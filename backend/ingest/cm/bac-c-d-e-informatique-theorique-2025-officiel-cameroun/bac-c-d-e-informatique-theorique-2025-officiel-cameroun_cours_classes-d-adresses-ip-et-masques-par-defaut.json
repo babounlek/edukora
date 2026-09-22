@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-classes-d-adresses-ip-et-masques-par-defaut-tle-tronc-commun",
+  "meta": {
+    "titre": "Classes d'adresses IP et masques par défaut",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Adressage IP",
+    "duree_estimee_min": 20,
+    "tags": [
+      "adresse IP",
+      "classe A",
+      "classe B",
+      "classe C",
+      "masque de sous-réseau",
+      "classes d'adresses IPv4",
+      "masque par défaut"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex1-q7-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une adresse IP comme 128.100.0.11 n'est pas qu'une suite de quatre nombres : elle indique, dès son premier octet, à quelle famille elle appartient et donc comment la partager entre partie réseau et partie machine. Savoir lire une classe d'adresse en quelques secondes est un réflexe indispensable pour toute question réseau."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une adresse IPv4 s'écrit sous la forme de quatre nombres (octets) séparés par des points."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire la classe d'une adresse IPv4 sur son premier octet",
+      "contenu_markdown": "Le premier octet d'une adresse IPv4 détermine sa classe :\n\n- **Classe A** : premier octet de 0 à 127 → masque par défaut 255.0.0.0\n- **Classe B** : premier octet de 128 à 191 → masque par défaut 255.255.0.0\n- **Classe C** : premier octet de 192 à 223 → masque par défaut 255.255.255.0\n\nLe masque par défaut indique combien d'octets sont réservés à l'identification du réseau (les octets couverts par des 255) et combien restent disponibles pour identifier les machines de ce réseau (les octets couverts par des 0)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la classe et le masque par défaut de l'adresse 128.100.0.11.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler le premier octet de l'adresse",
+          "justification": "C'est la seule valeur nécessaire pour déterminer la classe.",
+          "resultat_markdown": "Premier octet = 128."
+        },
+        {
+          "numero": 2,
+          "action": "Situer cette valeur dans les trois intervalles de classes",
+          "justification": "128 appartient à l'intervalle [128 ; 191].",
+          "resultat_markdown": "128 ∈ [128 ; 191] → classe B."
+        },
+        {
+          "numero": 3,
+          "action": "En déduire le masque par défaut associé à cette classe",
+          "justification": "La classe B réserve ses deux premiers octets au réseau.",
+          "resultat_markdown": "Masque par défaut : 255.255.0.0."
+        }
+      ],
+      "conclusion_markdown": "On obtient la classe B et son masque 255.255.0.0, ce qui signifie que 128.100 identifie le réseau et 0.11 identifie la machine sur ce réseau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Regarder le dernier octet au lieu du premier",
+          "pourquoi_faux": "La classe d'une adresse IPv4 se détermine uniquement à partir de son PREMIER octet ; les octets suivants n'interviennent pas dans cette détermination.",
+          "correction_markdown": "Toujours isoler le premier octet en premier, avant même de regarder le reste de l'adresse."
+        },
+        {
+          "erreur_markdown": "Confondre les bornes des intervalles (par exemple placer 128 en classe A)",
+          "pourquoi_faux": "La classe A s'arrête à 127 inclus ; 128 appartient déjà à la classe B. Une erreur d'un chiffre sur une borne change complètement la classe et le masque associé.",
+          "correction_markdown": "Mémoriser précisément les trois bornes : 0-127 (A), 128-191 (B), 192-223 (C)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner la classe et le masque par défaut de l'adresse 192.168.1.10.",
+          "solution_markdown": "Premier octet = 192, qui appartient à l'intervalle [192 ; 223] : classe C. Masque par défaut : 255.255.255.0."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner la classe et le masque par défaut de l'adresse 10.0.0.5.",
+          "solution_markdown": "Premier octet = 10, qui appartient à l'intervalle [0 ; 127] : classe A. Masque par défaut : 255.0.0.0."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux machines ont pour adresses 128.100.0.11 et 128.101.0.20, avec le masque par défaut de leur classe. Appartiennent-elles au même réseau ? Justifier par le calcul de l'adresse réseau de chacune.",
+          "solution_markdown": "Les deux adresses commencent par 128, donc classe B, masque par défaut 255.255.0.0 : les deux premiers octets identifient le réseau. Adresse réseau de la première machine : 128.100.0.0. Adresse réseau de la seconde : 128.101.0.0. Ces deux adresses réseau sont différentes (100 ≠ 101) : les deux machines n'appartiennent donc pas au même réseau, bien qu'elles partagent le même premier octet et la même classe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La classe d'une adresse IPv4 se lit uniquement sur son premier octet.",
+        "Classe A : 0-127, masque 255.0.0.0. Classe B : 128-191, masque 255.255.0.0. Classe C : 192-223, masque 255.255.255.0.",
+        "Le masque par défaut indique combien d'octets identifient le réseau (255) et combien identifient la machine (0).",
+        "Deux adresses de même classe ne sont pas forcément sur le même réseau : il faut comparer leur adresse réseau complète, pas seulement leur classe."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-resolution-systemes-equations-trois-inconnues-1ere-d",
+  "meta": {
+    "titre": "Résolution de systèmes d'équations à trois inconnues par changement de variable",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Systèmes d'équations",
+    "duree_estimee_min": 25,
+    "tags": [
+      "systèmes d'équations",
+      "changement de variable",
+      "résolution dans ℝ³"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "21",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-1999-cameroun",
+    "epreuve_titre": "Probatoire D - Mathématiques - Session 1999 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-1999-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Résoudre un système à trois équations est déjà un classique quand les trois inconnues sont $x$, $y$ et $z$. Mais que faire quand l'énoncé mélange $x$, $y^2$ et $z^3$ dans les mêmes équations ? Le réflexe à acquérir ici change une apparente complication en un système parfaitement ordinaire : il suffit de renommer les groupes qui posent problème pour retrouver un système linéaire classique, résolu en quelques lignes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résolution d'un système linéaire à deux ou trois inconnues (combinaison, substitution)",
+        "Notion de racine carrée et de racine cubique d'un nombre réel"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le changement de variable dans un système polynomial",
+      "contenu_markdown": "Quand un système comporte des expressions comme $y^2$ ou $z^3$ répétées à l'identique dans plusieurs équations, on les traite comme de nouvelles inconnues à part entière. Poser $Y=y^2$ et $Z=z^3$ transforme un système apparemment non linéaire en un vrai système linéaire aux inconnues $x$, $Y$, $Z$, résoluble par les méthodes habituelles (substitution, combinaison). Une fois $x$, $Y$ et $Z$ trouvés, on revient aux inconnues d'origine en résolvant séparément $y^2=Y$ (qui donne en général deux valeurs opposées si $Y \\geq 0$) et $z^3=Z$ (qui n'en donne qu'une seule, réelle).",
+      "formule_principale": "y^2 = Y \\implies y = \\pm\\sqrt{Y} \\ (Y \\geq 0) \\qquad z^3 = Z \\implies z = \\sqrt[3]{Z}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}^3$ le système : $$\\begin{cases} x + 2y^2 + 3z^3 = 7 \\\\ 2x + 3y^2 + 4z^3 = 11 \\\\ x - y^2 - z^3 = 0 \\end{cases}$$",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser $Y=y^2$ et $Z=z^3$",
+          "justification": "Chaque inconnue difficile apparaît toujours au même degré dans les trois équations : le système devient linéaire en $(x,Y,Z)$.",
+          "resultat_markdown": "$$\\begin{cases} x + 2Y + 3Z = 7 \\\\ 2x + 3Y + 4Z = 11 \\\\ x - Y - Z = 0 \\end{cases}$$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer $x$ à partir de la troisième équation",
+          "justification": "C'est l'équation la plus simple, elle isole $x$ directement.",
+          "resultat_markdown": "$x = Y+Z$"
+        },
+        {
+          "numero": 3,
+          "action": "Substituer $x$ dans les deux premières équations",
+          "justification": "On élimine $x$ pour obtenir un système à deux inconnues $Y,Z$.",
+          "resultat_markdown": "$$\\begin{cases} 3Y+4Z=7 \\\\ 5Y+6Z=11 \\end{cases}$$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre le système en $(Y,Z)$ par combinaison",
+          "justification": "On multiplie pour aligner les coefficients de $Y$, puis on soustrait.",
+          "resultat_markdown": "$15Y+20Z=35$ et $15Y+18Z=33$, d'où $2Z=2$, donc $Z=1$, puis $3Y+4=7$, donc $Y=1$."
+        },
+        {
+          "numero": 5,
+          "action": "Revenir à $x$, puis à $y$ et $z$",
+          "justification": "$x=Y+Z$ ; $y^2=Y$ donne deux valeurs opposées ; $z^3=Z$ n'en donne qu'une.",
+          "resultat_markdown": "$x=2$ ; $y=\\pm 1$ ; $z=1$"
+        }
+      ],
+      "conclusion_markdown": "Le système admet deux solutions dans $\\mathbb{R}^3$ : $S=\\{(2,1,1)\\,;\\,(2,-1,1)\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $z = \\pm\\sqrt[3]{Z}$ comme pour une racine carrée.",
+          "pourquoi_faux": "Une racine cubique réelle est unique : la fonction $z \\mapsto z^3$ est strictement croissante sur $\\mathbb{R}$, donc bijective, contrairement à $y \\mapsto y^2$ qui n'est pas injective.",
+          "correction_markdown": "Ne garder qu'une seule valeur pour $z$, et bien penser aux deux valeurs opposées pour $y$ (si $Y \\geq 0$)."
+        },
+        {
+          "erreur_markdown": "Résoudre le système linéaire en $(x,Y,Z)$ puis oublier de vérifier que $Y\\geq 0$ avant d'en tirer $y$.",
+          "pourquoi_faux": "Si le calcul donnait $Y<0$, aucun réel $y$ ne vérifierait $y^2=Y$ : il faudrait alors conclure à l'absence de solution réelle pour $y$.",
+          "correction_markdown": "Toujours vérifier le signe de $Y$ avant d'en extraire la racine carrée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $\\begin{cases} x+2y^2=8 \\\\ 3x-y^2=3 \\end{cases}$.",
+          "solution_markdown": "On pose $Y=y^2$. Le système devient $\\begin{cases} x+2Y=8 \\\\ 3x-Y=3 \\end{cases}$.\n\nDe la seconde équation, $Y=3x-3$. En remplaçant dans la première : $x+2(3x-3)=8$, soit $x+6x-6=8$, donc $7x=14$, donc $x=2$.\n\nOn en tire $Y=3(2)-3=3$.\n\nComme $Y=y^2=3$, on obtient $y=\\sqrt{3}$ ou $y=-\\sqrt{3}$.\n\n$$S=\\{(2,\\sqrt{3})\\,;\\,(2,-\\sqrt{3})\\}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^3$ le système $\\begin{cases} x+y^2+z^3=6 \\\\ x-y^2+z^3=4 \\\\ x+y^2-z^3=2 \\end{cases}$.",
+          "solution_markdown": "Posons $Y=y^2$ et $Z=z^3$. Le système devient $\\begin{cases} x+Y+Z=6 \\\\ x-Y+Z=4 \\\\ x+Y-Z=2 \\end{cases}$.\n\nEn soustrayant la deuxième équation à la première : $2Y=2$, donc $Y=1$.\n\nEn soustrayant la troisième équation à la première : $2Z=4$, donc $Z=2$.\n\nEn remplaçant dans la première équation : $x+1+2=6$, donc $x=3$.\n\nComme $Y=y^2=1$, on a $y=1$ ou $y=-1$. Comme $Z=z^3=2$, on a $z=\\sqrt[3]{2}$ (valeur unique).\n\n$$S=\\{(3,1,\\sqrt[3]{2})\\,;\\,(3,-1,\\sqrt[3]{2})\\}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^3$ le système $\\begin{cases} 2x+y^2+z^3=5 \\\\ x+3y^2-z^3=-3 \\\\ x-y^2+2z^3=8 \\end{cases}$ (indication : commencer par éliminer $x$).",
+          "solution_markdown": "Posons $Y=y^2$ et $Z=z^3$. Le système devient $\\begin{cases} 2x+Y+Z=5 \\\\ x+3Y-Z=-3 \\\\ x-Y+2Z=8 \\end{cases}$.\n\nDe la deuxième équation : $x=-3-3Y+Z$.\n\nEn remplaçant dans la première : $2(-3-3Y+Z)+Y+Z=5$, soit $-6-6Y+2Z+Y+Z=5$, donc $-5Y+3Z=11$ (i).\n\nEn remplaçant dans la troisième : $(-3-3Y+Z)-Y+2Z=8$, soit $-3-4Y+3Z=8$, donc $-4Y+3Z=11$ (ii).\n\nEn soustrayant (ii) à (i) : $(-5Y+3Z)-(-4Y+3Z)=11-11$, soit $-Y=0$, donc $Y=0$.\n\nEn reportant dans (ii) : $3Z=11$, donc $Z=\\dfrac{11}{3}$.\n\n$x=-3-3(0)+\\dfrac{11}{3}=-3+\\dfrac{11}{3}=\\dfrac{2}{3}$.\n\nComme $Y=y^2=0$, on a $y=0$ (valeur unique). Comme $Z=z^3=\\dfrac{11}{3}$, on a $z=\\sqrt[3]{\\dfrac{11}{3}}$.\n\n$$S=\\left\\{\\left(\\dfrac{2}{3},0,\\sqrt[3]{\\dfrac{11}{3}}\\right)\\right\\}$$\n\nVérification : $2\\left(\\frac{2}{3}\\right)+0+\\frac{11}{3}=\\frac{15}{3}=5$ ✓ ; $\\frac{2}{3}+0-\\frac{11}{3}=-\\frac{9}{3}=-3$ ✓ ; $\\frac{2}{3}-0+2\\left(\\frac{11}{3}\\right)=\\frac{24}{3}=8$ ✓."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dès que $y$ apparaît toujours au carré et $z$ toujours au cube dans un système, pose $Y=y^2$ et $Z=z^3$ : tu retrouves un système linéaire ordinaire.",
+        "Résous d'abord le système linéaire en $(x,Y,Z)$ par combinaison ou substitution, exactement comme un système classique à trois inconnues.",
+        "Ne reviens aux inconnues de départ qu'à la toute fin, en résolvant séparément chaque équation $y^2=Y$ et $z^3=Z$.",
+        "Une racine carrée réelle donne deux valeurs opposées (si $Y \\geq 0$), une racine cubique réelle n'en donne qu'une seule : ne traite jamais les deux de la même façon.",
+        "Vérifie toujours tes solutions dans le système d'origine (avec $y$ et $z$, pas seulement $Y$ et $Z$) : c'est le seul moyen sûr de repérer une erreur de signe.",
+        "Ce type de système apparaît souvent en tout début d'épreuve (Probatoire, BAC) comme question de mise en train : le résoudre vite et sans erreur permet de garder du temps pour les exercices plus longs."
+      ]
+    }
+  ]
+}

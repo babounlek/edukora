@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-sens-de-la-force-de-laplace-tle-c",
+  "meta": {
+    "titre": "Sens de la force de Laplace : rôle du courant et du champ magnétique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Champ magnétique et force de Laplace",
+    "duree_estimee_min": 25,
+    "tags": [
+      "force de Laplace",
+      "produit vectoriel",
+      "sens du courant",
+      "sens du champ magnétique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat série C - Physique Pratique - Étude de la déviation d'une tige mobile dans un champ magnétique",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-pratique-2026-officiel-ex1-q2.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur le même montage, sans rien changer d'autre, il suffit d'inverser deux fils au niveau du générateur pour que la tige, qui déviait vers la droite, se mette à dévier vers la gauche exactement du même angle. Ce simple constat expérimental cache une règle géométrique précise : le sens de la force de Laplace n'est pas fixe, il dépend directement du sens du courant et du sens du champ magnétique. Savoir prédire ce sens avant même de fermer le circuit, c'est ce que ce cours propose d'installer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "L'expression de la force de Laplace $\\vec{F} = I\\vec{L}\\times\\vec{B}$",
+        "Les propriétés du produit vectoriel : orientation et antisymétrie ($\\vec{u}\\times\\vec{v} = -\\vec{v}\\times\\vec{u}$)",
+        "La notion de sens conventionnel du courant dans un circuit"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le sens de la force de Laplace dépend de deux facteurs, chacun inversable indépendamment",
+      "contenu_markdown": "La force de Laplace s'écrit $\\vec{F} = I\\vec{L}\\times\\vec{B}$, où $\\vec{L}$ est orienté dans le sens conventionnel du courant. Le produit vectoriel a une propriété fondamentale : il est antisymétrique, c'est-à-dire que $\\vec{u}\\times\\vec{v} = -(\\vec{v}\\times\\vec{u})$. Inverser l'un des deux vecteurs qui entrent dans le produit inverse donc le résultat.\n\nAppliqué à la force de Laplace, cela signifie deux choses, indépendantes l'une de l'autre :\n\n- **Inverser le sens du courant $I$** (par exemple en permutant les bornes du générateur) inverse le sens de $\\vec{L}$ dans le produit, donc inverse le sens de $\\vec{F}$, tout en laissant $\\vec{B}$ inchangé.\n- **Inverser le sens du champ $\\vec{B}$** (par exemple en inversant la polarité d'un électroaimant) inverse également $\\vec{F}$, tout en laissant $I$ et $\\vec{L}$ inchangés.\n\nConséquence directe et souvent utilisée en TP : inverser ces DEUX facteurs à la fois (courant ET champ) inverse deux fois le sens de $\\vec{F}$, qui revient donc à son sens de départ - la force de Laplace ne change alors pas de sens.",
+      "formule_principale": "\\vec{u}\\times\\vec{v} = -(\\vec{v}\\times\\vec{u})",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le montage du TP, la tige OA dévie d'un angle α vers un côté donné lorsque le circuit est fermé avec un champ magnétique $\\vec{B}$ fixé. On permute ensuite les bornes du générateur, sans rien changer d'autre. Déterminer le sens de la nouvelle déviation de la tige.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce que modifie la permutation des bornes du générateur",
+          "justification": "Le générateur impose le sens de circulation du courant dans tout le circuit qu'il alimente. Permuter ses bornes inverse ce sens dans l'ensemble du circuit, y compris dans la tige.",
+          "resultat_markdown": "Le sens du courant $I$ dans la tige OA est inversé ; le champ magnétique $\\vec{B}$, lui, n'est pas modifié par cette manipulation."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer l'antisymétrie du produit vectoriel à $\\vec{F} = I\\vec{L}\\times\\vec{B}$",
+          "justification": "Inverser le sens de $I$ revient à inverser le sens du vecteur $\\vec{L}$ (orienté selon le sens conventionnel du courant), un seul des deux facteurs du produit vectoriel. Or $(-\\vec{L})\\times\\vec{B} = -(\\vec{L}\\times\\vec{B})$.",
+          "resultat_markdown": "La nouvelle force de Laplace est l'opposée de la précédente : $\\vec{F}' = -\\vec{F}$. Elle a la même norme (puisque $I$, $L$ et $B$ n'ont pas changé en valeur absolue) mais un sens opposé."
+        },
+        {
+          "numero": 3,
+          "action": "En déduire le sens de la nouvelle déviation de la tige",
+          "justification": "Le sens de déviation de la tige est directement déterminé par le sens de la force de Laplace qui s'exerce sur elle : une force de sens opposé produit une déviation du côté opposé.",
+          "resultat_markdown": "La tige dévie désormais du côté opposé à celui observé initialement, d'un angle de même valeur absolue α (la norme de la force, donc l'amplitude de la déviation à l'équilibre, n'a pas changé)."
+        }
+      ],
+      "conclusion_markdown": "Permuter les bornes du générateur inverse le sens du courant, donc le sens de la force de Laplace par antisymétrie du produit vectoriel, et donc le sens de déviation de la tige - sans changer l'amplitude de cette déviation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser qu'inverser le sens du courant change aussi la norme de la force de Laplace.",
+          "pourquoi_faux": "La norme $F = BIL\\sin\\theta$ ne dépend que des valeurs absolues de $I$, $B$, $L$ et de l'angle $\\theta$ entre le conducteur et le champ : inverser un sens ne change aucune de ces valeurs absolues, seul le sens du vecteur $\\vec{F}$ change.",
+          "correction_markdown": "Distingue toujours la norme de la force (inchangée par une inversion de sens) et le sens de la force (inversé) - ce sont deux informations indépendantes du même vecteur."
+        },
+        {
+          "erreur_markdown": "Croire qu'inverser à la fois le courant et le champ magnétique annule la force de Laplace.",
+          "pourquoi_faux": "Deux inversions successives d'un produit vectoriel se compensent : $(-\\vec{L})\\times(-\\vec{B}) = \\vec{L}\\times\\vec{B}$. La force ne s'annule pas, elle retrouve simplement son sens de départ.",
+          "correction_markdown": "Compte le nombre de facteurs inversés : un nombre impair d'inversions change le sens de la force, un nombre pair (comme deux) le laisse inchangé."
+        },
+        {
+          "erreur_markdown": "Essayer de deviner le sens de la force de Laplace « à l'instinct » plutôt qu'en appliquant une règle géométrique précise (règle de la main droite ou du produit vectoriel).",
+          "pourquoi_faux": "Le sens d'un produit vectoriel n'est pas intuitif : deux vecteurs perpendiculaires peuvent donner un résultat dans l'une ou l'autre de deux directions opposées selon l'ordre du produit, et seule une règle géométrique fiable permet de trancher sans erreur.",
+          "correction_markdown": "Applique systématiquement la règle des trois doigts de la main droite (ou la règle du bonhomme d'Ampère) : jamais de réponse « au jugé » sur un sens de force magnétique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un conducteur parcouru par un courant $I$, placé dans un champ magnétique $\\vec{B}$, subit une force de Laplace $\\vec{F}$ dirigée vers la droite. Sans rien changer d'autre, on double l'intensité du courant. Le sens de $\\vec{F}$ change-t-il ? Justifier.",
+          "solution_markdown": "Non, le sens de $\\vec{F}$ ne change pas.\n\nDoubler l'intensité $I$ multiplie par 2 la norme de la force ($F = BIL$ devient $2F$), mais ne change ni le sens du courant, ni celui de $\\vec{L}$ dans le produit vectoriel $\\vec{F} = I\\vec{L}\\times\\vec{B}$. Or c'est uniquement une inversion de sens de $I$ (et non un simple changement de sa valeur absolue) qui inverserait $\\vec{F}$.\n\nLa force de Laplace reste donc dirigée vers la droite, mais devient deux fois plus intense."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un montage identique à celui du TP, la tige dévie vers la gauche quand le circuit est fermé avec le champ $\\vec{B}$ dans un sens donné. On souhaite qu'elle dévie désormais vers la droite, sans changer l'intensité du courant. Proposer deux manipulations différentes, indépendantes l'une de l'autre, permettant d'obtenir ce résultat, et expliquer pourquoi chacune fonctionne.",
+          "solution_markdown": "**Première manipulation : permuter les bornes du générateur.**\nCela inverse le sens du courant $I$ dans la tige, donc le sens de $\\vec{L}$ dans le produit vectoriel $\\vec{F} = I\\vec{L}\\times\\vec{B}$. Par antisymétrie du produit vectoriel, $\\vec{F}$ change de sens : la tige dévie désormais du côté opposé, donc vers la droite.\n\n**Deuxième manipulation : inverser le sens du champ magnétique $\\vec{B}$** (par exemple en retournant l'aimant ou en inversant le sens du courant qui crée le champ, s'il est produit par un électroaimant).\nCela inverse le second facteur du produit vectoriel : $\\vec{F} = I\\vec{L}\\times(-\\vec{B}) = -(I\\vec{L}\\times\\vec{B})$. La force change à nouveau de sens, pour la même raison géométrique que la première manipulation, sans qu'il soit nécessaire de toucher au circuit électrique lui-même.\n\nLes deux manipulations produisent le même effet observable (la tige dévie de l'autre côté) parce qu'elles inversent chacune l'un des deux facteurs du même produit vectoriel."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On réalise successivement, sur le même montage, les trois manipulations suivantes, dans cet ordre, en partant d'une tige déviée vers la gauche : (1) on permute les bornes du générateur, (2) on inverse le sens du champ magnétique, (3) on permute une seconde fois les bornes du générateur. Déterminer, en le justifiant à chaque étape, le sens de déviation de la tige après ces trois manipulations.",
+          "solution_markdown": "On note $\\vec{F}_0$ le sens initial de la force de Laplace (tige déviée vers la gauche), et on suit le nombre d'inversions subies par chacun des deux facteurs du produit vectoriel $\\vec{F} = I\\vec{L}\\times\\vec{B}$.\n\n**Après la manipulation (1)** - permutation des bornes : le sens de $I$ (donc de $\\vec{L}$) est inversé une fois. La force devient $\\vec{F}_1 = -\\vec{F}_0$ : la tige dévie maintenant vers la droite.\n\n**Après la manipulation (2)** - inversion du champ : le sens de $\\vec{B}$ est inversé une fois, en plus de l'inversion précédente sur $I$. Deux facteurs sont maintenant inversés (un chacun) : $\\vec{F}_2 = (-\\vec{L})\\times(-\\vec{B}) = \\vec{L}\\times\\vec{B} = \\vec{F}_0$. La tige revient à une déviation vers la gauche, comme au départ.\n\n**Après la manipulation (3)** - seconde permutation des bornes : le sens de $I$ (donc de $\\vec{L}$) est inversé une seconde fois par rapport à son sens d'origine, tandis que $\\vec{B}$ reste dans le sens inversé fixé à l'étape (2). Un seul facteur net est donc inversé par rapport à la situation de départ (celui du champ) : $\\vec{F}_3 = \\vec{L}\\times(-\\vec{B}) = -\\vec{F}_0$.\n\n**Conclusion :** après les trois manipulations, la tige dévie vers la **droite**, exactement comme après la seule manipulation (1) - ce qui confirme que seul le nombre total d'inversions (ici impair au final : trois opérations, mais deux d'entre elles se neutralisent) détermine le sens final, jamais l'ordre dans lequel elles sont effectuées."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le sens de la force de Laplace dépend de DEUX facteurs indépendants : le sens du courant et le sens du champ magnétique.",
+        "Inverser un seul de ces deux facteurs inverse le sens de la force ; inverser les deux à la fois annule cet effet et ramène la force à son sens de départ.",
+        "La norme de la force ($F = BIL\\sin\\theta$) ne dépend jamais du sens des vecteurs, seulement de leurs valeurs absolues : une inversion de sens ne change jamais l'intensité de la déviation observée, seulement sa direction.",
+        "Ne devine jamais un sens de force magnétique « à l'instinct » : applique systématiquement une règle géométrique fiable (règle de la main droite, ou calcul explicite du produit vectoriel).",
+        "Au BAC, cette question de sens accompagne presque toujours celle de l'existence de la force (voir le cours associé) : les deux se travaillent ensemble, mais répondent à deux questions différentes - « y a-t-il une force ? » et « dans quel sens ? »."
+      ]
+    }
+  ]
+}

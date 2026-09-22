@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-parcourir-un-tableau-de-structures-et-compter-des-elements-selon-un-critere-tle-ti",
+  "meta": {
+    "titre": "Parcourir un tableau de structures et compter des éléments selon un critère",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Tableaux et structures en langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "parcours de tableau",
+      "comptage sous condition",
+      "opérateur modulo",
+      "struct"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex2-q11-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Compter, parmi une liste d'élèves, ceux qui ont plus de 15 ans, ceux dont la moyenne dépasse 10, ou ceux qui habitent une ville donnée : ce sont trois questions différentes qui se résolvent pourtant avec exactement le même squelette de code. Une fois ce motif maîtrisé, il se réutilise presque sans réfléchir."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer et parcourir un tableau avec une boucle for",
+        "Savoir accéder à un champ d'une structure (notation point)",
+        "Connaître l'opérateur modulo %"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Compteur à 0, boucle, condition, incrémentation",
+      "contenu_markdown": "Compter, parmi les éléments d'un tableau, ceux qui vérifient un critère donné suit toujours le même schéma en quatre temps : déclarer un **compteur initialisé à 0** avant la boucle ; **parcourir** le tableau avec une boucle `for` ; **tester** le critère avec un `if` à chaque itération (l'opérateur modulo `%` sert souvent à tester la parité : `x%2==0` pour un nombre pair) ; et **incrémenter** le compteur uniquement quand le critère est vérifié. Le compteur est enfin affiché une fois le parcours terminé, jamais à l'intérieur de la boucle."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écris un bloc qui parcourt le tableau Lyclamo de N élèves et affiche le nombre d'âges pairs.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déclarer et initialiser le compteur avant la boucle",
+          "justification": "Le compteur doit partir de 0 une seule fois, avant tout parcours",
+          "resultat_markdown": "int nb=0;"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la boucle de parcours du tableau",
+          "justification": "Chaque élève du tableau doit être examiné une fois",
+          "resultat_markdown": "for(i=0;i<=N-1;i++){ ... }"
+        },
+        {
+          "numero": 3,
+          "action": "Tester le critère de parité sur le champ age",
+          "justification": "Un âge est pair quand le reste de sa division par 2 vaut 0",
+          "resultat_markdown": "if(Lyclamo[i].age%2==0){ ... }"
+        },
+        {
+          "numero": 4,
+          "action": "Incrémenter le compteur et afficher le résultat final",
+          "justification": "L'incrémentation se fait uniquement si le critère est vérifié, l'affichage se fait après la boucle",
+          "resultat_markdown": "nb++; (dans le if) puis printf(\"Nombre d ages pairs : %d\",nb); (après la boucle)"
+        }
+      ],
+      "conclusion_markdown": "```c\nint nb=0;\nfor(i=0;i<=N-1;i++){\n  if(Lyclamo[i].age%2==0){\n    nb++;\n  }\n}\nprintf(\"Nombre d ages pairs : %d\",nb);\n```\nCe bloc affiche exactement le nombre d'élèves dont l'âge est pair, ni plus ni moins."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Initialiser le compteur à l'intérieur de la boucle for",
+          "pourquoi_faux": "Le compteur serait remis à 0 à chaque itération, et n'afficherait jamais qu'un résultat de 0 ou 1 à la fin du parcours.",
+          "correction_markdown": "L'initialisation du compteur doit toujours se faire une seule fois, avant le début de la boucle."
+        },
+        {
+          "erreur_markdown": "Tester Lyclamo[i].age==2 au lieu de Lyclamo[i].age%2==0",
+          "pourquoi_faux": "Cette condition ne détecterait que les élèves ayant exactement 2 ans, pas tous les âges pairs.",
+          "correction_markdown": "Pour tester la parité d'un nombre quelconque, utilise toujours l'opérateur modulo (%2==0), jamais une comparaison à une valeur précise."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris un bloc qui compte, dans un tableau t de n entiers, combien sont strictement positifs.",
+          "solution_markdown": "int nb=0;\nfor(i=0;i<n;i++){\n  if(t[i]>0){\n    nb++;\n  }\n}\nprintf(\"%d\",nb);"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "En reprenant le tableau Lyclamo (struct Eleve avec matricule, age, sexe), écris un bloc qui compte le nombre d'élèves de sexe 'F'.",
+          "solution_markdown": "int nb=0;\nfor(i=0;i<=N-1;i++){\n  if(Lyclamo[i].sexe=='F'){\n    nb++;\n  }\n}\nprintf(\"Nombre de filles : %d\",nb);\n\nLa comparaison d'un caractère utilise des apostrophes simples ('F'), jamais des guillemets doubles réservés aux chaînes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris un bloc qui compte, dans le tableau Lyclamo, le nombre d'élèves majeurs (âge supérieur ou égal à 18) ET de sexe 'M', en une seule boucle.",
+          "solution_markdown": "int nb=0;\nfor(i=0;i<=N-1;i++){\n  if(Lyclamo[i].age>=18 && Lyclamo[i].sexe=='M'){\n    nb++;\n  }\n}\nprintf(\"Nombre de garcons majeurs : %d\",nb);\n\nLes deux critères (âge et sexe) sont combinés dans une seule condition avec l'opérateur logique && (« et »), pour que le compteur ne s'incrémente que lorsque les deux conditions sont vraies à la fois pour le même élève."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Compter sous condition suit toujours le même schéma : compteur à 0 avant la boucle, test dans un if, incrémentation conditionnelle.",
+        "Le compteur ne s'affiche qu'une fois le parcours terminé, jamais à l'intérieur de la boucle.",
+        "L'opérateur modulo (%) teste la parité ; l'opérateur && combine plusieurs conditions à vérifier simultanément.",
+        "Ce motif de comptage se retrouve dans une multitude de variantes aux examens : une fois compris, il se réutilise directement en changeant seulement la condition testée."
+      ]
+    }
+  ]
+}

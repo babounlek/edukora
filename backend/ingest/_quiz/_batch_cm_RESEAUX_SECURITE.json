@@ -1,0 +1,172 @@
+[
+  {
+    "competence": "architecture réseau",
+    "pays": "cm",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "4e",
+      "serie_label": "",
+      "module_numero": "401",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10587,
+        "enonce_markdown": "**15.** Par rapport au DHCP, indiquer l'architecture réseau dans laquelle se trouve cette machine. *[0,5pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne architecture réseau se qualifie de client/serveur lorsqu'une machine, le client, sollicite un service auprès d'une autre machine dédiée, le serveur, qui le lui fournit.\n\nPar rapport au DHCP, cette machine se trouve dans une **architecture client/serveur** : elle joue le rôle de client DHCP, puisqu'elle demande une configuration IP, tandis qu'un serveur DHCP dédié, identifié par son adresse (192.168.43.1 pour la carte Wi-Fi, 192.168.22.254 pour l'adaptateur VMnet1), lui fournit cette configuration (adresse IP, masque, passerelle, durée du bail).\n\n### Conseil\nLe champ « Serveur DHCP » suivi d'une adresse, présent dans la sortie d'IPCONFIG, est à lui seul la preuve à citer dans ta réponse : il montre qu'un équipement distinct de la machine assure ce service, ce qui caractérise précisément une architecture client/serveur."
+      },
+      {
+        "exercise_id": 10744,
+        "enonce_markdown": "Définir les expressions ci-après : Architecture réseau. (0,5pt)",
+        "corrige_markdown": "### Rappel de méthode\nL'architecture réseau répond à la question « qui joue quel rôle ? », tandis que la topologie répond à la question « comment est câblé le réseau ? ».\n\n**Corrigé.** Une **architecture réseau** est le modèle d'organisation qui définit les rôles respectifs des ordinateurs d'un réseau (qui fournit des ressources, qui les consomme) et la manière dont ils communiquent et partagent leurs ressources entre eux. Les deux architectures les plus courantes sont l'architecture **Client-Serveur** (des postes clients sollicitent les services d'un ou plusieurs serveurs dédiés) et l'architecture **Peer-to-Peer** (poste à poste, où chaque ordinateur est à la fois client et fournisseur de ressources, sans serveur dédié)."
+      }
+    ]
+  },
+  {
+    "competence": "adressage IP",
+    "pays": "cm",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT002",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10596,
+        "enonce_markdown": "3) indiquer le type d'adressage qui a été utilisé lors de la configuration de la carte réseau sans fil WI-FI et justifier la réponse donnée. *[1pt]*",
+        "corrige_markdown": "### Rappel de méthode\nPour déterminer si une carte réseau utilise un adressage statique ou dynamique, il faut examiner l'attribut « DHCP activé » et la présence d'un bail (durée de location de l'adresse) dans le résultat d'ipconfig /all : un DHCP activé accompagné d'un bail obtenu/expirant signale un adressage dynamique.\n\n### Corrigé détaillé\nL'analyse de la carte « réseau sans fil Wi-Fi » montre trois indices concordants : « DHCP activé : Oui », un « Serveur DHCP : 192.168.43.253 », ainsi qu'un « Bail obtenu : jeudi 6 mai 2021 17:25:34 » et un « Bail expirant : jeudi 6 mai 2021 18:25:33 ».\n\nLa carte Wi-Fi utilise donc un **adressage dynamique (DHCP)**.\n\n**Justification** : l'adresse IPv4 (192.168.43.184) n'a pas été saisie manuellement par un utilisateur. Elle a été attribuée automatiquement, pour une durée limitée d'une heure (de 17h25 à 18h25), par un serveur DHCP identifié à l'adresse 192.168.43.253. Le fait que cette attribution soit limitée dans le temps par un bail, renouvelable à son expiration, est la caractéristique même de l'adressage dynamique : une adresse fixe configurée manuellement (adressage statique) n'aurait jamais de bail associé.\n\n### Piège à éviter\nNe pas conclure uniquement sur « DHCP activé : Oui » : cette seule case ne suffit pas à démontrer un adressage dynamique tant que l'on n'a pas vérifié la présence effective d'un bail limité dans le temps.\n\n### Conseil\nRepère toujours trois indices ensemble pour conclure avec certitude à un adressage dynamique : DHCP activé = Oui, une adresse de serveur DHCP renseignée, et une paire bail obtenu / bail expirant."
+      },
+      {
+        "exercise_id": 10744,
+        "enonce_markdown": "Proposer un paramètre correct pour l'ordinateur PC4, similaire au paramètre de l'ordinateur PC2. (0,5pt)",
+        "corrige_markdown": "### Rappel de méthode\nPour que deux ordinateurs d'un même réseau local puissent communiquer directement, leurs adresses IP doivent appartenir au **même sous-réseau** (mêmes premiers octets selon le masque utilisé) tout en restant **distinctes** l'une de l'autre (même réseau, hôte différent).\n\n**Corrigé.** Puisque PC2 possède l'adresse IP `192.168.2.75` (paramètre 1 de la question précédente), un paramètre IP correct pour PC4, appartenant au même réseau, peut être par exemple **192.168.2.76** : mêmes trois premiers octets (`192.168.2`) que PC2, garantissant l'appartenance au même sous-réseau, mais un dernier octet différent (`76` au lieu de `75`), garantissant que PC4 ait sa propre adresse, distincte de celle de PC2."
+      }
+    ]
+  },
+  {
+    "competence": "ipconfig",
+    "pays": "cm",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT002",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10587,
+        "enonce_markdown": "**7.** Déterminer le mode d'adressage utilisé par cet ordinateur. Justifier votre réponse. *[0,5pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLe mode d'adressage d'une machine, statique ou dynamique, se lit directement dans la sortie d'IPCONFIG /ALL à travers le champ « DHCP activé » et la présence, ou non, d'un bail.\n\nCet ordinateur utilise un **adressage dynamique**. Sur chacune de ses cartes, le champ « DHCP activé » indique « Oui », et la carte Wi-Fi précise un bail obtenu et un bail expirant ainsi qu'un serveur DHCP (192.168.43.1) : l'adresse IP 192.168.43.228 n'a donc pas été saisie manuellement, elle a été attribuée automatiquement, pour une durée limitée, par un serveur DHCP.\n\n### Piège à éviter\nUn adressage statique se reconnaîtrait par « DHCP activé : Non » et l'absence totale de bail (obtenu/expirant) : la seule présence d'une adresse IPv4 ne suffit jamais à conclure sur le mode d'adressage, il faut toujours vérifier le champ DHCP."
+      }
+    ]
+  },
+  {
+    "competence": "adressage dynamique",
+    "pays": "cm",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10587,
+        "enonce_markdown": "**7.** Déterminer le mode d'adressage utilisé par cet ordinateur. Justifier votre réponse. *[0,5pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLe mode d'adressage d'une machine, statique ou dynamique, se lit directement dans la sortie d'IPCONFIG /ALL à travers le champ « DHCP activé » et la présence, ou non, d'un bail.\n\nCet ordinateur utilise un **adressage dynamique**. Sur chacune de ses cartes, le champ « DHCP activé » indique « Oui », et la carte Wi-Fi précise un bail obtenu et un bail expirant ainsi qu'un serveur DHCP (192.168.43.1) : l'adresse IP 192.168.43.228 n'a donc pas été saisie manuellement, elle a été attribuée automatiquement, pour une durée limitée, par un serveur DHCP.\n\n### Piège à éviter\nUn adressage statique se reconnaîtrait par « DHCP activé : Non » et l'absence totale de bail (obtenu/expirant) : la seule présence d'une adresse IPv4 ne suffit jamais à conclure sur le mode d'adressage, il faut toujours vérifier le champ DHCP."
+      },
+      {
+        "exercise_id": 10596,
+        "enonce_markdown": "3) indiquer le type d'adressage qui a été utilisé lors de la configuration de la carte réseau sans fil WI-FI et justifier la réponse donnée. *[1pt]*",
+        "corrige_markdown": "### Rappel de méthode\nPour déterminer si une carte réseau utilise un adressage statique ou dynamique, il faut examiner l'attribut « DHCP activé » et la présence d'un bail (durée de location de l'adresse) dans le résultat d'ipconfig /all : un DHCP activé accompagné d'un bail obtenu/expirant signale un adressage dynamique.\n\n### Corrigé détaillé\nL'analyse de la carte « réseau sans fil Wi-Fi » montre trois indices concordants : « DHCP activé : Oui », un « Serveur DHCP : 192.168.43.253 », ainsi qu'un « Bail obtenu : jeudi 6 mai 2021 17:25:34 » et un « Bail expirant : jeudi 6 mai 2021 18:25:33 ».\n\nLa carte Wi-Fi utilise donc un **adressage dynamique (DHCP)**.\n\n**Justification** : l'adresse IPv4 (192.168.43.184) n'a pas été saisie manuellement par un utilisateur. Elle a été attribuée automatiquement, pour une durée limitée d'une heure (de 17h25 à 18h25), par un serveur DHCP identifié à l'adresse 192.168.43.253. Le fait que cette attribution soit limitée dans le temps par un bail, renouvelable à son expiration, est la caractéristique même de l'adressage dynamique : une adresse fixe configurée manuellement (adressage statique) n'aurait jamais de bail associé.\n\n### Piège à éviter\nNe pas conclure uniquement sur « DHCP activé : Oui » : cette seule case ne suffit pas à démontrer un adressage dynamique tant que l'on n'a pas vérifié la présence effective d'un bail limité dans le temps.\n\n### Conseil\nRepère toujours trois indices ensemble pour conclure avec certitude à un adressage dynamique : DHCP activé = Oui, une adresse de serveur DHCP renseignée, et une paire bail obtenu / bail expirant."
+      }
+    ]
+  },
+  {
+    "competence": "peer to peer",
+    "pays": "cm",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "4e",
+      "serie_label": "",
+      "module_numero": "401",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10744,
+        "enonce_markdown": "Établir la différence entre l'architecture Client-Serveur et l'architecture Peer-to-Peer en reproduisant et en remplissant les cases vides du tableau ci-après avec les valeurs appropriées de la liste suivante : les ordinateurs sont à la fois client et fournisseurs de services ; le coût de la mise en œuvre est faible ; la sécurité est élevée du fait de la gestion centralisée de l'accès aux ressources ; le coût de la mise en œuvre est élevé ; le réseau est vulnérable ; les services et les données sont fournis aux ordinateurs clients de façons exclusives.\n\n| Critères | Architecture peer-to-peer |\n|---|---|\n| Transmission des données | |\n| Coût de mise en œuvre | |\n| Sécurité | |\n\n(1,5pt)",
+        "corrige_markdown": "### Rappel de méthode\nDans l'architecture peer-to-peer, aucun ordinateur n'est dédié à un rôle unique : chaque poste peut à la fois demander et fournir des ressources, et il n'existe pas de point central qui gère et sécurise l'accès. C'est l'inverse de l'architecture Client-Serveur, où un serveur dédié centralise les services et l'accès aux ressources.\n\n**Corrigé.**\n\n| Critères | Architecture peer-to-peer |\n|---|---|\n| Transmission des données | Les ordinateurs sont à la fois client et fournisseurs de services |\n| Coût de mise en œuvre | Le coût de la mise en œuvre est faible |\n| Sécurité | Le réseau est vulnérable |\n\n(À titre de comparaison, l'architecture Client-Serveur présenterait : transmission des données = « les services et les données sont fournis aux ordinateurs clients de façons exclusives », coût de mise en œuvre = « élevé », sécurité = « élevée du fait de la gestion centralisée de l'accès aux ressources ».)\n\n**Piège à éviter.** Ne pas inverser les deux architectures : une sécurité **élevée** et un coût **élevé** caractérisent le Client-Serveur (à cause du matériel serveur dédié et de sa gestion centralisée), et non le peer-to-peer."
+      }
+    ]
+  }
+]

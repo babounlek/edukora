@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-la-recursivite-en-programmation-principe-et-fonctionnement-ti-2021",
+  "meta": {
+    "titre": "La récursivité en programmation : principe et fonctionnement",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Récursivité en langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "récursivité",
+      "fonction récursive",
+      "cas de base",
+      "cas récursif"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex2-q7-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Certains calculs se définissent naturellement à partir d'un calcul plus simple du même type : la factorielle d'un nombre se définit à partir de la factorielle du nombre précédent. La récursivité est la technique de programmation qui exploite directement ce genre de définition, en laissant une fonction s'appeler elle-même."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire et appeler une fonction en C",
+        "Avoir observé au moins une trace d'exécution d'une fonction qui s'appelle elle-même"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une fonction récursive combine cas de base et cas récursif",
+      "contenu_markdown": "Une fonction est dite **récursive** lorsqu'elle s'appelle elle-même, directement (dans son propre corps) ou indirectement (par l'intermédiaire d'une autre fonction), afin de résoudre un problème en le ramenant à une version plus simple du même problème.\n\nToute fonction récursive correctement écrite comporte obligatoirement deux éléments :\n\n- Le **cas de base** (ou cas d'arrêt) : une situation simple, résolue directement sans nouvel appel récursif, qui arrête la chaîne d'appels.\n- Le **cas récursif** : la situation générale, résolue en appelant la fonction elle-même sur une version plus simple du problème, qui doit toujours progresser vers le cas de base (jamais s'en éloigner ni rester immobile).\n\nSans cas de base atteignable, ou si le cas récursif ne progresse jamais réellement vers lui, la fonction s'appellerait indéfiniment, jusqu'à un **débordement de pile** (*stack overflow*) qui provoque le plantage du programme, la mémoire réservée aux appels de fonctions étant limitée."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Nommer le type de fonction que constitue factorielle(), et justifier.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'appel de la fonction à elle-même",
+          "justification": "C'est la marque distinctive d'une fonction récursive",
+          "resultat_markdown": "Ligne 24 : a *= factorielle(a-1); - factorielle s'appelle elle-même dans son propre corps."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le cas de base",
+          "justification": "Le cas de base arrête la chaîne d'appels",
+          "resultat_markdown": "Ligne 20-21 : if (a == 1) { return 1; } - quand a atteint 1, la fonction renvoie directement 1 sans nouvel appel."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier que le cas récursif progresse vers le cas de base",
+          "justification": "Sans cette progression, la récursion ne s'arrêterait jamais",
+          "resultat_markdown": "Chaque appel récursif utilise a-1 : la valeur décroît strictement à chaque appel, jusqu'à atteindre 1."
+        }
+      ],
+      "conclusion_markdown": "factorielle() est une fonction récursive : elle combine un cas de base (a==1) qui arrête la récursion et un cas récursif (a *= factorielle(a-1)) qui progresse strictement vers ce cas de base."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire une fonction récursive sans cas de base, ou avec un cas de base jamais atteint",
+          "pourquoi_faux": "Sans point d'arrêt réellement atteignable, chaque appel en déclenche un nouveau indéfiniment, jusqu'à épuiser la mémoire réservée aux appels de fonctions (débordement de pile), ce qui plante le programme.",
+          "correction_markdown": "Toujours vérifier, avant d'écrire le cas récursif, que le paramètre progresse strictement vers une valeur qui déclenchera le cas de base."
+        },
+        {
+          "erreur_markdown": "Faire progresser le paramètre dans le mauvais sens (par exemple a+1 au lieu de a-1 pour atteindre 1 depuis une valeur supérieure à 1)",
+          "pourquoi_faux": "Si le paramètre s'éloigne du cas de base au lieu de s'en rapprocher, la condition d'arrêt n'est jamais atteinte : la récursion continue indéfiniment.",
+          "correction_markdown": "Vérifier systématiquement le sens de progression du paramètre par rapport à la valeur qui déclenche le cas de base."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans la fonction récursive puissance(a, n) qui calcule aⁿ par puissance(a,n) = a × puissance(a, n-1), avec puissance(a,0) = 1, identifier le cas de base et le cas récursif.",
+          "solution_markdown": "Cas de base : puissance(a, 0) = 1 (arrêt quand l'exposant atteint 0). Cas récursif : puissance(a, n) = a × puissance(a, n-1) pour n > 0, qui progresse en décrémentant n à chaque appel."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire en C une fonction récursive int somme(int n) qui calcule 1+2+...+n, avec son cas de base et son cas récursif.",
+          "solution_markdown": "```c\nint somme(int n) {\n    if (n == 1) {\n        return 1;\n    }\n    else {\n        return n + somme(n - 1);\n    }\n}\n```\nCas de base : n == 1, renvoie 1 directement. Cas récursif : n + somme(n-1), qui progresse en décrémentant n à chaque appel jusqu'à atteindre 1."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi la fonction suivante ne s'arrête jamais lorsqu'elle est appelée avec un argument positif, malgré la présence apparente d'un cas de base : int f(int n) { if (n == 0) { return 0; } else { return f(n); } }",
+          "solution_markdown": "Le cas de base (n == 0) existe bien et est correctement écrit, mais le cas récursif appelle f(n) avec exactement le même argument n, sans jamais le faire progresser vers 0 (il faudrait f(n-1), pas f(n)). Pour tout appel initial avec n différent de 0, la condition n==0 ne devient donc jamais vraie : la fonction s'appelle indéfiniment elle-même avec la même valeur, jusqu'au débordement de pile. La présence d'un cas de base ne suffit pas : encore faut-il que le cas récursif progresse réellement vers lui."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fonction récursive s'appelle elle-même pour résoudre un problème en le ramenant à une version plus simple du même problème.",
+        "Elle combine toujours un cas de base (arrêt direct, sans nouvel appel) et un cas récursif (appel à elle-même, en progressant vers le cas de base).",
+        "L'absence de cas de base atteignable, ou une progression qui ne s'en rapproche jamais, provoque un débordement de pile.",
+        "Reconnaître ces deux éléments dans n'importe quelle fonction récursive est le premier réflexe à avoir, avant même de dérouler sa trace d'exécution."
+      ]
+    }
+  ]
+}

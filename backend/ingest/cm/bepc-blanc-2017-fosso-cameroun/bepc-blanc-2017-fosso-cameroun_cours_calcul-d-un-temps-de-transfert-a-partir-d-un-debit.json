@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-calcul-d-un-temps-de-transfert-a-partir-d-un-debit-3e",
+  "meta": {
+    "titre": "Calcul d'un temps de transfert à partir d'un débit",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Unités et conversions en informatique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "débit",
+      "temps de transfert",
+      "conversion d'unités",
+      "octet et bit"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "BEPC Blanc N°1 - Institut Polyvalent Fosso - Épreuve d'Informatique théorique (session avril 2017, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-blanc-2017-fosso-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand une barre de progression affiche « temps restant : 2 minutes » pendant le téléchargement d'un fichier, ce chiffre n'est pas deviné au hasard : il résulte d'un calcul simple reliant la taille du fichier et le débit de la connexion. Ce calcul revient très régulièrement en Informatique au BEPC, avec un piège récurrent : la taille est presque toujours donnée en octets, le débit presque toujours en bits - et confondre les deux fausse tout le résultat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir que $1\\text{ octet} = 8\\text{ bits}$",
+        "Savoir que $1\\text{ Ko} = 1000\\text{ octets}$ (convention retenue à ce niveau, parfois 1024 selon le cours suivi)",
+        "Savoir isoler une inconnue dans une formule simple (temps = distance / vitesse, par analogie)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule du temps de transfert",
+      "contenu_markdown": "Le temps nécessaire pour transférer un fichier se calcule par :\n\n$$t = \\dfrac{\\text{taille du fichier (en bits)}}{\\text{débit (en bits par seconde)}}$$\n\nLa condition indispensable pour appliquer cette formule : la taille du fichier et le débit doivent être exprimés dans la **même unité** (le bit). Or un énoncé donne presque toujours la taille du fichier en octets (ou en Ko, Mo...) et le débit en bits par seconde : il faut donc systématiquement convertir la taille du fichier en bits avant de diviser, jamais l'inverse.",
+      "formule_principale": "t = \\dfrac{\\text{taille (bits)}}{\\text{débit (bit/s)}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer le temps que mettra un fichier de 640 Ko à être transféré si le débit de transfert est de 512 bits/seconde.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la taille du fichier de Ko en octets",
+          "justification": "Le Ko n'est pas directement comparable au bit/s : il faut d'abord passer par l'octet.",
+          "resultat_markdown": "$640\\text{ Ko} = 640\\times1000 = 640\\,000\\text{ octets}$ (avec $1\\text{ Ko}=1000$ octets)"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir la taille du fichier d'octets en bits",
+          "justification": "Le débit est donné en bits par seconde : il faut que la taille soit elle aussi en bits pour pouvoir diviser.",
+          "resultat_markdown": "$640\\,000\\text{ octets} = 640\\,000\\times8 = 5\\,120\\,000\\text{ bits}$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule du temps de transfert",
+          "justification": "Les deux grandeurs sont maintenant dans la même unité, on peut diviser directement.",
+          "resultat_markdown": "$t = \\dfrac{5\\,120\\,000}{512} = 10\\,000\\text{ secondes}$"
+        },
+        {
+          "numero": 4,
+          "action": "Convertir le résultat en heures, minutes, secondes pour le rendre plus lisible",
+          "justification": "Un résultat en dizaines de milliers de secondes est peu parlant ; le convertir facilite la vérification de son ordre de grandeur.",
+          "resultat_markdown": "$10\\,000\\text{ s} = 2\\text{ h } 46\\text{ min } 40\\text{ s}$"
+        }
+      ],
+      "conclusion_markdown": "Le transfert du fichier de 640 Ko dure 10 000 secondes, soit environ 2 h 46 min 40 s, à un débit de 512 bits/s."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser directement la taille en Ko par le débit en bits/s, sans aucune conversion.",
+          "pourquoi_faux": "Le Ko et le bit ne sont pas la même unité (l'un mesure une quantité d'octets, l'autre une quantité de bits) : diviser l'un par l'autre sans conversion donne un nombre qui n'a aucune signification physique.",
+          "correction_markdown": "Vérifie systématiquement que les deux grandeurs (taille et débit) sont dans la même unité avant de les diviser."
+        },
+        {
+          "erreur_markdown": "Convertir la taille en bits mais oublier de repasser d'abord par les octets (multiplier directement 640 par 8 en le prenant pour une taille en octets).",
+          "pourquoi_faux": "640 est un nombre de Ko, pas d'octets : il faut d'abord multiplier par 1000 (ou 1024) pour obtenir des octets, puis par 8 pour obtenir des bits - sauter l'étape intermédiaire fausse le résultat d'un facteur 1000.",
+          "correction_markdown": "Décompose toujours la conversion en deux étapes séparées et écrites : Ko → octets, puis octets → bits."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un fichier de 1000 octets est transféré à un débit de 500 bits/s. Calculer le temps de transfert.",
+          "solution_markdown": "Taille en bits : $1000\\times8 = 8000$ bits. Temps : $t = \\dfrac{8000}{500} = 16$ secondes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un fichier de 250 Ko est transféré à un débit de 2000 bits/s (on prendra $1\\text{ Ko}=1000$ octets). Calculer le temps de transfert, en secondes puis en minutes.",
+          "solution_markdown": "Taille en octets : $250\\times1000 = 250\\,000$ octets. Taille en bits : $250\\,000\\times8 = 2\\,000\\,000$ bits. Temps : $t = \\dfrac{2\\,000\\,000}{2000} = 1000$ secondes, soit $\\dfrac{1000}{60} \\approx 16\\text{ min } 40\\text{ s}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un débit de connexion est annoncé « 2 Mbit/s ». Un fichier de 5 Mo doit être transféré (on prendra $1\\text{ Mo}=1000\\text{ Ko}$ et $1\\text{ Ko}=1000$ octets, comme $1\\text{ Mbit}=1000$ kbit$=1\\,000\\,000$ bits). Calculer le temps de transfert en secondes.",
+          "solution_markdown": "Taille du fichier en octets : $5\\text{ Mo} = 5\\times1000\\times1000 = 5\\,000\\,000$ octets. En bits : $5\\,000\\,000\\times8 = 40\\,000\\,000$ bits. Débit en bits/s : $2\\text{ Mbit/s} = 2\\times1\\,000\\,000 = 2\\,000\\,000$ bits/s. Temps de transfert : $t = \\dfrac{40\\,000\\,000}{2\\,000\\,000} = 20$ secondes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La formule à retenir : temps = taille du fichier (en bits) divisée par le débit (en bits par seconde).",
+        "Convertis toujours la taille du fichier en bits avant de diviser : Ko → octets (×1000 ou ×1024) puis octets → bits (×8).",
+        "Un débit en Mbit/s ou kbit/s se convertit en bit/s de la même façon qu'une taille de fichier, avant tout calcul.",
+        "Vérifie l'ordre de grandeur de ton résultat : un temps de transfert en dizaines de milliers de secondes gagne à être reconverti en heures/minutes pour être interprété.",
+        "Ce type de calcul revient très régulièrement au BEPC d'Informatique, dans l'exercice consacré à l'organisation et au traitement de l'information."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+ "cours_id": "cours-equation-sinus-intervalle-1ere-ce",
+ "meta": {
+  "titre": "Résoudre une équation sin x = a dans un intervalle donné",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Trigonométrie",
+  "duree_estimee_min": 30,
+  "tags": [
+   "équation trigonométrique",
+   "sinus",
+   "cercle trigonométrique",
+   "intervalle",
+   "valeurs remarquables"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "III"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex1-q1c-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Une équation comme $\\sin x=\\dfrac{1}{2}$ n'a pas « une » solution : elle en a une infinité, puisque le sinus reprend la même valeur tous les tours de cercle. C'est pourquoi tout énoncé sérieux précise un intervalle : « résoudre dans $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$ », « dans $[0\\,;\\,2\\pi[$ », « dans $\\mathbb{R}$ ». Savoir passer de l'infinité des solutions à celles que l'intervalle retient, c'est tout l'enjeu, et c'est là que se perdent le plus de points au Probatoire."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Lire un angle et son sinus sur le cercle trigonométrique",
+    "Connaître les valeurs remarquables : $\\sin\\dfrac{\\pi}{6}=\\dfrac{1}{2}$, $\\sin\\dfrac{\\pi}{4}=\\dfrac{\\sqrt{2}}{2}$, $\\sin\\dfrac{\\pi}{3}=\\dfrac{\\sqrt{3}}{2}$",
+    "Savoir que $\\sin(\\pi-x)=\\sin x$"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "De l'équation générale aux solutions d'un intervalle",
+   "contenu_markdown": "Soit $a$ un réel. L'équation $\\sin x=a$ n'a de solution que si $-1\\leqslant a\\leqslant 1$. Dans ce cas, en notant $\\alpha$ un réel tel que $\\sin\\alpha=a$ :\n\n$$\\sin x=a\\iff x=\\alpha+2k\\pi\\quad\\text{ou}\\quad x=\\pi-\\alpha+2k\\pi,\\qquad k\\in\\mathbb{Z}$$\n\nLes deux familles correspondent aux deux points du cercle trigonométrique situés à la même hauteur $a$ : ils sont symétriques par rapport à l'axe des ordonnées, d'où le $\\pi-\\alpha$.\n\n**Méthode en trois temps.**\n\n1. Trouver un angle de référence $\\alpha$ tel que $\\sin\\alpha=a$, en s'appuyant sur les valeurs remarquables.\n2. Écrire les deux familles de solutions.\n3. Ne garder que les valeurs de $k$ pour lesquelles la solution tombe dans l'intervalle imposé.\n\n**Le raccourci sur un intervalle de monotonie.** Sur $\\left[-\\dfrac{\\pi}{2}\\,;\\,\\dfrac{\\pi}{2}\\right]$, la fonction sinus est strictement croissante, donc injective : l'équation $\\sin x=a$ y admet **au plus une** solution. Sur un intervalle contenu dans celui-là, comme $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$, il suffit donc d'exhiber une solution et de justifier l'unicité par la stricte croissance, sans dérouler les deux familles.",
+   "formule_principale": "\\sin x=\\sin\\alpha\\iff x=\\alpha+2k\\pi\\;\\text{ ou }\\;x=\\pi-\\alpha+2k\\pi,\\;k\\in\\mathbb{Z}",
+   "variantes": [
+    {
+     "nom": "Lecture directe sur le cercle trigonométrique",
+     "quand_utiliser": "Quand l'intervalle est $[0\\,;\\,2\\pi[$ ou $]-\\pi\\,;\\,\\pi]$ et que $a$ est une valeur remarquable",
+     "contenu_markdown": "On trace le cercle trigonométrique, on place la droite horizontale d'ordonnée $a$, et l'on repère les deux points d'intersection. Leurs abscisses curvilignes se lisent directement sur le cercle, sans passer par la formule générale. C'est plus rapide et beaucoup plus sûr sur les intervalles usuels, à condition de faire le dessin proprement."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Résoudre dans $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[\\times\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$ le système d'inconnues $(x\\,;\\,y)$ : $\\begin{cases} 2\\sin x+2\\sin y=\\sqrt{3}+1 \\\\ \\sin x\\times\\sin y=\\dfrac{\\sqrt{3}}{4} \\end{cases}$ (Probatoire C et E, Cameroun, 2014).",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Poser un changement d'inconnues",
+     "justification": "Les inconnues $x$ et $y$ n'interviennent qu'à travers $\\sin x$ et $\\sin y$ : on peut les traiter comme deux nombres",
+     "resultat_markdown": "On pose $a=\\sin x$ et $b=\\sin y$"
+    },
+    {
+     "numero": 2,
+     "action": "Réécrire le système en $(a\\,;\\,b)$",
+     "justification": "On divise la première équation par $2$ pour faire apparaître une somme",
+     "resultat_markdown": "$\\begin{cases} a+b=\\dfrac{\\sqrt{3}+1}{2} \\\\ ab=\\dfrac{\\sqrt{3}}{4} \\end{cases}$"
+    },
+    {
+     "numero": 3,
+     "action": "Résoudre ce système somme-produit",
+     "justification": "$a$ et $b$ sont les racines de $t^{2}-\\dfrac{\\sqrt{3}+1}{2}t+\\dfrac{\\sqrt{3}}{4}=0$, de discriminant $\\Delta=\\dfrac{4-2\\sqrt{3}}{4}=\\left(\\dfrac{\\sqrt{3}-1}{2}\\right)^{2}$",
+     "resultat_markdown": "$\\{a\\,;\\,b\\}=\\left\\{\\dfrac{1}{2}\\,;\\,\\dfrac{\\sqrt{3}}{2}\\right\\}$"
+    },
+    {
+     "numero": 4,
+     "action": "Vérifier que ces valeurs sont des sinus admissibles",
+     "justification": "Une équation $\\sin x=a$ n'a de solution que si $-1\\leqslant a\\leqslant 1$",
+     "resultat_markdown": "$0<\\dfrac{1}{2}<1$ et $0<\\dfrac{\\sqrt{3}}{2}<1$ : les deux valeurs conviennent"
+    },
+    {
+     "numero": 5,
+     "action": "Justifier l'unicité de l'antécédent sur l'intervalle",
+     "justification": "La fonction sinus est strictement croissante sur $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$, donc injective : chaque valeur y a au plus un antécédent",
+     "resultat_markdown": "Il suffit d'exhiber une solution pour être sûr qu'il n'y en a pas d'autre"
+    },
+    {
+     "numero": 6,
+     "action": "Revenir aux angles",
+     "justification": "Valeurs remarquables : $\\sin\\dfrac{\\pi}{6}=\\dfrac{1}{2}$ et $\\sin\\dfrac{\\pi}{3}=\\dfrac{\\sqrt{3}}{2}$, avec $\\dfrac{\\pi}{6}$ et $\\dfrac{\\pi}{3}$ dans $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$",
+     "resultat_markdown": "$\\sin x=\\dfrac{1}{2}\\iff x=\\dfrac{\\pi}{6}$ et $\\sin x=\\dfrac{\\sqrt{3}}{2}\\iff x=\\dfrac{\\pi}{3}$"
+    },
+    {
+     "numero": 7,
+     "action": "Assembler les deux cas et vérifier",
+     "justification": "Le système est symétrique en $x$ et $y$, donc les deux répartitions sont solutions ; on contrôle sur le premier couple",
+     "resultat_markdown": "$2\\times\\dfrac{1}{2}+2\\times\\dfrac{\\sqrt{3}}{2}=1+\\sqrt{3}$ et $\\dfrac{1}{2}\\times\\dfrac{\\sqrt{3}}{2}=\\dfrac{\\sqrt{3}}{4}$"
+    }
+   ],
+   "conclusion_markdown": "L'ensemble des solutions est $S=\\left\\{\\left(\\dfrac{\\pi}{6}\\,;\\,\\dfrac{\\pi}{3}\\right)\\;;\\;\\left(\\dfrac{\\pi}{3}\\,;\\,\\dfrac{\\pi}{6}\\right)\\right\\}$. On vient de voir qu'une équation trigonométrique se résout en deux temps nettement séparés : un travail algébrique sur les sinus, puis un retour aux angles où l'intervalle imposé fait tout le tri."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Écrire $\\sin x=\\dfrac{1}{2}\\iff x=\\dfrac{\\pi}{6}$ sans autre justification, quel que soit l'intervalle",
+     "pourquoi_faux": "Sur $\\mathbb{R}$, l'équation a une infinité de solutions : $\\dfrac{\\pi}{6}+2k\\pi$ et $\\dfrac{5\\pi}{6}+2k\\pi$. L'équivalence n'est vraie que sur un intervalle où le sinus est injectif, et cela doit être écrit.",
+     "correction_markdown": "Justifie l'unicité en une phrase : « la fonction sinus est strictement croissante sur $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$, donc chaque valeur y admet au plus un antécédent ». Sans cette phrase, la réponse est comptée comme non démontrée."
+    },
+    {
+     "erreur_markdown": "Oublier la seconde famille $x=\\pi-\\alpha+2k\\pi$ quand l'intervalle est large",
+     "pourquoi_faux": "Deux points du cercle trigonométrique ont la même ordonnée $a$ : ils sont symétriques par rapport à l'axe des ordonnées. Ne retenir que $\\alpha$ revient à n'en voir qu'un seul, et l'on perd la moitié des solutions.",
+     "correction_markdown": "Fais le dessin du cercle avec la droite horizontale d'ordonnée $a$ : les deux intersections sautent aux yeux. Puis vérifie chaque solution candidate en la comparant aux bornes de l'intervalle."
+    },
+    {
+     "erreur_markdown": "Confondre les valeurs remarquables du sinus et du cosinus, par exemple écrire $\\sin\\dfrac{\\pi}{3}=\\dfrac{1}{2}$",
+     "pourquoi_faux": "C'est le cosinus qui vaut $\\dfrac{1}{2}$ en $\\dfrac{\\pi}{3}$ ; le sinus y vaut $\\dfrac{\\sqrt{3}}{2}$. L'inversion fausse tout le retour aux angles, alors même que la partie algébrique était juste.",
+     "correction_markdown": "Retiens l'ordre croissant : sur $\\left[0\\,;\\,\\dfrac{\\pi}{2}\\right]$ le sinus **croît** de $0$ à $1$, donc $\\sin\\dfrac{\\pi}{6}=\\dfrac{1}{2}<\\sin\\dfrac{\\pi}{4}=\\dfrac{\\sqrt{2}}{2}<\\sin\\dfrac{\\pi}{3}=\\dfrac{\\sqrt{3}}{2}$. Le plus grand angle a le plus grand sinus."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Résoudre dans $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$ l'équation $2\\sin x-\\sqrt{2}=0$.",
+     "solution_markdown": "On isole d'abord le sinus :\n\n$$2\\sin x-\\sqrt{2}=0\\iff 2\\sin x=\\sqrt{2}\\iff \\sin x=\\frac{\\sqrt{2}}{2}$$\n\nLa valeur $\\dfrac{\\sqrt{2}}{2}$ appartient bien à $[-1\\,;\\,1]$, l'équation a donc des solutions.\n\nValeur remarquable : $\\sin\\dfrac{\\pi}{4}=\\dfrac{\\sqrt{2}}{2}$, et $\\dfrac{\\pi}{4}$ appartient à $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$.\n\nLa fonction sinus étant strictement croissante sur $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$, elle y est injective : cette solution est l'unique.\n\n$$S=\\left\\{\\frac{\\pi}{4}\\right\\}$$"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Résoudre dans $[0\\,;\\,2\\pi[$ l'équation $\\sin x=-\\dfrac{1}{2}$.",
+     "solution_markdown": "**Étape 1 — angle de référence.** On cherche $\\alpha$ tel que $\\sin\\alpha=-\\dfrac{1}{2}$. Comme $\\sin\\dfrac{\\pi}{6}=\\dfrac{1}{2}$ et que le sinus est impair, $\\sin\\left(-\\dfrac{\\pi}{6}\\right)=-\\dfrac{1}{2}$. On prend $\\alpha=-\\dfrac{\\pi}{6}$.\n\n**Étape 2 — les deux familles.**\n\n$$x=-\\frac{\\pi}{6}+2k\\pi\\qquad\\text{ou}\\qquad x=\\pi-\\left(-\\frac{\\pi}{6}\\right)+2k\\pi=\\frac{7\\pi}{6}+2k\\pi,\\qquad k\\in\\mathbb{Z}$$\n\n**Étape 3 — sélection dans $[0\\,;\\,2\\pi[$.**\n\nPremière famille : pour $k=0$, $x=-\\dfrac{\\pi}{6}<0$, rejeté. Pour $k=1$, $x=-\\dfrac{\\pi}{6}+2\\pi=\\dfrac{11\\pi}{6}$, qui appartient à $[0\\,;\\,2\\pi[$ puisque $\\dfrac{11\\pi}{6}<2\\pi=\\dfrac{12\\pi}{6}$. Retenu. Pour $k=2$, $x=\\dfrac{11\\pi}{6}+2\\pi>2\\pi$, rejeté.\n\nSeconde famille : pour $k=0$, $x=\\dfrac{7\\pi}{6}$, qui appartient à $[0\\,;\\,2\\pi[$. Retenu. Pour $k=1$, $x>2\\pi$, rejeté ; pour $k=-1$, $x<0$, rejeté.\n\n**Étape 4 — vérification.** Les deux angles $\\dfrac{7\\pi}{6}$ et $\\dfrac{11\\pi}{6}$ sont situés sous l'axe des abscisses sur le cercle trigonométrique, ce qui est cohérent avec un sinus négatif, et ils sont symétriques par rapport à l'axe des ordonnées.\n\n$$S=\\left\\{\\frac{7\\pi}{6}\\;;\\;\\frac{11\\pi}{6}\\right\\}$$"
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Résoudre dans $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$ l'équation $2\\sin^{2}x-3\\sin x+1=0$.",
+     "solution_markdown": "**Étape 1 — changement d'inconnue.** On pose $u=\\sin x$. L'équation devient\n\n$$2u^{2}-3u+1=0$$\n\n**Étape 2 — résolution en $u$.** Discriminant : $\\Delta=(-3)^{2}-4\\times 2\\times 1=9-8=1>0$, donc $\\sqrt{\\Delta}=1$.\n\n$$u_{1}=\\frac{3-1}{2\\times 2}=\\frac{2}{4}=\\frac{1}{2}\\qquad;\\qquad u_{2}=\\frac{3+1}{4}=1$$\n\n**Étape 3 — retour aux angles, premier cas.** $\\sin x=\\dfrac{1}{2}$. Comme $\\sin\\dfrac{\\pi}{6}=\\dfrac{1}{2}$ et que $\\dfrac{\\pi}{6}\\in\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$, et que le sinus est strictement croissant donc injectif sur cet intervalle, la seule solution est $x=\\dfrac{\\pi}{6}$.\n\n**Étape 4 — retour aux angles, second cas.** $\\sin x=1$. Le sinus ne vaut $1$ qu'en $\\dfrac{\\pi}{2}+2k\\pi$. Or l'intervalle $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$ est **ouvert** en $\\dfrac{\\pi}{2}$ : cette valeur en est exclue. Ce cas ne fournit donc aucune solution.\n\n**Étape 5 — vérification.** Pour $x=\\dfrac{\\pi}{6}$ : $2\\times\\left(\\dfrac{1}{2}\\right)^{2}-3\\times\\dfrac{1}{2}+1=\\dfrac{1}{2}-\\dfrac{3}{2}+1=0$.\n\n$$S=\\left\\{\\frac{\\pi}{6}\\right\\}$$\n\n**Ce qu'il faut retenir de cet exercice.** Une équation trigonométrique du second degré en $\\sin x$ se traite toujours en deux blocs séparés : d'abord une équation algébrique ordinaire, ensuite un retour aux angles où l'intervalle élimine les candidats. C'est à la seconde étape, et non à la première, que se joue la réponse."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Avant tout calcul, vérifie que la valeur cherchée est bien dans $[-1\\,;\\,1]$ : sinon, l'équation n'a aucune solution.",
+    "Deux points du cercle ont le même sinus : d'où les deux familles $\\alpha+2k\\pi$ et $\\pi-\\alpha+2k\\pi$. Ne t'arrête jamais à la première.",
+    "Sur $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$, le sinus est strictement croissant donc injectif : une seule solution, mais écris la justification, elle vaut des points.",
+    "Fais le dessin du cercle trigonométrique dès que l'intervalle dépasse un quart de tour : la sélection des $k$ devient visuelle au lieu d'être laborieuse.",
+    "Une équation en $\\sin^{2}x$ se traite par changement d'inconnue $u=\\sin x$ : une équation algébrique d'abord, un retour aux angles ensuite.",
+    "Au Probatoire, ce type d'équation apparaît le plus souvent en fin d'exercice, après un travail algébrique (somme-produit, factorisation, formule de duplication). Le mot « En déduire » signale que le travail difficile est déjà fait."
+   ]
+  }
+ ]
+}

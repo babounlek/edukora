@@ -1,0 +1,157 @@
+{
+  "cours_id": "cours-identifier-et-corriger-des-erreurs-de-syntaxe-dans-un-script-javascript-tle-tronc-commun",
+  "meta": {
+    "titre": "Identifier et corriger des erreurs de syntaxe dans un script JavaScript",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation JavaScript",
+    "duree_estimee_min": 30,
+    "tags": [
+      "JavaScript",
+      "syntaxe",
+      "débogage",
+      "var",
+      "guillemets",
+      "concaténation"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-e-abi-informatique-theorique-officiel-2019",
+    "epreuve_titre": "Baccalauréat ESG - Épreuve théorique d'informatique - Séries A, C, D, E et ABI - Cameroun - 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un script JavaScript qui ne s'exécute pas correctement n'est presque jamais dû à une erreur de logique : au début de l'apprentissage, c'est presque toujours une faute de syntaxe minuscule, une majuscule oubliée, un guillemet mal placé, un signe manquant, qui bloque tout le programme. Au BAC, cette compétence est directement évaluée : on te donne un script contenant plusieurs erreurs et on te demande de les repérer puis de les corriger, ligne par ligne. Ce cours te donne la méthode systématique pour ne plus en laisser passer aucune."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure de base d'une page HTML (balises html, head, body)",
+        "Savoir qu'un script JavaScript s'insère dans une balise script",
+        "Connaître la notion de variable et de tableau en JavaScript"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode de relecture ligne par ligne",
+      "contenu_markdown": "Pour vérifier la syntaxe d'un script JavaScript, il faut contrôler systématiquement quatre points sur chaque ligne, car ce sont les quatre familles d'erreurs les plus fréquentes : la casse des mots-clés, la cohérence des guillemets d'une chaîne de caractères, la présence de l'opérateur de concaténation + entre une chaîne et une variable, et la présence du point-virgule de fin d'instruction.",
+      "formule_principale": "mot-clé en minuscules + guillemets cohérents + concaténation avec + + point-virgule final",
+      "variantes": [
+        {
+          "nom": "Vérification par exécution mentale",
+          "quand_utiliser": "Quand le script est court et que tu peux dérouler son exécution dans ta tête, variable par variable",
+          "contenu_markdown": "Plutôt que de relire la syntaxe isolément, tu peux dérouler mentalement le script comme le ferait l'interpréteur : à chaque ligne, demande-toi ce que fait exactement cette instruction et si elle est capable de s'exécuter sans erreur. Cette méthode est complémentaire de la relecture systématique, pas un substitut : elle t'aide surtout à repérer les erreurs de guillemets et de concaténation, plus difficiles à voir d'un simple coup d'œil."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le script suivant contient plusieurs erreurs de syntaxe. Identifier les lignes fautives et proposer une correction pour chacune :\n\n```html\n1- <html>\n2- <head>\n3- </head>\n4- <body>\n5- <script language = javascript>\n6- Var tab=[auteur1,auteur2,auteur3,auteur4] ;\n7- Var numero ;\n8- numero= parseInt(prompt('Entrer le numéro de l'élément à afficher : ')) ;\n9- Alert(\"Le nom de l'auteur correspondant est : \" tab[numero-1]) ;\n10- </script>\n11- </body>\n12- </html>\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Contrôler la ligne 5 : la balise script",
+          "justification": "L'attribut language doit être écrit exactement comme le nom d'attribut HTML attendu et sa valeur doit être entre guillemets, sinon le navigateur ne peut pas l'interpréter correctement.",
+          "resultat_markdown": "`<script language = javascript>` est fautif car la valeur n'est pas entre guillemets. Corrigé en `<script language=\"javascript\">`"
+        },
+        {
+          "numero": 2,
+          "action": "Contrôler la ligne 6 : la déclaration du tableau",
+          "justification": "Le mot-clé de déclaration de variable s'écrit var, en minuscules. De plus, les éléments du tableau sont des noms d'auteurs, donc des chaînes de caractères, qui doivent être entre guillemets pour ne pas être pris pour des identifiants de variables non déclarées.",
+          "resultat_markdown": "`Var tab=[auteur1,auteur2,auteur3,auteur4] ;` est fautif (deux erreurs). Corrigé en `var tab=[\"auteur1\",\"auteur2\",\"auteur3\",\"auteur4\"] ;`"
+        },
+        {
+          "numero": 3,
+          "action": "Contrôler la ligne 7 : la déclaration de la variable numero",
+          "justification": "Même règle que la ligne 6 : var s'écrit en minuscules.",
+          "resultat_markdown": "`Var numero ;` est fautif. Corrigé en `var numero ;`"
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler la ligne 8 : la lecture de la saisie utilisateur",
+          "justification": "La chaîne de caractères est ouverte avec une apostrophe (guillemet simple), or le texte contient lui-même une apostrophe dans « l'élément », qui referme la chaîne prématurément et casse la syntaxe.",
+          "resultat_markdown": "`prompt('Entrer le numéro de l'élément à afficher : ')` est fautif. Corrigé en `prompt(\"Entrer le numéro de l'élément à afficher : \")`, avec des guillemets doubles qui n'entrent pas en conflit avec l'apostrophe du texte"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler la ligne 9 : l'affichage du résultat",
+          "justification": "La fonction d'affichage s'écrit alert, en minuscules. De plus, il manque l'opérateur + qui doit relier la chaîne de caractères à la variable tab[numero-1] pour les concaténer en un seul message.",
+          "resultat_markdown": "`Alert(\"...\" tab[numero-1]) ;` est fautif (deux erreurs). Corrigé en `alert(\"Le nom de l'auteur correspondant est : \" + tab[numero-1]) ;`"
+        }
+      ],
+      "conclusion_markdown": "Sur les douze lignes de ce script, cinq contiennent une erreur de syntaxe (lignes 5, 6, 7, 8 et 9), dont deux en contiennent même deux chacune (lignes 6 et 9) : une relecture qui s'arrête à la première erreur trouvée sur une ligne en laisserait passer la moitié."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire Var, Alert ou Fonction avec une majuscule initiale, par réflexe d'écriture d'une phrase en français.",
+          "pourquoi_faux": "JavaScript est un langage sensible à la casse (case-sensitive) : var et Var sont deux identifiants totalement différents pour l'interpréteur. Le mot-clé var, la fonction alert et le mot-clé function n'existent qu'en minuscules ; toute variante de casse provoque une erreur.",
+          "correction_markdown": "Mémorise les mots-clés et fonctions natives de JavaScript exclusivement en minuscules : var, function, alert, prompt, parseInt (seul le I de Int reste en majuscule, par convention de nommage interne, pas par règle de casse du mot-clé lui-même)."
+        },
+        {
+          "erreur_markdown": "Mélanger guillemets simples et doubles sans vérifier si le texte contenu dans la chaîne comporte lui-même une apostrophe.",
+          "pourquoi_faux": "Une chaîne de caractères se termine dès que l'interpréteur rencontre le même caractère délimiteur que celui qui l'a ouverte. Si le texte contient une apostrophe, comme dans « l'élève », et que la chaîne est elle-même délimitée par des apostrophes, la chaîne se referme au milieu du texte et le reste devient une suite de caractères incompréhensible pour l'interpréteur.",
+          "correction_markdown": "Dès qu'un texte français à afficher contient une apostrophe (l', d', qu'...), délimite systématiquement la chaîne avec des guillemets doubles plutôt que des apostrophes."
+        },
+        {
+          "erreur_markdown": "Juxtaposer une chaîne de caractères et une variable sans opérateur entre les deux, en pensant que JavaScript les assemblera automatiquement.",
+          "pourquoi_faux": "JavaScript n'assemble jamais deux valeurs placées l'une à côté de l'autre sans opérateur explicite : \"texte\" tab[i] n'est pas une instruction valide, l'interpréteur ne sait pas ce qu'il doit faire de ces deux éléments juxtaposés.",
+          "correction_markdown": "Utilise systématiquement l'opérateur + pour concaténer une chaîne de caractères et une variable : \"texte\" + variable."
+        },
+        {
+          "erreur_markdown": "Oublier de mettre entre guillemets les éléments d'un tableau censés représenter du texte.",
+          "pourquoi_faux": "Sans guillemets, JavaScript interprète chaque élément comme le nom d'une variable à évaluer, pas comme du texte littéral ; si cette variable n'a jamais été déclarée, le programme provoque une erreur dès qu'il tente de lire le tableau.",
+          "correction_markdown": "Avant d'écrire un tableau de valeurs textuelles, demande-toi si chaque élément est une donnée à mettre entre guillemets ou une variable déjà déclarée ailleurs dans le script, sans guillemets."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le script suivant contient une seule erreur de syntaxe : `Var age = 17 ;`. Identifie l'erreur et corrige-la.",
+          "solution_markdown": "Le mot-clé de déclaration de variable est écrit Var, avec une majuscule initiale. JavaScript étant sensible à la casse, seul le mot-clé var, entièrement en minuscules, est reconnu par l'interpréteur ; Var provoque une erreur de syntaxe. Correction : `var age = 17 ;`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Corrige la ligne suivante, qui doit afficher un message combinant du texte et la valeur d'une variable note : `alert('Ta note est : ' note) ;`",
+          "solution_markdown": "Deux points à vérifier. D'abord, la chaîne « Ta note est : » est correctement délimitée par des apostrophes et ne contient elle-même aucune apostrophe : ce n'est pas fautif ici. Ensuite, il manque l'opérateur de concaténation + entre la chaîne et la variable note : sans lui, JavaScript ne sait pas comment assembler les deux éléments. Correction : `alert('Ta note est : ' + note) ;`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un script doit demander à l'utilisateur son prénom puis afficher un message de bienvenue personnalisé. Voici le code proposé par un élève, qui contient trois erreurs distinctes. Identifie-les toutes et propose une version corrigée :\n\n```html\nVar prenom ;\nprenom = prompt('Quel est ton prénom, l'ami ?') ;\nAlert(\"Bienvenue \" prenom) ;\n```",
+          "solution_markdown": "Trois erreurs indépendantes à corriger.\n\n1. `Var prenom ;` utilise une majuscule sur le mot-clé de déclaration : il doit s'écrire `var prenom ;`.\n2. La chaîne `'Quel est ton prénom, l'ami ?'` est délimitée par des apostrophes, mais elle contient elle-même une apostrophe dans « l'ami » : cette apostrophe interne referme la chaîne prématurément. Il faut la délimiter avec des guillemets doubles : `\"Quel est ton prénom, l'ami ?\"`.\n3. `Alert(\"Bienvenue \" prenom) ;` utilise une majuscule sur la fonction d'affichage, qui doit être alert, et juxtapose la chaîne et la variable prenom sans opérateur de concaténation +.\n\nVersion corrigée complète :\n\n```html\nvar prenom ;\nprenom = prompt(\"Quel est ton prénom, l'ami ?\") ;\nalert(\"Bienvenue \" + prenom) ;\n```"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un mot-clé JavaScript (var, function, alert, prompt...) s'écrit toujours en minuscules : la casse n'est jamais une question de style, c'est une question de syntaxe valide ou invalide.",
+        "Une chaîne de caractères doit être délimitée par le même type de guillemets du début à la fin ; si le texte contient une apostrophe, utilise des guillemets doubles pour l'englober.",
+        "Deux valeurs juxtaposées sans opérateur ne s'assemblent jamais toutes seules : la concaténation d'une chaîne et d'une variable exige toujours le signe +.",
+        "Une donnée textuelle placée dans un tableau ou une variable doit être entre guillemets ; sans eux, JavaScript la traite comme le nom d'une variable, pas comme du texte.",
+        "Au BAC, ce type d'exercice te demande de relire un script ligne par ligne et de justifier chaque correction : une ligne peut contenir plus d'une erreur, ne t'arrête jamais à la première trouvée."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "cours_id": "cours-bibliotheques-standard-c-dres-jan2024",
+  "meta": {
+    "titre": "Les bibliotheques standard du langage C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C - bibliotheques",
+    "duree_estimee_min": 15,
+    "tags": [
+      "bibliotheques standard",
+      "stdio.h",
+      "stdlib.h",
+      "include"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-dres2024-ex2-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "printf et scanf ne sortent pas de nulle part : elles proviennent d'une bibliotheque standard qu'il faut inclure en tete de programme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est la directive #include"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Bibliotheques standard usuelles du langage C",
+      "contenu_markdown": "Une **bibliotheque standard** du C est un ensemble de fonctions predefinies, fournies avec tout compilateur C conforme, que l'on rend disponibles dans un programme via la directive `#include`. Deux bibliotheques tres frequentes : **stdio.h** (Standard Input/Output), qui fournit les fonctions d'entree/sortie comme `printf` et `scanf` ; et **stdlib.h** (Standard Library), qui fournit des fonctions utilitaires generales comme l'allocation memoire (`malloc`), les conversions (`atoi`) ou la generation de nombres aleatoires (`rand`). On peut egalement citer `math.h` (fonctions mathematiques) et `string.h` (manipulation de chaines de caracteres)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un programme utilise la fonction sqrt() pour calculer une racine carree. Quelle bibliotheque standard doit-il inclure ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la nature de la fonction",
+          "justification": "sqrt calcule une racine carree, une operation mathematique.",
+          "resultat_markdown": "sqrt() est une fonction mathematique."
+        },
+        {
+          "numero": 2,
+          "action": "Associer a la bonne bibliotheque",
+          "justification": "Les fonctions mathematiques standard sont regroupees dans math.h.",
+          "resultat_markdown": "Le programme doit inclure #include <math.h>."
+        }
+      ],
+      "conclusion_markdown": "Chaque famille de fonctions standard est regroupee dans une bibliotheque dediee, a inclure explicitement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser printf ou scanf sans inclure #include <stdio.h> en debut de fichier.",
+          "pourquoi_faux": "Sans cette inclusion, le compilateur ne connait pas la declaration de ces fonctions et refuse de compiler (ou emet un avertissement selon le compilateur)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle bibliotheque standard faut-il inclure pour utiliser la fonction strlen() (longueur d'une chaine) ?",
+          "solution_markdown": "string.h"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une bibliotheque standard regroupe des fonctions predefinies accessibles via #include.",
+        "stdio.h fournit printf/scanf ; stdlib.h fournit des utilitaires generaux.",
+        "Oublier l'inclusion d'une bibliotheque empeche la compilation du programme."
+      ]
+    }
+  ]
+}

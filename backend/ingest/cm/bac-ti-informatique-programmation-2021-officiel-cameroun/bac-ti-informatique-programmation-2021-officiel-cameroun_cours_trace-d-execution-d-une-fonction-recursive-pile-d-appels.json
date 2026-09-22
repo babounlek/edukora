@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-trace-d-execution-d-une-fonction-recursive-pile-d-appels-ti-2021",
+  "meta": {
+    "titre": "Trace d'exécution d'une fonction récursive (pile d'appels)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Récursivité en langage C",
+    "duree_estimee_min": 35,
+    "tags": [
+      "récursivité",
+      "trace d'exécution",
+      "pile d'appels",
+      "factorielle",
+      "descente",
+      "remontée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex2-q5-0",
+    "rappels_lies": [
+      "rdm-bac-ti-info-prog-2021-ex2-q6-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comprendre une fonction récursive en la lisant une seule fois suffit rarement : il faut la dérouler pas à pas, appel après appel, pour voir concrètement ce qui se passe en mémoire. Cette compétence de trace d'exécution revient systématiquement dès qu'un exercice manipule la récursivité, quel que soit l'algorithme récursif étudié."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une fonction récursive (une fonction qui s'appelle elle-même)",
+        "Connaître la notion de cas de base qui arrête la récursion"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Descente puis remontée : deux phases à toujours séparer",
+      "contenu_markdown": "Exécuter pas à pas une fonction récursive suit toujours deux phases bien distinctes, à ne jamais mélanger dans une trace :\n\n**La descente** : chaque appel dont le test du cas de base est encore faux doit attendre le résultat d'un nouvel appel avant de pouvoir continuer son propre calcul. Cet appel s'empile en mémoire (dans ce qu'on appelle la pile d'appels) sans qu'aucun calcul n'ait encore réellement lieu : on ne fait qu'accumuler des appels en attente, jusqu'à atteindre le cas de base.\n\n**La remontée** : une fois le cas de base atteint et sa valeur connue, chaque appel en attente reprend son calcul, dans l'ordre **exactement inverse** de la descente (le dernier appel empilé est le premier à reprendre, principe dit LIFO - *Last In, First Out*). C'est uniquement pendant cette phase que les calculs (multiplications, additions...) ont réellement lieu.\n\nPrésenter une trace récursive dans deux tableaux séparés (un pour la descente, un pour la remontée) évite l'erreur la plus fréquente : croire qu'un calcul a déjà lieu pendant la descente."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Exécuter pas à pas le programme de calcul de factorielle lorsque x = 6.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier la condition d'entrée dans la branche récursive",
+          "justification": "Le programme teste d'abord x > 8 || x < 1 avant tout appel à factorielle",
+          "resultat_markdown": "6 n'est ni supérieur à 8 ni inférieur à 1 : le programme entre dans le else et exécute f = factorielle(6);"
+        },
+        {
+          "numero": 2,
+          "action": "Dérouler la phase de descente",
+          "justification": "Chaque appel teste a==1 ; tant que c'est faux, un nouvel appel s'empile sans calcul réel",
+          "resultat_markdown": "| Appel | Test `a == 1` | Instruction exécutée | En attente de |\n|---|---|---|---|\n| `factorielle(6)` | 6 == 1 : faux | `a *= factorielle(5);` | retour de `factorielle(5)` |\n| `factorielle(5)` | 5 == 1 : faux | `a *= factorielle(4);` | retour de `factorielle(4)` |\n| `factorielle(4)` | 4 == 1 : faux | `a *= factorielle(3);` | retour de `factorielle(3)` |\n| `factorielle(3)` | 3 == 1 : faux | `a *= factorielle(2);` | retour de `factorielle(2)` |\n| `factorielle(2)` | 2 == 1 : faux | `a *= factorielle(1);` | retour de `factorielle(1)` |\n| `factorielle(1)` | 1 == 1 : vrai | `return 1;` | (rien, la pile commence à se dépiler) |"
+        },
+        {
+          "numero": 3,
+          "action": "Dérouler la phase de remontée",
+          "justification": "Une fois factorielle(1) résolu, chaque appel en attente reprend son calcul dans l'ordre inverse de la descente",
+          "resultat_markdown": "| Retour depuis | Calcul effectué | Valeur renvoyée |\n|---|---|---|\n| `factorielle(1)` | - (cas de base) | 1 |\n| `factorielle(2)` | `a = 2 * 1` | 2 |\n| `factorielle(3)` | `a = 3 * 2` | 6 |\n| `factorielle(4)` | `a = 4 * 6` | 24 |\n| `factorielle(5)` | `a = 5 * 24` | 120 |\n| `factorielle(6)` | `a = 6 * 120` | 720 |"
+        },
+        {
+          "numero": 4,
+          "action": "Relier le résultat final à la suite du programme",
+          "justification": "La valeur remontée jusqu'à l'appel initial est celle affectée à f",
+          "resultat_markdown": "factorielle(6) renvoie 720, qui est affecté à f (ligne 13), puis affiché par printf (ligne 14) : « Factorielle 6 égal 720 »."
+        }
+      ],
+      "conclusion_markdown": "La trace complète montre que 6 appels sont empilés durant la descente, sans aucun calcul, puis 6 multiplications ont lieu durant la remontée, produisant le résultat final 720."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier les valeurs pendant la phase de descente",
+          "pourquoi_faux": "Tant que le cas de base n'est pas atteint, chaque appel ne fait qu'attendre le résultat du suivant : aucune multiplication n'a lieu avant que factorielle(1) n'ait renvoyé sa valeur.",
+          "correction_markdown": "Toujours séparer clairement la trace en deux tableaux, descente puis remontée, pour ne jamais mélanger accumulation d'appels et calcul réel."
+        },
+        {
+          "erreur_markdown": "Se tromper sur l'ordre de la remontée, en remontant dans le même ordre que la descente",
+          "pourquoi_faux": "La pile d'appels fonctionne selon le principe LIFO (dernier entré, premier sorti) : c'est factorielle(1), le DERNIER appel empilé, qui redonne sa valeur en PREMIER pendant la remontée, pas factorielle(6).",
+          "correction_markdown": "Toujours démarrer la remontée par le cas de base (le dernier appel empilé), puis remonter appel par appel dans l'ordre strictement inverse de la descente."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Combien d'appels récursifs (empilés) la phase de descente de factorielle(4) compte-t-elle ?",
+          "solution_markdown": "4 appels : factorielle(4), factorielle(3), factorielle(2), factorielle(1)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dérouler la phase de remontée de factorielle(4), à partir du moment où factorielle(1) a renvoyé 1.",
+          "solution_markdown": "| Retour depuis | Calcul | Valeur renvoyée |\n|---|---|---|\n| factorielle(1) | cas de base | 1 |\n| factorielle(2) | 2 × 1 | 2 |\n| factorielle(3) | 3 × 2 | 6 |\n| factorielle(4) | 4 × 6 | 24 |\nfactorielle(4) renvoie donc 24."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une fonction récursive somme(n) calcule 1+2+...+n par la relation somme(n) = n + somme(n-1), avec somme(1) = 1. Dresser la trace complète (descente puis remontée) de somme(4).",
+          "solution_markdown": "**Descente** :\n| Appel | Test n==1 | Instruction | En attente de |\n|---|---|---|---|\n| somme(4) | faux | n + somme(3) | retour de somme(3) |\n| somme(3) | faux | n + somme(2) | retour de somme(2) |\n| somme(2) | faux | n + somme(1) | retour de somme(1) |\n| somme(1) | vrai | return 1 | - |\n\n**Remontée** :\n| Retour depuis | Calcul | Valeur renvoyée |\n|---|---|---|\n| somme(1) | cas de base | 1 |\n| somme(2) | 2 + 1 | 3 |\n| somme(3) | 3 + 3 | 6 |\n| somme(4) | 4 + 6 | 10 |\n\nsomme(4) renvoie 10, ce qui correspond bien à 1+2+3+4 = 10."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Toute trace récursive se déroule en deux phases : la descente (empilement d'appels en attente, sans calcul) puis la remontée (calcul réel, dans l'ordre inverse de la descente).",
+        "Le cas de base est le seul appel qui renvoie une valeur sans attendre un autre appel : c'est lui qui déclenche le début de la remontée.",
+        "La pile d'appels fonctionne selon le principe LIFO : le dernier appel empilé est le premier à renvoyer sa valeur.",
+        "Présenter la trace en deux tableaux séparés (descente, remontée) évite l'erreur classique de calculer trop tôt.",
+        "Cette méthode de trace s'applique à toute fonction récursive, pas seulement à la factorielle : seule la nature du calcul effectué pendant la remontée change."
+      ]
+    }
+  ]
+}

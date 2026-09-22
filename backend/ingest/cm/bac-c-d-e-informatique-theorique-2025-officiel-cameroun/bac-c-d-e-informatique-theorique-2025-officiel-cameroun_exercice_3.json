@@ -1,0 +1,206 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "C, D, E",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2025,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "introduction_markdown": null,
+  "points": "6",
+  "groupes": [],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 3**\n\n**PARTIE III : ALGORITHMIQUE ET PROGRAMMATION (06 PTS)**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Un élève de terminale a écrit l'algorithme suivant pour son devoir d'informatique :\n\n```\nAlgorithme : traitement\nVariable\n    Note [1..10] de réels ;\n    i, Nbre, Somme, Moyenne : entier ;\nDebut\n    Somme ⟵ 0 ;\n    Nbre ⟵ 0 ;\n    Pour i allant de 1 à 10 faire\n        Ecrire (\"Entrez la note de l'élève \", i) ;\n        Lire (Note[i]) ;\n        Somme ⟵ Somme + Note[i] ;\n        Si (Note[i] ≥ 10)\n            Nbre ⟵ Nbre + 1 ;\n        Finsi\n    Finpour\n    Moyenne ⟵ Somme/10 ;\n    Ecrire (\"Le résultat est : \", Moyenne, Nbre) ;\nFin\n```\n\n**1.** Nommer la structure de données utilisée dans cet algorithme et donner sa taille. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne structure de données se reconnaît à sa syntaxe de déclaration : un identificateur suivi d'un intervalle d'indices entre crochets désigne systématiquement un tableau, dont la taille se lit directement dans cet intervalle.\n\nLa déclaration `Note [1..10] de réels` correspond à un **tableau** (structure de données linéaire indicée), de nom `Note`, contenant des éléments de type réel repérés par un indice allant de 1 à 10.\n\n**Taille du tableau** : nombre d'éléments = 10 - 1 + 1 = **10 éléments**.\n\n### Piège à éviter\nNe pas confondre la taille du tableau (le nombre de cases, ici 10) avec la valeur du dernier indice (qui vaut ici aussi 10 par coïncidence, car les indices commencent à 1). Si le tableau était déclaré `Note[3..12]`, la taille resterait 10 alors que le dernier indice serait 12 : toujours calculer indice_max - indice_min + 1.",
+      "themes": [
+        "structure de données",
+        "tableau",
+        "algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex3-q1-0",
+          "competence": "Notion de structure de donnée",
+          "contenu_markdown": "Une structure de données se reconnaît à sa syntaxe de déclaration : un identificateur suivi d'un intervalle d'indices entre crochets désigne systématiquement un tableau, dont la taille se lit directement dans cet intervalle.",
+          "cours_genere": true,
+          "cours_id": "cours-notion-de-structure-de-donnee-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Exécuter l'algorithme avec le tableau de valeurs suivant : 12,5 ; 10 ; 7,5 ; 8,5 ; 14 ; 12,5 ; 09. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nExécuter un algorithme à la main consiste à dérouler chaque instruction dans l'ordre, en tenant à jour, ligne après ligne, la valeur courante de chaque variable dans un tableau de trace - jamais en essayant de deviner le résultat final directement.\n\n**Données disponibles.** Le sujet fournit la série de notes suivante à saisir successivement dans le tableau `Note` : 12,5 ; 10 ; 7,5 ; 8,5 ; 14 ; 12,5 ; 09. Cela ne représente que **7 valeurs**, alors que la boucle `Pour i allant de 1 à 10` en attend 10 : les valeurs de Note[8], Note[9] et Note[10] ne sont pas fournies par l'énoncé. La trace ci-dessous est donc menée sur les 7 itérations pour lesquelles une donnée existe réellement, sans inventer les trois valeurs manquantes.\n\n**Tableau de trace** (état de Somme et Nbre après chaque itération) :\n\n| i | Note[i] | Note[i] ≥ 10 ? | Somme (cumul) | Nbre (cumul) |\n|---|---|---|---|---|\n| 1 | 12,5 | oui | 0 + 12,5 = 12,5 | 1 |\n| 2 | 10 | oui (10 ≥ 10) | 12,5 + 10 = 22,5 | 2 |\n| 3 | 7,5 | non | 22,5 + 7,5 = 30 | 2 |\n| 4 | 8,5 | non | 30 + 8,5 = 38,5 | 2 |\n| 5 | 14 | oui | 38,5 + 14 = 52,5 | 3 |\n| 6 | 12,5 | oui | 52,5 + 12,5 = 65 | 4 |\n| 7 | 09 | non | 65 + 9 = 74 | 4 |\n\n**Après les 7 itérations disponibles : Somme = 74 et Nbre = 4.**\n\nComme Note[8], Note[9] et Note[10] ne sont pas connues, la valeur finale de Somme (et donc de Moyenne = Somme/10) ne peut pas être déterminée avec certitude à l'issue des 10 itérations réellement prévues par l'algorithme : elle vaudra 74 plus la somme des trois notes manquantes.\n\n### Piège à éviter\nNe complète jamais les 3 valeurs manquantes par une supposition (par exemple en répétant la dernière valeur ou en mettant des zéros) pour obtenir un résultat « propre » : cela reviendrait à inventer une donnée d'examen. La bonne pratique consiste à dérouler ce qui est réellement fourni et à signaler explicitement la limite atteinte.\n\n### Conseil\nPrésente toujours ta trace sous forme de tableau à une colonne par variable suivie dans le temps (comme ci-dessus) plutôt qu'en prose : c'est la présentation attendue par les correcteurs de BAC, et elle évite d'oublier de mettre à jour une variable à une étape donnée.",
+      "themes": [
+        "trace d'exécution",
+        "simulation d'algorithme",
+        "boucle Pour"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex3-q2-0",
+          "competence": "Simuler l'exécution d'un algorithme itératif à la main (trace de variables)",
+          "contenu_markdown": "Exécuter un algorithme à la main consiste à dérouler chaque instruction dans l'ordre, en tenant à jour, ligne après ligne, la valeur courante de chaque variable dans un tableau de trace - jamais en essayant de deviner le résultat final directement.",
+          "cours_genere": true,
+          "cours_id": "cours-simuler-l-execution-d-un-algorithme-iteratif-a-la-main-trace-de-variables-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Décrire ce que fait cet algorithme. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nDécrire un algorithme, c'est résumer son intention générale (à quoi sert-il ?) sans le retraduire ligne à ligne : on identifie ce qu'il lit, ce qu'il calcule, et ce qu'il produit en sortie.\n\nCet algorithme lit successivement 10 notes réelles saisies au clavier et les range dans le tableau `Note` ; il calcule au fur et à mesure leur somme cumulée (`Somme`) et compte combien d'entre elles sont supérieures ou égales à 10 (`Nbre`) ; il calcule enfin une moyenne (`Moyenne = Somme/10`) et affiche cette moyenne ainsi que le nombre de notes supérieures ou égales à 10.\n\n### Piège à éviter\nNe dis pas simplement « il calcule une moyenne » : la description doit aussi mentionner le comptage conditionnel (Nbre), qui est un second traitement à part entière de l'algorithme, pas un simple sous-produit du calcul de moyenne. Une description qui n'en parle pas est incomplète.",
+      "themes": [
+        "lecture d'algorithme",
+        "somme et comptage conditionnel"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex3-q3-0",
+          "competence": "Reconnaître un traitement algorithmique classique (somme conditionnelle et comptage)",
+          "contenu_markdown": "Décrire un algorithme, c'est résumer son intention générale (à quoi sert-il ?) sans le retraduire ligne à ligne : on identifie ce qu'il lit, ce qu'il calcule, et ce qu'il produit en sortie.",
+          "cours_genere": true,
+          "cours_id": "cours-reconnaitre-un-traitement-algorithmique-classique-somme-conditionnelle-et-comptage-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Énumérer un IDE C permettant d'exécuter ce code. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn IDE (Integrated Development Environment / environnement de développement intégré) regroupe dans un seul logiciel l'éditeur de texte, le compilateur et le débogueur nécessaires pour écrire, corriger et exécuter un programme.\n\nExemples d'IDE permettant d'écrire, compiler et exécuter du code C : **Code::Blocks**, Dev-C++, ou encore Visual Studio Code associé à un compilateur C (GCC).\n\n### Conseil\nCite un seul nom d'IDE clairement écrit plutôt qu'une liste approximative : la question ne demande qu'un seul exemple, un nom mal orthographié ou inventé peut faire perdre le point alors qu'une réponse courte et exacte le rapporte intégralement.",
+      "themes": [
+        "IDE",
+        "chaîne de développement C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex3-q4-0",
+          "competence": "L'IDE : environnement de développement intégré",
+          "contenu_markdown": "Un IDE (Integrated Development Environment / environnement de développement intégré) regroupe dans un seul logiciel l'éditeur de texte, le compilateur et le débogueur nécessaires pour écrire, corriger et exécuter un programme.",
+          "cours_genere": true,
+          "cours_id": "cours-l-ide-environnement-de-developpement-integre-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** Écrire deux bibliothèques C. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne bibliothèque standard du langage C regroupe des fonctions prêtes à l'emploi ; on l'utilise en incluant son fichier d'en-tête (`#include <nom.h>`) au début du programme.\n\nDeux exemples : **stdio.h** (entrées/sorties standard : `printf`, `scanf`) et **math.h** (fonctions mathématiques : `sqrt`, `pow`).\n\n### Conseil\nAssocie toujours, dans ta tête, chaque bibliothèque à la fonction précise qui te fait t'en souvenir (`stdio.h` → `printf`/`scanf`, `math.h` → `sqrt`) : c'est plus fiable que de mémoriser une liste de noms isolés.",
+      "themes": [
+        "bibliothèques C",
+        "stdio.h",
+        "math.h"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex3-q5-0",
+          "competence": "Les bibliothèques standard du langage C",
+          "contenu_markdown": "Une bibliothèque standard du langage C regroupe des fonctions prêtes à l'emploi ; on l'utilise en incluant son fichier d'en-tête (`#include <nom.h>`) au début du programme.",
+          "cours_genere": true,
+          "cours_id": "cours-les-bibliotheques-standard-du-langage-c-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "**6.** Donner la signification des symboles C suivants : `\\n`, `&`, `++`, `+=`. *[0,25 pt × 4 = 1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nChaque symbole du langage C a un rôle syntaxique précis et unique : certains agissent sur une chaîne de caractères affichée (\\n), d'autres sur une variable (&, ++, +=). Les confondre change le sens du programme sans provoquer d'erreur de compilation.\n\n**`\\n`** : séquence d'échappement représentant un saut de ligne. Placée dans une chaîne de caractères affichée par `printf`, elle déplace le curseur d'affichage au début de la ligne suivante.\n\n**`&`** : opérateur d'adresse. Appliqué à une variable, il renvoie l'adresse mémoire de cette variable plutôt que sa valeur ; c'est pourquoi `scanf(\"%d\", &x)` doit obligatoirement passer l'adresse de `x` pour que la fonction puisse modifier son contenu.\n\n**`++`** : opérateur d'incrémentation. `i++` (ou `++i`) ajoute 1 à la valeur de `i` ; c'est un raccourci pour `i = i + 1`.\n\n**`+=`** : opérateur d'affectation composée. `a += b` est un raccourci pour `a = a + b` : on additionne `b` à `a` puis on range le résultat dans `a`.\n\n### Piège à éviter\nNe confonds pas `++` (opérateur unaire, agit seul sur une variable) et `+=` (opérateur binaire, combine deux valeurs) : les deux « ajoutent quelque chose », mais `i++` n'a de sens qu'avec l'incrément fixe de 1, alors que `a += b` permet d'ajouter n'importe quelle quantité `b`.",
+      "themes": [
+        "opérateurs C",
+        "syntaxe C"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex3-q6-0",
+          "competence": "Signification des opérateurs et symboles du langage C (\\\\n, &, ++, +=)",
+          "contenu_markdown": "Chaque symbole du langage C a un rôle syntaxique précis et unique : certains agissent sur une chaîne de caractères affichée (\\n), d'autres sur une variable (&, ++, +=). Les confondre change le sens du programme sans provoquer d'erreur de compilation.",
+          "cours_genere": true,
+          "cours_id": "cours-signification-des-operateurs-et-symboles-du-langage-c-n-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "7",
+      "enonce_markdown": "**7.** Traduire cet algorithme en programme C. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nTraduire un algorithme en C revient à transposer chaque structure du pseudo-code vers sa syntaxe C exacte, en n'oubliant jamais que les tableaux C sont indicés à partir de 0 alors que la plupart des pseudo-codes scolaires indicent à partir de 1.\n\n**Étape 1 - Déclarer les variables.** Le tableau `Note[1..10] de réels` devient un tableau C de 10 éléments de type `float` ; l'indexation de 1 à 10 dans l'algorithme devient une indexation de 0 à 9 en C (`Note[10]`, indices 0 à 9). `i` et `Nbre` restent des entiers (`int`) ; `Somme` et `Moyenne` doivent être déclarés en `float` en C, car ce sont des accumulations et une division de valeurs réelles - contrairement à l'énoncé, qui les déclare (de façon incohérente) en « entier » alors que les notes lues sont réelles.\n\n**Étape 2 - Traduire la boucle Pour.** `Pour i allant de 1 à 10 faire ... Finpour` devient `for (i = 0; i < 10; i++) { ... }`, en affichant `i + 1` dans les invites pour continuer à parler d'« élève 1 » à « élève 10 » comme dans l'énoncé, bien que l'indice interne du tableau C aille de 0 à 9.\n\n**Étape 3 - Traduire la lecture et l'accumulation.** `Lire(Note[i])` devient `scanf(\"%f\", &Note[i])` (le `&` est indispensable, voir question 6) ; `Somme ⟵ Somme + Note[i]` devient `Somme += Note[i];`.\n\n**Étape 4 - Traduire le test conditionnel.** `Si (Note[i] ≥ 10) Nbre ⟵ Nbre + 1 Finsi` devient `if (Note[i] >= 10) { Nbre++; }`.\n\n**Étape 5 - Traduire le calcul final et l'affichage.** `Moyenne ⟵ Somme/10` devient `Moyenne = Somme / 10;` ; l'instruction `Ecrire` devient un `printf` avec les spécificateurs adaptés (`%f` pour un réel, `%d` pour un entier).\n\n**Programme C complet :**\n\n```c\n#include <stdio.h>\n\nint main(void) {\n    float Note[10];\n    int i, Nbre = 0;\n    float Somme = 0, Moyenne;\n\n    for (i = 0; i < 10; i++) {\n        printf(\"Entrez la note de l'eleve %d : \", i + 1);\n        scanf(\"%f\", &Note[i]);\n        Somme += Note[i];\n        if (Note[i] >= 10) {\n            Nbre++;\n        }\n    }\n\n    Moyenne = Somme / 10;\n    printf(\"Le resultat est : %.2f %d\\n\", Moyenne, Nbre);\n\n    return 0;\n}\n```\n\n### Piège à éviter\nDéclarer `Somme` et `Moyenne` en `int` comme le suggère (à tort) l'énoncé de l'algorithme tronquerait toutes les parties décimales des notes et du résultat : une note de 12,5 serait traitée comme 12. C'est une incohérence de typage déjà présente dans le pseudo-code source ; en traduisant vers un vrai langage compilé comme le C, il faut la corriger en utilisant `float`, faute de quoi le programme compile mais donne des résultats faux.\n\n### Conseil\nVérifie systématiquement, avant de rendre ta traduction, que chaque indice de tableau utilisé en C reste dans l'intervalle [0 ; taille-1] : c'est l'erreur de traduction la plus fréquente quand on part d'un pseudo-code indicé à partir de 1.",
+      "themes": [
+        "traduction algorithme-C",
+        "tableaux en C",
+        "boucle for"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex3-q7-0",
+          "competence": "Traduire un algorithme en programme C : structure d'un programme C",
+          "contenu_markdown": "Traduire un algorithme en C revient à transposer chaque structure du pseudo-code vers sa syntaxe C exacte, en n'oubliant jamais que les tableaux C sont indicés à partir de 0 alors que la plupart des pseudo-codes scolaires indicent à partir de 1.",
+          "cours_genere": true,
+          "cours_id": "cours-traduire-un-algorithme-en-programme-c-structure-d-un-programme-c-tle-tronc-commun"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "algorithme",
+    "tableau",
+    "trace d'exécution",
+    "langage C",
+    "IDE",
+    "bibliothèques C",
+    "opérateurs C",
+    "traduction pseudo-code"
+  ],
+  "incertitudes": [
+    "Le fichier référentiel backend/programme/fixtures/programme_officiel_cm_informatique.json n'a pas été trouvé sur le système de fichiers : savoir_officiel n'a pu être renseigné pour aucune sous-question de cet exercice.",
+    "Question 2 : le tableau de valeurs fourni par le sujet source (pages 3-4) ne comporte que 7 notes (12,5 ; 10 ; 7,5 ; 8,5 ; 14 ; 12,5 ; 09) alors que la boucle de l'algorithme en attend 10 (Pour i de 1 à 10). Les 3 valeurs manquantes (Note[8], Note[9], Note[10]) ne sont fournies nulle part dans le PDF source ; le corrigé trace donc les 7 itérations disponibles et signale explicitement l'impossibilité de conclure sur le résultat final exact, plutôt que d'inventer les valeurs absentes.",
+    "L'algorithme source déclare Somme et Moyenne comme des variables « entier » alors qu'elles accumulent/divisent des notes réelles : incohérence de typage déjà présente dans l'énoncé, signalée dans le corrigé de la question 7 sans être silencieusement corrigée dans la restitution du pseudo-code original."
+  ],
+  "statut": "brouillon"
+}

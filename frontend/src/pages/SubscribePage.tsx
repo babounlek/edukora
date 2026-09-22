@@ -214,7 +214,7 @@ export function SubscribePage() {
 
     setError(null)
     if (!/^6\d{8}$/.test(phoneNumber)) {
-      setError("Entre un numéro Mobile Money valide (9 chiffres, commence par 6).")
+      setError("Entrez un numéro Mobile Money valide (9 chiffres, commence par 6).")
       return
     }
 
@@ -302,7 +302,7 @@ export function SubscribePage() {
             {plan.name}
             {plan.duration_mode === "JUSQUA_EXAMEN" && (
               <span className="text-xs font-normal text-muted-foreground">
-                Accès jusqu'à ton examen - {plan.effective_duration_days} jour{plan.effective_duration_days > 1 ? "s" : ""} restant{plan.effective_duration_days > 1 ? "s" : ""}
+                Accès jusqu'à son examen - {plan.effective_duration_days} jour{plan.effective_duration_days > 1 ? "s" : ""} restant{plan.effective_duration_days > 1 ? "s" : ""}
               </span>
             )}
             {plan.inclut_inedit && (
@@ -333,7 +333,7 @@ export function SubscribePage() {
             ? "Seules les formules qui débloquent les Épreuves Inédites sur ce cursus sont proposées ici."
             : requireRepetiteur
               ? "Seul l'add-on Fiches (répétiteurs) pour ce cursus est proposé ici - il ne débloque pas les corrigés classiques."
-              : "Choisis ton offre et ton moyen de paiement pour débloquer l'accès."}
+              : "Choisissez votre offre et votre moyen de paiement pour débloquer l'accès."}
         </p>
       </div>
 
@@ -345,14 +345,14 @@ export function SubscribePage() {
                 <div className="flex items-center gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3.5 py-2.5 text-sm">
                   <Gift className="size-4 shrink-0 text-gold" />
                   <span>
-                    Tu as <strong className="text-foreground">{formatAmount(creditDisponible)} FCFA</strong> de
+                    Vous avez <strong className="text-foreground">{formatAmount(creditDisponible)} FCFA</strong> de
                     crédit parrainage - appliqué automatiquement pour un paiement Campay.
                   </span>
                 </div>
               )}
 
               <div className="flex flex-col gap-2.5">
-                <StepLabel n={1}>Ton offre</StepLabel>
+                <StepLabel n={1}>Votre offre</StepLabel>
                 <div className="flex flex-col gap-4">
                   {planGroups.map((group) => (
                     <div key={group.label} className="flex flex-col gap-2">
@@ -426,8 +426,8 @@ export function SubscribePage() {
                 ) : (
                   <div className="flex flex-col gap-2.5 rounded-lg border border-dashed border-input p-3">
                     <p className="text-xs text-muted-foreground">
-                      Paiement manuel : tu effectues toi-même le transfert, puis déclares ta transaction. Vérifiée
-                      par notre équipe sous quelques heures.
+                      Paiement manuel : vous effectuez vous-même le transfert, puis déclarez votre transaction.
+                      Vérifiée par notre équipe sous quelques heures.
                     </p>
                     <div className="grid grid-cols-2 gap-2">
                       {MANUAL_METHODS.map((method) => (
@@ -514,7 +514,7 @@ export function SubscribePage() {
           {phase === "manual_submitted" && declaredPayment && (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <CheckCircle2 className="size-10 text-success" />
-              <p className="font-display font-medium">Ta déclaration a bien été enregistrée</p>
+              <p className="font-display font-medium">Votre déclaration a bien été enregistrée</p>
               <p className="text-sm text-muted-foreground">
                 Elle est actuellement en cours de vérification par notre équipe, généralement en quelques heures.
                 Numéro de demande : #{declaredPayment.id}.
@@ -528,7 +528,7 @@ export function SubscribePage() {
           {phase === "pending" && (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <Loader2 className="size-8 animate-spin text-primary" />
-              <p className="font-display font-medium">Confirme le paiement sur ton téléphone</p>
+              <p className="font-display font-medium">Confirmez le paiement sur votre téléphone</p>
               <p className="text-sm text-muted-foreground">
                 Une demande Mobile Money a été envoyée au {phoneNumber}. Cette page se met à jour automatiquement.
               </p>
@@ -547,7 +547,7 @@ export function SubscribePage() {
               <AlertCircle className="size-10 text-warning" />
               <p className="font-display font-medium">La confirmation prend plus de temps que prévu</p>
               <p className="text-sm text-muted-foreground">
-                As-tu validé la demande sur ton téléphone ? Si le paiement passe malgré tout, ton
+                Avez-vous validé la demande sur votre téléphone ? Si le paiement passe malgré tout, votre
                 abonnement s'activera automatiquement dès la confirmation de l'opérateur.
               </p>
               <Button variant="outline" onClick={() => setPhase("form")}>
@@ -587,7 +587,7 @@ export function SubscribePage() {
 
       <p className="mt-6 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
         <ShieldCheck className="size-3.5 shrink-0" />
-        Paiement sécurisé - ton abonnement s'active dès la confirmation du paiement.
+        Paiement sécurisé - votre abonnement s'active dès la confirmation du paiement.
       </p>
     </div>
   )

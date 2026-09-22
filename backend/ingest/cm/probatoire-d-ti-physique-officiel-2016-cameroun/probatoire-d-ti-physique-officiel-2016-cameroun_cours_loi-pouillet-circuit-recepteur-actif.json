@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-loi-pouillet-circuit-recepteur-actif-premiere-d-ti",
+  "meta": {
+    "titre": "Loi de Pouillet généralisée dans un circuit série avec générateur et récepteur actif",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Électricité - Circuits en régime continu",
+    "duree_estimee_min": 22,
+    "tags": [
+      "loi de Pouillet",
+      "circuit série",
+      "force électromotrice",
+      "récepteur actif"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2016-cameroun",
+    "epreuve_titre": "Épreuve de physique au Probatoire, séries D et TI - 2016 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2016-officiel-cameroun-ex3-qB.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un générateur, un résistor, un électrolyseur et un ampèremètre branchés en série : comment trouver la force électromotrice du générateur sans mesurer sa tension directement ? La loi de Pouillet généralisée permet de la calculer à partir du seul courant mesuré et des caractéristiques déjà connues de chaque élément du circuit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm aux bornes d'un résistor : $U = R\\times I$",
+        "Notion de force électromotrice $E$ et de résistance interne $r$ d'un générateur",
+        "Notion de récepteur actif (force contre-électromotrice $E'$, résistance interne $r'$)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Pouillet généralisée",
+      "contenu_markdown": "Dans un circuit série parcouru par un courant unique d'intensité $I$, comportant un générateur de force électromotrice $E$ et de résistance interne $r$, un ou plusieurs résistors de résistances $R_i$, et éventuellement un récepteur actif (comme un électrolyseur) de force contre-électromotrice $E'$ et de résistance interne $r'$, la loi de Pouillet généralisée s'écrit en égalant la force électromotrice totale du générateur à la somme des chutes de tension résistives de tout le circuit et de la force contre-électromotrice du récepteur actif : $E = \\left(\\sum R_i + r + r'\\right) \\times I + E'$.",
+      "formula_principale": "E = \\left(\\sum R_i + r + r'\\right) \\times I + E'"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit série comporte un résistor $R=10\\,\\Omega$, un électrolyseur ($E'=10\\,\\text{V}$ ; $r'=1,5\\,\\Omega$), un ampèremètre de résistance interne $a=0,5\\,\\Omega$, et un générateur ($E$ inconnue ; $r=0,5\\,\\Omega$). L'ampèremètre indique $I=0,5\\,\\text{A}$. Calculer $E$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Faire l'inventaire de tous les éléments résistifs du circuit série",
+          "justification": "Tous les éléments sont parcourus par le même courant $I$ en série",
+          "resultat_markdown": "$R=10\\,\\Omega$ ; $a=0,5\\,\\Omega$ ; $r=0,5\\,\\Omega$ ; $r'=1,5\\,\\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la loi de Pouillet généralisée",
+          "justification": "Le générateur doit fournir la tension nécessaire à toutes les chutes résistives et à la force contre-électromotrice du récepteur actif",
+          "resultat_markdown": "$E = (R+a+r+r')\\times I + E'$"
+        },
+        {
+          "numero": 3,
+          "action": "Faire l'application numérique",
+          "justification": "$(10+0,5+0,5+1,5)=12,5\\,\\Omega$",
+          "resultat_markdown": "$E = 12,5\\times 0,5 + 10 = 6,25+10 = 16,25\\,\\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "La force électromotrice du générateur vaut 16,25 V."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la force contre-électromotrice $E'$ du récepteur actif dans l'équation, en traitant l'électrolyseur comme un simple résistor de résistance $r'$.",
+          "pourquoi_faux": "Un récepteur actif convertit une partie de l'énergie électrique reçue en une autre forme d'énergie (chimique, mécanique...) : cette conversion se traduit par une force contre-électromotrice $E'$ qui s'ajoute aux chutes de tension purement résistives, elle ne peut jamais être ignorée.",
+          "correction_markdown": "Identifie systématiquement, dans l'énoncé, tout élément décrit par un couple $(E', r')$ : c'est le signal qu'il s'agit d'un récepteur actif, à ajouter dans l'équation avec son $E'$ propre."
+        },
+        {
+          "erreur_markdown": "Négliger la résistance interne d'un appareil de mesure (ampèremètre) sous prétexte qu'elle est petite.",
+          "pourquoi_faux": "Toute résistance donnée explicitement dans l'énoncé doit être prise en compte dans le bilan des tensions, même si sa valeur numérique paraît faible comparée aux autres.",
+          "correction_markdown": "N'omets un élément du circuit dans le calcul que si l'énoncé le précise explicitement (résistance négligeable) ; sinon, inclus-le systématiquement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit série comporte un générateur ($E=12\\,\\text{V}$ ; $r=1\\,\\Omega$) et un résistor $R=5\\,\\Omega$. Calculer l'intensité du courant.",
+          "solution_markdown": "$E=(R+r)\\times I \\Rightarrow I = \\dfrac{E}{R+r} = \\dfrac{12}{6}=2\\,\\text{A}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit série comporte un générateur ($E=9\\,\\text{V}$ ; $r=0,5\\,\\Omega$), un résistor $R=4\\,\\Omega$, et un moteur électrique (récepteur actif, $E'=3\\,\\text{V}$ ; $r'=0,5\\,\\Omega$). Calculer l'intensité du courant.",
+          "solution_markdown": "$E = (R+r+r')\\times I + E' \\Rightarrow I = \\dfrac{E-E'}{R+r+r'} = \\dfrac{9-3}{4+0,5+0,5} = \\dfrac{6}{5} = 1,2\\,\\text{A}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, dans un circuit série comportant un générateur et un récepteur actif, l'intensité du courant ne peut être positive (dans le sens conventionnel prévu) que si $E > E'$, et interpréter physiquement cette condition.",
+          "solution_markdown": "D'après la loi de Pouillet généralisée, $E = (\\sum R_i)\\times I + E'$, donc $I = \\dfrac{E-E'}{\\sum R_i}$. Comme une résistance $\\sum R_i$ est toujours positive, le signe de $I$ est celui de $E-E'$ : pour que $I>0$ dans le sens conventionnel prévu par le montage, il faut donc $E>E'$.\n\nPhysiquement, cela signifie que le générateur doit fournir une force électromotrice strictement supérieure à la force contre-électromotrice du récepteur actif pour pouvoir le faire fonctionner dans le sens voulu (par exemple, faire tourner un moteur ou entretenir une électrolyse) : si $E<E'$, le récepteur actif imposerait au contraire sa propre force électromotrice au circuit, inversant le rôle des deux dipôles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Pouillet généralisée additionne toutes les chutes de tension résistives du circuit série et la force contre-électromotrice d'un éventuel récepteur actif, pour les égaler à la force électromotrice du générateur.",
+        "Un récepteur actif se reconnaît à son couple $(E', r')$ : sa force contre-électromotrice ne doit jamais être oubliée dans l'équation.",
+        "Chaque élément résistif du circuit, même de faible valeur, doit être inclus dès qu'il est donné explicitement dans l'énoncé.",
+        "Isoler $E$, $I$ ou une résistance inconnue revient toujours à réarranger la même équation de base.",
+        "Ce type de calcul est la porte d'entrée classique d'un exercice de bilan de puissance : il fournit les valeurs numériques (E, I) nécessaires à tous les calculs de puissance qui suivent."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "cours_id": "cours-probatoire-d-maths-officiel-2010-cameroun-denombrement-exactement-k-meme-groupe",
+  "meta": {
+    "titre": "Dénombrer un tirage avec \"exactement k\" éléments d'un même groupe",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Combinaisons, tirage simultané, condition d'exactitude",
+    "duree_estimee_min": 20,
+    "tags": [
+      "dénombrement",
+      "combinaisons",
+      "tirage simultané",
+      "condition exacte",
+      "groupe complémentaire"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "22",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2010-cameroun",
+    "epreuve_titre": "Probatoire D Mathématiques officiel 2010 (Cameroun)",
+    "exercice_numero": "Problème",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2010-cameroun-probleme-qA1c-1",
+    "rappels_lies": [
+      "rdm-probatoire-d-maths-officiel-2010-cameroun-probleme-qA1b-1",
+      "rdm-probatoire-d-maths-officiel-2010-cameroun-probleme-qA1c-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "\"Tous les 5 élèves ont le même âge\" et \"exactement 4 élèves ont le même âge\" semblent des questions voisines, mais leur dénombrement obéit à des logiques très différentes. La seconde condition cache un piège classique : oublier que le dernier élément doit explicitement être exclu du groupe commun, sous peine de compter aussi les tirages où les 5 ont le même âge."
+    },
+    {
+      "type": "prerequis",
+      "contenu_markdown": "Nombre de combinaisons $C_n^k$, principe additif (réunion de cas disjoints), principe multiplicatif (choix successifs indépendants)."
+    },
+    {
+      "type": "regle",
+      "formule_principale": "Pour dénombrer un tirage simultané de $k$ éléments parmi une population partitionnée en groupes, où EXACTEMENT $j$ éléments proviennent d'un même groupe $i$ (d'effectif $n_i$), on calcule, pour chaque groupe possible : $C_{n_i}^{\\,j}\\times C_{N-n_i}^{\\,k-j}$ (choisir $j$ éléments dans le groupe $i$, puis les $k-j$ restants strictement en dehors de ce groupe), puis on additionne sur tous les groupes candidats.",
+      "variantes": [
+        "Cas particulier fréquent où k-j=1 (un seul élément hors du groupe) : la formule se simplifie en $C_{n_i}^{\\,j}\\times(N-n_i)$, car choisir 1 élément parmi $N-n_i$ revient simplement à multiplier par $N-n_i$.",
+        "Piège à repérer : \"exactement j\" est plus restrictif qu'\"au moins j\" — la formule ci-dessus exclut explicitement le groupe i pour les k-j éléments restants, ce qui n'est PAS la même chose que choisir librement k-j éléments parmi tous les N-n_i+ (n_i-j) éléments restants dans la population totale une fois j déjà retirés du groupe i (cette dernière quantité inclurait par erreur d'autres éléments du groupe i)."
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "etapes": [
+        "On dénombre les tirages de 5 élèves parmi 50 (répartis en 4 groupes d'âge : 15, 20, 10, 5) où EXACTEMENT 4 élèves ont le même âge.",
+        "Pour chaque groupe candidat (les 4 qualifient, ayant chacun au moins 4 élèves), on calcule $C_{n_i}^{4}\\times(50-n_i)$ : le 5ᵉ élève est pris parmi les $50-n_i$ élèves des AUTRES groupes, garantissant qu'il ne partage pas l'âge des 4 premiers.",
+        "Groupe de 15 : $C_{15}^{4}\\times35=1365\\times35=47775$. Groupe de 20 : $C_{20}^{4}\\times30=4845\\times30=145350$. Groupe de 10 : $C_{10}^{4}\\times40=210\\times40=8400$. Groupe de 5 : $C_{5}^{4}\\times45=5\\times45=225$.",
+        "Les quatre cas sont mutuellement exclusifs (un tirage donné a EXACTEMENT UN groupe qui fournit ses 4 éléments communs) : on additionne donc directement sans risque de double-comptage : $47775+145350+8400+225=201750$."
+      ]
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Choisir le 5ᵉ élément parmi les 50 élèves de la population totale (au lieu des 50-n_i élèves hors du groupe) : cela compterait aussi, par erreur, les tirages où les 5 élèves ont le même âge (déjà comptés dans la question \"les 5 ont le même âge\"), violant la condition d'exactitude.",
+        "Oublier de sommer sur tous les groupes possibles ayant au moins j éléments : chaque groupe doit être examiné comme candidat séparé, car le groupe fournissant les 4 éléments communs n'est pas fixé par l'énoncé.",
+        "Confondre cette question avec celle du dénombrement \"au moins 4\" (qui engloberait aussi le cas où les 5 ont le même âge, et s'obtiendrait en additionnant le résultat \"exactement 4\" et celui de \"les 5 ont le même âge\")."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Un sac contient 12 boules réparties en 3 couleurs : 5 rouges, 4 vertes, 3 bleues. On tire simultanément 4 boules. Dénombrer les tirages où exactement 3 boules ont la même couleur.",
+        "Reprendre l'exemple résolu ci-dessus et calculer, par la même méthode, le nombre de tirages où exactement 3 élèves (et non 4) ont le même âge."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "\"Exactement j éléments d'un même groupe\" se dénombre par $C_{n_i}^{\\,j}\\times C_{N-n_i}^{\\,k-j}$, sommé sur tous les groupes candidats.",
+        "Le complément (les k-j éléments restants) doit impérativement être pris HORS du groupe choisi, jamais dans la population totale.",
+        "Chaque groupe candidat donne des tirages mutuellement exclusifs : on additionne directement les résultats sans soustraction ni division supplémentaire."
+      ]
+    }
+  ]
+}

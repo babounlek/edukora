@@ -1,0 +1,179 @@
+{
+ "cours_id": "cours-orthogonalite-produit-scalaire-coordonnees-1ere-ce",
+ "meta": {
+  "titre": "Démontrer une orthogonalité par le produit scalaire en coordonnées",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Géométrie analytique de l'espace",
+  "duree_estimee_min": 25,
+  "tags": ["produit scalaire dans l'espace", "coordonnées", "droites orthogonales", "repère orthonormé", "vecteur directeur"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "24",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex3-q2b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Là où la voie synthétique demande une demi-page — trouver un plan, deux droites sécantes, un parallélisme — le produit scalaire tranche en trois lignes : deux soustractions de coordonnées, trois produits, une somme. Le sujet 2005 demande d'ailleurs les deux méthodes successivement, sur la même paire de droites, pour qu'on mesure l'écart. Mais l'outil analytique a une condition d'emploi absolue, et elle est facile à oublier : le repère doit être **orthonormé**."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir calculer les coordonnées d'un vecteur à partir de celles de deux points",
+    "Connaître l'expression analytique du produit scalaire dans un repère orthonormé",
+    "Savoir ce qu'est un vecteur directeur d'une droite",
+    "Distinguer droites orthogonales et droites perpendiculaires"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Somme des produits de coordonnées, dans un repère orthonormé",
+   "contenu_markdown": "**Les coordonnées d'un vecteur.** Pour deux points $M\\left(x\\,;\\,y\\,;\\,z\\right)$ et $N\\left(x'\\,;\\,y'\\,;\\,z'\\right)$ :\n\n$$\\overrightarrow{MN} = \\left(x'-x\\,;\\,y'-y\\,;\\,z'-z\\right)$$\n\nOn soustrait les coordonnées de l'**origine** du vecteur à celles de son **extrémité** — dans cet ordre.\n\n**L'expression analytique du produit scalaire.** Dans un repère **orthonormé** :\n\n$$\\vec{u} \\cdot \\vec{v} = xx' + yy' + zz'$$\n\n**La condition d'emploi.** Cette formule n'est valable que si le repère est orthonormé. Dans un repère quelconque, elle est **fausse**, et un calcul nul ne prouverait rien. C'est pour cela que les énoncés prennent soin de préciser « repère orthonormé ».\n\n**Le critère d'orthogonalité.** Deux droites sont orthogonales si et seulement si un vecteur directeur de l'une est orthogonal à un vecteur directeur de l'autre :\n\n$$(d) \\perp (d') \\iff \\vec{u} \\cdot \\vec{v} = 0$$\n\n**La méthode, en quatre gestes.**\n\n1. **Signaler** que le repère est orthonormé.\n2. **Calculer** les coordonnées d'un vecteur directeur de chaque droite.\n3. **Effectuer** le produit scalaire.\n4. **Conclure** selon qu'il est nul ou non.\n\n**Le choix des vecteurs directeurs est libre.** Tout vecteur non nul porté par la droite convient. Pour la droite $(GF)$, on peut prendre $\\overrightarrow{GF}$ ou $\\overrightarrow{FG}$ : le produit scalaire change de signe, mais sa nullité ne dépend pas du choix.\n\n**Ce que le produit scalaire donne en plus.** Il ne dit pas seulement si l'angle est droit, il le **mesure** :\n\n$$\\cos\\theta = \\frac{\\vec{u} \\cdot \\vec{v}}{\\left\\|\\vec{u}\\right\\| \\times \\left\\|\\vec{v}\\right\\|} \\qquad \\text{avec} \\qquad \\left\\|\\vec{u}\\right\\| = \\sqrt{x^{2}+y^{2}+z^{2}}$$\n\n**Orthogonales, pas perpendiculaires.** Le produit scalaire ne renseigne que sur les **directions**. Un produit nul établit l'orthogonalité, jamais la perpendicularité — laquelle exige en plus que les droites se coupent, ce qui se vérifie séparément.\n\n**Les contrôles.** Les normes des vecteurs doivent correspondre aux longueurs de la figure. Dans un cube d'arête $1$ : une arête a pour norme $1$, une diagonale de face $\\sqrt{2}$, une grande diagonale $\\sqrt{3}$.",
+   "formule_principale": "\\vec{u} \\cdot \\vec{v} = xx' + yy' + zz' = 0 \\iff \\vec{u} \\perp \\vec{v}",
+   "variantes": [
+    {
+     "nom": "Expression géométrique du produit scalaire",
+     "quand_utiliser": "Quand on connaît les longueurs et l'angle plutôt que les coordonnées",
+     "contenu_markdown": "$$\\vec{u} \\cdot \\vec{v} = \\left\\|\\vec{u}\\right\\| \\times \\left\\|\\vec{v}\\right\\| \\times \\cos\\theta$$\n\nCette forme ne demande aucun repère et vaut dans tout l'espace. Elle rend d'ailleurs le critère évident : le produit est nul si et seulement si $\\cos\\theta = 0$, c'est-à-dire si $\\theta = 90^{\\circ}$ — les deux vecteurs étant supposés non nuls."
+    },
+    {
+     "nom": "Orthogonalité d'une droite et d'un plan",
+     "quand_utiliser": "Quand on veut montrer qu'une droite est perpendiculaire à un plan",
+     "contenu_markdown": "Une droite de vecteur directeur $\\vec{u}$ est perpendiculaire à un plan de vecteur normal $\\vec{n}$ si et seulement si $\\vec{u}$ et $\\vec{n}$ sont **colinéaires**.\n\nEt si le plan est donné par une équation $ax+by+cz+d = 0$, son vecteur normal se lit directement : $\\vec{n}(a\\,;\\,b\\,;\\,c)$.\n\nC'est bien plus rapide que la méthode synthétique par deux droites sécantes."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Dans le repère orthonormé $\\left(A\\,;\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AE}\\right)$ lié au cube $ABCDEFGH$ d'arête $1$, on a $G(1\\,;\\,1\\,;\\,1)$, $F(0\\,;\\,1\\,;\\,1)$, $H(1\\,;\\,0\\,;\\,1)$ et $C(1\\,;\\,1\\,;\\,0)$. Calculer $\\overrightarrow{GF} \\cdot \\overrightarrow{HC}$ et en déduire que les droites $(GF)$ et $(HC)$ sont orthogonales. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Signaler que le repère est orthonormé",
+     "justification": "C'est ce qui autorise la formule analytique",
+     "resultat_markdown": "Le repère étant orthonormé, on peut écrire $\\vec{u} \\cdot \\vec{v} = xx'+yy'+zz'$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer les coordonnées de $\\overrightarrow{GF}$",
+     "justification": "Extrémité moins origine : $F - G$",
+     "resultat_markdown": "$\\overrightarrow{GF} = (0-1\\,;\\,1-1\\,;\\,1-1) = (-1\\,;\\,0\\,;\\,0)$"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer les coordonnées de $\\overrightarrow{HC}$",
+     "justification": "Extrémité moins origine : $C - H$",
+     "resultat_markdown": "$\\overrightarrow{HC} = (1-1\\,;\\,1-0\\,;\\,0-1) = (0\\,;\\,1\\,;\\,-1)$"
+    },
+    {
+     "numero": 4,
+     "action": "Effectuer le produit scalaire",
+     "justification": "Somme des produits des coordonnées correspondantes",
+     "resultat_markdown": "$\\overrightarrow{GF} \\cdot \\overrightarrow{HC} = (-1)\\times 0 + 0 \\times 1 + 0 \\times (-1) = 0+0+0 = 0$"
+    },
+    {
+     "numero": 5,
+     "action": "Conclure",
+     "justification": "Un produit scalaire nul entre deux vecteurs non nuls caractérise l'orthogonalité",
+     "resultat_markdown": "Les droites $(GF)$ et $(HC)$ sont **orthogonales**"
+    },
+    {
+     "numero": 6,
+     "action": "Contrôler la norme de $\\overrightarrow{GF}$",
+     "justification": "$[GF]$ est une arête du cube",
+     "resultat_markdown": "$\\left\\|\\overrightarrow{GF}\\right\\| = \\sqrt{1+0+0} = 1$. Conforme"
+    },
+    {
+     "numero": 7,
+     "action": "Contrôler la norme de $\\overrightarrow{HC}$",
+     "justification": "$[HC]$ est une diagonale de la face $DCGH$",
+     "resultat_markdown": "$\\left\\|\\overrightarrow{HC}\\right\\| = \\sqrt{0+1+1} = \\sqrt{2}$. Conforme"
+    }
+   ],
+   "conclusion_markdown": "Le produit scalaire est nul, donc les droites sont orthogonales — ce qui confirme par le calcul le résultat obtenu à la question 1 par voie synthétique. Compare les deux démonstrations : une demi-page de raisonnement d'un côté, quatre lignes de calcul de l'autre. Mais l'outil analytique a un prix — il faut un repère orthonormé, et il faut le dire. Note aussi que le mot exact reste **orthogonales** : le produit scalaire ne renseigne que sur les directions, et ces deux droites ne se coupent pas."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Appliquer la formule sans vérifier que le repère est orthonormé",
+     "pourquoi_faux": "L'expression $xx'+yy'+zz'$ n'est valable qu'en repère orthonormé. Dans un repère quelconque, un résultat nul ne prouve rien du tout.",
+     "correction_markdown": "Écris en une incise : « le repère étant orthonormé ». C'est une ligne, et c'est ce qui rend le calcul démonstratif."
+    },
+    {
+     "erreur_markdown": "Inverser l'ordre de la soustraction",
+     "pourquoi_faux": "Pour $\\overrightarrow{GF}$, on calcule $F - G$, pas $G - F$. L'inversion change le signe de toutes les coordonnées. La nullité du produit n'en souffre pas, mais tout calcul de norme signée ou d'angle en serait faussé.",
+     "correction_markdown": "Retiens : **extrémité moins origine**. La première lettre du vecteur est l'origine, donc celle qu'on retranche."
+    },
+    {
+     "erreur_markdown": "Additionner les coordonnées au lieu de multiplier",
+     "pourquoi_faux": "Le produit scalaire est une **somme de produits**, pas un produit de sommes ni une somme de coordonnées. Écrire $(-1+0)+(0+1)+(0-1) = -1$ n'a aucun sens.",
+     "correction_markdown": "Écris les trois produits séparément avant de les additionner : $(-1)(0)$, $(0)(1)$, $(0)(-1)$. Trois multiplications, puis une addition."
+    },
+    {
+     "erreur_markdown": "Conclure que les droites sont perpendiculaires",
+     "pourquoi_faux": "Le produit scalaire ne renseigne que sur les directions. Ici $(GF)$ et $(HC)$ ne se coupent pas — elles ne sont même pas coplanaires — donc elles sont orthogonales sans être perpendiculaires.",
+     "correction_markdown": "Réserve « perpendiculaires » aux droites dont on a vérifié qu'elles se coupent. Le produit scalaire seul ne le dit jamais."
+    },
+    {
+     "erreur_markdown": "Se tromper sur les coordonnées des sommets",
+     "pourquoi_faux": "Une erreur à la question précédente se propage ici et fausse le produit scalaire. Le calcul serait juste, la conclusion fausse.",
+     "correction_markdown": "Contrôle les normes obtenues : une arête doit valoir $1$, une diagonale de face $\\sqrt{2}$, une grande diagonale $\\sqrt{3}$. Une norme aberrante signale une coordonnée fausse."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Dans un repère orthonormé de l'espace, on donne $A(1\\,;\\,2\\,;\\,-1)$, $B(3\\,;\\,0\\,;\\,2)$, $C(0\\,;\\,1\\,;\\,1)$ et $D(2\\,;\\,3\\,;\\,3)$. Les droites $(AB)$ et $(CD)$ sont-elles orthogonales ? Et les droites $(AC)$ et $(BD)$ ?",
+     "solution_markdown": "**Première paire.**\n\n**Étape 1 - les vecteurs.**\n\n$$\\overrightarrow{AB} = (3-1\\,;\\,0-2\\,;\\,2-(-1)) = (2\\,;\\,-2\\,;\\,3)$$\n\n$$\\overrightarrow{CD} = (2-0\\,;\\,3-1\\,;\\,3-1) = (2\\,;\\,2\\,;\\,2)$$\n\n**Étape 2 - le produit scalaire.**\n\n$$\\overrightarrow{AB} \\cdot \\overrightarrow{CD} = 2 \\times 2 + (-2) \\times 2 + 3 \\times 2 = 4 - 4 + 6 = 6 \\neq 0$$\n\n**Les droites $(AB)$ et $(CD)$ ne sont pas orthogonales.**\n\n**Étape 3 - mesurer l'angle.**\n\n$$\\left\\|\\overrightarrow{AB}\\right\\| = \\sqrt{4+4+9} = \\sqrt{17} \\qquad ; \\qquad \\left\\|\\overrightarrow{CD}\\right\\| = \\sqrt{4+4+4} = 2\\sqrt{3}$$\n\n$$\\cos\\theta = \\dfrac{6}{\\sqrt{17} \\times 2\\sqrt{3}} = \\dfrac{6}{2\\sqrt{51}} = \\dfrac{3}{\\sqrt{51}} \\approx 0{,}420$$\n\n$$\\theta \\approx 65^{\\circ}$$\n\n**Seconde paire.**\n\n**Étape 4 - les vecteurs.**\n\n$$\\overrightarrow{AC} = (0-1\\,;\\,1-2\\,;\\,1-(-1)) = (-1\\,;\\,-1\\,;\\,2)$$\n\n$$\\overrightarrow{BD} = (2-3\\,;\\,3-0\\,;\\,3-2) = (-1\\,;\\,3\\,;\\,1)$$\n\n**Étape 5 - le produit scalaire.**\n\n$$\\overrightarrow{AC} \\cdot \\overrightarrow{BD} = (-1)(-1) + (-1)(3) + (2)(1) = 1 - 3 + 2 = 0$$\n\n**Les droites $(AC)$ et $(BD)$ sont orthogonales.**\n\n**Étape 6 - sont-elles perpendiculaires ?**\n\nIl faudrait qu'elles se coupent. Cherchons un point commun : un point de $(AC)$ s'écrit $A + t\\,\\overrightarrow{AC} = (1-t\\,;\\,2-t\\,;\\,-1+2t)$, un point de $(BD)$ s'écrit $B + s\\,\\overrightarrow{BD} = (3-s\\,;\\,3s\\,;\\,2+s)$.\n\nL'égalité des trois coordonnées donne le système\n\n$$1-t = 3-s \\qquad ; \\qquad 2-t = 3s \\qquad ; \\qquad -1+2t = 2+s$$\n\nDes deux premières : $s - t = 2$ et $t + 3s = 2$. En substituant $t = s-2$ : $s-2+3s = 2$, donc $s = 1$ et $t = -1$.\n\nVérifions la troisième : $-1+2(-1) = -3$ et $2+1 = 3$. **Elles ne coïncident pas.**\n\nLe système est incompatible : les droites ne se coupent pas.\n\n**Conclusion.** $(AC)$ et $(BD)$ sont orthogonales **sans être perpendiculaires** : ce sont des droites non coplanaires.\n\n**Ce qu'il faut retenir.** Le produit scalaire tranche l'orthogonalité en trois lignes, mais la perpendicularité demande en plus de chercher un point d'intersection — un système de trois équations à deux inconnues, dont la compatibilité n'a rien d'automatique."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $1$ dans le repère $\\left(A\\,;\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AE}\\right)$. Calculer l'angle entre les deux diagonales de face $(AF)$ et $(AC)$, puis entre la grande diagonale $(AG)$ et l'arête $(AB)$.",
+     "solution_markdown": "**Étape 1 - les coordonnées.**\n\n$$A(0\\,;\\,0\\,;\\,0) \\quad B(1\\,;\\,0\\,;\\,0) \\quad C(1\\,;\\,1\\,;\\,0) \\quad F(1\\,;\\,0\\,;\\,1) \\quad G(1\\,;\\,1\\,;\\,1)$$\n\n**Première partie - l'angle entre $(AF)$ et $(AC)$.**\n\n**Étape 2 - les vecteurs et leurs normes.**\n\n$$\\overrightarrow{AF} = (1\\,;\\,0\\,;\\,1) \\qquad ; \\qquad \\overrightarrow{AC} = (1\\,;\\,1\\,;\\,0)$$\n\n$$\\left\\|\\overrightarrow{AF}\\right\\| = \\sqrt{2} \\qquad ; \\qquad \\left\\|\\overrightarrow{AC}\\right\\| = \\sqrt{2}$$\n\nCe sont bien deux diagonales de face. Conforme.\n\n**Étape 3 - le produit scalaire.**\n\n$$\\overrightarrow{AF} \\cdot \\overrightarrow{AC} = 1 \\times 1 + 0 \\times 1 + 1 \\times 0 = 1$$\n\n**Étape 4 - l'angle.**\n\n$$\\cos\\theta = \\dfrac{1}{\\sqrt{2} \\times \\sqrt{2}} = \\dfrac{1}{2} \\qquad \\Longrightarrow \\qquad \\theta = 60^{\\circ}$$\n\n**Étape 5 - interpréter.**\n\nCe résultat n'est pas fortuit. Les points $A$, $F$, $C$ forment un triangle dont les trois côtés sont des diagonales de face :\n\n$$AF = AC = \\sqrt{2} \\qquad ; \\qquad FC = \\sqrt{(1-1)^{2}+(1-0)^{2}+(0-1)^{2}} = \\sqrt{2}$$\n\nLe triangle $AFC$ est **équilatéral**, d'où l'angle de $60^{\\circ}$.\n\n**Seconde partie - l'angle entre $(AG)$ et $(AB)$.**\n\n**Étape 6 - les vecteurs.**\n\n$$\\overrightarrow{AG} = (1\\,;\\,1\\,;\\,1) \\qquad ; \\qquad \\overrightarrow{AB} = (1\\,;\\,0\\,;\\,0)$$\n\n$$\\left\\|\\overrightarrow{AG}\\right\\| = \\sqrt{3} \\qquad ; \\qquad \\left\\|\\overrightarrow{AB}\\right\\| = 1$$\n\n**Étape 7 - le produit scalaire et l'angle.**\n\n$$\\overrightarrow{AG} \\cdot \\overrightarrow{AB} = 1 + 0 + 0 = 1$$\n\n$$\\cos\\theta = \\dfrac{1}{\\sqrt{3} \\times 1} = \\dfrac{1}{\\sqrt{3}} = \\dfrac{\\sqrt{3}}{3} \\approx 0{,}577$$\n\n$$\\theta \\approx 54{,}7^{\\circ}$$\n\n**Étape 8 - remarque.**\n\nCet angle est le même entre la grande diagonale et **chacune** des trois arêtes issues de $A$ : par symétrie, les trois produits scalaires valent $1$ et les trois normes sont identiques.\n\nC'est l'angle caractéristique de la grande diagonale d'un cube, environ $54{,}74^{\\circ}$, qu'on retrouve en cristallographie et en chimie — c'est la moitié de l'angle des liaisons du carbone tétraédrique.\n\n**Ce qu'il faut retenir.** Le produit scalaire ne se limite pas au test d'orthogonalité : il mesure tous les angles. Et un angle qui tombe sur une valeur remarquable, comme les $60^{\\circ}$ de la première partie, signale presque toujours une figure remarquable cachée — ici un triangle équilatéral."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $1$ dans le repère $\\left(A\\,;\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AE}\\right)$. Soit $M$ le point de l'arête $[BF]$ tel que $\\overrightarrow{BM} = t\\,\\overrightarrow{BF}$, avec $t \\in [0\\,;\\,1]$. Déterminer la ou les valeurs de $t$ pour lesquelles les droites $(AM)$ et $(DM)$ sont orthogonales, puis interpréter géométriquement.",
+     "solution_markdown": "**Étape 1 - les coordonnées de $M$.**\n\n$$B(1\\,;\\,0\\,;\\,0) \\qquad ; \\qquad F(1\\,;\\,0\\,;\\,1) \\qquad \\Longrightarrow \\qquad \\overrightarrow{BF} = (0\\,;\\,0\\,;\\,1)$$\n\n$$\\overrightarrow{BM} = t\\,\\overrightarrow{BF} = (0\\,;\\,0\\,;\\,t) \\qquad \\Longrightarrow \\qquad M(1\\,;\\,0\\,;\\,t)$$\n\n**Étape 2 - les deux vecteurs.**\n\n$$\\overrightarrow{MA} = A - M = (-1\\,;\\,0\\,;\\,-t)$$\n\n$$\\overrightarrow{MD} = D - M = (0-1\\,;\\,1-0\\,;\\,0-t) = (-1\\,;\\,1\\,;\\,-t)$$\n\n**Étape 3 - le produit scalaire.**\n\n$$\\overrightarrow{MA} \\cdot \\overrightarrow{MD} = (-1)(-1) + (0)(1) + (-t)(-t) = 1 + 0 + t^{2} = 1 + t^{2}$$\n\n**Étape 4 - résoudre.**\n\n$$1 + t^{2} = 0$$\n\nUn carré étant positif ou nul, $1+t^{2} \\geqslant 1 > 0$ pour tout réel $t$.\n\n**Aucune valeur de $t$ ne convient : les droites $(AM)$ et $(DM)$ ne sont jamais orthogonales.**\n\n**Étape 5 - interpréter géométriquement.**\n\nLe point $M$ voit le segment $[AD]$ sous un angle droit si et seulement si $\\overrightarrow{MA} \\cdot \\overrightarrow{MD} = 0$, c'est-à-dire si $M$ appartient à la **sphère de diamètre $[AD]$**.\n\nCette sphère a pour centre le milieu de $[AD]$, soit $\\left(0\\,;\\,\\dfrac{1}{2}\\,;\\,0\\right)$, et pour rayon $\\dfrac{1}{2}$.\n\nOr la distance de ce centre à un point $M(1\\,;\\,0\\,;\\,t)$ de l'arête $[BF]$ vaut\n\n$$d = \\sqrt{1 + \\dfrac{1}{4} + t^{2}} \\geqslant \\sqrt{\\dfrac{5}{4}} \\approx 1{,}12 > \\dfrac{1}{2}$$\n\n**L'arête $[BF]$ est entièrement à l'extérieur de la sphère** : aucun de ses points ne voit $[AD]$ sous un angle droit.\n\n**Étape 6 - la valeur minimale de l'angle.**\n\nL'angle $\\widehat{AMD}$ est le plus proche de $90^{\\circ}$ quand le cosinus est le plus petit. Calculons :\n\n$$\\left\\|\\overrightarrow{MA}\\right\\| = \\sqrt{1+t^{2}} \\qquad ; \\qquad \\left\\|\\overrightarrow{MD}\\right\\| = \\sqrt{2+t^{2}}$$\n\n$$\\cos\\theta = \\dfrac{1+t^{2}}{\\sqrt{1+t^{2}}\\sqrt{2+t^{2}}} = \\sqrt{\\dfrac{1+t^{2}}{2+t^{2}}}$$\n\nPosons $u = t^{2} \\in [0\\,;\\,1]$. La fonction $u \\mapsto \\dfrac{1+u}{2+u} = 1 - \\dfrac{1}{2+u}$ est **croissante** en $u$.\n\nLe cosinus est donc minimal pour $u = 0$, c'est-à-dire $t = 0$ :\n\n$$\\cos\\theta = \\sqrt{\\dfrac{1}{2}} = \\dfrac{\\sqrt{2}}{2} \\qquad \\Longrightarrow \\qquad \\theta = 45^{\\circ}$$\n\n**L'angle maximal vaut $45^{\\circ}$, atteint pour $M = B$.**\n\n**Étape 7 - vérifier ce cas.**\n\nPour $t = 0$, $M = B$, et le triangle $ABD$ est rectangle **en $A$**, avec $AB = AD = 1$. Il est donc rectangle isocèle, et ses angles aigus valent bien $45^{\\circ}$. Conforme.\n\n**Ce qu'il faut retenir.** Un produit scalaire qui ne s'annule **jamais** est une information géométrique forte : il signale que la configuration cherchée est impossible. Ici, l'interprétation par la sphère de diamètre $[AD]$ explique pourquoi, et transforme un calcul algébrique en un fait de position."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Coordonnées d'un vecteur : **extrémité moins origine**.",
+    "En repère orthonormé : $\\vec{u} \\cdot \\vec{v} = xx'+yy'+zz'$.",
+    "Cette formule n'est valable **qu'en repère orthonormé** : signale-le avant de l'appliquer.",
+    "Un produit scalaire nul entre vecteurs non nuls caractérise l'orthogonalité.",
+    "Le choix des vecteurs directeurs est libre : la nullité n'en dépend pas.",
+    "Le produit scalaire mesure aussi les angles : $\\cos\\theta = \\dfrac{\\vec{u}\\cdot\\vec{v}}{\\left\\|\\vec{u}\\right\\|\\left\\|\\vec{v}\\right\\|}$.",
+    "Il ne renseigne que sur les **directions** : la perpendicularité exige en plus un point d'intersection.",
+    "Contrôle les normes : arête $1$, diagonale de face $\\sqrt{2}$, grande diagonale $\\sqrt{3}$.",
+    "Un vecteur normal à un plan se lit sur les coefficients de son équation.",
+    "Un produit scalaire qui ne s'annule jamais signale une configuration géométriquement impossible."
+   ]
+  }
+ ]
+}

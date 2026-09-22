@@ -1,0 +1,177 @@
+{
+  "cours_id": "cours-reduction-vectorielle-barycentre-p1c",
+  "meta": {
+    "titre": "La réduction vectorielle et les lignes de niveau barycentriques",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "niveau": "1ere",
+    "serie": "C, E",
+    "sous_theme": "Barycentres - réduction vectorielle",
+    "duree_estimee_min": 45,
+    "tags": [
+      "barycentre",
+      "réduction vectorielle",
+      "ligne de niveau",
+      "cercle",
+      "norme",
+      "relation de Chasles"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C-E",
+      "module_numero": "23",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2000-cameroun",
+    "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2000 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-maths-2000-cameroun-ex3-q2a-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une expression comme $\\|2\\overrightarrow{MA} - \\overrightarrow{MB} + \\overrightarrow{MC}\\|$ semble impossible à étudier : trois vecteurs qui bougent tous en même temps quand $M$ se déplace. En réalité, ils n'en font qu'un. Toute la difficulté disparaît en une ligne, dès qu'on a identifié le barycentre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition du barycentre d'un système de points pondérés",
+        "Maîtriser la relation de Chasles",
+        "Savoir qu'un cercle est l'ensemble des points à distance constante d'un point fixe"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une somme de vecteurs, un seul vecteur",
+      "contenu_markdown": "**La propriété fondamentale.** Soit $G$ le barycentre du système $\\{(A_1;\\alpha_1), \\dots, (A_n;\\alpha_n)\\}$, avec $\\alpha = \\sum \\alpha_i \\neq 0$. Alors, pour **tout** point $M$ du plan :\n\n$$\\sum_{i} \\alpha_i \\,\\overrightarrow{MA_i} = \\alpha \\,\\overrightarrow{MG}$$\n\nC'est la **réduction vectorielle**. Une somme de $n$ vecteurs variables se ramène à **un seul**.\n\n**La condition à ne jamais oublier.** Elle n'est valable que si $\\alpha = \\sum\\alpha_i \\neq 0$. Si la somme des coefficients est **nulle**, le barycentre n'existe pas, et la somme vectorielle est alors un **vecteur constant**, indépendant de $M$ — ce qui change radicalement la nature du problème.\n\n| $\\sum \\alpha_i$ | Le barycentre | La somme $\\sum\\alpha_i\\overrightarrow{MA_i}$ |\n|---|---|---|\n| $\\neq 0$ | existe, unique | vaut $\\alpha\\,\\overrightarrow{MG}$, **dépend de $M$** |\n| $= 0$ | n'existe pas | est un vecteur **constant** |\n\n**Localiser le barycentre.** On applique la propriété en prenant pour origine l'un des points pondérés, de préférence celui de plus gros coefficient :\n\n$$\\alpha\\,\\overrightarrow{A_1G} = \\sum_i \\alpha_i \\,\\overrightarrow{A_1A_i}$$\n\nLe terme $\\overrightarrow{A_1A_1}$ disparaît, ce qui allège le calcul.\n\n**Les lignes de niveau.** C'est l'application principale. On cherche l'ensemble des points $M$ tels que :\n\n$$\\left\\| \\sum_i \\alpha_i \\overrightarrow{MA_i} \\right\\| = k$$\n\n*La méthode, en trois temps.*\n\n1. **Réduire** : la condition devient $\\|\\alpha \\overrightarrow{MG}\\| = k$.\n2. **Sortir le scalaire** : $|\\alpha| \\times MG = k$, donc $MG = \\dfrac{k}{|\\alpha|}$.\n3. **Conclure** : c'est le cercle de centre $G$ et de rayon $\\dfrac{k}{|\\alpha|}$, si $k > 0$.\n\n*Les cas limites, à connaître :*\n\n| Valeur de $k$ | Ensemble obtenu |\n|---|---|\n| $k > 0$ | cercle de centre $G$ et de rayon $\\frac{k}{|\\alpha|}$ |\n| $k = 0$ | le point $G$ seul |\n| $k < 0$ | ensemble vide (une norme n'est jamais négative) |\n\n**L'autre application : les transformations.** Une application définie par $\\overrightarrow{GM'} = \\sum\\alpha_i\\overrightarrow{MA_i}$ se réduit en $\\overrightarrow{GM'} = \\alpha\\,\\overrightarrow{MG} = -\\alpha\\,\\overrightarrow{GM}$ : c'est l'**homothétie de centre $G$ et de rapport $-\\alpha$**.",
+      "formule_principale": "\\sum_i \\alpha_i \\,\\overrightarrow{MA_i} = \\left(\\sum_i \\alpha_i\\right) \\overrightarrow{MG}",
+      "variantes": [
+        {
+          "nom": "Le cas où la somme des coefficients est nulle",
+          "quand_utiliser": "Quand $\\sum\\alpha_i = 0$, par exemple pour $\\overrightarrow{MA} + \\overrightarrow{MB} - 2\\overrightarrow{MC}$",
+          "contenu_markdown": "Lorsque $\\sum\\alpha_i = 0$, aucun barycentre n'existe et la réduction est impossible. Mais la somme $\\sum\\alpha_i\\overrightarrow{MA_i}$ devient alors un **vecteur constant** $\\vec{u}$, que l'on calcule en choisissant $M$ librement, par exemple $M = A$. La condition $\\|\\sum\\alpha_i\\overrightarrow{MA_i}\\| = k$ ne dépend plus de $M$ : elle est soit vraie pour tous les points du plan si $\\|\\vec{u}\\| = k$, soit fausse pour tous. En revanche, une condition du type $\\left(\\sum\\alpha_i\\overrightarrow{MA_i}\\right) \\cdot \\overrightarrow{MN} = k$ définit alors une **droite**, ce qui constitue la vraie question dans ce cas de figure."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCD$ est un carré de côté $c$. $G$ est le barycentre de $\\{(A;2),(B;-1),(C;1)\\}$. Déterminer la position de $G$, puis l'ensemble $(\\mathcal{C})$ des points $M$ tels que $\\|2\\overrightarrow{MA} - \\overrightarrow{MB} + \\overrightarrow{MC}\\| = \\frac{AD}{2}$.",
+      "epreuve_source": "Probatoire C et E, Mathématiques, session 2000, Cameroun, problème, partie A",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier l'existence du barycentre",
+          "justification": "Rien n'est possible si la somme des coefficients est nulle.",
+          "resultat_markdown": "$2 + (-1) + 1 = 2 \\neq 0$ : le barycentre $G$ existe et est unique."
+        },
+        {
+          "numero": 2,
+          "action": "Localiser $G$ en prenant $A$ pour origine",
+          "justification": "Le point de plus gros coefficient est le meilleur choix : son terme s'annule.",
+          "resultat_markdown": "$2\\overrightarrow{AG} = 2\\overrightarrow{AA} - \\overrightarrow{AB} + \\overrightarrow{AC} = \\overrightarrow{AC} - \\overrightarrow{AB}$"
+        },
+        {
+          "numero": 3,
+          "action": "Simplifier par Chasles",
+          "justification": "$\\overrightarrow{AC} - \\overrightarrow{AB} = \\overrightarrow{BC}$, et dans le carré $\\overrightarrow{BC} = \\overrightarrow{AD}$.",
+          "resultat_markdown": "$2\\overrightarrow{AG} = \\overrightarrow{AD}$, donc $G$ est le **milieu de $[AD]$**."
+        },
+        {
+          "numero": 4,
+          "action": "Réduire la somme vectorielle",
+          "justification": "C'est la propriété fondamentale, appliquée avec $\\alpha = 2$.",
+          "resultat_markdown": "Pour tout $M$ : $2\\overrightarrow{MA} - \\overrightarrow{MB} + \\overrightarrow{MC} = 2\\overrightarrow{MG}$."
+        },
+        {
+          "numero": 5,
+          "action": "Traduire la condition définissant l'ensemble",
+          "justification": "On remplace la somme par sa forme réduite dans l'égalité de l'énoncé.",
+          "resultat_markdown": "$M \\in (\\mathcal{C}) \\iff \\|2\\overrightarrow{MG}\\| = \\dfrac{AD}{2}$"
+        },
+        {
+          "numero": 6,
+          "action": "Sortir le scalaire de la norme",
+          "justification": "$\\|2\\vec{v}\\| = 2\\|\\vec{v}\\|$ : c'est l'étape où l'on perd le plus souvent le facteur.",
+          "resultat_markdown": "$2\\,MG = \\dfrac{AD}{2}$, soit $MG = \\dfrac{AD}{4}$."
+        },
+        {
+          "numero": 7,
+          "action": "Conclure",
+          "justification": "Distance constante à un point fixe : c'est la définition du cercle.",
+          "resultat_markdown": "$(\\mathcal{C})$ est le **cercle de centre $G$ et de rayon $\\dfrac{AD}{4}$**."
+        }
+      ],
+      "conclusion_markdown": "Le barycentre $G$ est le milieu de $[AD]$, et l'ensemble cherché est le cercle de centre $G$ et de rayon $\\frac{AD}{4}$, entièrement contenu dans le carré."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer la réduction sans vérifier que $\\sum\\alpha_i \\neq 0$",
+          "pourquoi_faux": "Si la somme des coefficients est nulle, il n'y a pas de barycentre et la formule est fausse. La vérification prend une ligne et conditionne tout le reste.",
+          "correction_markdown": "Commence systématiquement par écrire $\\sum\\alpha_i = \\dots \\neq 0$."
+        },
+        {
+          "erreur_markdown": "Oublier le coefficient en sortant de la norme",
+          "pourquoi_faux": "$\\|2\\overrightarrow{MG}\\|$ vaut $2\\,MG$, non $MG$. L'oubli double le rayon trouvé et fausse toutes les questions suivantes.",
+          "correction_markdown": "Écris l'étape intermédiaire : $\\|2\\overrightarrow{MG}\\| = |2| \\times \\|\\overrightarrow{MG}\\| = 2\\,MG$."
+        },
+        {
+          "erreur_markdown": "Prendre la valeur du coefficient au lieu de sa valeur absolue",
+          "pourquoi_faux": "Si $\\sum\\alpha_i$ est négatif, par exemple $-3$, le rayon vaut $\\frac{k}{3}$ et non $-\\frac{k}{3}$. Un rayon est toujours positif.",
+          "correction_markdown": "Note la formule avec la valeur absolue : $MG = \\frac{k}{|\\alpha|}$."
+        },
+        {
+          "erreur_markdown": "Confondre le barycentre $G$ et le centre $O$ de la figure",
+          "pourquoi_faux": "Les énoncés mentionnent souvent le centre du carré ou l'isobarycentre, qui ne sont pas le barycentre pondéré demandé. Ici $O$ est le centre du carré, $G$ est le milieu d'un côté : deux points distincts.",
+          "correction_markdown": "Après avoir localisé $G$, place-le sur ta figure et vérifie visuellement qu'il n'est pas confondu avec un autre point nommé."
+        },
+        {
+          "erreur_markdown": "Négliger les cas limites de la ligne de niveau",
+          "pourquoi_faux": "Si le second membre est nul, l'ensemble se réduit au point $G$ ; s'il est négatif, l'ensemble est vide. Répondre « c'est un cercle » sans discuter est incomplet quand l'énoncé fait dépendre $k$ d'un paramètre.",
+          "correction_markdown": "Quand $k$ est un paramètre, discute les trois cas $k>0$, $k=0$, $k<0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$ABC$ est un triangle. $G$ est le barycentre de $\\{(A;1),(B;1),(C;2)\\}$. Déterminer l'ensemble des points $M$ tels que $\\|\\overrightarrow{MA} + \\overrightarrow{MB} + 2\\overrightarrow{MC}\\| = 8$.",
+          "solution_markdown": "**Étape 1 — vérifier l'existence de $G$.**\n\n$$1 + 1 + 2 = 4 \\neq 0$$\n\nLe barycentre $G$ existe.\n\n**Étape 2 — réduire.**\n\n$$\\overrightarrow{MA} + \\overrightarrow{MB} + 2\\overrightarrow{MC} = 4\\,\\overrightarrow{MG}$$\n\n**Étape 3 — traduire la condition.**\n\n$$\\|4\\overrightarrow{MG}\\| = 8 \\iff 4\\,MG = 8 \\iff MG = 2$$\n\n**Conclusion.** L'ensemble cherché est le **cercle de centre $G$ et de rayon $2$**.\n\n**Remarque sur la position de $G$.** En prenant $C$ pour origine : $4\\overrightarrow{CG} = \\overrightarrow{CA} + \\overrightarrow{CB}$. Si $I$ désigne le milieu de $[AB]$, alors $\\overrightarrow{CA} + \\overrightarrow{CB} = 2\\overrightarrow{CI}$, d'où $\\overrightarrow{CG} = \\frac12\\overrightarrow{CI}$ : le point $G$ est le milieu du segment $[CI]$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$ABCD$ est un carré de centre $O$ et de côté $4$ cm. Déterminer et construire l'ensemble des points $M$ du plan tels que $\\|3\\overrightarrow{MA} - \\overrightarrow{MB} - \\overrightarrow{MC} + \\overrightarrow{MD}\\| = 6$.",
+          "solution_markdown": "**Étape 1 — somme des coefficients.**\n\n$$3 + (-1) + (-1) + 1 = 2 \\neq 0$$\n\nLe barycentre $G$ du système $\\{(A;3),(B;-1),(C;-1),(D;1)\\}$ existe.\n\n**Étape 2 — localiser $G$, en prenant $A$ pour origine.**\n\n$$2\\,\\overrightarrow{AG} = 3\\overrightarrow{AA} - \\overrightarrow{AB} - \\overrightarrow{AC} + \\overrightarrow{AD}$$\n$$2\\,\\overrightarrow{AG} = -\\overrightarrow{AB} - \\overrightarrow{AC} + \\overrightarrow{AD}$$\n\nDans le carré, $\\overrightarrow{AC} = \\overrightarrow{AB} + \\overrightarrow{AD}$ (diagonale), donc :\n\n$$2\\,\\overrightarrow{AG} = -\\overrightarrow{AB} - \\left(\\overrightarrow{AB} + \\overrightarrow{AD}\\right) + \\overrightarrow{AD} = -2\\,\\overrightarrow{AB}$$\n\n$$\\overrightarrow{AG} = -\\overrightarrow{AB}$$\n\n**Position de $G$ :** c'est le symétrique du point $B$ par rapport à $A$. Il se trouve donc sur la droite $(AB)$, à $4$ cm de $A$, **à l'extérieur** du carré.\n\n**Étape 3 — réduire et conclure.**\n\n$$\\|2\\overrightarrow{MG}\\| = 6 \\iff 2\\,MG = 6 \\iff MG = 3$$\n\nL'ensemble est le **cercle de centre $G$ et de rayon $3$ cm**.\n\n**Étape 4 — construction.**\n\n1. Tracer le carré $ABCD$ de côté $4$ cm.\n2. Prolonger $[BA]$ au-delà de $A$ et placer $G$ tel que $AG = 4$ cm.\n3. Tracer le cercle de centre $G$ et de rayon $3$ cm.\n\n**Contrôle.** Comme $AG = 4 > 3$, le point $A$ est extérieur au cercle. Celui-ci ne rencontre donc pas le carré : il est entièrement situé à gauche du côté $[AD]$, à $1$ cm de distance minimale."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$ABC$ est un triangle. Discuter, selon les valeurs du réel $k$, la nature de l'ensemble $(E_k)$ des points $M$ tels que $\\|2\\overrightarrow{MA} - 3\\overrightarrow{MB} + \\overrightarrow{MC}\\| = k$. Traiter également le cas où le coefficient de $B$ vaut $3$ au lieu de $-3$.",
+          "solution_markdown": "**PREMIER CAS : coefficients $2$, $-3$, $1$.**\n\n**Étape 1 — somme des coefficients.**\n\n$$2 + (-3) + 1 = 0$$\n\nLa somme est **nulle** : le barycentre **n'existe pas** et la réduction vectorielle est impossible. C'est le cas particulier qu'il faut savoir reconnaître.\n\n**Étape 2 — montrer que la somme est un vecteur constant.**\n\nSoient $M$ et $N$ deux points quelconques. Par Chasles, $\\overrightarrow{MA} = \\overrightarrow{MN} + \\overrightarrow{NA}$, et de même pour $B$ et $C$ :\n\n$$2\\overrightarrow{MA} - 3\\overrightarrow{MB} + \\overrightarrow{MC} = (2-3+1)\\overrightarrow{MN} + 2\\overrightarrow{NA} - 3\\overrightarrow{NB} + \\overrightarrow{NC}$$\n\nLe coefficient de $\\overrightarrow{MN}$ vaut $0$, donc :\n\n$$2\\overrightarrow{MA} - 3\\overrightarrow{MB} + \\overrightarrow{MC} = 2\\overrightarrow{NA} - 3\\overrightarrow{NB} + \\overrightarrow{NC}$$\n\nL'expression **ne dépend pas de $M$** : c'est un vecteur constant, notons-le $\\vec{u}$.\n\n**Étape 3 — calculer $\\vec{u}$.**\n\nOn choisit $M = A$, choix qui annule le premier terme :\n\n$$\\vec{u} = 2\\overrightarrow{AA} - 3\\overrightarrow{AB} + \\overrightarrow{AC} = -3\\overrightarrow{AB} + \\overrightarrow{AC}$$\n\n**Étape 4 — discuter.**\n\nLa condition $\\|\\vec{u}\\| = k$ ne fait plus intervenir $M$ du tout. Deux situations :\n\n| Condition | Ensemble $(E_k)$ |\n|---|---|\n| $k = \\|\\vec{u}\\|$ | le **plan tout entier** |\n| $k \\neq \\|\\vec{u}\\|$ | l'**ensemble vide** |\n\nAvec $\\|\\vec{u}\\| = \\|{-3\\overrightarrow{AB} + \\overrightarrow{AC}}\\|$, valeur calculable dès que les longueurs du triangle sont connues.\n\n**SECOND CAS : coefficients $2$, $3$, $1$.**\n\n**Étape 5 — somme des coefficients.**\n\n$$2 + 3 + 1 = 6 \\neq 0$$\n\nLe barycentre $G$ existe et la réduction s'applique :\n\n$$2\\overrightarrow{MA} + 3\\overrightarrow{MB} + \\overrightarrow{MC} = 6\\,\\overrightarrow{MG}$$\n\n**Étape 6 — traduire.**\n\n$$\\|6\\overrightarrow{MG}\\| = k \\iff 6\\,MG = k \\iff MG = \\frac{k}{6}$$\n\n**Étape 7 — discuter selon $k$.**\n\n| Valeur de $k$ | Ensemble $(E_k)$ |\n|---|---|\n| $k < 0$ | **vide** — une norme n'est jamais négative |\n| $k = 0$ | le **point $G$** seul |\n| $k > 0$ | **cercle** de centre $G$ et de rayon $\\dfrac{k}{6}$ |\n\n**Étape 8 — la leçon de cette comparaison.**\n\nUn simple changement de signe sur un coefficient fait basculer le problème d'une famille à l'autre :\n\n| | $\\sum\\alpha_i = 0$ | $\\sum\\alpha_i \\neq 0$ |\n|---|---|---|\n| Barycentre | n'existe pas | existe |\n| La somme vectorielle | constante | proportionnelle à $\\overrightarrow{MG}$ |\n| $(E_k)$ possible | plan entier ou vide | cercle, point, ou vide |\n\n**Ce qu'il faut retenir.** Le tout premier calcul à faire, avant toute autre chose, est la **somme des coefficients**. Elle décide de la méthode entière, et une copie qui applique la réduction vectorielle sans l'avoir vérifiée peut se tromper de nature de réponse du tout au tout."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Réduction vectorielle : $\\sum\\alpha_i\\overrightarrow{MA_i} = \\left(\\sum\\alpha_i\\right)\\overrightarrow{MG}$, valable **si** $\\sum\\alpha_i \\neq 0$.",
+        "Premier geste, toujours : calculer $\\sum\\alpha_i$ et vérifier qu'elle est non nulle.",
+        "Si $\\sum\\alpha_i = 0$, pas de barycentre : la somme est un **vecteur constant**.",
+        "Pour localiser $G$, prendre pour origine le point de plus gros coefficient : son terme s'annule.",
+        "Ligne de niveau : $\\|\\sum\\alpha_i\\overrightarrow{MA_i}\\| = k$ donne $MG = \\dfrac{k}{|\\alpha|}$, donc un **cercle** de centre $G$.",
+        "Ne pas perdre le coefficient en sortant de la norme : $\\|\\alpha\\vec{v}\\| = |\\alpha|\\,\\|\\vec{v}\\|$.",
+        "Cas limites : $k=0$ donne le point $G$ ; $k<0$ donne l'ensemble vide."
+      ]
+    }
+  ]
+}

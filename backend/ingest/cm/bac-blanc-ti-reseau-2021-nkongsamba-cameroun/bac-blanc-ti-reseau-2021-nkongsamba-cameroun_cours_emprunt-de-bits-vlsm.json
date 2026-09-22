@@ -1,0 +1,109 @@
+{
+  "cours_id": "cours-emprunt-de-bits-vlsm-nkongsamba-2021",
+  "meta": {
+    "titre": "Emprunt de bits pour créer des sous-réseaux (VLSM)",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage IPv4 et sous-réseaux",
+    "duree_estimee_min": 15,
+    "tags": [
+      "VLSM",
+      "sous-réseaux",
+      "masque de sous-réseau",
+      "emprunt de bits"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-blanc-ti-reseau-2021-nkongsamba-cameroun",
+    "epreuve_titre": "Examen blanc - Lycée Bilingue de Nkongsamba - Réseau, Internet et Sécurité informatique - TI - 2021",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex2-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Découper un réseau en plusieurs sous-réseaux revient à emprunter, à la partie réservée aux machines, juste assez de bits pour créer le nombre de groupes demandé."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les classes d'adresses IPv4 et leur masque par défaut.",
+        "Savoir convertir un nombre entre écriture décimale et écriture binaire sur un octet."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer le nombre de bits à emprunter",
+      "contenu_markdown": "Pour découper un réseau en au moins N sous-réseaux, il faut emprunter n bits à la partie hôte du masque par défaut, où n est le plus petit entier tel que 2 puissance n soit supérieur ou égal à N. Le nouveau masque (en notation /x) s'obtient en ajoutant ces n bits empruntés au masque par défaut, et sa notation décimale pointée s'obtient en plaçant ces n bits à 1 en tête du premier octet où l'emprunt a lieu."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une adresse de classe B (masque par défaut /16) doit être découpée en au moins 10 sous-réseaux. Quel masque obtient-on ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher le plus petit n tel que 2ⁿ ≥ 10",
+          "justification": "n bits empruntés créent 2ⁿ sous-réseaux.",
+          "resultat_markdown": "2³=8 (insuffisant), 2⁴=16 (suffisant) : n = 4."
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter n au masque par défaut",
+          "justification": "Le masque par défaut de la classe B est /16.",
+          "resultat_markdown": "Nouveau masque : /16 + 4 = /20."
+        },
+        {
+          "numero": 3,
+          "action": "Convertir en décimal pointé",
+          "justification": "4 bits à 1 dans le 3e octet donnent 11110000 = 240.",
+          "resultat_markdown": "255.255.240.0"
+        }
+      ],
+      "conclusion_markdown": "Le masque /20 (255.255.240.0) permet de créer 16 sous-réseaux, ce qui satisfait le besoin d'au moins 10 sous-réseaux."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Arrondir au nombre de sous-réseaux demandé plutôt qu'à la puissance de 2 immédiatement supérieure",
+          "pourquoi_faux": "Un découpage binaire ne peut produire qu'un nombre de sous-réseaux qui soit une puissance de 2 (2, 4, 8, 16...), jamais un nombre arbitraire comme 10."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier la contrainte sur le nombre d'hôtes par sous-réseau",
+          "pourquoi_faux": "Emprunter plus de bits que nécessaire crée davantage de sous-réseaux mais réduit d'autant le nombre d'hôtes disponibles dans chacun."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Combien de sous-réseaux crée-t-on en empruntant 2 bits ?",
+          "solution_markdown": "2² = 4 sous-réseaux."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une adresse de classe C doit être découpée en au moins 4 sous-réseaux. Quel est le nouveau masque en notation /n ?",
+          "solution_markdown": "2²=4 suffit, donc n=2 bits empruntés. Masque par défaut /24 + 2 = /26."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "n bits empruntés créent 2ⁿ sous-réseaux : cherche le plus petit n qui atteint le nombre demandé.",
+        "Le nouveau masque = masque par défaut + n (en notation /x).",
+        "Toujours vérifier ensuite que le nombre d'hôtes restant par sous-réseau reste suffisant."
+      ]
+    }
+  ]
+}

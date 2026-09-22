@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-adressage-ip-et-masque-de-sous-reseau-tle-ti",
+  "meta": {
+    "titre": "Adressage IP et masque de sous-réseau",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques",
+    "duree_estimee_min": 22,
+    "tags": [
+      "masque de sous-réseau",
+      "adressage IP",
+      "plage d'adresses"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qB.3-0",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qB.4.3-0"
+    ],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux ordinateurs peuvent chacun posséder une adresse IP parfaitement valide, et pourtant être incapables de communiquer directement, simplement parce qu'ils n'appartiennent pas au même sous-réseau. Le masque de sous-réseau est ce qui permet de trancher cette question en un coup d'œil."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse IP",
+        "Savoir qu'une adresse IPv4 s'écrit en quatre nombres séparés par des points"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le masque découpe l'adresse en partie réseau et partie hôte",
+      "contenu_markdown": "Un **masque de sous-réseau** (par exemple 255.255.255.0) indique quelle partie d'une adresse IP désigne le réseau, et quelle partie désigne l'hôte au sein de ce réseau. Avec un masque 255.255.255.0, les trois premiers octets identifient le réseau et le dernier octet identifie l'hôte : les adresses attribuables aux équipements vont alors de x.x.x.**1** à x.x.x.**254** (x.x.x.0 désigne le réseau lui-même, x.x.x.255 est l'adresse de diffusion/broadcast). Deux machines ne peuvent communiquer directement, sans passerelle, que si leurs trois premiers octets sont identiques.",
+      "formule_principale": "Réseau 192.168.122.0 /255.255.255.0 -> hôtes valides de .1 à .254",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pour le réseau d'adresse 192.168.122.0, masque 255.255.255.0, proposer une configuration IP valide pour l'équipement D (sachant que A utilise déjà 192.168.122.50).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la plage d'adresses attribuables du réseau",
+          "justification": "Le masque fixe les bornes basse et haute de la plage utilisable",
+          "resultat_markdown": "Avec 255.255.255.0, les adresses valides vont de 192.168.122.1 à 192.168.122.254."
+        },
+        {
+          "numero": 2,
+          "action": "Écarter les adresses déjà utilisées",
+          "justification": "Deux équipements ne peuvent pas partager la même adresse sur le même réseau",
+          "resultat_markdown": "192.168.122.50 est déjà utilisée par A : il faut choisir une autre valeur."
+        },
+        {
+          "numero": 3,
+          "action": "Choisir une adresse valide restante et le même masque",
+          "justification": "Toute machine du même réseau doit utiliser le même masque",
+          "resultat_markdown": "192.168.122.10, masque 255.255.255.0, convient pour D."
+        }
+      ],
+      "conclusion_markdown": "Toute adresse entre 192.168.122.1 et 192.168.122.254, différente de celles déjà attribuées, associée au masque 255.255.255.0, constitue une configuration IP valide pour D."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Proposer 192.168.122.0 ou 192.168.122.255 comme adresse d'un équipement",
+          "pourquoi_faux": "192.168.122.0 désigne le réseau lui-même (pas une machine), et 192.168.122.255 est l'adresse de diffusion (broadcast) reçue par tous les hôtes du réseau : aucune des deux ne peut être attribuée à un équipement précis.",
+          "correction_markdown": "Retiens que la première et la dernière adresse d'une plage réseau en /24 (masque 255.255.255.0) sont toujours réservées, jamais attribuables à un hôte."
+        },
+        {
+          "erreur_markdown": "Oublier de préciser le masque de sous-réseau, en ne donnant qu'une adresse IP",
+          "pourquoi_faux": "Une configuration IP \"valide\" comporte toujours au minimum une adresse ET un masque : sans masque, impossible de savoir quelle partie de l'adresse désigne le réseau.",
+          "correction_markdown": "Donne systématiquement les deux informations ensemble : l'adresse IP ET le masque de sous-réseau associé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Avec un masque 255.255.255.0, combien d'adresses sont attribuables aux hôtes d'un réseau (hors réseau et broadcast) ?",
+          "solution_markdown": "254 adresses (de x.x.x.1 à x.x.x.254), soit 256 combinaisons possibles sur le dernier octet moins les deux adresses réservées (réseau et broadcast)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les machines 192.168.1.15 et 192.168.2.20, toutes deux avec un masque 255.255.255.0, appartiennent-elles au même réseau ? Justifier.",
+          "solution_markdown": "Non. Avec un masque 255.255.255.0, seuls les trois premiers octets déterminent le réseau : 192.168.**1** diffère de 192.168.**2**, ces deux machines appartiennent donc à deux réseaux différents (192.168.1.0 et 192.168.2.0) et ne peuvent pas communiquer directement sans passerelle."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le poste F est configuré en 192.168.123.60/255.255.255.0, alors que le réseau de l'énoncé est 192.168.122.0/255.255.255.0. Expliquer pourquoi cette configuration empêche F de joindre directement les autres postes du réseau, et ce qu'il faudrait changer pour corriger la situation.",
+          "solution_markdown": "Avec un masque 255.255.255.0, F (192.168.**123**.60) et les autres postes (192.168.**122**.x) ont un troisième octet différent : ils appartiennent à deux réseaux IP distincts (192.168.123.0 et 192.168.122.0). Aucune communication directe n'est possible entre deux réseaux différents sans un routeur ou une passerelle configurée pour les relier, ce qui n'est pas prévu ici. Pour corriger la situation, il suffit de reconfigurer F avec une adresse appartenant au même réseau que les autres postes, par exemple 192.168.122.60 (une adresse libre entre .1 et .254, différente de celles déjà attribuées), en conservant le même masque 255.255.255.0 : F redeviendrait alors directement joignable par tous les postes du réseau 192.168.122.0."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le masque de sous-réseau détermine quelle partie de l'adresse IP désigne le réseau, et quelle partie désigne l'hôte.",
+        "Avec 255.255.255.0, les adresses attribuables vont de x.x.x.1 à x.x.x.254.",
+        "x.x.x.0 (réseau) et x.x.x.255 (broadcast) ne sont jamais attribuables à un équipement.",
+        "Deux machines ne communiquent directement que si leurs octets réseau (déterminés par le masque) sont identiques.",
+        "Au BAC TI, une erreur d'adressage entre deux postes se détecte toujours en comparant leurs octets réseau selon le masque utilisé."
+      ]
+    }
+  ]
+}

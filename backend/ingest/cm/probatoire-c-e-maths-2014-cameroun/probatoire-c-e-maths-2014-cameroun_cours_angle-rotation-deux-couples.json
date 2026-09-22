@@ -1,0 +1,178 @@
+{
+ "cours_id": "cours-angle-rotation-deux-couples-1ere-ce",
+ "meta": {
+  "titre": "Déterminer l'angle d'une rotation à partir de deux points et de leurs images",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Transformations du plan",
+  "duree_estimee_min": 30,
+  "tags": ["rotation", "angle orienté", "mesure principale", "carré direct", "transformation du plan"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "IV"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qA1-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Une rotation est définie par deux données : un centre et un angle. L'intuition voudrait qu'on cherche d'abord le centre, puisqu'il semble plus concret. C'est l'inverse qui est efficace. L'angle se lit sur les **vecteurs**, et un vecteur ne dépend pas du point où on le place : on peut donc le déterminer sans rien savoir du centre. C'est précisément la structure de l'énoncé du Probatoire 2014, où l'angle est demandé en premier et sert ensuite à identifier le centre."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la définition d'une rotation de centre $\\Omega$ et d'angle $\\theta$",
+    "Manipuler les angles orientés de vecteurs et la relation de Chasles",
+    "Savoir ce qu'est la mesure principale d'un angle",
+    "Reconnaître l'orientation directe ou indirecte d'un polygone"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "L'angle se lit sur un vecteur et son image",
+   "contenu_markdown": "**La propriété fondamentale.** Soit $r$ une rotation d'angle $\\theta$. Pour tous points $P$ et $Q$ d'images respectives $P'$ et $Q'$ :\n\n$$\\operatorname{mes}\\left(\\overrightarrow{PQ}\\,;\\,\\overrightarrow{P'Q'}\\right) = \\theta \\quad [2\\pi]$$\n\nAutrement dit, une rotation fait tourner **tous** les vecteurs du plan du même angle. Cette mesure ne dépend ni du choix de $P$, ni de celui de $Q$, ni du centre de la rotation.\n\n**Ce que cela change en pratique.** Deux couples (point, image) suffisent pour obtenir l'angle, et le centre reste inconnu pendant tout le calcul. C'est l'ordre naturel de résolution :\n\n1. **L'angle**, par la lecture sur $\\overrightarrow{PQ}$ et $\\overrightarrow{P'Q'}$.\n2. **Le centre**, ensuite, par l'intersection des médiatrices de $[PP']$ et $[QQ']$.\n\n**Remplacer un vecteur par un vecteur colinéaire de même sens.** Un angle orienté ne dépend que de la **direction et du sens** des vecteurs, pas de leur longueur. Donc si $\\overrightarrow{u} = k\\,\\overrightarrow{v}$ avec $k > 0$, on peut remplacer $\\overrightarrow{u}$ par $\\overrightarrow{v}$ sans changer l'angle. C'est ce qui permet de passer d'un vecteur dépendant d'un paramètre à un côté fixe de la figure.\n\n**Attention au signe si $k < 0$** : deux vecteurs opposés font un angle de $\\pi$, ce qui décale la mesure de $\\pi$. Vérifie toujours que le coefficient est positif avant de substituer.\n\n**L'orientation de la figure fixe le signe.** Dans un polygone **direct**, les sommets se succèdent dans le sens trigonométrique (sens inverse des aiguilles d'une montre). Pour un carré direct $ABCD$ :\n\n$$\\operatorname{mes}\\left(\\overrightarrow{AB}\\,;\\,\\overrightarrow{AD}\\right) = \\frac{\\pi}{2} \\quad [2\\pi]$$\n\nSi le carré était indirect, ce serait $-\\dfrac{\\pi}{2}$. Le mot « direct » de l'énoncé n'est donc jamais décoratif.\n\n**Échanger les deux vecteurs change le signe** :\n\n$$\\operatorname{mes}\\left(\\overrightarrow{v}\\,;\\,\\overrightarrow{u}\\right) = -\\operatorname{mes}\\left(\\overrightarrow{u}\\,;\\,\\overrightarrow{v}\\right) \\quad [2\\pi]$$\n\n**La mesure principale** est l'unique mesure appartenant à $\\left]-\\pi\\,;\\,\\pi\\right]$. Les mesures $-\\dfrac{\\pi}{2}$ et $\\dfrac{3\\pi}{2}$ décrivent le même angle, mais une seule est la mesure principale.",
+   "formule_principale": "r(P)=P' \\text{ et } r(Q)=Q' \\implies \\operatorname{mes}\\left(\\overrightarrow{PQ}\\,;\\,\\overrightarrow{P'Q'}\\right)=\\theta",
+   "variantes": [
+    {
+     "nom": "Lecture de l'angle quand le centre est connu",
+     "quand_utiliser": "Quand l'énoncé donne le centre $\\Omega$ et un couple (point, image)",
+     "contenu_markdown": "Si le centre $\\Omega$ est connu et que $r(P) = P'$, l'angle se lit directement sur les rayons :\n\n$$\\theta = \\operatorname{mes}\\left(\\overrightarrow{\\Omega P}\\,;\\,\\overrightarrow{\\Omega P'}\\right) \\quad [2\\pi]$$\n\nUn seul couple suffit alors, au lieu de deux. C'est le cas le plus fréquent en exercice, mais il suppose le centre déjà identifié — ce qui n'est pas la situation du problème traité ici."
+    },
+    {
+     "nom": "Cas particulier de la symétrie centrale",
+     "quand_utiliser": "Quand l'angle trouvé vaut $\\pi$",
+     "contenu_markdown": "Une rotation d'angle $\\pi$ est exactement une symétrie centrale de même centre. C'est la seule rotation qui coïncide avec une symétrie, et la seule dont l'angle est son propre opposé modulo $2\\pi$. Si ton calcul aboutit à $\\pi$, tu peux donc conclure par « $r$ est la symétrie de centre $\\Omega$ », formulation souvent attendue."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Dans le plan orienté, $ABCD$ est un carré **direct** de centre $O$ et de côté $AB = 6$. Les points $M$ et $N$ appartiennent respectivement aux segments $[AD]$ et $[DC]$, avec $AM = DN$, $M \\neq A$ et $M \\neq D$. Soit $r$ la rotation qui transforme $A$ en $D$ et $M$ en $N$. Déterminer la mesure principale de l'angle de $r$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Exploiter les deux couples donnés",
+     "justification": "$r(A) = D$ et $r(M) = N$, donc $r$ transforme $\\overrightarrow{AM}$ en $\\overrightarrow{DN}$",
+     "resultat_markdown": "$\\theta = \\operatorname{mes}\\left(\\overrightarrow{AM}\\,;\\,\\overrightarrow{DN}\\right) \\quad [2\\pi]$"
+    },
+    {
+     "numero": 2,
+     "action": "Remplacer $\\overrightarrow{AM}$ par $\\overrightarrow{AD}$",
+     "justification": "$M$ appartient à $[AD]$ et $M \\neq A$, donc $\\overrightarrow{AM}$ est un multiple **positif** de $\\overrightarrow{AD}$",
+     "resultat_markdown": "L'angle est inchangé : on peut écrire $\\theta = \\operatorname{mes}\\left(\\overrightarrow{AD}\\,;\\,\\overrightarrow{DN}\\right)$"
+    },
+    {
+     "numero": 3,
+     "action": "Remplacer $\\overrightarrow{DN}$ par $\\overrightarrow{DC}$",
+     "justification": "$DN = AM \\neq 0$ donc $N \\neq D$ ; comme $N$ appartient à $[DC]$, le vecteur $\\overrightarrow{DN}$ est un multiple positif de $\\overrightarrow{DC}$",
+     "resultat_markdown": "$\\theta = \\operatorname{mes}\\left(\\overrightarrow{AD}\\,;\\,\\overrightarrow{DC}\\right) \\quad [2\\pi]$"
+    },
+    {
+     "numero": 4,
+     "action": "Utiliser la structure de parallélogramme",
+     "justification": "Dans le carré $ABCD$, les côtés $[AB]$ et $[DC]$ sont parallèles, de même longueur et de même sens, donc $\\overrightarrow{DC} = \\overrightarrow{AB}$",
+     "resultat_markdown": "$\\theta = \\operatorname{mes}\\left(\\overrightarrow{AD}\\,;\\,\\overrightarrow{AB}\\right) \\quad [2\\pi]$"
+    },
+    {
+     "numero": 5,
+     "action": "Utiliser le caractère direct du carré",
+     "justification": "Les sommets se succèdent dans le sens trigonométrique, donc l'angle en $A$ pris de $\\overrightarrow{AB}$ vers $\\overrightarrow{AD}$ vaut $+\\dfrac{\\pi}{2}$",
+     "resultat_markdown": "$\\operatorname{mes}\\left(\\overrightarrow{AB}\\,;\\,\\overrightarrow{AD}\\right) = \\dfrac{\\pi}{2} \\quad [2\\pi]$"
+    },
+    {
+     "numero": 6,
+     "action": "Échanger les deux vecteurs",
+     "justification": "Échanger l'ordre d'un angle orienté change son signe",
+     "resultat_markdown": "$\\theta = \\operatorname{mes}\\left(\\overrightarrow{AD}\\,;\\,\\overrightarrow{AB}\\right) = -\\dfrac{\\pi}{2} \\quad [2\\pi]$"
+    },
+    {
+     "numero": 7,
+     "action": "Vérifier qu'il s'agit bien de la mesure principale",
+     "justification": "$-\\dfrac{\\pi}{2}$ appartient à $\\left]-\\pi\\,;\\,\\pi\\right]$",
+     "resultat_markdown": "La mesure principale de l'angle de $r$ est $-\\dfrac{\\pi}{2}$"
+    }
+   ],
+   "conclusion_markdown": "L'angle de $r$ vaut $-\\dfrac{\\pi}{2}$ : il s'agit d'un quart de tour dans le sens des aiguilles d'une montre. Note que le centre n'est intervenu à aucun moment — il sera déterminé à la question suivante. Note aussi que le résultat ne dépend pas de la position de $M$ sur $[AD]$ : c'est normal, l'angle d'une rotation est le même pour tous les couples."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Ignorer le mot « direct » et répondre $+\\dfrac{\\pi}{2}$",
+     "pourquoi_faux": "L'orientation du carré fixe le signe de tous les angles de la figure. Dans un carré direct, aller de $\\overrightarrow{AD}$ vers $\\overrightarrow{AB}$ se fait dans le sens des aiguilles d'une montre, donc en angle négatif. Répondre $+\\dfrac{\\pi}{2}$ revient à travailler dans un carré indirect.",
+     "correction_markdown": "Fais un croquis en plaçant $A$, $B$, $C$, $D$ dans le sens trigonométrique, et lis le signe sur la figure. L'erreur se propage ensuite sur toute la partie A du problème : image de $I$, position de $G'$."
+    },
+    {
+     "erreur_markdown": "Chercher le centre avant l'angle",
+     "pourquoi_faux": "Ce n'est pas faux, mais c'est beaucoup plus long : il faut construire deux médiatrices dont l'une dépend du paramètre $AM$. L'angle, lui, s'obtient en quatre lignes sans aucune donnée sur le centre.",
+     "correction_markdown": "Prends l'habitude de l'ordre angle puis centre. La propriété sur les vecteurs est indépendante du centre : c'est ce qui la rend utilisable en premier."
+    },
+    {
+     "erreur_markdown": "Remplacer $\\overrightarrow{AM}$ par $\\overrightarrow{DA}$ ou $\\overrightarrow{DN}$ par $\\overrightarrow{CD}$",
+     "pourquoi_faux": "Ces vecteurs sont bien colinéaires aux bons, mais de sens **opposé**. Un changement de sens décale l'angle de $\\pi$, ce qui donnerait $\\dfrac{\\pi}{2}$ au lieu de $-\\dfrac{\\pi}{2}$.",
+     "correction_markdown": "Vérifie que le coefficient de colinéarité est positif : $\\overrightarrow{AM} = \\dfrac{AM}{AD}\\,\\overrightarrow{AD}$ avec $\\dfrac{AM}{AD} > 0$. Le point de départ du vecteur doit être le même dans les deux écritures."
+    },
+    {
+     "erreur_markdown": "Oublier de justifier que $M \\neq A$ et $N \\neq D$",
+     "pourquoi_faux": "Si $M = A$, le vecteur $\\overrightarrow{AM}$ est nul et n'a pas de direction : l'angle orienté n'est pas défini. L'énoncé exclut ce cas explicitement, et cette exclusion doit être utilisée.",
+     "correction_markdown": "Mentionne l'hypothèse $M \\neq A$ au moment de la substitution, et déduis-en $N \\neq D$ par l'égalité $DN = AM$. C'est une ligne, et elle rend la démonstration complète."
+    },
+    {
+     "erreur_markdown": "Donner $\\dfrac{3\\pi}{2}$ comme réponse finale",
+     "pourquoi_faux": "C'est bien une mesure de l'angle, mais ce n'est pas la mesure **principale**, qui doit appartenir à $\\left]-\\pi\\,;\\,\\pi\\right]$. La question posée demande explicitement la mesure principale.",
+     "correction_markdown": "Ramène systématiquement ton résultat dans $\\left]-\\pi\\,;\\,\\pi\\right]$ en ajoutant ou retranchant $2\\pi$ : $\\dfrac{3\\pi}{2} - 2\\pi = -\\dfrac{\\pi}{2}$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "$ABC$ est un triangle équilatéral **direct** de centre de gravité $G$. Soit $r$ la rotation qui transforme $A$ en $B$ et $B$ en $C$. Déterminer la mesure principale de son angle, puis identifier son centre.",
+     "solution_markdown": "**Étape 1 - l'angle.**\n\nLa rotation transforme $A$ en $B$ et $B$ en $C$, donc elle transforme $\\overrightarrow{AB}$ en $\\overrightarrow{BC}$ :\n\n$$\\theta = \\operatorname{mes}\\left(\\overrightarrow{AB}\\,;\\,\\overrightarrow{BC}\\right) \\quad [2\\pi]$$\n\n**Étape 2 - ramener à un angle du triangle.**\n\nOn utilise $\\overrightarrow{BC}$ et le vecteur $\\overrightarrow{BA} = -\\overrightarrow{AB}$. Par la relation entre vecteurs opposés :\n\n$$\\operatorname{mes}\\left(\\overrightarrow{AB}\\,;\\,\\overrightarrow{BC}\\right) = \\operatorname{mes}\\left(\\overrightarrow{AB}\\,;\\,\\overrightarrow{BA}\\right) + \\operatorname{mes}\\left(\\overrightarrow{BA}\\,;\\,\\overrightarrow{BC}\\right) = \\pi + \\operatorname{mes}\\left(\\overrightarrow{BA}\\,;\\,\\overrightarrow{BC}\\right)$$\n\n**Étape 3 - utiliser l'orientation directe.**\n\nLe triangle étant direct, ses sommets se succèdent dans le sens trigonométrique. L'angle en $B$, pris de $\\overrightarrow{BA}$ vers $\\overrightarrow{BC}$, vaut donc $+\\dfrac{\\pi}{3}$ (le triangle est équilatéral, tous ses angles valent $60^{\\circ}$).\n\n$$\\theta = \\pi + \\dfrac{\\pi}{3} = \\dfrac{4\\pi}{3} \\quad [2\\pi]$$\n\n**Étape 4 - mesure principale.**\n\n$\\dfrac{4\\pi}{3}$ n'appartient pas à $\\left]-\\pi\\,;\\,\\pi\\right]$. On retranche $2\\pi$ :\n\n$$\\theta = \\dfrac{4\\pi}{3} - 2\\pi = -\\dfrac{2\\pi}{3}$$\n\n**Étape 5 - le centre.**\n\nLe centre appartient à la médiatrice de $[AB]$ et à celle de $[BC]$. Dans un triangle équilatéral, les médiatrices se coupent au centre de gravité $G$, qui est aussi le centre du cercle circonscrit.\n\n**Conclusion.** $r$ est la rotation de centre $G$ et d'angle $-\\dfrac{2\\pi}{3}$.\n\n**Contrôle.** Une rotation de $-\\dfrac{2\\pi}{3}$ autour du centre permute les trois sommets dans l'ordre $A \\to B \\to C \\to A$, et $\\left(-\\dfrac{2\\pi}{3}\\right) \\times 3 = -2\\pi$ : appliquée trois fois, elle redonne l'identité. Cohérent."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABCD$ est un carré direct de centre $O$. On note $I$, $J$, $K$, $L$ les milieux respectifs de $[AB]$, $[BC]$, $[CD]$, $[DA]$. Soit $r$ la rotation de centre $O$ et d'angle $-\\dfrac{\\pi}{2}$. Déterminer les images par $r$ des quatre sommets, puis celle du point $I$. En déduire l'image du segment $[AI]$.",
+     "solution_markdown": "**Étape 1 - orientation de la figure.**\n\nLe carré étant direct, les sommets $A$, $B$, $C$, $D$ se succèdent dans le sens trigonométrique. Une rotation d'angle $-\\dfrac{\\pi}{2}$ tourne dans le sens **inverse**, c'est-à-dire dans le sens des aiguilles d'une montre : elle envoie donc chaque sommet sur le **précédent** dans l'ordre alphabétique.\n\n**Étape 2 - images des sommets.**\n\nVérifions sur $A$. On a $OA = OD$ (le centre est équidistant des sommets) et\n\n$$\\operatorname{mes}\\left(\\overrightarrow{OA}\\,;\\,\\overrightarrow{OD}\\right) = -\\dfrac{\\pi}{2}$$\n\ncar $D$ précède $A$ dans le sens trigonométrique. Donc $r(A) = D$.\n\nLe même raisonnement donne :\n\n$$r(A) = D \\qquad r(B) = A \\qquad r(C) = B \\qquad r(D) = C$$\n\n**Étape 3 - image de $I$.**\n\nUne rotation conserve les milieux, car c'est une isométrie qui conserve l'alignement et les longueurs. Le point $I$ étant le milieu de $[AB]$, son image est le milieu de $\\left[r(A)\\,r(B)\\right] = [DA]$.\n\n$$r(I) = L$$\n\n**Étape 4 - image du segment.**\n\nUne rotation transforme un segment en un segment de même longueur, celui joignant les images des extrémités :\n\n$$r\\left([AI]\\right) = \\left[r(A)\\,r(I)\\right] = [DL]$$\n\n**Contrôle de cohérence.** $L$ est le milieu de $[DA]$, donc $DL = \\dfrac{DA}{2}$. Par ailleurs $AI = \\dfrac{AB}{2}$, et $DA = AB$ puisque le carré a tous ses côtés égaux. Les deux segments ont bien la même longueur, ce qui est nécessaire pour une isométrie.\n\n**Remarque.** Dans le problème du Probatoire 2014, c'est exactement l'image $r(I) = J$ (avec la numérotation du sujet) qui permet de déterminer l'image du barycentre $G$ à la question A.3.c."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Dans le plan orienté, $ABC$ est un triangle quelconque direct. On construit à l'extérieur du triangle les carrés directs $ABDE$ (sur le côté $[AB]$) et $ACFG$ construit de sorte que $\\operatorname{mes}\\left(\\overrightarrow{AC}\\,;\\,\\overrightarrow{AG}\\right) = -\\dfrac{\\pi}{2}$. Soit $r$ la rotation de centre $A$ et d'angle $\\dfrac{\\pi}{2}$. Déterminer $r(G)$ et $r(B)$, puis en déduire que $GB = CE$ et que les droites $(GB)$ et $(CE)$ sont perpendiculaires.",
+     "solution_markdown": "**Étape 1 - déterminer $r(G)$.**\n\nPar construction, $\\operatorname{mes}\\left(\\overrightarrow{AC}\\,;\\,\\overrightarrow{AG}\\right) = -\\dfrac{\\pi}{2}$, ce qui équivaut, en échangeant les vecteurs, à\n\n$$\\operatorname{mes}\\left(\\overrightarrow{AG}\\,;\\,\\overrightarrow{AC}\\right) = \\dfrac{\\pi}{2}$$\n\nLe carré $ACFG$ ayant tous ses côtés égaux, $AG = AC$. Les deux conditions d'une rotation de centre $A$ et d'angle $\\dfrac{\\pi}{2}$ sont réunies :\n\n$$r(G) = C$$\n\n**Étape 2 - déterminer $r(B)$.**\n\nDans le carré direct $ABDE$, les sommets se succèdent dans le sens trigonométrique, donc\n\n$$\\operatorname{mes}\\left(\\overrightarrow{AB}\\,;\\,\\overrightarrow{AE}\\right) = \\dfrac{\\pi}{2} \\qquad \\text{et} \\qquad AB = AE$$\n\nD'où\n\n$$r(B) = E$$\n\n**Étape 3 - exploiter la conservation des longueurs.**\n\nUne rotation est une isométrie : elle conserve les distances. Comme $r(G) = C$ et $r(B) = E$ :\n\n$$GB = r(G)\\,r(B) = CE$$\n\n**Les deux segments ont donc la même longueur.**\n\n**Étape 4 - exploiter la rotation des vecteurs.**\n\nLa rotation $r$ transforme $\\overrightarrow{GB}$ en $\\overrightarrow{CE}$, donc\n\n$$\\operatorname{mes}\\left(\\overrightarrow{GB}\\,;\\,\\overrightarrow{CE}\\right) = \\dfrac{\\pi}{2} \\quad [2\\pi]$$\n\nUn angle de $\\dfrac{\\pi}{2}$ entre deux vecteurs directeurs signifie que les droites qui les portent sont perpendiculaires :\n\n$$(GB) \\perp (CE)$$\n\n**Conclusion.** Les segments $[GB]$ et $[CE]$ ont même longueur et leurs supports sont perpendiculaires.\n\n**Ce qu'il faut retenir.** La méthode est toujours la même : on identifie une rotation qui envoie l'un des segments sur l'autre, et les deux conclusions - égalité des longueurs, angle des supports - tombent d'un coup. Chercher à calculer les longueurs séparément, par Al-Kashi dans deux triangles distincts, aboutirait au même résultat mais en trois fois plus de lignes.\n\n**Remarque.** Ce résultat est un classique de la géométrie des transformations : quels que soient la forme du triangle $ABC$ et le fait qu'il soit ou non particulier, la conclusion tient. C'est la signature d'une démonstration par transformation, qui ne dépend d'aucune mesure."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "L'angle d'une rotation se lit sur n'importe quel vecteur et son image : $\\operatorname{mes}\\left(\\overrightarrow{PQ}\\,;\\,\\overrightarrow{P'Q'}\\right) = \\theta$.",
+    "Cette lecture ne fait pas intervenir le centre : détermine donc l'angle d'abord, le centre ensuite.",
+    "Un angle orienté ne dépend que de la direction et du sens : on peut remplacer un vecteur par un colinéaire de **même sens**, jamais de sens opposé.",
+    "Le mot « direct » fixe le signe de tous les angles de la figure : dans un carré direct $ABCD$, $\\operatorname{mes}\\left(\\overrightarrow{AB}\\,;\\,\\overrightarrow{AD}\\right) = \\dfrac{\\pi}{2}$.",
+    "Échanger les deux vecteurs d'un angle orienté change son signe.",
+    "La mesure principale appartient à $\\left]-\\pi\\,;\\,\\pi\\right]$ : ramène-y toujours ton résultat avant de conclure.",
+    "Vérifie que les vecteurs utilisés sont non nuls : un angle orienté n'est pas défini pour le vecteur nul.",
+    "Une rotation est une isométrie : elle conserve longueurs, milieux, alignement et parallélisme.",
+    "Fais toujours un croquis orienté : le signe de l'angle s'y lit directement, et une erreur de signe contamine toute la suite du problème."
+   ]
+  }
+ ]
+}

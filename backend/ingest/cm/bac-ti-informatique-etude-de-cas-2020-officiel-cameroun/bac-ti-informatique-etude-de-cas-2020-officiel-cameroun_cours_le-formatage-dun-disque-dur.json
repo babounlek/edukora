@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-le-formatage-dun-disque-dur-tle-ti",
+  "meta": {
+    "titre": "Le formatage d'un disque dur",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 15,
+    "tags": [
+      "formatage",
+      "système de fichiers",
+      "disque dur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3-qB.1-0",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3-qB.2-0"
+    ],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un disque dur tout neuf, sorti de son emballage, ne peut recevoir aucun fichier tant qu'il n'a pas reçu une organisation logique précise. Cette préparation, c'est le formatage - une opération que tout technicien en maintenance rencontre régulièrement, pour des raisons parfois très différentes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un disque dur et un système de fichiers (organisation des données sur le disque)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Préparer le disque à recevoir des données",
+      "contenu_markdown": "Le **formatage** est l'opération qui prépare un disque dur à recevoir des données, en organisant sa surface en secteurs et en pistes, puis en y installant une structure de système de fichiers (table d'allocation, par exemple NTFS ou FAT32). Le formatage supprime, ou rend inaccessibles, les données précédemment présentes sur le disque. On distingue le formatage **rapide** (qui recrée seulement la structure du système de fichiers, sans vérifier physiquement chaque secteur) et le formatage **complet** (qui vérifie aussi l'intégrité physique de chaque secteur, plus long mais plus sûr).",
+      "formule_principale": "Formatage = organisation en secteurs/pistes + installation d'un système de fichiers",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer en quoi consiste le formatage d'un disque dur et donner deux raisons pour lesquelles un disque peut être formaté.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Définir précisément l'opération de formatage",
+          "justification": "C'est la première partie de la réponse attendue",
+          "resultat_markdown": "Organisation de la surface du disque en secteurs/pistes et installation d'une structure de système de fichiers."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier une première raison courante de formater un disque",
+          "justification": "Une situation fréquente en maintenance informatique",
+          "resultat_markdown": "Réinstaller proprement un système d'exploitation, ou changer de système de fichiers."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier une seconde raison courante",
+          "justification": "Une autre situation fréquente, distincte de la première",
+          "resultat_markdown": "Éliminer une infection virale sévère ou des erreurs de disque irréparables par les outils classiques."
+        }
+      ],
+      "conclusion_markdown": "Le formatage prépare le disque à recevoir des données ; il est déclenché le plus souvent pour réinstaller un système d'exploitation ou pour assainir un disque gravement corrompu."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre formatage et suppression simple de fichiers",
+          "pourquoi_faux": "Supprimer des fichiers un par un retire des éléments précis tout en conservant la structure du système de fichiers ; le formatage recrée entièrement cette structure et efface globalement l'accès à tout ce qu'elle référençait.",
+          "correction_markdown": "Présente le formatage comme une opération globale sur la STRUCTURE du disque, pas comme une simple suppression de fichiers individuels."
+        },
+        {
+          "erreur_markdown": "Croire qu'un formatage rapide efface physiquement et immédiatement toutes les données",
+          "pourquoi_faux": "Un formatage rapide recrée surtout la table d'allocation (l'index qui indique où se trouve chaque fichier) : les données restent souvent physiquement présentes sur le disque jusqu'à ce qu'elles soient écrasées par de nouvelles données, ce qui explique pourquoi des logiciels de récupération peuvent parfois retrouver des fichiers après un formatage rapide.",
+          "correction_markdown": "Distingue le formatage rapide (recrée seulement l'index) du formatage complet (vérifie aussi physiquement les secteurs) quand la question porte sur la récupérabilité des données après formatage."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer un exemple de système de fichiers installé lors d'un formatage.",
+          "solution_markdown": "NTFS (ou FAT32, exFAT)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle est la différence entre un formatage rapide et un formatage complet ?",
+          "solution_markdown": "Le formatage rapide recrée uniquement la structure du système de fichiers (la table d'allocation), sans vérifier l'état physique de chaque secteur du disque : il est très rapide, mais ne détecte pas les secteurs défectueux. Le formatage complet vérifie en plus l'intégrité physique de chaque secteur du disque, ce qui prend beaucoup plus de temps, mais permet de détecter et d'isoler d'éventuels secteurs endommagés."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un technicien souhaite vendre un ancien disque dur professionnel contenant des données confidentielles. Un simple formatage rapide suffit-il à garantir que ces données ne pourront plus jamais être récupérées par l'acheteur ? Justifier et proposer une solution plus sûre.",
+          "solution_markdown": "Non, un formatage rapide ne suffit pas : il recrée seulement la table d'allocation, sans effacer physiquement le contenu des secteurs. Des logiciels de récupération de données spécialisés peuvent alors reconstituer une grande partie des fichiers effacés, car les données restent physiquement présentes tant qu'elles n'ont pas été réellement écrasées par de nouvelles écritures. Une solution plus sûre consiste à effectuer un effacement sécurisé (plusieurs passages d'écriture aléatoire sur l'intégralité du disque, via un logiciel dédié), ou à recourir à la destruction physique du disque pour une confidentialité absolue, plutôt que de se contenter d'un simple formatage avant de céder le matériel."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le formatage organise la surface du disque en secteurs/pistes et y installe un système de fichiers.",
+        "Il rend les données précédentes inaccessibles, sans forcément les effacer physiquement (formatage rapide).",
+        "Deux raisons courantes de formater : réinstaller le système d'exploitation, ou assainir un disque gravement corrompu.",
+        "Le formatage complet, plus long, vérifie en plus l'état physique de chaque secteur.",
+        "Au BAC TI, ne confonds jamais formatage (opération globale sur la structure) et suppression de fichiers (opération ciblée)."
+      ]
+    }
+  ]
+}

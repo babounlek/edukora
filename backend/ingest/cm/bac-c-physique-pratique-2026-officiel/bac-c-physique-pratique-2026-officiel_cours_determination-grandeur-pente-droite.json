@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-determination-grandeur-pente-droite-tle-c",
+  "meta": {
+    "titre": "Déterminer une grandeur physique à partir de la pente d'une droite expérimentale",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Méthodes expérimentales et traitement de données",
+    "duree_estimee_min": 30,
+    "tags": [
+      "pente d'une droite",
+      "analyse dimensionnelle",
+      "exploitation graphique",
+      "ordre de grandeur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat série C - Physique Pratique - Étude de la déviation d'une tige mobile dans un champ magnétique",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-pratique-2026-officiel-ex1-q3.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une balance ne suffit pas toujours à peser un objet : une tige de quelques grammes, prise dans un montage électrique, ne se pèse pas directement sans démonter le circuit. Et pourtant, cette masse se calcule très précisément à partir d'un simple graphique expérimental, sans aucune balance. C'est tout l'intérêt de savoir lire une pente sur une droite et la relier, par une formule physique, à la grandeur qu'on cherche : transformer un dessin en un nombre exploitable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "La construction d'une courbe expérimentale et la reconnaissance d'une droite passant par l'origine (proportionnalité)",
+        "Le calcul du coefficient directeur (pente) d'une droite à partir de deux points",
+        "Les unités des grandeurs physiques usuelles et l'analyse dimensionnelle de base"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la pente d'une droite à la grandeur physique recherchée",
+      "contenu_markdown": "Quand une relation physique théorique prend la forme $y = a \\cdot x$ (proportionnalité), où $a$ regroupe plusieurs grandeurs physiques (certaines connues, une inconnue), la méthode générale pour déterminer la grandeur inconnue est toujours la même :\n\n1. Isoler la pente $a$ dans la relation théorique en fonction des grandeurs déjà connues et de la grandeur recherchée.\n2. Lire ou calculer la valeur numérique de $a$ à partir du graphique expérimental $y = f(x)$ : $a = \\dfrac{\\Delta y}{\\Delta x}$, en choisissant deux points **nettement éloignés l'un de l'autre** sur la droite tracée (jamais deux points rapprochés, qui amplifient l'erreur relative de lecture).\n3. Réinjecter cette valeur numérique de $a$ dans la relation isolée à l'étape 1 pour calculer la grandeur recherchée.\n4. Vérifier le résultat par une analyse dimensionnelle (les unités doivent se simplifier correctement) et par un contrôle d'ordre de grandeur (le résultat est-il physiquement raisonnable pour l'objet étudié ?).\n\nCette méthode s'applique identiquement, quelle que soit la loi physique en jeu : loi de Hooke, loi d'Ohm, relation d'équilibre d'un pendule électromagnétique, ou toute autre relation de proportionnalité rencontrée en TP.",
+      "formule_principale": "a = \\dfrac{\\Delta y}{\\Delta x}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une tige de cuivre OA, de longueur $L = 20$ cm, mobile autour d'un axe (Δ), est en équilibre dans un champ magnétique $B = 1{,}2\\times10^{-3}$ T selon la relation $I = \\dfrac{mg}{BL}\\sin\\alpha$ (avec $g = 9{,}8\\ \\text{m.s}^{-2}$). Le graphique $I = f(\\sin\\alpha)$, tracé à partir des mesures, est une droite passant par l'origine, sur laquelle on peut lire les deux points $(0\\,;0)$ et $(0{,}094\\,;19{,}2)$. Déterminer la masse $m$ de la tige.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler la pente $a$ dans la relation théorique",
+          "justification": "La relation $I = \\dfrac{mg}{BL}\\sin\\alpha$ est de la forme $I = a\\sin\\alpha$, avec $\\sin\\alpha$ en abscisse et $I$ en ordonnée : la pente $a$ de la droite représente donc exactement le coefficient $\\dfrac{mg}{BL}$.",
+          "resultat_markdown": "$a = \\dfrac{mg}{BL}$, d'où $m = \\dfrac{aBL}{g}$ en isolant $m$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la valeur numérique de la pente à partir de deux points éloignés de la droite",
+          "justification": "On choisit l'origine et le point le plus éloigné disponible sur le graphique, pour minimiser l'incertitude relative sur la pente calculée.",
+          "resultat_markdown": "$a = \\dfrac{\\Delta I}{\\Delta(\\sin\\alpha)} = \\dfrac{19{,}2 - 0}{0{,}094 - 0} \\approx 204{,}3\\ \\text{A}$"
+        },
+        {
+          "numero": 3,
+          "action": "Réinjecter la pente dans l'expression de $m$ et calculer",
+          "justification": "Toutes les grandeurs du second membre ($a$, $B$, $L$, $g$) sont maintenant connues numériquement.",
+          "resultat_markdown": "$m = \\dfrac{aBL}{g} = \\dfrac{204{,}3 \\times 1{,}2\\times10^{-3} \\times 0{,}20}{9{,}8}$\n\n$204{,}3 \\times 1{,}2\\times10^{-3} = 0{,}24516$\n\n$0{,}24516 \\times 0{,}20 = 0{,}049032$\n\n$0{,}049032 \\div 9{,}8 \\approx 5{,}003\\times10^{-3}\\ \\text{kg}$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier par analyse dimensionnelle et ordre de grandeur",
+          "justification": "Un résultat numérique correct doit être cohérent en unités et physiquement plausible pour l'objet réel étudié.",
+          "resultat_markdown": "$[a][B][L]/[g] = A \\cdot T \\cdot m / (m.s^{-2})$, qui se simplifie en kilogrammes puisque $1\\,T = 1\\,kg.A^{-1}.s^{-2}$ : l'unité obtenue est bien un kilogramme. Une masse de quelques grammes pour une tige de cuivre de 20 cm de long est par ailleurs un ordre de grandeur physiquement raisonnable."
+        }
+      ],
+      "conclusion_markdown": "$m \\approx 5{,}0\\times10^{-3}\\ \\text{kg} = 5{,}0\\ \\text{g}$ : la masse de la tige a été déterminée uniquement à partir du graphique expérimental et de la relation théorique d'équilibre, sans aucune pesée directe."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer la pente à partir de deux points consécutifs et rapprochés du tableau de mesures.",
+          "pourquoi_faux": "Deux points proches l'un de l'autre amplifient l'erreur relative de lecture : une petite erreur de lecture sur une petite différence de coordonnées produit un rapport $\\Delta y/\\Delta x$ très instable, alors que la même erreur de lecture sur un grand écart a un effet relatif bien plus faible.",
+          "correction_markdown": "Choisis toujours deux points nettement éloignés l'un de l'autre sur la droite tracée, idéalement l'origine et le point expérimental le plus éloigné disponible."
+        },
+        {
+          "erreur_markdown": "Utiliser directement un point du tableau de mesures brutes plutôt qu'un point réellement situé sur la droite tracée.",
+          "pourquoi_faux": "La droite tracée représente la tendance moyenne de l'ensemble des mesures, qui lisse les petites erreurs expérimentales individuelles ; un point brut du tableau peut s'écarter légèrement de cette tendance et fausser localement le calcul de pente.",
+          "correction_markdown": "Lis la pente sur la droite elle-même (ou vérifie que les points choisis appartiennent effectivement à la droite tracée), pas directement sur des mesures individuelles qui comportent chacune leur propre incertitude."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier l'unité du résultat final, ou ne pas remarquer qu'un résultat physiquement absurde (masse négative, masse de plusieurs tonnes) signale une erreur de calcul.",
+          "pourquoi_faux": "Un résultat numérique juste en apparence peut cacher une erreur de facteur 10, une inversion de numérateur et dénominateur, ou une confusion d'unité (cm au lieu de m, par exemple) : seule la vérification systématique de l'unité et de l'ordre de grandeur permet de la détecter avant de livrer le résultat.",
+          "correction_markdown": "Prends toujours quelques secondes, à la fin du calcul, pour vérifier que l'unité obtenue est cohérente et que la valeur numérique est plausible pour l'objet physique réel étudié."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le graphique $F = f(x)$ de la force de rappel $F$ (en N) exercée par un ressort en fonction de son allongement $x$ (en m) est une droite passant par l'origine. On lit sur cette droite les deux points $(0\\,;0)$ et $(0{,}20\\,;8{,}0)$. La loi de Hooke s'écrit $F = kx$, où $k$ est la raideur du ressort (en N/m). Déterminer $k$.",
+          "solution_markdown": "La pente de la droite $F = f(x)$ est directement $k$, puisque $F = kx$ est déjà de la forme $y = a \\cdot x$ avec $a = k$.\n\n$$k = \\dfrac{\\Delta F}{\\Delta x} = \\dfrac{8{,}0 - 0}{0{,}20 - 0} = \\dfrac{8{,}0}{0{,}20}$$\n\n$$k = 40\\ \\text{N/m}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On étudie la relation $U = RI$ (loi d'Ohm) pour un conducteur ohmique. Le graphique $U = f(I)$ est une droite passant par l'origine ; on y lit les points $(0\\,;0)$ et $(0{,}50\\,;10)$, avec $I$ en ampères et $U$ en volts. Déterminer la résistance $R$ du conducteur, puis vérifier la cohérence dimensionnelle du résultat.",
+          "solution_markdown": "La relation $U = RI$ est de la forme $y = a \\cdot x$ avec $y = U$, $x = I$ et $a = R$ : la pente de la droite $U = f(I)$ est donc directement la résistance $R$.\n\n$$R = \\dfrac{\\Delta U}{\\Delta I} = \\dfrac{10 - 0}{0{,}50 - 0} = \\dfrac{10}{0{,}50}$$\n\n$$R = 20\\ \\Omega$$\n\nVérification dimensionnelle : $R = U/I$, donc $[R] = V/A = \\Omega$ par définition même de l'ohm. L'unité obtenue est cohérente, et une résistance de 20 Ω est un ordre de grandeur tout à fait courant pour un conducteur ohmique de laboratoire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans une expérience analogue à celle de la tige OA, on étudie une seconde tige, cette fois de longueur $L' = 25$ cm et plongée dans un champ $B' = 2{,}0\\times10^{-3}$ T. Le graphique $I = f(\\sin\\alpha)$ obtenu est une droite passant par l'origine, de pente $a' = 98{,}0$ A. On donne $g = 9{,}8\\ \\text{m.s}^{-2}$. Déterminer la masse de cette seconde tige, puis comparer, en le justifiant physiquement, avec la tige du TP ($m = 5{,}0$ g) : cette seconde tige est-elle plus légère ou plus lourde ?",
+          "solution_markdown": "On applique la même relation $a' = \\dfrac{m'g}{B'L'}$, donc $m' = \\dfrac{a'B'L'}{g}$.\n\n$$m' = \\dfrac{98{,}0 \\times 2{,}0\\times10^{-3} \\times 0{,}25}{9{,}8}$$\n\n$98{,}0 \\times 2{,}0\\times10^{-3} = 0{,}196$\n\n$0{,}196 \\times 0{,}25 = 0{,}049$\n\n$0{,}049 \\div 9{,}8 = 5{,}0\\times10^{-3}\\ \\text{kg}$\n\n$$m' = 5{,}0\\times10^{-3}\\ \\text{kg} = 5{,}0\\ \\text{g}$$\n\nCette seconde tige a exactement la même masse que celle du TP (5,0 g), bien que sa pente expérimentale ($98{,}0$ A) soit très différente de celle du TP ($204{,}3$ A). Ce n'est pas une coïncidence : la pente $a = \\dfrac{mg}{BL}$ dépend à la fois de la masse ET du champ magnétique ET de la longueur de la tige. Ici, le champ plus intense ($B'$ double environ) et la tige plus longue ($L'$ plus grande) compensent une pente plus faible pour aboutir, au final, à la même masse - preuve que comparer deux pentes brutes, sans recalculer la grandeur physique qu'elles encodent, ne permet aucune conclusion directe sur les masses respectives."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour extraire une grandeur physique d'un graphique, isole d'abord la pente $a$ dans la relation théorique, avant même de lire quoi que ce soit sur le graphique.",
+        "Calcule toujours la pente à partir de deux points nettement éloignés l'un de l'autre sur la droite tracée, jamais deux points rapprochés.",
+        "Une fois la grandeur calculée, vérifie systématiquement son unité par analyse dimensionnelle et son ordre de grandeur par rapport à l'objet physique réel étudié.",
+        "Ne compare jamais deux pentes brutes entre deux expériences différentes sans recalculer la grandeur physique qu'elles encodent réellement : la pente dépend souvent de plusieurs facteurs à la fois.",
+        "Cette méthode - isoler, lire, réinjecter, vérifier - est universelle : elle s'applique à toute relation de proportionnalité rencontrée en TP de physique, pas seulement à l'expérience de la tige mobile."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-le-prototype-declaration-anticipee-d-une-fonction-en-c-ti-2021",
+  "meta": {
+    "titre": "Le prototype (déclaration anticipée) d'une fonction en C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Fonctions en langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "prototype",
+      "déclaration de fonction",
+      "compilation C",
+      "fonction"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex2-q3-1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le compilateur C lit un fichier du début à la fin, dans l'ordre. Que se passe-t-il alors quand main() appelle une fonction définie seulement plus bas dans le fichier, comme c'est le cas dans l'exercice ? Sans une information préalable, le compilateur refuserait tout simplement de compiler l'appel."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une fonction en C (type de retour, nom, paramètres, corps)",
+        "Comprendre qu'un fichier C se compile de haut en bas"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le prototype annonce une fonction avant sa définition complète",
+      "contenu_markdown": "Un **prototype de fonction** est une déclaration qui annonce au compilateur l'existence d'une fonction avant que son corps complet ne soit défini plus loin dans le fichier. Il reprend le type de retour, le nom et les types des paramètres de la fonction, mais se termine par un point-virgule au lieu d'un corps entre accolades :\n\n```c\ntype_retour nom_fonction(type_param1, type_param2, ...);\n```\n\nGrâce à cette annonce, le compilateur accepte un appel à cette fonction avant même d'avoir lu sa définition complète, puisqu'il connaît déjà sa signature (type de retour et types de paramètres) et peut donc vérifier la cohérence de l'appel. La définition complète (avec le corps de la fonction) peut alors apparaître n'importe où plus loin dans le fichier, y compris après la fonction `main()` qui l'utilise.\n\nSans prototype, un appel à une fonction non encore définie plus haut dans le fichier provoque une erreur de compilation (ou, selon le compilateur, un avertissement dangereux supposant par défaut un type de retour `int`, souvent incorrect)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le rôle de la ligne 5 du programme :\n```c\n5: unsigned int factorielle(unsigned int a);\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la ponctuation finale de la ligne",
+          "justification": "Un point-virgule sans accolades signale un prototype, pas une définition",
+          "resultat_markdown": "La ligne se termine par un point-virgule, sans corps de fonction entre accolades : c'est un prototype, pas la définition complète de factorielle."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier ce que le prototype communique au compilateur",
+          "justification": "Le type de retour et les types de paramètres suffisent à vérifier un appel",
+          "resultat_markdown": "Le type de retour (unsigned int) et le type du paramètre (unsigned int a) de la fonction factorielle."
+        },
+        {
+          "numero": 3,
+          "action": "Relier ce prototype à l'appel fait plus loin dans le programme",
+          "justification": "C'est justement ce prototype qui rend cet appel anticipé possible",
+          "resultat_markdown": "Grâce à ce prototype, l'appel f = factorielle(x); (ligne 13, à l'intérieur de main()) est accepté par le compilateur, alors que la définition complète de factorielle n'apparaît qu'à la ligne 18, après main()."
+        }
+      ],
+      "conclusion_markdown": "Le prototype de la ligne 5 permet au compilateur d'accepter l'appel à factorielle() fait dans main(), bien avant d'avoir lu la définition complète de cette fonction plus bas dans le fichier."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre un prototype et une définition de fonction",
+          "pourquoi_faux": "Un prototype se termine par un point-virgule et ne contient jamais de corps ; une définition contient le corps complet entre accolades. Ce sont deux notations différentes pour deux rôles différents.",
+          "correction_markdown": "Vérifier systématiquement la présence ou l'absence d'accolades et de point-virgule pour distinguer les deux."
+        },
+        {
+          "erreur_markdown": "Croire qu'un prototype est toujours obligatoire, même quand la fonction est définie avant son premier appel",
+          "pourquoi_faux": "Si la définition complète de la fonction précède déjà tous ses appels dans le fichier, le compilateur connaît déjà sa signature au moment de chaque appel : un prototype séparé devient alors superflu.",
+          "correction_markdown": "Un prototype n'est nécessaire que lorsque la fonction est appelée avant sa définition complète dans l'ordre de lecture du fichier."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire le prototype d'une fonction carre qui prend un int en paramètre et retourne un int.",
+          "solution_markdown": "`int carre(int n);`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un programme appelle moyenne(a, b) dans main(), mais la fonction moyenne n'est ni prototypée ni définie avant cet appel : elle n'est définie que plus bas dans le fichier. Que se passe-t-il à la compilation, et comment corriger le problème ?",
+          "solution_markdown": "Le compilateur signale une erreur (ou un avertissement selon sa configuration), car il ne connaît pas encore la signature de moyenne au moment de l'appel. Il suffit d'ajouter le prototype de moyenne avant main(), par exemple `float moyenne(float a, float b);`, pour que le compilateur accepte l'appel."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi le prototype d'une fonction récursive comme factorielle() est indispensable, alors qu'une fonction récursive s'appelle elle-même à l'intérieur de sa propre définition, où elle est donc déjà « connue ».",
+          "solution_markdown": "Dans l'exercice, le prototype (ligne 5) n'est pas nécessaire pour l'appel récursif interne (factorielle s'appelant elle-même à la ligne 24, à l'intérieur de sa propre définition, où le compilateur connaît déjà sa signature en cours de lecture du corps) : il est nécessaire pour l'appel fait depuis main() (ligne 13), qui précède la définition complète de factorielle (ligne 18) dans l'ordre du fichier. Le prototype sert donc ici uniquement à satisfaire cet appel externe anticipé, pas la récursivité elle-même."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un prototype annonce le type de retour et les types de paramètres d'une fonction, avant sa définition complète.",
+        "Il se termine par un point-virgule, sans corps entre accolades, contrairement à une définition.",
+        "Il permet d'appeler une fonction avant l'endroit où elle est réellement définie dans le fichier.",
+        "Il n'est nécessaire que si un appel précède la définition complète dans l'ordre de lecture du fichier par le compilateur."
+      ]
+    }
+  ]
+}

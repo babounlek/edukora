@@ -1,0 +1,111 @@
+{
+  "cours_id": "cours-sql-count-tle-ti",
+  "meta": {
+    "titre": "Compter des lignes en SQL avec COUNT",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 12,
+    "tags": [
+      "SQL",
+      "COUNT",
+      "WHERE"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex2-q4.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de clients avons-nous dans telle ville ? Combien d'appartements restent en dessous d'un certain seuil de surface ? Ce genre de question de gestion, apparemment anodine, se résout en SQL par une combinaison très simple, mais qu'il faut savoir assembler dans le bon ordre : filtrer d'abord, compter ensuite."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une requête SQL avec WHERE."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Compter des lignes filtrées",
+      "contenu_markdown": "La fonction `COUNT(*)` compte le nombre de lignes renvoyées par une requête. Pour compter uniquement les lignes qui vérifient une condition, il suffit de placer cette condition dans une clause WHERE avant d'appliquer COUNT : WHERE filtre d'abord les lignes, COUNT compte ensuite ce qu'il en reste.",
+      "formule_principale": "SELECT COUNT(*) FROM table WHERE condition;"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui compte le nombre d'appartements dont la superficie est inférieure à 70 m².",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la condition de filtrage",
+          "justification": "« Superficie inférieure à 70 m² » se traduit directement en condition WHERE.",
+          "resultat_markdown": "`WHERE superficie < 70`"
+        },
+        {
+          "numero": 2,
+          "action": "Compter les lignes restantes",
+          "justification": "Une fois le filtre appliqué, il ne reste plus qu'à compter les lignes.",
+          "resultat_markdown": "```sql\nSELECT COUNT(*) AS nombre_appartements\nFROM APPARTEMENT\nWHERE superficie < 70;\n```"
+        }
+      ],
+      "conclusion_markdown": "WHERE filtre les appartements de moins de 70 m², COUNT(*) compte ensuite combien il en reste."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser COUNT(*) sans WHERE alors que l'énoncé demande un sous-ensemble précis",
+          "pourquoi_faux": "Sans WHERE, COUNT(*) compte TOUTES les lignes de la table, pas seulement celles qui vérifient la condition demandée par l'énoncé.",
+          "correction_markdown": "Relis toujours l'énoncé pour vérifier s'il demande un comptage global ou un comptage restreint à une condition, et ajoute WHERE dans ce second cas."
+        },
+        {
+          "erreur_markdown": "Utiliser COUNT(colonne) en pensant que cela change le résultat par rapport à COUNT(*)",
+          "pourquoi_faux": "`COUNT(colonne)` ne compte que les lignes où cette colonne n'est pas NULL, ce qui peut donner un résultat différent de `COUNT(*)` si la colonne contient des valeurs manquantes.",
+          "correction_markdown": "Utilise `COUNT(*)` par défaut pour compter des lignes, sauf besoin spécifique de compter uniquement les valeurs non nulles d'une colonne précise."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrivez la requête qui compte le nombre total de clients enregistrés.",
+          "solution_markdown": "```sql\nSELECT COUNT(*) AS nombre_clients\nFROM CLIENT;\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrivez la requête qui compte le nombre d'appartements dont le prix de vente dépasse 50 000 000.",
+          "solution_markdown": "```sql\nSELECT COUNT(*) AS nombre_appartements_chers\nFROM APPARTEMENT\nWHERE pxvente > 50000000;\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui compte le nombre de clients DISTINCTS qui possèdent au moins un appartement de plus de 150 m², sachant qu'un même client peut posséder plusieurs appartements.",
+          "solution_markdown": "```sql\nSELECT COUNT(DISTINCT A.codeclt) AS nombre_clients\nFROM APPARTEMENT A\nWHERE A.superficie > 150;\n```\nSans `DISTINCT`, `COUNT(A.codeclt)` compterait une fois par APPARTEMENT correspondant au critère, et non une fois par CLIENT : un client possédant deux appartements de plus de 150 m² serait alors compté deux fois. `COUNT(DISTINCT A.codeclt)` élimine d'abord les doublons de code client avant de compter, garantissant qu'un même client, même propriétaire de plusieurs appartements concernés, n'est comptabilisé qu'une seule fois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "COUNT(*) compte le nombre de lignes renvoyées par une requête.",
+        "Pour compter un sous-ensemble précis, place la condition dans WHERE avant COUNT : filtrer d'abord, compter ensuite.",
+        "COUNT(DISTINCT colonne) élimine les doublons avant de compter, utile quand un même élément peut apparaître plusieurs fois dans le résultat.",
+        "Au BAC, toute question qui commence par « le nombre de... » ou « combien de... » annonce une requête construite autour de COUNT."
+      ]
+    }
+  ]
+}

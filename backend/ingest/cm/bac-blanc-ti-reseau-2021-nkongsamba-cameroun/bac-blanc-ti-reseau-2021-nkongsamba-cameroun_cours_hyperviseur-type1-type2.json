@@ -1,0 +1,103 @@
+{
+  "cours_id": "cours-hyperviseur-type1-type2-nkongsamba-2021",
+  "meta": {
+    "titre": "Hyperviseur de type 1 et hyperviseur de type 2",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Virtualisation",
+    "duree_estimee_min": 15,
+    "tags": [
+      "hyperviseur",
+      "virtualisation",
+      "bare-metal"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-blanc-ti-reseau-2021-nkongsamba-cameroun",
+    "epreuve_titre": "Examen blanc - Lycée Bilingue de Nkongsamba - Réseau, Internet et Sécurité informatique - TI - 2021",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex3-q3-0",
+    "rappels_lies": [
+      "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex3-q4-0",
+      "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex3-q4-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un hyperviseur peut soit remplacer le système d'exploitation d'une machine, soit s'installer simplement à l'intérieur d'un système d'exploitation déjà en place : cette différence sépare les deux types d'hyperviseurs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est la virtualisation et une machine virtuelle."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Type 1 (natif) contre type 2 (hébergé)",
+      "contenu_markdown": "Un hyperviseur de type 1 (natif ou bare-metal) s'installe directement sur le matériel physique, sans système d'exploitation hôte intermédiaire, et gère lui-même l'accès aux ressources. Un hyperviseur de type 2 (hébergé) s'installe comme une simple application au-dessus d'un système d'exploitation hôte déjà présent, qui reste responsable de l'accès réel au matériel. Le type 1, plus proche du matériel, offre de meilleures performances et vise les serveurs ; le type 2, plus simple à installer, vise les postes de travail et les usages de test."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un particulier installe VirtualBox sur son PC personnel équipé de Windows 10 pour tester Linux. De quel type d'hyperviseur s'agit-il ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier si un système d'exploitation hôte préexiste",
+          "justification": "Windows 10 est déjà installé et fonctionnel sur le PC avant l'installation de VirtualBox.",
+          "resultat_markdown": "Un système d'exploitation hôte (Windows 10) est déjà présent."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire le type d'hyperviseur",
+          "justification": "Un hyperviseur qui s'installe au-dessus d'un système d'exploitation existant est un hyperviseur hébergé.",
+          "resultat_markdown": "VirtualBox est ici un hyperviseur de type 2."
+        }
+      ],
+      "conclusion_markdown": "La présence d'un système d'exploitation hôte fonctionnel avant l'installation de l'hyperviseur est le signal qui identifie systématiquement un hyperviseur de type 2."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que le type 1 est « plus simple » car il est numéroté en premier",
+          "pourquoi_faux": "C'est l'inverse pédagogiquement : le type 2 est plus simple à installer pour un utilisateur final, le type 1 demande une installation dédiée d'un serveur."
+        },
+        {
+          "erreur_markdown": "Dire qu'un hyperviseur de type 2 ne dépend d'aucun système d'exploitation",
+          "pourquoi_faux": "C'est l'exact contraire de sa définition : le type 2 dépend justement d'un système d'exploitation hôte déjà installé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "VMware ESXi s'installe directement sur un serveur nu, sans aucun système d'exploitation préalable. De quel type s'agit-il ?",
+          "solution_markdown": "Hyperviseur de type 1 (natif, bare-metal)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi une entreprise qui héberge de nombreux serveurs virtuels en production choisit-elle généralement un hyperviseur de type 1 plutôt que de type 2 ?",
+          "solution_markdown": "Parce que le type 1, en s'exécutant directement sur le matériel sans couche de système d'exploitation intermédiaire, offre de meilleures performances et une meilleure fiabilité, essentielles pour un usage de production à grande échelle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Type 1 (natif/bare-metal) : s'installe directement sur le matériel, pas de système d'exploitation hôte, destiné aux serveurs (ex. VMware ESXi, Hyper-V serveur).",
+        "Type 2 (hébergé) : s'installe comme une application dans un système d'exploitation existant, destiné aux postes de travail (ex. VMware Workstation, VirtualBox)."
+      ]
+    }
+  ]
+}

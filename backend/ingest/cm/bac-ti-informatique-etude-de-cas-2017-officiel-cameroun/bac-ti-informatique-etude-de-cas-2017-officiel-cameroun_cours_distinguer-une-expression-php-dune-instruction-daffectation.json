@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-expression-vs-affectation-php-tle-ti",
+  "meta": {
+    "titre": "Expression ou affectation ? Le piège des lignes PHP qui ne changent rien",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases du langage PHP - opérateurs",
+    "duree_estimee_min": 25,
+    "tags": [
+      "PHP",
+      "affectation",
+      "expression",
+      "opérateurs de comparaison",
+      "opérateurs composés"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau d'instructions PHP à compléter ligne par ligne ressemble à un exercice mécanique : appliquer chaque ligne, noter le résultat, passer à la suivante. Le piège, c'est que certaines lignes qui ressemblent à des calculs ne changent en réalité rien du tout, parce qu'elles ne contiennent aucun ordre de stockage. Savoir repérer ces lignes « fantômes » est une compétence transversale qui évite bien des erreurs, en PHP comme dans n'importe quel autre langage de programmation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les quatre opérations arithmétiques de base et l'ordre des priorités.",
+        "Savoir ce qu'est une variable en PHP (préfixe `$`)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Repérer l'opérateur d'affectation avant de calculer quoi que ce soit",
+      "contenu_markdown": "Une instruction PHP ne modifie une variable que si elle contient un opérateur d'affectation : `=` (affectation simple), `+=`, `-=`, `*=`, `/=` (affectation composée, qui combine un calcul et un stockage), ou `++`/`--` (incrémentation/décrémentation, qui ajoutent ou retirent 1). Une instruction qui ne contient aucun de ces opérateurs - une simple expression arithmétique isolée (`$x + 3;`), ou un opérateur de comparaison comme `==`, `!=`, `<`, `>` - est bel et bien évaluée par PHP, mais son résultat n'est stocké nulle part : il est immédiatement perdu, comme un calcul fait sur un brouillon qu'on ne recopie jamais au propre. Pour analyser une séquence d'instructions, on identifie donc d'abord, ligne par ligne, la présence ou l'absence d'un opérateur d'affectation, avant même de faire le moindre calcul.",
+      "formule_principale": "\\text{Opérateur d'affectation présent} \\;\\Rightarrow\\; \\text{la variable change} \\quad|\\quad \\text{absent} \\;\\Rightarrow\\; \\text{la variable reste inchangée}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pour $x$ valant 20 avant toute opération, déterminer la valeur de `$x` après chacune des lignes suivantes, exécutées l'une après l'autre : `$x +3;` puis `$x=$x+2;` puis `$x==5;`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Analyser la ligne `$x +3;`",
+          "justification": "Cette ligne ne contient aucun opérateur d'affectation, seulement une addition isolée.",
+          "resultat_markdown": "Le calcul `20 + 3 = 23` est effectué puis jeté ; `$x` reste à 20."
+        },
+        {
+          "numero": 2,
+          "action": "Analyser la ligne `$x=$x+2;`",
+          "justification": "Le signe `=` affecte le résultat du calcul à `$x`.",
+          "resultat_markdown": "`$x` devient `20 + 2 = 22`."
+        },
+        {
+          "numero": 3,
+          "action": "Analyser la ligne `$x==5;`",
+          "justification": "`==` est un opérateur de comparaison, pas d'affectation : il teste seulement l'égalité, sans jamais stocker de résultat.",
+          "resultat_markdown": "Le test « 22 est-il égal à 5 ? » vaut faux, mais `$x` reste à 22."
+        }
+      ],
+      "conclusion_markdown": "Sur trois lignes qui ressemblent à des calculs, une seule (`$x=$x+2;`) modifie réellement `$x` : les deux autres sont évaluées puis oubliées, faute d'opérateur d'affectation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que `$x +3;` équivaut à `$x += 3;` et donc que `$x` passe de 20 à 23.",
+          "pourquoi_faux": "Sans le signe `=`, PHP calcule bien `$x + 3` mais ne l'affecte à aucune variable ; le résultat est perdu à la fin de la ligne, `$x` ne change pas.",
+          "correction_markdown": "Vérifier la présence explicite d'un opérateur d'affectation (`=`, `+=`, `++`...) avant de conclure qu'une variable change de valeur."
+        },
+        {
+          "erreur_markdown": "Traiter `$x==5;` comme une affectation qui donnerait la valeur 5 à `$x`.",
+          "pourquoi_faux": "Le double signe égal `==` est un opérateur de comparaison (il répond à une question vrai/faux), totalement différent du simple `=` qui affecte une valeur. Une seule lettre de différence change complètement le sens de l'instruction.",
+          "correction_markdown": "Toujours bien distinguer `=` (un seul signe, affectation) de `==` (deux signes, comparaison) : c'est une confusion très fréquente, y compris chez des programmeurs expérimentés."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour `$y` valant 10, quelle est la valeur de `$y` après l'instruction `$y * 2;` ?",
+          "solution_markdown": "`$y` reste à 10 : `$y * 2;` est une expression isolée sans opérateur d'affectation, le résultat `20` est calculé puis jeté."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour `$z` valant 8, déterminer la valeur de `$z` après l'exécution successive des trois lignes : `$z *= 2;` puis `$z != 16;` puis `$z--;`.",
+          "solution_markdown": "Ligne 1 : `$z *= 2;` équivaut à `$z = $z * 2`, soit `8 * 2 = 16` : `$z` devient 16.\n\nLigne 2 : `$z != 16;` est une comparaison (« différent de ») dont le résultat est faux puisque `$z` vaut bien 16, mais ce test n'affecte rien : `$z` reste à 16.\n\nLigne 3 : `$z--;` décrémente `$z` de 1 : `16 - 1 = 15`. `$z` devient 15."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour `$a` valant 5, une suite de six lignes est exécutée dans l'ordre : `$a += 3;` ; `$a > 10;` ; `$a -= $a - 4;` ; `$a % 2;` ; `$a++;` ; `$a == $a;`. Donner la valeur finale de `$a` en justifiant chaque étape.",
+          "solution_markdown": "Ligne 1 : `$a += 3;` donne `$a = 5 + 3 = 8`.\n\nLigne 2 : `$a > 10;` est une comparaison (faux, 8 n'est pas supérieur à 10), sans effet : `$a` reste à 8.\n\nLigne 3 : `$a -= $a - 4;` équivaut à `$a = $a - ($a - 4)`. On évalue d'abord la partie droite avec `$a = 8` : `8 - 4 = 4`. Puis `$a = 8 - 4 = 4`.\n\nLigne 4 : `$a % 2;` est une expression isolée (reste de la division de 4 par 2, soit 0), sans effet : `$a` reste à 4.\n\nLigne 5 : `$a++;` incrémente `$a` de 1 : `4 + 1 = 5`.\n\nLigne 6 : `$a == $a;` est une comparaison (toujours vraie, une variable est toujours égale à elle-même), sans effet : `$a` reste à 5.\n\nLa valeur finale de `$a` est **5**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une ligne PHP ne modifie une variable que si elle contient un opérateur d'affectation : `=`, `+=`, `-=`, `*=`, `/=`, `++`, `--`.",
+        "Une expression isolée (calcul sans `=`) est évaluée puis immédiatement perdue : elle n'a aucun effet sur l'état du programme.",
+        "Un opérateur de comparaison (`==`, `!=`, `<`, `>`, `<=`, `>=`) produit un résultat vrai/faux qui n'est jamais stocké tout seul dans une variable.",
+        "Pour analyser une séquence d'instructions, repère d'abord TOUTES les lignes contenant un opérateur d'affectation avant de calculer quoi que ce soit.",
+        "Ce piège revient chaque année sous une forme ou une autre au BAC TI : un tableau à compléter contenant volontairement une ou plusieurs lignes sans affectation, pour vérifier que le candidat ne calcule pas mécaniquement sans réfléchir au sens de chaque opérateur."
+      ]
+    }
+  ]
+}

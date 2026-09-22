@@ -1,0 +1,167 @@
+{
+ "cours_id": "cours-coefficient-correlation-lineaire-1ere-ce",
+ "meta": {
+  "titre": "Calculer et interpréter le coefficient de corrélation linéaire",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistique à deux variables",
+  "duree_estimee_min": 30,
+  "tags": ["coefficient de corrélation", "covariance", "écart-type", "ajustement affine", "variance"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex2-q2bi-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "La covariance dit dans quel sens deux caractères varient ensemble, mais pas avec quelle force : sa valeur dépend des unités choisies, et $5{,}72$ ne signifie rien tant qu'on ignore si l'on compte en chevaux ou en kilowatts. Le coefficient de corrélation corrige ce défaut. C'est un nombre sans unité, toujours compris entre $-1$ et $1$, qui mesure à quel point le nuage se rapproche d'une droite. Un seul nombre, et l'on sait si l'ajustement affine que l'on s'apprête à calculer a du sens."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Calculer la covariance d'une série statistique double",
+    "Calculer une variance et en déduire un écart-type",
+    "Savoir qu'un écart-type est la racine carrée de la variance, donc positif"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Une covariance normalisée par les écarts-types",
+   "contenu_markdown": "**Définition.** Pour une série statistique double $(x_i ; y_i)$, le coefficient de corrélation linéaire est\n\n$$r = \\dfrac{\\operatorname{Cov}(X,Y)}{\\sigma_X \\, \\sigma_Y}$$\n\noù $\\sigma_X = \\sqrt{V(X)}$ et $\\sigma_Y = \\sqrt{V(Y)}$ sont les écarts-types des deux caractères.\n\n**Pourquoi diviser par les écarts-types ?** La covariance s'exprime dans le produit des deux unités : elle change de valeur si l'on passe des mètres aux centimètres. En la divisant par le produit des écarts-types, qui portent chacun l'une des deux unités, on obtient un nombre **sans dimension**, donc comparable d'une série à l'autre.\n\n**Encadrement fondamental.** Pour toute série,\n\n$$-1 \\leqslant r \\leqslant 1$$\n\nCet encadrement est le contrôle le plus rapide : une valeur hors de cet intervalle signale toujours une erreur.\n\n**Lecture du résultat.**\n\n| Valeur de $r$ | Interprétation |\n|---|---|\n| $r$ proche de $1$ | forte corrélation positive : les deux caractères augmentent ensemble, le nuage est presque aligné et croissant |\n| $r$ proche de $-1$ | forte corrélation négative : quand l'un augmente, l'autre diminue, le nuage est presque aligné et décroissant |\n| $r$ proche de $0$ | aucune tendance affine ne se dégage |\n| $r = \\pm 1$ | les points sont **exactement** alignés |\n\n**En pratique.** On considère généralement qu'un ajustement affine est justifié dès que $|r| \\geqslant 0{,}87$ environ, ce qui correspond à $r^2 \\geqslant 0{,}75$. Ce seuil n'est pas une règle mathématique : c'est une convention, et l'énoncé attend surtout que tu compares $|r|$ à $1$ et que tu commentes.\n\n**Le signe.** Il est toujours celui de la covariance, puisque les deux écarts-types sont positifs. Retenir cela évite de recalculer un signe déjà connu.",
+   "formule_principale": "r = \\dfrac{\\operatorname{Cov}(X,Y)}{\\sigma_X \\, \\sigma_Y} \\quad\\text{avec}\\quad -1 \\leqslant r \\leqslant 1",
+   "variantes": [
+    {
+     "nom": "Formule avec les variances au dénominateur",
+     "quand_utiliser": "Quand l'énoncé fournit les variances et non les écarts-types",
+     "contenu_markdown": "On peut écrire directement\n\n$$r = \\dfrac{\\operatorname{Cov}(X,Y)}{\\sqrt{V(X) \\times V(Y)}}$$\n\nCette écriture évite d'extraire deux racines carrées séparément, et elle est souvent plus rapide quand les variances sont données. Attention toutefois : la racine porte sur le **produit** des deux variances, pas sur leur somme."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Pour la série donnant la fréquentation d'un site touristique sur $7$ ans, on a établi que $\\operatorname{Cov}(X,Y) \\approx 5{,}72$. L'énoncé fournit de plus $\\bar{y} = 4{,}57$, $V(X) = 4$ et $V(Y) = 10{,}46$. Calculer le coefficient de corrélation linéaire entre $X$ et $Y$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Calculer l'écart-type de $X$",
+     "justification": "L'écart-type est la racine carrée de la variance",
+     "resultat_markdown": "$\\sigma_X = \\sqrt{V(X)} = \\sqrt{4} = 2$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer l'écart-type de $Y$",
+     "justification": "Même formule ; la racine ne tombe pas ronde, on garde quatre décimales pour l'instant",
+     "resultat_markdown": "$\\sigma_Y = \\sqrt{10{,}46} \\approx 3{,}2342$"
+    },
+    {
+     "numero": 3,
+     "action": "Vérifier l'ordre de grandeur",
+     "justification": "Un écart-type doit être du même ordre que la dispersion observée ; les valeurs de $Y$ vont de $1$ à $10$, donc un écart-type d'environ $3$ est plausible",
+     "resultat_markdown": "$\\sigma_Y \\approx 3{,}23$ : cohérent"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer le dénominateur",
+     "justification": "C'est le produit des deux écarts-types",
+     "resultat_markdown": "$\\sigma_X \\, \\sigma_Y \\approx 2 \\times 3{,}2342 = 6{,}4684$"
+    },
+    {
+     "numero": 5,
+     "action": "Former le quotient",
+     "justification": "On applique la définition avec la covariance déjà calculée",
+     "resultat_markdown": "$r = \\dfrac{5{,}72}{6{,}4684} \\approx 0{,}8843$"
+    },
+    {
+     "numero": 6,
+     "action": "Arrondir et conclure",
+     "justification": "Deux décimales suffisent pour interpréter",
+     "resultat_markdown": "$r \\approx 0{,}88$"
+    },
+    {
+     "numero": 7,
+     "action": "Vérifier l'encadrement",
+     "justification": "Un coefficient de corrélation appartient toujours à $[-1 ; 1]$",
+     "resultat_markdown": "$-1 \\leqslant 0{,}88 \\leqslant 1$ : la valeur est admissible"
+    },
+    {
+     "numero": 8,
+     "action": "Interpréter",
+     "justification": "On commente le signe puis la valeur absolue",
+     "resultat_markdown": "$r > 0$ : la fréquentation augmente avec le rang de l'année. $|r| = 0{,}88$ est proche de $1$ : la corrélation est forte, l'ajustement affine est légitime"
+    }
+   ],
+   "conclusion_markdown": "Le coefficient de corrélation vaut environ $0{,}88$ : positif et proche de $1$, il autorise l'ajustement affine que la question suivante fera calculer. Sans ce contrôle, rien ne garantirait que la droite de régression ait un sens pour cette série."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Placer les variances au dénominateur au lieu des écarts-types",
+     "pourquoi_faux": "Écrire $r = \\dfrac{\\operatorname{Cov}}{V(X) \\times V(Y)}$ donnerait ici $\\dfrac{5{,}72}{4 \\times 10{,}46} \\approx 0{,}137$, valeur qui appartient certes à $[-1 ; 1]$ mais qui n'a aucun sens : elle ferait conclure à une absence de corrélation alors que le nuage est nettement aligné.",
+     "correction_markdown": "Retiens que le dénominateur porte les mêmes unités que la covariance, donc qu'il fait intervenir les écarts-types, pas les variances. En cas de doute, écris $\\sqrt{V(X) \\times V(Y)}$ : la racine est la trace des écarts-types."
+    },
+    {
+     "erreur_markdown": "Ne pas vérifier que $r$ appartient à $[-1 ; 1]$",
+     "pourquoi_faux": "C'est le seul contrôle qui détecte à coup sûr la confusion précédente lorsqu'elle produit une valeur trop grande. Une valeur comme $1{,}43$ ou $2{,}8$ est mathématiquement impossible et signale immédiatement une erreur de dénominateur.",
+     "correction_markdown": "Écris systématiquement, après le calcul, la phrase : « $r$ appartient bien à $[-1 ; 1]$ ». Cinq secondes, et le résultat est sécurisé."
+    },
+    {
+     "erreur_markdown": "Conclure qu'une forte corrélation prouve un lien de cause à effet",
+     "pourquoi_faux": "Le coefficient de corrélation mesure une **liaison statistique**, pas une causalité. Deux grandeurs peuvent être fortement corrélées parce qu'elles dépendent toutes deux d'une troisième, ou par pure coïncidence sur un petit échantillon.",
+     "correction_markdown": "Formule l'interprétation en termes de liaison : « les deux caractères varient dans le même sens de façon régulière », et non « l'un provoque l'autre »."
+    },
+    {
+     "erreur_markdown": "Recalculer la covariance au lieu d'utiliser la valeur déjà obtenue",
+     "pourquoi_faux": "Outre la perte de temps, on risque d'utiliser une valeur légèrement différente de celle demandée par l'énoncé. Ici, l'arrondi par excès $5{,}72$ est celui que la suite de l'exercice attend, puisque $\\dfrac{5{,}72}{4} = 1{,}43$ est exactement le coefficient directeur annoncé.",
+     "correction_markdown": "Réutilise les valeurs déjà établies et celles que l'énoncé fournit explicitement. Quand un sujet donne $\\bar{y}$, $V(X)$ et $V(Y)$, c'est qu'il veut qu'on s'en serve tels quels."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Une série double vérifie $\\operatorname{Cov}(X,Y) = -12$, $V(X) = 16$ et $V(Y) = 25$. Calculer le coefficient de corrélation linéaire et interpréter le résultat.",
+     "solution_markdown": "**Écarts-types.**\n\n$$\\sigma_X = \\sqrt{16} = 4 \\qquad ; \\qquad \\sigma_Y = \\sqrt{25} = 5$$\n\n**Coefficient de corrélation.**\n\n$$r = \\dfrac{-12}{4 \\times 5} = \\dfrac{-12}{20} = -0{,}6$$\n\n**Contrôle.** $-1 \\leqslant -0{,}6 \\leqslant 1$ : la valeur est admissible.\n\n**Interprétation.** Le coefficient est **négatif** : les deux caractères varient en sens contraires, quand $X$ augmente, $Y$ diminue globalement.\n\nSa valeur absolue vaut $0{,}6$, assez éloignée de $1$ : la corrélation est **modérée**. Le nuage présente une tendance décroissante, mais les points restent dispersés autour de la droite. Un ajustement affine serait peu fiable pour faire des prévisions.\n\n**Remarque.** Le signe de $r$ est celui de la covariance, ici négative : on pouvait l'annoncer avant tout calcul."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "On considère la série double suivante.\n\n| $x_i$ | $1$ | $2$ | $3$ | $4$ |\n|---|---|---|---|---|\n| $y_i$ | $3$ | $5$ | $6$ | $10$ |\n\nCalculer $\\operatorname{Cov}(X,Y)$, $V(X)$, $V(Y)$, puis le coefficient de corrélation linéaire.",
+     "solution_markdown": "**Étape 1 - moyennes.**\n\n$$\\bar{x} = \\dfrac{1+2+3+4}{4} = \\dfrac{10}{4} = 2{,}5 \\qquad ; \\qquad \\bar{y} = \\dfrac{3+5+6+10}{4} = \\dfrac{24}{4} = 6$$\n\n**Étape 2 - covariance.** On dresse la ligne des produits.\n\n| $x_i y_i$ | $3$ | $10$ | $18$ | $40$ |\n|---|---|---|---|---|\n\nSomme : $3+10 = 13$ ; $+18 = 31$ ; $+40 = 71$.\n\n$$\\operatorname{Cov}(X,Y) = \\dfrac{71}{4} - 2{,}5 \\times 6 = 17{,}75 - 15 = 2{,}75$$\n\n**Étape 3 - variance de $X$.** Somme des carrés : $1+4+9+16 = 30$.\n\n$$V(X) = \\dfrac{30}{4} - 2{,}5^2 = 7{,}5 - 6{,}25 = 1{,}25$$\n\n**Étape 4 - variance de $Y$.** Somme des carrés : $9+25+36+100 = 170$.\n\n$$V(Y) = \\dfrac{170}{4} - 6^2 = 42{,}5 - 36 = 6{,}5$$\n\n**Étape 5 - écarts-types.**\n\n$$\\sigma_X = \\sqrt{1{,}25} \\approx 1{,}118 \\qquad ; \\qquad \\sigma_Y = \\sqrt{6{,}5} \\approx 2{,}550$$\n\n**Étape 6 - coefficient de corrélation.**\n\n$$r = \\dfrac{2{,}75}{1{,}118 \\times 2{,}550} = \\dfrac{2{,}75}{2{,}851} \\approx 0{,}96$$\n\n**Contrôle.** $-1 \\leqslant 0{,}96 \\leqslant 1$ : admissible.\n\n**Interprétation.** La corrélation est positive et très forte, $|r|$ étant proche de $1$ : les quatre points sont presque alignés selon une direction croissante, et un ajustement affine est pleinement justifié.\n\n**Contrôle supplémentaire.** Les deux variances sont positives, comme elles doivent l'être, et l'on vérifie que $|\\operatorname{Cov}| = 2{,}75$ ne dépasse pas $\\sigma_X \\sigma_Y \\approx 2{,}85$ : c'est exactement ce qu'impose l'encadrement $|r| \\leqslant 1$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit une série double dont les points sont **exactement alignés** sur une droite d'équation $y = ax + b$ avec $a \\neq 0$. Démontrer que le coefficient de corrélation linéaire vaut $1$ si $a > 0$ et $-1$ si $a < 0$.",
+     "solution_markdown": "**Étape 1 - traduire l'alignement.**\n\nDire que les points sont exactement alignés signifie que, pour tout individu $i$,\n\n$$y_i = a x_i + b$$\n\n**Étape 2 - exprimer $\\bar{y}$.**\n\n$$\\bar{y} = \\dfrac{1}{n}\\sum y_i = \\dfrac{1}{n}\\sum (a x_i + b) = a \\times \\dfrac{1}{n}\\sum x_i + \\dfrac{1}{n} \\times nb = a\\bar{x} + b$$\n\nLe point moyen appartient donc lui aussi à la droite, ce qui était prévisible.\n\n**Étape 3 - exprimer la covariance.**\n\nOn utilise la définition par les écarts à la moyenne :\n\n$$\\operatorname{Cov}(X,Y) = \\dfrac{1}{n}\\sum (x_i - \\bar{x})(y_i - \\bar{y})$$\n\nOr\n\n$$y_i - \\bar{y} = (a x_i + b) - (a\\bar{x} + b) = a(x_i - \\bar{x})$$\n\nD'où\n\n$$\\operatorname{Cov}(X,Y) = \\dfrac{1}{n}\\sum (x_i - \\bar{x}) \\times a(x_i - \\bar{x}) = a \\times \\dfrac{1}{n}\\sum (x_i - \\bar{x})^2 = a \\, V(X)$$\n\n**Étape 4 - exprimer la variance de $Y$.**\n\n$$V(Y) = \\dfrac{1}{n}\\sum (y_i - \\bar{y})^2 = \\dfrac{1}{n}\\sum a^2 (x_i - \\bar{x})^2 = a^2 V(X)$$\n\n**Étape 5 - en déduire l'écart-type de $Y$.**\n\n$$\\sigma_Y = \\sqrt{a^2 V(X)} = |a| \\sqrt{V(X)} = |a| \\, \\sigma_X$$\n\nLa valeur absolue est indispensable : une racine carrée est positive, alors que $a$ peut être négatif.\n\n**Étape 6 - calculer le coefficient de corrélation.**\n\n$$r = \\dfrac{\\operatorname{Cov}(X,Y)}{\\sigma_X \\sigma_Y} = \\dfrac{a \\, V(X)}{\\sigma_X \\times |a| \\sigma_X} = \\dfrac{a \\, V(X)}{|a| \\, \\sigma_X^2}$$\n\nOr $\\sigma_X^2 = V(X)$, qui est non nul puisque les $x_i$ ne sont pas tous égaux. Donc\n\n$$r = \\dfrac{a}{|a|}$$\n\n**Étape 7 - conclure.**\n\n- Si $a > 0$, alors $|a| = a$ et $r = 1$.\n- Si $a < 0$, alors $|a| = -a$ et $r = -1$.\n\n**Interprétation.** La valeur $\\pm 1$ caractérise donc exactement l'alignement parfait, et son signe est celui de la pente. C'est ce qui justifie l'usage de $r$ comme mesure de la qualité d'un ajustement affine : plus $|r|$ s'approche de $1$, plus le nuage se rapproche d'une droite.\n\n**Contrôle sur un exemple.** Pour la série $(1 ; 3)$, $(2 ; 5)$, $(3 ; 7)$, qui vérifie $y = 2x + 1$, on trouve $\\bar{x} = 2$, $\\bar{y} = 5$, $\\operatorname{Cov} = \\dfrac{3+10+21}{3} - 10 = \\dfrac{34}{3} - 10 = \\dfrac{4}{3}$, $V(X) = \\dfrac{14}{3} - 4 = \\dfrac{2}{3}$ et $V(Y) = \\dfrac{83}{3} - 25 = \\dfrac{8}{3}$. Alors $\\sigma_X \\sigma_Y = \\sqrt{\\dfrac{2}{3} \\times \\dfrac{8}{3}} = \\dfrac{4}{3}$, et $r = 1$ comme annoncé."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "$r = \\dfrac{\\operatorname{Cov}(X,Y)}{\\sigma_X \\sigma_Y}$ : au dénominateur les **écarts-types**, jamais les variances.",
+    "En cas de doute, écris $\\sqrt{V(X) \\times V(Y)}$ : la racine te rappelle qu'il s'agit d'écarts-types.",
+    "Vérifie toujours que $r$ appartient à $[-1 ; 1]$ : c'est le contrôle qui détecte la confusion précédente.",
+    "Le signe de $r$ est celui de la covariance, les écarts-types étant positifs : tu le connais avant tout calcul.",
+    "$|r|$ proche de $1$ signifie nuage presque aligné, donc ajustement affine justifié ; $|r| = 1$ signifie alignement parfait.",
+    "Une forte corrélation n'est pas une relation de cause à effet : parle de liaison, pas de causalité.",
+    "Réutilise les valeurs fournies par l'énoncé plutôt que de les recalculer : elles sont choisies pour que la suite tombe juste.",
+    "Au Probatoire, cette question s'intercale entre la covariance et la droite de régression : elle valide l'ajustement avant qu'on ne le calcule."
+   ]
+  }
+ ]
+}

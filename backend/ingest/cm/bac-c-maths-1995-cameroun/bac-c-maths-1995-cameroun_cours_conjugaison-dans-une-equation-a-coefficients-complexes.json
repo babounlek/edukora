@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-conjugaison-dans-une-equation-a-coefficients-complexes-terminale-c",
+  "meta": {
+    "titre": "Conjuguer une équation à coefficients complexes pour exploiter des racines conjuguées",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Nombres complexes - équations polynomiales dans C",
+    "duree_estimee_min": 30,
+    "tags": [
+      "nombres complexes",
+      "conjugué",
+      "équation de degré 3",
+      "racines conjuguées",
+      "abaissement du degré"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-maths-1995-cameroun",
+    "epreuve_titre": "BAC Mathématiques - Cameroun, série C, session 1995 (Office du Baccalauréat du Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-maths-1995-cameroun-ex1-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "En Première, tu as appris une règle confortable : si une équation à coefficients **réels** admet la racine $z_0$, alors elle admet aussi $\\overline{z_0}$. En Terminale C, les sujets de BAC cassent ce confort en proposant des équations dont les coefficients contiennent des $i$ - comme $z^{3}-(5+i)z^{2}+(9+4i)z-5-5i=0$. La règle ne s'applique plus, et pourtant l'énoncé annonce que deux des racines sont conjuguées. Que faire ? Conjuguer non pas une racine, mais l'équation tout entière. Cette technique fait apparaître une seconde équation, révèle les racines communes aux deux, et fait tomber le degré de 3 à 2 en une soustraction."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écriture algébrique d'un nombre complexe et calcul de son conjugué",
+        "Les règles $\\overline{u+v}=\\overline{u}+\\overline{v}$, $\\overline{uv}=\\overline{u}\\,\\overline{v}$ et $\\overline{\\overline{z}}=z$",
+        "Résolution d'une équation du second degré dans $\\mathbb{C}$ (discriminant, racine carrée d'un réel négatif)",
+        "Notion de racine d'un polynôme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Conjuguer l'équation, pas seulement la racine",
+      "contenu_markdown": "Soit $P(z)=a_nz^{n}+\\dots+a_1z+a_0$ un polynôme à coefficients complexes, et soit $\\widetilde{P}$ le polynôme obtenu en remplaçant chaque coefficient par son conjugué :\n\n$$\\widetilde{P}(w)=\\overline{a_n}\\,w^{n}+\\dots+\\overline{a_1}\\,w+\\overline{a_0}.$$\n\nComme la conjugaison respecte les sommes et les produits, on a pour tout $z$ :\n\n$$\\overline{P(z)}=\\widetilde{P}\\left(\\overline{z}\\right).$$\n\n**Conséquence centrale.** Si $z$ est racine de $P$, alors $\\overline{z}$ est racine de $\\widetilde{P}$ : l'équation conjuguée $\\widetilde{P}(w)=0$ a exactement pour racines les conjuguées des racines de $P$.\n\n**Comment cela sert.** Suppose que l'énoncé garantisse $z_1=\\overline{z_2}$ parmi les racines de $P$. En conjuguant cette égalité, $\\overline{z_1}=z_2$. Les racines de $\\widetilde{P}$ sont donc $z_2$, $z_1$ et les conjuguées des autres : $z_1$ et $z_2$ sont racines **des deux** équations. En soustrayant $\\widetilde{P}(w)=0$ de $P(w)=0$, les termes de plus haut degré (dont les coefficients sont souvent réels, donc identiques) disparaissent, et on obtient une équation de degré strictement plus petit satisfaite par $z_1$ et $z_2$.\n\n**Cas particulier bien connu.** Si tous les coefficients sont réels, $\\widetilde{P}=P$ : la différence est nulle et on retrouve simplement que $\\overline{z}$ est racine de $P$. La règle vue en Première est donc un cas particulier de celle-ci.",
+      "formule_principale": "\\overline{P(z)}=\\widetilde{P}\\left(\\overline{z}\\right)",
+      "variantes": [
+        {
+          "nom": "Méthode par identification (factorisation)",
+          "quand_utiliser": "Quand on sait que deux racines sont conjuguées, donc que leur somme $s$ et leur produit $p$ sont RÉELS.",
+          "contenu_markdown": "On écrit a priori $P(z)=(z^{2}-sz+p)(z-c)$ avec $s\\in\\mathbb{R}$, $p\\in\\mathbb{R}$ et $c\\in\\mathbb{C}$, puis on développe :\n\n$$(z^{2}-sz+p)(z-c)=z^{3}-(c+s)z^{2}+(sc+p)z-pc.$$\n\nL'identification des coefficients avec ceux de $P$ donne un système en $s$, $p$, $c$ que l'on résout en séparant partie réelle et partie imaginaire. Cette variante donne d'un coup les trois racines, mais demande plus de calculs que la soustraction. Elle est précieuse comme **vérification** du résultat obtenu par la première méthode."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{C}$ l'équation $(E)\\;:\\;z^{3}-(5+i)z^{2}+(9+4i)z-5-5i=0$, sachant qu'elle possède trois solutions $z_1$, $z_2$, $z_3$ vérifiant $z_1=\\overline{z_2}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Conjuguer l'équation terme à terme",
+          "justification": "La conjugaison respecte somme et produit, donc $\\overline{z^{n}}=\\overline{z}^{\\,n}$ et $\\overline{az^{n}}=\\overline{a}\\,\\overline{z}^{\\,n}$.",
+          "resultat_markdown": "$$\\overline{P(z)}=\\overline{z}^{\\,3}-(5-i)\\overline{z}^{\\,2}+(9-4i)\\overline{z}-5+5i.$$ Si $P(z)=0$ alors $\\overline{P(z)}=0$, donc $\\overline{z}$ est racine de $(E')\\;:\\;w^{3}-(5-i)w^{2}+(9-4i)w-5+5i=0$."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier les racines communes à $(E)$ et $(E')$",
+          "justification": "L'hypothèse $z_1=\\overline{z_2}$ donne, par conjugaison, $\\overline{z_1}=z_2$. Les racines de $(E')$ sont donc $z_2$, $z_1$ et $\\overline{z_3}$.",
+          "resultat_markdown": "$z_1$ et $z_2$ sont racines à la fois de $(E)$ et de $(E')$."
+        },
+        {
+          "numero": 3,
+          "action": "Soustraire les deux équations membre à membre",
+          "justification": "Les deux polynômes ont le même terme $w^{3}$ : la soustraction élimine le degré 3.",
+          "resultat_markdown": "$$\\big[-(5+i)+(5-i)\\big]w^{2}+\\big[(9+4i)-(9-4i)\\big]w+\\big[(-5-5i)-(-5+5i)\\big]=0$$ $$-2i\\,w^{2}+8i\\,w-10i=0\\quad\\Longleftrightarrow\\quad -2i\\left(w^{2}-4w+5\\right)=0.$$ Comme $-2i\\neq0$ : $w^{2}-4w+5=0$."
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre l'équation du second degré obtenue",
+          "justification": "Discriminant $\\Delta=b^{2}-4ac$ ; comme $\\Delta<0$, on cherche une racine carrée complexe de $\\Delta$.",
+          "resultat_markdown": "$$\\Delta=(-4)^{2}-4\\times1\\times5=16-20=-4=(2i)^{2},$$ $$z=\\frac{4\\pm2i}{2}=2\\pm i.$$ Donc $z_1=2+i$ et $z_2=2-i$."
+        },
+        {
+          "numero": 5,
+          "action": "Obtenir la troisième racine par la somme des racines",
+          "justification": "Pour $z^{3}+a_2z^{2}+a_1z+a_0=0$, la somme des racines vaut $-a_2$. Ici $a_2=-(5+i)$.",
+          "resultat_markdown": "$$z_1+z_2+z_3=5+i,\\qquad z_1+z_2=4,\\qquad z_3=(5+i)-4=1+i.$$"
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier avec le produit des racines",
+          "justification": "Le produit des racines vaut $-a_0=5+5i$ : c'est un contrôle indépendant du calcul précédent.",
+          "resultat_markdown": "$$z_1z_2=(2+i)(2-i)=4-i^{2}=5,\\qquad z_1z_2z_3=5(1+i)=5+5i.\\ \\checkmark$$"
+        }
+      ],
+      "conclusion_markdown": "L'équation $(E)$ a pour ensemble de solutions $S=\\{2+i\\;;\\;2-i\\;;\\;1+i\\}$. On vient de montrer que l'hypothèse « deux racines conjuguées » suffit, même avec des coefficients complexes, à ramener une équation de degré 3 à une équation de degré 2."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer directement « les coefficients sont complexes mais l'équation a une racine conjuguée, donc $\\overline{z_1}$ est aussi racine de $(E)$ ».",
+          "pourquoi_faux": "La propriété « si $z_0$ est racine alors $\\overline{z_0}$ l'est aussi » n'est vraie que pour un polynôme à coefficients réels. Avec des coefficients complexes, le conjugué d'une racine est racine de l'équation **conjuguée**, qui est une autre équation. Ici $\\overline{z_3}=1-i$ n'est d'ailleurs pas racine de $(E)$ : en substituant, on trouverait une valeur non nulle.",
+          "correction_markdown": "Écrire explicitement l'équation conjuguée $(E')$ et dire que ses racines sont $\\overline{z_1}$, $\\overline{z_2}$, $\\overline{z_3}$. Ce n'est qu'ensuite, grâce à l'hypothèse $z_1=\\overline{z_2}$, qu'on peut affirmer que $z_1$ et $z_2$ appartiennent aux deux ensembles de racines."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe en soustrayant les termes constants : écrire $(-5-5i)-(-5+5i)=0$.",
+          "pourquoi_faux": "Le double signe moins devant $5i$ s'inverse : $(-5-5i)+5-5i=-10i$, et non 0. Cette erreur donne $-2iw^{2}+8iw=0$, soit $w(w-4)=0$ après division, donc les fausses racines 0 et 4 - qui ne vérifient évidemment pas $(E)$.",
+          "correction_markdown": "Poser la soustraction en colonne, coefficient par coefficient, avec les parenthèses écrites : $(-5-5i)-(-5+5i)=-5-5i+5-5i=-10i$. Puis vérifier que la factorisation par $-2i$ redonne bien les trois termes."
+        },
+        {
+          "erreur_markdown": "Conclure que $(E_2):z^{2}-4z+5=0$ « est l'équation demandée » et s'arrêter là, sans résoudre.",
+          "pourquoi_faux": "L'abaissement de degré n'est qu'un moyen. La question suivante demande les solutions de l'équation de départ, et il manque encore la troisième racine, qui ne s'obtient pas dans $(E_2)$.",
+          "correction_markdown": "Après avoir résolu $(E_2)$, utiliser systématiquement une relation coefficients-racines (la somme est la plus rapide) pour obtenir la racine restante, puis vérifier avec le produit."
+        },
+        {
+          "erreur_markdown": "Écrire $\\sqrt{\\Delta}=\\sqrt{-4}=2i$.",
+          "pourquoi_faux": "Le symbole $\\sqrt{\\phantom{x}}$ n'est défini que sur $[0\\,;+\\infty[$. L'écriture $\\sqrt{-4}$ n'a pas de sens et conduit à des absurdités du type $\\sqrt{-4}\\times\\sqrt{-9}=\\sqrt{36}=6$ alors que $2i\\times3i=-6$.",
+          "correction_markdown": "Écrire « $-4=(2i)^{2}$, donc $2i$ est **une** racine carrée complexe de $\\Delta$ », puis appliquer $z=\\dfrac{-b\\pm2i}{2a}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $P(z)=z^{2}-(3+i)z+(2+2i)$. Écrire l'équation conjuguée $\\widetilde{P}(w)=0$, puis vérifier que $z=2$ est racine de $P$ et que $\\overline{2}=2$ est bien racine de $\\widetilde{P}$.",
+          "solution_markdown": "**Équation conjuguée.** On conjugue chaque coefficient : $\\overline{1}=1$, $\\overline{-(3+i)}=-(3-i)$, $\\overline{2+2i}=2-2i$. Donc\n\n$$\\widetilde{P}(w)=w^{2}-(3-i)w+(2-2i).$$\n\n**$z=2$ est-il racine de $P$ ?**\n\n$$P(2)=2^{2}-(3+i)\\times2+(2+2i)=4-6-2i+2+2i=(4-6+2)+(-2+2)i=0.$$\n\nOui.\n\n**$\\overline{2}=2$ est-il racine de $\\widetilde{P}$ ?**\n\n$$\\widetilde{P}(2)=4-(3-i)\\times2+(2-2i)=4-6+2i+2-2i=0.$$\n\nOui, conformément à la règle $\\overline{P(z)}=\\widetilde{P}\\left(\\overline{z}\\right)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On considère $(E)\\;:\\;z^{3}-(4+i)z^{2}+(7+2i)z-(6+3i)=0$. On admet que $(E)$ possède trois solutions $z_1$, $z_2$, $z_3$ telles que $z_1=\\overline{z_2}$. Déterminer les trois solutions.",
+          "solution_markdown": "**Étape 1 - équation conjuguée.** En conjuguant tous les coefficients :\n\n$$(E')\\;:\\;w^{3}-(4-i)w^{2}+(7-2i)w-(6-3i)=0,$$\n\ndont les racines sont $\\overline{z_1}$, $\\overline{z_2}$, $\\overline{z_3}$.\n\n**Étape 2 - racines communes.** De $z_1=\\overline{z_2}$ on tire $\\overline{z_1}=z_2$ : les racines de $(E')$ sont $z_2$, $z_1$, $\\overline{z_3}$. Donc $z_1$ et $z_2$ sont racines de $(E)$ et de $(E')$.\n\n**Étape 3 - soustraction.** Pour $w\\in\\{z_1;z_2\\}$ :\n\n$$\\big[-(4+i)+(4-i)\\big]w^{2}+\\big[(7+2i)-(7-2i)\\big]w+\\big[-(6+3i)+(6-3i)\\big]=0$$\n\n$$-2i\\,w^{2}+4i\\,w-6i=0\\quad\\Longleftrightarrow\\quad-2i\\left(w^{2}-2w+3\\right)=0,$$\n\ndonc $w^{2}-2w+3=0$.\n\n**Étape 4 - résolution.** $\\Delta=(-2)^{2}-4\\times1\\times3=4-12=-8=\\left(2i\\sqrt{2}\\right)^{2}$, car $\\left(2i\\sqrt2\\right)^{2}=4i^{2}\\times2=-8$. D'où\n\n$$w=\\frac{2\\pm2i\\sqrt{2}}{2}=1\\pm i\\sqrt{2}.$$\n\nDonc $z_1=1+i\\sqrt{2}$ et $z_2=1-i\\sqrt{2}$.\n\n**Étape 5 - troisième racine.** La somme des racines vaut $4+i$ et $z_1+z_2=2$, donc\n\n$$z_3=(4+i)-2=2+i.$$\n\n**Vérification par le produit.** Le produit des racines vaut $6+3i$. Or $z_1z_2=1^{2}+\\left(\\sqrt2\\right)^{2}=1+2=3$ (produit de deux conjugués, égal au carré du module), donc $z_1z_2z_3=3(2+i)=6+3i$. C'est bien la valeur attendue.\n\n$$S=\\left\\{1+i\\sqrt{2}\\;;\\;1-i\\sqrt{2}\\;;\\;2+i\\right\\}.$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $(E)\\;:\\;z^{3}-(5+i)z^{2}+(9+4i)z-5-5i=0$. Retrouver les trois solutions **sans conjuguer l'équation**, en utilisant uniquement le fait que la somme et le produit de deux nombres complexes conjugués sont réels. (On écrira $P(z)=(z^{2}-sz+p)(z-c)$ avec $s$ et $p$ réels.)",
+          "solution_markdown": "**Pourquoi $s$ et $p$ sont réels.** Si $z_1=\\overline{z_2}$, alors\n\n$$s=z_1+z_2=z_1+\\overline{z_1}=2\\,\\mathrm{Re}(z_1)\\in\\mathbb{R},\\qquad p=z_1z_2=z_1\\overline{z_1}=|z_1|^{2}\\in\\mathbb{R}.$$\n\n$z_1$ et $z_2$ sont donc les racines du trinôme réel $z^{2}-sz+p$, et $P(z)=(z^{2}-sz+p)(z-c)$ avec $c=z_3$.\n\n**Développement.**\n\n$$(z^{2}-sz+p)(z-c)=z^{3}-cz^{2}-sz^{2}+scz+pz-pc=z^{3}-(c+s)z^{2}+(sc+p)z-pc.$$\n\n**Identification** avec $z^{3}-(5+i)z^{2}+(9+4i)z-(5+5i)$ :\n\n$$\\begin{cases}c+s=5+i\\\\ sc+p=9+4i\\\\ pc=5+5i\\end{cases}$$\n\n**Résolution.** De la première équation, $c=(5+i)-s$ ; comme $s$ est réel, la partie imaginaire de $c$ vaut 1, donc $c=(5-s)+i$.\n\nReportons dans la troisième : $p\\big[(5-s)+i\\big]=5+5i$. En identifiant parties réelle et imaginaire, sachant que $p$ est réel :\n\n$$\\begin{cases}p(5-s)=5\\\\ p=5\\end{cases}$$\n\nD'où $p=5$, puis $5(5-s)=5$, soit $5-s=1$ et $s=4$. On en déduit $c=1+i$.\n\n**Contrôle sur l'équation restante :** $sc+p=4(1+i)+5=9+4i$. C'est bien le coefficient attendu.\n\n**Conclusion.** $z_1$ et $z_2$ sont les racines de $z^{2}-4z+5=0$, soit $2+i$ et $2-i$, et $z_3=c=1+i$. On retrouve $S=\\{2+i\\;;\\;2-i\\;;\\;1+i\\}$, ce qui valide la méthode par conjugaison."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand les coefficients sont complexes, le conjugué d'une racine n'est pas racine de la même équation : il est racine de l'équation obtenue en conjuguant tous les coefficients.",
+        "L'hypothèse « deux racines sont conjuguées » est ce qui place ces deux racines dans les deux équations à la fois : c'est elle qui rend la soustraction possible.",
+        "Soustraire les deux équations fait disparaître les termes de plus haut degré et livre directement le trinôme dont $z_1$ et $z_2$ sont racines. Ce trinôme est toujours à coefficients réels : si ce n'est pas le cas chez toi, c'est une erreur de signe.",
+        "La racine restante s'obtient par la somme des racines, et se vérifie par le produit. Ces deux relations coûtent une minute et sécurisent tout l'exercice.",
+        "Au BAC série C, ce schéma ouvre presque systématiquement les exercices de nombres complexes : équation de degré 3 avec une indication sur les racines, puis exploitation géométrique des affixes obtenues (similitude, triangle, cercle). Maîtriser l'abaissement de degré, c'est débloquer tout le reste de l'exercice."
+      ]
+    }
+  ]
+}

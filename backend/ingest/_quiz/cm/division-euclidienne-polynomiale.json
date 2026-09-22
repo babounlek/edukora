@@ -1,0 +1,96 @@
+[
+  {
+    "external_id": "cqc-division-euclidienne-polynomiale-faible-0",
+    "theme": "division euclidienne polynomiale",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}\\setminus\\{-3\\}$ par $$f(x) = \\dfrac{x^2+5x+7}{x+3}.$$ Détermine trois réels $a$, $b$ et $c$ tels que, pour tout $x\\neq -3$, on ait $$f(x) = ax+b+\\dfrac{c}{x+3}.$$",
+    "corrige_markdown": "### Rappel de méthode\nQuand un numérateur $P(x)$ a un degré supérieur d'une unité à celui de son dénominateur $x+d$, la fraction $\\dfrac{P(x)}{x+d}$ se réécrit toujours comme une expression affine augmentée d'un reste fractionnaire $\\dfrac{c}{x+d}$. Cette réécriture repose sur l'égalité $P(x) = (x+d)\\times Q(x) + r$ ($Q$ affine, $r$ constant) : diviser chaque membre par $(x+d)$ suffit à faire apparaître la décomposition cherchée.\n\n### Corrigé\nOn effectue la division euclidienne de $x^2+5x+7$ par $x+3$.\n\nOn cherche $Q(x)=x+q$ tel que $x^2+5x+7=(x+3)(x+q)+r$. Comme $(x+3)(x+2) = x^2+2x+3x+6 = x^2+5x+6$, on pose $q=2$, et le reste vaut :\n$$x^2+5x+7-(x^2+5x+6) = 1.$$\nDonc :\n$$x^2+5x+7=(x+3)(x+2)+1.$$\n**Vérification :** $(x+3)(x+2)+1 = x^2+5x+6+1 = x^2+5x+7$, ce qui correspond bien au polynôme de départ.\n\nEn divisant les deux membres par $(x+3)$, on obtient, pour tout $x\\neq -3$ :\n$$f(x) = x+2+\\dfrac{1}{x+3}.$$\nAinsi $a=1$, $b=2$ et $c=1$.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [7108]
+  },
+  {
+    "external_id": "cqc-division-euclidienne-polynomiale-faible-1",
+    "theme": "division euclidienne polynomiale",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}\\setminus\\{4\\}$ par $$f(x) = \\dfrac{x^2-6x+11}{x-4}.$$ Parmi les quatre écritures suivantes, laquelle correspond à la décomposition de $f(x)$ sous la forme $ax+b+\\dfrac{c}{x-4}$, valable pour tout $x\\neq 4$ ?",
+    "corrige_markdown": "### Rappel de méthode\nPour décomposer une fraction $\\dfrac{P(x)}{x-d}$ sous la forme $ax+b+\\dfrac{c}{x-d}$, on effectue la division euclidienne de $P(x)$ par $(x-d)$, puis on vérifie systématiquement le résultat en redéveloppant $(x-d)(ax+b)+c$ : cette vérification permet d'éliminer les erreurs de signe, très fréquentes dans ce type de calcul.\n\n### Corrigé\nOn effectue la division euclidienne de $x^2-6x+11$ par $x-4$.\n\n$(x-4)(x-2) = x^2-2x-4x+8 = x^2-6x+8$.\n\nLe reste est $11-8=3$, donc :\n$$x^2-6x+11=(x-4)(x-2)+3.$$\n**Vérification :** $(x-4)(x-2)+3 = x^2-6x+8+3 = x^2-6x+11$, ce qui correspond bien au polynôme de départ.\n\nEn divisant par $(x-4)$, on obtient, pour tout $x\\neq 4$ :\n$$f(x) = x-2+\\dfrac{3}{x-4}.$$\n\nLa bonne réponse est **a**. (L'option b inverse le signe du reste ; l'option c inverse le signe du terme constant $-2$ du quotient ; l'option d confond le reste de la division, qui vaut $3$, avec le terme constant $11$ du numérateur de départ.)",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "$x-2+\\dfrac{3}{x-4}$"},
+      {"lettre": "b", "texte": "$x-2-\\dfrac{3}{x-4}$"},
+      {"lettre": "c", "texte": "$x+2+\\dfrac{3}{x-4}$"},
+      {"lettre": "d", "texte": "$x-2+\\dfrac{11}{x-4}$"}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [7108, 8404]
+  },
+  {
+    "external_id": "cqc-division-euclidienne-polynomiale-moyenne-0",
+    "theme": "division euclidienne polynomiale",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "Soit $f$ la fonction définie pour tout $x\\neq \\dfrac12$ par $$f(x) = \\dfrac{2x^2+x-4}{2x-1}.$$ Détermine trois réels $a$, $b$ et $c$ tels que, pour tout $x\\neq \\dfrac12$, on ait $$f(x) = ax+b+\\dfrac{c}{2x-1}.$$",
+    "corrige_markdown": "### Rappel de méthode\nLorsque le dénominateur $2x-1$ n'a pas pour coefficient dominant $1$, la division euclidienne se mène de la même façon qu'avec un diviseur du type $x+d$, mais chaque étape du quotient s'obtient en divisant le terme dominant du reste partiel par le terme dominant $2x$ du diviseur, et non par $x$ seul.\n\n### Corrigé\nOn effectue la division euclidienne de $2x^2+x-4$ par $2x-1$.\n\n**Étape 1.** Le terme dominant de $2x^2+x-4$ est $2x^2$, celui de $2x-1$ est $2x$ : $\\dfrac{2x^2}{2x}=x$. On multiplie : $(2x-1)\\times x = 2x^2-x$. On soustrait :\n$$(2x^2+x-4)-(2x^2-x) = 2x-4.$$\n\n**Étape 2.** Le terme dominant de $2x-4$ est $2x$ : $\\dfrac{2x}{2x}=1$. On multiplie : $(2x-1)\\times 1 = 2x-1$. On soustrait :\n$$(2x-4)-(2x-1) = -3.$$\n\nLe quotient est donc $x+1$ et le reste est $-3$ :\n$$2x^2+x-4=(2x-1)(x+1)-3.$$\n**Vérification :** $(2x-1)(x+1) = 2x^2+2x-x-1 = 2x^2+x-1$, et $2x^2+x-1-3=2x^2+x-4$, ce qui correspond bien au polynôme de départ.\n\nEn divisant par $(2x-1)$, on obtient, pour tout $x\\neq \\dfrac12$ :\n$$f(x) = x+1-\\dfrac{3}{2x-1}.$$\nAinsi $a=1$, $b=1$ et $c=-3$.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-division-euclidienne-polynomiale-moyenne-1",
+    "theme": "division euclidienne polynomiale",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}\\setminus\\{-5\\}$ par $$f(x) = \\dfrac{x^2+9x+23}{x+5}.$$ On sait qu'il existe un réel $m$ tel que, pour tout $x\\neq -5$, $$x^2+9x+23=(x+5)(x+m)+3.$$ 1) Détermine la valeur de $m$. 2) Déduis-en l'écriture de $f(x)$ sous la forme $ax+b+\\dfrac{c}{x+5}$, avec $a$, $b$, $c$ trois réels à préciser.",
+    "corrige_markdown": "### Rappel de méthode\nQuand une égalité de division euclidienne est donnée avec un coefficient inconnu, on développe le membre de droite et on identifie les coefficients de même degré avec le membre de gauche : deux polynômes égaux pour toute valeur de $x$ ont nécessairement les mêmes coefficients à chaque degré.\n\n### Corrigé\n**1)** On développe $(x+5)(x+m)+3$ :\n$$(x+5)(x+m)+3 = x^2+(m+5)x+5m+3.$$\nEn identifiant avec $x^2+9x+23$, le coefficient de $x$ donne $m+5=9$, donc $m=4$.\n\n**Vérification du terme constant :** avec $m=4$, $5m+3 = 20+3=23$, ce qui correspond bien au terme constant du polynôme de départ.\n\n**2)** Avec $m=4$, l'égalité devient :\n$$x^2+9x+23=(x+5)(x+4)+3.$$\nEn divisant les deux membres par $(x+5)$, on obtient, pour tout $x\\neq -5$ :\n$$f(x) = x+4+\\dfrac{3}{x+5}.$$\nAinsi $a=1$, $b=4$ et $c=3$.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [8404]
+  },
+  {
+    "external_id": "cqc-division-euclidienne-polynomiale-moyenne-2",
+    "theme": "division euclidienne polynomiale",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "Soit $f$ la fonction définie pour tout $x\\neq -\\dfrac13$ par $$f(x) = \\dfrac{3x^2-2x+5}{3x+1}.$$ Parmi les quatre écritures suivantes, laquelle correspond à la décomposition de $f(x)$ sous la forme $ax+b+\\dfrac{c}{3x+1}$, valable pour tout $x\\neq -\\dfrac13$ ?",
+    "corrige_markdown": "### Rappel de méthode\nAvec un diviseur du type $3x+1$, dont le coefficient dominant n'est pas $1$, chaque étape de la division s'obtient en divisant le terme dominant du reste partiel par le terme dominant $3x$ du diviseur ; oublier de le faire, et diviser par $x$ seul comme si le diviseur était unitaire, est une erreur fréquente qui fausse tout le quotient.\n\n### Corrigé\nOn effectue la division euclidienne de $3x^2-2x+5$ par $3x+1$.\n\n**Étape 1.** $\\dfrac{3x^2}{3x}=x$. On multiplie : $(3x+1)\\times x = 3x^2+x$. On soustrait :\n$$(3x^2-2x+5)-(3x^2+x) = -3x+5.$$\n\n**Étape 2.** $\\dfrac{-3x}{3x}=-1$. On multiplie : $(3x+1)\\times(-1) = -3x-1$. On soustrait :\n$$(-3x+5)-(-3x-1) = 6.$$\n\nLe quotient est $x-1$ et le reste est $6$ :\n$$3x^2-2x+5=(3x+1)(x-1)+6.$$\n**Vérification :** $(3x+1)(x-1) = 3x^2-3x+x-1 = 3x^2-2x-1$, et $3x^2-2x-1+6=3x^2-2x+5$, ce qui correspond bien au polynôme de départ.\n\nDonc, pour tout $x\\neq -\\dfrac13$ :\n$$f(x) = x-1+\\dfrac{6}{3x+1}.$$\n\nLa bonne réponse est **a**. (L'option b change à tort le signe du diviseur dans le terme fractionnaire ; l'option c inverse le signe du terme constant $-1$ du quotient ; l'option d oublie de diviser le terme dominant par $3x$ et garde $3x$ comme premier terme du quotient au lieu de $x$.)",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "$x-1+\\dfrac{6}{3x+1}$"},
+      {"lettre": "b", "texte": "$x-1+\\dfrac{6}{3x-1}$"},
+      {"lettre": "c", "texte": "$x+1+\\dfrac{6}{3x+1}$"},
+      {"lettre": "d", "texte": "$3x-1+\\dfrac{6}{3x+1}$"}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-division-euclidienne-polynomiale-elevee-0",
+    "theme": "division euclidienne polynomiale",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}\\setminus\\{3\\}$ par $$f(x) = \\dfrac{x^3-4x^2+x+9}{x-3}.$$ 1) Effectue la division euclidienne du polynôme $x^3-4x^2+x+9$ par $(x-3)$ : détermine le polynôme quotient $Q(x)$, de degré $2$, et le réel reste $r$. 2) Vérifie ton résultat en développant $(x-3)Q(x)+r$ et en retrouvant le polynôme $x^3-4x^2+x+9$. 3) Déduis-en l'écriture de $f(x)$ sous la forme $Q(x)+\\dfrac{r}{x-3}$.",
+    "corrige_markdown": "### Rappel de méthode\nLa division euclidienne d'un polynôme de degré $3$ par un polynôme de degré $1$ se mène terme par terme, comme pour un diviseur de degré $1$ classique, mais le quotient obtenu est alors de degré $2$. À chaque étape, on divise le terme dominant du reste partiel par le terme dominant du diviseur, on multiplie tout le diviseur par ce terme, puis on soustrait ; on répète l'opération jusqu'à obtenir un reste de degré strictement inférieur à celui du diviseur.\n\n### Corrigé\n**1)** On effectue la division euclidienne de $x^3-4x^2+x+9$ par $x-3$.\n\n**Étape 1.** $\\dfrac{x^3}{x}=x^2$. On multiplie : $(x-3)\\times x^2 = x^3-3x^2$. On soustrait :\n$$(x^3-4x^2+x+9)-(x^3-3x^2) = -x^2+x+9.$$\n\n**Étape 2.** $\\dfrac{-x^2}{x}=-x$. On multiplie : $(x-3)\\times(-x) = -x^2+3x$. On soustrait :\n$$(-x^2+x+9)-(-x^2+3x) = -2x+9.$$\n\n**Étape 3.** $\\dfrac{-2x}{x}=-2$. On multiplie : $(x-3)\\times(-2) = -2x+6$. On soustrait :\n$$(-2x+9)-(-2x+6) = 3.$$\n\nLe reste obtenu, $3$, est de degré $0$ : strictement inférieur au degré $1$ du diviseur, donc la division s'arrête ici.\n\nLe quotient est $Q(x)=x^2-x-2$ et le reste est $r=3$.\n\n**2)** Vérification :\n$$(x-3)(x^2-x-2) = x^3-x^2-2x-3x^2+3x+6 = x^3-4x^2+x+6.$$\nEn ajoutant le reste : $x^3-4x^2+x+6+3 = x^3-4x^2+x+9$, ce qui correspond exactement au polynôme de départ. L'égalité $$x^3-4x^2+x+9=(x-3)(x^2-x-2)+3$$ est donc confirmée.\n\n**3)** En divisant les deux membres par $(x-3)$, on obtient, pour tout $x\\neq 3$ :\n$$f(x) = x^2-x-2+\\dfrac{3}{x-3}.$$",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [7108, 8404]
+  }
+]

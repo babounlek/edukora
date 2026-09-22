@@ -22,7 +22,7 @@ import { useDebouncedValue } from "@/lib/useDebouncedValue"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { subjectShortLabel } from "@/lib/subjectLabel"
 import { coursReaderPath } from "@/lib/countryPath"
-import { cn, formatAmount } from "@/lib/utils"
+import { capitaliserTheme, cn, formatAmount } from "@/lib/utils"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Input } from "@/components/ui/input"
@@ -135,6 +135,14 @@ export function CoursListPage() {
   const cursusFilter = searchParams.get("cursus") ?? ""
   const nonLusFilter = searchParams.get("nonlus") === "true"
   const search = searchParams.get("search") ?? ""
+  // Arrivée depuis /parcours ("voir tous les cours" d'un savoir/thème) - `savoir` et
+  // `theme` pilotent le filtre API (voir CoursListView), mutuellement exclusifs selon
+  // que la matière est en mode Parcours par fréquence ou Module→Savoir classique (voir
+  // ParcoursSubjectPage.lienCoursDuSavoir). `savoir_label` n'est qu'un libellé
+  // d'affichage pour la puce de filtre ci-dessous (l'API ne le lit jamais).
+  const savoirFilter = searchParams.get("savoir") ?? ""
+  const themeFilter = searchParams.get("theme") ?? ""
+  const savoirLabel = searchParams.get("savoir_label") ?? ""
 
   useSeo({
     title: "Cours de révision",
@@ -188,7 +196,7 @@ export function CoursListPage() {
     queryFn: ({ signal }) => listCursus(country, signal),
   })
 
-  const filtresActifs = Boolean(subjectFilter || cursusFilter || nonLusFilter || search)
+  const filtresActifs = Boolean(subjectFilter || cursusFilter || nonLusFilter || search || savoirFilter || themeFilter)
 
   // Volumétrie totale du pays, affichée dans le hero : jamais `count` de la liste
   // ci-dessous, qui est le nombre de résultats APRÈS filtrage et tomberait à 3 dès
@@ -211,7 +219,7 @@ export function CoursListPage() {
   const debouncedSearch = useDebouncedValue(search, 300)
 
   const coursQuery = useInfiniteQuery({
-    queryKey: ["cours", country, subjectFilter, cursusFilter, nonLusFilter, debouncedSearch],
+    queryKey: ["cours", country, subjectFilter, cursusFilter, nonLusFilter, debouncedSearch, savoirFilter, themeFilter],
     queryFn: ({ pageParam, signal }) =>
       listCours(
         {
@@ -222,6 +230,8 @@ export function CoursListPage() {
           // Jamais `false` : le backend ne teste que la valeur "true", mais envoyer
           // exclude_read=false polluerait l'URL de l'API pour rien.
           exclude_read: nonLusFilter || undefined,
+          savoir: savoirFilter ? Number(savoirFilter) : undefined,
+          theme: themeFilter ? Number(themeFilter) : undefined,
           page: pageParam,
         },
         signal,
@@ -291,13 +301,30 @@ export function CoursListPage() {
   }
 
   function resetFilters() {
-    // Un seul setSearchParams pour les 4 clés : `searchParams` ne change qu'au
-    // prochain rendu, donc 4 updateFilter() dans le même tick partiraient chacun de
-    // l'état initial et n'en retireraient effectivement qu'une seule.
+    // Un seul setSearchParams pour toutes les clés : `searchParams` ne change qu'au
+    // prochain rendu, donc plusieurs updateFilter() dans le même tick partiraient
+    // chacun de l'état initial et n'en retireraient effectivement qu'un seul.
     setSearchParams(
       (prev) => {
         const next = new URLSearchParams(prev)
-        for (const key of ["subject", "cursus", "nonlus", "search"]) next.delete(key)
+        for (const key of ["subject", "cursus", "nonlus", "search", "savoir", "theme", "savoir_label"]) next.delete(key)
+        return next
+      },
+      { replace: true },
+    )
+  }
+
+  function clearSavoirFilter() {
+    // `savoir`/`theme` et `savoir_label` vont toujours ensemble (voir
+    // ParcoursSubjectPage.lienCoursDuSavoir) - même raison multi-clés que
+    // resetFilters ci-dessus. Les deux clés sont mutuellement exclusives, donc
+    // supprimer les deux à chaque fois est sans risque.
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev)
+        next.delete("savoir")
+        next.delete("theme")
+        next.delete("savoir_label")
         return next
       },
       { replace: true },
@@ -325,6 +352,16 @@ export function CoursListPage() {
       key: "nonlus",
       label: "Non lus uniquement",
       clear: () => updateFilter("nonlus", ""),
+    },
+    savoirFilter && {
+      key: "savoir",
+      label: savoirLabel ? `Savoir : ${capitaliserTheme(savoirLabel)}` : "Savoir filtré",
+      clear: clearSavoirFilter,
+    },
+    themeFilter && {
+      key: "theme",
+      label: savoirLabel ? `Thème : ${capitaliserTheme(savoirLabel)}` : "Thème filtré",
+      clear: clearSavoirFilter,
     },
   ].filter((chip): chip is { key: string; label: string; clear: () => void } => Boolean(chip))
 

@@ -1,0 +1,158 @@
+{
+  "epreuve_source": "probatoire-c-e-maths-2001-cameroun",
+  "numero_exercice": "1",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "serie": "C, E",
+  "examen": "probatoire",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2001,
+  "duree_epreuve": "3 heures",
+  "coefficient": 6,
+  "titre_exercice": "Suite récurrente à coefficient variable et suite géométrique auxiliaire",
+  "points": 3.5,
+  "figures": [],
+  "enonce_intro_markdown": "*L'épreuve comporte deux exercices et un problème. La qualité de la rédaction et le soin apporté au tracé des figures seront pris en compte dans l'évaluation de la copie du candidat.*\n\n### Exercice 1 — 3,5 points\n\nOn considère deux suites numériques $(U_n)$ et $(V_n)$ définies de la manière suivante :\n\n$$\\begin{cases} U_1 = \\dfrac{1}{3} \\\\[2mm] U_{n+1} = \\dfrac{n+1}{3n}\\,U_n \\end{cases} \\qquad \\text{et} \\qquad V_n = \\frac{U_n}{n}$$",
+  "questions": [
+    {
+      "numero": "1",
+      "points": 0.75,
+      "enonce_markdown": "1. Calculer $U_2$, $U_3$ et $U_4$. *(0,75 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nOn applique la relation de récurrence **pas à pas**, en remplaçant $n$ par sa valeur à chaque étape. Il faut prendre garde à ce que la suite commence ici à l'indice $1$ et non à l'indice $0$ : le calcul de $U_2$ se fait donc avec $n = 1$.\n\n**Calcul de $U_2$** (on prend $n = 1$) :\n\n$$U_2 = \\frac{1+1}{3 \\times 1}\\,U_1 = \\frac{2}{3} \\times \\frac{1}{3} = \\frac{2}{9}$$\n\n**Calcul de $U_3$** (on prend $n = 2$) :\n\n$$U_3 = \\frac{2+1}{3 \\times 2}\\,U_2 = \\frac{3}{6} \\times \\frac{2}{9} = \\frac{1}{2} \\times \\frac{2}{9} = \\frac{1}{9}$$\n\n**Calcul de $U_4$** (on prend $n = 3$) :\n\n$$U_4 = \\frac{3+1}{3 \\times 3}\\,U_3 = \\frac{4}{9} \\times \\frac{1}{9} = \\frac{4}{81}$$\n\n$$\\boxed{\\;U_2 = \\frac{2}{9} \\qquad ; \\qquad U_3 = \\frac{1}{9} \\qquad ; \\qquad U_4 = \\frac{4}{81}\\;}$$\n\n**Une observation qui annonce la suite.** Écrivons ces valeurs en faisant apparaître l'indice :\n\n| $n$ | $U_n$ | $\\dfrac{U_n}{n}$ |\n|---|---|---|\n| $1$ | $\\dfrac13$ | $\\dfrac13$ |\n| $2$ | $\\dfrac29$ | $\\dfrac19$ |\n| $3$ | $\\dfrac39$ soit $\\dfrac19$ | $\\dfrac{1}{27}$ |\n| $4$ | $\\dfrac{4}{81}$ | $\\dfrac{1}{81}$ |\n\nLa dernière colonne, qui est précisément $V_n$, donne $\\frac13, \\frac19, \\frac1{27}, \\frac1{81}$ : les puissances successives de $\\frac13$. C'est ce que la question 2 va demander de démontrer.\n\n### Piège à éviter\nLe coefficient $\\dfrac{n+1}{3n}$ **change à chaque rang** : ce n'est pas une suite géométrique. Utiliser toujours le même facteur, par exemple celui obtenu pour $n=1$, est l'erreur la plus fréquente.\n\n### Conseil\nÉcris à chaque étape la valeur de $n$ que tu utilises. Ici la suite démarre à l'indice $1$, ce qui décale tout d'un cran par rapport aux habitudes.",
+      "themes": [
+        "suite récurrente",
+        "calcul de termes",
+        "coefficient variable"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "C-E",
+        "module_numero": "21",
+        "savoir_numero": "VIII"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-e-maths-2001-cameroun-ex1-q1-1",
+          "competence": "Calculer les premiers termes d'une suite définie par récurrence à coefficient variable",
+          "contenu_markdown": "On applique la relation de récurrence **pas à pas**, en remplaçant $n$ par sa valeur à chaque étape. Il faut prendre garde à ce que la suite commence ici à l'indice $1$ et non à l'indice $0$ : le calcul de $U_2$ se fait donc avec $n = 1$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "points": 1,
+      "enonce_markdown": "2. Démontrer que $(V_n)$ est une suite géométrique, en préciser le premier terme et la raison. *(1 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nOn calcule $V_{n+1}$ à partir de sa définition, on y remplace $U_{n+1}$ par la relation de récurrence, puis on simplifie pour faire apparaître $V_n = \\dfrac{U_n}{n}$. Le facteur $\\dfrac{n+1}{n}$ de la récurrence se simplifie exactement avec le $\\dfrac{1}{n+1}$ venu de la définition de $V_{n+1}$ : c'est le mécanisme même de l'exercice.\n\n**Point de départ.**\n\n$$V_{n+1} = \\frac{U_{n+1}}{n+1}$$\n\n**Substitution de la relation de récurrence.**\n\n$$U_{n+1} = \\frac{n+1}{3n}\\,U_n$$\n\nd'où :\n\n$$V_{n+1} = \\frac{1}{n+1} \\times \\frac{n+1}{3n}\\,U_n$$\n\n**Simplification.**\n\nLe facteur $(n+1)$ apparaît au numérateur et au dénominateur ; il se simplifie, ce qui est licite car $n \\geqslant 1$ donc $n+1 \\neq 0$ :\n\n$$V_{n+1} = \\frac{U_n}{3n} = \\frac{1}{3} \\times \\frac{U_n}{n} = \\frac{1}{3}\\,V_n$$\n\n**Conclusion.**\n\nPour tout entier $n \\geqslant 1$, $V_{n+1} = \\dfrac{1}{3}V_n$ : la suite $(V_n)$ est **géométrique de raison** $q = \\dfrac{1}{3}$.\n\n**Premier terme.**\n\nLa suite commence au rang $1$ :\n\n$$V_1 = \\frac{U_1}{1} = \\frac{1}{3}$$\n\n$$\\boxed{\\;(V_n) \\text{ géométrique de premier terme } V_1 = \\frac{1}{3} \\text{ et de raison } q = \\frac{1}{3}\\;}$$\n\n**Contrôle sur les valeurs calculées en question 1.**\n\n$$V_2 = \\frac{U_2}{2} = \\frac{2/9}{2} = \\frac{1}{9} = \\frac13 \\times \\frac13 \\quad ✔$$\n$$V_3 = \\frac{U_3}{3} = \\frac{1/9}{3} = \\frac{1}{27} = \\frac13 \\times \\frac19 \\quad ✔$$\n\nLa raison $\\frac13$ est confirmée.\n\n### Piège à éviter\nNe remplace pas $V_{n+1}$ par $\\dfrac{U_{n+1}}{n}$ : le dénominateur doit lui aussi porter l'indice $n+1$. C'est précisément ce $(n+1)$ au dénominateur qui se simplifie avec celui du numérateur de la récurrence.\n\n### Conseil\nIci le premier terme est $V_1$ et non $V_0$, car la suite $(U_n)$ démarre à l'indice $1$. Ce décalage se répercutera sur la formule du terme général : l'exposant sera $n-1$, non $n$.",
+      "themes": [
+        "suite géométrique",
+        "suite auxiliaire",
+        "simplification"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "C-E",
+        "module_numero": "21",
+        "savoir_numero": "VIII"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-e-maths-2001-cameroun-ex1-q2-2",
+          "competence": "Démontrer qu'une suite auxiliaire est géométrique par simplification",
+          "contenu_markdown": "On calcule $V_{n+1}$ à partir de sa définition, on y remplace $U_{n+1}$ par la relation de récurrence, puis on simplifie pour faire apparaître $V_n = \\dfrac{U_n}{n}$. Le facteur $\\dfrac{n+1}{n}$ de la récurrence se simplifie exactement avec le $\\dfrac{1}{n+1}$ venu de la définition de $V_{n+1}$ : c'est le mécanisme même de l'exercice.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "points": 1,
+      "enonce_markdown": "3. En déduire les expressions de $V_n$ et $U_n$ en fonction de $n$. *(1 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nPour une suite géométrique dont le premier terme est d'indice $p$, le terme général s'écrit $V_n = V_p \\times q^{\\,n-p}$. Ici $p = 1$, donc l'exposant est $n-1$. On revient ensuite à $U_n$ par la relation $U_n = n\\,V_n$.\n\n**Expression de $V_n$.**\n\nLa suite $(V_n)$ est géométrique de premier terme $V_1 = \\dfrac13$, de raison $q = \\dfrac13$, et l'indice de départ est $1$ :\n\n$$V_n = V_1 \\times q^{\\,n-1} = \\frac{1}{3} \\times \\left(\\frac{1}{3}\\right)^{n-1} = \\left(\\frac{1}{3}\\right)^{n}$$\n\n$$\\boxed{\\;V_n = \\left(\\frac{1}{3}\\right)^n = \\frac{1}{3^n}\\;}$$\n\nLe premier terme étant lui-même égal à la raison, l'exposant se simplifie agréablement.\n\n**Expression de $U_n$.**\n\nPar définition, $V_n = \\dfrac{U_n}{n}$, donc $U_n = n\\,V_n$ :\n\n$$\\boxed{\\;U_n = \\frac{n}{3^n}\\;}$$\n\n**Vérifications sur les valeurs de la question 1.**\n\n| $n$ | $\\dfrac{n}{3^n}$ | Valeur trouvée en Q1 |\n|---|---|---|\n| $1$ | $\\dfrac{1}{3}$ | $\\dfrac13$ ✔ |\n| $2$ | $\\dfrac{2}{9}$ | $\\dfrac29$ ✔ |\n| $3$ | $\\dfrac{3}{27} = \\dfrac19$ | $\\dfrac19$ ✔ |\n| $4$ | $\\dfrac{4}{81}$ | $\\dfrac{4}{81}$ ✔ |\n\nLes quatre valeurs concordent.\n\n### Piège à éviter\nL'exposant est $n-1$ et non $n$, parce que la suite démarre au rang $1$. Écrire $V_n = \\frac13 \\times \\left(\\frac13\\right)^n$ donnerait $V_1 = \\frac19$, en contradiction avec le calcul direct $V_1 = \\frac13$.\n\n### Conseil\nRetiens la formule sous forme générale : $V_n = V_p \\times q^{\\,n-p}$ où $p$ est l'indice du premier terme. Elle vaut quel que soit le point de départ, et t'évite d'avoir à réfléchir à chaque fois.",
+      "themes": [
+        "terme général",
+        "suite géométrique",
+        "indice initial"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "C-E",
+        "module_numero": "21",
+        "savoir_numero": "VIII"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-e-maths-2001-cameroun-ex1-q3-3",
+          "competence": "Exprimer le terme général d'une suite géométrique d'indice initial non nul",
+          "contenu_markdown": "Pour une suite géométrique dont le premier terme est d'indice $p$, le terme général s'écrit $V_n = V_p \\times q^{\\,n-p}$. Ici $p = 1$, donc l'exposant est $n-1$. On revient ensuite à $U_n$ par la relation $U_n = n\\,V_n$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "points": 0.75,
+      "enonce_markdown": "4. Calculer $S = \\dfrac{1}{3} + \\dfrac{1}{9} + \\dfrac{1}{27} + \\dots + \\dfrac{1}{59049}$. *(0,75 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nIl faut d'abord **reconnaître** la suite dont on somme les termes, puis **compter** le nombre de termes en identifiant le rang du dernier. On applique enfin la formule de la somme d'une suite géométrique.\n\n**Étape 1 — reconnaître les termes.**\n\n$$\\frac13,\\ \\frac19,\\ \\frac1{27},\\ \\dots$$\n\nCe sont les puissances successives de $\\dfrac13$ : ce sont exactement les termes $V_n = \\left(\\frac13\\right)^n$ de la suite étudiée.\n\n**Étape 2 — identifier le rang du dernier terme.**\n\nIl faut trouver $p$ tel que $3^p = 59\\,049$. Calculons les puissances de $3$ :\n\n| $p$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ | $8$ | $9$ | $10$ |\n|---|---|---|---|---|---|---|---|---|---|---|\n| $3^p$ | $3$ | $9$ | $27$ | $81$ | $243$ | $729$ | $2\\,187$ | $6\\,561$ | $19\\,683$ | $59\\,049$ |\n\n$$59\\,049 = 3^{10}$$\n\nLa somme va donc de $V_1$ à $V_{10}$ et comporte **10 termes**.\n\n**Étape 3 — appliquer la formule.**\n\n$$S = V_1 \\times \\frac{1-q^{10}}{1-q} = \\frac13 \\times \\frac{1 - \\left(\\frac13\\right)^{10}}{1 - \\frac13}$$\n\nLe dénominateur vaut $\\dfrac23$, donc :\n\n$$S = \\frac13 \\times \\frac{3}{2}\\left[1 - \\left(\\frac13\\right)^{10}\\right] = \\frac{1}{2}\\left(1 - \\frac{1}{3^{10}}\\right)$$\n\n$$\\boxed{\\;S = \\frac{1}{2}\\left(1 - \\frac{1}{59\\,049}\\right) = \\frac{59\\,048}{118\\,098} = \\frac{29\\,524}{59\\,049}\\;}$$\n\n**Valeur approchée.**\n\n$$S \\approx 0{,}499\\,99$$\n\n**Interprétation.** La somme est très proche de $\\dfrac12$, et l'on voit sur la forme obtenue que si l'on prolongeait indéfiniment, la somme tendrait exactement vers $\\dfrac12$. C'est une illustration de la convergence des séries géométriques de raison strictement comprise entre $-1$ et $1$.\n\n### Piège à éviter\nLe nombre de termes est $10$ et non $9$ : la somme va de $V_1$ à $V_{10}$ inclus. Une erreur d'un rang change complètement le résultat, et l'on ne s'en aperçoit qu'en vérifiant que le dernier terme est bien celui de l'énoncé.\n\n### Conseil\nDécompose $59\\,049$ en puissance de $3$ **avant** toute autre chose : c'est cette décomposition qui donne le nombre de termes, et donc l'exposant de la formule.",
+      "themes": [
+        "somme géométrique",
+        "puissances de 3",
+        "nombre de termes"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "C-E",
+        "module_numero": "21",
+        "savoir_numero": "VIII"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-c-e-maths-2001-cameroun-ex1-q4-4",
+          "competence": "Calculer une somme géométrique en identifiant le rang du dernier terme",
+          "contenu_markdown": "Il faut d'abord **reconnaître** la suite dont on somme les termes, puis **compter** le nombre de termes en identifiant le rang du dernier. On applique enfin la formule de la somme d'une suite géométrique.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "probatoire",
+    "C et E",
+    "mathématiques",
+    "2001",
+    "Cameroun",
+    "suite récurrente",
+    "suite géométrique",
+    "suite auxiliaire",
+    "somme",
+    "terme général"
+  ],
+  "incertitudes": [
+    "Épreuve issue du recueil commercial « Prépas Probatoire » (compilation 1999-2018), découpé le 18/08/2026 ; la couche texte du PDF est exploitable et la transcription en est directement issue. Le recueil ne reproduit pas la mention du pays sur l'en-tête, mais l'émetteur (MINEDUC - OBC) l'établit sans ambiguïté. Coefficient 6 en série C, 5 en série E."
+  ],
+  "statut": "brouillon"
+}

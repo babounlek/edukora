@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-integration-par-parties-x-ln-x-terminale-d-ti",
+  "meta": {"titre": "Intégrer x ln x par intégration par parties", "cours_id": "cours-integration-par-parties-x-ln-x-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D & TI", "sous_theme": "Calcul intégral — intégration par parties", "tags": ["intégration par parties", "logarithme", "primitive"], "duree_estimee_minutes": 8, "epreuve_source": "bac-d-maths-2019-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2019-cameroun-ex4-q4a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Intégrer un produit contenant un logarithme se fait presque toujours en posant u=ln x, car sa dérivée simple 1/x élimine le logarithme de la nouvelle intégrale à calculer."},
+    {"type": "prerequis", "items_markdown": ["Formule d'intégration par parties : ∫u dv = uv - ∫v du", "Primitive de x^n"]},
+    {"type": "regle", "titre": "Poser u=ln x, dv=x dx", "contenu_markdown": "Pour intégrer $x\\ln x$, on pose $u=\\ln x$ (donc $du=\\frac1xdx$) et $dv=x\\,dx$ (donc $v=\\frac{x^2}2$) : $\\int x\\ln x\\,dx=\\dfrac{x^2}2\\ln x-\\displaystyle\\int\\dfrac{x^2}2\\times\\dfrac1x\\,dx=\\dfrac{x^2}2\\ln x-\\dfrac{x^2}4+C$.", "formule_principale": "∫x ln x dx = (x²/2)ln x - x²/4 + C", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer ∫x²lnx dx.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Poser u=lnx, dv=x²dx", "justification": "du=dx/x, v=x³/3", "resultat_markdown": "uv=x³lnx/3"},
+      {"numero": 2, "action": "Nouvelle intégrale", "justification": "∫x³/3 × 1/x dx = ∫x²/3 dx", "resultat_markdown": "x³/9"}
+    ], "conclusion_markdown": "∫x²lnx dx = x³lnx/3 - x³/9 + C."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Poser u=x et dv=lnx dx au lieu de u=lnx et dv=x dx", "pourquoi_faux": "La primitive de ln x n'est pas immédiate (elle nécessite elle-même une intégration par parties), alors que la dérivée de ln x est immédiate (1/x) ; choisir u=x, dv=lnx dx complique inutilement le calcul au lieu de le simplifier.", "correction_markdown": "Pour un produit contenant un logarithme, poser systématiquement u=ln x (dérivée simple) plutôt que dv=ln x dx (primitive complexe)."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Calculer ∫3x lnx dx.", "solution_markdown": "u=lnx, dv=3xdx, v=3x²/2. ∫3xlnx dx = (3x²/2)lnx - ∫(3x²/2)(1/x)dx = (3x²/2)lnx - ∫(3x/2)dx = (3x²/2)lnx - 3x²/4 + C."},
+      {"numero": 2, "difficulte": "facile", "enonce_markdown": "Pourquoi le choix u=lnx transforme-t-il systématiquement l'intégrale en une intégrale de polynôme simple ?", "solution_markdown": "Parce que du=(1/x)dx et v contient un facteur x^(n+1) (primitive de x^n) ; le produit v×du élimine exactement le logarithme et réduit la puissance de x de 1, transformant l'intégrale de départ en une intégrale purement polynomiale, immédiate à calculer."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Pour intégrer x ln x, poser u=ln x (dérivée simple 1/x) et dv=x dx (primitive simple x²/2).", "Ce choix élimine systématiquement le logarithme de la nouvelle intégrale à calculer.", "Le résultat final est (x²/2)ln x - x²/4 + C."]}
+  ]
+}

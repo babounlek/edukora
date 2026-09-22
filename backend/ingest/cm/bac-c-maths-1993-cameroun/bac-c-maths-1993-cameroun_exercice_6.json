@@ -14,49 +14,110 @@
   "titre_exercice": "Problème, Partie C : fonction g(x)=√(2+2lnx), point fixe x0, suite récurrente Un+1=g(Un) et convergence par contraction",
   "points": 4,
   "figures": [],
-  "enonce_intro_markdown": "$g$ est une fonction définie sur $[1;+\\infty[$ par $g(x)=\\sqrt{2+2\\ln x}$, où $x_0$ désigne la solution de $f(x)=0$ dans $\\,]1;2[$ établie en Partie B (question 2a).\n\n**Note sur une coquille du document source (question 2b).** L'énoncé transcrit demande d'établir « $|U_o-x_o|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$ » — cette formulation, avec l'indice $o$ (zéro, terme fixe $U_0$) au lieu de $n$, est incohérente : $U_0$ étant une constante fixe, une inégalité la bornant par une expression dépendant de $n$ n'a de sens que si le terme de gauche dépend lui aussi de $n$. Il s'agit manifestement d'une confusion entre l'indice « $o$ » (zéro) et l'indice « $n$ » lors de la transcription : la propriété naturelle à établir par récurrence, cohérente avec la suite du raisonnement et la question 2c (qui demande de « déduire que $(U_n)$ est convergente »), est $|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$ pour tout entier naturel $n$. C'est cette version corrigée qui est démontrée ci-dessous.",
+  "enonce_intro_markdown": "$g$ est une fonction définie sur $[1;+\\infty[$ par $g(x)=\\sqrt{2+2\\ln x}$, où $x_0$ désigne la solution de $f(x)=0$ dans $\\,]1;2[$ établie en Partie B (question 2a).",
   "questions": [
     {
       "numero": "1a",
       "points": "0,5pt",
       "enonce_markdown": "Montrer que pour tout $x$ de $[1;+\\infty[$, $g(x)\\geqslant\\sqrt2$.",
-      "rappels_de_methode": [{"cours_id": "cours-minorer-fonction-racine-composee-croissance-log-terminale-c", "texte": "Pour minorer g(x)=√(2+2lnx) sur [1;+∞[, on utilise que lnx≥ln1=0 pour x≥1, donc 2+2lnx≥2, puis que la racine carrée est croissante."}],
-      "corrige_markdown": "### Rappel de méthode\nPour minorer une fonction composée de la forme $\\sqrt{h(x)}$, on minore d'abord l'expression $h(x)$ sous la racine, puis on utilise le fait que la fonction racine carrée est croissante pour transférer cette minoration.\n\n**Pour $x\\geqslant1$, comme $\\ln$ est croissante, $\\ln x\\geqslant\\ln1=0$.**\n\n**Donc $2\\ln x\\geqslant0$, puis $2+2\\ln x\\geqslant2$.**\n\n**Comme la fonction racine carrée est croissante sur $[0;+\\infty[$, cette inégalité se transfère :**\n\n$$\\sqrt{2+2\\ln x}\\geqslant\\sqrt2$$\n\n**$g(x)\\geqslant\\sqrt2$ pour tout $x\\in[1;+\\infty[$, avec égalité en $x=1$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-minorer-fonction-racine-composee-croissance-log-terminale-c",
+          "texte": "Pour minorer g(x)=√(2+2lnx) sur [1;+∞[, on utilise que lnx≥ln1=0 pour x≥1, donc 2+2lnx≥2, puis que la racine carrée est croissante."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour minorer une fonction composée de la forme $\\sqrt{h(x)}$, on minore d'abord l'expression $h(x)$ sous la racine, puis on utilise le fait que la fonction racine carrée est croissante pour transférer cette minoration.\n\n**Pour $x\\geqslant1$, comme $\\ln$ est croissante, $\\ln x\\geqslant\\ln1=0$.**\n\n**Donc $2\\ln x\\geqslant0$, puis $2+2\\ln x\\geqslant2$.**\n\n**Comme la fonction racine carrée est croissante sur $[0;+\\infty[$, cette inégalité se transfère :**\n\n$$\\sqrt{2+2\\ln x}\\geqslant\\sqrt2$$\n\n**$g(x)\\geqslant\\sqrt2$ pour tout $x\\in[1;+\\infty[$, avec égalité en $x=1$.**",
+      "themes": [
+        "logarithme",
+        "racine carrée",
+        "encadrement"
+      ]
     },
     {
       "numero": "1b",
       "points": "0,75pt",
       "enonce_markdown": "Montrer que pour tout $x$ de $[1;+\\infty[$, $0\\leqslant g'(x)\\leqslant\\dfrac{\\sqrt2}2$.",
-      "rappels_de_methode": [{"cours_id": "cours-deriver-racine-composee-majorer-via-minoration-precedente-terminale-c", "texte": "Pour dériver g(x)=√(2+2lnx), on obtient g'(x)=1/(x√(2+2lnx))=1/(x·g(x)) ; le majorant de g' s'obtient en minorant x·g(x) via x≥1 et g(x)≥√2 (question précédente)."}],
-      "corrige_markdown": "### Rappel de méthode\nPour dériver une fonction de la forme $g(x)=\\sqrt{h(x)}$, on utilise $g'(x)=\\dfrac{h'(x)}{2\\sqrt{h(x)}}$. Pour majorer ensuite $g'(x)$, on minore le dénominateur en réutilisant une minoration déjà établie (ici celle de la question précédente sur $g(x)$ lui-même).\n\n**Dérivation de $g(x)=\\sqrt{2+2\\ln x}=(2+2\\ln x)^{1/2}$.**\n\n$$g'(x)=\\dfrac1{2\\sqrt{2+2\\ln x}}\\times\\dfrac2x=\\dfrac1{x\\sqrt{2+2\\ln x}}=\\dfrac1{x\\,g(x)}$$\n\n**Positivité.** Pour $x\\in[1;+\\infty[$, $x>0$ et $g(x)>0$ (racine carrée d'un nombre positif) : donc $g'(x)=\\dfrac1{x\\,g(x)}>0\\geqslant0$.\n\n**Majoration.** D'après la question 1a, $g(x)\\geqslant\\sqrt2$ ; de plus $x\\geqslant1$ sur le domaine considéré. Donc :\n\n$$x\\,g(x)\\geqslant1\\times\\sqrt2=\\sqrt2$$\n\n**D'où, en inversant (fonctions positives) :**\n\n$$g'(x)=\\dfrac1{x\\,g(x)}\\leqslant\\dfrac1{\\sqrt2}=\\dfrac{\\sqrt2}2$$\n\n**$0\\leqslant g'(x)\\leqslant\\dfrac{\\sqrt2}2$ pour tout $x\\in[1;+\\infty[$, avec égalité $g'(1)=\\dfrac{\\sqrt2}2$ atteinte exactement en $x=1$** (car $x\\,g(x)$ est croissant, donc $g'$ décroissante, maximale en $x=1$).\n\n### Conseil\nRemarquer que la borne $\\dfrac{\\sqrt2}2$ est atteinte EXACTEMENT en $x=1$ (pas seulement approchée) : $g'(1)=\\dfrac1{1\\times\\sqrt2}=\\dfrac{\\sqrt2}2$, ce qui confirme que l'encadrement est optimal, pas une simple majoration grossière."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deriver-racine-composee-majorer-via-minoration-precedente-terminale-c",
+          "texte": "Pour dériver g(x)=√(2+2lnx), on obtient g'(x)=1/(x√(2+2lnx))=1/(x·g(x)) ; le majorant de g' s'obtient en minorant x·g(x) via x≥1 et g(x)≥√2 (question précédente)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour dériver une fonction de la forme $g(x)=\\sqrt{h(x)}$, on utilise $g'(x)=\\dfrac{h'(x)}{2\\sqrt{h(x)}}$. Pour majorer ensuite $g'(x)$, on minore le dénominateur en réutilisant une minoration déjà établie (ici celle de la question précédente sur $g(x)$ lui-même).\n\n**Dérivation de $g(x)=\\sqrt{2+2\\ln x}=(2+2\\ln x)^{1/2}$.**\n\n$$g'(x)=\\dfrac1{2\\sqrt{2+2\\ln x}}\\times\\dfrac2x=\\dfrac1{x\\sqrt{2+2\\ln x}}=\\dfrac1{x\\,g(x)}$$\n\n**Positivité.** Pour $x\\in[1;+\\infty[$, $x>0$ et $g(x)>0$ (racine carrée d'un nombre positif) : donc $g'(x)=\\dfrac1{x\\,g(x)}>0\\geqslant0$.\n\n**Majoration.** D'après la question 1a, $g(x)\\geqslant\\sqrt2$ ; de plus $x\\geqslant1$ sur le domaine considéré. Donc :\n\n$$x\\,g(x)\\geqslant1\\times\\sqrt2=\\sqrt2$$\n\n**D'où, en inversant (fonctions positives) :**\n\n$$g'(x)=\\dfrac1{x\\,g(x)}\\leqslant\\dfrac1{\\sqrt2}=\\dfrac{\\sqrt2}2$$\n\n**$0\\leqslant g'(x)\\leqslant\\dfrac{\\sqrt2}2$ pour tout $x\\in[1;+\\infty[$, avec égalité $g'(1)=\\dfrac{\\sqrt2}2$ atteinte exactement en $x=1$** (car $x\\,g(x)$ est croissant, donc $g'$ décroissante, maximale en $x=1$).\n\n### Conseil\nRemarquer que la borne $\\dfrac{\\sqrt2}2$ est atteinte EXACTEMENT en $x=1$ (pas seulement approchée) : $g'(1)=\\dfrac1{1\\times\\sqrt2}=\\dfrac{\\sqrt2}2$, ce qui confirme que l'encadrement est optimal, pas une simple majoration grossière.",
+      "themes": [
+        "dérivée",
+        "racine carrée",
+        "encadrement"
+      ]
     },
     {
       "numero": "1c",
       "points": "0,5pt",
       "enonce_markdown": "Calculer $g(x_0)$ en fonction de $x_0$, $x_0$ étant la solution de la question 2a) (Partie B).",
-      "rappels_de_methode": [{"cours_id": "cours-reconnaitre-point-fixe-resultat-etabli-partie-precedente-terminale-c", "texte": "Pour calculer g(x0), on reconnaît que g(x)=√(2+2lnx) est exactement l'expression déjà établie en Partie B (question 2b) pour x0 lui-même : g(x0)=x0, faisant de x0 un point fixe de g."}],
-      "corrige_markdown": "### Rappel de méthode\nLorsque l'expression d'une fonction coïncide exactement avec un résultat déjà établi dans une partie antérieure, il suffit de le reconnaître plutôt que de recalculer : ici, $g(x)=\\sqrt{2+2\\ln x}$ correspond exactement au second membre de l'égalité $x_0=\\sqrt{2+2\\ln x_0}$ déjà démontrée.\n\n**D'après la Partie B (question 2b), $x_0=\\sqrt{2+2\\ln x_0}$.**\n\n**Or, par définition, $g(x_0)=\\sqrt{2+2\\ln x_0}$.**\n\n**Donc :**\n\n$$g(x_0)=x_0$$\n\n**$x_0$ est donc un point fixe de $g$** (un antécédent de lui-même par $g$) — propriété clé qui sera exploitée dans l'étude de la suite $(U_n)$ ci-après."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-reconnaitre-point-fixe-resultat-etabli-partie-precedente-terminale-c",
+          "texte": "Pour calculer g(x0), on reconnaît que g(x)=√(2+2lnx) est exactement l'expression déjà établie en Partie B (question 2b) pour x0 lui-même : g(x0)=x0, faisant de x0 un point fixe de g."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLorsque l'expression d'une fonction coïncide exactement avec un résultat déjà établi dans une partie antérieure, il suffit de le reconnaître plutôt que de recalculer : ici, $g(x)=\\sqrt{2+2\\ln x}$ correspond exactement au second membre de l'égalité $x_0=\\sqrt{2+2\\ln x_0}$ déjà démontrée.\n\n**D'après la Partie B (question 2b), $x_0=\\sqrt{2+2\\ln x_0}$.**\n\n**Or, par définition, $g(x_0)=\\sqrt{2+2\\ln x_0}$.**\n\n**Donc :**\n\n$$g(x_0)=x_0$$\n\n**$x_0$ est donc un point fixe de $g$** (un antécédent de lui-même par $g$) — propriété clé qui sera exploitée dans l'étude de la suite $(U_n)$ ci-après.",
+      "themes": [
+        "point fixe",
+        "racine carrée",
+        "logarithme"
+      ]
     },
     {
       "numero": "2a",
       "points": "0,5pt",
       "enonce_markdown": "Soit $(U_n)$ la suite réelle définie par $U_0=\\sqrt2$ et $U_{n+1}=\\sqrt{2+2\\ln U_n}$. Montrer que pour tout entier naturel $n$, $U_n\\geqslant\\sqrt2$.",
-      "rappels_de_methode": [{"cours_id": "cours-recurrence-simple-minoration-suite-via-fonction-minoree-terminale-c", "texte": "Pour montrer par récurrence que Un≥√2, on s'appuie sur le fait que Un+1=g(Un) et que g(x)≥√2 pour tout x du domaine de g (établi précédemment)."}],
-      "corrige_markdown": "### Rappel de méthode\nPour montrer par récurrence qu'une suite récurrente $U_{n+1}=g(U_n)$ reste minorée par une valeur $m$, on s'appuie sur le fait déjà établi que $g(x)\\geqslant m$ pour tout $x$ du domaine de $g$ : il suffit de vérifier l'initialisation, puis l'hérédité découle directement de cette propriété de $g$.\n\n**Initialisation ($n=0$).** $U_0=\\sqrt2\\geqslant\\sqrt2$ (égalité).\n\n**Hérédité.** Supposons $U_n\\geqslant\\sqrt2$ pour un rang $n$. Comme $\\sqrt2>1$, on a $U_n\\geqslant\\sqrt2>1$, donc $U_n\\in[1;+\\infty[$, domaine de $g$ : on peut donc appliquer $g$.\n\n**D'après la question 1a, $g(x)\\geqslant\\sqrt2$ pour tout $x\\in[1;+\\infty[$ ; en particulier :**\n\n$$U_{n+1}=g(U_n)\\geqslant\\sqrt2$$\n\n**Par récurrence, pour tout entier naturel $n$, $U_n\\geqslant\\sqrt2$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-recurrence-simple-minoration-suite-via-fonction-minoree-terminale-c",
+          "texte": "Pour montrer par récurrence que Un≥√2, on s'appuie sur le fait que Un+1=g(Un) et que g(x)≥√2 pour tout x du domaine de g (établi précédemment)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour montrer par récurrence qu'une suite récurrente $U_{n+1}=g(U_n)$ reste minorée par une valeur $m$, on s'appuie sur le fait déjà établi que $g(x)\\geqslant m$ pour tout $x$ du domaine de $g$ : il suffit de vérifier l'initialisation, puis l'hérédité découle directement de cette propriété de $g$.\n\n**Initialisation ($n=0$).** $U_0=\\sqrt2\\geqslant\\sqrt2$ (égalité).\n\n**Hérédité.** Supposons $U_n\\geqslant\\sqrt2$ pour un rang $n$. Comme $\\sqrt2>1$, on a $U_n\\geqslant\\sqrt2>1$, donc $U_n\\in[1;+\\infty[$, domaine de $g$ : on peut donc appliquer $g$.\n\n**D'après la question 1a, $g(x)\\geqslant\\sqrt2$ pour tout $x\\in[1;+\\infty[$ ; en particulier :**\n\n$$U_{n+1}=g(U_n)\\geqslant\\sqrt2$$\n\n**Par récurrence, pour tout entier naturel $n$, $U_n\\geqslant\\sqrt2$.**",
+      "themes": [
+        "suite récurrente",
+        "récurrence",
+        "encadrement"
+      ]
     },
     {
       "numero": "2b",
       "points": "1pt",
-      "enonce_markdown": "Établir pour tout entier naturel $n$ les inégalités suivantes : $|U_{n+1}-x_0|\\leqslant\\dfrac{\\sqrt2}2|U_n-x_0|$ (on pourra utiliser la partie A), puis $|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$ (voir la note de correction en tête de ce fichier).",
-      "rappels_de_methode": [{"cours_id": "cours-inegalite-contraction-appliquer-partie-a-fonction-terminale-c", "texte": "L'inégalité des accroissements finis de la Partie A, appliquée à g avec le majorant √2/2 de |g'| et le point fixe g(x0)=x0, donne directement |Un+1-x0|≤(√2/2)|Un-x0| ; cette inégalité se propage ensuite par récurrence en une majoration géométrique."}],
-      "corrige_markdown": "### Rappel de méthode\nL'inégalité des accroissements finis démontrée en Partie A, appliquée à une fonction $g$ dont la dérivée est majorée en valeur absolue sur un intervalle contenant deux points, donne directement une majoration de l'écart des images en fonction de l'écart des points de départ. Appliquée entre un terme de la suite et un point fixe de $g$, cette inégalité devient une inégalité de contraction, qui se propage ensuite par récurrence en une majoration géométrique.\n\n**Première inégalité : $|U_{n+1}-x_0|\\leqslant\\dfrac{\\sqrt2}2|U_n-x_0|$.**\n\n**D'après la question 2a, $U_n\\geqslant\\sqrt2>1$, donc $U_n\\in[1;+\\infty[$. D'après la Partie B (question 2a), $x_0\\in\\,]1;2[\\subset[1;+\\infty[$.**\n\n**D'après la question 1b, $|g'(x)|=g'(x)\\leqslant\\dfrac{\\sqrt2}2$ pour tout $x\\in[1;+\\infty[$, intervalle contenant $U_n$ et $x_0$.**\n\n**Application de l'inégalité des accroissements finis (Partie A) sur l'intervalle $[\\min(U_n,x_0);\\max(U_n,x_0)]\\subset[1;+\\infty[$, avec $k=\\dfrac{\\sqrt2}2$ :**\n\n$$|g(U_n)-g(x_0)|\\leqslant\\dfrac{\\sqrt2}2|U_n-x_0|$$\n\n**Comme $U_{n+1}=g(U_n)$ (relation de récurrence) et $g(x_0)=x_0$ (question 1c, $x_0$ point fixe de $g$) :**\n\n$$|U_{n+1}-x_0|\\leqslant\\dfrac{\\sqrt2}2|U_n-x_0|$$\n\n**La première inégalité est établie.**\n\n**Seconde inégalité, par récurrence : $|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$.**\n\n**Initialisation ($n=0$).** $U_0=\\sqrt2\\in[1;2]$ (car $\\sqrt2\\approx1{,}414$) et $x_0\\in\\,]1;2[$ : les deux valeurs appartiennent à $[1;2]$, intervalle de longueur $1$, donc $|U_0-x_0|\\leqslant2-1=1=\\left(\\dfrac{\\sqrt2}2\\right)^0$.\n\n**Hérédité.** Supposons $|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$. D'après la première inégalité :\n\n$$|U_{n+1}-x_0|\\leqslant\\dfrac{\\sqrt2}2|U_n-x_0|\\leqslant\\dfrac{\\sqrt2}2\\times\\left(\\dfrac{\\sqrt2}2\\right)^n=\\left(\\dfrac{\\sqrt2}2\\right)^{n+1}$$\n\n**Par récurrence, pour tout entier naturel $n$, $|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$.**"
+      "enonce_markdown": "Établir pour tout entier naturel $n$ les inégalités suivantes : $|U_{n+1}-x_0|\\leqslant\\dfrac{\\sqrt2}2|U_n-x_0|$ (on pourra utiliser la partie A), puis $|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-inegalite-contraction-appliquer-partie-a-fonction-terminale-c",
+          "texte": "L'inégalité des accroissements finis de la Partie A, appliquée à g avec le majorant √2/2 de |g'| et le point fixe g(x0)=x0, donne directement |Un+1-x0|≤(√2/2)|Un-x0| ; cette inégalité se propage ensuite par récurrence en une majoration géométrique."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'inégalité des accroissements finis démontrée en Partie A, appliquée à une fonction $g$ dont la dérivée est majorée en valeur absolue sur un intervalle contenant deux points, donne directement une majoration de l'écart des images en fonction de l'écart des points de départ. Appliquée entre un terme de la suite et un point fixe de $g$, cette inégalité devient une inégalité de contraction, qui se propage ensuite par récurrence en une majoration géométrique.\n\n**Première inégalité : $|U_{n+1}-x_0|\\leqslant\\dfrac{\\sqrt2}2|U_n-x_0|$.**\n\n**D'après la question 2a, $U_n\\geqslant\\sqrt2>1$, donc $U_n\\in[1;+\\infty[$. D'après la Partie B (question 2a), $x_0\\in\\,]1;2[\\subset[1;+\\infty[$.**\n\n**D'après la question 1b, $|g'(x)|=g'(x)\\leqslant\\dfrac{\\sqrt2}2$ pour tout $x\\in[1;+\\infty[$, intervalle contenant $U_n$ et $x_0$.**\n\n**Application de l'inégalité des accroissements finis (Partie A) sur l'intervalle $[\\min(U_n,x_0);\\max(U_n,x_0)]\\subset[1;+\\infty[$, avec $k=\\dfrac{\\sqrt2}2$ :**\n\n$$|g(U_n)-g(x_0)|\\leqslant\\dfrac{\\sqrt2}2|U_n-x_0|$$\n\n**Comme $U_{n+1}=g(U_n)$ (relation de récurrence) et $g(x_0)=x_0$ (question 1c, $x_0$ point fixe de $g$) :**\n\n$$|U_{n+1}-x_0|\\leqslant\\dfrac{\\sqrt2}2|U_n-x_0|$$\n\n**La première inégalité est établie.**\n\n**Seconde inégalité, par récurrence : $|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$.**\n\n**Initialisation ($n=0$).** $U_0=\\sqrt2\\in[1;2]$ (car $\\sqrt2\\approx1{,}414$) et $x_0\\in\\,]1;2[$ : les deux valeurs appartiennent à $[1;2]$, intervalle de longueur $1$, donc $|U_0-x_0|\\leqslant2-1=1=\\left(\\dfrac{\\sqrt2}2\\right)^0$.\n\n**Hérédité.** Supposons $|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$. D'après la première inégalité :\n\n$$|U_{n+1}-x_0|\\leqslant\\dfrac{\\sqrt2}2|U_n-x_0|\\leqslant\\dfrac{\\sqrt2}2\\times\\left(\\dfrac{\\sqrt2}2\\right)^n=\\left(\\dfrac{\\sqrt2}2\\right)^{n+1}$$\n\n**Par récurrence, pour tout entier naturel $n$, $|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$.**",
+      "themes": [
+        "inégalité des accroissements finis",
+        "suite récurrente",
+        "récurrence"
+      ]
     },
     {
       "numero": "2c",
       "points": "0,75pt",
       "enonce_markdown": "En déduire que la suite $(U_n)$ est convergente et donner sa limite.",
-      "rappels_de_methode": [{"cours_id": "cours-convergence-suite-encadrement-geometrique-gendarmes-terminale-c", "texte": "Si 0≤|Un-x0|≤kⁿ avec 0<k<1, alors kⁿ→0, donc par le théorème des gendarmes |Un-x0|→0, c'est-à-dire Un→x0 : la suite converge vers x0."}],
-      "corrige_markdown": "### Rappel de méthode\nSi $0\\leqslant|U_n-x_0|\\leqslant k^n$ avec $0<k<1$, alors $k^n\\to0$ quand $n\\to+\\infty$ (suite géométrique de raison dans $]0;1[$), donc par le théorème des gendarmes, $|U_n-x_0|\\to0$, c'est-à-dire $U_n\\to x_0$.\n\n**D'après la question 2b, pour tout $n$, $0\\leqslant|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$.**\n\n**Comme $\\dfrac{\\sqrt2}2\\approx0{,}707\\in\\,]0;1[$, on a $\\displaystyle\\lim_{n\\to+\\infty}\\left(\\dfrac{\\sqrt2}2\\right)^n=0$.**\n\n**Par le théorème des gendarmes :**\n\n$$\\lim_{n\\to+\\infty}|U_n-x_0|=0\\ \\Longrightarrow\\ \\lim_{n\\to+\\infty}U_n=x_0$$\n\n**La suite $(U_n)$ est convergente, de limite $x_0$** (la solution de $f(x)=0$ dans $\\,]1;2[$ établie en Partie B).\n\n### Conseil\nCe résultat illustre la méthode du point fixe pour approcher numériquement une solution d'équation : la suite $(U_n)$, construite à partir de la relation $x_0=g(x_0)$, converge vers $x_0$ à une vitesse géométrique de raison $\\dfrac{\\sqrt2}2\\approx0{,}707$, ce qui permettrait d'approximer $x_0$ avec une précision croissante en itérant $U_{n+1}=g(U_n)$."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-convergence-suite-encadrement-geometrique-gendarmes-terminale-c",
+          "texte": "Si 0≤|Un-x0|≤kⁿ avec 0<k<1, alors kⁿ→0, donc par le théorème des gendarmes |Un-x0|→0, c'est-à-dire Un→x0 : la suite converge vers x0."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi $0\\leqslant|U_n-x_0|\\leqslant k^n$ avec $0<k<1$, alors $k^n\\to0$ quand $n\\to+\\infty$ (suite géométrique de raison dans $]0;1[$), donc par le théorème des gendarmes, $|U_n-x_0|\\to0$, c'est-à-dire $U_n\\to x_0$.\n\n**D'après la question 2b, pour tout $n$, $0\\leqslant|U_n-x_0|\\leqslant\\left(\\dfrac{\\sqrt2}2\\right)^n$.**\n\n**Comme $\\dfrac{\\sqrt2}2\\approx0{,}707\\in\\,]0;1[$, on a $\\displaystyle\\lim_{n\\to+\\infty}\\left(\\dfrac{\\sqrt2}2\\right)^n=0$.**\n\n**Par le théorème des gendarmes :**\n\n$$\\lim_{n\\to+\\infty}|U_n-x_0|=0\\ \\Longrightarrow\\ \\lim_{n\\to+\\infty}U_n=x_0$$\n\n**La suite $(U_n)$ est convergente, de limite $x_0$** (la solution de $f(x)=0$ dans $\\,]1;2[$ établie en Partie B).\n\n### Conseil\nCe résultat illustre la méthode du point fixe pour approcher numériquement une solution d'équation : la suite $(U_n)$, construite à partir de la relation $x_0=g(x_0)$, converge vers $x_0$ à une vitesse géométrique de raison $\\dfrac{\\sqrt2}2\\approx0{,}707$, ce qui permettrait d'approximer $x_0$ avec une précision croissante en itérant $U_{n+1}=g(U_n)$.",
+      "themes": [
+        "convergence",
+        "suite géométrique",
+        "théorème des gendarmes",
+        "suite récurrente"
+      ]
     }
   ]
 }

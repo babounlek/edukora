@@ -1,0 +1,157 @@
+{
+  "cours_id": "cours-architecture-d-un-micro-ordinateur-3e",
+  "meta": {
+    "titre": "Architecture d'un micro-ordinateur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Architecture des ordinateurs",
+    "duree_estimee_min": 30,
+    "tags": [
+      "architecture de l'ordinateur",
+      "Von Neumann",
+      "unité centrale de traitement",
+      "mémoire centrale",
+      "bus",
+      "RISC",
+      "CISC"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2026-cameroun",
+    "epreuve_titre": "BEPC Cameroun - Épreuve théorique d'informatique - Session 2026",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bepc-informatique-2026-cameroun-ex1-q1-1",
+    "rappels_lies": [
+      "rdm-bepc-informatique-2026-cameroun-ex1-q3-1",
+      "rdm-bepc-informatique-2026-cameroun-ex1-q4-1"
+    ],
+    "correction_id": "corr-bepc-informatique-2026-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ouvre le boîtier d'une unité centrale : tu y vois des cartes, des câbles, un ventilateur. Rien ne dit à première vue qui commande, qui calcule, qui se souvient. L'architecture, c'est justement le plan qui répond à ces trois questions. La comprendre te permet de savoir pourquoi un ordinateur ralentit quand la mémoire est saturée, pourquoi un processeur plus rapide ne suffit pas toujours, et ce que signifient les caractéristiques inscrites sur la fiche technique d'une machine que tu voudrais acheter."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir distinguer le matériel (le boîtier, les composants) du logiciel (les programmes installés)",
+        "Connaître les principaux périphériques et savoir dire lesquels servent à entrer une information et lesquels servent à la restituer",
+        "Savoir qu'un ordinateur ne manipule que des 0 et des 1"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le modèle de Von Neumann",
+      "contenu_markdown": "L'architecture d'un ordinateur est l'organisation interne de la machine : la nature de ses composants matériels, le rôle de chacun et la manière dont ils sont reliés entre eux pour échanger les données et les instructions.\n\nDepuis 1945, presque tous les ordinateurs suivent le même plan, dit **modèle de Von Neumann**, bâti sur quatre organes reliés par des bus.\n\n| Organe | Rôle |\n|---|---|\n| Unité arithmétique et logique (UAL) | exécute les calculs et les comparaisons |\n| Unité de commande | lit les instructions, les décode, pilote les autres organes |\n| Mémoire centrale | contient à la fois les données et le programme |\n| Unités d'entrée et de sortie | assurent les échanges avec l'extérieur |\n\nL'UAL et l'unité de commande réunies forment l'**unité centrale de traitement**, autrement dit le processeur.\n\nL'idée fondatrice du modèle tient en une phrase à retenir telle quelle :\n\n> **Dans un ordinateur de Von Neumann, le programme est stocké dans la même mémoire que les données qu'il manipule.**\n\nLes trois **bus** transportent l'information entre ces organes : le bus de données (les valeurs), le bus d'adresses (l'emplacement mémoire visé), le bus de commandes (les ordres de lecture ou d'écriture).\n\n**Deux familles de processeurs**\n\nLe processeur ne comprend qu'un ensemble fini d'instructions élémentaires, appelé jeu d'instructions. Deux philosophies s'opposent :\n\n- **RISC**, *Reduced Instruction Set Computer*, processeur à jeu d'instructions réduit : peu d'instructions, toutes simples et rapides ; les traitements complexes s'obtiennent en enchaînant plusieurs instructions simples. C'est l'architecture des processeurs de téléphones portables.\n- **CISC**, *Complex Instruction Set Computer*, processeur à jeu d'instructions complexe : beaucoup d'instructions, dont certaines réalisent à elles seules un traitement élaboré. C'est l'architecture historique des processeurs d'ordinateurs de bureau.",
+      "formule_principale": "UAL + Unité de commande = Unité centrale de traitement (processeur)",
+      "variantes": [
+        {
+          "nom": "Lecture par le schéma plutôt que par la liste",
+          "quand_utiliser": "Quand la question demande de citer des composants et que la mémoire fait défaut le jour de l'épreuve",
+          "contenu_markdown": "Redessine le modèle au brouillon en trente secondes : une boîte « Mémoire centrale » au centre, une boîte « Processeur » coupée en deux (UAL en haut, Unité de commande en bas), une flèche entrante à gauche depuis les unités d'entrée, une flèche sortante à droite vers les unités de sortie. Tu lis alors directement sur ton dessin tous les composants demandés, dans le vocabulaire exact du programme, sans risque d'en oublier un."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Question tirée de l'épreuve du BEPC 2026 : « Donner la signification de l'expression : Architecture de l'ordinateur » puis « Citer deux (02) composants de l'architecture de Von Neumann ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le type de question posé",
+          "justification": "« Donner la signification de l'expression » appelle une définition ; « citer » appelle une simple énumération, sans développement. Traiter les deux de la même façon fait perdre du temps sur la première et des points sur la seconde.",
+          "resultat_markdown": "Question 1 : définition à rédiger. Question 2 : deux termes à énumérer."
+        },
+        {
+          "numero": 2,
+          "action": "Construire la définition en trois temps",
+          "justification": "Une définition complète nomme le genre (une organisation), l'objet (les composants matériels) et le trait distinctif (leurs liaisons et leurs échanges).",
+          "resultat_markdown": "L'architecture de l'ordinateur désigne l'organisation interne de la machine : la nature de ses composants matériels, le rôle de chacun et la manière dont ils sont reliés entre eux par les bus pour échanger données et instructions."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier que la définition ne se réduit pas à une liste de matériel",
+          "justification": "Citer « écran, clavier, unité centrale » décrirait l'équipement visible d'un poste de travail, pas l'organisation interne. Le mot qui porte le point est « organisation ».",
+          "resultat_markdown": "La définition contient bien le mot « organisation » et mentionne les liaisons : elle est recevable."
+        },
+        {
+          "numero": 4,
+          "action": "Choisir deux composants du modèle de Von Neumann",
+          "justification": "Le modèle en compte quatre. Il faut en choisir deux réellement distincts, et non deux noms qui désignent le même organe.",
+          "resultat_markdown": "L'unité arithmétique et logique (UAL) et la mémoire centrale."
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler que les deux composants choisis ne se recouvrent pas",
+          "justification": "« Le processeur et l'unité de commande » serait refusé, l'unité de commande faisant partie du processeur. L'UAL et la mémoire centrale, elles, sont deux organes séparés du schéma.",
+          "resultat_markdown": "Aucun recouvrement : les deux composants comptent chacun pour 0,5 point."
+        }
+      ],
+      "conclusion_markdown": "On vient de traiter les deux formes que prend cette notion en examen : définir l'architecture, et citer les organes du modèle de Von Neumann. Une définition centrée sur l'organisation et les liaisons, deux composants réellement distincts : les deux points sont acquis."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Définir l'architecture de l'ordinateur en énumérant « écran, clavier, souris, unité centrale ».",
+          "pourquoi_faux": "Cette liste décrit l'équipement visible d'un poste de travail, pas l'organisation interne de la machine. L'architecture répond à la question « comment les organes internes sont-ils agencés et reliés ? », pas à « que voit-on sur la table ? ».",
+          "correction_markdown": "Commencer par le mot « organisation » : « l'organisation interne des composants matériels de la machine et de leurs liaisons »."
+        },
+        {
+          "erreur_markdown": "Citer « le processeur et l'unité de commande » comme deux composants du modèle de Von Neumann.",
+          "pourquoi_faux": "L'unité de commande est un élément du processeur : on cite donc deux fois le même organe, à deux niveaux de détail différents. Le correcteur ne compte qu'un composant.",
+          "correction_markdown": "Choisir deux organes du même niveau dans le schéma : par exemple l'UAL et la mémoire centrale, ou l'unité de commande et les unités d'entrée-sortie."
+        },
+        {
+          "erreur_markdown": "Traduire RISC par « Rapid Instruction Set Computer ».",
+          "pourquoi_faux": "Le R signifie *Reduced*. C'est le nombre d'instructions qui est réduit ; la rapidité n'en est qu'une conséquence, pas la définition. Une lettre traduite de travers fait perdre le point du sigle.",
+          "correction_markdown": "Mémoriser les deux sigles comme un seul bloc : *Instruction Set Computer* précédé de *Reduced* ou de *Complex*."
+        },
+        {
+          "erreur_markdown": "Affirmer que la mémoire centrale ne contient que les données, le programme étant ailleurs.",
+          "pourquoi_faux": "C'est précisément l'inverse de l'idée fondatrice du modèle de Von Neumann : programme et données partagent la même mémoire. C'est ce choix qui rend l'ordinateur programmable sans le recâbler.",
+          "correction_markdown": "Retenir la phrase-clé : « le programme est stocké dans la même mémoire que les données »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer les quatre organes du modèle de Von Neumann et indiquer, pour chacun, son rôle en une ligne.",
+          "solution_markdown": "1. **L'unité arithmétique et logique (UAL)** : elle exécute les opérations de calcul (addition, soustraction, multiplication, division) et les opérations logiques (comparaisons, ET, OU).\n2. **L'unité de commande** : elle lit les instructions du programme en mémoire, les décode et envoie aux autres organes les ordres nécessaires à leur exécution.\n3. **La mémoire centrale** : elle conserve, pendant l'exécution, à la fois les données à traiter et les instructions du programme.\n4. **Les unités d'entrée et de sortie** : elles assurent les échanges avec l'extérieur, l'entrée récupérant les informations fournies par l'utilisateur (clavier, souris, scanner) et la sortie restituant les résultats (écran, imprimante, haut-parleur).\n\nOn peut ajouter que ces quatre organes communiquent par l'intermédiaire des bus : bus de données, bus d'adresses et bus de commandes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un camarade affirme : « L'unité centrale de traitement, c'est le boîtier posé sous le bureau. » Expliquer pourquoi cette affirmation est fausse et donner la définition correcte.",
+          "solution_markdown": "**Pourquoi l'affirmation est fausse**\n\nLe boîtier posé sous le bureau s'appelle en français l'unité centrale, au sens courant du mot : c'est le meuble métallique qui abrite la carte mère, le disque dur, l'alimentation et les cartes d'extension. Il contient des dizaines de composants dont un seul est le processeur.\n\nL'unité centrale de traitement, elle, est un composant précis du modèle de Von Neumann, et non un contenant.\n\n**Définition correcte**\n\nL'unité centrale de traitement (processeur) est le composant formé par la réunion de l'unité arithmétique et logique et de l'unité de commande. Elle exécute les instructions du programme : l'unité de commande les lit et les décode, l'UAL réalise les calculs et les comparaisons demandés.\n\n**Conclusion**\n\nLe boîtier est un contenant matériel, l'unité centrale de traitement est l'organe de calcul qu'il abrite. Le premier se mesure en centimètres, le second se caractérise par sa fréquence et son jeu d'instructions."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un fabricant de téléphones portables choisit un processeur RISC plutôt qu'un processeur CISC. Donner la signification des deux sigles, puis proposer une raison qui explique ce choix.",
+          "solution_markdown": "**Signification des sigles**\n\n- RISC : *Reduced Instruction Set Computer*, processeur à jeu d'instructions réduit.\n- CISC : *Complex Instruction Set Computer*, processeur à jeu d'instructions complexe.\n\n**Ce qui les distingue**\n\nUn processeur RISC ne connaît qu'un petit nombre d'instructions, toutes simples et de durée à peu près égale. Un processeur CISC en connaît beaucoup, dont certaines réalisent à elles seules un traitement élaboré et occupent le processeur plus longtemps.\n\n**Raison du choix pour un téléphone portable**\n\nUn jeu d'instructions réduit demande un circuit électronique plus simple. Un circuit plus simple compte moins de transistors, donc consomme moins d'énergie et dégage moins de chaleur.\n\nOr un téléphone portable fonctionne sur batterie et ne dispose d'aucun ventilateur : l'autonomie et la dissipation thermique y sont les contraintes décisives, bien avant la puissance brute. Le processeur RISC répond exactement à ces deux contraintes.\n\n**Conclusion**\n\nLe fabricant privilégie le RISC parce qu'un jeu d'instructions réduit permet un processeur sobre en énergie et peu échauffant, ce qui est indispensable dans un appareil alimenté par batterie et refroidi passivement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'architecture, c'est l'organisation interne des composants et de leurs liaisons : dès que tu vois ce mot, pense « plan de la machine », jamais « liste du matériel visible ».",
+        "Le modèle de Von Neumann tient en quatre organes : UAL, unité de commande, mémoire centrale, unités d'entrée-sortie, reliés par les bus.",
+        "UAL et unité de commande réunies forment le processeur : ne les cite jamais comme équivalentes au processeur lui-même.",
+        "L'idée fondatrice à retenir mot pour mot : le programme est stocké dans la même mémoire que les données.",
+        "RISC et CISC ne diffèrent que par un adjectif, *Reduced* ou *Complex*, appliqué au même groupe *Instruction Set Computer*.",
+        "Au BEPC, cette notion revient chaque année sous trois formes : définir l'architecture, citer des composants de Von Neumann, développer un sigle. Apprends-la une fois pour les trois."
+      ]
+    }
+  ]
+}

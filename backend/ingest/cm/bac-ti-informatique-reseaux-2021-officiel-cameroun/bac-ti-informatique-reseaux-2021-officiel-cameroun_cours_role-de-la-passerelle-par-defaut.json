@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-role-de-la-passerelle-par-defaut-terminale-ti",
+  "meta": {
+    "titre": "Rôle de la passerelle par défaut",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Routage et adressage réseau",
+    "duree_estimee_min": 15,
+    "tags": [
+      "passerelle par défaut",
+      "routage",
+      "réseau local",
+      "routeur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ordinateur connecté à un petit réseau local sait parfaitement parler aux machines de ce même réseau. Mais comment fait-il pour joindre un serveur situé à l'autre bout du monde, sur Internet, alors qu'il ne connaît ni son réseau ni son chemin ? Il n'a en réalité qu'une seule chose à savoir : à qui confier le paquet pour qu'il trouve, lui, le bon chemin. Ce quelqu'un, c'est la passerelle par défaut."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de réseau local et d'adresse IP",
+        "Notion de routeur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le rôle de la passerelle par défaut",
+      "contenu_markdown": "La passerelle par défaut est l'adresse IP (généralement celle d'un routeur) vers laquelle une machine envoie tout paquet destiné à une machine située EN DEHORS de son propre réseau local. Elle joue le rôle de point de sortie du réseau : sans elle, une machine ne pourrait communiquer qu'avec les autres machines de son propre réseau, jamais avec Internet ni avec un autre réseau distant.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un ordinateur d'adresse 192.168.43.228 (masque 255.255.255.0) veut contacter le serveur 172.217.20.14 (un serveur Google sur Internet). Décrire le rôle joué par la passerelle par défaut 192.168.43.1 dans cet échange.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier si la destination appartient au même réseau",
+          "justification": "Une machine compare toujours l'adresse de destination à son propre réseau avant de choisir comment envoyer le paquet.",
+          "resultat_markdown": "172.217.20.14 n'appartient pas au réseau 192.168.43.0/24 : ce n'est pas une machine du réseau local."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la règle d'envoi hors réseau local",
+          "justification": "Toute destination hors du réseau local est envoyée à la passerelle par défaut, jamais directement.",
+          "resultat_markdown": "L'ordinateur envoie le paquet à sa passerelle par défaut, 192.168.43.1, plutôt que de tenter de le délivrer lui-même."
+        },
+        {
+          "numero": 3,
+          "action": "Décrire le relais assuré par la passerelle",
+          "justification": "La passerelle (un routeur) connaît, elle, le chemin vers l'extérieur du réseau local.",
+          "resultat_markdown": "Le routeur à l'adresse 192.168.43.1 reçoit le paquet et le retransmet vers Internet, en direction du serveur 172.217.20.14, via son propre chemin de routage."
+        }
+      ],
+      "conclusion_markdown": "La passerelle par défaut agit comme un relais obligatoire : la machine locale ne connaît pas le chemin vers l'extérieur, elle se contente de tout confier à sa passerelle, qui elle sait comment continuer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décrire la passerelle par défaut comme le serveur qui héberge les sites web visités",
+          "pourquoi_faux": "La passerelle n'héberge aucun contenu : elle ne fait que relayer les paquets vers l'extérieur du réseau local, le contenu (site web) est hébergé sur un serveur distant totalement différent.",
+          "correction_markdown": "Présente la passerelle uniquement comme un point de relais/routage, jamais comme un hébergeur de contenu."
+        },
+        {
+          "erreur_markdown": "Confondre passerelle par défaut et serveur DHCP quand ils partagent la même adresse IP",
+          "pourquoi_faux": "Il arrive qu'un même routeur assure les deux fonctions (attribution d'adresses ET passerelle), avec la même adresse IP dans les deux champs, mais ce sont deux services logiquement distincts.",
+          "correction_markdown": "Explique toujours la fonction du champ interrogé (passerelle = routage vers l'extérieur, DHCP = attribution d'adresses), même si l'adresse affichée est identique dans les deux champs."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Définir en une phrase le rôle de la passerelle par défaut.",
+          "solution_markdown": "La passerelle par défaut est l'adresse (généralement d'un routeur) vers laquelle une machine envoie tout paquet destiné à une machine située en dehors de son propre réseau local, notamment vers Internet."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ordinateur du réseau 10.0.0.0/24 essaie de contacter un autre ordinateur du MÊME réseau, à l'adresse 10.0.0.55. Sa passerelle par défaut intervient-elle dans cet échange ? Justifier.",
+          "solution_markdown": "Non, la passerelle n'intervient pas. 10.0.0.55 appartient au même réseau (10.0.0.0/24) que l'ordinateur émetteur : la communication se fait directement au sein du réseau local, sans avoir besoin de sortir vers un autre réseau. La passerelle par défaut n'est sollicitée que pour joindre une machine EXTÉRIEURE au réseau local."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur perd sa configuration de passerelle par défaut (le champ devient vide) mais conserve son adresse IP, son masque et son serveur DNS. Expliquer précisément ce qu'il peut encore faire et ce qu'il ne peut plus faire sur le réseau.",
+          "solution_markdown": "Sans passerelle par défaut, l'ordinateur peut toujours communiquer avec les machines de son propre réseau local (même adresse réseau que la sienne), puisque cette communication ne nécessite aucun relais externe. En revanche, il ne peut plus atteindre aucune machine située en dehors de son réseau local, y compris Internet : même si le serveur DNS reste joignable localement pour résoudre un nom en adresse IP, la réponse obtenue (une adresse IP externe) resterait inatteignable, faute de savoir vers quel équipement envoyer les paquets qui lui sont destinés."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La passerelle par défaut est le point de sortie du réseau local vers l'extérieur, notamment Internet.",
+        "Une machine ne l'utilise que pour joindre une destination hors de son propre réseau.",
+        "C'est généralement l'adresse d'un routeur, capable de relayer le trafic vers d'autres réseaux.",
+        "Passerelle par défaut et serveur DHCP peuvent partager la même adresse IP tout en restant deux fonctions distinctes.",
+        "Sans passerelle configurée, une machine reste capable de communiquer en local mais perd tout accès à l'extérieur."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-identifier-cle-primaire-tle-ti",
+  "meta": {
+    "titre": "Identifier la clé primaire d'une table relationnelle",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction aux bases de données relationnelles",
+    "duree_estimee_min": 18,
+    "tags": [
+      "base de données",
+      "clé primaire",
+      "modèle relationnel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Choisir la bonne clé primaire n'est pas un détail technique parmi d'autres : c'est la décision qui garantit qu'on ne confondra jamais deux enregistrements distincts. Une erreur ici peut rendre incohérente toute une base de données, bien après que la table ait été créée."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un tuple et un attribut dans une table relationnelle.",
+        "Savoir lire les colonnes d'une table présentée sous forme de tableau."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois critères pour un bon candidat",
+      "contenu_markdown": "La clé primaire d'une table est l'attribut, ou le plus petit groupe d'attributs, dont la valeur identifie chaque tuple de façon unique. Un bon candidat doit satisfaire trois critères simultanément : l'unicité (deux tuples ne peuvent jamais partager la même valeur), la permanence (la valeur ne change jamais une fois attribuée, contrairement à un âge ou une adresse) et l'obligation (la valeur ne peut jamais rester vide, contrainte souvent notée NOT NULL). Un attribut qui échoue à l'un seul de ces trois critères doit être écarté, même s'il semble à première vue distinguer suffisamment les tuples entre eux.",
+      "formule_principale": "Clé primaire = unique + permanente + jamais vide"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La table ENSEIGNANT du CES de Bambam comporte les colonnes Matricule, Nom, Prénom, Discipline, Age, Date d'intégration. Quel champ peut être considéré pertinemment comme étant la clé primaire ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écarter Nom et Prénom",
+          "justification": "Rien n'empêche deux enseignants distincts de porter le même nom ou le même prénom : l'unicité n'est pas garantie.",
+          "resultat_markdown": "Nom et Prénom échouent au critère d'unicité."
+        },
+        {
+          "numero": 2,
+          "action": "Écarter Discipline",
+          "justification": "Une même discipline est nécessairement partagée par plusieurs enseignants (DZOULA et BABA sont tous deux en Informatique dans l'extrait fourni).",
+          "resultat_markdown": "Discipline échoue au critère d'unicité."
+        },
+        {
+          "numero": 3,
+          "action": "Écarter Age",
+          "justification": "L'âge change chaque année, ce qui viole le critère de permanence, et deux enseignants peuvent avoir le même âge.",
+          "resultat_markdown": "Age échoue aux critères de permanence et d'unicité."
+        },
+        {
+          "numero": 4,
+          "action": "Retenir Matricule",
+          "justification": "Un matricule est conçu, par nature administrative, pour être unique, attribué une fois pour toutes et jamais laissé vide à l'embauche.",
+          "resultat_markdown": "Matricule satisfait les trois critères : c'est la clé primaire de la table ENSEIGNANT."
+        }
+      ],
+      "conclusion_markdown": "Passer chaque colonne au crible des trois critères, plutôt que de choisir au premier coup d'œil, garantit de ne jamais retenir un attribut qui semblait distinguer les tuples sans réellement le garantir."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir Nom comme clé primaire parce qu'aucun homonyme n'apparaît dans l'extrait fourni",
+          "pourquoi_faux": "L'absence d'homonyme dans un extrait de cinq lignes ne garantit rien pour l'ensemble de la table, qui peut compter des centaines d'enseignants au fil des années : la clé primaire doit rester valable pour tous les tuples présents ET futurs, pas seulement pour l'échantillon visible.",
+          "correction_markdown": "Ne juge jamais l'unicité d'un candidat sur le seul extrait donné : demande-toi toujours si deux tuples pourraient, en toute généralité, partager la même valeur."
+        },
+        {
+          "erreur_markdown": "Choisir un attribut qui change au fil du temps, comme Age, en pensant qu'il reste unique à un instant donné",
+          "pourquoi_faux": "Même si deux enseignants n'avaient temporairement pas le même âge, une clé primaire doit identifier le MÊME tuple à travers le temps, sans jamais changer de valeur - un enseignant reste le même enseignant après son anniversaire, sa clé primaire doit donc rester la même.",
+          "correction_markdown": "Vérifie toujours la permanence d'un candidat dans le temps, pas seulement son unicité à un instant précis."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une table VEHICULE comporte les colonnes Immatriculation, Marque, Couleur, Anneemise en circulation. Quel champ retiendriez-vous comme clé primaire ?",
+          "solution_markdown": "Immatriculation : c'est le seul champ conçu pour identifier un véhicule de façon unique et permanente, contrairement à la marque, la couleur (partagées par plusieurs véhicules) ou l'année de mise en circulation."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une table ELEVE comporte les colonnes Matricule, Nom, Prénom, DateNaissance, Classe. Un élève propose DateNaissance comme clé primaire, en expliquant que deux élèves nés le même jour, c'est rare. Réfutez cette proposition.",
+          "solution_markdown": "« Rare » ne veut pas dire « impossible » : une clé primaire doit garantir l'unicité pour TOUS les tuples, sans aucune exception, alors que rien n'empêche statistiquement deux élèves d'un même établissement de partager une date de naissance, surtout sur plusieurs centaines d'élèves. DateNaissance ne remplit donc pas le critère d'unicité de façon garantie, contrairement à Matricule, qui reste le seul champ conçu spécifiquement pour ne jamais se répéter."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une table INSCRIPTION, qui enregistre l'inscription d'un élève à un cours, ne comporte que deux colonnes : codeEleve et codeCours, aucune des deux n'étant à elle seule unique (un même élève s'inscrit à plusieurs cours, un même cours accueille plusieurs élèves). Comment identifier chaque tuple de cette table de façon unique ?",
+          "solution_markdown": "Ni codeEleve seul ni codeCours seul ne peut servir de clé primaire, puisqu'aucun des deux n'est unique isolément. En revanche, la COMBINAISON des deux (codeEleve, codeCours) l'est : un même élève ne s'inscrit normalement qu'une seule fois au même cours, donc aucune paire (codeEleve, codeCours) ne se répète dans la table. On parle alors de clé primaire composée (ou clé composite) : deux attributs qui, pris ensemble, identifient chaque tuple de façon unique, alors qu'aucun des deux ne le fait séparément."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une bonne clé primaire est unique, permanente dans le temps, et jamais vide.",
+        "Écarte systématiquement les colonnes exposées à l'homonymie (nom, prénom) ou au partage entre plusieurs tuples (discipline, catégorie).",
+        "Une colonne qui change au fil du temps (âge, adresse) ne peut jamais servir de clé primaire, même si elle semble unique à un instant donné.",
+        "Quand aucun attribut seul n'est unique, une combinaison de plusieurs attributs peut former une clé primaire composée.",
+        "Au BAC TI, cette question précède presque toujours la création de la table (CREATE TABLE) : la clé primaire identifiée ici devient directement la contrainte PRIMARY KEY de la requête suivante."
+      ]
+    }
+  ]
+}

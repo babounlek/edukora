@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-sql-group-by-tle-ti",
+  "meta": {
+    "titre": "Agréger des données par groupe en SQL (GROUP BY)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 20,
+    "tags": [
+      "SQL",
+      "GROUP BY",
+      "AVG",
+      "agregation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex2-q4.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer une moyenne générale est simple ; calculer une moyenne PAR secteur, PAR ville ou PAR représentant demande un outil supplémentaire, qui répartit d'abord les lignes en petits paquets avant d'appliquer le calcul à chacun d'eux séparément. C'est exactement le rôle de GROUP BY, l'une des clauses SQL les plus puissantes pour produire des tableaux de bord de gestion."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les fonctions d'agrégation de base : `AVG` (moyenne), `SUM` (somme), `COUNT` (nombre), `MIN`, `MAX`."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La clause GROUP BY",
+      "contenu_markdown": "GROUP BY répartit les lignes du résultat en groupes selon la valeur d'une ou plusieurs colonnes ; une fonction d'agrégation placée dans le SELECT (comme `AVG`, `SUM`, `COUNT`) s'applique alors séparément à chaque groupe, et non à l'ensemble de la table. Règle essentielle : toute colonne présente dans le SELECT doit être soit une colonne agrégée par une fonction, soit une colonne listée dans le GROUP BY - jamais une colonne « libre » qui n'appartient à aucune des deux catégories.",
+      "formule_principale": "SELECT colonne_groupe, FONCTION(colonne) FROM table GROUP BY colonne_groupe;"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui calcule la moyenne des prix de vente des appartements, par secteur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la colonne de regroupement",
+          "justification": "« Par secteur » signale la colonne selon laquelle regrouper les lignes.",
+          "resultat_markdown": "`GROUP BY secteur`"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la fonction d'agrégation à appliquer",
+          "justification": "« La moyenne des prix » demande la fonction AVG sur la colonne pxvente.",
+          "resultat_markdown": "`AVG(pxvente)`"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la requête complète",
+          "justification": "Le SELECT ne doit contenir que la colonne de regroupement et la colonne agrégée.",
+          "resultat_markdown": "```sql\nSELECT secteur, AVG(pxvente) AS prix_moyen\nFROM APPARTEMENT\nGROUP BY secteur;\n```"
+        }
+      ],
+      "conclusion_markdown": "GROUP BY répartit les appartements par secteur, AVG calcule ensuite la moyenne des prix à l'intérieur de chaque secteur pris séparément."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ajouter la colonne `ref` dans le SELECT à côté de AVG(pxvente)",
+          "pourquoi_faux": "`ref` identifie un appartement précis, mais un groupe contient plusieurs appartements du même secteur : SQL ne sait pas quelle référence afficher pour représenter tout le groupe, et la plupart des SGBD rejettent la requête.",
+          "correction_markdown": "Ne mets dans le SELECT que des colonnes agrégées ou présentes dans le GROUP BY, jamais une colonne qui varie à l'intérieur d'un même groupe."
+        },
+        {
+          "erreur_markdown": "Confondre GROUP BY et ORDER BY",
+          "pourquoi_faux": "ORDER BY trie l'affichage des lignes sans les fusionner ; GROUP BY fusionne plusieurs lignes en une seule par groupe et permet d'y appliquer une fonction d'agrégation. Les deux peuvent d'ailleurs se combiner dans une même requête.",
+          "correction_markdown": "Utilise GROUP BY dès que l'énoncé parle de calcul « par » catégorie (par secteur, par ville, par représentant), pas seulement pour trier."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui compte le nombre d'appartements par secteur.",
+          "solution_markdown": "```sql\nSELECT secteur, COUNT(*) AS nombre\nFROM APPARTEMENT\nGROUP BY secteur;\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrivez la requête qui calcule le prix de vente maximum géré par chaque représentant (identifié par coderep).",
+          "solution_markdown": "```sql\nSELECT coderep, MAX(pxvente) AS prix_max\nFROM APPARTEMENT\nGROUP BY coderep;\n```\n`MAX` remplace ici `AVG`, mais le principe reste identique : GROUP BY répartit d'abord les appartements par représentant, MAX calcule ensuite le prix le plus élevé au sein de chaque groupe."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui affiche, pour chaque secteur, le nombre d'appartements et leur prix moyen, mais seulement pour les secteurs qui comptent plus de trois appartements.",
+          "solution_markdown": "```sql\nSELECT secteur, COUNT(*) AS nombre, AVG(pxvente) AS prix_moyen\nFROM APPARTEMENT\nGROUP BY secteur\nHAVING COUNT(*) > 3;\n```\nLa clause WHERE ne peut pas être utilisée ici car elle filtre les lignes AVANT le regroupement, alors que la condition « plus de trois appartements » porte sur le résultat du regroupement lui-même (le nombre d'appartements par groupe). Il faut donc utiliser HAVING, qui filtre les GROUPES après leur constitution et peut porter directement sur une fonction d'agrégation comme `COUNT(*)`, ce que WHERE ne permet jamais de faire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "GROUP BY répartit les lignes en groupes selon une colonne, avant d'appliquer une fonction d'agrégation à chacun d'eux.",
+        "Toute colonne du SELECT doit être agrégée ou présente dans le GROUP BY, jamais libre.",
+        "Pour filtrer sur le résultat d'une agrégation (comme un COUNT), utilise HAVING, jamais WHERE, qui agit avant le regroupement.",
+        "Au BAC, le mot « par » (moyenne PAR secteur, nombre PAR représentant) est le signal immédiat d'un GROUP BY à écrire."
+      ]
+    }
+  ]
+}

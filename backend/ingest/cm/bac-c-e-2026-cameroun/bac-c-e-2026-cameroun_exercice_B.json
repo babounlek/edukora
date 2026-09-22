@@ -1,0 +1,113 @@
+{
+  "epreuve_source": "bac-c-e-2026-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathematiques",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2026",
+  "duree_epreuve": "4h",
+  "coefficient": "7(C) / 6(E)",
+  "serie": "C/E",
+  "nature_epreuve": null,
+  "numero_exercice": "B",
+  "points": 7,
+  "figures": [],
+  "enonce_intro_markdown": "**Partie B : Évaluation des compétences (7 points)**\n\nBALO est le promoteur d'une petite et moyenne entreprise (PME) de fabrication de savons. Lors d'une cérémonie organisée par le Gouvernement, cette PME a été primée pour la qualité de ses produits. Cette PME, située dans la région du Nord, voudrait faire la promotion de ses produits dans les trois autres aires culturelles, et ceci en langues nationales. Elle a donc recruté autant de commerciaux hommes que de commerciaux femmes. Tous les commerciaux recrutés parlent au moins l'une des 3 langues : Ewondo, Douala et Mendjoumba. Quinze commerciaux recrutés parlent l'Ewondo, vingt parlent le Mendjoumba, dix le Douala, huit parlent l'Ewondo et le Mendjoumba, neuf le Douala et le Mendjoumba et sept le Douala et l'Ewondo.\n\nLors de la fabrication des savons, de nombreux accidents de travail se produisent conduisant à des blessures. LOBA, le médecin de cette PME, veut utiliser les résultats d'une étude fiable sur une hormone sécrétée lors de la survenue d'une hémorragie. Cette hormone favorise la réabsorption de l'eau par l'organisme après une hémorragie. Cette étude a modélisé le taux de cette hormone en $\\mu g/mL$ dans le sang en fonction du temps $t$ en minutes par la fonction $\\varphi$ définie par $\\varphi(t)=5te^{-\\frac{3}{5}t}+1$. LOBA voudrait connaître le taux maximal de cette hormone contenu dans l'organisme humain.\n\nPour réduire les coûts d'acquisition de la matière première, BALO a acheté un terrain ayant la forme d'un triangle rectangle pour la culture de cette matière première. Les études faites sur ce terrain ont établi que la production minimale de cette matière première est de $7,5$ tonnes à l'hectare et les dimensions de ce terrain sont toutes des nombres entiers naturels. Le côté le plus long de ce terrain mesure $y$ hm et les deux autres côtés mesurent respectivement $x$ hm et $6$ hm.\n\n*(Barème : les tâches 1, 2 et 3 comptent chacune pour 2,25 points ; 0,25 point supplémentaire récompense la présentation générale de la copie sur l'ensemble de la Partie B - ce point n'est rattaché à aucune tâche précise et n'est donc pas noté séparément ci-dessous.)*",
+  "questions": [
+    {
+      "numero": "Tâche1",
+      "enonce_markdown": "Déterminer le nombre de commerciaux femmes recrutés dans cette PME.",
+      "corrige_markdown": "### Rappel de méthode\nPour un problème à trois ensembles $E$, $D$, $M$ dont on connaît les effectifs et les intersections deux à deux mais pas le triple recoupement, on introduit $x=\\mathrm{card}(E\\cap D\\cap M)$ comme inconnue. On exprime alors chacune des 7 zones du diagramme de Venn en fonction de $x$ (les trois zones \"exactement deux ensembles\" s'obtiennent en retranchant $x$ à chaque intersection deux à deux, puis chaque zone \"un seul ensemble\" s'obtient en retranchant du cardinal total de cet ensemble les deux zones à double appartenance qu'il contient et le triple recoupement). La condition que chaque zone soit un effectif positif ou nul, combinée à une éventuelle contrainte supplémentaire de l'énoncé (ici la parité du total), permet souvent de déterminer $x$ de façon unique même sans donnée directe sur le triple recoupement.\n\n### Corrigé détaillé\n\n**Étape 1 - poser l'inconnue du triple recoupement.**\nNotons $E$, $D$, $M$ les ensembles des commerciaux parlant respectivement l'Ewondo, le Douala, le Mendjoumba, et $x=\\mathrm{card}(E\\cap D\\cap M)$ le nombre de commerciaux parlant les trois langues (donnée non fournie explicitement par l'énoncé).\n\n**Étape 2 - exprimer les 7 zones du diagramme en fonction de $x$.**\nZones à deux langues exactement :\n$$\\mathrm{card}(E\\cap M\\text{ seul}) = 8-x, \\qquad \\mathrm{card}(D\\cap M\\text{ seul}) = 9-x, \\qquad \\mathrm{card}(D\\cap E\\text{ seul}) = 7-x$$\nZones à une seule langue (on retire du total de chaque ensemble ses deux zones à double appartenance et le triple recoupement) :\n$$\\mathrm{card}(E\\text{ seul}) = 15-(8-x)-(7-x)-x = 15-8-7+2x-x = x$$\n$$\\mathrm{card}(M\\text{ seul}) = 20-(8-x)-(9-x)-x = 20-8-9+2x-x = 3+x$$\n$$\\mathrm{card}(D\\text{ seul}) = 10-(9-x)-(7-x)-x = 10-9-7+2x-x = x-6$$\n\n**Étape 3 - contrainte de positivité de chaque zone.**\nToutes ces quantités sont des effectifs, donc positives ou nulles :\n$$8-x\\geq0,\\ 9-x\\geq0,\\ 7-x\\geq0 \\ \\Rightarrow\\ x\\leq7 \\qquad\\text{(la plus contraignante des trois)}$$\n$$x-6\\geq0 \\ \\Rightarrow\\ x\\geq6$$\nDonc $6\\leq x\\leq7$, avec $x$ entier : $x\\in\\{6\\,;\\,7\\}$.\n\n**Étape 4 - trancher grâce à la condition \"autant d'hommes que de femmes\".**\nLe nombre total de commerciaux est $\\mathrm{card}(E\\cup D\\cup M)$, somme des 7 zones :\n$$\\mathrm{Total} = x + (3+x) + (x-6) + (8-x) + (9-x) + (7-x) + x = 21+x$$\n(on retrouve directement ce résultat par la formule du crible : $15+20+10-8-9-7+x = 21+x$, ce qui confirme le calcul zone par zone.)\nComme l'entreprise a recruté autant d'hommes que de femmes, ce total doit être un nombre pair (deux moitiés égales). Or $21$ est impair, donc $21+x$ est pair si et seulement si $x$ est impair. Parmi $x\\in\\{6\\,;\\,7\\}$, seul $x=7$ est impair.\n\n**Étape 5 - conclure.**\n$x=7$, donc $\\mathrm{Total} = 21+7 = 28$ commerciaux au total. Comme il y a autant de femmes que d'hommes :\n$$\\text{Nombre de femmes} = \\frac{28}{2} = 14$$\n\n**Vérification globale.** Avec $x=7$ : $E$ seul $=7$, $M$ seul $=10$, $D$ seul $=1$, $E\\cap M$ seul $=1$, $D\\cap M$ seul $=2$, $D\\cap E$ seul $=0$, triple $=7$. Somme $=7+10+1+1+2+0+7=28$. On retrouve $\\mathrm{card}(E)=7+1+0+7=15$ ✓, $\\mathrm{card}(M)=10+1+2+7=20$ ✓, $\\mathrm{card}(D)=1+2+0+7=10$ ✓ : toutes les données de l'énoncé sont respectées.\n\nLa PME a recruté **14 commerciales femmes** (et 14 commerciaux hommes).\n\n### Piège à éviter\nNe pars jamais du principe qu'aucun commercial ne parle les trois langues à la fois sous prétexte que l'énoncé ne le précise pas : ici, supposer $x=0$ donnerait un total de $21$ commerciaux, un nombre impair incompatible avec \"autant d'hommes que de femmes\" - c'est justement cette incohérence qui doit alerter et pousser à chercher la vraie valeur de $x$ plutôt que de la fixer arbitrairement à $0$.",
+      "themes": [
+        "dénombrement",
+        "diagramme de Venn",
+        "trois ensembles",
+        "formule du crible"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-e-2026-cameroun-exB-qTache1-1",
+          "competence": "Résolution d'un problème à trois ensembles par diagramme de Venn",
+          "contenu_markdown": "### Rappel de méthode\nPour un problème à trois ensembles $E$, $D$, $M$ dont on connaît les effectifs et les intersections deux à deux mais pas le triple recoupement, on introduit $x=\\mathrm{card}(E\\cap D\\cap M)$ comme inconnue. On exprime alors chacune des 7 zones du diagramme de Venn en fonction de $x$ (les trois zones \"exactement deux ensembles\" s'obtiennent en retranchant $x$ à chaque intersection deux à deux, puis chaque zone \"un seul ensemble\" s'obtient en retranchant du cardinal total de cet ensemble les deux zones à double appartenance qu'il contient et le triple recoupement). La condition que chaque zone soit un effectif positif ou nul, combinée à une éventuelle contrainte supplémentaire de l'énoncé (ici la parité du total), permet souvent de déterminer $x$ de façon unique même sans donnée directe sur le triple recoupement.",
+          "cours_genere": true,
+          "cours_id": "cours-diagramme-de-venn-trois-ensembles-terminale-c-e"
+        }
+      ]
+    },
+    {
+      "numero": "Tâche2",
+      "enonce_markdown": "Déterminer le taux maximal de cette hormone contenue dans l'organisme humain.",
+      "corrige_markdown": "### Rappel de méthode\nPour trouver le maximum d'une fonction dérivable sur un intervalle, on calcule sa dérivée, on détermine son signe, et on repère la valeur où la dérivée s'annule en changeant de signe (de positif à négatif) : c'est en ce point que la fonction atteint son maximum local, qui est global si c'est le seul point critique et que le comportement aux bords de l'intervalle ne dépasse pas cette valeur.\n\n### Corrigé détaillé\n\n**Étape 1 - dériver $\\varphi$.**\n$\\varphi(t) = 5t\\,e^{-\\frac35t}+1$, avec $t\\geq0$ (le temps ne peut pas être négatif). C'est un produit : $\\varphi(t) = 5t\\times e^{-\\frac35t}+1$.\n$$\\varphi'(t) = 5\\,e^{-\\frac35t}+5t\\times\\left(-\\frac35\\right)e^{-\\frac35t} = 5e^{-\\frac35t}-3t\\,e^{-\\frac35t} = e^{-\\frac35t}(5-3t)$$\n\n**Étape 2 - signe de $\\varphi'$.**\n$e^{-\\frac35t}>0$ pour tout $t$, donc le signe de $\\varphi'(t)$ est celui de $(5-3t)$ :\n$$\\varphi'(t)=0 \\iff 5-3t=0 \\iff t=\\frac53$$\n$\\varphi'(t)>0$ pour $t<\\dfrac53$ et $\\varphi'(t)<0$ pour $t>\\dfrac53$.\n\n**Étape 3 - conclure sur le maximum.**\n$\\varphi$ est croissante sur $\\left[0\\,;\\,\\frac53\\right]$ puis décroissante sur $\\left[\\frac53\\,;\\,+\\infty\\right[$ : elle atteint donc son maximum en $t=\\dfrac53$ minute (soit $1$ minute $40$ secondes après le début).\n\n**Étape 4 - calculer la valeur maximale.**\n$$\\varphi\\left(\\frac53\\right) = 5\\times\\frac53\\times e^{-\\frac35\\times\\frac53}+1 = \\frac{25}{3}\\,e^{-1}+1 = \\frac{25}{3e}+1$$\nNumériquement, $e\\approx2{,}71828$, donc $\\dfrac{25}{3e}\\approx\\dfrac{25}{8{,}1548}\\approx3{,}07$, d'où $\\varphi\\left(\\frac53\\right)\\approx4{,}07$.\n\n**Conclusion.** Le taux maximal de cette hormone dans l'organisme est $\\dfrac{25}{3e}+1\\ \\mu g/mL$, soit environ $4{,}07\\ \\mu g/mL$, atteint $\\dfrac53$ minute (environ $1$ min $40$ s) après le début de l'hémorragie.\n\n### Conseil\nSur $[0,+\\infty[$, il suffit de vérifier que $\\varphi'$ ne change de signe qu'une seule fois (de $+$ à $-$) pour affirmer que ce point critique est un maximum global, sans avoir besoin d'étudier séparément la limite en $+\\infty$ - ici $\\varphi(t)\\to1$ quand $t\\to+\\infty$, bien en dessous de $\\varphi\\left(\\frac53\\right)$, ce qui confirme (sans être nécessaire à la démonstration) qu'il s'agit bien du maximum absolu.",
+      "themes": [
+        "étude de fonction",
+        "optimisation",
+        "dérivée d'un produit",
+        "fonction exponentielle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-e-2026-cameroun-exB-qTâche2-1",
+          "competence": "Optimisation d'une fonction du type t*exp(-kt)",
+          "contenu_markdown": "### Rappel de méthode\nPour trouver le maximum d'une fonction dérivable sur un intervalle, on calcule sa dérivée, on détermine son signe, et on repère la valeur où la dérivée s'annule en changeant de signe (de positif à négatif) : c'est en ce point que la fonction atteint son maximum local, qui est global si c'est le seul point critique et que le comportement aux bords de l'intervalle ne dépasse pas cette valeur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "Tâche3",
+      "enonce_markdown": "Évaluer la production minimale de cette matière première sur le terrain acheté.",
+      "corrige_markdown": "### Rappel de méthode\nQuand un triangle rectangle a des côtés entiers naturels avec l'hypoténuse $y$ et les deux côtés de l'angle droit $x$ et un nombre connu, la relation de Pythagore $y^2=x^2+(\\text{connu})^2$ se transforme en $(y-x)(y+x)=(\\text{connu})^2$ : en écrivant $(\\text{connu})^2$ comme produit de deux facteurs $d_1\\times d_2$ de même parité (car $y-x$ et $y+x$ ont toujours la même parité, leur différence $2x$ étant paire), on retrouve toutes les solutions entières possibles.\n\n### Corrigé détaillé\n\n**Étape 1 - poser la relation de Pythagore.**\nLe terrain est un triangle rectangle dont le côté le plus long, donc l'hypoténuse, mesure $y$ hm, et les deux côtés de l'angle droit mesurent $x$ hm et $6$ hm. D'après le théorème de Pythagore :\n$$y^2 = x^2+6^2 = x^2+36$$\n\n**Étape 2 - factoriser $y^2-x^2$.**\n$$y^2-x^2 = 36 \\quad\\Longleftrightarrow\\quad (y-x)(y+x) = 36$$\n$x$ et $y$ sont des entiers naturels avec $y>x>0$ (l'hypoténuse est le côté le plus long), donc $y-x$ et $y+x$ sont des entiers naturels strictement positifs, avec $y-x<y+x$, et de même parité puisque $(y+x)-(y-x)=2x$ est pair.\n\n**Étape 3 - lister les décompositions de $36$ en produit de deux facteurs de même parité.**\n$36 = 1\\times36 = 2\\times18 = 3\\times12 = 4\\times9 = 6\\times6$.\n$1\\times36$ : parités différentes (impair, pair) - rejeté.\n$2\\times18$ : deux facteurs pairs - à retenir.\n$3\\times12$ : parités différentes - rejeté.\n$4\\times9$ : parités différentes - rejeté.\n$6\\times6$ : donnerait $y-x=6$ et $y+x=6$, donc $x=0$, impossible (un côté du terrain ne peut pas être nul) - rejeté.\n\n**Étape 4 - résoudre avec $y-x=2$ et $y+x=18$.**\n$$\\begin{cases}y-x=2\\\\y+x=18\\end{cases} \\ \\Longrightarrow\\ 2y=20 \\ \\Longrightarrow\\ y=10, \\quad x=18-10=8$$\n\n**Étape 5 - vérification.**\n$x^2+6^2 = 8^2+6^2 = 64+36 = 100 = 10^2 = y^2$. ✓ Le triplet $(6,8,10)$ est bien pythagoricien (c'est le triplet $(3,4,5)$ multiplié par $2$), et $y=10$ est bien le plus grand des trois côtés.\n\n**Étape 6 - aire du terrain.**\nLes deux côtés de l'angle droit du triangle rectangle sont $x=8$ hm et $6$ hm (l'hypoténuse $y=10$ hm n'est jamais l'un des deux côtés qui forment l'angle droit) :\n$$\\text{Aire} = \\frac{1}{2}\\times8\\times6 = 24 \\text{ hm}^2$$\nOr $1\\ \\text{hm}^2$ correspond exactement à $1$ hectare, donc l'aire du terrain est $24$ hectares.\n\n**Étape 7 - production minimale.**\nLa production minimale est de $7,5$ tonnes par hectare, donc sur l'ensemble du terrain :\n$$\\text{Production minimale} = 7{,}5\\times24 = 180 \\text{ tonnes}$$\n\n**Conclusion.** Le terrain mesure $6$ hm $\\times$ $8$ hm $\\times$ $10$ hm (aire $24$ hectares), et la production minimale de matière première sur ce terrain est de **180 tonnes**.\n\n### Piège à éviter\nNe confonds pas les côtés de l'angle droit avec l'hypoténuse pour calculer l'aire : la formule $\\frac12\\times\\text{base}\\times\\text{hauteur}$ ne s'applique directement qu'aux deux côtés qui forment l'angle droit ($x$ et $6$ ici), jamais avec l'hypoténuse $y$ à la place de l'un d'eux.",
+      "themes": [
+        "théorème de Pythagore",
+        "équations diophantiennes",
+        "aire d'un triangle rectangle",
+        "triplet pythagoricien"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-e-2026-cameroun-exB-qTâche3-1",
+          "competence": "Théorème de Pythagore et recherche de triplets entiers",
+          "contenu_markdown": "### Rappel de méthode\nQuand un triangle rectangle a des côtés entiers naturels avec l'hypoténuse $y$ et les deux côtés de l'angle droit $x$ et un nombre connu, la relation de Pythagore $y^2=x^2+(\\text{connu})^2$ se transforme en $(y-x)(y+x)=(\\text{connu})^2$ : en écrivant $(\\text{connu})^2$ comme produit de deux facteurs $d_1\\times d_2$ de même parité (car $y-x$ et $y+x$ ont toujours la même parité, leur différence $2x$ étant paire), on retrouve toutes les solutions entières possibles.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "diagramme de Venn",
+    "trois ensembles",
+    "dénombrement",
+    "optimisation",
+    "fonction exponentielle",
+    "théorème de Pythagore",
+    "triplet pythagoricien",
+    "aire",
+    "situation-problème"
+  ],
+  "incertitudes": [
+    "Cours complet généré dans cette passe pour le rappel 'Résolution d'un problème à trois ensembles par diagramme de Venn' (Tâche 1, cours_id=cours-diagramme-de-venn-trois-ensembles-terminale-c-e).",
+    "Rappels de méthode des tâches 2 (optimisation d'une fonction produit-exponentielle) et 3 (théorème de Pythagore et équation diophantienne) non encore développés en cours complet dans cette passe, faute de volume disponible (cours_genere=false, cours_id=null pour chacun) - à traiter lors d'un prochain lot.",
+    "Le point de présentation (0,25 pt) mentionné sur l'épreuve récompense la tenue générale de la copie sur l'ensemble de la Partie B et n'est rattaché à aucune tâche corrigeable individuellement ; il n'a donc pas été modélisé comme une question distincte."
+  ],
+  "statut": "brouillon",
+  "matiere_normalisee": "MATHS",
+  "classe": "Tle"
+}

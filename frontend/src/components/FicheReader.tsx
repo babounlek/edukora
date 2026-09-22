@@ -2,6 +2,7 @@ import { useState } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
+import rehypeRaw from "rehype-raw"
 import { ArrowLeft, ArrowRight, Eye, RotateCcw } from "lucide-react"
 
 import type { EpreuveHeader } from "@/api/types"
@@ -27,7 +28,7 @@ function CardQuestion({ texte }: { texte: string }) {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkMath]}
-      rehypePlugins={[rehypeKatex]}
+      rehypePlugins={[rehypeRaw, rehypeKatex]}
       components={{ p: ({ children }) => <>{children}</> }}
     >
       {texte}

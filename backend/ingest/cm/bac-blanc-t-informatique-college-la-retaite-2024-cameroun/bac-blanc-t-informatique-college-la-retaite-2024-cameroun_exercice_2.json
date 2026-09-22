@@ -1,0 +1,155 @@
+{
+  "epreuve_source": "bac-blanc-t-informatique-college-la-retaite-2024-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "filiere_serie_a": null,
+  "serie": "TI",
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "institution": "Collège de la Retraite",
+  "annee": 2024,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "statut": "brouillon",
+  "numero_exercice": "2",
+  "introduction_markdown": null,
+  "points": 3,
+  "groupes": [
+    "PARTIE I : PROGRAMMATION EN LANGAGE C (10 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**B.** Une translation d'ordre **n** appliquée à une chaîne de caractères **ch** consiste à déplacer les **n** derniers caractères de la chaîne vers son début.\n\n*Exemples :*\n- Pour `ch=\"bonjour\"` et `n=1`, on déplace le dernier caractère de `ch` vers le début, ce qui donne après translation `ch=\"rbonjou\"` ;\n- Pour `ch=\"bonjour\"` et `n=4`, on déplace les 4 derniers caractères de `ch` vers le début, ce qui donne après translation `ch=\"jourbon\"`.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Pour `ch=\"Probatoire_TI\"`, donner les résultats des translations d'ordre `n=6` et `n=8`. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne translation d'ordre n reprend exactement la définition donnée dans l'énoncé : on découpe la chaîne en deux morceaux, les n derniers caractères d'un côté et les caractères restants de l'autre, puis on recolle ces deux morceaux en plaçant le premier (les n derniers caractères d'origine) devant le second.\n\nLa chaîne `ch=\"Probatoire_TI\"` compte 13 caractères, numérotés de la position 1 à la position 13 : P-r-o-b-a-t-o-i-r-e-_-T-I. Pour `n=6`, les 6 derniers caractères (positions 8 à 13) sont `ire_TI`, et les 7 premiers (positions 1 à 7) sont `Probato` ; la translation donne donc `ch=\"ire_TIProbato\"`. Pour `n=8`, les 8 derniers caractères (positions 6 à 13) sont `toire_TI`, et les 5 premiers (positions 1 à 5) sont `Proba` ; la translation donne `ch=\"toire_TIProba\"`.\n\n### Conseil\nAvant de traiter un cas avec un grand n, vérifie toujours ta méthode sur les deux petits exemples déjà donnés dans l'énoncé (`n=1` et `n=4` sur `\"bonjour\"`) : si tu retrouves bien `\"rbonjou\"` et `\"jourbon\"`, ta façon de découper la chaîne est correcte et tu peux l'appliquer en confiance à `\"Probatoire_TI\"`.",
+      "themes": [
+        "Manipulation de chaînes de caractères",
+        "Découpage et concaténation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex2-q1-1",
+          "competence": "Découpage et recomposition d'une chaîne de caractères",
+          "contenu_markdown": "Une translation d'ordre n reprend exactement la définition donnée dans l'énoncé : on découpe la chaîne en deux morceaux, les n derniers caractères d'un côté et les caractères restants de l'autre, puis on recolle ces deux morceaux en plaçant le premier (les n derniers caractères d'origine) devant le second.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "**2.a.** Donner, en langage C, la déclaration d'un tableau `mot` permettant de gérer une chaîne (on utilisera des chaînes de taille maximale 10). *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nEn langage C, une chaîne de caractères est stockée dans un tableau de `char` qui doit toujours réserver une case supplémentaire pour le caractère de fin de chaîne `'\\0'`, ajouté automatiquement par les fonctions de lecture comme `scanf(\"%s\", ...)`.\n\nPour gérer des chaînes d'au plus 10 caractères utiles, il faut donc déclarer un tableau d'au moins 11 cases :\n\n```c\nchar mot[11];\n```\n\n### Piège à éviter\nDéclarer `char mot[10];` en pensant à « 10 caractères maximum » est l'erreur la plus commise sur ce type de question : il ne reste alors aucune place pour le `'\\0'` final, et toute chaîne de 10 caractères réellement saisie déborde du tableau.",
+      "themes": [
+        "Déclaration de tableaux de caractères",
+        "Caractère de fin de chaîne"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex2-q2a-1",
+          "competence": "Déclaration d'un tableau de caractères en C",
+          "contenu_markdown": "En langage C, une chaîne de caractères est stockée dans un tableau de `char` qui doit toujours réserver une case supplémentaire pour le caractère de fin de chaîne `'\\0'`, ajouté automatiquement par les fonctions de lecture comme `scanf(\"%s\", ...)`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2b",
+      "enonce_markdown": "**2.b.** Donner, en langage C, une instruction permettant de lire les caractères d'un mot dans la variable `mot` et de retenir le nombre de caractères lus dans la variable `taille`. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa fonction `scanf(\"%s\", mot)` lit un mot au clavier (jusqu'au premier espace ou retour à la ligne) et le stocke dans le tableau `mot`, terminé par `'\\0'` ; la fonction `strlen`, déclarée dans `<string.h>`, permet ensuite de compter les caractères réellement présents dans une chaîne, sans compter ce `'\\0'` final.\n\n```c\nscanf(\"%s\", mot);\ntaille = strlen(mot);\n```\n\n### Conseil\nN'oublie pas `#include <string.h>` en tête de programme dès que tu utilises `strlen` : une fonction de bibliothèque non déclarée provoque un avertissement à la compilation, et parfois un résultat incorrect.",
+      "themes": [
+        "Lecture de chaînes (scanf %s)",
+        "Fonction strlen"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex2-q2b-1",
+          "competence": "Lecture d'une chaîne et calcul de sa longueur",
+          "contenu_markdown": "La fonction `scanf(\"%s\", mot)` lit un mot au clavier (jusqu'au premier espace ou retour à la ligne) et le stocke dans le tableau `mot`, terminé par `'\\0'` ; la fonction `strlen`, déclarée dans `<string.h>`, permet ensuite de compter les caractères réellement présents dans une chaîne, sans compter ce `'\\0'` final.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2c",
+      "enonce_markdown": "**2.c.** Donner une instruction permettant de lire l'ordre de translation compris entre 1 et n (on utilisera la structure `do…while`). *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne structure `do…while` exécute son corps au moins une fois, puis le répète tant que la condition reste vraie : c'est la structure adaptée pour forcer une resaisie tant qu'une valeur entrée reste invalide.\n\n```c\nint ordre;\ndo {\n    printf(\"Donner l'ordre de translation (entre 1 et %d) : \", taille);\n    scanf(\"%d\", &ordre);\n} while (ordre < 1 || ordre > taille);\n```\n\n### Piège à éviter\nÉcrire la condition de sortie au lieu de la condition de répétition est une confusion fréquente : un `do…while` se répète tant que la condition écrite est vraie, donc ici tant que la valeur reste en dehors de l'intervalle [1, taille] - pas l'inverse.",
+      "themes": [
+        "Structure do-while",
+        "Validation de saisie"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex2-q2c-1",
+          "competence": "Validation d'une saisie par do-while",
+          "contenu_markdown": "Une structure `do…while` exécute son corps au moins une fois, puis le répète tant que la condition reste vraie : c'est la structure adaptée pour forcer une resaisie tant qu'une valeur entrée reste invalide.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Donner une suite d'instructions en langage C permettant d'effectuer la translation de `mot`, d'ordre `ordre`. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nConstruire la translation revient à recopier, dans une chaîne temporaire, d'abord les `ordre` derniers caractères de `mot`, puis les caractères restants dans leur ordre initial, avant de refermer la chaîne par `'\\0'` et de la recopier dans `mot`.\n\n```c\nchar temp[11];\nint k;\nfor (k = 0; k < ordre; k++) temp[k] = mot[taille - ordre + k];\nfor (k = ordre; k < taille; k++) temp[k] = mot[k - ordre];\ntemp[taille] = '\\0';\nstrcpy(mot, temp);\n```\n\nOn peut vérifier cette suite d'instructions sur l'exemple `mot=\"bonjour\"` (taille=7) et `ordre=1` : la première boucle ne s'exécute qu'une fois et donne `temp[0]=mot[6]='r'` ; la seconde recopie `mot[0]` à `mot[5]` dans `temp[1]` à `temp[6]`, soit `\"bonjou\"` ; on obtient bien `temp=\"rbonjou\"`, conforme à l'exemple donné dans l'énoncé.\n\n### Piège à éviter\nÉcrire directement dans `mot` pendant qu'on le lit encore (par exemple `mot[k]=mot[k-ordre]` sans tableau intermédiaire) écrase des caractères dont on a encore besoin plus loin dans le calcul : la chaîne temporaire n'est pas un détour inutile, elle évite ce genre d'écrasement.\n\n### Conseil\nTeste toujours ton code sur les deux exemples déjà résolus dans l'énoncé (`n=1` et `n=4` sur `\"bonjour\"`) avant de le considérer correct - c'est le moyen le plus rapide de repérer une erreur d'indice le jour de l'examen.",
+      "themes": [
+        "Manipulation de tableaux de caractères",
+        "Algorithme de rotation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex2-q3-1",
+          "competence": "Rotation d'une chaîne de caractères via tableau temporaire",
+          "contenu_markdown": "Construire la translation revient à recopier, dans une chaîne temporaire, d'abord les `ordre` derniers caractères de `mot`, puis les caractères restants dans leur ordre initial, avant de refermer la chaîne par `'\\0'` et de la recopier dans `mot`.",
+          "cours_genere": true,
+          "cours_id": "cours-rotation-sequence-decalage-terminale-ti"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "chaines de caracteres C",
+    "translation circulaire",
+    "strlen",
+    "strcpy",
+    "do while",
+    "Terminale TI"
+  ],
+  "incertitudes": [
+    "savoir_officiel non renseigné : référentiel non accessible depuis cet environnement (voir remarque détaillée dans l'exercice 1).",
+    "Cours généré pour le rappel de méthode de la question 3 (rotation via tableau temporaire) : cours-rotation-sequence-decalage-terminale-ti. Les autres rappels de méthode de cet exercice (questions 1, 2a, 2b, 2c) restent sans cours généré dans cette passe, faute de temps disponible pour traiter la totalité du lot ; à compléter lors d une prochaine exécution."
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-classes-d-adresses-ipv4-terminale-ti",
+  "meta": {
+    "titre": "Classes d'adresses IPv4",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage IPv4",
+    "duree_estimee_min": 18,
+    "tags": [
+      "classes d'adresses IP",
+      "adressage IPv4",
+      "classe A",
+      "classe B",
+      "classe C",
+      "classes d'adresses IPv4",
+      "masque par défaut"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q9-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant l'apparition des masques de sous-réseau modernes (CIDR), les concepteurs d'Internet ont réparti l'ensemble des adresses IPv4 possibles en grandes catégories, appelées classes, selon la taille du réseau qu'elles étaient censées desservir. Cette répartition historique reste aujourd'hui encore une notion incontournable du programme, et un simple coup d'œil au premier nombre d'une adresse IP suffit à trancher."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écriture décimale pointée d'une adresse IPv4",
+        "Notion d'octet (0 à 255)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déterminer la classe d'une adresse IPv4",
+      "contenu_markdown": "La classe d'une adresse IPv4 se lit sur la valeur de son premier octet uniquement :\n\nClasse A : de 1 à 126. Classe B : de 128 à 191. Classe C : de 192 à 223. Classe D (multidiffusion) : de 224 à 239. Classe E (réservée, expérimentale) : de 240 à 255. La valeur 127 est réservée à la boucle locale (loopback, ex. 127.0.0.1) et n'appartient à aucune classe utilisable sur un réseau.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la classe de l'adresse IPv4 192.168.43.228.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler le premier octet de l'adresse",
+          "justification": "Seul le premier octet détermine la classe d'une adresse IPv4.",
+          "resultat_markdown": "Le premier octet de 192.168.43.228 vaut 192."
+        },
+        {
+          "numero": 2,
+          "action": "Situer cette valeur dans les plages de classes",
+          "justification": "192 est compris entre 192 et 223, la plage réservée à la classe C.",
+          "resultat_markdown": "192 appartient à l'intervalle [192 ; 223] : l'adresse est de classe C."
+        }
+      ],
+      "conclusion_markdown": "L'adresse 192.168.43.228 est une adresse de classe C, ce qui est cohérent avec son usage typique dans un petit réseau local domestique ou d'entreprise."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Déterminer la classe à partir du masque de sous-réseau plutôt que du premier octet",
+          "pourquoi_faux": "Un masque comme 255.255.255.0 est le masque par défaut de la classe C, mais il peut aussi résulter d'un découpage manuel en sous-réseaux appliqué à une adresse d'une autre classe : seul le premier octet de l'adresse fait foi.",
+          "correction_markdown": "Ignore le masque affiché pour déterminer la classe : regarde uniquement la valeur du premier octet de l'adresse IP elle-même."
+        },
+        {
+          "erreur_markdown": "Oublier la plage réservée 127.x.x.x (boucle locale)",
+          "pourquoi_faux": "Bien que 127 tombe numériquement dans l'intervalle de la classe A (1 à 126 exclu, 127 inclus selon certaines présentations), cette plage est en réalité réservée au test local (loopback) et n'est jamais attribuée à une machine sur un réseau réel.",
+          "correction_markdown": "Signale que 127.x.x.x est une exception réservée à la boucle locale, pas une adresse de classe A utilisable normalement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer la classe de l'adresse 172.16.5.10.",
+          "solution_markdown": "Le premier octet vaut 172, compris entre 128 et 191 : l'adresse est de classe B."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un réseau utilise des adresses commençant par 10.x.x.x. Déterminer sa classe et expliquer pourquoi ce type de réseau est fréquent dans les grandes entreprises.",
+          "solution_markdown": "Le premier octet vaut 10, compris entre 1 et 126 : la classe est A. Les adresses de classe A réservent 24 bits à la partie hôte, ce qui permet théoriquement plus de 16 millions d'adresses hôtes dans un seul réseau : ce très grand espace d'adressage convient particulièrement aux grandes entreprises, qui doivent connecter un nombre élevé de postes de travail sur un réseau privé unique (10.0.0.0/8 est d'ailleurs une plage officiellement réservée à cet usage privé)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi la notion de classe d'adresses, bien qu'encore enseignée, est aujourd'hui largement remplacée par la notation CIDR (adresse/préfixe, par exemple 192.168.1.0/24) dans la configuration réelle des réseaux.",
+          "solution_markdown": "Le découpage en classes fixes (A, B, C) impose des tailles de réseau rigides : une classe C n'offre que 254 adresses d'hôtes utilisables, une classe B plus de 65 000, sans possibilité intermédiaire. Une entreprise ayant besoin de 500 adresses devait donc, avec les classes strictes, gaspiller une classe B entière (65 000 adresses disponibles pour 500 utilisées) ou se contenter d'une classe C insuffisante. La notation CIDR (Classless Inter-Domain Routing) supprime cette rigidité en permettant de choisir librement la longueur du préfixe réseau (/25, /26, /27...), ce qui autorise un découpage sur mesure de l'espace d'adressage et limite le gaspillage d'adresses IPv4, une ressource devenue rare. La notion de classe reste néanmoins utile pour comprendre l'organisation historique de l'espace d'adressage IPv4 et les masques par défaut associés."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La classe d'une adresse IPv4 se lit uniquement sur son premier octet.",
+        "Classe A : 1-126, Classe B : 128-191, Classe C : 192-223, Classe D : 224-239, Classe E : 240-255.",
+        "127.x.x.x est réservé à la boucle locale, en dehors de l'usage normal des classes.",
+        "Le masque de sous-réseau affiché ne détermine jamais la classe : seul le premier octet de l'adresse fait foi.",
+        "La notation CIDR moderne (adresse/préfixe) a largement remplacé le découpage rigide en classes dans la pratique."
+      ]
+    }
+  ]
+}

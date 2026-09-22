@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-la-fonction-empty-en-php-tle-ti",
+  "meta": {
+    "titre": "La fonction empty() en PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Validation de données en PHP",
+    "duree_estimee_min": 15,
+    "tags": [
+      "empty()",
+      "validation de formulaire côté serveur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.7.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'enregistrer une donnée en base, il faut s'assurer qu'elle existe réellement. Tester `si la variable == \"\"` fonctionne, mais oublie certains cas limites. PHP propose une fonction dédiée, conçue justement pour couvrir tous ces cas en une seule vérification."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les types de base en PHP (chaîne, entier, booléen)",
+        "Savoir écrire une condition if simple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "empty() : une seule fonction pour tester le vide",
+      "contenu_markdown": "`empty($variable)` est une fonction PHP qui renvoie `true` si la variable est considérée comme vide : elle n'existe pas, ou elle vaut `\"\"` (chaîne vide), `0`, `\"0\"`, `null`, `false`, ou un tableau vide `array()`. Elle renvoie `false` dans tous les autres cas. Contrairement à un test direct comme `if($variable == \"\")`, `empty()` ne provoque aucun avertissement si la variable n'a jamais été définie."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écris une condition qui vérifie que le champ `$_POST['numero']` a bien été renseigné avant de poursuivre le traitement du formulaire.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la variable à tester",
+          "justification": "La donnée provient du formulaire soumis en POST",
+          "resultat_markdown": "`$_POST['numero']`"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer empty() plutôt qu'une comparaison directe",
+          "justification": "empty() couvre à la fois l'absence totale du champ et sa présence sous forme vide, sans avertissement",
+          "resultat_markdown": "`if(empty($_POST['numero'])){ ... }`"
+        },
+        {
+          "numero": 3,
+          "action": "Réagir selon le résultat",
+          "justification": "Le traitement doit s'arrêter ou signaler une erreur si le champ est vide",
+          "resultat_markdown": "`if(empty($_POST['numero'])){ echo 'champ numero manquant'; } else { /* traitement normal */ }`"
+        }
+      ],
+      "conclusion_markdown": "La condition détecte à la fois l'absence du champ et sa présence sous forme de chaîne vide, en une seule vérification robuste."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que empty(\"0\") renvoie false",
+          "pourquoi_faux": "La chaîne \"0\" est traitée comme une valeur vide par `empty()`, alors qu'elle correspond pourtant à une saisie réelle de l'utilisateur.",
+          "correction_markdown": "Si la valeur 0 est une saisie légitime dans ton contexte (un numéro d'article égal à 0, par exemple), préfère un test explicite comme `isset($_POST['numero']) && $_POST['numero'] !== \"\"`."
+        },
+        {
+          "erreur_markdown": "Utiliser empty() sur une variable qui n'a jamais existé sans savoir que c'est justement son intérêt",
+          "pourquoi_faux": "Certains élèves évitent `empty()` par prudence, en pensant qu'elle provoquerait une erreur sur une variable non définie, alors que c'est exactement l'inverse : c'est son cas d'usage principal.",
+          "correction_markdown": "`empty($variable_inexistante)` renvoie simplement `true`, sans avertissement : c'est bien plus sûr qu'un test direct sur une variable qui n'existe pas."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que renvoie `empty(\"\")` ?",
+          "solution_markdown": "`true`, car une chaîne vide est considérée comme une valeur vide par `empty()`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris une condition qui affiche « erreur » si le champ `$_POST['couleur']` n'est pas renseigné.",
+          "solution_markdown": "`if(empty($_POST['couleur'])){ echo \"erreur\"; }`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un formulaire de vote propose un champ `note` pouvant valoir 0 (note la plus basse). Pourquoi `empty($_POST['note'])` est-il un mauvais choix pour vérifier que ce champ a été renseigné, et par quoi le remplacer ?",
+          "solution_markdown": "`empty()` renvoie `true` pour la valeur `\"0\"`, alors qu'une note de 0 est ici une réponse parfaitement valide de l'utilisateur : la condition rejetterait à tort ce cas comme si le champ n'avait pas été renseigné. Il faut la remplacer par un test qui distingue l'absence réelle de la valeur 0, par exemple `if(!isset($_POST['note']) || $_POST['note'] === \"\")`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "empty(\\$variable) teste en une seule fois l'absence, la chaîne vide, 0, null, false et le tableau vide.",
+        "Elle ne provoque aucun avertissement même si la variable n'a jamais été définie, contrairement à une comparaison directe.",
+        "Piège à retenir : empty(\"0\") vaut true, ce qui peut être une erreur si 0 est une valeur légitime dans ton contexte.",
+        "Dans ce cas précis, préfère isset() combiné à une comparaison stricte plutôt que empty() seul."
+      ]
+    }
+  ]
+}

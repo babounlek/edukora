@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-requete-sql-select-where-order-by-tle-tronc-commun",
+  "meta": {
+    "titre": "Exécuter une requête SQL SELECT avec WHERE et ORDER BY",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Langage SQL - interrogation d'une base de données",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "WHERE",
+      "ORDER BY",
+      "filtrage",
+      "tri"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "BAC A, C, D, E - Épreuve théorique d'Informatique - Session 2020 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2020-ex3-q2.d-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une base de données ne sert à rien si l'on ne sait pas en extraire l'information utile : c'est le rôle de la requête SELECT. Dès qu'un examinateur te donne une table de données et une requête toute faite, il attend que tu sois capable de prédire exactement ce qu'elle affiche, ligne par ligne, sans avoir besoin d'un ordinateur pour vérifier. C'est une compétence simple à acquérir une fois qu'on connaît le bon ordre des étapes, et elle revient très régulièrement dans les épreuves d'Informatique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table (lignes = enregistrements, colonnes = champs) et une clé primaire",
+        "Connaître la syntaxe de base d'une requête SELECT ... FROM ...",
+        "Savoir comparer des valeurs (dates, nombres, texte) avec les opérateurs <=, >=, =, <, >"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Filtrer puis trier, jamais l'inverse",
+      "contenu_markdown": "Une requête SELECT qui combine une clause WHERE et une clause ORDER BY s'exécute toujours selon le même ordre logique, quel que soit l'ordre d'écriture des mots-clés dans la requête. On part de la table complète indiquée après FROM. On applique d'abord la clause WHERE : on ne conserve que les enregistrements qui vérifient la condition, tous les autres sont éliminés du résultat. On applique ensuite la clause ORDER BY sur les seuls enregistrements retenus : on les range dans l'ordre croissant (ASC, valeur par défaut) ou décroissant (DESC) du champ indiqué. Enfin, seuls les champs listés juste après SELECT sont affichés dans le résultat, même si la condition WHERE porte sur un champ qui n'est pas affiché.\n\nRègle centrale : filtrage (WHERE) avant tri (ORDER BY), et seuls les champs cités après SELECT apparaissent dans le résultat final.",
+      "formule_principale": "SELECT champs FROM table WHERE condition ORDER BY champ [ASC ou DESC]",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère la table PRODUIT suivante :\n\n| codeProduit | nom | prix | date_expiration |\n|---|---|---|---|\n| PRO001 | Cerelac 6 | 2800 | 10/06/2021 |\n| PRO002 | NAN Confort | 3600 | 05/12/2019 |\n| PRO003 | Phosphatine | 3000 | 12/10/2020 |\n| PRO004 | Cerelac 8 | 3200 | 17/03/2020 |\n| PRO005 | NAN Confort 2 | 3800 | 18/12/2020 |\n\nQuel est le résultat de la requête :\n\n```sql\nSELECT nom, prix, date_expiration FROM PRODUIT WHERE date_expiration <= '15/06/2020' ORDER BY nom ASC\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la table de départ et les champs affichés",
+          "justification": "FROM PRODUIT indique la table source ; SELECT nom, prix, date_expiration indique que seuls ces trois champs apparaîtront dans le résultat (codeProduit ne sera pas affiché, même s'il existe dans la table).",
+          "resultat_markdown": "Table de départ : PRODUIT (5 enregistrements). Champs affichés : nom, prix, date_expiration."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la clause WHERE : comparer chaque date_expiration à '15/06/2020'",
+          "justification": "Seuls les enregistrements dont la date d'expiration est antérieure ou égale au 15/06/2020 vérifient la condition.",
+          "resultat_markdown": "PRO001 (10/06/2021) : postérieure, exclu. PRO002 (05/12/2019) : antérieure, retenu. PRO003 (12/10/2020) : postérieure, exclu. PRO004 (17/03/2020) : antérieure, retenu. PRO005 (18/12/2020) : postérieure, exclu."
+        },
+        {
+          "numero": 3,
+          "action": "Constituer l'ensemble filtré",
+          "justification": "Seuls les enregistrements retenus à l'étape précédente passent à l'étape de tri.",
+          "resultat_markdown": "Ensemble filtré : PRO002 (NAN Confort, 3600, 05/12/2019) et PRO004 (Cerelac 8, 3200, 17/03/2020)."
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la clause ORDER BY nom ASC",
+          "justification": "On trie l'ensemble filtré par ordre alphabétique croissant du champ nom.",
+          "resultat_markdown": "« Cerelac 8 » précède « NAN Confort » (C avant N)."
+        },
+        {
+          "numero": 5,
+          "action": "Ne conserver que les champs demandés par le SELECT",
+          "justification": "codeProduit n'a pas été demandé dans le SELECT : il n'apparaît pas dans le résultat final, bien qu'il ait servi à identifier chaque ligne.",
+          "resultat_markdown": "Résultat final : (Cerelac 8, 3200, 17/03/2020) puis (NAN Confort, 3600, 05/12/2019)."
+        }
+      ],
+      "conclusion_markdown": "Le résultat de la requête est un tableau de deux lignes affichant uniquement nom, prix et date_expiration, trié par nom croissant : Cerelac 8 (3200, 17/03/2020) puis NAN Confort (3600, 05/12/2019)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Trier d'abord la table entière par nom, puis appliquer le filtre WHERE sur le résultat trié",
+          "pourquoi_faux": "L'ordre logique d'exécution est fixe : WHERE s'applique toujours avant ORDER BY, quel que soit l'ordre d'écriture des mots-clés dans la requête. Trier avant de filtrer complique inutilement le raisonnement et peut faire perdre la trace de certains enregistrements.",
+          "correction_markdown": "Toujours filtrer d'abord sur l'ensemble complet des enregistrements, et ne trier qu'une fois l'ensemble final déterminé."
+        },
+        {
+          "erreur_markdown": "Afficher le champ codeProduit dans le résultat parce qu'il apparaît dans la table d'origine",
+          "pourquoi_faux": "Seuls les champs explicitement listés après SELECT apparaissent dans le résultat, même si d'autres champs existent dans la table ou ont servi à la condition WHERE.",
+          "correction_markdown": "Relis toujours la liste exacte des champs après SELECT avant de rédiger le résultat final : n'ajoute aucun champ qui n'y figure pas."
+        },
+        {
+          "erreur_markdown": "Comparer les dates comme du texte plutôt que comme des dates réelles (comparer '12/10/2020' et '15/06/2020' lettre par lettre)",
+          "pourquoi_faux": "Une comparaison de dates doit tenir compte de l'ordre chronologique réel (année, puis mois, puis jour), pas de l'ordre alphabétique des caractères qui composent la date écrite.",
+          "correction_markdown": "Convertis mentalement chaque date au format année-mois-jour avant de comparer, pour raisonner sur l'ordre chronologique réel plutôt que sur l'apparence du texte."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "En reprenant la table PRODUIT de l'exemple, quel est le résultat de la requête :\n\n```sql\nSELECT nom, prix FROM PRODUIT WHERE prix > 3000\n```",
+          "solution_markdown": "On filtre les enregistrements dont le prix est strictement supérieur à 3000 : PRO001 (2800, exclu), PRO002 (3600, retenu), PRO003 (3000, exclu car 3000 n'est pas strictement supérieur à 3000), PRO004 (3200, retenu), PRO005 (3800, retenu). Aucune clause ORDER BY n'est précisée : le résultat conserve l'ordre d'apparition des enregistrements dans la table.\n\nRésultat : (NAN Confort, 3600), (Cerelac 8, 3200), (NAN Confort 2, 3800)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quel est le résultat de la requête :\n\n```sql\nSELECT nom, date_expiration FROM PRODUIT WHERE date_expiration <= '15/06/2020' ORDER BY prix DESC\n```",
+          "solution_markdown": "Étape 1 (WHERE) : comme dans l'exemple résolu, seuls PRO002 (05/12/2019) et PRO004 (17/03/2020) vérifient date_expiration <= '15/06/2020'.\n\nÉtape 2 (ORDER BY prix DESC) : on trie ces deux enregistrements par prix décroissant. PRO002 a un prix de 3600, PRO004 a un prix de 3200. 3600 est supérieur à 3200, donc PRO002 est placé avant PRO004.\n\nÉtape 3 (SELECT) : seuls nom et date_expiration sont affichés, pas le prix qui n'a servi qu'au tri.\n\nRésultat : (NAN Confort, 05/12/2019) puis (Cerelac 8, 17/03/2020)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En reprenant la table PRODUIT, écris la requête SQL qui affiche le nom et le prix des produits dont le nom contient le mot « Confort », triés par prix croissant, puis donne le résultat de cette requête sur la table de l'exemple.",
+          "solution_markdown": "La recherche d'un mot à l'intérieur d'un champ texte se fait avec l'opérateur LIKE et le caractère joker %, qui remplace n'importe quelle suite de caractères avant ou après le mot recherché.\n\n```sql\nSELECT nom, prix FROM PRODUIT WHERE nom LIKE '%Confort%' ORDER BY prix ASC\n```\n\nÉtape WHERE : on ne garde que les enregistrements dont le champ nom contient la chaîne « Confort ». PRO001 (Cerelac 6, exclu), PRO002 (NAN Confort, retenu), PRO003 (Phosphatine, exclu), PRO004 (Cerelac 8, exclu), PRO005 (NAN Confort 2, retenu).\n\nÉtape ORDER BY prix ASC : PRO002 a un prix de 3600, PRO005 a un prix de 3800. 3600 est inférieur à 3800, donc PRO002 est placé avant PRO005.\n\nRésultat : (NAN Confort, 3600) puis (NAN Confort 2, 3800)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une requête SELECT s'exécute toujours dans le même ordre logique : on filtre avec WHERE avant de trier avec ORDER BY, jamais l'inverse, quel que soit l'ordre d'écriture des clauses dans le texte de la requête.",
+        "Seuls les champs listés juste après SELECT apparaissent dans le résultat final, même si d'autres champs ont servi à filtrer ou à trier.",
+        "ORDER BY trie par défaut en ordre croissant (ASC) ; précise DESC explicitement pour un tri décroissant.",
+        "Compare toujours les dates selon leur ordre chronologique réel (année, mois, jour), jamais comme une suite de caractères.",
+        "Au BAC, ce type de question revient chaque année sous la forme d'une petite table de données suivie d'une requête à exécuter mentalement : la méthode filtrer-puis-trier-puis-projeter s'applique systématiquement, quelle que soit la table."
+      ]
+    }
+  ]
+}

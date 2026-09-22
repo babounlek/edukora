@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-construire-l-algorigramme-d-un-algorithme-3e-bepc-informatique-2025-etab-cameroun",
+  "meta": {
+    "titre": "Construire l'algorigramme d'un algorithme",
+    "matiere": "Informatique",
+    "matiere_normalisee": "INFORMATIQUE",
+    "pays": "cm",
+    "serie": null,
+    "classe": "3e",
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 30,
+    "tags": ["algorigramme", "organigramme de programmation", "symboles normalisés", "losange", "structure alternative"],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2025-etab-cameroun",
+    "epreuve_titre": "BEPC blanc n°1 - Collège Mgr François-Xavier Vogt - Épreuve théorique d'informatique - Avril 2025",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bepc-informatique-2025-etab-cameroun-ex4-q4-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-informatique-2025-etab-cameroun-ex4"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Explique à un camarade, uniquement avec des mots, le chemin qui mène du collège à ta maison. Il se perdra. Dessine-lui le plan avec les carrefours et les directions à prendre : il arrivera.\n\nL'algorigramme fait exactement cela pour un algorithme. Le texte se lit ligne à ligne et il faut retenir, au fur et à mesure, où l'on en est ; le schéma montre d'un seul coup d'œil les chemins possibles et les points où l'exécution se sépare en deux. C'est une question presque toujours présente au BEPC, souvent la mieux notée de la partie algorithmique, et pourtant l'une des plus mal réussies faute d'avoir appris les symboles. Ce cours te donne les quatre symboles à connaître et la méthode mécanique pour ne jamais te tromper."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme écrit en langage algorithmique (Var, Lire, Afficher, Si, Alors, Sinon, FinSi)",
+        "Comprendre le fonctionnement de la structure alternative : une condition, deux branches, une seule exécutée",
+        "Savoir tracer proprement des figures géométriques simples à la règle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les quatre symboles et la méthode de construction",
+      "contenu_markdown": "**Définition**\n\nUn algorigramme, appelé aussi organigramme de programmation, est la représentation graphique d'un algorithme au moyen de symboles normalisés reliés par des flèches qui indiquent l'ordre d'exécution.\n\n**Les quatre symboles du programme de 3e**\n\n| Symbole | Forme | Contenu | Nombre de sorties |\n|---|---|---|---|\n| Début / Fin | Ovale (ou rectangle à bouts arrondis) | Le mot `Début` ou le mot `Fin` | 1 pour Début, 0 pour Fin |\n| Entrée / Sortie | Parallélogramme | `Lire (variable)` ou `Afficher (message)` | 1 |\n| Traitement | Rectangle | Un calcul ou une affectation, par exemple `S ← A + B` | 1 |\n| Test | Losange | Une condition suivie d'un point d'interrogation | 2, étiquetées `Oui` et `Non` |\n\n**La règle d'or : un seul début, une seule fin**\n\nQuel que soit le nombre de branches, l'algorigramme part d'un unique ovale `Début` et aboutit à un unique ovale `Fin`. Les branches issues d'un losange doivent donc **se rejoindre** avant l'ovale final. C'est l'erreur la plus coûteuse en examen : dessiner un `Fin` au bout de chaque branche.\n\n**La méthode, en cinq temps**\n\n1. Tracer l'ovale `Début` en haut de la feuille, bien centré.\n2. Parcourir l'algorithme ligne par ligne, de haut en bas, sans en sauter aucune.\n3. Remplacer chaque ligne par son symbole : `Lire` et `Afficher` donnent un parallélogramme, une affectation donne un rectangle, un `Si` donne un losange.\n4. Relier chaque symbole au suivant par une flèche descendante. À la sortie d'un losange, tracer deux flèches et **les étiqueter** `Oui` et `Non`.\n5. Faire converger les branches vers un même point, puis relier ce point à l'ovale `Fin`.\n\n**Le cas de la structure alternative**\n\nQuand l'algorithme contient `Si … Alors … Sinon … FinSi` :\n\n- la condition entre parenthèses va dans le losange, suivie d'un point d'interrogation ;\n- les instructions entre `Alors` et `Sinon` vont sur la branche `Oui` ;\n- les instructions entre `Sinon` et `FinSi` vont sur la branche `Non` ;\n- le `FinSi` correspond au point de convergence des deux branches, il ne se dessine pas lui-même.",
+      "formule_principale": "Ovale = début/fin ; parallélogramme = entrée/sortie ; rectangle = traitement ; losange = test à deux sorties étiquetées",
+      "variantes": [
+        {
+          "nom": "L'alternative réduite (Si sans Sinon)",
+          "quand_utiliser": "Quand l'algorithme ne prévoit une action que dans un seul cas et ne fait rien dans l'autre",
+          "contenu_markdown": "Si l'algorithme s'écrit `Si (condition) Alors instruction FinSi`, sans `Sinon`, le losange conserve ses deux sorties, mais la branche `Non` ne porte aucun symbole : elle rejoint directement le point de convergence.\n\nÉcrire un losange à une seule sortie serait une faute. Un test a toujours deux issues, même lorsque l'une d'elles ne demande aucune action : la machine doit bien aller quelque part quand la condition est fausse."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Représenter l'algorigramme de l'algorithme suivant. *(1,5 pt)*\n\n```\nAlgorithme Comparaison\nVar N : entier;\nDébut\n    Afficher (\"Entrer un nombre :\");\n    Lire (N);\n    Si (N > 10) Alors\n        Afficher (\"Le nombre est supérieur à 10\");\n    Sinon\n        Afficher (\"Le nombre est inférieur ou égal à 10\");\n    FinSi\nFin\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Inventorier les lignes à représenter",
+          "justification": "Avant de tracer, on compte les symboles nécessaires : cela évite de manquer de place en bas de la feuille, problème classique sur cette question. L'en-tête `Algorithme Comparaison` et la déclaration `Var N : entier;` ne se dessinent pas, car ils ne sont pas des actions exécutées.",
+          "resultat_markdown": "Symboles nécessaires : 2 ovales (Début, Fin), 3 parallélogrammes (1 lecture, 2 affichages) plus 1 parallélogramme pour le message d'invitation, soit 4 au total, et 1 losange. Aucun rectangle : l'algorithme ne réalise aucun calcul."
+        },
+        {
+          "numero": 2,
+          "action": "Tracer l'ovale de départ et le premier affichage",
+          "justification": "On suit l'ordre d'exécution. La première instruction du corps est l'affichage du message d'invitation, qui est une sortie : parallélogramme.",
+          "resultat_markdown": "Ovale `Début`, puis flèche descendante vers un parallélogramme contenant `Afficher (\"Entrer un nombre :\")`."
+        },
+        {
+          "numero": 3,
+          "action": "Tracer la lecture",
+          "justification": "`Lire (N)` fait entrer une donnée depuis le clavier vers la variable : c'est une entrée, donc également un parallélogramme.",
+          "resultat_markdown": "Flèche descendante vers un parallélogramme contenant `Lire (N)`."
+        },
+        {
+          "numero": 4,
+          "action": "Tracer le losange du test et étiqueter ses deux sorties",
+          "justification": "Le `Si (N > 10) Alors` devient un losange. Les étiquettes `Oui` et `Non` sont obligatoires : sans elles, le correcteur ne peut pas savoir quelle branche correspond au cas vrai, et le point est perdu même si le dessin est par ailleurs exact.",
+          "resultat_markdown": "Losange contenant `N > 10 ?`. Deux flèches en sortent : celle de gauche étiquetée `Oui`, celle de droite étiquetée `Non`."
+        },
+        {
+          "numero": 5,
+          "action": "Placer une instruction sur chaque branche",
+          "justification": "L'instruction située entre `Alors` et `Sinon` va sur la branche `Oui`, celle située entre `Sinon` et `FinSi` va sur la branche `Non`. Ce sont deux affichages, donc deux parallélogrammes.",
+          "resultat_markdown": "Branche `Oui` : parallélogramme `Afficher (\"Le nombre est supérieur à 10\")`. Branche `Non` : parallélogramme `Afficher (\"Le nombre est inférieur ou égal à 10\")`."
+        },
+        {
+          "numero": 6,
+          "action": "Faire converger les deux branches, puis tracer l'ovale de fin",
+          "justification": "Le `FinSi` de l'algorithme correspond exactement à ce point de convergence. Comme un algorigramme n'a qu'une seule fin, les deux branches doivent se rejoindre avant l'ovale final.",
+          "resultat_markdown": "Les deux flèches se rejoignent en un point unique, d'où part une flèche vers l'ovale `Fin`."
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier le schéma en le parcourant avec deux valeurs de test",
+          "justification": "C'est le contrôle qui garantit que le dessin traduit fidèlement l'algorithme. On choisit une valeur qui vérifie la condition et une qui ne la vérifie pas.",
+          "resultat_markdown": "Pour `N = 25` : on descend jusqu'au losange, `25 > 10` est vrai, on prend la branche `Oui`, on affiche « Le nombre est supérieur à 10 », on rejoint `Fin`. Pour `N = 4` : `4 > 10` est faux, on prend la branche `Non`, on affiche « Le nombre est inférieur ou égal à 10 », on rejoint `Fin`. Les deux parcours aboutissent bien à l'unique ovale de fin."
+        }
+      ],
+      "conclusion_markdown": "L'algorigramme obtenu :\n\n```\n                    +-------------+\n                    |    Début    |\n                    +------+------+\n                           |\n         +-----------------v---------------------+\n         |  Afficher (\"Entrer un nombre :\")      |\n         +-----------------+---------------------+\n                           |\n         +-----------------v---------+\n         |        Lire (N)           |\n         +-----------------+---------+\n                           |\n                     +-----v------+\n                    /              \\\n                   <    N > 10 ?    >\n                    \\              /\n                     +--+------+--+\n              Oui       |      |       Non\n           +------------+      +-------------+\n           |                                 |\n +---------v-------------+     +-------------v------------------+\n | Afficher (\"Le nombre  |     | Afficher (\"Le nombre est       |\n |  est supérieur à 10\") |     |  inférieur ou égal à 10\")      |\n +---------+-------------+     +-------------+------------------+\n           |                                 |\n           +----------------+----------------+\n                            |\n                      +-----v------+\n                      |    Fin     |\n                      +------------+\n```\n\nOn vient de traduire une structure alternative complète : un losange, deux branches étiquetées, une convergence, une seule fin."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dessiner un ovale `Fin` au bout de chaque branche du losange.",
+          "pourquoi_faux": "Un algorithme n'a qu'une seule terminaison. Les deux branches représentent deux chemins possibles d'une même exécution, pas deux algorithmes différents. Multiplier les fins revient à affirmer que le programme s'arrête à deux endroits distincts, ce qui n'a pas de sens.",
+          "correction_markdown": "Fais toujours converger les branches vers un point unique avant l'ovale `Fin`. Ce point de convergence correspond au `FinSi` de l'algorithme écrit."
+        },
+        {
+          "erreur_markdown": "Oublier d'étiqueter les deux sorties du losange avec `Oui` et `Non`.",
+          "pourquoi_faux": "Sans étiquette, rien n'indique quelle branche est parcourue quand la condition est vraie. Le schéma devient ambigu : le correcteur ne peut pas vérifier que tu as placé les bons messages du bon côté, et il ne peut donc pas accorder le point.",
+          "correction_markdown": "Écris `Oui` et `Non` directement sur les flèches, près du losange. Certains barèmes acceptent `Vrai` et `Faux` : l'important est que l'étiquette soit présente et lisible."
+        },
+        {
+          "erreur_markdown": "Utiliser un rectangle pour représenter `Lire (N)` ou `Afficher (…)`.",
+          "pourquoi_faux": "Le rectangle est réservé aux traitements, c'est-à-dire aux calculs et aux affectations. Une lecture ou un affichage est un échange avec l'extérieur de la machine : la norme impose le parallélogramme. Confondre les deux revient à effacer la distinction entre traiter une donnée et la faire entrer ou sortir.",
+          "correction_markdown": "Retiens le repère visuel : le parallélogramme est penché, comme une donnée qui entre ou qui sort ; le rectangle est droit, comme un calcul qui reste à l'intérieur."
+        },
+        {
+          "erreur_markdown": "Dessiner les symboles sans les relier par des flèches, ou avec de simples traits.",
+          "pourquoi_faux": "L'algorigramme représente un ordre d'exécution. Sans pointe de flèche, le sens de parcours n'est pas indiqué : le schéma ne représente plus qu'une collection de formes juxtaposées, et l'information essentielle, la chronologie, disparaît.",
+          "correction_markdown": "Trace chaque liaison avec une pointe de flèche qui indique le sens de l'exécution, de haut en bas et, à la convergence, vers le point de rassemblement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Associer chaque instruction au symbole qui la représente dans un algorigramme :\n\na. `Lire (A);`\nb. `S ← A + B;`\nc. `Si (S > 100) Alors`\nd. `Fin`\ne. `Afficher (\"Bonjour\");`",
+          "solution_markdown": "On applique le tableau des quatre symboles.\n\n| Instruction | Symbole | Pourquoi |\n|---|---|---|\n| a. `Lire (A);` | Parallélogramme | Entrée : une donnée vient de l'extérieur vers la machine |\n| b. `S ← A + B;` | Rectangle | Traitement : un calcul suivi d'une affectation |\n| c. `Si (S > 100) Alors` | Losange | Test : une condition à évaluer, deux issues possibles |\n| d. `Fin` | Ovale | Terminaison de l'algorithme |\n| e. `Afficher (\"Bonjour\");` | Parallélogramme | Sortie : une information part de la machine vers l'écran |\n\n**Remarque** : les instructions a et e utilisent le même symbole, bien que l'une soit une entrée et l'autre une sortie. La norme ne les distingue pas par la forme ; c'est le texte écrit à l'intérieur qui précise le sens."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Représenter l'algorigramme de l'algorithme suivant :\n\n```\nAlgorithme Moyenne\nVar note1, note2, moy : réel;\nDébut\n    Lire (note1);\n    Lire (note2);\n    moy ← (note1 + note2) / 2;\n    Si (moy >= 10) Alors\n        Afficher (\"Admis\");\n    Sinon\n        Afficher (\"Recalé\");\n    FinSi\nFin\n```",
+          "solution_markdown": "**Inventaire des symboles** : 2 ovales, 2 parallélogrammes d'entrée, 1 rectangle de traitement (le calcul de la moyenne), 1 losange, 2 parallélogrammes de sortie.\n\nC'est le rectangle qui distingue cet exercice du précédent : l'algorithme réalise ici un vrai calcul.\n\n**Construction pas à pas** :\n\n1. Ovale `Début`.\n2. Parallélogramme `Lire (note1)`.\n3. Parallélogramme `Lire (note2)`.\n4. Rectangle `moy ← (note1 + note2) / 2`.\n5. Losange `moy >= 10 ?`, avec deux sorties étiquetées.\n6. Branche `Oui` : parallélogramme `Afficher (\"Admis\")`.\n7. Branche `Non` : parallélogramme `Afficher (\"Recalé\")`.\n8. Convergence des deux branches, puis ovale `Fin`.\n\n**Algorigramme** :\n\n```\n              +-------------+\n              |    Début    |\n              +------+------+\n                     |\n           +---------v----------+\n           |    Lire (note1)    |\n           +---------+----------+\n                     |\n           +---------v----------+\n           |    Lire (note2)    |\n           +---------+----------+\n                     |\n     +---------------v-------------------+\n     |  moy <- (note1 + note2) / 2       |\n     +---------------+-------------------+\n                     |\n               +-----v------+\n              /              \\\n             <   moy >= 10 ?  >\n              \\              /\n               +--+------+--+\n        Oui       |      |      Non\n     +------------+      +-----------+\n     |                               |\n +---v----------------+   +----------v---------+\n | Afficher (\"Admis\") |   | Afficher (\"Recalé\")|\n +---+----------------+   +----------+---------+\n     |                               |\n     +---------------+---------------+\n                     |\n               +-----v------+\n               |    Fin     |\n               +------------+\n```\n\n**Vérification** : pour `note1 = 12` et `note2 = 14`, la moyenne vaut 13 ; `13 >= 10` est vrai, on prend la branche `Oui` et l'on affiche « Admis ». Pour `note1 = 6` et `note2 = 8`, la moyenne vaut 7 ; la condition est fausse, on prend la branche `Non` et l'on affiche « Recalé ». Le schéma est conforme."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire, en langage algorithmique, l'algorithme correspondant à l'algorigramme décrit ci-dessous, puis indiquer ce qu'il affiche pour `A = 7` et pour `A = 12`.\n\nDescription du schéma : ovale `Début` ; parallélogramme `Lire (A)` ; losange `A > 10 ?` ; sur la branche `Oui`, un rectangle `B ← A - 10` puis un parallélogramme `Afficher (B)` ; sur la branche `Non`, un parallélogramme `Afficher (A)` ; convergence ; ovale `Fin`.",
+          "solution_markdown": "**Étape 1 : traduire chaque symbole en instruction.**\n\nOn parcourt le schéma dans l'ordre et l'on applique la correspondance inverse de celle du cours : parallélogramme d'entrée donne `Lire`, losange donne `Si … Alors`, rectangle donne une affectation, parallélogramme de sortie donne `Afficher`, convergence donne `FinSi`.\n\n**Étape 2 : identifier les variables et leurs types.**\n\nDeux variables apparaissent, `A` qui est lue et `B` qui reçoit le résultat d'une soustraction. Comme rien n'indique de décimales, on les déclare entières.\n\n**Algorithme obtenu** :\n\n```\nAlgorithme Reduction\nVar A, B : entier;\nDébut\n    Lire (A);\n    Si (A > 10) Alors\n        B <- A - 10;\n        Afficher (B);\n    Sinon\n        Afficher (A);\n    FinSi\nFin\n```\n\n**Étape 3 : dérouler pour `A = 7`.**\n\n1. `Lire (A)` place 7 dans `A`.\n2. Le test `7 > 10` est **faux**.\n3. La machine exécute donc la branche `Sinon` et affiche la valeur de `A`.\n\nRésultat affiché : **7**.\n\n**Étape 4 : dérouler pour `A = 12`.**\n\n1. `Lire (A)` place 12 dans `A`.\n2. Le test `12 > 10` est **vrai**.\n3. La machine exécute la branche `Alors` : elle calcule `B ← 12 - 10`, donc `B` vaut 2.\n4. Elle affiche ensuite la valeur de `B`.\n\nRésultat affiché : **2**.\n\n**Remarque de méthode** : la branche `Oui` contient ici deux symboles à la suite, un rectangle puis un parallélogramme. Une branche n'est pas limitée à une seule instruction : elle peut en enchaîner autant que nécessaire avant de rejoindre le point de convergence."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quatre symboles suffisent : ovale pour le début et la fin, parallélogramme pour lire et afficher, rectangle pour calculer, losange pour tester.",
+        "Un seul `Début`, une seule `Fin` : les branches issues d'un losange se rejoignent toujours avant l'ovale final.",
+        "Les deux sorties du losange s'étiquettent `Oui` et `Non`. Sans étiquette, le schéma est ambigu et le point est perdu.",
+        "Le `FinSi` de l'algorithme ne se dessine pas : il correspond au point où les deux branches se rassemblent.",
+        "Vérifie toujours ton schéma en le parcourant du doigt avec deux valeurs de test, l'une qui vérifie la condition, l'autre non.",
+        "Au BEPC, l'algorigramme vaut souvent 1,5 pt, soit la question la mieux notée de la partie algorithmique. Prends une règle, laisse de la place autour du losange, et cette question devient l'une des plus sûres de l'épreuve."
+      ]
+    }
+  ]
+}

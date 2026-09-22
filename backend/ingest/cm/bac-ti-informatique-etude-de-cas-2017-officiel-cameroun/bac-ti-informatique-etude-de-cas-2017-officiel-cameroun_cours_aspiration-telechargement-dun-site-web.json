@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-aspiration-site-web-tle-ti",
+  "meta": {
+    "titre": "L'aspiration d'un site web",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques - services Internet",
+    "duree_estimee_min": 15,
+    "tags": [
+      "aspiration de site",
+      "téléchargement automatique",
+      "copie hors ligne",
+      "services Internet"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Consulter un site web sans connexion Internet, par exemple pour préparer une présentation dans un lieu sans réseau, suppose d'en récupérer une copie complète à l'avance. C'est exactement le service que rend un logiciel d'aspiration de site : il ne se contente pas de sauvegarder une page, il reconstruit sur le disque une copie fonctionnelle du site visité."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une page web contient des liens vers d'autres pages et vers des ressources (images, styles).",
+        "Savoir ce qu'est un téléchargement de fichier."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Suivre les liens, télécharger, reconstituer",
+      "contenu_markdown": "Aspirer un site web consiste à utiliser un logiciel spécialisé qui parcourt automatiquement l'ensemble des liens d'un site, télécharge le contenu de chaque page rencontrée ainsi que les ressources associées (images, feuilles de style, scripts), et reconstitue l'arborescence du site sur le disque local, de façon à obtenir une copie consultable même hors connexion. L'aspiration se distingue d'un simple téléchargement de page par son caractère automatique (le logiciel découvre lui-même les pages à télécharger en suivant les liens) et exhaustif (il vise l'ensemble du site, ou une profondeur de liens choisie par l'utilisateur), plutôt qu'une action manuelle page par page.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une capture de logiciel d'aspiration affiche « En cours : Analyse des liens de la page... », « Liens parcourus : 2/139 (+136) », « Fichiers écrits : 127 ». Expliquer ce que fait le logiciel à cet instant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Interpréter « Analyse des liens de la page »",
+          "justification": "C'est la phase où le logiciel découvre de nouveaux liens à explorer sur la page en cours de traitement.",
+          "resultat_markdown": "Le logiciel lit le code de la page pour en extraire tous les liens qu'elle contient."
+        },
+        {
+          "numero": 2,
+          "action": "Interpréter « Liens parcourus : 2/139 (+136) »",
+          "justification": "2 liens ont déjà été traités sur les 139 découverts jusqu'ici, et l'analyse de la page courante vient d'en révéler 136 nouveaux.",
+          "resultat_markdown": "Le nombre de liens à traiter grandit au fur et à mesure de l'exploration : c'est la preuve du caractère automatique et progressif de l'aspiration."
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter « Fichiers écrits : 127 »",
+          "justification": "Chaque ressource téléchargée (page, image, style) est enregistrée sur le disque local.",
+          "resultat_markdown": "127 fichiers ont déjà été téléchargés et enregistrés localement, reconstituant peu à peu la copie du site."
+        }
+      ],
+      "conclusion_markdown": "Le logiciel est en train d'aspirer le site : il découvre automatiquement de nouveaux liens en analysant chaque page, télécharge et enregistre chaque ressource rencontrée, et reconstitue ainsi progressivement une copie complète du site sur le disque local."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre l'aspiration d'un site avec le simple enregistrement d'une page web (« Enregistrer sous » dans un navigateur).",
+          "pourquoi_faux": "Enregistrer une seule page ne récupère que cette page (et parfois ses ressources directes), sans suivre automatiquement les liens vers les autres pages du site : ce n'est pas une exploration exhaustive.",
+          "correction_markdown": "Retenir que l'aspiration implique de suivre les liens de proche en proche, potentiellement sur tout le site, alors qu'un enregistrement de page reste ponctuel et manuel."
+        },
+        {
+          "erreur_markdown": "Croire que l'aspiration ne télécharge que le texte des pages, sans les images ni la mise en forme.",
+          "pourquoi_faux": "Un site aspiré doit rester consultable et fonctionnel hors connexion : le logiciel télécharge donc aussi les images, feuilles de style et scripts nécessaires à l'affichage correct des pages.",
+          "correction_markdown": "Une aspiration réussie doit permettre de naviguer dans la copie locale du site exactement comme sur le site en ligne, mise en forme comprise."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel est l'intérêt principal d'aspirer un site web plutôt que de le consulter uniquement en ligne ?",
+          "solution_markdown": "Pouvoir consulter le site hors connexion, une fois la copie locale reconstituée, sans dépendre d'un accès Internet."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un logiciel d'aspiration affiche, à la fin de son travail, « Erreurs : 3 ». Que peut signifier cette valeur ?",
+          "solution_markdown": "Cela signifie que 3 ressources (pages, images ou autres fichiers) rencontrées lors de l'exploration des liens n'ont pas pu être téléchargées correctement, par exemple à cause d'un lien brisé, d'une ressource temporairement indisponible, ou d'une restriction d'accès du serveur distant."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un utilisateur configure son logiciel d'aspiration pour ne suivre les liens que jusqu'à une profondeur de 2 niveaux à partir de la page d'accueil. Expliquer ce que cette limite change dans le comportement de l'aspiration, et pourquoi un tel réglage peut être utile.",
+          "solution_markdown": "Avec une profondeur limitée à 2, le logiciel télécharge la page d'accueil (niveau 0), toutes les pages directement liées depuis elle (niveau 1), puis toutes les pages liées depuis ces dernières (niveau 2) - mais il n'ira pas plus loin, même si ces pages de niveau 2 contiennent elles-mêmes de nouveaux liens.\n\nCe réglage est utile pour limiter le volume téléchargé et la durée de l'opération sur un site très vaste, ou pour se concentrer sur les sections les plus proches de la page d'accueil, souvent les plus pertinentes, sans télécharger l'intégralité d'un site qui peut compter plusieurs milliers de pages."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Aspirer un site, c'est suivre automatiquement tous ses liens pour en télécharger l'ensemble des pages et ressources.",
+        "Ce qui distingue l'aspiration d'un simple téléchargement de page est son caractère automatique et exhaustif.",
+        "Une copie aspirée doit rester consultable hors connexion : texte, images et mise en forme sont tous récupérés.",
+        "Le nombre de liens à parcourir grandit au fil de l'exploration, chaque nouvelle page révélant de nouveaux liens.",
+        "Cette notion illustre, au programme du BAC TI, un service Internet concret au-delà du simple navigateur web."
+      ]
+    }
+  ]
+}

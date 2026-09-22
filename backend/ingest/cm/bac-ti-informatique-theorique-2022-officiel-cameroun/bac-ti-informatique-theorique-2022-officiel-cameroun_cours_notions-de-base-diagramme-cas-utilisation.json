@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-notions-cas-utilisation-tle-ti",
+  "meta": {
+    "titre": "Notions de base du diagramme de cas d'utilisation : acteur et cas d'utilisation",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction au diagramme de cas d'utilisation",
+    "duree_estimee_min": 20,
+    "tags": [
+      "UML",
+      "acteur",
+      "cas d'utilisation",
+      "vocabulaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de dessiner quoi que ce soit, il faut savoir répondre à une question simple : qui utilise le système, et pour quoi faire ? Le diagramme de cas d'utilisation UML part de cette question, la plus simple et pourtant la plus souvent mal répondue à l'examen. Un élève qui confond un acteur avec une fonctionnalité, ou un cas d'utilisation avec une tâche technique interne, part avec un diagramme faux dès la première étape. Ce cours pose les deux notions qui portent tout le reste : l'acteur et le cas d'utilisation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un système d'information et à quoi il sert dans une organisation.",
+        "Avoir déjà vu la notion de service rendu par une application (ce que l'utilisateur en attend, pas comment elle le fait)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Acteur et cas d'utilisation : deux notions à ne jamais confondre",
+      "contenu_markdown": "Un **acteur** est une entité externe au système - une personne, un rôle, ou un autre système informatique - qui échange directement de l'information avec lui, sans jamais faire partie de son fonctionnement interne. Un **cas d'utilisation** est un service que le système rend à un acteur, formulé par un verbe à l'infinitif suivi d'un complément (« Emprunter un ouvrage », « Consulter le catalogue »), qui produit toujours un résultat observable et utile pour l'acteur qui le déclenche.\n\nLa distinction se retient par une question simple : un acteur répond à « QUI utilise le système ? », un cas d'utilisation répond à « QUE peut-il en obtenir ? ». Un même système peut avoir plusieurs acteurs et chacun peut déclencher plusieurs cas d'utilisation ; un même cas d'utilisation peut aussi être partagé par plusieurs acteurs.",
+      "formule_principale": "Acteur = QUI interagit avec le système  ;  Cas d'utilisation = QUOI le système lui rend comme service"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bibliothèque scolaire compte un gestionnaire, des bibliothécaires et des abonnés (élèves, enseignants, élèves externes). Identifier deux acteurs et deux cas d'utilisation de ce système.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relire le texte à la recherche de qui échange de l'information avec le futur système",
+          "justification": "Un acteur se repère en cherchant qui déclenche une action ou consulte le système, jamais qui se contente de décrire son fonctionnement.",
+          "resultat_markdown": "Le gestionnaire et l'abonné apparaissent comme deux acteurs distincts : le premier gère les inscriptions et les relances, le second consulte et emprunte."
+        },
+        {
+          "numero": 2,
+          "action": "Pour chaque acteur repéré, reformuler l'action qu'il déclenche en verbe à l'infinitif suivi d'un complément",
+          "justification": "Un cas d'utilisation se formule toujours ainsi, jamais par un nom seul comme « Inscription » qui ne dit pas qui agit ni sur quoi précisément.",
+          "resultat_markdown": "Le gestionnaire déclenche « Gérer les inscriptions » ; l'abonné déclenche « Consulter le catalogue général »."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier que chaque cas d'utilisation produit un résultat perçu par l'acteur",
+          "justification": "Cela permet d'écarter une fausse candidate comme « Enregistrer une ligne en base de données », qui est une opération technique invisible pour l'acteur.",
+          "resultat_markdown": "« Gérer les inscriptions » et « Consulter le catalogue général » sont bien deux services que l'acteur perçoit directement."
+        }
+      ],
+      "conclusion_markdown": "Deux acteurs (Gestionnaire, Abonné) et deux cas d'utilisation (Gérer les inscriptions, Consulter le catalogue général) ont été identifiés en appliquant strictement les deux définitions."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre un acteur avec une fonctionnalité (répondre « l'inscription » comme acteur)",
+          "pourquoi_faux": "L'inscription est un service rendu, pas une entité qui interagit avec le système : elle ne peut donc jamais figurer comme acteur.",
+          "correction_markdown": "Pose-toi systématiquement la question « est-ce que ça utilise le système, ou est-ce que c'est un service rendu par le système ? » avant de classer un élément."
+        },
+        {
+          "erreur_markdown": "Ajouter comme acteur une personne qui décrit seulement les règles de fonctionnement du système, sans jamais interagir avec lui",
+          "pourquoi_faux": "Un directeur qui explique le fonctionnement attendu dans l'énoncé n'est pas nécessairement acteur : il ne le devient que s'il interagit lui-même avec le système une fois en service.",
+          "correction_markdown": "Vérifie que l'acteur déclenche lui-même au moins un cas d'utilisation ; sinon, ce n'est qu'une source d'information pour le cahier des charges, pas un acteur du futur système."
+        },
+        {
+          "erreur_markdown": "Formuler un cas d'utilisation par un nom seul (« Emprunt ») plutôt que par un verbe à l'infinitif",
+          "pourquoi_faux": "Un nom seul ne dit pas qui déclenche l'action ni ce qu'elle produit concrètement ; il se prête à des lectures multiples et n'est pas une formulation UML correcte.",
+          "correction_markdown": "Reformule toujours en « verbe à l'infinitif + complément » : « Emprunter un ouvrage », jamais « Emprunt »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un distributeur automatique de billets est utilisé par un client pour retirer de l'argent, et par un technicien pour recharger le distributeur en billets. Identifier les acteurs et un cas d'utilisation par acteur.",
+          "solution_markdown": "Deux acteurs interagissent directement avec le distributeur : le **Client** et le **Technicien**. Le Client déclenche le cas d'utilisation **Retirer de l'argent** (il obtient un résultat direct : des billets). Le Technicien déclenche le cas d'utilisation **Recharger le distributeur** (il obtient un résultat direct : le distributeur réapprovisionné). Les deux répondent à la définition d'un acteur et leurs actions répondent à celle d'un cas d'utilisation."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un système de vidéosurveillance enregistre en continu les images captées par des caméras, sans qu'aucun opérateur n'intervienne dans cet enregistrement. Un opérateur de sécurité peut, lui, consulter les enregistrements a posteriori. L'enregistrement automatique doit-il être modélisé comme un cas d'utilisation déclenché par la caméra en tant qu'acteur ? Justifier.",
+          "solution_markdown": "Il faut d'abord vérifier si la caméra répond à la définition d'un acteur. Une caméra qui transmet automatiquement un flux vidéo, sans intervention humaine ni décision autonome, est un dispositif matériel interne au système plutôt qu'un acteur externe - sauf si elle constitue elle-même un système tiers autonome qui échange de l'information avec le système principal (par exemple une caméra intelligente qui décide elle-même de déclencher un enregistrement selon une détection de mouvement). Dans le cas décrit ici (enregistrement continu et automatique, sans décision), la caméra n'est pas modélisée comme acteur : l'enregistrement continu est un traitement interne. En revanche, l'opérateur de sécurité EST un acteur, et **Consulter les enregistrements** est un cas d'utilisation qu'il déclenche, car il s'agit bien d'un service perçu et utile pour lui."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un système de commande en ligne interagit avec un client (qui passe commande), un livreur (qui met à jour le statut de livraison) et un système bancaire externe (qui valide le paiement). Identifier tous les acteurs de ce système, en justifiant pourquoi le système bancaire en fait partie, puis proposer un cas d'utilisation pour chacun.",
+          "solution_markdown": "Trois acteurs interagissent avec le système de commande en ligne : le **Client**, le **Livreur**, et le **Système bancaire**. Le Client et le Livreur sont des acteurs humains évidents. Le **Système bancaire**, bien que ce ne soit pas une personne, répond pleinement à la définition d'un acteur UML : un acteur peut être une personne, un rôle, ou un autre système informatique ; le système bancaire est un système tiers, externe au système de commande, qui échange directement de l'information avec lui (une demande de validation de paiement, une réponse d'acceptation ou de refus) sans faire partie de son fonctionnement interne. Cas d'utilisation associés : le Client déclenche **Passer une commande** ; le Livreur déclenche **Mettre à jour le statut de livraison** ; le Système bancaire est sollicité par le cas d'utilisation **Valider le paiement** (en tant qu'acteur secondaire, sollicité au cours de l'exécution du cas déclenché par le Client)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un acteur est une entité externe au système (personne, rôle ou autre système) qui échange directement de l'information avec lui - jamais un élément interne.",
+        "Un cas d'utilisation est un service rendu par le système à un acteur, formulé en verbe à l'infinitif + complément, jamais un nom seul ni une opération technique invisible.",
+        "Un système tiers (comme un serveur bancaire) peut parfaitement être un acteur : rien n'oblige un acteur à être une personne humaine.",
+        "Au BAC TI, cette distinction ouvre presque toujours la première question d'un sujet de Systèmes d'Information : elle conditionne la réussite de tout le diagramme qui en découle."
+      ]
+    }
+  ]
+}

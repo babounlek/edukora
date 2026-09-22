@@ -1,0 +1,308 @@
+[
+  {
+    "competence": "if",
+    "pays": "cm",
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "C"
+      },
+      {
+        "examen": "bac",
+        "serie": "D"
+      },
+      {
+        "examen": "bac",
+        "serie": "E"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "D"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "E"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 9943,
+        "enonce_markdown": "3. Recopier et compléter le tableau ci-dessous en donnant la traduction en langage C des instructions algorithmiques données. *[0,5 pt × 4 = 2 pts]*\n\n| Ligne | LANGAGE ALGORITHMIQUE | LANGAGE C |\n|---|---|---|\n| 7 | Lire (Taille_Recherchée) ; | |\n| 9 | Pour i allant de 1 à 5 Faire | |\n| 10 | Si (Tailles[i] = Taille_Recherchee) alors | |\n| 11 | Afficher (\"Élève trouvé à la position \", i) ; | |",
+        "corrige_markdown": "### Rappel de méthode\nTraduire une instruction algorithmique en langage C revient à remplacer chaque mot-clé par son équivalent syntaxique exact du langage C : Lire devient scanf avec l'adresse de la variable (&variable), Pour...Faire devient for(init;condition;incrémentation), Si...Alors devient if(condition), et Afficher devient printf avec un format adapté au type affiché.\n\n**Ligne 7 (Lire)** : scanf lit une valeur entière et la stocke à l'adresse de la variable, indiquée par le symbole &.\n\n**Ligne 9 (Pour)** : for regroupe en un seul en-tête l'initialisation du compteur, sa condition de poursuite et son incrémentation.\n\n**Ligne 10 (Si)** : if teste une condition entre parenthèses ; l'égalité se note == en C (deux signes égal), jamais un seul, qui serait une affectation.\n\n**Ligne 11 (Afficher)** : printf affiche un texte et une valeur, avec %d comme format pour un entier.\n\n| Ligne | LANGAGE ALGORITHMIQUE | LANGAGE C |\n|---|---|---|\n| 7 | Lire (Taille_Recherchée) ; | scanf(\"%d\", &Taille_Recherchee); |\n| 9 | Pour i allant de 1 à 5 Faire | for (i = 1; i <= 5; i++) { |\n| 10 | Si (Tailles[i] = Taille_Recherchee) alors | if (Tailles[i] == Taille_Recherchee) { |\n| 11 | Afficher (\"Élève trouvé à la position \", i) ; | printf(\"Eleve trouve a la position %d\", i); |\n\n### Piège à éviter\nNe confonds jamais = et == en langage C : = affecte une valeur à une variable, == teste une égalité. Écrire if (Tailles[i] = Taille_Recherchee) est une erreur classique qui compile mais fausse complètement le résultat du programme.\n\n### Conseil\nLe tableau Tailles de l'algorithme est indexé de 1 à 5, alors qu'un tableau C standard commence à l'indice 0 : pour traduire terme à terme sans décaler les indices, déclare le tableau avec une case supplémentaire (int Tailles[6];), la case d'indice 0 restant simplement inutilisée."
+      },
+      {
+        "exercise_id": 10748,
+        "enonce_markdown": "Traduire les instructions 2, 3, 10 et le bloc A en instructions propres au langage C. (2,5pts)",
+        "corrige_markdown": "### Rappel de méthode\nTraduire un algorithme en C revient à transposer chaque instruction dans la syntaxe C correspondante : `Ecrire`/`Afficher` devient `printf()`, `Lire` devient `scanf()` (avec l'opérateur `&` devant la variable), et `Si...Alors...Sinon...Finsi` devient `if(...){...} else {...}`.\n\n**Corrigé.**\n\nInstruction 2 (`Afficher(\"Entrez N\") ;`) :\n\n```c\nprintf(\"Entrez N\");\n```\n\nInstruction 3 (`Lire(N) ;`) :\n\n```c\nscanf(\"%d\", &N);\n```\n\nInstruction 10 (`Afficher(\"Taux reussite=\", Taux) ;`) :\n\n```c\nprintf(\"Taux reussite=%.2f\", Taux);\n```\n\nBloc A (instructions 7 et 8, `Si Note[K]>=10 alors Comp <- Comp+1 ; Finsi`) :\n\n```c\nif (Note[K] >= 10) {\n    Comp = Comp + 1;\n}\n```\n\n**Piège à éviter.** Deux pièges classiques dans cette traduction : (1) si `Taux` est déclaré comme un entier (`int`), le calcul `Comp*100/N` s'effectue en **division entière** et peut tronquer le résultat (perte de précision) : mieux vaut déclarer `Taux` en `float` et utiliser `printf` avec `%.2f`. (2) l'algorithme indexe le tableau `Note` à partir de **1** (`Note[1]` à `Note[N]`), alors qu'en C les tableaux sont indexés à partir de **0** : une traduction rigoureuse doit soit décaler tous les indices (`Note[K-1]`), soit déclarer le tableau avec une case supplémentaire inutilisée (`int Note[N+1];`) pour conserver `Note[1]` comme premier élément réellement utilisé."
+      }
+    ]
+  },
+  {
+    "competence": "condition",
+    "pays": "cm",
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      },
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "D"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "E"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 8193,
+        "enonce_markdown": "d) Une structure alternative. *(0,5 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nUne structure alternative (ou structure conditionnelle) fait dépendre l'exécution d'instructions du résultat d'un test. Elle se repère à son squelette complet : **Si** condition **alors** ... **Sinon** ... **Finsi**. On la recopie en entier, du **Si** jusqu'au **Finsi** : amputée d'une de ses parties, elle n'a plus de sens.\n\n### Corrigé\nLa structure alternative de cet algorithme est :\n\n```\nSi (nombre < 10) alors\n    Ecrire (\" ce nombre est plus petit que 10\") ;\nSinon\n    Ecrire (\"ce nombre est plus grand que 10\") ;\nFinsi\n```\n\nAnalyse de ses trois composants :\n\n1. **La condition** : `(nombre < 10)`. C'est une expression booléenne, c'est-à-dire une expression dont la valeur ne peut être que Vrai ou Faux. Elle est évaluée une seule fois, au moment où l'exécution atteint le `Si`.\n2. **La branche « alors »** : exécutée si la condition est **vraie**. Ici, l'algorithme affiche « ce nombre est plus petit que 10 ».\n3. **La branche « Sinon »** : exécutée si la condition est **fausse**. Ici, l'algorithme affiche « ce nombre est plus grand que 10 ».\n\nUne seule des deux branches est exécutée à chaque passage, jamais les deux. C'est précisément ce caractère exclusif qui donne son nom à la structure : *alternative*.\n\nIl s'agit ici de la forme **complète** de la structure alternative (avec `Sinon`). Il existe aussi une forme **réduite**, sans `Sinon` : `Si condition alors ... Finsi`, où rien ne se passe lorsque la condition est fausse.\n\n### Piège à éviter\nDeux erreurs reviennent constamment sur cette question.\n\nD'abord, recopier uniquement la ligne `Si (nombre < 10) alors` : la structure alternative est le bloc entier, `Finsi` compris. Le `Finsi` marque la fin de la structure, sans lui l'algorithme ne saurait pas où reprendre le cours normal des instructions.\n\nEnsuite, confondre structure alternative et structure répétitive. L'alternative choisit entre deux chemins et n'exécute son contenu qu'une seule fois ; la répétitive (`Tant que`, `Pour`, `Répéter`) réexécute les mêmes instructions plusieurs fois.\n\n### Conseil\nVérifie l'exactitude logique de l'algorithme quand tu le lis : si l'utilisateur saisit exactement 10, la condition `nombre < 10` est fausse, donc l'algorithme affiche « ce nombre est plus grand que 10 », ce qui est faux puisque 10 n'est pas plus grand que 10. Repérer ce genre de faiblesse ne t'est pas demandé ici, mais c'est le réflexe qui te fera gagner des points sur les questions du type « cet algorithme est-il correct ? »"
+      },
+      {
+        "exercise_id": 8213,
+        "enonce_markdown": "2. Identifier la structure de contrôle utilisée dans cet algorithme. *(1pt)*",
+        "corrige_markdown": "### Rappel de méthode\nPour identifier une structure de contrôle, on ne se fie pas au sens de l'algorithme mais aux mots-clés qui l'écrivent. Trois familles seulement existent au programme : la structure **séquentielle** (les instructions s'enchaînent l'une après l'autre), la structure **alternative** ou conditionnelle (`Si ... Alors ... Sinon ... Finsi`), et la structure **répétitive** ou itérative (`Pour`, `Tant que`, `Répéter`). Il suffit de chercher lequel de ces mots-clés apparaît.\n\n**Repérage dans l'algorithme**\n\nL'algorithme contient les mots-clés `Si`, `alors`, `Sinon` et `Finsi` :\n\n```\nSi(Moyenne>=10) alors\n    Ecrire(\"Admis au BEPC\");\nSinon\n    Ecrire(\"Recalé au BEPC\");\nFinsi\n```\n\nAucun mot-clé de répétition (`Pour`, `Tant que`, `Répéter`) n'y figure.\n\n**Réponse**\n\nLa structure de contrôle utilisée est la **structure alternative complète** (ou structure conditionnelle `Si ... Alors ... Sinon ... Finsi`).\n\n**Justification de son fonctionnement**\n\nLa condition `Moyenne >= 10` est évaluée une seule fois et fournit un résultat booléen :\n\n- si elle est **vraie**, seule l'instruction `Ecrire(\"Admis au BEPC\")` est exécutée ;\n- si elle est **fausse**, seule l'instruction `Ecrire(\"Recalé au BEPC\")` est exécutée.\n\nLes deux affichages ne peuvent jamais se produire ensemble : c'est ce caractère exclusif qui caractérise l'alternative.\n\n### Piège à éviter\nNe réponds pas « la structure séquentielle » sous prétexte que les instructions se suivent de haut en bas. La séquence est présente dans tout algorithme, elle n'a donc aucune valeur discriminante ici : la question porte sur la structure remarquable qu'on y a introduite, celle qui fait choisir entre deux chemins.\n\n### Conseil\nDistingue bien l'alternative **complète** (avec `Sinon`) de l'alternative **réduite** (sans `Sinon`, où rien ne se passe quand la condition est fausse). Préciser « complète » quand le `Sinon` est présent est un détail de vocabulaire que les correcteurs remarquent, et cela ne coûte qu'un mot."
+      },
+      {
+        "exercise_id": 8218,
+        "enonce_markdown": "2. Identifier la **structure de contrôle** utilisée dans cet algorithme et expliquer son fonctionnement. *(1 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nPour identifier une structure de contrôle, cherche ses mots-clés d'encadrement dans le texte de l'algorithme : `Si … Alors … Sinon … FinSi` signale une structure alternative, `Pour … FinPour` ou `TantQue … FinTantQue` signalent une boucle. Expliquer son fonctionnement, c'est ensuite décrire ce que la machine fait dans chacun des cas possibles, sans en oublier aucun.\n\n**Identification**\n\nL'algorithme contient les mots-clés `Si (N > 10) Alors … Sinon … FinSi`. La structure utilisée est donc la **structure alternative complète**, appelée aussi structure conditionnelle à deux branches, ou structure `Si … Alors … Sinon`.\n\n**Fonctionnement**\n\nLa machine procède en trois temps :\n\n1. elle évalue la condition placée entre parenthèses, ici `N > 10`, et obtient un résultat qui ne peut être que vrai ou faux ;\n2. si la condition est **vraie**, elle exécute uniquement les instructions situées entre `Alors` et `Sinon` : ici l'affichage du message « Le nombre est supérieur à 10 » ;\n3. si la condition est **fausse**, elle exécute uniquement les instructions situées entre `Sinon` et `FinSi` : ici l'affichage du message « Le nombre est inférieur ou égal à 10 ».\n\nDans les deux cas, l'exécution se poursuit ensuite après le `FinSi`. Les deux branches ne sont jamais exécutées ensemble, et il n'y a jamais aucune des deux qui soit sautée : exactement une branche est parcourue à chaque exécution.\n\n**Vérification sur deux valeurs**\n\n- Pour `N = 25` : `25 > 10` est vrai, la machine affiche « Le nombre est supérieur à 10 ».\n- Pour `N = 4` : `4 > 10` est faux, la machine affiche « Le nombre est inférieur ou égal à 10 ».\n\n### Piège à éviter\nNe réponds pas « la structure séquentielle ». La séquence, c'est le simple fait d'enchaîner les instructions les unes après les autres ; elle est présente dans tout algorithme et n'est jamais la réponse attendue quand un `Si` figure dans le texte.\n\n### Conseil\nQuand une question demande d'identifier **et** d'expliquer, sépare visiblement les deux parties de ta réponse. La moitié des points porte sur le nom de la structure, l'autre moitié sur la description des deux branches : traite les deux, même brièvement."
+      },
+      {
+        "exercise_id": 10254,
+        "enonce_markdown": "**1.3.** Une condition. *[0,25 pt]*",
+        "corrige_markdown": "La condition utilisée dans cet algorithme est **(N=0)** (ligne 6) : elle teste si le nombre de notes à gérer est nul."
+      }
+    ]
+  },
+  {
+    "competence": "vocabulaire informatique",
+    "pays": "cm",
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bepc",
+        "serie": ""
+      },
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "D"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "E"
+      },
+      {
+        "examen": "bac",
+        "serie": "A"
+      },
+      {
+        "examen": "bac",
+        "serie": "C"
+      },
+      {
+        "examen": "bac",
+        "serie": "D"
+      },
+      {
+        "examen": "bac",
+        "serie": "E"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "2nde",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCM203",
+      "savoir_numero": "IV"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 8191,
+        "enonce_markdown": "1. a) Dans le contexte informatique, définir : **mémoire**. *(1 pt)*",
+        "corrige_markdown": "### Rappel de méthode\nDéfinir un terme technique, c'est le rattacher d'abord à sa catégorie (composant matériel ? logiciel ? opération ?), puis énoncer sa fonction principale, enfin le distinguer des notions voisines. Une définition qui reprend le mot à définir dans sa propre explication ne vaut aucun point.\n\n### Corrigé\nEn informatique, la **mémoire** est un dispositif (composant matériel) de l'ordinateur qui sert à **enregistrer, conserver et restituer** des données et des programmes.\n\nCette définition tient en trois fonctions, qu'il faut savoir citer :\n\n1. **Enregistrer** (écrire) : la mémoire reçoit une information et la range à un emplacement repéré par une adresse.\n2. **Conserver** (stocker) : l'information reste disponible, soit tant que l'ordinateur est alimenté (mémoire vive), soit même après extinction (mémoire de masse).\n3. **Restituer** (lire) : l'information est renvoyée au processeur ou à l'utilisateur quand on la demande.\n\nOn distingue deux grandes familles :\n\n- la **mémoire centrale**, directement accessible par le processeur : la mémoire vive (RAM), volatile, et la mémoire morte (ROM), permanente ;\n- les **mémoires de masse** (ou mémoires auxiliaires), qui conservent durablement de grandes quantités de données : disque dur, clé USB, CD/DVD, carte mémoire.\n\nDans la situation proposée, l'ordinateur possède les deux : une RAM de 2,00 Go (mémoire vive) et un disque dur de 560 Go (mémoire de masse).\n\n### Piège à éviter\nNe réponds pas « la mémoire, c'est ce qui permet à l'ordinateur de se souvenir » : c'est une paraphrase, pas une définition. Ne réponds pas non plus « la mémoire, c'est le disque dur » : le disque dur n'est qu'un type de mémoire parmi d'autres.\n\n### Conseil\nSur une question de définition notée 1 point, écris une phrase de définition complète puis ajoute un exemple concret tiré de l'énoncé (ici la RAM de 2,00 Go ou le disque dur de 560 Go). L'exemple coûte dix secondes et sécurise la totalité du point."
+      },
+      {
+        "exercise_id": 8995,
+        "enonce_markdown": "**1.** Définir le terme : « Système d'exploitation ». *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn ordinateur fait tourner deux grandes familles de logiciels : ceux qui font fonctionner la machine elle-même, et ceux qui servent à réaliser une tâche précise pour l'utilisateur. Le premier logiciel à démarrer, avant tous les autres, appartient à la première famille : c'est lui qui rend possible le lancement de tous les autres.\n\n### Corrigé\nUn système d'exploitation est un logiciel de base qui gère les ressources matérielles et logicielles d'un ordinateur (processeur, mémoire, périphériques) et qui sert d'intermédiaire entre l'utilisateur, les logiciels d'application et le matériel. C'est le premier logiciel à s'exécuter au démarrage de l'ordinateur. Exemples : Windows, Linux, Mac OS.\n\n### Piège à éviter\nNe confonds pas système d'exploitation et logiciel d'application. Ms Word ou un jeu vidéo ne font fonctionner aucun autre logiciel : ils ont au contraire besoin qu'un système d'exploitation soit déjà démarré pour pouvoir eux-mêmes s'exécuter."
+      },
+      {
+        "exercise_id": 8996,
+        "enonce_markdown": "**1.** Parmi les éléments reçus, relevez celui qui correspond à un logiciel de base. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nFace à une liste d'équipements et de logiciels, la première question à se poser est toujours la même : s'agit-il d'un logiciel (une suite d'instructions installée sur l'ordinateur) ou d'un matériel (un objet physique) ? Une fois cette distinction faite, il reste à ranger chaque logiciel dans sa catégorie (logiciel de base, logiciel d'application, didacticiel...) et chaque matériel dans la sienne (périphérique d'entrée, de sortie, ou de stockage).\n\n### Corrigé\nLe logiciel de base présent dans la liste est Windows 10 : c'est le système d'exploitation de l'ordinateur, celui qui gère l'ensemble de ses ressources et permet de faire fonctionner tous les autres logiciels.\n\n### Piège à éviter\nNe confonds pas Windows 10 (le système d'exploitation, un logiciel de base) avec Office 2015 (une suite de logiciels d'application) : les deux sont des logiciels, mais ils n'ont pas le même rôle."
+      },
+      {
+        "exercise_id": 9438,
+        "enonce_markdown": "Définir les termes suivants : **Sécurité informatique**, **Ligne de commande**. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nDéfinir un terme informatique suppose d'abord d'énoncer sa nature (ce dont il s'agit), puis sa fonction ou sa finalité (à quoi il sert), sans se limiter à reformuler l'intitulé de la question.\n\n**Sécurité informatique** : ensemble des moyens techniques, organisationnels et humains mis en place pour protéger un système informatique (matériel, logiciels, données) contre les accès non autorisés, les altérations et les destructions, qu'elles soient accidentelles ou malveillantes.\n\n**Ligne de commande** : interface textuelle d'un système d'exploitation qui permet à l'utilisateur de communiquer avec la machine en saisissant des instructions au clavier, plutôt qu'en manipulant des éléments graphiques comme les icônes ou les fenêtres.\n\n### Piège à éviter\nNe réduis pas la sécurité informatique à la seule protection contre les virus : elle couvre aussi bien les pannes matérielles que les erreurs humaines ou les attaques réseau.\n\n### Conseil\nPour toute définition, vise deux éléments dans ta phrase : la catégorie à laquelle appartient le terme (« ensemble de... », « interface... ») et son rôle. Une définition qui ne contient que l'un des deux perd des points au barème."
+      }
+    ]
+  },
+  {
+    "competence": "conversion d'unités",
+    "pays": "cm",
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "C"
+      },
+      {
+        "examen": "bac",
+        "serie": "D"
+      },
+      {
+        "examen": "bac",
+        "serie": "E"
+      },
+      {
+        "examen": "bepc",
+        "serie": ""
+      },
+      {
+        "examen": "probatoire",
+        "serie": "C"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "D"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "E"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 7573,
+        "enonce_markdown": "6) Déterminer la taille de l'écran en cm. (0,75 pt)",
+        "corrige_markdown": "### Rappel de méthode\nLa taille d'un écran est traditionnellement exprimée en pouces (inch, noté \"). La conversion en centimètres utilise l'équivalence 1 pouce = 2,54 cm.\n\n### Corrigé\nL'écran des PC de la PME mesure 22 pouces.\n\nConversion : 22 × 2,54 = 55,88\n\nRéponse : **55,88 cm** (environ 56 cm)"
+      },
+      {
+        "exercise_id": 8966,
+        "enonce_markdown": "**3.** Calculer le temps que mettra un fichier de 640 Ko à être transféré si le débit de transfert est de 512 bits/seconde. *[2 pts]*",
+        "corrige_markdown": "### Rappel de méthode\nLe temps de transfert d'un fichier se calcule par la formule $t = \\dfrac{\\text{taille du fichier (en bits)}}{\\text{débit (en bits/s)}}$. La taille étant ici donnée en octets (Ko) et le débit en bits par seconde, il faut d'abord convertir la taille du fichier dans la même unité que le débit.\n\n### Corrigé\n**Étape 1 - convertir la taille du fichier en bits.**\n\nOn retient la convention $1\\text{ Ko} = 1000$ octets et $1\\text{ octet} = 8$ bits :\n\n$$640\\text{ Ko} = 640\\times1000 = 640\\,000\\text{ octets}$$\n$$640\\,000\\text{ octets} = 640\\,000\\times8 = 5\\,120\\,000\\text{ bits}$$\n\n**Étape 2 - appliquer la formule du temps de transfert.**\n\n$$t = \\dfrac{\\text{taille en bits}}{\\text{débit}} = \\dfrac{5\\,120\\,000}{512} = 10\\,000\\text{ secondes}$$\n\n**Étape 3 - convertir en heures, minutes, secondes pour une lecture plus parlante.**\n\n$$10\\,000\\text{ s} = 2\\text{ h } 46\\text{ min } 40\\text{ s}$$\n\nEn effet, $2\\text{ h} = 7200\\text{ s}$, puis $10\\,000 - 7200 = 2800\\text{ s}$, soit $46\\text{ min} = 2760\\text{ s}$ et un reste de $40\\text{ s}$.\n\n$$\\boxed{t = 10\\,000\\text{ s} = 2\\text{ h } 46\\text{ min } 40\\text{ s}}$$\n\n### Piège à éviter\nNe divise jamais directement 640 (en Ko) par 512 (en bits/s) sans conversion préalable : les deux grandeurs ne sont pas dans la même unité (octets contre bits). La présence simultanée de « Ko » et de « bits » dans un énoncé doit immédiatement déclencher une conversion avant tout calcul.\n\n### Conseil\nCertains cours utilisent la convention $1\\text{ Ko} = 1024$ octets plutôt que $1000$ : si ton enseignant l'impose, refais le calcul avec ce facteur - la démarche, conversion en bits puis division par le débit, reste identique, seul le résultat numérique final change légèrement."
+      },
+      {
+        "exercise_id": 9438,
+        "enonce_markdown": "Une photo de dimension 15 cm x 10 cm est introduite dans la machine avec une résolution de 200 ppp et une profondeur de 3 octets. Calculer sa définition et en déduire sa taille en kilooctet (KO). *[1,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLa définition d'une image numérisée (son nombre total de pixels) se calcule en convertissant chaque dimension physique du document, exprimée en centimètres, en pouces (1 pouce = 2,54 cm), puis en multipliant cette valeur par la résolution de numérisation exprimée en points par pouce (ppp) ; le nombre de pixels obtenu dans chaque direction doit être un entier, la taille en octets s'obtient ensuite en multipliant la définition totale par la profondeur de codage.\n\n**Étape 1 : conversion des dimensions en pouces.**\nLargeur : $15 \\div 2,54 \\approx 5,906$ pouces.\nHauteur : $10 \\div 2,54 \\approx 3,937$ pouces.\n\n**Étape 2 : nombre de pixels dans chaque direction.**\nNombre de pixels en largeur $= 5,906 \\times 200 \\approx 1181,1$, soit **1181 pixels** (un nombre de pixels est nécessairement entier).\nNombre de pixels en hauteur $= 3,937 \\times 200 \\approx 787,4$, soit **787 pixels**.\n\n**Étape 3 : définition de l'image.**\nDéfinition $= 1181 \\times 787 = 929\\,447$ pixels.\n\n**Étape 4 : taille en octets.**\nTaille $=$ Définition $\\times$ profondeur $= 929\\,447 \\times 3 = 2\\,788\\,341$ octets.\n\n**Étape 5 : conversion en kilooctets (1 Ko = 1024 octets).**\nTaille $= 2\\,788\\,341 \\div 1024 \\approx 2723$ Ko.\n\n**La photo a une définition de 929 447 pixels et occupe environ 2723 Ko en mémoire.**\n\n### Piège à éviter\nN'oublie jamais de convertir les centimètres en pouces avant d'appliquer la résolution : la résolution en ppp (points par pouce) ne s'applique qu'à une dimension exprimée en pouces, jamais directement à des centimètres.\n\n### Conseil\nVérifie l'ordre de grandeur de ton résultat : une photo numérisée à 200 ppp compte couramment plusieurs centaines de milliers de pixels ; un résultat de quelques centaines de pixels seulement signale presque toujours un oubli de conversion cm → pouces."
+      },
+      {
+        "exercise_id": 10252,
+        "enonce_markdown": "**5.** Une caméra capture une image de définition 3840 x 2160 pixels. Calculer la taille de cette image en Méga-octets, sachant qu'un pixel utilise 24 bits et que 1 Ko = 1024 octets. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLe poids d'une image numérique non compressée se calcule en multipliant son nombre total de pixels par le nombre de bits utilisés pour coder la couleur d'un seul pixel, puis en convertissant le résultat obtenu en bits vers l'unité demandée à l'aide des conversions 1 octet = 8 bits et 1 Ko = 1024 octets.\n\n**Nombre de pixels de l'image :**\n\n$$3840 \\times 2160 = 8\\,294\\,400 \\text{ pixels}$$\n\n**Taille en bits** (24 bits par pixel) :\n\n$$8\\,294\\,400 \\times 24 = 199\\,065\\,600 \\text{ bits}$$\n\n**Conversion en octets** (1 octet = 8 bits) :\n\n$$199\\,065\\,600 \\div 8 = 24\\,883\\,200 \\text{ octets}$$\n\n**Conversion en Ko** (1 Ko = 1024 octets) :\n\n$$24\\,883\\,200 \\div 1024 = 24\\,300 \\text{ Ko}$$\n\n**Conversion en Mo** (1 Mo = 1024 Ko) :\n\n$$24\\,300 \\div 1024 \\approx 23{,}73 \\text{ Mo}$$\n\nL'image pèse donc environ **23,73 Mo**.\n\n### Piège à éviter\nN'oublie jamais de convertir les bits en octets (division par 8) avant de diviser par 1024 : diviser directement le nombre de bits par 1024 pour obtenir des Ko fausse le résultat d'un facteur 8.\n\n### Conseil\nPour vérifier l'ordre de grandeur, retiens qu'une image Full HD non compressée (1920 x 1080, 24 bits) pèse environ 6 Mo. Une image 4K comme celle-ci a 4 fois plus de pixels : son poids doit donc avoisiner 4 x 6 = 24 Mo, ce qui confirme le résultat trouvé."
+      }
+    ]
+  },
+  {
+    "competence": "maintenance préventive",
+    "pays": "cm",
+    "matiere": "Informatique",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "C"
+      },
+      {
+        "examen": "bac",
+        "serie": "D"
+      },
+      {
+        "examen": "bac",
+        "serie": "E"
+      },
+      {
+        "examen": "bepc",
+        "serie": ""
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "2nde",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCM203",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 7573,
+        "enonce_markdown": "3) Déterminer le type de maintenance informatique que le chef d'entreprise souhaite pour sa PME. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nOn distingue la maintenance corrective, qui intervient après une panne pour la réparer, de la maintenance préventive, qui intervient avant toute panne pour en réduire le risque (contrôles réguliers, protections contre les causes connues de dysfonctionnement).\n\n### Corrigé\nLe chef d'entreprise veut protéger son matériel contre les pannes liées aux variations d'énergie électrique, avant qu'elles ne surviennent (achat de régulateurs de tension). C'est une démarche d'anticipation, pas une réparation après incident.\n\nRéponse : il s'agit de **maintenance préventive**.\n\n### Piège à éviter\nNe confonds pas \"protéger contre\" (anticiper) et \"réparer\" (corriger) : le premier verbe seul suffit à identifier la maintenance préventive."
+      },
+      {
+        "exercise_id": 8210,
+        "enonce_markdown": "2. Citer deux (02) types de maintenance applicable sur un microordinateur. *(0,5pt×2 = 1pt)*",
+        "corrige_markdown": "### Rappel de méthode\nLa maintenance regroupe toutes les opérations qui gardent un ordinateur en état de marche. On la classe selon le moment où elle intervient : avant la panne (on l'empêche d'arriver) ou après la panne (on la répare). Ce critère chronologique donne directement les deux grandes familles attendues au BEPC.\n\n**Réponse attendue (deux types au choix)**\n\n1. **La maintenance préventive** : elle intervient *avant* toute panne. Elle consiste à effectuer régulièrement des opérations d'entretien pour éviter la défaillance : dépoussiérage de l'unité centrale et des ventilateurs, mise à jour du système d'exploitation et de l'antivirus, sauvegarde des données, vérification des connexions.\n\n2. **La maintenance corrective** (aussi appelée maintenance curative) : elle intervient *après* la panne. Elle consiste à diagnostiquer la cause du dysfonctionnement puis à réparer ou remplacer l'élément défaillant : changer un disque dur en panne, réinstaller un système corrompu, remplacer une barrette de mémoire.\n\nLe barème accorde 0,5 point par type correctement cité. Deux types suffisent : inutile d'en aligner quatre.\n\n**Autres réponses recevables**\n\nSelon la classification utilisée en classe, on peut aussi citer la **maintenance matérielle** (sur les composants physiques) opposée à la **maintenance logicielle** (sur les programmes et le système), ou encore la **maintenance évolutive** (mise à niveau du matériel et des logiciels pour suivre les besoins).\n\n### Piège à éviter\nNe mélange pas les deux classifications dans une même réponse en croyant multiplier tes chances. Écrire « maintenance préventive et maintenance logicielle » n'oppose rien du tout : une maintenance logicielle peut être préventive comme corrective. Choisis un seul critère de classement et tiens-le jusqu'au bout.\n\n### Conseil\nLe verbe « citer » t'autorise à répondre en deux lignes, sans développer. Mais ajoute systématiquement trois ou quatre mots d'explication après chaque terme (« maintenance préventive : entretien régulier avant la panne »). Cela ne coûte rien en temps et permet au correcteur de valider le point même si le terme employé n'est pas exactement celui de son corrigé."
+      },
+      {
+        "exercise_id": 8215,
+        "enonce_markdown": "c. Remplacer une mémoire ou un CPU défaillant, c'est de la maintenance préventive.",
+        "corrige_markdown": "**Réponse : FAUX.**\n\n### Rappel de méthode\nPour classer une opération de maintenance, une seule question suffit : la panne s'est-elle déjà produite ? Si l'intervention a lieu **avant** toute défaillance, dans le but de l'éviter, la maintenance est préventive. Si elle a lieu **après** la défaillance, pour rétablir le fonctionnement, elle est corrective (on dit aussi curative).\n\n**Application à l'affirmation**\n\nL'énoncé parle d'une mémoire ou d'un CPU « défaillant » : la panne est donc déjà survenue au moment où l'on intervient. Remplacer le composant sert à rétablir le fonctionnement de la machine, pas à empêcher une panne future.\n\nIl s'agit donc de maintenance **corrective**, et non préventive : l'affirmation est **fausse**.\n\nExemples de maintenance préventive, pour comparaison : dépoussiérer l'unité centrale, défragmenter le disque dur, mettre à jour l'antivirus, sauvegarder régulièrement les données.\n\n### Piège à éviter\nLe verbe « remplacer » évoque le renouvellement et fait penser à tort à de la prévention. Ne te fie pas au verbe : cherche l'adjectif qui qualifie le composant. « Défaillant », « en panne », « grillé » signalent toujours une intervention corrective.\n\n### Conseil\nMémorise la règle sous forme de repère temporel : préventif = avant la panne, correctif = après la panne. Cette seule phrase permet de trancher tous les items de ce type sans hésiter."
+      },
+      {
+        "exercise_id": 8995,
+        "enonce_markdown": "**4.** Lister les trois catégories de maintenance. *[1,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLa maintenance informatique se classe selon le moment où elle intervient par rapport à la panne : avant qu'elle ne survienne, après qu'elle est survenue, ou pour en limiter les conséquences en attendant une réparation complète.\n\n### Corrigé\nOn distingue trois catégories de maintenance :\n- la maintenance préventive, réalisée avant l'apparition d'une panne, pour l'éviter (nettoyage, mise à jour, vérification régulière) ;\n- la maintenance curative (ou corrective), réalisée après l'apparition d'une panne, pour la réparer ;\n- la maintenance palliative, réalisée pour dépanner provisoirement un équipement en attendant une réparation définitive.\n\n### Piège à éviter\nNe réduis pas la maintenance à la seule réparation après panne. La catégorie la plus rentable pour un élève à l'examen, et la plus souvent oubliée, est la maintenance préventive : elle intervient avant que quoi que ce soit ne soit cassé."
+      }
+    ]
+  }
+]

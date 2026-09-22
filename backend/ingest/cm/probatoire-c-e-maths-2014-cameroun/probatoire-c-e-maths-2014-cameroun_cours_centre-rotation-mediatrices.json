@@ -1,0 +1,190 @@
+{
+ "cours_id": "cours-centre-rotation-mediatrices-1ere-ce",
+ "meta": {
+  "titre": "Déterminer le centre d'une rotation par les médiatrices",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Transformations du plan",
+  "duree_estimee_min": 30,
+  "tags": ["rotation", "centre d'une rotation", "médiatrice", "équidistance", "point invariant"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "IV"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qA2b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Une rotation laisse un seul point immobile : son centre. Tous les autres tournent autour de lui, et chacun reste à la même distance de lui avant et après. C'est cette équidistance qui livre le centre. Chaque couple (point, image) le contraint à rester sur une médiatrice ; deux couples suffisent pour l'immobiliser. La méthode est purement géométrique, ne demande aucun repère et fonctionne même quand la rotation n'est connue que par ses effets."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la caractérisation de la médiatrice d'un segment par l'équidistance",
+    "Savoir qu'une rotation conserve les distances",
+    "Savoir que deux droites non parallèles se coupent en un unique point",
+    "Connaître les propriétés du centre d'un carré"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux couples, deux médiatrices, un point",
+   "contenu_markdown": "**La propriété fondamentale.** Soit $r$ une rotation de centre $\\Omega$. Pour tout point $P$ d'image $P'$ :\n\n$$\\Omega P = \\Omega P'$$\n\ncar $P$ et $P'$ sont sur un même cercle de centre $\\Omega$. Le centre appartient donc à la **médiatrice** de $[PP']$.\n\n**Rappel sur la médiatrice.** La médiatrice d'un segment $[PP']$ est l'ensemble des points équidistants de $P$ et de $P'$. C'est la droite perpendiculaire à $(PP')$ passant par son milieu.\n\n**La méthode en trois temps.**\n\n1. **Deux couples.** À partir de $r(P) = P'$ et $r(Q) = Q'$, écrire que le centre appartient à la médiatrice de $[PP']$ **et** à celle de $[QQ']$.\n2. **Sécance.** Justifier que ces deux médiatrices ne sont pas parallèles, donc qu'elles se coupent en un point et un seul.\n3. **Identification.** Vérifier qu'un point candidat appartient à ces deux mêmes médiatrices : par unicité, il est le centre.\n\n**Pourquoi deux couples et pas un seul.** Un seul couple ne détermine rien : une **infinité** de points sont équidistants de $P$ et $P'$, toute la médiatrice. Conclure de $OM = ON$ que $O$ est le centre est donc un raisonnement incomplet, même si la conclusion est vraie.\n\n**Justifier que les médiatrices sont sécantes.** La médiatrice de $[PP']$ est perpendiculaire à $(PP')$, celle de $[QQ']$ perpendiculaire à $(QQ')$. Deux perpendiculaires sont parallèles entre elles si et seulement si les droites de départ le sont. Il suffit donc de montrer que $(PP')$ et $(QQ')$ ne sont pas parallèles — le plus souvent par l'absurde.\n\n**Le raisonnement d'identification.** L'argument est celui de l'unicité, et il mérite d'être énoncé proprement :\n\n- Le centre cherché $\\Omega$ appartient aux deux médiatrices.\n- Le point candidat $O$ appartient aussi aux deux médiatrices.\n- Les deux médiatrices se coupent en **un seul** point.\n- Donc $\\Omega = O$.\n\n**Le cas dégénéré.** Si les deux segments $[PP']$ et $[QQ']$ ont la même médiatrice, la méthode ne conclut pas : il faut alors un troisième couple. Ce cas se produit notamment lorsque $P$, $P'$, $Q$, $Q'$ sont les sommets d'un trapèze isocèle.",
+   "formule_principale": "r(P)=P' \\text{ et } r(Q)=Q' \\implies \\Omega \\in \\operatorname{med}[PP'] \\cap \\operatorname{med}[QQ']",
+   "variantes": [
+    {
+     "nom": "Recherche du point invariant par le calcul",
+     "quand_utiliser": "Quand la rotation est donnée par son expression analytique dans un repère",
+     "contenu_markdown": "Si la transformation est définie par des formules donnant $(x'\\,;\\,y')$ en fonction de $(x\\,;\\,y)$, le centre est l'unique point **invariant** : on résout le système obtenu en imposant $x' = x$ et $y' = y$.\n\nCette méthode est incontournable en géométrie analytique, mais elle suppose un repère et des coordonnées. Dans un problème de géométrie pure, où la rotation n'est connue que par ses effets sur des points, elle n'est tout simplement pas applicable — d'où l'intérêt de la méthode des médiatrices."
+    },
+    {
+     "nom": "Centre du cercle circonscrit",
+     "quand_utiliser": "Quand la rotation permute les sommets d'un polygone régulier",
+     "contenu_markdown": "Si une rotation permute circulairement les sommets d'un polygone régulier, son centre est le centre du polygone, c'est-à-dire celui de son cercle circonscrit. On peut alors conclure sans construire aucune médiatrice.\n\nC'est le cas dans le problème du Probatoire 2014 : la rotation envoie $A$ sur $D$, deux sommets consécutifs du carré, et son centre est le centre $O$ du carré. Encore faut-il le **démontrer**, ce que fait la méthode des médiatrices."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCD$ est un carré direct de centre $O$ et de côté $6$. Les points $M$ et $N$ appartiennent respectivement à $[AD]$ et $[DC]$, avec $AM = DN$, $M \\neq A$ et $M \\neq D$. La rotation $r$ transforme $A$ en $D$ et $M$ en $N$, et l'on a établi à la question précédente que $OM^{2} = ON^{2}$. En déduire que $O$ est le centre de $r$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Nommer le centre cherché",
+     "justification": "On ne peut pas raisonner sur un objet qu'on n'a pas nommé",
+     "resultat_markdown": "Notons $\\Omega$ le centre de la rotation $r$"
+    },
+    {
+     "numero": 2,
+     "action": "Placer $\\Omega$ sur la première médiatrice",
+     "justification": "$r(A) = D$, donc $\\Omega A = \\Omega D$",
+     "resultat_markdown": "$\\Omega$ appartient à la médiatrice de $[AD]$"
+    },
+    {
+     "numero": 3,
+     "action": "Placer $\\Omega$ sur la seconde médiatrice",
+     "justification": "$r(M) = N$, donc $\\Omega M = \\Omega N$",
+     "resultat_markdown": "$\\Omega$ appartient à la médiatrice de $[MN]$"
+    },
+    {
+     "numero": 4,
+     "action": "Montrer que $O$ est sur la médiatrice de $[AD]$",
+     "justification": "$O$ est le centre du carré, milieu commun des diagonales, donc équidistant des quatre sommets",
+     "resultat_markdown": "$OA = OB = OC = OD$, en particulier $OA = OD$"
+    },
+    {
+     "numero": 5,
+     "action": "Montrer que $O$ est sur la médiatrice de $[MN]$",
+     "justification": "La question précédente donne $OM^{2} = ON^{2}$, et deux longueurs positives de même carré sont égales",
+     "resultat_markdown": "$OM = ON$, donc $O$ appartient à la médiatrice de $[MN]$"
+    },
+    {
+     "numero": 6,
+     "action": "Supposer les deux médiatrices parallèles",
+     "justification": "Raisonnement par l'absurde ; deux médiatrices parallèles impliquent que $(AD)$ et $(MN)$ le sont aussi",
+     "resultat_markdown": "Si $\\operatorname{med}[AD]$ et $\\operatorname{med}[MN]$ étaient parallèles, alors $(AD)$ et $(MN)$ le seraient"
+    },
+    {
+     "numero": 7,
+     "action": "Aboutir à une contradiction",
+     "justification": "$M$ appartient à $(AD)$ : si $(MN)$ était parallèle à $(AD)$, ces droites seraient confondues, donc $N$ appartiendrait à $(AD)$",
+     "resultat_markdown": "Or $N$ appartient à $(DC)$ et $(AD) \\cap (DC) = \\{D\\}$, donc $N = D$, soit $DN = 0$, donc $AM = 0$ et $M = A$ : contradiction avec $M \\neq A$"
+    },
+    {
+     "numero": 8,
+     "action": "Conclure à l'unicité du point d'intersection",
+     "justification": "Deux droites non parallèles se coupent en un point et un seul",
+     "resultat_markdown": "Les deux médiatrices sont sécantes en un unique point"
+    },
+    {
+     "numero": 9,
+     "action": "Identifier",
+     "justification": "$\\Omega$ et $O$ appartiennent tous deux aux deux médiatrices, dont l'intersection est réduite à un point",
+     "resultat_markdown": "$\\Omega = O$"
+    }
+   ],
+   "conclusion_markdown": "Le centre de $r$ est le point $O$, centre du carré. Joint à la question A.1, cela caractérise complètement la transformation : **$r$ est la rotation de centre $O$ et d'angle $-\\dfrac{\\pi}{2}$.** C'est cette identification qui rend calculables toutes les images demandées ensuite — celle de $I$, puis celle du barycentre $G$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Conclure de $OM = ON$ seul que $O$ est le centre",
+     "pourquoi_faux": "L'égalité $OM = ON$ place $O$ sur la médiatrice de $[MN]$, mais **tous** les points de cette droite la vérifient. Une infinité de points sont équidistants de $M$ et $N$, et un seul est le centre.",
+     "correction_markdown": "Utilise impérativement le second couple $(A\\,;\\,D)$. C'est l'intersection de deux médiatrices, jamais une seule, qui isole un point unique."
+    },
+    {
+     "erreur_markdown": "Oublier de justifier que les deux médiatrices sont sécantes",
+     "pourquoi_faux": "Si elles étaient parallèles, leur intersection serait vide ou une droite entière, et l'argument d'unicité tomberait. C'est précisément l'étape que l'hypothèse $M \\neq A$ de l'énoncé sert à établir.",
+     "correction_markdown": "Rédige le raisonnement par l'absurde : médiatrices parallèles impliquent supports parallèles, ce qui force $N = D$ puis $M = A$, exclu par l'énoncé. Chaque hypothèse d'un énoncé sert à quelque chose."
+    },
+    {
+     "erreur_markdown": "Passer de $OM^{2} = ON^{2}$ à $OM = ON$ sans un mot",
+     "pourquoi_faux": "L'égalité des carrés n'entraîne l'égalité qu'entre nombres de même signe. Ici les deux quantités sont des longueurs, donc positives, mais l'argument doit être écrit.",
+     "correction_markdown": "Une incise suffit : « ces deux longueurs étant positives, $OM = ON$ ». Le correcteur attend cette rigueur, particulièrement en série C."
+    },
+    {
+     "erreur_markdown": "Chercher le centre en résolvant un système de coordonnées",
+     "pourquoi_faux": "Ce n'est pas faux, mais l'énoncé ne fournit aucun repère, et la position de $M$ dépend d'un paramètre. Il faudrait introduire un repère, exprimer la rotation analytiquement, résoudre — plusieurs pages pour ce que trois lignes de géométrie donnent.",
+     "correction_markdown": "Réserve la méthode du point invariant aux transformations données par des formules. En géométrie pure, la méthode des médiatrices est nettement plus rapide."
+    },
+    {
+     "erreur_markdown": "Confondre médiatrice et bissectrice, ou médiatrice et médiane",
+     "pourquoi_faux": "La médiatrice d'un segment est perpendiculaire à ce segment et passe par son milieu. La médiane part d'un sommet, la bissectrice partage un angle : ni l'une ni l'autre ne caractérise l'équidistance à deux points.",
+     "correction_markdown": "Retiens la caractérisation par l'équidistance : $\\Omega P = \\Omega P'$ équivaut à « $\\Omega$ appartient à la médiatrice de $[PP']$ ». C'est cette formulation, et non la définition perpendiculaire-milieu, qu'on utilise en pratique."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Dans un repère orthonormé, on considère les points $A(1\\,;\\,0)$, $B(0\\,;\\,1)$, $A'(0\\,;\\,1)$ et $B'(-1\\,;\\,0)$. Une rotation $r$ transforme $A$ en $A'$ et $B$ en $B'$. Déterminer son centre par la méthode des médiatrices, puis son angle.",
+     "solution_markdown": "**Étape 1 - la médiatrice de $[AA']$.**\n\nOn a $A(1\\,;\\,0)$ et $A'(0\\,;\\,1)$. Un point $\\Omega(x\\,;\\,y)$ appartient à cette médiatrice si et seulement si $\\Omega A^{2} = \\Omega A'^{2}$ :\n\n$$(x-1)^{2} + y^{2} = x^{2} + (y-1)^{2}$$\n\n$$x^{2} - 2x + 1 + y^{2} = x^{2} + y^{2} - 2y + 1$$\n\n$$-2x = -2y \\quad \\Longleftrightarrow \\quad y = x$$\n\n**Étape 2 - la médiatrice de $[BB']$.**\n\nAvec $B(0\\,;\\,1)$ et $B'(-1\\,;\\,0)$ :\n\n$$x^{2} + (y-1)^{2} = (x+1)^{2} + y^{2}$$\n\n$$x^{2} + y^{2} - 2y + 1 = x^{2} + 2x + 1 + y^{2}$$\n\n$$-2y = 2x \\quad \\Longleftrightarrow \\quad y = -x$$\n\n**Étape 3 - les deux médiatrices sont-elles sécantes ?**\n\nLeurs coefficients directeurs sont $1$ et $-1$ : ils diffèrent, donc les droites ne sont pas parallèles et se coupent en un point unique.\n\n**Étape 4 - l'intersection.**\n\n$$y = x \\quad \\text{et} \\quad y = -x \\quad \\Longrightarrow \\quad x = -x \\quad \\Longrightarrow \\quad x = 0 \\quad \\text{puis} \\quad y = 0$$\n\n**Le centre est l'origine $O(0\\,;\\,0)$.**\n\n**Étape 5 - l'angle.**\n\nLe centre étant connu, l'angle se lit sur $\\overrightarrow{OA}$ et $\\overrightarrow{OA'}$. Le vecteur $\\overrightarrow{OA}$ est le vecteur unitaire porté par l'axe des abscisses, $\\overrightarrow{OA'}$ celui porté par l'axe des ordonnées :\n\n$$\\theta = \\operatorname{mes}\\left(\\overrightarrow{OA}\\,;\\,\\overrightarrow{OA'}\\right) = \\dfrac{\\pi}{2}$$\n\n**Conclusion.** $r$ est la rotation de centre $O$ et d'angle $\\dfrac{\\pi}{2}$, c'est-à-dire le quart de tour direct.\n\n**Contrôle.** Vérifions sur $B$ : la rotation d'un quart de tour direct envoie $(0\\,;\\,1)$ sur $(-1\\,;\\,0)$, qui est bien $B'$. Conforme."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABC$ est un triangle équilatéral direct. On note $I$ le milieu de $[AB]$ et $J$ celui de $[BC]$. Soit $r$ la rotation qui transforme $A$ en $B$ et $I$ en $J$. Déterminer son centre et son angle, en justifiant que les deux médiatrices utilisées sont sécantes.",
+     "solution_markdown": "**Étape 1 - l'angle, d'abord.**\n\nLa rotation transforme $\\overrightarrow{AI}$ en $\\overrightarrow{BJ}$. Or $\\overrightarrow{AI} = \\dfrac{1}{2}\\overrightarrow{AB}$ et $\\overrightarrow{BJ} = \\dfrac{1}{2}\\overrightarrow{BC}$, avec des coefficients positifs. Donc\n\n$$\\theta = \\operatorname{mes}\\left(\\overrightarrow{AB}\\,;\\,\\overrightarrow{BC}\\right)$$\n\nEn passant par $\\overrightarrow{BA} = -\\overrightarrow{AB}$ :\n\n$$\\theta = \\pi + \\operatorname{mes}\\left(\\overrightarrow{BA}\\,;\\,\\overrightarrow{BC}\\right) = \\pi + \\dfrac{\\pi}{3} = \\dfrac{4\\pi}{3} \\equiv -\\dfrac{2\\pi}{3} \\quad [2\\pi]$$\n\n**Étape 2 - les deux médiatrices.**\n\nNotons $\\Omega$ le centre.\n\n- $r(A) = B$ donne $\\Omega A = \\Omega B$ : le centre est sur la médiatrice de $[AB]$.\n- $r(I) = J$ donne $\\Omega I = \\Omega J$ : le centre est sur la médiatrice de $[IJ]$.\n\n**Étape 3 - justifier qu'elles sont sécantes.**\n\nLa médiatrice de $[AB]$ est perpendiculaire à $(AB)$, celle de $[IJ]$ est perpendiculaire à $(IJ)$. Si elles étaient parallèles, les droites $(AB)$ et $(IJ)$ le seraient.\n\nOr $I$ et $J$ sont les milieux de $[AB]$ et $[BC]$ : dans le triangle $ABC$, la droite $(IJ)$ est la droite des milieux relative au côté $[AC]$, donc **parallèle à $(AC)$**. Si $(IJ)$ était parallèle à $(AB)$, alors $(AC)$ le serait aussi, et les points $A$, $B$, $C$ seraient alignés : impossible pour un triangle.\n\nLes deux médiatrices sont donc sécantes en un point unique.\n\n**Étape 4 - identifier ce point.**\n\nSoit $G$ le centre du cercle circonscrit au triangle, qui pour un triangle équilatéral coïncide avec son centre de gravité.\n\n- $GA = GB$ puisque $G$ est équidistant des trois sommets : $G$ est sur la médiatrice de $[AB]$.\n- Pour $[IJ]$ : les segments $[GI]$ et $[GJ]$ joignent le centre aux milieux de deux côtés. Par la symétrie d'ordre $3$ du triangle équilatéral, la rotation de centre $G$ et d'angle $-\\dfrac{2\\pi}{3}$ envoie $A$ sur $B$ et $B$ sur $C$, donc le milieu $I$ de $[AB]$ sur le milieu $J$ de $[BC]$. Une rotation conservant les distances au centre, $GI = GJ$.\n\nDonc $G$ appartient aux deux médiatrices, et par unicité $\\Omega = G$.\n\n**Conclusion.** $r$ est la rotation de centre $G$, centre de gravité du triangle, et d'angle $-\\dfrac{2\\pi}{3}$.\n\n**Contrôle.** Appliquée trois fois, cette rotation tourne de $-2\\pi$, soit l'identité. Elle permute donc circulairement $A \\to B \\to C \\to A$, ce qui est bien la symétrie d'ordre $3$ attendue pour un triangle équilatéral."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soient $P$, $P'$, $Q$, $Q'$ quatre points du plan tels que $PQ = P'Q'$, avec $P \\neq P'$ et $Q \\neq Q'$. On admet qu'il existe une rotation transformant $P$ en $P'$ et $Q$ en $Q'$ dès lors que les médiatrices de $[PP']$ et $[QQ']$ sont sécantes. Étudier le cas où ces deux médiatrices sont **parallèles** : quelle transformation obtient-on alors ? Illustrer par un exemple en coordonnées.",
+     "solution_markdown": "**Étape 1 - traduire le parallélisme.**\n\nLes médiatrices de $[PP']$ et $[QQ']$ sont parallèles si et seulement si les droites $(PP')$ et $(QQ')$ le sont, puisque chacune est perpendiculaire à l'une d'elles.\n\nAutrement dit, les vecteurs $\\overrightarrow{PP'}$ et $\\overrightarrow{QQ'}$ sont **colinéaires** : les deux points se déplacent selon la même direction.\n\n**Étape 2 - le sous-cas de la translation.**\n\nSupposons de plus $\\overrightarrow{PP'} = \\overrightarrow{QQ'}$, c'est-à-dire même direction, même sens et même longueur.\n\nAlors $PP'Q'Q$ est un parallélogramme, et la transformation qui envoie $P$ sur $P'$ et $Q$ sur $Q'$ est la **translation** de vecteur $\\overrightarrow{PP'}$.\n\nUne translation de vecteur non nul n'a **aucun** point invariant : ce n'est pas une rotation, ce qui explique que la méthode des médiatrices échoue. Deux droites parallèles distinctes n'ont pas de point commun, exactement comme la translation n'a pas de centre.\n\n**Étape 3 - le sous-cas de la symétrie.**\n\nSi $\\overrightarrow{PP'}$ et $\\overrightarrow{QQ'}$ sont colinéaires mais **de sens opposés**, ou de longueurs différentes, les médiatrices peuvent être **confondues**. La transformation est alors la symétrie orthogonale d'axe cette médiatrice commune — une isométrie **indirecte**, qui inverse l'orientation, et donc jamais une rotation.\n\n**Étape 4 - exemple en coordonnées pour la translation.**\n\nPrenons $P(0\\,;\\,0)$, $Q(2\\,;\\,0)$, $P'(0\\,;\\,3)$, $Q'(2\\,;\\,3)$.\n\nVérifions l'hypothèse : $PQ = 2$ et $P'Q' = 2$. Les deux longueurs sont bien égales.\n\nMédiatrice de $[PP']$ : les points équidistants de $(0\\,;\\,0)$ et $(0\\,;\\,3)$ vérifient $x^2 + y^2 = x^2 + (y-3)^2$, soit $0 = -6y + 9$, donc $y = \\dfrac{3}{2}$.\n\nMédiatrice de $[QQ']$ : de même, $(x-2)^2 + y^2 = (x-2)^2 + (y-3)^2$ donne encore $y = \\dfrac{3}{2}$.\n\n**Les deux médiatrices sont confondues**, donc en particulier pas sécantes en un point unique. Aucun centre ne peut être isolé.\n\nEt en effet, $\\overrightarrow{PP'} = \\overrightarrow{QQ'} = \\begin{pmatrix} 0 \\\\ 3 \\end{pmatrix}$ : la transformation est la translation de vecteur $3\\overrightarrow{j}$.\n\n**Conclusion générale.** Étant donné deux couples (point, image) avec conservation des distances, exactement trois situations se présentent :\n\n1. Médiatrices **sécantes** en un point unique : rotation de centre ce point.\n2. Médiatrices **strictement parallèles** ou confondues avec $\\overrightarrow{PP'} = \\overrightarrow{QQ'}$ : translation.\n3. Médiatrices **confondues** avec des déplacements de sens contraires : symétrie orthogonale d'axe cette médiatrice.\n\n**Ce qu'il faut retenir.** L'étape « justifier que les médiatrices sont sécantes » n'est pas une formalité de rédaction : c'est elle qui **écarte** la translation et la symétrie. Sans elle, rien ne garantit que la transformation soit une rotation."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Le centre d'une rotation est équidistant de tout point et de son image : $r(P) = P'$ place le centre sur la médiatrice de $[PP']$.",
+    "Un seul couple ne suffit pas : toute une droite vérifie l'équidistance. Il en faut deux.",
+    "Justifie toujours que les deux médiatrices sont sécantes : c'est ce qui écarte la translation et la symétrie.",
+    "Deux médiatrices sont parallèles si et seulement si les segments correspondants le sont : raisonne par l'absurde sur les supports.",
+    "L'argument final est celui de l'unicité : centre cherché et point candidat sont sur les deux mêmes droites sécantes, donc confondus.",
+    "$OM^{2} = ON^{2}$ ne donne $OM = ON$ que parce que ce sont des longueurs, donc positives : écris-le.",
+    "Détermine l'angle **avant** le centre : sa lecture sur les vecteurs n'exige pas le centre.",
+    "Réserve la recherche du point invariant par le calcul aux transformations données analytiquement.",
+    "Chaque hypothèse d'un énoncé sert à quelque chose : ici, $M \\neq A$ est exactement ce qui rend les médiatrices sécantes."
+   ]
+  }
+ ]
+}

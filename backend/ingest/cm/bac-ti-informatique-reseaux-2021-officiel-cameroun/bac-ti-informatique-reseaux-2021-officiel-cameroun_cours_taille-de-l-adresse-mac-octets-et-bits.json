@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-taille-de-l-adresse-mac-octets-et-bits-terminale-ti",
+  "meta": {
+    "titre": "Taille de l'adresse MAC (octets et bits)",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Couche liaison de données",
+    "duree_estimee_min": 12,
+    "tags": [
+      "adresse MAC",
+      "hexadécimal",
+      "octet",
+      "bit"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q10-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une adresse MAC s'affiche toujours sous une forme très reconnaissable, faite de paires de caractères séparées par des tirets ou des deux-points. Cette écriture n'est pas arbitraire : elle correspond directement à un découpage précis en octets, qu'il suffit de compter pour retrouver sa taille exacte en bits."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Système hexadécimal (0-9, A-F)",
+        "Relation entre octet et bit (1 octet = 8 bits)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Compter la taille d'une adresse MAC",
+      "contenu_markdown": "Une adresse MAC s'écrit toujours en six groupes de deux chiffres hexadécimaux, séparés par un tiret ou un deux-points (ex. 00-50-56-C0-00-01). Chaque groupe de deux chiffres hexadécimaux code exactement un octet (8 bits). Une adresse MAC compte donc **6 octets**, soit 6 × 8 = **48 bits**, quel que soit le constructeur ou l'équipement réseau concerné.",
+      "formule_principale": "6 \\text{ octets} = 6 \\times 8 = 48 \\text{ bits}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la taille en octets et en bits de l'adresse MAC 00-50-56-C0-00-01.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter les groupes séparés par des tirets",
+          "justification": "Chaque groupe correspond à un octet de l'adresse.",
+          "resultat_markdown": "00 / 50 / 56 / C0 / 00 / 01 : six groupes distincts."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la taille en octets",
+          "justification": "Six groupes hexadécimaux à deux chiffres correspondent à six octets.",
+          "resultat_markdown": "L'adresse fait 6 octets."
+        },
+        {
+          "numero": 3,
+          "action": "Convertir en bits",
+          "justification": "Un octet vaut 8 bits.",
+          "resultat_markdown": "6 × 8 = 48 bits."
+        }
+      ],
+      "conclusion_markdown": "L'adresse MAC 00-50-56-C0-00-01 fait 6 octets, soit 48 bits, comme toute adresse MAC quel que soit l'équipement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter le nombre de caractères hexadécimaux (12) et le confondre avec le nombre de bits",
+          "pourquoi_faux": "12 caractères hexadécimaux ne font pas 12 bits : chaque caractère hexadécimal code 4 bits (puisque l'hexadécimal utilise 16 symboles = 2⁴), donc 12 caractères font 12 × 4 = 48 bits, pas 12 bits.",
+          "correction_markdown": "Compte plutôt les groupes de deux caractères (les octets) et multiplie par 8, ou compte les caractères individuels et multiplie par 4 : les deux méthodes donnent 48 bits."
+        },
+        {
+          "erreur_markdown": "Confondre la taille de l'adresse MAC (48 bits) avec celle d'une adresse IPv4 (32 bits)",
+          "pourquoi_faux": "Ce sont deux adresses de nature différente : la MAC identifie une carte réseau sur 48 bits, l'IPv4 identifie une machine sur un réseau donné sur 32 bits.",
+          "correction_markdown": "Retiens les deux tailles comme deux constantes distinctes du cours : 48 bits pour MAC, 32 bits pour IPv4."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Combien d'octets et de bits compte l'adresse MAC A4-4E-31-86-EF-F8 ?",
+          "solution_markdown": "6 octets, soit 48 bits (comme toute adresse MAC)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une adresse MAC est donnée sous la forme 9C:B6:54:A4:13:4A (avec des deux-points au lieu de tirets). Cette notation change-t-elle la taille de l'adresse ? Justifier.",
+          "solution_markdown": "Non. Le séparateur utilisé (tiret ou deux-points) est une simple convention d'écriture selon le système d'exploitation ou l'outil utilisé ; il ne modifie en rien le contenu de l'adresse. On compte toujours six groupes de deux chiffres hexadécimaux, soit 6 octets et 48 bits, quel que soit le séparateur choisi."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une adresse MAC de 48 bits permet-elle, en théorie, d'attribuer une adresse unique à chaque carte réseau fabriquée dans le monde ? Justifier par un calcul d'ordre de grandeur.",
+          "solution_markdown": "Avec 48 bits, le nombre total d'adresses MAC possibles est 2^48, soit environ 281 474 976 710 656 (plus de 281 000 milliards) d'adresses distinctes. Ce nombre est très largement supérieur au nombre de cartes réseau jamais fabriquées dans le monde, ce qui permet en théorie d'attribuer à chaque carte une adresse unique et de ne jamais épuiser l'espace disponible. En pratique, les 24 premiers bits identifient le constructeur (OUI, Organizationally Unique Identifier), et les 24 bits restants, gérés par ce constructeur, garantissent l'unicité au sein de sa propre production."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une adresse MAC compte toujours 6 octets, soit 48 bits, quel que soit l'équipement.",
+        "Chaque groupe de deux chiffres hexadécimaux séparé par un tiret ou un deux-points correspond à un octet.",
+        "Un chiffre hexadécimal code 4 bits ; 12 chiffres hexadécimaux font donc bien 48 bits, pas 12.",
+        "48 bits pour l'adresse MAC, 32 bits pour l'adresse IPv4 : deux constantes à ne jamais confondre."
+      ]
+    }
+  ]
+}

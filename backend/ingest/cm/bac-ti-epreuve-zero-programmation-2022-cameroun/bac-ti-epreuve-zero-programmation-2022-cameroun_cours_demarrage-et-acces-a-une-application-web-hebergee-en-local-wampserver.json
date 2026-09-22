@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-demarrage-et-acces-a-une-application-web-hebergee-en-local-wampserver-tle-ti",
+  "meta": {
+    "titre": "Démarrage et accès à une application web hébergée en local (WampServer)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Serveurs Web et hébergement local",
+    "duree_estimee_min": 15,
+    "tags": [
+      "WampServer",
+      "démarrage",
+      "localhost",
+      "Apache",
+      "MySQL"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q6.5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un site parfaitement codé n'affiche rien tant que les services qui le font tourner ne sont pas réellement démarrés. Vérifier ce démarrage est le premier réflexe avant tout test en local, et le premier point à contrôler quand « rien ne s'affiche »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de serveur Web et de services Apache/MySQL",
+        "Répertoire www de WampServer"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lancer les services, puis appeler l'application par son adresse locale",
+      "contenu_markdown": "Démarrer une application hébergée en local suppose deux étapes successives : d'abord lancer l'icône WampServer (ou double-cliquer dessus si elle est déjà présente dans la barre des tâches), ce qui démarre les services Apache et MySQL ; ensuite vérifier que le témoin visuel de WampServer est passé au vert, signe que les deux services sont pleinement opérationnels (orange signifie qu'un des deux services n'a pas encore démarré ou a rencontré un problème, rouge qu'aucun service n'est démarré). Une fois ce témoin vert, on ouvre un navigateur et on saisit l'adresse `http://localhost/nom_du_dossier` pour accéder à l'application.",
+      "formule_principale": "Icône WampServer (verte) -> navigateur -> http://localhost/dossier",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer comment démarrer le script `verif_motdepasse.php` de l'exercice 2, hébergé sur un serveur Web local avec WampServer.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Démarrer WampServer",
+          "justification": "Aucune requête vers localhost n'aboutit tant qu'Apache et MySQL ne sont pas lancés.",
+          "resultat_markdown": "Lancer l'application WampServer (icône du bureau ou de la barre des tâches)."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier le témoin de statut",
+          "justification": "Un témoin encore orange signale que MySQL ou Apache n'a pas fini de démarrer, ou qu'un port est déjà occupé par un autre logiciel.",
+          "resultat_markdown": "Attendre que l'icône WampServer devienne verte dans la barre des tâches."
+        },
+        {
+          "numero": 3,
+          "action": "Ouvrir l'application dans le navigateur",
+          "justification": "C'est cette adresse qui déclenche l'exécution du script PHP par Apache.",
+          "resultat_markdown": "Saisir `http://localhost/verif_motdepasse.php` (en supposant le fichier placé directement dans www) dans la barre d'adresse du navigateur."
+        }
+      ],
+      "conclusion_markdown": "Sans ce démarrage préalable des services, la requête vers `http://localhost` échouerait purement et simplement, quelle que soit la qualité du code PHP écrit."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tester l'application dans le navigateur sans avoir vérifié le témoin de statut de WampServer.",
+          "pourquoi_faux": "Un témoin encore orange (MySQL non démarré, port 80 déjà utilisé par un autre logiciel comme Skype ou IIS) empêche la page de s'afficher correctement, et l'erreur affichée par le navigateur ne dit pas toujours explicitement pourquoi.",
+          "correction_markdown": "Toujours vérifier visuellement l'icône WampServer avant de conclure à un bug dans le code : beaucoup d'erreurs en TP viennent d'un service mal démarré, pas du script lui-même."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle couleur doit afficher l'icône WampServer pour confirmer que l'application peut être testée dans le navigateur ?",
+          "solution_markdown": "Vert : les deux services (Apache et MySQL) sont alors pleinement démarrés."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "L'icône WampServer reste orange après le démarrage. Proposer une cause possible et une vérification à effectuer.",
+          "solution_markdown": "Une cause fréquente est qu'un autre logiciel (Skype, IIS, un autre serveur Apache) occupe déjà le port utilisé par Apache (souvent le port 80). Vérification possible : ouvrir le menu de WampServer et consulter les journaux (logs) Apache, ou fermer les logiciels susceptibles d'utiliser ce port avant de relancer WampServer."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un développeur veut que son application soit accessible depuis un autre ordinateur du même réseau local, pas seulement depuis http://localhost. Quelle information technique doit-il utiliser à la place de « localhost », et pourquoi ?",
+          "solution_markdown": "Il doit utiliser l'adresse IP locale de sa machine sur le réseau (par exemple 192.168.1.15), et non `localhost`, qui désigne toujours « cette machine elle-même », quelle que soit la machine qui l'interprète. Un autre ordinateur du réseau qui tape `http://localhost` interrogerait donc SA PROPRE machine, pas celle qui héberge réellement l'application. En saisissant l'adresse IP réelle de la machine hôte, les autres postes du réseau peuvent atteindre le serveur Apache qui y tourne, à condition que le pare-feu de cette machine autorise les connexions entrantes sur le port utilisé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le démarrage d'une application locale passe toujours par le démarrage préalable des services (Apache, MySQL).",
+        "Le témoin de couleur de WampServer (rouge/orange/vert) indique l'état réel des services : vert seul garantit un test fiable.",
+        "L'adresse locale reproduit le chemin du fichier sous www : http://localhost/dossier/fichier.php.",
+        "Beaucoup d'erreurs de TP viennent d'un service non démarré, pas d'une erreur dans le code : vérifier le témoin avant de déboguer le script."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-fonction-homographique-etude-complete-1ere-d",
+  "meta": {
+    "titre": "Étudier une fonction homographique f(x) = (ax+b)/(cx+d) : la mettre sous forme k + m/(x-x0)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Généralités sur les fonctions numériques / Dérivation",
+    "duree_estimee_min": 30,
+    "tags": [
+      "fonction homographique",
+      "asymptotes",
+      "centre de symétrie",
+      "dérivation",
+      "sens de variation"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "21",
+      "savoir_numero": "VI"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2003-cameroun",
+    "epreuve_titre": "Probatoire D - Mathématiques - Session 2003 (Cameroun)",
+    "exercice_numero": "Problème - Partie B",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2003-cameroun-probleme-qB1a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction $f(x)=\\dfrac{ax+b}{cx+d}$ (avec $c\\neq 0$) semble compliquée à étudier directement, mais elle cache toujours une écriture beaucoup plus simple : $f(x)=k+\\dfrac{m}{x-x_0}$. Une fois cette forme trouvée, les variations, les limites, les asymptotes et même le centre de symétrie de la courbe s'obtiennent presque sans calcul supplémentaire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Division euclidienne de polynômes ou identification de coefficients",
+        "Dérivée d'un quotient de fonctions",
+        "Limites d'une fonction en un point et en l'infini",
+        "Définition d'une fonction impaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Réécriture sous forme k + m/(x-x0)",
+      "contenu_markdown": "Pour $f(x)=\\dfrac{ax+b}{cx+d}$ avec $c\\neq 0$ et $x_0=-\\dfrac{d}{c}$ (valeur interdite), on écrit $ax+b$ comme $\\dfrac{a}{c}$ fois $(cx+d)$ plus un reste constant : $f(x)=\\dfrac{a}{c}+\\dfrac{m}{cx+d}$ pour un certain $m$, que l'on détermine en réduisant au même dénominateur et en identifiant avec $ax+b$. On obtient alors la forme $f(x)=k+\\dfrac{m}{x-x_0}$ (avec $k=\\dfrac{a}{c}$), qui donne directement : l'asymptote verticale $x=x_0$, l'asymptote horizontale $y=k$ (en $+\\infty$ et $-\\infty$), le centre de symétrie $\\Omega(x_0\\,;k)$ (intersection des deux asymptotes), et le sens de variation (identique à celui de $x\\mapsto \\dfrac{m}{x-x_0}$, qui est monotone sur chacun des deux intervalles délimités par $x_0$, décroissante si $m>0$, croissante si $m<0$).",
+      "formule_principale": "f(x) = \\dfrac{ax+b}{cx+d} = k + \\dfrac{m}{x-x_0}, \\quad x_0=-\\dfrac{d}{c}",
+      "variantes": [
+        {
+          "nom": "Démonstration du centre de symétrie via cette forme",
+          "quand_utiliser": "Quand l'énoncé demande de démontrer qu'un point donné est centre de symétrie de la courbe.",
+          "contenu_markdown": "En posant $X=x-x_0$ et $Y=y-k$, l'équation $y=f(x)$ devient $Y=\\dfrac{m}{X}$, fonction impaire de $X$ : cela prouve directement que $\\Omega(x_0\\,;k)$ est centre de symétrie, sans repasser par un calcul de $f(x_0+h)+f(x_0-h)$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f(x)=\\dfrac{2x+1}{x-3}$, définie sur $\\mathbb{R}\\setminus\\{3\\}$. Mettre $f(x)$ sous la forme $k+\\dfrac{m}{x-3}$, en déduire les asymptotes de $(C_f)$ et son centre de symétrie.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Faire apparaître (x-3) au numérateur",
+          "justification": "On écrit $2x+1$ comme $2$ fois $(x-3)$ plus un reste constant, pour pouvoir simplifier avec le dénominateur $(x-3)$.",
+          "resultat_markdown": "$2x+1 = 2(x-3)+7$ (car $2(x-3)=2x-6$, et $2x+1-(2x-6)=7$)"
+        },
+        {
+          "numero": 2,
+          "action": "Réécrire f(x) en séparant les deux termes",
+          "justification": "On divise chaque terme du numérateur par $(x-3)$.",
+          "resultat_markdown": "$f(x)=\\dfrac{2(x-3)+7}{x-3}=\\dfrac{2(x-3)}{x-3}+\\dfrac{7}{x-3}=2+\\dfrac{7}{x-3}$"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier k, x0 et m, puis en déduire les asymptotes",
+          "justification": "La forme obtenue est exactement $k+\\dfrac{m}{x-x_0}$ avec $k=2$, $x_0=3$, $m=7$.",
+          "resultat_markdown": "Asymptote verticale : $x=3$. Asymptote horizontale : $y=2$ (en $+\\infty$ et en $-\\infty$)."
+        },
+        {
+          "numero": 4,
+          "action": "En déduire le centre de symétrie",
+          "justification": "Le centre de symétrie d'une fonction homographique est toujours le point d'intersection de ses deux asymptotes.",
+          "resultat_markdown": "$\\Omega(3\\,;2)$ est centre de symétrie de $(C_f)$ (ce que l'on peut redémontrer rigoureusement en posant $X=x-3$, $Y=y-2$, qui donne $Y=\\dfrac{7}{X}$, fonction impaire)."
+        }
+      ],
+      "conclusion_markdown": "$f(x)=2+\\dfrac{7}{x-3}$ ; asymptotes $x=3$ et $y=2$ ; centre de symétrie $\\Omega(3\\,;2)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer la dérivée d'une fonction homographique sans utiliser la forme simplifiée, en refaisant à chaque fois le calcul complet du quotient.",
+          "pourquoi_faux": "Ce n'est pas une erreur de résultat, mais une perte de temps et une source d'erreurs de calcul évitable : une fois $f(x)=k+\\dfrac{m}{x-x_0}$ établie, $f'(x)=\\dfrac{-m}{(x-x_0)^2}$ s'obtient immédiatement (dérivée de $\\frac{1}{X}$ qui est $\\frac{-1}{X^2}$), sans repasser par la formule du quotient.",
+          "correction_markdown": "Prends l'habitude de mettre systématiquement une fonction homographique sous forme $k+\\dfrac{m}{x-x_0}$ dès le début de l'exercice : cela accélère et sécurise TOUTES les questions qui suivent (dérivée, limites, asymptotes, centre de symétrie)."
+        },
+        {
+          "erreur_markdown": "Affirmer que $f$ est monotone sur $\\mathbb{R}\\setminus\\{x_0\\}$ tout entier (« décroissante sur $\\mathbb{R}\\setminus\\{x_0\\}$ »).",
+          "pourquoi_faux": "La fonction n'est monotone que sur CHACUN des deux intervalles séparés par la valeur interdite $x_0$ ; il n'y a aucune comparaison possible entre une valeur prise juste avant $x_0$ et une valeur prise loin après $x_0$.",
+          "correction_markdown": "Toujours préciser « décroissante (ou croissante) sur $]-\\infty\\,;x_0[$ ET sur $]x_0\\,;+\\infty[$ », jamais « sur $\\mathbb{R}\\setminus\\{x_0\\}$ » sans cette précision."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Mettre $f(x)=\\dfrac{3x-1}{x-2}$ sous la forme $k+\\dfrac{m}{x-2}$, et donner les asymptotes de sa courbe.",
+          "solution_markdown": "$3x-1=3(x-2)+5$ (car $3(x-2)=3x-6$, et $3x-1-(3x-6)=5$).\n\n$f(x)=\\dfrac{3(x-2)+5}{x-2}=3+\\dfrac{5}{x-2}$.\n\nAsymptote verticale : $x=2$. Asymptote horizontale : $y=3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $g(x)=\\dfrac{-x+4}{x+1}$. Mettre $g(x)$ sous forme $k+\\dfrac{m}{x-x_0}$, étudier son sens de variation sur chacun des deux intervalles de son ensemble de définition, et donner son centre de symétrie.",
+          "solution_markdown": "$-x+4=-(x+1)+5$ (car $-(x+1)=-x-1$, et $-x+4-(-x-1)=5$).\n\n$g(x)=\\dfrac{-(x+1)+5}{x+1}=-1+\\dfrac{5}{x+1}$.\n\n$g'(x)=\\dfrac{-5}{(x+1)^2}<0$ pour tout $x\\neq -1$ : $g$ est strictement décroissante sur $]-\\infty\\,;-1[$ et sur $]-1\\,;+\\infty[$.\n\nCentre de symétrie : $\\Omega(-1\\,;-1)$ (intersection des asymptotes $x=-1$ et $y=-1$)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h(x)=\\dfrac{2x+5}{x+1}$. Démontrer que le point $\\Omega(-1\\,;2)$ est centre de symétrie de la courbe de $h$, en posant $X=x+1$ et $Y=y-2$.",
+          "solution_markdown": "$2x+5=2(x+1)+3$ (car $2(x+1)=2x+2$, et $2x+5-(2x+2)=3$), donc $h(x)=2+\\dfrac{3}{x+1}$.\n\nAvec $X=x+1$ (donc $x=X-1$) et $Y=y-2$ : l'équation $y=h(x)$ devient $Y+2=2+\\dfrac{3}{X}$, soit $Y=\\dfrac{3}{X}$.\n\n$X\\mapsto \\dfrac{3}{X}$ est une fonction impaire (car $\\dfrac{3}{-X}=-\\dfrac{3}{X}$), donc $\\Omega(-1\\,;2)$ est bien centre de symétrie de la courbe de $h$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Toute fonction homographique $f(x)=\\dfrac{ax+b}{cx+d}$ ($c\\neq 0$) se réécrit $f(x)=k+\\dfrac{m}{x-x_0}$, avec $x_0=-\\dfrac{d}{c}$ la valeur interdite.",
+        "Cette forme donne immédiatement les deux asymptotes ($x=x_0$ et $y=k$), le centre de symétrie $\\Omega(x_0\\,;k)$, et une dérivée facile à calculer : $f'(x)=\\dfrac{-m}{(x-x_0)^2}$.",
+        "Le sens de variation ne s'énonce jamais globalement sur $\\mathbb{R}\\setminus\\{x_0\\}$, mais séparément sur chacun des deux intervalles $]-\\infty\\,;x_0[$ et $]x_0\\,;+\\infty[$.",
+        "Pour démontrer que $\\Omega(x_0\\,;k)$ est centre de symétrie, poser $X=x-x_0$, $Y=y-k$, et montrer que $Y=\\dfrac{m}{X}$ est une fonction impaire de $X$ : c'est plus rapide et plus rigoureux que de vérifier $f(x_0+h)+f(x_0-h)=2k$."
+      ]
+    }
+  ]
+}

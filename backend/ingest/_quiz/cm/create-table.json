@@ -1,0 +1,141 @@
+[
+  {
+    "external_id": "cqc-create-table-faible-0",
+    "theme": "CREATE TABLE",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle instruction SQL crée correctement une table `livre` avec un identifiant entier `id` et un titre `titre` de 100 caractères au plus ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLa syntaxe est `CREATE TABLE nom_table (colonne1 type, colonne2 type, ...);` : les colonnes sont déclarées entre parenthèses, séparées par des virgules, chacune avec son type.\n\n### Corrigé\n\nSeule la première proposition respecte la syntaxe : `CREATE TABLE livre (id INT, titre VARCHAR(100));`. Les autres inversent les mots-clés (`CREATE livre TABLE`), utilisent un mot-clé inexistant (`NEW TABLE`) ou des crochets à la place des parenthèses.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "CREATE TABLE livre (id INT, titre VARCHAR(100));"
+      },
+      {
+        "lettre": "B",
+        "texte": "CREATE livre TABLE (id INT, titre VARCHAR(100));"
+      },
+      {
+        "lettre": "C",
+        "texte": "NEW TABLE livre (id INT, titre VARCHAR(100));"
+      },
+      {
+        "lettre": "D",
+        "texte": "CREATE TABLE livre [id INT, titre VARCHAR(100)];"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10585,
+      10624
+    ]
+  },
+  {
+    "external_id": "cqc-create-table-faible-1",
+    "theme": "CREATE TABLE",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Écrire la requête SQL qui crée la table `salle` avec les colonnes suivantes : `id` (entier, clé primaire), `nom` (texte de 30 caractères au plus) et `capacite` (entier).",
+    "corrige_markdown": "### Rappel de méthode\n\nUne clé primaire se déclare avec `PRIMARY KEY` à la suite du type de la colonne ; elle identifie chaque ligne de façon unique.\n\n### Corrigé\n\n```sql\nCREATE TABLE salle (\n    id INT PRIMARY KEY,\n    nom VARCHAR(30),\n    capacite INT\n);\n```",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10585,
+      10624
+    ]
+  },
+  {
+    "external_id": "cqc-create-table-moyenne-2",
+    "theme": "CREATE TABLE",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Écrire la requête qui crée la table `produit` avec :\n\n- `id` : entier, clé primaire dont la valeur est attribuée automatiquement ;\n- `libelle` : texte de 50 caractères au plus, obligatoire ;\n- `prix` : nombre décimal à 10 chiffres dont 2 après la virgule, valant 0 par défaut.",
+    "corrige_markdown": "### Rappel de méthode\n\nLes contraintes se placent après le type : `PRIMARY KEY`, `AUTO_INCREMENT` (MySQL) pour un identifiant automatique, `NOT NULL` pour une valeur obligatoire, `DEFAULT valeur` pour une valeur par défaut.\n\n### Corrigé\n\n```sql\nCREATE TABLE produit (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    libelle VARCHAR(50) NOT NULL,\n    prix DECIMAL(10,2) DEFAULT 0\n);\n```\n\n`DECIMAL(10,2)` réserve 10 chiffres au total dont 2 décimales.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10585,
+      10624
+    ]
+  },
+  {
+    "external_id": "cqc-create-table-moyenne-3",
+    "theme": "CREATE TABLE",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle définition de colonne garantit que chaque ligne de la table reçoit automatiquement un identifiant entier unique ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn identifiant automatique et unique combine trois idées : un type entier, une clé primaire (unicité et non-nullité) et `AUTO_INCREMENT`, qui incrémente la valeur à chaque insertion.\n\n### Corrigé\n\nLa définition `id INT PRIMARY KEY AUTO_INCREMENT` réunit les trois. `id INT UNIQUE` impose l'unicité mais oblige à fournir la valeur à la main ; `id VARCHAR(10) NOT NULL` n'assure ni l'unicité ni l'automatisme ; `id INT DEFAULT 0` donnerait la même valeur 0 à toutes les lignes.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "id INT PRIMARY KEY AUTO_INCREMENT"
+      },
+      {
+        "lettre": "B",
+        "texte": "id INT UNIQUE"
+      },
+      {
+        "lettre": "C",
+        "texte": "id VARCHAR(10) NOT NULL"
+      },
+      {
+        "lettre": "D",
+        "texte": "id INT DEFAULT 0"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10585,
+      10624
+    ]
+  },
+  {
+    "external_id": "cqc-create-table-elevee-4",
+    "theme": "CREATE TABLE",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un lycée gère des classes et des élèves : chaque élève appartient à une classe.\n\n1. Écrire les requêtes qui créent la table `classe` (`id_classe` entier clé primaire, `libelle` texte de 30 caractères) et la table `eleve` (`id_eleve` entier clé primaire, `nom` texte de 50 caractères obligatoire, `id_classe` entier), avec une clé étrangère de `eleve.id_classe` vers `classe.id_classe`.\n2. Dans quel ordre faut-il créer les deux tables ?\n3. Que se passe-t-il si on insère un élève avec `id_classe = 99` alors qu'aucune classe n'a cet identifiant ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne clé étrangère se déclare avec `FOREIGN KEY (colonne) REFERENCES table_référencée(colonne)`. La table référencée doit exister avant celle qui la référence, et le SGBD refuse toute valeur sans correspondance.\n\n### Corrigé\n\n1. ```sql\n   CREATE TABLE classe (\n       id_classe INT PRIMARY KEY,\n       libelle VARCHAR(30)\n   );\n\n   CREATE TABLE eleve (\n       id_eleve INT PRIMARY KEY,\n       nom VARCHAR(50) NOT NULL,\n       id_classe INT,\n       FOREIGN KEY (id_classe) REFERENCES classe(id_classe)\n   );\n   ```\n2. On crée d'abord `classe`, puis `eleve` : la clé étrangère de `eleve` fait référence à `classe`, qui doit donc déjà exister.\n3. L'insertion est **refusée** avec une erreur d'intégrité référentielle : la valeur 99 n'existe pas dans `classe.id_classe`, donc l'élève ne peut pas être rattaché à une classe inexistante.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10585,
+      10624
+    ]
+  }
+]

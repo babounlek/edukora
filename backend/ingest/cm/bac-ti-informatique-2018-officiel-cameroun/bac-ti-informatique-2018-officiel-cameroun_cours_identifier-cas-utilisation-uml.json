@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-identifier-cas-utilisation-uml-tle-ti",
+  "meta": {
+    "titre": "Identifier les cas d'utilisation d'un système en UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de cas d'utilisation",
+    "duree_estimee_min": 20,
+    "tags": [
+      "UML",
+      "cas d'utilisation",
+      "diagramme de cas d'utilisation",
+      "include"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex1-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois les acteurs identifiés, la question naturelle devient : que font-ils avec le système ? Un cas d'utilisation répond exactement à cette question - il décrit un service rendu, jamais une tâche technique interne que l'utilisateur ne voit jamais."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier les acteurs d'un système à partir d'un texte de cas d'entreprise.",
+        "Connaître la notation de base du diagramme de cas d'utilisation (acteur, ellipse, frontière du système)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un verbe à l'infinitif, jamais un nom seul",
+      "contenu_markdown": "Un cas d'utilisation représente un service que le système rend à un acteur, et se formule toujours par un verbe à l'infinitif suivi d'un complément (« Effectuer une location », jamais « Location »). Il s'obtient en reformulant chaque action que le texte attribue explicitement à un acteur vis-à-vis du système, jamais une opération technique interne invisible pour l'utilisateur (comme « enregistrer en base de données »). Lorsqu'un cas d'utilisation exécute systématiquement, à chaque fois, un sous-cas plus élémentaire, on relie les deux par une relation `<<include>>` (flèche en pointillés) partant du cas englobant vers le sous-cas inclus : ce sous-cas n'a alors plus besoin d'être proposé séparément à l'acteur, il fait partie intégrante du déroulement du premier.",
+      "formule_principale": "Cas d'utilisation = verbe à l'infinitif + complément, décrivant un service rendu à un acteur"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "En reprenant le cas SOCOPRO : les employés effectuent une location après avoir systématiquement vérifié la disponibilité de l'espace ou du matériel ; tout le monde peut consulter le planning des locations ; le responsable de service édite le récapitulatif des locations de son service. Identifiez les cas d'utilisation de ce système.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reformuler chaque action citée sous forme verbe + complément",
+          "justification": "Chaque action explicitement attribuée à un acteur devient un cas d'utilisation candidat.",
+          "resultat_markdown": "Effectuer une location, Vérifier la disponibilité, Consulter le planning des locations, Éditer le récapitulatif des locations du service."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer un cas systématiquement exécuté à l'intérieur d'un autre",
+          "justification": "La vérification de disponibilité est décrite comme un passage obligé de toute location, jamais un service que l'employé demanderait séparément.",
+          "resultat_markdown": "« Vérifier la disponibilité » est incluse dans « Effectuer une location » via une relation `<<include>>`."
+        },
+        {
+          "numero": 3,
+          "action": "Dresser la liste finale des cas d'utilisation",
+          "justification": "L'inclusion est une relation entre deux cas, pas un cas supplémentaire indépendant.",
+          "resultat_markdown": "Quatre cas d'utilisation : Consulter le planning des locations, Effectuer une location (incluant Vérifier la disponibilité), Éditer le récapitulatif des locations du service."
+        }
+      ],
+      "conclusion_markdown": "Chaque cas d'utilisation traduit un service rendu à un acteur précis du système SOCOPRO ; la vérification de disponibilité, systématique, se modélise par une relation `<<include>>` plutôt que comme un cas indépendant."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire un nom seul comme cas d'utilisation, par exemple « Réservation » au lieu de « Effectuer une réservation »",
+          "pourquoi_faux": "Un nom seul ne dit pas quelle action est réalisée ; la convention UML impose un verbe à l'infinitif pour que le diagramme reste lisible sans ambiguïté sur ce que fait réellement l'acteur.",
+          "correction_markdown": "Relis chaque cas d'utilisation et vérifie qu'il commence par un verbe à l'infinitif suivi d'un complément, jamais par un nom seul."
+        },
+        {
+          "erreur_markdown": "Faire remonter une opération purement technique, invisible pour l'acteur, comme un cas d'utilisation à part entière",
+          "pourquoi_faux": "« Enregistrer les données en base » ou « Générer un identifiant unique » sont des opérations internes du système, jamais des services que l'acteur demande consciemment : elles n'apparaissent jamais en cas d'utilisation.",
+          "correction_markdown": "Ne retiens comme cas d'utilisation que ce que l'acteur demande ou obtient consciemment du système, jamais ce qui se passe en coulisses."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un cybercafé, le client démarre une session sur un poste et le gérant encaisse le paiement à la fin. Identifiez les cas d'utilisation.",
+          "solution_markdown": "Deux cas d'utilisation : Démarrer une session (acteur : Client) et Encaisser un paiement (acteur : Gérant)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un distributeur automatique de billets exige systématiquement, à chaque retrait, de vérifier le solde du compte avant de délivrer l'argent. Identifiez les cas d'utilisation et la relation qui les lie.",
+          "solution_markdown": "Deux cas d'utilisation : Retirer de l'argent (acteur : Client) et Vérifier le solde du compte. Puisque cette vérification est systématique à chaque retrait, elle est incluse dans « Retirer de l'argent » par une relation `<<include>>`, plutôt que d'être proposée comme un service indépendant que le client déclencherait de lui-même."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur ce même distributeur, un client peut, en option, imprimer un reçu après son retrait - certains clients le demandent, d'autres non. Ce cas d'utilisation « Imprimer un reçu » doit-il être relié à « Retirer de l'argent » par une relation `<<include>>`, comme la vérification de solde ? Justifiez.",
+          "solution_markdown": "Non. La relation `<<include>>` est réservée à un sous-cas exécuté systématiquement, à chaque fois, sans exception - c'est le cas de la vérification du solde, jamais optionnelle. L'impression du reçu, elle, dépend d'un choix du client à chaque opération : ce n'est pas une relation `<<include>>` mais une relation `<<extend>>` (extension), qui relie un cas d'utilisation optionnel, déclenché sous condition, au cas de base qu'il prolonge - ici, « Imprimer un reçu » étend « Retirer de l'argent » uniquement lorsque le client en fait la demande."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un cas d'utilisation se formule par un verbe à l'infinitif suivi d'un complément, jamais par un nom seul.",
+        "Il décrit toujours un service rendu à un acteur, jamais une opération technique interne invisible pour lui.",
+        "Une action systématiquement exécutée à l'intérieur d'un autre cas se relie par `<<include>>`, un flèche en pointillés vers le sous-cas inclus.",
+        "Une action optionnelle qui prolonge un cas de base sous condition se relie par `<<extend>>`, à ne pas confondre avec `<<include>>`.",
+        "Au BAC TI, la liste des cas d'utilisation découle directement des acteurs déjà identifiés : reprends chaque acteur et demande-toi quelles actions précises il déclenche."
+      ]
+    }
+  ]
+}

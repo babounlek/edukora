@@ -7,6 +7,7 @@ import { listEpreuves } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { cn } from "@/lib/utils"
 import { SITE_NAME } from "@/lib/site"
@@ -94,7 +95,7 @@ function CountrySwitcher({ onNavigate, dansLeMenu = false }: { onNavigate?: () =
 }
 
 export function Header() {
-  const { isAuthenticated, user } = useAuth()
+  const { isAuthenticated, isLoading: authLoading, user } = useAuth()
   const { country } = useCountry()
   const { pathname } = useLocation()
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
@@ -238,7 +239,15 @@ export function Header() {
             <CountrySwitcher />
             <ThemeToggle />
           </div>
-          {isAuthenticated ? (
+          {authLoading ? (
+            // Le token d'accès ne survit jamais à un rechargement de page (voir
+            // AuthContext) - une session valide se reconfirme silencieusement en
+            // arrière-plan à chaque montage, ce qui prend un aller-retour réseau.
+            // Sans ce repli neutre, un utilisateur connecté verrait le bouton
+            // "Connexion" s'afficher brièvement à chaque F5, comme s'il avait été
+            // déconnecté.
+            <Skeleton className="h-8 w-20 rounded-md" />
+          ) : isAuthenticated ? (
             <Button asChild variant="ghost" size="sm">
               <Link to="/compte" className="flex items-center gap-1.5">
                 <UserCircle className="size-4 shrink-0" />

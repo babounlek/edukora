@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-construction-de-tableaux-html-fusion-de-cellules-1ere-tronc-commun",
+  "meta": {
+    "titre": "Construction de tableaux HTML : fusion de cellules",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web - HTML",
+    "duree_estimee_min": 25,
+    "tags": [
+      "HTML",
+      "tableau HTML",
+      "colspan",
+      "rowspan",
+      "fusion de cellules"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex3-qP2-1.1-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau HTML classique aligne des cellules bien rangées, une par colonne et par ligne. Mais un bulletin de notes ou un emploi du temps a souvent besoin d'un en-tête qui chevauche deux colonnes, ou d'une case qui reste affichée sur plusieurs lignes sans se répéter. C'est exactement ce que permettent colspan et rowspan : deux attributs qui étirent une cellule au-delà de sa case d'origine. Savoir les lire, et surtout savoir dessiner le résultat qu'ils produisent, est une compétence directement testée à l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure de base d'un tableau HTML : les balises <table>, <tr> (ligne) et <td> (cellule)",
+        "Savoir qu'une ligne <tr> contient une suite de cellules <td> lues de gauche à droite"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les attributs colspan et rowspan",
+      "contenu_markdown": "Dans un tableau HTML, chaque ligne <tr> contient normalement autant de cellules <td> que de colonnes du tableau ; les attributs colspan et rowspan, placés dans une balise <td>, permettent de fusionner plusieurs cellules voisines en une seule. colspan=\"n\" étend la cellule sur n colonnes de la même ligne : les n-1 cellules qu'elle absorbe ne s'écrivent plus dans le code, la ligne compte donc moins de balises <td> que de colonnes réelles. rowspan=\"n\" étend la cellule sur n lignes de la même colonne : la ligne HTML qui suit une cellule fusionnée verticalement contient alors une balise <td> de moins, puisque la cellule fusionnée occupe déjà cet emplacement sur cette ligne suivante. Lire un tableau qui mélange les deux attributs demande donc de compter, ligne par ligne, combien de cellules sont réellement écrites et combien sont \"héritées\" d'une fusion précédente.",
+      "formule_principale": "<td colspan=\"n\">...</td>  |  <td rowspan=\"n\">...</td>",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dessiner le tableau produit par le code HTML suivant :\n\n```html\n<table BORDER=\"1\">\n<tr><td colspan=\"2\"><b>Noms et classes</b></td>\n<td><b>Niveau</b></td></tr>\n<tr><td>HAMIDOU</td><td>PD</td>\n<td rowspan=\"2\">Second Cycle</td></tr>\n<tr><td>TAMO</td><td>PC</td></tr>\n</table>",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Fixer le nombre de colonnes du tableau",
+          "justification": "Le nombre de colonnes se lit sur la ligne qui contient le plus de cellules après avoir compté les fusions horizontales. La deuxième ligne <tr> (HAMIDOU, PD, Second Cycle) affiche 3 cellules distinctes sans aucun colspan : le tableau a donc 3 colonnes.",
+          "resultat_markdown": "Tableau à 3 colonnes."
+        },
+        {
+          "numero": 2,
+          "action": "Traiter la première ligne <tr>",
+          "justification": "Elle contient une cellule <td colspan=\"2\"> (« Noms et classes ») qui occupe à elle seule les colonnes 1 et 2, suivie d'une cellule normale <td> (« Niveau ») qui occupe la colonne 3.",
+          "resultat_markdown": "| Noms et classes (fusionné) | Niveau |\n|---|---|"
+        },
+        {
+          "numero": 3,
+          "action": "Traiter la deuxième ligne <tr>",
+          "justification": "Elle contient trois cellules distinctes : HAMIDOU (colonne 1), PD (colonne 2), et Second Cycle avec rowspan=\"2\" (colonne 3), qui va donc aussi occuper la case correspondante de la ligne suivante.",
+          "resultat_markdown": "| HAMIDOU | PD | Second Cycle (fusionné verticalement) |"
+        },
+        {
+          "numero": 4,
+          "action": "Traiter la troisième ligne <tr>",
+          "justification": "Elle ne contient que deux balises <td> (TAMO, PC) et non trois : c'est normal, la troisième case de cette ligne est déjà occupée par la cellule « Second Cycle » qui s'étend depuis la ligne précédente grâce à son rowspan=\"2\".",
+          "resultat_markdown": "| TAMO | PC | *(case occupée par la fusion verticale)* |"
+        }
+      ],
+      "conclusion_markdown": "Le tableau final comporte donc 3 lignes visibles et 3 colonnes, avec un en-tête fusionné horizontalement sur les deux premières colonnes et une cellule fusionnée verticalement sur les deux dernières lignes de la troisième colonne :\n\n![fig-1](probatoire-c-d-e-informatique-throrique-2024-officiel-2024_exercice_3_fig_1.png)"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter le nombre de colonnes en comptant simplement les balises <td> de la première ligne rencontrée",
+          "pourquoi_faux": "Si cette première ligne contient elle-même un colspan, son nombre de balises <td> est inférieur au nombre réel de colonnes du tableau. Ici, la première ligne n'a que 2 balises <td> alors que le tableau compte 3 colonnes.",
+          "correction_markdown": "Toujours vérifier le nombre de colonnes sur la ligne la plus chargée, celle qui ne contient aucun colspan, plutôt que sur la première ligne du code."
+        },
+        {
+          "erreur_markdown": "Redessiner une troisième cellule vide sur la ligne de TAMO, en pensant qu'il manque une case",
+          "pourquoi_faux": "Le code ne contient que deux balises <td> sur cette ligne, ce qui est volontaire : la troisième colonne de cette ligne est déjà occupée par la cellule « Second Cycle », qui s'étend sur deux lignes grâce à rowspan=\"2\".",
+          "correction_markdown": "Avant de dessiner, repérer chaque rowspan et noter sur quelles lignes suivantes il retire une cellule attendue - une ligne \"plus courte\" que prévu est un signal normal, pas une erreur du code."
+        },
+        {
+          "erreur_markdown": "Confondre colspan et rowspan et fusionner verticalement une cellule qui devait s'étendre horizontalement",
+          "pourquoi_faux": "colspan agit sur les colonnes (extension horizontale, vers la droite), rowspan agit sur les lignes (extension verticale, vers le bas) : ce sont deux directions de fusion différentes qui produisent des dessins très différents.",
+          "correction_markdown": "Associer chaque attribut à sa direction par la première lettre : col comme colonne (horizontal), row comme ligne (vertical, row = rangée en anglais)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dessiner le tableau produit par ce code :\n\n```html\n<table BORDER=\"1\">\n<tr><td colspan=\"3\"><b>Emploi du temps</b></td></tr>\n<tr><td>Lundi</td><td>Mardi</td><td>Mercredi</td></tr>\n</table>\n```",
+          "solution_markdown": "La première ligne ne contient qu'une seule cellule, avec colspan=\"3\" : elle s'étend donc sur toute la largeur du tableau (3 colonnes). La deuxième ligne contient 3 cellules normales, une par colonne. Le tableau obtenu compte 2 lignes et 3 colonnes :\n\n| Emploi du temps (fusionné sur 3 colonnes) |||\n|---|---|---|\n| Lundi | Mardi | Mercredi |"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dessiner le tableau produit par ce code :\n\n```html\n<table BORDER=\"1\">\n<tr><td rowspan=\"2\">Matière</td><td>Note 1</td></tr>\n<tr><td>Note 2</td></tr>\n</table>\n```",
+          "solution_markdown": "La première ligne contient une cellule « Matière » avec rowspan=\"2\" : elle occupe la colonne 1 sur les deux lignes du tableau. Elle est suivie de « Note 1 » en colonne 2 de la première ligne. La deuxième ligne ne contient qu'une seule balise <td> (« Note 2 ») car sa première colonne est déjà occupée par la fusion verticale de « Matière ». Le tableau obtenu a 2 lignes et 2 colonnes :\n\n| Matière (fusionné sur 2 lignes) | Note 1 |\n|---|---|\n| *(case occupée)* | Note 2 |"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire le code HTML d'un tableau à 3 colonnes et 3 lignes où : la première ligne affiche un titre unique « Résultats du trimestre » fusionné sur les 3 colonnes ; la deuxième ligne affiche « Nom », « Devoir », « Composition » chacun dans sa propre cellule ; la troisième ligne affiche « KAMGA » dans la première colonne, cette cellule devant en plus rester visible sur une éventuelle quatrième ligne (rowspan), puis « 14 » et « 16 » dans les deux colonnes suivantes.",
+          "solution_markdown": "On combine un colspan pour le titre de la première ligne et un rowspan pour la cellule « KAMGA » de la troisième ligne, qui doit continuer à occuper sa colonne sur une ligne suivante non représentée ici :\n\n```html\n<table BORDER=\"1\">\n<tr><td colspan=\"3\"><b>Résultats du trimestre</b></td></tr>\n<tr><td>Nom</td><td>Devoir</td><td>Composition</td></tr>\n<tr><td rowspan=\"2\">KAMGA</td><td>14</td><td>16</td></tr>\n</table>\n```\n\nSi une quatrième ligne existait dans l'énoncé complet, elle ne contiendrait alors que 2 balises <td> (les notes suivantes), la première colonne restant occupée par la cellule « KAMGA » fusionnée sur 2 lignes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "colspan=\"n\" étend une cellule sur n colonnes de la même ligne (fusion horizontale) ; rowspan=\"n\" l'étend sur n lignes de la même colonne (fusion verticale).",
+        "Une ligne qui contient une cellule fusionnée écrit toujours moins de balises <td> que de colonnes réelles du tableau : ce n'est jamais un oubli dans le code.",
+        "Pour fixer le nombre de colonnes d'un tableau, compte les <td> sur la ligne qui n'utilise aucun colspan, pas sur la première ligne rencontrée.",
+        "Une cellule avec rowspan=\"2\" retire une case attendue sur la ligne <tr> suivante : vérifie toujours cet effet avant de dessiner cette ligne suivante.",
+        "Au Probatoire et au BEPC, la consigne « Dessiner le résultat qui s'affichera » est fréquente : entraîne-toi à reconstituer le tableau case par case avant de le dessiner d'un coup."
+      ]
+    }
+  ]
+}

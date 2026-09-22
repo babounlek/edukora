@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-protocole-mesure-periode-oscillation-terminale",
+  "meta": {
+    "titre": "Protocole de mesure d'une période d'oscillation par comptage de N oscillations",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Méthodologie expérimentale - mesures temporelles",
+    "duree_estimee_min": 20,
+    "tags": [
+      "période",
+      "chronométrage",
+      "protocole expérimental",
+      "incertitudes de mesure"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat Blanc - Physique Pratique - Pendule de torsion (2026, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-blanc-c-physique-pratique-2026-officiel-ex1-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chronométrer un pendule qui met à peine une demi-seconde à osciller semble simple : on déclenche, on arrête, on lit. Le problème, c'est que la main de l'expérimentateur met elle-même environ deux dixièmes de seconde à réagir à ce qu'elle voit - une durée qui n'a rien de négligeable face à une demi-seconde. Ce cours explique comment un protocole bien construit transforme ce défaut humain en une source d'erreur négligeable, sans changer de matériel ni de manipulateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une période (durée d'un phénomène périodique)",
+        "Savoir utiliser un chronomètre manuel (déclenchement, arrêt, lecture)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Mesurer sur N oscillations plutôt que sur une seule",
+      "contenu_markdown": "Le temps de réaction humain (environ 0,2 s à 0,3 s) s'ajoute à chaque déclenchement et à chaque arrêt du chronomètre. Sur une seule période de courte durée, cette erreur représente une fraction importante, parfois supérieure à 50 %, de la valeur mesurée. En mesurant la durée totale $t$ d'un grand nombre $N$ d'oscillations complètes, l'erreur de réaction reste globalement la même en valeur absolue (elle intervient une seule fois au départ et une seule fois à l'arrêt), mais elle est répartie sur une durée totale $N$ fois plus grande. La période obtenue par $T = t/N$ a donc une erreur relative $N$ fois plus petite que si l'on avait mesuré une seule oscillation.\n\nLe protocole complet comprend systématiquement les étapes suivantes :\n\n1. Écarter le système de sa position d'équilibre et le lâcher sans vitesse initiale (ou le mettre en mouvement de façon reproductible).\n2. Choisir un repère de déclenchement unique et facilement identifiable (le plus souvent le passage par la position d'équilibre).\n3. Déclencher le chronomètre à ce repère, en comptant simultanément les oscillations.\n4. Arrêter le chronomètre au même repère, franchi dans le même sens, après $N$ oscillations complètes.\n5. Calculer $T = t/N$.\n6. Répéter la mesure plusieurs fois et prendre la valeur moyenne, pour réduire encore l'incertitude.",
+      "formule_principale": "T = t/N",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On écarte un pendule de torsion de sa position d'équilibre d'un angle θm puis on le lâche sans vitesse initiale. Décrire le mode opératoire permettant de mesurer expérimentalement la période de ses oscillations.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Préparer le système dans un état initial reproductible",
+          "justification": "Écarter la tige d'un angle θm et la lâcher sans vitesse initiale garantit que chaque essai démarre dans les mêmes conditions.",
+          "resultat_markdown": "État initial : tige écartée de θm, lâchée sans vitesse initiale."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir un repère de déclenchement unique",
+          "justification": "Le passage par la position d'équilibre est le point le plus facilement identifiable visuellement, en particulier avec la vitesse maximale du système à cet instant.",
+          "resultat_markdown": "Repère retenu : passage de la tige par la position d'équilibre, dans un sens donné."
+        },
+        {
+          "numero": 3,
+          "action": "Déclencher le chronomètre et compter N oscillations complètes",
+          "justification": "Compter un grand nombre d'oscillations (par exemple N = 10) répartit l'erreur de réaction sur une durée totale nettement plus longue qu'une seule période.",
+          "resultat_markdown": "Chronomètre déclenché au passage n°0 par la position d'équilibre ; comptage jusqu'à N = 10."
+        },
+        {
+          "numero": 4,
+          "action": "Arrêter le chronomètre au même repère, dans le même sens, et noter la durée totale t",
+          "justification": "Utiliser le même repère et le même sens qu'au départ garantit que t correspond exactement à un nombre entier de périodes.",
+          "resultat_markdown": "Durée totale mesurée : t (pour N = 10 oscillations complètes)."
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la période et répéter la mesure",
+          "justification": "La moyenne de plusieurs essais réduit encore l'incertitude aléatoire restante.",
+          "resultat_markdown": "T0 = t / N, moyenné sur plusieurs essais indépendants."
+        }
+      ],
+      "conclusion_markdown": "Le protocole ne change ni le matériel ni le phénomène observé : il change uniquement la façon dont l'erreur de réaction humaine se répartit dans le calcul final, ce qui suffit à rendre la mesure exploitable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Mesurer une seule période au chronomètre manuel et la donner directement comme résultat.",
+          "pourquoi_faux": "L'erreur de réaction humaine (0,2 à 0,3 s) représente alors une fraction énorme d'une période courte, rendant la mesure peu fiable.",
+          "correction_markdown": "Toujours mesurer un multiple N d'oscillations complètes et diviser la durée totale par N."
+        },
+        {
+          "erreur_markdown": "Déclencher le chronomètre à un instant quelconque du mouvement (par exemple dès que la tige commence à bouger) et l'arrêter à un autre instant quelconque.",
+          "pourquoi_faux": "Si le départ et l'arrêt ne correspondent pas au même repère du mouvement franchi dans le même sens, la durée mesurée ne correspond pas à un nombre entier de périodes.",
+          "correction_markdown": "Choisir un repère unique et facilement reconnaissable (le passage par la position d'équilibre, par exemple) pour le déclenchement et pour l'arrêt."
+        },
+        {
+          "erreur_markdown": "Ne réaliser qu'un seul essai pour chaque valeur du paramètre étudié (ici la distance x).",
+          "pourquoi_faux": "Un seul essai ne permet pas de détecter ni de compenser une erreur ponctuelle de manipulation.",
+          "correction_markdown": "Répéter chaque mesure plusieurs fois (au moins trois) et prendre la valeur moyenne."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un pendule simple a une période estimée à environ 2 s. Faut-il mesurer sur autant d'oscillations que pour un pendule de période 0,3 s ? Justifier.",
+          "solution_markdown": "Non, dans les mêmes proportions. L'erreur de réaction humaine reste de l'ordre de 0,2 à 0,3 s quelle que soit la période étudiée. Pour une période de 2 s, l'erreur relative sur une seule mesure est déjà de l'ordre de 10 à 15 %, ce qui reste trop grand pour un TP soigné, mais nettement moins critique que pour une période de 0,3 s (erreur relative de 65 à 100 %). Un comptage sur N = 5 à N = 10 oscillations suffit généralement à ramener l'erreur relative sous quelques pour cent, contre N = 10 à N = 20 pour un pendule plus rapide."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève mesure la durée de 15 oscillations d'un pendule et trouve t = 9,3 s. Calculer la période T, puis estimer l'erreur relative sur T si l'erreur de réaction totale (déclenchement + arrêt) est estimée à 0,3 s.",
+          "solution_markdown": "Période : $T = t/N = 9,3/15 \\approx 0,62\\text{ s}$.\n\nErreur relative sur t : $\\dfrac{\\Delta t}{t} = \\dfrac{0,3}{9,3} \\approx 0,032$, soit environ 3,2 %.\n\nComme $T = t/N$ avec N exact (comptage, pas de mesure), l'erreur relative sur T est la même que sur t : environ 3,2 %, contre plus de 48 % si l'on avait mesuré une seule oscillation avec la même erreur de réaction (0,3 s sur 0,62 s)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On dispose d'un chronomètre électronique déclenché et arrêté par un capteur optique, avec une erreur de réaction quasi nulle (inférieure à 0,001 s), mais dont la lecture est limitée à la milliseconde près. Le protocole en N oscillations reste-t-il utile ? Justifier.",
+          "solution_markdown": "Oui, mais pour une raison différente. Avec un capteur optique, l'erreur de réaction humaine disparaît, mais il subsiste une incertitude de lecture liée à la résolution de l'appareil (ici 0,001 s) et, plus important, aux imperfections mécaniques du dispositif (frottements variables, position du capteur). Mesurer sur N oscillations permet toujours de moyenner ces sources d'erreur résiduelles et de réduire l'incertitude relative sur la période, même quand l'erreur de réaction humaine n'est plus le facteur limitant. Le principe (répartir une erreur fixe sur une durée plus grande) reste valable pour toute source d'erreur dont l'ordre de grandeur ne dépend pas de N."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Ne mesure jamais une période courte sur une seule oscillation : le temps de réaction humain fausse la mesure de façon disproportionnée.",
+        "Choisis un repère de déclenchement et d'arrêt unique, franchi dans le même sens, pour garantir un nombre entier de périodes.",
+        "Calcule T = t/N après avoir compté N oscillations complètes, avec N assez grand pour rendre l'erreur de réaction négligeable.",
+        "Répète chaque mesure plusieurs fois et prends la moyenne : cela réduit l'incertitude aléatoire au-delà de ce que permet le seul comptage sur N oscillations.",
+        "Cette méthode s'applique à tout phénomène périodique mesuré au chronomètre manuel (pendule simple, pendule de torsion, oscillateur mécanique) et revient fréquemment dans les épreuves pratiques du BAC et du Probatoire."
+      ]
+    }
+  ]
+}

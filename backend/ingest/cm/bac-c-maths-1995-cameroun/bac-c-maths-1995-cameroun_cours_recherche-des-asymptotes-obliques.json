@@ -1,0 +1,166 @@
+{
+  "cours_id": "cours-recherche-des-asymptotes-obliques-terminale-c",
+  "meta": {
+    "titre": "Étudier les branches infinies et trouver une asymptote oblique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Analyse - étude de fonctions et branches infinies",
+    "duree_estimee_min": 30,
+    "tags": [
+      "asymptote oblique",
+      "branche infinie",
+      "branche parabolique",
+      "division euclidienne",
+      "position relative",
+      "changement de variable"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-maths-1995-cameroun",
+    "epreuve_titre": "BAC Mathématiques - Cameroun, série C, session 1995 (Office du Baccalauréat du Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-maths-1995-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand $x$ part vers l'infini, une courbe peut faire trois choses : filer le long d'une droite (asymptote), s'écarter de toute droite en montant de plus en plus vite (branche parabolique), ou se stabiliser à une hauteur fixe (asymptote horizontale). L'énoncé ne te dira jamais laquelle : c'est à toi de trancher, et l'intuition se trompe souvent - une expression qui « ressemble » à $x$ n'a pas forcément $y=x$ pour asymptote. La procédure ci-dessous ne laisse aucune place au hasard : deux limites, dans cet ordre, et la réponse tombe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Limites d'une fonction en $+\\infty$ et en $-\\infty$, formes indéterminées",
+        "Croissances comparées et limites de référence de l'exponentielle",
+        "Division euclidienne de deux polynômes",
+        "Étude du signe d'une expression pour déterminer une position relative"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La procédure en deux limites",
+      "contenu_markdown": "Soit $f$ telle que $\\lim_{x\\to+\\infty}f(x)=\\pm\\infty$ (même procédure en $-\\infty$).\n\n**Première limite : la direction.** On calcule $\\displaystyle\\lim_{x\\to+\\infty}\\frac{f(x)}{x}$.\n- Si cette limite vaut $0$ : branche parabolique de direction l'axe des abscisses.\n- Si elle vaut $\\pm\\infty$ : branche parabolique de direction l'axe des ordonnées.\n- Si elle vaut un réel $a\\neq0$ : la courbe a la **direction asymptotique** de la droite $y=ax$, et il faut poursuivre.\n\n**Seconde limite : la hauteur.** Dans le dernier cas, on calcule $\\displaystyle\\lim_{x\\to+\\infty}\\big(f(x)-ax\\big)$.\n- Si elle vaut un réel $b$ : la droite d'équation $y=ax+b$ est **asymptote oblique** à la courbe.\n- Si elle est infinie : branche parabolique de direction $y=ax$, sans asymptote.\n\n**Position relative.** Une fois l'asymptote trouvée, on étudie le **signe** de la différence\n\n$$d(x)=f(x)-(ax+b).$$\n\nSi $d(x)>0$, la courbe est au-dessus de l'asymptote ; si $d(x)<0$, en dessous. Un changement de signe indique un point d'intersection entre la courbe et son asymptote - ce qui est parfaitement possible.\n\n**Raccourci pour les fonctions rationnelles.** Si $f=\\dfrac{N}{D}$ avec $\\deg N=\\deg D+1$, la division euclidienne $N=DQ+R$ donne\n\n$$f(x)=Q(x)+\\frac{R(x)}{D(x)},$$\n\noù $Q$ est de degré 1. Comme $\\dfrac{R(x)}{D(x)}\\to0$, la droite $y=Q(x)$ est asymptote, et le signe de $\\dfrac{R(x)}{D(x)}$ donne directement la position. Une seule division remplace les deux limites.",
+      "formule_principale": "y=ax+b \\text{ est asymptote} \\iff \\lim_{x\\to\\pm\\infty}\\big(f(x)-ax-b\\big)=0",
+      "variantes": [
+        {
+          "nom": "Changement de variable pour les expressions en $e^{1/x}$ ou $\\ln$",
+          "quand_utiliser": "Quand $f(x)-ax$ présente une forme indéterminée du type $\\infty\\times0$ faisant intervenir $\\frac{1}{x}$.",
+          "contenu_markdown": "On pose $u=\\dfrac{1}{x}$, donc $x=\\dfrac{1}{u}$, et $u\\to0$ quand $x\\to\\pm\\infty$. L'expression $x\\big(g(1/x)-g(0)\\big)$ devient $\\dfrac{g(u)-g(0)}{u}$, c'est-à-dire un **taux d'accroissement en 0**, dont la limite est $g'(0)$.\n\nC'est exactement ce qui fait apparaître les limites de référence $\\displaystyle\\lim_{u\\to0}\\frac{e^{u}-1}{u}=1$ et $\\displaystyle\\lim_{u\\to0}\\frac{\\ln(1+u)}{u}=1$. Quand un sujet « donne » l'une de ces limites, c'est le signal que ce changement de variable est attendu."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f$ définie par $f(x)=xe^{1/x}$ pour $x<0$ et $f(x)=\\dfrac{x^{2}}{x+2}$ pour $x>0$. Étudier les branches infinies de la courbe $(C)$ de $f$ et préciser la position de $(C)$ par rapport à ses asymptotes. (On donne $\\lim_{u\\to0}\\frac{e^{u}-1}{u}=1$.)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $\\frac{f(x)}{x}$ en $-\\infty$",
+          "justification": "Première limite de la procédure ; le facteur $x$ se simplifie.",
+          "resultat_markdown": "$$\\frac{f(x)}{x}=\\frac{xe^{1/x}}{x}=e^{1/x}\\xrightarrow[x\\to-\\infty]{}e^{0}=1.$$ La limite vaut $a=1$, réel non nul : direction asymptotique $y=x$, on poursuit."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire $f(x)-x$ et repérer la forme indéterminée",
+          "justification": "Il faut nommer la forme indéterminée avant de la lever : c'est une exigence de rédaction.",
+          "resultat_markdown": "$$f(x)-x=x\\left(e^{1/x}-1\\right),$$ produit d'un facteur tendant vers $-\\infty$ par un facteur tendant vers 0 : forme indéterminée $\\infty\\times0$."
+        },
+        {
+          "numero": 3,
+          "action": "Poser $u=\\frac{1}{x}$",
+          "justification": "Le résultat fourni par l'énoncé porte sur $\\frac{e^{u}-1}{u}$ : il faut faire apparaître exactement cette expression.",
+          "resultat_markdown": "Avec $u=\\dfrac{1}{x}$, donc $x=\\dfrac{1}{u}$ et $u\\to0^{-}$ : $$x\\left(e^{1/x}-1\\right)=\\frac{e^{u}-1}{u}\\xrightarrow[u\\to0]{}1.$$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure pour la branche en $-\\infty$",
+          "justification": "La seconde limite est un réel $b=1$ : il y a asymptote oblique.",
+          "resultat_markdown": "La droite $(\\mathcal{D}_1):y=x+1$ est asymptote oblique à $(C)$ en $-\\infty$."
+        },
+        {
+          "numero": 5,
+          "action": "Étudier la position par rapport à $(\\mathcal{D}_1)$",
+          "justification": "On étudie le signe de $f(x)-(x+1)$ en réutilisant le changement de variable, puis l'inégalité de convexité $e^{u}\\geq1+u$.",
+          "resultat_markdown": "$$f(x)-(x+1)=\\frac{e^{u}-1}{u}-1=\\frac{e^{u}-1-u}{u}.$$ Pour $u\\neq0$, $e^{u}>1+u$ donc le numérateur est $>0$ ; et $u=\\frac{1}{x}<0$. Le quotient est donc négatif : $(C)$ est **en dessous** de $(\\mathcal{D}_1)$ sur $]-\\infty\\,;0[$."
+        },
+        {
+          "numero": 6,
+          "action": "Traiter la branche en $+\\infty$ par division euclidienne",
+          "justification": "$f$ est rationnelle avec $\\deg N=\\deg D+1$ : la division donne asymptote et position d'un coup.",
+          "resultat_markdown": "$x^{2}=(x+2)(x-2)+4$, donc $$f(x)=x-2+\\frac{4}{x+2}.$$ Comme $\\frac{4}{x+2}\\to0$, la droite $(\\mathcal{D}_2):y=x-2$ est asymptote oblique en $+\\infty$."
+        },
+        {
+          "numero": 7,
+          "action": "Position par rapport à $(\\mathcal{D}_2)$",
+          "justification": "Le reste de la division est directement la différence $f(x)-(x-2)$.",
+          "resultat_markdown": "Pour $x>0$, $f(x)-(x-2)=\\dfrac{4}{x+2}>0$ : $(C)$ est **au-dessus** de $(\\mathcal{D}_2)$."
+        }
+      ],
+      "conclusion_markdown": "La courbe possède deux asymptotes obliques parallèles : $y=x+1$ en $-\\infty$, avec la courbe en dessous, et $y=x-2$ en $+\\infty$, avec la courbe au-dessus. On notera qu'une même courbe peut parfaitement avoir deux asymptotes obliques différentes, une de chaque côté."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Passer directement à $\\lim\\big(f(x)-x\\big)$ sans avoir calculé $\\lim\\frac{f(x)}{x}$.",
+          "pourquoi_faux": "Rien ne garantit a priori que le coefficient directeur vaut 1. Si $\\frac{f(x)}{x}$ tendait vers 2, la différence $f(x)-x$ tendrait vers l'infini et on conclurait à tort à l'absence d'asymptote. La première limite est ce qui **détermine** $a$ ; la sauter, c'est deviner.",
+          "correction_markdown": "Toujours dans l'ordre : d'abord $\\lim\\frac{f(x)}{x}=a$, puis $\\lim\\big(f(x)-ax\\big)=b$. Les deux limites sont notées séparément au barème."
+        },
+        {
+          "erreur_markdown": "Dans $f(x)-x=x\\left(e^{1/x}-1\\right)$, remplacer $e^{1/x}$ par 1 et conclure que la limite vaut 0.",
+          "pourquoi_faux": "C'est remplacer un facteur par sa limite dans une forme indéterminée. Le second facteur tend bien vers 0, mais il est multiplié par $x$ qui tend vers $-\\infty$ : le produit peut valoir n'importe quoi. Ici il vaut 1, pas 0, et l'asymptote est $y=x+1$, pas $y=x$.",
+          "correction_markdown": "Nommer la forme indéterminée $\\infty\\times0$, puis la lever par le changement de variable $u=\\frac{1}{x}$, qui transforme le produit en un taux d'accroissement."
+        },
+        {
+          "erreur_markdown": "Répondre « asymptote oblique $y=x-2$ » sans étudier la position de la courbe.",
+          "pourquoi_faux": "La position relative fait partie de l'étude des branches infinies : sans elle, on ne sait pas de quel côté tracer la courbe, et le tracé demandé ensuite est faux. C'est aussi un point de barème distinct.",
+          "correction_markdown": "Étudier systématiquement le signe de $f(x)-(ax+b)$. Pour une fonction rationnelle, c'est le signe du reste divisé par le dénominateur : aucun calcul supplémentaire."
+        },
+        {
+          "erreur_markdown": "Supposer que la courbe ne peut pas couper son asymptote.",
+          "pourquoi_faux": "Une asymptote décrit un comportement **à l'infini**, pas une barrière. La différence $f(x)-(ax+b)$ peut très bien changer de signe en un point : la courbe traverse alors l'asymptote avant de s'en rapprocher définitivement.",
+          "correction_markdown": "Résoudre l'équation $f(x)-(ax+b)=0$ quand l'étude du signe le suggère, et faire figurer les points d'intersection éventuels sur le tracé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f(x)=\\dfrac{2x^{2}-3x+1}{x-1}$ pour $x\\neq1$. Déterminer l'asymptote oblique de la courbe de $f$ en $+\\infty$ et la position de la courbe par rapport à cette asymptote.",
+          "solution_markdown": "**Division euclidienne.** On divise $2x^{2}-3x+1$ par $x-1$ :\n\n$$2x^{2}-3x+1=(x-1)(2x-1)+0.$$\n\nEn effet $(x-1)(2x-1)=2x^{2}-x-2x+1=2x^{2}-3x+1$. Le reste est nul.\n\n**Conséquence.** Pour tout $x\\neq1$,\n\n$$f(x)=2x-1.$$\n\nLa fonction coïncide donc avec une fonction affine sur son ensemble de définition : la courbe est la droite $y=2x-1$ privée du point d'abscisse 1.\n\n**Asymptote et position.** La droite $y=2x-1$ est asymptote (la différence $f(x)-(2x-1)$ est nulle), et la courbe est confondue avec elle, sans être ni au-dessus ni en dessous.\n\n*Ce cas limite est instructif : il rappelle que la division euclidienne doit toujours être effectuée avant toute conclusion. Ici, une factorisation préalable du numérateur, $2x^{2}-3x+1=(x-1)(2x-1)$, aurait révélé immédiatement la simplification.*"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $g(x)=\\dfrac{x^{2}+x+1}{x-1}$ pour $x\\neq1$. Déterminer toutes les asymptotes de la courbe de $g$ et la position de la courbe par rapport à l'asymptote oblique.",
+          "solution_markdown": "**Asymptote verticale.** Le dénominateur s'annule en 1. Le numérateur y vaut $1+1+1=3\\neq0$, donc\n\n$$\\lim_{x\\to1^{-}}g(x)=-\\infty\\quad\\text{et}\\quad\\lim_{x\\to1^{+}}g(x)=+\\infty$$\n\n(le numérateur tend vers 3 et le dénominateur vers 0, négatif à gauche de 1 et positif à droite). La droite d'équation $x=1$ est asymptote verticale.\n\n**Division euclidienne.** Divisons $x^{2}+x+1$ par $x-1$ :\n\n$$x^{2}+x+1=(x-1)(x+2)+3,$$\n\ncar $(x-1)(x+2)=x^{2}+2x-x-2=x^{2}+x-2$, et $x^{2}+x+1-(x^{2}+x-2)=3$. Donc\n\n$$g(x)=x+2+\\frac{3}{x-1}.$$\n\n**Asymptote oblique.** $\\dfrac{3}{x-1}\\to0$ quand $x\\to\\pm\\infty$, donc la droite $y=x+2$ est asymptote oblique en $+\\infty$ **et** en $-\\infty$.\n\n**Position.** $g(x)-(x+2)=\\dfrac{3}{x-1}$, dont le signe est celui de $x-1$ :\n- pour $x>1$ : $\\dfrac{3}{x-1}>0$, la courbe est au-dessus de l'asymptote ;\n- pour $x<1$ : $\\dfrac{3}{x-1}<0$, la courbe est en dessous.\n\nLa courbe ne coupe jamais son asymptote, puisque $\\frac{3}{x-1}$ ne s'annule pas."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h$ définie sur $]0\\,;+\\infty[$ par $h(x)=x\\ln\\left(1+\\dfrac{1}{x}\\right)$. Étudier la branche infinie de la courbe de $h$ en $+\\infty$, puis celle de la fonction $k(x)=x^{2}\\ln\\left(1+\\dfrac{1}{x}\\right)$. Commenter la différence.",
+          "solution_markdown": "**Étude de $h$.** Posons $u=\\dfrac{1}{x}$ ; quand $x\\to+\\infty$, $u\\to0^{+}$ et $x=\\dfrac{1}{u}$ :\n\n$$h(x)=\\frac{\\ln(1+u)}{u}\\xrightarrow[u\\to0]{}1.$$\n\nLa limite est finie : $h$ n'a pas de branche infinie en $+\\infty$, mais une **asymptote horizontale** d'équation $y=1$.\n\n*Position :* on peut préciser en utilisant $\\ln(1+u)<u$ pour $u>0$ (la courbe du logarithme est strictement sous sa tangente en 0) : alors $\\dfrac{\\ln(1+u)}{u}<1$, donc la courbe de $h$ est en dessous de son asymptote.\n\n**Étude de $k$.** Avec le même changement de variable, $x^{2}=\\dfrac{1}{u^{2}}$ :\n\n$$k(x)=\\frac{\\ln(1+u)}{u^{2}}=\\frac{1}{u}\\times\\frac{\\ln(1+u)}{u}.$$\n\nQuand $u\\to0^{+}$, le second facteur tend vers 1 et le premier vers $+\\infty$, donc $k(x)\\to+\\infty$ : il y a bien une branche infinie. Appliquons la procédure.\n\n*Première limite :*\n\n$$\\frac{k(x)}{x}=x\\ln\\left(1+\\frac{1}{x}\\right)=h(x)\\xrightarrow[x\\to+\\infty]{}1.$$\n\nDonc $a=1$ : direction asymptotique $y=x$.\n\n*Seconde limite :*\n\n$$k(x)-x=x^{2}\\ln\\left(1+\\frac1x\\right)-x=\\frac{\\ln(1+u)}{u^{2}}-\\frac{1}{u}=\\frac{\\ln(1+u)-u}{u^{2}}.$$\n\nLe développement limité $\\ln(1+u)=u-\\dfrac{u^{2}}{2}+u^{2}\\varepsilon(u)$ avec $\\varepsilon(u)\\to0$ donne\n\n$$\\frac{\\ln(1+u)-u}{u^{2}}=-\\frac{1}{2}+\\varepsilon(u)\\xrightarrow[u\\to0]{}-\\frac{1}{2}.$$\n\nLa droite d'équation $y=x-\\dfrac{1}{2}$ est donc asymptote oblique à la courbe de $k$ en $+\\infty$.\n\n**Commentaire.** Les deux fonctions reposent sur la même expression $\\ln\\left(1+\\frac1x\\right)$, mais le facteur multiplicatif change tout : avec $x$, la limite est finie et l'on obtient une asymptote horizontale ; avec $x^{2}$, la limite est infinie et il faut aller chercher un terme d'ordre supérieur pour trouver l'asymptote oblique. C'est l'illustration exacte du danger signalé plus haut : on ne devine jamais la nature d'une branche infinie à partir de l'allure de la formule."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux limites, toujours dans le même ordre : $\\lim\\frac{f(x)}{x}$ donne $a$, puis $\\lim\\big(f(x)-ax\\big)$ donne $b$.",
+        "Une limite nulle ou infinie au premier calcul signifie branche parabolique : ne cherche pas d'asymptote dans ce cas.",
+        "Pour une fonction rationnelle dont le degré du numérateur dépasse de 1 celui du dénominateur, la division euclidienne donne l'asymptote et la position en une seule ligne. Fais-la systématiquement.",
+        "L'étude de la position relative fait partie de la question : elle décide de quel côté tu traces la courbe.",
+        "Une expression contenant $e^{1/x}$ ou $\\ln\\left(1+\\frac1x\\right)$ appelle presque toujours le changement de variable $u=\\frac1x$, qui ramène la forme indéterminée à un taux d'accroissement connu.",
+        "Au BAC série C, cette question précède immédiatement le tracé de la courbe : une asymptote fausse entraîne un tracé faux, donc une double perte de points. Vérifie ton résultat en calculant $f(x)-(ax+b)$ pour une grande valeur de $x$ : la différence doit être petite."
+      ]
+    }
+  ]
+}

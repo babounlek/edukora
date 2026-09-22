@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-point-de-fonctionnement-et-intervalle-de-confiance-definitions-1ere-d-ti",
+  "meta": {
+    "titre": "Point de fonctionnement d'un dipôle et intervalle de confiance : définitions",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Mesures et incertitudes ; caractéristiques électriques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "point de fonctionnement",
+      "intervalle de confiance",
+      "incertitude",
+      "caractéristique intensité-tension"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2022-cameroun",
+    "epreuve_titre": "Épreuve de physique au probatoire D et TI 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2022-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un générateur alimente un récepteur, quelles valeurs d'intensité et de tension s'établissent réellement dans le circuit ? Et quand on répète une mesure plusieurs fois, comment exprimer honnêtement la marge d'erreur autour du résultat obtenu ? Ces deux questions, en apparence sans rapport, appellent chacune une définition précise et normalisée : le point de fonctionnement d'un côté, l'intervalle de confiance de l'autre. Ce cours fixe ces deux définitions et la méthode pour les rédiger sans perdre de points."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tracé et lecture d'une caractéristique intensité-tension $U=f(I)$",
+        "Notion d'incertitude-type et d'incertitude élargie sur une mesure"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux définitions à ne jamais confondre",
+      "contenu_markdown": "**Point de fonctionnement d'un dipôle.** Lorsqu'un dipôle actif (par exemple un générateur) est associé en circuit fermé à un dipôle passif (un récepteur), le point de fonctionnement est le point d'intersection, dans le plan $(I,U)$, entre la caractéristique du premier dipôle et la caractéristique du second. Ses coordonnées $(I_0\\,;\\,U_0)$ donnent l'intensité et la tension qui s'établissent réellement dans le circuit lorsqu'il fonctionne.\n\n**Intervalle de confiance d'une mesure.** L'intervalle de confiance d'une mesure est l'intervalle $[x_{\\text{mesuré}}-U\\,;\\,x_{\\text{mesuré}}+U]$, centré sur la valeur mesurée $x_{\\text{mesuré}}$ et de demi-largeur égale à l'incertitude élargie $U$, dans lequel se trouve la valeur vraie de la grandeur mesurée avec un niveau de confiance donné (généralement 95 %).\n\nDans les deux cas, la définition porte sur une propriété générale (une intersection de caractéristiques ; un intervalle centré sur une mesure), jamais sur un exemple numérique particulier.",
+      "formule_principale": "P_{fonctionnement} = \\text{intersection des caractéristiques } U=f_1(I) \\text{ et } U=f_2(I)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur de f.é.m. $E=4{,}5\\ \\text{V}$ et de résistance interne $r=1{,}0\\ \\Omega$ alimente un conducteur ohmique de résistance $R=8{,}0\\ \\Omega$. Déterminer le point de fonctionnement du circuit.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la caractéristique du générateur",
+          "justification": "Un générateur réel suit la loi $U = E - rI$ (modèle de Thévenin).",
+          "resultat_markdown": "$U = 4{,}5 - 1{,}0\\,I$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la caractéristique du récepteur",
+          "justification": "Un conducteur ohmique suit la loi d'Ohm $U = RI$.",
+          "resultat_markdown": "$U = 8{,}0\\,I$"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre le système pour trouver l'intersection",
+          "justification": "Le point de fonctionnement est le point $(I_0, U_0)$ commun aux deux caractéristiques : on égalise les deux expressions de $U$.",
+          "resultat_markdown": "$4{,}5 - 1{,}0\\,I_0 = 8{,}0\\,I_0 \\Rightarrow 4{,}5 = 9{,}0\\,I_0 \\Rightarrow I_0 = 0{,}50\\ \\text{A}$, puis $U_0 = 8{,}0 \\times 0{,}50 = 4{,}0\\ \\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "Le point de fonctionnement du circuit est $(I_0\\,;\\,U_0) = (0{,}50\\ \\text{A}\\,;\\,4{,}0\\ \\text{V})$ : ce sont les valeurs réelles d'intensité et de tension qui s'établissent dans le circuit fermé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Définir le point de fonctionnement comme « le point où on lit l'intensité sur le graphique »",
+          "pourquoi_faux": "Cette formulation ne dit pas QUELLES deux caractéristiques s'intersectent : elle est incomplète et ne prouve pas que le concept est compris.",
+          "correction_markdown": "Toujours préciser qu'il s'agit de l'intersection entre la caractéristique du générateur (ou dipôle actif) et celle du récepteur (ou dipôle passif) associés en circuit fermé."
+        },
+        {
+          "erreur_markdown": "Donner l'incertitude $U$ seule comme réponse à « qu'est-ce que l'intervalle de confiance »",
+          "pourquoi_faux": "$U$ est un nombre, pas un intervalle : l'intervalle de confiance a deux bornes (borne inférieure et borne supérieure) centrées sur la valeur mesurée.",
+          "correction_markdown": "Toujours écrire l'intervalle sous la forme $[x_{\\text{mesuré}}-U\\,;\\,x_{\\text{mesuré}}+U]$, avec ses deux bornes explicites."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.é.m. $E=6{,}0\\ \\text{V}$ et de résistance interne $r=2{,}0\\ \\Omega$ alimente un conducteur ohmique $R=10\\ \\Omega$. Déterminer le point de fonctionnement.",
+          "solution_markdown": "Caractéristique du générateur : $U=6{,}0-2{,}0I$. Caractéristique du récepteur : $U=10I$. Égalité : $6{,}0-2{,}0I_0=10I_0 \\Rightarrow 6{,}0=12I_0 \\Rightarrow I_0=0{,}50\\ \\text{A}$, puis $U_0=10\\times0{,}50=5{,}0\\ \\text{V}$. Point de fonctionnement : $(0{,}50\\ \\text{A}\\,;\\,5{,}0\\ \\text{V})$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une mesure de longueur donne $x_{\\text{mesuré}} = 12{,}4\\ \\text{cm}$ avec une incertitude-type $u=0{,}05\\ \\text{cm}$ et un facteur d'élargissement $k=2$. Écrire l'intervalle de confiance associé.",
+          "solution_markdown": "L'incertitude élargie vaut $U=ku=2\\times0{,}05=0{,}10\\ \\text{cm}$. L'intervalle de confiance est $[12{,}4-0{,}10\\,;\\,12{,}4+0{,}10] = [12{,}3\\ \\text{cm}\\,;\\,12{,}5\\ \\text{cm}]$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un générateur ($E=9{,}0\\ \\text{V}$, $r=3{,}0\\ \\Omega$) alimente une lampe dont la caractéristique est $U = 5{,}0\\sqrt{I}$ (I en A, U en V). Estimer graphiquement puis vérifier par le calcul le point de fonctionnement pour $I_0 \\approx 1{,}0\\ \\text{A}$ (méthode par essais successifs).",
+          "solution_markdown": "Caractéristique du générateur : $U=9{,}0-3{,}0I$. On cherche $I_0$ tel que $9{,}0-3{,}0I_0 = 5{,}0\\sqrt{I_0}$. Essai $I_0=1{,}0$ : générateur donne $U=6{,}0\\ \\text{V}$, lampe donne $U=5{,}0\\ \\text{V}$ (écart positif, il faut augmenter $I_0$). Essai $I_0=1{,}2$ : générateur donne $9{,}0-3{,}6=5{,}4\\ \\text{V}$, lampe donne $5{,}0\\sqrt{1{,}2}\\approx5{,}5\\ \\text{V}$ (les deux valeurs sont très proches). Le point de fonctionnement est approximativement $(I_0\\,;\\,U_0)\\approx(1{,}2\\ \\text{A}\\,;\\,5{,}4\\ \\text{V})$, obtenu ici par approximations successives car le système n'est pas linéaire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le point de fonctionnement est TOUJOURS l'intersection de deux caractéristiques, jamais un point lu au hasard sur une seule courbe.",
+        "L'intervalle de confiance a deux bornes ; l'incertitude (élargie ou type) est un seul nombre : ne les confonds jamais dans une définition.",
+        "Une définition rigoureuse cite la propriété générale, jamais un exemple numérique particulier.",
+        "Ces deux notions sont systématiquement évaluées en questions de cours au Probatoire et au Baccalauréat, sous la forme « Définir... » : elles rapportent des points sûrs si la formulation est précise."
+      ]
+    }
+  ]
+}

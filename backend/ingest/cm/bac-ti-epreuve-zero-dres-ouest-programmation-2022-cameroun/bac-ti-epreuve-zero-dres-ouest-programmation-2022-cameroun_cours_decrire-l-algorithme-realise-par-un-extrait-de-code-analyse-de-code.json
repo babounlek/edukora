@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-decrire-l-algorithme-realise-par-un-extrait-de-code-analyse-de-code-tle-ti",
+  "meta": {
+    "titre": "Décrire l'algorithme réalisé par un extrait de code (analyse de code)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Analyse et synthèse de code",
+    "duree_estimee_min": 15,
+    "tags": [
+      "analyse de code",
+      "synthèse d'un algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex2-q9-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Qu'est-ce que fait ce bout de code ? » est une question qui piège beaucoup d'élèves, non pas parce qu'ils ne comprennent pas le code, mais parce qu'ils répondent en re-décrivant chaque ligne au lieu de résumer l'effet global obtenu."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un extrait de code simple (boucles, conditions, appels de fonction)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résumer l'effet global, pas rejouer chaque ligne",
+      "contenu_markdown": "Décrire ce que fait un extrait de code consiste à formuler, en une ou deux phrases de haut niveau, son effet global pour l'utilisateur ou pour le programme, plutôt que de reprendre instruction par instruction ce qu'il fait techniquement. La bonne réponse répond à la question « à quoi sert ce bloc ? », pas à la question « comment fonctionne-t-il en détail ? » (cette seconde question relève plutôt d'une trace d'exécution)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Énonce ce que fait ce bloc : `do{printf(\"Entrez un entier naturel\"); scanf(\"%d\",&n);} while(n<0); M=som(n); printf(\"le resultat est :%d \",M);`",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'effet de la boucle do...while",
+          "justification": "Elle répète la saisie tant que la condition n<0 est vraie",
+          "resultat_markdown": "Demande un entier naturel à l'utilisateur, en répétant la demande tant que la valeur saisie est négative"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier l'effet de l'appel de fonction",
+          "justification": "M=som(n) calcule une valeur à partir de n",
+          "resultat_markdown": "Calcule la somme des entiers de 0 à n grâce à la fonction récursive som"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier l'effet de l'instruction finale",
+          "justification": "printf affiche le résultat obtenu",
+          "resultat_markdown": "Affiche ce résultat à l'écran"
+        }
+      ],
+      "conclusion_markdown": "En résumé, ce bloc demande un entier naturel à l'utilisateur, calcule la somme des entiers de 0 à cette valeur, puis affiche le résultat."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre en retraduisant chaque ligne comme dans une trace d'exécution",
+          "pourquoi_faux": "Une description demande une synthèse générale, pas un rejeu détaillé instruction par instruction, qui répond à une autre question (« quel résultat pour telle valeur ? »).",
+          "correction_markdown": "Distingue toujours « ce que fait le code » (une synthèse) de « comment il s'exécute pour telle valeur » (une trace)."
+        },
+        {
+          "erreur_markdown": "Décrire uniquement la première instruction et ignorer la suite du bloc",
+          "pourquoi_faux": "Une description incomplète, qui ignore l'appel de fonction ou l'affichage final, ne rend pas compte de l'effet global du bloc entier.",
+          "correction_markdown": "Balaie tout le bloc demandé avant de rédiger ta réponse : chaque instruction contribue à l'effet global."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que fait ce bloc ? for(i=0;i<10;i++){ printf(\"%d\\n\", i);}",
+          "solution_markdown": "Il affiche les entiers de 0 à 9, un par ligne."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que fait ce bloc ? int max=t[0]; for(i=1;i<n;i++){ if(t[i]>max){max=t[i];}}",
+          "solution_markdown": "Il recherche et détermine la plus grande valeur (le maximum) contenue dans le tableau t de n éléments."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que fait ce bloc ? int c=0; for(i=0;i<n;i++){ if(t[i]%2==0){c++;}} printf(\"%d\",c); Donne une description qui va au-delà d'une simple paraphrase du code.",
+          "solution_markdown": "Ce bloc compte, parmi les n éléments du tableau t, combien sont des nombres pairs, puis affiche ce nombre. Une simple paraphrase se contenterait de dire « il incrémente c si t[i] est pair » ; la description attendue nomme l'objectif du traitement (compter les éléments pairs d'un tableau), pas seulement le mécanisme utilisé pour l'atteindre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Décrire un extrait de code, c'est résumer son effet global, pas reformuler chaque ligne.",
+        "Distingue toujours cette question de la trace d'exécution, qui demande un résultat pour une valeur précise.",
+        "Balaie tout le bloc demandé avant de conclure : une instruction ignorée peut changer complètement la description attendue.",
+        "Une bonne réponse nomme l'objectif du traitement (ce qu'il calcule ou accomplit), pas seulement le mécanisme technique utilisé."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+[
+  {
+    "competence": "algorithmique",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10533,
+        "enonce_markdown": "Identifier les variables d'entrée. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nDans un algorigramme, une variable d'entrée est une donnée fournie de l'extérieur au traitement (typiquement via une instruction Lire/Read) : c'est elle qui alimente les calculs, mais elle n'est jamais elle-même le résultat final communiqué à l'utilisateur.\n\nDans l'algorigramme donné, la seule instruction de lecture est `Lire(X)`, placée juste après le test `K<50`. `X` est donc la valeur saisie à chaque tour de boucle, sur laquelle repose ensuite tout le traitement (comparaison à 0, ajout à `S` ou incrémentation de `N`).\n\n**Variable d'entrée : `X`**.\n\n### Piège à éviter\nNe pas confondre `K`, qui pilote uniquement le nombre de répétitions de la boucle (un compteur interne), avec une variable d'entrée : `K` n'est jamais lu depuis l'extérieur, il est incrémenté automatiquement par l'algorithme lui-même (`K=K+1`)."
+      }
+    ]
+  },
+  {
+    "competence": "langage C",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "Donner la différence entre une variable globale et une variable locale. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nEn langage C, la portée d'une variable détermine l'endroit du programme où elle est visible et la durée pendant laquelle elle existe en mémoire : une variable globale est déclarée en dehors de toute fonction et une variable locale est déclarée à l'intérieur d'une fonction ou d'un bloc.\n\nUne **variable globale** est déclarée en dehors de toutes les fonctions (généralement en tête du fichier source, avant `main()`). Elle est visible et modifiable par toutes les fonctions du programme, et elle conserve sa valeur pendant toute la durée d'exécution du programme.\n\nUne **variable locale** est déclarée à l'intérieur d'une fonction (y compris `main()`) ou d'un bloc `{ }`. Elle n'existe que pendant l'exécution de ce bloc : elle est créée à l'entrée du bloc et détruite à sa sortie. Elle n'est visible et utilisable que dans le bloc où elle a été déclarée - une autre fonction ne peut ni la lire ni la modifier directement.\n\n| Critère | Variable globale | Variable locale |\n|---|---|---|\n| Lieu de déclaration | Hors de toute fonction | À l'intérieur d'une fonction ou d'un bloc |\n| Durée de vie | Toute la durée du programme | Le temps d'exécution du bloc |\n| Visibilité | Toutes les fonctions du fichier | Uniquement le bloc de déclaration |\n\n### Piège à éviter\nConfondre \"déclarée en premier dans `main()`\" avec \"globale\" : une variable déclarée tout en haut de `main()` reste locale à `main()`, elle n'est pas accessible depuis une autre fonction.\n\n### Conseil\nPour vérifier rapidement si une variable est locale ou globale, regarde si son point de déclaration se trouve à l'intérieur d'une paire d'accolades `{ }` d'une fonction : si oui, elle est locale."
+      },
+      {
+        "exercise_id": 10575,
+        "enonce_markdown": "**1.** Ecrire une fonction C qui lit la dimension N d'un tableau T du type entier et remplit le tableau par des valeurs entrées au clavier. *[2 pts]*",
+        "corrige_markdown": "### Rappel de méthode\nEn C, un tableau se déclare avec une taille fixée à la compilation ; pour laisser l'utilisateur choisir cette taille au moment de l'exécution, on lit d'abord N avec `scanf`, on dimensionne le tableau à N (ici avec une taille maximale suffisante, la taille exacte de 50 étant connue par l'énoncé), puis on parcourt les indices de 0 à N-1 dans une boucle `for` pour lire chaque valeur.\n\n```c\n#define TAILLE_MAX 50\n\nvoid saisirTableau(int T[], int *n) {\n    int i;\n\n    printf(\"Entrez la dimension du tableau (N) : \");\n    scanf(\"%d\", n);\n\n    for (i = 0; i < *n; i++) {\n        printf(\"Entrez la note de l'eleve %d : \", i + 1);\n        scanf(\"%d\", &T[i]);\n    }\n}\n```\n\nLe paramètre `n` est passé par adresse (`int *n`) parce que la fonction doit modifier, pour l'appelant, la valeur de N lue au clavier : un paramètre passé par valeur en C ne renvoie aucune modification à la fonction appelante, il faut donc transmettre l'adresse de la variable pour que `scanf` (qui exige lui-même une adresse, `&T[i]` ou `n`) puisse l'écrire directement en mémoire. Le tableau `T`, lui, est déjà transmis par adresse de façon implicite dès qu'il est déclaré en paramètre de fonction : `T[i]` à l'intérieur de la fonction modifie directement le tableau de l'appelant, sans passage explicite de pointeur supplémentaire.\n\n### Piège à éviter\nN'oublie pas l'astérisque devant `n` dans `scanf(\"%d\", n)` : ici `n` est déjà un pointeur (`int *n`), donc `scanf` reçoit directement l'adresse voulue sans `&` supplémentaire. Écrire `&n` par réflexe (comme pour une variable simple) transmettrait l'adresse du pointeur lui-même, pas celle de l'entier pointé, et ferait planter le programme ou écrire à un endroit incorrect.\n\n### Conseil\nPrévois toujours une variable de taille maximale du tableau (ici `TAILLE_MAX`) même si l'énoncé annonce un effectif fixe de 50 élèves : cela protège le programme d'un débordement si la valeur saisie au clavier dépasse la capacité réellement allouée au tableau."
+      },
+      {
+        "exercise_id": 10576,
+        "enonce_markdown": "**1.** Justifier pourquoi cette fonction est dite récursive. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne fonction est dite récursive lorsqu'elle s'appelle elle-même, directement ou indirectement, dans son propre corps, à condition de disposer d'un cas de base qui arrête la chaîne d'appels : sans lui, la fonction s'appellerait indéfiniment.\n\nLa fonction `calcul` s'appelle elle-même à deux endroits de son corps : ligne 8, `return calcul(x*x, n/2)`, et ligne 11, `return x*calcul(x*x,(n-1)/2)`. C'est cette présence d'un appel à `calcul` à l'intérieur même de la définition de `calcul` qui la rend récursive. Le cas de base qui garantit l'arrêt de la récursion est le test `if(n==0)` de la ligne 3 : à chaque appel récursif, le second paramètre est divisé par 2 (`n/2` ou `(n-1)/2`), donc il finit nécessairement par atteindre 0 après un nombre fini d'appels, ce qui déclenche le `return 1` de la ligne 4 et met fin à la chaîne d'appels.\n\n### Piège à éviter\nNe te contente pas de répondre « parce qu'elle contient calcul(...) » : justifie aussi pourquoi cette récursion se termine (l'existence et l'atteignabilité du cas de base), sans quoi la réponse ne distingue pas une fonction récursive correcte d'un appel qui boucle indéfiniment."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**1.** Décrire de façon précise le type de base utilisé dans ce code. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLe type `unsigned int` désigne, en langage C, un entier non signé codé le plus souvent sur 4 octets (32 bits) sur les systèmes actuels, capable de représenter uniquement des valeurs positives ou nulles, de 0 à 2³²-1, sans bit réservé au signe contrairement à `int`.\n\nLe code utilise exclusivement le type `unsigned int` (variables `f`, `x` ligne 4, paramètre et type de retour de `factorielle` lignes 5 et 18). Sur la plupart des compilateurs actuels, `unsigned int` occupe 4 octets, soit 32 bits, et peut donc stocker des valeurs entières comprises entre 0 et 2³²-1, c'est-à-dire 4 294 967 295. Le mot-clé `unsigned` indique explicitement l'absence de bit de signe : tous les bits du mot mémoire servent à représenter la valeur elle-même, ce qui double la plus grande valeur représentable par rapport à un `int` signé de même taille, mais interdit toute valeur négative.\n\n### Conseil\nQuand une question demande de décrire un type « de façon précise », donne systématiquement trois informations : sa taille en octets/bits, sa plage de valeurs exacte, et ce qui le distingue du type voisin le plus proche (ici `int`, par l'absence de valeurs négatives). Une réponse réduite à « un entier » ne rapporte généralement qu'une fraction du barème."
+      }
+    ]
+  },
+  {
+    "competence": "boucle for",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10561,
+        "enonce_markdown": "**3.** Donner le nombre d'instructions (itérations) de la boucle de la ligne 8. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLe nombre d'itérations d'une boucle `for(init; condition; incrément)` se détermine en énumérant toutes les valeurs successives prises par la variable de contrôle tant que la condition reste vraie.\n\nÀ la ligne 7 de ce programme, `for (i=taille; i>=4; i--){` ouvre une boucle dont le corps s'étend des lignes 8 à 10 (c'est en ce sens que l'énoncé la désigne comme la « boucle de la ligne 8 », puisque sa première instruction s'y trouve) : la variable `i` part de `taille` (soit 7) et diminue de 1 à chaque tour tant que `i>=4`. Elle prend donc successivement les valeurs 7, 6, 5 puis 4, avant de s'arrêter puisque `i=3` ne vérifie plus `i>=4`. Cette boucle s'exécute donc **4 fois**.\n\n### Piège à éviter\nNe confonds pas la valeur de départ de `i` (7) avec le nombre de répétitions de la boucle : ici, malgré un `i` qui part de 7, la boucle ne tourne que 4 fois, parce qu'elle s'arrête dès que `i` descend sous 4."
+      },
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**10.** Réécris la portion de code de la ligne 15 à la ligne 22 en utilisant la structure **while**. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne boucle `for(init; condition; incrementation){ corps }` se réécrit toujours en boucle `while` équivalente en plaçant l'initialisation avant la boucle, la condition inchangée dans le `while`, et l'incrémentation en toute dernière instruction du corps de la boucle.\n\nLa boucle des lignes 15 à 22 s'initialise avec `i=0` (déjà fait ligne 14), se répète tant que `i<=N-1`, et incrémente `i` à chaque tour avec `i++`. En appliquant la règle de conversion :\n\n```c\ni=0;\nwhile(i<=N-1){\n  printf(\"Entrez le matricule de l eleve %d \n\",i+1);\n  scanf(\"%d\",&Lyclamo[i].matricule);\n  printf(\"Entrez l age de l eleve %d \n\",i+1);\n  scanf(\"%s\",&Lyclamo[i].age);\n  printf(\"Entrez le sexe de l eleve %d \n\",i+1);\n  scanf(\"%d\",&Lyclamo[i].sexe);\n  i++;\n}\n```\n\n### Piège à éviter\nNe place jamais `i++` en tête de la boucle `while` : il doit rester la toute dernière instruction du corps, exactement comme il est exécuté en dernier à chaque tour dans la boucle `for` d'origine. L'oublier en fin de bloc transforme la boucle en boucle infinie."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**9.** Réécrire ce code sans la fonction **factorielle()** et en utilisant la boucle **for**. *[2 pts]*",
+        "corrige_markdown": "### Rappel de méthode\nToute fonction récursive qui accumule un résultat par des appels successifs peut être remplacée par une version itérative équivalente, en initialisant une variable accumulateur avant une boucle, puis en la mettant à jour à chaque itération de manière à reproduire exactement le même enchaînement de calculs que les appels récursifs.\n\nLa récursivité calcule `factorielle(x) = x × (x-1) × ... × 2 × 1`. Une boucle `for` qui parcourt les entiers de 1 à `x` en multipliant un accumulateur à chaque tour reproduit exactement ce même calcul, sans jamais rappeler la fonction `factorielle()` :\n\n```c\n/* Exemple de calcul itératif de la factorielle d'un nombre */\n#include <stdio.h>\n#include <stdlib.h>\nunsigned int f, x;\nint main() {\n    puts(\"Entrez une valeur entière entre 1 et 8: \");\n    scanf(\"%d\", &x);\n    if(x > 8 || x < 1) {\n        printf(\"On a dit entre 1 to 8 !\");\n    }\n    else {\n        f = 1;\n        for (unsigned int i = 1; i <= x; i++) {\n            f *= i;\n        }\n        printf(\"Factorielle %u égal %u\n\", x, f);\n    }\n    exit(EXIT_SUCCESS);\n}\n```\n\nL'accumulateur `f` est initialisé à `1` (élément neutre de la multiplication) avant la boucle, puis multiplié par chaque entier `i` de 1 à `x` inclus (condition `i <= x`). Pour `x = 6`, la boucle produit exactement la même suite de produits que la trace récursive de la question 5 : `1×1=1`, `1×2=2`, `2×3=6`, `6×4=24`, `24×5=120`, `120×6=720`, ce qui confirme l'équivalence des deux versions.\n\n### Piège à éviter\nInitialiser l'accumulateur à `0` au lieu de `1` est l'erreur la plus fréquente sur ce type de conversion : toute multiplication par `0` renverrait systématiquement `0`, quel que soit `x`. L'élément neutre de la multiplication est `1`, pas `0` (qui, lui, est l'élément neutre de l'addition).\n\n### Conseil\nVérifie toujours ta boucle en la comparant à la trace récursive déjà établie à une question précédente lorsque l'énoncé en propose une : si les deux méthodes donnent le même résultat sur le même exemple, la conversion récursif/itératif est presque certainement correcte."
+      },
+      {
+        "exercise_id": 10621,
+        "enonce_markdown": "Reecrire le bout de code allant de la ligne 54 a la ligne 61 en utilisant exclusivement la boucle while(). (1,5 pt)",
+        "corrige_markdown": "Le code original (lignes 54-61) est une boucle `for` qui parcourt les `$nbart` lignes du resultat, et pour chacune, une boucle `for` interne qui parcourt les `$nbcol` colonnes :\n\n```php\n$i = 0;\nwhile ($i < $nbart) {\n    $ligne = $result->fetch_row();\n    echo \"<tr>\";\n    $j = 0;\n    while ($j < $nbcol) {\n        echo \"<td>\", $ligne[$j], \"</td>\";\n        $j++;\n    }\n    echo \"</tr>\";\n    $i++;\n}\n```\n\n### Rappel de méthode\nToute boucle `for (init; condition; incrément)` se convertit en `while` selon trois étapes : l'initialisation se place avant la boucle, la condition devient celle du `while`, et l'incrément est placé à la fin du corps de la boucle. Pour deux boucles imbriquées, on applique la règle à chacune, en réinitialisant le compteur interne avant chaque tour de la boucle externe. Attention : oublier l'incrément ou la réinitialisation du compteur interne provoque une boucle infinie ou un affichage incomplet.\n\nLa conversion suit la meme methode pour chacune des deux boucles `for` : l'initialisation (`$i=0` / `$j=0`) est placee avant le `while`, la condition d'arret (`$i<$nbart` / `$j<$nbcol`) devient la condition du `while`, et l'increment (`$i++` / `$j++`) est reporte a la toute fin du corps de la boucle -- juste avant l'accolade fermante -- afin de reproduire exactement le meme comportement d'execution que la boucle `for` d'origine."
+      }
+    ]
+  },
+  {
+    "competence": "boucle while",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**10.** Réécris la portion de code de la ligne 15 à la ligne 22 en utilisant la structure **while**. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne boucle `for(init; condition; incrementation){ corps }` se réécrit toujours en boucle `while` équivalente en plaçant l'initialisation avant la boucle, la condition inchangée dans le `while`, et l'incrémentation en toute dernière instruction du corps de la boucle.\n\nLa boucle des lignes 15 à 22 s'initialise avec `i=0` (déjà fait ligne 14), se répète tant que `i<=N-1`, et incrémente `i` à chaque tour avec `i++`. En appliquant la règle de conversion :\n\n```c\ni=0;\nwhile(i<=N-1){\n  printf(\"Entrez le matricule de l eleve %d \n\",i+1);\n  scanf(\"%d\",&Lyclamo[i].matricule);\n  printf(\"Entrez l age de l eleve %d \n\",i+1);\n  scanf(\"%s\",&Lyclamo[i].age);\n  printf(\"Entrez le sexe de l eleve %d \n\",i+1);\n  scanf(\"%d\",&Lyclamo[i].sexe);\n  i++;\n}\n```\n\n### Piège à éviter\nNe place jamais `i++` en tête de la boucle `while` : il doit rester la toute dernière instruction du corps, exactement comme il est exécuté en dernier à chaque tour dans la boucle `for` d'origine. L'oublier en fin de bloc transforme la boucle en boucle infinie."
+      },
+      {
+        "exercise_id": 10576,
+        "enonce_markdown": "**5.** Réécrire une autre version non récursive de cette fonction en utilisant une structure itérative. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nTransformer une récursion terminale (ou quasi terminale) en boucle consiste à remplacer chaque appel récursif par une nouvelle itération qui met à jour les mêmes variables que celles transmises en paramètre à l'appel récursif, et à accumuler dans une variable séparée les facteurs multipliés sur la branche impaire.\n\n```c\nint calculIteratif(int x, int n) {\n    int resultat = 1;\n\n    while (n > 0) {\n        if (n % 2 != 0) {\n            resultat = resultat * x;\n        }\n        x = x * x;\n        n = n / 2;\n    }\n\n    return resultat;\n}\n```\n\n`resultat` remplace le facteur x accumulé à chaque branche impaire de la version récursive (ligne 11 du code d'origine, `x*calcul(...)`) : il démarre à 1 (l'élément neutre de la multiplication, comme le `return 1` du cas de base) et se voit multiplié par x chaque fois que n est impair. `x` est ensuite mis au carré et `n` divisé par 2 (division entière) à chaque itération, que n soit pair ou impair - la division entière `(n-1)/2` de la branche impaire et `n/2` de la branche paire donnent en effet exactement le même résultat en C (ex. n=5 : `(5-1)/2 = 2` et `5/2 = 2`), ce qui permet d'unifier les deux cas en une seule instruction `n = n / 2` dans la boucle.\n\n### Piège à éviter\nNe mets pas à jour `x` avant de tester s'il faut multiplier `resultat` par l'ancienne valeur de x : l'ordre des instructions à l'intérieur de la boucle (test et multiplication de `resultat`, PUIS mise au carré de x, PUIS division de n) doit être respecté strictement, sinon `resultat` se retrouve multiplié par le mauvais x.\n\n### Conseil\nTeste ta version itérative avec les mêmes valeurs que la trace de la question 3 (x=5, n=10) : si elle ne renvoie pas 9 765 625 comme la version récursive, c'est que l'ordre des trois instructions de la boucle n'est pas respecté."
+      },
+      {
+        "exercise_id": 10621,
+        "enonce_markdown": "Reecrire le bout de code allant de la ligne 54 a la ligne 61 en utilisant exclusivement la boucle while(). (1,5 pt)",
+        "corrige_markdown": "Le code original (lignes 54-61) est une boucle `for` qui parcourt les `$nbart` lignes du resultat, et pour chacune, une boucle `for` interne qui parcourt les `$nbcol` colonnes :\n\n```php\n$i = 0;\nwhile ($i < $nbart) {\n    $ligne = $result->fetch_row();\n    echo \"<tr>\";\n    $j = 0;\n    while ($j < $nbcol) {\n        echo \"<td>\", $ligne[$j], \"</td>\";\n        $j++;\n    }\n    echo \"</tr>\";\n    $i++;\n}\n```\n\n### Rappel de méthode\nToute boucle `for (init; condition; incrément)` se convertit en `while` selon trois étapes : l'initialisation se place avant la boucle, la condition devient celle du `while`, et l'incrément est placé à la fin du corps de la boucle. Pour deux boucles imbriquées, on applique la règle à chacune, en réinitialisant le compteur interne avant chaque tour de la boucle externe. Attention : oublier l'incrément ou la réinitialisation du compteur interne provoque une boucle infinie ou un affichage incomplet.\n\nLa conversion suit la meme methode pour chacune des deux boucles `for` : l'initialisation (`$i=0` / `$j=0`) est placee avant le `while`, la condition d'arret (`$i<$nbart` / `$j<$nbcol`) devient la condition du `while`, et l'increment (`$i++` / `$j++`) est reporte a la toute fin du corps de la boucle -- juste avant l'accolade fermante -- afin de reproduire exactement le meme comportement d'execution que la boucle `for` d'origine."
+      },
+      {
+        "exercise_id": 10622,
+        "enonce_markdown": "Reecrire le bout de code allant de la ligne 23 a la ligne 25 en utilisant la boucle while(). (1 pt)",
+        "corrige_markdown": "Le code original est une boucle `for` qui affiche chacun des `Max` produits :\n\n```c\ni = 0;\nwhile (i < Max) {\n    printf(\"\nLes produits de la facture sont : %s %d %f = %f FCFA\n\", list[i].designation,\n        list[i].quantite, list[i].prix, list[i].montant);\n    i++;\n}\n```\n\n### Rappel de méthode\nToute boucle `for (init; condition; incrément)` se réécrit en `while` en trois temps : l'initialisation est placée juste avant la boucle, la condition devient celle du `while`, et l'incrément est placé à la fin du corps de la boucle, après le traitement. Le corps de la boucle reste identique. Attention : oublier l'incrément en fin de corps provoque une boucle infinie, et placer l'incrément avant le traitement décale les indices.\n\nComme pour toute conversion `for` -> `while`, l'initialisation (`i = 0`) est placee avant la boucle, la condition d'arret (`i < Max`) devient la condition du `while`, et l'increment (`i++`) est deplace en derniere instruction du corps de la boucle, pour reproduire exactement le meme deroulement que la boucle `for` d'origine."
+      }
+    ]
+  },
+  {
+    "competence": "trace d'exécution",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10561,
+        "enonce_markdown": "**4.** Exécuter la suite d'instructions des lignes 7 à 11 et dire ce qu'elle produit, pour le tableau initial T = [2, 5, 6, 7, 5, 3, 5]. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nExécuter « à la main » une boucle qui modifie un tableau consiste à réécrire l'état complet du tableau après chaque itération, en appliquant scrupuleusement chaque instruction du corps de la boucle dans l'ordre où elle est écrite.\n\nUne remarque préalable s'impose : la ligne 8, `elt=T[taille];`, lit la case `T[7]`, alors que le tableau `T` ne compte que 7 cases valides, numérotées de `T[0]` à `T[6]` (puisque `#define taille 7`). Cette lecture sort donc du tableau : en C, un tel accès est un comportement indéterminé, dont le résultat réel dépend du compilateur et ne peut pas être garanti. Tout porte cependant à croire, à la lecture de l'algorithme, qu'il s'agit d'une erreur d'écriture à la ligne 8, et que l'instruction voulue était `elt=T[taille-1];` (c'est-à-dire `elt=T[6];`, le dernier élément valide du tableau) : c'est cette version corrigée qui donne à l'algorithme un sens cohérent, et c'est elle qui est exécutée ci-dessous. Avec `elt=T[taille-1]`, chaque tour de la boucle « ligne 7 » retire le dernier élément du tableau, décale tous les autres d'un cran vers la droite (`for(j=5;j>=0;j--) T[j+1]=T[j];`), puis replace l'élément retiré en tête (`T[0]=elt;`) : c'est une rotation d'un cran vers la droite. La boucle extérieure répétant cette rotation 4 fois (question 3), le tableau final est le tableau de départ après une rotation de 4 crans vers la droite.\n\nPartons de T = [2, 5, 6, 7, 5, 3, 5] (indices 0 à 6).\n\nTour 1 (elt = T[6] = 5) : décalage → [2, 2, 5, 6, 7, 5, 3], puis T[0] = 5 → **[5, 2, 5, 6, 7, 5, 3]**\n\nTour 2 (elt = T[6] = 3) : décalage → [5, 5, 2, 5, 6, 7, 5], puis T[0] = 3 → **[3, 5, 2, 5, 6, 7, 5]**\n\nTour 3 (elt = T[6] = 5) : décalage → [3, 3, 5, 2, 5, 6, 7], puis T[0] = 5 → **[5, 3, 5, 2, 5, 6, 7]**\n\nTour 4 (elt = T[6] = 7) : décalage → [5, 5, 3, 5, 2, 5, 6], puis T[0] = 7 → **[7, 5, 3, 5, 2, 5, 6]**\n\nLe tableau affiché en sortie du programme est donc : **7 5 3 5 2 5 6**, c'est-à-dire exactement le tableau de départ dont les 4 derniers éléments (7, 5, 3, 5) sont passés en tête, dans le même ordre, suivis des 3 premiers (2, 5, 6).\n\n### Piège à éviter\nUne exécution à la main qui recopierait littéralement `elt=T[taille]` (donc `T[7]`) ne peut aboutir à aucun résultat garanti, puisque cette case n'existe pas : ne jamais inventer une valeur pour une case hors tableau, et toujours signaler ce type d'anomalie plutôt que de la passer sous silence.\n\n### Conseil\nPour ne pas se perdre dans les décalages d'indices, réécris entièrement le tableau après chaque instruction plutôt que d'essayer de suivre les changements « de tête » - c'est plus long à l'écrit mais beaucoup plus fiable le jour de l'examen."
+      },
+      {
+        "exercise_id": 10563,
+        "enonce_markdown": "**2.a.** Soit le tableau `T` suivant, donné indépendamment de la séquence précédente : `T = [-2, 1, 5, 7, 12, 26]` (indices 0 à 5). Pour chaque valeur de `a`, donner la valeur de `P` obtenue après exécution des lignes 22 à 26, pour `a=6` puis `a=26`. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nExécuter à la main les lignes 22 à 26 consiste à suivre pas à pas la variable `i`, qui part de 0 et s'incrémente tant que `T[i]` reste strictement supérieur à `a` - la valeur finale de `i` (rangée dans `p`) est donc le premier indice, à partir de 1, où le tableau cesse de dépasser `a`.\n\nPour `a=6` : `i` passe de 0 à 1 ; on teste `T[1]=1>6`, ce qui est faux, donc la boucle s'arrête dès le premier passage. On obtient **P=1**. Pour `a=26` : `i` passe de 0 à 1 ; on teste `T[1]=1>26`, également faux, donc la boucle s'arrête là aussi dès le premier passage. On obtient également **P=1**.\n\n### Piège à éviter\nLes deux valeurs de `a` (6 et 26) donnent ici le même résultat P=1, ce qui peut surprendre : ce n'est pas une erreur de calcul, c'est une conséquence du tableau `T` donné, qui est rangé en ordre croissant (`T[1]=1` est déjà la plus petite valeur après `T[0]`) alors que l'algorithme n'est réellement utile que sur un tableau rangé en ordre décroissant, comme le garantit la séquence des lignes 10 à 19 étudiée en question 1. Ce constat prépare directement la question 2.b."
+      },
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**7.** Exécute et présente la trace d'exécution du bout de code de la ligne 23 à la ligne 25 pour **n=5**. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nTracer l'exécution d'un extrait de code consiste à dérouler ses instructions une à une dans l'ordre réel d'exécution, en notant à chaque étape la valeur des variables concernées, jusqu'à obtenir le résultat final ; pour une fonction récursive, on descend jusqu'au cas de base avant de remonter en recomposant chaque résultat intermédiaire.\n\nPour n = 5, la trace des lignes 23 à 25 se déroule ainsi :\n\n- **Ligne 23** : le programme affiche « Entrez un entier naturel », l'utilisateur saisit 5, donc `n = 5`. La condition `n<0` du `while` est fausse (5 n'est pas négatif), la boucle `do...while` s'arrête donc après ce seul passage.\n- **Ligne 24** : `M = som(5);` déclenche la récursivité. On descend d'abord jusqu'au cas de base :\n  - `som(5) = 5 + som(4)`\n  - `som(4) = 4 + som(3)`\n  - `som(3) = 3 + som(2)`\n  - `som(2) = 2 + som(1)`\n  - `som(1) = 1 + som(0)`\n  - `som(0) = 0` (cas de base, `a==0`)\n\n  puis on remonte en recomposant chaque résultat : `som(1) = 1+0 = 1`, `som(2) = 2+1 = 3`, `som(3) = 3+3 = 6`, `som(4) = 4+6 = 10`, `som(5) = 5+10 = 15`. Donc `M = 15`.\n- **Ligne 25** : le programme affiche « le resultat est :15 ».\n\n### Piège à éviter\nUne trace de fonction récursive qui s'arrête à la première ligne (`som(5) = 5 + som(4)`) sans continuer jusqu'au cas de base est incomplète : il faut impérativement descendre jusqu'à `som(0)` avant de pouvoir remonter et calculer une valeur numérique.\n\n### Conseil\nPrésente toujours la descente puis la remontée sur deux groupes de lignes séparés, comme ci-dessus : c'est la façon la plus claire de montrer à l'examinateur que tu as compris le mécanisme de la récursivité, et pas seulement le résultat final."
+      },
+      {
+        "exercise_id": 10576,
+        "enonce_markdown": "**3.** Donner la trace d'exécution de cette fonction avec les valeurs suivantes x = 5 et n = 10. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nTracer l'exécution d'une fonction récursive consiste à dérouler la pile des appels successifs jusqu'au cas de base, puis à remonter cette pile en calculant, à chaque niveau, la valeur renvoyée à partir du résultat déjà obtenu au niveau plus profond.\n\n**Descente (appels successifs, x est mis au carré à chaque étape, n divisé par 2) :**\n\n```\ncalcul(5, 10)      n=10 pair   -> calcul(5*5, 10/2)        = calcul(25, 5)\ncalcul(25, 5)      n=5 impair  -> 25 * calcul(25*25, 2)     = 25 * calcul(625, 2)\ncalcul(625, 2)     n=2 pair    -> calcul(625*625, 1)        = calcul(390625, 1)\ncalcul(390625, 1)  n=1 impair  -> 390625 * calcul(390625², 0) = 390625 * calcul(152587890625, 0)\ncalcul(152587890625, 0)  n=0   -> return 1\n```\n\nL'appel s'arrête bien en un nombre fini d'étapes : n passe de 10 à 5, puis 2, puis 1, puis 0, en 4 divisions, exactement comme attendu pour une récursion qui divise son paramètre par 2 à chaque appel.\n\n**Remontée (chaque niveau utilise le résultat renvoyé par l'appel plus profond) :**\n\n```\ncalcul(390625, 1)  = 390625 * 1         = 390625\ncalcul(625, 2)     = 390625\ncalcul(25, 5)      = 25 * 390625        = 9 765 625\ncalcul(5, 10)      = 9 765 625\n```\n\nLa fonction renvoie donc **9 765 625** pour `calcul(5, 10)`.\n\n### Piège à éviter\nSur la branche impaire (ligne 11), n'oublie pas de multiplier par x **avant** la mise au carré : c'est x (390625 ici), pas x*x, qui multiplie le résultat de l'appel récursif à la remontée du niveau `calcul(390625, 1)`.\n\n### Conseil\nVérifie ton résultat final par un calcul indépendant de $x^n$ : $5^{10} = 9\\,765\\,625$. Si la trace ne retombe pas sur cette valeur, une étape de la descente ou de la remontée contient une erreur de calcul à corriger avant de répondre à la question suivante."
+      }
+    ]
+  }
+]

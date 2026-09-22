@@ -1,0 +1,96 @@
+[
+  {
+    "external_id": "cqc-arrangement-faible-0",
+    "theme": "arrangement",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "E"}, {"examen": "probatoire", "serie": "A"}],
+    "enonce_markdown": "Un jeu consiste à tirer successivement et sans remise 3 jetons parmi 7 jetons numérotés de 1 à 7 placés dans un sac, puis à les aligner dans leur ordre de sortie pour former un nombre à 3 chiffres tous différents. Combien de nombres différents peut-on ainsi former ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'on tire successivement et sans remise plusieurs éléments distincts dans un ensemble, et que l'ordre du tirage compte (ici, la position du chiffre dans le nombre formé), le nombre de résultats possibles est un arrangement $A_n^p = n \\times (n-1) \\times \\cdots \\times (n-p+1)$, où $n$ est l'effectif total et $p$ le nombre d'éléments tirés.\n\n### Corrigé\n\nOn tire 3 jetons parmi 7, sans remise (chaque jeton tiré ne peut plus être retiré) et l'ordre de sortie compte puisqu'il détermine la position du chiffre (centaines, dizaines, unités) : il s'agit donc d'un arrangement de 3 éléments parmi 7.\n\n$$A_7^3 = 7 \\times 6 \\times 5 = 210$$\n\nOn peut ainsi former **210 nombres différents**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "210"},
+      {"lettre": "B", "texte": "343"},
+      {"lettre": "C", "texte": "35"},
+      {"lettre": "D", "texte": "120"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [9402]
+  },
+  {
+    "external_id": "cqc-arrangement-faible-1",
+    "theme": "arrangement",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "E"}, {"examen": "probatoire", "serie": "A"}],
+    "enonce_markdown": "Parmi 5 candidats à la direction d'un club de lecture, il faut d'abord retenir 2 finalistes, sans aucune distinction de rôle entre eux à ce stade. Une fois ces 2 finalistes connus, on décide lequel des deux devient président du club et lequel devient simple membre du bureau (les deux rôles sont différents). Combien de résultats finaux différents peut-on obtenir, en tenant compte à la fois de l'identité des 2 finalistes retenus et de l'attribution des rôles entre eux ?",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand un problème de dénombrement comporte deux étapes de nature différente - une sélection d'un sous-groupe sans distinction de rôle, puis une répartition de rôles distincts entre les éléments choisis - on traite chaque étape séparément : choisir un sous-groupe non ordonné relève d'une combinaison $C_n^p$, tandis que répartir des rôles distincts entre des éléments déjà choisis est un arrangement (une permutation) de ce sous-groupe. Le principe multiplicatif combine ensuite les deux comptages.\n\n### Corrigé\n\n**Étape 1 - choix des 2 finalistes parmi 5, sans distinction de rôle :**\n$$C_5^2 = \\frac{5!}{2!\\,3!} = 10$$\n\n**Étape 2 - attribution des 2 rôles distincts (président, simple membre) aux 2 finalistes retenus :**\n$$A_2^2 = 2! = 2$$\n\n**Principe multiplicatif :**\n$$10 \\times 2 = 20$$\n\nOn obtient **20 résultats finaux différents**. (On peut vérifier que ce résultat coïncide avec $A_5^2 = 5 \\times 4 = 20$, puisque choisir 2 personnes puis leur attribuer 2 rôles distincts revient à choisir un couple ordonné directement parmi les 5 candidats.)",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [9385]
+  },
+  {
+    "external_id": "cqc-arrangement-moyenne-0",
+    "theme": "arrangement",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "E"}, {"examen": "probatoire", "serie": "A"}],
+    "enonce_markdown": "Le digicode d'un immeuble demande de saisir une combinaison de 4 caractères : les deux premiers caractères sont des chiffres distincts choisis parmi les chiffres de 1 à 7 (un même chiffre ne peut pas apparaître deux fois parmi ces deux premiers caractères), les deux derniers caractères sont des lettres, chacune choisie librement parmi les lettres P, Q, R, S, T (une même lettre peut être répétée entre ces deux positions). Combien de combinaisons différentes ce digicode permet-il de former ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'une combinaison de caractères comporte une partie où les éléments doivent être distincts et où l'ordre compte (un arrangement $A_n^p$), et une autre partie où la répétition est autorisée à chaque emplacement, chaque emplacement de cette seconde partie constitue un choix indépendant parmi $n$ possibilités, soit $n^p$ au total. On calcule chaque partie séparément, puis on applique le principe multiplicatif pour obtenir le nombre total de combinaisons.\n\n### Corrigé\n\n**Partie chiffrée (2 chiffres distincts parmi 7, ordre important) :**\n$$A_7^2 = 7 \\times 6 = 42$$\n\n**Partie littérale (2 lettres, répétition permise, parmi 5) :** chaque position est un choix libre parmi 5 lettres, donc\n$$5 \\times 5 = 5^2 = 25$$\n\n**Principe multiplicatif :**\n$$42 \\times 25 = 1050$$\n\nCe digicode permet de former **1050 combinaisons différentes**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [8291]
+  },
+  {
+    "external_id": "cqc-arrangement-moyenne-1",
+    "theme": "arrangement",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "E"}, {"examen": "probatoire", "serie": "A"}],
+    "enonce_markdown": "Une association sportive de 8 membres, composée de 5 hommes et 3 femmes, souhaite former un comité de 3 personnes chargé d'organiser un tournoi. Ce comité doit compter exactement 2 femmes (et donc 1 homme). Une fois les 3 membres du comité désignés, il faut choisir parmi eux un responsable logistique et un responsable communication (deux fonctions distinctes) ; le troisième membre du comité n'occupe aucune fonction particulière. Combien de comités différents, fonctions attribuées comprises, peut-on former au total ?",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand une consigne impose une répartition par catégorie (ici, un nombre fixé de femmes et un nombre fixé d'hommes) suivie d'une attribution de fonctions distinctes à une partie seulement du groupe retenu, on procède en deux temps : le respect de la contrainte de catégorie se traite avec une combinaison $C_n^p$ par catégorie, ces combinaisons se multipliant entre elles ; puis l'attribution des fonctions distinctes parmi les personnes retenues se traite avec un arrangement $A_n^p$, portant uniquement sur le nombre de fonctions à pourvoir.\n\n### Corrigé\n\n**Étape 1 - constitution du trio avec exactement 2 femmes :**\nChoix des 2 femmes parmi 3 : $C_3^2 = 3$\nChoix de 1 homme parmi 5 : $C_5^1 = 5$\nNombre de trios valides : $3 \\times 5 = 15$\n\n**Étape 2 - attribution des 2 fonctions distinctes (logistique, communication) parmi les 3 membres du trio :** le troisième membre n'ayant aucune fonction, il s'agit d'un arrangement de 2 fonctions parmi les 3 personnes du trio :\n$$A_3^2 = 3 \\times 2 = 6$$\n\n**Principe multiplicatif :**\n$$15 \\times 6 = 90$$\n\nOn peut former **90 comités différents**, fonctions attribuées comprises.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "90"},
+      {"lettre": "B", "texte": "15"},
+      {"lettre": "C", "texte": "45"},
+      {"lettre": "D", "texte": "180"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [9385]
+  },
+  {
+    "external_id": "cqc-arrangement-moyenne-2",
+    "theme": "arrangement",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "E"}, {"examen": "probatoire", "serie": "A"}],
+    "enonce_markdown": "Une bibliothécaire souhaite composer une vitrine de présentation avec 3 ouvrages : 2 romans à choisir parmi 6 romans disponibles, et 1 essai à choisir parmi 4 essais disponibles. Les 3 ouvrages retenus seront ensuite placés côte à côte sur une étagère comportant 3 emplacements bien distincts. Combien de vitrines différentes (choix des ouvrages ET ordre sur l'étagère) peut-on composer ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'il faut d'abord choisir un ensemble d'éléments sans tenir compte de l'ordre - une combinaison $C_n^p$ pour chaque catégorie disponible - puis disposer les éléments retenus sur des emplacements tous distincts, cette seconde étape est un arrangement de l'ensemble choisi sur lui-même, c'est-à-dire une permutation : $p!$ façons de ranger $p$ éléments sur $p$ emplacements. Le principe multiplicatif relie les deux étapes.\n\n### Corrigé\n\n**Étape 1 - choix des ouvrages :**\nChoix de 2 romans parmi 6 : $C_6^2 = \\dfrac{6!}{2!\\,4!} = 15$\nChoix de 1 essai parmi 4 : $C_4^1 = 4$\nNombre de sélections d'ouvrages : $15 \\times 4 = 60$\n\n**Étape 2 - disposition des 3 ouvrages retenus sur les 3 emplacements distincts de l'étagère :** il s'agit d'une permutation des 3 ouvrages choisis, soit un arrangement de 3 éléments sur 3 emplacements :\n$$3! = 6$$\n\n**Principe multiplicatif :**\n$$60 \\times 6 = 360$$\n\nOn peut composer **360 vitrines différentes**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [9385, 9402]
+  },
+  {
+    "external_id": "cqc-arrangement-elevee-0",
+    "theme": "arrangement",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "probatoire", "serie": "C"}, {"examen": "probatoire", "serie": "E"}, {"examen": "probatoire", "serie": "A"}],
+    "enonce_markdown": "Un jury de contrôle qualité de 4 personnes doit être constitué à partir d'une équipe technique de 12 personnes, composée de 7 hommes et 5 femmes. Le jury doit compter exactement 2 femmes et 2 hommes. Une fois les 4 membres du jury désignés, il faut attribuer parmi eux un poste de président du jury et un poste de rapporteur (deux fonctions distinctes) ; les deux autres membres du jury n'occupent aucune fonction particulière. Combien de compositions de jury, fonctions attribuées comprises, sont-elles possibles au total ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour un dénombrement combinant plusieurs contraintes de catégorie et une attribution de fonctions distinctes, on procède par étapes : chaque contrainte de catégorie (ici, un effectif imposé de femmes et un effectif imposé d'hommes) se traite par une combinaison $C_n^p$ propre à sa catégorie, ces combinaisons se multipliant entre elles par le principe multiplicatif pour obtenir le nombre de groupes valides ; puis, au sein de chaque groupe retenu, l'attribution de fonctions distinctes à une partie seulement de ses membres se traite par un arrangement $A_n^p$, portant uniquement sur le nombre de fonctions à pourvoir.\n\n### Corrigé\n\n**Étape 1 - constitution du groupe de 4 avec exactement 2 femmes et 2 hommes :**\nChoix des 2 femmes parmi 5 : $C_5^2 = \\dfrac{5!}{2!\\,3!} = 10$\nChoix des 2 hommes parmi 7 : $C_7^2 = \\dfrac{7!}{2!\\,5!} = 21$\nNombre de groupes valides : $10 \\times 21 = 210$\n\n**Étape 2 - attribution des 2 fonctions distinctes (président, rapporteur) parmi les 4 membres du groupe :** les 2 autres membres n'ayant aucune fonction, il s'agit d'un arrangement de 2 fonctions parmi les 4 personnes du groupe :\n$$A_4^2 = 4 \\times 3 = 12$$\n\n**Principe multiplicatif :**\n$$210 \\times 12 = 2520$$\n\nOn peut former **2520 compositions de jury différentes**, fonctions attribuées comprises.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [9385]
+  }
+]

@@ -1,0 +1,176 @@
+{
+  "cours_id": "cours-asymptote-oblique-decomposition-p1c",
+  "meta": {
+    "titre": "L'asymptote oblique : décomposer pour tout obtenir d'un coup",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "niveau": "1ere",
+    "serie": "C, E",
+    "sous_theme": "Fonctions rationnelles - asymptote oblique",
+    "duree_estimee_min": 50,
+    "tags": [
+      "asymptote oblique",
+      "division euclidienne",
+      "position relative",
+      "fonction rationnelle",
+      "tableau de variation"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C-E",
+      "module_numero": "21",
+      "savoir_numero": "IV"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2002-cameroun",
+    "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2002 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-maths-2002-cameroun-ex4-qb1b-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Devant $f(x) = \\frac{x^2-5x+10}{x-3}$, on peut passer une heure à calculer des limites, une dérivée de quotient, des positions relatives. Ou bien écrire une seule ligne — $f(x) = x-2+\\frac{4}{x-3}$ — et lire toutes les réponses dessus. Le choix se fait dès la première question."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir effectuer une division euclidienne de polynômes",
+        "Connaître la définition d'une asymptote",
+        "Savoir dériver un quotient et étudier le signe d'un trinôme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Partie affine plus reste : la forme qui dit tout",
+      "contenu_markdown": "**Le problème.** Soit $f$ une fonction rationnelle dont le degré du numérateur dépasse **d'exactement un** celui du dénominateur. Alors la courbe admet une **asymptote oblique**, et l'écriture décomposée la révèle immédiatement.\n\n**La décomposition.** Toute fonction rationnelle de ce type s'écrit :\n\n$$f(x) = \\underbrace{ax+b}_{\\text{partie affine}} + \\underbrace{\\frac{c}{x-x_0}}_{\\text{reste}}$$\n\n**Comment l'obtenir : trois méthodes.**\n\n*1. La division euclidienne*, méthode générale. On divise le numérateur $N(x)$ par le dénominateur $D(x)$ :\n\n$$N(x) = D(x) \\times Q(x) + R \\qquad \\Longrightarrow \\qquad f(x) = Q(x) + \\frac{R}{D(x)}$$\n\nLe **quotient** $Q$ donne la partie affine, le **reste** $R$ le numérateur de la fraction.\n\n*2. La factorisation guidée*, quand l'énoncé la suggère. On ajoute et retranche des quantités pour faire apparaître partout le facteur $D(x)$.\n\n*3. L'identification.* On pose $f(x) = ax+b+\\frac{c}{x-x_0}$, on réduit au même dénominateur et l'on identifie les coefficients.\n\n**Ce que la forme décomposée donne immédiatement.**\n\n| Question | Réponse lue sur $f(x) = ax+b+\\frac{c}{x-x_0}$ |\n|---|---|\n| **Asymptote verticale** | $x = x_0$ |\n| **Asymptote oblique** | $y = ax+b$, car $\\frac{c}{x-x_0} \\to 0$ |\n| **Position relative** | signe de $\\frac{c}{x-x_0}$ : au-dessus si positif, au-dessous si négatif |\n| **Points d'intersection** avec l'asymptote | **aucun**, car $\\frac{c}{x-x_0}$ ne s'annule jamais |\n| **Dérivée** | $f'(x) = a - \\frac{c}{(x-x_0)^2}$, en une ligne |\n| **Centre de symétrie** | le point $\\Omega\\left(x_0\\,;\\,ax_0+b\\right)$ |\n\n**La position relative, en détail.** Le signe de $c$ commande tout :\n\n| | $x < x_0$ | $x > x_0$ |\n|---|---|---|\n| si $c > 0$ | courbe **au-dessous** | courbe **au-dessus** |\n| si $c < 0$ | courbe **au-dessus** | courbe **au-dessous** |\n\n**Le centre de symétrie.** En posant $X = x - x_0$ et $Y = y - (ax_0+b)$, la fonction devient $Y = aX + \\frac{c}{X}$, qui est **impaire**. La courbe est donc symétrique par rapport au point $\\Omega\\left(x_0\\,;\\,ax_0+b\\right)$, intersection des deux asymptotes.\n\n**Une conséquence pratique de cette symétrie.** Les solutions de toute équation $f'(x) = m$ vont **par paires symétriques** par rapport à $x_0$, puisqu'une symétrie centrale conserve les directions. Leur somme vaut donc toujours $2x_0$ : c'est un contrôle gratuit.",
+      "formule_principale": "f(x) = ax + b + \\frac{c}{x-x_0} \\qquad \\Longrightarrow \\qquad (D) : y = ax+b",
+      "variantes": [
+        {
+          "nom": "Le cas où le degré dépasse de plus de un",
+          "quand_utiliser": "Quand le numérateur est de degré 3 et le dénominateur de degré 1, par exemple",
+          "contenu_markdown": "Si le degré du numérateur dépasse celui du dénominateur de **deux ou plus**, il n'y a **pas** d'asymptote oblique : le quotient de la division euclidienne est alors un polynôme de degré au moins $2$. La courbe admet dans ce cas une **branche parabolique**, et l'on dit que la courbe est asymptote à une parabole. La décomposition reste utile — elle donne toujours la dérivée en une ligne et la position par rapport à la parabole — mais le mot « asymptote oblique » ne convient plus. La règle est donc stricte : asymptote oblique **si et seulement si** le degré du numérateur vaut exactement celui du dénominateur plus un."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f(x) = \\dfrac{x^2-5x+10}{x-3}$ définie sur $\\mathbb{R}\\setminus\\{3\\}$. Décomposer $f$, en déduire l'asymptote oblique et la position relative, puis dresser le tableau de variation.",
+      "epreuve_source": "Probatoire C et E, Mathématiques, session 2002, Cameroun, problème, partie B",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Effectuer la division euclidienne",
+          "justification": "Le degré du numérateur dépasse d'un celui du dénominateur : l'asymptote oblique existe.",
+          "resultat_markdown": "$x^2-5x+10 = (x-3)(x-2) + 4$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la forme décomposée",
+          "justification": "On divise chaque terme par $(x-3)$.",
+          "resultat_markdown": "$f(x) = x - 2 + \\dfrac{4}{x-3}$, soit $a=1$, $b=-2$, $c=4$."
+        },
+        {
+          "numero": 3,
+          "action": "Lire l'asymptote oblique",
+          "justification": "La partie fractionnaire tend vers 0 aux infinis.",
+          "resultat_markdown": "$(D) : y = x-2$ est asymptote oblique en $-\\infty$ et en $+\\infty$."
+        },
+        {
+          "numero": 4,
+          "action": "Déterminer la position relative",
+          "justification": "On étudie le signe de $f(x)-(x-2) = \\frac{4}{x-3}$, qui est celui de $x-3$.",
+          "resultat_markdown": "$(\\mathcal{C})$ est **au-dessous** de $(D)$ sur $]-\\infty;3[$ et **au-dessus** sur $]3;+\\infty[$."
+        },
+        {
+          "numero": 5,
+          "action": "Dériver la forme décomposée",
+          "justification": "Bien plus rapide que la formule du quotient.",
+          "resultat_markdown": "$f'(x) = 1 - \\dfrac{4}{(x-3)^2} = \\dfrac{(x-3)^2-4}{(x-3)^2} = \\dfrac{(x-5)(x-1)}{(x-3)^2}$"
+        },
+        {
+          "numero": 6,
+          "action": "Étudier le signe et calculer les extremums",
+          "justification": "Le dénominateur est positif : le signe est celui du trinôme, positif hors des racines.",
+          "resultat_markdown": "$f'>0$ sur $]-\\infty;1[$ et $]5;+\\infty[$ ; $f(1)=-3$ maximum local, $f(5)=5$ minimum local."
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier la symétrie",
+          "justification": "Les deux extremums doivent être symétriques par rapport à l'asymptote verticale.",
+          "resultat_markdown": "$\\dfrac{1+5}{2} = 3$ ✔ — le centre de symétrie est $\\Omega(3\\,;\\,1)$."
+        }
+      ],
+      "conclusion_markdown": "La décomposition $f(x) = x-2+\\frac{4}{x-3}$ fournit d'un seul coup l'asymptote oblique $y=x-2$, la position relative selon le signe de $x-3$, la dérivée factorisée et le centre de symétrie $\\Omega(3;1)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher l'asymptote oblique par la limite de $\\frac{f(x)}{x}$",
+          "pourquoi_faux": "Cette méthode générale fonctionne, mais elle est bien plus longue : il faut calculer $a = \\lim\\frac{f(x)}{x}$ puis $b = \\lim\\left(f(x)-ax\\right)$. La décomposition donne $a$ et $b$ directement, sans aucune limite.",
+          "correction_markdown": "Décompose d'abord : la partie affine **est** l'asymptote, il n'y a rien à calculer."
+        },
+        {
+          "erreur_markdown": "Oublier d'étudier la position relative",
+          "pourquoi_faux": "Trouver l'asymptote ne suffit pas : les énoncés demandent presque toujours de préciser de quel côté se trouve la courbe. C'est le signe de $\\frac{c}{x-x_0}$ qui répond, et il change de part et d'autre de $x_0$.",
+          "correction_markdown": "Dresse un petit tableau de signes à deux colonnes : $x<x_0$ et $x>x_0$."
+        },
+        {
+          "erreur_markdown": "Croire que la courbe coupe son asymptote oblique",
+          "pourquoi_faux": "L'équation $f(x) = ax+b$ équivaut à $\\frac{c}{x-x_0} = 0$, qui n'a aucune solution tant que $c \\neq 0$. La courbe ne rencontre **jamais** son asymptote oblique dans ce cas de figure.",
+          "correction_markdown": "Écris explicitement que l'équation n'a pas de solution : c'est souvent un point du barème."
+        },
+        {
+          "erreur_markdown": "Dériver le quotient initial plutôt que la forme décomposée",
+          "pourquoi_faux": "La formule $\\left(\\frac{u}{v}\\right)' = \\frac{u'v-uv'}{v^2}$ donne le bon résultat, mais au prix d'un développement long et propice aux erreurs de signe. La forme $x-2+\\frac{4}{x-3}$ se dérive en une ligne.",
+          "correction_markdown": "Décompose toujours **avant** de dériver : c'est le principal bénéfice de cette écriture."
+        },
+        {
+          "erreur_markdown": "Relier les deux branches à travers l'asymptote verticale",
+          "pourquoi_faux": "La fonction n'est pas définie en $x_0$ : les deux branches sont séparées et partent chacune vers l'infini. Il peut arriver, comme ici, qu'un maximum local soit inférieur à un minimum local — ce n'est pas contradictoire, ils sont sur des branches distinctes.",
+          "correction_markdown": "Marque la **double barre** dans le tableau de variation et interromps le tracé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Décomposer $f(x) = \\dfrac{2x^2+x-3}{x+1}$ sous la forme $ax+b+\\dfrac{c}{x+1}$, puis donner l'asymptote oblique et la position relative de la courbe.",
+          "solution_markdown": "**Étape 1 — division euclidienne.**\n\nDivisons $2x^2+x-3$ par $x+1$ :\n\n$$2x^2+x-3 = (x+1)(2x-1) - 2$$\n\n*Vérification :* $(x+1)(2x-1) = 2x^2 - x + 2x - 1 = 2x^2+x-1$, puis $-2$ donne $2x^2+x-3$ ✔\n\n**Étape 2 — forme décomposée.**\n\n$$f(x) = 2x - 1 - \\frac{2}{x+1}$$\n\nsoit $a = 2$, $b = -1$, $c = -2$.\n\n**Étape 3 — asymptote oblique.**\n\nComme $\\dfrac{-2}{x+1} \\to 0$ aux infinis :\n\n$$(D) : y = 2x-1$$\n\n**Étape 4 — position relative.**\n\n$$f(x) - (2x-1) = \\frac{-2}{x+1}$$\n\nLe numérateur étant **négatif**, le signe est l'opposé de celui de $x+1$ :\n\n| $x$ | $x+1$ | $\\frac{-2}{x+1}$ | Position |\n|---|---|---|---|\n| $x < -1$ | $-$ | $> 0$ | courbe **au-dessus** |\n| $x > -1$ | $+$ | $< 0$ | courbe **au-dessous** |\n\n**Attention.** La position est ici **inversée** par rapport à l'exemple du cours, parce que $c = -2 < 0$. C'est bien le signe de $c$ qui commande.\n\n**Étape 5 — asymptote verticale et centre.**\n\nAsymptote verticale $x = -1$ ; centre de symétrie $\\Omega(-1\\,;\\,2\\times(-1)-1) = \\Omega(-1\\,;\\,-3)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $g(x) = \\dfrac{x^2+2x+2}{x+1}$. Décomposer $g$, étudier ses variations et montrer que la courbe admet un centre de symétrie que l'on précisera.",
+          "solution_markdown": "**Étape 1 — décomposition.**\n\n$$x^2+2x+2 = (x+1)^2 + 1$$\n\ndonc :\n\n$$g(x) = \\frac{(x+1)^2+1}{x+1} = (x+1) + \\frac{1}{x+1} = x + 1 + \\frac{1}{x+1}$$\n\nsoit $a=1$, $b=1$, $c=1$, et $x_0 = -1$.\n\n**Étape 2 — asymptotes.**\n\n- Verticale : $x = -1$\n- Oblique : $y = x+1$, la courbe étant **au-dessus** pour $x>-1$ et **au-dessous** pour $x<-1$, puisque $c = 1 > 0$.\n\n**Étape 3 — dérivée.**\n\n$$g'(x) = 1 - \\frac{1}{(x+1)^2} = \\frac{(x+1)^2-1}{(x+1)^2} = \\frac{x(x+2)}{(x+1)^2}$$\n\n*Détail :* $(x+1)^2 - 1 = x^2+2x = x(x+2)$.\n\n**Étape 4 — signe et variations.**\n\nLe dénominateur est positif ; le signe est celui de $x(x+2)$, positif hors de $[-2\\,;\\,0]$.\n\n$$g(-2) = -2+1+\\frac{1}{-1} = -2 \\qquad ; \\qquad g(0) = 0+1+1 = 2$$\n\n| $x$ | $-\\infty$ | | $-2$ | | $-1$ | | $0$ | | $+\\infty$ |\n|---|---|---|---|---|---|---|---|---|---|\n| $g'(x)$ | | $+$ | $0$ | $-$ | ‖ | $-$ | $0$ | $+$ | |\n| $g(x)$ | $-\\infty$ | $\\nearrow$ | $-2$ | $\\searrow$ | $-\\infty$ ‖ $+\\infty$ | $\\searrow$ | $2$ | $\\nearrow$ | $+\\infty$ |\n\n**Étape 5 — centre de symétrie.**\n\nLe centre est l'intersection des deux asymptotes :\n\n$$\\Omega\\left(-1\\,;\\,(-1)+1\\right) = \\Omega(-1\\,;\\,0)$$\n\n*Démonstration.* Posons $x = -1+h$ :\n\n$$g(-1+h) = (-1+h)+1+\\frac{1}{h} = h + \\frac1h$$\n$$g(-1-h) = (-1-h)+1+\\frac{1}{-h} = -h - \\frac1h$$\n\nDonc :\n\n$$g(-1+h) + g(-1-h) = 0 = 2 \\times y_\\Omega$$\n\nC'est exactement la caractérisation du centre de symétrie $\\Omega(-1\\,;\\,0)$. ✔\n\n**Contrôle par les extremums.** Ils sont en $-2$ et $0$, dont la moyenne vaut $-1 = x_\\Omega$ ; et leurs ordonnées $-2$ et $2$ ont pour moyenne $0 = y_\\Omega$. Les deux extremums sont donc symétriques l'un de l'autre par rapport à $\\Omega$. ✔"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $f(x) = \\dfrac{x^2-5x+10}{x-3}$. Déterminer tous les points de la courbe en lesquels la tangente est parallèle à une droite de coefficient directeur $m$ donné, et discuter selon les valeurs de $m$. Interpréter géométriquement les résultats.",
+          "solution_markdown": "**Étape 1 — poser l'équation.**\n\nD'après la décomposition, $f'(x) = 1 - \\dfrac{4}{(x-3)^2}$. On cherche les $x \\neq 3$ tels que $f'(x) = m$ :\n\n$$1 - \\frac{4}{(x-3)^2} = m$$\n$$\\frac{4}{(x-3)^2} = 1 - m$$\n\n**Étape 2 — discuter selon $m$.**\n\n*Cas 1 : $m > 1$.* Alors $1-m < 0$, tandis que le membre de gauche $\\frac{4}{(x-3)^2}$ est toujours **strictement positif**. L'équation est impossible.\n\n$$\\text{Aucun point.}$$\n\n*Cas 2 : $m = 1$.* L'équation devient $\\frac{4}{(x-3)^2} = 0$, sans solution.\n\n$$\\text{Aucun point.}$$\n\n*Cas 3 : $m < 1$.* Alors $1-m > 0$ et l'on peut écrire :\n\n$$(x-3)^2 = \\frac{4}{1-m}$$\n$$x - 3 = \\pm\\frac{2}{\\sqrt{1-m}}$$\n$$x = 3 \\pm \\frac{2}{\\sqrt{1-m}}$$\n\n$$\\text{Deux points, symétriques par rapport à } x=3.$$\n\n**Tableau récapitulatif.**\n\n| Valeur de $m$ | Nombre de points | Abscisses |\n|---|---|---|\n| $m > 1$ | $0$ | — |\n| $m = 1$ | $0$ | — |\n| $m < 1$ | $2$ | $3 \\pm \\dfrac{2}{\\sqrt{1-m}}$ |\n\n**Étape 3 — vérifier sur le cas de l'épreuve.**\n\nPour $m = \\frac13$, qui est bien inférieur à $1$ :\n\n$$x = 3 \\pm \\frac{2}{\\sqrt{1-\\frac13}} = 3 \\pm \\frac{2}{\\sqrt{\\frac23}} = 3 \\pm 2\\sqrt{\\frac32} = 3 \\pm \\sqrt{6}$$\n\n*Détail :* $2\\sqrt{\\frac32} = 2 \\times \\frac{\\sqrt3}{\\sqrt2} = \\frac{2\\sqrt3}{\\sqrt2} = \\sqrt2\\sqrt3 = \\sqrt6$.\n\nOn retrouve exactement les abscisses $3\\pm\\sqrt6$ trouvées à la question 5b de l'épreuve. ✔\n\n**Étape 4 — interprétation géométrique.**\n\n*Pourquoi $m = 1$ est exclu.* Le coefficient $1$ est celui de l'**asymptote oblique** $y = x-2$. Aucune tangente ne lui est parallèle, et la raison est claire : la courbe s'approche indéfiniment de l'asymptote sans jamais avoir exactement sa direction. Sa pente tend vers $1$ à l'infini, mais ne l'atteint jamais.\n\n*Pourquoi $m > 1$ est exclu.* La dérivée $f'(x) = 1 - \\frac{4}{(x-3)^2}$ est toujours **strictement inférieure à $1$**, puisqu'on retranche une quantité positive. La courbe n'est jamais plus « raide » que son asymptote.\n\nAutrement dit, l'ensemble des pentes atteintes par les tangentes est exactement $]-\\infty\\,;\\,1[$.\n\n*Pourquoi les points vont par paires.* La courbe admet $\\Omega(3\\,;\\,1)$ pour centre de symétrie. Une symétrie centrale conserve les **directions** : si la tangente en $M$ a pour pente $m$, la tangente au point symétrique $M'$ a la même pente $m$. Les solutions vont donc nécessairement par paires symétriques par rapport à $x_\\Omega = 3$, ce que confirme la forme $3 \\pm \\dots$ obtenue.\n\n**Étape 5 — un contrôle de cohérence.**\n\nPour $m = 0$, on cherche les tangentes **horizontales**, c'est-à-dire les extremums :\n\n$$x = 3 \\pm \\frac{2}{\\sqrt{1}} = 3 \\pm 2 \\qquad \\text{soit} \\qquad x = 1 \\text{ et } x = 5$$\n\nCe sont bien les abscisses du maximum local et du minimum local trouvées au tableau de variation. ✔\n\n**Conclusion.** L'étude d'une seule équation, $f'(x) = m$, révèle trois propriétés structurelles de la courbe : ses pentes sont toutes inférieures à $1$, la direction de l'asymptote n'est jamais atteinte, et les tangentes de même pente vont par paires symétriques. Ces trois faits découlent tous de la décomposition initiale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Asymptote oblique **si et seulement si** le degré du numérateur vaut celui du dénominateur **plus un**.",
+        "Décomposer d'abord : $f(x) = ax+b+\\dfrac{c}{x-x_0}$, par division euclidienne ou identification.",
+        "L'asymptote oblique est $y = ax+b$ ; l'asymptote verticale est $x = x_0$.",
+        "La **position relative** est donnée par le signe de $\\dfrac{c}{x-x_0}$, qui change de part et d'autre de $x_0$.",
+        "La courbe ne coupe **jamais** son asymptote oblique tant que $c \\neq 0$.",
+        "Dérive la forme décomposée : $f'(x) = a - \\dfrac{c}{(x-x_0)^2}$, en une seule ligne.",
+        "Le point $\\Omega\\left(x_0\\,;\\,ax_0+b\\right)$, intersection des asymptotes, est **centre de symétrie** : les extremums et les tangentes de même pente vont par paires symétriques."
+      ]
+    }
+  ]
+}

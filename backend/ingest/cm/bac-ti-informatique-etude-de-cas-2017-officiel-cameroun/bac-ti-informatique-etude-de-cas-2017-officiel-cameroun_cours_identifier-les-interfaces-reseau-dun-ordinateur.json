@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-interfaces-reseau-ordinateur-ipconfig-tle-ti",
+  "meta": {
+    "titre": "Identifier les interfaces réseau d'un ordinateur",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques - matériel réseau",
+    "duree_estimee_min": 15,
+    "tags": [
+      "carte réseau",
+      "interface réseau",
+      "Ethernet",
+      "Wi-Fi",
+      "ipconfig"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q4.8-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ordinateur portable moderne dispose presque toujours de plusieurs façons de se connecter à un réseau : un câble Ethernet, une puce Wi-Fi, parfois plus. Compter précisément ces interfaces à partir d'une simple sortie de commande demande de ne pas se laisser distraire par leur état de connexion du moment, qui n'a rien à voir avec leur existence matérielle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une carte réseau est le composant matériel qui permet à un ordinateur de se connecter à un réseau.",
+        "Savoir lire la structure générale d'une sortie `ipconfig /all` (blocs séparés par carte)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Compter les blocs, pas les connexions actives",
+      "contenu_markdown": "Dans le résultat de `ipconfig /all`, chaque interface réseau de la machine (filaire ou sans fil) apparaît sous son propre intitulé « Carte Ethernet Connexion... » ; il suffit de compter le nombre de ces blocs, y compris ceux dont le média est déconnecté. Le statut affiché à l'intérieur de chaque bloc (« Média déconnecté », adresse IP absente) renseigne sur l'état de connexion à l'instant de la capture, pas sur l'existence matérielle de l'interface : une carte réseau physiquement présente dans la machine apparaît toujours dans la liste, connectée ou non.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une capture affiche deux blocs : « Carte Ethernet Connexion au réseau local » (adresse IP 172.16.8.248, DHCP activé) et « Carte Ethernet Connexion réseau sans fil » (Statut du média : Média déconnecté). Combien de cartes réseau possède cet ordinateur ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter les blocs distincts « Carte... »",
+          "justification": "Chaque bloc correspond à une interface réseau matérielle de la machine.",
+          "resultat_markdown": "Deux blocs identifiés : une carte filaire et une carte sans fil."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier que le statut de connexion ne change pas le compte",
+          "justification": "Le statut « Média déconnecté » de la carte sans fil décrit son état à l'instant présent, pas son existence.",
+          "resultat_markdown": "La carte sans fil compte bel et bien, malgré son statut déconnecté."
+        }
+      ],
+      "conclusion_markdown": "L'ordinateur dispose de 2 cartes réseau : la carte filaire Ethernet, active et connectée, et la carte Wi-Fi, présente mais non connectée au moment de la capture."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « 1 carte réseau » en ne comptant que la carte activement connectée (Ethernet) et en ignorant la carte Wi-Fi déconnectée.",
+          "pourquoi_faux": "« Média déconnecté » signifie seulement qu'aucun câble ou signal n'est détecté à cet instant, pas que le matériel est absent de la machine : la carte Wi-Fi reste une interface réseau à part entière.",
+          "correction_markdown": "Compte toujours tous les blocs « Carte... » affichés par `ipconfig /all`, quel que soit leur statut de connexion au moment de la capture."
+        },
+        {
+          "erreur_markdown": "Compter les adresses IP affichées plutôt que les blocs de carte, en oubliant qu'une carte déconnectée n'affiche généralement aucune adresse IP.",
+          "pourquoi_faux": "Une carte sans adresse IP (déconnectée) reste une carte réseau ; le nombre d'adresses IP affichées ne correspond donc pas forcément au nombre de cartes présentes.",
+          "correction_markdown": "Compte les intitulés de blocs (« Carte Ethernet Connexion... »), pas les lignes d'adresse IP qu'ils contiennent."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une capture `ipconfig /all` affiche un seul bloc, intitulé « Carte Ethernet Connexion au réseau local ». Combien de cartes réseau possède cette machine ?",
+          "solution_markdown": "Une seule carte réseau : un seul bloc figure dans la capture."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une capture affiche trois blocs : une carte Ethernet filaire connectée, une carte Wi-Fi connectée, et une carte « Bluetooth Network Connection » avec le statut « Média déconnecté ». Combien d'interfaces réseau cette machine possède-t-elle, et pourquoi la connexion Bluetooth compte-t-elle comme une interface réseau ?",
+          "solution_markdown": "Trois interfaces réseau au total. Le Bluetooth, bien que principalement connu pour relier des périphériques (casque, souris), peut aussi servir d'interface réseau (partage de connexion Internet entre deux appareils, par exemple), c'est pourquoi Windows lui attribue son propre bloc de configuration IP dans `ipconfig /all`, au même titre que l'Ethernet et le Wi-Fi."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un technicien affirme qu'un ordinateur n'a « aucune carte réseau qui fonctionne » parce que toutes les cartes affichées dans `ipconfig /all` montrent un statut déconnecté ou une adresse IP de type 169.254.x.x (adresse d'auto-configuration). Cette conclusion est-elle correcte ? Distinguer ce que révèle vraiment chaque symptôme.",
+          "solution_markdown": "La conclusion « aucune carte réseau » est incorrecte du point de vue matériel : la présence même des blocs dans `ipconfig /all` prouve que les cartes réseau existent et sont reconnues par le système d'exploitation. Ce que révèlent réellement les deux symptômes est différent :\n\nUn statut « Média déconnecté » signifie qu'aucun signal n'est détecté sur cette interface (câble débranché, Wi-Fi non associé à un réseau) : c'est un problème de connexion physique ou de association réseau, pas une carte défaillante.\n\nUne adresse 169.254.x.x (adresse APIPA) signifie que la carte est bien connectée physiquement, mais qu'elle n'a pas réussi à obtenir d'adresse IP d'un serveur DHCP (serveur DHCP injoignable ou absent) : c'est un problème côté attribution d'adresse, pas côté matériel de la carte elle-même.\n\nLe diagnostic correct distingue donc trois causes possibles (carte absente, câble/Wi-Fi non connecté, DHCP injoignable), chacune nécessitant une action différente, plutôt que de conclure globalement à l'absence de toute carte réseau fonctionnelle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque bloc « Carte... » d'un `ipconfig /all` correspond à une interface réseau matérielle distincte de la machine.",
+        "Le statut de connexion (connecté/déconnecté) affiché dans un bloc ne change rien au fait que la carte existe et compte dans le total.",
+        "Une carte réseau peut être Ethernet (filaire), Wi-Fi (sans fil), ou plus rarement Bluetooth : toutes apparaissent sous le même type de bloc.",
+        "Une adresse IP absente ou de type 169.254.x.x signale un problème d'attribution DHCP, pas une carte réseau manquante.",
+        "Cette lecture rigoureuse d'une capture `ipconfig` est directement réutilisable en contexte professionnel de maintenance, au-delà du seul exercice du BAC TI."
+      ]
+    }
+  ]
+}

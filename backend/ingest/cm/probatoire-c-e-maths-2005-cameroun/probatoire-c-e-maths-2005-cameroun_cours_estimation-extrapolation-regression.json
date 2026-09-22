@@ -1,0 +1,193 @@
+{
+ "cours_id": "cours-estimation-extrapolation-regression-1ere-ce",
+ "meta": {
+  "titre": "Estimer une valeur à l'aide de la droite de régression de x en y",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistiques à deux variables",
+  "duree_estimee_min": 20,
+  "tags": ["estimation", "extrapolation", "droite de régression", "interprétation", "fiabilité"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qB3b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Substituer une valeur dans une équation de droite : le calcul est immédiat. Ce qui ne l'est pas, c'est de savoir **dans quelle lettre** substituer, et **jusqu'où** on a le droit d'aller. Estimer une puissance pour une cylindrée de $3500$ cm³ alors que les données s'arrêtent à $2500$, ce n'est plus interpoler : c'est extrapoler, et supposer que la tendance se prolonge — ce que rien ne garantit. Une phrase là-dessus vaut plus que le calcul lui-même."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Disposer de l'équation de la droite de régression appropriée",
+    "Savoir substituer une valeur dans une équation",
+    "Savoir arrondir selon une précision demandée",
+    "Connaître la plage de valeurs des données"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Substituer dans la bonne lettre, puis apprécier la fiabilité",
+   "contenu_markdown": "**Le principe.** Une droite de régression sert à **prévoir**. On remplace la variable connue par sa valeur et l'on calcule l'autre.\n\n**La méthode, en quatre gestes.**\n\n1. **Identifier** ce qu'on connaît et ce qu'on cherche.\n2. **Choisir** la droite correspondante.\n3. **Substituer** dans la bonne lettre.\n4. **Arrondir** selon la précision demandée, puis **apprécier la fiabilité**.\n\n**Le choix de la droite.**\n\n| On connaît | On cherche | Droite à utiliser |\n|---|---|---|\n| $x$ | $y$ | $y = ax+b$ |\n| $y$ | $x$ | $x = a'y+b'$ |\n\n**La substitution.** Dans $x = a'y+b'$, la lettre $y$ désigne la variable **connue**. Substituer la valeur donnée dans $x$ serait une inversion complète du raisonnement.\n\nVérifie toujours **quelle lettre désigne quelle grandeur** avant de calculer : ici $x$ est la puissance et $y$ la cylindrée.\n\n**Interpolation ou extrapolation ?** C'est la question de fiabilité :\n\n| Situation | Nom | Fiabilité |\n|---|---|---|\n| valeur **dans** la plage observée | interpolation | bonne |\n| valeur **hors** de la plage | extrapolation | à discuter |\n\n**Pourquoi l'extrapolation est risquée.** L'ajustement affine résume la tendance **observée**. Rien ne garantit qu'elle se prolonge au-delà des données : le phénomène peut changer de nature, saturer, ou s'infléchir.\n\nUne estimation extrapolée doit donc être présentée comme un **ordre de grandeur**, pas comme une prévision fiable.\n\n**La phrase à ajouter.** Une ligne suffit :\n\n« La cylindrée $3500$ cm³ est très supérieure à la plus grande valeur observée, $2500$ cm³ : il s'agit d'une extrapolation, et le résultat doit être considéré comme un ordre de grandeur. »\n\nCe genre de remarque est valorisé au barème et distingue une copie qui **comprend** d'une copie qui **applique**.\n\n**L'arrondi.** Il suit la consigne : « au cheval près » signifie à l'unité. On n'arrondit qu'à la **fin**, jamais dans les calculs intermédiaires.\n\n**Le contrôle de cohérence.** La valeur estimée doit être plausible. Ici, une cylindrée de $3500$ cm³ — supérieure aux $2500$ observées — doit donner une puissance supérieure aux $75$ chevaux observés. On obtient $109$ : cohérent.",
+   "formule_principale": "y = y_{0} \\implies x = a'y_{0}+b'",
+   "variantes": [
+    {
+     "nom": "Estimation par lecture graphique",
+     "quand_utiliser": "Quand la droite est tracée et la précision demandée modeste",
+     "contenu_markdown": "On repère la valeur connue sur son axe, on monte ou on se déplace jusqu'à la droite, puis on lit l'autre coordonnée.\n\nC'est rapide, mais moins précis que le calcul, et cela suppose que la valeur cherchée figure dans la plage du dessin — ce qui n'est justement pas le cas en extrapolation, où il faudrait prolonger la droite hors du cadre."
+    },
+    {
+     "nom": "Estimation avec la mauvaise droite",
+     "quand_utiliser": "À ne jamais faire — mais à savoir reconnaître",
+     "contenu_markdown": "Utiliser la droite de $y$ en $x$ pour prévoir $x$ à partir de $y$ revient à inverser l'équation $y = ax+b$ en $x = \\dfrac{y-b}{a}$.\n\nCe n'est **pas** la même chose que la droite de régression de $x$ en $y$, car les deux droites sont distinctes dès que $\\left|r\\right| < 1$.\n\nL'écart entre les deux estimations mesure d'ailleurs la qualité de l'ajustement : plus la corrélation est forte, plus elles se rapprochent."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "La droite de régression de $x$ (puissance en chevaux) en $y$ (cylindrée en cm³) a pour équation $x = 0{,}028\\,365\\,y + 9{,}73$. Donner une estimation au cheval près de la puissance d'un moteur de cylindrée $3500$ cm³. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier ce qu'on connaît",
+     "justification": "L'énoncé donne une cylindrée",
+     "resultat_markdown": "On connaît $y = 3500$ cm³"
+    },
+    {
+     "numero": 2,
+     "action": "Identifier ce qu'on cherche",
+     "justification": "La question porte sur la puissance",
+     "resultat_markdown": "On cherche $x$, en chevaux"
+    },
+    {
+     "numero": 3,
+     "action": "Choisir la droite",
+     "justification": "On prévoit $x$ à partir de $y$",
+     "resultat_markdown": "C'est bien la droite de régression de $x$ en $y$, $x = a'y+b'$"
+    },
+    {
+     "numero": 4,
+     "action": "Substituer",
+     "justification": "On remplace $y$ par $3500$, et non $x$",
+     "resultat_markdown": "$x = 0{,}028\\,365 \\times 3500 + 9{,}73$"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer le produit",
+     "justification": "En gardant toutes les décimales",
+     "resultat_markdown": "$0{,}028\\,365 \\times 3500 = 99{,}28$"
+    },
+    {
+     "numero": 6,
+     "action": "Additionner",
+     "justification": "On ajoute l'ordonnée à l'origine",
+     "resultat_markdown": "$x = 99{,}28 + 9{,}73 = 109{,}01$"
+    },
+    {
+     "numero": 7,
+     "action": "Arrondir",
+     "justification": "« Au cheval près » signifie à l'unité",
+     "resultat_markdown": "$x \\approx 109$"
+    },
+    {
+     "numero": 8,
+     "action": "Rédiger la conclusion",
+     "justification": "Avec l'unité et le contexte",
+     "resultat_markdown": "On estime à environ $109$ chevaux la puissance d'un moteur de cylindrée $3500$ cm³"
+    },
+    {
+     "numero": 9,
+     "action": "Apprécier la fiabilité",
+     "justification": "La valeur sort de la plage observée, qui va de $1000$ à $2500$ cm³",
+     "resultat_markdown": "Il s'agit d'une **extrapolation** : rien ne garantit que la relation quasi affine constatée se prolonge au-delà de $2500$ cm³"
+    },
+    {
+     "numero": 10,
+     "action": "Contrôler la vraisemblance",
+     "justification": "Une cylindrée supérieure à toutes les observées doit donner une puissance supérieure",
+     "resultat_markdown": "$109 > 75$, la plus grande puissance observée. Cohérent"
+    }
+   ],
+   "conclusion_markdown": "L'estimation vaut environ $109$ chevaux. Deux points de vigilance. D'abord, c'est bien $y$ qu'on remplace par $3500$ : l'équation $x = a'y+b'$ exprime la puissance **en fonction de** la cylindrée. Ensuite, $3500$ dépasse largement la plus grande valeur observée : la remarque sur l'extrapolation ne coûte qu'une ligne, elle est valorisée au barème, et elle montre qu'on a compris ce qu'un ajustement peut et ne peut pas faire."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Substituer dans la mauvaise lettre",
+     "pourquoi_faux": "Remplacer $x$ par $3500$ dans $x = a'y+b'$ reviendrait à résoudre $3500 = 0{,}0284y+9{,}73$, soit $y \\approx 122\\,900$ cm³ : une cylindrée absurde.",
+     "correction_markdown": "Écris explicitement ce que désigne chaque lettre avant de substituer : $x$ = puissance, $y$ = cylindrée. Puis vérifie la vraisemblance du résultat."
+    },
+    {
+     "erreur_markdown": "Utiliser la droite de $y$ en $x$",
+     "pourquoi_faux": "Cette droite prévoit une cylindrée à partir d'une puissance : c'est l'inverse de ce qu'on demande. Et l'inverser algébriquement ne donne pas la droite de régression de $x$ en $y$, car les deux droites sont distinctes.",
+     "correction_markdown": "Pose-toi la question : que connaît-on, que cherche-t-on ? La variable **connue** est celle qui figure au second membre."
+    },
+    {
+     "erreur_markdown": "Ne pas signaler l'extrapolation",
+     "pourquoi_faux": "La valeur $3500$ dépasse de $40\\,\\%$ la plus grande cylindrée observée. Présenter le résultat comme une prévision fiable, sans nuance, montre qu'on n'a pas compris la portée de l'ajustement.",
+     "correction_markdown": "Ajoute une ligne signalant que la valeur sort de la plage étudiée. C'est valorisé au barème et cela ne coûte rien."
+    },
+    {
+     "erreur_markdown": "Arrondir dans les calculs intermédiaires",
+     "pourquoi_faux": "Arrondir $a'$ à $0{,}03$ donnerait $0{,}03 \\times 3500 = 105$, puis $105+9{,}73 = 114{,}73$, soit $115$ chevaux au lieu de $109$ — une erreur de six chevaux.",
+     "correction_markdown": "Garde toutes les décimales du coefficient et n'arrondis qu'au moment d'écrire la réponse finale."
+    },
+    {
+     "erreur_markdown": "Oublier l'unité et le contexte",
+     "pourquoi_faux": "Répondre « $109$ » ne dit pas de quoi il s'agit. En statistique, le résultat doit être **interprété** dans le contexte de l'étude.",
+     "correction_markdown": "Rédige une phrase complète : « on estime à environ $109$ chevaux la puissance d'un moteur de $3500$ cm³ »."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "La droite de régression de $y$ en $x$ d'une série a pour équation $y = 3{,}2x + 14$, les valeurs de $x$ observées allant de $5$ à $25$. Estimer $y$ pour $x = 12$, puis pour $x = 40$. Commenter la différence de statut entre les deux estimations.",
+     "solution_markdown": "**Première estimation - $x = 12$.**\n\n$$y = 3{,}2 \\times 12 + 14 = 38{,}4 + 14 = 52{,}4$$\n\n**Statut :** la valeur $12$ appartient à l'intervalle $[5\\,;\\,25]$ des données observées.\n\nC'est une **interpolation** : on prévoit à l'intérieur du domaine étudié. La fiabilité est **bonne**, sous réserve que l'ajustement affine soit lui-même de qualité.\n\n**Seconde estimation - $x = 40$.**\n\n$$y = 3{,}2 \\times 40 + 14 = 128 + 14 = 142$$\n\n**Statut :** la valeur $40$ dépasse largement le maximum observé, $25$. L'écart représente $60\\,\\%$ au-delà de la borne.\n\nC'est une **extrapolation** : on suppose que la relation se prolonge bien au-delà des données. La fiabilité est **faible**.\n\n**Commentaire.**\n\n| | $x = 12$ | $x = 40$ |\n|---|---|---|\n| Position | dans $[5\\,;\\,25]$ | hors de $[5\\,;\\,25]$ |\n| Nature | interpolation | extrapolation |\n| Fiabilité | bonne | à discuter |\n\n**Pourquoi cette différence ?**\n\nL'ajustement affine résume la tendance **constatée entre $5$ et $25$**. Entre ces bornes, on dispose de points de comparaison : l'estimation s'appuie sur des observations qui l'encadrent.\n\nAu-delà, rien. Le phénomène peut parfaitement s'infléchir, saturer, ou changer de régime. La droite ne « sait » rien de ce qui se passe hors de son domaine.\n\n**Une image utile.** Une droite de régression est comme une carte : fiable sur le territoire relevé, muette au-delà de ses bords.\n\n**Ce qu'il faut retenir.** Le calcul est identique dans les deux cas ; c'est le **statut** de la réponse qui change. Signaler ce statut fait partie de la réponse attendue."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Une série double a pour moyennes $\\bar{x} = 10$ et $\\bar{y} = 25$, pour variances $V(x) = 20$ et $V(y) = 80$, et pour covariance $\\operatorname{Cov}(x,y) = 32$. Estimer $y$ pour $x = 15$ par la droite de $y$ en $x$, puis estimer $x$ pour $y = 41$ par la droite de $x$ en $y$. Vérifier ensuite si les deux estimations sont cohérentes entre elles.",
+     "solution_markdown": "**Étape 1 - la droite de $y$ en $x$.**\n\n$$a = \\dfrac{32}{20} = 1{,}6 \\qquad ; \\qquad b = 25 - 1{,}6 \\times 10 = 25-16 = 9$$\n\n$$y = 1{,}6x + 9$$\n\n**Étape 2 - estimer $y$ pour $x = 15$.**\n\n$$y = 1{,}6 \\times 15 + 9 = 24 + 9 = 33$$\n\n**Étape 3 - la droite de $x$ en $y$.**\n\n$$a' = \\dfrac{32}{80} = 0{,}4 \\qquad ; \\qquad b' = 10 - 0{,}4 \\times 25 = 10-10 = 0$$\n\n$$x = 0{,}4y$$\n\n**Étape 4 - estimer $x$ pour $y = 41$.**\n\n$$x = 0{,}4 \\times 41 = 16{,}4$$\n\n**Étape 5 - tester la cohérence.**\n\nSi les deux droites étaient identiques, alors partir de $x = 15$, obtenir $y = 33$, puis repartir de $y = 33$ devrait redonner $x = 15$.\n\nVérifions :\n\n$$x = 0{,}4 \\times 33 = 13{,}2 \\neq 15$$\n\n**Les deux estimations ne sont pas réciproques.**\n\n**Étape 6 - expliquer.**\n\nLes deux droites sont **distinctes**. Calculons le coefficient de corrélation :\n\n$$r^{2} = a \\times a' = 1{,}6 \\times 0{,}4 = 0{,}64 \\qquad \\Longrightarrow \\qquad r = 0{,}8$$\n\nLa corrélation est bonne mais pas parfaite. Les deux droites forment donc un angle, et l'aller-retour ne revient pas au point de départ.\n\n**Étape 7 - quantifier l'écart.**\n\nL'aller-retour donne $13{,}2$ au lieu de $15$, soit un rapport\n\n$$\\dfrac{13{,}2}{15} = 0{,}88$$\n\nRegardons ce nombre autrement. L'aller-retour depuis le point moyen : partant de $\\bar{x}+d$, on obtient $\\bar{y} + ad$, puis $\\bar{x} + a'ad = \\bar{x} + r^{2}d$.\n\nAvec $d = 15-10 = 5$ :\n\n$$x_{\\text{retour}} = 10 + 0{,}64 \\times 5 = 10 + 3{,}2 = 13{,}2$$\n\n**Conforme.** L'écart au point moyen est multiplié par $r^{2} = 0{,}64$ à chaque aller-retour.\n\n**Étape 8 - interpréter.**\n\nCe phénomène porte un nom : la **régression vers la moyenne**. C'est d'ailleurs l'origine historique du mot « régression ».\n\nUn individu très au-dessus de la moyenne sur un caractère tend à être moins extrême sur l'autre — non par une loi de la nature, mais parce que la corrélation est imparfaite.\n\n**Ce qu'il faut retenir.** Les deux droites ne sont pas réciproques l'une de l'autre. Utiliser l'une pour vérifier l'autre est une erreur de méthode : chacune répond à une question différente, et l'aller-retour ramène toujours vers la moyenne."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Pour les huit voitures, la droite de régression de $x$ en $y$ est $x = 0{,}028\\,365\\,y + 9{,}73$. Calculer les valeurs estimées pour les huit cylindrées observées, en déduire les résidus, et apprécier la qualité de l'ajustement. Discuter ensuite de la validité de l'estimation pour $y = 3500$.",
+     "solution_markdown": "**Étape 1 - calculer les valeurs estimées.**\n\n| $y_{i}$ | $0{,}028\\,365\\,y_{i}$ | $x$ estimé | $x_{i}$ observé | Résidu |\n|---|---|---|---|---|\n| $1000$ | $28{,}37$ | $38{,}10$ | $35$ | $-3{,}10$ |\n| $1600$ | $45{,}38$ | $55{,}11$ | $55$ | $-0{,}11$ |\n| $1800$ | $51{,}06$ | $60{,}79$ | $60$ | $-0{,}79$ |\n| $1700$ | $48{,}22$ | $57{,}95$ | $60$ | $+2{,}05$ |\n| $1900$ | $53{,}89$ | $63{,}62$ | $65$ | $+1{,}38$ |\n| $2000$ | $56{,}73$ | $66{,}46$ | $70$ | $+3{,}54$ |\n| $2100$ | $59{,}57$ | $69{,}30$ | $72$ | $+2{,}70$ |\n| $2500$ | $70{,}91$ | $80{,}64$ | $75$ | $-5{,}64$ |\n\n**Étape 2 - vérifier la somme des résidus.**\n\n$$-3{,}10 - 0{,}11 - 0{,}79 + 2{,}05 + 1{,}38 + 3{,}54 + 2{,}70 - 5{,}64$$\n\nCalculons : $-3{,}10-0{,}11 = -3{,}21$ ; $-0{,}79 = -4{,}00$ ; $+2{,}05 = -1{,}95$ ; $+1{,}38 = -0{,}57$ ; $+3{,}54 = 2{,}97$ ; $+2{,}70 = 5{,}67$ ; $-5{,}64 = 0{,}03$.\n\n**La somme est quasi nulle**, à l'arrondi près. C'est une propriété générale de la droite de régression : les résidus se compensent.\n\n**Étape 3 - apprécier l'ampleur des résidus.**\n\nLe plus grand vaut $5{,}64$ chevaux en valeur absolue, sur une plage de puissances de $35$ à $75$, soit $40$ chevaux.\n\n$$\\dfrac{5{,}64}{40} \\approx 14\\,\\%$$\n\nLes autres sont nettement plus faibles, de l'ordre de $2$ à $3$ chevaux.\n\n**L'ajustement est de qualité correcte**, avec un point manifestement moins bien ajusté.\n\n**Étape 4 - identifier le point atypique.**\n\nLa voiture $8$ — cylindrée $2500$, puissance $75$ — a le plus fort résidu, $-5{,}64$.\n\nLa droite lui **prédit** $80{,}64$ chevaux alors qu'elle n'en a que $75$. C'est cohérent avec ce qu'on avait observé : cette voiture a une cylindrée exceptionnellement élevée pour sa puissance.\n\n**Étape 5 - discuter l'estimation pour $y = 3500$.**\n\n*Premier problème : l'extrapolation.* La valeur $3500$ dépasse de $40\\,\\%$ le maximum observé, $2500$.\n\n*Deuxième problème : la tendance en fin de plage.* Le résidu de la dernière voiture est **négatif** et le plus grand en valeur absolue. Cela suggère que la relation pourrait **s'infléchir** vers le haut de la plage : les grosses cylindrées auraient moins de puissance que la droite ne le prédit.\n\nSi cette tendance se poursuit, l'estimation de $109$ chevaux pour $3500$ cm³ serait **surestimée**.\n\n*Troisième problème : la nature du phénomène.* Un moteur de $3500$ cm³ appartient à une catégorie différente de celles étudiées. Rien ne garantit que les principes de conception soient les mêmes.\n\n**Étape 6 - la conclusion nuancée.**\n\n« L'estimation de $109$ chevaux constitue un ordre de grandeur. Elle repose sur une extrapolation de $40\\,\\%$ au-delà de la plage observée, et l'examen des résidus suggère que la relation pourrait s'infléchir pour les fortes cylindrées, ce qui conduirait à une surestimation. Cette valeur ne doit pas être présentée comme une prévision fiable. »\n\n**Ce qu'il faut retenir.** L'analyse des **résidus** — écarts entre valeurs observées et valeurs prédites — est le moyen le plus direct d'apprécier un ajustement. Leur somme est toujours nulle, mais leur **répartition** est instructive : un résidu systématiquement d'un signe en fin de plage signale une courbure que la droite ne capte pas."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Identifie ce que tu connais et ce que tu cherches avant de choisir la droite.",
+    "Dans $x = a'y+b'$, la lettre $y$ désigne la variable **connue** : substitue dans $y$, pas dans $x$.",
+    "Vérifie quelle lettre désigne quelle grandeur avant tout calcul.",
+    "**Interpolation** : valeur dans la plage observée, fiabilité bonne.",
+    "**Extrapolation** : valeur hors de la plage, fiabilité à discuter.",
+    "Une ligne signalant l'extrapolation est valorisée au barème.",
+    "N'arrondis qu'à la fin, selon la précision demandée.",
+    "Rédige une phrase complète, avec unité et contexte.",
+    "Contrôle la vraisemblance du résultat par rapport aux données observées.",
+    "Les deux droites de régression ne sont pas réciproques : un aller-retour ramène vers la moyenne.",
+    "L'analyse des résidus mesure la qualité de l'ajustement ; leur somme est toujours nulle."
+   ]
+  }
+ ]
+}

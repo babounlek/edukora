@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-operateur-de-recherche-avancee-intitle-google-terminale-ti",
+  "meta": {
+    "titre": "Opérateur de recherche avancée intitle (Google)",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Recherche avancée sur le Web",
+    "duree_estimee_min": 12,
+    "tags": [
+      "opérateur intitle",
+      "recherche avancée Google",
+      "titre de page",
+      "opérateurs de recherche avancée",
+      "Google"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex2-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le titre d'une page web en résume souvent le sujet principal mieux que n'importe quel mot perdu dans son contenu. Un opérateur de recherche permet justement de cibler cette zone précise, très révélatrice du sujet réel d'un document, plutôt que de se contenter d'une recherche large sur l'ensemble de la page."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de titre d'une page web (balise title)",
+        "Usage de base d'un moteur de recherche"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'opérateur intitle:",
+      "contenu_markdown": "L'opérateur **intitle:** restreint la recherche du mot qui le suit au **titre** de la page, une zone précise et généralement très représentative de son sujet. Les autres mots d'une même requête, non précédés d'un opérateur, restent recherchés n'importe où dans le contenu de la page, sans contrainte de zone.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer ce que fait la commande Google : pandémie Afrique intitle:temoignage",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les mots libres et le mot contraint",
+          "justification": "Seul le mot suivant directement intitle: est soumis à une contrainte de zone.",
+          "resultat_markdown": "« pandémie » et « Afrique » sont des mots libres, cherchés n'importe où dans la page. « temoignage », précédé de intitle:, est contraint au titre de la page."
+        },
+        {
+          "numero": 2,
+          "action": "Formuler l'effet global de la commande",
+          "justification": "La commande combine une recherche large (mots libres) et une contrainte précise (titre).",
+          "resultat_markdown": "La commande recherche les pages contenant « pandémie » et « Afrique » n'importe où dans leur contenu, ET dont le titre contient obligatoirement le mot « temoignage »."
+        }
+      ],
+      "conclusion_markdown": "intitle: permet de croiser une recherche générale sur le contenu avec une exigence précise sur le titre, ce qui cible efficacement des pages dont le sujet principal correspond au mot exigé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que intitle: s'applique à tous les mots de la requête, pas seulement au mot qui le suit",
+          "pourquoi_faux": "Comme inurl:, l'opérateur intitle: ne contraint QUE le mot placé immédiatement après lui ; les autres mots de la requête restent des mots-clés de recherche classique, sans contrainte de zone.",
+          "correction_markdown": "Utilise allintitle: (variante de allinurl: mais pour le titre) si plusieurs mots doivent tous figurer dans le titre."
+        },
+        {
+          "erreur_markdown": "Confondre le titre de la page (balise title, affiché dans l'onglet du navigateur et les résultats de recherche) avec un simple titre visible dans le corps du texte",
+          "pourquoi_faux": "intitle: cherche dans la balise HTML de titre de la page, une métadonnée technique, pas dans un texte en gros caractères affiché au milieu du contenu visible.",
+          "correction_markdown": "Précise que la contrainte porte sur le titre technique de la page (celui affiché dans l'onglet du navigateur et les résultats Google), pas sur un simple titre visuel dans le texte."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire une commande qui recherche des pages contenant le mot « recette » n'importe où, mais dont le titre contient obligatoirement le mot « chocolat ».",
+          "solution_markdown": "recette intitle:chocolat"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Comparer les résultats attendus de intitle:cybersecurite et de allintitle:cybersecurite reseaux.",
+          "solution_markdown": "intitle:cybersecurite retourne les pages dont le titre contient le mot « cybersecurite », sans aucune contrainte sur le mot « reseaux » qui n'apparaît pas dans cette commande. allintitle:cybersecurite reseaux, en revanche, exige que le titre de la page contienne À LA FOIS « cybersecurite » ET « reseaux » : cette seconde commande retourne un ensemble de résultats plus restreint et plus ciblé que la première."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi combiner intitle: avec un opérateur comme filetype: (par exemple intitle:rapport filetype:pdf) permet une recherche particulièrement ciblée, en illustrant avec un cas concret.",
+          "solution_markdown": "Chaque opérateur restreint la recherche selon un critère indépendant : intitle: contraint le TITRE de la page, filetype: contraint le FORMAT du document. En les combinant, on cumule les deux contraintes à la fois : intitle:rapport filetype:pdf ne retient que les documents au format PDF dont le titre contient explicitement le mot « rapport », ce qui élimine à la fois les pages web classiques (non-PDF) et les documents PDF dont le titre ne correspond pas au sujet recherché. Cette combinaison est particulièrement utile pour retrouver un document officiel précis (un rapport, une étude) parmi la masse de contenus disponibles sur le Web, bien plus efficacement qu'une recherche par mots-clés simples."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "intitle: contraint uniquement le mot qui le suit immédiatement à figurer dans le titre de la page.",
+        "Les autres mots d'une même requête, sans opérateur, restent cherchés librement dans le contenu.",
+        "allintitle: étend la contrainte à plusieurs mots devant tous figurer dans le titre.",
+        "Combiner plusieurs opérateurs (intitle:, filetype:...) permet une recherche très ciblée."
+      ]
+    }
+  ]
+}

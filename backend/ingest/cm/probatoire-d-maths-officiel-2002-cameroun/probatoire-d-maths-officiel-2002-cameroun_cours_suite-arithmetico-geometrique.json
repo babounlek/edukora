@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-suite-arithmetico-geometrique-suite-auxiliaire-1ere-d",
+  "meta": {
+    "titre": "Suites définies par U(n+1) = aU(n) + b : construire la suite auxiliaire géométrique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "suite arithmético-géométrique",
+      "suite auxiliaire",
+      "suite géométrique",
+      "point fixe"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "21",
+      "savoir_numero": "VIII"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2002-cameroun",
+    "epreuve_titre": "Probatoire D - Mathématiques - Session 2002 (Cameroun)",
+    "exercice_numero": "Problème - Partie A",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2002-cameroun-probleme-qA2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite définie par $U_0$ donné et $U_{n+1}=aU_n+b$ (avec $a\\neq 1$) n'est en général ni arithmétique ni géométrique. Mais elle cache toujours, à l'intérieur, une suite géométrique : il suffit de lui soustraire la bonne constante. Ce cours donne la méthode pour trouver cette constante et transformer n'importe quelle suite de ce type en une suite géométrique que l'on sait déjà étudier complètement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition et propriétés d'une suite géométrique (terme général, somme des termes)",
+        "Résolution d'une équation du premier degré",
+        "Raisonnement par calcul direct sur une relation de récurrence"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La suite auxiliaire V(n) = U(n) - l",
+      "contenu_markdown": "Soit $(U_n)$ définie par $U_0$ donné et $U_{n+1}=aU_n+b$, avec $a\\neq 1$. On appelle point fixe de la relation le nombre $\\ell$ tel que $\\ell=a\\ell+b$, c'est-à-dire $\\ell=\\dfrac{b}{1-a}$. En posant $V_n=U_n-\\ell$ pour tout $n$, on démontre que $(V_n)$ est géométrique de raison $a$ : $V_{n+1}=U_{n+1}-\\ell=(aU_n+b)-\\ell=a(U_n-\\ell)+(a\\ell+b-\\ell)=aV_n+0=aV_n$ (le terme constant s'annule exactement parce que $\\ell$ a été choisi comme point fixe : $a\\ell+b=\\ell$). On obtient alors $V_n=V_0\\,a^n$, puis $U_n=V_n+\\ell=(U_0-\\ell)a^n+\\ell$, une formule explicite pour $U_n$ en fonction de $n$ seul.",
+      "formule_principale": "V_{n+1} = a V_n \\quad \\text{avec} \\quad V_n = U_n - \\ell, \\ \\ell = \\dfrac{b}{1-a}",
+      "variantes": [
+        {
+          "nom": "Cas où $\\ell$ est donné directement par l'énoncé",
+          "quand_utiliser": "Quand l'énoncé impose déjà la suite auxiliaire à étudier (par exemple $V_n=U_n-3$), sans demander de retrouver $\\ell$ soi-même.",
+          "contenu_markdown": "Il suffit alors de vérifier que la constante donnée est bien le point fixe de la relation (ou, plus simplement, de calculer directement $V_{n+1}$ en fonction de $V_n$ à partir de la définition de $V_n$ et de la relation de récurrence de $(U_n)$, comme dans l'exemple ci-dessous) : le calcul fait apparaître de lui-même le terme constant qui s'annule si la valeur est correcte."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère la suite $(U_n)$ définie par $U_0=1$ et $U_{n+1}=2U_n-3$, et la suite $(V_n)$ définie par $V_n=U_n-3$. Démontrer que $(V_n)$ est géométrique, préciser son premier terme et sa raison, puis donner l'expression de $U_n$ en fonction de $n$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer V(n+1) à partir de la définition de V(n) et de la relation de récurrence de U(n)",
+          "justification": "On part de $V_{n+1}=U_{n+1}-3$ et on remplace $U_{n+1}$ par son expression $2U_n-3$.",
+          "resultat_markdown": "$V_{n+1}=U_{n+1}-3=(2U_n-3)-3=2U_n-6$"
+        },
+        {
+          "numero": 2,
+          "action": "Faire réapparaître V(n) en factorisant",
+          "justification": "L'objectif est d'obtenir une expression ne comportant que $V_n=U_n-3$, pour reconnaître une relation géométrique.",
+          "resultat_markdown": "$V_{n+1}=2U_n-6=2(U_n-3)=2V_n$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la nature de (V(n)) et calculer son premier terme",
+          "justification": "La relation $V_{n+1}=2V_n$, vraie pour tout $n$, est exactement la définition d'une suite géométrique de raison $2$.",
+          "resultat_markdown": "$(V_n)$ est géométrique de raison $q=2$ et de premier terme $V_0=U_0-3=1-3=-2$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire le terme général de V(n) puis de U(n)",
+          "justification": "Le terme général d'une suite géométrique est $V_n=V_0\\,q^n$ ; on retrouve ensuite $U_n$ grâce à la relation $U_n=V_n+3$.",
+          "resultat_markdown": "$V_n=-2\\times 2^n=-2^{n+1}$, donc $U_n=V_n+3=3-2^{n+1}$"
+        }
+      ],
+      "conclusion_markdown": "$(V_n)$ est géométrique de premier terme $-2$ et de raison $2$ ; pour tout entier naturel $n$, $U_n=3-2^{n+1}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer que $(U_n)$ elle-même est géométrique, en confondant la suite de départ et la suite auxiliaire.",
+          "pourquoi_faux": "$(U_n)$ vérifie $U_{n+1}=aU_n+b$ avec $b\\neq 0$ : ce n'est ni une suite arithmétique (la différence $U_{n+1}-U_n$ n'est pas constante) ni une suite géométrique (le rapport $U_{n+1}/U_n$ n'est pas constant). Seule la suite auxiliaire $(V_n)=(U_n-\\ell)$ est géométrique.",
+          "correction_markdown": "Toujours bien distinguer, dans la rédaction, la suite $(U_n)$ de départ et la suite auxiliaire $(V_n)$ : les propriétés de géométricité, de raison, de terme général s'énoncent sur $(V_n)$, puis se traduisent sur $(U_n)$ dans un second temps via $U_n=V_n+\\ell$."
+        },
+        {
+          "erreur_markdown": "Se tromper dans le calcul de la somme $S_n=V_0+V_1+\\dots+V_n$ en utilisant l'exposant $q^n$ au lieu de $q^{n+1}$.",
+          "pourquoi_faux": "La somme porte sur $n+1$ termes (les indices $0,1,\\dots,n$), et la formule de la somme géométrique utilise le nombre de termes, pas le dernier indice.",
+          "correction_markdown": "Compter explicitement le nombre de termes de la somme avant d'appliquer la formule $S=V_0\\dfrac{q^{\\text{nombre de termes}}-1}{q-1}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $(U_n)$ définie par $U_0=2$ et $U_{n+1}=3U_n-4$. On pose $V_n=U_n-2$. Démontrer que $(V_n)$ est géométrique et donner son premier terme et sa raison.",
+          "solution_markdown": "$V_{n+1}=U_{n+1}-2=(3U_n-4)-2=3U_n-6=3(U_n-2)=3V_n$.\n\n$(V_n)$ est donc géométrique de raison $q=3$, de premier terme $V_0=U_0-2=2-2=0$.\n\n(Remarque : $V_0=0$ entraîne $V_n=0$ pour tout $n$, donc $U_n=2$ pour tout $n$ : la suite $(U_n)$ est en réalité constante, ce qui est cohérent puisque $2$ est le point fixe de la relation $U_{n+1}=3U_n-4$.)"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $(U_n)$ définie par $U_0=0$ et $U_{n+1}=\\dfrac12 U_n+3$. Trouver la constante $\\ell$ telle que $(U_n-\\ell)$ soit géométrique, puis donner l'expression de $U_n$ en fonction de $n$.",
+          "solution_markdown": "Le point fixe $\\ell$ vérifie $\\ell=\\dfrac12\\ell+3$, soit $\\dfrac12\\ell=3$, donc $\\ell=6$.\n\nEn posant $V_n=U_n-6$ : $V_{n+1}=U_{n+1}-6=\\left(\\dfrac12U_n+3\\right)-6=\\dfrac12U_n-3=\\dfrac12(U_n-6)=\\dfrac12V_n$.\n\n$(V_n)$ est géométrique de raison $\\dfrac12$ et de premier terme $V_0=U_0-6=0-6=-6$.\n\n$V_n=-6\\times\\left(\\dfrac12\\right)^n$, donc $U_n=V_n+6=6-6\\times\\left(\\dfrac12\\right)^n$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $(U_n)$ définie par $U_0=5$ et $U_{n+1}=2U_n-3$, et $S_n=U_0+U_1+\\dots+U_n$. En utilisant la suite auxiliaire $V_n=U_n-3$, exprimer $S_n$ en fonction de $n$.",
+          "solution_markdown": "$V_n=U_n-3$ est géométrique de raison $2$ et de premier terme $V_0=U_0-3=5-3=2$, donc $V_n=2\\times 2^n=2^{n+1}$, et $U_n=V_n+3=2^{n+1}+3$.\n\n$S_n=\\sum_{k=0}^{n}U_k=\\sum_{k=0}^{n}\\left(2^{k+1}+3\\right)=\\sum_{k=0}^{n}2^{k+1}+\\sum_{k=0}^{n}3$.\n\n$\\sum_{k=0}^{n}2^{k+1}=2\\times\\dfrac{2^{n+1}-1}{2-1}=2^{n+2}-2$ (somme géométrique de premier terme $2$ et de raison $2$, $n+1$ termes).\n\n$\\sum_{k=0}^{n}3=3(n+1)$ (somme de $n+1$ termes constants égaux à $3$).\n\n$S_n=2^{n+2}-2+3(n+1)=2^{n+2}+3n+1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une suite $U_{n+1}=aU_n+b$ (avec $a\\neq 1$) n'est en général ni arithmétique ni géométrique, mais la suite auxiliaire $V_n=U_n-\\ell$, où $\\ell=\\dfrac{b}{1-a}$ est le point fixe de la relation, est toujours géométrique de raison $a$.",
+        "Quand l'énoncé donne directement la suite auxiliaire à étudier, il suffit de calculer $V_{n+1}$ à partir de la définition de $V_n$ et de la relation de récurrence de $(U_n)$ : le terme constant doit s'annuler dans le calcul, ce qui confirme le bon choix de $\\ell$.",
+        "Une fois $(V_n)$ reconnue géométrique, toutes les formules usuelles s'appliquent : $V_n=V_0\\,q^n$, puis $U_n=V_n+\\ell$, et la somme $S_n=V_0\\dfrac{q^{n+1}-1}{q-1}$ pour $n+1$ termes.",
+        "Ce type de suite (dite arithmético-géométrique) revient très régulièrement au Probatoire et au Baccalauréat : la méthode de la suite auxiliaire est à automatiser complètement."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+[
+  {
+    "external_id": "cqc-sql-faible-0",
+    "theme": "SQL",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle requête SQL affiche les noms des élèves de la classe TI1 dans une table `eleve(id, nom, classe, moyenne)` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne requête de consultation suit le schéma `SELECT colonnes FROM table WHERE condition` : on choisit les colonnes à afficher, la table, puis le filtre sur les lignes.\n\n### Corrigé\n\nIl faut afficher la colonne `nom`, depuis la table `eleve`, pour les lignes dont `classe` vaut `'TI1'` : `SELECT nom FROM eleve WHERE classe = 'TI1';`. Les autres propositions inversent colonne et valeur, interrogent une table qui n'existe pas, ou emploient `DELETE`, qui supprime des lignes au lieu de les afficher.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "SELECT nom FROM eleve WHERE classe = 'TI1';"
+      },
+      {
+        "lettre": "B",
+        "texte": "SELECT classe FROM eleve WHERE nom = 'TI1';"
+      },
+      {
+        "lettre": "C",
+        "texte": "SELECT * FROM classe WHERE eleve = 'TI1';"
+      },
+      {
+        "lettre": "D",
+        "texte": "DELETE nom FROM eleve WHERE classe = 'TI1';"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10585,
+      10621,
+      10624
+    ]
+  },
+  {
+    "external_id": "cqc-sql-faible-1",
+    "theme": "SQL",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `eleve` contient les lignes suivantes :\n\n| id | nom | classe | moyenne |\n|----|-----|--------|---------|\n| 1 | Amina | TI1 | 14.5 |\n| 2 | Brice | TI1 | 9.0 |\n| 3 | Carine | TI2 | 12.0 |\n| 4 | David | TI2 | 15.5 |\n| 5 | Estelle | TI1 | 11.5 |\n\nÉcrire la requête qui retourne le nombre d'élèves enregistrés, puis donner son résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\nLa fonction d'agrégation `COUNT(*)` compte le nombre de lignes d'une table (ou d'un résultat filtré) et retourne une seule valeur.\n\n### Corrigé\n\nLa requête est `SELECT COUNT(*) FROM eleve;`. La table contient 5 lignes, le résultat est donc **5**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10585,
+      10621,
+      10624
+    ]
+  },
+  {
+    "external_id": "cqc-sql-moyenne-2",
+    "theme": "SQL",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `eleve` contient les lignes suivantes :\n\n| id | nom | classe | moyenne |\n|----|-----|--------|---------|\n| 1 | Amina | TI1 | 14.5 |\n| 2 | Brice | TI1 | 9.0 |\n| 3 | Carine | TI2 | 12.0 |\n| 4 | David | TI2 | 15.5 |\n| 5 | Estelle | TI1 | 11.5 |\n\nQuel est le résultat exact de la requête suivante (colonnes et ordre des lignes) ?\n\n```sql\nSELECT nom, moyenne FROM eleve WHERE moyenne >= 12 ORDER BY moyenne DESC;\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nLe SGBD applique d'abord le filtre `WHERE` ligne par ligne, puis trie le résultat avec `ORDER BY` (`DESC` = décroissant) et n'affiche que les colonnes de la clause `SELECT`.\n\n### Corrigé\n\nLe filtre `moyenne >= 12` retient Amina (14.5), Carine (12.0, la borne est incluse), David (15.5) ; Brice (9.0) et Estelle (11.5) sont écartés. Le tri décroissant donne :\n\n| nom | moyenne |\n|-----|---------|\n| David | 15.5 |\n| Amina | 14.5 |\n| Carine | 12.0 |",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10585,
+      10621,
+      10624
+    ]
+  },
+  {
+    "external_id": "cqc-sql-moyenne-3",
+    "theme": "SQL",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `eleve` contient les lignes suivantes :\n\n| id | nom | classe | moyenne |\n|----|-----|--------|---------|\n| 1 | Amina | TI1 | 14.5 |\n| 2 | Brice | TI1 | 9.0 |\n| 3 | Carine | TI2 | 12.0 |\n| 4 | David | TI2 | 15.5 |\n| 5 | Estelle | TI1 | 11.5 |\n\nOn exécute la requête :\n\n```sql\nSELECT classe, AVG(moyenne) FROM eleve GROUP BY classe;\n```\n\nQuelle ligne est retournée pour la classe TI2 ?",
+    "corrige_markdown": "### Rappel de méthode\n\n`GROUP BY classe` regroupe les lignes par valeur de `classe` ; `AVG(moyenne)` calcule alors la moyenne arithmétique des valeurs de chaque groupe (somme divisée par l'effectif du groupe).\n\n### Corrigé\n\nLe groupe TI2 contient Carine (12.0) et David (15.5) : la moyenne est $\\dfrac{12 + 15.5}{2} = 13.75$. La ligne retournée est **TI2 | 13.75**. La valeur 27.5 serait la somme, 2 l'effectif, et 15.5 le maximum.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "TI2 | 13.75"
+      },
+      {
+        "lettre": "B",
+        "texte": "TI2 | 27.5"
+      },
+      {
+        "lettre": "C",
+        "texte": "TI2 | 2"
+      },
+      {
+        "lettre": "D",
+        "texte": "TI2 | 15.5"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10585,
+      10621,
+      10624
+    ]
+  },
+  {
+    "external_id": "cqc-sql-elevee-4",
+    "theme": "SQL",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `eleve` contient les lignes suivantes :\n\n| id | nom | classe | moyenne |\n|----|-----|--------|---------|\n| 1 | Amina | TI1 | 14.5 |\n| 2 | Brice | TI1 | 9.0 |\n| 3 | Carine | TI2 | 12.0 |\n| 4 | David | TI2 | 15.5 |\n| 5 | Estelle | TI1 | 11.5 |\n\n1. Écrire la requête qui augmente de 1 point la moyenne des élèves de la classe TI1 dont la moyenne est strictement inférieure à 12.\n2. Après cette mise à jour, donner les noms retournés par `SELECT nom FROM eleve WHERE moyenne >= 12;` (dans l'ordre des `id`).",
+    "corrige_markdown": "### Rappel de méthode\n\n`UPDATE table SET colonne = expression WHERE condition` modifie uniquement les lignes qui satisfont la condition ; sans `WHERE`, toutes les lignes seraient modifiées. Les conditions se combinent avec `AND`.\n\n### Corrigé\n\n1. ```sql\n   UPDATE eleve SET moyenne = moyenne + 1 WHERE classe = 'TI1' AND moyenne < 12;\n   ```\n   Les lignes touchées sont Brice (9.0 devient 10.0) et Estelle (11.5 devient 12.5). Amina (14.5) n'est pas modifiée car elle ne satisfait pas `moyenne < 12`, et les élèves de TI2 non plus car leur classe est différente.\n2. Après la mise à jour, les moyennes sont 14.5, 10.0, 12.0, 15.5, 12.5. Les moyennes supérieures ou égales à 12 sont celles d'**Amina, Carine, David et Estelle** (Brice, à 10.0, est exclu).",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10585,
+      10621,
+      10624
+    ]
+  }
+]

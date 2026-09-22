@@ -1,0 +1,186 @@
+{
+ "cours_id": "cours-pertinence-ajustement-affine-1ere-ce",
+ "meta": {
+  "titre": "Justifier la pertinence d'un ajustement affine à partir d'un nuage de points",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistiques à deux variables",
+  "duree_estimee_min": 20,
+  "tags": ["ajustement affine", "nuage de points", "corrélation", "lecture graphique", "point atypique"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qB1b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "« Le nuage laisse-t-il entrevoir un ajustement linéaire ? » La tentation est de répondre « oui » et de passer à la suite. Mais la question vaut un demi-point, et un mot n'en rapporte aucun. Ce qu'on attend, c'est une **description** : la direction du nuage, sa régularité, ses éventuels points atypiques. Deux phrases, appuyées sur ce que montre la figure — et si possible confirmées par un calcul de rapports d'accroissement."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Avoir représenté le nuage de points",
+    "Savoir calculer un rapport d'accroissement",
+    "Comprendre ce qu'est un ajustement affine",
+    "Savoir repérer un point s'écartant d'une tendance"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Direction, régularité, points atypiques",
+   "contenu_markdown": "**Ce qu'on cherche.** Un ajustement affine consiste à remplacer le nuage par une **droite** qui en résume la tendance. Il n'est légitime que si les points se répartissent effectivement au voisinage d'une droite.\n\n**Les trois critères d'appréciation.**\n\n1. **La direction.** Les points progressent-ils dans un sens constant ? Une progression du bas à gauche vers le haut à droite signale une corrélation **positive** ; l'inverse une corrélation **négative**.\n2. **La régularité.** Le nuage présente-t-il une **courbure** ? Si les points s'incurvent nettement, une droite ne convient pas.\n3. **La dispersion.** Les points sont-ils resserrés autour d'une direction, ou éparpillés ?\n\n**Le test numérique.** On calcule les **rapports d'accroissement** entre points consécutifs :\n\n$$\\frac{y_{i+1}-y_{i}}{x_{i+1}-x_{i}}$$\n\n- **Constants** ou proches : les points sont quasi alignés, l'ajustement affine convient.\n- **Croissants ou décroissants régulièrement** : le nuage est courbe, un autre modèle est préférable.\n- **Erratiques** : la dispersion est trop forte, aucun ajustement simple ne convient.\n\n**La méthode, en trois gestes.**\n\n1. **Décrire** l'allure du nuage en une phrase.\n2. **Confirmer** par quelques rapports d'accroissement.\n3. **Conclure**, en signalant les points atypiques éventuels.\n\n**Les points atypiques.** Un point nettement écarté de la tendance ne disqualifie pas l'ajustement, mais il mérite d'être **signalé**. Il peut correspondre à une mesure exceptionnelle, à une erreur, ou simplement à la variabilité naturelle.\n\nSignaler un point atypique montre qu'on a **regardé** le nuage, et non répondu mécaniquement.\n\n**Ce qu'il ne faut pas faire.** Répondre « oui » ou « non » sans justification. La question porte sur une **appréciation motivée**, et le barème récompense la motivation, pas la conclusion.\n\n**Nuance sur le vocabulaire.** On dit « ajustement **affine** » ou « ajustement **linéaire** » indifféremment en statistique, même si la droite obtenue a en général une ordonnée à l'origine non nulle et n'est donc pas linéaire au sens strict.\n\n**Le lien avec la corrélation.** En classe de première, le coefficient de corrélation n'est pas toujours au programme, mais l'idée est là : plus les points sont proches d'une droite, meilleur est l'ajustement. Le jugement reste ici **graphique**.",
+   "formule_principale": "\\text{rapports } \\frac{y_{i+1}-y_{i}}{x_{i+1}-x_{i}} \\text{ proches} \\implies \\text{ajustement affine pertinent}",
+   "variantes": [
+    {
+     "nom": "Nuage manifestement courbe",
+     "quand_utiliser": "Quand les rapports d'accroissement varient régulièrement",
+     "contenu_markdown": "Si les rapports croissent ou décroissent de façon monotone, le nuage suit une courbe et non une droite.\n\nOn peut alors tester un modèle **géométrique** en calculant les quotients $\\dfrac{y_{i+1}}{y_{i}}$ : s'ils sont constants, la croissance est exponentielle, et un changement de variable $z = \\ln y$ rendra le nuage aligné.\n\nRépondre honnêtement « non, le nuage présente une courbure » vaut mieux qu'un « oui » de complaisance."
+    },
+    {
+     "nom": "Ajustement par la droite de Mayer",
+     "quand_utiliser": "Quand on veut un ajustement rapide sans les formules de régression",
+     "contenu_markdown": "On partage le nuage en **deux groupes** de même effectif, selon les abscisses croissantes, et l'on calcule le point moyen de chaque groupe, $G_{1}$ et $G_{2}$.\n\nLa droite $\\left(G_{1}G_{2}\\right)$ est la **droite de Mayer**. Elle passe par le point moyen $G$ du nuage entier, et fournit un ajustement acceptable sans aucun calcul de covariance.\n\nC'est une alternative simple à la droite de régression, souvent acceptée en première."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Le nuage des huit voitures — puissance $x$ en chevaux, cylindrée $y$ en cm³ — a été représenté : $(35\\,;\\,1000)$, $(55\\,;\\,1600)$, $(60\\,;\\,1800)$, $(60\\,;\\,1700)$, $(65\\,;\\,1900)$, $(70\\,;\\,2000)$, $(72\\,;\\,2100)$, $(75\\,;\\,2500)$. Ce nuage laisse-t-il entrevoir un ajustement linéaire ? (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Décrire la direction",
+     "justification": "Lecture globale de la figure",
+     "resultat_markdown": "Les huit points progressent du bas à gauche vers le haut à droite : quand la puissance augmente, la cylindrée augmente aussi"
+    },
+    {
+     "numero": 2,
+     "action": "Vérifier l'absence de courbure",
+     "justification": "On cherche un changement de direction ou un infléchissement",
+     "resultat_markdown": "Le nuage ne présente ni courbure marquée ni changement de direction"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer un premier rapport d'accroissement",
+     "justification": "Entre les voitures $1$ et $2$",
+     "resultat_markdown": "$\\dfrac{1600-1000}{55-35} = \\dfrac{600}{20} = 30$"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer un deuxième rapport",
+     "justification": "Entre les voitures $2$ et $5$",
+     "resultat_markdown": "$\\dfrac{1900-1600}{65-55} = \\dfrac{300}{10} = 30$"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer un troisième rapport",
+     "justification": "Entre les voitures $5$ et $7$",
+     "resultat_markdown": "$\\dfrac{2100-1900}{72-65} = \\dfrac{200}{7} \\approx 29$"
+    },
+    {
+     "numero": 6,
+     "action": "Constater la régularité",
+     "justification": "Les trois premiers rapports sont très proches",
+     "resultat_markdown": "Ils valent $30$, $30$ et $29$ : la croissance est quasi linéaire, d'environ $30$ cm³ par cheval"
+    },
+    {
+     "numero": 7,
+     "action": "Repérer l'écart",
+     "justification": "Le dernier saut, entre les voitures $7$ et $8$",
+     "resultat_markdown": "$\\dfrac{2500-2100}{75-72} = \\dfrac{400}{3} \\approx 133$, nettement plus élevé"
+    },
+    {
+     "numero": 8,
+     "action": "Conclure",
+     "justification": "En pondérant l'écart observé",
+     "resultat_markdown": "**Oui**, le nuage laisse entrevoir un ajustement linéaire : les points sont sensiblement alignés selon une direction croissante"
+    },
+    {
+     "numero": 9,
+     "action": "Signaler les points atypiques",
+     "justification": "Cela montre qu'on a examiné le nuage",
+     "resultat_markdown": "La voiture $8$, de cylindrée $2500$ cm³, se situe un peu au-dessus de la tendance, et la voiture $4$ légèrement en dessous ; ces écarts restent modérés au regard de la plage de valeurs"
+    }
+   ],
+   "conclusion_markdown": "La réponse est oui, mais elle doit être **motivée**. Une réponse en un mot ne rapporte pas le demi-point : il faut décrire l'allure du nuage et signaler les points atypiques. Deux phrases suffisent, à condition qu'elles s'appuient sur ce que montre la figure. Le calcul des rapports d'accroissement, qui prend trente secondes, transforme une impression en argument."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Répondre « oui » sans justification",
+     "pourquoi_faux": "La question vaut un demi-point et porte sur une **appréciation motivée**. Un mot seul ne montre pas qu'on a examiné le nuage.",
+     "correction_markdown": "Décris l'allure en une phrase, confirme par un ou deux rapports d'accroissement, et signale les écarts. Trois lignes."
+    },
+    {
+     "erreur_markdown": "Répondre non parce que les points ne sont pas parfaitement alignés",
+     "pourquoi_faux": "Un nuage statistique n'est jamais exactement aligné : c'est précisément pourquoi on parle d'**ajustement**. La question est de savoir si une droite résume convenablement la tendance, pas si elle passe par tous les points.",
+     "correction_markdown": "Juge la **tendance globale**, pas la coïncidence exacte. Une dispersion modérée autour d'une direction est parfaitement compatible avec un ajustement affine."
+    },
+    {
+     "erreur_markdown": "Ignorer un point manifestement atypique",
+     "pourquoi_faux": "La voiture $8$ s'écarte visiblement de la tendance. Ne pas le signaler donne l'impression d'une lecture superficielle, et prive la réponse de sa nuance.",
+     "correction_markdown": "Signale-le en une incise : « la voiture $8$ se situe un peu au-dessus de la tendance ». Cela ne remet pas en cause la conclusion, mais montre que tu as regardé."
+    },
+    {
+     "erreur_markdown": "Confondre corrélation et causalité",
+     "pourquoi_faux": "Un bon ajustement affine établit une **liaison statistique** entre les deux caractères, pas un lien de cause à effet. Ici puissance et cylindrée sont liées par la conception du moteur, mais la statistique seule ne le dit pas.",
+     "correction_markdown": "Reste dans le registre descriptif : « les deux caractères varient dans le même sens », sans affirmer que l'un cause l'autre."
+    },
+    {
+     "erreur_markdown": "Calculer les rapports avec les mauvais points",
+     "pourquoi_faux": "Il faut prendre des points d'abscisses **différentes**. Les voitures $3$ et $4$ ont la même puissance $60$ : leur rapport d'accroissement aurait un dénominateur nul.",
+     "correction_markdown": "Choisis des couples d'abscisses distinctes, bien répartis sur la plage. Trois suffisent pour juger."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Pour chacune des trois séries suivantes, dire si un ajustement affine paraît pertinent, en justifiant par les rapports d'accroissement. Série A : $(1\\,;\\,3)$, $(2\\,;\\,5)$, $(3\\,;\\,7)$, $(4\\,;\\,9)$. Série B : $(1\\,;\\,2)$, $(2\\,;\\,4)$, $(3\\,;\\,8)$, $(4\\,;\\,16)$. Série C : $(1\\,;\\,5)$, $(2\\,;\\,2)$, $(3\\,;\\,8)$, $(4\\,;\\,1)$.",
+     "solution_markdown": "**Série A.**\n\nRapports d'accroissement :\n\n$$\\dfrac{5-3}{1} = 2 \\qquad \\dfrac{7-5}{1} = 2 \\qquad \\dfrac{9-7}{1} = 2$$\n\n**Tous égaux à $2$.**\n\nLes points sont **exactement alignés** sur la droite d'équation $y = 2x+1$.\n\n*Vérification :* $2 \\times 1+1 = 3$, $2 \\times 2+1 = 5$, $2 \\times 3+1 = 7$, $2 \\times 4+1 = 9$. Conforme.\n\n**Ajustement affine parfaitement pertinent.**\n\n**Série B.**\n\nRapports d'accroissement :\n\n$$\\dfrac{4-2}{1} = 2 \\qquad \\dfrac{8-4}{1} = 4 \\qquad \\dfrac{16-8}{1} = 8$$\n\nIls **doublent** à chaque fois : le nuage est courbe, tourné vers le haut.\n\nTestons les **quotients** :\n\n$$\\dfrac{4}{2} = 2 \\qquad \\dfrac{8}{4} = 2 \\qquad \\dfrac{16}{8} = 2$$\n\n**Constants égaux à $2$** : la croissance est **géométrique**, de raison $2$.\n\nLe modèle est $y = 2^{x}$.\n\n**Ajustement affine non pertinent.** Un changement de variable $z = \\ln y$ rendrait le nuage aligné, avec $z = x \\ln 2$.\n\n**Série C.**\n\nRapports d'accroissement :\n\n$$\\dfrac{2-5}{1} = -3 \\qquad \\dfrac{8-2}{1} = 6 \\qquad \\dfrac{1-8}{1} = -7$$\n\nIls changent de **signe** et d'ordre de grandeur : $-3$, $+6$, $-7$.\n\nLe nuage est **erratique** : les points montent, descendent, remontent sans direction stable.\n\n**Ajustement affine non pertinent**, et aucun modèle simple ne convient : les deux caractères ne semblent pas liés.\n\n**Synthèse.**\n\n| Série | Rapports | Quotients | Diagnostic |\n|---|---|---|---|\n| A | constants | — | alignement parfait |\n| B | croissants | constants | croissance géométrique |\n| C | erratiques | erratiques | pas de liaison |\n\n**Ce qu'il faut retenir.** Deux tests suffisent à trancher : les **différences** pour un modèle affine, les **quotients** pour un modèle géométrique. Si aucun n'est régulier, il n'y a probablement pas de liaison exploitable."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Une série double donne $(10\\,;\\,52)$, $(20\\,;\\,61)$, $(30\\,;\\,68)$, $(40\\,;\\,79)$, $(50\\,;\\,88)$, $(60\\,;\\,150)$. Apprécier la pertinence d'un ajustement affine, identifier le point atypique, et comparer les pentes obtenues avec et sans ce point.",
+     "solution_markdown": "**Étape 1 - les rapports d'accroissement.**\n\n| De … à … | Rapport |\n|---|---|\n| $10 \\to 20$ | $\\dfrac{61-52}{10} = 0{,}9$ |\n| $20 \\to 30$ | $\\dfrac{68-61}{10} = 0{,}7$ |\n| $30 \\to 40$ | $\\dfrac{79-68}{10} = 1{,}1$ |\n| $40 \\to 50$ | $\\dfrac{88-79}{10} = 0{,}9$ |\n| $50 \\to 60$ | $\\dfrac{150-88}{10} = 6{,}2$ |\n\n**Étape 2 - identifier le point atypique.**\n\nLes quatre premiers rapports sont resserrés entre $0{,}7$ et $1{,}1$, de moyenne voisine de $0{,}9$.\n\nLe dernier vaut $6{,}2$, soit **presque sept fois** plus. Le point $(60\\,;\\,150)$ est manifestement **atypique**.\n\n**Étape 3 - la pente sans le point atypique.**\n\nPrenons les cinq premiers points, du premier au dernier :\n\n$$a_{1} = \\dfrac{88-52}{50-10} = \\dfrac{36}{40} = 0{,}9$$\n\n**Étape 4 - la pente avec tous les points.**\n\n$$a_{2} = \\dfrac{150-52}{60-10} = \\dfrac{98}{50} = 1{,}96$$\n\n**Étape 5 - comparer.**\n\n$$\\dfrac{a_{2}}{a_{1}} = \\dfrac{1{,}96}{0{,}9} \\approx 2{,}18$$\n\n**Le point atypique fait plus que doubler la pente**, alors qu'il ne représente qu'un sixième des données.\n\n**Étape 6 - apprécier.**\n\nLes cinq premiers points sont **très bien alignés** : un ajustement affine y serait parfaitement pertinent, avec une pente d'environ $0{,}9$.\n\nLe sixième point s'écarte tellement qu'il **fausse** l'ajustement d'ensemble.\n\n**Étape 7 - que faire de ce point ?**\n\nTrois attitudes, selon le contexte :\n\n1. **Vérifier** s'il s'agit d'une erreur de mesure ou de saisie. Si oui, le corriger.\n2. **L'écarter** de l'ajustement en le signalant explicitement, si l'on peut justifier qu'il correspond à une situation différente.\n3. **Le conserver** en signalant que l'ajustement est peu fiable.\n\nEn épreuve, la troisième attitude est la plus prudente : on garde toutes les données, mais on **signale** l'anomalie.\n\n**Étape 8 - conclusion rédigée.**\n\n« Les cinq premiers points sont sensiblement alignés, avec un accroissement régulier d'environ $0{,}9$ unité de $y$ par unité de $x$. Le point $(60\\,;\\,150)$ s'écarte très fortement de cette tendance et fait plus que doubler la pente de l'ajustement. Un ajustement affine reste envisageable, mais sa fiabilité est réduite par ce point atypique. »\n\n**Ce qu'il faut retenir.** Un seul point aberrant peut dominer entièrement un ajustement. C'est pourquoi la question de la pertinence se pose **avant** tout calcul de régression, et non après."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Les huit voitures du sujet donnent le nuage $(35\\,;\\,1000)$, $(55\\,;\\,1600)$, $(60\\,;\\,1800)$, $(60\\,;\\,1700)$, $(65\\,;\\,1900)$, $(70\\,;\\,2000)$, $(72\\,;\\,2100)$, $(75\\,;\\,2500)$. Construire la droite de Mayer, calculer sa pente et son équation, et vérifier qu'elle passe par le point moyen $G(61{,}5\\,;\\,1825)$.",
+     "solution_markdown": "**Étape 1 - le principe de la droite de Mayer.**\n\nOn partage le nuage en **deux groupes de même effectif**, selon les abscisses croissantes, puis on joint les points moyens des deux groupes.\n\nIci, huit points donnent deux groupes de quatre.\n\n**Étape 2 - former les deux groupes.**\n\n*Groupe 1*, les quatre plus petites puissances : $(35\\,;\\,1000)$, $(55\\,;\\,1600)$, $(60\\,;\\,1800)$, $(60\\,;\\,1700)$.\n\n*Groupe 2*, les quatre plus grandes : $(65\\,;\\,1900)$, $(70\\,;\\,2000)$, $(72\\,;\\,2100)$, $(75\\,;\\,2500)$.\n\n**Étape 3 - le point moyen du groupe 1.**\n\n$$\\bar{x}_{1} = \\dfrac{35+55+60+60}{4} = \\dfrac{210}{4} = 52{,}5$$\n\n$$\\bar{y}_{1} = \\dfrac{1000+1600+1800+1700}{4} = \\dfrac{6100}{4} = 1525$$\n\n$$G_{1}(52{,}5\\,;\\,1525)$$\n\n**Étape 4 - le point moyen du groupe 2.**\n\n$$\\bar{x}_{2} = \\dfrac{65+70+72+75}{4} = \\dfrac{282}{4} = 70{,}5$$\n\n$$\\bar{y}_{2} = \\dfrac{1900+2000+2100+2500}{4} = \\dfrac{8500}{4} = 2125$$\n\n$$G_{2}(70{,}5\\,;\\,2125)$$\n\n**Étape 5 - la pente.**\n\n$$a = \\dfrac{\\bar{y}_{2}-\\bar{y}_{1}}{\\bar{x}_{2}-\\bar{x}_{1}} = \\dfrac{2125-1525}{70{,}5-52{,}5} = \\dfrac{600}{18} = \\dfrac{100}{3} \\approx 33{,}33$$\n\n**Interprétation :** chaque cheval supplémentaire correspond à environ $33$ cm³ de cylindrée en plus.\n\n*Comparaison :* les rapports d'accroissement calculés dans le corrigé du sujet donnaient environ $30$. L'ordre de grandeur est cohérent.\n\n**Étape 6 - l'équation.**\n\nLa droite passe par $G_{1}(52{,}5\\,;\\,1525)$ :\n\n$$y - 1525 = \\dfrac{100}{3}\\left(x - 52{,}5\\right)$$\n\n$$y = \\dfrac{100}{3}x - \\dfrac{100 \\times 52{,}5}{3} + 1525 = \\dfrac{100}{3}x - 1750 + 1525$$\n\n$$y = \\dfrac{100}{3}x - 225$$\n\n**Étape 7 - vérifier le passage par $G$.**\n\nLe point moyen du nuage entier vaut $G(61{,}5\\,;\\,1825)$.\n\n$$\\dfrac{100}{3} \\times 61{,}5 - 225 = \\dfrac{6150}{3} - 225 = 2050 - 225 = 1825$$\n\n**Conforme : la droite passe exactement par $G$.**\n\n**Étape 8 - démontrer que c'est général.**\n\nCe n'est pas une coïncidence. Le point moyen du nuage entier est la moyenne des points moyens des deux groupes, puisque ceux-ci ont le **même effectif** :\n\n$$\\bar{x} = \\dfrac{4\\bar{x}_{1} + 4\\bar{x}_{2}}{8} = \\dfrac{\\bar{x}_{1}+\\bar{x}_{2}}{2}$$\n\net de même pour $\\bar{y}$.\n\nDonc $G$ est le **milieu** de $\\left[G_{1}G_{2}\\right]$, et il appartient nécessairement à la droite $\\left(G_{1}G_{2}\\right)$.\n\n*Vérification :* $\\dfrac{52{,}5+70{,}5}{2} = 61{,}5$ et $\\dfrac{1525+2125}{2} = 1825$. Conforme.\n\n**Étape 9 - apprécier la qualité.**\n\nCalculons les écarts entre valeurs observées et valeurs prédites :\n\n| $x$ | $y$ observé | $y$ prédit | Écart |\n|---|---|---|---|\n| $35$ | $1000$ | $942$ | $+58$ |\n| $55$ | $1600$ | $1608$ | $-8$ |\n| $60$ | $1800$ | $1775$ | $+25$ |\n| $60$ | $1700$ | $1775$ | $-75$ |\n| $65$ | $1900$ | $1942$ | $-42$ |\n| $70$ | $2000$ | $2108$ | $-108$ |\n| $72$ | $2100$ | $2175$ | $-75$ |\n| $75$ | $2500$ | $2275$ | $+225$ |\n\nLes écarts restent modérés — de l'ordre de quelques pour cent — sauf pour la voiture $8$, dont l'écart de $225$ cm³ confirme le caractère atypique déjà signalé.\n\n**Ce qu'il faut retenir.** La droite de Mayer s'obtient sans aucune formule de covariance : deux moyennes de groupe, une pente, une équation. Et elle passe **toujours** par le point moyen, ce qui fournit un contrôle immédiat."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Justifie toujours : une réponse en un mot ne rapporte pas le point.",
+    "Trois critères : la **direction**, la **régularité** (absence de courbure), la **dispersion**.",
+    "Confirme par les rapports d'accroissement : proches, l'ajustement affine convient.",
+    "Rapports croissant régulièrement : nuage courbe, teste les quotients pour un modèle géométrique.",
+    "Un nuage statistique n'est jamais parfaitement aligné : juge la **tendance**, pas la coïncidence.",
+    "Signale les points atypiques : cela montre que tu as examiné le nuage.",
+    "Un seul point aberrant peut dominer entièrement l'ajustement.",
+    "Ne confonds pas corrélation et causalité : reste descriptif.",
+    "Prends des abscisses distinctes pour calculer les rapports.",
+    "La droite de Mayer donne un ajustement rapide, et elle passe toujours par le point moyen."
+   ]
+  }
+ ]
+}

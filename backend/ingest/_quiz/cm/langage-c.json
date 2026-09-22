@@ -1,0 +1,171 @@
+[
+  {
+    "external_id": "cqc-langage-c-faible-0",
+    "theme": "langage C",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle instruction C lit au clavier un entier et le range dans la variable `int n;` ?",
+    "corrige_markdown": "### Rappel de méthode\n\n`scanf` reçoit un format (`%d` pour un `int`) et l'**adresse** de la variable à remplir, obtenue avec l'opérateur `&`, car la fonction doit pouvoir modifier la variable.\n\n### Corrigé\n\nL'instruction correcte est `scanf(\"%d\", &n);` : `%d` est le format d'un entier et `&n` est l'adresse de `n`. Sans `&`, `scanf` recevrait la valeur de `n` au lieu de son adresse ; `%f` est le format d'un réel ; `input(n)` n'existe pas en C.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "scanf(\"%d\", n);"
+      },
+      {
+        "lettre": "B",
+        "texte": "scanf(\"%d\", &n);"
+      },
+      {
+        "lettre": "C",
+        "texte": "scanf(\"%f\", &n);"
+      },
+      {
+        "lettre": "D",
+        "texte": "input(n);"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10532,
+      10575,
+      10576,
+      10586
+    ]
+  },
+  {
+    "external_id": "cqc-langage-c-faible-1",
+    "theme": "langage C",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le programme C suivant :\n\n```c\n#include <stdio.h>\n\nint total = 10;\n\nvoid ajouter(int x) {\n    int total = 0;\n    total = total + x;\n}\n\nint main() {\n    ajouter(5);\n    printf(\"%d\", total);\n    return 0;\n}\n```\n\nQu'affiche ce programme ? Expliquer pourquoi.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne variable déclarée dans une fonction est locale à cette fonction ; si elle porte le même nom qu'une variable globale, elle la masque à l'intérieur de la fonction sans jamais modifier la variable globale.\n\n### Corrigé\n\nLe programme affiche **10**. Dans `ajouter`, la déclaration `int total = 0;` crée une variable locale qui masque la variable globale `total` : l'addition `total + x` porte sur la variable locale (qui vaut 5), détruite à la fin de la fonction. La variable globale `total`, lue dans `main`, n'a jamais été modifiée.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10532,
+      10575,
+      10576,
+      10586
+    ]
+  },
+  {
+    "external_id": "cqc-langage-c-moyenne-2",
+    "theme": "langage C",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Écrire en C une fonction `int somme(int T[], int n)` qui retourne la somme des `n` premiers éléments du tableau `T`, puis donner la valeur retournée par `somme(T, 4)` pour `T = {4, 7, 1, 8}`.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne fonction qui parcourt un tableau utilise une variable accumulateur initialisée à 0 et une boucle qui visite chaque indice de 0 à `n - 1`.\n\n### Corrigé\n\n```c\nint somme(int T[], int n) {\n    int s = 0;\n    for (int i = 0; i < n; i++)\n        s = s + T[i];\n    return s;\n}\n```\n\nPour `T = {4, 7, 1, 8}` et `n = 4`, `s` prend successivement les valeurs 4, 11, 12 puis 20. La fonction retourne **20**. Les indices d'un tableau C commencent à 0 : la boucle s'arrête à `n - 1`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10532,
+      10575,
+      10576,
+      10586
+    ]
+  },
+  {
+    "external_id": "cqc-langage-c-moyenne-3",
+    "theme": "langage C",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Qu'affiche l'instruction suivante en langage C ?\n\n```c\nprintf(\"%d\", 7 / 2);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nEn C, la division de deux entiers est une division entière : le résultat est le quotient tronqué, sans partie décimale. L'opérateur `%` donne le reste.\n\n### Corrigé\n\n`7` et `2` sont deux entiers : `7 / 2` est une division entière dont le quotient est 3 (le reste `7 % 2` vaut 1). `printf(\"%d\", 7 / 2)` affiche donc **3**, et non 3.5. Pour obtenir 3.5, il faudrait au moins un opérande réel, par exemple `7 / 2.0`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "3.5"
+      },
+      {
+        "lettre": "B",
+        "texte": "3"
+      },
+      {
+        "lettre": "C",
+        "texte": "4"
+      },
+      {
+        "lettre": "D",
+        "texte": "3.0"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10532,
+      10575,
+      10576,
+      10586
+    ]
+  },
+  {
+    "external_id": "cqc-langage-c-elevee-4",
+    "theme": "langage C",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On souhaite échanger les valeurs de deux variables entières avec une fonction. Voici une première version :\n\n```c\n#include <stdio.h>\n\nvoid echanger(int a, int b) {\n    int t = a;\n    a = b;\n    b = t;\n}\n\nint main() {\n    int x = 3, y = 8;\n    echanger(x, y);\n    printf(\"%d %d\", x, y);\n    return 0;\n}\n```\n\n1. Qu'affiche ce programme ? Pourquoi l'échange n'a-t-il pas lieu ?\n2. Réécrire la fonction et l'appel pour que l'échange fonctionne, puis indiquer l'affichage obtenu.",
+    "corrige_markdown": "### Rappel de méthode\n\nEn C, les paramètres sont passés par valeur : la fonction travaille sur des copies. Pour modifier une variable de l'appelant, on passe son adresse (`&x`) et la fonction la manipule par un pointeur (`*a`).\n\n### Corrigé\n\n1. Le programme affiche **3 8**. `echanger` reçoit des copies de `x` et de `y` ; l'échange est effectué sur ces copies, qui disparaissent à la fin de la fonction, et `x` et `y` ne sont pas modifiés.\n2. En passant les adresses :\n\n```c\nvoid echanger(int *a, int *b) {\n    int t = *a;\n    *a = *b;\n    *b = t;\n}\n\n/* dans main : */\nechanger(&x, &y);\nprintf(\"%d %d\", x, y);\n```\n\nLa fonction modifie directement les variables de `main` : l'affichage est **8 3**.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10532,
+      10575,
+      10576,
+      10586
+    ]
+  }
+]

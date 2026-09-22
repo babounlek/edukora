@@ -1,0 +1,89 @@
+{
+  "cours_id": "cours-probatoire-d-maths-officiel-2007-cameroun-optimisation-changement-de-variable",
+  "meta": {
+    "titre": "Optimiser une aire par changement de variable centré",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Changement de variable, forme constante moins un carré, maximum",
+    "duree_estimee_min": 20,
+    "tags": [
+      "optimisation",
+      "changement de variable",
+      "aire d'un rectangle",
+      "maximum d'une fonction",
+      "second degré"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "21",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2007-cameroun",
+    "epreuve_titre": "Probatoire D Mathématiques officiel 2007 (Cameroun)",
+    "exercice_numero": "Problème",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2007-cameroun-probleme-qB2b-1",
+    "rappels_lies": [
+      "rdm-probatoire-d-maths-officiel-2007-cameroun-probleme-qB2a-1",
+      "rdm-probatoire-d-maths-officiel-2007-cameroun-probleme-qB2b-1",
+      "rdm-probatoire-d-maths-officiel-2007-cameroun-probleme-qB3-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment trouver le maximum d'une aire $A(x)=100x-\\dfrac{x^2}{2}$ sans dériver ? Une astuce classique consiste à recentrer la variable autour de la valeur qui rend l'expression la plus simple possible : on pose $x=x_0+h$, et l'aire prend alors la forme immédiatement lisible \"constante moins un carré\", dont le maximum saute aux yeux."
+    },
+    {
+      "type": "prerequis",
+      "contenu_markdown": "Identités remarquables (carré d'une somme), résolution d'une contrainte de positivité (inéquation simple), notion de maximum d'une expression du type $K-h^2$."
+    },
+    {
+      "type": "regle",
+      "formule_principale": "Si une grandeur $A$ s'écrit, après le changement de variable $x=x_0+h$, sous la forme $A=K-\\alpha h^2$ avec $\\alpha>0$, alors $A$ est maximale exactement quand $h=0$ (c'est-à-dire $x=x_0$), et ce maximum vaut $K$.",
+      "variantes": [
+        "Le point $x_0$ à choisir pour le changement de variable est en général le centre de l'intervalle de définition de $x$ (ici le milieu de $]0;200[$, donc $x_0=100$), ce qui garantit que $A(x)$, en général une fonction du second degré, se transforme en une expression paire en $h$.",
+        "Cette méthode est une alternative à l'étude classique par dérivation (recherche du sommet d'une parabole via $-b/2a$) : les deux méthodes sont équivalentes et donnent le même résultat, mais le changement de variable évite le recours explicite à la dérivée."
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "etapes": [
+        "On part de $A(x)=100x-\\dfrac{x^2}{2}$, définie pour $x\\in\\,]0;200[$ (contrainte de positivité des deux dimensions du rectangle).",
+        "On choisit $x_0=100$, le centre de l'intervalle $]0;200[$, et on pose $x=100+h$, avec $h\\in\\,]-100;100[$ (d'après la question 2.a : $|h|<100$).",
+        "On développe : $100x=100(100+h)=10000+100h$ et $x^2=(100+h)^2=10000+200h+h^2$, donc $\\dfrac{x^2}{2}=5000+100h+\\dfrac{h^2}{2}$.",
+        "On combine : $A=10000+100h-\\left(5000+100h+\\dfrac{h^2}{2}\\right)=5000-\\dfrac{h^2}{2}$. Les termes en $h$ (linéaires) s'éliminent : c'est précisément l'effet recherché du centrage sur $x_0$.",
+        "$A=\\dfrac{10000-h^2}{2}$ est de la forme $K-\\alpha h^2$ avec $K=5000$, $\\alpha=\\dfrac12$ : le maximum est atteint en $h=0$, soit $x=100$, et vaut $A_{\\max}=5000$."
+      ]
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Choisir un point de centrage $x_0$ arbitraire (pas le centre de l'intervalle) : le terme linéaire en $h$ ne s'annule alors pas, et la méthode perd tout son intérêt.",
+        "Oublier de vérifier que $h=0$ appartient bien à l'intervalle autorisé pour $h$ : le maximum théorique de $K-\\alpha h^2$ n'est valable que si $h=0$ est atteignable compte tenu des contraintes du problème.",
+        "Confondre le maximum de $A$ (ici $5000$, une aire) avec la valeur de $h$ ou de $x$ qui le réalise (ici $h=0$, soit $x=100$) : bien répondre à la question posée (valeur maximale, ou dimensions)."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Un rectangle a un périmètre fixé à $80$ m. En posant $x=20+h$ pour un côté $x$, exprimer l'aire $A$ en fonction de $h$ et en déduire l'aire maximale ainsi que les dimensions correspondantes.",
+        "Retrouver le résultat $A_{\\max}=5000$ m² de l'exemple ci-dessus par la méthode de la dérivée (étude du signe de $A'(x)=100-x$), et vérifier que $x=100$ correspond bien au même optimum."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Poser $x=x_0+h$ avec $x_0$ au centre de l'intervalle de définition transforme souvent une expression du second degré en une forme paire, sans terme linéaire en $h$.",
+        "Une expression de la forme $K-\\alpha h^2$ (avec $\\alpha>0$) atteint son maximum $K$ exactement en $h=0$.",
+        "Cette technique de changement de variable est une alternative élégante à l'étude par dérivation pour les problèmes d'optimisation du second degré."
+      ]
+    }
+  ]
+}

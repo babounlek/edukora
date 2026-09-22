@@ -1,0 +1,171 @@
+[
+  {
+    "external_id": "cqc-javascript-faible-0",
+    "theme": "JavaScript",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle balise HTML permet d'insérer du code JavaScript dans une page web ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe code JavaScript s'intègre à une page HTML dans une balise dédiée, ouverte et refermée, qui indique au navigateur qu'il doit interpréter son contenu comme un script.\n\n### Corrigé\n\nLa balise est `<script> ... </script>`. Elle peut contenir le code directement ou pointer vers un fichier externe avec l'attribut `src`. Les balises `<js>`, `<javascript>` et `<code>` n'existent pas pour cet usage (`<code>` sert seulement à afficher du code).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "<js>"
+      },
+      {
+        "lettre": "B",
+        "texte": "<script>"
+      },
+      {
+        "lettre": "C",
+        "texte": "<javascript>"
+      },
+      {
+        "lettre": "D",
+        "texte": "<code>"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10534,
+      10535,
+      10536,
+      10537
+    ]
+  },
+  {
+    "external_id": "cqc-javascript-faible-1",
+    "theme": "JavaScript",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans une page web, `a = prompt(\"Premier nombre ?\")` et `b = prompt(\"Second nombre ?\")` reçoivent les saisies 4 et 6.\n\nQue valent `a + b` et `Number(a) + Number(b)` ? Expliquer la différence.",
+    "corrige_markdown": "### Rappel de méthode\n\nLa fonction `prompt` retourne toujours une chaîne de caractères. L'opérateur `+` concatène deux chaînes ; pour additionner des nombres, il faut d'abord convertir les valeurs (`Number`, `parseInt`, `parseFloat`).\n\n### Corrigé\n\n`a` et `b` sont les chaînes `\"4\"` et `\"6\"`. `a + b` les **concatène** et donne la chaîne `\"46\"`. `Number(a) + Number(b)` convertit d'abord en nombres puis additionne : **10**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10534,
+      10535,
+      10536,
+      10537
+    ]
+  },
+  {
+    "external_id": "cqc-javascript-moyenne-2",
+    "theme": "JavaScript",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère la fonction JavaScript suivante :\n\n```js\nfunction somme(n) {\n    var s = 0;\n    for (var i = 1; i <= n; i++) {\n        s += i;\n    }\n    return s;\n}\n```\n\n1. Donner les valeurs retournées par `somme(4)` et `somme(10)`.\n2. Quelle valeur retournerait `somme(4)` si la condition de la boucle était `i < n` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour simuler une fonction, on suit la valeur de l'accumulateur à chaque tour ; une borne `<=` inclut la valeur limite, une borne `<` l'exclut.\n\n### Corrigé\n\n1. `somme(4)` = 1 + 2 + 3 + 4 = **10** ; `somme(10)` = 1 + 2 + ... + 10 = **55**.\n2. Avec `i < n`, le dernier tour est `i = 3` : `somme(4)` = 1 + 2 + 3 = **6**. La valeur `n` n'est plus ajoutée.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10534,
+      10535,
+      10536,
+      10537
+    ]
+  },
+  {
+    "external_id": "cqc-javascript-moyenne-3",
+    "theme": "JavaScript",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle valeur ce script affiche-t-il ?\n\n```js\nvar n = 0;\ndo {\n    n = n + 3;\n} while (n < 10);\ndocument.write(n);\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nDans une boucle `do ... while`, le corps s'exécute avant le test : la condition décide seulement si l'on recommence. On suit la valeur de la variable tour par tour.\n\n### Corrigé\n\n`n` vaut successivement 3, 6, 9 puis 12. Après 9, la condition `9 < 10` est vraie donc on recommence ; après 12, `12 < 10` est fausse et la boucle s'arrête. Le script affiche **12** (et non 10 : `n` ne prend jamais cette valeur).",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "9"
+      },
+      {
+        "lettre": "B",
+        "texte": "10"
+      },
+      {
+        "lettre": "C",
+        "texte": "12"
+      },
+      {
+        "lettre": "D",
+        "texte": "15"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10534,
+      10535,
+      10536,
+      10537
+    ]
+  },
+  {
+    "external_id": "cqc-javascript-elevee-4",
+    "theme": "JavaScript",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Pour valider une note, un script JavaScript répète la question tant que la saisie est incorrecte :\n\n```js\nvar note;\ndo {\n    note = Number(prompt(\"Note sur 20 ?\"));\n} while (isNaN(note) || note < 0 || note > 20);\n```\n\n1. L'utilisateur saisit successivement `abc`, `25`, `-3`, puis `14`. Combien de fois `prompt` est-il appelé et quelle est la valeur finale de `note` ?\n2. Que se passerait-il si on remplaçait les `||` par des `&&` ? Justifier avec la saisie `abc`.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne condition de validation est vraie quand la saisie est **incorrecte** : `||` (ou) regroupe les différents cas d'erreur, un seul suffit à rejeter la saisie. Avec `&&`, il faudrait que tous les cas d'erreur soient réunis en même temps.\n\n### Corrigé\n\n1. `abc` : `Number(\"abc\")` vaut `NaN`, `isNaN` est vrai, on recommence. `25` : supérieur à 20, on recommence. `-3` : inférieur à 0, on recommence. `14` : aucune condition d'erreur n'est vraie, la boucle s'arrête. `prompt` est appelé **4 fois** et `note` vaut **14**.\n2. Avec `&&`, la condition devient `isNaN(note) && note < 0 && note > 20`. Pour `abc`, `note` vaut `NaN` : `isNaN(note)` est vrai mais `NaN < 0` est faux, donc l'ensemble est faux et la boucle s'arrête : la saisie `abc` serait **acceptée à tort**. De toute façon, une note ne peut pas être à la fois négative et supérieure à 20 : la condition ne pourrait jamais être vraie.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10534,
+      10535,
+      10536,
+      10537
+    ]
+  }
+]

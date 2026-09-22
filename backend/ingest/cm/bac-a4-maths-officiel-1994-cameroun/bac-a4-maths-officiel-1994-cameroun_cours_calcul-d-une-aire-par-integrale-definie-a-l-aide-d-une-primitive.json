@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-calcul-d-une-aire-par-integrale-definie-a-l-aide-d-une-primitive-tle-a",
+  "meta": {
+    "titre": "Calculer une aire à l'aide d'une intégrale définie et d'une primitive",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Primitives et intégrales",
+    "duree_estimee_min": 25,
+    "tags": [
+      "calcul d'aire",
+      "intégrale",
+      "primitive"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a4-maths-officiel-1994-cameroun",
+    "epreuve_titre": "BAC Mathematiques - Serie A (A4 bilingue) - Session 1994 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a4-maths-officiel-1994-cameroun-ex3-q6b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer l'aire sous une courbe semblait impossible sans découper le domaine en une infinité de petits rectangles, jusqu'à ce qu'on découvre le lien entre aire et primitive. Ce lien transforme un calcul autrefois redoutable en une simple évaluation de primitive en deux points."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer une primitive d'une fonction donnée.",
+        "Savoir étudier le signe d'une fonction sur un intervalle.",
+        "Connaître la notion d'unité d'aire dans un repère donné."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Aire sous une courbe à l'aide d'une primitive",
+      "contenu_markdown": "Si $f$ est une fonction positive et continue sur $[a,b]$, l'aire du domaine plan compris entre sa courbe, l'axe des abscisses et les droites $x=a$ et $x=b$ est donnée par l'intégrale $\\displaystyle\\int_a^b f(x)\\,dx=F(b)-F(a)$, où $F$ est une primitive quelconque de $f$. Cette formule ne s'applique directement que si $f(x)\\geq 0$ sur $[a,b]$ : si $f$ change de signe, il faut découper l'intervalle et prendre la valeur absolue de chaque intégrale partielle avant de sommer.",
+      "formule_principale": "\\mathcal{A}=\\int_a^b f(x)\\,dx=F(b)-F(a)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$f(x)=4xe^{-x}$ admet pour primitive $F(x)=-4(x+1)e^{-x}$. Calculer l'aire du domaine limité par la courbe de $f$, l'axe des abscisses et les droites $x=0$ et $x=2$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier le signe de $f$ sur $[0,2]$",
+          "justification": "La formule de l'aire par intégrale directe ne s'applique que si $f$ est positive sur tout l'intervalle.",
+          "resultat_markdown": "Pour $x\\in[0,2]$, $x\\geq 0$ et $e^{-x}>0$, donc $f(x)=4xe^{-x}\\geq 0$ : la formule s'applique directement, sans valeur absolue."
+        },
+        {
+          "numero": 2,
+          "action": "Évaluer $F$ aux deux bornes",
+          "justification": "L'intégrale se calcule par $F(2)-F(0)$, avec $F(x)=-4(x+1)e^{-x}$.",
+          "resultat_markdown": "$F(2)=-4(2+1)e^{-2}=-12e^{-2}$ ; $F(0)=-4(0+1)e^0=-4$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la différence $F(2)-F(0)$",
+          "justification": "C'est la valeur de l'intégrale, donc de l'aire cherchée puisque $f\\geq 0$.",
+          "resultat_markdown": "$\\mathcal{A}=F(2)-F(0)=-12e^{-2}-(-4)=4-12e^{-2}$ unités d'aire."
+        },
+        {
+          "numero": 4,
+          "action": "Donner une valeur numérique approchée",
+          "justification": "Une valeur numérique complète l'expression exacte et permet de vérifier l'ordre de grandeur.",
+          "resultat_markdown": "$e^{-2}\\approx 0{,}1353$, donc $\\mathcal{A}\\approx 4-1{,}624=2{,}376$ unités d'aire."
+        }
+      ],
+      "conclusion_markdown": "L'aire cherchée vaut exactement $4-12e^{-2}$ unités d'aire, soit environ $2{,}38$ unités d'aire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $F(0)-F(2)$ au lieu de $F(2)-F(0)$, en inversant l'ordre des bornes.",
+          "pourquoi_faux": "L'intégrale entre $a$ et $b$ (avec $a<b$) se calcule toujours $F(b)-F(a)$, c'est-à-dire la valeur en la borne SUPÉRIEURE moins la valeur en la borne INFÉRIEURE, jamais l'inverse.",
+          "correction_markdown": "Identifier clairement quelle borne est $a$ (la plus petite) et laquelle est $b$ (la plus grande) avant de soustraire, et toujours écrire $F(b)-F(a)$."
+        },
+        {
+          "erreur_markdown": "Appliquer directement $\\int_a^b f(x)\\,dx$ comme une aire sans avoir vérifié que $f$ garde un signe constant sur $[a,b]$.",
+          "pourquoi_faux": "Si $f$ change de signe sur l'intervalle, l'intégrale calcule une somme algébrique (les parties négatives se soustraient), pas une aire géométrique : le résultat serait alors inférieur à l'aire réelle.",
+          "correction_markdown": "Toujours commencer par étudier le signe de $f$ sur l'intervalle ; si $f$ change de signe, découper l'intervalle aux points où $f$ s'annule et sommer les valeurs absolues des intégrales partielles."
+        },
+        {
+          "erreur_markdown": "Oublier la conversion en cm² quand l'énoncé précise une unité graphique (par exemple « unité = 2 cm ») et laisser le résultat uniquement en unités d'aire.",
+          "pourquoi_faux": "Le résultat en « unités d'aire » (u.a.) dépend du repère choisi : si l'énoncé fixe une échelle en centimètres, la conversion en cm² est souvent attendue pour une réponse concrète.",
+          "correction_markdown": "Repérer si l'énoncé donne une unité graphique ; si oui, convertir en multipliant par le carré de cette unité (par exemple $2\\,\\text{cm}\\to 1$ u.a. $=4\\,\\text{cm}^2$)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer l'aire du domaine limité par la courbe de $f(x)=2x$, l'axe des abscisses et les droites $x=0$ et $x=3$.",
+          "solution_markdown": "$f(x)=2x\\geq 0$ sur $[0,3]$. Une primitive de $f$ est $F(x)=x^2$.\n\n$$\\mathcal{A}=F(3)-F(0)=9-0=9 \\text{ unités d'aire.}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer l'aire du domaine limité par la courbe de $g(x)=e^{-x}$, l'axe des abscisses et les droites $x=0$ et $x=1$.",
+          "solution_markdown": "$g(x)=e^{-x}>0$ pour tout $x$. Une primitive de $g$ est $G(x)=-e^{-x}$.\n\n$$\\mathcal{A}=G(1)-G(0)=-e^{-1}-(-e^0)=-e^{-1}+1=1-\\dfrac{1}{e}\\approx 0{,}632 \\text{ unités d'aire.}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer l'aire du domaine limité par la courbe de $h(x)=x^2-4$, l'axe des abscisses et les droites $x=0$ et $x=3$ (attention : $h$ change de signe sur cet intervalle).",
+          "solution_markdown": "$h(x)=x^2-4=0 \\iff x=\\pm 2$. Sur $[0,2]$, $h(x)\\leq 0$ (par exemple $h(0)=-4<0$) ; sur $[2,3]$, $h(x)\\geq 0$ (par exemple $h(3)=5>0$). Il faut donc découper l'intervalle en $[0,2]$ et $[2,3]$.\n\nUne primitive de $h$ est $H(x)=\\dfrac{x^3}{3}-4x$.\n\nSur $[0,2]$ : $\\displaystyle\\int_0^2 h(x)\\,dx=H(2)-H(0)=\\left(\\dfrac{8}{3}-8\\right)-0=-\\dfrac{16}{3}$, négatif car $h\\leq 0$ ; l'aire correspondante est $\\left|-\\dfrac{16}{3}\\right|=\\dfrac{16}{3}$.\n\nSur $[2,3]$ : $\\displaystyle\\int_2^3 h(x)\\,dx=H(3)-H(2)=(9-12)-\\left(\\dfrac{8}{3}-8\\right)=-3+\\dfrac{16}{3}=\\dfrac{7}{3}$, déjà positif.\n\n$$\\mathcal{A}=\\dfrac{16}{3}+\\dfrac{7}{3}=\\dfrac{23}{3} \\text{ unités d'aire.}$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'aire sous une courbe POSITIVE sur $[a,b]$ est $F(b)-F(a)$, où $F$ est une primitive de $f$.",
+        "Vérifie toujours le signe de $f$ sur l'intervalle AVANT d'appliquer la formule directement : une fonction négative donnerait une intégrale négative, pas une aire.",
+        "Si $f$ change de signe, découpe l'intervalle aux zéros de $f$ et prends la valeur absolue de chaque intégrale partielle avant de sommer.",
+        "Respecte toujours l'ordre des bornes : $F(\\text{borne supérieure})-F(\\text{borne inférieure})$.",
+        "Convertis le résultat en cm² (ou toute autre unité) uniquement si l'énoncé fixe une échelle graphique explicite, en multipliant par le carré de cette échelle."
+      ]
+    }
+  ]
+}

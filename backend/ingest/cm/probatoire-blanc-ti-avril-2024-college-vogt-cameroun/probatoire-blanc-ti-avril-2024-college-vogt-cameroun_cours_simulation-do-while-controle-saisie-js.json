@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-simulation-do-while-controle-saisie-js-premiere-ti",
+  "meta": {
+    "titre": "Simulation d'exécution d'une boucle do...while avec contrôle de saisie",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "JavaScript et structures de contrôle",
+    "duree_estimee_min": 15,
+    "tags": [
+      "do while",
+      "validation de saisie",
+      "JavaScript",
+      "simulation d'exécution"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "6",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex6-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "On te donne deux valeurs à tester dans un script, et le réflexe est souvent de foncer directement vers le calcul final. Mais si ces valeurs ne passent jamais la porte d'entrée du programme (une boucle de validation de saisie), ce calcul final ne sera tout simplement jamais atteint."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe `do { ... } while (condition);` en JavaScript",
+        "Savoir évaluer une condition composée avec `||` (OU logique)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Toujours tester la condition d'arrêt AVANT de dérouler la suite",
+      "contenu_markdown": "Exécuter (simuler) un script comportant une boucle `do...while` avec une condition de validation de saisie consiste à tester d'abord si les valeurs proposées vérifient cette condition : tant qu'elle échoue, le corps de la boucle se répète et redemande une saisie, avant même d'atteindre les instructions placées après la boucle.",
+      "formule_principale": "do { demander saisie } while (saisie invalide); -> tant que vrai, on reboucle",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Simuler ce script pour une saisie de age=15 puis limite=10 :\n```javascript\ndo {\n    age = parseInt(prompt(\"Age:\"));\n    limite = parseInt(prompt(\"Limite:\"));\n} while (age < limite);\nalert(\"Accès autorisé\");\n```",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Premier passage : lecture des valeurs",
+          "justification": "Le corps du do...while s'exécute obligatoirement une première fois",
+          "resultat_markdown": "`age` = 15, `limite` = 10."
+        },
+        {
+          "numero": 2,
+          "action": "Test de la condition",
+          "justification": "`age < limite` devient `15 < 10`",
+          "resultat_markdown": "`15 < 10` est **faux**."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la suite de l'exécution",
+          "justification": "La condition étant fausse, la boucle s'arrête et le programme continue après elle",
+          "resultat_markdown": "Le message \"Accès autorisé\" s'affiche."
+        }
+      ],
+      "conclusion_markdown": "Avec ces valeurs, la condition d'arrêt est immédiatement vérifiée (fausse) dès le premier passage : le programme ne reboucle jamais et atteint directement l'instruction `alert()`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer directement le résultat final du script avec les valeurs données, sans vérifier la condition de la boucle",
+          "pourquoi_faux": "Si les valeurs données ne satisfont jamais la condition d'arrêt, le script ne dépasse jamais la boucle : aucun calcul situé après elle ne s'exécute avec ces valeurs.",
+          "correction_markdown": "Teste systématiquement la condition d'arrêt EN PREMIER, avec les valeurs exactes données par l'énoncé, avant de dérouler quoi que ce soit d'autre."
+        },
+        {
+          "erreur_markdown": "Oublier qu'une condition avec plusieurs `||` est vraie dès qu'UNE SEULE des sous-conditions est vraie",
+          "pourquoi_faux": "`(n<0 || p<0 || p>n)` reboucle si NE SERAIT-CE QU'UNE des trois conditions est vraie, même si les deux autres sont fausses.",
+          "correction_markdown": "Évalue chaque sous-condition séparément, puis combine avec \"au moins une vraie -> le tout est vrai\" pour un `||`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour la boucle `do { x = parseInt(prompt()); } while (x <= 0);`, l'utilisateur saisit d'abord 5. Le programme redemande-t-il une saisie ? Justifier.",
+          "solution_markdown": "Non : la condition `x <= 0` devient `5 <= 0`, ce qui est faux. La boucle s'arrête dès le premier passage, aucune nouvelle saisie n'est redemandée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour `do { p = parseInt(prompt()); n = parseInt(prompt()); } while(n<0 || p<0 || p>n);`, l'utilisateur saisit p=3 puis n=3. Le script sort-il de la boucle ? Justifier chaque sous-condition.",
+          "solution_markdown": "Oui, il en sort. `n<0` : `3<0` est faux. `p<0` : `3<0` est faux. `p>n` : `3>3` est faux (3 n'est pas strictement supérieur à 3). Les trois sous-conditions du `||` étant toutes fausses, la condition globale est fausse : la boucle s'arrête et le script continue après elle."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi une condition de validation comme `(n<0 || p<0 || p>n)` utilise-t-elle un OU (`||`) plutôt qu'un ET (`&&`) pour décider s'il faut REDEMANDER une saisie ?",
+          "solution_markdown": "Le but est de rejeter la saisie dès qu'UN SEUL des critères de validité est violé : `n` négatif, OU `p` négatif, OU `p` plus grand que `n`. Chacune de ces trois situations, prise isolément, rend déjà la saisie invalide pour la suite du programme (par exemple un calcul de combinaison $C_n^p$, qui exige $0 \\le p \\le n$). Utiliser un `&&` (ET) demanderait au contraire que LES TROIS conditions soient vraies SIMULTANÉMENT pour rebroucler, ce qui laisserait passer des saisies invalides dès qu'une seule des trois anomalies n'est pas présente - par exemple, une saisie avec `p>n` mais `n` et `p` tous deux positifs ne serait alors jamais rejetée. Le `||` garantit que la MOINDRE anomalie parmi les trois suffit à forcer une nouvelle saisie, ce qui est exactement le comportement de validation recherché."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une boucle `do...while` exécute toujours son corps au moins une fois avant le premier test de la condition.",
+        "Avec une condition de validation de saisie, teste-la TOUJOURS en premier avec les valeurs exactes données, avant tout autre calcul.",
+        "Une condition combinée avec `||` (OU) est vraie dès qu'UNE SEULE sous-condition est vraie : c'est ce qui permet de rejeter une saisie au moindre défaut.",
+        "Tant que la condition de la boucle reste vraie, aucune instruction placée après elle ne s'exécute, même si un calcul semble \"logique\" à faire avec les valeurs données.",
+        "Ce piège (calculer directement sans vérifier la boucle de validation) est l'un des plus fréquents sur ce type de question à l'examen : prends-en le réflexe inverse."
+      ]
+    }
+  ]
+}

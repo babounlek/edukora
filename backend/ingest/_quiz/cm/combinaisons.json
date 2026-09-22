@@ -1,0 +1,145 @@
+[
+  {
+    "external_id": "cqc-combinaisons-faible-0",
+    "theme": "combinaisons",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "A", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "TI"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "A"},
+      {"examen": "probatoire", "serie": "D"}
+    ],
+    "enonce_markdown": "Lors d'une réunion de coordination, 12 délégués régionaux se saluent : chaque délégué serre la main de chacun des 11 autres délégués exactement une fois. Détermine le nombre total de poignées de main échangées au cours de cette réunion.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne poignée de main entre deux personnes ne dépend pas de l'ordre : la main de X serrant celle de Y est la même poignée que celle de Y serrant celle de X. Compter les poignées de main possibles entre $n$ personnes revient donc à compter le nombre de PAIRES non ordonnées qu'on peut former parmi ces $n$ personnes, soit $\\binom{n}{2}$, et non un nombre d'arrangements ordonnés.\n\n### Corrigé\n\nOn choisit 2 délégués parmi les 12 pour former une poignée de main, sans tenir compte de l'ordre : le nombre de poignées de main est\n$$\\binom{12}{2} = \\dfrac{12 \\times 11}{2} = 66.$$\n\nAu total, 66 poignées de main ont été échangées.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-combinaisons-faible-1",
+    "theme": "combinaisons",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "A", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "TI"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "A"},
+      {"examen": "probatoire", "serie": "D"}
+    ],
+    "enonce_markdown": "On considère le coefficient binomial $\\binom{15}{13}$. Sans développer séparément $15!$, $13!$ et $2!$, utilise une propriété générale des coefficients binomiaux pour écrire $\\binom{15}{13}$ sous une forme équivalente portant sur des nombres plus petits, puis calcule sa valeur exacte.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour tout entier $n$ et tout entier $k$ tel que $0 \\le k \\le n$, les coefficients binomiaux vérifient la propriété de symétrie $\\binom{n}{k} = \\binom{n}{n-k}$ : choisir les $k$ éléments retenus revient exactement à choisir les $n-k$ éléments qu'on écarte. Cette propriété permet de remplacer un calcul portant sur un grand $k$ par un calcul équivalent portant sur un petit $n-k$.\n\n### Corrigé\n\nIci $n = 15$ et $k = 13$, donc $n - k = 2$. La propriété de symétrie donne\n$$\\binom{15}{13} = \\binom{15}{2}.$$\nOr\n$$\\binom{15}{2} = \\dfrac{15 \\times 14}{2} = 105.$$\nDonc $\\binom{15}{13} = 105$.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-combinaisons-moyenne-0",
+    "theme": "combinaisons",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "A", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "TI"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "A"},
+      {"examen": "probatoire", "serie": "D"}
+    ],
+    "enonce_markdown": "Le conseil de gestion d'un établissement doit compter 5 membres, choisis parmi 8 enseignants et 6 parents d'élèves candidats. On souhaite que ce conseil comporte au moins 3 enseignants. Combien de compositions différentes du conseil sont possibles ?",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand une contrainte porte sur \"au moins\" un certain nombre d'éléments d'une catégorie, on ne peut pas appliquer directement une seule combinaison : il faut décomposer le dénombrement en cas exclusifs selon le nombre exact d'éléments de cette catégorie effectivement retenus, dénombrer chaque cas séparément à l'aide du produit de deux combinaisons, puis additionner les résultats (principe additif).\n\n### Corrigé\n\n\"Au moins 3 enseignants\" parmi 5 membres se décompose en trois cas exclusifs : exactement 3, exactement 4, ou exactement 5 enseignants.\n\n- 3 enseignants et 2 parents : $\\binom{8}{3}\\binom{6}{2} = 56 \\times 15 = 840$\n- 4 enseignants et 1 parent : $\\binom{8}{4}\\binom{6}{1} = 70 \\times 6 = 420$\n- 5 enseignants et 0 parent : $\\binom{8}{5}\\binom{6}{0} = 56 \\times 1 = 56$\n\nLe nombre total de compositions possibles est\n$$840 + 420 + 56 = 1316.$$",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-combinaisons-moyenne-1",
+    "theme": "combinaisons",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "A", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "TI"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "A"},
+      {"examen": "probatoire", "serie": "D"}
+    ],
+    "enonce_markdown": "Un digicode d'immeuble fonctionne de la façon suivante : pour composer le code, on appuie SIMULTANÉMENT sur plusieurs touches parmi les 10 touches numérotées de 0 à 9 ; seul l'ENSEMBLE des touches pressées ensemble détermine le code, l'ordre dans lequel les doigts se posent n'ayant aucune importance. Combien de codes différents à 4 touches peut-on former avec ce système ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'un choix porte sur un ENSEMBLE d'éléments distincts pris parmi une collection, sans tenir compte de l'ordre dans lequel ils sont choisis, le nombre de choix possibles est un coefficient binomial $\\binom{n}{k}$, où $n$ est le nombre total d'éléments disponibles et $k$ le nombre d'éléments retenus simultanément.\n\n### Corrigé\n\nIci $n = 10$ touches disponibles et $k = 4$ touches pressées en même temps, sans ordre. Le nombre de codes possibles est\n$$\\binom{10}{4} = \\dfrac{10 \\times 9 \\times 8 \\times 7}{4 \\times 3 \\times 2 \\times 1} = \\dfrac{5040}{24} = 210.$$\n\nIl existe donc 210 codes différents à 4 touches.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-combinaisons-moyenne-2",
+    "theme": "combinaisons",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "A", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "TI"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "A"},
+      {"examen": "probatoire", "serie": "D"}
+    ],
+    "enonce_markdown": "Un polygone convexe possède 9 sommets, numérotés de 1 à 9. On appelle diagonale tout segment reliant deux sommets non consécutifs, c'est-à-dire non reliés par un côté du polygone. Combien de diagonales ce polygone possède-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe nombre total de segments reliant deux sommets quelconques parmi $n$ sommets est $\\binom{n}{2}$, puisque choisir 2 sommets pour tracer un segment est un choix non ordonné. Parmi tous ces segments, les $n$ côtés du polygone relient des sommets consécutifs et ne sont pas des diagonales : il faut donc retrancher ces $n$ côtés du total pour n'obtenir que les diagonales.\n\n### Corrigé\n\nAvec $n = 9$, le nombre total de segments entre deux sommets est\n$$\\binom{9}{2} = \\dfrac{9 \\times 8}{2} = 36.$$\nLe polygone possède 9 côtés, qui relient des sommets consécutifs et ne sont donc pas des diagonales. Le nombre de diagonales est\n$$36 - 9 = 27.$$\n\nLa bonne réponse est **A) 27**. La réponse B (36) correspond au nombre total de segments, en oubliant de retirer les côtés. La réponse C (54) correspond à $9 \\times 6$, en oubliant de diviser par 2. La réponse D (28) correspond à $\\binom{8}{2}$, en écartant à tort un sommet du décompte.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "27"},
+      {"lettre": "B", "texte": "36"},
+      {"lettre": "C", "texte": "54"},
+      {"lettre": "D", "texte": "28"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-combinaisons-elevee-0",
+    "theme": "combinaisons",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "A", "module_numero": "22", "savoir_numero": "II"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "TI"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "A"},
+      {"examen": "probatoire", "serie": "D"}
+    ],
+    "enonce_markdown": "Un lycée doit former une délégation de 6 élèves parmi 14 candidats pour représenter l'établissement à un concours interrégional. Deux des candidats, Fabrice et Aïcha, sont en conflit ouvert, et le proviseur exige qu'ils ne siègent JAMAIS ensemble dans la même délégation. Combien de délégations de 6 élèves respectant cette exigence sont possibles ?",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand une contrainte porte sur l'absence simultanée de deux éléments précis (ils ne doivent jamais être choisis ensemble), il est souvent plus efficace de dénombrer par complémentaire : on calcule le nombre total de choix sans restriction, puis on soustrait le nombre de choix où les deux éléments interdits sont présents EN MÊME TEMPS, plutôt que de découper directement en plusieurs cas selon la présence de chacun séparément.\n\n### Corrigé\n\nLe nombre total de délégations de 6 élèves parmi 14, sans aucune restriction, est\n$$\\binom{14}{6} = 3003.$$\n\nLes délégations interdites sont celles où Fabrice ET Aïcha sont tous deux présents : il reste alors à choisir les $6-2=4$ élèves restants parmi les $14-2=12$ autres candidats, soit\n$$\\binom{12}{4} = 495$$\ndélégations interdites.\n\nLe nombre de délégations valides est donc\n$$3003 - 495 = 2508.$$",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  }
+]

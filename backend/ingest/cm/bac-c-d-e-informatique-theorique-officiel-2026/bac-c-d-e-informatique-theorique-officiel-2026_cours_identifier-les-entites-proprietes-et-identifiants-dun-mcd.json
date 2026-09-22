@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-identifier-entites-proprietes-identifiants-mcd-tle-c-d-e",
+  "meta": {
+    "titre": "Identifier les entités, propriétés et identifiants d'un MCD",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Modélisation d'un système d'information (MCD)",
+    "duree_estimee_min": 30,
+    "tags": ["MCD", "entités", "propriétés", "identifiants", "règles de gestion", "bases de données"],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-officiel-2026",
+    "epreuve_titre": "BAC C-D-E Informatique Théorique 2026 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex2-qa-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un directeur d'entreprise te décrit son activité en langage courant : des personnes réservent des salles, chaque réservation a une date, chaque salle a une capacité. Avant d'écrire la moindre ligne de code ou la moindre table SQL, il faut transformer ce texte en un schéma rigoureux qui dit précisément quels objets le système doit mémoriser et ce qui permet de reconnaître chacun d'eux sans confusion. C'est la première étape, et la plus décisive, de la construction d'un Modèle Conceptuel de Données : sans elle, toute base de données construite ensuite repose sur des fondations bancales."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un énoncé de système d'information et repérer les règles de gestion qu'il contient",
+        "Connaître le vocabulaire de base d'une base de données (donnée, table, ligne, colonne)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Entités, propriétés et identifiants",
+      "contenu_markdown": "Une entité représente un objet ou un concept du monde réel que le système doit mémoriser durablement (une personne, une réservation, une salle, un produit...). Elle existe indépendamment des autres objets et peut être désignée sans ambiguïté grâce à un identifiant. Une propriété est une information élémentaire qui caractérise une entité (un nom, une date, une capacité). L'identifiant est la propriété, ou le groupe de propriétés, qui permet de distinguer sans erreur deux occurrences différentes de la même entité : deux personnes peuvent porter le même nom, mais jamais le même code unique.",
+      "formule_principale": "Entité = objet à mémoriser ; Propriété = caractéristique de cet objet ; Identifiant = propriété qui garantit l'unicité de chaque occurrence",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le Directeur d'une agence de location de salles de spectacle veut informatiser son SI. RG3 : « Une personne est caractérisée par un code unique, son nom, son prénom, son contact et son numéro de CNI. » RG4 : « Une réservation comporte un numéro unique et est datée. » RG5 : « Une salle possède un numéro unique, un nom, une capacité et une adresse. » Identifier les entités avec leurs propriétés et leurs identifiants.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer, dans chaque règle de gestion, l'objet du monde réel décrit",
+          "justification": "Chaque règle de gestion qui attribue des caractéristiques propres à un objet distinct signale une entité candidate",
+          "resultat_markdown": "RG3 décrit une personne, RG4 décrit une réservation, RG5 décrit une salle : trois objets distincts à mémoriser."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier que chaque objet possède un identifiant unique explicite dans le texte",
+          "justification": "Une entité doit pouvoir être désignée sans ambiguïté ; l'absence d'identifiant obligerait à le créer soi-même, ce qui n'est pas le cas ici puisque les trois règles en fournissent un",
+          "resultat_markdown": "RG3 donne un « code unique » pour la personne, RG4 un « numéro unique » pour la réservation, RG5 un « numéro unique » pour la salle : les trois entités sont confirmées, chacune avec son identifiant."
+        },
+        {
+          "numero": 3,
+          "action": "Lister les propriétés de chaque entité en soulignant son identifiant",
+          "justification": "Toutes les autres informations données par la règle de gestion deviennent des propriétés ordinaires, non soulignées, de l'entité",
+          "resultat_markdown": "PERSONNE : Code_Personne (identifiant), Nom, Prenom, Contact, N_CNI.\n\nRESERVATION : N_Reservation (identifiant), Date_Reservation.\n\nSALLE : N_Salle (identifiant), Nom_Salle, Capacite, Adresse."
+        }
+      ],
+      "conclusion_markdown": "On obtient trois entités correctement formées, chacune avec la liste complète de ses propriétés et son identifiant clairement distingué des autres : c'est la base sur laquelle les associations et les cardinalités du MCD viendront ensuite se greffer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Créer une entité pour chaque mot du texte qui ressemble à un nom commun (par exemple une entité « AGENCE » simplement parce que le mot apparaît dans l'énoncé)",
+          "pourquoi_faux": "Une entité doit correspondre à un objet dont on mémorise plusieurs occurrences distinctes avec leurs propres propriétés. Un mot qui ne désigne que le cadre général de l'étude, sans identifiant ni propriétés propres énumérées dans les règles de gestion, n'est pas une entité.",
+          "correction_markdown": "Ne retiens comme entité que les objets pour lesquels une règle de gestion énumère explicitement des propriétés et un identifiant."
+        },
+        {
+          "erreur_markdown": "Oublier de souligner l'identifiant, ou souligner une propriété qui n'est pas garantie unique (comme le nom d'une personne)",
+          "pourquoi_faux": "Deux personnes peuvent porter le même nom : le nom ne garantit donc pas de distinguer sans ambiguïté deux occurrences de l'entité PERSONNE. Seule la propriété que la règle de gestion qualifie explicitement d'« unique » peut jouer ce rôle.",
+          "correction_markdown": "Cherche systématiquement, dans le texte de la règle de gestion, le mot « unique » ou son équivalent (numéro, code, matricule) : c'est lui qui désigne l'identifiant, jamais une propriété choisie par habitude."
+        },
+        {
+          "erreur_markdown": "Regrouper deux objets distincts dans une seule entité parce qu'ils apparaissent dans la même phrase (par exemple fusionner RESERVATION et SALLE)",
+          "pourquoi_faux": "RG4 et RG5 attribuent chacune un identifiant unique différent (numéro de réservation, numéro de salle) et des propriétés propres à chaque objet : ce sont deux entités séparées, même si RG2 les met ensuite en relation.",
+          "correction_markdown": "Une règle de gestion qui relie deux objets (« une réservation concerne une salle ») décrit une association entre deux entités, elle ne fusionne jamais ces deux entités en une seule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une bibliothèque scolaire gère ses emprunts. RG1 : « Un livre est caractérisé par un ISBN unique, un titre et un auteur. » Identifier l'entité décrite, ses propriétés et son identifiant.",
+          "solution_markdown": "RG1 décrit un seul objet à mémoriser : le livre, avec un identifiant unique explicite, l'ISBN.\n\nL'entité LIVRE regroupe les propriétés données par RG1 : ISBN (identifiant, souligné), Titre, Auteur.\n\nAucune autre entité n'est décrite par cette règle : il n'y a qu'un seul objet du monde réel énuméré ici."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Toujours pour la bibliothèque, RG2 : « Un élève est caractérisé par un matricule unique, un nom et une classe. » RG3 : « Un emprunt porte un numéro unique et une date de retour prévue. » Identifier les entités, leurs propriétés et leurs identifiants à partir de RG2 et RG3.",
+          "solution_markdown": "RG2 décrit un objet distinct, l'élève, avec un identifiant unique explicite, le matricule. L'entité ELEVE regroupe : Matricule (identifiant, souligné), Nom, Classe.\n\nRG3 décrit un second objet distinct, l'emprunt, avec un identifiant unique explicite, le numéro d'emprunt. L'entité EMPRUNT regroupe : N_Emprunt (identifiant, souligné), Date_Retour_Prevue.\n\nOn obtient donc deux entités séparées, ELEVE et EMPRUNT, chacune avec son propre identifiant garanti unique par l'énoncé, en plus de l'entité LIVRE identifiée à l'exercice précédent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une règle de gestion supplémentaire précise : « Un emprunt concerne un seul livre et est réalisé par un seul élève ; un élève peut avoir zéro ou plusieurs emprunts en cours. » Cette règle ajoute-t-elle une nouvelle entité au MCD de la bibliothèque ? Justifier, puis préciser ce qu'elle décrit réellement.",
+          "solution_markdown": "Cette règle ne décrit aucun objet nouveau avec ses propres propriétés et son propre identifiant : elle ne fait qu'exprimer des liens entre les entités déjà identifiées, ELEVE, EMPRUNT et LIVRE, ainsi que la fréquence de ces liens (« zéro ou plusieurs »).\n\nElle n'ajoute donc pas d'entité au MCD. Elle décrit en réalité deux associations entre entités déjà identifiées : un lien entre EMPRUNT et LIVRE (« concerne »), et un lien entre EMPRUNT et ELEVE (« est réalisé par »), ainsi qu'une première indication de cardinalité (« zéro ou plusieurs » emprunts par élève). C'est la distinction essentielle entre une entité, qui a ses propres propriétés et son identifiant, et une association, qui ne fait que relier des entités déjà identifiées entre elles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une entité correspond toujours à un objet du monde réel dont une règle de gestion énumère explicitement les propriétés et un identifiant unique : ne l'invente jamais à partir d'un simple mot du texte.",
+        "L'identifiant n'est jamais choisi par habitude (comme le nom) : c'est la propriété que la règle de gestion qualifie elle-même d'unique (code, numéro, matricule, ISBN).",
+        "Une règle de gestion qui relie deux objets déjà identifiés décrit une association, pas une nouvelle entité : ne confonds jamais les deux.",
+        "Représente toujours l'identifiant souligné en tête de la liste des propriétés de son entité : c'est ce que le correcteur vérifie en premier sur un schéma de MCD.",
+        "Au BAC, cette étape ouvre systématiquement les exercices de modélisation de système d'information : une erreur ici se répercute sur toutes les questions suivantes (associations, cardinalités, passage au modèle relationnel)."
+      ]
+    }
+  ]
+}

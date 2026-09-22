@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-rendement-moteur-electrique-premiere",
+  "meta": {
+    "titre": "Rendement énergétique d'un moteur électrique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Énergie électrique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "rendement énergétique",
+      "puissance électrique",
+      "puissance mécanique",
+      "moteur électrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2019-cameroun",
+    "epreuve_titre": "Épreuve de physique au probatoire D et TI 2019 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2019-cameroun-ex3-qC1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un moteur électrique consomme toujours plus d'énergie qu'il n'en restitue sous forme utile : une partie se perd en chaleur (effet Joule, frottements). Le rendement énergétique mesure précisément cette part utile, et permet, à partir d'une seule donnée (la puissance utile fournie), de remonter à la puissance électrique consommée, puis à l'intensité du courant appelé — un enchaînement de calculs très fréquent dès qu'un exercice évoque un moteur, une pompe ou tout récepteur électromécanique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation entre puissance électrique, tension et intensité : $P = U \\times I$ (courant continu)",
+        "Notion de puissance mécanique fournie par un moteur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rendement énergétique d'un récepteur électrique",
+      "contenu_markdown": "Le rendement énergétique $\\eta$ d'un récepteur (ici un moteur) est le rapport entre la puissance utile qu'il fournit (ici la puissance mécanique $P_m$) et la puissance électrique qu'il consomme, $P_{elec}$ : $\\eta = \\dfrac{P_m}{P_{elec}}$, avec $\\eta$ compris entre 0 et 1 (ou exprimé en pourcentage). La puissance électrique consommée est toujours supérieure ou égale à la puissance utile fournie, la différence correspondant aux pertes (effet Joule dans les enroulements, frottements mécaniques, pertes magnétiques).",
+      "formule_principale": "\\eta = \\dfrac{P_{\\text{utile}}}{P_{\\text{consommée}}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un moteur à courant continu, dont le rendement énergétique vaut 80 %, fournit une puissance mécanique $P_m = 144$ W lorsque la tension à ses bornes est $U = 50$ V. Déterminer la puissance électrique consommée, puis l'intensité du courant qui le traverse.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler la puissance électrique consommée dans la formule du rendement",
+          "justification": "Le rendement relie $P_m$ (connu) à $P_{elec}$ (inconnue) par $\\eta = P_m/P_{elec}$.",
+          "resultat_markdown": "$$P_{elec} = \\dfrac{P_m}{\\eta}$$"
+        },
+        {
+          "numero": 2,
+          "action": "Faire l'application numérique de la puissance électrique",
+          "justification": "On remplace $P_m$ et $\\eta$ par leurs valeurs numériques ($\\eta = 80\\% = 0{,}8$).",
+          "resultat_markdown": "$$P_{elec} = \\dfrac{144}{0{,}8} = 180 \\text{ W}$$"
+        },
+        {
+          "numero": 3,
+          "action": "Utiliser la relation $P = U \\times I$ pour trouver l'intensité",
+          "justification": "En courant continu, la puissance électrique consommée par un dipôle est le produit de la tension à ses bornes par l'intensité qui le traverse.",
+          "resultat_markdown": "$$I = \\dfrac{P_{elec}}{U} = \\dfrac{180}{50} = 3{,}6 \\text{ A}$$"
+        }
+      ],
+      "conclusion_markdown": "Le moteur consomme une puissance électrique de 180 W, ce qui correspond à un courant de 3,6 A sous une tension de 50 V."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $P_{elec} = P_m \\times \\eta$ au lieu de $P_{elec} = P_m / \\eta$.",
+          "pourquoi_faux": "Le rendement relie la puissance utile (plus petite) à la puissance consommée (plus grande) par $\\eta = P_m/P_{elec} < 1$ : multiplier $P_m$ par $\\eta$ (un nombre inférieur à 1) donnerait une puissance électrique inférieure à la puissance mécanique fournie, ce qui est physiquement impossible pour un récepteur qui a nécessairement des pertes.",
+          "correction_markdown": "Avant de choisir entre multiplier ou diviser par $\\eta$, vérifie le sens physique : la puissance consommée doit toujours être supérieure ou égale à la puissance utile fournie, jamais l'inverse."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir le pourcentage en nombre décimal avant de calculer (utiliser $\\eta = 80$ au lieu de $\\eta = 0{,}8$).",
+          "pourquoi_faux": "Un rendement de 80 % correspond à la fraction $80/100 = 0{,}8$ : utiliser directement le nombre 80 dans la formule multiplie ou divise par un facteur 100 en trop.",
+          "correction_markdown": "Convertis systématiquement un rendement donné en pourcentage en une fraction décimale avant tout calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur de rendement 75 % fournit une puissance mécanique de 300 W. Calculer la puissance électrique qu'il consomme.",
+          "solution_markdown": "$$P_{elec} = \\dfrac{P_m}{\\eta} = \\dfrac{300}{0{,}75} = 400 \\text{ W}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur à courant continu, alimenté sous une tension $U = 24$ V, est parcouru par un courant d'intensité $I = 5$ A. Il fournit une puissance mécanique $P_m = 96$ W. Calculer son rendement énergétique.",
+          "solution_markdown": "$$P_{elec} = U \\times I = 24 \\times 5 = 120 \\text{ W}$$\n\n$$\\eta = \\dfrac{P_m}{P_{elec}} = \\dfrac{96}{120} = 0{,}8 = 80\\%$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un moteur à courant continu de rendement $\\eta = 85\\%$, alimenté sous une tension $U = 220$ V, est utilisé pour élever, à vitesse constante, une charge de masse $m = 20$ kg d'une hauteur $h = 15$ m en une durée $t = 25$ s. On prendra $g = 10$ N/kg. Calculer la puissance mécanique fournie par le moteur, puis l'intensité du courant qu'il consomme.",
+          "solution_markdown": "**Puissance mécanique :** à vitesse constante, la puissance mécanique utile sert à élever la charge contre son poids ; le travail du poids sur la hauteur $h$ vaut $W = mgh$, fourni en une durée $t$ :\n\n$$P_m = \\dfrac{W}{t} = \\dfrac{mgh}{t} = \\dfrac{20 \\times 10 \\times 15}{25} = \\dfrac{3000}{25}$$\n\n$$P_m = 120 \\text{ W}$$\n\n**Puissance électrique consommée :**\n\n$$P_{elec} = \\dfrac{P_m}{\\eta} = \\dfrac{120}{0{,}85} \\approx 141{,}2 \\text{ W}$$\n\n**Intensité consommée :**\n\n$$I = \\dfrac{P_{elec}}{U} = \\dfrac{141{,}2}{220} \\approx 0{,}64 \\text{ A}$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le rendement énergétique d'un récepteur, $\\eta = P_{\\text{utile}}/P_{\\text{consommée}}$, est toujours inférieur à 1 (ou à 100 %).",
+        "Pour retrouver $P_{elec}$ à partir de $P_m$ et $\\eta$, on divise : $P_{elec} = P_m/\\eta$ (jamais l'inverse).",
+        "Convertis toujours un rendement en pourcentage en fraction décimale avant de calculer.",
+        "En courant continu, $P = U \\times I$ permet ensuite de passer d'une puissance électrique à une intensité, dès que la tension est connue.",
+        "Ce type de calcul en chaîne (rendement puis loi $P = UI$) est très fréquent dans les exercices sur les moteurs, pompes et autres convertisseurs électromécaniques : identifie toujours d'abord quelle puissance est « utile » et laquelle est « consommée » avant de choisir le sens de la division."
+      ]
+    }
+  ]
+}

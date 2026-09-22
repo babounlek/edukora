@@ -1,0 +1,1512 @@
+[
+  {
+    "competence": "stdio.h",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "Donner un exemple de bibliothèque avec son rôle principal. *[0,25 pt x 2 = 0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne bibliothèque (library) en C est un ensemble de fonctions déjà écrites et compilées, regroupées par thème, que l'on peut réutiliser dans un programme en l'incluant avec la directive #include, sans avoir à réécrire ces fonctions soi-même.\n\n**Exemple** : `stdio.h` (Standard Input/Output) est une bibliothèque dont le rôle principal est de fournir les fonctions d'entrée-sortie standard, comme `printf()` pour afficher à l'écran et `scanf()` pour lire une saisie clavier.\n\nD'autres exemples valables : `math.h` (fonctions mathématiques comme `sqrt()`, `pow()`), `string.h` (manipulation de chaînes de caractères comme `strlen()`, `strcat()`), `stdlib.h` (fonctions utilitaires générales comme `malloc()`, `rand()`).\n\n### Conseil\nUne seule bibliothèque suffit si son rôle est correctement décrit : inutile d'en citer plusieurs si la consigne n'en demande qu'un exemple."
+      },
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**3.** Décris les rôles des bibliothèques **stdio.h** et **stdlib.h**. *[0,5 pt x 2 = 1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\n`stdio.h` (standard input/output) déclare les fonctions d'entrée-sortie standard comme `printf` et `scanf` ; `stdlib.h` (standard library) regroupe des fonctions utilitaires générales telles que la gestion de la mémoire dynamique (`malloc`, `free`), les conversions de chaînes en nombres (`atoi`, `atof`) ou la génération de nombres aléatoires (`rand`).\n\nDans ce programme, `stdio.h` est indispensable puisque tout le programme repose sur `printf` et `scanf` pour dialoguer avec l'utilisateur (lignes 16 à 25). `stdlib.h` est inclus par précaution mais aucune de ses fonctions n'est utilisée dans ce programme précis : la question porte sur le rôle général de la bibliothèque, indépendamment du fait qu'elle serve ou non ici.\n\n### Piège à éviter\nNe dis jamais qu'une bibliothèque incluse mais inutilisée est une erreur : en C, `#include` ne fait qu'apporter des déclarations disponibles si besoin, sans obliger à les utiliser toutes."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**2.** Décrire les deux bibliothèques utilisées dans ce code. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne bibliothèque standard du langage C regroupe des fonctions déjà écrites et testées, rendues disponibles dans un programme par la directive `#include`, ce qui évite à chaque programmeur de réécrire des fonctionnalités courantes comme les entrées-sorties ou la gestion mémoire.\n\n**`<stdio.h>`** (Standard Input/Output) fournit les fonctions d'entrée-sortie standard du langage C. Le code l'utilise pour `puts()` (ligne 7, affichage d'un message), `scanf()` (ligne 8, lecture d'une saisie clavier) et `printf()` (lignes 10 et 14, affichage formaté).\n\n**`<stdlib.h>`** (Standard Library) fournit des fonctions générales utilitaires : gestion de la mémoire, conversions, contrôle du programme. Le code l'utilise ici pour `exit()` et la constante `EXIT_SUCCESS` (ligne 16), qui terminent le programme en signalant au système d'exploitation que l'exécution s'est déroulée sans erreur."
+      },
+      {
+        "exercise_id": 10622,
+        "enonce_markdown": "Decrire les deux bibliotheques utilisees dans ce code. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nEn C, la directive `#include` insère une bibliothèque, c'est-à-dire un ensemble de fonctions déjà écrites. `<stdio.h>` (Standard Input Output) fournit les entrées-sorties comme `printf()` et `scanf()`. `<stdlib.h>` (Standard Library) fournit des utilitaires généraux : allocation mémoire (`malloc`, `free`), conversions (`atoi`) et `exit()`. Pour décrire une bibliothèque, on donne son nom, sa signification et quelques fonctions typiques. Attention : elle est déclarée avec `#include` en début de fichier, sans point-virgule.\n\n**`<stdio.h>`** (ligne 1) : bibliotheque d'entrees-sorties standard (\"STanDard Input/Output\"), qui fournit les fonctions de lecture et d'ecriture comme `scanf()` (lecture au clavier) et `printf()` (affichage a l'ecran), utilisees tout au long de ce programme.\n- **`<stdlib.h>`** (ligne 2) : bibliotheque standard generale (\"STanDard LIBrary\"), qui fournit notamment des fonctions de gestion memoire (`malloc`, `free`), de conversion (`atoi`, `atof`) et d'utilitaires divers ; elle n'est pas strictement indispensable a ce programme tel qu'ecrit, mais est habituellement incluse par prudence des qu'on manipule des tableaux ou des conversions."
+      }
+    ]
+  },
+  {
+    "competence": "client-serveur",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10571,
+        "enonce_markdown": "**I. HTML et JAVASCRIPT (3 points)**\n\n**1.** Définir **application web**. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne application web est un programme accessible depuis un navigateur, dont le traitement est réparti entre un client qui affiche l'interface et un serveur qui exécute la logique et manipule les données de façon dynamique.\n\nUne application web se distingue d'un simple site web par sa capacité à traiter des données de manière dynamique : elle reçoit une requête du navigateur (le client), exécute un programme côté serveur qui peut interroger une base de données, effectuer des calculs ou vérifier des conditions, puis renvoie une page dont le contenu dépend du résultat de ce traitement plutôt que d'un fichier figé.\n\nDans le sujet, l'application de « Soft Computer » illustre exactement ce principe : le formulaire de la Capture 2, affiché dans le navigateur du gestionnaire de stock, sert à saisir des informations sur un article. Ces informations sont ensuite transmises à un script PHP exécuté sur le serveur (Capture 1), qui les confronte à la base de données « Habillement » avant de renvoyer un résultat sous forme de tableau HTML généré à la volée.\n\n### Piège à éviter\nNe réduis pas ta définition à « un programme qui s'affiche dans un navigateur » : un site vitrine purement statique s'affiche lui aussi dans un navigateur sans être une application web. Le critère décisif est le traitement dynamique des données, pas le support d'affichage.\n\n### Conseil\nAppuie toujours ta définition sur l'exemple concret fourni par le sujet plutôt que sur une phrase récitée : cela prouve à l'examinateur que tu maîtrises la notion et pas seulement son vocabulaire."
+      },
+      {
+        "exercise_id": 10574,
+        "enonce_markdown": "**1.** Expliquer de quel côté s'exécute un script PHP. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nPHP est un langage de script exécuté côté serveur : le serveur Web interprète le code PHP avant d'envoyer la page au navigateur, si bien que le navigateur ne reçoit jamais le code PHP lui-même, seulement le HTML qu'il a produit.\n\nDans le script de l'énoncé, tout ce qui se trouve entre `<?php` (ligne 6) et `?>` est donc exécuté sur le serveur qui héberge le site : c'est le serveur qui se connecte à la base de données (ligne 19), qui compare le mot de passe (ligne 34) et qui décide quel message HTML renvoyer. Le navigateur du candidat qui remplit le formulaire ne voit jamais ces instructions ; il ne reçoit que le résultat, sous forme de HTML déjà généré (le `<h3>` correspondant au cas rencontré).\n\n### Conseil\nPour répondre à ce type de question, oppose toujours explicitement PHP (« côté serveur ») à JavaScript (« côté client, dans le navigateur ») : c'est cette opposition, plus que la définition seule, que le correcteur attend de retrouver."
+      }
+    ]
+  },
+  {
+    "competence": "CREATE DATABASE",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10621,
+        "enonce_markdown": "Ecrire la requete qui cree la base de donnees manipulee dans ce code. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nEn SQL, la base de données se crée avec `CREATE DATABASE nom_base;`, et le nom à utiliser se lit dans le code qui s'y connecte : en mysqli, c'est le quatrième argument du constructeur `new mysqli(hôte, utilisateur, mot_de_passe, base)`. On ne confond pas la création de la base avec celle des tables, qui utilise `CREATE TABLE`. Attention : la requête se termine par un point-virgule et le nom doit être identique à celui du script.\n\nLa base de donnees manipulee (ligne 28 : `new mysqli(\"localhost\",\"root\",\"\", \"magasin\")`) se nomme `magasin` :\n\n```sql\nCREATE DATABASE magasin;\n```"
+      },
+      {
+        "exercise_id": 10624,
+        "enonce_markdown": "En considerant les libelles de la figure 1, ecrire la requete SQL qui cree la base de donnees manipulee dans ce code. (1 pt)",
+        "corrige_markdown": "### Rappel de méthode\nOn crée une base avec `CREATE DATABASE nom;`, on la sélectionne avec `USE nom;`, puis on crée chaque table avec `CREATE TABLE nom (colonne type contrainte, ...);`. Chaque colonne reçoit un type adapté (`INT`, `VARCHAR(n)`, `DATE`…), la clé primaire est déclarée par `PRIMARY KEY` et un identifiant automatique par `AUTO_INCREMENT`. Attention : les noms de colonnes doivent correspondre à ceux utilisés dans les requêtes du script, et les types doivent convenir aux données saisies (un numéro de téléphone se stocke en `VARCHAR`).\n\nD'apres les libelles de la figure 1 (NomP, Ville, Sexe, Tel, Res_Test, Etat_Vac, Nom_Vac) et les colonnes effectivement utilisees par l'instruction INSERT du script (id_client, nomP, ville, Tel, NomVac), la requete SQL qui cree la base de donnees manipulee dans ce code est :\n\n```sql\nCREATE DATABASE PATIENT;\nUSE PATIENT;\nCREATE TABLE patient (\n    id_client INT AUTO_INCREMENT PRIMARY KEY,\n    nomP VARCHAR(50),\n    ville VARCHAR(50),\n    Tel VARCHAR(15),\n    NomVac VARCHAR(50)\n);\n```"
+      }
+    ]
+  },
+  {
+    "competence": "structure de données",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "Définir **structure de donnée** et citer un exemple non primitif. *[0,25 pt x 2 = 0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne structure de donnée est une manière organisée de stocker et d'organiser un ensemble de données en mémoire, afin de pouvoir les manipuler efficacement (les parcourir, les rechercher, les modifier).\n\nOn distingue les types de données **primitifs** (int, char, float...), qui stockent une seule valeur simple, des structures de données **non primitives** (ou composées), qui organisent plusieurs valeurs ensemble selon une logique précise.\n\n**Exemple non primitif** : le tableau (array). Un tableau regroupe plusieurs valeurs du même type, rangées les unes à la suite des autres et repérées chacune par un indice (par exemple `int notes[5];` regroupe 5 entiers accessibles via `notes[0]` à `notes[4]`).\n\n### Conseil\nSi on te demande un exemple \"non primitif\", exclus d'office `int`, `char`, `float`, `double` : ce sont des types de base, pas des structures de données composées."
+      },
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**5.** Identifie dans le programme un tableau et un enregistrement. *[0,25 pt x 2 = 0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn tableau regroupe plusieurs valeurs du même type sous un seul nom, accessibles par indice ; un enregistrement (ou structure) regroupe au contraire plusieurs champs éventuellement de types différents pour décrire un seul objet complexe, accessibles par leur nom de champ.\n\nDans ce programme, `Lyclamo` (ligne 13) est le tableau : il rassemble 5 élèves sous un seul nom, parcourus par l'indice `i`. La structure `Eleve` (lignes 4 à 7) est l'enregistrement : chacun de ses champs `matricule`, `age` et `sexe`, bien que de types différents (`int`, `int`, `char`), décrit un seul et même élève."
+      },
+      {
+        "exercise_id": 10625,
+        "enonce_markdown": "Identifier dans ce code, une variable manipulant une structure de donnee. (0,5pt)",
+        "corrige_markdown": "### Rappel de méthode\nUne structure de données organise plusieurs valeurs sous un même nom. En C, le tableau est la structure de base : il regroupe des éléments de même type, stockés de façon contiguë et accessibles par leur indice. Il se déclare par `type nom[taille];` et ses éléments sont numérotés à partir de 0, de sorte que le dernier indice vaut `taille - 1`. Attention : une variable simple (entier, réel, caractère) n'est pas une structure de données, et le langage C ne vérifie pas les dépassements d'indice.\n\nLa variable manipulant une structure de donnee est le **tableau `A`**, declare ligne 4 par `int A[50];`. Un tableau est une structure de donnees qui regroupe, sous un seul nom, une collection d'elements de meme type (ici, au plus 50 entiers), chacun etant accessible individuellement par son indice, comme `A[I]`."
+      }
+    ]
+  },
+  {
+    "competence": "IDE",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "2nde",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCM201",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "Définir **IDE**. Donner un bon exemple. *[0,25 pt x 2 = 0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn IDE (Integrated Development Environment, environnement de développement intégré) est un logiciel qui regroupe dans une seule interface les outils nécessaires au développeur : éditeur de texte/code, compilateur ou interpréteur, et débogueur.\n\nL'objectif d'un IDE est de faire gagner du temps au développeur en évitant de jongler entre plusieurs logiciels séparés (un éditeur de texte, puis une invite de commande pour compiler, puis un autre outil pour déboguer) : tout est accessible depuis une seule fenêtre.\n\n**Exemple** : Code::Blocks est un IDE couramment utilisé pour développer en langage C, il intègre un éditeur de code, le compilateur GCC et un débogueur.\n\n### Piège à éviter\nNe pas confondre IDE et compilateur : le compilateur est un des outils intégrés dans l'IDE, mais l'IDE lui-même ne compile rien - il délègue cette tâche au compilateur qu'il embarque."
+      },
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**2.** Après avoir donné la signification de **IDE**, donne un **exemple d'IDE** qu'on peut utiliser pour saisir, compiler et exécuter ce programme. *[0,5 pt + 0,5 pt = 1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn IDE (Integrated Development Environment, Environnement de Développement Intégré) est un logiciel qui regroupe en un seul outil l'éditeur de texte pour écrire le code, le compilateur ou l'interpréteur pour le traduire, et le débogueur pour repérer les erreurs à l'exécution.\n\nPour saisir, compiler et exécuter le programme C présenté ici, on peut par exemple utiliser Code::Blocks, Dev-C++ ou encore Visual Studio Code associé à un compilateur GCC : ces trois logiciels réunissent en une seule fenêtre l'écriture du code, sa compilation et le lancement du programme obtenu.\n\n### Conseil\nUn seul exemple d'IDE suffit à valider la question : inutile d'en citer plusieurs si l'énoncé n'en demande qu'un, mieux vaut consacrer ce temps aux questions suivantes."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**10.** Nommer un IDE qui peut être utilisé pour tester ce code. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn IDE (environnement de développement intégré) regroupe dans un seul logiciel l'éditeur de texte, le compilateur et le débogueur nécessaires pour écrire, compiler et corriger un programme, évitant à l'utilisateur de jongler entre plusieurs outils séparés.\n\nCe code étant écrit en langage C standard (sans bibliothèque spécifique à un système), il peut être testé dans n'importe quel IDE supportant le C, par exemple **Code::Blocks**, **Dev-C++** ou **Visual Studio Code** (associé à un compilateur comme GCC/MinGW). Un seul nom, correctement justifié comme capable de compiler et d'exécuter du C, suffit à répondre à la question."
+      },
+      {
+        "exercise_id": 10625,
+        "enonce_markdown": "Citer un (01) exemple d'IDE utilise pour compiler le code en langage C. (0.5pt)",
+        "corrige_markdown": "### Rappel de méthode\nPour compiler et exécuter du code C, on utilise un compilateur (par exemple GCC), souvent fourni dans un environnement de développement intégré qui réunit éditeur, compilateur et débogueur. Parmi les IDE courants pour le C, on cite Code::Blocks, Dev-C++, CLion, Eclipse CDT ou Visual Studio. Attention : un IDE n'est pas un compilateur, il en pilote un, et le simple éditeur de texte ne suffit pas à lancer la compilation.\n\nUn exemple d'IDE utilise pour compiler du code en langage C est **Code::Blocks** (on peut aussi citer Dev-C++, ou Visual Studio Code associe a un compilateur comme GCC/MinGW)."
+      }
+    ]
+  },
+  {
+    "competence": "scanf",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10576,
+        "enonce_markdown": "**2.** Ecrire la fonction principale `main()` en C dans laquelle vous feriez l'appel de la fonction donnée ci-dessus avec des valeurs fournies par l'utilisateur. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nAppeler une fonction avec des valeurs fournies par l'utilisateur suppose de déclarer les variables qui recevront ces valeurs, de les lire au clavier avec `scanf`, puis de transmettre ces variables en argument de la fonction et d'afficher la valeur renvoyée.\n\n```c\nint main() {\n    int x, n, resultat;\n\n    printf(\"Entrez la valeur de x : \");\n    scanf(\"%d\", &x);\n    printf(\"Entrez la valeur de n : \");\n    scanf(\"%d\", &n);\n\n    resultat = calcul(x, n);\n\n    printf(\"calcul(%d, %d) = %d\n\", x, n, resultat);\n\n    return 0;\n}\n```\n\n`x` et `n` sont lus séparément au clavier, chacun précédé d'un message qui précise à l'utilisateur ce qui est attendu. L'appel `calcul(x, n)` transmet ces deux valeurs par copie (passage par valeur, la fonction `calcul` ne modifie d'ailleurs jamais x ou n de l'appelant) et son résultat est stocké dans `resultat` avant d'être affiché.\n\n### Conseil\nAffiche toujours les valeurs de x et n en même temps que le résultat (comme dans `printf` ci-dessus) : cela permet de vérifier immédiatement, à l'exécution, que le résultat correspond bien aux valeurs saisies, sans avoir à les retenir."
+      },
+      {
+        "exercise_id": 10625,
+        "enonce_markdown": "Donner le role de la fonction scanf(\"%d\", &N ) de la ligne 12 tout en decrivant ses differents parametres. (1,5pt)",
+        "corrige_markdown": "### Rappel de méthode\nLa fonction `scanf(format, adresses...)` lit des données saisies au clavier et les range dans des variables. Le premier paramètre est la chaîne de format, qui précise le type attendu (`%d` entier, `%f` réel, `%c` caractère, `%s` chaîne) ; les suivants sont les adresses des variables de destination, obtenues avec l'opérateur `&`. Attention : oublier le `&` devant une variable simple provoque un comportement indéfini, sauf pour un tableau de caractères dont le nom est déjà une adresse.\n\nLa fonction `scanf(\"%d\", &N )` lit une valeur entiere saisie au clavier par l'utilisateur et la stocke dans la variable `N`.\n\nSes deux parametres sont :\n\n1. `\"%d\"` : la **chaine de format**, qui indique a `scanf()` que la valeur a lire doit etre interpretee comme un entier decimal (`%d` = decimal).\n2. `&N` : l'**adresse memoire** de la variable `N`, obtenue grace a l'operateur d'adresse `&`. `scanf()` a besoin de cette adresse, et non de la valeur de `N`, car elle doit ecrire directement la valeur saisie a cet emplacement memoire (passage par adresse) pour que `N` soit effectivement modifiee apres l'appel."
+      }
+    ]
+  },
+  {
+    "competence": "compilation",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**2.** Après avoir donné la signification de **IDE**, donne un **exemple d'IDE** qu'on peut utiliser pour saisir, compiler et exécuter ce programme. *[0,5 pt + 0,5 pt = 1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn IDE (Integrated Development Environment, Environnement de Développement Intégré) est un logiciel qui regroupe en un seul outil l'éditeur de texte pour écrire le code, le compilateur ou l'interpréteur pour le traduire, et le débogueur pour repérer les erreurs à l'exécution.\n\nPour saisir, compiler et exécuter le programme C présenté ici, on peut par exemple utiliser Code::Blocks, Dev-C++ ou encore Visual Studio Code associé à un compilateur GCC : ces trois logiciels réunissent en une seule fenêtre l'écriture du code, sa compilation et le lancement du programme obtenu.\n\n### Conseil\nUn seul exemple d'IDE suffit à valider la question : inutile d'en citer plusieurs si l'énoncé n'en demande qu'un, mieux vaut consacrer ce temps aux questions suivantes."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**3.** Donner le rôle :\n\n**3.1.** De la ligne 5. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn prototype de fonction annonce au compilateur, avant sa définition complète, le type de retour d'une fonction, son nom et le type de ses paramètres, ce qui permet d'appeler cette fonction plus haut dans le fichier, avant l'endroit où elle est réellement définie.\n\n```c\n5: unsigned int factorielle(unsigned int a);\n```\n\nCette ligne déclare le prototype de la fonction `factorielle` : elle indique au compilateur que cette fonction existe, qu'elle retourne un `unsigned int` et qu'elle prend un paramètre de type `unsigned int`, sans en donner le corps (le code exécuté n'apparaît qu'à la ligne 18). Grâce à ce prototype, l'appel `f = factorielle(x);` fait à la ligne 13, à l'intérieur de `main()`, est accepté par le compilateur alors que la définition complète de `factorielle` se trouve plus bas dans le fichier (lignes 18 à 27).\n\n### Piège à éviter\nSans ce prototype, le compilateur rencontrerait l'appel `factorielle(x)` ligne 13 avant d'avoir connaissance de cette fonction, ce qui provoquerait une erreur (ou, selon le compilateur, un simple avertissement dangereux supposant un type de retour par défaut incorrect). Le prototype n'est donc pas une formalité : il conditionne la compilation correcte du programme."
+      },
+      {
+        "exercise_id": 10625,
+        "enonce_markdown": "Citer un (01) exemple d'IDE utilise pour compiler le code en langage C. (0.5pt)",
+        "corrige_markdown": "### Rappel de méthode\nPour compiler et exécuter du code C, on utilise un compilateur (par exemple GCC), souvent fourni dans un environnement de développement intégré qui réunit éditeur, compilateur et débogueur. Parmi les IDE courants pour le C, on cite Code::Blocks, Dev-C++, CLion, Eclipse CDT ou Visual Studio. Attention : un IDE n'est pas un compilateur, il en pilote un, et le simple éditeur de texte ne suffit pas à lancer la compilation.\n\nUn exemple d'IDE utilise pour compiler du code en langage C est **Code::Blocks** (on peut aussi citer Dev-C++, ou Visual Studio Code associe a un compilateur comme GCC/MinGW)."
+      }
+    ]
+  },
+  {
+    "competence": "saisie clavier",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10575,
+        "enonce_markdown": "**1.** Ecrire une fonction C qui lit la dimension N d'un tableau T du type entier et remplit le tableau par des valeurs entrées au clavier. *[2 pts]*",
+        "corrige_markdown": "### Rappel de méthode\nEn C, un tableau se déclare avec une taille fixée à la compilation ; pour laisser l'utilisateur choisir cette taille au moment de l'exécution, on lit d'abord N avec `scanf`, on dimensionne le tableau à N (ici avec une taille maximale suffisante, la taille exacte de 50 étant connue par l'énoncé), puis on parcourt les indices de 0 à N-1 dans une boucle `for` pour lire chaque valeur.\n\n```c\n#define TAILLE_MAX 50\n\nvoid saisirTableau(int T[], int *n) {\n    int i;\n\n    printf(\"Entrez la dimension du tableau (N) : \");\n    scanf(\"%d\", n);\n\n    for (i = 0; i < *n; i++) {\n        printf(\"Entrez la note de l'eleve %d : \", i + 1);\n        scanf(\"%d\", &T[i]);\n    }\n}\n```\n\nLe paramètre `n` est passé par adresse (`int *n`) parce que la fonction doit modifier, pour l'appelant, la valeur de N lue au clavier : un paramètre passé par valeur en C ne renvoie aucune modification à la fonction appelante, il faut donc transmettre l'adresse de la variable pour que `scanf` (qui exige lui-même une adresse, `&T[i]` ou `n`) puisse l'écrire directement en mémoire. Le tableau `T`, lui, est déjà transmis par adresse de façon implicite dès qu'il est déclaré en paramètre de fonction : `T[i]` à l'intérieur de la fonction modifie directement le tableau de l'appelant, sans passage explicite de pointeur supplémentaire.\n\n### Piège à éviter\nN'oublie pas l'astérisque devant `n` dans `scanf(\"%d\", n)` : ici `n` est déjà un pointeur (`int *n`), donc `scanf` reçoit directement l'adresse voulue sans `&` supplémentaire. Écrire `&n` par réflexe (comme pour une variable simple) transmettrait l'adresse du pointeur lui-même, pas celle de l'entier pointé, et ferait planter le programme ou écrire à un endroit incorrect.\n\n### Conseil\nPrévois toujours une variable de taille maximale du tableau (ici `TAILLE_MAX`) même si l'énoncé annonce un effectif fixe de 50 élèves : cela protège le programme d'un débordement si la valeur saisie au clavier dépasse la capacité réellement allouée au tableau."
+      },
+      {
+        "exercise_id": 10625,
+        "enonce_markdown": "Donner le role de la fonction scanf(\"%d\", &N ) de la ligne 12 tout en decrivant ses differents parametres. (1,5pt)",
+        "corrige_markdown": "### Rappel de méthode\nLa fonction `scanf(format, adresses...)` lit des données saisies au clavier et les range dans des variables. Le premier paramètre est la chaîne de format, qui précise le type attendu (`%d` entier, `%f` réel, `%c` caractère, `%s` chaîne) ; les suivants sont les adresses des variables de destination, obtenues avec l'opérateur `&`. Attention : oublier le `&` devant une variable simple provoque un comportement indéfini, sauf pour un tableau de caractères dont le nom est déjà une adresse.\n\nLa fonction `scanf(\"%d\", &N )` lit une valeur entiere saisie au clavier par l'utilisateur et la stocke dans la variable `N`.\n\nSes deux parametres sont :\n\n1. `\"%d\"` : la **chaine de format**, qui indique a `scanf()` que la valeur a lire doit etre interpretee comme un entier decimal (`%d` = decimal).\n2. `&N` : l'**adresse memoire** de la variable `N`, obtenue grace a l'operateur d'adresse `&`. `scanf()` a besoin de cette adresse, et non de la valeur de `N`, car elle doit ecrire directement la valeur saisie a cet emplacement memoire (passage par adresse) pour que `N` soit effectivement modifiee apres l'appel."
+      }
+    ]
+  },
+  {
+    "competence": "entrées-sorties",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "*La fonction `gets()` permet de lire en mémoire un certain nombre de caractères dans un tableau ou ailleurs.* Répondre par Vrai ou Faux. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nEn C, gets() lit une ligne de caractères saisie au clavier et la range dans un tableau de caractères (chaîne), tandis que puts() affiche à l'écran le contenu d'une chaîne de caractères suivie d'un retour à la ligne ; toutes deux appartiennent à la bibliothèque stdio.h, au même titre que printf() et scanf().\n\nL'affirmation décrit `gets()` comme une fonction qui \"permet de lire en mémoire un certain nombre de caractères dans un tableau ou ailleurs\" : c'est globalement exact dans le principe (elle lit une chaîne et la stocke dans un tableau de caractères passé en argument), même si en pratique `gets()` ne limite pas elle-même le nombre de caractères lus - elle lit jusqu'au retour à la ligne, quelle que soit la taille du tableau fourni.\n\n**Réponse : Vrai** (dans le principe général décrit par l'énoncé).\n\n### Piège à éviter\nNe jamais utiliser `gets()` dans un vrai programme : comme elle ne vérifie pas la taille du tableau destination, elle peut écrire au-delà de sa limite (débordement de tampon) et corrompre la mémoire. C'est pour cette raison que `gets()` a été retirée du standard C11 ; on lui préfère aujourd'hui `fgets()`, qui accepte une taille maximale."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**3.2.** De la ligne 7. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLa fonction `puts()`, définie dans `<stdio.h>`, affiche à l'écran la chaîne de caractères passée en argument, en ajoutant automatiquement un retour à la ligne après l'affichage, contrairement à `printf()` qui n'en ajoute que si on l'écrit explicitement.\n\n```c\n7: puts(\"Entrez une valeur entière entre 1 et 8: \");\n```\n\nCette ligne affiche à l'écran le message d'invite `Entrez une valeur entière entre 1 et 8: `, destiné à indiquer à l'utilisateur ce qu'il doit saisir juste avant l'appel à `scanf()` de la ligne suivante. `puts()` est adaptée ici car le message est une simple chaîne de caractères fixe, sans valeur à insérer dynamiquement, ce qui rend son usage plus simple que `printf()` pour ce cas précis."
+      }
+    ]
+  },
+  {
+    "competence": "algorigramme",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10533,
+        "enonce_markdown": "Identifier les variables d'entrée. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nDans un algorigramme, une variable d'entrée est une donnée fournie de l'extérieur au traitement (typiquement via une instruction Lire/Read) : c'est elle qui alimente les calculs, mais elle n'est jamais elle-même le résultat final communiqué à l'utilisateur.\n\nDans l'algorigramme donné, la seule instruction de lecture est `Lire(X)`, placée juste après le test `K<50`. `X` est donc la valeur saisie à chaque tour de boucle, sur laquelle repose ensuite tout le traitement (comparaison à 0, ajout à `S` ou incrémentation de `N`).\n\n**Variable d'entrée : `X`**.\n\n### Piège à éviter\nNe pas confondre `K`, qui pilote uniquement le nombre de répétitions de la boucle (un compteur interne), avec une variable d'entrée : `K` n'est jamais lu depuis l'extérieur, il est incrémenté automatiquement par l'algorithme lui-même (`K=K+1`)."
+      }
+    ]
+  },
+  {
+    "competence": "JavaScript",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10534,
+        "enonce_markdown": "Donner la raison pour laquelle on dit que JavaScript est léger. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nJavaScript est qualifié de langage léger car il est interprété directement par le navigateur, sans étape de compilation préalable, avec une syntaxe simple et peu de mécanismes lourds à charger avant de pouvoir s'exécuter.\n\nJavaScript ne nécessite ni compilateur séparé ni environnement d'exécution externe volumineux : le moteur JavaScript est déjà intégré à tout navigateur web (Chrome, Firefox...), qui lit et exécute le code directement, ligne par ligne. Cette absence de compilation et la petite taille du langage de base expliquent qu'on le qualifie de \"léger\", par opposition à des langages compilés dotés d'un environnement d'exécution plus lourd à mettre en place.\n\n### Piège à éviter\nNe pas confondre \"léger\" avec \"peu puissant\" : JavaScript, bien que léger à l'exécution, permet des traitements complexes (manipulation du DOM, calculs, interactions dynamiques)."
+      },
+      {
+        "exercise_id": 10535,
+        "enonce_markdown": "Pendant la période du confinement en 2020, où la majorité des leçons et évaluations se faisaient en ligne à cause de la Covid-19, un enseignant de mathématiques vous a posé un problème relatif à l'étude d'une fonction numérique de la forme $f(x)=\\dfrac{ax^2+bx+c}{ax^2-bx-c}$. Il souhaite un script JavaScript qui aide les apprenants à étudier une telle fonction sans présenter au préalable le tableau de variation ni tracer la courbe.\n\n**Consigne** : déterminer le domaine de définition de la fonction, et surtout déterminer les limites aux bornes du domaine de définition.",
+        "corrige_markdown": "### Rappel de méthode\nÉtudier une fonction numérique par script consiste à traduire en instructions ce que l'on ferait à la main (calcul du domaine de définition à partir de l'annulation du dénominateur, puis calcul des limites aux bornes de ce domaine), plutôt qu'à faire deviner le résultat par un tracé de courbe ou un tableau de variation.\n\n**Mise en équation du problème mathématique**\n\nOn pose $N(x) = ax^2+bx+c$ (numérateur) et $D(x) = ax^2-bx-c$ (dénominateur), de sorte que $f(x) = \\dfrac{N(x)}{D(x)}$.\n\n**Étape 1 - Domaine de définition**\n\n$f$ est définie partout où $D(x) \\neq 0$. Il faut donc résoudre $D(x)=0$, c'est-à-dire $ax^2-bx-c=0$.\n\n*Cas particulier $a=0$* : $D(x)$ se réduit à $-bx-c$, une expression du premier degré (ou une constante si $b=0$ aussi). Le programme doit traiter ce cas séparément (division par un coefficient nul interdite dans la formule du second degré).\n\n*Cas général $a \\neq 0$* : le discriminant du dénominateur est\n$$\\Delta_D = (-b)^2 - 4 \\times a \\times (-c) = b^2+4ac$$\n\n- Si $\\Delta_D>0$ : deux racines distinctes $x_1=\\dfrac{b-\\sqrt{\\Delta_D}}{2a}$ et $x_2=\\dfrac{b+\\sqrt{\\Delta_D}}{2a}$, donc $D_f=\\mathbb{R}\\setminus\\{x_1;x_2\\}$.\n- Si $\\Delta_D=0$ : une racine double $x_0=\\dfrac{b}{2a}$, donc $D_f=\\mathbb{R}\\setminus\\{x_0\\}$.\n- Si $\\Delta_D<0$ : $D(x)$ ne s'annule jamais, donc $D_f=\\mathbb{R}$.\n\n**Étape 2 - Limites aux bornes de $D_f$**\n\n*Limites en $+\\infty$ et en $-\\infty$* : $N(x)$ et $D(x)$ sont tous deux des trinômes de coefficient dominant $a$ (quand $a \\neq 0$). Le quotient des termes de plus haut degré donne directement :\n$$\\lim_{x\\to \\pm\\infty} f(x) = \\lim_{x\\to\\pm\\infty} \\frac{ax^2}{ax^2} = \\frac{a}{a} = 1$$\nLa droite d'équation $y=1$ est donc asymptote horizontale à la courbe, dans tous les cas où $a\\neq 0$.\n\n*Limites en une valeur exclue $x_0$ (racine de $D$)* : il faut d'abord vérifier que $x_0$ n'annule pas aussi $N$ (sinon la fraction se simplifierait et $x_0$ ne serait qu'un \"trou\", pas une asymptote). Si $N(x_0)\\neq 0$, $f$ admet une asymptote verticale d'équation $x=x_0$ ; le signe de chaque limite laterale dépend du signe de $N(x_0)$ et du signe de $D(x)$ de part et d'autre de $x_0$ (qui change de signe si $x_0$ est une racine simple, et garde un signe constant si $x_0$ est une racine double).\n\n**Traduction en script JavaScript**\n\nPlutôt que de refaire cette étude de signe à la main dans le script, on exploite le fait que la division flottante de JavaScript renvoie déjà `Infinity`, `-Infinity` ou `NaN` pour un dénominateur nul ou quasi nul : évaluer $f$ juste à gauche et juste à droite de $x_0$ (à $x_0 \\pm \\varepsilon$, avec $\\varepsilon$ très petit) donne directement le signe de chaque limite latérale, sans avoir à écrire soi-même l'étude de signe du dénominateur.\n\n```javascript\n<html><head><title>Etude de fonction</title></head>\n<body>\n<script type=\"text/javascript\">\n\nfunction N(a,b,c,x) { return a*x*x + b*x + c; }\nfunction D(a,b,c,x) { return a*x*x - b*x - c; }\nfunction f(a,b,c,x) { return N(a,b,c,x) / D(a,b,c,x); }\n\nvar a = parseFloat(prompt(\"Entrez le coefficient a :\"));\nvar b = parseFloat(prompt(\"Entrez le coefficient b :\"));\nvar c = parseFloat(prompt(\"Entrez le coefficient c :\"));\n\nvar message = \"\";\n\nif (a == 0) {\n    message += \"Cas particulier a=0 : le dénominateur est du premier degré.\n\";\n    if (b != 0) {\n        var x0 = -c/b;\n        message += \"Domaine de définition : R privé de {\" + x0 + \"}\n\";\n    } else {\n        message += (c != 0)\n            ? \"Domaine de définition : R tout entier (f(x) = -1 partout)\n\"\n            : \"Fonction non définie : numérateur et dénominateur sont tous deux nuls.\n\";\n    }\n} else {\n    var delta = b*b + 4*a*c;\n    var exclus = [];\n\n    if (delta > 0) {\n        var x1 = (b - Math.sqrt(delta)) / (2*a);\n        var x2 = (b + Math.sqrt(delta)) / (2*a);\n        exclus = [x1, x2];\n    } else if (delta == 0) {\n        var x0 = b / (2*a);\n        exclus = [x0];\n    }\n\n    message += \"Domaine de définition : R privé de {\" + exclus.join(\" ; \") + \"}\n\";\n    message += \"Limite en -Infini et en +Infini : 1 (car a/a = 1)\n\";\n\n    var epsilon = 0.0001;\n    for (var i = 0; i < exclus.length; i++) {\n        var x0 = exclus[i];\n        if (Math.abs(N(a,b,c,x0)) < 1e-9) {\n            message += \"En x=\" + x0 + \" : point sans image mais NON asymptotique (numérateur également nul)\n\";\n        } else {\n            var gauche = f(a,b,c, x0 - epsilon);\n            var droite = f(a,b,c, x0 + epsilon);\n            message += \"En x=\" + x0 + \" : limite à gauche = \" + gauche + \", limite à droite = \" + droite + \"\n\";\n        }\n    }\n}\n\ndocument.write(\"<pre>\" + message + \"</pre>\");\n\n</script>\n</body></html>\n```\n\nDéroulé de la logique du script :\n1. Les fonctions `N`, `D` et `f` calculent respectivement le numérateur, le dénominateur et l'image par $f$, pour des coefficients `a,b,c` et un réel `x` quelconques.\n2. Le cas `a==0` est traité à part, comme identifié à l'étape 1 ci-dessus (dénominateur non quadratique).\n3. Pour `a!=0`, le discriminant `delta` du dénominateur est calculé exactement comme $\\Delta_D=b^2+4ac$, et le tableau `exclus` reçoit les valeurs interdites selon son signe.\n4. La limite aux infinis est directement affichée comme `1`, valeur démontrée mathématiquement à l'étape 2, sans qu'aucun calcul supplémentaire ne soit nécessaire.\n5. Pour chaque valeur exclue, le script vérifie d'abord si le numérateur y est également nul (cas du \"trou\", à distinguer d'une véritable asymptote), puis, sinon, évalue $f$ juste avant et juste après cette valeur pour en déduire numériquement le signe de chaque limite latérale (JavaScript affichera alors lui-même des très grands nombres positifs ou négatifs, révélateurs du signe de l'infini correspondant).\n\n### Piège à éviter\nÉcrire directement `f(a,b,c,x0)` avec `x0` calculé par la formule du second degré donnerait le plus souvent une valeur numérique énorme mais finie (à cause des erreurs d'arrondi de `Math.sqrt`), jamais l'exacte valeur `Infinity` : le dénominateur calculé informatiquement n'est presque jamais rigoureusement égal à 0. C'est pourquoi le script évalue $f$ à `x0 - epsilon` et `x0 + epsilon` plutôt qu'en `x0` lui-même - cela donne un résultat numérique exploitable pour déterminer le signe de chaque limite, sans dépendre de la précision exacte de l'arrondi flottant en `x0`.\n\n### Conseil\nLe jour de l'épreuve, si l'écriture complète du script en JavaScript prend trop de temps, détaille au moins clairement la démarche mathématique (discriminant du dénominateur, limite en $\\pm\\infty$ égale à $a/a=1$) : c'est cette démarche, traduite ensuite en instructions, que le correcteur veut voir apparaître en premier."
+      },
+      {
+        "exercise_id": 10536,
+        "enonce_markdown": "Il y a un an, le frère d'un élève de la PTI avait sérieusement critiqué l'enseignant d'Algorithme & Programmation, lui reprochant d'enseigner encore le code HTML alors qu'il existe des CMS pour faciliter les tâches. Un jour, à l'aide d'un CMS, un code fut réalisé par Bintou : le code source encore ouvert, un mouvement de doigt par inadvertance enfonça la touche \"backspace\" et un caractère fut effacé. À l'interprétation, le résultat affiche une erreur de fond par l'expression NaN.\n\n**Consigne** : après lecture du code et observation de la capture d'écran, préciser la ligne de code qui fait problème et la corriger.\n\n*NB : une ligne normale mais repérée comme fausse retranche le point.*\n\n![Capture d'écran du navigateur : tableau des notes avec Moyenne = NaN pour SAMIRATOU](/media/figures/cm/probatoire-blanc-ti-avril-2024-college-vogt-cameroun_exercice_5_fig_1.webp)\n\n```html\n<!DOCTYPE html>\n<html><head><title></title></head>\n<body> <table border=\"2\">\n<tr>\n<td>Nom</td>\n<td>Francais</td>\n<td>Anglais</td>\n<td>Moyenne</td></tr>\n<tr>\n<td>KONFOR</td>\n<td><script type=\"text/javascript\">\nvar F; var Note;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote=F;\ndocument.write(\"\"+Note);\n</script></td>\n<td><script type=\"text/javascript\">\nvar A; var M;\nA=parseInt(prompt(\"entrer la note d'Anglais\"));\nM = A ;\ndocument.write(\"\"+M);\n</script></td>\n<td><script type=\"text/javascript\">\nMoy=(M+Note)/2;\ndocument.write(\"\"+Moy)\n</script></td>\n<tr>\n<td>TANTOH</td>\n<td><script type=\"text/javascript\">\nvar F;var Note ;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote=F;\ndocument.write(\"\"+Note);\n</script></td>\n<td><script type=\"text/javascript\">\nvar A; var M;\nA=parseInt(prompt(\"entrer la note d'Anglais\"));\nM = A ;\ndocument.write(\"\"+M);\n</script></td>\n<td><script type=\"text/javascript\">\nMoy=(M+Note)/2;\ndocument.write(\"\"+Moy)\n</script></td>\n<tr>\n<td>SAMIRATOU</td>\n<td><script type=\"text/javascript\">\nvar F1; var Note1 ;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote1=F1;\ndocument.write(\"\"+Note);\n</script></td>\n<td><script type=\"text/javascript\">\nvar A1; var M1;\nA1=parseInt(prompt(\"entrer la note d'Anglais\"));\nM1 = A1 ;\ndocument.write(\"\"+M1);</script></td>\n<td><script type=\"text/javascript\">\nMoy1=(M1+Note1)/2;\ndocument.write(\"\"+Moy1)\n</script></td>\n</body></html>\n```",
+        "corrige_markdown": "### Rappel de méthode\nEn JavaScript classique (scripts non modulaires, hors mode strict), une variable déclarée avec var en dehors de toute fonction est globale : la redéclarer avec var dans un autre bloc <script> de la même page ne crée pas une nouvelle variable, elle réutilise et peut écraser la même variable globale que celle déjà utilisée plus haut dans la page.\n\n**Repérage de la ligne fautive**\n\nDans le bloc `<script>` de la ligne \"SAMIRATOU\" :\n```javascript\nvar F1; var Note1 ;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote1=F1;\ndocument.write(\"\"+Note);\n```\nLa ligne `F1` et `Note1` sont bien déclarées, mais l'instruction de saisie assigne le résultat à `F` (variable globale déjà utilisée pour KONFOR et TANTOH), pas à `F1`. Résultat : `F1` reste déclarée mais **jamais assignée**, donc `undefined`.\n\n**Propagation de l'erreur**\n\nLa ligne suivante, `Note1=F1;`, affecte donc `undefined` à `Note1`. Puis, dans le bloc `<script>` de la colonne Moyenne :\n```javascript\nMoy1=(M1+Note1)/2;\n```\n`M1` est un nombre valide (assigné correctement via `A1`/`M1`), mais `Note1` vaut `undefined`. En JavaScript, toute opération arithmétique impliquant `undefined` renvoie `NaN` (Not a Number) : `M1 + undefined` donne déjà `NaN`, et `NaN / 2` reste `NaN`. C'est exactement la valeur affichée dans la colonne Moyenne de la ligne SAMIRATOU.\n\n**Ligne à corriger** : `F=parseInt(prompt(\"entrer la note de Francais\"));` doit devenir :\n```javascript\nF1=parseInt(prompt(\"entrer la note de Francais\"));\n```\nUne fois cette correction faite, `F1` reçoit bien la note saisie, `Note1=F1` devient un nombre valide, et `Moy1=(M1+Note1)/2` calcule une moyenne correcte au lieu de `NaN`.\n\n### Piège à éviter\nIl ne faut pas se laisser distraire par la ligne `document.write(\"\"+Note);` de la même série de blocs, qui affiche `Note` (variable globale laissée par le bloc TANTOH) au lieu de `Note1` : cette ligne affiche par coïncidence une valeur numérique plausible (donc sans NaN visible), mais elle constitue une **deuxième erreur bien réelle** du même code (elle affiche la note de Français du candidat précédent, pas celle de SAMIRATOU). La consigne demande cependant de répérer la ou les lignes ayant produit **NaN** : seule l'erreur sur `F1` en est directement responsable, la note NB de l'énoncé prévenant justement qu'une ligne \"normale\" mais désignée à tort comme fautive fait perdre le point.\n\n### Conseil\nPour retrouver ce genre de bogue rapidement, pars du résultat inattendu (ici `NaN` dans Moyenne) et remonte le calcul étape par étape : `Moy1` dépend de `M1` et `Note1` -> `Note1` dépend de `F1` -> `F1` n'est jamais assigné. Cette remontée en arrière est plus fiable que de relire tout le code dans l'ordre de haut en bas."
+      },
+      {
+        "exercise_id": 10537,
+        "enonce_markdown": "Exécuter le script ci-dessous pour n=2 et p=6. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nExécuter (simuler) un script comportant une boucle do...while avec une condition de validation de saisie consiste à tester d'abord si les valeurs proposées vérifient cette condition : tant qu'elle échoue, le corps de la boucle se répète et redemande une saisie, avant même d'atteindre les instructions placées après la boucle.\n\nLe script commence par :\n```javascript\ndo\n{\np=parseInt(prompt(\"Entrez l'entier p:\"));\nn=parseInt(prompt(\"Entrez l'entier n:\"));\n}\nwhile(n<0 || p<0 || p>n)\n```\nUne boucle `do...while` exécute toujours son corps au moins une fois, puis teste la condition : si elle est vraie, on reboucle ; si elle est fausse, on continue avec la suite du script.\n\n**Exécution avec n=2 et p=6**\n\n1. Premier passage dans le corps de la boucle : l'utilisateur saisit `p=6` puis `n=2`.\n2. Test de la condition `while(n<0 || p<0 || p>n)` : `n<0` est faux (2 n'est pas négatif), `p<0` est faux (6 n'est pas négatif), mais `p>n` vaut `6>2`, ce qui est **vrai**.\n3. La condition globale (union par `||`) est donc **vraie** : la boucle recommence et redemande à l'utilisateur de saisir `p` puis `n`.\n\n**Conclusion de l'exécution** : avec les valeurs n=2 et p=6, le script ne dépasse jamais la boucle `do...while` : il redemande indéfiniment une nouvelle saisie tant que l'utilisateur ne fournit pas des valeurs telles que `p` soit inférieur ou égal à `n` (et que les deux soient positifs ou nuls). Aucun calcul de `o`, `s`, `m`, `y` ni `z` n'est donc effectué avec ces valeurs : la boîte de dialogue `alert(\"La solution :\"+z)` ne s'affiche jamais tant que l'utilisateur n'entre pas un couple valide (par exemple p=2 et n=6).\n\n### Piège à éviter\nBeaucoup d'élèves ignorent la boucle `do...while` et calculent directement `z` en substituant n=2 et p=6 dans les formules du bas (comme si le script s'exécutait en ligne droite). C'est une erreur : la condition de validation `p>n` (ici vraie) empêche précisément le script d'atteindre ces lignes avec des valeurs où p dépasse n. Toujours vérifier la condition de la boucle `do...while` avant de dérouler la suite du script.\n\n### Conseil\nPour ce genre de question, commence systématiquement par évaluer la condition d'arrêt de la boucle avec les valeurs données, avant de calculer quoi que ce soit d'autre : c'est souvent elle qui décide si le reste du script s'exécute ou non."
+      }
+    ]
+  },
+  {
+    "competence": "Formulaire HTML",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10534,
+        "enonce_markdown": "Donner au choix deux parties d'un formulaire. *[0,25 pt x 2 = 0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn formulaire HTML (balise <form>) est composé de plusieurs types d'éléments complémentaires : des champs de saisie qui recueillent l'information de l'utilisateur, et des boutons d'action qui déclenchent le traitement de cette information.\n\nDeux parties valables, au choix :\n1. **Les champs de saisie** : balises `<input>` (texte, case à cocher, bouton radio, nombre...), `<textarea>` (texte long), `<select>` (liste déroulante). Ce sont elles qui recueillent la donnée saisie par l'utilisateur.\n2. **Les boutons d'action** : bouton de soumission (`<input type=\"submit\">` ou `<button type=\"submit\">`), qui envoie les données du formulaire, et éventuellement un bouton de réinitialisation (`<input type=\"reset\">`).\n\n### Conseil\nSi le correcteur attend une réponse différente (par exemple \"étiquettes `<label>` et champs de saisie\"), toute paire cohérente et correctement justifiée reste valable : la consigne dit bien \"au choix\"."
+      },
+      {
+        "exercise_id": 10565,
+        "enonce_markdown": "**1.** Reproduire le code de ce formulaire en tenant compte de : la méthode d'envoi utilisée ; l'organisation du formulaire dans un tableau ; le réceptionnaire du formulaire soumis ; le fait que chaque champ du formulaire porte le nom de son étiquette ; le fait que les champs noms, prénoms et montant sont obligatoires et contrôlés par le navigateur. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn formulaire HTML se décrit avec une balise <form> dont les attributs method (verbe HTTP d'envoi) et action (page qui réceptionne les données) déterminent son comportement ; un champ devient obligatoire, avec contrôle assuré par le navigateur lui-même avant tout envoi, dès qu'on lui ajoute l'attribut HTML5 required.\n\nLa capture de la barre d'adresse fournie avec l'énoncé (figure 2) montre, après soumission, une URL propre (`localhost/tp/enregistrement.php`) sans aucun paramètre visible : c'est la signature d'un envoi en méthode **POST** (une méthode GET afficherait les valeurs saisies dans l'URL, sous la forme `enregistrement.php?nom=...&prenom=...`). Le réceptionnaire du formulaire est donc `enregistrement.php`, désigné par l'attribut `action`.\n\n```html\n<form method=\"post\" action=\"enregistrement.php\">\n    <table>\n        <tr><td>NOM</td><td><input type=\"text\" name=\"nom\" required></td></tr>\n        <tr><td>PRENOM</td><td><input type=\"text\" name=\"prenom\" required></td></tr>\n        <tr><td>AGE</td><td><input type=\"text\" name=\"age\"></td></tr>\n        <tr><td>TELEPHONE</td><td><input type=\"text\" name=\"telephone\"></td></tr>\n        <tr><td>MONTANT</td><td><input type=\"text\" name=\"montant\" required></td></tr>\n    </table>\n    <input type=\"submit\" value=\"SOUMETTRE\">\n    <input type=\"reset\" value=\"ANNULER\">\n</form>\n```\n\n### Piège à éviter\nLe bouton « ANNULER » du formulaire d'origine (figure 1) doit réinitialiser les champs, pas les soumettre : utilise `<input type=\"reset\">` et non `<input type=\"submit\">` pour ce bouton, sous peine d'envoyer un formulaire vide au serveur.\n\n### Conseil\nLe seul indice fourni pour déduire la méthode d'envoi est l'absence de paramètres dans l'URL après soumission (figure 2) : entraîne-toi à repérer ce type d'indice visuel, fréquent dans les sujets de programmation Web qui fournissent une capture d'écran plutôt qu'un énoncé purement textuel."
+      },
+      {
+        "exercise_id": 10571,
+        "enonce_markdown": "**2.** Propose en HTML le code du formulaire présenté dans les captures. Prends en compte les **attributs** de la balise `<form>`. La méthode est **POST** et le fichier de traitement est nommé « **enregistrement** ». Les noms des champs du formulaire sont respectivement **numero, designation, couleur et enregistrer**. *[1,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLa balise `<form>` délimite un formulaire HTML. Son attribut `action` indique le fichier qui traitera les données saisies, son attribut `method` indique comment ces données seront transmises (`get` ou `post`), et chaque champ de saisie doit porter un attribut `name` qui servira de clé pour récupérer sa valeur côté serveur.\n\nL'énoncé impose trois contraintes précises à respecter dans le code : la méthode `POST`, un fichier de traitement nommé « enregistrement » (soit `enregistrement.php` puisque le traitement est réalisé en PHP dans toute la suite de l'exercice) et des champs nommés exactement `numero`, `designation`, `couleur` et `enregistrer`. En reprenant la disposition visible sur la Capture 2 (trois champs de texte puis un bouton), le formulaire s'écrit :\n\n```html\n<form action=\"enregistrement.php\" method=\"post\">\n  numero : <input type=\"text\" name=\"numero\"><br>\n  designation : <input type=\"text\" name=\"designation\"><br>\n  couleur : <input type=\"text\" name=\"couleur\"><br>\n  <input type=\"submit\" name=\"enregistrer\" value=\"enregistrer\">\n</form>\n```\n\nLe bouton utilise `type=\"submit\"` pour déclencher l'envoi du formulaire vers `enregistrement.php`, tout en portant lui-même le nom `enregistrer` exigé par l'énoncé.\n\n### Piège à éviter\nN'oublie pas l'attribut `name` sur le bouton lui-même : l'énoncé demande explicitement que le bouton porte aussi le nom `enregistrer`, en plus des trois champs de saisie. Un formulaire sans `name` sur ses champs transmet des données inutilisables côté PHP, puisque `$_POST` les indexe par ce nom.\n\n### Conseil\nVérifie systématiquement la cohérence entre le nom donné à un champ dans le formulaire et le nom que tu utiliseras pour le récupérer côté PHP (`$_POST['numero']`, par exemple) : c'est l'erreur la plus fréquente qui fait échouer un exercice pourtant correctement compris."
+      },
+      {
+        "exercise_id": 10573,
+        "enonce_markdown": "**1.** Définir formulaire. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn formulaire HTML est un composant de page Web qui rassemble, à l'intérieur de la balise `<form>`, des champs de saisie destinés à recueillir des informations auprès de l'utilisateur pour les transmettre à un programme de traitement situé côté serveur ou côté client.\n\nUn formulaire se caractérise par sa balise conteneur `<form>`, qui porte deux attributs essentiels : `action` (l'adresse du script qui reçoit les données saisies) et `method` (GET ou POST, la manière dont ces données sont envoyées), et par les champs de saisie qu'elle regroupe : zones de texte, cases à cocher, listes déroulantes, boutons. Le *Calculateur de salaire* de la figure ci-dessus applique exactement cette structure : le salaire brut, les cases Bonus et Allocation, le genre et le nombre de personnes à charge sont des champs réunis dans un même formulaire, prêts à être transmis au traitement JavaScript qui calcule le salaire final.\n\n### Conseil\nCite toujours les attributs `action` et `method`, même si la question ne les demande pas explicitement : ça montre au correcteur que tu maîtrises le mécanisme de transmission des données, pas seulement le vocabulaire."
+      }
+    ]
+  },
+  {
+    "competence": "Tableaux HTML",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**2.** Écrire le code HTML qui permet d'afficher le formulaire de la figure 1. Il est conseillé d'utiliser un tableau de 2 lignes et 2 colonnes. *[1.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn formulaire HTML se construit avec la balise `<form>`, qui définit l'action (la page de destination) et la méthode d'envoi des données, et contient des champs de saisie (`<input>`) associés chacun à un attribut `name` qui sert de clé pour récupérer la valeur côté serveur ; un tableau `<table>` permet d'aligner proprement les étiquettes de champ et les champs eux-mêmes.\n\nLa figure 1 montre deux lignes : une ligne « Code client » avec une zone de saisie pré-remplie à 12, et une ligne « Modifier » avec un bouton de validation. Le nom du champ de saisie doit être **code**, puisque le script PHP donné lit sa valeur avec `$_POST['code']` (ligne 2 et ligne 16 du code source).\n\n```html\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"fr\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />\n<title>Saisie du code client</title>\n</head>\n<body>\n<form action=\"mysqliex9.php\" method=\"post\">\n<fieldset>\n<legend>Saisissez votre code client pour modifier vos coordonnées</legend>\n<table>\n<tr>\n<td>Code client :</td>\n<td><input type=\"text\" name=\"code\" value=\"12\" /></td>\n</tr>\n<tr>\n<td>Modifier :</td>\n<td><input type=\"submit\" name=\"modif\" value=\"Modifier\" /></td>\n</tr>\n</table>\n</fieldset>\n</form>\n</body>\n</html>\n```\n\nLe tableau comporte bien deux lignes (`<tr>`) et deux colonnes (`<td>`) par ligne, comme demandé. Le nom du fichier cible de l'attribut `action` (ici `mysqliex9.php`) n'est pas imposé par l'énoncé : seul compte que ce soit la page contenant le code PHP donné, celle qui lit `$_POST['code']`.\n\n### Piège à éviter\nBeaucoup d'élèves oublient de nommer le champ de saisie **code** exactement (en écrivant par exemple `client` ou `id`) : le script PHP fourni ne fonctionnerait alors jamais, puisqu'il cherche précisément `$_POST['code']`. Le nom du champ n'est pas un détail esthétique, c'est la clé qui relie le formulaire au script qui le traite.\n\n### Conseil\nRelis toujours le code PHP fourni pour retrouver les noms exacts de champs attendus (`$_POST['xxx']`) avant d'écrire le formulaire HTML correspondant : c'est la garantie la plus sûre de ne pas perdre de points sur un simple nom de champ."
+      },
+      {
+        "exercise_id": 10620,
+        "enonce_markdown": "Ecrire le code HTML qui permet d'inserer le contenu du formulaire (ligne 10 a 23) dans un tableau de 5 lignes et 2 colonnes. (1,5 pt)",
+        "corrige_markdown": "Les lignes 10 a 23 du formulaire regroupent 5 blocs logiques : le champ Mot-cle, le select Categorie, le select Trier par, les boutons radio En ordre, et le bouton Envoyer. On les place donc dans un tableau de 5 lignes et 2 colonnes : la 1ere colonne porte le libelle, la 2eme colonne porte le champ de saisie correspondant.\n\n```html\n<table border=\"1\">\n  <tr>\n    <td>Mot-cle:</td>\n    <td><input type=\"text\" name=\"motcle\" size=\"40\" maxlength=\"40\" value=\"<?php echo $_POST['motcle']; ?>\"/></td>\n  </tr>\n  <tr>\n    <td>Dans la categorie :</td>\n    <td>\n      <select name=\"categorie\">\n        <option value=\"tous\">Tous</option>\n        <option value=\"informatique\">Informatique</option>\n        <option value=\"divers\">Divers</option>\n      </select>\n    </td>\n  </tr>\n  <tr>\n    <td>Trier par :</td>\n    <td>\n      <select name=\"tri\">\n        <option value=\"prix\">Prix</option>\n        <option value=\"categorie\">Categorie</option>\n        <option value=\"id_article\">Code</option>\n      </select>\n    </td>\n  </tr>\n  <tr>\n    <td>En ordre:</td>\n    <td>\n      Croissant<input type=\"radio\" name=\"ordre\" value=\"ASC\" checked=\"checked\"/>\n      Decroissant<input type=\"radio\" name=\"ordre\" value=\"DESC\" />\n    </td>\n  </tr>\n  <tr>\n    <td>Envoyer</td>\n    <td><input type=\"submit\" name=\"\" value=\"OK\"/></td>\n  </tr>\n</table>\n```\n\n### Rappel de méthode\nPour mettre en forme un formulaire HTML, on l'insère dans une balise `<table>` : chaque ligne est un `<tr>` et chaque cellule un `<td>`. On place généralement le libellé dans la première colonne et le champ de saisie (`<input>`, `<select>`) dans la seconde. Le tableau doit se trouver à l'intérieur de la balise `<form>`, et le nombre de `<tr>` et de `<td>` doit correspondre exactement à la structure demandée. Attention : ne pas oublier de fermer chaque balise.\n\nChaque `<tr>` correspond a une ligne du tableau et chaque ligne contient exactement deux `<td>` : le libelle, puis le champ de formulaire associe -- on retrouve bien les 5 lignes x 2 colonnes demandees, sans modifier le nom (`name=\"...\"`) d'aucun champ, puisque c'est par ce nom que le script PHP recupere les valeurs saisies via `$_POST`."
+      }
+    ]
+  },
+  {
+    "competence": "Programmation web",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10534,
+        "enonce_markdown": "Définir CSS. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nCSS (Cascading Style Sheets, feuilles de style en cascade) est un langage utilisé pour décrire la présentation d'un document HTML (couleurs, polices, mises en page, espacements), en séparant la mise en forme du contenu.\n\nLe HTML décrit la **structure** et le **contenu** d'une page (titres, paragraphes, images, formulaires), tandis que le CSS décrit son **apparence** (couleur du texte, taille des polices, disposition des éléments à l'écran). Cette séparation permet de modifier l'apparence d'un site sans toucher à son contenu, et inversement.\n\n**CSS** = Cascading Style Sheets (feuilles de style en cascade) : un langage de description de la présentation des pages web.\n\n### Conseil\n\"En cascade\" fait référence aux règles de priorité entre plusieurs styles qui s'appliquent au même élément (styles en ligne, dans le `<head>`, dans un fichier externe) : le correcteur apprécie que ce mot soit expliqué, pas seulement recopié."
+      },
+      {
+        "exercise_id": 10573,
+        "enonce_markdown": "**1.** Définir formulaire. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn formulaire HTML est un composant de page Web qui rassemble, à l'intérieur de la balise `<form>`, des champs de saisie destinés à recueillir des informations auprès de l'utilisateur pour les transmettre à un programme de traitement situé côté serveur ou côté client.\n\nUn formulaire se caractérise par sa balise conteneur `<form>`, qui porte deux attributs essentiels : `action` (l'adresse du script qui reçoit les données saisies) et `method` (GET ou POST, la manière dont ces données sont envoyées), et par les champs de saisie qu'elle regroupe : zones de texte, cases à cocher, listes déroulantes, boutons. Le *Calculateur de salaire* de la figure ci-dessus applique exactement cette structure : le salaire brut, les cases Bonus et Allocation, le genre et le nombre de personnes à charge sont des champs réunis dans un même formulaire, prêts à être transmis au traitement JavaScript qui calcule le salaire final.\n\n### Conseil\nCite toujours les attributs `action` et `method`, même si la question ne les demande pas explicitement : ça montre au correcteur que tu maîtrises le mécanisme de transmission des données, pas seulement le vocabulaire."
+      },
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**I/ Programmation HTML et JavaScript** *(3 points)*\n\n**1.** Définir l'expression **application web**. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne application web est un logiciel dont le traitement s'exécute en partie sur un serveur distant et qui s'utilise à travers un navigateur, sans installation locale, par opposition à un logiciel de bureau classique qui s'installe et s'exécute entièrement sur le poste de l'utilisateur.\n\nUne **application web** est un programme informatique accessible par un navigateur (Chrome, Firefox, Edge...) via une connexion réseau, dont une partie du traitement (calculs, accès aux données) s'exécute sur un serveur distant tandis que l'affichage se fait sur le poste client. Elle génère des pages dont le contenu peut varier selon les actions de l'utilisateur ou les données stockées, contrairement à un simple site web statique dont le contenu est figé.\n\nExemple : le module décrit dans cet exercice (saisie d'un code client puis modification de ses coordonnées) est une application web, car les pages affichées dépendent des données réellement stockées dans la base **magasin** et des actions du client à chaque instant.\n\n### Conseil\nPense toujours à opposer explicitement l'application web au site web statique dans ta définition : c'est ce qui montre au correcteur que tu maîtrises la nuance entre contenu figé et contenu généré dynamiquement, souvent ce qui distingue une réponse à 0.5 pt complète d'une réponse partielle."
+      },
+      {
+        "exercise_id": 10620,
+        "enonce_markdown": "Definir l'expression : Serveur web. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nPour définir un terme informatique, on donne d'abord sa nature (logiciel, matériel, langage), puis son rôle, puis son fonctionnement en une phrase. Un serveur web est un logiciel qui reçoit les requêtes HTTP envoyées par les navigateurs (les clients), les traite, éventuellement en exécutant un script côté serveur, puis renvoie une réponse, le plus souvent une page HTML. Attention : le mot désigne aussi, par extension, la machine qui héberge ce logiciel, ce qu'il est utile de préciser.\n\nUn **serveur web** est un logiciel installe sur une machine connectee a un reseau (Internet ou intranet), dont le role est d'ecouter les requetes HTTP envoyees par les navigateurs (les clients), de les traiter -- ce qui peut inclure l'execution d'un script cote serveur comme du PHP -- puis de renvoyer une reponse (le plus souvent une page HTML) au client qui l'a demandee. Par extension, on appelle aussi \"serveur web\" la machine physique qui heberge ce logiciel. Exemples : Apache, Nginx, IIS."
+      }
+    ]
+  },
+  {
+    "competence": "fonction main",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10575,
+        "enonce_markdown": "**3.** Ecrire une fonction principale `main` en C où vous feriez appel aux différentes fonctions écrites ci-dessus. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne fonction `main` qui orchestre plusieurs fonctions déjà écrites se contente de déclarer les variables nécessaires, puis d'appeler chaque fonction dans l'ordre logique du traitement : ici, saisir le tableau, le trier, puis afficher le résultat pour vérifier visuellement que le tri a fonctionné.\n\n```c\nint main() {\n    int T[TAILLE_MAX];\n    int n, i;\n\n    saisirTableau(T, &n);\n    triSelection(T, n);\n\n    printf(\"Notes triees par ordre croissant :\n\");\n    for (i = 0; i < n; i++) {\n        printf(\"%d \", T[i]);\n    }\n    printf(\"\n\");\n\n    return 0;\n}\n```\n\n`saisirTableau(T, &n)` reçoit bien `&n` (l'adresse de la variable `n` du `main`), cohérent avec le paramètre `int *n` défini à la question 1. `triSelection(T, n)` reçoit en revanche directement `n` par valeur : cette fonction n'a besoin que de lire la taille, jamais de la modifier, un passage par valeur suffit donc. Une boucle d'affichage termine le programme pour que l'exécution produise un résultat visible et vérifiable.\n\n### Conseil\nFais toujours suivre l'appel des fonctions de calcul d'un affichage du résultat dans `main` : sur une question de ce type, un correcteur vérifie que le programme produit un résultat exploitable, pas seulement qu'il compile."
+      },
+      {
+        "exercise_id": 10576,
+        "enonce_markdown": "**2.** Ecrire la fonction principale `main()` en C dans laquelle vous feriez l'appel de la fonction donnée ci-dessus avec des valeurs fournies par l'utilisateur. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nAppeler une fonction avec des valeurs fournies par l'utilisateur suppose de déclarer les variables qui recevront ces valeurs, de les lire au clavier avec `scanf`, puis de transmettre ces variables en argument de la fonction et d'afficher la valeur renvoyée.\n\n```c\nint main() {\n    int x, n, resultat;\n\n    printf(\"Entrez la valeur de x : \");\n    scanf(\"%d\", &x);\n    printf(\"Entrez la valeur de n : \");\n    scanf(\"%d\", &n);\n\n    resultat = calcul(x, n);\n\n    printf(\"calcul(%d, %d) = %d\n\", x, n, resultat);\n\n    return 0;\n}\n```\n\n`x` et `n` sont lus séparément au clavier, chacun précédé d'un message qui précise à l'utilisateur ce qui est attendu. L'appel `calcul(x, n)` transmet ces deux valeurs par copie (passage par valeur, la fonction `calcul` ne modifie d'ailleurs jamais x ou n de l'appelant) et son résultat est stocké dans `resultat` avant d'être affiché.\n\n### Conseil\nAffiche toujours les valeurs de x et n en même temps que le résultat (comme dans `printf` ci-dessus) : cela permet de vérifier immédiatement, à l'exécution, que le résultat correspond bien aux valeurs saisies, sans avoir à les retenir."
+      }
+    ]
+  },
+  {
+    "competence": "bibliothèque standard",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "Donner un exemple de bibliothèque avec son rôle principal. *[0,25 pt x 2 = 0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne bibliothèque (library) en C est un ensemble de fonctions déjà écrites et compilées, regroupées par thème, que l'on peut réutiliser dans un programme en l'incluant avec la directive #include, sans avoir à réécrire ces fonctions soi-même.\n\n**Exemple** : `stdio.h` (Standard Input/Output) est une bibliothèque dont le rôle principal est de fournir les fonctions d'entrée-sortie standard, comme `printf()` pour afficher à l'écran et `scanf()` pour lire une saisie clavier.\n\nD'autres exemples valables : `math.h` (fonctions mathématiques comme `sqrt()`, `pow()`), `string.h` (manipulation de chaînes de caractères comme `strlen()`, `strcat()`), `stdlib.h` (fonctions utilitaires générales comme `malloc()`, `rand()`).\n\n### Conseil\nUne seule bibliothèque suffit si son rôle est correctement décrit : inutile d'en citer plusieurs si la consigne n'en demande qu'un exemple."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**2.** Décrire les deux bibliothèques utilisées dans ce code. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne bibliothèque standard du langage C regroupe des fonctions déjà écrites et testées, rendues disponibles dans un programme par la directive `#include`, ce qui évite à chaque programmeur de réécrire des fonctionnalités courantes comme les entrées-sorties ou la gestion mémoire.\n\n**`<stdio.h>`** (Standard Input/Output) fournit les fonctions d'entrée-sortie standard du langage C. Le code l'utilise pour `puts()` (ligne 7, affichage d'un message), `scanf()` (ligne 8, lecture d'une saisie clavier) et `printf()` (lignes 10 et 14, affichage formaté).\n\n**`<stdlib.h>`** (Standard Library) fournit des fonctions générales utilitaires : gestion de la mémoire, conversions, contrôle du programme. Le code l'utilise ici pour `exit()` et la constante `EXIT_SUCCESS` (ligne 16), qui terminent le programme en signalant au système d'exploitation que l'exécution s'est déroulée sans erreur."
+      },
+      {
+        "exercise_id": 10625,
+        "enonce_markdown": "Decrire la bibliotheque utilisee dans ce code. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nEn langage C, une bibliothèque se déclare au début du programme avec la directive `#include`, qui fournit au compilateur les prototypes des fonctions qu'elle contient. `stdio.h` (standard input/output) regroupe les fonctions d'entrée-sortie, notamment `printf()` pour afficher et `scanf()` pour lire au clavier ; `math.h` et `string.h` offrent respectivement les fonctions mathématiques et de chaînes. Attention : utiliser une fonction sans inclure sa bibliothèque provoque un avertissement ou une erreur de compilation.\n\nLa bibliotheque utilisee dans ce code est **`stdio.h`** (Standard Input/Output), incluse a la ligne 1 par `#include <stdio.h>`. Elle fournit les fonctions standard d'entree-sortie du langage C utilisees tout au long de ce programme : `printf()` pour afficher du texte a l'ecran, et `scanf()` pour lire une valeur saisie au clavier."
+      }
+    ]
+  },
+  {
+    "competence": "HTML",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10538,
+        "enonce_markdown": "Lors de la saisie de l'instruction ci-dessous, on a oublié d'insérer une information devant permettre un bon calcul de la moyenne. Écrire l'instruction correcte. *[0,25 pt]*\n\n```html\n<td><input type=\"button\" value=\"Calculer\" =\"moyenne()\" class=\"button\"></td>\n```",
+        "corrige_markdown": "### Rappel de méthode\nPour qu'un bouton HTML déclenche une fonction JavaScript lors d'un clic, il faut lui associer un gestionnaire d'événement, le plus souvent l'attribut onclick, dont la valeur est l'appel de la fonction à exécuter (onclick=\"nomDeLaFonction()\").\n\nInstruction donnée :\n```html\n<td><input type=\"button\" value=\"Calculer\" =\"moyenne()\" class=\"button\"></td>\n```\nL'attribut `=\"moyenne()\"` n'a pas de nom : un attribut HTML s'écrit toujours sous la forme `nom=\"valeur\"`, or ici le nom de l'attribut a été omis (il manque `onclick` avant le signe `=`). Le navigateur ignore cette portion mal formée : cliquer sur le bouton n'exécute donc jamais `moyenne()`.\n\n**Instruction corrigée** :\n```html\n<td><input type=\"button\" value=\"Calculer\" onclick=\"moyenne()\" class=\"button\"></td>\n```\n\n### Piège à éviter\nNe pas confondre l'attribut `value`, qui fixe le texte affiché sur le bouton (\"Calculer\"), avec l'attribut `onclick`, qui fixe l'action déclenchée au clic : ce sont deux attributs indépendants, tous deux nécessaires ici mais avec des rôles différents.\n\n### Conseil\nFace à un attribut qui commence directement par `=\"...\"`, sans nom avant le signe égal, pense systématiquement à un gestionnaire d'événement oublié (`onclick`, `onchange`, `onsubmit`...) : c'est l'erreur la plus fréquente de ce type sur un bouton d'action."
+      },
+      {
+        "exercise_id": 10620,
+        "enonce_markdown": "Ecrire le code HTML qui permet d'inserer le contenu du formulaire (ligne 10 a 23) dans un tableau de 5 lignes et 2 colonnes. (1,5 pt)",
+        "corrige_markdown": "Les lignes 10 a 23 du formulaire regroupent 5 blocs logiques : le champ Mot-cle, le select Categorie, le select Trier par, les boutons radio En ordre, et le bouton Envoyer. On les place donc dans un tableau de 5 lignes et 2 colonnes : la 1ere colonne porte le libelle, la 2eme colonne porte le champ de saisie correspondant.\n\n```html\n<table border=\"1\">\n  <tr>\n    <td>Mot-cle:</td>\n    <td><input type=\"text\" name=\"motcle\" size=\"40\" maxlength=\"40\" value=\"<?php echo $_POST['motcle']; ?>\"/></td>\n  </tr>\n  <tr>\n    <td>Dans la categorie :</td>\n    <td>\n      <select name=\"categorie\">\n        <option value=\"tous\">Tous</option>\n        <option value=\"informatique\">Informatique</option>\n        <option value=\"divers\">Divers</option>\n      </select>\n    </td>\n  </tr>\n  <tr>\n    <td>Trier par :</td>\n    <td>\n      <select name=\"tri\">\n        <option value=\"prix\">Prix</option>\n        <option value=\"categorie\">Categorie</option>\n        <option value=\"id_article\">Code</option>\n      </select>\n    </td>\n  </tr>\n  <tr>\n    <td>En ordre:</td>\n    <td>\n      Croissant<input type=\"radio\" name=\"ordre\" value=\"ASC\" checked=\"checked\"/>\n      Decroissant<input type=\"radio\" name=\"ordre\" value=\"DESC\" />\n    </td>\n  </tr>\n  <tr>\n    <td>Envoyer</td>\n    <td><input type=\"submit\" name=\"\" value=\"OK\"/></td>\n  </tr>\n</table>\n```\n\n### Rappel de méthode\nPour mettre en forme un formulaire HTML, on l'insère dans une balise `<table>` : chaque ligne est un `<tr>` et chaque cellule un `<td>`. On place généralement le libellé dans la première colonne et le champ de saisie (`<input>`, `<select>`) dans la seconde. Le tableau doit se trouver à l'intérieur de la balise `<form>`, et le nombre de `<tr>` et de `<td>` doit correspondre exactement à la structure demandée. Attention : ne pas oublier de fermer chaque balise.\n\nChaque `<tr>` correspond a une ligne du tableau et chaque ligne contient exactement deux `<td>` : le libelle, puis le champ de formulaire associe -- on retrouve bien les 5 lignes x 2 colonnes demandees, sans modifier le nom (`name=\"...\"`) d'aucun champ, puisque c'est par ce nom que le script PHP recupere les valeurs saisies via `$_POST`."
+      },
+      {
+        "exercise_id": 10623,
+        "enonce_markdown": "Ecrire le code HTML qui a permis de creer le formulaire de la figure 1. (1,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nPour reproduire un formulaire à partir d'une maquette, on encadre les champs dans une balise `<form>` dont l'attribut `action` désigne le script de traitement et `method` le mode d'envoi (`get` ou `post`). Chaque champ se code avec `<input>` : `type=\"text\"` pour une saisie libre, `type=\"radio\"` pour un choix unique (les boutons d'un même groupe partagent le même `name`), `<select>` pour une liste déroulante, et `type=\"submit\"` pour le bouton d'envoi. Attention : sans attribut `name`, la valeur d'un champ n'est pas transmise au serveur.\n\nD'apres la figure 1, le formulaire comporte les champs NomP, Ville, Sexe (M/F), Tel, Res_Test (Positif/Negatif), Etat_Vac (Vaccine/Non vaccine), Nom_Vac, et un bouton Envoyer :\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n    <title>Formulaire d'enregistrement patient</title>\n</head>\n<body>\n    <form action=\"traitement.php\" method=\"post\" onsubmit=\"return verification();\">\n        NomP <input type=\"text\" name=\"nomP\"><br><br>\n        Ville <input type=\"text\" name=\"ville\"><br><br>\n        Sexe\n        <input type=\"radio\" name=\"Sexe\" value=\"M\" checked> M\n        <input type=\"radio\" name=\"Sexe\" value=\"F\"> F\n        <br><br>\n        Tel <input type=\"text\" name=\"Tel\"><br><br>\n        Res_Test\n        <input type=\"radio\" name=\"Res_Test\" value=\"Positif\"> Positif\n        <input type=\"radio\" name=\"Res_Test\" value=\"Negatif\" checked> Negatif\n        <br><br>\n        Etat_Vac\n        <input type=\"radio\" name=\"Etat_Vac\" value=\"Vaccine\"> Vaccine\n        <input type=\"radio\" name=\"Etat_Vac\" value=\"Non vaccine\" checked> Non vaccine\n        <br><br>\n        Nom_Vac <input type=\"text\" name=\"NomVac\"><br><br>\n        <input type=\"submit\" value=\"Envoyer\">\n    </form>\n</body>\n</html>\n```\n\nLes noms des champs (`nomP`, `ville`, `Tel`, `NomVac`) sont choisis pour correspondre exactement aux cles utilisees par `$_POST['nomP']`, `$_POST['ville']`, `$_POST['Tel']` et `$_POST['NomVac']` dans `traitement.php`, puisque PHP recupere les donnees d'un formulaire par le nom de ses champs."
+      }
+    ]
+  },
+  {
+    "competence": "formulaire",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10538,
+        "enonce_markdown": "Lors de la saisie de l'instruction ci-dessous, on a oublié d'insérer une information devant permettre un bon calcul de la moyenne. Écrire l'instruction correcte. *[0,25 pt]*\n\n```html\n<td><input type=\"button\" value=\"Calculer\" =\"moyenne()\" class=\"button\"></td>\n```",
+        "corrige_markdown": "### Rappel de méthode\nPour qu'un bouton HTML déclenche une fonction JavaScript lors d'un clic, il faut lui associer un gestionnaire d'événement, le plus souvent l'attribut onclick, dont la valeur est l'appel de la fonction à exécuter (onclick=\"nomDeLaFonction()\").\n\nInstruction donnée :\n```html\n<td><input type=\"button\" value=\"Calculer\" =\"moyenne()\" class=\"button\"></td>\n```\nL'attribut `=\"moyenne()\"` n'a pas de nom : un attribut HTML s'écrit toujours sous la forme `nom=\"valeur\"`, or ici le nom de l'attribut a été omis (il manque `onclick` avant le signe `=`). Le navigateur ignore cette portion mal formée : cliquer sur le bouton n'exécute donc jamais `moyenne()`.\n\n**Instruction corrigée** :\n```html\n<td><input type=\"button\" value=\"Calculer\" onclick=\"moyenne()\" class=\"button\"></td>\n```\n\n### Piège à éviter\nNe pas confondre l'attribut `value`, qui fixe le texte affiché sur le bouton (\"Calculer\"), avec l'attribut `onclick`, qui fixe l'action déclenchée au clic : ce sont deux attributs indépendants, tous deux nécessaires ici mais avec des rôles différents.\n\n### Conseil\nFace à un attribut qui commence directement par `=\"...\"`, sans nom avant le signe égal, pense systématiquement à un gestionnaire d'événement oublié (`onclick`, `onchange`, `onsubmit`...) : c'est l'erreur la plus fréquente de ce type sur un bouton d'action."
+      },
+      {
+        "exercise_id": 10620,
+        "enonce_markdown": "Ecrire le code HTML qui permet d'inserer le contenu du formulaire (ligne 10 a 23) dans un tableau de 5 lignes et 2 colonnes. (1,5 pt)",
+        "corrige_markdown": "Les lignes 10 a 23 du formulaire regroupent 5 blocs logiques : le champ Mot-cle, le select Categorie, le select Trier par, les boutons radio En ordre, et le bouton Envoyer. On les place donc dans un tableau de 5 lignes et 2 colonnes : la 1ere colonne porte le libelle, la 2eme colonne porte le champ de saisie correspondant.\n\n```html\n<table border=\"1\">\n  <tr>\n    <td>Mot-cle:</td>\n    <td><input type=\"text\" name=\"motcle\" size=\"40\" maxlength=\"40\" value=\"<?php echo $_POST['motcle']; ?>\"/></td>\n  </tr>\n  <tr>\n    <td>Dans la categorie :</td>\n    <td>\n      <select name=\"categorie\">\n        <option value=\"tous\">Tous</option>\n        <option value=\"informatique\">Informatique</option>\n        <option value=\"divers\">Divers</option>\n      </select>\n    </td>\n  </tr>\n  <tr>\n    <td>Trier par :</td>\n    <td>\n      <select name=\"tri\">\n        <option value=\"prix\">Prix</option>\n        <option value=\"categorie\">Categorie</option>\n        <option value=\"id_article\">Code</option>\n      </select>\n    </td>\n  </tr>\n  <tr>\n    <td>En ordre:</td>\n    <td>\n      Croissant<input type=\"radio\" name=\"ordre\" value=\"ASC\" checked=\"checked\"/>\n      Decroissant<input type=\"radio\" name=\"ordre\" value=\"DESC\" />\n    </td>\n  </tr>\n  <tr>\n    <td>Envoyer</td>\n    <td><input type=\"submit\" name=\"\" value=\"OK\"/></td>\n  </tr>\n</table>\n```\n\n### Rappel de méthode\nPour mettre en forme un formulaire HTML, on l'insère dans une balise `<table>` : chaque ligne est un `<tr>` et chaque cellule un `<td>`. On place généralement le libellé dans la première colonne et le champ de saisie (`<input>`, `<select>`) dans la seconde. Le tableau doit se trouver à l'intérieur de la balise `<form>`, et le nombre de `<tr>` et de `<td>` doit correspondre exactement à la structure demandée. Attention : ne pas oublier de fermer chaque balise.\n\nChaque `<tr>` correspond a une ligne du tableau et chaque ligne contient exactement deux `<td>` : le libelle, puis le champ de formulaire associe -- on retrouve bien les 5 lignes x 2 colonnes demandees, sans modifier le nom (`name=\"...\"`) d'aucun champ, puisque c'est par ce nom que le script PHP recupere les valeurs saisies via `$_POST`."
+      },
+      {
+        "exercise_id": 10621,
+        "enonce_markdown": "Donner le role de la variable : \\$_POST['motcle']. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\n`$_POST` est un tableau associatif superglobal de PHP qui contient les données envoyées par un formulaire dont la méthode est `method=\"post\"`. La clé correspond à l'attribut `name` du champ HTML, si bien que `$_POST['nom']` récupère, côté serveur, la valeur saisie dans le champ de ce nom. Attention : c'est l'attribut `name` qui sert de clé, pas `id`, et il faut nettoyer la valeur avant de l'insérer dans une requête SQL.\n\n`$_POST['motcle']` recupere, cote serveur, la valeur saisie par l'utilisateur dans le champ de formulaire nomme `motcle` (le champ de texte Mot-cle), lorsque le formulaire est envoye avec la methode `method=\"post\"`. C'est ce mot-cle qui sera ensuite utilise dans la clause `WHERE lower(designation) LIKE '%$motcle%'` de la requete SQL pour filtrer les articles dont la designation contient ce mot-cle."
+      },
+      {
+        "exercise_id": 10623,
+        "enonce_markdown": "Ecrire le code HTML qui a permis de creer le formulaire de la figure 1. (1,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nPour reproduire un formulaire à partir d'une maquette, on encadre les champs dans une balise `<form>` dont l'attribut `action` désigne le script de traitement et `method` le mode d'envoi (`get` ou `post`). Chaque champ se code avec `<input>` : `type=\"text\"` pour une saisie libre, `type=\"radio\"` pour un choix unique (les boutons d'un même groupe partagent le même `name`), `<select>` pour une liste déroulante, et `type=\"submit\"` pour le bouton d'envoi. Attention : sans attribut `name`, la valeur d'un champ n'est pas transmise au serveur.\n\nD'apres la figure 1, le formulaire comporte les champs NomP, Ville, Sexe (M/F), Tel, Res_Test (Positif/Negatif), Etat_Vac (Vaccine/Non vaccine), Nom_Vac, et un bouton Envoyer :\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n    <title>Formulaire d'enregistrement patient</title>\n</head>\n<body>\n    <form action=\"traitement.php\" method=\"post\" onsubmit=\"return verification();\">\n        NomP <input type=\"text\" name=\"nomP\"><br><br>\n        Ville <input type=\"text\" name=\"ville\"><br><br>\n        Sexe\n        <input type=\"radio\" name=\"Sexe\" value=\"M\" checked> M\n        <input type=\"radio\" name=\"Sexe\" value=\"F\"> F\n        <br><br>\n        Tel <input type=\"text\" name=\"Tel\"><br><br>\n        Res_Test\n        <input type=\"radio\" name=\"Res_Test\" value=\"Positif\"> Positif\n        <input type=\"radio\" name=\"Res_Test\" value=\"Negatif\" checked> Negatif\n        <br><br>\n        Etat_Vac\n        <input type=\"radio\" name=\"Etat_Vac\" value=\"Vaccine\"> Vaccine\n        <input type=\"radio\" name=\"Etat_Vac\" value=\"Non vaccine\" checked> Non vaccine\n        <br><br>\n        Nom_Vac <input type=\"text\" name=\"NomVac\"><br><br>\n        <input type=\"submit\" value=\"Envoyer\">\n    </form>\n</body>\n</html>\n```\n\nLes noms des champs (`nomP`, `ville`, `Tel`, `NomVac`) sont choisis pour correspondre exactement aux cles utilisees par `$_POST['nomP']`, `$_POST['ville']`, `$_POST['Tel']` et `$_POST['NomVac']` dans `traitement.php`, puisque PHP recupere les donnees d'un formulaire par le nom de ses champs."
+      }
+    ]
+  },
+  {
+    "competence": "Vocabulaire du Web",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "4e",
+      "serie_label": "",
+      "module_numero": "401",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10571,
+        "enonce_markdown": "**I. HTML et JAVASCRIPT (3 points)**\n\n**1.** Définir **application web**. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne application web est un programme accessible depuis un navigateur, dont le traitement est réparti entre un client qui affiche l'interface et un serveur qui exécute la logique et manipule les données de façon dynamique.\n\nUne application web se distingue d'un simple site web par sa capacité à traiter des données de manière dynamique : elle reçoit une requête du navigateur (le client), exécute un programme côté serveur qui peut interroger une base de données, effectuer des calculs ou vérifier des conditions, puis renvoie une page dont le contenu dépend du résultat de ce traitement plutôt que d'un fichier figé.\n\nDans le sujet, l'application de « Soft Computer » illustre exactement ce principe : le formulaire de la Capture 2, affiché dans le navigateur du gestionnaire de stock, sert à saisir des informations sur un article. Ces informations sont ensuite transmises à un script PHP exécuté sur le serveur (Capture 1), qui les confronte à la base de données « Habillement » avant de renvoyer un résultat sous forme de tableau HTML généré à la volée.\n\n### Piège à éviter\nNe réduis pas ta définition à « un programme qui s'affiche dans un navigateur » : un site vitrine purement statique s'affiche lui aussi dans un navigateur sans être une application web. Le critère décisif est le traitement dynamique des données, pas le support d'affichage.\n\n### Conseil\nAppuie toujours ta définition sur l'exemple concret fourni par le sujet plutôt que sur une phrase récitée : cela prouve à l'examinateur que tu maîtrises la notion et pas seulement son vocabulaire."
+      },
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**I/ Programmation HTML et JavaScript** *(3 points)*\n\n**1.** Définir l'expression **application web**. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne application web est un logiciel dont le traitement s'exécute en partie sur un serveur distant et qui s'utilise à travers un navigateur, sans installation locale, par opposition à un logiciel de bureau classique qui s'installe et s'exécute entièrement sur le poste de l'utilisateur.\n\nUne **application web** est un programme informatique accessible par un navigateur (Chrome, Firefox, Edge...) via une connexion réseau, dont une partie du traitement (calculs, accès aux données) s'exécute sur un serveur distant tandis que l'affichage se fait sur le poste client. Elle génère des pages dont le contenu peut varier selon les actions de l'utilisateur ou les données stockées, contrairement à un simple site web statique dont le contenu est figé.\n\nExemple : le module décrit dans cet exercice (saisie d'un code client puis modification de ses coordonnées) est une application web, car les pages affichées dépendent des données réellement stockées dans la base **magasin** et des actions du client à chaque instant.\n\n### Conseil\nPense toujours à opposer explicitement l'application web au site web statique dans ta définition : c'est ce qui montre au correcteur que tu maîtrises la nuance entre contenu figé et contenu généré dynamiquement, souvent ce qui distingue une réponse à 0.5 pt complète d'une réponse partielle."
+      }
+    ]
+  },
+  {
+    "competence": "Architecture client-serveur",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "4e",
+      "serie_label": "",
+      "module_numero": "401",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10571,
+        "enonce_markdown": "**II. PROGRAMMATION EN PHP (7 points)**\n\n**1.** Définir **serveur Web**. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn serveur Web est un logiciel installé sur une machine qui reste en écoute des requêtes HTTP envoyées par les navigateurs, et qui y répond en renvoyant la ressource demandée : une page statique telle quelle, ou le résultat d'un script exécuté à la volée.\n\nDans le contexte du sujet, c'est ce logiciel serveur qui reçoit la requête envoyée quand le formulaire de la Capture 2 est soumis, qui déclenche l'exécution du script PHP correspondant, puis qui renvoie au navigateur la page HTML générée contenant le tableau des articles.\n\n### Piège à éviter\nNe confonds pas le serveur Web (le logiciel qui distribue les pages, par exemple Apache) avec la machine physique qui l'héberge (l'ordinateur ou la « machine serveur ») : la question porte sur le logiciel, pas sur le matériel."
+      },
+      {
+        "exercise_id": 10621,
+        "enonce_markdown": "Decrire a l'aide d'un schema le fonctionnement d'une page web dynamique. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nUne page web dynamique est générée au moment de la requête, contrairement à une page statique. Le schéma suit toujours le même cycle : le navigateur envoie une requête HTTP au serveur web, qui transmet le script à l'interpréteur (PHP) ; celui-ci interroge au besoin le SGBD, reçoit les données, construit une page HTML, puis le serveur la renvoie au navigateur. Un bon schéma nomme chaque acteur et numérote les échanges dans l'ordre. Attention : le navigateur ne voit jamais le code PHP, seulement le HTML produit.\n\nUne page web dynamique, contrairement a une page statique, genere son contenu HTML au moment de la requete, en fonction des donnees saisies par l'utilisateur et/ou du contenu d'une base de donnees. Le cycle complet, applique au cas de la recherche d'article, se deroule en six etapes :\n\n![Schema du fonctionnement d'une page web dynamique : navigateur, serveur web + PHP, serveur MySQL, et cycle requete/reponse en 6 etapes](/media/figures/cm/bac-ti-programmation-2022-officiel-cameroun_exercice_2_fig_2.webp)\n\n1. Le navigateur (client) envoie une requete HTTP (methode POST) contenant le mot-cle saisi.\n2. Le serveur web recoit la requete et transmet le script a l'interpreteur PHP, qui execute le code situe entre `<?php` et `?>` ; ce code construit une requete SQL a partir du mot-cle recu.\n3. Le serveur de base de donnees (MySQL) execute cette requete SQL et renvoie les lignes trouvees.\n4. Le script PHP parcourt ces lignes (boucles `for`/`while`) et construit dynamiquement le tableau HTML de resultats.\n5. Le serveur web renvoie la page HTML complete (formulaire + tableau de resultats) au navigateur.\n6. Le navigateur affiche cette page a l'utilisateur.\n\nC'est cette generation du HTML \"a la demande\", a partir de donnees variables, qui distingue la page dynamique d'une page statique dont le contenu HTML est fige a l'avance sur le serveur."
+      }
+    ]
+  },
+  {
+    "competence": "Spécificateurs de format",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "*%c, %d et %f sont des indicateurs utilisés avec des fonctions comme `printf()` uniquement, et permettant de traiter le format caractère (%c), le format entier (%d), le format décimal (%f).* Répondre par vrai ou faux. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nEn langage C, les indicateurs de format %c, %d et %f décrivent le type de donnée à lire ou à afficher (caractère, entier, décimal) ; ils sont utilisés par toute fonction de formatage d'entrée-sortie, pas par une seule fonction en particulier.\n\nL'énoncé affirme que ces indicateurs sont utilisés \"avec des fonctions comme `printf()` uniquement\". Cette affirmation est fausse : `%c`, `%d` et `%f` sont utilisés par toute la famille des fonctions de formatage du langage C, aussi bien en écriture (`printf()`, `sprintf()`, `fprintf()`) qu'en lecture (`scanf()`, `sscanf()`, `fscanf()`). Le mot \"uniquement\" restreint à tort leur usage à une seule fonction.\n\nLa description du rôle de chaque indicateur est en revanche correcte : `%c` traite le format caractère, `%d` le format entier, `%f` le format décimal (réel en virgule flottante).\n\n**Réponse : Faux** (à cause du mot \"uniquement\" - la description des formats, elle, est exacte).\n\n### Piège à éviter\nNe pas répondre \"faux\" sans préciser pourquoi : si la partie sur le rôle de %c/%d/%f n'est pas commentée, le correcteur ne peut pas savoir si l'erreur repérée est la bonne."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**3.3.** De la ligne 8. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLa fonction `scanf()` lit une valeur saisie au clavier et la stocke à l'adresse mémoire fournie en argument ; le spécificateur de format (`%d`, `%f`, `%c`...) lui indique sous quelle forme interpréter les caractères tapés, et l'opérateur `&` fournit l'adresse de la variable destinée à recevoir la valeur.\n\n```c\n8: scanf(\"%d\", &x);\n```\n\nCette ligne lit au clavier une valeur saisie par l'utilisateur, l'interprète comme un entier décimal grâce au spécificateur `%d`, puis la stocke à l'adresse mémoire de la variable `x`, adresse obtenue avec l'opérateur `&x`. Après exécution de cette ligne, `x` contient la valeur entrée par l'utilisateur, prête à être testée puis transmise à la fonction `factorielle()`.\n\n### Piège à éviter\nOublier le `&` devant `x` est l'erreur la plus fréquente sur cette ligne : sans lui, `scanf()` recevrait la valeur actuelle de `x` au lieu de son adresse, et ne pourrait donc pas y écrire la saisie de l'utilisateur (comportement indéfini, souvent un plantage du programme)."
+      }
+    ]
+  },
+  {
+    "competence": "conversion de boucle",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10621,
+        "enonce_markdown": "Reecrire le bout de code allant de la ligne 54 a la ligne 61 en utilisant exclusivement la boucle while(). (1,5 pt)",
+        "corrige_markdown": "Le code original (lignes 54-61) est une boucle `for` qui parcourt les `$nbart` lignes du resultat, et pour chacune, une boucle `for` interne qui parcourt les `$nbcol` colonnes :\n\n```php\n$i = 0;\nwhile ($i < $nbart) {\n    $ligne = $result->fetch_row();\n    echo \"<tr>\";\n    $j = 0;\n    while ($j < $nbcol) {\n        echo \"<td>\", $ligne[$j], \"</td>\";\n        $j++;\n    }\n    echo \"</tr>\";\n    $i++;\n}\n```\n\n### Rappel de méthode\nToute boucle `for (init; condition; incrément)` se convertit en `while` selon trois étapes : l'initialisation se place avant la boucle, la condition devient celle du `while`, et l'incrément est placé à la fin du corps de la boucle. Pour deux boucles imbriquées, on applique la règle à chacune, en réinitialisant le compteur interne avant chaque tour de la boucle externe. Attention : oublier l'incrément ou la réinitialisation du compteur interne provoque une boucle infinie ou un affichage incomplet.\n\nLa conversion suit la meme methode pour chacune des deux boucles `for` : l'initialisation (`$i=0` / `$j=0`) est placee avant le `while`, la condition d'arret (`$i<$nbart` / `$j<$nbcol`) devient la condition du `while`, et l'increment (`$i++` / `$j++`) est reporte a la toute fin du corps de la boucle -- juste avant l'accolade fermante -- afin de reproduire exactement le meme comportement d'execution que la boucle `for` d'origine."
+      },
+      {
+        "exercise_id": 10622,
+        "enonce_markdown": "Reecrire le bout de code allant de la ligne 23 a la ligne 25 en utilisant la boucle while(). (1 pt)",
+        "corrige_markdown": "Le code original est une boucle `for` qui affiche chacun des `Max` produits :\n\n```c\ni = 0;\nwhile (i < Max) {\n    printf(\"\nLes produits de la facture sont : %s %d %f = %f FCFA\n\", list[i].designation,\n        list[i].quantite, list[i].prix, list[i].montant);\n    i++;\n}\n```\n\n### Rappel de méthode\nToute boucle `for (init; condition; incrément)` se réécrit en `while` en trois temps : l'initialisation est placée juste avant la boucle, la condition devient celle du `while`, et l'incrément est placé à la fin du corps de la boucle, après le traitement. Le corps de la boucle reste identique. Attention : oublier l'incrément en fin de corps provoque une boucle infinie, et placer l'incrément avant le traitement décale les indices.\n\nComme pour toute conversion `for` -> `while`, l'initialisation (`i = 0`) est placee avant la boucle, la condition d'arret (`i < Max`) devient la condition du `while`, et l'increment (`i++`) est deplace en derniere instruction du corps de la boucle, pour reproduire exactement le meme deroulement que la boucle `for` d'origine."
+      }
+    ]
+  },
+  {
+    "competence": "environnement de développement",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "2nde",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCM201",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "Définir **IDE**. Donner un bon exemple. *[0,25 pt x 2 = 0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn IDE (Integrated Development Environment, environnement de développement intégré) est un logiciel qui regroupe dans une seule interface les outils nécessaires au développeur : éditeur de texte/code, compilateur ou interpréteur, et débogueur.\n\nL'objectif d'un IDE est de faire gagner du temps au développeur en évitant de jongler entre plusieurs logiciels séparés (un éditeur de texte, puis une invite de commande pour compiler, puis un autre outil pour déboguer) : tout est accessible depuis une seule fenêtre.\n\n**Exemple** : Code::Blocks est un IDE couramment utilisé pour développer en langage C, il intègre un éditeur de code, le compilateur GCC et un débogueur.\n\n### Piège à éviter\nNe pas confondre IDE et compilateur : le compilateur est un des outils intégrés dans l'IDE, mais l'IDE lui-même ne compile rien - il délègue cette tâche au compilateur qu'il embarque."
+      },
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**2.** Après avoir donné la signification de **IDE**, donne un **exemple d'IDE** qu'on peut utiliser pour saisir, compiler et exécuter ce programme. *[0,5 pt + 0,5 pt = 1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn IDE (Integrated Development Environment, Environnement de Développement Intégré) est un logiciel qui regroupe en un seul outil l'éditeur de texte pour écrire le code, le compilateur ou l'interpréteur pour le traduire, et le débogueur pour repérer les erreurs à l'exécution.\n\nPour saisir, compiler et exécuter le programme C présenté ici, on peut par exemple utiliser Code::Blocks, Dev-C++ ou encore Visual Studio Code associé à un compilateur GCC : ces trois logiciels réunissent en une seule fenêtre l'écriture du code, sa compilation et le lancement du programme obtenu.\n\n### Conseil\nUn seul exemple d'IDE suffit à valider la question : inutile d'en citer plusieurs si l'énoncé n'en demande qu'un, mieux vaut consacrer ce temps aux questions suivantes."
+      },
+      {
+        "exercise_id": 10624,
+        "enonce_markdown": "Citer un exemple d'environnement integre de developpement web. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nUn environnement de développement intégré (IDE) est un logiciel qui regroupe dans un même outil l'éditeur de code, la coloration syntaxique, l'autocomplétion, le débogage et souvent l'exécution ou le test du projet. Pour le développement web, on cite par exemple Visual Studio Code, PhpStorm, NetBeans ou Eclipse. Attention : un simple éditeur de texte comme le Bloc-notes n'est pas un IDE, car il n'offre pas ces fonctions d'aide.\n\nUn exemple d'environnement integre de developpement (IDE) pour le web est **Visual Studio Code**, qui reunit dans un seul logiciel l'edition du code HTML/CSS/JavaScript/PHP, la coloration syntaxique, l'autocompletion et, via des extensions, la connexion a un serveur local ou distant pour tester le site."
+      }
+    ]
+  },
+  {
+    "competence": "variable globale",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**4.** Relève dans le programme : *[0,25 pt x 4 = 1 pt]*\n\n4.1. Une variable globale",
+        "corrige_markdown": "### Rappel de méthode\nUne variable globale est déclarée en dehors de toute fonction : elle est visible et modifiable par toutes les fonctions du programme, du point où elle est déclarée jusqu'à la fin du fichier.\n\nLa ligne 11, `int n,M;`, est écrite entre la fonction `som` et la fonction `main`, donc en dehors de toute fonction : `n` et `M` sont des variables globales, ce qui explique qu'elles soient directement utilisables dans `main` sans avoir été déclarées à nouveau localement."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**4.** Donner la différence fondamentale entre la variable **x** et la variable **a** dans ce code. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLa portée d'une variable en C dépend de l'endroit où elle est déclarée : une variable déclarée en dehors de toute fonction est globale et reste accessible depuis tout le fichier durant toute l'exécution du programme, tandis qu'une variable déclarée à l'intérieur d'une fonction (y compris un paramètre) est locale, créée à chaque appel de cette fonction et détruite dès qu'elle se termine.\n\n**`x`** est déclarée ligne 4 (`unsigned int f, x;`), en dehors de toute fonction : c'est une **variable globale**, visible et modifiable depuis `main()` comme depuis n'importe quelle autre fonction du fichier, et qui conserve sa valeur pendant toute la durée d'exécution du programme.\n\n**`a`** est le paramètre de la fonction `factorielle` (ligne 18) : c'est une **variable locale**. Une nouvelle variable `a` est créée à chaque appel de `factorielle` (donc six fois de suite lors des appels récursifs de la question 5), avec sa propre valeur indépendante des autres appels, puis détruite dès que l'appel correspondant se termine. La variable `a` de `factorielle(3)` n'est ni la même case mémoire, ni la même valeur, que la variable `a` de `factorielle(2)`, bien qu'elles portent le même nom.\n\n### Piège à éviter\nNe confonds pas « variable locale » et « paramètre » comme s'ils s'excluaient : un paramètre de fonction EST une variable locale à cette fonction, simplement initialisée automatiquement avec la valeur transmise lors de l'appel."
+      },
+      {
+        "exercise_id": 10622,
+        "enonce_markdown": "Donner la difference entre une variable globale et une variable locale. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nUne variable globale est déclarée en dehors de toute fonction : elle est visible depuis tout le fichier, existe pendant toute l'exécution du programme et peut être modifiée par n'importe quelle fonction. Une variable locale est déclarée à l'intérieur d'une fonction ou d'un bloc : elle n'est visible que là et disparaît quand ce bloc se termine. Attention : si une variable locale porte le même nom qu'une globale, elle masque cette dernière dans son bloc.\n\nUne **variable globale** (comme `list` et `i`, declarees lignes 10-11, en dehors de toute fonction) est declaree en dehors de toute fonction : elle est visible et modifiable depuis n'importe quelle fonction du fichier, et conserve sa valeur pendant toute la duree d'execution du programme.\n\nUne **variable locale** (comme `total` ou `k` dans la fonction `somme()` proposee a la question 5) est declaree a l'interieur d'une fonction (ou d'un bloc) : elle n'est visible et utilisable qu'a l'interieur de ce bloc, et elle est detruite (sa memoire est liberee) des que l'execution sort de ce bloc."
+      },
+      {
+        "exercise_id": 10625,
+        "enonce_markdown": "Etablir la difference entre une variable globale et une variable locale. (1 pt)",
+        "corrige_markdown": "### Rappel de méthode\nLa portée d'une variable est la zone du programme où elle est visible. Une variable globale est déclarée en dehors de toute fonction : elle est accessible à toutes les fonctions et existe pendant toute l'exécution. Une variable locale est déclarée dans une fonction ou un bloc : elle n'est visible qu'à cet endroit et sa mémoire est libérée à la sortie. Attention : une variable locale de même nom qu'une globale masque cette dernière, et abuser des globales rend le code difficile à maintenir.\n\nUne **variable globale** est declaree en dehors de toute fonction : elle est accessible et modifiable depuis n'importe quelle fonction du programme, et existe pendant toute la duree d'execution de celui-ci. Une **variable locale** est declaree a l'interieur d'une fonction (ou d'un bloc) : elle n'est visible et accessible qu'a l'interieur de cette fonction, et elle est detruite des que l'on en sort. Dans ce programme, toutes les variables (`A`, `VAL`, `POS`, `N`, `I`, `INF`, `MIL`, `SUP`) sont declarees a l'interieur de la fonction `main()` : ce sont donc toutes des variables **locales** a `main()`."
+      }
+    ]
+  },
+  {
+    "competence": "variable locale",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**4.** Donner la différence fondamentale entre la variable **x** et la variable **a** dans ce code. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLa portée d'une variable en C dépend de l'endroit où elle est déclarée : une variable déclarée en dehors de toute fonction est globale et reste accessible depuis tout le fichier durant toute l'exécution du programme, tandis qu'une variable déclarée à l'intérieur d'une fonction (y compris un paramètre) est locale, créée à chaque appel de cette fonction et détruite dès qu'elle se termine.\n\n**`x`** est déclarée ligne 4 (`unsigned int f, x;`), en dehors de toute fonction : c'est une **variable globale**, visible et modifiable depuis `main()` comme depuis n'importe quelle autre fonction du fichier, et qui conserve sa valeur pendant toute la durée d'exécution du programme.\n\n**`a`** est le paramètre de la fonction `factorielle` (ligne 18) : c'est une **variable locale**. Une nouvelle variable `a` est créée à chaque appel de `factorielle` (donc six fois de suite lors des appels récursifs de la question 5), avec sa propre valeur indépendante des autres appels, puis détruite dès que l'appel correspondant se termine. La variable `a` de `factorielle(3)` n'est ni la même case mémoire, ni la même valeur, que la variable `a` de `factorielle(2)`, bien qu'elles portent le même nom.\n\n### Piège à éviter\nNe confonds pas « variable locale » et « paramètre » comme s'ils s'excluaient : un paramètre de fonction EST une variable locale à cette fonction, simplement initialisée automatiquement avec la valeur transmise lors de l'appel."
+      },
+      {
+        "exercise_id": 10622,
+        "enonce_markdown": "Donner la difference entre une variable globale et une variable locale. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nUne variable globale est déclarée en dehors de toute fonction : elle est visible depuis tout le fichier, existe pendant toute l'exécution du programme et peut être modifiée par n'importe quelle fonction. Une variable locale est déclarée à l'intérieur d'une fonction ou d'un bloc : elle n'est visible que là et disparaît quand ce bloc se termine. Attention : si une variable locale porte le même nom qu'une globale, elle masque cette dernière dans son bloc.\n\nUne **variable globale** (comme `list` et `i`, declarees lignes 10-11, en dehors de toute fonction) est declaree en dehors de toute fonction : elle est visible et modifiable depuis n'importe quelle fonction du fichier, et conserve sa valeur pendant toute la duree d'execution du programme.\n\nUne **variable locale** (comme `total` ou `k` dans la fonction `somme()` proposee a la question 5) est declaree a l'interieur d'une fonction (ou d'un bloc) : elle n'est visible et utilisable qu'a l'interieur de ce bloc, et elle est detruite (sa memoire est liberee) des que l'execution sort de ce bloc."
+      },
+      {
+        "exercise_id": 10625,
+        "enonce_markdown": "Etablir la difference entre une variable globale et une variable locale. (1 pt)",
+        "corrige_markdown": "### Rappel de méthode\nLa portée d'une variable est la zone du programme où elle est visible. Une variable globale est déclarée en dehors de toute fonction : elle est accessible à toutes les fonctions et existe pendant toute l'exécution. Une variable locale est déclarée dans une fonction ou un bloc : elle n'est visible qu'à cet endroit et sa mémoire est libérée à la sortie. Attention : une variable locale de même nom qu'une globale masque cette dernière, et abuser des globales rend le code difficile à maintenir.\n\nUne **variable globale** est declaree en dehors de toute fonction : elle est accessible et modifiable depuis n'importe quelle fonction du programme, et existe pendant toute la duree d'execution de celui-ci. Une **variable locale** est declaree a l'interieur d'une fonction (ou d'un bloc) : elle n'est visible et accessible qu'a l'interieur de cette fonction, et elle est detruite des que l'on en sort. Dans ce programme, toutes les variables (`A`, `VAL`, `POS`, `N`, `I`, `INF`, `MIL`, `SUP`) sont declarees a l'interieur de la fonction `main()` : ce sont donc toutes des variables **locales** a `main()`."
+      }
+    ]
+  },
+  {
+    "competence": "Portée des variables",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "Donner la différence entre une variable globale et une variable locale. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nEn langage C, la portée d'une variable détermine l'endroit du programme où elle est visible et la durée pendant laquelle elle existe en mémoire : une variable globale est déclarée en dehors de toute fonction et une variable locale est déclarée à l'intérieur d'une fonction ou d'un bloc.\n\nUne **variable globale** est déclarée en dehors de toutes les fonctions (généralement en tête du fichier source, avant `main()`). Elle est visible et modifiable par toutes les fonctions du programme, et elle conserve sa valeur pendant toute la durée d'exécution du programme.\n\nUne **variable locale** est déclarée à l'intérieur d'une fonction (y compris `main()`) ou d'un bloc `{ }`. Elle n'existe que pendant l'exécution de ce bloc : elle est créée à l'entrée du bloc et détruite à sa sortie. Elle n'est visible et utilisable que dans le bloc où elle a été déclarée - une autre fonction ne peut ni la lire ni la modifier directement.\n\n| Critère | Variable globale | Variable locale |\n|---|---|---|\n| Lieu de déclaration | Hors de toute fonction | À l'intérieur d'une fonction ou d'un bloc |\n| Durée de vie | Toute la durée du programme | Le temps d'exécution du bloc |\n| Visibilité | Toutes les fonctions du fichier | Uniquement le bloc de déclaration |\n\n### Piège à éviter\nConfondre \"déclarée en premier dans `main()`\" avec \"globale\" : une variable déclarée tout en haut de `main()` reste locale à `main()`, elle n'est pas accessible depuis une autre fonction.\n\n### Conseil\nPour vérifier rapidement si une variable est locale ou globale, regarde si son point de déclaration se trouve à l'intérieur d'une paire d'accolades `{ }` d'une fonction : si oui, elle est locale."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**4.** Donner la différence fondamentale entre la variable **x** et la variable **a** dans ce code. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLa portée d'une variable en C dépend de l'endroit où elle est déclarée : une variable déclarée en dehors de toute fonction est globale et reste accessible depuis tout le fichier durant toute l'exécution du programme, tandis qu'une variable déclarée à l'intérieur d'une fonction (y compris un paramètre) est locale, créée à chaque appel de cette fonction et détruite dès qu'elle se termine.\n\n**`x`** est déclarée ligne 4 (`unsigned int f, x;`), en dehors de toute fonction : c'est une **variable globale**, visible et modifiable depuis `main()` comme depuis n'importe quelle autre fonction du fichier, et qui conserve sa valeur pendant toute la durée d'exécution du programme.\n\n**`a`** est le paramètre de la fonction `factorielle` (ligne 18) : c'est une **variable locale**. Une nouvelle variable `a` est créée à chaque appel de `factorielle` (donc six fois de suite lors des appels récursifs de la question 5), avec sa propre valeur indépendante des autres appels, puis détruite dès que l'appel correspondant se termine. La variable `a` de `factorielle(3)` n'est ni la même case mémoire, ni la même valeur, que la variable `a` de `factorielle(2)`, bien qu'elles portent le même nom.\n\n### Piège à éviter\nNe confonds pas « variable locale » et « paramètre » comme s'ils s'excluaient : un paramètre de fonction EST une variable locale à cette fonction, simplement initialisée automatiquement avec la valeur transmise lors de l'appel."
+      },
+      {
+        "exercise_id": 10622,
+        "enonce_markdown": "Donner la difference entre une variable globale et une variable locale. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nUne variable globale est déclarée en dehors de toute fonction : elle est visible depuis tout le fichier, existe pendant toute l'exécution du programme et peut être modifiée par n'importe quelle fonction. Une variable locale est déclarée à l'intérieur d'une fonction ou d'un bloc : elle n'est visible que là et disparaît quand ce bloc se termine. Attention : si une variable locale porte le même nom qu'une globale, elle masque cette dernière dans son bloc.\n\nUne **variable globale** (comme `list` et `i`, declarees lignes 10-11, en dehors de toute fonction) est declaree en dehors de toute fonction : elle est visible et modifiable depuis n'importe quelle fonction du fichier, et conserve sa valeur pendant toute la duree d'execution du programme.\n\nUne **variable locale** (comme `total` ou `k` dans la fonction `somme()` proposee a la question 5) est declaree a l'interieur d'une fonction (ou d'un bloc) : elle n'est visible et utilisable qu'a l'interieur de ce bloc, et elle est detruite (sa memoire est liberee) des que l'execution sort de ce bloc."
+      }
+    ]
+  },
+  {
+    "competence": "gets()",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "*La fonction `gets()` permet de lire en mémoire un certain nombre de caractères dans un tableau ou ailleurs.* Répondre par Vrai ou Faux. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nEn C, gets() lit une ligne de caractères saisie au clavier et la range dans un tableau de caractères (chaîne), tandis que puts() affiche à l'écran le contenu d'une chaîne de caractères suivie d'un retour à la ligne ; toutes deux appartiennent à la bibliothèque stdio.h, au même titre que printf() et scanf().\n\nL'affirmation décrit `gets()` comme une fonction qui \"permet de lire en mémoire un certain nombre de caractères dans un tableau ou ailleurs\" : c'est globalement exact dans le principe (elle lit une chaîne et la stocke dans un tableau de caractères passé en argument), même si en pratique `gets()` ne limite pas elle-même le nombre de caractères lus - elle lit jusqu'au retour à la ligne, quelle que soit la taille du tableau fourni.\n\n**Réponse : Vrai** (dans le principe général décrit par l'énoncé).\n\n### Piège à éviter\nNe jamais utiliser `gets()` dans un vrai programme : comme elle ne vérifie pas la taille du tableau destination, elle peut écrire au-delà de sa limite (débordement de tampon) et corrompre la mémoire. C'est pour cette raison que `gets()` a été retirée du standard C11 ; on lui préfère aujourd'hui `fgets()`, qui accepte une taille maximale."
+      }
+    ]
+  },
+  {
+    "competence": "puts()",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "*La fonction `puts()` permet d'afficher à l'écran un certain nombre de caractères.* Répondre par Vrai ou Faux. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nEn C, gets() lit une ligne de caractères saisie au clavier et la range dans un tableau de caractères (chaîne), tandis que puts() affiche à l'écran le contenu d'une chaîne de caractères suivie d'un retour à la ligne ; toutes deux appartiennent à la bibliothèque stdio.h, au même titre que printf() et scanf().\n\nL'affirmation décrit `puts()` comme une fonction qui \"permet d'afficher à l'écran un certain nombre de caractères\" : c'est exact - `puts()` prend une chaîne de caractères en argument et l'affiche intégralement à l'écran, en ajoutant automatiquement un retour à la ligne final.\n\n**Réponse : Vrai**.\n\n### Piège à éviter\nNe pas oublier que `puts()` ajoute toujours un retour à la ligne après l'affichage, contrairement à `printf()` qui n'en ajoute que si `\n` est explicitement écrit dans la chaîne de format."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**3.2.** De la ligne 7. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nLa fonction `puts()`, définie dans `<stdio.h>`, affiche à l'écran la chaîne de caractères passée en argument, en ajoutant automatiquement un retour à la ligne après l'affichage, contrairement à `printf()` qui n'en ajoute que si on l'écrit explicitement.\n\n```c\n7: puts(\"Entrez une valeur entière entre 1 et 8: \");\n```\n\nCette ligne affiche à l'écran le message d'invite `Entrez une valeur entière entre 1 et 8: `, destiné à indiquer à l'utilisateur ce qu'il doit saisir juste avant l'appel à `scanf()` de la ligne suivante. `puts()` est adaptée ici car le message est une simple chaîne de caractères fixe, sans valeur à insérer dynamiquement, ce qui rend son usage plus simple que `printf()` pour ce cas précis."
+      }
+    ]
+  },
+  {
+    "competence": "Simulation d'exécution",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "Donner le rendu du programme ci-dessous, puis citer la fonction principale sans laquelle on obtiendrait aucun résultat. *[0,5 pt + 0,25 pt = 0,75 pt]*\n\n```c\n#include <stdio.h>\nint main () {\n    char car=' ';\n    int sortie=0;\n    do {\n        printf(\"Appuyez sur S pour sortir \n\");\n        car = getchar ();\n        /* On le compare pour savoir si l'on peut sortir: */\n        sortie = ((car == 's') || (car == 'S'));\n    } while (sortie==0);\n    return 0;\n}\n```",
+        "corrige_markdown": "### Rappel de méthode\nSimuler l'exécution d'un programme itératif consiste à dérouler ligne par ligne chaque tour de boucle en notant l'évolution des variables, jusqu'à ce que la condition d'arrêt soit atteinte ; une boucle do...while exécute toujours son corps au moins une fois, la condition n'étant testée qu'après.\n\nAnalyse du programme :\n```c\n#include <stdio.h>\nint main () {\n    char car=' ';\n    int sortie=0;\n    do {\n        printf(\"Appuyez sur S pour sortir \n\");\n        car = getchar ();\n        /* On le compare pour savoir si l'on peut sortir: */\n        sortie = ((car == 's') || (car == 'S'));\n    } while (sortie==0);\n    return 0;\n}\n```\n\nDéroulé :\n1. Le programme entre dans la boucle `do...while` : le corps s'exécute une première fois quoi qu'il arrive.\n2. `printf(\"Appuyez sur S pour sortir \n\");` affiche le message à l'écran.\n3. `car = getchar();` attend que l'utilisateur saisisse un caractère au clavier et le stocke dans `car`.\n4. `sortie = ((car == 's') || (car == 'S'));` vaut 1 (vrai) si le caractère saisi est `s` ou `S`, sinon 0 (faux).\n5. La condition `while (sortie==0)` est testée : tant qu'elle est vraie (l'utilisateur n'a pas saisi `s` ou `S`), la boucle recommence à l'étape 2 et le message est réaffiché.\n6. Dès que l'utilisateur saisit `s` ou `S`, `sortie` vaut 1, la condition `sortie==0` devient fausse, la boucle s'arrête et le programme se termine par `return 0;` (aucun autre affichage).\n\n**Rendu du programme** : il affiche en boucle le message \"Appuyez sur S pour sortir\", en demandant à chaque fois un caractère au clavier, jusqu'à ce que l'utilisateur saisisse la lettre `s` ou `S` ; le programme se termine alors silencieusement, sans afficher aucun autre message.\n\n**Fonction principale sans laquelle on obtiendrait aucun résultat** : la fonction `main()`. C'est le point d'entrée obligatoire de tout programme C : sans elle, l'exécution ne peut même pas commencer, et aucune instruction du fichier ne serait exécutée.\n\n### Piège à éviter\n`getchar()` lit les caractères un par un dans le tampon clavier, retour à la ligne compris. Si l'utilisateur tape \"bs\" puis Entrée, le premier tour de boucle lit `b` (échec, on reboucle), le second tour lit `s` (succès, on sort) - le caractère de retour à la ligne final ne sera lu que si aucune des lettres précédentes n'a permis de sortir avant lui."
+      },
+      {
+        "exercise_id": 10537,
+        "enonce_markdown": "Exécuter le script ci-dessous pour n=2 et p=6. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nExécuter (simuler) un script comportant une boucle do...while avec une condition de validation de saisie consiste à tester d'abord si les valeurs proposées vérifient cette condition : tant qu'elle échoue, le corps de la boucle se répète et redemande une saisie, avant même d'atteindre les instructions placées après la boucle.\n\nLe script commence par :\n```javascript\ndo\n{\np=parseInt(prompt(\"Entrez l'entier p:\"));\nn=parseInt(prompt(\"Entrez l'entier n:\"));\n}\nwhile(n<0 || p<0 || p>n)\n```\nUne boucle `do...while` exécute toujours son corps au moins une fois, puis teste la condition : si elle est vraie, on reboucle ; si elle est fausse, on continue avec la suite du script.\n\n**Exécution avec n=2 et p=6**\n\n1. Premier passage dans le corps de la boucle : l'utilisateur saisit `p=6` puis `n=2`.\n2. Test de la condition `while(n<0 || p<0 || p>n)` : `n<0` est faux (2 n'est pas négatif), `p<0` est faux (6 n'est pas négatif), mais `p>n` vaut `6>2`, ce qui est **vrai**.\n3. La condition globale (union par `||`) est donc **vraie** : la boucle recommence et redemande à l'utilisateur de saisir `p` puis `n`.\n\n**Conclusion de l'exécution** : avec les valeurs n=2 et p=6, le script ne dépasse jamais la boucle `do...while` : il redemande indéfiniment une nouvelle saisie tant que l'utilisateur ne fournit pas des valeurs telles que `p` soit inférieur ou égal à `n` (et que les deux soient positifs ou nuls). Aucun calcul de `o`, `s`, `m`, `y` ni `z` n'est donc effectué avec ces valeurs : la boîte de dialogue `alert(\"La solution :\"+z)` ne s'affiche jamais tant que l'utilisateur n'entre pas un couple valide (par exemple p=2 et n=6).\n\n### Piège à éviter\nBeaucoup d'élèves ignorent la boucle `do...while` et calculent directement `z` en substituant n=2 et p=6 dans les formules du bas (comme si le script s'exécutait en ligne droite). C'est une erreur : la condition de validation `p>n` (ici vraie) empêche précisément le script d'atteindre ces lignes avec des valeurs où p dépasse n. Toujours vérifier la condition de la boucle `do...while` avant de dérouler la suite du script.\n\n### Conseil\nPour ce genre de question, commence systématiquement par évaluer la condition d'arrêt de la boucle avec les valeurs données, avant de calculer quoi que ce soit d'autre : c'est souvent elle qui décide si le reste du script s'exécute ou non."
+      }
+    ]
+  },
+  {
+    "competence": "Variables d'entrée/sortie",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10533,
+        "enonce_markdown": "Identifier les variables d'entrée. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nDans un algorigramme, une variable d'entrée est une donnée fournie de l'extérieur au traitement (typiquement via une instruction Lire/Read) : c'est elle qui alimente les calculs, mais elle n'est jamais elle-même le résultat final communiqué à l'utilisateur.\n\nDans l'algorigramme donné, la seule instruction de lecture est `Lire(X)`, placée juste après le test `K<50`. `X` est donc la valeur saisie à chaque tour de boucle, sur laquelle repose ensuite tout le traitement (comparaison à 0, ajout à `S` ou incrémentation de `N`).\n\n**Variable d'entrée : `X`**.\n\n### Piège à éviter\nNe pas confondre `K`, qui pilote uniquement le nombre de répétitions de la boucle (un compteur interne), avec une variable d'entrée : `K` n'est jamais lu depuis l'extérieur, il est incrémenté automatiquement par l'algorithme lui-même (`K=K+1`)."
+      }
+    ]
+  },
+  {
+    "competence": "Validation de saisie",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10537,
+        "enonce_markdown": "Exécuter le script ci-dessous pour n=2 et p=6. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nExécuter (simuler) un script comportant une boucle do...while avec une condition de validation de saisie consiste à tester d'abord si les valeurs proposées vérifient cette condition : tant qu'elle échoue, le corps de la boucle se répète et redemande une saisie, avant même d'atteindre les instructions placées après la boucle.\n\nLe script commence par :\n```javascript\ndo\n{\np=parseInt(prompt(\"Entrez l'entier p:\"));\nn=parseInt(prompt(\"Entrez l'entier n:\"));\n}\nwhile(n<0 || p<0 || p>n)\n```\nUne boucle `do...while` exécute toujours son corps au moins une fois, puis teste la condition : si elle est vraie, on reboucle ; si elle est fausse, on continue avec la suite du script.\n\n**Exécution avec n=2 et p=6**\n\n1. Premier passage dans le corps de la boucle : l'utilisateur saisit `p=6` puis `n=2`.\n2. Test de la condition `while(n<0 || p<0 || p>n)` : `n<0` est faux (2 n'est pas négatif), `p<0` est faux (6 n'est pas négatif), mais `p>n` vaut `6>2`, ce qui est **vrai**.\n3. La condition globale (union par `||`) est donc **vraie** : la boucle recommence et redemande à l'utilisateur de saisir `p` puis `n`.\n\n**Conclusion de l'exécution** : avec les valeurs n=2 et p=6, le script ne dépasse jamais la boucle `do...while` : il redemande indéfiniment une nouvelle saisie tant que l'utilisateur ne fournit pas des valeurs telles que `p` soit inférieur ou égal à `n` (et que les deux soient positifs ou nuls). Aucun calcul de `o`, `s`, `m`, `y` ni `z` n'est donc effectué avec ces valeurs : la boîte de dialogue `alert(\"La solution :\"+z)` ne s'affiche jamais tant que l'utilisateur n'entre pas un couple valide (par exemple p=2 et n=6).\n\n### Piège à éviter\nBeaucoup d'élèves ignorent la boucle `do...while` et calculent directement `z` en substituant n=2 et p=6 dans les formules du bas (comme si le script s'exécutait en ligne droite). C'est une erreur : la condition de validation `p>n` (ici vraie) empêche précisément le script d'atteindre ces lignes avec des valeurs où p dépasse n. Toujours vérifier la condition de la boucle `do...while` avant de dérouler la suite du script.\n\n### Conseil\nPour ce genre de question, commence systématiquement par évaluer la condition d'arrêt de la boucle avec les valeurs données, avant de calculer quoi que ce soit d'autre : c'est souvent elle qui décide si le reste du script s'exécute ou non."
+      },
+      {
+        "exercise_id": 10562,
+        "enonce_markdown": "**2.c.** Donner une instruction permettant de lire l'ordre de translation compris entre 1 et n (on utilisera la structure `do…while`). *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne structure `do…while` exécute son corps au moins une fois, puis le répète tant que la condition reste vraie : c'est la structure adaptée pour forcer une resaisie tant qu'une valeur entrée reste invalide.\n\n```c\nint ordre;\ndo {\n    printf(\"Donner l'ordre de translation (entre 1 et %d) : \", taille);\n    scanf(\"%d\", &ordre);\n} while (ordre < 1 || ordre > taille);\n```\n\n### Piège à éviter\nÉcrire la condition de sortie au lieu de la condition de répétition est une confusion fréquente : un `do…while` se répète tant que la condition écrite est vraie, donc ici tant que la valeur reste en dehors de l'intervalle [1, taille] - pas l'inverse."
+      }
+    ]
+  },
+  {
+    "competence": "mysqli",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**5.2.** De la ligne de code 14. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nEn PHP, l'extension mysqli permet de dialoguer avec un serveur MySQL au moyen d'un objet de connexion, créé une seule fois avec `new mysqli(hôte, utilisateur, mot de passe, base)`, puis utilisé pour envoyer des requêtes et systématiquement refermé avec `close()` une fois le travail terminé.\n\n```php\n14 $idcom = new mysqli(\"localhost\",\"root\",\"\", \"magasin\");\n```\n\nCette ligne crée un objet `mysqli`, stocké dans la variable `$idcom`, représentant une connexion au serveur de base de données. Les quatre arguments précisent respectivement : l'hôte du serveur MySQL (`localhost`, c'est-à-dire la machine locale), le nom d'utilisateur (`root`), le mot de passe (une chaîne vide `\"\"`, cas typique d'une installation de développement) et le nom de la base de données à utiliser (`magasin`). C'est cet objet `$idcom` qui sera ensuite utilisé pour exécuter toutes les requêtes SQL du script (`$idcom->query(...)`) et qui devra être refermé avec `$idcom->close()` une fois le traitement terminé (lignes 35 et 55 du code).\n\n### Piège à éviter\nUn mot de passe vide (`\"\"`) n'est acceptable que sur un poste de développement local. Dans un projet réel destiné à être hébergé, laisser un compte `root` sans mot de passe est une faille de sécurité majeure : le correcteur peut valoriser une réponse qui le signale, même si la question ne le demande pas explicitement."
+      },
+      {
+        "exercise_id": 10621,
+        "enonce_markdown": "Identifier dans ce code une variable de type booleen. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nUne variable booléenne ne peut prendre que deux valeurs, `true` ou `false`. En PHP, elle provient d'un test de comparaison, d'une affectation explicite ou d'une fonction qui renvoie `false` en cas d'échec. Ainsi `query()` de mysqli renvoie `false` si la requête SQL échoue, ce qui justifie un test du type `if(!$variable)`. Attention : une variable qui contient un objet ou un nombre n'est pas booléenne, même si on peut la tester dans une condition.\n\nLa variable **`$result`** (ligne 38 : `$result = $idcom->query($requete);`) peut prendre une valeur booleenne : la methode `query()` de mysqli renvoie un objet resultat en cas de succes, mais renvoie la valeur booleenne `false` si la requete SQL echoue. C'est justement ce que teste la ligne 39 (`if(!$result)`), qui verifie si `$result` vaut `false` avant d'exploiter les donnees."
+      },
+      {
+        "exercise_id": 10624,
+        "enonce_markdown": "Identifier la ligne correspondant a la connexion a la base de donnees et decrire les differents parametres mis en exergue. (1 pt)",
+        "corrige_markdown": "### Rappel de méthode\nAvec l'extension mysqli, la connexion s'établit par `new mysqli(hôte, utilisateur, mot_de_passe, base)` (ou `mysqli_connect` en style procédural). Les quatre paramètres sont, dans l'ordre : l'adresse du serveur MySQL (souvent `localhost`), le nom de l'utilisateur, son mot de passe (éventuellement vide en local) et le nom de la base à utiliser. Attention : l'ordre des paramètres est imposé, et la base doit déjà exister sur le serveur.\n\nLa ligne correspondant a la connexion a la base de donnees est la **ligne 2** :\n\n`$idcom=new mysqli(\"localhost\",\"root\",\"\", \"PATIENT\");`\n\nLes quatre parametres de la fonction mysqli() sont, dans l'ordre : `\"localhost\"` (l'adresse du serveur MySQL, ici la machine locale), `\"root\"` (le nom de l'utilisateur MySQL utilise pour se connecter), `\"\"` (le mot de passe associe a cet utilisateur, ici vide) et `\"PATIENT\"` (le nom de la base de donnees a laquelle on souhaite se connecter)."
+      }
+    ]
+  },
+  {
+    "competence": "$_POST",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10571,
+        "enonce_markdown": "**8.** Écris un code PHP qui, au clic du bouton « enregistrer », récupère les informations du formulaire et les affiche. *[1 pt]*\n\n**NB :** considère les informations données en I.2.",
+        "corrige_markdown": "### Rappel de méthode\nQuand un formulaire est soumis avec `method=\"post\"`, PHP range automatiquement les valeurs saisies dans le tableau superglobal `$_POST`, indexé par le `name` de chaque champ ; il suffit alors de lire `$_POST['nom_du_champ']` pour récupérer une valeur et de l'afficher avec `echo`.\n\nEn reprenant le formulaire écrit à la question I.2 (champs `numero`, `designation`, `couleur`, méthode POST), le fichier `enregistrement.php` qui reçoit la soumission récupère et affiche ces trois valeurs ainsi :\n\n```php\n<?php\n$numero = $_POST['numero'];\n$designation = $_POST['designation'];\n$couleur = $_POST['couleur'];\necho \"numero : \".$numero.\"<br>\";\necho \"designation : \".$designation.\"<br>\";\necho \"couleur : \".$couleur.\"<br>\";\n?>\n```\n\n### Piège à éviter\nUtiliser `$_GET` au lieu de `$_POST` ici serait une erreur : le formulaire de la question I.2 a été explicitement écrit avec `method=\"post\"`, donc seul `$_POST` contient les valeurs saisies. `$_GET` resterait vide.\n\n### Conseil\nFais toujours correspondre la superglobale PHP à la méthode déclarée dans la balise `<form>` : POST avec `$_POST`, GET avec `$_GET`. C'est une vérification à deux secondes qui évite une erreur fréquente et coûteuse en points."
+      },
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**4.** Expliquer les variables super globales **$_GET** et **$_POST**. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\n$_GET et $_POST sont des tableaux associatifs superglobaux de PHP, c'est-à-dire accessibles depuis n'importe quel endroit du script sans déclaration préalable, qui contiennent automatiquement les données envoyées par un formulaire HTML, chaque valeur étant indexée par le nom (`name`) du champ correspondant.\n\n**$_GET** récupère les données transmises par la méthode GET, c'est-à-dire ajoutées directement dans l'URL sous forme de paires clé=valeur après un point d'interrogation (par exemple `page.php?id=3`). Ces données restent visibles dans la barre d'adresse et sont limitées en taille, ce qui les rend inadaptées à des informations sensibles ou volumineuses.\n\n**$_POST** récupère les données transmises par la méthode POST, envoyées dans le corps de la requête HTTP plutôt que dans l'URL. Elles ne sont donc pas visibles dans la barre d'adresse et ne sont pas limitées par la longueur d'une URL, ce qui les rend adaptées à l'envoi de formulaires contenant des informations sensibles (mots de passe) ou volumineuses.\n\nDans le code de l'exercice, le formulaire est envoyé avec `method=\"post\"` (ligne 23), ce qui explique que le script lise systématiquement ses données avec `$_POST` (`$_POST['code']`, `$_POST['nom']`, etc.) plutôt qu'avec `$_GET`.\n\n### Piège à éviter\nNe dis jamais que $_GET et $_POST sont interchangeables : le choix entre les deux dépend de l'attribut `method` du formulaire HTML (`method=\"get\"` ou `method=\"post\"`). Un script qui lit `$_POST['code']` alors que le formulaire a été envoyé avec `method=\"get\"` ne récupérera jamais la valeur attendue."
+      },
+      {
+        "exercise_id": 10621,
+        "enonce_markdown": "Donner le role de la variable : \\$_POST['motcle']. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\n`$_POST` est un tableau associatif superglobal de PHP qui contient les données envoyées par un formulaire dont la méthode est `method=\"post\"`. La clé correspond à l'attribut `name` du champ HTML, si bien que `$_POST['nom']` récupère, côté serveur, la valeur saisie dans le champ de ce nom. Attention : c'est l'attribut `name` qui sert de clé, pas `id`, et il faut nettoyer la valeur avant de l'insérer dans une requête SQL.\n\n`$_POST['motcle']` recupere, cote serveur, la valeur saisie par l'utilisateur dans le champ de formulaire nomme `motcle` (le champ de texte Mot-cle), lorsque le formulaire est envoye avec la methode `method=\"post\"`. C'est ce mot-cle qui sera ensuite utilise dans la clause `WHERE lower(designation) LIKE '%$motcle%'` de la requete SQL pour filtrer les articles dont la designation contient ce mot-cle."
+      },
+      {
+        "exercise_id": 10624,
+        "enonce_markdown": "Identifier et relever sur votre copie la variable superglobale qu'on a utilise dans « traitement.php » pour recuperer les valeurs des champs du formulaire. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nEn PHP, les données envoyées par un formulaire sont récupérées grâce aux tableaux superglobaux, accessibles partout dans le script sans déclaration. `$_GET` contient les données transmises dans l'URL (méthode `get`) et `$_POST` celles envoyées dans le corps de la requête (méthode `post`) ; on lit une valeur par `$_POST['nom_du_champ']`. Attention : le choix entre les deux dépend de l'attribut `method` du formulaire, et la clé doit correspondre exactement à l'attribut `name` du champ.\n\nLa variable superglobale utilisee dans « traitement.php » pour recuperer les valeurs des champs du formulaire est **`$_POST`** (utilisee sous la forme `$_POST['nomP']`, `$_POST['ville']`, `$_POST['Tel']`, `$_POST['NomVac']`), car le formulaire form.html est envoye avec la methode `method=\"post\"`."
+      }
+    ]
+  },
+  {
+    "competence": "$_GET",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10571,
+        "enonce_markdown": "**12.** On voudrait écrire un script PHP qui récupère un nombre entier dans un formulaire de nom « Nombre » via la méthode **GET** et affiche sa table de multiplication en commençant par 0 jusqu'à 9, au clic du bouton OK de nom « ok ». Par exemple, si l'utilisateur entre 2, au clic du bouton « ok » on a le résultat :\n\n2*0=0\n\n2*1=2\n\n2*2=4\n\n12.1. Propose le code PHP. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nQuand un formulaire est soumis avec `method=\"get\"`, PHP range automatiquement les valeurs saisies dans le tableau superglobal `$_GET`, indexé par le `name` de chaque champ ; il suffit alors de lire `$_GET['nom_du_champ']` pour récupérer une valeur et de l'afficher avec `echo`.\n\nLe formulaire (visible en aperçu ci-dessous) comporte un champ `Nombre` et un bouton `ok`, tous deux transmis en `GET` :\n\n![Aperçu du champ de saisie du nombre et du bouton OK avant le clic, utilisé comme exemple d'interface pour la question 12](/media/figures/cm/bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun_exercice_1_fig_2.webp)\n\n```php\n<form method=\"get\">\n  <input type=\"text\" name=\"Nombre\">\n  <input type=\"submit\" name=\"ok\" value=\"OK\">\n</form>\n\n<?php\nif(isset($_GET['Nombre'])){\n  $nombre = $_GET['Nombre'];\n  for($i=0; $i<=9; $i++){\n    echo $nombre.\"*\".$i.\"=\".($nombre*$i).\"<br>\";\n  }\n}\n?>\n```\n\nPour une saisie de 2, la boucle affiche bien `2*0=0`, `2*1=2`, `2*2=4`, et ainsi de suite jusqu'à `2*9=18`, conformément à l'exemple donné dans l'énoncé.\n\n### Piège à éviter\nLe test `isset($_GET['Nombre'])` est indispensable : sans lui, la première ouverture de la page (avant toute saisie) provoque un avertissement PHP, puisque `$_GET['Nombre']` n'existe pas encore tant que le formulaire n'a pas été soumis une première fois.\n\n### Conseil\nPlace toujours le formulaire et le traitement PHP dans le même fichier quand l'énoncé ne précise pas de fichier de traitement séparé : la page s'affiche alors normalement au premier chargement, puis affiche en plus le résultat dès que l'utilisateur clique sur « ok »."
+      },
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**4.** Expliquer les variables super globales **$_GET** et **$_POST**. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\n$_GET et $_POST sont des tableaux associatifs superglobaux de PHP, c'est-à-dire accessibles depuis n'importe quel endroit du script sans déclaration préalable, qui contiennent automatiquement les données envoyées par un formulaire HTML, chaque valeur étant indexée par le nom (`name`) du champ correspondant.\n\n**$_GET** récupère les données transmises par la méthode GET, c'est-à-dire ajoutées directement dans l'URL sous forme de paires clé=valeur après un point d'interrogation (par exemple `page.php?id=3`). Ces données restent visibles dans la barre d'adresse et sont limitées en taille, ce qui les rend inadaptées à des informations sensibles ou volumineuses.\n\n**$_POST** récupère les données transmises par la méthode POST, envoyées dans le corps de la requête HTTP plutôt que dans l'URL. Elles ne sont donc pas visibles dans la barre d'adresse et ne sont pas limitées par la longueur d'une URL, ce qui les rend adaptées à l'envoi de formulaires contenant des informations sensibles (mots de passe) ou volumineuses.\n\nDans le code de l'exercice, le formulaire est envoyé avec `method=\"post\"` (ligne 23), ce qui explique que le script lise systématiquement ses données avec `$_POST` (`$_POST['code']`, `$_POST['nom']`, etc.) plutôt qu'avec `$_GET`.\n\n### Piège à éviter\nNe dis jamais que $_GET et $_POST sont interchangeables : le choix entre les deux dépend de l'attribut `method` du formulaire HTML (`method=\"get\"` ou `method=\"post\"`). Un script qui lit `$_POST['code']` alors que le formulaire a été envoyé avec `method=\"get\"` ne récupérera jamais la valeur attendue."
+      }
+    ]
+  },
+  {
+    "competence": "XAMPP",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10571,
+        "enonce_markdown": "12.2. Décris la procédure de façon générale à suivre pour que le fichier contenant ce programme puisse être accessible en local via le navigateur. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nPour qu'un fichier PHP soit exécuté et non simplement affiché comme du texte par le navigateur, il doit être servi par un serveur Web capable d'interpréter PHP : en local, on installe donc une suite comme WAMP, XAMPP ou LAMP (Apache + PHP + MySQL), on place le fichier dans le dossier racine du serveur, puis on démarre les services avant d'accéder au fichier par une URL locale.\n\nLa procédure générale comporte quatre étapes : installer une suite logicielle de développement local regroupant Apache, PHP et MySQL (par exemple WAMPServer ou XAMPP) ; copier le fichier contenant le script (par exemple `table.php`) dans le dossier racine du serveur (`www` pour WAMP, `htdocs` pour XAMPP), éventuellement dans un sous-dossier propre au projet ; démarrer le service Apache (et MySQL si le script en a besoin) depuis le panneau de contrôle de la suite installée ; enfin, ouvrir un navigateur et saisir l'adresse `http://localhost/table.php` (ou `http://localhost/nom_du_dossier/table.php` si le fichier est dans un sous-dossier) pour que le serveur interprète le script et renvoie la page générée.\n\n### Piège à éviter\nOuvrir directement le fichier `.php` depuis l'explorateur de fichiers (double clic) ne fonctionne jamais : le navigateur afficherait alors le code source brut ou une page blanche, puisque aucun serveur n'intercepte la requête pour interpréter le PHP. Le fichier doit impérativement être demandé via `http://localhost/...` et non via un chemin de fichier local (`file:///...`)."
+      },
+      {
+        "exercise_id": 10574,
+        "enonce_markdown": "**6.2.** Citer un autre exemple d'environnement intégré de développement Web qu'on pourrait utiliser. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn environnement intégré de développement (EDI) Web regroupe en une seule installation un serveur Web, un interpréteur de langage serveur (PHP, par exemple) et un système de gestion de bases de données, pour permettre de développer et tester un site dynamique en local sans configuration séparée de chaque composant.\n\nWampServer, cité dans l'énoncé, en est un exemple sous Windows (Apache + MySQL + PHP). D'autres environnements équivalents existent et répondent à la question : **XAMPP** (multiplateforme, le plus répandu), **MAMP** (sous macOS), ou **EasyPHP**. Il suffit d'en citer un seul pour valider cette sous-question.\n\n### Conseil\nSi le nom exact t'échappe le jour de l'examen, décris la fonction plutôt que de laisser la réponse vide : « un environnement regroupant Apache, MySQL et PHP en une seule installation » identifie déjà correctement la famille d'outils visée."
+      }
+    ]
+  },
+  {
+    "competence": "structures",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10622,
+        "enonce_markdown": "Donner le role de la ligne 10. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nUne instruction du type `struct type nom[N];` déclare un tableau de N éléments, chacun étant une structure du type indiqué. Une structure regroupe plusieurs champs de types différents sous un même nom, et le tableau permet de stocker plusieurs enregistrements indexés de 0 à N-1. On accède à un champ avec `nom[i].champ`. Attention : les indices vont de 0 à N-1, donc l'accès à `nom[N]` sort du tableau.\n\nLa ligne 10 (`struct produit list[Max];`) declare un **tableau** nomme `list`, de `Max` (soit 4) elements, ou chaque element est une structure de type `struct produit` (definie lignes 4-9, avec les champs designation, qantite/quantite, prix et montant). Cela permet de stocker, dans une seule variable indexable, les informations des 4 produits de la facture."
+      }
+    ]
+  },
+  {
+    "competence": "programme informatique",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**1.** Définis **Programme**. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn programme est une suite d'instructions écrites dans un langage de programmation, organisée de façon à être traduite puis exécutée par un ordinateur pour réaliser une tâche déterminée.\n\nLe fichier source présenté ici, écrit en langage C, en est un exemple : les instructions qu'il contient (déclaration de la structure `Eleve`, fonction récursive `som`, fonction `main`) décrivent une tâche précise, à savoir saisir les informations de N élèves puis calculer et afficher la somme des entiers de 0 à un nombre saisi par l'utilisateur.\n\n### Piège à éviter\nNe confonds pas « programme » et « logiciel » : un programme est le résultat d'une écriture en langage de programmation, tandis qu'un logiciel désigne plus largement un produit fini, prêt à l'emploi, qui peut regrouper plusieurs programmes, une documentation et une interface utilisateur."
+      },
+      {
+        "exercise_id": 10622,
+        "enonce_markdown": "Definir le terme Programme. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nUn programme est une suite ordonnée d'instructions, écrites dans un langage de programmation, que l'ordinateur exécute pour résoudre un problème ou accomplir une tâche. Pour le définir, on précise qu'il est écrit dans un langage (par exemple le C) puis traduit en langage machine par un compilateur ou un interpréteur. Attention : ne pas confondre le programme (le code) avec le processus, c'est-à-dire son exécution en mémoire.\n\nUn **programme** est un ensemble ordonne d'instructions, ecrites dans un langage de programmation (ici le C), qui indiquent a un ordinateur la suite d'operations a executer pour resoudre un probleme ou realiser une tache donnee -- ici, saisir les produits d'une facture et calculer leur montant."
+      }
+    ]
+  },
+  {
+    "competence": "stdlib.h",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**3.** Décris les rôles des bibliothèques **stdio.h** et **stdlib.h**. *[0,5 pt x 2 = 1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\n`stdio.h` (standard input/output) déclare les fonctions d'entrée-sortie standard comme `printf` et `scanf` ; `stdlib.h` (standard library) regroupe des fonctions utilitaires générales telles que la gestion de la mémoire dynamique (`malloc`, `free`), les conversions de chaînes en nombres (`atoi`, `atof`) ou la génération de nombres aléatoires (`rand`).\n\nDans ce programme, `stdio.h` est indispensable puisque tout le programme repose sur `printf` et `scanf` pour dialoguer avec l'utilisateur (lignes 16 à 25). `stdlib.h` est inclus par précaution mais aucune de ses fonctions n'est utilisée dans ce programme précis : la question porte sur le rôle général de la bibliothèque, indépendamment du fait qu'elle serve ou non ici.\n\n### Piège à éviter\nNe dis jamais qu'une bibliothèque incluse mais inutilisée est une erreur : en C, `#include` ne fait qu'apporter des déclarations disponibles si besoin, sans obliger à les utiliser toutes."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**2.** Décrire les deux bibliothèques utilisées dans ce code. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne bibliothèque standard du langage C regroupe des fonctions déjà écrites et testées, rendues disponibles dans un programme par la directive `#include`, ce qui évite à chaque programmeur de réécrire des fonctionnalités courantes comme les entrées-sorties ou la gestion mémoire.\n\n**`<stdio.h>`** (Standard Input/Output) fournit les fonctions d'entrée-sortie standard du langage C. Le code l'utilise pour `puts()` (ligne 7, affichage d'un message), `scanf()` (ligne 8, lecture d'une saisie clavier) et `printf()` (lignes 10 et 14, affichage formaté).\n\n**`<stdlib.h>`** (Standard Library) fournit des fonctions générales utilitaires : gestion de la mémoire, conversions, contrôle du programme. Le code l'utilise ici pour `exit()` et la constante `EXIT_SUCCESS` (ligne 16), qui terminent le programme en signalant au système d'exploitation que l'exécution s'est déroulée sans erreur."
+      },
+      {
+        "exercise_id": 10622,
+        "enonce_markdown": "Decrire les deux bibliotheques utilisees dans ce code. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nEn C, la directive `#include` insère une bibliothèque, c'est-à-dire un ensemble de fonctions déjà écrites. `<stdio.h>` (Standard Input Output) fournit les entrées-sorties comme `printf()` et `scanf()`. `<stdlib.h>` (Standard Library) fournit des utilitaires généraux : allocation mémoire (`malloc`, `free`), conversions (`atoi`) et `exit()`. Pour décrire une bibliothèque, on donne son nom, sa signification et quelques fonctions typiques. Attention : elle est déclarée avec `#include` en début de fichier, sans point-virgule.\n\n**`<stdio.h>`** (ligne 1) : bibliotheque d'entrees-sorties standard (\"STanDard Input/Output\"), qui fournit les fonctions de lecture et d'ecriture comme `scanf()` (lecture au clavier) et `printf()` (affichage a l'ecran), utilisees tout au long de ce programme.\n- **`<stdlib.h>`** (ligne 2) : bibliotheque standard generale (\"STanDard LIBrary\"), qui fournit notamment des fonctions de gestion memoire (`malloc`, `free`), de conversion (`atoi`, `atof`) et d'utilitaires divers ; elle n'est pas strictement indispensable a ce programme tel qu'ecrit, mais est habituellement incluse par prudence des qu'on manipule des tableaux ou des conversions."
+      }
+    ]
+  },
+  {
+    "competence": "exécution côté serveur",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10574,
+        "enonce_markdown": "**1.** Expliquer de quel côté s'exécute un script PHP. *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nPHP est un langage de script exécuté côté serveur : le serveur Web interprète le code PHP avant d'envoyer la page au navigateur, si bien que le navigateur ne reçoit jamais le code PHP lui-même, seulement le HTML qu'il a produit.\n\nDans le script de l'énoncé, tout ce qui se trouve entre `<?php` (ligne 6) et `?>` est donc exécuté sur le serveur qui héberge le site : c'est le serveur qui se connecte à la base de données (ligne 19), qui compare le mot de passe (ligne 34) et qui décide quel message HTML renvoyer. Le navigateur du candidat qui remplit le formulaire ne voit jamais ces instructions ; il ne reçoit que le résultat, sous forme de HTML déjà généré (le `<h3>` correspondant au cas rencontré).\n\n### Conseil\nPour répondre à ce type de question, oppose toujours explicitement PHP (« côté serveur ») à JavaScript (« côté client, dans le navigateur ») : c'est cette opposition, plus que la définition seule, que le correcteur attend de retrouver."
+      },
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**3.** Expliquer de quel côté s'exécute un script PHP. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn script PHP s'exécute exclusivement côté serveur : le serveur web interprète le code PHP, produit le résultat sous forme de HTML, puis envoie uniquement ce résultat au navigateur, qui ne reçoit et n'exécute jamais le code PHP source.\n\nDans le code fourni, tout ce qui se trouve entre `<?php` et `?>` (par exemple la connexion à la base avec `new mysqli(...)` ligne 14, ou la construction de la requête SQL) est exécuté sur le serveur, avant l'envoi de la page. Le navigateur du client ne voit jamais ce code : si l'on affichait le « code source de la page » depuis le navigateur, on n'y trouverait que le HTML généré par les instructions `echo`, jamais les instructions PHP elles-mêmes. C'est cette exécution côté serveur qui permet, entre autres, de cacher les identifiants de connexion à la base de données (`\"root\"`, `\"\"`) au client final.\n\n### Conseil\nSi on te demande de justifier pourquoi PHP est adapté à la sécurité d'une application (accès base de données, mots de passe), rappelle-toi que c'est précisément parce que le code ne quitte jamais le serveur, contrairement au JavaScript qui, lui, s'exécute côté client et reste visible dans le code source de la page."
+      }
+    ]
+  },
+  {
+    "competence": "EDI Web",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10574,
+        "enonce_markdown": "**6.2.** Citer un autre exemple d'environnement intégré de développement Web qu'on pourrait utiliser. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn environnement intégré de développement (EDI) Web regroupe en une seule installation un serveur Web, un interpréteur de langage serveur (PHP, par exemple) et un système de gestion de bases de données, pour permettre de développer et tester un site dynamique en local sans configuration séparée de chaque composant.\n\nWampServer, cité dans l'énoncé, en est un exemple sous Windows (Apache + MySQL + PHP). D'autres environnements équivalents existent et répondent à la question : **XAMPP** (multiplateforme, le plus répandu), **MAMP** (sous macOS), ou **EasyPHP**. Il suffit d'en citer un seul pour valider cette sous-question.\n\n### Conseil\nSi le nom exact t'échappe le jour de l'examen, décris la fonction plutôt que de laisser la réponse vide : « un environnement regroupant Apache, MySQL et PHP en une seule installation » identifie déjà correctement la famille d'outils visée."
+      }
+    ]
+  }
+]

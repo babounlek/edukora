@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-modes-d-adressage-ip-statique-et-dynamique-dhcp-terminale-ti",
+  "meta": {
+    "titre": "Modes d'adressage IP : statique et dynamique (DHCP)",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage réseau",
+    "duree_estimee_min": 18,
+    "tags": [
+      "adressage statique",
+      "adressage dynamique",
+      "DHCP",
+      "IPCONFIG"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q7-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux ordinateurs peuvent afficher exactement la même adresse IP, dans la même plage, et pourtant l'avoir obtenue de deux façons radicalement différentes : l'une saisie une fois pour toutes par un technicien, l'autre distribuée automatiquement et pour un temps limité. Distinguer ces deux modes d'adressage, et surtout savoir le prouver à partir d'une simple sortie de commande, est une compétence directement exigée à l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'adresse IP",
+        "Notion de serveur (rôle client/serveur)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître le mode d'adressage d'une machine",
+      "contenu_markdown": "L'**adressage statique** consiste à saisir manuellement, une fois pour toutes, l'adresse IP, le masque et la passerelle d'une machine : ces valeurs ne changent pas tant qu'un technicien ne les modifie pas.\n\nL'**adressage dynamique** consiste à faire attribuer automatiquement ces valeurs par un serveur DHCP, pour une durée limitée appelée bail.\n\nPreuve à citer dans une sortie IPCONFIG /ALL : le champ « DHCP activé » (Oui = dynamique, Non = statique) et, en dynamique uniquement, la présence d'un bail obtenu/expirant et d'un champ « Serveur DHCP ».",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La sortie IPCONFIG /ALL d'une carte Wi-Fi indique : DHCP activé : Oui ; Bail obtenu : dimanche 21 mars 2021 07:48:19 ; Bail expirant : dimanche 21 mars 2021 12:59:57 ; Serveur DHCP : 192.168.43.1. Déterminer le mode d'adressage et justifier.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le champ DHCP activé",
+          "justification": "C'est le premier indicateur direct du mode d'adressage.",
+          "resultat_markdown": "DHCP activé : Oui, ce qui oriente vers un adressage dynamique."
+        },
+        {
+          "numero": 2,
+          "action": "Confirmer avec la présence d'un bail",
+          "justification": "Un bail (durée d'attribution limitée) n'existe que dans un adressage dynamique ; une adresse statique n'a pas de durée de validité.",
+          "resultat_markdown": "La carte affiche un bail obtenu et un bail expirant : cette notion de durée limitée confirme un adressage dynamique."
+        },
+        {
+          "numero": 3,
+          "action": "Confirmer avec le serveur DHCP identifié",
+          "justification": "L'existence même d'un serveur DHCP responsable de l'attribution est la troisième preuve.",
+          "resultat_markdown": "Un serveur DHCP (192.168.43.1) est explicitement identifié comme responsable de l'attribution : le mode d'adressage est bien dynamique."
+        }
+      ],
+      "conclusion_markdown": "Trois indices concordants (DHCP activé : Oui, présence d'un bail, serveur DHCP identifié) confirment sans ambiguïté un adressage dynamique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure au mode d'adressage uniquement à partir de la présence d'une adresse IP",
+          "pourquoi_faux": "Une adresse IP existe aussi bien en statique qu'en dynamique : sa seule présence ne permet pas de trancher, il faut vérifier le champ DHCP.",
+          "correction_markdown": "Cite toujours le champ « DHCP activé » comme preuve, jamais la simple existence d'une adresse IP."
+        },
+        {
+          "erreur_markdown": "Croire qu'un adressage dynamique change d'adresse à chaque instant",
+          "pourquoi_faux": "Le bail dure généralement plusieurs heures ou jours ; la machine conserve la même adresse IP tant que le bail n'a pas expiré ou n'a pas été renouvelé avec une nouvelle valeur.",
+          "correction_markdown": "Précise que l'adresse dynamique change seulement au renouvellement du bail, pas en permanence."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une carte réseau affiche « DHCP activé : Non » et aucune information de bail. Quel est son mode d'adressage ?",
+          "solution_markdown": "Adressage statique : l'adresse a été configurée manuellement, sans intervention d'un serveur DHCP ni durée de validité limitée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Expliquer pourquoi un serveur d'entreprise critique (par exemple un serveur de messagerie) est généralement configuré en adressage statique plutôt qu'en adressage dynamique.",
+          "solution_markdown": "Un serveur doit rester joignable en permanence à une adresse IP connue et stable, car de nombreux services (DNS, pare-feu, clients de messagerie) sont configurés pour le contacter à cette adresse précise. Avec un adressage dynamique, l'adresse pourrait changer à l'expiration du bail ou après une panne du serveur DHCP, rendant le serveur injoignable tant que les configurations dépendantes n'auraient pas été mises à jour. L'adressage statique évite ce risque en garantissant une adresse fixe et prévisible."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un poste de travail configuré en DHCP se retrouve, après une coupure prolongée du serveur DHCP, avec une adresse commençant par 169.254. Expliquer ce que révèle cette adresse et pourquoi elle diffère d'un simple échec d'adressage statique.",
+          "solution_markdown": "Une adresse commençant par 169.254 correspond à une adresse APIPA (Automatic Private IP Addressing) : lorsqu'une machine configurée en DHCP ne parvient à contacter aucun serveur DHCP après plusieurs tentatives, elle s'attribue automatiquement, elle-même, une adresse dans cette plage réservée, afin de pouvoir au moins communiquer avec d'autres machines dans le même cas sur le réseau local. Ce mécanisme reste un mode dynamique dégradé (la machine continue de chercher un serveur DHCP en arrière-plan) et ne doit pas être confondu avec un adressage statique, où l'absence de configuration manuelle produirait simplement une absence totale d'adresse IP, sans repli automatique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'adressage statique est saisi manuellement et ne change pas ; l'adressage dynamique est distribué par un serveur DHCP pour une durée limitée (bail).",
+        "Le champ « DHCP activé » d'IPCONFIG /ALL est la preuve directe à citer pour justifier le mode d'adressage.",
+        "La présence d'un bail et d'un serveur DHCP confirme un adressage dynamique.",
+        "Un serveur critique est généralement en adressage statique pour rester joignable à une adresse stable et connue.",
+        "Une adresse commençant par 169.254 (APIPA) signale un échec de contact avec le serveur DHCP, pas un adressage statique."
+      ]
+    }
+  ]
+}

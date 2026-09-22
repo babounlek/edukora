@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-transformation-d-une-fonction-recursive-en-fonction-iterative-boucle-tle-ti",
+  "meta": {
+    "titre": "Transformation d'une fonction récursive en fonction itérative (boucle)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Récursivité en langage C",
+    "duree_estimee_min": 30,
+    "tags": [
+      "langage C",
+      "récursivité",
+      "boucle while",
+      "itératif"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex4-q5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque appel récursif consomme de la mémoire sur la pile d'exécution : pour un n très grand, une version récursive peut épuiser cette mémoire (dépassement de pile), là où une version itérative équivalente, avec une simple boucle, ne consomme qu'une quantité de mémoire fixe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Mécanisme de la récursivité et de son cas de base",
+        "Boucle while ou for en C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Remplacer chaque appel récursif par une itération qui met à jour les mêmes variables",
+      "contenu_markdown": "Transformer une récursion en boucle consiste à identifier les paramètres qui changent à chaque appel récursif (ici x et n) et à les faire évoluer, à l'intérieur d'une boucle `while`, exactement comme ils évolueraient d'un appel récursif à l'autre. Une variable supplémentaire accumule ce que la version récursive multipliait (ou ajoutait) au moment de l'auto-appel, sur la branche qui ne fait pas que « passer au niveau suivant » (ici la branche impaire, qui multiplie par x). La boucle se termine exactement quand la condition d'arrêt de la récursivité (le cas de base) est atteinte.",
+      "formule_principale": "resultat = valeur neutre; while (condition de non-arrêt) { mettre à jour resultat et les paramètres }",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Réécrire, sous forme itérative, la fonction récursive `calcul(x, n)` de l'exercice qui calcule $x^n$ par exponentiation rapide.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser la variable d'accumulation à l'élément neutre",
+          "justification": "resultat doit valoir 1 au départ, comme le cas de base return 1 de la version récursive, pour ne jamais fausser le produit final.",
+          "resultat_markdown": "`int resultat = 1;`"
+        },
+        {
+          "numero": 2,
+          "action": "Répéter tant que n n'a pas atteint le cas de base",
+          "justification": "La boucle doit s'arrêter exactement quand la version récursive se serait arrêtée, c'est-à-dire quand n atteint 0.",
+          "resultat_markdown": "`while (n > 0) { ... }`"
+        },
+        {
+          "numero": 3,
+          "action": "À l'intérieur de la boucle, reproduire l'effet de chaque appel récursif",
+          "justification": "Multiplier resultat par x seulement si n est impair (comme la branche impaire de la récursion), puis mettre x au carré et diviser n par 2, dans cet ordre précis.",
+          "resultat_markdown": "`if (n % 2 != 0) { resultat = resultat * x; } x = x * x; n = n / 2;`"
+        }
+      ],
+      "conclusion_markdown": "Cette version itérative produit exactement le même résultat que la version récursive pour toute paire (x, n), tout en n'utilisant qu'un espace mémoire constant, sans empiler d'appels de fonction."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Mettre à jour x et n avant de tester s'il faut multiplier resultat par l'ancienne valeur de x.",
+          "pourquoi_faux": "Si x est déjà mis au carré avant le test, resultat se retrouve multiplié par x² au lieu de x sur la branche impaire, ce qui fausse tout le calcul final.",
+          "correction_markdown": "Respecter strictement l'ordre des trois instructions à l'intérieur de la boucle : d'abord tester et éventuellement multiplier resultat, ENSUITE mettre x au carré, ENFIN diviser n."
+        },
+        {
+          "erreur_markdown": "Utiliser deux variables n distinctes en pensant reproduire les deux branches (paire/impaire) de la récursion par deux chemins séparés dans la boucle.",
+          "pourquoi_faux": "La division entière `n/2` donne le même résultat que `(n-1)/2` lorsque n est impair (ex. 5/2 = 2 et (5-1)/2 = 2 en C), ce qui permet d'unifier les deux branches en une seule instruction `n = n/2`, sans distinction de cas pour cette mise à jour précise.",
+          "correction_markdown": "Vérifier, avant de compliquer la boucle, si les deux branches de la récursion partagent en réalité la même mise à jour pour un paramètre donné - ici, c'est le cas pour n, ce qui simplifie la boucle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Réécrire sous forme itérative la fonction factorielle récursive `fact(n) = si n==0 alors 1 sinon n*fact(n-1)`.",
+          "solution_markdown": "```c\nint factIteratif(int n) {\n    int resultat = 1;\n    while (n > 0) {\n        resultat = resultat * n;\n        n = n - 1;\n    }\n    return resultat;\n}\n```\nresultat accumule le produit, initialisé à 1 (élément neutre de la multiplication), et n décroît de 1 à chaque tour jusqu'à atteindre 0, comme dans la version récursive."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réécrire sous forme itérative une fonction récursive `somme(n) = si n==0 alors 0 sinon n+somme(n-1)` qui calcule 1+2+...+n.",
+          "solution_markdown": "```c\nint sommeIterative(int n) {\n    int resultat = 0;\n    while (n > 0) {\n        resultat = resultat + n;\n        n = n - 1;\n    }\n    return resultat;\n}\n```\nresultat démarre à 0 (élément neutre de l'addition, comme le cas de base `return 0`), et accumule chaque valeur de n avant sa décrémentation."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Certaines récursions, dites terminales (où l'appel récursif est la toute dernière opération effectuée, sans aucun calcul après son retour), se transforment en boucle de façon particulièrement directe. La fonction calcul(x,n) de l'exercice est-elle terminale sur ses deux branches ? Justifier, et expliquer le lien avec la facilité de sa transformation en boucle.",
+          "solution_markdown": "Sur la branche paire (`return calcul(x*x, n/2);`), l'appel récursif est bien la toute dernière opération : rien n'est fait après son retour, c'est une récursion terminale. Sur la branche impaire en revanche (`return x*calcul(x*x,(n-1)/2);`), une multiplication par x est encore effectuée APRÈS le retour de l'appel récursif : ce n'est pas une récursion terminale au sens strict. Le programme reste malgré tout facile à transformer en boucle, car ce calcul supplémentaire (la multiplication par x) peut être reporté dans une variable d'accumulation externe (`resultat`) mise à jour AVANT l'itération suivante plutôt qu'après un retour d'appel : c'est exactement la technique utilisée dans le cours, qui transforme une récursion non strictement terminale en boucle en faisant porter l'accumulation par une variable séparée plutôt que par la pile d'appels."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Transformer une récursion en boucle revient à faire évoluer, à chaque itération, les mêmes paramètres que ceux transmis à l'appel récursif.",
+        "Une variable d'accumulation initialisée à l'élément neutre (0 pour une somme, 1 pour un produit) remplace ce que la récursion multipliait ou ajoutait au retour de chaque appel.",
+        "L'ordre des instructions à l'intérieur de la boucle doit respecter scrupuleusement l'ordre logique de la version récursive.",
+        "Une version itérative n'empile aucun appel de fonction : elle évite tout risque de dépassement de pile sur une entrée n très grande, contrairement à la version récursive."
+      ]
+    }
+  ]
+}

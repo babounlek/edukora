@@ -1,0 +1,155 @@
+{
+  "cours_id": "cours-la-structure-alternative-en-algorithmique-3e",
+  "meta": {
+    "titre": "La structure alternative en algorithmique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Initiation à l'algorithmique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "structure de contrôle",
+      "structure alternative",
+      "Si Alors Sinon",
+      "condition",
+      "booléen",
+      "structure séquentielle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2026-cameroun",
+    "epreuve_titre": "BEPC Cameroun - Épreuve théorique d'informatique - Session 2026",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bepc-informatique-2026-cameroun-ex4-q2-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-informatique-2026-cameroun-ex4"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme qui exécute toujours les mêmes instructions dans le même ordre ne sait rien décider. Or déterminer si un candidat est admis ou recalé suppose précisément de choisir entre deux chemins selon la moyenne obtenue. La structure alternative est le mécanisme qui donne cette capacité de décision, et c'est le premier vrai saut conceptuel de l'algorithmique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et une instruction",
+        "Savoir comparer deux nombres et utiliser les symboles $<$, $>$, $\\leq$, $\\geq$, $=$",
+        "Savoir qu'une comparaison n'a que deux résultats possibles : vrai ou faux"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois structures de contrôle et l'alternative",
+      "contenu_markdown": "**Les trois familles à connaître**\n\nUne structure de contrôle définit l'ordre dans lequel les instructions sont exécutées. Le programme de 3e en retient trois, et trois seulement.\n\n| Structure | Ce qu'elle fait | Mots-clés qui la signalent |\n|---|---|---|\n| Séquentielle | exécute les instructions l'une après l'autre | aucun mot-clé particulier |\n| Alternative (conditionnelle) | choisit entre deux chemins selon une condition | `Si`, `Alors`, `Sinon`, `Finsi` |\n| Répétitive (itérative) | répète des instructions plusieurs fois | `Pour`, `Tant que`, `Répéter` |\n\n> Pour identifier la structure d'un algorithme, on ne raisonne pas sur son sens : on cherche les mots-clés. Ce sont eux, et eux seuls, qui la désignent.\n\n**La structure alternative complète**\n\n```\nSi (condition) alors\n    instructions exécutées si la condition est vraie\nSinon\n    instructions exécutées si la condition est fausse\nFinsi\n```\n\nSon fonctionnement tient en trois temps :\n\n1. la condition est évaluée **une seule fois** et donne un résultat booléen, vrai ou faux ;\n2. si elle est vraie, seul le bloc situé après `alors` s'exécute ;\n3. si elle est fausse, seul le bloc situé après `Sinon` s'exécute.\n\n> Les deux blocs ne peuvent jamais s'exécuter ensemble. C'est ce caractère exclusif qui définit l'alternative.\n\n**La structure alternative réduite**\n\nQuand rien n'est prévu dans le cas contraire, on omet le `Sinon` :\n\n```\nSi (condition) alors\n    instructions\nFinsi\n```\n\nPréciser « complète » ou « réduite » dans une réponse d'examen est un détail de vocabulaire que les correcteurs remarquent.\n\n**Écrire correctement une condition**\n\nUne condition est une comparaison, construite avec un opérateur de comparaison :\n\n| Opérateur | Signification |\n|---|---|\n| `=` | égal à |\n| `<>` ou `≠` | différent de |\n| `<` , `>` | strictement inférieur, strictement supérieur |\n| `<=` , `>=` | inférieur ou égal, supérieur ou égal |\n\nAttention à la frontière : `Moyenne >= 10` admet le candidat qui a exactement 10, alors que `Moyenne > 10` le recale.",
+      "formule_principale": "Si (condition) alors ... Sinon ... Finsi",
+      "variantes": [
+        {
+          "nom": "Alternative imbriquée pour plus de deux cas",
+          "quand_utiliser": "Quand la décision comporte trois issues ou davantage, par exemple attribuer une mention",
+          "contenu_markdown": "Une alternative ne distingue que deux cas. Pour en traiter trois, on place une seconde alternative à l'intérieur du `Sinon` de la première :\n\n```\nSi (Moyenne >= 14) alors\n    Ecrire(\"Mention Bien\");\nSinon\n    Si (Moyenne >= 12) alors\n        Ecrire(\"Mention Assez Bien\");\n    Sinon\n        Ecrire(\"Passable ou ajourne\");\n    Finsi\nFinsi\n```\n\nRègle de sécurité : chaque `Si` ouvert doit avoir son `Finsi`. Compte-les avant de rendre ta copie, ils doivent être en nombre égal. Ordonne aussi les conditions de la plus exigeante à la moins exigeante, sinon la première condition satisfaite masque toutes les suivantes."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Question tirée de l'épreuve du BEPC 2026 : « Identifier la structure de contrôle utilisée dans cet algorithme », l'algorithme `Decision` comportant les lignes `Si(Moyenne>=10) alors`, `Ecrire(\"Admis au BEPC\");`, `Sinon`, `Ecrire(\"Recalé au BEPC\");`, `Finsi`. (1pt)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Balayer l'algorithme à la recherche des mots-clés de structure",
+          "justification": "L'identification repose sur les mots-clés, pas sur le sens de l'algorithme. Il faut donc les relever explicitement avant toute interprétation.",
+          "resultat_markdown": "Mots-clés relevés : `Si`, `alors`, `Sinon`, `Finsi`."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier l'absence de mots-clés de répétition",
+          "justification": "Écarter explicitement la structure répétitive évite de confondre un algorithme qui décide avec un algorithme qui recommence.",
+          "resultat_markdown": "Ni `Pour`, ni `Tant que`, ni `Répéter` n'apparaissent : la structure répétitive est écartée."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la famille de structure",
+          "justification": "Le quadruplet `Si / alors / Sinon / Finsi` ne désigne qu'une seule structure au programme.",
+          "resultat_markdown": "La structure utilisée est la structure alternative, ou structure conditionnelle."
+        },
+        {
+          "numero": 4,
+          "action": "Préciser qu'elle est complète",
+          "justification": "La présence du `Sinon` distingue l'alternative complète de l'alternative réduite. Ce mot supplémentaire est valorisé.",
+          "resultat_markdown": "Le `Sinon` étant présent, il s'agit de la structure alternative **complète** : `Si ... Alors ... Sinon ... Finsi`."
+        },
+        {
+          "numero": 5,
+          "action": "Justifier par le fonctionnement observé",
+          "justification": "Une justification en deux lignes transforme une réponse par reconnaissance en une réponse démontrée.",
+          "resultat_markdown": "La condition `Moyenne >= 10` est évaluée une fois : si elle est vraie, seul « Admis au BEPC » s'affiche ; si elle est fausse, seul « Recalé au BEPC » s'affiche. Les deux messages ne peuvent jamais apparaître ensemble."
+        }
+      ],
+      "conclusion_markdown": "L'algorithme utilise la structure alternative complète. La réponse a été obtenue par relevé des mots-clés, confirmée par l'exclusivité des deux affichages."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « la structure séquentielle » parce que les instructions se suivent de haut en bas.",
+          "pourquoi_faux": "La séquence est présente dans absolument tout algorithme : elle n'a donc aucune valeur discriminante. La question porte sur la structure remarquable introduite dans cet algorithme, celle qui fait choisir entre deux chemins.",
+          "correction_markdown": "Chercher les mots-clés `Si`, `Pour`, `Tant que`. Si l'un d'eux apparaît, c'est lui la réponse ; la séquence n'est jamais la bonne réponse à une question d'identification."
+        },
+        {
+          "erreur_markdown": "Répondre « la structure répétitive » parce que l'algorithme sert à traiter tous les candidats.",
+          "pourquoi_faux": "L'algorithme présenté traite un seul candidat, une seule fois. Le fait qu'on l'exécute plusieurs fois de suite dans la réalité ne crée aucune boucle dans le texte de l'algorithme.",
+          "correction_markdown": "Ne juger que sur ce qui est écrit : sans `Pour`, `Tant que` ni `Répéter`, il n'y a pas de répétition."
+        },
+        {
+          "erreur_markdown": "Écrire une condition avec le symbole d'affectation, par exemple `Si (Moyenne ← 10) alors`.",
+          "pourquoi_faux": "La flèche range une valeur dans une variable, elle ne compare rien. Écrite dans une condition, elle détruirait la moyenne saisie et l'algorithme déclarerait tout le monde admis.",
+          "correction_markdown": "Réserver la flèche `←` à l'affectation et employer `=`, `<`, `>`, `<=`, `>=` dans les conditions."
+        },
+        {
+          "erreur_markdown": "Omettre le `Finsi` en croyant que le `Sinon` ferme la structure.",
+          "pourquoi_faux": "Le `Sinon` ouvre le second bloc, il ne referme pas l'alternative. Sans `Finsi`, la machine ne sait pas où s'arrête le bloc conditionnel, et toutes les instructions suivantes se retrouvent capturées à l'intérieur.",
+          "correction_markdown": "Compter les `Si` et les `Finsi` avant de rendre : leur nombre doit être identique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On exécute l'algorithme `Decision` du sujet avec successivement les moyennes 15 ; 10 ; 9,5. Indiquer, pour chaque cas, le message affiché et justifier.",
+          "solution_markdown": "L'algorithme évalue la condition `Moyenne >= 10`, qui se lit « Moyenne est supérieure ou égale à 10 ».\n\n**Cas 1 : Moyenne = 15**\n\nOn teste : $15 \\geq 10$ ? Oui, la condition est **vraie**.\n\nSeul le bloc situé après `alors` s'exécute. Message affiché : **Admis au BEPC**.\n\n**Cas 2 : Moyenne = 10**\n\nOn teste : $10 \\geq 10$ ? Oui, car l'opérateur `>=` inclut le cas d'égalité. La condition est **vraie**.\n\nMessage affiché : **Admis au BEPC**.\n\nCe cas est le plus instructif : avec l'opérateur `>` à la place de `>=`, la condition aurait été fausse et le candidat aurait été déclaré recalé avec exactement la moyenne. Le choix de l'opérateur décide du sort du candidat qui a pile 10.\n\n**Cas 3 : Moyenne = 9,5**\n\nOn teste : $9{,}5 \\geq 10$ ? Non, la condition est **fausse**.\n\nSeul le bloc situé après `Sinon` s'exécute. Message affiché : **Recalé au BEPC**.\n\n**Observation générale**\n\nDans les trois cas, un seul message s'affiche. C'est la marque de l'alternative : les deux blocs s'excluent mutuellement."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un algorithme qui demande l'âge d'une personne et affiche « Majeur » si l'âge est supérieur ou égal à 21 ans, « Mineur » sinon. Préciser le type de la variable utilisée.",
+          "solution_markdown": "**Choix du type**\n\nUn âge exprimé en années révolues est un nombre entier : on ne dit pas qu'une personne a 20,5 ans dans un document administratif. Le type retenu est donc `Entier`.\n\n**Algorithme**\n\n```\nAlgorithme Majorite\n    Variable Age : Entier ;\nDebut\n    Ecrire(\"Veuillez saisir votre age :\");\n    Lire(Age);\n    Si (Age >= 21) alors\n        Ecrire(\"Majeur\");\n    Sinon\n        Ecrire(\"Mineur\");\n    Finsi\nFin\n```\n\n**Justification de chaque partie**\n\n- La déclaration réserve un emplacement mémoire nommé `Age`, de type entier.\n- Le premier `Ecrire` affiche une invite : sans elle, l'utilisateur verrait un curseur clignotant sans savoir quoi saisir.\n- `Lire(Age)` range la valeur saisie dans la variable.\n- La condition `Age >= 21` emploie `>=` et non `>`, car une personne de 21 ans tout juste est majeure au Cameroun. Avec `>`, elle serait déclarée mineure.\n- Le `Finsi` referme la structure ; sans lui, l'algorithme serait syntaxiquement incorrect.\n\n**Vérification sur trois jeux d'essai**\n\n| Âge saisi | Condition $Age \\geq 21$ | Message |\n|---|---|---|\n| 25 | vraie | Majeur |\n| 21 | vraie | Majeur |\n| 17 | fausse | Mineur |\n\nLes trois cas, dont le cas limite 21, donnent le résultat attendu."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Modifier l'algorithme `Decision` pour qu'il affiche la mention obtenue : « Excellent » à partir de 16, « Bien » à partir de 14, « Assez Bien » à partir de 12, « Passable » à partir de 10, et « Ajourné » en dessous. Expliquer pourquoi l'ordre des conditions est déterminant.",
+          "solution_markdown": "**Algorithme**\n\n```\nAlgorithme Mention\n    Variable Moyenne : Reel ;\nDebut\n    Ecrire(\"Veuillez saisir la moyenne\");\n    Lire(Moyenne);\n    Si (Moyenne >= 16) alors\n        Ecrire(\"Excellent\");\n    Sinon\n        Si (Moyenne >= 14) alors\n            Ecrire(\"Bien\");\n        Sinon\n            Si (Moyenne >= 12) alors\n                Ecrire(\"Assez Bien\");\n            Sinon\n                Si (Moyenne >= 10) alors\n                    Ecrire(\"Passable\");\n                Sinon\n                    Ecrire(\"Ajourne\");\n                Finsi\n            Finsi\n        Finsi\n    Finsi\nFin\n```\n\n**Contrôle de syntaxe**\n\nQuatre `Si` sont ouverts, quatre `Finsi` les referment. Chaque `Sinon` est suivi soit d'une instruction, soit d'un nouveau `Si`. La structure est équilibrée.\n\n**Pourquoi l'ordre des conditions est déterminant**\n\nLes conditions sont testées de haut en bas et la première qui se révèle vraie déclenche son bloc, après quoi toutes les autres sont ignorées.\n\nExaminons une moyenne de 17 avec l'ordre correct : la première condition $17 \\geq 16$ est vraie, « Excellent » s'affiche, et l'exécution saute directement au `Fin`.\n\nExaminons maintenant le même 17 si l'on avait placé la condition la moins exigeante en premier :\n\n```\nSi (Moyenne >= 10) alors\n    Ecrire(\"Passable\");\nSinon\n    ...\n```\n\nLa condition $17 \\geq 10$ est vraie, donc « Passable » s'affiche et toutes les mentions supérieures deviennent inatteignables. Aucun candidat n'obtiendrait jamais « Excellent », « Bien » ni « Assez Bien ».\n\n**Règle à retenir**\n\nDans une cascade d'alternatives imbriquées, les conditions doivent être ordonnées de la plus restrictive à la plus large. Autrement, la condition la plus large capture tous les cas et masque celles qui la suivent.\n\n**Vérification**\n\n| Moyenne | Première condition vraie | Mention affichée |\n|---|---|---|\n| 17 | $\\geq 16$ | Excellent |\n| 14,5 | $\\geq 14$ | Bien |\n| 12 | $\\geq 12$ | Assez Bien |\n| 10 | $\\geq 10$ | Passable |\n| 8 | aucune | Ajourné |\n\nChaque intervalle produit bien la mention attendue, y compris aux bornes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois structures de contrôle seulement : séquentielle, alternative, répétitive. Identifie-les par leurs mots-clés, jamais par le sens de l'algorithme.",
+        "`Si`, `Alors`, `Sinon`, `Finsi` signalent l'alternative. `Pour`, `Tant que`, `Répéter` signalent la répétition.",
+        "Ne réponds jamais « séquentielle » à une question d'identification : la séquence est présente partout, elle ne distingue rien.",
+        "Dans une alternative, un seul des deux blocs s'exécute. Jamais les deux, jamais aucun.",
+        "Précise « complète » quand le `Sinon` est présent, « réduite » quand il est absent.",
+        "L'opérateur décide du cas limite : `>= 10` admet celui qui a exactement 10, `> 10` le recale.",
+        "Autant de `Finsi` que de `Si` : compte-les avant de rendre ta copie.",
+        "Au BEPC, l'identification de la structure de contrôle est une question à 1 point qui se traite en trente secondes. Ne la laisse jamais passer."
+      ]
+    }
+  ]
+}

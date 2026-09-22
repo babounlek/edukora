@@ -1,0 +1,99 @@
+{
+  "cours_id": "cours-boucle-for-sommation-php-dres-jan2024",
+  "meta": {
+    "titre": "Ecrire une boucle for de sommation en PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "PHP - boucles",
+    "duree_estimee_min": 12,
+    "tags": [
+      "PHP",
+      "boucle for",
+      "sommation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 4,
+    "rappel_id": "rdm-dres2024-ex4-qa-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer une somme sur un nombre connu de valeurs (1 a 20, par exemple) est le cas d'usage le plus naturel de la boucle for : elle regroupe tout ce dont on a besoin en une seule ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre la notion de variable en PHP",
+        "Savoir ce qu'est un accumulateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Structure d'une boucle for de sommation",
+      "contenu_markdown": "La boucle `for ($i = debut; $i <= fin; $i++) { $somme += $i; }` regroupe en une seule ligne trois elements : l'initialisation du compteur (`$i = debut`), la condition d'arret (`$i <= fin`), et le pas d'incrementation (`$i++`). Avant la boucle, un accumulateur (`$somme`) est initialise a 0 ; a chaque iteration, il est augmente de la valeur courante du compteur. Le for est le choix naturel des que le nombre d'iterations est connu a l'avance."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Ecrire une boucle for qui calcule la somme des nombres pairs de 2 a 10.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser l'accumulateur",
+          "justification": "La somme doit partir de 0 avant tout cumul.",
+          "resultat_markdown": "`$somme = 0;`"
+        },
+        {
+          "numero": 2,
+          "action": "Ecrire l'en-tete de la boucle",
+          "justification": "Le compteur part de 2, s'arrete a 10, et avance de 2 en 2 pour ne visiter que les pairs.",
+          "resultat_markdown": "`for ($i = 2; $i <= 10; $i += 2) {`"
+        },
+        {
+          "numero": 3,
+          "action": "Cumuler dans le corps de la boucle",
+          "justification": "Chaque valeur de i doit s'ajouter a la somme.",
+          "resultat_markdown": "`$somme += $i; }`"
+        }
+      ],
+      "conclusion_markdown": "`$somme` vaut alors 2+4+6+8+10 = 30 a la sortie de la boucle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Initialiser l'accumulateur `$somme` a l'interieur de la boucle plutot qu'avant.",
+          "pourquoi_faux": "Une initialisation a l'interieur de la boucle remettrait `$somme` a 0 a chaque iteration, empechant tout cumul.",
+          "correction_markdown": "Placer `$somme = 0;` avant le `for`, puis cumuler avec `$somme += $i;` dans le corps de la boucle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Ecrire une boucle for qui calcule la somme des 10 premiers entiers naturels.",
+          "solution_markdown": "```php\n$somme = 0;\nfor ($i = 1; $i <= 10; $i++) {\n    $somme += $i;\n}\n```"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La boucle for regroupe initialisation, condition et pas en une seule ligne.",
+        "L'accumulateur doit toujours etre initialise avant la boucle, jamais dedans.",
+        "Le for convient particulierement quand le nombre d'iterations est connu a l'avance."
+      ]
+    }
+  ]
+}

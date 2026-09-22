@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-portee-des-variables-en-langage-c-premiere-ti",
+  "meta": {
+    "titre": "Portée des variables en langage C (globale vs locale)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Variables et types en langage C",
+    "duree_estimee_min": 15,
+    "tags": [
+      "variable globale",
+      "variable locale",
+      "portée",
+      "langage C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex1-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux fonctions différentes de ton programme peuvent-elles se \"voir\" et se transmettre des informations sans passer par des paramètres ? La réponse dépend d'un seul choix fait au moment où tu déclares chaque variable : où, exactement, tu écris cette déclaration. Ce choix - à l'intérieur ou à l'extérieur d'une fonction - décide si la variable reste privée à un seul morceau de code ou devient accessible à tout le programme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer une variable en C (`int x;`, `char c;`...)",
+        "Savoir ce qu'est une fonction et où se situent ses accolades `{ }`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Portée (globale) et durée de vie (locale) d'une variable",
+      "contenu_markdown": "Une **variable globale** est déclarée en dehors de toute fonction (en général en tête du fichier). Elle est visible par toutes les fonctions du programme et existe pendant toute la durée d'exécution de celui-ci.\n\nUne **variable locale** est déclarée à l'intérieur d'une fonction ou d'un bloc `{ }`. Elle n'existe et n'est visible que le temps de l'exécution de ce bloc : elle est créée à son entrée et détruite à sa sortie.",
+      "formule_principale": "Déclarée hors fonction = globale ; déclarée dans une fonction ou un bloc = locale",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le programme suivant, indiquer la portée de chaque variable et dire si `compteur` est accessible depuis `afficher()` :\n```c\n#include <stdio.h>\nint compteur = 0;\n\nvoid incrementer() {\n    compteur = compteur + 1;\n}\n\nvoid afficher() {\n    int message = compteur;\n    printf(\"%d\", message);\n}\n\nint main() {\n    incrementer();\n    afficher();\n    return 0;\n}\n```",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer où chaque variable est déclarée",
+          "justification": "La portée dépend uniquement du lieu de déclaration, jamais de l'endroit où la variable est utilisée",
+          "resultat_markdown": "`compteur` est déclarée avant toute fonction (ligne 2) ; `message` est déclarée à l'intérieur de `afficher()`."
+        },
+        {
+          "numero": 2,
+          "action": "Classer chaque variable",
+          "justification": "Hors fonction = globale, dans une fonction = locale",
+          "resultat_markdown": "`compteur` est **globale** ; `message` est **locale** à `afficher()`."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier l'accessibilité de `compteur` depuis `afficher()`",
+          "justification": "Une variable globale est visible par toutes les fonctions du fichier, y compris celles définies après elle",
+          "resultat_markdown": "Oui : `afficher()` peut lire `compteur` directement, comme le fait la ligne `int message = compteur;`."
+        }
+      ],
+      "conclusion_markdown": "`compteur` est une variable globale, modifiable par `incrementer()` et lisible par `afficher()` sans qu'aucun paramètre ne soit nécessaire pour la faire transiter entre les deux fonctions ; `message`, elle, reste strictement locale à `afficher()` et n'existe plus une fois cette fonction terminée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser qu'une variable déclarée tout en haut de `main()` est globale",
+          "pourquoi_faux": "`main()` est une fonction comme une autre : toute variable déclarée à l'intérieur de ses accolades, même en première ligne, reste locale à `main()` et n'est pas accessible depuis une autre fonction.",
+          "correction_markdown": "Pour rendre une variable réellement globale, il faut la déclarer avant `main()`, en dehors de toute paire d'accolades de fonction."
+        },
+        {
+          "erreur_markdown": "Croire qu'une variable locale garde sa valeur d'un appel de fonction à l'autre",
+          "pourquoi_faux": "Une variable locale est détruite à chaque sortie de son bloc : au prochain appel de la fonction, elle est recréée avec une valeur indéterminée (ou réinitialisée si elle a une valeur par défaut), sans mémoire de son ancienne valeur.",
+          "correction_markdown": "Si une valeur doit être conservée d'un appel à l'autre, il faut soit la rendre globale, soit la déclarer `static` (une notion plus avancée que la simple portée locale/globale)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `int total; void f() { int x; }`, indiquer la portée de `total` et de `x`.",
+          "solution_markdown": "`total` est déclarée hors de toute fonction : elle est **globale**. `x` est déclarée à l'intérieur de `f()` : elle est **locale** à `f()`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux fonctions `depot()` et `retrait()` doivent toutes deux modifier une même variable `solde`, sans qu'aucune ne soit appelée par l'autre. Comment déclarer `solde` pour que ce soit possible, et pourquoi ?",
+          "solution_markdown": "Il faut déclarer `solde` en tant que **variable globale** (hors de toute fonction, par exemple en tête du fichier avec `int solde = 0;`). Une variable locale à `depot()` ne serait pas visible depuis `retrait()`, et réciproquement : seule une variable globale peut être partagée par deux fonctions indépendantes sans passer par des paramètres."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Que va afficher ce programme, et pourquoi ?\n```c\n#include <stdio.h>\nint x = 10;\n\nvoid f() {\n    int x = 20;\n    printf(\"%d\\n\", x);\n}\n\nint main() {\n    f();\n    printf(\"%d\\n\", x);\n    return 0;\n}\n```",
+          "solution_markdown": "Le programme affiche successivement `20` puis `10`.\n\nIl existe ici DEUX variables différentes nommées `x` : la variable globale `x` (valeur 10, déclarée ligne 2) et une variable locale `x` déclarée à l'intérieur de `f()` (valeur 20). Quand une variable locale porte le même nom qu'une variable globale, la variable locale masque la globale à l'intérieur de son bloc : `printf(\"%d\\n\", x);` dans `f()` utilise donc la variable locale et affiche `20`. Une fois `f()` terminée, la variable locale `x` est détruite ; le `printf` de `main()` retrouve alors la variable globale `x`, toujours égale à `10`, et l'affiche."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une variable globale se déclare hors de toute fonction ; elle vit pendant toute l'exécution du programme et est visible de partout.",
+        "Une variable locale se déclare dans une fonction ou un bloc ; elle n'existe que le temps de ce bloc et n'est visible que dans ce bloc.",
+        "Une variable locale portant le même nom qu'une variable globale la masque temporairement dans son propre bloc, sans jamais modifier la globale.",
+        "Pour partager une donnée entre deux fonctions indépendantes (qui ne s'appellent pas l'une l'autre), une variable globale est le moyen le plus direct.",
+        "Au BEPC/Probatoire d'Informatique, cette distinction est régulièrement testée sous forme de question de cours directe (\"donner la différence entre...\") ou en analysant le comportement d'un programme donné."
+      ]
+    }
+  ]
+}

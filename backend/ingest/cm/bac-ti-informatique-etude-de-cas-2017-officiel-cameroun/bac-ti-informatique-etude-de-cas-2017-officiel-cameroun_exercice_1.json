@@ -1,0 +1,214 @@
+{
+  "epreuve_source": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+  "pays": "cm",
+  "matiere": "Systèmes d'Information",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2017,
+  "duree_epreuve": "3h",
+  "coefficient": "4",
+  "numero_exercice": "1",
+  "introduction_markdown": "**Aucun document en dehors de ceux remis aux candidats par les examinateurs n'est autorisé.**",
+  "points": "08",
+  "groupes": [],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 1**\n\n**PREMIÈRE PARTIE : LES BASES DU LANGAGE PHP (08 points)**\n\nOn vous demande de répondre aux questions ci-après à partir de vos compétences en PHP.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Parmi les langages suivants, lesquels permettent de travailler avec des bases de données ?\n\na) HTML ; b) PHP ; c) JAVA ; d) CSS *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn langage permet de « travailler avec des bases de données » lorsqu'il dispose d'instructions de traitement capables d'ouvrir une connexion, d'envoyer des requêtes et de récupérer des résultats depuis un serveur de base de données ; un langage de balisage ou de mise en forme, qui ne fait que décrire la structure ou l'apparence d'une page, n'a aucune capacité de ce type.\n\nOn examine chacun des quatre langages proposés.\n\n**a) HTML** est un langage de balisage : il décrit la structure d'une page web (titres, paragraphes, tableaux) mais ne contient aucune instruction de traitement. Il ne peut ni ouvrir une connexion à une base de données ni exécuter une requête. HTML est donc à exclure.\n\n**b) PHP** est un langage de script côté serveur, doté d'un jeu d'instructions complet (variables, boucles, fonctions) et d'extensions dédiées comme `mysqli` ou `PDO` qui permettent de se connecter à un serveur MySQL, d'envoyer des requêtes SQL et de récupérer les résultats. PHP est donc à retenir.\n\n**c) JAVA** est un langage de programmation généraliste, qui dispose de l'API JDBC (Java DataBase Connectivity) pour dialoguer avec pratiquement tous les systèmes de gestion de bases de données. JAVA est donc également à retenir.\n\n**d) CSS** est un langage de mise en forme : il définit uniquement l'apparence visuelle des éléments HTML (couleurs, polices, marges). Comme HTML, il ne contient aucune instruction de traitement et ne peut pas interagir avec une base de données. CSS est donc à exclure.\n\nLes langages qui permettent de travailler avec une base de données sont donc **b) PHP** et **c) JAVA**.\n\n### Piège à éviter\nNe confonds pas « afficher des données à l'écran » et « travailler avec une base de données ». HTML peut très bien afficher un tableau de résultats qu'on lui a fourni tout fait, mais il n'a lui-même exécuté aucune requête : c'est toujours un langage de traitement (PHP, Java, Python...) qui a interrogé la base en amont.\n\n### Conseil\nFace à ce type de question, pose-toi une seule question par langage : « ce langage contient-il des instructions de traitement (variables, conditions, boucles, fonctions) ou se contente-t-il de décrire une structure ou une apparence ? » Un langage de balisage/mise en forme (HTML, CSS, XML) est toujours à exclure ; un langage de programmation ou de script (PHP, Java, Python, C) est toujours à retenir.",
+      "themes": [
+        "Langages de programmation web",
+        "PHP",
+        "Bases de données",
+        "HTML et CSS"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q1-1",
+          "competence": "Langages web côté serveur et interaction avec une base de données",
+          "contenu_markdown": "Un langage permet de « travailler avec des bases de données » lorsqu'il dispose d'instructions de traitement capables d'ouvrir une connexion, d'envoyer des requêtes et de récupérer des résultats depuis un serveur de base de données ; un langage de balisage ou de mise en forme, qui ne fait que décrire la structure ou l'apparence d'une page, n'a aucune capacité de ce type.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Écrire un petit code PHP permettant d'afficher la phrase :\n\n« J'aime la **Programmation** en PHP. »\n\n*NB : Remarquer que le mot « Programmation » est mis en gras et souligné. [1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'instruction `echo` affiche à l'écran le texte qui lui est passé entre guillemets ; comme cette sortie est interprétée par le navigateur, on peut insérer directement des balises HTML de mise en forme (`<b>` pour le gras, `<u>` pour le souligné) à l'intérieur de la chaîne, à condition de bien les fermer dans l'ordre inverse de leur ouverture.\n\nLe mot « Programmation » doit apparaître à la fois en gras et souligné : il faut donc l'entourer d'une balise `<b>...</b>` et d'une balise `<u>...</u>` imbriquées.\n\n```php\n<?php\n    echo \"J'aime la <b><u>Programmation</u></b> en PHP.\";\n?>\n```\n\nLe script s'ouvre par la balise `<?php` et se termine par `?>`. L'instruction `echo` est suivie de la chaîne à afficher, délimitée par des guillemets doubles. À l'intérieur de cette chaîne, `<b><u>Programmation</u></u>` insère les deux balises de mise en forme autour du seul mot concerné, fermées dans l'ordre inverse de leur ouverture (`</u>` puis `</b>`). L'instruction se termine par un point-virgule.\n\nÀ l'exécution, le navigateur affiche : J'aime la **Programmation** en PHP (avec le mot « Programmation » en gras et souligné).\n\n### Piège à éviter\nOublier le point-virgule final ou refermer les balises dans le mauvais ordre (`<b><u>Programmation</b></u>`) : le navigateur affiche alors un rendu incohérent, ou dans certains cas plus stricts (XHTML) provoque une erreur de structure. Ferme toujours tes balises comme des parenthèses imbriquées : la dernière ouverte est la première fermée.\n\n### Conseil\nTu peux utiliser indifféremment `<b>` ou `<strong>` pour le gras : les deux sont acceptés, `<strong>` porte en plus un sens sémantique d'importance. Vérifie toujours, avant de rendre ta copie, que chaque balise ouverte a bien sa balise fermante correspondante.",
+      "themes": [
+        "PHP",
+        "Instruction echo",
+        "Balises HTML de mise en forme"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q2-1",
+          "competence": "Affichage de texte formaté avec echo en PHP",
+          "contenu_markdown": "L'instruction `echo` affiche à l'écran le texte qui lui est passé entre guillemets ; comme cette sortie est interprétée par le navigateur, on peut insérer directement des balises HTML de mise en forme (`<b>` pour le gras, `<u>` pour le souligné) à l'intérieur de la chaîne, à condition de bien les fermer dans l'ordre inverse de leur ouverture.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Les variables et les opérateurs ont un véritable intérêt dans la programmation PHP. Quel est, à votre avis, le résultat des instructions ci-dessous ? *NB : Reproduire et compléter le tableau ci-dessous. [2 pts]*\n\n| Instructions | Résultat (pour x valant 20 avant toute opération) |\n|---|---|\n| `$x +3;` | |\n| `$x=$x+2;` | |\n| `$x++;` | |\n| `$x+=$x;` | |\n| `$x==5;` | |\n| `$x--;` | |\n| `$x-=$x+4;` | |\n| `$x%3;` | |",
+      "corrige_markdown": "### Rappel de méthode\nUne instruction PHP ne modifie la variable `$x` que si elle contient un opérateur d'affectation (`=`, `+=`, `-=`, `++`, `--`) ; une instruction qui ne fait qu'évaluer une expression sans l'affecter à une variable (une simple opération arithmétique livrée seule, ou un test de comparaison comme `==`) est calculée puis immédiatement jetée, sans effet sur l'état de `$x`.\n\nLe tableau s'exécute ligne par ligne, chaque ligne partant de la valeur de `$x` laissée par la ligne précédente. On part de `$x = 20`.\n\n**Ligne 1 : `$x +3;`** : cette ligne est une simple expression (`$x + 3`), calculée puis jamais stockée nulle part faute de signe `=`. La valeur de `$x` reste inchangée : **20**.\n\n**Ligne 2 : `$x=$x+2;`** : ici l'opérateur `=` affecte le résultat à `$x`. On calcule `$x + 2 = 20 + 2 = 22`, puis on l'affecte : `$x` devient **22**.\n\n**Ligne 3 : `$x++;`** : l'opérateur d'incrémentation ajoute 1 à `$x` : `22 + 1 = 23`. `$x` devient **23**.\n\n**Ligne 4 : `$x+=$x;`** : cette écriture équivaut à `$x = $x + $x`, soit `23 + 23 = 46`. `$x` devient **46**.\n\n**Ligne 5 : `$x==5;`** : attention, `==` est un opérateur de comparaison, pas d'affectation : cette ligne se contente de tester si `$x` vaut 5 (ce qui est faux, puisque `$x` vaut 46), et ce résultat booléen n'est affecté à aucune variable. `$x` reste inchangé : **46**.\n\n**Ligne 6 : `$x--;`** : l'opérateur de décrémentation retire 1 à `$x` : `46 - 1 = 45`. `$x` devient **45**.\n\n**Ligne 7 : `$x-=$x+4;`** : cette écriture équivaut à `$x = $x - ($x + 4)`. On évalue d'abord la partie droite avec la valeur courante de `$x` : `$x + 4 = 45 + 4 = 49`. Puis on effectue la soustraction : `45 - 49 = -4`. `$x` devient **-4**.\n\n**Ligne 8 : `$x%3;`** : comme aux lignes 1 et 5, il n'y a ici aucune affectation : l'expression `$x % 3` est simplement évaluée (elle vaudrait `-1` en PHP) puis jetée. `$x` reste inchangé : **-4**.\n\n### Piège à éviter\nLe piège de cet exercice est de croire que chaque ligne du tableau modifie forcément `$x`. Trois lignes sur huit (`$x +3;`, `$x==5;`, `$x%3;`) ne comportent aucun opérateur d'affectation : elles calculent une valeur qui ne sert à rien, exactement comme si tu faisais un calcul sur un brouillon sans jamais le noter dans le résultat officiel.\n\n### Conseil\nAvant de remplir un tel tableau, repère d'abord, sur toute la liste, les seules lignes qui contiennent un opérateur d'affectation (`=`, `+=`, `-=`, `++`, `--`) : ce sont les seules susceptibles de faire évoluer la valeur affichée. Sur les autres lignes, recopie simplement la valeur de la ligne précédente.",
+      "themes": [
+        "PHP",
+        "Opérateurs d'affectation",
+        "Expressions et instructions",
+        "Variables"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q3-1",
+          "competence": "Distinguer une expression PHP d'une instruction d'affectation",
+          "contenu_markdown": "Une instruction PHP ne modifie la variable `$x` que si elle contient un opérateur d'affectation (`=`, `+=`, `-=`, `++`, `--`) ; une instruction qui ne fait qu'évaluer une expression sans l'affecter à une variable (une simple opération arithmétique livrée seule, ou un test de comparaison comme `==`) est calculée puis immédiatement jetée, sans effet sur l'état de `$x`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4a",
+      "enonce_markdown": "**4.** Soit le code PHP donné ci-dessous :\n\n```php\n<?php\n    // Des prenoms\n    $prenoms = array (\"RENE\", \"DIDIER\", \"PAUL\", \"ERICK\", \"LAWRENCE\");\n    // utilisation de la boucle FOR\n    for ($numero = 0; $numero < 5; $numero++){\n        echo $prenoms[$numero];\n        echo \"<br />\";\n    }\n?>\n```\n\n**a)** Identifier les variables utilisées dans ce code. Préciser le type de chacune de ces variables. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne variable PHP se reconnaît à son préfixe `$` ; pour déterminer son type, on remonte à la valeur qui lui est affectée au moment de sa création : une liste de valeurs entre `array(...)` donne un tableau, une valeur numérique sans point donne un entier, une valeur numérique avec point donne un flottant, un texte entre guillemets donne une chaîne de caractères.\n\nLe code contient deux variables.\n\n**`$prenoms`** est créée par `$prenoms = array(\"RENE\", \"DIDIER\", \"PAUL\", \"ERICK\", \"LAWRENCE\")` : c'est un **tableau indexé** (type `array`), dont chacun des cinq éléments est une **chaîne de caractères** (type `string`).\n\n**`$numero`** est créée dans l'en-tête de la boucle `for ($numero = 0; ...)` avec la valeur `0` : c'est un **entier** (type `int`), utilisé ici comme compteur de boucle et comme indice pour parcourir `$prenoms`.\n\n### Piège à éviter\nNe pas oublier `$numero` : parce qu'elle sert « seulement » de compteur de boucle, elle est souvent omise alors qu'elle est une variable à part entière, avec son propre type.\n\n### Conseil\nBalaie le code de haut en bas et souligne chaque symbole `$` rencontré : cela garantit de ne laisser passer aucune variable, y compris celles qui n'apparaissent que dans l'en-tête d'une boucle.",
+      "themes": [
+        "PHP",
+        "Variables",
+        "Types de données",
+        "Tableaux indexés"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q4a-1",
+          "competence": "Identifier une variable et son type en PHP",
+          "contenu_markdown": "Une variable PHP se reconnaît à son préfixe `$` ; pour déterminer son type, on remonte à la valeur qui lui est affectée au moment de sa création : une liste de valeurs entre `array(...)` donne un tableau, une valeur numérique sans point donne un entier, une valeur numérique avec point donne un flottant, un texte entre guillemets donne une chaîne de caractères.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4b",
+      "enonce_markdown": "**b)** Donner une esquisse du résultat produit par l'exécution de ce code. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nSimuler une boucle `for` consiste à dérouler à la main ses trois éléments à chaque tour : vérifier la condition, exécuter le corps de la boucle, puis appliquer le pas, jusqu'à ce que la condition devienne fausse.\n\nLa boucle est initialisée à `$numero = 0`, se poursuit tant que `$numero < 5`, et incrémente `$numero` de 1 à chaque tour : elle s'exécute donc pour `$numero` valant successivement 0, 1, 2, 3 et 4, soit 5 tours - exactement le nombre d'éléments du tableau `$prenoms`.\n\nÀ chaque tour, le code affiche `$prenoms[$numero]` suivi d'un retour à la ligne HTML (`<br />`). Le résultat affiché à l'écran est donc :\n\n```\nRENE\nDIDIER\nPAUL\nERICK\nLAWRENCE\n```\n\nchaque prénom apparaissant sur sa propre ligne, dans l'ordre où il a été saisi dans le tableau.\n\n### Piège à éviter\nNe pas confondre l'affichage de `$prenoms[$numero]` (qui montre le contenu de la case du tableau) avec l'affichage de `$numero` (qui montrerait seulement 0, 1, 2, 3, 4) : c'est bien le prénom qui est demandé à l'écran, pas l'indice.\n\n### Conseil\nAvant de conclure, vérifie toujours que le nombre de tours de boucle correspond exactement au nombre d'éléments du tableau parcouru : ici 5 tours pour 5 prénoms, donc aucun élément n'est oublié et aucun indice ne dépasse la taille du tableau.",
+      "themes": [
+        "PHP",
+        "Boucle for",
+        "Tableaux indexés",
+        "Simulation d'exécution"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q4b-1",
+          "competence": "Simuler une boucle for parcourant un tableau indexé en PHP",
+          "contenu_markdown": "Simuler une boucle `for` consiste à dérouler à la main ses trois éléments à chaque tour : vérifier la condition, exécuter le corps de la boucle, puis appliquer le pas, jusqu'à ce que la condition devienne fausse.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4c",
+      "enonce_markdown": "**c)** Réécrire ce code en utilisant la boucle WHILE. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nConvertir une boucle `for ($i = init; condition; pas)` en boucle `while` revient à extraire ses trois éléments constitutifs et à les replacer à trois endroits différents : l'initialisation avant le `while`, la condition dans la parenthèse du `while`, et le pas comme dernière instruction à l'intérieur du bloc.\n\nEn appliquant cette méthode au `for ($numero = 0; $numero < 5; $numero++)` de la question précédente, on obtient :\n\n```php\n<?php\n    // Des prenoms\n    $prenoms = array (\"RENE\", \"DIDIER\", \"PAUL\", \"ERICK\", \"LAWRENCE\");\n    // utilisation de la boucle WHILE\n    $numero = 0;\n    while ($numero < 5){\n        echo $prenoms[$numero];\n        echo \"<br />\";\n        $numero++;\n    }\n?>\n```\n\nL'initialisation `$numero = 0` est placée juste avant le `while`. La condition `$numero < 5` devient la condition du `while`. Le corps de la boucle reprend les deux instructions d'affichage à l'identique. Le pas `$numero++`, qui était implicite dans l'en-tête du `for`, doit impérativement être recopié en toute dernière ligne du bloc `while` : sans lui, `$numero` resterait égal à 0 pour toujours et la boucle ne s'arrêterait jamais.\n\n### Piège à éviter\nL'erreur la plus fréquente est d'oublier l'incrémentation `$numero++;` à l'intérieur du bloc `while` : la condition `$numero < 5` resterait alors indéfiniment vraie, ce qui provoque une boucle infinie qui bloque le programme.\n\n### Conseil\nUne fois ta boucle `while` écrite, relis-la en vérifiant que les trois ingrédients du `for` d'origine (initialisation, condition, pas) sont bien tous les trois présents, chacun à sa place : c'est la garantie qu'aucune boucle infinie ne se cache dans ta réécriture.",
+      "themes": [
+        "PHP",
+        "Boucle while",
+        "Conversion de boucle",
+        "Boucle for"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q4c-1",
+          "competence": "Convertir une boucle for en boucle while en PHP",
+          "contenu_markdown": "Convertir une boucle `for ($i = init; condition; pas)` en boucle `while` revient à extraire ses trois éléments constitutifs et à les replacer à trois endroits différents : l'initialisation avant le `while`, la condition dans la parenthèse du `while`, et le pas comme dernière instruction à l'intérieur du bloc.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** Quel est le résultat produit par l'exécution du code PHP ci-dessous ? *[1 pt]*\n\n```php\n<?php\n$nombres = array (8, 9, 24, 39, -1, 87);\n$resultat = ($nombres[2] * $nombres[3] + $nombres[5]) / ($nombres[4] - $nombres[1]);\n?>\n```",
+      "corrige_markdown": "### Rappel de méthode\nPour évaluer une expression utilisant des éléments d'un tableau indexé, on commence toujours par dresser la correspondance entre chaque indice et sa valeur (le premier élément porte l'indice 0, pas 1), avant de substituer ces valeurs dans l'expression et de respecter la priorité des opérations (multiplication et division avant addition et soustraction, parenthèses en premier).\n\nLe tableau `$nombres` contient six éléments, numérotés à partir de 0 :\n\n| Indice | 0 | 1 | 2 | 3 | 4 | 5 |\n|---|---|---|---|---|---|---|\n| Valeur | 8 | 9 | 24 | 39 | -1 | 87 |\n\nOn substitue chaque indice par sa valeur dans l'expression :\n\n$$\\text{resultat} = \\frac{\\text{nombres}[2] \\times \\text{nombres}[3] + \\text{nombres}[5]}{\\text{nombres}[4] - \\text{nombres}[1]} = \\frac{24 \\times 39 + 87}{-1 - 9}$$\n\nOn calcule séparément le numérateur et le dénominateur, chacun étant entre parenthèses dans le code et donc évalué en premier.\n\nNumérateur : $24 \\times 39 = 936$, puis $936 + 87 = 1023$.\n\nDénominateur : $-1 - 9 = -10$.\n\n$$\\text{resultat} = \\frac{1023}{-10} = -102{,}3$$\n\nLe code produit donc la valeur **-102,3**. Cette valeur n'étant affichée par aucun `echo` dans le code fourni, elle reste stockée dans la variable `$resultat` sans apparaître à l'écran ; c'est cette valeur numérique que l'exécution du code produit.\n\n### Piège à éviter\nL'erreur la plus fréquente est de compter les éléments à partir de 1 au lieu de 0 : `$nombres[4]` désigne le cinquième élément du tableau (`-1`), pas le quatrième (`39`). Une seule confusion d'indice fait basculer tout le résultat.\n\n### Conseil\nÉcris systématiquement la ligne « indice → valeur » avant de substituer quoi que ce soit dans une formule : cela élimine presque totalement le risque d'erreur d'indexation, qui est le piège numéro un de ce type d'exercice.",
+      "themes": [
+        "PHP",
+        "Tableaux indexés",
+        "Expressions arithmétiques",
+        "Indices de tableau"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q5-1",
+          "competence": "Évaluer une expression arithmétique avec des éléments de tableau indexé",
+          "contenu_markdown": "Pour évaluer une expression utilisant des éléments d'un tableau indexé, on commence toujours par dresser la correspondance entre chaque indice et sa valeur (le premier élément porte l'indice 0, pas 1), avant de substituer ces valeurs dans l'expression et de respecter la priorité des opérations (multiplication et division avant addition et soustraction, parenthèses en premier).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "PHP",
+    "variables PHP",
+    "boucle for",
+    "boucle while",
+    "tableau indexé PHP",
+    "echo PHP",
+    "opérateurs PHP"
+  ],
+  "incertitudes": [
+    "Référentiel programme officiel Informatique introuvable dans cet environnement (fichier backend/programme/fixtures/programme_officiel_cm_informatique.json absent) : savoir_officiel laissé à null sur toutes les sous-questions de cette épreuve, faute de pouvoir consulter la liste des savoirs.",
+    "Le barème imprimé sur le sujet annonce 08 points pour cette partie, mais la somme des points affichés par question (0,5+1+2+0,5+1+1+1) totalise 7 points : écart d'1 point présent sur le document source lui-même, reproduit tel quel sans invention d'un point supplémentaire.",
+    "Question 1 : le libellé « quels sont ceux qui permettent... » autorise plusieurs réponses correctes (PHP et Java) ; la sous-question est donc traitée en format ouvert plutôt qu'en QCM à réponse unique, le schéma qcm/reponse_correcte ne prévoyant qu'une seule bonne réponse."
+  ],
+  "statut": "brouillon"
+}

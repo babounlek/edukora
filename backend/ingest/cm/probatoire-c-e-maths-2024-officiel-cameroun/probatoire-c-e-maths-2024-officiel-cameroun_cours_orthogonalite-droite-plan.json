@@ -1,0 +1,157 @@
+{
+  "cours_id": "cours-orthogonalite-droite-plan-1ere-c-e",
+  "meta": {
+    "titre": "Orthogonalité d'une droite et d'un plan, orthogonalité de deux plans",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Géométrie dans l'espace",
+    "duree_estimee_min": 30,
+    "tags": [
+      "orthogonalité",
+      "droite et plan",
+      "deux plans",
+      "tétraèdre régulier",
+      "géométrie dans l'espace"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2024-officiel-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2024",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex1-q1a-0",
+    "rappels_lies": [
+      "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex1-q1b-0",
+      "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex1-q1c-0",
+      "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex1-q2-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un maçon qui vérifie qu'un mur est bien vertical, ou un menuisier qui contrôle l'équerrage d'une charpente, résolvent en pratique le même problème géométrique : comment être sûr qu'une droite est perpendiculaire à un plan tout entier, sans pouvoir tester tous les angles un par un ? En géométrie dans l'espace, il existe un critère simple qui règle la question en une seule vérification, et ce cours te montre comment l'utiliser sur un solide classique du programme, le tétraèdre régulier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de droites sécantes et de droites coplanaires dans l'espace",
+        "Propriétés du triangle équilatéral (la médiane issue d'un sommet est aussi sa hauteur)",
+        "Théorème de Pythagore dans un triangle rectangle",
+        "Vocabulaire de base d'un tétraèdre (arêtes, faces, sommets, milieu d'une arête)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les deux critères d'orthogonalité dans l'espace",
+      "contenu_markdown": "Une droite $d$ est orthogonale à un plan $P$ si et seulement si elle est orthogonale à deux droites sécantes de $P$ (il est inutile, et même impossible en pratique, de vérifier l'orthogonalité à toutes les droites de $P$). Une fois cette orthogonalité établie, $d$ est automatiquement orthogonale à TOUTE droite de $P$, ce qui permet d'en déduire d'autres orthogonalités sans nouveau calcul. Un plan $Q$ est orthogonal à un plan $P$ dès que $Q$ contient une droite orthogonale à $P$ : il suffit donc de repérer une seule droite bien choisie pour conclure sur les deux plans entiers.",
+      "formule_principale": "d\\perp P \\Leftrightarrow \\big(d\\perp d_1 \\text{ et } d\\perp d_2,\\; d_1,d_2 \\text{ sécantes, } d_1,d_2\\subset P\\big)",
+      "variantes": [
+        {
+          "nom": "Critère plan-plan",
+          "quand_utiliser": "Pour démontrer que deux plans sont orthogonaux, une fois qu'une droite orthogonale à l'un des deux plans est déjà identifiée dans l'autre.",
+          "contenu_markdown": "Si un plan $Q$ contient une droite $d$ orthogonale à un plan $P$, alors $Q\\perp P$. On évite ainsi de revenir à la définition (existence d'une droite de $Q$ orthogonale à toute droite de $P$)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCD$ est un tétraèdre régulier. $H$ est le projeté orthogonal de $A$ sur le plan $(BCD)$, et $I$ est le milieu de l'arête $[BC]$. Démontrer que $(BC)\\perp(AID)$, que $H\\in[ID]$, que $(BC)\\perp(AH)$, puis que les plans $(AID)$ et $(BCD)$ sont orthogonaux.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier deux droites sécantes du plan (AID), chacune orthogonale à (BC)",
+          "justification": "Le tétraèdre étant régulier, ses faces ABC et DBC sont équilatérales ; dans un triangle équilatéral, la médiane issue d'un sommet est aussi la hauteur correspondante.",
+          "resultat_markdown": "Dans $ABC$ équilatéral, $I$ milieu de $[BC]$ : $(AI)\\perp(BC)$. Dans $DBC$ équilatéral, $I$ milieu de $[BC]$ : $(DI)\\perp(BC)$."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le critère droite-plan",
+          "justification": "(AI) et (DI) sont sécantes en $I$ et contenues dans le plan (AID) ; (BC) est orthogonale à ces deux droites sécantes.",
+          "resultat_markdown": "$(BC)\\perp(AID)$."
+        },
+        {
+          "numero": 3,
+          "action": "Montrer que H est équidistant de B et C",
+          "justification": "$(AH)\\perp(BCD)$ par définition de $H$ ; le théorème de Pythagore dans les triangles rectangles $AHB$ et $AHC$, combiné à $AB=AC$ (tétraèdre régulier), donne $HB=HC$.",
+          "resultat_markdown": "$HB^2=AB^2-AH^2=AC^2-AH^2=HC^2 \\Rightarrow HB=HC$."
+        },
+        {
+          "numero": 4,
+          "action": "En déduire que H appartient à (ID)",
+          "justification": "H, équidistant de B et C, appartient à la médiatrice de [BC] dans le plan (BCD), qui est justement la droite (DI) (médiane = hauteur dans le triangle équilatéral DBC) ; H, intérieur au triangle, est donc entre I et D.",
+          "resultat_markdown": "$H\\in[ID]$."
+        },
+        {
+          "numero": 5,
+          "action": "En déduire que (BC) et (AH) sont orthogonales",
+          "justification": "H∈[ID]⊂(AID), donc (AH)⊂(AID) ; or (BC)⊥(AID) (étape 2), donc (BC) est orthogonale à toute droite de ce plan, en particulier (AH).",
+          "resultat_markdown": "$(BC)\\perp(AH)$."
+        },
+        {
+          "numero": 6,
+          "action": "Conclure sur l'orthogonalité des deux plans",
+          "justification": "(BCD) contient la droite (BC), elle-même orthogonale au plan (AID) (étape 2) : c'est exactement le critère plan-plan.",
+          "resultat_markdown": "$(AID)\\perp(BCD)$."
+        }
+      ],
+      "conclusion_markdown": "On vient de démontrer, à partir d'une seule propriété des triangles équilatéraux (médiane = hauteur), une chaîne complète de résultats : une droite orthogonale à un plan, un point situé sur un segment précis, deux droites orthogonales, et enfin deux plans orthogonaux."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure que $(BC)\\perp(AID)$ après avoir seulement montré $(BC)\\perp(AI)$.",
+          "pourquoi_faux": "Une droite orthogonale à une seule droite d'un plan peut très bien ne pas être orthogonale au plan entier : il faut impérativement deux droites sécantes du plan.",
+          "correction_markdown": "Toujours exhiber une seconde droite du plan, sécante à la première, et vérifier l'orthogonalité avec elle aussi (ici, $(DI)$)."
+        },
+        {
+          "erreur_markdown": "Affirmer que $H$ est le centre du tétraèdre \"parce que c'est régulier\", sans justification.",
+          "pourquoi_faux": "Une propriété doit être démontrée à partir de faits établis (ici, l'égalité $HB=HC$ obtenue par Pythagore), pas simplement invoquée comme une évidence liée à la régularité du solide.",
+          "correction_markdown": "Toujours redémontrer l'égalité de distances par le calcul (Pythagore), même si le résultat paraît intuitivement évident sur un solide régulier."
+        },
+        {
+          "erreur_markdown": "Pour démontrer que deux plans sont orthogonaux, chercher deux droites sécantes dans chacun des deux plans.",
+          "pourquoi_faux": "C'est le critère utilisé pour une droite et un plan, pas pour deux plans : la définition entre deux plans est différente et plus simple à mobiliser une fois une droite orthogonale déjà connue.",
+          "correction_markdown": "Pour deux plans, cherche une seule droite, contenue dans l'un des deux plans, déjà connue comme orthogonale à l'autre plan."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$SABC$ est une pyramide telle que $SA\\perp(ABC)$. Démontrer que $(BC)\\perp(SAB)$ sachant que $(BC)\\perp(AB)$.",
+          "solution_markdown": "$SA\\perp(ABC)$ donc $SA\\perp BC$ (car $BC\\subset(ABC)$). Par hypothèse, $AB\\perp BC$. Les droites $(SA)$ et $(AB)$ sont sécantes en $A$ et contenues dans le plan $(SAB)$. La droite $(BC)$ est orthogonale à ces deux droites sécantes de $(SAB)$ : **$(BC)\\perp(SAB)$.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans le tétraèdre régulier $ABCD$ du cours, $J$ est le milieu de $[AD]$. Démontrer que $(AD)\\perp(BJC)$ (raisonnement analogue à celui du cours, en échangeant les rôles des arêtes).",
+          "solution_markdown": "$ABD$ et $CBD$ ... reprenons avec les bonnes faces : les faces contenant $[AD]$ sont $ABD$ et $ACD$, toutes deux équilatérales. Dans $ABD$, $J$ milieu de $[AD]$ : la médiane $(BJ)$ issue de $B$ est aussi hauteur, donc $(BJ)\\perp(AD)$. Dans $ACD$, $J$ milieu de $[AD]$ : la médiane $(CJ)$ issue de $C$ est aussi hauteur, donc $(CJ)\\perp(AD)$. Les droites $(BJ)$ et $(CJ)$ sont sécantes en $J$ et contenues dans le plan $(BJC)$. La droite $(AD)$ est orthogonale à ces deux droites sécantes : **$(AD)\\perp(BJC)$.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$ABCDEFGH$ est un cube. Démontrer que la droite $(AG)$ (grande diagonale du cube) est orthogonale au plan $(BDE)$, sachant que $ABCD$, $ABFE$ et $ADHE$ sont des faces carrées de côté $a$ (indication : place le cube dans un repère et calcule un produit scalaire, ou utilise le critère des deux sécantes après avoir identifié deux droites de $(BDE)$).",
+          "solution_markdown": "Plaçons le cube dans un repère orthonormé : $A(0,0,0)$, $B(a,0,0)$, $D(0,a,0)$, $E(0,0,a)$, et donc $G(a,a,a)$ (sommet opposé à $A$). Le vecteur directeur de $(AG)$ est $\\overrightarrow{AG}=(a,a,a)$.\n\nCalculons $\\overrightarrow{AG}\\cdot\\overrightarrow{BD}$ où $\\overrightarrow{BD}=D-B=(-a,a,0)$ : $\\overrightarrow{AG}\\cdot\\overrightarrow{BD}=a\\times(-a)+a\\times a+a\\times0=-a^2+a^2+0=0$. Donc $(AG)\\perp(BD)$.\n\nCalculons $\\overrightarrow{AG}\\cdot\\overrightarrow{BE}$ où $\\overrightarrow{BE}=E-B=(-a,0,a)$ : $\\overrightarrow{AG}\\cdot\\overrightarrow{BE}=a\\times(-a)+a\\times0+a\\times a=-a^2+0+a^2=0$. Donc $(AG)\\perp(BE)$.\n\nLes droites $(BD)$ et $(BE)$ sont sécantes en $B$ et contenues dans le plan $(BDE)$. La droite $(AG)$ est orthogonale à ces deux droites sécantes de $(BDE)$ : **$(AG)\\perp(BDE)$.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour prouver qu'une droite est orthogonale à un plan, trouve toujours DEUX droites sécantes de ce plan, jamais une seule.",
+        "Une fois une droite reconnue orthogonale à un plan, elle l'est automatiquement à TOUTE droite de ce plan : exploite ce résultat en chaîne plutôt que de tout redémontrer.",
+        "Pour deux plans orthogonaux, cherche une seule droite bien choisie, contenue dans l'un, orthogonale à l'autre.",
+        "Dans un tétraèdre régulier, la propriété « médiane = hauteur » des triangles équilatéraux est la clé de la quasi-totalité des démonstrations d'orthogonalité.",
+        "Ce type de raisonnement (orthogonalité de droites et de plans dans un solide) est un classique du Probatoire et du Baccalauréat scientifique camerounais : il revient presque chaque année sous une forme proche."
+      ]
+    }
+  ]
+}

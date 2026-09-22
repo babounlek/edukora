@@ -1,0 +1,98 @@
+{
+  "cours_id": "cours-php-langage-interprete-execution-cote-serveur-dres-jan2024",
+  "meta": {
+    "titre": "PHP : langage interprete, execution cote serveur et extension .php",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - PHP",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "langage interprete",
+      "execution cote serveur",
+      "extension de fichier"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-dres2024-ex3-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "PHP ne se compile pas comme le C : il s'execute directement, cote serveur, et seulement dans les fichiers que le serveur a ete configure pour reconnaitre comme tels."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un serveur web dynamique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "PHP est interprete, execute cote serveur, et lie a l'extension .php",
+      "contenu_markdown": "PHP est un langage **interprete**, non compile : le serveur execute (interprete) le code PHP directement a chaque requete, sans produire prealablement un fichier machine compile comme le ferait un compilateur C.\n\nLe code PHP s'execute **cote serveur** (server-side) : le serveur interprete le script et envoie au navigateur uniquement le resultat en HTML ; le navigateur ne voit jamais le code PHP lui-meme.\n\nEn configuration standard, un serveur web n'interprete le code PHP que dans les fichiers portant l'extension **.php**. Si le code est place dans un fichier d'extension .html, le serveur le traite comme du contenu statique : il l'envoie tel quel, et le navigateur affiche le code PHP en clair plutot que son resultat, sauf configuration particuliere du serveur (par exemple via un fichier .htaccess)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un developpeur renomme accidentellement contact.php en contact.html sans changer la configuration du serveur. Que va-t-il se passer quand un visiteur ouvre cette page ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la regle d'interpretation par defaut",
+          "justification": "Le serveur n'interprete le PHP que dans les fichiers .php.",
+          "resultat_markdown": "Le fichier contact.html n'est pas reconnu comme un script a interpreter."
+        },
+        {
+          "numero": 2,
+          "action": "En deduire le comportement du serveur",
+          "justification": "Un fichier non reconnu comme PHP est envoye tel quel (contenu statique).",
+          "resultat_markdown": "Le serveur envoie le fichier tel quel au navigateur."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur l'affichage",
+          "justification": "Le navigateur affiche ce qu'il recoit sans l'executer.",
+          "resultat_markdown": "Le visiteur verra le code PHP brut affiche dans la page, au lieu du resultat attendu."
+        }
+      ],
+      "conclusion_markdown": "Renommer un fichier PHP en .html sans reconfigurer le serveur casse son execution."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que le navigateur peut interpreter du code PHP recu tel quel.",
+          "pourquoi_faux": "PHP s'execute exclusivement cote serveur ; le navigateur ne sait interpreter que du HTML, CSS et JavaScript, jamais du PHP."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le code source PHP d'un site est-il visible par un visiteur qui affiche le code source de la page dans son navigateur ?",
+          "solution_markdown": "Non : seul le resultat HTML genere par le serveur est envoye au navigateur, jamais le script PHP lui-meme."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "PHP est interprete, jamais compile en amont comme le C.",
+        "Le code PHP s'execute cote serveur, avant l'envoi de la page au navigateur.",
+        "Seuls les fichiers .php sont interpretes par defaut ; un .html reste du contenu statique."
+      ]
+    }
+  ]
+}

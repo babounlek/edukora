@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-calcul-de-l-adresse-de-diffusion-broadcast-d-un-reseau-terminale-ti",
+  "meta": {
+    "titre": "Calcul de l'adresse de diffusion (broadcast) d'un réseau",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage IPv4 et sous-réseaux",
+    "duree_estimee_min": 18,
+    "tags": [
+      "adresse de diffusion",
+      "broadcast",
+      "masque de sous-réseau",
+      "calcul IP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q11-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un serveur qui doit annoncer sa présence à toutes les machines d'un réseau local, sans en connaître la liste exacte, ne peut pas envoyer un message à chacune individuellement. Il utilise une adresse spéciale, capable de joindre toutes les machines du réseau en une seule fois : l'adresse de diffusion. Un calcul simple à partir du masque de sous-réseau permet de la déterminer sans ambiguïté."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Adresse réseau et masque de sous-réseau",
+        "Notation décimale pointée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer l'adresse de diffusion d'un réseau",
+      "contenu_markdown": "L'adresse de diffusion (broadcast) d'un réseau s'obtient en mettant à 1 tous les bits de la partie hôte de l'adresse IP, c'est-à-dire tous les bits NON couverts par le masque de sous-réseau. Pour un masque en 255.255.255.0 (/24), la partie hôte correspond au dernier octet : l'adresse de diffusion porte ce dernier octet à sa valeur maximale, 255, en conservant les trois premiers octets identiques à ceux de l'adresse réseau.",
+      "formule_principale": "\\text{Adresse de diffusion} = \\text{Adresse réseau avec tous les bits hôte à 1}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer l'adresse de diffusion du réseau 192.168.43.0, masque 255.255.255.0.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la partie réseau et la partie hôte",
+          "justification": "Le masque 255.255.255.0 couvre les trois premiers octets (partie réseau) et laisse le dernier octet à la partie hôte.",
+          "resultat_markdown": "Partie réseau : 192.168.43. Partie hôte : le dernier octet."
+        },
+        {
+          "numero": 2,
+          "action": "Mettre tous les bits de la partie hôte à 1",
+          "justification": "L'adresse de diffusion exige que tous les bits hôtes valent 1, ce qui correspond à la valeur décimale maximale de l'octet.",
+          "resultat_markdown": "Le dernier octet, tout en 1 sur 8 bits (11111111), vaut 255 en décimal."
+        },
+        {
+          "numero": 3,
+          "action": "Assembler l'adresse de diffusion complète",
+          "justification": "On conserve la partie réseau et on remplace la partie hôte par sa valeur maximale.",
+          "resultat_markdown": "Adresse de diffusion : 192.168.43.255."
+        }
+      ],
+      "conclusion_markdown": "L'adresse de diffusion 192.168.43.255 permet d'envoyer un même message à toutes les machines du réseau 192.168.43.0/24 en une seule transmission."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre adresse de diffusion et adresse de la passerelle par défaut",
+          "pourquoi_faux": "La passerelle par défaut est l'adresse d'un routeur précis (souvent .1), utilisée pour sortir du réseau ; l'adresse de diffusion (souvent .255 pour un masque /24) sert à joindre TOUTES les machines du réseau en une fois. Ce sont deux adresses à fonctions opposées.",
+          "correction_markdown": "Distingue toujours : passerelle = un destinataire précis (le routeur), diffusion = tous les destinataires du réseau à la fois."
+        },
+        {
+          "erreur_markdown": "Calculer l'adresse de diffusion à partir d'un masque autre que celui réellement indiqué pour ce réseau",
+          "pourquoi_faux": "Le calcul dépend entièrement du masque : un masque différent (par exemple 255.255.255.192 au lieu de 255.255.255.0) change complètement la partie hôte et donc l'adresse de diffusion obtenue.",
+          "correction_markdown": "Relis toujours le masque exact fourni par l'énoncé avant de mettre les bits hôtes à 1."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer l'adresse de diffusion du réseau 10.0.0.0, masque 255.0.0.0.",
+          "solution_markdown": "Le masque 255.0.0.0 couvre uniquement le premier octet (partie réseau : 10), les trois derniers octets forment la partie hôte. En les portant tous à 255, l'adresse de diffusion est 10.255.255.255."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le réseau 172.16.0.0 utilise le masque 255.255.0.0. Déterminer son adresse de diffusion et expliquer pourquoi elle diffère de celle d'un réseau en 255.255.255.0 partageant les deux mêmes premiers octets.",
+          "solution_markdown": "Le masque 255.255.0.0 couvre les deux premiers octets (partie réseau : 172.16), les deux derniers octets forment la partie hôte. En les portant tous à 255, l'adresse de diffusion est 172.16.255.255, et non 172.16.0.255 comme ce serait le cas avec un masque 255.255.255.0. La différence vient du nombre d'octets réservés à la partie hôte : plus le masque couvre peu d'octets (ou de bits), plus la partie hôte est grande, et plus l'adresse de diffusion « s'étend » loin dans les octets suivants."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi une machine ne peut jamais recevoir, comme adresse IP propre, l'adresse de diffusion de son réseau, même si elle en respecte le format d'écriture.",
+          "solution_markdown": "L'adresse de diffusion est une adresse spéciale réservée par convention à un usage collectif : tout paquet envoyé à cette adresse doit être traité et reçu par TOUTES les machines du réseau simultanément, jamais par une seule. Si une machine individuelle recevait cette adresse comme sa propre adresse IP, il deviendrait impossible de distinguer un message qui lui est destiné personnellement d'un message destiné à l'ensemble du réseau, ce qui romprait le fonctionnement même de la diffusion. C'est pourquoi, avec l'adresse réseau elle-même (tous les bits hôtes à 0), l'adresse de diffusion (tous les bits hôtes à 1) est systématiquement exclue des adresses attribuables à une machine."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'adresse de diffusion met tous les bits de la partie hôte à 1 (valeur maximale de cette partie).",
+        "Pour un masque 255.255.255.0, elle se lit directement : dernier octet à 255.",
+        "Elle sert à envoyer un message à toutes les machines du réseau en une seule transmission.",
+        "Elle ne doit jamais être confondue avec la passerelle par défaut, ni attribuée à une machine individuelle.",
+        "Le calcul dépend toujours du masque exact du réseau concerné : plus la partie hôte est grande, plus l'adresse de diffusion s'étend sur les derniers octets."
+      ]
+    }
+  ]
+}

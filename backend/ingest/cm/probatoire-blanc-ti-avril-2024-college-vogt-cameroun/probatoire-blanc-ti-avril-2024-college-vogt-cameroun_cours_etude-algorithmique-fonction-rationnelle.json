@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-etude-algorithmique-fonction-rationnelle-premiere-ti",
+  "meta": {
+    "titre": "Étude algorithmique d'une fonction rationnelle : domaine de définition et limites aux bornes",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Algorithmique appliquée aux mathématiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "fonction rationnelle",
+      "domaine de définition",
+      "discriminant",
+      "limite",
+      "asymptote"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex4-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un professeur te demande d'étudier une fonction sans dresser de tableau de variation ni tracer sa courbe : comment est-ce seulement possible ? En transformant chaque étape mathématique (chercher où le dénominateur s'annule, calculer une limite) en instruction que l'ordinateur peut exécuter à ta place, pour n'importe quelle fonction de la même famille."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer le discriminant d'un trinôme du second degré",
+        "Connaître la notion de limite d'une fonction en +∞, -∞ et en un point",
+        "Savoir écrire une fonction et une condition en JavaScript"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Domaine, limites aux infinis, limites aux points exclus",
+      "contenu_markdown": "Pour une fonction $f=\\dfrac{N}{D}$ où $N$ et $D$ sont deux polynômes du second degré de même coefficient dominant $a$ :\n\n1. **Domaine de définition** : résoudre $D(x)=0$ via son discriminant $\\Delta_D$. Trois cas (deux racines, une racine double, aucune racine) donnent le domaine $D_f$.\n2. **Limites en $\\pm\\infty$** : comme $N$ et $D$ ont le même coefficient dominant $a$, $\\lim_{x\\to\\pm\\infty} f(x) = a/a = 1$.\n3. **Limites en une valeur exclue $x_0$** : si $N(x_0)\\neq 0$, asymptote verticale (le signe se détermine en évaluant $f$ juste avant et juste après $x_0$) ; si $N(x_0)=0$ aussi, c'est un point sans image mais SANS asymptote (simplification possible).",
+      "formule_principale": "\\Delta_D = b^2+4ac \\quad;\\quad \\lim_{x\\to\\pm\\infty} f(x) = \\frac{a}{a} = 1",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier $f(x)=\\dfrac{x^2+5x+6}{x^2-5x-6}$ (domaine de définition et limites aux bornes).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les coefficients et calculer le discriminant du dénominateur",
+          "justification": "$D(x)=x^2-5x-6$ correspond à $a=1,b=5,c=6$ dans la forme générale $ax^2-bx-c$",
+          "resultat_markdown": "$\\Delta_D = b^2+4ac = 25+24=49$"
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer le domaine de définition",
+          "justification": "$\\Delta_D>0$ : deux racines distinctes",
+          "resultat_markdown": "$x_1=\\dfrac{5-7}{2}=-1$, $x_2=\\dfrac{5+7}{2}=6$, donc $D_f=\\mathbb{R}\\setminus\\{-1;6\\}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la limite aux infinis",
+          "justification": "$a=1$ pour le numérateur comme pour le dénominateur",
+          "resultat_markdown": "$\\lim_{x\\to\\pm\\infty} f(x) = 1$"
+        },
+        {
+          "numero": 4,
+          "action": "Étudier les limites en x=-1 et x=6",
+          "justification": "Vérifier d'abord que le numérateur ne s'annule pas aussi en ces points",
+          "resultat_markdown": "$N(-1)=1-5+6=2\\neq 0$ et $N(6)=36+30+6=72\\neq 0$ : ce sont bien deux asymptotes verticales (signes obtenus numériquement de part et d'autre de chaque valeur)."
+        }
+      ],
+      "conclusion_markdown": "$f$ est définie sur $\\mathbb{R}\\setminus\\{-1;6\\}$, admet la droite $y=1$ comme asymptote horizontale, et deux asymptotes verticales en $x=-1$ et $x=6$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de vérifier si le numérateur s'annule aussi à la valeur exclue du dénominateur",
+          "pourquoi_faux": "Si $N(x_0)=0$ également, la fraction se simplifie et $x_0$ n'est qu'un point sans image (un \"trou\"), pas une asymptote verticale : conclure trop vite à une asymptote serait faux.",
+          "correction_markdown": "Calcule systématiquement $N(x_0)$ avant de conclure à une asymptote verticale en $x_0$."
+        },
+        {
+          "erreur_markdown": "Évaluer $f$ exactement en $x_0$ dans un script pour en déduire le signe de la limite",
+          "pourquoi_faux": "Un $x_0$ calculé par une formule avec racine carrée porte presque toujours une erreur d'arrondi : le dénominateur calculé n'est jamais rigoureusement nul, ce qui donne un très grand nombre fini plutôt que l'exacte valeur Infinity.",
+          "correction_markdown": "Évalue plutôt $f$ en $x_0-\\varepsilon$ et $x_0+\\varepsilon$ (avec $\\varepsilon$ très petit) pour obtenir numériquement le signe de chaque limite latérale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour $f(x)=\\dfrac{2x^2+x+1}{2x^2-x-1}$, calculer le discriminant du dénominateur et en déduire le domaine de définition.",
+          "solution_markdown": "$D(x)=2x^2-x-1$ donne $a=2,b=1,c=1$, donc $\\Delta_D=b^2+4ac=1+8=9>0$. Racines : $x_1=\\dfrac{1-3}{4}=-\\dfrac{1}{2}$, $x_2=\\dfrac{1+3}{4}=1$. Domaine : $D_f=\\mathbb{R}\\setminus\\{-\\tfrac{1}{2};1\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Justifier, sans calcul de discriminant, que $\\lim_{x\\to+\\infty} \\dfrac{3x^2+x-2}{3x^2-x-2} = 1$.",
+          "solution_markdown": "Le numérateur et le dénominateur sont tous deux des trinômes de coefficient dominant $a=3$. Quand $x\\to+\\infty$, chaque trinôme est équivalent à son terme de plus haut degré : $3x^2+x-2 \\sim 3x^2$ et $3x^2-x-2 \\sim 3x^2$. Le quotient tend donc vers $\\dfrac{3x^2}{3x^2}=1$. Ce résultat ne dépend que de l'égalité des coefficients dominants, jamais des autres coefficients $b$ et $c$ : inutile de calculer le moindre discriminant pour cette limite précise."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour $f(x)=\\dfrac{x^2-4}{x^2-2x-8}$, montrer que $x=-2$ n'est PAS une asymptote verticale, bien qu'il annule le dénominateur.",
+          "solution_markdown": "Dénominateur : $D(x)=x^2-2x-8=(x-4)(x+2)$, qui s'annule bien en $x=-2$ et $x=4$. Numérateur : $N(x)=x^2-4=(x-2)(x+2)$, qui s'annule ÉGALEMENT en $x=-2$. Comme $x=-2$ annule à la fois le numérateur et le dénominateur, la fraction se simplifie : pour $x\\neq -2$, $f(x)=\\dfrac{(x-2)(x+2)}{(x-4)(x+2)}=\\dfrac{x-2}{x-4}$. La limite de cette expression simplifiée en $x=-2$ vaut $\\dfrac{-2-2}{-2-4}=\\dfrac{-4}{-6}=\\dfrac{2}{3}$, une valeur FINIE : $x=-2$ n'est donc pas une asymptote verticale, seulement un point où $f$ n'est pas définie (un \"trou\" dans la courbe), la courbe se prolongeant continûment de part et d'autre vers la valeur $2/3$. Seul $x=4$, qui n'annule pas le numérateur ($N(4)=16-4=12\\neq 0$), donne une véritable asymptote verticale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Domaine de définition d'une fraction : partout où le dénominateur ne s'annule pas, trouvé via son discriminant.",
+        "Si numérateur et dénominateur ont le même coefficient dominant $a$, la limite aux infinis vaut toujours $1$.",
+        "Avant de conclure à une asymptote verticale en une valeur exclue, vérifie toujours que le numérateur n'y est pas nul lui aussi (sinon : simplification possible, pas d'asymptote).",
+        "Dans un script, évalue $f$ juste avant et après une valeur exclue (jamais exactement dessus) pour obtenir numériquement le signe d'une limite infinie.",
+        "Cette démarche - domaine puis limites aux bornes - est le point de départ de toute étude de fonction, avant même de songer au tableau de variation ou à la courbe."
+      ]
+    }
+  ]
+}

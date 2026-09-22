@@ -1,0 +1,97 @@
+{
+  "cours_id": "cours-fonctionnement-site-web-dynamique-schema-dres-jan2024",
+  "meta": {
+    "titre": "Schematiser le fonctionnement d'un site web dynamique",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - architecture",
+    "duree_estimee_min": 15,
+    "tags": [
+      "site web dynamique",
+      "architecture client-serveur",
+      "schema"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-dres2024-ex3-q7-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un site dynamique n'est jamais une simple boite noire : c'est un echange precis en plusieurs etapes entre trois acteurs, qu'un schema rend immediatement clair."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre les notions de serveur web, serveur de base de donnees, et langage cote serveur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les etapes du fonctionnement d'un site dynamique",
+      "contenu_markdown": "Le fonctionnement d'un site web dynamique repose sur un echange en plusieurs etapes entre le navigateur (client), le serveur web muni d'un interpreteur PHP, et un serveur de base de donnees : (1) le navigateur envoie une requete HTTP au serveur web ; (2) si necessaire, le serveur web transmet une requete SQL au serveur de base de donnees ; (3) le serveur de base de donnees renvoie les donnees demandees ; (4-5) le script PHP construit dynamiquement une page HTML a partir de ces donnees ; (6) le serveur web renvoie cette page HTML generee au navigateur, qui l'affiche."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un visiteur consulte la fiche d'un produit sur un site marchand. Decrire les etapes qui se produisent entre son clic et l'affichage de la fiche.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Requete du navigateur",
+          "justification": "Le clic genere une requete HTTP vers l'URL de la fiche produit.",
+          "resultat_markdown": "Le navigateur envoie une requete HTTP au serveur web."
+        },
+        {
+          "numero": 2,
+          "action": "Interrogation de la base",
+          "justification": "Le script PHP a besoin des informations du produit stockees en base.",
+          "resultat_markdown": "Le serveur web execute une requete SQL vers le serveur de base de donnees."
+        },
+        {
+          "numero": 3,
+          "action": "Construction et envoi de la reponse",
+          "justification": "Les donnees recues sont inserees dans un gabarit HTML avant envoi.",
+          "resultat_markdown": "Le script PHP genere la page HTML de la fiche produit, renvoyee au navigateur qui l'affiche."
+        }
+      ],
+      "conclusion_markdown": "Trois acteurs et six echanges suffisent a decrire tout site dynamique classique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le serveur de base de donnees et decrire uniquement un echange navigateur-serveur web.",
+          "pourquoi_faux": "Un site est dit dynamique precisement parce que son contenu depend de donnees variables, generalement stockees et interrogees dans un serveur de base de donnees distinct."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'echange d'un site dynamique, quel acteur execute le script PHP ?",
+          "solution_markdown": "Le serveur web (muni de l'interpreteur PHP), jamais le navigateur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un site dynamique implique trois acteurs : navigateur, serveur web/PHP, serveur de base de donnees.",
+        "Le navigateur ne recoit jamais que le resultat HTML final, jamais le script PHP.",
+        "La base de donnees est interrogee par le serveur web, jamais directement par le navigateur."
+      ]
+    }
+  ]
+}

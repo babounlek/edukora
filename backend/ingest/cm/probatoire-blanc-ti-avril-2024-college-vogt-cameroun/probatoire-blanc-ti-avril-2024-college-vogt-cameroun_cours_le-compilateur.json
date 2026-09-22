@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-le-compilateur-premiere-ti",
+  "meta": {
+    "titre": "Le compilateur : traduction du code source en code exécutable",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Chaîne de développement d'un programme",
+    "duree_estimee_min": 12,
+    "tags": [
+      "compilateur",
+      "compilation",
+      "code source",
+      "langage machine"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex1-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu écris un programme en langage C, dans un fichier texte lisible par un humain. L'ordinateur, lui, ne comprend que des suites de 0 et de 1. Comment ton texte devient-il quelque chose que le processeur peut réellement exécuter ? C'est le rôle du compilateur, l'un des outils les plus fondamentaux de la programmation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un fichier source (`.c`, `.py`...)",
+        "Avoir une idée générale de ce qu'est un programme exécutable"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le compilateur, traducteur avant exécution",
+      "contenu_markdown": "Un **compilateur** est un programme qui traduit intégralement un code source écrit dans un langage de programmation évolué (C, C++...) en langage machine (code objet ou exécutable), avant que ce programme ne soit exécuté. Cette traduction complète, faite une seule fois, produit un fichier exécutable que l'on peut ensuite lancer directement, sans repasser par le code source.",
+      "formule_principale": "code source (.c) --[compilateur]--> fichier exécutable",
+      "variantes": [
+        {
+          "nom": "L'interpréteur",
+          "quand_utiliser": "Pour des langages comme Python ou JavaScript (dans un navigateur)",
+          "contenu_markdown": "Un interpréteur traduit et exécute le code ligne par ligne, sans produire de fichier exécutable séparé au préalable. C'est plus souple pour tester rapidement du code, mais généralement plus lent à l'exécution qu'un programme compilé."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer les étapes qui séparent l'écriture de `programme.c` de son exécution.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écriture du code source",
+          "justification": "Le développeur rédige les instructions dans un langage évolué, lisible par un humain",
+          "resultat_markdown": "Fichier `programme.c` contenant le code C."
+        },
+        {
+          "numero": 2,
+          "action": "Compilation",
+          "justification": "Le compilateur (par exemple GCC) traduit ce texte en langage machine et vérifie au passage qu'il respecte la syntaxe du C",
+          "resultat_markdown": "Fichier exécutable produit (par exemple `programme.exe` ou `a.out`)."
+        },
+        {
+          "numero": 3,
+          "action": "Exécution",
+          "justification": "Le fichier obtenu est directement compréhensible par le processeur, sans besoin de retraduire le code source",
+          "resultat_markdown": "Le programme s'exécute et produit son résultat (affichages, calculs...)."
+        }
+      ],
+      "conclusion_markdown": "La compilation est une étape unique et préalable : une fois le fichier exécutable produit, il peut être relancé autant de fois que voulu sans repasser par le compilateur, tant que le code source ne change pas."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre compilateur et IDE",
+          "pourquoi_faux": "Un IDE (comme Code::Blocks) est un logiciel qui regroupe plusieurs outils, dont un compilateur ; le compilateur lui-même (comme GCC) est un programme précis, dédié uniquement à la traduction du code.",
+          "correction_markdown": "Retiens que l'IDE \"contient\" ou \"utilise\" un compilateur, mais qu'ils ne désignent pas la même chose."
+        },
+        {
+          "erreur_markdown": "Croire qu'une erreur de compilation est la même chose qu'une erreur d'exécution",
+          "pourquoi_faux": "Une erreur de compilation empêche même la production du fichier exécutable (le code ne respecte pas la syntaxe du langage) ; une erreur d'exécution survient après compilation réussie, pendant que le programme tourne (par exemple une division par zéro).",
+          "correction_markdown": "Si le compilateur signale une erreur, aucun exécutable n'est produit : il faut d'abord corriger le code source avant de pouvoir tester le programme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer un exemple de compilateur pour le langage C.",
+          "solution_markdown": "GCC (GNU Compiler Collection) est un compilateur très répandu pour le langage C (et C++). D'autres exemples valables : Clang, ou le compilateur intégré à Turbo C."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève écrit `int x = 5` (sans point-virgule final) puis lance la compilation. Que va-t-il se passer, et pourquoi ?",
+          "solution_markdown": "La compilation va échouer et signaler une erreur de syntaxe (point-virgule manquant). Le compilateur vérifie que le code respecte scrupuleusement la grammaire du langage C avant de le traduire : une instruction mal formée bloque la production du fichier exécutable, même si le reste du programme est correct."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi un programme compilé s'exécute-t-il généralement plus vite qu'un programme interprété, comme un script Python classique ?",
+          "solution_markdown": "Un programme compilé a déjà été entièrement traduit en langage machine avant l'exécution : le processeur exécute directement des instructions machine, sans traduction supplémentaire. Un programme interprété, lui, doit être traduit ligne par ligne au moment même de l'exécution : cette traduction répétée (à chaque exécution, parfois à chaque passage dans une boucle) consomme du temps supplémentaire que la compilation préalable évite."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un compilateur traduit intégralement un code source en langage machine, avant toute exécution.",
+        "GCC est un exemple courant de compilateur pour le langage C.",
+        "Un compilateur diffère d'un interpréteur, qui traduit et exécute le code ligne par ligne, sans étape de compilation séparée.",
+        "Une erreur de compilation empêche la production même du fichier exécutable : rien ne peut s'exécuter tant qu'elle n'est pas corrigée.",
+        "Au Probatoire, cette notion revient souvent en question de cours directe : sois prêt à donner à la fois une définition précise et un exemple concret."
+      ]
+    }
+  ]
+}

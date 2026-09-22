@@ -1,0 +1,192 @@
+{
+ "cours_id": "cours-aire-par-decoupage-1ere-ce",
+ "meta": {
+  "titre": "Calculer une aire par découpage d'une figure globale",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Aires et modélisation",
+  "duree_estimee_min": 25,
+  "tags": ["aire par découpage", "additivité des aires", "carré", "trinôme du second degré", "modélisation géométrique"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qA4c-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Le triangle $IMN$ n'a aucun côté sur le carré, aucun angle droit, aucune hauteur lisible. Le calculer directement demanderait de construire une hauteur oblique, d'en trouver la longueur par Pythagore, puis de multiplier. Trois pages, et autant d'occasions de se tromper. La solution tient en une ligne : ce triangle est **ce qui reste** du carré une fois retirés les trois autres morceaux, tous faciles. Calculer un reste plutôt que la chose elle-même — c'est souvent la voie la plus courte."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir calculer l'aire d'un carré, d'un triangle rectangle et d'un trapèze",
+    "Maîtriser le développement et la réduction d'expressions littérales",
+    "Savoir soustraire des expressions entre parenthèses en changeant tous les signes",
+    "Savoir vérifier un résultat sur un cas particulier"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Le tout est la somme des morceaux",
+   "contenu_markdown": "**Le principe : additivité des aires.** Si une figure est partagée en régions **sans recouvrement** et qui la **couvrent entièrement**, alors l'aire de la figure est la somme des aires des régions :\n\n$$\\mathcal{A}(\\text{tout}) = \\mathcal{A}_{1} + \\mathcal{A}_{2} + \\dots + \\mathcal{A}_{n}$$\n\n**Les deux conditions.** Elles sont toutes deux indispensables :\n\n- **sans recouvrement** : deux régions ne doivent pas se chevaucher, sinon on compte deux fois la même surface ;\n- **couverture complète** : aucune portion ne doit être oubliée, sinon la somme est trop petite.\n\nSur une figure, vérifie que chaque point du carré appartient à une région et une seule.\n\n**La méthode, en quatre gestes.**\n\n1. **Écrire** l'égalité de découpage en toutes lettres, avant tout calcul.\n2. **Isoler** l'aire cherchée en la faisant passer seule dans un membre.\n3. **Substituer** les expressions déjà obtenues.\n4. **Développer et réduire** avec soin.\n\n**Le geste qui rapporte des points.** Écris l'égalité de découpage en français avant de calculer : « aire du carré = aire de $IAM$ + aire de $MDN$ + aire de $IMN$ + aire du trapèze $BCNI$ ». Cette ligne vaut le point de méthode même si l'algèbre qui suit contient une étourderie de signe.\n\n**Le piège de la soustraction.** Retirer une expression entre parenthèses change **tous** les signes qu'elle contient :\n\n$$-\\left(3x - \\frac{x^{2}}{2}\\right) = -3x + \\frac{x^{2}}{2}$$\n\nC'est la source d'erreur numéro un de ce type de question. Écris systématiquement les parenthèses, puis supprime-les en une étape distincte et visible.\n\n**Le contrôle final.** Choisis une valeur simple du paramètre, souvent celle qui place les points aux milieux, et calcule les quatre aires **numériquement**. Leur somme doit valoir exactement l'aire de la figure globale. Ce test détecte toute erreur de signe ou de coefficient.\n\n**Ce que produit la méthode.** Le résultat est en général un trinôme du second degré, ce qui n'a rien d'accidentel : les morceaux faciles sont linéaires ou quadratiques, et leur combinaison l'est aussi. C'est ce trinôme qui devient ensuite l'objet d'une étude de fonction.",
+   "formule_principale": "\\mathcal{A}(\\text{cherchée}) = \\mathcal{A}(\\text{globale}) - \\sum \\mathcal{A}(\\text{morceaux connus})",
+   "variantes": [
+    {
+     "nom": "Découpage additif plutôt que soustractif",
+     "quand_utiliser": "Quand la figure cherchée se décompose naturellement en morceaux simples",
+     "contenu_markdown": "Le raisonnement s'emploie aussi dans l'autre sens : au lieu de retrancher, on **ajoute** les morceaux qui composent la figure cherchée.\n\nC'est le cas d'un polygone irrégulier qu'on partage en triangles par ses diagonales. La technique est la même, seul le sens de l'égalité change. Le choix entre les deux dépend de ce qui est le plus simple à calculer : la figure elle-même, ou son complémentaire."
+    },
+    {
+     "nom": "Calcul direct par le déterminant",
+     "quand_utiliser": "Quand on dispose d'un repère et des coordonnées des sommets",
+     "contenu_markdown": "Dans un repère orthonormé, l'aire du triangle $IMN$ vaut\n\n$$\\mathcal{A} = \\frac{1}{2}\\left|\\det\\left(\\overrightarrow{IM}\\,;\\,\\overrightarrow{IN}\\right)\\right|$$\n\nCette méthode fonctionne sans découpage et donne le résultat directement, même pour un triangle quelconque. Elle constitue un excellent moyen de **vérifier** le résultat obtenu par découpage, en plaçant le carré dans un repère bien choisi."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCD$ est un carré de côté $6$, $I$ le milieu de $[AB]$, $M$ un point de $[AD]$ et $N$ un point de $[DC]$ avec $AM = DN = x$. On a établi que $\\mathcal{A}(IAM) = \\dfrac{3x}{2}$, $\\mathcal{A}(MDN) = 3x - \\dfrac{x^{2}}{2}$ et $\\mathcal{A}_{1}(BCNI) = 27 - 3x$. En déduire que l'aire $\\mathcal{A}$ du triangle $IMN$ vaut $\\mathcal{A} = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Vérifier que le découpage est valide",
+     "justification": "Les points $I$, $M$, $N$ partagent le carré en quatre régions : le triangle $IAM$ dans le coin $A$, le triangle $MDN$ dans le coin $D$, le triangle $IMN$ au centre, et le trapèze $BCNI$. Aucune ne chevauche les autres et elles couvrent tout le carré",
+     "resultat_markdown": "Le découpage est licite"
+    },
+    {
+     "numero": 2,
+     "action": "Écrire l'égalité de découpage",
+     "justification": "Additivité des aires",
+     "resultat_markdown": "$\\mathcal{A}(ABCD) = \\mathcal{A}(IAM) + \\mathcal{A}(MDN) + \\mathcal{A}(IMN) + \\mathcal{A}_{1}$"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer l'aire du carré",
+     "justification": "Côté au carré",
+     "resultat_markdown": "$\\mathcal{A}(ABCD) = 6^{2} = 36$"
+    },
+    {
+     "numero": 4,
+     "action": "Isoler l'aire cherchée",
+     "justification": "On fait passer les trois autres termes de l'autre côté",
+     "resultat_markdown": "$\\mathcal{A} = 36 - \\mathcal{A}(IAM) - \\mathcal{A}(MDN) - \\mathcal{A}_{1}$"
+    },
+    {
+     "numero": 5,
+     "action": "Substituer, parenthèses comprises",
+     "justification": "On reporte les trois expressions des questions a) et b), en encadrant chacune",
+     "resultat_markdown": "$\\mathcal{A} = 36 - \\dfrac{3x}{2} - \\left(3x - \\dfrac{x^{2}}{2}\\right) - \\left(27 - 3x\\right)$"
+    },
+    {
+     "numero": 6,
+     "action": "Supprimer les parenthèses",
+     "justification": "Le signe moins devant une parenthèse change **tous** les signes qu'elle contient",
+     "resultat_markdown": "$\\mathcal{A} = 36 - \\dfrac{3x}{2} - 3x + \\dfrac{x^{2}}{2} - 27 + 3x$"
+    },
+    {
+     "numero": 7,
+     "action": "Regrouper les termes constants",
+     "justification": "$36 - 27$",
+     "resultat_markdown": "Terme constant : $9$"
+    },
+    {
+     "numero": 8,
+     "action": "Regrouper les termes en $x$",
+     "justification": "$-\\dfrac{3x}{2} - 3x + 3x$ : les deux derniers s'annulent",
+     "resultat_markdown": "Terme en $x$ : $-\\dfrac{3x}{2}$"
+    },
+    {
+     "numero": 9,
+     "action": "Assembler",
+     "justification": "Le seul terme en $x^{2}$ est $\\dfrac{x^{2}}{2}$",
+     "resultat_markdown": "$\\mathcal{A} = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$"
+    },
+    {
+     "numero": 10,
+     "action": "Contrôler numériquement en $x = 3$",
+     "justification": "Alors $M$ et $N$ sont les milieux de $[AD]$ et $[DC]$",
+     "resultat_markdown": "La formule donne $\\dfrac{9}{2} - \\dfrac{9}{2} + 9 = 9$. Contrôle direct : $\\dfrac{9}{2} + \\dfrac{9}{2} + 18 + 9 = 36$. Le compte est juste"
+    }
+   ],
+   "conclusion_markdown": "L'aire du triangle $IMN$ vaut $\\mathcal{A} = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$ unités d'aire. Ce trinôme n'est pas une fin : c'est exactement la fonction $f$ que la partie B du problème étudie sur $[0\\,;\\,6]$. La géométrie vient de fabriquer un objet d'analyse, et la question « pour quelle position de $M$ l'aire est-elle minimale ? » devient « où cette parabole atteint-elle son sommet ? »."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Oublier de changer les signes en supprimant une parenthèse",
+     "pourquoi_faux": "Écrire $-\\left(3x - \\dfrac{x^{2}}{2}\\right) = -3x - \\dfrac{x^{2}}{2}$ inverse le signe du terme en $x^{2}$, et l'aire deviendrait négative pour les grandes valeurs de $x$ — impossible.",
+     "correction_markdown": "Écris toujours les parenthèses lors de la substitution, puis supprime-les dans une étape **séparée et visible**. Ne fais jamais les deux d'un coup mentalement."
+    },
+    {
+     "erreur_markdown": "Chercher à calculer directement l'aire du triangle $IMN$",
+     "pourquoi_faux": "Le triangle n'a ni angle droit ni côté sur le carré. Il faudrait construire une hauteur oblique, calculer les longueurs $IM$ et $IN$ par Pythagore, puis passer par la formule trigonométrique. Plusieurs pages là où le découpage tient en cinq lignes.",
+     "correction_markdown": "Quand une figure est difficile mais que son complémentaire est simple, calcule le complémentaire. Le mot « en déduire » de l'énoncé est d'ailleurs l'indice que le découpage est attendu."
+    },
+    {
+     "erreur_markdown": "Oublier une des régions du découpage",
+     "pourquoi_faux": "Retirer seulement les deux triangles sans le trapèze donne un résultat trop grand. Le découpage doit couvrir **tout** le carré, sans exception.",
+     "correction_markdown": "Colorie mentalement chaque région sur ton croquis et vérifie qu'aucune zone blanche ne subsiste. Puis contrôle numériquement : la somme doit valoir exactement $36$."
+    },
+    {
+     "erreur_markdown": "Se lancer dans les calculs sans écrire l'égalité de découpage",
+     "pourquoi_faux": "Ce n'est pas faux mathématiquement, mais le barème attribue un point de méthode à cette ligne. Un candidat qui se trompe ensuite dans l'algèbre le perd entièrement, alors qu'il aurait pu le conserver.",
+     "correction_markdown": "Écris en français : « aire du carré = somme des quatre morceaux ». Une phrase, un point, et cela structure la suite du raisonnement."
+    },
+    {
+     "erreur_markdown": "Ne pas vérifier le résultat sur un cas particulier",
+     "pourquoi_faux": "Une erreur de signe passe inaperçue dans une expression littérale, mais saute aux yeux dès qu'on substitue une valeur. C'est un contrôle qui coûte trente secondes.",
+     "correction_markdown": "Prends $x = 3$, calcule les quatre aires numériquement, et vérifie que leur somme vaut $36$. Si le compte ne tombe pas, l'erreur est dans l'un des quatre termes."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "$ABCD$ est un carré de côté $10$. Les points $P$, $Q$, $R$, $S$ sont les milieux respectifs de $[AB]$, $[BC]$, $[CD]$, $[DA]$. Calculer l'aire du quadrilatère $PQRS$ par découpage, et exprimer le résultat en fraction de l'aire du carré.",
+     "solution_markdown": "**Étape 1 - identifier le découpage.**\n\nLes quatre segments $[SP]$, $[PQ]$, $[QR]$, $[RS]$ découpent le carré en cinq régions : le quadrilatère central $PQRS$ et quatre triangles rectangles dans les coins, à savoir $APS$, $BQP$, $CRQ$ et $DSR$.\n\nAucun chevauchement, couverture complète : le découpage est licite.\n\n**Étape 2 - calculer l'aire d'un triangle de coin.**\n\nLe triangle $APS$ est rectangle en $A$. Ses côtés de l'angle droit valent\n\n$$AP = \\dfrac{AB}{2} = 5 \\qquad ; \\qquad AS = \\dfrac{AD}{2} = 5$$\n\n$$\\mathcal{A}(APS) = \\dfrac{5 \\times 5}{2} = \\dfrac{25}{2} = 12{,}5$$\n\n**Étape 3 - exploiter la symétrie.**\n\nLes quatre triangles de coin sont superposables, puisque tous les points sont des milieux et que le carré possède une symétrie d'ordre $4$. Leur aire totale vaut donc\n\n$$4 \\times 12{,}5 = 50$$\n\n**Étape 4 - appliquer le découpage.**\n\n$$\\mathcal{A}(PQRS) = \\mathcal{A}(ABCD) - 4 \\times \\mathcal{A}(APS) = 100 - 50 = 50$$\n\n**Étape 5 - exprimer en fraction.**\n\n$$\\dfrac{\\mathcal{A}(PQRS)}{\\mathcal{A}(ABCD)} = \\dfrac{50}{100} = \\dfrac{1}{2}$$\n\n**Le quadrilatère $PQRS$ occupe exactement la moitié du carré.**\n\n**Contrôle par une autre voie.** Le quadrilatère $PQRS$ est lui-même un carré, de côté $PQ$. Le triangle $BQP$ étant rectangle isocèle de côtés $5$ :\n\n$$PQ = 5\\sqrt{2} \\qquad \\Longrightarrow \\qquad \\mathcal{A}(PQRS) = \\left(5\\sqrt{2}\\right)^{2} = 25 \\times 2 = 50$$\n\nConforme.\n\n**Remarque.** Le rapport $\\dfrac{1}{2}$ ne dépend pas du côté du carré : il vaut toujours la moitié, quelle que soit la taille. C'est un résultat classique, connu depuis l'Antiquité."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABCD$ est un carré de côté $8$. Un point $M$ appartient à $[AB]$ avec $AM = x$, et un point $N$ appartient à $[BC]$ avec $BN = x$, où $0 \\leqslant x \\leqslant 8$. Exprimer l'aire du triangle $DMN$ en fonction de $x$ par découpage, puis déterminer la valeur de $x$ qui la rend minimale.",
+     "solution_markdown": "**Étape 1 - identifier le découpage.**\n\nLe triangle $DMN$ est entouré de trois triangles rectangles qui complètent le carré :\n\n- $ADM$, rectangle en $A$ ;\n- $MBN$, rectangle en $B$ ;\n- $NCD$, rectangle en $C$.\n\nCes quatre régions couvrent le carré sans se chevaucher.\n\n**Étape 2 - calculer les trois aires connues.**\n\nTriangle $ADM$ : côtés de l'angle droit $AD = 8$ et $AM = x$.\n\n$$\\mathcal{A}(ADM) = \\dfrac{8x}{2} = 4x$$\n\nTriangle $MBN$ : côtés $MB = 8 - x$ et $BN = x$.\n\n$$\\mathcal{A}(MBN) = \\dfrac{x(8-x)}{2} = 4x - \\dfrac{x^{2}}{2}$$\n\nTriangle $NCD$ : côtés $NC = 8 - x$ et $CD = 8$.\n\n$$\\mathcal{A}(NCD) = \\dfrac{8(8-x)}{2} = 32 - 4x$$\n\n**Étape 3 - appliquer le découpage.**\n\n$$\\mathcal{A}(DMN) = 64 - 4x - \\left(4x - \\dfrac{x^{2}}{2}\\right) - \\left(32 - 4x\\right)$$\n\n**Étape 4 - supprimer les parenthèses.**\n\n$$\\mathcal{A}(DMN) = 64 - 4x - 4x + \\dfrac{x^{2}}{2} - 32 + 4x$$\n\n**Étape 5 - réduire.**\n\nConstantes : $64 - 32 = 32$.\n\nTermes en $x$ : $-4x - 4x + 4x = -4x$.\n\n$$\\mathcal{A}(DMN) = \\dfrac{x^{2}}{2} - 4x + 32$$\n\n**Étape 6 - minimiser.**\n\nC'est un trinôme de coefficient dominant $\\dfrac{1}{2} > 0$ : la parabole est tournée vers le haut et admet un minimum au sommet.\n\n$$x_{0} = -\\dfrac{b}{2a} = -\\dfrac{-4}{2 \\times \\dfrac{1}{2}} = 4$$\n\nCette valeur appartient à $[0\\,;\\,8]$.\n\n$$\\mathcal{A}(DMN)(4) = \\dfrac{16}{2} - 16 + 32 = 8 - 16 + 32 = 24$$\n\n**Conclusion.** L'aire est minimale pour $x = 4$, c'est-à-dire quand $M$ et $N$ sont les milieux de leurs côtés, et elle vaut alors $24$ unités d'aire.\n\n**Contrôle en $x = 0$.** Alors $M = A$ et $N = B$, et le triangle $DMN$ devient $DAB$, d'aire $\\dfrac{8 \\times 8}{2} = 32$. La formule donne $0 - 0 + 32 = 32$. Conforme.\n\n**Contrôle en $x = 4$.** Aires des trois triangles : $16$, $8$, $16$, de somme $40$. Et $64 - 40 = 24$. Conforme.\n\n**Remarque.** Le minimum $24$ représente $37{,}5\\,\\%$ du carré. Le triangle ne descend jamais en dessous : sa configuration la plus « économe » est celle des milieux."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "$ABCD$ est un carré de côté $6$, $I$ le milieu de $[AB]$, $M$ sur $[AD]$ et $N$ sur $[DC]$ avec $AM = DN = x$. On a établi que $\\mathcal{A}(IMN) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$. Retrouver ce résultat par un calcul de déterminant dans un repère bien choisi, puis déterminer les valeurs de $x$ pour lesquelles l'aire du triangle $IMN$ vaut exactement le quart de celle du carré.",
+     "solution_markdown": "**Première partie - vérification par le déterminant.**\n\n**Étape 1 - choisir le repère.**\n\nPrenons le repère orthonormé $\\left(A\\,;\\,\\overrightarrow{i}\\,;\\,\\overrightarrow{j}\\right)$ avec $\\overrightarrow{i} = \\dfrac{1}{6}\\overrightarrow{AB}$ et $\\overrightarrow{j} = \\dfrac{1}{6}\\overrightarrow{AD}$. Les sommets ont pour coordonnées\n\n$$A(0\\,;\\,0) \\qquad B(6\\,;\\,0) \\qquad C(6\\,;\\,6) \\qquad D(0\\,;\\,6)$$\n\n**Étape 2 - coordonnées des trois points.**\n\n$I$ est le milieu de $[AB]$ : $I(3\\,;\\,0)$.\n\n$M$ est sur $[AD]$ avec $AM = x$ : $M(0\\,;\\,x)$.\n\n$N$ est sur $[DC]$ avec $DN = x$ ; comme $D(0\\,;\\,6)$ et $C(6\\,;\\,6)$ : $N(x\\,;\\,6)$.\n\n**Étape 3 - les deux vecteurs.**\n\n$$\\overrightarrow{IM} = \\begin{pmatrix} 0 - 3 \\\\ x - 0 \\end{pmatrix} = \\begin{pmatrix} -3 \\\\ x \\end{pmatrix} \\qquad ; \\qquad \\overrightarrow{IN} = \\begin{pmatrix} x - 3 \\\\ 6 \\end{pmatrix}$$\n\n**Étape 4 - le déterminant.**\n\n$$\\det\\left(\\overrightarrow{IM}\\,;\\,\\overrightarrow{IN}\\right) = (-3) \\times 6 - x \\times (x-3) = -18 - x^{2} + 3x$$\n\n**Étape 5 - l'aire.**\n\n$$\\mathcal{A} = \\dfrac{1}{2}\\left|-18 - x^{2} + 3x\\right| = \\dfrac{1}{2}\\left|x^{2} - 3x + 18\\right|$$\n\nLe trinôme $x^{2} - 3x + 18$ a pour discriminant $9 - 72 = -63 < 0$ : il est donc **toujours strictement positif**, et la valeur absolue peut être retirée.\n\n$$\\mathcal{A} = \\dfrac{x^{2} - 3x + 18}{2} = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$$\n\n**Le résultat du découpage est confirmé.**\n\n**Remarque sur le discriminant.** Sa négativité prouve au passage que l'aire ne s'annule jamais : les points $I$, $M$, $N$ ne sont jamais alignés, quelle que soit la valeur de $x$.\n\n**Seconde partie - le quart du carré.**\n\n**Étape 6 - poser l'équation.**\n\nL'aire du carré vaut $36$, donc son quart vaut $9$ :\n\n$$\\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9 = 9$$\n\n**Étape 7 - résoudre.**\n\n$$\\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x = 0$$\n\nOn multiplie par $2$ :\n\n$$x^{2} - 3x = 0 \\qquad \\Longrightarrow \\qquad x(x-3) = 0$$\n\n$$x = 0 \\qquad \\text{ou} \\qquad x = 3$$\n\n**Étape 8 - interpréter les deux solutions.**\n\nPour $x = 0$ : $M = A$ et $N = D$. Le triangle devient $IAD$, rectangle en $A$, de côtés $AI = 3$ et $AD = 6$, d'aire $\\dfrac{3 \\times 6}{2} = 9$. Conforme, et cette configuration, bien que limite, reste géométriquement valide.\n\nPour $x = 3$ : $M$ et $N$ sont les milieux de $[AD]$ et $[DC]$. C'est la configuration la plus symétrique, et le contrôle numérique du corrigé donnait déjà $9$. Conforme.\n\n**Conclusion.** L'aire du triangle $IMN$ vaut le quart de celle du carré pour $x = 0$ et pour $x = 3$.\n\n**Étape 9 - vérifier la cohérence avec le minimum.**\n\nLe minimum du trinôme est atteint en $x_{0} = \\dfrac{3}{2}$, exactement entre les deux solutions — ce qui est normal, la parabole étant symétrique par rapport à son axe. Sa valeur y est $\\dfrac{9}{8} - \\dfrac{9}{4} + 9 = \\dfrac{9 - 18 + 72}{8} = \\dfrac{63}{8} = 7{,}875 < 9$. Cohérent : entre les deux solutions, l'aire est inférieure au quart du carré.\n\n**Ce qu'il faut retenir.** Deux méthodes indépendantes — découpage et déterminant — donnant le même trinôme, la confiance dans le résultat est totale. En épreuve, un contrôle par une seconde méthode vaut souvent mieux qu'une relecture de la première."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "L'aire d'une figure est la somme des aires de régions qui la couvrent entièrement, sans se chevaucher.",
+    "Quand une figure est difficile mais son complémentaire simple, calcule le complémentaire.",
+    "Écris l'égalité de découpage en toutes lettres avant tout calcul : c'est le point de méthode.",
+    "Encadre chaque expression substituée par des parenthèses, puis supprime-les dans une étape distincte.",
+    "Un signe moins devant une parenthèse change **tous** les signes qu'elle contient.",
+    "Vérifie qu'aucune région n'est oubliée : chaque point de la figure doit appartenir à une région et une seule.",
+    "Contrôle numériquement sur une valeur simple : la somme des morceaux doit valoir exactement l'aire globale.",
+    "Le mot « en déduire » de l'énoncé signale qu'un résultat antérieur doit être réutilisé, donc qu'un découpage est attendu.",
+    "En repère, l'aire d'un triangle vaut la moitié de la valeur absolue d'un déterminant : bonne méthode de vérification indépendante.",
+    "Le trinôme obtenu devient l'objet d'une étude de fonction : la géométrie fabrique l'analyse."
+   ]
+  }
+ ]
+}

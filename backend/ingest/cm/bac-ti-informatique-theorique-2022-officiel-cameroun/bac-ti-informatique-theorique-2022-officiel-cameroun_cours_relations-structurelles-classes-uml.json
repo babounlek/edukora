@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-relations-structurelles-classes-tle-ti",
+  "meta": {
+    "titre": "Les relations structurelles entre classes UML : généralisation, agrégation, composition",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de classes : les relations structurelles",
+    "duree_estimee_min": 25,
+    "tags": [
+      "UML",
+      "généralisation",
+      "agrégation",
+      "composition"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex2-q2b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trois symboles reviennent sans cesse sur un diagramme de classes : une flèche triangulaire, un losange vide, un losange plein. Ils se ressemblent assez pour être confondus sous la pression de l'examen, mais ils encodent trois relations profondément différentes entre deux classes. Ce cours démêle les trois pour de bon."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une classe UML et ses trois compartiments (cours précédent).",
+        "Avoir une première idée intuitive de ce qu'est hériter d'une catégorie plus générale."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois symboles, trois relations",
+      "contenu_markdown": "La **généralisation** relie une sous-classe à une super-classe dont elle hérite des attributs et opérations : elle se dessine par un trait plein terminé par une flèche à tête triangulaire creuse, pointant vers la classe la plus générale. La **composition** et l'**agrégation** représentent toutes deux une relation « tout-partie », mais diffèrent par la force du lien : dans une **composition**, la partie ne peut exister sans le tout et disparaît avec lui - losange PLEIN du côté du tout ; dans une **agrégation**, la partie garde une existence autonome et peut survivre à la disparition du tout - losange VIDE du côté du tout.\n\nLe test pour distinguer agrégation et composition : si le tout disparaît, la partie disparaît-elle nécessairement avec lui ? Si oui, composition. Si la partie peut survivre ou être réutilisée ailleurs, agrégation.",
+      "formule_principale": "Généralisation : enfant -|> parent (triangle creux)  ;  Composition : tout <=> partie (losange plein)  ;  Agrégation : tout <-> partie (losange vide)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le diagramme d'un hôtel, la classe Chambre est reliée à la classe Hotel par un losange plein côté Hotel ; la classe Occupation est reliée à la classe Hotel par un losange vide côté Hotel, avec le rôle « facturation ». Interpréter ces deux relations.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le type de losange de chaque relation",
+          "justification": "Le remplissage du losange est le seul indice visuel qui distingue composition et agrégation.",
+          "resultat_markdown": "Hotel-Chambre : losange plein. Hotel-Occupation : losange vide."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le test de survie de la partie",
+          "justification": "C'est le raisonnement qui donne du sens au symbole, au-delà de sa simple reconnaissance visuelle.",
+          "resultat_markdown": "Une Chambre n'a pas de sens hors de son Hotel : si l'hôtel ferme, la chambre disparaît du système. Une Occupation garde un intérêt même si la gestion de l'hôtel changeait."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la nature de chaque relation",
+          "justification": "Le test confirme la lecture faite du symbole.",
+          "resultat_markdown": "Hotel-Chambre est une composition. Hotel-Occupation est une agrégation."
+        }
+      ],
+      "conclusion_markdown": "Le symbole ET le raisonnement métier doivent toujours converger : un losange mal choisi trahit une modélisation qui ne reflète pas la réalité du système décrit."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le sens du triangle de généralisation avec celui d'une flèche d'association simple",
+          "pourquoi_faux": "Une flèche d'association simple indique un sens de navigation, alors que le triangle creux de la généralisation indique spécifiquement un lien d'héritage, avec des conséquences sur les attributs et opérations hérités.",
+          "correction_markdown": "Vérifie toujours la forme de la tête de flèche : un triangle creux et fermé signale une généralisation, une simple pointe ouverte signale une association ordinaire."
+        },
+        {
+          "erreur_markdown": "Décider qu'une relation est une composition simplement parce que les deux classes semblent « proches » dans l'énoncé",
+          "pourquoi_faux": "La proximité dans le texte ne suffit pas : seule la question de la survie de la partie sans le tout permet de trancher entre agrégation et composition.",
+          "correction_markdown": "Applique systématiquement le test : « si le tout disparaît, la partie disparaît-elle nécessairement avec lui ? » avant de choisir entre les deux losanges."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une classe Vehicule est composée de plusieurs classes Roue (une roue n'a pas de sens hors d'un véhicule et est détruite avec lui). Quelle relation UML représente ce lien, et avec quel symbole ?",
+          "solution_markdown": "C'est une relation de **composition** : une Roue ne peut exister indépendamment du Vehicule auquel elle appartient, et disparaît avec lui. Elle se représente par un losange PLEIN du côté de la classe Vehicule (le tout)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une classe Equipe est associée à plusieurs classes Joueur ; un Joueur peut cependant changer d'équipe au cours de sa carrière et continue d'exister indépendamment d'une équipe précise. Quelle relation UML représente ce lien ?",
+          "solution_markdown": "C'est une relation d'**agrégation** : le Joueur garde une existence autonome, indépendante d'une Equipe précise. Elle se représente par un losange VIDE du côté de la classe Equipe (le tout)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une classe Personne est spécialisée en classe Etudiant et en classe Enseignant. La classe Etablissement est composée de plusieurs classes Salle, et est associée par agrégation à plusieurs classes Etudiant (un étudiant peut changer d'établissement sans être détruit). Représenter et justifier l'ensemble des trois relations en jeu.",
+          "solution_markdown": "**Généralisation** : Etudiant et Enseignant héritent de Personne, deux flèches à tête triangulaire creuse pointant vers Personne. **Composition** : Etablissement-Salle, losange PLEIN côté Etablissement, car une salle n'a pas de sens hors de l'établissement qui la contient. **Agrégation** : Etablissement-Etudiant, losange VIDE côté Etablissement, car un étudiant garde son existence propre même s'il change d'établissement en cours de cursus - contrairement à la salle, il n'est jamais détruit par un changement d'affectation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Généralisation = héritage entre classes, triangle creux pointant vers la classe la plus générale.",
+        "Composition = relation tout-partie forte, la partie ne survit jamais au tout, losange plein côté tout.",
+        "Agrégation = relation tout-partie faible, la partie garde son autonomie, losange vide côté tout.",
+        "Le test décisif entre agrégation et composition : la partie disparaît-elle nécessairement si le tout disparaît ?",
+        "Au BAC TI, ces trois relations sont presque toujours présentes ensemble sur un même diagramme fourni en énoncé : les repérer correctement conditionne la réussite de toutes les questions qui en dépendent."
+      ]
+    }
+  ]
+}

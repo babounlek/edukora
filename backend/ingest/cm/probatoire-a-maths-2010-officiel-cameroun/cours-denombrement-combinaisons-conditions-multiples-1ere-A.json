@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-denombrement-combinaisons-conditions-multiples-1ere-A",
+  "meta": {
+    "titre": "Dénombrement par combinaisons avec conditions multiples",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Organisation et gestion des données",
+    "duree_estimee_min": 25,
+    "tags": [
+      "combinaisons",
+      "dénombrement",
+      "principe multiplicatif"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathematiques - Cameroun - Session 2010",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2010-officiel-cameroun-ex2-q5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un enseignant doit former une équipe de 4 élèves pour un concours, avec une contrainte précise : un élève d'un groupe donné et trois élèves d'un autre groupe. Compter le nombre d'équipes possibles à la main deviendrait vite impossible avec plusieurs dizaines d'élèves. Le dénombrement par combinaisons donne une formule directe pour ce genre de comptage."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la factorielle $n!$",
+        "Savoir qu'une combinaison ne tient pas compte de l'ordre des éléments choisis"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Combinaisons et principe multiplicatif",
+      "contenu_markdown": "Le nombre de façons de choisir $k$ éléments distincts parmi $n$, sans tenir compte de l'ordre, est $\\displaystyle\\binom{n}{k}=\\frac{n!}{k!(n-k)!}$. Quand un choix se décompose en plusieurs groupes indépendants (par exemple \"1 élève parmi tel groupe ET 3 élèves parmi tel autre groupe\"), le nombre total de choix possibles est le PRODUIT des combinaisons associées à chaque groupe : c'est le principe multiplicatif.",
+      "formule_principale": "\\binom{n}{k}=\\frac{n!}{k!(n-k)!}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une classe compte 3 élèves de moyenne inférieure à 4 et 8 élèves de moyenne supérieure ou égale à 12. On veut désigner 4 élèves comprenant exactement 1 élève du premier groupe et 3 élèves du second. Calculer le nombre de choix possibles.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les deux groupes indépendants et leurs effectifs",
+          "justification": "Le choix se décompose en deux conditions distinctes à satisfaire simultanément",
+          "resultat_markdown": "1 élève parmi 3, et 3 élèves parmi 8"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la combinaison de chaque groupe",
+          "justification": "L'ordre de sélection ne compte pas dans une équipe",
+          "resultat_markdown": "$\\binom{3}{1}=3 \\qquad \\binom{8}{3}=\\dfrac{8\\times7\\times6}{3\\times2\\times1}=56$"
+        },
+        {
+          "numero": 3,
+          "action": "Multiplier les deux résultats",
+          "justification": "Principe multiplicatif : les deux choix sont indépendants",
+          "resultat_markdown": "$3\\times56=168$"
+        }
+      ],
+      "conclusion_markdown": "Il existe 168 façons de désigner les 4 élèves dans les conditions demandées."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner les deux combinaisons au lieu de les multiplier",
+          "pourquoi_faux": "Le choix des deux groupes se fait SIMULTANÉMENT (1 élève ET 3 élèves), pas l'un OU l'autre : chaque choix du premier groupe se combine avec chaque choix du second, ce qui correspond à une multiplication, pas une addition.",
+          "correction_markdown": "Repère si les conditions sont liées par un \"ET\" (multiplication) ou un \"OU\" (addition) avant de choisir l'opération."
+        },
+        {
+          "erreur_markdown": "Oublier de regrouper plusieurs sous-groupes qui vérifient ensemble une même condition",
+          "pourquoi_faux": "Si la condition porte sur \"moyenne supérieure ou égale à 12\" et que deux classes séparées répondent à ce critère, il faut additionner leurs effectifs avant de calculer la combinaison, sinon une partie des candidats disponibles est ignorée.",
+          "correction_markdown": "Avant de calculer une combinaison, vérifie que l'effectif utilisé regroupe bien TOUS les éléments qui vérifient la condition posée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un groupe compte 5 filles et 4 garçons. Combien de façons de choisir 2 filles et 1 garçon ?",
+          "solution_markdown": "$\\binom{5}{2}\\times\\binom{4}{1}=10\\times4=40$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une classe compte 6 candidats admissibles et 10 candidats non admissibles. Combien de comités de 3 personnes comprenant exactement 2 admissibles et 1 non admissible peut-on former ?",
+          "solution_markdown": "$\\binom{6}{2}\\times\\binom{10}{1}=15\\times10=150$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un jury de 5 personnes doit être formé parmi 6 hommes et 5 femmes, avec au moins 2 femmes. Calculer le nombre de jurys possibles (indication : additionner les cas à 2, 3, 4 et 5 femmes).",
+          "solution_markdown": "Cas 2 femmes/3 hommes : $\\binom{5}{2}\\binom{6}{3}=10\\times20=200$. Cas 3 femmes/2 hommes : $\\binom{5}{3}\\binom{6}{2}=10\\times15=150$. Cas 4 femmes/1 homme : $\\binom{5}{4}\\binom{6}{1}=5\\times6=30$. Cas 5 femmes/0 homme : $\\binom{5}{5}\\binom{6}{0}=1\\times1=1$. Total : $200+150+30+1=381$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une combinaison $\\binom{n}{k}$ compte les choix de $k$ éléments parmi $n$ sans tenir compte de l'ordre.",
+        "Décompose toujours un dénombrement à conditions multiples en sous-groupes indépendants avant de calculer.",
+        "Un \"ET\" entre deux conditions se traduit par une multiplication des combinaisons, un \"OU\" par une addition.",
+        "Regroupe d'abord tous les éléments qui vérifient une même condition avant de calculer la combinaison correspondante.",
+        "Ce type de dénombrement est un classique du Probatoire, souvent posé en fin d'exercice de statistiques pour croiser les deux notions."
+      ]
+    }
+  ]
+}

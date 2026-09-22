@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-operateur-de-recherche-avancee-allinurl-google-terminale-ti",
+  "meta": {
+    "titre": "Opérateur de recherche avancée allinurl (Google)",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Recherche avancée sur le Web",
+    "duree_estimee_min": 15,
+    "tags": [
+      "opérateurs de recherche Google",
+      "allinurl",
+      "inurl",
+      "recherche avancée",
+      "Google"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex2-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chercher des mots n'importe où dans une page renvoie souvent des milliers de résultats trop larges pour être exploitables. Un moteur de recherche comme Google propose des opérateurs qui restreignent la recherche à une zone précise de la page, par exemple à son adresse (URL) elle-même : une astuce redoutablement efficace pour cibler des documents bien identifiés."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'URL",
+        "Usage de base d'un moteur de recherche"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'opérateur allinurl:",
+      "contenu_markdown": "L'opérateur **allinurl:** restreint une recherche Google aux pages dont l'URL contient TOUS les mots indiqués après l'opérateur, quel que soit leur ordre dans l'URL. Il se distingue de **inurl:**, qui ne contraint que le mot placé immédiatement après lui, les mots suivants étant alors cherchés n'importe où dans la page (pas nécessairement dans l'URL).",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "inurl: (un seul mot contraint)",
+          "quand_utiliser": "Quand un seul mot doit obligatoirement figurer dans l'URL, les autres mots de la requête restant libres.",
+          "contenu_markdown": "inurl:pandemie Afrique ne contraint que « pandemie » à figurer dans l'URL ; « Afrique » est alors cherché n'importe où dans la page."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la commande Google qui retourne toutes les pages dont l'URL contient à la fois les mots « pandémie » et « Afrique ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la contrainte demandée",
+          "justification": "L'énoncé exige que les deux mots figurent tous les deux dans l'URL, pas seulement dans le contenu de la page.",
+          "resultat_markdown": "Il faut un opérateur qui restreigne PLUSIEURS mots à la zone URL en même temps."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir l'opérateur adapté",
+          "justification": "allinurl: s'applique à tous les mots qui le suivent, contrairement à inurl: qui ne s'applique qu'au premier.",
+          "resultat_markdown": "L'opérateur allinurl: convient exactement à cette contrainte."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la commande complète",
+          "justification": "La syntaxe place l'opérateur suivi directement des mots concernés.",
+          "resultat_markdown": "Commande : allinurl:pandémie Afrique"
+        }
+      ],
+      "conclusion_markdown": "allinurl:pandémie Afrique retourne uniquement les pages dont l'adresse contient les deux mots, ce qui élimine toute page où l'un des deux mots n'apparaîtrait que dans le contenu, pas dans l'URL."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire « inurl:pandémie Afrique » en pensant contraindre les deux mots à l'URL",
+          "pourquoi_faux": "inurl: ne s'applique qu'au mot qui le suit immédiatement (« pandémie ») ; « Afrique » serait alors cherché n'importe où dans la page, pas nécessairement dans l'URL.",
+          "correction_markdown": "Utilise allinurl: dès que PLUSIEURS mots doivent tous figurer dans l'URL."
+        },
+        {
+          "erreur_markdown": "Croire que allinurl: recherche les mots dans le contenu ET dans l'URL de la page",
+          "pourquoi_faux": "allinurl: restreint strictement la recherche à l'URL de la page ; il ne vérifie pas si les mots figurent aussi dans son contenu visible.",
+          "correction_markdown": "Précise que la contrainte porte uniquement sur l'adresse (URL) de la page, pas sur son contenu."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la commande qui recherche les pages dont l'URL contient le seul mot « biodiversite ».",
+          "solution_markdown": "inurl:biodiversite (allinurl: fonctionnerait aussi pour un seul mot, mais inurl: suffit et est la forme la plus naturelle pour un seul mot)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Comparer les résultats attendus de allinurl:cours reseaux et de inurl:cours reseaux.",
+          "solution_markdown": "allinurl:cours reseaux ne retient que les pages dont l'URL contient à la fois « cours » ET « reseaux ». inurl:cours reseaux ne contraint que le mot « cours » à figurer dans l'URL ; le mot « reseaux » est alors cherché n'importe où dans la page, pas nécessairement dans son URL. La seconde commande retourne donc en général davantage de résultats, moins strictement ciblés, que la première."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi l'opérateur allinurl: peut échouer à retrouver une page pertinente si les mots recherchés apparaissent dans l'URL sous une forme légèrement différente (par exemple sans accent, ou séparés par un tiret).",
+          "solution_markdown": "Les opérateurs de recherche par URL comparent les mots demandés à la chaîne de caractères réelle de l'URL, qui suit souvent des conventions techniques différentes du langage courant : une URL contient rarement des accents (pandemie plutôt que pandémie), utilise fréquemment des tirets ou underscores à la place des espaces (articles-sur-la-pandemie), ou emploie des abréviations. Si le mot recherché ne correspond pas exactement, même à un accent ou un caractère de séparation près, à la forme réellement présente dans l'URL, l'opérateur allinurl: ne retiendra pas la page, même si son contenu traite parfaitement du sujet recherché. Il est donc utile de tester plusieurs variantes du mot (sans accent, avec tiret) si une première recherche allinurl: ne donne pas de résultat satisfaisant."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "allinurl: exige que TOUS les mots suivants figurent dans l'URL de la page.",
+        "inurl: ne contraint que le mot placé immédiatement après lui à l'URL.",
+        "Ces deux opérateurs ne portent que sur l'adresse (URL) de la page, jamais sur son contenu visible.",
+        "Une URL réelle contient rarement des accents et utilise souvent des tirets : penser à tester des variantes du mot recherché."
+      ]
+    }
+  ]
+}

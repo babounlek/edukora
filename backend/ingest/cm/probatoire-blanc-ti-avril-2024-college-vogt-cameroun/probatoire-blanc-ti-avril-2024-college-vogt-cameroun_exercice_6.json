@@ -1,0 +1,90 @@
+{
+  "epreuve_source": "probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+  "numero_exercice": "6",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "etablissement",
+  "etablissement": "Collège Mgr. François-Xavier VOGT",
+  "institution": null,
+  "annee": 2024,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "introduction_markdown": null,
+  "points": "0,75",
+  "groupes": [
+    "PARTIE II : PROGRAMMATION DES SITES WEB STATIQUES ET DYNAMIQUES (6 pts)",
+    "B- Évaluation des compétences (4,25 pts)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 3 (0,75 pt)**\n\n```html\n<html><head><title> Santa Djon </title></head>\n<body background=\"desert.jpg\">\n<p align=\"center\"> <strong>Santa Djon Solidarity </strong></p>\n<script language=\"javascript\">\ndo\n{\np=parseInt(prompt(\"Entrez l'entier p:\"));\nn=parseInt(prompt(\"Entrez l'entier n:\"));\n}\nwhile(n<0 || p<0 || p>n)\no=1;\ns=1;\nfor (i=1;i<=n;i++)\n{\no=o*i;\n}\nfor (i=1;i<=p;i++)\n{\ns=s*i;\n}\na=n-p;\nm=1;\nfor (i=1;i<=a;i++)\n{\nm=m*i;\n}\ny=s*m;\nz=o/y;\nalert(\"La solution :\"+z);\n</script></body></html>\n```",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Exécuter le script ci-dessous pour n=2 et p=6. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nExécuter (simuler) un script comportant une boucle do...while avec une condition de validation de saisie consiste à tester d'abord si les valeurs proposées vérifient cette condition : tant qu'elle échoue, le corps de la boucle se répète et redemande une saisie, avant même d'atteindre les instructions placées après la boucle.\n\nLe script commence par :\n```javascript\ndo\n{\np=parseInt(prompt(\"Entrez l'entier p:\"));\nn=parseInt(prompt(\"Entrez l'entier n:\"));\n}\nwhile(n<0 || p<0 || p>n)\n```\nUne boucle `do...while` exécute toujours son corps au moins une fois, puis teste la condition : si elle est vraie, on reboucle ; si elle est fausse, on continue avec la suite du script.\n\n**Exécution avec n=2 et p=6**\n\n1. Premier passage dans le corps de la boucle : l'utilisateur saisit `p=6` puis `n=2`.\n2. Test de la condition `while(n<0 || p<0 || p>n)` : `n<0` est faux (2 n'est pas négatif), `p<0` est faux (6 n'est pas négatif), mais `p>n` vaut `6>2`, ce qui est **vrai**.\n3. La condition globale (union par `||`) est donc **vraie** : la boucle recommence et redemande à l'utilisateur de saisir `p` puis `n`.\n\n**Conclusion de l'exécution** : avec les valeurs n=2 et p=6, le script ne dépasse jamais la boucle `do...while` : il redemande indéfiniment une nouvelle saisie tant que l'utilisateur ne fournit pas des valeurs telles que `p` soit inférieur ou égal à `n` (et que les deux soient positifs ou nuls). Aucun calcul de `o`, `s`, `m`, `y` ni `z` n'est donc effectué avec ces valeurs : la boîte de dialogue `alert(\"La solution :\"+z)` ne s'affiche jamais tant que l'utilisateur n'entre pas un couple valide (par exemple p=2 et n=6).\n\n### Piège à éviter\nBeaucoup d'élèves ignorent la boucle `do...while` et calculent directement `z` en substituant n=2 et p=6 dans les formules du bas (comme si le script s'exécutait en ligne droite). C'est une erreur : la condition de validation `p>n` (ici vraie) empêche précisément le script d'atteindre ces lignes avec des valeurs où p dépasse n. Toujours vérifier la condition de la boucle `do...while` avant de dérouler la suite du script.\n\n### Conseil\nPour ce genre de question, commence systématiquement par évaluer la condition d'arrêt de la boucle avec les valeurs données, avant de calculer quoi que ce soit d'autre : c'est souvent elle qui décide si le reste du script s'exécute ou non.",
+      "themes": [
+        "JavaScript",
+        "Boucle do...while",
+        "Validation de saisie",
+        "Simulation d'exécution"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex6-q1-0",
+          "competence": "Simulation d'exécution d'une boucle do...while avec contrôle de saisie",
+          "contenu_markdown": "Exécuter (simuler) un script comportant une boucle do...while avec une condition de validation de saisie consiste à tester d'abord si les valeurs proposées vérifient cette condition : tant qu'elle échoue, le corps de la boucle se répète et redemande une saisie, avant même d'atteindre les instructions placées après la boucle.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Dire ce que le script permet de faire. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour identifier ce que calcule un script numérique, on remplace chaque bloc de code par l'opération mathématique qu'il traduit (une boucle for qui multiplie i à chaque tour calcule une factorielle), puis on assemble ces briques pour reconnaître une formule connue.\n\nUne fois la saisie validée (p ≤ n, les deux positifs ou nuls), le script calcule :\n\n- `for (i=1;i<=n;i++) { o=o*i; }` avec `o` initialisé à 1 : ceci calcule $o = n!$ (factorielle de n).\n- `for (i=1;i<=p;i++) { s=s*i; }` avec `s` initialisé à 1 : ceci calcule $s = p!$ (factorielle de p).\n- `a=n-p; for (i=1;i<=a;i++) { m=m*i; }` avec `m` initialisé à 1 : ceci calcule $m = (n-p)!$ (factorielle de n-p).\n- `y=s*m;` donne $y = p! \\times (n-p)!$.\n- `z=o/y;` donne :\n$$z = \\frac{n!}{p! \\times (n-p)!}$$\n\nCette expression est exactement la formule du nombre de combinaisons de $p$ éléments choisis parmi $n$, notée $C_n^p$ ou $\\binom{n}{p}$, utilisée en dénombrement.\n\n**Ce que permet le script** : calculer le nombre de combinaisons possibles de $p$ éléments pris parmi $n$ éléments (le nombre de façons de choisir $p$ objets parmi $n$ sans tenir compte de l'ordre).\n\n### Conseil\nReconnaître la formule $\\dfrac{n!}{p!(n-p)!}$ à vue est un gain de temps précieux : dès que tu la repères dans un script, tu sais immédiatement qu'il s'agit d'un calcul de combinaison, sans avoir besoin de dérouler chaque boucle en détail.",
+      "themes": [
+        "JavaScript",
+        "Factorielle",
+        "Combinaisons",
+        "Dénombrement"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex6-q2-0",
+          "competence": "Reconnaître un algorithme de calcul combinatoire (nombre de combinaisons C(n,p))",
+          "contenu_markdown": "Pour identifier ce que calcule un script numérique, on remplace chaque bloc de code par l'opération mathématique qu'il traduit (une boucle for qui multiplie i à chaque tour calcule une factorielle), puis on assemble ces briques pour reconnaître une formule connue.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "JavaScript",
+    "do while",
+    "factorielle",
+    "combinaison",
+    "dénombrement",
+    "simulation d'exécution"
+  ],
+  "incertitudes": [
+    "Matière Informatique en principe couverte par le référentiel programme officiel edukora, mais le fichier backend/programme/fixtures/programme_officiel_cm_informatique.json est introuvable sur cet environnement : savoir_officiel laissé à null par manque d'accès au référentiel."
+  ],
+  "statut": "brouillon"
+}

@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-la-sequence-de-demarrage-dun-ordinateur-post-tle-ti",
+  "meta": {
+    "titre": "La séquence de démarrage d'un ordinateur (POST)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 15,
+    "tags": [
+      "POST",
+      "BIOS",
+      "démarrage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3-qA.2-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Entre l'instant où l'on appuie sur le bouton power et l'apparition du bureau de Windows, un enchaînement d'étapes précis se déroule, chacune vérifiant que le matériel est prêt avant de passer à la suivante. Connaître cet enchaînement, c'est déjà savoir où chercher quand un ordinateur refuse de démarrer normalement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un microprocesseur et un système d'exploitation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du courant électrique à l'interface du système d'exploitation",
+      "contenu_markdown": "Le démarrage d'un ordinateur suit une séquence stricte : d'abord la mise sous tension des composants (alimentation, ventilateurs, voyants), puis l'exécution du **POST** (Power-On Self-Test) par le BIOS/UEFI, qui vérifie le bon fonctionnement des composants essentiels (mémoire, processeur, cartes) et signale une éventuelle erreur par un bip sonore ou un message ; enfin, le BIOS/UEFI recherche un périphérique de démarrage et lance le chargement du système d'exploitation, jusqu'à l'affichage de son interface.",
+      "formule_principale": "Mise sous tension -> POST (BIOS/UEFI) -> chargement du système d'exploitation -> interface affichée",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier le premier évènement perceptible après la pression du bouton power d'une unité centrale.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce qui se produit immédiatement à la mise sous tension",
+          "justification": "Avant tout traitement logiciel, l'électricité doit alimenter les composants",
+          "resultat_markdown": "L'alimentation fournit du courant aux composants : ventilateurs et voyants s'activent immédiatement."
+        },
+        {
+          "numero": 2,
+          "action": "Situer cet évènement par rapport au reste de la séquence",
+          "justification": "Il faut vérifier qu'aucune étape ne le précède réellement",
+          "resultat_markdown": "Cette mise sous tension précède même le POST du BIOS, qui ne peut s'exécuter qu'une fois le processeur alimenté."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur le premier évènement réellement perceptible",
+          "justification": "\"Perceptible\" signifie visible ou audible par l'utilisateur, pas seulement mesurable électriquement",
+          "resultat_markdown": "L'allumage des voyants et la mise en rotation des ventilateurs, quasi simultanés avec le bip du POST."
+        }
+      ],
+      "conclusion_markdown": "Le premier évènement perceptible est la mise sous tension immédiate des composants (voyants, ventilateurs), avant même le premier affichage à l'écran."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre \"l'affichage du logo de la carte mère à l'écran\" comme premier évènement",
+          "pourquoi_faux": "L'affichage à l'écran nécessite déjà que le contrôleur vidéo ait été initialisé par le POST, ce qui suppose que l'alimentation, les ventilateurs et le début du POST aient déjà eu lieu : ce n'est donc pas le tout premier évènement.",
+          "correction_markdown": "Classe toujours les évènements du démarrage dans leur ordre chronologique réel avant de répondre \"le premier\" : l'affichage à l'écran vient après plusieurs étapes internes déjà amorcées."
+        },
+        {
+          "erreur_markdown": "Croire que le POST et le chargement du système d'exploitation sont la même étape",
+          "pourquoi_faux": "Le POST est un test matériel exécuté par le BIOS/UEFI, indépendant de tout système d'exploitation ; le chargement du système d'exploitation n'intervient qu'après, une fois le POST terminé avec succès.",
+          "correction_markdown": "Sépare toujours ces deux étapes dans une réponse : le POST vérifie le matériel, le système d'exploitation ne démarre qu'ensuite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifie le sigle POST dans le contexte du démarrage d'un ordinateur ?",
+          "solution_markdown": "Power-On Self-Test : le test automatique que le BIOS/UEFI effectue sur les composants essentiels à chaque mise sous tension."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ordinateur émet une série de bips au démarrage puis n'affiche rien à l'écran. Que peut-on en déduire ?",
+          "solution_markdown": "Les bips proviennent du POST exécuté par le BIOS/UEFI, qui a détecté une anomalie matérielle avant même l'initialisation de l'affichage (mémoire RAM mal insérée, carte graphique défectueuse, par exemple). Le code sonore précis (nombre et durée des bips) dépend du fabricant du BIOS et indique généralement la nature exacte du composant en cause ; l'absence totale d'affichage confirme que le POST s'est arrêté avant même de pouvoir initialiser la sortie vidéo."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi un technicien en maintenance considère-t-il le POST comme une étape critique à comprendre, plutôt qu'un simple détail technique du démarrage ?",
+          "solution_markdown": "Le POST est la seule étape du démarrage qui teste systématiquement et automatiquement les composants matériels essentiels avant que quoi que ce soit d'autre ne s'exécute. Un échec à cette étape (bips d'erreur, blocage avant l'affichage) localise immédiatement le problème au niveau matériel (mémoire, carte graphique, processeur), sans qu'il soit nécessaire de suspecter le système d'exploitation, qui n'a même pas encore commencé à se charger. Comprendre précisément à quelle étape un démarrage échoue (avant, pendant, ou après le POST) permet donc au technicien de cibler immédiatement sa recherche de panne, plutôt que de tester au hasard logiciel et matériel."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La séquence de démarrage suit un ordre strict : mise sous tension, POST, chargement du système d'exploitation.",
+        "Le premier évènement perceptible est la mise sous tension des composants (voyants, ventilateurs), avant l'affichage à l'écran.",
+        "Le POST (Power-On Self-Test) est exécuté par le BIOS/UEFI et teste les composants matériels essentiels.",
+        "Un échec du POST se signale souvent par des bips sonores, avant même toute tentative d'affichage.",
+        "Au BAC TI, situer précisément à quelle étape un problème survient est la compétence clé d'un diagnostic de panne au démarrage."
+      ]
+    }
+  ]
+}

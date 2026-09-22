@@ -1,0 +1,105 @@
+{
+  "cours_id": "cours-plage-adresses-utilisables-sous-reseau-nkongsamba-2021",
+  "meta": {
+    "titre": "Déterminer la plage d'adresses utilisables d'un sous-réseau",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage IPv4 et sous-réseaux",
+    "duree_estimee_min": 15,
+    "tags": [
+      "sous-réseaux",
+      "adresse utilisable",
+      "adresse de diffusion",
+      "plage d'adresses utilisables"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-blanc-ti-reseau-2021-nkongsamba-cameroun",
+    "epreuve_titre": "Examen blanc - Lycée Bilingue de Nkongsamba - Réseau, Internet et Sécurité informatique - TI - 2021",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex2-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois le masque connu, tous les sous-réseaux d'un découpage se déduisent mécaniquement en avançant par blocs de taille identique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer la taille d'un bloc de sous-réseau (2 puissance h).",
+        "Savoir calculer le nombre maximal d'hôtes d'un sous-réseau."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lister les sous-réseaux et leur plage utilisable",
+      "contenu_markdown": "Pour lister les sous-réseaux issus d'un découpage, on calcule la taille d'un bloc par 2 puissance h (h étant le nombre de bits hôtes), puis on énumère les sous-réseaux successifs par pas de cette taille dans l'octet concerné. Dans chaque sous-réseau, la première adresse (bits hôtes à 0) et la dernière (bits hôtes à 1) sont réservées, si bien que la plage utilisable va de la première adresse plus 1 à la dernière adresse moins 1."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec un masque /29 (3 bits hôtes) sur le réseau 10.0.0.0, quelle est la plage utilisable du 3e sous-réseau ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la taille du bloc",
+          "justification": "2 puissance h avec h=3 bits hôtes.",
+          "resultat_markdown": "2³ = 8 adresses par bloc."
+        },
+        {
+          "numero": 2,
+          "action": "Énumérer les sous-réseaux par pas de 8",
+          "justification": "Sous-réseau 1 : .0-.7 ; sous-réseau 2 : .8-.15 ; sous-réseau 3 : .16-.23.",
+          "resultat_markdown": "3e sous-réseau : 10.0.0.16 à 10.0.0.23."
+        },
+        {
+          "numero": 3,
+          "action": "Exclure adresse réseau et diffusion",
+          "justification": "La première (.16) et la dernière (.23) sont réservées.",
+          "resultat_markdown": "Plage utilisable : 10.0.0.17 à 10.0.0.22."
+        }
+      ],
+      "conclusion_markdown": "La plage utilisable exclut systématiquement les deux bornes du bloc, qui restent réservées à l'identification du réseau et à la diffusion."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inclure l'adresse réseau ou l'adresse de diffusion dans la plage utilisable",
+          "pourquoi_faux": "Ces deux adresses délimitent le sous-réseau mais ne peuvent jamais être attribuées à une machine."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec des blocs de taille 16, quelle est l'adresse réseau du 2e sous-réseau à partir de 172.16.0.0 ?",
+          "solution_markdown": "172.16.0.16 (1 × 16 = 16)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "élevé",
+          "enonce_markdown": "Pour ce même 2e sous-réseau (bloc de 16), donner la plus petite et la plus grande adresse utilisable.",
+          "solution_markdown": "Le bloc va de 172.16.0.16 à 172.16.0.31. Plage utilisable : 172.16.0.17 à 172.16.0.30."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Taille du bloc = 2 puissance (bits hôtes).",
+        "Les sous-réseaux se succèdent par pas de cette taille.",
+        "Plage utilisable = (adresse réseau + 1) jusqu'à (adresse de diffusion - 1)."
+      ]
+    }
+  ]
+}

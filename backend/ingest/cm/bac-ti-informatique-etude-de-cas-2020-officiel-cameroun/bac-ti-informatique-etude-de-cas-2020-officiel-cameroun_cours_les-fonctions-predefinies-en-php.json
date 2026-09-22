@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-les-fonctions-predefinies-en-php-tle-ti",
+  "meta": {
+    "titre": "Les fonctions prédéfinies en PHP",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases du langage PHP",
+    "duree_estimee_min": 15,
+    "tags": [
+      "fonctions PHP",
+      "paramètres",
+      "mysql_connect"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q4.4-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un développeur PHP n'écrit presque jamais de zéro : il assemble des fonctions déjà écrites par le langage lui-même ou par ses extensions, chacune capable d'exécuter une tâche précise dès qu'on lui fournit les bonnes informations. Savoir reconnaître une fonction et ses paramètres, c'est comprendre ce qu'un script demande réellement à PHP de faire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir distinguer une variable ($nom) d'un appel de fonction (nom())",
+        "Avoir déjà lu un extrait de code PHP simple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un nom suivi de parenthèses contenant ses paramètres",
+      "contenu_markdown": "Une **fonction prédéfinie** est une portion de code déjà écrite, fournie par PHP ou par une de ses extensions (comme l'extension MySQL), et que l'on déclenche simplement en écrivant son nom suivi de parenthèses. Les **paramètres** sont les informations placées entre ces parenthèses, séparées par des virgules : ils indiquent à la fonction sur quelles données elle doit travailler. Une fonction peut n'avoir aucun paramètre (parenthèses vides), un seul, ou plusieurs.",
+      "formule_principale": "nomDeLaFonction(parametre1, parametre2, ...)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code de VIPBoutique, identifier deux fonctions utilisées et déterminer les paramètres de chacune.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les noms suivis de parenthèses dans le code",
+          "justification": "C'est la signature visuelle d'un appel de fonction en PHP",
+          "resultat_markdown": "`mysql_connect(...)`, `mysql_select_db(...)`, `mysql_query(...)`, `mysql_fetch_assoc(...)`, `mysql_close()`."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir deux fonctions et lire ce qui se trouve entre leurs parenthèses",
+          "justification": "Le contenu des parenthèses donne directement les paramètres",
+          "resultat_markdown": "`mysql_connect('localhost', 'login', 'password')` : trois paramètres. `mysql_query($sql)` : un seul paramètre, la variable `$sql`."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer le rôle de chaque paramètre",
+          "justification": "Chaque paramètre correspond à une information précise attendue par la fonction",
+          "resultat_markdown": "Pour `mysql_connect` : serveur, utilisateur, mot de passe. Pour `mysql_query` : la requête SQL à exécuter."
+        }
+      ],
+      "conclusion_markdown": "`mysql_connect()` (3 paramètres) et `mysql_query()` (1 paramètre) sont deux fonctions prédéfinies utilisées dans ce script pour se connecter puis interroger la base de données."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre une fonction et une variable qui la reçoit, par exemple dire que \"$req est une fonction\"",
+          "pourquoi_faux": "`$req` est une variable qui stocke le résultat renvoyé par la fonction `mysql_query($sql)` : la fonction, c'est `mysql_query()`, pas `$req`.",
+          "correction_markdown": "Repère toujours le nom immédiatement suivi de parenthèses : c'est lui la fonction, jamais la variable qui reçoit son résultat à gauche du signe =."
+        },
+        {
+          "erreur_markdown": "Compter `mysql_close()` comme une fonction sans paramètre alors qu'elle en a un implicite",
+          "pourquoi_faux": "Techniquement, `mysql_close()` peut recevoir en paramètre la ressource de connexion à fermer ; ici elle est appelée sans argument, ce qui ferme la dernière connexion ouverte par défaut.",
+          "correction_markdown": "Distingue \"appelée sans paramètre dans ce code précis\" de \"ne peut jamais recevoir de paramètre\" : beaucoup de fonctions PHP ont des paramètres optionnels non utilisés dans un appel donné."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `strlen($nom)`, quel est le nom de la fonction et quel est son paramètre ?",
+          "solution_markdown": "La fonction est `strlen()` (qui calcule la longueur d'une chaîne de caractères), son paramètre est `$nom`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La fonction `mysql_select_db('BDVIPBoutique', $bd)` prend combien de paramètres ? Que représente chacun ?",
+          "solution_markdown": "Elle prend **deux paramètres** : `'BDVIPBoutique'`, le nom de la base de données à sélectionner, et `$bd`, la ressource de connexion sur laquelle appliquer cette sélection (celle ouverte précédemment par `mysql_connect`)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la fonction `mysql_fetch_assoc($req)` doit-elle obligatoirement recevoir en paramètre le résultat d'un appel précédent à `mysql_query()`, et pas directement la variable `$sql` ?",
+          "solution_markdown": "`mysql_query($sql)` exécute la requête et renvoie une **ressource de résultat** contenant les lignes trouvées dans la base ; c'est cette ressource, stockée dans `$req`, que `mysql_fetch_assoc()` doit parcourir ligne par ligne. `$sql` n'est qu'une chaîne de caractères représentant la requête SQL avant son exécution : elle ne contient aucune donnée de la base, seulement le texte de la demande. Passer `$sql` directement à `mysql_fetch_assoc()` n'aurait donc aucun sens, faute de résultat à parcourir."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fonction prédéfinie s'appelle par son nom suivi de parenthèses.",
+        "Les paramètres, entre les parenthèses, indiquent à la fonction sur quelles données travailler.",
+        "Une fonction peut avoir zéro, un ou plusieurs paramètres.",
+        "Ne confonds jamais la fonction elle-même avec la variable qui reçoit son résultat.",
+        "Au BAC TI, une question sur les fonctions attend toujours le nom exact ET le rôle de chaque paramètre, pas seulement leur nombre."
+      ]
+    }
+  ]
+}

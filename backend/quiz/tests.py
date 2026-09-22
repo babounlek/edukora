@@ -457,6 +457,12 @@ class SelectQuizBatchTests(TestCase):
         exercise_ids = {m["exercise_id"] for m in req["materiel_reference"]}
         self.assertEqual(exercise_ids, {q.exercise_id for q in questions})
 
+    def test_matiere_option_restricts_selection_to_one_subject(self):
+        self._questions_taguees(self.theme)
+
+        self.assertEqual(len(self._run(matiere="MATHS")), 1)
+        self.assertEqual(self._run(matiere="PROGRAMMATION"), [])
+
     def test_excludes_competency_at_or_above_floor(self):
         q1 = _make_question(self.lesson, "1")
         q1.themes.add(self.theme)

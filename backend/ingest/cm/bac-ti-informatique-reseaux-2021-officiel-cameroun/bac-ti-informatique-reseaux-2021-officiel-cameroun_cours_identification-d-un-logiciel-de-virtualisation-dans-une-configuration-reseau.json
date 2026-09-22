@@ -1,0 +1,114 @@
+{
+  "cours_id": "cours-identification-d-un-logiciel-de-virtualisation-dans-une-configuration-reseau-terminale-ti",
+  "meta": {
+    "titre": "Identification d'un logiciel de virtualisation dans une configuration réseau",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Virtualisation",
+    "duree_estimee_min": 12,
+    "tags": [
+      "virtualisation",
+      "VMware",
+      "VirtualBox",
+      "IPCONFIG"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à une longue sortie de commande IPCONFIG /ALL remplie de chiffres et d'adresses, il est facile de passer à côté d'un indice pourtant très simple : le nom même des cartes réseau listées. Ce nom suffit souvent, à lui seul, à révéler quel logiciel de virtualisation tourne sur la machine, sans qu'aucun calcul ne soit nécessaire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une sortie de commande IPCONFIG /ALL ou ifconfig",
+        "Connaître la notion de virtualisation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Repérer le logiciel de virtualisation par le nom des cartes réseau",
+      "contenu_markdown": "Chaque logiciel de virtualisation crée ses propres cartes réseau virtuelles, et nomme leur description de façon caractéristique, incluant le nom du logiciel ou de l'éditeur.\n\nUne carte décrite comme « VMware Virtual Ethernet Adapter for VMnetX » (ou nommée « VMnetX ») signale **VMware** (VMware Workstation ou VMware Player). Une carte nommée « VirtualBox Host-Only Network » signale **Oracle VirtualBox**. Une carte nommée « Hyper-V Virtual Ethernet Adapter » signale **Hyper-V** (Microsoft).",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La sortie d'IPCONFIG /ALL d'un ordinateur affiche une carte « Ethernet VMware Network Adapter VMnet1 : Description : VMware Virtual Ethernet Adapter for VMnet1 ». Identifier le logiciel de virtualisation utilisé.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le nom de la carte réseau virtuelle",
+          "justification": "Une carte réseau virtuelle porte toujours un nom lié au logiciel qui l'a créée.",
+          "resultat_markdown": "La carte s'appelle « VMware Network Adapter VMnet1 » et sa description contient « VMware Virtual Ethernet Adapter »."
+        },
+        {
+          "numero": 2,
+          "action": "Associer ce nom au logiciel correspondant",
+          "justification": "« VMware » est le nom de l'éditeur du logiciel de virtualisation VMware Workstation/Player.",
+          "resultat_markdown": "Le logiciel de virtualisation utilisé sur cette machine est VMware."
+        }
+      ],
+      "conclusion_markdown": "Le nom de la carte réseau virtuelle suffit, sans aucun calcul, à identifier le logiciel de virtualisation installé sur la machine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « machine virtuelle » à la place du nom du logiciel",
+          "pourquoi_faux": "La question porte sur le LOGICIEL de virtualisation (VMware, VirtualBox...), pas sur le concept général de machine virtuelle qu'il crée.",
+          "correction_markdown": "Réponds toujours par le nom propre du logiciel ou de l'éditeur (VMware, VirtualBox, Hyper-V), jamais par un terme générique."
+        },
+        {
+          "erreur_markdown": "Ignorer la carte virtuelle parce qu'elle est physiquement absente (pas de câble branché)",
+          "pourquoi_faux": "Une carte réseau virtuelle n'a jamais besoin de câble physique : elle existe uniquement en logiciel, mais elle est bien réelle dans la configuration réseau de la machine.",
+          "correction_markdown": "Analyse toutes les cartes listées par IPCONFIG, y compris celles qui n'ont pas de connexion physique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une carte réseau est décrite comme « VirtualBox Host-Only Ethernet Adapter ». Quel logiciel de virtualisation est installé ?",
+          "solution_markdown": "Oracle VirtualBox."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une sortie IPCONFIG affiche deux cartes : « Intel(R) Ethernet Connection » (câble branché) et « Hyper-V Virtual Ethernet Adapter » (sans câble). Expliquer ce que révèle la seconde carte sur la configuration de la machine.",
+          "solution_markdown": "La présence d'une carte « Hyper-V Virtual Ethernet Adapter » révèle que le logiciel de virtualisation Hyper-V (intégré à Windows) est activé sur cette machine, même si aucune machine virtuelle n'est visiblement en cours d'exécution : Hyper-V crée cette carte virtuelle dès son activation, pour permettre la future communication réseau de machines virtuelles qui seraient créées."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une machine affiche à la fois une carte « VMnet1 » et une carte « VMnet8 ». Expliquer pourquoi deux cartes virtuelles distinctes peuvent coexister pour un même logiciel de virtualisation, et donner une raison technique d'utiliser l'une plutôt que l'autre.",
+          "solution_markdown": "VMware peut créer plusieurs réseaux virtuels distincts pour répondre à des besoins différents : VMnet1 correspond typiquement à un réseau « host-only », qui relie uniquement l'hôte à ses machines virtuelles sans accès à Internet, tandis que VMnet8 correspond typiquement à un réseau en mode NAT, qui permet aux machines virtuelles d'accéder à Internet via l'adresse IP de l'hôte. Un administrateur choisit VMnet1 pour isoler complètement des machines virtuelles de test (sécurité), et VMnet8 lorsque ces machines doivent malgré tout sortir sur Internet."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le nom d'une carte réseau virtuelle révèle directement le logiciel de virtualisation installé.",
+        "VMware crée des cartes « VMnetX », VirtualBox des cartes « Host-Only Network », Hyper-V des cartes « Hyper-V Virtual Ethernet Adapter ».",
+        "Une carte virtuelle n'a pas besoin de câble physique : elle reste une carte réseau à part entière dans l'analyse.",
+        "Répondre toujours par le nom propre du logiciel, jamais par un terme générique comme « machine virtuelle »."
+      ]
+    }
+  ]
+}

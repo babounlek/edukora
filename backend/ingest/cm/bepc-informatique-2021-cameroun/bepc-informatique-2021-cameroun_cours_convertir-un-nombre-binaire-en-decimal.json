@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-convertir-un-nombre-binaire-en-decimal-3e",
+  "meta": {
+    "titre": "Convertir un nombre binaire en décimal",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Systèmes de numération",
+    "duree_estimee_min": 25,
+    "tags": [
+      "base 2",
+      "binaire",
+      "conversion",
+      "puissances de 2",
+      "numération"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BEPC-2021-INFORMATIQUE",
+    "epreuve_titre": "BEPC Épreuve Théorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2021-cameroun-ex2-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'ordinateur ne connaît que deux états : le courant passe ou il ne passe pas, 1 ou 0. Tout ce qu'il manipule, nombres, lettres, images, est écrit avec ces deux chiffres seulement. Savoir retraduire une suite de 0 et de 1 en un nombre que tu comprends, c'est la première clé pour lire ce que fait vraiment la machine, et c'est une question qui tombe à presque chaque BEPC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les puissances de 2 jusqu'à $2^{10}$",
+        "Savoir qu'un nombre écrit en base 10 utilise les chiffres de 0 à 9, et qu'un nombre en base 2 n'utilise que 0 et 1"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode des poids",
+      "contenu_markdown": "Dans un nombre binaire, chaque chiffre a un **poids** qui dépend de sa position. On numérote les positions **à partir de la droite, en commençant à 0** ; le poids de la position de rang $n$ vaut $2^n$.\n\nPour convertir, on multiplie chaque chiffre par son poids, puis on additionne tous les produits.\n\nTable des poids à connaître par cœur :\n\n| Rang | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |\n|---|---|---|---|---|---|---|---|---|\n| Poids | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |\n\nComme un chiffre binaire vaut 0 ou 1, multiplier revient à **garder le poids quand le chiffre est 1 et à l'ignorer quand il est 0**. Convertir se réduit donc à additionner les poids des positions occupées par un 1.",
+      "formule_principale": "N = a_n \\times 2^n + a_{n-1} \\times 2^{n-1} + \\cdots + a_1 \\times 2^1 + a_0 \\times 2^0",
+      "variantes": [
+        {
+          "nom": "Méthode de Horner (multiplications successives)",
+          "quand_utiliser": "Quand le nombre binaire est long et que les puissances de 2 deviennent difficiles à retenir",
+          "contenu_markdown": "On part du chiffre le plus à gauche et on parcourt le nombre vers la droite. À chaque nouveau chiffre, on multiplie le résultat courant par 2 et on ajoute le chiffre lu.\n\nSur $(11010)_2$ : on commence à 1 ; puis $1 \\times 2 + 1 = 3$ ; puis $3 \\times 2 + 0 = 6$ ; puis $6 \\times 2 + 1 = 13$ ; puis $13 \\times 2 + 0 = 26$.\n\nLe résultat est le même, 26, et cette méthode n'exige aucune puissance de 2 : uniquement des doublements. Elle sert aussi de vérification quand on a converti par les poids."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Convertir en décimal (base 10) le nombre binaire $(11010)_2$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Numéroter les rangs de droite à gauche",
+          "justification": "Le chiffre le plus à droite occupe le rang 0, celui d'à côté le rang 1, et ainsi de suite.",
+          "resultat_markdown": "Chiffres : 1 1 0 1 0 ; rangs correspondants : 4 3 2 1 0."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire le poids de chaque rang",
+          "justification": "Le poids du rang $n$ vaut $2^n$.",
+          "resultat_markdown": "$2^4 = 16$ ; $2^3 = 8$ ; $2^2 = 4$ ; $2^1 = 2$ ; $2^0 = 1$."
+        },
+        {
+          "numero": 3,
+          "action": "Poser la somme des produits",
+          "justification": "Chaque chiffre est multiplié par le poids de son rang.",
+          "resultat_markdown": "$(11010)_2 = 1 \\times 2^4 + 1 \\times 2^3 + 0 \\times 2^2 + 1 \\times 2^1 + 0 \\times 2^0$"
+        },
+        {
+          "numero": 4,
+          "action": "Remplacer les puissances par leur valeur",
+          "justification": "On substitue les poids calculés à l'étape 2.",
+          "resultat_markdown": "$(11010)_2 = 1 \\times 16 + 1 \\times 8 + 0 \\times 4 + 1 \\times 2 + 0 \\times 1$"
+        },
+        {
+          "numero": 5,
+          "action": "Effectuer les multiplications",
+          "justification": "Les termes dont le chiffre vaut 0 disparaissent.",
+          "resultat_markdown": "$(11010)_2 = 16 + 8 + 0 + 2 + 0$"
+        },
+        {
+          "numero": 6,
+          "action": "Additionner",
+          "justification": "On additionne les poids retenus : $16 + 8 = 24$, puis $24 + 2 = 26$.",
+          "resultat_markdown": "$(11010)_2 = 26$"
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier par la méthode de Horner",
+          "justification": "On refait le calcul autrement, de gauche à droite, pour contrôler.",
+          "resultat_markdown": "$1$ ; $1 \\times 2 + 1 = 3$ ; $3 \\times 2 + 0 = 6$ ; $6 \\times 2 + 1 = 13$ ; $13 \\times 2 + 0 = 26$. Même résultat."
+        }
+      ],
+      "conclusion_markdown": "Le nombre binaire $(11010)_2$ vaut donc $(26)_{10}$ en base 10."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Numéroter les rangs à partir de la gauche.",
+          "pourquoi_faux": "Le rang 0 est toujours celui du chiffre des unités, c'est-à-dire le plus à droite. En numérotant depuis la gauche sur $(11010)_2$, on écrirait $1 \\times 1 + 1 \\times 2 + 0 \\times 4 + 1 \\times 8 + 0 \\times 16 = 11$ au lieu de 26.",
+          "correction_markdown": "Écris les rangs sous les chiffres, de droite à gauche, avant tout calcul : 4 3 2 1 0 sous 1 1 0 1 0."
+        },
+        {
+          "erreur_markdown": "Commencer la numérotation à 1 au lieu de 0.",
+          "pourquoi_faux": "Le chiffre des unités vaut $2^0 = 1$, pas $2^1 = 2$. Décaler tous les rangs d'un cran double le résultat : on trouverait 52 au lieu de 26.",
+          "correction_markdown": "Retiens le repère : le dernier chiffre à droite pèse 1, toujours."
+        },
+        {
+          "erreur_markdown": "Oublier les positions qui portent un 0.",
+          "pourquoi_faux": "Les termes valant 0 ne changent pas la somme, mais les sauter dans l'écriture fait souvent perdre le compte des rangs et décale tout le reste du calcul.",
+          "correction_markdown": "Écris tous les termes, y compris ceux en $0 \\times$, puis raye-les au moment d'additionner."
+        },
+        {
+          "erreur_markdown": "Confondre les préfixes multiplicateurs et la conversion de base.",
+          "pourquoi_faux": "Convertir $(11010)_2$ en base 10 est une opération sur l'écriture d'un nombre ; passer de kilo-octets en octets est une multiplication par 1 024 (ou par 1 000 selon la convention). Ce sont deux questions différentes, même si les deux font intervenir la base 2.",
+          "correction_markdown": "Repère le mot de l'énoncé : « convertir en décimal » porte sur l'écriture du nombre, « combien d'octets » porte sur une unité de mesure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir $(1011)_2$ en base 10.",
+          "solution_markdown": "Rangs de droite à gauche : 3 2 1 0, de poids 8, 4, 2, 1.\n\n$(1011)_2 = 1 \\times 2^3 + 0 \\times 2^2 + 1 \\times 2^1 + 1 \\times 2^0$\n\n$(1011)_2 = 1 \\times 8 + 0 \\times 4 + 1 \\times 2 + 1 \\times 1$\n\n$(1011)_2 = 8 + 0 + 2 + 1$\n\n$(1011)_2 = 11$\n\nVérification par Horner : $1$ ; $1 \\times 2 + 0 = 2$ ; $2 \\times 2 + 1 = 5$ ; $5 \\times 2 + 1 = 11$. Le nombre se termine par 1, il est donc impair : cohérent avec 11."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir $(110011)_2$ en base 10, puis vérifier le résultat par une seconde méthode.",
+          "solution_markdown": "Rangs de droite à gauche : 5 4 3 2 1 0, de poids 32, 16, 8, 4, 2, 1.\n\n$(110011)_2 = 1 \\times 32 + 1 \\times 16 + 0 \\times 8 + 0 \\times 4 + 1 \\times 2 + 1 \\times 1$\n\n$(110011)_2 = 32 + 16 + 0 + 0 + 2 + 1$\n\n$(110011)_2 = 51$\n\nVérification par Horner, de gauche à droite : $1$ ; $1 \\times 2 + 1 = 3$ ; $3 \\times 2 + 0 = 6$ ; $6 \\times 2 + 0 = 12$ ; $12 \\times 2 + 1 = 25$ ; $25 \\times 2 + 1 = 51$.\n\nContrôle d'encadrement : six chiffres commençant par 1, donc le nombre est compris entre $2^5 = 32$ et $2^6 - 1 = 63$. 51 appartient bien à cet intervalle."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sans effectuer la conversion complète, expliquer pourquoi tout nombre binaire de 8 chiffres est compris entre 128 et 255, puis en déduire le nombre de valeurs différentes que l'on peut coder sur un octet.",
+          "solution_markdown": "Un nombre binaire écrit avec 8 chiffres et commençant par 1 a son chiffre de gauche au rang 7, de poids $2^7 = 128$. Ce terme est présent quel que soit le reste, donc le nombre vaut au moins 128 : c'est le cas $(10000000)_2$.\n\nLa plus grande valeur s'obtient quand tous les chiffres valent 1, soit $(11111111)_2$. Sa valeur est la somme de tous les poids :\n\n$128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255$\n\nOn peut retrouver ce total sans additionner : ajouter 1 à $(11111111)_2$ donne $(100000000)_2$, c'est-à-dire $2^8 = 256$. Donc $(11111111)_2 = 256 - 1 = 255$.\n\nTout nombre de 8 chiffres binaires commençant par 1 est donc compris entre 128 et 255.\n\nSi l'on autorise en revanche les zéros de tête (écriture sur 8 positions, du type 00000101), les valeurs vont de 0 à 255, ce qui fait $2^8 = 256$ valeurs différentes. C'est exactement le nombre de combinaisons codables sur un octet, et la raison pour laquelle un octet permet de représenter 256 caractères distincts."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Numérote les rangs à partir de la droite en commençant à 0 : c'est là que se joue la quasi-totalité des erreurs.",
+        "Convertir revient à additionner les poids des positions occupées par un 1 : $16 + 8 + 2 = 26$ pour $(11010)_2$.",
+        "Apprends les puissances de 2 jusqu'à 1024 ; elles servent aussi pour les unités de mesure de la mémoire.",
+        "Contrôle ton résultat par la parité (dernier chiffre 0 donne un nombre pair) et par l'encadrement (un binaire de $n$ chiffres commençant par 1 vaut entre $2^{n-1}$ et $2^n - 1$).",
+        "La méthode de Horner, en doublant à chaque chiffre, donne le même résultat sans aucune puissance à retenir : garde-la comme vérification.",
+        "Au BEPC, cette conversion vaut souvent 2 points à elle seule, dans la partie organisation et traitement de l'information."
+      ]
+    }
+  ]
+}

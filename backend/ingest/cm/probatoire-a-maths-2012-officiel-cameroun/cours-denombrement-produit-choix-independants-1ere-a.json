@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-denombrement-produit-choix-independants-1ere-a",
+  "meta": {
+    "titre": "Dénombrement par produit de choix indépendants",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Dénombrement",
+    "duree_estimee_min": 22,
+    "tags": [
+      "dénombrement",
+      "combinaisons",
+      "choix indépendants",
+      "principe multiplicatif"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2012-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2012 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2012-officiel-cameroun-ex2-qII.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Former un groupe de danse avec des filles et des garçons, composer un plat avec une entrée et un dessert, choisir une tenue avec un haut et un bas : dans toutes ces situations, deux choix indépendants se combinent. Savoir reconnaître cette indépendance, et savoir qu'elle se traduit par une multiplication, évite de se perdre dans des dénombrements qui semblent complexes au premier regard."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Formule des combinaisons $C_n^p$",
+        "Notion de choix indépendants"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Principe multiplicatif appliqué à des catégories indépendantes",
+      "contenu_markdown": "Quand une situation se décompose en plusieurs choix indépendants (le résultat de l'un n'influence pas les possibilités de l'autre), le nombre total de résultats possibles est le produit du nombre de possibilités de chaque choix pris séparément. Pour un groupe formé de $p$ éléments choisis parmi $n_1$ dans une catégorie et $q$ éléments choisis parmi $n_2$ dans une autre catégorie, le nombre total de groupes est $C_{n_1}^p\\times C_{n_2}^q$.",
+      "formule_principale": "\\text{Nombre total} = C_{n_1}^{p}\\times C_{n_2}^{q}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un groupe de danse de 5 filles et 6 garçons doit être formé à partir de 10 filles présélectionnées et 10 garçons présélectionnés. Combien de groupes peut-on former ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les deux choix indépendants",
+          "justification": "Choisir les filles et choisir les garçons sont deux décisions séparées, l'une n'influence pas l'autre",
+          "resultat_markdown": "Choix 1 : 5 filles parmi 10. Choix 2 : 6 garçons parmi 10."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer chaque choix séparément avec la formule des combinaisons",
+          "justification": "Dans un groupe, l'ordre des filles (ou des garçons) choisies n'a pas d'importance",
+          "resultat_markdown": "$C_{10}^5=252 \\quad;\\quad C_{10}^6=210$"
+        },
+        {
+          "numero": 3,
+          "action": "Multiplier les deux résultats",
+          "justification": "Principe multiplicatif : chaque choix de filles peut se combiner avec chaque choix de garçons",
+          "resultat_markdown": "$252\\times210=52\\,920$"
+        }
+      ],
+      "conclusion_markdown": "On peut former $52\\,920$ groupes différents avec les 20 personnes présélectionnées."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner les deux résultats au lieu de les multiplier",
+          "pourquoi_faux": "Additionner reviendrait à compter « soit un choix de filles, soit un choix de garçons », alors qu'on veut les deux choix simultanément dans le même groupe.",
+          "correction_markdown": "Deux choix qui se combinent SIMULTANÉMENT (« et » logique) se multiplient ; deux choix qui s'excluent (« ou » logique) s'additionnent."
+        },
+        {
+          "erreur_markdown": "Utiliser une formule d'arrangement au lieu de combinaison pour chaque catégorie",
+          "pourquoi_faux": "À l'intérieur d'un groupe, l'ordre dans lequel les filles ou les garçons ont été choisis ne change rien à la composition finale du groupe.",
+          "correction_markdown": "Vérifie catégorie par catégorie si l'ordre compte avant de choisir entre $C$ et $A$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un comité de 3 personnes doit être formé avec 2 hommes et 1 femme, choisis parmi 6 hommes et 5 femmes disponibles. Combien de comités peut-on former ?",
+          "solution_markdown": "$C_6^2\\times C_5^1=15\\times5=75$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un menu comporte une entrée choisie parmi 4, un plat choisi parmi 3 et un dessert choisi parmi 5. Combien de menus complets peut-on composer ?",
+          "solution_markdown": "Trois choix indépendants successifs : $4\\times3\\times5=60$ menus possibles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un jury de 4 personnes doit être formé avec exactement 2 professeurs parmi 7 disponibles et 2 parents d'élèves parmi 6 disponibles, sachant qu'un professeur précis, M. Eto'o, doit obligatoirement en faire partie. Combien de jurys peut-on former ?",
+          "solution_markdown": "M. Eto'o étant imposé, il reste à choisir $2-1=1$ professeur parmi les $7-1=6$ restants, et 2 parents parmi 6. $C_6^1\\times C_6^2=6\\times15=90$ jurys possibles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux choix indépendants qui se combinent dans un même résultat se multiplient, jamais ne s'additionnent.",
+        "Décompose systématiquement une situation mixte (plusieurs catégories) en dénombrements séparés avant de multiplier.",
+        "Vérifie pour chaque catégorie si l'ordre compte : $C$ si non, $A$ si oui.",
+        "Ce principe multiplicatif est la base de presque tous les dénombrements plus complexes rencontrés au Probatoire."
+      ]
+    }
+  ]
+}

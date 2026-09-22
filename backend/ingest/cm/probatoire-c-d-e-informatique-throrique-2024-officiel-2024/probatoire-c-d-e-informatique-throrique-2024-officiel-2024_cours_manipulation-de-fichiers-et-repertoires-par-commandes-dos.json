@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-manipulation-de-fichiers-et-repertoires-par-commandes-dos-1ere-tronc-commun",
+  "meta": {
+    "titre": "Manipulation de fichiers et répertoires par commandes DOS",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Système d'exploitation - Ligne de commande DOS",
+    "duree_estimee_min": 20,
+    "tags": [
+      "DOS",
+      "ligne de commande",
+      "fichiers",
+      "répertoires"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex1-q3.1-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant l'apparition des interfaces graphiques, la seule façon de commander un ordinateur était de taper une ligne de texte précise dans un terminal noir. Cette façon de faire n'a jamais disparu : elle reste la base des systèmes d'exploitation modernes et un passage obligé de l'épreuve d'informatique. Savoir écrire la bonne commande DOS pour afficher, renommer ou créer un dossier, c'est comprendre comment un ordinateur organise ses fichiers avant même de voir une seule icône."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un fichier et un répertoire (dossier) dans un ordinateur",
+        "Connaître la notion d'arborescence (un dossier peut contenir d'autres dossiers)",
+        "Savoir utiliser un clavier pour saisir du texte sans faute"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Syntaxe générale d'une commande DOS",
+      "contenu_markdown": "Une commande DOS s'écrit toujours selon le même schéma : le nom de la commande, suivi le cas échéant d'un ou plusieurs paramètres qui précisent son comportement, puis de la cible sur laquelle elle agit (un fichier, un répertoire, ou rien). Quatre commandes couvrent la quasi-totalité des besoins de base : DIR affiche le contenu d'un répertoire, MD (Make Directory, ou MKDIR) crée un répertoire, REN (Rename) renomme un fichier ou un répertoire en donnant d'abord son nom actuel puis son nouveau nom, et RD (Remove Directory) supprime un répertoire vide. Le paramètre /? placé après n'importe quel nom de commande affiche toujours l'aide de cette commande, sans exécuter son action.",
+      "formule_principale": "COMMANDE [paramètre] [cible]",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On dispose d'un répertoire nommé **Mathématiques**. On souhaite successivement : afficher l'aide de la commande DIR, renommer ce répertoire en **Informatique**, puis créer à l'intérieur un nouveau répertoire nommé **COURS**.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Afficher l'aide de la commande DIR",
+          "justification": "Le paramètre /? placé après le nom d'une commande DOS affiche toujours la liste de ses options et son mode d'emploi, sans exécuter l'action propre de la commande.",
+          "resultat_markdown": "```\nDIR /?\n```"
+        },
+        {
+          "numero": 2,
+          "action": "Renommer le répertoire Mathématiques en Informatique",
+          "justification": "La commande REN prend deux arguments dans un ordre fixe et non interchangeable : l'ancien nom du fichier ou du répertoire, puis le nouveau nom à lui attribuer.",
+          "resultat_markdown": "```\nREN Mathématiques Informatique\n```"
+        },
+        {
+          "numero": 3,
+          "action": "Créer le répertoire COURS",
+          "justification": "La commande MD (Make Directory), suivie du nom souhaité, crée un nouveau répertoire vide à l'emplacement courant.",
+          "resultat_markdown": "```\nMD COURS\n```"
+        }
+      ],
+      "conclusion_markdown": "Ces trois commandes couvrent les trois familles d'actions de base sur les répertoires en DOS : consulter l'aide, renommer, créer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `REN Informatique Mathématiques` pour renommer Mathématiques en Informatique",
+          "pourquoi_faux": "DOS interprète toujours le premier argument comme le nom actuel du fichier ou dossier à modifier, et le second comme son nouveau nom. Inverser l'ordre revient à demander l'opération inverse de celle voulue, et provoque une erreur si le second nom n'existe pas.",
+          "correction_markdown": "Toujours écrire *ancien nom* puis *nouveau nom* : `REN Mathématiques Informatique`."
+        },
+        {
+          "erreur_markdown": "Écrire `MD /COURS` en ajoutant un slash devant le nom du répertoire à créer",
+          "pourquoi_faux": "Le caractère `/` introduit un paramètre de commande, pas un nom de fichier ou de dossier. `/COURS` serait interprété comme un paramètre inconnu de MD, et la commande échouerait.",
+          "correction_markdown": "Faire suivre MD directement du nom voulu, sans slash : `MD COURS`."
+        },
+        {
+          "erreur_markdown": "Confondre MD (créer un répertoire) et RD (supprimer un répertoire) à cause de leur syntaxe presque identique",
+          "pourquoi_faux": "Les deux commandes prennent un nom de répertoire en argument de la même façon, mais produisent des effets opposés : l'une crée, l'autre détruit un répertoire vide.",
+          "correction_markdown": "Associer chaque commande à son verbe anglais complet : Make Directory (créer) contre Remove Directory (supprimer)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la commande DOS permettant de créer un répertoire nommé **ARCHIVES**.",
+          "solution_markdown": "La création d'un répertoire s'effectue avec la commande MD suivie du nom voulu :\n\n```\nMD ARCHIVES\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la commande DOS permettant de renommer le fichier **notes.txt** en **devoir.txt**, puis la commande permettant d'afficher l'aide de la commande REN.",
+          "solution_markdown": "Le renommage suit la syntaxe REN *ancien nom* *nouveau nom*, et l'aide de n'importe quelle commande s'obtient en lui ajoutant le paramètre /? :\n\n```\nREN notes.txt devoir.txt\nREN /?\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève dispose d'un répertoire **TP** contenant un fichier **rapport.doc**. Écrire la suite de commandes DOS permettant, dans l'ordre : d'afficher le contenu du répertoire TP, de renommer TP en TP_INFO, d'entrer dans ce répertoire renommé, puis d'y créer un sous-répertoire ARCHIVES.",
+          "solution_markdown": "Chaque étape correspond à une commande précise, exécutée dans l'ordre demandé. Afficher le contenu d'un répertoire se fait avec DIR suivi de son nom. Renommer utilise REN. Se déplacer à l'intérieur d'un répertoire utilise la commande CD (Change Directory), non vue dans l'exercice mais nécessaire ici puisqu'il faut agir depuis l'intérieur de TP_INFO. Créer le sous-répertoire utilise ensuite MD :\n\n```\nDIR TP\nREN TP TP_INFO\nCD TP_INFO\nMD ARCHIVES\n```\n\nAprès ces quatre commandes, le répertoire TP_INFO contient le fichier rapport.doc ainsi qu'un nouveau sous-répertoire vide nommé ARCHIVES."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une commande DOS s'écrit toujours nom de la commande, puis paramètre éventuel, puis cible.",
+        "Le paramètre /? affiche l'aide de n'importe quelle commande, sans jamais l'exécuter.",
+        "REN prend toujours deux arguments dans l'ordre ancien nom puis nouveau nom, jamais l'inverse.",
+        "MD crée un répertoire, RD le supprime : deux commandes à ne jamais confondre malgré leur ressemblance.",
+        "Au Probatoire comme au BEPC, ces commandes reviennent presque chaque session sous la forme « Écrire la commande DOS permettant de... » : mémorise la syntaxe exacte de DIR, MD, REN et RD plutôt que leur seul principe général."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "epreuve_source": "bac-c-math-1992-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathematiques",
+  "nature_epreuve": null,
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "1992",
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": "2",
+  "points": null,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice N°2**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Soit $f$ la fonction de $\\mathbb{R}$ dans $\\mathbb{R}$ définie par $f(x)=\\dfrac{1}{x}-\\ln(x+1)+\\ln x$ ($\\ln$ désigne la fonction logarithme népérien).\n\nÉtudier les variations de $f$, puis en déduire le signe de $f(x)$ selon les valeurs de $x$.",
+      "figures": [],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "themes": [
+        "Étude de fonction",
+        "Dérivation",
+        "Limites et croissances comparées",
+        "Signe d'une fonction"
+      ],
+      "savoir_officiel": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-math-1992-cameroun-ex2-q1-1",
+          "competence": "Étudier le signe d'une fonction à partir de son tableau de variation",
+          "contenu_markdown": "Pour déterminer le signe d'une fonction sans résoudre explicitement f(x)=0, on étudie ses variations (signe de la dérivée) puis ses limites aux bornes du domaine. Si la fonction est strictement monotone et que l'une de ses limites vaut une valeur précise sans jamais l'atteindre, la fonction reste strictement du même côté de cette valeur sur tout l'intervalle.",
+          "cours_genere": true,
+          "cours_id": "cours-etude-signe-fonction-tableau-variation-terminale-c"
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour déterminer le signe d'une fonction sans résoudre explicitement f(x)=0, on étudie ses variations (signe de la dérivée) puis ses limites aux bornes du domaine. Si la fonction est strictement monotone et que l'une de ses limites vaut une valeur précise sans jamais l'atteindre, la fonction reste strictement du même côté de cette valeur sur tout l'intervalle.\n\n**Domaine de définition.** $f(x)=\\dfrac1x-\\ln(x+1)+\\ln x$ exige simultanément $x\\neq0$ (pour $1/x$), $x+1>0$ (pour $\\ln(x+1)$) et $x>0$ (pour $\\ln x$). La condition la plus restrictive est $x>0$, donc $D_f=\\,]0,+\\infty[$.\n\n**Calcul de la dérivée.** Écrivons $f(x)=\\dfrac1x+\\ln x-\\ln(x+1)$ :\n$$f'(x)=-\\frac{1}{x^2}+\\frac{1}{x}-\\frac{1}{x+1}$$\n\nRéduisons $\\dfrac1x-\\dfrac1{x+1}$ au même dénominateur : $\\dfrac1x-\\dfrac1{x+1}=\\dfrac{(x+1)-x}{x(x+1)}=\\dfrac{1}{x(x+1)}$. Donc :\n$$f'(x)=-\\frac{1}{x^2}+\\frac{1}{x(x+1)}=\\frac{-(x+1)+x}{x^2(x+1)}=\\frac{-1}{x^2(x+1)}$$\n\nPour $x>0$, on a $x^2(x+1)>0$, donc $f'(x)<0$ pour tout $x>0$ : **$f$ est strictement décroissante sur $]0,+\\infty[$**.\n\n**Limite en $0^+$.** $\\dfrac1x\\to+\\infty$, $\\ln(x+1)\\to\\ln1=0$, et $\\ln x\\to-\\infty$. Posons $x=1/n$ avec $n\\to+\\infty$ : $\\dfrac1x+\\ln x=n+\\ln\\!\\left(\\dfrac1n\\right)=n-\\ln n$. Par croissances comparées, $n$ l'emporte sur $\\ln n$ quand $n\\to+\\infty$, donc $n-\\ln n\\to+\\infty$. Ainsi :\n$$\\lim_{x\\to0^+}f(x)=+\\infty$$\n\n**Limite en $+\\infty$.** $\\dfrac1x\\to0$, et $\\ln x-\\ln(x+1)=-\\ln\\dfrac{x+1}{x}=-\\ln\\!\\left(1+\\dfrac1x\\right)$. Quand $x\\to+\\infty$, $\\dfrac1x\\to0$ donc $\\ln\\!\\left(1+\\dfrac1x\\right)\\to\\ln1=0$. Ainsi :\n$$\\lim_{x\\to+\\infty}f(x)=0$$\n\n**Tableau de variation.**\n$$\n\\begin{array}{|c|ccc|}\n\\hline\nx & 0 & & +\\infty \\\\\n\\hline\nf'(x) & & - & \\\\\n\\hline\n & +\\infty & & \\\\\nf(x) & & \\searrow & \\\\\n & & & 0 \\\\\n\\hline\n\\end{array}\n$$\n\n**Signe de $f(x)$.** $f$ est strictement décroissante sur $]0,+\\infty[$ et sa limite en $+\\infty$ vaut $0$ sans jamais être atteinte (une limite n'est pas une valeur prise par la fonction) : $f$ reste donc strictement supérieure à cette limite sur tout l'intervalle. **$f(x)>0$ pour tout $x>0$.**\n\n### Piège à éviter\nUne limite égale à $0$ en $+\\infty$ ne signifie pas que la fonction s'annule quelque part. Ici $f$ ne s'annule jamais sur son domaine : elle décroît vers $0$ sans jamais l'atteindre, et reste donc strictement positive. C'est ce résultat, pas une racine de $f$, qui sert de socle à la question suivante."
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Soit $(U_n)_{n\\in\\mathbb{N}^*}$ la suite numérique de terme général $U_n=1+\\dfrac{1}{2}+\\cdots+\\dfrac{1}{n}-\\ln(n+1)$.\n\nMontrer que la suite $(U_n)_{n\\in\\mathbb{N}^*}$ est strictement croissante.",
+      "figures": [],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "themes": [
+        "Suites numériques",
+        "Monotonie",
+        "Fonction auxiliaire"
+      ],
+      "savoir_officiel": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-math-1992-cameroun-ex2-q2-1",
+          "competence": "Étudier la monotonie d'une suite à l'aide d'une fonction auxiliaire déjà étudiée",
+          "contenu_markdown": "Pour montrer qu'une suite est strictement croissante, on étudie le signe de $U_{n+1}-U_n$. Si cette différence coïncide avec l'expression d'une fonction déjà étudiée, évaluée en un point du domaine, le signe déjà établi de cette fonction donne directement la conclusion, sans nouveau calcul de signe.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une suite est strictement croissante, on étudie le signe de $U_{n+1}-U_n$. Si cette différence coïncide avec l'expression d'une fonction déjà étudiée, évaluée en un point du domaine, le signe déjà établi de cette fonction donne directement la conclusion, sans nouveau calcul de signe.\n\nCalculons $U_{n+1}-U_n$ :\n$$U_{n+1}-U_n=\\left(1+\\frac12+\\cdots+\\frac1n+\\frac1{n+1}-\\ln(n+2)\\right)-\\left(1+\\frac12+\\cdots+\\frac1n-\\ln(n+1)\\right)$$\n\nTous les termes $1+\\dfrac12+\\cdots+\\dfrac1n$ se simplifient, il reste :\n$$U_{n+1}-U_n=\\frac{1}{n+1}-\\ln(n+2)+\\ln(n+1)$$\n\nOr, d'après la question 1, $f(x)=\\dfrac1x-\\ln(x+1)+\\ln x$. Évaluons $f$ en $x=n+1$ :\n$$f(n+1)=\\frac{1}{n+1}-\\ln\\big((n+1)+1\\big)+\\ln(n+1)=\\frac{1}{n+1}-\\ln(n+2)+\\ln(n+1)$$\n\nCette expression est exactement celle de $U_{n+1}-U_n$ : **$U_{n+1}-U_n=f(n+1)$.**\n\nComme $n\\in\\mathbb{N}^*$, on a $n+1\\geqslant2>0$, donc $n+1$ appartient au domaine $]0,+\\infty[$ de $f$. D'après la question 1, $f(x)>0$ pour tout $x>0$, donc en particulier $f(n+1)>0$, c'est-à-dire :\n$$U_{n+1}-U_n>0$$\n\n**La suite $(U_n)_{n\\in\\mathbb{N}^*}$ est donc strictement croissante.**"
+    },
+    {
+      "numero": "3a",
+      "enonce_markdown": "a) Montrer que, pour tout entier $k$ de $\\mathbb{N}^*$ :\n$$\\dfrac{1}{k+1}\\leqslant\\displaystyle\\int_k^{k+1}\\dfrac{dt}{t}\\leqslant\\dfrac{1}{k}$$",
+      "figures": [],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "themes": [
+        "Encadrement d'intégrale",
+        "Monotonie d'une fonction",
+        "Intégration des inégalités"
+      ],
+      "savoir_officiel": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-math-1992-cameroun-ex2-q3a-1",
+          "competence": "Encadrer une intégrale à l'aide de la monotonie de la fonction intégrée",
+          "contenu_markdown": "Si une fonction est décroissante sur un intervalle $[k,k+1]$, sa plus petite valeur sur cet intervalle est atteinte en $k+1$ et sa plus grande valeur en $k$. En intégrant l'encadrement obtenu sur un intervalle de longueur $1$, on obtient un encadrement de l'intégrale par ces deux valeurs.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi une fonction est décroissante sur un intervalle $[k,k+1]$, sa plus petite valeur sur cet intervalle est atteinte en $k+1$ et sa plus grande valeur en $k$. En intégrant l'encadrement obtenu sur un intervalle de longueur $1$, on obtient un encadrement de l'intégrale par ces deux valeurs.\n\nSoit $k\\in\\mathbb{N}^*$. La fonction $t\\mapsto\\dfrac1t$ est strictement décroissante sur $[k,k+1]$ (comme sur tout intervalle de réels strictement positifs, sa dérivée $-1/t^2$ est négative).\n\nPour tout $t\\in[k,k+1]$, la décroissance de $t\\mapsto\\dfrac1t$ donne, en comparant aux deux bornes :\n$$\\frac{1}{k+1}\\leqslant\\frac{1}{t}\\leqslant\\frac{1}{k}$$\n\nCes inégalités portent sur des réels positifs et restent vraies après intégration sur $[k,k+1]$ (intégrer une inégalité entre fonctions conserve le sens de l'inégalité) :\n$$\\int_k^{k+1}\\frac{1}{k+1}\\,dt\\leqslant\\int_k^{k+1}\\frac{dt}{t}\\leqslant\\int_k^{k+1}\\frac{1}{k}\\,dt$$\n\nLes membres de gauche et de droite intègrent des constantes sur un intervalle de longueur $(k+1)-k=1$ :\n$$\\frac{1}{k+1}\\times1\\leqslant\\int_k^{k+1}\\frac{dt}{t}\\leqslant\\frac{1}{k}\\times1$$\n\n**$\\dfrac{1}{k+1}\\leqslant\\displaystyle\\int_k^{k+1}\\dfrac{dt}{t}\\leqslant\\dfrac{1}{k}$, pour tout $k\\in\\mathbb{N}^*$.**"
+    },
+    {
+      "numero": "3b",
+      "enonce_markdown": "b) En sommant l'encadrement précédent pour $k$ allant de $1$ à $n$, en déduire que :\n$$\\dfrac12+\\dfrac13+\\cdots+\\dfrac{1}{n+1}\\leqslant\\ln(n+1)\\leqslant1+\\dfrac12+\\cdots+\\dfrac1n$$",
+      "figures": [],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "themes": [
+        "Sommation d'inégalités",
+        "Relation de Chasles pour les intégrales",
+        "Suites et séries harmoniques"
+      ],
+      "savoir_officiel": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-math-1992-cameroun-ex2-q3b-1",
+          "competence": "Sommer un encadrement valable pour chaque indice afin d'obtenir un encadrement de somme",
+          "contenu_markdown": "Pour déduire un encadrement d'une somme de $n$ termes à partir d'un encadrement valable pour chaque indice $k$, on somme membre à membre les trois inégalités pour $k$ allant de $1$ à $n$. L'intégrale se télescope alors en une seule intégrale sur tout l'intervalle réuni, grâce à la relation de Chasles pour les intégrales.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour déduire un encadrement d'une somme de $n$ termes à partir d'un encadrement valable pour chaque indice $k$, on somme membre à membre les trois inégalités pour $k$ allant de $1$ à $n$. L'intégrale se télescope alors en une seule intégrale sur tout l'intervalle réuni, grâce à la relation de Chasles pour les intégrales.\n\nSommons l'encadrement de la question 3.a pour $k=1,2,\\ldots,n$ :\n$$\\sum_{k=1}^{n}\\frac{1}{k+1}\\leqslant\\sum_{k=1}^{n}\\int_k^{k+1}\\frac{dt}{t}\\leqslant\\sum_{k=1}^{n}\\frac{1}{k}$$\n\n**Membre de gauche :** $\\displaystyle\\sum_{k=1}^{n}\\frac{1}{k+1}=\\frac12+\\frac13+\\cdots+\\frac1{n+1}$.\n\n**Membre du milieu :** la relation de Chasles pour les intégrales assure que la somme des intégrales sur les intervalles consécutifs $[1,2],[2,3],\\ldots,[n,n+1]$ est égale à l'intégrale sur l'intervalle global $[1,n+1]$ :\n$$\\sum_{k=1}^{n}\\int_k^{k+1}\\frac{dt}{t}=\\int_1^{n+1}\\frac{dt}{t}=\\big[\\ln t\\big]_1^{n+1}=\\ln(n+1)-\\ln1=\\ln(n+1)$$\n\n**Membre de droite :** $\\displaystyle\\sum_{k=1}^{n}\\frac1k=1+\\frac12+\\cdots+\\frac1n$.\n\nEn regroupant les trois membres :\n$$\\frac12+\\frac13+\\cdots+\\frac1{n+1}\\leqslant\\ln(n+1)\\leqslant1+\\frac12+\\cdots+\\frac1n$$\n\n### Conseil\nLe passage d'un encadrement ponctuel (indice par indice) à un encadrement global se fait presque toujours par sommation terme à terme suivie d'un télescopage : repère ce schéma, il revient très souvent dans les exercices d'encadrement de sommes harmoniques par des logarithmes."
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Montrer que, pour tout $n\\in\\mathbb{N}^*$, $U_n<1$, et que la suite $(U_n)_{n\\in\\mathbb{N}^*}$ est convergente (on ne demande pas de déterminer sa limite).",
+      "figures": [],
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "themes": [
+        "Suite majorée",
+        "Théorème de la limite monotone",
+        "Convergence de suite"
+      ],
+      "savoir_officiel": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-math-1992-cameroun-ex2-q4-1",
+          "competence": "Prouver la convergence d'une suite par le théorème de la limite monotone",
+          "contenu_markdown": "Une suite croissante et majorée converge, d'après le théorème de la limite monotone. Une fois la croissance déjà acquise, il suffit donc de trouver un majorant, souvent en réutilisant un encadrement déjà établi pour une expression proche de la suite étudiée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne suite croissante et majorée converge, d'après le théorème de la limite monotone. Une fois la croissance déjà acquise, il suffit donc de trouver un majorant, souvent en réutilisant un encadrement déjà établi pour une expression proche de la suite étudiée.\n\n**Majoration de $U_n$ par $1$.** D'après la question 3.b, inégalité de gauche :\n$$\\frac12+\\frac13+\\cdots+\\frac1{n+1}\\leqslant\\ln(n+1)$$\n\nIsolons le dernier terme $\\dfrac{1}{n+1}$ du membre de gauche :\n$$\\left(\\frac12+\\cdots+\\frac1n\\right)+\\frac1{n+1}\\leqslant\\ln(n+1)$$\n\nEn reportant dans l'expression de $U_n=1+\\left(\\dfrac12+\\cdots+\\dfrac1n\\right)-\\ln(n+1)$, on remplace $\\ln(n+1)$ par une quantité supérieure ou égale à $\\left(\\dfrac12+\\cdots+\\dfrac1n\\right)+\\dfrac1{n+1}$ :\n$$U_n\\leqslant1+\\left(\\frac12+\\cdots+\\frac1n\\right)-\\left[\\left(\\frac12+\\cdots+\\frac1n\\right)+\\frac1{n+1}\\right]=1-\\frac{1}{n+1}$$\n\nComme $\\dfrac{1}{n+1}>0$ pour tout $n\\in\\mathbb{N}^*$, on a $1-\\dfrac1{n+1}<1$. **On obtient $U_n\\leqslant1-\\dfrac{1}{n+1}<1$, donc $U_n<1$ pour tout $n\\in\\mathbb{N}^*$.**\n\n**Convergence de $(U_n)$.** D'après la question 2, $(U_n)_{n\\in\\mathbb{N}^*}$ est strictement croissante. D'après ce qui précède, elle est majorée par $1$. Une suite croissante et majorée est convergente (théorème de la limite monotone) : **$(U_n)_{n\\in\\mathbb{N}^*}$ est donc convergente** (sans qu'il soit demandé de préciser sa limite).\n\n### Conseil\nTu n'as pas besoin de connaître la valeur exacte d'une limite pour prouver la convergence : croissance plus majoration suffisent. Réserve le calcul explicite d'une limite aux cas où l'énoncé le demande vraiment, cela te fait gagner du temps le jour de l'examen."
+    }
+  ],
+  "mots_cles_recherche": [
+    "étude de fonction",
+    "tableau de variation",
+    "signe d'une fonction",
+    "suite numérique",
+    "monotonie de suite",
+    "encadrement d'intégrale",
+    "relation de Chasles intégrale",
+    "suite croissante majorée",
+    "constante d'Euler"
+  ],
+  "incertitudes": [
+    "*** DOUBLON CONFIRME - NE PAS INGERER *** Ce PDF (bac-c-math-1992-cameroun.pdf) est un doublon byte-pour-byte (MD5 identique) de bac-c-maths-1992-cameroun.pdf, deja traite et present dans json/cm/bac-c-maths-1992-cameroun/ avec un corrige distinct. Ce dossier json/cm/bac-c-math-1992-cameroun/ constitue une correction redondante du meme sujet, produite par erreur avant que le doublon ne soit detecte. A exclure de toute ingestion en base pour eviter un contenu duplique.",
+    "Rappel de méthode de la question 1 (rdm-bac-c-math-1992-cameroun-ex2-q1-1) choisi comme le plus transférable de toute l'épreuve : un cours complet à 7 sections a été généré (cours_id=cours-etude-signe-fonction-tableau-variation-terminale-c), livré dans un fichier séparé.",
+    "Rappel de méthode de la question 2 (rdm-bac-c-math-1992-cameroun-ex2-q2-1) non développé en cours complet dans cette passe : cours_genere=false, cours_id=null.",
+    "Rappel de méthode de la question 3a (rdm-bac-c-math-1992-cameroun-ex2-q3a-1) non développé en cours complet dans cette passe : cours_genere=false, cours_id=null.",
+    "Rappel de méthode de la question 3b (rdm-bac-c-math-1992-cameroun-ex2-q3b-1) non développé en cours complet dans cette passe : cours_genere=false, cours_id=null.",
+    "Rappel de méthode de la question 4 (rdm-bac-c-math-1992-cameroun-ex2-q4-1) non développé en cours complet dans cette passe : cours_genere=false, cours_id=null."
+  ],
+  "statut": "brouillon"
+}

@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-validation-d-un-formulaire-avec-javascript-tle-ti",
+  "meta": {
+    "titre": "Validation d'un formulaire avec JavaScript",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "JavaScript et événements",
+    "duree_estimee_min": 25,
+    "tags": [
+      "JavaScript",
+      "validation de formulaire",
+      "alert",
+      "onclick"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qI.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formulaire envoyé avec des champs vides fait perdre du temps à tout le monde : au serveur qui reçoit une donnée incomplète, et à l'utilisateur qui doit tout recommencer. Plutôt que de laisser le serveur découvrir le problème après coup, on peut le détecter immédiatement dans le navigateur, avant même l'envoi. C'est exactement le rôle de la validation de formulaire en JavaScript."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une fonction JavaScript simple",
+        "Connaître la structure d'un formulaire HTML (balise form, champs input)",
+        "Savoir utiliser une condition if / else en JavaScript"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire un champ, tester sa valeur, réagir",
+      "contenu_markdown": "Valider un formulaire côté client suit toujours le même schéma en trois temps. On **lit** la valeur de chaque champ à contrôler, généralement via `document.forms[...].nomDuChamp.value` ou `document.getElementById(...).value`. On **teste** cette valeur avec une condition : une chaîne vide s'écrit `\"\"` et se compare avec `==` ou `===`. On **réagit** enfin en affichant un message adapté, le plus souvent avec `alert(\"message\")` pour une boîte de dialogue simple.\n\nPour déclencher cette vérification au moment voulu, on relie la fonction à un événement grâce à l'attribut `onclick` d'un bouton (ou `onsubmit` sur la balise `<form>` elle-même si l'on veut bloquer l'envoi en cas d'échec).",
+      "variantes": [
+        {
+          "nom": "Validation via onclick sur un bouton simple",
+          "quand_utiliser": "Quand on veut juste afficher un message sans empêcher un envoi éventuel du formulaire",
+          "contenu_markdown": "Le bouton est de type `button` (pas `submit`) et appelle la fonction de vérification au clic."
+        },
+        {
+          "nom": "Validation via onsubmit sur le formulaire",
+          "quand_utiliser": "Quand on veut réellement empêcher l'envoi du formulaire si les données sont invalides",
+          "contenu_markdown": "La fonction est appelée par `onsubmit=\"return maFonction()\"` et doit renvoyer `false` pour bloquer l'envoi."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écris la fonction JavaScript qui, au clic du bouton « enregistrer » d'un formulaire à trois champs (numero, designation, couleur), affiche « enregistrement effectué avec succès » si tous les champs sont renseignés, ou « echec d'enregistrement » sinon.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Récupérer la valeur des trois champs",
+          "justification": "Il faut disposer de chaque valeur saisie avant de pouvoir la tester",
+          "resultat_markdown": "`var numero = document.forms[0].numero.value;` (et de même pour `designation` et `couleur`)"
+        },
+        {
+          "numero": 2,
+          "action": "Construire la condition de vérification",
+          "justification": "Le formulaire est invalide dès qu'au moins un champ est vide, d'où l'opérateur logique « ou » (`||`)",
+          "resultat_markdown": "`if(numero==\"\" || designation==\"\" || couleur==\"\"){ ... }`"
+        },
+        {
+          "numero": 3,
+          "action": "Afficher le message correspondant",
+          "justification": "Un `alert()` pour chaque branche de la condition, conformément à l'énoncé",
+          "resultat_markdown": "`alert(\"echec d'enregistrement\");` dans le `if`, `alert(\"enregistrement effectué avec succès\");` dans le `else`"
+        },
+        {
+          "numero": 4,
+          "action": "Relier la fonction au clic du bouton",
+          "justification": "Sans ce lien, la fonction existe mais ne s'exécute jamais",
+          "resultat_markdown": "`<input type=\"button\" name=\"enregistrer\" value=\"enregistrer\" onclick=\"verifierFormulaire()\">`"
+        }
+      ],
+      "conclusion_markdown": "La fonction obtenue lit les trois champs, vérifie qu'aucun n'est vide, puis affiche le message approprié dans une boîte de dialogue, exactement comme demandé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser un bouton de type `submit` pour une validation purement JavaScript",
+          "pourquoi_faux": "Un bouton `submit` déclenche l'envoi du formulaire dès le clic, ce qui recharge la page ou navigue vers le fichier de traitement avant même que l'utilisateur n'ait pu lire le message affiché.",
+          "correction_markdown": "Utilise `type=\"button\"` quand la validation ne doit pas provoquer d'envoi, ou `onsubmit=\"return ...\"` sur le formulaire si l'envoi doit être conditionné au résultat."
+        },
+        {
+          "erreur_markdown": "Tester chaque champ avec un `if` séparé et un seul `alert` d'échec par champ",
+          "pourquoi_faux": "Cela peut afficher plusieurs boîtes de dialogue successives pour un seul clic si plusieurs champs sont vides, ce qui n'est pas ce que demande l'énoncé (un seul message global).",
+          "correction_markdown": "Regroupe toutes les conditions dans un seul test avec `||`, pour n'obtenir qu'un seul message, positif ou négatif."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la condition JavaScript qui vérifie qu'une variable `nom` n'est pas une chaîne vide.",
+          "solution_markdown": "`if(nom == \"\"){ /* champ vide */ }` ou, en inversant, `if(nom != \"\"){ /* champ renseigné */ }`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un formulaire comporte désormais un quatrième champ, `quantite`, qui doit en plus être un nombre strictement positif. Adapte la fonction de vérification pour inclure ce nouveau contrôle.",
+          "solution_markdown": "```javascript\nfunction verifierFormulaire(){\n  var numero = document.forms[0].numero.value;\n  var designation = document.forms[0].designation.value;\n  var couleur = document.forms[0].couleur.value;\n  var quantite = document.forms[0].quantite.value;\n  if(numero==\"\" || designation==\"\" || couleur==\"\" || quantite==\"\" || quantite<=0){\n    alert(\"echec d'enregistrement\");\n  } else {\n    alert(\"enregistrement effectué avec succès\");\n  }\n}\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Modifie la fonction pour qu'elle empêche réellement l'envoi du formulaire vers le serveur quand un champ est vide, au lieu de se contenter d'afficher un message.",
+          "solution_markdown": "Il faut relier la fonction à l'événement `onsubmit` du formulaire et lui faire renvoyer un booléen :\n\n```html\n<form onsubmit=\"return verifierFormulaire()\" method=\"post\" action=\"enregistrement.php\">\n```\n\n```javascript\nfunction verifierFormulaire(){\n  var numero = document.forms[0].numero.value;\n  var designation = document.forms[0].designation.value;\n  var couleur = document.forms[0].couleur.value;\n  if(numero==\"\" || designation==\"\" || couleur==\"\"){\n    alert(\"echec d'enregistrement\");\n    return false;\n  }\n  return true;\n}\n```\n\nQuand la fonction renvoie `false`, le navigateur annule l'envoi du formulaire ; quand elle renvoie `true`, l'envoi se poursuit normalement vers `enregistrement.php`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Valider un formulaire en JavaScript suit toujours le même schéma : lire, tester, réagir.",
+        "Une chaîne vide se teste avec `== \"\"`, et l'opérateur `||` regroupe plusieurs conditions d'échec en une seule.",
+        "Un bouton `type=\"button\"` avec `onclick` affiche un message sans envoyer le formulaire ; `onsubmit=\"return ...\"` sur le `<form>` permet en plus de bloquer l'envoi.",
+        "Au BAC TI, ce type de question associe presque toujours HTML (le formulaire) et JavaScript (sa validation) : relis toujours l'énoncé pour savoir si l'envoi doit être bloqué ou seulement signalé."
+      ]
+    }
+  ]
+}

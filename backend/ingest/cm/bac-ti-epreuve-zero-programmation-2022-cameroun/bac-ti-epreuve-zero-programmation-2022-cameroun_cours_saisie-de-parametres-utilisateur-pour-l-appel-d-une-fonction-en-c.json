@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-saisie-de-parametres-utilisateur-pour-l-appel-d-une-fonction-en-c-tle-ti",
+  "meta": {
+    "titre": "Saisie de paramètres utilisateur pour l'appel d'une fonction en C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Récursivité en langage C",
+    "duree_estimee_min": 15,
+    "tags": [
+      "langage C",
+      "scanf",
+      "fonction main",
+      "appel de fonction"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex4-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction déjà écrite et correcte reste inutile tant que rien, dans le programme, ne l'appelle avec des valeurs réelles. C'est le rôle de main() : transformer une définition de fonction en un calcul effectivement exécuté."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Déclaration de variables simples en C",
+        "Instruction scanf pour un entier"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déclarer, lire, appeler, afficher",
+      "contenu_markdown": "Appeler une fonction avec des valeurs choisies par l'utilisateur suit toujours la même suite d'étapes dans `main()` : déclarer une variable par paramètre attendu par la fonction, lire chacune au clavier avec `scanf(\"%d\", &variable)` (l'esperluette `&` est ici indispensable car `scanf` a besoin de l'adresse de la variable, pas de sa valeur), transmettre ces variables à la fonction dans l'appel, puis afficher la valeur renvoyée pour rendre le résultat visible à l'exécution.",
+      "formule_principale": "scanf(\"%d\", &x); resultat = f(x); printf(\"%d\", resultat);",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la fonction main() qui lit deux entiers x et n saisis par l'utilisateur, puis affiche le résultat de `calcul(x, n)`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déclarer une variable par paramètre attendu, plus une pour le résultat",
+          "justification": "calcul attend deux paramètres (x et n) ; une troisième variable stocke le résultat renvoyé.",
+          "resultat_markdown": "`int x, n, resultat;`"
+        },
+        {
+          "numero": 2,
+          "action": "Lire chaque valeur au clavier avec l'esperluette",
+          "justification": "scanf exige l'adresse de la variable à remplir, jamais sa valeur.",
+          "resultat_markdown": "`scanf(\"%d\", &x); scanf(\"%d\", &n);`"
+        },
+        {
+          "numero": 3,
+          "action": "Appeler la fonction et stocker son résultat",
+          "justification": "x et n sont transmis par valeur : calcul() en reçoit une copie, ce qui suffit puisqu'elle ne doit rien renvoyer à main() autrement que par son return.",
+          "resultat_markdown": "`resultat = calcul(x, n);`"
+        }
+      ],
+      "conclusion_markdown": "Le programme affiche alors le résultat réellement calculé pour les valeurs saisies par l'utilisateur, et non une valeur fixée en dur dans le code."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'esperluette dans `scanf(\"%d\", x)` au lieu de `scanf(\"%d\", &x)`.",
+          "pourquoi_faux": "Sans `&`, scanf reçoit la VALEUR de x (non initialisée, donc indéterminée) au lieu de son ADRESSE, et tente d'écrire à l'emplacement mémoire correspondant à cette valeur, ce qui provoque un comportement indéfini, souvent un plantage du programme.",
+          "correction_markdown": "Retenir que scanf a systématiquement besoin d'une adresse pour chaque variable simple à remplir : `&variable`, sauf si la variable est déjà elle-même un pointeur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une fonction `int carre(int x)` renvoie le carré de x. Écrire un main() qui lit x au clavier et affiche son carré.",
+          "solution_markdown": "```c\nint main() {\n    int x, resultat;\n    scanf(\"%d\", &x);\n    resultat = carre(x);\n    printf(\"%d\", resultat);\n    return 0;\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une fonction `float moyenne(float a, float b, float c)` renvoie la moyenne de trois notes. Écrire un main() qui lit les trois notes au clavier et affiche leur moyenne avec 2 décimales.",
+          "solution_markdown": "```c\nint main() {\n    float a, b, c, resultat;\n    scanf(\"%f\", &a);\n    scanf(\"%f\", &b);\n    scanf(\"%f\", &c);\n    resultat = moyenne(a, b, c);\n    printf(\"%.2f\", resultat);\n    return 0;\n}\n```\nLe format `%f` remplace `%d` car les paramètres sont des nombres à virgule flottante, et `%.2f` dans printf impose l'affichage à 2 décimales."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi un programme qui lit x et n au clavier avant d'appeler `calcul(x, n)` reste-t-il exposé à un résultat incorrect si l'utilisateur saisit une valeur non numérique (par exemple une lettre) au clavier, et que peut-on faire pour s'en prémunir ?",
+          "solution_markdown": "`scanf(\"%d\", &x)` attend une séquence de caractères représentant un entier ; si l'utilisateur saisit une lettre, `scanf` échoue à convertir cette entrée, laisse `x` non modifié (potentiellement non initialisé) et renvoie une valeur indiquant le nombre de conversions réussies (0 ici) plutôt que de déclencher une erreur visible. Le programme continue alors son exécution avec une valeur de x indéterminée, ce qui fausse silencieusement tout le calcul qui suit. Pour s'en prémunir, on peut tester la valeur de retour de `scanf` elle-même (`if (scanf(\"%d\", &x) != 1) { ... erreur ... }`) et redemander la saisie tant qu'elle n'est pas valide, plutôt que de supposer que l'utilisateur saisira toujours un entier correct."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Appeler une fonction avec des valeurs utilisateur suit toujours le schéma : déclarer, lire (scanf avec &), appeler, afficher.",
+        "scanf exige l'adresse de la variable à remplir (&variable), jamais sa valeur directement.",
+        "Le format de scanf/printf (%d, %f...) doit correspondre exactement au type de la variable concernée.",
+        "Un programme robuste vérifie la valeur de retour de scanf avant de faire confiance à la saisie de l'utilisateur."
+      ]
+    }
+  ]
+}

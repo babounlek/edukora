@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-identifier-objet-uml-tle-ti",
+  "meta": {
+    "titre": "Identifier un objet en UML (identifiant, état, comportement)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Approche objet",
+    "duree_estimee_min": 18,
+    "tags": [
+      "UML",
+      "objet",
+      "identifiant",
+      "état",
+      "comportement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex1-q7-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Derrière chaque classe que tu modélises se cachent des objets bien réels : cet employé précis, ce livre précis, cette commande précise. Savoir décomposer un objet en trois dimensions - identifiant, état, comportement - est le réflexe qui prépare directement la construction d'une classe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une classe UML de façon générale.",
+        "Savoir lire un texte de cas et en extraire les informations propres à une personne ou un élément précis."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois questions pour caractériser un objet",
+      "contenu_markdown": "Un objet est une instance concrète d'une classe. On le caractérise en répondant à trois questions distinctes : quel est son identifiant (la valeur unique qui le distingue de tout autre objet de la même classe, en général stable dans le temps) ? Quel est son état (les valeurs prises à un instant précis par ses attributs, susceptibles de changer au fil du temps) ? Quel est son comportement (l'ensemble des opérations qu'il est capable d'exécuter, définies par sa classe) ? Ces trois dimensions ne se substituent jamais l'une à l'autre : un identifiant qui change n'en est plus un, et un comportement décrit une capacité d'action, jamais une valeur figée.",
+      "formule_principale": "Objet = identifiant (stable) + état (valeurs à un instant t) + comportement (actions possibles)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'employé Mbassa Jonathan, matricule 017Z, a été embauché en 2010 en tant qu'ingénieur. Il occupe actuellement le poste de responsable du service location du matériel, pour un salaire de 600 000 FCFA avantages compris. Identifiez cet objet par son identifiant, son état et son comportement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'identifiant de l'objet",
+          "justification": "L'identifiant est la valeur unique qui distingue cet employé de tout autre employé de SOCOPRO, indépendamment de ses fonctions.",
+          "resultat_markdown": "Identifiant : matricule 017Z."
+        },
+        {
+          "numero": 2,
+          "action": "Décrire l'état de l'objet à l'instant présent",
+          "justification": "L'état correspond aux valeurs actuelles des attributs de l'objet, qui peuvent évoluer (un poste ou un salaire peut changer, contrairement au matricule).",
+          "resultat_markdown": "État : poste = « responsable du service location du matériel », date d'embauche = 2010, salaire = 600 000 FCFA avantages compris."
+        },
+        {
+          "numero": 3,
+          "action": "Décrire le comportement de l'objet",
+          "justification": "Le comportement liste les actions que l'objet peut exécuter en tant qu'employé, et en tant que responsable de service pour ses droits supplémentaires.",
+          "resultat_markdown": "Comportement : effectuer une location, vérifier une disponibilité (actions d'Employé) ; éditer le récapitulatif de son service (action propre au Responsable de service)."
+        }
+      ],
+      "conclusion_markdown": "Mbassa Jonathan est entièrement caractérisé par ces trois dimensions : un identifiant qui ne change jamais, un état qui reflète sa situation actuelle, et un comportement qui liste ce qu'il peut faire dans le système."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner le nom de l'employé (« Mbassa Jonathan ») comme identifiant",
+          "pourquoi_faux": "Un nom n'est jamais garanti unique - deux employés peuvent porter le même nom - alors qu'un identifiant doit distinguer l'objet de façon absolument certaine.",
+          "correction_markdown": "Cherche toujours un code ou un numéro conçu spécifiquement pour être unique (matricule, numéro de compte...), jamais un nom ou un prénom, comme identifiant d'un objet."
+        },
+        {
+          "erreur_markdown": "Mélanger état et comportement, par exemple écrire « effectue des locations » comme un élément de l'état",
+          "pourquoi_faux": "L'état décrit des VALEURS à un instant donné (un poste, un salaire), le comportement décrit des ACTIONS possibles (un verbe d'action) : les deux répondent à des questions différentes.",
+          "correction_markdown": "Pose-toi la question : est-ce une valeur que l'objet possède (état), ou une action qu'il peut réaliser (comportement) ? Un verbe à l'infinitif signale presque toujours un comportement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un livre de bibliothèque porte la référence ISBN 978-2-1234-5678-9, est actuellement « emprunté » et peut être réservé ou rendu. Identifiez cet objet par son identifiant, son état et son comportement.",
+          "solution_markdown": "Identifiant : ISBN 978-2-1234-5678-9. État : statut = « emprunté ». Comportement : être réservé, être rendu."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une commande en ligne porte le numéro CMD-2024-00317, contient 3 articles pour un montant total de 45 000 FCFA, et son statut actuel est « en préparation ». Le système permet de la valider, de l'annuler ou de suivre sa livraison. Identifiez cet objet.",
+          "solution_markdown": "Identifiant : numéro de commande CMD-2024-00317 (un numéro conçu pour être unique, contrairement au montant ou au nombre d'articles qui peuvent se répéter d'une commande à l'autre). État : nombre d'articles = 3, montant total = 45 000 FCFA, statut = « en préparation ». Comportement : valider la commande, annuler la commande, suivre la livraison."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux employés d'une même entreprise portent tous deux le nom « Manga Paul », mais des matricules différents (E102 et E245). Expliquez pourquoi cette situation ne pose aucun problème pour le système d'information, et ce qui se passerait si l'entreprise identifiait ses employés par leur nom plutôt que par leur matricule.",
+          "solution_markdown": "Cette situation ne pose aucun problème parce que l'identifiant retenu est le matricule (E102, E245), qui reste unique même en cas d'homonymie parfaite sur le nom : le système distingue parfaitement les deux employés malgré leur nom identique. Si l'entreprise avait choisi le nom comme identifiant, elle ne pourrait plus distinguer ces deux employés dans sa base de données : toute opération portant sur « Manga Paul » (calculer un salaire, enregistrer une location) risquerait de s'appliquer au mauvais employé, ou de fusionner par erreur les deux dossiers en un seul. C'est précisément pour éviter ce risque qu'un identifiant d'objet doit toujours être une valeur conçue pour être unique, jamais une donnée qui peut légitimement se répéter."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un objet se caractérise par trois dimensions distinctes : identifiant (stable et unique), état (valeurs à un instant donné) et comportement (actions possibles).",
+        "L'identifiant n'est jamais un nom ou un prénom, toujours une valeur conçue pour rester unique, même en cas d'homonymie.",
+        "L'état peut changer dans le temps (un poste, un salaire), contrairement à l'identifiant qui reste fixe pour toute la vie de l'objet.",
+        "Le comportement se formule par des verbes d'action, jamais par des valeurs : c'est ce qui prépare directement les opérations de la future classe.",
+        "Au BAC TI, cette question précède presque toujours celle sur la classe elle-même : bien distinguer les trois dimensions ici évite de les confondre au moment de construire le rectangle UML de la classe."
+      ]
+    }
+  ]
+}

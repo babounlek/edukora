@@ -1,0 +1,149 @@
+{
+  "cours_id": "cours-insertion-du-javascript-dans-une-page-html-tle-tronccommun",
+  "meta": {
+    "titre": "Insérer du code JavaScript dans une page HTML",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web - JavaScript",
+    "duree_estimee_min": 20,
+    "tags": [
+      "JavaScript",
+      "HTML",
+      "balise script",
+      "script externe",
+      "évènement"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-e-informatique-theorique-officiel-2013",
+    "epreuve_titre": "Baccalauréat A, C, D, E - Informatique (Épreuve théorique) - 2013 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2013-ex3-q3.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page HTML pure reste statique : elle affiche du texte et des images, mais ne réagit jamais à ce que fait l'utilisateur. Pour qu'un bouton change de couleur au clic, qu'un formulaire vérifie une saisie avant de l'envoyer, ou qu'une page affiche une alerte, il faut y ajouter du code JavaScript. Mais où placer exactement ce code dans la structure d'une page HTML ? Ce cours répond précisément à cette question, à travers les emplacements possibles et ce qui les distingue."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure de base d'une page HTML (balises <html>, <head>, <body>)",
+        "Savoir ce qu'est une balise HTML et comment elle s'ouvre et se ferme",
+        "Avoir une première idée de ce qu'est un langage de programmation (instruction, exécution)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les emplacements possibles du code JavaScript dans une page HTML",
+      "contenu_markdown": "Le code JavaScript n'a pas un emplacement unique dans une page HTML : il peut être placé à plusieurs endroits distincts selon le moment et la portée souhaités pour son exécution. Un script placé dans `<head>` s'exécute en général avant l'affichage du contenu de la page, un script placé dans `<body>` s'exécute au fil de la lecture de la page par le navigateur, et un script inséré comme attribut d'une balise ne s'exécute qu'au moment précis où l'évènement associé se produit, un clic par exemple.",
+      "formule_principale": "<script> instructions JavaScript </script>",
+      "variantes": [
+        {
+          "nom": "Script interne (dans head ou body)",
+          "quand_utiliser": "Quand le code JavaScript est propre à cette page et n'a pas besoin d'être réutilisé ailleurs",
+          "contenu_markdown": "On l'écrit directement entre des balises `<script>` et `</script>`, placées soit dans `<head>...</head>`, soit dans `<body>...</body>`."
+        },
+        {
+          "nom": "Script externe",
+          "quand_utiliser": "Quand le même code JavaScript doit être réutilisé sur plusieurs pages du site, ou pour garder le HTML lisible séparément du code",
+          "contenu_markdown": "On l'écrit dans un fichier séparé portant l'extension `.js`, puis on l'appelle depuis la page HTML avec `<script src=\"fichier.js\"></script>`."
+        },
+        {
+          "nom": "JavaScript en ligne (attribut d'évènement)",
+          "quand_utiliser": "Quand le code doit réagir à une action précise de l'utilisateur sur un élément particulier (clic, survol, saisie)",
+          "contenu_markdown": "On l'écrit directement dans un attribut d'évènement de la balise concernée, par exemple `<button onclick=\"maFonction()\">Cliquer</button>`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur une page HTML, citer trois endroits où l'on peut insérer un code JavaScript.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le premier emplacement possible",
+          "justification": "Un script peut être placé dans l'en-tête de la page, avant que le contenu ne soit affiché.",
+          "resultat_markdown": "Emplacement 1 : entre les balises `<head>` et `</head>`, dans une balise `<script>`."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le deuxième emplacement possible",
+          "justification": "Un script peut aussi être placé dans le corps de la page, au fil du contenu affiché.",
+          "resultat_markdown": "Emplacement 2 : entre les balises `<body>` et `</body>`, dans une balise `<script>`."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier le troisième emplacement possible",
+          "justification": "Un script peut enfin être directement rattaché à un évènement précis sur un élément HTML, sans passer par une balise `<script>` séparée.",
+          "resultat_markdown": "Emplacement 3 : comme attribut d'évènement d'une balise, par exemple `onclick=\"...\"`."
+        }
+      ],
+      "conclusion_markdown": "Les trois emplacements attendus sont donc : dans `<head>`, dans `<body>`, et en attribut d'évènement d'une balise HTML ; un fichier `.js` externe appelé par `<script src=\"...\"></script>` constitue une quatrième réponse également valable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que le JavaScript ne peut être placé que dans `<head>`, parce que c'est l'endroit le plus souvent montré en premier dans les cours.",
+          "pourquoi_faux": "Un script placé uniquement dans `<head>` s'exécute avant que le contenu du `<body>` n'existe : s'il doit agir sur un élément de la page (un bouton, un champ de formulaire), cet élément n'existe pas encore au moment où le script s'exécute, ce qui provoque une erreur.",
+          "correction_markdown": "Place le script juste avant la fermeture de `</body>`, ou utilise un évènement comme `onload`, quand il doit manipuler des éléments déjà présents dans la page."
+        },
+        {
+          "erreur_markdown": "Oublier la balise `<script>` et écrire du code JavaScript à même le texte de la page, comme s'il s'agissait de contenu HTML normal.",
+          "pourquoi_faux": "Le navigateur interprète tout ce qui n'est pas entre balises `<script>` (ou dans un attribut d'évènement) comme du texte à afficher, pas comme des instructions à exécuter : le code JavaScript apparaîtrait tel quel dans la page au lieu de s'exécuter.",
+          "correction_markdown": "Vérifie systématiquement que ton code JavaScript est bien encadré par `<script>` et `</script>`, ou placé dans un attribut d'évènement reconnu comme `onclick`."
+        },
+        {
+          "erreur_markdown": "Confondre le fichier `.js` externe avec un simple lien hypertexte, et l'appeler avec `<a href=\"fichier.js\">` au lieu de `<script src=\"fichier.js\">`.",
+          "pourquoi_faux": "La balise `<a href=\"...\">` crée un lien cliquable vers le fichier, elle ne l'exécute jamais comme un script : le navigateur téléchargerait ou afficherait le fichier .js comme du texte brut, sans jamais lancer les instructions qu'il contient.",
+          "correction_markdown": "Un fichier JavaScript externe s'appelle toujours avec l'attribut `src` d'une balise `<script>`, jamais avec une balise `<a>`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la ligne de code HTML qui permet d'appeler, dans le corps d'une page, un fichier JavaScript externe nommé `script.js`.",
+          "solution_markdown": "On utilise la balise `<script>` avec l'attribut `src`, placée dans le corps de la page : `<script src=\"script.js\"></script>`. Cette ligne, insérée entre `<body>` et `</body>`, indique au navigateur d'aller chercher le fichier `script.js` et d'exécuter les instructions qu'il contient au moment où il rencontre cette ligne."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un bouton doit afficher le message 'Bonjour' dans une fenêtre d'alerte lorsqu'on clique dessus. Écrire le code HTML du bouton qui déclenche cette action en JavaScript en ligne.",
+          "solution_markdown": "1. Le déclenchement recherché est un clic sur le bouton : on utilise donc l'attribut d'évènement `onclick`, qui ne s'exécute qu'au moment du clic, jamais au chargement de la page.\n2. L'action à exécuter est l'affichage d'une fenêtre d'alerte contenant le texte 'Bonjour' : en JavaScript, cela s'écrit `alert('Bonjour')`.\n3. On assemble les deux dans la balise `<button>` : `<button onclick=\"alert('Bonjour')\">Cliquer ici</button>`.\n\nCe bouton, une fois inséré dans le `<body>` de la page, affiche la fenêtre d'alerte uniquement lorsqu'un utilisateur clique dessus."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une page HTML doit afficher une alerte de bienvenue dès l'ouverture complète de la page (pas au clic), sans dépendre d'un bouton. Expliquer où placer le code JavaScript correspondant et pourquoi un simple script placé en tout début de `<head>` ne suffit pas forcément.",
+          "solution_markdown": "1. L'action demandée doit se déclencher automatiquement à l'ouverture de la page, pas sur une action de l'utilisateur : ce n'est donc ni un script `<head>` exécuté avant le contenu (qui ne réagit à aucun évènement), ni un attribut `onclick` qui exige un clic.\n2. Un script placé tout en haut de `<head>` s'exécute avant que le contenu de `<body>` ne soit chargé par le navigateur : si l'instruction dépendait d'un élément de la page pour s'exécuter correctement, elle échouerait car cet élément n'existerait pas encore à ce moment-là.\n3. Deux solutions correctes : soit placer le script juste avant la balise fermante `</body>`, ce qui garantit que tout le contenu HTML précédent est déjà chargé au moment de l'exécution : `<script>alert('Bienvenue')</script>` juste avant `</body>` ; soit rattacher le script à l'évènement `onload` du corps de la page, qui se déclenche précisément quand le chargement de la page est terminé : `<body onload=\"alert('Bienvenue')\">`.\n4. Les deux solutions produisent le même résultat observable, une alerte au chargement complet de la page, mais `onload` garantit explicitement que tout le contenu de la page, y compris les images, est chargé avant l'exécution, alors qu'un script juste avant `</body>` garantit seulement que le HTML qui le précède est déjà interprété."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le JavaScript se place à trois endroits possibles dans une page HTML : dans `<head>`, dans `<body>`, ou en attribut d'évènement d'une balise, un fichier `.js` externe appelé par `<script src=\"...\">` étant une quatrième option.",
+        "Un script qui doit manipuler des éléments déjà affichés se place en fin de `<body>`, ou se rattache à l'évènement `onload`, jamais tout en haut de `<head>`.",
+        "Le code JavaScript doit toujours être encadré par `<script>...</script>` ou placé dans un attribut d'évènement reconnu, sinon le navigateur l'affiche comme du texte au lieu de l'exécuter.",
+        "Un fichier `.js` externe s'appelle avec `<script src=\"...\"></script>`, jamais avec une balise `<a>`.",
+        "Au BAC, cette question porte sur l'emplacement du code dans la structure de la page, pas sur la syntaxe JavaScript elle-même : ne réponds pas à côté en détaillant des instructions au lieu des emplacements."
+      ]
+    }
+  ]
+}

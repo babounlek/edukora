@@ -1,0 +1,166 @@
+[
+  {
+    "external_id": "cqc-structure-de-donnees-faible-0",
+    "theme": "structure de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Parmi les propositions suivantes, laquelle est une structure de données (type non primitif) ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn type primitif contient une seule valeur (entier, réel, caractère) ; une structure de données regroupe plusieurs valeurs sous un même nom (tableau, enregistrement, liste...).\n\n### Corrigé\n\nLe **tableau** est une structure de données : il regroupe plusieurs valeurs d'un même type sous un seul nom. `int`, `char` et `float` sont des types primitifs : chacun ne contient qu'une seule valeur.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "int"
+      },
+      {
+        "lettre": "B",
+        "texte": "Un tableau"
+      },
+      {
+        "lettre": "C",
+        "texte": "char"
+      },
+      {
+        "lettre": "D",
+        "texte": "float"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10532,
+      10572,
+      10625
+    ]
+  },
+  {
+    "external_id": "cqc-structure-de-donnees-faible-1",
+    "theme": "structure de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère les déclarations C suivantes :\n\n```c\nint notes[5];\n\nstruct eleve {\n    char nom[30];\n    int age;\n    float moyenne;\n};\n```\n\nLaquelle de ces deux déclarations est un tableau et laquelle est un enregistrement (structure) ? Donner la différence essentielle.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn tableau regroupe des éléments de **même type**, accessibles par leur indice ; un enregistrement (`struct`) regroupe des champs de **types éventuellement différents**, accessibles par leur nom.\n\n### Corrigé\n\n`int notes[5];` est un **tableau** : cinq entiers, du même type, accessibles par indice de 0 à 4. `struct eleve` est un **enregistrement** : il regroupe un nom (chaîne), un âge (entier) et une moyenne (réel), de types différents, accessibles par leur nom (`e.age`, `e.moyenne`).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10532,
+      10572,
+      10625
+    ]
+  },
+  {
+    "external_id": "cqc-structure-de-donnees-moyenne-2",
+    "theme": "structure de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le tableau `int T[5] = {12, 7, 9, 15, 4};`\n\n1. Que valent `T[0]`, `T[4]` et `T[1] + T[3]` ?\n2. Quel est l'indice du dernier élément ? Que se passe-t-il si on lit `T[5]` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLes indices d'un tableau C commencent à 0 : un tableau de n éléments a des indices de 0 à n - 1. Accéder à un indice en dehors de cette plage est une erreur.\n\n### Corrigé\n\n1. `T[0]` = **12**, `T[4]` = **4** et `T[1] + T[3]` = 7 + 15 = **22**.\n2. Le dernier indice est **4** (le tableau a 5 éléments, indices 0 à 4). Lire `T[5]` dépasse les limites du tableau : le compilateur C ne l'interdit pas, mais on lit une zone mémoire qui n'appartient pas au tableau (comportement indéfini, valeur imprévisible ou plantage).",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10532,
+      10572,
+      10625
+    ]
+  },
+  {
+    "external_id": "cqc-structure-de-donnees-moyenne-3",
+    "theme": "structure de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Qu'affiche le programme suivant ?\n\n```c\nstruct point { int x; int y; };\n\nint main() {\n    struct point p = {3, 4};\n    printf(\"%d\", p.x + p.y);\n    return 0;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nOn accède à un champ d'une variable de type `struct` avec l'opérateur point : `variable.champ`. L'opérateur `+` additionne ici deux entiers.\n\n### Corrigé\n\n`p.x` vaut 3 et `p.y` vaut 4 : `p.x + p.y` est l'addition des deux entiers, soit **7**. La valeur 34 serait une concaténation, qui n'existe pas pour des entiers, et 12 un produit.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "34"
+      },
+      {
+        "lettre": "B",
+        "texte": "7"
+      },
+      {
+        "lettre": "C",
+        "texte": "12"
+      },
+      {
+        "lettre": "D",
+        "texte": "3"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10532,
+      10572,
+      10625
+    ]
+  },
+  {
+    "external_id": "cqc-structure-de-donnees-elevee-4",
+    "theme": "structure de données",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Écrire une fonction C `int indice_min(int T[], int n)` qui retourne l'indice du plus petit élément d'un tableau `T` de `n` éléments. Faire la trace pour `T = {12, 7, 9, 15, 4, 8}` (`n = 6`) : donner l'indice retourné, la valeur minimale et le nombre de comparaisons effectuées.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour chercher un minimum, on retient l'indice du meilleur élément vu jusque-là (initialisé à 0), puis on parcourt les autres éléments en le mettant à jour chaque fois qu'un élément plus petit apparaît.\n\n### Corrigé\n\n```c\nint indice_min(int T[], int n) {\n    int imin = 0;\n    for (int i = 1; i < n; i++)\n        if (T[i] < T[imin])\n            imin = i;\n    return imin;\n}\n```\n\nTrace pour `T = {12, 7, 9, 15, 4, 8}` : `imin` vaut 0 ; à `i = 1`, 7 < 12 donc `imin = 1` ; `i = 2` (9) et `i = 3` (15) ne changent rien ; à `i = 4`, 4 < 7 donc `imin = 4` ; `i = 5` (8) ne change rien.\n\nLa fonction retourne l'indice **4**, la valeur minimale est **4**, et il y a **5 comparaisons** (`n - 1`, une par élément à partir de l'indice 1).",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10532,
+      10572,
+      10625
+    ]
+  }
+]

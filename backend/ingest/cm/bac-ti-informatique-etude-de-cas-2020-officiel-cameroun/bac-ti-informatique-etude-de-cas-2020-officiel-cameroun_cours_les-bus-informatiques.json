@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-les-bus-informatiques-tle-ti",
+  "meta": {
+    "titre": "Les bus informatiques",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 15,
+    "tags": [
+      "bus de données",
+      "bus d'adresses",
+      "PCI Express"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3-qA.4.4-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un ordinateur, les composants ne communiquent pas au hasard : ils échangent leurs informations sur des lignes partagées appelées bus, chacune dédiée à un type précis d'information. Sans ces bus, microprocesseur, mémoire et carte graphique resteraient trois îles isolées."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est le microprocesseur et la mémoire centrale"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois types de lignes pour trois types d'information",
+      "contenu_markdown": "Un **bus informatique** est un ensemble de lignes de communication partagées entre plusieurs composants d'un ordinateur. On distingue le **bus de données** (transporte les données réellement échangées), le **bus d'adresses** (transporte les adresses mémoire à lire ou à écrire), et le **bus de contrôle** (transporte les signaux de commande et de synchronisation). Physiquement, la liaison entre la carte graphique, la mémoire centrale et le microprocesseur est aujourd'hui le plus souvent assurée par un connecteur **PCI Express (PCIe)**, qui a remplacé l'ancien standard **AGP**.",
+      "formule_principale": "Bus de données + Bus d'adresses + Bus de contrôle -> liaison physique PCI Express (ou AGP)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La carte graphique du schéma communique avec la mémoire centrale et le microprocesseur par l'intermédiaire d'un bus. Nommer deux types de bus utilisés dans ce cas.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler les grandes catégories de bus existantes",
+          "justification": "Il faut connaître la classification avant de répondre",
+          "resultat_markdown": "Bus de données, bus d'adresses, bus de contrôle."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir deux catégories pertinentes pour la communication carte graphique - mémoire - microprocesseur",
+          "justification": "L'échange combine toujours au moins le transport des données et celui des adresses",
+          "resultat_markdown": "Bus de données (les données d'image échangées) et bus d'adresses (les emplacements mémoire concernés)."
+        },
+        {
+          "numero": 3,
+          "action": "Préciser l'interface physique concrète",
+          "justification": "Ces bus logiques s'appuient sur un connecteur physique réel",
+          "resultat_markdown": "Ces échanges transitent physiquement par un connecteur PCI Express (PCIe), ou AGP sur du matériel plus ancien."
+        }
+      ],
+      "conclusion_markdown": "Le bus de données et le bus d'adresses sont deux types de bus utilisés, transitant physiquement par un connecteur PCI Express (ou AGP)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre \"PCI Express\" et \"AGP\" comme les \"deux types de bus\" demandés",
+          "pourquoi_faux": "PCI Express et AGP sont des standards d'interface PHYSIQUE (des connecteurs), pas des types fonctionnels de bus (données, adresses, contrôle) : la question porte sur la nature de l'information transportée, pas sur le connecteur utilisé.",
+          "correction_markdown": "Distingue toujours le TYPE fonctionnel de bus (données, adresses, contrôle) du STANDARD physique qui l'implémente (PCI Express, AGP, USB...)."
+        },
+        {
+          "erreur_markdown": "Oublier le bus de contrôle en ne citant que données et adresses",
+          "pourquoi_faux": "Le bus de contrôle, bien que moins visible, reste indispensable : il synchronise les échanges (signaux de lecture/écriture, horloge) entre les composants.",
+          "correction_markdown": "Si la question demande explicitement plus de deux types, n'oublie pas le bus de contrôle en complément des bus de données et d'adresses."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel type de bus transporte les données réellement échangées entre deux composants ?",
+          "solution_markdown": "Le bus de données."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quel est le rôle du bus d'adresses, en complément du bus de données ?",
+          "solution_markdown": "Le bus d'adresses transporte l'information indiquant OÙ lire ou écrire une donnée en mémoire (l'adresse mémoire concernée), alors que le bus de données transporte la donnée elle-même. Les deux fonctionnent toujours ensemble : sans adresse, une donnée ne saurait pas où aller ; sans donnée, l'adresse ne servirait à rien."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi le passage d'AGP à PCI Express a-t-il représenté une avancée importante pour les cartes graphiques, en particulier concernant le bus de données ?",
+          "solution_markdown": "AGP fonctionnait selon une architecture partagée à débit limité et fixe, adaptée aux besoins graphiques de son époque. PCI Express repose sur une architecture en liaisons point à point (« lanes ») dont le nombre peut être multiplié (x1, x4, x8, x16), ce qui augmente considérablement la bande passante disponible sur le bus de données entre la carte graphique, la mémoire centrale et le microprocesseur. Cette évolution a permis d'accompagner l'augmentation constante du volume de données à échanger (résolutions d'écran plus élevées, textures 3D plus complexes, calculs graphiques plus intensifs) sans être limité par le goulot d'étranglement qu'aurait représenté l'ancien standard AGP."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un bus est un ensemble de lignes de communication partagées entre composants d'un ordinateur.",
+        "Le bus de données transporte les données échangées, le bus d'adresses les emplacements mémoire concernés, le bus de contrôle les signaux de synchronisation.",
+        "PCI Express (et anciennement AGP) sont des standards physiques qui implémentent ces bus, à ne pas confondre avec les types fonctionnels de bus.",
+        "La carte graphique communique avec la mémoire centrale et le microprocesseur via ces bus combinés.",
+        "Au BAC TI, une question sur les bus attend une réponse en termes fonctionnels (données, adresses, contrôle), le nom du connecteur physique venant seulement en complément."
+      ]
+    }
+  ]
+}

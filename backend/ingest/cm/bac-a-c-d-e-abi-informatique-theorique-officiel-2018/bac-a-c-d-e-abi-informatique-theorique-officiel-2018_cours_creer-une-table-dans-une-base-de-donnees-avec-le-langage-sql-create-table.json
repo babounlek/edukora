@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-creer-une-table-sql-create-table-tle-tronc-commun",
+  "meta": {
+    "titre": "Créer une table dans une base de données avec le langage SQL (CREATE TABLE)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données relationnelles",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "CREATE TABLE",
+      "clé primaire",
+      "base de données relationnelle"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-A-C-D-E-ABI-INFORMATIQUE-THEORIQUE-OFFICIEL-2018",
+    "epreuve_titre": "BAC A, C, D, E, ABI - Informatique (Épreuve théorique) - Cameroun - 2018",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2018-ex3-q3.2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une base de données ne contient rien tant qu'aucune table n'a été créée pour accueillir ses informations : avant de pouvoir enregistrer le moindre enseignant, élève ou produit, il faut d'abord définir la structure qui va les contenir. C'est exactement ce que demande la question 3.2.a de cette épreuve : construire, en langage SQL, la structure d'une table à partir d'un extrait de données déjà organisé en colonnes. Cette compétence est la porte d'entrée de toute manipulation de base de données au BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table dans une base de données relationnelle (lignes et colonnes)",
+        "Connaître la notion de clé primaire (champ qui identifie chaque enregistrement de façon unique)",
+        "Distinguer les types de données de base (texte, nombre, date)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La syntaxe de l'instruction CREATE TABLE",
+      "contenu_markdown": "Créer une table en SQL consiste à décrire sa structure : son nom, puis la liste de ses champs (colonnes), chacun associé à un type de données qui précise la nature des valeurs qu'il pourra contenir. Le champ qui identifie chaque enregistrement de façon unique reçoit en plus la contrainte PRIMARY KEY. Trois étapes suffisent à construire cette requête à partir d'un extrait de table donné dans un énoncé : lister les colonnes visibles dans l'extrait, choisir pour chacune un type de données cohérent avec les valeurs observées, puis repérer laquelle joue le rôle de clé primaire.",
+      "formule_principale": "CREATE TABLE nom_table (champ1 type1 PRIMARY KEY, champ2 type2, champ3 type3, ...);",
+      "variantes": [
+        {
+          "nom": "Types de données les plus courants",
+          "quand_utiliser": "Au moment de choisir le type de chaque champ.",
+          "contenu_markdown": "VARCHAR(n) pour du texte de longueur variable (noms, matricules) ; INT pour des nombres entiers ; DATE pour des dates. Le choix du type dépend de la nature des valeurs observées dans l'extrait de table donné par l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit la table « Enseignant » dont l'extrait est donné ci-dessous :\n\n| Matricule | Nom | Prenom | Matiere |\n|---|---|---|---|\n| UV201 | MBIDA | Marcus | Anglais |\n| UV202 | FANYEP | Linux | Informatique |\n| UV203 | YAYA | Stan | Mathematique |\n| UV204 | DIKA | Daniel | Informatique |\n\nÉcrire la requête SQL permettant de créer la table « Enseignant ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les colonnes visibles dans l'extrait de table",
+          "justification": "La structure de la table à créer doit reprendre exactement les champs présentés dans l'énoncé, ni plus ni moins.",
+          "resultat_markdown": "Quatre colonnes : Matricule, Nom, Prenom, Matiere."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir un type de données pour chaque champ",
+          "justification": "Les valeurs observées (UV201, MBIDA, Marcus, Anglais) sont toutes des chaînes de caractères, jamais des nombres à calculer : le type VARCHAR convient à chacune.",
+          "resultat_markdown": "Matricule VARCHAR(10), Nom VARCHAR(30), Prenom VARCHAR(30), Matiere VARCHAR(30)."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier le champ qui joue le rôle de clé primaire",
+          "justification": "Les valeurs de la colonne Matricule (UV201, UV202, UV203, UV204) sont toutes différentes : ce champ identifie chaque enseignant de façon unique, c'est donc lui qui reçoit la contrainte PRIMARY KEY.",
+          "resultat_markdown": "Matricule VARCHAR(10) PRIMARY KEY."
+        },
+        {
+          "numero": 4,
+          "action": "Assembler la requête complète",
+          "justification": "L'instruction CREATE TABLE regroupe le nom de la table et la liste des champs entre parenthèses, séparés par des virgules, terminée par un point-virgule.",
+          "resultat_markdown": "```sql\nCREATE TABLE Enseignant (\n    Matricule VARCHAR(10) PRIMARY KEY,\n    Nom VARCHAR(30),\n    Prenom VARCHAR(30),\n    Matiere VARCHAR(30)\n);\n```"
+        }
+      ],
+      "conclusion_markdown": "La table Enseignant est ainsi créée avec ses quatre champs et sa clé primaire correctement déclarée : elle est prête à recevoir les enregistrements présentés dans l'extrait de l'énoncé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la contrainte PRIMARY KEY sur le champ identifiant, en écrivant simplement `Matricule VARCHAR(10),`.",
+          "pourquoi_faux": "Sans cette contrainte, rien n'empêche d'insérer ensuite deux enseignants avec le même matricule dans la table, ce qui contredit la définition même d'une clé primaire : un champ dont la valeur identifie chaque enregistrement de façon unique.",
+          "correction_markdown": "Toujours ajouter PRIMARY KEY immédiatement après le type du champ identifiant : `Matricule VARCHAR(10) PRIMARY KEY,`."
+        },
+        {
+          "erreur_markdown": "Utiliser le type INT pour le champ Matricule parce qu'il contient des chiffres, en écrivant `Matricule INT PRIMARY KEY,`.",
+          "pourquoi_faux": "Le matricule commence par des lettres (« UV »), avant les chiffres : ce n'est pas une valeur numérique sur laquelle on effectuerait un calcul, mais une chaîne de caractères. Le type INT rejetterait une valeur comme « UV201 ».",
+          "correction_markdown": "Choisir le type d'après la nature réelle des valeurs, pas seulement d'après la présence de chiffres : une référence alphanumérique reste du texte, donc VARCHAR."
+        },
+        {
+          "erreur_markdown": "Oublier la virgule entre deux champs consécutifs, ou en ajouter une après le dernier champ avant la parenthèse fermante.",
+          "pourquoi_faux": "Chaque champ doit être séparé du suivant par une virgule, mais le dernier champ de la liste n'en porte pas après lui : une virgule oubliée ou une virgule surnuméraire provoque une erreur de syntaxe qui empêche la création de la table.",
+          "correction_markdown": "Relire la liste des champs avant de rendre la copie : une virgule entre chaque champ, aucune après le dernier."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une bibliothèque scolaire tient un registre de ses livres avec les colonnes suivantes : Code (ex. LIV001), Titre, Auteur, Annee_publication (un nombre entier). Écrire la requête SQL permettant de créer la table « Livre », en choisissant judicieusement le champ jouant le rôle de clé primaire.",
+          "solution_markdown": "Le champ Code identifie chaque livre de façon unique (LIV001, LIV002...) : c'est lui qui reçoit la contrainte PRIMARY KEY. Titre et Auteur sont des chaînes de caractères (VARCHAR), tandis qu'Annee_publication est un nombre entier (INT).\n\n```sql\nCREATE TABLE Livre (\n    Code VARCHAR(10) PRIMARY KEY,\n    Titre VARCHAR(50),\n    Auteur VARCHAR(50),\n    Annee_publication INT\n);\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un club sportif souhaite enregistrer ses membres avec les colonnes suivantes : Numero_licence (identifiant unique, ex. 2024001), Nom, Prenom, Date_naissance (une date). Écrire la requête SQL de création de la table « Membre ».",
+          "solution_markdown": "Numero_licence identifie chaque membre de façon unique : c'est le champ clé primaire. Nom et Prenom sont des chaînes de caractères. Date_naissance est une date, ce qui correspond au type DATE plutôt qu'à VARCHAR ou INT.\n\n```sql\nCREATE TABLE Membre (\n    Numero_licence VARCHAR(10) PRIMARY KEY,\n    Nom VARCHAR(30),\n    Prenom VARCHAR(30),\n    Date_naissance DATE\n);\n```\n\nNumero_licence est déclaré en VARCHAR plutôt qu'en INT : rien dans l'énoncé n'indique qu'on effectuera un calcul sur ce numéro, et le conserver en texte évite de perdre un éventuel zéro non significatif en tête du numéro."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une entreprise veut créer deux tables liées : une table « Employe » (Matricule identifiant unique, Nom, Prenom) et une table « Service » (Code_service identifiant unique, ex. SRV01, Nom_service). Chaque employé appartient à un seul service. Écrire les requêtes SQL de création des deux tables, en ajoutant à la table Employe un champ permettant de retrouver le service auquel appartient chaque employé.",
+          "solution_markdown": "Chaque table reçoit d'abord sa propre clé primaire : Matricule pour Employe, Code_service pour Service.\n\n```sql\nCREATE TABLE Service (\n    Code_service VARCHAR(10) PRIMARY KEY,\n    Nom_service VARCHAR(30)\n);\n\nCREATE TABLE Employe (\n    Matricule VARCHAR(10) PRIMARY KEY,\n    Nom VARCHAR(30),\n    Prenom VARCHAR(30),\n    Code_service VARCHAR(10)\n);\n```\n\nLe champ Code_service ajouté dans la table Employe reprend le même type que la clé primaire de la table Service : c'est une clé étrangère, qui permet de savoir à quel service appartient chaque employé sans dupliquer le nom du service dans chaque ligne de la table Employe. La table Service doit être créée avant la table Employe pour respecter l'ordre logique de dépendance entre les deux tables."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant d'écrire la requête, liste les colonnes visibles dans l'extrait de l'énoncé : la structure de la table doit les reprendre exactement.",
+        "Choisis le type de chaque champ d'après la nature réelle des valeurs (texte, nombre entier, date), jamais d'après leur seule apparence.",
+        "Le champ dont les valeurs sont toutes différentes dans l'extrait est celui qui reçoit la contrainte PRIMARY KEY.",
+        "Une virgule sépare chaque champ du suivant, sans virgule après le dernier champ ni après la fermeture de la parenthèse.",
+        "Au BAC informatique, cette requête est presque toujours la première d'une série de questions sur la même table : une erreur ici compromet aussi les requêtes SELECT qui suivent."
+      ]
+    }
+  ]
+}

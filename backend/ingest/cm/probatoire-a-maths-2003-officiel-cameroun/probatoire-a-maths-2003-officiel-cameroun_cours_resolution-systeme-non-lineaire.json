@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-resolution-systeme-non-lineaire-premiere-a",
+  "meta": {
+    "titre": "Résolution d'un système non linéaire (équation affine et somme de carrés)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Systèmes d'équations",
+    "duree_estimee_min": 25,
+    "tags": [
+      "système d'équations",
+      "second degré",
+      "discriminant",
+      "substitution"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-MATHS-2003-CAMEROUN",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2003 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-maths-2003-officiel-cameroun-ex1-qa-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer les dimensions d'un terrain à partir de sa forme et de son aire, retrouver deux nombres connaissant leur différence et la somme de leurs carrés : ces problèmes se traduisent presque toujours par un système de deux équations à deux inconnues, dont une seule est simple et l'autre fait intervenir des carrés. Ce cours montre comment ramener un tel système à une unique équation du second degré, que tu sais déjà résoudre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résoudre une équation du premier degré à une inconnue",
+        "Développer une identité remarquable comme $(a+b)^2$",
+        "Calculer le discriminant et les racines d'une équation du second degré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode de substitution",
+      "contenu_markdown": "Pour résoudre un système formé d'une équation affine $x-y=k$ et d'une équation faisant intervenir $x^2+y^2$, on isole une inconnue dans l'équation affine (par exemple $x=y+k$), puis on la remplace dans la seconde équation. On obtient alors une équation du second degré à une seule inconnue, qu'on résout avec le discriminant. Chaque racine trouvée pour cette inconnue redonne, via l'équation affine, la valeur correspondante de l'autre inconnue : un système de ce type admet donc en général deux couples de solutions.",
+      "formule_principale": "\\Delta = b^2-4ac",
+      "variantes": [
+        {
+          "nom": "Méthode par somme et différence",
+          "quand_utiliser": "Quand on préfère travailler directement avec $x+y$ et $x-y$ plutôt que substituer",
+          "contenu_markdown": "On utilise les identités $(x+y)^2=x^2+y^2+2xy$ et $(x-y)^2=x^2+y^2-2xy$. Si l'énoncé donne $x-y$ et $x^2+y^2$, on calcule d'abord $xy$ à partir de $(x-y)^2=x^2+y^2-2xy$, puis $(x+y)^2$ à partir de $x^2+y^2+2xy$, ce qui donne $x+y$ (au signe près). On résout enfin le système linéaire formé par $x+y$ et $x-y$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer les réels $x$ et $y$ tels que $\\begin{cases} x-y=4 \\\\ x^2+y^2=106\\end{cases}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler une inconnue dans l'équation affine",
+          "justification": "L'équation $x-y=4$ est la plus simple à réarranger : elle donne directement $x$ en fonction de $y$.",
+          "resultat_markdown": "$x=y+4$"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer dans la seconde équation",
+          "justification": "Remplacer $x$ par $y+4$ transforme le système en une seule équation à l'inconnue $y$.",
+          "resultat_markdown": "$(y+4)^2+y^2=106$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer et réduire",
+          "justification": "On développe $(y+4)^2=y^2+8y+16$ puis on regroupe les termes semblables pour obtenir une équation du second degré sous forme réduite.",
+          "resultat_markdown": "$y^2+8y+16+y^2=106 \\;\\Rightarrow\\; 2y^2+8y-90=0 \\;\\Rightarrow\\; y^2+4y-45=0$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le discriminant et les racines",
+          "justification": "On applique $\\Delta=b^2-4ac$ avec $a=1,\\,b=4,\\,c=-45$, puis la formule des racines.",
+          "resultat_markdown": "$\\Delta=16+180=196=14^2 \\;\\Rightarrow\\; y_1=\\dfrac{-4-14}{2}=-9 \\quad;\\quad y_2=\\dfrac{-4+14}{2}=5$"
+        },
+        {
+          "numero": 5,
+          "action": "Revenir à $x$ pour chaque valeur de $y$",
+          "justification": "On réutilise la relation $x=y+4$ trouvée à l'étape 1.",
+          "resultat_markdown": "$y=-9 \\Rightarrow x=-5 \\quad;\\quad y=5 \\Rightarrow x=9$"
+        }
+      ],
+      "conclusion_markdown": "Le système admet deux couples de solutions : $(x,y)=(-5,-9)$ et $(x,y)=(9,5)$, tous deux vérifiés dans les deux équations de départ."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $(y+4)^2=y^2+16$ en développant l'identité remarquable",
+          "pourquoi_faux": "Le développement correct de $(a+b)^2$ comporte trois termes : $a^2+2ab+b^2$. Oublier le double produit $2\\times y\\times4=8y$ fait disparaître un terme entier de l'équation et change complètement les racines trouvées.",
+          "correction_markdown": "Toujours écrire les trois termes du développement avant de simplifier : $(y+4)^2=y^2+8y+16$."
+        },
+        {
+          "erreur_markdown": "Ne donner qu'un seul couple solution alors que l'équation du second degré a deux racines",
+          "pourquoi_faux": "Une équation du second degré à discriminant strictement positif a deux racines distinctes : chacune doit être reportée dans l'équation affine pour donner un couple $(x,y)$ complet.",
+          "correction_markdown": "Reporte systématiquement les deux racines trouvées pour $y$ dans $x=y+4$, ce qui donne deux couples $(x,y)$."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier les couples trouvés dans les deux équations initiales",
+          "pourquoi_faux": "Une erreur de calcul dans le développement ou la résolution du second degré peut passer inaperçue si on ne revient pas aux équations de départ.",
+          "correction_markdown": "Remplace toujours $x$ et $y$ par les valeurs trouvées dans $x-y=4$ ET dans $x^2+y^2=106$ avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ le système $\\begin{cases} x+y=7 \\\\ x^2+y^2=25 \\end{cases}$.",
+          "solution_markdown": "De $x+y=7$, on tire $x=7-y$. En substituant : $(7-y)^2+y^2=25$, soit $49-14y+y^2+y^2=25$, donc $2y^2-14y+24=0$, puis $y^2-7y+12=0$. Le discriminant vaut $\\Delta=49-48=1$. Les racines sont $y_1=\\dfrac{7-1}{2}=3$ et $y_2=\\dfrac{7+1}{2}=4$. On revient à $x=7-y$ : pour $y=3$, $x=4$ ; pour $y=4$, $x=3$. Le système admet deux couples solutions : $(4,3)$ et $(3,4)$. Vérification : $4+3=7$ et $16+9=25$ pour les deux couples."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ le système $\\begin{cases} x-y=2 \\\\ x^2+y^2=34 \\end{cases}$.",
+          "solution_markdown": "De $x-y=2$, on tire $x=y+2$. En substituant : $(y+2)^2+y^2=34$, soit $y^2+4y+4+y^2=34$, donc $2y^2+4y-30=0$, puis $y^2+2y-15=0$. Le discriminant vaut $\\Delta=4+60=64=8^2$. Les racines sont $y_1=\\dfrac{-2-8}{2}=-5$ et $y_2=\\dfrac{-2+8}{2}=3$. On revient à $x=y+2$ : pour $y=-5$, $x=-3$ ; pour $y=3$, $x=5$. Le système admet deux couples solutions : $(-3,-5)$ et $(5,3)$. Vérification : $5-3=2$ et $25+9=34$ ; $-3-(-5)=2$ et $9+25=34$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un rectangle a une longueur $L$ qui dépasse sa largeur $l$ de 3 cm. La somme des carrés de ses deux dimensions vaut 89 cm². Calculer $L$ et $l$.",
+          "solution_markdown": "On traduit l'énoncé par le système $\\begin{cases} L-l=3 \\\\ L^2+l^2=89 \\end{cases}$. De $L-l=3$, on tire $L=l+3$. En substituant : $(l+3)^2+l^2=89$, soit $l^2+6l+9+l^2=89$, donc $2l^2+6l-80=0$, puis $l^2+3l-40=0$. Le discriminant vaut $\\Delta=9+160=169=13^2$. Les racines sont $l_1=\\dfrac{-3-13}{2}=-8$ et $l_2=\\dfrac{-3+13}{2}=5$. Une largeur est une longueur positive : on rejette $l=-8$ et on retient $l=5$, d'où $L=5+3=8$. Le rectangle a pour dimensions $L=8$ cm et $l=5$ cm. Vérification : $8-5=3$ et $64+25=89$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à un système $x-y=k$ / $x^2+y^2=n$, isole toujours l'inconnue de l'équation affine en premier : c'est la porte d'entrée vers la substitution.",
+        "Développe entièrement l'identité remarquable obtenue avant de simplifier : ne saute jamais le double produit.",
+        "Une équation du second degré à discriminant positif donne deux racines, donc en général deux couples solutions au système : ne t'arrête pas au premier trouvé.",
+        "Dans un problème concret (longueurs, aires), rejette systématiquement les couples qui donnent une grandeur négative.",
+        "Vérifie chaque couple final dans les DEUX équations de départ, jamais dans une seule.",
+        "Ce type de système apparaît au Probatoire aussi bien en calcul pur qu'en mise en situation géométrique : la même méthode s'applique dans les deux cas."
+      ]
+    }
+  ]
+}

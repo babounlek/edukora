@@ -1,0 +1,161 @@
+[
+  {
+    "external_id": "cqc-structure-conditionnelle-faible-0",
+    "theme": "structure conditionnelle",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un programme doit afficher « Majeur » lorsque la variable entière `age` est supérieure ou égale à 18. Quelle condition faut-il écrire dans le `if` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne condition traduit exactement l'énoncé : « supérieur ou égal à » s'écrit `>=`. Il faut aussi distinguer la comparaison `==` de l'affectation `=`.\n\n### Corrigé\n\nL'énoncé demande « supérieur **ou égal** à 18 » : la condition est `age >= 18`. `age > 18` exclurait une personne d'exactement 18 ans, `age = 18` est une affectation (et non un test) et `age <= 18` teste l'inverse.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "age > 18"
+      },
+      {
+        "lettre": "B",
+        "texte": "age >= 18"
+      },
+      {
+        "lettre": "C",
+        "texte": "age = 18"
+      },
+      {
+        "lettre": "D",
+        "texte": "age <= 18"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10533,
+      10585
+    ]
+  },
+  {
+    "external_id": "cqc-structure-conditionnelle-faible-1",
+    "theme": "structure conditionnelle",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le programme C suivant :\n\n```c\nint x = 7;\nif (x % 2 == 0)\n    printf(\"pair\");\nelse\n    printf(\"impair\");\n```\n\nQu'affiche-t-il ? Qu'afficherait-il si `x` valait 12 ?",
+    "corrige_markdown": "### Rappel de méthode\n\nDans une structure `if ... else`, une seule des deux branches s'exécute : celle du `if` si la condition est vraie, celle du `else` sinon. `x % 2` donne le reste de la division entière par 2.\n\n### Corrigé\n\nPour `x = 7`, $7 = 2 \\times 3 + 1$ donc `7 % 2` vaut 1, la condition `x % 2 == 0` est fausse et la branche `else` s'exécute : le programme affiche **impair**. Pour `x = 12`, `12 % 2` vaut 0, la condition est vraie et le programme affiche **pair**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10533,
+      10585
+    ]
+  },
+  {
+    "external_id": "cqc-structure-conditionnelle-moyenne-2",
+    "theme": "structure conditionnelle",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un algorithme attribue une mention d'après une note sur 20 :\n\n```\nSi note >= 16 alors afficher \"Très bien\"\nSinon Si note >= 14 alors afficher \"Bien\"\nSinon Si note >= 12 alors afficher \"Assez bien\"\nSinon Si note >= 10 alors afficher \"Passable\"\nSinon afficher \"Insuffisant\"\nFinSi\n```\n\n1. Quelle mention est affichée pour `note = 12`, pour `note = 14` et pour `note = 9` ?\n2. Que se passerait-il si on plaçait le test `note >= 10` en premier ?",
+    "corrige_markdown": "### Rappel de méthode\n\nDans une suite de `Sinon Si`, les conditions sont évaluées dans l'ordre et seule la première vraie déclenche sa branche : on les classe donc de la plus restrictive à la moins restrictive.\n\n### Corrigé\n\n1. `note = 12` : les tests `>= 16` et `>= 14` sont faux, `>= 12` est vrai : **Assez bien**. `note = 14` : `>= 16` est faux, `>= 14` est vrai : **Bien**. `note = 9` : aucun test n'est vrai, on arrive au `Sinon` final : **Insuffisant**.\n2. Si `note >= 10` était testé en premier, toute note supérieure ou égale à 10 (même 18) donnerait « Passable », puisque la première condition vraie l'emporte et que les suivantes ne sont jamais évaluées. L'ordre des tests est donc essentiel.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10533,
+      10585
+    ]
+  },
+  {
+    "external_id": "cqc-structure-conditionnelle-moyenne-3",
+    "theme": "structure conditionnelle",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le programme C suivant :\n\n```c\nint a = 5;\nif (a > 3) printf(\"A\");\nif (a > 4) printf(\"B\");\nelse       printf(\"C\");\n```\n\nQu'affiche ce programme ?",
+    "corrige_markdown": "### Rappel de méthode\n\nDeux `if` successifs sont indépendants : chacun est évalué. Un `else` se rattache au `if` qui le précède immédiatement, pas au premier de la série.\n\n### Corrigé\n\nLe premier `if` : `a > 3` est vrai, donc `A` est affiché. Le second `if` est évalué séparément : `a > 4` est vrai (5 > 4), donc `B` est affiché et le `else` (rattaché à ce second `if`) est ignoré. Le programme affiche **AB**. Avec un `else if` à la place du second `if`, seul `A` aurait été affiché.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "A"
+      },
+      {
+        "lettre": "B",
+        "texte": "AB"
+      },
+      {
+        "lettre": "C",
+        "texte": "ABC"
+      },
+      {
+        "lettre": "D",
+        "texte": "AC"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10533,
+      10585
+    ]
+  },
+  {
+    "external_id": "cqc-structure-conditionnelle-elevee-4",
+    "theme": "structure conditionnelle",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Une année est bissextile si elle est divisible par 4, sauf si elle est divisible par 100, à moins qu'elle ne soit aussi divisible par 400.\n\n1. Écrire en C la condition qui teste si la variable entière `annee` est bissextile, à l'aide d'opérateurs logiques.\n2. Indiquer, en justifiant, si 1900, 2000 et 2024 sont bissextiles.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne règle à exceptions imbriquées se traduit par des conditions composées : `&&` (et), `||` (ou), `!=` (différent). On combine « règle générale et non exception » ou « exception de l'exception ».\n\n### Corrigé\n\n1. `if ((annee % 4 == 0 && annee % 100 != 0) || annee % 400 == 0)` : divisible par 4 **et** pas par 100, **ou** divisible par 400.\n2. - 1900 : divisible par 4 et par 100, mais pas par 400 : la première partie est fausse (divisible par 100) et la seconde aussi : **non bissextile**.\n   - 2000 : divisible par 400 : la seconde partie est vraie : **bissextile**.\n   - 2024 : divisible par 4 et non divisible par 100 : la première partie est vraie : **bissextile**.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10533,
+      10585
+    ]
+  }
+]

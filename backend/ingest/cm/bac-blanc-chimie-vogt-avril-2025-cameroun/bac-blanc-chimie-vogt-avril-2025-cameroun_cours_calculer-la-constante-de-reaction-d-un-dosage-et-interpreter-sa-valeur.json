@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-constante-reaction-dosage-terminale",
+  "meta": {
+    "titre": "Calculer la constante de réaction d'un dosage et interpréter sa valeur",
+    "matiere": "Chimie",
+    "pays": "cm",
+    "serie": "C, D",
+    "sous_theme": "Dosages acide-base - critère de faisabilité",
+    "duree_estimee_min": 15,
+    "tags": [
+      "constante de réaction",
+      "réaction totale",
+      "pKa",
+      "dosage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat Blanc - Épreuve Pratique de Chimie - Collège F.-X. Vogt (avril 2025, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-blanc-chimie-vogt-avril-2025-cameroun-ex2-q2.3.6-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toutes les réactions acide-base ne se prêtent pas à un dosage : encore faut-il que la réaction soit quasiment totale, faute de quoi le saut de pH à l'équivalence serait trop faible pour être exploité. Un seul nombre, la constante de réaction $K_R$, permet de vérifier ce critère avant même de réaliser l'expérience."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Constante d'acidité Ka et pKa d'un couple acide/base",
+        "Notion de réaction totale (quotient de réaction très supérieur à 1)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "KR se déduit directement du pKa du couple mis en jeu",
+      "contenu_markdown": "Pour une réaction de dosage $B + H_3O^+ \\rightarrow BH^+ + H_2O$, la constante de réaction est l'inverse de la constante d'acidité du couple $BH^+/B$ :\n\n$$K_R = \\frac{[BH^+]}{[B][H_3O^+]} = \\frac{1}{K_a} = 10^{pK_a}$$\n\nPlus le pKa du couple est grand, plus $K_R$ est grand, et plus la réaction de dosage est totale. En pratique, une réaction est considérée comme suffisamment totale pour servir de support à un dosage dès que $K_R \\geq 10^4$.",
+      "formule_principale": "KR = 10^pKa",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le couple mis en jeu dans un dosage a pour pKa 7,3. Calculer la constante de réaction du dosage et conclure sur sa faisabilité.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la relation entre KR et le pKa du couple",
+          "justification": "KR est l'inverse de Ka du couple acide/base mis en jeu dans la réaction de dosage.",
+          "resultat_markdown": "KR = 1/Ka = 10^pKa."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer numériquement KR",
+          "justification": "Application directe de la formule avec pKa = 7,3.",
+          "resultat_markdown": "KR = 10^7,3 ≈ 2,0×10⁷."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer KR au seuil de réaction totale",
+          "justification": "Une réaction est considérée totale, au sens d'un dosage, dès que KR ≥ 10⁴.",
+          "resultat_markdown": "2,0×10⁷ >> 10⁴ : la réaction est totale."
+        }
+      ],
+      "conclusion_markdown": "La réaction étant totale, elle produit un saut de pH net et exploitable au point d'équivalence, ce qui justifie son usage comme support d'un dosage pH-métrique fiable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre KR avec Ka du couple, sans prendre l'inverse.",
+          "pourquoi_faux": "KR est la constante de la réaction de dosage (B + H3O+ → BH+ + H2O), qui est la réaction INVERSE de la dissociation de l'acide BH+ : elle vaut donc 1/Ka, pas Ka.",
+          "correction_markdown": "Vérifie toujours le sens de l'équation dont tu calcules la constante avant d'appliquer 10^pKa ou 10^-pKa."
+        },
+        {
+          "erreur_markdown": "Conclure qu'une réaction est totale simplement parce que KR est supérieur à 1.",
+          "pourquoi_faux": "KR > 1 signifie seulement que la réaction est favorisée dans le sens direct, pas qu'elle est totale : le seuil pratique retenu pour un dosage est bien plus élevé (KR ≥ 10⁴).",
+          "correction_markdown": "Compare toujours KR au seuil de 10⁴ (ou 10³ selon les conventions), jamais au seuil de 1, pour juger du caractère total d'une réaction de dosage."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un couple acide/base a pour pKa 9,2. Calculer la constante de réaction KR du dosage correspondant.",
+          "solution_markdown": "KR = 10^9,2 ≈ 1,6×10⁹."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un couple acide/base a un pKa très faible, de 1,5. Le dosage correspondant est-il exploitable ? Justifier par le calcul de KR.",
+          "solution_markdown": "KR = 10^1,5 ≈ 32. Comme KR << 10⁴, la réaction n'est pas suffisamment totale : le saut de pH à l'équivalence serait trop faible pour être exploité de façon fiable, ce dosage n'est donc pas praticable dans de bonnes conditions."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la constante de réaction d'un dosage acide fort / base forte (par exemple HCl dosé par NaOH) est-elle considérée comme extrêmement grande, sans même faire référence à un pKa particulier ?",
+          "solution_markdown": "La réaction de dosage entre un acide fort et une base forte est la réaction de formation de l'eau à partir de H3O+ et OH- : H3O+ + OH- → 2H2O, de constante KR = 1/Ke = 10^14 (Ke étant le produit ionique de l'eau). Cette valeur, extrêmement grande, ne dépend d'aucun pKa d'un couple faible : elle traduit le fait qu'un acide fort et une base forte réagissent de façon quasiment totale et instantanée, ce qui rend ce type de dosage particulièrement net."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "KR = 10^pKa pour une réaction de dosage B + H3O+ → BH+ + H2O, où pKa est celui du couple BH+/B formé.",
+        "Une réaction de dosage est considérée totale, donc exploitable, dès que KR ≥ 10⁴.",
+        "Plus le pKa du couple est grand, plus la réaction de dosage est totale.",
+        "Un dosage acide fort / base forte a une constante de réaction extrêmement grande (10^14), ce qui explique la netteté de son saut de pH.",
+        "Calculer KR avant de réaliser un dosage permet de vérifier, sans expérience préalable, si la réaction choisie donnera un saut de pH exploitable."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-reperer-les-instructions-d-entree-et-de-sortie-dans-un-algorithme-3e",
+  "meta": {
+    "titre": "Les instructions d'entrée et de sortie dans un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : instructions élémentaires",
+    "duree_estimee_min": 30,
+    "tags": [
+      "algorithmique",
+      "instruction d'entrée",
+      "instruction de sortie",
+      "Lire",
+      "Ecrire",
+      "variable",
+      "pseudo-code"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2023-cameroun",
+    "epreuve_titre": "BEPC Informatique - Cameroun, session 2023 (MINESEC/DECC), épreuve théorique",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-informatique-2023-cameroun-ex3-q1.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme qui ne communique pas avec l'extérieur ne sert à rien : il calculerait toujours la même chose, avec les mêmes données, pour donner un résultat que personne ne verrait. Les instructions d'entrée et de sortie sont les deux portes de l'algorithme, celle par laquelle les données entrent et celle par laquelle les résultats sortent. Les repérer et ne jamais les confondre est le tout premier réflexe d'analyse qu'on attend de toi au BEPC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme en pseudo-code et repérer les blocs Début et Fin",
+        "Connaître la notion de variable",
+        "Comprendre qu'un algorithme s'exécute ligne par ligne, du haut vers le bas"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire, c'est entrer ; Ecrire, c'est sortir",
+      "contenu_markdown": "Le sens de circulation de l'information distingue les deux familles, et c'est le seul critère fiable.\n\n**Instruction d'entrée (lecture)**\n\n```\nLire (variable) ;\n```\n\nL'algorithme attend que l'utilisateur saisisse une valeur au clavier, puis range cette valeur dans la variable indiquée entre parenthèses. L'information vient de l'extérieur vers la mémoire de l'ordinateur. L'argument d'un `Lire` est **toujours une variable**, jamais un texte entre guillemets : il faut bien un emplacement pour ranger ce qui est saisi.\n\n**Instruction de sortie (écriture)**\n\n```\nEcrire (\"message\") ;\nEcrire (variable) ;\nEcrire (\"La somme vaut : \", s) ;\n```\n\nL'algorithme affiche à l'écran soit un texte fixe placé entre guillemets, soit le contenu d'une variable, soit les deux à la suite. L'information va de la mémoire vers l'extérieur.\n\n**Le repère infaillible : les guillemets.**\n\n| Ce que tu vois | Ce que c'est |\n|---|---|\n| du texte entre guillemets | forcément une **sortie** (on ne peut rien ranger dans un texte fixe) |\n| un nom de variable seul dans un `Lire` | une **entrée** |\n| un nom de variable seul dans un `Ecrire` | une **sortie**, qui affiche la valeur de la variable |\n\nDans un algorithme correctement écrit, un `Lire` est presque toujours précédé d'un `Ecrire` qui affiche un message d'invite (« Entrez un nombre : »). C'est une politesse envers l'utilisateur, qui saurait sinon pas ce qu'on attend de lui, et c'est aussi la source de la confusion la plus fréquente entre les deux instructions.",
+      "formule_principale": "\\text{Lire (variable)} \\rightarrow \\text{ENTRÉE} \\quad ; \\quad \\text{Ecrire (\\ldots)} \\rightarrow \\text{SORTIE}",
+      "variantes": [
+        {
+          "nom": "Notations rencontrées selon les manuels",
+          "quand_utiliser": "Quand le sujet emploie un vocabulaire différent de celui de ton cours",
+          "contenu_markdown": "Le pseudo-code n'est pas normalisé : selon les ouvrages, l'entrée s'écrit `Lire`, `Saisir` ou `Entrer`, et la sortie `Ecrire`, `Afficher` ou `Sortir`. Le sens ne change pas. En langage C, ces instructions deviennent `scanf` pour l'entrée et `printf` pour la sortie. Repère le verbe employé par le sujet lui-même et emploie le même dans ta réponse."
+        },
+        {
+          "nom": "Entrée et sortie sur un support autre que le clavier ou l'écran",
+          "quand_utiliser": "Quand l'algorithme lit ou écrit dans un fichier",
+          "contenu_markdown": "La lecture peut aussi provenir d'un fichier et l'écriture s'y diriger, avec des instructions du type `Lire (fichier, variable)`. Le principe reste identique : ce qui compte est le sens de circulation de l'information, entrant ou sortant de l'algorithme, pas la nature du support."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier dans l'algorithme suivant une instruction d'entrée de données, et la recopier.\n\n```\nAlgorithme Comparaison\nVariables nombre : entier ;\nDébut\n    Ecrire (\"entrer un nombre\") ;\n    Lire (nombre) ;\n        Si (nombre < 10) alors\n            Ecrire (\" ce nombre est plus petit que 10\") ;\n        Sinon\n            Ecrire (\"ce nombre est plus grand que 10\") ;\n        Finsi\nFin\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer toutes les instructions de communication de l'algorithme",
+          "justification": "Avant de choisir, on fait l'inventaire : cela évite de s'arrêter à la première ligne qui semble convenir.",
+          "resultat_markdown": "Quatre instructions de communication : un `Lire` et trois `Ecrire`."
+        },
+        {
+          "numero": 2,
+          "action": "Écarter les instructions dont l'argument est un texte entre guillemets",
+          "justification": "Une valeur saisie par l'utilisateur doit être rangée quelque part. Un texte entre guillemets est une constante, on ne peut rien y ranger : ces instructions sont donc nécessairement des sorties.",
+          "resultat_markdown": "Les trois `Ecrire (\"...\") ;` sont écartés : ce sont des sorties."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier que l'instruction restante porte bien sur une variable",
+          "justification": "C'est la signature d'une instruction d'entrée : le mot-clé de lecture, suivi d'une variable qui recevra la valeur saisie.",
+          "resultat_markdown": "`Lire (nombre) ;` : `nombre` est bien la variable déclarée en tête d'algorithme, de type entier. Elle est prête à recevoir la valeur saisie."
+        },
+        {
+          "numero": 4,
+          "action": "Confirmer par le sens de circulation de l'information",
+          "justification": "C'est le critère de fond, celui qu'il faut pouvoir énoncer si le correcteur demande une justification.",
+          "resultat_markdown": "L'utilisateur tape une valeur au clavier, celle-ci entre dans la mémoire de l'ordinateur et s'y trouve rangée sous le nom `nombre`. L'information circule de l'extérieur vers l'algorithme : c'est une entrée."
+        },
+        {
+          "numero": 5,
+          "action": "Recopier l'instruction complète",
+          "justification": "La consigne demande de recopier. Une instruction se recopie avec ses parenthèses, son argument et son point-virgule, sans quoi la réponse est incomplète.",
+          "resultat_markdown": "```\nLire (nombre) ;\n```"
+        }
+      ],
+      "conclusion_markdown": "L'unique instruction d'entrée de cet algorithme est `Lire (nombre) ;`. On a vu au passage que le message `Ecrire (\"entrer un nombre\") ;`, malgré le verbe « entrer » qu'il contient, est bien une sortie : le mot-clé fait foi, pas le sens du message affiché."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `Ecrire (\"entrer un nombre\") ;` parce que le message contient le mot « entrer »",
+          "pourquoi_faux": "Le texte entre guillemets est un simple message affiché à l'écran, destiné à l'utilisateur. Il n'exécute aucune lecture. C'est le mot-clé placé devant les parenthèses, et lui seul, qui détermine la nature de l'instruction.",
+          "correction_markdown": "Ne lis jamais le contenu du message pour classer une instruction. Regarde uniquement le mot-clé : `Lire` pour l'entrée, `Ecrire` pour la sortie. Le message d'invite précède presque toujours la vraie lecture, ce qui rend le piège systématique."
+        },
+        {
+          "erreur_markdown": "Recopier seulement le mot `Lire` au lieu de l'instruction entière",
+          "pourquoi_faux": "`Lire` seul n'est pas une instruction : c'est un mot-clé auquel il manque son argument. Sans savoir dans quelle variable ranger la valeur, la machine ne peut rien exécuter.",
+          "correction_markdown": "Recopie toujours la ligne complète, parenthèses et point-virgule compris, exactement telle qu'elle figure dans le sujet. La consigne « recopier sur votre feuille de composition » demande une transcription fidèle."
+        },
+        {
+          "erreur_markdown": "Écrire `Lire (\"nombre\") ;` avec des guillemets autour du nom de la variable",
+          "pourquoi_faux": "Les guillemets transforment `nombre` en texte fixe. On demanderait alors à la machine de ranger la valeur saisie dans un texte, ce qui n'a pas de sens : un texte constant n'est pas un emplacement mémoire.",
+          "correction_markdown": "Retiens la règle d'écriture : jamais de guillemets dans un `Lire`, toujours un nom de variable nu. Les guillemets ne servent que dans un `Ecrire`, pour délimiter un message à afficher tel quel."
+        },
+        {
+          "erreur_markdown": "Confondre l'instruction d'entrée avec l'affectation `nombre <- 10 ;`",
+          "pourquoi_faux": "L'affectation range elle aussi une valeur dans une variable, mais cette valeur est écrite dans l'algorithme : elle ne vient pas de l'utilisateur. Il n'y a donc aucune communication avec l'extérieur, et l'exécution donne toujours le même résultat.",
+          "correction_markdown": "Pose-toi la question : d'où vient la valeur ? Du clavier, c'est une entrée ; de l'algorithme lui-même, c'est une affectation. Cette distinction est ce qui rend un algorithme réutilisable sur des données différentes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour chacune des instructions suivantes, indiquer s'il s'agit d'une entrée, d'une sortie ou d'aucune des deux, et justifier.\n\na) `Lire (age) ;`\nb) `Ecrire (\"Bonjour\") ;`\nc) `Ecrire (age) ;`\nd) `age <- 15 ;`",
+          "solution_markdown": "**a) `Lire (age) ;` : instruction d'entrée.**\n\nLe mot-clé `Lire` déclenche l'attente d'une saisie au clavier, et la valeur saisie est rangée dans la variable `age`. L'information vient de l'extérieur.\n\n**b) `Ecrire (\"Bonjour\") ;` : instruction de sortie.**\n\nLe mot-clé `Ecrire` affiche à l'écran le texte placé entre guillemets, ici « Bonjour ». L'information va vers l'extérieur.\n\n**c) `Ecrire (age) ;` : instruction de sortie.**\n\nC'est encore une sortie, mais ce qui est affiché n'est plus un texte fixe : c'est la **valeur** actuellement contenue dans la variable `age`. Si `age` vaut 15, l'écran affiche 15, et non le mot « age ».\n\n**d) `age <- 15 ;` : ni entrée, ni sortie.**\n\nC'est une **affectation** : elle range la valeur 15 dans la variable `age`. Cette valeur est écrite dans l'algorithme lui-même, aucune communication n'a lieu avec l'utilisateur.\n\n**Ce que montre la comparaison de b) et c).** La présence ou l'absence de guillemets change complètement le comportement : `Ecrire (\"age\")` afficherait le mot « age », alors que `Ecrire (age)` affiche son contenu."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un algorithme qui demande à l'utilisateur son nom et son âge, puis affiche le message « Bonjour », suivi du nom, puis de l'âge. Repérer ensuite dans ton algorithme toutes les instructions d'entrée.",
+          "solution_markdown": "**Étape 1 : identifier les données à lire et leur type.**\n\nDeux données : le nom, qui est une suite de lettres, donc de type **chaîne de caractères** ; l'âge, qui est un nombre entier de nombre d'années, donc de type **entier**.\n\n**Étape 2 : écrire l'algorithme.**\n\n```\nAlgorithme Salutation\nVariables nom : chaîne de caractères ;\n          age : entier ;\nDébut\n    Ecrire (\"Entrez votre nom : \") ;\n    Lire (nom) ;\n    Ecrire (\"Entrez votre âge : \") ;\n    Lire (age) ;\n    Ecrire (\"Bonjour \", nom, \", vous avez \", age, \" ans.\") ;\nFin\n```\n\n**Étape 3 : repérer les instructions d'entrée.**\n\nDeux instructions d'entrée : `Lire (nom) ;` et `Lire (age) ;`.\n\n**Étape 4 : vérifier la logique de l'ordre des instructions.**\n\nChaque `Lire` est précédé d'un `Ecrire` d'invite. Sans ce message, l'utilisateur verrait un écran vide et ne saurait pas quoi taper, ni dans quel ordre. Cet enchaînement message d'invite puis lecture est un automatisme attendu dans toute copie.\n\n**Étape 5 : contrôler la dernière instruction.**\n\n`Ecrire (\"Bonjour \", nom, \", vous avez \", age, \" ans.\") ;` alterne des textes fixes entre guillemets et des noms de variables sans guillemets. Pour `nom` valant « Awa » et `age` valant 15, l'écran affiche : `Bonjour Awa, vous avez 15 ans.`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "L'algorithme ci-dessous est censé calculer et afficher le périmètre d'un rectangle. Il contient deux erreurs liées aux instructions d'entrée et de sortie. Les identifier, les expliquer et corriger l'algorithme.\n\n```\nAlgorithme Perimetre\nVariables L, l, p : réel ;\nDébut\n    Ecrire (\"Entrez la longueur : \") ;\n    Lire (\"L\") ;\n    Ecrire (\"Entrez la largeur : \") ;\n    Lire (l) ;\n    p <- 2 * (L + l) ;\n    Ecrire (\"p\") ;\nFin\n```",
+          "solution_markdown": "**Erreur 1 : `Lire (\"L\") ;`**\n\n*Ce qui ne va pas.* La variable `L` est placée entre guillemets, ce qui en fait un texte fixe, la lettre « L ». La machine devrait ranger la longueur saisie dans ce texte, ce qui est impossible : un texte constant n'est pas un emplacement mémoire modifiable.\n\n*Conséquence concrète.* La variable `L` ne reçoit jamais rien. Elle reste sans valeur, et le calcul du périmètre à la ligne suivante est faussé, quand il ne provoque pas une erreur d'exécution.\n\n*Correction.* Retirer les guillemets : `Lire (L) ;`\n\n**Erreur 2 : `Ecrire (\"p\") ;`**\n\n*Ce qui ne va pas.* Ici encore, les guillemets transforment `p` en texte fixe. L'algorithme affiche donc la lettre « p » à l'écran, au lieu de la valeur du périmètre calculée juste avant.\n\n*Conséquence concrète.* L'utilisateur voit s'afficher `p` quelles que soient les dimensions qu'il a saisies. Tout le calcul aura été fait pour rien.\n\n*Correction.* Retirer les guillemets autour de la variable : `Ecrire (p) ;`\n\n**Algorithme corrigé.**\n\n```\nAlgorithme Perimetre\nVariables L, l, p : réel ;\nDébut\n    Ecrire (\"Entrez la longueur : \") ;\n    Lire (L) ;\n    Ecrire (\"Entrez la largeur : \") ;\n    Lire (l) ;\n    p <- 2 * (L + l) ;\n    Ecrire (\"Le périmètre vaut : \", p) ;\nFin\n```\n\n**Vérification par simulation.** Pour une longueur de 5 et une largeur de 3 : `L` reçoit 5, `l` reçoit 3, puis $p \\leftarrow 2 \\times (5 + 3) = 2 \\times 8 = 16$. L'écran affiche `Le périmètre vaut : 16`. Le résultat est conforme à la formule du périmètre d'un rectangle.\n\n**La règle à retenir de cet exercice.** Les guillemets délimitent ce qui doit être affiché **tel quel**. Dès qu'on veut manipuler le contenu d'une variable, en lecture comme en écriture, son nom s'écrit nu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Lire fait entrer une donnée dans la machine, Ecrire fait sortir une information vers l'écran. Le sens de circulation, c'est tout ce qu'il faut retenir.",
+        "C'est le mot-clé qui classe l'instruction, jamais le sens du message affiché. Un Ecrire qui dit « entrer un nombre » reste une sortie.",
+        "Dans un Lire, l'argument est toujours une variable nue, jamais un texte entre guillemets : il faut un emplacement pour ranger la saisie.",
+        "Dans un Ecrire, les guillemets affichent le texte tel quel, l'absence de guillemets affiche le contenu de la variable. Deux comportements radicalement différents.",
+        "Quand on te demande de recopier une instruction, recopie-la entière : mot-clé, parenthèses, argument et point-virgule.",
+        "Au BEPC, cette compétence est testée par la question « identifier une instruction d'entrée de données » et, plus difficile, par la correction d'un algorithme volontairement fautif. Les deux se traitent avec le même réflexe de lecture du mot-clé."
+      ]
+    }
+  ]
+}

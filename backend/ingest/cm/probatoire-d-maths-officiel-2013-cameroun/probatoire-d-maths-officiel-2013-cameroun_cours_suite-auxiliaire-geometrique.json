@@ -1,0 +1,87 @@
+{
+  "cours_id": "cours-probatoire-d-maths-officiel-2013-cameroun-suite-auxiliaire-geometrique",
+  "meta": {
+    "titre": "Prouver qu'une suite auxiliaire (vn = un - k) est géométrique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Suites arithmético-géométriques, suite auxiliaire géométrique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "suite récurrente",
+      "suite auxiliaire",
+      "suite géométrique",
+      "arithmético-géométrique"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "21",
+      "savoir_numero": "VIII"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2013-cameroun",
+    "epreuve_titre": "Probatoire D Mathématiques officiel 2013 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2013-cameroun-ex2-q3a-1",
+    "rappels_lies": [
+      "rdm-probatoire-d-maths-officiel-2013-cameroun-ex2-q3a-1",
+      "rdm-probatoire-d-maths-officiel-2013-cameroun-ex2-q3b-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite définie par une relation du type $u_{n+1}=au_n+b$ (avec $a\\neq1$) n'est en général ni arithmétique ni géométrique. Mais en lui associant la bonne suite auxiliaire $v_n=u_n-k$, on la ramène toujours à une suite géométrique bien connue — et on peut alors en donner l'expression explicite en fonction de $n$."
+    },
+    {
+      "type": "prerequis",
+      "contenu_markdown": "Définition d'une suite géométrique ($v_{n+1}=q\\times v_n$ pour tout $n$), formule du terme général $v_n=v_0\\times q^n$, résolution d'une équation du premier degré."
+    },
+    {
+      "type": "regle",
+      "formule_principale": "Pour une suite $(u_n)$ définie par $u_{n+1}=au_n+b$ avec $a\\neq1$, on pose $v_n=u_n-k$ où $k$ est le point fixe de la relation, c'est-à-dire l'unique solution de $k=ak+b$, soit $k=\\dfrac{b}{1-a}$. La suite $(v_n)$ ainsi définie est alors géométrique de raison $a$.",
+      "variantes": [
+        "En pratique, on n'a pas besoin de calculer k au préalable si l'énoncé donne déjà vn=un-k tout fait : il suffit d'exprimer vn+1=un+1-k en remplaçant un+1 par au_n+b, puis de factoriser par a pour faire réapparaître (un-k)=vn.",
+        "Une fois (vn) reconnue géométrique de raison q et de premier terme v0, on a vn=v0×q^n, puis un=vn+k (ou vn+2, etc., selon la définition de vn) pour revenir à la suite d'origine."
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "etapes": [
+        "Suite $(u_n)$ définie par $u_0=1$, $u_{n+1}=-\\dfrac{1}{2}u_n+3$, et suite auxiliaire donnée $v_n=u_n-2$ (ici $k=2$ est bien le point fixe : $2=-\\dfrac{1}{2}\\times2+3$).",
+        "On calcule $v_{n+1}=u_{n+1}-2=\\left(-\\dfrac{1}{2}u_n+3\\right)-2=-\\dfrac{1}{2}u_n+1$.",
+        "On factorise par $-\\dfrac{1}{2}$ pour faire réapparaître $u_n-2$ : $-\\dfrac{1}{2}u_n+1=-\\dfrac{1}{2}(u_n-2)=-\\dfrac{1}{2}v_n$.",
+        "On obtient $v_{n+1}=-\\dfrac{1}{2}v_n$ pour tout $n$ : $(v_n)$ est géométrique de raison $q=-\\dfrac{1}{2}$, de premier terme $v_0=u_0-2=-1$.",
+        "Terme général : $v_n=-1\\times\\left(-\\dfrac{1}{2}\\right)^n=-\\left(-\\dfrac{1}{2}\\right)^n$, puis $u_n=v_n+2=2-\\left(-\\dfrac{1}{2}\\right)^n$."
+      ]
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Oublier de vérifier, à la fin, que la factorisation reconstitue exactement vn=un-k avec la MÊME constante k que celle donnée dans l'énoncé (une erreur d'arithmétique à cette étape casse toute la démonstration).",
+        "Confondre le rôle de a (la raison de la suite géométrique auxiliaire) avec celui de b : c'est toujours le coefficient multiplicateur devant un dans la relation de récurrence qui devient la raison, jamais la constante additive.",
+        "Conclure « (un) est géométrique » au lieu de « (vn) est géométrique » : (un) elle-même n'est en général ni géométrique ni arithmétique, seule la suite auxiliaire l'est."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Soit $(w_n)$ définie par $w_0=5$ et $w_{n+1}=3w_n-4$. Montrer que $(t_n)$ définie par $t_n=w_n-2$ est géométrique, préciser sa raison et son premier terme, puis exprimer $w_n$ en fonction de $n$.",
+        "Reprendre l'exemple résolu ci-dessus en partant de $u_0=0$ au lieu de $u_0=1$ : la suite $(v_n)$ reste-t-elle géométrique de même raison ? Que devient son premier terme ?"
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une suite $u_{n+1}=au_n+b$ (avec $a\\neq1$) devient géométrique via la suite auxiliaire $v_n=u_n-k$, où $k$ est le point fixe de la relation ($k=ak+b$).",
+        "La raison de $(v_n)$ est toujours égale au coefficient $a$ de la relation de récurrence d'origine.",
+        "Une fois $v_n=v_0\\times q^n$ obtenu, on revient à $u_n$ simplement en ajoutant $k$ : $u_n=v_n+k$."
+      ]
+    }
+  ]
+}

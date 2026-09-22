@@ -14,79 +14,169 @@
   "titre_exercice": "Étude de fonctions logarithmiques, encadrement d'une somme de Riemann",
   "points": 5.0,
   "figures": [],
-  "enonce_intro_markdown": "Soient $f$ et $g$ deux fonctions définies sur $]0;+\\infty[$ par $f(x)=x-1+\\dfrac12\\ln x$ et $g(x)=\\dfrac{2x-\\ln x}{2\\sqrt x}$.\n\n**Note sur l'énoncé** : à la fin de la question 4, l'énoncé demande littéralement de « dresser le tableau de variations de $f$ », alors que celui-ci a déjà été établi intégralement à la question 1. Or la question 6.b) exploite explicitement « les variations de $g$ sur $[1;+\\infty[$ », variations qui ne sont établies nulle part ailleurs dans le sujet. Il s'agit très vraisemblablement d'une coquille du sujet original (« $f$ » pour « $g$ »). Nous traitons donc à la question 4 le tableau de variations de $g$, seule interprétation cohérente avec la suite de l'exercice.",
+  "enonce_intro_markdown": "Soient $f$ et $g$ deux fonctions définies sur $]0;+\\infty[$ par $f(x)=x-1+\\dfrac12\\ln x$ et $g(x)=\\dfrac{2x-\\ln x}{2\\sqrt x}$.",
   "questions": [
     {
       "numero": "1",
       "points": "0,75pt",
       "enonce_markdown": "Étudier les variations de $f$ ; puis dresser son tableau de variation.",
-      "rappels_de_methode": [{"cours_id": "cours-etudier-variations-fonction-affine-plus-logarithme-terminale-c", "texte": "Pour $f(x)=\\alpha x+\\beta+\\gamma\\ln x$ sur $]0;+\\infty[$, $f'(x)=\\alpha+\\gamma/x$ ; si $\\alpha$ et $\\gamma$ sont de même signe, $f'$ garde ce signe constant sur tout le domaine."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etudier-variations-fonction-affine-plus-logarithme-terminale-c",
+          "texte": "Pour $f(x)=\\alpha x+\\beta+\\gamma\\ln x$ sur $]0;+\\infty[$, $f'(x)=\\alpha+\\gamma/x$ ; si $\\alpha$ et $\\gamma$ sont de même signe, $f'$ garde ce signe constant sur tout le domaine."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nÉtudier les variations d'une fonction consiste à calculer sa dérivée, à étudier son signe sur le domaine de définition, puis à calculer les limites aux bornes de ce domaine pour construire le tableau de variations complet.\n\n### Corrigé détaillé\n$f$ est définie et dérivable sur $]0;+\\infty[$ comme somme de fonctions dérivables sur cet intervalle (fonction affine et $\\frac12\\ln x$).\n\n**Calcul de la dérivée.** $f'(x)=1+\\dfrac12\\times\\dfrac1x=1+\\dfrac1{2x}$.\n\n**Signe de $f'(x)$.** Pour tout $x\\in]0;+\\infty[$, on a $x>0$ donc $\\dfrac1{2x}>0$, donc $f'(x)=1+\\dfrac1{2x}>1>0$. La dérivée est strictement positive sur tout le domaine : $f$ est donc strictement croissante sur $]0;+\\infty[$.\n\n**Limite en $0^+$.** Quand $x\\to0^+$, $x-1\\to-1$ et $\\ln x\\to-\\infty$, donc $\\frac12\\ln x\\to-\\infty$. Par somme, $f(x)\\to-\\infty$.\n\n**Limite en $+\\infty$.** Quand $x\\to+\\infty$, $x-1\\to+\\infty$ et $\\frac12\\ln x\\to+\\infty$. Par somme, $f(x)\\to+\\infty$.\n\n**Tableau de variations :**\n$$\\begin{array}{c|ccc}\nx & 0 & & +\\infty \\\\\n\\hline\nf'(x) & & + & \\\\\n\\hline\nf(x) & -\\infty & \\nearrow & +\\infty\n\\end{array}$$",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "dérivée",
+        "tableau de variations",
+        "limite",
+        "sens de variation"
+      ]
     },
     {
       "numero": "2",
       "points": "0,5pt",
       "enonce_markdown": "Montrer que le réel 1 est l'unique solution de l'équation $f(x)=0$.",
-      "rappels_de_methode": [{"cours_id": "cours-demontrer-unicite-solution-via-theoreme-de-la-bijection-terminale-c", "texte": "Si $f$ est continue et strictement monotone sur $I$, elle réalise une bijection de $I$ vers l'intervalle image, et $f(x)=k$ admet une unique solution dans $I$ pour tout $k$ de cet intervalle image."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-demontrer-unicite-solution-via-theoreme-de-la-bijection-terminale-c",
+          "texte": "Si $f$ est continue et strictement monotone sur $I$, elle réalise une bijection de $I$ vers l'intervalle image, et $f(x)=k$ admet une unique solution dans $I$ pour tout $k$ de cet intervalle image."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nLe théorème de la bijection (corollaire du théorème des valeurs intermédiaires) affirme que si une fonction est continue et strictement monotone sur un intervalle $I$, alors elle réalise une bijection de $I$ vers l'intervalle image, et l'équation $f(x)=k$ admet une unique solution dans $I$ pour tout $k$ appartenant à cet intervalle image.\n\n### Corrigé détaillé\n**Existence.** $f(1)=1-1+\\dfrac12\\ln 1=0+\\dfrac12\\times0=0$. Donc $x=1$ est bien solution de $f(x)=0$.\n\n**Unicité.** D'après la question 1, $f$ est continue (comme somme de fonctions continues) et strictement croissante sur $]0;+\\infty[$. $f$ réalise donc une bijection de $]0;+\\infty[$ vers $]-\\infty;+\\infty[=\\mathbb R$ (d'après les limites trouvées à la question 1). Comme $0\\in\\mathbb R$, l'équation $f(x)=0$ admet donc une unique solution sur $]0;+\\infty[$. Cette solution étant $x=1$ (vérifié ci-dessus), 1 est l'unique solution de $f(x)=0$.\n\n### Conseil\nDans ce type de question, il faut toujours combiner les deux arguments : vérifier qu'une valeur candidate annule bien $f$ (existence), puis invoquer la stricte monotonie déjà établie pour garantir qu'aucune autre valeur ne convient (unicité). L'un sans l'autre ne suffit pas.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "théorème de la bijection",
+        "continuité",
+        "monotonie"
+      ]
     },
     {
       "numero": "3",
       "points": "0,25pt",
       "enonce_markdown": "En déduire suivant les valeurs de $x$, le signe de $f(x)$.",
-      "rappels_de_methode": [{"cours_id": "cours-deduire-le-signe-dune-fonction-a-partir-de-sa-monotonie-et-dun-zero-connu-terminale-c", "texte": "Si $f$ est strictement croissante sur $I$ et $f(x_0)=0$, alors $f(x)<0$ pour $x<x_0$ et $f(x)>0$ pour $x>x_0$ (inverse si décroissante)."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deduire-le-signe-dune-fonction-a-partir-de-sa-monotonie-et-dun-zero-connu-terminale-c",
+          "texte": "Si $f$ est strictement croissante sur $I$ et $f(x_0)=0$, alors $f(x)<0$ pour $x<x_0$ et $f(x)>0$ pour $x>x_0$ (inverse si décroissante)."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nQuand une fonction est strictement monotone et s'annule en un point connu, son signe de part et d'autre de ce point se déduit directement du sens de variation : une fonction strictement croissante est négative avant son zéro, positive après.\n\n### Corrigé détaillé\n$f$ est strictement croissante sur $]0;+\\infty[$ (question 1) et $f(1)=0$ (question 2). Donc :\n- pour $x\\in]0;1[$, $x<1$ donc $f(x)<f(1)=0$ : $f(x)<0$.\n- pour $x=1$, $f(x)=0$.\n- pour $x\\in]1;+\\infty[$, $x>1$ donc $f(x)>f(1)=0$ : $f(x)>0$.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "signe d'une fonction",
+        "sens de variation"
+      ]
     },
     {
       "numero": "4",
       "points": "0,75pt",
-      "enonce_markdown": "Montrer que pour tout $x\\in]0;+\\infty[$, $g'(x)=\\dfrac{f(x)}{2x\\sqrt x}$ ; puis dresser le tableau de variations de $g$ (voir note sur l'énoncé ci-dessus).",
-      "rappels_de_methode": [{"cours_id": "cours-deriver-un-quotient-en-racine-carree-et-relier-le-resultat-a-une-autre-fonction-terminale-c", "texte": "Pour dériver $u(x)/\\sqrt x$, réécrire $u(x)\\times x^{-1/2}$, dériver terme à terme, puis factoriser par $x^{-3/2}$ pour faire apparaître une expression reconnaissable."}],
+      "enonce_markdown": "Montrer que pour tout $x\\in]0;+\\infty[$, $g'(x)=\\dfrac{f(x)}{2x\\sqrt x}$ ; puis dresser le tableau de variations de $g$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deriver-un-quotient-en-racine-carree-et-relier-le-resultat-a-une-autre-fonction-terminale-c",
+          "texte": "Pour dériver $u(x)/\\sqrt x$, réécrire $u(x)\\times x^{-1/2}$, dériver terme à terme, puis factoriser par $x^{-3/2}$ pour faire apparaître une expression reconnaissable."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nPour dériver un quotient de la forme $\\frac{u(x)}{\\sqrt x}$, il est souvent plus simple de réécrire $\\frac1{\\sqrt x}=x^{-1/2}$ et de dériver le produit $u(x)\\times x^{-1/2}$ avec la formule $(uv)'=u'v+uv'$, plutôt que d'utiliser directement la formule du quotient.\n\n### Corrigé détaillé\n**Réécriture de $g$.** $g(x)=\\dfrac{2x-\\ln x}{2\\sqrt x}=\\dfrac{2x}{2\\sqrt x}-\\dfrac{\\ln x}{2\\sqrt x}=\\sqrt x-\\dfrac12 x^{-1/2}\\ln x$, en utilisant $\\dfrac{x}{\\sqrt x}=\\sqrt x=x^{1/2}$.\n\n**Dérivation terme à terme.** Le premier terme : $(x^{1/2})'=\\dfrac12x^{-1/2}$.\n\nLe second terme $-\\dfrac12x^{-1/2}\\ln x$ est un produit ; on dérive avec $(uv)'=u'v+uv'$ où $u=x^{-1/2}$ ($u'=-\\dfrac12x^{-3/2}$) et $v=\\ln x$ ($v'=\\dfrac1x$) :\n$$\\left(-\\frac12x^{-1/2}\\ln x\\right)'=-\\frac12\\left[-\\frac12x^{-3/2}\\ln x+x^{-1/2}\\times\\frac1x\\right]=-\\frac12\\left[-\\frac12x^{-3/2}\\ln x+x^{-3/2}\\right]=\\frac14x^{-3/2}\\ln x-\\frac12x^{-3/2}$$\n\n**Somme des deux dérivées :**\n$$g'(x)=\\frac12x^{-1/2}+\\frac14x^{-3/2}\\ln x-\\frac12x^{-3/2}$$\n\n**Factorisation par $x^{-3/2}$.** On écrit $\\dfrac12x^{-1/2}=\\dfrac x2\\times x^{-3/2}$ (car $x^{-1/2}=x\\times x^{-3/2}$) :\n$$g'(x)=x^{-3/2}\\left[\\frac x2+\\frac14\\ln x-\\frac12\\right]=x^{-3/2}\\times\\frac12\\left[(x-1)+\\frac12\\ln x\\right]=\\frac{f(x)}{2x^{3/2}}=\\frac{f(x)}{2x\\sqrt x}$$\nen reconnaissant $f(x)=x-1+\\frac12\\ln x$ entre crochets. L'égalité demandée est établie.\n\n**Signe de $g'(x)$.** Pour tout $x>0$, $2x\\sqrt x>0$, donc le signe de $g'(x)$ est exactement celui de $f(x)$. D'après la question 3 : $g'(x)<0$ sur $]0;1[$, $g'(1)=0$, $g'(x)>0$ sur $]1;+\\infty[$. $g$ est donc strictement décroissante sur $]0;1]$ puis strictement croissante sur $[1;+\\infty[$, avec un minimum en $x=1$.\n\n**Valeur du minimum.** $g(1)=\\dfrac{2\\times1-\\ln1}{2\\sqrt1}=\\dfrac{2-0}{2}=1$.\n\n**Limite en $0^+$.** $2x\\to0$, et $-\\ln x\\to+\\infty$ ; le numérateur $2x-\\ln x\\to+\\infty$ tandis que $2\\sqrt x\\to0^+$ : $g(x)\\to+\\infty$.\n\n**Limite en $+\\infty$.** $g(x)=\\sqrt x-\\dfrac{\\ln x}{2\\sqrt x}$ ; $\\sqrt x\\to+\\infty$ et par croissances comparées $\\dfrac{\\ln x}{2\\sqrt x}\\to0$, donc $g(x)\\to+\\infty$.\n\n**Tableau de variations de $g$ :**\n$$\\begin{array}{c|ccccc}\nx & 0 & & 1 & & +\\infty \\\\\n\\hline\ng'(x) & & - & 0 & + & \\\\\n\\hline\ng(x) & +\\infty & \\searrow & 1 & \\nearrow & +\\infty\n\\end{array}$$\n\n### Piège à éviter\nDans la factorisation, il faut retrouver EXACTEMENT l'expression de $f(x)$ entre crochets pour valider l'égalité demandée : une erreur de signe dans la factorisation de $x^{-3/2}$ (facile à commettre) empêche de reconnaître $f(x)$ et fait échouer la démonstration.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "dérivée",
+        "dérivée d'un quotient",
+        "tableau de variations"
+      ]
     },
     {
       "numero": "5",
       "points": "0,5pt",
       "enonce_markdown": "Tracer soigneusement la courbe de $f$ dans un repère orthonormé.",
-      "rappels_de_methode": [{"cours_id": "cours-tracer-une-courbe-strictement-croissante-sans-asymptote-terminale-c", "texte": "Une pente qui se stabilise ne garantit pas une asymptote : il faut vérifier que l'écart f(x)-(ax+b) tend vers une limite finie (0), pas seulement que la pente converge."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-tracer-une-courbe-strictement-croissante-sans-asymptote-terminale-c",
+          "texte": "Une pente qui se stabilise ne garantit pas une asymptote : il faut vérifier que l'écart f(x)-(ax+b) tend vers une limite finie (0), pas seulement que la pente converge."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nLe tracé d'une courbe s'appuie sur le tableau de variations déjà établi, complété par quelques valeurs numériques précises qui ancrent le tracé.\n\n### Corrigé détaillé (description de la construction, en l'absence d'image jointe)\n$f$ est strictement croissante sur $]0;+\\infty[$, de $-\\infty$ à $+\\infty$, et s'annule en $x=1$ (point $(1;0)$ sur l'axe des abscisses).\n\nQuelques valeurs supplémentaires pour ancrer le tracé :\n- $f(0{,}5)=0{,}5-1+\\frac12\\ln(0{,}5)=-0{,}5+\\frac12\\times(-0{,}693)\\approx-0{,}85$\n- $f(2)=2-1+\\frac12\\ln2=1+\\frac12\\times0{,}693\\approx1{,}35$\n- $f(e)=e-1+\\frac12\\times1\\approx2{,}72-1+0{,}5=2{,}22$\n\nConstruction : placer les points $(0{,}5;-0{,}85)$, $(1;0)$, $(2;1{,}35)$ et $(e;2{,}22)$ dans un repère orthonormé, puis tracer une courbe strictement croissante passant par ces points, plongeant rapidement vers $-\\infty$ lorsque $x\\to0^+$ (la courbe devient très abrupte près de l'axe des ordonnées sans toutefois présenter d'asymptote verticale au sens strict), et s'élevant indéfiniment pour $x$ grand, avec une pente qui se rapproche de 1 (puisque le terme $\\frac12\\ln x$ devient négligeable devant $x$).\n\n### Piège à éviter\nNe pas tracer d'asymptote pour cette courbe : bien que la pente se rapproche de 1 pour $x$ grand, l'écart $f(x)-(x-1)=\\frac12\\ln x$ tend vers $+\\infty$ (même s'il croît beaucoup plus lentement que $x$), donc il n'existe aucune droite asymptote, ni horizontale ni oblique.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "tracé de courbe",
+        "représentation graphique",
+        "repère orthonormé"
+      ]
     },
     {
       "numero": "6a",
       "points": "0,75pt",
       "enonce_markdown": "On considère la suite $(u_n)$ définie par $u_n=\\displaystyle\\sum_{k=0}^n\\frac1n\\,g\\!\\left(1+\\frac kn\\right)$ et on pose $I=\\displaystyle\\int_1^2g(x)\\,dx$. Calculer $J=\\displaystyle\\int_1^2\\frac{\\ln x}{2\\sqrt x}\\,dx$ à l'aide d'une intégration par parties et en déduire la valeur exacte de $I$.",
-      "rappels_de_methode": [{"cours_id": "cours-integrer-par-parties-lnx-sur-racine-de-x-terminale-c", "texte": "Pour $\\int\\ln x\\times h(x)dx$, poser $u=\\ln x$ (car $du=dx/x$ simplifie) et $dv=h(x)dx$, puis appliquer $\\int u\\,dv=[uv]-\\int v\\,du$."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-integrer-par-parties-lnx-sur-racine-de-x-terminale-c",
+          "texte": "Pour $\\int\\ln x\\times h(x)dx$, poser $u=\\ln x$ (car $du=dx/x$ simplifie) et $dv=h(x)dx$, puis appliquer $\\int u\\,dv=[uv]-\\int v\\,du$."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nPour intégrer un produit $\\ln x\\times h(x)$ où $h$ admet une primitive simple, on pose $u=\\ln x$ (dont la dérivée $1/x$ simplifie l'écriture) et $dv=h(x)dx$, puis on applique $\\int u\\,dv=[uv]-\\int v\\,du$.\n\n### Corrigé détaillé\n**Calcul de $J$ par IPP.** On pose $u=\\ln x$ et $dv=\\dfrac1{2\\sqrt x}dx$. Alors $du=\\dfrac1xdx$ et $v=\\displaystyle\\int\\frac1{2\\sqrt x}dx=\\sqrt x$ (car $(\\sqrt x)'=\\dfrac1{2\\sqrt x}$).\n\n$$J=\\Big[\\sqrt x\\ln x\\Big]_1^2-\\int_1^2\\sqrt x\\times\\frac1x\\,dx=\\Big[\\sqrt x\\ln x\\Big]_1^2-\\int_1^2\\frac1{\\sqrt x}\\,dx$$\n\nTerme entre crochets : $\\sqrt2\\ln2-\\sqrt1\\ln1=\\sqrt2\\ln2-0=\\sqrt2\\ln2$.\n\nIntégrale restante : $\\displaystyle\\int_1^2x^{-1/2}dx=\\Big[2\\sqrt x\\Big]_1^2=2\\sqrt2-2$.\n\nDonc $J=\\sqrt2\\ln2-(2\\sqrt2-2)=\\sqrt2\\ln2-2\\sqrt2+2$.\n\n**Déduction de $I$.** Puisque $g(x)=\\sqrt x-\\dfrac{\\ln x}{2\\sqrt x}$ (établi question 4), on a $I=\\displaystyle\\int_1^2\\sqrt x\\,dx-J$.\n\n$\\displaystyle\\int_1^2\\sqrt x\\,dx=\\Big[\\frac23x^{3/2}\\Big]_1^2=\\frac23\\times2\\sqrt2-\\frac23=\\frac{4\\sqrt2}{3}-\\frac23=\\frac{4\\sqrt2-2}{3}$.\n\n$$I=\\frac{4\\sqrt2-2}{3}-\\left(\\sqrt2\\ln2-2\\sqrt2+2\\right)=\\frac{4\\sqrt2-2}{3}-\\sqrt2\\ln2+2\\sqrt2-2$$\n\nOn réduit au même dénominateur 3 : $2\\sqrt2=\\dfrac{6\\sqrt2}{3}$ et $-2=\\dfrac{-6}{3}$ :\n\n$$I=\\frac{4\\sqrt2-2+6\\sqrt2-6}{3}-\\sqrt2\\ln2=\\frac{10\\sqrt2-8}{3}-\\sqrt2\\ln2$$\n\n**Vérification numérique.** $\\sqrt2\\approx1{,}4142$ donc $I\\approx\\dfrac{14{,}142-8}{3}-1{,}4142\\times0{,}6931\\approx\\dfrac{6{,}142}{3}-0{,}9803\\approx2{,}047-0{,}980=1{,}067$. Une estimation par la méthode de Simpson avec les points $x=1,1{,}5,2$ donne $\\big(g(1)+4g(1{,}5)+g(2)\\big)\\times\\frac{0{,}5}{3}\\approx1{,}068$, cohérent avec le résultat exact à l'arrondi près.\n\n### Conseil\nToujours vérifier numériquement un résultat d'intégrale obtenu par calcul formel, par exemple avec la méthode de Simpson à trois points : un écart significatif signale une erreur de calcul avant même de relire la démonstration.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "intégration par parties",
+        "calcul intégral",
+        "logarithme"
+      ]
     },
     {
       "numero": "6b",
       "points": "0,5pt",
       "enonce_markdown": "Soit $n\\in\\mathbb N^*$ et $k$ un entier naturel tel que $0\\le k\\le n-1$. En utilisant les variations de $g$ sur $[1;+\\infty[$, démontrer que $\\dfrac1n g\\!\\left(1+\\dfrac kn\\right)\\le\\displaystyle\\int_{1+\\frac kn}^{1+\\frac{k+1}n}g(x)\\,dx\\le\\dfrac1n g\\!\\left(1+\\dfrac{k+1}n\\right)$.",
-      "rappels_de_methode": [{"cours_id": "cours-encadrer-une-integrale-sur-un-sous-intervalle-par-monotonie-terminale-c", "texte": "Si $g$ est croissante sur $[\\alpha,\\beta]$, alors $(\\beta-\\alpha)g(\\alpha)\\le\\int_\\alpha^\\beta g\\le(\\beta-\\alpha)g(\\beta)$."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-encadrer-une-integrale-sur-un-sous-intervalle-par-monotonie-terminale-c",
+          "texte": "Si $g$ est croissante sur $[\\alpha,\\beta]$, alors $(\\beta-\\alpha)g(\\alpha)\\le\\int_\\alpha^\\beta g\\le(\\beta-\\alpha)g(\\beta)$."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nQuand une fonction est monotone sur un intervalle, on peut encadrer son intégrale sur un sous-intervalle par les valeurs de la fonction aux bornes, multipliées par la longueur du sous-intervalle : c'est le principe des rectangles d'encadrement.\n\n### Corrigé détaillé\nPuisque $0\\le k\\le n-1$, on a $1\\le1+\\dfrac kn<1+\\dfrac{k+1}n$, donc le sous-intervalle $\\left[1+\\frac kn;1+\\frac{k+1}n\\right]$ est inclus dans $[1;+\\infty[$.\n\nD'après la question 4, $g$ est strictement croissante sur $[1;+\\infty[$. Donc pour tout $x\\in\\left[1+\\frac kn;1+\\frac{k+1}n\\right]$ :\n$$g\\!\\left(1+\\frac kn\\right)\\le g(x)\\le g\\!\\left(1+\\frac{k+1}n\\right)$$\n\nCette inégalité étant vraie pour tout $x$ du sous-intervalle, on intègre les trois membres sur $\\left[1+\\frac kn;1+\\frac{k+1}n\\right]$, intervalle de longueur $\\left(1+\\frac{k+1}n\\right)-\\left(1+\\frac kn\\right)=\\frac1n$. L'intégration conserve les inégalités (comparaison d'intégrales de fonctions ordonnées sur un intervalle) :\n$$\\int_{1+\\frac kn}^{1+\\frac{k+1}n}g\\!\\left(1+\\frac kn\\right)dx\\le\\int_{1+\\frac kn}^{1+\\frac{k+1}n}g(x)\\,dx\\le\\int_{1+\\frac kn}^{1+\\frac{k+1}n}g\\!\\left(1+\\frac{k+1}n\\right)dx$$\n\nComme $g\\!\\left(1+\\frac kn\\right)$ et $g\\!\\left(1+\\frac{k+1}n\\right)$ sont des constantes (indépendantes de $x$), leurs intégrales sur un intervalle de longueur $\\frac1n$ valent respectivement $\\frac1n g\\!\\left(1+\\frac kn\\right)$ et $\\frac1n g\\!\\left(1+\\frac{k+1}n\\right)$. On obtient exactement l'inégalité demandée.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "encadrement",
+        "intégrale",
+        "sens de variation"
+      ]
     },
     {
       "numero": "6c",
       "points": "0,5pt",
       "enonce_markdown": "En déduire de la question 6.b) que $u_n-\\dfrac{g(2)}n\\le I\\le u_n-\\dfrac{g(1)}n$.",
-      "rappels_de_methode": [{"cours_id": "cours-sommer-un-encadrement-local-par-telescopage-pour-obtenir-une-somme-de-riemann-terminale-c", "texte": "Sommer un encadrement local sur des sous-intervalles consécutifs reconstitue, par la relation de Chasles, un encadrement de l'intégrale globale."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-sommer-un-encadrement-local-par-telescopage-pour-obtenir-une-somme-de-riemann-terminale-c",
+          "texte": "Sommer un encadrement local sur des sous-intervalles consécutifs reconstitue, par la relation de Chasles, un encadrement de l'intégrale globale."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nSommer un encadrement valable pour chaque terme $k$ d'une somme, en reconnaissant que la somme des intégrales sur des sous-intervalles consécutifs reconstitue l'intégrale sur l'intervalle global (relation de Chasles), est la méthode standard pour passer d'un encadrement local à un encadrement global.\n\n### Corrigé détaillé\nOn somme l'inégalité de la question 6.b) pour $k$ allant de $0$ à $n-1$ :\n$$\\sum_{k=0}^{n-1}\\frac1n g\\!\\left(1+\\frac kn\\right)\\le\\sum_{k=0}^{n-1}\\int_{1+\\frac kn}^{1+\\frac{k+1}n}g(x)\\,dx\\le\\sum_{k=0}^{n-1}\\frac1n g\\!\\left(1+\\frac{k+1}n\\right)$$\n\n**Membre du milieu.** Par la relation de Chasles, la somme des intégrales sur les sous-intervalles consécutifs $\\left[1+\\frac kn;1+\\frac{k+1}n\\right]$ pour $k=0,\\dots,n-1$ reconstitue l'intégrale sur l'intervalle global $[1;2]$ (car pour $k=0$ la borne inférieure est $1$ et pour $k=n-1$ la borne supérieure est $1+\\frac nn=2$) :\n$$\\sum_{k=0}^{n-1}\\int_{1+\\frac kn}^{1+\\frac{k+1}n}g(x)\\,dx=\\int_1^2g(x)\\,dx=I$$\n\n**Membre de gauche.** $\\displaystyle\\sum_{k=0}^{n-1}\\frac1n g\\!\\left(1+\\frac kn\\right)$ est la somme définissant $u_n$ (qui va de $k=0$ à $n$) privée de son dernier terme ($k=n$) : $u_n=\\sum_{k=0}^{n-1}\\frac1ng\\!\\left(1+\\frac kn\\right)+\\frac1ng\\!\\left(1+\\frac nn\\right)=\\sum_{k=0}^{n-1}\\frac1ng\\!\\left(1+\\frac kn\\right)+\\frac1ng(2)$. Donc $\\displaystyle\\sum_{k=0}^{n-1}\\frac1n g\\!\\left(1+\\frac kn\\right)=u_n-\\dfrac{g(2)}n$.\n\n**Membre de droite.** $\\displaystyle\\sum_{k=0}^{n-1}\\frac1n g\\!\\left(1+\\frac{k+1}n\\right)$ : on effectue le changement d'indice $j=k+1$, qui varie de $1$ à $n$ quand $k$ varie de $0$ à $n-1$ : $\\displaystyle\\sum_{j=1}^{n}\\frac1n g\\!\\left(1+\\frac jn\\right)$. Or $u_n=\\sum_{k=0}^n\\frac1ng\\!\\left(1+\\frac kn\\right)=\\frac1ng\\!\\left(1+\\frac0n\\right)+\\sum_{j=1}^n\\frac1ng\\!\\left(1+\\frac jn\\right)=\\frac1ng(1)+\\sum_{j=1}^n\\frac1ng\\!\\left(1+\\frac jn\\right)$. Donc $\\displaystyle\\sum_{j=1}^{n}\\frac1n g\\!\\left(1+\\frac jn\\right)=u_n-\\dfrac{g(1)}n$.\n\n**Conclusion.** En reportant ces trois expressions dans l'encadrement initial, on obtient exactement :\n$$u_n-\\frac{g(2)}n\\le I\\le u_n-\\frac{g(1)}n$$",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "encadrement",
+        "intégrale",
+        "relation de Chasles"
+      ]
     },
     {
       "numero": "6d",
       "points": "0,5pt",
       "enonce_markdown": "Calculer alors la limite de la suite $(u_n)$.",
-      "rappels_de_methode": [{"cours_id": "cours-appliquer-le-theoreme-des-gendarmes-pour-calculer-la-limite-dune-suite-terminale-c", "texte": "Si $v_n\\le u_n\\le w_n$ et $\\lim v_n=\\lim w_n=L$, alors $\\lim u_n=L$ (théorème des gendarmes)."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-appliquer-le-theoreme-des-gendarmes-pour-calculer-la-limite-dune-suite-terminale-c",
+          "texte": "Si $v_n\\le u_n\\le w_n$ et $\\lim v_n=\\lim w_n=L$, alors $\\lim u_n=L$ (théorème des gendarmes)."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nLe théorème des gendarmes (ou théorème d'encadrement) permet de conclure qu'une suite converge vers une limite $L$ dès lors qu'elle est encadrée par deux suites convergeant toutes deux vers $L$.\n\n### Corrigé détaillé\nDe l'encadrement de la question 6.c), $u_n-\\dfrac{g(2)}n\\le I\\le u_n-\\dfrac{g(1)}n$, on isole $u_n$ en ajoutant les termes adéquats à chaque membre :\n$$I+\\frac{g(1)}n\\le u_n\\le I+\\frac{g(2)}n$$\n\n$g(1)=1$ et $g(2)=\\dfrac{2\\times2-\\ln2}{2\\sqrt2}=\\dfrac{4-\\ln2}{2\\sqrt2}$ sont deux constantes fixées (indépendantes de $n$). Donc quand $n\\to+\\infty$ :\n$$\\frac{g(1)}n\\to0\\quad\\text{et}\\quad\\frac{g(2)}n\\to0$$\n\nLes deux suites encadrantes $I+\\dfrac{g(1)}n$ et $I+\\dfrac{g(2)}n$ convergent donc toutes deux vers $I$. D'après le théorème des gendarmes :\n$$\\lim_{n\\to+\\infty}u_n=I=\\frac{10\\sqrt2-8}{3}-\\sqrt2\\ln2$$\n\n### Conseil\nCe résultat illustre une méthode classique : $u_n$ est une somme de Riemann associée à $g$ sur $[1;2]$, et l'encadrement des questions 6.b)-6.c) est une démonstration rigoureuse (sans admettre le théorème général des sommes de Riemann) que cette somme converge vers l'intégrale $I$.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "limite",
+        "théorème des gendarmes",
+        "convergence"
+      ]
     }
   ]
 }

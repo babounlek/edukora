@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-connexion-a-une-base-de-donnees-avec-php-mysql-tle-ti",
+  "meta": {
+    "titre": "Connexion à une base de données avec PHP/MySQL",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "PHP et bases de données",
+    "duree_estimee_min": 18,
+    "tags": [
+      "mysql_connect",
+      "mysql_select_db",
+      "base de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q4.6-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un site dynamique qui affiche des avis clients doit d'abord \"parler\" à la base de données qui les contient. Cette conversation suit toujours les deux mêmes premières étapes : se connecter au serveur, puis choisir la base précise sur laquelle travailler."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et une fonction en PHP",
+        "Avoir une idée générale de ce qu'est une base de données (un ensemble de tables organisées)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Se connecter, puis choisir la base",
+      "contenu_markdown": "Avant d'exécuter la moindre requête, un script PHP doit accomplir deux étapes distinctes : ouvrir une connexion vers le serveur de bases de données avec `mysql_connect(serveur, utilisateur, mot_de_passe)`, puis sélectionner la base de données précise à utiliser sur cette connexion avec `mysql_select_db(nom_de_la_base, connexion)`. Ces deux étapes sont indispensables : un serveur peut héberger plusieurs bases, et se connecter au serveur ne suffit pas à préciser laquelle utiliser.",
+      "formule_principale": "mysql_connect(serveur, utilisateur, mdp)  puis  mysql_select_db(base, connexion)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code de VIPBoutique, expliquer le rôle de la ligne 3 : `mysql_select_db('BDVIPBoutique',$bd);`",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce qui précède cette ligne",
+          "justification": "Le contexte précédent conditionne le rôle de l'instruction",
+          "resultat_markdown": "La ligne 2 a déjà ouvert une connexion au serveur MySQL local et stocké cette connexion dans `$bd`."
+        },
+        {
+          "numero": 2,
+          "action": "Analyser les deux paramètres de mysql_select_db",
+          "justification": "Chaque paramètre a un rôle précis dans cette fonction",
+          "resultat_markdown": "`'BDVIPBoutique'` est le nom de la base à utiliser, `$bd` est la connexion sur laquelle appliquer ce choix."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur l'effet produit",
+          "justification": "Cet effet détermine ce que les requêtes suivantes pourront faire",
+          "resultat_markdown": "Toute requête exécutée ensuite sur `$bd` (comme celle de la ligne 6) s'appliquera par défaut à la base BDVIPBoutique."
+        }
+      ],
+      "conclusion_markdown": "La ligne 3 sélectionne la base BDVIPBoutique comme base de travail sur la connexion ouverte à la ligne 2, rendant possible la requête SQL de la ligne 5."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que mysql_connect() suffit à lui seul pour interroger une base précise",
+          "pourquoi_faux": "mysql_connect() ouvre seulement l'accès au serveur, pas à une base en particulier : un même serveur héberge souvent plusieurs bases distinctes.",
+          "correction_markdown": "Retiens toujours les deux étapes dans l'ordre : se connecter au serveur, PUIS choisir la base avec mysql_select_db()."
+        },
+        {
+          "erreur_markdown": "Inverser l'ordre des paramètres de mysql_select_db et écrire mysql_select_db(\\$bd, 'BDVIPBoutique')",
+          "pourquoi_faux": "Le premier paramètre attendu est le nom de la base (une chaîne de caractères), le second la ressource de connexion : inverser l'ordre provoque une erreur ou un comportement incorrect.",
+          "correction_markdown": "Vérifie systématiquement l'ordre des paramètres d'une fonction avant de la reproduire : nom de la base d'abord, connexion ensuite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle fonction PHP permet d'ouvrir une connexion à un serveur MySQL ?",
+          "solution_markdown": "`mysql_connect(serveur, utilisateur, mot_de_passe)`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un script exécute `mysql_query()` sans avoir jamais appelé `mysql_select_db()` auparavant. Que va-t-il probablement se passer ?",
+          "solution_markdown": "La requête échouera très probablement, car aucune base de données n'a été précisée sur la connexion : PHP ne sait pas sur quelle base exécuter la requête. Une erreur de type \"No database selected\" est renvoyée par MySQL, et le script devrait alors passer par la clause `or die(...)` prévue pour afficher cette erreur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi est-il plus sûr d'écrire `mysql_query($sql) or die('Erreur SQL !'.mysql_error());` plutôt que simplement `mysql_query($sql);` ?",
+          "solution_markdown": "La connexion à une base de données et l'exécution d'une requête peuvent échouer pour de nombreuses raisons (base inexistante, identifiants incorrects, erreur de syntaxe SQL, table absente). Sans vérification, un script qui échoue silencieusement continue son exécution avec une variable `$req` invalide, ce qui provoque ensuite des erreurs difficiles à diagnostiquer plus loin dans le code (par exemple sur `mysql_fetch_assoc($req)`). En ajoutant `or die(...)`, le script arrête immédiatement son exécution dès l'échec et affiche un message d'erreur explicite (ici complété par `mysql_error()`, qui donne le détail exact renvoyé par MySQL), ce qui facilite grandement le débogage."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Se connecter à un serveur MySQL et choisir une base sont deux étapes distinctes et toutes deux nécessaires.",
+        "mysql_connect() ouvre la connexion au serveur (serveur, utilisateur, mot de passe).",
+        "mysql_select_db() sélectionne la base de travail sur cette connexion (nom de la base, connexion).",
+        "Sans mysql_select_db(), une requête ne sait pas sur quelle base s'exécuter.",
+        "Au BAC TI, une question sur une ligne de connexion attend qu'on identifie précisément CE que cette ligne apporte de nouveau par rapport à la ligne précédente."
+      ]
+    }
+  ]
+}

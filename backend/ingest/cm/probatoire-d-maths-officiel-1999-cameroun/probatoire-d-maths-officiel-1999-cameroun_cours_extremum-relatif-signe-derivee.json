@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-extremum-relatif-signe-derivee-1ere-d",
+  "meta": {
+    "titre": "Extremum relatif et changement de signe de la dérivée",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Dérivation et variations de fonctions",
+    "duree_estimee_min": 30,
+    "tags": [
+      "extremum relatif",
+      "signe de la dérivée",
+      "tableau de variations",
+      "point critique"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "21",
+      "savoir_numero": "VI"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-1999-cameroun",
+    "epreuve_titre": "Probatoire D - Mathématiques - Session 1999 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-1999-cameroun-ex3-qA3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une dérivée nulle en un point ne garantit pas automatiquement un maximum ou un minimum : c'est un piège très classique. Ce cours fixe la règle exacte pour reconnaître un véritable extremum relatif, et pour démasquer les faux positifs - les points où la dérivée s'annule sans que la fonction change réellement de comportement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul de la dérivée d'une fonction usuelle",
+        "Lecture d'un tableau de signes",
+        "Notion de fonction croissante/décroissante sur un intervalle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le critère du changement de signe",
+      "contenu_markdown": "Soit $f$ une fonction dérivable sur un intervalle contenant $x_0$. $f$ admet un extremum relatif en $x_0$ si et seulement si $f'$ s'annule EN CHANGEANT DE SIGNE en $x_0$. Si $f'(x_0)=0$ mais que $f'$ garde le même signe de part et d'autre de $x_0$, alors $f$ n'a pas d'extremum en $x_0$ : elle continue de croître (ou de décroître) à travers ce point, qui est seulement un point où la tangente est horizontale (point d'inflexion à tangente horizontale). Quand le signe passe du $+$ au $-$, l'extremum est un maximum relatif ; quand il passe du $-$ au $+$, c'est un minimum relatif.",
+      "formule_principale": "f'(x_0)=0 \\text{ et changement de signe} \\iff \\text{extremum relatif en } x_0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$f$ admet-elle un extremum relatif en $-2$ ? En $0$ ? (d'après le tableau de signes de $f'$ établi précédemment).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relire le tableau de signes de $f'$",
+          "justification": "Le critère d'extremum se lit directement sur ce tableau : il suffit de comparer le signe de $f'$ juste avant et juste après chaque point suspect.",
+          "resultat_markdown": "$f'$ est $+$ sur $(-\\infty,-2)$, $-$ sur $(-2,0)$, $-$ sur $(0,2)$, $+$ sur $(2,+\\infty)$."
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le point $x=-2$",
+          "justification": "On compare le signe de $f'$ immédiatement avant et après $-2$.",
+          "resultat_markdown": "$f'$ passe de $+$ (sur $(-\\infty,-2)$) à $-$ (sur $(-2,0)$) : le signe change, donc $f$ admet un maximum relatif en $-2$."
+        },
+        {
+          "numero": 3,
+          "action": "Étudier le point $x=0$",
+          "justification": "Même comparaison, cette fois autour de $0$.",
+          "resultat_markdown": "$f'$ reste négative avant ET après $0$ (sur $(-2,0)$ comme sur $(0,2)$) : le signe ne change pas, donc $f$ n'admet aucun extremum en $0$, malgré $f(0)=0$."
+        }
+      ],
+      "conclusion_markdown": "$f$ admet un maximum relatif en $x=-2$ ; elle n'admet pas d'extremum en $x=0$, où elle est simplement décroissante."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure à un extremum dès que $f'(x_0)=0$, sans regarder le signe autour du point.",
+          "pourquoi_faux": "$f'(x_0)=0$ est une condition nécessaire mais pas suffisante : la fonction $f(x)=x^3$ vérifie $f'(0)=0$ sans avoir d'extremum en $0$, puisque $f'(x)=3x^2\\geq 0$ ne change jamais de signe.",
+          "correction_markdown": "Toujours comparer explicitement le signe de $f'$ sur l'intervalle juste avant et juste après le point candidat."
+        },
+        {
+          "erreur_markdown": "Confondre le point où $f$ s'annule (ou prend une valeur particulière) avec le point où $f$ admet un extremum.",
+          "pourquoi_faux": "Ce sont deux questions indépendantes : l'une porte sur la valeur de $f$, l'autre sur ses variations (donc sur le signe de $f'$).",
+          "correction_markdown": "Ne jamais déduire un extremum de la seule valeur de $f$ en un point ; toujours repasser par le tableau de signes de $f'$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f(x)=x^2-4x+3$ sur $\\mathbb{R}$. $f$ admet-elle un extremum en $x=2$ ?",
+          "solution_markdown": "$f'(x)=2x-4$, qui s'annule en $x=2$.\n\nPour $x<2$, $2x-4<0$ donc $f'(x)<0$. Pour $x>2$, $2x-4>0$ donc $f'(x)>0$.\n\nLe signe passe de $-$ à $+$ : $f$ admet un minimum relatif en $x=2$, de valeur $f(2)=4-8+3=-1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $g(x)=x^3$ sur $\\mathbb{R}$. On a $g'(x)=3x^2$ et $g'(0)=0$. $g$ admet-elle un extremum en $x=0$ ? Justifier en étudiant le signe de $g'$ autour de $0$.",
+          "solution_markdown": "$g'(x)=3x^2 \\geq 0$ pour tout réel $x$ : $g'$ ne change jamais de signe, elle est positive (ou nulle uniquement en $x=0$) sur $\\mathbb{R}$ tout entier.\n\nBien que $g'(0)=0$, il n'y a pas de changement de signe autour de $0$ : $g$ n'admet donc pas d'extremum en $x=0$. La fonction $g$ est strictement croissante sur $\\mathbb{R}$ (sauf en l'unique point $x=0$ où sa dérivée s'annule sans changer de signe) : $x=0$ est un point d'inflexion à tangente horizontale, pas un extremum."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h$ une fonction paire, dérivable sur $\\mathbb{R}$, telle que $h'(x)<0$ pour $x\\in(0,3)$ et $h'(x)>0$ pour $x>3$. En déduire, en justifiant à partir de la parité de $h'$, le comportement de $h'$ sur $(-3,0)$ et sur $x<-3$, puis conclure sur l'existence d'extrema relatifs de $h$ en $x=-3$, $0$ et $3$.",
+          "solution_markdown": "$h$ est paire, donc sa dérivée $h'$ est impaire : $h'(-x)=-h'(x)$ pour tout $x$.\n\nPour $x\\in(0,3)$, $h'(x)<0$, donc $h'(-x)=-h'(x)>0$ pour $-x\\in(-3,0)$ : $h'$ est positive sur $(-3,0)$.\n\nPour $x>3$, $h'(x)>0$, donc $h'(-x)=-h'(x)<0$ pour $-x<-3$ : $h'$ est négative sur $x<-3$.\n\nRécapitulatif du signe de $h'$ : négatif sur $(-\\infty,-3)$, positif sur $(-3,0)$, négatif sur $(0,3)$, positif sur $(3,+\\infty)$.\n\nEn $x=-3$ : le signe passe de $-$ à $+$ : $h$ admet un minimum relatif en $-3$.\n\nEn $x=0$ : par imparité de $h'$, $h'(-0)=-h'(0)$ donne $h'(0)=0$ ; le signe passe de $+$ (sur $(-3,0)$) à $-$ (sur $(0,3)$) : $h$ admet un maximum relatif en $0$.\n\nEn $x=3$ : le signe passe de $-$ à $+$ : $h$ admet un minimum relatif en $3$.\n\nContrairement à l'exemple précédent (où le signe restait constant autour de $0$ et excluait tout extremum), ici le signe change réellement autour de chacun des trois points : les trois sont donc de véritables extrema relatifs."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un extremum relatif n'existe que si $f'$ change de signe : $f'(x_0)=0$ seul ne suffit jamais à conclure.",
+        "Signe $+$ puis $-$ : maximum relatif. Signe $-$ puis $+$ : minimum relatif. Signe inchangé : pas d'extremum, juste un point à tangente horizontale.",
+        "La dérivée d'une fonction paire est impaire, et la dérivée d'une fonction impaire est paire : cette symétrie permet souvent de déduire la moitié d'un tableau de signes sans calcul.",
+        "Ne confonds jamais une propriété de la valeur de $f$ (comme $f(0)=0$) avec une propriété de ses variations (l'existence d'un extremum), qui dépend uniquement du signe de $f'$.",
+        "Au Probatoire comme au BAC, cette question accompagne presque systématiquement une étude de fonction ou un tableau de signes à compléter : maîtriser ce critère est indispensable dès qu'un tableau de variations est demandé."
+      ]
+    }
+  ]
+}

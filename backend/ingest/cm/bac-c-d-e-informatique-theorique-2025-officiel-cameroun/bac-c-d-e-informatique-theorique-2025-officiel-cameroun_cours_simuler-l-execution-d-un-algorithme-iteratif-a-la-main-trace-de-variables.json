@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-simuler-l-execution-d-un-algorithme-iteratif-a-la-main-trace-de-variables-tle-tronc-commun",
+  "meta": {
+    "titre": "Simuler l'exécution d'un algorithme itératif à la main (trace de variables)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorigrammes et algorithmique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "trace d'exécution",
+      "simulation d'algorithme",
+      "boucle Pour",
+      "tableau de trace"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex3-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comprendre un algorithme sur le papier ne suffit pas toujours : il faut aussi savoir le « faire tourner à la main », ligne après ligne, pour vérifier qu'on en a bien compris le fonctionnement réel. Cette compétence, appelée trace d'exécution, est régulièrement demandée au BAC et se maîtrise avec une méthode simple et systématique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme avec une boucle Pour et une structure conditionnelle Si...Finsi."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode du tableau de trace",
+      "contenu_markdown": "Exécuter un algorithme à la main consiste à dérouler chaque instruction dans l'ordre, en tenant à jour, ligne après ligne, la valeur courante de chaque variable - jamais en essayant de deviner directement le résultat final.\n\nLa présentation la plus fiable est un **tableau de trace** : une colonne par variable suivie (le compteur de boucle, les accumulateurs...), une ligne par itération. À chaque itération, on met à jour UNE SEULE fois chaque variable modifiée par le corps de la boucle, dans l'ordre exact où les instructions apparaissent dans l'algorithme."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Tracer l'exécution d'une boucle qui, pour i allant de 1 à 3, lit une valeur V[i] et met à jour Somme (Somme ← Somme + V[i]) et Nbre (incrémenté si V[i] ≥ 10), avec V = [5, 12, 8].",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser les variables avant la boucle",
+          "justification": "L'algorithme initialise Somme et Nbre à 0 avant d'entrer dans la boucle.",
+          "resultat_markdown": "Somme = 0, Nbre = 0."
+        },
+        {
+          "numero": 2,
+          "action": "Dérouler l'itération i = 1",
+          "justification": "V[1] = 5 ; 5 < 10, donc Nbre n'est pas incrémenté.",
+          "resultat_markdown": "Somme = 0 + 5 = 5 ; Nbre = 0."
+        },
+        {
+          "numero": 3,
+          "action": "Dérouler l'itération i = 2",
+          "justification": "V[2] = 12 ; 12 ≥ 10, donc Nbre est incrémenté.",
+          "resultat_markdown": "Somme = 5 + 12 = 17 ; Nbre = 1."
+        },
+        {
+          "numero": 4,
+          "action": "Dérouler l'itération i = 3",
+          "justification": "V[3] = 8 ; 8 < 10, donc Nbre n'est pas incrémenté.",
+          "resultat_markdown": "Somme = 17 + 8 = 25 ; Nbre = 1."
+        }
+      ],
+      "conclusion_markdown": "Après les 3 itérations, on obtient Somme = 25 et Nbre = 1, un résultat obtenu pas à pas et donc vérifiable ligne par ligne, plutôt que deviné."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer directement le résultat final sans dérouler les itérations",
+          "pourquoi_faux": "Un calcul global (« la somme de toutes les valeurs ») peut sembler donner le bon résultat sur un exemple simple, mais ne permet pas de suivre correctement des variables qui dépendent de conditions (comme Nbre, qui ne s'incrémente que sous certaines conditions) : seule une trace pas à pas garantit l'exactitude du résultat.",
+          "correction_markdown": "Toujours dérouler itération par itération avec un tableau de trace, même quand le résultat final semble évident au premier coup d'œil."
+        },
+        {
+          "erreur_markdown": "Oublier de mettre à jour une variable à une itération où sa condition est fausse",
+          "pourquoi_faux": "Une variable conditionnelle comme Nbre garde sa valeur précédente si la condition n'est pas vérifiée à une itération donnée : oublier de la reporter (même inchangée) dans le tableau de trace peut faire perdre le fil du calcul.",
+          "correction_markdown": "Reporter explicitement la valeur de CHAQUE variable suivie à CHAQUE ligne du tableau de trace, même si elle n'a pas changé à cette itération."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Tracer l'exécution de Somme ← Somme + i pour i allant de 1 à 4 (Somme initialisée à 0).",
+          "solution_markdown": "i=1 : Somme = 0+1 = 1. i=2 : Somme = 1+2 = 3. i=3 : Somme = 3+3 = 6. i=4 : Somme = 6+4 = 10. Résultat final : Somme = 10."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Tracer l'exécution d'une boucle qui compte le nombre de valeurs paires dans le tableau T = [3, 8, 5, 12, 7], en incrémentant un compteur Nbre à chaque valeur paire rencontrée (Nbre initialisé à 0).",
+          "solution_markdown": "i=1 : T[1]=3, impair, Nbre=0. i=2 : T[2]=8, pair, Nbre=1. i=3 : T[3]=5, impair, Nbre=1. i=4 : T[4]=12, pair, Nbre=2. i=5 : T[5]=7, impair, Nbre=2. Résultat final : Nbre = 2."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Tracer l'exécution de l'algorithme suivant sur le tableau T = [4, -2, 7, -5, 3] : Max initialisé à T[1] ; Pour i allant de 2 à 5, Si T[i] > Max Alors Max ← T[i] Finsi. Expliquer pourquoi l'initialisation de Max à T[1] (plutôt qu'à 0, par exemple) est indispensable ici.",
+          "solution_markdown": "Initialisation : Max = T[1] = 4. i=2 : T[2]=-2, -2 > 4 est faux, Max reste 4. i=3 : T[3]=7, 7 > 4 est vrai, Max devient 7. i=4 : T[4]=-5, -5 > 7 est faux, Max reste 7. i=5 : T[5]=3, 3 > 7 est faux, Max reste 7. Résultat final : Max = 7.\n\nInitialiser Max à T[1] plutôt qu'à 0 est indispensable car le tableau contient des valeurs négatives (-2 et -5) : si Max avait été initialisé à 0, l'algorithme aurait pu conclure à tort qu'aucune valeur ne dépasse 0 dans certains cas (tableau entièrement négatif), ou aurait ignoré une vraie valeur maximale négative. Initialiser Max à la première valeur du tableau garantit que Max est toujours une valeur réellement présente dans le tableau dès le départ, quel que soit son signe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une trace d'exécution se construit avec un tableau : une colonne par variable, une ligne par itération.",
+        "Chaque itération met à jour les variables dans l'ordre exact des instructions de l'algorithme, jamais par un calcul global devinable.",
+        "Reporter la valeur de chaque variable à chaque ligne, même quand elle ne change pas à cette itération précise.",
+        "Une trace bien présentée permet de vérifier soi-même son résultat avant de le rendre, ligne par ligne, sans avoir à faire confiance à une intuition."
+      ]
+    }
+  ]
+}

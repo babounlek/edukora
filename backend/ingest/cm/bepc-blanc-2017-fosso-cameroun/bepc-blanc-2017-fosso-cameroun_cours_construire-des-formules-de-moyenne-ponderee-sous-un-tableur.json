@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-construire-des-formules-de-moyenne-ponderee-sous-un-tableur-3e",
+  "meta": {
+    "titre": "Construire des formules de moyenne pondérée sous un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Tableur (Excel)",
+    "duree_estimee_min": 25,
+    "tags": [
+      "Excel",
+      "tableur",
+      "moyenne pondérée",
+      "fonction SOMME"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "BEPC Blanc N°1 - Institut Polyvalent Fosso - Épreuve d'Informatique théorique (session avril 2017, Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-blanc-2017-fosso-cameroun-ex3-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un bulletin scolaire ne fait jamais la moyenne simple des notes : une note de Mathématiques compte davantage qu'une note d'Éducation musicale parce que son coefficient est plus élevé. Reproduire ce calcul dans un tableur - la moyenne pondérée - est l'un des exercices Excel les plus fréquents au BEPC d'Informatique, parce qu'il combine deux compétences à la fois : construire une formule de multiplication simple, puis l'assembler avec la fonction SOMME pour obtenir un résultat automatique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir repérer une cellule par sa référence (colonne + ligne, par exemple B2)",
+        "Savoir qu'une formule Excel commence toujours par le signe =",
+        "Connaître la fonction SOMME(plage) pour additionner un ensemble de cellules"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode en deux temps de la moyenne pondérée",
+      "contenu_markdown": "Calculer une moyenne pondérée par des coefficients sous un tableur suit toujours le même schéma en deux temps :\n\n1. **Calculer, pour chaque ligne (chaque matière), une « note finale »** en multipliant la note par son coefficient : `=Note*Coef`.\n2. **Diviser la somme de toutes les notes finales par la somme de tous les coefficients** : `=SOMME(notes finales)/SOMME(coefficients)`.\n\nCe n'est jamais la fonction `MOYENNE()` appliquée directement aux notes qui donne ce résultat : `MOYENNE()` calcule une moyenne arithmétique simple, qui ignore les coefficients. La fonction `SOMME(plage)` permet d'automatiser l'addition d'une colonne ou d'une ligne entière sans ressaisir chaque valeur, ce qui est indispensable dès que le nombre de matières est important.",
+      "formule_principale": "\\text{Moyenne pondérée} = \\dfrac{\\sum (\\text{Note}\\times\\text{Coef})}{\\sum \\text{Coef}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Reproduire le tableau suivant et compléter les cellules B5, C5, D2 à D5, E5 (Moyenne) avec les formules correspondantes : Matière/Note/Coef pour Maths (8, 3), Physique (11, 2), INFO (15, 2).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Construire la formule de note finale pour la première matière (D2)",
+          "justification": "La note finale de chaque matière est le produit de la note par son coefficient.",
+          "resultat_markdown": "D2 = `=B2*C2` → $8\\times3=24$"
+        },
+        {
+          "numero": 2,
+          "action": "Recopier la même logique pour les deux autres matières (D3, D4)",
+          "justification": "La structure de la formule est identique pour chaque ligne, seules les références de cellules changent.",
+          "resultat_markdown": "D3 = `=B3*C3` → $11\\times2=22$ ; D4 = `=B4*C4` → $15\\times2=30$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le total des coefficients (C5) et le total des notes finales (D5)",
+          "justification": "Ces deux totaux sont les deux termes nécessaires à la formule de moyenne pondérée.",
+          "resultat_markdown": "C5 = `=SOMME(C2:C4)` → $3+2+2=7$ ; D5 = `=SOMME(D2:D4)` → $24+22+30=76$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la moyenne pondérée (E5) en divisant les deux totaux",
+          "justification": "C'est la dernière étape : rapporter le total des notes finales au total des coefficients.",
+          "resultat_markdown": "E5 = `=D5/C5` → $76\\div7 \\approx 10{,}86$"
+        }
+      ],
+      "conclusion_markdown": "La moyenne pondérée de l'élève, obtenue automatiquement par les formules D2 à D5 puis E5, est d'environ 10,86/20 - un résultat que la fonction MOYENNE() appliquée directement aux notes brutes n'aurait pas donné."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser `=MOYENNE(B2:B4)` pour calculer la moyenne pondérée demandée.",
+          "pourquoi_faux": "`MOYENNE()` calcule une moyenne arithmétique simple, qui traite toutes les notes sur un pied d'égalité et ignore complètement les coefficients : le résultat obtenu (environ 11,33 ici) ne correspond pas à la moyenne pondérée attendue.",
+          "correction_markdown": "Réserve `MOYENNE()` aux cas où l'énoncé ne mentionne aucun coefficient ; dès qu'une pondération intervient, construis la formule Note×Coef puis divise les deux sommes."
+        },
+        {
+          "erreur_markdown": "Diviser la somme des notes finales par le nombre de matières (3) au lieu de la somme des coefficients (7).",
+          "pourquoi_faux": "Diviser par le nombre de matières revient à traiter chaque matière comme ayant le même poids, ce qui annule justement l'effet des coefficients que l'on cherche à appliquer.",
+          "correction_markdown": "Vérifie toujours que le dénominateur de la moyenne pondérée est bien la somme des coefficients (SOMME(C2:C4)), jamais un simple comptage de lignes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sous Excel, la cellule B2 contient la note 12 et la cellule C2 le coefficient 4. Écrire la formule à saisir en D2 pour obtenir la note finale, et donner sa valeur.",
+          "solution_markdown": "D2 = `=B2*C2`, ce qui donne $12\\times4=48$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un tableau comporte 4 matières (lignes 2 à 5), avec les notes en colonne B, les coefficients en colonne C, et les notes finales en colonne D (D2 à D5 déjà remplies avec Note×Coef). Écrire la formule à saisir en D6 (total des notes finales), en C6 (total des coefficients) et en E6 (moyenne pondérée).",
+          "solution_markdown": "D6 = `=SOMME(D2:D5)` (total des notes finales). C6 = `=SOMME(C2:C5)` (total des coefficients). E6 = `=D6/C6` (moyenne pondérée, obtenue en divisant le total des notes finales par le total des coefficients)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un professeur souhaite qu'Excel affiche automatiquement « Admis » si la moyenne pondérée (calculée en E5) est supérieure ou égale à 10, et « Non admis » sinon. Sachant que la fonction conditionnelle d'Excel s'écrit SI(condition; valeur_si_vrai; valeur_si_faux), proposer la formule à saisir dans une cellule dédiée à cette mention.",
+          "solution_markdown": "On combine le résultat déjà obtenu en E5 avec la fonction SI : `=SI(E5>=10;\"Admis\";\"Non admis\")`. Cette formule teste si la valeur de E5 (la moyenne pondérée déjà calculée par `=D5/C5`) est supérieure ou égale à 10 ; si c'est vrai, la cellule affiche le texte « Admis », sinon elle affiche « Non admis ». Cet exemple montre que les formules d'un tableur se combinent : le résultat d'une formule (ici E5) peut servir de donnée d'entrée à une autre formule."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une moyenne pondérée se construit en deux temps : calculer chaque note finale (Note×Coef), puis diviser la somme des notes finales par la somme des coefficients.",
+        "N'utilise jamais MOYENNE() directement sur les notes brutes dès qu'un coefficient intervient : cette fonction ignore la pondération.",
+        "SOMME(plage) automatise l'addition d'une colonne ou d'une ligne : elle évite de ressaisir chaque valeur et s'adapte si le tableau s'agrandit.",
+        "Une fois une formule construite sur une ligne, recopie-la vers le bas plutôt que de la retaper : Excel adapte automatiquement les références de cellules.",
+        "Ce type d'exercice - reproduire un tableau et compléter des formules de moyenne pondérée - revient très régulièrement dans la partie Excel du BEPC d'Informatique."
+      ]
+    }
+  ]
+}

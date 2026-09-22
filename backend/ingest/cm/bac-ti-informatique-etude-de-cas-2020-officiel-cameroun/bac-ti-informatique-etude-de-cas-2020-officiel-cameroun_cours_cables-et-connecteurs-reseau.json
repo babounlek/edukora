@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-cables-et-connecteurs-reseau-tle-ti",
+  "meta": {
+    "titre": "Câbles et connecteurs réseau",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques",
+    "duree_estimee_min": 15,
+    "tags": [
+      "câble droit",
+      "câble croisé",
+      "RJ45",
+      "câbles réseau",
+      "connecteurs fibre optique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qB.2-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tous les câbles réseau Ethernet ne se ressemblent qu'en apparence : selon les deux équipements que l'on relie, il faut choisir entre deux brochages différents, sous peine d'une liaison qui ne fonctionne tout simplement pas (sur du matériel ancien, sans détection automatique)."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une carte réseau, un commutateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Câble droit entre équipements différents, câble croisé entre équipements identiques",
+      "contenu_markdown": "Un câble Ethernet à paires torsadées existe en deux brochages : le **câble droit**, utilisé pour relier deux équipements de **types différents** (un ordinateur à un switch, un switch à un routeur) ; le **câble croisé**, utilisé pour relier deux équipements de **même type** (deux ordinateurs entre eux, ou deux switches entre eux) sur du matériel qui ne détecte pas automatiquement le sens de la liaison. La plupart des équipements récents intègrent une fonction dite auto-MDIX qui rend cette distinction moins critique, mais elle reste la règle de référence à connaître.",
+      "formule_principale": "Types différents -> câble droit | Types identiques -> câble croisé",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer le type de câble permettant de connecter l'équipement A (un ordinateur) à l'équipement Switch 1 du schéma.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le type de chaque équipement à relier",
+          "justification": "Le choix du câble dépend uniquement de cette identification",
+          "resultat_markdown": "A est un poste de travail (ordinateur), Switch 1 est un commutateur."
+        },
+        {
+          "numero": 2,
+          "action": "Comparer les deux types d'équipements",
+          "justification": "La règle de câblage distingue équipements de même type et de types différents",
+          "resultat_markdown": "Ordinateur et commutateur sont deux types d'équipements différents."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la règle de câblage correspondante",
+          "justification": "Des types différents appellent un câble droit",
+          "resultat_markdown": "Le câble à utiliser est un câble droit."
+        }
+      ],
+      "conclusion_markdown": "A et Switch 1 étant deux équipements de types différents, la connexion se fait par un câble droit."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre systématiquement \"câble croisé\" pour toute connexion réseau, par réflexe",
+          "pourquoi_faux": "Le câble croisé n'est nécessaire qu'entre deux équipements de même type ; la grande majorité des connexions réelles (poste vers switch, switch vers routeur) utilisent un câble droit.",
+          "correction_markdown": "Identifie toujours d'abord le type des DEUX équipements à relier avant de choisir le câble : ne réponds jamais par automatisme."
+        },
+        {
+          "erreur_markdown": "Croire que la catégorie du câble (5e, 6...) détermine s'il est droit ou croisé",
+          "pourquoi_faux": "La catégorie (5e, 6, 6a...) indique la bande passante et la qualité du câble, pas son brochage : un câble de n'importe quelle catégorie peut être câblé droit ou croisé.",
+          "correction_markdown": "Distingue toujours la catégorie du câble (performance) de son brochage (droit ou croisé, qui dépend des équipements reliés)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel type de câble relie un ordinateur à un commutateur ?",
+          "solution_markdown": "Un câble droit, puisque ce sont deux équipements de types différents."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quel type de câble faut-il, en théorie, pour relier directement deux ordinateurs entre eux sans passer par un switch (matériel ancien, sans auto-MDIX) ?",
+          "solution_markdown": "Un câble croisé, car les deux ordinateurs sont des équipements de même type."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur le schéma de l'énoncé, Switch 1 et Switch 2 sont reliés directement entre eux par un câble. De quel type de câble s'agit-il, en théorie, et pourquoi cette règle s'assouplit-elle de plus en plus sur le matériel moderne ?",
+          "solution_markdown": "En théorie, un câble **croisé** est nécessaire, puisque Switch 1 et Switch 2 sont deux équipements de même type. Cette règle s'assouplit avec le matériel moderne car la plupart des commutateurs actuels intègrent une fonction **auto-MDIX**, qui détecte automatiquement le brochage du câble branché et adapte en interne l'orientation de ses propres broches d'émission/réception : un câble droit fonctionne alors tout aussi bien qu'un câble croisé sur ce type d'équipement, rendant la distinction historique moins critique en pratique, même si elle reste la référence théorique à connaître pour un examen."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le câble droit relie deux équipements de types différents (ordinateur - switch, switch - routeur).",
+        "Le câble croisé relie deux équipements de même type (ordinateur - ordinateur, switch - switch).",
+        "La catégorie d'un câble (5e, 6...) concerne sa performance, pas son brochage.",
+        "L'auto-MDIX du matériel moderne rend cette distinction moins critique en pratique, mais elle reste la règle de référence.",
+        "Au BAC TI, il suffit d'identifier le type des deux équipements reliés sur le schéma pour trancher entre câble droit et câble croisé."
+      ]
+    }
+  ]
+}

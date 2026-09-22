@@ -1,0 +1,179 @@
+{
+ "cours_id": "cours-image-cercle-par-rotation-1ere-ce",
+ "meta": {
+  "titre": "Déterminer l'image d'un cercle par une rotation",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Transformations du plan",
+  "duree_estimee_min": 20,
+  "tags": ["rotation", "image d'un cercle", "isométrie", "cercles sécants", "existence d'une rotation"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "IV"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qC1-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Un cercle est entièrement déterminé par deux données : un centre et un rayon. Une rotation conserve les distances, donc le rayon ; il ne reste qu'à suivre le centre. L'image d'un cercle est ainsi le cercle de centre l'image du centre et de **même** rayon — un seul point à transformer pour transformer une infinité. Encore faut-il vérifier, avant tout, que la rotation dont parle l'énoncé **existe** bel et bien."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir qu'une rotation est une isométrie",
+    "Connaître la définition d'un cercle par son centre et son rayon",
+    "Savoir qu'une rotation de centre donné exige l'équidistance du centre aux deux points",
+    "Connaître les propriétés de deux cercles sécants"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Suivre le centre, conserver le rayon",
+   "contenu_markdown": "**La propriété.** Soit $r$ une rotation et $(\\mathcal{C})$ le cercle de centre $\\Omega$ et de rayon $R$. Alors\n\n$$r\\left(\\mathcal{C}\\right) = \\text{cercle de centre } r(\\Omega) \\text{ et de rayon } R$$\n\n**Pourquoi.** Une rotation est une **isométrie** : elle conserve les distances. Un point $M$ vérifiant $\\Omega M = R$ a pour image un point $M'$ vérifiant $r(\\Omega)M' = R$.\n\n**Le rayon est inchangé.** C'est la conséquence directe de l'isométrie, et c'est ce qui distingue une rotation d'une homothétie, laquelle multiplie le rayon par $\\left|k\\right|$.\n\n**La méthode, en trois gestes.**\n\n1. **Vérifier** que la rotation existe.\n2. **Déterminer** l'image du centre.\n3. **Conclure** : cercle de centre l'image, de même rayon.\n\n**L'existence de la rotation.** Une rotation de centre $A$ transformant $P$ en $Q$ existe **si et seulement si** $AP = AQ$ : le centre doit être équidistant du point et de son image.\n\nCette vérification n'est pas formelle. Dans la configuration de deux cercles sécants, elle repose sur un fait précis : le point d'intersection $A$ appartient aux deux cercles, donc\n\n$$AO = AO' = R$$\n\nLa rotation de centre $A$ envoyant $O$ sur $O'$ existe donc, son angle étant $\\left(\\overrightarrow{AO}\\,;\\,\\overrightarrow{AO'}\\right)$.\n\n**L'hypothèse décisive : l'égalité des rayons.** Si les deux cercles n'avaient pas le même rayon, l'image de $(\\mathcal{C})$ serait un cercle de centre $O'$ mais de rayon $R$, **différent** de $(\\mathcal{C}')$.\n\nCite explicitement cette hypothèse : c'est elle qui fait la conclusion.\n\n**Les images des figures usuelles par une rotation.**\n\n| Figure | Image |\n|---|---|\n| point | point |\n| droite | droite |\n| segment | segment de même longueur |\n| cercle | cercle de même rayon |\n| angle | angle de même mesure |\n\nUne rotation conserve **tout** sauf la position : c'est une isométrie **directe**, qui préserve aussi l'orientation.\n\n**Le contrôle.** Vérifie qu'un point particulier du cercle a bien son image sur le cercle annoncé. Ici, le point $A$ étant invariant et appartenant aux deux cercles, la cohérence est immédiate.",
+   "formule_principale": "r\\left(\\mathcal{C}(\\Omega\\,;\\,R)\\right) = \\mathcal{C}\\left(r(\\Omega)\\,;\\,R\\right)",
+   "variantes": [
+    {
+     "nom": "Image d'un cercle par une homothétie",
+     "quand_utiliser": "Quand la transformation n'est pas une isométrie",
+     "contenu_markdown": "L'homothétie de centre $\\Omega_{0}$ et de rapport $k$ transforme le cercle de centre $\\Omega$ et de rayon $R$ en le cercle de centre l'image de $\\Omega$ et de rayon $\\left|k\\right|R$.\n\nLe rayon est donc **multiplié**, contrairement au cas de la rotation. C'est la différence essentielle entre isométrie et similitude."
+    },
+    {
+     "nom": "Image d'un cercle par une translation ou une symétrie",
+     "quand_utiliser": "Pour les autres isométries",
+     "contenu_markdown": "Toutes les isométries — translation, symétrie centrale, symétrie axiale, rotation — conservent le rayon. La règle est donc identique : image du centre, même rayon.\n\nSeule l'**orientation** distingue ces transformations : les rotations et translations sont directes, les symétries axiales indirectes. Cela ne change rien pour un cercle, qui n'a pas d'orientation propre."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Deux cercles $(\\mathcal{C})$ et $(\\mathcal{C}')$ de **même rayon**, de centres respectifs $O$ et $O'$, sont sécants en deux points $A$ et $B$. Soit $r$ la rotation de centre $A$ qui transforme $O$ en $O'$. Déterminer l'image de $(\\mathcal{C})$ par $r$. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Vérifier que la rotation existe",
+     "justification": "Une rotation de centre $A$ transformant $O$ en $O'$ exige $AO = AO'$",
+     "resultat_markdown": "$A$ appartient à $(\\mathcal{C})$ donc $AO = R$, et à $(\\mathcal{C}')$ donc $AO' = R$ : l'égalité est vérifiée"
+    },
+    {
+     "numero": 2,
+     "action": "Préciser l'angle de la rotation",
+     "justification": "Il se lit sur les deux rayons issus du centre",
+     "resultat_markdown": "L'angle de $r$ est $\\left(\\overrightarrow{AO}\\,;\\,\\overrightarrow{AO'}\\right)$"
+    },
+    {
+     "numero": 3,
+     "action": "Rappeler la propriété de conservation",
+     "justification": "Une rotation est une isométrie",
+     "resultat_markdown": "L'image d'un cercle de centre $\\Omega$ et de rayon $R$ est le cercle de centre $r(\\Omega)$ et de rayon $R$"
+    },
+    {
+     "numero": 4,
+     "action": "Appliquer à $(\\mathcal{C})$",
+     "justification": "Son centre est $O$ et son rayon $R$",
+     "resultat_markdown": "$r\\left(\\mathcal{C}\\right)$ est le cercle de centre $r(O)$ et de rayon $R$"
+    },
+    {
+     "numero": 5,
+     "action": "Identifier le centre image",
+     "justification": "C'est la définition même de $r$",
+     "resultat_markdown": "$r(O) = O'$"
+    },
+    {
+     "numero": 6,
+     "action": "Conclure",
+     "justification": "En invoquant l'hypothèse d'égalité des rayons",
+     "resultat_markdown": "L'image est le cercle de centre $O'$ et de rayon $R$ ; or $(\\mathcal{C}')$ est précisément ce cercle, puisque les deux cercles ont **même rayon**. Donc $r\\left(\\mathcal{C}\\right) = \\mathcal{C}'$"
+    },
+    {
+     "numero": 7,
+     "action": "Contrôler",
+     "justification": "Le point $A$ est invariant, comme centre de la rotation",
+     "resultat_markdown": "$A$ appartient à $(\\mathcal{C})$ et son image $A$ appartient bien à $(\\mathcal{C}')$. Cohérent"
+    }
+   ],
+   "conclusion_markdown": "L'image de $(\\mathcal{C})$ par $r$ est le cercle $(\\mathcal{C}')$. Deux points de rédaction à ne pas négliger. D'abord, vérifie que la rotation existe : $A$ étant sur les deux cercles, on a $AO = AO' = R$, et c'est cette égalité qui autorise l'énoncé. Ensuite, cite explicitement l'hypothèse d'**égalité des rayons** : sans elle, l'image serait un cercle de centre $O'$ certes, mais qui ne coïnciderait pas avec $(\\mathcal{C}')$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Ne pas citer l'hypothèse d'égalité des rayons",
+     "pourquoi_faux": "C'est elle qui permet d'identifier le cercle image avec $(\\mathcal{C}')$. Sans elle, on obtient seulement « un cercle de centre $O'$ et de rayon $R$ », ce qui n'est pas la conclusion demandée.",
+     "correction_markdown": "Écris : « les deux cercles ayant même rayon $R$, le cercle de centre $O'$ et de rayon $R$ est exactement $(\\mathcal{C}')$ »."
+    },
+    {
+     "erreur_markdown": "Ne pas vérifier que la rotation existe",
+     "pourquoi_faux": "Une rotation de centre $A$ transformant $O$ en $O'$ n'existe que si $AO = AO'$. L'énoncé la donne comme acquise, mais la vérification sécurise toute la partie.",
+     "correction_markdown": "Une ligne : « $A$ appartient aux deux cercles, donc $AO = AO' = R$ ». Cela justifie l'existence et donne l'angle."
+    },
+    {
+     "erreur_markdown": "Croire que le rayon change",
+     "pourquoi_faux": "Une rotation est une **isométrie** : elle conserve toutes les distances, donc le rayon. C'est l'homothétie qui le multiplie.",
+     "correction_markdown": "Retiens la liste des isométries : translation, rotation, symétries. Toutes conservent les longueurs, donc les rayons."
+    },
+    {
+     "erreur_markdown": "Chercher à transformer les points du cercle un à un",
+     "pourquoi_faux": "Un cercle a une infinité de points. Le transformer point par point est impossible — et inutile, puisque deux données suffisent à le déterminer.",
+     "correction_markdown": "Ne transforme que le **centre**. Le rayon, lui, ne bouge pas."
+    },
+    {
+     "erreur_markdown": "Confondre l'image du cercle et l'image du disque",
+     "pourquoi_faux": "Ce n'est pas une erreur ici, mais la distinction compte : le cercle est la ligne, le disque la surface. Une isométrie transforme l'un en l'autre respectivement, sans les mélanger.",
+     "correction_markdown": "Emploie le mot exact. « Cercle » désigne la courbe ; « disque » la région qu'elle borde."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Dans un repère orthonormé, soit $(\\mathcal{C})$ le cercle de centre $\\Omega(3\\,;\\,1)$ et de rayon $2$, et $r$ la rotation de centre $O(0\\,;\\,0)$ et d'angle $\\dfrac{\\pi}{2}$. Déterminer le centre, le rayon et l'équation du cercle image.",
+     "solution_markdown": "**Étape 1 - l'image du centre.**\n\nLa rotation de centre $O$ et d'angle $\\dfrac{\\pi}{2}$ transforme le point $(x\\,;\\,y)$ en $(-y\\,;\\,x)$.\n\n*Justification :* les formules générales donnent $x' = x\\cos\\theta - y\\sin\\theta$ et $y' = x\\sin\\theta + y\\cos\\theta$. Pour $\\theta = \\dfrac{\\pi}{2}$ : $\\cos\\theta = 0$ et $\\sin\\theta = 1$, d'où $x' = -y$ et $y' = x$.\n\nDonc\n\n$$r(\\Omega) = \\Omega'(-1\\,;\\,3)$$\n\n**Étape 2 - le rayon.**\n\nUne rotation est une isométrie : le rayon est **inchangé**.\n\n$$R = 2$$\n\n**Étape 3 - l'équation.**\n\n$$(x+1)^{2} + (y-3)^{2} = 4$$\n\n**Étape 4 - contrôler par un point.**\n\nLe point $P(5\\,;\\,1)$ appartient à $(\\mathcal{C})$ : en effet $(5-3)^{2}+(1-1)^{2} = 4$. Conforme.\n\nSon image par $r$ est $P'(-1\\,;\\,5)$.\n\nVérifions qu'elle appartient au cercle image :\n\n$$(-1+1)^{2}+(5-3)^{2} = 0+4 = 4$$\n\n**Conforme.**\n\n**Étape 5 - contrôler par les distances au centre de rotation.**\n\n$$O\\Omega = \\sqrt{9+1} = \\sqrt{10}$$\n\n$$O\\Omega' = \\sqrt{1+9} = \\sqrt{10}$$\n\n**Égales**, comme il se doit pour une rotation de centre $O$.\n\n**Ce qu'il faut retenir.** Pour un quart de tour direct autour de l'origine, la transformation des coordonnées est particulièrement simple : $(x\\,;\\,y) \\longmapsto (-y\\,;\\,x)$. Elle mérite d'être retenue telle quelle."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Deux cercles $(\\mathcal{C})$ et $(\\mathcal{C}')$ de rayons respectifs $R$ et $R'$, avec $R \\neq R'$, de centres $O$ et $O'$, sont sécants en $A$ et $B$. Existe-t-il une rotation de centre $A$ transformant $(\\mathcal{C})$ en $(\\mathcal{C}')$ ? Et une similitude ? Justifier.",
+     "solution_markdown": "**Première question - la rotation.**\n\n**Étape 1 - raisonner par l'absurde.**\n\nSupposons qu'une rotation $r$ transforme $(\\mathcal{C})$ en $(\\mathcal{C}')$.\n\nUne rotation étant une isométrie, elle conserve les rayons : le cercle image aurait pour rayon $R$.\n\nOr $(\\mathcal{C}')$ a pour rayon $R' \\neq R$.\n\n**Contradiction : aucune rotation ne transforme $(\\mathcal{C})$ en $(\\mathcal{C}')$**, quel que soit son centre.\n\n**Étape 2 - remarque importante.**\n\nLa rotation de centre $A$ transformant $O$ en $O'$ **n'existe même pas**, puisqu'elle exigerait $AO = AO'$, c'est-à-dire $R = R'$.\n\nL'hypothèse d'égalité des rayons du sujet 2005 n'était donc pas décorative : elle conditionnait toute la partie.\n\n**Seconde question - la similitude.**\n\n**Étape 3 - définir.**\n\nUne **similitude directe** de centre $\\Omega$, de rapport $k > 0$ et d'angle $\\theta$ est la composée d'une homothétie de rapport $k$ et d'une rotation d'angle $\\theta$, de même centre.\n\nElle multiplie toutes les longueurs par $k$.\n\n**Étape 4 - chercher le rapport.**\n\nPour transformer $(\\mathcal{C})$ en $(\\mathcal{C}')$, il faut\n\n$$k = \\dfrac{R'}{R}$$\n\n**Étape 5 - chercher le centre.**\n\nLa similitude doit transformer $O$ en $O'$. Si son centre est $A$, il faut\n\n$$AO' = k \\times AO \\qquad \\Longleftrightarrow \\qquad R' = \\dfrac{R'}{R} \\times R$$\n\nCette égalité est **vraie**, puisque $AO = R$ et $AO' = R'$.\n\n**Étape 6 - conclure.**\n\n**Oui**, il existe une similitude directe de centre $A$, de rapport $\\dfrac{R'}{R}$ et d'angle $\\left(\\overrightarrow{AO}\\,;\\,\\overrightarrow{AO'}\\right)$, qui transforme $(\\mathcal{C})$ en $(\\mathcal{C}')$.\n\n**Étape 7 - vérifier sur le point $A$.**\n\nLe centre d'une similitude est invariant : $A \\longmapsto A$.\n\nOr $A$ appartient à $(\\mathcal{C})$ et à $(\\mathcal{C}')$ : son image appartient bien au cercle image. Cohérent.\n\n**Étape 8 - le cas particulier.**\n\nSi $R = R'$, alors $k = 1$ et la similitude se réduit à une **rotation** : on retrouve exactement la situation du sujet 2005.\n\n**Ce qu'il faut retenir.** L'égalité des rayons est la condition **nécessaire et suffisante** pour qu'une isométrie transforme un cercle en un autre. Sans elle, il faut passer aux similitudes, qui autorisent un changement d'échelle."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Deux cercles de même rayon $R$, de centres $O$ et $O'$, sont sécants en $A$ et $B$. Soit $r$ la rotation de centre $A$ transformant $O$ en $O'$. Déterminer l'angle de $r$ en fonction de la distance $OO'$, puis déterminer l'image de $B$ par $r$ et interpréter.",
+   "solution_markdown": "**Étape 1 - l'angle en fonction de $OO'$.**\n\nLe triangle $AOO'$ est **isocèle en $A$**, puisque $AO = AO' = R$.\n\nL'angle de la rotation est $\\theta = \\left(\\overrightarrow{AO}\\,;\\,\\overrightarrow{AO'}\\right)$, c'est-à-dire l'angle au sommet $A$.\n\nAppliquons Al-Kashi dans ce triangle :\n\n$$OO'^{2} = AO^{2}+AO'^{2} - 2 \\times AO \\times AO' \\times \\cos\\theta = 2R^{2}-2R^{2}\\cos\\theta$$\n\n$$OO'^{2} = 2R^{2}\\left(1-\\cos\\theta\\right)$$\n\nD'où\n\n$$\\cos\\theta = 1 - \\dfrac{OO'^{2}}{2R^{2}}$$\n\n**Étape 2 - vérifier les cas limites.**\n\n*Si $OO' \\to 0$ :* les deux cercles se confondent, $\\cos\\theta \\to 1$, donc $\\theta \\to 0$. La rotation devient l'identité. Cohérent.\n\n*Si $OO' = 2R$ :* les deux cercles sont **tangents extérieurement**, $\\cos\\theta = 1-2 = -1$, donc $\\theta = \\pi$. La rotation devient une symétrie centrale, et $A = B$ : les cercles ne sont plus sécants en deux points. C'est le cas limite.\n\n*Si $OO' = R\\sqrt{2}$ :* $\\cos\\theta = 1-\\dfrac{2R^{2}}{2R^{2}} = 0$, donc $\\theta = \\dfrac{\\pi}{2}$. Quart de tour.\n\n**Étape 3 - l'image de $B$.**\n\nOn sait que $r\\left(\\mathcal{C}\\right) = \\mathcal{C}'$, donc $r(B)$ appartient à $(\\mathcal{C}')$.\n\nDe plus, $r$ étant une isométrie de centre $A$ :\n\n$$A\\,r(B) = AB$$\n\nLe point $r(B)$ est donc sur $(\\mathcal{C}')$ **et** sur le cercle de centre $A$ et de rayon $AB$.\n\n**Étape 4 - identifier les candidats.**\n\nLe cercle de centre $A$ et de rayon $AB$ coupe $(\\mathcal{C}')$ en deux points au plus. L'un d'eux est $B$ lui-même, puisque $B$ est sur $(\\mathcal{C}')$ et à distance $AB$ de $A$.\n\nL'autre, notons-le $B''$, est le symétrique de $B$ par rapport à la droite $(AO')$.\n\n**Étape 5 - trancher.**\n\nSi $r(B)$ valait $B$, alors $B$ serait invariant par $r$. Or le seul point invariant d'une rotation d'angle non nul est son **centre**, ici $A$. Comme $B \\neq A$ — les cercles sont sécants en deux points distincts — on a $r(B) \\neq B$.\n\nDonc $r(B) = B''$, symétrique de $B$ par rapport à $(AO')$.\n\n**Étape 6 - interpréter géométriquement.**\n\nLa droite $(OO')$ est la **médiatrice** de $[AB]$ : c'est une propriété classique de deux cercles sécants, puisque $OA = OB = R$ et $O'A = O'B = R$.\n\nEn conséquence, $B$ est le symétrique de $A$ par rapport à $(OO')$.\n\nLa rotation $r$ « fait tourner » la figure autour de $A$ d'un angle $\\theta$, et $B$ décrit un arc du cercle de centre $A$ et de rayon $AB$.\n\n**Étape 7 - un cas particulier remarquable.**\n\nSi $OO' = R$, les deux centres sont à distance $R$ l'un de l'autre, et chacun est sur l'autre cercle. Alors\n\n$$\\cos\\theta = 1 - \\dfrac{R^{2}}{2R^{2}} = \\dfrac{1}{2} \\qquad \\Longrightarrow \\qquad \\theta = \\dfrac{\\pi}{3}$$\n\nLe triangle $AOO'$ est alors **équilatéral**, ce qui se vérifie directement : $AO = AO' = OO' = R$.\n\nC'est la configuration classique de la construction du triangle équilatéral à la règle et au compas.\n\n**Ce qu'il faut retenir.** L'angle d'une rotation reliant deux cercles sécants de même rayon se calcule par Al-Kashi dans le triangle isocèle des deux centres et d'un point d'intersection. Et les cas limites — cercles confondus, tangents — donnent les valeurs extrêmes $0$ et $\\pi$, ce qui valide la formule."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "L'image d'un cercle par une rotation est le cercle de centre l'**image du centre** et de **même rayon**.",
+    "Une rotation est une isométrie : elle conserve toutes les distances, donc les rayons.",
+    "Une rotation de centre $A$ transformant $P$ en $Q$ existe si et seulement si $AP = AQ$.",
+    "Dans deux cercles sécants, le point d'intersection est équidistant des deux centres : $AO = AO' = R$.",
+    "Cite explicitement l'hypothèse d'**égalité des rayons** : c'est elle qui identifie le cercle image.",
+    "Ne transforme que le centre : deux données suffisent à déterminer un cercle.",
+    "Une homothétie, elle, multiplie le rayon par $\\left|k\\right|$.",
+    "Si les rayons diffèrent, aucune isométrie ne convient : il faut une **similitude**.",
+    "Le seul point invariant d'une rotation d'angle non nul est son centre.",
+    "Contrôle en vérifiant qu'un point particulier a bien son image sur le cercle annoncé."
+   ]
+  }
+ ]
+}

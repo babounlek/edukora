@@ -1,0 +1,36 @@
+{
+  "type": "cours",
+  "cours_id": "cours-role-compteur-conditionnel-bepc-informatique",
+  "meta": {
+    "titre": "Déterminer le rôle d'un compteur conditionnel dans un algorithme",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Initiation à l'algorithmique",
+    "duree_estimee_min": 10,
+    "tags": ["variables"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bepc-2-2026-s1-ex4-q3-0"
+  },
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Une variable qui n'avance que lorsqu'une condition est vraie ne compte pas des tours de boucle : elle compte des cas particuliers."},
+    {"type": "prerequis", "items": ["Notion de variable", "Notion de condition"]},
+    {"type": "regle", "titre": "Reconnaître un compteur conditionnel", "contenu_markdown": "Un compteur conditionnel est une variable initialisée à 0, qui n'est augmentée de 1 que lorsqu'une condition précise est vérifiée à l'intérieur d'une boucle (par exemple, à l'intérieur d'un `Si`). Contrairement au compteur de boucle lui-même (qui avance à chaque tour sans condition), le compteur conditionnel mesure combien de fois, parmi tous les tours effectués, une propriété particulière était vraie.", "formule_principale": null, "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Dans un algorithme, `Nb <- 0;` précède une boucle `Pour i de 1 à N faire Si (i mod 3 = 0) alors Nb <- Nb + 1; Finsi FinPour`. Quel est le rôle de `Nb` ?", "etapes": [
+      {"numero": 1, "action": "Observer la valeur initiale", "justification": "Nb commence à 0, comme tout compteur.", "resultat_markdown": "Valeur de départ neutre."},
+      {"numero": 2, "action": "Observer la condition qui déclenche l'incrémentation", "justification": "Nb n'augmente que si i est un multiple de 3.", "resultat_markdown": "Nb ne compte que les multiples de 3 rencontrés."}
+    ], "conclusion_markdown": "Nb est un compteur conditionnel : il compte, parmi les entiers de 1 à N, combien sont des multiples de 3."},
+    {"type": "erreurs_classiques", "items": [
+      {"erreur_markdown": "Confondre le compteur conditionnel (`Nb`) avec le compteur de la boucle elle-même (`i`).", "pourquoi_faux": "`i` avance à chaque tour, quelle que soit la condition ; `Nb` n'avance que lorsque la condition est vraie. À la fin, `i` vaut toujours N+1, alors que `Nb` vaut au maximum N, souvent bien moins.", "correction_markdown": "Distingue toujours le compteur qui pilote la boucle (incrémenté sans condition) du compteur conditionnel qui compte un sous-ensemble de cas (incrémenté seulement si une condition est vraie)."}
+    ]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyenne", "enonce_markdown": "Un algorithme initialise `Neg <- 0;`, puis à chaque tour d'une boucle qui lit une série de nombres, exécute `Si (Nombre < 0) alors Neg <- Neg + 1; Finsi`. Quel est le rôle de `Neg` ?", "solution_markdown": "Neg est un compteur conditionnel : il compte le nombre de valeurs négatives parmi tous les nombres lus."}
+    ]},
+    {"type": "synthese", "items_markdown": [
+      "Compteur conditionnel = variable à 0 augmentée de 1 seulement si une condition est vraie",
+      "Il compte un sous-ensemble de cas, pas tous les tours de boucle",
+      "Ne pas le confondre avec le compteur qui pilote la boucle elle-même"
+    ]}
+  ]
+}

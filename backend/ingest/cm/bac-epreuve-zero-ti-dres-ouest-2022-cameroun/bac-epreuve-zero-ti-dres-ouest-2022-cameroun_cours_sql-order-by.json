@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-sql-order-by-tle-ti",
+  "meta": {
+    "titre": "Trier les résultats d'une requête SQL avec ORDER BY",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 15,
+    "tags": [
+      "SQL",
+      "ORDER BY",
+      "tri"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex2-q4.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une liste de clients dans le désordre n'aide personne : le premier réflexe utile en SQL, souvent la toute première requête qu'on apprend à écrire au-delà du simple SELECT * FROM, consiste à trier un résultat pour le rendre lisible et exploitable par un utilisateur humain."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une requête SQL simple `SELECT ... FROM ...`."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La clause ORDER BY",
+      "contenu_markdown": "La clause ORDER BY trie les lignes du résultat selon une ou plusieurs colonnes, toujours placée en toute dernière position de la requête. Le tri est croissant par défaut (`ASC`) ; il peut être forcé décroissant avec `DESC`. Plusieurs colonnes peuvent être listées, séparées par des virgules : le tri s'applique alors sur la première colonne, puis, à égalité, sur la deuxième, et ainsi de suite.",
+      "formule_principale": "SELECT ... FROM table ORDER BY colonne1 [ASC|DESC], colonne2 [ASC|DESC];"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrivez la requête SQL qui liste tous les clients de la table CLIENT, classés par ordre alphabétique.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la sélection de base",
+          "justification": "On veut la liste complète des clients, donc toutes les colonnes.",
+          "resultat_markdown": "`SELECT * FROM CLIENT`"
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter le tri par nom",
+          "justification": "« Ordre alphabétique » porte d'abord sur le nom de famille.",
+          "resultat_markdown": "`ORDER BY nomclt`"
+        },
+        {
+          "numero": 3,
+          "action": "Affiner le tri par prénom en cas d'égalité de nom",
+          "justification": "Deux clients peuvent partager le même nom : le prénom départage l'ordre.",
+          "resultat_markdown": "```sql\nSELECT *\nFROM CLIENT\nORDER BY nomclt, prenomclt;\n```"
+        }
+      ],
+      "conclusion_markdown": "ORDER BY, placé en toute dernière position, trie le résultat sur une ou plusieurs colonnes, dans l'ordre où elles sont listées."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer ORDER BY avant WHERE ou GROUP BY",
+          "pourquoi_faux": "SQL impose un ordre strict des clauses : SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY. Toute autre disposition provoque une erreur de syntaxe.",
+          "correction_markdown": "Mémorise l'ordre des clauses et place toujours ORDER BY en tout dernier."
+        },
+        {
+          "erreur_markdown": "Croire que ORDER BY est nécessaire pour que les données soient stockées triées",
+          "pourquoi_faux": "ORDER BY ne trie que le résultat affiché par cette requête précise, il ne modifie jamais l'ordre de stockage physique des données dans la table.",
+          "correction_markdown": "N'oublie jamais ORDER BY dans une requête où l'ordre d'affichage compte : sans lui, l'ordre des lignes renvoyées n'est pas garanti."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrivez la requête qui liste les représentants de la table REPRESENTANT triés par ordre alphabétique de leur nom.",
+          "solution_markdown": "```sql\nSELECT *\nFROM REPRESENTANT\nORDER BY nomrep;\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrivez la requête qui liste les appartements de la table APPARTEMENT du plus cher au moins cher.",
+          "solution_markdown": "```sql\nSELECT *\nFROM APPARTEMENT\nORDER BY pxvente DESC;\n```\n`DESC` inverse l'ordre de tri par défaut, du prix le plus élevé vers le plus faible."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez une requête qui liste les appartements par secteur (ordre alphabétique), et, à l'intérieur d'un même secteur, du prix de vente le plus élevé au moins élevé.",
+          "solution_markdown": "```sql\nSELECT *\nFROM APPARTEMENT\nORDER BY secteur ASC, pxvente DESC;\n```\nLe tri s'applique d'abord sur `secteur` en ordre croissant (alphabétique), conformément au comportement par défaut ; à l'intérieur d'un même secteur, les lignes sont ensuite triées sur `pxvente` en ordre décroissant grâce à `DESC`, précisé colonne par colonne : chaque colonne de tri peut recevoir sa propre direction, indépendamment des autres."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "ORDER BY trie le résultat d'une requête, toujours en dernière position de la requête.",
+        "Tri croissant par défaut (`ASC`), tri décroissant explicite avec `DESC`.",
+        "Plusieurs colonnes de tri se séparent par une virgule et s'appliquent dans l'ordre où elles sont écrites.",
+        "Au BAC, une demande de classement, de tri, ou d'ordre (alphabétique, croissant, décroissant) est le signal immédiat qu'il faut utiliser ORDER BY."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-notion-d-application-web-ti-2021",
+  "meta": {
+    "titre": "Notion d'application web",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 15,
+    "tags": [
+      "application web",
+      "client-serveur",
+      "site statique",
+      "site dynamique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex1-qI-1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Consulter ta messagerie en ligne, réserver un billet ou suivre l'état d'une commande : dans chaque cas, tu utilises une application web, sans avoir rien installé sur ton ordinateur. Comprendre ce qui distingue une application web d'un simple site vitrine ou d'un logiciel installé est le point de départ obligé avant de programmer soi-même une page dynamique comme celle de cet exercice."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un navigateur web (Chrome, Firefox...)",
+        "Avoir une idée générale du fonctionnement client-serveur (un ordinateur qui demande, un autre qui répond)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Application web : définition et fonctionnement",
+      "contenu_markdown": "Une **application web** est un logiciel accessible à travers un navigateur, dont le fonctionnement repose sur l'échange de requêtes et de réponses entre un poste client (le navigateur de l'utilisateur) et un serveur distant. Une partie au moins de son traitement (accès aux données, calculs, logique métier) s'exécute sur ce serveur, ce qui la distingue :\n\n- **du logiciel de bureau classique**, installé et exécuté entièrement sur le poste de l'utilisateur (par exemple un traitement de texte hors ligne) ;\n- **du site web statique**, dont chaque page affiche toujours le même contenu quel que soit le visiteur ou le moment de la consultation, car aucun traitement serveur ne génère la page à la demande.\n\nUne application web génère au contraire des pages dont le contenu varie : selon les données stockées (par exemple les coordonnées d'un client précis dans une base de données), selon les actions de l'utilisateur (un formulaire rempli, un bouton cliqué), ou selon le moment de la consultation."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le module de gestion des coordonnées clients décrit dans l'épreuve (saisie d'un code client, puis modification de ses coordonnées) est-il une application web ? Justifier.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier comment l'utilisateur y accède",
+          "justification": "Une application web s'utilise via un navigateur, sans installation",
+          "resultat_markdown": "Le module se manipule entièrement à travers deux pages web consultées dans un navigateur."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier si le contenu affiché dépend de données ou d'actions",
+          "justification": "C'est ce qui distingue une application dynamique d'un site statique",
+          "resultat_markdown": "Le formulaire de la deuxième page est prérempli avec les coordonnées réelles du client correspondant au code saisi ($coord[1], $coord[2]...), lues dans la base magasin : le contenu change donc selon le client choisi."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier qu'un traitement s'exécute côté serveur",
+          "justification": "C'est la condition qui distingue une application web d'une simple page HTML locale",
+          "resultat_markdown": "Le code PHP fourni s'exécute sur le serveur (connexion à la base, requêtes SQL) avant de renvoyer la page au navigateur."
+        }
+      ],
+      "conclusion_markdown": "Le module est bien une application web : il s'utilise via un navigateur, son contenu varie selon les données réelles du client consulté, et son traitement s'appuie sur un serveur distant."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « une application web, c'est un site internet »",
+          "pourquoi_faux": "Tous les sites internet ne sont pas des applications web : une page HTML statique qui affiche toujours le même contenu, sans base de données ni traitement serveur, est un site web mais pas une application web.",
+          "correction_markdown": "Réserver le terme « application web » aux sites dont le contenu est généré dynamiquement, en fonction de données ou d'actions de l'utilisateur."
+        },
+        {
+          "erreur_markdown": "Décrire une application web comme un logiciel qui « s'installe sur l'ordinateur »",
+          "pourquoi_faux": "C'est l'inverse : l'intérêt d'une application web est précisément de ne rien installer sur le poste client, contrairement à un logiciel de bureau.",
+          "correction_markdown": "Insister sur l'accès via navigateur, sans installation locale, comme caractéristique centrale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une page HTML affichant toujours le même texte « Bienvenue sur notre site », sans base de données ni formulaire, est-elle une application web ?",
+          "solution_markdown": "Non. Cette page affiche un contenu identique pour tous les visiteurs, à tout moment, sans aucun traitement serveur qui en modifie le contenu : c'est un site web statique, pas une application web."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur de recherche interne à un site, qui affiche des résultats différents selon le mot-clé tapé par l'utilisateur, est-il une application web ? Justifier en une phrase.",
+          "solution_markdown": "Oui : le contenu affiché (les résultats) dépend directement de l'action de l'utilisateur (le mot-clé saisi) et suppose un traitement côté serveur qui recherche puis renvoie les résultats correspondants, ce qui correspond exactement à la définition d'une application web."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une application installée sur un smartphone, qui affiche des données mises à jour en se connectant à un serveur distant via Internet, peut-elle être considérée comme relevant de la même famille de principe qu'une application web ? Nuancer la réponse.",
+          "solution_markdown": "Elle partage le même principe client-serveur (le smartphone est le client, le serveur distant traite les données), mais ce n'est pas strictement une application web au sens de cette définition si elle nécessite une installation locale et ne s'exécute pas dans un navigateur : on parle alors d'application mobile native, qui peut néanmoins consommer les mêmes services serveur (API) qu'une application web équivalente."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une application web s'utilise dans un navigateur, sans installation, contrairement à un logiciel de bureau.",
+        "Son contenu est généré dynamiquement (données, actions utilisateur), contrairement à un site statique dont le contenu ne change jamais.",
+        "Une partie au moins de son traitement s'exécute sur un serveur distant, jamais uniquement sur le poste du visiteur.",
+        "Au BAC TI, cette définition sert de point de départ à presque tout exercice de programmation web : elle justifie pourquoi on distingue systématiquement ce qui s'exécute côté client de ce qui s'exécute côté serveur."
+      ]
+    }
+  ]
+}

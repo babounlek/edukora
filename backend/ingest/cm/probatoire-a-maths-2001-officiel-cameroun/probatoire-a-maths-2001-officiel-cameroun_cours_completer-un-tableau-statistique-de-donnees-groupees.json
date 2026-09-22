@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-completer-un-tableau-statistique-de-donnees-groupees-1ere-a",
+  "meta": {
+    "titre": "Compléter un tableau statistique de données groupées",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 18,
+    "tags": [
+      "statistiques",
+      "tableau de données groupées",
+      "effectifs cumulés",
+      "centre de classe"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2001-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathematiques - Session 2001 (Cameroun)",
+    "exercice_numero": "B",
+    "rappel_id": "rdm-probatoire-a-maths-2001-officiel-cameroun-exB-q1a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une série statistique groupée en classes se présente presque toujours sous forme de tableau à compléter avant de pouvoir calculer quoi que ce soit. Trois colonnes reviennent systématiquement : le centre de chaque classe, le produit effectif fois centre, et l'effectif cumulé croissant. Savoir les reconstruire à partir de quelques valeurs déjà données est la première étape indispensable avant de calculer une moyenne ou de tracer un polygone des effectifs cumulés."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer une demi-somme (moyenne de deux nombres)",
+        "Effectuer une addition en plusieurs étapes sans erreur",
+        "Lire un intervalle semi-ouvert $[a\\,;b[$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Compléter les colonnes d'un tableau statistique groupé",
+      "contenu_markdown": "Pour une classe $[b_1\\,;b_2[$ d'effectif $n_i$ :\n\n- le centre de classe est $x_i=\\dfrac{b_1+b_2}{2}$ ;\n- le produit $n_ix_i$ s'obtient en multipliant l'effectif par ce centre ;\n- l'effectif cumulé croissant (ECC) d'une classe est la somme de son effectif et de l'ECC de la classe précédente (le tout premier ECC est simplement l'effectif de la première classe).",
+      "formule_principale": "x_i=\\dfrac{b_1+b_2}{2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Compléter le tableau statistique donnant la taille de 40 individus, dont les classes $[165\\,;170[$, $[170\\,;175[$ et $[175\\,;180[$ ont pour effectifs respectifs 10, 10 et 7, sans centre ni produit renseignés.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les centres de classe manquants",
+          "justification": "On applique $x_i=\\dfrac{b_1+b_2}{2}$ à chaque classe",
+          "resultat_markdown": "$x_3=167,5\\;;\\;x_4=172,5\\;;\\;x_5=177,5$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les produits $n_ix_i$ manquants",
+          "justification": "On multiplie chaque effectif par son centre",
+          "resultat_markdown": "$8\\times162,5=1\\,300\\;;\\;10\\times167,5=1\\,675\\;;\\;10\\times172,5=1\\,725\\;;\\;7\\times177,5=1\\,242,5$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les effectifs cumulés croissants manquants",
+          "justification": "On ajoute l'effectif de chaque classe à l'ECC précédent",
+          "resultat_markdown": "$11+10=21\\;;\\;21+10=31\\;;\\;31+7=38$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier la cohérence du tableau",
+          "justification": "Le dernier ECC doit être égal à l'effectif total",
+          "resultat_markdown": "$38+2=40$, conforme à l'effectif total annoncé"
+        }
+      ],
+      "conclusion_markdown": "Le tableau complété comporte six classes avec leurs centres, leurs produits $n_ix_i$ et leurs effectifs cumulés croissants, prêts à être utilisés pour le calcul de la moyenne ou la construction du polygone."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre une borne de la classe avec son centre",
+          "pourquoi_faux": "Le centre $x_i=\\dfrac{b_1+b_2}{2}$ est une valeur intermédiaire entre les deux bornes, jamais l'une des deux bornes elle-même.",
+          "correction_markdown": "Toujours calculer la demi-somme des deux bornes, même quand l'une d'elles semble déjà être une valeur ronde."
+        },
+        {
+          "erreur_markdown": "Recalculer l'effectif cumulé à partir de zéro à chaque ligne",
+          "pourquoi_faux": "L'effectif cumulé croissant s'accumule ligne après ligne : il représente le nombre total d'individus dont la valeur est inférieure à la borne supérieure de la classe.",
+          "correction_markdown": "Toujours ajouter l'effectif de la ligne courante à l'ECC déjà calculé de la ligne précédente."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier que le dernier effectif cumulé correspond à l'effectif total",
+          "pourquoi_faux": "Si le dernier ECC ne correspond pas à l'effectif total annoncé par l'énoncé, une erreur s'est glissée dans le tableau.",
+          "correction_markdown": "Toujours comparer le dernier ECC obtenu à l'effectif total avant de considérer le tableau comme terminé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer le centre de la classe $[20\\,;30[$ et de la classe $[30\\,;45[$.",
+          "solution_markdown": "Pour $[20\\,;30[$ : $x=\\dfrac{20+30}{2}=25$. Pour $[30\\,;45[$ : $x=\\dfrac{30+45}{2}=37,5$. Les deux classes n'ont pas forcément la même largeur, la formule du centre reste la même dans les deux cas."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une classe $[10\\,;15[$ a un effectif de 6 et suit une classe dont l'effectif cumulé croissant vaut 24. Calculer le produit $n_ix_i$ de cette classe et son effectif cumulé croissant.",
+          "solution_markdown": "Le centre de la classe est $x=\\dfrac{10+15}{2}=12,5$. Le produit vaut $n_ix_i=6\\times12,5=75$. L'effectif cumulé croissant de cette classe est $24+6=30$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 50 individus est répartie en 6 classes. La somme des effectifs des cinq premières classes vaut 42. Sachant que l'effectif cumulé croissant de la dernière classe est nécessairement l'effectif total, déterminer l'effectif de la dernière classe.",
+          "solution_markdown": "L'effectif cumulé croissant de la dernière classe est toujours égal à l'effectif total de la série, ici $50$. L'effectif de la dernière classe est donc $50-42=8$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le centre d'une classe est toujours la demi-somme de ses deux bornes, jamais l'une des deux bornes.",
+        "Le produit $n_ix_i$ multiplie l'effectif de la classe par son centre : il prépare le calcul de la moyenne.",
+        "L'effectif cumulé croissant s'obtient en additionnant progressivement les effectifs, classe après classe.",
+        "Le dernier effectif cumulé croissant doit toujours être égal à l'effectif total de la série : c'est le contrôle final du tableau.",
+        "Un tableau bien complété est la base de tout le reste : moyenne, polygone, tout calcul statistique ultérieur en dépend directement."
+      ]
+    }
+  ]
+}

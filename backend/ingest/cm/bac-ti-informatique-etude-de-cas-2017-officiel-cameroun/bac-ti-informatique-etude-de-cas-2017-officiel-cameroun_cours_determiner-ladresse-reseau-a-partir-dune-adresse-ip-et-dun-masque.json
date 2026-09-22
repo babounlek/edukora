@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-adresse-reseau-ip-et-masque-tle-ti",
+  "meta": {
+    "titre": "Déterminer l'adresse réseau à partir d'une adresse IP et d'un masque",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques - adressage IP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "adresse IP",
+      "masque de sous-réseau",
+      "adresse réseau",
+      "adressage IPv4"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q4.6-1",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q4.7-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux ordinateurs peuvent-ils communiquer directement, sans passer par un routeur ? La réponse dépend d'une seule chose : appartiennent-ils au même réseau ? Et pour le savoir, il faut calculer l'adresse réseau de chacun. Ce calcul, qui semble abstrait la première fois qu'on le rencontre, devient un automatisme rapide une fois la méthode bien comprise."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une adresse IPv4 s'écrit sous la forme de quatre nombres (octets) séparés par des points.",
+        "Savoir qu'un masque de sous-réseau utilise la même notation que l'adresse IP."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le masque sépare la partie réseau de la partie machine",
+      "contenu_markdown": "L'adresse réseau s'obtient en appliquant un ET logique entre l'adresse IP de la machine et son masque de sous-réseau : chaque octet où le masque vaut 255 est recopié tel quel depuis l'adresse IP (c'est la partie « réseau », fixe pour toutes les machines du même réseau), chaque octet où le masque vaut 0 devient 0 dans l'adresse réseau (c'est la partie « machine », qui varie d'une machine à l'autre). Une fois l'adresse réseau connue, toute adresse IP qui partage les mêmes octets « réseau » (ceux où le masque vaut 255) appartient au même réseau, quels que soient ses octets « machine ».",
+      "formule_principale": "\\text{Adresse réseau} = \\text{Adresse IP} \\;\\text{ET}\\; \\text{Masque de sous-réseau}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer l'adresse réseau de la machine d'adresse IP 172.16.8.248 avec le masque 255.255.0.0, puis proposer une autre adresse IP appartenant à ce même réseau.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la partie réseau et la partie machine grâce au masque",
+          "justification": "255.255.0.0 indique que les deux premiers octets sont fixes (réseau), les deux derniers variables (machine).",
+          "resultat_markdown": "Partie réseau : 172.16. Partie machine : 8.248."
+        },
+        {
+          "numero": 2,
+          "action": "Construire l'adresse réseau",
+          "justification": "On recopie la partie réseau, on met à 0 la partie machine.",
+          "resultat_markdown": "Adresse réseau : 172.16.0.0"
+        },
+        {
+          "numero": 3,
+          "action": "Proposer une autre adresse du même réseau",
+          "justification": "Toute adresse commençant par 172.16 (hors adresses réseau/diffusion et déjà attribuées) appartient au même réseau.",
+          "resultat_markdown": "Par exemple 172.16.1.1, distincte des adresses déjà utilisées dans la capture (172.16.8.248, 172.16.0.254)."
+        }
+      ],
+      "conclusion_markdown": "L'adresse réseau est 172.16.0.0, et toute adresse de la forme 172.16.x.y en fait partie : c'est ce même principe qui permet, en pratique, de vérifier si deux machines peuvent communiquer directement sans passer par un routeur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer l'adresse réseau en gardant tous les octets de l'adresse IP inchangés, par exemple répondre 172.16.8.248 comme adresse réseau.",
+          "pourquoi_faux": "C'est confondre l'adresse de la machine elle-même avec l'adresse du réseau auquel elle appartient : l'adresse réseau doit mettre à 0 tous les octets où le masque vaut 0.",
+          "correction_markdown": "Toujours appliquer explicitement le masque octet par octet plutôt que de recopier l'adresse IP telle quelle."
+        },
+        {
+          "erreur_markdown": "Proposer comme « autre adresse du réseau » une adresse qui ne partage pas les mêmes octets réseau, par exemple 172.17.1.1 au lieu de 172.16.x.y.",
+          "pourquoi_faux": "172.17 et 172.16 sont deux valeurs différentes sur le deuxième octet, qui fait partie de la partie réseau fixée par le masque 255.255.0.0 : ces deux adresses appartiennent donc à deux réseaux différents.",
+          "correction_markdown": "Vérifier que les octets correspondant aux 255 du masque restent identiques à ceux de l'adresse réseau calculée, avant de proposer une nouvelle adresse."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer l'adresse réseau de la machine d'adresse IP 192.168.1.25 avec le masque 255.255.255.0.",
+          "solution_markdown": "Le masque indique que les trois premiers octets sont fixes : adresse réseau = 192.168.1.0."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux machines ont pour adresses IP 10.0.5.12 et 10.0.7.44, avec le même masque 255.255.0.0. Appartiennent-elles au même réseau ? Justifier par le calcul.",
+          "solution_markdown": "Avec le masque 255.255.0.0, seuls les deux premiers octets comptent pour l'adresse réseau.\n\nAdresse réseau de la première machine : 10.0.0.0. Adresse réseau de la seconde machine : 10.0.0.0.\n\nLes deux adresses réseau sont identiques : les deux machines appartiennent bien au même réseau, malgré des troisièmes octets différents (5 et 7), qui font partie de la portion « machine » de l'adresse avec ce masque."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une machine a pour adresse IP 192.168.20.130 avec un masque 255.255.255.192. Déterminer l'adresse réseau de cette machine, sachant que ce masque ne coupe pas sur une frontière d'octet entier (192 en binaire est 11000000). Expliquer la méthode à suivre.",
+          "solution_markdown": "Le masque 255.255.255.192 fixe entièrement les trois premiers octets (192.168.20), mais seulement une partie du quatrième octet : en binaire, 192 s'écrit 11000000, ce qui signifie que les deux premiers bits du quatrième octet appartiennent à la partie réseau, les six derniers à la partie machine.\n\nOn convertit 130 en binaire : $130 = 10000010$. On applique le ET logique avec le masque du quatrième octet (11000000) : $10000010\\ \\text{ET}\\ 11000000 = 10000000$, soit 128 en décimal.\n\nL'adresse réseau est donc 192.168.20.128. Ce cas illustre que le calcul octet par octet vu dans le cours se généralise, avec une conversion binaire, dès que le masque ne s'arrête pas sur une frontière d'octet entier (un cas qui dépasse le programme de base mais éclaire la logique complète du calcul)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'adresse réseau s'obtient par un ET logique entre l'adresse IP et le masque de sous-réseau.",
+        "Un octet à 255 dans le masque se recopie depuis l'adresse IP ; un octet à 0 devient 0 dans l'adresse réseau.",
+        "Deux machines appartiennent au même réseau si et seulement si elles ont la même adresse réseau, calculée avec le même masque.",
+        "Une adresse IP « du même réseau » doit reproduire exactement les octets réseau de l'adresse réseau calculée.",
+        "Ce calcul conditionne, en pratique, si deux machines peuvent communiquer directement ou doivent obligatoirement passer par un routeur : c'est l'une des compétences réseau les plus utiles du programme du BAC TI."
+      ]
+    }
+  ]
+}

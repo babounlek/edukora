@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-identifier-les-variables-et-les-constantes-dans-un-algorithme-3e",
+  "meta": {
+    "titre": "Identifier les variables et les constantes dans un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Initiation à l'algorithmique",
+    "duree_estimee_min": 18,
+    "tags": [
+      "algorithmique",
+      "variable",
+      "constante"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "BEPC Blanc N°1 - Institut Polyvalent Fosso - Épreuve d'Informatique théorique (session avril 2017, Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-blanc-2017-fosso-cameroun-ex3-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'écrire un algorithme, il faut savoir répondre à une question simple : parmi toutes les valeurs qui apparaissent dans une formule, lesquelles changent d'un calcul à l'autre, et lesquelles restent toujours identiques ? Cette distinction entre variable et constante est la toute première étape de la conception de n'importe quel algorithme, et une question de cours récurrente au BEPC d'Informatique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une formule mathématique simple (périmètre, aire, moyenne...)",
+        "Comprendre qu'un algorithme est une suite d'instructions destinée à être exécutée plusieurs fois, avec des données potentiellement différentes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Variable et constante : le critère du changement",
+      "contenu_markdown": "Dans un algorithme :\n\n- une **variable** est une donnée dont la valeur peut changer d'une exécution à l'autre de l'algorithme, selon ce que fournit l'utilisateur ou selon ce que le programme calcule au cours de son déroulement ;\n- une **constante** est une donnée dont la valeur reste toujours la même, quelle que soit l'exécution du programme - elle est fixée une fois pour toutes, indépendamment des données fournies par l'utilisateur.\n\nLe test à appliquer systématiquement : *cette valeur change-t-elle si on relance l'algorithme avec d'autres données ?* Si oui, c'est une variable. Si non, c'est une constante. Un simple facteur numérique (comme le 2 dans « périmètre = 2×rayon×π ») n'est ni une variable ni une constante nommée : c'est un coefficient de la formule, qui ne se classe dans aucune des deux catégories.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On se propose d'écrire un algorithme qui calcule le périmètre et l'aire d'un cercle selon les formules périmètre = 2×rayon×pi et Aire = rayon×rayon×pi. Identifier les variables et les constantes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer toutes les données nommées apparaissant dans les deux formules",
+          "justification": "Avant de classer, il faut d'abord lister : rayon, périmètre, aire, pi.",
+          "resultat_markdown": "Données nommées : rayon, périmètre, aire, pi."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le test du changement à « rayon »",
+          "justification": "Le rayon est fourni par l'utilisateur à chaque exécution, pour un cercle différent à chaque fois.",
+          "resultat_markdown": "rayon change d'une exécution à l'autre : c'est une variable (donnée d'entrée)."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le test à « périmètre » et « aire »",
+          "justification": "Ces deux valeurs sont calculées à partir du rayon fourni : elles changent donc aussi selon le rayon.",
+          "resultat_markdown": "périmètre et aire changent selon la valeur de rayon : ce sont des variables (données de résultat, calculées)."
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer le test à « pi »",
+          "justification": "Le nombre π garde la même valeur quel que soit le cercle étudié, contrairement au rayon.",
+          "resultat_markdown": "pi ne change jamais, quelle que soit l'exécution : c'est une constante."
+        }
+      ],
+      "conclusion_markdown": "L'algorithme comporte trois variables (rayon en entrée, périmètre et aire en résultats) et une constante (pi) ; le facteur 2 de la formule du périmètre n'est ni l'une ni l'autre, c'est un simple coefficient numérique de la formule."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Classer le nombre 2 de la formule « périmètre = 2×rayon×pi » parmi les constantes de l'algorithme.",
+          "pourquoi_faux": "Une constante, dans un algorithme, désigne une donnée nommée conservée par le programme (comme pi) ; un coefficient numérique isolé dans une formule mathématique n'est pas une donnée du programme, c'est un simple nombre écrit dans l'expression.",
+          "correction_markdown": "Réserve le terme « constante » aux données nommées explicitement utilisées par l'algorithme, pas à n'importe quel chiffre présent dans une formule."
+        },
+        {
+          "erreur_markdown": "Considérer périmètre et aire comme des constantes parce qu'elles sont « fixées par une formule ».",
+          "pourquoi_faux": "Être calculées par une formule ne rend pas ces valeurs fixes : elles dépendent du rayon fourni, donc elles changent dès que le rayon change - c'est le critère du changement qui définit une variable, pas la présence d'une formule.",
+          "correction_markdown": "Ne confonds pas « calculé par une formule » et « constant » : applique toujours le test du changement d'une exécution à l'autre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un algorithme calcule la surface d'un carré selon la formule surface = cote×cote. Identifier la ou les variables de cet algorithme.",
+          "solution_markdown": "cote est une variable (donnée d'entrée, différente selon le carré étudié) ; surface est également une variable, puisqu'elle est calculée à partir de cote et change donc avec lui. Il n'y a aucune constante dans cette formule."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un algorithme calcule le prix TTC d'un article selon la formule prix_ttc = prix_ht × (1 + taux_tva), où le taux de TVA est fixé à 19,25 % pour tous les articles traités par ce programme. Identifier les variables et les constantes.",
+          "solution_markdown": "prix_ht est une variable : il change selon l'article traité. prix_ttc est également une variable, calculée à partir de prix_ht, donc dépendante de lui. taux_tva, en revanche, est une constante : sa valeur (19,25 %) est fixée pour tous les articles traités par ce programme et ne change jamais d'une exécution à l'autre."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un algorithme calcule la moyenne pondérée d'un élève à partir de trois notes et de leurs coefficients respectifs, saisis par l'utilisateur à chaque exécution. Un professeur affirme que les coefficients sont des constantes puisqu'ils ne changent pas « pendant » un calcul donné. Discuter cette affirmation.",
+          "solution_markdown": "L'affirmation confond deux échelles de temps différentes. Il est vrai que, pendant le déroulement d'un calcul précis, un coefficient donné garde la même valeur - mais c'est également vrai du rayon dans l'exemple du cercle, qui n'est pourtant pas une constante. Le critère pertinent n'est pas la stabilité pendant une exécution, mais la stabilité d'une exécution à l'autre : ici, les coefficients sont saisis par l'utilisateur et peuvent différer d'un élève à l'autre (un coefficient 3 pour les Maths d'un élève, un coefficient différent pour une autre configuration de bulletin). Ils changent donc bien d'une exécution à l'autre de l'algorithme : ce sont des variables, pas des constantes - contrairement à un nombre comme pi ou un taux fixé une fois pour toutes dans l'énoncé du programme."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une variable change de valeur d'une exécution de l'algorithme à l'autre ; une constante garde toujours la même valeur.",
+        "Applique systématiquement le test : « cette valeur change-t-elle si on relance le programme avec d'autres données ? »",
+        "Une donnée calculée à partir d'une variable (comme un périmètre calculé à partir d'un rayon) est elle-même une variable, jamais une constante.",
+        "Un simple coefficient numérique dans une formule (comme le 2 de « 2×rayon×pi ») n'est ni une variable ni une constante nommée du programme.",
+        "Cette distinction ouvre presque systématiquement les exercices d'algorithmique du BEPC d'Informatique, avant l'écriture de l'algorithme lui-même : la maîtriser sécurise des points faciles en début d'exercice."
+      ]
+    }
+  ]
+}

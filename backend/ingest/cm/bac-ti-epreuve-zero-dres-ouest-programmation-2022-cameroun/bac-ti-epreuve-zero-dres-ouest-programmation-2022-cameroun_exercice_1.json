@@ -1,0 +1,472 @@
+{
+  "epreuve_source": "bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "sujet zero",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2022,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "statut": "brouillon",
+  "numero_exercice": "1",
+  "introduction_markdown": "Aucun document ou matériel n'est autorisé en dehors de ceux remis aux candidats par les examinateurs.",
+  "points": "10",
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun_exercice_1_fig_1.png",
+      "page_source": 2,
+      "type": "document",
+      "legende": "Capture 2 : formulaire HTML affichant les champs numero, designation, couleur et le bouton enregistrer",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun_exercice_1_fig_2.png",
+      "page_source": 3,
+      "type": "document",
+      "legende": "Aperçu du champ de saisie du nombre et du bouton OK avant le clic, utilisé comme exemple d'interface pour la question 12",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 1**\n\n**Partie I : Programmation Web (10 points)**\n\nL'entreprise « Soft Computer » est engagée par un client pour la mise en place d'une application web de gestion automatisée de son stock d'articles. Il est question, pour un début, d'enregistrer et d'afficher des informations. Les captures suivantes sont des extraits du prototype du projet.\n\n```\n1-<html>\n2-<head>\n3-<title></title>\n4-</head>\n5-<body>\n6-<?php\n7-$serveur = \"localhost\";\n8-$login = \"root\";\n9-$pswd = \" \";\n10-$bdd = \"Habillement\";\n11-$con = mysqli_connect($serveur,$login,$pswd, $bdd) or die ('erreur de connexion');\n12-$connect=mysqli_select_db($bdd,$con) or die ('erreur de connexion base');\n13-$sql ='SELECT * from Article WHERE designation =\"chemise\" AND couleur=\"rouge\"';\n14-$query_result = mysqli_query($connect, $sql);\n15-echo'<TABLE border=\"1\" ><th align=\"center\">numero</th><th align=\"center\"> designation</th><th align=\"center\">couleur</th></tr>' ;\n16-while ($row=mysqli_fetch_array($query_result)){\n17-echo' <tr><td align=\"center\">'.$row[1].' </td><td align=\"center\">'.$row[2].' </td><td align=\"center\">'.$row[3] .'</td></tr>' ;}\n18-echo'</table>' ;\n19-mysqli_close( ) ;    ?>\n20-</body>\n21-</html>\n```\n\n*Capture 1*\n\n![fig-1](bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun_exercice_1_fig_1.png)\n\n*Capture 2*\n\n| numero | désignation | couleur |\n|---|---|---|\n| 1 | chemise | Rouge |\n| 2 | Pantalons | Bleue |\n| 3 | chemise | Rouge |\n| 4 | chemise | Rouge |\n| 5 | Chaussure | Noire |\n| 6 | Chemise | Verte |\n\n*Capture 3 - contenu de la table Article*\n\nObserve les captures précédentes et utilise tes compétences pour répondre aux questions.",
+  "questions": [
+    {
+      "numero": "I.1",
+      "enonce_markdown": "**I. HTML et JAVASCRIPT (3 points)**\n\n**1.** Définir **application web**. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne application web est un programme accessible depuis un navigateur, dont le traitement est réparti entre un client qui affiche l'interface et un serveur qui exécute la logique et manipule les données de façon dynamique.\n\nUne application web se distingue d'un simple site web par sa capacité à traiter des données de manière dynamique : elle reçoit une requête du navigateur (le client), exécute un programme côté serveur qui peut interroger une base de données, effectuer des calculs ou vérifier des conditions, puis renvoie une page dont le contenu dépend du résultat de ce traitement plutôt que d'un fichier figé.\n\nDans le sujet, l'application de « Soft Computer » illustre exactement ce principe : le formulaire de la Capture 2, affiché dans le navigateur du gestionnaire de stock, sert à saisir des informations sur un article. Ces informations sont ensuite transmises à un script PHP exécuté sur le serveur (Capture 1), qui les confronte à la base de données « Habillement » avant de renvoyer un résultat sous forme de tableau HTML généré à la volée.\n\n### Piège à éviter\nNe réduis pas ta définition à « un programme qui s'affiche dans un navigateur » : un site vitrine purement statique s'affiche lui aussi dans un navigateur sans être une application web. Le critère décisif est le traitement dynamique des données, pas le support d'affichage.\n\n### Conseil\nAppuie toujours ta définition sur l'exemple concret fourni par le sujet plutôt que sur une phrase récitée : cela prouve à l'examinateur que tu maîtrises la notion et pas seulement son vocabulaire.",
+      "themes": [
+        "application web",
+        "client-serveur",
+        "vocabulaire du web"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qI.1-0",
+          "competence": "Application web : définition et fonctionnement client-serveur",
+          "contenu_markdown": "Une application web est un programme accessible depuis un navigateur, dont le traitement est réparti entre un client qui affiche l'interface et un serveur qui exécute la logique et manipule les données de façon dynamique.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I.2",
+      "enonce_markdown": "**2.** Propose en HTML le code du formulaire présenté dans les captures. Prends en compte les **attributs** de la balise `<form>`. La méthode est **POST** et le fichier de traitement est nommé « **enregistrement** ». Les noms des champs du formulaire sont respectivement **numero, designation, couleur et enregistrer**. *[1,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa balise `<form>` délimite un formulaire HTML. Son attribut `action` indique le fichier qui traitera les données saisies, son attribut `method` indique comment ces données seront transmises (`get` ou `post`), et chaque champ de saisie doit porter un attribut `name` qui servira de clé pour récupérer sa valeur côté serveur.\n\nL'énoncé impose trois contraintes précises à respecter dans le code : la méthode `POST`, un fichier de traitement nommé « enregistrement » (soit `enregistrement.php` puisque le traitement est réalisé en PHP dans toute la suite de l'exercice) et des champs nommés exactement `numero`, `designation`, `couleur` et `enregistrer`. En reprenant la disposition visible sur la Capture 2 (trois champs de texte puis un bouton), le formulaire s'écrit :\n\n```html\n<form action=\"enregistrement.php\" method=\"post\">\n  numero : <input type=\"text\" name=\"numero\"><br>\n  designation : <input type=\"text\" name=\"designation\"><br>\n  couleur : <input type=\"text\" name=\"couleur\"><br>\n  <input type=\"submit\" name=\"enregistrer\" value=\"enregistrer\">\n</form>\n```\n\nLe bouton utilise `type=\"submit\"` pour déclencher l'envoi du formulaire vers `enregistrement.php`, tout en portant lui-même le nom `enregistrer` exigé par l'énoncé.\n\n### Piège à éviter\nN'oublie pas l'attribut `name` sur le bouton lui-même : l'énoncé demande explicitement que le bouton porte aussi le nom `enregistrer`, en plus des trois champs de saisie. Un formulaire sans `name` sur ses champs transmet des données inutilisables côté PHP, puisque `$_POST` les indexe par ce nom.\n\n### Conseil\nVérifie systématiquement la cohérence entre le nom donné à un champ dans le formulaire et le nom que tu utiliseras pour le récupérer côté PHP (`$_POST['numero']`, par exemple) : c'est l'erreur la plus fréquente qui fait échouer un exercice pourtant correctement compris.",
+      "themes": [
+        "formulaire HTML",
+        "balise form",
+        "attributs action et method"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qI.2-0",
+          "competence": "Structure d'un formulaire HTML",
+          "contenu_markdown": "La balise `<form>` délimite un formulaire HTML. Son attribut `action` indique le fichier qui traitera les données saisies, son attribut `method` indique comment ces données seront transmises (`get` ou `post`), et chaque champ de saisie doit porter un attribut `name` qui servira de clé pour récupérer sa valeur côté serveur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I.3",
+      "enonce_markdown": "**3.** On désire récupérer les données issues du formulaire et les enregistrer en vérifiant juste que tous les champs soient renseignés. Si c'est le cas, le message « enregistrement effectué avec succès » est affiché dans une boîte de dialogue ; ou bien « echec d'enregistrement » dans le cas contraire.\n\nÉcris en JavaScript le code d'une fonction qui permet d'effectuer cette tâche au clic du bouton « enregistrer ». *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nValider un formulaire côté client consiste à écrire une fonction JavaScript qui lit la valeur de chaque champ via le DOM, teste si elle est vide avec une condition (ou la fonction `empty()` côté PHP, mais ici en JavaScript un simple test `== \"\"` suffit), puis affiche le résultat dans une boîte de dialogue avec `alert()`.\n\nLa fonction doit être déclenchée au clic du bouton « enregistrer » : on utilise donc un bouton de type `button` (et non `submit`, pour ne pas provoquer un envoi du formulaire qui interromprait la démonstration) associé à un gestionnaire `onclick`. À l'intérieur de la fonction, chaque champ est lu via `document.forms[...]`, puis une condition combinée avec l'opérateur logique `||` (« ou ») vérifie si l'un des trois champs au moins est resté vide.\n\n```html\n<script>\nfunction verifierFormulaire(){\n  var numero = document.forms[0].numero.value;\n  var designation = document.forms[0].designation.value;\n  var couleur = document.forms[0].couleur.value;\n  if(numero == \"\" || designation == \"\" || couleur == \"\"){\n    alert(\"echec d'enregistrement\");\n  } else {\n    alert(\"enregistrement effectué avec succès\");\n  }\n}\n</script>\n```\n\net le bouton se déclare alors ainsi : `<input type=\"button\" name=\"enregistrer\" value=\"enregistrer\" onclick=\"verifierFormulaire()\">`.\n\n### Piège à éviter\nSi tu laisses le bouton en `type=\"submit\"`, le navigateur envoie le formulaire vers `enregistrement.php` dès le clic, ce qui recharge la page et empêche l'élève de voir la boîte de dialogue s'afficher correctement avant la navigation. La consigne demande une vérification en JavaScript seule : le bouton doit rester de type `button`.\n\n### Conseil\nUtilise l'opérateur `||` plutôt que trois `if` séparés pour ce genre de vérification : le code est plus court, plus lisible, et surtout il évite d'oublier d'afficher le message d'échec pour l'un des champs.",
+      "themes": [
+        "JavaScript",
+        "validation de formulaire",
+        "boîte de dialogue alert"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qI.3-0",
+          "competence": "Validation d'un formulaire avec JavaScript",
+          "contenu_markdown": "Valider un formulaire côté client consiste à écrire une fonction JavaScript qui lit la valeur de chaque champ via le DOM, teste si elle est vide avec une condition (ou la fonction `empty()` côté PHP, mais ici en JavaScript un simple test `== \"\"` suffit), puis affiche le résultat dans une boîte de dialogue avec `alert()`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.1",
+      "enonce_markdown": "**II. PROGRAMMATION EN PHP (7 points)**\n\n**1.** Définir **serveur Web**. *[0,25 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn serveur Web est un logiciel installé sur une machine qui reste en écoute des requêtes HTTP envoyées par les navigateurs, et qui y répond en renvoyant la ressource demandée : une page statique telle quelle, ou le résultat d'un script exécuté à la volée.\n\nDans le contexte du sujet, c'est ce logiciel serveur qui reçoit la requête envoyée quand le formulaire de la Capture 2 est soumis, qui déclenche l'exécution du script PHP correspondant, puis qui renvoie au navigateur la page HTML générée contenant le tableau des articles.\n\n### Piège à éviter\nNe confonds pas le serveur Web (le logiciel qui distribue les pages, par exemple Apache) avec la machine physique qui l'héberge (l'ordinateur ou la « machine serveur ») : la question porte sur le logiciel, pas sur le matériel.",
+      "themes": [
+        "serveur web",
+        "requête HTTP",
+        "architecture client-serveur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.1-0",
+          "competence": "Le serveur Web : rôle et fonctionnement",
+          "contenu_markdown": "Un serveur Web est un logiciel installé sur une machine qui reste en écoute des requêtes HTTP envoyées par les navigateurs, et qui y répond en renvoyant la ressource demandée : une page statique telle quelle, ou le résultat d'un script exécuté à la volée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.2",
+      "enonce_markdown": "**2.** Donne la signification de **PHP**. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPHP est un langage de script exécuté côté serveur : le code est interprété sur le serveur avant l'envoi de la page, si bien que seul le résultat HTML produit parvient au navigateur, jamais le code source PHP lui-même.\n\nPHP signifie « PHP: Hypertext Preprocessor », un acronyme récursif où le sigle se définit lui-même dans sa propre expansion (le nom d'origine, « Personal Home Page », a été abandonné au fil des versions du langage). Le fichier `enregistrement.php` de cet exercice illustre exactement ce mécanisme : les balises `<?php ... ?>` délimitent le code qui sera exécuté et interprété sur le serveur avant que la page ne soit renvoyée au navigateur du gestionnaire de stock.\n\n### Conseil\nSi l'examinateur ne demande que la signification du sigle, ne développe pas toute l'histoire du langage : réponds directement « PHP: Hypertext Preprocessor », le reste n'est utile que si la question le demande explicitement.",
+      "themes": [
+        "PHP",
+        "langage côté serveur",
+        "acronyme"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.2-0",
+          "competence": "PHP : un langage de script exécuté côté serveur",
+          "contenu_markdown": "PHP est un langage de script exécuté côté serveur : le code est interprété sur le serveur avant l'envoi de la page, si bien que seul le résultat HTML produit parvient au navigateur, jamais le code source PHP lui-même.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.4",
+      "enonce_markdown": "**4.** Présente un avantage du PHP par rapport au JavaScript. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPHP est un langage de script exécuté côté serveur : le code est interprété sur le serveur avant l'envoi de la page, si bien que seul le résultat HTML produit parvient au navigateur, jamais le code source PHP lui-même.\n\nComme établi à la question II.2, cette exécution côté serveur donne à PHP deux avantages concrets sur JavaScript pour ce projet : le code source PHP n'est jamais visible ni modifiable par le client (le mot de passe de connexion à la base « Habillement », visible ligne 9 de la Capture 1, resterait exposé si ce code s'exécutait côté navigateur), et PHP peut accéder directement à des ressources du serveur, en particulier à la base de données MySQL, ce qu'un script JavaScript exécuté dans le navigateur ne peut jamais faire directement.\n\n### Conseil\nUn seul avantage bien justifié rapporte davantage de points qu'une liste non expliquée : choisis l'argument de la confidentialité du code ou celui de l'accès à la base de données, et développe-le en une phrase plutôt que d'énumérer plusieurs avantages vagues.",
+      "themes": [
+        "PHP",
+        "JavaScript",
+        "sécurité du code côté serveur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.4-0",
+          "competence": "PHP : un langage de script exécuté côté serveur",
+          "contenu_markdown": "PHP est un langage de script exécuté côté serveur : le code est interprété sur le serveur avant l'envoi de la page, si bien que seul le résultat HTML produit parvient au navigateur, jamais le code source PHP lui-même.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.5",
+      "enonce_markdown": "**5.** Relève dans la liste suivante un serveur Web et un serveur de données : **PERL, ZEUS, MYSQLI, MYSQL, HTTPS, Apache, Javascript, Web Protocol, PHP**. *[0,25 pt x 2 = 0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn serveur Web distribue des pages en réponse à des requêtes HTTP (exemple : Apache), tandis qu'un serveur de données (ou SGBD, système de gestion de base de données) stocke et gère des données interrogeables par requêtes SQL (exemple : MySQL) : ce sont deux logiciels aux rôles différents, même lorsqu'ils sont installés sur la même machine.\n\nDans la liste proposée (PERL, ZEUS, MYSQLI, MYSQL, HTTPS, Apache, Javascript, Web Protocol, PHP), le serveur Web est **Apache** et le serveur de données est **MySQL**. Les autres éléments de la liste ne sont ni l'un ni l'autre : PERL et PHP sont des langages de script, JavaScript est un langage de script côté client, HTTPS est un protocole de communication sécurisé (pas un logiciel serveur), « Web Protocol » n'est pas une dénomination réelle, et MYSQLI est l'extension PHP qui permet de dialoguer avec le serveur MySQL, non un serveur en tant que tel.\n\n### Piège à éviter\nNe confonds jamais MySQL et MySQLI : MySQL est le serveur de données lui-même, MySQLI (« MySQL Improved ») est seulement l'extension PHP utilisée dans la Capture 1 (`mysqli_connect`, `mysqli_query`) pour s'y connecter depuis un script PHP. C'est l'erreur la plus fréquente sur cette question.\n\n### Conseil\nRepère le mot-clé du domaine : un « serveur » distribue ou stocke quelque chose en continu (pages ou données), alors qu'un langage ou un protocole ne fait qu'exprimer une instruction ou une règle d'échange. Ce repère élimine rapidement PERL, PHP, JavaScript et HTTPS de la liste.",
+      "themes": [
+        "serveur web",
+        "serveur de données",
+        "Apache",
+        "MySQL"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.5-0",
+          "competence": "Serveur Web et serveur de données : le rôle d'Apache et de MySQL",
+          "contenu_markdown": "Un serveur Web distribue des pages en réponse à des requêtes HTTP (exemple : Apache), tandis qu'un serveur de données (ou SGBD, système de gestion de base de données) stocke et gère des données interrogeables par requêtes SQL (exemple : MySQL) : ce sont deux logiciels aux rôles différents, même lorsqu'ils sont installés sur la même machine.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.6.1",
+      "enonce_markdown": "**6.** Dans la capture 1, dis ce que fait :\n\n6.1. La ligne 11 *[0,25 pt x 2 = 0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\n`mysqli_connect(serveur, login, mot_de_passe, base)` ouvre une connexion entre le script PHP et un serveur MySQL ; elle renvoie une ressource de connexion utilisable par les fonctions suivantes, ou `false` en cas d'échec, ce qu'on intercepte généralement avec `or die(...)`.\n\nÀ la ligne 11 de la Capture 1, `$con = mysqli_connect($serveur,$login,$pswd, $bdd) or die ('erreur de connexion');` ouvre une connexion au serveur MySQL « localhost » en utilisant le login « root » et le mot de passe défini par `$pswd`, en ciblant directement la base « Habillement ». La ressource de connexion obtenue est stockée dans `$con` ; si la connexion échoue, `mysqli_connect` renvoie `false`, ce que l'opérateur `or die('erreur de connexion')` intercepte pour arrêter immédiatement le script et afficher le message d'erreur plutôt que de continuer avec une connexion invalide.\n\n### Conseil\nLe combo `or die(...)` est la manière la plus rapide de sécuriser un appel qui peut échouer en PHP procédural : mentionne-le explicitement, c'est exactement ce que l'examinateur attend de voir justifié sur cette ligne.",
+      "themes": [
+        "mysqli_connect",
+        "connexion à une base de données",
+        "gestion d'erreur PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.6.1-0",
+          "competence": "Se connecter à une base de données MySQL avec PHP (extension mysqli)",
+          "contenu_markdown": "`mysqli_connect(serveur, login, mot_de_passe, base)` ouvre une connexion entre le script PHP et un serveur MySQL ; elle renvoie une ressource de connexion utilisable par les fonctions suivantes, ou `false` en cas d'échec, ce qu'on intercepte généralement avec `or die(...)`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.6.2",
+      "enonce_markdown": "6.2. La ligne 14",
+      "corrige_markdown": "### Rappel de méthode\n`mysqli_connect(serveur, login, mot_de_passe, base)` ouvre une connexion entre le script PHP et un serveur MySQL ; elle renvoie une ressource de connexion utilisable par les fonctions suivantes, ou `false` en cas d'échec, ce qu'on intercepte généralement avec `or die(...)`.\n\nLa ligne 14, `$query_result = mysqli_query($connect, $sql);`, exécute la requête SQL contenue dans la chaîne `$sql` (définie ligne 13) via la connexion `$connect`, et stocke dans `$query_result` l'ensemble des lignes renvoyées par le serveur MySQL, prêtes à être parcourues ligne par ligne à la boucle suivante avec `mysqli_fetch_array`.\n\n### Conseil\nRetiens toujours l'enchaînement à trois temps de PHP avec MySQL : se connecter (`mysqli_connect`), exécuter la requête (`mysqli_query`), puis parcourir le résultat (`mysqli_fetch_array` en boucle). Reconnaître ce motif permet de répondre vite à ce type de question de lecture de code.",
+      "themes": [
+        "mysqli_query",
+        "exécution d'une requête SQL en PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.6.2-0",
+          "competence": "Se connecter à une base de données MySQL avec PHP (extension mysqli)",
+          "contenu_markdown": "`mysqli_connect(serveur, login, mot_de_passe, base)` ouvre une connexion entre le script PHP et un serveur MySQL ; elle renvoie une ressource de connexion utilisable par les fonctions suivantes, ou `false` en cas d'échec, ce qu'on intercepte généralement avec `or die(...)`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.7.1",
+      "enonce_markdown": "**7.** Donne les rôles des fonctions *[0,25 pt x 2 = 0,5 pt]*\n\n7.1. `empty ( )`,",
+      "corrige_markdown": "### Rappel de méthode\n`empty($variable)` est une fonction PHP qui teste si une variable est considérée comme vide (non définie, chaîne vide \"\", 0, `null`, `false` ou tableau vide) et renvoie un booléen, sans générer d'avertissement même si la variable n'existe pas.\n\nCette fonction est très utile pour vérifier qu'un champ de formulaire a bien été renseigné avant de l'enregistrer en base de données : `if(empty($_POST['numero'])){ ... }` détecte aussi bien l'absence du champ que sa présence sous forme de chaîne vide.\n\n### Piège à éviter\n`empty(\"0\")` renvoie `true` : la chaîne \"0\" est traitée comme vide par cette fonction, alors qu'elle correspond pourtant à une saisie réelle de l'utilisateur (par exemple un numéro d'article égal à 0). Ce comportement surprend souvent les débutants et peut fausser une validation de formulaire mal pensée.",
+      "themes": [
+        "empty()",
+        "validation de données en PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.7.1-0",
+          "competence": "La fonction empty() en PHP",
+          "contenu_markdown": "`empty($variable)` est une fonction PHP qui teste si une variable est considérée comme vide (non définie, chaîne vide \"\", 0, `null`, `false` ou tableau vide) et renvoie un booléen, sans générer d'avertissement même si la variable n'existe pas.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.7.2",
+      "enonce_markdown": "7.2. `mysql_fetch_array( )`",
+      "corrige_markdown": "### Rappel de méthode\n`mysqli_fetch_array($resultat)` extrait la ligne suivante d'un résultat de requête sous forme de tableau (indices numériques et/ou noms de colonnes selon le mode choisi) et avance le pointeur interne du résultat ; elle renvoie `false` lorsqu'il n'y a plus de ligne à lire, ce qui permet de l'utiliser directement comme condition d'une boucle `while`.\n\nC'est cette propriété qui rend l'écriture `while ($row=mysqli_fetch_array($query_result)){ ... }` (ligne 16 de la Capture 1) aussi naturelle : la boucle continue tant qu'il reste des lignes à lire dans `$query_result`, et s'arrête automatiquement dès que `mysqli_fetch_array` renvoie `false`.\n\n### Conseil\nRappelle-toi que `mysqli_fetch_array` renvoie par défaut un tableau à la fois indexé numériquement (`$row[0]`, `$row[1]`...) et associatif par nom de colonne (`$row['numero']`...) : c'est ce qui explique que la Capture 1 puisse utiliser `$row[1]`, `$row[2]`, `$row[3]` sans jamais nommer les colonnes.",
+      "themes": [
+        "mysqli_fetch_array",
+        "parcours d'un résultat de requête SQL"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.7.2-0",
+          "competence": "Se connecter à une base de données MySQL avec PHP (extension mysqli)",
+          "contenu_markdown": "`mysqli_fetch_array($resultat)` extrait la ligne suivante d'un résultat de requête sous forme de tableau (indices numériques et/ou noms de colonnes selon le mode choisi) et avance le pointeur interne du résultat ; elle renvoie `false` lorsqu'il n'y a plus de ligne à lire, ce qui permet de l'utiliser directement comme condition d'une boucle `while`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.8",
+      "enonce_markdown": "**8.** Écris un code PHP qui, au clic du bouton « enregistrer », récupère les informations du formulaire et les affiche. *[1 pt]*\n\n**NB :** considère les informations données en I.2.",
+      "corrige_markdown": "### Rappel de méthode\nQuand un formulaire est soumis avec `method=\"post\"`, PHP range automatiquement les valeurs saisies dans le tableau superglobal `$_POST`, indexé par le `name` de chaque champ ; il suffit alors de lire `$_POST['nom_du_champ']` pour récupérer une valeur et de l'afficher avec `echo`.\n\nEn reprenant le formulaire écrit à la question I.2 (champs `numero`, `designation`, `couleur`, méthode POST), le fichier `enregistrement.php` qui reçoit la soumission récupère et affiche ces trois valeurs ainsi :\n\n```php\n<?php\n$numero = $_POST['numero'];\n$designation = $_POST['designation'];\n$couleur = $_POST['couleur'];\necho \"numero : \".$numero.\"<br>\";\necho \"designation : \".$designation.\"<br>\";\necho \"couleur : \".$couleur.\"<br>\";\n?>\n```\n\n### Piège à éviter\nUtiliser `$_GET` au lieu de `$_POST` ici serait une erreur : le formulaire de la question I.2 a été explicitement écrit avec `method=\"post\"`, donc seul `$_POST` contient les valeurs saisies. `$_GET` resterait vide.\n\n### Conseil\nFais toujours correspondre la superglobale PHP à la méthode déclarée dans la balise `<form>` : POST avec `$_POST`, GET avec `$_GET`. C'est une vérification à deux secondes qui évite une erreur fréquente et coûteuse en points.",
+      "themes": [
+        "$_POST",
+        "récupération de données de formulaire en PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.8-0",
+          "competence": "Récupérer les données d'un formulaire en PHP : $_GET et $_POST",
+          "contenu_markdown": "Quand un formulaire est soumis avec `method=\"post\"`, PHP range automatiquement les valeurs saisies dans le tableau superglobal `$_POST`, indexé par le `name` de chaque champ ; il suffit alors de lire `$_POST['nom_du_champ']` pour récupérer une valeur et de l'afficher avec `echo`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.9",
+      "enonce_markdown": "**9.** Interprète le code de la ligne 13 à 18 (capture 1) et présente le résultat obtenu à partir de la table article (capture 2). *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nInterpréter une requête `SELECT ... WHERE condition1 AND condition2` consiste à ne retenir, parmi toutes les lignes de la table, que celles qui vérifient simultanément chacune des conditions reliées par `AND` ; le résultat obtenu est ensuite affiché ligne par ligne par la boucle PHP qui suit la requête.\n\nLa requête de la ligne 13, `SELECT * from Article WHERE designation =\"chemise\" AND couleur=\"rouge\"`, ne conserve que les lignes de la table `Article` dont la désignation vaut « chemise » **et** dont la couleur vaut « rouge ». En comparant aux six lignes de la Capture 3 : la ligne 1 (chemise, Rouge), la ligne 3 (chemise, Rouge) et la ligne 4 (chemise, Rouge) vérifient les deux conditions à la fois ; la ligne 2 (Pantalons) et la ligne 5 (Chaussure) sont écartées par la désignation, et la ligne 6 (Chemise, Verte) est écartée par la couleur, malgré une désignation proche de « chemise » (MySQL compare les chaînes sans tenir compte de la casse par défaut, donc « Chemise » aurait pu correspondre à « chemise » si la couleur avait, elle aussi, été « Rouge »).\n\nLes lignes 15 à 18 affichent ensuite ce résultat sous forme de tableau HTML. En notant que `$row[1]`, `$row[2]`, `$row[3]` désignent respectivement `numero`, `designation` et `couleur` (la table comporte donc une colonne technique en position 0, non représentée dans la Capture 3, généralement un identifiant auto-incrémenté), le tableau affiché à l'écran est :\n\n| numero | designation | couleur |\n|---|---|---|\n| 1 | chemise | Rouge |\n| 3 | chemise | Rouge |\n| 4 | chemise | Rouge |\n\n### Piège à éviter\nNe recopie pas les six lignes de la Capture 3 : seules celles qui satisfont **les deux** conditions du `WHERE` doivent apparaître. Beaucoup d'élèves oublient de croiser les deux critères et n'en appliquent qu'un seul, ce qui laisse passer des lignes qui ne devraient pas figurer dans le résultat (par exemple la ligne 6, si l'on ne vérifie que la désignation).\n\n### Conseil\nSur ce genre de question, construis un petit tableau de vérification ligne par ligne (désignation correcte ? couleur correcte ? les deux ?) avant de rédiger la réponse finale : c'est plus lent à l'écrit mais beaucoup plus fiable qu'une lecture rapide de la table.",
+      "themes": [
+        "requête SQL SELECT",
+        "clause WHERE",
+        "opérateur AND"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.9-0",
+          "competence": "Interpréter une requête SQL SELECT...WHERE avec plusieurs conditions",
+          "contenu_markdown": "Interpréter une requête `SELECT ... WHERE condition1 AND condition2` consiste à ne retenir, parmi toutes les lignes de la table, que celles qui vérifient simultanément chacune des conditions reliées par `AND` ; le résultat obtenu est ensuite affiché ligne par ligne par la boucle PHP qui suit la requête.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.10",
+      "enonce_markdown": "**10.** Soit le bout de code suivant :\n\n```php\n<?php\n$x=15; $y=$x-- ; $z=--$x ;\necho \" la valeur de x: \".$x.\" la valeur de y: \".$y.\" la valeur de z: \".$z ; ?>\n```\n\nDonne le résultat de x, y et z à la fin de l'exécution. *[0,75 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nEn PHP comme en C, l'opérateur de décrémentation `--` (ou d'incrémentation `++`) placé après la variable (post-opérateur, `$x--`) renvoie d'abord la valeur actuelle de la variable avant de la modifier, tandis que placé avant la variable (pré-opérateur, `--$x`), il modifie d'abord la variable puis renvoie sa nouvelle valeur.\n\nEn appliquant cette règle pas à pas au code proposé :\n\n1. `$x=15;` : `$x` vaut 15.\n2. `$y=$x--;` : post-décrémentation. `$y` reçoit la valeur actuelle de `$x`, soit 15, **puis** `$x` est décrémenté. Après cette ligne : `$y = 15` et `$x = 14`.\n3. `$z=--$x;` : pré-décrémentation. `$x` est décrémenté **avant** d'être lu, `$x` passe donc de 14 à 13, et `$z` reçoit cette nouvelle valeur. Après cette ligne : `$z = 13` et `$x = 13`.\n\nÀ la fin de l'exécution : **x = 13, y = 15, z = 13**.\n\n### Piège à éviter\nL'erreur la plus fréquente consiste à décrémenter `$x` avant de calculer `$y` dans `$y=$x--;`, ce qui donnerait à tort `$y = 14`. Le post-opérateur affecte toujours l'**ancienne** valeur avant toute modification : c'est la seule chose à retenir pour ne jamais se tromper sur ce type de question.\n\n### Conseil\nPour ne jamais hésiter entre pré- et post-opérateur, lis la ligne de code à voix haute en français : « y reçoit x, ensuite x diminue » pour `$x--`, contre « x diminue, ensuite z reçoit x » pour `--$x`. L'ordre des mots dans la phrase suit exactement l'ordre des opérations.",
+      "themes": [
+        "incrémentation",
+        "décrémentation",
+        "pré-opérateur et post-opérateur"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.10-0",
+          "competence": "Incrémentation et décrémentation en PHP : pré-opérateur et post-opérateur",
+          "contenu_markdown": "En PHP comme en C, l'opérateur de décrémentation `--` (ou d'incrémentation `++`) placé après la variable (post-opérateur, `$x--`) renvoie d'abord la valeur actuelle de la variable avant de la modifier, tandis que placé avant la variable (pré-opérateur, `--$x`), il modifie d'abord la variable puis renvoie sa nouvelle valeur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.11",
+      "enonce_markdown": "**11.** Différencie les méthodes **POST** et **GET**. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa méthode GET transmet les données dans l'URL elle-même, ce qui les rend visibles, limitées en taille et facilement mises en cache ou partagées ; la méthode POST les transmet dans le corps de la requête HTTP, ce qui les rend invisibles dans l'URL, sans limite pratique de taille, et mieux adaptées aux données sensibles ou volumineuses.\n\nConcrètement, un formulaire en GET produit une adresse du type `enregistrement.php?numero=1&designation=chemise`, visible et modifiable directement dans la barre d'adresse du navigateur, alors qu'un formulaire en POST envoie ces mêmes données de façon invisible pour l'utilisateur. C'est pour cette raison que le formulaire d'enregistrement d'un article (question I.2, avec des données destinées à être stockées) utilise POST, alors que le formulaire de calcul de table de multiplication (question 12) peut se permettre GET, puisqu'il n'écrit rien en base et que l'utilisateur peut vouloir partager ou recharger l'URL du résultat.\n\n### Piège à éviter\nGET n'est pas « moins sécurisé donc à éviter dans tous les cas » : c'est une méthode parfaitement valide pour des recherches ou des consultations sans effet de bord, où l'on souhaite justement que l'URL soit partageable. Le vrai critère de choix est la nature des données (sensibles ou non) et l'effet de l'opération (lecture simple ou modification/enregistrement).",
+      "themes": [
+        "méthode GET",
+        "méthode POST",
+        "formulaire HTML"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.11-0",
+          "competence": "Les méthodes GET et POST d'un formulaire HTML",
+          "contenu_markdown": "La méthode GET transmet les données dans l'URL elle-même, ce qui les rend visibles, limitées en taille et facilement mises en cache ou partagées ; la méthode POST les transmet dans le corps de la requête HTTP, ce qui les rend invisibles dans l'URL, sans limite pratique de taille, et mieux adaptées aux données sensibles ou volumineuses.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.12.1",
+      "enonce_markdown": "**12.** On voudrait écrire un script PHP qui récupère un nombre entier dans un formulaire de nom « Nombre » via la méthode **GET** et affiche sa table de multiplication en commençant par 0 jusqu'à 9, au clic du bouton OK de nom « ok ». Par exemple, si l'utilisateur entre 2, au clic du bouton « ok » on a le résultat :\n\n2*0=0\n\n2*1=2\n\n2*2=4\n\n12.1. Propose le code PHP. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nQuand un formulaire est soumis avec `method=\"get\"`, PHP range automatiquement les valeurs saisies dans le tableau superglobal `$_GET`, indexé par le `name` de chaque champ ; il suffit alors de lire `$_GET['nom_du_champ']` pour récupérer une valeur et de l'afficher avec `echo`.\n\nLe formulaire (visible en aperçu ci-dessous) comporte un champ `Nombre` et un bouton `ok`, tous deux transmis en `GET` :\n\n![fig-2](bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun_exercice_1_fig_2.png)\n\n```php\n<form method=\"get\">\n  <input type=\"text\" name=\"Nombre\">\n  <input type=\"submit\" name=\"ok\" value=\"OK\">\n</form>\n\n<?php\nif(isset($_GET['Nombre'])){\n  $nombre = $_GET['Nombre'];\n  for($i=0; $i<=9; $i++){\n    echo $nombre.\"*\".$i.\"=\".($nombre*$i).\"<br>\";\n  }\n}\n?>\n```\n\nPour une saisie de 2, la boucle affiche bien `2*0=0`, `2*1=2`, `2*2=4`, et ainsi de suite jusqu'à `2*9=18`, conformément à l'exemple donné dans l'énoncé.\n\n### Piège à éviter\nLe test `isset($_GET['Nombre'])` est indispensable : sans lui, la première ouverture de la page (avant toute saisie) provoque un avertissement PHP, puisque `$_GET['Nombre']` n'existe pas encore tant que le formulaire n'a pas été soumis une première fois.\n\n### Conseil\nPlace toujours le formulaire et le traitement PHP dans le même fichier quand l'énoncé ne précise pas de fichier de traitement séparé : la page s'affiche alors normalement au premier chargement, puis affiche en plus le résultat dès que l'utilisateur clique sur « ok ».",
+      "themes": [
+        "$_GET",
+        "boucle for en PHP",
+        "table de multiplication"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.12.1-0",
+          "competence": "Récupérer les données d'un formulaire en PHP : $_GET et $_POST",
+          "contenu_markdown": "Quand un formulaire est soumis avec `method=\"get\"`, PHP range automatiquement les valeurs saisies dans le tableau superglobal `$_GET`, indexé par le `name` de chaque champ ; il suffit alors de lire `$_GET['nom_du_champ']` pour récupérer une valeur et de l'afficher avec `echo`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.12.2",
+      "enonce_markdown": "12.2. Décris la procédure de façon générale à suivre pour que le fichier contenant ce programme puisse être accessible en local via le navigateur. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour qu'un fichier PHP soit exécuté et non simplement affiché comme du texte par le navigateur, il doit être servi par un serveur Web capable d'interpréter PHP : en local, on installe donc une suite comme WAMP, XAMPP ou LAMP (Apache + PHP + MySQL), on place le fichier dans le dossier racine du serveur, puis on démarre les services avant d'accéder au fichier par une URL locale.\n\nLa procédure générale comporte quatre étapes : installer une suite logicielle de développement local regroupant Apache, PHP et MySQL (par exemple WAMPServer ou XAMPP) ; copier le fichier contenant le script (par exemple `table.php`) dans le dossier racine du serveur (`www` pour WAMP, `htdocs` pour XAMPP), éventuellement dans un sous-dossier propre au projet ; démarrer le service Apache (et MySQL si le script en a besoin) depuis le panneau de contrôle de la suite installée ; enfin, ouvrir un navigateur et saisir l'adresse `http://localhost/table.php` (ou `http://localhost/nom_du_dossier/table.php` si le fichier est dans un sous-dossier) pour que le serveur interprète le script et renvoie la page générée.\n\n### Piège à éviter\nOuvrir directement le fichier `.php` depuis l'explorateur de fichiers (double clic) ne fonctionne jamais : le navigateur afficherait alors le code source brut ou une page blanche, puisque aucun serveur n'intercepte la requête pour interpréter le PHP. Le fichier doit impérativement être demandé via `http://localhost/...` et non via un chemin de fichier local (`file:///...`).",
+      "themes": [
+        "serveur web local",
+        "WAMP",
+        "XAMPP",
+        "hébergement local PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.12.2-0",
+          "competence": "Installer un serveur Web local pour exécuter des scripts PHP",
+          "contenu_markdown": "Pour qu'un fichier PHP soit exécuté et non simplement affiché comme du texte par le navigateur, il doit être servi par un serveur Web capable d'interpréter PHP : en local, on installe donc une suite comme WAMP, XAMPP ou LAMP (Apache + PHP + MySQL), on place le fichier dans le dossier racine du serveur, puis on démarre les services avant d'accéder au fichier par une URL locale.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "programmation web",
+    "HTML",
+    "formulaire",
+    "JavaScript",
+    "PHP",
+    "mysqli",
+    "base de données MySQL",
+    "requête SQL",
+    "GET",
+    "POST",
+    "serveur web"
+  ],
+  "incertitudes": [
+    "Fichier programme officiel backend/programme/fixtures/programme_officiel_cm_informatique.json introuvable sur le système de fichiers mis à disposition : savoir_officiel laissé à null pour toutes les sous-questions de cet exercice, à rattacher ultérieurement une fois le référentiel disponible.",
+    "Numérotation d'origine de la Partie II (PHP) : le sujet passe directement de la question 2 à la question 4, sans question 3 - numérotation conservée telle quelle par fidélité à la source (le document est un sujet zéro / spécimen, qui peut comporter cette coquille d'origine).",
+    "Le nom du fichier de traitement du formulaire est donné comme « enregistrement » sans extension précisée par l'énoncé : interprété comme enregistrement.php, cohérent avec le contexte PHP de toute la Partie II.",
+    "Le schéma exact de la table Article n'est pas fourni par l'énoncé. L'utilisation de $row[1], $row[2], $row[3] dans la Capture 1 pour afficher numero/designation/couleur suppose une colonne technique (identifiant auto-incrémenté) en position 0, non représentée dans la Capture 3 : interprétation retenue pour la question 9 car cohérente avec la convention usuelle de conception d'une table."
+  ]
+}

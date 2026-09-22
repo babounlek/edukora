@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-recurrence-suite-minoree-point-fixe-monotonie-terminale-d-ti",
+  "meta": {"titre": "Démontrer par récurrence qu'une suite définie par une fonction reste minorée", "cours_id": "cours-recurrence-suite-minoree-point-fixe-monotonie-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D & TI", "sous_theme": "Suites — récurrence et stabilité d'intervalle", "tags": ["récurrence", "suite récurrente", "stabilité d'intervalle"], "duree_estimee_minutes": 8, "epreuve_source": "bac-d-maths-2020-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2020-cameroun-ex3-B1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Pour une suite définie par une relation de récurrence Un+1=f(Un), montrer que f envoie un intervalle stable dans lui-même permet, par récurrence, de garantir que tous les termes de la suite restent dans cet intervalle."},
+    {"type": "prerequis", "items_markdown": ["Principe de récurrence (initialisation puis hérédité)", "Sens de variation de f sur l'intervalle considéré"]},
+    {"type": "regle", "titre": "Récurrence via la stabilité de l'intervalle", "contenu_markdown": "Pour montrer $U_n\\ge k$ pour tout $n$ (suite définie par $U_{n+1}=f(U_n)$) : initialisation ($U_0\\ge k$), puis hérédité — si $U_n\\ge k$ et $f$ est croissante sur $[k;+\\infty[$ avec $f(k)\\ge k$, alors $U_{n+1}=f(U_n)\\ge f(k)\\ge k$.", "formule_principale": "Un ≥ k et f croissante avec f(k) ≥ k ⟹ Un+1 = f(Un) ≥ k", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "U0=5, Un+1=f(Un) avec f croissante sur [2;+∞[ et f(2)=2. Montrer Un≥2 pour tout n.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Initialisation", "justification": "U0=5≥2", "resultat_markdown": "vrai au rang 0"},
+      {"numero": 2, "action": "Hérédité", "justification": "supposer Un≥2, f croissante", "resultat_markdown": "f(Un)≥f(2)=2 donc Un+1≥2"}
+    ], "conclusion_markdown": "Par récurrence, Un≥2 pour tout n."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Utiliser la croissance de f sans vérifier au préalable que Un (l'antécédent) appartient bien à l'intervalle sur lequel cette croissance est établie", "pourquoi_faux": "La propriété f croissante n'est valable QUE sur l'intervalle où elle a été démontrée ; appliquer f(Un)≥f(2) suppose implicitement que Un est bien dans le domaine de croissance de f, ce qui doit être garanti par l'hypothèse de récurrence elle-même.", "correction_markdown": "Toujours vérifier explicitement, à chaque étape de l'hérédité, que l'antécédent appartient à l'intervalle sur lequel la monotonie de f a été établie."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "V0=1, Vn+1=g(Vn) avec g croissante sur [0;+∞[ et g(0)=0,5. Montrer Vn≥0 pour tout n.", "solution_markdown": "Initialisation : V0=1≥0. Hérédité : si Vn≥0, g croissante donne g(Vn)≥g(0)=0,5≥0, donc Vn+1≥0. Par récurrence, Vn≥0 pour tout n."},
+      {"numero": 2, "difficulte": "difficile", "enonce_markdown": "Pourquoi la condition f(k)≥k est-elle essentielle dans ce raisonnement, et que se passerait-il si f(k)<k ?", "solution_markdown": "Si f(k)<k, alors même en partant d'un Un≥k, on obtiendrait f(Un)≥f(k) mais f(k) pourrait être inférieur à k, ce qui casserait la chaîne d'inégalités et empêcherait de conclure Un+1≥k ; la condition f(k)≥k garantit que l'image du point limite reste dans l'intervalle recherché, condition indispensable à l'hérédité."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Pour montrer Un≥k par récurrence, il faut l'initialisation puis l'hérédité en s'appuyant sur la croissance de f.", "La condition f(k)≥k est essentielle pour que l'hérédité fonctionne.", "Toujours vérifier que l'antécédent appartient au domaine où la monotonie de f a été établie."]}
+  ]
+}

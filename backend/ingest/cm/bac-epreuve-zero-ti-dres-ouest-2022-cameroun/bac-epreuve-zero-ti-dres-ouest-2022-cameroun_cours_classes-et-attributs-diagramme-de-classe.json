@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-classes-et-attributs-diagramme-de-classe-tle-ti",
+  "meta": {
+    "titre": "Identifier les classes et les attributs d'un diagramme de classe",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagrammes UML structurels",
+    "duree_estimee_min": 25,
+    "tags": [
+      "diagramme de classe",
+      "classe",
+      "attribut",
+      "heritage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex1-q2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Construire un diagramme de classe commence toujours de la même façon : lire attentivement un texte en français et en extraire, comme on trierait des objets sur une table, ce qui deviendra une classe et ce qui deviendra un simple attribut. Cette étape de lecture est la plus décisive de tout l'exercice : une classe oubliée ou un attribut mal placé se répercute sur tout le reste du diagramme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une classe UML se représente par un rectangle divisé en trois compartiments : le nom de la classe, ses attributs, ses méthodes.",
+        "Savoir ce qu'est une relation de généralisation (héritage) entre deux classes."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Repérer classes et attributs dans un texte",
+      "contenu_markdown": "Une classe candidate est en général un nom commun qui désigne une catégorie d'objets du domaine étudié (une personne, un véhicule, un document...), surtout si l'énoncé lui attribue plusieurs propriétés propres. Un attribut candidat est une propriété qui caractérise un seul exemplaire de cette classe (un nom, une date, une couleur, un nombre). Lorsque plusieurs classes partagent exactement les mêmes attributs, il faut factoriser ces attributs communs dans une classe mère, reliée à chacune des classes filles par une relation de généralisation : les attributs communs ne sont alors écrits qu'une seule fois, dans la classe mère."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un élève est caractérisé par son nom, son prénom, son âge et son sexe. Le conducteur possède les mêmes informations, avec en plus son numéro de permis. Modélisez ces deux candidats classes et leurs attributs.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les deux classes candidates",
+          "justification": "L'énoncé nomme explicitement deux catégories de personnes.",
+          "resultat_markdown": "Deux classes candidates : `Eleve` et `Conducteur`."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les attributs communs aux deux classes",
+          "justification": "Les quatre mêmes attributs (nom, prénom, âge, sexe) sont énoncés pour les deux classes : c'est le signal qu'il faut les factoriser.",
+          "resultat_markdown": "Attributs communs : `-nom`, `-prenom`, `-age`, `-sexe`."
+        },
+        {
+          "numero": 3,
+          "action": "Créer la classe mère et y placer les attributs communs",
+          "justification": "Factoriser évite de dupliquer les mêmes attributs dans les deux classes filles.",
+          "resultat_markdown": "Classe `Personne` avec les attributs `-nom`, `-prenom`, `-age`, `-sexe`."
+        },
+        {
+          "numero": 4,
+          "action": "Relier les classes filles à la classe mère",
+          "justification": "`Eleve` et `Conducteur` héritent de `Personne` : elles « sont » chacune une personne.",
+          "resultat_markdown": "`Eleve` et `Conducteur` héritent de `Personne` (généralisation)."
+        },
+        {
+          "numero": 5,
+          "action": "Ajouter l'attribut propre au Conducteur",
+          "justification": "Le numéro de permis n'est mentionné que pour le conducteur : il reste propre à cette seule classe fille.",
+          "resultat_markdown": "`Conducteur` porte en plus l'attribut propre `-numeroPermis` ; `Eleve` n'ajoute aucun attribut propre."
+        }
+      ],
+      "conclusion_markdown": "Deux classes filles qui partagent les mêmes attributs signalent une classe mère à créer : les attributs communs y sont factorisés une seule fois."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Créer une classe pour chaque simple propriété citée dans l'énoncé",
+          "pourquoi_faux": "Une propriété comme « la couleur » ou « le poids » décrit un objet, elle ne constitue pas en elle-même une catégorie d'objets du domaine : ce sont des attributs, pas des classes.",
+          "correction_markdown": "Pose-toi la question « est-ce que ce mot désigne une catégorie d'objets, ou une simple propriété d'un objet ? » avant de créer une nouvelle classe."
+        },
+        {
+          "erreur_markdown": "Recopier les attributs hérités dans chaque classe fille",
+          "pourquoi_faux": "Une fois qu'un attribut est placé dans la classe mère, il ne doit plus réapparaître dans les classes filles : la relation de généralisation garantit qu'elles en héritent automatiquement.",
+          "correction_markdown": "Si un attribut apparaît à l'identique dans toutes les sous-classes, il n'a sa place que dans la classe mère, jamais dans les classes filles."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un énoncé décrit un `Rectangle` par sa largeur et sa hauteur. S'agit-il d'un candidat classe ou d'un candidat attribut pour « largeur » ?",
+          "solution_markdown": "« Largeur » est un candidat attribut : c'est une propriété numérique qui caractérise un `Rectangle`, pas une catégorie d'objets en soi."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un `Salarie` et un `Stagiaire` partagent les attributs nom et matricule ; le `Salarie` a en plus un salaire mensuel, le `Stagiaire` a en plus une date de fin de stage. Proposez une organisation en classes qui évite toute duplication d'attribut.",
+          "solution_markdown": "Créer une classe mère `Personne` (ou `Employe`) avec les attributs communs `-nom` et `-matricule`, puis deux classes filles héritant d'elle : `Salarie`, avec l'attribut propre `-salaireMensuel`, et `Stagiaire`, avec l'attribut propre `-dateFinStage`. Aucun attribut n'est dupliqué : chacun n'apparaît que dans la classe où il a été identifié comme propre ou commun."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un énoncé précise qu'un `Vehicule` (attributs : immatriculation, marque) peut être soit une `Voiture` (attribut propre : nombre de portes) soit une `Moto` (attribut propre : cylindrée), et qu'un `Vehicule` est lui-même composé d'un `Moteur` (attributs : puissance, type de carburant). Construisez la liste des classes de ce système et justifiez, pour chacune, si elle appartient à une hiérarchie d'héritage ou à une relation de tout/partie.",
+          "solution_markdown": "Le système comporte quatre classes. `Vehicule`, `Voiture` et `Moto` forment une hiérarchie d'héritage : `Voiture` et `Moto` sont deux catégories spécifiques de `Vehicule`, elles héritent donc de ses attributs communs (immatriculation, marque) et ajoutent chacune leur propre attribut (nombre de portes pour l'une, cylindrée pour l'autre). `Moteur`, en revanche, n'est pas une sorte de `Vehicule` : un moteur n'« est » pas un véhicule, il en est un COMPOSANT. La relation entre `Vehicule` et `Moteur` n'est donc pas une généralisation mais une relation de tout/partie (composition ou agrégation selon que le moteur peut ou non exister indépendamment du véhicule), à traiter séparément de la hiérarchie d'héritage Vehicule/Voiture/Moto."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une classe candidate désigne une catégorie d'objets du domaine ; un attribut candidat désigne une propriété d'un exemplaire de cette classe.",
+        "Des attributs identiques répétés dans plusieurs classes signalent une classe mère à créer, reliée aux classes filles par une généralisation.",
+        "Un attribut factorisé dans la classe mère ne doit jamais être recopié dans les classes filles : l'héritage s'en charge automatiquement.",
+        "Au BAC, la première étape de construction d'un diagramme de classe (« la représentation des différentes classes et de leurs attributs ») porte souvent le plus de points : elle mérite une lecture lente et méthodique de l'énoncé avant tout tracé."
+      ]
+    }
+  ]
+}

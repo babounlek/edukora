@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-reconnaitre-la-structure-de-controle-utilisee-dans-un-algorithme-3e",
+  "meta": {
+    "titre": "Reconnaître la structure de contrôle utilisée dans un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : structures de contrôle",
+    "duree_estimee_min": 20,
+    "tags": [
+      "structures de contrôle",
+      "structure conditionnelle",
+      "alternative",
+      "structure itérative",
+      "algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2024-cameroun",
+    "epreuve_titre": "BEPC Informatique - Cameroun, session 2024 (MINESEC-DECC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2024-cameroun-ex2-q4.2.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme qui dit « réussi » ou « échoué » ne peut pas se contenter d'exécuter ses instructions les unes après les autres : il doit choisir. Ce choix s'écrit avec une structure de contrôle précise, et l'examen demande de la nommer. Trois familles seulement existent, et chacune se reconnaît à ses mots-clés."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme en pseudo-code",
+        "Savoir évaluer une condition simple comme Note >= 10"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois familles de structures de contrôle",
+      "contenu_markdown": "Les structures de contrôle décident de l'ordre dans lequel les instructions s'exécutent. On en distingue trois familles :\n\n**1. La structure séquentielle.** Les instructions s'exécutent l'une après l'autre, dans l'ordre où elles sont écrites. Aucun mot-clé particulier.\n\n**2. La structure conditionnelle (ou alternative).** Elle choisit entre deux traitements selon qu'une condition est vraie ou fausse. Mots-clés : `Si`, `Alors`, `Sinon`, `Finsi`.\n\n- forme **simple** (ou réduite) : `Si condition Alors instruction Finsi` ;\n- forme **complète** : `Si condition Alors instruction1 Sinon instruction2 Finsi`.\n\n**3. La structure itérative (ou répétitive).** Elle répète un traitement. Mots-clés : `Pour ... Faire`, `Tant que ... Faire`, `Répéter ... Jusqu'à`.\n\nPour identifier la structure d'un algorithme, on cherche donc ses mots-clés : `Si` annonce une conditionnelle, `Pour` ou `Tant que` annoncent une itération.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le nom de la structure de contrôle utilisée dans l'algorithme suivant.\n\n```\nAlgorithme Réussite\nVariable Note : réel ;\nDébut\n    Ecrire (\"saisir une valeur \") ;\n    Lire (Note) ;\n    Si Note > = 10 alors\n        Ecrire (\"vous avez réussi au BEPC\") ;\n    Sinon\n        Ecrire (\"vous avez échoué au BEPC\") ;\nFin\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher les mots-clés de contrôle dans le corps",
+          "justification": "Chaque structure se reconnaît à des mots réservés bien identifiés.",
+          "resultat_markdown": "Mots-clés présents : `Si`, `alors`, `Sinon`."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier l'absence de mots-clés de répétition",
+          "justification": "Sans `Pour`, `Tant que` ni `Répéter`, aucune instruction ne se répète.",
+          "resultat_markdown": "Aucun mot-clé d'itération : l'algorithme s'exécute une seule fois du début à la fin."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer la famille correspondante",
+          "justification": "`Si ... Alors ... Sinon` est la signature de la structure qui choisit entre deux traitements.",
+          "resultat_markdown": "Structure conditionnelle, appelée aussi structure alternative."
+        },
+        {
+          "numero": 4,
+          "action": "Préciser la forme",
+          "justification": "La présence d'une partie `Sinon` distingue la forme complète de la forme simple.",
+          "resultat_markdown": "Il s'agit de la **structure conditionnelle (alternative) complète**, de la forme Si … Alors … Sinon."
+        }
+      ],
+      "conclusion_markdown": "L'algorithme utilise une structure conditionnelle complète : selon que la condition Note >= 10 est vraie ou fausse, il affiche l'un ou l'autre des deux messages, jamais les deux."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Parler de boucle ou de structure itérative",
+          "pourquoi_faux": "Rien ne se répète : il n'y a ni Pour, ni Tant que, ni Répéter. Un test n'est pas une répétition.",
+          "correction_markdown": "Cherche les mots-clés avant de répondre : Si annonce un choix, Pour et Tant que annoncent une répétition."
+        },
+        {
+          "erreur_markdown": "Répondre « structure séquentielle » parce que les instructions se suivent",
+          "pourquoi_faux": "Les instructions se suivent effectivement, mais la question porte sur la structure qui commande le déroulement ; ici, c'est le test qui décide de la suite.",
+          "correction_markdown": "Quand un Si apparaît, la réponse attendue est la structure conditionnelle."
+        },
+        {
+          "erreur_markdown": "Oublier de préciser « complète »",
+          "pourquoi_faux": "La distinction entre forme simple (sans Sinon) et forme complète (avec Sinon) est régulièrement demandée telle quelle.",
+          "correction_markdown": "Ajoute systématiquement « complète » quand la partie Sinon est présente."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quels mots-clés annoncent une structure itérative ?",
+          "solution_markdown": "Pour ... Faire, Tant que ... Faire, et Répéter ... Jusqu'à. Leur présence signale qu'un traitement va être exécuté plusieurs fois."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Indique la structure de contrôle utilisée dans l'algorithme suivant et justifie ta réponse :\n```\nDébut\n    Pour i de 1 à 5 Faire\n        Ecrire (i) ;\n    FinPour\nFin\n```",
+          "solution_markdown": "C'est une structure itérative (répétitive), reconnaissable au mot-clé Pour ... Faire fermé par FinPour. Elle répète l'instruction Ecrire(i) pour i valant successivement 1, 2, 3, 4 puis 5 : l'affichage se produit donc cinq fois. Aucun mot-clé Si n'apparaît, il n'y a pas de choix à faire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Transforme l'algorithme Réussite pour qu'il affiche « réussi avec mention » si la note est supérieure ou égale à 14, « réussi » si elle est comprise entre 10 et 14, et « échoué » sinon. Quelle structure obtiens-tu ?",
+          "solution_markdown": "```\nAlgorithme Mention\nVariable Note : réel ;\nDébut\n    Ecrire (\"saisir une valeur\") ;\n    Lire (Note) ;\n    Si Note >= 14 Alors\n        Ecrire (\"réussi avec mention\") ;\n    Sinon\n        Si Note >= 10 Alors\n            Ecrire (\"réussi\") ;\n        Sinon\n            Ecrire (\"échoué\") ;\n        Finsi\n    Finsi\nFin\n```\nOn obtient deux structures conditionnelles complètes, la seconde placée à l'intérieur de la partie Sinon de la première : on parle de structures conditionnelles imbriquées. L'ordre des tests compte : commencer par le seuil le plus élevé évite d'avoir à écrire une condition double comme « Note >= 10 et Note < 14 ». Trois cas de sortie, donc trois messages possibles, mais un seul s'affiche à chaque exécution."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois familles seulement : séquentielle, conditionnelle (alternative), itérative (répétitive).",
+        "Chaque famille se reconnaît à ses mots-clés : Si … Alors … Sinon pour le choix, Pour et Tant que pour la répétition.",
+        "Une structure conditionnelle est complète quand elle possède une partie Sinon, simple quand elle n'en a pas.",
+        "Un test n'est pas une boucle : sans Pour ni Tant que, rien ne se répète.",
+        "Au BEPC, on te demande de nommer la structure : réponds « structure conditionnelle (ou alternative) complète » et tu couvres toutes les formulations attendues."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-resolution-d-une-equation-du-premier-degre-dans-c-tle-a",
+  "meta": {
+    "titre": "Résoudre une équation du premier degré dans l'ensemble des nombres complexes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Nombres complexes",
+    "duree_estimee_min": 25,
+    "tags": [
+      "nombres complexes",
+      "équation dans C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a4-maths-officiel-1994-cameroun",
+    "epreuve_titre": "BAC Mathematiques - Serie A (A4 bilingue) - Session 1994 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a4-maths-officiel-1994-cameroun-ex2-q3a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Résoudre $az=b$ dans $\\mathbb{C}$ ressemble à résoudre la même équation dans $\\mathbb{R}$, avec une différence de taille : on ne peut jamais laisser un nombre complexe au dénominateur dans la réponse finale. La technique du conjugué, déjà connue pour simplifier une fraction, devient ici un passage obligé."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir résoudre une équation du premier degré $ax=b$ dans $\\mathbb{R}$.",
+        "Connaître le conjugué d'un nombre complexe et la propriété $z\\bar z=|z|^2$.",
+        "Savoir développer un produit de deux nombres complexes."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résolution de $az=b$ dans $\\mathbb{C}$",
+      "contenu_markdown": "Pour résoudre une équation du premier degré $az=b$ dans $\\mathbb{C}$, avec $a\\neq 0$, on isole $z$ comme dans $\\mathbb{R}$ : $z=\\dfrac{b}{a}$. Cette écriture n'est pas encore une forme algébrique tant que $a$ contient un terme en $i$ : on multiplie alors le numérateur et le dénominateur par le CONJUGUÉ de $a$, ce qui rend le dénominateur réel (grâce à $a\\bar a=|a|^2$) et permet de terminer le calcul sous forme algébrique.",
+      "formule_principale": "z=\\dfrac{b}{a}=\\dfrac{b\\bar a}{a\\bar a}=\\dfrac{b\\bar a}{|a|^2}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{C}$ l'équation $(1-i)z+2\\sqrt{2}=-\\sqrt{2}(1+i)(1-i)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Simplifier le membre de droite",
+          "justification": "$(1+i)(1-i)$ est un produit de la forme $(a+b)(a-b)=a^2-b^2$, à développer avant toute autre manipulation.",
+          "resultat_markdown": "$(1+i)(1-i)=1-i^2=1+1=2$, donc le membre de droite vaut $-\\sqrt{2}\\times 2=-2\\sqrt{2}$."
+        },
+        {
+          "numero": 2,
+          "action": "Isoler le terme en $z$",
+          "justification": "On procède comme pour une équation réelle : on fait passer le terme constant de l'autre côté.",
+          "resultat_markdown": "$(1-i)z=-2\\sqrt{2}-2\\sqrt{2}=-4\\sqrt{2}$."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire $z$ comme un quotient",
+          "justification": "On divise les deux membres par le coefficient $(1-i)$, non nul.",
+          "resultat_markdown": "$z=\\dfrac{-4\\sqrt{2}}{1-i}$."
+        },
+        {
+          "numero": 4,
+          "action": "Multiplier par le conjugué pour obtenir la forme algébrique",
+          "justification": "Le conjugué de $1-i$ est $1+i$ ; $(1-i)(1+i)=1-i^2=2$ est réel, ce qui élimine le $i$ du dénominateur.",
+          "resultat_markdown": "$z=\\dfrac{-4\\sqrt{2}(1+i)}{(1-i)(1+i)}=\\dfrac{-4\\sqrt{2}(1+i)}{2}=-2\\sqrt{2}(1+i)=-2\\sqrt{2}-2\\sqrt{2}\\,i$."
+        }
+      ],
+      "conclusion_markdown": "L'unique solution de l'équation est $z=-2\\sqrt{2}-2\\sqrt{2}\\,i$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Laisser la réponse sous la forme $z=\\dfrac{-4\\sqrt{2}}{1-i}$ sans terminer le calcul.",
+          "pourquoi_faux": "Une fraction dont le dénominateur contient encore $i$ n'est pas une forme algébrique : la consigne « résoudre » attend une réponse écrite $a+ib$, sans complexe au dénominateur.",
+          "correction_markdown": "Toujours terminer par la multiplication au conjugué du dénominateur, même si le résultat intermédiaire « ressemble » déjà à une réponse."
+        },
+        {
+          "erreur_markdown": "Diviser terme à terme, en écrivant $\\dfrac{-4\\sqrt{2}}{1-i}=\\dfrac{-4\\sqrt{2}}{1}-\\dfrac{-4\\sqrt{2}}{i}$ ou une décomposition similaire.",
+          "pourquoi_faux": "Un quotient par une somme (ici $1-i$) ne se distribue jamais terme à terme sur le dénominateur : ce n'est pas une opération valide, que ce soit dans $\\mathbb{R}$ ou dans $\\mathbb{C}$.",
+          "correction_markdown": "Passer systématiquement par la multiplication au conjugué du dénominateur ENTIER, jamais par une distribution terme à terme du dénominateur."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe sur le conjugué, par exemple multiplier par $-1-i$ au lieu de $1+i$ pour un dénominateur $1-i$.",
+          "pourquoi_faux": "Le conjugué de $a-ib$ est $a+ib$ : seul le signe de la partie imaginaire change, pas celui de la partie réelle.",
+          "correction_markdown": "Écrire explicitement le dénominateur sous forme $a+ib$ avant de choisir son conjugué $a-ib$ (ou l'inverse), pour éviter toute confusion de signe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{C}$ l'équation $(1+i)z=4$.",
+          "solution_markdown": "$$z=\\dfrac{4}{1+i}=\\dfrac{4(1-i)}{(1+i)(1-i)}=\\dfrac{4(1-i)}{1-i^2}=\\dfrac{4(1-i)}{2}=2(1-i)=2-2i.$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{C}$ l'équation $(2-i)z+3=1+2i$.",
+          "solution_markdown": "On isole le terme en $z$ : $$(2-i)z=1+2i-3=-2+2i.$$\n\nOn multiplie par le conjugué $2+i$ du dénominateur :\n\n$$z=\\dfrac{-2+2i}{2-i}=\\dfrac{(-2+2i)(2+i)}{(2-i)(2+i)}=\\dfrac{-4-2i+4i+2i^2}{4-i^2}=\\dfrac{-4+2i-2}{4+1}=\\dfrac{-6+2i}{5}=-\\dfrac{6}{5}+\\dfrac{2}{5}i.$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre dans $\\mathbb{C}$ l'équation $(1-i)z+\\sqrt{2}=i(1+i)(1-i)$, puis calculer le module de la solution trouvée.",
+          "solution_markdown": "On simplifie le membre de droite : $(1+i)(1-i)=1-i^2=2$, donc le membre de droite vaut $2i$.\n\nOn isole $z$ : $$(1-i)z=2i-\\sqrt{2}.$$\n\n$$z=\\dfrac{2i-\\sqrt{2}}{1-i}=\\dfrac{(2i-\\sqrt{2})(1+i)}{(1-i)(1+i)}=\\dfrac{2i+2i^2-\\sqrt{2}-\\sqrt{2}i}{2}=\\dfrac{2i-2-\\sqrt{2}-\\sqrt{2}i}{2}.$$\n\nOn regroupe partie réelle et partie imaginaire au numérateur : $$z=\\dfrac{(-2-\\sqrt{2})+(2-\\sqrt{2})i}{2}=\\dfrac{-2-\\sqrt{2}}{2}+\\dfrac{2-\\sqrt{2}}{2}i.$$\n\nLe module se calcule ensuite avec $|z|=\\sqrt{\\left(\\dfrac{-2-\\sqrt{2}}{2}\\right)^2+\\left(\\dfrac{2-\\sqrt{2}}{2}\\right)^2}$, qui se simplifie numériquement à $|z|\\approx 1{,}23$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Isoler $z$ dans $az=b$ se fait comme dans $\\mathbb{R}$ : $z=\\dfrac{b}{a}$.",
+        "Un complexe ne reste jamais au dénominateur dans une forme algébrique finale : il faut systématiquement multiplier par le conjugué du dénominateur.",
+        "Le produit d'un complexe par son conjugué est toujours réel, égal au carré de son module : c'est ce qui élimine le $i$ du dénominateur.",
+        "Ne jamais distribuer une division terme à terme sur une somme au dénominateur : toujours passer par la multiplication au conjugué de l'ensemble du dénominateur.",
+        "Au BAC, cette technique du conjugué revient dans presque tous les exercices sur les complexes dès qu'une division apparaît : elle mérite d'être totalement automatisée."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-les-bibliotheques-standard-du-langage-c-premiere-ti",
+  "meta": {
+    "titre": "Les bibliothèques standard du langage C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Chaîne de développement d'un programme",
+    "duree_estimee_min": 12,
+    "tags": [
+      "bibliothèque",
+      "stdio.h",
+      "math.h",
+      "string.h",
+      "#include"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex1-q6-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi n'as-tu jamais eu besoin d'écrire toi-même le code qui affiche du texte à l'écran, ou qui calcule une racine carrée ? Parce que quelqu'un l'a déjà fait avant toi, et l'a rangé dans une bibliothèque que tu n'as plus qu'à réutiliser d'un simple `#include`."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Avoir déjà écrit un programme C utilisant `#include <stdio.h>`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La bibliothèque, du code prêt à l'emploi",
+      "contenu_markdown": "Une **bibliothèque** (library) en C est un ensemble de fonctions déjà écrites et compilées, regroupées par thème, que l'on peut réutiliser dans un programme en l'incluant avec la directive `#include`, sans avoir à réécrire ces fonctions soi-même.",
+      "formule_principale": "\\texttt{\\#include <nom\\_bibliotheque.h>}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un élève veut calculer la racine carrée de 25 et afficher le résultat. Quelles bibliothèques doit-il inclure, et pourquoi ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les fonctions nécessaires",
+          "justification": "Calculer une racine carrée nécessite `sqrt()`, afficher un résultat nécessite `printf()`",
+          "resultat_markdown": "`sqrt()` et `printf()` sont deux fonctions distinctes, appartenant à deux bibliothèques différentes."
+        },
+        {
+          "numero": 2,
+          "action": "Associer chaque fonction à sa bibliothèque",
+          "justification": "`sqrt()` est une fonction mathématique, `printf()` une fonction d'entrée-sortie",
+          "resultat_markdown": "`sqrt()` appartient à `math.h` ; `printf()` appartient à `stdio.h`."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire les inclusions et le code",
+          "justification": "Chaque bibliothèque utilisée doit être incluse en tête du fichier",
+          "resultat_markdown": "```c\n#include <stdio.h>\n#include <math.h>\n\nint main() {\n    printf(\"%f\", sqrt(25));\n    return 0;\n}\n```"
+        }
+      ],
+      "conclusion_markdown": "Chaque fonction utilisée doit appartenir à une bibliothèque explicitement incluse : oublier `#include <math.h>` provoquerait une erreur de compilation dès l'appel à `sqrt()`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'inclure une bibliothèque alors qu'une de ses fonctions est utilisée",
+          "pourquoi_faux": "Le compilateur ne connaît une fonction que si la bibliothèque qui la déclare a été incluse : sans `#include`, il ne sait pas que cette fonction existe.",
+          "correction_markdown": "Avant d'utiliser une fonction nouvelle (`sqrt`, `strlen`, `rand`...), vérifie toujours à quelle bibliothèque elle appartient et ajoute l'`#include` correspondant."
+        },
+        {
+          "erreur_markdown": "Croire que `stdio.h` contient toutes les fonctions du langage C",
+          "pourquoi_faux": "`stdio.h` ne regroupe que les fonctions d'entrée-sortie standard (`printf`, `scanf`, `gets`, `puts`...) ; les fonctions mathématiques, de manipulation de chaînes ou de gestion de mémoire appartiennent à d'autres bibliothèques.",
+          "correction_markdown": "Retiens au moins un rôle précis par bibliothèque courante : `stdio.h` (entrées-sorties), `math.h` (mathématiques), `string.h` (chaînes de caractères), `stdlib.h` (utilitaires généraux)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "À quelle bibliothèque appartient la fonction `printf()` ?",
+          "solution_markdown": "`stdio.h` (Standard Input/Output), la bibliothèque des entrées-sorties standard."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un programme utilise `strlen()` pour connaître la longueur d'une chaîne de caractères, mais le compilateur signale une erreur \"fonction non déclarée\". Quelle est la cause la plus probable, et comment la corriger ?",
+          "solution_markdown": "La cause la plus probable est l'oubli de l'inclusion de la bibliothèque `string.h`, qui déclare `strlen()` ainsi que les autres fonctions de manipulation de chaînes (`strcat`, `strcpy`, `strcmp`...). Correction : ajouter `#include <string.h>` en tête du fichier."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi les bibliothèques standard existent-elles sous forme de code déjà compilé, plutôt que d'être simplement des exemples de code source que chacun recopierait dans son propre programme ?",
+          "solution_markdown": "Fournir les bibliothèques déjà compilées apporte deux avantages majeurs. D'abord, l'efficacité : le code compilé s'exécute directement, sans qu'il faille le retraduire à chaque programme qui l'utilise. Ensuite, la fiabilité : ces fonctions (comme `printf` ou `sqrt`) ont été testées et optimisées une fois pour toutes par leurs auteurs ; un développeur qui les réutilise n'a pas à réinventer ni à revalider un code déjà éprouvé, il se contente de l'appeler via son interface (déclarée dans le fichier `.h` inclus), ce qui réduit fortement le risque d'y introduire de nouvelles erreurs."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une bibliothèque regroupe des fonctions déjà écrites et compilées, réutilisables via `#include`.",
+        "`stdio.h` : entrées-sorties (`printf`, `scanf`, `gets`, `puts`).",
+        "`math.h` : fonctions mathématiques (`sqrt`, `pow`...) ; `string.h` : chaînes de caractères (`strlen`, `strcat`...) ; `stdlib.h` : utilitaires généraux (`malloc`, `rand`...).",
+        "Oublier l'inclusion d'une bibliothèque provoque une erreur de compilation dès qu'une de ses fonctions est appelée.",
+        "Au Probatoire, une seule bibliothèque bien expliquée (nom + rôle précis) suffit si la consigne ne demande qu'un exemple : inutile d'en citer plusieurs sans y être invité."
+      ]
+    }
+  ]
+}

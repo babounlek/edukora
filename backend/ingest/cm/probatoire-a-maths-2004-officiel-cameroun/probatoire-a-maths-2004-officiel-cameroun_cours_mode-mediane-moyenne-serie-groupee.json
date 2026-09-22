@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-mode-mediane-moyenne-serie-groupee-premiere-a",
+  "meta": {
+    "titre": "Mode, médiane et moyenne d'une série statistique groupée en classes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques descriptives",
+    "duree_estimee_min": 25,
+    "tags": [
+      "statistiques",
+      "mode",
+      "médiane",
+      "moyenne",
+      "classes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2004 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2004-officiel-cameroun-ex2-qII1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau de salaires, de tailles ou de notes regroupées par intervalles ne se lit pas comme une simple liste de valeurs : il faut des méthodes adaptées pour en extraire une valeur centrale unique. Mode, médiane et moyenne répondent chacun à une question différente sur la même série, et les trois se calculent différemment lorsque les données sont groupées en classes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lecture d'un tableau d'effectifs",
+        "Calcul d'effectifs cumulés croissants",
+        "Résolution d'une simple règle de trois (interpolation linéaire)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois indicateurs, trois calculs",
+      "contenu_markdown": "Pour une série groupée en classes : le **mode** est le centre de la classe modale, celle qui a le plus grand effectif. La **médiane** s'obtient par interpolation linéaire à l'intérieur de la classe qui contient le rang $50\\,\\%$ des effectifs cumulés croissants. La **moyenne** est la somme des produits (centre de classe × effectif), divisée par l'effectif total.",
+      "formule_principale": "\\text{Médiane}=b_{\\text{inf}}+\\dfrac{50-C_{\\text{avant}}}{\\text{effectif de la classe}}\\times \\text{amplitude}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer le mode, la médiane et la moyenne de la série Hommes : $[2,3[:6\\,\\%\\,;[3,4[:24\\,\\%\\,;[4,5[:43\\,\\%\\,;[5,6[:17\\,\\%\\,;[6,7[:10\\,\\%$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la classe modale",
+          "justification": "C'est la classe dont l'effectif est le plus grand.",
+          "resultat_markdown": "Classe modale $=[4,5[$ (effectif $43\\,\\%$), donc Mode $=\\dfrac{4+5}{2}=4,5$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les effectifs cumulés croissants",
+          "justification": "Ils permettent de repérer la classe qui contient le rang $50$.",
+          "resultat_markdown": "$6\\,;30\\,;73\\,;90\\,;100$"
+        },
+        {
+          "numero": 3,
+          "action": "Repérer la classe médiane et interpoler",
+          "justification": "Le cumul passe de $30$ à $73$ dans la classe $[4,5[$ : le rang $50$ s'y trouve.",
+          "resultat_markdown": "$\\text{Médiane}=4+\\dfrac{50-30}{43}\\times1\\approx4,47$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la moyenne",
+          "justification": "On pondère chaque centre de classe par son effectif, puis on divise par l'effectif total ($100$).",
+          "resultat_markdown": "$\\dfrac{6\\times2,5+24\\times3,5+43\\times4,5+17\\times5,5+10\\times6,5}{100}=\\dfrac{451}{100}=4,51$"
+        }
+      ],
+      "conclusion_markdown": "Pour la série Hommes : Mode $=4,5$, Médiane $\\approx4,47$, Moyenne $=4,51$. Les trois valeurs, très proches, montrent une série peu dissymétrique concentrée autour de la classe $[4,5[$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre comme mode la borne inférieure ou supérieure de la classe modale au lieu de son centre",
+          "pourquoi_faux": "Le mode d'une série groupée est conventionnellement le centre de la classe modale, une valeur représentative de toute la classe, pas une de ses bornes.",
+          "correction_markdown": "Calcule toujours le centre par $\\dfrac{\\text{borne inf}+\\text{borne sup}}{2}$ avant de le donner comme mode."
+        },
+        {
+          "erreur_markdown": "Chercher le rang $50$ dans les effectifs de chaque classe plutôt que dans les effectifs CUMULÉS",
+          "pourquoi_faux": "La médiane se situe par rapport à l'accumulation progressive des effectifs, pas par rapport à l'effectif d'une seule classe isolée : sans cumul, on ne peut pas savoir où se trouve la moitié des observations.",
+          "correction_markdown": "Construis toujours la colonne des effectifs cumulés croissants avant de chercher la classe médiane."
+        },
+        {
+          "erreur_markdown": "Utiliser les bornes des classes au lieu de leurs centres dans le calcul de la moyenne",
+          "pourquoi_faux": "La moyenne pondérée suppose qu'on représente chaque classe par une valeur unique, conventionnellement son centre, pas une de ses extrémités qui sous-estimerait ou surestimerait systématiquement la moyenne.",
+          "correction_markdown": "Recalcule toujours les centres de classe (borne inf + borne sup, divisé par 2) avant de les multiplier par les effectifs."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série a pour classe modale $[10,20[$ avec un effectif de $30$, la plus grande de toutes. Donner le mode.",
+          "solution_markdown": "Le mode est le centre de la classe modale : $\\dfrac{10+20}{2}=15$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série de 100 élèves a pour effectifs cumulés croissants : $[0,5[:12\\,;[5,10[:40\\,;[10,15[:75\\,;[15,20[:100$. Déterminer la classe médiane puis la médiane par interpolation.",
+          "solution_markdown": "Le rang $50$ se situe entre le cumul $40$ (avant $[10,15[$) et $75$ (après). La classe médiane est donc $[10,15[$.\n\n$\\text{Médiane}=10+\\dfrac{50-40}{35}\\times5=10+\\dfrac{50}{35}\\approx10+1,43\\approx11,43$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série a pour classes et effectifs : $[0,10[:20\\,;[10,20[:50\\,;[20,30[:30$. Calculer la moyenne, puis comparer sa position par rapport au mode (sans recalculer la médiane, juste indiquer si la série semble symétrique).",
+          "solution_markdown": "Centres : $5\\,;15\\,;25$. Moyenne $=\\dfrac{20\\times5+50\\times15+30\\times25}{100}=\\dfrac{100+750+750}{100}=\\dfrac{1600}{100}=16$.\n\nLa classe modale est $[10,20[$ (effectif $50$, le plus grand), de centre $15$. La moyenne ($16$) est très proche du mode ($15$) : la série paraît relativement symétrique, sans être tirée fortement vers les valeurs élevées ou faibles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le mode se lit directement : c'est le centre de la classe la plus peuplée.",
+        "La médiane exige de cumuler les effectifs avant d'interpoler dans la bonne classe.",
+        "La moyenne pondère chaque centre de classe par son effectif puis divise par l'effectif total.",
+        "Comparer les trois valeurs renseigne sur la forme de la série : proches, elle est peu dissymétrique ; éloignées, elle est étalée d'un côté, une observation souvent demandée en commentaire de statistiques au Probatoire."
+      ]
+    }
+  ]
+}

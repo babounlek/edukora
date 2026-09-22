@@ -1,0 +1,67 @@
+{
+  "epreuve_source": "bac-d-maths-2019-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "serie": "D & TI",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 2019,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "numero_exercice": 3,
+  "titre_exercice": "Problème — Partie A : suite numérique récurrente",
+  "points": 2.0,
+  "figures": [],
+  "enonce_intro_markdown": "Ce problème comporte trois parties indépendantes A, B et C. **Partie A.** On considère la suite numérique $(U_n)$ définie par $\\begin{cases}U_0=0\\\\\\text{pour tout }n\\in\\mathbb N,\\ U_{n+1}=-\\dfrac13e^{3U_n-3}\\end{cases}$.\n\n*Note de transcription : le passage correspondant de la source scannée présente une formule partiellement illisible (« $U_{n+1}=-e^{3U_n-3}$ » suivi d'un « 3 » isolé, laissant supposer une division par 3 mal restituée par la numérisation). La reconstruction $U_{n+1}=-\\frac13e^{3U_n-3}$ retenue ici est celle qui rend l'énoncé de la question 1 (encadrement $-1\\leq U_n\\leq0$) rigoureusement démontrable et cohérente avec la suite des questions ; elle est signalée ici par transparence.*",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "1pt",
+      "enonce_markdown": "Montrer par récurrence que pour tout entier naturel $n$, on a : $-1\\leq U_n\\leq0$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-recurrence-encadrement-suite-exponentielle-terminale-d-ti",
+          "texte": "Pour démontrer un encadrement par récurrence, on vérifie l'initialisation, puis on suppose l'encadrement vrai au rang n et on l'utilise pour établir l'encadrement au rang n+1, en exploitant la croissance de la fonction exponentielle."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer un encadrement par récurrence, on vérifie l'initialisation (le premier terme satisfait l'encadrement), puis on suppose l'encadrement vrai au rang $n$ (hypothèse de récurrence) et on l'utilise pour établir l'encadrement au rang $n+1$, en exploitant ici la croissance de la fonction exponentielle.\n\n**Initialisation (rang $n=0$).**\n\n$U_0=0$. On vérifie $-1\\leq0\\leq0$ : c'est vrai.\n\n**Hérédité.** Supposons que pour un entier naturel $n$ donné, $-1\\leq U_n\\leq0$ (hypothèse de récurrence). Montrons que $-1\\leq U_{n+1}\\leq0$.\n\n**Majoration ($U_{n+1}\\leq0$).**\n\nPour tout réel $x$, $e^x>0$. Donc $e^{3U_n-3}>0$ pour tout $U_n$, donc $U_{n+1}=-\\dfrac13e^{3U_n-3}<0$.\n\nEn particulier, $U_{n+1}\\leq0$.\n\n**Minoration ($U_{n+1}\\geq-1$).**\n\nPar hypothèse de récurrence, $U_n\\leq0$.\n\nLa fonction exponentielle étant strictement croissante sur $\\mathbb R$, l'inégalité $U_n\\leq0$ entraîne :\n\n$3U_n-3\\leq3\\times0-3=-3$\n\n$e^{3U_n-3}\\leq e^{-3}$ (croissance de l'exponentielle)\n\nOr $e^{-3}\\approx0{,}0498$, donc $e^{-3}<3$.\n\nDonc $e^{3U_n-3}\\leq e^{-3}<3$, c'est-à-dire $0<e^{3U_n-3}<3$.\n\nEn divisant par $3$ : $0<\\dfrac13e^{3U_n-3}<1$\n\nEn multipliant par $-1$ (ce qui inverse les inégalités) : $-1<-\\dfrac13e^{3U_n-3}<0$\n\nC'est-à-dire $-1<U_{n+1}<0$.\n\n**Conclusion de l'hérédité.** On a montré $-1<U_{n+1}<0$, ce qui implique en particulier $-1\\leq U_{n+1}\\leq0$.\n\n**Conclusion générale.** L'encadrement est vrai au rang $0$ (initialisation), et il se transmet du rang $n$ au rang $n+1$ (hérédité). Par le principe de récurrence, **pour tout entier naturel $n$, $-1\\leq U_n\\leq0$.**\n\n### Piège à éviter\nLors du passage de $e^{3U_n-3}\\leq e^{-3}$ à la conclusion $U_{n+1}\\geq-1$, ne pas oublier que multiplier une inégalité par un nombre négatif ($-\\frac13$) INVERSE le sens de l'inégalité : c'est cette inversion qui transforme la majoration de $e^{3U_n-3}$ en minoration de $U_{n+1}$.",
+      "themes": [
+        "récurrence",
+        "encadrement",
+        "fonction exponentielle",
+        "Suites — récurrence et exponentielle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "2",
+      "points": "1pt",
+      "enonce_markdown": "En utilisant la calculatrice, donner les valeurs approchées à $10^{-3}$ près par défaut de $U_1$ et $U_2$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-valeurs-approchees-calculatrice-suite-recurrente-terminale-d-ti",
+          "texte": "Pour calculer une valeur approchée par défaut à 10^-3 près, on calcule la valeur exacte (ou une valeur très précise à la calculatrice), puis on tronque vers le bas (vers -∞) au millième, c'est-à-dire qu'on prend le plus grand multiple de 0,001 inférieur ou égal à la valeur calculée."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour calculer une valeur approchée PAR DÉFAUT à $10^{-3}$ près, on calcule la valeur exacte (ou une valeur très précise à la calculatrice), puis on tronque vers le bas (vers $-\\infty$) au millième — c'est-à-dire qu'on prend le plus grand multiple de $0{,}001$ inférieur ou égal à la valeur calculée (et non le plus proche).\n\n**Calcul de $U_1$.**\n\n$U_1=-\\dfrac13e^{3U_0-3}=-\\dfrac13e^{3\\times0-3}=-\\dfrac13e^{-3}$\n\nÀ la calculatrice : $e^{-3}\\approx0{,}0497870684$\n\n$U_1\\approx-\\dfrac{0{,}0497870684}3\\approx-0{,}0165956895$\n\n**Approximation par défaut à $10^{-3}$ près.** La valeur exacte $-0{,}0165956895$ se situe entre $-0{,}017$ et $-0{,}016$. Le plus grand multiple de $0{,}001$ inférieur ou égal à cette valeur est $-0{,}017$ (et non $-0{,}016$, qui est SUPÉRIEUR à la valeur exacte).\n\n**$U_1\\approx-0{,}017$ (valeur approchée par défaut à $10^{-3}$ près).**\n\n**Calcul de $U_2$.**\n\n$U_2=-\\dfrac13e^{3U_1-3}$\n\nEn utilisant la valeur précise de $U_1\\approx-0{,}0165956895$ :\n\n$3U_1-3\\approx3\\times(-0{,}0165956895)-3\\approx-0{,}0497870685-3\\approx-3{,}0497870685$\n\nÀ la calculatrice : $e^{-3{,}0497870685}\\approx0{,}0473687$\n\n$U_2\\approx-\\dfrac{0{,}0473687}3\\approx-0{,}0157896$\n\n**Approximation par défaut à $10^{-3}$ près.** La valeur exacte $-0{,}0157896$ se situe entre $-0{,}016$ et $-0{,}015$. Le plus grand multiple de $0{,}001$ inférieur ou égal à cette valeur est $-0{,}016$.\n\n**$U_2\\approx-0{,}016$ (valeur approchée par défaut à $10^{-3}$ près).**\n\n### Piège à éviter\nConfondre \"valeur approchée par défaut\" avec un simple arrondi au plus proche : pour un nombre négatif, l'approximation par défaut (qui doit être INFÉRIEURE OU ÉGALE à la valeur exacte) s'obtient en \"descendant\" vers des valeurs plus négatives, ce qui peut surprendre (ex. $-0{,}017<-0{,}0165957$, donc $-0{,}017$ est bien la valeur par défaut, alors qu'un arrondi au plus proche aurait donné $-0{,}017$ également ici par coïncidence, mais ce ne serait pas systématiquement le cas).",
+      "themes": [
+        "valeur approchée par défaut",
+        "calculatrice",
+        "suite récurrente",
+        "Suites — approximation numérique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    }
+  ],
+  "matiere_normalisee": "MATHS",
+  "classe": "Tle"
+}

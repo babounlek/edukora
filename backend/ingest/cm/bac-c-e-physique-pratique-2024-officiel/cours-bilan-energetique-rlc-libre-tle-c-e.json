@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-bilan-energetique-rlc-libre-tle-c-e",
+  "meta": {
+    "titre": "Bilan énergétique d'un oscillateur RLC libre et effet Joule",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Circuits électriques - oscillations libres",
+    "duree_estimee_min": 35,
+    "tags": [
+      "oscillateur RLC",
+      "énergie électromagnétique",
+      "effet Joule",
+      "amortissement",
+      "loi des mailles"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Épreuve de physique au baccalauréat C 2024 (Séries C & E, Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-e-physique-pratique-2024-officiel-ex4-q1.3-0",
+    "rappels_lies": [
+      "rdm-bac-c-e-physique-pratique-2024-officiel-ex4-q1.1-0",
+      "rdm-bac-c-e-physique-pratique-2024-officiel-ex4-q1.2-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un circuit RLC série, une fois chargé puis abandonné à lui-même, oscille - mais ses oscillations s'amortissent progressivement, jusqu'à s'éteindre complètement. Cette diminution d'amplitude n'est pas un mystère : elle traduit une perte d'énergie bien réelle, exactement comme un pendule qui finit par s'arrêter à cause des frottements. Ce cours établit, calcul à l'appui, où va cette énergie perdue - et pourquoi la réponse est la même que pour n'importe quel conducteur parcouru par un courant."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Énergie stockée par un condensateur : $E_C=\\dfrac{q^2}{2C}$",
+        "Énergie stockée par une bobine : $E_L=\\dfrac{1}{2}Li^2$",
+        "Loi des mailles (loi d'additivité des tensions) appliquée à un circuit RLC série",
+        "Relation entre charge et intensité : $i=\\dfrac{dq}{dt}$",
+        "Puissance dissipée par effet Joule dans un conducteur ohmique : $P=Ri^2$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'énergie totale d'un RLC libre diminue exactement à la vitesse de la dissipation Joule",
+      "contenu_markdown": "Dans un circuit RLC série livré à lui-même (oscillateur libre), l'énergie totale $E_T$ emmagasinée est la somme de l'énergie électrique du condensateur et de l'énergie magnétique de la bobine :\n$$E_T=\\dfrac{q^2}{2C}+\\dfrac{1}{2}Li^2$$\n\nEn l'absence de résistance ($R+r=0$), cette énergie se conserverait indéfiniment et les oscillations ne s'amortiraient jamais : c'est le cas idéal du LC pur. Dès qu'une résistance totale $(R+r)$ est présente dans le circuit, l'énergie totale diminue au cours du temps, et le calcul montre que cette diminution correspond exactement à la puissance dissipée par effet Joule dans cette résistance.",
+      "formule_principale": "\\dfrac{dE_T}{dt} = -(R+r)\\,i^2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit RLC série, de résistance totale $(R+r)$, d'inductance $L$ et de capacité $C$, oscille librement après avoir été chargé. Montrer que la diminution de son énergie totale au cours du temps est due à l'effet Joule.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'énergie totale emmagasinée dans le circuit",
+          "justification": "L'énergie totale d'un circuit RLC série est la somme des énergies stockées dans le condensateur et dans la bobine",
+          "resultat_markdown": "$E_T=\\dfrac{q^2}{2C}+\\dfrac{Li^2}{2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver $E_T$ par rapport au temps",
+          "justification": "Pour étudier l'évolution de l'énergie au cours du temps, on calcule sa dérivée temporelle, avec $i=\\frac{dq}{dt}$",
+          "resultat_markdown": "$\\dfrac{dE_T}{dt}=\\dfrac{q}{C}\\dfrac{dq}{dt}+Li\\dfrac{di}{dt}=i\\left(\\dfrac{q}{C}+L\\dfrac{di}{dt}\\right)$"
+        },
+        {
+          "numero": 3,
+          "action": "Utiliser la loi des mailles pour simplifier le facteur entre parenthèses",
+          "justification": "La loi des mailles du circuit RLC série s'écrit $\\frac{q}{C}+L\\frac{di}{dt}+(R+r)i=0$, donc $\\frac{q}{C}+L\\frac{di}{dt}=-(R+r)i$",
+          "resultat_markdown": "$\\dfrac{dE_T}{dt}=i\\times[-(R+r)i]=-(R+r)i^2$"
+        },
+        {
+          "numero": 4,
+          "action": "Comparer à la puissance dissipée par effet Joule",
+          "justification": "La puissance dissipée par effet Joule dans une résistance $(R+r)$ traversée par un courant $i$ vaut $P_{Joule}=(R+r)i^2$ : c'est exactement l'opposé de $\\frac{dE_T}{dt}$",
+          "resultat_markdown": "$\\dfrac{dE_T}{dt}=-(R+r)i^2=-P_{Joule}$"
+        }
+      ],
+      "conclusion_markdown": "L'énergie totale du circuit diminue exactement au rythme où elle est dissipée par effet Joule dans la résistance totale du circuit : l'amortissement des oscillations d'un RLC libre s'explique intégralement par cet effet, sans qu'aucun autre phénomène de perte n'intervienne."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la résistance interne $r$ de la bobine et n'écrire que $R$ dans le bilan de puissance",
+          "pourquoi_faux": "Une bobine réelle possède toujours une résistance interne non nulle, qui dissipe elle aussi de l'énergie par effet Joule au même titre que le conducteur ohmique R. Omettre $r$ sous-estime la dissipation réelle et peut fausser la comparaison énergétique.",
+          "correction_markdown": "Utilise systématiquement la résistance totale du circuit $(R+r)$ dans le bilan de puissance, jamais $R$ seul, sauf si l'énoncé précise explicitement une bobine idéale (r=0)."
+        },
+        {
+          "erreur_markdown": "Confondre le signe de $\\frac{dE_T}{dt}$ : écrire $\\frac{dE_T}{dt}=+(R+r)i^2$",
+          "pourquoi_faux": "Le signe négatif n'est pas un détail : il traduit physiquement une perte d'énergie (l'énergie totale du circuit diminue). Un signe positif signifierait à tort que le circuit gagne de l'énergie au cours du temps, ce qui est physiquement impossible pour un oscillateur libre sans apport extérieur.",
+          "correction_markdown": "Vérifie toujours la cohérence du signe obtenu avec le sens physique attendu : un système livré à lui-même et soumis à un phénomène dissipatif voit nécessairement son énergie diminuer, donc $\\frac{dE_T}{dt}<0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit RLC série (résistance totale $R_{tot}$) est parcouru, à un instant donné, par un courant d'intensité $i=0,20\\text{ A}$. La résistance totale du circuit vaut $R_{tot}=15\\ \\Omega$. Calculer la puissance instantanée dissipée par effet Joule à cet instant, et en déduire la valeur de $\\frac{dE_T}{dt}$ à ce même instant.",
+          "solution_markdown": "Puissance Joule : $P_{Joule}=R_{tot}\\,i^2=15\\times(0,20)^2=15\\times0,04=0,60\\text{ W}$.\n\nComme $\\frac{dE_T}{dt}=-P_{Joule}$, on a $\\frac{dE_T}{dt}=-0,60\\text{ W}$ (l'énergie totale du circuit diminue de 0,60 joule par seconde à cet instant)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On considère un circuit LC pur (résistance totale nulle), oscillant librement. En reprenant la même démarche que dans le cours (écriture de $E_T$, dérivation, utilisation de la loi des mailles), montrer que l'énergie totale de ce circuit se conserve au cours du temps.",
+          "solution_markdown": "Énergie totale : $E_T=\\dfrac{q^2}{2C}+\\dfrac{Li^2}{2}$.\n\nDérivée : $\\dfrac{dE_T}{dt}=i\\left(\\dfrac{q}{C}+L\\dfrac{di}{dt}\\right)$.\n\nLoi des mailles d'un circuit LC pur (sans résistance) : $\\dfrac{q}{C}+L\\dfrac{di}{dt}=0$.\n\nEn substituant : $\\dfrac{dE_T}{dt}=i\\times0=0$.\n\nL'énergie totale du circuit LC pur reste donc constante au cours du temps : c'est le cas idéal d'un oscillateur non amorti, qui oscillerait indéfiniment sans jamais perdre d'amplitude - un cas limite qui n'existe pas en pratique, toute bobine réelle possédant une résistance interne non nulle."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit RLC série de résistance totale $(R+r)=8\\ \\Omega$ voit son énergie totale passer de $E_{T1}=2,0\\times10^{-2}\\text{ J}$ à $E_{T2}=1,2\\times10^{-2}\\text{ J}$ entre deux instants séparés de $\\Delta t=0,10\\text{ s}$. En admettant que l'intensité efficace du courant sur cet intervalle est approximativement constante, estimer sa valeur à partir du bilan énergétique du circuit.",
+          "solution_markdown": "Énergie dissipée par effet Joule sur l'intervalle : $\\Delta E=E_{T1}-E_{T2}=2,0\\times10^{-2}-1,2\\times10^{-2}=0,8\\times10^{-2}\\text{ J}$.\n\nEn admettant un courant d'intensité efficace $I$ approximativement constante sur $\\Delta t$, l'énergie dissipée s'écrit $\\Delta E \\approx (R+r)\\,I^2\\,\\Delta t$.\n\nOn isole $I^2$ : $I^2 = \\dfrac{\\Delta E}{(R+r)\\Delta t} = \\dfrac{0,8\\times10^{-2}}{8\\times0,10} = \\dfrac{0,8\\times10^{-2}}{0,8} = 1,0\\times10^{-2}\\text{ A}^2$.\n\nDonc $I = \\sqrt{1,0\\times10^{-2}} = 0,10\\text{ A}$.\n\nL'intensité efficace approximative du courant sur cet intervalle est d'environ $0,10\\text{ A}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'énergie totale d'un RLC libre est $E_T=\\frac{q^2}{2C}+\\frac{1}{2}Li^2$ : toujours la somme de l'énergie du condensateur et de celle de la bobine.",
+        "Dérive $E_T$ par rapport au temps, puis utilise systématiquement la loi des mailles pour simplifier l'expression obtenue : c'est le seul moyen de faire apparaître le terme en $i^2$ caractéristique de l'effet Joule.",
+        "Le résultat $\\frac{dE_T}{dt}=-(R+r)i^2$ est général pour tout RLC série réel : il montre que l'énergie perdue par l'oscillateur est intégralement dissipée par effet Joule, aucune autre voie de perte n'existe dans ce modèle.",
+        "Un circuit LC pur (sans résistance) conserverait son énergie indéfiniment : c'est le cas limite théorique qui permet de comprendre, par contraste, pourquoi un RLC réel s'amortit.",
+        "Au BAC, cette démonstration est un grand classique des situations-problèmes : le candidat doit dérouler la méthode complète (écrire $E_T$, dériver, utiliser la loi des mailles, comparer à $P_{Joule}=(R+r)i^2$) sans sauter d'étape, même si le résultat final semble évident."
+      ]
+    }
+  ]
+}

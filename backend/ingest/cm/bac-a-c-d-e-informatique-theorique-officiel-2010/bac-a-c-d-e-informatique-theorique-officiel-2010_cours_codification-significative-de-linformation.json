@@ -1,0 +1,149 @@
+{
+  "cours_id": "cours-codification-significative-de-linformation-tle-a-c-d",
+  "meta": {
+    "titre": "Codification significative de l'information",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Organisation et traitement de l'information",
+    "duree_estimee_min": 25,
+    "tags": [
+      "codification",
+      "codage de l'information",
+      "code significatif",
+      "représentation de l'information"
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": null,
+      "module_numero": "301",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Épreuve théorique d'informatique au baccalauréat A, C et D 2009",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2010-ex3-q1a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois que tu remplis une fiche d'état civil, que tu lis un numéro de plaque d'immatriculation ou un numéro de sécurité sociale, tu es face à un code qui n'a rien d'arbitraire : chaque groupe de caractères y raconte quelque chose de précis sur la personne ou l'objet concerné. Savoir construire ce type de code, et le reconnaître, c'est la compétence testée dès qu'un exercice d'informatique te demande de « donner une codification » d'une information réelle (une date, un lieu, une identité). C'est un classique du baccalauréat camerounais, qui revient sous des formulations très proches d'une session à l'autre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une information (une donnée brute : une date, un nom, un lieu, une quantité).",
+        "Savoir distinguer une lettre d'un chiffre et manipuler des chaînes alphanumériques simples."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La codification significative",
+      "contenu_markdown": "Coder une information, c'est la remplacer par une suite de symboles (chiffres, lettres) construite selon une règle précise, dans le but de la stocker, de la transmettre ou de la traiter plus facilement. Il existe plusieurs familles de codes selon la règle de construction choisie : le code séquentiel (un simple numéro d'ordre, sans lien avec le contenu de l'information), le code significatif (chaque partie du code correspond à un élément de sens précis de l'information d'origine) et le code hiérarchique (le code reproduit une structure de niveaux, comme une filiation ou une classification). La codification significative est celle qui s'impose chaque fois que l'information à coder se décompose naturellement en plusieurs éléments identifiables : une date se décompose en jour/mois/année, un lieu se décompose en ville/région, une identité se décompose en nom/prénom. Le code se construit alors en juxtaposant un segment par élément, dans un ordre fixé à l'avance.",
+      "formule_principale": "Code significatif = segment(élément 1) + segment(élément 2) + ... + segment(élément n)",
+      "variantes": [
+        {
+          "nom": "Code séquentiel",
+          "quand_utiliser": "Quand l'information à coder n'a pas de structure interne à exploiter (une simple liste d'articles à numéroter dans l'ordre d'arrivée, par exemple) : le code est alors un numéro d'ordre, sans signification propre.",
+          "contenu_markdown": "Le code séquentiel attribue les numéros 1, 2, 3... dans l'ordre de création des enregistrements. Il est simple à générer mais ne permet de retrouver aucune information sur l'élément codé à la seule lecture du code."
+        },
+        {
+          "nom": "Code hiérarchique (arborescent)",
+          "quand_utiliser": "Quand l'information décrit une relation d'ordre ou de filiation entre plusieurs éléments (une génération qui en engendre une autre, une classification en catégories et sous-catégories).",
+          "contenu_markdown": "Le code hiérarchique ajoute un niveau au code de l'élément parent à chaque nouvelle génération ou sous-catégorie, par exemple 1, puis 1.1, puis 1.1.1. La position dans le code traduit directement la position dans la hiérarchie réelle."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Monsieur CAMARA est né le 13 avril 1942 à Yaoundé, dans la province du Centre, au Cameroun. Donner une codification de cette information, en précisant comment elle s'appelle.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les éléments distincts qui composent l'information à coder",
+          "justification": "Un code significatif attribue un segment à chaque élément de sens ; il faut d'abord isoler ces éléments avant de construire le code. Ici, l'information contient une date de naissance (jour, mois, année) et un lieu de naissance (ville, région).",
+          "resultat_markdown": "Éléments identifiés : jour = 13, mois = avril, année = 1942, ville = Yaoundé, région = Centre."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir un segment de code pour chaque élément",
+          "justification": "Chaque segment doit rester lisible et de longueur fixe pour que le code entier puisse être découpé sans ambiguïté au moment de la lecture.",
+          "resultat_markdown": "Jour sur 2 chiffres : `13`. Mois sur 2 chiffres : `04`. Année sur 4 chiffres : `1942`. Ville sur 3 lettres (abréviation) : `YAO`. Région sur 2 lettres (abréviation) : `CE`."
+        },
+        {
+          "numero": 3,
+          "action": "Juxtaposer les segments dans un ordre fixé",
+          "justification": "L'ordre choisi (ici : date puis lieu) doit être le même pour tous les codes de ce type, sinon deux personnes différentes pourraient produire des codes ambigus à relire.",
+          "resultat_markdown": "Code obtenu : `13041942YAOCE`."
+        },
+        {
+          "numero": 4,
+          "action": "Nommer le type de code obtenu",
+          "justification": "Chaque segment du code garde un sens directement identifiable (on peut retrouver la date et le lieu en relisant le code), ce qui correspond exactement à la définition de la codification significative, par opposition à un numéro d'ordre qui n'aurait aucun sens propre.",
+          "resultat_markdown": "Il s'agit d'une codification significative (ou codification alphanumérique structurée)."
+        }
+      ],
+      "conclusion_markdown": "Le code `13041942YAOCE` est une codification significative de l'identité de naissance de Monsieur CAMARA : chacun de ses segments se déchiffre directement en revenant à l'information d'origine, ce qui est la propriété qui définit ce type de code."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Attribuer un simple numéro d'ordre à l'information (par exemple coder Monsieur CAMARA « 001 ») plutôt qu'un code construit à partir des éléments de la date et du lieu.",
+          "pourquoi_faux": "Un numéro d'ordre est un code séquentiel : il ne conserve aucune information sur le contenu réel de la donnée. La question demande explicitement une codification qui reste liée à l'information de départ, ce qui exclut le code séquentiel.",
+          "correction_markdown": "Toujours découper l'information en ses éléments constitutifs (date, lieu, identité) avant de choisir un type de code, et réserver le code séquentiel aux cas où l'information n'a justement aucune structure exploitable."
+        },
+        {
+          "erreur_markdown": "Construire un code où les segments n'ont pas une longueur fixe (par exemple écrire le mois en toutes lettres une fois, en chiffres une autre fois).",
+          "pourquoi_faux": "Un code dont les segments changent de longueur ou de format d'une occurrence à l'autre ne peut plus être découpé automatiquement à la lecture : on ne sait plus où s'arrête un segment et où commence le suivant.",
+          "correction_markdown": "Fixer à l'avance le nombre de caractères de chaque segment (2 chiffres pour le jour, 2 pour le mois, 4 pour l'année, par exemple) et respecter cette longueur pour toutes les informations codées de la même façon."
+        },
+        {
+          "erreur_markdown": "Confondre codification significative et codification hiérarchique lorsque l'information contient à la fois une date/un lieu ET une relation de filiation.",
+          "pourquoi_faux": "Les deux types de code répondent à des besoins différents : la codification significative représente des attributs indépendants d'un même élément (date, lieu), la codification hiérarchique représente une relation d'ordre entre plusieurs éléments distincts (une génération qui en engendre une autre).",
+          "correction_markdown": "Se demander si l'information décrit un seul élément avec plusieurs attributs (codification significative) ou une relation entre plusieurs éléments distincts (codification hiérarchique) avant de choisir le type de code."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Madame ESSOMBA est née le 5 janvier 1988 à Douala, dans la région du Littoral. Proposer une codification significative de cette information.",
+          "solution_markdown": "1. Identifier les éléments : jour = 5, mois = janvier, année = 1988, ville = Douala, région = Littoral.\n2. Choisir un segment par élément, longueur fixe : jour sur 2 chiffres `05`, mois sur 2 chiffres `01`, année sur 4 chiffres `1988`, ville sur 3 lettres `DOU`, région sur 2 lettres `LT`.\n3. Juxtaposer dans l'ordre date puis lieu : `05011988DOULT`.\n4. Ce code est une codification significative : chaque segment se déchiffre directement (jour, mois, année, ville, région)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bibliothèque scolaire veut coder ses livres de façon à retrouver directement, à la seule lecture du code, la matière du livre (Maths, Français, Histoire) et son année de parution. Proposer un code significatif pour un livre de Mathématiques paru en 2015, et justifier le choix de chaque segment.",
+          "solution_markdown": "1. Identifier les éléments à coder : la matière du livre et son année de parution.\n2. Choisir un segment pour chacun : matière sur 3 lettres, par exemple `MAT` pour Mathématiques (on choisirait `FRA` pour Français, `HIS` pour Histoire, afin que chaque matière ait un segment de même longueur et facilement reconnaissable) ; année sur 4 chiffres, `2015`.\n3. Juxtaposer les deux segments dans un ordre fixé, par exemple matière puis année : `MAT2015`.\n4. Ce code est une codification significative : la matière et l'année de parution se lisent directement dans le code, sans avoir besoin d'un registre externe pour les retrouver, contrairement à un numéro d'ordre séquentiel qui obligerait à consulter un catalogue."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un établissement veut coder ses élèves de façon à retrouver, à la seule lecture du code, leur classe (6e à Tle), leur série pour les classes qui en ont une, et leur numéro d'ordre dans la classe. Proposer un code pour un élève de Terminale C, 12e de sa classe, et discuter s'il s'agit encore d'une codification purement significative ou d'un mélange de deux types de code.",
+          "solution_markdown": "1. Identifier les éléments à coder : la classe (Tle), la série (C) et le numéro d'ordre dans la classe (12).\n2. Choisir un segment pour chacun : classe sur 2 caractères, `TL` pour Terminale ; série sur 1 lettre, `C` ; numéro d'ordre sur 2 chiffres avec un zéro initial si besoin, `12`.\n3. Juxtaposer les segments dans un ordre fixé, classe puis série puis numéro d'ordre : `TLC12`.\n4. Discussion : les segments `TL` et `C` sont un code significatif classique, puisqu'ils renvoient directement à une caractéristique de l'élève (sa classe, sa série). Le segment `12`, en revanche, est un numéro d'ordre au sein de la classe : pris isolément, ce segment est un code séquentiel, qui ne dit rien sur l'élève en dehors de son rang d'inscription. Le code `TLC12` est donc un code mixte : significatif pour la classe et la série, séquentiel pour le numéro d'ordre. C'est une situation très fréquente en pratique, un code réel combine souvent plusieurs principes plutôt que d'appliquer un seul type à la lettre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant de coder une information, découpe-la toujours en ses éléments constitutifs : c'est ce découpage qui détermine le nombre de segments du code.",
+        "Un code significatif garde un sens directement lisible dans chacun de ses segments ; un code séquentiel n'est qu'un numéro d'ordre sans lien avec le contenu.",
+        "Fixe la longueur de chaque segment à l'avance, sinon le code ne peut plus être découpé sans ambiguïté à la lecture.",
+        "Une information qui décrit une relation entre plusieurs éléments (filiation, classification) appelle plutôt une codification hiérarchique, pas seulement significative.",
+        "Un code réel mélange parfois plusieurs principes (une partie significative, une partie séquentielle) : sais reconnaître chaque partie plutôt que de forcer un seul type sur tout le code.",
+        "Au BAC comme au BEPC, ce type de question porte presque toujours sur une identité, une date ou un lieu réel à coder : entraîne-toi à repérer vite les éléments à segmenter, c'est la moitié du travail déjà faite."
+      ]
+    }
+  ]
+}

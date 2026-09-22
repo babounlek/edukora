@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-langages-web-cote-serveur-et-bases-de-donnees-tle-ti",
+  "meta": {
+    "titre": "Langages web et bases de données : qui peut vraiment y accéder ?",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction au web dynamique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "PHP",
+      "HTML",
+      "CSS",
+      "Java",
+      "bases de données",
+      "langage de traitement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un site marchand affiche la liste des produits en stock, un prix qui change selon les promotions, un compteur de vues sur chaque article. Ces informations ne sont écrites nulle part dans le code HTML de la page : elles viennent d'une base de données, interrogée à chaque visite. Mais alors, pourquoi ne peut-on pas simplement écrire cette interrogation en HTML ou en CSS ? Ce cours répond à cette question en donnant le critère qui sépare, parmi les langages du web, ceux qui peuvent dialoguer avec une base de données de ceux qui en sont structurellement incapables."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une page web combine plusieurs langages (structure, mise en forme, traitement).",
+        "Avoir déjà vu au moins un exemple de code HTML et un exemple de code PHP ou Java."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Langage de traitement contre langage de description",
+      "contenu_markdown": "Un langage permet de travailler avec une base de données lorsqu'il est un langage de traitement : il propose des variables, des conditions, des boucles et des fonctions capables d'ouvrir une connexion réseau vers un serveur de base de données, d'y envoyer une requête (le plus souvent en SQL) et de récupérer, puis d'exploiter, le résultat renvoyé. HTML et CSS sont des langages de description : HTML décrit la structure d'un document (titres, paragraphes, tableaux), CSS décrit son apparence (couleurs, tailles, positions). Aucun des deux ne propose la moindre instruction de traitement : ils ne savent ni additionner deux nombres, ni tester une condition, ni ouvrir une connexion réseau. Un langage de traitement comme PHP ou Java, à l'inverse, dispose de bibliothèques ou d'extensions dédiées (mysqli et PDO pour PHP, JDBC pour Java) qui prennent en charge le dialogue avec le serveur de base de données.",
+      "formule_principale": "\\text{Langage de traitement (variables, boucles, fonctions)} \\;\\Rightarrow\\; \\text{peut dialoguer avec une base de données}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Parmi les langages suivants, lesquels permettent de travailler avec des bases de données ? a) HTML ; b) PHP ; c) JAVA ; d) CSS",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la nature de chaque langage",
+          "justification": "On classe chaque langage comme langage de description ou langage de traitement.",
+          "resultat_markdown": "HTML : description (structure). CSS : description (apparence). PHP : traitement (script serveur). JAVA : traitement (programmation généraliste)."
+        },
+        {
+          "numero": 2,
+          "action": "Éliminer les langages de description",
+          "justification": "Un langage de description n'a aucune instruction capable d'ouvrir une connexion à une base de données.",
+          "resultat_markdown": "HTML et CSS sont éliminés."
+        },
+        {
+          "numero": 3,
+          "action": "Confirmer les langages de traitement retenus",
+          "justification": "PHP dispose de mysqli/PDO, Java dispose de JDBC : tous deux savent dialoguer avec un serveur de base de données.",
+          "resultat_markdown": "PHP et JAVA sont retenus."
+        }
+      ],
+      "conclusion_markdown": "Les langages qui permettent de travailler avec une base de données sont PHP et JAVA ; HTML et CSS, langages de description, en sont incapables."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre que HTML permet de travailler avec une base de données parce qu'une page HTML peut afficher un tableau de résultats.",
+          "pourquoi_faux": "La page HTML affiche un résultat déjà préparé par un langage de traitement en amont (souvent PHP) ; HTML lui-même n'a exécuté aucune requête et ne pourrait pas le faire seul.",
+          "correction_markdown": "Distinguer « afficher un résultat » (HTML peut le faire) de « produire ce résultat en interrogeant une base » (seul un langage de traitement le peut)."
+        },
+        {
+          "erreur_markdown": "Considérer que CSS pourrait aider à « organiser » les données d'une base parce qu'il organise visuellement une page.",
+          "pourquoi_faux": "CSS ne manipule que l'apparence des éléments déjà présents dans la page ; il ne lit, n'écrit et ne transmet aucune donnée.",
+          "correction_markdown": "CSS n'intervient jamais dans le traitement des données, seulement dans leur présentation visuelle une fois qu'elles sont déjà affichées."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le langage Python permet-il de travailler avec des bases de données ? Justifier.",
+          "solution_markdown": "Oui : Python est un langage de traitement complet (variables, conditions, boucles, fonctions) qui dispose de modules dédiés (comme `sqlite3` ou `mysql-connector`) permettant de se connecter à un serveur de base de données, d'envoyer des requêtes et de récupérer les résultats."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un développeur affirme : « JavaScript exécuté dans le navigateur peut se connecter directement à une base de données MySQL installée sur le serveur. » Cette affirmation est-elle exacte ? Justifier.",
+          "solution_markdown": "Non, cette affirmation est inexacte dans le cas général. JavaScript exécuté côté navigateur (côté client) n'a pas d'accès direct au serveur de base de données pour des raisons de sécurité : il doit passer par un langage de traitement côté serveur (PHP, Java, Node.js...) qui, lui, interroge la base et renvoie le résultat au navigateur. JavaScript est bien un langage de traitement (il a des variables, boucles, fonctions), mais son exécution côté client l'empêche d'accéder directement à une base protégée sur le serveur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "XML est parfois utilisé pour stocker des données structurées. Peut-on dire que XML est un langage qui « travaille avec des bases de données » au même titre que PHP ? Justifier ta réponse en distinguant le rôle de XML de celui de PHP.",
+          "solution_markdown": "Non. XML, comme HTML, est un langage de description : il définit un format pour structurer des données (des balises et leur contenu), mais il ne contient aucune instruction de traitement (pas de variable, pas de boucle, pas de condition) et ne peut donc ni ouvrir une connexion à une base de données, ni exécuter une requête. Un fichier XML peut tout à fait être généré ou lu par un langage de traitement comme PHP (qui, lui, va se connecter à la base, récupérer des données, puis les organiser au format XML) : XML est alors un format de sortie ou d'échange, jamais l'outil qui a réalisé le traitement lui-même. La distinction reste la même que pour HTML/CSS : décrire une structure de données n'est pas la même chose que les traiter."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un langage travaille avec une base de données s'il est un langage de traitement (variables, conditions, boucles, fonctions), jamais un langage de simple description.",
+        "HTML décrit la structure d'une page, CSS décrit son apparence : aucun des deux ne traite de données.",
+        "PHP (mysqli, PDO) et Java (JDBC) sont deux exemples classiques de langages de traitement capables de dialoguer avec un serveur de base de données.",
+        "Ce critère (traitement contre description) se généralise à tout nouveau langage rencontré : pose-toi la question « a-t-il des instructions de traitement ? » avant de conclure.",
+        "Au BAC TI, ce type de question ouvre presque toujours la partie consacrée à un langage de programmation web (souvent PHP) : elle vérifie que tu situes correctement ce langage parmi les autres technologies du web avant d'en étudier la syntaxe."
+      ]
+    }
+  ]
+}

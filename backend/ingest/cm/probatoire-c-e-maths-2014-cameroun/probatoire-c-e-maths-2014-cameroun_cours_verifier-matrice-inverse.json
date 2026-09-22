@@ -1,0 +1,185 @@
+{
+ "cours_id": "cours-verifier-matrice-inverse-1ere-ce",
+ "meta": {
+  "titre": "Vérifier qu'une matrice est l'inverse d'une autre",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Matrices et applications linéaires",
+  "duree_estimee_min": 25,
+  "tags": ["matrice inverse", "produit matriciel", "matrice identité", "déterminant", "matrice symétrique"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "VI"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex1-q2b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Chercher l'inverse d'une matrice demande une formule et plusieurs lignes de calcul. Vérifier qu'un candidat proposé **est** l'inverse ne demande qu'un produit. Beaucoup d'énoncés exploitent cette dissymétrie : ils vous offrent la réponse et vous demandent seulement de la justifier. Encore faut-il lire le verbe de la consigne. « Justifier que » et « déterminer » n'appellent pas du tout le même travail, et confondre les deux coûte cinq minutes pour rien."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Effectuer le produit de deux matrices carrées d'ordre $2$",
+    "Reconnaître la matrice identité",
+    "Calculer le déterminant d'une matrice carrée d'ordre $2$",
+    "Manipuler les radicaux dans un calcul numérique"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Un produit égal à l'identité suffit",
+   "contenu_markdown": "**Définition.** Deux matrices carrées $M$ et $M'$ de même ordre sont **inverses** l'une de l'autre lorsque\n\n$$M \\times M' = M' \\times M = I$$\n\noù $I$ désigne la matrice identité, celle dont la diagonale ne contient que des $1$ et le reste des $0$.\n\n**Ce qu'il suffit de vérifier.** En dimension $2$, l'égalité $M \\times M' = I$ entraîne automatiquement $M' \\times M = I$. Un seul produit suffit donc en pratique, même s'il est plus rigoureux de justifier le second.\n\n**Le produit de deux matrices d'ordre 2.** Pour\n\n$$M = \\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} \\qquad ; \\qquad M' = \\begin{pmatrix} a' & b' \\\\ c' & d' \\end{pmatrix}$$\n\nle coefficient situé en ligne $i$ et colonne $j$ du produit s'obtient en parcourant la **ligne $i$ de $M$** et la **colonne $j$ de $M'$**, en multipliant terme à terme et en additionnant :\n\n$$M \\times M' = \\begin{pmatrix} aa' + bc' & ab' + bd' \\\\ ca' + dc' & cb' + dd' \\end{pmatrix}$$\n\n**Le raccourci des matrices symétriques.** Si $M$ et $M'$ sont toutes deux **symétriques**, c'est-à-dire égales à leur transposée, alors la transposition de $M M' = I$ donne\n\n$$\\left(M M'\\right)^T = M'^T M^T = M' M \\qquad \\text{et} \\qquad I^T = I$$\n\ndonc $M' M = I$. Le second produit est acquis sans aucun calcul supplémentaire.\n\n**Le contrôle par les déterminants.** Le déterminant d'un produit est le produit des déterminants. Comme $\\det I = 1$, deux matrices inverses vérifient nécessairement\n\n$$\\det M \\times \\det M' = 1$$\n\nC'est un contrôle en une ligne, qui détecte immédiatement une erreur dans le calcul de $M'$.\n\n**Condition d'existence.** Une matrice admet un inverse si et seulement si son déterminant est non nul. Vérifier $\\det M \\neq 0$ avant tout calcul garantit que l'inverse existe bel et bien.",
+   "formule_principale": "M \\times M' = I \\iff M' = M^{-1}",
+   "variantes": [
+    {
+     "nom": "Calcul direct de l'inverse par la formule",
+     "quand_utiliser": "Quand l'énoncé demande de **déterminer** l'inverse, et non de vérifier un candidat",
+     "contenu_markdown": "Pour $M = \\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$ de déterminant $\\det M = ad - bc$ non nul :\n\n$$M^{-1} = \\dfrac{1}{ad-bc} \\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix}$$\n\nOn échange les deux coefficients de la diagonale principale, on change le signe des deux autres, et l'on divise par le déterminant. Cette formule est indispensable quand aucun candidat n'est fourni, mais elle est nettement plus longue et plus risquée que la simple vérification d'un produit."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit $M = \\begin{pmatrix} \\dfrac{1}{2} & \\dfrac{\\sqrt{3}}{2} \\\\ \\dfrac{\\sqrt{3}}{2} & \\dfrac{1}{2} \\end{pmatrix}$. On pose $M' = 2M - 2I$, où $I = \\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}$. Justifier que $M'$ est la matrice inverse de $M$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Vérifier que l'inverse existe",
+     "justification": "Une matrice est inversible si et seulement si son déterminant est non nul",
+     "resultat_markdown": "$\\det M = \\dfrac{1}{2} \\times \\dfrac{1}{2} - \\dfrac{\\sqrt{3}}{2} \\times \\dfrac{\\sqrt{3}}{2} = \\dfrac{1}{4} - \\dfrac{3}{4} = -\\dfrac{1}{2} \\neq 0$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer $2M$",
+     "justification": "Multiplier une matrice par un réel revient à multiplier chacun de ses coefficients",
+     "resultat_markdown": "$2M = \\begin{pmatrix} 1 & \\sqrt{3} \\\\ \\sqrt{3} & 1 \\end{pmatrix}$"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer $2I$",
+     "justification": "Même opération sur la matrice identité",
+     "resultat_markdown": "$2I = \\begin{pmatrix} 2 & 0 \\\\ 0 & 2 \\end{pmatrix}$"
+    },
+    {
+     "numero": 4,
+     "action": "En déduire $M'$",
+     "justification": "On soustrait coefficient par coefficient",
+     "resultat_markdown": "$M' = \\begin{pmatrix} 1-2 & \\sqrt{3}-0 \\\\ \\sqrt{3}-0 & 1-2 \\end{pmatrix} = \\begin{pmatrix} -1 & \\sqrt{3} \\\\ \\sqrt{3} & -1 \\end{pmatrix}$"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer le coefficient en ligne 1, colonne 1 du produit",
+     "justification": "Première ligne de $M$ contre première colonne de $M'$",
+     "resultat_markdown": "$\\dfrac{1}{2} \\times (-1) + \\dfrac{\\sqrt{3}}{2} \\times \\sqrt{3} = -\\dfrac{1}{2} + \\dfrac{3}{2} = 1$"
+    },
+    {
+     "numero": 6,
+     "action": "Calculer le coefficient en ligne 1, colonne 2",
+     "justification": "Première ligne de $M$ contre deuxième colonne de $M'$",
+     "resultat_markdown": "$\\dfrac{1}{2} \\times \\sqrt{3} + \\dfrac{\\sqrt{3}}{2} \\times (-1) = \\dfrac{\\sqrt{3}}{2} - \\dfrac{\\sqrt{3}}{2} = 0$"
+    },
+    {
+     "numero": 7,
+     "action": "Calculer les deux coefficients de la seconde ligne",
+     "justification": "Deuxième ligne de $M$ contre chacune des colonnes de $M'$",
+     "resultat_markdown": "$\\dfrac{\\sqrt{3}}{2} \\times (-1) + \\dfrac{1}{2} \\times \\sqrt{3} = 0$ et $\\dfrac{\\sqrt{3}}{2} \\times \\sqrt{3} + \\dfrac{1}{2} \\times (-1) = \\dfrac{3}{2} - \\dfrac{1}{2} = 1$"
+    },
+    {
+     "numero": 8,
+     "action": "Assembler le produit",
+     "justification": "Les quatre coefficients forment la matrice identité",
+     "resultat_markdown": "$M \\times M' = \\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix} = I$"
+    },
+    {
+     "numero": 9,
+     "action": "Obtenir l'autre produit par transposition",
+     "justification": "$M$ et $M'$ sont symétriques, donc $\\left(M M'\\right)^T = M' M$, et $I^T = I$",
+     "resultat_markdown": "$M' \\times M = I$ également"
+    },
+    {
+     "numero": 10,
+     "action": "Contrôler par les déterminants",
+     "justification": "Le produit des déterminants doit valoir $1$",
+     "resultat_markdown": "$\\det M' = (-1)(-1) - \\sqrt{3} \\times \\sqrt{3} = 1 - 3 = -2$, et $\\left(-\\dfrac{1}{2}\\right) \\times (-2) = 1$"
+    }
+   ],
+   "conclusion_markdown": "Les deux produits valant $I$, la matrice $M' = \\begin{pmatrix} -1 & \\sqrt{3} \\\\ \\sqrt{3} & -1 \\end{pmatrix}$ est bien l'inverse de $M$. Le contrôle par les déterminants, mené en une ligne à l'étape 10, valide indépendamment tout le calcul : c'est le réflexe à conserver."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Recalculer l'inverse par la formule au lieu de vérifier le candidat proposé",
+     "pourquoi_faux": "Ce n'est pas mathématiquement faux, mais c'est deux fois plus long et deux fois plus risqué : la formule fait intervenir une division par le déterminant, ici $-\\dfrac{1}{2}$, source d'erreurs de signe. L'énoncé dit « justifier que », pas « déterminer ».",
+     "correction_markdown": "Lis le verbe de la consigne. « Justifier que », « montrer que », « vérifier que » signalent qu'un candidat est fourni : contente-toi de le tester."
+    },
+    {
+     "erreur_markdown": "Multiplier les matrices terme à terme, coefficient contre coefficient",
+     "pourquoi_faux": "Le produit matriciel n'est pas le produit terme à terme. Le coefficient en position $(1,1)$ du produit combine **toute** la première ligne de $M$ avec **toute** la première colonne de $M'$, et non le seul coefficient $(1,1)$ de chacune.",
+     "correction_markdown": "Trace du doigt la ligne de gauche et la colonne de droite : chaque coefficient du produit est une somme de deux termes en dimension $2$, jamais un produit isolé."
+    },
+    {
+     "erreur_markdown": "Oublier que $\\sqrt{3} \\times \\sqrt{3} = 3$",
+     "pourquoi_faux": "Laisser $\\sqrt{3} \\times \\sqrt{3}$ tel quel, ou l'écrire $\\sqrt{9}$ sans conclure, empêche les simplifications qui font apparaître les $1$ et les $0$ de l'identité. Le calcul semble alors ne pas aboutir.",
+     "correction_markdown": "Simplifie chaque produit de radicaux dès qu'il apparaît : $\\sqrt{a} \\times \\sqrt{a} = a$. C'est ce qui fait tomber les coefficients sur des entiers."
+    },
+    {
+     "erreur_markdown": "Ne vérifier qu'un seul des deux produits sans le justifier",
+     "pourquoi_faux": "La définition exige les deux égalités. En dimension $2$ l'une entraîne l'autre, mais encore faut-il le dire, ou fournir un argument comme celui de la symétrie.",
+     "correction_markdown": "Ajoute une ligne : soit tu invoques la symétrie des deux matrices, soit tu calcules le second produit. Une phrase suffit, et elle complète la démonstration."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $A = \\begin{pmatrix} 3 & 5 \\\\ 1 & 2 \\end{pmatrix}$ et $B = \\begin{pmatrix} 2 & -5 \\\\ -1 & 3 \\end{pmatrix}$. Vérifier que $B$ est l'inverse de $A$.",
+     "solution_markdown": "**Étape 1 - existence.**\n\n$$\\det A = 3 \\times 2 - 5 \\times 1 = 6 - 5 = 1 \\neq 0$$\n\nLa matrice $A$ est donc inversible.\n\n**Étape 2 - calcul du produit $A \\times B$.**\n\nCoefficient $(1,1)$ : $3 \\times 2 + 5 \\times (-1) = 6 - 5 = 1$\n\nCoefficient $(1,2)$ : $3 \\times (-5) + 5 \\times 3 = -15 + 15 = 0$\n\nCoefficient $(2,1)$ : $1 \\times 2 + 2 \\times (-1) = 2 - 2 = 0$\n\nCoefficient $(2,2)$ : $1 \\times (-5) + 2 \\times 3 = -5 + 6 = 1$\n\n$$A \\times B = \\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix} = I$$\n\n**Étape 3 - le second produit.**\n\nCoefficient $(1,1)$ : $2 \\times 3 + (-5) \\times 1 = 6 - 5 = 1$\n\nCoefficient $(1,2)$ : $2 \\times 5 + (-5) \\times 2 = 10 - 10 = 0$\n\nCoefficient $(2,1)$ : $(-1) \\times 3 + 3 \\times 1 = -3 + 3 = 0$\n\nCoefficient $(2,2)$ : $(-1) \\times 5 + 3 \\times 2 = -5 + 6 = 1$\n\n$$B \\times A = I$$\n\n**Conclusion.** $B = A^{-1}$.\n\n**Contrôle par les déterminants.** $\\det B = 2 \\times 3 - (-5) \\times (-1) = 6 - 5 = 1$, et $\\det A \\times \\det B = 1 \\times 1 = 1$. Conforme.\n\n**Remarque.** Ici $\\det A = 1$, donc la formule directe aurait aussi été rapide : on échange $3$ et $2$, on change le signe de $5$ et de $1$, et l'on ne divise par rien. C'est exactement la matrice $B$."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $M = \\begin{pmatrix} 2 & 1 \\\\ 3 & 2 \\end{pmatrix}$. Vérifier que $M$ satisfait la relation $M^2 - 4M + I = 0$, puis en déduire l'expression de $M^{-1}$ en fonction de $M$ et de $I$.",
+     "solution_markdown": "**Étape 1 - calculer $M^2$.**\n\nCoefficient $(1,1)$ : $2 \\times 2 + 1 \\times 3 = 4 + 3 = 7$\n\nCoefficient $(1,2)$ : $2 \\times 1 + 1 \\times 2 = 2 + 2 = 4$\n\nCoefficient $(2,1)$ : $3 \\times 2 + 2 \\times 3 = 6 + 6 = 12$\n\nCoefficient $(2,2)$ : $3 \\times 1 + 2 \\times 2 = 3 + 4 = 7$\n\n$$M^2 = \\begin{pmatrix} 7 & 4 \\\\ 12 & 7 \\end{pmatrix}$$\n\n**Étape 2 - vérifier la relation.**\n\n$$4M = \\begin{pmatrix} 8 & 4 \\\\ 12 & 8 \\end{pmatrix}$$\n\n$$M^2 - 4M + I = \\begin{pmatrix} 7-8+1 & 4-4+0 \\\\ 12-12+0 & 7-8+1 \\end{pmatrix} = \\begin{pmatrix} 0 & 0 \\\\ 0 & 0 \\end{pmatrix}$$\n\nLa relation est vérifiée.\n\n**Étape 3 - en déduire l'inverse.**\n\nDe $M^2 - 4M + I = 0$ on tire\n\n$$I = 4M - M^2 = M\\left(4I - M\\right)$$\n\nen factorisant par $M$, ce qui est licite puisque $M$ commute avec elle-même et avec $I$.\n\nCette égalité signifie exactement que $4I - M$ est l'inverse de $M$ :\n\n$$M^{-1} = 4I - M$$\n\n**Étape 4 - expliciter et vérifier.**\n\n$$4I - M = \\begin{pmatrix} 4 & 0 \\\\ 0 & 4 \\end{pmatrix} - \\begin{pmatrix} 2 & 1 \\\\ 3 & 2 \\end{pmatrix} = \\begin{pmatrix} 2 & -1 \\\\ -3 & 2 \\end{pmatrix}$$\n\nContrôle par le produit : $2 \\times 2 + 1 \\times (-3) = 4 - 3 = 1$ pour le coefficient $(1,1)$, et $2 \\times (-1) + 1 \\times 2 = 0$ pour le coefficient $(1,2)$. Conforme.\n\nContrôle par la formule directe : $\\det M = 4 - 3 = 1$, donc $M^{-1} = \\begin{pmatrix} 2 & -1 \\\\ -3 & 2 \\end{pmatrix}$. Identique.\n\n**Ce qu'il faut retenir.** Une relation polynomiale vérifiée par une matrice fournit son inverse sans aucune division : c'est exactement le mécanisme de l'exercice du Probatoire, où $M' = 2M - 2I$ est l'inverse parce que $M$ vérifie $2M^2 - 2M = I$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $m$ un réel et $M_m = \\begin{pmatrix} m & 1 \\\\ 2 & m-1 \\end{pmatrix}$. Déterminer les valeurs de $m$ pour lesquelles $M_m$ est inversible, puis vérifier que pour $m = 3$ la matrice $N = \\begin{pmatrix} 2 & -1 \\\\ -2 & 3 \\end{pmatrix}$ est, à un facteur près que l'on précisera, l'inverse de $M_3$.",
+     "solution_markdown": "**Étape 1 - condition d'inversibilité.**\n\n$$\\det M_m = m(m-1) - 1 \\times 2 = m^2 - m - 2$$\n\nLa matrice est inversible si et seulement si ce déterminant est non nul. Cherchons quand il s'annule :\n\n$$m^2 - m - 2 = 0$$\n\nDiscriminant : $\\Delta = 1 + 8 = 9$, donc $\\sqrt{\\Delta} = 3$.\n\n$$m_1 = \\dfrac{1-3}{2} = -1 \\qquad ; \\qquad m_2 = \\dfrac{1+3}{2} = 2$$\n\n**Conclusion.** $M_m$ est inversible si et seulement si $m \\neq -1$ et $m \\neq 2$.\n\n**Étape 2 - le cas $m = 3$.**\n\n$$M_3 = \\begin{pmatrix} 3 & 1 \\\\ 2 & 2 \\end{pmatrix} \\qquad \\text{et} \\qquad \\det M_3 = 9 - 3 - 2 = 4$$\n\nLe déterminant est non nul, la matrice est bien inversible.\n\n**Étape 3 - calculer le produit $M_3 \\times N$.**\n\nCoefficient $(1,1)$ : $3 \\times 2 + 1 \\times (-2) = 6 - 2 = 4$\n\nCoefficient $(1,2)$ : $3 \\times (-1) + 1 \\times 3 = -3 + 3 = 0$\n\nCoefficient $(2,1)$ : $2 \\times 2 + 2 \\times (-2) = 4 - 4 = 0$\n\nCoefficient $(2,2)$ : $2 \\times (-1) + 2 \\times 3 = -2 + 6 = 4$\n\n$$M_3 \\times N = \\begin{pmatrix} 4 & 0 \\\\ 0 & 4 \\end{pmatrix} = 4I$$\n\n**Étape 4 - conclure.**\n\nLe produit ne vaut pas $I$ mais $4I$. En divisant les deux membres par $4$ :\n\n$$M_3 \\times \\dfrac{1}{4} N = I$$\n\nDonc\n\n$$M_3^{-1} = \\dfrac{1}{4} N = \\begin{pmatrix} \\dfrac{1}{2} & -\\dfrac{1}{4} \\\\ -\\dfrac{1}{2} & \\dfrac{3}{4} \\end{pmatrix}$$\n\n**Le facteur cherché est $\\dfrac{1}{4}$**, c'est-à-dire l'inverse du déterminant.\n\n**Étape 5 - interpréter.**\n\nCe n'est pas une coïncidence : la formule générale de l'inverse s'écrit\n\n$$M^{-1} = \\dfrac{1}{\\det M} \\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix}$$\n\nLa matrice $N = \\begin{pmatrix} 2 & -1 \\\\ -2 & 3 \\end{pmatrix}$ est exactement la matrice obtenue en échangeant les coefficients diagonaux de $M_3$ et en changeant le signe des deux autres. Il ne manquait que la division par $\\det M_3 = 4$.\n\n**Contrôle par les déterminants.** $\\det N = 2 \\times 3 - (-1)(-2) = 6 - 2 = 4$, et $\\det M_3 \\times \\det\\left(\\dfrac{1}{4}N\\right) = 4 \\times \\dfrac{4}{16} = 1$. Conforme.\n\n**Ce qu'il faut retenir.** Un produit qui donne $kI$ au lieu de $I$ ne signifie pas que le candidat est faux : il l'est à un facteur près, et ce facteur est presque toujours le déterminant."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Deux matrices sont inverses lorsque leur produit vaut la matrice identité : $M M' = M' M = I$.",
+    "Lis le verbe de la consigne : « justifier que » ou « vérifier que » signale qu'un candidat est fourni, donc qu'un simple produit suffit.",
+    "Le produit matriciel combine une **ligne** de gauche avec une **colonne** de droite : ce n'est jamais un produit terme à terme.",
+    "Simplifie les radicaux dès qu'ils apparaissent : $\\sqrt{a} \\times \\sqrt{a} = a$, et c'est ce qui fait tomber les coefficients sur des entiers.",
+    "Contrôle en une ligne : $\\det M \\times \\det M' = 1$ pour deux matrices inverses.",
+    "Vérifie d'abord que $\\det M \\neq 0$ : sans cela, l'inverse n'existe pas.",
+    "Si les deux matrices sont symétriques, la transposition donne le second produit gratuitement.",
+    "Un produit égal à $kI$ signale un candidat correct à un facteur près, ce facteur étant en général le déterminant."
+   ]
+  }
+ ]
+}

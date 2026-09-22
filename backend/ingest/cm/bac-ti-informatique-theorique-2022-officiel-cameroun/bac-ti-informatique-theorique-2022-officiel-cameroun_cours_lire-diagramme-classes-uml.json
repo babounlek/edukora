@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-lire-diagramme-classes-tle-ti",
+  "meta": {
+    "titre": "Lire un diagramme de classes UML : notation et éléments",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de classes : notation de base",
+    "duree_estimee_min": 22,
+    "tags": [
+      "UML",
+      "diagramme de classes",
+      "visibilité",
+      "multiplicité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un diagramme de classes ressemble à un plan d'architecte : chaque rectangle est une pièce, chaque trait un couloir, chaque symbole une règle de construction. Savoir le LIRE avant de savoir le dessiner est la compétence la plus rentable à l'examen : la majorité des questions sur un diagramme déjà fourni se résolvent en repérant le bon symbole au bon endroit, pas en réfléchissant longuement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une classe et un objet en programmation ou en UML.",
+        "Savoir lire un tableau à compartiments."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois compartiments et les signes de visibilité",
+      "contenu_markdown": "Une classe UML se représente par un rectangle à trois compartiments empilés : le **nom de la classe** en haut (en gras, centré), ses **attributs** au milieu (un par ligne, avec leur type après le symbole `:`), et ses **opérations** en bas (avec leurs parenthèses `()`, éventuellement leur type de retour). Chaque attribut et chaque opération est précédé d'un signe de visibilité : `-` pour privé, `+` pour public, `#` pour protégé.\n\nLes classes sont reliées entre elles par des traits porteurs de **multiplicités** (1, 0..1, 1..*, *...) qui précisent combien d'objets d'une classe peuvent être associés à un objet de l'autre classe, et éventuellement d'un **nom de rôle** qui précise la fonction jouée par chaque extrémité de l'association.",
+      "formule_principale": "Classe = Nom (haut) + Attributs (milieu, -/+/#) + Opérations (bas, -/+/#)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une classe Vehicule est représentée avec l'attribut `-immatriculation : string` et l'opération `+demarrer()`. Identifier la visibilité de chaque membre et expliquer ce qu'elle signifie concrètement pour l'utilisation de cette classe.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le signe devant chaque membre",
+          "justification": "Le signe de visibilité est toujours le premier caractère du membre, avant son nom.",
+          "resultat_markdown": "`-immatriculation` commence par `-` ; `+demarrer()` commence par `+`."
+        },
+        {
+          "numero": 2,
+          "action": "Traduire chaque signe en règle d'accès",
+          "justification": "`-` = privé, accessible uniquement depuis l'intérieur de la classe ; `+` = public, accessible depuis l'extérieur.",
+          "resultat_markdown": "immatriculation est privé ; demarrer() est public."
+        },
+        {
+          "numero": 3,
+          "action": "En déduire la conséquence pratique pour un programme qui utiliserait cette classe",
+          "justification": "La visibilité détermine ce qu'un autre morceau de programme peut faire directement avec un objet Vehicule.",
+          "resultat_markdown": "Un autre objet peut appeler `demarrer()` directement sur un objet Vehicule, mais ne peut pas lire ou modifier directement son immatriculation."
+        }
+      ],
+      "conclusion_markdown": "La visibilité n'est jamais un détail décoratif du diagramme : elle traduit une vraie règle de conception, protéger les données internes tout en exposant un comportement contrôlé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire un attribut sans son type (répondre juste « Nom » au lieu de « -Nom : string »)",
+          "pourquoi_faux": "Le type fait partie intégrante de la définition de l'attribut : deux attributs de même nom mais de types différents ne se comportent pas de la même façon.",
+          "correction_markdown": "Recopie toujours l'attribut avec son signe de visibilité ET son type complet, exactement comme il apparaît sur le diagramme."
+        },
+        {
+          "erreur_markdown": "Confondre le compartiment des attributs et celui des opérations quand une classe n'a pas de méthode visible",
+          "pourquoi_faux": "Une classe sans opération affichée garde quand même trois compartiments dans la notation UML standard, le troisième restant simplement vide.",
+          "correction_markdown": "Compte toujours trois zones dans un rectangle de classe, même si l'une d'elles semble vide sur le schéma."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une classe Etudiant porte l'attribut `+nom : string` et l'attribut `-moyenneGenerale : float`. Lequel des deux peut être lu directement par un autre objet du programme ?",
+          "solution_markdown": "L'attribut `+nom` est public : il peut être lu directement par un autre objet du programme. L'attribut `-moyenneGenerale` est privé : il ne peut être lu ou modifié que depuis l'intérieur de la classe Etudiant elle-même, par exemple via une méthode publique dédiée si le concepteur en prévoit une."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sur un diagramme, une association entre Commande et Produit porte la multiplicité `1..*` du côté Produit et `1` du côté Commande. Formuler en une phrase ce que cela signifie concrètement pour la gestion d'une commande.",
+          "solution_markdown": "Une Commande est associée à au moins un Produit, potentiellement plusieurs ; à l'inverse, chaque ligne de Produit dans cette association concerne exactement une seule Commande. Concrètement, une commande ne peut pas être vide, et un produit commandé ne peut pas être partagé entre deux commandes différentes dans cette modélisation."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un diagramme de classes présente une classe Employe avec l'opération `#calculerPrime() : float`. Un développeur crée une sous-classe Cadre qui hérite de Employe. Le développeur peut-il utiliser `calculerPrime()` directement depuis le code de la classe Cadre ? Et depuis une classe totalement indépendante, comme Facturation ? Justifier en fonction de la visibilité protégée.",
+          "solution_markdown": "Le signe `#` indique une visibilité protégée : le membre est accessible depuis la classe elle-même ET depuis ses sous-classes, mais pas depuis une classe extérieure à cette hiérarchie. Le développeur PEUT donc utiliser `calculerPrime()` directement dans le code de Cadre, puisque Cadre hérite de Employe. En revanche, une classe Facturation totalement indépendante NE PEUT PAS appeler directement `calculerPrime()` sur un objet Employe ou Cadre : elle devrait passer par une méthode publique si le concepteur en a prévu une."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une classe UML a toujours trois compartiments : nom, attributs, opérations - même quand l'un d'eux est vide.",
+        "Le signe `-` = privé, `+` = public, `#` = protégé ; ce signe précède toujours le nom du membre.",
+        "Une association entre deux classes porte des multiplicités qui répondent à « combien d'objets de l'autre classe peuvent être liés à un seul objet de celle-ci ? ».",
+        "Un nom de rôle sur une association précise la fonction jouée par une extrémité, utile quand deux associations relient les deux mêmes classes.",
+        "Au BAC TI, une bonne partie des points d'une question « identifier sur la figure » se gagne en sachant où regarder : nom en haut, attributs au milieu, opérations en bas, signes de visibilité en tout début de chaque ligne."
+      ]
+    }
+  ]
+}

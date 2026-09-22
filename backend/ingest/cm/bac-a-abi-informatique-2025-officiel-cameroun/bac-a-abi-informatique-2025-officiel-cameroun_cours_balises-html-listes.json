@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-balises-html-listes-1ere-tronc-commun",
+  "meta": {
+    "titre": "Créer une liste HTML avec les balises <ul> et <li>",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web statique - HTML",
+    "duree_estimee_min": 20,
+    "tags": [
+      "HTML",
+      "balise ul",
+      "balise li",
+      "liste non ordonnée",
+      "page web"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-2025-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique au probatoire A et ABI 2025 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-abi-informatique-2025-officiel-cameroun-ex2-qB2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un directeur d'entreprise qui ne connaît pas la programmation web te confie souvent une demande simple en apparence : « affiche mes activités sous forme de liste sur la page d'accueil ». Derrière cette phrase se cache l'une des structures les plus utilisées du langage HTML, la liste à puces. Savoir la construire, c'est déjà savoir organiser visuellement n'importe quel contenu répétitif d'une page web, qu'il s'agisse d'un menu de navigation, d'une liste de services ou d'un sommaire d'article."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une balise HTML et la différence entre balise ouvrante et balise fermante",
+        "Connaître la structure minimale d'une page HTML (balises html, body)",
+        "Savoir imbriquer une balise à l'intérieur d'une autre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La structure ul / li",
+      "contenu_markdown": "Une liste non ordonnée, c'est-à-dire une liste à puces sans numérotation, se construit avec la balise conteneur <ul> (unordered list). Chaque élément de la liste est ensuite délimité par une balise <li> (list item), placée à l'intérieur de <ul>. Le navigateur affiche automatiquement une puce devant chaque <li>, sans qu'il soit nécessaire de la saisir soi-même dans le code.",
+      "formule_principale": "<ul><li>élément 1</li><li>élément 2</li></ul>",
+      "variantes": [
+        {
+          "nom": "Liste ordonnée avec <ol>",
+          "quand_utiliser": "Quand l'énoncé demande une numérotation (1., 2., 3.) plutôt que de simples puces.",
+          "contenu_markdown": "La balise <ol> (ordered list) fonctionne exactement comme <ul>, avec les mêmes balises <li> à l'intérieur, mais le navigateur numérote automatiquement chaque élément au lieu d'afficher une puce."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le directeur d'une entreprise souhaite afficher sous forme de liste non ordonnée les activités suivantes de la page d'accueil de son site : Offre de service ; Recherche et développement ; etc. Écrire la balise HTML permettant d'insérer cette liste.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le type de liste demandé",
+          "justification": "L'énoncé précise « liste non ordonnées » : il s'agit donc d'une liste à puces, pas d'une liste numérotée.",
+          "resultat_markdown": "Balise conteneur à utiliser : <ul>"
+        },
+        {
+          "numero": 2,
+          "action": "Ouvrir la balise conteneur <ul>",
+          "justification": "Toute liste HTML doit être encadrée par sa balise conteneur avant d'y placer des éléments.",
+          "resultat_markdown": "<ul>"
+        },
+        {
+          "numero": 3,
+          "action": "Créer un élément <li> pour chaque activité de l'entreprise",
+          "justification": "Chaque ligne de la liste correspond à une balise <li> distincte, contenant le texte de l'activité.",
+          "resultat_markdown": "<li>Offre de service</li>\n<li>Recherche et développement</li>\n<li>etc...</li>"
+        },
+        {
+          "numero": 4,
+          "action": "Refermer la balise conteneur </ul>",
+          "justification": "Toute balise ouvrante doit être refermée : oublier </ul> laisse la liste ouverte et peut perturber l'affichage du reste de la page.",
+          "resultat_markdown": "</ul>"
+        }
+      ],
+      "conclusion_markdown": "Le code complet obtenu est :\n\n```html\n<ul>\n  <li>Offre de service</li>\n  <li>Recherche et développement</li>\n  <li>etc...</li>\n</ul>\n```\n\nAffiché dans un navigateur, ce code produit une liste à puces des trois activités de l'entreprise."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser <ol> à la place de <ul> parce que la liste comporte plusieurs éléments les uns en dessous des autres.",
+          "pourquoi_faux": "Le nombre d'éléments n'a aucun rapport avec le choix entre <ul> et <ol> : seul le type de repère visuel demandé, puce ou numéro, détermine la balise à utiliser, et l'énoncé précise explicitement « liste non ordonnées ».",
+          "correction_markdown": "Relire systématiquement l'énoncé pour repérer le mot « ordonnée » ou « non ordonnée » avant de choisir entre <ol> et <ul>."
+        },
+        {
+          "erreur_markdown": "Écrire le texte des activités directement entre <ul> et </ul>, sans encadrer chacune d'une balise <li>.",
+          "pourquoi_faux": "Sans balise <li>, le navigateur ne sait pas où commence et où s'arrête chaque élément de la liste : il affiche le texte à la suite, sans puces ni retour à la ligne entre les activités.",
+          "correction_markdown": "Chaque élément de la liste doit être individuellement encadré par <li> et </li>, même quand il ne contient qu'un seul mot."
+        },
+        {
+          "erreur_markdown": "Oublier de refermer la balise </ul> à la fin de la liste.",
+          "pourquoi_faux": "Une balise conteneur non refermée reste théoriquement ouverte pour le navigateur, ce qui peut inclure par erreur d'autres éléments de la page dans la liste et casser la mise en forme qui suit.",
+          "correction_markdown": "Vérifier systématiquement qu'à chaque balise ouvrante correspond une balise fermante, en les comptant si besoin sur un exemple court."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire le code HTML d'une liste non ordonnée contenant les trois éléments suivants : Pain ; Lait ; Œufs.",
+          "solution_markdown": "```html\n<ul>\n  <li>Pain</li>\n  <li>Lait</li>\n  <li>Œufs</li>\n</ul>\n```\n\nChaque élément devient un <li> distinct entre les balises <ul> et </ul>, ce qui produit une liste à puces de trois éléments."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le directeur veut désormais que ses trois activités (Offre de service ; Recherche et développement ; Formation) apparaissent numérotées de 1 à 3 plutôt qu'à puces. Écrire le code HTML correspondant.",
+          "solution_markdown": "```html\n<ol>\n  <li>Offre de service</li>\n  <li>Recherche et développement</li>\n  <li>Formation</li>\n</ol>\n```\n\nLe passage d'une liste à puces à une liste numérotée, ou l'inverse, ne change que la balise conteneur (<ol> au lieu de <ul>) ; les balises <li> internes restent identiques, seul le rendu visuel change, un numéro remplaçant la puce."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le directeur veut une page d'accueil qui affiche un titre « Nos activités » suivi de la liste non ordonnée de ses trois activités (Offre de service ; Recherche et développement ; Formation). Écrire le code HTML complet de cette section de la page, y compris le titre.",
+          "solution_markdown": "```html\n<h2>Nos activités</h2>\n<ul>\n  <li>Offre de service</li>\n  <li>Recherche et développement</li>\n  <li>Formation</li>\n</ul>\n```\n\nLe titre de section utilise une balise de titre, ici <h2>, un niveau adapté à un sous-titre de page. Il est placé avant la liste. Les deux structures, titre et liste, sont indépendantes et simplement juxtaposées dans le code : aucune balise ne doit les imbriquer l'une dans l'autre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une liste HTML a toujours deux niveaux de balises : le conteneur (<ul> ou <ol>) et les éléments (<li>) - jamais de texte de liste directement entre les balises conteneur.",
+        "<ul> pour des puces, <ol> pour une numérotation : seul le rendu visuel change, la structure interne avec <li> reste identique.",
+        "N'oublie jamais de refermer chaque balise ouvrante : </li> pour chaque <li>, </ul> ou </ol> pour le conteneur.",
+        "Ce type de question revient très souvent au probatoire et au BAC dans le module Programmation web : automatiser la structure ul/li te fait gagner du temps sur une question à faible risque d'erreur si elle est bien apprise."
+      ]
+    }
+  ]
+}

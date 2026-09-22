@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-adressage-ip-statique-et-dynamique-dhcp-tle-tronc-commun",
+  "meta": {
+    "titre": "Adressage IP statique et dynamique (DHCP)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Adressage IP",
+    "duree_estimee_min": 15,
+    "tags": [
+      "adressage statique",
+      "adressage dynamique",
+      "DHCP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex1-q8-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur un réseau, certaines machines gardent toujours la même adresse IP, d'autres en reçoivent une nouvelle presque à chaque connexion. Cette différence n'est pas un hasard : elle correspond à deux modes d'adressage bien distincts, que l'on doit savoir reconnaître à partir d'indices précis dans un énoncé."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse IP et à quoi elle sert."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Adressage statique contre adressage dynamique (DHCP)",
+      "contenu_markdown": "**Adressage statique** : chaque machine reçoit une adresse IP configurée manuellement, une fois pour toutes, par un administrateur. Elle ne change jamais tant qu'on ne la modifie pas soi-même. C'est le mode utilisé pour les équipements qui doivent rester joignables de façon prévisible (serveurs, imprimantes réseau, routeurs).\n\n**Adressage dynamique (DHCP)** : un serveur DHCP (Dynamic Host Configuration Protocol) attribue automatiquement une adresse IP (ainsi que le masque, la passerelle et le DNS) à chaque machine qui se connecte au réseau, pour une durée limitée. C'est le mode utilisé pour les postes clients, qui n'ont pas besoin d'une adresse fixe.\n\nL'indice qui doit systématiquement déclencher le réflexe « adressage dynamique » dans un énoncé est la mention explicite d'un serveur DHCP activé."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le serveur d'un réseau indique « DHCP Activated : Yes ». Décrire le mode d'adressage IP de ce réseau et le justifier.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'indice donné par l'énoncé",
+          "justification": "La mention DHCP activé est le signal direct d'un adressage dynamique.",
+          "resultat_markdown": "« DHCP Activated : Yes » sur le serveur."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire le mode d'adressage des postes clients",
+          "justification": "Le rôle du DHCP est justement d'attribuer automatiquement les adresses aux clients.",
+          "resultat_markdown": "Les postes clients reçoivent leur adresse IP automatiquement : adressage dynamique."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier le cas des équipements de service (serveur, routeur, imprimante)",
+          "justification": "Ces équipements doivent rester joignables à une adresse connue et fixe.",
+          "resultat_markdown": "Le serveur, le routeur et l'imprimante réseau conservent une adresse fixe : adressage statique pour ces équipements-là."
+        }
+      ],
+      "conclusion_markdown": "On obtient une réponse nuancée et complète : adressage dynamique pour les postes clients (grâce au DHCP), adressage statique pour les équipements qui doivent rester joignables de façon prévisible."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « dynamique » ou « statique » sans justifier par un élément précis de l'énoncé",
+          "pourquoi_faux": "La question demande explicitement une justification : une réponse correcte mais non justifiée par la mention DHCP (ou son absence) ne rapporte pas tous les points prévus au barème.",
+          "correction_markdown": "Toujours citer l'indice exact de l'énoncé (« DHCP Activated : Yes », ou des adresses toutes différentes sans mention DHCP) qui justifie la réponse."
+        },
+        {
+          "erreur_markdown": "Affirmer que TOUT le réseau est en adressage dynamique dès qu'un DHCP est présent",
+          "pourquoi_faux": "Un serveur DHCP attribue des adresses aux machines qui le lui demandent, mais les équipements de service (serveur, routeur, imprimante) gardent en pratique une adresse fixe configurée manuellement pour rester joignables de façon prévisible : les deux modes coexistent souvent sur le même réseau.",
+          "correction_markdown": "Distinguer le mode d'adressage des postes clients de celui des équipements de service, plutôt que de donner une seule réponse globale pour tout le réseau."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Qu'attribue automatiquement un serveur DHCP à une machine qui se connecte au réseau ?",
+          "solution_markdown": "Une adresse IP, ainsi que généralement le masque de sous-réseau, la passerelle par défaut et l'adresse du serveur DNS à utiliser."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi une imprimante réseau partagée par tout un bureau est-elle presque toujours configurée en adressage statique plutôt que dynamique ?",
+          "solution_markdown": "Parce que tous les postes du bureau doivent pouvoir la retrouver à une adresse connue et stable pour lui envoyer des documents à imprimer. Si son adresse changeait régulièrement (comme le permettrait le DHCP), chaque poste devrait la reconfigurer à chaque changement, ce qui rendrait le partage peu fiable."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un administrateur réseau désactive le service DHCP de son serveur par erreur. Quel problème les postes clients vont-ils rencontrer au prochain redémarrage, et pourquoi les équipements en adressage statique (serveur, routeur) ne seront-ils pas affectés ?",
+          "solution_markdown": "Les postes clients configurés en DHCP ne recevront plus d'adresse IP automatiquement au démarrage : ils resteront sans adresse valide (ou avec une adresse d'auto-configuration limitée), incapables de communiquer normalement sur le réseau, car leur configuration dépend entièrement de la réponse du serveur DHCP à chaque connexion. Les équipements en adressage statique (serveur, routeur, imprimante) ne sont pas affectés, car leur adresse IP est enregistrée une fois pour toutes dans leur propre configuration : ils n'ont jamais besoin d'interroger un serveur DHCP pour fonctionner."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Adressage statique = adresse fixe configurée manuellement ; adressage dynamique = adresse attribuée automatiquement par un serveur DHCP.",
+        "L'indice à repérer dans un énoncé : la mention explicite d'un DHCP activé signale un adressage dynamique pour les clients.",
+        "Les équipements qui rendent un service (serveur, routeur, imprimante) restent presque toujours en adressage statique, même sur un réseau avec DHCP.",
+        "Une bonne réponse d'examen distingue toujours les deux catégories de machines plutôt que de donner une réponse unique pour tout le réseau."
+      ]
+    }
+  ]
+}

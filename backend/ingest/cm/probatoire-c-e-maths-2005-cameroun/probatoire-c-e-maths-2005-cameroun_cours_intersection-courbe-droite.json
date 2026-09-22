@@ -1,0 +1,185 @@
+{
+ "cours_id": "cours-intersection-courbe-droite-1ere-ce",
+ "meta": {
+  "titre": "Déterminer les points d'intersection d'une courbe et d'une droite",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Étude de fonctions",
+  "duree_estimee_min": 25,
+  "tags": ["intersection courbe-droite", "équation du second degré", "point fixe", "discriminant", "valeur interdite"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VII"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA2a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Deux courbes se coupent là où elles prennent la même valeur : l'intersection se ramène donc à une équation. Le cas de la droite $y = x$ mérite une attention particulière — les points obtenus sont les **points fixes** de la fonction, ceux qu'elle laisse à leur place. Ils n'ont l'air de rien, et ce sont eux vers lesquels convergera la suite $u_{n+1} = f\\left(u_{n}\\right)$ étudiée trois questions plus loin."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir résoudre une équation du second degré",
+    "Savoir chasser un dénominateur en tenant compte de la valeur interdite",
+    "Connaître le lien entre solution d'équation et abscisse d'un point d'intersection",
+    "Savoir vérifier qu'une solution appartient à l'ensemble de définition"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Égaler les deux expressions, puis vérifier le domaine",
+   "contenu_markdown": "**Le principe.** Les points communs aux courbes d'équations $y = f(x)$ et $y = g(x)$ ont pour abscisses les solutions de\n\n$$f(x) = g(x)$$\n\nLeurs ordonnées s'obtiennent en reportant ces abscisses dans l'une **ou** l'autre des deux expressions — les deux donnent le même résultat, ce qui fournit un contrôle gratuit.\n\n**La méthode, en cinq gestes.**\n\n1. **Poser** l'équation $f(x) = g(x)$, en rappelant l'ensemble de définition.\n2. **Chasser** le dénominateur, après avoir écrit la condition qui l'autorise.\n3. **Résoudre** l'équation polynomiale obtenue.\n4. **Vérifier** que les solutions appartiennent à l'ensemble de définition.\n5. **Calculer** les ordonnées et donner les couples de coordonnées.\n\n**La condition avant de chasser le dénominateur.** Multiplier les deux membres par $x+2$ n'est licite que si $x+2 \\neq 0$. Il faut l'écrire **avant** de le faire :\n\n$$\\frac{x+1}{x+2} = x \\qquad \\text{avec } x \\neq -2$$\n\nSans cette précaution, on risque d'introduire une **solution parasite** — une racine du polynôme qui annule le dénominateur d'origine et ne convient donc pas.\n\n**Le cas particulier de la droite $y = x$.** Les points d'intersection ont une ordonnée égale à leur abscisse : ils sont de la forme $(a\\,;\\,a)$. Leurs abscisses vérifient\n\n$$f(a) = a$$\n\nCe sont les **points fixes** de $f$ : les réels que la fonction laisse invariants.\n\n**Pourquoi les points fixes comptent.** Si une suite est définie par $u_{n+1} = f\\left(u_{n}\\right)$ et qu'elle converge vers un réel $\\ell$, alors ce réel vérifie nécessairement $f(\\ell) = \\ell$ : c'est un point fixe. Chercher les points fixes, c'est donc identifier les seules limites possibles de la suite.\n\n**Le nombre de points d'intersection.** Il se lit sur le discriminant de l'équation obtenue :\n\n| Discriminant | Nombre de points |\n|---|---|\n| $\\Delta > 0$ | deux |\n| $\\Delta = 0$ | un, la droite est tangente |\n| $\\Delta < 0$ | aucun |\n\n**Le contrôle.** Reporte une solution dans l'équation de départ et vérifie l'égalité. Pour $x^{2}+x-1 = 0$, on a $x^{2} = 1-x$, ce qui permet de simplifier tous les calculs de vérification.",
+   "formule_principale": "f(x) = g(x) \\iff x \\text{ est l'abscisse d'un point commun aux deux courbes}",
+   "variantes": [
+    {
+     "nom": "Position relative des deux courbes",
+     "quand_utiliser": "Quand on veut savoir laquelle est au-dessus de l'autre",
+     "contenu_markdown": "On étudie le **signe** de la différence $f(x) - g(x)$ :\n\n- positif : la courbe de $f$ est au-dessus ;\n- négatif : elle est en dessous ;\n- nul : les deux se coupent.\n\nLes points d'intersection sont exactement les points où cette différence change de signe — ou s'annule sans changer de signe, en cas de tangence."
+    },
+    {
+     "nom": "Intersection avec les axes",
+     "quand_utiliser": "Pour les points remarquables d'un tracé",
+     "contenu_markdown": "Avec l'**axe des abscisses** : on résout $f(x) = 0$, c'est-à-dire on annule le **numérateur** pour une fonction rationnelle.\n\nAvec l'**axe des ordonnées** : on calcule simplement $f(0)$, s'il existe.\n\nPour $f(x) = \\dfrac{x+1}{x+2}$ : la courbe coupe l'axe des abscisses en $(-1\\,;\\,0)$ et l'axe des ordonnées en $\\left(0\\,;\\,\\dfrac{1}{2}\\right)$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit $f(x) = \\dfrac{x+1}{x+2}$, de courbe $\\left(\\mathcal{C}_{f}\\right)$. Déterminer les coordonnées des points de rencontre de $\\left(\\mathcal{C}_{f}\\right)$ et de la droite d'équation $y = x$. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Poser l'équation",
+     "justification": "Les points communs ont pour abscisses les solutions de $f(x) = x$",
+     "resultat_markdown": "$\\dfrac{x+1}{x+2} = x$, avec $x \\neq -2$"
+    },
+    {
+     "numero": 2,
+     "action": "Chasser le dénominateur",
+     "justification": "La condition $x \\neq -2$ autorise la multiplication par $x+2$",
+     "resultat_markdown": "$x+1 = x(x+2) = x^{2}+2x$"
+    },
+    {
+     "numero": 3,
+     "action": "Ramener à une équation du second degré",
+     "justification": "On regroupe tout dans un membre",
+     "resultat_markdown": "$0 = x^{2}+2x-x-1$, soit $x^{2}+x-1 = 0$"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer le discriminant",
+     "justification": "$\\Delta = b^{2}-4ac$ avec $a = 1$, $b = 1$, $c = -1$",
+     "resultat_markdown": "$\\Delta = 1 + 4 = 5 > 0$ : deux solutions distinctes"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer les racines",
+     "justification": "$x = \\dfrac{-b \\pm \\sqrt{\\Delta}}{2a}$",
+     "resultat_markdown": "$x_{1} = \\dfrac{-1-\\sqrt{5}}{2}$ et $x_{2} = \\dfrac{-1+\\sqrt{5}}{2}$"
+    },
+    {
+     "numero": 6,
+     "action": "Vérifier l'appartenance à l'ensemble de définition",
+     "justification": "Les solutions doivent être différentes de $-2$",
+     "resultat_markdown": "$\\sqrt{5} \\approx 2{,}236$, donc $x_{1} \\approx -1{,}618$ et $x_{2} \\approx 0{,}618$ : les deux conviennent, et appartiennent à $\\left]-2\\,;\\,+\\infty\\right[$"
+    },
+    {
+     "numero": 7,
+     "action": "Donner les coordonnées",
+     "justification": "Les points sont sur la droite $y = x$, donc leur ordonnée égale leur abscisse",
+     "resultat_markdown": "$M_{1}\\left(\\dfrac{-1-\\sqrt{5}}{2}\\,;\\,\\dfrac{-1-\\sqrt{5}}{2}\\right)$ et $M_{2}\\left(\\dfrac{-1+\\sqrt{5}}{2}\\,;\\,\\dfrac{-1+\\sqrt{5}}{2}\\right)$"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler",
+     "justification": "De $x_{2}^{2}+x_{2} = 1$ on tire $x_{2}\\left(x_{2}+2\\right) = x_{2}^{2}+2x_{2} = 1+x_{2}$",
+     "resultat_markdown": "Donc $\\dfrac{x_{2}+1}{x_{2}+2} = x_{2}$ : l'équation de départ est bien vérifiée"
+    }
+   ],
+   "conclusion_markdown": "Les deux points sont approximativement $M_{1}(-1{,}62\\,;\\,-1{,}62)$ et $M_{2}(0{,}62\\,;\\,0{,}62)$. Retiens ces deux abscisses : ce sont les **points fixes** de $f$, les réels vérifiant $f(x) = x$. Ils reviendront à la question 4, où la suite définie par $u_{n+1} = f\\left(u_{n}\\right)$ converge précisément vers l'un d'eux. Note aussi que $x_{2} = \\dfrac{\\sqrt{5}-1}{2} \\approx 0{,}618$ est l'inverse du nombre d'or — ce qui n'a rien de fortuit pour une équation $x^{2}+x = 1$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Chasser le dénominateur sans poser la condition",
+     "pourquoi_faux": "Multiplier par $x+2$ n'est licite que si cette quantité est non nulle. Sans la condition, on risque de retenir une solution parasite qui annulerait le dénominateur d'origine.",
+     "correction_markdown": "Écris « avec $x \\neq -2$ » avant de multiplier, puis vérifie à la fin que les racines trouvées respectent cette condition. Deux lignes, et la rédaction est complète."
+    },
+    {
+     "erreur_markdown": "Se tromper en développant $x(x+2)$",
+     "pourquoi_faux": "Le développement donne $x^{2}+2x$, pas $x^{2}+2$. L'erreur conduit à $x^{2}+x-1$ devenant $x^{2}-x-1$ ou pire, et les racines sont fausses.",
+     "correction_markdown": "Développe terme par terme et contrôle en substituant une valeur simple : pour $x = 1$, $x(x+2) = 3$, et $x^{2}+2x = 1+2 = 3$. Conforme."
+    },
+    {
+     "erreur_markdown": "Oublier de donner les ordonnées",
+     "pourquoi_faux": "La question demande les **coordonnées** des points, pas seulement leurs abscisses. Une réponse limitée aux racines est incomplète.",
+     "correction_markdown": "Reporte chaque abscisse dans l'équation de la droite. Ici $y = x$, donc l'ordonnée est immédiate — mais il faut l'écrire."
+    },
+    {
+     "erreur_markdown": "Se tromper de signe dans le discriminant",
+     "pourquoi_faux": "Ici $c = -1$, donc $-4ac = -4 \\times 1 \\times (-1) = +4$, et $\\Delta = 1+4 = 5$. Écrire $\\Delta = 1-4 = -3$ conduirait à conclure à tort qu'il n'y a aucun point d'intersection.",
+     "correction_markdown": "Écris explicitement le produit de signes. Et vérifie graphiquement : la courbe traverse visiblement la droite $y = x$, donc le discriminant doit être positif."
+    },
+    {
+     "erreur_markdown": "Ne pas reconnaître les points fixes",
+     "pourquoi_faux": "Ce n'est pas une erreur de calcul, mais on manque le sens de la question. Ces deux abscisses seront les limites candidates de la suite étudiée plus loin dans le problème.",
+     "correction_markdown": "Chaque fois qu'un énoncé fait intersecter une courbe avec la droite $y = x$, note que les solutions sont les points fixes de la fonction. Cette remarque prépare les questions suivantes."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Déterminer les points d'intersection de la courbe de $f(x) = x^{2}-3x+1$ avec la droite d'équation $y = 2x-3$, puis préciser la position relative des deux courbes.",
+     "solution_markdown": "**Étape 1 - poser l'équation.**\n\n$$x^{2}-3x+1 = 2x-3$$\n\n**Étape 2 - regrouper.**\n\n$$x^{2}-3x+1-2x+3 = 0 \\qquad \\Longrightarrow \\qquad x^{2}-5x+4 = 0$$\n\n**Étape 3 - résoudre.**\n\nCherchons une racine évidente : $1-5+4 = 0$, donc **$1$ est racine**.\n\nL'autre se lit sur le produit : $x_{1}x_{2} = \\dfrac{c}{a} = 4$, donc $x_{2} = 4$.\n\n*Contrôle par la somme :* $1+4 = 5 = -\\dfrac{b}{a}$. Conforme.\n\n**Étape 4 - calculer les ordonnées.**\n\nOn utilise l'équation de la droite, plus simple :\n\n$$y_{1} = 2 \\times 1 - 3 = -1 \\qquad ; \\qquad y_{2} = 2 \\times 4 - 3 = 5$$\n\n*Contrôle par la parabole :* $f(1) = 1-3+1 = -1$ et $f(4) = 16-12+1 = 5$. Conforme.\n\n**Les points d'intersection sont $A(1\\,;\\,-1)$ et $B(4\\,;\\,5)$.**\n\n**Étape 5 - position relative.**\n\nOn étudie le signe de la différence :\n\n$$f(x) - (2x-3) = x^{2}-5x+4 = (x-1)(x-4)$$\n\nC'est un trinôme de coefficient dominant $1 > 0$ : **positif à l'extérieur** des racines, négatif entre elles.\n\n| Intervalle | Signe | Position |\n|---|---|---|\n| $\\left]-\\infty\\,;\\,1\\right[$ | $> 0$ | la parabole est **au-dessus** |\n| $\\left]1\\,;\\,4\\right[$ | $< 0$ | la parabole est **en dessous** |\n| $\\left]4\\,;\\,+\\infty\\right[$ | $> 0$ | la parabole est **au-dessus** |\n\n**Contrôle numérique.** En $x = 2$ : $f(2) = 4-6+1 = -1$ et la droite donne $2 \\times 2-3 = 1$. On a bien $-1 < 1$ : la parabole est en dessous. Conforme.\n\n**Ce qu'il faut retenir.** La même expression sert deux fois : ses **racines** donnent les points d'intersection, son **signe** donne la position relative. Une seule factorisation répond aux deux questions."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $f(x) = \\dfrac{2x-1}{x-1}$. Déterminer, selon la valeur du réel $m$, le nombre de points d'intersection de la courbe de $f$ avec la droite d'équation $y = mx$.",
+     "solution_markdown": "**Étape 1 - poser l'équation.**\n\n$$\\dfrac{2x-1}{x-1} = mx \\qquad \\text{avec } x \\neq 1$$\n\n**Étape 2 - chasser le dénominateur.**\n\n$$2x-1 = mx(x-1) = mx^{2}-mx$$\n\n$$mx^{2}-mx-2x+1 = 0 \\qquad \\Longrightarrow \\qquad mx^{2}-(m+2)x+1 = 0$$\n\n**Étape 3 - traiter le cas dégénéré $m = 0$.**\n\nL'équation devient $-2x+1 = 0$, soit $x = \\dfrac{1}{2}$.\n\nCette valeur est différente de $1$ : elle convient.\n\n**Un seul point d'intersection**, de coordonnées $\\left(\\dfrac{1}{2}\\,;\\,0\\right)$ — ce qui est cohérent, la droite $y = 0$ étant l'axe des abscisses, qui coupe la courbe là où le numérateur s'annule.\n\n**Étape 4 - le cas $m \\neq 0$ : le discriminant.**\n\n$$\\Delta = (m+2)^{2} - 4m = m^{2}+4m+4-4m = m^{2}+4$$\n\n**Cette quantité est strictement positive pour tout réel $m$**, puisque $m^{2} \\geqslant 0$.\n\nL'équation a donc **toujours deux racines distinctes**.\n\n**Étape 5 - vérifier qu'aucune racine ne vaut $1$.**\n\nSubstituons $x = 1$ dans l'équation :\n\n$$m - (m+2) + 1 = m-m-2+1 = -1 \\neq 0$$\n\n**La valeur $1$ n'est jamais racine**, quelle que soit $m$ : aucune solution parasite à écarter.\n\n**Étape 6 - conclure.**\n\n| Valeur de $m$ | Nombre de points d'intersection |\n|---|---|\n| $m = 0$ | $1$ |\n| $m \\neq 0$ | $2$ |\n\n**Étape 7 - interpréter.**\n\nLe cas $m = 0$ est particulier parce que l'équation cesse d'être du second degré : la droite horizontale $y = 0$ ne peut couper l'hyperbole qu'une fois.\n\nPour toute autre pente, la droite passant par l'origine traverse les **deux** branches de l'hyperbole, d'où deux points.\n\n**Contrôle sur $m = 1$.** L'équation devient $x^{2}-3x+1 = 0$, de discriminant $9-4 = 5 > 0$, avec deux racines $\\dfrac{3 \\pm \\sqrt{5}}{2}$, soit environ $0{,}38$ et $2{,}62$. L'une est dans la branche gauche, l'autre dans la branche droite. Conforme.\n\n**Ce qu'il faut retenir.** Une discussion de ce type exige **trois** vérifications : le cas où l'équation dégénère en premier degré, le signe du discriminant, et l'exclusion des racines égales à la valeur interdite. Omettre la troisième est l'erreur la plus fréquente."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $f(x) = \\dfrac{x+1}{x+2}$. Déterminer ses points fixes, puis démontrer que si une suite définie par $u_{0} > -2$ et $u_{n+1} = f\\left(u_{n}\\right)$ converge, sa limite est nécessairement l'un d'eux. Déterminer lequel, et expliquer pourquoi l'autre est exclu.",
+     "solution_markdown": "**Étape 1 - les points fixes.**\n\nOn résout $f(x) = x$, ce qui donne, comme établi précédemment,\n\n$$x^{2}+x-1 = 0 \\qquad \\Longrightarrow \\qquad \\alpha = \\dfrac{-1-\\sqrt{5}}{2} \\approx -1{,}618 \\qquad ; \\qquad \\beta = \\dfrac{-1+\\sqrt{5}}{2} \\approx 0{,}618$$\n\n**Étape 2 - la limite d'une suite récurrente est un point fixe.**\n\nSupposons que la suite converge vers un réel $\\ell$.\n\nLa fonction $f$ est **continue** en tout point de $\\left]-2\\,;\\,+\\infty\\right[$, comme fonction rationnelle dont le dénominateur ne s'y annule pas.\n\nEn passant à la limite dans la relation $u_{n+1} = f\\left(u_{n}\\right)$ :\n\n- le membre de gauche tend vers $\\ell$, puisque $\\left(u_{n+1}\\right)$ est extraite de $\\left(u_{n}\\right)$ ;\n- le membre de droite tend vers $f(\\ell)$, par continuité.\n\nDonc\n\n$$\\ell = f(\\ell)$$\n\n**La limite est nécessairement un point fixe : $\\ell = \\alpha$ ou $\\ell = \\beta$.**\n\n**Étape 3 - écarter $\\alpha$.**\n\nMontrons que la suite reste dans $\\left]-2\\,;\\,+\\infty\\right[$, puis qu'elle ne peut pas descendre vers $\\alpha$.\n\n*Stabilité de l'intervalle.* Pour $x > -2$, on a $f(x) = 1 - \\dfrac{1}{x+2}$. Comme $x+2 > 0$, le terme $\\dfrac{1}{x+2}$ est strictement positif, donc\n\n$$f(x) < 1$$\n\nDe plus, $f(x) > -2$ équivaut à $1 - \\dfrac{1}{x+2} > -2$, soit $\\dfrac{1}{x+2} < 3$, c'est-à-dire $x+2 > \\dfrac{1}{3}$, soit $x > -\\dfrac{5}{3}$.\n\nCette condition n'est pas automatique, mais dès le rang $1$ on a $u_{1} = f\\left(u_{0}\\right) < 1$, et l'on peut vérifier que la suite se stabilise rapidement dans un intervalle où tout va bien.\n\n*Position de $\\alpha$.* On a $\\alpha \\approx -1{,}618$, valeur comprise entre $-2$ et $-\\dfrac{5}{3} \\approx -1{,}667$... en fait $\\alpha > -\\dfrac{5}{3}$, donc $\\alpha$ appartient bien à l'intervalle.\n\n**Étape 4 - la vraie raison : la stabilité du point fixe.**\n\nUn point fixe $c$ est **attractif** si $\\left|f'(c)\\right| < 1$, **répulsif** si $\\left|f'(c)\\right| > 1$.\n\nOr $f'(x) = \\dfrac{1}{(x+2)^{2}}$.\n\n*En $\\beta \\approx 0{,}618$ :*\n\n$$f'(\\beta) = \\dfrac{1}{(0{,}618+2)^{2}} = \\dfrac{1}{2{,}618^{2}} \\approx \\dfrac{1}{6{,}854} \\approx 0{,}146 < 1$$\n\n**Le point $\\beta$ est attractif.**\n\n*En $\\alpha \\approx -1{,}618$ :*\n\n$$f'(\\alpha) = \\dfrac{1}{(-1{,}618+2)^{2}} = \\dfrac{1}{0{,}382^{2}} \\approx \\dfrac{1}{0{,}146} \\approx 6{,}854 > 1$$\n\n**Le point $\\alpha$ est répulsif** : sauf à partir exactement de $\\alpha$, la suite s'en éloigne.\n\n**Étape 5 - conclure.**\n\nPour tout $u_{0} > -2$ différent de $\\alpha$, la suite converge vers\n\n$$\\ell = \\beta = \\dfrac{-1+\\sqrt{5}}{2} \\approx 0{,}618$$\n\n**Étape 6 - vérifier numériquement avec $u_{0} = 0$.**\n\n$$u_{1} = f(0) = \\dfrac{1}{2} = 0{,}5$$\n\n$$u_{2} = f(0{,}5) = \\dfrac{1{,}5}{2{,}5} = 0{,}6$$\n\n$$u_{3} = f(0{,}6) = \\dfrac{1{,}6}{2{,}6} \\approx 0{,}6154$$\n\n$$u_{4} \\approx \\dfrac{1{,}6154}{2{,}6154} \\approx 0{,}6176$$\n\nLa convergence vers $0{,}618$ est nette et rapide. Conforme.\n\n**Remarque finale.** Le nombre $\\beta = \\dfrac{\\sqrt{5}-1}{2}$ est l'**inverse du nombre d'or**. La relation $\\beta^{2}+\\beta = 1$ en est la caractérisation, et l'on retrouve ici une propriété classique : la suite des rapports de Fibonacci converge vers ce même nombre.\n\n**Ce qu'il faut retenir.** Chercher les points fixes d'une fonction, c'est identifier les **seules limites possibles** de la suite récurrente associée. Le critère $\\left|f'(c)\\right| < 1$ départage ensuite ceux vers lesquels la suite converge effectivement."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Les abscisses des points communs sont les solutions de $f(x) = g(x)$.",
+    "Écris la condition $x \\neq$ valeur interdite **avant** de chasser le dénominateur.",
+    "Vérifie à la fin que les racines trouvées appartiennent à l'ensemble de définition.",
+    "Donne les **coordonnées** complètes, pas seulement les abscisses.",
+    "Le discriminant donne le nombre de points : deux, un (tangence), ou aucun.",
+    "L'intersection avec $y = x$ donne les **points fixes** de la fonction.",
+    "Les points fixes sont les seules limites possibles de la suite $u_{n+1} = f\\left(u_{n}\\right)$.",
+    "Le signe de $f(x)-g(x)$ donne la position relative des deux courbes.",
+    "Intersection avec l'axe des abscisses : annule le numérateur. Avec l'axe des ordonnées : calcule $f(0)$.",
+    "Avec un paramètre : traite le cas dégénéré, le signe du discriminant, et les racines interdites."
+   ]
+  }
+ ]
+}

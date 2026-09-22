@@ -1,0 +1,116 @@
+{
+  "epreuve_source": "bepc-informatique-2025-etab-cameroun.pdf",
+  "numero_exercice": "4",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "matiere_normalisee": "INFORMATIQUE",
+  "nature_epreuve": "theorique",
+  "serie": null,
+  "classe": "3e",
+  "examen": "bepc",
+  "origine": "etablissement",
+  "etablissement": "Collège Mgr François-Xavier Vogt",
+  "institution": null,
+  "annee": "2025",
+  "duree_epreuve": "1h30",
+  "coefficient": "2",
+  "points": "4",
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE III : INITIATION À L'ALGORITHMIQUE ET AU DÉVELOPPEMENT LOGICIEL (7 pts)**\n\n**Exercice 1 (4 pts)**\n\nUn élève de 3e participe à un atelier informatique où il doit écrire un algorithme pour vérifier si un nombre est supérieur ou inférieur à 10.\n\n```\nAlgorithme Comparaison\nVar N : entier;\nDébut\n    Afficher (\"Entrer un nombre :\");\n    Lire (N);\n    Si (N > 10) Alors\n        Afficher (\"Le nombre est supérieur à 10\");\n    Sinon\n        Afficher (\"Le nombre est inférieur ou égal à 10\");\n    FinSi\nFin\n```",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Définir **syntaxe**. *(0,5 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nDéfinir un mot du vocabulaire informatique qui existe aussi en français courant demande de partir du sens général, puis de le transposer au langage de programmation. En grammaire, la syntaxe est l'ensemble des règles d'agencement des mots dans la phrase. En informatique, le principe est le même, appliqué aux instructions.\n\n**Définition**\n\nLa syntaxe d'un langage (algorithmique ou de programmation) est l'ensemble des règles d'écriture que l'on doit respecter pour qu'une instruction soit correctement formée et donc comprise par la machine : ordre des mots-clés, ponctuation, parenthèses, guillemets, terminaison des instructions.\n\n**Illustration prise dans l'algorithme de l'énoncé**\n\nÉcrire `Si (N > 10) Alors` respecte la syntaxe : le mot-clé `Si`, la condition entre parenthèses, le mot-clé `Alors`. Écrire `Si Alors N > 10` contient exactement les mêmes éléments mais viole la syntaxe, et l'instruction devient inutilisable.\n\n### Piège à éviter\nNe confonds pas syntaxe et sémantique. La syntaxe dit si la phrase est **bien écrite**, la sémantique dit si elle a le **bon sens**. Un algorithme peut être syntaxiquement parfait et donner malgré tout un résultat faux, parce que le raisonnement, lui, est erroné.\n\n### Conseil\nSur une définition à 0,5 pt, une seule phrase précise vaut mieux qu'un paragraphe approximatif. Assure-toi qu'elle contient les mots **règles d'écriture** et **langage** : ce sont les deux mots-clés du barème.",
+      "themes": ["syntaxe", "langage de programmation", "règles d'écriture", "algorithmique"],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2025-etab-cameroun-ex4-q1-1",
+          "competence": "La syntaxe en algorithmique et en programmation",
+          "contenu_markdown": "Définir un mot du vocabulaire informatique qui existe aussi en français courant demande de partir du sens général, puis de le transposer au langage de programmation. En grammaire, la syntaxe est l'ensemble des règles d'agencement des mots dans la phrase. En informatique, le principe est le même, appliqué aux instructions.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Identifier la **structure de contrôle** utilisée dans cet algorithme et expliquer son fonctionnement. *(1 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nPour identifier une structure de contrôle, cherche ses mots-clés d'encadrement dans le texte de l'algorithme : `Si … Alors … Sinon … FinSi` signale une structure alternative, `Pour … FinPour` ou `TantQue … FinTantQue` signalent une boucle. Expliquer son fonctionnement, c'est ensuite décrire ce que la machine fait dans chacun des cas possibles, sans en oublier aucun.\n\n**Identification**\n\nL'algorithme contient les mots-clés `Si (N > 10) Alors … Sinon … FinSi`. La structure utilisée est donc la **structure alternative complète**, appelée aussi structure conditionnelle à deux branches, ou structure `Si … Alors … Sinon`.\n\n**Fonctionnement**\n\nLa machine procède en trois temps :\n\n1. elle évalue la condition placée entre parenthèses, ici `N > 10`, et obtient un résultat qui ne peut être que vrai ou faux ;\n2. si la condition est **vraie**, elle exécute uniquement les instructions situées entre `Alors` et `Sinon` : ici l'affichage du message « Le nombre est supérieur à 10 » ;\n3. si la condition est **fausse**, elle exécute uniquement les instructions situées entre `Sinon` et `FinSi` : ici l'affichage du message « Le nombre est inférieur ou égal à 10 ».\n\nDans les deux cas, l'exécution se poursuit ensuite après le `FinSi`. Les deux branches ne sont jamais exécutées ensemble, et il n'y a jamais aucune des deux qui soit sautée : exactement une branche est parcourue à chaque exécution.\n\n**Vérification sur deux valeurs**\n\n- Pour `N = 25` : `25 > 10` est vrai, la machine affiche « Le nombre est supérieur à 10 ».\n- Pour `N = 4` : `4 > 10` est faux, la machine affiche « Le nombre est inférieur ou égal à 10 ».\n\n### Piège à éviter\nNe réponds pas « la structure séquentielle ». La séquence, c'est le simple fait d'enchaîner les instructions les unes après les autres ; elle est présente dans tout algorithme et n'est jamais la réponse attendue quand un `Si` figure dans le texte.\n\n### Conseil\nQuand une question demande d'identifier **et** d'expliquer, sépare visiblement les deux parties de ta réponse. La moitié des points porte sur le nom de la structure, l'autre moitié sur la description des deux branches : traite les deux, même brièvement.",
+      "themes": ["structure de contrôle", "structure alternative", "Si Alors Sinon", "condition", "algorithmique"],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2025-etab-cameroun-ex4-q2-1",
+          "competence": "La structure alternative en algorithmique",
+          "contenu_markdown": "Pour identifier une structure de contrôle, cherche ses mots-clés d'encadrement dans le texte de l'algorithme : `Si … Alors … Sinon … FinSi` signale une structure alternative, `Pour … FinPour` ou `TantQue … FinTantQue` signalent une boucle. Expliquer son fonctionnement, c'est ensuite décrire ce que la machine fait dans chacun des cas possibles, sans en oublier aucun.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Relever une **instruction de lecture** et une **instruction d'écriture** présentes dans l'algorithme. *(1 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nUne instruction de lecture fait entrer une donnée depuis l'extérieur vers une variable de la machine : son mot-clé est `Lire`, et elle est toujours suivie d'un nom de variable. Une instruction d'écriture fait sortir une information de la machine vers l'écran : ses mots-clés sont `Afficher` ou `Écrire`, et elle est suivie d'un message ou d'une valeur. Repère le mot-clé, la nature de l'instruction suit automatiquement.\n\n**Instruction de lecture**\n\n```\nLire (N);\n```\n\nElle place dans la variable `N` la valeur saisie au clavier par l'utilisateur.\n\n**Instruction d'écriture**\n\n```\nAfficher (\"Entrer un nombre :\");\n```\n\nElle affiche à l'écran le message d'invitation destiné à l'utilisateur.\n\nLes deux autres instructions `Afficher` de l'algorithme, celles qui suivent `Alors` et `Sinon`, sont également des instructions d'écriture : n'importe laquelle des trois convient pour répondre.\n\n**Distinction utile**\n\nL'algorithme ne contient qu'une seule instruction de lecture, `Lire (N)`, alors qu'il compte trois instructions d'écriture. La lecture est unique parce qu'une seule donnée est demandée à l'utilisateur : le nombre à comparer.\n\n### Piège à éviter\nLe sens de la lecture et de l'écriture se prend du point de vue de la machine, pas de l'utilisateur. C'est l'utilisateur qui écrit au clavier, mais l'instruction correspondante est `Lire` : la machine, elle, lit ce qui est saisi. Le raisonnement inverse est l'erreur la plus fréquente sur cette question.\n\n### Conseil\nRecopie l'instruction entière, avec ses parenthèses et son point-virgule, exactement comme elle figure dans l'énoncé. Écrire seulement « Lire » sans la variable est souvent compté comme une réponse incomplète.",
+      "themes": ["instruction de lecture", "instruction d'écriture", "Lire", "Afficher", "entrées-sorties"],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2025-etab-cameroun-ex4-q3-1",
+          "competence": "Les instructions d'entrée et de sortie dans un algorithme",
+          "contenu_markdown": "Une instruction de lecture fait entrer une donnée depuis l'extérieur vers une variable de la machine : son mot-clé est `Lire`, et elle est toujours suivie d'un nom de variable. Une instruction d'écriture fait sortir une information de la machine vers l'écran : ses mots-clés sont `Afficher` ou `Écrire`, et elle est suivie d'un message ou d'une valeur. Repère le mot-clé, la nature de l'instruction suit automatiquement.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4. Représenter l'**algorigramme** de cet algorithme. *(1,5 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nUn algorigramme (ou organigramme de programmation) traduit un algorithme en symboles normalisés reliés par des flèches. Quatre symboles suffisent au niveau du BEPC :\n\n- **ovale** : début et fin de l'algorithme ;\n- **parallélogramme** : entrée (`Lire`) ou sortie (`Afficher`) ;\n- **rectangle** : traitement, c'est-à-dire un calcul ou une affectation ;\n- **losange** : test, avec deux sorties étiquetées `Oui` et `Non`.\n\nLa méthode est mécanique : on suit l'algorithme ligne à ligne, on remplace chaque ligne par son symbole, et on relie les symboles par des flèches dans l'ordre d'exécution. Le seul point délicat est le losange, dont les deux branches doivent se rejoindre avant l'ovale de fin.\n\n**Construction pas à pas**\n\n1. Tracer l'ovale de départ contenant le mot `Début`.\n2. En dessous, un parallélogramme de sortie contenant `Afficher (\"Entrer un nombre :\")`, relié au précédent par une flèche descendante.\n3. En dessous, un parallélogramme d'entrée contenant `Lire (N)`.\n4. En dessous, un losange contenant la condition `N > 10 ?`. Deux flèches en sortent : celle de gauche étiquetée `Oui`, celle de droite étiquetée `Non`.\n5. Sur la branche `Oui`, un parallélogramme de sortie contenant `Afficher (\"Le nombre est supérieur à 10\")`.\n6. Sur la branche `Non`, un parallélogramme de sortie contenant `Afficher (\"Le nombre est inférieur ou égal à 10\")`.\n7. Faire converger les deux branches vers un même point, puis relier ce point à l'ovale final contenant le mot `Fin`.\n\nAucun rectangle de traitement n'apparaît : l'algorithme ne réalise ni calcul ni affectation, il se contente de lire, de tester et d'afficher.\n\n**Algorigramme obtenu**\n\n```\n                    +-------------+\n                    |    Début    |            ovale\n                    +------+------+\n                           |\n         +-----------------v---------------------+\n         |  Afficher (\"Entrer un nombre :\")      |   parallélogramme (sortie)\n         +-----------------+---------------------+\n                           |\n         +-----------------v---------+\n         |        Lire (N)           |             parallélogramme (entrée)\n         +-----------------+---------+\n                           |\n                     +-----v------+\n                    /              \\\n                   <    N > 10 ?    >             losange (test)\n                    \\              /\n                     +--+------+--+\n              Oui       |      |       Non\n           +------------+      +-------------+\n           |                                 |\n +---------v-------------+     +-------------v------------------+\n | Afficher (\"Le nombre  |     | Afficher (\"Le nombre est       |\n |  est supérieur à 10\") |     |  inférieur ou égal à 10\")      |\n +---------+-------------+     +-------------+------------------+\n           |                                 |\n           +----------------+----------------+\n                            |\n                      +-----v------+\n                      |    Fin     |           ovale\n                      +------------+\n```\n\n### Piège à éviter\nDeux erreurs coûtent presque toujours des points sur cette question. La première : ne pas étiqueter les sorties du losange, si bien que le correcteur ne sait pas quelle branche correspond au cas vrai. La seconde : faire descendre chaque branche vers son propre `Fin`, ce qui donne deux fins à l'algorithme. Un algorigramme n'a qu'un seul début et qu'une seule fin : les branches doivent se rejoindre avant l'ovale final.\n\n### Conseil\nUtilise une règle et laisse de la place autour du losange : c'est là que les copies deviennent illisibles. Et vérifie ton schéma en le parcourant du doigt avec une valeur de test, par exemple `N = 25`, puis `N = 4` : si les deux parcours te mènent bien à `Fin` en affichant le bon message, ton algorigramme est juste.",
+      "themes": ["algorigramme", "organigramme de programmation", "symboles normalisés", "structure alternative", "représentation graphique d'un algorithme"],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2025-etab-cameroun-ex4-q4-1",
+          "competence": "Construire l'algorigramme d'un algorithme",
+          "contenu_markdown": "Un algorigramme (ou organigramme de programmation) traduit un algorithme en symboles normalisés reliés par des flèches. Quatre symboles suffisent au niveau du BEPC :\n\n- **ovale** : début et fin de l'algorithme ;\n- **parallélogramme** : entrée (`Lire`) ou sortie (`Afficher`) ;\n- **rectangle** : traitement, c'est-à-dire un calcul ou une affectation ;\n- **losange** : test, avec deux sorties étiquetées `Oui` et `Non`.\n\nLa méthode est mécanique : on suit l'algorithme ligne à ligne, on remplace chaque ligne par son symbole, et on relie les symboles par des flèches dans l'ordre d'exécution. Le seul point délicat est le losange, dont les deux branches doivent se rejoindre avant l'ovale de fin.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "BEPC blanc informatique 2025",
+    "algorithme comparaison nombre",
+    "syntaxe algorithmique",
+    "structure alternative Si Alors Sinon",
+    "instruction de lecture et d'écriture",
+    "algorigramme organigramme"
+  ],
+  "incertitudes": [
+    "savoir_officiel = null sur les 4 sous-questions : l'algorithmique (syntaxe, structures de contrôle, instructions d'entrée-sortie, algorigramme) ne figure dans aucun des sept savoirs du vivier Informatique 3e, limité au module 301 (systèmes de numération, codage, unités de mesure, transfert de données) et au module 302 (tableur). Le savoir « Utiliser les notions élémentaires de l'algorithmique » existe mais en classe de Première (module TCMP101), donc hors du vivier de la classe traitée. Aucun rattachement approximatif n'a été forcé.",
+    "L'algorithme figure dans un encadré du scan ; il a été transcrit intégralement en bloc de code, le texte étant entièrement lisible. Aucun crop d'image n'a été nécessaire.",
+    "Question 4 : l'algorigramme demandé est un schéma à produire par le candidat. Le corrigé le restitue sous forme de schéma en caractères, accompagné de la construction pas à pas ; aucune figure PNG n'a été générée."
+  ],
+  "statut": "brouillon"
+}

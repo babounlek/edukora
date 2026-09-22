@@ -121,17 +121,33 @@ function resolveCalloutVariant(title: string): CalloutVariant | undefined {
  * à un bloc de code qui afficherait tout en texte brut.
  */
 export function extractCallouts(markdown: string): string {
-  // Le corps s'arrête normalement à la première ligne vide (un "### Piège à éviter"/
-  // "Conseil"/"Rappel de méthode" n'est en pratique jamais qu'un seul paragraphe) -
-  // sauf quand cette ligne vide est immédiatement suivie d'un marqueur
-  // "[COURS_LINK:...]" (voir _annotate_cours_links côté backend, qui l'injecte comme
-  // paragraphe séparé juste après un Rappel de méthode) : il faut alors continuer pour
-  // l'inclure dans le même blockquote, sans quoi il atterrit hors du Callout, en texte
-  // brut non stylé (constaté en prod). Sans le `(?!\[COURS_LINK:)`, un corps
-  // multi-paragraphe engloutirait aussi tout texte qui suit sans son propre titre
-  // "###" - notamment l'énoncé de la question suivante, qui n'est séparé du corrigé
-  // précédent que par une ligne vide (voir _render_question_corrige) : régression
-  // vérifiée et exclue explicitement ici.
+  // Le corps s'arrête à la PREMIÈRE ligne vide après le titre - SKILL.md l'impose sans
+  // exception ("Le bloc `### Rappel de méthode` reste UN SEUL paragraphe, sans aucune
+  // ligne blanche à l'intérieur" ; même règle pour Piège/Conseil) : le principe général
+  // (2-4 lignes) est le SEUL contenu de l'encadré coloré, la résolution chiffrée qui
+  // suit (point 2 du template, "Corrigé détaillé étape par étape") n'a jamais sa place
+  // dedans - même repère que _RAPPEL_BLOCK_RE côté backend, qui ne retient lui aussi que
+  // le premier paragraphe pour décider où injecter [COURS_LINK:...].
+  //
+  // Historique : entre le 2026-08-31 et le 2026-09-02, cette frontière avait été
+  // repoussée à la prochaine "vraie" rupture (titre/---/nouvelle sous-question) pour
+  // absorber les rappels à plusieurs paragraphes déjà présents en base (~39% du corpus
+  // à l'époque, jusqu'à toucher la quasi-totalité des exercices ensuite) plutôt que de
+  // les tronquer visuellement. Effet de bord non anticipé : l'encadré "Rappel de
+  // méthode" finissait par engloutir la résolution ENTIÈRE (démonstration chiffrée,
+  // formules $$...$$, réponse finale en gras), rendant rappel et correction
+  // indiscernables l'un de l'autre - signalé en prod (mathematiques-probatoire-c-et-e-
+  // 2008, mathematiques-probatoire-a-2023-blanc). Revenu à la règle d'origine du skill :
+  // un rappel qui déborde sur un second paragraphe n'est plus mis en valeur au-delà du
+  // premier, celui-ci redevenant un texte de corrigé normal, visuellement distinct de
+  // l'encadré - exactement la séparation attendue, sans toucher au contenu déjà en base.
+  //
+  // Un marqueur "[COURS_LINK:...]" NE compte PAS comme fin de bloc (voir
+  // _annotate_cours_links côté backend, qui l'injecte comme paragraphe séparé juste
+  // après le premier paragraphe d'un Rappel de méthode) : il doit rester dans le même
+  // blockquote, sans quoi il atterrit hors du Callout en texte brut non stylé. Plusieurs
+  // marqueurs consécutifs sont possibles (un même bloc peut correspondre à plusieurs
+  // rappels fusionnés, voir sa docstring) : chacun repousse la frontière d'autant.
   const headingRe = new RegExp(
     `^###[ \\t]*(${TITLES_ALTERNATION})[ \\t]*\\n+([\\s\\S]*?)(?=\\n{2,}(?!\\[COURS_LINK:)|\\n#{1,6}[ \\t]|\\n---|\\n*(?![\\s\\S]))`,
     "gm",
@@ -149,6 +165,40 @@ export function extractCallouts(markdown: string): string {
   })
 
   return markdown
+}
+
+const BARE_COURS_LINK_LINE_RE = /^\[COURS_LINK:([a-zA-Z0-9_-]+)\]$/gm
+
+/**
+ * Regroupe une pile de marqueurs `[COURS_LINK:slug]` orphelins consécutifs (2 ou plus)
+ * en un seul marqueur `[COURS_LINK_GROUP:slug1,slug2,...]`, à appeler après
+ * extractCallouts - un marqueur encore présent à ce stade, hors blockquote, est
+ * forcément orphelin (voir `append_unmatched` côté backend,
+ * catalog.rendering.annotate_cours_links) : le rappel de méthode source n'a pas pu être
+ * apparié à un bloc précis dans le corrigé, et son lien est ajouté tel quel en fin
+ * d'exercice plutôt que d'être perdu. Un exercice qui compte beaucoup de rappels non
+ * appariés (un "Problème" à plusieurs parties, notamment) en accumule plusieurs à la
+ * suite - chacun rendu isolément comme son propre bouton "Voir le cours complet" pleine
+ * largeur, ils s'empilaient verticalement, strictement identiques à l'oeil (même texte,
+ * même icône, seule la cible du lien diffère) : à l'affichage, on n'y voit qu'un même
+ * lien répété plusieurs fois de suite plutôt que plusieurs cours réellement distincts
+ * (signalé en prod sur mathematiques-probatoire-c-2004, scan corpus du 2026-09-02 : 29
+ * exercices touchés, toutes matières confondues). Un seul marqueur orphelin reste
+ * inchangé (voir COURS_LINK_SENTINEL côté EpreuveMarkdown.tsx) : rien à regrouper, et un
+ * encadré à un seul lien resterait identique aux deux rendus.
+ */
+export function groupBareCoursLinks(markdown: string): string {
+  // Le dernier marqueur d'une pile n'est pas forcément suivi d'un saut de ligne (fin de
+  // chaîne, voir annotate_cours_links côté backend qui n'ajoute rien après le dernier
+  // slug) : capturé à part, sans "\n+" obligatoire après lui, contrairement aux
+  // marqueurs précédents de la même pile.
+  return markdown.replace(
+    /(?:^\[COURS_LINK:[a-zA-Z0-9_-]+\]\n+){1,}^\[COURS_LINK:[a-zA-Z0-9_-]+\]/gm,
+    (block) => {
+      const slugs = Array.from(block.matchAll(BARE_COURS_LINK_LINE_RE), (m) => m[1])
+      return `[COURS_LINK_GROUP:${slugs.join(",")}]`
+    },
+  )
 }
 
 // `(?![\s\S])` = fin du texte : avec le flag `m`, un `$` s'arrêtait à la fin de la PREMIÈRE

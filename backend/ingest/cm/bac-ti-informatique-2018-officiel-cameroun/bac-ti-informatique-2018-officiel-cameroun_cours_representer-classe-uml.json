@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-representer-classe-uml-tle-ti",
+  "meta": {
+    "titre": "Représenter une classe UML avec ses attributs et ses opérations",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de classes",
+    "duree_estimee_min": 22,
+    "tags": [
+      "UML",
+      "diagramme de classes",
+      "attribut",
+      "opération",
+      "visibilité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex1-q8-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois qu'on a décrit un objet précis (un employé, un livre, une commande), l'étape suivante consiste à généraliser : quelle est la structure commune à TOUS les objets de cette famille ? C'est exactement ce que représente une classe UML, avec sa notation en trois compartiments."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier un objet par son identifiant, son état et son comportement.",
+        "Savoir distinguer une donnée (attribut) d'une action (opération)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le rectangle à trois compartiments",
+      "contenu_markdown": "Une classe UML regroupe tous les objets qui partagent la même structure d'attributs et le même ensemble d'opérations possibles, seules leurs valeurs différant d'un objet à l'autre. Elle se représente par un rectangle divisé en trois compartiments empilés : le nom de la classe en haut (avec une majuscule initiale, au singulier), la liste de ses attributs au milieu (chacun typé : chaîne, entier, date, réel...), et la liste de ses opérations en bas (chacune suivie de parenthèses). Un signe `-` devant un membre indique une visibilité privée (accessible seulement depuis l'intérieur de la classe), un signe `+` une visibilité publique (accessible depuis l'extérieur) : ces signes ne sont pas décoratifs, ils font partie intégrante de la notation UML.",
+      "formule_principale": "Classe = Nom (haut) + attributs typés, visibilité -/+ (milieu) + opérations() (bas)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "En reprenant le cas SOCOPRO : l'employé Mbassa Jonathan (matricule 017Z) a pour attributs son poste, sa date d'embauche et son salaire, et peut effectuer une location, vérifier une disponibilité et consulter le planning. Identifiez une classe du système, avec ses attributs et ses opérations.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la classe qui généralise cet objet",
+          "justification": "Tous les employés de SOCOPRO partagent la même structure et les mêmes opérations possibles : seules leurs valeurs diffèrent d'un employé à l'autre.",
+          "resultat_markdown": "La classe Employé convient."
+        },
+        {
+          "numero": 2,
+          "action": "Lister les attributs avec leur type",
+          "justification": "Chaque attribut correspond à une donnée que possède tout objet Employé, avec son type précisé.",
+          "resultat_markdown": "matricule : chaîne, nom : chaîne, poste : chaîne, dateEmbauche : date, salaire : réel."
+        },
+        {
+          "numero": 3,
+          "action": "Lister les opérations avec leur visibilité",
+          "justification": "Chaque opération correspond à une action que tout objet Employé peut exécuter, rendue accessible depuis l'extérieur de la classe (visibilité publique) puisqu'elle est déclenchée par l'acteur Employé lui-même.",
+          "resultat_markdown": "```\nEmployé\n---------------------------------\n- matricule : chaîne\n- nom : chaîne\n- poste : chaîne\n- dateEmbauche : date\n- salaire : réel\n---------------------------------\n+ effectuerLocation()\n+ verifierDisponibilite()\n+ consulterPlanning()\n```"
+        }
+      ],
+      "conclusion_markdown": "La classe Employé rassemble dans un seul rectangle tout ce que partagent les employés de SOCOPRO : leur structure de données et leurs actions possibles, indépendamment de l'identité de tel ou tel employé précis."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier les parenthèses après le nom d'une opération",
+          "pourquoi_faux": "Les parenthèses signalent visuellement qu'il s'agit d'une action exécutable, et non d'un simple attribut ; sans elles, le correcteur ne peut plus distinguer d'un coup d'œil les deux compartiments.",
+          "correction_markdown": "Écris systématiquement chaque opération suivie de parenthèses, même vides : `effectuerLocation()`, jamais `effectuerLocation` seul."
+        },
+        {
+          "erreur_markdown": "Mettre un attribut calculé au moment de l'affichage, comme « nombreDeLocations », directement dans la liste des attributs stockés",
+          "pourquoi_faux": "Un attribut représente une donnée réellement stockée pour chaque objet ; une valeur recalculée à la demande (un compte, une moyenne, un total) relève d'une opération qui la calcule, pas d'un attribut figé.",
+          "correction_markdown": "Avant d'ajouter un attribut, demande-toi s'il s'agit d'une valeur stockée pour l'objet ou d'un résultat recalculé à chaque consultation ; dans ce second cas, c'est une opération, pas un attribut."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un livre de bibliothèque a pour attributs son ISBN, son titre et son statut (disponible ou emprunté), et peut être emprunté ou rendu. Représentez la classe Livre correspondante.",
+          "solution_markdown": "```\nLivre\n---------------------------------\n- isbn : chaîne\n- titre : chaîne\n- statut : chaîne\n---------------------------------\n+ emprunter()\n+ rendre()\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un compte bancaire a pour attributs son numéro et son solde. Il expose une opération pour consulter le solde (accessible à tout titulaire) et une opération interne, réservée au système bancaire, pour recalculer les intérêts mensuels. Représentez la classe CompteBancaire en précisant correctement la visibilité de chaque opération.",
+          "solution_markdown": "```\nCompteBancaire\n---------------------------------\n- numero : chaîne\n- solde : réel\n---------------------------------\n+ consulterSolde()\n- calculerInterets()\n```\nL'opération `consulterSolde()` reste publique (`+`) car le titulaire du compte la déclenche lui-même depuis l'extérieur de la classe ; `calculerInterets()` reste privée (`-`) car elle n'est jamais déclenchée directement par un acteur externe, seulement utilisée en interne par le système bancaire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un enseignant et un élève partagent tous deux les attributs nom, prénom et date de naissance, mais l'enseignant a en plus une discipline enseignée et l'opération noterUneCopie(), tandis que l'élève a en plus une classe de scolarité et l'opération consulterSesNotes(). Proposez une organisation en classes qui évite de dupliquer les attributs communs, en utilisant la notation UML complète.",
+          "solution_markdown": "```\nPersonne\n---------------------------------\n- nom : chaîne\n- prenom : chaîne\n- dateNaissance : date\n---------------------------------\n\nEnseignant (hérite de Personne)\n---------------------------------\n- discipline : chaîne\n---------------------------------\n+ noterUneCopie()\n\nEleve (hérite de Personne)\n---------------------------------\n- classeScolarite : chaîne\n---------------------------------\n+ consulterSesNotes()\n```\nLes trois attributs communs (nom, prénom, date de naissance) sont factorisés une seule fois dans la classe mère Personne ; Enseignant et Eleve héritent de ces attributs par une relation de généralisation et n'ajoutent, chacune, que leur attribut et leur opération propres. Aucun attribut commun n'est recopié dans les classes filles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une classe UML se représente par un rectangle à trois compartiments : nom, attributs typés, opérations.",
+        "Le signe `-` marque une visibilité privée, le signe `+` une visibilité publique : ce ne sont jamais de simples décorations.",
+        "Une opération s'écrit toujours suivie de parenthèses, même vides.",
+        "Une valeur recalculée à la demande est une opération, jamais un attribut stocké.",
+        "Au BAC TI, l'identification d'une classe avec ses attributs ET ses opérations prépare directement le diagramme de classes complet : soigner cette étape rapporte des points sur toute question ultérieure qui s'appuie dessus."
+      ]
+    }
+  ]
+}

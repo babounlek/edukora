@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-verifier-teneur-dosage-facteur-dilution-terminale",
+  "meta": {
+    "titre": "Vérifier une teneur annoncée par dosage : de la solution mère à la masse totale",
+    "matiere": "Chimie",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Dosages acide-base - contrôle qualité",
+    "duree_estimee_min": 18,
+    "tags": [
+      "contrôle qualité",
+      "dosage acide-base",
+      "facteur de dilution",
+      "fiole jaugée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat - Chimie Théorique - Séries C, D et E - Office du Baccalauréat du Cameroun (session 2023)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-d-e-chimie-theorique-2023-officiel-cameroun-ex4-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un contrôle qualité par dosage ne titre presque jamais l'échantillon entier directement : on dissout d'abord tout l'échantillon dans un grand volume connu, puis on n'en dose qu'une petite fraction précisément mesurée. Remonter de cette fraction dosée à la masse totale de l'échantillon d'origine est l'étape qui donne tout son sens au contrôle qualité."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation d'équivalence d'un dosage acide-base",
+        "Notion de facteur de dilution entre un volume prélevé et un volume total"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Remonter du prélèvement dosé à la totalité de l'échantillon",
+      "contenu_markdown": "Quand un échantillon entier est dissous dans un volume total $V_{\\text{tot}}$ (une solution mère S), puis qu'un volume $V_{\\text{préléve}}$ de cette solution est prélevé pour être dosé, la quantité de matière trouvée dans le dosage ne représente qu'une fraction $\\dfrac{V_{\\text{préléve}}}{V_{\\text{tot}}}$ de la quantité totale contenue dans l'échantillon d'origine. Pour retrouver cette quantité totale, il faut multiplier le résultat du dosage par l'inverse de cette fraction (le facteur de dilution) : $$n_{\\text{total}} = n_{\\text{dans le prélèvement}} \\times \\frac{V_{\\text{tot}}}{V_{\\text{préléve}}}$$ avant de la convertir en masse pour la comparer à la teneur annoncée.",
+      "formule_principale": "n(total) = n(dosé) × Vtot/Vprélevé",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le contenu d'un sachet d'aspirine (étiquette « 100 mg ») est dissous dans 500 mL (solution S). Un prélèvement de 100 mL de S est dosé par NaOH à 10⁻² mol/L, l'équivalence étant atteinte pour 11,1 mL. Vérifier la teneur annoncée (M(aspirine) = 180 g/mol).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la quantité de matière d'aspirine dans le prélèvement dosé",
+          "justification": "Relation d'équivalence pour une réaction AH + HO- → A- + H2O, 1 pour 1.",
+          "resultat_markdown": "n(AH)dans 100 mL = CB × VBE = 10⁻² × 0,0111 = 1,11×10⁻⁴ mol."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le facteur de dilution entre le prélèvement et la solution totale",
+          "justification": "100 mL prélevés sur un total de 500 mL.",
+          "resultat_markdown": "Facteur = 500/100 = 5."
+        },
+        {
+          "numero": 3,
+          "action": "En déduire la quantité de matière totale d'aspirine dans le sachet",
+          "justification": "Application du facteur de dilution à la quantité trouvée dans le prélèvement.",
+          "resultat_markdown": "n(AH)total = 1,11×10⁻⁴ × 5 = 5,55×10⁻⁴ mol."
+        },
+        {
+          "numero": 4,
+          "action": "Convertir en masse et comparer à l'étiquette",
+          "justification": "La comparaison finale se fait toujours sur la même grandeur (masse) que celle annoncée par l'étiquette.",
+          "resultat_markdown": "m = 5,55×10⁻⁴ × 180 ≈ 0,0999 g = 99,9 mg, à comparer aux 100 mg annoncés : écart négligeable, étiquette vérifiée."
+        }
+      ],
+      "conclusion_markdown": "Le facteur de dilution (ici 5) est aussi important que le dosage lui-même : l'oublier reviendrait à sous-estimer la teneur réelle d'un facteur 5, une erreur considérable en contrôle qualité."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Comparer directement la quantité de matière trouvée dans le prélèvement (100 mL) à la teneur totale annoncée sur l'étiquette, sans appliquer le facteur de dilution.",
+          "pourquoi_faux": "Le prélèvement ne représente qu'une fraction de l'échantillon total dissous : comparer sans remettre à l'échelle sous-estime systématiquement la teneur réelle.",
+          "correction_markdown": "Identifie toujours le rapport entre le volume total de la solution mère et le volume effectivement prélevé pour le dosage, avant toute comparaison avec une teneur totale."
+        },
+        {
+          "erreur_markdown": "Inverser le facteur de dilution (multiplier par Vprélevé/Vtot au lieu de Vtot/Vprélevé).",
+          "pourquoi_faux": "Le prélèvement contient MOINS de matière que le total (puisqu'il n'en est qu'une fraction) : il faut donc multiplier par un facteur SUPÉRIEUR à 1 pour remonter au total, jamais par un facteur inférieur à 1.",
+          "correction_markdown": "Vérifie que ton facteur de dilution est toujours supérieur à 1 quand tu remontes d'un prélèvement vers un total : Vtot est toujours au numérateur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un échantillon est dissous dans 250 mL, dont 50 mL sont prélevés pour un dosage. Quel est le facteur de dilution à appliquer pour remonter à la quantité totale ?",
+          "solution_markdown": "Facteur = 250/50 = 5."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un comprimé de vitamine C est dissous dans 200 mL. Un prélèvement de 20 mL est dosé, donnant n = 5,0×10⁻⁵ mol de vitamine C (M = 176 g/mol) dans ce prélèvement. Calculer la masse totale de vitamine C dans le comprimé.",
+          "solution_markdown": "Facteur de dilution = 200/20 = 10. n(total) = 5,0×10⁻⁵ × 10 = 5,0×10⁻⁴ mol. m(total) = 5,0×10⁻⁴ × 176 = 0,088 g = 88 mg."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour améliorer la précision d'un contrôle qualité, un technicien hésite entre prélever 10 mL ou 50 mL d'une même solution mère de 250 mL pour le dosage (le volume restant étant ajusté pour garder un volume total dosé raisonnable, par ajout d'eau). Lequel des deux choix minimise l'incertitude relative sur la teneur totale calculée, et pourquoi ?",
+          "solution_markdown": "Prélever un plus grand volume (50 mL plutôt que 10 mL) réduit le facteur de dilution à appliquer ensuite (250/50 = 5, contre 250/10 = 25) : comme toute incertitude de mesure sur le volume à l'équivalence (VBE) se retrouve multipliée par ce facteur de dilution lors du calcul de la quantité totale, un facteur de dilution plus petit amplifie moins cette incertitude. Prélever 50 mL est donc préférable pour minimiser l'incertitude relative sur la teneur totale calculée, à condition que le volume prélevé reste compatible avec le protocole de dosage (verrerie disponible, volume total raisonnable)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un dosage effectué sur un prélèvement ne donne directement que la quantité de matière contenue DANS ce prélèvement, jamais dans l'échantillon total.",
+        "Le facteur de dilution (Vtotal/Vprélevé) permet de remonter du prélèvement à la quantité totale : il est toujours supérieur à 1.",
+        "Convertis la quantité de matière totale en masse avant de comparer au résultat annoncé sur une étiquette, toujours exprimée en masse.",
+        "Un facteur de dilution plus petit (prélèvement plus grand) réduit l'incertitude relative finale sur la teneur totale calculée."
+      ]
+    }
+  ]
+}

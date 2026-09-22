@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-determination-graphique-dune-acceleration-tle-c-e",
+  "meta": {
+    "titre": "Determination graphique d'une acceleration a partir de trois positions successives (methode des vecteurs differences)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Mecanique - methodes graphiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "acceleration centripete",
+      "methode des differences finies",
+      "derivee seconde discrete"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2010 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-e-physique-2010-officiel-cameroun-ex4-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment mesurer une acceleration - une grandeur qui implique deux derivations successives par rapport au temps - a partir de simples positions relevees a intervalles reguliers, sans jamais deriver une equation ? C'est exactement ce que permet la methode des vecteurs differences, dont ce cours acheve la mise en oeuvre commencee dans la construction graphique de $\\vec A_k$."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Construction graphique du vecteur $\\vec A_k$ (cours precedent)",
+        "Notion physique de derivee seconde (acceleration = derivee de la vitesse)",
+        "Conversion d'unites (distances, temps)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la construction graphique a l'acceleration numerique",
+      "contenu_markdown": "Le vecteur $\\vec A_k = \\vec{G_kG_{k+2}}+\\vec{G_kG_{k-2}}$, construit graphiquement, est relie a l'acceleration reelle du mobile en position $G_k$ par $a_k = A_k/(4\\tau^2)$ (formule analogue a la derivee seconde discrete, avec un pas de temps double $2\\tau$). Il faut imperativement convertir $A_k$, mesure sur le graphe a une echelle donnee, en une distance reelle avant d'appliquer cette formule.",
+      "formule_principale": "a_k = \\dfrac{A_{k,reel}}{4\\tau^2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un vecteur $\\vec A_k$ mesure $1{,}21\\ \\text{cm}$ sur un graphe a l'echelle $1/10^9$, avec $\\tau=1\\ \\text{h}$. Determiner l'acceleration reelle correspondante.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir Ak en distance reelle",
+          "justification": "L'echelle du graphe doit etre appliquee avant tout calcul physique",
+          "resultat_markdown": "$A_{k,reel} = 1{,}21\\times10^9\\ \\text{cm} = 1{,}21\\times10^7\\ \\text{m}$"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir tau en secondes",
+          "justification": "L'acceleration doit s'exprimer dans les unites SI (m/s^2)",
+          "resultat_markdown": "$\\tau=1\\ \\text{h}=3600\\ \\text{s}$, donc $4\\tau^2 = 4\\times3600^2 = 5{,}184\\times10^7\\ \\text{s}^2$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'acceleration",
+          "justification": "Application directe de la formule",
+          "resultat_markdown": "$a_k = 1{,}21\\times10^7/5{,}184\\times10^7 \\approx 0{,}23\\ \\text{m/s}^2$"
+        }
+      ],
+      "conclusion_markdown": "On vient d'obtenir une acceleration en m/s^2 a partir d'une simple longueur mesuree sur un graphe : les deux conversions d'unites (echelle du graphe, duree en secondes) sont les etapes les plus souvent negligees, mais absolument indispensables."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement A_k en centimetres (valeur graphique) dans la formule a_k = A_k/(4 tau^2)",
+          "pourquoi_faux": "La formule physique exige une distance reelle (en metres), pas une longueur mesuree sur le papier : oublier la conversion d'echelle fausse le resultat d'un facteur egal a l'inverse de l'echelle (ici $10^9$).",
+          "correction_markdown": "Toujours convertir A_k a l'echelle reelle avant de l'utiliser dans la formule de l'acceleration."
+        },
+        {
+          "erreur_markdown": "Utiliser tau en heures au lieu de secondes dans le calcul de 4 tau^2",
+          "pourquoi_faux": "L'acceleration en m/s^2 exige un temps en secondes ; utiliser des heures directement produirait un resultat numeriquement absurde (facteur $3600^2$ d'erreur).",
+          "correction_markdown": "Toujours convertir systematiquement tau en secondes avant de calculer $4\\tau^2$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un vecteur $A_k$ mesure $2{,}0\\ \\text{cm}$ sur un graphe a l'echelle $1/10^8$, avec $\\tau=30\\ \\text{min}$. Calculer l'acceleration reelle.",
+          "solution_markdown": "$A_{k,reel}=2{,}0\\times10^8\\ \\text{cm}=2{,}0\\times10^6\\ \\text{m}$. $\\tau=1800\\ \\text{s}$, $4\\tau^2=4\\times1800^2=1{,}296\\times10^7\\ \\text{s}^2$. $a_k=2{,}0\\times10^6/1{,}296\\times10^7\\approx0{,}154\\ \\text{m/s}^2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux mesures graphiques donnent des accelerations $a_1=0{,}20\\ \\text{m/s}^2$ et $a_2=0{,}18\\ \\text{m/s}^2$ pour le meme satellite a deux positions differentes de son orbite circulaire. L'ecart entre les deux valeurs remet-il en cause le caractere circulaire uniforme du mouvement ?",
+          "solution_markdown": "Pour un mouvement circulaire uniforme, l'acceleration centripete devrait avoir la meme norme en tout point de la trajectoire. Un ecart de l'ordre de $10\\%$ entre deux mesures graphiques independantes reste compatible avec les incertitudes de lecture inherentes a toute construction graphique (mesure de longueurs au millimetre pres, imprecision du trace) : il ne remet donc pas en cause, a lui seul, le caractere circulaire uniforme du mouvement, mais illustre les limites de precision de la methode graphique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que la formule $a_k=A_k/(4\\tau^2)$ redonne bien, dans le cas d'un mouvement circulaire uniforme de rayon $r$ et de vitesse angulaire $\\omega$, l'expression theorique de l'acceleration centripete $a=\\omega^2 r$, lorsque l'angle elementaire $\\theta=\\omega\\tau$ est petit.",
+          "solution_markdown": "D'apres le cours precedent, $A_k=2r(1-\\cos2\\theta)$ avec $\\theta=\\omega\\tau$. Pour $\\theta$ petit, $\\cos2\\theta\\approx1-2\\theta^2$, donc $A_k\\approx2r\\times2\\theta^2=4r\\theta^2=4r\\omega^2\\tau^2$. En reportant dans $a_k=A_k/(4\\tau^2)$ : $a_k \\approx 4r\\omega^2\\tau^2/(4\\tau^2) = r\\omega^2$, qui est exactement l'expression theorique de l'acceleration centripete $a=\\omega^2r$. La methode graphique redonne donc bien, a la limite des petits angles, le resultat theorique attendu — ce qui confirme sa validite."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La formule $a_k=A_k/(4\\tau^2)$ convertit un vecteur construit graphiquement en une acceleration physique reelle.",
+        "Deux conversions sont indispensables et frequemment oubliees : l'echelle du graphe (pour A_k) et l'unite de temps en secondes (pour tau).",
+        "Un ecart de l'ordre de 10 a 20% entre une acceleration mesuree graphiquement et une valeur theorique (ou entre deux mesures graphiques) est normal et attendu, du fait de l'imprecision inherente a toute lecture graphique.",
+        "Cette methode, a la limite des petits angles, redonne exactement l'expression theorique de l'acceleration centripete $a=\\omega^2r$ : elle n'est pas une approximation grossiere, mais une methode numerique rigoureuse.",
+        "Au BAC, cette methode graphique constitue l'etape numerique centrale de tout exercice de 'verification' d'une loi de la dynamique a partir d'un enregistrement experimental."
+      ]
+    }
+  ]
+}

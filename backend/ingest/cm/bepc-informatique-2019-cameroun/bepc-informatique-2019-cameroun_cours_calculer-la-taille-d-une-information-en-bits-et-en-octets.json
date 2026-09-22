@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-calculer-la-taille-d-une-information-en-bits-et-en-octets-3e",
+  "meta": {
+    "titre": "Calculer la taille d'une information en bits et en octets",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Unités de mesure de l'information",
+    "duree_estimee_min": 30,
+    "tags": [
+      "bit",
+      "octet",
+      "kilo-octet",
+      "conversion",
+      "taille d'un fichier",
+      "codage des caractères"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2019-cameroun",
+    "epreuve_titre": "BEPC Informatique 2019 - Cameroun (MINESEC/DECC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2019-cameroun-ex2-q2.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ta clé USB annonce 8 Go, ton devoir pèse 42 Ko, ta connexion débite 2 Mbit/s. Trois unités, trois ordres de grandeur, et une confusion permanente entre le bit et l'octet qui coûte des points à chaque session d'examen. Tout part pourtant d'une seule relation, apprise en une ligne : un octet vaut huit bits. Ce cours montre comment, à partir de là, calculer la taille d'un texte, convertir dans n'importe quelle unité et repérer les pièges des énoncés."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir multiplier et diviser des nombres entiers, y compris par 8 et par 1024.",
+        "Savoir ce qu'est un caractère (lettre, chiffre, espace, signe de ponctuation).",
+        "Connaître la notion de fichier et de capacité d'un support de stockage."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du bit au giga-octet",
+      "contenu_markdown": "**Le bit** (*binary digit*) est la plus petite quantité d'information manipulée par un ordinateur. Il ne prend que deux valeurs : 0 ou 1. Son symbole est `b`.\n\n**L'octet** (*byte* en anglais) est un groupe de **8 bits**. Son symbole est `o` (ou `B` en anglais). C'est l'unité de base pour mesurer la taille des fichiers, parce qu'un caractère du texte courant tient précisément sur un octet dans les codages classiques (ASCII étendu, ISO 8859-1).\n\n**Relation fondamentale**\n\n1 octet = 8 bits\n\n**Les multiples.** Deux conventions coexistent, et l'examen attend que tu saches laquelle tu utilises.\n\n| Unité | Convention binaire (usage scolaire et informatique) | Convention décimale (norme SI, fabricants) |\n|---|---|---|\n| 1 kilo-octet (Ko) | 1 024 octets = $2^{10}$ | 1 000 octets |\n| 1 méga-octet (Mo) | 1 024 Ko = 1 048 576 octets | 1 000 000 octets |\n| 1 giga-octet (Go) | 1 024 Mo | 1 000 000 000 octets |\n| 1 téra-octet (To) | 1 024 Go | 1 000 000 000 000 octets |\n\nAu Cameroun, **la convention binaire (1 Ko = 1 024 octets) est celle du programme et des sujets d'examen** : c'est celle qu'il faut appliquer, en précisant la relation utilisée dans la copie. La norme internationale réserve en toute rigueur les préfixes kibi, mébi, gibi (Kio, Mio, Gio) aux puissances de 1 024, mais cette écriture n'est pas exigée au BEPC.\n\n**Méthode de calcul de la taille d'un texte, en trois étapes**\n\n1. **Compter les caractères**, en incluant les espaces et les signes de ponctuation, et en excluant ce que l'énoncé exclut explicitement (guillemets, par exemple).\n2. **Multiplier par la taille d'un caractère** pour obtenir la taille en octets : le plus souvent 1 octet par caractère.\n3. **Convertir dans l'unité demandée** : multiplier par 8 pour passer aux bits, diviser par 1 024 pour passer aux kilo-octets.",
+      "formule_principale": "1\\ octet = 8\\ bits \\quad ; \\quad 1\\ Ko = 1\\,024\\ octets"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer en bits la taille de l'information contenue dans la phrase « je suis malade papa. », sachant que chaque caractère tient sur 1 octet. Les espaces sont comptés comme des caractères, il n'y a qu'un seul espace entre deux mots, et les guillemets ne sont pas pris en compte. *(BEPC Informatique 2019, Partie II, question 2.b)*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Délimiter précisément ce qu'il faut compter",
+          "justification": "L'énoncé exclut les guillemets et impose un seul espace entre les mots : ces deux consignes changent le résultat final.",
+          "resultat_markdown": "La chaîne à mesurer est exactement : je suis malade papa."
+        },
+        {
+          "numero": 2,
+          "action": "Compter les caractères mot par mot",
+          "justification": "Compter de tête conduit presque toujours à une erreur d'une ou deux unités. On pose le décompte.",
+          "resultat_markdown": "`je` : 2 ; espace : 1 ; `suis` : 4 ; espace : 1 ; `malade` : 6 ; espace : 1 ; `papa` : 4 ; `.` : 1."
+        },
+        {
+          "numero": 3,
+          "action": "Additionner et contrôler le total",
+          "justification": "Un contrôle par catégories confirme le décompte.",
+          "resultat_markdown": "$2+1+4+1+6+1+4+1 = 20$ caractères, soit 16 lettres, 3 espaces et 1 point."
+        },
+        {
+          "numero": 4,
+          "action": "Passer aux octets",
+          "justification": "Chaque caractère tient sur 1 octet, d'après l'énoncé.",
+          "resultat_markdown": "$20 \\times 1 = 20$ octets."
+        },
+        {
+          "numero": 5,
+          "action": "Convertir en bits",
+          "justification": "La question demande le résultat en bits, et 1 octet vaut 8 bits.",
+          "resultat_markdown": "$20 \\times 8 = 160$ bits."
+        }
+      ],
+      "conclusion_markdown": "La taille de cette information est de **160 bits**, soit 20 octets. Le calcul lui-même est immédiat ; toute la difficulté tenait au décompte exact des caractères."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier les espaces dans le décompte des caractères.",
+          "pourquoi_faux": "Un espace est un caractère à part entière : il est codé et il occupe un octet exactement comme une lettre. L'omettre dans « je suis malade papa. » fait passer de 20 à 17 caractères, donc de 160 à 136 bits.",
+          "correction_markdown": "Décompose ton total en trois catégories : lettres, espaces, ponctuation. Tu ne peux plus en oublier une."
+        },
+        {
+          "erreur_markdown": "Confondre le bit et l'octet, en écrivant « 20 bits » au lieu de « 20 octets ».",
+          "pourquoi_faux": "Le rapport entre les deux est de 8 : une confusion entre eux fausse le résultat d'un facteur 8. C'est l'erreur la plus fréquente et la plus lourdement sanctionnée, parce qu'elle révèle que la relation de base n'est pas maîtrisée.",
+          "correction_markdown": "Écris systématiquement l'unité à côté de chaque nombre pendant le calcul, jamais seulement à la fin."
+        },
+        {
+          "erreur_markdown": "Diviser par 1 000 au lieu de 1 024 pour passer des octets aux kilo-octets.",
+          "pourquoi_faux": "La convention retenue au programme est binaire : 1 Ko = 1 024 octets. Diviser par 1 000 introduit un écart de 2,4 %, faible sur un petit fichier mais considérable sur un disque entier.",
+          "correction_markdown": "Précise dans ta copie la relation que tu utilises : « avec 1 Ko = 1 024 octets ». Le correcteur voit alors que la convention est maîtrisée."
+        },
+        {
+          "erreur_markdown": "Multiplier deux fois par 8 en passant des caractères aux bits.",
+          "pourquoi_faux": "L'erreur vient d'un calcul mené trop vite : on convertit les caractères en octets, puis on remultiplie par 8 un nombre déjà exprimé en bits. Le résultat est huit fois trop grand.",
+          "correction_markdown": "Contrôle l'ordre de grandeur : une phrase d'une vingtaine de caractères pèse quelques centaines de bits, jamais plusieurs milliers."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une page de texte contient 2 000 caractères, chacun codé sur 1 octet. Calculer la taille de cette page en octets, en bits, puis en kilo-octets.",
+          "solution_markdown": "**Solution.**\n\n**En octets.** Chaque caractère occupe 1 octet :\n\n$$2\\,000 \\times 1 = 2\\,000 \\ \\text{octets}$$\n\n**En bits.** Un octet vaut 8 bits :\n\n$$2\\,000 \\times 8 = 16\\,000 \\ \\text{bits}$$\n\n**En kilo-octets.** Avec la convention binaire, 1 Ko = 1 024 octets :\n\n$$\\frac{2\\,000}{1\\,024} \\approx 1{,}95 \\ \\text{Ko}$$\n\nLa page pèse donc environ 1,95 Ko, soit un peu moins de 2 Ko. Ce résultat est cohérent : un fichier texte d'une page occupe toujours quelques kilo-octets seulement, ce qui explique qu'un simple `.txt` soit si léger comparé à une photo."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une carte mémoire de 8 Go doit stocker des photographies de 4 Mo chacune. Combien de photographies peut-elle contenir au maximum ? Détaille la conversion.",
+          "solution_markdown": "**Solution.**\n\n**Étape 1 - Ramener les deux grandeurs à la même unité.** La capacité est en giga-octets, la taille d'une photo en méga-octets. On convertit la capacité en méga-octets, avec 1 Go = 1 024 Mo :\n\n$$8 \\ \\text{Go} = 8 \\times 1\\,024 = 8\\,192 \\ \\text{Mo}$$\n\n**Étape 2 - Diviser la capacité par la taille d'une photo.**\n\n$$\\frac{8\\,192}{4} = 2\\,048$$\n\n**Étape 3 - Conclure.** La carte peut contenir au maximum **2 048 photographies** de 4 Mo.\n\n**Remarque de méthode.** Le nombre obtenu est un maximum théorique. En pratique, le système de fichiers occupe lui-même une petite partie de la carte, et le nombre réel de photos enregistrables est légèrement inférieur. Si l'énoncé ne le précise pas, on donne le résultat théorique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève achète un disque dur externe annoncé « 500 Go » par le fabricant. Une fois branché, son ordinateur affiche une capacité d'environ 465 Go. L'élève croit avoir été trompé. Explique l'origine de cet écart par le calcul, et indique si le fabricant a menti.",
+          "solution_markdown": "**Solution.**\n\n**Origine de l'écart : deux conventions différentes pour le même préfixe.**\n\n1. **Le fabricant utilise la convention décimale**, celle du Système international : pour lui, 1 Go = 1 000 000 000 octets. Le disque annoncé 500 Go contient donc :\n\n$$500 \\times 1\\,000\\,000\\,000 = 500\\,000\\,000\\,000 \\ \\text{octets}$$\n\n2. **Le système d'exploitation utilise la convention binaire** : pour lui, 1 Go = 1 024 Mo = 1 024 × 1 024 × 1 024 octets, soit :\n\n$$1\\,024^3 = 1\\,073\\,741\\,824 \\ \\text{octets}$$\n\n3. **Conversion du contenu réel dans l'unité du système.** On divise le nombre d'octets réellement présents par la valeur binaire du giga-octet :\n\n$$\\frac{500\\,000\\,000\\,000}{1\\,073\\,741\\,824} \\approx 465{,}7$$\n\nLe système affiche donc environ **465,7 Go**, exactement ce que constate l'élève.\n\n**Le fabricant a-t-il menti ?**\n\nNon. Le disque contient bien les 500 milliards d'octets annoncés : aucun octet ne manque. Ce qui diffère, c'est l'unité de mesure employée pour les compter. Le fabricant respecte la norme internationale, où le préfixe « giga » signifie un milliard, comme dans « gigawatt » ou « gigahertz ». Le système d'exploitation, lui, conserve l'usage informatique historique, où « giga » désigne $1\\,024^3$.\n\n**Ce que la norme prévoit.** Pour lever l'ambiguïté, la norme internationale a créé des préfixes distincts : le **gibi-octet (Gio)** vaut $1\\,024^3$ octets, le **giga-octet (Go)** vaut $10^9$ octets. Le disque devrait donc être décrit comme « 500 Go, soit 465,7 Gio ». Cette écriture reste peu employée dans le commerce, et l'écart continue d'étonner les acheteurs.\n\n**À retenir pour l'examen.** L'écart entre les deux conventions grandit avec la taille : il est de 2,4 % au niveau du kilo-octet, de 4,9 % au méga-octet et de 7,4 % au giga-octet. Précise toujours la convention que tu utilises dans un calcul de capacité."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un octet vaut 8 bits. Cette relation est la clé de tous les calculs de taille : apprends-la dans les deux sens.",
+        "Pour mesurer un texte : compte les caractères espaces et ponctuation compris, multiplie par 1 octet, puis par 8 pour obtenir des bits.",
+        "Le décompte des caractères est l'étape qui fait perdre le point, pas la multiplication. Pose-le mot par mot.",
+        "Précise toujours la convention utilisée : au programme, 1 Ko = 1 024 octets, 1 Mo = 1 024 Ko, 1 Go = 1 024 Mo.",
+        "Les fabricants comptent en puissances de 1 000, les systèmes d'exploitation en puissances de 1 024 : c'est là toute l'origine des capacités affichées plus faibles que celles annoncées.",
+        "Vérifie l'ordre de grandeur avant de rendre : une phrase pèse quelques centaines de bits, une page de texte quelques kilo-octets, une photo quelques méga-octets.",
+        "Au BEPC, cette compétence tombe sous forme d'un calcul de taille de phrase ou d'un calcul de nombre de fichiers tenant sur un support : les deux se traitent avec les mêmes trois étapes."
+      ]
+    }
+  ]
+}

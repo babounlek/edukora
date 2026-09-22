@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-trace-d-execution-d-une-fonction-recursive-pile-d-appels-tle-ti",
+  "meta": {
+    "titre": "Trace d'exécution d'une fonction récursive (pile d'appels)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Récursivité en langage C",
+    "duree_estimee_min": 30,
+    "tags": [
+      "langage C",
+      "récursivité",
+      "trace d'exécution",
+      "pile d'appels"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex4-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à une fonction récursive qu'on ne comprend pas encore bien, la meilleure arme n'est pas de deviner ce qu'elle fait, mais de la dérouler à la main, appel après appel, exactement comme l'ordinateur le ferait. C'est ce qu'on appelle une trace d'exécution."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Reconnaître une fonction récursive et son cas de base",
+        "Priorité des opérations arithmétiques (parenthèses, multiplication, division)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Descendre jusqu'au cas de base, puis remonter en calculant chaque niveau",
+      "contenu_markdown": "Tracer l'exécution d'une fonction récursive se fait en deux phases. **La descente** : on note chaque appel successif avec ses paramètres réels, en calculant à chaque étape les valeurs transmises au niveau suivant, jusqu'à atteindre le cas de base. **La remontée** : en partant du cas de base (dont la valeur de retour est connue directement), on calcule le résultat de chaque appel en utilisant le résultat déjà obtenu au niveau immédiatement plus profond, jusqu'à remonter au tout premier appel. Chaque niveau de cette trace correspond à ce qu'on appelle un niveau de la pile d'appels (call stack) : la mémoire que le programme réserve pour chaque appel en attente de son résultat.",
+      "formule_principale": "Descente jusqu'au cas de base, puis remontée en réutilisant chaque résultat déjà obtenu",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Tracer l'exécution de calcul(5, 10), où calcul(x, n) applique l'exponentiation rapide.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Descendre : noter chaque appel avec ses paramètres réels",
+          "justification": "n est divisé par 2 (ou (n-1)/2) à chaque appel : la descente s'arrête nécessairement en un nombre fini d'étapes.",
+          "resultat_markdown": "calcul(5,10) -> calcul(25,5) -> calcul(625,2) -> calcul(390625,1) -> calcul(152587890625,0)"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la valeur du cas de base",
+          "justification": "C'est le point de départ de la remontée : aucun calcul supplémentaire n'est nécessaire à ce niveau.",
+          "resultat_markdown": "calcul(152587890625, 0) = 1 (cas de base, n==0)"
+        },
+        {
+          "numero": 3,
+          "action": "Remonter niveau par niveau en réutilisant le résultat du niveau plus profond",
+          "justification": "Chaque niveau impair multiplie par x (l'ancien x, pas x au carré) le résultat déjà obtenu au niveau suivant.",
+          "resultat_markdown": "calcul(390625,1) = 390625*1 = 390625 ; calcul(625,2) = 390625 ; calcul(25,5) = 25*390625 = 9765625 ; calcul(5,10) = 9765625"
+        }
+      ],
+      "conclusion_markdown": "La trace confirme que calcul(5,10) renvoie 9 765 625, en 5 niveaux d'appels correspondant aux divisions successives de n par 2 (10, 5, 2, 1, 0)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier par x*x au lieu de x sur la branche impaire lors de la remontée.",
+          "pourquoi_faux": "Le code multiplie explicitement par `x` (ligne 11 : `return x*calcul(x*x,(n-1)/2)`), la valeur de x AVANT sa mise au carré pour l'appel suivant, pas après.",
+          "correction_markdown": "Toujours noter la valeur de x utilisée pour la multiplication au moment même de l'appel, avant qu'elle ne soit mise au carré pour l'appel suivant."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que la descente s'arrête bien en un nombre fini d'étapes avant de commencer la remontée.",
+          "pourquoi_faux": "Une trace bâclée qui ne vérifie pas explicitement l'atteinte du cas de base peut cacher une erreur de calcul dans la descente (une division mal faite, par exemple), qui ne serait détectée qu'au moment où le résultat final semble incohérent.",
+          "correction_markdown": "Vérifier explicitement, à chaque étape de la descente, que le nouveau paramètre n a bien diminué et se rapproche de 0."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Tracer l'exécution de la fonction factorielle récursive `fact(n) = si n==0 alors 1 sinon n*fact(n-1)` pour fact(4).",
+          "solution_markdown": "Descente : fact(4) -> fact(3) -> fact(2) -> fact(1) -> fact(0).\nCas de base : fact(0) = 1.\nRemontée : fact(1) = 1*1 = 1 ; fact(2) = 2*1 = 2 ; fact(3) = 3*2 = 6 ; fact(4) = 4*6 = 24.\nRésultat : fact(4) = 24."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Tracer l'exécution de calcul(2, 6) avec la fonction de l'exercice (calcul(x,n) = x^n par exponentiation rapide).",
+          "solution_markdown": "Descente : calcul(2,6) [pair] -> calcul(4,3) [impair] -> calcul(16,1) [impair] -> calcul(256,0) [cas de base].\nCas de base : calcul(256,0) = 1.\nRemontée : calcul(16,1) = 16*1 = 16 ; calcul(4,3) = 4*16 = 64 ; calcul(2,6) = 64.\nVérification indépendante : 2^6 = 64. Le résultat concorde."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En te basant sur les traces précédentes, exprimer, en fonction de n, le nombre approximatif de niveaux d'appels (donc la profondeur de la pile) nécessaires pour calculer calcul(x, n) par cet algorithme, et comparer avec le nombre d'appels que nécessiterait une version naïve qui multiplierait x par lui-même n fois.",
+          "solution_markdown": "À chaque appel, n est approximativement divisé par 2 (division entière, que n soit pair ou impair) : le nombre de niveaux d'appels jusqu'au cas de base est donc de l'ordre de $\\log_2(n)$ (pour n=10, on observe 4 divisions jusqu'à 0, cohérent avec $\\log_2(10) \\approx 3{,}3$, arrondi supérieur). Une version naïve qui multiplierait x par lui-même n fois nécessiterait, elle, n appels (ou n itérations), soit un ordre de grandeur $O(n)$ contre $O(\\log n)$ pour l'exponentiation rapide : pour n=1000 par exemple, la version rapide ne nécessite qu'une dizaine de niveaux d'appels contre 1000 multiplications pour la version naïve, un gain considérable qui justifie l'intérêt de cet algorithme."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une trace d'exécution récursive se construit en deux temps : la descente jusqu'au cas de base, puis la remontée qui calcule chaque niveau à partir du suivant.",
+        "Chaque niveau de la descente doit montrer explicitement les nouveaux paramètres transmis à l'appel suivant.",
+        "La remontée réutilise le résultat déjà obtenu au niveau plus profond : jamais un recalcul depuis le début.",
+        "Une trace complète permet de vérifier un résultat par un calcul indépendant (ici $x^n$), une étape qu'il ne faut jamais sauter avant de conclure."
+      ]
+    }
+  ]
+}

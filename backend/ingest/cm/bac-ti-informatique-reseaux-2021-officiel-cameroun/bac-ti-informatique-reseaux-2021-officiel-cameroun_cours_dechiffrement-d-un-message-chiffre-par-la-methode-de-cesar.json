@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-dechiffrement-d-un-message-chiffre-par-la-methode-de-cesar-terminale-ti",
+  "meta": {
+    "titre": "Déchiffrement d'un message chiffré par la méthode de César",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Cryptographie",
+    "duree_estimee_min": 20,
+    "tags": [
+      "chiffrement de César",
+      "cryptographie symétrique",
+      "déchiffrement",
+      "force brute",
+      "cryptographie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex3-q5b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Parmi les techniques de chiffrement les plus anciennes, celle attribuée à Jules César reste aujourd'hui encore un excellent point d'entrée pour comprendre le principe même du chiffrement : décaler chaque lettre d'un message pour le rendre incompréhensible à qui ne connaît pas la règle du décalage. Simple à mettre en œuvre, elle l'est tout autant à percer, à condition de connaître la bonne méthode."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaissance de l'ordre des 26 lettres de l'alphabet",
+        "Notion de chiffrement et de déchiffrement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déchiffrer un message chiffré par la méthode de César",
+      "contenu_markdown": "Le chiffrement de César décale chaque lettre du message clair d'un nombre fixe de positions dans l'alphabet (le décalage, ou clé). Pour déchiffrer un message chiffré par cette méthode, il faut reculer chaque lettre du même nombre de positions. Le décalage historique attribué à César est de 3, mais en cas de doute, on peut tester méthodiquement les 25 décalages possibles (de 1 à 25) jusqu'à obtenir un texte cohérent : c'est une attaque par force brute, réalisable à la main car l'alphabet ne compte que 26 lettres.",
+      "formule_principale": "\\text{Lettre claire} = \\text{Lettre chiffrée} - \\text{décalage} \\pmod{26}",
+      "variantes": [
+        {
+          "nom": "Attaque par force brute (décalage inconnu)",
+          "quand_utiliser": "Quand le décalage utilisé n'est pas connu à l'avance et ne peut être supposé égal à 3.",
+          "contenu_markdown": "Tester successivement chaque décalage de 1 à 25 sur le début du message, et retenir celui qui produit des mots reconnaissables dans la langue attendue."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déchiffrer le message suivant, chiffré par la méthode de César : « KHOOR PRQGH ».",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tester le décalage historique de 3",
+          "justification": "Le décalage 3 est le point de départ naturel avant une recherche plus large.",
+          "resultat_markdown": "En reculant chaque lettre de 3 rangs : K→H, H→E, O→L, O→L, R→O, soit « HELLO » pour le premier mot."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le même décalage au reste du message",
+          "justification": "Le décalage est fixe pour tout le message, il doit être appliqué uniformément.",
+          "resultat_markdown": "P→M, R→O, Q→N, G→D, H→E, soit « MONDE » pour le second mot."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier la cohérence du résultat obtenu",
+          "justification": "Un texte cohérent dans la langue attendue confirme que le bon décalage a été trouvé.",
+          "resultat_markdown": "« HELLO MONDE » forme un message cohérent (mélange franco-anglais reconnu comme un classique de test informatique) : le décalage de 3 est confirmé."
+        }
+      ],
+      "conclusion_markdown": "Le message déchiffré est « HELLO MONDE », confirmé par la cohérence du résultat obtenu avec le décalage historique de 3."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décaler dans le mauvais sens (avancer au lieu de reculer) lors du déchiffrement",
+          "pourquoi_faux": "Si le chiffrement a AVANCÉ chaque lettre du décalage, le déchiffrement doit la RECULER du même nombre ; avancer à nouveau reviendrait à chiffrer une seconde fois, pas à déchiffrer.",
+          "correction_markdown": "Vérifie toujours le sens de l'opération : chiffrement = avancer, déchiffrement = reculer (ou l'inverse selon la convention adoptée), et reste cohérent sur tout le message."
+        },
+        {
+          "erreur_markdown": "S'arrêter au premier mot qui semble à peu près correct sans vérifier le reste du message",
+          "pourquoi_faux": "Un mot isolé peut sembler correct par coïncidence avec un mauvais décalage ; seule la cohérence de PLUSIEURS mots du message confirme fiablement le bon décalage.",
+          "correction_markdown": "Vérifie le décalage trouvé sur au moins deux mots distincts du message avant de conclure définitivement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déchiffrer le mot chiffré par César avec un décalage de 3 : « FRXUV ».",
+          "solution_markdown": "En reculant chaque lettre de 3 rangs : F→C, R→O, X→U, U→R, V→S, soit « COURS »."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un message chiffré par César, avec un décalage inconnu, commence par le mot « YMJ ». Retrouver le décalage utilisé, sachant que le message est en anglais et que ce premier mot doit être un mot anglais courant de trois lettres.",
+          "solution_markdown": "En testant les décalages successifs sur « YMJ » : avec un décalage de 5, Y→T, M→H, J→E, ce qui donne « THE », un mot anglais très courant et cohérent en début de phrase. Le décalage utilisé est donc 5."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi le chiffrement de César, malgré son intérêt pédagogique, est aujourd'hui considéré comme totalement inadapté à un usage de sécurité réel, en vous appuyant sur le nombre de clés possibles.",
+          "solution_markdown": "Le chiffrement de César ne comporte que 25 décalages possibles (de 1 à 25, le décalage 0 ne chiffrant rien). Un attaquant qui intercepte un message chiffré par cette méthode peut donc tester exhaustivement, à la main ou instantanément avec un programme, les 25 décalages possibles et repérer celui qui produit un texte cohérent, sans avoir besoin d'aucune information secrète supplémentaire : c'est une attaque par force brute triviale à mener. Un chiffrement moderne utilise, à la place, un espace de clés bien plus vaste (par exemple 2^128 clés possibles ou davantage pour des standards comme l'AES), rendant une telle recherche exhaustive totalement impraticable même avec une puissance de calcul considérable. Le chiffrement de César reste néanmoins pédagogiquement utile pour comprendre le principe général du décalage et du déchiffrement, avant d'aborder des méthodes cryptographiques réellement robustes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "César décale chaque lettre du message clair d'un nombre fixe de positions (le décalage).",
+        "Pour déchiffrer, on recule chaque lettre du message chiffré du même nombre de positions.",
+        "En l'absence de décalage connu, on peut tester méthodiquement les 25 décalages possibles (force brute).",
+        "Vérifier le décalage trouvé sur au moins deux mots distincts avant de conclure au message final.",
+        "Le très petit nombre de décalages possibles (25) rend le chiffrement de César totalement impropre à un usage de sécurité moderne."
+      ]
+    }
+  ]
+}

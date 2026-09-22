@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-derivee-seconde-et-etude-de-la-convexite-tle-a",
+  "meta": {
+    "titre": "Étudier la convexité d'une fonction à l'aide de sa dérivée seconde",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Étude de fonctions",
+    "duree_estimee_min": 25,
+    "tags": [
+      "dérivée seconde",
+      "convexité",
+      "étude de fonctions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a4-maths-officiel-1994-cameroun",
+    "epreuve_titre": "BAC Mathematiques - Serie A (A4 bilingue) - Session 1994 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a4-maths-officiel-1994-cameroun-ex3-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La dérivée première dit si une courbe monte ou descend. La dérivée SECONDE, elle, dit comment la courbe se COURBE : vers le haut, comme un bol, ou vers le bas, comme une cloche. Cette information supplémentaire permet de repérer les points d'inflexion, ces endroits où la courbe change de forme sans que cela se voie dans le tableau de variations classique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir dériver une fonction une première fois.",
+        "Savoir dériver à nouveau une expression déjà dérivée (dérivée seconde).",
+        "Savoir étudier le signe d'une expression factorisée."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Signe de la dérivée seconde et convexité",
+      "contenu_markdown": "La dérivée seconde $f''$ d'une fonction $f$ s'obtient en dérivant une seconde fois $f'$. Son signe renseigne sur la convexité de la courbe de $f$ : là où $f''(x)\\geq 0$, la courbe est CONVEXE (elle tourne sa concavité vers le haut, comme un bol) ; là où $f''(x)\\leq 0$, la courbe est CONCAVE (elle tourne sa concavité vers le bas, comme une cloche). Un point où $f''$ s'annule EN CHANGEANT DE SIGNE est un point d'inflexion : la courbe y change de type de courbure.",
+      "formule_principale": "f''(x)\\geq 0 \\text{ sur } I \\iff \\text{courbe convexe sur } I"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$f(x)=4xe^{-x}$, avec $f'(x)=4e^{-x}(1-x)$. Calculer $f''(x)$ et résoudre l'inéquation $f''(x)\\geq 0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver $f'(x)=4e^{-x}(1-x)=4e^{-x}-4xe^{-x}$",
+          "justification": "On dérive chaque terme, en utilisant à nouveau la formule du produit pour le second terme.",
+          "resultat_markdown": "$\\dfrac{d}{dx}\\big[4e^{-x}\\big]=-4e^{-x}$ et $\\dfrac{d}{dx}\\big[4xe^{-x}\\big]=4e^{-x}-4xe^{-x}$ (déjà calculé pour $f'$)."
+        },
+        {
+          "numero": 2,
+          "action": "Combiner les deux dérivées et factoriser",
+          "justification": "$f''(x)$ est la différence des deux dérivées obtenues, qu'on factorise par $e^{-x}$.",
+          "resultat_markdown": "$f''(x)=-4e^{-x}-\\big(4e^{-x}-4xe^{-x}\\big)=-8e^{-x}+4xe^{-x}=4e^{-x}(x-2)$."
+        },
+        {
+          "numero": 3,
+          "action": "Étudier le signe de $f''(x)$",
+          "justification": "$e^{-x}>0$ toujours, donc le signe de $f''(x)$ est celui de $(x-2)$.",
+          "resultat_markdown": "$f''(x)\\geq 0 \\iff x-2\\geq 0 \\iff x\\geq 2$."
+        }
+      ],
+      "conclusion_markdown": "$f''(x)=4e^{-x}(x-2)$, et $f''(x)\\geq 0$ sur $[2;+\\infty[$ : la courbe de $f$ est concave sur $]-\\infty;2]$ et convexe sur $[2;+\\infty[$, avec un point d'inflexion en $x=2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le signe de $f'$ (sens de variation) avec celui de $f''$ (convexité), et croire qu'ils doivent changer de signe au même point.",
+          "pourquoi_faux": "Ce sont deux études indépendantes : $f'$ s'annule là où $f$ change de sens de variation (extremum local), $f''$ s'annule là où la courbe change de courbure (point d'inflexion). Rien n'impose que ce soit au même point.",
+          "correction_markdown": "Toujours mener les deux études séparément, avec deux tableaux de signes distincts si nécessaire, et ne jamais réutiliser machinalement le point trouvé pour $f'=0$ dans l'étude de $f''$."
+        },
+        {
+          "erreur_markdown": "Affirmer qu'un point où $f''(x)=0$ est automatiquement un point d'inflexion, sans vérifier que $f''$ change bien de signe autour de ce point.",
+          "pourquoi_faux": "Si $f''(x)=0$ en un point mais que $f''$ garde le même signe de part et d'autre (elle touche zéro sans le traverser), la courbure ne change pas réellement : ce n'est pas un point d'inflexion.",
+          "correction_markdown": "Toujours vérifier le changement de signe effectif de part et d'autre du point candidat avant de conclure à un point d'inflexion."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f(x)=x^3$. Calculer $f''(x)$ et étudier la convexité de $f$.",
+          "solution_markdown": "$$f'(x)=3x^2,\\qquad f''(x)=6x.$$\n\n$f''(x)\\geq 0 \\iff x\\geq 0$ : la courbe est concave sur $]-\\infty;0]$ et convexe sur $[0;+\\infty[$, avec un point d'inflexion en $x=0$ (où $f''$ change bien de signe)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $g(x)=e^{-x^2}$. Calculer $g''(x)$ et étudier son signe (indication : $g'(x)=-2xe^{-x^2}$).",
+          "solution_markdown": "$$g''(x)=-2e^{-x^2}+(-2x)\\times(-2x)e^{-x^2}=-2e^{-x^2}+4x^2e^{-x^2}=2e^{-x^2}(2x^2-1).$$\n\nComme $e^{-x^2}>0$, le signe de $g''(x)$ est celui de $(2x^2-1)$, qui s'annule pour $x=\\pm\\dfrac{1}{\\sqrt{2}}$.\n\n$g''(x)\\geq 0$ pour $x\\leq -\\dfrac{1}{\\sqrt{2}}$ ou $x\\geq \\dfrac{1}{\\sqrt{2}}$ (courbe convexe), et $g''(x)<0$ entre les deux (courbe concave), avec deux points d'inflexion."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h(x)=x\\ln(x)$ sur $]0;+\\infty[$. Calculer $h''(x)$ et étudier la convexité de $h$.",
+          "solution_markdown": "$$h'(x)=\\ln(x)+x\\times\\dfrac{1}{x}=\\ln(x)+1.$$\n\n$$h''(x)=\\dfrac{1}{x}.$$\n\nSur $]0;+\\infty[$, on a toujours $\\dfrac{1}{x}>0$ : $h''(x)>0$ pour tout $x$ du domaine, donc la courbe de $h$ est convexe sur tout son domaine, sans aucun point d'inflexion."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La dérivée seconde $f''$ renseigne sur la convexité de la courbe, une information distincte du sens de variation donné par $f'$.",
+        "$f''(x)\\geq 0$ signifie courbe convexe (vers le haut) ; $f''(x)\\leq 0$ signifie courbe concave (vers le bas).",
+        "Un point d'inflexion exige un CHANGEMENT DE SIGNE de $f''$ autour du point, pas seulement $f''=0$ en ce point.",
+        "Mener l'étude de $f'$ et de $f''$ comme deux études complètement séparées, avec leurs propres tableaux de signes.",
+        "Au BAC, cette étude complète souvent une étude de variations pour affiner le tracé de la courbe : elle est de plus en plus fréquente dans les problèmes de fonctions."
+      ]
+    }
+  ]
+}

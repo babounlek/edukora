@@ -1,0 +1,69 @@
+{
+  "epreuve_source": "probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+  "numero_exercice": "4",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "etablissement",
+  "etablissement": "Collège Mgr. François-Xavier VOGT",
+  "institution": null,
+  "annee": 2024,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "introduction_markdown": null,
+  "points": "2",
+  "groupes": [
+    "PARTIE II : PROGRAMMATION DES SITES WEB STATIQUES ET DYNAMIQUES (6 pts)",
+    "B- Évaluation des compétences (4,25 pts)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**B- Évaluation des compétences (4,25 pts)**\n\n**Exercice 1 (2 pts)**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Pendant la période du confinement en 2020, où la majorité des leçons et évaluations se faisaient en ligne à cause de la Covid-19, un enseignant de mathématiques vous a posé un problème relatif à l'étude d'une fonction numérique de la forme $f(x)=\\dfrac{ax^2+bx+c}{ax^2-bx-c}$. Il souhaite un script JavaScript qui aide les apprenants à étudier une telle fonction sans présenter au préalable le tableau de variation ni tracer la courbe.\n\n**Consigne** : déterminer le domaine de définition de la fonction, et surtout déterminer les limites aux bornes du domaine de définition.",
+      "corrige_markdown": "### Rappel de méthode\nÉtudier une fonction numérique par script consiste à traduire en instructions ce que l'on ferait à la main (calcul du domaine de définition à partir de l'annulation du dénominateur, puis calcul des limites aux bornes de ce domaine), plutôt qu'à faire deviner le résultat par un tracé de courbe ou un tableau de variation.\n\n**Mise en équation du problème mathématique**\n\nOn pose $N(x) = ax^2+bx+c$ (numérateur) et $D(x) = ax^2-bx-c$ (dénominateur), de sorte que $f(x) = \\dfrac{N(x)}{D(x)}$.\n\n**Étape 1 - Domaine de définition**\n\n$f$ est définie partout où $D(x) \\neq 0$. Il faut donc résoudre $D(x)=0$, c'est-à-dire $ax^2-bx-c=0$.\n\n*Cas particulier $a=0$* : $D(x)$ se réduit à $-bx-c$, une expression du premier degré (ou une constante si $b=0$ aussi). Le programme doit traiter ce cas séparément (division par un coefficient nul interdite dans la formule du second degré).\n\n*Cas général $a \\neq 0$* : le discriminant du dénominateur est\n$$\\Delta_D = (-b)^2 - 4 \\times a \\times (-c) = b^2+4ac$$\n\n- Si $\\Delta_D>0$ : deux racines distinctes $x_1=\\dfrac{b-\\sqrt{\\Delta_D}}{2a}$ et $x_2=\\dfrac{b+\\sqrt{\\Delta_D}}{2a}$, donc $D_f=\\mathbb{R}\\setminus\\{x_1;x_2\\}$.\n- Si $\\Delta_D=0$ : une racine double $x_0=\\dfrac{b}{2a}$, donc $D_f=\\mathbb{R}\\setminus\\{x_0\\}$.\n- Si $\\Delta_D<0$ : $D(x)$ ne s'annule jamais, donc $D_f=\\mathbb{R}$.\n\n**Étape 2 - Limites aux bornes de $D_f$**\n\n*Limites en $+\\infty$ et en $-\\infty$* : $N(x)$ et $D(x)$ sont tous deux des trinômes de coefficient dominant $a$ (quand $a \\neq 0$). Le quotient des termes de plus haut degré donne directement :\n$$\\lim_{x\\to \\pm\\infty} f(x) = \\lim_{x\\to\\pm\\infty} \\frac{ax^2}{ax^2} = \\frac{a}{a} = 1$$\nLa droite d'équation $y=1$ est donc asymptote horizontale à la courbe, dans tous les cas où $a\\neq 0$.\n\n*Limites en une valeur exclue $x_0$ (racine de $D$)* : il faut d'abord vérifier que $x_0$ n'annule pas aussi $N$ (sinon la fraction se simplifierait et $x_0$ ne serait qu'un \"trou\", pas une asymptote). Si $N(x_0)\\neq 0$, $f$ admet une asymptote verticale d'équation $x=x_0$ ; le signe de chaque limite laterale dépend du signe de $N(x_0)$ et du signe de $D(x)$ de part et d'autre de $x_0$ (qui change de signe si $x_0$ est une racine simple, et garde un signe constant si $x_0$ est une racine double).\n\n**Traduction en script JavaScript**\n\nPlutôt que de refaire cette étude de signe à la main dans le script, on exploite le fait que la division flottante de JavaScript renvoie déjà `Infinity`, `-Infinity` ou `NaN` pour un dénominateur nul ou quasi nul : évaluer $f$ juste à gauche et juste à droite de $x_0$ (à $x_0 \\pm \\varepsilon$, avec $\\varepsilon$ très petit) donne directement le signe de chaque limite latérale, sans avoir à écrire soi-même l'étude de signe du dénominateur.\n\n```javascript\n<html><head><title>Etude de fonction</title></head>\n<body>\n<script type=\"text/javascript\">\n\nfunction N(a,b,c,x) { return a*x*x + b*x + c; }\nfunction D(a,b,c,x) { return a*x*x - b*x - c; }\nfunction f(a,b,c,x) { return N(a,b,c,x) / D(a,b,c,x); }\n\nvar a = parseFloat(prompt(\"Entrez le coefficient a :\"));\nvar b = parseFloat(prompt(\"Entrez le coefficient b :\"));\nvar c = parseFloat(prompt(\"Entrez le coefficient c :\"));\n\nvar message = \"\";\n\nif (a == 0) {\n    message += \"Cas particulier a=0 : le dénominateur est du premier degré.\\n\";\n    if (b != 0) {\n        var x0 = -c/b;\n        message += \"Domaine de définition : R privé de {\" + x0 + \"}\\n\";\n    } else {\n        message += (c != 0)\n            ? \"Domaine de définition : R tout entier (f(x) = -1 partout)\\n\"\n            : \"Fonction non définie : numérateur et dénominateur sont tous deux nuls.\\n\";\n    }\n} else {\n    var delta = b*b + 4*a*c;\n    var exclus = [];\n\n    if (delta > 0) {\n        var x1 = (b - Math.sqrt(delta)) / (2*a);\n        var x2 = (b + Math.sqrt(delta)) / (2*a);\n        exclus = [x1, x2];\n    } else if (delta == 0) {\n        var x0 = b / (2*a);\n        exclus = [x0];\n    }\n\n    message += \"Domaine de définition : R privé de {\" + exclus.join(\" ; \") + \"}\\n\";\n    message += \"Limite en -Infini et en +Infini : 1 (car a/a = 1)\\n\";\n\n    var epsilon = 0.0001;\n    for (var i = 0; i < exclus.length; i++) {\n        var x0 = exclus[i];\n        if (Math.abs(N(a,b,c,x0)) < 1e-9) {\n            message += \"En x=\" + x0 + \" : point sans image mais NON asymptotique (numérateur également nul)\\n\";\n        } else {\n            var gauche = f(a,b,c, x0 - epsilon);\n            var droite = f(a,b,c, x0 + epsilon);\n            message += \"En x=\" + x0 + \" : limite à gauche = \" + gauche + \", limite à droite = \" + droite + \"\\n\";\n        }\n    }\n}\n\ndocument.write(\"<pre>\" + message + \"</pre>\");\n\n</script>\n</body></html>\n```\n\nDéroulé de la logique du script :\n1. Les fonctions `N`, `D` et `f` calculent respectivement le numérateur, le dénominateur et l'image par $f$, pour des coefficients `a,b,c` et un réel `x` quelconques.\n2. Le cas `a==0` est traité à part, comme identifié à l'étape 1 ci-dessus (dénominateur non quadratique).\n3. Pour `a!=0`, le discriminant `delta` du dénominateur est calculé exactement comme $\\Delta_D=b^2+4ac$, et le tableau `exclus` reçoit les valeurs interdites selon son signe.\n4. La limite aux infinis est directement affichée comme `1`, valeur démontrée mathématiquement à l'étape 2, sans qu'aucun calcul supplémentaire ne soit nécessaire.\n5. Pour chaque valeur exclue, le script vérifie d'abord si le numérateur y est également nul (cas du \"trou\", à distinguer d'une véritable asymptote), puis, sinon, évalue $f$ juste avant et juste après cette valeur pour en déduire numériquement le signe de chaque limite latérale (JavaScript affichera alors lui-même des très grands nombres positifs ou négatifs, révélateurs du signe de l'infini correspondant).\n\n### Piège à éviter\nÉcrire directement `f(a,b,c,x0)` avec `x0` calculé par la formule du second degré donnerait le plus souvent une valeur numérique énorme mais finie (à cause des erreurs d'arrondi de `Math.sqrt`), jamais l'exacte valeur `Infinity` : le dénominateur calculé informatiquement n'est presque jamais rigoureusement égal à 0. C'est pourquoi le script évalue $f$ à `x0 - epsilon` et `x0 + epsilon` plutôt qu'en `x0` lui-même - cela donne un résultat numérique exploitable pour déterminer le signe de chaque limite, sans dépendre de la précision exacte de l'arrondi flottant en `x0`.\n\n### Conseil\nLe jour de l'épreuve, si l'écriture complète du script en JavaScript prend trop de temps, détaille au moins clairement la démarche mathématique (discriminant du dénominateur, limite en $\\pm\\infty$ égale à $a/a=1$) : c'est cette démarche, traduite ensuite en instructions, que le correcteur veut voir apparaître en premier.",
+      "themes": [
+        "Fonction rationnelle",
+        "Domaine de définition",
+        "Limites",
+        "JavaScript",
+        "Discriminant"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex4-q1-0",
+          "competence": "Étude algorithmique d'une fonction rationnelle : domaine de définition et limites aux bornes",
+          "contenu_markdown": "Étudier une fonction numérique par script consiste à traduire en instructions ce que l'on ferait à la main (calcul du domaine de définition à partir de l'annulation du dénominateur, puis calcul des limites aux bornes de ce domaine), plutôt qu'à faire deviner le résultat par un tracé de courbe ou un tableau de variation.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "fonction rationnelle",
+    "domaine de définition",
+    "discriminant",
+    "limite",
+    "asymptote",
+    "JavaScript",
+    "script",
+    "étude de fonction"
+  ],
+  "incertitudes": [
+    "L'énoncé ne précise pas si a, b, c sont des coefficients numériques fixés à l'avance ou des valeurs saisies par l'utilisateur au moment de l'exécution : le corrigé traite le cas général (coefficients saisis via prompt), le plus cohérent avec la consigne qui demande un script réutilisable pour étudier n'importe quelle fonction de cette forme.",
+    "Matière Informatique en principe couverte par le référentiel programme officiel edukora, mais le fichier backend/programme/fixtures/programme_officiel_cm_informatique.json est introuvable sur cet environnement : savoir_officiel laissé à null par manque d'accès au référentiel."
+  ],
+  "statut": "brouillon"
+}

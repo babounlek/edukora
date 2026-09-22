@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-le-serveur-web-role-et-fonctionnement-tle-ti",
+  "meta": {
+    "titre": "Le serveur Web : rôle et fonctionnement",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 15,
+    "tags": [
+      "serveur web",
+      "HTTP",
+      "Apache"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Taper une adresse dans un navigateur et voir une page s'afficher quelques dixièmes de seconde plus tard semble presque magique. Derrière cette rapidité se cache un logiciel précis, installé sur une machine distante, dont le seul métier est d'attendre des demandes et d'y répondre : le serveur Web."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le principe général du modèle client-serveur",
+        "Savoir ce qu'est une adresse URL"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un logiciel en écoute permanente de requêtes HTTP",
+      "contenu_markdown": "Un **serveur Web** est un logiciel qui reste en écoute des requêtes HTTP envoyées par les navigateurs, et qui y répond en renvoyant la ressource demandée : une page statique telle quelle si aucun traitement n'est nécessaire, ou le résultat d'un script (PHP, par exemple) exécuté à la volée. Apache et Nginx sont deux exemples très répandus de serveurs Web.\n\nLe serveur Web ne doit pas être confondu avec la machine physique qui l'héberge (souvent appelée elle aussi « le serveur » dans le langage courant) : l'un est un logiciel, l'autre le matériel sur lequel ce logiciel fonctionne."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un gestionnaire de stock soumet le formulaire d'enregistrement d'un article. Décris le rôle exact du serveur Web dans le traitement de cette soumission.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Le serveur Web reçoit la requête HTTP",
+          "justification": "Le formulaire a été soumis avec `action=\"enregistrement.php\"` : cette adresse cible directement le serveur Web",
+          "resultat_markdown": "Le serveur identifie qu'il doit traiter le fichier `enregistrement.php`"
+        },
+        {
+          "numero": 2,
+          "action": "Le serveur transmet l'exécution à l'interpréteur PHP",
+          "justification": "Un fichier `.php` ne peut pas être renvoyé tel quel : il doit d'abord être interprété",
+          "resultat_markdown": "Le code PHP du fichier s'exécute, avec accès à la base de données MySQL"
+        },
+        {
+          "numero": 3,
+          "action": "Le serveur récupère le résultat produit par le script",
+          "justification": "Le script termine son exécution en générant du HTML (via des instructions `echo`)",
+          "resultat_markdown": "Une page HTML complète est prête à être renvoyée"
+        },
+        {
+          "numero": 4,
+          "action": "Le serveur renvoie cette page au navigateur",
+          "justification": "C'est la dernière étape du rôle du serveur pour cette requête",
+          "resultat_markdown": "Le gestionnaire voit s'afficher la confirmation de son enregistrement"
+        }
+      ],
+      "conclusion_markdown": "Le serveur Web joue ici le rôle de chef d'orchestre : il reçoit la demande, délègue le traitement à PHP, puis renvoie le résultat, sans jamais interpréter lui-même le contenu du script."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre serveur Web et base de données",
+          "pourquoi_faux": "Le serveur Web (Apache) distribue des pages ; c'est un logiciel différent, MySQL, qui stocke et gère les données. Les deux collaborent mais ne remplissent pas le même rôle.",
+          "correction_markdown": "Retiens deux mots-clés distincts : serveur Web = distribution de pages, serveur de données (SGBD) = stockage et interrogation de données."
+        },
+        {
+          "erreur_markdown": "Croire que le serveur Web \"comprend\" le PHP tout seul",
+          "pourquoi_faux": "Un serveur Web sait distribuer des fichiers, mais il a besoin d'un module ou d'un interpréteur PHP associé pour exécuter le code contenu dans les fichiers `.php`.",
+          "correction_markdown": "C'est justement pour cette raison qu'une suite comme WAMP installe ensemble Apache et PHP : l'un distribue, l'autre interprète."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cite un exemple de logiciel serveur Web.",
+          "solution_markdown": "Apache (on peut aussi citer Nginx ou IIS)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Explique en une phrase la différence entre le serveur Web et le serveur de données dans une application comme celle de « Soft Computer ».",
+          "solution_markdown": "Le serveur Web (Apache) reçoit les requêtes du navigateur et exécute le script PHP, tandis que le serveur de données (MySQL) stocke les articles et répond aux requêtes SQL envoyées par ce script."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un utilisateur tape directement l'adresse d'un fichier `.php` mais reçoit une erreur « page introuvable ». Le fichier existe pourtant bien sur le disque de l'ordinateur. Que peux-tu en déduire sur le serveur Web ?",
+          "solution_markdown": "L'existence du fichier sur le disque ne suffit pas : il faut qu'un serveur Web soit démarré et configuré pour servir ce dossier. L'erreur « page introuvable » suggère qu'aucun serveur Web n'écoute à l'adresse demandée, ou que le fichier n'est pas placé dans le dossier racine que ce serveur surveille (par exemple `htdocs` ou `www`)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un serveur Web est un logiciel, pas une machine : il écoute les requêtes HTTP et y répond.",
+        "Il peut renvoyer une ressource statique telle quelle, ou déléguer un traitement (PHP) avant de renvoyer un résultat généré.",
+        "Ne confonds jamais serveur Web (Apache) et serveur de données (MySQL) : ce sont deux logiciels aux rôles complémentaires mais différents.",
+        "Ouvrir un fichier `.php` sans passer par un serveur Web ne fonctionne jamais : le code ne serait pas interprété."
+      ]
+    }
+  ]
+}

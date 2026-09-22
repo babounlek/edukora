@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-execution-cote-serveur-d-un-script-php-opposition-client-serveur-tle-ti",
+  "meta": {
+    "titre": "Exécution côté serveur d'un script PHP (opposition client/serveur)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation serveur (PHP)",
+    "duree_estimee_min": 20,
+    "tags": [
+      "PHP",
+      "côté serveur",
+      "client-serveur",
+      "JavaScript"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux langages peuvent cohabiter dans la même page Web sans jamais s'exécuter au même endroit : JavaScript agit dans le navigateur de l'internaute, PHP agit sur la machine qui héberge le site. Confondre les deux est l'une des erreurs de compréhension les plus fréquentes en début de programmation Web."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de page Web et de navigateur",
+        "Distinction entre un fichier .html et un fichier .php"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "PHP s'exécute sur le serveur, avant l'envoi de la page au navigateur",
+      "contenu_markdown": "PHP est un langage de script interprété côté serveur : lorsqu'un navigateur demande une page `.php`, c'est le serveur Web qui exécute le code PHP qu'elle contient, produit le HTML résultant, puis envoie uniquement ce HTML au navigateur. Le code PHP lui-même n'est jamais transmis au client et n'est donc jamais visible dans le code source affiché par le navigateur (contrairement à JavaScript, qui s'exécute côté client, dans le navigateur lui-même, et dont le code reste visible).",
+      "formule_principale": "Navigateur (client) --requête--> Serveur (exécute PHP) --HTML--> Navigateur",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le script `verif_motdepasse.php` de l'exercice 2, expliquer où s'exécutent les instructions comprises entre `<?php` (ligne 6) et la fin du script.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'extension du fichier concerné",
+          "justification": "Un fichier `.php` signale au serveur Web qu'il doit être interprété avant d'être envoyé, contrairement à un fichier `.html` servi tel quel.",
+          "resultat_markdown": "Le fichier s'appelle `verif_motdepasse.php`."
+        },
+        {
+          "numero": 2,
+          "action": "Localiser la zone de code PHP à l'intérieur du fichier",
+          "justification": "Seul ce qui se trouve entre `<?php` et `?>` est du code PHP ; le reste (balises HTML) est envoyé tel quel.",
+          "resultat_markdown": "Tout ce qui suit `<?php` (ligne 6) jusqu'à la balise fermante correspondante."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur le lieu d'exécution",
+          "justification": "C'est le principe même du fonctionnement d'un serveur Web dynamique.",
+          "resultat_markdown": "Ce code s'exécute sur le serveur qui héberge le site, avant que la page ne soit envoyée au navigateur du candidat qui a rempli le formulaire."
+        }
+      ],
+      "conclusion_markdown": "Le navigateur du candidat ne reçoit jamais le code PHP : il reçoit uniquement le HTML déjà généré par le serveur, comme le message « Mot de passe accepté ! » ou le formulaire à ressaisir."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre que PHP « s'exécute dans le navigateur », en confondant avec JavaScript.",
+          "pourquoi_faux": "C'est exactement l'inverse : JavaScript s'exécute côté client (navigateur), PHP s'exécute côté serveur. Les deux langages peuvent apparaître dans une même page sans jamais s'exécuter au même endroit.",
+          "correction_markdown": "Retenir l'association : PHP = serveur, JavaScript = navigateur (client). Un moyen mnémotechnique : PHP produit du HTML AVANT l'envoi, JavaScript agit sur du HTML déjà reçu."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un site affiche l'heure exacte du serveur au moment où la page est générée. Ce calcul doit-il être fait en PHP ou en JavaScript ? Justifier.",
+          "solution_markdown": "En PHP, car l'heure doit être celle du serveur au moment où il génère la page (fonction `date()`), pas celle de l'ordinateur du visiteur. Si le calcul était fait en JavaScript, ce serait l'heure de l'ordinateur du visiteur qui s'afficherait, potentiellement différente de celle du serveur (fuseau horaire différent, horloge mal réglée)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un formulaire doit vérifier, avant même d'envoyer les données au serveur, qu'un champ « email » contient bien un caractère @. Ce contrôle doit-il être fait en PHP ou en JavaScript pour un retour immédiat sans rechargement de page ? Justifier.",
+          "solution_markdown": "En JavaScript, car ce contrôle doit réagir immédiatement dans le navigateur, avant même que le formulaire soit envoyé au serveur, sans rechargement de page. Un contrôle équivalent en PHP existerait aussi en pratique (pour la sécurité, car un contrôle JavaScript peut être contourné), mais il n'agirait qu'après l'envoi des données, avec un rechargement de la page."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi un contrôle de sécurité (par exemple vérifier qu'un mot de passe respecte une longueur minimale) ne doit-il jamais reposer uniquement sur du JavaScript côté client ?",
+          "solution_markdown": "Le code JavaScript s'exécute entièrement dans le navigateur du visiteur, qui peut le désactiver, le modifier via les outils de développement, ou envoyer directement une requête au serveur sans passer par le formulaire (avec un outil comme un script ou une extension). Un contrôle uniquement côté client peut donc toujours être contourné par un utilisateur malveillant. Le contrôle de sécurité réel doit donc être répété côté serveur (en PHP), seul environnement que l'utilisateur ne peut pas modifier ; le contrôle JavaScript reste utile, mais uniquement pour améliorer le confort d'utilisation (retour immédiat), jamais comme unique rempart de sécurité."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "PHP s'exécute côté serveur : le navigateur ne reçoit jamais le code PHP, seulement le HTML qu'il a produit.",
+        "JavaScript s'exécute côté client, dans le navigateur, et son code reste visible dans la page reçue.",
+        "Un même site peut combiner les deux langages, chacun à l'endroit qui correspond à son rôle.",
+        "Au BAC TI, une question qui oppose PHP et JavaScript attend explicitement cette distinction serveur/client, pas seulement une définition isolée de PHP."
+      ]
+    }
+  ]
+}

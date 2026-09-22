@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-calcul-algebrique-sur-les-nombres-complexes-par-multiplications-successives-tle-a",
+  "meta": {
+    "titre": "Écrire sous forme algébrique une suite de nombres complexes définis par récurrence",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Nombres complexes",
+    "duree_estimee_min": 25,
+    "tags": [
+      "nombres complexes",
+      "forme algébrique",
+      "calcul algébrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a4-maths-officiel-1994-cameroun",
+    "epreuve_titre": "BAC Mathematiques - Serie A (A4 bilingue) - Session 1994 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a4-maths-officiel-1994-cameroun-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un exercice définit une suite de nombres complexes $z_0, z_1, z_2, \\dots$ chacun obtenu en multipliant le précédent par un même facteur, il est tentant de tout redévelopper depuis $z_0$ à chaque étape. C'est à la fois plus long et plus risqué qu'une progression pas à pas, où chaque résultat s'appuie sur le précédent déjà simplifié."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir développer un produit de deux nombres complexes sous forme algébrique.",
+        "Connaître la propriété fondamentale $i^2=-1$.",
+        "Savoir regrouper partie réelle et partie imaginaire."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Multiplication successive et simplification algébrique",
+      "contenu_markdown": "Pour écrire sous forme algébrique un nombre complexe défini par une relation du type $z_{n+1}=k\\times z_n$ (avec $k$ un facteur complexe fixe), on développe le produit $k\\times z_n$ comme un produit de deux binômes complexes, en utilisant $i^2=-1$ pour simplifier les termes en $i^2$, puis on regroupe la partie réelle et la partie imaginaire du résultat. On repart ensuite de CE résultat déjà simplifié pour calculer le terme suivant, jamais de l'expression d'origine $z_0$.",
+      "formule_principale": "z_{n+1}=k\\,z_n=k(a+ib)=(ka-kb\\,i^2)+\\cdots \\text{ (développer puis regrouper)}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On pose $z_0=\\dfrac{\\sqrt{2}}{2}(1+i)$ et $z_1=(1-i)z_0$, $z_2=(1-i)z_1$, $z_3=(1-i)z_2$. Écrire $z_1$, $z_2$, $z_3$ sous forme algébrique.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Développer $z_1=(1-i)z_0$",
+          "justification": "On multiplie $(1-i)$ par $\\dfrac{\\sqrt{2}}{2}(1+i)$, en développant $(1-i)(1+i)$.",
+          "resultat_markdown": "$(1-i)(1+i)=1^2-i^2=1-(-1)=2$, donc $z_1=\\dfrac{\\sqrt{2}}{2}\\times 2=\\sqrt{2}$."
+        },
+        {
+          "numero": 2,
+          "action": "Développer $z_2=(1-i)z_1$ à partir de $z_1$ déjà simplifié",
+          "justification": "On repart du résultat $z_1=\\sqrt{2}$ (un réel), pas de l'expression d'origine de $z_0$.",
+          "resultat_markdown": "$z_2=(1-i)\\times\\sqrt{2}=\\sqrt{2}-\\sqrt{2}\\,i$."
+        },
+        {
+          "numero": 3,
+          "action": "Développer $z_3=(1-i)z_2$ à partir de $z_2$ déjà simplifié",
+          "justification": "On développe $(1-i)(\\sqrt{2}-\\sqrt{2}i)=\\sqrt{2}(1-i)^2$, puis $(1-i)^2$ en utilisant $i^2=-1$.",
+          "resultat_markdown": "$(1-i)^2=1-2i+i^2=1-2i-1=-2i$, donc $z_3=\\sqrt{2}\\times(-2i)=-2\\sqrt{2}\\,i$."
+        }
+      ],
+      "conclusion_markdown": "On obtient $z_1=\\sqrt{2}$, $z_2=\\sqrt{2}-\\sqrt{2}\\,i$ et $z_3=-2\\sqrt{2}\\,i$, chaque résultat ayant servi de point de départ simplifié pour le calcul suivant."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Redévelopper $z_2$ directement à partir de $z_0$ (en écrivant $z_2=(1-i)^2 z_0$ développé d'un coup) plutôt qu'à partir de $z_1$ déjà calculé.",
+          "pourquoi_faux": "Ce n'est pas mathématiquement faux en soi, mais cela multiplie les termes à développer d'un coup et augmente fortement le risque d'erreur de signe, sans aucun point de contrôle intermédiaire.",
+          "correction_markdown": "Toujours progresser étape par étape : simplifier $z_1$ complètement, PUIS calculer $z_2=(1-i)z_1$ à partir de cette forme simplifiée."
+        },
+        {
+          "erreur_markdown": "Oublier de remplacer $i^2$ par $-1$ et laisser un résultat du type $1-2i+i^2$ sans le simplifier davantage.",
+          "pourquoi_faux": "Une expression contenant encore $i^2$ n'est pas une forme algébrique complète : celle-ci doit être écrite uniquement avec des termes réels et des termes en $i$ (puissance 1).",
+          "correction_markdown": "Systématiquement remplacer $i^2$ par $-1$ dès qu'il apparaît, avant de regrouper les termes."
+        },
+        {
+          "erreur_markdown": "Mélanger partie réelle et partie imaginaire dans le regroupement final, par exemple écrire $\\sqrt{2}-\\sqrt{2}=0$ au lieu de $\\sqrt{2}-\\sqrt{2}\\,i$.",
+          "pourquoi_faux": "Un terme avec $i$ et un terme sans $i$ ne se combinent JAMAIS par addition ou soustraction directe : ce sont deux composantes différentes du nombre complexe (partie réelle et partie imaginaire).",
+          "correction_markdown": "Toujours regrouper séparément les termes SANS $i$ (partie réelle) et les termes AVEC $i$ (partie imaginaire), sans jamais les mélanger."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On pose $u_0=1+i$ et $u_1=(1+i)u_0$. Écrire $u_1$ sous forme algébrique.",
+          "solution_markdown": "$$u_1=(1+i)(1+i)=(1+i)^2=1+2i+i^2=1+2i-1=2i.$$\n\nDonc $u_1=2i$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On pose $v_0=1-i$, $v_1=(1+i)v_0$, $v_2=(1+i)v_1$. Écrire $v_1$ et $v_2$ sous forme algébrique.",
+          "solution_markdown": "$$v_1=(1+i)(1-i)=1-i^2=1+1=2.$$\n\n$v_1=2$ est réel. On repart de cette valeur simplifiée pour calculer $v_2$ :\n\n$$v_2=(1+i)\\times 2=2+2i.$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On pose $w_0=\\sqrt{3}+i$ et $w_{n+1}=(\\sqrt{3}-i)w_n$ pour tout $n\\geq 0$. Calculer $w_1$ et $w_2$ sous forme algébrique, puis conjecturer si la suite $(w_n)$ est périodique en observant les deux premiers termes.",
+          "solution_markdown": "$$w_1=(\\sqrt{3}-i)(\\sqrt{3}+i)=(\\sqrt{3})^2-i^2=3-(-1)=4.$$\n\n$w_1=4$ est réel. On repart de cette valeur pour calculer $w_2$ :\n\n$$w_2=(\\sqrt{3}-i)\\times 4=4\\sqrt{3}-4i.$$\n\nLes valeurs $w_0=\\sqrt{3}+i$, $w_1=4$ et $w_2=4\\sqrt{3}-4i$ sont toutes différentes : sur ces deux premiers termes, rien n'indique une périodicité (chaque terme change à la fois de module et, pour $w_0$ et $w_2$, d'argument, contrairement au cas où le facteur multiplicatif aurait un module égal à 1)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Développe une multiplication de nombres complexes comme un produit de binômes ordinaire, en gardant $i$ comme une inconnue jusqu'au bout.",
+        "Remplace systématiquement $i^2$ par $-1$ dès qu'il apparaît : une forme algébrique ne contient jamais de $i^2$ résiduel.",
+        "Ne mélange jamais partie réelle et partie imaginaire dans le regroupement final : ce sont deux composantes distinctes.",
+        "Dans une suite de nombres complexes définis par récurrence, repars toujours du dernier résultat déjà simplifié, jamais de l'expression d'origine : c'est plus court et plus sûr.",
+        "Au BAC, ce type de calcul en chaîne sert souvent de première étape avant une étude de modules ou d'arguments : une erreur de signe en début de chaîne se propage sur toutes les questions suivantes."
+      ]
+    }
+  ]
+}

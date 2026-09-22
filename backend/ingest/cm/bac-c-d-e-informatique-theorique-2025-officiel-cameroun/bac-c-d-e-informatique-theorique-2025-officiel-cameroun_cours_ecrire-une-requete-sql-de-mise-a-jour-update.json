@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-de-mise-a-jour-update-tle-tronc-commun",
+  "meta": {
+    "titre": "Écrire une requête SQL de mise à jour (UPDATE)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Langage de Manipulation de Données (LMD) - mise à jour",
+    "duree_estimee_min": 15,
+    "tags": [
+      "SQL",
+      "UPDATE",
+      "WHERE"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qC4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Changer le prix d'un seul produit dans une base qui en contient des milliers est une opération quotidienne pour toute application de gestion. UPDATE le permet, mais une seule clause oubliée peut transformer une correction ciblée en catastrophe généralisée."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une requête SELECT simple avec une clause WHERE."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "UPDATE modifie des lignes ciblées, jamais toute la table par défaut",
+      "contenu_markdown": "```sql\nUPDATE NomTable\nSET colonne = nouvelle_valeur\nWHERE condition;\n```\n\nUPDATE modifie la valeur d'une ou plusieurs colonnes pour les lignes d'une table qui vérifient une condition. La clause WHERE n'est jamais un détail facultatif : sans elle, la modification s'applique à TOUTES les lignes de la table, sans exception."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Changer le prix du produit « carton de sucre » de 3500 à 7500 dans la table PRODUIT(Ref, NomProd, Prix).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la table et la colonne à modifier",
+          "justification": "On modifie la colonne Prix de la table PRODUIT.",
+          "resultat_markdown": "UPDATE PRODUIT SET Prix = 7500"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la condition qui cible la bonne ligne",
+          "justification": "Seul le produit dont le nom est « carton de sucre » doit être modifié.",
+          "resultat_markdown": "WHERE NomProd = 'carton de sucre';"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la requête complète",
+          "justification": "On combine la modification et sa condition dans une seule instruction.",
+          "resultat_markdown": "UPDATE PRODUIT SET Prix = 7500 WHERE NomProd = 'carton de sucre';"
+        }
+      ],
+      "conclusion_markdown": "On obtient une requête qui modifie exclusivement le produit visé, sans toucher aux autres lignes de la table."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Omettre la clause WHERE",
+          "pourquoi_faux": "Sans WHERE, la requête UPDATE PRODUIT SET Prix = 7500; changerait le prix de TOUS les produits de la base à 7500, pas seulement celui du carton de sucre.",
+          "correction_markdown": "Toujours vérifier, avant d'exécuter un UPDATE, qu'une clause WHERE cible précisément les lignes concernées."
+        },
+        {
+          "erreur_markdown": "Utiliser une condition trop large (par exemple WHERE Prix = 3500 au lieu du nom du produit)",
+          "pourquoi_faux": "Si plusieurs produits différents ont accidentellement le même prix de départ (3500), cette condition modifierait le prix de tous ces produits, pas seulement celui visé.",
+          "correction_markdown": "Cibler la condition sur un identifiant vraiment unique du produit visé (sa référence ou son nom exact), pas sur une caractéristique qui pourrait être partagée par d'autres lignes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête qui change l'adresse du client dont l'identifiant IdCli est '02T32' pour 'avenue Kennedy, Yaoundé'.",
+          "solution_markdown": "UPDATE CLIENT SET Adresse = 'avenue Kennedy, Yaoundé' WHERE IdCli = '02T32';"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête qui augmente de 10% le prix de TOUS les produits dont le prix actuel est inférieur à 1000.",
+          "solution_markdown": "UPDATE PRODUIT SET Prix = Prix * 1.10 WHERE Prix < 1000;\n\nOn peut réutiliser la colonne elle-même (Prix) dans l'expression de la nouvelle valeur : ici, chaque ligne concernée voit son propre prix multiplié par 1,10."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un développeur exécute par erreur UPDATE PRODUIT SET Prix = 0; sans clause WHERE sur une base de production. Décrire précisément les conséquences de cette erreur, puis proposer une bonne pratique qui aurait pu l'éviter.",
+          "solution_markdown": "Conséquence : TOUS les produits de la table PRODUIT voient leur prix passer à 0, sans exception, car aucune condition ne restreint les lignes concernées - la base entière de tarification est corrompue en une seule instruction, ce qui peut avoir des conséquences commerciales et financières immédiates si la base est utilisée en production. Bonne pratique : avant d'exécuter un UPDATE potentiellement risqué, exécuter d'abord un SELECT avec la MÊME clause WHERE prévue pour l'UPDATE, afin de vérifier visuellement quelles lignes seraient concernées avant de les modifier réellement ; certains environnements permettent aussi de travailler dans une transaction que l'on peut annuler (ROLLBACK) si le résultat ne correspond pas à ce qui était attendu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "UPDATE modifie des lignes existantes ; sans WHERE, la modification s'applique à TOUTES les lignes de la table.",
+        "La clause WHERE doit cibler un identifiant vraiment unique de la ligne visée, jamais une caractéristique potentiellement partagée.",
+        "On peut réutiliser la colonne elle-même dans l'expression de sa nouvelle valeur (Prix = Prix * 1.10).",
+        "Avant un UPDATE risqué, tester la même condition avec un SELECT permet de vérifier les lignes concernées avant de les modifier réellement."
+      ]
+    }
+  ]
+}

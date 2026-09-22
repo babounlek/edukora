@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-lide-environnement-de-developpement-integre-premiere-ti",
+  "meta": {
+    "titre": "L'IDE : environnement de développement intégré",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Chaîne de développement d'un programme",
+    "duree_estimee_min": 12,
+    "tags": [
+      "IDE",
+      "environnement de développement",
+      "outils de programmation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex1-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Écrire du code, le compiler, corriger les erreurs, relancer le programme, recommencer... si chacune de ces étapes demandait d'ouvrir un logiciel différent, programmer deviendrait vite épuisant. C'est exactement le problème que résout un IDE : rassembler tous ces outils au même endroit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un compilateur (voir le cours dédié)",
+        "Avoir déjà écrit ou lu un petit programme en C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'IDE, une seule interface pour tout le cycle de développement",
+      "contenu_markdown": "Un **IDE** (Integrated Development Environment, environnement de développement intégré) est un logiciel qui regroupe dans une seule interface les outils nécessaires au développeur : un éditeur de texte/code (avec coloration syntaxique), un compilateur ou interpréteur, et un débogueur (pour repérer les erreurs pendant l'exécution).",
+      "formule_principale": "IDE = éditeur + compilateur/interpréteur + débogueur, réunis dans un seul logiciel",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un élève tape son programme C dans Code::Blocks, clique sur \"Build and Run\", et voit une fenêtre noire afficher le résultat. Décrire ce qui s'est passé en coulisses.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rédaction dans l'éditeur intégré",
+          "justification": "Code::Blocks fournit un éditeur de texte adapté au C (coloration des mots-clés, indentation automatique)",
+          "resultat_markdown": "Le fichier `.c` est enregistré dans le projet Code::Blocks."
+        },
+        {
+          "numero": 2,
+          "action": "Compilation déclenchée par \"Build\"",
+          "justification": "Code::Blocks appelle en interne un compilateur (GCC, par défaut) sur le fichier source",
+          "resultat_markdown": "Un fichier exécutable est généré si aucune erreur de syntaxe n'est détectée."
+        },
+        {
+          "numero": 3,
+          "action": "Exécution déclenchée par \"Run\"",
+          "justification": "L'IDE lance automatiquement le fichier exécutable produit, dans une fenêtre de console",
+          "resultat_markdown": "La fenêtre noire affiche les `printf()` du programme."
+        }
+      ],
+      "conclusion_markdown": "Le bouton \"Build and Run\" enchaîne en réalité deux étapes distinctes (compilation puis exécution), effectuées par des outils différents (compilateur, puis système d'exploitation) que l'IDE se charge de coordonner sans que l'utilisateur ait à les lancer séparément."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser que l'IDE compile lui-même le code",
+          "pourquoi_faux": "L'IDE ne fait qu'appeler un compilateur externe (souvent GCC) en arrière-plan ; il ne traduit rien lui-même.",
+          "correction_markdown": "Dis plutôt que l'IDE \"intègre\" ou \"embarque\" un compilateur, sans se substituer à lui."
+        },
+        {
+          "erreur_markdown": "Citer un simple éditeur de texte (comme Bloc-notes) comme exemple d'IDE",
+          "pourquoi_faux": "Un éditeur de texte simple ne permet ni de compiler ni de déboguer directement depuis son interface : il manque les deux autres composantes essentielles d'un IDE.",
+          "correction_markdown": "Un bon exemple d'IDE doit intégrer au moins l'édition ET la compilation/exécution en un clic (Code::Blocks, Dev-C++, Visual Studio Code correctement configuré...)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer un IDE couramment utilisé pour programmer en C.",
+          "solution_markdown": "Code::Blocks est un exemple courant et gratuit. D'autres réponses valables : Dev-C++, Turbo C++, Visual Studio Code (avec les extensions C adaptées)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quel avantage concret un débogueur intégré à l'IDE apporte-t-il, par rapport à une simple relecture du code ?",
+          "solution_markdown": "Un débogueur permet d'exécuter le programme pas à pas (une instruction à la fois), en observant en temps réel la valeur de chaque variable. Cela permet de repérer précisément à quel moment une variable prend une valeur inattendue, alors qu'une simple relecture du code oblige à deviner mentalement ce que fait chaque ligne, ce qui est beaucoup plus lent et plus source d'erreurs sur un programme long."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un développeur pourrait-il se passer complètement d'IDE et programmer en C uniquement avec un éditeur de texte basique et des commandes tapées à la main ? Justifier.",
+          "solution_markdown": "Oui, c'est parfaitement possible : un IDE est un outil de confort, pas une obligation technique. Il suffit d'écrire le code dans n'importe quel éditeur de texte, puis d'appeler le compilateur en ligne de commande (par exemple `gcc programme.c -o programme`), et enfin de lancer l'exécutable produit. C'est d'ailleurs ce que font de nombreux développeurs expérimentés sur des serveurs sans interface graphique. L'IDE ne remplace aucune étape du cycle compilation-exécution, il se contente de les automatiser et de les rassembler dans une seule interface pour gagner du temps."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un IDE regroupe éditeur de code, compilateur/interpréteur et débogueur dans une seule interface.",
+        "Il ne remplace pas le compilateur : il l'appelle en arrière-plan pour toi.",
+        "Code::Blocks, Dev-C++ et Visual Studio Code sont des exemples valables d'IDE pour le C.",
+        "On peut techniquement programmer sans IDE, en utilisant un éditeur simple et la ligne de commande - l'IDE n'apporte que du confort, jamais une fonctionnalité impossible sans lui.",
+        "Ne confonds jamais IDE (l'environnement complet) et compilateur (un seul outil intégré dans cet environnement) : c'est l'erreur la plus fréquente sur cette notion."
+      ]
+    }
+  ]
+}

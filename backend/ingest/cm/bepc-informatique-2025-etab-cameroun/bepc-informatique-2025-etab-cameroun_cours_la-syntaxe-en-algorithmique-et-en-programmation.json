@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-la-syntaxe-en-algorithmique-et-en-programmation-3e-bepc-informatique-2025-etab-cameroun",
+  "meta": {
+    "titre": "La syntaxe en algorithmique et en programmation",
+    "matiere": "Informatique",
+    "matiere_normalisee": "INFORMATIQUE",
+    "pays": "cm",
+    "serie": null,
+    "classe": "3e",
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 25,
+    "tags": ["syntaxe", "sémantique", "erreur de syntaxe", "mots-clés", "langage de programmation"],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2025-etab-cameroun",
+    "epreuve_titre": "BEPC blanc n°1 - Collège Mgr François-Xavier Vogt - Épreuve théorique d'informatique - Avril 2025",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bepc-informatique-2025-etab-cameroun-ex4-q1-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-informatique-2025-etab-cameroun-ex4"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Manger je veux du riz. » Tu comprends la phrase, malgré l'ordre bousculé des mots. Un ordinateur, lui, ne comprendrait rien du tout.\n\nC'est toute la différence entre un lecteur humain et une machine : l'humain devine, la machine applique la règle à la lettre. Un mot-clé mal placé, une parenthèse oubliée, un guillemet non fermé, et l'algorithme entier devient inutilisable. Ces règles d'écriture portent un nom, la syntaxe, et elles constituent le premier obstacle que rencontre tout débutant en programmation. Ce cours t'apprend à la définir, à la distinguer de la sémantique, et à repérer les fautes qui coûtent des points en examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un algorithme : une suite d'instructions résolvant un problème",
+        "Reconnaître la structure générale d'un algorithme : en-tête, déclaration des variables, Début, corps, Fin",
+        "Connaître les principaux mots-clés du langage algorithmique : Var, Lire, Afficher, Si, Alors, Sinon, FinSi"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Syntaxe et sémantique",
+      "contenu_markdown": "**Définition de la syntaxe**\n\nLa syntaxe d'un langage, algorithmique ou de programmation, est l'ensemble des règles d'écriture que l'on doit respecter pour qu'une instruction soit correctement formée et donc comprise par la machine.\n\nElle porte sur quatre éléments :\n\n1. **les mots-clés** : leur orthographe et leur ordre (`Si … Alors … Sinon … FinSi`) ;\n2. **la ponctuation** : point-virgule en fin d'instruction, deux-points dans une déclaration de variable ;\n3. **les symboles d'encadrement** : parenthèses autour d'une condition, guillemets autour d'un message ;\n4. **la structure d'ensemble** : tout bloc ouvert doit être fermé, `Début` appelle `Fin`, `Si` appelle `FinSi`.\n\n**La comparaison avec la grammaire française**\n\nEn français, la syntaxe est l'ensemble des règles d'agencement des mots dans la phrase. En informatique, c'est exactement la même idée, appliquée aux instructions. La différence est que le français tolère l'à-peu-près, alors que la machine ne tolère rien.\n\n**Syntaxe et sémantique : la distinction à ne jamais manquer**\n\n| | Syntaxe | Sémantique |\n|---|---|---|\n| Question posée | La phrase est-elle **bien écrite** ? | La phrase a-t-elle le **bon sens** ? |\n| Erreur détectée par | Le compilateur, avant l'exécution | Le programmeur, en constatant un résultat faux |\n| Exemple d'erreur | `Si N > 10 FinSi Alors` | `Si (N < 10) Alors Afficher(\"supérieur à 10\")` |\n\nLa deuxième ligne du tableau est essentielle : une erreur de syntaxe empêche le programme de démarrer, tandis qu'une erreur de sémantique le laisse tourner normalement et produit tranquillement un résultat faux. La seconde est donc bien plus difficile à repérer.\n\n**Les fautes de syntaxe les plus fréquentes en copie**\n\n- oublier `FinSi` après une structure alternative ;\n- écrire `Si N > 10 Alors` sans les parenthèses autour de la condition ;\n- oublier les guillemets autour d'un message à afficher ;\n- confondre l'affectation et la comparaison ;\n- déclarer une variable après `Début` au lieu de la déclarer avant.",
+      "formule_principale": "Syntaxe = règles d'écriture (la forme) ; sémantique = signification (le sens)",
+      "variantes": [
+        {
+          "nom": "La syntaxe change d'un langage à l'autre, pas la logique",
+          "quand_utiliser": "Quand on passe du langage algorithmique à un vrai langage de programmation, comme le C ou Python",
+          "contenu_markdown": "Le même test s'écrit de trois façons différentes selon le langage, alors que le raisonnement est identique :\n\n- **Algorithmique** : `Si (N > 10) Alors Afficher(\"grand\"); FinSi`\n- **Langage C** : `if (N > 10) { printf(\"grand\"); }`\n- **Python** : `if N > 10:` puis, sur la ligne suivante indentée, `print(\"grand\")`\n\nLes mots-clés changent, la ponctuation change, la façon de délimiter le bloc change. La logique, elle, ne change pas. C'est pourquoi on apprend d'abord l'algorithmique : elle enseigne le raisonnement, indépendamment de la syntaxe d'un langage particulier."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Définir **syntaxe**. *(0,5 pt)*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer que le mot existe aussi en français courant",
+          "justification": "Beaucoup de termes informatiques sont empruntés à d'autres domaines. Partir du sens connu évite le blocage et conduit droit à la définition attendue.",
+          "resultat_markdown": "En grammaire, la syntaxe est l'ensemble des règles d'agencement des mots dans la phrase."
+        },
+        {
+          "numero": 2,
+          "action": "Transposer ce sens au langage informatique",
+          "justification": "La transposition consiste à remplacer « mots dans la phrase » par « éléments dans l'instruction », et « comprise par un lecteur » par « comprise par la machine ».",
+          "resultat_markdown": "En informatique, la syntaxe est l'ensemble des règles d'écriture à respecter pour qu'une instruction soit correctement formée."
+        },
+        {
+          "numero": 3,
+          "action": "Rédiger la définition complète en une phrase",
+          "justification": "Sur une question à 0,5 pt, une phrase unique et précise vaut mieux qu'un paragraphe approximatif. Elle doit contenir les deux mots-clés du barème : règles d'écriture et langage.",
+          "resultat_markdown": "« La syntaxe d'un langage est l'ensemble des règles d'écriture que l'on doit respecter pour qu'une instruction soit correctement formée et comprise par la machine. »"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier la définition sur un exemple pris dans l'algorithme de l'énoncé",
+          "justification": "Le contrôle consiste à écrire une instruction correcte, puis la même instruction avec les mêmes éléments mal agencés. Si la définition explique pourquoi la seconde est fautive, elle est juste.",
+          "resultat_markdown": "`Si (N > 10) Alors` respecte la syntaxe. `Si Alors N > 10` contient exactement les mêmes éléments, mais mal agencés : l'instruction devient inutilisable. La définition rend bien compte de la différence."
+        }
+      ],
+      "conclusion_markdown": "La définition attendue tient en une phrase construite autour de deux mots : **règles d'écriture** et **langage**. L'exemple de vérification n'est pas exigé par le barème, mais il te garantit que ta phrase dit bien ce qu'elle doit dire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Définir la syntaxe comme « le sens d'une instruction » ou « ce que fait l'instruction ».",
+          "pourquoi_faux": "C'est la définition de la sémantique, pas de la syntaxe. La syntaxe ne s'intéresse qu'à la forme : elle dit si l'instruction est correctement écrite, jamais si elle fait ce qu'il faut. Les deux notions sont voisines et le barème les distingue.",
+          "correction_markdown": "Retiens le couple : syntaxe = forme, sémantique = sens. Si ta définition contient le mot « signification », tu as défini la sémantique."
+        },
+        {
+          "erreur_markdown": "Croire qu'un algorithme sans erreur de syntaxe est forcément juste.",
+          "pourquoi_faux": "Un algorithme peut être parfaitement écrit et raisonner à l'envers. `Si (N < 10) Alors Afficher(\"Le nombre est supérieur à 10\")` ne contient aucune faute de syntaxe : le compilateur l'accepte sans broncher, et le programme affiche un message faux à chaque exécution.",
+          "correction_markdown": "Après avoir vérifié l'écriture, teste toujours ton algorithme à la main avec deux valeurs bien choisies, l'une qui vérifie la condition et l'autre non. C'est le seul moyen de détecter une erreur de sens."
+        },
+        {
+          "erreur_markdown": "Négliger la ponctuation en copie en se disant que « le correcteur comprendra ».",
+          "pourquoi_faux": "En examen, l'écriture d'un algorithme est notée pour elle-même : les guillemets, les parenthèses et le `FinSi` font partie de ce qui est évalué. Par ailleurs, prendre l'habitude de l'à-peu-près sur papier conduit tout droit à des dizaines d'erreurs de compilation dès qu'on passe sur machine.",
+          "correction_markdown": "Écris toujours l'algorithme comme si une machine devait le lire : chaque parenthèse ouverte est refermée, chaque bloc ouvert est fermé, chaque message est entre guillemets."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Relever les erreurs de syntaxe dans l'extrait suivant et le réécrire correctement :\n\n```\nVar N entier;\nDébut\n    Lire N;\n    Si N > 5 Alors\n        Afficher (Le nombre est grand);\nFin\n```",
+          "solution_markdown": "**Erreurs relevées, ligne par ligne** :\n\n1. `Var N entier;` : les deux-points manquent entre le nom de la variable et son type. Il faut `Var N : entier;`.\n2. `Lire N;` : les parenthèses autour de la variable manquent. Il faut `Lire (N);`.\n3. `Si N > 5 Alors` : les parenthèses autour de la condition manquent. Il faut `Si (N > 5) Alors`.\n4. `Afficher (Le nombre est grand);` : les guillemets autour du message manquent. Sans eux, la machine cherche des variables nommées `Le`, `nombre`, `est` et `grand`.\n5. Le `FinSi` manque : la structure alternative est ouverte mais jamais fermée.\n\n**Version corrigée** :\n\n```\nVar N : entier;\nDébut\n    Lire (N);\n    Si (N > 5) Alors\n        Afficher (\"Le nombre est grand\");\n    FinSi\nFin\n```\n\n**Remarque** : aucune de ces cinq erreurs ne porte sur le raisonnement. L'algorithme voulait dire la bonne chose du premier coup ; il était simplement mal écrit. C'est exactement ce que recouvre la notion de faute de syntaxe."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour chacun des deux algorithmes suivants, indiquer s'il contient une erreur de syntaxe, une erreur de sémantique, ou aucune des deux. Justifier.\n\n**Algorithme A**\n```\nVar age : entier;\nDébut\n    Lire (age);\n    Si (age >= 18) Alors\n        Afficher (\"Mineur\");\n    Sinon\n        Afficher (\"Majeur\");\n    FinSi\nFin\n```\n\n**Algorithme B**\n```\nVar age : entier;\nDébut\n    Lire (age;\n    Si (age >= 18) Alors\n        Afficher (\"Majeur\");\n    FinSi\nFin\n```",
+          "solution_markdown": "**Algorithme A : erreur de sémantique.**\n\nOn vérifie d'abord l'écriture : les deux-points, les parenthèses, les guillemets, le `FinSi` sont tous présents. Aucune faute de syntaxe.\n\nOn déroule ensuite avec une valeur de test. Pour `age = 20` : la condition `20 >= 18` est vraie, donc la machine exécute la branche `Alors` et affiche « Mineur ». Le résultat est faux.\n\nLes deux messages ont été intervertis. Le programme fonctionne, ne signale aucune erreur, et ment à chaque exécution : c'est le profil typique d'une erreur de sémantique.\n\n**Algorithme B : erreur de syntaxe.**\n\nLa ligne `Lire (age;` ouvre une parenthèse sans la refermer. La machine attend la parenthèse fermante et ne la trouve pas : elle refuse l'instruction et le programme ne démarre pas.\n\nEn revanche, la logique de l'algorithme B est correcte : si l'âge atteint 18 ans, il affiche bien « Majeur ». Une fois la parenthèse rétablie, il fonctionne.\n\n**Conclusion à retenir** : l'algorithme B est plus facile à corriger que l'algorithme A, alors qu'il semble plus abîmé. L'erreur de syntaxe se signale d'elle-même ; l'erreur de sémantique, jamais."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève affirme : « Le compilateur vérifie mon programme, donc s'il ne signale aucune erreur, mon programme est juste. » Expliquer pourquoi ce raisonnement est faux, en s'appuyant sur la distinction syntaxe/sémantique, puis proposer une méthode de vérification qui comble ce manque.",
+          "solution_markdown": "**Étape 1 : ce que le compilateur vérifie réellement.**\n\nLe compilateur lit le code source et contrôle qu'il respecte les règles d'écriture du langage : mots-clés correctement orthographiés, parenthèses appariées, blocs refermés, types compatibles. Autrement dit, il vérifie la **syntaxe**.\n\n**Étape 2 : ce qu'il ne peut pas vérifier.**\n\nLe compilateur ne sait pas ce que le programme est censé faire. Personne ne le lui a dit. Il ne peut donc pas savoir que le message « Mineur » aurait dû être « Majeur », ni que la condition aurait dû être `<` au lieu de `>`. Il vérifie la forme, jamais l'intention. La **sémantique** lui échappe entièrement.\n\n**Étape 3 : conclusion sur le raisonnement de l'élève.**\n\nL'absence d'erreur signalée prouve seulement que le programme est bien écrit. Elle ne prouve rien sur sa justesse. L'élève confond « accepté par la machine » et « conforme à ce que je voulais faire ».\n\n**Étape 4 : la méthode qui comble le manque, le jeu d'essais.**\n\nAvant même d'écrire le programme, on prépare un tableau de valeurs de test dont on connaît d'avance le résultat attendu. On y place toujours trois catégories de cas :\n\n1. un cas ordinaire (par exemple `age = 25`, résultat attendu « Majeur ») ;\n2. un cas ordinaire de l'autre côté (par exemple `age = 10`, résultat attendu « Mineur ») ;\n3. un cas limite, exactement à la frontière (`age = 18`, résultat attendu « Majeur »).\n\nOn exécute ensuite le programme sur chacun de ces cas et l'on compare le résultat obtenu au résultat attendu. Toute différence révèle une erreur de sémantique que le compilateur n'aurait jamais signalée.\n\n**Remarque** : le cas limite est le plus important des trois. C'est précisément là que se logent les erreurs de comparaison, quand on écrit `>` là où il fallait `>=`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La syntaxe, ce sont les **règles d'écriture** d'un langage : mots-clés, ponctuation, parenthèses, guillemets, blocs refermés.",
+        "Retiens le couple qui règle tout : syntaxe = la forme, sémantique = le sens. Si ta définition parle de signification, tu as défini la sémantique.",
+        "Une erreur de syntaxe empêche le programme de démarrer ; une erreur de sémantique le laisse tourner et produit un résultat faux. La seconde est bien plus dangereuse.",
+        "Le compilateur vérifie la syntaxe, jamais l'intention. Un programme qui compile n'est pas pour autant un programme juste.",
+        "Sur une copie, écris l'algorithme comme si une machine devait le lire : chaque parenthèse ouverte est refermée, chaque `Si` a son `FinSi`, chaque message est entre guillemets.",
+        "Au BEPC, la syntaxe est demandée sous forme de définition courte (0,5 pt), ou dans un exercice où il faut repérer et corriger les fautes d'écriture d'un algorithme donné."
+      ]
+    }
+  ]
+}

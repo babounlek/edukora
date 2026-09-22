@@ -1,0 +1,110 @@
+{
+  "cours_id": "cours-types-de-bases-de-donnees-tle-ti",
+  "meta": {
+    "titre": "Les types de bases de données",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Développement des bases de données",
+    "duree_estimee_min": 18,
+    "tags": [
+      "base relationnelle",
+      "base orientee objet",
+      "NoSQL"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex2-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toutes les bases de données ne rangent pas leurs informations de la même façon : certaines les organisent en tableaux, d'autres en objets, d'autres encore en documents ou en arborescences. Connaître ces grandes familles permet de comprendre pourquoi le schéma étudié dans cet exercice, avec ses tables reliées par des clés, relève précisément du modèle relationnel."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition générale d'une base de données et le rôle d'un SGBD."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les grandes familles de bases de données",
+      "contenu_markdown": "La base de données relationnelle organise les données en tables reliées entre elles par des clés, et s'interroge en langage SQL. La base de données orientée objet stocke les données sous forme d'objets, semblables à des instances de classes, avec leurs attributs et leurs méthodes. La base de données hiérarchique organise les données en arborescence, chaque enregistrement n'ayant qu'un seul parent. La base de données NoSQL regroupe des modèles plus récents, adaptés aux données non structurées ou semi-structurées, comme les bases orientées documents ou orientées graphe."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Citez deux types de base de données.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Citer le type le plus répandu en gestion",
+          "justification": "C'est le type auquel appartient le schéma CLIENT/APPARTEMENT/REPRESENTANT étudié dans cet exercice.",
+          "resultat_markdown": "La base de données relationnelle : données organisées en tables reliées par des clés."
+        },
+        {
+          "numero": 2,
+          "action": "Citer un second type distinct",
+          "justification": "Il faut choisir un type qui repose sur un principe d'organisation différent.",
+          "resultat_markdown": "La base de données orientée objet : données stockées comme des instances de classes."
+        }
+      ],
+      "conclusion_markdown": "Deux types valides parmi d'autres : relationnelle (tables) et orientée objet (instances de classes) - chacun répond à un principe d'organisation différent."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer deux SGBD (MySQL, Oracle) au lieu de deux types de bases de données",
+          "pourquoi_faux": "Un SGBD est un logiciel qui met en œuvre un type de base de données ; MySQL et Oracle sont tous deux des SGBD relationnels, ce ne sont pas deux types différents.",
+          "correction_markdown": "Vérifie que ta réponse décrit un MODÈLE d'organisation des données, pas le nom d'un logiciel."
+        },
+        {
+          "erreur_markdown": "Présenter le modèle relationnel et le modèle orienté objet comme deux façons équivalentes d'écrire la même chose",
+          "pourquoi_faux": "Les deux modèles reposent sur des principes d'organisation différents : le relationnel sépare les données dans des tables reliées par des clés, sans y attacher de méthodes, alors que l'orienté objet regroupe dans une même instance les données et les traitements qui les manipulent. Passer de l'un à l'autre demande une restructuration réelle, pas une simple traduction.",
+          "correction_markdown": "Décris toujours un type de base de données par son principe d'organisation propre (tables et clés, ou objets et méthodes), jamais comme un synonyme d'un autre type."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans quel type de base de données les informations sont-elles organisées en tables reliées par des clés ?",
+          "solution_markdown": "Dans une base de données relationnelle."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une application manipule des documents JSON de structure variable (certains clients ont un champ « téléphone secondaire », d'autres non). Quel type de base de données est le mieux adapté à cette situation, et pourquoi pas le modèle relationnel strict ?",
+          "solution_markdown": "Une base de données NoSQL orientée documents est la mieux adaptée : elle accepte que chaque document ait sa propre structure, sans imposer un schéma de colonnes identique pour tous les enregistrements. Le modèle relationnel strict impose au contraire que toutes les lignes d'une même table partagent exactement les mêmes colonnes, ce qui est mal adapté à des données dont la structure varie d'un enregistrement à l'autre."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquez pourquoi le schéma CLIENT/APPARTEMENT/REPRESENTANT étudié dans cet exercice relève du modèle relationnel, et non du modèle orienté objet, bien que les deux modèles permettent de représenter des entités liées entre elles.",
+          "solution_markdown": "Le schéma étudié organise les données en trois tables distinctes (CLIENT, APPARTEMENT, REPRESENTANT), chacune composée de colonnes, et relie ces tables entre elles par des clés étrangères (#coderep, #codeclt) : c'est la définition même du modèle relationnel, interrogé par des requêtes SQL qui combinent ces tables via des jointures. Le modèle orienté objet représenterait au contraire ces mêmes entités comme des objets porteurs à la fois de leurs données (attributs) et des méthodes qui les manipulent, reliés entre eux par des références directes d'objet à objet plutôt que par des clés stockées dans des colonnes. Le fait que les relations du schéma soient explicitement matérialisées par des clés primaires et étrangères dans des tables, sans aucune notion de méthode associée aux données, signale sans ambiguïté un modèle relationnel."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quatre grandes familles à connaître : relationnelle (tables et clés), orientée objet (instances de classes), hiérarchique (arborescence), NoSQL (documents, graphes).",
+        "Un SGBD n'est jamais un type de base de données : c'est le logiciel qui met en œuvre un type donné.",
+        "Le schéma étudié dans cet exercice (CLIENT, APPARTEMENT, REPRESENTANT reliés par des clés) est un exemple typique de modèle relationnel.",
+        "Au BAC, cite toujours deux types clairement distincts par leur principe d'organisation, pas deux logiciels du même type."
+      ]
+    }
+  ]
+}

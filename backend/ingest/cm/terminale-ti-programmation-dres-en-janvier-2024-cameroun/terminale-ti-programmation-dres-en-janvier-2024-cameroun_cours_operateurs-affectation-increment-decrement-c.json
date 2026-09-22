@@ -1,0 +1,92 @@
+{
+  "cours_id": "cours-operateurs-affectation-increment-decrement-c-dres-jan2024",
+  "meta": {
+    "titre": "Operateurs d'incrementation, decrementation et d'affectation composee en C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C - operateurs",
+    "duree_estimee_min": 15,
+    "tags": [
+      "operateurs C",
+      "incrementation",
+      "decrementation",
+      "affectation composee"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 1,
+    "rappel_id": "rdm-dres2024-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Six ecritures courtes qui reviennent partout dans le code C : X++, X--, X+=5 et consorts. Savoir exactement ce que chacune modifie evite des erreurs de trace d'execution frequentes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre l'affectation simple = en C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Semantique des operateurs d'incrementation/decrementation et d'affectation composee",
+      "contenu_markdown": "En **post-incrementation** (`X++`) ou **post-decrementation** (`X--`), la variable est utilisee dans son etat courant puis modifiee de 1 juste apres. Les **operateurs d'affectation composee** (`+=`, `-=`, `*=`, `/=`) appliquent l'operation indiquee entre la variable et l'operande, puis rangent le resultat dans la variable : `X+=5` equivaut a `X=X+5`, `X*=Y` equivaut a `X=X*Y`, `X-=Y` equivaut a `X=X-Y`.\n\nUn cas particulier merite attention : `X=Y++`. Ici, c'est le **post**-operateur applique a Y qui compte : l'expression `Y++` renvoie d'abord l'ancienne valeur de Y (qui est affectee a X), puis Y est incremente. Si l'operateur avait ete ecrit `++Y` (pre-incrementation), X aurait recu la nouvelle valeur de Y, deja incrementee."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit A=10. Que valent A et B apres l'instruction B = A++ ; puis apres une seconde instruction C = ++A ; ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Executer B = A++",
+          "justification": "Le post-operateur renvoie d'abord la valeur courante de A avant de l'incrementer.",
+          "resultat_markdown": "B recoit 10 (valeur de A avant incrementation), puis A devient 11."
+        },
+        {
+          "numero": 2,
+          "action": "Executer C = ++A",
+          "justification": "Le pre-operateur incremente A d'abord, puis renvoie la nouvelle valeur.",
+          "resultat_markdown": "A devient 12, puis C recoit 12."
+        }
+      ],
+      "conclusion_markdown": "Au final : A=12, B=10, C=12. La position de l'operateur (avant ou apres la variable) change ce qui est effectivement affecte."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que X=Y++ affecte a X la valeur DEJA incrementee de Y.",
+          "pourquoi_faux": "Le post-operateur ++ renvoie la valeur AVANT incrementation ; c'est le pre-operateur ++Y qui aurait renvoye la valeur apres incrementation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit N=5. Que vaut N apres l'instruction N-=3 ?",
+          "solution_markdown": "N = 5 - 3 = 2."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Post-operateur (X++, X--) : on utilise l'ancienne valeur, puis on modifie.",
+        "Pre-operateur (++X, --X) : on modifie d'abord, puis on utilise la nouvelle valeur.",
+        "Une affectation composee X op= Y equivaut a X = X op Y."
+      ]
+    }
+  ]
+}

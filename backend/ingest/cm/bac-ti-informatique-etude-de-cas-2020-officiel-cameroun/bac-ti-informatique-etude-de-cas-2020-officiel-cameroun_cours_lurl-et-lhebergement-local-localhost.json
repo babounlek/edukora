@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-lurl-et-lhebergement-local-localhost-tle-ti",
+  "meta": {
+    "titre": "L'URL et l'hébergement local (localhost)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Conception de sites web",
+    "duree_estimee_min": 12,
+    "tags": [
+      "URL",
+      "localhost",
+      "serveur local",
+      "hébergement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant qu'un site ne soit visible sur Internet par tout le monde, son développeur le teste d'abord sur sa propre machine. Il a alors besoin d'une adresse pour y accéder depuis son navigateur, exactement comme s'il naviguait sur un site public : cette adresse spéciale, c'est localhost."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une URL et un serveur web local (voir le cours sur les outils de développement)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "localhost désigne la machine elle-même",
+      "contenu_markdown": "Tant qu'un site dynamique n'est pas hébergé chez un prestataire externe, il est testé directement sur l'ordinateur du développeur grâce à un serveur web local (WampServer, XAMPP...). Le nom **`localhost`** (ou son équivalent numérique, l'adresse `127.0.0.1`) désigne alors cette machine elle-même, exactement comme le ferait un nom de domaine public sur Internet. L'URL de test prend la forme `http://localhost/` suivie du nom du dossier où sont placés les fichiers du site dans le répertoire racine du serveur local.",
+      "formule_principale": "http://localhost/nomDuDossierDuProjet/",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le code de VIPBoutique se connecte avec `mysql_connect('localhost', ...)`. Déterminer l'URL permettant de tester le site.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'indice donné par le code",
+          "justification": "Le premier paramètre de mysql_connect indique où se trouve le serveur MySQL utilisé",
+          "resultat_markdown": "`mysql_connect('localhost', ...)` indique que le serveur MySQL utilisé tourne sur la machine locale."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire l'environnement d'exécution du site",
+          "justification": "Un serveur MySQL local va généralement de pair avec un serveur web local sur la même machine",
+          "resultat_markdown": "Le site est donc en cours de développement, testé localement via un serveur web local (type WampServer), pas encore hébergé en ligne."
+        },
+        {
+          "numero": 3,
+          "action": "Construire l'URL de test correspondante",
+          "justification": "L'accès à un serveur local se fait toujours via le nom localhost",
+          "resultat_markdown": "L'URL de test est de la forme `http://localhost/`, suivie du dossier où sont placés les fichiers du projet, par exemple `http://localhost/vipboutique/`."
+        }
+      ],
+      "conclusion_markdown": "Puisque le serveur MySQL est local, l'URL de test du site est http://localhost/, suivie du nom du dossier du projet."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Proposer une adresse Internet publique (ex. www.vipboutique.com) comme URL de test",
+          "pourquoi_faux": "Le code montre une connexion à 'localhost' : le site n'est pas encore hébergé publiquement, une adresse Internet publique ne mènerait vers aucun serveur réel à ce stade du développement.",
+          "correction_markdown": "Vérifie toujours la valeur du premier paramètre de mysql_connect() avant de proposer une URL : 'localhost' signale systématiquement un test en local."
+        },
+        {
+          "erreur_markdown": "Oublier le nom du dossier du projet et répondre simplement http://localhost/",
+          "pourquoi_faux": "Un serveur local héberge souvent plusieurs projets côte à côte dans des dossiers séparés sous sa racine : http://localhost/ seul mènerait à la page d'accueil du serveur, pas nécessairement au site recherché.",
+          "correction_markdown": "Complète toujours l'URL par le nom du dossier contenant les fichiers du projet testé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que désigne le nom localhost sur un ordinateur ?",
+          "solution_markdown": "localhost désigne la machine elle-même : l'ordinateur sur lequel on se trouve, utilisé ici comme serveur de test."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un projet nommé « boutiqueEnLigne » est placé dans le dossier racine d'un serveur WampServer. Quelle URL permet d'y accéder depuis le navigateur ?",
+          "solution_markdown": "`http://localhost/boutiqueEnLigne/`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le site VIPBoutique, testé en local avec succès, doit maintenant être publié pour être accessible à tous les internautes. Le code de connexion doit-il rester inchangé ? Justifier.",
+          "solution_markdown": "Non, le code doit être modifié. `mysql_connect('localhost', 'login', 'password')` fonctionne uniquement parce que le serveur MySQL de test tourne sur la même machine que le serveur web local. Une fois le site transféré chez un hébergeur public, la base de données est généralement hébergée sur un serveur MySQL distinct fourni par l'hébergeur, avec sa propre adresse (souvent différente de 'localhost'), son propre nom d'utilisateur et son propre mot de passe. Le premier paramètre de mysql_connect(), ainsi que les identifiants, doivent donc être mis à jour pour correspondre à ceux fournis par l'hébergeur, sans quoi le site publié ne parviendra jamais à se connecter à sa base de données réelle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "localhost désigne la machine elle-même, utilisée comme serveur de test.",
+        "L'URL de test d'un site en développement local prend la forme http://localhost/nomDuDossier/.",
+        "mysql_connect('localhost', ...) dans un code est le signal qu'un site est encore en développement local.",
+        "Passer un site en ligne implique presque toujours de changer les identifiants de connexion à la base de données.",
+        "Au BAC TI, une question sur l'URL de test s'appuie toujours sur un indice précis du code fourni, jamais sur une supposition générale."
+      ]
+    }
+  ]
+}

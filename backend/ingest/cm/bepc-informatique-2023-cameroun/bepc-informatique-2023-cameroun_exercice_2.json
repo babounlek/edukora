@@ -1,0 +1,108 @@
+{
+  "epreuve_source": "bepc-informatique-2023-cameroun.pdf",
+  "numero_exercice": "2",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "serie": null,
+  "examen": "bepc",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2023",
+  "duree_epreuve": "1h",
+  "coefficient": "1",
+  "points": "4",
+  "figures": [],
+  "enonce_intro_markdown": "**Partie II : Organisation et traitement de l'information, algorithmique (7 points)**\n\n**Exercice 1**",
+  "questions": [
+    {
+      "numero": "1.a",
+      "enonce_markdown": "1. Vous disposez d'une clé USB de capacité 3 Giga-octets (Go). Vous effectuez un téléchargement de vidéos dont la taille est égale à 3080 Méga-octets (Mo).\n\na) Convertir la capacité de la clé USB (3 Go) en Mo. (On donne : 1 Ko = 1000 octets). *(1,5 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nAvant toute conversion, on relève la convention imposée par l'énoncé. Ici il est écrit 1 Ko = 1000 octets : toute la chaîne des multiples se construit alors avec le même facteur 1000. Descendre d'un cran dans les unités (du Go vers le Mo, du Mo vers le Ko, du Ko vers l'octet) revient à multiplier par 1000 ; remonter d'un cran revient à diviser par 1000.\n\n### Corrigé\n**Étape 1 : écrire la chaîne des unités avec la convention de l'énoncé.**\n\nL'énoncé donne 1 Ko = 1000 octets. Les multiples suivants se déduisent avec le même facteur :\n\n$$1\\ \\text{Ko} = 1000\\ \\text{octets} \\quad ; \\quad 1\\ \\text{Mo} = 1000\\ \\text{Ko} \\quad ; \\quad 1\\ \\text{Go} = 1000\\ \\text{Mo}$$\n\n**Étape 2 : repérer le nombre de crans à descendre.**\n\nOn part du giga-octet (Go) pour arriver au méga-octet (Mo) : c'est un seul cran vers le bas dans la chaîne Go → Mo → Ko → octet. Il faut donc multiplier une seule fois par 1000.\n\n**Étape 3 : effectuer la conversion.**\n\n$$3\\ \\text{Go} = 3 \\times 1000\\ \\text{Mo} = 3000\\ \\text{Mo}$$\n\n**La capacité de la clé USB est donc de 3000 Mo.**\n\n**Étape 4 : vérifier en repassant par les octets.**\n\nCette vérification est facultative le jour de l'examen, mais elle est rapide et elle sécurise le résultat.\n\n- En partant des Go : $3\\ \\text{Go} = 3 \\times 1000 \\times 1000 \\times 1000 = 3\\ 000\\ 000\\ 000$ octets.\n- En partant du résultat trouvé : $3000\\ \\text{Mo} = 3000 \\times 1000 \\times 1000 = 3\\ 000\\ 000\\ 000$ octets.\n\nLes deux chemins donnent le même nombre d'octets : la conversion est correcte.\n\n### Piège à éviter\nDeux conventions coexistent réellement en informatique et elles ne donnent pas le même résultat. La convention **décimale**, celle qu'impose ici l'énoncé, pose 1 Ko = 1000 octets : c'est celle qu'utilisent les fabricants de clés USB et de disques durs pour annoncer leurs capacités. La convention **binaire** pose 1 Kio = $2^{10}$ = 1024 octets : c'est celle qu'utilisent les systèmes d'exploitation pour afficher l'espace disponible. Avec elle, 3 Go donneraient $3 \\times 1024 = 3072$ Mo, un résultat juste dans son propre système mais faux ici.\n\nLe réflexe à prendre : quand l'énoncé écrit « On donne : 1 Ko = 1000 octets », il tranche la question à ta place. Recopie cette égalité en tête de ta réponse avant de calculer, tu prouves ainsi au correcteur que tu as choisi la bonne convention.\n\n### Conseil\nRetiens l'ordre des unités par leur initiale : **o**ctet, **K**o, **M**o, **G**o, **T**o. Compte le nombre de crans entre l'unité de départ et l'unité d'arrivée, puis multiplie (vers le bas) ou divise (vers le haut) par 1000 autant de fois qu'il y a de crans. Cette méthode évite l'erreur la plus fréquente, qui consiste à multiplier alors qu'il fallait diviser.",
+      "themes": [
+        "unités de mesure de l'information",
+        "conversion Go Mo Ko",
+        "capacité de stockage"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2023-cameroun-ex2-q1.a-0",
+          "competence": "Convertir une capacité de stockage entre Go, Mo, Ko et octets",
+          "contenu_markdown": "Avant toute conversion, on relève la convention imposée par l'énoncé. Ici il est écrit 1 Ko = 1000 octets : toute la chaîne des multiples se construit alors avec le même facteur 1000. Descendre d'un cran dans les unités (du Go vers le Mo, du Mo vers le Ko, du Ko vers l'octet) revient à multiplier par 1000 ; remonter d'un cran revient à diviser par 1000.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1.b",
+      "enonce_markdown": "b) Pouvez-vous sauvegarder la totalité des vidéos téléchargées dans cette clé USB ? Justifier votre réponse. *(1 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nPour décider si des données tiennent sur un support, on ne compare jamais deux nombres exprimés dans des unités différentes. On ramène d'abord les deux quantités à une unité commune, puis on compare, et seulement ensuite on conclut par oui ou par non en citant l'écart.\n\n### Corrigé\n**Réponse : non, il n'est pas possible de sauvegarder la totalité des vidéos sur cette clé USB.**\n\n**Étape 1 : ramener les deux quantités à la même unité.**\n\n- Capacité de la clé USB : 3 Go, soit **3000 Mo** (résultat de la question précédente).\n- Taille des vidéos téléchargées : **3080 Mo** (donnée de l'énoncé, déjà en Mo).\n\n**Étape 2 : comparer.**\n\n$$3080\\ \\text{Mo} > 3000\\ \\text{Mo}$$\n\nLa taille des vidéos dépasse la capacité de la clé.\n\n**Étape 3 : chiffrer l'écart et conclure.**\n\n$$3080 - 3000 = 80\\ \\text{Mo}$$\n\nIl manque **80 Mo** d'espace sur la clé. Les vidéos ne peuvent donc pas y être enregistrées en totalité : la copie s'interromprait une fois la clé pleine, et 80 Mo de données resteraient non copiées.\n\n**Remarque qui renforce la conclusion.** Le résultat ne dépend même pas de la convention choisie à la question précédente. Avec la convention binaire (1 Kio = 1024 octets), la capacité vaudrait $3 \\times 1024 = 3072$ Mo, ce qui reste inférieur à 3080 Mo. Dans les deux systèmes de mesure, la réponse est non.\n\n### Piège à éviter\nNe réponds jamais « non » tout seul : la question demande explicitement de justifier. Une réponse sans le calcul comparatif ne vaut qu'une fraction du point. À l'inverse, ne te lance pas dans la comparaison avant d'avoir converti : comparer directement « 3 » et « 3080 » sans unités n'a aucun sens.\n\n### Conseil\nDans la réalité, la capacité réellement utilisable d'une clé USB est encore inférieure à celle annoncée, parce que le formatage et le système de fichiers occupent eux-mêmes une partie de l'espace. Mentionner ce point en une phrase après ta conclusion montre que tu maîtrises la notion au-delà du calcul : c'est le genre de remarque qui fait la différence sur une copie.",
+      "themes": [
+        "capacité de stockage",
+        "comparaison de grandeurs",
+        "clé USB"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2023-cameroun-ex2-q1.b-0",
+          "competence": "Comparer une capacité de stockage disponible à la taille des données à enregistrer",
+          "contenu_markdown": "Pour décider si des données tiennent sur un support, on ne compare jamais deux nombres exprimés dans des unités différentes. On ramène d'abord les deux quantités à une unité commune, puis on compare, et seulement ensuite on conclut par oui ou par non en citant l'écart.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Effectuer en base 2 l'opération suivante : $(1111)_2 + (110)_2$ *(1,5 pt)*",
+      "corrige_markdown": "### Rappel de méthode\nL'addition en base 2 se pose exactement comme une addition en base 10, colonne par colonne en partant de la droite, avec une seule table à connaître : 0+0=0, 0+1=1, 1+0=1 et 1+1=10, ce dernier cas s'écrivant « je pose 0 et je retiens 1 ». Quand une retenue s'ajoute à deux 1, on obtient 1+1+1=11, soit « je pose 1 et je retiens 1 ».\n\n### Corrigé\n**Étape 1 : poser l'addition en alignant les chiffres par la droite.**\n\n```\n   Retenues :  1 1 1 0\n                 1 1 1 1\n   +               1 1 0\n   ----------------------\n               1 0 1 0 1\n```\n\n**Étape 2 : dérouler le calcul colonne par colonne, de droite à gauche.**\n\n- **Colonne des unités (rang 0) :** $1 + 0 = 1$. On pose **1**, retenue 0.\n- **Colonne de rang 1 :** $1 + 1 = (10)_2$. On pose **0**, on retient **1**.\n- **Colonne de rang 2 :** $1 + 1 = (10)_2$, auquel s'ajoute la retenue 1, donc $1 + 1 + 1 = (11)_2$. On pose **1**, on retient **1**.\n- **Colonne de rang 3 :** le second nombre n'a plus de chiffre, on complète par 0 : $1 + 0 = 1$, auquel s'ajoute la retenue 1, donc $1 + 0 + 1 = (10)_2$. On pose **0**, on retient **1**.\n- **Colonne de rang 4 :** il ne reste que la retenue 1. On pose **1**.\n\n**Étape 3 : lire le résultat de gauche à droite.**\n\n$$(1111)_2 + (110)_2 = (10101)_2$$\n\n**Étape 4 : vérifier en repassant par la base 10.**\n\nChaque chiffre binaire est multiplié par la puissance de 2 correspondant à son rang, le rang du chiffre le plus à droite étant 0.\n\n- $(1111)_2 = 1 \\times 2^3 + 1 \\times 2^2 + 1 \\times 2^1 + 1 \\times 2^0 = 8 + 4 + 2 + 1 = 15$\n- $(110)_2 = 1 \\times 2^2 + 1 \\times 2^1 + 0 \\times 2^0 = 4 + 2 + 0 = 6$\n- Somme en base 10 : $15 + 6 = 21$\n- Conversion du résultat trouvé : $(10101)_2 = 1 \\times 2^4 + 0 \\times 2^3 + 1 \\times 2^2 + 0 \\times 2^1 + 1 \\times 2^0 = 16 + 0 + 4 + 0 + 1 = 21$\n\nLes deux valeurs coïncident : le résultat $(10101)_2$ est confirmé.\n\n### Piège à éviter\nL'erreur la plus fréquente est d'écrire $1 + 1 = 2$ dans une colonne. Le chiffre 2 n'existe pas en base 2 : les seuls chiffres disponibles sont 0 et 1, exactement comme en base 10 où le chiffre 10 n'existe pas. Dès que la somme d'une colonne atteint 2, on pose 0 et on retient 1.\n\nSeconde erreur classique : oublier d'écrire la dernière retenue. Ici, la colonne de rang 4 ne contient aucun chiffre des deux opérandes, seulement la retenue sortante. L'oublier donnerait $(0101)_2 = 5$ au lieu de 21.\n\n### Conseil\nLe résultat de l'addition de deux nombres binaires comporte au plus un chiffre de plus que le plus long des deux opérandes. Ici, le plus long fait 4 chiffres, donc le résultat en fait 4 ou 5. Si tu en trouves 6, tu as commis une erreur de retenue. Et prends l'habitude de contrôler systématiquement en base 10 : la conversion coûte trente secondes et transforme un résultat incertain en résultat garanti.",
+      "themes": [
+        "numération binaire",
+        "addition en base 2",
+        "conversion base 2 base 10"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-informatique-2023-cameroun-ex2-q2-0",
+          "competence": "Effectuer une addition de deux nombres en base 2",
+          "contenu_markdown": "L'addition en base 2 se pose exactement comme une addition en base 10, colonne par colonne en partant de la droite, avec une seule table à connaître : 0+0=0, 0+1=1, 1+0=1 et 1+1=10, ce dernier cas s'écrivant « je pose 0 et je retiens 1 ». Quand une retenue s'ajoute à deux 1, on obtient 1+1+1=11, soit « je pose 1 et je retiens 1 ».",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "BEPC informatique 2023",
+    "conversion Go en Mo",
+    "unités de mesure de l'information",
+    "1 Ko = 1000 octets",
+    "capacité clé USB",
+    "addition binaire",
+    "base 2",
+    "numération binaire",
+    "10101 base 2"
+  ],
+  "incertitudes": [
+    "Le signe de l'opération de la question 2 est un « + » : sur le scan, le caractère porte un léger bruit qui pourrait le faire lire comme « ÷ ». L'agrandissement à fort zoom montre une barre verticale pleine croisant une barre horizontale (plus), sans les deux points caractéristiques du signe de division. Le corrigé traite donc une addition."
+  ],
+  "statut": "brouillon",
+  "matiere_normalisee": "INFORMATIQUE",
+  "classe": "3e"
+}

@@ -1,0 +1,191 @@
+{
+ "cours_id": "cours-denombrement-groupes-composition-imposee-1ere-ce",
+ "meta": {
+  "titre": "Dénombrer des groupes de composition imposée par des combinaisons",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Dénombrement",
+  "duree_estimee_min": 25,
+  "tags": ["dénombrement", "combinaison", "principe multiplicatif", "groupe", "contrôle par la somme"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "22",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2006-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2006 (Cameroun)",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-c-e-maths-2006-cameroun-ex1-q3-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Un mot suffit à décider de la formule : « groupe ». Un groupe est un **ensemble**, l'ordre n'y compte pas, et le groupe formé d'Awa et Bintou est le même que celui formé de Bintou et Awa. C'est donc une combinaison, jamais un arrangement. Et quand l'énoncé impose une composition — « exactement deux filles » — il impose du même coup le reste : un garçon. Cette lecture double est ce qui fait apparaître les deux facteurs du produit."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la formule des combinaisons",
+    "Distinguer combinaison et arrangement",
+    "Connaître le principe multiplicatif",
+    "Savoir calculer une factorielle et simplifier un quotient"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Combinaisons par catégorie, puis produit",
+   "contenu_markdown": "**La combinaison.** Le nombre de façons de choisir $p$ éléments parmi $n$, **sans tenir compte de l'ordre** et sans répétition, vaut\n\n$$\\binom{n}{p} = C_{n}^{p} = \\frac{n!}{p!\\,(n-p)!}$$\n\n**Le calcul pratique.** Plutôt que de développer les factorielles :\n\n$$\\binom{n}{p} = \\frac{n(n-1)\\cdots(n-p+1)}{p!}$$\n\nsoit $p$ facteurs décroissants au numérateur, divisés par $p!$.\n\n$$\\binom{7}{3} = \\frac{7 \\times 6 \\times 5}{3 \\times 2 \\times 1} = \\frac{210}{6} = 35$$\n\n**Combinaison ou arrangement ?** Une seule question : **permuter deux éléments change-t-il l'objet ?**\n\n| Réponse | Objet | Formule |\n|---|---|---|\n| oui | arrangement | $A_{n}^{p}$ |\n| non | combinaison | $\\binom{n}{p}$ |\n\nPour un **groupe**, un **comité**, une **délégation**, une **main de cartes**, un **tirage simultané** : l'ordre ne compte pas. Ce sont des combinaisons.\n\n**La méthode pour une composition imposée, en quatre gestes.**\n\n1. **Inventorier** les catégories et leurs effectifs.\n2. **Traduire** la contrainte : elle fixe le nombre à prendre dans **chaque** catégorie.\n3. **Compter** séparément par des combinaisons.\n4. **Multiplier**, les choix étant indépendants.\n\n**La lecture double.** « Exactement $2$ filles » dans un groupe de $3$ signifie aussi « exactement $1$ garçon ». La contrainte porte sur les **deux** catégories à la fois.\n\nOublier de choisir le garçon donne $3$ au lieu de $12$ : on aurait compté les paires de filles, pas les groupes.\n\n**Les propriétés utiles des combinaisons.**\n\n$$\\binom{n}{0} = \\binom{n}{n} = 1 \\qquad ; \\qquad \\binom{n}{1} = n \\qquad ; \\qquad \\binom{n}{p} = \\binom{n}{n-p}$$\n\nLa dernière, dite de **symétrie**, permet souvent d'alléger le calcul : $\\binom{7}{5} = \\binom{7}{2} = 21$.\n\n**Le contrôle par la somme.** C'est le plus rentable. On dénombre **toutes** les compositions possibles et l'on vérifie que leur somme est le total :\n\n$$\\sum_{k} \\binom{3}{k}\\binom{4}{3-k} = \\binom{7}{3}$$\n\nCette identité, dite de **Vandermonde**, valide le résultat en quelques lignes.",
+   "formule_principale": "\\binom{n}{p} = \\frac{n!}{p!\\,(n-p)!}",
+   "variantes": [
+    {
+     "nom": "Dénombrement par le complémentaire",
+     "quand_utiliser": "Quand la contrainte est « au moins » ou « au plus »",
+     "contenu_markdown": "« Au moins une fille » se compte plus vite par le complémentaire :\n\n$$\\binom{7}{3} - \\binom{4}{3} = 35 - 4 = 31$$\n\nOn retranche du total les groupes **sans aucune** fille, c'est-à-dire composés uniquement de garçons.\n\nCompter directement exigerait de sommer les cas à une, deux et trois filles : $18+12+1 = 31$. Même résultat, trois fois plus long."
+    },
+    {
+     "nom": "Arrangements, quand l'ordre compte",
+     "quand_utiliser": "Pour un classement, un podium, un code",
+     "contenu_markdown": "$$A_{n}^{p} = \\frac{n!}{(n-p)!} = p! \\times \\binom{n}{p}$$\n\nLe facteur $p!$ compte les ordres possibles d'un même ensemble.\n\nPour un groupe de $3$ parmi $7$ : $A_{7}^{3} = 210$ contre $\\binom{7}{3} = 35$, soit $3! = 6$ fois plus."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Sept élèves d'une classe de Première C, parmi lesquels trois filles, constituent des groupes de travail de trois élèves choisis au hasard. Trouver le nombre de groupes possibles ayant exactement deux filles. (Probatoire C et E, Cameroun, 2006.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Inventorier les catégories",
+     "justification": "La classe compte $7$ élèves dont $3$ filles",
+     "resultat_markdown": "$3$ filles et $7-3 = 4$ garçons"
+    },
+    {
+     "numero": 2,
+     "action": "Traduire la contrainte",
+     "justification": "Un groupe de $3$ élèves avec exactement $2$ filles",
+     "resultat_markdown": "Il comporte donc $3-2 = 1$ garçon"
+    },
+    {
+     "numero": 3,
+     "action": "Identifier la nature du dénombrement",
+     "justification": "Un groupe est un ensemble : l'ordre n'y compte pas",
+     "resultat_markdown": "Ce sont des **combinaisons**, pas des arrangements"
+    },
+    {
+     "numero": 4,
+     "action": "Choisir les deux filles",
+     "justification": "Combinaison de $2$ éléments parmi $3$",
+     "resultat_markdown": "$\\binom{3}{2} = \\dfrac{3 \\times 2}{2} = 3$"
+    },
+    {
+     "numero": 5,
+     "action": "Choisir le garçon",
+     "justification": "Combinaison de $1$ élément parmi $4$",
+     "resultat_markdown": "$\\binom{4}{1} = 4$"
+    },
+    {
+     "numero": 6,
+     "action": "Multiplier",
+     "justification": "Les deux choix sont indépendants",
+     "resultat_markdown": "$3 \\times 4 = 12$"
+    },
+    {
+     "numero": 7,
+     "action": "Calculer le total sans contrainte",
+     "justification": "Pour préparer le contrôle",
+     "resultat_markdown": "$\\binom{7}{3} = \\dfrac{7 \\times 6 \\times 5}{6} = 35$"
+    },
+    {
+     "numero": 8,
+     "action": "Dénombrer toutes les compositions",
+     "justification": "De $0$ à $3$ filles",
+     "resultat_markdown": "$0$ fille : $1 \\times 4 = 4$ ; $1$ fille : $3 \\times 6 = 18$ ; $2$ filles : $3 \\times 4 = 12$ ; $3$ filles : $1 \\times 1 = 1$"
+    },
+    {
+     "numero": 9,
+     "action": "Contrôler par la somme",
+     "justification": "Les quatre cas épuisent toutes les possibilités",
+     "resultat_markdown": "$4+18+12+1 = 35$, soit exactement $\\binom{7}{3}$. Conforme"
+    }
+   ],
+   "conclusion_markdown": "Il existe **$12$ groupes** comportant exactement deux filles. Deux points de méthode. D'abord, « exactement $2$ filles » signifie aussi « exactement $1$ garçon » : la contrainte porte sur les deux catégories, et c'est ce qui fait apparaître les deux facteurs. Ensuite, le contrôle par la somme est décisif : dénombrer les quatre compositions et vérifier qu'elles totalisent $\\binom{7}{3} = 35$ valide le résultat sans ambiguïté."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Utiliser des arrangements au lieu de combinaisons",
+     "pourquoi_faux": "Calculer $A_{3}^{2} \\times A_{4}^{1} = 6 \\times 4 = 24$ distingue l'ordre dans lequel les deux filles sont choisies. Or un groupe formé d'Awa et Bintou est le même que celui formé de Bintou et Awa : le résultat est **doublé**.",
+     "correction_markdown": "Demande-toi si permuter deux membres change le groupe. Non : c'est donc une combinaison."
+    },
+    {
+     "erreur_markdown": "Oublier de choisir le garçon",
+     "pourquoi_faux": "Répondre $\\binom{3}{2} = 3$ compte les **paires de filles**, pas les groupes de trois. Il manque le troisième membre.",
+     "correction_markdown": "Vérifie que la somme des effectifs choisis fait bien la taille du groupe : ici $2+1 = 3$. Conforme."
+    },
+    {
+     "erreur_markdown": "Compter les garçons comme s'il y en avait trois",
+     "pourquoi_faux": "L'énoncé donne $7$ élèves **dont** $3$ filles : il y a donc $4$ garçons, pas $3$. Cette lecture rapide donnerait $3 \\times 3 = 9$ au lieu de $12$.",
+     "correction_markdown": "Écris explicitement la répartition : $3$ filles et $4$ garçons, de somme $7$. Une ligne de vérification."
+    },
+    {
+     "erreur_markdown": "Additionner au lieu de multiplier",
+     "pourquoi_faux": "Écrire $3+4 = 7$ compte les deux choix comme des alternatives. Or il faut choisir les filles **et** le garçon : c'est un produit.",
+     "correction_markdown": "« Et » donne un produit, « ou » exclusif donne une somme. Ici, chaque groupe contient à la fois des filles et un garçon."
+    },
+    {
+     "erreur_markdown": "Ne pas contrôler par la somme",
+     "pourquoi_faux": "C'est le contrôle le plus sûr et il prend deux minutes. Sans lui, une erreur de calcul sur l'une des combinaisons passe inaperçue.",
+     "correction_markdown": "Dénombre toutes les compositions possibles et vérifie que leur somme vaut le nombre total de groupes, ici $\\binom{7}{3} = 35$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Une urne contient $5$ boules rouges et $4$ boules vertes. On tire simultanément $3$ boules. Dénombrer les tirages contenant exactement $2$ rouges, puis ceux contenant au moins $2$ rouges, puis ceux ne contenant aucune verte.",
+     "solution_markdown": "**Préliminaire.** Un tirage **simultané** ne tient pas compte de l'ordre : ce sont des combinaisons.\n\nTotal des tirages : $\\binom{9}{3} = \\dfrac{9 \\times 8 \\times 7}{6} = 84$.\n\n**Premier cas : exactement $2$ rouges.**\n\nDonc exactement $1$ verte.\n\n$$\\binom{5}{2} \\times \\binom{4}{1} = 10 \\times 4 = 40$$\n\n*Détail :* $\\binom{5}{2} = \\dfrac{5 \\times 4}{2} = 10$.\n\n**Deuxième cas : au moins $2$ rouges.**\n\nCela recouvre « exactement $2$ » et « exactement $3$ ».\n\n*Exactement $3$ rouges :* $\\binom{5}{3} \\times \\binom{4}{0} = 10 \\times 1 = 10$.\n\n$$40 + 10 = 50$$\n\n**Troisième cas : aucune verte.**\n\nLes trois boules sont rouges :\n\n$$\\binom{5}{3} = 10$$\n\n**Contrôle par la somme.**\n\nDénombrons toutes les compositions :\n\n| Rouges | Vertes | Nombre |\n|---|---|---|\n| $0$ | $3$ | $1 \\times 4 = 4$ |\n| $1$ | $2$ | $5 \\times 6 = 30$ |\n| $2$ | $1$ | $10 \\times 4 = 40$ |\n| $3$ | $0$ | $10 \\times 1 = 10$ |\n\nSomme : $4+30+40+10 = 84$. **Conforme à $\\binom{9}{3}$.**\n\n**Remarque sur le deuxième cas.** On aurait pu passer par le complémentaire : « au moins $2$ rouges » est le contraire de « au plus $1$ rouge », soit $4+30 = 34$, et $84-34 = 50$. Même résultat.\n\nIci le calcul direct était plus court, car il ne comportait que deux cas contre deux également. Le complémentaire s'impose surtout quand il y a beaucoup plus de cas d'un côté que de l'autre.\n\n**Ce qu'il faut retenir.** Le tableau des compositions, avec sa somme de contrôle, est l'outil le plus sûr : il donne tous les cas d'un coup et vérifie le total."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Un comité de $5$ personnes doit être formé parmi $6$ professeurs et $8$ parents d'élèves. Dénombrer les comités comportant au moins $2$ professeurs et au moins $2$ parents, puis ceux où les professeurs sont majoritaires.",
+     "solution_markdown": "**Étape 1 - le cadre.**\n\nUn comité est un ensemble : combinaisons.\n\nTotal : $\\binom{14}{5} = \\dfrac{14 \\times 13 \\times 12 \\times 11 \\times 10}{120}$.\n\nCalculons : $14 \\times 13 = 182$ ; $\\times 12 = 2184$ ; $\\times 11 = 24\\,024$ ; $\\times 10 = 240\\,240$.\n\n$$\\binom{14}{5} = \\dfrac{240\\,240}{120} = 2002$$\n\n**Première question - au moins $2$ de chaque.**\n\nAvec $5$ places, « au moins $2$ professeurs et au moins $2$ parents » laisse deux compositions possibles :\n\n- $2$ professeurs et $3$ parents ;\n- $3$ professeurs et $2$ parents.\n\n*Cas $2$-$3$ :*\n\n$$\\binom{6}{2} \\times \\binom{8}{3} = 15 \\times 56 = 840$$\n\n*Détails :* $\\binom{6}{2} = \\dfrac{6 \\times 5}{2} = 15$ et $\\binom{8}{3} = \\dfrac{8 \\times 7 \\times 6}{6} = 56$.\n\n*Cas $3$-$2$ :*\n\n$$\\binom{6}{3} \\times \\binom{8}{2} = 20 \\times 28 = 560$$\n\n*Total :*\n\n$$840 + 560 = 1400$$\n\n**Seconde question - professeurs majoritaires.**\n\nSur $5$ membres, être majoritaire signifie être au moins $3$.\n\n*Cas $3$ professeurs :* $560$ (calculé ci-dessus).\n\n*Cas $4$ professeurs :* $\\binom{6}{4} \\times \\binom{8}{1} = 15 \\times 8 = 120$.\n\n*Cas $5$ professeurs :* $\\binom{6}{5} \\times \\binom{8}{0} = 6 \\times 1 = 6$.\n\n*Total :*\n\n$$560+120+6 = 686$$\n\n**Contrôle par le tableau complet.**\n\n| Professeurs | Parents | Nombre |\n|---|---|---|\n| $0$ | $5$ | $1 \\times 56 = 56$ |\n| $1$ | $4$ | $6 \\times 70 = 420$ |\n| $2$ | $3$ | $15 \\times 56 = 840$ |\n| $3$ | $2$ | $20 \\times 28 = 560$ |\n| $4$ | $1$ | $15 \\times 8 = 120$ |\n| $5$ | $0$ | $6 \\times 1 = 6$ |\n\nSomme : $56+420 = 476$ ; $+840 = 1316$ ; $+560 = 1876$ ; $+120 = 1996$ ; $+6 = 2002$.\n\n**Conforme à $\\binom{14}{5} = 2002$.**\n\n*Vérification des deux réponses :* $840+560 = 1400$ pour la première, et $560+120+6 = 686$ pour la seconde. Conformes au tableau.\n\n**Remarque.** Comme $5$ est impair, il n'y a pas d'égalité possible : les professeurs sont soit majoritaires, soit minoritaires. On vérifie : $686$ comités à majorité professeurs, et $2002-686 = 1316$ à majorité parents.\n\n**Ce qu'il faut retenir.** Le tableau complet des compositions, avec sa somme de contrôle, répond à **toutes** les questions d'un même exercice. Le construire d'emblée fait gagner du temps."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Démontrer l'identité $\\displaystyle\\sum_{k=0}^{p} \\binom{a}{k}\\binom{b}{p-k} = \\binom{a+b}{p}$, dite identité de Vandermonde, par un argument de dénombrement. L'appliquer au cas $a = 3$, $b = 4$, $p = 3$ du sujet.",
+     "solution_markdown": "**Étape 1 - poser le problème de dénombrement.**\n\nConsidérons un ensemble de $a+b$ objets, partagé en deux catégories : $a$ objets de type A et $b$ objets de type B.\n\nOn veut compter les façons de choisir $p$ objets parmi les $a+b$.\n\n**Étape 2 - le premier comptage.**\n\nSans tenir compte des catégories, ce nombre vaut\n\n$$\\binom{a+b}{p}$$\n\n**Étape 3 - le second comptage, par catégorie.**\n\nClassons ces mêmes choix selon le nombre $k$ d'objets de type A retenus.\n\nSi l'on prend $k$ objets de type A, il faut en prendre $p-k$ de type B. Le nombre de choix correspondants vaut\n\n$$\\binom{a}{k} \\times \\binom{b}{p-k}$$\n\n**Étape 4 - sommer.**\n\nLes valeurs possibles de $k$ vont de $0$ à $p$ — les termes où $k > a$ ou $p-k > b$ étant nuls par convention.\n\nCes cas sont **deux à deux disjoints** — un choix contient un nombre bien déterminé d'objets de type A — et ils **épuisent** toutes les possibilités.\n\nDonc\n\n$$\\sum_{k=0}^{p} \\binom{a}{k}\\binom{b}{p-k} = \\binom{a+b}{p}$$\n\n**L'identité est démontrée.**\n\n**Étape 5 - la nature de l'argument.**\n\nOn a compté **le même ensemble de deux façons différentes**. C'est un raisonnement dit de **double dénombrement**, très puissant : il démontre une identité algébrique sans aucun calcul.\n\n**Étape 6 - application au sujet.**\n\nAvec $a = 3$ filles, $b = 4$ garçons, $p = 3$ :\n\n$$\\sum_{k=0}^{3} \\binom{3}{k}\\binom{4}{3-k} = \\binom{7}{3}$$\n\nDéveloppons :\n\n| $k$ | $\\binom{3}{k}$ | $\\binom{4}{3-k}$ | Produit |\n|---|---|---|---|\n| $0$ | $1$ | $\\binom{4}{3} = 4$ | $4$ |\n| $1$ | $3$ | $\\binom{4}{2} = 6$ | $18$ |\n| $2$ | $3$ | $\\binom{4}{1} = 4$ | $12$ |\n| $3$ | $1$ | $\\binom{4}{0} = 1$ | $1$ |\n\nSomme : $4+18+12+1 = 35 = \\binom{7}{3}$. **Conforme.**\n\n**Étape 7 - le terme du sujet.**\n\nLa réponse cherchée dans l'exercice est le terme $k = 2$ : $\\binom{3}{2}\\binom{4}{1} = 12$.\n\nC'est aussi le **plus grand** des quatre termes, ce qui a une interprétation : la composition « deux filles, un garçon » est la plus fréquente parmi tous les groupes possibles.\n\n**Étape 8 - un cas particulier remarquable.**\n\nEn prenant $a = b = n$ et $p = n$, et en utilisant la symétrie $\\binom{n}{n-k} = \\binom{n}{k}$ :\n\n$$\\sum_{k=0}^{n} \\binom{n}{k}^{2} = \\binom{2n}{n}$$\n\nPour $n = 3$ : $1+9+9+1 = 20$, et $\\binom{6}{3} = 20$. **Conforme.**\n\n**Ce qu'il faut retenir.** Le contrôle par la somme employé dans l'exercice n'est pas une simple vérification numérique : c'est un cas particulier d'une identité générale, et son fondement est le double dénombrement. Compter un même ensemble de deux manières est l'un des outils les plus efficaces de la combinatoire."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Un **groupe** est un ensemble : l'ordre n'y compte pas, ce sont des combinaisons.",
+    "$\\binom{n}{p} = \\dfrac{n(n-1)\\cdots(n-p+1)}{p!}$ : $p$ facteurs décroissants divisés par $p!$.",
+    "Le test : permuter deux éléments change-t-il l'objet ? Non pour un groupe.",
+    "Une contrainte de composition fixe le nombre à prendre dans **chaque** catégorie.",
+    "« Exactement $2$ filles » sur $3$ signifie aussi « exactement $1$ garçon ».",
+    "Vérifie que la somme des effectifs choisis fait la taille du groupe.",
+    "On **multiplie** les combinaisons de chaque catégorie : les choix sont indépendants.",
+    "Symétrie : $\\binom{n}{p} = \\binom{n}{n-p}$, souvent plus rapide à calculer.",
+    "Pour « au moins », passe par le complémentaire si les cas contraires sont moins nombreux.",
+    "Contrôle par la somme : toutes les compositions doivent totaliser $\\binom{n}{p}$."
+   ]
+  }
+ ]
+}

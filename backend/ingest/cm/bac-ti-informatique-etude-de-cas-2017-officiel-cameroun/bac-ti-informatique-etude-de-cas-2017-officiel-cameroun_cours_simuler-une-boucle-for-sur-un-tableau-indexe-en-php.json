@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-simuler-boucle-for-tableau-indexe-php-tle-ti",
+  "meta": {
+    "titre": "Simuler à la main une boucle for qui parcourt un tableau",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases du langage PHP - boucles",
+    "duree_estimee_min": 25,
+    "tags": [
+      "PHP",
+      "boucle for",
+      "tableau indexé",
+      "simulation d'exécution"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q4b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Prédire ce qu'un programme va afficher sans l'exécuter est une compétence essentielle, aussi bien en examen (où l'on n'a pas d'ordinateur sous la main) qu'en vrai métier de développeur (pour relire du code avant de le tester). Une boucle `for` qui parcourt un tableau se prête particulièrement bien à cet exercice de simulation, à condition de la dérouler tour par tour, sans sauter d'étape."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe d'une boucle `for` : `for (initialisation; condition; pas)`.",
+        "Savoir qu'un tableau indexé numérote ses éléments à partir de 0."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dérouler la boucle tour par tour",
+      "contenu_markdown": "Simuler une boucle `for ($i = init; condition; pas)` consiste à répéter, autant de fois que nécessaire, le cycle suivant : vérifier que la condition est vraie pour la valeur courante de `$i` ; si oui, exécuter le corps de la boucle avec cette valeur de `$i` ; puis appliquer le pas (souvent `$i++`) et recommencer. Le nombre total de tours se déduit directement des trois éléments de l'en-tête : avec `for ($i = 0; $i < n; $i++)`, la boucle s'exécute exactement $n$ fois, pour $i$ valant successivement $0, 1, 2, \\ldots, n-1$ - ce qui correspond exactement aux indices valides d'un tableau de $n$ éléments.",
+      "formule_principale": "for\\ (\\$i = 0;\\ \\$i < n;\\ \\$i{+}{+}) \\;\\Rightarrow\\; n \\text{ tours, pour } i = 0, 1, \\ldots, n-1",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner l'esquisse du résultat produit par le code `$prenoms = array(\"RENE\", \"DIDIER\", \"PAUL\", \"ERICK\", \"LAWRENCE\"); for ($numero = 0; $numero < 5; $numero++) { echo $prenoms[$numero]; echo \"<br />\"; }`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les bornes de la boucle",
+          "justification": "La condition `$numero < 5` avec un départ à 0 et un pas de +1 donne les valeurs 0, 1, 2, 3, 4.",
+          "resultat_markdown": "5 tours de boucle, pour `$numero` = 0, 1, 2, 3, 4."
+        },
+        {
+          "numero": 2,
+          "action": "Associer chaque valeur de `$numero` à l'élément du tableau qu'elle désigne",
+          "justification": "`$prenoms[$numero]` renvoie l'élément du tableau situé à l'indice `$numero`.",
+          "resultat_markdown": "0→RENE, 1→DIDIER, 2→PAUL, 3→ERICK, 4→LAWRENCE."
+        },
+        {
+          "numero": 3,
+          "action": "Reconstituer l'affichage produit à chaque tour",
+          "justification": "Chaque tour affiche le prénom courant, suivi d'un retour à la ligne HTML `<br />`.",
+          "resultat_markdown": "RENE<br />DIDIER<br />PAUL<br />ERICK<br />LAWRENCE<br />"
+        }
+      ],
+      "conclusion_markdown": "Le code affiche les cinq prénoms du tableau, un par ligne, dans leur ordre d'apparition : RENE, DIDIER, PAUL, ERICK, LAWRENCE."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter 6 tours de boucle en incluant `$numero = 5`.",
+          "pourquoi_faux": "La condition `$numero < 5` est stricte : dès que `$numero` atteint 5, elle devient fausse et la boucle s'arrête sans exécuter ce tour. Le dernier tour valide est `$numero = 4`.",
+          "correction_markdown": "Toujours vérifier si la condition d'arrêt utilise `<` (strict, la borne est exclue) ou `<=` (large, la borne est incluse) avant de compter les tours."
+        },
+        {
+          "erreur_markdown": "Afficher les indices (0, 1, 2, 3, 4) au lieu des prénoms.",
+          "pourquoi_faux": "Le code affiche `$prenoms[$numero]`, c'est-à-dire le contenu de la case du tableau à cet indice, pas l'indice lui-même.",
+          "correction_markdown": "Bien distinguer une variable indice (`$numero`) de l'élément du tableau qu'elle désigne (`$prenoms[$numero]`) : ce sont deux valeurs différentes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner l'esquisse du résultat de `$fruits = array(\"Mangue\", \"Ananas\"); for ($i = 0; $i < 2; $i++) { echo $fruits[$i]; }`.",
+          "solution_markdown": "La boucle s'exécute 2 fois, pour `$i` = 0 puis 1. Résultat affiché : `MangueAnanas` (les deux mots sont collés, faute d'instruction de saut de ligne entre les deux `echo`)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner l'esquisse du résultat de `$notes = array(12, 8, 15, 10); for ($i = 1; $i < 4; $i++) { echo $notes[$i]; echo \" - \"; }`.",
+          "solution_markdown": "La boucle commence à `$i = 1` (et non 0) et s'arrête avant `$i = 4` : elle s'exécute pour `$i` = 1, 2, 3, soit 3 tours. Résultat affiché : `8 - 15 - 10 - ` (l'élément d'indice 0, soit 12, n'est jamais affiché puisque la boucle ne commence qu'à l'indice 1)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Donner l'esquisse du résultat de `$villes = array(\"Yaoundé\", \"Douala\", \"Bafoussam\", \"Garoua\"); for ($i = count($villes) - 1; $i >= 0; $i--) { echo $villes[$i]; echo \", \"; }`, sachant que `count($villes)` renvoie le nombre d'éléments du tableau.",
+          "solution_markdown": "`count($villes)` vaut 4 (quatre éléments), donc `$i` démarre à `4 - 1 = 3`. La condition `$i >= 0` avec un pas `$i--` fait décroître `$i` : 3, 2, 1, 0, puis la boucle s'arrête quand `$i` devient -1. La boucle parcourt donc le tableau à l'envers, de l'indice 3 à l'indice 0.\n\nRésultat affiché : `Garoua, Bafoussam, Douala, Yaoundé, ` - les villes apparaissent dans l'ordre inverse de leur position dans le tableau, car l'initialisation part du dernier indice et le pas est décroissant."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Simuler une boucle `for`, c'est dérouler tour par tour : condition, corps de boucle, pas, et recommencer.",
+        "Avec `for ($i = 0; $i < n; $i++)`, la boucle s'exécute exactement $n$ fois, pour $i$ de 0 à $n-1$.",
+        "Une condition stricte (`<`) exclut la borne, une condition large (`<=`) l'inclut : ne jamais confondre les deux lors du comptage des tours.",
+        "`$tableau[$i]` désigne l'élément situé à l'indice `$i`, jamais l'indice lui-même : garde toujours cette distinction claire dans ta simulation.",
+        "Cette compétence de simulation manuelle est systématiquement testée au BAC TI sur un extrait de code fourni, car elle prouve la compréhension du fonctionnement réel de la boucle, au-delà du simple recopiage de sa syntaxe."
+      ]
+    }
+  ]
+}

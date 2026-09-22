@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-loi-faraday-flux-fem-premiere-d-ti",
+  "meta": {
+    "titre": "Loi de Faraday : flux et f.é.m. induite",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi de Faraday",
+      "flux magnétique",
+      "force électromotrice induite",
+      "bobine tournante"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2018-CM",
+    "epreuve_titre": "Probatoire D et TI - Physique - 2018 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2018-cameroun-ex3-q3.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment une bobine qui tourne dans un champ magnétique peut-elle produire, sans aucune pile ni batterie, une tension électrique utilisable ? C'est le principe même des alternateurs qui produisent l'électricité du secteur : la loi de Faraday explique ce phénomène d'induction en reliant la tension produite à la variation du flux magnétique traversant le circuit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de flux magnétique $\\Phi = \\vec{B}\\cdot\\vec{n}\\,S$",
+        "Fonctions trigonométriques et leur dérivée",
+        "Notion de vitesse angulaire $\\omega$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Faraday",
+      "contenu_markdown": "Lorsqu'un circuit électrique (une bobine, par exemple) est soumis à un flux magnétique $\\Phi(t)$ qui varie au cours du temps, il apparaît à ses bornes une force électromotrice induite $e(t)$, donnée par la loi de Faraday : $e(t) = -\\dfrac{d\\Phi}{dt}$. Le signe moins traduit la loi de Lenz : les effets de l'induction s'opposent toujours à la cause qui leur a donné naissance. Pour une bobine plate de $N$ spires de surface $S$ chacune, tournant à la vitesse angulaire constante $\\omega$ dans un champ magnétique uniforme $\\vec{B}$, le flux à travers la bobine s'écrit $\\Phi(t) = NBS\\cos(\\omega t + \\varphi)$, où $\\varphi$ dépend de la position angulaire initiale de la bobine par rapport au champ (souvent $\\varphi = 0$ si le champ et la normale à la bobine sont alignés à $t=0$). En dérivant, on obtient une f.é.m. sinusoïdale : $e(t) = NBS\\omega\\sin(\\omega t + \\varphi)$, d'amplitude $e_{max} = NBS\\omega$.",
+      "formule_principale": "e(t) = -\\dfrac{d\\Phi}{dt}",
+      "variantes": [
+        {
+          "nom": "Choix entre sinus et cosinus pour le flux",
+          "quand_utiliser": "Il faut déterminer si $\\Phi(t)$ commence par un cosinus ou un sinus selon la position initiale de la bobine par rapport au champ.",
+          "contenu_markdown": "Si à $t=0$ le champ et la normale à la bobine sont alignés (flux maximal), $\\Phi(t) = NBS\\cos(\\omega t)$ ; si à $t=0$ le champ est dans le plan de la bobine (flux nul), $\\Phi(t) = NBS\\sin(\\omega t)$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine plate de $N = 200$ spires de surface $S = 5\\times10^{-3}\\,\\text{m}^2$ tourne à la vitesse angulaire constante $\\omega = 100\\,\\text{rad/s}$ dans un champ magnétique uniforme $B = 0{,}02\\,\\text{T}$. À $t=0$, le champ est dans le plan des spires. Établir l'expression de la f.é.m. induite $e(t)$ et calculer sa valeur maximale.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'expression du flux à travers la bobine",
+          "justification": "À $t=0$, le champ est dans le plan des spires, donc perpendiculaire à la normale : le flux est nul à cet instant, ce qui correspond à une fonction sinus.",
+          "resultat_markdown": "$\\Phi(t) = NBS\\sin(\\omega t)$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver le flux pour obtenir la f.é.m.",
+          "justification": "On applique la loi de Faraday $e = -d\\Phi/dt$, sachant que la dérivée de $\\sin(\\omega t)$ est $\\omega\\cos(\\omega t)$.",
+          "resultat_markdown": "$e(t) = -NBS \\times \\omega\\cos(\\omega t) = -NBS\\omega\\cos(\\omega t)$"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier l'amplitude de la f.é.m.",
+          "justification": "L'amplitude est le coefficient qui multiplie la fonction trigonométrique, en valeur absolue.",
+          "resultat_markdown": "$e_{max} = NBS\\omega$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer numériquement",
+          "justification": "On reporte les valeurs numériques de l'énoncé.",
+          "resultat_markdown": "$e_{max} = 200 \\times 0{,}02 \\times 5\\times10^{-3} \\times 100 = 200\\times0{,}02\\times0{,}5 = 2\\,\\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "La f.é.m. induite s'écrit $e(t) = -2\\cos(100t)\\,\\text{V}$, de valeur maximale $e_{max} = 2\\,\\text{V}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser systématiquement $\\Phi(t) = NBS\\cos(\\omega t)$ sans vérifier la condition initiale donnée par l'énoncé.",
+          "pourquoi_faux": "Le choix entre sinus et cosinus dépend entièrement de la position de la bobine par rapport au champ à $t=0$ : utiliser la mauvaise fonction déphase le résultat de $\\pi/2$ et peut inverser le signe de la réponse à une question ultérieure.",
+          "correction_markdown": "Relis toujours attentivement la condition initiale donnée par l'énoncé (champ aligné avec la normale, ou champ dans le plan des spires) avant d'écrire l'expression du flux."
+        },
+        {
+          "erreur_markdown": "Oublier le signe moins de la loi de Faraday lors de la dérivation.",
+          "pourquoi_faux": "Ce signe n'est pas un détail : il traduit la loi de Lenz et détermine si la f.é.m. est en phase ou en opposition de phase avec la dérivée du flux ; l'omettre inverse le sens de la tension calculée à chaque instant.",
+          "correction_markdown": "Écris systématiquement $e = -d\\Phi/dt$ avant de dériver, jamais $e = +d\\Phi/dt$, même si le signe final semble ensuite s'absorber dans une valeur maximale prise en valeur absolue."
+        },
+        {
+          "erreur_markdown": "Confondre la pulsation $\\omega$ (en rad/s) avec la fréquence $f$ (en Hz) dans les calculs.",
+          "pourquoi_faux": "Ce sont deux grandeurs différentes reliées par $\\omega = 2\\pi f$ ; les confondre change l'ordre de grandeur du résultat d'un facteur $2\\pi \\approx 6{,}28$.",
+          "correction_markdown": "Vérifie toujours l'unité de la grandeur donnée par l'énoncé (rad/s pour $\\omega$, Hz pour $f$) avant de l'utiliser directement dans une formule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une bobine de $N = 100$ spires de surface $S = 0{,}02\\,\\text{m}^2$ tourne dans un champ $B = 0{,}01\\,\\text{T}$ à la vitesse angulaire $\\omega = 50\\,\\text{rad/s}$. Calculer la valeur maximale de la f.é.m. induite.",
+          "solution_markdown": "$e_{max} = NBS\\omega = 100\\times0{,}01\\times0{,}02\\times50 = 1\\,\\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bobine de $N = 300$ spires de surface $S = 8\\times10^{-3}\\,\\text{m}^2$ tourne dans un champ $B = 0{,}015\\,\\text{T}$. On mesure une f.é.m. maximale $e_{max} = 3{,}6\\,\\text{V}$. Calculer la vitesse angulaire de la bobine.",
+          "solution_markdown": "$e_{max} = NBS\\omega \\Rightarrow \\omega = \\dfrac{e_{max}}{NBS} = \\dfrac{3{,}6}{300\\times0{,}015\\times0{,}008} = \\dfrac{3{,}6}{0{,}036} = 100\\,\\text{rad/s}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une bobine de $N$ spires, de surface $S = 0{,}01\\,\\text{m}^2$, tourne à la fréquence $f = 50\\,\\text{Hz}$ dans un champ magnétique $B = 8\\times10^{-3}\\,\\text{T}$. On souhaite que la f.é.m. maximale produite atteigne exactement $e_{max} = 5\\,\\text{V}$. Déterminer le nombre de spires nécessaire, puis discuter si ce nombre est physiquement raisonnable.",
+          "solution_markdown": "$\\omega = 2\\pi f = 2\\pi\\times50 \\approx 314{,}16\\,\\text{rad/s}$. À partir de $e_{max} = NBS\\omega$ : $N = \\dfrac{e_{max}}{BS\\omega} = \\dfrac{5}{8\\times10^{-3}\\times0{,}01\\times314{,}16} = \\dfrac{5}{0{,}02513} \\approx 199$. Il faut environ $199$ spires, arrondies à $199$ ou $200$ spires selon la précision de bobinage possible : c'est un nombre tout à fait réaliste pour une bobine d'alternateur scolaire ou de petit générateur expérimental."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Faraday $e = -d\\Phi/dt$ relie la f.é.m. induite à la variation temporelle du flux magnétique.",
+        "Pour une bobine tournant à vitesse angulaire constante, le flux et la f.é.m. sont tous deux sinusoïdaux, déphasés l'un par rapport à l'autre.",
+        "Le choix entre sinus et cosinus pour le flux dépend uniquement de la condition initiale (position de la bobine par rapport au champ à $t=0$) donnée par l'énoncé.",
+        "L'amplitude de la f.é.m. induite, $e_{max} = NBS\\omega$, augmente avec le nombre de spires, la surface, le champ magnétique et la vitesse de rotation : c'est ce principe qui régit la conception des alternateurs.",
+        "Ce mécanisme d'induction électromagnétique est un grand classique du programme de Terminale et de Première scientifique et technique, souvent associé à une exploitation de mesures à l'oscilloscope."
+      ]
+    }
+  ]
+}

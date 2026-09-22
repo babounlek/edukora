@@ -27,6 +27,7 @@ from django.db.models import Count
 from catalog.ingestion import (
     DIFFICULTE_MAP,
     IngestionError,
+    _est_tag_structurel,
     _link_tags_to_savoir,
     _normalize,
     _normalize_qcm_choix,
@@ -56,49 +57,10 @@ SELECTION_LIMIT = 5
 # Abaissable à 1 via --min-questions pour retrouver l'ancien comportement.
 SELECTION_MIN_QUESTIONS = 2
 
-# Tags qui nomment la FORME d'une question, jamais une notion : sections d'épreuve du
-# format camerounais par compétences, formats de réponse, items de barème, ou supports
-# que le quiz ne peut de toute façon pas afficher (CompetenceItem n'a aucun mécanisme
-# d'image - voir concepteur-quiz-competence, exigence d'autonomie). Proposés en boucle
-# par la sélection tant qu'ils n'étaient pas écartés, et impossibles à traiter : six
-# items sur « situation-problème » n'auraient en commun que d'être des problèmes.
-#
-# Comparaison sur le nom normalisé (voir catalog.ingestion._normalize) et par égalité
-# EXACTE, jamais par préfixe : « définition de Brönsted », « définition par foyer et
-# directrice » ou « figures de style » sont de vraies notions qu'un filtrage large
-# emporterait à tort. Seules exceptions, deux familles où aucun tag légitime ne commence
-# ainsi : voir _TAGS_STRUCTURELS_MOTIFS.
-_TAGS_STRUCTURELS_EXACTS = frozenset({
-    # Sections d'épreuve et énoncés génériques
-    "situation probleme", "situation-probleme", "probleme concret",
-    "presentation d un probleme", "methodologie de l agir competent",
-    # Formats de réponse
-    "definition", "definitions", "definition de concepts", "definition sigle",
-    "definitions et contexte",
-    # Items de barème portant sur la forme de la copie
-    "presentation", "presentation formelle", "presentation de la copie",
-    "redaction guidee", "redaction argumentee",
-    # Opérations sans contenu notionnel propre
-    "calcul numerique", "application numerique",
-    # Supports que le quiz ne peut pas afficher
-    "tableau", "schema", "figure", "lecture graphique",
-})
-
-# Familles où le préfixe suffit, aucun tag de notion ne commençant ainsi : « QCM… »
-# (QCM lexical, QCM de définition, QCM d'inférence) et « vrai ou faux… » nomment
-# exclusivement le format attendu de la réponse.
-_TAGS_STRUCTURELS_MOTIFS = ("qcm", "vrai ou faux")
-
-
-def _est_tag_structurel(nom):
-    """
-    Un tag nomme-t-il la forme d'une question plutôt qu'une notion ? Voir
-    _TAGS_STRUCTURELS_EXACTS pour le raisonnement et les faux positifs évités.
-    """
-    normalise = _normalize(nom)
-    if normalise in _TAGS_STRUCTURELS_EXACTS:
-        return True
-    return any(normalise == motif or normalise.startswith(motif + " ") for motif in _TAGS_STRUCTURELS_MOTIFS)
+# _est_tag_structurel (filtre les tags qui nomment un FORMAT plutôt qu'une notion, ex.
+# « QCM… », « situation-problème ») vit désormais dans catalog.ingestion (déplacé le
+# 2026-09-07) : _link_tags_to_savoir en a besoin aussi, pas seulement la sélection de
+# compétences ci-dessous - voir son import en tête de fichier.
 SELECTION_REPARTITION = {"FAIBLE": 2, "MOYENNE": 3, "ELEVEE": 1}
 SELECTION_MAX_REFERENCE_QUESTIONS = 4
 
@@ -192,7 +154,8 @@ def _find_undercovered_competencies(country, floor, min_questions=SELECTION_MIN_
 
     Deux couples sont écartés avant tout calcul de couverture, parce qu'ils ne
     constituent pas des compétences traitables (voir SELECTION_MIN_QUESTIONS et
-    _TAGS_STRUCTURELS_EXACTS pour le détail et les cas réels qui les ont motivés) :
+    catalog.ingestion._TAGS_STRUCTURELS_EXACTS pour le détail et les cas réels qui les
+    ont motivés) :
     ceux dont le tag nomme la forme d'une question plutôt qu'une notion, et ceux
     adossés à moins de `min_questions` exercices.
 
@@ -409,6 +372,7 @@ def _build_generation_request_from_savoir(country, savoir, subject, gap):
 
 def select_quiz_batch(
     country, limit=SELECTION_LIMIT, floor=SELECTION_FLOOR, min_questions=SELECTION_MIN_QUESTIONS,
+    subject_code=None,
 ):
     """
     Sélectionne jusqu'à `limit` compétences sous-couvertes pour `country` et produit
@@ -428,12 +392,15 @@ def select_quiz_batch(
     endroit à faire évoluer si le critère de sélection change.
     """
     savoir_candidates = _find_undercovered_savoirs_officiels(country, floor)
+    if subject_code:
+        # Ciblage d'un lot (skill tunnel-completude-edukora, étape E) : une seule matière.
+        savoir_candidates = [c for c in savoir_candidates if c[1].code == subject_code]
     savoir_ids_in_play = {savoir.pk for savoir, _, _ in savoir_candidates}
 
     tag_candidates = [
         (theme, subject, gap)
         for theme, subject, gap in _find_undercovered_competencies(country, floor, min_questions)
-        if theme.savoir_officiel_id not in savoir_ids_in_play
+        if theme.savoir_officiel_id not in savoir_ids_in_play and (not subject_code or subject.code == subject_code)
     ]
 
     combined = sorted(

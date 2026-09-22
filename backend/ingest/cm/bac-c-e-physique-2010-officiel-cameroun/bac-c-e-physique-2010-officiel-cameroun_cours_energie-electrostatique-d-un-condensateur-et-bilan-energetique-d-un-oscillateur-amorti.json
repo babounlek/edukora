@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-energie-electrostatique-et-bilan-energetique-oscillateur-tle-c-e",
+  "meta": {
+    "titre": "Energie electrostatique d'un condensateur et bilan energetique d'un oscillateur amorti",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Oscillateurs electriques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "energie electrostatique",
+      "bilan energetique",
+      "effet Joule",
+      "circuit RLC amorti"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2010 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2010-officiel-cameroun-ex2-q4b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois qu'un oscillateur electrique s'amortit, son energie ne disparait pas : elle se transforme en chaleur, dissipee par effet Joule. Ce cours montre comment quantifier precisement cette perte, en comparant l'energie stockee par le condensateur a deux instants differents de l'enregistrement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Energie electrostatique d'un condensateur, $E=\\tfrac12 Cu^2$",
+        "Principe de conservation de l'energie",
+        "Lecture d'une tension sur un enregistrement oscilloscopique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer un bilan energetique entre deux instants d'un oscillateur amorti",
+      "contenu_markdown": "L'energie electrostatique emmagasinee par un condensateur de capacite $C$ sous une tension $u$ vaut $E=\\tfrac12 Cu^2$. En relevant les tensions maximales $U_0$ et $U_1$ atteintes par le condensateur a deux instants successifs (typiquement $t=0$ et $t=T$, une pseudo-periode plus tard), on calcule les energies correspondantes $E_0$ et $E_1$ ; leur difference $\\Delta E = E_0-E_1$ represente exactement l'energie dissipee par effet Joule dans la resistance entre ces deux instants.",
+      "formule_principale": "E = \\tfrac12 Cu^2 \\qquad \\Delta E = E_0 - E_1 = \\tfrac12 C(U_0^2 - U_1^2)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un condensateur $C=22{,}5\\ \\mu\\text{F}$ est charge sous $U_0=8{,}0\\ \\text{V}$ a $t=0$ ; a $t=T$, sa tension maximale n'est plus que $U_1=7{,}2\\ \\text{V}$. Calculer $E_0$, $E_1$ et l'energie perdue $\\Delta E$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'energie initiale E0",
+          "justification": "Application directe de la formule de l'energie electrostatique",
+          "resultat_markdown": "$E_0 = \\tfrac12\\times22{,}5\\times10^{-6}\\times8{,}0^2 = \\tfrac12\\times22{,}5\\times10^{-6}\\times64 = 7{,}2\\times10^{-4}\\ \\text{J}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'energie a l'instant t=T",
+          "justification": "Meme formule, avec la tension U1 mesuree une pseudo-periode plus tard",
+          "resultat_markdown": "$E_1 = \\tfrac12\\times22{,}5\\times10^{-6}\\times7{,}2^2 = \\tfrac12\\times22{,}5\\times10^{-6}\\times51{,}84 = 5{,}83\\times10^{-4}\\ \\text{J}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'energie perdue",
+          "justification": "La difference des deux energies represente exactement la dissipation Joule",
+          "resultat_markdown": "$\\Delta E = E_0 - E_1 = 7{,}2\\times10^{-4} - 5{,}83\\times10^{-4} \\approx 1{,}37\\times10^{-4}\\ \\text{J}$"
+        }
+      ],
+      "conclusion_markdown": "On vient de quantifier exactement l'energie dissipee par effet Joule sur une pseudo-periode, sans jamais avoir besoin de connaitre la valeur de la resistance elle-meme : c'est tout l'interet de ce bilan energetique global."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser une tension instantanee quelconque au lieu de la tension maximale (amplitude) a chaque instant considere",
+          "pourquoi_faux": "Pour comparer deux etats energetiques significatifs (et coherents avec la pseudo-periode T, definie entre deux maxima), il faut relever les tensions aux extrema successifs, pas des valeurs instantanees prises au hasard sur la courbe.",
+          "correction_markdown": "Toujours relever les tensions maximales (sommets de la courbe) aux instants demandes, jamais une valeur instantanee arbitraire."
+        },
+        {
+          "erreur_markdown": "Calculer $\\Delta E = \\tfrac12 C(U_0-U_1)^2$ au lieu de $\\tfrac12 C(U_0^2-U_1^2)$",
+          "pourquoi_faux": "L'energie est proportionnelle au carre de la tension : $\\Delta E = E_0 - E_1$ se developpe en $\\tfrac12CU_0^2 - \\tfrac12CU_1^2$, jamais en $\\tfrac12C(U_0-U_1)^2$ (qui correspondrait a une toute autre grandeur).",
+          "correction_markdown": "Toujours calculer separement $E_0$ et $E_1$ avant de les soustraire, plutot que de manipuler directement une expression factorisee risquant la confusion."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un condensateur $C=10\\ \\mu\\text{F}$ est charge sous $U=6{,}0\\ \\text{V}$. Calculer l'energie qu'il emmagasine.",
+          "solution_markdown": "$E = \\tfrac12\\times10\\times10^{-6}\\times6{,}0^2 = \\tfrac12\\times10\\times10^{-6}\\times36 = 1{,}8\\times10^{-4}\\ \\text{J}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un condensateur $C=10\\ \\mu\\text{F}$ voit sa tension maximale passer de $U_0=6{,}0\\ \\text{V}$ a $U_1=5{,}5\\ \\text{V}$ sur une pseudo-periode. Calculer l'energie dissipee par effet Joule.",
+          "solution_markdown": "$E_1 = \\tfrac12\\times10\\times10^{-6}\\times5{,}5^2 = 1{,}5125\\times10^{-4}\\ \\text{J}$. $\\Delta E = E_0-E_1 = 1{,}8\\times10^{-4} - 1{,}5125\\times10^{-4} \\approx 2{,}88\\times10^{-5}\\ \\text{J}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur trois pseudo-periodes successives, un condensateur voit sa tension maximale passer de $U_0=10{,}0\\ \\text{V}$ a $U_3=8{,}1\\ \\text{V}$ ($C=15\\ \\mu\\text{F}$). Calculer l'energie totale dissipee sur ces trois pseudo-periodes, puis l'energie moyenne dissipee par pseudo-periode (en admettant une dissipation reguliere).",
+          "solution_markdown": "$E_0 = \\tfrac12\\times15\\times10^{-6}\\times10{,}0^2 = 7{,}5\\times10^{-4}\\ \\text{J}$. $E_3 = \\tfrac12\\times15\\times10^{-6}\\times8{,}1^2 = \\tfrac12\\times15\\times10^{-6}\\times65{,}61 \\approx 4{,}92\\times10^{-4}\\ \\text{J}$. Energie totale dissipee : $\\Delta E_{tot} = E_0-E_3 \\approx 2{,}58\\times10^{-4}\\ \\text{J}$. En admettant une dissipation reguliere sur les trois pseudo-periodes, l'energie moyenne dissipee par pseudo-periode est $\\Delta E_{tot}/3 \\approx 8{,}6\\times10^{-5}\\ \\text{J}$ (valeur moyenne uniquement : en realite, l'energie dissipee diminue legerement a chaque cycle puisque l'amplitude elle-meme diminue)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'energie electrostatique d'un condensateur, $E=\\tfrac12Cu^2$, se calcule toujours a partir de la tension maximale (amplitude) a l'instant considere.",
+        "Le bilan energetique d'un oscillateur amorti se fait en comparant les energies a deux instants precis, jamais en manipulant directement les tensions.",
+        "$\\Delta E = E_0 - E_1$ represente exactement l'energie dissipee par effet Joule entre ces deux instants, sans besoin de connaitre la valeur de la resistance.",
+        "Piege frequent : ne jamais calculer $\\tfrac12C(U_0-U_1)^2$ a la place de $\\tfrac12C(U_0^2-U_1^2)$, les deux expressions sont mathematiquement tres differentes.",
+        "Au BAC, ce type de bilan energetique cloture generalement l'etude quantitative d'un enregistrement d'oscillations amorties."
+      ]
+    }
+  ]
+}

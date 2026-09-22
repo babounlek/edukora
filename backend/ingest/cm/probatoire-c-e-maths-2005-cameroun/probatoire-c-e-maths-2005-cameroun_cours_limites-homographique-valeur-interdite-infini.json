@@ -1,0 +1,191 @@
+{
+ "cours_id": "cours-limites-homographique-valeur-interdite-infini-1ere-ce",
+ "meta": {
+  "titre": "Calculer les limites d'une fonction homographique en une valeur interdite et à l'infini",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Limites et asymptotes",
+  "duree_estimee_min": 30,
+  "tags": ["limites", "fonction rationnelle", "asymptote verticale", "asymptote horizontale", "valeur interdite"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "V"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA1a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "En une valeur interdite, la limite est presque toujours infinie — mais avec quel signe ? La question paraît anodine et fait pourtant perdre la moitié des points. Le réflexe habituel, « ça part vers $+\\infty$ à droite », est faux dès que le numérateur est négatif, et c'est exactement le cas ici. Il n'y a qu'une méthode fiable : écrire le signe des **deux** facteurs, puis conclure."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir déterminer l'ensemble de définition d'une fonction rationnelle",
+    "Connaître les règles de signe d'un quotient",
+    "Savoir factoriser par le terme de plus haut degré",
+    "Connaître le lien entre limite et asymptote"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Le signe des deux facteurs décide de tout",
+   "contenu_markdown": "**La fonction homographique.** C'est une fonction du type\n\n$$f(x) = \\frac{ax+b}{cx+d} \\qquad \\text{avec } c \\neq 0 \\text{ et } ad-bc \\neq 0$$\n\nSon ensemble de définition est $\\mathbb{R}$ privé de la **valeur interdite** $-\\dfrac{d}{c}$, qui annule le dénominateur.\n\n**En la valeur interdite : d'abord vérifier qu'il n'y a pas d'indétermination.** Si le numérateur ne s'annule pas au même point, il n'y a **aucune** forme indéterminée : la limite est infinie, et seul le signe reste à déterminer.\n\n**La règle de signe.** Le quotient tend vers $+\\infty$ si numérateur et dénominateur sont **de même signe** au voisinage du point, vers $-\\infty$ s'ils sont de signes contraires.\n\n| Numérateur | Dénominateur | Limite |\n|---|---|---|\n| $> 0$ | $\\to 0^{+}$ | $+\\infty$ |\n| $> 0$ | $\\to 0^{-}$ | $-\\infty$ |\n| $< 0$ | $\\to 0^{+}$ | $-\\infty$ |\n| $< 0$ | $\\to 0^{-}$ | $+\\infty$ |\n\n**Les deux limites latérales sont toujours opposées** pour une homographique, puisque seul le dénominateur change de signe en traversant la valeur interdite.\n\n**À l'infini.** Numérateur et dénominateur sont de même degré : on factorise par $x$ et l'on simplifie.\n\n$$f(x) = \\frac{x\\left(a+\\dfrac{b}{x}\\right)}{x\\left(c+\\dfrac{d}{x}\\right)} = \\frac{a+\\dfrac{b}{x}}{c+\\dfrac{d}{x}} \\qquad \\xrightarrow[x \\to \\pm\\infty]{} \\qquad \\frac{a}{c}$$\n\nLa limite est donc le **quotient des coefficients dominants**, et elle est la même en $+\\infty$ et en $-\\infty$.\n\n**La méthode, en quatre gestes.**\n\n1. **Déterminer** la valeur interdite.\n2. **Vérifier** que le numérateur ne s'y annule pas.\n3. **Écrire le signe** du numérateur et du dénominateur de chaque côté.\n4. **Conclure**, puis traduire en asymptotes.\n\n**Les asymptotes.**\n\n| Limite | Asymptote |\n|---|---|\n| $\\lim_{x \\to a} f(x) = \\pm\\infty$ | verticale, d'équation $x = a$ |\n| $\\lim_{x \\to \\pm\\infty} f(x) = \\ell$ | horizontale, d'équation $y = \\ell$ |\n\n**L'écriture décomposée, à connaître.** Toute homographique s'écrit\n\n$$f(x) = \\alpha + \\frac{\\beta}{cx+d}$$\n\nPour $f(x) = \\dfrac{x+1}{x+2}$, on remarque que $x+1 = (x+2)-1$, d'où\n\n$$f(x) = \\frac{(x+2)-1}{x+2} = 1 - \\frac{1}{x+2}$$\n\nCette forme donne **les trois limites d'un seul coup d'œil** : le terme $\\dfrac{1}{x+2}$ explose en $-2$ et s'annule à l'infini. Elle resservira pour la dérivée, le tracé et la position par rapport à l'asymptote.",
+   "formule_principale": "\\frac{ax+b}{cx+d} \\xrightarrow[x \\to \\pm\\infty]{} \\frac{a}{c}",
+   "variantes": [
+    {
+     "nom": "Forme indéterminée en une valeur interdite",
+     "quand_utiliser": "Quand numérateur et dénominateur s'annulent au même point",
+     "contenu_markdown": "Si le numérateur s'annule lui aussi, la limite est de la forme $\\dfrac{0}{0}$ : il faut **factoriser** par $(x-a)$ et simplifier.\n\nExemple : $\\dfrac{x^{2}-1}{x-1} = \\dfrac{(x-1)(x+1)}{x-1} = x+1$ pour $x \\neq 1$, donc la limite en $1$ vaut $2$ — finie, et sans asymptote.\n\nRien de tel pour une homographique dont le numérateur ne s'annule pas en la valeur interdite : c'est le cas le plus fréquent, et le plus simple."
+    },
+    {
+     "nom": "Position de la courbe par rapport à l'asymptote horizontale",
+     "quand_utiliser": "Quand on veut préciser le tracé",
+     "contenu_markdown": "On étudie le signe de $f(x) - \\ell$.\n\nIci $f(x) - 1 = -\\dfrac{1}{x+2}$, qui est **négatif** pour $x > -2$ : la courbe est en dessous de son asymptote horizontale sur cet intervalle, et au-dessus pour $x < -2$.\n\nCette information ne coûte qu'une ligne et vaut souvent un point au tracé."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit $f$ définie par $f(x) = \\dfrac{x+1}{x+2}$. Calculer les limites de $f$ à gauche de $-2$, à droite de $-2$, et en $+\\infty$. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Déterminer la valeur interdite",
+     "justification": "Le dénominateur s'annule pour $x+2 = 0$",
+     "resultat_markdown": "$x = -2$, donc $D_{f} = \\mathbb{R} \\setminus \\left\\{-2\\right\\}$"
+    },
+    {
+     "numero": 2,
+     "action": "Vérifier qu'il n'y a pas d'indétermination",
+     "justification": "On calcule le numérateur en $-2$",
+     "resultat_markdown": "$-2+1 = -1 \\neq 0$ : le numérateur ne s'annule pas, donc pas de forme $\\dfrac{0}{0}$"
+    },
+    {
+     "numero": 3,
+     "action": "Établir le signe du dénominateur",
+     "justification": "$x+2$ change de signe en $-2$",
+     "resultat_markdown": "$x < -2 \\implies x+2 < 0$, et $x > -2 \\implies x+2 > 0$"
+    },
+    {
+     "numero": 4,
+     "action": "Limite à gauche de $-2$",
+     "justification": "Numérateur tendant vers $-1 < 0$, dénominateur vers $0^{-}$ : deux quantités négatives",
+     "resultat_markdown": "$\\displaystyle\\lim_{x \\to (-2)^{-}} f(x) = +\\infty$"
+    },
+    {
+     "numero": 5,
+     "action": "Limite à droite de $-2$",
+     "justification": "Numérateur tendant vers $-1 < 0$, dénominateur vers $0^{+}$ : signes contraires",
+     "resultat_markdown": "$\\displaystyle\\lim_{x \\to (-2)^{+}} f(x) = -\\infty$"
+    },
+    {
+     "numero": 6,
+     "action": "Factoriser par $x$ pour l'infini",
+     "justification": "Numérateur et dénominateur sont de même degré",
+     "resultat_markdown": "$f(x) = \\dfrac{x\\left(1+\\dfrac{1}{x}\\right)}{x\\left(1+\\dfrac{2}{x}\\right)} = \\dfrac{1+\\dfrac{1}{x}}{1+\\dfrac{2}{x}}$"
+    },
+    {
+     "numero": 7,
+     "action": "Passer à la limite",
+     "justification": "$\\dfrac{1}{x} \\to 0$ et $\\dfrac{2}{x} \\to 0$",
+     "resultat_markdown": "$\\displaystyle\\lim_{x \\to +\\infty} f(x) = \\dfrac{1}{1} = 1$"
+    },
+    {
+     "numero": 8,
+     "action": "Traduire en asymptotes",
+     "justification": "Limites infinies en un point fini, limite finie à l'infini",
+     "resultat_markdown": "La droite $x = -2$ est asymptote **verticale**, et la droite $y = 1$ asymptote **horizontale** en $+\\infty$"
+    },
+    {
+     "numero": 9,
+     "action": "Contrôler par l'écriture décomposée",
+     "justification": "$x+1 = (x+2)-1$",
+     "resultat_markdown": "$f(x) = 1 - \\dfrac{1}{x+2}$ : le terme $\\dfrac{1}{x+2}$ explose en $-2$ et s'annule à l'infini. Les trois limites se lisent d'un coup"
+    }
+   ],
+   "conclusion_markdown": "Les trois limites valent $+\\infty$, $-\\infty$ et $1$. Note leur ordre : $+\\infty$ **à gauche** et $-\\infty$ **à droite**, ce qui est l'inverse du réflexe le plus courant. C'est le signe négatif du numérateur qui inverse la conclusion. Retiens surtout l'écriture $f(x) = 1 - \\dfrac{1}{x+2}$ : elle donne les trois limites d'un coup d'œil, et elle resservira pour la dérivée, la position par rapport à l'asymptote et le tracé."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Se tromper de signe pour les limites latérales",
+     "pourquoi_faux": "Le réflexe « $+\\infty$ à droite, $-\\infty$ à gauche » ne vaut que si le numérateur est positif. Ici il vaut $-1$, donc tout s'inverse.",
+     "correction_markdown": "Écris systématiquement le signe des **deux** facteurs avant de conclure : numérateur $\\to -1 < 0$, dénominateur $\\to 0^{+}$, donc quotient $\\to -\\infty$."
+    },
+    {
+     "erreur_markdown": "Croire à une forme indéterminée en $-2$",
+     "pourquoi_faux": "Il n'y a indétermination que si numérateur **et** dénominateur s'annulent. Ici le numérateur vaut $-1$ : la limite est franchement infinie.",
+     "correction_markdown": "Calcule d'abord le numérateur en la valeur interdite. S'il est non nul, aucune factorisation n'est nécessaire."
+    },
+    {
+     "erreur_markdown": "Annoncer une limite nulle à l'infini",
+     "pourquoi_faux": "Numérateur et dénominateur sont de **même degré** : la limite est le quotient des coefficients dominants, ici $\\dfrac{1}{1} = 1$. Une limite nulle supposerait un numérateur de degré strictement inférieur.",
+     "correction_markdown": "Compare les degrés. Même degré donne le quotient des coefficients dominants ; numérateur de degré inférieur donne $0$ ; numérateur de degré supérieur donne $\\pm\\infty$."
+    },
+    {
+     "erreur_markdown": "Simplifier $\\dfrac{x+1}{x+2}$ en $\\dfrac{1}{2}$",
+     "pourquoi_faux": "On ne simplifie pas une fraction terme à terme : $\\dfrac{x+1}{x+2} \\neq \\dfrac{x}{x} + \\dfrac{1}{2}$ ni $\\dfrac{1}{2}$. Cette simplification abusive donnerait une fonction constante, ce que $f$ n'est pas.",
+     "correction_markdown": "Factorise le numérateur et le dénominateur **entiers** par $x$, ou utilise l'écriture décomposée $1 - \\dfrac{1}{x+2}$."
+    },
+    {
+     "erreur_markdown": "Confondre asymptote verticale et horizontale",
+     "pourquoi_faux": "Une limite **infinie en un point fini** donne une asymptote verticale $x = a$. Une limite **finie à l'infini** donne une asymptote horizontale $y = \\ell$. Les intervertir revient à échanger les deux droites du tracé.",
+     "correction_markdown": "Retiens : la limite infinie fait fuir la courbe **vers le haut ou le bas**, donc l'asymptote est verticale. La limite finie l'aplatit, donc l'asymptote est horizontale."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $g(x) = \\dfrac{2x-3}{x-1}$. Déterminer l'ensemble de définition de $g$, ses limites aux bornes, et les équations de ses asymptotes.",
+     "solution_markdown": "**Étape 1 - ensemble de définition.**\n\nLe dénominateur s'annule pour $x = 1$ :\n\n$$D_{g} = \\mathbb{R} \\setminus \\left\\{1\\right\\} = \\left]-\\infty\\,;\\,1\\right[ \\cup \\left]1\\,;\\,+\\infty\\right[$$\n\n**Étape 2 - vérifier l'indétermination.**\n\nNumérateur en $x = 1$ : $2 - 3 = -1 \\neq 0$. Pas d'indétermination.\n\n**Étape 3 - limites en $1$.**\n\n*À gauche :* $x < 1$ donne $x-1 < 0$, et le numérateur tend vers $-1 < 0$. Deux quantités négatives :\n\n$$\\lim_{x \\to 1^{-}} g(x) = +\\infty$$\n\n*À droite :* $x > 1$ donne $x-1 > 0$, numérateur négatif :\n\n$$\\lim_{x \\to 1^{+}} g(x) = -\\infty$$\n\n**Étape 4 - limites à l'infini.**\n\nMême degré au numérateur et au dénominateur :\n\n$$\\lim_{x \\to \\pm\\infty} g(x) = \\dfrac{2}{1} = 2$$\n\n**Étape 5 - les asymptotes.**\n\n- Asymptote **verticale** : $x = 1$.\n- Asymptote **horizontale** : $y = 2$, en $+\\infty$ comme en $-\\infty$.\n\n**Étape 6 - contrôle par l'écriture décomposée.**\n\n$$2x-3 = 2(x-1) - 1 \\qquad \\Longrightarrow \\qquad g(x) = 2 - \\dfrac{1}{x-1}$$\n\nOn lit immédiatement l'asymptote $y = 2$ et le comportement en $x = 1$.\n\n**Étape 7 - position par rapport à l'asymptote.**\n\n$$g(x) - 2 = -\\dfrac{1}{x-1}$$\n\nPour $x > 1$ : négatif, la courbe est **en dessous** de $y = 2$.\n\nPour $x < 1$ : positif, la courbe est **au-dessus**.\n\n*Contrôle numérique :* $g(2) = \\dfrac{1}{1} = 1 < 2$, et $g(0) = \\dfrac{-3}{-1} = 3 > 2$. Conforme."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $h(x) = \\dfrac{x^{2}-4}{x-2}$ et $k(x) = \\dfrac{x^{2}+1}{x-2}$. Déterminer, pour chacune, les limites en $2$ et en $+\\infty$. Comparer les deux situations.",
+     "solution_markdown": "**Première fonction - $h$.**\n\n**Étape 1 - repérer l'indétermination.**\n\nEn $x = 2$ : numérateur $4-4 = 0$ et dénominateur $0$. **Forme indéterminée $\\dfrac{0}{0}$.**\n\n**Étape 2 - factoriser.**\n\n$$x^{2}-4 = (x-2)(x+2)$$\n\n$$h(x) = \\dfrac{(x-2)(x+2)}{x-2} = x+2 \\qquad \\text{pour } x \\neq 2$$\n\n**Étape 3 - conclure.**\n\n$$\\lim_{x \\to 2} h(x) = 4$$\n\nLa limite est **finie** : il n'y a **pas** d'asymptote verticale. La fonction se prolonge par continuité en posant $h(2) = 4$.\n\n$$\\lim_{x \\to +\\infty} h(x) = \\lim_{x \\to +\\infty} (x+2) = +\\infty$$\n\nLa courbe est en fait une **droite** privée d'un point : celle d'équation $y = x+2$, trouée en $(2\\,;\\,4)$.\n\n**Seconde fonction - $k$.**\n\n**Étape 4 - vérifier l'indétermination.**\n\nEn $x = 2$ : numérateur $4+1 = 5 \\neq 0$. **Pas d'indétermination.**\n\n**Étape 5 - limites en $2$.**\n\n*À gauche :* numérateur $\\to 5 > 0$, dénominateur $\\to 0^{-}$ :\n\n$$\\lim_{x \\to 2^{-}} k(x) = -\\infty$$\n\n*À droite :* numérateur $\\to 5 > 0$, dénominateur $\\to 0^{+}$ :\n\n$$\\lim_{x \\to 2^{+}} k(x) = +\\infty$$\n\nLa droite $x = 2$ est **asymptote verticale**.\n\n**Étape 6 - limite en $+\\infty$.**\n\nLe numérateur est de degré $2$, le dénominateur de degré $1$ : le numérateur l'emporte.\n\n$$k(x) = \\dfrac{x^{2}\\left(1+\\dfrac{1}{x^{2}}\\right)}{x\\left(1-\\dfrac{2}{x}\\right)} = x \\times \\dfrac{1+\\dfrac{1}{x^{2}}}{1-\\dfrac{2}{x}} \\qquad \\xrightarrow[x \\to +\\infty]{} \\qquad +\\infty$$\n\n**Comparaison.**\n\n| | $h$ | $k$ |\n|---|---|---|\n| Numérateur en $2$ | $0$ | $5$ |\n| Nature en $2$ | indétermination levée, limite $4$ | limite infinie |\n| Asymptote verticale | **non** | oui, $x = 2$ |\n| Limite en $+\\infty$ | $+\\infty$ | $+\\infty$ |\n\n**Ce qu'il faut retenir.** Une valeur interdite ne donne **pas toujours** une asymptote verticale. Tout dépend du numérateur : s'il s'annule au même point, il faut factoriser, et la limite peut être finie. C'est pourquoi la vérification de l'étape 1 doit précéder tout raisonnement sur les signes."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $m$ un réel et $f_{m}(x) = \\dfrac{mx+1}{x-m}$. Déterminer, selon $m$, l'ensemble de définition de $f_{m}$, ses limites aux bornes et ses asymptotes. Identifier les valeurs de $m$ pour lesquelles $f_{m}$ n'est pas une véritable fonction homographique.",
+     "solution_markdown": "**Étape 1 - la valeur interdite.**\n\nLe dénominateur s'annule pour $x = m$. Donc\n\n$$D_{f_{m}} = \\mathbb{R} \\setminus \\left\\{m\\right\\}$$\n\n**Étape 2 - repérer le cas dégénéré.**\n\nUne fonction $\\dfrac{ax+b}{cx+d}$ est homographique si et seulement si $ad - bc \\neq 0$. Ici $a = m$, $b = 1$, $c = 1$, $d = -m$ :\n\n$$ad - bc = m \\times (-m) - 1 \\times 1 = -m^{2} - 1$$\n\nCette quantité vaut $-\\left(m^{2}+1\\right)$, qui est **strictement négative** pour tout réel $m$ : elle ne s'annule jamais.\n\n**La fonction est donc homographique pour toute valeur de $m$.** Aucun cas dégénéré.\n\n**Étape 3 - vérifier l'indétermination en $x = m$.**\n\nNumérateur en $x = m$ :\n\n$$m \\times m + 1 = m^{2}+1 > 0$$\n\nIl est **strictement positif** pour tout $m$ : jamais d'indétermination, et le numérateur est toujours du même signe.\n\n**Étape 4 - limites en $m$.**\n\n*À gauche :* $x < m$ donne $x - m < 0$, numérateur $\\to m^{2}+1 > 0$ :\n\n$$\\lim_{x \\to m^{-}} f_{m}(x) = -\\infty$$\n\n*À droite :* $x > m$ donne $x-m > 0$ :\n\n$$\\lim_{x \\to m^{+}} f_{m}(x) = +\\infty$$\n\n**Ces signes sont les mêmes quelle que soit la valeur de $m$**, puisque le numérateur reste positif.\n\n**Étape 5 - limites à l'infini.**\n\n*Cas $m \\neq 0$ :* numérateur et dénominateur de degré $1$ :\n\n$$\\lim_{x \\to \\pm\\infty} f_{m}(x) = \\dfrac{m}{1} = m$$\n\n*Cas $m = 0$ :* la fonction devient $f_{0}(x) = \\dfrac{1}{x}$, dont la limite à l'infini vaut $0$ — ce qui est bien $m = 0$. La formule reste valable.\n\n**Étape 6 - les asymptotes.**\n\n- **Verticale** : $x = m$, pour tout $m$.\n- **Horizontale** : $y = m$, pour tout $m$.\n\n**Étape 7 - remarque géométrique.**\n\nLes deux asymptotes ont la même « valeur » $m$ : elles se coupent au point $(m\\,;\\,m)$, qui appartient à la droite $y = x$.\n\nQuand $m$ varie, le centre de symétrie de l'hyperbole se déplace donc le long de la **première bissectrice**.\n\n**Étape 8 - l'écriture décomposée.**\n\n$$mx+1 = m(x-m) + m^{2}+1$$\n\n$$f_{m}(x) = m + \\dfrac{m^{2}+1}{x-m}$$\n\nCette forme confirme tout d'un coup : l'asymptote horizontale $y = m$, l'asymptote verticale $x = m$, et le signe du numérateur résiduel $m^{2}+1 > 0$ qui fixe l'orientation des branches.\n\n**Étape 9 - vérifier sur deux valeurs.**\n\n*Pour $m = 1$ :* $f_{1}(x) = \\dfrac{x+1}{x-1} = 1 + \\dfrac{2}{x-1}$. Asymptotes $x = 1$ et $y = 1$. Conforme.\n\n*Pour $m = -2$ :* $f_{-2}(x) = \\dfrac{-2x+1}{x+2} = -2 + \\dfrac{5}{x+2}$. Asymptotes $x = -2$ et $y = -2$. Conforme.\n\n**Ce qu'il faut retenir.** L'écriture décomposée $f(x) = \\alpha + \\dfrac{\\beta}{cx+d}$ est l'outil universel pour une homographique : elle donne les deux asymptotes, le sens de variation par le signe de $\\beta$, et la position de la courbe. Cherche-la systématiquement, dès la première question."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Vérifie d'abord que le numérateur ne s'annule pas en la valeur interdite : sinon il faut factoriser.",
+    "Écris le signe des **deux** facteurs avant de conclure sur une limite infinie.",
+    "Les deux limites latérales sont toujours **opposées** pour une homographique.",
+    "À l'infini, la limite est le quotient des coefficients dominants quand les degrés sont égaux.",
+    "Limite infinie en un point fini : asymptote **verticale**. Limite finie à l'infini : asymptote **horizontale**.",
+    "Ne simplifie jamais une fraction terme à terme.",
+    "Cherche l'écriture décomposée $f(x) = \\alpha + \\dfrac{\\beta}{cx+d}$ : elle donne tout d'un coup.",
+    "La position par rapport à l'asymptote horizontale se lit sur le signe de $f(x)-\\ell$.",
+    "Une valeur interdite ne donne pas toujours une asymptote : tout dépend du numérateur.",
+    "Compare les degrés pour la limite à l'infini : égaux donne le quotient, numérateur plus petit donne $0$, plus grand donne l'infini."
+   ]
+  }
+ ]
+}

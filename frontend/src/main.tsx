@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { registerSW } from 'virtual:pwa-register'
 import 'katex/dist/katex.min.css'
 import 'flag-icons/css/flag-icons.min.css'
 import '@fontsource/work-sans/400.css'
@@ -50,16 +49,13 @@ createRoot(document.getElementById('root')!).render(
   </StrictMode>,
 )
 
-// registerType "autoUpdate" (voir vite.config.ts) : une nouvelle version active son
-// service worker et rafraîchit le cache tout de suite, sans bannière "nouvelle
-// version disponible" à construire - cohérent avec ErrorBoundary.tsx, qui gère déjà
-// le cas où une version périmée resterait ouverte (chunk introuvable -> rechargement
-// automatique). Pas de mode dev-only ici : devOptions.enabled dans vite.config.ts
-// n'active un vrai service worker qu'en dev si demandé, cet appel reste donc correct
-// dans les deux environnements.
-registerSW({
-  immediate: true,
-  onRegisterError: (error) => {
-    console.error("Échec d'enregistrement du service worker (mode hors ligne indisponible) :", error)
-  },
-})
+// PWA désactivée pour l'instant (voir vite.config.ts, plus de plugin VitePWA) : aucun
+// nouveau service worker n'est généré, donc sans ce nettoyage les visiteurs qui en ont
+// déjà un installé resteraient bloqués indéfiniment sur son cache - plus aucune
+// nouvelle version ne sera jamais poussée pour le remplacer.
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach((registration) => registration.unregister())
+  })
+  caches?.keys().then((keys) => keys.forEach((key) => caches.delete(key)))
+}

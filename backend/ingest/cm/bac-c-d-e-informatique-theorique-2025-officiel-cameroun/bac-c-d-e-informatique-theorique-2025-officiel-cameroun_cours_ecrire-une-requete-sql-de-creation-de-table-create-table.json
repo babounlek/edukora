@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-table-create-table-tle-tronc-commun",
+  "meta": {
+    "titre": "Écrire une requête SQL de création de table (CREATE TABLE)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Langage de Définition de Données (LDD)",
+    "duree_estimee_min": 20,
+    "tags": [
+      "SQL",
+      "CREATE TABLE",
+      "clé primaire",
+      "clé étrangère"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qC2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de pouvoir stocker la moindre donnée, il faut déclarer la structure qui va l'accueillir. CREATE TABLE est l'instruction qui transforme un schéma logique (une ligne comme COMMANDE(NumCom, DateCom, #IdCli)) en une vraie table de base de données."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un schéma logique de type NomTable(cléPrimaire, attribut, #cléÉtrangère)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Structure d'une requête CREATE TABLE",
+      "contenu_markdown": "```sql\nCREATE TABLE NomTable (\n    colonne1 TYPE PRIMARY KEY,\n    colonne2 TYPE,\n    colonne3 TYPE,\n    FOREIGN KEY (colonne3) REFERENCES AutreTable(cléCorrespondante)\n);\n```\n\nChaque colonne du schéma logique devient une ligne de la requête, avec un type de données (VARCHAR pour du texte, INT pour un entier, DATE pour une date...). La clé primaire (soulignée dans le schéma) reçoit la contrainte PRIMARY KEY. Chaque clé étrangère (précédée d'un # dans le schéma) reçoit une contrainte FOREIGN KEY qui précise la table et la colonne référencées."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête de création de la table COMMANDE(NumCom, DateCom, #IdCli), sachant qu'IdCli référence la table CLIENT.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les colonnes avec un type adapté",
+          "justification": "NumCom est un identifiant textuel, DateCom une date, IdCli un identifiant textuel.",
+          "resultat_markdown": "NumCom VARCHAR(10), DateCom DATE, IdCli VARCHAR(10)."
+        },
+        {
+          "numero": 2,
+          "action": "Déclarer la clé primaire",
+          "justification": "NumCom est soulignée dans le schéma logique : c'est la clé primaire de COMMANDE.",
+          "resultat_markdown": "NumCom VARCHAR(10) PRIMARY KEY."
+        },
+        {
+          "numero": 3,
+          "action": "Déclarer la clé étrangère",
+          "justification": "#IdCli signale une clé étrangère référençant CLIENT.",
+          "resultat_markdown": "FOREIGN KEY (IdCli) REFERENCES CLIENT(IdCli)."
+        },
+        {
+          "numero": 4,
+          "action": "Assembler la requête complète",
+          "justification": "On regroupe toutes les colonnes et contraintes dans la syntaxe CREATE TABLE.",
+          "resultat_markdown": "CREATE TABLE COMMANDE (NumCom VARCHAR(10) PRIMARY KEY, DateCom DATE, IdCli VARCHAR(10), FOREIGN KEY (IdCli) REFERENCES CLIENT(IdCli));"
+        }
+      ],
+      "conclusion_markdown": "On obtient une requête de création de table fidèle au schéma logique, avec ses contraintes de clé primaire et de clé étrangère correctement déclarées."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la contrainte FOREIGN KEY sur une colonne marquée # dans le schéma",
+          "pourquoi_faux": "Sans cette contrainte, la table se crée quand même mais ne traduit pas fidèlement le schéma logique fourni : le lien entre les deux tables n'est plus garanti par la base de données elle-même.",
+          "correction_markdown": "Vérifier systématiquement chaque colonne précédée d'un # dans le schéma logique et lui associer une contrainte FOREIGN KEY."
+        },
+        {
+          "erreur_markdown": "Choisir un type de donnée incohérent (par exemple INT pour une date)",
+          "pourquoi_faux": "Un type mal choisi empêche des opérations naturelles sur la colonne (comparer des dates, trier chronologiquement) et peut faire échouer des insertions de données pourtant valides.",
+          "correction_markdown": "Toujours associer le type SQL le plus proche du type réel de la donnée : DATE pour une date, VARCHAR pour du texte, INT/DECIMAL pour un nombre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête de création de la table PRODUIT(Ref, NomProd, Prix), sans clé étrangère.",
+          "solution_markdown": "CREATE TABLE PRODUIT (\n    Ref VARCHAR(10) PRIMARY KEY,\n    NomProd VARCHAR(50),\n    Prix DECIMAL(10,2)\n);"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête de création de la table CLIENT(IdCli, NomCli, PrenomCli, Adresse).",
+          "solution_markdown": "CREATE TABLE CLIENT (\n    IdCli VARCHAR(10) PRIMARY KEY,\n    NomCli VARCHAR(50),\n    PrenomCli VARCHAR(50),\n    Adresse VARCHAR(100)\n);"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire la requête de création de la table DETAILCOMMAND(NumCom, Ref, Quantite), sachant que NumCom et Ref forment ENSEMBLE la clé primaire (clé composée), et référencent respectivement COMMANDE(NumCom) et PRODUIT(Ref).",
+          "solution_markdown": "CREATE TABLE DETAILCOMMAND (\n    NumCom VARCHAR(10),\n    Ref VARCHAR(10),\n    Quantite INT,\n    PRIMARY KEY (NumCom, Ref),\n    FOREIGN KEY (NumCom) REFERENCES COMMANDE(NumCom),\n    FOREIGN KEY (Ref) REFERENCES PRODUIT(Ref)\n);\n\nQuand la clé primaire est composée de plusieurs colonnes (cas d'une table association issue d'un MCD), on ne peut plus utiliser PRIMARY KEY directement après une seule colonne : on déclare toutes les colonnes normalement, puis on ajoute une ligne PRIMARY KEY (colonne1, colonne2) qui les combine."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CREATE TABLE traduit directement un schéma logique NomTable(clé, attributs, #clé étrangère) en une vraie table SQL.",
+        "La clé primaire (soulignée dans le schéma) reçoit PRIMARY KEY ; chaque clé étrangère (#) reçoit une contrainte FOREIGN KEY ... REFERENCES ....",
+        "Choisir un type SQL cohérent avec la nature réelle de chaque donnée (texte, entier, date...).",
+        "Une clé primaire composée de plusieurs colonnes se déclare avec PRIMARY KEY (col1, col2) en fin de définition, pas colonne par colonne."
+      ]
+    }
+  ]
+}

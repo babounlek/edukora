@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-etude-complete-des-variations-d-une-fonction-tle-a",
+  "meta": {
+    "titre": "Étudier les variations d'une fonction : dérivée, signe, tableau de variations",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Étude de fonctions",
+    "duree_estimee_min": 30,
+    "tags": [
+      "étude de fonctions",
+      "dérivée",
+      "limites",
+      "tableau de variations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a4-maths-officiel-1994-cameroun",
+    "epreuve_titre": "BAC Mathematiques - Serie A (A4 bilingue) - Session 1994 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a4-maths-officiel-1994-cameroun-ex3-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Étudier les variations d'une fonction » est sans doute la consigne la plus fréquente au BAC en analyse : elle revient dans presque tous les problèmes de fonctions, quelle que soit leur nature (polynomiale, exponentielle, logarithmique...). Une méthode fixe, appliquée dans le bon ordre, permet de traiter n'importe quelle fonction dérivable sans se laisser dérouter par la complexité de son expression."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer la dérivée d'un produit, d'une somme, d'une composée.",
+        "Savoir étudier le signe d'une expression (facteur par facteur).",
+        "Connaître les limites usuelles (croissances comparées avec l'exponentielle)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode de l'étude complète des variations",
+      "contenu_markdown": "Étudier les variations d'une fonction $f$ consiste à suivre quatre étapes dans l'ordre : calculer la dérivée $f'$, étudier le signe de $f'(x)$ sur chaque intervalle du domaine (souvent en factorisant $f'(x)$ pour isoler un facteur dont le signe est facile à lire, comme une exponentielle toujours positive), en déduire le sens de variation de $f$ (croissante là où $f'>0$, décroissante là où $f'<0$), puis calculer les limites de $f$ aux bornes du domaine pour compléter un tableau de variations qui résume l'ensemble de l'étude.",
+      "formule_principale": "f \\text{ croissante sur } I \\iff f'(x)\\geq 0 \\text{ sur } I"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier les variations de $f(x)=4xe^{-x}$ sur $\\mathbb{R}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la dérivée $f'$",
+          "justification": "$f$ est le produit de $u(x)=4x$ (donc $u'(x)=4$) et $v(x)=e^{-x}$ (donc $v'(x)=-e^{-x}$) ; on applique $(uv)'=u'v+uv'$.",
+          "resultat_markdown": "$f'(x)=4e^{-x}+4x\\times(-e^{-x})=4e^{-x}(1-x)$."
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe de $f'(x)$",
+          "justification": "L'exponentielle $e^{-x}$ est toujours strictement positive sur $\\mathbb{R}$ : le signe de $f'(x)$ dépend uniquement du facteur $(1-x)$.",
+          "resultat_markdown": "$f'(x)>0$ pour $x<1$, $f'(x)=0$ pour $x=1$, $f'(x)<0$ pour $x>1$."
+        },
+        {
+          "numero": 3,
+          "action": "En déduire le sens de variation",
+          "justification": "Le signe de la dérivée donne directement le sens de variation de la fonction.",
+          "resultat_markdown": "$f$ est strictement croissante sur $]-\\infty;1]$ et strictement décroissante sur $[1;+\\infty[$, avec un maximum $f(1)=\\dfrac{4}{e}$."
+        },
+        {
+          "numero": 4,
+          "action": "Calculer les limites aux bornes",
+          "justification": "Il faut compléter le tableau avec le comportement de $f$ en $-\\infty$ et $+\\infty$.",
+          "resultat_markdown": "Par croissances comparées, $f(x)\\to 0$ quand $x\\to+\\infty$ ; et $f(x)\\to-\\infty$ quand $x\\to-\\infty$ (le facteur $e^{-x}$ tend vers $+\\infty$ plus vite que $x$ ne tend vers $-\\infty$)."
+        }
+      ],
+      "conclusion_markdown": "Le tableau de variations résume l'étude : $f$ croît de $-\\infty$ à $\\dfrac{4}{e}$ sur $]-\\infty;1]$, puis décroît de $\\dfrac{4}{e}$ vers $0$ sur $[1;+\\infty[$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Étudier le signe du facteur exponentiel (ici $e^{-x}$) en plus du facteur polynomial, comme s'il pouvait changer de signe.",
+          "pourquoi_faux": "La fonction exponentielle est TOUJOURS strictement positive, quel que soit son exposant : elle ne s'annule jamais et ne change jamais de signe. L'étudier est une perte de temps qui peut faire perdre le fil du raisonnement.",
+          "correction_markdown": "Repérer immédiatement les facteurs toujours positifs (exponentielle, carré, valeur absolue) et concentrer l'étude de signe uniquement sur les facteurs qui peuvent réellement changer de signe."
+        },
+        {
+          "erreur_markdown": "Conclure au sens de variation sans avoir factorisé $f'(x)$, en essayant de lire le signe directement sur une somme de plusieurs termes.",
+          "pourquoi_faux": "Le signe d'une somme n'est pas toujours évident à lire directement (contrairement au signe d'un produit de facteurs), ce qui mène facilement à une erreur ou à une étude incomplète.",
+          "correction_markdown": "Toujours factoriser $f'(x)$ autant que possible avant d'en étudier le signe, en particulier pour faire ressortir un facteur exponentiel toujours positif."
+        },
+        {
+          "erreur_markdown": "Oublier de calculer les limites aux bornes du domaine, en s'arrêtant au tableau de signes de $f'$.",
+          "pourquoi_faux": "Le tableau de variations n'est complet que si les limites aux bornes y figurent : elles renseignent sur le comportement global de la courbe (asymptotes éventuelles) et sont explicitement demandées dans la plupart des énoncés.",
+          "correction_markdown": "Toujours terminer l'étude par le calcul des limites aux bornes du domaine (ou aux points où la fonction n'est pas définie), avant de présenter le tableau final."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Étudier les variations de $f(x)=x^2-4x+3$ sur $\\mathbb{R}$.",
+          "solution_markdown": "$$f'(x)=2x-4=2(x-2).$$\n\n$f'(x)>0 \\iff x>2$, $f'(x)<0 \\iff x<2$.\n\n$f$ est décroissante sur $]-\\infty;2]$ et croissante sur $[2;+\\infty[$, avec un minimum $f(2)=4-8+3=-1$.\n\nLimites : $f(x)\\to+\\infty$ quand $x\\to\\pm\\infty$ (polynôme du second degré à coefficient dominant positif)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Étudier les variations de $g(x)=xe^{x}$ sur $\\mathbb{R}$.",
+          "solution_markdown": "$$g'(x)=1\\times e^x+x\\times e^x=e^x(1+x).$$\n\nComme $e^x>0$ pour tout $x$, le signe de $g'(x)$ est celui de $(1+x)$ : $g'(x)>0 \\iff x>-1$.\n\n$g$ est décroissante sur $]-\\infty;-1]$ et croissante sur $[-1;+\\infty[$, avec un minimum $g(-1)=-e^{-1}=-\\dfrac{1}{e}$.\n\nLimites : par croissances comparées, $g(x)\\to 0$ quand $x\\to-\\infty$ ; $g(x)\\to+\\infty$ quand $x\\to+\\infty$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Étudier les variations de $h(x)=(x^2-1)e^{-x}$ sur $\\mathbb{R}$.",
+          "solution_markdown": "$$h'(x)=2x\\,e^{-x}+(x^2-1)\\times(-e^{-x})=e^{-x}\\big[2x-(x^2-1)\\big]=e^{-x}(-x^2+2x+1).$$\n\nComme $e^{-x}>0$, le signe de $h'(x)$ est celui de $-x^2+2x+1$, un trinôme du second degré. Son discriminant est $\\Delta=2^2-4\\times(-1)\\times 1=4+4=8>0$, ses racines sont $x=\\dfrac{-2\\pm\\sqrt{8}}{-2}=1\\mp\\sqrt{2}$.\n\nLe coefficient dominant $-1$ étant négatif, $-x^2+2x+1$ est positif ENTRE les racines : $h'(x)>0$ sur $]1-\\sqrt{2};1+\\sqrt{2}[$, et $h'(x)<0$ ailleurs.\n\n$h$ est donc décroissante sur $]-\\infty;1-\\sqrt{2}]$, croissante sur $[1-\\sqrt{2};1+\\sqrt{2}]$, puis décroissante sur $[1+\\sqrt{2};+\\infty[$.\n\nLimites : $h(x)\\to+\\infty$ quand $x\\to-\\infty$ (le facteur $x^2-1\\to+\\infty$ et $e^{-x}\\to+\\infty$) ; $h(x)\\to 0$ quand $x\\to+\\infty$ (par croissances comparées, malgré le facteur polynomial du second degré)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Étudier les variations suit toujours le même ordre : dérivée, signe de la dérivée, sens de variation, limites, tableau final.",
+        "Factorise systématiquement $f'(x)$ pour isoler les facteurs toujours positifs (comme une exponentielle) et concentrer l'étude de signe sur ce qui peut réellement changer.",
+        "Le tableau de variations n'est complet qu'avec les limites aux bornes : ne jamais s'arrêter au seul signe de la dérivée.",
+        "Un maximum ou un minimum local correspond toujours à un changement de signe de $f'$, jamais seulement à $f'(x)=0$ sans changement de signe autour.",
+        "Au BAC, cette étude sert quasi systématiquement de socle aux questions suivantes (tangentes, convexité, tracé de courbe) : une erreur de signe ici se répercute sur tout le reste du problème."
+      ]
+    }
+  ]
+}

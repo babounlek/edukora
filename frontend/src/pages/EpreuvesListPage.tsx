@@ -456,7 +456,7 @@ export function EpreuvesListPage() {
             className={cn(
               "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
               origineFilter === "INEDITE"
-                ? "border-gold/50 bg-gold/15 text-gold"
+                ? "border-gold bg-gold text-gold-foreground"
                 : "border-border text-muted-foreground hover:border-gold/40 hover:text-gold",
             )}
           >
@@ -603,7 +603,12 @@ export function EpreuvesListPage() {
       </div>
 
       {country && subjectFilter && cursusFilter && (
-        <ThemesFrequents country={country} cursusId={Number(cursusFilter)} subjectCode={subjectFilter} />
+        <ThemesFrequents
+          country={country}
+          cursusId={Number(cursusFilter)}
+          subjectCode={subjectFilter}
+          variant="preview"
+        />
       )}
 
       {isLoading ? (

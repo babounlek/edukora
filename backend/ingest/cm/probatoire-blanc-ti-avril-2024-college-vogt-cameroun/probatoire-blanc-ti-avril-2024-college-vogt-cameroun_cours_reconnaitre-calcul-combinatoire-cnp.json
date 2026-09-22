@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-reconnaitre-calcul-combinatoire-cnp-premiere-ti",
+  "meta": {
+    "titre": "Reconnaître un algorithme de calcul combinatoire (nombre de combinaisons C(n,p))",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Algorithmique appliquée aux mathématiques",
+    "duree_estimee_min": 15,
+    "tags": [
+      "factorielle",
+      "combinaison",
+      "dénombrement",
+      "algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "6",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex6-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trois boucles `for` qui multiplient des compteurs, puis une division finale : à première vue, un script anodin. Mais en reconnaissant chaque brique (une factorielle, encore une factorielle, une troisième factorielle, puis un quotient), une formule mathématique bien connue du dénombrement apparaît immédiatement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition de la factorielle ($n! = 1\\times 2\\times\\cdots\\times n$)",
+        "Connaître la formule du nombre de combinaisons $C_n^p = \\dfrac{n!}{p!(n-p)!}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Traduire chaque boucle en expression mathématique",
+      "contenu_markdown": "Pour identifier ce que calcule un script numérique, on remplace chaque bloc de code par l'opération mathématique qu'il traduit (une boucle `for` qui multiplie `i` à chaque tour calcule une factorielle), puis on assemble ces briques pour reconnaître une formule connue.",
+      "formule_principale": "for(i=1;i<=n;i++){ o=o*i; } avec o initialisé à 1 --> calcule n!",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier ce que calcule ce script, pour des valeurs n et p valides (0 ≤ p ≤ n) :\n```javascript\no=1; for(i=1;i<=n;i++){ o=o*i; }\ns=1; for(i=1;i<=p;i++){ s=s*i; }\na=n-p; m=1; for(i=1;i<=a;i++){ m=m*i; }\ny=s*m;\nz=o/y;\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire la première boucle",
+          "justification": "`o` initialisée à 1, multipliée par `i` de 1 à `n`",
+          "resultat_markdown": "`o` = $n!$"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire la deuxième boucle",
+          "justification": "Même motif, mais de 1 à `p`",
+          "resultat_markdown": "`s` = $p!$"
+        },
+        {
+          "numero": 3,
+          "action": "Traduire la troisième boucle",
+          "justification": "Même motif, de 1 à `a` où `a=n-p`",
+          "resultat_markdown": "`m` = $(n-p)!$"
+        },
+        {
+          "numero": 4,
+          "action": "Assembler `y` et `z`",
+          "justification": "`y=s*m` = $p!\\times(n-p)!$, puis `z=o/y`",
+          "resultat_markdown": "`z` = $\\dfrac{n!}{p!\\times(n-p)!} = C_n^p$"
+        }
+      ],
+      "conclusion_markdown": "Ce script calcule le nombre de combinaisons de $p$ éléments choisis parmi $n$, une formule fondamentale du dénombrement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Essayer de deviner le résultat en exécutant mentalement chaque boucle valeur par valeur, sans chercher à reconnaître la formule globale",
+          "pourquoi_faux": "Cette méthode fonctionne pour de petites valeurs mais devient très lente et source d'erreurs dès que $n$ et $p$ grandissent, et elle ne permet pas de RÉPONDRE à la question posée (\"que permet de faire ce script ?\"), qui demande une identification générale, pas un calcul particulier.",
+          "correction_markdown": "Entraîne-toi à reconnaître directement le motif d'une factorielle (`variable=1; for(...){ variable=variable*i; }`) : c'est bien plus rapide que de dérouler chaque boucle à la main."
+        },
+        {
+          "erreur_markdown": "Confondre $C_n^p$ (combinaisons, sans ordre) avec $A_n^p$ (arrangements, avec ordre)",
+          "pourquoi_faux": "Un script qui calcule $\\dfrac{n!}{p!(n-p)!}$ (avec DEUX factorielles au dénominateur) calcule des combinaisons ; un script qui calcule seulement $\\dfrac{n!}{(n-p)!}$ (une seule factorielle au dénominateur) calculerait des arrangements.",
+          "correction_markdown": "Vérifie toujours le nombre exact de factorielles présentes au dénominateur avant de conclure entre combinaison et arrangement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel est le résultat de $C_5^2$ (combinaisons de 2 éléments parmi 5) ?",
+          "solution_markdown": "$C_5^2 = \\dfrac{5!}{2!\\times 3!} = \\dfrac{120}{2\\times 6} = \\dfrac{120}{12} = 10$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un script contient une seule boucle `for(i=1;i<=n;i++){ o=o*i; }` (calculant $n!$), puis affiche directement `o`, sans aucune autre boucle ni division. Que calcule ce script, et en quoi diffère-t-il du script étudié dans le cours ?",
+          "solution_markdown": "Ce script calcule simplement la **factorielle de n** ($n!$), sans aller jusqu'au calcul d'une combinaison. Il lui manque les deux autres boucles (pour $p!$ et $(n-p)!$) ainsi que la division finale qui, ensemble, transforment une simple factorielle en nombre de combinaisons $C_n^p$. Une factorielle seule est une brique de base réutilisée dans de nombreux calculs de dénombrement (combinaisons, arrangements, permutations), mais elle ne représente à elle seule aucun de ces résultats."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Modifier le script du cours pour qu'il calcule le nombre d'arrangements $A_n^p = \\dfrac{n!}{(n-p)!}$ au lieu du nombre de combinaisons.",
+          "solution_markdown": "```javascript\no=1; for(i=1;i<=n;i++){ o=o*i; }\na=n-p; m=1; for(i=1;i<=a;i++){ m=m*i; }\nz=o/m;\n```\nLa différence essentielle avec le script de combinaisons est la SUPPRESSION de la boucle qui calculait $p!$ (variable `s`), ainsi que de la multiplication `y=s*m` : puisque $A_n^p=\\dfrac{n!}{(n-p)!}$ ne divise que par $(n-p)!$, une seule factorielle au dénominateur suffit, calculée ici directement par `m`. Cette comparaison illustre bien que la présence ou l'absence d'une factorielle supplémentaire au dénominateur est exactement ce qui distingue un calcul d'arrangements d'un calcul de combinaisons."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`variable=1; for(...){ variable=variable*i; }` est le motif classique du calcul d'une factorielle.",
+        "$C_n^p = \\dfrac{n!}{p!\\times(n-p)!}$ : trois factorielles combinées par deux multiplications et une division.",
+        "Reconnaître ce motif évite de dérouler chaque boucle à la main pour répondre à \"que fait ce script ?\".",
+        "Une seule factorielle au dénominateur (au lieu de deux) signale un calcul d'arrangements $A_n^p$, pas de combinaisons.",
+        "Cette compétence de lecture de motifs algorithmiques se retrouve dans de nombreux exercices de dénombrement programmé, en Première comme en Terminale."
+      ]
+    }
+  ]
+}

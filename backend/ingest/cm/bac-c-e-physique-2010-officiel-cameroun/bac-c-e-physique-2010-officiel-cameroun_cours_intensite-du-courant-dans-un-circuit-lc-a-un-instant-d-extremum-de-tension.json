@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-intensite-a-un-extremum-de-tension-tle-c-e",
+  "meta": {
+    "titre": "Intensite du courant dans un circuit LC a un instant d'extremum de tension",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Oscillateurs electriques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "relation intensite-charge",
+      "extremum de tension",
+      "circuit RLC"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2010 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2010-officiel-cameroun-ex2-q5b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A l'instant precis ou la tension d'un condensateur atteint son maximum, le courant dans le circuit s'annule completement - un resultat qui parait contre-intuitif tant qu'on n'a pas fait le lien mathematique entre tension et courant. Ce cours l'etablit et le justifie physiquement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation entre intensite et charge, $i=dq/dt$",
+        "Relation charge-tension d'un condensateur, $q=Cu$",
+        "Notion d'extremum d'une fonction (derivee nulle)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Intensite nulle a un extremum de tension",
+      "contenu_markdown": "Dans un circuit serie, l'intensite du courant est reliee a la tension du condensateur par $i = \\dfrac{dq}{dt} = C\\dfrac{du_C}{dt}$. A un instant ou $u_C$ atteint un extremum (maximum ou minimum), sa derivee par rapport au temps est nulle par definition meme d'un extremum : l'intensite y est donc necessairement nulle.",
+      "formule_principale": "\\dfrac{du_C}{dt}(t_0) = 0 \\;\\Longrightarrow\\; i(t_0) = 0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A l'instant $t=T$ (une pseudo-periode apres $t=0$), la tension $u_C$ d'un circuit LC atteint un nouveau maximum. Que vaut l'intensite du courant a cet instant ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler la relation intensite-tension",
+          "justification": "C'est elle qui relie directement la question posee a une propriete mathematique",
+          "resultat_markdown": "$i = C\\dfrac{du_C}{dt}$"
+        },
+        {
+          "numero": 2,
+          "action": "Caracteriser l'instant t=T",
+          "justification": "Un maximum de la fonction $u_C(t)$ correspond a une derivee nulle",
+          "resultat_markdown": "$\\dfrac{du_C}{dt}(T) = 0$ (extremum de $u_C$)"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur l'intensite",
+          "justification": "Consequence directe des deux etapes precedentes",
+          "resultat_markdown": "$i(T) = C\\times0 = 0$"
+        }
+      ],
+      "conclusion_markdown": "L'intensite du courant est nulle a chaque instant ou la tension du condensateur atteint un extremum : c'est un resultat systematique, valable pour tout circuit RLC serie, amorti ou non."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser que l'intensite est maximale quand la tension est maximale",
+          "pourquoi_faux": "Tension et intensite sont physiquement en quadrature de phase dans un circuit LC (l'energie oscille entre le condensateur et la bobine) : quand l'une est maximale, l'autre est nulle, jamais l'inverse.",
+          "correction_markdown": "Retenir que tension du condensateur et intensite du courant atteignent leurs extrema a des instants differents, jamais simultanement, dans un circuit LC."
+        },
+        {
+          "erreur_markdown": "Justifier $i=0$ uniquement par un argument energetique sans le lien mathematique $i=C\\,du_C/dt$",
+          "pourquoi_faux": "Si l'argument energetique (energie magnetique nulle a cet instant) est correct et peut etre ajoute, la demonstration rigoureuse attendue repose sur la derivee nulle de $u_C$ a un extremum — l'omettre laisse la reponse incomplete.",
+          "correction_markdown": "Toujours ecrire explicitement la relation $i=C\\,du_C/dt$ et l'argument de derivee nulle, l'argument energetique venant en complement, pas en remplacement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A quel(s) instant(s), au cours d'une pseudo-periode, l'intensite du courant dans un circuit LC est-elle nulle ?",
+          "solution_markdown": "A chaque instant ou $u_C(t)$ atteint un extremum (maximum ou minimum), c'est-a-dire deux fois par pseudo-periode."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A quel instant, au cours d'une periode, l'intensite du courant dans un circuit LC est-elle maximale en valeur absolue ?",
+          "solution_markdown": "L'intensite est maximale quand $u_C$ passe par zero (sa derivee y est alors maximale en valeur absolue), c'est-a-dire lorsque toute l'energie du circuit est stockee sous forme magnetique dans la bobine, aucune sous forme electrostatique dans le condensateur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Justifier, par un argument energetique independant de la derivee, que l'intensite est nulle a un instant ou $u_C$ est extremale.",
+          "solution_markdown": "L'energie totale du circuit se repartit a chaque instant entre l'energie electrostatique du condensateur $E_C=\\tfrac12Cu_C^2$ et l'energie magnetique de la bobine $E_L=\\tfrac12Li^2$, leur somme restant constante en l'absence de resistance (ou variant lentement en presence d'un amortissement faible). Quand $u_C$ est extremale, $E_C$ est (localement) maximale ; comme $E_C+E_L$ reste quasiment constante sur un intervalle tres court autour de cet instant, $E_L$ y est (localement) minimale, donc nulle si $E_C$ atteint son maximum global de l'oscillateur a cet instant — ce qui impose $i=0$ a cet instant precis."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La relation $i = C\\,du_C/dt$ relie directement intensite et tension d'un condensateur dans un circuit serie.",
+        "A un extremum (maximum ou minimum) de $u_C(t)$, la derivee est nulle par definition, donc l'intensite y est nulle.",
+        "Tension et intensite ne sont jamais extremales au meme instant dans un circuit LC : elles sont en quadrature, l'energie oscillant continuellement entre le condensateur et la bobine.",
+        "L'argument energetique (energie magnetique nulle a cet instant) complete, mais ne remplace jamais, la demonstration par la derivee nulle.",
+        "Au BAC, cette question cloture souvent l'etude d'un enregistrement, en reliant l'aspect graphique (extremum visible) a une grandeur electrique non directement visible sur le trace (l'intensite)."
+      ]
+    }
+  ]
+}

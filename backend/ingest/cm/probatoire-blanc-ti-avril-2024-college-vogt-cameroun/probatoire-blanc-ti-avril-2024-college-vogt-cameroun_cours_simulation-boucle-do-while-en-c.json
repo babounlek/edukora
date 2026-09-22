@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-simulation-boucle-do-while-en-c-premiere-ti",
+  "meta": {
+    "titre": "Lecture et simulation d'un algorithme itératif (boucle do...while) en langage C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures de contrôle en langage C",
+    "duree_estimee_min": 18,
+    "tags": [
+      "do while",
+      "boucle",
+      "simulation d'exécution",
+      "getchar"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex1-q10-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un programme qu'on ne peut pas exécuter soi-même sur un ordinateur (à l'examen, par exemple), il faut être capable de le \"faire tourner dans sa tête\", ligne par ligne. C'est ce qu'on appelle simuler l'exécution - une compétence indispensable pour deviner ce qu'affichera un programme sans jamais le lancer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe de la boucle `do { ... } while (condition);`",
+        "Savoir ce que fait `getchar()`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "do...while : le corps s'exécute toujours au moins une fois",
+      "contenu_markdown": "Simuler l'exécution d'un programme itératif consiste à dérouler ligne par ligne chaque tour de boucle en notant l'évolution des variables, jusqu'à ce que la condition d'arrêt soit atteinte. Une boucle `do...while` exécute toujours son corps au moins une fois, la condition n'étant testée qu'après - contrairement à une boucle `while` classique, qui teste la condition AVANT d'exécuter le corps.",
+      "formule_principale": "do { corps } while (condition); -> le corps s'exécute d'abord, la condition est testée ensuite",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Simuler l'exécution du programme suivant et donner son affichage final :\n```c\nint i = 0;\ndo {\n    printf(\"%d \", i);\n    i = i + 1;\n} while (i < 3);\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Premier passage (i=0)",
+          "justification": "Le corps s'exécute obligatoirement une première fois, sans test préalable",
+          "resultat_markdown": "Affiche `0 `, puis `i` devient 1."
+        },
+        {
+          "numero": 2,
+          "action": "Test de la condition après le premier passage",
+          "justification": "`i < 3` avec `i=1` est vrai",
+          "resultat_markdown": "La boucle continue."
+        },
+        {
+          "numero": 3,
+          "action": "Deuxième et troisième passages",
+          "justification": "Même déroulé : affichage puis incrémentation puis test",
+          "resultat_markdown": "Affiche `1 ` (i devient 2, test vrai), puis affiche `2 ` (i devient 3, test `3<3` faux)."
+        },
+        {
+          "numero": 4,
+          "action": "Arrêt de la boucle",
+          "justification": "`i < 3` est maintenant faux (i=3)",
+          "resultat_markdown": "La boucle s'arrête, aucun autre affichage n'a lieu."
+        }
+      ],
+      "conclusion_markdown": "Le programme affiche `0 1 2 ` puis s'arrête : trois passages dans la boucle, le troisième provoquant l'arrêt seulement APRÈS avoir affiché sa valeur, propriété caractéristique du `do...while`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tester la condition avant d'exécuter le corps de la boucle, comme pour un `while` classique",
+          "pourquoi_faux": "Dans un `do...while`, la condition n'est testée qu'APRÈS le corps : même si elle est fausse dès le départ, le corps s'exécute au moins une fois.",
+          "correction_markdown": "Déroule toujours le corps une première fois avant même de regarder la condition, pour une boucle `do...while`."
+        },
+        {
+          "erreur_markdown": "Oublier qu'une fonction comme `getchar()` consomme les caractères un par un, y compris le retour à la ligne",
+          "pourquoi_faux": "Si l'utilisateur tape plusieurs caractères avant d'appuyer sur Entrée, chaque tour de boucle qui appelle `getchar()` ne lit qu'un seul de ces caractères à la fois, dans l'ordre où ils ont été tapés.",
+          "correction_markdown": "Pense à dérouler la simulation caractère par caractère quand `getchar()` est utilisé dans une boucle, pas saisie complète par saisie complète."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Combien de fois le corps de cette boucle s'exécute-t-il, et que fait-elle ?\n```c\nint k = 5;\ndo {\n    k = k - 1;\n} while (k > 5);\n```",
+          "solution_markdown": "Le corps s'exécute **une seule fois**, même si la condition `k > 5` est fausse dès le départ (`k` vaut 5, pas plus de 5) : c'est la propriété du `do...while`, qui exécute toujours son corps au moins une fois avant tout test. Après ce passage, `k` vaut 4, et le test `4 > 5` est faux : la boucle s'arrête."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Simuler ce programme et donner son affichage :\n```c\nint total = 0;\nint n = 1;\ndo {\n    total = total + n;\n    n = n + 1;\n} while (n <= 4);\nprintf(\"%d\", total);\n```",
+          "solution_markdown": "Déroulé : passage 1 (n=1) : total=0+1=1, n devient 2, test 2<=4 vrai. Passage 2 (n=2) : total=1+2=3, n devient 3, test vrai. Passage 3 (n=3) : total=3+3=6, n devient 4, test vrai. Passage 4 (n=4) : total=6+4=10, n devient 5, test 5<=4 faux, arrêt. Le programme affiche donc **10** (la somme de 1+2+3+4)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une boucle `do...while` contient une condition de validation de saisie, comme `while(n<0 || p<0 || p>n)`. Expliquer ce qui se passe si l'utilisateur entre des valeurs qui ne vérifient JAMAIS cette condition d'arrêt, et pourquoi cela illustre bien le fonctionnement du `do...while`.",
+          "solution_markdown": "Tant que la condition reste vraie (par exemple si l'utilisateur persiste à entrer `p>n`), la boucle redemande indéfiniment une nouvelle saisie : le programme ne dépassera jamais cette boucle, et aucune instruction placée après ne s'exécutera. Cela illustre bien le mécanisme du `do...while` : ce n'est pas parce que le corps s'exécute \"au moins une fois\" qu'il ne peut pas s'exécuter un très grand nombre de fois - la boucle continue de reprendre son corps aussi longtemps que la condition testée après ce corps reste vraie, exactement comme n'importe quelle autre boucle contrôlée par une condition."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`do { ... } while (condition);` exécute toujours son corps au moins une fois, avant même le premier test de la condition.",
+        "Pour simuler l'exécution, déroule chaque tour de boucle dans l'ordre réel : corps d'abord, test ensuite.",
+        "`getchar()` lit les caractères un par un dans le tampon clavier, retour à la ligne inclus : simule caractère par caractère si plusieurs sont tapés avant Entrée.",
+        "Une boucle `do...while` de validation de saisie peut se répéter un grand nombre de fois si l'utilisateur ne fournit jamais de valeurs satisfaisant la condition d'arrêt.",
+        "Au Probatoire, une question \"exécuter le programme pour telles valeurs\" demande presque toujours ce travail de simulation ligne par ligne, jamais un simple calcul final en sautant les étapes intermédiaires."
+      ]
+    }
+  ]
+}

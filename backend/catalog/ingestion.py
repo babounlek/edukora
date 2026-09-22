@@ -46,6 +46,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from PIL import Image, UnidentifiedImageError
 from django.db import transaction
+from django.db.models import Q
 from django.utils import timezone
 
 from .ingestion_repairs import (
@@ -62,6 +63,14 @@ from .ingestion_repairs import (
     _repair_narrow_array_columns,
     _reposition_trailing_exercise_reference,
     _strip_em_dash,
+)
+from .reparations_auto import (
+    JOURNAL as REPARATIONS_JOURNAL,
+    PROPOSITIONS_THEMES,
+    _repair_literal_dollars,
+    enregistrer_proposition,
+    proposer_themes,
+    vider_journal,
 )
 from .models import Cours, Country, Cursus, Difficulte, Examen, Exercise, Figure, FiliereSerieA, Lesson, LessonType, NatureEpreuve, Origine, OrigineFigure, PartieEpreuveFrancais, Question, RappelDeMethode, Series, StatutContenu, Subject, SUBJECT_FAMILIES, Tag, TypeReponse, VarianteSujet, _join_fr, institution_officielle
 from programme.models import Module, Savoir
@@ -168,6 +177,7 @@ MATIERE_MAP = {
     "education civique": "EDUCATION_CIVIQUE",
     "education a la citoyennete": "EDUCATION_CIVIQUE",  # synonyme vu sur bepc-ecm-2026-cameroun ("ECM" = Éducation à la Citoyenneté et à la Morale).
     "education morale et civique": "EDUCATION_CIVIQUE",  # intitulé "EMC" des années 1990 (bepc-emc-1995/1996/1997-officiel-cameroun), même matière que ECM sous son ancienne dénomination.
+    "education civique et morale": "EDUCATION_CIVIQUE",  # même sigle "EMC", ordre des mots inversé par rapport à la variante ci-dessus - vu sur bepc-emc-2005/2007/2008-officiel-cameroun, scan corpus du 2026-08-30.
     "ecm": "EDUCATION_CIVIQUE",  # sigle brut plutôt que l'intitulé développé, vu sur bepc-blanc-littoral-2026-cameroun.
     "litterature": "LITTERATURE",
     "litterature ou culture generale": "LITTERATURE",
@@ -209,6 +219,7 @@ MATIERE_MAP = {
     # dédiée plutôt qu'un alias vers PHYSIQUE_CHIMIE, pour ne pas perdre le volet
     # technologie dans l'intitulé affiché à l'élève.
     "physique-chimie-technologie": "PHYSIQUE_CHIMIE_TECH",
+    "pct": "PHYSIQUE_CHIMIE_TECH",  # sigle brut plutôt que l'intitulé développé, vu sur bepc-pct-2005/2006/2008/2010/2012/2013-officiel-cameroun (contenu confirmé : section "A- CHIMIE" en tête d'exercice, même famille que bepc-blanc-pct-2017-adventiste-cameroun déjà ingéré sous l'intitulé complet).
     # Matière examinée au BEPC camerounais (voir bepc-dessin-2026-cameroun) - décision
     # utilisateur du 2026-08-26 : Subject à part entière, même traitement que
     # Espagnol/Éducation Civique par le passé. Contenu resté bloqué à l'ingestion
@@ -297,6 +308,14 @@ VARIANTE_SUJET_MAP = {
     "sujet1": VarianteSujet.SUJET_1,
     "sujet 2": VarianteSujet.SUJET_2,
     "sujet2": VarianteSujet.SUJET_2,
+    # Variantes numériques vues 2026-09-04 sur bac-c-ti-svt-officiel-2018/2020 (chiffres
+    # romains) et bepc-svt-officiel-2009/2011/2012 (chiffres romains + "N°") - _normalize()
+    # retire déjà les accents/majuscules mais pas "°" (ignoré par l'encodage ascii, donc
+    # "N°1" -> "n1").
+    "sujet i": VarianteSujet.SUJET_1,
+    "sujet ii": VarianteSujet.SUJET_2,
+    "sujet n1": VarianteSujet.SUJET_1,
+    "sujet n2": VarianteSujet.SUJET_2,
 }
 
 FILIERE_SERIE_A_MAP = {
@@ -318,9 +337,23 @@ ORIGINE_MAP = {
     "examen_blanc": Origine.BLANC,  # variante underscore, vu sur bac-c-maths-blanc-2003-cameroun - même dérive que "bac_blanc" dans EXAMEN_MAP.
     "blanc": Origine.BLANC,
     "sujet zero": Origine.SUJET_ZERO,  # _normalize() retire déjà l'accent ("zéro" -> "zero"), une seule entrée suffit.
+    # "zero" seul (sans "sujet") vu 2026-09-04 sur bepc-svt-epreuve-zero-2022-cameroun (4
+    # fichiers) : même défaut de forme que "bac_blanc" ci-dessous, valeur cible non ambiguë.
+    "zero": Origine.SUJET_ZERO,
     "etablissement": Origine.ETABLISSEMENT,
     "epreuve d'etablissement": Origine.ETABLISSEMENT,
     "autre": Origine.AUTRE,
+    # "bac_blanc" vu 2026-09-04 sur bac-blanc-regional-svteehb-officiel-fevrier-2026-cameroun
+    # (4 fichiers) : même dérive que "bac_blanc" déjà tolérée côté EXAMEN_MAP (compte-rendu
+    # confus entre `examen` et `origine`, voir le commentaire associé), mais ici sur le champ
+    # `origine` lui-même.
+    "bac_blanc": Origine.BLANC,
+    # "evaluation_harmonisee" vu 2026-09-04 sur
+    # bac-c-ti-svteehb-evaluation-harmonisee-nord-2024-cameroun (4 fichiers) : une évaluation
+    # harmonisée au niveau régional est organisée par l'inspection/les établissements, pas par
+    # l'organisme national de l'examen - même famille que "devoir harmonise" (déjà tolérée côté
+    # EXAMEN_MAP avec le même raisonnement), donc Origine.BLANC plutôt que OFFICIEL.
+    "evaluation_harmonisee": Origine.BLANC,
 }
 
 REQUIRED_KEYS = [
@@ -621,7 +654,19 @@ def _resolve_partie_epreuve_francais(matiere_raw, partie_raw):
     (voir MATIERE_MAP) - cette info était jusqu'ici résolue vers la Subject FRANCAIS
     puis perdue. `partie_raw` présent mais hors liste fermée -> erreur (même contrat
     que _resolve_nature_epreuve) ; `matiere_raw` hors liste -> simplement ignoré, ce
-    n'est pas son rôle de porter cette info pour la quasi-totalité des matières."""
+    n'est pas son rôle de porter cette info pour la quasi-totalité des matières.
+
+    Vu 2026-09-04 sur probatoire-d-maths-officiel-2020/2021-cameroun (4 fichiers,
+    isolé - scan corpus-wide) : `partie_raw` peut aussi porter, pour une matière qui
+    n'est PAS Français, la structure générique "Partie A : Évaluation des
+    ressources"/"Partie B : Évaluation des compétences" du format d'évaluation par
+    compétences (toutes matières, sans rapport avec les parties de l'épreuve de
+    Français). Ce champ reste réservé au Français par son nom même
+    (partie_epreuve_francais) - ignoré silencieusement hors Français plutôt qu'une
+    erreur, cette structure restant de toute façon déjà visible dans
+    enonce_intro_markdown."""
+    if partie_raw and MATIERE_MAP.get(_normalize(matiere_raw)) != "FRANCAIS":
+        return ""
     if partie_raw:
         partie = PARTIE_FRANCAIS_MAP.get(_normalize(partie_raw))
         if not partie:
@@ -978,21 +1023,146 @@ def _resolve_savoir_officiel(raw, subject):
         )
 
 
-def _link_tags_to_savoir(tags, savoir):
+# Tags qui nomment la FORME d'une question/d'un cours, jamais une notion : sections
+# d'épreuve du format camerounais par compétences, formats de réponse, items de barème,
+# ou supports qu'un tag générique ne peut pas décrire un savoir précis. Déplacé depuis
+# quiz.ingestion (2026-09-07) : y vivait pour un seul usage (filtrer la sélection de
+# compétences quiz), mais _link_tags_to_savoir en a tout autant besoin - "QCM" n'a par
+# exemple aucun rapport avec un savoir quel qu'il soit, quel que soit le contenu qui le
+# porte. catalog est le propriétaire naturel de cette liste (Tag y vit, _normalize aussi
+# déjà) ; quiz.ingestion importe désormais ces symboles d'ici plutôt que sa propre copie.
+#
+# Comparaison sur le nom normalisé (voir _normalize ci-dessus) et par égalité EXACTE,
+# jamais par préfixe : « définition de Brönsted », « définition par foyer et directrice »
+# ou « figures de style » sont de vraies notions qu'un filtrage large emporterait à tort.
+# Seules exceptions, deux familles où aucun tag légitime ne commence ainsi : voir
+# _TAGS_STRUCTURELS_MOTIFS.
+_TAGS_STRUCTURELS_EXACTS = frozenset({
+    # Sections d'épreuve et énoncés génériques
+    "situation probleme", "situation-probleme", "probleme concret",
+    "presentation d un probleme", "methodologie de l agir competent",
+    # Formats de réponse
+    "definition", "definitions", "definition de concepts", "definition sigle",
+    "definitions et contexte",
+    # Items de barème portant sur la forme de la copie
+    "presentation", "presentation formelle", "presentation de la copie",
+    "redaction guidee", "redaction argumentee",
+    # Opérations sans contenu notionnel propre
+    "calcul numerique", "application numerique",
+    # Supports que le quiz ne peut pas afficher
+    "tableau", "schema", "figure", "lecture graphique",
+})
+
+# Familles où le préfixe suffit, aucun tag de notion ne commençant ainsi : « QCM… »
+# (QCM lexical, QCM de définition, QCM d'inférence) et « vrai ou faux… » nomment
+# exclusivement le format attendu de la réponse.
+_TAGS_STRUCTURELS_MOTIFS = ("qcm", "vrai ou faux")
+
+
+def _est_tag_structurel(nom):
+    """
+    Un tag nomme-t-il la forme d'une question plutôt qu'une notion ? Voir
+    _TAGS_STRUCTURELS_EXACTS pour le raisonnement et les faux positifs évités.
+    """
+    normalise = _normalize(nom)
+    if normalise in _TAGS_STRUCTURELS_EXACTS:
+        return True
+    return any(normalise == motif or normalise.startswith(motif + " ") for motif in _TAGS_STRUCTURELS_MOTIFS)
+
+
+def _tag_deja_utilise_sur_plusieurs_cursus(tag):
+    """
+    Même garde que programme.management.commands.map_tags_to_savoir_officiel (voir sa
+    docstring) : Tag.savoir_officiel est une FK unique, elle ne peut pas représenter
+    fidèlement un tag qui vit dans plusieurs cursus/séries à la fois. Étendue ici à
+    Cours (la commande hors-ligne ne couvrait que Lesson/Question) via `tag.cours`. Un
+    Cours "toutes séries" (Cours.cursus vide, voir son help_text) ne contribue aucune
+    ligne ici - normal, pas un oubli : il n'affirme aucun cursus particulier.
+    """
+    cursus_ids = (
+        set(tag.cours.values_list("cursus", flat=True))
+        | set(tag.lessons_as_theme.values_list("cursus", flat=True))
+        | set(tag.questions_as_theme.values_list("exercise__lesson__cursus", flat=True))
+    )
+    cursus_ids.discard(None)
+    return len(cursus_ids) > 1
+
+
+def _tag_en_conflit_avec_un_autre_savoir(tag, savoir, *, exclude_cours=None, exclude_question=None):
+    """
+    Vrai si `tag` est déjà utilisé, sur un AUTRE Cours ou une autre Question que celle en
+    cours d'ingestion (exclue via exclude_cours/exclude_question - sinon un Cours neuf
+    portant à la fois `tag` et un vieux tag déjà rattaché ailleurs se bloquerait lui-même),
+    aux côtés d'un signal déjà rattaché à un savoir différent de `savoir` : soit un tag
+    voisin (même Cours/Question) déjà lié à un autre savoir, soit - côté Question,
+    source plus fiable encore, voir Question.savoir_officiel - le rattachement direct de
+    la question elle-même. Signe que `tag` couvre plusieurs sujets, pas seulement celui
+    visé ici.
+
+    Portée à Cours/Question uniquement : ce sont les deux seuls modèles que
+    quiz.services.construire_parcours et QuestionQuerySet.rattachees_au_savoir
+    consomment pour le rattachement par tag, et les deux qui restent dans cette app -
+    interroger quiz.CompetenceItem ou les modèles inedit depuis ici inverserait la
+    dépendance entre apps. Lacune assumée : un tag dont tout le conflit vivrait
+    uniquement côté CompetenceItem/inedit échapperait à cette garde.
+    """
+    cours_qs = tag.cours.all()
+    if exclude_cours is not None:
+        cours_qs = cours_qs.exclude(pk=exclude_cours.pk)
+    if cours_qs.filter(tags__savoir_officiel__isnull=False).exclude(tags__savoir_officiel=savoir).exists():
+        return True
+
+    questions_qs = tag.questions_as_theme.all()
+    if exclude_question is not None:
+        questions_qs = questions_qs.exclude(pk=exclude_question.pk)
+    if questions_qs.filter(themes__savoir_officiel__isnull=False).exclude(themes__savoir_officiel=savoir).exists():
+        return True
+    if questions_qs.filter(savoir_officiel__isnull=False).exclude(savoir_officiel=savoir).exists():
+        return True
+
+    return False
+
+
+def _link_tags_to_savoir(tags, savoir, *, exclude_cours=None, exclude_question=None):
     """
     Best-effort, jamais bloquant pour l'ingestion elle-même : lie chaque Tag résolu au
     Savoir officiel visé, seulement s'il n'a pas déjà de rattachement (jamais
-    d'écrasement d'un mapping déjà validé à la main - voir Tag.savoir_officiel). Effet
-    de bord volontaire : chaque contenu neuf généré avec ce champ fait progresser le
-    mapping des tags historiques vers le référentiel officiel, sans attendre la passe
-    de curation dédiée pour ce tag précis.
+    d'écrasement d'un mapping déjà validé à la main - voir Tag.savoir_officiel) ET s'il
+    ne ressemble pas à un tag partagé entre plusieurs sujets (voir les 3 gardes
+    ci-dessous). Effet de bord volontaire : chaque contenu neuf généré avec ce champ fait
+    progresser le mapping des tags historiques vers le référentiel officiel, sans
+    attendre la passe de curation dédiée pour ce tag précis - mais seulement pour les
+    tags qui ont l'air d'appartenir sans ambiguïté à ce seul savoir.
+
+    Incident du 2026-09-07, à l'origine des 3 gardes : le tag "racine évidente"
+    (technique de factorisation polynomiale) avait été rattaché à tort au savoir
+    "TRIGONOMETRIE" - premier contenu ingéré à croiser ce tag avec un savoir résolu,
+    faute de toute garde ici - puis réutilisé sur un Cours sans rapport avec la
+    trigonométrie, qui ressortait donc à tort dans le parcours d'un élève.
+
+    1. Tag structurel (voir _est_tag_structurel) - nomme un format, jamais une notion.
+    2. Usage déjà multi-cursus (voir _tag_deja_utilise_sur_plusieurs_cursus).
+    3. Conflit avec un autre savoir déjà observé ailleurs (voir
+       _tag_en_conflit_avec_un_autre_savoir).
+
+    Dans les trois cas, on saute le rattachement plutôt que de deviner : le tag reste
+    `savoir_officiel=None`, comme un tag jamais encore vu - voir
+    programme.management.commands.audit_coherence_tags_savoir pour retrouver après coup
+    les tags ainsi laissés de côté et les rattacher à la main si besoin.
     """
     if not savoir:
         return
     for tag in tags:
-        if tag.savoir_officiel_id is None:
-            tag.savoir_officiel = savoir
-            tag.save(update_fields=["savoir_officiel"])
+        if tag.savoir_officiel_id is not None:
+            continue
+        if _est_tag_structurel(tag.name):
+            continue
+        if _tag_deja_utilise_sur_plusieurs_cursus(tag):
+            continue
+        if _tag_en_conflit_avec_un_autre_savoir(tag, savoir, exclude_cours=exclude_cours, exclude_question=exclude_question):
+            continue
+        tag.savoir_officiel = savoir
+        tag.save(update_fields=["savoir_officiel"])
 
 
 # Largeur maximale d'une figure une fois compressée - un scan de manuel ou une photo
@@ -1069,7 +1239,7 @@ def _attach_figures(exercise, figures_data, source_dir):
     questions = list(exercise.questions.all())
     illisibles_indispensables = []
 
-    for fig_data in figures_data:
+    for index, fig_data in enumerate(figures_data, start=1):
         if isinstance(fig_data, str):
             # Constaté sur bac-c-physique-2024/bac-d-physique-2019/2022-cameroun (9
             # fichiers) : la compétence a émis l'id de la figure comme simple chaîne
@@ -1080,10 +1250,20 @@ def _attach_figures(exercise, figures_data, source_dir):
             # échouer tout l'exercice pour une figure qui n'était de toute façon pas
             # exploitable telle quelle.
             continue
-        filename = fig_data.get("fichier")
-        fig_id = fig_data.get("id")
-        if not fig_id:
-            raise IngestionError(f"Figure incomplète (id manquant) : {fig_data!r}")
+        # "nom_fichier"/id manquant : défaut vu une première fois le 2026-09-03 (13
+        # fichiers, corrigé alors par patch de données ponctuel) et RÉAPPARU 24h plus
+        # tard le 2026-09-04 sur 33 fichiers supplémentaires (SVT officiel 2005-2021,
+        # bac-c-ti-svteehb-officiel-2026, probatoire-d-svteehb-2024, etc.) - la
+        # récurrence fait basculer le correctif d'un patch de données isolé vers une
+        # tolérance plateforme (voir feedback_correction_experte_consistency, "la
+        # récurrence peut faire basculer le verdict"). `id` sert uniquement de nom
+        # d'ancrage pour le texte alternatif du placeholder ![id](fichier) - un id
+        # positionnel "fig-N" reproduit exactement la convention que la compétence
+        # utilise déjà quand elle fournit le champ ; si le placeholder réel utilise une
+        # autre convention, le repli `.replace(filename, ...)` plus bas rattrape quand
+        # même le lien (voir son commentaire).
+        filename = fig_data.get("fichier") or fig_data.get("nom_fichier")
+        fig_id = fig_data.get("id") or f"fig-{index}"
         if not filename:
             # Cas fréquent sur les épreuves anciennes scannées (voir bac-d-ti-physique
             # 1999-2016, probatoire-c-d-chimie 2008/2011/2013) : la compétence décrit
@@ -1092,7 +1272,7 @@ def _attach_figures(exercise, figures_data, source_dir):
             # référencée par un placeholder `![...]` dans enonce/corrige_markdown
             # (vérifié corpus-wide, 2026-08 : aucun des cas rencontrés ne s'appuie sur
             # l'image pour la lisibilité du texte), donc rien n'est perdu à l'ignorer
-            plutôt qu'à faire échouer l'ingestion de tout l'exercice pour ça. Ce sont
+            # plutôt qu'à faire échouer l'ingestion de tout l'exercice pour ça. Ce sont
             # en pratique des tracés que le corrigé construit (diagramme de Fresnel,
             # courbe à tracer...) plutôt que des images perdues du sujet : aucune
             # trace dans les incertitudes (172 notes purgées le 2026-09-19).
@@ -1167,8 +1347,12 @@ def _attach_figures(exercise, figures_data, source_dir):
             exercise.save(update_fields=["incertitudes"])
 
 
-def ingest_exercise(data, source_dir=None, force=False):
+def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False):
     """
+    `exiger_themes=True` (run_ingestion, réingestion admin) rejette l'exercice entier si
+    une question n'a aucun thème ; désactivé par défaut pour les appels directs (tests,
+    backfills).
+
     Ingère un objet JSON (un exercice). Retourne (exercise, created).
     Lève IngestionError si les champs de classification ne peuvent pas être résolus.
     Idempotent par défaut : si un Exercise existe déjà pour ce (lesson, numero_exercice),
@@ -1206,6 +1390,7 @@ def ingest_exercise(data, source_dir=None, force=False):
     data, had_missing_separators = _repair_missing_matrix_row_separators(data)
     data, had_glued_hline = _repair_glued_hline(data)
     data, had_narrow_columns = _repair_narrow_array_columns(data)
+    data, _ = _repair_literal_dollars(data, f"{data.get('epreuve_source', '?')}#{data.get('numero_exercice', '?')}")
 
     missing = [key for key in REQUIRED_KEYS if not data.get(key)]
     if missing:
@@ -1252,6 +1437,16 @@ def ingest_exercise(data, source_dir=None, force=False):
     variante_sujet = _resolve_variante_sujet(data.get("variante_sujet"))
     filiere_serie_a = _resolve_filiere_serie_a(data.get("filiere_serie_a"), data.get("serie"))
 
+    # Condition de non-conflit pour la recherche du Lesson ci-dessous : un Lesson est
+    # rejoignable tant que sa variante n'est pas renseignée ET différente de celle de
+    # cet exercice - une variante vide (des deux côtés) ne bloque jamais rien (voir
+    # VarianteSujetIngestionTests.test_filled_by_later_exercise_when_first_omits_it).
+    # `Q()` (vide) plutôt qu'un filtre sur "" quand `variante_sujet` lui-même est vide :
+    # cet exercice ne fournit alors aucune information distinctive, il ne doit pas
+    # écarter un Lesson dont la variante a déjà été renseignée par un exercice précédent.
+    variante_sujet_match = Q(variante_sujet__in=[variante_sujet, ""]) if variante_sujet else Q()
+    variante_sujet_match_prefixed = Q(lesson__variante_sujet__in=[variante_sujet, ""]) if variante_sujet else Q()
+
     year = None
     if data.get("annee"):
         try:
@@ -1276,6 +1471,7 @@ def ingest_exercise(data, source_dir=None, force=False):
     # l'Exercise existant.
     if not force:
         existing = Exercise.objects.filter(
+            variante_sujet_match_prefixed,
             numero_exercice=numero_exercice,
             lesson__epreuve_source=epreuve_source,
             lesson__subject=subject,
@@ -1313,8 +1509,21 @@ def ingest_exercise(data, source_dir=None, force=False):
         # ci-dessous, qui élargit alors la Subject du Lesson existant plutôt que de le
         # fragmenter. `family_codes` ne contient que {subject.code} pour toute matière
         # hors famille (l'écrasante majorité) : comportement strictement inchangé.
+        #
+        # variante_sujet_match (2026-09-04, voir sa définition plus haut) participe
+        # désormais à cette recherche : un scan corpus-wide a trouvé 8 épreuves où la
+        # compétence a réutilisé le MÊME epreuve_source pour "Sujet 1" ET "Sujet 2" (au
+        # lieu de la convention établie d'un epreuve_source distinct par variante - voir
+        # build_lesson_title/le seed manuel de bepc-svt-officiel-2009-sujet2-cameroun),
+        # ex. bac-c-ti-svt-officiel-2018/2020, bepc-svt-officiel-2009/2011/2012/2013-
+        # cameroun, avec les mêmes numero_exercice 1..4 des deux côtés. Sans ce filtre,
+        # le Sujet 2 rejoignait silencieusement le Lesson du Sujet 1 (même
+        # epreuve_source/subject/year) puis chaque Exercise numero_exercice="1..4" du
+        # Sujet 2 se heurtait au raccourci "déjà existant" plus haut (posé par le Sujet
+        # 1) et disparaissait sans la moindre erreur.
         family_codes = _subject_family_codes(subject.code)
         lesson = Lesson.objects.filter(
+            variante_sujet_match,
             epreuve_source=epreuve_source, subject__code__in=family_codes, subject__country=country,
             year=year, lesson_type=LessonType.CORR, cursus__country=country,
         ).distinct().first()
@@ -1488,11 +1697,27 @@ def ingest_exercise(data, source_dir=None, force=False):
                 savoir_officiel=savoir_officiel,
             )
             themes = _get_or_create_tags(q_data.get("themes") or themes_precedents.get(question.numero))
+            if exiger_themes and not themes:
+                # D'abord une proposition automatique (journalisée "À REVOIR", réécrite dans le
+                # JSON source par run_ingestion) ; rejet seulement si rien n'en sort. Une
+                # Question sans thème est invisible du Parcours par thèmes (campagne 1200 -> 0
+                # du 2026-09-19). L'atomic() englobant annule l'Exercise entier en cas de rejet.
+                propositions, origine = proposer_themes(q_data, questions_data, data, subject)
+                if propositions:
+                    themes = _get_or_create_tags(propositions)
+                    enregistrer_proposition(
+                        f"{lesson.slug}#{numero_exercice}.{question.numero}", ordre - 1, propositions, origine,
+                    )
+            if exiger_themes and not themes:
+                raise IngestionError(
+                    f"questions[{ordre - 1}] : aucun thème (champ `themes` vide ou absent) - "
+                    "chaque question doit porter au moins un thème.",
+                )
             question.themes.set(themes)
             # Conservé en plus du rattachement direct ci-dessus : c'est ce lien-là qui fait
             # progresser le mapping des tags historiques, et les épreuves déjà en base n'ont
             # que lui. Les deux voies coexistent, les lecteurs interrogent l'union.
-            _link_tags_to_savoir(themes, savoir_officiel)
+            _link_tags_to_savoir(themes, savoir_officiel, exclude_question=question)
 
             for rappel_data in q_data.get("rappels_de_methode") or []:
                 # _strip_em_dash appliqué identiquement ici et sur corrige_markdown
@@ -1592,6 +1817,7 @@ def ingest_cours(data, source_dir=None):
     data, _ = _repair_double_json_escaping(data)
     data, _ = _repair_missing_matrix_row_separators(data)
     data, _ = _repair_dict_shaped_cours_sections(data)
+    data, _ = _repair_literal_dollars(data, f"cours {data.get('cours_id', '?')}")
 
     meta = data.get("meta") or {}
     source = data.get("source") or {}
@@ -1712,7 +1938,9 @@ def ingest_cours(data, source_dir=None):
 
         tags = _get_or_create_tags(meta.get("tags"))
         cours.tags.set(tags)
-        _link_tags_to_savoir(tags, _resolve_savoir_officiel(meta.get("savoir_officiel"), subject))
+        _link_tags_to_savoir(
+            tags, _resolve_savoir_officiel(meta.get("savoir_officiel"), subject), exclude_cours=cours,
+        )
         cours.compile_from_sections()
 
         if rappel:
@@ -1744,6 +1972,8 @@ def run_ingestion(path):
     _resolve_country.cache_clear()
     _resolve_subject.cache_clear()
     _resolve_cursus_list.cache_clear()
+    vider_journal()
+    sources_a_reecrire = {}  # file_path -> raw : JSON dont des thèmes proposés doivent être écrits
 
     path = Path(path)
     # Tout composant de chemin préfixé par "_" (dossier ou fichier) est du tooling/état
@@ -1771,6 +2001,7 @@ def run_ingestion(path):
     exercice_items = []
     cours_items = []
     errors = []
+    raws = {}
 
     for file_path in files:
         try:
@@ -1779,6 +2010,7 @@ def run_ingestion(path):
             errors.append(f"{file_path}: JSON invalide ({exc})")
             continue
 
+        raws[file_path] = raw
         for data in raw if isinstance(raw, list) else [raw]:
             # Un objet "cours" (mode cours) porte "sections" ; un objet "exercice"
             # (mode automatisation) porte "corrige_markdown" - jamais les deux.
@@ -1804,7 +2036,13 @@ def run_ingestion(path):
             skipped += 1
             continue
         try:
-            exercise, was_created = ingest_exercise(data, source_dir=file_path.parent)
+            PROPOSITIONS_THEMES.clear()
+            exercise, was_created = ingest_exercise(data, source_dir=file_path.parent, exiger_themes=True)
+            # Thèmes proposés automatiquement : écrits dans le JSON source (la source reste la
+            # référence, une réingestion ne doit pas les perdre ni les recalculer autrement).
+            for proposition in PROPOSITIONS_THEMES:
+                data["questions"][proposition["question_index"]]["themes"] = proposition["themes"]
+                sources_a_reecrire[file_path] = raws[file_path]
             lesson_ids.add(exercise.lesson_id)
             created += 1 if was_created else 0
             skipped += 0 if was_created else 1
@@ -1827,10 +2065,23 @@ def run_ingestion(path):
             cours_id = data.get("cours_id", "?") if isinstance(data, dict) else "?"
             errors.append(f"{file_path} (cours {cours_id}): {exc}")
 
+    for file_path, raw in sources_a_reecrire.items():
+        _reecrire_source_json(file_path, raw)
+
     return {
         "files_found": len(files), "created": created, "skipped": skipped, "errors": errors,
-        "lesson_ids": sorted(lesson_ids),
+        "lesson_ids": sorted(lesson_ids), "reparations": list(REPARATIONS_JOURNAL),
     }
+
+
+def _reecrire_source_json(file_path, raw):
+    """Réécrit un JSON source en conservant sa fin de ligne (CRLF/LF) et son éventuel saut de ligne final."""
+    original = file_path.read_bytes().decode("utf-8")
+    fin_de_ligne = "\r\n" if "\r\n" in original else "\n"
+    contenu = json.dumps(raw, ensure_ascii=False, indent=2)
+    if original.endswith(("\n", "\r\n")):
+        contenu += "\n"
+    file_path.write_bytes(contenu.replace("\n", fin_de_ligne).encode("utf-8"))
 
 
 # --- Ingestion en arrière-plan (bouton de l'admin) ---------------------------

@@ -1,0 +1,161 @@
+{
+ "cours_id": "cours-droite-regression-y-en-x-1ere-ce",
+ "meta": {
+  "titre": "Déterminer la droite de régression de Y en X",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistique à deux variables",
+  "duree_estimee_min": 30,
+  "tags": ["droite de régression", "ajustement affine", "covariance", "point moyen", "moindres carrés"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex2-q2bii-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Le nuage est tracé, la corrélation est forte : il existe donc une droite qui résume bien la série. Mais laquelle ? On pourrait en tracer une à la règle, à l'oeil, et deux élèves obtiendraient deux droites différentes. La droite de régression lève cette ambiguïté : elle est **unique**, définie par deux formules, et c'est elle qui permet de prévoir une valeur non observée. C'est le point d'aboutissement de toute étude statistique à deux variables."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Calculer les moyennes des deux caractères d'une série double",
+    "Calculer une covariance et une variance",
+    "Reconnaître l'équation réduite d'une droite $y = ax + b$"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux formules, et un point de passage obligé",
+   "contenu_markdown": "**Définition.** La droite de régression de $Y$ en $X$ est la droite d'équation\n\n$$y = ax + b$$\n\navec\n\n$$a = \\dfrac{\\operatorname{Cov}(X,Y)}{V(X)} \\qquad \\text{et} \\qquad b = \\bar{y} - a\\bar{x}$$\n\n**À quoi elle sert.** C'est la droite qu'on utilise pour **prévoir $y$ connaissant $x$**. C'est elle, et pas une autre, qui rend minimale la somme des carrés des écarts verticaux entre les points du nuage et la droite : d'où le nom de méthode des moindres carrés.\n\n**Le point de passage.** La formule $b = \\bar{y} - a\\bar{x}$ n'est qu'une réécriture de\n\n$$\\bar{y} = a\\bar{x} + b$$\n\nqui exprime que le **point moyen** $G(\\bar{x} ; \\bar{y})$ appartient à la droite. C'est le contrôle le plus rapide de tout le calcul : si la droite trouvée ne passe pas par $G$, une des deux formules a été mal appliquée.\n\n**Ne pas confondre avec l'autre droite.** Il existe aussi une droite de régression de $X$ en $Y$, d'équation $x = a'y + b'$ avec\n\n$$a' = \\dfrac{\\operatorname{Cov}(X,Y)}{V(Y)}$$\n\nLes deux droites sont **différentes** et se coupent en $G$. Elles ne coïncident que si $|r| = 1$, c'est-à-dire si les points sont exactement alignés. Le choix entre les deux dépend de la question posée : pour prévoir $y$ à partir de $x$, c'est la régression de $Y$ en $X$ ; pour prévoir $x$ à partir de $y$, c'est l'autre.\n\n**Ordre de grandeur du coefficient directeur.** $a$ est le rapport d'une covariance à une variance en $x$ : il s'exprime donc en unités de $y$ par unité de $x$. Si $y$ se compte en milliers et $x$ en unités, attends-toi à un $a$ de l'ordre du millier, et non de l'unité.",
+   "formule_principale": "a = \\dfrac{\\operatorname{Cov}(X,Y)}{V(X)} \\qquad ; \\qquad b = \\bar{y} - a\\bar{x}",
+   "variantes": [
+    {
+     "nom": "Écriture avec le point moyen",
+     "quand_utiliser": "Quand on veut éviter de calculer $b$ séparément",
+     "contenu_markdown": "Puisque la droite passe par $G(\\bar{x} ; \\bar{y})$ et a pour coefficient directeur $a$, on peut l'écrire directement sous la forme\n\n$$y - \\bar{y} = a(x - \\bar{x})$$\n\nCette écriture évite le calcul de $b$ et rend le passage par $G$ évident. On la développe seulement si l'énoncé exige l'équation réduite."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Pour la série donnant la fréquentation d'un site touristique sur $7$ ans, on a établi que $\\operatorname{Cov}(X,Y) \\approx 5{,}72$ et $\\bar{x} = 4$. L'énoncé fournit $\\bar{y} = 4{,}57$ et $V(X) = 4$. Justifier qu'une équation de la droite de régression de $Y$ en $X$ est $y = 1{,}43x - 1{,}15$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier la droite demandée",
+     "justification": "L'énoncé demande la régression de $Y$ en $X$ : le coefficient directeur est le rapport de la covariance à la variance de $X$",
+     "resultat_markdown": "$a = \\dfrac{\\operatorname{Cov}(X,Y)}{V(X)}$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer le coefficient directeur",
+     "justification": "On remplace par les valeurs connues",
+     "resultat_markdown": "$a = \\dfrac{5{,}72}{4} = 1{,}43$"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer le produit $a\\bar{x}$",
+     "justification": "C'est le terme à retrancher pour obtenir $b$",
+     "resultat_markdown": "$1{,}43 \\times 4 = 5{,}72$"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer l'ordonnée à l'origine",
+     "justification": "$b = \\bar{y} - a\\bar{x}$",
+     "resultat_markdown": "$b = 4{,}57 - 5{,}72 = -1{,}15$"
+    },
+    {
+     "numero": 5,
+     "action": "Écrire l'équation",
+     "justification": "On assemble les deux coefficients dans la forme réduite",
+     "resultat_markdown": "$y = 1{,}43x - 1{,}15$, ce qui est bien l'équation annoncée"
+    },
+    {
+     "numero": 6,
+     "action": "Contrôler par le point moyen",
+     "justification": "La droite doit passer par $G(4 ; 4{,}57)$ ; on remplace $x$ par $4$",
+     "resultat_markdown": "$1{,}43 \\times 4 - 1{,}15 = 5{,}72 - 1{,}15 = 4{,}57 = \\bar{y}$ : le contrôle est concluant"
+    },
+    {
+     "numero": 7,
+     "action": "Contrôler sur une valeur observée",
+     "justification": "Pour $x = 6$, la série donne $y = 8$ ; la droite doit fournir une valeur proche",
+     "resultat_markdown": "$1{,}43 \\times 6 - 1{,}15 = 8{,}58 - 1{,}15 = 7{,}43$, à comparer à $8$ : l'ajustement colle bien"
+    }
+   ],
+   "conclusion_markdown": "La droite de régression de $Y$ en $X$ a pour équation $y = 1{,}43x - 1{,}15$. Le contrôle par le point moyen, mené à l'étape 6, valide d'un coup les deux coefficients : c'est lui qu'il faut faire systématiquement avant de passer à la question d'estimation."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Diviser la covariance par $V(Y)$ au lieu de $V(X)$",
+     "pourquoi_faux": "On obtient alors le coefficient directeur de l'**autre** droite de régression, celle de $X$ en $Y$. Ici cela donnerait $\\dfrac{5{,}72}{10{,}46} \\approx 0{,}55$ au lieu de $1{,}43$, soit une droite complètement différente, inutilisable pour prévoir $y$.",
+     "correction_markdown": "Retiens la règle : la variable qu'on veut **prévoir** donne son nom à la droite, et la variance au dénominateur est celle de l'**autre** variable, celle qui sert de point de départ. Pour $Y$ en $X$, on divise par $V(X)$."
+    },
+    {
+     "erreur_markdown": "Calculer $b = a\\bar{x} - \\bar{y}$ au lieu de $\\bar{y} - a\\bar{x}$",
+     "pourquoi_faux": "L'inversion donne l'opposé, ici $+1{,}15$ au lieu de $-1{,}15$. La droite obtenue ne passe alors plus par le point moyen, et l'estimation finale est fausse de $2{,}30$.",
+     "correction_markdown": "Ne mémorise pas la formule de $b$ : pars de $\\bar{y} = a\\bar{x} + b$, qui traduit le passage par $G$, et isole $b$. Tu la reconstruis en cinq secondes, sans risque d'inversion."
+    },
+    {
+     "erreur_markdown": "Arrondir $a$ avant de calculer $b$",
+     "pourquoi_faux": "L'arrondi de $a$ se propage, multiplié par $\\bar{x}$, dans le calcul de $b$. Sur une série où $\\bar{x}$ est grand, une erreur de $0{,}01$ sur $a$ produit une erreur bien plus grande sur $b$.",
+     "correction_markdown": "Garde toutes les décimales jusqu'au dernier calcul. Ici $a = 1{,}43$ est exact, mais ce n'est pas toujours le cas : vérifie avant d'arrondir."
+    },
+    {
+     "erreur_markdown": "Tracer la droite avant d'avoir vérifié la corrélation",
+     "pourquoi_faux": "Les formules donnent toujours une droite, même quand le nuage n'a aucune structure affine. Une droite de régression calculée sur un nuage circulaire est mathématiquement correcte et statistiquement absurde.",
+     "correction_markdown": "Le calcul de $r$, à la question précédente, n'est pas une formalité : c'est lui qui autorise l'ajustement. Cite-le en une phrase avant de conclure."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Une série double vérifie $\\bar{x} = 10$, $\\bar{y} = 25$, $\\operatorname{Cov}(X,Y) = 18$ et $V(X) = 9$. Déterminer une équation de la droite de régression de $Y$ en $X$.",
+     "solution_markdown": "**Coefficient directeur.**\n\n$$a = \\dfrac{\\operatorname{Cov}(X,Y)}{V(X)} = \\dfrac{18}{9} = 2$$\n\n**Ordonnée à l'origine.**\n\n$$b = \\bar{y} - a\\bar{x} = 25 - 2 \\times 10 = 25 - 20 = 5$$\n\n**Équation.**\n\n$$y = 2x + 5$$\n\n**Contrôle par le point moyen.** Pour $x = 10$ :\n\n$$2 \\times 10 + 5 = 25 = \\bar{y}$$\n\nLa droite passe bien par $G(10 ; 25)$.\n\n**Remarque.** On aurait pu écrire directement $y - 25 = 2(x - 10)$, forme qui rend le passage par $G$ évident et qui se développe en $y = 2x + 5$."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "On considère la série double suivante.\n\n| $x_i$ | $2$ | $4$ | $6$ | $8$ | $10$ |\n|---|---|---|---|---|---|\n| $y_i$ | $7$ | $12$ | $14$ | $19$ | $23$ |\n\nDéterminer une équation de la droite de régression de $Y$ en $X$, puis estimer la valeur de $y$ pour $x = 12$.",
+     "solution_markdown": "**Étape 1 - moyennes.**\n\n$$\\bar{x} = \\dfrac{2+4+6+8+10}{5} = \\dfrac{30}{5} = 6$$\n\n$$\\bar{y} = \\dfrac{7+12+14+19+23}{5} = \\dfrac{75}{5} = 15$$\n\n**Étape 2 - covariance.** Ligne des produits :\n\n| $x_i y_i$ | $14$ | $48$ | $84$ | $152$ | $230$ |\n|---|---|---|---|---|---|\n\nSomme : $14+48 = 62$ ; $+84 = 146$ ; $+152 = 298$ ; $+230 = 528$.\n\n$$\\operatorname{Cov}(X,Y) = \\dfrac{528}{5} - 6 \\times 15 = 105{,}6 - 90 = 15{,}6$$\n\n**Étape 3 - variance de $X$.** Somme des carrés : $4+16+36+64+100 = 220$.\n\n$$V(X) = \\dfrac{220}{5} - 6^2 = 44 - 36 = 8$$\n\n**Étape 4 - coefficient directeur.**\n\n$$a = \\dfrac{15{,}6}{8} = 1{,}95$$\n\n**Étape 5 - ordonnée à l'origine.**\n\n$$b = 15 - 1{,}95 \\times 6 = 15 - 11{,}7 = 3{,}3$$\n\n**Équation.**\n\n$$y = 1{,}95x + 3{,}3$$\n\n**Contrôle par le point moyen.** $1{,}95 \\times 6 + 3{,}3 = 11{,}7 + 3{,}3 = 15 = \\bar{y}$.\n\n**Étape 6 - estimation pour $x = 12$.**\n\n$$y = 1{,}95 \\times 12 + 3{,}3 = 23{,}4 + 3{,}3 = 26{,}7$$\n\n**Commentaire.** La valeur $x = 12$ dépasse à peine la plus grande valeur observée, $10$ : l'extrapolation reste raisonnable. On estime donc $y \\approx 26{,}7$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Pour une série double, on note $D$ la droite de régression de $Y$ en $X$, de coefficient directeur $a$, et $D'$ celle de $X$ en $Y$, de coefficient $a'$. Démontrer que $a \\times a' = r^2$, puis en déduire à quelle condition les deux droites sont confondues.",
+     "solution_markdown": "**Étape 1 - écrire les deux coefficients.**\n\n$$a = \\dfrac{\\operatorname{Cov}(X,Y)}{V(X)} \\qquad ; \\qquad a' = \\dfrac{\\operatorname{Cov}(X,Y)}{V(Y)}$$\n\n**Étape 2 - former le produit.**\n\n$$a \\times a' = \\dfrac{\\operatorname{Cov}(X,Y)}{V(X)} \\times \\dfrac{\\operatorname{Cov}(X,Y)}{V(Y)} = \\dfrac{\\left[\\operatorname{Cov}(X,Y)\\right]^2}{V(X) \\, V(Y)}$$\n\n**Étape 3 - reconnaître le coefficient de corrélation.**\n\nPar définition,\n\n$$r = \\dfrac{\\operatorname{Cov}(X,Y)}{\\sigma_X \\sigma_Y} \\qquad \\text{donc} \\qquad r^2 = \\dfrac{\\left[\\operatorname{Cov}(X,Y)\\right]^2}{\\sigma_X^2 \\, \\sigma_Y^2}$$\n\nOr $\\sigma_X^2 = V(X)$ et $\\sigma_Y^2 = V(Y)$, donc\n\n$$r^2 = \\dfrac{\\left[\\operatorname{Cov}(X,Y)\\right]^2}{V(X) \\, V(Y)} = a \\times a'$$\n\n$$\\boxed{a \\, a' = r^2}$$\n\n**Étape 4 - condition de confusion des deux droites.**\n\n$D$ a pour équation $y = ax + b$. La droite $D'$, d'équation $x = a'y + b'$, s'écrit sous forme réduite, si $a' \\neq 0$ :\n\n$$y = \\dfrac{1}{a'}x - \\dfrac{b'}{a'}$$\n\nLes deux droites passent toutes deux par le point moyen $G$. Elles sont donc confondues si et seulement si elles ont le même coefficient directeur :\n\n$$a = \\dfrac{1}{a'} \\iff a \\, a' = 1$$\n\n**Étape 5 - traduire avec $r$.**\n\nD'après l'étape 3, cette condition s'écrit\n\n$$r^2 = 1 \\iff |r| = 1$$\n\n**Conclusion.** Les deux droites de régression sont confondues si et seulement si $|r| = 1$, c'est-à-dire si et seulement si les points du nuage sont **exactement alignés**.\n\n**Interprétation.** Dans tous les autres cas, les deux droites sont distinctes et forment un angle d'autant plus ouvert que $|r|$ est petit. L'écart entre elles est donc une mesure visuelle de la qualité de l'ajustement : deux droites presque confondues signalent une corrélation forte.\n\n**Contrôle sur l'exercice du Probatoire.** Avec $a = 1{,}43$ et $a' = \\dfrac{5{,}72}{10{,}46} \\approx 0{,}5468$, on obtient $a a' \\approx 0{,}782$, à comparer à $r^2 \\approx 0{,}88^2 = 0{,}774$. Les deux valeurs coïncident aux arrondis près."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Droite de régression de $Y$ en $X$ : $y = ax + b$ avec $a = \\dfrac{\\operatorname{Cov}(X,Y)}{V(X)}$ et $b = \\bar{y} - a\\bar{x}$.",
+    "Au dénominateur de $a$, la variance de la variable de **départ**, celle qu'on connaît : $V(X)$ pour prévoir $y$.",
+    "Ne mémorise pas $b$ : pars de $\\bar{y} = a\\bar{x} + b$, qui exprime le passage par le point moyen, et isole $b$.",
+    "Contrôle systématique : remplace $x$ par $\\bar{x}$, tu dois retrouver $\\bar{y}$. Ce test valide les deux coefficients d'un coup.",
+    "Les deux droites de régression sont distinctes et se coupent en $G$ ; elles ne coïncident que si $|r| = 1$.",
+    "Vérifie l'ordre de grandeur de $a$ : il s'exprime en unités de $y$ par unité de $x$.",
+    "N'arrondis pas $a$ avant de calculer $b$ : l'erreur se propage, amplifiée par $\\bar{x}$.",
+    "Au Probatoire, la droite de régression précède toujours une question d'estimation : c'est elle qui permet la prévision, et une erreur ici se propage sur la question suivante."
+   ]
+  }
+ ]
+}

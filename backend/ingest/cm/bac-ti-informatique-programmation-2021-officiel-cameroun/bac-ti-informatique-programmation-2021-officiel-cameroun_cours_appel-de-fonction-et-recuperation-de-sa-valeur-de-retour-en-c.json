@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-appel-de-fonction-et-recuperation-de-sa-valeur-de-retour-en-c-ti-2021",
+  "meta": {
+    "titre": "Appel de fonction et récupération de sa valeur de retour en C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Fonctions en langage C",
+    "duree_estimee_min": 15,
+    "tags": [
+      "appel de fonction",
+      "return",
+      "affectation",
+      "langage C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex2-q3-4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction qui calcule quelque chose ne sert à rien si son résultat se perd aussitôt calculé. Savoir précisément ce qui se passe, dans quel ordre, quand on écrit variable = fonction(...); est indispensable pour lire n'importe quel programme C sans se perdre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire et lire une instruction return dans une fonction",
+        "Connaître le principe de l'affectation (=) en C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "variable = fonction(arguments) : exécuter puis affecter",
+      "contenu_markdown": "Quand une fonction est déclarée pour retourner une valeur (type de retour différent de `void`, et contenant au moins une instruction `return valeur;`), l'appeler dans une expression d'affectation suit toujours le même déroulement :\n\n1. Les arguments sont évalués et transmis à la fonction.\n2. La fonction s'exécute **entièrement**, y compris tout appel imbriqué (récursif ou non) qu'elle contient.\n3. Dès qu'une instruction `return` est atteinte, l'exécution de la fonction s'arrête et la valeur qui suit `return` devient le résultat de l'appel.\n4. Cette valeur est alors affectée à la variable placée à gauche du signe `=`.\n\nL'instruction `variable = fonction(arguments);` ne passe donc jamais à la ligne suivante avant que la fonction n'ait terminé complètement son exécution : le programme attend le retour de la fonction avant de continuer."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le rôle de la ligne 13 du programme :\n```c\n13: f = factorielle(x);\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'appel de fonction et son argument",
+          "justification": "factorielle(x) transmet la valeur actuelle de x comme argument",
+          "resultat_markdown": "factorielle(x) appelle la fonction factorielle avec la valeur de x comme argument."
+        },
+        {
+          "numero": 2,
+          "action": "Rappeler que l'exécution complète de la fonction précède l'affectation",
+          "justification": "Y compris, ici, tous les appels récursifs internes à factorielle",
+          "resultat_markdown": "L'exécution de factorielle(x) se déroule entièrement (y compris ses appels récursifs internes) avant que la ligne 13 ne se termine."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier ce que devient la valeur de retour",
+          "justification": "C'est le signe = qui relie l'appel à la variable f",
+          "resultat_markdown": "La valeur retournée par factorielle(x) (via ses instructions return, lignes 21 et 25) est affectée à la variable f."
+        }
+      ],
+      "conclusion_markdown": "Après exécution de cette ligne, f contient exactement le résultat du calcul de la factorielle de x, prêt à être affiché à la ligne suivante."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que f = factorielle(x); affecte d'abord une valeur à f puis lance le calcul",
+          "pourquoi_faux": "C'est l'inverse : la fonction s'exécute intégralement d'abord, et l'affectation à f n'a lieu qu'une fois cette exécution terminée et sa valeur de retour connue.",
+          "correction_markdown": "Toujours lire une affectation d'appel de fonction de droite à gauche : d'abord l'exécution complète de l'appel, ensuite seulement l'affectation."
+        },
+        {
+          "erreur_markdown": "Oublier de récupérer la valeur de retour d'une fonction qui en produit une",
+          "pourquoi_faux": "Écrire simplement factorielle(x); sans l'affecter à une variable exécute bien la fonction, mais son résultat est immédiatement perdu, sans qu'aucune erreur ne le signale.",
+          "correction_markdown": "Toujours affecter la valeur de retour d'une fonction à une variable (ou l'utiliser directement dans une expression) dès qu'on a besoin de ce résultat par la suite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire l'instruction qui appelle une fonction carre(n) et stocke son résultat dans une variable resultat.",
+          "solution_markdown": "`resultat = carre(n);`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que vaut z après exécution de ces deux lignes ? int addition(int a, int b) { return a + b; } ... z = addition(3, 4) + 1;",
+          "solution_markdown": "z vaut 8. addition(3, 4) s'exécute d'abord entièrement et retourne 7, puis l'expression devient z = 7 + 1, ce qui affecte 8 à z."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une fonction f() ne contient aucune instruction return, mais son type de retour est déclaré int. Que se passe-t-il si on écrit x = f(); ? Cette pratique est-elle sûre ?",
+          "solution_markdown": "Le comportement est indéfini : la fonction ne produit aucune valeur de retour explicite, donc x reçoit une valeur imprévisible (souvent le contenu résiduel d'un registre processeur ou d'une zone mémoire, sans rapport garanti avec le traitement de la fonction). Cette pratique n'est jamais sûre : toute fonction dont le type de retour n'est pas void doit contenir au moins une instruction return sur chaque chemin d'exécution possible, sans quoi la valeur récupérée par l'appelant est incertaine."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "variable = fonction(arguments); exécute d'abord entièrement la fonction, puis affecte sa valeur de retour à la variable.",
+        "Cela reste vrai même si la fonction contient des appels imbriqués ou récursifs : tout s'exécute avant l'affectation finale.",
+        "Une valeur de retour non récupérée (appel sans affectation) est simplement perdue, sans erreur signalée.",
+        "Une fonction dont le type de retour n'est pas void doit toujours contenir un return sur chaque chemin d'exécution, sous peine de valeur de retour imprévisible."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+[
+  {
+    "external_id": "cqc-condition-initiale-faible-0",
+    "theme": "condition initiale",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "C-E",
+      "module_numero": "25",
+      "savoir_numero": "IX"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "C" },
+      { "examen": "bac", "serie": "E" },
+      { "examen": "bac", "serie": "A" },
+      { "examen": "bac", "serie": "D" },
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x) = 6x^2 - 4x + 5$.\n\nDéterminer la primitive $F$ de $f$ sur $\\mathbb{R}$ telle que $F(0) = -1$.\n\nParmi les quatre expressions suivantes, laquelle correspond à $F$ ?",
+    "corrige_markdown": "### Rappel de méthode\nOn détermine d'abord la primitive générale de $f$ en primitivant chaque terme de la somme (formule $x^n \\to \\dfrac{x^{n+1}}{n+1}$), ce qui fait apparaître une constante $k \\in \\mathbb{R}$. Puis, si une condition $F(x_0) = y_0$ est imposée, on remplace $x$ par $x_0$ dans cette expression générale, on pose le résultat égal à $y_0$, et on résout l'équation obtenue en $k$.\n\n### Corrigé\n**Primitive générale.** On primitive $f$ terme à terme sur $\\mathbb{R}$.\n\nUne primitive de $6x^2$ est $6 \\times \\dfrac{x^3}{3} = 2x^3$.\n\nUne primitive de $-4x$ est $-4 \\times \\dfrac{x^2}{2} = -2x^2$.\n\nUne primitive de $5$ (constante) est $5x$.\n\nLa primitive générale de $f$ sur $\\mathbb{R}$ est donc :\n$$F(x) = 2x^3 - 2x^2 + 5x + k, \\quad k \\in \\mathbb{R}$$\n\n**Détermination de $k$.** La condition $F(0) = -1$ donne :\n$$F(0) = 2(0)^3 - 2(0)^2 + 5(0) + k = k$$\ndonc $k = -1$.\n\n**Conclusion.** La primitive cherchée est :\n$$F(x) = 2x^3 - 2x^2 + 5x - 1$$\n\n**Vérification** : $F'(x) = 6x^2 - 4x + 5 = f(x)$, et $F(0) = -1$. Conforme. C'est bien l'expression **A**.\n\nLa réponse **B** primitive $-4x$ en $-4x^2$ (oubli de diviser par $2$) ; la réponse **C** primitive $6x^2$ en $3x^3$ (division par $2$ au lieu de $3$) ; la réponse **D** commet une erreur de signe en résolvant $k$ (trouve $k=1$ au lieu de $k=-1$).",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "$F(x) = 2x^3 - 2x^2 + 5x - 1$" },
+      { "lettre": "B", "texte": "$F(x) = 2x^3 - 4x^2 + 5x - 1$" },
+      { "lettre": "C", "texte": "$F(x) = 3x^3 - 2x^2 + 5x - 1$" },
+      { "lettre": "D", "texte": "$F(x) = 2x^3 - 2x^2 + 5x + 1$" }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-condition-initiale-faible-1",
+    "theme": "condition initiale",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "C-E",
+      "module_numero": "25",
+      "savoir_numero": "IX"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "C" },
+      { "examen": "bac", "serie": "E" },
+      { "examen": "bac", "serie": "A" },
+      { "examen": "bac", "serie": "D" },
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x) = 9e^{3x-3}$.\n\nDéterminer la primitive $F$ de $f$ sur $\\mathbb{R}$ telle que $F(1) = 10$.",
+    "corrige_markdown": "### Rappel de méthode\nUne primitive de $e^{ax+b}$ (avec $a \\neq 0$) est $\\dfrac{1}{a}e^{ax+b}$ : il faut diviser par le coefficient $a$ de $x$ dans l'exposant, jamais l'oublier ni le multiplier. Une fois la primitive générale $F(x) = \\ldots + k$ obtenue, on exploite la condition $F(x_0) = y_0$ pour déterminer $k$.\n\n### Corrigé\n**Primitive générale.** Ici $a = 3$. Une primitive de $9e^{3x-3}$ est $9 \\times \\dfrac13 e^{3x-3} = 3e^{3x-3}$.\n\nLa primitive générale de $f$ sur $\\mathbb{R}$ est donc :\n$$F(x) = 3e^{3x-3} + k, \\quad k \\in \\mathbb{R}$$\n\n**Détermination de $k$.** La condition $F(1) = 10$ donne :\n$$F(1) = 3e^{3(1)-3} + k = 3e^{0} + k = 3 + k$$\ncar $e^0 = 1$. Comme $F(1) = 10$ :\n$$3 + k = 10 \\iff k = 7$$\n\n**Conclusion.** La primitive cherchée est :\n$$F(x) = 3e^{3x-3} + 7$$\n\n**Vérification** : $F'(x) = 3 \\times 3\\,e^{3x-3} = 9e^{3x-3} = f(x)$, et $F(1) = 3e^0+7 = 3+7 = 10$. Conforme.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-condition-initiale-moyenne-2",
+    "theme": "condition initiale",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "C-E",
+      "module_numero": "25",
+      "savoir_numero": "IX"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "C" },
+      { "examen": "bac", "serie": "E" },
+      { "examen": "bac", "serie": "A" },
+      { "examen": "bac", "serie": "D" },
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur l'intervalle $]1;+\\infty[$ par $f(x) = \\dfrac{4}{x-1}$.\n\nDéterminer la primitive $F$ de $f$ sur cet intervalle telle que $F(3) = 4\\ln 2 - 6$.\n\nParmi les quatre expressions suivantes, laquelle correspond à $F$ ?",
+    "corrige_markdown": "### Rappel de méthode\nPour une fonction de la forme $f(x) = \\dfrac{k}{x-a}$, une primitive sur un intervalle où $x-a$ garde un signe constant est $F(x) = k\\ln\\lvert x-a\\rvert + C$. Une fois cette primitive générale posée, on exploite la condition $F(x_0) = y_0$ pour déterminer la constante.\n\n### Corrigé\n**Primitive générale.** Sur $]1;+\\infty[$, on a $x-1 > 0$, donc $\\lvert x-1\\rvert = x-1$. Une primitive de $f(x) = \\dfrac{4}{x-1}$ sur cet intervalle est :\n$$F(x) = 4\\ln(x-1) + k, \\quad k \\in \\mathbb{R}$$\n\n**Détermination de $k$.** Le point $x_0 = 3$ appartient bien à $]1;+\\infty[$. On calcule :\n$$F(3) = 4\\ln(3-1) + k = 4\\ln 2 + k$$\nComme $F(3) = 4\\ln 2 - 6$ :\n$$4\\ln 2 + k = 4\\ln 2 - 6 \\iff k = -6$$\n\n**Conclusion.** La primitive cherchée est :\n$$F(x) = 4\\ln(x-1) - 6$$\n\n**Vérification** : $F'(x) = 4 \\times \\dfrac{1}{x-1} = \\dfrac{4}{x-1} = f(x)$, et $F(3) = 4\\ln 2 - 6$. Conforme. C'est bien l'expression **A**.\n\nLa réponse **B** inverse le signe du terme logarithmique ; la réponse **C** commet une erreur de signe en résolvant $k$ (trouve $k=6$ au lieu de $k=-6$) ; la réponse **D** oublie le coefficient $4$ devant le logarithme.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      { "lettre": "A", "texte": "$F(x) = 4\\ln(x-1) - 6$" },
+      { "lettre": "B", "texte": "$F(x) = -4\\ln(x-1) - 6$" },
+      { "lettre": "C", "texte": "$F(x) = 4\\ln(x-1) + 6$" },
+      { "lettre": "D", "texte": "$F(x) = \\ln(x-1) - 6$" }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-condition-initiale-moyenne-3",
+    "theme": "condition initiale",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "C-E",
+      "module_numero": "25",
+      "savoir_numero": "IX"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "C" },
+      { "examen": "bac", "serie": "E" },
+      { "examen": "bac", "serie": "A" },
+      { "examen": "bac", "serie": "D" },
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur l'intervalle $]-\\infty;0[$ par $f(x) = 2x - \\dfrac{3}{x^2}$.\n\nDéterminer la primitive $F$ de $f$ sur cet intervalle telle que $F(-1) = 5$.",
+    "corrige_markdown": "### Rappel de méthode\nPour primitiver une somme, on traite chaque terme séparément : $2x$ se primitive par la règle usuelle $x^n \\to \\dfrac{x^{n+1}}{n+1}$, tandis que $\\dfrac{3}{x^2} = 3x^{-2}$ se primitive avec la même règle appliquée à un exposant négatif, $x^{-2} \\to \\dfrac{x^{-1}}{-1} = -\\dfrac1x$ ; il faut alors être vigilant sur les deux signes qui se combinent (celui du terme et celui produit par la primitivation). Une fois la primitive générale posée, la condition $F(x_0)=y_0$ permet de déterminer la constante.\n\n### Corrigé\n**Primitive générale.** On primitive $f$ terme à terme sur $]-\\infty;0[$.\n\nUne primitive de $2x$ est $x^2$.\n\nEn écrivant $-\\dfrac{3}{x^2} = -3x^{-2}$, une primitive est $-3 \\times \\dfrac{x^{-1}}{-1} = 3x^{-1} = \\dfrac3x$.\n\nLa primitive générale de $f$ sur $]-\\infty;0[$ est donc :\n$$F(x) = x^2 + \\dfrac3x + k, \\quad k \\in \\mathbb{R}$$\n\n**Détermination de $k$.** Le point $x_0=-1$ appartient bien à $]-\\infty;0[$. On calcule :\n$$F(-1) = (-1)^2 + \\dfrac{3}{-1} + k = 1 - 3 + k = -2+k$$\nComme $F(-1) = 5$ :\n$$-2+k = 5 \\iff k = 7$$\n\n**Conclusion.** La primitive cherchée est :\n$$F(x) = x^2 + \\dfrac3x + 7$$\n\n**Vérification** : $F'(x) = 2x - \\dfrac{3}{x^2} = f(x)$, et $F(-1) = 1-3+7 = 5$. Conforme.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-condition-initiale-moyenne-4",
+    "theme": "condition initiale",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "C-E",
+      "module_numero": "25",
+      "savoir_numero": "IX"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "C" },
+      { "examen": "bac", "serie": "E" },
+      { "examen": "bac", "serie": "A" },
+      { "examen": "bac", "serie": "D" },
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur l'intervalle $]-\\infty;1[$ par $f(x) = \\dfrac{5}{1-x}$.\n\nDéterminer la primitive $F$ de $f$ sur cet intervalle telle que $F(-2) = 8 - 5\\ln 3$.",
+    "corrige_markdown": "### Rappel de méthode\nPour une fonction de la forme $f(x) = \\dfrac{k}{ax+b}$ avec $a \\neq 0$, une primitive sur un intervalle où $ax+b$ garde un signe constant est $F(x) = \\dfrac{k}{a}\\ln\\lvert ax+b\\rvert + C$ ; ici $a=-1$, ce qui introduit un signe négatif devant le logarithme qu'il ne faut pas oublier. Une fois la primitive générale posée, la condition $F(x_0)=y_0$ permet de déterminer la constante.\n\n### Corrigé\n**Primitive générale.** On a $f(x) = \\dfrac{5}{1-x} = \\dfrac{5}{-x+1}$, donc $a=-1$ et $k=5$ dans la formule. Sur $]-\\infty;1[$, on a $1-x>0$, donc $\\lvert 1-x\\rvert = 1-x$. Une primitive de $f$ sur cet intervalle est :\n$$F(x) = \\dfrac{5}{-1}\\ln(1-x) + k = -5\\ln(1-x) + k, \\quad k \\in \\mathbb{R}$$\n\n**Détermination de $k$.** Le point $x_0=-2$ appartient bien à $]-\\infty;1[$. On calcule :\n$$F(-2) = -5\\ln\\big(1-(-2)\\big) + k = -5\\ln 3 + k$$\nComme $F(-2) = 8 - 5\\ln 3$ :\n$$-5\\ln 3 + k = 8 - 5\\ln 3 \\iff k = 8$$\n\n**Conclusion.** La primitive cherchée est :\n$$F(x) = -5\\ln(1-x) + 8$$\n\n**Vérification** : $F'(x) = -5 \\times \\dfrac{-1}{1-x} = \\dfrac{5}{1-x} = f(x)$, et $F(-2) = -5\\ln 3 + 8$. Conforme.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-condition-initiale-elevee-5",
+    "theme": "condition initiale",
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "C-E",
+      "module_numero": "25",
+      "savoir_numero": "IX"
+    },
+    "matiere": "Mathématiques",
+    "cursus": [
+      { "examen": "bac", "serie": "C" },
+      { "examen": "bac", "serie": "E" },
+      { "examen": "bac", "serie": "A" },
+      { "examen": "bac", "serie": "D" },
+      { "examen": "bac", "serie": "TI" }
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x) = 4x - 3 + 6e^{2x}$.\n\nDéterminer la primitive $F$ de $f$ sur $\\mathbb{R}$ telle que $F(2) = 3e^4 + 10$.",
+    "corrige_markdown": "### Rappel de méthode\nLorsqu'une primitive combine un terme polynomial et un terme exponentiel, on primitive chaque terme indépendamment par la formule qui lui correspond ($x^n \\to \\dfrac{x^{n+1}}{n+1}$ pour le polynôme, $e^{ax} \\to \\dfrac1a e^{ax}$ pour l'exponentielle), avant de rassembler le tout sous une seule constante $k$. On détermine ensuite $k$ grâce à la condition $F(x_0)=y_0$, quitte à laisser une valeur exponentielle non simplifiée (comme $e^4$) dans le résultat final.\n\n### Corrigé\n**Primitive générale.** On primitive $f$ terme à terme sur $\\mathbb{R}$.\n\nUne primitive de $4x$ est $2x^2$.\n\nUne primitive de $-3$ (constante) est $-3x$.\n\nUne primitive de $6e^{2x}$ est $6 \\times \\dfrac12 e^{2x} = 3e^{2x}$.\n\nLa primitive générale de $f$ sur $\\mathbb{R}$ est donc :\n$$F(x) = 2x^2 - 3x + 3e^{2x} + k, \\quad k \\in \\mathbb{R}$$\n\n**Détermination de $k$.** On calcule :\n$$F(2) = 2(2)^2 - 3(2) + 3e^{2(2)} + k = 8 - 6 + 3e^4 + k = 2 + 3e^4 + k$$\nComme $F(2) = 3e^4 + 10$ :\n$$2 + 3e^4 + k = 3e^4 + 10 \\iff k = 8$$\n\n**Conclusion.** La primitive cherchée est :\n$$F(x) = 2x^2 - 3x + 3e^{2x} + 8$$\n\n**Vérification** : $F'(x) = 4x - 3 + 6e^{2x} = f(x)$, et $F(2) = 8-6+3e^4+8 = 3e^4+10$. Conforme.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  }
+]

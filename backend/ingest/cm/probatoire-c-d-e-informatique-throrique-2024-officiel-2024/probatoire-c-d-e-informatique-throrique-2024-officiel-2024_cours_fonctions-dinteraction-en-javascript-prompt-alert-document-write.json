@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-fonctions-dinteraction-en-javascript-prompt-alert-document-write-1ere-tronc-commun",
+  "meta": {
+    "titre": "Fonctions d'interaction en JavaScript : prompt, alert, document.write",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation web - JavaScript",
+    "duree_estimee_min": 20,
+    "tags": [
+      "JavaScript",
+      "prompt",
+      "alert",
+      "document.write",
+      "interaction utilisateur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex3-qP2-2.2-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un script JavaScript qui tourne dans un navigateur doit communiquer avec l'utilisateur : lui demander une valeur, l'informer d'un résultat, ou construire la page qu'il regarde. Trois fonctions très simples suffisent pour couvrir ces trois besoins : prompt() pour demander, alert() pour informer, document.write() pour construire la page elle-même. Elles se ressemblent par leur simplicité d'écriture, mais elles n'agissent pas du tout au même endroit ni de la même façon - une confusion entre elles est l'une des erreurs les plus fréquentes sur ce type de question."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir insérer et exécuter un script JavaScript dans une page HTML avec la balise <script>",
+        "Connaître la notion de variable et d'affectation en JavaScript"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois fonctions, trois rôles distincts",
+      "contenu_markdown": "JavaScript propose plusieurs fonctions pour communiquer avec l'utilisateur, mais elles n'agissent pas au même endroit. prompt(\"message\") ouvre une boîte de dialogue système qui affiche le message donné, propose un champ de saisie, et renvoie le texte tapé par l'utilisateur (ou null s'il annule) ; l'exécution du script est suspendue tant que l'utilisateur n'a pas validé. alert(\"message\") ouvre elle aussi une boîte de dialogue système par-dessus la page, mais seulement pour afficher un message, sans champ de saisie ; elle bloque de la même façon l'exécution du reste du script jusqu'au clic sur OK. document.write(\"message\") ne passe par aucune fenêtre : elle insère du texte ou du code HTML directement dans le corps de la page web, à l'endroit où le script s'exécute, sans jamais interrompre le déroulement du script.",
+      "formule_principale": "valeur = prompt(\"message\");   alert(\"message\");   document.write(\"message\");",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la différence entre les fonctions `alert()` et `document.write()`, à partir du script suivant :\n\n```javascript\nvar s=0;\nn=parseInt(prompt(\"saisir un nombre\"));\nfor(i=0;i<=n; i++){\n    nb=parseInt(prompt(\"saisir un entier:\"));\n    s+=nb; }\nalert(\"Le résultat est:\"+ \" \"+s);\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'usage de prompt() dans ce script",
+          "justification": "prompt() apparaît deux fois, une fois pour demander le nombre n de valeurs à saisir, une fois à l'intérieur de la boucle pour demander chaque valeur nb : dans les deux cas, la fonction ouvre une boîte de dialogue avec un champ de saisie et renvoie le texte tapé, converti ici en entier par parseInt().",
+          "resultat_markdown": "prompt() sert exclusivement à obtenir une valeur saisie par l'utilisateur."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier l'usage de alert() dans ce script",
+          "justification": "alert() apparaît une seule fois, en toute fin de script, pour afficher le résultat final s : cette fonction ne demande rien à l'utilisateur, elle affiche seulement un message, dans une boîte de dialogue qui bloque le script jusqu'au clic sur OK.",
+          "resultat_markdown": "alert() affiche un message dans une fenêtre système, sans jamais toucher au contenu de la page."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer avec ce que ferait document.write() à la place de alert()",
+          "justification": "Si la dernière ligne du script était document.write(\"Le résultat est: \"+s) au lieu de alert(...), le message ne s'afficherait pas dans une fenêtre mais serait inséré directement dans le corps de la page HTML, sans bloquer le script et sans nécessiter de clic de l'utilisateur.",
+          "resultat_markdown": "document.write() écrit dans la page elle-même ; alert() ouvre une fenêtre par-dessus la page."
+        }
+      ],
+      "conclusion_markdown": "alert(\"message\") affiche le message dans une boîte de dialogue fournie par le navigateur, qui bloque l'exécution du reste du script tant que l'utilisateur n'a pas cliqué sur OK. document.write(\"message\"), à l'inverse, insère le message directement dans le flux HTML de la page à l'endroit où le script s'exécute, sans jamais interrompre le script ni ouvrir de fenêtre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser que document.write() ouvre une fenêtre comme alert()",
+          "pourquoi_faux": "document.write() ne crée aucune fenêtre ni aucun élément visuel séparé : elle modifie directement le contenu HTML de la page en cours d'affichage, au même titre que si ce texte avait été écrit dans le fichier HTML lui-même.",
+          "correction_markdown": "Retenir que seules prompt() et alert() ouvrent une boîte de dialogue système ; document.write() agit uniquement sur le contenu de la page."
+        },
+        {
+          "erreur_markdown": "Croire que prompt() peut afficher un résultat sans rien demander à l'utilisateur",
+          "pourquoi_faux": "prompt() affiche toujours un champ de saisie en plus du message, même s'il n'est pas utilisé ensuite : ce n'est jamais la bonne fonction pour se contenter d'informer l'utilisateur.",
+          "correction_markdown": "Utiliser prompt() uniquement quand une valeur doit réellement être récupérée de l'utilisateur ; utiliser alert() pour simplement l'informer."
+        },
+        {
+          "erreur_markdown": "Utiliser document.write() après le chargement complet de la page en pensant qu'il ajoute simplement du texte",
+          "pourquoi_faux": "Appeler document.write() après que la page a fini de se charger efface tout le contenu déjà affiché, car le navigateur rouvre alors un nouveau flux de document dans lequel il écrit.",
+          "correction_markdown": "Réserver document.write() à une utilisation pendant le chargement initial de la page, ou lui préférer une autre méthode (comme la modification du DOM) une fois la page chargée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un script contient la ligne `alert(\"Bienvenue sur le site\");`. Expliquer ce qui s'affiche à l'écran et si le script continue à s'exécuter immédiatement après.",
+          "solution_markdown": "alert() ouvre une boîte de dialogue système affichant le texte « Bienvenue sur le site », avec un bouton OK. Le script ne continue pas immédiatement : son exécution est suspendue tant que l'utilisateur n'a pas cliqué sur OK pour fermer la boîte."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réécrire la ligne `document.write(\"Total : \" + total);` en utilisant alert() à la place, puis expliquer la différence de comportement entre les deux versions.",
+          "solution_markdown": "La ligne devient :\n\n```javascript\nalert(\"Total : \" + total);\n```\n\nAvec document.write(), le texte « Total : » suivi de la valeur de total s'insère directement dans la page HTML, sans interrompre le script. Avec alert(), le même texte s'affiche dans une boîte de dialogue système qui bloque l'exécution du script jusqu'au clic sur OK, et rien n'est ajouté au contenu visible de la page elle-même."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un script demande à l'utilisateur son prénom avec prompt(), puis doit afficher un message de bienvenue personnalisé directement inséré dans la page (pas dans une fenêtre). Écrire les deux lignes de code nécessaires, puis expliquer pourquoi l'ordre de ces deux lignes ne peut pas être inversé.",
+          "solution_markdown": "```javascript\nvar prenom = prompt(\"Quel est votre prénom ?\");\ndocument.write(\"Bienvenue, \" + prenom + \" !\");\n```\n\nLa variable prenom doit être remplie par prompt() avant que document.write() ne puisse l'utiliser dans le message : si l'ordre était inversé, document.write() s'exécuterait avec une variable prenom encore non définie, et le message afficherait « Bienvenue, undefined ! » au lieu du prénom réellement saisi. L'ordre des instructions en JavaScript suit toujours l'ordre d'écriture du code, de haut en bas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "prompt() demande une valeur à l'utilisateur et la renvoie sous forme de texte ; penser à la convertir avec parseInt() ou parseFloat() si un nombre est attendu.",
+        "alert() affiche un message dans une fenêtre système et bloque le script jusqu'au clic sur OK ; elle ne modifie jamais le contenu de la page.",
+        "document.write() insère du texte ou du HTML directement dans la page, sans fenêtre et sans bloquer le script, mais efface tout si elle est appelée après le chargement complet de la page.",
+        "prompt() et alert() se ressemblent (toutes deux ouvrent une fenêtre système) mais l'une demande, l'autre informe seulement.",
+        "Au Probatoire, la question « donner la différence entre alert() et document.write() » revient régulièrement : structure toujours la réponse autour de deux critères, où le message apparaît et si le script est interrompu."
+      ]
+    }
+  ]
+}

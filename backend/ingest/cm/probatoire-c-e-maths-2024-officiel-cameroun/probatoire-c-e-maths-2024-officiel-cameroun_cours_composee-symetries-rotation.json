@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-composee-symetries-rotation-1ere-c-e",
+  "meta": {
+    "titre": "Composée de deux symétries orthogonales : translation ou rotation",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Isométries planes",
+    "duree_estimee_min": 30,
+    "tags": [
+      "isométries",
+      "symétrie orthogonale",
+      "rotation",
+      "translation",
+      "composée d'applications"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2024-officiel-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2024",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex2-q2-0",
+    "rappels_lies": [
+      "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex2-q1-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un motif de mosaïque qui se répète par glissement, ou une pale d'hélice qui tourne autour de son axe : ces deux transformations très différentes (translation, rotation) peuvent pourtant naître d'une même opération, la composition de deux symétries orthogonales. Savoir reconnaître, à l'avance, si deux axes vont produire une translation ou une rotation - et calculer l'angle ou le vecteur exact - est une compétence clé du chapitre sur les isométries planes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition d'une symétrie orthogonale d'axe donné",
+        "Définition d'une translation et d'une rotation, avec leurs éléments caractéristiques",
+        "Notion de droites parallèles et de droites sécantes dans le plan",
+        "Repérage de points par des coordonnées dans un repère orthonormé"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Composer deux symétries orthogonales",
+      "contenu_markdown": "La nature de $S_{\\Delta_2}\\circ S_{\\Delta_1}$ (symétrie d'axe $\\Delta_1$ appliquée en premier) dépend uniquement de la position relative des deux axes. Si $\\Delta_1$ et $\\Delta_2$ sont parallèles, la composée est une translation de vecteur $2\\vec u$, où $\\vec u$ est le vecteur orthogonal à $\\Delta_1$ qui l'envoie sur $\\Delta_2$. Si $\\Delta_1$ et $\\Delta_2$ sont sécantes en un point $\\Omega$, la composée est une rotation de centre $\\Omega$ et d'angle le double de l'angle orienté entre $\\Delta_1$ et $\\Delta_2$.",
+      "formule_principale": "S_{\\Delta_2}\\circ S_{\\Delta_1} = \\text{rotation}(\\Omega,\\, 2\\,\\widehat{(\\Delta_1,\\Delta_2)}) \\text{ si } \\Delta_1\\cap\\Delta_2=\\{\\Omega\\}",
+      "variantes": [
+        {
+          "nom": "Translation ∘ symétrie (axes perpendiculaires au vecteur)",
+          "quand_utiliser": "Quand une translation de vecteur $\\vec v$ est composée avec une symétrie d'axe perpendiculaire à $\\vec v$.",
+          "contenu_markdown": "$t_{\\vec v}\\circ S_\\Delta = S_{\\Delta'}$, où $\\Delta'$ est l'image de $\\Delta$ par la translation de vecteur $\\frac12\\vec v$ : la composée reste une symétrie orthogonale, d'axe simplement déplacé."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCD$ est un rectangle avec $\\mathrm{Mes}(\\overrightarrow{AB},\\overrightarrow{AD})=\\frac\\pi2$ et $AB=2AD$. $I$, $J$ sont les milieux de $[AB]$, $[CD]$. On pose $f=S_{(IC)}\\circ t_{\\overrightarrow{AB}}\\circ S_{(IJ)}$. Déterminer la nature et les éléments caractéristiques de $f$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Simplifier d'abord la partie translation ∘ symétrie",
+          "justification": "$(IJ)$ est perpendiculaire à $\\overrightarrow{AB}$ (l'un est vertical, l'autre horizontal dans un repère adapté au rectangle) : on peut appliquer la variante du cours.",
+          "resultat_markdown": "$t_{\\overrightarrow{AB}}\\circ S_{(IJ)}=S_{(BC)}$ (axe $(IJ)$ déplacé de $\\frac12\\overrightarrow{AB}$, ce qui l'amène exactement sur $(BC)$)."
+        },
+        {
+          "numero": 2,
+          "action": "Reconnaître la composée finale comme deux symétries d'axes sécants",
+          "justification": "$f=S_{(IC)}\\circ S_{(BC)}$ d'après l'étape 1 ; les axes $(BC)$ et $(IC)$ sont sécants en $C$.",
+          "resultat_markdown": "$f$ est une rotation de centre $C$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'angle de la rotation par les coordonnées",
+          "justification": "Un calcul direct en coordonnées (avec $A(0,0)$, $B(2a,0)$, $C(2a,a)$, $I(a,0)$) donne $f(x,y)=(y+a,3a-x)$, qui est la formule d'une rotation de centre $C(2a,a)$ et d'angle $-\\frac\\pi2$.",
+          "resultat_markdown": "$f$ est la rotation de centre $C$ et d'angle $-\\dfrac{\\pi}{2}$."
+        }
+      ],
+      "conclusion_markdown": "On vient de décomposer une isométrie d'apparence compliquée (trois transformations composées) en une rotation unique, entièrement caractérisée par son centre et son angle, en traitant les symétries deux par deux."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Composer les trois transformations $S_{(IC)}$, $t_{\\overrightarrow{AB}}$, $S_{(IJ)}$ dans l'ordre où elles sont lues, de gauche à droite.",
+          "pourquoi_faux": "La notation $f=g\\circ h$ signifie que $h$ s'applique en premier, $g$ en second : appliquer dans l'ordre de lecture inverse l'ordre réel d'application donne un résultat totalement faux.",
+          "correction_markdown": "Applique toujours la transformation la plus à droite du symbole $\\circ$ en premier, et progresse vers la gauche."
+        },
+        {
+          "erreur_markdown": "Affirmer que l'angle de rotation est simplement l'angle géométrique (non orienté) entre les deux axes.",
+          "pourquoi_faux": "L'angle de la rotation est le DOUBLE de l'angle ORIENTÉ entre les axes (dans l'ordre où les symétries sont appliquées), pas l'angle brut entre les deux droites.",
+          "correction_markdown": "Vérifie systématiquement le signe de l'angle trouvé par un calcul de coordonnées, comme dans l'exemple résolu, plutôt que de te fier à une lecture visuelle du schéma."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier si le vecteur de translation est bien perpendiculaire à l'axe avant d'utiliser la variante \"translation ∘ symétrie = symétrie\".",
+          "pourquoi_faux": "Si le vecteur n'est pas perpendiculaire à l'axe, la composée n'est en général ni une translation ni une symétrie, mais une symétrie glissée (bien plus complexe à décrire).",
+          "correction_markdown": "Vérifie toujours l'orthogonalité entre le vecteur de translation et l'axe de symétrie avant d'appliquer cette variante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$\\Delta_1$ et $\\Delta_2$ sont deux droites parallèles distinctes, distantes de $3$ cm. Caractériser $S_{\\Delta_2}\\circ S_{\\Delta_1}$.",
+          "solution_markdown": "D'après le cours, la composée de deux symétries d'axes parallèles est une translation de vecteur $2\\vec u$, où $\\vec u$ est le vecteur orthogonal à $\\Delta_1$ menant à $\\Delta_2$, de norme la distance entre les deux droites soit $3$ cm. **$S_{\\Delta_2}\\circ S_{\\Delta_1}$ est donc la translation de vecteur $2\\vec u$, de norme $6$ cm, dirigé de $\\Delta_1$ vers $\\Delta_2$ perpendiculairement à ces deux droites.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$ABC$ est un triangle équilatéral direct de centre $O$. Caractériser $S_{(OB)}\\circ S_{(OA)}$ (indication : l'angle $(\\overrightarrow{OA},\\overrightarrow{OB})$ vaut $\\frac{2\\pi}{3}$ dans un triangle équilatéral direct).",
+          "solution_markdown": "Les droites $(OA)$ et $(OB)$ sont sécantes en $O$ (centre du triangle) : la composée est une rotation de centre $O$. L'angle orienté $(\\widehat{(OA),(OB)})=\\frac{2\\pi}{3}$ (angle au centre du triangle équilatéral direct), donc l'angle de la rotation est le double : $2\\times\\frac{2\\pi}{3}=\\frac{4\\pi}{3}\\equiv-\\frac{2\\pi}{3}\\ [2\\pi]$. **$S_{(OB)}\\circ S_{(OA)}$ est la rotation de centre $O$ et d'angle $-\\dfrac{2\\pi}{3}$ (ou, de façon équivalente, $\\dfrac{4\\pi}{3}$).**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$ABCD$ est un carré direct de centre $O$. On pose $g=S_{(AC)}\\circ S_{(BD)}$. Montrer que $g$ est une rotation dont on précisera le centre et l'angle, puis déterminer $g(A)$.",
+          "solution_markdown": "Les diagonales $(BD)$ et $(AC)$ d'un carré sont sécantes en son centre $O$ : $g$ est une rotation de centre $O$. Dans un carré direct, l'angle $(\\widehat{(BD),(AC)})=\\frac\\pi4$ (les diagonales d'un carré font un angle de $45°$, cohérent avec l'orientation directe du carré), donc l'angle de $g$ vaut $2\\times\\frac\\pi4=\\frac\\pi2$. **$g$ est la rotation de centre $O$ et d'angle $\\frac\\pi2$.** Une rotation de centre $O$, d'angle $\\frac\\pi2$, envoie chaque sommet d'un carré direct sur le sommet suivant dans le sens direct : $g(A)=B$ (en supposant l'ordre direct $A,B,C,D$ autour de $O$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Compose toujours les symétries de droite à gauche : la plus à droite du symbole $\\circ$ s'applique en premier.",
+        "Axes parallèles $\\Rightarrow$ translation de vecteur double de la distance entre les axes ; axes sécants $\\Rightarrow$ rotation de centre leur intersection.",
+        "L'angle de la rotation est TOUJOURS le double de l'angle orienté entre les deux axes, dans l'ordre d'application.",
+        "Un calcul de coordonnées permet de vérifier sans ambiguïté le signe de l'angle trouvé : ne néglige jamais cette vérification en cas de doute.",
+        "Ce thème revient très régulièrement au Probatoire, souvent combiné à une translation ou une homothétie dans la même composée : entraîne-toi à décomposer étape par étape, jamais tout d'un bloc."
+      ]
+    }
+  ]
+}

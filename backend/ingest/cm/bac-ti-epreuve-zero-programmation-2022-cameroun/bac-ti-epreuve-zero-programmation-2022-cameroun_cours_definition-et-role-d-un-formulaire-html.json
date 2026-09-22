@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-definition-et-role-d-un-formulaire-html-tle-ti",
+  "meta": {
+    "titre": "Définition et rôle d'un formulaire HTML",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 20,
+    "tags": [
+      "formulaire",
+      "HTML",
+      "form",
+      "action",
+      "method"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex1-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un site marchand qui demande ton nom et ton adresse avant de valider une commande, un moteur de recherche qui attend un mot-clé avant d'afficher des résultats : dans les deux cas, une page Web a besoin de récupérer une information saisie par un visiteur. C'est exactement le rôle du formulaire HTML, l'outil de base pour faire dialoguer une page avec la personne qui la consulte."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure minimale d'une page HTML (<html>, <head>, <body>)",
+        "Notion de balise et d'attribut en HTML"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La balise <form> et ses champs de saisie",
+      "contenu_markdown": "Un formulaire est délimité par la balise conteneur `<form>`, qui porte deux attributs essentiels : `action` (l'adresse de la page ou du script qui va recevoir les données une fois le formulaire soumis) et `method` (GET ou POST, la manière dont les données sont transmises). À l'intérieur de cette balise, chaque information à collecter est représentée par un champ de saisie : une zone de texte (`<input type=\"text\">`), une case à cocher (`<input type=\"checkbox\">`), une liste déroulante (`<select>`) ou un bouton (`<input type=\"submit\">` ou `<input type=\"button\">`). Chaque champ porte un attribut `name`, qui sert de clé pour retrouver sa valeur au moment du traitement.",
+      "formule_principale": "<form action=\"traitement.php\" method=\"POST\"> ... </form>",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le formulaire *Calculateur de salaire* de l'exercice 1 doit collecter le salaire brut, deux cases à cocher (Bonus, Allocation), le genre et le nombre de personnes à charge. Identifier la balise conteneur et le rôle de chacun de ses attributs.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la balise conteneur",
+          "justification": "Tous les champs de saisie d'un même traitement doivent être regroupés à l'intérieur d'une seule balise <form>.",
+          "resultat_markdown": "`<form action=\"calcul_salaire.php\" method=\"POST\"> ... </form>`"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir le type de champ adapté à chaque information",
+          "justification": "Le salaire brut est une valeur numérique libre (zone de texte), Bonus/Allocation sont des choix binaires (case à cocher), le genre est un choix parmi une liste fermée (liste déroulante).",
+          "resultat_markdown": "`<input type=\"text\" name=\"salaireBrut\">`, `<input type=\"checkbox\" name=\"bonus\">`, `<select name=\"genre\">`"
+        },
+        {
+          "numero": 3,
+          "action": "Nommer chaque champ avec l'attribut name",
+          "justification": "C'est ce nom, et lui seul, qui permettra de retrouver la valeur saisie au moment du traitement, en JavaScript comme en PHP.",
+          "resultat_markdown": "Chaque champ porte un `name` unique : `salaireBrut`, `bonus`, `allocation`, `genre`, `personnesACharge`."
+        }
+      ],
+      "conclusion_markdown": "Le formulaire *Calculateur de salaire* est donc une unique balise `<form>` qui regroupe cinq champs nommés, prêts à être lus par un script de traitement dès que l'utilisateur clique sur le bouton Calculer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'attribut `name` sur un champ de saisie.",
+          "pourquoi_faux": "Sans `name`, la valeur saisie par l'utilisateur n'a pas de clé associée : ni JavaScript (`document.formulaire.champ`) ni PHP (`$_POST[\"champ\"]`) ne peuvent la retrouver, même si le champ s'affiche normalement à l'écran.",
+          "correction_markdown": "Donner systématiquement un `name` explicite à chaque champ dès sa création, avant même de rédiger le traitement qui l'exploitera."
+        },
+        {
+          "erreur_markdown": "Placer un bouton `Calculer` en dehors de la balise `<form>`.",
+          "pourquoi_faux": "Un bouton placé hors du formulaire n'a accès à aucun des champs de ce formulaire par simple héritage de contexte ; il faut alors le relier manuellement, ce qui complique inutilement le script.",
+          "correction_markdown": "Toujours vérifier que l'ensemble des champs ET le ou les boutons associés sont bien imbriqués à l'intérieur de la même balise `<form>`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la balise `<form>` d'un formulaire de contact qui envoie ses données en POST vers `contact.php`.",
+          "solution_markdown": "`<form action=\"contact.php\" method=\"POST\"> ... </form>` : `action` pointe vers le script `contact.php` qui va traiter les données, `method=\"POST\"` indique que les données seront envoyées dans le corps de la requête plutôt que dans l'URL."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un formulaire d'inscription doit collecter un nom (texte), un mot de passe (masqué) et l'acceptation d'un règlement (case à cocher). Écrire les trois champs correspondants.",
+          "solution_markdown": "`<input type=\"text\" name=\"nom\">` pour le nom, `<input type=\"password\" name=\"motdepasse\">` pour le mot de passe masqué, `<input type=\"checkbox\" name=\"accepteReglement\">` pour la case à cocher. Chaque champ porte un `name` distinct pour rester identifiable individuellement au traitement."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi un formulaire qui transmet un mot de passe ne devrait-il jamais utiliser `method=\"GET\"` ? Justifier en te basant sur le fonctionnement de GET.",
+          "solution_markdown": "La méthode GET transmet les données du formulaire directement dans l'URL de la page appelée (ex. `traitement.php?motdepasse=1234`). Cette URL apparaît en clair dans la barre d'adresse, dans l'historique du navigateur et dans les journaux (logs) du serveur : un mot de passe y serait donc visible en clair à plusieurs endroits. La méthode POST transmet les données dans le corps de la requête HTTP, invisible dans l'URL, ce qui la rend seule appropriée pour une donnée sensible comme un mot de passe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un formulaire, c'est une balise `<form>` qui regroupe des champs nommés destinés à être envoyés à un traitement.",
+        "L'attribut `action` répond à la question « vers quelle page ? », l'attribut `method` répond à « de quelle manière ? ».",
+        "Chaque champ n'existe, pour le traitement, que par son attribut `name` : sans lui, sa valeur est perdue.",
+        "Au BAC TI, une question « Définir formulaire » attend ces deux notions ensemble : le rôle du formulaire ET le mécanisme action/method qui le rend exploitable."
+      ]
+    }
+  ]
+}

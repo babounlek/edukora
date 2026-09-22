@@ -1,0 +1,151 @@
+[
+  {
+    "external_id": "cqc-boucle-while-faible-0",
+    "theme": "boucle while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Qu'affiche le programme suivant ?\n\n```c\nint n = 3;\nwhile (n > 0) {\n    printf(\"%d \", n);\n    n--;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle `while` teste sa condition **avant** chaque tour : le corps s'exécute tant que la condition est vraie, et on suit l'évolution de la variable testée.\n\n### Corrigé\n\n`n` vaut 3 : on affiche 3 puis `n` devient 2 ; on affiche 2 puis `n` devient 1 ; on affiche 1 puis `n` devient 0. La condition `n > 0` est alors fausse et la boucle s'arrête sans afficher 0. Le programme affiche **3 2 1**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "3 2 1"
+      },
+      {
+        "lettre": "B",
+        "texte": "3 2 1 0"
+      },
+      {
+        "lettre": "C",
+        "texte": "2 1 0"
+      },
+      {
+        "lettre": "D",
+        "texte": "0 1 2 3"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10572,
+      10576,
+      10621,
+      10622
+    ]
+  },
+  {
+    "external_id": "cqc-boucle-while-faible-1",
+    "theme": "boucle while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Combien de fois le corps de la boucle suivante est-il exécuté, et quelle est la valeur finale de `k` ?\n\n```c\nint k = 20;\nwhile (k > 5)\n    k = k - 4;\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nPour compter les tours d'une boucle `while`, on suit la valeur de la variable testée : chaque fois que la condition est vraie, le corps s'exécute une fois de plus.\n\n### Corrigé\n\n`k` vaut successivement 20, 16, 12, 8 puis 4. Les tests `20 > 5`, `16 > 5`, `12 > 5` et `8 > 5` sont vrais : le corps est exécuté **4 fois**. Le test `4 > 5` est faux et la boucle s'arrête avec **k = 4**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10572,
+      10576,
+      10621,
+      10622
+    ]
+  },
+  {
+    "external_id": "cqc-boucle-while-moyenne-2",
+    "theme": "boucle while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le programme suivant :\n\n```c\nint x = 10;\nwhile (x < 5)\n    printf(\"A\");\ndo {\n    printf(\"B\");\n} while (x < 5);\n```\n\nQu'affiche-t-il ? Quelle différence de comportement cela illustre-t-il entre `while` et `do ... while` ?",
+    "corrige_markdown": "### Rappel de méthode\n\n`while` teste la condition avant le premier tour (le corps peut ne jamais s'exécuter) ; `do ... while` exécute le corps une première fois avant de tester la condition (au moins un tour).\n\n### Corrigé\n\nLe programme affiche **B**. Avec `while (x < 5)`, la condition est fausse dès le départ (10 n'est pas inférieur à 5) : le corps n'est jamais exécuté et rien n'est affiché. Avec `do ... while`, le corps est exécuté une première fois (affichage de `B`) avant que la condition soit testée ; elle est fausse et la boucle s'arrête.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10572,
+      10576,
+      10621,
+      10622
+    ]
+  },
+  {
+    "external_id": "cqc-boucle-while-moyenne-3",
+    "theme": "boucle while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Laquelle de ces boucles ne se termine jamais ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle `while` se termine si le corps modifie une variable de la condition de façon à la rendre fausse ; sans cette modification, la condition reste vraie indéfiniment.\n\n### Corrigé\n\nLa boucle `int i = 0; while (i < 5) { printf(\"x\"); }` ne modifie jamais `i` : la condition `i < 5` reste toujours vraie et la boucle est infinie. Dans les trois autres, la variable testée est modifiée à chaque tour (`i++` ou `i--`) et la condition finit par devenir fausse.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "int i = 0; while (i < 5) i++;"
+      },
+      {
+        "lettre": "B",
+        "texte": "int i = 0; while (i < 5) { printf(\"x\"); }"
+      },
+      {
+        "lettre": "C",
+        "texte": "int i = 5; while (i > 0) i--;"
+      },
+      {
+        "lettre": "D",
+        "texte": "int i = 1; while (i <= 3) i++;"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10572,
+      10576,
+      10621,
+      10622
+    ]
+  },
+  {
+    "external_id": "cqc-boucle-while-elevee-4",
+    "theme": "boucle while",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Écrire en C une boucle `while` qui calcule la somme des chiffres d'un entier `n > 0` (par exemple 4729), en utilisant les opérateurs `%` et `/`. Présenter les valeurs de `n` et de `s` à la fin de chaque tour pour `n = 4729`, et donner le résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\nLe reste de la division par 10 (`n % 10`) donne le dernier chiffre de `n` et le quotient (`n / 10`) supprime ce chiffre ; on répète jusqu'à ce que `n` vaille 0.\n\n### Corrigé\n\n```c\nint s = 0;\nwhile (n > 0) {\n    s = s + n % 10;\n    n = n / 10;\n}\n```\n\nTrace pour `n = 4729` (valeurs en fin de tour) :\n\n| Tour | s | n |\n|------|---|---|\n| 1 | 9 | 472 |\n| 2 | 11 | 47 |\n| 3 | 18 | 4 |\n| 4 | 22 | 0 |\n\nQuand `n` vaut 0 la condition est fausse. La somme des chiffres est **22** ($4 + 7 + 2 + 9$).",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10572,
+      10576,
+      10621,
+      10622
+    ]
+  }
+]

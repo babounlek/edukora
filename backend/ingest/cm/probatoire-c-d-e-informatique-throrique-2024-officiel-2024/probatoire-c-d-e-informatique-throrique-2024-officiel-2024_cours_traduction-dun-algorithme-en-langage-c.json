@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-traduction-dun-algorithme-en-langage-c-1ere-tronc-commun",
+  "meta": {
+    "titre": "Traduction d'un algorithme en langage C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation - du pseudo-code au langage C",
+    "duree_estimee_min": 25,
+    "tags": [
+      "langage C",
+      "traduction",
+      "déclaration de variables",
+      "syntaxe C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex3-q3.2-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme en pseudo-code est un plan : il décrit ce qu'il faut faire, dans un langage proche du français. Le traduire en C, c'est couler ce plan dans une syntaxe stricte, où chaque virgule et chaque accolade compte. L'épreuve demande presque toujours de traduire une ligne précise plutôt que tout l'algorithme, ce qui impose de connaître par cœur les correspondances entre pseudo-code et C plutôt que de les deviner."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les types de base en C (int, float, char)",
+        "Savoir lire un algorithme en pseudo-code"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois règles constantes de traduction",
+      "contenu_markdown": "Traduire un algorithme en langage C revient à transposer chaque instruction du pseudo-code dans la syntaxe C correspondante, en respectant trois règles constantes : chaque instruction se termine par un point-virgule, chaque bloc d'instructions s'écrit entre accolades { }, et chaque déclaration de variable précise son type C avant son nom, un tableau de taille N se déclarant sous la forme type nom[taille];. Les correspondances de vocabulaire les plus utilisées sont : réel devient float, entier devient int ; Lire devient scanf() (avec l'opérateur & devant la variable) et Ecrire devient printf() ; Si...Alors...Sinon...Finsi devient if(...){...} else {...} ; Pour...Faire...Finpour devient for(initialisation; condition; incrémentation){...}.",
+      "formule_principale": "\\text{type} \\; \\text{nom} \\; [\\text{taille}]; \\quad \\text{(déclaration d'un tableau en C)}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en langage C la ligne 2 de l'algorithme somme_produit_moyenne : `Var Note : tableau [1..N] de réels ;`",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce que déclare cette ligne en pseudo-code",
+          "justification": "La ligne déclare un tableau nommé Note, de taille N, dont chaque case contient un réel.",
+          "resultat_markdown": "Un tableau de N réels, nommé Note."
+        },
+        {
+          "numero": 2,
+          "action": "Traduire le type réel en type C",
+          "justification": "En langage C, le type réel correspond au type float (ou double pour plus de précision, mais float est le choix attendu ici, cohérent avec le niveau de l'algorithme).",
+          "resultat_markdown": "réel devient `float`."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la syntaxe C de déclaration d'un tableau",
+          "justification": "En C, un tableau se déclare avec son type, son nom, puis sa taille entre crochets, et l'instruction se termine par un point-virgule.",
+          "resultat_markdown": "```c\nfloat Note[N];\n```"
+        }
+      ],
+      "conclusion_markdown": "La ligne 2 se traduit par `float Note[N];`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le point-virgule final d'une instruction C",
+          "pourquoi_faux": "En C, l'absence de point-virgule à la fin d'une instruction provoque une erreur de compilation : le compilateur ne sait pas où s'arrête l'instruction.",
+          "correction_markdown": "Vérifier systématiquement, ligne par ligne, que chaque instruction traduite se termine par un point-virgule."
+        },
+        {
+          "erreur_markdown": "Écrire la taille du tableau avant son nom, par exemple `float [N] Note;`",
+          "pourquoi_faux": "La syntaxe C impose l'ordre type, puis nom, puis crochets contenant la taille : aucun autre ordre n'est reconnu par le compilateur.",
+          "correction_markdown": "Mémoriser l'ordre fixe : `type nom[taille];`, dans cet ordre précis."
+        },
+        {
+          "erreur_markdown": "Oublier l'opérateur d'adresse & devant une variable utilisée avec scanf()",
+          "pourquoi_faux": "scanf() a besoin de connaître l'adresse mémoire de la variable à remplir, pas sa valeur : sans le &, le programme compile parfois mais plante ou stocke une valeur incorrecte à l'exécution.",
+          "correction_markdown": "Ajouter systématiquement & devant une variable simple utilisée avec scanf() ; pour un élément de tableau comme Note[i], le & reste également obligatoire."
+        },
+        {
+          "erreur_markdown": "Traduire réel par int au lieu de float",
+          "pourquoi_faux": "Le type int en C ne stocke que des nombres entiers : toute partie décimale serait perdue, ce qui trahit le sens même de la variable réelle d'origine.",
+          "correction_markdown": "Réserver int aux variables déclarées entier en pseudo-code, et float (ou double) aux variables déclarées réel."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en langage C la ligne de pseudo-code : `Var Age : entier ;`",
+          "solution_markdown": "entier correspond au type C `int`. La traduction est :\n\n```c\nint Age;\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire en langage C : `Si (Age>=18) alors Ecrire(\"Majeur\") ; Sinon Ecrire(\"Mineur\") ; Finsi`",
+          "solution_markdown": "La structure alternative Si...Alors...Sinon...Finsi se traduit par if(...){...} else {...}, et Ecrire devient printf() :\n\n```c\nif (Age >= 18) {\n    printf(\"Majeur\");\n} else {\n    printf(\"Mineur\");\n}\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Traduire intégralement en langage C l'algorithme suivant, qui calcule la somme des N premiers entiers :\n\n```\nAlgorithme somme_entiers ;\nVar N, i, S : entiers ;\nDébut\n    Ecrire (\"Entrez N : \") ;\n    Lire (N) ;\n    S ← 0 ;\n    Pour i allant de 1 à N faire\n        S ← S + i ;\n    Finpour\n    Ecrire (\"La somme vaut : \", S) ;\nFin.\n```",
+          "solution_markdown": "On traduit d'abord les déclarations (trois entiers, donc trois int), puis chaque instruction dans l'ordre, en respectant les correspondances Lire -> scanf() avec &, Ecrire -> printf(), Pour -> for :\n\n```c\n#include <stdio.h>\n\nint main() {\n    int N, i, S;\n    printf(\"Entrez N : \");\n    scanf(\"%d\", &N);\n    S = 0;\n    for (i = 1; i <= N; i++) {\n        S = S + i;\n    }\n    printf(\"La somme vaut : %d\", S);\n    return 0;\n}\n```\n\nLa structure `#include <stdio.h>` et la fonction `main()` encadrant le programme ne figurent pas dans l'algorithme d'origine, mais sont indispensables pour obtenir un programme C complet et compilable."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois règles ne changent jamais : point-virgule en fin d'instruction, accolades pour un bloc, type avant nom pour une déclaration.",
+        "réel devient float, entier devient int, Lire devient scanf() avec un &, Ecrire devient printf().",
+        "Un tableau se déclare toujours type nom[taille]; dans cet ordre, jamais un autre.",
+        "N'oublie jamais le & devant une variable simple ou un élément de tableau passé à scanf().",
+        "Au Probatoire, la traduction porte presque toujours sur une ou deux lignes précises de l'algorithme donné : apprends les correspondances une par une plutôt que d'espérer traduire par intuition."
+      ]
+    }
+  ]
+}

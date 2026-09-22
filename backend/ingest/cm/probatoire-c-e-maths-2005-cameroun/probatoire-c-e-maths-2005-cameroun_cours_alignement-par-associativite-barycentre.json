@@ -1,0 +1,185 @@
+{
+ "cours_id": "cours-alignement-par-associativite-barycentre-1ere-ce",
+ "meta": {
+  "titre": "Démontrer un alignement par l'associativité du barycentre",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Barycentre",
+  "duree_estimee_min": 25,
+  "tags": ["barycentre partiel", "associativité du barycentre", "alignement", "milieu", "coefficients négatifs"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex1-q2-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Démontrer que trois points sont alignés se fait classiquement par la colinéarité de deux vecteurs — ce qui demande de les calculer. La voie barycentrique est plus économe : si l'un des trois points s'écrit comme barycentre des deux autres, l'alignement est acquis, sans un seul calcul de coordonnées. Et l'associativité est précisément l'outil qui fabrique cette écriture, en regroupant les points d'un système à trois en un système à deux."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la caractérisation vectorielle du barycentre",
+    "Savoir qu'un barycentre de deux points appartient à la droite qui les joint",
+    "Savoir manipuler des coefficients barycentriques négatifs",
+    "Connaître le théorème d'associativité"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Regrouper deux points pour se ramener à une droite",
+   "contenu_markdown": "**Le fait fondamental.** Si $G = \\operatorname{bar}\\left\\{P(\\alpha)\\,;\\,Q(\\beta)\\right\\}$ avec $\\alpha + \\beta \\neq 0$, alors $G$ appartient à la **droite** $(PQ)$.\n\nEn effet, la relation de réduction donne $\\overrightarrow{PG} = \\dfrac{\\beta}{\\alpha+\\beta}\\,\\overrightarrow{PQ}$ : les vecteurs $\\overrightarrow{PG}$ et $\\overrightarrow{PQ}$ sont colinéaires.\n\n**Le théorème d'associativité.** Soit $G = \\operatorname{bar}\\left\\{A(\\alpha)\\,;\\,B(\\beta)\\,;\\,C(\\gamma)\\right\\}$, avec $\\alpha+\\beta+\\gamma \\neq 0$. Si de plus $\\beta + \\gamma \\neq 0$, on peut remplacer $B$ et $C$ par leur barycentre partiel $H$, affecté de la somme $\\beta + \\gamma$ :\n\n$$G = \\operatorname{bar}\\left\\{A(\\alpha)\\,;\\,H(\\beta+\\gamma)\\right\\}$$\n\n**La méthode, en quatre gestes.**\n\n1. **Vérifier** que la somme totale des coefficients est non nulle : le barycentre existe.\n2. **Repérer** le groupe de deux points dont le barycentre partiel est connu ou identifiable.\n3. **Vérifier** que la somme des coefficients de ce groupe est non nulle.\n4. **Appliquer** l'associativité, et conclure que les trois points sont alignés.\n\n**La double vérification.** Il faut deux fois contrôler que la somme est non nulle : pour le système **complet**, puis pour le **groupe** que l'on remplace. C'est particulièrement important quand des coefficients sont négatifs, car les compensations y sont fréquentes.\n\n**Comment repérer le bon groupe.** Cherche les points dont le barycentre partiel a **déjà été identifié** dans une question précédente. Dans un problème structuré, ce n'est jamais un hasard : la question antérieure a été posée exactement pour fournir ce regroupement.\n\n**Aller plus loin que l'alignement.** Quand les deux coefficients finaux sont **égaux**, le barycentre est le **milieu** du segment. Cette précision ne coûte pas une ligne de plus et sert presque toujours dans les questions suivantes, notamment pour appliquer la relation de la médiane.\n\n**Les trois façons de démontrer un alignement.**\n\n| Méthode | Ce qu'elle demande |\n|---|---|\n| Colinéarité de vecteurs | Calculer deux vecteurs |\n| Coordonnées et déterminant | Un repère |\n| Écriture barycentrique | Rien, si le barycentre est fourni |\n\nLa troisième est la plus rapide dès que l'énoncé introduit des barycentres.",
+   "formule_principale": "G = \\operatorname{bar}\\left\\{A(\\alpha)\\,;\\,H(\\beta+\\gamma)\\right\\} \\implies A,\\ G,\\ H \\text{ alignés}",
+   "variantes": [
+    {
+     "nom": "Démonstration par colinéarité",
+     "quand_utiliser": "Quand aucune structure barycentrique n'est disponible",
+     "contenu_markdown": "Trois points $A$, $I$, $J$ sont alignés si et seulement si les vecteurs $\\overrightarrow{AI}$ et $\\overrightarrow{AJ}$ sont **colinéaires**, c'est-à-dire s'il existe un réel $k$ tel que\n\n$$\\overrightarrow{AI} = k\\,\\overrightarrow{AJ}$$\n\nEn coordonnées, cela se traduit par la nullité du déterminant $x\\,y' - x'\\,y$.\n\nC'est la méthode générale, mais elle exige de calculer les deux vecteurs — ce que l'écriture barycentrique évite entièrement."
+    },
+    {
+     "nom": "Concours de droites",
+     "quand_utiliser": "Quand on veut montrer que trois droites passent par un même point",
+     "contenu_markdown": "Un même barycentre de trois points admet **trois** décompositions, une par groupe de deux points. Chacune le place sur une droite différente :\n\n$$G \\in (A\\,H_{BC}) \\qquad G \\in (B\\,H_{AC}) \\qquad G \\in (C\\,H_{AB})$$\n\nLes trois droites sont donc **concourantes** en $G$. C'est la démonstration la plus élégante du concours des médianes d'un triangle, obtenue en prenant tous les coefficients égaux."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABC$ est un triangle, $I$ le barycentre du système $\\left\\{A(2)\\,;\\,B(5)\\,;\\,C(-3)\\right\\}$, et $J$ le barycentre de $\\left\\{B(5)\\,;\\,C(-3)\\right\\}$ établi à la question précédente. Démontrer que les points $A$, $I$ et $J$ sont alignés. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Vérifier l'existence de $I$",
+     "justification": "La somme des coefficients du système complet doit être non nulle",
+     "resultat_markdown": "$2 + 5 + (-3) = 4 \\neq 0$ : le barycentre $I$ existe"
+    },
+    {
+     "numero": 2,
+     "action": "Repérer le groupe à remplacer",
+     "justification": "La question 1 a identifié le barycentre partiel de $B$ et $C$ avec ces coefficients précis",
+     "resultat_markdown": "Le sous-système $\\left\\{B(5)\\,;\\,C(-3)\\right\\}$ a pour barycentre le point $J$"
+    },
+    {
+     "numero": 3,
+     "action": "Vérifier que le regroupement est licite",
+     "justification": "La somme des coefficients du groupe doit être non nulle",
+     "resultat_markdown": "$5 + (-3) = 2 \\neq 0$ : le barycentre partiel existe, l'associativité s'applique"
+    },
+    {
+     "numero": 4,
+     "action": "Appliquer l'associativité",
+     "justification": "On remplace le couple $(B\\,;\\,5)$, $(C\\,;\\,-3)$ par $J$ affecté de la somme $2$",
+     "resultat_markdown": "$I = \\operatorname{bar}\\left\\{A(2)\\,;\\,J(2)\\right\\}$"
+    },
+    {
+     "numero": 5,
+     "action": "Simplifier les coefficients",
+     "justification": "On divise les deux par $2$, ce qui ne change pas le point",
+     "resultat_markdown": "$I = \\operatorname{bar}\\left\\{A(1)\\,;\\,J(1)\\right\\}$"
+    },
+    {
+     "numero": 6,
+     "action": "Reconnaître le milieu",
+     "justification": "Deux coefficients égaux caractérisent le milieu",
+     "resultat_markdown": "$I$ est le **milieu** du segment $[AJ]$"
+    },
+    {
+     "numero": 7,
+     "action": "Conclure sur l'alignement",
+     "justification": "Un barycentre de deux points appartient à la droite qui les joint",
+     "resultat_markdown": "$I$ appartient à la droite $(AJ)$ : les points $A$, $I$ et $J$ sont **alignés**"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler la cohérence des sommes",
+     "justification": "La somme des coefficients doit être invariante par regroupement",
+     "resultat_markdown": "Avant : $2 + 5 - 3 = 4$. Après : $2 + 2 = 4$. Conforme"
+    }
+   ],
+   "conclusion_markdown": "Les trois points sont alignés, et l'on a obtenu bien plus : $I$ est le **milieu** de $[AJ]$. Cette précision, qui ne coûte pas une ligne de plus, sera directement réutilisée à la question 3.b), où la relation de la médiane relative au segment $[AJ]$ intervient. Retiens aussi la structure de l'exercice : la question 1 n'avait d'autre but que de préparer ce regroupement."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Regrouper sans vérifier que la somme du groupe est non nulle",
+     "pourquoi_faux": "Si $\\beta + \\gamma = 0$, le barycentre partiel n'existe pas et l'associativité ne s'applique pas du tout. Avec des coefficients de signes contraires, comme ici $5$ et $-3$, cette vérification n'a rien de formel.",
+     "correction_markdown": "Écris explicitement $5 + (-3) = 2 \\neq 0$. Si la somme s'annulait, il faudrait choisir un autre groupe."
+    },
+    {
+     "erreur_markdown": "Affecter le coefficient $1$ au barycentre partiel",
+     "pourquoi_faux": "Écrire $I = \\operatorname{bar}\\left\\{A(2)\\,;\\,J(1)\\right\\}$ donne un point différent. Le barycentre partiel hérite de la **somme** des coefficients du groupe qu'il remplace, ici $2$.",
+     "correction_markdown": "Le contrôle est immédiat : la somme totale doit être inchangée. Avant $4$, après $2 + 2 = 4$. Avec un coefficient $1$, on obtiendrait $3$, et l'erreur apparaîtrait."
+    },
+    {
+     "erreur_markdown": "S'arrêter à « $I$ appartient à $(AJ)$ »",
+     "pourquoi_faux": "Ce n'est pas faux, mais on perd l'information la plus utile : les deux coefficients étant égaux, $I$ est le **milieu** de $[AJ]$. Cette précision est indispensable à la question suivante.",
+     "correction_markdown": "Simplifie toujours les coefficients finaux et regarde s'ils sont égaux. Si oui, dis-le : c'est un milieu."
+    },
+    {
+     "erreur_markdown": "Calculer les vecteurs $\\overrightarrow{AI}$ et $\\overrightarrow{AJ}$ pour montrer leur colinéarité",
+     "pourquoi_faux": "Ce n'est pas faux, mais l'énoncé a construit toute la structure barycentrique pour éviter ce calcul. Il faudrait exprimer les deux vecteurs en fonction de $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$, puis identifier le coefficient : plusieurs lignes pour ce que l'associativité donne en trois.",
+     "correction_markdown": "Dès qu'un énoncé introduit des barycentres, cherche le regroupement plutôt que les vecteurs. C'est la démarche que le barème valorise."
+    },
+    {
+     "erreur_markdown": "Choisir un groupe au hasard",
+     "pourquoi_faux": "Regrouper $A$ et $B$, par exemple, donnerait un barycentre partiel inconnu, sans lien avec les points de l'énoncé, et l'alignement demandé ne suivrait pas.",
+     "correction_markdown": "Choisis le groupe dont le barycentre partiel est **déjà identifié** par une question précédente. C'est presque toujours celui-là."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "$ABC$ est un triangle. Soit $G$ le barycentre de $\\left\\{A(1)\\,;\\,B(2)\\,;\\,C(2)\\right\\}$ et $K$ le milieu de $[BC]$. Démontrer que $A$, $G$ et $K$ sont alignés, et préciser la position de $G$ sur le segment $[AK]$.",
+     "solution_markdown": "**Étape 1 - existence de $G$.**\n\n$$1 + 2 + 2 = 5 \\neq 0$$\n\nLe barycentre $G$ existe.\n\n**Étape 2 - identifier le barycentre partiel.**\n\nLes points $B$ et $C$ portent le même coefficient $2$. Leur barycentre partiel est donc le **milieu** de $[BC]$, c'est-à-dire $K$ :\n\n$$K = \\operatorname{bar}\\left\\{B(2)\\,;\\,C(2)\\right\\} = \\operatorname{bar}\\left\\{B(1)\\,;\\,C(1)\\right\\}$$\n\n**Étape 3 - vérifier le regroupement.**\n\n$$2 + 2 = 4 \\neq 0$$\n\nLe regroupement est licite.\n\n**Étape 4 - appliquer l'associativité.**\n\n$$G = \\operatorname{bar}\\left\\{A(1)\\,;\\,K(4)\\right\\}$$\n\n**Étape 5 - conclure sur l'alignement.**\n\n$G$ est barycentre de deux points, donc il appartient à la droite $(AK)$ : **$A$, $G$ et $K$ sont alignés.**\n\n**Étape 6 - position de $G$.**\n\nLa relation de réduction, en prenant $A$ comme origine, donne\n\n$$(1+4)\\,\\overrightarrow{AG} = 4\\,\\overrightarrow{AK} \\qquad \\Longrightarrow \\qquad \\overrightarrow{AG} = \\dfrac{4}{5}\\,\\overrightarrow{AK}$$\n\n**$G$ est situé aux quatre cinquièmes de $[AK]$ en partant de $A$.**\n\n**Contrôle de la somme.** Avant : $1+2+2 = 5$. Après : $1 + 4 = 5$. Conforme.\n\n**Remarque.** La droite $(AK)$ est la **médiane** issue de $A$, puisque $K$ est le milieu de $[BC]$. Si les trois coefficients avaient été égaux, $G$ aurait été le centre de gravité, situé aux deux tiers de la médiane. Ici il est plus proche de $K$, parce que $B$ et $C$ pèsent davantage que $A$."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABC$ est un triangle. Soit $G$ le barycentre de $\\left\\{A(3)\\,;\\,B(-1)\\,;\\,C(2)\\right\\}$. Déterminer les **trois** décompositions possibles de $G$ en barycentre de deux points, et en déduire trois droites concourantes en $G$. Vérifier si l'une des décompositions est impossible.",
+     "solution_markdown": "**Étape 1 - existence.**\n\n$$3 + (-1) + 2 = 4 \\neq 0$$\n\nLe barycentre $G$ existe.\n\n**Étape 2 - premier groupe : $B$ et $C$.**\n\nSomme : $-1 + 2 = 1 \\neq 0$. Le regroupement est licite.\n\nNotons $P = \\operatorname{bar}\\left\\{B(-1)\\,;\\,C(2)\\right\\}$. Alors\n\n$$G = \\operatorname{bar}\\left\\{A(3)\\,;\\,P(1)\\right\\} \\qquad \\Longrightarrow \\qquad G \\in (AP)$$\n\nPosition de $P$ : $\\overrightarrow{BP} = \\dfrac{2}{1}\\overrightarrow{BC} = 2\\,\\overrightarrow{BC}$, donc $P$ est hors du segment $[BC]$, au-delà de $C$.\n\n**Étape 3 - deuxième groupe : $A$ et $C$.**\n\nSomme : $3 + 2 = 5 \\neq 0$. Licite.\n\nNotons $Q = \\operatorname{bar}\\left\\{A(3)\\,;\\,C(2)\\right\\}$. Alors\n\n$$G = \\operatorname{bar}\\left\\{Q(5)\\,;\\,B(-1)\\right\\} \\qquad \\Longrightarrow \\qquad G \\in (BQ)$$\n\nPosition de $Q$ : $\\overrightarrow{AQ} = \\dfrac{2}{5}\\overrightarrow{AC}$, donc $Q$ est **dans** le segment $[AC]$, aux deux cinquièmes depuis $A$.\n\n**Étape 4 - troisième groupe : $A$ et $B$.**\n\nSomme : $3 + (-1) = 2 \\neq 0$. Licite.\n\nNotons $R = \\operatorname{bar}\\left\\{A(3)\\,;\\,B(-1)\\right\\}$. Alors\n\n$$G = \\operatorname{bar}\\left\\{R(2)\\,;\\,C(2)\\right\\} \\qquad \\Longrightarrow \\qquad G \\in (CR)$$\n\nEt comme les deux coefficients sont égaux, **$G$ est le milieu de $[RC]$**.\n\nPosition de $R$ : $\\overrightarrow{AR} = \\dfrac{-1}{2}\\overrightarrow{AB}$, donc $R$ est hors du segment $[AB]$, du côté opposé à $B$.\n\n**Étape 5 - conclure.**\n\nLes **trois** décompositions sont possibles, aucune n'est impossible : les trois sommes partielles $1$, $5$ et $2$ sont toutes non nulles.\n\nLes trois droites $(AP)$, $(BQ)$ et $(CR)$ sont **concourantes en $G$**.\n\n**Étape 6 - quand une décomposition serait-elle impossible ?**\n\nUne décomposition échoue si la somme des coefficients du groupe s'annule. Pour un système $\\left\\{A(\\alpha)\\,;\\,B(\\beta)\\,;\\,C(\\gamma)\\right\\}$, cela arriverait si deux coefficients étaient **opposés**.\n\nExemple : $\\left\\{A(3)\\,;\\,B(-3)\\,;\\,C(2)\\right\\}$. Le groupe $(A\\,;\\,B)$ a pour somme $0$ : impossible à regrouper. Les deux autres décompositions resteraient valides.\n\n**Ce qu'il faut retenir.** Un barycentre de trois points admet en général trois décompositions, donc trois droites concourantes. Chaque décomposition est licite tant que la somme partielle n'est pas nulle — et deux coefficients opposés en bloquent exactement une."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "$ABC$ est un triangle. Soient $P$ le point de $[AB]$ tel que $\\overrightarrow{AP} = \\dfrac{1}{3}\\overrightarrow{AB}$, et $Q$ le point de $[AC]$ tel que $\\overrightarrow{AQ} = \\dfrac{1}{4}\\overrightarrow{AC}$. Démontrer, par la méthode barycentrique, que les droites $(BQ)$ et $(CP)$ se coupent en un point $G$ dont on donnera l'écriture barycentrique relativement à $A$, $B$, $C$. Puis déterminer le rapport $\\dfrac{BG}{BQ}$.",
+     "solution_markdown": "**Étape 1 - écrire $P$ et $Q$ comme barycentres.**\n\nDe $\\overrightarrow{AP} = \\dfrac{1}{3}\\overrightarrow{AB}$, la formule $\\overrightarrow{AP} = k\\,\\overrightarrow{AB} \\iff P = \\operatorname{bar}\\left\\{A(1-k)\\,;\\,B(k)\\right\\}$ avec $k = \\dfrac{1}{3}$ donne\n\n$$P = \\operatorname{bar}\\left\\{A\\left(\\dfrac{2}{3}\\right)\\,;\\,B\\left(\\dfrac{1}{3}\\right)\\right\\} = \\operatorname{bar}\\left\\{A(2)\\,;\\,B(1)\\right\\}$$\n\nDe même, avec $k = \\dfrac{1}{4}$ :\n\n$$Q = \\operatorname{bar}\\left\\{A(3)\\,;\\,C(1)\\right\\}$$\n\n**Étape 2 - chercher le bon système à trois points.**\n\nOn cherche des coefficients $\\alpha$, $\\beta$, $\\gamma$ tels que le barycentre $G$ de $\\left\\{A(\\alpha)\\,;\\,B(\\beta)\\,;\\,C(\\gamma)\\right\\}$ appartienne aux deux droites.\n\n**Condition pour $G \\in (CP)$ :** il faut pouvoir regrouper $A$ et $B$ en $P$, donc que $\\dfrac{\\alpha}{\\beta} = \\dfrac{2}{1}$, c'est-à-dire $\\alpha = 2\\beta$.\n\n**Condition pour $G \\in (BQ)$ :** il faut pouvoir regrouper $A$ et $C$ en $Q$, donc que $\\dfrac{\\alpha}{\\gamma} = \\dfrac{3}{1}$, c'est-à-dire $\\alpha = 3\\gamma$.\n\n**Étape 3 - résoudre.**\n\nPrenons $\\alpha = 6$, le plus petit multiple commun de $2$ et $3$. Alors\n\n$$\\beta = \\dfrac{\\alpha}{2} = 3 \\qquad ; \\qquad \\gamma = \\dfrac{\\alpha}{3} = 2$$\n\n$$G = \\operatorname{bar}\\left\\{A(6)\\,;\\,B(3)\\,;\\,C(2)\\right\\}$$\n\nSomme : $6 + 3 + 2 = 11 \\neq 0$. Le point existe.\n\n**Étape 4 - vérifier les deux appartenances.**\n\n**Sur $(CP)$ :** groupe $(A\\,;\\,B)$, de somme $6 + 3 = 9 \\neq 0$. Son barycentre partiel est $\\operatorname{bar}\\left\\{A(6)\\,;\\,B(3)\\right\\} = \\operatorname{bar}\\left\\{A(2)\\,;\\,B(1)\\right\\} = P$. Donc\n\n$$G = \\operatorname{bar}\\left\\{P(9)\\,;\\,C(2)\\right\\} \\qquad \\Longrightarrow \\qquad G \\in (PC)$$\n\n**Sur $(BQ)$ :** groupe $(A\\,;\\,C)$, de somme $6 + 2 = 8 \\neq 0$. Son barycentre partiel est $\\operatorname{bar}\\left\\{A(6)\\,;\\,C(2)\\right\\} = \\operatorname{bar}\\left\\{A(3)\\,;\\,C(1)\\right\\} = Q$. Donc\n\n$$G = \\operatorname{bar}\\left\\{Q(8)\\,;\\,B(3)\\right\\} \\qquad \\Longrightarrow \\qquad G \\in (QB)$$\n\n**Le point $G$ appartient aux deux droites : c'est leur point d'intersection.**\n\n**Étape 5 - justifier l'unicité.**\n\nLes droites $(CP)$ et $(BQ)$ ne sont pas parallèles : $P$ appartient à $[AB]$ et $Q$ à $[AC]$, deux côtés distincts d'un triangle, donc les droites $(CP)$ et $(BQ)$ sont sécantes. Leur intersection est réduite à un point, qui est donc $G$.\n\n**Étape 6 - calculer le rapport $\\dfrac{BG}{BQ}$.**\n\nDe $G = \\operatorname{bar}\\left\\{Q(8)\\,;\\,B(3)\\right\\}$, la relation de réduction en prenant $B$ comme origine donne\n\n$$(8+3)\\,\\overrightarrow{BG} = 8\\,\\overrightarrow{BQ} \\qquad \\Longrightarrow \\qquad \\overrightarrow{BG} = \\dfrac{8}{11}\\,\\overrightarrow{BQ}$$\n\n$$\\dfrac{BG}{BQ} = \\dfrac{8}{11}$$\n\n**Étape 7 - contrôle par l'autre décomposition.**\n\nDe $G = \\operatorname{bar}\\left\\{P(9)\\,;\\,C(2)\\right\\}$ :\n\n$$\\overrightarrow{CG} = \\dfrac{9}{11}\\,\\overrightarrow{CP} \\qquad \\Longrightarrow \\qquad \\dfrac{CG}{CP} = \\dfrac{9}{11}$$\n\nLes deux fractions ont le même dénominateur $11$, qui est la somme totale des coefficients : c'est le signe que les deux décompositions décrivent bien le même point.\n\n**Ce qu'il faut retenir.** Pour trouver l'intersection de deux céviennes, on cherche le système de coefficients qui permet **les deux** regroupements simultanément. Le rapport de section se lit ensuite directement sur la décomposition correspondante : le coefficient du point opposé, divisé par la somme totale."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Un barycentre de deux points appartient à la droite qui les joint : c'est le fondement de la méthode.",
+    "L'associativité remplace un groupe de points par leur barycentre partiel, affecté de la **somme** de leurs coefficients.",
+    "Vérifie deux fois que la somme est non nulle : pour le système complet, puis pour le groupe regroupé.",
+    "Avec des coefficients négatifs, cette double vérification n'a rien de formel : les compensations sont fréquentes.",
+    "Choisis le groupe dont le barycentre partiel est déjà identifié par une question précédente.",
+    "Simplifie les coefficients finaux : s'ils sont égaux, le barycentre est le **milieu**, et il faut le dire.",
+    "Contrôle : la somme totale des coefficients est invariante par regroupement.",
+    "Un barycentre de trois points admet trois décompositions, donc trois droites concourantes.",
+    "Deux coefficients opposés bloquent exactement une des trois décompositions.",
+    "Le rapport de section se lit sur la décomposition : coefficient du point opposé divisé par la somme totale."
+   ]
+  }
+ ]
+}

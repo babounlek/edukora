@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-calculer-aire-integrale-densite-effectifs-population-terminale-d-ti",
+  "meta": {"titre": "Calculer un effectif de population via une aire par intégrale et une densité", "cours_id": "cours-calculer-aire-integrale-densite-effectifs-population-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D-TI", "sous_theme": "Calcul intégral — application aux populations", "tags": ["intégrale", "aire", "densité de population", "conversion d'échelle"], "duree_estimee_minutes": 12, "epreuve_source": "bac-d-ti-maths-2021-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2021-cameroun-ex4-t1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Pour trouver un effectif de population réparti géographiquement, on enchaîne trois étapes indépendantes : calculer l'aire de la zone par intégrale, la convertir en unités réelles via le carré de l'échelle, puis multiplier par la densité de population."},
+    {"type": "prerequis", "items_markdown": ["Calcul d'une aire entre une courbe positive et l'axe des abscisses par intégrale", "Conversion d'une aire en unités réelles : multiplier par le carré du facteur d'échelle"]},
+    {"type": "regle", "titre": "Aire → conversion d'échelle → densité", "contenu_markdown": "Pour obtenir un effectif de population sur une zone délimitée par une courbe : on calcule d'abord l'aire de la zone en unités graphiques par intégrale ($\\int_a^bg(x)dx$), on la convertit en km² en multipliant par le carré de l'échelle (si 1 unité graphique $=L$ km, alors 1 unité² $=L^2$ km²), puis on multiplie cette aire réelle par la densité de population (en individus/km²) pour obtenir l'effectif.", "formule_principale": "Effectif = (∫ab g(x)dx) × L² × densité", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Zone délimitée par y=x²+1 sur [0;2] (échelle 1 unité=3km), densité 20/km². Calculer l'effectif.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Calculer l'aire graphique", "justification": "∫0² (x²+1)dx=[x³/3+x]", "resultat_markdown": "aire=8/3+2=14/3 unités²"},
+      {"numero": 2, "action": "Convertir en km²", "justification": "×3²=×9", "resultat_markdown": "14/3×9=42 km²"},
+      {"numero": 3, "action": "Multiplier par la densité", "justification": "×20", "resultat_markdown": "840 individus"}
+    ], "conclusion_markdown": "Effectif = 840 individus."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Multiplier l'aire directement par la densité SANS avoir d'abord converti cette aire en unités réelles (km²)", "pourquoi_faux": "La densité est donnée en individus par km² (unité réelle), tandis que l'intégrale calcule une aire en unités graphiques (unité du repère, pas nécessairement des km²) ; sans conversion préalable, le produit aire×densité n'a pas de sens dimensionnel cohérent.", "correction_markdown": "Toujours convertir l'aire graphique en aire réelle (km²) via le carré de l'échelle AVANT de multiplier par la densité."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Zone délimitée par y=4-x sur [0;4] (échelle 1 unité=2km), densité 15/km². Calculer l'effectif.", "solution_markdown": "Aire=∫0⁴(4-x)dx=[4x-x²/2]=16-8=8 unités². Conversion: 8×2²=32km². Effectif=32×15=480 individus."},
+      {"numero": 2, "difficulte": "facile", "enonce_markdown": "Pourquoi le facteur de conversion d'une aire est-il le CARRÉ du facteur d'échelle, et non le facteur lui-même ?", "solution_markdown": "Parce qu'une aire est une grandeur à deux dimensions (longueur × largeur) : si chaque longueur est multipliée par le facteur d'échelle L, l'aire (produit de deux longueurs) est multipliée par L×L=L², pas simplement par L."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Un effectif de population sur une zone se calcule en trois étapes : aire par intégrale, conversion d'échelle (facteur au carré), puis multiplication par la densité.", "Ne jamais multiplier une aire graphique directement par une densité réelle sans conversion préalable.", "Cette méthode s'applique à chaque zone séparément quand la population est répartie en plusieurs sites."]}
+  ]
+}

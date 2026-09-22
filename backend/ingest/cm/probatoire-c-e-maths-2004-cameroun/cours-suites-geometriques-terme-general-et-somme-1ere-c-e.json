@@ -1,0 +1,175 @@
+{
+  "cours_id": "cours-suites-geometriques-terme-general-et-somme-1ere-c-e",
+  "meta": {
+    "titre": "Suites géométriques : terme général et somme de termes consécutifs",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 35,
+    "tags": [
+      "suite géométrique",
+      "raison",
+      "terme général",
+      "somme de termes",
+      "taux d'accroissement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2004-cameroun",
+    "epreuve_titre": "Probatoire C et E - Mathématiques - Cameroun, session 2004",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-maths-2004-cameroun-ex3-q2b-1",
+    "rappels_lies": [
+      "rdm-probatoire-c-e-maths-2004-cameroun-ex3-q1-1",
+      "rdm-probatoire-c-e-maths-2004-cameroun-ex3-q2a-1",
+      "rdm-probatoire-c-e-maths-2004-cameroun-ex3-q2c-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une entreprise voit sa production augmenter de 10 % chaque année. Au bout de dix ans, de combien a-t-elle progressé ? La tentation est d'additionner : $10 \\times 10\\,\\% = 100\\,\\%$, donc le double. C'est faux, et l'écart n'est pas anodin : la production a en réalité été multipliée par près de 2,6. La raison tient à un mécanisme simple - chaque augmentation porte sur un montant déjà augmenté. Les suites géométriques décrivent exactement ce mécanisme, qu'il s'agisse d'une population, d'un capital placé, d'une dette ou d'une décroissance radioactive."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Manipuler les puissances d'un nombre réel",
+        "Traduire un pourcentage d'augmentation ou de diminution par un coefficient multiplicateur",
+        "Résoudre une équation du premier degré",
+        "Utiliser la notation indicée $u_n$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître, exprimer et sommer une suite géométrique",
+      "contenu_markdown": "**Définition.** Une suite $(u_n)$ est **géométrique de raison $q$** lorsque, pour tout indice $n$,\n\n$$\nu_{n+1} = q \\times u_n\n$$\n\n**Reconnaissance par le taux d'accroissement.** Un énoncé donne rarement la raison directement. Il donne souvent le taux d'accroissement $\\dfrac{u_{n+1} - u_n}{u_n}$, ou un pourcentage. Le passage se fait ainsi :\n\n$$\n\\frac{u_{n+1} - u_n}{u_n} = t \\iff u_{n+1} - u_n = t\\,u_n \\iff u_{n+1} = (1+t)\\,u_n\n$$\n\nLa raison est donc $q = 1 + t$, jamais $t$. Une hausse de 10 % correspond à $q = 1{,}1$ ; une baisse de 10 % à $q = 0{,}9$.\n\n**Terme général.** Si le premier terme porte l'indice $p$, alors pour tout $n \\ge p$ :\n\n$$\n\\boxed{\\,u_n = u_p \\times q^{\\,n-p}\\,}\n$$\n\nL'exposant $n - p$ compte le nombre de multiplications effectuées depuis le premier terme. Les deux cas usuels :\n\n- premier terme $u_0$ : $u_n = u_0 \\times q^{\\,n}$ ;\n- premier terme $u_1$ : $u_n = u_1 \\times q^{\\,n-1}$.\n\n**Somme de termes consécutifs.** Pour $q \\neq 1$, la somme de $N$ termes consécutifs commençant à $u_p$ vaut\n\n$$\n\\boxed{\\,u_p + u_{p+1} + \\cdots + u_{p+N-1} = u_p \\times \\frac{1 - q^{\\,N}}{1 - q}\\,}\n$$\n\nL'exposant est le **nombre de termes additionnés**, jamais l'indice du dernier terme. Retiens la formule sous sa forme parlée : premier terme multiplié par $\\dfrac{1 - q^{\\text{nombre de termes}}}{1-q}$.\n\nLe cas $q = 1$ est exclu de la formule : la suite est alors constante et la somme vaut simplement $N \\times u_p$.",
+      "formule_principale": "u_n = u_p \\times q^{\\,n-p} \\quad ; \\quad S = u_p \\times \\frac{1-q^{\\,N}}{1-q}",
+      "variantes": [
+        {
+          "nom": "Compter les termes avant d'appliquer la formule de la somme",
+          "quand_utiliser": "Systématiquement, dès que la somme ne commence pas à l'indice 0.",
+          "contenu_markdown": "Le nombre de termes d'une somme allant de l'indice $p$ à l'indice $m$ inclus vaut\n\n$$\nN = m - p + 1\n$$\n\nDe $u_1$ à $u_{10}$ : $N = 10 - 1 + 1 = 10$ termes. De $u_0$ à $u_{10}$ : $N = 10 - 0 + 1 = 11$ termes. De $u_3$ à $u_{12}$ : $N = 12 - 3 + 1 = 10$ termes.\n\nLe « $+1$ » est l'oubli le plus fréquent, et il coûte un terme entier dans le résultat final. Écris ce décompte explicitement sur ta copie avant d'écrire la formule."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La production d'une entreprise est notée $P_i$ pour l'année $i$, avec $1 \\le i \\le 10$, et exprimée en milliers d'unités. Les rapports $\\dfrac{P_{i+1} - P_i}{P_i}$ sont constants et égaux à $0{,}1$, et $P_1 = 20$.\n\nExprimer $P_n$ en fonction de $n$, calculer la valeur exacte de $P_{10}$, puis la production totale des dix premières années. *(Probatoire C et E, Cameroun, session 2004 - Exercice 3)*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Transformer le taux d'accroissement en relation de récurrence",
+          "justification": "On multiplie les deux membres de $\\dfrac{P_{i+1}-P_i}{P_i} = 0{,}1$ par $P_i$, puis on isole $P_{i+1}$.",
+          "resultat_markdown": "$P_{i+1} - P_i = 0{,}1\\,P_i$, donc $P_{i+1} = (1 + 0{,}1)P_i = 1{,}1\\,P_i$ : la suite est géométrique de raison $q = 1{,}1$"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer l'indice du premier terme",
+          "justification": "L'exposant du terme général dépend de l'indice de départ ; ici les années sont numérotées à partir de 1.",
+          "resultat_markdown": "Le premier terme est $P_1 = 20$, d'indice $p = 1$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule du terme général",
+          "justification": "$u_n = u_p \\times q^{\\,n-p}$ avec $p = 1$ donne un exposant $n-1$.",
+          "resultat_markdown": "$P_n = P_1 \\times (1{,}1)^{\\,n-1} = 20 \\times (1{,}1)^{\\,n-1}$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier la formule sur un terme déjà connu",
+          "justification": "Un test sur le rang 1 ou 2 détecte immédiatement une erreur d'exposant.",
+          "resultat_markdown": "Pour $n = 1$ : $20 \\times (1{,}1)^0 = 20 \\times 1 = 20 = P_1$ $\\checkmark$. Pour $n = 2$ : $20 \\times 1{,}1 = 22$, ce qui correspond bien à une hausse de 10 %."
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la valeur exacte de $P_{10}$",
+          "justification": "On applique la formule avec $n = 10$, puis on écrit $1{,}1 = \\dfrac{11}{10}$ pour obtenir une valeur exacte et non un arrondi.",
+          "resultat_markdown": "$P_{10} = 20 \\times (1{,}1)^9 = 20 \\times \\dfrac{11^9}{10^9} = \\dfrac{20 \\times 2\\,357\\,947\\,691}{10^9} = 47{,}15895382$ milliers d'unités"
+        },
+        {
+          "numero": 6,
+          "action": "Compter les termes de la somme demandée",
+          "justification": "La somme va de $P_1$ à $P_{10}$, soit $N = 10 - 1 + 1 = 10$ termes.",
+          "resultat_markdown": "$S = P_1 + P_2 + \\cdots + P_{10}$ comporte 10 termes"
+        },
+        {
+          "numero": 7,
+          "action": "Appliquer la formule de la somme et simplifier",
+          "justification": "$q = 1{,}1 \\neq 1$, donc $S = P_1 \\times \\dfrac{1-q^{10}}{1-q}$ ; le dénominateur $1 - 1{,}1 = -0{,}1$ est négatif, on change les deux signes.",
+          "resultat_markdown": "$S = 20 \\times \\dfrac{1 - (1{,}1)^{10}}{-0{,}1} = 20 \\times \\dfrac{(1{,}1)^{10} - 1}{0{,}1} = 200\\left[(1{,}1)^{10} - 1\\right]$"
+        },
+        {
+          "numero": 8,
+          "action": "Calculer la valeur numérique",
+          "justification": "$(1{,}1)^{10} = \\dfrac{11^{10}}{10^{10}} = 2{,}5937424601$.",
+          "resultat_markdown": "$S = 200 \\times (2{,}5937424601 - 1) = 200 \\times 1{,}5937424601 = 318{,}74849202$ milliers d'unités"
+        }
+      ],
+      "conclusion_markdown": "On a établi que $P_n = 20 \\times (1{,}1)^{n-1}$, que $P_{10} = 20 \\times (1{,}1)^9 \\approx 47{,}16$ milliers d'unités et que la production cumulée des dix premières années vaut environ $318{,}75$ milliers d'unités. Le raisonnement suivi - taux d'accroissement, puis raison, puis terme général, puis somme - est celui de tout exercice de suite géométrique appliquée à une évolution."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre $q = 0{,}1$ parce que le taux d'accroissement vaut $0{,}1$",
+          "pourquoi_faux": "Multiplier par $0{,}1$ divise la production par dix, alors que l'énoncé décrit une croissance. Le taux d'accroissement mesure seulement l'augmentation ; la raison, elle, doit aussi conserver la valeur de départ, d'où $q = 1 + t$.",
+          "correction_markdown": "Écrire la chaîne complète : $u_{n+1} = u_n + t\\,u_n = (1+t)u_n$, donc $q = 1 + t = 1{,}1$. Un contrôle d'ordre de grandeur suffit ensuite : avec $q = 1{,}1$ et $P_1 = 20$, on trouve $P_2 = 22$, ce qui est bien 10 % de plus."
+        },
+        {
+          "erreur_markdown": "Écrire $u_n = u_1 \\times q^{\\,n}$ quand le premier terme est $u_1$",
+          "pourquoi_faux": "Cette formule donnerait $u_1 = u_1 \\times q$, donc $q = 1$, ce qui est absurde. L'exposant compte les multiplications effectuées depuis le premier terme : pour passer de $u_1$ à $u_n$, il y en a $n - 1$, pas $n$.",
+          "correction_markdown": "Tester la formule sur le premier rang avant de l'utiliser : elle doit redonner exactement $u_1$. Seul $u_n = u_1 \\times q^{\\,n-1}$ passe ce test, puisque $q^0 = 1$."
+        },
+        {
+          "erreur_markdown": "Utiliser l'exposant 9 dans la formule de la somme de $P_1$ à $P_{10}$",
+          "pourquoi_faux": "L'exposant 9 vient du terme général $P_{10} = 20 \\times (1{,}1)^9$, où il compte des multiplications. Dans la somme, l'exposant compte des termes, et il y en a 10 de $P_1$ à $P_{10}$. Les deux nombres n'ont pas la même signification.",
+          "correction_markdown": "Écrire d'abord $N = 10 - 1 + 1 = 10$ sur la copie, puis reporter ce $N$ dans $\\dfrac{1-q^N}{1-q}$. La formule et le décompte restent ainsi deux étapes distinctes."
+        },
+        {
+          "erreur_markdown": "Obtenir une somme négative en laissant $\\dfrac{1 - (1{,}1)^{10}}{1 - 1{,}1}$ sans traiter les signes",
+          "pourquoi_faux": "Le numérateur $1 - (1{,}1)^{10}$ et le dénominateur $1 - 1{,}1$ sont tous deux négatifs, donc le quotient est positif. Une erreur de signe sur un seul des deux donne une production totale négative, résultat impossible pour une somme de productions.",
+          "correction_markdown": "Multiplier numérateur et dénominateur par $-1$ dès le départ pour travailler avec $\\dfrac{q^N - 1}{q - 1}$ quand $q > 1$, puis encadrer le résultat : la somme de 10 termes compris entre 20 et 47,16 doit se situer entre 200 et 471,6."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un capital de 500 000 FCFA est placé à intérêts composés au taux annuel de 6 %. On note $C_0 = 500\\,000$ le capital initial et $C_n$ le capital au bout de $n$ années.\n\n1. Exprimer $C_{n+1}$ en fonction de $C_n$, puis $C_n$ en fonction de $n$.\n2. Calculer le capital au bout de 5 ans, arrondi au franc près.",
+          "solution_markdown": "**1. Relation de récurrence et terme général.**\n\nChaque année, le capital augmente de 6 %, donc il est multiplié par $1 + \\dfrac{6}{100} = 1{,}06$ :\n\n$$\nC_{n+1} = 1{,}06 \\times C_n\n$$\n\nLa suite $(C_n)$ est géométrique de raison $q = 1{,}06$ et de premier terme $C_0 = 500\\,000$, d'indice $0$. La formule $u_n = u_p \\times q^{\\,n-p}$ avec $p = 0$ donne :\n\n$$\nC_n = 500\\,000 \\times (1{,}06)^{\\,n}\n$$\n\n**Contrôle.** Pour $n = 0$ : $500\\,000 \\times (1{,}06)^0 = 500\\,000 \\times 1 = 500\\,000 = C_0$ $\\checkmark$.\n\n**2. Capital au bout de 5 ans.**\n\n$$\nC_5 = 500\\,000 \\times (1{,}06)^5\n$$\n\nCalculons $(1{,}06)^5$ étape par étape :\n\n$$\n(1{,}06)^2 = 1{,}1236\n$$\n\n$$\n(1{,}06)^4 = \\left[(1{,}06)^2\\right]^2 = (1{,}1236)^2 = 1{,}26247696\n$$\n\n$$\n(1{,}06)^5 = (1{,}06)^4 \\times 1{,}06 = 1{,}26247696 \\times 1{,}06 = 1{,}3382255776\n$$\n\nd'où\n\n$$\nC_5 = 500\\,000 \\times 1{,}3382255776 = 669\\,112{,}7888\n$$\n\nLe capital au bout de 5 ans vaut environ **669 113 FCFA**.\n\n**Remarque.** Une addition naïve des intérêts donnerait $500\\,000 \\times (1 + 5 \\times 0{,}06) = 650\\,000$ FCFA. L'écart de 19 113 FCFA vient précisément du fait que les intérêts produisent eux-mêmes des intérêts."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $(u_n)$ une suite géométrique de raison $q$ telle que $u_2 = 12$ et $u_5 = 324$.\n\n1. Déterminer $q$, puis $u_0$.\n2. Calculer la somme $S = u_0 + u_1 + \\cdots + u_6$.",
+          "solution_markdown": "**1. Détermination de $q$ et de $u_0$.**\n\nLa formule du terme général donne, en partant de l'indice 2 :\n\n$$\nu_5 = u_2 \\times q^{\\,5-2} = u_2 \\times q^3\n$$\n\nEn remplaçant par les valeurs de l'énoncé :\n\n$$\n324 = 12 \\times q^3\n$$\n\n$$\nq^3 = \\frac{324}{12} = 27\n$$\n\nComme $27 = 3^3$ et que la fonction cube est bijective sur $\\mathbb{R}$ :\n\n$$\nq = 3\n$$\n\nPour obtenir $u_0$, on utilise $u_2 = u_0 \\times q^2$ :\n\n$$\n12 = u_0 \\times 3^2 = 9\\,u_0\n$$\n\n$$\nu_0 = \\frac{12}{9} = \\frac{4}{3}\n$$\n\n**Vérification.** $u_1 = \\dfrac{4}{3} \\times 3 = 4$, $u_2 = 4 \\times 3 = 12$ $\\checkmark$, et $u_5 = 12 \\times 3^3 = 12 \\times 27 = 324$ $\\checkmark$.\n\n**2. Calcul de la somme.**\n\nLa somme va de $u_0$ à $u_6$, elle comporte donc\n\n$$\nN = 6 - 0 + 1 = 7 \\text{ termes}\n$$\n\nComme $q = 3 \\neq 1$ :\n\n$$\nS = u_0 \\times \\frac{1 - q^{7}}{1 - q} = \\frac{4}{3} \\times \\frac{1 - 3^7}{1 - 3}\n$$\n\nCalculons $3^7$ :\n\n$$\n3^7 = 3^4 \\times 3^3 = 81 \\times 27 = 2\\,187\n$$\n\nd'où\n\n$$\nS = \\frac{4}{3} \\times \\frac{1 - 2\\,187}{-2} = \\frac{4}{3} \\times \\frac{-2\\,186}{-2} = \\frac{4}{3} \\times 1\\,093 = \\frac{4\\,372}{3}\n$$\n\n$$\nS = \\frac{4\\,372}{3} \\approx 1\\,457{,}33\n$$\n\n**Contrôle par addition directe.** $u_0 + u_1 + \\cdots + u_6 = \\dfrac{4}{3} + 4 + 12 + 36 + 108 + 324 + 972$. La somme des six derniers termes vaut $1\\,456$, à laquelle s'ajoute $\\dfrac{4}{3}$, soit $\\dfrac{4\\,368 + 4}{3} = \\dfrac{4\\,372}{3}$ $\\checkmark$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La population d'une ville était de 80 000 habitants en 2004 et croît de 3 % par an. On note $v_n$ la population $n$ années après 2004.\n\n1. Exprimer $v_n$ en fonction de $n$.\n2. Déterminer la première année où la population dépassera 120 000 habitants. *(On donne $\\ln 1{,}5 \\approx 0{,}4055$ et $\\ln 1{,}03 \\approx 0{,}029\\,559$.)*",
+          "solution_markdown": "**1. Expression de $v_n$.**\n\nUne croissance de 3 % par an correspond à une multiplication annuelle par $1 + \\dfrac{3}{100} = 1{,}03$ :\n\n$$\nv_{n+1} = 1{,}03 \\times v_n\n$$\n\nLa suite $(v_n)$ est géométrique de raison $1{,}03$ et de premier terme $v_0 = 80\\,000$ :\n\n$$\nv_n = 80\\,000 \\times (1{,}03)^{\\,n}\n$$\n\n**2. Franchissement du seuil de 120 000.**\n\nOn cherche le plus petit entier $n$ tel que\n\n$$\nv_n > 120\\,000 \\iff 80\\,000 \\times (1{,}03)^n > 120\\,000\n$$\n\nEn divisant les deux membres par $80\\,000$, nombre strictement positif, ce qui ne change pas le sens de l'inégalité :\n\n$$\n(1{,}03)^n > \\frac{120\\,000}{80\\,000} = 1{,}5\n$$\n\nLa fonction logarithme népérien étant strictement croissante sur $]0\\,;\\,+\\infty[$, l'inégalité se conserve :\n\n$$\n\\ln\\left[(1{,}03)^n\\right] > \\ln 1{,}5\n$$\n\n$$\nn \\ln 1{,}03 > \\ln 1{,}5\n$$\n\nComme $1{,}03 > 1$, on a $\\ln 1{,}03 > 0$ et la division ne change pas le sens :\n\n$$\nn > \\frac{\\ln 1{,}5}{\\ln 1{,}03} \\approx \\frac{0{,}4055}{0{,}029559} \\approx 13{,}72\n$$\n\nLe plus petit entier vérifiant cette condition est $n = 14$.\n\n**Vérification par encadrement.** Pour $n = 13$ : $(1{,}03)^{13} \\approx 1{,}4685$, donc $v_{13} \\approx 80\\,000 \\times 1{,}4685 \\approx 117\\,480$, inférieur à 120 000. Pour $n = 14$ : $(1{,}03)^{14} \\approx 1{,}5126$, donc $v_{14} \\approx 80\\,000 \\times 1{,}5126 \\approx 121\\,008$, supérieur à 120 000 $\\checkmark$.\n\n**Conclusion.** L'indice $n$ compte les années écoulées depuis 2004. La population dépassera 120 000 habitants en $2004 + 14 = \\mathbf{2018}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un énoncé qui parle de pourcentage, de taux d'accroissement ou d'évolution constante annonce presque toujours une suite géométrique : traduis-le en $u_{n+1} = q\\,u_n$ avant tout calcul.",
+        "La raison n'est pas le taux : une hausse de $t$ donne $q = 1+t$, une baisse donne $q = 1-t$. Vérifie toujours ton $q$ sur les deux premiers termes.",
+        "Dans $u_n = u_p \\times q^{\\,n-p}$, l'exposant compte les multiplications depuis le premier terme. Teste ta formule sur le premier rang : elle doit le redonner exactement.",
+        "Dans la formule de la somme, l'exposant compte les termes, pas les multiplications. Écris $N = m - p + 1$ sur ta copie avant d'appliquer la formule.",
+        "Une somme de termes positifs est positive et se situe entre $N$ fois le plus petit terme et $N$ fois le plus grand. Ce contrôle repère instantanément une erreur de signe.",
+        "Au Probatoire des séries C et E, les suites géométriques arrivent presque toujours habillées en situation concrète - production, population, capital - et l'exercice enchaîne reconnaissance, terme général et somme. Le premier point se joue dès la traduction du taux en raison."
+      ]
+    }
+  ]
+}

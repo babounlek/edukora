@@ -1,0 +1,171 @@
+{
+  "cours_id": "cours-taux-compression-chambre-combustion-bepc",
+  "meta": {
+    "titre": "Calculer le volume de la chambre de combustion à partir du taux de compression",
+    "matiere": "Physique-Chimie-Technologie",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Technologie - moteurs thermiques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "taux de compression",
+      "cylindrée",
+      "chambre de combustion",
+      "PMH",
+      "PMB",
+      "moteur"
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": "",
+      "module_numero": "2",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-pct-2018-cameroun",
+    "epreuve_titre": "BEPC Physique-Chimie-Technologie 2018 Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-pct-2018-cameroun-ex2-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur la notice d'un moteur figure un nombre sans unité : 9, ou 18 pour un Diesel. Ce nombre décide de la puissance du moteur, du carburant qu'il accepte et même du bruit qu'il fait. C'est le taux de compression, et il se calcule à partir de deux volumes qu'il faut savoir distinguer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un cylindre, un piston, le point mort haut et le point mort bas",
+        "Savoir ce qu'est la cylindrée d'un moteur",
+        "Savoir résoudre une équation du premier degré à une inconnue"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les deux volumes du cylindre",
+      "contenu_markdown": "Dans un cylindre de moteur, le piston se déplace entre deux positions extrêmes :\n- le **point mort haut (PMH)**, sa position la plus haute ;\n- le **point mort bas (PMB)**, sa position la plus basse.\n\nDeux volumes en découlent :\n- la **cylindrée unitaire** $C$ est le volume **balayé** par le piston entre le PMB et le PMH ;\n- le **volume de la chambre de combustion** $v$ est le volume qui reste au-dessus du piston lorsqu'il est au PMH.\n\nQuand le piston est au PMB, les gaz occupent donc $C + v$ ; quand il est au PMH, ils n'occupent plus que $v$.\n\nLe **taux de compression** $\\rho$ est le quotient de ces deux volumes :\n\n$$\\rho = \\frac{C + v}{v}$$\n\nC'est un nombre **sans unité**. Un moteur à essence a un taux voisin de 9 à 11 ; un moteur Diesel, qui doit enflammer le gasoil par la seule compression de l'air, monte jusqu'à 18 ou 22.\n\nEn isolant $v$, on obtient une formule directement utilisable :\n\n$$v = \\frac{C}{\\rho - 1}$$",
+      "formule_principale": "\\rho = \\frac{C + v}{v} \\qquad \\Longleftrightarrow \\qquad v = \\frac{C}{\\rho - 1}",
+      "variantes": [
+        {
+          "nom": "Cas d'un moteur à plusieurs cylindres",
+          "quand_utiliser": "Quand l'énoncé donne la cylindrée **totale** et le nombre de cylindres",
+          "contenu_markdown": "Le taux de compression se calcule toujours sur **un seul** cylindre. Si l'énoncé fournit la cylindrée totale $C_t$ d'un moteur à $N$ cylindres, il faut d'abord revenir à la cylindrée unitaire $C = \\dfrac{C_t}{N}$, puis appliquer $v = \\dfrac{C}{\\rho - 1}$. Le volume $v$ ainsi obtenu est celui d'une seule chambre de combustion."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On lit sur la notice d'un moteur à combustion interne : taux de compression 9 ; cylindrée $C = 400\\ \\text{cm}^3$. Calculer le volume $v$ de la chambre de combustion.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever les données",
+          "justification": "Le taux de compression est sans unité ; la cylindrée est un volume.",
+          "resultat_markdown": "$\\rho = 9$ ; $C = 400\\ \\text{cm}^3$ ; inconnue : $v$."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la relation de définition",
+          "justification": "Le numérateur est le volume au PMB, c'est-à-dire la cylindrée **plus** la chambre ; le dénominateur est le volume au PMH, c'est-à-dire la chambre seule.",
+          "resultat_markdown": "$$\\rho = \\frac{C + v}{v}$$"
+        },
+        {
+          "numero": 3,
+          "action": "Substituer les valeurs connues",
+          "justification": "On remplace $\\rho$ et $C$, en gardant $v$ comme inconnue.",
+          "resultat_markdown": "$$9 = \\frac{400 + v}{v}$$"
+        },
+        {
+          "numero": 4,
+          "action": "Supprimer le dénominateur",
+          "justification": "On multiplie les deux membres par $v$, qui n'est pas nul.",
+          "resultat_markdown": "$$9v = 400 + v$$"
+        },
+        {
+          "numero": 5,
+          "action": "Regrouper les termes en $v$",
+          "justification": "On retranche $v$ aux deux membres pour rassembler l'inconnue dans le membre de gauche.",
+          "resultat_markdown": "$$9v - v = 400 \\qquad \\text{soit} \\qquad 8v = 400$$"
+        },
+        {
+          "numero": 6,
+          "action": "Résoudre",
+          "justification": "On divise les deux membres par 8.",
+          "resultat_markdown": "$$v = \\frac{400}{8} = 50\\ \\text{cm}^3$$"
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier le résultat",
+          "justification": "On remplace $v$ par la valeur trouvée dans la relation de départ : on doit retrouver le taux annoncé.",
+          "resultat_markdown": "$$\\frac{400 + 50}{50} = \\frac{450}{50} = 9 \\quad \\checkmark$$"
+        }
+      ],
+      "conclusion_markdown": "Le volume de la chambre de combustion vaut $v = 50\\ \\text{cm}^3$, et la vérification redonne bien le taux de compression 9 annoncé par la notice."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\rho = \\dfrac{C}{v}$",
+          "pourquoi_faux": "C'est l'erreur la plus fréquente. La cylindrée est le volume **balayé** par le piston ; elle ne comprend pas la chambre de combustion. Le volume total au PMB vaut donc $C + v$, et non $C$. Cette confusion donnerait ici $v = 400/9 \\approx 44,4\\ \\text{cm}^3$, un résultat faux.",
+          "correction_markdown": "Fais toujours le dessin mental : au PMB, les gaz occupent la course du piston **plus** la chambre au-dessus."
+        },
+        {
+          "erreur_markdown": "Oublier de regrouper les termes en $v$",
+          "pourquoi_faux": "Passer de $9v = 400 + v$ à $v = 400/9$ revient à supprimer le $v$ du membre de droite sans le retrancher au membre de gauche. C'est une faute d'algèbre, pas de physique, mais elle coûte tout autant.",
+          "correction_markdown": "Écris explicitement la ligne $9v - v = 400$. Elle ne prend qu'une seconde et supprime le risque."
+        },
+        {
+          "erreur_markdown": "Attribuer une unité au taux de compression",
+          "pourquoi_faux": "Le taux de compression est un quotient de deux volumes : les unités se simplifient et le résultat est un nombre pur. Écrire « taux de compression = 9 cm³ » signale une incompréhension de la grandeur.",
+          "correction_markdown": "Contrôle par les unités : $\\dfrac{\\text{cm}^3}{\\text{cm}^3}$ est sans dimension."
+        },
+        {
+          "erreur_markdown": "Utiliser la cylindrée totale d'un moteur à plusieurs cylindres",
+          "pourquoi_faux": "Le taux de compression caractérise **un** cylindre. Employer la cylindrée totale d'un quatre cylindres dans la formule multiplie le volume de chambre trouvé par quatre.",
+          "correction_markdown": "Divise d'abord la cylindrée totale par le nombre de cylindres, puis applique la formule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur a une cylindrée unitaire $C = 300\\ \\text{cm}^3$ et un volume de chambre de combustion $v = 30\\ \\text{cm}^3$. Calculer son taux de compression.",
+          "solution_markdown": "**Formule.**\n\n$$\\rho = \\frac{C + v}{v}$$\n\n**Application numérique.**\n\n$$\\rho = \\frac{300 + 30}{30} = \\frac{330}{30} = 11$$\n\nLe taux de compression vaut $\\rho = 11$. C'est un nombre sans unité, valeur typique d'un moteur à essence."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur Diesel a un taux de compression de 18 et une chambre de combustion de volume $v = 25\\ \\text{cm}^3$. Calculer sa cylindrée unitaire.",
+          "solution_markdown": "**Étape 1 - écrire la relation.**\n\n$$\\rho = \\frac{C + v}{v}$$\n\n**Étape 2 - isoler $C$.** On multiplie les deux membres par $v$ :\n\n$$\\rho \\times v = C + v$$\n\npuis on retranche $v$ :\n\n$$C = \\rho \\times v - v = v(\\rho - 1)$$\n\n**Étape 3 - appliquer.**\n\n$$C = 25 \\times (18 - 1) = 25 \\times 17 = 425\\ \\text{cm}^3$$\n\n**Vérification.** $\\dfrac{425 + 25}{25} = \\dfrac{450}{25} = 18$ : le taux annoncé est retrouvé.\n\nLa cylindrée unitaire vaut $425\\ \\text{cm}^3$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un moteur à quatre cylindres a une cylindrée totale de $1600\\ \\text{cm}^3$ et un taux de compression de 9. Calculer le volume de la chambre de combustion d'un cylindre, puis le volume total occupé par les gaz dans ce cylindre lorsque le piston est au point mort bas.",
+          "solution_markdown": "**Étape 1 - revenir à la cylindrée unitaire.** Le taux de compression caractérise un seul cylindre. Les quatre cylindres étant identiques :\n\n$$C = \\frac{C_t}{N} = \\frac{1600}{4} = 400\\ \\text{cm}^3$$\n\n**Étape 2 - calculer le volume de la chambre.** On part de la relation de définition :\n\n$$\\rho = \\frac{C + v}{v} \\quad \\Rightarrow \\quad \\rho v = C + v \\quad \\Rightarrow \\quad v(\\rho - 1) = C \\quad \\Rightarrow \\quad v = \\frac{C}{\\rho - 1}$$\n\n$$v = \\frac{400}{9 - 1} = \\frac{400}{8} = 50\\ \\text{cm}^3$$\n\n**Étape 3 - calculer le volume au point mort bas.** Lorsque le piston est au PMB, les gaz occupent la cylindrée **plus** la chambre :\n\n$$V_{PMB} = C + v = 400 + 50 = 450\\ \\text{cm}^3$$\n\n**Vérification.** $\\dfrac{V_{PMB}}{v} = \\dfrac{450}{50} = 9$ : le taux de compression est bien retrouvé.\n\n**Conclusion.** Chaque chambre de combustion a un volume de $50\\ \\text{cm}^3$, et les gaz occupent $450\\ \\text{cm}^3$ dans un cylindre lorsque le piston est au point mort bas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux volumes, deux positions du piston : $C + v$ au point mort bas, $v$ seul au point mort haut.",
+        "Le taux de compression est leur quotient : $\\rho = \\dfrac{C + v}{v}$, un nombre sans unité.",
+        "La formule résolue $v = \\dfrac{C}{\\rho - 1}$ te fait gagner trois lignes le jour de l'épreuve. Sache la retrouver, mais retiens-la.",
+        "N'écris jamais $\\rho = \\dfrac{C}{v}$ : la cylindrée ne contient pas la chambre de combustion.",
+        "Vérifie toujours en réinjectant ta valeur dans la relation de départ : le taux annoncé doit réapparaître.",
+        "Au BEPC, cette question tombe dans l'exercice d'applications directes pour environ 0,75 point, souvent couplée à un calcul de cylindrée totale."
+      ]
+    }
+  ]
+}

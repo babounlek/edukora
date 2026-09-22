@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-construire-diagramme-cas-utilisation-tle-ti",
+  "meta": {
+    "titre": "Construire un diagramme de cas d'utilisation UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de cas d'utilisation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "UML",
+      "diagramme de cas d'utilisation",
+      "include",
+      "généralisation",
+      "acteur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex1-q6-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Identifier séparément les acteurs et les cas d'utilisation ne suffit pas : le diagramme, lui, doit montrer COMMENT ils se relient entre eux. C'est la question qui rapporte le plus de points dans un exercice de modélisation UML, et c'est aussi celle où une construction méthodique, étape par étape, évite le plus d'erreurs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier les acteurs d'un système à partir d'un texte de cas.",
+        "Savoir identifier les cas d'utilisation d'un système et repérer une relation `<<include>>`."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Cinq éléments graphiques, cinq règles de tracé",
+      "contenu_markdown": "Un diagramme de cas d'utilisation combine cinq éléments graphiques normalisés. La frontière du système est un rectangle qui matérialise ce qui est modélisé, avec son nom écrit au-dessus ou en haut du rectangle. Les acteurs, représentés par un petit personnage stylisé (ou un rectangle stéréotypé pour un acteur non humain), sont placés à l'EXTÉRIEUR de ce rectangle. Les cas d'utilisation, en ellipses, sont placés à l'INTÉRIEUR. Une association (trait plein simple, sans flèche) relie un acteur à chaque cas d'utilisation qu'il déclenche. Deux relations structurantes complètent l'ensemble : `<<include>>` (flèche en pointillés, du cas englobant vers le sous-cas systématiquement exécuté) et la généralisation d'acteur (flèche pleine à tête triangulaire creuse, de l'acteur spécialisé vers l'acteur plus général dont il hérite des droits).",
+      "formule_principale": "Frontière (rectangle) + acteurs (hors frontière) + cas d'utilisation (ellipses, dans la frontière) + associations + include/généralisation"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pour le système SOCOPRO : acteurs Visiteur (habitant de la ville), Employé et Responsable de service (spécialisation d'Employé) ; cas d'utilisation Consulter le planning des locations, Effectuer une location (incluant Vérifier la disponibilité) et Éditer le récapitulatif des locations du service. Construisez le diagramme de cas d'utilisation correspondant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tracer la frontière du système et la nommer",
+          "justification": "Toute la construction s'organise ensuite autour de ce rectangle de référence.",
+          "resultat_markdown": "Un rectangle intitulé « Système de gestion des locations SOCOPRO »."
+        },
+        {
+          "numero": 2,
+          "action": "Placer les acteurs à l'extérieur du rectangle",
+          "justification": "Un acteur n'appartient jamais à l'intérieur du système qu'il utilise.",
+          "resultat_markdown": "Visiteur, Employé et Responsable de service placés à gauche du rectangle."
+        },
+        {
+          "numero": 3,
+          "action": "Placer les cas d'utilisation en ellipses à l'intérieur",
+          "justification": "Chaque service rendu par le système doit apparaître dans la frontière.",
+          "resultat_markdown": "Quatre ellipses : Consulter le planning des locations, Effectuer une location, Vérifier la disponibilité, Éditer le récapitulatif des locations du service."
+        },
+        {
+          "numero": 4,
+          "action": "Relier chaque acteur à ses cas d'utilisation par une association",
+          "justification": "L'association matérialise qui déclenche quoi.",
+          "resultat_markdown": "Visiteur -- Consulter le planning ; Employé -- Effectuer une location et Employé -- Consulter le planning ; Responsable de service -- Éditer le récapitulatif."
+        },
+        {
+          "numero": 5,
+          "action": "Ajouter les relations structurantes include et généralisation",
+          "justification": "Ces deux relations restent distinctes d'une simple association et se tracent différemment.",
+          "resultat_markdown": "`<<include>>` de Effectuer une location vers Vérifier la disponibilité ; généralisation de Responsable de service vers Employé (le Responsable hérite ainsi de Effectuer une location et Consulter le planning, sans qu'il faille les redessiner)."
+        }
+      ],
+      "conclusion_markdown": "Le diagramme complet montre en un coup d'œil qui interagit avec le système de location SOCOPRO, ce que chacun peut y faire, et comment la vérification de disponibilité et l'héritage du responsable de service s'articulent avec les actions de base."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer un acteur à l'intérieur du rectangle du système",
+          "pourquoi_faux": "Un acteur est par définition EXTÉRIEUR au système : il interagit avec lui de l'extérieur, jamais depuis l'intérieur, quelle que soit son importance dans l'organisation.",
+          "correction_markdown": "Vérifie systématiquement que tous tes acteurs se trouvent hors du rectangle, et tous tes cas d'utilisation à l'intérieur, sans aucune exception."
+        },
+        {
+          "erreur_markdown": "Oublier la relation de généralisation entre deux acteurs qui partagent des actions",
+          "pourquoi_faux": "Sans cette relation, il faudrait redessiner sur l'acteur spécialisé toutes les associations déjà tracées sur l'acteur général, ce qui alourdit le diagramme et masque la relation hiérarchique réelle entre les deux rôles.",
+          "correction_markdown": "Dès que deux acteurs partagent une partie de leurs actions, cherche systématiquement s'il ne s'agit pas d'une spécialisation de l'un par rapport à l'autre plutôt que de deux acteurs indépendants."
+        },
+        {
+          "erreur_markdown": "Tracer une relation `<<include>>` avec une flèche pleine au lieu d'une flèche en pointillés",
+          "pourquoi_faux": "La flèche pleine est réservée à l'association simple (acteur vers cas d'utilisation) ; confondre les deux notations rend le diagramme ambigu pour le correcteur, qui ne peut plus distinguer qui déclenche l'action de ce qui l'inclut systématiquement.",
+          "correction_markdown": "Réserve toujours le trait plein sans flèche à l'association acteur-cas d'utilisation, et la flèche en pointillés étiquetée `<<include>>` à la relation entre deux cas d'utilisation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un cybercafé a pour acteurs Client (démarre une session) et Gérant (encaisse un paiement), sans relation entre les deux. Décrivez, étape par étape, la construction du diagramme correspondant.",
+          "solution_markdown": "1) Tracer un rectangle intitulé « Système du cybercafé ». 2) Placer Client et Gérant à l'extérieur du rectangle, de part et d'autre. 3) Placer deux ellipses à l'intérieur : Démarrer une session, Encaisser un paiement. 4) Relier Client par une association à Démarrer une session, et Gérant par une association à Encaisser un paiement. Aucune relation `<<include>>` ni généralisation n'est nécessaire ici, les deux cas d'utilisation étant indépendants et les deux acteurs disjoints."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sur un distributeur automatique de billets, le Client retire de l'argent, ce qui déclenche systématiquement une vérification du solde du compte. Décrivez la construction du diagramme correspondant, en particulier le traitement de la vérification.",
+          "solution_markdown": "1) Tracer un rectangle intitulé « Système du distributeur automatique ». 2) Placer l'acteur Client à l'extérieur. 3) Placer deux ellipses à l'intérieur : Retirer de l'argent, Vérifier le solde du compte. 4) Relier Client par une association au seul cas Retirer de l'argent - le Client ne déclenche pas lui-même la vérification, c'est le système qui l'exécute automatiquement à chaque retrait. 5) Tracer une flèche en pointillés étiquetée `<<include>>` de Retirer de l'argent vers Vérifier le solde du compte, puisque cette vérification est un passage obligé et systématique de tout retrait."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une plateforme de e-learning a pour acteurs Étudiant (s'inscrit à un cours, consulte ses notes) et Enseignant, qui est lui-même un ancien étudiant de la plateforme et conserve donc le droit de consulter des notes (les siennes en tant qu'apprenant continu), en plus de son droit propre de publier un cours. Construisez le diagramme complet, en justifiant chaque relation utilisée.",
+          "solution_markdown": "1) Tracer un rectangle intitulé « Système de e-learning ». 2) Placer Étudiant et Enseignant à l'extérieur du rectangle. 3) Placer trois ellipses à l'intérieur : S'inscrire à un cours, Consulter ses notes, Publier un cours. 4) Relier Étudiant par association à S'inscrire à un cours et à Consulter ses notes. 5) Relier Enseignant par association uniquement à son droit propre, Publier un cours - PAS aux deux cas déjà couverts par Étudiant. 6) Tracer une généralisation de Enseignant vers Étudiant : puisque l'énoncé précise qu'un enseignant reste un ancien étudiant et conserve les mêmes droits que lui, Enseignant hérite automatiquement de S'inscrire à un cours et Consulter ses notes sans qu'il soit nécessaire de redessiner ces deux associations sur Enseignant. C'est exactement le même principe que la relation Responsable de service / Employé de l'exercice sur SOCOPRO : un acteur spécialisé n'a besoin d'associations propres que pour ses droits QUI LUI SONT PROPRES, jamais pour ceux qu'il hérite déjà de l'acteur général."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Construis toujours dans le même ordre : frontière du système, acteurs à l'extérieur, cas d'utilisation en ellipses à l'intérieur, puis associations et relations structurantes.",
+        "Une association simple (trait plein) relie un acteur au cas qu'il déclenche lui-même, jamais à un cas qu'il hérite d'un autre acteur.",
+        "`<<include>>` (pointillés) relie deux cas d'utilisation entre eux, jamais un acteur à un cas.",
+        "La généralisation d'acteur (flèche pleine à tête creuse) évite de dupliquer les associations d'un acteur spécialisé qui hérite des droits d'un acteur plus général.",
+        "Au BAC TI, dresse toujours la liste complète des acteurs et cas d'utilisation au brouillon avant de tracer le moindre trait sur la copie : la disposition se corrige en quelques secondes sur un brouillon, beaucoup plus difficilement une fois le rectangle du système déjà posé."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-identifier-les-entites-et-associations-d-un-systeme-d-information-tle-tronc-commun",
+  "meta": {
+    "titre": "Identifier les entités et associations d'un système d'information",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Modélisation Merise - MCD",
+    "duree_estimee_min": 20,
+    "tags": [
+      "Merise",
+      "entités",
+      "associations",
+      "analyse de texte"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qA1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de dessiner le moindre schéma, il faut savoir lire un texte descriptif et en extraire ce qui deviendra les briques du futur modèle : les entités (les « objets » du système) et les associations (les liens entre eux). C'est une compétence de lecture méthodique, pas de dessin."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une base de données dans les grandes lignes."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux réflexes de lecture : l'identifiant et le verbe",
+      "contenu_markdown": "**Repérer une entité** : chercher, dans le texte, chaque objet qui possède un identifiant propre, explicitement cité (« identifié par un code unique », « défini par un identificateur unique », « identifié par un numéro »...). Sans identifiant propre, un ensemble d'attributs reste rattaché à l'entité qui le porte, il ne devient jamais une entité séparée.\n\n**Repérer une association** : chercher les verbes qui relient deux entités entre elles (« composé de », « publier », « provenant de »...). Chaque verbe de ce type devient une association nommée entre les deux entités concernées.\n\nMéthode pratique : relire le texte phrase par phrase, souligner chaque identifiant unique mentionné (candidat entité) puis chaque verbe reliant deux entités déjà repérées (candidat association)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un forum est identifié par un code unique. Il est composé de plusieurs rubriques, elles-mêmes identifiées par un code. Identifier les entités et l'association entre elles.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le premier identifiant explicite",
+          "justification": "« Un forum est identifié par un code unique » signale une entité.",
+          "resultat_markdown": "Entité FORUM (identifiant : code unique)."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer le second identifiant explicite",
+          "justification": "« rubriques, elles-mêmes identifiées par un code » signale une seconde entité.",
+          "resultat_markdown": "Entité RUBRIQUE (identifiant : code)."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer le verbe qui relie les deux entités",
+          "justification": "« composé de » relie FORUM et RUBRIQUE.",
+          "resultat_markdown": "Association COMPOSER entre FORUM et RUBRIQUE."
+        }
+      ],
+      "conclusion_markdown": "On obtient deux entités et une association simplement en suivant les identifiants et les verbes du texte, sans avoir eu besoin de connaître le domaine métier des forums de discussion."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Transformer un ensemble d'attributs descriptifs en entité séparée",
+          "pourquoi_faux": "Un groupe d'attributs qui décrit une entité (par exemple le « profil » d'un auteur : e-mail, nom, date de naissance) n'est une entité à part entière que s'il possède SON PROPRE identifiant. Sans identifiant propre mentionné dans le texte, ces attributs restent rattachés à l'entité qu'ils décrivent.",
+          "correction_markdown": "Vérifier systématiquement qu'un candidat-entité possède un identifiant propre explicitement cité dans le texte avant de le retenir."
+        },
+        {
+          "erreur_markdown": "Oublier une association parce que le verbe est implicite",
+          "pourquoi_faux": "Certaines relations entre entités sont exprimées sans verbe d'action évident (par exemple « un message relatif à une rubrique donnée » exprime un lien tout aussi réel qu'un verbe explicite comme « publier »).",
+          "correction_markdown": "Chercher aussi les tournures indirectes (« relatif à », « provenant de », « de tel forum ») qui expriment un lien entre deux entités, pas seulement les verbes d'action explicites."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "« Un élève est identifié par un matricule et est inscrit dans une seule classe, elle-même identifiée par un code. » Identifier les entités et l'association.",
+          "solution_markdown": "Entités : ÉLÈVE (identifiant : matricule) et CLASSE (identifiant : code). Association : INSCRIRE (ou « Appartenir ») entre ÉLÈVE et CLASSE."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "« Un livre, identifié par un ISBN, est écrit par un ou plusieurs auteurs. Un auteur est identifié par un numéro et connu par son nom et sa nationalité. » Identifier les entités et l'association.",
+          "solution_markdown": "Entités : LIVRE (identifiant : ISBN) et AUTEUR (identifiant : numéro, avec les attributs nom et nationalité). Association : ÉCRIRE entre AUTEUR et LIVRE."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "« Un client, identifié par un numéro, passe des commandes. Chaque commande, identifiée par un numéro, est livrée à une adresse précise, composée d'une rue, d'une ville et d'un code postal. » L'adresse de livraison doit-elle être modélisée comme une entité séparée ou comme des attributs de COMMANDE ? Justifier avec la méthode du cours.",
+          "solution_markdown": "L'adresse de livraison doit être modélisée comme un ensemble d'attributs de l'entité COMMANDE (rueLivraison, villeLivraison, codePostalLivraison), pas comme une entité séparée. En appliquant la méthode du cours : le texte ne donne aucun identifiant propre à l'adresse elle-même (pas de « code adresse unique » mentionné) ; elle est seulement décrite par trois informations qui précisent une commande donnée. Sans identifiant propre explicite, elle reste rattachée à l'entité qu'elle décrit, ici COMMANDE."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une entité se reconnaît à son identifiant propre, explicitement cité dans le texte.",
+        "Un ensemble d'attributs sans identifiant propre reste rattaché à l'entité qu'il décrit, ce n'est jamais une entité séparée.",
+        "Une association se reconnaît à un verbe (ou une tournure indirecte comme « relatif à ») qui relie deux entités déjà identifiées.",
+        "Relire le texte phrase par phrase, en soulignant systématiquement identifiants et verbes de liaison, évite d'oublier une entité ou une association."
+      ]
+    }
+  ]
+}

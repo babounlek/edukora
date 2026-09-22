@@ -1,0 +1,143 @@
+{
+  "cours_id": "cours-regroupement-classes-histogramme-1ere-a",
+  "meta": {
+    "titre": "Regroupement d'une série statistique en classes et construction d'un histogramme",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "statistique",
+      "classes d'amplitude égale",
+      "histogramme",
+      "classe modale"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2002-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Cameroun - Session 2002 (MINEDUC-OBC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2002-officiel-cameroun-ex2-q2b-1",
+    "rappels_lies": [
+      "rdm-probatoire-a-maths-2002-officiel-cameroun-ex2-q2c-1",
+      "rdm-probatoire-a-maths-2002-officiel-cameroun-ex2-q2e-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une classe entière a passé un devoir de mathématiques, et tu obtiens un tableau avec 21 notes différentes, chacune avec son effectif. Impossible de résumer ça d'un coup d'œil. En regroupant ces valeurs en quelques classes de même largeur, tu fais apparaître d'un coup la tendance générale de la classe : où se concentrent les notes, quelle proportion a réussi. C'est exactement ce que permettent le regroupement en classes et sa représentation graphique, l'histogramme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Additionner une liste d'effectifs pour obtenir un effectif total.",
+        "Lire et compléter un tableau à double entrée.",
+        "Connaître la notion d'intervalle (borne incluse [ ou exclue ])."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Regrouper en classes d'amplitude égale",
+      "contenu_markdown": "Pour regrouper une série en $k$ classes de même amplitude, on calcule d'abord l'étendue de la série (valeur maximale moins valeur minimale), puis on la divise par $k$ pour obtenir l'amplitude de chaque classe. On additionne ensuite les effectifs des valeurs qui appartiennent à chaque classe. La classe modale est celle qui possède l'effectif le plus élevé. L'histogramme représente chaque classe par un rectangle juxtaposé aux autres, de hauteur égale à l'effectif quand toutes les amplitudes sont égales.",
+      "formule_principale": "\\text{amplitude} = \\dfrac{\\text{étendue}}{\\text{nombre de classes}}",
+      "variantes": [
+        {
+          "nom": "Classes d'amplitudes inégales",
+          "quand_utiliser": "Quand l'énoncé impose des classes de largeurs différentes plutôt qu'égales.",
+          "contenu_markdown": "La hauteur d'un rectangle de l'histogramme n'est alors plus l'effectif brut mais la densité, effectif divisé par amplitude de la classe : c'est l'aire du rectangle, et non sa hauteur, qui doit rester proportionnelle à l'effectif."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Les notes obtenues par 54 élèves à un devoir sont réparties sur l'échelle de 0 à 20. Regrouper cette série en quatre classes de même amplitude et en déduire la classe modale.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'amplitude de chaque classe",
+          "justification": "Les notes s'étendent de 0 à 20, soit une étendue de 20, à répartir en 4 classes égales.",
+          "resultat_markdown": "$\\dfrac{20}{4}=5$, les classes sont $[0\\,;5[$, $[5\\,;10[$, $[10\\,;15[$, $[15\\,;20]$"
+        },
+        {
+          "numero": 2,
+          "action": "Additionner les effectifs de chaque classe",
+          "justification": "On regroupe les effectifs des notes appartenant à chaque intervalle.",
+          "resultat_markdown": "$[0\\,;5[ \\to 4 \\quad [5\\,;10[ \\to 17 \\quad [10\\,;15[ \\to 29 \\quad [15\\,;20] \\to 4$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier le total",
+          "justification": "La somme des effectifs de classes doit redonner l'effectif total de la série.",
+          "resultat_markdown": "$4+17+29+4=54$"
+        },
+        {
+          "numero": 4,
+          "action": "Identifier la classe modale",
+          "justification": "C'est la classe qui possède l'effectif le plus élevé.",
+          "resultat_markdown": "$29$ est le plus grand effectif, atteint par $[10\\,;15[$"
+        }
+      ],
+      "conclusion_markdown": "La classe modale de cette série est $[10\\,;15[$ : c'est l'intervalle de notes le plus représenté parmi les 54 élèves."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier une valeur à la frontière entre deux classes, par exemple compter la note 5 dans $[0\\,;5[$ au lieu de $[5\\,;10[$.",
+          "pourquoi_faux": "Le crochet fermé du côté gauche et ouvert du côté droit, $[0\\,;5[$, signifie que 5 n'appartient PAS à cette classe : il appartient à la classe suivante qui commence à 5.",
+          "correction_markdown": "Relire la notation de chaque classe avant de répartir les effectifs : une borne avec crochet ouvert exclut la valeur, une borne avec crochet fermé l'inclut."
+        },
+        {
+          "erreur_markdown": "Tracer un histogramme avec des espaces entre les rectangles, comme pour un diagramme en bâtons.",
+          "pourquoi_faux": "Les classes d'une série regroupée forment une partition continue de l'étendue des valeurs : il n'y a pas de « trou » entre elles, contrairement à des valeurs isolées d'un diagramme en bâtons.",
+          "correction_markdown": "Juxtaposer systématiquement les rectangles de l'histogramme, chaque rectangle commençant exactement où finit le précédent."
+        },
+        {
+          "erreur_markdown": "Utiliser l'effectif brut comme hauteur de rectangle même quand les classes n'ont pas la même amplitude.",
+          "pourquoi_faux": "Si les amplitudes diffèrent, une classe deux fois plus large « paraît » deux fois plus peuplée pour un même effectif alors que ce n'est pas le cas : c'est l'aire du rectangle qui doit représenter l'effectif, pas sa hauteur seule.",
+          "correction_markdown": "Calculer la densité, effectif divisé par amplitude, et l'utiliser comme hauteur dès que les classes n'ont pas toutes la même largeur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série de 30 valeurs comprises entre 0 et 40 doit être regroupée en 4 classes de même amplitude. Quelle est l'amplitude de chaque classe, et quelles sont les bornes des quatre classes ?",
+          "solution_markdown": "L'étendue de la série est $40-0=40$. Pour 4 classes de même amplitude, l'amplitude vaut $\\dfrac{40}{4}=10$.\n\nLes quatre classes sont donc $[0\\,;10[$, $[10\\,;20[$, $[20\\,;30[$ et $[30\\,;40]$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série statistique donne les effectifs suivants après regroupement en classes de même amplitude : $[0\\,;10[ \\to 6$, $[10\\,;20[ \\to 15$, $[20\\,;30[ \\to 9$. Calculer l'effectif total, déterminer la classe modale, puis calculer le pourcentage de valeurs appartenant à $[20\\,;30[$.",
+          "solution_markdown": "L'effectif total est $6+15+9=30$.\n\nLa classe modale est celle avec l'effectif le plus élevé, soit $15$, donc $[10\\,;20[$.\n\nLe pourcentage de valeurs dans $[20\\,;30[$ est $\\dfrac{9}{30}\\times100=30\\,\\%$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 40 valeurs est regroupée en classes d'amplitudes inégales : $[0\\,;5[ \\to 8$, $[5\\,;15[ \\to 20$, $[15\\,;25[ \\to 12$. Un élève affirme que la classe $[5\\,;15[$ est « deux fois plus représentée » que $[15\\,;25[$ simplement parce que son effectif (20) est presque le double (12). Discuter cette affirmation en comparant les densités des deux classes.",
+          "solution_markdown": "L'effectif seul ne suffit pas à comparer deux classes d'amplitudes différentes : il faut comparer leurs densités, effectif divisé par amplitude.\n\nDensité de $[5\\,;15[$ (amplitude 10) : $\\dfrac{20}{10}=2$ valeurs par unité.\n\nDensité de $[15\\,;25[$ (amplitude 10) : $\\dfrac{12}{10}=1,2$ valeur par unité.\n\nIci, les deux classes ont en réalité la même amplitude (10), donc la comparaison directe des effectifs (20 contre 12) est valable : $[5\\,;15[$ est bien plus dense. L'élève a raison dans ce cas précis, mais son raisonnement, comparer les effectifs bruts sans vérifier les amplitudes, aurait été faux si les classes avaient eu des largeurs différentes : c'est la densité, et non l'effectif brut, qu'il faut comparer par principe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Calcule l'amplitude d'une classe en divisant l'étendue de la série par le nombre de classes voulu.",
+        "Additionne les effectifs valeur par valeur pour remplir chaque classe, puis vérifie que la somme des classes redonne l'effectif total.",
+        "La classe modale est simplement celle qui a le plus grand effectif, aucun calcul supplémentaire n'est nécessaire une fois le tableau de classes rempli.",
+        "Dans un histogramme à amplitudes égales, la hauteur des rectangles est directement l'effectif ; à amplitudes inégales, utilise la densité.",
+        "Les rectangles d'un histogramme se touchent toujours, sans espace, car les classes forment une partition continue de l'étendue.",
+        "Au Probatoire, ce type de question enchaîne souvent effectif total, regroupement en classes, classe modale et pourcentage dans le même exercice : prépare chaque réponse en gardant les effectifs déjà calculés sous les yeux plutôt que de tout recompter à chaque sous-question."
+      ]
+    }
+  ]
+}

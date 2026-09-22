@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-se-connecter-a-une-base-de-donnees-mysql-avec-php-extension-mysqli-ti-2021",
+  "meta": {
+    "titre": "Se connecter à une base de données MySQL avec PHP (extension mysqli)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation serveur (PHP)",
+    "duree_estimee_min": 25,
+    "tags": [
+      "mysqli",
+      "MySQL",
+      "connexion base de données",
+      "PHP",
+      "close()"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex1-qII-5-2-0",
+    "rappels_lies": [
+      "rdm-bac-ti-info-prog-2021-ex1-qII-5-3-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un script PHP ne peut lire ni modifier aucune donnée tant qu'il n'a pas établi de connexion avec le serveur MySQL qui les héberge. Cette connexion s'ouvre une seule fois, se réutilise pour toutes les requêtes du script, puis doit être refermée proprement une fois le travail terminé."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un SGBD (serveur de données, voir le cours sur la pile logicielle d'un serveur web)",
+        "Connaître la notion d'objet et d'appel de méthode en PHP (->)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ouvrir puis fermer une connexion mysqli",
+      "contenu_markdown": "L'extension **mysqli** de PHP permet de dialoguer avec un serveur MySQL au moyen d'un objet de connexion. Cet objet se crée avec :\n\n```php\n$connexion = new mysqli(hôte, utilisateur, mot_de_passe, base_de_données);\n```\n\nLes quatre arguments précisent respectivement l'adresse du serveur MySQL (`\"localhost\"` pour une base sur la même machine), le nom d'utilisateur autorisé, son mot de passe, et le nom de la base à utiliser. L'objet retourné (ici `$connexion`) sert ensuite à envoyer toutes les requêtes du script avec sa méthode `query()` : `$connexion->query($sql)`.\n\nUne fois le traitement terminé, la connexion doit être explicitement refermée avec `$connexion->close()`, ce qui libère la ressource réservée sur le serveur MySQL plutôt que d'attendre la fin naturelle du script pour que PHP le fasse automatiquement."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le rôle de la ligne 14 du code de l'exercice :\n```php\n14 $idcom = new mysqli(\"localhost\",\"root\",\"\", \"magasin\");\n```\npuis celui de la ligne 55 :\n```php\n55 $idcom->close();\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les quatre arguments de new mysqli(...)",
+          "justification": "Chaque argument a un rôle précis dans l'établissement de la connexion",
+          "resultat_markdown": "\"localhost\" (serveur local), \"root\" (utilisateur), \"\" (mot de passe vide), \"magasin\" (base de données ciblée)."
+        },
+        {
+          "numero": 2,
+          "action": "Décrire ce que la ligne 14 produit",
+          "justification": "new mysqli(...) retourne un objet, pas un simple résultat",
+          "resultat_markdown": "Un objet de connexion, stocké dans $idcom, réutilisé ensuite pour toutes les requêtes du script (par exemple $idcom->query($requete))."
+        },
+        {
+          "numero": 3,
+          "action": "Décrire ce que fait la ligne 55",
+          "justification": "close() libère explicitement la ressource de connexion",
+          "resultat_markdown": "$idcom->close() referme la connexion ouverte ligne 14, à l'endroit précis où le traitement de la branche ENREGISTREMENT vient de se terminer."
+        }
+      ],
+      "conclusion_markdown": "La connexion à la base magasin est ouverte une seule fois (ligne 14) et refermée explicitement une fois chaque traitement terminé (lignes 35 et 55 selon la branche exécutée), ce qui illustre le cycle complet ouverture/utilisation/fermeture d'une connexion mysqli."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Laisser un mot de passe vide (\"\") dans un projet destiné à être mis en ligne",
+          "pourquoi_faux": "Un compte root sans mot de passe est une faille de sécurité majeure dès que l'application quitte un poste de développement local pour un serveur accessible depuis Internet.",
+          "correction_markdown": "Toujours définir un mot de passe robuste pour le compte utilisé en production, et ne jamais réutiliser tel quel le mot de passe vide d'un environnement de développement."
+        },
+        {
+          "erreur_markdown": "Confondre $result->close() et $idcom->close()",
+          "pourquoi_faux": "$result->close() libère uniquement le résultat de la dernière requête exécutée, tandis que $idcom->close() ferme la connexion entière au serveur MySQL : ce sont deux ressources distinctes.",
+          "correction_markdown": "Fermer systématiquement les deux, dans cet ordre (résultat puis connexion), sans confondre leur portée respective."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire l'instruction qui ouvre une connexion mysqli vers une base nommée bibliotheque, sur le serveur local, avec l'utilisateur admin et le mot de passe secret123.",
+          "solution_markdown": "`$cnx = new mysqli(\"localhost\", \"admin\", \"secret123\", \"bibliotheque\");`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire l'instruction qui referme la connexion $cnx de l'exercice précédent, une fois le traitement terminé.",
+          "solution_markdown": "`$cnx->close();`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi un script PHP qui ouvre une connexion mysqli mais ne l'a jamais explicitement refermée avec close() ne provoque en général pas d'erreur visible, alors que la bonne pratique recommande pourtant de toujours la fermer.",
+          "solution_markdown": "PHP referme automatiquement toutes les connexions à la base de données restées ouvertes dès que le script termine son exécution : c'est pourquoi l'absence de close() explicite ne provoque le plus souvent aucune erreur visible pour un script simple et court. Cependant, sur un serveur qui traite de nombreuses requêtes simultanées, chaque connexion ouverte consomme une ressource limitée (le nombre de connexions simultanées qu'un serveur MySQL peut maintenir) ; fermer explicitement une connexion dès qu'elle n'est plus nécessaire, plutôt que d'attendre la fin du script, libère cette ressource plus tôt et évite qu'un script long ne monopolise inutilement une connexion pendant tout son temps d'exécution."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "new mysqli(hôte, utilisateur, mot de passe, base) ouvre une connexion à un serveur MySQL et retourne un objet réutilisable.",
+        "Cet objet exécute toutes les requêtes du script avec sa méthode query().",
+        "close() referme explicitement la connexion une fois le traitement terminé, libérant la ressource côté serveur.",
+        "Un mot de passe vide n'est acceptable qu'en développement local, jamais sur un serveur accessible publiquement."
+      ]
+    }
+  ]
+}

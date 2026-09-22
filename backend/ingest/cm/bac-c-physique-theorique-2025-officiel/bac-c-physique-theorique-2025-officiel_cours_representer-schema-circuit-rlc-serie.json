@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-representer-schema-circuit-rlc-serie-terminale-c",
+  "meta": {
+    "titre": "Représenter le schéma d'un circuit RLC série alimenté par un GBF",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité - circuits RLC",
+    "duree_estimee_min": 15,
+    "tags": ["circuit RLC série", "schéma électrique", "GBF", "résonance"],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat C - Physique Théorique (2025, Cameroun, officiel)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-theorique-2025-officiel-ex3-q1.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de calculer quoi que ce soit sur un phénomène de résonance électrique, il faut savoir représenter correctement le montage qui le produit. Un schéma mal construit (composants mal reliés, ampèremètre mal placé) peut fausser toute l'interprétation qui suit, même si les calculs ultérieurs sont corrects."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les symboles normalisés des dipôles usuels : résistor, bobine, condensateur, générateur, ampèremètre.",
+        "Savoir ce qu'est un montage en série (un seul chemin possible pour le courant)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construction d'un circuit RLC série avec GBF",
+      "contenu_markdown": "Un circuit RLC série se représente par une boucle FERMÉE unique, dans laquelle sont placés, les uns à la suite des autres (l'ordre exact importe peu puisque le montage est en série) :\n\n- le générateur basse fréquence (GBF), source de tension alternative sinusoïdale ;\n- le conducteur ohmique de résistance $R$ ;\n- la bobine, de résistance $r$ et d'inductance $L$ ;\n- le condensateur de capacité $C$ ;\n- un ampèremètre, inséré directement DANS la boucle (jamais en dérivation), pour mesurer l'intensité efficace commune à tous les dipôles.",
+      "formule_principale": "\\text{GBF} - R - (r,L) - C - \\text{A, tous en série dans une boucle unique}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Représenter le schéma d'un circuit série constitué d'un GBF, d'un conducteur ohmique R, d'une bobine (r, L) et d'un condensateur C, avec un ampèremètre pour mesurer l'intensité efficace.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tracer la boucle fermée",
+          "justification": "Un montage série impose un unique chemin fermé pour le courant, sans dérivation.",
+          "resultat_markdown": "Une boucle rectangulaire fermée, sans branche parallèle."
+        },
+        {
+          "numero": 2,
+          "action": "Placer les dipôles les uns à la suite des autres",
+          "justification": "L'ordre des dipôles sur la boucle n'a pas d'incidence physique tant qu'ils restent tous en série.",
+          "resultat_markdown": "GBF, puis R, puis la bobine (r, L), puis C, disposés successivement sur la boucle."
+        },
+        {
+          "numero": 3,
+          "action": "Insérer l'ampèremètre en série",
+          "justification": "L'ampèremètre doit être traversé par le même courant que les autres dipôles pour mesurer l'intensité efficace commune.",
+          "resultat_markdown": "Ampèremètre A inséré directement dans la boucle, en série avec les autres dipôles."
+        }
+      ],
+      "conclusion_markdown": "Le schéma obtenu représente fidèlement le montage décrit : tous les dipôles sont parcourus par le même courant d'intensité efficace I, mesurée par l'ampèremètre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer l'ampèremètre en dérivation (en parallèle) sur un des dipôles.",
+          "pourquoi_faux": "Un ampèremètre en dérivation ne mesure pas l'intensité qui traverse le dipôle en série, mais crée un court-circuit partiel qui fausse totalement le fonctionnement du montage.",
+          "correction_markdown": "Insère toujours l'ampèremètre directement dans la boucle, en série, jamais en parallèle sur un composant."
+        },
+        {
+          "erreur_markdown": "Représenter la bobine sans faire apparaître sa résistance interne r.",
+          "pourquoi_faux": "Une bobine réelle possède toujours une résistance interne non nulle (due à la résistance du fil enroulé) ; l'omettre revient à modéliser une bobine idéale, ce qui contredit l'énoncé qui précise « bobine de résistance r et d'inductance L ».",
+          "correction_markdown": "Représente la bobine comme un unique dipôle (r, L) sur le schéma, sans la scinder artificiellement en deux composants séparés, mais en gardant les deux caractéristiques à l'esprit pour les calculs."
+        },
+        {
+          "erreur_markdown": "Ajouter une branche supplémentaire ou un interrupteur non mentionné par l'énoncé.",
+          "pourquoi_faux": "Un schéma de circuit doit représenter fidèlement le montage décrit, ni plus ni moins : ajouter des éléments non demandés peut suggérer un montage différent de celui étudié.",
+          "correction_markdown": "Limite le schéma aux seuls dipôles explicitement cités dans l'énoncé, dans la configuration (série ou parallèle) qu'il précise."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Décris, sans le dessiner, l'ordre logique des étapes pour représenter un circuit série comportant un générateur de tension continue et deux résistors R1 et R2.",
+          "solution_markdown": "1. Tracer une boucle fermée unique.\n2. Placer le générateur sur un côté de la boucle.\n3. Placer R1 puis R2 (ou l'inverse, l'ordre n'a pas d'importance) sur le reste de la boucle, en série.\n4. Vérifier qu'il n'existe qu'un seul chemin possible pour le courant, sans dérivation ni branche parallèle."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On souhaite mesurer, dans un circuit RLC série, à la fois l'intensité efficace I et la tension efficace U aux bornes du condensateur C. Où doivent être placés respectivement l'ampèremètre et le voltmètre ?",
+          "solution_markdown": "L'**ampèremètre** doit être inséré EN SÉRIE dans la boucle (n'importe où dans le circuit, puisque l'intensité est la même partout dans un montage série), pour être traversé par le même courant que les autres dipôles.\n\nLe **voltmètre**, lui, doit être placé EN DÉRIVATION (en parallèle) directement aux bornes du condensateur C, pour mesurer la différence de potentiel à ses bornes sans perturber le courant qui le traverse."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève propose de représenter le circuit RLC série de l'exercice avec l'ampèremètre placé entre le GBF et R, tandis qu'un autre élève le place entre la bobine et le condensateur C. Les deux schémas sont-ils physiquement équivalents pour la mesure de l'intensité efficace ? Justifie.",
+          "solution_markdown": "Oui, les deux schémas sont physiquement équivalents pour la mesure de l'intensité efficace. Dans un montage EN SÉRIE, l'intensité instantanée (et donc l'intensité efficace) est rigoureusement identique en tout point de la boucle, puisqu'il n'existe qu'un seul chemin possible pour le courant : aucune charge ne peut « s'accumuler » entre deux dipôles en série sans traverser le suivant.\n\nAutrement dit, la position exacte de l'ampèremètre sur la boucle (avant ou après tel ou tel dipôle) n'a strictement aucune influence sur la valeur qu'il affiche, tant qu'il reste inséré EN SÉRIE dans le circuit. Ce qui compte n'est donc pas la position relative de l'ampèremètre par rapport aux autres dipôles, mais uniquement le fait qu'il soit en série (et non en dérivation)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un circuit RLC série se représente par une boucle fermée unique regroupant GBF, R, bobine (r,L) et C, dans un ordre quelconque.",
+        "L'ampèremètre se place toujours EN SÉRIE dans la boucle ; un voltmètre se place toujours EN DÉRIVATION aux bornes du dipôle dont on mesure la tension.",
+        "Dans un montage série, l'intensité efficace est identique en tout point de la boucle : la position exacte de l'ampèremètre sur la boucle n'affecte pas la mesure.",
+        "Ne néglige jamais la résistance interne r d'une bobine réelle, même si elle n'apparaît pas explicitement sur un schéma simplifié : elle intervient dans les calculs d'impédance.",
+        "Au BAC, cette compétence de représentation précède presque toujours l'exploitation graphique d'une courbe de résonance : un schéma clair et correctement légendé facilite la suite du raisonnement, y compris pour le correcteur qui l'évalue."
+      ]
+    }
+  ]
+}

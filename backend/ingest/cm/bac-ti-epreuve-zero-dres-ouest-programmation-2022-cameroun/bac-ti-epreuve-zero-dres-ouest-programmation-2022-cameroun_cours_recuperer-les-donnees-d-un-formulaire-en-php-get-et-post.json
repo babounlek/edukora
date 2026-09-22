@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-recuperer-les-donnees-d-un-formulaire-en-php-get-et-post-tle-ti",
+  "meta": {
+    "titre": "Récupérer les données d'un formulaire en PHP : $_GET et $_POST",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "PHP et formulaires",
+    "duree_estimee_min": 20,
+    "tags": [
+      "$_POST",
+      "$_GET",
+      "superglobales PHP",
+      "formulaire HTML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.8-0",
+    "rappels_lies": [
+      "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.12.1-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formulaire soumis, c'est bien ; encore faut-il que le script PHP qui le reçoit sache où aller chercher chaque valeur saisie. PHP range automatiquement ces valeurs dans un tableau prêt à l'emploi, dont le nom dépend d'un seul détail : la méthode choisie dans la balise `<form>`."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'un formulaire HTML et ses attributs action/method",
+        "Savoir utiliser un tableau associatif en PHP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une superglobale par méthode : $_POST et $_GET",
+      "contenu_markdown": "Quand un formulaire est soumis avec `method=\"post\"`, PHP range automatiquement les valeurs saisies dans le tableau superglobal **`$_POST`**, indexé par le `name` de chaque champ. Quand il est soumis avec `method=\"get\"`, ces valeurs se retrouvent dans **`$_GET`**, avec la même règle d'indexation.\n\nDans les deux cas, la syntaxe de récupération est identique : `$_POST['nom_du_champ']` ou `$_GET['nom_du_champ']`. Le choix entre les deux ne dépend donc que d'une seule chose : la méthode déclarée dans la balise `<form>` qui a produit la soumission.",
+      "variantes": [
+        {
+          "nom": "$_POST",
+          "quand_utiliser": "Formulaire avec method=\"post\" (données sensibles, volumineuses, ou destinées à modifier des données côté serveur)",
+          "contenu_markdown": "`$valeur = $_POST['nom_du_champ'];`"
+        },
+        {
+          "nom": "$_GET",
+          "quand_utiliser": "Formulaire avec method=\"get\" (recherche, consultation, résultat partageable via l'URL)",
+          "contenu_markdown": "`$valeur = $_GET['nom_du_champ'];`"
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un formulaire à trois champs (numero, designation, couleur) est soumis en POST. Écris le script PHP qui récupère et affiche ces trois valeurs.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la méthode du formulaire",
+          "justification": "Elle détermine quelle superglobale utiliser",
+          "resultat_markdown": "method=\"post\" impose l'usage de `$_POST`"
+        },
+        {
+          "numero": 2,
+          "action": "Récupérer chaque champ par son nom",
+          "justification": "Chaque valeur est indexée dans `$_POST` par le `name` du champ HTML correspondant",
+          "resultat_markdown": "`$numero = $_POST['numero'];`\n`$designation = $_POST['designation'];`\n`$couleur = $_POST['couleur'];`"
+        },
+        {
+          "numero": 3,
+          "action": "Afficher les valeurs récupérées",
+          "justification": "L'énoncé demande explicitement l'affichage des informations",
+          "resultat_markdown": "`echo \"numero : \".$numero.\"<br>\";` (et de même pour les deux autres champs)"
+        }
+      ],
+      "conclusion_markdown": "Le script affiche les trois valeurs saisies, dans l'ordre où elles ont été récupérées depuis $_POST."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $_GET alors que le formulaire est en POST (ou l'inverse)",
+          "pourquoi_faux": "Chaque méthode range les données dans sa propre superglobale : `$_GET` reste vide si le formulaire a été soumis en POST, et réciproquement.",
+          "correction_markdown": "Vérifie toujours l'attribut `method` du formulaire avant de choisir entre $_POST et $_GET."
+        },
+        {
+          "erreur_markdown": "Oublier que le nom utilisé dans $_POST doit correspondre exactement à l'attribut name du champ HTML",
+          "pourquoi_faux": "PHP indexe les valeurs par le `name` du champ, pas par son `id` ni par le texte affiché à côté du champ.",
+          "correction_markdown": "Relis toujours le nom exact déclaré dans `name=\"...\"` du formulaire avant d'écrire `$_POST['...']`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un champ HTML est déclaré `<input type=\"text\" name=\"email\">` dans un formulaire en POST. Comment récupérer sa valeur en PHP ?",
+          "solution_markdown": "`$email = $_POST['email'];`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un formulaire de recherche est soumis en GET avec un champ `name=\"motcle\"`. Écris le code PHP qui affiche « Vous cherchez : » suivi du mot-clé saisi.",
+          "solution_markdown": "```php\n<?php\nif(isset($_GET['motcle'])){\n  echo \"Vous cherchez : \".$_GET['motcle'];\n}\n?>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un même fichier PHP doit à la fois afficher le formulaire vide au premier chargement et afficher le résultat après soumission (méthode GET, champ `Nombre`). Écris la structure générale du script pour que les deux cas soient gérés correctement.",
+          "solution_markdown": "```php\n<form method=\"get\">\n  <input type=\"text\" name=\"Nombre\">\n  <input type=\"submit\" name=\"ok\" value=\"OK\">\n</form>\n\n<?php\nif(isset($_GET['Nombre'])){\n  $nombre = $_GET['Nombre'];\n  for($i=0; $i<=9; $i++){\n    echo $nombre.\"*\".$i.\"=\".($nombre*$i).\"<br>\";\n  }\n}\n?>\n```\nLe test `isset($_GET['Nombre'])` protège le premier chargement, où le champ n'existe pas encore dans `$_GET` : le bloc PHP ne s'exécute alors que si le formulaire a déjà été soumis au moins une fois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$_POST et $_GET sont deux tableaux superglobaux PHP indexés par le nom (`name`) des champs du formulaire.",
+        "Le choix entre les deux dépend uniquement de l'attribut `method` déclaré dans la balise `<form>`.",
+        "Toujours protéger la lecture avec `isset(...)` quand le script peut s'exécuter avant toute soumission.",
+        "Une confusion entre $_GET et $_POST est l'une des erreurs les plus fréquentes et les plus simples à corriger : elle se détecte en relisant l'attribut method du formulaire."
+      ]
+    }
+  ]
+}

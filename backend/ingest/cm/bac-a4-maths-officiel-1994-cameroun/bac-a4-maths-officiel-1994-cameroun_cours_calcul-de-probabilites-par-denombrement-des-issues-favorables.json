@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-calcul-de-probabilites-par-denombrement-des-issues-favorables-tle-a",
+  "meta": {
+    "titre": "Calculer une probabilité par dénombrement des issues favorables",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Probabilités élémentaires",
+    "duree_estimee_min": 20,
+    "tags": [
+      "probabilités",
+      "dénombrement",
+      "équiprobabilité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a4-maths-officiel-1994-cameroun",
+    "epreuve_titre": "BAC Mathematiques - Serie A (A4 bilingue) - Session 1994 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a4-maths-officiel-1994-cameroun-ex1-q1a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Imagine un dé truqué, ou simplement un dé dont certains numéros apparaissent sur plusieurs faces à la fois : peut-on encore parler de « une chance sur six » pour chaque numéro ? Non, et c'est précisément le piège que ce cours désamorce. Dès qu'un jeu de hasard répartit ses issues de façon inégale entre les faces, la probabilité de chaque valeur ne dépend plus du nombre de valeurs possibles, mais du nombre de faces qui la portent réellement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une expérience aléatoire et un univers des possibles.",
+        "Connaître la définition d'une probabilité comme un nombre entre 0 et 1.",
+        "Savoir manipuler des fractions (simplification, somme)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Probabilité par dénombrement des cas favorables",
+      "contenu_markdown": "Quand une expérience a un nombre fini d'issues élémentaires toutes équiprobables (ici, les faces d'un dé, qui ont chacune la même chance d'apparaître), la probabilité d'un évènement est le nombre d'issues élémentaires qui réalisent cet évènement, divisé par le nombre total d'issues élémentaires. Si une valeur est portée par plusieurs faces, on compte CHACUNE de ces faces : la probabilité de cette valeur est proportionnelle au nombre de faces qui la portent, pas simplement égale à « un divisé par le nombre de valeurs différentes ».",
+      "formule_principale": "P(\\text{valeur } i)=\\dfrac{\\text{nombre de faces portant } i}{\\text{nombre total de faces}}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un dé cubique a une face portant le numéro 1, deux faces portant le numéro 3 et trois faces portant le numéro 5. Calculer $P_1$, $P_3$ et $P_5$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter le nombre total de faces du dé",
+          "justification": "Un dé cubique possède toujours 6 faces, quelle que soit la répartition des numéros.",
+          "resultat_markdown": "Nombre total de faces $=6$."
+        },
+        {
+          "numero": 2,
+          "action": "Compter le nombre de faces favorables à chaque valeur",
+          "justification": "L'énoncé précise directement combien de faces portent chaque numéro.",
+          "resultat_markdown": "1 face porte le numéro 1 ; 2 faces portent le numéro 3 ; 3 faces portent le numéro 5."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule à chaque valeur",
+          "justification": "Chaque probabilité est le rapport du nombre de faces favorables sur le nombre total de faces.",
+          "resultat_markdown": "$P_1=\\dfrac{1}{6}$, $\\quad P_3=\\dfrac{2}{6}=\\dfrac{1}{3}$, $\\quad P_5=\\dfrac{3}{6}=\\dfrac{1}{2}$."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier que la somme des probabilités vaut 1",
+          "justification": "Les trois valeurs 1, 3 et 5 couvrent toutes les faces du dé : leurs probabilités doivent donc totaliser 1.",
+          "resultat_markdown": "$\\dfrac{1}{6}+\\dfrac{1}{3}+\\dfrac{1}{2}=\\dfrac{1}{6}+\\dfrac{2}{6}+\\dfrac{3}{6}=\\dfrac{6}{6}=1$."
+        }
+      ],
+      "conclusion_markdown": "Les probabilités $P_1=\\dfrac{1}{6}$, $P_3=\\dfrac{1}{3}$ et $P_5=\\dfrac{1}{2}$ sont cohérentes : elles sont proportionnelles au nombre de faces de chaque valeur, et leur somme vaut bien 1."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affecter la probabilité $\\dfrac{1}{3}$ à chacune des trois valeurs 1, 3 et 5, en raisonnant « il y a trois valeurs possibles, donc une chance sur trois ».",
+          "pourquoi_faux": "Ce raisonnement suppose à tort que les trois VALEURS sont équiprobables. Or c'est seulement les FACES qui sont équiprobables (un dé non truqué a la même chance de tomber sur chacune de ses 6 faces). Une valeur portée par plusieurs faces a donc mécaniquement plus de chances de sortir.",
+          "correction_markdown": "Toujours revenir au nombre de faces : ici, $P_1=\\frac{1}{6}$ (une seule face), $P_3=\\frac{2}{6}$ (deux faces), $P_5=\\frac{3}{6}$ (trois faces)."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que la somme des probabilités trouvées vaut 1, et rendre une copie avec une face comptée deux fois ou oubliée.",
+          "pourquoi_faux": "Si une face est comptée en trop ou en moins, la somme des probabilités ne vaudra jamais exactement 1, ce qui signale immédiatement l'erreur.",
+          "correction_markdown": "Prendre systématiquement le réflexe de sommer toutes les probabilités trouvées sur le même dé avant de continuer l'exercice."
+        },
+        {
+          "erreur_markdown": "Confondre le nombre total de faces (toujours 6 pour un dé cubique) avec le nombre de valeurs différentes affichées sur le dé.",
+          "pourquoi_faux": "Le dénominateur de la probabilité est TOUJOURS le nombre total d'issues élémentaires équiprobables (les faces), jamais le nombre de catégories de résultats.",
+          "correction_markdown": "Se poser la question : « combien de faces au total ? » avant de calculer quoi que ce soit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un dé cubique porte le numéro 2 sur quatre faces et le numéro 5 sur deux faces. Calculer $P_2$ et $P_5$.",
+          "solution_markdown": "Le dé comporte 6 faces au total. Le numéro 2 est porté par 4 faces, le numéro 5 par 2 faces.\n\n$$P_2=\\dfrac{4}{6}=\\dfrac{2}{3},\\qquad P_5=\\dfrac{2}{6}=\\dfrac{1}{3}.$$\n\nVérification : $\\dfrac{2}{3}+\\dfrac{1}{3}=1$, ce qui confirme que toutes les faces ont été comptées."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un dé cubique porte le numéro 1 sur une face, le numéro 2 sur deux faces, le numéro 3 sur deux faces et le numéro 4 sur une face. Calculer la probabilité d'obtenir un numéro pair.",
+          "solution_markdown": "Le dé a 6 faces. Le numéro 2 apparaît sur 2 faces et le numéro 4 sur 1 face : « obtenir un numéro pair » regroupe donc $2+1=3$ faces favorables.\n\n$$P(\\text{pair})=\\dfrac{3}{6}=\\dfrac{1}{2}.$$\n\nOn peut vérifier en calculant aussi $P(\\text{impair})=\\dfrac{1+2}{6}=\\dfrac{3}{6}=\\dfrac{1}{2}$ : la somme des deux fait bien 1."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un dé tétraédrique (4 faces) porte le numéro 1 sur une face, le numéro 2 sur une face et le numéro 3 sur deux faces. On lance ce dé deux fois de suite et on s'intéresse à la somme des deux résultats. Quelle est la probabilité que cette somme soit égale à 4 ?",
+          "solution_markdown": "Le dé a 4 faces : $P_1=\\dfrac{1}{4}$, $P_2=\\dfrac{1}{4}$, $P_3=\\dfrac{2}{4}=\\dfrac{1}{2}$.\n\nPour obtenir une somme de 4 sur deux lancers indépendants, il faut soit $(1,3)$, soit $(2,2)$, soit $(3,1)$ (en distinguant l'ordre des deux lancers).\n\n$$P(1,3)=P_1\\times P_3=\\dfrac{1}{4}\\times\\dfrac{1}{2}=\\dfrac{1}{8},\\qquad P(2,2)=P_2\\times P_2=\\dfrac{1}{4}\\times\\dfrac{1}{4}=\\dfrac{1}{16},\\qquad P(3,1)=\\dfrac{1}{2}\\times\\dfrac{1}{4}=\\dfrac{1}{8}.$$\n\n$$P(\\text{somme}=4)=\\dfrac{1}{8}+\\dfrac{1}{16}+\\dfrac{1}{8}=\\dfrac{2}{16}+\\dfrac{1}{16}+\\dfrac{2}{16}=\\dfrac{5}{16}.$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Sur un dé (ou tout dispositif à faces équiprobables), la probabilité d'une valeur est toujours « nombre de faces favorables divisé par nombre total de faces », jamais « 1 divisé par le nombre de valeurs différentes ».",
+        "Le dénominateur ne change jamais : c'est le nombre total de faces (6 pour un cube, 4 pour un tétraèdre...).",
+        "Une valeur portée par plusieurs faces est mécaniquement plus probable qu'une valeur portée par une seule face.",
+        "Le réflexe de vérification qui ne coûte rien : la somme de toutes les probabilités d'un même dé doit toujours valoir 1.",
+        "Au BAC, cette méthode sert de point de départ à presque tous les exercices de probabilités sur dés, urnes ou tirages : elle est rarement notée seule, mais son erreur se répercute sur toute la suite de l'exercice si elle est mal posée."
+      ]
+    }
+  ]
+}

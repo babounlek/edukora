@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-pendule-de-torsion-periode-terminale-c",
+  "meta": {
+    "titre": "Établissement de l'équation différentielle et de la période d'un pendule de torsion",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Mécanique - oscillateurs (pendule de torsion)",
+    "duree_estimee_min": 35,
+    "tags": [
+      "pendule de torsion",
+      "moment d'inertie",
+      "théorème du moment cinétique",
+      "oscillateur harmonique",
+      "équation différentielle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat Blanc - Physique Pratique - Pendule de torsion (2026, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-blanc-c-physique-pratique-2026-officiel-ex1-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un pendule simple oscille grâce à la pesanteur ; un pendule de torsion oscille grâce à l'élasticité d'un fil qui résiste à la torsion, un peu comme un ressort résiste à l'étirement. Cette analogie n'est pas qu'une image : elle permet de retrouver, avec les mêmes outils que pour un oscillateur mécanique classique, la période d'un système en rotation. Ce cours montre comment passer d'une description physique du dispositif (un fil de torsion, une tige, des masses réglables) à une équation différentielle, puis à une formule de période directement exploitable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Moment d'inertie d'un point matériel par rapport à un axe : I = m·d²",
+        "Théorème du moment cinétique pour un solide en rotation autour d'un axe fixe",
+        "Résolution d'une équation différentielle du second ordre de la forme θ'' + ω₀²θ = 0 (oscillateur harmonique)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De l'équation du mouvement à la période",
+      "contenu_markdown": "Un fil de torsion de constante de torsion $C$ exerce, lorsqu'on le tord d'un angle $\\theta$ par rapport à sa position d'équilibre, un couple de rappel proportionnel à cet angle et opposé à lui :\n\n$$\\Gamma = -C\\theta$$\n\nPour un solide de moment d'inertie $I$ par rapport à l'axe de rotation, le théorème du moment cinétique donne :\n\n$$I\\ddot{\\theta} = \\Gamma = -C\\theta \\quad\\Longrightarrow\\quad \\ddot{\\theta} + \\frac{C}{I}\\theta = 0$$\n\nCette équation est celle d'un oscillateur harmonique de pulsation propre $\\omega_0 = \\sqrt{C/I}$, dont la solution est sinusoïdale, de période :\n\n$$T_0 = \\frac{2\\pi}{\\omega_0} = 2\\pi\\sqrt{\\frac{I}{C}}$$\n\nQuand le système comporte, en plus du solide de moment d'inertie propre $I_0$, des masses ponctuelles additionnelles placées à une distance $x$ de l'axe, il faut d'abord calculer le moment d'inertie total $I$ du système complet (par addition des moments d'inertie de chaque élément) avant d'appliquer la formule de la période.",
+      "formule_principale": "T_0 = 2\\pi\\sqrt{I/C}",
+      "variantes": [
+        {
+          "nom": "Analogie avec le pendule élastique (ressort)",
+          "quand_utiliser": "Pour retrouver rapidement la structure de la formule sans refaire toute la démonstration",
+          "contenu_markdown": "Un pendule élastique horizontal obéit à $m\\ddot{x} + kx = 0$, de période $T = 2\\pi\\sqrt{m/k}$. Le pendule de torsion suit exactement la même structure, en remplaçant la masse $m$ par le moment d'inertie $I$, et la raideur $k$ par la constante de torsion $C$ : $T_0 = 2\\pi\\sqrt{I/C}$. Cette correspondance (masse ↔ moment d'inertie, raideur ↔ constante de torsion) se retrouve dans tous les oscillateurs de rotation."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un pendule de torsion est formé d'une tige AB de moment d'inertie $I_0$ par rapport à l'axe $(\\Delta)$ confondu avec le fil de torsion OO', de constante de torsion $C$. Deux masses ponctuelles identiques $S_1$ et $S_2$, de masse $m$ chacune, sont fixées sur la tige à la même distance $x$ de O, de part et d'autre. Établir l'expression de la période $T_0$ des oscillations en fonction de $I_0$, $m$, $x$ et $C$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le moment d'inertie de chaque masse ajoutée par rapport à l'axe de rotation",
+          "justification": "Chaque masse ponctuelle m est à la distance x de l'axe (Δ), qui est vertical et passe par O, perpendiculaire à la tige horizontale.",
+          "resultat_markdown": "Moment d'inertie d'une masse ponctuelle : m·x², pour chacune des deux masses S1 et S2."
+        },
+        {
+          "numero": 2,
+          "action": "Sommer les moments d'inertie de tous les éléments du système",
+          "justification": "Le moment d'inertie total d'un système par rapport à un axe est la somme des moments d'inertie de chacun de ses éléments par rapport à ce même axe.",
+          "resultat_markdown": "$I_{total} = I_0 + mx^2 + mx^2 = I_0 + 2mx^2$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'équation du mouvement à partir du théorème du moment cinétique",
+          "justification": "Le fil de torsion exerce un couple de rappel Γ = -Cθ, seul couple non compensé pris en compte dans le plan horizontal (le poids ne travaille pas dans cette rotation).",
+          "resultat_markdown": "$I_{total}\\ddot{\\theta} = -C\\theta \\;\\Longrightarrow\\; \\ddot{\\theta} + \\dfrac{C}{I_{total}}\\theta = 0$"
+        },
+        {
+          "numero": 4,
+          "action": "Identifier la pulsation propre et en déduire la période",
+          "justification": "L'équation obtenue est celle d'un oscillateur harmonique de pulsation ω₀ = √(C/I_total).",
+          "resultat_markdown": "$T_0 = 2\\pi\\sqrt{\\dfrac{I_{total}}{C}}$"
+        },
+        {
+          "numero": 5,
+          "action": "Élever au carré et remplacer I_total par son expression",
+          "justification": "La forme demandée par l'énoncé est celle de T0² en fonction de I0, m, x et C séparément.",
+          "resultat_markdown": "$T_0^2 = \\dfrac{4\\pi^2 I_0}{C} + \\dfrac{8\\pi^2 m x^2}{C}$"
+        }
+      ],
+      "conclusion_markdown": "La période au carré est une fonction affine de $x^2$ : c'est cette propriété, obtenue directement à partir de la mécanique du système, qui permettra ensuite de déterminer expérimentalement $C$ et $I_0$ à partir d'un tracé graphique, sans avoir à les mesurer directement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de compter les deux masses S1 et S2 et n'ajouter qu'un seul terme mx² au moment d'inertie.",
+          "pourquoi_faux": "Les deux masses sont physiquement présentes sur la tige et contribuent chacune, indépendamment, au moment d'inertie total du système en rotation.",
+          "correction_markdown": "Toujours dénombrer explicitement chaque élément du système avant de sommer les moments d'inertie : ici deux masses identiques à la même distance x donnent 2mx², pas mx²."
+        },
+        {
+          "erreur_markdown": "Confondre le moment d'inertie I (qui dépend de la répartition des masses autour de l'axe) avec la masse totale du système.",
+          "pourquoi_faux": "Le moment d'inertie dépend de la distance des masses à l'axe (en x²), pas seulement de leur valeur : deux systèmes de même masse totale mais de répartitions différentes ont des moments d'inertie différents.",
+          "correction_markdown": "Toujours écrire le moment d'inertie de chaque élément comme le produit de sa masse par le carré de sa distance à l'axe, jamais comme une simple somme de masses."
+        },
+        {
+          "erreur_markdown": "Écrire l'équation du mouvement sans le signe moins devant Cθ, ou avec I au dénominateur au lieu du numérateur dans ω₀².",
+          "pourquoi_faux": "Le signe moins traduit le caractère rappelant du couple de torsion (il s'oppose toujours à l'écart) ; sans lui, l'équation décrirait une croissance exponentielle et non une oscillation.",
+          "correction_markdown": "Repartir systématiquement de Γ = -Cθ (couple de rappel) et du théorème du moment cinétique I·θ'' = Γ avant de simplifier, plutôt que de mémoriser directement la formule finale de la période."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un disque homogène de moment d'inertie I = 4,0×10⁻³ kg·m² est suspendu à un fil de torsion de constante C = 0,80 N·m·rad⁻¹. Calculer la période des oscillations de torsion de ce disque.",
+          "solution_markdown": "$T_0 = 2\\pi\\sqrt{\\dfrac{I}{C}} = 2\\pi\\sqrt{\\dfrac{4,0\\times10^{-3}}{0,80}} = 2\\pi\\sqrt{5,0\\times10^{-3}}$\n\n$\\sqrt{5,0\\times10^{-3}} \\approx 0,0707$, donc $T_0 \\approx 2\\pi \\times 0,0707 \\approx 0,444\\text{ s}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre le pendule de torsion de l'exemple résolu (tige de moment d'inertie I0, deux masses m à la distance x). On double la distance x en gardant m, I0 et C inchangés. La période T0 est-elle doublée ? Justifier à partir de la formule T0² = 4π²I0/C + 8π²mx²/C.",
+          "solution_markdown": "Non. Le terme 4π²I0/C ne dépend pas de x et reste constant ; seul le terme 8π²mx²/C est multiplié par 4 quand x double (car x² est multiplié par 4). T0² est donc multiplié par un facteur compris strictement entre 1 et 4 selon le poids relatif des deux termes, jamais exactement par 4 sauf si le terme en I0 est négligeable. Comme T0² n'est pas simplement multiplié par 4, T0 n'est pas exactement doublé : la relation entre T0 et x n'est pas une simple proportionnalité, c'est T0² qui est fonction affine de x², pas T0 qui est fonction linéaire de x."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un pendule de torsion est formé d'une tige de moment d'inertie I0 et de quatre masses ponctuelles identiques de masse m chacune, fixées sur la tige : deux à la distance x de O, et deux autres à la distance 2x de O (toutes dans le plan horizontal, sur l'axe de la tige). Établir l'expression de T0² en fonction de I0, m, x et C.",
+          "solution_markdown": "Moment d'inertie de chaque masse par rapport à l'axe (Δ) : pour les deux masses à la distance x, chacune contribue mx² ; pour les deux masses à la distance 2x, chacune contribue m(2x)² = 4mx².\n\n$$I_{total} = I_0 + \\underbrace{mx^2 + mx^2}_{\\text{masses à }x} + \\underbrace{4mx^2 + 4mx^2}_{\\text{masses à }2x} = I_0 + 2mx^2 + 8mx^2 = I_0 + 10mx^2$$\n\nEn reprenant $T_0^2 = 4\\pi^2 I_{total}/C$ :\n\n$$T_0^2 = \\frac{4\\pi^2 I_0}{C} + \\frac{40\\pi^2 m x^2}{C}$$\n\nLa méthode est la même que dans l'exemple résolu : sommer les moments d'inertie de tous les éléments, puis appliquer la formule générale de la période. Seul le coefficient devant mx² change, en fonction du nombre de masses et de leur distance à l'axe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le pendule de torsion obéit à la même structure mathématique qu'un oscillateur harmonique classique : masse ↔ moment d'inertie, raideur ↔ constante de torsion.",
+        "Calcule toujours le moment d'inertie total du système (I0 de la pièce fixe + somme des mx² de chaque masse ajoutée) avant d'appliquer la formule de la période.",
+        "Pars systématiquement du couple de rappel Γ = -Cθ et du théorème du moment cinétique pour retrouver l'équation différentielle, plutôt que de mémoriser directement T0 = 2π√(I/C).",
+        "T0² est une fonction affine de x² quand des masses sont placées à une distance réglable x : cette propriété prépare directement l'exploitation graphique d'une série de mesures.",
+        "Ce type de démonstration (établir une formule de période à partir d'un théorème de mécanique) est un classique des épreuves de Physique en série C et E, aussi bien à l'écrit qu'en pratique."
+      ]
+    }
+  ]
+}

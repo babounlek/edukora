@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-formules-combinaisons-arrangements-1ere-a",
+  "meta": {
+    "titre": "Formules générales des combinaisons et des arrangements",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Dénombrement",
+    "duree_estimee_min": 20,
+    "tags": [
+      "combinaisons",
+      "arrangements",
+      "factorielle",
+      "dénombrement"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2012-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2012 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2012-officiel-cameroun-ex2-qI-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Choisir une équipe de 2 délégués parmi 30 élèves, ou choisir un président puis un vice-président parmi les mêmes 30 élèves : ce sont deux questions différentes, même si les nombres de départ sont identiques. La différence tient à une seule chose, l'ordre compte-t-il ou non. Deux formules, $C_x^2$ et $A_x^2$, répondent chacune à l'une des deux situations."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de factorielle $n!$",
+        "Principe multiplicatif de dénombrement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Combinaisons et arrangements de 2 éléments parmi x",
+      "contenu_markdown": "Le nombre d'arrangements de 2 éléments choisis parmi $x$ (l'ordre compte) est $A_x^2=\\dfrac{x!}{(x-2)!}=x(x-1)$. Le nombre de combinaisons de 2 éléments choisis parmi $x$ (l'ordre ne compte pas) est $C_x^2=\\dfrac{x!}{2!(x-2)!}=\\dfrac{x(x-1)}{2}$. Comme il y a $2!=2$ façons d'ordonner une paire, on a toujours $A_x^2=2\\times C_x^2$.",
+      "formule_principale": "C_x^2=\\dfrac{x(x-1)}{2} \\quad ; \\quad A_x^2=x(x-1)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer en fonction de $x$ entier naturel les nombres $C_x^2$ et $A_x^2$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Développer $C_x^2$ à partir de sa définition en factorielles",
+          "justification": "$C_x^2=\\dfrac{x!}{2!(x-2)!}$, et $x!=x(x-1)(x-2)!$",
+          "resultat_markdown": "$C_x^2=\\dfrac{x(x-1)(x-2)!}{2\\times(x-2)!}=\\dfrac{x(x-1)}{2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Développer $A_x^2$ de la même façon",
+          "justification": "$A_x^2=\\dfrac{x!}{(x-2)!}$, la simplification par $(x-2)!$ est directe",
+          "resultat_markdown": "$A_x^2=\\dfrac{x(x-1)(x-2)!}{(x-2)!}=x(x-1)$"
+        }
+      ],
+      "conclusion_markdown": "On obtient $C_x^2=\\dfrac{x(x-1)}{2}$ et $A_x^2=x(x-1)$, valables pour tout entier $x\\geq2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $C_x^2$ pour une situation où l'ordre compte (par exemple un classement 1er/2e)",
+          "pourquoi_faux": "$C_x^2$ compte chaque paire une seule fois, indépendamment de l'ordre. Si la situation distingue « 1er » et « 2e », deux personnes différentes donnent deux résultats différents selon l'ordre : c'est un arrangement, pas une combinaison.",
+          "correction_markdown": "Pose-toi systématiquement la question : échanger l'ordre des deux éléments change-t-il la situation ? Si oui, utilise $A$ ; sinon, $C$."
+        },
+        {
+          "erreur_markdown": "Oublier la condition $x\\geq2$",
+          "pourquoi_faux": "$C_x^2$ et $A_x^2$ n'ont de sens que si on peut choisir 2 éléments distincts parmi $x$, ce qui suppose $x\\geq2$.",
+          "correction_markdown": "Précise toujours le domaine de validité de la formule en fonction de $x$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $C_8^2$ et $A_8^2$.",
+          "solution_markdown": "$C_8^2=\\dfrac{8\\times7}{2}=28$. $A_8^2=8\\times7=56$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une classe compte $x$ élèves. On veut élire un délégué et un vice-délégué (deux rôles distincts). Exprimer en fonction de $x$ le nombre de résultats possibles, puis calculer pour $x=25$.",
+          "solution_markdown": "Les deux rôles sont distincts : l'ordre compte, il s'agit de $A_x^2=x(x-1)$. Pour $x=25$ : $A_{25}^2=25\\times24=600$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer l'entier naturel $x$ tel que $C_x^2=45$.",
+          "solution_markdown": "$C_x^2=\\dfrac{x(x-1)}{2}=45 \\Rightarrow x(x-1)=90 \\Rightarrow x^2-x-90=0$. $\\Delta=1+360=361=19^2$. $x=\\dfrac{1+19}{2}=10$ (la racine négative est rejetée car $x$ est un entier naturel). Donc $x=10$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$C_x^2=\\dfrac{x(x-1)}{2}$ compte les paires sans tenir compte de l'ordre, $A_x^2=x(x-1)$ en tient compte.",
+        "$A_x^2$ est toujours le double de $C_x^2$ : un repère rapide pour vérifier un calcul.",
+        "La question à te poser avant de choisir la formule : échanger l'ordre change-t-il le résultat concret ?",
+        "Ces deux formules sont la brique de base de tout dénombrement plus complexe (groupes mixtes, tirages avec conditions)."
+      ]
+    }
+  ]
+}

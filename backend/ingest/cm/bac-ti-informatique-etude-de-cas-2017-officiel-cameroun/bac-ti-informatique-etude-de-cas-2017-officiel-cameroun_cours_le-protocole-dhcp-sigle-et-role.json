@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-protocole-dhcp-sigle-et-role-tle-ti",
+  "meta": {
+    "titre": "Le protocole DHCP : sigle et rôle",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques - adressage IP",
+    "duree_estimee_min": 20,
+    "tags": [
+      "DHCP",
+      "adressage IP automatique",
+      "serveur DHCP",
+      "bail DHCP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q4.1-1",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q4.2-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Brancher un ordinateur sur un réseau et voir qu'il obtient aussitôt une adresse IP fonctionnelle, sans qu'aucun humain n'ait rien tapé, tient presque de la magie. Ce tour de passe-passe a un nom précis, DHCP, et un mécanisme parfaitement identifiable, que ce cours détaille pas à pas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une machine sur un réseau IP a besoin d'une adresse IP, d'un masque de sous-réseau et d'une passerelle pour communiquer.",
+        "Savoir ce qu'est un serveur, au sens général du terme (une machine qui fournit un service à d'autres)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un protocole qui configure automatiquement chaque machine",
+      "contenu_markdown": "DHCP signifie Dynamic Host Configuration Protocol (protocole de configuration dynamique des hôtes). C'est un protocole réseau qui attribue automatiquement à chaque machine qui se connecte une adresse IP disponible ainsi que les paramètres réseau associés (masque de sous-réseau, passerelle par défaut, serveurs DNS), sans intervention manuelle de l'utilisateur. Un serveur DHCP a pour rôle de gérer une plage d'adresses IP disponibles et de « louer » une adresse à chaque machine qui en fait la demande, pour une durée limitée appelée bail : à l'expiration du bail, la machine doit renouveler sa demande, ce qui permet au serveur de récupérer et de redistribuer les adresses des machines déconnectées.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une capture `ipconfig /all` affiche : Adresse IP 172.16.8.248, Serveur DHCP 172.16.0.254, Bail obtenu jeudi 6 février 2014, Bail expirant vendredi 7 février 2014. Expliquer ce que révèle cette capture sur le fonctionnement du DHCP ici.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le rôle du serveur DHCP dans cette capture",
+          "justification": "La ligne « Serveur DHCP : 172.16.0.254 » désigne la machine qui a distribué l'adresse IP.",
+          "resultat_markdown": "La machine 172.16.0.254 joue le rôle de serveur DHCP sur ce réseau."
+        },
+        {
+          "numero": 2,
+          "action": "Interpréter l'adresse IP attribuée",
+          "justification": "L'adresse 172.16.8.248 n'a pas été saisie manuellement : elle a été fournie par le serveur DHCP identifié.",
+          "resultat_markdown": "L'ordinateur a reçu automatiquement l'adresse 172.16.8.248 sans configuration manuelle."
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter les dates de bail",
+          "justification": "Le bail est la durée pendant laquelle l'adresse reste attribuée à cette machine avant renouvellement.",
+          "resultat_markdown": "Le bail dure ici 24 heures (du 6 au 7 février 2014) : passé ce délai, l'ordinateur doit redemander une adresse au serveur DHCP."
+        }
+      ],
+      "conclusion_markdown": "La capture illustre exactement le mécanisme du DHCP : un serveur dédié (172.16.0.254) attribue automatiquement une adresse IP et ses paramètres à la machine, pour une durée de bail limitée qui devra être renouvelée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le serveur DHCP avec la passerelle par défaut, en pensant qu'il s'agit forcément de deux machines différentes.",
+          "pourquoi_faux": "Dans un petit réseau, une seule et même machine (souvent le routeur/box) cumule fréquemment les deux rôles, exactement comme dans la capture où serveur DHCP et passerelle partagent la même adresse `172.16.0.254`.",
+          "correction_markdown": "Vérifier les adresses réellement indiquées dans la capture plutôt que de supposer par principe que chaque rôle réseau correspond à une machine distincte."
+        },
+        {
+          "erreur_markdown": "Croire qu'une adresse attribuée par DHCP est définitive et ne changera jamais.",
+          "pourquoi_faux": "L'attribution DHCP est une location temporaire (le bail) : à son expiration, la machine peut recevoir la même adresse ou une adresse différente selon la disponibilité du moment.",
+          "correction_markdown": "Retenir le mot « bail » comme le signal que l'attribution DHCP est toujours limitée dans le temps, jamais permanente par défaut."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifie le sigle DHCP ?",
+          "solution_markdown": "Dynamic Host Configuration Protocol, protocole de configuration dynamique des hôtes."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une salle informatique de 30 postes utilise un serveur DHCP configuré pour ne distribuer que 20 adresses IP disponibles. Que se passe-t-il si les 30 postes sont allumés en même temps et tentent de se connecter au réseau ?",
+          "solution_markdown": "Seuls 20 postes pourront obtenir une adresse IP valide du serveur DHCP, puisque seules 20 adresses sont disponibles dans le pool configuré. Les 10 postes restants ne recevront aucune adresse IP exploitable (ou une adresse d'auto-configuration limitée, selon le système) et ne pourront pas communiquer normalement sur le réseau, jusqu'à ce qu'une adresse se libère (bail expiré d'un autre poste) ou que l'administrateur élargisse la plage d'adresses disponibles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi un serveur DHCP mal configuré (par exemple, un second serveur DHCP installé par erreur sur le même réseau) peut provoquer des conflits d'adresses IP ou une perte de connexion pour certains postes.",
+          "solution_markdown": "Si deux serveurs DHCP fonctionnent simultanément sur le même réseau sans coordination, chacun peut distribuer des adresses issues de plages différentes, ou pire, de plages qui se chevauchent : deux machines pourraient alors recevoir la même adresse IP de deux serveurs différents, ce qui provoque un conflit d'adresse (les deux machines concernées ne peuvent plus communiquer correctement, le système d'exploitation signalant généralement l'erreur).\n\nDe plus, une machine peut recevoir sa configuration (passerelle, DNS) du mauvais serveur DHCP si celui-ci répond plus vite que le serveur légitime, ce qui peut la priver d'accès à Internet ou au reste du réseau si ce second serveur n'est pas correctement configuré. C'est pour cette raison que la gestion du DHCP sur un réseau d'entreprise est centralisée et surveillée par l'administrateur réseau."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "DHCP signifie Dynamic Host Configuration Protocol : il configure automatiquement chaque machine qui rejoint le réseau.",
+        "Un serveur DHCP distribue adresse IP, masque, passerelle et DNS, sans intervention manuelle.",
+        "L'attribution d'une adresse DHCP est une location temporaire, appelée bail, jamais une attribution définitive.",
+        "Une même machine (souvent un routeur) peut cumuler plusieurs rôles réseau : serveur DHCP, passerelle par défaut.",
+        "Le DHCP est une notion centrale des réseaux au BAC TI : elle revient dans presque toutes les études de cas qui présentent une capture `ipconfig`."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-somme-carres-distances-plusieurs-points-1ere-d",
+  "meta": {
+    "titre": "Généraliser la relation de la médiane : MA²+MB²+MC²+MD²=4OM²+h",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Barycentres et lieux géométriques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "lieu géométrique",
+      "somme de carrés de distances",
+      "centre de symétrie",
+      "rectangle",
+      "produit scalaire"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "23",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2005-cameroun",
+    "epreuve_titre": "Probatoire D - Mathématiques - Session 2005 (Cameroun)",
+    "exercice_numero": "Problème - Partie A",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2005-cameroun-probleme-qA1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La relation de la médiane, $MA^2+MB^2=2MI^2+\\dfrac{AB^2}{2}$, ne concerne que DEUX points. Face à un lieu géométrique défini par une somme de carrés de distances à TROIS, QUATRE points ou plus, la même idée fonctionne encore, à condition de repartir des vecteurs plutôt que de chercher une formule toute faite : c'est la méthode qui compte, pas le nombre de points."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation de Chasles et écriture d'un vecteur comme différence de deux points",
+        "Développement du carré scalaire d'une somme de vecteurs",
+        "Notion de centre de symétrie (ou d'isobarycentre) d'un ensemble de points"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode générale (n points quelconques)",
+      "contenu_markdown": "Soit $A_1,A_2,\\ldots,A_n$ des points fixes et $G$ un point tel que $\\overrightarrow{GA_1}+\\overrightarrow{GA_2}+\\cdots+\\overrightarrow{GA_n}=\\vec 0$ (c'est-à-dire l'isobarycentre des $A_i$, ou plus généralement tout point tel que cette somme s'annule — par exemple le centre d'un rectangle ou d'un parallélogramme pour ses sommets). Pour tout point $M$, en écrivant $\\overrightarrow{MA_i}=\\overrightarrow{MG}+\\overrightarrow{GA_i}$ et en développant chaque carré scalaire, tous les termes croisés s'éliminent lors de la sommation (grâce à la condition sur $G$), et il reste : $\\displaystyle\\sum_{i=1}^n MA_i^2 = n\\,MG^2+\\sum_{i=1}^n GA_i^2$. Le second terme, $\\sum GA_i^2$, est une constante (elle ne dépend pas de $M$), calculable une fois pour toutes à partir de la figure.",
+      "formule_principale": "\\sum_{i=1}^n MA_i^2 = n\\,MG^2 + \\sum_{i=1}^n GA_i^2",
+      "variantes": [
+        {
+          "nom": "Cas particulier n=2 : relation de la médiane",
+          "quand_utiliser": "Pour retrouver la relation de la médiane classique comme cas particulier de la formule générale.",
+          "contenu_markdown": "Avec $n=2$ et $G=I$ milieu de $[AB]$ : $MA^2+MB^2=2MI^2+(IA^2+IB^2)=2MI^2+2IA^2=2MI^2+\\dfrac{AB^2}{2}$ (car $IA=IB=\\dfrac{AB}{2}$), qui est exactement la relation de la médiane usuelle."
+        },
+        {
+          "nom": "Cas n=4, sommets d'un rectangle",
+          "quand_utiliser": "Pour un lieu géométrique défini par une somme de quatre carrés de distances aux sommets d'un rectangle (ou plus généralement de tout quadrilatère dont les diagonales se coupent en leur milieu).",
+          "contenu_markdown": "Avec $G=O$ centre du rectangle $ABCD$ (les diagonales $[AC]$ et $[BD]$ se coupant en leur milieu $O$, on a bien $\\overrightarrow{OA}+\\overrightarrow{OB}+\\overrightarrow{OC}+\\overrightarrow{OD}=\\vec0$) et $OA=OB=OC=OD=\\dfrac{\\text{diagonale}}{2}$ : $MA^2+MB^2+MC^2+MD^2=4MO^2+4OA^2$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCD$ est un rectangle direct tel que $AB=a$ et $AD=b$, de centre $O$. Montrer que pour tout point $M$ du plan, $MA^2+MB^2+MC^2+MD^2=4OM^2+h$, où $h$ est un réel à déterminer en fonction de $a$ et $b$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Développer chaque MX² via O",
+          "justification": "On introduit systématiquement le point O en écrivant MX = MO + OX pour chaque sommet X.",
+          "resultat_markdown": "Pour $X\\in\\{A,B,C,D\\}$ : $MX^2=MO^2+2\\overrightarrow{MO}\\cdot\\overrightarrow{OX}+OX^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Sommer sur les quatre sommets et annuler le terme croisé",
+          "justification": "O étant le centre du rectangle (milieu commun des deux diagonales), la somme des quatre vecteurs OA, OB, OC, OD est nulle.",
+          "resultat_markdown": "$\\sum MX^2 = 4MO^2+2\\overrightarrow{MO}\\cdot\\vec0+\\sum OX^2 = 4MO^2+\\sum OX^2$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la constante Σ OX² à l'aide de la diagonale",
+          "justification": "Les quatre sommets d'un rectangle sont à égale distance de son centre, cette distance commune étant la moitié de la diagonale (calculée par Pythagore).",
+          "resultat_markdown": "$OA=OB=OC=OD=\\dfrac{\\sqrt{a^2+b^2}}{2}$, donc $\\sum OX^2=4\\times\\dfrac{a^2+b^2}{4}=a^2+b^2$"
+        }
+      ],
+      "conclusion_markdown": "$MA^2+MB^2+MC^2+MD^2=4MO^2+(a^2+b^2)$, donc $h=a^2+b^2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Essayer d'appliquer directement la relation de la médiane (formule à 2 points) à un problème à 3 ou 4 points, en cherchant une formule toute faite dans son cours.",
+          "pourquoi_faux": "La relation de la médiane est un cas particulier (n=2) d'une méthode plus générale ; il n'existe pas de formule unique à mémoriser pour chaque valeur de n, mais une DÉMARCHE (écrire MX=MG+GX, développer, sommer, annuler le terme croisé) qui s'adapte à n'importe quel nombre de points.",
+          "correction_markdown": "Refais systématiquement la démonstration à partir des vecteurs plutôt que de chercher à te souvenir d'une formule pour « 3 points » ou « 4 points » : la méthode est toujours la même, seul le calcul de la constante finale change selon la figure."
+        },
+        {
+          "erreur_markdown": "Oublier de justifier pourquoi le terme croisé s'annule (l'admettre sans vérifier que le point choisi comme référence vérifie bien la condition sur la somme des vecteurs).",
+          "pourquoi_faux": "L'annulation du terme croisé n'est vraie que pour un point G bien précis (l'isobarycentre, ou le centre de symétrie de la figure) : pour un point de référence choisi au hasard, la formule ne se simplifie pas de la même façon.",
+          "correction_markdown": "Justifie toujours explicitement pourquoi la somme des vecteurs s'annule au point choisi (ici : O est le milieu des deux diagonales du rectangle), avant d'affirmer que le terme croisé disparaît."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$ABC$ est un triangle équilatéral de côté $c$ et de centre de gravité $G$. Montrer que pour tout point $M$ du plan, $MA^2+MB^2+MC^2=3MG^2+h$, et déterminer $h$ en fonction de $c$.",
+          "solution_markdown": "En un triangle, le centre de gravité $G$ vérifie $\\overrightarrow{GA}+\\overrightarrow{GB}+\\overrightarrow{GC}=\\vec0$ par définition : la méthode générale s'applique directement avec $n=3$.\n\n$MA^2+MB^2+MC^2=3MG^2+(GA^2+GB^2+GC^2)$.\n\nPour un triangle équilatéral de côté $c$, la distance du centre de gravité à chaque sommet vaut $GA=GB=GC=\\dfrac{c\\sqrt3}{3}$ (propriété du triangle équilatéral), donc $GA^2=\\dfrac{c^2}{3}$.\n\n$h=3\\times\\dfrac{c^2}{3}=c^2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec les notations de l'exemple résolu (rectangle $ABCD$, $AB=6$, $AD=8$), déterminer la nature de l'ensemble des points $M$ tels que $MA^2+MB^2+MC^2+MD^2=200$.",
+          "solution_markdown": "$a^2+b^2=36+64=100$, donc $h=100$.\n\n$4OM^2+100=200 \\implies OM^2=25 \\implies OM=5$.\n\nL'ensemble cherché est le cercle de centre $O$ (centre du rectangle) et de rayon $5$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Toujours avec $AB=6$, $AD=8$, pour quelle valeur de $k$ l'ensemble des points $M$ tels que $MA^2+MB^2+MC^2+MD^2=k$ est-il réduit à un seul point ? Lequel ?",
+          "solution_markdown": "L'ensemble est réduit à un point lorsque $OM^2=0$, c'est-à-dire lorsque $k=h=a^2+b^2=100$.\n\nCe point unique est alors $M=O$, le centre du rectangle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La relation de la médiane ($n=2$) est un cas particulier d'une méthode plus générale valable pour un nombre quelconque de points : $\\sum MA_i^2 = n\\,MG^2+\\sum GA_i^2$, où $G$ est le point tel que $\\sum \\overrightarrow{GA_i}=\\vec0$.",
+        "Pour un rectangle, ce point $G$ est son centre $O$ (intersection des diagonales), et $\\sum OA_i^2=4\\times OA^2$ se calcule via le théorème de Pythagore sur la demi-diagonale.",
+        "Une fois l'identité $\\sum MA_i^2=n\\,MO^2+h$ établie, le lieu $\\{\\sum MA_i^2=k\\}$ se traite exactement comme pour deux points : cercle de centre $O$ si $k>h$, point unique $\\{O\\}$ si $k=h$, ensemble vide si $k<h$.",
+        "Ne jamais chercher à mémoriser une formule différente pour chaque nombre de points : refaire la démonstration vectorielle à chaque fois est plus sûr et s'adapte à toute figure."
+      ]
+    }
+  ]
+}

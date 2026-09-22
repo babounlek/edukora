@@ -29,6 +29,20 @@ export function coursListPath(country: string): string {
   return `/${country}/cours`
 }
 
+// Page dédiée au classement complet des thèmes fréquents (voir ThemesFrequents.tsx,
+// qui n'en montre qu'un aperçu tronqué sur /epreuves) - utilisable seule, avec ses
+// propres filtres matière/cursus en query params, pas seulement depuis l'aperçu.
+export function themesFrequentsPath(country: string): string {
+  return `/${country}/themes-frequents`
+}
+
+// Exercices concernés par un thème précis (voir ThemeExercicesPage) - id de Tag dans
+// l'URL, pas son nom : évite tout souci d'encodage/collision sur des noms de thème qui
+// contiennent des espaces ou des caractères accentués.
+export function themeExercicesPath(country: string, tagId: number): string {
+  return `/${country}/themes-frequents/${tagId}/exercices`
+}
+
 export function epreuveDetailPath(country: string, slug: string): string {
   return `/${country}/epreuves/${slug}`
 }

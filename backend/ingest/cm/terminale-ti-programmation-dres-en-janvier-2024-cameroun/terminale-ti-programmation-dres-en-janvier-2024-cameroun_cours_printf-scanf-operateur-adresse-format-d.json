@@ -1,0 +1,93 @@
+{
+  "cours_id": "cours-printf-scanf-operateur-adresse-format-d-dres-jan2024",
+  "meta": {
+    "titre": "printf, scanf, l'operateur & et le specificateur %d",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C - entrees-sorties standard",
+    "duree_estimee_min": 15,
+    "tags": [
+      "printf",
+      "scanf",
+      "operateur &",
+      "specificateur de format",
+      "%d"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-dres2024-ex2-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Lire un entier au clavier et l'afficher a l'ecran mobilise trois elements indissociables : scanf, l'operateur & et le format %d."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre la notion de variable et de type int en C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Entrees-sorties standard : printf, scanf, & et %d",
+      "contenu_markdown": "**printf()** sert a afficher (ecrire) des donnees a l'ecran. **scanf()** sert a lire (saisir) des donnees entrees au clavier par l'utilisateur.\n\nLe symbole **&** applique a une variable renvoie l'**adresse memoire** de cette variable plutot que sa valeur. Dans `scanf(\"%d\", &n)`, il est indispensable : scanf doit connaitre l'adresse ou ecrire la valeur saisie, car elle modifie directement le contenu de la variable en memoire (passage par adresse) - un simple passage par valeur ne le permettrait pas.\n\n**%d** est un specificateur de format qui indique que la donnee lue ou affichee doit etre interpretee comme un **entier decimal** (type int). D'autres specificateurs existent : %f pour un nombre a virgule flottante, %c pour un caractere, %s pour une chaine."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pourquoi l'instruction scanf(\"%d\", n) (sans le &) est-elle incorrecte pour lire un entier dans la variable n ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler ce qu'attend scanf",
+          "justification": "scanf doit ecrire la valeur saisie directement dans la variable, donc a l'adresse memoire de cette variable.",
+          "resultat_markdown": "scanf attend une adresse memoire en argument, pas une valeur."
+        },
+        {
+          "numero": 2,
+          "action": "Analyser scanf(\"%d\", n)",
+          "justification": "Sans &, c'est la VALEUR de n (non initialisee) qui est transmise, interpretee a tort comme une adresse.",
+          "resultat_markdown": "Le programme tente d'ecrire a une adresse memoire arbitraire (la valeur non initialisee de n), ce qui provoque un comportement indefini ou un plantage."
+        }
+      ],
+      "conclusion_markdown": "Il faut toujours ecrire scanf(\"%d\", &n) pour transmettre l'adresse de n, jamais sa valeur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le & devant une variable simple (non pointeur) dans un appel a scanf.",
+          "pourquoi_faux": "scanf a besoin de l'adresse memoire de la variable pour pouvoir y ecrire la valeur saisie ; sans &, elle recoit une valeur au lieu d'une adresse."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel specificateur de format faut-il utiliser dans printf pour afficher un nombre a virgule flottante ?",
+          "solution_markdown": "%f"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "printf affiche, scanf lit une donnee au clavier.",
+        "& renvoie l'adresse memoire d'une variable, necessaire a scanf pour modifier son contenu.",
+        "%d designe le format entier decimal parmi les specificateurs de format C."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "cours_id": "cours-deriver-une-fonction-homographique-1ere-a",
+  "meta": {
+    "titre": "Dériver une fonction homographique (quotient)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Fonctions dérivées",
+    "duree_estimee_min": 20,
+    "tags": [
+      "dérivée d'un quotient",
+      "fonction homographique"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "19",
+      "savoir_numero": "IV"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2001-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathematiques - Session 2001 (Cameroun)",
+    "exercice_numero": "C",
+    "rappel_id": "rdm-probatoire-a-maths-2001-officiel-cameroun-exC-q5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction homographique se dérive avec la formule du quotient, mais le calcul se simplifie presque toujours de façon spectaculaire : le terme en $x^2$ du numérateur s'annule systématiquement. Reconnaître ce mécanisme permet de vérifier son calcul en un coup d'œil et d'aller plus vite le jour de l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la formule de dérivation d'un quotient",
+        "Développer et réduire une expression littérale",
+        "Reconnaître le domaine de dérivabilité d'une fonction homographique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dérivée d'un quotient de deux fonctions affines",
+      "contenu_markdown": "Pour $f(x)=\\dfrac{u(x)}{v(x)}$ avec $u$ et $v$ dérivables et $v(x)\\neq0$ :\n\n$$f'(x)=\\dfrac{u'(x)v(x)-u(x)v'(x)}{v(x)^2}$$\n\nQuand $u$ et $v$ sont toutes deux affines ($u(x)=\\alpha x+\\beta$, $v(x)=\\gamma x+\\delta$), le numérateur de $f'$ se simplifie toujours en une constante : les termes en $x^2$ s'éliminent.",
+      "formule_principale": "f'(x)=\\dfrac{u'(x)v(x)-u(x)v'(x)}{v(x)^2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la fonction dérivée de $f(x)=\\dfrac{2x-2}{x+1}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier $u$, $u'$, $v$ et $v'$",
+          "justification": "On pose $u(x)=2x-2$ et $v(x)=x+1$",
+          "resultat_markdown": "$u'(x)=2\\;;\\;v'(x)=1$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule du quotient",
+          "justification": "$f'(x)=\\dfrac{u'v-uv'}{v^2}$",
+          "resultat_markdown": "$f'(x)=\\dfrac{2(x+1)-(2x-2)\\times1}{(x+1)^2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer et réduire le numérateur",
+          "justification": "Les termes en $x$ doivent s'éliminer",
+          "resultat_markdown": "$2(x+1)-(2x-2)=2x+2-2x+2=4$"
+        },
+        {
+          "numero": 4,
+          "action": "Étudier le signe de $f'$",
+          "justification": "Un carré au dénominateur est toujours positif",
+          "resultat_markdown": "$f'(x)=\\dfrac{4}{(x+1)^2}>0$ pour tout $x\\neq-1$"
+        }
+      ],
+      "conclusion_markdown": "$f'(x)=\\dfrac{4}{(x+1)^2}$ ; $f$ est strictement croissante sur chacun des intervalles de son domaine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le carré au dénominateur de la dérivée",
+          "pourquoi_faux": "La formule du quotient impose $v(x)^2$ au dénominateur : l'omettre change la nature même du résultat, qui n'est plus homogène à une dérivée.",
+          "correction_markdown": "Toujours écrire $(x+1)^2$ en entier au dénominateur, jamais $x+1$ seul."
+        },
+        {
+          "erreur_markdown": "Intervertir $u$ et $v$ dans la formule",
+          "pourquoi_faux": "Dériver $\\dfrac{v}{u}$ au lieu de $\\dfrac{u}{v}$ donne un résultat totalement différent, y compris dans son signe.",
+          "correction_markdown": "Identifier clairement le numérateur ($u$) et le dénominateur ($v$) de l'expression avant d'appliquer la formule."
+        },
+        {
+          "erreur_markdown": "Ne pas développer entièrement le numérateur avant de conclure sur son signe",
+          "pourquoi_faux": "Une expression non développée peut cacher un terme en $x$ qui semble présent alors qu'il s'annule après réduction, ou inversement.",
+          "correction_markdown": "Toujours développer et réduire complètement le numérateur avant d'en étudier le signe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dériver $f(x)=\\dfrac{x+1}{x-2}$.",
+          "solution_markdown": "$u=x+1,\\,u'=1\\;;\\;v=x-2,\\,v'=1$. $f'(x)=\\dfrac{1\\times(x-2)-(x+1)\\times1}{(x-2)^2}=\\dfrac{x-2-x-1}{(x-2)^2}=\\dfrac{-3}{(x-2)^2}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dériver $f(x)=\\dfrac{3x-5}{2x+1}$.",
+          "solution_markdown": "$u=3x-5,\\,u'=3\\;;\\;v=2x+1,\\,v'=2$. $f'(x)=\\dfrac{3(2x+1)-(3x-5)\\times2}{(2x+1)^2}=\\dfrac{6x+3-6x+10}{(2x+1)^2}=\\dfrac{13}{(2x+1)^2}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $f(x)=\\dfrac{ax+b}{x+c}$ avec $c$ fixé. Montrer que $f'(x)=\\dfrac{ac-b}{(x+c)^2}$, puis déterminer une condition sur $a$, $b$ et $c$ pour que $f$ soit strictement décroissante sur chaque intervalle de son domaine.",
+          "solution_markdown": "$u=ax+b,\\,u'=a\\;;\\;v=x+c,\\,v'=1$. $f'(x)=\\dfrac{a(x+c)-(ax+b)\\times1}{(x+c)^2}=\\dfrac{ax+ac-ax-b}{(x+c)^2}=\\dfrac{ac-b}{(x+c)^2}$. Le dénominateur étant toujours positif, le signe de $f'$ est celui de $ac-b$. $f$ est strictement décroissante si et seulement si $ac-b<0$, c'est-à-dire $b>ac$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La dérivée d'un quotient $\\dfrac{u}{v}$ est $\\dfrac{u'v-uv'}{v^2}$ : ne jamais oublier le carré au dénominateur.",
+        "Pour une fonction homographique, les termes en $x^2$ du numérateur s'éliminent toujours après développement : un résultat qui en garde un signale une erreur.",
+        "Un numérateur constant, une fois calculé, donne immédiatement le signe de la dérivée sur tout le domaine, sans étude supplémentaire.",
+        "Vérifie ton résultat en calculant $f'$ en un point particulier et en le comparant à une pente lue graphiquement si une tangente est donnée.",
+        "Cette dérivée sert directement à confirmer le sens de variation observé graphiquement et à établir l'équation d'une tangente."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-selecteurs-css-balise-classe-premiere-ti",
+  "meta": {
+    "titre": "Les sélecteurs CSS : sélecteur de balise et sélecteur de classe",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 12,
+    "tags": [
+      "CSS",
+      "sélecteur",
+      "classe",
+      "balise"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex3-q5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un simple point peut tout changer en CSS : écrire `p{...}` ou `.p{...}` ne cible absolument pas les mêmes éléments d'une page, alors que ces deux écritures se ressemblent au premier coup d'œil. Distinguer ces deux types de sélecteurs évite l'une des confusions les plus fréquentes chez les débutants."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe de base d'une règle CSS (`sélecteur { propriété: valeur; }`)",
+        "Savoir ce qu'est l'attribut `class` en HTML"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Point ou pas de point : deux sélecteurs différents",
+      "contenu_markdown": "En CSS, un sélecteur commençant par un point (comme `.p`) cible tous les éléments possédant l'attribut `class` portant ce nom, alors qu'un sélecteur sans point (comme `p`) cible directement toutes les balises de ce nom (ici, toutes les balises `<p>`) : les deux syntaxes ne désignent pas du tout les mêmes éléments.",
+      "formule_principale": "p{...} = balise <p> ; .p{...} = class=\"p\", quelle que soit la balise",
+      "variantes": [
+        {
+          "nom": "Le sélecteur d'identifiant (#)",
+          "quand_utiliser": "Pour cibler un seul élément unique de la page",
+          "contenu_markdown": "`#titre{...}` cible l'unique élément portant `id=\"titre\"` : contrairement à une classe, un même `id` ne doit apparaître qu'une seule fois par page."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un développeur veut que tous les `<div class=\"alerte\">` de sa page apparaissent en rouge, mais que les balises `<div>` sans cette classe restent noires. Écrire la règle CSS correspondante et expliquer pourquoi `div{color:red;}` serait incorrect.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce qu'il faut réellement cibler",
+          "justification": "Seuls les éléments portant `class=\"alerte\"` doivent être affectés, pas toutes les balises `<div>`",
+          "resultat_markdown": "Il faut un sélecteur de classe, pas un sélecteur de balise."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la règle avec le sélecteur de classe",
+          "justification": "Le point devant le nom cible l'attribut `class`, quelle que soit la balise",
+          "resultat_markdown": "```css\n.alerte {\n    color: red;\n}\n```"
+        },
+        {
+          "numero": 3,
+          "action": "Expliquer pourquoi `div{color:red;}` serait incorrect",
+          "justification": "Sans le point, `div` cible TOUTES les balises `<div>` de la page, avec ou sans la classe \"alerte\"",
+          "resultat_markdown": "`div{color:red;}` colorerait aussi les `<div>` qui ne devraient PAS être en rouge : le sélecteur serait trop large par rapport au besoin réel."
+        }
+      ],
+      "conclusion_markdown": "Le point devant le nom fait toute la différence entre \"toutes les balises de ce type\" et \"tous les éléments portant cette classe, quelle que soit leur balise\" : bien choisir entre les deux évite d'appliquer un style à des éléments qui ne le devraient pas."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que `.p{...}` cible automatiquement les balises `<p>`",
+          "pourquoi_faux": "Le point transforme totalement le sens du sélecteur : `.p` cherche l'attribut `class=\"p\"`, sur n'importe quelle balise, et ignore complètement le nom `<p>` de la balise paragraphe.",
+          "correction_markdown": "Pour cibler la balise `<p>` elle-même, il faut écrire `p{...}`, sans aucun point."
+        },
+        {
+          "erreur_markdown": "Utiliser un sélecteur de balise (`div{...}`) quand seule une partie des éléments de cette balise doit être stylée",
+          "pourquoi_faux": "Un sélecteur de balise s'applique à TOUS les éléments de cette balise sur la page, sans distinction : si seule une partie doit être ciblée, ce sélecteur est trop large.",
+          "correction_markdown": "Dès qu'il faut distinguer certains éléments d'une même balise des autres, utilise une classe (`.nom`) ou un identifiant (`#nom`) plutôt qu'un sélecteur de balise seul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel sélecteur CSS cible toutes les balises `<span>` de la page, sans distinction de classe ?",
+          "solution_markdown": "`span{...}`, un sélecteur de balise (sans point), cible toutes les balises `<span>` de la page."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le code HTML contient `<span class=\"important\">Attention</span>` et `<div class=\"important\">Danger</div>`. Écrire la règle CSS qui affiche ces deux éléments en gras (peu importe leur balise), grâce à leur point commun.",
+          "solution_markdown": "```css\n.important {\n    font-weight: bold;\n}\n```\nComme les deux éléments partagent la même classe (\"important\"), un unique sélecteur de classe (avec le point) suffit à les cibler tous les deux, malgré leurs balises différentes (`<span>` et `<div>`)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une page contient `<p class=\"p\">Texte A</p>` et `<div>Texte B</div>`. Pour chacune des règles suivantes, dire quel(s) texte(s) elle affecte, et pourquoi : (a) `p{color:blue;}` ; (b) `.p{color:blue;}`.",
+          "solution_markdown": "(a) `p{color:blue;}` est un sélecteur de BALISE : il affecte uniquement les éléments `<p>...</p>`, donc \"Texte A\" (porté par une balise `<p>`), quelle que soit sa classe. \"Texte B\" n'est pas concerné car il est dans une balise `<div>`, pas `<p>`.\n\n(b) `.p{color:blue;}` est un sélecteur de CLASSE : il affecte tout élément portant `class=\"p\"`, quelle que soit sa balise. Ici, \"Texte A\" est concerné (il porte à la fois la balise `<p>` ET la classe \"p\" - une coïncidence de nom, pas une obligation). Si `<div>` avait porté `class=\"p\"`, elle aurait aussi été affectée par (b), mais ce n'est pas le cas ici : \"Texte B\" n'a aucune classe. Dans cet exemple précis, (a) et (b) affectent donc le même texte, mais pour des raisons complètement différentes - ce qui montre bien qu'il ne faut jamais déduire le fonctionnement d'un sélecteur d'un résultat qui coïncide par hasard."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Sélecteur de balise (`p{...}`, sans point) : cible toutes les balises de ce nom sur la page.",
+        "Sélecteur de classe (`.p{...}`, avec un point) : cible tout élément portant `class=\"p\"`, quelle que soit sa balise.",
+        "Un nom de classe identique au nom d'une balise (comme `.p` et `<p>`) est une coïncidence trompeuse : les deux sélecteurs restent fondamentalement différents.",
+        "Le sélecteur d'identifiant (`#nom`, avec un dièse) cible un unique élément portant `id=\"nom\"`.",
+        "Avant d'écrire une règle CSS, demande-toi toujours : \"est-ce que je veux cibler TOUS les éléments d'une balise, ou seulement CERTAINS d'entre eux ?\" - la réponse détermine si un sélecteur de balise suffit ou s'il faut une classe."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-derivee-fonction-homographique-1ere-a",
+  "meta": {
+    "titre": "Dérivée d'une fonction homographique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Dérivation",
+    "duree_estimee_min": 20,
+    "tags": [
+      "dérivée",
+      "fonction homographique",
+      "dérivée de 1/u"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2002-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Cameroun - Session 2002 (MINEDUC-OBC)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-a-maths-2002-officiel-cameroun-ex4-q3b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu as déjà lu dans un tableau de variations qu'une fonction est décroissante partout où elle est définie. Mais comment le démontrer par le calcul plutôt que de le lire sur un dessin ? Il faut calculer sa dérivée et étudier son signe. Pour une fonction homographique, du type $\\dfrac{k}{x+a}$, une seule règle de dérivation suffit, et elle donne toujours un résultat de signe constant."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la dérivée des fonctions usuelles simples (fonction affine, fonction carré).",
+        "Savoir écrire une fraction $\\dfrac{k}{x+a}$ sous la forme $k\\times\\dfrac{1}{x+a}$.",
+        "Comprendre la notion de fonction composée $u\\mapsto\\dfrac{1}{u}$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dérivée de 1/u et d'une fonction homographique",
+      "contenu_markdown": "Pour une fonction de la forme $\\dfrac{1}{u(x)}$, où $u$ est dérivable et ne s'annule pas, la dérivée est $\\left(\\dfrac{1}{u}\\right)' = -\\dfrac{u'}{u^2}$. Pour une fonction homographique simple $f(x)=\\dfrac{k}{x+a}$ avec $k$ constante, on pose $u(x)=x+a$, donc $u'(x)=1$, et on obtient $f'(x) = -\\dfrac{k}{(x+a)^2}$. Le dénominateur $(x+a)^2$ étant toujours strictement positif (un carré non nul), le signe de $f'(x)$ est constant et opposé au signe de $k$.",
+      "formule_principale": "f(x)=\\dfrac{k}{x+a} \\;\\Longrightarrow\\; f'(x) = -\\dfrac{k}{(x+a)^2}",
+      "variantes": [
+        {
+          "nom": "Fonction homographique générale",
+          "quand_utiliser": "Quand la fonction a la forme $\\dfrac{ax+b}{cx+d}$, plus générale qu'une simple constante sur $(x+a)$.",
+          "contenu_markdown": "On utilise alors la formule de dérivation d'un quotient $\\left(\\dfrac{u}{v}\\right)' = \\dfrac{u'v-uv'}{v^2}$, avec $u(x)=ax+b$ et $v(x)=cx+d$. Le résultat se ramène souvent, après simplification, à une expression de signe constant, comme pour le cas particulier $\\dfrac{k}{x+a}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer la dérivée de la fonction $f$ définie par $f(x)=\\dfrac{2}{x+1}$ pour $x\\neq-1$, puis en déduire son signe.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Réécrire f sous la forme k × 1/u",
+          "justification": "On isole la constante multiplicative pour appliquer la règle de dérivation de 1/u.",
+          "resultat_markdown": "$f(x) = 2\\times\\dfrac{1}{x+1}$, avec $u(x)=x+1$ et $u'(x)=1$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule de dérivation de 1/u",
+          "justification": "$\\left(\\dfrac{1}{u}\\right)' = -\\dfrac{u'}{u^2}$",
+          "resultat_markdown": "$f'(x) = 2\\times\\left(-\\dfrac{1}{(x+1)^2}\\right) = -\\dfrac{2}{(x+1)^2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Étudier le signe de f'(x)",
+          "justification": "(x+1)² est toujours strictement positif pour x≠-1 ; le numérateur -2 est négatif.",
+          "resultat_markdown": "$f'(x)<0$ pour tout $x\\neq-1$"
+        }
+      ],
+      "conclusion_markdown": "$f'(x) = -\\dfrac{2}{(x+1)^2}$ est strictement négative sur tout l'ensemble de définition de $f$ : $f$ est donc strictement décroissante sur $]-\\infty\\,;-1[$ et sur $]-1\\,;+\\infty[$, ce qui confirme les deux signes moins observés dans son tableau de variations."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dériver $f(x)=\\dfrac{2}{x+1}$ en écrivant $f'(x)=\\dfrac{2}{1}=2$, comme si le dénominateur disparaissait simplement.",
+          "pourquoi_faux": "Une fraction dont le dénominateur dépend de x ne se dérive jamais en ignorant ce dénominateur : il faut appliquer la règle de dérivation de 1/u, qui fait apparaître le carré du dénominateur.",
+          "correction_markdown": "Toujours réécrire la fonction sous la forme $k\\times\\dfrac{1}{u(x)}$ avant de dériver, puis appliquer systématiquement $\\\\left(\\\\dfrac{1}{u}\\\\right)'=-\\\\dfrac{u'}{u^2}$."
+        },
+        {
+          "erreur_markdown": "Oublier le signe moins devant la fraction lors de l'application de la formule de dérivation de 1/u.",
+          "pourquoi_faux": "La fonction $u\\mapsto\\dfrac{1}{u}$ est décroissante partout où elle est définie : sa dérivée est donc nécessairement négative quand u'>0, ce que seul le signe moins de la formule traduit correctement.",
+          "correction_markdown": "Mémoriser la formule complète avec son signe, $\\\\left(\\\\dfrac{1}{u}\\\\right)'=-\\\\dfrac{u'}{u^2}$, plutôt que seulement $\\\\dfrac{u'}{u^2}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la dérivée de $f(x)=\\dfrac{5}{x-3}$ pour $x\\neq3$.",
+          "solution_markdown": "On écrit $f(x)=5\\times\\dfrac{1}{x-3}$, avec $u(x)=x-3$, $u'(x)=1$.\n\n$f'(x) = 5\\times\\left(-\\dfrac{1}{(x-3)^2}\\right) = -\\dfrac{5}{(x-3)^2}$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la dérivée de $g(x)=\\dfrac{-4}{x+2}$ pour $x\\neq-2$, puis déterminer son signe et en déduire le sens de variation de $g$.",
+          "solution_markdown": "On écrit $g(x)=-4\\times\\dfrac{1}{x+2}$, avec $u(x)=x+2$, $u'(x)=1$.\n\n$g'(x) = -4\\times\\left(-\\dfrac{1}{(x+2)^2}\\right) = \\dfrac{4}{(x+2)^2}$\n\n$(x+2)^2$ est toujours strictement positif pour $x\\neq-2$, et le numérateur $4$ est positif : $g'(x)>0$ pour tout $x\\neq-2$.\n\n$g$ est donc strictement croissante sur $]-\\infty\\,;-2[$ et sur $]-2\\,;+\\infty[$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer la dérivée de $h(x)=\\dfrac{3}{2x-1}$ pour $x\\neq\\dfrac{1}{2}$, en faisant attention au coefficient devant $x$ dans le dénominateur.",
+          "solution_markdown": "On écrit $h(x)=3\\times\\dfrac{1}{2x-1}$, avec $u(x)=2x-1$. Cette fois $u'(x)=2$ (dérivée de $2x-1$), et non $1$ : le coefficient devant $x$ dans le dénominateur ne doit pas être oublié.\n\n$h'(x) = 3\\times\\left(-\\dfrac{u'(x)}{u(x)^2}\\right) = 3\\times\\left(-\\dfrac{2}{(2x-1)^2}\\right) = -\\dfrac{6}{(2x-1)^2}$\n\n$h'(x)$ est strictement négative pour tout $x\\neq\\dfrac{1}{2}$ : $h$ est strictement décroissante sur chacun des deux intervalles de son ensemble de définition."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fonction homographique simple $\\dfrac{k}{x+a}$ se dérive en l'écrivant $k\\times\\dfrac{1}{x+a}$, puis en appliquant $\\left(\\dfrac{1}{u}\\right)'=-\\dfrac{u'}{u^2}$.",
+        "N'oublie jamais le signe moins de cette formule : c'est lui qui porte toute l'information sur le sens de variation.",
+        "Si le dénominateur contient un coefficient devant x, comme dans $2x-1$, sa dérivée u' n'est pas 1 mais ce coefficient : vérifie-le avant de conclure.",
+        "Le dénominateur au carré, $(x+a)^2$, est toujours strictement positif : le signe de la dérivée dépend uniquement du signe du numérateur k (ou -k après dérivation).",
+        "Une dérivée de signe constant sur tout l'ensemble de définition traduit une fonction strictement monotone sur chacun des intervalles qui composent cet ensemble.",
+        "Au Probatoire, ce calcul sert le plus souvent à confirmer par le calcul un sens de variation déjà lu ou pressenti sur un tableau : les deux doivent toujours coïncider."
+      ]
+    }
+  ]
+}

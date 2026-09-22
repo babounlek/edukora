@@ -1,0 +1,159 @@
+{
+  "epreuve_source": "bac-d-maths-2018-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "serie": "D & TI",
+  "examen": "BAC",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 2018,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "numero_exercice": 4,
+  "titre_exercice": "Problème, Partie B : approximation de α par une suite récurrente définie à partir de g",
+  "points": 5.25,
+  "figures": [],
+  "enonce_intro_markdown": "On garde les notations de la Partie A : $f(x)=2x+1-xe^{x-1}$, $I=[1,9;2]$, et $\\alpha$ l'unique solution de $f(x)=0$ dans $I$. On considère la fonction $g$ définie sur $I$ par $g(x)=1+\\ln\\left(2+\\dfrac1x\\right)$.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "0,5pt",
+      "enonce_markdown": "Démontrer que, sur $I$, l'équation $f(x)=0$ équivaut à l'équation $g(x)=x$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etablir-equivalence-equation-point-fixe-manipulation-algebrique-terminale-d-ti",
+          "texte": "Pour transformer une équation f(x)=0 en une équation de point fixe g(x)=x, on isole le terme exponentiel, on divise par un facteur non nul justifié par le domaine d'étude, puis on applique le logarithme népérien aux deux membres (valides car tous deux strictement positifs) ; chaque étape doit être réversible pour garantir l'équivalence."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour transformer une équation $f(x)=0$ en une équation de point fixe $g(x)=x$, on isole le terme exponentiel, on divise par un facteur non nul justifié par le domaine d'étude, puis on applique le logarithme népérien aux deux membres (valide car les deux membres sont alors strictement positifs). Chaque étape doit être réversible (équivalence, pas simple implication) pour garantir l'équivalence finale demandée.\n\n**Point de départ.**\n\n$$f(x)=0\\iff2x+1-xe^{x-1}=0$$\n\n**Étape 1 — isoler le terme exponentiel.**\n\n$$2x+1-xe^{x-1}=0\\iff xe^{x-1}=2x+1$$\n\n(on ajoute $xe^{x-1}$ aux deux membres, opération réversible)\n\n**Étape 2 — diviser par $x$.**\n\nSur $I=[1,9;2]$, on a $x\\geqslant1,9>0$, donc $x\\neq0$ : la division par $x$ est licite et réversible (on peut aussi bien multiplier par $x$ pour revenir en arrière).\n\n$$xe^{x-1}=2x+1\\iff e^{x-1}=\\dfrac{2x+1}x=\\dfrac{2x}x+\\dfrac1x=2+\\dfrac1x$$\n\n**Étape 3 — appliquer le logarithme népérien.**\n\nLes deux membres de l'égalité $e^{x-1}=2+\\dfrac1x$ sont strictement positifs : $e^{x-1}>0$ pour tout $x$ (exponentielle toujours positive), et $2+\\dfrac1x>0$ pour $x\\in I$ (car $x>0$, donc $\\dfrac1x>0$, donc $2+\\dfrac1x>2>0$). L'application du logarithme népérien, fonction strictement croissante sur $]0;+\\infty[$, est donc une opération équivalente (réversible via l'exponentielle) :\n\n$$e^{x-1}=2+\\dfrac1x\\iff\\ln\\left(e^{x-1}\\right)=\\ln\\left(2+\\dfrac1x\\right)\\iff x-1=\\ln\\left(2+\\dfrac1x\\right)$$\n\n(en utilisant $\\ln(e^{x-1})=x-1$)\n\n**Étape 4 — isoler $x$.**\n\n$$x-1=\\ln\\left(2+\\dfrac1x\\right)\\iff x=1+\\ln\\left(2+\\dfrac1x\\right)=g(x)$$\n\n**Conclusion.**\n\nChaque étape étant une équivalence (réversible), on a bien démontré, pour tout $x\\in I$ :\n\n$$f(x)=0\\iff g(x)=x$$\n\n### Piège à éviter\nAppliquer le logarithme sans vérifier explicitement que les deux membres sont strictement positifs : sur un intervalle où $2+\\frac1x$ pourrait être négatif ou nul, l'équivalence via le logarithme ne tiendrait plus. Ici, la positivité de $2+\\frac1x$ découle directement du fait que $I\\subset\\,]0;+\\infty[$, ce qu'il faut mentionner explicitement.",
+      "themes": [
+        "point fixe",
+        "équivalence",
+        "logarithme",
+        "Suites — méthode du point fixe"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "2",
+      "points": "1,5pt",
+      "enonce_markdown": "Étudier le sens de variation de $g$ sur $I$, et démontrer que, pour tout $x\\in I$, $g(x)\\in I$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-demontrer-stabilite-intervalle-fonction-monotone-encadrement-bornes-terminale-d-ti",
+          "texte": "Pour démontrer qu'une fonction monotone sur un intervalle I envoie I dans lui-même, on calcule l'image de I par la fonction (qui est l'intervalle délimité par les images des deux bornes, dans l'ordre inversé si la fonction est décroissante), puis on vérifie que cette image est bien incluse dans I."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour étudier le sens de variation d'une fonction composée avec un logarithme, on dérive en utilisant $(\\ln u)'=\\dfrac{u'}u$, puis on étudie le signe de la dérivée obtenue. Pour démontrer ensuite qu'une fonction monotone sur un intervalle $I$ envoie $I$ dans lui-même (stabilité de l'intervalle), on calcule l'image de $I$ par la fonction — c'est l'intervalle délimité par les images des deux bornes, dans l'ordre inversé si la fonction est décroissante — puis on vérifie que cette image est bien incluse dans $I$.\n\n**Calcul de $g'(x)$.**\n\n$g(x)=1+\\ln\\left(2+\\dfrac1x\\right)$. On pose $u(x)=2+\\dfrac1x$, avec $u'(x)=-\\dfrac1{x^2}$.\n\n$$g'(x)=\\dfrac{u'(x)}{u(x)}=\\dfrac{-\\frac1{x^2}}{2+\\frac1x}$$\n\nOn simplifie en multipliant numérateur et dénominateur par $x^2$ :\n\n$$g'(x)=\\dfrac{-\\frac1{x^2}\\times x^2}{\\left(2+\\frac1x\\right)\\times x^2}=\\dfrac{-1}{2x^2+x}=\\dfrac{-1}{x(2x+1)}$$\n\n**Signe de $g'(x)$ sur $I=[1,9;2]$.**\n\nSur $I$, $x>0$ et $2x+1>0$ (somme de deux termes positifs), donc $x(2x+1)>0$, donc $g'(x)=\\dfrac{-1}{x(2x+1)}<0$ pour tout $x\\in I$.\n\n**$g$ est donc strictement décroissante sur $I$.**\n\n**Calcul des images des bornes.**\n\n$$g(2)=1+\\ln\\left(2+\\dfrac12\\right)=1+\\ln(2,5)$$\n\nComme $\\ln(2,5)\\approx0,9163$, on obtient $g(2)\\approx1,9163$.\n\n$$g(1,9)=1+\\ln\\left(2+\\dfrac1{1,9}\\right)=1+\\ln(2+0,5263)=1+\\ln(2,5263)$$\n\nComme $\\ln(2,5263)\\approx0,9270$, on obtient $g(1,9)\\approx1,9270$.\n\n**Image de $I$ par $g$.**\n\nComme $g$ est strictement décroissante sur $I=[1,9;2]$, l'image de $I$ par $g$ est l'intervalle $\\left[g(2);g(1,9)\\right]\\approx[1,9163;1,9270]$ (les bornes sont inversées car $g$ est décroissante : la plus grande borne de $I$, $2$, donne la plus petite image).\n\n**Vérification de l'inclusion $g(I)\\subset I$.**\n\nOn doit vérifier $1,9\\leqslant g(2)$ et $g(1,9)\\leqslant2$.\n\n- $g(2)\\geqslant1,9$ équivaut à $\\ln(2,5)\\geqslant0,9$, c'est-à-dire $2,5\\geqslant e^{0,9}$. Or $e^{0,9}\\approx2,4596<2,5$ : l'inégalité est vérifiée.\n- $g(1,9)\\leqslant2$ équivaut à $\\ln(2,5263)\\leqslant1$, c'est-à-dire $2,5263\\leqslant e^1=e\\approx2,71828$. Cette inégalité est bien vérifiée.\n\n**Comme $1,9\\leqslant g(2)\\approx1,9163$ et $g(1,9)\\approx1,9270\\leqslant2$, on a $g(I)=[g(2);g(1,9)]\\subset[1,9;2]=I$.**\n\n**On a bien démontré que pour tout $x\\in I$, $g(x)\\in I$.**\n\n### Conseil\nComparer $e^{0,9}$ à $2,5$ (plutôt que de comparer directement deux valeurs décimales approchées de logarithmes) permet une vérification plus rigoureuse et moins sujette à erreur d'arrondi : $e^{0,9}\\approx2,46$ est nettement inférieur à $2,5$, ce qui laisse une marge confortable et confirme la stabilité de l'intervalle sans ambiguïté.",
+      "themes": [
+        "stabilité d'intervalle",
+        "fonction monotone",
+        "point fixe",
+        "Suites — stabilité d'intervalle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "3",
+      "points": "0,75pt",
+      "enonce_markdown": "Démontrer que, pour tout $x\\in I$, $|g'(x)|\\leqslant\\dfrac19$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-majorer-valeur-absolue-derivee-etude-monotonie-denominateur-terminale-d-ti",
+          "texte": "Pour majorer |g'(x)| sur un intervalle, on étudie les variations du dénominateur de g'(x) (croissant si produit de facteurs positifs croissants), afin d'identifier sa valeur minimale sur l'intervalle, qui donne alors le majorant recherché pour |g'(x)| (fonction décroissante d'un dénominateur croissant)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour majorer $|g'(x)|$ sur un intervalle quand $g'(x)=\\dfrac{-1}{d(x)}$ avec $d(x)>0$, on étudie les variations de $d(x)$ (le dénominateur) : si $d$ est croissante sur l'intervalle, son minimum est atteint à la borne gauche, ce qui donne directement le majorant recherché pour $|g'(x)|=\\dfrac1{d(x)}$ (une fonction $\\dfrac1d$ est décroissante là où $d$ est croissante et positive).\n\n**Rappel de $g'(x)$ (question 2).**\n\n$$g'(x)=\\dfrac{-1}{x(2x+1)},\\qquad\\text{donc}\\qquad|g'(x)|=\\dfrac1{x(2x+1)}$$\n\n**Étude des variations du dénominateur $d(x)=x(2x+1)=2x^2+x$ sur $I=[1,9;2]$.**\n\n$d(x)=2x^2+x$ est une somme de deux fonctions strictement croissantes et positives sur $I$ (car $x>0$ sur $I$) : $x\\mapsto2x^2$ est strictement croissante pour $x>0$, et $x\\mapsto x$ est strictement croissante. Une somme de fonctions strictement croissantes est strictement croissante.\n\n**$d$ est donc strictement croissante sur $I$, et son minimum sur $I$ est atteint en la borne gauche $x=1,9$.**\n\n**Calcul de $d(1,9)$.**\n\n$$d(1,9)=1,9\\times(2\\times1,9+1)=1,9\\times(3,8+1)=1,9\\times4,8=9,12$$\n\n**Comme $d$ est croissante avec minimum $d(1,9)=9,12$, on a, pour tout $x\\in I$ :**\n\n$$d(x)\\geqslant9,12$$\n\n**Comme $9,12>9$ :**\n\n$$d(x)\\geqslant9,12>9$$\n\n**Or $|g'(x)|=\\dfrac1{d(x)}$, et $d(x)$ étant minoré par $9,12$ (strictement supérieur à $9$), la fonction $\\dfrac1{d(x)}$ est majorée par $\\dfrac1{9,12}$, elle-même strictement inférieure à $\\dfrac19$ :**\n\n$$|g'(x)|=\\dfrac1{d(x)}\\leqslant\\dfrac1{9,12}<\\dfrac19$$\n\n**On a donc bien démontré, pour tout $x\\in I$ : $|g'(x)|\\leqslant\\dfrac19$** (l'inégalité obtenue est même légèrement plus précise, avec une marge, puisque le majorant réel $\\frac1{9,12}$ est strictement inférieur à $\\frac19$).\n\n### Conseil\nCalculer le minimum exact du dénominateur ($9,12$) plutôt que de se contenter d'un encadrement grossier montre que la borne $\\frac19$ demandée par l'énoncé n'est pas optimale (elle laisse une marge), ce qui est un bon indice de cohérence : l'énoncé demande souvent un majorant \"confortable\" et non la meilleure constante possible, pour faciliter les calculs de la suite dans les questions suivantes.",
+      "themes": [
+        "majoration",
+        "dérivée",
+        "point fixe",
+        "Suites — majoration de la dérivée pour la méthode du point fixe"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "4a",
+      "points": "0,75pt",
+      "enonce_markdown": "On définit la suite $(u_n)$ par $u_0=2$ et, pour tout $n\\in\\mathbb N$, $u_{n+1}=g(u_n)$. (On admet que tous les termes de la suite appartiennent à $I$.) Démontrer que, pour tout $n\\in\\mathbb N$, $|u_{n+1}-\\alpha|\\leqslant\\dfrac19|u_n-\\alpha|$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-appliquer-inegalite-accroissements-finis-majoration-ecart-terminale-d-ti",
+          "texte": "Pour majorer l'écart |g(a)-g(b)| entre deux images par une fonction dérivable dont la dérivée est bornée en valeur absolue par un majorant M sur un intervalle contenant a et b, on applique l'inégalité des accroissements finis : |g(a)-g(b)|≤M|a-b|."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour majorer l'écart $|g(a)-g(b)|$ entre deux images par une fonction dérivable dont la dérivée est bornée en valeur absolue par un majorant $M$ sur un intervalle contenant $a$ et $b$, on applique l'inégalité des accroissements finis : $|g(a)-g(b)|\\leqslant M|a-b|$.\n\n**Point fixe de $g$.**\n\nD'après la question 1, $f(\\alpha)=0\\iff g(\\alpha)=\\alpha$. Comme $\\alpha$ est par définition la solution de $f(x)=0$ dans $I$ (Partie A, question 4), on a bien $g(\\alpha)=\\alpha$ : $\\alpha$ est un point fixe de $g$.\n\n**Relation de récurrence.**\n\nPar définition de la suite, $u_{n+1}=g(u_n)$. En utilisant $\\alpha=g(\\alpha)$ :\n\n$$u_{n+1}-\\alpha=g(u_n)-g(\\alpha)$$\n\n**Application de l'inégalité des accroissements finis.**\n\n$g$ est dérivable sur $I$ (question 2), et $|g'(x)|\\leqslant\\dfrac19$ pour tout $x\\in I$ (question 3). Comme $u_n\\in I$ (admis par l'énoncé) et $\\alpha\\in I$ (Partie A, question 4), l'inégalité des accroissements finis s'applique entre $u_n$ et $\\alpha$, tous deux dans $I$ :\n\n$$|g(u_n)-g(\\alpha)|\\leqslant\\dfrac19|u_n-\\alpha|$$\n\n**Donc, en substituant $u_{n+1}-\\alpha=g(u_n)-g(\\alpha)$ :**\n\n$$|u_{n+1}-\\alpha|\\leqslant\\dfrac19|u_n-\\alpha|$$\n\n**Ce qui est le résultat demandé, valable pour tout $n\\in\\mathbb N$.**\n\n### Piège à éviter\nOublier de vérifier explicitement que $\\alpha$ est bien un point fixe de $g$ (c'est-à-dire $g(\\alpha)=\\alpha$) avant d'écrire $u_{n+1}-\\alpha=g(u_n)-g(\\alpha)$ : cette étape utilise directement le résultat de la question 1 et doit être justifiée, pas seulement supposée.",
+      "themes": [
+        "inégalité des accroissements finis",
+        "point fixe",
+        "contraction",
+        "Suites — inégalité des accroissements finis"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "4b",
+      "points": "1pt",
+      "enonce_markdown": "En déduire, par récurrence, que pour tout $n\\in\\mathbb N$, $|u_n-\\alpha|\\leqslant\\left(\\dfrac19\\right)^n\\times\\dfrac1{10}$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-demontrer-majoration-geometrique-par-recurrence-terminale-d-ti",
+          "texte": "Pour démontrer par récurrence une majoration de la forme |u_n-α|≤k^n×C, on vérifie l'initialisation directement, puis à l'hérédité on combine l'hypothèse de récurrence avec l'inégalité de contraction |u_(n+1)-α|≤k|u_n-α| établie précédemment, en multipliant les deux membres de l'hypothèse par k (positif, l'inégalité est conservée)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer par récurrence une majoration de la forme $|u_n-\\alpha|\\leqslant k^n\\times C$, on vérifie d'abord l'initialisation directement (rang $n=0$), puis, à l'hérédité, on combine l'hypothèse de récurrence avec l'inégalité de contraction $|u_{n+1}-\\alpha|\\leqslant k|u_n-\\alpha|$ établie précédemment, en multipliant les deux membres de l'hypothèse par $k$ (positif, ce qui conserve le sens de l'inégalité).\n\n**Initialisation (rang $n=0$).**\n\nOn doit vérifier $|u_0-\\alpha|\\leqslant\\left(\\dfrac19\\right)^0\\times\\dfrac1{10}=1\\times\\dfrac1{10}=\\dfrac1{10}$.\n\nOr $u_0=2$, et $\\alpha\\in I=[1,9;2]$ (Partie A, question 4), donc $\\alpha\\leqslant2$, soit $2-\\alpha\\in[0;0,1]$, c'est-à-dire :\n\n$$|u_0-\\alpha|=|2-\\alpha|=2-\\alpha\\leqslant2-1,9=0,1=\\dfrac1{10}$$\n\n**L'initialisation est bien vérifiée : $|u_0-\\alpha|\\leqslant\\dfrac1{10}$.**\n\n**Hérédité.**\n\nSoit $n\\in\\mathbb N$. On suppose que $|u_n-\\alpha|\\leqslant\\left(\\dfrac19\\right)^n\\times\\dfrac1{10}$ (hypothèse de récurrence), et on veut démontrer que $|u_{n+1}-\\alpha|\\leqslant\\left(\\dfrac19\\right)^{n+1}\\times\\dfrac1{10}$.\n\nD'après la question 4a :\n\n$$|u_{n+1}-\\alpha|\\leqslant\\dfrac19|u_n-\\alpha|$$\n\nEn multipliant les deux membres de l'hypothèse de récurrence par $\\dfrac19$ (positif, l'inégalité est conservée) :\n\n$$\\dfrac19|u_n-\\alpha|\\leqslant\\dfrac19\\times\\left(\\dfrac19\\right)^n\\times\\dfrac1{10}=\\left(\\dfrac19\\right)^{n+1}\\times\\dfrac1{10}$$\n\nEn combinant les deux inégalités (transitivité) :\n\n$$|u_{n+1}-\\alpha|\\leqslant\\dfrac19|u_n-\\alpha|\\leqslant\\left(\\dfrac19\\right)^{n+1}\\times\\dfrac1{10}$$\n\n**L'hérédité est démontrée.**\n\n**Conclusion.**\n\nL'initialisation étant vérifiée et l'hérédité établie, par le principe de récurrence, pour tout $n\\in\\mathbb N$ :\n\n$$|u_n-\\alpha|\\leqslant\\left(\\dfrac19\\right)^n\\times\\dfrac1{10}$$",
+      "themes": [
+        "récurrence",
+        "majoration géométrique",
+        "point fixe",
+        "Suites — récurrence, majoration géométrique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "4c",
+      "points": "0,75pt",
+      "enonce_markdown": "En déduire que la suite $(u_n)$ converge, et préciser sa limite.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-conclure-convergence-suite-theoreme-gendarmes-majoration-geometrique-terminale-d-ti",
+          "texte": "Pour conclure qu'une suite converge vers une limite à partir d'une majoration |u_n-limite|≤(raison)^n×constante avec raison strictement comprise entre -1 et 1, on invoque le théorème des gendarmes : le majorant géométrique tend vers 0, donc l'écart tend vers 0, donc la suite converge vers la limite annoncée."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour conclure qu'une suite converge vers une limite $\\ell$ à partir d'une majoration $|u_n-\\ell|\\leqslant k^n\\times C$ avec $-1<k<1$, on invoque le théorème des gendarmes (ou théorème d'encadrement) : comme $0\\leqslant|u_n-\\ell|\\leqslant k^n\\times C$ et que le majorant $k^n\\times C$ tend vers $0$ (car $|k|<1$), on en déduit que $|u_n-\\ell|\\to0$, c'est-à-dire $u_n\\to\\ell$.\n\n**Limite du majorant.**\n\nD'après la question 4b, pour tout $n\\in\\mathbb N$ :\n\n$$0\\leqslant|u_n-\\alpha|\\leqslant\\left(\\dfrac19\\right)^n\\times\\dfrac1{10}$$\n\nComme $\\left|\\dfrac19\\right|<1$, on a $\\left(\\dfrac19\\right)^n\\to0$ quand $n\\to+\\infty$ (limite d'une suite géométrique de raison strictement comprise entre $-1$ et $1$).\n\nDonc :\n\n$$\\left(\\dfrac19\\right)^n\\times\\dfrac1{10}\\to0\\times\\dfrac1{10}=0$$\n\n**Application du théorème des gendarmes.**\n\nComme $0\\leqslant|u_n-\\alpha|\\leqslant\\left(\\dfrac19\\right)^n\\times\\dfrac1{10}$ pour tout $n$, et que les deux suites encadrantes ($0$ et $\\left(\\frac19\\right)^n\\times\\frac1{10}$) tendent toutes deux vers $0$, le théorème des gendarmes donne :\n\n$$\\lim_{n\\to+\\infty}|u_n-\\alpha|=0$$\n\ncʼest-à-dire :\n\n$$\\lim_{n\\to+\\infty}u_n=\\alpha$$\n\n**La suite $(u_n)$ converge, et sa limite est $\\alpha$**, la solution de l'équation $f(x)=0$ dans $I$ établie en Partie A.\n\n### Conseil\nCe résultat illustre concrètement l'intérêt de toute la Partie B : la suite $(u_n)$, calculable terme à terme avec une simple calculatrice à partir de $u_0=2$, fournit une méthode numérique effective (méthode du point fixe) pour approcher $\\alpha$ avec une précision qui s'améliore à chaque itération d'un facteur $\\frac19$ — après seulement quelques termes, l'approximation devient extrêmement précise, ce qui est l'objet même de la question posée par le titre de la Partie B (\"recherche d'une approximation de $\\alpha$\").",
+      "themes": [
+        "théorème des gendarmes",
+        "convergence",
+        "suite géométrique",
+        "Suites — convergence, théorème des gendarmes"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    }
+  ],
+  "matiere_normalisee": "MATHS",
+  "classe": "Tle"
+}

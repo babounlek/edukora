@@ -31,7 +31,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
-        fields = ["id", "cursus", "expires_at", "is_active", "plan_name"]
+        fields = ["id", "cursus", "expires_at", "is_active", "plan_name", "duration_mode"]
 
     def get_plan_name(self, obj):
         """

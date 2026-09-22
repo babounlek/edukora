@@ -1,0 +1,205 @@
+{
+ "cours_id": "cours-variance-ecart-type-effectifs-1ere-ce",
+ "meta": {
+  "titre": "Calculer la variance et l'écart type d'une série statistique à effectifs",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistiques à une variable",
+  "duree_estimee_min": 30,
+  "tags": ["écart type", "variance", "moyenne", "troncature", "série statistique", "dispersion"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2006-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2006 (Cameroun)",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-c-e-maths-2006-cameroun-ex1-q42i-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "La moyenne dit où se situe une série ; l'écart type dit à quel point elle est étalée. Deux classes de même moyenne peuvent être radicalement différentes — l'une homogène, l'autre partagée entre très bons et très faibles. Le calcul, lui, se fait par la formule développée, bien plus rapide que la définition. Et attention au dernier mot de l'énoncé : « troncature » n'est pas « arrondi », et confondre les deux coûte les points alors que le calcul était juste."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir calculer une moyenne pondérée",
+    "Savoir élever au carré et sommer des produits",
+    "Savoir encadrer une racine carrée par essais",
+    "Distinguer troncature et arrondi"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Moyenne des carrés moins carré de la moyenne",
+   "contenu_markdown": "**La variance, définition.** C'est la moyenne des carrés des écarts à la moyenne :\n\n$$V = \\frac{1}{N}\\sum n_{i}\\left(x_{i}-\\bar{x}\\right)^{2}$$\n\n**La formule développée**, bien plus commode en calcul :\n\n$$V = \\frac{1}{N}\\sum n_{i}x_{i}^{2} - \\bar{x}^{2}$$\n\nOn la retient sous la forme : **moyenne des carrés moins carré de la moyenne**.\n\n**Pourquoi elle est équivalente.** En développant $\\left(x_{i}-\\bar{x}\\right)^{2} = x_{i}^{2}-2\\bar{x}x_{i}+\\bar{x}^{2}$ et en sommant, le terme croisé donne $-2\\bar{x} \\times N\\bar{x}$, d'où le résultat.\n\n**L'écart type.**\n\n$$\\sigma = \\sqrt{V}$$\n\nIl s'exprime dans la **même unité** que les données — des points ici — ce qui le rend directement interprétable, contrairement à la variance qui est en points au carré.\n\n**La méthode, en cinq gestes.**\n\n1. **Calculer** l'effectif total $N$.\n2. **Calculer** la moyenne $\\bar{x} = \\dfrac{\\sum n_{i}x_{i}}{N}$.\n3. **Calculer** $\\sum n_{i}x_{i}^{2}$.\n4. **Appliquer** la formule développée.\n5. **Extraire** la racine carrée, puis arrondir ou tronquer selon la consigne.\n\n**Troncature ou arrondi ?** La distinction est essentielle :\n\n| Opération | Principe | Exemple sur $4{,}3497$ |\n|---|---|---|\n| **troncature** d'ordre $2$ | on coupe après la $2^{\\text{e}}$ décimale | $4{,}34$ |\n| **arrondi** à $10^{-2}$ | on regarde la décimale suivante | $4{,}35$ |\n\nLa troncature ne regarde **jamais** le chiffre suivant : elle coupe, c'est tout.\n\n**Extraire une racine sans calculatrice.** On encadre par essais :\n\n$$4{,}34^{2} = 18{,}8356 \\qquad ; \\qquad 4{,}35^{2} = 18{,}9225$$\n\nSi $V$ est compris entre ces deux valeurs, alors $\\sigma$ est compris entre $4{,}34$ et $4{,}35$ — et sa **troncature d'ordre $2$** vaut nécessairement $4{,}34$.\n\nDeux multiplications suffisent, et la réponse est certaine.\n\n**Les contrôles.**\n\n- La variance est toujours **positive ou nulle**. Une valeur négative signale une erreur.\n- L'écart type est inférieur à l'**étendue** de la série, et généralement à sa moitié.\n- Ici, étendue $= 16-4 = 12$, et $\\sigma \\approx 4{,}35 < 6$. Cohérent.\n\n**L'interprétation.** Un écart type de $4{,}35$ pour une moyenne de $10{,}1$ donne un coefficient de variation de $\\dfrac{4{,}35}{10{,}1} \\approx 43\\,\\%$ : la dispersion est **forte**, la classe est hétérogène.",
+   "formule_principale": "V = \\frac{1}{N}\\sum n_{i}x_{i}^{2} - \\bar{x}^{2} \\qquad ; \\qquad \\sigma = \\sqrt{V}",
+   "variantes": [
+    {
+     "nom": "Calcul par les écarts",
+     "quand_utiliser": "Quand la moyenne est un entier simple",
+     "contenu_markdown": "On applique directement la définition :\n\n$$V = \\frac{1}{N}\\sum n_{i}\\left(x_{i}-\\bar{x}\\right)^{2}$$\n\nC'est plus court quand $\\bar{x}$ tombe rond, car les écarts sont alors des entiers.\n\nMais dès que la moyenne est décimale — ici $\\dfrac{293}{29}$ — la formule développée est nettement préférable : elle n'exige aucun arrondi intermédiaire."
+    },
+    {
+     "nom": "Changement d'origine et d'échelle",
+     "quand_utiliser": "Quand les valeurs sont grandes ou en progression régulière",
+     "contenu_markdown": "En posant $y_{i} = \\dfrac{x_{i}-x_{0}}{h}$, on obtient\n\n$$\\bar{x} = x_{0}+h\\bar{y} \\qquad ; \\qquad V(x) = h^{2}V(y) \\qquad ; \\qquad \\sigma(x) = \\left|h\\right|\\sigma(y)$$\n\nLa variance n'est **pas** affectée par le changement d'origine, seulement par celui d'échelle. C'est une propriété importante : ajouter une constante à toutes les notes ne change pas la dispersion."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Pour la série des notes $4$, $7$, $10$, $13$, $16$ d'effectifs respectifs $6$, $5$, $7$, $4$, $7$, calculer la troncature d'ordre $2$ de l'écart type. (Probatoire C et E, Cameroun, 2006.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Calculer l'effectif total",
+     "justification": "Somme des effectifs",
+     "resultat_markdown": "$N = 6+5+7+4+7 = 29$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer les produits $n_{i}x_{i}$",
+     "justification": "Pour la moyenne",
+     "resultat_markdown": "$24$ ; $35$ ; $70$ ; $52$ ; $112$"
+    },
+    {
+     "numero": 3,
+     "action": "Sommer",
+     "justification": "Terme à terme",
+     "resultat_markdown": "$24+35 = 59$ ; $+70 = 129$ ; $+52 = 181$ ; $+112 = 293$"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer la moyenne",
+     "justification": "En gardant la fraction exacte",
+     "resultat_markdown": "$\\bar{x} = \\dfrac{293}{29} \\approx 10{,}1034$"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer les produits $n_{i}x_{i}^{2}$",
+     "justification": "Pour la formule développée",
+     "resultat_markdown": "$6 \\times 16 = 96$ ; $5 \\times 49 = 245$ ; $7 \\times 100 = 700$ ; $4 \\times 169 = 676$ ; $7 \\times 256 = 1792$"
+    },
+    {
+     "numero": 6,
+     "action": "Sommer",
+     "justification": "Terme à terme",
+     "resultat_markdown": "$96+245 = 341$ ; $+700 = 1041$ ; $+676 = 1717$ ; $+1792 = 3509$"
+    },
+    {
+     "numero": 7,
+     "action": "Simplifier la moyenne des carrés",
+     "justification": "On remarque que $3509 = 29 \\times 121$",
+     "resultat_markdown": "$\\dfrac{3509}{29} = 121$ exactement"
+    },
+    {
+     "numero": 8,
+     "action": "Calculer le carré de la moyenne",
+     "justification": "$\\left(\\dfrac{293}{29}\\right)^{2} = \\dfrac{85\\,849}{841}$",
+     "resultat_markdown": "Et $121 = \\dfrac{101\\,761}{841}$, avec $841 = 29^{2}$"
+    },
+    {
+     "numero": 9,
+     "action": "Calculer la variance",
+     "justification": "Différence au même dénominateur",
+     "resultat_markdown": "$V = \\dfrac{101\\,761-85\\,849}{841} = \\dfrac{15\\,912}{841} \\approx 18{,}9203$"
+    },
+    {
+     "numero": 10,
+     "action": "Encadrer la racine",
+     "justification": "Deux multiplications suffisent",
+     "resultat_markdown": "$4{,}34^{2} = 18{,}8356$ et $4{,}35^{2} = 18{,}9225$, or $18{,}8356 < 18{,}9203 < 18{,}9225$"
+    },
+    {
+     "numero": 11,
+     "action": "Conclure l'encadrement",
+     "justification": "La fonction carré est croissante sur les positifs",
+     "resultat_markdown": "$4{,}34 < \\sigma < 4{,}35$, plus précisément $\\sigma \\approx 4{,}3497$"
+    },
+    {
+     "numero": 12,
+     "action": "Tronquer à l'ordre 2",
+     "justification": "On coupe après la deuxième décimale, sans arrondir",
+     "resultat_markdown": "La troncature d'ordre $2$ de l'écart type vaut **$4{,}34$**"
+    }
+   ],
+   "conclusion_markdown": "La troncature d'ordre $2$ vaut $4{,}34$. Le piège est là et nulle part ailleurs : l'**arrondi** de $4{,}3497$ à $10^{-2}$ près donnerait $4{,}35$, alors que sa **troncature** vaut $4{,}34$. L'énoncé demande explicitement la troncature. Note aussi l'astuce de l'étape 10 : l'encadrement par deux multiplications suffit à conclure sans calculatrice, puisque dès qu'on sait $\\sigma$ compris entre $4{,}34$ et $4{,}35$, sa troncature est déterminée."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Confondre troncature et arrondi",
+     "pourquoi_faux": "L'arrondi de $4{,}3497$ donne $4{,}35$, sa troncature $4{,}34$. L'énoncé demande la troncature : répondre $4{,}35$ coûte les points alors que tout le calcul était juste.",
+     "correction_markdown": "Troncature : on **coupe** après le rang demandé, sans regarder la suite. Arrondi : on regarde le chiffre suivant. Deux opérations différentes."
+    },
+    {
+     "erreur_markdown": "Confondre variance et écart type",
+     "pourquoi_faux": "La variance vaut ici $18{,}92$, l'écart type $4{,}35$. Répondre $18{,}92$ à une question sur l'écart type oublie la racine carrée.",
+     "correction_markdown": "L'écart type s'exprime dans l'unité des données. Un « écart » de $18{,}92$ points sur une échelle de $0$ à $20$ serait absurde : c'est un signal d'alerte."
+    },
+    {
+     "erreur_markdown": "Se tromper dans la formule développée",
+     "pourquoi_faux": "$V = \\dfrac{1}{N}\\sum n_{i}x_{i}^{2} - \\bar{x}^{2}$ : la moyenne est élevée au carré **après** avoir été calculée. Écrire $\\dfrac{1}{N}\\left(\\sum n_{i}x_{i}\\right)^{2}$ donne un résultat très différent.",
+     "correction_markdown": "Retiens la phrase : « moyenne des carrés moins carré de la moyenne ». Et vérifie que le résultat est positif."
+    },
+    {
+     "erreur_markdown": "Arrondir la moyenne avant de calculer la variance",
+     "pourquoi_faux": "Prendre $\\bar{x} = 10{,}1$ au lieu de $\\dfrac{293}{29}$ donnerait $\\bar{x}^{2} = 102{,}01$ au lieu de $102{,}0797$, et une variance de $18{,}99$ au lieu de $18{,}92$ — assez pour changer la troncature.",
+     "correction_markdown": "Garde la fraction exacte $\\dfrac{293}{29}$ dans tous les calculs intermédiaires. N'arrondis qu'à la toute fin."
+    },
+    {
+     "erreur_markdown": "Oublier les effectifs",
+     "pourquoi_faux": "Calculer $\\dfrac{4^{2}+7^{2}+10^{2}+13^{2}+16^{2}}{5}$ traite les cinq notes comme si elles avaient le même poids. Or la note $10$ concerne $7$ élèves et la note $13$ seulement $4$.",
+     "correction_markdown": "Chaque terme doit être multiplié par son effectif $n_{i}$, et l'on divise par l'effectif **total** $N$, pas par le nombre de valeurs distinctes."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Calculer la moyenne, la variance et l'écart type de la série : valeurs $2$, $4$, $6$, $8$ d'effectifs $3$, $5$, $8$, $4$. Arrondir l'écart type à $10^{-2}$, puis donner sa troncature d'ordre $2$.",
+     "solution_markdown": "**Étape 1 - effectif total.**\n\n$$N = 3+5+8+4 = 20$$\n\n**Étape 2 - la moyenne.**\n\n$$\\sum n_{i}x_{i} = 3 \\times 2 + 5 \\times 4 + 8 \\times 6 + 4 \\times 8 = 6+20+48+32 = 106$$\n\n$$\\bar{x} = \\dfrac{106}{20} = 5{,}3$$\n\n*Contrôle :* $2 \\leqslant 5{,}3 \\leqslant 8$. Conforme.\n\n**Étape 3 - la somme des $n_{i}x_{i}^{2}$.**\n\n$$3 \\times 4 = 12 \\qquad 5 \\times 16 = 80 \\qquad 8 \\times 36 = 288 \\qquad 4 \\times 64 = 256$$\n\nSomme : $12+80 = 92$ ; $+288 = 380$ ; $+256 = 636$.\n\n**Étape 4 - la variance.**\n\n$$V = \\dfrac{636}{20} - 5{,}3^{2} = 31{,}8 - 28{,}09 = 3{,}71$$\n\n*Contrôle :* positive. Conforme.\n\n**Étape 5 - l'écart type.**\n\n$$\\sigma = \\sqrt{3{,}71}$$\n\nEncadrons : $1{,}92^{2} = 3{,}6864$ et $1{,}93^{2} = 3{,}7249$.\n\nComme $3{,}6864 < 3{,}71 < 3{,}7249$ :\n\n$$1{,}92 < \\sigma < 1{,}93$$\n\nPlus précisément, $1{,}925^{2} = 3{,}705625 < 3{,}71$, donc $\\sigma > 1{,}925$.\n\nOn obtient $\\sigma \\approx 1{,}9261$.\n\n**Étape 6 - arrondi et troncature.**\n\n*Arrondi à $10^{-2}$ :* la troisième décimale est $6$, supérieure à $5$, donc on arrondit par excès :\n\n$$\\sigma \\approx 1{,}93$$\n\n*Troncature d'ordre $2$ :* on coupe après la deuxième décimale :\n\n$$\\sigma \\approx 1{,}92$$\n\n**Les deux diffèrent**, comme dans le sujet.\n\n**Étape 7 - contrôle par l'étendue.**\n\n$$e = 8-2 = 6 \\qquad ; \\qquad \\sigma \\approx 1{,}93 < 3 = \\dfrac{e}{2}$$\n\nConforme.\n\n**Étape 8 - interpréter.**\n\nCoefficient de variation : $\\dfrac{1{,}93}{5{,}3} \\approx 36\\,\\%$. Dispersion **modérée**.\n\n**Ce qu'il faut retenir.** Chaque fois que la troisième décimale est supérieure ou égale à $5$, arrondi et troncature diffèrent d'une unité au dernier rang. Lis attentivement la consigne."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Deux classes ont la même moyenne de $10$. Classe A : notes $8$, $10$, $12$ d'effectifs $10$, $10$, $10$. Classe B : notes $2$, $10$, $18$ d'effectifs $10$, $10$, $10$. Calculer les écarts types et commenter. Que devient l'écart type de la classe A si l'on ajoute $3$ points à chaque note ?",
+     "solution_markdown": "**Classe A.**\n\n*Effectif :* $N = 30$.\n\n*Moyenne :* $\\dfrac{10 \\times 8 + 10 \\times 10 + 10 \\times 12}{30} = \\dfrac{80+100+120}{30} = \\dfrac{300}{30} = 10$. Conforme.\n\n*Somme des carrés pondérés :*\n\n$$10 \\times 64 + 10 \\times 100 + 10 \\times 144 = 640+1000+1440 = 3080$$\n\n*Variance :*\n\n$$V_{A} = \\dfrac{3080}{30} - 100 = 102{,}667 - 100 = 2{,}667$$\n\n*Écart type :*\n\n$$\\sigma_{A} = \\sqrt{2{,}667} \\approx 1{,}633$$\n\n**Classe B.**\n\n*Moyenne :* $\\dfrac{10 \\times 2 + 10 \\times 10 + 10 \\times 18}{30} = \\dfrac{20+100+180}{30} = 10$. Conforme.\n\n*Somme des carrés pondérés :*\n\n$$10 \\times 4 + 10 \\times 100 + 10 \\times 324 = 40+1000+3240 = 4280$$\n\n*Variance :*\n\n$$V_{B} = \\dfrac{4280}{30} - 100 = 142{,}667 - 100 = 42{,}667$$\n\n*Écart type :*\n\n$$\\sigma_{B} = \\sqrt{42{,}667} \\approx 6{,}532$$\n\n**Commentaire.**\n\n| | Moyenne | Écart type |\n|---|---|---|\n| Classe A | $10$ | $1{,}63$ |\n| Classe B | $10$ | $6{,}53$ |\n\nLes deux classes ont **exactement la même moyenne**, mais leurs écarts types diffèrent d'un facteur $4$.\n\nLa classe A est **homogène** : toutes les notes sont proches de $10$.\n\nLa classe B est **hétérogène** : elle est partagée entre des élèves très faibles ($2$) et très forts ($18$).\n\n**La moyenne seule ne dit rien de cette différence.** C'est précisément le rôle de l'écart type.\n\n*Remarque :* $\\dfrac{\\sigma_{B}}{\\sigma_{A}} = \\dfrac{6{,}532}{1{,}633} = 4$, exactement le rapport des écarts aux extrêmes : $\\dfrac{18-10}{12-10} = 4$. Cohérent.\n\n**Seconde question - ajouter 3 points.**\n\nLes nouvelles notes sont $11$, $13$, $15$, de mêmes effectifs.\n\n*Nouvelle moyenne :* $\\dfrac{110+130+150}{30} = \\dfrac{390}{30} = 13 = 10+3$.\n\n*Nouvelle somme des carrés :* $10 \\times 121 + 10 \\times 169 + 10 \\times 225 = 1210+1690+2250 = 5150$.\n\n*Nouvelle variance :*\n\n$$V = \\dfrac{5150}{30} - 169 = 171{,}667 - 169 = 2{,}667$$\n\n**Identique à $V_{A}$ !**\n\n*Nouvel écart type :* $\\sigma \\approx 1{,}633$, inchangé.\n\n**Interprétation.** Ajouter une constante à toutes les valeurs **translate** la série : la moyenne se déplace de la même constante, mais les écarts entre valeurs sont inchangés, donc la dispersion aussi.\n\n**Propriété générale.**\n\n$$V(x+c) = V(x) \\qquad ; \\qquad V(kx) = k^{2}V(x) \\qquad ; \\qquad \\sigma(kx) = \\left|k\\right|\\sigma(x)$$\n\nL'écart type est insensible au changement d'origine, mais proportionnel au changement d'échelle.\n\n**Ce qu'il faut retenir.** Moyenne et écart type décrivent deux aspects **indépendants** : la position et la dispersion. Une même moyenne peut recouvrir des situations opposées, et c'est l'écart type qui les distingue."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Démontrer l'équivalence des deux formules de la variance, puis démontrer que $V \\geqslant 0$ avec égalité si et seulement si toutes les valeurs sont égales. Appliquer à la série du sujet pour interpréter la valeur $\\sigma \\approx 4{,}35$.",
+     "solution_markdown": "**Première partie - équivalence des formules.**\n\n**Étape 1 - partir de la définition.**\n\n$$V = \\frac{1}{N}\\sum n_{i}\\left(x_{i}-\\bar{x}\\right)^{2}$$\n\n**Étape 2 - développer le carré.**\n\n$$\\left(x_{i}-\\bar{x}\\right)^{2} = x_{i}^{2} - 2\\bar{x}x_{i} + \\bar{x}^{2}$$\n\n**Étape 3 - distribuer la somme.**\n\n$$V = \\frac{1}{N}\\left[\\sum n_{i}x_{i}^{2} - 2\\bar{x}\\sum n_{i}x_{i} + \\bar{x}^{2}\\sum n_{i}\\right]$$\n\n**Étape 4 - identifier les trois sommes.**\n\n- $\\sum n_{i}x_{i} = N\\bar{x}$, par définition de la moyenne ;\n- $\\sum n_{i} = N$, effectif total.\n\n$$V = \\frac{1}{N}\\left[\\sum n_{i}x_{i}^{2} - 2\\bar{x} \\times N\\bar{x} + \\bar{x}^{2} \\times N\\right]$$\n\n**Étape 5 - simplifier.**\n\n$$V = \\frac{1}{N}\\sum n_{i}x_{i}^{2} - 2\\bar{x}^{2} + \\bar{x}^{2} = \\frac{1}{N}\\sum n_{i}x_{i}^{2} - \\bar{x}^{2}$$\n\n**Les deux formules sont équivalentes.**\n\n**Seconde partie - positivité.**\n\n**Étape 6 - lire la définition.**\n\n$$V = \\frac{1}{N}\\sum n_{i}\\left(x_{i}-\\bar{x}\\right)^{2}$$\n\nChaque terme est un produit d'un effectif $n_{i} > 0$ par un carré, donc **positif ou nul**.\n\nUne somme de termes positifs divisée par $N > 0$ est positive ou nulle.\n\n$$V \\geqslant 0$$\n\n**Étape 7 - le cas d'égalité.**\n\n$V = 0$ exige que **chaque** terme soit nul, puisqu'ils sont tous positifs.\n\nComme $n_{i} > 0$, il faut $\\left(x_{i}-\\bar{x}\\right)^{2} = 0$ pour tout $i$, c'est-à-dire\n\n$$x_{i} = \\bar{x} \\qquad \\text{pour tout } i$$\n\n**Toutes les valeurs sont égales à la moyenne**, donc égales entre elles.\n\nRéciproquement, si toutes les valeurs sont égales, la moyenne leur est égale et tous les écarts sont nuls : $V = 0$.\n\n**Étape 8 - conséquence pratique.**\n\nUne variance négative est **impossible** : si un calcul en produit une, il contient une erreur.\n\nC'est le contrôle le plus immédiat de tout calcul de variance.\n\n**Troisième partie - interprétation sur la série du sujet.**\n\n**Étape 9 - les données.**\n\n$$\\bar{x} \\approx 10{,}10 \\qquad ; \\qquad \\sigma \\approx 4{,}35$$\n\n**Étape 10 - l'intervalle d'un écart type.**\n\n$$\\left[\\bar{x}-\\sigma \\,;\\, \\bar{x}+\\sigma\\right] \\approx \\left[5{,}75 \\,;\\, 14{,}45\\right]$$\n\n**Étape 11 - compter les élèves concernés.**\n\n| Note | Effectif | Dans l'intervalle ? |\n|---|---|---|\n| $4$ | $6$ | non |\n| $7$ | $5$ | oui |\n| $10$ | $7$ | oui |\n| $13$ | $4$ | oui |\n| $16$ | $7$ | non |\n\nEffectif concerné : $5+7+4 = 16$ élèves sur $29$, soit\n\n$$\\dfrac{16}{29} \\approx 55\\,\\%$$\n\n**Étape 12 - commenter.**\n\nSeuls $55\\,\\%$ des élèves se situent à moins d'un écart type de la moyenne — une proportion **faible**, qui traduit une distribution très étalée.\n\n**Étape 13 - le coefficient de variation.**\n\n$$\\dfrac{\\sigma}{\\bar{x}} = \\dfrac{4{,}35}{10{,}10} \\approx 0{,}43 = 43\\,\\%$$\n\nUn coefficient supérieur à $30\\,\\%$ signale une dispersion **forte**.\n\n**Étape 14 - lecture pédagogique.**\n\nLa classe est **hétérogène** : $6$ élèves à $4$ et $7$ élèves à $16$, soit $13$ élèves sur $29$ aux deux extrémités.\n\nUne moyenne de $10{,}1$ pourrait laisser croire à un niveau moyen homogène ; l'écart type révèle qu'il n'en est rien.\n\n**Ce qu'il faut retenir.** L'écart type n'est pas un chiffre à produire mécaniquement : c'est une information sur la **forme** de la distribution. Un écart type élevé relativement à la moyenne signale que celle-ci résume mal la série."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Variance : **moyenne des carrés moins carré de la moyenne**, $V = \\dfrac{1}{N}\\sum n_{i}x_{i}^{2} - \\bar{x}^{2}$.",
+    "Écart type : $\\sigma = \\sqrt{V}$, exprimé dans l'unité des données.",
+    "**Troncature** : on coupe après le rang demandé. **Arrondi** : on regarde le chiffre suivant. Deux opérations différentes.",
+    "N'arrondis jamais la moyenne avant de calculer la variance : garde la fraction exacte.",
+    "Multiplie chaque terme par son effectif et divise par l'effectif **total**.",
+    "Encadre la racine par deux multiplications : cela suffit à déterminer la troncature.",
+    "La variance est toujours **positive ou nulle** : une valeur négative signale une erreur.",
+    "Elle est nulle si et seulement si toutes les valeurs sont égales.",
+    "L'écart type est inférieur à l'étendue, généralement à sa moitié.",
+    "$V(x+c) = V(x)$ : ajouter une constante ne change pas la dispersion.",
+    "Le coefficient de variation $\\dfrac{\\sigma}{\\bar{x}}$ mesure la dispersion relative."
+   ]
+  }
+ ]
+}

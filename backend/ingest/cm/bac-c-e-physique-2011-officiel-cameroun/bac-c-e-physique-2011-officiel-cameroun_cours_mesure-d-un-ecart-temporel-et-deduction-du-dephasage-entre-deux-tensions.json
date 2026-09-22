@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-ecart-temporel-dephasage-oscillogramme-tle-c-e",
+  "meta": {
+    "titre": "Mesure d'un ecart temporel et deduction du dephasage entre deux tensions",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Electricite - regime sinusoidal force",
+    "duree_estimee_min": 25,
+    "tags": [
+      "dephasage",
+      "oscilloscope bi-courbe",
+      "circuit RC"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2011 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2011-officiel-cameroun-ex2-q3c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux courbes affichees simultanement sur un oscilloscope bi-courbe, decalees horizontalement l'une par rapport a l'autre, racontent une histoire de retard : ce decalage temporel, une fois mesure et compare a la periode du signal, se convertit directement en un dephasage angulaire, cle de voute de l'etude de tout circuit en regime sinusoidal force."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de dephasage entre deux signaux sinusoidaux de meme frequence",
+        "Relation entre periode T et angle de phase 2*pi",
+        "Lecture d'un oscillogramme bi-courbe"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du decalage temporel au dephasage",
+      "contenu_markdown": "Deux tensions sinusoidales de meme frequence, observees sur un oscilloscope bi-courbe, presentent un decalage temporel $\\Delta t$ entre deux points homologues (par exemple deux maxima consecutifs de chaque courbe). Puisqu'une periode complete $T$ correspond a un dephasage de $2\\pi$ radians, le dephasage $\\Delta\\varphi$ correspondant a $\\Delta t$ se calcule par une simple regle de trois.",
+      "formule_principale": "\\Delta\\varphi = \\dfrac{2\\pi\\,\\Delta t}{T}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur un oscillogramme, on mesure un ecart temporel $\\Delta t=5\\ \\text{ms}$ entre deux tensions de periode $T=20\\ \\text{ms}$. Calculer le dephasage $\\Delta\\varphi$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ecrire la regle de proportionnalite entre temps et phase",
+          "justification": "Une periode complete correspond a un tour complet, soit 2*pi radians",
+          "resultat_markdown": "$\\dfrac{\\Delta\\varphi}{2\\pi} = \\dfrac{\\Delta t}{T}$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler et calculer Delta phi",
+          "justification": "Application numerique",
+          "resultat_markdown": "$\\Delta\\varphi = 2\\pi\\times\\dfrac{5}{20} = 2\\pi\\times0{,}25 = \\dfrac{\\pi}{2}\\ \\text{rad}$"
+        },
+        {
+          "numero": 3,
+          "action": "Interpreter le resultat",
+          "justification": "Un quart de periode de decalage correspond a un quart de tour",
+          "resultat_markdown": "$\\Delta\\varphi = \\dfrac{\\pi}{2}\\ \\text{rad} = 90^\\circ$ : les deux tensions sont en quadrature de phase."
+        }
+      ],
+      "conclusion_markdown": "Un dephasage de $\\pi/2$ (quadrature) est caracteristique, en regime sinusoidal force, du dephasage entre la tension aux bornes d'un condensateur et l'intensite du courant qui le traverse - une valeur a reconnaitre immediatement dans un circuit RC."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre l'ordre des deux courbes et se tromper de signe sur le dephasage (avance ou retard)",
+          "pourquoi_faux": "Le dephasage a un signe : il faut identifier laquelle des deux courbes atteint son maximum en premier pour savoir si la tension etudiee est en avance ou en retard sur l'autre.",
+          "correction_markdown": "Toujours reperer sur l'oscillogramme quelle courbe passe la premiere par son maximum avant de conclure sur le signe du dephasage."
+        },
+        {
+          "erreur_markdown": "Melanger la mesure de Delta t (temps) avec celle de Delta phi (radians) sans passer par la regle de trois",
+          "pourquoi_faux": "$\\Delta t$ et $\\Delta\\varphi$ ne sont pas numeriquement egaux : ils sont relies par le facteur $2\\pi/T$, qui depend de la periode du signal.",
+          "correction_markdown": "Toujours ecrire explicitement $\\Delta\\varphi = 2\\pi\\Delta t/T$ comme etape de calcul, jamais confondre les deux grandeurs."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Ecrire la relation entre le dephasage Delta phi, l'ecart temporel Delta t et la periode T.",
+          "solution_markdown": "$\\Delta\\varphi = \\dfrac{2\\pi\\Delta t}{T}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ecart temporel de 2,5 ms est mesure entre deux tensions de periode T=10 ms. Calculer le dephasage en radians puis en degres.",
+          "solution_markdown": "$\\Delta\\varphi = 2\\pi\\times2{,}5/10 = 2\\pi\\times0{,}25 = \\pi/2\\ \\text{rad} = 90^\\circ$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux tensions de meme frequence $f=50\\ \\text{Hz}$ sont en quadrature de phase ($\\Delta\\varphi=\\pi/2$). Calculer l'ecart temporel Delta t correspondant.",
+          "solution_markdown": "$T = 1/f = 20\\ \\text{ms}$. En inversant la formule : $\\Delta t = \\dfrac{\\Delta\\varphi\\,T}{2\\pi} = \\dfrac{(\\pi/2)\\times20}{2\\pi} = \\dfrac{20}{4} = 5\\ \\text{ms}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le dephasage entre deux signaux de meme frequence se calcule a partir de leur ecart temporel par $\\Delta\\varphi=2\\pi\\Delta t/T$.",
+        "Il faut toujours identifier laquelle des deux courbes est en avance pour donner le bon signe au dephasage.",
+        "Un dephasage de $\\pi/2$ (quadrature) est une valeur particulierement frequente en regime sinusoidal force (condensateur, bobine idealises).",
+        "Ne jamais confondre l'ecart temporel (en secondes) avec le dephasage (en radians ou degres) : les deux sont relies par $2\\pi/T$."
+      ]
+    }
+  ]
+}

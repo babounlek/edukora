@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-calcul-de-distances-point-plan-et-point-droite-terminale-c",
+  "meta": {
+    "titre": "Distances dans l'espace : d'un point à un plan, d'un point à une droite",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Géométrie dans l'espace - distances et caractérisations métriques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "distance point-plan",
+      "distance point-droite",
+      "projeté orthogonal",
+      "produit scalaire",
+      "caractérisation métrique",
+      "surface"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-maths-1995-cameroun",
+    "epreuve_titre": "BAC Mathématiques - Cameroun, série C, session 1995 (Office du Baccalauréat du Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-maths-1995-cameroun-ex3-qP1.5.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Beaucoup de surfaces de l'espace se décrivent bien mieux par une phrase que par une équation. « L'ensemble des points situés à égale distance d'un point fixe » : c'est une sphère. « L'ensemble des points dont la distance à l'origine vaut $\\sqrt{2}$ fois la distance à un plan » : c'est un cône de révolution. Traduire ces phrases en équations, et inversement lire une équation comme une condition de distance, est l'un des mécanismes les plus rentables du programme de géométrie de Terminale C. Il repose sur deux formules, et sur une astuce de rédaction : comparer les carrés plutôt que les distances."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Repère orthonormé de l'espace, coordonnées d'un point et d'un vecteur",
+        "Produit scalaire dans l'espace et condition d'orthogonalité $\\vec{u}\\cdot\\vec{v}=0$",
+        "Équation cartésienne d'un plan et vecteur normal",
+        "Représentation paramétrique d'une droite"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les deux formules de distance et la règle des carrés",
+      "contenu_markdown": "Dans un repère **orthonormé** de l'espace :\n\n**Distance entre deux points.** Pour $A(x_A\\,;y_A\\,;z_A)$ et $M(x\\,;y\\,;z)$ :\n\n$$AM=\\sqrt{(x-x_A)^{2}+(y-y_A)^{2}+(z-z_A)^{2}}.$$\n\n**Distance d'un point à un plan.** Si $(P)$ a pour équation $ax+by+cz+d=0$, alors\n\n$$d\\big(M,(P)\\big)=\\frac{\\left|ax+by+cz+d\\right|}{\\sqrt{a^{2}+b^{2}+c^{2}}}.$$\n\nLa valeur absolue est indispensable : une distance est positive.\n\n**Distance d'un point à une droite.** Il n'existe pas de formule aussi directe : on passe par le **projeté orthogonal**. Si $(\\Delta)$ passe par $A$ et a pour vecteur directeur $\\vec{u}$, le projeté orthogonal $H$ de $M$ sur $(\\Delta)$ est l'unique point de $(\\Delta)$ tel que\n\n$$\\overrightarrow{MH}\\cdot\\vec{u}=0,$$\n\net alors $d\\big(M,(\\Delta)\\big)=MH$. En pratique : on écrit $H$ sous forme paramétrique, on résout l'équation scalaire ci-dessus en le paramètre, puis on calcule $MH$.\n\n**La règle des carrés.** Deux distances sont des nombres positifs ou nuls. Or, pour $s\\geq0$ et $t\\geq0$ :\n\n$$s=t\\iff s^{2}=t^{2}.$$\n\nOn peut donc travailler sur les carrés des distances, ce qui élimine racines et valeurs absolues, puis conclure sur les distances elles-mêmes. Cette équivalence doit être justifiée en une phrase, jamais utilisée en silence.\n\n**Caractérisation métrique d'une surface.** Pour montrer qu'une surface d'équation $F(x,y,z)=0$ est « l'ensemble des points tels que … », on rédige par une **chaîne d'équivalences** partant de l'équation et aboutissant à la condition de distance. Une seule chaîne remplace une double inclusion.",
+      "formule_principale": "d\\big(M,(P)\\big)=\\frac{|ax+by+cz+d|}{\\sqrt{a^{2}+b^{2}+c^{2}}}\\qquad ;\\qquad d\\big(M,(\\Delta)\\big)=MH \\text{ avec } \\overrightarrow{MH}\\cdot\\vec{u}=0",
+      "variantes": [
+        {
+          "nom": "Distance point-droite par le produit vectoriel",
+          "quand_utiliser": "Quand la droite n'est pas parallèle à un axe et que le calcul du paramètre serait lourd.",
+          "contenu_markdown": "Si $(\\Delta)$ passe par $A$ et a pour vecteur directeur $\\vec{u}$, alors\n\n$$d\\big(M,(\\Delta)\\big)=\\frac{\\left\\|\\overrightarrow{AM}\\wedge\\vec{u}\\right\\|}{\\left\\|\\vec{u}\\right\\|}.$$\n\nLe calcul est parfois plus rapide, mais il ne donne pas les coordonnées du projeté orthogonal. Quand l'énoncé demande explicitement ce projeté - ce qui est fréquent, car il sert souvent à la question suivante - il faut revenir à la méthode $\\overrightarrow{MH}\\cdot\\vec{u}=0$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'espace est rapporté à un repère orthonormé $(O,\\vec{i},\\vec{j},\\vec{k})$. On note $(P)$ le plan d'équation $x=0$ et $(\\mathcal{S})$ l'ensemble des points $M(x\\,;y\\,;z)$ vérifiant $x^{2}=y^{2}+z^{2}$. Montrer que $(\\mathcal{S})$ est l'ensemble des points $M$ de l'espace tels que $d(O,M)=\\sqrt{2}\\,d\\big(M,(P)\\big)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer $d(O,M)$",
+          "justification": "Formule de la distance entre deux points, appliquée à $O(0\\,;0\\,;0)$.",
+          "resultat_markdown": "$$d(O,M)=\\sqrt{x^{2}+y^{2}+z^{2}}.$$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer $d\\big(M,(P)\\big)$",
+          "justification": "$(P):x=0$ s'écrit $1\\cdot x+0\\cdot y+0\\cdot z+0=0$, donc $\\sqrt{a^{2}+b^{2}+c^{2}}=1$.",
+          "resultat_markdown": "$$d\\big(M,(P)\\big)=\\frac{|x|}{\\sqrt{1^{2}+0^{2}+0^{2}}}=|x|.$$"
+        },
+        {
+          "numero": 3,
+          "action": "Transformer l'équation de $(\\mathcal{S})$",
+          "justification": "On ajoute $x^{2}$ aux deux membres : l'équivalence est conservée, et le membre de gauche devient une somme de trois carrés.",
+          "resultat_markdown": "$$x^{2}=y^{2}+z^{2}\\iff x^{2}+x^{2}=x^{2}+y^{2}+z^{2}\\iff x^{2}+y^{2}+z^{2}=2x^{2}.$$"
+        },
+        {
+          "numero": 4,
+          "action": "Reconnaître les deux distances",
+          "justification": "Le membre de gauche est $d(O,M)^{2}$ et $2x^{2}=2|x|^{2}=2\\,d\\big(M,(P)\\big)^{2}$.",
+          "resultat_markdown": "$$M\\in(\\mathcal{S})\\iff d(O,M)^{2}=2\\,d\\big(M,(P)\\big)^{2}.$$"
+        },
+        {
+          "numero": 5,
+          "action": "Passer des carrés aux distances",
+          "justification": "$d(O,M)\\geq0$ et $\\sqrt{2}\\,d\\big(M,(P)\\big)\\geq0$ : deux réels positifs sont égaux si et seulement si leurs carrés le sont.",
+          "resultat_markdown": "$$M\\in(\\mathcal{S})\\iff d(O,M)=\\sqrt{2}\\;d\\big(M,(P)\\big).$$"
+        },
+        {
+          "numero": 6,
+          "action": "Interpréter géométriquement",
+          "justification": "Pour $M\\neq O$, $\\frac{|x|}{OM}$ est la valeur absolue du cosinus de l'angle entre $\\overrightarrow{OM}$ et $\\vec{i}$, vecteur normal à $(P)$ et directeur de l'axe des abscisses.",
+          "resultat_markdown": "La relation s'écrit $\\dfrac{|x|}{OM}=\\dfrac{1}{\\sqrt2}$, donc l'angle vaut $45°$ : $(\\mathcal{S})$ est le cône de révolution de sommet $O$, d'axe l'axe des abscisses et de demi-angle au sommet $\\dfrac{\\pi}{4}$."
+        }
+      ],
+      "conclusion_markdown": "On a démontré, par une chaîne d'équivalences, que l'équation $x^{2}=y^{2}+z^{2}$ caractérise exactement les points dont la distance à l'origine vaut $\\sqrt2$ fois la distance au plan $x=0$ - et l'on a identifié au passage la nature de la surface, un cône de révolution d'angle $45°$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $d\\big(M,(P)\\big)=x$ pour le plan $x=0$.",
+          "pourquoi_faux": "Une distance ne peut pas être négative, or $x$ l'est pour la moitié des points de l'espace. L'oubli de la valeur absolue rend l'équivalence fausse sur toute une nappe du cône, et le raisonnement s'effondre.",
+          "correction_markdown": "Écrire $d\\big(M,(P)\\big)=|x|$. La valeur absolue disparaîtra d'elle-même au passage aux carrés, mais elle doit figurer à la ligne où la distance est calculée."
+        },
+        {
+          "erreur_markdown": "Appliquer la formule du plan pour calculer une distance à une droite donnée par deux équations, en additionnant les deux distances aux plans.",
+          "pourquoi_faux": "Une droite donnée par $\\begin{cases}x=1\\\\ z=-3\\end{cases}$ est l'intersection de deux plans, mais la distance à l'intersection n'est ni la somme ni la moyenne des distances aux deux plans. Géométriquement, $d^{2}(M,\\Delta)=(x-1)^{2}+(z+3)^{2}$ : c'est un théorème de Pythagore, pas une addition de distances.",
+          "correction_markdown": "Toujours passer par le projeté orthogonal, ou par la formule du produit vectoriel. Pour une droite parallèle à un axe, la distance s'obtient d'ailleurs par Pythagore sur les deux coordonnées contraintes."
+        },
+        {
+          "erreur_markdown": "Élever au carré une égalité de distances sans justifier, ou pire, élever au carré une inégalité sans vérifier les signes.",
+          "pourquoi_faux": "L'équivalence $s=t\\iff s^{2}=t^{2}$ n'est vraie que pour $s,t\\geq0$ ; sinon $s=-t$ passe aussi le test. La rédaction sans justification est incomplète, et sur une inégalité elle devient réellement fausse si l'un des membres peut être négatif.",
+          "correction_markdown": "Ajouter la phrase : « les deux membres étant positifs ou nuls, l'égalité des carrés équivaut à l'égalité des nombres ». Une ligne, un point."
+        },
+        {
+          "erreur_markdown": "Démontrer seulement l'implication « $M\\in(\\mathcal{S})\\Rightarrow$ la relation de distance » et conclure que $(\\mathcal{S})$ « est l'ensemble » des points vérifiant cette relation.",
+          "pourquoi_faux": "« Être l'ensemble des points tels que … » signifie une double inclusion. L'implication seule montre que $(\\mathcal{S})$ est **contenu** dans cet ensemble, pas qu'il lui est égal.",
+          "correction_markdown": "Rédiger toute la démonstration avec des symboles $\\iff$ : chaque transformation employée (ajouter $x^{2}$, passer aux carrés de nombres positifs) est réversible, donc la chaîne d'équivalences est légitime et démontre les deux inclusions d'un coup."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "L'espace est rapporté à un repère orthonormé. Calculer la distance du point $A(2\\,;-1\\,;3)$ au plan $(P)$ d'équation $2x-y+2z-5=0$.",
+          "solution_markdown": "On identifie $a=2$, $b=-1$, $c=2$, $d=-5$, puis on calcule séparément numérateur et dénominateur.\n\n**Numérateur :**\n\n$$\\left|2x_A-y_A+2z_A-5\\right|=\\left|2\\times2-(-1)+2\\times3-5\\right|=\\left|4+1+6-5\\right|=|6|=6.$$\n\n**Dénominateur :**\n\n$$\\sqrt{a^{2}+b^{2}+c^{2}}=\\sqrt{2^{2}+(-1)^{2}+2^{2}}=\\sqrt{4+1+4}=\\sqrt{9}=3.$$\n\n**Conclusion :**\n\n$$d\\big(A,(P)\\big)=\\frac{6}{3}=2.$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $(\\Delta)$ la droite passant par $A(1\\,;0\\,;2)$ et de vecteur directeur $\\vec{u}(1\\,;1\\,;0)$, et soit $M(3\\,;2\\,;1)$. Déterminer les coordonnées du projeté orthogonal $H$ de $M$ sur $(\\Delta)$, puis la distance $d\\big(M,(\\Delta)\\big)$.",
+          "solution_markdown": "**Point courant de $(\\Delta)$.** $H=A+t\\,\\vec{u}$, soit\n\n$$H(1+t\\;;\\;t\\;;\\;2).$$\n\n**Condition d'orthogonalité.** Le vecteur $\\overrightarrow{MH}$ a pour coordonnées\n\n$$\\overrightarrow{MH}\\big((1+t)-3\\;;\\;t-2\\;;\\;2-1\\big)=\\overrightarrow{MH}(t-2\\;;\\;t-2\\;;\\;1).$$\n\nOn écrit $\\overrightarrow{MH}\\cdot\\vec{u}=0$ :\n\n$$(t-2)\\times1+(t-2)\\times1+1\\times0=2(t-2)=0,$$\n\nd'où $t=2$.\n\n**Projeté orthogonal.** $H(1+2\\;;\\;2\\;;\\;2)=H(3\\,;2\\,;2)$.\n\n**Distance.**\n\n$$MH^{2}=(3-3)^{2}+(2-2)^{2}+(2-1)^{2}=0+0+1=1,$$\n\ndonc $d\\big(M,(\\Delta)\\big)=MH=1$.\n\n**Vérification par le produit vectoriel.** $\\overrightarrow{AM}(2\\,;2\\,;-1)$ et $\\vec{u}(1\\,;1\\,;0)$ donnent\n\n$$\\overrightarrow{AM}\\wedge\\vec{u}=\\big(2\\times0-(-1)\\times1\\;;\\;(-1)\\times1-2\\times0\\;;\\;2\\times1-2\\times1\\big)=(1\\,;-1\\,;0),$$\n\nde norme $\\sqrt{2}$, et $\\|\\vec{u}\\|=\\sqrt{2}$. Donc $d=\\dfrac{\\sqrt2}{\\sqrt2}=1$. Les deux méthodes concordent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $(P)$ le plan d'équation $z=0$ et $F(0\\,;0\\,;2)$. Déterminer une équation cartésienne de l'ensemble $(\\mathcal{E})$ des points $M$ de l'espace tels que $d(M,F)=2\\,d\\big(M,(P)\\big)$, et reconnaître la nature de $(\\mathcal{E})$ dans le cas où l'on remplace le coefficient 2 par 1.",
+          "solution_markdown": "**Expression des deux distances.** Pour $M(x\\,;y\\,;z)$ :\n\n$$d(M,F)=\\sqrt{x^{2}+y^{2}+(z-2)^{2}},\\qquad d\\big(M,(P)\\big)=\\frac{|z|}{\\sqrt{0^{2}+0^{2}+1^{2}}}=|z|.$$\n\n**Mise en équation.** Les deux membres $d(M,F)$ et $2\\,d\\big(M,(P)\\big)$ sont positifs ou nuls, donc l'égalité équivaut à celle des carrés :\n\n$$x^{2}+y^{2}+(z-2)^{2}=4z^{2}.$$\n\n**Développement et réduction.**\n\n$$x^{2}+y^{2}+z^{2}-4z+4=4z^{2}$$\n\n$$x^{2}+y^{2}-3z^{2}-4z+4=0.$$\n\nOn peut compléter le carré sur $z$ : $-3z^{2}-4z=-3\\left(z^{2}+\\dfrac{4}{3}z\\right)=-3\\left[\\left(z+\\dfrac{2}{3}\\right)^{2}-\\dfrac{4}{9}\\right]=-3\\left(z+\\dfrac23\\right)^{2}+\\dfrac43$, d'où\n\n$$x^{2}+y^{2}-3\\left(z+\\frac{2}{3}\\right)^{2}+\\frac{4}{3}+4=0,\\qquad\\text{soit}\\qquad x^{2}+y^{2}-3\\left(z+\\frac{2}{3}\\right)^{2}=-\\frac{16}{3}.$$\n\nC'est l'équation d'une surface de révolution d'axe $(Oz)$ (un hyperboloïde à deux nappes).\n\n**Cas du coefficient 1.** L'égalité devient $d(M,F)=d\\big(M,(P)\\big)$, soit\n\n$$x^{2}+y^{2}+(z-2)^{2}=z^{2}.$$\n\nEn développant : $x^{2}+y^{2}+z^{2}-4z+4=z^{2}$, donc\n\n$$x^{2}+y^{2}=4z-4=4(z-1).$$\n\nCette fois l'équation ne contient plus de $z^{2}$ : c'est un **paraboloïde de révolution** d'axe $(Oz)$, obtenu en faisant tourner autour de $(Oz)$ la parabole d'équation $x^{2}=4(z-1)$ du plan $y=0$. On retrouve, en dimension 3, la définition par foyer et directrice de la parabole : le point $F$ joue le rôle du foyer et le plan $(P)$ celui de la directrice.\n\n**Ce qu'il faut retenir de la comparaison.** Le coefficient devant la distance au plan décide de la nature de la surface : égal à 1, on obtient un paraboloïde ; différent de 1, un hyperboloïde ou un ellipsoïde selon qu'il est supérieur ou inférieur à 1. C'est l'analogue spatial de l'excentricité des coniques."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Distance à un plan : formule directe avec valeur absolue au numérateur et norme du vecteur normal au dénominateur.",
+        "Distance à une droite : pas de formule directe, passe par le projeté orthogonal caractérisé par $\\overrightarrow{MH}\\cdot\\vec{u}=0$.",
+        "Compare toujours les carrés des distances, jamais les distances elles-mêmes, et justifie ce passage par la positivité en une phrase.",
+        "Une caractérisation métrique se rédige par une chaîne d'équivalences : c'est plus court et plus sûr qu'une double inclusion.",
+        "Une équation homogène de degré 2 comme $x^{2}=y^{2}+z^{2}$ cache toujours une condition d'angle : cherche-la, elle donne la nature de la surface.",
+        "Au BAC série C, la caractérisation métrique est presque toujours la question charnière d'un problème de géométrie dans l'espace : c'est elle qui permet ensuite de démontrer une invariance par isométrie sans le moindre calcul de coordonnées."
+      ]
+    }
+  ]
+}

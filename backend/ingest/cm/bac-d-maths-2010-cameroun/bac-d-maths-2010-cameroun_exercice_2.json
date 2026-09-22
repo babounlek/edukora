@@ -13,49 +13,107 @@
   "titre_exercice": "Exercice 2 : suite arithmético-géométrique, modélisation d'une croissance démographique",
   "points": 4.5,
   "figures": [],
-  "enonce_intro_markdown": "En 1990, un pays avait une population de $50$ millions d'habitants. Par accroissement naturel, sa population augmente de $1,5\\%$ par an. Par ailleurs, on constate une augmentation annuelle supplémentaire de $0,45$ million d'habitants dès l'année 1991. L'unité étant le million d'habitants, on note $U_0=50$ l'effectif de la population en 1990 et $U_n$ le nombre d'habitants en $1990+n$.\n\n**Note sur une incohérence du document source.** Le document source annonce dans son texte introductif un accroissement naturel de \"$1,5\\%$ par an\", mais la relation à démontrer à la question 1(b) est transcrite comme \"$U_{n+1}=1,01\\,U_n+0,45$\" (ce qui correspondrait à un taux de $1\\%$, incohérent avec le $1,5\\%$ annoncé). L'analyse de la question 2(b) tranche cette ambiguïté de façon décisive : avec un taux de $1\\%$ (multiplicateur $1,01$), le changement de variable $V_n=30+U_n$ proposé par l'énoncé NE produit PAS une suite géométrique pure (il subsiste un terme constant résiduel) ; avec un taux de $1,5\\%$ (multiplicateur $1,015$), en revanche, ce même changement de variable $V_n=30+U_n$ élimine exactement la constante et produit une suite parfaitement géométrique. Le \"$1,01$\" du document source est donc très probablement une erreur de numérisation (chiffre \"5\" omis) pour \"$1,015$\". L'ensemble de ce corrigé retient donc $U_{n+1}=1,015\\,U_n+0,45$, cohérent à la fois avec le taux de $1,5\\%$ annoncé dans le texte ET avec la structure géométrique attendue en question 2(b).",
+  "enonce_intro_markdown": "En 1990, un pays avait une population de $50$ millions d'habitants. Par accroissement naturel, sa population augmente de $1,5\\%$ par an. Par ailleurs, on constate une augmentation annuelle supplémentaire de $0,45$ million d'habitants dès l'année 1991. L'unité étant le million d'habitants, on note $U_0=50$ l'effectif de la population en 1990 et $U_n$ le nombre d'habitants en $1990+n$.",
   "questions": [
     {
       "numero": "1a",
       "points": "0,5pt",
       "enonce_markdown": "Calculer $U_1$ et $U_2$.",
-      "rappels_de_methode": [{"cours_id": "cours-calculer-termes-suite-recurrence-lineaire-directe-terminale-d", "texte": "Pour calculer les premiers termes d'une suite définie par une relation de récurrence linéaire un+1=aun+b, on substitue directement et successivement le terme déjà connu dans la formule."}],
-      "corrige_markdown": "### Rappel de méthode\nPour calculer les premiers termes d'une suite définie par une relation de récurrence linéaire $u_{n+1}=au_n+b$, on substitue directement et successivement le terme déjà connu dans la formule.\n\n**Utilisation de la relation $U_{n+1}=1,015\\,U_n+0,45$** (voir la note en tête de ce fichier sur la correction du taux de $1\\%$ en $1,5\\%$).\n\n**Calcul de $U_1$.**\n\n$$U_1=1,015\\times U_0+0,45=1,015\\times50+0,45=50,75+0,45=51,2$$\n\n**$U_1=51,2$ (millions d'habitants).**\n\n**Calcul de $U_2$.**\n\n$$U_2=1,015\\times U_1+0,45=1,015\\times51,2+0,45=51,968+0,45=52,418$$\n\n**$U_2=52,418$ (millions d'habitants).**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-termes-suite-recurrence-lineaire-directe-terminale-d",
+          "texte": "Pour calculer les premiers termes d'une suite définie par une relation de récurrence linéaire un+1=aun+b, on substitue directement et successivement le terme déjà connu dans la formule."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour calculer les premiers termes d'une suite définie par une relation de récurrence linéaire $u_{n+1}=au_n+b$, on substitue directement et successivement le terme déjà connu dans la formule.\n\n**Utilisation de la relation $U_{n+1}=1,015\\,U_n+0,45$.**\n\n**Calcul de $U_1$.**\n\n$$U_1=1,015\\times U_0+0,45=1,015\\times50+0,45=50,75+0,45=51,2$$\n\n**$U_1=51,2$ (millions d'habitants).**\n\n**Calcul de $U_2$.**\n\n$$U_2=1,015\\times U_1+0,45=1,015\\times51,2+0,45=51,968+0,45=52,418$$\n\n**$U_2=52,418$ (millions d'habitants).**",
+      "themes": [
+        "suite récurrente",
+        "calcul de termes"
+      ]
     },
     {
       "numero": "1b",
       "points": "0,75pt",
-      "enonce_markdown": "Montrer que $U_{n+1}=1,015\\,U_n+0,45$ (relation reconstruite ; voir la note en tête de ce fichier).",
-      "rappels_de_methode": [{"cours_id": "cours-etablir-relation-recurrence-contexte-croissance-additif-terminale-d", "texte": "Quand une population croît d'un taux p% par an puis reçoit un apport constant additionnel c, l'effectif de l'année suivante est un+1 = un×(1+p/100) + c."}],
-      "corrige_markdown": "### Rappel de méthode\nQuand une population croît d'un taux $p\\%$ par an (accroissement naturel) puis reçoit un apport constant additionnel $c$ (ici, l'augmentation annuelle supplémentaire), l'effectif de l'année suivante s'obtient par $u_{n+1}=u_n\\times\\left(1+\\dfrac p{100}\\right)+c$.\n\n**Traduction de l'énoncé.** La population croît de $1,5\\%$ par accroissement naturel (soit un facteur multiplicatif $1+\\dfrac{1,5}{100}=1,015$), puis reçoit un apport supplémentaire constant de $0,45$ million d'habitants chaque année.\n\n$$U_{n+1}=U_n\\times1,015+0,45$$\n\n**$U_{n+1}=1,015\\,U_n+0,45$, relation démontrée à partir des deux composantes de croissance décrites par l'énoncé.**\n\n### Piège à éviter\nNe pas confondre le taux de croissance annoncé dans le texte ($1,5\\%$, soit un multiplicateur $1,015$) avec un éventuel taux de $1\\%$ (multiplicateur $1,01$) qui pourrait apparaître par erreur de transcription : le multiplicateur $1,015$ est le seul cohérent avec le taux annoncé, et c'est aussi le seul qui permettra à la question 2(b) d'obtenir une suite auxiliaire authentiquement géométrique via le changement de variable $V_n=30+U_n$."
+      "enonce_markdown": "Montrer que $U_{n+1}=1,015\\,U_n+0,45$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etablir-relation-recurrence-contexte-croissance-additif-terminale-d",
+          "texte": "Quand une population croît d'un taux p% par an puis reçoit un apport constant additionnel c, l'effectif de l'année suivante est un+1 = un×(1+p/100) + c."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nQuand une population croît d'un taux $p\\%$ par an (accroissement naturel) puis reçoit un apport constant additionnel $c$ (ici, l'augmentation annuelle supplémentaire), l'effectif de l'année suivante s'obtient par $u_{n+1}=u_n\\times\\left(1+\\dfrac p{100}\\right)+c$.\n\n**Traduction de l'énoncé.** La population croît de $1,5\\%$ par accroissement naturel (soit un facteur multiplicatif $1+\\dfrac{1,5}{100}=1,015$), puis reçoit un apport supplémentaire constant de $0,45$ million d'habitants chaque année.\n\n$$U_{n+1}=U_n\\times1,015+0,45$$\n\n**$U_{n+1}=1,015\\,U_n+0,45$, relation démontrée à partir des deux composantes de croissance décrites par l'énoncé.**\n\n### Piège à éviter\nNe pas confondre le taux de croissance annoncé dans le texte ($1,5\\%$, soit un multiplicateur $1,015$) avec un éventuel taux de $1\\%$ (multiplicateur $1,01$) qui pourrait apparaître par erreur de transcription : le multiplicateur $1,015$ est le seul cohérent avec le taux annoncé, et c'est aussi le seul qui permettra à la question 2(b) d'obtenir une suite auxiliaire authentiquement géométrique via le changement de variable $V_n=30+U_n$.",
+      "themes": [
+        "pourcentage",
+        "suite récurrente",
+        "modélisation"
+      ]
     },
     {
       "numero": "2a",
       "points": "0,5pt",
       "enonce_markdown": "On considère la suite $(V_n)$ définie par $V_n=30+U_n$. Calculer $V_1$ et $V_2$.",
-      "rappels_de_methode": [{"cours_id": "cours-calculer-termes-suite-translatee-terminale-d", "texte": "Pour calculer les termes d'une suite définie comme une translation d'une autre suite déjà connue (Vn=k+Un), on additionne simplement la constante aux termes déjà calculés."}],
-      "corrige_markdown": "### Rappel de méthode\nPour calculer les termes d'une suite définie comme une translation d'une autre suite déjà connue ($V_n=k+U_n$), on additionne simplement la constante $k$ aux termes de $(U_n)$ déjà calculés.\n\n**Calcul de $V_1$**, à partir de $U_1=51,2$ (question 1a).\n\n$$V_1=30+U_1=30+51,2=81,2$$\n\n**Calcul de $V_2$**, à partir de $U_2=52,418$ (question 1a).\n\n$$V_2=30+U_2=30+52,418=82,418$$\n\n**$V_1=81,2$ et $V_2=82,418$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-termes-suite-translatee-terminale-d",
+          "texte": "Pour calculer les termes d'une suite définie comme une translation d'une autre suite déjà connue (Vn=k+Un), on additionne simplement la constante aux termes déjà calculés."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour calculer les termes d'une suite définie comme une translation d'une autre suite déjà connue ($V_n=k+U_n$), on additionne simplement la constante $k$ aux termes de $(U_n)$ déjà calculés.\n\n**Calcul de $V_1$**, à partir de $U_1=51,2$ (question 1a).\n\n$$V_1=30+U_1=30+51,2=81,2$$\n\n**Calcul de $V_2$**, à partir de $U_2=52,418$ (question 1a).\n\n$$V_2=30+U_2=30+52,418=82,418$$\n\n**$V_1=81,2$ et $V_2=82,418$.**",
+      "themes": [
+        "suite auxiliaire",
+        "calcul de termes"
+      ]
     },
     {
       "numero": "2b",
       "points": "0,75pt",
       "enonce_markdown": "Démontrer que la suite $(V_n)$ est une suite géométrique dont on précisera le premier terme et la raison.",
-      "rappels_de_methode": [{"cours_id": "cours-demontrer-suite-geometrique-translation-elimination-constante-terminale-d", "texte": "Pour démontrer qu'une suite Vn=Un+k (translation d'une suite arithmético-géométrique un+1=aun+b) est géométrique, on exprime Vn+1 en fonction de Vn en substituant Un=Vn-k dans la relation de récurrence, en choisissant k pour que tous les termes constants s'annulent exactement."}],
-      "corrige_markdown": "### Rappel de méthode\nPour démontrer qu'une suite $V_n=U_n+k$ (translation d'une suite arithmético-géométrique $u_{n+1}=au_n+b$) est géométrique, on exprime $V_{n+1}$ en fonction de $V_n$ en substituant $U_n=V_n-k$ dans la relation de récurrence : si $k$ est bien choisi (ici donné par l'énoncé, $k=30$), tous les termes constants s'annulent exactement, ne laissant que $V_{n+1}=aV_n$.\n\n**Expression de $V_{n+1}$.**\n\n$$V_{n+1}=30+U_{n+1}=30+\\big(1,015\\,U_n+0,45\\big)=30,45+1,015\\,U_n$$\n\n**Substitution de $U_n=V_n-30$** (issue de $V_n=30+U_n$).\n\n$$V_{n+1}=30,45+1,015\\,(V_n-30)=30,45+1,015\\,V_n-30,45$$\n\n**Les deux termes constants $30,45$ et $-30,45$ s'annulent exactement :**\n\n$$V_{n+1}=1,015\\,V_n$$\n\n**$(V_n)$ est donc une suite géométrique, de raison $q=1,015$.**\n\n**Calcul du premier terme.**\n\n$$V_0=30+U_0=30+50=80$$\n\n**$(V_n)$ est géométrique de raison $q=1,015$ et de premier terme $V_0=80$.**\n\n### Conseil\nL'annulation exacte des deux termes constants ($30,45$ et $-30,45$) est la preuve la plus rigoureuse que le taux de croissance retenu ($1,5\\%$, soit $1,015$) est le bon : avec un taux de $1\\%$ ($1,01$), ce même calcul laisserait un terme constant résiduel non nul, empêchant $(V_n)$ d'être authentiquement géométrique."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-demontrer-suite-geometrique-translation-elimination-constante-terminale-d",
+          "texte": "Pour démontrer qu'une suite Vn=Un+k (translation d'une suite arithmético-géométrique un+1=aun+b) est géométrique, on exprime Vn+1 en fonction de Vn en substituant Un=Vn-k dans la relation de récurrence, en choisissant k pour que tous les termes constants s'annulent exactement."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer qu'une suite $V_n=U_n+k$ (translation d'une suite arithmético-géométrique $u_{n+1}=au_n+b$) est géométrique, on exprime $V_{n+1}$ en fonction de $V_n$ en substituant $U_n=V_n-k$ dans la relation de récurrence : si $k$ est bien choisi (ici donné par l'énoncé, $k=30$), tous les termes constants s'annulent exactement, ne laissant que $V_{n+1}=aV_n$.\n\n**Expression de $V_{n+1}$.**\n\n$$V_{n+1}=30+U_{n+1}=30+\\big(1,015\\,U_n+0,45\\big)=30,45+1,015\\,U_n$$\n\n**Substitution de $U_n=V_n-30$** (issue de $V_n=30+U_n$).\n\n$$V_{n+1}=30,45+1,015\\,(V_n-30)=30,45+1,015\\,V_n-30,45$$\n\n**Les deux termes constants $30,45$ et $-30,45$ s'annulent exactement :**\n\n$$V_{n+1}=1,015\\,V_n$$\n\n**$(V_n)$ est donc une suite géométrique, de raison $q=1,015$.**\n\n**Calcul du premier terme.**\n\n$$V_0=30+U_0=30+50=80$$\n\n**$(V_n)$ est géométrique de raison $q=1,015$ et de premier terme $V_0=80$.**\n\n### Conseil\nL'annulation exacte des deux termes constants ($30,45$ et $-30,45$) est la preuve la plus rigoureuse que le taux de croissance retenu ($1,5\\%$, soit $1,015$) est le bon : avec un taux de $1\\%$ ($1,01$), ce même calcul laisserait un terme constant résiduel non nul, empêchant $(V_n)$ d'être authentiquement géométrique.",
+      "themes": [
+        "suite géométrique",
+        "suite auxiliaire",
+        "raison"
+      ]
     },
     {
       "numero": "2c",
       "points": "1,5pt",
       "enonce_markdown": "Exprimer $V_n$ puis $U_n$ en fonction de $n$. En déduire alors l'effectif de la population de ce pays en l'an 2010 (on prendra le résultat arrondi en million d'habitants).",
-      "rappels_de_methode": [{"cours_id": "cours-terme-general-suite-geometrique-application-numerique-arrondie-terminale-d", "texte": "Le terme général d'une suite géométrique de raison q et premier terme V0 est Vn=V0×qⁿ ; pour revenir à la suite d'origine translatée, on soustrait la constante de translation, puis on évalue numériquement au rang demandé."}],
-      "corrige_markdown": "### Rappel de méthode\nLe terme général d'une suite géométrique de raison $q$ et de premier terme $V_0$ (indexation à partir de $n=0$) est $V_n=V_0\\times q^n$. Pour revenir à la suite d'origine translatée $U_n=V_n-k$, on soustrait simplement la constante de translation, puis on évalue numériquement au rang correspondant à l'année demandée.\n\n**Expression de $V_n$**, d'après la question 2b ($V_0=80$, $q=1,015$).\n\n$$V_n=80\\times1,015^n$$\n\n**Expression de $U_n$**, à partir de $U_n=V_n-30$.\n\n$$U_n=80\\times1,015^n-30$$\n\n**Identification du rang correspondant à l'année 2010.** Comme $U_n$ représente la population en $1990+n$, l'année $2010$ correspond à $1990+n=2010$, soit $n=20$.\n\n**Calcul de $1,015^{20}$** (par élévations au carré successives).\n\n$$1,015^2=1,030225$$\n\n$$1,015^4=1,030225^2\\approx1,061364$$\n\n$$1,015^8\\approx1,061364^2\\approx1,126493$$\n\n$$1,015^{16}\\approx1,126493^2\\approx1,268987$$\n\n$$1,015^{20}=1,015^{16}\\times1,015^4\\approx1,268987\\times1,061364\\approx1,346855$$\n\n**Calcul de $U_{20}$.**\n\n$$U_{20}=80\\times1,346855-30\\approx107,748-30=77,748$$\n\n**$U_{20}\\approx77,748$, arrondi à $78$ millions d'habitants.**\n\n**L'effectif de la population de ce pays en l'an 2010 est estimé à environ $78$ millions d'habitants.**\n\n### Conseil\nCalculer $1,015^{20}$ par élévations au carré successives ($1,015^2$, puis $1,015^4$, $1,015^8$, $1,015^{16}$, puis recombiner $1,015^{16}\\times1,015^4$) est nettement plus rapide et moins sujet aux erreurs qu'une multiplication répétée par $1,015$ vingt fois de suite."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-terme-general-suite-geometrique-application-numerique-arrondie-terminale-d",
+          "texte": "Le terme général d'une suite géométrique de raison q et premier terme V0 est Vn=V0×qⁿ ; pour revenir à la suite d'origine translatée, on soustrait la constante de translation, puis on évalue numériquement au rang demandé."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLe terme général d'une suite géométrique de raison $q$ et de premier terme $V_0$ (indexation à partir de $n=0$) est $V_n=V_0\\times q^n$. Pour revenir à la suite d'origine translatée $U_n=V_n-k$, on soustrait simplement la constante de translation, puis on évalue numériquement au rang correspondant à l'année demandée.\n\n**Expression de $V_n$**, d'après la question 2b ($V_0=80$, $q=1,015$).\n\n$$V_n=80\\times1,015^n$$\n\n**Expression de $U_n$**, à partir de $U_n=V_n-30$.\n\n$$U_n=80\\times1,015^n-30$$\n\n**Identification du rang correspondant à l'année 2010.** Comme $U_n$ représente la population en $1990+n$, l'année $2010$ correspond à $1990+n=2010$, soit $n=20$.\n\n**Calcul de $1,015^{20}$** (par élévations au carré successives).\n\n$$1,015^2=1,030225$$\n\n$$1,015^4=1,030225^2\\approx1,061364$$\n\n$$1,015^8\\approx1,061364^2\\approx1,126493$$\n\n$$1,015^{16}\\approx1,126493^2\\approx1,268987$$\n\n$$1,015^{20}=1,015^{16}\\times1,015^4\\approx1,268987\\times1,061364\\approx1,346855$$\n\n**Calcul de $U_{20}$.**\n\n$$U_{20}=80\\times1,346855-30\\approx107,748-30=77,748$$\n\n**$U_{20}\\approx77,748$, arrondi à $78$ millions d'habitants.**\n\n**L'effectif de la population de ce pays en l'an 2010 est estimé à environ $78$ millions d'habitants.**\n\n### Conseil\nCalculer $1,015^{20}$ par élévations au carré successives ($1,015^2$, puis $1,015^4$, $1,015^8$, $1,015^{16}$, puis recombiner $1,015^{16}\\times1,015^4$) est nettement plus rapide et moins sujet aux erreurs qu'une multiplication répétée par $1,015$ vingt fois de suite.",
+      "themes": [
+        "suite géométrique",
+        "terme général",
+        "application numérique"
+      ]
     },
     {
       "numero": "2d",
       "points": "0,5pt",
       "enonce_markdown": "Déterminer par calcul à partir de quelle année l'effectif de la population de ce pays dépassera $100$ millions d'habitants si l'évolution se poursuit de la même manière.",
-      "rappels_de_methode": [{"cours_id": "cours-resoudre-inequation-exponentielle-logarithme-rang-seuil-terminale-d", "texte": "Pour trouver le plus petit rang n vérifiant une inégalité de la forme qⁿ>k (q>1), on isole qⁿ puis on prend le logarithme népérien des deux membres (fonction croissante, préserve le sens de l'inégalité), avant d'arrondir au nombre entier n immédiatement supérieur."}],
-      "corrige_markdown": "### Rappel de méthode\nPour trouver le plus petit rang $n$ vérifiant une inégalité de la forme $q^n>k$ (avec $q>1$), on isole $q^n$ dans l'inégalité, on prend le logarithme népérien des deux membres (fonction croissante, préservant le sens de l'inégalité), on isole $n$, puis on arrondit au nombre entier immédiatement supérieur.\n\n**Mise en inéquation.** On cherche le plus petit $n$ tel que $U_n>100$.\n\n$$80\\times1,015^n-30>100$$\n\n$$80\\times1,015^n>130$$\n\n$$1,015^n>\\dfrac{130}{80}=1,625$$\n\n**Passage au logarithme népérien** (fonction croissante, conserve le sens de l'inégalité).\n\n$$n\\times\\ln(1,015)>\\ln(1,625)$$\n\n**Comme $\\ln(1,015)>0$, on peut diviser sans changer le sens de l'inégalité.**\n\n$$n>\\dfrac{\\ln(1,625)}{\\ln(1,015)}\\approx\\dfrac{0,485508}{0,014889}\\approx32,6$$\n\n**Le plus petit entier $n$ vérifiant cette inégalité est $n=33$.**\n\n**Vérification numérique.** $U_{32}=80\\times1,015^{32}-30\\approx80\\times1,6103-30\\approx98,82<100$ (insuffisant). $U_{33}=80\\times1,015^{33}-30\\approx80\\times1,6345-30\\approx100,76>100$ (dépasse $100$).\n\n**Conclusion.** $n=33$ correspond à l'année $1990+33=2023$.\n\n**C'est donc à partir de l'année $2023$ que la population de ce pays dépassera $100$ millions d'habitants.**\n\n### Conseil\nToujours vérifier numériquement le rang trouvé (ici en comparant $U_{32}$ et $U_{33}$ à $100$) : cela confirme que l'arrondi du calcul logarithmique (qui donnait $n>32,6$) a bien été traité dans le bon sens, en prenant l'entier immédiatement SUPÉRIEUR ($33$, et non $32$)."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-resoudre-inequation-exponentielle-logarithme-rang-seuil-terminale-d",
+          "texte": "Pour trouver le plus petit rang n vérifiant une inégalité de la forme qⁿ>k (q>1), on isole qⁿ puis on prend le logarithme népérien des deux membres (fonction croissante, préserve le sens de l'inégalité), avant d'arrondir au nombre entier n immédiatement supérieur."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour trouver le plus petit rang $n$ vérifiant une inégalité de la forme $q^n>k$ (avec $q>1$), on isole $q^n$ dans l'inégalité, on prend le logarithme népérien des deux membres (fonction croissante, préservant le sens de l'inégalité), on isole $n$, puis on arrondit au nombre entier immédiatement supérieur.\n\n**Mise en inéquation.** On cherche le plus petit $n$ tel que $U_n>100$.\n\n$$80\\times1,015^n-30>100$$\n\n$$80\\times1,015^n>130$$\n\n$$1,015^n>\\dfrac{130}{80}=1,625$$\n\n**Passage au logarithme népérien** (fonction croissante, conserve le sens de l'inégalité).\n\n$$n\\times\\ln(1,015)>\\ln(1,625)$$\n\n**Comme $\\ln(1,015)>0$, on peut diviser sans changer le sens de l'inégalité.**\n\n$$n>\\dfrac{\\ln(1,625)}{\\ln(1,015)}\\approx\\dfrac{0,485508}{0,014889}\\approx32,6$$\n\n**Le plus petit entier $n$ vérifiant cette inégalité est $n=33$.**\n\n**Vérification numérique.** $U_{32}=80\\times1,015^{32}-30\\approx80\\times1,6103-30\\approx98,82<100$ (insuffisant). $U_{33}=80\\times1,015^{33}-30\\approx80\\times1,6345-30\\approx100,76>100$ (dépasse $100$).\n\n**Conclusion.** $n=33$ correspond à l'année $1990+33=2023$.\n\n**C'est donc à partir de l'année $2023$ que la population de ce pays dépassera $100$ millions d'habitants.**\n\n### Conseil\nToujours vérifier numériquement le rang trouvé (ici en comparant $U_{32}$ et $U_{33}$ à $100$) : cela confirme que l'arrondi du calcul logarithmique (qui donnait $n>32,6$) a bien été traité dans le bon sens, en prenant l'entier immédiatement SUPÉRIEUR ($33$, et non $32$).",
+      "themes": [
+        "suite géométrique",
+        "logarithme",
+        "inéquation"
+      ]
     }
   ]
 }

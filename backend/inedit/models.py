@@ -226,7 +226,15 @@ class EpreuveInedite(models.Model):
             if exercice.enonce_intro_markdown:
                 enonce_parts.append(exercice.enonce_intro_markdown)
                 corrige_parts.append(exercice.enonce_intro_markdown)
+            dernier_groupe_local = None
             for question in exercice.questions.order_by("ordre"):
+                # Sous-partie locale (voir QuestionInedite.groupe_local) : insérée juste
+                # avant la question qui l'ouvre, jamais répétée tant qu'elle ne change pas -
+                # même principe que l'en-tête "### Exercice N" ci-dessus, un niveau plus bas.
+                if question.groupe_local and question.groupe_local != dernier_groupe_local:
+                    enonce_parts.append(f"**{question.groupe_local}**")
+                    corrige_parts.append(f"**{question.groupe_local}**")
+                dernier_groupe_local = question.groupe_local
                 enonce_parts.append(f"**{question.numero}.** {question.enonce_markdown}")
                 corrige_parts.append(f"**{question.numero}.** {question.enonce_markdown}\n\n{question.corrige_markdown}")
 
@@ -290,6 +298,21 @@ class QuestionInedite(models.Model):
     exercice = models.ForeignKey(ExerciceInedite, on_delete=models.CASCADE, related_name="questions")
     numero = models.CharField(max_length=20)
     ordre = models.PositiveSmallIntegerField(help_text="Ordre d'affichage/résolution au sein de l'exercice.")
+    groupe_local = models.CharField(
+        max_length=255, blank=True,
+        help_text=(
+            "Repère de sous-partie affiché juste au-dessus de CETTE question, quand il "
+            "diffère de celui de la question précédente (ex. \"A-I. Vérification des "
+            "savoirs (4 pts)\"). Une seule étiquette plate, pas une pile comme "
+            "ExerciceInedite.groupes : sert à scinder un exercice en sous-sections "
+            "successives sans créer un ExerciceInedite par sous-section (voir "
+            "InediteTentativePage.tsx). Ne PAS recopier ce texte dans "
+            "enonce_intro_markdown, qui s'affiche une seule fois en tête de tout "
+            "l'exercice - le mélange des deux fait apparaître toutes les sous-parties "
+            "d'un coup avant la première question. Vide pour la grande majorité des "
+            "questions."
+        ),
+    )
 
     enonce_markdown = models.TextField()
     corrige_markdown = models.TextField()

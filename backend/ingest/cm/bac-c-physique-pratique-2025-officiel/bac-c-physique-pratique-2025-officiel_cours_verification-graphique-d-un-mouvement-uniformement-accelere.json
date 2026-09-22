@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-verification-graphique-d-un-mouvement-uniformement-accelere-terminale-c",
+  "meta": {
+    "titre": "Vérification graphique d'un mouvement uniformément accéléré (tracé de d en fonction de t²)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Exploitation graphique en mécanique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "mouvement uniformément accéléré",
+      "linéarisation",
+      "tracé de courbe",
+      "exploitation graphique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat C - Physique Pratique - Mouvement sur un plan incliné avec frottement (2025, Cameroun, officiel)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-pratique-2025-officiel-ex1-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau de mesures brut ne dit rien à l'œil nu : sept couples de nombres ne prouvent rien tant qu'on ne les a pas mis en forme. Tracer le bon graphe transforme ce tableau en une preuve visuelle immédiate - des points alignés confirment une loi physique, des points dispersés la remettent en question. La technique du choix des axes, appelée linéarisation, est ce qui permet de transformer une loi en $t^2$ en une simple droite, lisible et exploitable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi horaire d'un mouvement uniformément accéléré sans vitesse initiale : d = ½at²",
+        "Savoir construire un repère orthonormé gradué à partir d'une échelle imposée",
+        "Savoir reporter un nuage de points à partir d'un tableau de valeurs"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Linéariser une loi en t² pour vérifier un mouvement uniformément accéléré",
+      "contenu_markdown": "Pour un mobile lâché sans vitesse initiale ($v_0=0$) avec une accélération $a$ constante, la distance parcourue par son centre d'inertie suit la loi horaire :\n\n$$d = \\dfrac{1}{2}at^2$$\n\nCette relation n'est pas linéaire en $t$ (c'est une parabole si on trace $d=f(t)$), mais elle **devient linéaire** si l'on trace $d$ en fonction de $t^2$ plutôt qu'en fonction de $t$ : en posant $X=t^2$, la relation s'écrit $d=\\dfrac{a}{2}X$, une droite passant par l'origine, de pente $K=\\dfrac{a}{2}$.\n\nCette technique, appelée **linéarisation**, est systématique en physique expérimentale : chaque fois qu'une loi théorique prédit une relation non linéaire entre deux grandeurs mesurées, on cherche la transformation (carré, inverse, logarithme...) qui la rend linéaire, parce qu'une droite se trace, se lit et s'exploite bien plus facilement qu'une courbe quelconque - en particulier, sa pente donne accès directement à un paramètre physique.\n\nDeux vérifications valident le tracé : la droite doit passer par l'origine (puisque $d=0$ pour $t=0$), et les points expérimentaux doivent s'aligner sur cette droite à la précision de la mesure près.",
+      "formule_principale": "d = \\dfrac{1}{2}at^2 \\;\\Longrightarrow\\; d = K\\,t^2 \\text{ avec } K=\\dfrac{a}{2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un mobile est lâché sans vitesse initiale sur un plan incliné. Le relevé de la distance parcourue $d$ en fonction du temps $t$ donne le tableau : $t$(s) = 0,00 ; 0,12 ; 0,18 ; 0,24 ; 0,30 ; 0,36 ; 0,42 et $d$($10^{-2}$m) = 0,0 ; 1,1 ; 2,5 ; 4,4 ; 6,9 ; 10,0 ; 13,6. Tracer le graphe $d=f(t^2)$ avec les échelles imposées : 1 cm pour $10^{-2}\\text{ s}^2$ en abscisse, 1 cm pour $10^{-2}\\text{ m}$ en ordonnée.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer t² pour chaque valeur de t du tableau",
+          "justification": "Le graphe demandé a pour abscisse t², pas t : il faut donc d'abord calculer cette nouvelle colonne de valeurs.",
+          "resultat_markdown": "$t^2$ (en $10^{-2}\\text{ s}^2$) : 0,00 ; 1,4 ; 3,2 ; 5,8 ; 9,0 ; 13,0 ; 17,6."
+        },
+        {
+          "numero": 2,
+          "action": "Construire les axes gradués selon les échelles imposées",
+          "justification": "Une échelle mal choisie (trop resserrée ou trop étalée) rend la droite illisible ou fait sortir des points du cadre.",
+          "resultat_markdown": "Axe des abscisses : de 0 à 18 (×$10^{-2}\\text{ s}^2$), 1 cm par unité. Axe des ordonnées : de 0 à 14 (×$10^{-2}\\text{ m}$), 1 cm par unité."
+        },
+        {
+          "numero": 3,
+          "action": "Reporter les 7 points expérimentaux (t² ; d)",
+          "justification": "Chaque couple du tableau devient un point du graphe, placé avec précision à l'intersection des deux graduations correspondantes.",
+          "resultat_markdown": "Points reportés : (0,00 ; 0,0), (1,4 ; 1,1), (3,2 ; 2,5), (5,8 ; 4,4), (9,0 ; 6,9), (13,0 ; 10,0), (17,6 ; 13,6)."
+        },
+        {
+          "numero": 4,
+          "action": "Tracer la droite moyenne passant au mieux par les points",
+          "justification": "Les mesures expérimentales comportent toujours de petites incertitudes ; la droite tracée ne passe donc pas nécessairement par chaque point mais doit minimiser l'écart global.",
+          "resultat_markdown": "Droite passant par l'origine, laissant les points répartis de part et d'autre de son tracé de façon équilibrée."
+        }
+      ],
+      "conclusion_markdown": "Les points étant sensiblement alignés sur une droite passant par l'origine, le graphe confirme que $d$ est proportionnel à $t^2$ : le mouvement du mobile est bien uniformément accéléré, conformément à la loi $d=\\dfrac{1}{2}at^2$ attendue pour un lâcher sans vitesse initiale."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tracer le graphe $d=f(t)$ au lieu de $d=f(t^2)$, en reportant directement les valeurs de $t$ du tableau en abscisse.",
+          "pourquoi_faux": "$d=f(t)$ donne une parabole, pas une droite : la question demande explicitement une exploitation en $t^2$, précisément parce que c'est cette variable qui linéarise la loi horaire.",
+          "correction_markdown": "Relis toujours l'énoncé de la question pour identifier la variable exacte demandée en abscisse ($t$ ou $t^2$) avant de commencer à graduer les axes."
+        },
+        {
+          "erreur_markdown": "Relier les points expérimentaux les uns aux autres par des segments brisés, comme une ligne polygonale.",
+          "pourquoi_faux": "Les points de mesure comportent une incertitude expérimentale ; les relier brise l'idée que la loi physique sous-jacente est une droite unique, et masque la dispersion réelle des mesures autour de cette droite.",
+          "correction_markdown": "Trace toujours une droite unique, la plus proche possible de l'ensemble des points (droite moyenne), jamais une ligne brisée qui passe exactement par chaque point."
+        },
+        {
+          "erreur_markdown": "Ne pas graduer les axes de façon régulière, ou choisir une échelle différente de celle imposée par l'énoncé.",
+          "pourquoi_faux": "Une échelle non respectée fausse la lecture ultérieure de la pente (question suivante), qui se fait directement sur le graphe tracé.",
+          "correction_markdown": "Recopie l'échelle imposée avant de tracer un seul point, et vérifie que la plus grande valeur du tableau tient dans le cadre choisi."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un mobile lâché sans vitesse initiale a parcouru $d=0{,}45\\text{ m}$ après $t=0{,}3\\text{ s}$. Calculer la valeur de $t^2$ à reporter en abscisse pour ce point, et la valeur de $d$ à reporter en ordonnée.",
+          "solution_markdown": "$t^2 = 0{,}3^2 = 0{,}09\\text{ s}^2$. La valeur de $d$ à reporter en ordonnée est directement celle donnée : $d=0{,}45\\text{ m}$. Le point à placer sur le graphe $d=f(t^2)$ est donc $(0{,}09\\ ;\\ 0{,}45)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On trace le graphe $d=f(t^2)$ pour un mobile et on obtient une droite qui ne passe pas par l'origine, mais coupe l'axe des ordonnées en $d=0{,}02\\text{ m}$. Que peut-on en conclure sur les conditions initiales du mouvement ?",
+          "solution_markdown": "Si le mouvement était réellement issu d'un lâcher sans vitesse initiale à $t=0$, la droite $d=f(t^2)$ devrait passer par l'origine, puisque $d(t=0)=0$. Une ordonnée à l'origine non nulle indique que l'instant $t=0$ choisi pour les mesures ne correspond pas exactement à l'instant du lâcher (décalage de l'origine des temps), ou que le mobile possédait déjà une distance parcourue non nulle au moment du premier relevé. Dans un compte rendu de TP, cet écart doit être signalé plutôt qu'ignoré, car il traduit un défaut de synchronisation entre le début du chronométrage et le début effectif du mouvement."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour un mobile animé d'un mouvement uniformément accéléré mais avec une vitesse initiale $v_0 \\neq 0$ non nulle, la loi horaire devient $d=v_0t+\\dfrac{1}{2}at^2$. Le graphe $d=f(t^2)$ reste-t-il une droite ? Si non, quelle grandeur faudrait-il tracer en abscisse pour retrouver une droite ?",
+          "solution_markdown": "Avec $v_0\\neq0$, la relation $d=v_0t+\\dfrac{1}{2}at^2$ contient un terme en $t$ (pas seulement en $t^2$) : tracer $d$ en fonction de $t^2$ ne donne donc plus une droite, mais une courbe, puisque $d$ dépend à la fois de $t^2$ et de $\\sqrt{t^2}$. Pour retrouver une relation linéaire, il faut diviser toute l'équation par $t$ : $\\dfrac{d}{t}=v_0+\\dfrac{1}{2}at$. En traçant $\\dfrac{d}{t}$ en fonction de $t$ (et non plus $d$ en fonction de $t^2$), on obtient une droite de pente $\\dfrac{a}{2}$ et d'ordonnée à l'origine $v_0$ : cette linéarisation différente permet de déterminer à la fois l'accélération et la vitesse initiale, alors que la méthode $d=f(t^2)$ du cours suppose implicitement $v_0=0$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une loi horaire en $t^2$ (mouvement uniformément accéléré sans vitesse initiale) se linéarise en traçant $d=f(t^2)$, pas $d=f(t)$.",
+        "La droite obtenue doit passer par l'origine ; un décalage signale un problème de synchronisation entre le chronométrage et le début réel du mouvement.",
+        "Trace toujours une droite moyenne au plus près de l'ensemble des points, jamais une ligne brisée qui relie chaque point individuellement.",
+        "Respecte scrupuleusement l'échelle imposée par l'énoncé : la pente lue sur ce graphe sert directement à la question suivante.",
+        "Au BAC, cette étape de tracé graphique précède presque toujours une exploitation numérique (pente, ordonnée à l'origine) : un graphe mal construit compromet tous les résultats qui en découlent."
+      ]
+    }
+  ]
+}

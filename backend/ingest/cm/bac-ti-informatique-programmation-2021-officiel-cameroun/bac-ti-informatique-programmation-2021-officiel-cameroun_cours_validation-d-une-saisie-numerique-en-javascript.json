@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-validation-d-une-saisie-numerique-en-javascript-ti-2021",
+  "meta": {
+    "titre": "Validation d'une saisie numérique en JavaScript",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 25,
+    "tags": [
+      "JavaScript",
+      "validation de formulaire",
+      "expression régulière",
+      "onclick"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex1-qI-3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formulaire mal protégé accepte n'importe quelle saisie : un champ censé recevoir un code numérique peut très bien recevoir des lettres, une valeur vide, ou une décimale. Contrôler la saisie avant l'envoi du formulaire, directement dans le navigateur, évite d'envoyer des données invalides au serveur et prévient l'utilisateur immédiatement, sans attendre une réponse du serveur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'un formulaire HTML (balises form, input)",
+        "Savoir déclarer une fonction JavaScript et l'associer à un événement (onclick)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Valider une saisie avec JavaScript avant l'envoi du formulaire",
+      "contenu_markdown": "Valider une saisie côté client suit toujours le même principe en trois étapes : récupérer la valeur du champ à contrôler (avec `document.getElementById(...).value` ou `document.forms[...].elementName.value`), la tester avec une condition adaptée au type de contrainte demandé, puis réagir en cas d'échec en affichant un message (`alert(...)`) et en empêchant la validation du formulaire (en renvoyant `false` depuis la fonction appelée par l'événement).\n\nPour vérifier qu'une chaîne représente bien un **entier**, l'outil le plus fiable est une expression régulière du type `/^[0-9]+$/`, qui vérifie que TOUS les caractères de la chaîne, du premier au dernier (grâce aux ancres `^` et `$`), sont des chiffres. Une simple fonction comme `isNaN()` ne suffit pas : elle accepte à tort des décimales (`3.5`) ou des nombres négatifs (`-2`), qui ne sont pas des entiers positifs.",
+      "formule_principale": "/^[0-9]+$/"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code JavaScript qui contrôle que la valeur saisie dans le champ **Code client** est bien un entier, et affiche le message \"code incorrect\" dans le cas contraire, lors du clic sur le bouton **Modifier**.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Donner un identifiant unique au champ à contrôler",
+          "justification": "getElementById a besoin d'un identifiant pour retrouver précisément l'élément dans la page",
+          "resultat_markdown": "`<input type=\"text\" name=\"code\" id=\"code\" value=\"12\" />`"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la fonction de validation",
+          "justification": "Elle centralise le test et la réaction en cas d'échec",
+          "resultat_markdown": "```javascript\nfunction verifierCode() {\n    var code = document.getElementById(\"code\").value;\n    if (!/^[0-9]+$/.test(code)) {\n        alert(\"code incorrect\");\n        return false;\n    }\n    return true;\n}\n```"
+        },
+        {
+          "numero": 3,
+          "action": "Relier la fonction au clic sur le bouton Modifier",
+          "justification": "L'événement onclick déclenche la fonction, et son résultat (true/false) décide si le formulaire s'envoie",
+          "resultat_markdown": "`<input type=\"submit\" name=\"modif\" value=\"Modifier\" onclick=\"return verifierCode();\" />`"
+        }
+      ],
+      "conclusion_markdown": "Le formulaire ne s'envoie que si `verifierCode()` renvoie `true`, c'est-à-dire uniquement lorsque le champ code ne contient que des chiffres ; dans le cas contraire, le message \"code incorrect\" s'affiche et l'envoi est bloqué."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser uniquement `if (isNaN(code))` pour vérifier qu'une valeur est un entier",
+          "pourquoi_faux": "isNaN() renvoie false (donc « c'est un nombre ») pour des valeurs comme 3.5 ou -2, qui sont des nombres mais pas des entiers positifs au sens attendu par la question.",
+          "correction_markdown": "Utiliser une expression régulière ciblée comme /^[0-9]+$/, ou combiner Number.isInteger(Number(valeur)) avec un test de signe si les entiers négatifs doivent aussi être rejetés."
+        },
+        {
+          "erreur_markdown": "Oublier le mot-clé `return` devant l'appel de la fonction dans l'attribut onclick",
+          "pourquoi_faux": "Sans return, la valeur false renvoyée par la fonction est simplement ignorée par le navigateur, qui envoie le formulaire quoi qu'il arrive.",
+          "correction_markdown": "Toujours écrire onclick=\"return nomDeLaFonction();\" lorsque la fonction doit pouvoir bloquer l'envoi du formulaire."
+        },
+        {
+          "erreur_markdown": "Tester une chaîne vide sans s'en rendre compte",
+          "pourquoi_faux": "Une chaîne vide ne contient aucun caractère : le test /^[0-9]+$/ la rejette déjà correctement grâce au quantificateur + (qui exige au moins un chiffre), mais un test mal écrit avec * au lieu de + accepterait à tort une chaîne vide.",
+          "correction_markdown": "Toujours utiliser + (un ou plusieurs chiffres) et non * (zéro ou plusieurs) pour exiger qu'au moins un caractère soit présent."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la condition JavaScript qui teste si la variable saisie contient uniquement des chiffres, sans écrire la fonction complète.",
+          "solution_markdown": "`/^[0-9]+$/.test(saisie)` renvoie true si saisie ne contient que des chiffres, false sinon. On l'utilise généralement dans un test : `if (!/^[0-9]+$/.test(saisie)) { /* saisie invalide */ }`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Adapter la fonction verifierCode() pour qu'elle affiche le message \"veuillez saisir un nombre\" au lieu de \"code incorrect\", et l'appliquer à un champ nommé quantite au lieu de code.",
+          "solution_markdown": "```javascript\nfunction verifierQuantite() {\n    var quantite = document.getElementById(\"quantite\").value;\n    if (!/^[0-9]+$/.test(quantite)) {\n        alert(\"veuillez saisir un nombre\");\n        return false;\n    }\n    return true;\n}\n```\nIl suffit de renommer la variable, l'identifiant du champ récupéré et le message affiché ; la structure de la fonction reste identique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Modifier la fonction pour qu'elle accepte en plus les entiers négatifs (par exemple -5), tout en continuant à rejeter les décimales et les lettres.",
+          "solution_markdown": "Il faut autoriser un signe moins optionnel en tout début de chaîne, avant la suite de chiffres :\n```javascript\nfunction verifierCode() {\n    var code = document.getElementById(\"code\").value;\n    if (!/^-?[0-9]+$/.test(code)) {\n        alert(\"code incorrect\");\n        return false;\n    }\n    return true;\n}\n```\nLe `-?` signifie « zéro ou un signe moins », placé uniquement au tout début grâce à l'ancre `^` : une chaîne comme `12-3` reste rejetée, puisque le signe n'y est pas en première position."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Valider une saisie en JavaScript suit toujours le même schéma : récupérer la valeur, la tester, réagir en cas d'échec.",
+        "isNaN() teste « est-ce un nombre », pas « est-ce un entier » : une expression régulière comme /^[0-9]+$/ est plus fiable pour un entier positif.",
+        "Le return devant l'appel de la fonction dans onclick est indispensable pour que la fonction puisse réellement bloquer l'envoi du formulaire.",
+        "Ce type de validation client complète, sans jamais la remplacer, une validation côté serveur : un utilisateur qui désactive JavaScript contournerait une validation uniquement côté client.",
+        "Au BAC TI, cette compétence revient systématiquement dès qu'un exercice combine formulaire HTML et contrôle JavaScript sur un bouton."
+      ]
+    }
+  ]
+}

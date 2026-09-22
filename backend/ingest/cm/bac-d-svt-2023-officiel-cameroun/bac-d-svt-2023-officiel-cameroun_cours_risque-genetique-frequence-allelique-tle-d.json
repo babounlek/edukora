@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-risque-genetique-frequence-allelique-tle-d",
+  "meta": {
+    "titre": "Calculer un risque génétique à partir d'une fréquence allélique dans la population",
+    "matiere": "SVT",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Génétique humaine",
+    "duree_estimee_min": 30,
+    "tags": [
+      "risque génétique",
+      "fréquence allélique",
+      "hérédité autosomique récessive",
+      "probabilité en génétique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-SVT-2023-CM-OFFICIEL",
+    "epreuve_titre": "Baccalauréat série D - Épreuve théorique de Sciences de la Vie et de la Terre, Éducation à l'Environnement, Hygiène et Biotechnologie (SVTEEHB) - Session 2023 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-d-svt-2023-officiel-cameroun-ex4-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une femme, porteuse certaine d'un allèle responsable d'une maladie récessive, demande à son médecin quel risque court son futur enfant. Le médecin ne peut pas répondre par un simple oui ou non : il doit combiner ce qu'il sait avec certitude (le génotype de la mère) et ce qu'il ignore (le génotype du père, un inconnu de la population générale), à l'aide d'une donnée statistique, la fréquence des porteurs dans cette population. C'est cette combinaison de certitude et de probabilité qui permet de chiffrer un risque génétique réel."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de génotype homozygote et hétérozygote",
+        "Échiquier de croisement (carré de Punnett) pour un croisement Aa x Aa",
+        "Notion de probabilité d'événements indépendants (multiplication des probabilités)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Combiner fréquence populationnelle et probabilité de croisement",
+      "contenu_markdown": "Lorsqu'un parent a un génotype hétérozygote connu avec certitude (Aa) pour une affection autosomique récessive, et que l'autre parent est un individu quelconque tiré de la population générale, le risque global que leur enfant soit atteint (aa) se calcule en deux temps. D'abord, on détermine la probabilité que ce second parent soit lui-même hétérozygote (Aa), égale à la fréquence des porteurs dans la population générale. Ensuite, on détermine la probabilité que l'enfant soit atteint sachant que les deux parents sont hétérozygotes, obtenue par l'échiquier de croisement Aa x Aa (1/4 AA, 2/4 Aa, 1/4 aa), soit 1/4. Le risque global s'obtient en multipliant ces deux probabilités, car il s'agit de deux événements indépendants qui doivent tous deux se réaliser pour que l'enfant soit atteint : le parent inconnu doit être porteur, ET le croisement doit produire un enfant homozygote récessif.",
+      "formule_principale": "P(\\text{enfant atteint}) = P(\\text{2e parent Aa}) \\times \\dfrac{1}{4}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une population générale, on estime que 9 % des individus sont hétérozygotes pour une affection autosomique récessive donnée. Un homme hétérozygote certain (Aa) pour cette affection a un enfant avec une femme quelconque de cette population. Calculer le risque que cet enfant soit atteint.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le génotype du parent connu",
+          "justification": "L'homme est hétérozygote certain, de génotype Aa.",
+          "resultat_markdown": "P(homme Aa) = 1 (certitude)."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer la probabilité que la mère soit hétérozygote",
+          "justification": "La mère est un individu quelconque de la population générale, où 9 % des individus sont hétérozygotes.",
+          "resultat_markdown": "P(mère Aa) = 9% = 0,09"
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer la probabilité que l'enfant soit atteint sachant que les deux parents sont Aa",
+          "justification": "Le croisement Aa x Aa donne, par l'échiquier, 1/4 d'enfants aa.",
+          "resultat_markdown": "P(enfant aa | mère Aa) = 1/4 = 0,25"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le risque global",
+          "justification": "Le risque global est le produit de la probabilité que la mère soit porteuse par la probabilité de croisement, ces deux événements étant indépendants.",
+          "resultat_markdown": "$$P(\\text{enfant atteint}) = 0,09 \\times 0,25 = 0,0225 = 2,25\\%$$"
+        }
+      ],
+      "conclusion_markdown": "Le risque que cet enfant soit atteint de l'affection est de 2,25 %, un risque nettement plus faible que la seule probabilité de croisement (25 %), parce qu'il faut aussi que la mère, tirée au hasard dans la population générale, se révèle être porteuse."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Annoncer directement le risque de croisement (1/4 ou 25 %) comme risque global pour l'enfant, sans tenir compte de la fréquence des porteurs dans la population.",
+          "pourquoi_faux": "Le risque de 1/4 ne s'applique que si les DEUX parents sont hétérozygotes avec certitude. Quand l'un des deux parents est un individu quelconque de la population générale, il faut d'abord évaluer la probabilité qu'il soit lui-même porteur, avant d'appliquer le risque de croisement.",
+          "correction_markdown": "Repère toujours si le génotype des DEUX parents est connu avec certitude ou si l'un d'eux est un individu quelconque de la population : cela change complètement le calcul."
+        },
+        {
+          "erreur_markdown": "Additionner la fréquence des porteurs et la probabilité de croisement au lieu de les multiplier.",
+          "pourquoi_faux": "Les deux événements (le second parent est porteur ; le croisement produit un enfant homozygote récessif) doivent se réaliser SIMULTANÉMENT pour que l'enfant soit atteint : en probabilité, la réalisation conjointe de deux événements indépendants se traduit par une multiplication de leurs probabilités, jamais par une addition.",
+          "correction_markdown": "Retiens le mot-clé : deux conditions qui doivent être vraies EN MÊME TEMPS se multiplient, elles ne s'additionnent pas."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une population générale, 16 % des individus sont porteurs hétérozygotes d'une affection autosomique récessive. Un homme hétérozygote certain a un enfant avec une femme quelconque de cette population. Calculer le risque que l'enfant soit atteint.",
+          "solution_markdown": "P(femme Aa) = 16% = 0,16. P(enfant aa | femme Aa) = 1/4 = 0,25. P(enfant atteint) = 0,16 x 0,25 = 0,04 = 4%. Le risque que l'enfant soit atteint est donc de 4 %."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans une population générale, on dénombre 25 % d'individus hétérozygotes pour une affection autosomique récessive R. Une femme, dont on sait avec certitude qu'elle est hétérozygote, épouse un homme pris au hasard dans cette population. Calculer le risque que leur premier enfant soit atteint de l'affection R, puis expliquer pourquoi ce risque ne s'applique pas seulement au premier enfant mais identiquement à chaque grossesse ultérieure.",
+          "solution_markdown": "P(mari Aa) = 25% = 1/4. P(enfant aa | mari Aa) = 1/4. P(enfant atteint) = 1/4 x 1/4 = 1/16 = 6,25%. Le risque que le premier enfant soit atteint est donc de 6,25 %. Ce risque s'applique identiquement à chaque grossesse ultérieure, indépendamment du résultat des grossesses précédentes : le génotype du mari, une fois fixé (qu'il soit ou non porteur), ne change pas d'une grossesse à l'autre, et chaque fécondation correspond à un tirage indépendant des allèles parentaux selon les lois de la méiose. La naissance d'un premier enfant sain ou atteint ne modifie donc en rien la probabilité concernant les grossesses suivantes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans une population où l'on dénombre 20 % d'individus hétérozygotes pour une affection autosomique récessive, un couple a déjà eu un premier enfant atteint de cette affection. Recalculer, en le justifiant, le risque que leur second enfant soit également atteint, en expliquant pourquoi ce nouveau calcul diffère de celui qui utiliserait directement les 20 % de la population générale pour l'un des deux parents.",
+          "solution_markdown": "La naissance d'un premier enfant atteint (aa) apporte une information certaine et nouvelle : elle prouve que les DEUX parents sont nécessairement hétérozygotes (Aa), puisque chacun a dû transmettre un allèle a à cet enfant atteint. Il ne s'agit donc plus d'estimer la probabilité que l'un des parents soit porteur à partir de la fréquence de 20 % dans la population générale : cette fréquence n'est plus pertinente, puisque le génotype des deux parents est désormais connu avec certitude grâce à l'enfant déjà né. Le risque pour le second enfant se calcule alors directement par l'échiquier de croisement Aa x Aa, sans aucune pondération supplémentaire : P(second enfant atteint) = 1/4 = 25 %. Ce risque est donc bien plus élevé que celui qui aurait résulté d'un calcul utilisant à tort la fréquence de 20 % de la population générale pour l'un des deux parents."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand un seul parent a un génotype connu avec certitude, le risque pour l'enfant se calcule en multipliant la fréquence des porteurs dans la population générale (pour l'autre parent) par la probabilité de croisement (1/4 pour deux hétérozygotes).",
+        "Ces deux probabilités se multiplient parce que les deux conditions doivent être vraies simultanément, jamais elles ne s'additionnent.",
+        "La naissance d'un enfant déjà atteint transforme une probabilité en certitude sur le génotype des deux parents : le calcul du risque pour les grossesses suivantes change alors complètement (on utilise directement 1/4, sans fréquence populationnelle).",
+        "Le risque calculé avec une fréquence populationnelle est presque toujours nettement inférieur au risque de croisement brut (1/4) : ne les confonds jamais.",
+        "Au BAC, ce type de calcul de risque est une question quasi systématique des exercices de génétique humaine : identifie d'abord ce qui est connu avec certitude et ce qui reste probabiliste avant de poser le calcul."
+      ]
+    }
+  ]
+}

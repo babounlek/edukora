@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-topologie-logique-et-architecture-reseau-tle-ti",
+  "meta": {
+    "titre": "Topologie logique et architecture d'un réseau",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques - organisation des réseaux",
+    "duree_estimee_min": 25,
+    "tags": [
+      "topologie logique",
+      "topologie physique",
+      "Ethernet",
+      "architecture client-serveur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q4.4-1",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q4.5-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux questions reviennent presque toujours ensemble à propos d'un réseau : comment les données y circulent-elles (sa topologie), et qui y rend service à qui (son architecture) ? Ce sont deux angles d'analyse différents et complémentaires du même réseau, souvent confondus par les élèves alors qu'ils répondent chacun à une question précise et distincte."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une carte réseau et un câblage réseau.",
+        "Savoir qu'un réseau relie plusieurs machines entre elles."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux angles d'analyse distincts",
+      "contenu_markdown": "La topologie logique décrit la façon dont les données circulent réellement sur un réseau, indépendamment de la disposition physique des câbles (la topologie physique). Le réseau Ethernet, quel que soit son câblage, fonctionne toujours en diffusion (topologie logique en bus) : chaque trame émise est reçue par toutes les machines du segment, qui ne conservent que celles qui leur sont destinées - même lorsque le câblage physique dessine une étoile autour d'un commutateur. L'architecture réseau, de son côté, se détermine en observant si les machines partagent leurs ressources de façon symétrique (architecture poste à poste) ou si des machines spécialisées (serveurs) fournissent un service à des machines clientes qui en dépendent (architecture client-serveur) - la présence d'un serveur DHCP, d'un serveur de fichiers ou d'une passerelle dédiée est la signature caractéristique de cette seconde architecture.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une machine utilise une carte « Broadcom NetXtreme Gigabit Ethernet » et reçoit son adresse IP d'un serveur DHCP à l'adresse 172.16.0.254, qui joue également le rôle de passerelle. Déterminer la topologie logique et l'architecture de ce réseau.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la topologie logique",
+          "justification": "Le mot « Ethernet » dans la description de la carte réseau suffit à identifier la norme utilisée.",
+          "resultat_markdown": "Topologie logique en bus (diffusion), caractéristique du protocole Ethernet."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les services centralisés du réseau",
+          "justification": "Un serveur DHCP et une passerelle sont des services rendus par une machine à d'autres.",
+          "resultat_markdown": "Un serveur DHCP (172.16.0.254) distribue les adresses IP ; la même machine sert de passerelle vers l'extérieur."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur l'architecture",
+          "justification": "La présence de services centralisés rendus par une machine spécialisée à des machines clientes est la signature du client-serveur.",
+          "resultat_markdown": "Architecture client-serveur."
+        }
+      ],
+      "conclusion_markdown": "Ce réseau a donc une topologie logique en bus (héritée d'Ethernet) et une architecture client-serveur (serveur DHCP et passerelle centralisés) : les deux notions se répondent, mais décrivent deux aspects différents du même réseau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « topologie en étoile » à une question sur la topologie logique, en observant que le câblage physique du réseau part d'un switch central.",
+          "pourquoi_faux": "L'étoile décrite est la topologie physique (le câblage) ; la topologie logique d'un réseau Ethernet reste en bus quel que soit son câblage physique, car les données y circulent toujours par diffusion.",
+          "correction_markdown": "Toujours associer le mot « Ethernet » à une topologie logique en bus, indépendamment de la forme du câblage physique observée ou décrite."
+        },
+        {
+          "erreur_markdown": "Répondre « architecture poste à poste » simplement parce qu'il n'y a que deux ou trois machines visibles dans l'énoncé.",
+          "pourquoi_faux": "Le nombre de machines ne détermine pas l'architecture : même un réseau de deux machines peut être client-serveur si l'une fournit un service à l'autre (comme un serveur DHCP).",
+          "correction_markdown": "Chercher systématiquement un service centralisé (DHCP, fichiers, impression, passerelle) avant de conclure à une architecture poste à poste."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un petit réseau domestique relie trois ordinateurs qui partagent directement leurs fichiers entre eux, sans aucun serveur dédié. Quelle est l'architecture de ce réseau ?",
+          "solution_markdown": "Architecture poste à poste (peer-to-peer) : chaque machine agit à la fois comme cliente et comme serveuse des autres, sans service centralisé dédié."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un réseau d'entreprise utilise des câbles Ethernet reliés à un commutateur central, avec un serveur de fichiers dédié auquel tous les postes se connectent. Déterminer la topologie logique et l'architecture de ce réseau, en justifiant chaque réponse.",
+          "solution_markdown": "Topologie logique : en bus, car le réseau utilise Ethernet (le câblage physique en étoile autour du commutateur ne change rien à la topologie logique).\n\nArchitecture : client-serveur, car un serveur de fichiers dédié fournit un service centralisé (le stockage et l'accès aux fichiers) à l'ensemble des postes clients du réseau."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un cybercafé dispose de 15 postes clients, tous connectés à un unique serveur qui gère à la fois l'attribution des adresses IP (DHCP), le partage de la connexion Internet (passerelle) et le contrôle du temps de connexion facturé à chaque client. Analyser ce réseau selon les deux angles vus dans ce cours (topologie logique et architecture), en expliquant en quoi ces deux analyses sont complémentaires plutôt que redondantes.",
+          "solution_markdown": "Topologie logique : si le réseau utilise Ethernet (câblage RJ45 vers un switch, cas le plus courant dans ce type d'installation), la topologie logique reste en bus, par diffusion.\n\nArchitecture : clairement client-serveur, et même plus fortement marquée que dans les exemples précédents, puisque le serveur central cumule trois rôles de service (DHCP, passerelle, contrôle de facturation) que les postes clients ne peuvent assurer eux-mêmes.\n\nCes deux analyses sont complémentaires, pas redondantes, car elles répondent à deux questions différentes : la topologie logique décrit COMMENT les données circulent physiquement/logiquement sur le câblage (diffusion Ethernet), tandis que l'architecture décrit QUI rend service à qui dans l'organisation fonctionnelle du réseau (un serveur central au service de 15 clients). Un même réseau garde toujours ces deux caractéristiques simultanément, l'une ne se déduisant pas de l'autre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La topologie logique décrit comment les données circulent réellement ; la topologie physique décrit seulement la forme du câblage.",
+        "Un réseau Ethernet a toujours une topologie logique en bus (diffusion), quel que soit son câblage physique.",
+        "L'architecture réseau se détermine en cherchant un service centralisé rendu par une machine à d'autres (client-serveur), ou son absence (poste à poste).",
+        "Le nombre de machines ne détermine jamais l'architecture : seule la présence ou l'absence d'un service centralisé compte.",
+        "Ces deux notions, systématiquement demandées ensemble au BAC TI à partir d'une capture `ipconfig`, répondent à deux questions distinctes sur le même réseau : jamais l'une ne remplace l'autre."
+      ]
+    }
+  ]
+}

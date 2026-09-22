@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-d-insertion-insert-into-tle-tronc-commun",
+  "meta": {
+    "titre": "Écrire une requête SQL d'insertion (INSERT INTO)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Langage de Manipulation de Données (LMD) - insertion",
+    "duree_estimee_min": 15,
+    "tags": [
+      "SQL",
+      "INSERT INTO"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qC5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ajouter un nouveau client, un nouveau produit ou une nouvelle commande dans une base de données est l'opération la plus fondamentale du langage SQL. INSERT INTO le permet, à condition de respecter l'ordre exact des colonnes de la table."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire le schéma d'une table (nom des colonnes, ordre des colonnes)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "INSERT INTO ajoute une ligne complète, colonne par colonne",
+      "contenu_markdown": "```sql\nINSERT INTO NomTable (colonne1, colonne2, colonne3)\nVALUES (valeur1, valeur2, valeur3);\n```\n\nINSERT INTO ajoute une nouvelle ligne dans une table en donnant une valeur pour chaque colonne listée, dans le même ordre que cette liste. Lister explicitement les noms de colonnes (plutôt que de s'appuyer sur l'ordre par défaut de la table) rend la requête plus sûre : elle reste valide même si l'ordre des colonnes de la table venait à changer."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Insérer un nouveau client ('02T32', 'Bissa', 'Edmond', 'rue 24 Douala') dans la table CLIENT(IdCli, NomCli, PrenomCli, Adresse).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les colonnes de la table dans l'ordre du schéma",
+          "justification": "Le schéma logique donne l'ordre exact des colonnes : IdCli, NomCli, PrenomCli, Adresse.",
+          "resultat_markdown": "INSERT INTO CLIENT (IdCli, NomCli, PrenomCli, Adresse)"
+        },
+        {
+          "numero": 2,
+          "action": "Associer chaque valeur à sa colonne, dans le même ordre",
+          "justification": "'02T32' correspond à IdCli, 'Bissa' à NomCli, 'Edmond' à PrenomCli, 'rue 24 Douala' à Adresse.",
+          "resultat_markdown": "VALUES ('02T32', 'Bissa', 'Edmond', 'rue 24 Douala');"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier la correspondance entre le nombre de colonnes et le nombre de valeurs",
+          "justification": "INSERT INTO échoue si le nombre de valeurs fournies ne correspond pas exactement au nombre de colonnes listées.",
+          "resultat_markdown": "4 colonnes listées (IdCli, NomCli, PrenomCli, Adresse) pour 4 valeurs fournies : la requête est cohérente."
+        }
+      ],
+      "conclusion_markdown": "On obtient une requête d'insertion complète et sûre, qui reste valide même si l'ordre des colonnes de la table changeait par la suite."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire INSERT INTO CLIENT VALUES ('02T32', 'Bissa', 'Edmond', 'rue 24 Douala'); sans lister les colonnes",
+          "pourquoi_faux": "Cette syntaxe fonctionne uniquement si l'ordre des valeurs correspond EXACTEMENT à l'ordre des colonnes tel que défini dans la table au moment de l'exécution ; si la structure de la table change (ajout d'une colonne, réorganisation), la requête insère les valeurs dans les mauvaises colonnes sans provoquer d'erreur visible.",
+          "correction_markdown": "Toujours lister explicitement les noms de colonnes après le nom de la table, même quand cela semble redondant."
+        },
+        {
+          "erreur_markdown": "Oublier les guillemets simples autour d'une valeur textuelle",
+          "pourquoi_faux": "Une valeur de type texte (chaîne de caractères) doit toujours être entourée de guillemets simples en SQL ; sans eux, le moteur SQL tente d'interpréter la valeur comme un nom de colonne ou une constante numérique, ce qui provoque une erreur de syntaxe.",
+          "correction_markdown": "Entourer systématiquement de guillemets simples toute valeur de type texte ou date, jamais les valeurs numériques."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête qui insère un nouveau produit dans PRODUIT(Ref, NomProd, Prix) : ('P010', 'Savon', 500).",
+          "solution_markdown": "INSERT INTO PRODUIT (Ref, NomProd, Prix)\nVALUES ('P010', 'Savon', 500);"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête qui insère une nouvelle commande dans COMMANDE(NumCom, DateCom, #IdCli) : numéro 'C100', date '2025-03-15', pour le client '02T32'.",
+          "solution_markdown": "INSERT INTO COMMANDE (NumCom, DateCom, IdCli)\nVALUES ('C100', '2025-03-15', '02T32');\n\nLa date est également entourée de guillemets simples, comme toute valeur qui n'est pas un nombre pur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut insérer une ligne dans DETAILCOMMAND(NumCom, Ref, Quantite) pour la commande 'C100', le produit 'P010', quantité 3 - mais le client '02T32' et la commande 'C100' n'existent pas encore dans leurs tables respectives. Que se passe-t-il si on tente cette insertion directement, et dans quel ordre faut-il réellement procéder ?",
+          "solution_markdown": "Si CLIENT et COMMANDE possèdent des contraintes FOREIGN KEY correctement déclarées (voir le cours sur CREATE TABLE), la tentative d'insertion dans DETAILCOMMAND échoue avec une erreur de violation de contrainte de clé étrangère : on ne peut pas référencer un NumCom qui n'existe pas encore dans la table COMMANDE. L'ordre correct est : d'abord insérer le client dans CLIENT (si ce n'est pas déjà fait), puis insérer la commande dans COMMANDE (qui référence ce client), et enfin seulement insérer la ligne dans DETAILCOMMAND (qui référence cette commande et ce produit). Il faut toujours insérer d'abord dans la table « du côté 1 » d'une relation avant d'insérer dans la table qui la référence comme clé étrangère."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "INSERT INTO liste les colonnes puis leurs valeurs, dans le même ordre.",
+        "Toujours lister explicitement les colonnes, pour rester valide même si la structure de la table change.",
+        "Toute valeur texte ou date s'entoure de guillemets simples, jamais les valeurs numériques.",
+        "Respecter l'ordre des insertions dans les tables lorsque des clés étrangères sont en jeu : d'abord la table référencée, ensuite la table qui la référence."
+      ]
+    }
+  ]
+}

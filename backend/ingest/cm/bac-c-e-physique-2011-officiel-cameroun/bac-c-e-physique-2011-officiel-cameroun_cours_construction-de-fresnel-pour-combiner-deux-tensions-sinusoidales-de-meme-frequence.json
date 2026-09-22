@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-construction-de-fresnel-tle-c-e",
+  "meta": {
+    "titre": "Construction de Fresnel pour combiner deux tensions sinusoidales de meme frequence",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Electricite - regime sinusoidal force",
+    "duree_estimee_min": 25,
+    "tags": [
+      "construction de Fresnel",
+      "vecteur tournant",
+      "addition de tensions sinusoidales"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2011 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2011-officiel-cameroun-ex2-q5c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Additionner deux tensions sinusoidales de meme frequence mais dephasees l'une par rapport a l'autre est fastidieux si l'on s'en tient au calcul trigonometrique direct. La construction de Fresnel transforme ce probleme en un simple exercice de geometrie : chaque tension devient un vecteur, et leur somme devient une addition vectorielle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Representation d'une grandeur sinusoidale par un vecteur de Fresnel (norme = amplitude, angle = phase)",
+        "Addition vectorielle et theoreme d'Al-Kashi ou projection sur des axes",
+        "Loi des mailles en regime sinusoidal force"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Principe de la construction de Fresnel",
+      "contenu_markdown": "A chaque tension sinusoidale $u(t)=U_{max}\\cos(\\omega t+\\varphi)$, de meme pulsation $\\omega$ que les autres tensions du circuit, on associe un vecteur de Fresnel de norme $U_{max}$ et d'angle $\\varphi$ par rapport a un axe de reference. La loi des mailles ($u_{tot}=u_1+u_2$, par exemple) se traduit alors par une somme vectorielle des vecteurs de Fresnel correspondants : l'amplitude et la phase de la tension resultante se lisent (ou se calculent) directement sur le vecteur somme.",
+      "formule_principale": "\\vec U_{tot} = \\vec U_1 + \\vec U_2 \\quad \\Longrightarrow \\quad U_{tot,max}, \\varphi_{tot} \\text{ lus geometriquement}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que $u_{PM}(t)=6\\cos(100\\pi t)$ et $u_{QM}(t)=9\\cos(100\\pi t+\\pi/2)$, avec $u_{PQ}=u_{PM}-u_{QM}$, determiner par construction de Fresnel l'amplitude et la phase de $u_{PQ}(t)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Associer un vecteur de Fresnel a chaque tension",
+          "justification": "Meme pulsation pour les deux tensions, on peut les representer sur le meme diagramme",
+          "resultat_markdown": "$\\vec U_{PM}$ : norme 6, angle $0$ (axe de reference). $\\vec U_{QM}$ : norme 9, angle $\\pi/2$ (perpendiculaire au premier)."
+        },
+        {
+          "numero": 2,
+          "action": "Construire le vecteur difference U_PM - U_QM",
+          "justification": "u_PQ = u_PM - u_QM, donc le vecteur de Fresnel associe est la difference vectorielle",
+          "resultat_markdown": "$\\vec U_{PQ} = \\vec U_{PM} - \\vec U_{QM}$ : les deux vecteurs etant perpendiculaires, on utilise Pythagore pour la norme."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la norme et l'angle",
+          "justification": "Pythagore pour la norme, arctan pour l'angle (vecteurs perpendiculaires)",
+          "resultat_markdown": "$U_{PQmax} = \\sqrt{6^2+9^2} = \\sqrt{117} \\approx 10{,}8\\ \\text{V}$ ; $\\varphi_{PQ} = -\\arctan(9/6) \\approx -0{,}983\\ \\text{rad}$ (le signe negatif vient du sens de $-\\vec U_{QM}$)"
+        }
+      ],
+      "conclusion_markdown": "On obtient $u_{PQ}(t)\\approx10{,}8\\cos(100\\pi t-0{,}983)$ - un resultat qu'il serait beaucoup plus laborieux d'obtenir par developpement trigonometrique direct de $6\\cos(100\\pi t)-9\\cos(100\\pi t+\\pi/2)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner directement les amplitudes (6+9=15 V) sans tenir compte du dephasage",
+          "pourquoi_faux": "Deux tensions dephasees ne s'additionnent jamais arithmetiquement sur leurs amplitudes seules ; seule une addition vectorielle (tenant compte de l'angle entre elles) donne le bon resultat, sauf si elles sont exactement en phase.",
+          "correction_markdown": "Toujours construire le diagramme de Fresnel (ou utiliser Al-Kashi/Pythagore selon l'angle) plutot que d'additionner les amplitudes brutes."
+        },
+        {
+          "erreur_markdown": "Oublier le signe moins dans u_PQ = u_PM - u_QM et construire directement la somme des deux vecteurs",
+          "pourquoi_faux": "Une soustraction de tensions correspond a l'addition du vecteur oppose (norme identique, angle $+\\pi$), pas a une simple addition des deux vecteurs originaux.",
+          "correction_markdown": "Bien relire la relation entre tensions imposee par la loi des mailles avant de construire le diagramme (addition ou soustraction)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A quelle grandeur (norme, angle) associe-t-on, dans un diagramme de Fresnel, l'amplitude et la phase d'une tension sinusoidale ?",
+          "solution_markdown": "L'amplitude $U_{max}$ devient la norme du vecteur de Fresnel, et la phase $\\varphi$ devient son angle par rapport a l'axe de reference."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux tensions de meme pulsation, d'amplitudes 3 V et 4 V, sont en quadrature de phase (dephasage pi/2). Calculer l'amplitude de leur somme par construction de Fresnel.",
+          "solution_markdown": "Les deux vecteurs de Fresnel etant perpendiculaires, Pythagore donne $U_{tot} = \\sqrt{3^2+4^2} = \\sqrt{25} = 5\\ \\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux tensions de meme amplitude 5 V sont en opposition de phase (dephasage pi). Que vaut l'amplitude de leur somme ? Justifier par construction de Fresnel.",
+          "solution_markdown": "En opposition de phase, les deux vecteurs de Fresnel sont colineaires et de sens opposes (angle $\\pi$ entre eux) : leur somme vectorielle est nulle. L'amplitude de la tension resultante est $U_{tot}=0\\ \\text{V}$ : les deux tensions s'annulent exactement a chaque instant."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La construction de Fresnel associe a chaque tension sinusoidale un vecteur (norme = amplitude, angle = phase), a condition que toutes les tensions partagent la meme pulsation.",
+        "Une combinaison de tensions (loi des mailles) se traduit par une combinaison vectorielle identique des vecteurs de Fresnel associes.",
+        "L'amplitude et la phase resultantes se calculent par Pythagore/Al-Kashi et par des considerations d'angle, jamais par simple addition ou soustraction des amplitudes.",
+        "Cas particuliers a reconnaitre immediatement : vecteurs perpendiculaires (quadrature, Pythagore direct), vecteurs opposes (opposition de phase, somme nulle)."
+      ]
+    }
+  ]
+}

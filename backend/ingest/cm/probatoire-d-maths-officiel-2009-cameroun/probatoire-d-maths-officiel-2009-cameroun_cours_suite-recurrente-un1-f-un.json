@@ -1,0 +1,88 @@
+{
+  "cours_id": "cours-probatoire-d-maths-officiel-2009-cameroun-suite-recurrente-un1-f-un",
+  "meta": {
+    "titre": "Suites récurrentes Un+1=f(Un) : calcul et lecture graphique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Suites récurrentes, point fixe, construction en escalier/spirale",
+    "duree_estimee_min": 20,
+    "tags": [
+      "suite récurrente",
+      "point fixe",
+      "construction graphique",
+      "conjecture de convergence"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "21",
+      "savoir_numero": "VIII"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2009-cameroun",
+    "epreuve_titre": "Probatoire D Mathématiques officiel 2009 (Cameroun)",
+    "exercice_numero": "Problème",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2009-cameroun-probleme-qC2bc-1",
+    "rappels_lies": [
+      "rdm-probatoire-d-maths-officiel-2009-cameroun-probleme-qC1-1",
+      "rdm-probatoire-d-maths-officiel-2009-cameroun-probleme-qC2a-1",
+      "rdm-probatoire-d-maths-officiel-2009-cameroun-probleme-qC2bc-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite définie par $U_{n+1}=f(U_n)$ ne se calcule pas comme une suite arithmétique ou géométrique classique : chaque terme dépend de la fonction $f$ appliquée au précédent. Comment calculer ses premiers termes sans erreur, et surtout, comment deviner son comportement à long terme rien qu'en regardant un graphique ?"
+    },
+    {
+      "type": "prerequis",
+      "contenu_markdown": "Notion de fonction et d'image d'un réel par une fonction, lecture d'une courbe représentative, droite d'équation $y=x$, notion de suite convergente."
+    },
+    {
+      "type": "regle",
+      "formule_principale": "Pour une suite définie par $U_0$ donné et $U_{n+1}=f(U_n)$, chaque terme s'obtient en appliquant $f$ au terme précédent : $U_1=f(U_0)$, $U_2=f(U_1)$, $U_3=f(U_2)$, etc. Si, pour un certain réel $\\ell$, $f(\\ell)=\\ell$ (on dit que $\\ell$ est un point fixe de $f$), et si $U_n=\\ell$ pour un rang $n$, alors la suite reste constante égale à $\\ell$ à partir de ce rang.",
+      "variantes": [
+        "Construction graphique (méthode de l'escalier ou de la spirale) : à partir de $U_n$ en abscisse, on monte verticalement jusqu'à la courbe $(C_f)$ pour lire $U_{n+1}=f(U_n)$ en ordonnée, puis on se déplace horizontalement jusqu'à la droite $y=x$ pour reporter cette valeur en abscisse ; on répète l'opération pour chaque terme suivant.",
+        "Les points fixes de $f$ (solutions de $f(x)=x$) sont exactement les abscisses des points d'intersection entre $(C_f)$ et la droite $y=x$ : ce sont les limites potentielles de la suite si elle converge."
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "etapes": [
+        "On étudie $U_{n+1}=f(U_n)$ avec $f(x)=\\dfrac{x^2+x+2}{x+2}$, dont on a vérifié que $f(2)=2$ : $2$ est donc un point fixe de $f$.",
+        "Cas $U_0=2$ : puisque $U_0$ est déjà le point fixe, $U_1=f(2)=2$, $U_2=f(2)=2$, et ainsi de suite : la suite est constante, égale à $2$.",
+        "Cas $U_0=1$ : $U_1=f(1)=\\dfrac{1+1+2}{1+2}=\\dfrac{4}{3}\\approx1{,}33$.",
+        "$U_2=f\\left(\\dfrac{4}{3}\\right)=\\dfrac{23}{15}\\approx1{,}53$, puis $U_3=f\\left(\\dfrac{23}{15}\\right)=\\dfrac{1324}{795}\\approx1{,}67$ : chaque terme se calcule en réinjectant le précédent dans $f$.",
+        "On observe une suite strictement croissante ($1<1{,}33<1{,}53<1{,}67<\\ldots$) qui semble se rapprocher de plus en plus du point fixe $2$ : graphiquement, la construction en escalier entre $(C_f)$ et la droite $y=x$ se resserre autour du point d'intersection $(2;2)$, ce qui permet de conjecturer que $(U_n)$ converge vers $2$."
+      ]
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Confondre $U_{n+1}=f(U_n)$ (on applique $f$ à la valeur du terme précédent) avec une simple translation d'indice : il faut recalculer entièrement l'image par $f$, pas seulement décaler une formule explicite.",
+        "Oublier de vérifier si la valeur de départ $U_0$ est déjà un point fixe de $f$ : dans ce cas, la suite est immédiatement constante, et il est inutile (et source d'erreur) de continuer à calculer des termes qui resteront tous identiques.",
+        "Sur la construction graphique, oublier d'utiliser la droite $y=x$ pour reporter chaque ordonnée en abscisse avant de remonter à la courbe : sans cette étape, on ne peut pas enchaîner le calcul du terme suivant graphiquement."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Soit $f(x)=\\sqrt{x+2}$ et $(U_n)$ définie par $U_0=0$, $U_{n+1}=f(U_n)$. Calculer $U_1$, $U_2$, $U_3$ (valeurs approchées), puis vérifier que $2$ est un point fixe de $f$ et conjecturer la limite de $(U_n)$.",
+        "Sur un graphique donné de la fonction $f$ du cours et de la droite $y=x$, construire par la méthode de l'escalier les quatre premiers termes d'une suite $(U_n)$ de premier terme $U_0=1$, et lire graphiquement leur limite apparente."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une suite $U_{n+1}=f(U_n)$ se calcule terme à terme en appliquant systématiquement $f$ au résultat précédent.",
+        "Les points fixes de $f$ (où $f(x)=x$) sont les limites potentielles de la suite et se lisent comme les intersections de $(C_f)$ avec la droite $y=x$.",
+        "La construction graphique en escalier (courbe puis droite $y=x$, en alternance) permet de visualiser et de conjecturer le comportement de convergence de la suite sans calcul supplémentaire."
+      ]
+    }
+  ]
+}

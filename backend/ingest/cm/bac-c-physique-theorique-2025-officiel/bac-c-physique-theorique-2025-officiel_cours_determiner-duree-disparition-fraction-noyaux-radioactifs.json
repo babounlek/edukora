@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-determiner-duree-disparition-fraction-noyaux-radioactifs-terminale-c",
+  "meta": {
+    "titre": "Déterminer la durée nécessaire à la disparition d'une fraction donnée de noyaux radioactifs",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Radioactivité - décroissance radioactive",
+    "duree_estimee_min": 20,
+    "tags": ["décroissance radioactive", "période radioactive", "constante radioactive", "logarithme népérien"],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat C - Physique Théorique (2025, Cameroun, officiel)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-theorique-2025-officiel-ex3-q2.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un échantillon radioactif ne disparaît jamais complètement en un temps fini : sa quantité décroît exponentiellement, se rapprochant de zéro sans jamais l'atteindre exactement. Pourtant, on peut très précisément calculer combien de temps il faut attendre pour qu'une fraction donnée - 50 %, 90 %, ou 99 % - des noyaux initiaux ait disparu. Un simple logarithme suffit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi de décroissance radioactive N(t)=N0·e^(-λt).",
+        "Savoir manipuler le logarithme népérien (propriétés de ln, résolution d'équations exponentielles)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Isoler le temps dans la loi de décroissance",
+      "contenu_markdown": "La loi de décroissance radioactive s'écrit $N(t)=N_0e^{-\\lambda t}$, avec $\\lambda=\\dfrac{\\ln2}{T}$ la constante radioactive et $T$ la période radioactive. Si une fraction $x$ des noyaux initiaux a disparu à l'instant $t$, il reste une fraction $(1-x)$ :\n\n$$\\frac{N(t)}{N_0} = 1-x = e^{-\\lambda t}$$\n\nEn passant au logarithme népérien des deux membres, puis en isolant $t$ :\n\n$$t = \\frac{-\\ln(1-x)}{\\lambda} = \\frac{-\\ln(1-x)}{\\ln2}\\times T$$",
+      "formule_principale": "t = \\dfrac{-\\ln(1-x)}{\\ln2}\\times T",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le césium ¹³⁴₅₅Cs a une période radioactive T=2 ans. Déterminer le temps au bout duquel 99% des noyaux initiaux auront disparu.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire « 99% ont disparu » en fraction restante",
+          "justification": "Si 99% des noyaux ont disparu, il en reste 1%, soit une fraction 0,01.",
+          "resultat_markdown": "$N(t)/N_0 = 0{,}01$"
+        },
+        {
+          "numero": 2,
+          "action": "Passer au logarithme népérien",
+          "justification": "On isole t à partir de l'équation N(t)/N0=e^(-λt).",
+          "resultat_markdown": "$\\ln(0{,}01)=-\\lambda t \\implies t=\\dfrac{\\ln(100)}{\\lambda}$"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer λ en fonction de T et calculer",
+          "justification": "λ=ln2/T, donc t=(ln100/ln2)×T.",
+          "resultat_markdown": "$t = \\dfrac{4{,}605}{0{,}693}\\times2 \\approx 6{,}644\\times2 \\approx 13{,}3$ ans."
+        }
+      ],
+      "conclusion_markdown": "Il faut attendre environ 13,3 ans - soit plus de 6 périodes radioactives - pour que 99% des noyaux de césium 134 initialement présents aient disparu."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre « 99% ont disparu » avec « il reste 99% » et poser N(t)/N0=0,99.",
+          "pourquoi_faux": "Ces deux situations sont physiquement très différentes : il ne reste que 1% des noyaux si 99% ont disparu, ce qui correspond à un temps BEAUCOUP plus long qu'une fraction restante de 99% (qui correspondrait, elle, à un temps très court, bien inférieur à une période).",
+          "correction_markdown": "Traduis systématiquement « x% ont disparu » par une fraction restante de (100-x)% avant de poser l'équation, en particulier lorsque x est proche de 100."
+        },
+        {
+          "erreur_markdown": "Oublier le signe moins en passant au logarithme, ou l'appliquer de façon incohérente.",
+          "pourquoi_faux": "ln(0,01) est un nombre NÉGATIF (puisque 0,01<1) ; sans gérer correctement ce signe négatif, associé au signe moins de -λt, on peut obtenir un temps t négatif, physiquement impossible.",
+          "correction_markdown": "Vérifie toujours que le résultat final pour t est un nombre POSITIF ; un temps négatif signale systématiquement une erreur de signe dans la manipulation du logarithme."
+        },
+        {
+          "erreur_markdown": "Utiliser directement λ sans le calculer, en le confondant avec 1/T.",
+          "pourquoi_faux": "La constante radioactive est λ=ln2/T, pas 1/T : oublier le facteur ln2≈0,693 fausse tout calcul de t d'un facteur d'environ 1,44.",
+          "correction_markdown": "Retiens systématiquement la relation λ=ln2/T, et substitue-la explicitement avant de calculer t, plutôt que de mémoriser une formule raccourcie risquant la confusion."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un échantillon radioactif a une période T=5 ans. Déterminer le temps au bout duquel 50% des noyaux initiaux auront disparu (vérifier que ce temps correspond bien à la période T).",
+          "solution_markdown": "« 50% ont disparu » signifie qu'il en reste 50%, soit $N(t)/N_0=0{,}5$ :\n\n$$t = \\frac{-\\ln(0{,}5)}{\\ln2}\\times T = \\frac{\\ln2}{\\ln2}\\times T = T = 5\\ \\text{ans}$$\n\nCe résultat est cohérent avec la définition même de la période radioactive : c'est le temps au bout duquel exactement la moitié des noyaux initiaux ont disparu."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un échantillon radioactif de période T=8 jours (iode 131) : déterminer le temps au bout duquel 90% des noyaux initiaux auront disparu.",
+          "solution_markdown": "« 90% ont disparu » signifie qu'il en reste 10%, soit $N(t)/N_0=0{,}10$ :\n\n$$t = \\frac{-\\ln(0{,}10)}{\\ln2}\\times T = \\frac{\\ln(10)}{\\ln2}\\times8$$\n\nCalcul : $\\ln(10)\\approx2{,}303$ ; $\\ln2\\approx0{,}693$ ; $\\dfrac{2{,}303}{0{,}693}\\approx3{,}322$.\n\n$$t \\approx 3{,}322\\times8 \\approx 26{,}6\\ \\text{jours}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montre, par un raisonnement général (sans valeur numérique particulière de T), que le temps nécessaire pour que 99,9% des noyaux d'un échantillon radioactif aient disparu est toujours compris entre 9 et 10 périodes radioactives, quelle que soit la valeur de T.",
+          "solution_markdown": "« 99,9% ont disparu » signifie qu'il reste 0,1%, soit une fraction restante de $0{,}001=10^{-3}$ :\n\n$$t = \\frac{-\\ln(10^{-3})}{\\ln2}\\times T = \\frac{3\\ln(10)}{\\ln2}\\times T$$\n\nCalcul du coefficient, indépendant de T : $\\ln(10)\\approx2{,}303$, donc $3\\ln(10)\\approx6{,}908$ ; $\\ln2\\approx0{,}693$.\n\n$$\\frac{3\\ln(10)}{\\ln2} \\approx \\frac{6{,}908}{0{,}693} \\approx 9{,}97$$\n\nLe coefficient multiplicateur de T vaut environ 9,97, ce qui est bien compris entre 9 et 10, INDÉPENDAMMENT de la valeur numérique de T (T se simplifie entièrement dans le rapport, il n'intervient que comme facteur multiplicatif final). Ce résultat illustre une propriété générale : le nombre de périodes nécessaires pour atteindre une fraction restante donnée ne dépend que de cette fraction, jamais de la période T elle-même - seul le TEMPS ABSOLU correspondant dépend de T."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de décroissance N(t)=N0·e^(-λt), avec λ=ln2/T, permet de calculer le temps nécessaire pour atteindre n'importe quelle fraction restante de noyaux.",
+        "Traduis toujours soigneusement « x% ont disparu » en une fraction RESTANTE de (100-x)% avant de poser l'équation : c'est la source d'erreur la plus fréquente.",
+        "t=(-ln(fraction restante)/ln2)×T : ce coefficient multiplicateur de T ne dépend que de la fraction visée, jamais de la valeur de T elle-même.",
+        "Un résultat négatif pour t signale toujours une erreur de signe dans la manipulation du logarithme : vérifie systématiquement la positivité du résultat final.",
+        "Au BAC, ce type de calcul suit presque toujours l'écriture de l'équation de désintégration : il mobilise le logarithme népérien, une compétence transversale entre les mathématiques et la physique-chimie, très fréquemment évaluée en Terminale C."
+      ]
+    }
+  ]
+}

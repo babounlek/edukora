@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-css-role-et-definition-premiere-ti",
+  "meta": {
+    "titre": "CSS : rôle et définition",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 10,
+    "tags": [
+      "CSS",
+      "feuilles de style",
+      "HTML",
+      "mise en forme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex3-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux pages web peuvent avoir exactement le même contenu (les mêmes titres, les mêmes textes) et pourtant se ressembler comme deux sites totalement différents. Ce qui les distingue, ce n'est jamais le HTML : c'est le CSS."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une page HTML simple (balises de base)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "CSS, la présentation séparée du contenu",
+      "contenu_markdown": "**CSS** (Cascading Style Sheets, feuilles de style en cascade) est un langage utilisé pour décrire la présentation d'un document HTML (couleurs, polices, mises en page, espacements), en séparant la mise en forme du contenu. Le HTML décrit la structure et le contenu ; le CSS décrit l'apparence.",
+      "formule_principale": "sélecteur { propriété: valeur; }",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer ce que fait la règle CSS suivante et où elle peut être placée dans une page HTML : `h1 { color: red; }`",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le sélecteur",
+          "justification": "`h1` désigne toutes les balises de titre de premier niveau de la page",
+          "resultat_markdown": "Le sélecteur `h1` cible toutes les balises `<h1>`."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la propriété et sa valeur",
+          "justification": "`color` contrôle la couleur du texte, `red` en est la valeur",
+          "resultat_markdown": "`color: red;` demande d'afficher le texte en rouge."
+        },
+        {
+          "numero": 3,
+          "action": "Situer cette règle dans la page",
+          "justification": "Une règle CSS peut être écrite dans une balise `<style>` du `<head>`, ou dans un fichier `.css` externe lié par `<link>`",
+          "resultat_markdown": "Placée dans `<head><style>...</style></head>`, ou dans un fichier externe."
+        }
+      ],
+      "conclusion_markdown": "Toutes les balises `<h1>` de la page seront affichées en rouge, sans qu'aucune modification du contenu HTML lui-même n'ait été nécessaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que CSS peut créer du contenu (texte, images) sur la page",
+          "pourquoi_faux": "CSS ne fait que modifier l'APPARENCE d'un contenu déjà présent en HTML ; il ne peut ni ajouter ni supprimer du texte réel (à quelques exceptions décoratives très avancées près, hors programme).",
+          "correction_markdown": "Retiens la séparation stricte des rôles : HTML = contenu et structure, CSS = présentation."
+        },
+        {
+          "erreur_markdown": "Oublier que \"cascade\" signifie qu'il existe des règles de priorité entre plusieurs styles",
+          "pourquoi_faux": "Si plusieurs règles CSS s'appliquent au même élément avec des valeurs différentes, ce n'est pas au hasard qu'une seule l'emporte : des règles de priorité précises (spécificité du sélecteur, ordre d'écriture) déterminent laquelle est appliquée.",
+          "correction_markdown": "Le mot \"cascade\" dans CSS fait directement référence à ce mécanisme de priorité entre règles concurrentes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifie l'acronyme CSS ?",
+          "solution_markdown": "CSS signifie Cascading Style Sheets, en français feuilles de style en cascade."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire une règle CSS qui affiche tous les paragraphes (`<p>`) de la page avec une taille de police de 16 pixels et une couleur grise.",
+          "solution_markdown": "```css\np {\n    font-size: 16px;\n    color: gray;\n}\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi séparer la présentation (CSS) du contenu (HTML) est-il considéré comme une bonne pratique, plutôt que d'écrire directement `<p style=\"color:red\">` sur chaque paragraphe individuellement ?",
+          "solution_markdown": "Séparer présentation et contenu permet de modifier l'apparence de TOUTE une page (voire d'un site entier, avec un fichier CSS partagé) en changeant une seule règle, au lieu de devoir corriger l'attribut `style` sur chacune des centaines de balises concernées une par une. Cela rend aussi le code HTML plus lisible (il ne mélange plus structure et présentation) et facilite la maintenance : un changement de charte graphique ne touche alors que le fichier CSS, sans jamais avoir besoin de modifier le contenu HTML lui-même."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CSS = Cascading Style Sheets, un langage de description de la présentation des pages HTML.",
+        "HTML décrit le contenu et la structure ; CSS décrit l'apparence (couleurs, polices, mise en page).",
+        "Une règle CSS s'écrit `sélecteur { propriété: valeur; }`.",
+        "\"En cascade\" fait référence aux règles de priorité entre plusieurs styles qui s'appliquent au même élément.",
+        "Séparer CSS et HTML facilite la maintenance et la cohérence visuelle d'un site entier."
+      ]
+    }
+  ]
+}

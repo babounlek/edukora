@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-de-selection-avec-jointure-select-join-tle-tronc-commun",
+  "meta": {
+    "titre": "Écrire une requête SQL de sélection avec jointure (SELECT ... JOIN)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Langage de Manipulation de Données (LMD) - interrogation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "jointure",
+      "INNER JOIN"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qC3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dès qu'une information utile est répartie sur deux tables différentes, une simple requête SELECT sur une seule table ne suffit plus. Il faut apprendre à les « joindre » correctement, faute de quoi le résultat peut sembler correct... tout en étant complètement faux."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une requête SELECT simple sur une seule table.",
+        "Comprendre la notion de clé primaire et de clé étrangère."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Joindre deux tables sur leur colonne de correspondance",
+      "contenu_markdown": "Pour afficher des colonnes issues de deux tables liées par une clé étrangère, il faut les joindre en indiquant explicitement la colonne de correspondance (clé primaire d'un côté, clé étrangère de l'autre) :\n\n```sql\nSELECT colonne1, colonne2\nFROM Table1\nINNER JOIN Table2 ON Table1.cléCommune = Table2.cléCommune;\n```\n\nLa clause `ON` n'est jamais optionnelle : sans elle (ou sans condition équivalente dans un `WHERE`), le moteur SQL combine CHAQUE ligne de la première table avec CHAQUE ligne de la seconde (produit cartésien), ce qui produit un résultat numériquement absurde."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Afficher les noms des clients (table CLIENT) et leurs dates de commande respectives (table COMMANDE), sachant que le lien entre les deux tables se fait par IdCli.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les colonnes à afficher et leur table d'origine",
+          "justification": "NomCli vient de CLIENT, DateCom vient de COMMANDE.",
+          "resultat_markdown": "SELECT NomCli, DateCom"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la table de départ et la table à joindre",
+          "justification": "On part de CLIENT et on y joint COMMANDE.",
+          "resultat_markdown": "FROM CLIENT INNER JOIN COMMANDE"
+        },
+        {
+          "numero": 3,
+          "action": "Préciser la condition de jointure",
+          "justification": "Le lien entre les deux tables se fait par la colonne IdCli, présente comme clé primaire dans CLIENT et comme clé étrangère dans COMMANDE.",
+          "resultat_markdown": "ON CLIENT.IdCli = COMMANDE.IdCli;"
+        }
+      ],
+      "conclusion_markdown": "On obtient une requête qui n'affiche que les couples (client, date de commande) réellement liés entre eux, grâce à la condition de jointure explicite."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire SELECT NomCli, DateCom FROM CLIENT, COMMANDE; sans condition de jointure",
+          "pourquoi_faux": "Sans clause ON ni WHERE de jointure, le moteur SQL associe chaque client à CHAQUE commande de la base, y compris celles qui ne sont pas les siennes : le résultat contient un nombre de lignes égal au produit du nombre de clients par le nombre de commandes, presque toutes incorrectes.",
+          "correction_markdown": "Ne jamais lister plusieurs tables dans un FROM sans préciser immédiatement la condition qui les relie, que ce soit avec INNER JOIN ... ON ou avec un WHERE d'égalité entre les deux clés."
+        },
+        {
+          "erreur_markdown": "Se tromper de sens dans l'égalité de jointure (par exemple CLIENT.IdCli = COMMANDE.NumCom)",
+          "pourquoi_faux": "La jointure doit toujours comparer la clé primaire d'une table à la clé étrangère qui la référence dans l'autre table ; comparer deux colonnes qui ne représentent pas la même information produit un résultat vide ou incohérent.",
+          "correction_markdown": "Vérifier, avant d'écrire la condition ON, quelle colonne de la seconde table référence effectivement la clé primaire de la première (repérer le # dans le schéma logique)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête qui affiche le nom du produit (table PRODUIT) et la quantité commandée (table DETAILCOMMAND), sachant que la jointure se fait sur la colonne Ref.",
+          "solution_markdown": "SELECT NomProd, Quantite\nFROM PRODUIT\nINNER JOIN DETAILCOMMAND ON PRODUIT.Ref = DETAILCOMMAND.Ref;"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête qui affiche le nom du client et le numéro de chacune de ses commandes, en utilisant la syntaxe WHERE (sans INNER JOIN), équivalente à une jointure.",
+          "solution_markdown": "SELECT NomCli, NumCom\nFROM CLIENT, COMMANDE\nWHERE CLIENT.IdCli = COMMANDE.IdCli;\n\nCette syntaxe (jointure implicite avec WHERE) produit le même résultat que INNER JOIN ... ON, mais la syntaxe explicite avec INNER JOIN est généralement préférée car elle sépare clairement la condition de jointure des autres conditions de filtrage."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut afficher, pour CHAQUE commande, le nom du client ET le nom de chaque produit commandé avec sa quantité, en combinant les tables CLIENT, COMMANDE, DETAILCOMMAND et PRODUIT. Écrire la requête complète avec plusieurs jointures enchaînées.",
+          "solution_markdown": "SELECT NomCli, NumCom, NomProd, Quantite\nFROM CLIENT\nINNER JOIN COMMANDE ON CLIENT.IdCli = COMMANDE.IdCli\nINNER JOIN DETAILCOMMAND ON COMMANDE.NumCom = DETAILCOMMAND.NumCom\nINNER JOIN PRODUIT ON DETAILCOMMAND.Ref = PRODUIT.Ref;\n\nQuand une information traverse plus de deux tables (ici quatre), on enchaîne simplement plusieurs INNER JOIN à la suite, chacun reliant une nouvelle table à l'ensemble déjà construit par les jointures précédentes, toujours via la paire (clé primaire, clé étrangère) qui les relie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une jointure relie deux tables via leur colonne de correspondance : clé primaire d'un côté, clé étrangère de l'autre.",
+        "La clause ON (ou WHERE, en syntaxe implicite) n'est jamais optionnelle dès que deux tables apparaissent dans le FROM.",
+        "Sans condition de jointure, le résultat est un produit cartésien : chaque ligne d'une table combinée avec chaque ligne de l'autre.",
+        "Pour une information répartie sur plus de deux tables, enchaîner simplement plusieurs INNER JOIN à la suite."
+      ]
+    }
+  ]
+}

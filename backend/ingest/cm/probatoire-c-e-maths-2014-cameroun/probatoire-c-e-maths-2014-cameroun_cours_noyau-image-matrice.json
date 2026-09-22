@@ -1,0 +1,178 @@
+{
+ "cours_id": "cours-noyau-image-matrice-1ere-ce",
+ "meta": {
+  "titre": "Déterminer le noyau et l'image d'une application linéaire à partir de sa matrice",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Applications linéaires du plan vectoriel",
+  "duree_estimee_min": 30,
+  "tags": [
+   "application linéaire",
+   "matrice",
+   "noyau",
+   "image",
+   "déterminant",
+   "théorème du rang"
+  ],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "VI"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex1-q2a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Une application linéaire du plan peut écraser tout le plan sur une droite, voire sur un seul point, ou au contraire le transformer sans rien perdre. Comment savoir dans quel cas on se trouve, en regardant seulement les quatre nombres de sa matrice ? Un unique calcul, celui du déterminant, tranche la question, et deux notions le traduisent : le noyau, qui mesure ce que l'application détruit, et l'image, qui mesure ce qu'elle atteint."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir qu'une application linéaire $f$ vérifie $f(\\vec{u}+\\vec{v})=f(\\vec{u})+f(\\vec{v})$ et $f(\\lambda\\vec{u})=\\lambda f(\\vec{u})$",
+    "Lire les coordonnées de $f(\\vec{u})$ à partir de la matrice de $f$ dans une base",
+    "Résoudre un système linéaire homogène de deux équations à deux inconnues"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Noyau, image et déterminant",
+   "contenu_markdown": "Soit $f$ une application linéaire d'un plan vectoriel $E$ dans lui-même, de matrice $M=\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$ dans une base $B=\\left(\\vec{\\imath}\\,;\\,\\vec{\\jmath}\\right)$.\n\n**Le noyau** est l'ensemble des vecteurs que $f$ envoie sur le vecteur nul :\n\n$$\\ker f=\\left\\{\\vec{u}\\in E\\;\\middle|\\;f(\\vec{u})=\\vec{0}\\right\\}$$\n\nPour $\\vec{u}=x\\,\\vec{\\imath}+y\\,\\vec{\\jmath}$, la condition $f(\\vec{u})=\\vec{0}$ s'écrit comme le système homogène\n\n$$\\begin{cases} ax+by=0 \\\\ cx+dy=0 \\end{cases}$$\n\n**L'image** est l'ensemble des vecteurs atteints : $\\operatorname{Im}f=\\left\\{f(\\vec{u})\\;\\middle|\\;\\vec{u}\\in E\\right\\}$.\n\n**Le théorème du rang** les relie :\n\n$$\\dim(\\ker f)+\\dim(\\operatorname{Im}f)=\\dim E$$\n\n**Le critère du déterminant.** On pose $\\det M=ad-bc$. Alors, en dimension $2$ :\n\n- si $\\det M\\neq 0$ : le système homogène n'a que la solution nulle, donc $\\ker f=\\left\\{\\vec{0}\\right\\}$, $\\dim(\\operatorname{Im}f)=2-0=2$ et $\\operatorname{Im}f=E$. L'application $f$ est un **automorphisme** de $E$ ;\n- si $\\det M=0$ et $M\\neq 0$ : $\\ker f$ est une droite vectorielle, et $\\operatorname{Im}f$ aussi ;\n- si $M=0$ : $\\ker f=E$ et $\\operatorname{Im}f=\\left\\{\\vec{0}\\right\\}$.\n\nUn seul calcul, $\\det M$, annonce donc le résultat des deux questions.",
+   "formule_principale": "\\det M=ad-bc\\quad\\text{et}\\quad \\dim(\\ker f)+\\dim(\\operatorname{Im}f)=\\dim E",
+   "variantes": [
+    {
+     "nom": "Détermination directe de l'image par les vecteurs colonnes",
+     "quand_utiliser": "Quand $\\det M=0$ et qu'il faut décrire l'image, pas seulement sa dimension",
+     "contenu_markdown": "L'image de $f$ est le sous-espace vectoriel engendré par les images des vecteurs de la base, c'est-à-dire par les deux **colonnes** de la matrice :\n\n$$\\operatorname{Im}f=\\operatorname{Vect}\\left(f(\\vec{\\imath})\\,;\\,f(\\vec{\\jmath})\\right)$$\n\nSi $\\det M=0$, ces deux colonnes sont colinéaires : l'image est la droite vectorielle qu'elles engendrent, et il suffit d'en donner un vecteur directeur non nul."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Dans le plan vectoriel $E$ muni d'une base $B=\\left(\\vec{\\imath}\\,;\\,\\vec{\\jmath}\\right)$, l'application linéaire $f$ a pour matrice $M=\\begin{pmatrix} \\dfrac{1}{2} & \\dfrac{\\sqrt{3}}{2} \\\\ \\dfrac{\\sqrt{3}}{2} & \\dfrac{1}{2} \\end{pmatrix}$. Déterminer le noyau et l'image de $f$ (Probatoire C et E, Cameroun, 2014).",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Calculer le déterminant",
+     "justification": "$\\det M=ad-bc$ décide à lui seul de la nature du noyau et de l'image",
+     "resultat_markdown": "$\\det M=\\dfrac{1}{2}\\times\\dfrac{1}{2}-\\dfrac{\\sqrt{3}}{2}\\times\\dfrac{\\sqrt{3}}{2}=\\dfrac{1}{4}-\\dfrac{3}{4}=-\\dfrac{1}{2}$"
+    },
+    {
+     "numero": 2,
+     "action": "Interpréter le signe obtenu",
+     "justification": "$\\det M\\neq 0$ annonce un noyau réduit au vecteur nul et une image égale à $E$ ; il reste à le démontrer",
+     "resultat_markdown": "$-\\dfrac{1}{2}\\neq 0$, donc $f$ devrait être un automorphisme"
+    },
+    {
+     "numero": 3,
+     "action": "Écrire le système du noyau",
+     "justification": "Pour $\\vec{u}=x\\,\\vec{\\imath}+y\\,\\vec{\\jmath}$, la condition $f(\\vec{u})=\\vec{0}$ se lit ligne par ligne sur la matrice",
+     "resultat_markdown": "$\\begin{cases} \\dfrac{1}{2}x+\\dfrac{\\sqrt{3}}{2}y=0 \\\\ \\dfrac{\\sqrt{3}}{2}x+\\dfrac{1}{2}y=0 \\end{cases}$"
+    },
+    {
+     "numero": 4,
+     "action": "Simplifier le système",
+     "justification": "On multiplie chaque équation par $2$ pour éliminer les dénominateurs",
+     "resultat_markdown": "$\\begin{cases} x+\\sqrt{3}\\,y=0 \\\\ \\sqrt{3}\\,x+y=0 \\end{cases}$"
+    },
+    {
+     "numero": 5,
+     "action": "Résoudre par substitution",
+     "justification": "La première équation donne $x=-\\sqrt{3}\\,y$ ; on reporte dans la seconde",
+     "resultat_markdown": "$\\sqrt{3}\\times\\left(-\\sqrt{3}\\,y\\right)+y=-3y+y=-2y=0$, donc $y=0$, puis $x=-\\sqrt{3}\\times 0=0$"
+    },
+    {
+     "numero": 6,
+     "action": "Conclure sur le noyau",
+     "justification": "Le seul vecteur solution est le vecteur nul",
+     "resultat_markdown": "$\\ker f=\\left\\{\\vec{0}\\right\\}$ et $\\dim(\\ker f)=0$"
+    },
+    {
+     "numero": 7,
+     "action": "Appliquer le théorème du rang",
+     "justification": "$\\dim(\\ker f)+\\dim(\\operatorname{Im}f)=\\dim E=2$",
+     "resultat_markdown": "$\\dim(\\operatorname{Im}f)=2-0=2$"
+    },
+    {
+     "numero": 8,
+     "action": "Conclure sur l'image",
+     "justification": "$\\operatorname{Im}f$ est un sous-espace vectoriel de $E$ de même dimension que $E$",
+     "resultat_markdown": "$\\operatorname{Im}f=E$"
+    }
+   ],
+   "conclusion_markdown": "$\\ker f=\\left\\{\\vec{0}\\right\\}$ et $\\operatorname{Im}f=E$ : l'application $f$ est injective et surjective, c'est un automorphisme du plan vectoriel $E$. On vient de vérifier sur un cas concret que le déterminant annonce le résultat, et que le système homogène ne sert qu'à le démontrer."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Écrire $\\ker f=0$ au lieu de $\\ker f=\\left\\{\\vec{0}\\right\\}$",
+     "pourquoi_faux": "Le noyau est un **ensemble** de vecteurs, pas un nombre. Écrire $\\ker f=0$ confond un ensemble avec l'un de ses éléments, et surtout avec un scalaire.",
+     "correction_markdown": "Écris toujours $\\ker f=\\left\\{\\vec{0}\\right\\}$, avec les accolades et la flèche. La même rigueur vaut pour $\\operatorname{Im}f=E$, qui est bien une égalité d'ensembles."
+    },
+    {
+     "erreur_markdown": "Conclure $\\operatorname{Im}f=E$ du seul fait que $\\dim(\\operatorname{Im}f)=2$, sans dire que $\\operatorname{Im}f\\subset E$",
+     "pourquoi_faux": "Deux espaces de même dimension ne sont pas forcément égaux : ils sont seulement isomorphes. L'égalité vient de la conjonction de l'inclusion $\\operatorname{Im}f\\subset E$ et de l'égalité des dimensions.",
+     "correction_markdown": "Rédige en deux temps : « $\\operatorname{Im}f$ est un sous-espace vectoriel de $E$ » puis « de dimension $2=\\dim E$ », donc « $\\operatorname{Im}f=E$ »."
+    },
+    {
+     "erreur_markdown": "Calculer le déterminant comme $ad+bc$",
+     "pourquoi_faux": "Le déterminant d'une matrice $2\\times 2$ est $ad-bc$ : c'est une **différence** des deux produits en diagonale. Avec un plus, on obtient un nombre qui n'a aucune signification et le critère devient inopérant.",
+     "correction_markdown": "Contrôle sur la matrice identité : $\\det\\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}$ doit valoir $1$. Avec $ad-bc$ on trouve $1-0=1$ ; avec $ad+bc$ on trouverait aussi $1$, alors teste plutôt $\\begin{pmatrix} 1 & 1 \\\\ 1 & 1 \\end{pmatrix}$ : son déterminant doit être nul, car ses colonnes sont égales."
+    },
+    {
+     "erreur_markdown": "Résoudre le système du noyau et s'arrêter à « $x=-\\sqrt{3}y$ », en concluant que le noyau est une droite",
+     "pourquoi_faux": "Cette relation ne vient que de la **première** équation. Le noyau est l'ensemble des vecteurs qui vérifient les **deux** équations simultanément : il faut reporter dans la seconde, ce qui impose ici $y=0$.",
+     "correction_markdown": "Va toujours jusqu'au bout de la substitution. Si le report dans la seconde équation aboutit à $0=0$, alors le noyau est bien une droite ; s'il aboutit à $y=0$, le noyau est réduit au vecteur nul."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $f$ l'application linéaire de matrice $M=\\begin{pmatrix} 2 & 1 \\\\ 3 & 4 \\end{pmatrix}$ dans une base $B$ du plan vectoriel $E$. Déterminer $\\ker f$ et $\\operatorname{Im}f$.",
+     "solution_markdown": "**Étape 1 — déterminant.**\n\n$$\\det M=2\\times 4-1\\times 3=8-3=5\\neq 0$$\n\n**Étape 2 — noyau.** Pour $\\vec{u}=x\\,\\vec{\\imath}+y\\,\\vec{\\jmath}$ :\n\n$$f(\\vec{u})=\\vec{0}\\iff\\begin{cases} 2x+y=0 \\\\ 3x+4y=0 \\end{cases}$$\n\nLa première équation donne $y=-2x$. En reportant dans la seconde :\n\n$$3x+4\\times(-2x)=3x-8x=-5x=0\\;\\Longrightarrow\\;x=0$$\n\npuis $y=-2\\times 0=0$. Donc $\\ker f=\\left\\{\\vec{0}\\right\\}$ et $\\dim(\\ker f)=0$.\n\n**Étape 3 — image.** Par le théorème du rang, $\\dim(\\operatorname{Im}f)=2-0=2$. Comme $\\operatorname{Im}f$ est un sous-espace vectoriel de $E$ de même dimension que $E$, on a $\\operatorname{Im}f=E$.\n\n**Conclusion.** $\\ker f=\\left\\{\\vec{0}\\right\\}$ et $\\operatorname{Im}f=E$ : $f$ est un automorphisme de $E$."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $f$ l'application linéaire de matrice $M=\\begin{pmatrix} 2 & -4 \\\\ -1 & 2 \\end{pmatrix}$. Déterminer $\\ker f$ et $\\operatorname{Im}f$, en donnant pour chacun un vecteur directeur.",
+     "solution_markdown": "**Étape 1 — déterminant.**\n\n$$\\det M=2\\times 2-(-4)\\times(-1)=4-4=0$$\n\nLe déterminant est nul : le noyau n'est pas réduit au vecteur nul.\n\n**Étape 2 — noyau.**\n\n$$f(\\vec{u})=\\vec{0}\\iff\\begin{cases} 2x-4y=0 \\\\ -x+2y=0 \\end{cases}$$\n\nLa première équation donne $2x=4y$, soit $x=2y$. En reportant dans la seconde :\n\n$$-2y+2y=0$$\n\nL'égalité est vraie pour tout $y$ : la seconde équation n'apporte aucune information nouvelle. Le noyau est donc l'ensemble des vecteurs $\\vec{u}=2y\\,\\vec{\\imath}+y\\,\\vec{\\jmath}=y\\left(2\\vec{\\imath}+\\vec{\\jmath}\\right)$, pour $y$ réel quelconque.\n\n$$\\ker f=\\operatorname{Vect}\\left(2\\vec{\\imath}+\\vec{\\jmath}\\right),\\qquad \\dim(\\ker f)=1$$\n\nC'est une droite vectorielle, de vecteur directeur $2\\vec{\\imath}+\\vec{\\jmath}$.\n\n**Étape 3 — image.** Par le théorème du rang, $\\dim(\\operatorname{Im}f)=2-1=1$ : l'image est aussi une droite vectorielle.\n\nL'image est engendrée par les colonnes de $M$, c'est-à-dire par $f(\\vec{\\imath})=2\\vec{\\imath}-\\vec{\\jmath}$ et $f(\\vec{\\jmath})=-4\\vec{\\imath}+2\\vec{\\jmath}$. Ces deux vecteurs sont colinéaires, puisque $f(\\vec{\\jmath})=-2\\,f(\\vec{\\imath})$.\n\n$$\\operatorname{Im}f=\\operatorname{Vect}\\left(2\\vec{\\imath}-\\vec{\\jmath}\\right)$$\n\n**Conclusion.** $f$ écrase tout le plan sur la droite dirigée par $2\\vec{\\imath}-\\vec{\\jmath}$, en annulant la droite dirigée par $2\\vec{\\imath}+\\vec{\\jmath}$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $m$ un réel et $f_{m}$ l'application linéaire de matrice $M_{m}=\\begin{pmatrix} m & 1 \\\\ 4 & m \\end{pmatrix}$. Discuter, selon les valeurs de $m$, la nature de $\\ker f_{m}$ et de $\\operatorname{Im}f_{m}$.",
+     "solution_markdown": "**Étape 1 — déterminant en fonction de $m$.**\n\n$$\\det M_{m}=m\\times m-1\\times 4=m^{2}-4$$\n\n**Étape 2 — signe et annulation.**\n\n$$m^{2}-4=0\\iff m^{2}=4\\iff m=2\\quad\\text{ou}\\quad m=-2$$\n\n(on peut aussi factoriser : $m^{2}-4=(m-2)(m+2)$.)\n\n**Étape 3 — premier cas : $m\\neq 2$ et $m\\neq -2$.**\n\nAlors $\\det M_{m}\\neq 0$, donc\n\n$$\\ker f_{m}=\\left\\{\\vec{0}\\right\\}\\qquad\\text{et}\\qquad \\operatorname{Im}f_{m}=E$$\n\nL'application $f_{m}$ est un automorphisme du plan.\n\n**Étape 4 — deuxième cas : $m=2$.** La matrice devient $\\begin{pmatrix} 2 & 1 \\\\ 4 & 2 \\end{pmatrix}$, non nulle. Le système du noyau s'écrit\n\n$$\\begin{cases} 2x+y=0 \\\\ 4x+2y=0 \\end{cases}$$\n\nLa seconde équation est le double de la première : elle n'apporte rien. On garde $y=-2x$, donc\n\n$$\\ker f_{2}=\\operatorname{Vect}\\left(\\vec{\\imath}-2\\vec{\\jmath}\\right)$$\n\nen prenant $x=1$. Par le théorème du rang, $\\dim\\left(\\operatorname{Im}f_{2}\\right)=2-1=1$, et l'image est engendrée par la première colonne :\n\n$$\\operatorname{Im}f_{2}=\\operatorname{Vect}\\left(2\\vec{\\imath}+4\\vec{\\jmath}\\right)=\\operatorname{Vect}\\left(\\vec{\\imath}+2\\vec{\\jmath}\\right)$$\n\n**Étape 5 — troisième cas : $m=-2$.** La matrice devient $\\begin{pmatrix} -2 & 1 \\\\ 4 & -2 \\end{pmatrix}$. Le système du noyau s'écrit\n\n$$\\begin{cases} -2x+y=0 \\\\ 4x-2y=0 \\end{cases}$$\n\nLa seconde équation est $-2$ fois la première. On garde $y=2x$, donc\n\n$$\\ker f_{-2}=\\operatorname{Vect}\\left(\\vec{\\imath}+2\\vec{\\jmath}\\right)$$\n\net, de même,\n\n$$\\operatorname{Im}f_{-2}=\\operatorname{Vect}\\left(-2\\vec{\\imath}+4\\vec{\\jmath}\\right)=\\operatorname{Vect}\\left(\\vec{\\imath}-2\\vec{\\jmath}\\right)$$\n\n**Conclusion.** Pour $m\\notin\\{-2\\,;\\,2\\}$, $f_{m}$ est un automorphisme. Pour $m=2$ et $m=-2$, le noyau et l'image sont deux droites vectorielles, échangées d'un cas à l'autre : la droite qui est noyau pour $m=2$ est l'image pour $m=-2$, et réciproquement."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Commence toujours par $\\det M=ad-bc$ : ce seul nombre t'annonce la réponse aux deux questions avant tout autre calcul.",
+    "$\\det M\\neq 0$ signifie noyau réduit au vecteur nul et image égale à $E$ : l'application est un automorphisme.",
+    "$\\det M=0$ (avec $M\\neq 0$) signifie que noyau et image sont deux droites vectorielles : donne un vecteur directeur de chacune.",
+    "Le noyau se trouve en résolvant le système homogène **complet** : ne t'arrête pas à la première équation.",
+    "L'image est engendrée par les colonnes de la matrice, c'est-à-dire par les images des vecteurs de la base.",
+    "Écris $\\ker f=\\left\\{\\vec{0}\\right\\}$, jamais $\\ker f=0$ : ce sont des ensembles de vecteurs, la rigueur de notation est notée.",
+    "Au Probatoire C et E, cette question ouvre presque toujours un exercice sur les matrices : elle est suivie d'un calcul d'inverse ou d'une composition. La traiter vite et proprement libère du temps pour la suite."
+   ]
+  }
+ ]
+}

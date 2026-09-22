@@ -1,0 +1,168 @@
+{
+  "cours_id": "cours-tableau-statistique-3e",
+  "meta": {
+    "titre": "Lire et exploiter un tableau statistique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Statistiques - séries à modalités isolées",
+    "duree_estimee_min": 25,
+    "tags": [
+      "statistiques",
+      "effectif total",
+      "mode",
+      "fréquence",
+      "pourcentage",
+      "lecture de tableau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2002-officiel-cameroun",
+    "epreuve_titre": "BEPC - Mathématiques - Session 2002 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-maths-2002-officiel-cameroun-ex3-q1-1",
+    "rappels_lies": [
+      "rdm-bepc-maths-2002-officiel-cameroun-ex3-q2-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau statistique tient en deux lignes, et pourtant il répond à des questions très différentes : combien de personnes au total, quelle valeur revient le plus souvent, quelle proportion dépasse un certain seuil. Chacune appelle une opération distincte, et les confondre coûte des points sur des questions qui ne demandent que quelques additions. Ce cours te donne les trois lectures d'un même tableau."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir additionner une liste de nombres sans erreur",
+        "Savoir simplifier une fraction",
+        "Savoir convertir une fraction en pourcentage",
+        "Distinguer une valeur observée de son nombre d'occurrences"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois questions, trois lectures du même tableau",
+      "contenu_markdown": "**Le vocabulaire, à ne jamais confondre.**\n\n| Terme | Définition | Nature de la réponse |\n|---|---|---|\n| Modalité | une valeur observée | une valeur du caractère |\n| Effectif $n_i$ | nombre de fois où cette valeur apparaît | un nombre entier |\n| Effectif total $N$ | somme de tous les effectifs | un nombre entier |\n| Fréquence | $\\dfrac{n_i}{N}$ | un nombre entre 0 et 1 |\n| Pourcentage | $\\dfrac{n_i}{N} \\times 100$ | un nombre entre 0 et 100 |\n| Mode | la modalité de plus grand effectif | une **valeur**, jamais un effectif |\n\n**Les trois lectures.**\n\n*Lecture 1 - l'effectif total.* On additionne toute la ligne des effectifs. C'est la première chose à calculer, car elle sert de dénominateur à toutes les fréquences.\n\n$$N = n_1 + n_2 + \\cdots + n_p$$\n\n*Lecture 2 - le mode.* On repère le plus grand effectif, puis on donne la **modalité** située au-dessus. Le mode répond à la question « quelle valeur rencontre-t-on le plus souvent ? ».\n\n*Lecture 3 - un pourcentage sous condition.* On repère toutes les modalités qui vérifient la condition, on additionne leurs effectifs, puis on divise par $N$ et on multiplie par 100.\n\n**Les deux contrôles à faire systématiquement.**\n\n1. La somme des effectifs doit redonner l'effectif total annoncé, s'il est connu.\n2. La somme des fréquences doit valoir 1, celle des pourcentages 100.\n\n**Le piège des modalités non ordonnées.** Un tableau ne range pas toujours ses modalités dans l'ordre croissant. Devant une condition du type « inférieur à », réécris d'abord les modalités dans l'ordre : sinon, une valeur isolée en fin de tableau s'oublie facilement.",
+      "formule_principale": "\\text{pourcentage} = \\frac{n_i}{N} \\times 100",
+      "variantes": [
+        {
+          "nom": "Séries groupées en classes",
+          "quand_utiliser": "Quand les modalités sont des intervalles et non des valeurs isolées",
+          "contenu_markdown": "Si le tableau donne des classes comme $[0\\,;5[$ ou $[5\\,;10[$, on ne parle plus de mode mais de **classe modale** : la classe de plus grand effectif, à condition que toutes aient la même amplitude. Le calcul de la moyenne exige alors de remplacer chaque classe par son centre, la demi-somme de ses bornes."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une enquête menée auprès des revendeuses d'un marché donne le tableau suivant.\n\n| Recette journalière | 4 000 | 1 500 | 15 000 | 25 000 | 10 000 | 2 500 |\n|---|---|---|---|---|---|---|\n| Effectif | 25 | 35 | 12 | 10 | 63 | 30 |\n\nCalculer l'effectif total, donner le mode, puis le pourcentage des revendeuses dont la recette est inférieure à 4 000 F.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Additionner les effectifs",
+          "justification": "On regroupe deux par deux pour limiter les erreurs de calcul mental.",
+          "resultat_markdown": "$(25+35) + (12+10) + (63+30) = 60 + 22 + 93 = 175$"
+        },
+        {
+          "numero": 2,
+          "action": "Énoncer l'effectif total",
+          "justification": "C'est le nombre de personnes interrogées, et le dénominateur de toutes les fréquences à venir.",
+          "resultat_markdown": "$N = 175$ revendeuses"
+        },
+        {
+          "numero": 3,
+          "action": "Repérer le plus grand effectif",
+          "justification": "On compare les six nombres de la seconde ligne.",
+          "resultat_markdown": "Le plus grand effectif est 63."
+        },
+        {
+          "numero": 4,
+          "action": "Donner la modalité correspondante",
+          "justification": "Le mode est la valeur observée, pas son effectif : on remonte à la première ligne.",
+          "resultat_markdown": "Mode : une recette de 10 000 F"
+        },
+        {
+          "numero": 5,
+          "action": "Repérer les modalités vérifiant la condition",
+          "justification": "On cherche les recettes strictement inférieures à 4 000 F. Les modalités n'étant pas rangées dans l'ordre, on les parcourt toutes.",
+          "resultat_markdown": "1 500 F (effectif 35) et 2 500 F (effectif 30) ; la modalité 4 000 F est exclue, l'inégalité étant stricte."
+        },
+        {
+          "numero": 6,
+          "action": "Additionner les effectifs concernés",
+          "justification": "C'est le numérateur du pourcentage.",
+          "resultat_markdown": "$35 + 30 = 65$ revendeuses"
+        },
+        {
+          "numero": 7,
+          "action": "Calculer le pourcentage",
+          "justification": "On simplifie la fraction avant de multiplier par 100.",
+          "resultat_markdown": "$\\dfrac{65}{175} = \\dfrac{13}{35}$, d'où $\\dfrac{13}{35} \\times 100 \\approx 37{,}14\\,\\%$"
+        }
+      ],
+      "conclusion_markdown": "175 revendeuses ont été interrogées, le mode vaut 10 000 F, et environ 37,14 % d'entre elles réalisent une recette inférieure à 4 000 F. Le point délicat était l'étape 5 : les modalités du tableau n'étant pas rangées dans l'ordre croissant, la recette de 2 500 F, placée en dernière colonne, s'oublie facilement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner l'effectif à la place du mode",
+          "pourquoi_faux": "Le mode est la valeur qui revient le plus souvent, pas le nombre de fois où elle revient. Répondre 63 au lieu de 10 000 F confond la réponse avec le moyen de l'obtenir.",
+          "correction_markdown": "Après avoir repéré le plus grand effectif, remonte toujours à la ligne du dessus pour lire la modalité. Écris la réponse avec son unité : « le mode est 10 000 F »."
+        },
+        {
+          "erreur_markdown": "Oublier une modalité qui vérifie la condition",
+          "pourquoi_faux": "Les tableaux rangent rarement leurs modalités dans l'ordre croissant. Se contenter des premières colonnes laisse de côté des effectifs parfois importants.",
+          "correction_markdown": "Recopie les modalités dans l'ordre croissant sur ton brouillon avant de traiter une question comportant une inégalité. Le tri prend dix secondes."
+        },
+        {
+          "erreur_markdown": "Confondre fréquence et pourcentage",
+          "pourquoi_faux": "La fréquence est un nombre compris entre 0 et 1, le pourcentage entre 0 et 100. Répondre 0,3714 quand l'énoncé demande un pourcentage, ou 37,14 quand il demande une fréquence, ne répond pas à la question posée.",
+          "correction_markdown": "Relis la consigne avant d'écrire ta réponse, et fais suivre le nombre de son symbole : $0{,}3714$ ou $37{,}14\\,\\%$."
+        },
+        {
+          "erreur_markdown": "Traiter « inférieur à » comme « inférieur ou égal à »",
+          "pourquoi_faux": "L'inégalité stricte exclut la valeur seuil. Inclure les 25 revendeuses à 4 000 F ferait passer le résultat de 37,14 % à 51,43 %, soit un écart considérable.",
+          "correction_markdown": "Souligne le mot de comparaison dans l'énoncé : « inférieur à » exclut le seuil, « au plus » et « ne dépasse pas » l'incluent."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le tableau ci-dessous donne les pointures des élèves d'une classe.\n\n| Pointure | 38 | 39 | 40 | 41 | 42 |\n|---|---|---|---|---|---|\n| Effectif | 4 | 9 | 12 | 7 | 3 |\n\n1. Combien d'élèves compte la classe ?\n2. Quel est le mode de cette série ?\n3. Quel pourcentage d'élèves chausse du 40 ?",
+          "solution_markdown": "**1. Effectif total.**\n\n$$N = 4 + 9 + 12 + 7 + 3 = 35$$\n\nLa classe compte **35 élèves**.\n\n**2. Mode.**\n\nLe plus grand effectif est 12, qui correspond à la pointure 40.\n\n**Le mode est la pointure 40.**\n\n**3. Pourcentage d'élèves chaussant du 40.**\n\n$$\\frac{12}{35} \\times 100 = \\frac{1200}{35} \\approx 34{,}29\\,\\%$$\n\nEnviron **34,3 %** des élèves chaussent du 40."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une enquête sur le nombre d'enfants par famille dans un quartier donne :\n\n| Nombre d'enfants | 3 | 0 | 5 | 1 | 4 | 2 |\n|---|---|---|---|---|---|---|\n| Effectif | 22 | 6 | 9 | 14 | 11 | 18 |\n\n1. Combien de familles ont été interrogées ?\n2. Déterminer le mode.\n3. Quel pourcentage de familles a strictement moins de 3 enfants ?\n4. Quel pourcentage de familles a au moins 3 enfants ? Vérifier la cohérence des deux résultats.",
+          "solution_markdown": "**1. Nombre de familles.**\n\n$$N = 22 + 6 + 9 + 14 + 11 + 18$$\n\nOn regroupe : $(22+6) + (9+14) + (11+18) = 28 + 23 + 29 = 80$.\n\n**80 familles** ont été interrogées.\n\n**2. Mode.**\n\nLe plus grand effectif est 22, correspondant à la modalité 3.\n\n**Le mode est 3 enfants.**\n\n**3. Familles ayant strictement moins de 3 enfants.**\n\nOn range d'abord les modalités dans l'ordre croissant : 0, 1, 2, 3, 4, 5, d'effectifs respectifs 6, 14, 18, 22, 11, 9.\n\nLes modalités concernées sont 0, 1 et 2 :\n\n$$6 + 14 + 18 = 38 \\text{ familles}$$\n\n$$\\frac{38}{80} \\times 100 = 47{,}5\\,\\%$$\n\n**47,5 %** des familles ont moins de 3 enfants.\n\n**4. Familles ayant au moins 3 enfants.**\n\nL'expression « au moins 3 » inclut la modalité 3. Les modalités concernées sont 3, 4 et 5 :\n\n$$22 + 11 + 9 = 42 \\text{ familles}$$\n\n$$\\frac{42}{80} \\times 100 = 52{,}5\\,\\%$$\n\n**Vérification de cohérence.** Les deux catégories sont complémentaires : toute famille a soit moins de 3 enfants, soit au moins 3. La somme des deux pourcentages doit donc valoir 100 % :\n\n$$47{,}5 + 52{,}5 = 100$$\n\nLa cohérence est confirmée, et de même $38 + 42 = 80$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un commerçant relève les montants des achats effectués dans sa boutique en une matinée :\n\n| Montant (F) | 500 | 2 000 | 1 000 | 5 000 | 1 500 |\n|---|---|---|---|---|---|\n| Effectif | 12 | 9 | 15 | 4 | 10 |\n\n1. Calculer le nombre total d'achats et le mode.\n2. Calculer le pourcentage d'achats dont le montant dépasse 1 000 F.\n3. Calculer la recette totale de la matinée, puis le montant moyen d'un achat.\n4. Le commerçant affirme : « la moitié de mes clients dépensent plus que la moyenne ». A-t-il raison ? Justifier.",
+          "solution_markdown": "**1. Nombre total d'achats et mode.**\n\n$$N = 12 + 9 + 15 + 4 + 10 = 50 \\text{ achats}$$\n\nLe plus grand effectif est 15, correspondant au montant de 1 000 F.\n\n**Le mode est 1 000 F.**\n\n**2. Pourcentage d'achats dépassant 1 000 F.**\n\nL'expression « dépasse 1 000 F » est une inégalité stricte : la modalité 1 000 F est exclue. Les modalités concernées sont 1 500 F, 2 000 F et 5 000 F :\n\n$$10 + 9 + 4 = 23 \\text{ achats}$$\n\n$$\\frac{23}{50} \\times 100 = 46\\,\\%$$\n\n**46 %** des achats dépassent 1 000 F.\n\n**3. Recette totale et montant moyen.**\n\n*Recette totale :* on multiplie chaque montant par son effectif, puis on additionne.\n\n$$500 \\times 12 = 6\\,000$$\n$$2\\,000 \\times 9 = 18\\,000$$\n$$1\\,000 \\times 15 = 15\\,000$$\n$$5\\,000 \\times 4 = 20\\,000$$\n$$1\\,500 \\times 10 = 15\\,000$$\n\n$$\\text{Recette} = 6\\,000 + 18\\,000 + 15\\,000 + 20\\,000 + 15\\,000 = 74\\,000 \\text{ F}$$\n\n*Montant moyen :*\n\n$$\\overline{m} = \\frac{74\\,000}{50} = 1\\,480 \\text{ F}$$\n\n**4. L'affirmation du commerçant.**\n\nLe montant moyen vaut 1 480 F. Les achats strictement supérieurs à cette valeur sont ceux de 1 500 F, 2 000 F et 5 000 F :\n\n$$10 + 9 + 4 = 23 \\text{ achats}$$\n\n$$\\frac{23}{50} \\times 100 = 46\\,\\%$$\n\n**Le commerçant a tort**, mais de peu : 46 % de ses clients dépensent plus que la moyenne, et non 50 %.\n\n**Explication du phénomène.** La moyenne est tirée vers le haut par les quelques achats de 5 000 F, très supérieurs aux autres. Une valeur extrême, même rare, déplace la moyenne sans déplacer le partage des effectifs. C'est précisément la raison pour laquelle on complète souvent la moyenne par la **médiane**, qui partage l'effectif en deux moitiés égales par construction. Ici, en rangeant les 50 achats par montant croissant, la médiane se situe entre le 25ᵉ et le 26ᵉ achat, tous deux à 1 000 F : la médiane vaut donc 1 000 F, nettement inférieure à la moyenne."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Calcule l'effectif total en premier : il sert de dénominateur à toutes les fréquences.",
+        "Le mode est une **valeur**, jamais un effectif : après avoir repéré le plus grand effectif, remonte à la ligne du dessus.",
+        "Range les modalités dans l'ordre croissant avant toute question comportant une inégalité.",
+        "« Inférieur à » exclut le seuil, « au plus » et « ne dépasse pas » l'incluent : souligne le mot de comparaison.",
+        "Contrôle toujours par les deux sommes : celle des effectifs redonne le total, celle des pourcentages vaut 100.",
+        "Au BEPC, l'exercice de statistiques vaut souvent 2 à 3 points et ne demande que des additions et des divisions : c'est le meilleur rapport entre le temps passé et les points obtenus."
+      ]
+    }
+  ]
+}

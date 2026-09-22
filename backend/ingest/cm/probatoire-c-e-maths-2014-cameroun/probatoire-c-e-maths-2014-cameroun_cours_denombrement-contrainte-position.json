@@ -1,0 +1,160 @@
+{
+ "cours_id": "cours-denombrement-contrainte-position-1ere-ce",
+ "meta": {
+  "titre": "Dénombrer avec une contrainte de position imposée",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Dénombrement",
+  "duree_estimee_min": 25,
+  "tags": ["dénombrement", "contrainte", "permutation", "principe multiplicatif", "symétrie"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "22",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex2-q3b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "« Combien de parcours, si l'on commence toujours par l'escale $A$ ? » Une contrainte s'ajoute, et l'on est tenté de repartir de zéro avec un raisonnement compliqué. Il n'en est rien : une contrainte de position ne complique pas le dénombrement, elle le **simplifie**, en réduisant le nombre de places libres. La méthode tient en une phrase : on satisfait d'abord la contrainte, on dénombre ensuite ce qui reste."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir dénombrer les permutations de $n$ objets distincts",
+    "Maîtriser le principe multiplicatif",
+    "Connaître les valeurs des premières factorielles"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Satisfaire la contrainte d'abord, dénombrer le reste ensuite",
+   "contenu_markdown": "**Le principe.** Lorsqu'un rangement doit respecter une contrainte de position, on décompose le dénombrement en deux étapes successives et indépendantes :\n\n1. compter le nombre de façons de **satisfaire la contrainte** ;\n2. compter le nombre de façons de **disposer librement** les objets restants sur les places restantes.\n\nLe nombre total est le produit de ces deux nombres, par le principe multiplicatif.\n\n$$\\text{Total} = (\\text{façons de satisfaire la contrainte}) \\times (\\text{façons de remplir le reste})$$\n\n**Cas d'une position entièrement imposée.** Si un objet précis doit occuper une place précise, la première étape ne donne qu'**une** façon. Il reste alors à ranger $n-1$ objets sur $n-1$ places :\n\n$$1 \\times (n-1)! = (n-1)!$$\n\n**Cas d'une position à choisir.** Si la contrainte est du type « un objet d'une certaine catégorie occupe la première place », la première étape compte le nombre d'objets de cette catégorie. Avec $k$ objets possibles :\n\n$$k \\times (n-1)!$$\n\n**Le contrôle par symétrie.** C'est l'outil le plus efficace pour vérifier ce type de résultat. Si les $n$ objets jouent des rôles interchangeables, chacun occupe la première position dans le même nombre de rangements. Ce nombre vaut donc\n\n$$\\dfrac{n!}{n} = (n-1)!$$\n\nCe raisonnement ne demande aucun calcul supplémentaire et confirme le résultat en quelques secondes.\n\n**Ordre des étapes.** On traite toujours la contrainte **en premier**. Commencer par les places libres conduit à des raisonnements enchevêtrés, car le nombre d'objets disponibles dépend alors de ce qui a déjà été placé.",
+   "formule_principale": "\\text{Total} = (\\text{contrainte}) \\times (\\text{reste libre})",
+   "variantes": [
+    {
+     "nom": "Dénombrement par le complémentaire",
+     "quand_utiliser": "Quand la contrainte est une interdiction plutôt qu'une obligation",
+     "contenu_markdown": "Pour une contrainte du type « l'objet $A$ n'est **pas** en première position », il est plus rapide de compter tous les rangements puis de retrancher ceux qui violent la contrainte :\n\n$$n! - (n-1)!$$\n\nAvec $n = 5$ : $120 - 24 = 96$ parcours ne commençant pas par $A$. Chercher à dénombrer directement obligerait à distinguer les cas selon l'objet placé en première position, ce qui est plus long."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Un site touristique comporte $5$ escales distinctes $A$, $B$, $C$, $D$ et $E$, toutes obligatoires et visitées une seule fois chacune. De combien de façons distinctes peut-on parcourir les $5$ escales si l'on commence toujours par l'escale $A$ ? (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier la contrainte",
+     "justification": "L'énoncé impose l'occupant de la première position du parcours",
+     "resultat_markdown": "La première escale doit être $A$"
+    },
+    {
+     "numero": 2,
+     "action": "Compter les façons de satisfaire la contrainte",
+     "justification": "L'escale de départ est entièrement déterminée, il n'y a aucun choix à faire",
+     "resultat_markdown": "$1$ seule façon de remplir la première position"
+    },
+    {
+     "numero": 3,
+     "action": "Inventorier ce qui reste",
+     "justification": "L'escale $A$ étant placée, elle n'est plus disponible",
+     "resultat_markdown": "Il reste $4$ escales, $B$, $C$, $D$ et $E$, à placer sur $4$ positions"
+    },
+    {
+     "numero": 4,
+     "action": "Dénombrer les rangements restants",
+     "justification": "Les quatre escales sont distinctes, l'ordre compte, toutes sont utilisées : c'est une permutation de $4$ objets",
+     "resultat_markdown": "$4! = 4 \\times 3 \\times 2 \\times 1 = 24$"
+    },
+    {
+     "numero": 5,
+     "action": "Appliquer le principe multiplicatif",
+     "justification": "Les deux étapes sont indépendantes",
+     "resultat_markdown": "$1 \\times 24 = 24$"
+    },
+    {
+     "numero": 6,
+     "action": "Contrôler par symétrie",
+     "justification": "Les cinq escales jouent des rôles interchangeables : chacune est en première position dans le même nombre de parcours",
+     "resultat_markdown": "$\\dfrac{120}{5} = 24$, ce qui confirme le résultat"
+    }
+   ],
+   "conclusion_markdown": "Il existe $24$ parcours distincts commençant par l'escale $A$. Le contrôle par symétrie de l'étape 6 est particulièrement instructif : il redonne le résultat sans aucun calcul, à partir du seul total de la question précédente."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Répondre $5!$ en oubliant que la contrainte réduit le nombre de possibilités",
+     "pourquoi_faux": "$120$ est le nombre de parcours **sans** contrainte. Imposer l'escale de départ élimine forcément des parcours : le résultat doit être strictement inférieur à $120$.",
+     "correction_markdown": "Avant de conclure, compare ton résultat au total sans contrainte : une contrainte ne peut que faire diminuer le nombre de possibilités."
+    },
+    {
+     "erreur_markdown": "Répondre $4! \\times 5$ en croyant qu'il faut aussi choisir l'escale de départ",
+     "pourquoi_faux": "L'escale de départ n'est pas à choisir : elle est **imposée**, c'est $A$. Multiplier par $5$ reviendrait à compter tous les parcours, quelle que soit leur première escale, et l'on retrouverait $120$.",
+     "correction_markdown": "Distingue « une escale précise est imposée » de « une escale d'un certain type est imposée ». Le premier cas donne un facteur $1$, le second un facteur égal au nombre d'escales de ce type."
+    },
+    {
+     "erreur_markdown": "Commencer par dénombrer les places libres avant de traiter la contrainte",
+     "pourquoi_faux": "Le nombre d'objets disponibles pour les places libres dépend de ce qui a déjà été placé. En inversant l'ordre, on risque de compter $5$ choix pour la deuxième position alors que $A$ y est interdite.",
+     "correction_markdown": "Traite toujours la contrainte en premier : elle fixe le décor, et le reste se dénombre ensuite sans ambiguïté."
+    },
+    {
+     "erreur_markdown": "Additionner au lieu de multiplier",
+     "pourquoi_faux": "Écrire $1 + 24 = 25$ traduit une confusion entre étapes successives et cas disjoints. On additionne quand les situations s'excluent, on multiplie quand les choix s'enchaînent.",
+     "correction_markdown": "Pose-toi la question : « et » ou « ou » ? Un « et » entre deux choix successifs impose la multiplication, un « ou » entre deux cas impose l'addition."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Six coureurs franchissent la ligne d'arrivée dans un ordre quelconque, sans ex aequo. Combien de classements sont possibles si l'on sait que le coureur numéro $3$ termine dernier ?",
+     "solution_markdown": "**Étape 1 - satisfaire la contrainte.**\n\nLa dernière place est imposée : elle revient au coureur numéro $3$. Il n'y a donc qu'**une** façon de la remplir.\n\n**Étape 2 - dénombrer le reste.**\n\nIl reste $5$ coureurs à classer sur les $5$ premières places. L'ordre compte, chacun occupe une place, tous sont classés : c'est une permutation de $5$ objets.\n\n$$5! = 120$$\n\n**Étape 3 - principe multiplicatif.**\n\n$$1 \\times 120 = 120$$\n\n**Conclusion.** Il existe $120$ classements possibles.\n\n**Contrôle par symétrie.** Sans contrainte, il y aurait $6! = 720$ classements. Chacun des six coureurs termine dernier dans le même nombre d'entre eux, soit $\\dfrac{720}{6} = 120$. On retrouve bien le résultat."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "On forme un mot de $5$ lettres distinctes choisies parmi $A$, $B$, $C$, $D$, $E$, chacune utilisée une fois. Combien de mots commencent par une consonne **et** se terminent par une voyelle ?",
+     "solution_markdown": "**Étape 1 - inventorier.**\n\nParmi $A$, $B$, $C$, $D$, $E$, les voyelles sont $A$ et $E$, soit $2$ voyelles, et les consonnes $B$, $C$, $D$, soit $3$ consonnes.\n\n**Étape 2 - choisir la première lettre.**\n\nCe doit être une consonne : il y a $3$ possibilités.\n\n**Étape 3 - choisir la dernière lettre.**\n\nCe doit être une voyelle : il y a $2$ possibilités. Ce choix est indépendant du précédent, puisque aucune lettre n'est à la fois voyelle et consonne.\n\n**Étape 4 - remplir les trois places du milieu.**\n\nDeux lettres ont été placées, il en reste $3$ à disposer sur $3$ positions :\n\n$$3! = 6$$\n\n**Étape 5 - principe multiplicatif.**\n\n$$3 \\times 2 \\times 6 = 36$$\n\n**Conclusion.** Il existe $36$ mots répondant aux deux contraintes.\n\n**Contrôle.** Le total sans contrainte vaut $5! = 120$. La proportion de mots retenus est $\\dfrac{36}{120} = 0{,}3$, soit $30\\,\\%$. On peut le retrouver autrement : la probabilité que la première lettre soit une consonne vaut $\\dfrac{3}{5}$, et celle que la dernière soit une voyelle sachant la première fixée vaut $\\dfrac{2}{4}$, d'où $\\dfrac{3}{5} \\times \\dfrac{2}{4} = \\dfrac{6}{20} = 0{,}3$. Cohérent."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Reprenons les $5$ escales $A$, $B$, $C$, $D$, $E$. Combien de parcours commencent par $A$ **ou** se terminent par $E$ ?",
+     "solution_markdown": "**Attention au mot « ou ».** Il est **inclusif** : on compte les parcours qui satisfont au moins l'une des deux conditions, y compris ceux qui les satisfont toutes les deux. On ne peut donc pas simplement additionner.\n\n**Étape 1 - parcours commençant par $A$.**\n\nLa première escale est imposée, les quatre autres se rangent librement :\n\n$$1 \\times 4! = 24$$\n\n**Étape 2 - parcours se terminant par $E$.**\n\nMême raisonnement sur la dernière position :\n\n$$1 \\times 4! = 24$$\n\n**Étape 3 - parcours satisfaisant les deux conditions.**\n\nLa première escale est $A$, la dernière est $E$. Ces deux positions sont imposées, et il reste $3$ escales à placer sur les $3$ positions centrales :\n\n$$1 \\times 1 \\times 3! = 6$$\n\n**Étape 4 - appliquer le principe d'inclusion-exclusion.**\n\nSi l'on additionnait simplement $24 + 24$, les parcours commençant par $A$ **et** finissant par $E$ seraient comptés deux fois. Il faut donc les retrancher une fois :\n\n$$24 + 24 - 6 = 42$$\n\n**Conclusion.** Il existe $42$ parcours commençant par $A$ ou se terminant par $E$.\n\n**Contrôle par le complémentaire.**\n\nComptons les parcours qui ne commencent **pas** par $A$ et ne se terminent **pas** par $E$, puis retranchons du total.\n\n*Première position :* elle ne peut pas être $A$, donc $4$ choix.\n\n*Dernière position :* elle ne peut pas être $E$. Deux cas se présentent.\n\n- Si $E$ a été placé en première position, ce qui représente $1$ des $4$ choix précédents, alors la dernière position peut recevoir n'importe laquelle des $4$ escales restantes, soit $4$ choix, et les $3$ places centrales se remplissent de $3! = 6$ façons : $1 \\times 4 \\times 6 = 24$ parcours.\n- Si $E$ n'a pas été placé en première position, ce qui représente $3$ des $4$ choix, alors la dernière position doit éviter $E$ et l'escale déjà placée, soit $3$ choix, et les $3$ places centrales donnent $6$ façons : $3 \\times 3 \\times 6 = 54$ parcours.\n\nTotal des parcours ne satisfaisant aucune des deux conditions :\n\n$$24 + 54 = 78$$\n\nD'où le nombre cherché :\n\n$$120 - 78 = 42$$\n\nLes deux méthodes concordent.\n\n**Ce qu'il faut retenir.** Dès qu'un énoncé contient un « ou » entre deux contraintes, le principe d'inclusion-exclusion s'impose : additionner les deux cas, puis retrancher leur intersection comptée deux fois."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Face à une contrainte de position, satisfais-la **en premier**, puis dénombre librement ce qui reste.",
+    "Une position entièrement imposée compte pour un facteur $1$ : elle ne se choisit pas.",
+    "Une position soumise à une catégorie compte pour un facteur égal au nombre d'objets de cette catégorie.",
+    "Multiplie les étapes successives, additionne les cas disjoints : demande-toi si c'est un « et » ou un « ou ».",
+    "Contrôle par symétrie : si les $n$ objets sont interchangeables, chacun occupe une position donnée dans $\\dfrac{n!}{n} = (n-1)!$ rangements.",
+    "Compare toujours ton résultat au total sans contrainte : il doit être strictement plus petit.",
+    "Pour une interdiction, passe par le complémentaire : $n! - (n-1)!$ est plus rapide qu'un décompte direct.",
+    "Pour un « ou » entre deux contraintes, additionne les deux cas puis retranche leur intersection."
+   ]
+  }
+ ]
+}

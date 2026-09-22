@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-fonction-repartition-variable-aleatoire-1ere-a",
+  "meta": {
+    "titre": "Fonction de répartition d'une variable aléatoire discrète",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Probabilités",
+    "duree_estimee_min": 25,
+    "tags": [
+      "variable aléatoire",
+      "fonction de répartition",
+      "loi de probabilité",
+      "probabilités cumulées"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-1999-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Cameroun - Session 1999 (MINEDUC-OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-maths-1999-officiel-cameroun-ex3-qb-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une loi de probabilité te donne, valeur par valeur, la probabilité que $X$ prenne exactement telle ou telle valeur. Mais une question du type « quelle est la probabilité que $X$ ne dépasse pas 2 ? » demande d'additionner plusieurs de ces probabilités d'un coup. La fonction de répartition évite de refaire cette somme à chaque fois : c'est un outil qui, pour n'importe quel $x$, donne directement la probabilité cumulée $P(X\\leqslant x)$."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi de probabilité d'une variable aléatoire discrète (tableau valeurs/probabilités).",
+        "Savoir additionner des fractions de dénominateurs différents.",
+        "Distinguer une inégalité stricte d'une inégalité large."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire une fonction de répartition",
+      "contenu_markdown": "La fonction de répartition d'une variable aléatoire discrète $X$ est la fonction $F$ définie sur $\\mathbb{R}$ par $F(x)=P(X\\leqslant x)$. Si $X(\\Omega)=\\{x_1<x_2<\\dots<x_n\\}$, alors $F$ est constante par morceaux : elle vaut $0$ avant $x_1$, elle fait un saut d'amplitude $P(X=x_i)$ à chaque valeur $x_i$, et elle vaut $1$ à partir de $x_n$ (puisque la somme de toutes les probabilités vaut 1). Sur chaque palier $[x_i\\,;x_{i+1}[$, $F(x)$ est égale à la somme cumulée $P(X\\leqslant x_i) = \\sum_{k\\leqslant i} P(X=x_k)$.",
+      "formule_principale": "F(x) = P(X \\leqslant x)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$X$ suit la loi de probabilité donnée par $X(\\Omega)=\\{-3\\,;-1\\,;1\\,;2\\,;4\\,;5\\}$ avec $P(X=-3)=\\dfrac{1}{16}$, $P(X=-1)=\\dfrac{1}{8}$, $P(X=1)=\\dfrac{1}{4}$, $P(X=2)=\\dfrac{1}{16}$, $P(X=4)=\\dfrac{3}{8}$, $P(X=5)=\\dfrac{1}{8}$. Déterminer la fonction de répartition de $X$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ordonner les valeurs de X(Ω) et vérifier la somme des probabilités",
+          "justification": "La fonction de répartition se construit valeur par valeur, dans l'ordre croissant ; vérifier la somme évite de cumuler une loi de probabilité incohérente.",
+          "resultat_markdown": "$-3<-1<1<2<4<5$ et $\\dfrac{1}{16}+\\dfrac{2}{16}+\\dfrac{4}{16}+\\dfrac{1}{16}+\\dfrac{6}{16}+\\dfrac{2}{16}=\\dfrac{16}{16}=1$"
+        },
+        {
+          "numero": 2,
+          "action": "Cumuler les probabilités palier par palier",
+          "justification": "$F(x)$ reste constante entre deux valeurs consécutives de $X(\\Omega)$ et augmente de $P(X=x_i)$ à chaque valeur atteinte.",
+          "resultat_markdown": "$F(x)=0$ si $x<-3$ ; $F(x)=\\dfrac{1}{16}$ si $-3\\leqslant x<-1$ ; $F(x)=\\dfrac{3}{16}$ si $-1\\leqslant x<1$ ; $F(x)=\\dfrac{7}{16}$ si $1\\leqslant x<2$ ; $F(x)=\\dfrac{1}{2}$ si $2\\leqslant x<4$ ; $F(x)=\\dfrac{7}{8}$ si $4\\leqslant x<5$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier la valeur finale",
+          "justification": "La fonction de répartition doit atteindre 1 sur le dernier palier, puisque toutes les probabilités ont alors été cumulées.",
+          "resultat_markdown": "$F(x)=1$ si $x\\geqslant 5$"
+        }
+      ],
+      "conclusion_markdown": "La fonction de répartition est entièrement déterminée : une fonction en escalier, croissante, qui part de 0 et atteint 1 dès que toutes les valeurs de $X(\\Omega)$ ont été cumulées."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre $F(x_i)=P(X\\leqslant x_i)$ avec $P(X<x_i)$.",
+          "pourquoi_faux": "L'inégalité dans la définition de $F$ est large : $F(x_i)$ inclut la probabilité $P(X=x_i)$ elle-même, contrairement à $P(X<x_i)$ qui s'arrête juste avant.",
+          "correction_markdown": "Retiens que le saut de $F$ à $x_i$ inclut $x_i$ : $F(x_i)=F(x_i^-)+P(X=x_i)$, où $F(x_i^-)$ est la valeur juste avant le saut."
+        },
+        {
+          "erreur_markdown": "Oublier de cumuler et redonner à chaque palier la seule probabilité ponctuelle de la valeur atteinte.",
+          "pourquoi_faux": "La fonction de répartition est une somme cumulée depuis le début, pas une simple lecture ligne par ligne du tableau de la loi.",
+          "correction_markdown": "Additionne systématiquement la probabilité du palier précédent à la nouvelle probabilité ponctuelle, jamais la probabilité ponctuelle seule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$Y(\\Omega)=\\{0\\,;1\\,;2\\}$ avec $P(Y=0)=\\dfrac{1}{4}$, $P(Y=1)=\\dfrac{1}{2}$, $P(Y=2)=\\dfrac{1}{4}$. Déterminer la fonction de répartition de $Y$.",
+          "solution_markdown": "$F(x)=0$ si $x<0$ ; $F(x)=\\dfrac{1}{4}$ si $0\\leqslant x<1$ ; $F(x)=\\dfrac{1}{4}+\\dfrac{1}{2}=\\dfrac{3}{4}$ si $1\\leqslant x<2$ ; $F(x)=\\dfrac{3}{4}+\\dfrac{1}{4}=1$ si $x\\geqslant 2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec la loi de $X$ de l'exemple résolu ci-dessus, calculer $P(-1\\leqslant X\\leqslant 4)$ à partir de la fonction de répartition trouvée.",
+          "solution_markdown": "$P(-1\\leqslant X\\leqslant 4)=F(4)-F(-1)+P(X=-1)=P(X=-1)+P(X=1)+P(X=2)+P(X=4)$. Par la fonction de répartition, la façon la plus sûre est : $P(-1\\leqslant X\\leqslant 4)=F(4)-F(-3)= \\dfrac{7}{8}-\\dfrac{1}{16}=\\dfrac{14}{16}-\\dfrac{1}{16}=\\dfrac{13}{16}$. Vérification directe par somme : $\\dfrac{1}{8}+\\dfrac{1}{4}+\\dfrac{1}{16}+\\dfrac{3}{8}=\\dfrac{2+4+1+6}{16}=\\dfrac{13}{16}$. Les deux méthodes concordent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une variable aléatoire discrète $Z$ a pour fonction de répartition une fonction en escalier à 4 paliers, valant successivement $0$, $\\dfrac{1}{3}$, $\\dfrac{2}{3}$ et $1$ aux points $-2$, $0$, $3$ (avant chaque saut). Reconstituer la loi de probabilité de $Z$, sachant que $Z(\\Omega)=\\{-2\\,;0\\,;3\\}$.",
+          "solution_markdown": "Chaque saut de $F$ correspond exactement à la probabilité ponctuelle de la valeur atteinte, puisque la fonction de répartition cumule ces probabilités dans l'ordre croissant des valeurs.\n\n$P(Z=-2)=F(-2)-F(-2^-)=\\dfrac{1}{3}-0=\\dfrac{1}{3}$\\n\\n$P(Z=0)=F(0)-F(0^-)=\\dfrac{2}{3}-\\dfrac{1}{3}=\\dfrac{1}{3}$\\n\\n$P(Z=3)=F(3)-F(3^-)=1-\\dfrac{2}{3}=\\dfrac{1}{3}$\\n\\nLa loi de $Z$ est donc équirépartie sur ses trois valeurs : $P(Z=-2)=P(Z=0)=P(Z=3)=\\dfrac{1}{3}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$F(x)=P(X\\leqslant x)$ : une fonction en escalier, toujours croissante, qui part de 0 et atteint 1.",
+        "Chaque saut de F a pour amplitude exactement la probabilité ponctuelle de la valeur atteinte.",
+        "Ne confonds jamais $F(x_i)$ (inégalité large, inclut $x_i$) avec $P(X<x_i)$ (inégalité stricte, exclut $x_i$).",
+        "Construis toujours F par cumul progressif, dans l'ordre croissant des valeurs de X(Ω), jamais palier par palier isolément.",
+        "Au Probatoire, la fonction de répartition sert aussi à calculer rapidement des probabilités d'intervalles sans refaire toute la somme : F(b) moins F(a) juste avant a donne la probabilité cumulée entre ces deux bornes."
+      ]
+    }
+  ]
+}

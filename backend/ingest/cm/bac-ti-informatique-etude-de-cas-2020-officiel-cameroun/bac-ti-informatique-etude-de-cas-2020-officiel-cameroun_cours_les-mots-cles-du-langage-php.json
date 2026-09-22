@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-les-mots-cles-du-langage-php-tle-ti",
+  "meta": {
+    "titre": "Les mots-clés du langage PHP",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases du langage PHP",
+    "duree_estimee_min": 15,
+    "tags": [
+      "mots-clés",
+      "PHP",
+      "structures de contrôle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q4.3-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans tout langage de programmation, certains mots ne peuvent pas être utilisés comme noms de variables parce qu'ils appartiennent déjà à la grammaire du langage lui-même : ce sont les mots-clés. Les reconnaître dans un code, c'est déjà repérer son squelette avant même de comprendre le détail des calculs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une instruction PHP simple",
+        "Avoir déjà rencontré une structure conditionnelle ou une boucle dans un autre langage"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un mot réservé par la syntaxe du langage",
+      "contenu_markdown": "Un **mot-clé** (ou mot réservé) du langage PHP est un terme qui déclenche un comportement précis de l'interpréteur, indépendamment de tout code écrit par le programmeur : `if`, `else`, `while`, `for`, `foreach`, `echo`, `return`, `function`, `class` en sont des exemples. Un mot-clé se distingue d'une fonction prédéfinie (comme `mysql_connect()`) par le fait qu'il ne s'écrit jamais avec des parenthèses qui attendraient des arguments à fournir : il fait partie de la grammaire même du langage, pas de sa bibliothèque de fonctions.",
+      "formule_principale": "Mot-clé = grammaire du langage (if, while, echo...) ≠ fonction prédéfinie (avec parenthèses)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code de VIPBoutique, identifier deux mots-clés du langage PHP et donner leur signification.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les termes qui ne sont pas de simples noms de variables ou de fonctions définies par l'utilisateur",
+          "justification": "Un mot-clé appartient à la syntaxe du langage, pas au vocabulaire du programmeur",
+          "resultat_markdown": "Dans le code : `while` (ligne 7) et `echo` (ligne 9) sont deux mots-clés du langage PHP."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier qu'ils ne prennent pas de parenthèses comme une fonction",
+          "justification": "Cette absence de parenthèses distingue un mot-clé d'une fonction prédéfinie",
+          "resultat_markdown": "`while(...)` utilise des parenthèses pour sa condition, mais reste une structure de contrôle du langage, pas une fonction appelable ailleurs ; `echo` n'a même pas besoin de parenthèses."
+        },
+        {
+          "numero": 3,
+          "action": "Formuler la signification de chacun",
+          "justification": "Chaque mot-clé a un rôle précis et fixe dans le langage",
+          "resultat_markdown": "`while` répète un bloc tant qu'une condition est vraie ; `echo` affiche à l'écran une ou plusieurs chaînes de caractères."
+        }
+      ],
+      "conclusion_markdown": "Deux mots-clés PHP identifiés : `while` (structure répétitive) et `echo` (affichage)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `mysql_connect` ou `mysql_query` comme des \"mots-clés\" du langage",
+          "pourquoi_faux": "Ce sont des fonctions prédéfinies de l'extension MySQL, pas des éléments de la grammaire de PHP : elles auraient pu ne pas exister sans que PHP cesse d'être PHP, contrairement à `while` ou `if`.",
+          "correction_markdown": "Teste-toi ainsi : un mot-clé n'attend jamais d'arguments entre parenthèses comme le ferait une fonction (à l'exception de la condition d'un `if`/`while`, qui reste une structure de contrôle, pas un appel de fonction)."
+        },
+        {
+          "erreur_markdown": "Oublier `die` ou `or` comme mots-clés possibles",
+          "pourquoi_faux": "`or` est un opérateur logique du langage et `die` une construction de langage qui arrête l'exécution : les deux appartiennent bien à la syntaxe de PHP, même s'ils sont moins immédiatement reconnus que `if` ou `while`.",
+          "correction_markdown": "Ne te limite pas aux mots-clés les plus \"visibles\" (if, while, for) : les opérateurs logiques écrits en toutes lettres (`and`, `or`, `xor`) sont aussi des mots réservés du langage."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "`if` est-il un mot-clé du langage PHP ou une fonction ? Justifier.",
+          "solution_markdown": "`if` est un **mot-clé** : il introduit une structure conditionnelle intégrée à la syntaxe de PHP, et ne s'utilise jamais comme une fonction que l'on pourrait appeler ailleurs dans le code avec des arguments."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans l'instruction `return $total;`, `return` est-il un mot-clé ? Quel est son rôle ?",
+          "solution_markdown": "Oui, `return` est un mot-clé du langage PHP. Il termine l'exécution d'une fonction en cours et renvoie la valeur qui le suit (ici `$total`) à l'endroit du programme qui a appelé cette fonction."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi ne peut-on pas nommer une variable `$while` ou `$echo` en PHP ?",
+          "solution_markdown": "`while` et `echo` sont des mots réservés de la grammaire du langage : l'interpréteur PHP leur attribue un sens syntaxique fixe (respectivement une boucle et un affichage). Les utiliser comme nom de variable créerait une ambiguïté que l'interpréteur ne peut pas résoudre, et PHP interdit donc cette utilisation - une règle valable pour tous les mots-clés du langage, quel que soit celui choisi."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un mot-clé appartient à la grammaire du langage PHP, pas au vocabulaire défini par le programmeur.",
+        "`if`, `while`, `for`, `echo`, `return`, `function` en sont des exemples courants.",
+        "Un mot-clé ne s'écrit jamais comme une fonction que l'on pourrait appeler avec des arguments arbitraires.",
+        "Il ne peut jamais servir de nom de variable.",
+        "Au BAC TI, la question piège consiste à confondre un mot-clé avec une fonction prédéfinie comme mysql_connect : vérifie toujours si le terme appartient à la syntaxe du langage ou à sa bibliothèque de fonctions."
+      ]
+    }
+  ]
+}

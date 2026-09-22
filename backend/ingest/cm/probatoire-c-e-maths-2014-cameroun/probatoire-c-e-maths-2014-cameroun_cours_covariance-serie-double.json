@@ -1,0 +1,159 @@
+{
+ "cours_id": "cours-covariance-serie-double-1ere-ce",
+ "meta": {
+  "titre": "Calculer la covariance d'une série statistique double",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistique à deux variables",
+  "duree_estimee_min": 25,
+  "tags": [
+   "covariance",
+   "série statistique double",
+   "moyenne",
+   "formule développée"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex2-q2a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Quand le rang de l'année augmente, la fréquentation d'un site touristique augmente-t-elle vraiment, ou est-ce une impression donnée par un nuage de points mal regardé ? La covariance répond à cette question par un nombre : positive, les deux caractères varient dans le même sens ; négative, en sens contraire. C'est la brique de base de tout ce qui suit en statistique double, coefficient de corrélation comme droite de régression."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Calculer la moyenne d'une série statistique simple",
+    "Lire une série statistique double présentée en tableau",
+    "Maîtriser le calcul avec des décimaux et des fractions"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux formules pour une même covariance",
+   "contenu_markdown": "Soit une série statistique double $\\left(x_{i}\\,;\\,y_{i}\\right)_{1\\leqslant i\\leqslant n}$, de moyennes $\\bar{x}$ et $\\bar{y}$.\n\n**Définition.**\n\n$$\\operatorname{Cov}(X,Y)=\\frac{1}{n}\\sum_{i=1}^{n}\\left(x_{i}-\\bar{x}\\right)\\left(y_{i}-\\bar{y}\\right)$$\n\n**Formule développée**, celle qu'on utilise en pratique :\n\n$$\\operatorname{Cov}(X,Y)=\\frac{1}{n}\\sum_{i=1}^{n}x_{i}y_{i}-\\bar{x}\\,\\bar{y}$$\n\nLes deux expressions sont égales : il suffit de développer le produit dans la définition et d'utiliser $\\dfrac{1}{n}\\sum x_{i}=\\bar{x}$ et $\\dfrac{1}{n}\\sum y_{i}=\\bar{y}$.\n\n**Pourquoi préférer la seconde ?** La définition oblige à calculer $n$ écarts en $x$, $n$ écarts en $y$, puis $n$ produits, soit $3n$ opérations souvent décimales. La formule développée ne demande qu'une seule ligne supplémentaire au tableau, celle des produits $x_{i}y_{i}$, et deux moyennes.\n\n**Interprétation du signe.**\n\n- $\\operatorname{Cov}(X,Y)>0$ : les deux caractères varient globalement dans le même sens.\n- $\\operatorname{Cov}(X,Y)<0$ : ils varient en sens contraires.\n- $\\operatorname{Cov}(X,Y)=0$ : aucune tendance affine ne se dégage.\n\n**Cas particulier utile.** $\\operatorname{Cov}(X,X)=V(X)$ : la variance est la covariance d'un caractère avec lui-même.",
+   "formule_principale": "\\operatorname{Cov}(X,Y)=\\frac{1}{n}\\sum_{i=1}^{n}x_{i}y_{i}-\\bar{x}\\,\\bar{y}",
+   "variantes": [
+    {
+     "nom": "Formule de définition (écarts à la moyenne)",
+     "quand_utiliser": "Quand l'énoncé impose explicitement de passer par les écarts, ou quand $\\bar{x}$ et $\\bar{y}$ sont des entiers",
+     "contenu_markdown": "On dresse deux colonnes supplémentaires, $x_{i}-\\bar{x}$ et $y_{i}-\\bar{y}$, puis la colonne de leurs produits. La somme divisée par $n$ donne la covariance. Cette voie est plus lisible pédagogiquement, car elle montre que la covariance mesure la concordance des écarts à la moyenne, mais elle est nettement plus longue dès que les moyennes ne sont pas entières."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Le tableau suivant donne la fréquentation d'un site touristique sur $7$ ans. Calculer la covariance de la série $(X\\,;\\,Y)$, à $10^{-2}$ près par excès.\n\n| Rang de l'année ($X$) | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ |\n|---|---|---|---|---|---|---|---|\n| Nombre de personnes en milliers ($Y$) | $1{,}5$ | $2$ | $3{,}5$ | $1$ | $6$ | $8$ | $10$ |\n\n(Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Compter l'effectif",
+     "justification": "Le tableau comporte sept couples de valeurs",
+     "resultat_markdown": "$n=7$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer $\\bar{x}$",
+     "justification": "Somme des rangs divisée par $7$ ; la somme $1+2+\\cdots+7$ vaut $28$",
+     "resultat_markdown": "$\\bar{x}=\\dfrac{28}{7}=4$"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer $\\bar{y}$",
+     "justification": "Somme terme à terme : $1{,}5+2=3{,}5$ ; $+3{,}5=7$ ; $+1=8$ ; $+6=14$ ; $+8=22$ ; $+10=32$",
+     "resultat_markdown": "$\\bar{y}=\\dfrac{32}{7}$"
+    },
+    {
+     "numero": 4,
+     "action": "Ajouter la ligne des produits $x_{i}y_{i}$ au tableau",
+     "justification": "C'est la seule ligne de calcul qu'exige la formule développée",
+     "resultat_markdown": "$1{,}5\\;\\vert\\;4\\;\\vert\\;10{,}5\\;\\vert\\;4\\;\\vert\\;30\\;\\vert\\;48\\;\\vert\\;70$"
+    },
+    {
+     "numero": 5,
+     "action": "Sommer ces produits",
+     "justification": "Somme terme à terme : $1{,}5+4=5{,}5$ ; $+10{,}5=16$ ; $+4=20$ ; $+30=50$ ; $+48=98$ ; $+70=168$",
+     "resultat_markdown": "$\\displaystyle\\sum_{i=1}^{7}x_{i}y_{i}=168$"
+    },
+    {
+     "numero": 6,
+     "action": "Appliquer la formule développée",
+     "justification": "$\\operatorname{Cov}(X,Y)=\\dfrac{1}{n}\\sum x_{i}y_{i}-\\bar{x}\\,\\bar{y}$, avec $\\dfrac{168}{7}=24$ et $4\\times\\dfrac{32}{7}=\\dfrac{128}{7}$",
+     "resultat_markdown": "$\\operatorname{Cov}(X,Y)=24-\\dfrac{128}{7}=\\dfrac{168-128}{7}=\\dfrac{40}{7}$"
+    },
+    {
+     "numero": 7,
+     "action": "Donner l'arrondi demandé",
+     "justification": "$\\dfrac{40}{7}=5{,}714285\\ldots$ ; l'arrondi **par excès** prend le premier centième au-dessus, et non le centième le plus proche",
+     "resultat_markdown": "$\\operatorname{Cov}(X,Y)\\approx 5{,}72$"
+    }
+   ],
+   "conclusion_markdown": "La covariance vaut exactement $\\dfrac{40}{7}$, soit $5{,}72$ à $10^{-2}$ près par excès. Elle est positive : la fréquentation augmente globalement avec le rang de l'année. Cette valeur $5{,}72$ est celle qu'utilisera toute la suite de l'exercice, puisque $\\dfrac{5{,}72}{4}=1{,}43$ est exactement le coefficient directeur de la droite de régression annoncé par l'énoncé."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Oublier de soustraire $\\bar{x}\\,\\bar{y}$ et donner $\\dfrac{1}{n}\\sum x_{i}y_{i}$ comme covariance",
+     "pourquoi_faux": "Sans cette soustraction, on obtient ici $24$ au lieu de $5{,}72$ : un résultat quatre fois trop grand. La quantité $\\dfrac{1}{n}\\sum x_{i}y_{i}$ n'est que la moyenne des produits ; la covariance mesure ce qui reste une fois retiré l'effet des moyennes.",
+     "correction_markdown": "Écris la formule complète **avant** de substituer les valeurs. Contrôle d'ordre de grandeur : la covariance ne peut jamais dépasser $\\sigma_{X}\\sigma_{Y}$, ici $2\\times\\sqrt{10{,}46}\\approx 6{,}47$."
+    },
+    {
+     "erreur_markdown": "Confondre « à $10^{-2}$ près par excès » et « arrondi à $10^{-2}$ près »",
+     "pourquoi_faux": "L'arrondi ordinaire de $5{,}714\\ldots$ donne $5{,}71$ ; l'arrondi par excès donne $5{,}72$. Ce n'est pas une subtilité gratuite : avec $5{,}71$, le coefficient directeur vaudrait $1{,}4275$ et non le $1{,}43$ annoncé par la suite de l'énoncé.",
+     "correction_markdown": "« Par excès » veut dire au-dessus : on remonte au centième supérieur, quelle que soit la décimale suivante. « Par défaut » veut dire en dessous. « Arrondi » choisit le plus proche."
+    },
+    {
+     "erreur_markdown": "Arrondir $\\bar{y}$ à $4{,}57$ dès le début, puis calculer $\\operatorname{Cov}=24-4\\times 4{,}57$",
+     "pourquoi_faux": "On obtient $24-18{,}28=5{,}72$ par chance ici, mais l'arrondi précoce d'une valeur intermédiaire propage l'erreur de façon imprévisible sur d'autres séries. La règle est de ne jamais arrondir avant le résultat final.",
+     "correction_markdown": "Conserve $\\bar{y}=\\dfrac{32}{7}$ sous forme de fraction jusqu'au bout. Le calcul $\\dfrac{168-128}{7}$ est même plus simple que le calcul décimal."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Calculer la covariance de la série double suivante.\n\n| $x_{i}$ | $1$ | $2$ | $3$ | $4$ |\n|---|---|---|---|---|\n| $y_{i}$ | $3$ | $5$ | $6$ | $10$ |",
+     "solution_markdown": "**Effectif.** $n=4$.\n\n**Moyennes.**\n\n$$\\bar{x}=\\frac{1+2+3+4}{4}=\\frac{10}{4}=2{,}5\\qquad;\\qquad \\bar{y}=\\frac{3+5+6+10}{4}=\\frac{24}{4}=6$$\n\n**Ligne des produits.**\n\n| $x_{i}y_{i}$ | $3$ | $10$ | $18$ | $40$ |\n|---|---|---|---|---|\n\nSomme : $3+10=13$ ; $13+18=31$ ; $31+40=71$. Donc $\\displaystyle\\sum x_{i}y_{i}=71$.\n\n**Covariance.**\n\n$$\\operatorname{Cov}(X,Y)=\\frac{71}{4}-2{,}5\\times 6=17{,}75-15=2{,}75$$\n\nElle est positive : les deux caractères varient dans le même sens."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Calculer la covariance de la série double suivante, puis interpréter son signe.\n\n| $x_{i}$ | $2$ | $4$ | $6$ | $8$ | $10$ |\n|---|---|---|---|---|---|\n| $y_{i}$ | $9$ | $7$ | $6$ | $3$ | $1$ |",
+     "solution_markdown": "**Effectif.** $n=5$.\n\n**Moyennes.**\n\n$$\\bar{x}=\\frac{2+4+6+8+10}{5}=\\frac{30}{5}=6\\qquad;\\qquad \\bar{y}=\\frac{9+7+6+3+1}{5}=\\frac{26}{5}=5{,}2$$\n\n**Ligne des produits.**\n\n| $x_{i}y_{i}$ | $18$ | $28$ | $36$ | $24$ | $10$ |\n|---|---|---|---|---|---|\n\nSomme : $18+28=46$ ; $46+36=82$ ; $82+24=106$ ; $106+10=116$. Donc $\\displaystyle\\sum x_{i}y_{i}=116$.\n\n**Covariance.**\n\n$$\\operatorname{Cov}(X,Y)=\\frac{116}{5}-6\\times 5{,}2=23{,}2-31{,}2=-8$$\n\n**Interprétation.** La covariance est négative : lorsque $X$ augmente, $Y$ diminue globalement. C'est bien ce que montre le tableau, où les $y_{i}$ décroissent régulièrement pendant que les $x_{i}$ croissent."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "On considère la série double suivante, où $a$ est un réel.\n\n| $x_{i}$ | $1$ | $2$ | $3$ |\n|---|---|---|---|\n| $y_{i}$ | $4$ | $a$ | $8$ |\n\nDéterminer la valeur de $a$ pour laquelle la covariance de $(X\\,;\\,Y)$ est nulle. Que peut-on alors dire de la droite de régression de $Y$ en $X$ ?",
+     "solution_markdown": "**Étape 1 — effectif et moyenne de $X$.**\n\n$$n=3\\qquad;\\qquad \\bar{x}=\\frac{1+2+3}{3}=\\frac{6}{3}=2$$\n\n**Étape 2 — moyenne de $Y$ en fonction de $a$.**\n\n$$\\bar{y}=\\frac{4+a+8}{3}=\\frac{a+12}{3}$$\n\n**Étape 3 — somme des produits en fonction de $a$.**\n\n$$\\sum x_{i}y_{i}=1\\times 4+2\\times a+3\\times 8=4+2a+24=2a+28$$\n\n**Étape 4 — expression de la covariance.**\n\n$$\\operatorname{Cov}(X,Y)=\\frac{2a+28}{3}-2\\times\\frac{a+12}{3}=\\frac{2a+28-2(a+12)}{3}$$\n\nDéveloppement du numérateur : $2a+28-2a-24=4$.\n\n$$\\operatorname{Cov}(X,Y)=\\frac{4}{3}$$\n\n**Étape 5 — conclusion.** La covariance vaut $\\dfrac{4}{3}$ **quelle que soit** la valeur de $a$ : il n'existe aucun réel $a$ annulant la covariance.\n\n**Interprétation.** Le point $\\left(2\\,;\\,a\\right)$ a pour abscisse $\\bar{x}=2$ : il se situe exactement sur la verticale du point moyen. Déplacer ce point verticalement fait bouger $\\bar{y}$ d'autant, sans jamais modifier la concordance des écarts en $x$ et en $y$, car son écart $x_{i}-\\bar{x}$ est nul. Il ne pèse donc pas dans la covariance.\n\nLe coefficient directeur de la droite de régression de $Y$ en $X$ vaut $a_{\\text{reg}}=\\dfrac{\\operatorname{Cov}(X,Y)}{V(X)}$. Avec $V(X)=\\dfrac{1+4+9}{3}-2^{2}=\\dfrac{14}{3}-4=\\dfrac{2}{3}$, on obtient\n\n$$a_{\\text{reg}}=\\frac{4/3}{2/3}=2$$\n\nLa droite de régression a donc toujours pour coefficient directeur $2$, indépendamment de $a$ : seule son ordonnée à l'origine change, puisqu'elle doit passer par le point moyen $G\\left(2\\,;\\,\\dfrac{a+12}{3}\\right)$."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Utilise toujours la formule développée $\\operatorname{Cov}(X,Y)=\\dfrac{1}{n}\\sum x_{i}y_{i}-\\bar{x}\\,\\bar{y}$ : une seule ligne de calcul à ajouter au tableau.",
+    "Écris la ligne $x_{i}y_{i}$ sous le tableau de l'énoncé avant de sommer : c'est là que se logent presque toutes les erreurs, et le correcteur y voit ta méthode.",
+    "N'arrondis jamais une moyenne en cours de calcul : garde les fractions jusqu'au résultat final.",
+    "Le signe de la covariance se lit directement : positif, les deux caractères varient ensemble ; négatif, en sens contraires.",
+    "Distingue « par excès », « par défaut » et « arrondi » : ce sont trois consignes différentes, et l'énoncé choisit la sienne pour que la suite tombe juste.",
+    "Au Probatoire, la covariance n'est jamais une fin en soi : elle alimente le coefficient de corrélation et la droite de régression des questions suivantes. Une erreur ici se propage sur tout l'exercice, alors vérifie-la."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-tableaux-frequences-cumulees-croissantes-decroissantes-premiere-a",
+  "meta": {
+    "titre": "Construction des tableaux de fréquences cumulées croissantes et décroissantes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "effectifs cumulés",
+      "fréquences cumulées",
+      "tableau statistique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-MATHS-2000-CM",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2000 (Cameroun, MINEDUC-OBC)",
+    "correction_id": null,
+    "exercice_numero": "B",
+    "rappel_id": "rdm-probatoire-a-maths-2000-officiel-cameroun-exB-qI.2-1",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de pains pèsent moins de 54 g ? Au moins 55 g ? Un tableau d'effectifs simples ne répond pas directement à ce genre de question : il faut cumuler. Les tableaux de fréquences cumulées croissantes et décroissantes permettent de lire directement ces informations, et servent aussi de base pour tracer un polygone cumulatif ou trouver une classe médiane."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lecture d'un tableau à classes",
+        "Addition et soustraction successives",
+        "Calcul d'une fréquence en pourcentage"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Cumuler dans un sens, puis dans l'autre",
+      "contenu_markdown": "L'effectif cumulé croissant (ECC) d'une borne est la somme des effectifs de toutes les classes situées avant cette borne : il répond à « combien de valeurs sont strictement inférieures à cette borne ? ». L'effectif cumulé décroissant (ECD) répond à l'inverse : « combien de valeurs sont supérieures ou égales à cette borne ? ». On a toujours $\\mathrm{ECD}=N-\\mathrm{ECC}_{\\text{précédent}}$. Les fréquences cumulées s'obtiennent en divisant chaque effectif cumulé par $N$.",
+      "formule_principale": "\\mathrm{ECC}(\\text{borne}) + \\mathrm{ECD}(\\text{borne}) = N + n_{\\text{classe à cheval}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un échantillon de 30 pains est réparti en 10 classes d'effectifs 1, 1, 2, 3, 5, 6, 4, 4, 2, 2. Construire les tableaux de fréquences cumulées croissantes et décroissantes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier l'effectif total",
+          "justification": "Le dernier effectif cumulé croissant doit être égal à l'effectif total : c'est le premier contrôle à faire.",
+          "resultat_markdown": "$N=1+1+2+3+5+6+4+4+2+2=30$"
+        },
+        {
+          "numero": 2,
+          "action": "Cumuler les effectifs de gauche à droite",
+          "justification": "Chaque effectif cumulé croissant est la somme du précédent et de l'effectif de la classe courante.",
+          "resultat_markdown": "ECC successifs : 1, 2, 4, 7, 12, 18, 22, 26, 28, 30"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire les effectifs cumulés décroissants",
+          "justification": "On retranche à $N$ chaque effectif cumulé croissant de la classe précédente.",
+          "resultat_markdown": "ECD successifs (à partir de 52) : 30, 29, 28, 26, 23, 18, 12, 8, 4, 2"
+        },
+        {
+          "numero": 4,
+          "action": "Convertir en fréquences",
+          "justification": "On divise chaque effectif cumulé par $N=30$ et on multiplie par 100.",
+          "resultat_markdown": "FCC : 3,33 % à 100 % ; FCD : 100 % à 6,67 %"
+        }
+      ],
+      "conclusion_markdown": "Les deux tableaux se lisent en sens opposés à partir des mêmes bornes de classes ; leur cohérence se vérifie en retrouvant $N=30$ au premier et au dernier effectif cumulé de chaque tableau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Cumuler les effectifs décroissants dans le même sens que les croissants",
+          "pourquoi_faux": "Un ECD se construit en partant du total et en retranchant, pas en additionnant de gauche à droite comme un ECC.",
+          "correction_markdown": "Partir de $N$ pour le premier ECD, puis retrancher successivement chaque effectif de classe."
+        },
+        {
+          "erreur_markdown": "Associer un effectif cumulé croissant à la mauvaise borne (borne inférieure au lieu de supérieure)",
+          "pourquoi_faux": "L'ECC d'une classe $[e_1\\,;e_2[$ se rattache à la borne $e_2$ (« moins de $e_2$ »), pas à $e_1$.",
+          "correction_markdown": "Toujours associer l'effectif cumulé croissant à la borne supérieure de la classe qu'on vient d'ajouter."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un tableau a 3 classes d'effectifs 4, 6, 10. Donner les effectifs cumulés croissants.",
+          "solution_markdown": "ECC : 4, puis $4+6=10$, puis $10+10=20$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre les effectifs 4, 6, 10 (total $N=20$) et donner les effectifs cumulés décroissants.",
+          "solution_markdown": "ECD : $20$ (avant la 1ʳᵉ classe), $20-4=16$ (avant la 2ᵉ), $16-6=10$ (avant la 3ᵉ)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un tableau de 4 classes a des effectifs cumulés croissants 5, 12, 20, 25. Retrouver les effectifs de chaque classe et l'effectif total.",
+          "solution_markdown": "L'effectif total est le dernier ECC : $N=25$. Les effectifs de classe s'obtiennent par différences successives : $5$, $12-5=7$, $20-12=8$, $25-20=5$. Vérification : $5+7+8+5=25$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un effectif cumulé croissant compte les valeurs strictement inférieures à une borne, en cumulant de gauche à droite.",
+        "Un effectif cumulé décroissant compte les valeurs supérieures ou égales à une borne, en partant du total et en retranchant.",
+        "Le contrôle le plus rapide : le dernier ECC et le premier ECD doivent tous deux être égaux à l'effectif total $N$.",
+        "Diviser chaque effectif cumulé par $N$ donne directement la fréquence cumulée correspondante, en pourcentage."
+      ]
+    }
+  ]
+}

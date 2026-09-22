@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-identification-diagramme-sequence-uml-tle-ti",
+  "meta": {
+    "titre": "Identifier un diagramme de séquence UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagrammes UML comportementaux",
+    "duree_estimee_min": 15,
+    "tags": [
+      "diagramme de sequence",
+      "UML",
+      "ligne de vie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex1-q1.5a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un schéma UML inconnu, la première question à te poser n'est jamais « que représente-t-il ? » mais « à quelle famille appartient-il ? ». Un simple coup d'œil sur la forme générale du dessin, avant même de lire le moindre libellé, suffit souvent à identifier le type exact de diagramme UML que tu as sous les yeux."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'UML propose plusieurs familles de diagrammes : les diagrammes structurels (comme le diagramme de classe) qui décrivent l'organisation statique d'un système, et les diagrammes comportementaux qui décrivent son fonctionnement dynamique."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le repère visuel du diagramme de séquence",
+      "contenu_markdown": "Le diagramme de séquence est un diagramme UML comportemental (d'interaction) qui représente les échanges entre acteurs et objets, ordonnés le long d'un axe temporel vertical. Son repère visuel caractéristique est la ligne de vie : une ligne verticale en pointillés qui descend sous chaque acteur ou objet, matérialisant sa durée de présence dans le scénario, reliée par des flèches horizontales qui représentent les messages échangés, dans l'ordre chronologique de haut en bas."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un schéma représente un client, un vendeur et un ouvrier reliés par des flèches horizontales portant des libellés comme « Commande » ou « livrer », chacun surmontant une ligne verticale en pointillés. Quel nom donne-t-on à ce schéma ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la présence de lignes de vie",
+          "justification": "La ligne verticale en pointillés sous chaque acteur est le signal distinctif des diagrammes d'interaction UML.",
+          "resultat_markdown": "Trois lignes de vie sont visibles, une par acteur (client, vendeur, ouvrier)."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer l'organisation temporelle",
+          "justification": "Les flèches horizontales reliant les lignes de vie, lues de haut en bas, indiquent une chronologie d'échanges.",
+          "resultat_markdown": "Les messages (Commande, livrer...) s'enchaînent dans le temps, du haut vers le bas du schéma."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur le type de diagramme",
+          "justification": "La combinaison lignes de vie verticales + messages chronologiques horizontaux est la signature exclusive du diagramme de séquence, parmi tous les diagrammes UML.",
+          "resultat_markdown": "Il s'agit d'un diagramme de séquence."
+        }
+      ],
+      "conclusion_markdown": "Dès qu'un schéma UML combine des lignes de vie verticales et des messages horizontaux ordonnés dans le temps, il s'agit d'un diagramme de séquence."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre diagramme de séquence et diagramme de classe",
+          "pourquoi_faux": "Le diagramme de classe est structurel : il montre des rectangles de classes reliés par des relations statiques (association, héritage...), sans aucune notion de temps ni de ligne de vie.",
+          "correction_markdown": "Cherche la présence de lignes de vie verticales en pointillés : leur absence signale un diagramme structurel, pas un diagramme de séquence."
+        },
+        {
+          "erreur_markdown": "Confondre diagramme de séquence et diagramme de collaboration",
+          "pourquoi_faux": "Les deux représentent des échanges de messages entre objets, mais seul le diagramme de séquence organise ces échanges le long d'un axe temporel vertical explicite au moyen de lignes de vie ; le diagramme de collaboration les numérote simplement autour des objets, sans axe temporel.",
+          "correction_markdown": "Si tu vois un axe vertical de temps avec des lignes de vie, c'est un diagramme de séquence, pas un diagramme de collaboration."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel élément graphique, présent sous chaque acteur ou objet d'un diagramme de séquence, permet de le reconnaître immédiatement ?",
+          "solution_markdown": "La ligne de vie : une ligne verticale en pointillés qui descend sous l'acteur ou l'objet pendant toute sa durée de présence dans le scénario."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un schéma représente uniquement des rectangles de classes reliés par des traits portant des multiplicités (1, 0..*). S'agit-il d'un diagramme de séquence ? Justifiez.",
+          "solution_markdown": "Non, il s'agit d'un diagramme de classe. Il n'y a ni ligne de vie, ni message, ni notion de chronologie : les multiplicités et les relations statiques entre classes sont la signature du diagramme de classe, un diagramme structurel, non comportemental."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquez pourquoi un diagramme de séquence est mieux adapté qu'un diagramme de classe pour représenter le scénario complet d'une commande de fleurs, depuis la demande de renseignements jusqu'à la remise du bouquet.",
+          "solution_markdown": "Un diagramme de classe décrit l'organisation statique du système : quelles classes existent, quels attributs elles portent, comment elles sont reliées entre elles en permanence. Or, le scénario d'une commande de fleurs est avant tout une succession d'échanges, dans un ordre précis, entre un client, un vendeur et un ouvrier (demander, commander, fabriquer, facturer, livrer, régler...). Cette dimension temporelle et interactive ne peut pas être représentée par un diagramme structurel comme le diagramme de classe, qui ne montre aucune notion d'ordre ni d'échange ; elle nécessite un diagramme comportemental comme le diagramme de séquence, spécifiquement conçu pour ordonner des messages entre acteurs dans le temps."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le diagramme de séquence appartient à la famille des diagrammes UML comportementaux (d'interaction).",
+        "Son repère visuel unique : des lignes de vie verticales en pointillés, reliées par des messages horizontaux lus de haut en bas.",
+        "Ne le confonds ni avec le diagramme de classe (structurel, sans notion de temps), ni avec le diagramme de collaboration (interactions sans axe temporel explicite).",
+        "Au BAC, la question « quel nom donne-t-on à ce schéma » se résout en une phrase dès que tu as repéré la ligne de vie : ne cherche pas plus compliqué."
+      ]
+    }
+  ]
+}

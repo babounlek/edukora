@@ -3,13 +3,14 @@ import { Link } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
+import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
 import { ArrowRight } from "lucide-react"
 
 import { Callout } from "@/components/Callout"
 import { SolutionToggle } from "@/components/SolutionToggle"
-import { extractCallouts, extractSolutionToggles, flattenReactText, italicizeQuotes, normalizeMathBlocks, type CalloutVariant } from "@/lib/markdown"
+import { extractCallouts, extractSolutionToggles, flattenReactText, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks, type CalloutVariant } from "@/lib/markdown"
 import { API_BASE_URL } from "@/api/client"
 
 const CALLOUT_SENTINEL = /^\[CALLOUT:(piege|conseil|rappel)\]$/
@@ -18,6 +19,9 @@ const SOLUTION_TOGGLE_SENTINEL = /^\[SOLUTION_TOGGLE\]$/
 // possible sur du contenu compilé avant cette bascule (voir VisibleQuerySet.par_slug_ou_id
 // côté backend, qui accepte encore les deux en lecture).
 const COURS_LINK_SENTINEL = /^\[COURS_LINK:([a-zA-Z0-9_-]+)\]$/
+// Voir groupBareCoursLinks (lib/markdown) : plusieurs marqueurs orphelins consécutifs
+// regroupés en un seul, pour un encadré compact plutôt qu'une pile de boutons identiques.
+const COURS_LINK_GROUP_SENTINEL = /^\[COURS_LINK_GROUP:([a-zA-Z0-9_,-]+)\]$/
 const COURS_REF_HREF = /^COURS_REF:([a-zA-Z0-9_-]+)$/
 
 /** Sépare les enfants "[COURS_LINK:slug]" (un par cours associé) du reste du contenu. */
@@ -77,9 +81,36 @@ export function EpreuveMarkdown({ markdown, directCoursLinks = false }: EpreuveM
    * Marqueur "[COURS_LINK:slug]" isolé (pas dans un Rappel de méthode) : filet de
    * sécurité quand le rappel source a été reformulé et ne matche aucun bloc précis
    * (voir _annotate_cours_links côté backend) - le lien reste visible.
+   *
+   * "[COURS_LINK_GROUP:slug1,slug2,...]" : plusieurs marqueurs de ce type consécutifs
+   * (voir groupBareCoursLinks, lib/markdown) - un exercice avec beaucoup de rappels non
+   * appariés en accumule plusieurs à la suite, rendus dans un seul encadré plutôt
+   * qu'empilés en boutons identiques.
    */
   function MarkdownParagraph({ children }: { children?: ReactNode }) {
-    const match = flattenReactText(children).trim().match(COURS_LINK_SENTINEL)
+    const text = flattenReactText(children).trim()
+
+    const groupMatch = text.match(COURS_LINK_GROUP_SENTINEL)
+    if (groupMatch) {
+      const slugs = groupMatch[1].split(",")
+      return (
+        <div className="not-prose my-3 flex flex-col items-start gap-1.5 rounded-md border border-dashed border-border p-3">
+          <p className="text-sm font-medium text-muted-foreground">Cours liés à cet exercice</p>
+          {slugs.map((slug) => (
+            <Link
+              key={slug}
+              to={coursHref(slug)}
+              className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+            >
+              Voir le cours complet
+              <ArrowRight className="size-3.5" />
+            </Link>
+          ))}
+        </div>
+      )
+    }
+
+    const match = text.match(COURS_LINK_SENTINEL)
     if (match) {
       return (
         <p className="not-prose my-3">
@@ -175,7 +206,7 @@ export function EpreuveMarkdown({ markdown, directCoursLinks = false }: EpreuveM
   return (
     <ReactMarkdown
       remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
-      rehypePlugins={[rehypeKatex]}
+      rehypePlugins={[rehypeRaw, rehypeKatex]}
       components={{
         blockquote: MarkdownBlockquote,
         p: MarkdownParagraph,
@@ -186,7 +217,7 @@ export function EpreuveMarkdown({ markdown, directCoursLinks = false }: EpreuveM
         td: MarkdownTableCell,
       }}
     >
-      {italicizeQuotes(normalizeMathBlocks(extractSolutionToggles(extractCallouts(markdown))))}
+      {italicizeQuotes(normalizeMathBlocks(extractSolutionToggles(groupBareCoursLinks(extractCallouts(markdown)))))}
     </ReactMarkdown>
   )
 }

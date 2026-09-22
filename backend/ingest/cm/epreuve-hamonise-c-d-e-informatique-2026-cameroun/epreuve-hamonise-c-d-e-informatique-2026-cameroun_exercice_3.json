@@ -1,0 +1,157 @@
+{
+  "epreuve_source": "epreuve-hamonise-c-d-e-informatique-2026-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "C, D, E",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "institution": "Délégation Régionale des Enseignements Secondaires de l'Adamaoua - Inspection Régionale de Pédagogie chargée de l'Enseignement de l'Informatique",
+  "annee": 2026,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "statut": "brouillon",
+  "numero_exercice": "3",
+  "introduction_markdown": null,
+  "points": "4",
+  "groupes": [
+    "PARTIE II : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (7 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 : Bases de données (4 points)**\n\nLe tableau ci-dessous représente un extrait de la table ELEVE de la base de données nommée COLLEGE, issue de la conception du système d'information de l'exercice 1.\n\n| MATRICULE | NOM | PRÉNOM | DATE NAISSANCE | SEXE | STATUT | CLASSE |\n|---|---|---|---|---|---|---|\n| 12M159 | ESSIMBI | Jeanne | 11/12/2003 | M | N | TleC |\n| 16L177 | MONKAM | Stella | 05/10/2005 | F | R | TleD |\n| 21Y135 | DOUME | Isaac | 07/06/2005 | F | N | TleA4 |\n\nIl vous est demandé d'exploiter cette table et de répondre aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "1a",
+      "enonce_markdown": "**1.** Écrire la requête SQL permettant de :\n\na) Créer la table **Elève**. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa création d'une table en SQL utilise l'instruction CREATE TABLE, suivie du nom de la table et, entre parenthèses, de la liste de ses colonnes ; chaque colonne est déclarée avec un nom et un type de données adapté au contenu qu'elle stockera (texte, date, entier...), et la clé primaire est précisée pour garantir l'unicité de chaque enregistrement.\n\nLa table ELEVE reprend les sept colonnes visibles dans l'extrait : MATRICULE (identifiant unique de l'élève), NOM, PRENOM, DATE_NAISSANCE, SEXE, STATUT et CLASSE.\n\n```sql\nCREATE TABLE ELEVE (\n    MATRICULE VARCHAR(10) PRIMARY KEY,\n    NOM VARCHAR(30),\n    PRENOM VARCHAR(30),\n    DATE_NAISSANCE DATE,\n    SEXE CHAR(1),\n    STATUT CHAR(1),\n    CLASSE VARCHAR(10)\n);\n```\n\nMATRICULE est déclaré en clé primaire (PRIMARY KEY) car il identifie chaque élève de façon unique, comme l'exige la définition de l'entité ÉLÈVE établie à l'exercice 1.\n\n### Piège à éviter\nN'oublie pas la clé primaire : une table SQL sans PRIMARY KEY reste valide techniquement mais ne respecte pas la conception (MCD/MLD) établie juste avant, où MATRICULE est l'identifiant de l'entité ÉLÈVE.",
+      "themes": [
+        "SQL",
+        "CREATE TABLE",
+        "clé primaire"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex3-q1a-0",
+          "competence": "Créer une table en SQL (CREATE TABLE)",
+          "contenu_markdown": "La création d'une table en SQL utilise l'instruction CREATE TABLE, suivie du nom de la table et, entre parenthèses, de la liste de ses colonnes ; chaque colonne est déclarée avec un nom et un type de données adapté au contenu qu'elle stockera (texte, date, entier...), et la clé primaire est précisée pour garantir l'unicité de chaque enregistrement.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1b",
+      "enonce_markdown": "b) Insérer l'élève MOUSSA Ibrahim (Matricule 17M107, né le 20/10/2002, Sexe M, Statut R, Classe TleC). *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nL'insertion d'un enregistrement utilise l'instruction INSERT INTO, suivie du nom de la table, de la liste des colonnes concernées, puis du mot-clé VALUES et de la liste des valeurs correspondantes dans le même ordre ; les valeurs textuelles et les dates s'entourent de guillemets simples, au format AAAA-MM-JJ pour une date.\n\nLa date de naissance 20/10/2002, donnée au format jour/mois/année, s'écrit 2002-10-20 au format SQL standard (année-mois-jour).\n\n```sql\nINSERT INTO ELEVE (MATRICULE, NOM, PRENOM, DATE_NAISSANCE, SEXE, STATUT, CLASSE)\nVALUES ('17M107', 'MOUSSA', 'Ibrahim', '2002-10-20', 'M', 'R', 'TleC');\n```\n\n### Piège à éviter\nNe recopie jamais la date telle qu'elle est donnée dans l'énoncé (20/10/2002) directement dans la requête : le format attendu par SQL est AAAA-MM-JJ, donc 2002-10-20, sous peine de voir la date mal interprétée par le système de gestion de base de données.",
+      "themes": [
+        "SQL",
+        "INSERT INTO",
+        "format de date"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex3-q1b-0",
+          "competence": "Insérer un enregistrement en SQL (INSERT INTO)",
+          "contenu_markdown": "L'insertion d'un enregistrement utilise l'instruction INSERT INTO, suivie du nom de la table, de la liste des colonnes concernées, puis du mot-clé VALUES et de la liste des valeurs correspondantes dans le même ordre ; les valeurs textuelles et les dates s'entourent de guillemets simples, au format AAAA-MM-JJ pour une date.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1c",
+      "enonce_markdown": "c) Modifier le statut de l'élève MONKAM en \"Nouvelle\". *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa modification d'un ou plusieurs enregistrements existants utilise l'instruction UPDATE, suivie du nom de la table, du mot-clé SET précisant la ou les colonnes à modifier et leur nouvelle valeur, puis d'une clause WHERE qui cible précisément la ou les lignes concernées ; omettre le WHERE modifierait toutes les lignes de la table.\n\n```sql\nUPDATE ELEVE\nSET STATUT = 'Nouvelle'\nWHERE NOM = 'MONKAM';\n```\n\nLa clause WHERE NOM = 'MONKAM' cible uniquement l'élève MONKAM Stella, la seule concernée dans la table.\n\n### Piège à éviter\nL'énoncé demande littéralement de mettre le statut à « Nouvelle », mais la description de l'exercice 1 codait ce champ sur une seule lettre (R : Redoublant, N : Nouveau). En pratique professionnelle, la valeur cohérente avec ce codage serait `SET STATUT = 'N'` plutôt que le mot complet ; la requête ci-dessus suit la formulation exacte du sujet, mais retiens que sur un champ codé, il faut toujours utiliser le code prévu (ici une seule lettre) plutôt qu'un texte libre, pour rester cohérent avec la structure de la table.",
+      "themes": [
+        "SQL",
+        "UPDATE",
+        "clause WHERE"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex3-q1c-0",
+          "competence": "Modifier un enregistrement en SQL (UPDATE)",
+          "contenu_markdown": "La modification d'un ou plusieurs enregistrements existants utilise l'instruction UPDATE, suivie du nom de la table, du mot-clé SET précisant la ou les colonnes à modifier et leur nouvelle valeur, puis d'une clause WHERE qui cible précisément la ou les lignes concernées ; omettre le WHERE modifierait toutes les lignes de la table.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Écrire sur votre feuille de composition le résultat de la requête suivante :\n\n```sql\nSELECT NOM, PRENOM FROM ELEVE WHERE STATUT='R' AND SEXE='F';\n```\n\n*[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour prévoir le résultat d'une requête SELECT ... WHERE, il faut examiner ligne par ligne la table d'origine et ne retenir que les lignes qui vérifient simultanément toutes les conditions reliées par AND, puis n'afficher, pour ces lignes retenues, que les colonnes citées après SELECT.\n\nOn examine les trois lignes de la table ELEVE au regard des deux conditions STATUT='R' ET SEXE='F'. ESSIMBI Jeanne a STATUT='N' : elle ne vérifie pas la première condition, elle est exclue. MONKAM Stella a STATUT='R' et SEXE='F' : les deux conditions sont vérifiées, elle est retenue. DOUME Isaac a SEXE='F' mais STATUT='N' : la première condition échoue, il est exclu.\n\nSeule la ligne de MONKAM Stella vérifie les deux conditions à la fois. La requête n'affiche que les colonnes NOM et PRENOM de cette ligne :\n\n| NOM | PRENOM |\n|---|---|\n| MONKAM | Stella |\n\n### Piège à éviter\nNe confonds pas AND et OR : avec AND, une ligne doit vérifier les deux conditions à la fois pour être retenue. DOUME Isaac vérifie SEXE='F' mais pas STATUT='R', donc AND l'exclut, alors qu'un OR l'aurait gardé.",
+      "themes": [
+        "SQL",
+        "SELECT",
+        "clause WHERE",
+        "opérateur AND"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex3-q2-0",
+          "competence": "Prévoir le résultat d'une requête SELECT ... WHERE",
+          "contenu_markdown": "Pour prévoir le résultat d'une requête SELECT ... WHERE, il faut examiner ligne par ligne la table d'origine et ne retenir que les lignes qui vérifient simultanément toutes les conditions reliées par AND, puis n'afficher, pour ces lignes retenues, que les colonnes citées après SELECT.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "SQL",
+    "CREATE TABLE",
+    "INSERT INTO",
+    "UPDATE",
+    "SELECT",
+    "clause WHERE"
+  ],
+  "incertitudes": [
+    "Question 1c : l'énoncé demande de fixer STATUT à \"Nouvelle\" alors que le champ est codé sur une seule lettre (R/N) dans la description de l'exercice 1 ; la requête suit la formulation littérale du sujet, l'incohérence est signalée dans le corrigé lui-même (bloc Piège à éviter).",
+    "Aucun des rappels de méthode de cet exercice n'a été retenu parmi les 2 rappels coursifiés de l'épreuve (voir exercice 1 question 6b et exercice 2 question 3) ; ils restent documentés uniquement dans leur corrigé respectif."
+  ]
+}

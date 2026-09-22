@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-energie-cinetique-rotation-premiere",
+  "meta": {
+    "titre": "Énergie cinétique de rotation autour d'un axe fixe",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Mécanique du solide en rotation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "énergie cinétique de rotation",
+      "moment d'inertie",
+      "vitesse angulaire",
+      "rotor"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2019-cameroun",
+    "epreuve_titre": "Épreuve de physique au probatoire D et TI 2019 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2019-cameroun-ex1-qB1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une roue de vélo qui tourne, le rotor d'un alternateur, une meule qui tourne à plein régime : ces solides ne se déplacent pas en ligne droite, mais tournent autour d'un axe fixe. Ils possèdent pourtant, eux aussi, une énergie cinétique, liée non pas à leur vitesse de translation (ils n'en ont pas) mais à leur vitesse de rotation. Savoir calculer cette énergie cinétique de rotation est indispensable dès qu'un exercice met en scène un objet tournant : moteur, alternateur, volant d'inertie, disque, etc."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Convertir une fréquence de rotation entre tours par minute (tr/min) et tours par seconde (tr/s)",
+        "Relier fréquence de rotation $N$ et vitesse angulaire $\\omega$ ($\\omega = 2\\pi N$)",
+        "Connaître l'expression de l'énergie cinétique de translation, $E_c = \\frac12 mv^2$, pour comprendre l'analogie avec le cas de la rotation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Énergie cinétique d'un solide en rotation autour d'un axe fixe",
+      "contenu_markdown": "Un solide en rotation autour d'un axe fixe $(\\Delta)$ possède une énergie cinétique qui dépend de sa vitesse angulaire $\\omega$ (en rad/s) et de son moment d'inertie $J_\\Delta$ (en kg·m²) par rapport à cet axe. Le moment d'inertie joue, pour la rotation, le rôle que joue la masse pour la translation : il caractérise la résistance du solide à une variation de sa vitesse de rotation, et dépend à la fois de la masse du solide et de la façon dont elle est répartie autour de l'axe. Pour convertir une fréquence de rotation $N$ donnée en tours par minute, on calcule d'abord $N_s = N/60$ (en tours par seconde), puis $\\omega = 2\\pi N_s$ (en radians par seconde).",
+      "formule_principale": "E_c = \\frac12 J_\\Delta \\omega^2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le rotor d'un alternateur, de moment d'inertie $J_\\Delta = 1{,}6\\times10^{-2}$ kg·m² par rapport à son axe de rotation, tourne à plein régime à la fréquence constante $N = 1500$ tr/min. Déterminer sa vitesse angulaire $\\omega$, puis son énergie cinétique.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la fréquence de rotation en tours par seconde",
+          "justification": "La formule $\\omega = 2\\pi N_s$ utilise une fréquence en tr/s, or l'énoncé la donne en tr/min.",
+          "resultat_markdown": "$$N_s = \\dfrac{N}{60} = \\dfrac{1500}{60} = 25 \\text{ tr/s}$$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la vitesse angulaire",
+          "justification": "Un tour complet correspond à un angle de $2\\pi$ radians ; en $N_s$ tours par seconde, l'angle balayé par seconde (soit $\\omega$) vaut $2\\pi N_s$.",
+          "resultat_markdown": "$$\\omega = 2\\pi N_s = 2\\pi \\times 25 = 50\\pi \\approx 157{,}1 \\text{ rad/s}$$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule de l'énergie cinétique de rotation",
+          "justification": "On dispose maintenant de $J_\\Delta$ et $\\omega$, les deux seules grandeurs nécessaires.",
+          "resultat_markdown": "$$E_c = \\frac12 J_\\Delta \\omega^2 = \\frac12 \\times 1{,}6\\times10^{-2} \\times (50\\pi)^2$$\n\n$$(50\\pi)^2 = 2500\\pi^2 \\approx 24674$$\n\n$$E_c \\approx 0{,}5 \\times 1{,}6\\times10^{-2} \\times 24674 \\approx 197{,}4 \\text{ J}$$"
+        }
+      ],
+      "conclusion_markdown": "À plein régime, le rotor tourne à environ 157,1 rad/s et possède une énergie cinétique de rotation d'environ 197,4 J."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement $N$ (en tr/min) dans la formule $\\omega = 2\\pi N$ sans le convertir en tr/s.",
+          "pourquoi_faux": "$\\omega$ s'exprime en radians par seconde : si $N$ reste en tours par minute, le résultat obtenu sera 60 fois trop grand, une erreur qui passe facilement inaperçue car l'ordre de grandeur du nombre reste plausible.",
+          "correction_markdown": "Prends l'habitude systématique de convertir toute fréquence de rotation en tr/s avant de calculer $\\omega$, quelle que soit l'unité donnée dans l'énoncé."
+        },
+        {
+          "erreur_markdown": "Oublier d'élever $\\omega$ au carré dans la formule de l'énergie cinétique de rotation.",
+          "pourquoi_faux": "La formule est $E_c = \\frac12 J_\\Delta \\omega^2$, par analogie avec $E_c = \\frac12 m v^2$ : la vitesse (ou vitesse angulaire) intervient au carré, pas au premier degré. Une erreur ici change radicalement l'ordre de grandeur du résultat.",
+          "correction_markdown": "Vérifie toujours ta formule par analogie directe avec le cas de la translation : la structure $\\frac12 \\times (\\text{inertie}) \\times (\\text{vitesse})^2$ est la même dans les deux cas."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier l'ordre de grandeur d'un moment d'inertie donné dans l'énoncé.",
+          "pourquoi_faux": "Un moment d'inertie de quelques kg·m² correspond déjà à un objet massif ; un moment d'inertie de $10^{6}$ kg·m² pour un petit rotor d'alternateur n'a physiquement aucun sens et signale presque toujours une erreur de frappe ou de numérisation dans l'énoncé (exposant sans son signe).",
+          "correction_markdown": "Avant de te lancer dans un calcul, demande-toi si la donnée numérique fournie est compatible avec la taille réelle de l'objet décrit ; un ordre de grandeur absurde doit être signalé, pas calculé aveuglément."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un disque de moment d'inertie $J_\\Delta = 0{,}02$ kg·m² tourne à la fréquence constante $N = 300$ tr/min. Calculer sa vitesse angulaire $\\omega$ puis son énergie cinétique de rotation.",
+          "solution_markdown": "$$N_s = \\dfrac{300}{60} = 5 \\text{ tr/s} \\qquad \\omega = 2\\pi N_s = 2\\pi \\times 5 = 10\\pi \\approx 31{,}4 \\text{ rad/s}$$\n\n$$E_c = \\frac12 J_\\Delta \\omega^2 = \\frac12 \\times 0{,}02 \\times (31{,}4)^2 = 0{,}01 \\times 986{,}0$$\n\n$$E_c \\approx 9{,}86 \\text{ J}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le rotor d'une turbine, de moment d'inertie inconnu, tourne à $N = 3000$ tr/min et possède une énergie cinétique de rotation $E_c = 4{,}0\\times10^{3}$ J. Calculer son moment d'inertie $J_\\Delta$.",
+          "solution_markdown": "$$N_s = \\dfrac{3000}{60} = 50 \\text{ tr/s} \\qquad \\omega = 2\\pi \\times 50 = 100\\pi \\approx 314{,}2 \\text{ rad/s}$$\n\nOn isole $J_\\Delta$ dans $E_c = \\frac12 J_\\Delta \\omega^2$ :\n\n$$J_\\Delta = \\dfrac{2E_c}{\\omega^2} = \\dfrac{2 \\times 4{,}0\\times10^{3}}{(314{,}2)^2} = \\dfrac{8{,}0\\times10^{3}}{98722}$$\n\n$$J_\\Delta \\approx 8{,}1\\times10^{-2} \\text{ kg·m²}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un rotor de moment d'inertie $J_\\Delta = 5{,}0\\times10^{-2}$ kg·m² voit sa fréquence de rotation doubler, passant de $N_1$ à $N_2 = 2N_1$. Exprimer, en fonction de l'énergie cinétique initiale $E_{c1}$, l'énergie cinétique finale $E_{c2}$, puis calculer l'énergie qu'il a fallu fournir au rotor pour ce doublement si $N_1 = 900$ tr/min.",
+          "solution_markdown": "Comme $\\omega$ est proportionnelle à $N$ (à $2\\pi/60$ près), doubler $N$ revient à doubler $\\omega$ : $\\omega_2 = 2\\omega_1$.\n\n$$E_{c2} = \\frac12 J_\\Delta \\omega_2^2 = \\frac12 J_\\Delta (2\\omega_1)^2 = 4 \\times \\frac12 J_\\Delta \\omega_1^2 = 4 E_{c1}$$\n\nL'énergie cinétique est donc multipliée par 4 lorsque la fréquence de rotation double (elle dépend du carré de $\\omega$, donc du carré de $N$).\n\nCalcul numérique avec $N_1 = 900$ tr/min :\n\n$$N_{1s} = \\dfrac{900}{60} = 15 \\text{ tr/s} \\qquad \\omega_1 = 2\\pi \\times 15 = 30\\pi \\approx 94{,}2 \\text{ rad/s}$$\n\n$$E_{c1} = \\frac12 \\times 5{,}0\\times10^{-2} \\times (94{,}2)^2 = 0{,}025 \\times 8877{,}6 \\approx 221{,}9 \\text{ J}$$\n\n$$E_{c2} = 4 \\times E_{c1} \\approx 887{,}8 \\text{ J}$$\n\nL'énergie à fournir est la variation d'énergie cinétique entre les deux états :\n\n$$\\Delta E_c = E_{c2} - E_{c1} \\approx 887{,}8 - 221{,}9 \\approx 665{,}9 \\text{ J}$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'énergie cinétique de rotation d'un solide autour d'un axe fixe s'écrit $E_c = \\frac12 J_\\Delta \\omega^2$, exactement comme $E_c = \\frac12 mv^2$ pour une translation, en remplaçant la masse par le moment d'inertie et la vitesse par la vitesse angulaire.",
+        "Convertis systématiquement une fréquence de rotation en tours par seconde avant de calculer $\\omega = 2\\pi N_s$ : c'est la source d'erreur la plus fréquente.",
+        "$\\omega$ intervient au carré dans la formule de l'énergie cinétique : doubler la fréquence de rotation quadruple l'énergie cinétique.",
+        "Vérifie toujours que l'ordre de grandeur d'un moment d'inertie donné est compatible avec la taille réelle de l'objet décrit.",
+        "Au Probatoire comme au BAC, cette formule est le point de départ obligé de tout exercice mêlant rotor, moteur ou volant d'inertie : elle précède presque toujours une question sur le travail d'un couple moteur."
+      ]
+    }
+  ]
+}

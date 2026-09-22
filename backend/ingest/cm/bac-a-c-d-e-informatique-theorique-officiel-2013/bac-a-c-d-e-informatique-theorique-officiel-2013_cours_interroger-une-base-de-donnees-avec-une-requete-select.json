@@ -1,0 +1,150 @@
+{
+  "cours_id": "cours-interroger-une-base-de-donnees-avec-une-requete-select-tle-tronccommun",
+  "meta": {
+    "titre": "Interroger une base de données avec une requête SELECT",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données - Langage de requête",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "WHERE",
+      "base de données",
+      "requête"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-e-informatique-theorique-officiel-2013",
+    "epreuve_titre": "Baccalauréat A, C, D, E - Informatique (Épreuve théorique) - 2013 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2013-ex3-q3.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Imagine une base de données scolaire qui contient des milliers d'élèves : impossible de parcourir la liste à l'œil nu pour retrouver seulement ceux qui ont 17 ans, ou seulement leurs noms. La requête SELECT résout exactement ce problème : elle permet d'extraire, en une seule instruction, uniquement les données qui t'intéressent parmi des milliers de lignes. C'est l'outil de base de tout système de gestion de base de données (SGBD), aussi bien pour un carnet de notes scolaire que pour un site marchand qui affiche une liste de produits filtrée. Ce cours te montre comment lire et écrire une requête SELECT avec une condition WHERE."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table dans une base de données : un ensemble de lignes (enregistrements) et de colonnes (champs)",
+        "Savoir lire un tableau à plusieurs colonnes et repérer une valeur précise à l'intersection d'une ligne et d'une colonne",
+        "Connaître le vocabulaire de base des bases de données (base, table, champ, enregistrement)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La structure SELECT ... FROM ... WHERE",
+      "contenu_markdown": "Une requête de sélection s'écrit toujours selon le même schéma en trois parties. On indique la table à interroger, la condition que doivent vérifier les lignes retenues, et les colonnes à afficher. Bien qu'à l'écriture le mot SELECT apparaisse en premier, il est plus sûr de raisonner dans l'ordre FROM puis WHERE puis SELECT, car c'est l'ordre dans lequel le résultat se construit réellement : d'abord la table, ensuite le filtre sur les lignes, enfin le choix des colonnes affichées.",
+      "formule_principale": "SELECT <champs> FROM <table> WHERE <condition>",
+      "variantes": [
+        {
+          "nom": "Sélection sans condition",
+          "quand_utiliser": "Quand on veut afficher toutes les lignes de la table, sans filtrage",
+          "contenu_markdown": "On omet la clause WHERE : `SELECT <champs> FROM <table>` renvoie alors les champs demandés pour toutes les lignes de la table, sans aucune restriction."
+        },
+        {
+          "nom": "Sélection de toutes les colonnes",
+          "quand_utiliser": "Quand on veut afficher l'intégralité de chaque ligne retenue, pas seulement certains champs",
+          "contenu_markdown": "On remplace la liste des champs par le symbole `*` : `SELECT * FROM <table> WHERE <condition>` renvoie alors toutes les colonnes des lignes qui vérifient la condition."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La table « candidat » d'une base de données « BD_ELEVES » contient : EKASSI Jean Blaise (6ème 2, 10 ans), AKOA Pierre Paul (Tle C, 17 ans), FOTSO Jean De Dieu (2 C, 15 ans). Donner le résultat de la commande `select (Nom) from Liste where Age = 17`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la table concernée",
+          "justification": "La clause FROM désigne la table à interroger. L'énoncé vient de présenter la table « candidat » de la base BD_ELEVES ; la commande nomme cette table « Liste », ce qui est très probablement une désignation alternative de la même table dans l'énoncé de la commande.",
+          "resultat_markdown": "On travaille sur la table « candidat » (colonnes Nom, Prénom, Classe, Age)."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la condition de la clause WHERE",
+          "justification": "La clause WHERE filtre les lignes : seules celles qui vérifient Age = 17 sont retenues.",
+          "resultat_markdown": "EKASSI (Age = 10) exclu ; AKOA (Age = 17) retenu ; FOTSO (Age = 15) exclu."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la clause SELECT",
+          "justification": "Seul le champ Nom est demandé entre parenthèses après SELECT, pas la ligne entière.",
+          "resultat_markdown": "Nom = AKOA"
+        }
+      ],
+      "conclusion_markdown": "Le résultat de la requête est une seule valeur : **AKOA**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre en donnant toute la ligne (AKOA, Pierre Paul, Tle C, 17) au lieu du seul champ demandé.",
+          "pourquoi_faux": "La clause SELECT précise exactement quels champs doivent être affichés. Ici, seul `Nom` est demandé entre parenthèses : afficher les autres colonnes revient à répondre à une question qui n'a pas été posée.",
+          "correction_markdown": "Relis toujours la liste des champs après SELECT avant de rédiger la réponse, et n'affiche que ceux-là, même si tu as sous les yeux toute la ligne correspondante."
+        },
+        {
+          "erreur_markdown": "Appliquer la condition WHERE sur la mauvaise colonne, par exemple chercher '17' dans la colonne Classe au lieu de la colonne Age.",
+          "pourquoi_faux": "La condition porte sur une colonne précisément nommée (ici Age) : ce nom de colonne fixe sans ambiguïté où chercher la valeur, il ne s'agit jamais de deviner à partir du type ou de l'apparence de la donnée.",
+          "correction_markdown": "Repère d'abord le nom exact de la colonne cité dans la condition, puis va lire cette colonne précise ligne par ligne, sans te laisser influencer par une autre colonne qui contiendrait une valeur qui te semble correspondre."
+        },
+        {
+          "erreur_markdown": "Oublier qu'une requête peut ne retenir aucune ligne si aucune ne vérifie la condition, et répondre 'erreur' ou laisser la question sans réponse.",
+          "pourquoi_faux": "Un résultat vide est un résultat parfaitement valide en base de données : cela signifie simplement qu'aucun enregistrement ne correspond au critère demandé, pas que la requête est incorrecte.",
+          "correction_markdown": "Si aucune ligne ne vérifie la condition, écris explicitement que le résultat est vide (aucun enregistrement ne correspond), plutôt que de laisser la question sans réponse ou d'inventer un résultat."
+        },
+        {
+          "erreur_markdown": "Confondre le signe = de la clause WHERE avec une opération d'affectation comme en programmation, et croire que la requête modifie la valeur de Age.",
+          "pourquoi_faux": "Dans une requête SELECT, WHERE Age = 17 est un test de comparaison (la valeur de Age est-elle égale à 17 ?), jamais une instruction qui modifierait la table. Aucune requête SELECT ne modifie les données, elle se contente de les lire.",
+          "correction_markdown": "Retiens qu'une requête qui commence par SELECT est une requête de lecture seule : pour modifier des données, il faudrait une tout autre instruction (UPDATE), absente ici."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "En reprenant la table « candidat » (EKASSI, 6ème 2, 10 ans ; AKOA, Tle C, 17 ans ; FOTSO, 2 C, 15 ans), donner le résultat de la commande `select (Nom) from candidat where Age < 15`.",
+          "solution_markdown": "1. Table concernée (FROM) : la table « candidat », avec ses colonnes Nom, Prénom, Classe, Age.\n2. Condition (WHERE) : Age < 15, on ne retient que les lignes où l'âge est strictement inférieur à 15.\n   - EKASSI : Age = 10, 10 < 15 est vrai, ligne retenue.\n   - AKOA : Age = 17, 17 < 15 est faux, ligne exclue.\n   - FOTSO : Age = 15, 15 < 15 est faux (15 n'est pas strictement inférieur à 15), ligne exclue.\n   Une seule ligne vérifie la condition : celle d'EKASSI.\n3. Colonnes affichées (SELECT) : seul le champ Nom est demandé.\n\nRésultat de la commande : **EKASSI**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une table « produits » contient : Stylo (Prix 300, Stock 120), Cahier (Prix 650, Stock 80), Calculatrice (Prix 8500, Stock 15), Clé USB (Prix 6000, Stock 40). Donner le résultat de la commande `select (Nom) from produits where Prix > 5000`.",
+          "solution_markdown": "1. Table concernée (FROM) : la table « produits », avec ses colonnes Nom, Prix, Stock.\n2. Condition (WHERE) : Prix > 5000, on ne retient que les lignes où le prix est strictement supérieur à 5000.\n   - Stylo : Prix = 300, 300 > 5000 est faux, ligne exclue.\n   - Cahier : Prix = 650, 650 > 5000 est faux, ligne exclue.\n   - Calculatrice : Prix = 8500, 8500 > 5000 est vrai, ligne retenue.\n   - Clé USB : Prix = 6000, 6000 > 5000 est vrai, ligne retenue.\n   Deux lignes vérifient la condition : Calculatrice et Clé USB.\n3. Colonnes affichées (SELECT) : seul le champ Nom est demandé, pour chacune des lignes retenues.\n\nRésultat de la commande : **Calculatrice, Clé USB**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une table « eleves » contient : KAMGA (Sexe F, Moyenne 12), NDIAYE (Sexe M, Moyenne 14), BELLO (Sexe F, Moyenne 8), TCHOUA (Sexe F, Moyenne 15). Donner le résultat de la commande `select (Nom) from eleves where Sexe = 'F' and Moyenne >= 10`, et expliquer le rôle du mot-clé `and` dans cette requête.",
+          "solution_markdown": "1. Table concernée (FROM) : la table « eleves », avec ses colonnes Nom, Sexe, Moyenne.\n2. Condition (WHERE) : ici, deux conditions sont combinées par le mot-clé `and`. Contrairement à une condition unique, `and` exige que les DEUX conditions soient vraies simultanément pour qu'une ligne soit retenue - une ligne qui ne vérifie que l'une des deux est exclue.\n   - KAMGA : Sexe = F (vrai) et Moyenne = 12 donc Moyenne >= 10 (vrai) → les deux conditions sont vraies, ligne retenue.\n   - NDIAYE : Sexe = F est faux (NDIAYE est de sexe M) → au moins une condition est fausse, ligne exclue, même si sa moyenne de 14 vérifie la seconde condition.\n   - BELLO : Sexe = F (vrai) mais Moyenne = 8 donc Moyenne >= 10 est faux → au moins une condition est fausse, ligne exclue.\n   - TCHOUA : Sexe = F (vrai) et Moyenne = 15 donc Moyenne >= 10 (vrai) → les deux conditions sont vraies, ligne retenue.\n   Deux lignes vérifient simultanément les deux conditions : KAMGA et TCHOUA.\n3. Colonnes affichées (SELECT) : seul le champ Nom est demandé.\n\nRésultat de la commande : **KAMGA, TCHOUA**.\n\nRôle du mot-clé `and` : il combine deux conditions en exigeant qu'elles soient toutes les deux vérifiées par une même ligne pour que celle-ci soit retenue dans le résultat ; une ligne qui ne vérifie qu'une seule des deux conditions, même parfaitement, reste exclue du résultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à une requête SELECT ... FROM ... WHERE, raisonne toujours dans l'ordre FROM (quelle table ?), WHERE (quelles lignes ?), SELECT (quelles colonnes ?), même si SELECT s'écrit en premier.",
+        "La clause WHERE ne retient que les lignes qui vérifient la condition ; une ligne qui ne la vérifie pas est simplement exclue du résultat, ce n'est jamais une erreur.",
+        "Un résultat vide (aucune ligne ne correspond) est un résultat valide, pas un signe que la requête est fausse.",
+        "SELECT ne modifie jamais les données de la table : c'est une opération de lecture seule.",
+        "Une requête peut combiner plusieurs conditions avec `and` (toutes vérifiées) : repère bien quand une condition composée est utilisée avant de filtrer les lignes.",
+        "Au BAC, ce type de question apparaît systématiquement dans la partie « Traitement de l'information et base de données » de l'épreuve d'Informatique, souvent sous forme d'une petite table suivie d'une requête à interpréter."
+      ]
+    }
+  ]
+}

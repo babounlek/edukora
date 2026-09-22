@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-redirection-http-conditionnelle-avec-header-en-php-ti-2021",
+  "meta": {
+    "titre": "Redirection HTTP conditionnelle avec header() en PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation serveur (PHP)",
+    "duree_estimee_min": 20,
+    "tags": [
+      "header()",
+      "redirection HTTP",
+      "PHP",
+      "contrôle d'accès"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex1-qII-5-1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Certaines pages d'une application ne devraient jamais être atteintes directement : une page de modification des coordonnées d'un client n'a de sens que si un code client a déjà été saisi ailleurs. PHP permet de renvoyer automatiquement le visiteur vers la bonne page dans ce genre de situation, grâce à une seule fonction placée tout au début du script."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir tester si une variable est vide avec empty()",
+        "Connaître la structure if(condition){...} en PHP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "header(\"Location: ...\") redirige immédiatement le navigateur",
+      "contenu_markdown": "La fonction `header()` envoie un en-tête HTTP personnalisé au navigateur, avant tout contenu de la page. Associée à l'en-tête `Location:`, elle provoque une **redirection immédiate** : le navigateur abandonne la page en cours de chargement et demande aussitôt la nouvelle adresse indiquée.\n\n```php\nheader(\"Location: nouvelle_page.php\");\n```\n\nCombinée à une condition, cette redirection sert de **garde d'accès** : si une condition nécessaire n'est pas remplie (ici, la présence d'un code client transmis par un formulaire), le script redirige l'utilisateur vers la page appropriée plutôt que de continuer à exécuter du code qui échouerait ou n'aurait pas de sens.\n\nContrainte incontournable : `header()` doit être appelée **avant tout envoi de contenu** au navigateur - avant le moindre `echo`, et même avant tout caractère (espace compris) situé en dehors des balises `<?php ?>`. Une fois qu'un octet de contenu a été envoyé, les en-têtes HTTP ne peuvent plus être modifiés, et PHP signale l'erreur « headers already sent »."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le rôle du bloc de lignes de code allant de 1 à 3 :\n```php\n1  <?php\n2  if(empty($_POST['code'])){header(\"Location:mysqliex8.php\");}\n3  ?>\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la condition testée",
+          "justification": "empty() teste si une variable est vide, inexistante ou nulle",
+          "resultat_markdown": "`empty($_POST['code'])` est vrai si aucune valeur n'a été transmise pour le champ code (page atteinte sans passer par le formulaire de saisie)."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier l'action déclenchée si la condition est vraie",
+          "justification": "C'est l'instruction exécutée dans le corps du if",
+          "resultat_markdown": "`header(\"Location:mysqliex8.php\")` redirige immédiatement le navigateur vers la page mysqliex8.php."
+        },
+        {
+          "numero": 3,
+          "action": "En déduire le rôle global du bloc",
+          "justification": "Relier condition et action à l'intention du développeur",
+          "resultat_markdown": "Ce bloc empêche l'accès direct à la page de modification des coordonnées sans être passé par la page de saisie du code client : c'est une garde d'accès."
+        }
+      ],
+      "conclusion_markdown": "Placé tout en haut du script, avant toute sortie HTML, ce bloc protège la page contre tout accès direct sans code client préalablement transmis."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer un appel à header() après un echo ou après du HTML déjà envoyé",
+          "pourquoi_faux": "Une fois qu'un contenu a commencé à être envoyé au navigateur, les en-têtes HTTP sont déjà figés : PHP ne peut plus les modifier et signale l'erreur « headers already sent ».",
+          "correction_markdown": "Toujours placer les appels à header() tout en haut du script, avant la moindre sortie, y compris avant un simple espace en dehors des balises <?php ?>."
+        },
+        {
+          "erreur_markdown": "Oublier exit() ou die() après une redirection dans un cas sensible",
+          "pourquoi_faux": "header() demande au navigateur de changer de page, mais n'arrête pas elle-même l'exécution du script PHP en cours : le code situé après continue de s'exécuter sur le serveur, ce qui peut poser un problème de sécurité si ce code traite des données sensibles.",
+          "correction_markdown": "Après une redirection destinée à empêcher un traitement, ajouter exit(); juste après header(...) pour stopper immédiatement l'exécution du script."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire l'instruction PHP qui redirige vers la page connexion.php.",
+          "solution_markdown": "`header(\"Location: connexion.php\");`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un bloc PHP qui redirige vers login.php si la variable de session \\$_SESSION['utilisateur'] n'est pas définie, et qui arrête complètement l'exécution du script dans ce cas.",
+          "solution_markdown": "```php\n<?php\nif(empty($_SESSION['utilisateur'])) {\n    header(\"Location: login.php\");\n    exit();\n}\n?>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un développeur place un espace avant la balise <?php d'ouverture de son fichier, puis appelle header() en tout début de script. L'appel échoue avec l'erreur « headers already sent ». Expliquer pourquoi, alors que header() semble bien être la toute première instruction PHP du fichier.",
+          "solution_markdown": "Tout caractère situé en dehors des balises <?php ?>, y compris un simple espace ou un retour à la ligne avant la balise d'ouverture, est considéré comme du contenu HTML à envoyer immédiatement au navigateur. Cet espace est donc envoyé avant même que le code PHP ne s'exécute, ce qui « ferme » déjà les en-têtes HTTP : header() intervient alors trop tard, même si c'est la première instruction PHP proprement dite du fichier. Il faut vérifier qu'aucun caractère, espace compris, ne précède <?php dans le fichier."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "header(\"Location: page.php\") redirige immédiatement le navigateur vers une autre page.",
+        "Combinée à une condition (souvent empty() sur une donnée attendue), cette fonction sert de garde d'accès à une page.",
+        "header() doit toujours être appelée avant tout contenu envoyé au navigateur, sans exception.",
+        "Ajouter exit() après une redirection de sécurité empêche le reste du script de continuer à s'exécuter sur le serveur."
+      ]
+    }
+  ]
+}

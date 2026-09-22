@@ -1,0 +1,157 @@
+{
+  "cours_id": "cours-deduire-mld-a-partir-mcd-tle-c-d-e",
+  "meta": {
+    "titre": "Déduire le MLD à partir d'un MCD",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Conception de bases de données - Modèle Merise",
+    "duree_estimee_min": 30,
+    "tags": [
+      "MCD",
+      "MLD",
+      "Merise",
+      "cardinalités",
+      "clé étrangère",
+      "base de données"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "epreuve-hamonise-c-d-e-informatique-2026-cameroun",
+    "epreuve_titre": "Examen Régional Harmonisé - Épreuve Théorique d'Informatique - Terminale C-D-E - Session 2026 (Région de l'Adamaoua)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le MCD que tu dessines sur ta copie ne peut pas être directement transformé en base de données : aucun logiciel de gestion de base de données ne sait lire des entités et des cardinalités. Il faut d'abord le traduire en tables, avec leurs colonnes et leurs clés, que SQL sait créer directement avec CREATE TABLE. Cette traduction s'appelle le Modèle Logique de Données (MLD), et elle suit des règles fixes qu'il suffit d'appliquer méthodiquement, sans jamais improviser."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir élaborer un Modèle Conceptuel de Données (MCD) : entités, attributs, associations et cardinalités minimales/maximales.",
+        "Connaître la notion de clé primaire (identifiant unique d'une table) et de clé étrangère (référence vers la clé primaire d'une autre table).",
+        "Savoir lire une cardinalité de la forme (min, max), par exemple (1,1) ou (0,n)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les deux règles de passage du MCD au MLD",
+      "contenu_markdown": "Chaque association du MCD se transforme différemment selon ses cardinalités maximales des deux côtés. Il n'existe que deux cas à connaître pour la quasi-totalité des exercices du BAC.",
+      "formule_principale": "Association (1,1)-(1,n) : absorbée, clé étrangère côté (1,1) | Association (0,n)-(0,n) : devient une table à part entière, clé primaire = concaténation des deux clés étrangères",
+      "variantes": [
+        {
+          "nom": "Cas 1 : une cardinalité maximale vaut 1",
+          "quand_utiliser": "Quand une entité participe à l'association avec un maximum de 1 (ex. (1,1) ou (0,1)).",
+          "contenu_markdown": "L'association disparaît en tant que table. La table du côté dont le maximum vaut 1 reçoit une nouvelle colonne, clé étrangère, qui contient l'identifiant de l'entité de l'autre côté."
+        },
+        {
+          "nom": "Cas 2 : les deux cardinalités maximales valent n",
+          "quand_utiliser": "Quand les deux entités participent à l'association avec un maximum de n (association plusieurs-à-plusieurs).",
+          "contenu_markdown": "L'association devient une table indépendante. Sa clé primaire est la concaténation des clés primaires des deux entités reliées ; si l'association porte elle-même des attributs (par exemple une date d'affectation), ces attributs rejoignent cette nouvelle table."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le MCD du Collège LAROUSE comporte trois entités, ÉLÈVE, CLASSE et ENSEIGNANT, reliées par deux associations : INSCRIT entre ÉLÈVE et CLASSE, de cardinalités (1,1) côté ÉLÈVE et (1,n) côté CLASSE ; AFFECTER entre CLASSE et ENSEIGNANT, de cardinalités (0,n) des deux côtés. Déduire le MLD correspondant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Créer une table par entité, avec ses attributs et sa clé primaire",
+          "justification": "Chaque entité du MCD devient systématiquement une table du MLD, sans transformation particulière.",
+          "resultat_markdown": "ELEVE(matricule, nom, prenom, sexe, date_naissance, statut) ; CLASSE(code, libelle) ; ENSEIGNANT(CNI, nom, prenom, telephone). Les identifiants matricule, code et CNI sont les clés primaires de ces trois tables."
+        },
+        {
+          "numero": 2,
+          "action": "Examiner l'association INSCRIT et repérer le côté où le maximum vaut 1",
+          "justification": "La cardinalité (1,1) côté ÉLÈVE signifie qu'un élève est inscrit dans exactement une classe : c'est le cas 1 de la règle.",
+          "resultat_markdown": "L'association INSCRIT disparaît. La table ELEVE reçoit la clé étrangère #code, qui référence la clé primaire de CLASSE."
+        },
+        {
+          "numero": 3,
+          "action": "Mettre à jour la table ÉLÈVE avec cette clé étrangère",
+          "justification": "La clé étrangère se place dans la table repérée à l'étape précédente, jamais dans l'autre.",
+          "resultat_markdown": "ELEVE(matricule, nom, prenom, sexe, date_naissance, statut, #code)."
+        },
+        {
+          "numero": 4,
+          "action": "Examiner l'association AFFECTER et constater que les deux cardinalités maximales valent n",
+          "justification": "(0,n) des deux côtés correspond au cas 2 de la règle : l'association devient une table indépendante.",
+          "resultat_markdown": "AFFECTER devient une table dont la clé primaire est la concaténation de #CNI (clé étrangère vers ENSEIGNANT) et #code (clé étrangère vers CLASSE)."
+        },
+        {
+          "numero": 5,
+          "action": "Écrire le MLD complet",
+          "justification": "Il regroupe les trois tables issues des entités et la table issue de l'association plusieurs-à-plusieurs.",
+          "resultat_markdown": "ELEVE(matricule, nom, prenom, sexe, date_naissance, statut, #code) ; CLASSE(code, libelle) ; ENSEIGNANT(CNI, nom, prenom, telephone) ; AFFECTER(#CNI, #code)."
+        }
+      ],
+      "conclusion_markdown": "Le MCD à trois entités et deux associations se traduit en quatre tables : les trois tables d'entités, dont ELEVE enrichie d'une clé étrangère vers CLASSE, et une quatrième table AFFECTER née de l'association plusieurs-à-plusieurs, dont la clé primaire combine les deux clés étrangères."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer la clé étrangère #code dans la table CLASSE plutôt que dans la table ÉLÈVE.",
+          "pourquoi_faux": "La clé étrangère se place toujours du côté de la cardinalité maximale 1, jamais du côté du maximum n. Ici, c'est ÉLÈVE qui porte le (1,1) : c'est donc ÉLÈVE qui reçoit la référence vers CLASSE, et non l'inverse.",
+          "correction_markdown": "Avant de placer une clé étrangère, identifie systématiquement quelle entité porte le maximum 1 dans l'association : c'est toujours cette entité-là qui héberge la clé étrangère de l'autre."
+        },
+        {
+          "erreur_markdown": "Absorber l'association AFFECTER dans une des deux tables CLASSE ou ENSEIGNANT au lieu de créer une table séparée.",
+          "pourquoi_faux": "Une association (0,n)-(0,n) ne peut jamais être absorbée dans une seule des deux tables : une classe ayant plusieurs enseignants, et un enseignant intervenant dans plusieurs classes, aucune des deux tables ne peut stocker cette information avec une seule colonne. Seule une table intermédiaire, avec une ligne par couple (enseignant, classe), le permet.",
+          "correction_markdown": "Dès que les deux cardinalités maximales d'une association valent n, réflexe immédiat : créer une nouvelle table dont la clé primaire concatène les deux clés étrangères."
+        },
+        {
+          "erreur_markdown": "Oublier de reporter les attributs propres à une association porteuse (par exemple une date d'affectation) dans la nouvelle table issue de cette association.",
+          "pourquoi_faux": "Si l'association elle-même possède des attributs dans le MCD, ces attributs décrivent le lien entre les deux entités, pas l'une ou l'autre séparément : ils doivent obligatoirement rejoindre la table créée pour cette association, pas une des deux tables d'entités.",
+          "correction_markdown": "Relis toujours le MCD complet, attributs d'association compris, avant d'écrire le MLD : un attribut porté par le losange de l'association devient une colonne de la table issue de cette association."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un MCD comporte deux entités, LIVRE(reference, titre) et EDITEUR(code_editeur, nom), reliées par une association PUBLIER, de cardinalités (1,1) côté LIVRE et (1,n) côté EDITEUR (un livre est publié par un et un seul éditeur, un éditeur publie plusieurs livres). Déduire le MLD correspondant.",
+          "solution_markdown": "L'association PUBLIER a une cardinalité maximale de 1 côté LIVRE : c'est donc LIVRE qui reçoit la clé étrangère vers EDITEUR, et l'association disparaît en tant que table. Le MLD s'écrit : LIVRE(reference, titre, #code_editeur) ; EDITEUR(code_editeur, nom)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un MCD comporte deux entités, ETUDIANT(matricule, nom) et MODULE(code_module, intitule), reliées par une association SUIVRE, de cardinalités (0,n) côté ETUDIANT et (0,n) côté MODULE, portant elle-même un attribut note. Déduire le MLD correspondant.",
+          "solution_markdown": "Les deux cardinalités maximales valent n : l'association SUIVRE devient une table indépendante, dont la clé primaire concatène les clés étrangères vers ETUDIANT et MODULE. L'attribut note, porté par l'association elle-même, rejoint cette nouvelle table. Le MLD s'écrit : ETUDIANT(matricule, nom) ; MODULE(code_module, intitule) ; SUIVRE(#matricule, #code_module, note)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un MCD comporte trois entités : CLIENT(id_client, nom), COMMANDE(num_commande, date_commande) et PRODUIT(ref_produit, designation, prix_unitaire). Une commande est passée par un et un seul client (association PASSER, cardinalités (1,1) côté COMMANDE et (1,n) côté CLIENT) ; une commande contient plusieurs produits et un produit peut figurer dans plusieurs commandes (association CONTENIR, cardinalités (1,n) côté COMMANDE et (0,n) côté PRODUIT, portant un attribut quantite). Déduire le MLD complet.",
+          "solution_markdown": "L'association PASSER a une cardinalité maximale de 1 côté COMMANDE : COMMANDE reçoit la clé étrangère #id_client, et l'association disparaît en tant que table.\n\nL'association CONTENIR a des cardinalités maximales n des deux côtés (1,n) et (0,n) : elle devient une table indépendante, de clé primaire la concaténation de #num_commande et #ref_produit, enrichie de l'attribut quantite qu'elle porte.\n\nLe MLD complet s'écrit : CLIENT(id_client, nom) ; COMMANDE(num_commande, date_commande, #id_client) ; PRODUIT(ref_produit, designation, prix_unitaire) ; CONTENIR(#num_commande, #ref_produit, quantite)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque entité du MCD devient systématiquement une table du MLD, avec les mêmes attributs et le même identifiant comme clé primaire.",
+        "Repère toujours, pour chaque association, le côté qui porte la cardinalité maximale 1 : c'est ce côté qui reçoit la clé étrangère, jamais l'autre.",
+        "Une association dont les deux cardinalités maximales valent n devient obligatoirement une table à part entière, jamais une simple colonne ajoutée.",
+        "Un attribut porté par l'association elle-même (comme une note ou une quantité) rejoint toujours la table issue de cette association, pas une des deux tables d'entités.",
+        "Au BAC, cette question suit presque toujours l'élaboration du MCD : vérifie que tes cardinalités du MCD sont correctes avant de déduire le MLD, une erreur de cardinalité s'y répercute directement."
+      ]
+    }
+  ]
+}

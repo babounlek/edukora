@@ -339,7 +339,7 @@ class ExerciseAdmin(admin.ModelAdmin):
 
             try:
                 data = json.loads(json_path.read_text(encoding="utf-8"))
-                ingest_exercise(data, source_dir=source_dir, force=True)
+                ingest_exercise(data, source_dir=source_dir, force=True, exiger_themes=True)
                 reussis += 1
             except (IngestionError, OSError, ValueError) as exc:
                 self.message_user(request, f"{exercise} : {exc}", level=messages.ERROR)

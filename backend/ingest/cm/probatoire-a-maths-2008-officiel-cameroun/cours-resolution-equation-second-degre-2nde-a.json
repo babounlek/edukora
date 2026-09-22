@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-resolution-equation-second-degre-2nde-a",
+  "meta": {
+    "titre": "Résolution d'une équation du second degré",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Équations, inéquations et systèmes",
+    "duree_estimee_min": 30,
+    "tags": [
+      "discriminant",
+      "second degré",
+      "racines",
+      "factorisation"
+    ],
+    "savoir_officiel": {
+      "classe": "2nde",
+      "serie_label": "A",
+      "module_numero": "17",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2008-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2008 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-maths-2008-officiel-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un champ que l'on agrandit, une trajectoire qui retombe au sol, un prix qui varie avec la quantité vendue : beaucoup de situations concrètes se traduisent par une équation où l'inconnue apparaît au carré. Résoudre une équation du second degré, c'est retrouver les valeurs exactes qui rendent cette situation vraie, sans tâtonner ni essayer des nombres au hasard. C'est l'un des outils les plus réutilisés du programme de Première : on le retrouve dans les problèmes d'aires, les études de fonctions, la géométrie analytique et les probabilités."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Développer et réduire une expression littérale (identités remarquables, distributivité)",
+        "Calculer un carré et une racine carrée",
+        "Manipuler les puissances et les signes dans un calcul"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode du discriminant",
+      "contenu_markdown": "Une équation du second degré s'écrit $ax^2+bx+c=0$, avec $a\\neq0$. Pour la résoudre, on calcule le discriminant $\\Delta=b^2-4ac$. Son signe indique directement combien de solutions réelles existent et comment les calculer :\n\n- si $\\Delta>0$ : deux solutions distinctes, $x_1=\\dfrac{-b-\\sqrt{\\Delta}}{2a}$ et $x_2=\\dfrac{-b+\\sqrt{\\Delta}}{2a}$\n- si $\\Delta=0$ : une solution double, $x_0=\\dfrac{-b}{2a}$\n- si $\\Delta<0$ : aucune solution réelle",
+      "formule_principale": "\\Delta = b^2 - 4ac",
+      "variantes": [
+        {
+          "nom": "Résolution par factorisation directe",
+          "quand_utiliser": "Quand $c=0$ (facteur commun $x$) ou quand l'équation est déjà une identité remarquable reconnaissable, comme $x^2-9=0$",
+          "contenu_markdown": "Si $c=0$, l'équation se factorise immédiatement : $ax^2+bx=0$ devient $x(ax+b)=0$, donc $x=0$ ou $x=-\\dfrac{b}{a}$. Si l'équation est de la forme $x^2-k^2=0$, on factorise avec l'identité remarquable $x^2-k^2=(x-k)(x+k)$ pour obtenir directement $x=k$ ou $x=-k$, sans calculer de discriminant."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $-2x^2+10x+100=0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les coefficients $a$, $b$, $c$",
+          "justification": "L'équation est déjà sous la forme standard $ax^2+bx+c=0$",
+          "resultat_markdown": "$a=-2,\\; b=10,\\; c=100$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le discriminant",
+          "justification": "On applique $\\Delta=b^2-4ac$ en faisant attention au signe de $a$",
+          "resultat_markdown": "$\\Delta = 10^2-4\\times(-2)\\times100 = 100+800=900$"
+        },
+        {
+          "numero": 3,
+          "action": "Analyser le signe de $\\Delta$ et calculer $\\sqrt{\\Delta}$",
+          "justification": "$\\Delta=900>0$ : l'équation admet deux solutions réelles distinctes. Comme $30^2=900$, $\\sqrt{900}=30$",
+          "resultat_markdown": "$\\sqrt{\\Delta}=30$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer les deux solutions",
+          "justification": "On applique les deux formules avec $a=-2$, donc $2a=-4$",
+          "resultat_markdown": "$x_1=\\dfrac{-10-30}{-4}=10 \\quad ; \\quad x_2=\\dfrac{-10+30}{-4}=-5$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions est $S=\\{-5\\;;\\,10\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\Delta=b^2+4ac$ en oubliant le signe moins devant $4ac$",
+          "pourquoi_faux": "La formule impose une soustraction. Inverser ce signe change complètement la valeur du discriminant et donc le nombre de solutions trouvées.",
+          "correction_markdown": "Recopie systématiquement la formule complète $\\Delta=b^2-4ac$ avant de remplacer les lettres par les valeurs numériques."
+        },
+        {
+          "erreur_markdown": "Oublier que $a$ peut être négatif et se tromper de signe dans $2a$ au dénominateur",
+          "pourquoi_faux": "Quand $a<0$, $2a$ est négatif : une erreur de signe à cet endroit inverse $x_1$ et $x_2$ l'un dans l'autre.",
+          "correction_markdown": "Écris $2a$ avec son signe entre parenthèses avant de diviser, par exemple $2\\times(-2)=-4$, plutôt que de diviser de tête."
+        },
+        {
+          "erreur_markdown": "Conclure « pas de solution » quand $\\Delta=0$",
+          "pourquoi_faux": "$\\Delta=0$ signifie une racine double, pas l'absence de solution : l'équation a alors exactement une solution, $x_0=-b/(2a)$.",
+          "correction_markdown": "Distingue toujours les trois cas $\\Delta>0$, $\\Delta=0$, $\\Delta<0$ avant de conclure, plutôt que de résumer $\\Delta=0$ à un cas sans solution."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $x^2-5x+6=0$.",
+          "solution_markdown": "On identifie $a=1$, $b=-5$, $c=6$.\n\n$$\\Delta=(-5)^2-4\\times1\\times6=25-24=1$$\n\n$\\Delta=1>0$, donc deux solutions distinctes. Comme $\\sqrt{1}=1$ :\n$$x_1=\\frac{5-1}{2}=2 \\quad ; \\quad x_2=\\frac{5+1}{2}=3$$\n\n$S=\\{2\\;;\\,3\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer les valeurs de $m$ pour lesquelles l'équation $x^2-6x+m=0$ admet une solution double, puis calculer cette solution.",
+          "solution_markdown": "On identifie $a=1$, $b=-6$, $c=m$. Une solution double correspond à $\\Delta=0$.\n\n$$\\Delta=(-6)^2-4\\times1\\times m=36-4m$$\n\n$$36-4m=0 \\iff 4m=36 \\iff m=9$$\n\nPour $m=9$, la solution double est $x_0=\\dfrac{-b}{2a}=\\dfrac{6}{2}=3$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un jardinier dispose d'un terrain rectangulaire de 40 m sur 20 m. Il veut créer une allée de largeur constante $x$ le long de deux côtés adjacents, de sorte que la surface restante (non recouverte par l'allée) mesure $600\\,m^2$. Déterminer $x$.",
+          "solution_markdown": "Après le retrait de l'allée de largeur $x$ le long de la longueur et de la largeur, la surface restante est un rectangle de dimensions $(40-x)$ et $(20-x)$.\n\n$$(40-x)(20-x)=600$$\n\nOn développe :\n$$800-40x-20x+x^2=600$$\n$$x^2-60x+800=600$$\n$$x^2-60x+200=0$$\n\n$a=1$, $b=-60$, $c=200$ :\n$$\\Delta=(-60)^2-4\\times1\\times200=3600-800=2800$$\n\n$\\sqrt{2800}=\\sqrt{400\\times7}=20\\sqrt7\\approx52{,}9$\n\n$$x_1=\\frac{60-20\\sqrt7}{2}=30-10\\sqrt7\\approx3{,}5 \\quad ; \\quad x_2=30+10\\sqrt7\\approx56{,}5$$\n\nComme $x$ doit être une largeur d'allée strictement inférieure à 20 m (la plus petite dimension du terrain), seule $x_1\\approx3{,}5$ m est physiquement acceptable ; $x_2$ est rejetée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à $ax^2+bx+c=0$, identifie toujours $a$, $b$, $c$ avant tout calcul, en gardant leur signe.",
+        "Le signe de $\\Delta=b^2-4ac$ décide de tout : deux solutions, une solution double, ou aucune.",
+        "$\\Delta=0$ donne une solution, pas zéro : ne confonds jamais racine double et absence de solution.",
+        "Une équation du second degré resolue en mathématiques pures peut donner des solutions à rejeter dans un problème concret : vérifie toujours les contraintes de l'énoncé avant de conclure.",
+        "Au Probatoire comme au BAC, cette méthode revient constamment : dans les problèmes d'aires, l'étude de fonctions polynomiales, et la géométrie analytique."
+      ]
+    }
+  ]
+}

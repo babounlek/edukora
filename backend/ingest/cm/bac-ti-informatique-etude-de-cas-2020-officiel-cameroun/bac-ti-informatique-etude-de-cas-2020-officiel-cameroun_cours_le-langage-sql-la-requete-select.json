@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-le-langage-sql-la-requete-select-tle-ti",
+  "meta": {
+    "titre": "Le langage SQL : la requête SELECT",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "PHP et bases de données",
+    "duree_estimee_min": 18,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "requête",
+      "base de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q4.8-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Derrière chaque liste de produits ou d'avis affichée sur un site dynamique se cache presque toujours la même question posée à la base de données : « donne-moi telles colonnes, de telle table ». C'est exactement ce que fait une requête SQL de type SELECT."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une base de données organise ses informations en tables, elles-mêmes composées de colonnes et de lignes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Sélectionner des colonnes dans une table",
+      "contenu_markdown": "La requête **SELECT** est l'instruction SQL qui permet d'extraire des données d'une ou plusieurs tables d'une base de données. Sa forme la plus simple liste les colonnes souhaitées après `SELECT`, puis précise la table source après `FROM`. En PHP, cette requête est presque toujours écrite comme une simple chaîne de caractères, stockée dans une variable, avant d'être transmise à une fonction comme `mysql_query()` qui l'exécute réellement sur la base.",
+      "formule_principale": "SELECT colonne1, colonne2 FROM nomDeLaTable;",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code de VIPBoutique, expliquer ce que représente la ligne 5 : `$sql = 'SELECT nom, prenom, pointdevue FROM Client';`",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la nature de cette ligne",
+          "justification": "Il faut distinguer une simple affectation de variable d'une exécution réelle sur la base",
+          "resultat_markdown": "Cette ligne affecte une chaîne de caractères à la variable `$sql` : à ce stade, rien n'est encore exécuté sur la base de données."
+        },
+        {
+          "numero": 2,
+          "action": "Décomposer la requête SQL contenue dans cette chaîne",
+          "justification": "Chaque mot-clé SQL a un rôle précis dans la construction de la demande",
+          "resultat_markdown": "`SELECT nom, prenom, pointdevue` : les trois colonnes demandées. `FROM Client` : la table source de ces colonnes."
+        },
+        {
+          "numero": 3,
+          "action": "Relier cette ligne à la suite du script",
+          "justification": "Une requête stockée dans une variable n'a d'effet que si elle est ensuite exécutée",
+          "resultat_markdown": "C'est la ligne 6, `mysql_query($sql)`, qui exécute réellement cette requête et renvoie les lignes correspondantes de la table Client."
+        }
+      ],
+      "conclusion_markdown": "La ligne 5 est une requête SQL, stockée sous forme de texte, qui demande les colonnes nom, prenom et pointdevue de la table Client ; elle n'est réellement exécutée qu'à la ligne suivante."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que la ligne 5 \"récupère les clients de la base\"",
+          "pourquoi_faux": "À la ligne 5, rien n'est encore récupéré : la requête n'est encore qu'une chaîne de caractères en attente d'exécution. C'est mysql_query() qui l'exécute réellement à la ligne suivante.",
+          "correction_markdown": "Distingue toujours \"écrire une requête SQL dans une variable\" de \"exécuter cette requête sur la base\" : ce sont deux étapes séparées dans le code."
+        },
+        {
+          "erreur_markdown": "Oublier que SELECT * FROM Client aurait un sens différent de SELECT nom, prenom, pointdevue FROM Client",
+          "pourquoi_faux": "L'astérisque * sélectionne TOUTES les colonnes de la table, y compris celles non désirées ici (par exemple un identifiant technique) ; lister précisément les colonnes limite le résultat à ce qui est réellement utile.",
+          "correction_markdown": "Vérifie toujours si une requête utilise * (toutes les colonnes) ou une liste précise (colonnes choisies) : cela change la quantité de données réellement récupérée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête SQL qui sélectionne toutes les colonnes de la table Produit.",
+          "solution_markdown": "`SELECT * FROM Produit;`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête SQL qui sélectionne uniquement les colonnes `nom` et `prix` de la table `Produit`.",
+          "solution_markdown": "`SELECT nom, prix FROM Produit;`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi est-il préférable, dans le code de VIPBoutique, d'écrire `SELECT nom, prenom, pointdevue FROM Client` plutôt que `SELECT * FROM Client`, sachant que la table Client contient aussi une colonne `email` non affichée par le script ?",
+          "solution_markdown": "En listant précisément les colonnes utiles (`nom`, `prenom`, `pointdevue`), la requête ne renvoie que les données réellement nécessaires à l'affichage prévu par le script, ce qui réduit la quantité de données transférées entre la base et le script, améliore légèrement les performances, et surtout évite de manipuler par erreur une donnée sensible comme l'email dans le code d'affichage. Avec `SELECT *`, chaque ligne de résultat contiendrait aussi la colonne `email`, disponible dans `$donnees['email']` sans jamais être utilisée : un risque inutile si ce tableau de données était un jour affiché ou journalisé par erreur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SELECT extrait des colonnes précises d'une table, listées juste après ce mot-clé.",
+        "FROM précise la table source de ces colonnes.",
+        "En PHP, une requête SQL est d'abord une simple chaîne de caractères, exécutée ensuite par une fonction comme mysql_query().",
+        "SELECT * récupère toutes les colonnes ; lister les colonnes précises est souvent préférable.",
+        "Au BAC TI, une question sur une requête SQL en PHP distingue toujours l'écriture de la requête (une affectation) de son exécution réelle (un appel de fonction)."
+      ]
+    }
+  ]
+}

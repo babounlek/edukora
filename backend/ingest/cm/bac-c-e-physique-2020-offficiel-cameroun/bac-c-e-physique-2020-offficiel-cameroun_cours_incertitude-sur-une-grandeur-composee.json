@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-incertitude-grandeur-composee-1ere-c-e",
+  "meta": {
+    "titre": "Incertitude sur une grandeur composée par somme",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Mesure de grandeurs physiques et incertitudes",
+    "duree_estimee_min": 18,
+    "tags": [
+      "incertitude absolue",
+      "propagation des incertitudes",
+      "mesure",
+      "condensateurs en parallèle"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C",
+      "module_numero": "1",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2020-offficiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Séries C, E - Cameroun - Session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2020-offficiel-cameroun-ex2-q2.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux élèves mesurent chacun la longueur d'une table avec une règle graduée au millimètre, puis additionnent leurs deux mesures pour obtenir la longueur totale d'une salle. La longueur totale est-elle connue avec la même précision que chaque mesure individuelle ? Non : les erreurs possibles s'accumulent. Ce cours explique comment calculer précisément cette accumulation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de mesure physique et d'incertitude absolue",
+        "Écriture d'un résultat sous la forme $x = x_0 \\pm \\Delta x$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Propagation de l'incertitude dans une somme ou une différence",
+      "contenu_markdown": "Lorsqu'une grandeur $G$ s'obtient comme somme (ou différence) de grandeurs $x_1, x_2, \\ldots$ mesurées indépendamment, chacune affectée de son incertitude absolue $\\Delta x_1, \\Delta x_2, \\ldots$, l'incertitude absolue sur $G$ est toujours la somme de toutes les incertitudes absolues, que $G$ soit elle-même une somme ou une différence des grandeurs mesurées.",
+      "formule_principale": "G = x_1 \\pm x_2 \\implies \\Delta G = \\Delta x_1 + \\Delta x_2"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Deux résistances sont mesurées : $R_1 = (100 \\pm 2)\\ \\Omega$ et $R_2 = (50 \\pm 1)\\ \\Omega$. Montées en série, leur résistance équivalente est $R = R_1 + R_2$. Déterminer $R$ sous la forme $R = R_0 \\pm \\Delta R$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la valeur centrale",
+          "justification": "La résistance équivalente d'une association en série est la somme des résistances.",
+          "resultat_markdown": "$R_0 = R_1 + R_2 = 100 + 50 = 150\\ \\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'incertitude absolue",
+          "justification": "Puisque $R$ est une somme de deux grandeurs mesurées indépendamment, son incertitude est la somme des incertitudes de chaque terme.",
+          "resultat_markdown": "$\\Delta R = \\Delta R_1 + \\Delta R_2 = 2 + 1 = 3\\ \\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire le résultat final",
+          "justification": "On rassemble la valeur centrale et l'incertitude absolue dans l'écriture normalisée.",
+          "resultat_markdown": "$R = (150 \\pm 3)\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "La résistance équivalente vaut $(150 \\pm 3)\\ \\Omega$ : l'incertitude finale (3 Ω) est bien la somme des deux incertitudes de départ (2 Ω et 1 Ω), jamais leur différence."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Soustraire les incertitudes lorsque la grandeur composée est elle-même une différence de deux grandeurs mesurées.",
+          "pourquoi_faux": "Une différence de grandeurs mesurées peut voir ses erreurs s'additionner dans le même sens (l'une surestimée, l'autre sous-estimée) : l'incertitude ne peut donc jamais diminuer, elle s'additionne toujours, même pour une différence.",
+          "correction_markdown": "Retiens la règle une fois pour toutes : pour une somme ou une différence, l'incertitude absolue est toujours la somme des incertitudes absolues, jamais leur différence."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que les grandeurs mesurées sont bien indépendantes avant d'appliquer la règle.",
+          "pourquoi_faux": "Si les deux mesures partagent une même source d'erreur (le même instrument mal réglé, par exemple), la règle d'addition simple des incertitudes peut sous-estimer l'incertitude réelle.",
+          "correction_markdown": "Dans le cadre du programme de Première, on suppose toujours les mesures indépendantes sauf mention contraire de l'énoncé ; applique alors directement la règle d'addition."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux masses sont mesurées : $m_1 = (250 \\pm 5)\\ \\text{g}$ et $m_2 = (120 \\pm 2)\\ \\text{g}$. Déterminer la masse totale $m = m_1 + m_2$ sous la forme $m = m_0 \\pm \\Delta m$.",
+          "solution_markdown": "$m_0 = 250 + 120 = 370\\ \\text{g}$ ; $\\Delta m = 5 + 2 = 7\\ \\text{g}$ ; donc $m = (370 \\pm 7)\\ \\text{g}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Trois condensateurs identiques, chacun mesuré à $C_1 = (10 \\pm 0{,}5)\\ \\mu\\text{F}$, sont montés en parallèle. Déterminer la capacité équivalente $C = C_1 + C_1 + C_1$ sous la forme $C = C_0 \\pm \\Delta C$.",
+          "solution_markdown": "$C_0 = 3 \\times 10 = 30\\ \\mu\\text{F}$. Chaque terme de la somme porte sa propre incertitude, même s'ils ont la même valeur numérique : $\\Delta C = 0{,}5 + 0{,}5 + 0{,}5 = 1{,}5\\ \\mu\\text{F}$. Donc $C = (30{,}0 \\pm 1{,}5)\\ \\mu\\text{F}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On mesure une longueur $L_1 = (80 \\pm 1)\\ \\text{cm}$ et une longueur $L_2 = (30 \\pm 1)\\ \\text{cm}$, puis on calcule la différence $D = L_1 - L_2$ et la somme $S = L_1 + L_2$. Comparer $\\Delta D$ et $\\Delta S$, et commenter le résultat obtenu pour la précision relative de $D$ par rapport à celle de $S$.",
+          "solution_markdown": "$D_0 = 80 - 30 = 50\\ \\text{cm}$ et $\\Delta D = \\Delta L_1 + \\Delta L_2 = 1 + 1 = 2\\ \\text{cm}$, donc $D = (50 \\pm 2)\\ \\text{cm}$. $S_0 = 80 + 30 = 110\\ \\text{cm}$ et $\\Delta S = \\Delta L_1 + \\Delta L_2 = 1 + 1 = 2\\ \\text{cm}$ également, donc $S = (110 \\pm 2)\\ \\text{cm}$. Les deux incertitudes absolues sont identiques (2 cm), mais la précision relative $\\Delta D / D_0 = 2/50 = 4\\%$ est plus mauvaise que $\\Delta S / S_0 = 2/110 \\approx 1{,}8\\%$ : une différence de deux grandeurs proches est toujours moins précise relativement qu'une somme, même si l'incertitude absolue est la même."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour une grandeur obtenue par somme ou différence de mesures indépendantes, l'incertitude absolue totale est la somme des incertitudes absolues de chaque terme.",
+        "Cette règle s'applique de la même façon, que l'opération finale soit une addition ou une soustraction.",
+        "Un résultat de mesure s'écrit toujours sous la forme $x = x_0 \\pm \\Delta x$, jamais la valeur centrale seule.",
+        "Une différence de deux grandeurs proches donne souvent une précision relative moins bonne qu'une somme, même à incertitude absolue égale.",
+        "Au Probatoire, ce type de calcul d'incertitude est un classique de l'exercice 'Application des savoirs' : la méthode est toujours la même, quelle que soit la grandeur physique en jeu (capacité, résistance, masse, longueur...)."
+      ]
+    }
+  ]
+}

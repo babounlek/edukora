@@ -302,9 +302,9 @@ export function AccountPage() {
                           {sub.cursus.examen_display}
                           {sub.cursus.series ? ` - Série ${sub.cursus.series.code}` : ""}
                         </span>
-                        {sub.plan_name && (
-                          <span className="text-xs text-muted-foreground">{sub.plan_name}</span>
-                        )}
+                        <span className="text-xs text-muted-foreground">
+                          {sub.plan_name ?? (sub.duration_mode === "JUSQUA_EXAMEN" ? "Jusqu'à l'Examen" : "Mensuel")}
+                        </span>
                       </span>
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-muted-foreground">
@@ -344,13 +344,13 @@ export function AccountPage() {
             <CardContent>
               {/* L'add-on Épreuves Inédites (InscriptionInedite) est un produit séparé de
                   l'abonnement classique (Subscription) - même un compte abonné peut n'avoir
-                  aucun accès ici tant qu'il n'a pas pris l'add-on ou une formule Max qui
-                  l'inclut (voir subscriptions.models.ProductType). Rendu explicite ici
-                  plutôt que laissé implicite : source de confusion constatée. */}
+                  aucun accès ici tant qu'il n'a pas pris un plan Jusqu'à l'Examen, qui
+                  l'inclut (Plan.inclut_inedit, voir subscriptions.models.ProductType). Rendu
+                  explicite ici plutôt que laissé implicite : source de confusion constatée. */}
               {!inscriptionsInedites || inscriptionsInedites.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
                   Aucun accès Épreuves Inédites pour l'instant - c'est un add-on séparé de l'abonnement classique
-                  ci-dessus (inclus dans la formule Max, ou disponible seul).
+                  ci-dessus, inclus automatiquement dans l'abonnement Jusqu'à l'Examen.
                 </p>
               ) : (
                 <ul className="flex flex-col gap-2">

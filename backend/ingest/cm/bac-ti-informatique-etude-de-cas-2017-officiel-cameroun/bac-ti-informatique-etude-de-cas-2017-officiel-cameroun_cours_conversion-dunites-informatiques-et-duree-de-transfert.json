@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-conversion-unites-et-duree-transfert-tle-ti",
+  "meta": {
+    "titre": "Convertir des unités informatiques et calculer une durée de transfert",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques - calculs de débit",
+    "duree_estimee_min": 25,
+    "tags": [
+      "conversion d'unités",
+      "Mio",
+      "Kio",
+      "durée de transfert",
+      "débit"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Ce fichier de 25 Mio va se télécharger à 6,83 Kio/s » : sans conversion préalable, cette phrase ne permet aucun calcul, parce que les deux grandeurs ne sont pas exprimées dans la même unité. Ce cours donne la méthode, en deux étapes, pour transformer cette information en une durée concrète, exprimée en secondes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la relation entre les multiples binaires : 1 Mio = 1024 Kio.",
+        "Savoir que débit = quantité / durée, et donc que durée = quantité / débit."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Convertir avant de diviser",
+      "contenu_markdown": "Pour calculer une durée de transfert, il faut d'abord ramener la taille du fichier et le débit à la même unité, puis appliquer la relation durée = taille / débit. Les unités binaires standard suivent une progression par 1024 : 1 kibioctet (Kio) = 1024 octets, 1 mébioctet (Mio) = 1024 Kio, 1 gibioctet (Gio) = 1024 Mio. Convertir une taille de Mio en Kio consiste donc à multiplier par 1024 ; convertir de Kio en Mio consiste à diviser par 1024. Une fois taille et débit exprimés dans la même unité, la division taille / débit donne directement la durée en secondes.",
+      "formule_principale": "t\\ (\\text{s}) = \\dfrac{\\text{taille du fichier (dans l'unité du débit)}}{\\text{débit (par seconde)}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un site de 25 Mio doit être aspiré à un débit de 6,83 Kio/s. Calculer la durée de l'aspiration en secondes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'incohérence d'unités",
+          "justification": "La taille est en Mio, le débit en Kio/s : une division directe donnerait un résultat sans signification.",
+          "resultat_markdown": "25 (Mio) ÷ 6,83 (Kio/s) ne peut pas être calculé tel quel."
+        },
+        {
+          "numero": 2,
+          "action": "Convertir la taille en Kio",
+          "justification": "1 Mio = 1024 Kio, donné dans l'énoncé.",
+          "resultat_markdown": "$25 \\times 1024 = 25\\,600$ Kio."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la relation durée = taille / débit",
+          "justification": "Taille et débit sont maintenant tous deux exprimés en Kio (et Kio/s).",
+          "resultat_markdown": "$t = 25\\,600 / 6{,}83 \\approx 3748{,}2$ s"
+        }
+      ],
+      "conclusion_markdown": "L'aspiration du site dure environ 3748 secondes, soit un peu plus d'une heure. Sans la conversion préalable de l'étape 2, ce calcul aurait été impossible à mener correctement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser directement 25 par 6,83 sans convertir, en obtenant environ 3,66 « quelque chose ».",
+          "pourquoi_faux": "Le résultat obtenu ne correspond à aucune grandeur physique cohérente puisque le numérateur est en Mio et le dénominateur en Kio/s : c'est une division entre unités incompatibles.",
+          "correction_markdown": "Ne jamais diviser deux grandeurs sans avoir vérifié au préalable qu'elles sont exprimées dans la même unité."
+        },
+        {
+          "erreur_markdown": "Convertir le débit en Mio/s au lieu de convertir la taille en Kio, en divisant 6,83 par 1024.",
+          "pourquoi_faux": "Cette conversion est mathématiquement valable mais rend le calcul plus difficile (des décimales très petites) ; il est presque toujours plus simple de convertir la plus grande unité (Mio) vers la plus petite (Kio) déjà utilisée par le débit.",
+          "correction_markdown": "Choisis toujours de convertir vers l'unité déjà utilisée par le débit donné dans l'énoncé : cela évite des divisions supplémentaires inutiles."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un fichier de 2 Mio est téléchargé à un débit de 512 Kio/s. Calculer la durée du téléchargement en secondes. (1 Mio = 1024 Kio.)",
+          "solution_markdown": "$2 \\times 1024 = 2048$ Kio. $t = 2048 / 512 = 4$ s."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une vidéo de 1,5 Gio doit être téléchargée à un débit de 2048 Kio/s. Calculer la durée du téléchargement en secondes, puis la convertir en minutes. (1 Gio = 1024 Mio, 1 Mio = 1024 Kio.)",
+          "solution_markdown": "On convertit d'abord en Kio : $1{,}5 \\times 1024 = 1536$ Mio, puis $1536 \\times 1024 = 1\\,572\\,864$ Kio.\n\n$t = 1\\,572\\,864 / 2048 = 768$ s.\n\nEn minutes : $768 / 60 = 12{,}8$ min, soit environ 12 minutes 48 secondes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un opérateur affirme pouvoir transférer 10 Gio de données en 20 minutes. Calculer le débit moyen correspondant en Kio/s, puis dire si ce débit est cohérent avec un débit annoncé de « 100 Mbps » sur la même liaison (rappel : 1 octet = 8 bits, on admettra 1 Mo ≈ 1 Mio pour cette comparaison).",
+          "solution_markdown": "Convertissons 10 Gio en Kio : $10 \\times 1024 \\times 1024 = 10\\,485\\,760$ Kio.\n\n20 minutes = $20 \\times 60 = 1200$ s.\n\nDébit moyen $= 10\\,485\\,760 / 1200 \\approx 8738{,}1$ Kio/s, soit environ 8,53 Mio/s.\n\nConvertissons ensuite le débit annoncé de 100 Mbps en Mio/s : $100$ Mbit/s $= 100 / 8 = 12{,}5$ Mio/s.\n\nLe débit moyen réellement observé (≈8,53 Mio/s) est inférieur au débit maximal annoncé (12,5 Mio/s) : c'est cohérent, un débit annoncé étant une capacité maximale théorique, rarement atteinte en continu sur un transfert réel."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une division entre une taille et un débit n'a de sens que si les deux sont exprimés dans la même unité.",
+        "Les multiples binaires progressent par 1024 : 1 Mio = 1024 Kio, 1 Gio = 1024 Mio.",
+        "La relation à retenir est durée = taille du transfert / débit, une fois les unités harmonisées.",
+        "Convertis toujours vers l'unité déjà utilisée par le débit donné dans l'énoncé : c'est le chemin le plus court et le plus sûr.",
+        "Ce type de calcul de durée de transfert est un classique des exercices de réseaux au BAC TI, souvent basé sur une capture d'écran réelle d'un logiciel de téléchargement."
+      ]
+    }
+  ]
+}

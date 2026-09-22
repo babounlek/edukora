@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-calcul-moyenne-serie-statistique-groupee-1ere-a",
+  "meta": {
+    "titre": "Calcul de la moyenne d'une série statistique groupée en classes (centres de classe)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistique descriptive - séries groupées",
+    "duree_estimee_min": 25,
+    "tags": [
+      "moyenne",
+      "centre de classe",
+      "série groupée"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2006 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2006-officiel-cameroun-ex2-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer la moyenne d'une série de notes individuelles se fait en additionnant toutes les valeurs. Mais quand les données sont regroupées en classes, comme l'âge ou l'ancienneté de tout un groupe, on ne connaît plus la valeur exacte de chaque individu, seulement la classe à laquelle il appartient. Le centre de classe permet alors d'estimer la moyenne malgré cette perte d'information."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lire un tableau statistique groupé en classes",
+        "Calculer le centre d'un intervalle $[a,b[$",
+        "Effectuer une somme pondérée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule de la moyenne pondérée",
+      "contenu_markdown": "Pour une série groupée en classes d'effectifs $n_i$ et de centres de classe $x_i$, la moyenne se calcule par $\\bar{x}=\\dfrac{\\sum n_i x_i}{\\sum n_i}$. Le centre de classe $x_i$ d'un intervalle $[a,b[$ vaut $\\dfrac{a+b}{2}$ : c'est la valeur qui remplace, de façon approchée, toutes les valeurs réelles de cette classe.",
+      "formule_principale": "\\bar{x}=\\dfrac{\\sum n_i x_i}{\\sum n_i}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer la moyenne de la série d'ancienneté donnée par le tableau : classes $[0,4[$, $[4,8[$, $[8,12[$, $[12,16[$, $[16,20[$, $[20,24[$, $[24,28[$, effectifs 5, 15, 20, 10, 30, 5, 15, centres de classe 2, 6, 10, 14, 18, 22, 26.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer chaque produit $n_i x_i$",
+          "justification": "Chaque produit pondère le centre de classe par le nombre d'individus qu'il représente.",
+          "resultat_markdown": "$10,\\;90,\\;200,\\;140,\\;540,\\;110,\\;390$"
+        },
+        {
+          "numero": 2,
+          "action": "Sommer les effectifs",
+          "justification": "Le dénominateur de la moyenne est l'effectif total de la série.",
+          "resultat_markdown": "$\\sum n_i=5+15+20+10+30+5+15=100$"
+        },
+        {
+          "numero": 3,
+          "action": "Sommer les produits $n_i x_i$",
+          "justification": "Le numérateur de la moyenne est la somme de toutes les contributions pondérées.",
+          "resultat_markdown": "$\\sum n_i x_i=10+90+200+140+540+110+390=1480$"
+        },
+        {
+          "numero": 4,
+          "action": "Diviser la somme des produits par l'effectif total",
+          "justification": "On applique directement la formule de la moyenne pondérée.",
+          "resultat_markdown": "$\\bar{x}=\\dfrac{1480}{100}=14{,}8$"
+        }
+      ],
+      "conclusion_markdown": "L'ancienneté moyenne de cette série est de 14,8 ans."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser les bornes des classes (0, 4, 8...) au lieu des centres de classe dans le calcul",
+          "pourquoi_faux": "Les bornes ne représentent aucun individu réel de la classe : seul le centre de classe donne une estimation raisonnable de la valeur moyenne des individus qu'elle contient.",
+          "correction_markdown": "Calcule toujours le centre de classe $\\frac{a+b}{2}$ avant de multiplier par l'effectif, ou utilise directement le centre s'il est déjà donné dans le tableau."
+        },
+        {
+          "erreur_markdown": "Diviser par le nombre de classes (ici 7) au lieu de l'effectif total (ici 100)",
+          "pourquoi_faux": "Le dénominateur de la moyenne est le nombre total d'individus de la série, pas le nombre de classes utilisées pour les regrouper.",
+          "correction_markdown": "Vérifie que le dénominateur utilisé correspond bien à $\\sum n_i$, la somme de la ligne des effectifs."
+        },
+        {
+          "erreur_markdown": "Oublier de multiplier certains effectifs par leur centre de classe et les additionner directement aux produits",
+          "pourquoi_faux": "Chaque terme de la somme $\\sum n_i x_i$ doit être un produit $n_i \\times x_i$, jamais un effectif ou un centre de classe isolé.",
+          "correction_markdown": "Complète systématiquement une ligne intermédiaire $n_i x_i$ dans ton tableau avant de sommer, comme demandé explicitement dans l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série donne les classes $[0,10[$, $[10,20[$, $[20,30[$ avec les effectifs 4, 10, 6 et les centres de classe 5, 15, 25. Calculer la moyenne.",
+          "solution_markdown": "$n_i x_i$ : $4\\times 5=20$, $10\\times 15=150$, $6\\times 25=150$. Somme des effectifs : $4+10+6=20$. Somme des produits : $20+150+150=320$. Moyenne : $\\bar{x}=\\frac{320}{20}=16$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un tableau donne les classes $[0,5[$, $[5,10[$, $[10,15[$, $[15,20[$ avec les effectifs 3, 7, 12, 8. Calculer les centres de classe, puis la moyenne de la série.",
+          "solution_markdown": "Centres de classe : $2{,}5$, $7{,}5$, $12{,}5$, $17{,}5$. Produits $n_i x_i$ : $3\\times 2{,}5=7{,}5$ ; $7\\times 7{,}5=52{,}5$ ; $12\\times 12{,}5=150$ ; $8\\times 17{,}5=140$. Somme des effectifs : $3+7+12+8=30$. Somme des produits : $7{,}5+52{,}5+150+140=350$. Moyenne : $\\bar{x}=\\frac{350}{30}\\approx 11{,}67$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 50 élèves est regroupée en deux classes seulement, $[0,10[$ et $[10,20[$, de moyenne connue chacune (4 pour la première, 15 pour la seconde), avec 20 élèves dans la première classe et 30 dans la seconde. Peut-on calculer la moyenne générale de toute la série à partir de ces deux moyennes partielles, et comment ?",
+          "solution_markdown": "Oui : la moyenne générale d'une série formée de deux sous-groupes se calcule par une moyenne pondérée des moyennes partielles, en utilisant les effectifs de chaque sous-groupe comme poids, exactement comme pour des centres de classe. $\\bar{x}=\\dfrac{20\\times 4+30\\times 15}{20+30}=\\dfrac{80+450}{50}=\\dfrac{530}{50}=10{,}6$. Cette méthode généralise le calcul par centres de classe : chaque moyenne partielle joue ici le rôle d'un centre de classe, pondéré par son propre effectif."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La moyenne d'une série groupée s'obtient toujours par $\\bar{x}=\\dfrac{\\sum n_i x_i}{\\sum n_i}$, jamais par une simple moyenne des centres de classe sans pondération.",
+        "Le centre de classe $x_i=\\frac{a+b}{2}$ remplace, de façon approchée, toutes les valeurs réelles inconnues d'une classe $[a,b[$.",
+        "Complète toujours la ligne intermédiaire $n_i x_i$ avant de sommer : cela évite les erreurs d'addition directe entre effectifs et centres de classe.",
+        "Le dénominateur de la moyenne est l'effectif total de la série, jamais le nombre de classes du tableau.",
+        "Ce calcul revient très régulièrement au Probatoire, associé à la lecture de tableau et à l'histogramme : les trois exploitent le même tableau de données."
+      ]
+    }
+  ]
+}

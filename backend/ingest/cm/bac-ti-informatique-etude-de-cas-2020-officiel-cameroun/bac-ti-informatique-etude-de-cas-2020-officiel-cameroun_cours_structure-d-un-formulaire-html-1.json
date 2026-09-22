@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-structure-d-un-formulaire-html-tle-ti-1",
+  "meta": {
+    "titre": "Structure d'un formulaire HTML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web",
+    "duree_estimee_min": 12,
+    "tags": [
+      "formulaire",
+      "form",
+      "input",
+      "select",
+      "HTML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q6-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois que tu remplis un champ de connexion, que tu choisis ton pays dans une liste ou que tu cliques sur \"Envoyer\" sur un site web, tu interagis avec un formulaire HTML. Comprendre ses différentes parties est indispensable avant d'en construire un toi-même ou d'en exploiter les données côté serveur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les balises HTML de base (`<div>`, `<p>`...)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Champs de saisie et bouton d'action",
+      "contenu_markdown": "Un formulaire HTML (balise `<form>`) est composé de **champs de saisie** qui recueillent l'information de l'utilisateur (`<input>` pour un texte court, `<textarea>` pour un texte long, `<select>` pour un choix parmi une liste fermée d'options) et d'un **bouton d'action** qui déclenche l'envoi de ces données (bouton de soumission).",
+      "formule_principale": "<form> ... champs de saisie ... bouton d'action ... </form>",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Construire un petit formulaire d'inscription avec un champ nom, une liste de choix de la ville, et un bouton d'envoi.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ouvrir le formulaire",
+          "justification": "Toute la zone de saisie doit être encadrée par la balise `<form>`",
+          "resultat_markdown": "```html\n<form>\n```"
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter le champ texte et la liste de choix",
+          "justification": "Un texte court utilise `<input type=\"text\">`, un choix parmi des options fermées utilise `<select>`",
+          "resultat_markdown": "```html\n<input type=\"text\" name=\"nom\" placeholder=\"Votre nom\">\n<select name=\"ville\">\n  <option>Douala</option>\n  <option>Yaoundé</option>\n</select>\n```"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter le bouton d'action et fermer le formulaire",
+          "justification": "Un bouton de soumission déclenche l'envoi des données saisies",
+          "resultat_markdown": "```html\n<input type=\"submit\" value=\"Envoyer\">\n</form>\n```"
+        }
+      ],
+      "conclusion_markdown": "Le formulaire regroupe deux champs de saisie (texte court, liste fermée) et un bouton d'action (soumission) : les deux parties complémentaires que la question demandait de citer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la balise englobante `<form>`",
+          "pourquoi_faux": "Sans `<form>`, les champs de saisie existent visuellement mais leurs données ne peuvent être regroupées ni envoyées ensemble lors d'une soumission.",
+          "correction_markdown": "Vérifie que tous les champs liés à une même saisie sont bien encadrés par une seule balise `<form>`."
+        },
+        {
+          "erreur_markdown": "Confondre le bouton `submit` (qui envoie les données) et le bouton `reset` (qui les efface)",
+          "pourquoi_faux": "Les deux sont des boutons d'action, mais avec des effets opposés : l'un valide la saisie, l'autre l'annule.",
+          "correction_markdown": "Vérifie l'attribut `type` du bouton (`submit`, `reset`, ou `button` pour une action personnalisée) avant de conclure sur son rôle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer deux balises permettant de recueillir une saisie de l'utilisateur dans un formulaire HTML.",
+          "solution_markdown": "`<input>` (champ court : texte, nombre, case à cocher...) et `<select>` (liste déroulante). `<textarea>` (texte long sur plusieurs lignes) est une autre réponse valable."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle est la différence entre `<input type=\"submit\">` et `<input type=\"reset\">` ?",
+          "solution_markdown": "`<input type=\"submit\">` envoie les données saisies (déclenche leur traitement). `<input type=\"reset\">` efface toutes les saisies en les remettant à leur valeur initiale, sans rien envoyer."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi chaque champ de saisie doit-il porter un attribut `name` pour le traitement des données côté serveur ?",
+          "solution_markdown": "L'attribut `name` sert d'identifiant à chaque champ au moment de l'envoi : c'est lui qui permet au programme qui reçoit les données (en PHP par exemple) de savoir QUELLE valeur correspond à QUEL champ. Sans `name`, les valeurs partiraient sans étiquette, impossibles à relier à leur champ d'origine."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un formulaire HTML s'encadre avec la balise `<form>`.",
+        "Les champs de saisie (`<input>`, `<textarea>`, `<select>`) recueillent l'information de l'utilisateur.",
+        "Le bouton d'action (`submit`) déclenche l'envoi des données ; `reset` les efface.",
+        "L'attribut `name` de chaque champ permet d'identifier sa valeur lors du traitement."
+      ]
+    }
+  ]
+}

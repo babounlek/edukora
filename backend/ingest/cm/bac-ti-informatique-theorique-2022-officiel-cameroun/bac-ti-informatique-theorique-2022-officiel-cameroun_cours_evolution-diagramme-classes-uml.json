@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-evolution-diagramme-classes-tle-ti",
+  "meta": {
+    "titre": "Faire évoluer un diagramme de classes UML face à un nouveau besoin",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de classes : compléter un modèle existant",
+    "duree_estimee_min": 25,
+    "tags": [
+      "UML",
+      "diagramme de classes",
+      "évolution de modèle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex2-q6-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un système d'information n'est jamais figé : un nouveau besoin métier apparaît, et il faut compléter un diagramme déjà existant sans tout reprendre à zéro. C'est un exercice fréquent au BAC TI - « compléter le diagramme ci-dessus » - qui demande une méthode précise plutôt qu'une inspiration du moment."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un diagramme de classes existant.",
+        "Savoir traduire une règle de gestion en association et multiplicité.",
+        "Savoir reconnaître le besoin d'une classe-association."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Compléter sans tout redessiner",
+      "contenu_markdown": "Faire évoluer un diagramme de classes consiste à repérer, dans le nouveau besoin décrit, ce qui est réellement nouveau par rapport à ce qui existe déjà, puis à n'ajouter que le strict nécessaire : de nouvelles classes si de nouveaux types d'objets apparaissent, de nouvelles associations si de nouveaux liens relient ces classes aux classes déjà présentes, et une classe-association si le nouveau besoin fait apparaître une information propre à un lien plutôt qu'à une classe.\n\nLa méthode se résume en trois questions posées sur le texte du nouveau besoin : quels nouveaux types d'objets apparaissent ? à quelles classes déjà existantes ces nouveaux objets se rattachent-ils ? une information caractérise-t-elle un lien plutôt qu'une classe ?",
+      "formule_principale": "Nouveau besoin -> nouvelles classes ? -> rattachement aux classes existantes ? -> classe-association nécessaire ?"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le diagramme d'un hôtel comporte déjà les classes Hotel, Chambre et Employé. On ajoute la règle suivante : « les chambres peuvent être inspectées par des agents de l'office du tourisme, à l'issue de quoi un certificat est remis au directeur. » Compléter le diagramme.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les nouveaux types d'objets",
+          "justification": "Première question de la méthode : chercher les noms communs nouveaux qui désignent des entités du système.",
+          "resultat_markdown": "Deux nouveaux types d'objets apparaissent : l'agent de l'office du tourisme, et le certificat."
+        },
+        {
+          "numero": 2,
+          "action": "Créer les classes correspondantes avec leurs attributs plausibles",
+          "justification": "Chaque nouveau type d'objet devient une classe.",
+          "resultat_markdown": "Classe AgentTourisme (nom, service, méthode inspecterChambre()) ; classe Certificat (numéro, date d'émission, conclusion)."
+        },
+        {
+          "numero": 3,
+          "action": "Rattacher chaque nouvelle classe aux classes déjà existantes concernées",
+          "justification": "Deuxième question de la méthode : le texte dit explicitement que l'agent inspecte une Chambre, et que le certificat est remis à un Employé occupant le rôle de directeur.",
+          "resultat_markdown": "Association « inspecte » entre AgentTourisme et Chambre ; association « remis à » entre Certificat et Employé (rôle -directeur)."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier si une information caractérise le lien plutôt qu'une classe",
+          "justification": "Troisième question de la méthode : le certificat résulte précisément de chaque inspection, pas d'un agent ou d'une chambre pris isolément.",
+          "resultat_markdown": "Certificat est en réalité la classe-association de la relation d'inspection entre AgentTourisme et Chambre, reliée en pointillés à cette association, en plus de son lien vers Employé."
+        }
+      ],
+      "conclusion_markdown": "Le diagramme complété ajoute deux classes et leurs associations sans toucher aux classes déjà présentes : c'est la marque d'une évolution de modèle réussie, qui préserve tout ce qui fonctionnait déjà."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Rajouter les nouveaux attributs directement sur une classe déjà existante plutôt que de créer une nouvelle classe",
+          "pourquoi_faux": "Si le nouveau besoin décrit un type d'objet à part entière, le noyer dans les attributs d'une classe déjà existante empêche de représenter plusieurs exemplaires distincts.",
+          "correction_markdown": "Dès qu'un nouveau nom du texte peut exister en plusieurs exemplaires distincts avec sa propre identité, crée une classe à part."
+        },
+        {
+          "erreur_markdown": "Oublier de relier la nouvelle classe aux classes déjà existantes, en la laissant isolée sur le diagramme",
+          "pourquoi_faux": "Une classe qui n'est reliée à aucune autre est inutilisable dans le système.",
+          "correction_markdown": "Pour chaque nouvelle classe créée, relis le texte du nouveau besoin et identifie explicitement à quelle(s) classe(s) déjà existante(s) elle doit être associée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le diagramme d'une bibliothèque comporte déjà les classes Abonné et Ouvrage. On ajoute la règle : « un abonné peut désormais laisser un avis noté sur chaque ouvrage qu'il a emprunté. » Identifier la ou les nouvelles classes à ajouter et où les rattacher.",
+          "solution_markdown": "Le nouveau besoin décrit une information (l'avis noté) qui dépend à la fois de l'Abonné et de l'Ouvrage concernés : un même abonné peut noter plusieurs ouvrages, un même ouvrage peut recevoir des avis de plusieurs abonnés. C'est le signal d'une classe-association : une classe **Avis** (attributs note, commentaire), reliée en pointillés à l'association qui relie Abonné et Ouvrage."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le diagramme d'un établissement scolaire comporte déjà les classes Eleve et Classe. On ajoute la règle : « chaque élève doit remettre à son établissement une fiche médicale, renseignée par un médecin scolaire externe à l'établissement. » Compléter le diagramme.",
+          "solution_markdown": "Deux nouveaux types d'objets apparaissent : la fiche médicale et le médecin scolaire. On crée la classe **FicheMedicale** (dateEtablissement, observations) reliée à Eleve (multiplicité 1 côté Eleve), et la classe **MedecinScolaire** (nom, numéroAgrement), reliée par une association « renseigne » à FicheMedicale (multiplicité 1 côté MedecinScolaire, un médecin pouvant renseigner plusieurs fiches)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le diagramme d'une entreprise de transport comporte déjà les classes Chauffeur et Vehicule (association simple, sans classe-association). On ajoute la règle : « chaque trajet effectué par un chauffeur avec un véhicule donné enregistre un kilométrage parcouru et une date, et doit en plus être validé par un responsable de flotte parmi les Chauffeur ayant le statut de responsable. » Compléter le diagramme en expliquant pourquoi l'association initiale Chauffeur-Vehicule doit elle-même être transformée par cet ajout.",
+          "solution_markdown": "Le nouveau besoin introduit une information (kilométrage, date) qui caractérise chaque combinaison précise, ce qui impose de transformer l'association simple Chauffeur-Vehicule en une classe-association **Trajet** portant kilometrage et date, reliée en pointillés à cette association - l'association initiale ne disparaît pas, elle est enrichie. Pour la validation, il ne s'agit pas d'une nouvelle classe métier distincte mais d'un rôle particulier joué par certains objets de la classe Chauffeur déjà existante : on ajoute une association supplémentaire entre Trajet et Chauffeur, nommée « validé par », de multiplicité 1 côté Chauffeur, coexistant avec la première association - exactement comme Hotel et Employé étaient reliés par deux associations distinctes dans l'exemple de l'hôtel."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Faire évoluer un diagramme consiste à ajouter le strict nécessaire, jamais à redessiner ce qui fonctionne déjà.",
+        "Trois questions guident l'ajout : quels nouveaux types d'objets apparaissent ? à quelles classes existantes se rattachent-ils ? une information caractérise-t-elle un lien plutôt qu'une classe ?",
+        "Un nouveau nom qui peut exister en plusieurs exemplaires avec sa propre identité mérite sa propre classe, jamais un simple attribut ajouté ailleurs.",
+        "Une classe jamais reliée à aucune classe existante est une classe inutile : vérifie systématiquement le rattachement.",
+        "Au BAC TI, ces questions de complétion valorisent la cohérence avec le diagramme déjà fourni plus que l'originalité : réutiliser un patron de modélisation déjà présent est toujours un signe de maîtrise."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-invariance-globale-par-une-transformation-terminale-c",
+  "meta": {
+    "titre": "Montrer qu'un ensemble est globalement invariant par une transformation",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Transformations - invariance globale d'un ensemble",
+    "duree_estimee_min": 25,
+    "tags": [
+      "invariance globale",
+      "homothétie",
+      "isométrie",
+      "double inclusion",
+      "transformation réciproque",
+      "points fixes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-maths-1995-cameroun",
+    "epreuve_titre": "BAC Mathématiques - Cameroun, série C, session 1995 (Office du Baccalauréat du Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-maths-1995-cameroun-ex3-qP1.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Fais tourner un cercle autour de son centre : chaque point bouge, mais le cercle, lui, ne bouge pas. C'est toute la différence entre invariance **globale** (l'ensemble se retrouve identique à lui-même) et invariance **point par point** (chaque point reste à sa place). Les sujets de BAC jouent constamment sur cette distinction : « montrer que la surface est globalement invariante » n'a rien à voir avec « montrer que les points sont fixes », et confondre les deux fait perdre la question entière. La bonne nouvelle : la démonstration suit toujours le même schéma en deux temps."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'application bijective et de transformation réciproque",
+        "Expression analytique d'une homothétie, d'une translation, d'une symétrie",
+        "Équation cartésienne d'une surface ou d'une courbe",
+        "Raisonnement par double inclusion pour prouver une égalité d'ensembles"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Invariance globale : la double inclusion en deux temps",
+      "contenu_markdown": "Soit $T$ une transformation du plan ou de l'espace (donc une application **bijective**) et $A$ une partie.\n\n$$A \\text{ est globalement invariant par } T \\iff T(A)=A.$$\n\nCela n'exige pas que les points de $A$ soient fixes. Les points fixes de $T$ sont ceux qui vérifient $T(M)=M$ ; il peut n'y en avoir qu'un, comme le centre d'une homothétie.\n\n**Schéma de démonstration, en deux temps.**\n\n*Temps 1 - montrer $T(A)\\subset A$.* On prend $M\\in A$ quelconque, on écrit les coordonnées de $M'=T(M)$, et l'on vérifie que $M'$ satisfait l'équation caractérisant $A$.\n\n*Temps 2 - montrer $A\\subset T(A)$.* On applique le temps 1 à la transformation réciproque $T^{-1}$, qui est de même nature (la réciproque d'une homothétie de rapport $k$ est l'homothétie de même centre et de rapport $\\frac1k$ ; celle d'une rotation d'angle $\\theta$ est la rotation d'angle $-\\theta$). On obtient $T^{-1}(A)\\subset A$, puis en composant par $T$ :\n\n$$A=T\\big(T^{-1}(A)\\big)\\subset T(A).$$\n\nLes deux inclusions donnent $T(A)=A$.\n\n**Le raccourci par équivalence.** Quand le calcul du temps 1 s'écrit naturellement avec des $\\iff$ (c'est le cas dès que les coordonnées de $M$ se retrouvent en fonction de celles de $M'$ sans perte d'information), une seule chaîne suffit :\n\n$$M\\in A\\iff \\text{équation de } A \\text{ en } (x,y,z)\\iff \\text{équation de } A \\text{ en } (x',y',z')\\iff M'\\in A.$$\n\nC'est la rédaction la plus économique, mais elle exige que chaque étape soit réellement réversible.\n\n**Une méthode sans coordonnées.** Si $A$ admet une caractérisation métrique - « $A$ est l'ensemble des points $M$ tels que $d(M,\\ldots)=\\ldots$ » - et si $T$ conserve les quantités qui y figurent, l'invariance est immédiate. C'est le cas des isométries : elles conservent toutes les distances, donc toute partie définie par des conditions de distance à des objets eux-mêmes invariants est globalement invariante.",
+      "formule_principale": "T(A)=A \\iff \\big[T(A)\\subset A \\text{ et } T^{-1}(A)\\subset A\\big]",
+      "variantes": [
+        {
+          "nom": "Invariance par une famille de transformations",
+          "quand_utiliser": "Quand l'énoncé fait intervenir un paramètre (toutes les homothéties de centre $O$, toutes les rotations d'un axe donné).",
+          "contenu_markdown": "On mène le calcul avec le paramètre gardé littéral ($k$ quelconque non nul, $\\theta$ quelconque) plutôt qu'avec des valeurs particulières. La conclusion porte alors sur toute la famille d'un coup.\n\nCette lecture est souvent la plus éclairante : dire que $(\\mathcal{S})$ est invariant par **toutes** les homothéties de centre $O$ revient à dire que $(\\mathcal{S})$ est une réunion de droites passant par $O$, c'est-à-dire un cône de sommet $O$. L'invariance par toutes les rotations d'axe $(D)$ dit, elle, que la surface est de révolution autour de $(D)$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'espace est rapporté à un repère orthonormé $(O,\\vec{i},\\vec{j},\\vec{k})$ et $(\\mathcal{S})$ désigne l'ensemble des points $M(x\\,;y\\,;z)$ vérifiant $x^{2}=y^{2}+z^{2}$. Soit $k$ un réel non nul et $H_k$ l'homothétie de centre $O$ et de rapport $k$. Montrer que $(\\mathcal{S})$ est globalement invariant par $H_k$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'expression analytique de $H_k$",
+          "justification": "Par définition, $\\overrightarrow{OM'}=k\\,\\overrightarrow{OM}$ ; on traduit sur les coordonnées.",
+          "resultat_markdown": "$$\\begin{cases}x'=kx\\\\ y'=ky\\\\ z'=kz\\end{cases}$$"
+        },
+        {
+          "numero": 2,
+          "action": "Partir d'un point quelconque de $(\\mathcal{S})$",
+          "justification": "Pour prouver une inclusion, on prend un élément quelconque de l'ensemble de départ.",
+          "resultat_markdown": "Soit $M(x\\,;y\\,;z)\\in(\\mathcal{S})$, donc $x^{2}=y^{2}+z^{2}$, et soit $M'=H_k(M)$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer séparément $x'^{2}$ et $y'^{2}+z'^{2}$",
+          "justification": "Comparer les deux membres de l'équation de $(\\mathcal{S})$ pour le point image.",
+          "resultat_markdown": "$$x'^{2}=(kx)^{2}=k^{2}x^{2},$$ $$y'^{2}+z'^{2}=(ky)^{2}+(kz)^{2}=k^{2}\\left(y^{2}+z^{2}\\right)=k^{2}x^{2}.$$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure la première inclusion",
+          "justification": "Les deux quantités calculées sont égales, donc $M'$ vérifie l'équation de $(\\mathcal{S})$.",
+          "resultat_markdown": "$x'^{2}=y'^{2}+z'^{2}$, donc $M'\\in(\\mathcal{S})$ et $H_k\\big((\\mathcal{S})\\big)\\subset(\\mathcal{S})$."
+        },
+        {
+          "numero": 5,
+          "action": "Traiter la réciproque",
+          "justification": "$H_k$ est bijective, de réciproque $H_{1/k}$, définie car $k\\neq0$ ; l'étape 4 s'applique telle quelle à $H_{1/k}$.",
+          "resultat_markdown": "$H_{1/k}\\big((\\mathcal{S})\\big)\\subset(\\mathcal{S})$, donc en composant par $H_k$ : $$(\\mathcal{S})=H_k\\Big(H_{1/k}\\big((\\mathcal{S})\\big)\\Big)\\subset H_k\\big((\\mathcal{S})\\big).$$"
+        },
+        {
+          "numero": 6,
+          "action": "Rassembler et interpréter",
+          "justification": "Les deux inclusions donnent l'égalité ; la lecture géométrique confirme le résultat.",
+          "resultat_markdown": "$$H_k\\big((\\mathcal{S})\\big)=(\\mathcal{S}).$$ Géométriquement, $(\\mathcal{S})$ est une réunion de droites passant par $O$, et une homothétie de centre $O$ transforme toute droite passant par $O$ en elle-même."
+        }
+      ],
+      "conclusion_markdown": "$(\\mathcal{S})$ est globalement invariant par $H_k$, pour tout réel $k$ non nul. Attention à la portée exacte de ce résultat : seul le point $O$ est fixe, tous les autres points de $(\\mathcal{S})$ se déplacent le long de leur génératrice."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure « $(\\mathcal{S})$ est globalement invariant » après avoir seulement montré $H_k\\big((\\mathcal{S})\\big)\\subset(\\mathcal{S})$.",
+          "pourquoi_faux": "Une inclusion n'est pas une égalité. En toute rigueur, l'image pourrait être une partie stricte de $(\\mathcal{S})$ ; l'énoncé demande $T(A)=A$. Pour les transformations bijectives usuelles l'égalité est vraie, mais elle doit être démontrée.",
+          "correction_markdown": "Ajouter les deux lignes de la réciproque : « $H_k$ est bijective de réciproque $H_{1/k}$, à laquelle le même calcul s'applique ». C'est court et c'est un point de barème."
+        },
+        {
+          "erreur_markdown": "Confondre invariance globale et points fixes : écrire « $H_k(M)=M$ pour tout $M$ de $(\\mathcal{S})$ ».",
+          "pourquoi_faux": "Ce serait dire que $H_k$ est l'identité sur $(\\mathcal{S})$, ce qui est faux dès que $k\\neq1$ : le point $(1\\,;1\\,;0)$ de $(\\mathcal{S})$ a pour image $(k\\,;k\\,;0)$, qui est un autre point - situé, lui aussi, sur $(\\mathcal{S})$.",
+          "correction_markdown": "Formuler la conclusion exactement : « l'image de $(\\mathcal{S})$ est $(\\mathcal{S})$ », et préciser si besoin que le seul point fixe est le centre $O$."
+        },
+        {
+          "erreur_markdown": "Vérifier l'invariance sur un ou deux points particuliers de la surface et généraliser.",
+          "pourquoi_faux": "Un exemple ne démontre rien : il faut un point générique de coordonnées $(x\\,;y\\,;z)$ soumis à la seule hypothèse $x^{2}=y^{2}+z^{2}$. Un examinateur lit d'abord la première ligne de la démonstration : si elle commence par « prenons $M(1\\,;1\\,;0)$ », la question est perdue.",
+          "correction_markdown": "Commencer systématiquement par « Soit $M(x\\,;y\\,;z)$ un point quelconque de $(\\mathcal{S})$ », et n'utiliser ensuite que l'hypothèse générale."
+        },
+        {
+          "erreur_markdown": "Oublier de justifier que la réciproque est du même type, et écrire « par symétrie du raisonnement, l'autre inclusion est vraie ».",
+          "pourquoi_faux": "La formule « par symétrie » masque exactement l'étape qui est notée. Rien n'est symétrique tant qu'on n'a pas dit ce qu'est $T^{-1}$ ; pour une transformation non bijective, la propriété serait d'ailleurs fausse.",
+          "correction_markdown": "Nommer la réciproque explicitement : « $H_k$ est bijective et $H_k^{-1}=H_{1/k}$, homothétie de centre $O$ et de rapport $\\frac1k$, définie puisque $k\\neq0$ »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le plan rapporté à un repère orthonormé, soit $(\\mathcal{C})$ le cercle d'équation $x^{2}+y^{2}=9$ et $s$ la symétrie orthogonale d'axe l'axe des abscisses. Montrer que $(\\mathcal{C})$ est globalement invariant par $s$. Le cercle possède-t-il des points fixes par $s$ ?",
+          "solution_markdown": "**Expression analytique de $s$.** La symétrie d'axe $(Ox)$ transforme $M(x\\,;y)$ en $M'(x\\,;-y)$, soit\n\n$$\\begin{cases}x'=x\\\\ y'=-y\\end{cases}$$\n\n**Inclusion directe.** Soit $M(x\\,;y)\\in(\\mathcal{C})$, donc $x^{2}+y^{2}=9$. Alors\n\n$$x'^{2}+y'^{2}=x^{2}+(-y)^{2}=x^{2}+y^{2}=9,$$\n\ndonc $M'\\in(\\mathcal{C})$ et $s\\big((\\mathcal{C})\\big)\\subset(\\mathcal{C})$.\n\n**Réciproque.** $s$ est une involution : $s^{-1}=s$. L'inclusion précédente appliquée à $s^{-1}=s$ donne $s\\big((\\mathcal{C})\\big)\\subset(\\mathcal{C})$, d'où en composant par $s$ : $(\\mathcal{C})=s\\big(s((\\mathcal{C}))\\big)\\subset s\\big((\\mathcal{C})\\big)$.\n\n**Conclusion.** $s\\big((\\mathcal{C})\\big)=(\\mathcal{C})$ : le cercle est globalement invariant.\n\n**Points fixes.** $s(M)=M$ équivaut à $-y=y$, soit $y=0$. Les points de $(\\mathcal{C})$ vérifiant $y=0$ sont ceux tels que $x^{2}=9$, soit $x=3$ ou $x=-3$. Le cercle possède donc exactement **deux** points fixes, $(3\\,;0)$ et $(-3\\,;0)$ : tous les autres bougent, alors que le cercle, lui, reste identique à lui-même."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans l'espace rapporté à un repère orthonormé, soit $(\\mathcal{S}')$ la surface d'équation $x^{2}+y^{2}=z^{2}+1$ et $t$ la translation de vecteur $\\vec{v}(0\\,;0\\,;a)$, où $a$ est un réel. Pour quelles valeurs de $a$ la surface $(\\mathcal{S}')$ est-elle globalement invariante par $t$ ?",
+          "solution_markdown": "**Expression analytique.** $t$ transforme $M(x\\,;y\\,;z)$ en $M'(x\\,;y\\,;z+a)$, donc $x'=x$, $y'=y$, $z'=z+a$, et réciproquement $x=x'$, $y=y'$, $z=z'-a$.\n\n**Traduction de l'invariance.** $M'\\in(\\mathcal{S}')$ équivaut à $x'^{2}+y'^{2}=z'^{2}+1$, c'est-à-dire, en fonction des coordonnées de $M$ :\n\n$$x^{2}+y^{2}=(z+a)^{2}+1.$$\n\nOr $M\\in(\\mathcal{S}')$ équivaut à $x^{2}+y^{2}=z^{2}+1$.\n\n**Comparaison.** Pour que ces deux conditions soient équivalentes pour **tout** point, il faut et il suffit que\n\n$$(z+a)^{2}+1=z^{2}+1\\quad\\text{pour tout } z,$$\n\nsoit $z^{2}+2az+a^{2}=z^{2}$, c'est-à-dire $2az+a^{2}=0$ pour tout réel $z$. Un polynôme en $z$ est nul pour tout $z$ si et seulement si tous ses coefficients sont nuls :\n\n$$\\begin{cases}2a=0\\\\ a^{2}=0\\end{cases}\\quad\\Longleftrightarrow\\quad a=0.$$\n\n**Conclusion.** Seule la translation de vecteur nul, c'est-à-dire l'identité, laisse $(\\mathcal{S}')$ globalement invariante.\n\n**Lecture géométrique.** $(\\mathcal{S}')$ est un hyperboloïde de révolution à une nappe, dont le « col » est le cercle de rayon 1 situé dans le plan $z=0$. Toute translation verticale non nulle déplace ce col, donc modifie la surface. En revanche, $(\\mathcal{S}')$ est bien invariante par toute rotation d'axe $(Oz)$ et par la symétrie $z\\mapsto-z$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $(\\mathcal{S})$ la surface d'équation $x^{2}=y^{2}+z^{2}$. Démontrer que $(\\mathcal{S})$ est globalement invariante par toute rotation $R_\\theta$ d'axe l'axe des abscisses et d'angle $\\theta$, en utilisant deux méthodes : (a) par les coordonnées, (b) sans coordonnées, à partir de la caractérisation $d(O,M)=\\sqrt{2}\\,d\\big(M,(P)\\big)$ où $(P)$ est le plan $x=0$.",
+          "solution_markdown": "**(a) Méthode analytique.**\n\nLa rotation d'axe $(Ox)$ et d'angle $\\theta$ laisse l'abscisse inchangée et fait tourner le couple $(y,z)$ :\n\n$$\\begin{cases}x'=x\\\\ y'=y\\cos\\theta-z\\sin\\theta\\\\ z'=y\\sin\\theta+z\\cos\\theta\\end{cases}$$\n\nCalculons $y'^{2}+z'^{2}$ :\n\n$$y'^{2}=y^{2}\\cos^{2}\\theta-2yz\\cos\\theta\\sin\\theta+z^{2}\\sin^{2}\\theta,$$\n\n$$z'^{2}=y^{2}\\sin^{2}\\theta+2yz\\sin\\theta\\cos\\theta+z^{2}\\cos^{2}\\theta.$$\n\nEn additionnant, les doubles produits s'éliminent :\n\n$$y'^{2}+z'^{2}=y^{2}\\left(\\cos^{2}\\theta+\\sin^{2}\\theta\\right)+z^{2}\\left(\\sin^{2}\\theta+\\cos^{2}\\theta\\right)=y^{2}+z^{2}.$$\n\nDonc, si $M\\in(\\mathcal{S})$ : $x'^{2}=x^{2}=y^{2}+z^{2}=y'^{2}+z'^{2}$, soit $M'\\in(\\mathcal{S})$. La réciproque $R_{-\\theta}$ est une rotation de même axe, à laquelle le même calcul s'applique : $R_\\theta\\big((\\mathcal{S})\\big)=(\\mathcal{S})$.\n\n**(b) Méthode métrique, sans coordonnées.**\n\nTrois faits suffisent.\n\n1. $R_\\theta$ est une isométrie qui fixe $O$ (car $O$ est sur l'axe), donc pour tout $M$, en notant $M'=R_\\theta(M)$ :\n\n$$d(O,M')=d\\big(R_\\theta(O),R_\\theta(M)\\big)=d(O,M).$$\n\n2. Le plan $(P)$ d'équation $x=0$ est le plan passant par $O$ orthogonal à l'axe de la rotation ; son image est le plan passant par $R_\\theta(O)=O$ orthogonal à la direction de l'axe, qui est invariante. Donc $R_\\theta\\big((P)\\big)=(P)$.\n\n3. Une isométrie conserve la distance d'un point à une partie : $d\\big(M',R_\\theta((P))\\big)=d\\big(M,(P)\\big)$, et d'après 2, $d\\big(M',(P)\\big)=d\\big(M,(P)\\big)$.\n\nSoit alors $M\\in(\\mathcal{S})$. La caractérisation donne $d(O,M)=\\sqrt2\\,d\\big(M,(P)\\big)$. En remplaçant les deux membres à l'aide de 1 et 3 :\n\n$$d(O,M')=d(O,M)=\\sqrt{2}\\,d\\big(M,(P)\\big)=\\sqrt{2}\\,d\\big(M',(P)\\big),$$\n\ndonc $M'\\in(\\mathcal{S})$. Avec l'argument de la réciproque ($R_\\theta^{-1}=R_{-\\theta}$), on conclut $R_\\theta\\big((\\mathcal{S})\\big)=(\\mathcal{S})$.\n\n**Comparaison des deux méthodes.** La méthode (a) est mécanique mais exige d'écrire correctement la matrice de rotation et de mener un calcul trigonométrique. La méthode (b) ne demande aucun calcul et fonctionnerait à l'identique pour une rotation d'axe quelconque ou une symétrie : c'est elle qu'il faut privilégier quand un énoncé précise « on ne demande pas de rechercher l'expression analytique »."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Invariance globale signifie $T(A)=A$, pas « les points de $A$ sont fixes ». Ces deux propriétés n'ont rien à voir.",
+        "Deux temps toujours : $T(A)\\subset A$, puis le même argument appliqué à $T^{-1}$. Nomme la réciproque explicitement, ne dis jamais « par symétrie ».",
+        "Commence par « soit $M$ un point quelconque de $A$ » : un exemple numérique ne démontre rien.",
+        "Quand $A$ possède une caractérisation métrique et que $T$ est une isométrie conservant les objets qui y figurent, l'invariance s'obtient sans le moindre calcul de coordonnées.",
+        "Invariance par toutes les homothéties de centre $O$ = cône de sommet $O$ ; invariance par toutes les rotations d'axe $(D)$ = surface de révolution d'axe $(D)$. Ces lectures valorisent la copie.",
+        "Au BAC série C, l'invariance globale arrive presque toujours en fin de partie, après une caractérisation métrique établie juste avant : c'est le signal qu'il faut réutiliser cette caractérisation plutôt que repartir des coordonnées."
+      ]
+    }
+  ]
+}

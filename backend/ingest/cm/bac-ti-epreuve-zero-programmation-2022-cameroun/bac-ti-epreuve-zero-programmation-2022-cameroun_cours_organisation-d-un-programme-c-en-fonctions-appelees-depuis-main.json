@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-organisation-d-un-programme-c-en-fonctions-appelees-depuis-main-tle-ti",
+  "meta": {
+    "titre": "Organisation d'un programme C en fonctions appelées depuis main()",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Tableaux et fonctions en langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "langage C",
+      "fonction main",
+      "modularité",
+      "appel de fonction"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex3-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un programme C qui fait plusieurs choses (saisir, trier, afficher) gagne toujours à séparer ces tâches en fonctions distinctes plutôt qu'à tout écrire d'un bloc dans main() : chaque fonction reste compréhensible et réutilisable indépendamment des autres."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Déclaration et appel d'une fonction en C",
+        "Notion de fonction main() comme point d'entrée du programme"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "main() orchestre, il ne détaille pas",
+      "contenu_markdown": "Quand un traitement se décompose déjà en plusieurs fonctions bien identifiées, la fonction `main()` se contente de déclarer les variables partagées nécessaires (le tableau, sa taille), puis d'appeler chaque fonction dans l'ordre logique du traitement, en lui transmettant exactement les arguments dont elle a besoin. Un paramètre que la fonction appelée doit modifier pour l'appelant (comme la taille N lue au clavier) se transmet par adresse (`&n`) ; un paramètre qu'elle lit seulement (comme cette même taille N, une fois connue, transmise à la fonction de tri) se transmet par valeur (`n`).",
+      "formule_principale": "int main() { declarer(); saisir(&param); traiter(param); afficher(param); return 0; }",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la fonction `main()` qui enchaîne la saisie d'un tableau de notes, son tri par sélection, puis l'affichage du résultat.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déclarer les variables partagées entre les fonctions",
+          "justification": "Le tableau T et sa taille n doivent exister avant d'être transmis aux fonctions appelées.",
+          "resultat_markdown": "`int T[TAILLE_MAX]; int n, i;`"
+        },
+        {
+          "numero": 2,
+          "action": "Appeler la fonction de saisie avec &n",
+          "justification": "saisirTableau attend un pointeur pour pouvoir mettre à jour n dans main().",
+          "resultat_markdown": "`saisirTableau(T, &n);`"
+        },
+        {
+          "numero": 3,
+          "action": "Appeler la fonction de tri avec n (par valeur)",
+          "justification": "triSelection n'a besoin que de connaître n, jamais de le modifier : un passage par valeur suffit.",
+          "resultat_markdown": "`triSelection(T, n);`"
+        },
+        {
+          "numero": 4,
+          "action": "Afficher le résultat pour vérifier visuellement l'exécution",
+          "justification": "Un programme sans affichage final ne permet pas de vérifier que le traitement a réellement fonctionné.",
+          "resultat_markdown": "`for (i = 0; i < n; i++) printf(\"%d \", T[i]);`"
+        }
+      ],
+      "conclusion_markdown": "La fonction main() reste courte et lisible : elle ne contient aucun détail de saisie ni de tri, seulement l'enchaînement des appels dans le bon ordre, avec les bons modes de passage de paramètres."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Passer `n` par adresse (`&n`) à la fonction de tri, par réflexe copié de l'appel de saisie.",
+          "pourquoi_faux": "La fonction de tri ne modifie jamais n, elle a seulement besoin de connaître sa valeur pour délimiter ses boucles : un passage par adresse serait sans effet néfaste ici, mais traduit une incompréhension du VRAI critère de choix (est-ce que la fonction modifie la variable de l'appelant, oui ou non ?).",
+          "correction_markdown": "Se demander systématiquement, pour chaque paramètre : « cette fonction doit-elle renvoyer une modification de cette variable à l'appelant ? » Si oui, passage par adresse ; si non, passage par valeur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux fonctions existent déjà : `void saisir(int *x)` et `void afficher(int x)`. Écrire un main() minimal qui les enchaîne sur une variable entière.",
+          "solution_markdown": "```c\nint main() {\n    int valeur;\n    saisir(&valeur);\n    afficher(valeur);\n    return 0;\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Ajouter à l'exemple du cours une fonction `calculerMoyenne(int T[], int n)` qui renvoie la moyenne des notes, puis l'appeler et l'afficher dans main() après le tri.",
+          "solution_markdown": "```c\nint main() {\n    int T[TAILLE_MAX];\n    int n, i;\n    float moyenne;\n\n    saisirTableau(T, &n);\n    triSelection(T, n);\n    moyenne = calculerMoyenne(T, n);\n\n    for (i = 0; i < n; i++) {\n        printf(\"%d \", T[i]);\n    }\n    printf(\"\\nMoyenne de la classe : %.2f\\n\", moyenne);\n\n    return 0;\n}\n```\n`calculerMoyenne` reçoit `T` et `n` par simple lecture (aucun des deux n'est modifié par cette fonction), donc tous deux passés par valeur (le tableau restant, comme toujours, implicitement transmis par adresse en C sans que cela change la logique de l'appel)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi est-il préférable, dans un grand programme, d'avoir plusieurs petites fonctions appelées depuis main() plutôt qu'une seule fonction main() qui contient tout le code (saisie, tri, affichage) directement ?",
+          "solution_markdown": "Décomposer un programme en fonctions distinctes apporte plusieurs bénéfices concrets : chaque fonction peut être testée et corrigée indépendamment des autres (si le tri est faux, on sait immédiatement où chercher, sans devoir relire tout le programme) ; une fonction bien nommée (`triSelection`, `saisirTableau`) documente elle-même son rôle, ce qui rend le programme plus lisible qu'un long bloc de code sans repères ; enfin, une fonction générique comme `triSelection(T, n)` peut être réutilisée telle quelle dans un autre programme qui aurait besoin de trier un tableau différent, sans devoir réécrire cette logique. Un `main()` qui contient tout le détail perd ces trois avantages : il devient long, difficile à corriger et impossible à réutiliser partiellement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "main() orchestre l'appel des fonctions dans l'ordre logique du traitement, il n'en détaille jamais le contenu.",
+        "Le critère de choix entre passage par adresse et passage par valeur est toujours le même : la fonction appelée doit-elle modifier la variable pour l'appelant ?",
+        "Un tableau C est déjà, implicitement, transmis par adresse dès qu'il est passé en paramètre.",
+        "Décomposer un programme en fonctions distinctes facilite le test, la lecture et la réutilisation du code, un critère valorisé à l'examen au-delà du seul résultat final."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "cours_id": "cours-resolution-systeme-lineaire-1ere-a",
+  "meta": {
+    "titre": "Résolution d'un système de deux équations linéaires à deux inconnues",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Systèmes d'équations et d'inéquations",
+    "duree_estimee_min": 30,
+    "tags": [
+      "système linéaire",
+      "substitution",
+      "combinaison linéaire",
+      "deux inconnues"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2026-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques (officiel, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-maths-2026-officiel-cameroun-ex1-q2-0",
+    "rappels_lies": [
+      "rdm-probatoire-a-maths-2026-officiel-cameroun-ex4-q3-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un chauffeur transporte 20 caisses de deux poids différents pour une charge totale connue. Une association achète du riz et du savon en deux commandes à des prix inconnus. Ces deux situations, pourtant très différentes, se résolvent avec le même outil : un système de deux équations à deux inconnues. Maîtriser sa résolution te permet de traiter d'un seul coup tous les problèmes où deux grandeurs inconnues sont liées par deux informations distinctes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résoudre une équation du premier degré à une inconnue",
+        "Développer et réduire une expression littérale",
+        "Multiplier une égalité par un nombre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Substitution et combinaison linéaire",
+      "contenu_markdown": "Un système de deux équations linéaires à deux inconnues $x$ et $y$ se présente sous la forme $\\begin{cases} ax+by=c \\\\ a'x+b'y=c' \\end{cases}$. Deux méthodes permettent de le résoudre.",
+      "formule_principale": "\\begin{cases} ax+by=c \\\\ a'x+b'y=c' \\end{cases}",
+      "variantes": [
+        {
+          "nom": "Méthode par substitution",
+          "quand_utiliser": "Quand une des deux équations isole facilement une inconnue (coefficient égal à 1 devant $x$ ou $y$).",
+          "contenu_markdown": "On isole une inconnue dans l'équation la plus simple (par exemple $y=\\dfrac{c-ax}{b}$ si $b\\neq0$), puis on remplace cette expression dans l'autre équation : on obtient une équation à une seule inconnue, qu'on résout normalement avant de revenir calculer la seconde inconnue."
+        },
+        {
+          "nom": "Méthode par combinaison linéaire",
+          "quand_utiliser": "Quand aucune inconnue ne s'isole simplement, ou quand les coefficients se prêtent facilement à une multiplication entière pour les aligner.",
+          "contenu_markdown": "On multiplie une ou les deux équations par des nombres bien choisis pour que le coefficient d'une même inconnue devienne identique dans les deux équations, puis on soustrait (ou on additionne) les deux équations membre à membre : cette inconnue disparaît, il ne reste plus qu'une équation à une seule inconnue."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $(S)\\begin{cases} 28x+16y=416 \\\\ x+y=20 \\end{cases}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir la méthode et isoler une inconnue",
+          "justification": "La seconde équation $x+y=20$ a un coefficient 1 devant chaque inconnue : la substitution est donc la méthode la plus rapide ici.",
+          "resultat_markdown": "$y=20-x$"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer dans l'autre équation",
+          "justification": "On remplace $y$ par son expression dans la première équation, pour se ramener à une équation à une seule inconnue.",
+          "resultat_markdown": "$28x+16(20-x)=416$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer et réduire",
+          "justification": "On distribue le 16 puis on regroupe les termes en $x$.",
+          "resultat_markdown": "$28x+320-16x=416 \\;\\Rightarrow\\; 12x=96$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre l'équation obtenue",
+          "justification": "On divise les deux membres par le coefficient de $x$.",
+          "resultat_markdown": "$x=8$"
+        },
+        {
+          "numero": 5,
+          "action": "Revenir calculer la seconde inconnue",
+          "justification": "On réutilise l'expression $y=20-x$ obtenue à l'étape 1.",
+          "resultat_markdown": "$y=20-8=12$"
+        }
+      ],
+      "conclusion_markdown": "Le système $(S)$ admet pour unique solution le couple $(x\\,;y)=(8\\,;12)$. On vient de démontrer comment la substitution ramène un système à deux inconnues à une simple équation à une inconnue."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Après avoir trouvé $x$, oublier de revenir calculer $y$ et donner $x=8$ comme réponse finale.",
+          "pourquoi_faux": "La solution d'un système à deux inconnues est un COUPLE $(x\\,;y)$, pas une seule valeur : le travail n'est terminé que lorsque les deux inconnues sont calculées.",
+          "correction_markdown": "Prends l'habitude de terminer chaque résolution de système par la phrase « le couple solution est $(x\\,;y)=(\\ldots)$ », qui t'oblige à vérifier que les deux valeurs sont bien présentes."
+        },
+        {
+          "erreur_markdown": "En combinaison linéaire, multiplier une seule des deux équations et additionner directement sans vérifier que les coefficients d'une même inconnue sont bien devenus opposés ou égaux.",
+          "pourquoi_faux": "Si les coefficients ne sont pas alignés, l'addition ou la soustraction ne fait disparaître aucune inconnue : on obtient une équation à deux inconnues qui n'apporte rien de nouveau.",
+          "correction_markdown": "Avant d'additionner ou de soustraire, vérifie explicitement que les deux coefficients de l'inconnue à éliminer sont identiques (pour soustraire) ou opposés (pour additionner)."
+        },
+        {
+          "erreur_markdown": "Ne jamais vérifier la solution trouvée dans les équations de départ.",
+          "pourquoi_faux": "Une erreur de calcul lors de la substitution ou de la combinaison passe alors inaperçue jusqu'à la correction.",
+          "correction_markdown": "Réinjecte systématiquement le couple trouvé dans LES DEUX équations initiales : les deux doivent être vérifiées, pas une seule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $\\begin{cases} x+y=15 \\\\ x-y=3 \\end{cases}$.",
+          "solution_markdown": "Les deux équations ont déjà des coefficients opposés en $y$ ($+1$ et $-1$) : on les additionne membre à membre pour éliminer $y$. $(x+y)+(x-y)=15+3 \\Rightarrow 2x=18 \\Rightarrow x=9$. En remplaçant dans la première équation : $9+y=15 \\Rightarrow y=6$. **Le couple solution est $(x\\,;y)=(9\\,;6)$.** Vérification : $9+6=15$ et $9-6=3$, les deux équations sont vérifiées."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un marchand vend 3 stylos et 2 cahiers pour 1 900 FCFA ; il vend aussi 5 stylos et 4 cahiers pour 3 500 FCFA. Déterminer le prix d'un stylo et le prix d'un cahier.",
+          "solution_markdown": "En notant $p$ le prix d'un stylo et $c$ le prix d'un cahier : $\\begin{cases} 3p+2c=1\\,900 \\quad (i) \\\\ 5p+4c=3\\,500 \\quad (ii) \\end{cases}$. On multiplie $(i)$ par 2 : $6p+4c=3\\,800 \\quad (iii)$. On soustrait $(ii)$ à $(iii)$ : $(6p+4c)-(5p+4c)=3\\,800-3\\,500 \\Rightarrow p=300$. En remplaçant dans $(i)$ : $3\\times300+2c=1\\,900 \\Rightarrow 900+2c=1\\,900 \\Rightarrow 2c=1\\,000 \\Rightarrow c=500$. **Un stylo coûte 300 FCFA et un cahier coûte 500 FCFA.** Vérification dans $(ii)$ : $5\\times300+4\\times500=1\\,500+2\\,000=3\\,500$, conforme."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La somme de deux nombres est 50. Si on augmente le premier de 20% et qu'on diminue le second de 10%, la somme des deux nouveaux nombres vaut 51,5. Déterminer les deux nombres de départ.",
+          "solution_markdown": "En notant $a$ le premier nombre et $b$ le second : $\\begin{cases} a+b=50 \\quad (i) \\\\ 1{,}2a+0{,}9b=51{,}5 \\quad (ii) \\end{cases}$ (augmenter de 20% multiplie par $1{,}2$, diminuer de 10% multiplie par $0{,}9$). De $(i)$, $b=50-a$. En substituant dans $(ii)$ : $1{,}2a+0{,}9(50-a)=51{,}5 \\Rightarrow 1{,}2a+45-0{,}9a=51{,}5 \\Rightarrow 0{,}3a=6{,}5 \\Rightarrow a=\\dfrac{6{,}5}{0{,}3}\\approx21{,}67$. En reprenant $b=50-a\\approx28{,}33$. **Les deux nombres de départ sont environ $21{,}67$ et $28{,}33$** (on retrouve une somme non entière car les pourcentages appliqués ne donnent pas nécessairement des valeurs rondes ; vérifie toujours si l'énoncé attend une valeur exacte ou approchée)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un système à deux inconnues a pour solution un COUPLE $(x\\,;y)$, jamais une seule valeur.",
+        "Substitution : isole l'inconnue dont le coefficient vaut 1 dans l'équation la plus simple, puis remplace-la dans l'autre équation.",
+        "Combinaison linéaire : aligne les coefficients d'une inconnue par multiplication, puis additionne ou soustrais pour la faire disparaître.",
+        "Vérifie toujours ta solution dans les DEUX équations de départ, jamais une seule.",
+        "Au Probatoire comme au BAC, ce type de système apparaît aussi bien seul que caché dans un problème concret (mélanges, prix, répartitions) : c'est la mise en équation qui change, la résolution reste identique."
+      ]
+    }
+  ]
+}

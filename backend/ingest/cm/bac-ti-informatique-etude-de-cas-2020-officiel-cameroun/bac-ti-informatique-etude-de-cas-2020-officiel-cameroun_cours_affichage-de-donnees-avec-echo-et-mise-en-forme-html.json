@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-affichage-de-donnees-avec-echo-et-mise-en-forme-html-tle-ti",
+  "meta": {
+    "titre": "Affichage de données avec echo et mise en forme HTML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases du langage PHP",
+    "duree_estimee_min": 15,
+    "tags": [
+      "echo",
+      "concaténation",
+      "balises HTML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q4.7-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "PHP ne connaît que du texte à envoyer au navigateur : pour qu'un mot apparaisse en gras ou en italique, il faut mélanger, dans la même instruction `echo`, les données à afficher et les balises HTML qui les mettront en forme. Cette technique, très simple une fois repérée, revient dans presque tous les scripts PHP qui affichent des résultats de base de données."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les balises HTML de mise en forme de base : <b>, <i>",
+        "Savoir ce qu'est une chaîne de caractères et l'opérateur de concaténation `.` en PHP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Concaténer du texte, des balises et des variables",
+      "contenu_markdown": "L'instruction `echo` affiche tout ce qui lui est passé, qu'il s'agisse de texte fixe, de balises HTML ou de la valeur d'une variable. L'opérateur `.` (point) permet de **concaténer**, c'est-à-dire de coller bout à bout, plusieurs de ces éléments dans une seule instruction. Le navigateur qui reçoit ce texte final l'interprète ensuite normalement : une balise `<b>...</b>` qu'il reçoit affiche son contenu en gras, une balise `<i>...</i>` l'affiche en italique, exactement comme si elles avaient été écrites directement dans un fichier HTML.",
+      "formule_principale": "echo 'texte'.$variable.'<balise>'.$autreVariable.'</balise>';",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code de VIPBoutique, identifier deux données que le script affichera en gras à l'exécution.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler l'instruction echo concernée",
+          "justification": "C'est la seule instruction qui produit un affichage visible dans ce script",
+          "resultat_markdown": "Ligne 9-10 : `echo '<b>'.$donnees['nom'].' '.$donnees['prenom'].'</b> <i>'.$donnees['pointdevue'].'</i><br>';`"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les portions de texte encadrées par <b> et </b>",
+          "justification": "Ce sont ces balises qui déclenchent la mise en gras dans le navigateur",
+          "resultat_markdown": "Entre `<b>` et `</b>` se trouvent `$donnees['nom']` et `$donnees['prenom']`."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier que pointdevue n'est pas concerné",
+          "justification": "Il faut distinguer les balises <b> des balises <i>, qui produisent un rendu différent",
+          "resultat_markdown": "`$donnees['pointdevue']` est encadré par `<i>` et `</i>` : il s'affichera en italique, pas en gras."
+        }
+      ],
+      "conclusion_markdown": "Les deux données affichées en gras sont le nom et le prénom du client, grâce aux balises <b> qui les encadrent dans l'instruction echo."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inclure \\$donnees['pointdevue'] parmi les données \"en gras\"",
+          "pourquoi_faux": "Cette donnée est encadrée par <i> et </i>, pas par <b> et </b> : elle s'affiche en italique, une mise en forme différente.",
+          "correction_markdown": "Repère précisément QUELLE paire de balises encadre chaque donnée avant de conclure sur sa mise en forme - ne suppose jamais que \"toute donnée affichée\" est en gras."
+        },
+        {
+          "erreur_markdown": "Oublier que echo affiche du texte HTML brut, pas un rendu déjà mis en forme",
+          "pourquoi_faux": "PHP envoie uniquement du texte au navigateur ; c'est le navigateur, en recevant les balises <b> et <i>, qui applique réellement la mise en forme visuelle - PHP lui-même ne \"sait\" pas ce qu'est le gras.",
+          "correction_markdown": "Distingue toujours ce que PHP produit (du texte contenant des balises) de ce que le navigateur affiche (le rendu visuel de ces balises)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire l'instruction PHP qui affiche la valeur de `$nom` en gras.",
+          "solution_markdown": "`echo '<b>'.$nom.'</b>';`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que produit l'instruction `echo 'Bonjour '.$prenom.' !';` si `$prenom` vaut `'Awa'` ?",
+          "solution_markdown": "Elle affiche le texte `Bonjour Awa !` : les trois éléments (le texte `'Bonjour '`, la valeur de la variable `$prenom`, et le texte `' !'`) sont concaténés bout à bout par l'opérateur point avant d'être envoyés au navigateur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut afficher le prénom d'un client en gras ET souligné en même temps. Écrire l'instruction echo correspondante, sachant que la balise HTML de soulignement est `<u>`.",
+          "solution_markdown": "`echo '<b><u>'.$prenom.'</u></b>';`\n\nLes balises HTML s'imbriquent comme des parenthèses : il faut les fermer dans l'ordre inverse de leur ouverture (ici `<u>` s'ouvre après `<b>`, donc `</u>` doit se fermer avant `</b>`), pour que le navigateur applique correctement les deux mises en forme simultanément."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "echo affiche tout ce qui lui est passé : texte fixe, balises HTML, ou valeur d'une variable.",
+        "L'opérateur . (point) concatène plusieurs éléments en une seule chaîne à afficher.",
+        "Les balises HTML incluses dans un echo sont interprétées par le navigateur, pas par PHP.",
+        "<b> produit du gras, <i> produit de l'italique : ne les confonds jamais dans une réponse d'examen.",
+        "Au BAC TI, une question sur la mise en forme demande de repérer précisément quelle paire de balises encadre quelle donnée, jamais de généraliser à toutes les données affichées."
+      ]
+    }
+  ]
+}

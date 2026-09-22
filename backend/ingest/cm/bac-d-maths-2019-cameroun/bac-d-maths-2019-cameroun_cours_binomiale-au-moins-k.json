@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-loi-binomiale-probabilite-au-moins-k-succes-terminale-d-ti",
+  "meta": {"titre": "Calculer la probabilité d'obtenir au moins k succès (loi binomiale)", "cours_id": "cours-loi-binomiale-probabilite-au-moins-k-succes-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D & TI", "sous_theme": "Probabilités — loi binomiale", "tags": ["loi binomiale", "somme de probabilités", "au moins"], "duree_estimee_minutes": 8, "epreuve_source": "bac-d-maths-2019-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2019-cameroun-ex1-q3b"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "La probabilité d'obtenir au moins k succès s'obtient en additionnant les probabilités de chacun des cas possibles allant de k succès jusqu'au maximum n, chacun calculé par la formule binomiale."},
+    {"type": "prerequis", "items_markdown": ["Formule de la loi binomiale P(X=j)=C(n,j)p^j(1-p)^(n-j)", "Addition de fractions de même dénominateur"]},
+    {"type": "regle", "titre": "Additionner tous les cas de k à n", "contenu_markdown": "$$P(X\\geq k)=\\sum_{j=k}^nP(X=j)=\\sum_{j=k}^n\\dbinom nj p^j(1-p)^{n-j}$$", "formule_principale": "P(X≥k) = P(X=k) + P(X=k+1) + ... + P(X=n)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "4 épreuves, p=0,1. Probabilité d'au moins 3 succès.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "P(X=3)", "justification": "C(4,3)×0,1³×0,9", "resultat_markdown": "4×0,001×0,9=0,0036"},
+      {"numero": 2, "action": "P(X=4)", "justification": "C(4,4)×0,1⁴", "resultat_markdown": "0,0001"},
+      {"numero": 3, "action": "Additionner", "justification": "0,0036+0,0001", "resultat_markdown": "0,0037"}
+    ], "conclusion_markdown": "P(X≥3)=0,0037."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier d'inclure le dernier terme P(X=n) (le cas de tous les succès) dans la somme, en s'arrêtant trop tôt", "pourquoi_faux": "\"Au moins k\" inclut TOUS les cas depuis k jusqu'au maximum possible n (y compris le cas extrême où toutes les épreuves sont des succès) ; oublier ce dernier terme sous-estime systématiquement la probabilité recherchée.", "correction_markdown": "Toujours lister explicitement tous les termes de la somme, de k à n inclus, avant de commencer les calculs, pour ne pas en oublier un en cours de route."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "3 épreuves, p=0,3. Probabilité d'au moins 2 succès.", "solution_markdown": "P(X=2)=C(3,2)×0,3²×0,7=3×0,09×0,7=0,189. P(X=3)=0,3³=0,027. P(X≥2)=0,189+0,027=0,216."},
+      {"numero": 2, "difficulte": "facile", "enonce_markdown": "Existe-t-il une méthode alternative pour calculer P(X≥k) en évitant de sommer directement tous les termes ?", "solution_markdown": "Oui, on peut utiliser l'événement contraire : P(X≥k)=1-P(X<k)=1-P(X≤k-1), ce qui peut réduire le nombre de termes à calculer si k est proche de n plutôt que de 0, bien que cela ne change pas le principe général de sommation."}
+    ]},
+    {"type": "synthese", "items_markdown": ["\"Au moins k succès\" se calcule en additionnant P(X=k), P(X=k+1), ..., jusqu'à P(X=n).", "Ne jamais oublier le dernier terme correspondant au cas extrême de n succès sur n épreuves.", "L'événement contraire (X<k) peut parfois offrir un calcul plus court selon la valeur de k."]}
+  ]
+}

@@ -1,0 +1,208 @@
+{
+ "cours_id": "cours-continuite-derivabilite-valeur-absolue-1ere-ce",
+ "meta": {
+  "titre": "Étudier la continuité et la dérivabilité en un point d'une fonction avec valeur absolue",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Continuité et dérivabilité",
+  "duree_estimee_min": 35,
+  "tags": ["valeur absolue", "continuité", "dérivabilité", "taux d'accroissement", "point anguleux", "demi-tangente"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VI"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qB4a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Une courbe peut être parfaitement continue — tracée sans lever le crayon — et pourtant présenter un **coin**. En ce coin, la notion de tangente s'effondre : il y en a deux, une de chaque côté, et elles ne se raccordent pas. C'est exactement ce que produit une valeur absolue. Retiens la bonne implication : dérivable entraîne continue, jamais l'inverse. Écrire « $g$ est continue donc dérivable » est l'une des fautes de cours les plus lourdement sanctionnées du programme."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la définition de la valeur absolue et savoir l'expliciter par cas",
+    "Savoir calculer une limite à droite et à gauche",
+    "Connaître la définition du nombre dérivé par le taux d'accroissement",
+    "Savoir simplifier un quotient en factorisant le numérateur"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Expliciter par cas, puis comparer à gauche et à droite",
+   "contenu_markdown": "**Expliciter la valeur absolue.** Par définition :\n\n$$\\left|x\\right| = \\begin{cases} x & \\text{si } x \\geqslant 0 \\\\ -x & \\text{si } x < 0 \\end{cases}$$\n\nToute fonction contenant $\\left|x\\right|$ admet donc **deux expressions**, de part et d'autre de $0$. C'est la première chose à écrire, avant toute étude.\n\n**La continuité en un point $a$.** La fonction $g$ est continue en $a$ si les trois quantités suivantes existent et coïncident :\n\n$$\\lim_{x \\to a^{-}} g(x) \\qquad = \\qquad g(a) \\qquad = \\qquad \\lim_{x \\to a^{+}} g(x)$$\n\n**La dérivabilité en un point $a$.** La fonction $g$ est dérivable en $a$ si le taux d'accroissement admet une limite **finie** :\n\n$$g'(a) = \\lim_{x \\to a} \\frac{g(x) - g(a)}{x - a}$$\n\nQuand la fonction change d'expression en $a$, on calcule cette limite **séparément** des deux côtés :\n\n$$g'_{g}(a) = \\lim_{x \\to a^{-}} \\frac{g(x)-g(a)}{x-a} \\qquad ; \\qquad g'_{d}(a) = \\lim_{x \\to a^{+}} \\frac{g(x)-g(a)}{x-a}$$\n\n**Le critère.** $g$ est dérivable en $a$ **si et seulement si** les deux nombres dérivés existent, sont finis et sont **égaux**.\n\n**La méthode, en cinq gestes.**\n\n1. **Expliciter** les deux expressions de $g$.\n2. **Calculer** $g(a)$.\n3. **Comparer** les deux limites latérales à $g(a)$ : c'est la continuité.\n4. **Calculer** les deux taux d'accroissement et leurs limites : ce sont les nombres dérivés.\n5. **Comparer** : égaux, la fonction est dérivable ; différents, elle ne l'est pas.\n\n**Le sens de l'implication.** Il n'y en a qu'un :\n\n$$g \\text{ dérivable en } a \\implies g \\text{ continue en } a$$\n\nLa réciproque est **fausse**, et cet exercice en est justement le contre-exemple.\n\n**L'interprétation graphique.** Quand $g'_{g}(a) \\neq g'_{d}(a)$, la courbe présente un **point anguleux** : deux demi-tangentes distinctes, de coefficients directeurs $g'_{g}(a)$ et $g'_{d}(a)$. La courbe est continue — on ne lève pas le crayon — mais elle « casse ».\n\n**Le cas particulier de la parité.** Si $g$ est **paire**, sa courbe est symétrique par rapport à l'axe des ordonnées, donc les deux demi-tangentes en $0$ ont des coefficients directeurs **opposés** :\n\n$$g'_{g}(0) = -g'_{d}(0)$$\n\nDeux nombres opposés ne sont égaux que s'ils sont nuls. Donc **une fonction paire n'est dérivable en $0$ que si sa dérivée y est nulle**, c'est-à-dire si la tangente y est horizontale. Ce raccourci permet de prévoir le résultat avant tout calcul.\n\n**Le calcul du taux d'accroissement.** Le numérateur s'annule toujours en $a$, ce qui permet de factoriser par $(x-a)$ et de simplifier. Sans cette simplification, on obtient une forme indéterminée $\\dfrac{0}{0}$ qui ne se lève pas.",
+   "formule_principale": "g \\text{ dérivable en } a \\iff g'_{g}(a) = g'_{d}(a) \\text{ (finis)}",
+   "variantes": [
+    {
+     "nom": "Étude par la limite de la dérivée",
+     "quand_utiliser": "Quand la fonction est dérivable de part et d'autre du point",
+     "contenu_markdown": "Si $g$ est continue en $a$ et dérivable au voisinage de $a$ sauf peut-être en $a$, on peut souvent conclure par les **limites de la dérivée** :\n\nsi $\\lim_{x \\to a^{-}} g'(x)$ et $\\lim_{x \\to a^{+}} g'(x)$ existent et sont égales, alors $g$ est dérivable en $a$.\n\nIci, pour $x > 0$ : $g'(x) = x - \\dfrac{3}{2}$, qui tend vers $-\\dfrac{3}{2}$. Pour $x < 0$ : $g'(x) = x + \\dfrac{3}{2}$, qui tend vers $\\dfrac{3}{2}$. Les deux limites diffèrent, ce qui confirme la non-dérivabilité.\n\nC'est plus rapide, mais le Probatoire attend en général le passage explicite par le **taux d'accroissement**, qui est la définition."
+    },
+    {
+     "nom": "Fonction du type |f(x)|",
+     "quand_utiliser": "Quand la valeur absolue porte sur l'image, non sur la variable",
+     "contenu_markdown": "Pour $h(x) = \\left|f(x)\\right|$, les points suspects ne sont pas ceux où $x$ change de signe, mais ceux où **$f$ s'annule en changeant de signe**.\n\nEn un tel point $a$ : $h$ est toujours **continue**, mais elle est dérivable seulement si $f'(a) = 0$. Sinon la courbe présente un point anguleux, avec deux demi-tangentes de coefficients $f'(a)$ et $-f'(a)$.\n\nGraphiquement, $\\left|f\\right|$ s'obtient en **repliant vers le haut** la portion de courbe située sous l'axe des abscisses."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit $f$ définie sur $[0\\,;\\,6]$ par $f(x) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$, et $g$ définie de $[-6\\,;\\,6]$ vers $\\mathbb{R}$ par $g(x) = f\\left(\\left|x\\right|\\right)$. Étudier la continuité et la dérivabilité de $g$ en $0$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Expliciter $g$ sur la partie droite",
+     "justification": "Pour $x \\in [0\\,;\\,6]$, on a $\\left|x\\right| = x$",
+     "resultat_markdown": "$g(x) = f(x) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$"
+    },
+    {
+     "numero": 2,
+     "action": "Expliciter $g$ sur la partie gauche",
+     "justification": "Pour $x \\in [-6\\,;\\,0]$, on a $\\left|x\\right| = -x$",
+     "resultat_markdown": "$g(x) = f(-x) = \\dfrac{1}{2}(-x)^{2} - \\dfrac{3}{2}(-x) + 9 = \\dfrac{1}{2}x^{2} + \\dfrac{3}{2}x + 9$"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer $g(0)$",
+     "justification": "Valeur de référence pour les deux tests",
+     "resultat_markdown": "$g(0) = f\\left(\\left|0\\right|\\right) = f(0) = 9$"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer la limite à droite",
+     "justification": "On utilise l'expression valable pour $x > 0$, continue comme polynôme",
+     "resultat_markdown": "$\\displaystyle\\lim_{x \\to 0^{+}} \\left(\\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9\\right) = 9$"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer la limite à gauche",
+     "justification": "On utilise l'expression valable pour $x < 0$",
+     "resultat_markdown": "$\\displaystyle\\lim_{x \\to 0^{-}} \\left(\\dfrac{1}{2}x^{2} + \\dfrac{3}{2}x + 9\\right) = 9$"
+    },
+    {
+     "numero": 6,
+     "action": "Conclure sur la continuité",
+     "justification": "Les deux limites latérales existent, sont égales entre elles et égales à $g(0)$",
+     "resultat_markdown": "$g$ est **continue en $0$**"
+    },
+    {
+     "numero": 7,
+     "action": "Former le taux d'accroissement à droite",
+     "justification": "Pour $x > 0$ : le terme constant $9$ se simplifie avec $g(0) = 9$",
+     "resultat_markdown": "$\\dfrac{g(x)-g(0)}{x-0} = \\dfrac{\\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x}{x} = \\dfrac{1}{2}x - \\dfrac{3}{2}$"
+    },
+    {
+     "numero": 8,
+     "action": "Passer à la limite à droite",
+     "justification": "Après simplification par $x$, il n'y a plus d'indétermination",
+     "resultat_markdown": "$g'_{d}(0) = -\\dfrac{3}{2}$"
+    },
+    {
+     "numero": 9,
+     "action": "Former le taux d'accroissement à gauche et passer à la limite",
+     "justification": "Même calcul avec l'autre expression, où le terme du premier degré change de signe",
+     "resultat_markdown": "$\\dfrac{g(x)-g(0)}{x} = \\dfrac{1}{2}x + \\dfrac{3}{2}$, donc $g'_{g}(0) = \\dfrac{3}{2}$"
+    },
+    {
+     "numero": 10,
+     "action": "Comparer et conclure",
+     "justification": "Les deux nombres dérivés sont finis mais différents",
+     "resultat_markdown": "$g'_{d}(0) = -\\dfrac{3}{2} \\neq \\dfrac{3}{2} = g'_{g}(0)$ : $g$ **n'est pas dérivable en $0$**"
+    },
+    {
+     "numero": 11,
+     "action": "Interpréter graphiquement",
+     "justification": "Deux demi-tangentes distinctes en un point de continuité",
+     "resultat_markdown": "La courbe présente au point $(0\\,;\\,9)$ un **point anguleux**, avec deux demi-tangentes de coefficients directeurs $\\dfrac{3}{2}$ à gauche et $-\\dfrac{3}{2}$ à droite"
+    }
+   ],
+   "conclusion_markdown": "La fonction $g$ est continue en $0$ mais n'y est pas dérivable : c'est le contre-exemple canonique à l'implication réciproque. Note qu'on pouvait prévoir le résultat sans le moindre calcul. La fonction $g$ est paire, donc les deux demi-tangentes en $0$ ont nécessairement des coefficients directeurs **opposés** ; elles ne coïncideraient que si ce coefficient était nul, c'est-à-dire si $f'(0) = 0$. Or $f'(0) = -\\dfrac{3}{2} \\neq 0$ : le point anguleux était garanti d'avance."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Écrire « $g$ est continue en $0$ donc dérivable en $0$ »",
+     "pourquoi_faux": "L'implication ne va que dans un sens : dérivable entraîne continue. La réciproque est fausse, et cet exercice en est précisément le contre-exemple. C'est une faute de cours lourdement sanctionnée.",
+     "correction_markdown": "Retiens le sens unique : **dérivable $\\implies$ continue**. Et retiens ce contre-exemple, qui est le plus classique du programme."
+    },
+    {
+     "erreur_markdown": "Ne pas expliciter les deux expressions de $g$",
+     "pourquoi_faux": "Sans les deux expressions, on ne peut ni calculer les limites latérales ni former les taux d'accroissement. Travailler directement avec $f\\left(\\left|x\\right|\\right)$ rend tout calcul impossible.",
+     "correction_markdown": "Commence **toujours** par écrire les deux expressions, en précisant leur intervalle de validité. C'est la première ligne de la solution."
+    },
+    {
+     "erreur_markdown": "Se tromper de signe en calculant $f(-x)$",
+     "pourquoi_faux": "Dans $f(-x)$, le terme en $x^{2}$ est **inchangé** puisque $(-x)^{2} = x^{2}$, mais le terme en $x$ **change de signe** : $-\\dfrac{3}{2}(-x) = +\\dfrac{3}{2}x$. C'est ce changement qui produit le point anguleux.",
+     "correction_markdown": "Substitue $-x$ terme par terme, sans sauter d'étape. Et contrôle : $g(-1)$ doit être égal à $g(1)$, puisque $g$ est paire."
+    },
+    {
+     "erreur_markdown": "Simplifier le taux d'accroissement sans factoriser",
+     "pourquoi_faux": "Écrire $\\dfrac{\\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x}{x}$ et passer directement à la limite donne une forme $\\dfrac{0}{0}$ non levée. Il faut d'abord simplifier par $x$, ce qui est licite puisque $x \\neq 0$ dans le taux.",
+     "correction_markdown": "Factorise le numérateur par $x$, puis simplifie **avant** de passer à la limite. Le résultat, $\\dfrac{1}{2}x - \\dfrac{3}{2}$, se calcule alors sans difficulté."
+    },
+    {
+     "erreur_markdown": "Ne calculer qu'un seul nombre dérivé",
+     "pourquoi_faux": "La dérivabilité en un point de changement d'expression exige la **comparaison** des deux. Un seul ne prouve rien : c'est justement leur différence qui est en cause ici.",
+     "correction_markdown": "Calcule systématiquement les deux, à gauche et à droite, et conclus par leur comparaison explicite."
+    },
+    {
+     "erreur_markdown": "Confondre $f\\left(\\left|x\\right|\\right)$ et $\\left|f(x)\\right|$",
+     "pourquoi_faux": "La première transformation agit sur l'**abscisse** et symétrise par rapport à l'axe des ordonnées ; la seconde agit sur l'**ordonnée** et replie vers le haut. Ici $f$ est positive sur $[0\\,;\\,6]$, donc $\\left|f\\right| = f$ : la confusion ferait retrouver la courbe de $f$ sans rien de nouveau.",
+     "correction_markdown": "Repère où se trouve la valeur absolue : à l'intérieur de $f$, elle agit sur $x$ ; à l'extérieur, sur $f(x)$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $h$ définie sur $\\mathbb{R}$ par $h(x) = \\left|x\\right|$. Étudier la continuité et la dérivabilité de $h$ en $0$, et interpréter graphiquement.",
+     "solution_markdown": "**Étape 1 - expliciter.**\n\n$$h(x) = \\begin{cases} x & \\text{si } x \\geqslant 0 \\\\ -x & \\text{si } x < 0 \\end{cases}$$\n\n**Étape 2 - la continuité.**\n\n$$h(0) = \\left|0\\right| = 0$$\n\n$$\\lim_{x \\to 0^{+}} h(x) = \\lim_{x \\to 0^{+}} x = 0 \\qquad ; \\qquad \\lim_{x \\to 0^{-}} h(x) = \\lim_{x \\to 0^{-}} (-x) = 0$$\n\nLes trois quantités coïncident : **$h$ est continue en $0$**.\n\n**Étape 3 - le taux d'accroissement à droite.**\n\nPour $x > 0$ :\n\n$$\\dfrac{h(x)-h(0)}{x-0} = \\dfrac{x - 0}{x} = 1$$\n\nLe taux est **constant** égal à $1$, donc $h'_{d}(0) = 1$.\n\n**Étape 4 - le taux d'accroissement à gauche.**\n\nPour $x < 0$ :\n\n$$\\dfrac{h(x)-h(0)}{x-0} = \\dfrac{-x - 0}{x} = -1$$\n\nDonc $h'_{g}(0) = -1$.\n\n**Étape 5 - conclure.**\n\n$$h'_{d}(0) = 1 \\neq -1 = h'_{g}(0)$$\n\n**$h$ n'est pas dérivable en $0$.**\n\n**Interprétation graphique.** La courbe de $h$ est formée de deux demi-droites issues de l'origine : celle de droite a pour coefficient directeur $1$, celle de gauche $-1$. Elles forment un **V**, avec un point anguleux à l'origine.\n\n**Remarque.** C'est le contre-exemple fondateur : la fonction valeur absolue est continue partout sur $\\mathbb{R}$, mais non dérivable en $0$. Toutes les situations de ce cours en dérivent.\n\n**Contrôle par la parité.** $h$ est paire, donc les deux demi-tangentes ont des coefficients opposés : $1$ et $-1$. Comme ils ne sont pas nuls, la non-dérivabilité était prévisible sans calcul."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $u$ définie sur $\\mathbb{R}$ par $u(x) = f\\left(\\left|x\\right|\\right)$ où $f(x) = x^{2} - 4x + 5$. Étudier la continuité et la dérivabilité de $u$ en $0$. Même question pour $v(x) = p\\left(\\left|x\\right|\\right)$ où $p(x) = x^{2} + 3$. Comparer les deux situations et en tirer une règle générale.",
+     "solution_markdown": "**Première partie - la fonction $u$.**\n\n**Étape 1 - expliciter.**\n\nPour $x \\geqslant 0$ : $u(x) = x^{2} - 4x + 5$.\n\nPour $x < 0$ : $u(x) = (-x)^{2} - 4(-x) + 5 = x^{2} + 4x + 5$.\n\n**Étape 2 - la continuité.**\n\n$$u(0) = 5 \\qquad ; \\qquad \\lim_{x \\to 0^{+}} u(x) = 5 \\qquad ; \\qquad \\lim_{x \\to 0^{-}} u(x) = 5$$\n\n**$u$ est continue en $0$.**\n\n**Étape 3 - les nombres dérivés.**\n\nÀ droite, pour $x > 0$ :\n\n$$\\dfrac{u(x) - 5}{x} = \\dfrac{x^{2} - 4x}{x} = x - 4 \\qquad \\Longrightarrow \\qquad u'_{d}(0) = -4$$\n\nÀ gauche, pour $x < 0$ :\n\n$$\\dfrac{u(x) - 5}{x} = \\dfrac{x^{2} + 4x}{x} = x + 4 \\qquad \\Longrightarrow \\qquad u'_{g}(0) = 4$$\n\n$$-4 \\neq 4$$\n\n**$u$ n'est pas dérivable en $0$** : point anguleux.\n\n**Seconde partie - la fonction $v$.**\n\n**Étape 4 - expliciter.**\n\nPour $x \\geqslant 0$ : $v(x) = x^{2} + 3$.\n\nPour $x < 0$ : $v(x) = (-x)^{2} + 3 = x^{2} + 3$.\n\n**Les deux expressions sont identiques** : $v(x) = x^{2} + 3$ pour tout réel $x$. La valeur absolue n'a aucun effet, parce que $p$ ne contient que des puissances **paires**.\n\n**Étape 5 - conclure.**\n\n$v$ est un polynôme, donc continue **et** dérivable sur $\\mathbb{R}$, en particulier en $0$, avec\n\n$$v'(0) = 0$$\n\n**Troisième partie - la comparaison.**\n\n| | $u$ | $v$ |\n|---|---|---|\n| $f'(0)$ | $-4$ | $0$ |\n| Continue en $0$ | oui | oui |\n| Dérivable en $0$ | **non** | **oui** |\n| Allure en $0$ | point anguleux | tangente horizontale |\n\n**La règle générale.** Soit $f$ dérivable en $0$ et $g(x) = f\\left(\\left|x\\right|\\right)$. Alors :\n\n- $g$ est **toujours continue** en $0$ ;\n- $g$ est dérivable en $0$ **si et seulement si $f'(0) = 0$**.\n\n**Démonstration rapide.** Les deux nombres dérivés valent $g'_{d}(0) = f'(0)$ et $g'_{g}(0) = -f'(0)$. Ils sont opposés, donc égaux uniquement si $f'(0) = 0$.\n\n**Vérification sur le sujet 2014.** Pour $f(x) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$, on a $f'(0) = -\\dfrac{3}{2} \\neq 0$ : point anguleux. Conforme au corrigé.\n\n**Ce qu'il faut retenir.** Un seul calcul suffit : celui de $f'(0)$. S'il est nul, la courbe se raccorde en douceur ; sinon, elle casse. La règle est valable pour n'importe quelle fonction $f$ dérivable en $0$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $w$ définie sur $\\mathbb{R}$ par $w(x) = \\left|x^{2} - 4\\right|$. Déterminer les points où $w$ n'est pas dérivable, calculer les demi-tangentes en chacun d'eux, et décrire l'allure de la courbe.",
+     "solution_markdown": "**Étape 1 - repérer les points suspects.**\n\nIci la valeur absolue porte sur l'**image**, non sur la variable. Les points suspects sont ceux où l'expression intérieure s'annule :\n\n$$x^{2} - 4 = 0 \\iff x = -2 \\text{ ou } x = 2$$\n\nEn dehors de ces deux points, $w$ coïncide localement avec un polynôme et est donc dérivable.\n\n**Étape 2 - expliciter par cas.**\n\nÉtudions le signe de $x^{2} - 4 = (x-2)(x+2)$ : c'est un trinôme de coefficient dominant positif, donc **positif à l'extérieur** des racines et **négatif entre** elles.\n\n$$w(x) = \\begin{cases} x^{2} - 4 & \\text{si } x \\leqslant -2 \\text{ ou } x \\geqslant 2 \\\\ 4 - x^{2} & \\text{si } -2 < x < 2 \\end{cases}$$\n\n**Étape 3 - la continuité en $2$.**\n\n$$w(2) = \\left|4 - 4\\right| = 0$$\n\n$$\\lim_{x \\to 2^{+}} \\left(x^{2}-4\\right) = 0 \\qquad ; \\qquad \\lim_{x \\to 2^{-}} \\left(4 - x^{2}\\right) = 0$$\n\n**$w$ est continue en $2$.** (Une valeur absolue est toujours continue là où l'expression intérieure l'est.)\n\n**Étape 4 - les nombres dérivés en $2$.**\n\nÀ droite, pour $x > 2$ :\n\n$$\\dfrac{w(x) - 0}{x-2} = \\dfrac{x^{2}-4}{x-2} = \\dfrac{(x-2)(x+2)}{x-2} = x+2$$\n\n$$w'_{d}(2) = 4$$\n\nÀ gauche, pour $x < 2$ :\n\n$$\\dfrac{w(x) - 0}{x-2} = \\dfrac{4 - x^{2}}{x-2} = \\dfrac{-(x-2)(x+2)}{x-2} = -(x+2)$$\n\n$$w'_{g}(2) = -4$$\n\n$$4 \\neq -4$$\n\n**$w$ n'est pas dérivable en $2$.** Point anguleux, avec deux demi-tangentes de coefficients $-4$ à gauche et $4$ à droite.\n\n**Étape 5 - le point $x = -2$.**\n\nLa fonction $w$ est **paire**, puisque $w(-x) = \\left|(-x)^{2}-4\\right| = \\left|x^{2}-4\\right| = w(x)$. Sa courbe est donc symétrique par rapport à l'axe des ordonnées, et le comportement en $-2$ se déduit de celui en $2$ par symétrie :\n\n$$w'_{g}(-2) = -4 \\qquad ; \\qquad w'_{d}(-2) = 4$$\n\n**$w$ n'est pas dérivable en $-2$** non plus.\n\n**Étape 6 - l'allure de la courbe.**\n\nOn part de la parabole $y = x^{2}-4$, de sommet $(0\\,;\\,-4)$ et de racines $\\pm 2$. La valeur absolue **replie vers le haut** la portion située sous l'axe des abscisses, c'est-à-dire l'arc compris entre $-2$ et $2$.\n\nLa courbe obtenue :\n\n- pour $x \\leqslant -2$ : branche de parabole décroissante, arrivant en $(-2\\,;\\,0)$ ;\n- pour $-2 \\leqslant x \\leqslant 2$ : arc de parabole **retournée**, culminant en $(0\\,;\\,4)$ ;\n- pour $x \\geqslant 2$ : branche de parabole croissante, repartant de $(2\\,;\\,0)$.\n\nLes deux points $(-2\\,;\\,0)$ et $(2\\,;\\,0)$ sont des points anguleux, sur l'axe des abscisses.\n\n**Étape 7 - la règle générale.**\n\nPour $h(x) = \\left|f(x)\\right|$ et $a$ tel que $f(a) = 0$ :\n\n- $h$ est **toujours continue** en $a$ ;\n- $h$ est dérivable en $a$ **si et seulement si $f'(a) = 0$**, c'est-à-dire si $f$ admet un extremum en $a$.\n\nIci $f(x) = x^{2}-4$ donne $f'(2) = 4 \\neq 0$ : point anguleux confirmé.\n\n**Contre-exemple éclairant.** Pour $f(x) = (x-2)^{2}$, on a $f(2) = 0$ **et** $f'(2) = 0$. La fonction $\\left|f\\right| = f$ est alors partout dérivable : le repliement ne crée aucun coin, puisque la courbe touchait déjà l'axe tangentiellement.\n\n**Ce qu'il faut retenir.** Les deux transformations obéissent à des règles jumelles. Pour $f\\left(\\left|x\\right|\\right)$, le point suspect est $x = 0$ et le critère est $f'(0) = 0$. Pour $\\left|f(x)\\right|$, les points suspects sont les racines de $f$ et le critère est $f'(a) = 0$. Dans les deux cas : continuité assurée, dérivabilité conditionnelle."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Commence toujours par expliciter les deux expressions de la fonction, de part et d'autre du point suspect.",
+    "Continuité en $a$ : les deux limites latérales existent, sont égales entre elles et égales à $g(a)$.",
+    "Dérivabilité en $a$ : les deux nombres dérivés existent, sont finis et sont **égaux**.",
+    "Dérivable $\\implies$ continue, jamais l'inverse : $g(x) = f\\left(\\left|x\\right|\\right)$ en est le contre-exemple type.",
+    "Factorise le numérateur du taux d'accroissement par $(x-a)$ avant de passer à la limite.",
+    "Calcule **les deux** nombres dérivés : c'est leur comparaison qui conclut.",
+    "Deux nombres dérivés différents donnent un **point anguleux** : deux demi-tangentes, courbe continue mais cassée.",
+    "Pour une fonction paire, les demi-tangentes en $0$ ont des coefficients opposés : dérivabilité seulement si la dérivée y est nulle.",
+    "Règle rapide : $f\\left(\\left|x\\right|\\right)$ est dérivable en $0$ si et seulement si $f'(0) = 0$.",
+    "Ne confonds pas $f\\left(\\left|x\\right|\\right)$, qui agit sur l'abscisse, et $\\left|f(x)\\right|$, qui agit sur l'ordonnée."
+   ]
+  }
+ ]
+}

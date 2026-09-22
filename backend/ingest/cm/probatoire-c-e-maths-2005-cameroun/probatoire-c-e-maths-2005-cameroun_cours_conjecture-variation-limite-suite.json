@@ -1,0 +1,184 @@
+{
+ "cours_id": "cours-conjecture-variation-limite-suite-1ere-ce",
+ "meta": {
+  "titre": "Conjecturer le sens de variation et la limite d'une suite à partir d'une construction graphique",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Suites numériques",
+  "duree_estimee_min": 20,
+  "tags": ["suite récurrente", "conjecture", "sens de variation", "convergence", "point fixe"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VIII"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA4c-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "« Conjecturer » n'est pas « démontrer », et la nuance vaut des points. Une conjecture est une hypothèse **lue** sur une figure ou sur quelques valeurs : elle indique le résultat probable sans l'établir. Le mot dispense de la démonstration, mais il oblige à la formulation : « on conjecture que », et non « la suite est ». C'est une question de rigueur, pas de style."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir construire les termes d'une suite en escalier ou en spirale",
+    "Connaître la notion de point fixe",
+    "Savoir ce que signifie la convergence d'une suite",
+    "Distinguer conjecture et démonstration"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Lire l'escalier, nommer le point d'accumulation",
+   "contenu_markdown": "**Ce qu'une conjecture doit comporter.** Deux affirmations, chacune appuyée sur une observation :\n\n1. le **sens de variation**, lu sur la progression des termes ;\n2. la **convergence** et sa limite, lue sur le point d'accumulation.\n\n**Lire le sens de variation.** Sur une construction en escalier :\n\n| Progression des abscisses | Conjecture |\n|---|---|\n| vers la droite | suite **croissante** |\n| vers la gauche | suite **décroissante** |\n| alternée | suite **oscillante**, non monotone |\n\nOn confirme par les valeurs calculées : ici $0 < 0{,}5 < 0{,}6 < 0{,}615 < 0{,}618$.\n\n**Lire la limite.** Les marches se resserrent autour d'un point : c'est le **point d'accumulation** de la construction, c'est-à-dire l'intersection de la courbe et de la droite $y = x$.\n\n**Pourquoi cette intersection ?** Si la suite converge vers $\\ell$ et que $f$ est **continue**, alors en passant à la limite dans $u_{n+1} = f\\left(u_{n}\\right)$ :\n\n$$\\ell = f(\\ell)$$\n\nLa limite est donc nécessairement un **point fixe**. C'est le théorème qui justifie la lecture graphique.\n\n**Choisir entre plusieurs points fixes.** Quand l'équation $f(x) = x$ a plusieurs solutions, il faut dire **laquelle** :\n\n- la suite ne peut converger que vers un point situé du bon côté de son point de départ ;\n- une suite croissante partant de $u_{0}$ ne peut s'approcher d'un point fixe inférieur à $u_{0}$.\n\nUne phrase suffit à écarter les candidats impossibles.\n\n**La formulation attendue.** Trois formules acceptables :\n\n- « On conjecture que la suite est croissante. »\n- « La construction suggère que la suite converge vers $\\ell$. »\n- « Il semble que… »\n\nÀ éviter : « la suite **est** croissante », qui affirme sans preuve.\n\n**Ce qu'une démonstration exigerait.** Pour établir la croissance, une **récurrence** montrant $u_{n+1} > u_{n}$ ; pour la convergence, la majoration plus le théorème de la limite monotone. L'énoncé ne le demande pas ici, mais il faut savoir que la conjecture n'en tient pas lieu.\n\n**Le contrôle de cohérence.** Vérifie que la limite conjecturée est bien un point fixe : c'est la condition nécessaire, et elle valide la lecture.",
+   "formule_principale": "u_{n+1} = f\\left(u_{n}\\right) \\text{ et } u_{n} \\to \\ell \\text{ et } f \\text{ continue} \\implies \\ell = f(\\ell)",
+   "variantes": [
+    {
+     "nom": "Conjecture sur une suite oscillante",
+     "quand_utiliser": "Quand $f$ est décroissante et la construction en spirale",
+     "contenu_markdown": "La suite n'est alors **pas monotone** : elle oscille de part et d'autre de la limite.\n\nLa conjecture porte sur les deux **sous-suites** : celle des termes d'indice pair et celle des termes d'indice impair, chacune monotone, de sens contraires, et convergeant vers la même limite.\n\nOn conjecture donc : « la suite n'est pas monotone, mais elle semble converger vers $\\ell$, en oscillant autour de cette valeur »."
+    },
+    {
+     "nom": "Démonstration par récurrence",
+     "quand_utiliser": "Quand l'énoncé demande de **démontrer** et non de conjecturer",
+     "contenu_markdown": "Pour la croissance, on montre par récurrence que $u_{n} < u_{n+1}$, en utilisant la croissance de $f$ : si $u_{n} < u_{n+1}$, alors $f\\left(u_{n}\\right) < f\\left(u_{n+1}\\right)$, soit $u_{n+1} < u_{n+2}$.\n\nPour la majoration, on montre de même que $u_{n} < \\ell$ entraîne $u_{n+1} = f\\left(u_{n}\\right) < f(\\ell) = \\ell$.\n\nCroissante et majorée, la suite converge — et sa limite est le point fixe."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "La suite $\\left(u_{n}\\right)$ est définie par $u_{0} = 0$ et $u_{n+1} = \\dfrac{u_{n}+1}{u_{n}+2}$. Ses cinq premiers termes ont été construits en escalier sur la courbe de $f(x) = \\dfrac{x+1}{x+2}$ et la droite $y = x$. En déduire une conjecture sur le sens de variation et la convergence de $\\left(u_{n}\\right)$. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Observer la progression de l'escalier",
+     "justification": "Chaque terme est placé plus loin que le précédent sur l'axe des abscisses",
+     "resultat_markdown": "L'escalier progresse **vers la droite**"
+    },
+    {
+     "numero": 2,
+     "action": "Confirmer par les valeurs",
+     "justification": "Les termes calculés à la question 4.a)",
+     "resultat_markdown": "$0 < 0{,}5 < 0{,}6 < 0{,}615 < 0{,}618$"
+    },
+    {
+     "numero": 3,
+     "action": "Formuler la première conjecture",
+     "justification": "En employant le vocabulaire de la conjecture",
+     "resultat_markdown": "On conjecture que la suite $\\left(u_{n}\\right)$ est **croissante**"
+    },
+    {
+     "numero": 4,
+     "action": "Observer le resserrement",
+     "justification": "Les marches de l'escalier rétrécissent rapidement",
+     "resultat_markdown": "Les points s'accumulent autour d'une valeur"
+    },
+    {
+     "numero": 5,
+     "action": "Identifier le point d'accumulation",
+     "justification": "C'est l'intersection $M_{2}$ de $\\left(\\mathcal{C}_{f}\\right)$ et de $\\Delta$, trouvée à la question 2.a)",
+     "resultat_markdown": "Son abscisse vaut $\\ell = \\dfrac{-1+\\sqrt{5}}{2} \\approx 0{,}618$"
+    },
+    {
+     "numero": 6,
+     "action": "Formuler la seconde conjecture",
+     "justification": "Convergence vers le point d'accumulation",
+     "resultat_markdown": "On conjecture que $\\left(u_{n}\\right)$ **converge vers** $\\ell = \\dfrac{-1+\\sqrt{5}}{2}$"
+    },
+    {
+     "numero": 7,
+     "action": "Écarter l'autre point fixe",
+     "justification": "L'équation $f(x) = x$ a deux solutions",
+     "resultat_markdown": "L'autre vaut $\\dfrac{-1-\\sqrt{5}}{2} \\approx -1{,}618$, négative ; une suite partant de $0$ et croissante ne peut s'en approcher"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler la cohérence",
+     "justification": "$f$ est continue sur $\\left]-2\\,;\\,+\\infty\\right[$",
+     "resultat_markdown": "Si la suite converge vers $\\ell$, alors $\\ell = f(\\ell)$ : la limite est nécessairement un point fixe. La conjecture est compatible"
+    }
+   ],
+   "conclusion_markdown": "On conjecture que la suite est croissante et converge vers $\\dfrac{-1+\\sqrt{5}}{2} \\approx 0{,}618$. Note l'architecture de l'exercice : la question 2.a) faisait chercher les intersections avec $y = x$ **précisément** pour préparer cette conclusion, trois questions plus loin. Et retiens la formulation : « on conjecture que », jamais « la suite est » — la lecture graphique suggère, elle ne démontre pas."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Affirmer sans le mot « conjecture »",
+     "pourquoi_faux": "Écrire « la suite est croissante et converge vers $\\ell$ » présente comme démontré ce qui n'est que lu sur une figure. Une démonstration exigerait une récurrence.",
+     "correction_markdown": "Emploie « on conjecture que », « la construction suggère que », ou « il semble que ». Le mot de l'énoncé indique le niveau d'exigence."
+    },
+    {
+     "erreur_markdown": "Ne conjecturer que sur un seul aspect",
+     "pourquoi_faux": "La question demande **deux** choses : le sens de variation et la convergence. Répondre seulement « la suite converge » ne rapporte que la moitié du point.",
+     "correction_markdown": "Structure ta réponse en deux affirmations distinctes, chacune appuyée sur une observation de la figure."
+    },
+    {
+     "erreur_markdown": "Ne pas préciser vers quel point fixe",
+     "pourquoi_faux": "L'équation $f(x) = x$ a **deux** solutions. Dire « la suite converge vers un point fixe » sans dire lequel laisse la réponse incomplète.",
+     "correction_markdown": "Donne la valeur exacte, et justifie l'exclusion de l'autre en une phrase : elle est négative, la suite est positive et croissante."
+    },
+    {
+     "erreur_markdown": "Conjecturer une limite qui n'est pas un point fixe",
+     "pourquoi_faux": "Si $f$ est continue, la limite vérifie nécessairement $\\ell = f(\\ell)$. Annoncer une limite comme $0{,}62$ ou $1$ contredit ce théorème.",
+     "correction_markdown": "Vérifie toujours que la valeur conjecturée est bien solution de $f(x) = x$. C'est la condition nécessaire, et le contrôle est immédiat."
+    },
+    {
+     "erreur_markdown": "Confondre convergence et croissance",
+     "pourquoi_faux": "Une suite peut croître sans converger — si elle tend vers $+\\infty$ — et converger sans être monotone, si elle oscille. Les deux propriétés sont indépendantes.",
+     "correction_markdown": "Traite-les séparément : le **sens** de l'escalier donne la monotonie, le **resserrement** des marches donne la convergence."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $f(x) = \\sqrt{x+2}$ et la suite définie par $u_{0} = 0$ et $u_{n+1} = f\\left(u_{n}\\right)$. Calculer les quatre premiers termes, déterminer les points fixes de $f$, et formuler une conjecture.",
+     "solution_markdown": "**Étape 1 - les premiers termes.**\n\n$$u_{0} = 0$$\n\n$$u_{1} = \\sqrt{2} \\approx 1{,}414$$\n\n$$u_{2} = \\sqrt{1{,}414+2} = \\sqrt{3{,}414} \\approx 1{,}848$$\n\n$$u_{3} = \\sqrt{3{,}848} \\approx 1{,}962$$\n\n**Étape 2 - les points fixes.**\n\n$$\\sqrt{x+2} = x$$\n\nCette équation impose $x \\geqslant 0$, puisqu'une racine carrée est positive.\n\nOn élève au carré :\n\n$$x+2 = x^{2} \\qquad \\Longrightarrow \\qquad x^{2}-x-2 = 0$$\n\nDiscriminant : $1+8 = 9$, donc $\\sqrt{\\Delta} = 3$.\n\n$$x = \\dfrac{1-3}{2} = -1 \\qquad \\text{ou} \\qquad x = \\dfrac{1+3}{2} = 2$$\n\nLa solution $-1$ est **à écarter** : elle ne vérifie pas $x \\geqslant 0$.\n\n*Vérification :* $\\sqrt{-1+2} = \\sqrt{1} = 1 \\neq -1$. Effectivement à écarter.\n\n**Le seul point fixe est $\\ell = 2$.**\n\n*Vérification :* $\\sqrt{2+2} = \\sqrt{4} = 2$. Conforme.\n\n**Étape 3 - observer.**\n\n$$0 < 1{,}414 < 1{,}848 < 1{,}962$$\n\nLes termes **croissent** et se resserrent autour de $2$.\n\n**Étape 4 - la conjecture.**\n\nOn conjecture que la suite $\\left(u_{n}\\right)$ est **croissante** et qu'elle **converge vers $2$**.\n\n**Étape 5 - contrôler.**\n\nLa fonction $f$ est croissante sur $\\left[-2\\,;\\,+\\infty\\right[$ : la construction est bien un **escalier**, cohérent avec une suite monotone.\n\nLa dérivée vaut $f'(x) = \\dfrac{1}{2\\sqrt{x+2}}$, donc\n\n$$f'(2) = \\dfrac{1}{2 \\times 2} = \\dfrac{1}{4} < 1$$\n\nLe point fixe est **attractif** : la convergence est confirmée.\n\n**Ce qu'il faut retenir.** Élever au carré peut introduire des solutions parasites. Ici $-1$ vérifie l'équation carrée mais pas l'équation initiale : il faut toujours revenir vérifier."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $f(x) = 4 - x^{2}$ et la suite définie par $u_{0} = 1$ et $u_{n+1} = f\\left(u_{n}\\right)$. Calculer les six premiers termes et formuler une conjecture. Comparer avec la suite de même relation partant de $u_{0} = 1{,}5$.",
+     "solution_markdown": "**Première suite - $u_{0} = 1$.**\n\n$$u_{0} = 1$$\n\n$$u_{1} = 4-1 = 3$$\n\n$$u_{2} = 4-9 = -5$$\n\n$$u_{3} = 4-25 = -21$$\n\n$$u_{4} = 4-441 = -437$$\n\n$$u_{5} = 4-190\\,969 = -190\\,965$$\n\n**Conjecture 1 :** la suite **diverge** vers $-\\infty$, et très rapidement. Elle n'est pas monotone au début — elle monte de $1$ à $3$ avant de s'effondrer.\n\n**Seconde suite - $u_{0} = 1{,}5$.**\n\n$$u_{0} = 1{,}5$$\n\n$$u_{1} = 4-2{,}25 = 1{,}75$$\n\n$$u_{2} = 4-3{,}0625 = 0{,}9375$$\n\n$$u_{3} = 4-0{,}8789 \\approx 3{,}121$$\n\n$$u_{4} = 4-9{,}741 \\approx -5{,}741$$\n\n$$u_{5} = 4-32{,}96 \\approx -28{,}96$$\n\n**Conjecture 2 :** la suite oscille de façon désordonnée pendant quelques termes, puis **diverge** vers $-\\infty$.\n\n**Étape - les points fixes.**\n\n$$4-x^{2} = x \\qquad \\Longrightarrow \\qquad x^{2}+x-4 = 0$$\n\nDiscriminant : $1+16 = 17$.\n\n$$\\ell_{1} = \\dfrac{-1-\\sqrt{17}}{2} \\approx -2{,}562 \\qquad ; \\qquad \\ell_{2} = \\dfrac{-1+\\sqrt{17}}{2} \\approx 1{,}562$$\n\n**Étape - étudier leur nature.**\n\n$$f'(x) = -2x$$\n\n$$\\left|f'\\left(\\ell_{2}\\right)\\right| = 2 \\times 1{,}562 = 3{,}12 > 1 \\qquad \\text{répulsif}$$\n\n$$\\left|f'\\left(\\ell_{1}\\right)\\right| = 2 \\times 2{,}562 = 5{,}12 > 1 \\qquad \\text{répulsif}$$\n\n**Les deux points fixes sont répulsifs.**\n\n**Étape - interpréter.**\n\nAucun point fixe n'étant attractif, la suite ne peut converger vers aucun d'eux — sauf à y démarrer exactement.\n\nC'est ce qui explique la divergence observée dans les deux cas : quel que soit le point de départ, la suite finit par s'éloigner et diverger.\n\n**Étape - le cas particulier.**\n\nSi l'on prenait $u_{0} = \\ell_{2} \\approx 1{,}562$ exactement, la suite serait **constante**. Mais la moindre erreur d'arrondi la ferait diverger : c'est précisément le sens du mot « répulsif ».\n\n*Illustration :* avec $u_{0} = 1{,}56$, très proche de $\\ell_{2}$ :\n\n$$u_{1} = 4-2{,}4336 = 1{,}5664 \\qquad u_{2} = 4-2{,}4536 \\approx 1{,}5464 \\qquad u_{3} \\approx 1{,}6087$$\n\nL'écart au point fixe **grossit** à chaque étape, d'un facteur voisin de $3$. Après quelques termes, la suite s'effondre.\n\n**Ce qu'il faut retenir.** L'existence d'un point fixe ne garantit **pas** la convergence. C'est le critère $\\left|f'(\\ell)\\right| < 1$ qui décide, et quand tous les points fixes sont répulsifs, la suite diverge quel que soit son point de départ — à l'exception improbable du point fixe exact."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $f(x) = \\dfrac{x+1}{x+2}$ et $\\left(u_{n}\\right)$ définie par $u_{0} = 0$ et $u_{n+1} = f\\left(u_{n}\\right)$. **Démontrer** les conjectures formulées : la suite est croissante, majorée par $\\ell = \\dfrac{-1+\\sqrt{5}}{2}$, et converge vers $\\ell$.",
+     "solution_markdown": "**Première partie - la majoration.**\n\n**Étape 1 - énoncer la propriété à démontrer.**\n\nMontrons par récurrence que, pour tout entier naturel $n$ :\n\n$$P(n) : \\quad 0 \\leqslant u_{n} < \\ell$$\n\n**Étape 2 - initialisation.**\n\n$u_{0} = 0$, et $\\ell \\approx 0{,}618 > 0$. Donc $0 \\leqslant u_{0} < \\ell$ : $P(0)$ est vraie.\n\n**Étape 3 - hérédité.**\n\nSupposons $P(n)$ vraie pour un entier $n$, c'est-à-dire $0 \\leqslant u_{n} < \\ell$.\n\nLa fonction $f$ est **strictement croissante** sur $\\left]-2\\,;\\,+\\infty\\right[$, intervalle qui contient $[0\\,;\\,\\ell]$. Elle conserve donc l'ordre :\n\n$$f(0) \\leqslant f\\left(u_{n}\\right) < f(\\ell)$$\n\nOr $f(0) = \\dfrac{1}{2} > 0$ et $f(\\ell) = \\ell$ puisque $\\ell$ est point fixe. Donc\n\n$$0 < \\dfrac{1}{2} \\leqslant u_{n+1} < \\ell$$\n\n$P(n+1)$ est vraie.\n\n**Étape 4 - conclusion.**\n\nPar récurrence, $0 \\leqslant u_{n} < \\ell$ pour tout $n$. **La suite est majorée par $\\ell$.**\n\n**Seconde partie - la croissance.**\n\n**Étape 5 - étudier le signe de $f(x)-x$.**\n\n$$f(x) - x = \\dfrac{x+1}{x+2} - x = \\dfrac{x+1-x(x+2)}{x+2} = \\dfrac{-x^{2}-x+1}{x+2} = \\dfrac{-\\left(x^{2}+x-1\\right)}{x+2}$$\n\n**Étape 6 - déterminer ce signe sur $[0\\,;\\,\\ell[$.**\n\nLe dénominateur $x+2$ est strictement positif pour $x \\geqslant 0$.\n\nLe trinôme $x^{2}+x-1$ a pour racines $\\alpha \\approx -1{,}618$ et $\\ell \\approx 0{,}618$. De coefficient dominant positif, il est **négatif strictement entre** ses racines.\n\nDonc pour $0 \\leqslant x < \\ell$ : $x^{2}+x-1 < 0$, d'où $-\\left(x^{2}+x-1\\right) > 0$, et\n\n$$f(x) - x > 0$$\n\n**Étape 7 - conclure.**\n\nD'après la première partie, $0 \\leqslant u_{n} < \\ell$ pour tout $n$. Donc\n\n$$u_{n+1} - u_{n} = f\\left(u_{n}\\right) - u_{n} > 0$$\n\n**La suite est strictement croissante.**\n\n**Troisième partie - la convergence.**\n\n**Étape 8 - appliquer le théorème de la limite monotone.**\n\nLa suite $\\left(u_{n}\\right)$ est **croissante** et **majorée** par $\\ell$. D'après le théorème de la limite monotone, elle **converge** vers un réel $L$ vérifiant $L \\leqslant \\ell$.\n\n**Étape 9 - identifier la limite.**\n\nLa fonction $f$ est continue sur $\\left]-2\\,;\\,+\\infty\\right[$, et tous les termes appartiennent à $[0\\,;\\,\\ell]$, intervalle contenu dans cet ensemble. En passant à la limite dans $u_{n+1} = f\\left(u_{n}\\right)$ :\n\n$$L = f(L)$$\n\nLa limite est donc un **point fixe** de $f$.\n\n**Étape 10 - écarter l'autre point fixe.**\n\nLes deux points fixes sont $\\alpha \\approx -1{,}618$ et $\\ell \\approx 0{,}618$.\n\nOr la suite est croissante à partir de $u_{0} = 0$, donc $L \\geqslant u_{0} = 0 > \\alpha$.\n\n**Il ne reste que $L = \\ell$.**\n\n**Conclusion générale.**\n\n$$\\lim_{n \\to +\\infty} u_{n} = \\dfrac{-1+\\sqrt{5}}{2}$$\n\n**Les trois conjectures sont démontrées.**\n\n**Étape 11 - remarque sur la structure de la démonstration.**\n\nL'ordre n'est pas indifférent :\n\n1. la **majoration** se démontre d'abord, par récurrence, en utilisant la croissance de $f$ ;\n2. la **croissance** de la suite en découle, par le signe de $f(x)-x$ sur l'intervalle obtenu ;\n3. la **convergence** résulte du théorème de la limite monotone ;\n4. l'**identification** de la limite utilise la continuité et l'exclusion de l'autre point fixe.\n\nChaque étape utilise la précédente. C'est le schéma standard de toute étude de suite récurrente, et il vaut la peine d'être mémorisé tel quel.\n\n**Ce qu'il faut retenir.** Une conjecture indique **quoi** démontrer ; la démonstration dit **comment**. Ici la figure avait tout annoncé — croissance, majoration, limite — mais chacune de ces affirmations a demandé un argument propre."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Une conjecture comporte **deux** affirmations : le sens de variation et la convergence.",
+    "Le sens de l'escalier donne la monotonie ; le resserrement des marches donne la convergence.",
+    "Emploie « on conjecture que », jamais « la suite est » : la lecture graphique suggère sans démontrer.",
+    "La limite d'une suite récurrente convergente est nécessairement un **point fixe** de $f$.",
+    "Quand il y a plusieurs points fixes, dis **lequel** et justifie l'exclusion des autres.",
+    "Vérifie que la valeur conjecturée est bien solution de $f(x) = x$.",
+    "Croissance et convergence sont indépendantes : une suite peut croître sans converger.",
+    "L'existence d'un point fixe ne garantit pas la convergence : c'est $\\left|f'(\\ell)\\right| < 1$ qui décide.",
+    "Une démonstration exige : majoration par récurrence, croissance par le signe de $f(x)-x$, puis limite monotone."
+   ]
+  }
+ ]
+}

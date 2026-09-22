@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-topologies-physiques-et-architectures-reseau-tle-tronc-commun",
+  "meta": {
+    "titre": "Topologies physiques et architectures réseau",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Topologies et architectures réseau",
+    "duree_estimee_min": 20,
+    "tags": [
+      "topologie en étoile",
+      "topologie en bus",
+      "architecture client-serveur",
+      "poste à poste"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex1-q5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux questions bien différentes se cachent souvent derrière une seule consigne « décris ce réseau » : comment les câbles sont-ils disposés (la topologie) et qui rend service à qui (l'architecture) ? Confondre les deux fait perdre la moitié des points d'une question qui, pourtant, n'en a l'air que d'une seule."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier les équipements d'un schéma réseau simple (postes, serveur, commutateur)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Topologie physique et architecture logique : deux notions à ne pas confondre",
+      "contenu_markdown": "**La topologie physique** décrit la disposition matérielle des liaisons entre machines. Les plus courantes : en **étoile** (toutes les machines relient à un point central, comme un commutateur), en **bus** (toutes les machines partagent un même câble linéaire), en **anneau** (les machines sont reliées en boucle fermée).\n\n**L'architecture réseau** décrit qui fournit les services et qui les consomme. On distingue l'**architecture client-serveur** (une ou plusieurs machines dédiées, les serveurs, fournissent des services à des machines clientes) de l'**architecture poste à poste** (peer-to-peer, où toutes les machines ont un rôle équivalent, à la fois client et serveur).\n\nPour répondre correctement, il faut donc TOUJOURS donner les deux informations séparément : la topologie (comment c'est câblé) ET l'architecture (qui sert qui)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Nommer la topologie physique et l'architecture d'un réseau où le serveur, trois postes, une imprimante et un routeur sont tous reliés à un même commutateur central.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer comment les équipements sont physiquement reliés",
+          "justification": "C'est la question de la topologie.",
+          "resultat_markdown": "Tous les équipements convergent vers un seul point central (le commutateur) : topologie en étoile."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer quelle machine fournit des services aux autres",
+          "justification": "C'est la question de l'architecture.",
+          "resultat_markdown": "Le serveur (RAM/HDD élevés, DHCP activé) fournit des services aux postes clients."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur les deux notions séparément",
+          "justification": "La réponse complète doit citer les deux, sans en fusionner une avec l'autre.",
+          "resultat_markdown": "Topologie physique : étoile. Architecture : client-serveur."
+        }
+      ],
+      "conclusion_markdown": "On obtient une réponse complète en deux volets distincts, exactement comme l'attend le barème d'une question qui demande explicitement les deux notions."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne donner que la topologie ou que l'architecture",
+          "pourquoi_faux": "La question demande explicitement les deux notions ; n'en donner qu'une seule ne rapporte que la moitié des points même si la réponse donnée est juste.",
+          "correction_markdown": "Relire systématiquement la question : si elle demande « topologie ET architecture », structurer la réponse en deux phrases distinctes et clairement identifiées."
+        },
+        {
+          "erreur_markdown": "Dire « topologie client-serveur »",
+          "pourquoi_faux": "Client-serveur n'est pas une topologie (une disposition de câbles) mais une architecture (une répartition de rôles) : les deux notions ne sont pas interchangeables, même si les deux mots décrivent le même réseau.",
+          "correction_markdown": "Réserver le mot « topologie » aux formes géométriques de câblage (étoile, bus, anneau) et le mot « architecture » à la répartition des rôles (client-serveur, poste à poste)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un réseau où chaque poste est relié directement à ses deux voisins, formant une boucle fermée, quelle est la topologie physique ?",
+          "solution_markdown": "Topologie en anneau : les machines sont reliées les unes aux autres en une boucle fermée, chaque poste ayant exactement deux voisins directs."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un groupe de 4 amis qui partagent directement leurs fichiers entre eux sans aucun ordinateur dédié à ce rôle, quelle architecture réseau est utilisée ?",
+          "solution_markdown": "Architecture poste à poste (peer-to-peer) : chaque machine peut aussi bien demander un fichier à une autre que lui en fournir un, sans qu'aucune machine ne soit dédiée exclusivement au rôle de serveur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un réseau d'entreprise utilise une topologie en étoile autour d'un commutateur central, mais aucune machine n'est dédiée à fournir des services aux autres : chaque poste peut consulter directement les fichiers partagés de n'importe quel autre poste. Ce réseau est-il en architecture client-serveur ? Justifier en distinguant clairement topologie et architecture.",
+          "solution_markdown": "Non, ce réseau est en architecture poste à poste, malgré sa topologie physique en étoile. La topologie (comment les câbles sont disposés autour du commutateur) et l'architecture (qui fournit les services) sont deux notions indépendantes : une topologie en étoile peut très bien supporter une architecture poste à poste si aucune machine n'a le rôle dédié de serveur. Ici, chaque poste jouant à la fois le rôle de client et de fournisseur de fichiers pour les autres, sans machine dédiée, l'architecture est poste à poste, et la topologie reste étoile."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Topologie = comment les câbles sont disposés (étoile, bus, anneau) ; architecture = qui fournit les services (client-serveur, poste à poste).",
+        "Une même topologie physique (par exemple l'étoile) peut supporter n'importe quelle architecture : les deux notions sont indépendantes.",
+        "Un réseau en étoile avec un serveur dédié = topologie étoile + architecture client-serveur : toujours donner les deux réponses séparément.",
+        "Repère le serveur à ses caractéristiques (RAM/stockage élevés, services actifs comme le DHCP) pour identifier l'architecture client-serveur d'un coup d'œil."
+      ]
+    }
+  ]
+}

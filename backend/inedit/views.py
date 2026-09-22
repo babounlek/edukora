@@ -51,6 +51,10 @@ def _question_payload(question, reponse, *, correction_disponible, exercice=None
         "id": question.id,
         "numero": question.numero,
         "ordre": question.ordre,
+        # Voir QuestionInedite.groupe_local - jamais gaté par correction_disponible,
+        # contrairement à corrige_markdown/reponse_correcte plus bas : c'est un repère
+        # structurel de l'énoncé, pas une information qui trahirait la correction.
+        "groupe_local": question.groupe_local,
         "enonce_markdown": question.enonce_markdown,
         "type_reponse": question.type_reponse,
         "choix": question.choix,

@@ -14,49 +14,109 @@
   "titre_exercice": "Exercice 1 : racine d'un polynôme complexe, factorisation, triangle rectangle isocèle et rotation",
   "points": 4,
   "figures": [],
-  "enonce_intro_markdown": "On considère la fonction polynôme $P$ à variable complexe définie par $P(z)=z^3-(6+6i)z^2+21iz+15-5i$.\n\n**Note sur une coquille du document source.** L'énoncé de la question 3 est transcrit comme \"Résoudre dans $\\mathbb C$ l'équation $z^2-(6+5i)+5+15i=0$\", ce qui est incohérent (un terme constant $-(6+5i)$ isolé sans $z$ ne peut suivre un terme en $z^2$ de façon cohérente). La lecture évidemment correcte, cohérente avec le quotient $az^2+bz+c$ déterminé à la question 2, est $z^2-(6+5i)z+5+15i=0$ (un \"$z$\" omis lors de la numérisation). C'est cette équation corrigée qui est résolue ci-dessous.",
+  "enonce_intro_markdown": "On considère la fonction polynôme $P$ à variable complexe définie par $P(z)=z^3-(6+6i)z^2+21iz+15-5i$.",
   "questions": [
     {
       "numero": "1",
       "points": "0,25pt",
       "enonce_markdown": "Calculer $P(i)$.",
-      "rappels_de_methode": [{"cours_id": "cours-evaluer-polynome-complexe-valeur-donnee-terminale-d", "texte": "Pour évaluer un polynôme complexe en une valeur donnée, on substitue directement cette valeur dans chaque terme, en calculant soigneusement les puissances successives de i."}],
-      "corrige_markdown": "### Rappel de méthode\nPour évaluer un polynôme complexe en une valeur donnée, on substitue directement cette valeur dans chaque terme du polynôme, en calculant soigneusement les puissances successives de $i$ ($i^2=-1$, $i^3=-i$).\n\n**Substitution de $z=i$ dans $P(z)=z^3-(6+6i)z^2+21iz+15-5i$.**\n\n$$P(i)=i^3-(6+6i)i^2+21i\\times i+15-5i$$\n\n**Calcul de chaque terme.**\n\n$$i^3=-i$$\n\n$$-(6+6i)i^2=-(6+6i)\\times(-1)=6+6i$$\n\n$$21i\\times i=21i^2=-21$$\n\n**Assemblage.**\n\n$$P(i)=-i+(6+6i)+(-21)+(15-5i)$$\n\n$$=(6-21+15)+(-i+6i-5i)$$\n\n$$=0+0i=0$$\n\n**$P(i)=0$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-evaluer-polynome-complexe-valeur-donnee-terminale-d",
+          "texte": "Pour évaluer un polynôme complexe en une valeur donnée, on substitue directement cette valeur dans chaque terme, en calculant soigneusement les puissances successives de i."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour évaluer un polynôme complexe en une valeur donnée, on substitue directement cette valeur dans chaque terme du polynôme, en calculant soigneusement les puissances successives de $i$ ($i^2=-1$, $i^3=-i$).\n\n**Substitution de $z=i$ dans $P(z)=z^3-(6+6i)z^2+21iz+15-5i$.**\n\n$$P(i)=i^3-(6+6i)i^2+21i\\times i+15-5i$$\n\n**Calcul de chaque terme.**\n\n$$i^3=-i$$\n\n$$-(6+6i)i^2=-(6+6i)\\times(-1)=6+6i$$\n\n$$21i\\times i=21i^2=-21$$\n\n**Assemblage.**\n\n$$P(i)=-i+(6+6i)+(-21)+(15-5i)$$\n\n$$=(6-21+15)+(-i+6i-5i)$$\n\n$$=0+0i=0$$\n\n**$P(i)=0$.**",
+      "themes": [
+        "nombres complexes",
+        "calcul numérique"
+      ]
     },
     {
       "numero": "2",
       "points": "0,75pt",
       "enonce_markdown": "En déduire que $P(z)=(z-i)(az^2+bz+c)$ où $a$, $b$ et $c$ sont des nombres complexes que l'on déterminera.",
-      "rappels_de_methode": [{"cours_id": "cours-factoriser-polynome-racine-connue-division-terminale-d", "texte": "Si P(z0)=0, alors (z-z0) divise P(z) sans reste ; on effectue la division euclidienne (ou une division suivant les puissances décroissantes, terme à terme) pour déterminer le quotient."}],
-      "corrige_markdown": "### Rappel de méthode\nSi $P(z_0)=0$, alors $(z-z_0)$ divise $P(z)$ sans reste (théorème du reste/racine) : on effectue la division euclidienne du polynôme, terme à terme suivant les puissances décroissantes, pour déterminer le quotient.\n\n**D'après la question 1, $P(i)=0$ : $(z-i)$ divise donc $P(z)$.**\n\n**Division de $P(z)=z^3-(6+6i)z^2+21iz+15-5i$ par $(z-i)$**, terme à terme.\n\nOn cherche $az^2+bz+c$ tel que $(z-i)(az^2+bz+c)=P(z)$.\n\n**Coefficient de $z^3$** : $a=1$ (le coefficient dominant de $P$ est $1$).\n\n**Développement de $(z-i)(z^2+bz+c)$.**\n\n$$(z-i)(z^2+bz+c)=z^3+bz^2+cz-iz^2-ibz-ic=z^3+(b-i)z^2+(c-ib)z-ic$$\n\n**Identification avec $P(z)=z^3-(6+6i)z^2+21iz+(15-5i)$.**\n\n**Coefficient de $z^2$ :** $b-i=-(6+6i)$, donc $b=-(6+6i)+i=-6-6i+i=-6-5i$.\n\n**Coefficient de $z$ :** $c-ib=21i$. Avec $b=-6-5i$ : $ib=i(-6-5i)=-6i-5i^2=-6i+5=5-6i$. Donc $c=21i+ib=21i+5-6i=5+15i$.\n\n**Vérification par le terme constant :** $-ic=-i(5+15i)=-5i-15i^2=-5i+15=15-5i$ ✓ (coïncide exactement avec le terme constant de $P$).\n\n**$a=1$, $b=-6-5i$, $c=5+15i$.**\n\n**$P(z)=(z-i)\\big(z^2-(6+5i)z+5+15i\\big)$.**\n\n### Conseil\nToujours terminer la division en vérifiant le terme constant final (ici $-ic$) : sa coïncidence avec le terme constant de $P(z)$ confirme, indépendamment des calculs intermédiaires, que la factorisation est correcte."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-factoriser-polynome-racine-connue-division-terminale-d",
+          "texte": "Si P(z0)=0, alors (z-z0) divise P(z) sans reste ; on effectue la division euclidienne (ou une division suivant les puissances décroissantes, terme à terme) pour déterminer le quotient."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi $P(z_0)=0$, alors $(z-z_0)$ divise $P(z)$ sans reste (théorème du reste/racine) : on effectue la division euclidienne du polynôme, terme à terme suivant les puissances décroissantes, pour déterminer le quotient.\n\n**D'après la question 1, $P(i)=0$ : $(z-i)$ divise donc $P(z)$.**\n\n**Division de $P(z)=z^3-(6+6i)z^2+21iz+15-5i$ par $(z-i)$**, terme à terme.\n\nOn cherche $az^2+bz+c$ tel que $(z-i)(az^2+bz+c)=P(z)$.\n\n**Coefficient de $z^3$** : $a=1$ (le coefficient dominant de $P$ est $1$).\n\n**Développement de $(z-i)(z^2+bz+c)$.**\n\n$$(z-i)(z^2+bz+c)=z^3+bz^2+cz-iz^2-ibz-ic=z^3+(b-i)z^2+(c-ib)z-ic$$\n\n**Identification avec $P(z)=z^3-(6+6i)z^2+21iz+(15-5i)$.**\n\n**Coefficient de $z^2$ :** $b-i=-(6+6i)$, donc $b=-(6+6i)+i=-6-6i+i=-6-5i$.\n\n**Coefficient de $z$ :** $c-ib=21i$. Avec $b=-6-5i$ : $ib=i(-6-5i)=-6i-5i^2=-6i+5=5-6i$. Donc $c=21i+ib=21i+5-6i=5+15i$.\n\n**Vérification par le terme constant :** $-ic=-i(5+15i)=-5i-15i^2=-5i+15=15-5i$ ✓ (coïncide exactement avec le terme constant de $P$).\n\n**$a=1$, $b=-6-5i$, $c=5+15i$.**\n\n**$P(z)=(z-i)\\big(z^2-(6+5i)z+5+15i\\big)$.**\n\n### Conseil\nToujours terminer la division en vérifiant le terme constant final (ici $-ic$) : sa coïncidence avec le terme constant de $P(z)$ confirme, indépendamment des calculs intermédiaires, que la factorisation est correcte.",
+      "themes": [
+        "nombres complexes",
+        "division euclidienne",
+        "factorisation",
+        "identification de coefficients"
+      ]
     },
     {
       "numero": "3",
       "points": "1pt",
-      "enonce_markdown": "Résoudre dans $\\mathbb C$ l'équation $z^2-(6+5i)z+5+15i=0$ (équation reconstruite ; voir la note en tête de ce fichier) ; en déduire les solutions de l'équation $P(z)=0$.",
-      "rappels_de_methode": [{"cours_id": "cours-resoudre-equation-discriminant-reel-negatif-deduire-polynome-terminale-d", "texte": "Pour résoudre az²+bz+c=0 dans C avec Δ réel négatif, on utilise √Δ=i√|Δ| ; les solutions de P(z)=0 sont alors la racine déjà connue réunie aux racines du facteur du second degré."}],
-      "corrige_markdown": "### Rappel de méthode\nPour résoudre $az^2+bz+c=0$ dans $\\mathbb C$ lorsque le discriminant $\\Delta$ obtenu est un réel STRICTEMENT NÉGATIF, on utilise $\\sqrt\\Delta=i\\sqrt{|\\Delta|}$ dans la formule usuelle. Une fois cette équation résolue, les solutions de l'équation polynomiale complète $P(z)=0$ (dont $P(z)=(z-i)(az^2+bz+c)$) sont la racine déjà connue ($z=i$) réunie aux racines trouvées pour le facteur du second degré.\n\n**Identification des coefficients**, d'après la question 2 : $a=1$, $b=-(6+5i)$, $c=5+15i$.\n\n**Calcul du discriminant.**\n\n$$\\Delta=b^2-4ac=(6+5i)^2-4\\times1\\times(5+15i)$$\n\n$$(6+5i)^2=36+60i+25i^2=36+60i-25=11+60i$$\n\n$$4(5+15i)=20+60i$$\n\n$$\\Delta=(11+60i)-(20+60i)=-9$$\n\n**$\\Delta=-9$, un réel strictement négatif.**\n\n**Calcul de la racine carrée de $\\Delta$.**\n\n$$\\sqrt\\Delta=i\\sqrt9=3i$$\n\n**Calcul des solutions.**\n\n$$z=\\dfrac{(6+5i)\\pm3i}2$$\n\n$$z_1=\\dfrac{(6+5i)+3i}2=\\dfrac{6+8i}2=3+4i\\qquad z_2=\\dfrac{(6+5i)-3i}2=\\dfrac{6+2i}2=3+i$$\n\n**L'ensemble des solutions de $z^2-(6+5i)z+5+15i=0$ est $\\{3+4i\\,;\\,3+i\\}$.**\n\n**Déduction des solutions de $P(z)=0$.** Comme $P(z)=(z-i)\\big(z^2-(6+5i)z+5+15i\\big)$ (question 2) :\n\n$$P(z)=0\\ \\Longleftrightarrow\\ z-i=0\\ \\text{ou}\\ z^2-(6+5i)z+5+15i=0$$\n\n**Les solutions de $P(z)=0$ sont $\\{i\\,;\\,3+i\\,;\\,3+4i\\}$.**\n\n### Conseil\nCes trois solutions coïncident exactement avec les affixes $\\alpha=i$, $\\beta=3+i$ et $\\gamma=3+4i$ des points $A$, $B$, $C$ introduits à la question 4 : une bonne lecture d'ensemble de l'exercice permet d'anticiper cette correspondance et de vérifier la cohérence des calculs."
+      "enonce_markdown": "Résoudre dans $\\mathbb C$ l'équation $z^2-(6+5i)z+5+15i=0$ ; en déduire les solutions de l'équation $P(z)=0$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-resoudre-equation-discriminant-reel-negatif-deduire-polynome-terminale-d",
+          "texte": "Pour résoudre az²+bz+c=0 dans C avec Δ réel négatif, on utilise √Δ=i√|Δ| ; les solutions de P(z)=0 sont alors la racine déjà connue réunie aux racines du facteur du second degré."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour résoudre $az^2+bz+c=0$ dans $\\mathbb C$ lorsque le discriminant $\\Delta$ obtenu est un réel STRICTEMENT NÉGATIF, on utilise $\\sqrt\\Delta=i\\sqrt{|\\Delta|}$ dans la formule usuelle. Une fois cette équation résolue, les solutions de l'équation polynomiale complète $P(z)=0$ (dont $P(z)=(z-i)(az^2+bz+c)$) sont la racine déjà connue ($z=i$) réunie aux racines trouvées pour le facteur du second degré.\n\n**Identification des coefficients**, d'après la question 2 : $a=1$, $b=-(6+5i)$, $c=5+15i$.\n\n**Calcul du discriminant.**\n\n$$\\Delta=b^2-4ac=(6+5i)^2-4\\times1\\times(5+15i)$$\n\n$$(6+5i)^2=36+60i+25i^2=36+60i-25=11+60i$$\n\n$$4(5+15i)=20+60i$$\n\n$$\\Delta=(11+60i)-(20+60i)=-9$$\n\n**$\\Delta=-9$, un réel strictement négatif.**\n\n**Calcul de la racine carrée de $\\Delta$.**\n\n$$\\sqrt\\Delta=i\\sqrt9=3i$$\n\n**Calcul des solutions.**\n\n$$z=\\dfrac{(6+5i)\\pm3i}2$$\n\n$$z_1=\\dfrac{(6+5i)+3i}2=\\dfrac{6+8i}2=3+4i\\qquad z_2=\\dfrac{(6+5i)-3i}2=\\dfrac{6+2i}2=3+i$$\n\n**L'ensemble des solutions de $z^2-(6+5i)z+5+15i=0$ est $\\{3+4i\\,;\\,3+i\\}$.**\n\n**Déduction des solutions de $P(z)=0$.** Comme $P(z)=(z-i)\\big(z^2-(6+5i)z+5+15i\\big)$ (question 2) :\n\n$$P(z)=0\\ \\Longleftrightarrow\\ z-i=0\\ \\text{ou}\\ z^2-(6+5i)z+5+15i=0$$\n\n**Les solutions de $P(z)=0$ sont $\\{i\\,;\\,3+i\\,;\\,3+4i\\}$.**\n\n### Conseil\nCes trois solutions coïncident exactement avec les affixes $\\alpha=i$, $\\beta=3+i$ et $\\gamma=3+4i$ des points $A$, $B$, $C$ introduits à la question 4 : une bonne lecture d'ensemble de l'exercice permet d'anticiper cette correspondance et de vérifier la cohérence des calculs.",
+      "themes": [
+        "nombres complexes",
+        "équation du second degré",
+        "discriminant"
+      ]
     },
     {
       "numero": "4a",
       "points": "1pt",
       "enonce_markdown": "$A$, $B$ et $C$ sont trois points du plan complexe d'affixes respectives $\\alpha=i$, $\\beta=3+i$ et $\\gamma=3+4i$. Calculer le rapport $\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}$.",
-      "rappels_de_methode": [{"cours_id": "cours-calculer-quotient-affixes-trois-points-terminale-d", "texte": "Le quotient (zC-zB)/(zA-zB) compare, depuis le sommet B, les vecteurs BC et BA : son module donne le rapport des longueurs BC/BA, son argument donne l'angle (BA,BC)."}],
-      "corrige_markdown": "### Rappel de méthode\nLe quotient $\\dfrac{z_C-z_B}{z_A-z_B}$ compare, depuis le sommet $B$, les vecteurs $\\vec{BC}$ et $\\vec{BA}$ : son module donne le rapport des longueurs $\\dfrac{BC}{BA}$, et son argument donne une mesure de l'angle $(\\vec{BA},\\vec{BC})$.\n\n**Calcul du numérateur $\\gamma-\\beta$.**\n\n$$\\gamma-\\beta=(3+4i)-(3+i)=3i$$\n\n**Calcul du dénominateur $\\alpha-\\beta$.**\n\n$$\\alpha-\\beta=i-(3+i)=-3$$\n\n**Calcul du quotient.**\n\n$$\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}=\\dfrac{3i}{-3}=-i$$\n\n**$\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}=-i$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-quotient-affixes-trois-points-terminale-d",
+          "texte": "Le quotient (zC-zB)/(zA-zB) compare, depuis le sommet B, les vecteurs BC et BA : son module donne le rapport des longueurs BC/BA, son argument donne l'angle (BA,BC)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLe quotient $\\dfrac{z_C-z_B}{z_A-z_B}$ compare, depuis le sommet $B$, les vecteurs $\\vec{BC}$ et $\\vec{BA}$ : son module donne le rapport des longueurs $\\dfrac{BC}{BA}$, et son argument donne une mesure de l'angle $(\\vec{BA},\\vec{BC})$.\n\n**Calcul du numérateur $\\gamma-\\beta$.**\n\n$$\\gamma-\\beta=(3+4i)-(3+i)=3i$$\n\n**Calcul du dénominateur $\\alpha-\\beta$.**\n\n$$\\alpha-\\beta=i-(3+i)=-3$$\n\n**Calcul du quotient.**\n\n$$\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}=\\dfrac{3i}{-3}=-i$$\n\n**$\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}=-i$.**",
+      "themes": [
+        "nombres complexes",
+        "module et argument",
+        "distance entre deux points"
+      ]
     },
     {
       "numero": "4b",
       "points": "0,5pt",
       "enonce_markdown": "Quelle est la nature du triangle $ABC$ ?",
-      "rappels_de_methode": [{"cours_id": "cours-nature-triangle-rectangle-isocele-quotient-imaginaire-module-1-terminale-d", "texte": "Si (zC-zB)/(zA-zB) est imaginaire pur de module 1, alors BA=BC (isocèle en B) et BA⊥BC (rectangle en B) : le triangle est rectangle isocèle en B."}],
-      "corrige_markdown": "### Rappel de méthode\nSi $\\dfrac{z_C-z_B}{z_A-z_B}$ est imaginaire pur (partie réelle nulle) ET de module $1$, alors $BA=BC$ (le module $1$ traduit l'égalité des longueurs, donc isocèle en $B$) et $BA\\perp BC$ (l'argument $\\pm\\frac\\pi2$ traduit la perpendicularité, donc rectangle en $B$) : le triangle est rectangle isocèle en $B$.\n\n**D'après la question 4a, $\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}=-i$.**\n\n**Ce quotient est imaginaire pur** (partie réelle nulle), **de module $|-i|=1$.**\n\n**Conclusion.** $BA=BC$ (isocèle en $B$) et l'angle en $B$ est droit (rectangle en $B$, car $\\arg(-i)=-\\dfrac\\pi2$).\n\n**Le triangle $ABC$ est rectangle isocèle en $B$.**\n\n### Conseil\nVérification rapide indépendante : $BA=|\\alpha-\\beta|=|-3|=3$ et $BC=|\\gamma-\\beta|=|3i|=3$ : $BA=BC=3$, confirmant directement l'égalité des longueurs sans repasser par le quotient."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-nature-triangle-rectangle-isocele-quotient-imaginaire-module-1-terminale-d",
+          "texte": "Si (zC-zB)/(zA-zB) est imaginaire pur de module 1, alors BA=BC (isocèle en B) et BA⊥BC (rectangle en B) : le triangle est rectangle isocèle en B."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi $\\dfrac{z_C-z_B}{z_A-z_B}$ est imaginaire pur (partie réelle nulle) ET de module $1$, alors $BA=BC$ (le module $1$ traduit l'égalité des longueurs, donc isocèle en $B$) et $BA\\perp BC$ (l'argument $\\pm\\frac\\pi2$ traduit la perpendicularité, donc rectangle en $B$) : le triangle est rectangle isocèle en $B$.\n\n**D'après la question 4a, $\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}=-i$.**\n\n**Ce quotient est imaginaire pur** (partie réelle nulle), **de module $|-i|=1$.**\n\n**Conclusion.** $BA=BC$ (isocèle en $B$) et l'angle en $B$ est droit (rectangle en $B$, car $\\arg(-i)=-\\dfrac\\pi2$).\n\n**Le triangle $ABC$ est rectangle isocèle en $B$.**\n\n### Conseil\nVérification rapide indépendante : $BA=|\\alpha-\\beta|=|-3|=3$ et $BC=|\\gamma-\\beta|=|3i|=3$ : $BA=BC=3$, confirmant directement l'égalité des longueurs sans repasser par le quotient.",
+      "themes": [
+        "nombres complexes",
+        "triangle rectangle isocèle",
+        "perpendicularité"
+      ]
     },
     {
       "numero": "4c",
       "points": "0,5pt",
       "enonce_markdown": "Donner l'angle de la rotation $r$ de centre $B$ qui transforme $A$ en $C$.",
-      "rappels_de_methode": [{"cours_id": "cours-determiner-angle-rotation-ecriture-complexe-terminale-d", "texte": "L'écriture complexe d'une rotation de centre Ω et d'angle θ transformant A en C vérifie zC-zΩ=e^(iθ)(zA-zΩ) ; l'angle θ s'obtient donc comme l'argument du quotient (zC-zΩ)/(zA-zΩ)."}],
-      "corrige_markdown": "### Rappel de méthode\nL'écriture complexe d'une rotation de centre $\\Omega$ et d'angle $\\theta$ transformant un point $A$ en un point $C$ vérifie $z_C-z_\\Omega=e^{i\\theta}(z_A-z_\\Omega)$. L'angle $\\theta$ de la rotation s'obtient donc directement comme l'argument du quotient $\\dfrac{z_C-z_\\Omega}{z_A-z_\\Omega}$.\n\n**Identification.** Ici $\\Omega=B$, et l'on cherche $\\theta$ tel que $\\gamma-\\beta=e^{i\\theta}(\\alpha-\\beta)$, c'est-à-dire $e^{i\\theta}=\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}$.\n\n**D'après la question 4a, $\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}=-i$.**\n\n**Recherche de l'argument de $-i$.** $-i=\\cos\\left(-\\dfrac\\pi2\\right)+i\\sin\\left(-\\dfrac\\pi2\\right)$, donc $\\arg(-i)=-\\dfrac\\pi2$.\n\n**$e^{i\\theta}=-i\\ \\Longrightarrow\\ \\theta=-\\dfrac\\pi2$ (modulo $2\\pi$).**\n\n**La rotation $r$ de centre $B$ qui transforme $A$ en $C$ a pour angle $-\\dfrac\\pi2$ (soit $-90°$).**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-angle-rotation-ecriture-complexe-terminale-d",
+          "texte": "L'écriture complexe d'une rotation de centre Ω et d'angle θ transformant A en C vérifie zC-zΩ=e^(iθ)(zA-zΩ) ; l'angle θ s'obtient donc comme l'argument du quotient (zC-zΩ)/(zA-zΩ)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'écriture complexe d'une rotation de centre $\\Omega$ et d'angle $\\theta$ transformant un point $A$ en un point $C$ vérifie $z_C-z_\\Omega=e^{i\\theta}(z_A-z_\\Omega)$. L'angle $\\theta$ de la rotation s'obtient donc directement comme l'argument du quotient $\\dfrac{z_C-z_\\Omega}{z_A-z_\\Omega}$.\n\n**Identification.** Ici $\\Omega=B$, et l'on cherche $\\theta$ tel que $\\gamma-\\beta=e^{i\\theta}(\\alpha-\\beta)$, c'est-à-dire $e^{i\\theta}=\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}$.\n\n**D'après la question 4a, $\\dfrac{\\gamma-\\beta}{\\alpha-\\beta}=-i$.**\n\n**Recherche de l'argument de $-i$.** $-i=\\cos\\left(-\\dfrac\\pi2\\right)+i\\sin\\left(-\\dfrac\\pi2\\right)$, donc $\\arg(-i)=-\\dfrac\\pi2$.\n\n**$e^{i\\theta}=-i\\ \\Longrightarrow\\ \\theta=-\\dfrac\\pi2$ (modulo $2\\pi$).**\n\n**La rotation $r$ de centre $B$ qui transforme $A$ en $C$ a pour angle $-\\dfrac\\pi2$ (soit $-90°$).**",
+      "themes": [
+        "rotation",
+        "écriture complexe",
+        "nombres complexes"
+      ]
     }
   ]
 }

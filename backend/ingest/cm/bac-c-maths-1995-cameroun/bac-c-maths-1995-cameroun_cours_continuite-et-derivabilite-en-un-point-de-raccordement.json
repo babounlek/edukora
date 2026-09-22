@@ -1,0 +1,166 @@
+{
+  "cours_id": "cours-continuite-et-derivabilite-en-un-point-de-raccordement-terminale-c",
+  "meta": {
+    "titre": "Continuité et dérivabilité d'une fonction définie par morceaux",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Analyse - continuité et dérivabilité",
+    "duree_estimee_min": 35,
+    "tags": [
+      "fonction définie par morceaux",
+      "continuité",
+      "dérivabilité",
+      "taux d'accroissement",
+      "point de raccordement",
+      "limites latérales"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-maths-1995-cameroun",
+    "epreuve_titre": "BAC Mathématiques - Cameroun, série C, session 1995 (Office du Baccalauréat du Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-maths-1995-cameroun-ex2-q1.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction définie par deux formules différentes de part et d'autre d'un point, c'est le graphique d'un tarif : un prix au kilomètre en dessous d'un seuil, un autre au-dessus. La question intéressante n'est pas de savoir si chaque formule est jolie, mais ce qui se passe exactement au seuil. La courbe se recolle-t-elle sans saut (continuité) ? Se recolle-t-elle sans angle (dérivabilité) ? Ce sont deux questions différentes, et une fonction peut très bien répondre oui à la première et non à la seconde. Tout l'exercice se joue en ce point unique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Limites d'une fonction en un point et en l'infini, limites à gauche et à droite",
+        "Limites de référence de l'exponentielle : $\\lim_{u\\to-\\infty}e^{u}=0$ et $\\lim_{u\\to+\\infty}e^{u}=+\\infty$",
+        "Formules de dérivation : produit, quotient, composée $\\left(e^{w}\\right)'=w'e^{w}$",
+        "Définition du nombre dérivé comme limite du taux d'accroissement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Continuité puis dérivabilité au point de raccordement",
+      "contenu_markdown": "Soit $f$ définie sur $\\mathbb{R}$ par une expression $f_1$ sur $]-\\infty\\,;a[$, une valeur $f(a)$, et une expression $f_2$ sur $]a\\,;+\\infty[$.\n\n**Sur les intervalles ouverts**, la continuité et la dérivabilité se justifient par les théorèmes généraux : sommes, produits, quotients (dénominateur non nul) et composées de fonctions de référence. Deux lignes suffisent, mais elles doivent être écrites : elles portent des points au barème.\n\n**Continuité en $a$.**\n\n$$f \\text{ est continue en } a \\iff \\lim_{x\\to a^{-}}f(x)=\\lim_{x\\to a^{+}}f(x)=f(a).$$\n\nTrois nombres à comparer, pas deux. Une fonction peut avoir des limites latérales égales entre elles mais différentes de $f(a)$ : elle est alors discontinue en $a$.\n\n**Dérivabilité en $a$.** On étudie le taux d'accroissement\n\n$$\\tau(x)=\\frac{f(x)-f(a)}{x-a}.$$\n\n$$f \\text{ est dérivable en } a \\iff \\lim_{x\\to a^{-}}\\tau(x)\\ \\text{et}\\ \\lim_{x\\to a^{+}}\\tau(x)\\ \\text{existent, sont FINIES et ÉGALES.}$$\n\nLeur valeur commune est alors $f'(a)$.\n\n**Interprétation graphique des cas de non-dérivabilité :**\n- limites latérales finies mais différentes : la courbe présente un **point anguleux** (deux demi-tangentes distinctes) ;\n- limite infinie des deux côtés, de même signe : **tangente verticale** ;\n- limite infinie de signes opposés : point de rebroussement.\n\n**Ordre de traitement.** Toujours la continuité d'abord : une fonction non continue en $a$ n'y est jamais dérivable. La réciproque est fausse, comme le montre $x\\mapsto|x|$ en 0.",
+      "formule_principale": "f'(a)=\\lim_{x\\to a}\\frac{f(x)-f(a)}{x-a}",
+      "variantes": [
+        {
+          "nom": "Théorème du prolongement de la dérivée",
+          "quand_utiliser": "Quand le taux d'accroissement conduit à une forme indéterminée difficile, et seulement si toutes les hypothèses sont vérifiables.",
+          "contenu_markdown": "Si $f$ est continue en $a$, dérivable sur un voisinage de $a$ privé de $a$, et si $f'(x)$ admet une limite finie $\\ell$ quand $x\\to a$, alors $f$ est dérivable en $a$ et $f'(a)=\\ell$.\n\nTrois hypothèses, aucune facultative. En particulier, si $\\lim_{x\\to a}f'(x)$ n'existe pas, le théorème ne dit rien : $f$ peut malgré tout être dérivable en $a$. Utilise-le en dernier recours, et énonce les trois hypothèses explicitement. Le taux d'accroissement, lui, ne demande aucune précaution."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f$ définie sur $\\mathbb{R}$ par : $f(x)=xe^{1/x}$ si $x<0$ ; $f(0)=0$ ; $f(x)=\\dfrac{x^{2}}{x+2}$ si $x>0$. Étudier la continuité puis la dérivabilité de $f$, et donner l'expression de $f'(x)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traiter les intervalles ouverts",
+          "justification": "Sur $]-\\infty;0[$, composée et produit de fonctions continues et dérivables ; sur $]0;+\\infty[$, quotient dont le dénominateur $x+2$ vaut au moins 2.",
+          "resultat_markdown": "$f$ est continue et dérivable sur $]-\\infty\\,;0[$ et sur $]0\\,;+\\infty[$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la limite à gauche en 0",
+          "justification": "Pour $x<0$, $\\frac{1}{x}\\to-\\infty$ donc $e^{1/x}\\to0$ ; le facteur $x$ tend aussi vers 0. Aucune forme indéterminée.",
+          "resultat_markdown": "$$\\lim_{x\\to0^{-}}x\\,e^{1/x}=0.$$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la limite à droite en 0 et comparer à $f(0)$",
+          "justification": "Substitution directe : le dénominateur ne s'annule pas en 0.",
+          "resultat_markdown": "$$\\lim_{x\\to0^{+}}\\frac{x^{2}}{x+2}=\\frac{0}{2}=0=f(0).$$ Les trois nombres sont égaux : $f$ est continue en 0, donc sur $\\mathbb{R}$."
+        },
+        {
+          "numero": 4,
+          "action": "Dériver sur $]-\\infty;0[$",
+          "justification": "Produit $u v$ avec $u(x)=x$, $v(x)=e^{1/x}$ ; on applique $\\left(e^{w}\\right)'=w'e^{w}$ avec $w(x)=\\frac{1}{x}$, $w'(x)=-\\frac{1}{x^{2}}$.",
+          "resultat_markdown": "$$f'(x)=e^{1/x}+x\\left(-\\frac{1}{x^{2}}e^{1/x}\\right)=e^{1/x}\\left(1-\\frac{1}{x}\\right)=e^{1/x}\\times\\frac{x-1}{x}.$$"
+        },
+        {
+          "numero": 5,
+          "action": "Dériver sur $]0;+\\infty[$",
+          "justification": "Quotient : $\\left(\\frac{u}{v}\\right)'=\\frac{u'v-uv'}{v^{2}}$ avec $u(x)=x^{2}$ et $v(x)=x+2$.",
+          "resultat_markdown": "$$f'(x)=\\frac{2x(x+2)-x^{2}}{(x+2)^{2}}=\\frac{x^{2}+4x}{(x+2)^{2}}=\\frac{x(x+4)}{(x+2)^{2}}.$$"
+        },
+        {
+          "numero": 6,
+          "action": "Calculer le taux d'accroissement à gauche en 0",
+          "justification": "On divise $f(x)-f(0)=xe^{1/x}$ par $x-0=x$ : le facteur $x$ se simplifie, ce qui supprime toute indétermination.",
+          "resultat_markdown": "$$\\frac{f(x)-f(0)}{x-0}=e^{1/x}\\xrightarrow[x\\to0^{-}]{}0.$$"
+        },
+        {
+          "numero": 7,
+          "action": "Calculer le taux d'accroissement à droite en 0 et conclure",
+          "justification": "Même division par $x$ ; puis on compare les deux limites latérales.",
+          "resultat_markdown": "$$\\frac{f(x)-f(0)}{x-0}=\\frac{x}{x+2}\\xrightarrow[x\\to0^{+}]{}0.$$ Les deux limites sont finies et égales à 0 : $f$ est dérivable en 0 et $f'(0)=0$."
+        }
+      ],
+      "conclusion_markdown": "$f$ est continue et dérivable sur $\\mathbb{R}$, avec\n\n$$f'(x)=\\begin{cases}e^{1/x}\\times\\dfrac{x-1}{x} & \\text{si } x<0\\\\ 0 & \\text{si } x=0\\\\ \\dfrac{x(x+4)}{(x+2)^{2}} & \\text{si } x>0\\end{cases}$$\n\nLe recollement se fait sans saut et sans angle : la courbe traverse l'origine avec une tangente horizontale."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure à la continuité en 0 en écrivant seulement « $f(0)=0$ donc $f$ est continue en 0 ».",
+          "pourquoi_faux": "La valeur $f(0)$ est une donnée de l'énoncé, elle ne prouve rien à elle seule. La continuité compare cette valeur aux deux limites latérales : sans les calculer, la conclusion est sans fondement. Une fonction valant 0 en 0 mais tendant vers 1 à droite est discontinue.",
+          "correction_markdown": "Écrire les trois nombres et les comparer : $\\lim_{x\\to0^{-}}f(x)$, $\\lim_{x\\to0^{+}}f(x)$, $f(0)$. Trois lignes, trois points de barème."
+        },
+        {
+          "erreur_markdown": "Affirmer que $\\lim_{x\\to0}e^{1/x}=0$ sans préciser le côté.",
+          "pourquoi_faux": "Le comportement dépend entièrement du signe de $x$ : à gauche, $\\frac{1}{x}\\to-\\infty$ donc $e^{1/x}\\to0$ ; à droite, $\\frac{1}{x}\\to+\\infty$ donc $e^{1/x}\\to+\\infty$. La limite en 0 n'existe donc pas, seules les limites latérales ont un sens.",
+          "correction_markdown": "Toujours écrire $x\\to0^{-}$ ou $x\\to0^{+}$ et justifier le signe de $\\frac{1}{x}$ avant de conclure sur l'exponentielle."
+        },
+        {
+          "erreur_markdown": "Déduire la dérivabilité en 0 de l'égalité $\\lim_{x\\to0^{-}}f'(x)=\\lim_{x\\to0^{+}}f'(x)=0$, sans autre justification.",
+          "pourquoi_faux": "C'est appliquer le théorème du prolongement de la dérivée sans en énoncer les hypothèses (continuité en 0, dérivabilité au voisinage, existence des limites). Une copie qui l'utilise sans les citer perd les points, même si la conclusion est juste.",
+          "correction_markdown": "Utiliser le taux d'accroissement : il ne suppose rien et se rédige en deux lignes de chaque côté. Garde le théorème de prolongement pour les cas où le taux est réellement inextricable, et énonce alors ses trois hypothèses."
+        },
+        {
+          "erreur_markdown": "Oublier le signe moins dans $\\left(\\frac{1}{x}\\right)'=-\\frac{1}{x^{2}}$ lors de la dérivation de $e^{1/x}$.",
+          "pourquoi_faux": "On obtiendrait $f'(x)=e^{1/x}\\left(1+\\frac{1}{x}\\right)$, dont le signe pour $x<0$ change en $x=-1$ : le tableau de variations ferait apparaître un extremum inexistant, et toute l'allure de la courbe serait fausse.",
+          "correction_markdown": "Écrire la formule générale $\\left(e^{w}\\right)'=w'e^{w}$ **avant** de remplacer $w$ par $\\frac{1}{x}$, puis calculer $w'$ séparément sur une ligne à part."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $g$ définie par $g(x)=x^{2}+1$ si $x\\leq1$ et $g(x)=2x$ si $x>1$. Étudier la continuité et la dérivabilité de $g$ en 1.",
+          "solution_markdown": "**Continuité en 1.**\n\n$$\\lim_{x\\to1^{-}}g(x)=\\lim_{x\\to1^{-}}\\left(x^{2}+1\\right)=1+1=2,\\qquad \\lim_{x\\to1^{+}}g(x)=\\lim_{x\\to1^{+}}2x=2,\\qquad g(1)=1^{2}+1=2.$$\n\nLes trois nombres valent 2 : $g$ est continue en 1.\n\n**Dérivabilité en 1.** Taux d'accroissement à gauche ($x<1$) :\n\n$$\\frac{g(x)-g(1)}{x-1}=\\frac{x^{2}+1-2}{x-1}=\\frac{x^{2}-1}{x-1}=\\frac{(x-1)(x+1)}{x-1}=x+1\\xrightarrow[x\\to1^{-}]{}2.$$\n\nTaux d'accroissement à droite ($x>1$) :\n\n$$\\frac{g(x)-g(1)}{x-1}=\\frac{2x-2}{x-1}=\\frac{2(x-1)}{x-1}=2\\xrightarrow[x\\to1^{+}]{}2.$$\n\nLes deux limites sont finies et égales à 2 : $g$ est dérivable en 1 et $g'(1)=2$. La courbe se recolle sans angle, avec une tangente de coefficient directeur 2."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $h$ définie sur $\\mathbb{R}$ par $h(x)=\\dfrac{\\ln(1+x)}{x}$ si $x>0$, $h(0)=1$, et $h(x)=e^{x}$ si $x<0$. Étudier la continuité et la dérivabilité de $h$ en 0. (On rappelle $\\lim_{t\\to0}\\frac{\\ln(1+t)}{t}=1$.)",
+          "solution_markdown": "**Continuité en 0.**\n\nÀ gauche : $\\lim_{x\\to0^{-}}e^{x}=e^{0}=1$.\n\nÀ droite : c'est exactement la limite rappelée, $\\lim_{x\\to0^{+}}\\dfrac{\\ln(1+x)}{x}=1$.\n\nEt $h(0)=1$. Les trois valeurs sont égales : $h$ est continue en 0.\n\n**Dérivabilité à gauche.**\n\n$$\\frac{h(x)-h(0)}{x-0}=\\frac{e^{x}-1}{x}\\xrightarrow[x\\to0^{-}]{}1,$$\n\ncar $\\lim_{t\\to0}\\frac{e^{t}-1}{t}=1$ (c'est le nombre dérivé de $t\\mapsto e^{t}$ en 0). Donc $h'_g(0)=1$.\n\n**Dérivabilité à droite.**\n\n$$\\frac{h(x)-h(0)}{x-0}=\\frac{1}{x}\\left(\\frac{\\ln(1+x)}{x}-1\\right)=\\frac{\\ln(1+x)-x}{x^{2}}.$$\n\nPour lever cette forme indéterminée $\\frac{0}{0}$, on utilise le développement limité $\\ln(1+x)=x-\\dfrac{x^{2}}{2}+x^{2}\\varepsilon(x)$ avec $\\varepsilon(x)\\to0$. Alors\n\n$$\\frac{\\ln(1+x)-x}{x^{2}}=\\frac{-\\dfrac{x^{2}}{2}+x^{2}\\varepsilon(x)}{x^{2}}=-\\frac{1}{2}+\\varepsilon(x)\\xrightarrow[x\\to0^{+}]{}-\\frac{1}{2}.$$\n\nDonc $h'_d(0)=-\\dfrac{1}{2}$.\n\n**Conclusion.** Les deux nombres dérivés latéraux sont finis mais différents ($1\\neq-\\frac12$) : $h$ n'est **pas** dérivable en 0. La courbe présente en 0 un point anguleux, avec deux demi-tangentes de coefficients directeurs 1 (à gauche) et $-\\frac12$ (à droite)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer les réels $a$ et $b$ pour que la fonction $f$ définie par $f(x)=\\sqrt{x}$ si $x\\geq1$ et $f(x)=ax^{2}+b$ si $x<1$ soit dérivable sur $\\mathbb{R}_{+}^{*}$.",
+          "solution_markdown": "**Analyse du problème.** Sur $]0\\,;1[$ et sur $]1\\,;+\\infty[$, $f$ est dérivable quels que soient $a$ et $b$ (polynôme, et fonction racine sur un intervalle où $x>0$). Le seul point à discuter est $x=1$.\n\n**Condition 1 : continuité en 1.** Elle est nécessaire à la dérivabilité.\n\n$$\\lim_{x\\to1^{-}}f(x)=a\\times1^{2}+b=a+b,\\qquad f(1)=\\sqrt{1}=1=\\lim_{x\\to1^{+}}f(x).$$\n\nLa continuité impose donc\n\n$$a+b=1.\\qquad (1)$$\n\n**Condition 2 : égalité des nombres dérivés latéraux.** Sous la condition (1), on a $f(1)=1$.\n\nTaux à gauche, pour $x<1$, en utilisant $b=1-a$ :\n\n$$\\frac{f(x)-f(1)}{x-1}=\\frac{ax^{2}+1-a-1}{x-1}=\\frac{a\\left(x^{2}-1\\right)}{x-1}=\\frac{a(x-1)(x+1)}{x-1}=a(x+1)\\xrightarrow[x\\to1^{-}]{}2a.$$\n\nTaux à droite, pour $x>1$ : on reconnaît le nombre dérivé de $x\\mapsto\\sqrt{x}$ en 1, mais calculons-le explicitement en multipliant par la quantité conjuguée :\n\n$$\\frac{\\sqrt{x}-1}{x-1}=\\frac{\\left(\\sqrt{x}-1\\right)\\left(\\sqrt{x}+1\\right)}{(x-1)\\left(\\sqrt{x}+1\\right)}=\\frac{x-1}{(x-1)\\left(\\sqrt{x}+1\\right)}=\\frac{1}{\\sqrt{x}+1}\\xrightarrow[x\\to1^{+}]{}\\frac{1}{2}.$$\n\nL'égalité des deux limites impose\n\n$$2a=\\frac{1}{2},\\qquad\\text{soit}\\qquad a=\\frac{1}{4}.\\qquad (2)$$\n\n**Conclusion.** De (2) puis (1) : $a=\\dfrac{1}{4}$ et $b=1-\\dfrac{1}{4}=\\dfrac{3}{4}$.\n\n**Vérification.** Avec ces valeurs, $f(x)=\\frac{x^{2}}{4}+\\frac{3}{4}$ pour $x<1$ : en 1 cela donne $\\frac14+\\frac34=1=\\sqrt1$ (continuité), et la dérivée à gauche vaut $\\frac{2x}{4}=\\frac{x}{2}$, qui vaut $\\frac12$ en 1, c'est-à-dire le nombre dérivé de $\\sqrt{x}$ en 1. Les deux conditions sont bien satisfaites."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Sur les intervalles ouverts, invoque les théorèmes généraux ; toute la difficulté est concentrée au point de raccordement.",
+        "Continuité : trois nombres à comparer, la limite à gauche, la limite à droite et la valeur de la fonction. Pas deux.",
+        "Dérivabilité : deux limites de taux d'accroissement, qui doivent exister, être finies et égales. Le taux d'accroissement ne suppose rien et ne se discute pas.",
+        "Continuité et dérivabilité ne sont pas la même chose : $x\\mapsto|x|$ est continue en 0 sans y être dérivable. En revanche, pas de dérivabilité sans continuité.",
+        "Avant toute limite faisant intervenir $e^{1/x}$, regarde le signe de $x$ : c'est lui qui décide entre 0 et $+\\infty$.",
+        "Au BAC série C, ce type de question ouvre presque toujours un problème d'étude de fonction : la suite (variations, branches infinies, tracé) en dépend entièrement. Traite-la avec soin, les points sont nombreux et faciles à sécuriser."
+      ]
+    }
+  ]
+}

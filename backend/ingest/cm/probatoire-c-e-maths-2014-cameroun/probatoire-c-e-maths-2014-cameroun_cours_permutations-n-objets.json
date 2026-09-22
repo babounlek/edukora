@@ -1,0 +1,160 @@
+{
+ "cours_id": "cours-permutations-n-objets-1ere-ce",
+ "meta": {
+  "titre": "Dénombrer les permutations de n objets distincts",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Dénombrement",
+  "duree_estimee_min": 25,
+  "tags": ["permutation", "factorielle", "principe multiplicatif", "dénombrement", "ordre"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "22",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex2-q3a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "De combien de façons peut-on ranger cinq livres sur une étagère, servir cinq plats dans un repas, visiter cinq escales d'un circuit ? La réponse est la même dans les trois cas, et elle croît à une vitesse déconcertante : cinq objets donnent $120$ ordres possibles, dix en donnent plus de trois millions et demi. Compter ces arrangements complets s'appelle dénombrer les permutations, et tout tient dans une seule idée : à chaque étape, il reste un choix de moins."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître le principe multiplicatif : un choix en $p$ façons suivi d'un choix en $q$ façons donne $p \\times q$ possibilités",
+    "Savoir ce qu'est une factorielle",
+    "Distinguer une situation où l'ordre compte d'une situation où il ne compte pas"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Ordonner tous les objets : la factorielle",
+   "contenu_markdown": "**Définition.** Une **permutation** de $n$ objets distincts est un rangement de ces $n$ objets dans un certain ordre, chacun étant utilisé une fois et une seule.\n\n**Résultat.** Le nombre de permutations de $n$ objets distincts est\n\n$$n! = n \\times (n-1) \\times (n-2) \\times \\cdots \\times 2 \\times 1$$\n\n**Démonstration par le principe multiplicatif.** On construit le rangement position par position.\n\n- Pour la première position : $n$ objets disponibles, donc $n$ choix.\n- Pour la deuxième : l'objet déjà placé n'est plus disponible, il reste $n-1$ choix.\n- Pour la troisième : $n-2$ choix.\n- Et ainsi de suite jusqu'à la dernière position, où il ne reste qu'un seul objet, donc $1$ choix.\n\nLes choix étant successifs et indépendants, on multiplie :\n\n$$n \\times (n-1) \\times \\cdots \\times 1 = n!$$\n\n**Comment reconnaître la situation.** Trois indices, qui doivent être réunis :\n\n1. l'**ordre compte** : deux rangements des mêmes objets dans un ordre différent sont deux résultats différents ;\n2. il n'y a **pas de répétition** : chaque objet sert une fois ;\n3. on utilise **tous** les objets, pas seulement une partie.\n\nSi le troisième point tombe, on n'a plus une permutation mais un **arrangement** de $p$ objets parmi $n$, dénombré par $A_n^p = \\dfrac{n!}{(n-p)!}$. Si c'est le premier qui tombe, on a une **combinaison**.\n\n**Valeurs à connaître.**\n\n| $n$ | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ |\n|---|---|---|---|---|---|---|---|\n| $n!$ | $1$ | $2$ | $6$ | $24$ | $120$ | $720$ | $5040$ |\n\n**Convention.** On pose $0! = 1$, ce qui rend cohérentes les formules d'arrangements et de combinaisons.",
+   "formule_principale": "n! = n \\times (n-1) \\times \\cdots \\times 2 \\times 1",
+   "variantes": [
+    {
+     "nom": "Permutation vue comme un arrangement complet",
+     "quand_utiliser": "Quand on préfère une formule unique pour les arrangements et les permutations",
+     "contenu_markdown": "Une permutation de $n$ objets est exactement un arrangement de $n$ objets parmi $n$ :\n\n$$A_n^n = \\dfrac{n!}{(n-n)!} = \\dfrac{n!}{0!} = n!$$\n\nCette lecture évite de mémoriser deux formules distinctes : il suffit de retenir celle des arrangements et de constater que le cas $p = n$ redonne la factorielle. C'est aussi ce qui justifie la convention $0! = 1$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Un site touristique comporte $5$ escales distinctes nommées $A$, $B$, $C$, $D$ et $E$. Elles sont obligatoires pour tous les visiteurs, qui y passent une seule fois par escale. De combien de façons distinctes peut-on parcourir les $5$ escales ? (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Vérifier que l'ordre compte",
+     "justification": "Un parcours est décrit par la succession des escales visitées : commencer par $A$ puis aller en $B$ n'est pas le même circuit que l'inverse",
+     "resultat_markdown": "L'ordre intervient : on ne dénombre pas des ensembles mais des rangements"
+    },
+    {
+     "numero": 2,
+     "action": "Vérifier l'absence de répétition",
+     "justification": "L'énoncé précise que les visiteurs passent « une seule fois par escale »",
+     "resultat_markdown": "Chaque escale apparaît exactement une fois dans le parcours"
+    },
+    {
+     "numero": 3,
+     "action": "Vérifier que toutes les escales sont utilisées",
+     "justification": "L'énoncé précise qu'elles sont « obligatoires »",
+     "resultat_markdown": "Les $5$ escales figurent dans chaque parcours : il s'agit bien d'une permutation"
+    },
+    {
+     "numero": 4,
+     "action": "Dénombrer position par position",
+     "justification": "À chaque rang, on retire les escales déjà visitées du choix disponible",
+     "resultat_markdown": "$5$ choix pour la première escale, puis $4$, puis $3$, puis $2$, puis $1$"
+    },
+    {
+     "numero": 5,
+     "action": "Appliquer le principe multiplicatif",
+     "justification": "Les cinq choix sont successifs, on multiplie",
+     "resultat_markdown": "$5 \\times 4 \\times 3 \\times 2 \\times 1 = 5!$"
+    },
+    {
+     "numero": 6,
+     "action": "Calculer",
+     "justification": "On regroupe pour aller vite : $5 \\times 4 = 20$ et $3 \\times 2 \\times 1 = 6$",
+     "resultat_markdown": "$5! = 20 \\times 6 = 120$"
+    }
+   ],
+   "conclusion_markdown": "Il existe $120$ façons distinctes de parcourir les cinq escales. On vient de vérifier les trois conditions qui caractérisent une permutation avant d'appliquer la formule : c'est cette vérification, et non le calcul, qui constitue le vrai travail de la question."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Utiliser une combinaison au lieu d'une permutation",
+     "pourquoi_faux": "Une combinaison ignore l'ordre. Ici $\\binom{5}{5} = 1$, ce qui reviendrait à dire qu'il n'existe qu'un seul parcours : c'est absurde, puisque visiter $A$ puis $B$ diffère de visiter $B$ puis $A$.",
+     "correction_markdown": "Pose-toi la question avant tout calcul : deux résultats formés des mêmes éléments dans un ordre différent sont-ils distincts ? Si oui, l'ordre compte, et la combinaison est exclue."
+    },
+    {
+     "erreur_markdown": "Confondre $n!$ et $n^n$",
+     "pourquoi_faux": "$5^5 = 3125$ compte les parcours dans lesquels une escale peut être visitée plusieurs fois, ce que l'énoncé interdit explicitement. La puissance correspond aux tirages **avec remise**, la factorielle aux rangements sans répétition.",
+     "correction_markdown": "Le mot-clé est « une seule fois » : il exclut la répétition, donc la puissance. Repère-le et souligne-le dans l'énoncé."
+    },
+    {
+     "erreur_markdown": "Croire que $5!$ vaut $5 \\times 5 \\times 5 \\times 5 \\times 5$ ou $5 \\times 4$",
+     "pourquoi_faux": "La factorielle est le produit de **tous** les entiers de $1$ à $n$ : chaque facteur diminue d'une unité, et l'on descend jusqu'à $1$. S'arrêter à $5 \\times 4 = 20$ revient à ne remplir que deux positions sur cinq.",
+     "correction_markdown": "Écris le produit en entier la première fois : $5 \\times 4 \\times 3 \\times 2 \\times 1$. Compte les facteurs, il doit y en avoir exactement $n$."
+    },
+    {
+     "erreur_markdown": "Appliquer la formule sans vérifier qu'on utilise tous les objets",
+     "pourquoi_faux": "Si l'énoncé demandait de ne visiter que $3$ escales parmi les $5$, on aurait un arrangement $A_5^3 = 5 \\times 4 \\times 3 = 60$, et non $120$. La factorielle ne s'applique que si tous les objets sont rangés.",
+     "correction_markdown": "Compte les positions à remplir et compare-les au nombre d'objets disponibles. Égalité donne une permutation, inégalité donne un arrangement."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "De combien de façons peut-on ranger $6$ livres distincts côte à côte sur une étagère ?",
+     "solution_markdown": "**Analyse de la situation.**\n\n- L'ordre compte : deux rangements différents des mêmes livres donnent deux étagères différentes.\n- Pas de répétition : chaque livre occupe une seule place.\n- Tous les livres sont utilisés.\n\nIl s'agit donc d'une permutation de $6$ objets.\n\n**Dénombrement.**\n\n$$6! = 6 \\times 5 \\times 4 \\times 3 \\times 2 \\times 1$$\n\nCalcul par regroupements : $6 \\times 5 = 30$, $4 \\times 3 = 12$, $2 \\times 1 = 2$.\n\n$$6! = 30 \\times 12 \\times 2 = 30 \\times 24 = 720$$\n\n**Conclusion.** Il existe $720$ rangements possibles.\n\n**Contrôle.** On peut retrouver $6!$ à partir de $5! = 120$ : en effet $6! = 6 \\times 5! = 6 \\times 120 = 720$. Cette relation de récurrence est souvent le moyen le plus rapide de calculer une factorielle."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Un mot est formé des $5$ lettres $M$, $A$, $T$, $H$, $S$, chacune utilisée une fois. Combien d'anagrammes peut-on former ? Parmi elles, combien commencent par une voyelle ?",
+     "solution_markdown": "**Première question - toutes les anagrammes.**\n\nLes cinq lettres sont distinctes, l'ordre compte, chacune est utilisée une fois : c'est une permutation de $5$ objets.\n\n$$5! = 120$$\n\nIl existe $120$ anagrammes.\n\n**Seconde question - celles commençant par une voyelle.**\n\nParmi $M$, $A$, $T$, $H$, $S$, la seule voyelle est $A$.\n\n*Étape 1 - placer la première lettre.* Elle est imposée : ce doit être $A$. Il y a donc $1$ façon de remplir la première position.\n\n*Étape 2 - placer les quatre autres.* Les lettres $M$, $T$, $H$, $S$ se rangent librement sur les quatre positions restantes : c'est une permutation de $4$ objets.\n\n$$4! = 24$$\n\n*Étape 3 - principe multiplicatif.*\n\n$$1 \\times 24 = 24$$\n\n**Conclusion.** $24$ anagrammes commencent par une voyelle.\n\n**Contrôle par symétrie.** Chacune des cinq lettres occupe la première position dans le même nombre d'anagrammes, soit $\\dfrac{120}{5} = 24$. Comme il n'y a qu'une voyelle, on retrouve bien $24$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Cinq personnes, dont deux frères, doivent s'asseoir sur un banc de cinq places. Combien y a-t-il de dispositions dans lesquelles les deux frères sont assis côte à côte ? Combien dans lesquelles ils ne le sont pas ?",
+     "solution_markdown": "**Première question - les deux frères côte à côte.**\n\n*Idée.* On traite les deux frères comme un **bloc** unique, ce qui ramène le problème à ranger quatre objets : le bloc et les trois autres personnes.\n\n*Étape 1 - ranger les quatre objets.*\n\n$$4! = 24$$\n\n*Étape 2 - ordonner l'intérieur du bloc.* Les deux frères peuvent être disposés dans deux ordres différents à l'intérieur du bloc :\n\n$$2! = 2$$\n\n*Étape 3 - principe multiplicatif.*\n\n$$24 \\times 2 = 48$$\n\nIl y a $48$ dispositions où les deux frères sont voisins.\n\n**Seconde question - les deux frères séparés.**\n\n*Par le complémentaire.* Le nombre total de dispositions vaut $5! = 120$. On retranche celles où ils sont voisins :\n\n$$120 - 48 = 72$$\n\nIl y a $72$ dispositions où les deux frères ne sont pas côte à côte.\n\n**Contrôle par un décompte direct.**\n\nComptons les paires de places voisines sur un banc de cinq places : ce sont les paires $(1,2)$, $(2,3)$, $(3,4)$ et $(4,5)$, soit $4$ paires.\n\nPour chaque paire, les deux frères s'y placent de $2$ façons, et les trois autres personnes occupent les trois places restantes de $3! = 6$ façons :\n\n$$4 \\times 2 \\times 6 = 48$$\n\nOn retrouve bien $48$, ce qui valide la méthode du bloc.\n\n**Ce qu'il faut retenir.** La technique du bloc transforme une contrainte de voisinage en une permutation plus petite ; il ne faut jamais oublier de multiplier ensuite par les $2!$ arrangements internes du bloc. Et pour une contrainte de séparation, le passage par le complémentaire est presque toujours plus rapide qu'un décompte direct."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Une permutation range **tous** les objets, chacun une fois, dans un ordre qui compte : il y en a $n!$.",
+    "La formule vient du principe multiplicatif : $n$ choix, puis $n-1$, puis $n-2$, jusqu'à $1$.",
+    "Trois conditions à vérifier avant d'appliquer $n!$ : l'ordre compte, pas de répétition, tous les objets utilisés.",
+    "Si l'on n'utilise qu'une partie des objets, c'est un arrangement $A_n^p$ ; si l'ordre ne compte pas, une combinaison.",
+    "Ne confonds pas $n!$ avec $n^n$ : la puissance autorise les répétitions, la factorielle les interdit.",
+    "Retiens $5! = 120$ et $6! = 720$, et la relation $n! = n \\times (n-1)!$ qui permet de monter de proche en proche.",
+    "Pour une contrainte de voisinage, traite les objets concernés comme un bloc, sans oublier de multiplier par leurs arrangements internes.",
+    "Pour une contrainte de séparation, passe par le complémentaire : c'est presque toujours plus court."
+   ]
+  }
+ ]
+}

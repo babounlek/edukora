@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-algorithme-du-tri-par-selection-en-langage-c-tle-ti",
+  "meta": {
+    "titre": "Algorithme du tri par sélection en langage C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Tableaux et fonctions en langage C",
+    "duree_estimee_min": 30,
+    "tags": [
+      "langage C",
+      "tri par sélection",
+      "algorithme de tri",
+      "tableau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex3-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trier les notes de 50 élèves à la main reviendrait à repérer, à chaque étape, le plus petit nombre restant et à le mettre de côté. C'est exactement la logique du tri par sélection : un algorithme simple, systématiquement demandé au BAC TI parce qu'il illustre parfaitement la combinaison d'une boucle de recherche et d'un échange."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Manipulation d'un tableau par indice",
+        "Boucles for imbriquées",
+        "Échange de deux variables via une variable temporaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "À chaque position, placer le minimum restant",
+      "contenu_markdown": "Le tri par sélection parcourt le tableau position par position (indice `i` de 0 à n-2). Pour chaque position `i`, il recherche, parmi les cases `i` à `n-1` restantes, l'indice du plus petit élément (variable `indiceMin`), puis échange cet élément avec celui actuellement en position `i`. Après le passage `i`, les `i+1` premières cases du tableau contiennent définitivement les `i+1` plus petites valeurs, déjà triées dans l'ordre croissant. Sa complexité est de $O(n^2)$ comparaisons, quel que soit l'état initial du tableau.",
+      "formule_principale": "Pour i de 0 à n-2 : trouver indiceMin dans [i, n-1], puis échanger T[i] et T[indiceMin]",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire une fonction C qui trie par ordre croissant un tableau de taille N en utilisant l'algorithme du tri par sélection.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Boucle externe : fixer la position à définir",
+          "justification": "i s'arrête à n-2 : une fois les n-1 premières positions correctement placées, la dernière l'est automatiquement.",
+          "resultat_markdown": "`for (i = 0; i < n - 1; i++) { ... }`"
+        },
+        {
+          "numero": 2,
+          "action": "Boucle interne : rechercher l'indice du minimum restant",
+          "justification": "On compare uniquement la partie non encore triée, de i+1 à n-1 ; indiceMin part de i, la position candidate par défaut.",
+          "resultat_markdown": "`indiceMin = i; for (j = i+1; j < n; j++) if (T[j] < T[indiceMin]) indiceMin = j;`"
+        },
+        {
+          "numero": 3,
+          "action": "Échanger T[i] et T[indiceMin] si nécessaire",
+          "justification": "Un échange n'est utile que si le minimum trouvé n'est pas déjà en position i, mais reste correct même si on l'effectue systématiquement.",
+          "resultat_markdown": "`if (indiceMin != i) { temp = T[i]; T[i] = T[indiceMin]; T[indiceMin] = temp; }`"
+        }
+      ],
+      "conclusion_markdown": "Après les n-1 passages de la boucle externe, le tableau est entièrement trié par ordre croissant : chaque position i a reçu, l'une après l'autre, le minimum restant du tableau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Échanger dès qu'un élément plus petit que T[i] est trouvé, à l'intérieur même de la boucle de recherche.",
+          "pourquoi_faux": "Cela réalise potentiellement plusieurs échanges par passage au lieu d'un seul, et peut laisser passer un minimum encore plus petit découvert plus loin dans le même parcours : ce n'est plus un tri par sélection correct.",
+          "correction_markdown": "Toujours séparer complètement la recherche du minimum (qui ne fait que mettre à jour indiceMin) de l'échange (qui n'intervient qu'une fois la recherche terminée sur tout l'intervalle)."
+        },
+        {
+          "erreur_markdown": "Comparer les valeurs (`if (T[j] < T[i])`) au lieu de comparer par rapport à `T[indiceMin]`.",
+          "pourquoi_faux": "Comparer systématiquement à `T[i]`, qui ne change jamais pendant la boucle interne, empêche de repérer un minimum plus petit qu'un minimum déjà trouvé entre i+1 et j-1.",
+          "correction_markdown": "Toujours comparer à `T[indiceMin]`, qui se met à jour au fil de la recherche, jamais à `T[i]` fixe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dérouler à la main le tri par sélection sur le tableau [5, 2, 8, 1] : donner l'état du tableau après chaque passage de la boucle externe.",
+          "solution_markdown": "Passage i=0 : minimum de [5,2,8,1] est 1 (indice 3), échange avec l'indice 0 -> [1, 2, 8, 5].\nPassage i=1 : minimum de [2,8,5] (indices 1 à 3) est 2, déjà en position -> [1, 2, 8, 5].\nPassage i=2 : minimum de [8,5] (indices 2 à 3) est 5 (indice 3), échange avec l'indice 2 -> [1, 2, 5, 8].\nTableau trié : [1, 2, 5, 8]."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Adapter la fonction triSelection du cours pour trier le tableau par ordre DÉCROISSANT plutôt que croissant.",
+          "solution_markdown": "```c\nvoid triSelectionDecroissant(int T[], int n) {\n    int i, j, indiceMax, temp;\n    for (i = 0; i < n - 1; i++) {\n        indiceMax = i;\n        for (j = i + 1; j < n; j++) {\n            if (T[j] > T[indiceMax]) {\n                indiceMax = j;\n            }\n        }\n        if (indiceMax != i) {\n            temp = T[i];\n            T[i] = T[indiceMax];\n            T[indiceMax] = temp;\n        }\n    }\n}\n```\nIl suffit d'inverser le sens de la comparaison (`>` au lieu de `<`) pour rechercher le maximum restant plutôt que le minimum : le reste de la structure de l'algorithme est strictement identique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le tri par sélection effectue toujours le même nombre de comparaisons quel que soit l'état initial du tableau (trié, inversé, aléatoire). Justifier cette affirmation, puis expliquer en quoi cela le distingue du tri à bulles optimisé (qui peut s'arrêter plus tôt sur un tableau déjà trié).",
+          "solution_markdown": "La boucle interne du tri par sélection parcourt systématiquement tout l'intervalle [i+1, n-1] pour trouver le minimum, quel que soit son contenu : aucune condition d'arrêt anticipé n'existe dans cette recherche, contrairement à d'autres algorithmes. Le nombre total de comparaisons est donc toujours (n-1) + (n-2) + ... + 1 = n(n-1)/2, soit $O(n^2)$, que le tableau de départ soit déjà trié ou totalement désordonné. Un tri à bulles optimisé, en revanche, intègre un indicateur qui détecte l'absence d'échange lors d'un passage complet : sur un tableau déjà trié, un seul passage suffit à le confirmer, et l'algorithme s'arrête immédiatement en $O(n)$ comparaisons, un avantage que le tri par sélection ne peut jamais offrir de par sa structure."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le tri par sélection place, à chaque passage, le minimum restant à sa position définitive.",
+        "La recherche du minimum (mise à jour de indiceMin) et l'échange sont deux étapes strictement séparées, jamais mélangées.",
+        "La comparaison se fait toujours par rapport à T[indiceMin], jamais par rapport à T[i] qui reste fixe pendant la recherche.",
+        "Sa complexité en O(n²) est constante quel que soit l'état initial du tableau : c'est un algorithme simple à écrire, mais pas le plus efficace sur un grand tableau."
+      ]
+    }
+  ]
+}

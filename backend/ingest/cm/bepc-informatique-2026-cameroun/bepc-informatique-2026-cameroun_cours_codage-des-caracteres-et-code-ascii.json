@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-codage-des-caracteres-et-code-ascii-3e",
+  "meta": {
+    "titre": "Codage des caractères et code ASCII",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Codage de l'information",
+    "duree_estimee_min": 30,
+    "tags": [
+      "code ASCII",
+      "codage des caractères",
+      "bit",
+      "octet",
+      "puissances de 2",
+      "Unicode"
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": null,
+      "module_numero": "301",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2026-cameroun",
+    "epreuve_titre": "BEPC Cameroun - Épreuve théorique d'informatique - Session 2026",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2026-cameroun-ex2-q3-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-informatique-2026-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu tapes la lettre A au clavier, elle apparaît à l'écran. Entre les deux, l'ordinateur n'a jamais vu de lettre : il a stocké le nombre 65, écrit 1000001 en binaire. Tout texte, tout message, tout nom de fichier n'est qu'une suite de nombres déguisés. Le code qui organise ce déguisement s'appelle ASCII, et savoir comment il fonctionne explique aussi bien les caractères bizarres qui apparaissent parfois dans un fichier mal ouvert que la taille exacte d'un document texte."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un bit et connaître le système binaire (chiffres 0 et 1)",
+        "Savoir calculer une puissance de 2 : $2^7$, $2^8$",
+        "Savoir convertir un nombre décimal en binaire par les puissances de 2 successives"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le code ASCII",
+      "contenu_markdown": "**Le principe du codage**\n\nUn ordinateur ne stocke que des 0 et des 1. Pour représenter un caractère, on décide donc d'une convention : à chaque caractère on associe un nombre, et c'est ce nombre, écrit en binaire, qui est réellement enregistré. Une telle convention s'appelle un **code**.\n\n**La règle décisive du nombre de bits**\n\n> Avec $n$ bits, on écrit $2^n$ combinaisons différentes, donc on peut coder au plus $2^n$ caractères distincts.\n\nC'est cette règle qui permet d'identifier un code à partir du nombre de bits annoncé par l'énoncé.\n\n| Nombre de bits | Combinaisons | Code correspondant |\n|---|---|---|\n| 7 | $2^7 = 128$ | ASCII standard |\n| 8 | $2^8 = 256$ | ASCII étendu (avec les lettres accentuées) |\n| 16 et plus | $2^{16} = 65\\,536$ et au-delà | Unicode (tous les alphabets du monde) |\n\n**Le code ASCII**\n\nASCII est le sigle de *American Standard Code for Information Interchange*, que l'on traduit par « code américain normalisé pour l'échange d'informations ». Il code sur **7 bits** et associe donc à chacun des nombres de 0 à 127 un caractère et un seul : lettres majuscules et minuscules, chiffres, signes de ponctuation, caractères de commande.\n\nQuelques codes à connaître :\n\n| Caractère | Code décimal | Code binaire sur 7 bits |\n|---|---|---|\n| espace | 32 | 0100000 |\n| `0` | 48 | 0110000 |\n| `A` | 65 | 1000001 |\n| `B` | 66 | 1000010 |\n| `Z` | 90 | 1011010 |\n| `a` | 97 | 1100001 |\n\nDeux régularités très utiles :\n\n- les lettres se suivent dans l'ordre alphabétique, donc `C` vaut $65 + 2 = 67$ ;\n- une minuscule vaut sa majuscule augmentée de 32, donc `b` vaut $66 + 32 = 98$.\n\n**Le codage d'une chaîne de caractères**\n\nUne chaîne est codée en mettant bout à bout les codes de ses caractères successifs, dans l'ordre. `BEP` devient 66, 69, 80.",
+      "formule_principale": "\\text{Nombre de caractères codables sur } n \\text{ bits} = 2^n",
+      "variantes": [
+        {
+          "nom": "Retrouver le code d'une lettre sans table",
+          "quand_utiliser": "En examen, quand la table ASCII n'est pas fournie et qu'on demande le code d'une lettre précise",
+          "contenu_markdown": "Mémorise trois ancres seulement : `A` vaut 65, `a` vaut 97, `0` vaut 48. Toutes les autres valeurs se déduisent par comptage dans l'alphabet. Pour `M`, treizième lettre : $65 + 12 = 77$, en comptant douze pas depuis `A` qui est la première. Pour `m` : $97 + 12 = 109$, ou plus simplement $77 + 32 = 109$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Question tirée de l'épreuve du BEPC 2026 : « Déterminer le code utilisé en informatique pour représenter les caractères, les chaînes de caractères et les nombres sur 7 bits. » (1pt)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler l'indice décisif de l'énoncé",
+          "justification": "Plusieurs codes servent à représenter des caractères. Un seul élément permet de trancher : la mention « sur 7 bits ». C'est une consigne, pas un détail de décor.",
+          "resultat_markdown": "Indice retenu : le codage se fait sur 7 bits."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le nombre de caractères que 7 bits permettent de coder",
+          "justification": "La règle $2^n$ transforme le nombre de bits en nombre de symboles, ce qui identifie le code.",
+          "resultat_markdown": "$2^7 = 2 \\times 2 \\times 2 \\times 2 \\times 2 \\times 2 \\times 2 = 128$ caractères."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer le code correspondant à 128 caractères",
+          "justification": "Au programme de 3e, le seul code sur 7 bits est le code ASCII standard.",
+          "resultat_markdown": "Il s'agit du code **ASCII**, sigle de *American Standard Code for Information Interchange*."
+        },
+        {
+          "numero": 4,
+          "action": "Écarter explicitement Unicode",
+          "justification": "Unicode est l'autre réponse que les élèves proposent. Il travaille sur 16 bits et plus, donc sur bien davantage que 128 caractères : il est incompatible avec l'énoncé.",
+          "resultat_markdown": "$2^{16} = 65\\,536 \\neq 128$ : Unicode ne convient pas."
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier la cohérence sur un exemple",
+          "justification": "Un code valide doit produire des valeurs comprises entre 0 et 127 pour tous les caractères usuels.",
+          "resultat_markdown": "`A` vaut 65 et `a` vaut 97 : les deux sont bien inférieurs à 128. Vérification en binaire : $65 = 64 + 1 = 2^6 + 2^0$, soit $1000001$ sur 7 bits."
+        }
+      ],
+      "conclusion_markdown": "La réponse est le code ASCII, et elle a été obtenue par un calcul, pas par un souvenir : 7 bits donnent 128 combinaisons, ce qui correspond exactement à l'étendue du code ASCII standard."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « Unicode » à une question portant sur un codage à 7 bits.",
+          "pourquoi_faux": "Unicode existe et sert bien à coder des caractères, mais il utilise 16 bits ou davantage afin de couvrir tous les alphabets du monde. La mention « 7 bits » de l'énoncé l'exclut formellement.",
+          "correction_markdown": "Lire le nombre de bits comme une consigne : 7 bits mènent à ASCII, 8 bits à l'ASCII étendu, 16 bits et plus à Unicode."
+        },
+        {
+          "erreur_markdown": "Calculer $2 \\times 7 = 14$ au lieu de $2^7 = 128$.",
+          "pourquoi_faux": "Chaque bit ajouté double le nombre de combinaisons, il ne l'augmente pas de deux. Avec 1 bit on a 2 possibilités, avec 2 bits on en a 4, avec 3 bits 8 : la progression est multiplicative.",
+          "correction_markdown": "Poser le produit en entier au brouillon la première fois : $2\\times2\\times2\\times2\\times2\\times2\\times2 = 128$."
+        },
+        {
+          "erreur_markdown": "Croire que le caractère `5` est stocké avec la valeur 5.",
+          "pourquoi_faux": "Le caractère `5` est un symbole d'écriture, pas une quantité. Son code ASCII est 53. C'est pourquoi un tableur refuse d'additionner une colonne quand les nombres y ont été saisis comme du texte.",
+          "correction_markdown": "Distinguer le chiffre-symbole (code ASCII 48 pour `0`, donc 53 pour `5`) du nombre-valeur utilisé dans un calcul."
+        },
+        {
+          "erreur_markdown": "Confondre l'écart majuscule/minuscule avec un écart de 26.",
+          "pourquoi_faux": "L'alphabet compte 26 lettres, mais le décalage entre `A` (65) et `a` (97) vaut 32, car la table ASCII intercale six signes de ponctuation entre la fin des majuscules et le début des minuscules.",
+          "correction_markdown": "Retenir le nombre 32 comme écart majuscule/minuscule, et le vérifier une fois : $97 - 65 = 32$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sachant que le code ASCII de `A` est 65, donner les codes décimaux des caractères `C`, `E` et `a`, puis écrire le code de `C` en binaire sur 7 bits.",
+          "solution_markdown": "**Codes décimaux**\n\nLes lettres majuscules se suivent dans l'ordre alphabétique à partir de `A` = 65.\n\n- `C` est la troisième lettre : on avance de 2 rangs depuis `A`, donc $65 + 2 = 67$.\n- `E` est la cinquième lettre : $65 + 4 = 69$.\n- `a` est la minuscule de `A`, et l'écart majuscule/minuscule vaut 32 : $65 + 32 = 97$.\n\n**Code binaire de `C` sur 7 bits**\n\nOn décompose 67 en somme de puissances de 2, de la plus grande à la plus petite :\n\n$67 = 64 + 3$\n$3 = 2 + 1$\n\nDonc $67 = 64 + 2 + 1 = 2^6 + 2^1 + 2^0$.\n\nOn place un 1 aux rangs 6, 1 et 0, un 0 partout ailleurs, en écrivant les rangs de 6 à 0 :\n\n| Rang | 6 | 5 | 4 | 3 | 2 | 1 | 0 |\n|---|---|---|---|---|---|---|---|\n| Valeur | 64 | 32 | 16 | 8 | 4 | 2 | 1 |\n| Bit | 1 | 0 | 0 | 0 | 0 | 1 | 1 |\n\nLe code binaire de `C` est donc **1000011**.\n\n**Vérification** : $64 + 2 + 1 = 67$. Le résultat est confirmé."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un texte contient 500 caractères, codés en ASCII sur un octet chacun. Calculer sa taille en octets, puis en kilo-octets. Préciser la convention utilisée.",
+          "solution_markdown": "**Taille en octets**\n\nChaque caractère occupe un octet, et le texte compte 500 caractères :\n\n$$500 \\times 1 = 500 \\text{ octets}$$\n\n**Taille en kilo-octets**\n\nDeux conventions coexistent et donnent deux résultats différents. Il faut donc dire laquelle on utilise.\n\n*Convention scolaire (binaire), la plus courante en classe* : $1\\ \\text{Ko} = 2^{10} = 1024$ octets.\n\n$$\\frac{500}{1024} \\approx 0{,}49 \\text{ Ko}$$\n\n*Convention du Système international* : $1\\ \\text{ko} = 1000$ octets.\n\n$$\\frac{500}{1000} = 0{,}5 \\text{ ko}$$\n\n**Réponse rédigée**\n\nLe texte occupe 500 octets, soit environ 0,49 Ko avec la convention binaire retenue en classe ($1\\ \\text{Ko} = 1024\\ \\text{o}$), ou exactement 0,5 ko avec la convention du Système international ($1\\ \\text{ko} = 1000\\ \\text{o}$).\n\n**Remarque importante**\n\nLe code ASCII standard n'utilise que 7 bits, mais en pratique chaque caractère est stocké sur un octet complet, soit 8 bits, le huitième restant inutilisé ou servant à l'extension. C'est pourquoi l'énoncé précise « sur un octet chacun » : sans cette précision, le calcul aurait dû partir de 7 bits par caractère."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi le code ASCII standard ne permet pas d'écrire correctement le mot « élève », et indiquer quels codes permettent de le faire.",
+          "solution_markdown": "**Le problème posé par le mot « élève »**\n\nCe mot contient deux caractères accentués : `é` et `è`.\n\n**Pourquoi ASCII standard ne suffit pas**\n\nLe code ASCII standard travaille sur 7 bits, donc dispose de $2^7 = 128$ positions numérotées de 0 à 127. Ces 128 positions sont entièrement occupées par les 26 lettres majuscules, les 26 minuscules, les 10 chiffres, les signes de ponctuation courants et 33 caractères de commande.\n\nAucune position ne reste libre pour les lettres accentuées. Ce n'est pas un oubli : ASCII a été conçu aux États-Unis pour l'anglais, langue qui n'utilise pas d'accents.\n\n**Première solution : l'ASCII étendu**\n\nEn passant à 8 bits, on double le nombre de positions :\n\n$$2^8 = 256$$\n\nLes 128 positions de 0 à 127 restent identiques à l'ASCII standard, ce qui assure la compatibilité, et les 128 positions supplémentaires (128 à 255) accueillent les lettres accentuées des langues européennes. Le `é` y porte par exemple le code 233 dans la norme ISO 8859-1.\n\nLimite de cette solution : 128 places supplémentaires ne suffisent pas pour toutes les langues du monde. Plusieurs variantes incompatibles de l'ASCII étendu ont donc coexisté, et c'est ce qui provoque les caractères bizarres que l'on voit parfois dans un fichier ouvert avec la mauvaise variante.\n\n**Seconde solution : Unicode**\n\nUnicode utilise 16 bits et davantage, soit au minimum :\n\n$$2^{16} = 65\\,536 \\text{ positions}$$\n\nIl couvre ainsi l'alphabet latin accentué, mais aussi le grec, l'arabe, le chinois et les alphabets africains. C'est la norme employée aujourd'hui par les pages web et les systèmes d'exploitation.\n\n**Conclusion**\n\nÉcrire « élève » exige un code disposant de plus de 128 positions : l'ASCII étendu sur 8 bits y parvient pour le français, Unicode y parvient pour toutes les langues à la fois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le nombre de bits commande tout : avec $n$ bits on code $2^n$ caractères. Cette formule identifie le code à elle seule.",
+        "7 bits, 128 caractères, ASCII : retiens ces trois éléments comme un bloc indissociable.",
+        "Trois ancres suffisent pour reconstruire la table : `A` = 65, `a` = 97, `0` = 48. Le reste se déduit par comptage.",
+        "L'écart entre une majuscule et sa minuscule vaut 32, jamais 26.",
+        "Le caractère `5` n'est pas le nombre 5 : son code ASCII est 53. C'est toute la différence entre un texte et une valeur calculable.",
+        "Au BEPC, la question se présente presque toujours ainsi : un nombre de bits est donné, le code est à nommer. Calcule $2^n$ avant de répondre, tu ne te tromperas pas."
+      ]
+    }
+  ]
+}

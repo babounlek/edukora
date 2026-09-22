@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-cycles-tours-vilebrequin-bepc",
+  "meta": {
+    "titre": "Relier le nombre de cycles et le nombre de tours de vilebrequin",
+    "matiere": "Physique-Chimie-Technologie",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Technologie - moteurs thermiques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "moteur à quatre temps",
+      "cycle",
+      "vilebrequin",
+      "point mort",
+      "deux temps",
+      "régime moteur"
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": "",
+      "module_numero": "2",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-pct-2024-cameroun",
+    "epreuve_titre": "BEPC Physique-Chimie-Technologie 2024 Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-pct-2024-cameroun-ex2-q5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un moteur qui tourne à 3000 tours par minute n'explose pas 3000 fois par minute dans chaque cylindre. Il le fait exactement deux fois moins. Ce facteur 2, souvent oublié, sépare une réponse juste d'une réponse fausse sur toutes les questions de régime moteur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les quatre temps du cycle et leur ordre",
+        "Savoir ce que sont le point mort haut et le point mort bas",
+        "Savoir que la bielle transforme le va-et-vient du piston en rotation du vilebrequin"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un temps vaut un demi-tour",
+      "contenu_markdown": "Le piston se déplace entre deux positions extrêmes, le **point mort haut** et le **point mort bas**. Chaque aller ou retour entre ces deux points constitue un **temps**, et correspond à un **demi-tour** de vilebrequin.\n\n**Pour un moteur à quatre temps :**\n\n$$1\\ \\text{cycle} = 4\\ \\text{temps} = 4 \\times \\frac{1}{2}\\ \\text{tour} = \\boxed{2\\ \\text{tours de vilebrequin}}$$\n\n**Pour un moteur à deux temps :**\n\n$$1\\ \\text{cycle} = 2\\ \\text{temps} = 1\\ \\text{tour de vilebrequin}$$\n\n**Les deux relations à connaître, dans les deux sens :**\n\n$$n_{tours} = 2 \\times n_{cycles} \\qquad ; \\qquad n_{cycles} = \\frac{n_{tours}}{2}$$\n\n**Application au régime moteur.** Un moteur à quatre temps tournant à $N$ tours par minute accomplit $\\dfrac{N}{2}$ cycles par minute dans chaque cylindre. À 3000 tr/min, cela fait 1500 cycles par minute, soit **25 explosions par seconde** par cylindre.\n\n**Le lien avec l'arbre à cames.** Chaque soupape ne s'ouvre qu'une fois par cycle, donc une fois tous les deux tours de vilebrequin. C'est pourquoi l'arbre à cames tourne **deux fois moins vite** que le vilebrequin. Les deux faits découlent de la même règle.",
+      "formule_principale": "n_{tours} = 2 \\times n_{cycles} \\quad \\text{(moteur à quatre temps)}",
+      "variantes": [
+        {
+          "nom": "Compter les explosions d'un moteur à plusieurs cylindres",
+          "quand_utiliser": "Quand l'énoncé demande le nombre total d'explosions et non celui d'un seul cylindre",
+          "contenu_markdown": "Chaque cylindre accomplit son propre cycle, décalé par rapport aux autres. Le nombre total d'explosions par minute vaut donc $\\dfrac{N}{2} \\times \\text{nombre de cylindres}$. Un quatre cylindres à 3000 tr/min produit $1500 \\times 4 = 6000$ explosions par minute, soit une tous les demi-tours de vilebrequin : c'est ce qui rend sa rotation bien plus régulière que celle d'un monocylindre."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer le nombre de tours du vilebrequin après 9 cycles complets de fonctionnement d'un moteur à quatre temps.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décomposer un cycle en temps",
+          "justification": "Le cycle à quatre temps comporte l'admission, la compression, la combustion-détente et l'échappement.",
+          "resultat_markdown": "1 cycle = 4 temps."
+        },
+        {
+          "numero": 2,
+          "action": "Relier un temps à une fraction de tour",
+          "justification": "Chaque temps déplace le piston d'un point mort à l'autre, ce qui correspond à un demi-tour de vilebrequin.",
+          "resultat_markdown": "1 temps = $\\dfrac{1}{2}$ tour de vilebrequin."
+        },
+        {
+          "numero": 3,
+          "action": "En déduire le nombre de tours par cycle",
+          "justification": "On multiplie le nombre de temps par la fraction de tour correspondante.",
+          "resultat_markdown": "$$1\\ \\text{cycle} = 4 \\times \\frac{1}{2} = 2\\ \\text{tours}$$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer aux 9 cycles",
+          "justification": "Chaque cycle demandant deux tours, le total se calcule par simple multiplication.",
+          "resultat_markdown": "$$n_{tours} = 9 \\times 2 = 18\\ \\text{tours}$$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier par le raisonnement inverse",
+          "justification": "On repart du résultat pour retrouver le nombre de cycles annoncé.",
+          "resultat_markdown": "18 tours font 36 demi-tours, soit 36 temps ; $\\dfrac{36}{4} = 9$ cycles $\\checkmark$"
+        }
+      ],
+      "conclusion_markdown": "Après 9 cycles complets, le vilebrequin d'un moteur à quatre temps a effectué 18 tours."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre 9 tours",
+          "pourquoi_faux": "C'est la réponse d'un moteur à **deux** temps, dont le cycle ne demande qu'un seul tour. Sur un quatre temps, il en faut deux par cycle.",
+          "correction_markdown": "Repère le type de moteur dans l'énoncé avant de calculer : quatre temps donne le facteur 2, deux temps le facteur 1."
+        },
+        {
+          "erreur_markdown": "Répondre 36 tours",
+          "pourquoi_faux": "C'est confondre les **temps** et les **tours** : 9 cycles font bien 36 temps, mais chaque temps ne vaut qu'un demi-tour.",
+          "correction_markdown": "Retiens la chaîne complète : cycles, puis temps, puis demi-tours, puis tours. Ne saute aucun maillon."
+        },
+        {
+          "erreur_markdown": "Donner le résultat sans justifier le facteur 2",
+          "pourquoi_faux": "Le produit $9 \\times 2$ ne prouve rien par lui-même. Le barème crédite la ligne qui établit qu'un cycle vaut deux tours.",
+          "correction_markdown": "Écris explicitement « 1 temps = 1/2 tour, donc 4 temps = 2 tours » avant de multiplier."
+        },
+        {
+          "erreur_markdown": "Confondre régime moteur et nombre de cycles",
+          "pourquoi_faux": "Un moteur à 3000 tr/min n'accomplit pas 3000 cycles par minute mais 1500. La vitesse affichée est celle du **vilebrequin**, pas celle du cycle.",
+          "correction_markdown": "Divise toujours le régime par 2 pour obtenir le nombre de cycles sur un moteur à quatre temps."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur à quatre temps effectue 25 cycles. Combien de tours son vilebrequin a-t-il accomplis ?",
+          "solution_markdown": "**Relation.** Un cycle de moteur à quatre temps demande 2 tours de vilebrequin.\n\n**Application.**\n\n$$n_{tours} = 25 \\times 2 = 50\\ \\text{tours}$$\n\n**Vérification.** 50 tours font 100 demi-tours, soit 100 temps ; $\\dfrac{100}{4} = 25$ cycles $\\checkmark$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur à quatre temps tourne à 2400 tr/min. Calculer le nombre de cycles accomplis par chaque cylindre en une minute, puis en une seconde.",
+          "solution_markdown": "**Étape 1 - relier tours et cycles.** Un cycle demande 2 tours de vilebrequin :\n\n$$n_{cycles/min} = \\frac{2400}{2} = 1200\\ \\text{cycles par minute}$$\n\n**Étape 2 - ramener à la seconde.** Une minute compte 60 secondes :\n\n$$n_{cycles/s} = \\frac{1200}{60} = 20\\ \\text{cycles par seconde}$$\n\n**Conclusion.** Chaque cylindre accomplit 1200 cycles par minute, soit 20 par seconde : il y a donc 20 explosions par seconde dans chaque cylindre."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un moteur Diesel à six cylindres, à quatre temps, tourne à 1800 tr/min. Calculer le nombre de cycles par minute dans un cylindre, le nombre total d'explosions par minute pour le moteur entier, l'intervalle de temps entre deux explosions successives, et la vitesse de rotation de l'arbre à cames. Expliquer enfin en quoi ces résultats rendent la rotation plus régulière que celle d'un monocylindre.",
+          "solution_markdown": "**Étape 1 - cycles par minute dans un cylindre.**\n\n$$n_{cycles} = \\frac{1800}{2} = 900\\ \\text{cycles par minute}$$\n\n**Étape 2 - nombre total d'explosions par minute.** Chaque cylindre produit une explosion par cycle, et le moteur en compte six :\n\n$$n_{explosions} = 900 \\times 6 = 5400\\ \\text{explosions par minute}$$\n\n**Étape 3 - intervalle entre deux explosions.**\n\n$$\\Delta t = \\frac{60}{5400} \\approx 0,0111\\ \\text{s} \\approx 11\\ \\text{ms}$$\n\nUne explosion se produit donc environ toutes les 11 millisecondes quelque part dans le moteur.\n\n**Étape 4 - vitesse de l'arbre à cames.** Chaque soupape ne s'ouvre qu'une fois par cycle, soit une fois tous les deux tours de vilebrequin. L'arbre à cames tourne donc deux fois moins vite :\n\n$$N_{cames} = \\frac{1800}{2} = 900\\ \\text{tr/min}$$\n\n**Étape 5 - exprimer l'intervalle en degrés de vilebrequin.** Le cycle complet occupe 2 tours, soit 720° de vilebrequin. Six explosions s'y répartissent régulièrement :\n\n$$\\frac{720}{6} = 120°\\ \\text{entre deux explosions}$$\n\n**Étape 6 - comparer au monocylindre.**\n\n*Le monocylindre.* Il ne produit qu'une explosion tous les 720° de vilebrequin. Entre deux impulsions, le vilebrequin doit franchir trois temps résistants, admission, compression et échappement, sans recevoir aucune énergie. Il ralentit sensiblement, puis accélère brutalement à l'explosion suivante. Cette irrégularité impose un **volant d'inertie lourd**, qui emmagasine l'énergie de la détente pour la restituer pendant les temps résistants.\n\n*Le six cylindres.* Une explosion survient tous les 120°, soit tous les tiers de tour. Le couple ne retombe jamais bien longtemps, car un cylindre est toujours en train de pousser pendant que les autres franchissent leurs temps résistants. La rotation est donc naturellement bien plus régulière, et un volant **léger** suffit.\n\n**Conclusion.** Multiplier les cylindres revient à rapprocher les impulsions motrices. C'est ce qui explique la souplesse des moteurs à six cylindres et plus, et la vibration caractéristique des monocylindres. Tout découle de la même règle de départ : un cycle vaut deux tours de vilebrequin."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un temps de moteur vaut un **demi-tour** de vilebrequin : c'est la règle de base.",
+        "Un cycle de moteur à quatre temps vaut donc **deux tours** ; un cycle de deux temps n'en vaut qu'un.",
+        "$n_{tours} = 2 \\times n_{cycles}$, et inversement $n_{cycles} = \\dfrac{n_{tours}}{2}$.",
+        "Un moteur à 3000 tr/min n'accomplit que 1500 cycles par minute par cylindre. Divise toujours par 2.",
+        "L'arbre à cames tourne deux fois moins vite que le vilebrequin, pour la même raison.",
+        "Au BEPC, la question vaut 1 point. Justifie le facteur 2 avant de multiplier : c'est cette ligne qui est créditée."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-alter-table-tle-ti",
+  "meta": {
+    "titre": "Modifier la structure d'une table avec ALTER TABLE (ajout ou suppression de colonne)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL - Définition de données (LDD)",
+    "duree_estimee_min": 16,
+    "tags": [
+      "SQL",
+      "ALTER TABLE",
+      "DROP COLUMN",
+      "ADD COLUMN",
+      "langage de définition de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q8-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une table déjà créée, et déjà remplie de données, n'est pas figée pour toujours : les besoins d'une organisation évoluent, et sa structure doit parfois évoluer avec eux. ALTER TABLE permet de modifier cette structure sans devoir supprimer la table entière et perdre toutes les données déjà enregistrées."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une colonne (attribut) d'une table relationnelle.",
+        "Connaître la syntaxe de base de CREATE TABLE et le rôle des types de données."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une commande, plusieurs opérations possibles sur la structure",
+      "contenu_markdown": "L'instruction ALTER TABLE modifie la structure d'une table déjà créée, sans toucher à son nom ni à celui des autres colonnes. Associée à ADD COLUMN, elle ajoute une nouvelle colonne (avec son type) à toutes les lignes déjà existantes, qui reçoivent alors la valeur NULL par défaut sur cette nouvelle colonne tant qu'elle n'est pas explicitement renseignée. Associée à DROP COLUMN, elle supprime définitivement une colonne entière et l'ensemble des valeurs qu'elle contenait pour tous les tuples existants - une opération irréversible sans sauvegarde préalable. Il ne faut jamais confondre cette action sur la STRUCTURE de la table (ses colonnes) avec DELETE, qui agit sur ses LIGNES (ses tuples) : les deux commandes ne suppriment jamais la même chose.",
+      "formule_principale": "ALTER TABLE table ADD COLUMN colonne type;  |  ALTER TABLE table DROP COLUMN colonne;"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrivez la requête qui permet de supprimer la colonne Age de la table ENSEIGNANT.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la table concernée",
+          "justification": "ALTER TABLE porte toujours sur une table déjà existante, nommée explicitement.",
+          "resultat_markdown": "ALTER TABLE ENSEIGNANT"
+        },
+        {
+          "numero": 2,
+          "action": "Préciser l'opération de suppression de colonne",
+          "justification": "On veut retirer une colonne entière, jamais des lignes : c'est DROP COLUMN, pas DELETE.",
+          "resultat_markdown": "DROP COLUMN Age"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la requête complète",
+          "justification": "On respecte la syntaxe ALTER TABLE table DROP COLUMN colonne;",
+          "resultat_markdown": "```sql\nALTER TABLE ENSEIGNANT\nDROP COLUMN Age;\n```"
+        }
+      ],
+      "conclusion_markdown": "La table ENSEIGNANT conserve ses cinq autres colonnes et tous ses tuples ; seule la colonne Age, et les valeurs qu'elle contenait pour chaque enseignant, disparaît définitivement de la structure."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre DROP COLUMN avec DELETE, en écrivant DELETE COLUMN Age",
+          "pourquoi_faux": "DELETE et DROP COLUMN ne sont pas interchangeables : DELETE supprime des LIGNES d'après une condition WHERE, DROP COLUMN supprime une COLONNE entière pour TOUTES les lignes - ce sont deux dimensions différentes de la table.",
+          "correction_markdown": "Retiens l'association : supprimer des lignes → DELETE FROM ... WHERE ... ; supprimer une colonne → ALTER TABLE ... DROP COLUMN ..."
+        },
+        {
+          "erreur_markdown": "Ajouter un type de données à DROP COLUMN, comme DROP COLUMN Age INT",
+          "pourquoi_faux": "Un type n'a de sens qu'au moment de CRÉER ou d'AJOUTER une colonne, jamais au moment de la supprimer : le moteur SQL sait déjà quel type portait la colonne existante, il n'y a rien à préciser pour la retirer.",
+          "correction_markdown": "Réserve le type de données à CREATE TABLE et à ALTER TABLE ... ADD COLUMN ; jamais à DROP COLUMN, qui ne prend que le nom de la colonne à retirer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrivez la requête SQL qui supprime la colonne Statut de la table LIVRE.",
+          "solution_markdown": "```sql\nALTER TABLE LIVRE\nDROP COLUMN Statut;\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "L'établissement souhaite désormais enregistrer le numéro de téléphone de chaque enseignant. Écrivez la requête SQL qui ajoute une colonne Telephone (texte) à la table ENSEIGNANT déjà existante et déjà remplie de données.",
+          "solution_markdown": "```sql\nALTER TABLE ENSEIGNANT\nADD COLUMN Telephone VARCHAR(15);\n```\nCette requête ajoute la colonne à la structure de la table sans supprimer aucun enseignant déjà enregistré : chaque tuple existant reçoit automatiquement la valeur NULL sur cette nouvelle colonne, en attendant qu'elle soit renseignée individuellement, par exemple avec une série de requêtes UPDATE."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un administrateur hésite entre deux solutions pour retirer une information devenue inutile de la table PRODUIT : supprimer la colonne PrixUnitaire avec ALTER TABLE, ou supprimer tous les tuples de la table avec DELETE FROM PRODUIT, avant de la recréer avec CREATE TABLE sans cette colonne. Comparez les deux approches et expliquez pourquoi l'une est nettement préférable.",
+          "solution_markdown": "```sql\nALTER TABLE PRODUIT\nDROP COLUMN PrixUnitaire;\n```\nCette seule requête retire la colonne PrixUnitaire tout en conservant intacts tous les tuples déjà enregistrés (avec leurs autres colonnes intactes : CodeProduit, Designation, QuantiteStock). L'autre approche - supprimer tous les tuples puis recréer la table - est nettement moins avantageuse : DELETE FROM PRODUIT effacerait définitivement toutes les données existantes (codes produits, désignations, stocks), qu'il faudrait ensuite ressaisir intégralement une fois la nouvelle table créée, pour ne finalement retirer qu'une seule colonne. ALTER TABLE ... DROP COLUMN atteint exactement le même objectif structurel, sans jamais perdre la moindre donnée sur les colonnes qu'on souhaite conserver."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "ALTER TABLE modifie la structure d'une table déjà créée, sans la recréer ni perdre ses données existantes.",
+        "DROP COLUMN retire une colonne entière et toutes ses valeurs pour tous les tuples ; ADD COLUMN en ajoute une nouvelle, avec NULL par défaut sur les tuples existants.",
+        "Ne confonds jamais DROP COLUMN (structure, colonnes) avec DELETE (contenu, lignes) : les deux agissent sur des dimensions différentes de la table.",
+        "DROP COLUMN ne prend jamais de type de données en argument, contrairement à ADD COLUMN qui en exige un.",
+        "Au BAC TI, cette commande clôt souvent la partie bases de données d'un sujet : elle boucle le cycle complet CREATE, INSERT, UPDATE, DELETE, ALTER que tu dois savoir mobiliser dans n'importe quel ordre selon la question posée."
+      ]
+    }
+  ]
+}

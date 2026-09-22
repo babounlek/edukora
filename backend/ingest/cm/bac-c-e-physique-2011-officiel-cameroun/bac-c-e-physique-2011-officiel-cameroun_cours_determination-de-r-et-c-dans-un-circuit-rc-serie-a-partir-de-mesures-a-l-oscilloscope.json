@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-determination-r-c-circuit-serie-tle-c-e",
+  "meta": {
+    "titre": "Determination de R et C dans un circuit RC serie a partir de mesures a l'oscilloscope",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Electricite - regime sinusoidal force",
+    "duree_estimee_min": 25,
+    "tags": [
+      "circuit RC serie",
+      "impedance",
+      "loi d'Ohm en valeurs efficaces"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2011 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2011-officiel-cameroun-ex2-q2c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sans jamais ouvrir le boitier d'un circuit RC, on peut retrouver les valeurs de la resistance et de la capacite du condensateur : il suffit de mesurer, a l'oscilloscope et a l'amperemetre, les tensions efficaces aux bornes de chaque composant et l'intensite efficace du courant qui les traverse."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm pour un resistor en valeurs efficaces : U=RI",
+        "Impedance d'un condensateur en regime sinusoidal : Zc=1/(Cω)",
+        "Lecture d'amplitudes sur un oscillogramme et conversion en valeurs efficaces"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calcul de R et C a partir des tensions efficaces et du courant efficace",
+      "contenu_markdown": "Dans un circuit RC serie parcouru par un courant efficace $I$, la tension efficace aux bornes du resistor $U_R$ verifie la loi d'Ohm $U_R=RI$, d'ou $R=U_R/I$. La tension efficace aux bornes du condensateur $U_C$ verifie $U_C=Z_CI=\\dfrac{I}{C\\omega}$, d'ou $C=\\dfrac{I}{U_C\\omega}$ (avec $\\omega=2\\pi f$ la pulsation du signal).",
+      "formule_principale": "R = \\dfrac{U_R}{I} \\qquad C = \\dfrac{I}{U_C\\,\\omega}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit RC serie, alimente a $f=50\\ \\text{Hz}$, est parcouru par un courant efficace $I=200\\ \\text{mA}$. On lit sur l'oscilloscope une amplitude $U_{Rmax}=6\\ \\text{V}$ aux bornes de R et $U_{Cmax}=9\\ \\text{V}$ aux bornes de C. Calculer R et C.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir les amplitudes lues en valeurs efficaces",
+          "justification": "L'oscilloscope donne des amplitudes (valeurs maximales), la loi d'Ohm efficace utilise des valeurs efficaces",
+          "resultat_markdown": "$U_R = \\dfrac{U_{Rmax}}{\\sqrt2} = \\dfrac{6}{\\sqrt2} \\approx 4{,}24\\ \\text{V}$, $U_C = \\dfrac{U_{Cmax}}{\\sqrt2} = \\dfrac{9}{\\sqrt2} \\approx 6{,}36\\ \\text{V}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer R",
+          "justification": "Loi d'Ohm efficace pour un resistor",
+          "resultat_markdown": "$R = \\dfrac{U_R}{I} = \\dfrac{4{,}24}{0{,}2} \\approx 21{,}2\\ \\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer C",
+          "justification": "Impedance efficace du condensateur",
+          "resultat_markdown": "$\\omega = 2\\pi\\times50 \\approx 314\\ \\text{rad/s}$, $C = \\dfrac{I}{U_C\\omega} = \\dfrac{0{,}2}{6{,}36\\times314} \\approx \\dfrac{0{,}2}{1997} \\approx 1{,}0\\times10^{-4}\\ \\text{F} = 100\\ \\mu\\text{F}$"
+        }
+      ],
+      "conclusion_markdown": "On obtient une resistance et une capacite d'ordres de grandeur usuels de TP - un bon indicateur que les conversions amplitude-vers-efficace n'ont pas ete oubliees en cours de route."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement les amplitudes lues a l'oscilloscope dans la loi d'Ohm, sans les diviser par racine de 2",
+          "pourquoi_faux": "L'oscilloscope affiche des valeurs maximales (amplitudes), alors que la loi d'Ohm en courant/tension efficaces ($U=RI$) exige des valeurs efficaces $U=U_{max}/\\sqrt2$.",
+          "correction_markdown": "Toujours convertir systematiquement chaque amplitude lue en valeur efficace avant tout calcul de R ou C."
+        },
+        {
+          "erreur_markdown": "Oublier le facteur 2*pi en passant de la frequence f a la pulsation omega dans le calcul de C",
+          "pourquoi_faux": "L'impedance du condensateur s'exprime avec $\\omega=2\\pi f$, pas directement avec $f$ : omettre ce facteur fausse $C$ d'un rapport $2\\pi$.",
+          "correction_markdown": "Toujours calculer $\\omega=2\\pi f$ comme etape intermediaire explicite avant d'appliquer $C=I/(U_C\\omega)$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Ecrire la loi d'Ohm efficace pour un resistor R parcouru par un courant efficace I.",
+          "solution_markdown": "$U_R = RI$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un resistor est parcouru par $I=100\\ \\text{mA}$ efficaces, avec $U_R=3\\ \\text{V}$ efficaces a ses bornes. Calculer R.",
+          "solution_markdown": "$R = U_R/I = 3/0{,}1 = 30\\ \\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un condensateur, parcouru par $I=50\\ \\text{mA}$ efficaces a $f=100\\ \\text{Hz}$, a une tension efficace $U_C=4\\ \\text{V}$ a ses bornes. Calculer sa capacite C.",
+          "solution_markdown": "$\\omega=2\\pi\\times100\\approx628\\ \\text{rad/s}$. $C = \\dfrac{I}{U_C\\omega} = \\dfrac{0{,}05}{4\\times628} = \\dfrac{0{,}05}{2512} \\approx 1{,}99\\times10^{-5}\\ \\text{F} \\approx 20\\ \\mu\\text{F}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Toute lecture d'oscilloscope donne une amplitude (valeur max) ; il faut la diviser par $\\sqrt2$ pour obtenir la valeur efficace utilisee dans les lois d'Ohm.",
+        "Pour un resistor : $R=U_R/I$ (loi d'Ohm classique en valeurs efficaces).",
+        "Pour un condensateur : $C=I/(U_C\\omega)$, avec $\\omega=2\\pi f$ imperativement calcule au prealable.",
+        "Toujours verifier la coherence des ordres de grandeur obtenus (ohms a kilo-ohms pour R, nF a mF pour C en TP courant)."
+      ]
+    }
+  ]
+}

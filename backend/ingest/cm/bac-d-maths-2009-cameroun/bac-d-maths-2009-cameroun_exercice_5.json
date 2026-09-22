@@ -14,35 +14,75 @@
   "titre_exercice": "Problème, Partie C : primitive d'une fonction, suite d'intégrales et aire sous une courbe, limite",
   "points": 4,
   "figures": [],
-  "enonce_intro_markdown": "$F$ est une fonction numérique définie par $F(x)=(ax+b)e^{-x}+x$.\n\n**Notes sur deux coquilles du document source.** (1) La question 1 est transcrite \"Déterminer $a$ et $b$ pour que $f$ soit une primitive de $f$\", ce qui est incohérent (une fonction ne peut être primitive d'elle-même dans ce contexte). La lecture évidemment correcte est \"pour que $F$ soit une primitive de $f$\" (confusion entre $F$ majuscule et $f$ minuscule lors de la numérisation), et c'est cette version qui est traitée ci-dessous. (2) La question 2(c) demande \"$\\lim_{n\\to-\\infty}u_n$\", incohérent puisque $(u_n)$ est définie uniquement pour les entiers naturels $n$ (qui tendent vers $+\\infty$, jamais vers $-\\infty$). La lecture corrigée est \"$\\lim_{n\\to+\\infty}u_n$\", traitée ci-dessous.",
+  "enonce_intro_markdown": "$F$ est une fonction numérique définie par $F(x)=(ax+b)e^{-x}+x$.",
   "questions": [
     {
       "numero": "1",
       "points": "1pt",
-      "enonce_markdown": "Déterminer $a$ et $b$ pour que $F$ soit une primitive de $f$, où $f$ est la fonction définie dans la Partie A (correction de la coquille \"$f$ primitive de $f$\" ; voir la note en tête de ce fichier).",
-      "rappels_de_methode": [{"cours_id": "cours-determiner-primitive-produit-affine-exponentielle-plus-x-terminale-d", "texte": "Pour déterminer les coefficients d'une primitive imposée de forme (ax+b)e^(-x)+x, on dérive cette forme, on factorise par e^(-x), puis on identifie terme à terme avec l'expression de f(x)."}],
-      "corrige_markdown": "### Rappel de méthode\nPour déterminer les coefficients d'une primitive imposée de la forme $F(x)=(ax+b)e^{-x}+x$, on calcule $F'(x)$, on factorise par $e^{-x}$, puis on identifie terme à terme avec l'expression de $f(x)$ déjà connue.\n\n**Calcul de $F'(x)$.**\n\n$$F'(x)=a\\,e^{-x}+(ax+b)\\times(-e^{-x})+1=e^{-x}\\big[a-(ax+b)\\big]+1=e^{-x}\\big[-ax+(a-b)\\big]+1$$\n\n**Identification avec $f(x)=(2x+1)e^{-x}+1$.**\n\n$$e^{-x}\\big[-ax+(a-b)\\big]+1=e^{-x}(2x+1)+1$$\n\n**Coefficient de $x$ :** $-a=2\\ \\Longrightarrow\\ a=-2$.\n\n**Terme constant :** $a-b=1\\ \\Longrightarrow\\ -2-b=1\\ \\Longrightarrow\\ b=-3$.\n\n**$a=-2$ et $b=-3$.**\n\n**Vérification (recalcul indépendant).** $F(x)=(-2x-3)e^{-x}+x$. $F'(x)=-2e^{-x}+(-2x-3)(-e^{-x})+1=e^{-x}[-2+2x+3]+1=e^{-x}(2x+1)+1=f(x)\\ \\checkmark$\n\n**La vérification confirme $a=-2$, $b=-3$.**"
+      "enonce_markdown": "Déterminer $a$ et $b$ pour que $F$ soit une primitive de $f$, où $f$ est la fonction définie dans la Partie A.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-primitive-produit-affine-exponentielle-plus-x-terminale-d",
+          "texte": "Pour déterminer les coefficients d'une primitive imposée de forme (ax+b)e^(-x)+x, on dérive cette forme, on factorise par e^(-x), puis on identifie terme à terme avec l'expression de f(x)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour déterminer les coefficients d'une primitive imposée de la forme $F(x)=(ax+b)e^{-x}+x$, on calcule $F'(x)$, on factorise par $e^{-x}$, puis on identifie terme à terme avec l'expression de $f(x)$ déjà connue.\n\n**Calcul de $F'(x)$.**\n\n$$F'(x)=a\\,e^{-x}+(ax+b)\\times(-e^{-x})+1=e^{-x}\\big[a-(ax+b)\\big]+1=e^{-x}\\big[-ax+(a-b)\\big]+1$$\n\n**Identification avec $f(x)=(2x+1)e^{-x}+1$.**\n\n$$e^{-x}\\big[-ax+(a-b)\\big]+1=e^{-x}(2x+1)+1$$\n\n**Coefficient de $x$ :** $-a=2\\ \\Longrightarrow\\ a=-2$.\n\n**Terme constant :** $a-b=1\\ \\Longrightarrow\\ -2-b=1\\ \\Longrightarrow\\ b=-3$.\n\n**$a=-2$ et $b=-3$.**\n\n**Vérification (recalcul indépendant).** $F(x)=(-2x-3)e^{-x}+x$. $F'(x)=-2e^{-x}+(-2x-3)(-e^{-x})+1=e^{-x}[-2+2x+3]+1=e^{-x}(2x+1)+1=f(x)\\ \\checkmark$\n\n**La vérification confirme $a=-2$, $b=-3$.**",
+      "themes": [
+        "primitive",
+        "identification de coefficients",
+        "fonction exponentielle"
+      ]
     },
     {
       "numero": "2a",
       "points": "1pt",
       "enonce_markdown": "On considère la suite $(u_n)$ définie pour tout entier naturel $n\\geqslant2$ par $u_n=\\displaystyle\\int_2^n\\big(f(x)-1\\big)dx$. Calculer $u_2$ et $u_4$.",
-      "rappels_de_methode": [{"cours_id": "cours-calculer-integrale-primitive-deja-etablie-terminale-d", "texte": "Pour calculer une intégrale dont la primitive est déjà connue (via une question antérieure), on évalue simplement cette primitive aux deux bornes et on soustrait ; le cas particulier où les deux bornes coïncident donne toujours une intégrale nulle."}],
-      "corrige_markdown": "### Rappel de méthode\nPour calculer une intégrale dont une primitive est déjà connue (établie dans une question antérieure), on évalue simplement cette primitive aux deux bornes et on soustrait. Le cas particulier où les deux bornes coïncident donne toujours une intégrale nulle, sans calcul nécessaire.\n\n**Recherche d'une primitive de $f(x)-1$.** Comme $f(x)-1=(2x+1)e^{-x}$, et que $F(x)=(-2x-3)e^{-x}+x$ est une primitive de $f(x)$ (question 1), une primitive de $f(x)-1$ est $G(x)=F(x)-x=(-2x-3)e^{-x}$.\n\n**Vérification :** $G'(x)=-2e^{-x}+(-2x-3)(-e^{-x})=e^{-x}[-2+2x+3]=e^{-x}(2x+1)=f(x)-1\\ \\checkmark$\n\n**Calcul de $u_2$.**\n\n$$u_2=\\int_2^2\\big(f(x)-1\\big)dx=0$$\n\n**(Une intégrale dont les deux bornes coïncident est toujours nulle, sans calcul de primitive nécessaire.)**\n\n**$u_2=0$.**\n\n**Calcul de $u_4$.**\n\n$$u_4=\\int_2^4\\big(f(x)-1\\big)dx=G(4)-G(2)$$\n\n$$G(4)=(-8-3)e^{-4}=-11e^{-4}$$\n\n$$G(2)=(-4-3)e^{-2}=-7e^{-2}$$\n\n$$u_4=-11e^{-4}-(-7e^{-2})=-11e^{-4}+7e^{-2}$$\n\n**Calcul numérique.** $e^{-4}\\approx0,018316$, $e^{-2}\\approx0,135335$.\n\n$$u_4\\approx-11\\times0,018316+7\\times0,135335\\approx-0,20147+0,94735\\approx0,7459$$\n\n**$u_4=-11e^{-4}+7e^{-2}\\approx0,746$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-integrale-primitive-deja-etablie-terminale-d",
+          "texte": "Pour calculer une intégrale dont la primitive est déjà connue (via une question antérieure), on évalue simplement cette primitive aux deux bornes et on soustrait ; le cas particulier où les deux bornes coïncident donne toujours une intégrale nulle."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour calculer une intégrale dont une primitive est déjà connue (établie dans une question antérieure), on évalue simplement cette primitive aux deux bornes et on soustrait. Le cas particulier où les deux bornes coïncident donne toujours une intégrale nulle, sans calcul nécessaire.\n\n**Recherche d'une primitive de $f(x)-1$.** Comme $f(x)-1=(2x+1)e^{-x}$, et que $F(x)=(-2x-3)e^{-x}+x$ est une primitive de $f(x)$ (question 1), une primitive de $f(x)-1$ est $G(x)=F(x)-x=(-2x-3)e^{-x}$.\n\n**Vérification :** $G'(x)=-2e^{-x}+(-2x-3)(-e^{-x})=e^{-x}[-2+2x+3]=e^{-x}(2x+1)=f(x)-1\\ \\checkmark$\n\n**Calcul de $u_2$.**\n\n$$u_2=\\int_2^2\\big(f(x)-1\\big)dx=0$$\n\n**(Une intégrale dont les deux bornes coïncident est toujours nulle, sans calcul de primitive nécessaire.)**\n\n**$u_2=0$.**\n\n**Calcul de $u_4$.**\n\n$$u_4=\\int_2^4\\big(f(x)-1\\big)dx=G(4)-G(2)$$\n\n$$G(4)=(-8-3)e^{-4}=-11e^{-4}$$\n\n$$G(2)=(-4-3)e^{-2}=-7e^{-2}$$\n\n$$u_4=-11e^{-4}-(-7e^{-2})=-11e^{-4}+7e^{-2}$$\n\n**Calcul numérique.** $e^{-4}\\approx0,018316$, $e^{-2}\\approx0,135335$.\n\n$$u_4\\approx-11\\times0,018316+7\\times0,135335\\approx-0,20147+0,94735\\approx0,7459$$\n\n**$u_4=-11e^{-4}+7e^{-2}\\approx0,746$.**",
+      "themes": [
+        "calcul intégral",
+        "intégrale",
+        "primitive"
+      ]
     },
     {
       "numero": "2b",
       "points": "1,5pt",
       "enonce_markdown": "Donner une interprétation géométrique de $u_n$ et donner son expression en fonction de $n$.",
-      "rappels_de_methode": [{"cours_id": "cours-interpretation-geometrique-aire-courbe-asymptote-expression-generale-terminale-d", "texte": "Une intégrale ∫[a,n](f(x)-k)dx, quand f(x)>k sur [a,n], représente l'aire entre la courbe de f, la droite y=k et les droites x=a, x=n ; son expression générale s'obtient en évaluant une primitive déjà connue aux bornes a et n (n variable)."}],
-      "corrige_markdown": "### Rappel de méthode\nUne intégrale $\\displaystyle\\int_a^n\\big(f(x)-k\\big)dx$, lorsque $f(x)>k$ sur $[a;n]$, représente l'aire (en unités d'aire) du domaine compris entre la courbe de $f$, la droite horizontale $y=k$, et les droites verticales $x=a$ et $x=n$. Son expression générale en fonction de $n$ s'obtient en évaluant une primitive déjà connue aux bornes $a$ (fixe) et $n$ (variable).\n\n**Position de $f$ par rapport à $y=1$ sur $[2;+\\infty[$.** D'après le tableau de variation de la Partie A (question 2), $f$ est décroissante sur $\\left[\\frac12;+\\infty\\right[$ vers la limite $1$ (non atteinte). Comme $2>\\frac12$, sur $[2;+\\infty[$, $f$ est décroissante et $f(x)>1$ pour tout $x$ fini (la limite $1$ n'étant jamais atteinte).\n\n**Interprétation géométrique.** Pour $n>2$, $u_n=\\displaystyle\\int_2^n\\big(f(x)-1\\big)dx$ représente **l'aire, en unités d'aire, du domaine du plan délimité par la courbe $(C)$, la droite $y=1$ (asymptote horizontale de $(C)$) et les droites verticales $x=2$ et $x=n$.**\n\n**Expression de $u_n$ en fonction de $n$**, à l'aide de la primitive $G(x)=(-2x-3)e^{-x}$ établie à la question 2a.\n\n$$u_n=G(n)-G(2)=(-2n-3)e^{-n}-(-7e^{-2})$$\n\n$$\\boxed{u_n=(-2n-3)e^{-n}+7e^{-2}}$$\n\n**Vérification (cohérence avec la question 2a).** Pour $n=2$ : $u_2=(-4-3)e^{-2}+7e^{-2}=-7e^{-2}+7e^{-2}=0\\ \\checkmark$. Pour $n=4$ : $u_4=(-8-3)e^{-4}+7e^{-2}=-11e^{-4}+7e^{-2}\\ \\checkmark$ (coïncide exactement avec la question 2a)."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-interpretation-geometrique-aire-courbe-asymptote-expression-generale-terminale-d",
+          "texte": "Une intégrale ∫[a,n](f(x)-k)dx, quand f(x)>k sur [a,n], représente l'aire entre la courbe de f, la droite y=k et les droites x=a, x=n ; son expression générale s'obtient en évaluant une primitive déjà connue aux bornes a et n (n variable)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne intégrale $\\displaystyle\\int_a^n\\big(f(x)-k\\big)dx$, lorsque $f(x)>k$ sur $[a;n]$, représente l'aire (en unités d'aire) du domaine compris entre la courbe de $f$, la droite horizontale $y=k$, et les droites verticales $x=a$ et $x=n$. Son expression générale en fonction de $n$ s'obtient en évaluant une primitive déjà connue aux bornes $a$ (fixe) et $n$ (variable).\n\n**Position de $f$ par rapport à $y=1$ sur $[2;+\\infty[$.** D'après le tableau de variation de la Partie A (question 2), $f$ est décroissante sur $\\left[\\frac12;+\\infty\\right[$ vers la limite $1$ (non atteinte). Comme $2>\\frac12$, sur $[2;+\\infty[$, $f$ est décroissante et $f(x)>1$ pour tout $x$ fini (la limite $1$ n'étant jamais atteinte).\n\n**Interprétation géométrique.** Pour $n>2$, $u_n=\\displaystyle\\int_2^n\\big(f(x)-1\\big)dx$ représente **l'aire, en unités d'aire, du domaine du plan délimité par la courbe $(C)$, la droite $y=1$ (asymptote horizontale de $(C)$) et les droites verticales $x=2$ et $x=n$.**\n\n**Expression de $u_n$ en fonction de $n$**, à l'aide de la primitive $G(x)=(-2x-3)e^{-x}$ établie à la question 2a.\n\n$$u_n=G(n)-G(2)=(-2n-3)e^{-n}-(-7e^{-2})$$\n\n$$\\boxed{u_n=(-2n-3)e^{-n}+7e^{-2}}$$\n\n**Vérification (cohérence avec la question 2a).** Pour $n=2$ : $u_2=(-4-3)e^{-2}+7e^{-2}=-7e^{-2}+7e^{-2}=0\\ \\checkmark$. Pour $n=4$ : $u_4=(-8-3)e^{-4}+7e^{-2}=-11e^{-4}+7e^{-2}\\ \\checkmark$ (coïncide exactement avec la question 2a).",
+      "themes": [
+        "calcul d'aire",
+        "intégrale",
+        "primitive"
+      ]
     },
     {
       "numero": "2c",
       "points": "0,5pt",
-      "enonce_markdown": "Calculer $\\displaystyle\\lim_{n\\to+\\infty}u_n$ (correction de la coquille \"$\\lim_{n\\to-\\infty}u_n$\" ; voir la note en tête de ce fichier).",
-      "rappels_de_methode": [{"cours_id": "cours-limite-suite-integrale-croissance-comparee-terminale-d", "texte": "Pour calculer la limite d'une expression un=(polynôme en n)×e^(-n)+constante, on utilise la croissance comparée ne^(-n)→0 quand n→+∞, ne laissant subsister que la constante."}],
-      "corrige_markdown": "### Rappel de méthode\nPour calculer la limite d'une expression de la forme $u_n=(\\text{polynôme en }n)\\times e^{-n}+\\text{constante}$ quand $n\\to+\\infty$, on utilise la croissance comparée $ne^{-n}\\to0$ (l'exponentielle décroissante l'emporte toujours sur tout polynôme), ne laissant subsister que le terme constant.\n\n**Expression de $u_n$**, d'après la question 2b : $u_n=(-2n-3)e^{-n}+7e^{-2}$.\n\n**Étude de la limite du premier terme.** Quand $n\\to+\\infty$, $e^{-n}\\to0$ et $(-2n-3)\\to-\\infty$ ; par croissance comparée (l'exponentielle décroissante domine tout polynôme), le produit $(-2n-3)e^{-n}\\to0$.\n\n**Le second terme $7e^{-2}$ est une constante, indépendante de $n$.**\n\n$$\\lim_{n\\to+\\infty}u_n=0+7e^{-2}=7e^{-2}$$\n\n**Calcul numérique.** $7e^{-2}\\approx7\\times0,135335\\approx0,9473$.\n\n**$\\displaystyle\\lim_{n\\to+\\infty}u_n=7e^{-2}=\\dfrac7{e^2}\\approx0,947$.**\n\n### Conseil\nCe résultat a une signification géométrique claire : l'aire totale entre la courbe $(C)$ et son asymptote $y=1$, depuis $x=2$ jusqu'à l'infini, est FINIE (et vaut $\\approx0,947$ unité d'aire) — cela illustre que la courbe se rapproche de son asymptote suffisamment vite (exponentiellement) pour que cette aire, bien que portant sur un domaine infiniment long, reste bornée."
+      "enonce_markdown": "Calculer $\\displaystyle\\lim_{n\\to+\\infty}u_n$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-limite-suite-integrale-croissance-comparee-terminale-d",
+          "texte": "Pour calculer la limite d'une expression un=(polynôme en n)×e^(-n)+constante, on utilise la croissance comparée ne^(-n)→0 quand n→+∞, ne laissant subsister que la constante."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour calculer la limite d'une expression de la forme $u_n=(\\text{polynôme en }n)\\times e^{-n}+\\text{constante}$ quand $n\\to+\\infty$, on utilise la croissance comparée $ne^{-n}\\to0$ (l'exponentielle décroissante l'emporte toujours sur tout polynôme), ne laissant subsister que le terme constant.\n\n**Expression de $u_n$**, d'après la question 2b : $u_n=(-2n-3)e^{-n}+7e^{-2}$.\n\n**Étude de la limite du premier terme.** Quand $n\\to+\\infty$, $e^{-n}\\to0$ et $(-2n-3)\\to-\\infty$ ; par croissance comparée (l'exponentielle décroissante domine tout polynôme), le produit $(-2n-3)e^{-n}\\to0$.\n\n**Le second terme $7e^{-2}$ est une constante, indépendante de $n$.**\n\n$$\\lim_{n\\to+\\infty}u_n=0+7e^{-2}=7e^{-2}$$\n\n**Calcul numérique.** $7e^{-2}\\approx7\\times0,135335\\approx0,9473$.\n\n**$\\displaystyle\\lim_{n\\to+\\infty}u_n=7e^{-2}=\\dfrac7{e^2}\\approx0,947$.**\n\n### Conseil\nCe résultat a une signification géométrique claire : l'aire totale entre la courbe $(C)$ et son asymptote $y=1$, depuis $x=2$ jusqu'à l'infini, est FINIE (et vaut $\\approx0,947$ unité d'aire) — cela illustre que la courbe se rapproche de son asymptote suffisamment vite (exponentiellement) pour que cette aire, bien que portant sur un domaine infiniment long, reste bornée.",
+      "themes": [
+        "limite",
+        "croissances comparées",
+        "suite numérique"
+      ]
     }
   ]
 }

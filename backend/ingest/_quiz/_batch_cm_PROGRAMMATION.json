@@ -1,0 +1,195 @@
+[
+  {
+    "competence": "while",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10625,
+        "enonce_markdown": "Reecrire les instructions des lignes 30 a 39 en utilisant la boucle do…while () en lieu et place de while ( ). (1,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nLa boucle `while (condition) { ... }` teste la condition avant chaque tour, donc son corps peut ne jamais s'exécuter. La boucle `do { ... } while (condition);` exécute d'abord le corps puis teste la condition : il s'exécute au moins une fois, et le point-virgule final est obligatoire. Pour convertir, on place le corps dans `do`, on garde la même condition de poursuite dans `while` et on conserve les initialisations avant la boucle. Attention : si la condition est fausse dès le départ, le `do...while` exécute quand même un tour.\n\nEn remplacant `while` par `do...while`, les lignes 30 a 39 deviennent :\n\n```c\nPOS=-1;\ndo\n    {\n        MIL=(SUP+INF)/2;\n        if (VAL < A[MIL])\n            SUP=MIL-1;\n        else if (VAL > A[MIL])\n            INF=MIL+1;\n        else\n            POS=MIL;\n    } while ((INF<=SUP) && (POS==-1));\n```\n\n**Piege a eviter** : une boucle `while` teste sa condition AVANT chaque execution du corps, alors qu'une boucle `do...while` execute toujours son corps **au moins une fois** avant de tester la condition. Tant que `N >= 1`, cela ne change rien ici, puisque `INF=0 <= SUP=N-1` est deja vrai des le depart. Mais si `N=0` (tableau vide), la version `while` ne rentre jamais dans la boucle (`0 <= -1` est faux), alors que la version `do...while` execute son corps une premiere fois malgre tout : `MIL` vaudrait alors `(-1+0)/2 = 0` et le programme accederait a `A[0]`, une case du tableau qui n'a jamais ete initialisee par la boucle de saisie puisque `N=0`."
+      },
+      {
+        "exercise_id": 10742,
+        "enonce_markdown": "Compléter l'instruction de la ligne 23 en utilisant la fonction prédéfinie mysqli_fetch_assoc( ). (0,5pt)",
+        "corrige_markdown": "### Rappel de méthode\nÀ chaque tour, `$ligne` reçoit la ligne suivante du résultat (sous forme de tableau associatif) ; la boucle continue tant que `mysqli_fetch_assoc()` renvoie une ligne (valeur non nulle)\n\n```php\nwhile($ligne = mysqli_fetch_assoc($result)){\n```\n\nÀ chaque tour, `$ligne` reçoit la ligne suivante du résultat (sous forme de tableau associatif) ; la boucle continue tant que `mysqli_fetch_assoc()` renvoie une ligne (valeur non nulle), et s'arrête d'elle-même lorsque toutes les lignes ont été parcourues."
+      }
+    ]
+  },
+  {
+    "competence": "base de données",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": "",
+      "module_numero": "301",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10574,
+        "enonce_markdown": "**4.** Donner les rôles des extensions PHP suivantes : `mysql_query()`, `mysql_select_db()`, `mysql_fetch_array()`. *[0,75 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nL'ancienne extension `mysql_*` de PHP fournit une fonction dédiée à chaque étape du dialogue avec une base MySQL : sélectionner la base à utiliser, envoyer une requête SQL, puis parcourir le résultat renvoyé ligne par ligne.\n\n- **`mysql_select_db(\"php\", $bd)`** (ligne 22) : sélectionne, sur la connexion `$bd` déjà ouverte, la base de données à utiliser pour les requêtes suivantes (ici la base nommée `php`).\n- **`mysql_query($sql)`** (ligne 25) : envoie la requête SQL contenue dans la variable `$sql` au serveur MySQL et renvoie un identifiant de résultat exploitable par les autres fonctions `mysql_*`.\n- **`mysql_fetch_array($resultat)`** (ligne 33) : extrait, du résultat renvoyé par `mysql_query`, la ligne courante sous forme de tableau accessible à la fois par index numérique et par nom de colonne (ex. `$ligne[\"motdepasse_utilisateur\"]`).\n\n### Piège à éviter\nNe confonds pas `mysql_connect()` (établir la connexion au serveur MySQL, ligne 19) avec `mysql_select_db()` (choisir la base à l'intérieur de cette connexion, ligne 22) : ce sont deux étapes distinctes et successives, jamais interchangeables.\n\n### Conseil\nMentionne que cette extension `mysql_*` est aujourd'hui obsolète et retirée des versions récentes de PHP (remplacée par `mysqli_*` ou PDO) : une remarque de ce type, en fin de réponse, montre une culture technique à jour sans jamais être exigée par le barème."
+      },
+      {
+        "exercise_id": 10721,
+        "enonce_markdown": "Écrire la portion de code PHP de sélection de la base de données BD_USERS. (1pt)",
+        "corrige_markdown": "### Rappel de méthode\n(On peut également sélectionner directement la base dès la connexion en passant `\"BD_USERS\"` comme quatrième argument de `mysqli_connect()`.)\n\n```php\n<?php\nmysqli_select_db($connexion, \"BD_USERS\");\n?>\n```\n\n(On peut également sélectionner directement la base dès la connexion en passant `\"BD_USERS\"` comme quatrième argument de `mysqli_connect()`.)"
+      }
+    ]
+  },
+  {
+    "competence": "stdio.h",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": null,
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10532,
+        "enonce_markdown": "Donner un exemple de bibliothèque avec son rôle principal. *[0,25 pt x 2 = 0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne bibliothèque (library) en C est un ensemble de fonctions déjà écrites et compilées, regroupées par thème, que l'on peut réutiliser dans un programme en l'incluant avec la directive #include, sans avoir à réécrire ces fonctions soi-même.\n\n**Exemple** : `stdio.h` (Standard Input/Output) est une bibliothèque dont le rôle principal est de fournir les fonctions d'entrée-sortie standard, comme `printf()` pour afficher à l'écran et `scanf()` pour lire une saisie clavier.\n\nD'autres exemples valables : `math.h` (fonctions mathématiques comme `sqrt()`, `pow()`), `string.h` (manipulation de chaînes de caractères comme `strlen()`, `strcat()`), `stdlib.h` (fonctions utilitaires générales comme `malloc()`, `rand()`).\n\n### Conseil\nUne seule bibliothèque suffit si son rôle est correctement décrit : inutile d'en citer plusieurs si la consigne n'en demande qu'un exemple."
+      },
+      {
+        "exercise_id": 10572,
+        "enonce_markdown": "**3.** Décris les rôles des bibliothèques **stdio.h** et **stdlib.h**. *[0,5 pt x 2 = 1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\n`stdio.h` (standard input/output) déclare les fonctions d'entrée-sortie standard comme `printf` et `scanf` ; `stdlib.h` (standard library) regroupe des fonctions utilitaires générales telles que la gestion de la mémoire dynamique (`malloc`, `free`), les conversions de chaînes en nombres (`atoi`, `atof`) ou la génération de nombres aléatoires (`rand`).\n\nDans ce programme, `stdio.h` est indispensable puisque tout le programme repose sur `printf` et `scanf` pour dialoguer avec l'utilisateur (lignes 16 à 25). `stdlib.h` est inclus par précaution mais aucune de ses fonctions n'est utilisée dans ce programme précis : la question porte sur le rôle général de la bibliothèque, indépendamment du fait qu'elle serve ou non ici.\n\n### Piège à éviter\nNe dis jamais qu'une bibliothèque incluse mais inutilisée est une erreur : en C, `#include` ne fait qu'apporter des déclarations disponibles si besoin, sans obliger à les utiliser toutes."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**2.** Décrire les deux bibliothèques utilisées dans ce code. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne bibliothèque standard du langage C regroupe des fonctions déjà écrites et testées, rendues disponibles dans un programme par la directive `#include`, ce qui évite à chaque programmeur de réécrire des fonctionnalités courantes comme les entrées-sorties ou la gestion mémoire.\n\n**`<stdio.h>`** (Standard Input/Output) fournit les fonctions d'entrée-sortie standard du langage C. Le code l'utilise pour `puts()` (ligne 7, affichage d'un message), `scanf()` (ligne 8, lecture d'une saisie clavier) et `printf()` (lignes 10 et 14, affichage formaté).\n\n**`<stdlib.h>`** (Standard Library) fournit des fonctions générales utilitaires : gestion de la mémoire, conversions, contrôle du programme. Le code l'utilise ici pour `exit()` et la constante `EXIT_SUCCESS` (ligne 16), qui terminent le programme en signalant au système d'exploitation que l'exécution s'est déroulée sans erreur."
+      },
+      {
+        "exercise_id": 10622,
+        "enonce_markdown": "Decrire les deux bibliotheques utilisees dans ce code. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nEn C, la directive `#include` insère une bibliothèque, c'est-à-dire un ensemble de fonctions déjà écrites. `<stdio.h>` (Standard Input Output) fournit les entrées-sorties comme `printf()` et `scanf()`. `<stdlib.h>` (Standard Library) fournit des utilitaires généraux : allocation mémoire (`malloc`, `free`), conversions (`atoi`) et `exit()`. Pour décrire une bibliothèque, on donne son nom, sa signification et quelques fonctions typiques. Attention : elle est déclarée avec `#include` en début de fichier, sans point-virgule.\n\n**`<stdio.h>`** (ligne 1) : bibliotheque d'entrees-sorties standard (\"STanDard Input/Output\"), qui fournit les fonctions de lecture et d'ecriture comme `scanf()` (lecture au clavier) et `printf()` (affichage a l'ecran), utilisees tout au long de ce programme.\n- **`<stdlib.h>`** (ligne 2) : bibliotheque standard generale (\"STanDard LIBrary\"), qui fournit notamment des fonctions de gestion memoire (`malloc`, `free`), de conversion (`atoi`, `atof`) et d'utilitaires divers ; elle n'est pas strictement indispensable a ce programme tel qu'ecrit, mais est habituellement incluse par prudence des qu'on manipule des tableaux ou des conversions."
+      }
+    ]
+  },
+  {
+    "competence": "SELECT",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10742,
+        "enonce_markdown": "**I. Programmation HTML et JAVASCRIPT (3pts)** - Représenter sur votre feuille de composition l'interface correspondant au code de la page web ci-dessus. (1pt)",
+        "corrige_markdown": "### Rappel de méthode\nLe code HTML définit un formulaire encadré (`<fieldset>`) intitulé « Évaluation », organisé en tableau (`<table>`) avec trois lignes de saisie\n\nLe code HTML définit un formulaire encadré (`<fieldset>`) intitulé « Évaluation », organisé en tableau (`<table>`) avec trois lignes de saisie (Matricule en texte libre, Date au format date, Faute via une liste déroulante à 4 options visibles simultanément grâce à `size=\"4\"`), suivies d'un bouton de soumission centré intitulé « soumettre » :\n\n![Interface de saisie correspondant au code HTML (fieldset Évaluation : Matricule, Date, Faute, bouton soumettre)](/media/figures/cm/bac-ti-programmation-2025-officiel-cameroun_exercice_1_fig_1.webp)"
+      }
+    ]
+  },
+  {
+    "competence": "débogage",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10536,
+        "enonce_markdown": "Il y a un an, le frère d'un élève de la PTI avait sérieusement critiqué l'enseignant d'Algorithme & Programmation, lui reprochant d'enseigner encore le code HTML alors qu'il existe des CMS pour faciliter les tâches. Un jour, à l'aide d'un CMS, un code fut réalisé par Bintou : le code source encore ouvert, un mouvement de doigt par inadvertance enfonça la touche \"backspace\" et un caractère fut effacé. À l'interprétation, le résultat affiche une erreur de fond par l'expression NaN.\n\n**Consigne** : après lecture du code et observation de la capture d'écran, préciser la ligne de code qui fait problème et la corriger.\n\n*NB : une ligne normale mais repérée comme fausse retranche le point.*\n\n![Capture d'écran du navigateur : tableau des notes avec Moyenne = NaN pour SAMIRATOU](/media/figures/cm/probatoire-blanc-ti-avril-2024-college-vogt-cameroun_exercice_5_fig_1.webp)\n\n```html\n<!DOCTYPE html>\n<html><head><title></title></head>\n<body> <table border=\"2\">\n<tr>\n<td>Nom</td>\n<td>Francais</td>\n<td>Anglais</td>\n<td>Moyenne</td></tr>\n<tr>\n<td>KONFOR</td>\n<td><script type=\"text/javascript\">\nvar F; var Note;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote=F;\ndocument.write(\"\"+Note);\n</script></td>\n<td><script type=\"text/javascript\">\nvar A; var M;\nA=parseInt(prompt(\"entrer la note d'Anglais\"));\nM = A ;\ndocument.write(\"\"+M);\n</script></td>\n<td><script type=\"text/javascript\">\nMoy=(M+Note)/2;\ndocument.write(\"\"+Moy)\n</script></td>\n<tr>\n<td>TANTOH</td>\n<td><script type=\"text/javascript\">\nvar F;var Note ;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote=F;\ndocument.write(\"\"+Note);\n</script></td>\n<td><script type=\"text/javascript\">\nvar A; var M;\nA=parseInt(prompt(\"entrer la note d'Anglais\"));\nM = A ;\ndocument.write(\"\"+M);\n</script></td>\n<td><script type=\"text/javascript\">\nMoy=(M+Note)/2;\ndocument.write(\"\"+Moy)\n</script></td>\n<tr>\n<td>SAMIRATOU</td>\n<td><script type=\"text/javascript\">\nvar F1; var Note1 ;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote1=F1;\ndocument.write(\"\"+Note);\n</script></td>\n<td><script type=\"text/javascript\">\nvar A1; var M1;\nA1=parseInt(prompt(\"entrer la note d'Anglais\"));\nM1 = A1 ;\ndocument.write(\"\"+M1);</script></td>\n<td><script type=\"text/javascript\">\nMoy1=(M1+Note1)/2;\ndocument.write(\"\"+Moy1)\n</script></td>\n</body></html>\n```",
+        "corrige_markdown": "### Rappel de méthode\nEn JavaScript classique (scripts non modulaires, hors mode strict), une variable déclarée avec var en dehors de toute fonction est globale : la redéclarer avec var dans un autre bloc <script> de la même page ne crée pas une nouvelle variable, elle réutilise et peut écraser la même variable globale que celle déjà utilisée plus haut dans la page.\n\n**Repérage de la ligne fautive**\n\nDans le bloc `<script>` de la ligne \"SAMIRATOU\" :\n```javascript\nvar F1; var Note1 ;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote1=F1;\ndocument.write(\"\"+Note);\n```\nLa ligne `F1` et `Note1` sont bien déclarées, mais l'instruction de saisie assigne le résultat à `F` (variable globale déjà utilisée pour KONFOR et TANTOH), pas à `F1`. Résultat : `F1` reste déclarée mais **jamais assignée**, donc `undefined`.\n\n**Propagation de l'erreur**\n\nLa ligne suivante, `Note1=F1;`, affecte donc `undefined` à `Note1`. Puis, dans le bloc `<script>` de la colonne Moyenne :\n```javascript\nMoy1=(M1+Note1)/2;\n```\n`M1` est un nombre valide (assigné correctement via `A1`/`M1`), mais `Note1` vaut `undefined`. En JavaScript, toute opération arithmétique impliquant `undefined` renvoie `NaN` (Not a Number) : `M1 + undefined` donne déjà `NaN`, et `NaN / 2` reste `NaN`. C'est exactement la valeur affichée dans la colonne Moyenne de la ligne SAMIRATOU.\n\n**Ligne à corriger** : `F=parseInt(prompt(\"entrer la note de Francais\"));` doit devenir :\n```javascript\nF1=parseInt(prompt(\"entrer la note de Francais\"));\n```\nUne fois cette correction faite, `F1` reçoit bien la note saisie, `Note1=F1` devient un nombre valide, et `Moy1=(M1+Note1)/2` calcule une moyenne correcte au lieu de `NaN`.\n\n### Piège à éviter\nIl ne faut pas se laisser distraire par la ligne `document.write(\"\"+Note);` de la même série de blocs, qui affiche `Note` (variable globale laissée par le bloc TANTOH) au lieu de `Note1` : cette ligne affiche par coïncidence une valeur numérique plausible (donc sans NaN visible), mais elle constitue une **deuxième erreur bien réelle** du même code (elle affiche la note de Français du candidat précédent, pas celle de SAMIRATOU). La consigne demande cependant de répérer la ou les lignes ayant produit **NaN** : seule l'erreur sur `F1` en est directement responsable, la note NB de l'énoncé prévenant justement qu'une ligne \"normale\" mais désignée à tort comme fautive fait perdre le point.\n\n### Conseil\nPour retrouver ce genre de bogue rapidement, pars du résultat inattendu (ici `NaN` dans Moyenne) et remonte le calcul étape par étape : `Moy1` dépend de `M1` et `Note1` -> `Note1` dépend de `F1` -> `F1` n'est jamais assigné. Cette remontée en arrière est plus fiable que de relire tout le code dans l'ordre de haut en bas."
+      },
+      {
+        "exercise_id": 10742,
+        "enonce_markdown": "Corriger les erreurs de la ligne 10. (0,25pt)",
+        "corrige_markdown": "### Rappel de méthode\nles arguments sont dans le mauvais ordre (le nom du serveur `$servername` est complètement omis) et ne correspondent pas à la signature `mysqli_connect(servername, username, password, dbname)`\n\nLa ligne 10 appelle `mysqli_connect($password, $username, $dbname);` : les arguments sont dans le mauvais ordre (le nom du serveur `$servername` est complètement omis) et ne correspondent pas à la signature `mysqli_connect(servername, username, password, dbname)`. La ligne corrigée est :\n\n```php\n$conn = mysqli_connect($servername, $username, $password, $dbname);\n```\n\n(Remarque annexe, hors périmètre strict de la ligne 10 : la ligne 9 contient également une coquille sur le nom de la base, `\" Dicipline\"` au lieu de `\"Discipline\"` (espace de tête et faute d'orthographe), qu'il conviendrait de corriger en `$dbname = \"Discipline\";` pour que la connexion cible réellement la bonne base.)"
+      },
+      {
+        "exercise_id": 10743,
+        "enonce_markdown": "En compilant ce programme, six (06) erreurs vous sont signalées au niveau des lignes 16, 26, 38, 46, 56 et 59. Réécrire ces lignes de code en corrigeant les différentes erreurs qu'elles contiennent. (1,5pt)",
+        "corrige_markdown": "### Rappel de méthode\nChaque ligne signalée doit être analysée indépendamment : identifier d'abord si l'erreur est une erreur de **syntaxe** (mot-clé mal écrit, ponctuation invalide, spécificateur de format incorrect) ou une erreur de **logique** (opérateur d'affectation à la place d'un opérateur de comparaison, instruction qui ne fait pas ce qu'elle devrait), puis corriger en respectant l'intention du programme.\n\n**Corrigé, ligne par ligne :**\n\n**Ligne 16** (originale : `Return 0;`) : le mot-clé `return` s'écrit en minuscules en C (`Return` avec un `R` majuscule provoque une erreur de compilation). De plus, la fonction `moyennegenerale()` est censée **renvoyer** la moyenne générale calculée par la boucle précédente (variable locale `moyennegenerale`), et non la constante `0` qui viderait le calcul de tout intérêt.\n\n```c\n16. return moyennegenerale;\n```\n\n**Ligne 26** (originale : `if(trouve=1){`) : `=` est l'opérateur d'**affectation** (il place la valeur `1` dans `trouve` et vaut toujours vrai), alors qu'une condition doit utiliser l'opérateur de **comparaison** `==`.\n\n```c\n26. if(trouve==1){\n```\n\n**Ligne 38** (originale : `scanf(\"%t\",terminale[i].matricule);`) : `%t` n'est pas un spécificateur de format valide en C. `matricule` étant un tableau de caractères (`char matricule[6];`, ligne 6), le spécificateur correct pour lire une chaîne de caractères est `%s`.\n\n```c\n38. scanf(\"%s\",terminale[i].matricule);\n```\n\n**Ligne 46** (originale : `for(i=0,i<taille,i++){`) : les trois clauses d'un `for` (initialisation, condition, incrément) doivent être séparées par des **points-virgules** `;`, jamais par des virgules.\n\n```c\n46. for(i=0;i<taille;i++){\n```\n\n**Ligne 56** (originale : `terminale[min]= terminale[i];`) : cette ligne intervient dans un échange (permutation) de deux éléments du tableau. La ligne 54 sauvegarde déjà l'ancienne valeur de `terminale[i]` dans `tmp`, puis la ligne 55 écrase `terminale[i]` avec `terminale[min]`. Réécrire ensuite `terminale[min] = terminale[i];` ne fait que recopier sur `terminale[min]` la valeur qui vient d'y être copiée (celle de `terminale[min]` lui-même) : la valeur originale de `terminale[i]`, censée terminer l'échange, est perdue. Il faut affecter à `terminale[min]` la valeur sauvegardée dans `tmp`.\n\n```c\n56. terminale[min] = tmp;\n```\n\n**Ligne 59** (originale : `printf(\" \n\",moyennegenerale(terminale));`) : la chaîne de format de `printf` ne contient aucun spécificateur (`%...`) pour afficher la valeur flottante renvoyée par `moyennegenerale(terminale)` ; celle-ci est donc calculée mais jamais affichée. Il faut ajouter un spécificateur `%f` (ou `%.2f` pour deux décimales) correspondant au type `float` renvoyé par la fonction.\n\n```c\n59. printf(\"%.2f \n\",moyennegenerale(terminale));\n```\n\n**Piège à éviter.** Corriger uniquement la syntaxe sans vérifier que l'instruction réalise toujours l'intention du programme (cas des lignes 16 et 56, qui compilaient presque correctement mais produisaient un résultat faux ou une perte de données)."
+      }
+    ]
+  }
+]

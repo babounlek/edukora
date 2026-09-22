@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-recepteur-charge-batterie-premiere-d-ti",
+  "meta": {
+    "titre": "Loi d'Ohm généralisée pour un récepteur (charge d'un accumulateur)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Générateurs et récepteurs électriques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "récepteur électrique",
+      "force contre-électromotrice",
+      "charge d'une batterie",
+      "bilan de puissance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2018-CM",
+    "epreuve_titre": "Probatoire D et TI - Physique - 2018 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2018-cameroun-ex3-q2.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une même batterie peut tour à tour fournir de l'énergie électrique à un circuit (elle se comporte alors comme un générateur) ou en recevoir pour se recharger (elle se comporte alors comme un récepteur) : reconnaître dans quel rôle se trouve un dipôle actif est la clé pour écrire la bonne loi d'Ohm et le bon bilan de puissance."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm pour un générateur : $U = E - rI$",
+        "Notion de puissance électrique",
+        "Loi des mailles dans un circuit série"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le récepteur électrique en charge",
+      "contenu_markdown": "Un récepteur électrique actif, comme une batterie en cours de charge ou un moteur électrique, s'oppose en partie au passage du courant grâce à une force contre-électromotrice (f.c.é.m.) $E'$. La tension $U$ à ses bornes, lorsqu'il est traversé par un courant d'intensité $I$ et possède une résistance interne $r'$, vérifie la loi d'Ohm généralisée pour un récepteur : $U = E' + r'I$ (le signe $+$, contrairement au générateur où $U = E - rI$, traduit le fait que le récepteur consomme de l'énergie électrique au lieu d'en fournir). Si le récepteur est associé en série à une résistance de protection $R$ alimentée sous une tension totale $U_{\\text{totale}}$, la loi des mailles s'écrit $U_{\\text{totale}} = RI + U = RI + E' + r'I$. Le bilan de puissance correspondant est $P_{\\text{fournie}} = P_{\\text{Joule dans R}} + P_{\\text{Joule dans } r'} + P_{\\text{reçue utilement}}$, avec $P_{\\text{reçue utilement}} = E'I$ (par exemple l'énergie chimique stockée pour une batterie, ou l'énergie mécanique fournie pour un moteur).",
+      "formule_principale": "U = E' + r'I \\quad \\text{(récepteur, résistance interne } r' \\text{)}",
+      "variantes": [
+        {
+          "nom": "Résistance interne négligeable",
+          "quand_utiliser": "L'énoncé précise que la résistance interne du récepteur (ou de la batterie) est négligeable.",
+          "contenu_markdown": "Si $r' \\approx 0$, la loi se simplifie en $U = E'$ pour le récepteur seul ; si une résistance de protection $R$ est présente en série, la loi des mailles devient simplement $U_{\\text{totale}} = RI + E'$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un moteur électrique de f.c.é.m. $E' = 8\\,\\text{V}$ et de résistance interne négligeable est alimenté, en série avec une résistance de protection $R = 2\\,\\Omega$, sous une tension totale $U = 20\\,\\text{V}$. Calculer l'intensité du courant dans le circuit, puis dresser le bilan des puissances.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la loi des mailles pour le circuit série",
+          "justification": "Le moteur, récepteur de résistance interne négligeable, et la résistance de protection sont traversés par le même courant $I$.",
+          "resultat_markdown": "$U = RI + E'$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler l'intensité I",
+          "justification": "On résout l'équation obtenue par rapport à $I$.",
+          "resultat_markdown": "$I = \\dfrac{U - E'}{R} = \\dfrac{20-8}{2} = \\dfrac{12}{2} = 6\\,\\text{A}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la puissance totale fournie par la source",
+          "justification": "C'est le produit de la tension totale par l'intensité du courant.",
+          "resultat_markdown": "$P_{\\text{fournie}} = UI = 20 \\times 6 = 120\\,\\text{W}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la puissance dissipée par effet Joule dans R",
+          "justification": "La résistance de protection dissipe une partie de la puissance fournie.",
+          "resultat_markdown": "$P_R = RI^2 = 2 \\times 6^2 = 72\\,\\text{W}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la puissance utile reçue par le moteur",
+          "justification": "La résistance interne du moteur étant négligeable, toute la puissance restante lui est utilement transmise (ici sous forme mécanique).",
+          "resultat_markdown": "$P_{\\text{moteur}} = E'I = 8 \\times 6 = 48\\,\\text{W}$, avec vérification $P_{\\text{fournie}} = P_R + P_{\\text{moteur}} = 72+48 = 120\\,\\text{W}$"
+        }
+      ],
+      "conclusion_markdown": "L'intensité dans le circuit vaut $6\\,\\text{A}$ ; sur les $120\\,\\text{W}$ fournis par la source, $72\\,\\text{W}$ sont dissipés par effet Joule dans la résistance de protection et $48\\,\\text{W}$ sont utilement transmis au moteur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $U = E' - RI$ comme pour un générateur.",
+          "pourquoi_faux": "Un récepteur en fonctionnement (charge d'une batterie, moteur qui tourne) consomme de l'énergie électrique au lieu d'en fournir : sa f.c.é.m. s'ajoute à la chute de tension résistive dans la loi des mailles, elle ne s'y soustrait pas.",
+          "correction_markdown": "Avant d'écrire une loi d'Ohm généralisée, demande-toi si le dipôle actif fournit de l'énergie au circuit (générateur, signe $-$) ou en reçoit (récepteur, signe $+$)."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que la somme des puissances dissipées et utiles égale bien la puissance totale fournie.",
+          "pourquoi_faux": "Cette vérification est le meilleur moyen de détecter une erreur de calcul avant de rendre sa copie ; une somme qui ne correspond pas signale immédiatement un problème dans l'un des termes calculés.",
+          "correction_markdown": "Prends l'habitude systématique de vérifier $P_{\\text{fournie}} = \\sum P_{\\text{dissipées et utiles}}$ à la fin de tout bilan de puissance."
+        },
+        {
+          "erreur_markdown": "Confondre la f.c.é.m. $E'$ d'un récepteur avec la f.é.m. $E$ d'un générateur dans les formules.",
+          "pourquoi_faux": "Ce sont deux grandeurs de nature différente : $E$ caractérise l'énergie fournie par un générateur, $E'$ l'énergie reçue et convertie par un récepteur ; les utiliser l'une pour l'autre inverse le sens physique du bilan énergétique.",
+          "correction_markdown": "Repère toujours, avant tout calcul, si le dipôle étudié se comporte en générateur ou en récepteur dans la situation décrite par l'énoncé, et utilise la notation ($E$ ou $E'$) correspondante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un récepteur de f.c.é.m. $E' = 6\\,\\text{V}$ et de résistance interne négligeable est parcouru par un courant $I = 1{,}5\\,\\text{A}$. Calculer la tension à ses bornes.",
+          "solution_markdown": "Résistance interne négligeable, donc $U = E' = 6\\,\\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une batterie en charge, de f.c.é.m. $E' = 14\\,\\text{V}$ et de résistance interne $r' = 0{,}5\\,\\Omega$, est alimentée directement (sans résistance de protection supplémentaire) sous une tension $U = 16\\,\\text{V}$. Calculer l'intensité du courant de charge.",
+          "solution_markdown": "$U = E' + r'I \\Rightarrow I = \\dfrac{U-E'}{r'} = \\dfrac{16-14}{0{,}5} = \\dfrac{2}{0{,}5} = 4\\,\\text{A}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une batterie de f.c.é.m. $E' = 12\\,\\text{V}$ et de résistance interne $r' = 0{,}2\\,\\Omega$ est mise en charge, en série avec une résistance de protection $R$, sous une tension totale $U = 15\\,\\text{V}$. On souhaite que le courant de charge ne dépasse pas $3\\,\\text{A}$ pour ne pas endommager la batterie. Déterminer la valeur minimale de $R$ à utiliser.",
+          "solution_markdown": "La loi des mailles s'écrit $U = RI + r'I + E' = (R+r')I + E'$. Pour $I = 3\\,\\text{A}$ (valeur limite à ne pas dépasser) : $15 = (R+0{,}2)\\times3 + 12 \\Rightarrow (R+0{,}2)\\times3 = 3 \\Rightarrow R+0{,}2 = 1 \\Rightarrow R = 0{,}8\\,\\Omega$. Une résistance de protection inférieure à $0{,}8\\,\\Omega$ laisserait passer un courant supérieur à $3\\,\\text{A}$ : il faut donc choisir $R \\geqslant 0{,}8\\,\\Omega$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un récepteur en fonctionnement vérifie $U = E' + r'I$ : la f.c.é.m. s'AJOUTE à la chute de tension résistive, contrairement à un générateur.",
+        "Le bilan de puissance d'un récepteur sépare toujours la puissance fournie en deux parts : celle dissipée par effet Joule (perdue) et celle reçue utilement (stockée ou convertie).",
+        "Vérifier que la somme des puissances calculées reconstitue la puissance totale fournie est le réflexe de contrôle indispensable de ce type d'exercice.",
+        "Charge d'une batterie, fonctionnement d'un moteur électrique : ce sont deux situations classiques où un dipôle actif se comporte en récepteur, aussi bien au Probatoire qu'au Baccalauréat."
+      ]
+    }
+  ]
+}

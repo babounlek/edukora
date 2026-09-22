@@ -1,0 +1,36 @@
+{
+  "type": "cours",
+  "cours_id": "cours-compilateur-vs-interpreteur-bepc-informatique",
+  "meta": {
+    "titre": "Distinguer un compilateur d'un interpréteur",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Développement logiciel",
+    "duree_estimee_min": 10,
+    "tags": ["compilateur", "langage de programmation"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bepc-1-2026-s1-ex5-q2-0"
+  },
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Deux façons de traduire un même texte : d'un bloc avant de le lire à voix haute, ou phrase par phrase en même temps qu'on le lit. C'est exactement ce qui sépare un compilateur d'un interpréteur."},
+    {"type": "prerequis", "items": ["Notion de code source", "Notion de langage machine"]},
+    {"type": "regle", "titre": "Compilateur et interpréteur : le critère du moment", "contenu_markdown": "Le compilateur traduit tout le code source en une seule fois, avant l'exécution, et produit un fichier exécutable autonome qui n'a plus besoin du compilateur ensuite. L'interpréteur, lui, traduit et exécute le code ligne par ligne, au fur et à mesure, sans produire de fichier exécutable séparé : il doit être présent à chaque exécution du programme.", "formule_principale": null, "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Un programme écrit en Python contient une erreur à sa dixième ligne, jamais atteinte car une condition l'évite. Un programme en C contient la même erreur. Que se passe-t-il dans chaque cas au moment de lancer le programme ?", "etapes": [
+      {"numero": 1, "action": "Analyser le cas Python (interprété)", "justification": "L'interpréteur traduit ligne par ligne, seulement au moment où chaque ligne est exécutée.", "resultat_markdown": "Le programme Python s'exécute normalement : la ligne fautive n'étant jamais atteinte, l'interpréteur ne la traduit jamais."},
+      {"numero": 2, "action": "Analyser le cas C (compilé)", "justification": "Le compilateur traduit tout le fichier en une seule fois, avant toute exécution.", "resultat_markdown": "La compilation du programme C échoue dès le départ : l'erreur est détectée à la traduction, avant même que le programme ne s'exécute."}
+    ], "conclusion_markdown": "Le programme Python s'exécute sans problème car la ligne fautive n'est jamais traduite ; le programme C, lui, ne compile même pas, car le compilateur traduit et vérifie tout le fichier avant toute exécution."},
+    {"type": "erreurs_classiques", "items": [
+      {"erreur_markdown": "Penser qu'un langage interprété est toujours « moins bon » qu'un langage compilé.", "pourquoi_faux": "Chaque approche a ses usages : l'interprétation facilite les tests rapides et la portabilité, la compilation produit généralement des programmes qui s'exécutent plus vite. Ce n'est pas une hiérarchie de qualité.", "correction_markdown": "Présente les deux comme deux stratégies différentes, avec chacune ses avantages, plutôt que l'une meilleure que l'autre dans l'absolu."}
+    ]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyenne", "enonce_markdown": "Un programme compilé, une fois son fichier exécutable produit, a-t-il encore besoin du compilateur pour s'exécuter ?", "solution_markdown": "Non : le fichier exécutable produit par la compilation est autonome et peut être lancé directement, sans que le compilateur soit encore nécessaire."}
+    ]},
+    {"type": "synthese", "items_markdown": [
+      "Compilateur : traduction complète avant l'exécution, fichier exécutable autonome",
+      "Interpréteur : traduction et exécution ligne par ligne, présence requise à chaque exécution",
+      "Aucune des deux approches n'est universellement supérieure à l'autre"
+    ]}
+  ]
+}

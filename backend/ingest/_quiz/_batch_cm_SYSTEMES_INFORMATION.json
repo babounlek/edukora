@@ -1,0 +1,196 @@
+[
+  {
+    "competence": "vocabulaire",
+    "pays": "cm",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "C-D",
+      "module_numero": "3",
+      "savoir_numero": "III"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10590,
+        "enonce_markdown": "**1.** Définir les notions de *cas d'utilisation* et d'*acteur* en UML. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn cas d'utilisation représente un service que le système rend à un utilisateur externe, tandis qu'un acteur désigne cet utilisateur externe lui-même (personne, rôle ou système tiers) qui interagit avec le système sans faire partie de son fonctionnement interne.\n\n**Cas d'utilisation.** Un cas d'utilisation est une fonctionnalité du système, formulée par un verbe à l'infinitif suivi d'un complément (par exemple « Emprunter un ouvrage »), qui produit un résultat observable et utile pour l'acteur qui la déclenche. Il décrit un service rendu de bout en bout, jamais une opération technique interne invisible pour l'utilisateur.\n\n**Acteur.** Un acteur est une entité externe au système - une personne, un rôle ou un autre système informatique - qui échange directement de l'information avec lui. Un acteur n'est jamais un élément interne du système que l'on modélise : il se situe toujours à sa frontière.\n\nDans le cas de la bibliothèque scolaire, les acteurs pressentis sont le gestionnaire, le bibliothécaire et les différentes catégories d'abonnés (élève, enseignant, élève externe), et les cas d'utilisation correspondent aux services que le futur système doit leur rendre (s'inscrire, consulter le catalogue, gérer les emprunts...).\n\n### Piège à éviter\nNe confonds pas un cas d'utilisation avec une simple tâche technique du système (« enregistrer une ligne en base de données ») : un cas d'utilisation décrit toujours un service que l'acteur perçoit et dont il tire un bénéfice direct."
+      },
+      {
+        "exercise_id": 10592,
+        "enonce_markdown": "**1.** Définir : Base de données, SGBD, Langage SQL. *[1,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne base de données regroupe les données stockées et organisées de façon structurée ; un SGBD est le logiciel qui permet de créer, manipuler, interroger et sécuriser cette base ; le langage SQL est le langage normalisé utilisé pour dialoguer avec un SGBD relationnel, à la fois pour définir la structure des données et pour les manipuler.\n\n**Base de données.** Ensemble structuré et organisé de données, stockées de façon durable sur un support informatique, destinées à être partagées et exploitées par plusieurs utilisateurs ou applications, tout en évitant autant que possible les redondances.\n\n**SGBD (Système de Gestion de Base de Données).** Logiciel qui permet de créer une base de données, d'y insérer, modifier, supprimer et interroger des données, tout en garantissant leur cohérence, leur sécurité et l'accès simultané de plusieurs utilisateurs.\n\n**Langage SQL (Structured Query Language).** Langage normalisé utilisé pour créer et modifier la structure d'une base de données relationnelle (langage de définition de données : CREATE, ALTER) et pour y insérer, modifier, supprimer et interroger les données qu'elle contient (langage de manipulation de données : INSERT, UPDATE, DELETE, SELECT)."
+      }
+    ]
+  },
+  {
+    "competence": "composition",
+    "pays": "cm",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C-E",
+      "module_numero": "23",
+      "savoir_numero": "VI"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10569,
+        "enonce_markdown": "**b)** la représentation des différentes relations. *[1,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUne fois les classes posées, il faut qualifier la nature du lien entre chaque paire de classes : l'héritage exprime « est un », la composition exprime « est composé de » avec un tout qui ne survit pas sans ses parties, et la simple association exprime « est en relation avec », sans notion de tout ni de partie.\n\nTrois familles de relations structurent ce diagramme. `Eleve` et `Conducteur` héritent de `Personne` par une relation de généralisation, symbolisée par un trait plein terminé par un triangle à pointe ouverte vers `Personne` : un élève « est une » personne, un conducteur « est une » personne. `Bus` est composé d'une `Carrosserie` et de `Siege` par une relation de composition, symbolisée par un trait plein débutant par un losange plein du côté de `Bus` : une carrosserie et des sièges n'ont pas de raison d'exister en dehors du bus auquel ils appartiennent. `Bus` est enfin associé à `Personne` par la relation « transporte », une simple association sans losange ni triangle : un bus transporte des personnes, mais un élève ou un conducteur continue d'exister indépendamment du bus qui le transporte à un instant donné.\n\n![Diagramme de classe UML du système de gestion des bus de ramassage scolaire (classes Personne, Eleve, Conducteur, Bus, Carrosserie, Siege) produit dans le corrigé](/media/figures/cm/bac-epreuve-zero-ti-dres-ouest-2022-cameroun_exercice_1_fig_3.webp)\n\n### Piège à éviter\nNe modélise pas la relation Bus-Personne par une composition : un élève ou un conducteur continue d'exister même si le bus qui le transporte est retiré du service, ce qui est précisément le signe d'une simple association et non d'un lien tout-partie."
+      },
+      {
+        "exercise_id": 10591,
+        "enonce_markdown": "**3.** Décrire la différence entre Agrégation et Composition. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nL'agrégation et la composition représentent toutes deux une relation « tout-partie » entre deux classes, mais elles diffèrent par la force du lien de dépendance entre le tout et sa partie : dans une composition, la partie ne peut exister sans le tout et disparaît avec lui (losange plein du côté du tout), alors que dans une agrégation, la partie garde une existence autonome et peut survivre à la disparition du tout (losange vide du côté du tout).\n\nDans le modèle de l'hôtel, une **Chambre** n'a de sens que rattachée à un **Hotel** précis et disparaît conceptuellement si l'hôtel est fermé : c'est une composition. Une **Occupation**, en revanche, garde une existence propre (trace comptable, historique de séjour) même si la gestion de l'hôtel venait à changer : la relation qui la rattache à l'Hotel via la facturation est une agrégation."
+      },
+      {
+        "exercise_id": 10681,
+        "enonce_markdown": "**2.3.** Expliquer la différence entre une relation d'agrégation et une relation de composition. *[1 pt]*",
+        "corrige_markdown": "L'**agrégation** est une relation tout-partie faible : la partie peut exister indépendamment du tout et être partagée par plusieurs touts. Elle se représente par un losange vide du côté du tout. Exemple : une équipe agrège des joueurs, mais un joueur peut exister, et être transféré vers une autre équipe, même si l'équipe est dissoute.\n\nLa **composition** est une relation tout-partie forte : la partie n'existe pas sans le tout, elle en est indissociable et n'est jamais partagée. Elle se représente par un losange plein du côté du tout. Exemple : une commande est composée de lignes de commande, qui n'ont aucun sens et disparaissent si la commande est supprimée.\n\n### Rappel de méthode\nL'agrégation et la composition modélisent toutes deux une relation tout-partie, mais le critère décisif pour les distinguer est le cycle de vie de la partie : si elle survit à la destruction du tout, c'est une agrégation (losange vide) ; si elle disparaît avec lui, c'est une composition (losange plein).\n\n### Piège à éviter\nLe sens du losange se lit toujours du côté du TOUT, jamais du côté de la partie : un losange placé du mauvais côté inverse complètement le sens de la relation aux yeux du correcteur."
+      }
+    ]
+  },
+  {
+    "competence": "syntaxe",
+    "pays": "cm",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10582,
+        "enonce_markdown": "**4.5.** Identifiez par son numéro la ligne de code qui fait référence à un commentaire mono ligne.",
+        "corrige_markdown": "### Rappel de méthode\nEn PHP, un commentaire est une portion de texte ignorée par l'interpréteur au moment de l'exécution ; un commentaire mono-ligne commence par `//` (ou par `#`) et s'arrête automatiquement à la fin de la ligne.\n\nC'est la **ligne 4** : `//POINTDEVUE indique si un client est d'accord pour un produit ou pas`. Le double slash `//` marque le début du commentaire, qui se termine avec la ligne elle-même ; il n'a donc aucun effet sur l'exécution du programme et sert uniquement à documenter le code pour le développeur."
+      },
+      {
+        "exercise_id": 10583,
+        "enonce_markdown": "**4.2.** Vous utilisez pour le poste F la configuration IP suivante : 192.168.123.60, le masque de sous-réseau étant 255.255.255.0. À partir de F, donnez la syntaxe complète de la commande qui permet d'affirmer que F peut échanger des données avec A.",
+        "corrige_markdown": "### Rappel de méthode\nPING est un utilitaire de diagnostic réseau fondé sur le protocole ICMP : il sert à vérifier qu'un hôte distant répond, avant même de chercher pourquoi une application ne fonctionne pas.\n\nDepuis l'invite de commandes du poste F, la syntaxe complète est :\n\n```\nC:\\>ping 192.168.122.50\n```\n\nOn cible directement l'adresse IP de A (192.168.122.50) : si la commande obtient des réponses, F et A peuvent échanger des données ; sinon, un message d'erreur apparaît (voir question 4.3)."
+      }
+    ]
+  },
+  {
+    "competence": "maintenance informatique",
+    "pays": "cm",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "2nde",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCM203",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10581,
+        "enonce_markdown": "**1.** Définir l'expression « logiciel antivirus ». *[0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn logiciel antivirus est un programme dont la fonction est de détecter, bloquer et éliminer les logiciels malveillants (virus, vers, chevaux de Troie, logiciels espions) présents sur un système informatique, ainsi que d'empêcher leur installation future.\n\nUn logiciel antivirus se définit donc comme un programme de sécurité informatique qui surveille les fichiers, la mémoire et le registre d'un ordinateur pour y détecter, isoler ou supprimer tout code malveillant, sur la base de signatures connues ou de comportements suspects.\n\nC'est exactement ce que réalise le logiciel de la capture fournie : il scanne les fichiers, le registre et les répertoires de l'ordinateur (« Scanning 3054 Files and 841 Folders ») pour y repérer d'éventuels virus.\n\n### Conseil\nN'oublie pas de mentionner les deux fonctions complémentaires d'un antivirus dans ta définition : la détection (repérer une menace) et le traitement (bloquer, nettoyer ou supprimer cette menace) - une définition qui n'évoque que la détection est incomplète."
+      }
+    ]
+  },
+  {
+    "competence": "MCD",
+    "pays": "cm",
+    "matiere": "Systèmes d'Information",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      },
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10683,
+        "enonce_markdown": "**3.** Transformer le MCD en schéma relationnel. *[2,5 pt]*",
+        "corrige_markdown": "Le MCD comporte deux associations à transformer : `APPARTIENT`, de cardinalités (1,1) côté VEHICULE et (1,n) côté MODELE, et `POSSEDE`, de cardinalités (1,n) des deux côtés.\n\n**Association `APPARTIENT` (1,1) - (1,n)** : la cardinalité 1,1 du côté VEHICULE autorise la migration de la clé primaire de MODELE comme clé étrangère dans la table VEHICULE.\n\n**Association `POSSEDE` (1,n) - (1,n)** : les deux cardinalités maximales valant `n`, aucune migration de clé n'est possible ; l'association devient une table à part entière, dont la clé primaire est la concaténation des clés primaires de VEHICULE et de PROPRIETAIRE.\n\nLe schéma relationnel obtenu s'écrit :\n\n`VEHICULE (Immatriculation, Type, Couleur, DateVehicule, #IdModele)`\n\n`MODELE (IdModele, LibeleModele, Carburant)`\n\n`PROPRIETAIRE (Identifiant, Nom, Adresse, Telephone)`\n\n`POSSEDE (#Immatriculation, #Identifiant)`\n\nLes attributs Immatriculation, IdModele et Identifiant sont les clés primaires de chaque table ; les attributs précédés de `#` sont des clés étrangères.\n\n### Rappel de méthode\nPour transformer une association MCD en schéma relationnel : si l'une des deux cardinalités maximales vaut 1, la clé primaire de l'entité du côté « n » migre comme clé étrangère dans la table du côté « 1 » ; si les deux cardinalités maximales valent « n », l'association devient une table indépendante dont la clé primaire est la concaténation des clés primaires des deux entités reliées.\n\n### Piège à éviter\nNe te trompe pas de sens pour la migration : la clé étrangère se place toujours dans la table du côté dont la cardinalité maximale vaut 1, jamais dans l'autre. Ici, c'est VEHICULE, côté (1,1), qui reçoit la clé étrangère IdModele, pas MODELE."
+      },
+      {
+        "exercise_id": 10720,
+        "enonce_markdown": "Transformer le MCD ci-dessus en schéma relationnel. (1,5pt)",
+        "corrige_markdown": "### Rappel de méthode\n**Règle de transformation** : lorsqu'une des deux entités participant à une association binaire a une cardinalité maximale égale à 1 (ici `PLATS`, cardinalité (1,1)) et l'autre une cardinalité maximale égale à n (ici `CLIENT`, cardinalité (1,n)), la clé étrangère est placée du côté de l'entité dont la cardinalité maximale vaut 1 (`PLATS`), et elle référence la clé primaire de l'entité dont la cardinalité maximale vaut n (`CLIENT`).\n\nLe MCD comporte une association binaire **RESERVE** entre `CLIENT` (cardinalité maximale n) et `PLATS` (cardinalité maximale 1). **Règle de transformation** : lorsqu'une des deux entités participant à une association binaire a une cardinalité maximale égale à 1 (ici `PLATS`, cardinalité (1,1)) et l'autre une cardinalité maximale égale à n (ici `CLIENT`, cardinalité (1,n)), la clé étrangère est placée du côté de l'entité dont la cardinalité maximale vaut 1 (`PLATS`), et elle référence la clé primaire de l'entité dont la cardinalité maximale vaut n (`CLIENT`). L'association ne génère donc pas de table indépendante.\n\nLe schéma relationnel obtenu est :\n\n```\nCLIENT (IDclient, NOM, TELEPHONE)\nPLATS (IDPLATS, NOMPLAT, DESCRIPTIONPLAT, PRIX, #IDclient)\n```\n\noù `IDclient` et `IDPLATS` (soulignés) sont les clés primaires respectives de `CLIENT` et `PLATS`, et `#IDclient` dans la table `PLATS` est la clé étrangère qui référence `IDclient` de `CLIENT`."
+      },
+      {
+        "exercise_id": 10729,
+        "enonce_markdown": "Représenter le modèle conceptuel des données en respectant le formalisme de représentation des objets. (1.25 pt)",
+        "corrige_markdown": "### Rappel de méthode\n\nPour représenter un MCD, dessiner un rectangle par entité (nom, puis propriétés avec l'identifiant souligné), un ovale ou une ligne par association, relier chaque entité à ses associations et inscrire les cardinalités à l'extrémité de chaque lien.\n\nLe modèle conceptuel des données rassemble les trois entités, les deux relations et les cardinalités établies aux questions précédentes dans un schéma unique respectant le formalisme entité-association :\n\n![Modèle conceptuel des données (MCD) de la gestion des accessoires de l'entreprise NDENDE](/media/figures/cm/probatoire-ti-SI-2023-officiel-cameroun_exercice_2_fig_1.webp)"
+      }
+    ]
+  }
+]

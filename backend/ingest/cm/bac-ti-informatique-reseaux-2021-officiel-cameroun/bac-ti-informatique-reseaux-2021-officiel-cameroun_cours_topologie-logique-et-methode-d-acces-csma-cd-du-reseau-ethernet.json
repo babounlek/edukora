@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-topologie-logique-et-methode-d-acces-csma-cd-du-reseau-ethernet-terminale-ti",
+  "meta": {
+    "titre": "Topologie logique et méthode d'accès CSMA/CD du réseau Ethernet",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Topologies et méthodes d'accès réseau",
+    "duree_estimee_min": 22,
+    "tags": [
+      "Ethernet",
+      "topologie en bus",
+      "CSMA/CD",
+      "topologie logique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q13-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Regarder les câbles d'une salle informatique suggère presque toujours une étoile : tous les postes reliés à un même commutateur central. Et pourtant, le réseau Ethernet qui y circule continue de fonctionner, logiquement, comme si toutes les machines partageaient un unique fil commun. Cette différence entre ce que l'on voit (le câblage) et ce qui se passe réellement (la circulation des données) est au cœur de la notion de topologie logique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de topologie physique (bus, étoile, anneau)",
+        "Notion de collision de trames"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Topologie logique en bus et méthode CSMA/CD",
+      "contenu_markdown": "La **topologie logique** décrit la façon dont les données circulent et dont les stations accèdent au support, indépendamment du câblage physique réel.\n\nLe réseau **Ethernet** fonctionne selon une topologie logique en **bus** : toutes les stations partagent logiquement un seul support de communication, même si elles sont câblées physiquement en étoile autour d'un commutateur.\n\nL'accès à ce support partagé est régi par la méthode **CSMA/CD** (Carrier Sense Multiple Access with Collision Detection) : une station écoute le support avant d'émettre (Carrier Sense) ; si le support est libre, elle émet ; si deux stations émettent simultanément, une collision est détectée (Collision Detection), les deux stations arrêtent immédiatement d'émettre, puis chacune retransmet après un délai d'attente aléatoire, ce qui réduit la probabilité d'une nouvelle collision.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Deux ordinateurs A et B, connectés au même commutateur Ethernet, émettent chacun une trame au même instant. Décrire le déroulement de l'accès au support selon la méthode CSMA/CD.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écoute du support avant émission",
+          "justification": "CSMA impose de vérifier que le support est libre avant d'émettre.",
+          "resultat_markdown": "A et B écoutent le support, le trouvent libre au même instant, et décident chacun d'émettre leur trame."
+        },
+        {
+          "numero": 2,
+          "action": "Émission simultanée et collision",
+          "justification": "Deux émissions au même instant sur un support partagé se superposent et se corrompent mutuellement.",
+          "resultat_markdown": "Les deux trames entrent en collision sur le support partagé : le signal résultant est inexploitable pour les deux stations."
+        },
+        {
+          "numero": 3,
+          "action": "Détection de la collision et arrêt d'émission",
+          "justification": "CD (Collision Detection) impose de détecter cette collision pendant l'émission elle-même.",
+          "resultat_markdown": "A et B détectent la collision (signal anormal) et interrompent immédiatement leur émission."
+        },
+        {
+          "numero": 4,
+          "action": "Attente aléatoire puis retransmission",
+          "justification": "Un délai aléatoire, différent pour chaque station, évite qu'une nouvelle collision identique ne se reproduise immédiatement.",
+          "resultat_markdown": "A et B attendent chacun un délai aléatoire indépendant, puis retentent une émission ; comme les délais diffèrent, l'une des deux émet en général avant l'autre, sans nouvelle collision."
+        }
+      ],
+      "conclusion_markdown": "La méthode CSMA/CD ne prévient pas totalement les collisions sur un support partagé, mais garantit qu'elles sont détectées et résolues, de sorte que les deux trames finissent par être transmises avec succès."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décrire la topologie physique (étoile autour d'un switch) à la place de la topologie logique demandée",
+          "pourquoi_faux": "Une question sur la topologie logique porte sur le partage du support et la gestion des accès, pas sur la disposition des câbles, même si celle-ci est en étoile.",
+          "correction_markdown": "Distingue toujours : topologie physique = câblage réel, topologie logique = façon dont les données circulent et dont les stations y accèdent."
+        },
+        {
+          "erreur_markdown": "Croire que le CSMA/CD élimine complètement les collisions",
+          "pourquoi_faux": "CSMA/CD ne fait que détecter et gérer les collisions après qu'elles se sont produites (par un arrêt puis une nouvelle tentative) ; il ne les empêche pas totalement, notamment lorsque deux stations écoutent le support libre au même instant.",
+          "correction_markdown": "Présente le CSMA/CD comme un mécanisme de détection et de résolution des collisions, pas comme une garantie de les éviter."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Nommer la topologie logique d'un réseau Ethernet et la méthode d'accès au support qui lui est associée.",
+          "solution_markdown": "Topologie logique en bus, méthode d'accès CSMA/CD (Carrier Sense Multiple Access with Collision Detection)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Expliquer pourquoi un réseau Ethernet moderne, entièrement construit avec des commutateurs (switchs) plutôt que des concentrateurs (hubs), rencontre en pratique très peu de collisions, alors que sa topologie logique reste en théorie un bus.",
+          "solution_markdown": "Un commutateur, contrairement à un concentrateur, n'envoie une trame reçue que sur le port de destination réel (déterminé grâce à l'adresse MAC), et non sur tous les ports à la fois. Il établit ainsi un domaine de collision distinct pour chaque liaison point à point entre une machine et le commutateur, ce qui rend les collisions extrêmement rares voire inexistantes en pratique (surtout en mode full-duplex, où l'émission et la réception se font simultanément sur des canaux séparés). La méthode CSMA/CD reste néanmoins définie dans la norme Ethernet, héritée de l'époque des concentrateurs où le support était réellement partagé par toutes les machines à la fois."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Comparer, dans ses grandes lignes, le principe du CSMA/CD (Ethernet filaire) à celui du CSMA/CA utilisé en Wi-Fi, et expliquer pourquoi la détection de collision (CD) n'est pas utilisée en Wi-Fi.",
+          "solution_markdown": "Le CSMA/CD détecte une collision PENDANT l'émission, en comparant le signal émis au signal effectivement présent sur le support : cela suppose qu'une station puisse écouter le support tout en émettant, ce qui est possible sur un câble filaire. En Wi-Fi, une station qui émet ne peut généralement pas écouter le support en même temps, sur la même fréquence (elle ne peut pas distinguer son propre signal fort du signal faible d'une autre station qui émettrait en même temps) : détecter une collision pendant l'émission n'est donc pas fiable. Le Wi-Fi utilise à la place le CSMA/CA (Collision Avoidance) : plutôt que de détecter les collisions après coup, il cherche à les ÉVITER en amont, notamment par un délai d'attente systématique avant émission et, sur certains réseaux, par un mécanisme d'accusé de réception explicite qui confirme la bonne réception de chaque trame."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La topologie logique décrit la circulation des données et l'accès au support, indépendamment du câblage physique.",
+        "Ethernet fonctionne en topologie logique de bus, même câblé physiquement en étoile autour d'un switch.",
+        "CSMA/CD : écoute avant émission, détection de collision pendant l'émission, arrêt puis réémission après délai aléatoire.",
+        "Les commutateurs modernes réduisent drastiquement les collisions réelles, sans changer la norme CSMA/CD elle-même.",
+        "Le Wi-Fi utilise le CSMA/CA (évitement) plutôt que le CSMA/CD (détection), car une station ne peut pas écouter le support en émettant."
+      ]
+    }
+  ]
+}

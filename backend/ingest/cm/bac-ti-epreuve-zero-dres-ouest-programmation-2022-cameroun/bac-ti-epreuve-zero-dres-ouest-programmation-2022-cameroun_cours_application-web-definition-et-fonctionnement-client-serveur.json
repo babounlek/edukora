@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-application-web-definition-et-fonctionnement-client-serveur-tle-ti",
+  "meta": {
+    "titre": "Application web : définition et fonctionnement client-serveur",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 20,
+    "tags": [
+      "application web",
+      "client-serveur",
+      "HTTP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qI.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu consultes ton relevé de notes en ligne ou que tu commandes un article sur un site marchand, la page que tu vois change selon toi : elle n'est pas la même pour deux visiteurs différents. Comment un simple navigateur peut-il afficher un contenu different selon qui le demande ? La réponse tient dans un mécanisme à deux acteurs, le client et le serveur, que ce cours te propose de comprendre avant de programmer ta première application web."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une page HTML et à quoi sert un navigateur",
+        "Avoir une idée générale de ce qu'est un réseau informatique (Internet, requête, réponse)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le modèle client-serveur",
+      "contenu_markdown": "Une application web est un programme accessible depuis un navigateur, dont le fonctionnement repose sur deux rôles distincts. Le **client** est le navigateur de l'utilisateur : il envoie une requête (par exemple, en cliquant sur un lien ou en soumettant un formulaire) et affiche la réponse reçue. Le **serveur** est un programme distant qui reçoit cette requête, exécute un traitement (calcul, interrogation d'une base de données, vérification d'identifiants) et renvoie une réponse, le plus souvent une page HTML générée à la volée.\n\nCe qui distingue une application web d'un simple site statique, c'est précisément ce traitement dynamique côté serveur : le contenu renvoyé dépend des données transmises par le client et de l'état du serveur (contenu d'une base de données, par exemple), et non d'un fichier figé une fois pour toutes."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'entreprise « Soft Computer » développe une application de gestion de stock : un formulaire HTML permet de saisir un article, puis un script serveur enregistre et affiche les données. Explique le trajet complet d'une saisie, du clic du gestionnaire jusqu'à l'affichage du résultat.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Le gestionnaire remplit le formulaire et clique sur « enregistrer »",
+          "justification": "Le navigateur (le client) rassemble les valeurs saisies dans les champs numero, designation et couleur",
+          "resultat_markdown": "Une requête HTTP contenant ces trois valeurs est préparée"
+        },
+        {
+          "numero": 2,
+          "action": "Le navigateur envoie la requête au serveur",
+          "justification": "L'attribut `action` du formulaire indique l'adresse du script à exécuter (`enregistrement.php`), et `method=\"post\"` indique comment les données voyagent",
+          "resultat_markdown": "La requête atteint le serveur Web hébergeant le script PHP"
+        },
+        {
+          "numero": 3,
+          "action": "Le serveur exécute le script PHP",
+          "justification": "Le script se connecte à la base de données MySQL, exécute une requête SQL et construit une page de réponse",
+          "resultat_markdown": "Une page HTML contenant, par exemple, un tableau des articles est générée"
+        },
+        {
+          "numero": 4,
+          "action": "Le serveur renvoie la réponse au navigateur",
+          "justification": "Le rôle du serveur s'arrête une fois la réponse envoyée : il ne garde pas la page affichée, c'est au client de l'afficher",
+          "resultat_markdown": "Le gestionnaire voit s'afficher le résultat de son enregistrement dans son navigateur"
+        }
+      ],
+      "conclusion_markdown": "Ce trajet en quatre étapes, requête du client, traitement côté serveur, réponse, affichage, est le mécanisme fondamental de toute application web, quelle que soit sa complexité."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire qu'une application web est « un site avec plusieurs pages »",
+          "pourquoi_faux": "Le nombre de pages n'a rien à voir avec la définition : un site vitrine peut compter dix pages statiques sans jamais traiter de donnée, ce n'est pas une application web.",
+          "correction_markdown": "Retiens le vrai critère : la présence d'un traitement dynamique côté serveur qui adapte le contenu renvoyé selon la demande du client."
+        },
+        {
+          "erreur_markdown": "Croire que tout se passe dans le navigateur",
+          "pourquoi_faux": "Le navigateur affiche uniquement ce que le serveur lui a renvoyé ; il ne peut pas, à lui seul, interroger une base de données MySQL hébergée sur le serveur.",
+          "correction_markdown": "Sépare toujours mentalement ce qui s'exécute côté client (HTML, CSS, JavaScript) de ce qui s'exécute côté serveur (PHP, accès à la base de données)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cite les deux rôles principaux impliqués dans le fonctionnement d'une application web.",
+          "solution_markdown": "Le **client** (généralement le navigateur de l'utilisateur), qui envoie les requêtes et affiche les réponses, et le **serveur**, qui reçoit ces requêtes, exécute un traitement et renvoie une réponse."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un site affiche toujours le même texte « Bienvenue sur notre site » à tous les visiteurs, sans jamais consulter de base de données. S'agit-il d'une application web ? Justifie.",
+          "solution_markdown": "Non : le contenu renvoyé est identique pour tout visiteur et ne dépend d'aucun traitement dynamique côté serveur. C'est un site statique, même s'il est hébergé sur un serveur Web."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une application affiche la météo du jour, différente selon la ville tapée par l'utilisateur dans un champ de recherche. Décris, étape par étape, ce qui se passe côté client puis côté serveur entre la saisie de la ville et l'affichage de la météo.",
+          "solution_markdown": "1. Le client (navigateur) récupère la ville saisie et l'envoie dans une requête au serveur.\n2. Le serveur reçoit cette requête, exécute un script qui interroge une source de données météo pour cette ville précise.\n3. Le serveur construit une page de réponse contenant les informations météo trouvées.\n4. Le serveur renvoie cette page au client, qui l'affiche à l'écran de l'utilisateur. Le contenu final dépend donc entièrement de la donnée transmise par le client (la ville), preuve du caractère dynamique du traitement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une application web répartit toujours le travail entre un client (navigateur) et un serveur.",
+        "Ce qui définit une application web, c'est le traitement dynamique côté serveur, pas le nombre de pages ni leur apparence.",
+        "Le client envoie une requête, le serveur exécute un traitement et renvoie une réponse : ce cycle se répète à chaque interaction.",
+        "Au BAC TI, cette définition sert de socle avant d'aborder HTML, JavaScript et PHP, qui se répartissent justement entre le côté client et le côté serveur."
+      ]
+    }
+  ]
+}

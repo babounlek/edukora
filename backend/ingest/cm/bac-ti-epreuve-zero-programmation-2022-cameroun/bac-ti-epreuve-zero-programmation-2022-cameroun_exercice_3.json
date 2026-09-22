@@ -1,0 +1,112 @@
+{
+  "epreuve_source": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "sujet zero",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2022,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "introduction_markdown": null,
+  "points": "5",
+  "groupes": [
+    "II/ PROGRAMMATION PROCÉDURALE EN C (10 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 3**\n\n**II/ PROGRAMMATION PROCÉDURALE EN C (10 points)**\n\n**A/** On souhaite écrire un programme C qui trie de façon automatique les notes en mathématiques de 50 élèves d'une classe de Terminale TI qui sont stockées dans un tableau.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Ecrire une fonction C qui lit la dimension N d'un tableau T du type entier et remplit le tableau par des valeurs entrées au clavier. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nEn C, un tableau se déclare avec une taille fixée à la compilation ; pour laisser l'utilisateur choisir cette taille au moment de l'exécution, on lit d'abord N avec `scanf`, on dimensionne le tableau à N (ici avec une taille maximale suffisante, la taille exacte de 50 étant connue par l'énoncé), puis on parcourt les indices de 0 à N-1 dans une boucle `for` pour lire chaque valeur.\n\n```c\n#define TAILLE_MAX 50\n\nvoid saisirTableau(int T[], int *n) {\n    int i;\n\n    printf(\"Entrez la dimension du tableau (N) : \");\n    scanf(\"%d\", n);\n\n    for (i = 0; i < *n; i++) {\n        printf(\"Entrez la note de l'eleve %d : \", i + 1);\n        scanf(\"%d\", &T[i]);\n    }\n}\n```\n\nLe paramètre `n` est passé par adresse (`int *n`) parce que la fonction doit modifier, pour l'appelant, la valeur de N lue au clavier : un paramètre passé par valeur en C ne renvoie aucune modification à la fonction appelante, il faut donc transmettre l'adresse de la variable pour que `scanf` (qui exige lui-même une adresse, `&T[i]` ou `n`) puisse l'écrire directement en mémoire. Le tableau `T`, lui, est déjà transmis par adresse de façon implicite dès qu'il est déclaré en paramètre de fonction : `T[i]` à l'intérieur de la fonction modifie directement le tableau de l'appelant, sans passage explicite de pointeur supplémentaire.\n\n### Piège à éviter\nN'oublie pas l'astérisque devant `n` dans `scanf(\"%d\", n)` : ici `n` est déjà un pointeur (`int *n`), donc `scanf` reçoit directement l'adresse voulue sans `&` supplémentaire. Écrire `&n` par réflexe (comme pour une variable simple) transmettrait l'adresse du pointeur lui-même, pas celle de l'entier pointé, et ferait planter le programme ou écrire à un endroit incorrect.\n\n### Conseil\nPrévois toujours une variable de taille maximale du tableau (ici `TAILLE_MAX`) même si l'énoncé annonce un effectif fixe de 50 élèves : cela protège le programme d'un débordement si la valeur saisie au clavier dépasse la capacité réellement allouée au tableau.",
+      "themes": [
+        "langage C",
+        "tableau",
+        "saisie clavier",
+        "passage par adresse"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex3-q1-0",
+          "competence": "Saisie dynamique d'un tableau en langage C (scanf en boucle et passage par adresse)",
+          "contenu_markdown": "En C, un tableau se déclare avec une taille fixée à la compilation ; pour laisser l'utilisateur choisir cette taille au moment de l'exécution, on lit d'abord N avec `scanf`, on dimensionne le tableau à N (ici avec une taille maximale suffisante, la taille exacte de 50 étant connue par l'énoncé), puis on parcourt les indices de 0 à N-1 dans une boucle `for` pour lire chaque valeur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Ecrire une fonction C qui permet de trier un tableau de taille N pris en entrée en utilisant l'algorithme du tri par sélection. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nLe tri par sélection parcourt le tableau de gauche à droite ; à chaque position i, il recherche l'indice du plus petit élément restant parmi les cases i à N-1, puis échange cet élément avec celui actuellement en position i. Après le passage i, les i+1 premières cases contiennent donc les i+1 plus petites valeurs, déjà triées.\n\n```c\nvoid triSelection(int T[], int n) {\n    int i, j, indiceMin, temp;\n\n    for (i = 0; i < n - 1; i++) {\n        indiceMin = i;\n        for (j = i + 1; j < n; j++) {\n            if (T[j] < T[indiceMin]) {\n                indiceMin = j;\n            }\n        }\n        if (indiceMin != i) {\n            temp = T[i];\n            T[i] = T[indiceMin];\n            T[indiceMin] = temp;\n        }\n    }\n}\n```\n\nLa boucle externe (`i` de 0 à n-2) fixe la position que l'on est en train de définitivement placer. La boucle interne (`j` de i+1 à n-1) parcourt uniquement la partie non encore triée du tableau pour y repérer, via `indiceMin`, l'indice du minimum courant - jamais sa valeur seule, car c'est l'indice qui permet ensuite de réaliser l'échange. Le test `if (indiceMin != i)` évite un échange inutile (une variable avec elle-même) lorsque l'élément en position i est déjà le minimum de la partie restante, ce qui n'est pas obligatoire pour la correction de l'algorithme mais évite une écriture mémoire superflue.\n\n### Piège à éviter\nNe mélange pas la recherche du minimum et l'échange dans la même boucle interne (échanger dès qu'on trouve un élément plus petit que T[i]) : cela produirait un tri différent, pas un tri par sélection, et pourrait laisser passer un minimum encore plus petit découvert plus loin dans le même passage. Il faut d'abord terminer la recherche du minimum sur tout l'intervalle [i+1, n-1], puis échanger une seule fois.\n\n### Conseil\nRetiens la complexité du tri par sélection, $O(n^2)$ comparaisons quel que soit l'état initial du tableau : une remarque de ce type en fin de réponse montre que tu maîtrises l'algorithme au-delà de sa seule syntaxe, un point souvent valorisé au barème d'une question de programmation.",
+      "themes": [
+        "langage C",
+        "algorithme de tri",
+        "tri par sélection"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex3-q2-0",
+          "competence": "Algorithme du tri par sélection en langage C",
+          "contenu_markdown": "Le tri par sélection parcourt le tableau de gauche à droite ; à chaque position i, il recherche l'indice du plus petit élément restant parmi les cases i à N-1, puis échange cet élément avec celui actuellement en position i. Après le passage i, les i+1 premières cases contiennent donc les i+1 plus petites valeurs, déjà triées.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Ecrire une fonction principale `main` en C où vous feriez appel aux différentes fonctions écrites ci-dessus. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne fonction `main` qui orchestre plusieurs fonctions déjà écrites se contente de déclarer les variables nécessaires, puis d'appeler chaque fonction dans l'ordre logique du traitement : ici, saisir le tableau, le trier, puis afficher le résultat pour vérifier visuellement que le tri a fonctionné.\n\n```c\nint main() {\n    int T[TAILLE_MAX];\n    int n, i;\n\n    saisirTableau(T, &n);\n    triSelection(T, n);\n\n    printf(\"Notes triees par ordre croissant :\\n\");\n    for (i = 0; i < n; i++) {\n        printf(\"%d \", T[i]);\n    }\n    printf(\"\\n\");\n\n    return 0;\n}\n```\n\n`saisirTableau(T, &n)` reçoit bien `&n` (l'adresse de la variable `n` du `main`), cohérent avec le paramètre `int *n` défini à la question 1. `triSelection(T, n)` reçoit en revanche directement `n` par valeur : cette fonction n'a besoin que de lire la taille, jamais de la modifier, un passage par valeur suffit donc. Une boucle d'affichage termine le programme pour que l'exécution produise un résultat visible et vérifiable.\n\n### Conseil\nFais toujours suivre l'appel des fonctions de calcul d'un affichage du résultat dans `main` : sur une question de ce type, un correcteur vérifie que le programme produit un résultat exploitable, pas seulement qu'il compile.",
+      "themes": [
+        "langage C",
+        "fonction main",
+        "organisation d'un programme"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex3-q3-0",
+          "competence": "Organisation d'un programme C en fonctions appelées depuis main()",
+          "contenu_markdown": "Une fonction `main` qui orchestre plusieurs fonctions déjà écrites se contente de déclarer les variables nécessaires, puis d'appeler chaque fonction dans l'ordre logique du traitement : ici, saisir le tableau, le trier, puis afficher le résultat pour vérifier visuellement que le tri a fonctionné.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "langage C",
+    "tableau",
+    "tri par sélection",
+    "fonction main",
+    "passage par adresse"
+  ],
+  "incertitudes": [
+    "Fichier de référentiel programme officiel programme_officiel_cm_informatique.json introuvable sur cette machine : savoir_officiel laissé à null sur toutes les sous-questions de cette épreuve faute de référentiel disponible pour vérifier le rattachement.",
+    "L'énoncé n'impose pas de nom de fonction ni de convention de passage de paramètres pour cette partie A/ (contrairement à l'exercice 1 où le nom CalculAddition est imposé) : les noms de fonctions et de variables (saisirTableau, triSelection, TAILLE_MAX...) sont choisis de façon cohérente et documentée dans le corrigé, sans être une exigence du sujet source."
+  ],
+  "statut": "brouillon"
+}

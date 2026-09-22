@@ -1,0 +1,94 @@
+{
+  "cours_id": "cours-structure-conditionnelle-if-elseif-else-blocs-exhaustifs-php-dres-jan2024",
+  "meta": {
+    "titre": "Structure if/elseif/else : executer et identifier un bloc mort",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "PHP - structures conditionnelles",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "if",
+      "elseif",
+      "else",
+      "code mort"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-dres2024-ex3-q8a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toutes les chaines de if/elseif/else ne se valent pas : certaines cachent un bloc qui ne s'executera jamais, meme si l'ecriture semble correcte."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre la syntaxe if/elseif/else en PHP",
+        "Connaitre l'operateur modulo %"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Executer une chaine conditionnelle et reperer un bloc inatteignable",
+      "contenu_markdown": "Pour executer mentalement une chaine `if / elseif / else`, on evalue les conditions dans l'ordre d'ecriture et on s'arrete des que l'une d'elles est vraie : les blocs suivants ne sont alors pas executes pour ce passage.\n\nPour tout entier N, `N % 2` ne peut valoir que 0 (N pair) ou 1 (N impair) : il n'existe pas de troisieme cas. Une chaine qui teste `if (N%2==0)` puis `elseif (N%2==1)` couvre donc deja tous les cas possibles : un `else` final ajoute apres ces deux tests ne sera jamais atteint, car il ne resterait aucune valeur de N pour laquelle ni l'une ni l'autre condition ne serait vraie. A l'inverse, une chaine qui se limite a `if (N%2==0) ... else ...` (sans test explicite intermediaire) n'a pas ce probleme : son `else` capture par construction tout ce qui n'est pas passe par le `if`, quelle que soit la valeur de N."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une chaine teste if ($age < 18) {...} elseif ($age >= 18) {...} else {...}. Le bloc else sera-t-il jamais execute ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les cas couverts par les deux premiers tests",
+          "justification": "age < 18 et age >= 18 sont deux conditions complementaires et exhaustives pour un age numerique.",
+          "resultat_markdown": "Tout age est soit < 18, soit >= 18 : il n'existe pas de troisieme possibilite."
+        },
+        {
+          "numero": 2,
+          "action": "Conclure sur le bloc else",
+          "justification": "Puisque les deux premiers tests epuisent tous les cas, aucune valeur ne peut les eviter tous les deux.",
+          "resultat_markdown": "Le bloc else est un bloc mort, jamais execute."
+        }
+      ],
+      "conclusion_markdown": "Quand deux conditions consecutives sont deja exhaustives (complementaires), un else final ajoute est necessairement inatteignable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'un bloc else est toujours utile 'au cas ou', meme quand les conditions precedentes couvrent deja tous les cas possibles.",
+          "pourquoi_faux": "Un else n'est atteint que si aucune condition precedente n'est vraie ; si ces conditions sont deja exhaustives (comme pair/impair, ou < 18 / >= 18), le else ne peut jamais etre declenche."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "moyenne",
+          "enonce_markdown": "Une chaine teste if ($n > 0) ... elseif ($n < 0) ... else ... Le else est-il mort ?",
+          "solution_markdown": "Non : il reste le cas n == 0, ni positif ni negatif, que seul le else peut capturer. Ce else est donc bien atteignable, contrairement au cas pair/impair."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une chaine if/elseif s'arrete au premier test vrai.",
+        "Deux conditions complementaires et exhaustives (comme pair/impair) rendent tout else final inatteignable.",
+        "Verifier l'exhaustivite des tests precedents avant de conclure qu'un bloc est mort."
+      ]
+    }
+  ]
+}

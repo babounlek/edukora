@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-chaleur-massique-purete-1ere-c-e",
+  "meta": {
+    "titre": "Bilan calorimétrique : détermination d'une chaleur massique et pureté d'un matériau",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Mise en œuvre d'un modèle pour expliquer une situation",
+    "duree_estimee_min": 24,
+    "tags": [
+      "chaleur massique",
+      "calorimétrie",
+      "pureté d'un métal",
+      "situation-problème"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C",
+      "module_numero": "1",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2020-offficiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Séries C, E - Cameroun - Session 2020",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-e-physique-2020-offficiel-cameroun-ex4-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment vérifier, sans laboratoire de chimie sophistiqué, qu'un métal acheté sur un marché est bien celui qu'on croit ? Une simple expérience de calorimétrie, associée à un raisonnement physique rigoureux, permet déjà de trancher : ce cours montre comment la physique peut répondre à une question très concrète de la vie courante."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Bilan calorimétrique et valeur en eau d'un calorimètre",
+        "Formule $Q = mc\\Delta T$",
+        "Notion d'écart relatif en pourcentage"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déterminer une chaleur massique et juger de la pureté d'un matériau",
+      "contenu_markdown": "Lorsqu'un solide de masse et de température connues est plongé dans un calorimètre contenant de l'eau à une autre température, le bilan calorimétrique permet de déterminer la chaleur massique expérimentale du solide, à condition de connaître au préalable la valeur en eau du calorimètre. Comparer cette valeur expérimentale à la chaleur massique théorique du matériau pur permet ensuite de juger si l'échantillon testé est probablement pur ou non : un écart relatif important, dépassant ce que peut expliquer la seule imprécision des mesures, indique un matériau différent du corps pur de référence, souvent un alliage.",
+      "formule_principale": "c_x = \\dfrac{(\\mu + m_{eau}) \\cdot c_e \\cdot |\\Delta T_{eau}|}{m_{solide} \\cdot |\\Delta T_{solide}|} \\qquad \\text{puis comparer } c_x \\text{ à } c_{théorique}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un calorimètre de valeur en eau $\\mu = 20\\ \\text{g}$ contient $400\\ \\text{g}$ d'eau à $19{,}5°\\text{C}$. On y plonge un bloc métallique de masse $m = 0{,}8\\ \\text{kg}$, initialement à $95{,}0°\\text{C}$ ; la température se stabilise à $24{,}3°\\text{C}$. Le métal supposé est du cuivre, de chaleur massique théorique $c_{Cu} = 385\\ \\text{J} \\cdot \\text{kg}^{-1} \\cdot \\text{K}^{-1}$. Déterminer la chaleur massique expérimentale de l'échantillon et se prononcer sur sa nature.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la chaleur cédée par l'eau et le calorimètre",
+          "justification": "L'eau et le calorimètre, plus froids que le métal, se réchauffent : ils reçoivent la chaleur cédée par le métal, mais on peut aussi la voir comme la chaleur nécessaire pour les réchauffer.",
+          "resultat_markdown": "$Q_{eau} = (\\mu + m_{eau}) \\cdot c_e \\cdot (T_f - T_{eau,i}) = (0{,}020 + 0{,}400) \\times 4190 \\times (24{,}3 - 19{,}5)$"
+        },
+        {
+          "numero": 2,
+          "action": "Effectuer le calcul numérique de $Q_{eau}$",
+          "justification": "On multiplie les termes successivement.",
+          "resultat_markdown": "$Q_{eau} = 0{,}420 \\times 4190 \\times 4{,}8 = 8447\\ \\text{J}$ (à l'unité près)"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer la chaleur cédée par le métal en fonction de $c_x$",
+          "justification": "Le métal se refroidit de sa température initiale à la température finale ; il cède la chaleur reçue par l'eau et le calorimètre (conservation de l'énergie).",
+          "resultat_markdown": "$Q_{eau} = m \\cdot c_x \\cdot (T_{métal,i} - T_f) = 0{,}8 \\times c_x \\times (95{,}0 - 24{,}3) = 0{,}8 \\times c_x \\times 70{,}7$"
+        },
+        {
+          "numero": 4,
+          "action": "Isoler et calculer $c_x$",
+          "justification": "On résout l'égalité des deux expressions de la chaleur échangée pour trouver $c_x$.",
+          "resultat_markdown": "$c_x = \\dfrac{8447}{0{,}8 \\times 70{,}7} = \\dfrac{8447}{56{,}56} \\approx 149{,}4\\ \\text{J} \\cdot \\text{kg}^{-1} \\cdot \\text{K}^{-1}$"
+        },
+        {
+          "numero": 5,
+          "action": "Comparer à la valeur théorique et conclure",
+          "justification": "On calcule l'écart relatif entre $c_x$ et la valeur théorique du cuivre pur.",
+          "resultat_markdown": "$\\dfrac{c_{Cu} - c_x}{c_{Cu}} = \\dfrac{385 - 149{,}4}{385} \\approx 61\\%$ : écart énorme, l'échantillon n'est donc manifestement pas du cuivre pur"
+        }
+      ],
+      "conclusion_markdown": "Un écart relatif de plus de 60 % entre la chaleur massique mesurée et celle du cuivre pur ne peut en aucun cas s'expliquer par une simple imprécision de mesure : cet exemple illustre un cas où le matériau testé est très clairement différent du corps pur supposé, à la différence de l'exercice de l'épreuve source où l'écart, plus faible (3,9 %), demandait une analyse plus fine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement la chaleur massique du corps pur dans le calcul, au lieu de calculer $c_x$ comme une inconnue.",
+          "pourquoi_faux": "Le but même de l'expérience est de déterminer la chaleur massique réelle de l'échantillon testé, qui n'est pas supposée égale d'avance à celle du corps pur : c'est justement leur comparaison, une fois $c_x$ calculé indépendamment, qui permet de juger de la pureté.",
+          "correction_markdown": "Calcule toujours $c_x$ comme une inconnue à isoler dans l'équation du bilan, avant de la comparer, dans un second temps seulement, à la valeur théorique du corps pur."
+        },
+        {
+          "erreur_markdown": "Conclure à une impureté dès que l'écart relatif n'est pas rigoureusement nul, sans discuter l'ordre de grandeur de cet écart.",
+          "pourquoi_faux": "Aucune mesure expérimentale n'est parfaite : un léger écart (quelques pour cent) peut s'expliquer entièrement par l'imprécision de lecture des températures, sans qu'il soit nécessaire d'invoquer une impureté du matériau.",
+          "correction_markdown": "Compare toujours l'écart relatif obtenu à un ordre de grandeur raisonnable pour les incertitudes de l'expérience (quelques pour cent pour des températures lues au dixième de degré) avant de conclure à une impureté."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un calorimètre (valeur en eau négligeable) contient $300\\ \\text{g}$ d'eau à $18{,}0°\\text{C}$. On y plonge un bloc métallique de $200\\ \\text{g}$ à $80{,}0°\\text{C}$ ; la température se stabilise à $22{,}0°\\text{C}$. Calculer la chaleur massique expérimentale du métal.",
+          "solution_markdown": "$Q_{eau} = m_{eau} c_e (T_f - T_{eau,i}) = 0{,}300 \\times 4190 \\times (22{,}0 - 18{,}0) = 0{,}300 \\times 4190 \\times 4{,}0 = 5028\\ \\text{J}$. $c_x = \\dfrac{Q_{eau}}{m_{métal}(T_{métal,i} - T_f)} = \\dfrac{5028}{0{,}200 \\times (80{,}0 - 22{,}0)} = \\dfrac{5028}{0{,}200 \\times 58{,}0} = \\dfrac{5028}{11{,}6} \\approx 433\\ \\text{J} \\cdot \\text{kg}^{-1} \\cdot \\text{K}^{-1}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exercice précédent : la chaleur massique théorique du fer pur est $c_{Fe} = 470\\ \\text{J} \\cdot \\text{kg}^{-1} \\cdot \\text{K}^{-1}$. Calculer l'écart relatif entre la valeur expérimentale trouvée et cette référence, et discuter si cet écart permet de conclure à une impureté.",
+          "solution_markdown": "Écart relatif $= \\dfrac{c_{Fe} - c_x}{c_{Fe}} = \\dfrac{470 - 433}{470} \\approx 7{,}9\\%$. Cet écart, un peu plus marqué qu'une simple imprécision de lecture des températures (de l'ordre de quelques pour cent), suggère que l'échantillon n'est probablement pas du fer parfaitement pur, sans que la conclusion soit aussi nette que pour un écart de plusieurs dizaines de pour cent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève réalise l'expérience de calorimétrie et trouve un écart relatif de seulement $0{,}5\\%$ entre la chaleur massique mesurée et celle du métal pur de référence. Peut-on affirmer avec certitude absolue que l'échantillon est pur ? Justifier en évoquant les limites de la méthode expérimentale.",
+          "solution_markdown": "Un écart aussi faible (0,5 %) est parfaitement compatible avec un échantillon pur, et constitue un argument solide en ce sens : il est très inférieur à ce qu'une imprécision de mesure des températures pourrait expliquer si elle allait dans le sens contraire. Cependant, on ne peut pas parler de certitude absolue : la méthode calorimétrique compare seulement une propriété macroscopique (la chaleur massique) à une valeur de référence, et il existe en théorie des alliages ou mélanges dont la chaleur massique se trouve, par coïncidence, très proche de celle du corps pur recherché, sans que l'échantillon soit réellement pur. La calorimétrie donne donc un indice scientifique fort mais pas une preuve définitive de pureté au sens chimique strict, qui nécessiterait une analyse complémentaire (spectrométrie, analyse chimique)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La chaleur massique expérimentale d'un solide s'obtient en égalant la chaleur qu'il cède à celle reçue par l'eau et le calorimètre.",
+        "Isole toujours $c_x$ comme une inconnue avant de la comparer à une valeur théorique de référence.",
+        "Un écart relatif de quelques pour cent peut s'expliquer par l'imprécision des mesures ; un écart de plusieurs dizaines de pour cent signale une nature différente du matériau.",
+        "La calorimétrie donne un indice scientifique solide sur la pureté d'un matériau, mais jamais une preuve chimique absolue.",
+        "Au Probatoire, une 'situation-problème' de ce type est notée sur la rigueur du raisonnement complet (calcul, comparaison, conclusion argumentée), pas seulement sur le résultat numérique final."
+      ]
+    }
+  ]
+}

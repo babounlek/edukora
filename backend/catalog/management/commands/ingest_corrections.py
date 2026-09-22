@@ -81,6 +81,10 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"{report['created']} objet(s) créé(s)."))
         if report["skipped"]:
             self.stdout.write(f"{report['skipped']} objet(s) déjà existant(s), ignoré(s).")
+        if report.get("reparations"):
+            self.stdout.write(self.style.WARNING(f"{len(report['reparations'])} réparation(s)/proposition(s) automatique(s) :"))
+            for ligne in report["reparations"]:
+                self.stdout.write(self.style.WARNING(f"  - {ligne}"))
         if report["errors"]:
             self.stdout.write(self.style.ERROR(f"{len(report['errors'])} erreur(s) :"))
             for error in report["errors"]:

@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-les-supports-de-transmission-reseau-tle-ti",
+  "meta": {
+    "titre": "Les supports de transmission réseau",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques",
+    "duree_estimee_min": 15,
+    "tags": [
+      "Ethernet",
+      "Wi-Fi",
+      "câble",
+      "ondes radio",
+      "câbles réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qA.4-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un même ordinateur peut souvent se connecter au réseau de plusieurs façons différentes : brancher un câble, ou se passer de câble grâce aux ondes radio. Chaque mode de connexion s'appuie sur un support physique bien précis pour faire réellement voyager l'information."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une carte réseau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux grandes familles de supports",
+      "contenu_markdown": "Un réseau informatique peut relier ses équipements par une **connexion filaire** (câble à paires torsadées de type Ethernet, ou fibre optique), ou par une **connexion sans fil** (Wi-Fi, transmission par ondes radio). Chaque carte réseau d'un ordinateur est dédiée à un support précis : une carte Ethernet exige un câble, une carte Wi-Fi fonctionne sans aucun câble en captant les ondes radio émises par un point d'accès.",
+      "formule_principale": "Filaire (câble Ethernet, fibre) | Sans fil (Wi-Fi, ondes radio)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "À partir de la capture des interfaces réseau d'un ordinateur portable, identifier deux modes de connexion possibles et leur support.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les cartes réseau listées dans la capture",
+          "justification": "Chaque carte réseau correspond à un mode de connexion distinct",
+          "resultat_markdown": "« Broadcom NetXtreme Gigabit Ethernet » et « Réseau local Broadcom 802.11a/b/g »."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la nature de chaque carte",
+          "justification": "Le nom de la carte indique directement le type de connexion qu'elle assure",
+          "resultat_markdown": "« Gigabit Ethernet » désigne une carte filaire ; « 802.11a/b/g » est une norme Wi-Fi, donc une carte sans fil."
+        },
+        {
+          "numero": 3,
+          "action": "Associer le support de transmission à chaque carte",
+          "justification": "Le support physique découle directement du type de carte identifié",
+          "resultat_markdown": "Carte Ethernet -> câble à paires torsadées ; carte Wi-Fi -> ondes radio."
+        }
+      ],
+      "conclusion_markdown": "Deux modes de connexion identifiés : filaire (câble Ethernet) et sans fil (ondes radio Wi-Fi)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer le modem comme un troisième mode de connexion \"au réseau local\"",
+          "pourquoi_faux": "Le modem sert à convertir un signal pour un accès distant (souvent vers Internet via une ligne téléphonique), pas à connecter l'ordinateur au réseau local de la structure : ce n'est pas le même niveau de connexion que les deux cartes réseau demandées ici.",
+          "correction_markdown": "Limite ta réponse aux deux cartes réseau explicitement listées dans la capture quand la question porte sur les modes de connexion \"de cet ordinateur à un réseau\"."
+        },
+        {
+          "erreur_markdown": "Donner \"Internet\" comme support de transmission",
+          "pourquoi_faux": "Internet est un réseau, pas un support physique : le support est le moyen matériel réel (câble, ondes) qui transporte physiquement le signal.",
+          "correction_markdown": "Un support de transmission se touche ou se mesure physiquement (un câble, une fréquence radio) : Internet n'en est pas un, c'est l'ensemble des réseaux interconnectés qui l'utilisent."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel support de transmission utilise une carte réseau Wi-Fi ?",
+          "solution_markdown": "Les ondes radio (transmission hertzienne, sans câble)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi une connexion filaire Ethernet est-elle souvent préférée à une connexion Wi-Fi dans une salle de serveurs ?",
+          "solution_markdown": "Une connexion filaire offre généralement un débit plus stable et plus élevé, une latence plus faible et une meilleure résistance aux interférences et aux problèmes de sécurité (interception plus difficile qu'une onde radio qui se propage dans l'air), ce qui la rend préférable pour des équipements critiques comme des serveurs qui exigent une fiabilité maximale."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un même ordinateur portable possède à la fois une carte Ethernet et une carte Wi-Fi, toutes deux actives et connectées à des réseaux différents. Cela pose-t-il un problème, et que peut-on en déduire sur le nombre d'adresses IP de cette machine ?",
+          "solution_markdown": "Ce n'est pas un problème en soi : chaque carte réseau constitue une interface distincte, avec sa propre configuration. La machine possède alors **deux adresses IP simultanément**, une par interface active, chacune valable sur le réseau auquel sa carte est connectée. Le système d'exploitation doit cependant déterminer quelle interface utiliser par défaut pour une communication donnée (selon les métriques de route configurées), ce qui peut occasionnellement provoquer des comportements réseau inattendus si les deux réseaux se chevauchent ou si la priorité n'est pas celle voulue par l'utilisateur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une connexion filaire utilise un câble (Ethernet, fibre optique) comme support.",
+        "Une connexion sans fil utilise les ondes radio (Wi-Fi) comme support.",
+        "Chaque carte réseau d'un ordinateur est dédiée à un support de transmission précis.",
+        "Le modem ne connecte pas au réseau local : il convertit un signal pour un support généralement distant.",
+        "Au BAC TI, le nom même d'une carte réseau (« Ethernet », « 802.11 ») suffit souvent à identifier son support de transmission sans autre information."
+      ]
+    }
+  ]
+}

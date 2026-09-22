@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-reconnaitre-traitement-somme-conditionnelle-comptage-premiere-ti",
+  "meta": {
+    "titre": "Reconnaître un traitement algorithmique classique (somme conditionnelle et comptage)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Algorigrammes et algorithmique",
+    "duree_estimee_min": 15,
+    "tags": [
+      "somme conditionnelle",
+      "comptage",
+      "algorigramme",
+      "boucle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Certains schémas reviennent sans cesse en algorithmique : sommer des valeurs sous condition, compter des occurrences, chercher un maximum... Apprendre à les reconnaître d'un coup d'œil te fait gagner un temps précieux à l'examen, plutôt que de redécouvrir leur logique à chaque fois."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une boucle `Tant que` et une structure `Si...Sinon` dans un algorigramme",
+        "Comprendre le rôle d'un accumulateur (une variable initialisée à 0 puis augmentée à chaque tour)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître le traitement branche par branche",
+      "contenu_markdown": "Reconnaître le traitement dégagé par un algorigramme consiste à relire chaque branche de la structure conditionnelle imbriquée dans la boucle et à nommer, en une expression courte, ce que le résultat final représente concrètement. Deux motifs très fréquents : une variable initialisée à 0 puis augmentée de la valeur lue (`S=S+X`) réalise une **somme** ; une variable initialisée à 0 puis augmentée de 1 (`N=N+1`) réalise un **comptage** d'occurrences vérifiant une condition.",
+      "formule_principale": "S = S + X (accumulation d'une valeur) vs N = N + 1 (comptage d'occurrences)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une boucle qui lit 50 valeurs `X`, la branche \"Si X>0\" fait `S=S+X`, la branche \"Sinon\" fait `N=N+1`. Nommer précisément le traitement réalisé.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Analyser la branche \"Si X>0\"",
+          "justification": "`S=S+X` avec `S` initialisée à 0 est le motif classique de la somme",
+          "resultat_markdown": "`S` accumule la somme des valeurs qui vérifient `X>0`, c'est-à-dire les valeurs strictement positives."
+        },
+        {
+          "numero": 2,
+          "action": "Analyser la branche \"Sinon\"",
+          "justification": "`N=N+1` avec `N` initialisée à 0 est le motif classique du comptage",
+          "resultat_markdown": "`N` compte le nombre de valeurs qui NE vérifient PAS `X>0`, c'est-à-dire les valeurs négatives ou nulles."
+        },
+        {
+          "numero": 3,
+          "action": "Formuler le traitement global",
+          "justification": "Assembler les deux branches en une phrase unique et précise",
+          "resultat_markdown": "Ce traitement calcule, parmi 50 nombres saisis, la somme des nombres strictement positifs et le nombre de valeurs négatives ou nulles."
+        }
+      ],
+      "conclusion_markdown": "Nommer un traitement, c'est toujours relier une variable accumulée à SA condition de mise à jour : dire seulement \"il fait une somme\" sans préciser \"des valeurs positives\" est une réponse incomplète."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décrire le traitement sans mentionner la condition qui déclenche chaque branche",
+          "pourquoi_faux": "\"Il calcule une somme et un comptage\" ne dit rien de ce qui est réellement compté ou sommé : la condition du `Si` est l'information la plus importante du traitement, pas un détail secondaire.",
+          "correction_markdown": "Précise toujours la condition exacte : \"somme des valeurs positives\", \"comptage des valeurs négatives ou nulles\", jamais une description vague."
+        },
+        {
+          "erreur_markdown": "Confondre le nombre total de valeurs lues (ici 50, fixé par la boucle) avec le résultat du comptage conditionnel (`N`)",
+          "pourquoi_faux": "`N` ne compte qu'une partie des 50 valeurs lues (celles qui vérifient la condition \"Sinon\"), jamais la totalité.",
+          "correction_markdown": "Distingue bien le nombre d'itérations de la boucle (fixé par la condition de la boucle elle-même) du résultat d'un comptage conditionnel réalisé à l'intérieur de cette boucle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une boucle lit 20 valeurs et fait, à chaque tour, `Compteur = Compteur + 1` si la valeur lue est paire. Que calcule `Compteur` à la fin ?",
+          "solution_markdown": "`Compteur` compte le nombre de valeurs paires parmi les 20 valeurs lues : c'est un comptage conditionnel classique."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une boucle lit des notes jusqu'à ce que l'utilisateur saisisse -1 (valeur sentinelle). À chaque tour (sauf pour -1), elle fait `Total = Total + Note` ET `Nombre = Nombre + 1`. Que représente `Total / Nombre` à la fin ?",
+          "solution_markdown": "`Total` accumule la somme de toutes les notes saisies (hors sentinelle), `Nombre` compte combien de notes ont été saisies : `Total / Nombre` représente donc la **moyenne** des notes saisies. C'est la combinaison classique d'une somme et d'un comptage pour obtenir une moyenne, sans connaître à l'avance le nombre de valeurs à traiter."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une boucle lit 100 valeurs. Elle fait `Max = X` (sans condition préalable) uniquement lors du premier passage, puis, pour tous les passages suivants, `Si X > Max Alors Max = X`. Nommer ce traitement et expliquer pourquoi l'initialisation du premier passage est indispensable.",
+          "solution_markdown": "Ce traitement calcule le **maximum** des 100 valeurs lues : à chaque tour, `Max` ne change que si une valeur plus grande que celle déjà retenue est trouvée. L'initialisation lors du premier passage (`Max = X` sans condition) est indispensable car, sans elle, `Max` n'aurait aucune valeur de départ à comparer : comparer `X > Max` alors que `Max` n'a jamais été initialisée reviendrait à comparer avec une valeur indéterminée, ce qui rendrait le résultat imprévisible. Ce même besoin d'initialisation correcte se retrouve dans le traitement de somme (`S` initialisée à 0) et de comptage (`N` initialisée à 0) vus plus haut : toute variable accumulée doit partir d'une valeur neutre et connue avant la boucle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`Variable = Variable + valeur` avec initialisation à 0 : c'est le motif de la somme (accumulation).",
+        "`Variable = Variable + 1` avec initialisation à 0 : c'est le motif du comptage d'occurrences.",
+        "Toujours nommer le traitement en précisant la condition exacte qui déclenche chaque accumulation, jamais de façon vague.",
+        "D'autres motifs classiques à savoir reconnaître : le calcul d'un maximum/minimum (comparaison avec initialisation au premier élément), le calcul d'une moyenne (somme divisée par un comptage).",
+        "Au Probatoire, cette compétence de reconnaissance de motif permet de répondre vite à une question de synthèse (\"quel est le rôle de cet algorithme ?\") sans avoir à réexpliquer chaque ligne en détail."
+      ]
+    }
+  ]
+}

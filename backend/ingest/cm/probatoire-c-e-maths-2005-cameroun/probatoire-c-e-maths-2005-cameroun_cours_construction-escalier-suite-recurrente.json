@@ -1,0 +1,197 @@
+{
+ "cours_id": "cours-construction-escalier-suite-recurrente-1ere-ce",
+ "meta": {
+  "titre": "Construire graphiquement les termes d'une suite définie par récurrence",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Suites numériques",
+  "duree_estimee_min": 25,
+  "tags": ["suite récurrente", "construction en escalier", "point fixe", "lecture graphique", "droite y = x"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VIII"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA4b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "La courbe de $f$ donne $u_{n+1}$ à partir de $u_{n}$ — mais elle le donne en **ordonnée**, alors qu'il faudrait le récupérer en **abscisse** pour recommencer. C'est tout le rôle de la droite $y = x$ : elle est le renvoi qui transforme une ordonnée en abscisse. Sans elle, la construction est impossible ; avec elle, l'escalier se dessine tout seul et rend visibles la monotonie, la majoration et la limite."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Disposer du tracé de la courbe de $f$",
+    "Savoir tracer la droite d'équation $y = x$",
+    "Comprendre la relation $u_{n+1} = f\\left(u_{n}\\right)$",
+    "Connaître la notion de point fixe"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Verticale vers la courbe, horizontale vers la droite",
+   "contenu_markdown": "**Le problème à résoudre.** La courbe de $f$ donne $u_{n+1} = f\\left(u_{n}\\right)$ en **ordonnée**. Pour calculer le terme suivant, il faut cette valeur en **abscisse**. La droite $\\Delta$ d'équation $y = x$ opère ce transfert : le point de $\\Delta$ d'ordonnée $u_{n+1}$ a pour abscisse $u_{n+1}$.\n\n**La procédure, en boucle.**\n\n1. Placer $u_{0}$ sur l'axe des abscisses.\n2. Monter **verticalement** jusqu'à la courbe : on atteint $\\left(u_{0}\\,;\\,u_{1}\\right)$.\n3. Se déplacer **horizontalement** jusqu'à $\\Delta$ : on atteint $\\left(u_{1}\\,;\\,u_{1}\\right)$.\n4. Projeter sur l'axe des abscisses : on lit $u_{1}$.\n5. Recommencer à partir de $u_{1}$.\n\nOn alterne donc **verticale** puis **horizontale**, indéfiniment.\n\n**Les deux allures possibles.** Elles dépendent du sens de variation de $f$ :\n\n| Nature de $f$ | Allure | Comportement de la suite |\n|---|---|---|\n| **croissante** | escalier | monotone |\n| **décroissante** | spirale (escargot) | oscillante autour de la limite |\n\nC'est une information qu'on obtient **sans calcul**, en regardant simplement le tableau de variation de $f$.\n\n**Ce que la construction révèle.** Elle ne sert pas qu'à placer des points :\n\n- le **sens** de l'escalier donne la monotonie ;\n- le **point d'accumulation** donne la limite ;\n- la **borne** que les marches ne franchissent pas donne un majorant ou un minorant.\n\n**Le point fixe est le point d'accumulation.** L'escalier s'accumule au point d'intersection de la courbe et de la droite, c'est-à-dire au point fixe. C'est la traduction graphique du fait que la limite vérifie $f(\\ell) = \\ell$.\n\n**Attractif ou répulsif ?** Cela se lit sur la **pente** de la courbe au point fixe, comparée à celle de la droite, égale à $1$ :\n\n| Pente de $f$ en $\\ell$ | Comportement |\n|---|---|\n| $\\left|f'(\\ell)\\right| < 1$ | la courbe est moins raide : l'escalier **s'approche** |\n| $\\left|f'(\\ell)\\right| > 1$ | la courbe est plus raide : l'escalier **s'éloigne** |\n\n**Le repère doit être orthonormé** pour que la droite $y = x$ apparaisse à $45^{\\circ}$. Sinon la construction reste correcte, mais l'allure devient trompeuse.\n\n**L'échelle.** Les premiers termes d'une suite convergente se resserrent très vite : ici les quatre premiers tiennent dans moins d'un centimètre à l'échelle imposée. Un **agrandissement en marge** est alors indispensable pour que l'escalier soit lisible.",
+   "formule_principale": "u_{n} \\xrightarrow{\\text{verticale}} \\left(u_{n}\\,;\\,u_{n+1}\\right) \\xrightarrow{\\text{horizontale}} \\left(u_{n+1}\\,;\\,u_{n+1}\\right)",
+   "variantes": [
+    {
+     "nom": "Construction en spirale",
+     "quand_utiliser": "Quand la fonction $f$ est décroissante",
+     "contenu_markdown": "Le procédé est identique — verticale puis horizontale — mais l'allure change du tout au tout : les points tournent autour du point fixe au lieu de progresser dans un sens.\n\nLes termes **oscillent** : $u_{0} < \\ell < u_{1}$, puis $u_{2} < \\ell < u_{3}$, et ainsi de suite. Les deux sous-suites d'indices pairs et impairs sont monotones, de sens contraires.\n\nOn le repère d'un coup d'œil sur le tableau de variation de $f$, avant même de construire."
+    },
+    {
+     "nom": "Lecture d'un majorant ou d'un minorant",
+     "quand_utiliser": "Pour préparer une démonstration de convergence",
+     "contenu_markdown": "Sur une construction en escalier montant, aucune marche ne dépasse le point fixe : la suite est **majorée** par $\\ell$.\n\nCela suggère la démonstration à rédiger : montrer par récurrence que $u_{n} < \\ell$ pour tout $n$, puis que la suite est croissante. Croissante et majorée, elle converge.\n\nLa figure ne démontre rien à elle seule, mais elle **indique** exactement ce qu'il faut démontrer."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "La courbe de $f(x) = \\dfrac{x+1}{x+2}$ est tracée sur $\\left]-2\\,;\\,+\\infty\\right[$. La suite $\\left(u_{n}\\right)$ est définie par $u_{0} = 0$ et $u_{n+1} = f\\left(u_{n}\\right)$. Construire sur l'axe des abscisses les cinq premiers termes de $\\left(u_{n}\\right)$. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Tracer la droite $\\Delta$",
+     "justification": "Elle est indispensable au report des ordonnées en abscisses",
+     "resultat_markdown": "La droite d'équation $y = x$, passant par l'origine, à $45^{\\circ}$ puisque le repère est orthonormé"
+    },
+    {
+     "numero": 2,
+     "action": "Repérer le point fixe",
+     "justification": "C'est l'intersection de $\\left(\\mathcal{C}_{f}\\right)$ et de $\\Delta$ trouvée à la question 2.a)",
+     "resultat_markdown": "$\\ell = \\dfrac{-1+\\sqrt{5}}{2} \\approx 0{,}618$"
+    },
+    {
+     "numero": 3,
+     "action": "Placer $u_{0}$",
+     "justification": "Le premier terme est donné",
+     "resultat_markdown": "$u_{0} = 0$, sur l'axe des abscisses"
+    },
+    {
+     "numero": 4,
+     "action": "Première verticale",
+     "justification": "On monte de $u_{0}$ jusqu'à la courbe",
+     "resultat_markdown": "On atteint le point $(0\\,;\\,0{,}5)$ : l'ordonnée lue est $u_{1} = 0{,}5$"
+    },
+    {
+     "numero": 5,
+     "action": "Première horizontale",
+     "justification": "On se déplace jusqu'à $\\Delta$ pour reporter l'ordonnée en abscisse",
+     "resultat_markdown": "On atteint $(0{,}5\\,;\\,0{,}5)$, que l'on projette sur l'axe des abscisses : c'est $u_{1}$"
+    },
+    {
+     "numero": 6,
+     "action": "Deuxième aller-retour",
+     "justification": "Verticale jusqu'à la courbe, horizontale jusqu'à $\\Delta$",
+     "resultat_markdown": "On obtient $u_{2} = 0{,}6$"
+    },
+    {
+     "numero": 7,
+     "action": "Troisième et quatrième aller-retour",
+     "justification": "Même procédé, répété",
+     "resultat_markdown": "On obtient $u_{3} \\approx 0{,}615$ puis $u_{4}$"
+    },
+    {
+     "numero": 8,
+     "action": "Calculer $u_{4}$ pour contrôler",
+     "justification": "Le placement graphique doit correspondre à la valeur exacte",
+     "resultat_markdown": "$u_{4} = \\dfrac{\\dfrac{8}{13}+1}{\\dfrac{8}{13}+2} = \\dfrac{21/13}{34/13} = \\dfrac{21}{34} \\approx 0{,}618$"
+    },
+    {
+     "numero": 9,
+     "action": "Lire la figure",
+     "justification": "L'allure porte l'information",
+     "resultat_markdown": "Les abscisses $0$ ; $0{,}5$ ; $0{,}6$ ; $0{,}615$ ; $0{,}618$ se succèdent de gauche à droite en se resserrant : l'escalier est **montant** et ses marches rétrécissent"
+    },
+    {
+     "numero": 10,
+     "action": "Interpréter",
+     "justification": "L'escalier s'accumule au point d'intersection",
+     "resultat_markdown": "La suite semble **croissante**, **majorée** par $\\ell$, et **convergente** vers $\\ell \\approx 0{,}618$"
+    }
+   ],
+   "conclusion_markdown": "L'escalier monte et ses marches rétrécissent très vite. Deux conseils pratiques. La droite $y = x$ n'est pas décorative : sans elle, aucun report n'est possible, et il ne faut pas la confondre avec la courbe qu'elle coupe en deux points. Et prévois un **agrandissement en marge** sur l'intervalle $[0\\,;\\,0{,}7]$ : à l'échelle imposée de $2$ cm par unité, les quatre premiers termes tiennent dans moins d'un centimètre et l'escalier serait illisible."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Ne pas tracer la droite $y = x$",
+     "pourquoi_faux": "Sans elle, il est impossible de reporter l'ordonnée $u_{n+1}$ en abscisse pour poursuivre. La construction s'arrête au premier terme.",
+     "correction_markdown": "Trace-la en premier, avant même de placer $u_{0}$. C'est l'outil de la construction, pas un ornement."
+    },
+    {
+     "erreur_markdown": "Inverser l'ordre des déplacements",
+     "pourquoi_faux": "On monte **d'abord** verticalement jusqu'à la courbe, **puis** horizontalement jusqu'à la droite. L'ordre inverse donnerait une construction qui ne correspond à aucune relation de récurrence.",
+     "correction_markdown": "Retiens : la verticale interroge la **fonction**, l'horizontale interroge la **droite**. Verticale d'abord, toujours."
+    },
+    {
+     "erreur_markdown": "Confondre la courbe et la droite",
+     "pourquoi_faux": "Elles se coupent aux points fixes, et près de ces points elles sont très proches. Se tromper de support à une étape fait dévier toute la suite de la construction.",
+     "correction_markdown": "Distingue-les nettement : trait plein pour la courbe, pointillés pour la droite, avec une légende."
+    },
+    {
+     "erreur_markdown": "Utiliser une échelle trop petite",
+     "pourquoi_faux": "Les quatre premiers termes tiennent dans un intervalle de $0{,}12$ unité, soit moins de $2{,}5$ mm à l'échelle imposée. L'escalier devient un trait indistinct.",
+     "correction_markdown": "Fais un agrandissement en marge, avec une échelle dix fois plus grande sur l'intervalle utile. Indique-le clairement sur la figure."
+    },
+    {
+     "erreur_markdown": "Placer les termes sans les projeter sur l'axe",
+     "pourquoi_faux": "L'énoncé demande de construire les termes **sur l'axe des abscisses**. Les points de la droite $\\Delta$ ne suffisent pas : il faut la projection verticale.",
+     "correction_markdown": "Trace les projections en pointillés et marque chaque abscisse d'un point nommé $u_{0}$, $u_{1}$, $u_{2}$…"
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $f(x) = \\dfrac{x}{2} + 1$ et la suite définie par $u_{0} = 0$ et $u_{n+1} = f\\left(u_{n}\\right)$. Calculer les quatre premiers termes, décrire la construction en escalier, et déterminer la limite.",
+     "solution_markdown": "**Étape 1 - les premiers termes.**\n\n$$u_{0} = 0$$\n\n$$u_{1} = \\dfrac{0}{2}+1 = 1$$\n\n$$u_{2} = \\dfrac{1}{2}+1 = 1{,}5$$\n\n$$u_{3} = \\dfrac{1{,}5}{2}+1 = 1{,}75$$\n\n**Étape 2 - le point fixe.**\n\n$$\\ell = \\dfrac{\\ell}{2}+1 \\iff \\dfrac{\\ell}{2} = 1 \\iff \\ell = 2$$\n\n**Étape 3 - l'allure de la construction.**\n\nLa fonction $f$ est **affine croissante**, de coefficient directeur $\\dfrac{1}{2}$. La construction est donc un **escalier**, et non une spirale.\n\nLa courbe de $f$ est une droite de pente $\\dfrac{1}{2}$, moins raide que $\\Delta$ dont la pente vaut $1$ : l'escalier **s'approche** du point fixe.\n\n**Étape 4 - décrire la construction.**\n\n1. Placer $u_{0} = 0$ sur l'axe des abscisses.\n2. Monter verticalement jusqu'à la droite de $f$ : on lit $1$.\n3. Se déplacer horizontalement jusqu'à $\\Delta$, projeter : $u_{1} = 1$.\n4. Recommencer : $u_{2} = 1{,}5$, puis $u_{3} = 1{,}75$.\n\nLes marches montent et rétrécissent, se resserrant vers l'intersection des deux droites, au point $(2\\,;\\,2)$.\n\n**Étape 5 - les écarts.**\n\n| $n$ | $u_{n}$ | $2 - u_{n}$ |\n|---|---|---|\n| $0$ | $0$ | $2$ |\n| $1$ | $1$ | $1$ |\n| $2$ | $1{,}5$ | $0{,}5$ |\n| $3$ | $1{,}75$ | $0{,}25$ |\n\nChaque écart est la **moitié** du précédent.\n\n**Étape 6 - conclure.**\n\nLa suite des écarts est géométrique de raison $\\dfrac{1}{2}$, donc elle tend vers $0$ :\n\n$$\\lim_{n \\to +\\infty} u_{n} = 2$$\n\n**Contrôle par la dérivée.** $f'(x) = \\dfrac{1}{2}$, donc $\\left|f'(\\ell)\\right| = \\dfrac{1}{2} < 1$ : le point fixe est attractif. Conforme.\n\n**Remarque.** Pour une fonction **affine**, la raison de la suite des écarts est exactement le coefficient directeur. C'est ce qui rend ce cas entièrement calculable, contrairement au cas homographique où seul le comportement local est simple."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $f(x) = 3 - \\dfrac{x}{2}$ et la suite définie par $u_{0} = 0$ et $u_{n+1} = f\\left(u_{n}\\right)$. Calculer les cinq premiers termes, prévoir l'allure de la construction avant de la décrire, et déterminer la limite.",
+     "solution_markdown": "**Étape 1 - prévoir l'allure.**\n\n$$f'(x) = -\\dfrac{1}{2} < 0$$\n\nLa fonction est **décroissante** : la construction sera une **spirale**, pas un escalier. Les termes vont **osciller** autour de la limite.\n\nCette prévision se fait avant tout calcul, sur le seul signe de la dérivée.\n\n**Étape 2 - les cinq premiers termes.**\n\n$$u_{0} = 0$$\n\n$$u_{1} = 3 - 0 = 3$$\n\n$$u_{2} = 3 - 1{,}5 = 1{,}5$$\n\n$$u_{3} = 3 - 0{,}75 = 2{,}25$$\n\n$$u_{4} = 3 - 1{,}125 = 1{,}875$$\n\n**Étape 3 - le point fixe.**\n\n$$\\ell = 3 - \\dfrac{\\ell}{2} \\iff \\dfrac{3\\ell}{2} = 3 \\iff \\ell = 2$$\n\n**Étape 4 - vérifier l'oscillation.**\n\n| $n$ | $u_{n}$ | Position vs $\\ell = 2$ | Écart |\n|---|---|---|---|\n| $0$ | $0$ | en dessous | $-2$ |\n| $1$ | $3$ | au-dessus | $+1$ |\n| $2$ | $1{,}5$ | en dessous | $-0{,}5$ |\n| $3$ | $2{,}25$ | au-dessus | $+0{,}25$ |\n| $4$ | $1{,}875$ | en dessous | $-0{,}125$ |\n\nLes termes **alternent** de part et d'autre de $2$, et les écarts sont divisés par $2$ en changeant de signe à chaque étape.\n\n**Conforme à la prévision de l'étape 1.**\n\n**Étape 5 - décrire la construction.**\n\n1. Placer $u_{0} = 0$.\n2. Monter verticalement jusqu'à la droite de $f$ : on atteint $(0\\,;\\,3)$.\n3. Aller horizontalement jusqu'à $\\Delta$ : $(3\\,;\\,3)$, donc $u_{1} = 3$.\n4. Descendre verticalement jusqu'à la droite de $f$ : $(3\\,;\\,1{,}5)$.\n5. Aller horizontalement à gauche jusqu'à $\\Delta$ : $(1{,}5\\,;\\,1{,}5)$, donc $u_{2} = 1{,}5$.\n\nLes segments tracés **tournent** autour du point $(2\\,;\\,2)$ en se resserrant : c'est la spirale annoncée.\n\n**Étape 6 - la limite.**\n\nLes écarts forment une suite géométrique de raison $-\\dfrac{1}{2}$, dont la valeur absolue tend vers $0$ :\n\n$$\\lim_{n \\to +\\infty} u_{n} = 2$$\n\n**Contrôle :** $\\left|f'(\\ell)\\right| = \\dfrac{1}{2} < 1$, point fixe attractif. Conforme.\n\n**Étape 7 - les deux sous-suites.**\n\nLes termes d'indice **pair** — $0$ ; $1{,}5$ ; $1{,}875$ — forment une suite **croissante** convergeant vers $2$ par en dessous.\n\nLes termes d'indice **impair** — $3$ ; $2{,}25$ — forment une suite **décroissante** convergeant vers $2$ par au-dessus.\n\nC'est la structure typique d'une suite oscillante convergente : deux sous-suites monotones adjacentes.\n\n**Ce qu'il faut retenir.** Le **signe** de $f'$ décide de l'allure — escalier si $f$ croît, spirale si $f$ décroît — et la **valeur absolue** de $f'$ au point fixe décide de la convergence. Deux informations lues sur le tableau de variation, avant tout calcul."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $f(x) = \\dfrac{x+1}{x+2}$ et la suite définie par $u_{n+1} = f\\left(u_{n}\\right)$. Étudier graphiquement et analytiquement le comportement de la suite selon la valeur de $u_{0}$ dans $\\left]-2\\,;\\,+\\infty\\right[$, en distinguant les cas $u_{0} < \\ell$, $u_{0} = \\ell$ et $u_{0} > \\ell$, où $\\ell = \\dfrac{-1+\\sqrt{5}}{2}$.",
+     "solution_markdown": "**Étape 1 - les données de base.**\n\nLes deux points fixes sont\n\n$$\\alpha = \\dfrac{-1-\\sqrt{5}}{2} \\approx -1{,}618 \\qquad ; \\qquad \\ell = \\dfrac{-1+\\sqrt{5}}{2} \\approx 0{,}618$$\n\nTous deux appartiennent à $\\left]-2\\,;\\,+\\infty\\right[$.\n\nLa dérivée vaut $f'(x) = \\dfrac{1}{(x+2)^{2}} > 0$ : la fonction est **croissante**, donc la construction est un **escalier** dans tous les cas.\n\n**Étape 2 - la nature des deux points fixes.**\n\n$$f'(\\ell) = \\dfrac{1}{(0{,}618+2)^{2}} = \\dfrac{1}{6{,}854} \\approx 0{,}146 < 1 \\qquad \\text{attractif}$$\n\n$$f'(\\alpha) = \\dfrac{1}{(-1{,}618+2)^{2}} = \\dfrac{1}{0{,}146} \\approx 6{,}854 > 1 \\qquad \\text{répulsif}$$\n\n**Cas 1 : $u_{0} = \\ell$.**\n\nAlors $u_{1} = f(\\ell) = \\ell$, et par récurrence immédiate $u_{n} = \\ell$ pour tout $n$.\n\n**La suite est constante.** Graphiquement, la verticale et l'horizontale se réduisent à un point : l'escalier n'a pas de marche.\n\n**Cas 2 : $\\alpha < u_{0} < \\ell$.**\n\n*Étude du signe de $f(x) - x$.* On a vu que $f(x) = x$ équivaut à $x^{2}+x-1 = 0$. Donc\n\n$$f(x) - x = \\dfrac{x+1}{x+2} - x = \\dfrac{x+1-x^{2}-2x}{x+2} = \\dfrac{-\\left(x^{2}+x-1\\right)}{x+2}$$\n\nPour $x > -2$, le dénominateur est positif, et le trinôme $x^{2}+x-1$ est **négatif entre** ses racines $\\alpha$ et $\\ell$.\n\nDonc pour $\\alpha < x < \\ell$ : $-\\left(x^{2}+x-1\\right) > 0$, et $f(x) > x$.\n\n*Conséquence.* $u_{1} = f\\left(u_{0}\\right) > u_{0}$ : la suite **croît**.\n\n*Stabilité de l'intervalle.* $f$ étant croissante, $u_{0} < \\ell$ entraîne $f\\left(u_{0}\\right) < f(\\ell) = \\ell$, donc $u_{1} < \\ell$. Par récurrence, tous les termes restent dans $\\left]\\alpha\\,;\\,\\ell\\right[$.\n\n*Conclusion.* La suite est croissante et majorée par $\\ell$ : elle **converge**, et sa limite est un point fixe appartenant à l'adhérence de l'intervalle, donc $\\ell$.\n\n*Graphiquement :* escalier **montant**, marches rétrécissantes, s'accumulant en $\\ell$ par la gauche.\n\n**Cas 3 : $u_{0} > \\ell$.**\n\n*Signe de $f(x)-x$.* Pour $x > \\ell$, le trinôme $x^{2}+x-1$ est **positif**, donc $f(x) - x < 0$ : la suite **décroît**.\n\n*Minoration.* $f$ croissante et $u_{0} > \\ell$ donnent $u_{1} > \\ell$, et par récurrence tous les termes restent supérieurs à $\\ell$.\n\n*Conclusion.* Décroissante et minorée par $\\ell$, la suite **converge** vers $\\ell$.\n\n*Graphiquement :* escalier **descendant**, s'accumulant en $\\ell$ par la droite.\n\n**Cas 4 : $-2 < u_{0} < \\alpha$.**\n\nPour $x < \\alpha$, le trinôme est **positif**, donc $f(x) < x$ : la suite décroît.\n\nMais elle est bornée inférieurement par $-2$... en réalité, examinons de plus près. Comme $f$ est croissante et $u_{0} < \\alpha$, on a $u_{1} < f(\\alpha) = \\alpha$. La suite décroît en restant sous $\\alpha$.\n\nOr $\\lim_{x \\to (-2)^{+}} f(x) = -\\infty$ : les termes plongent, et l'un d'eux finit par sortir de $\\left]-2\\,;\\,+\\infty\\right[$. **La suite n'est plus définie** au-delà d'un certain rang.\n\n*Graphiquement :* l'escalier descend vers l'asymptote verticale et « tombe » hors du domaine.\n\n**Étape 3 - synthèse.**\n\n| Valeur de $u_{0}$ | Comportement | Allure |\n|---|---|---|\n| $-2 < u_{0} < \\alpha$ | non définie à partir d'un rang | escalier fuyant vers $-\\infty$ |\n| $u_{0} = \\alpha$ | constante égale à $\\alpha$ | point unique |\n| $\\alpha < u_{0} < \\ell$ | croissante, converge vers $\\ell$ | escalier montant |\n| $u_{0} = \\ell$ | constante égale à $\\ell$ | point unique |\n| $u_{0} > \\ell$ | décroissante, converge vers $\\ell$ | escalier descendant |\n\n**Étape 4 - vérifier sur deux exemples.**\n\n*Pour $u_{0} = 0$, dans $\\left]\\alpha\\,;\\,\\ell\\right[$ :* $0$ ; $0{,}5$ ; $0{,}6$ ; $0{,}615$ — croissante vers $\\ell$. Conforme.\n\n*Pour $u_{0} = 3$, supérieur à $\\ell$ :* $u_{1} = \\dfrac{4}{5} = 0{,}8$, $u_{2} = \\dfrac{1{,}8}{2{,}8} \\approx 0{,}643$, $u_{3} \\approx 0{,}622$ — décroissante vers $\\ell$. Conforme.\n\n**Ce qu'il faut retenir.** Le signe de $f(x)-x$ décide de la monotonie, et il change précisément aux **points fixes**. C'est pourquoi ceux-ci découpent le domaine en zones de comportements distincts — et pourquoi les identifier est la toute première étape de l'étude d'une suite récurrente."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "La droite $y = x$ est l'outil du report : elle transforme une ordonnée en abscisse.",
+    "Procédure : **verticale** jusqu'à la courbe, **horizontale** jusqu'à la droite, puis on recommence.",
+    "$f$ croissante donne un **escalier** ; $f$ décroissante donne une **spirale**.",
+    "L'escalier s'accumule au point fixe, intersection de la courbe et de la droite.",
+    "$\\left|f'(\\ell)\\right| < 1$ : la courbe est moins raide que la droite, l'escalier s'approche.",
+    "La construction révèle monotonie, majoration et limite — mais elle ne les démontre pas.",
+    "Le signe de $f(x)-x$ donne la monotonie, et il change aux points fixes.",
+    "Distingue nettement la courbe et la droite : elles se coupent et se ressemblent près du point fixe.",
+    "Prévois un agrandissement : les termes d'une suite convergente se resserrent très vite.",
+    "Projette les termes sur l'axe des abscisses et nomme-les."
+   ]
+  }
+ ]
+}

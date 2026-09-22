@@ -1,0 +1,91 @@
+{
+  "epreuve_source": "probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+  "numero_exercice": "7",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "etablissement",
+  "etablissement": "Collège Mgr. François-Xavier VOGT",
+  "institution": null,
+  "annee": 2024,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "introduction_markdown": null,
+  "points": "0,5",
+  "groupes": [
+    "PARTIE II : PROGRAMMATION DES SITES WEB STATIQUES ET DYNAMIQUES (6 pts)",
+    "B- Évaluation des compétences (4,25 pts)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 4 (0,5 pt)**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Lors de la saisie de l'instruction ci-dessous, on a oublié d'insérer une information devant empêcher qu'il y ait une valeur négative. Écrire l'instruction correcte. *[0,25 pt]*\n\n```html\n<td><input type=\"number\" style=\"width:360px; border:none; outline: none;\" id=\"PrixDJANSSAN\"></td>\n```",
+      "corrige_markdown": "### Rappel de méthode\nUn champ de saisie HTML5 de type number accepte, par défaut, aussi bien des valeurs négatives que positives ; pour interdire les valeurs négatives, il faut ajouter explicitement l'attribut min avec la borne inférieure autorisée (min=\"0\" pour n'accepter que des valeurs positives ou nulles).\n\nInstruction donnée :\n```html\n<td><input type=\"number\" style=\"width:360px; border:none; outline: none;\" id=\"PrixDJANSSAN\"></td>\n```\nAucun attribut ne limite ici la valeur saisie : un utilisateur peut entrer un nombre négatif sans que le champ ne s'y oppose. Il manque l'attribut `min`, qui fixe la valeur minimale acceptée par le champ.\n\n**Instruction corrigée** :\n```html\n<td><input type=\"number\" min=\"0\" style=\"width:360px; border:none; outline: none;\" id=\"PrixDJANSSAN\"></td>\n```\n\n### Piège à éviter\nL'attribut `min=\"0\"` bloque uniquement les flèches d'incrémentation/décrémentation du champ et la validation du formulaire (méthode `checkValidity()`/soumission) : un utilisateur peut encore taper \"-5\" au clavier sans que rien ne s'affiche tant que le formulaire n'est pas soumis ou vérifié par du code JavaScript. Pour une interdiction totale et immédiate, il faudrait compléter avec un contrôle en JavaScript (par exemple sur l'événement `input`).",
+      "themes": [
+        "HTML5",
+        "Validation de formulaire",
+        "Attribut min",
+        "input number"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex7-q1-0",
+          "competence": "Validation de saisie HTML5 : attributs min/max d'un champ number",
+          "contenu_markdown": "Un champ de saisie HTML5 de type number accepte, par défaut, aussi bien des valeurs négatives que positives ; pour interdire les valeurs négatives, il faut ajouter explicitement l'attribut min avec la borne inférieure autorisée (min=\"0\" pour n'accepter que des valeurs positives ou nulles).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "Lors de la saisie de l'instruction ci-dessous, on a oublié d'insérer une information devant permettre un bon calcul de la moyenne. Écrire l'instruction correcte. *[0,25 pt]*\n\n```html\n<td><input type=\"button\" value=\"Calculer\" =\"moyenne()\" class=\"button\"></td>\n```",
+      "corrige_markdown": "### Rappel de méthode\nPour qu'un bouton HTML déclenche une fonction JavaScript lors d'un clic, il faut lui associer un gestionnaire d'événement, le plus souvent l'attribut onclick, dont la valeur est l'appel de la fonction à exécuter (onclick=\"nomDeLaFonction()\").\n\nInstruction donnée :\n```html\n<td><input type=\"button\" value=\"Calculer\" =\"moyenne()\" class=\"button\"></td>\n```\nL'attribut `=\"moyenne()\"` n'a pas de nom : un attribut HTML s'écrit toujours sous la forme `nom=\"valeur\"`, or ici le nom de l'attribut a été omis (il manque `onclick` avant le signe `=`). Le navigateur ignore cette portion mal formée : cliquer sur le bouton n'exécute donc jamais `moyenne()`.\n\n**Instruction corrigée** :\n```html\n<td><input type=\"button\" value=\"Calculer\" onclick=\"moyenne()\" class=\"button\"></td>\n```\n\n### Piège à éviter\nNe pas confondre l'attribut `value`, qui fixe le texte affiché sur le bouton (\"Calculer\"), avec l'attribut `onclick`, qui fixe l'action déclenchée au clic : ce sont deux attributs indépendants, tous deux nécessaires ici mais avec des rôles différents.\n\n### Conseil\nFace à un attribut qui commence directement par `=\"...\"`, sans nom avant le signe égal, pense systématiquement à un gestionnaire d'événement oublié (`onclick`, `onchange`, `onsubmit`...) : c'est l'erreur la plus fréquente de ce type sur un bouton d'action.",
+      "themes": [
+        "HTML",
+        "Événements JavaScript",
+        "onclick",
+        "Formulaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex7-q2-0",
+          "competence": "Déclencher une fonction JavaScript depuis un événement HTML (onclick)",
+          "contenu_markdown": "Pour qu'un bouton HTML déclenche une fonction JavaScript lors d'un clic, il faut lui associer un gestionnaire d'événement, le plus souvent l'attribut onclick, dont la valeur est l'appel de la fonction à exécuter (onclick=\"nomDeLaFonction()\").",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "HTML5",
+    "input number",
+    "attribut min",
+    "onclick",
+    "événement JavaScript",
+    "formulaire"
+  ],
+  "incertitudes": [
+    "La feuille de style de l'instruction de la question 1 comporte, sur le sujet source, un caractère 'O' isolé avant 'width:360px' (« style=\"Owidth:360px;... »), très probablement un artefact de numérisation (bruit du scan) plutôt qu'une véritable propriété CSS : il a été retiré dans l'énoncé reformulé et dans le corrigé, cette question portant sur l'attribut min et non sur cette propriété de style.",
+    "Matière Informatique en principe couverte par le référentiel programme officiel edukora, mais le fichier backend/programme/fixtures/programme_officiel_cm_informatique.json est introuvable sur cet environnement : savoir_officiel laissé à null par manque d'accès au référentiel."
+  ],
+  "statut": "brouillon"
+}

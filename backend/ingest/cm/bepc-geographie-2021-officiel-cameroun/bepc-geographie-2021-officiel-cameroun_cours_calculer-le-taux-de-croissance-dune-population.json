@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-calcul-du-taux-de-croissance-dune-population-3e",
+  "meta": {
+    "titre": "Calculer le taux de croissance d'une population",
+    "matiere": "Géographie",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Démographie et statistiques de population",
+    "duree_estimee_min": 25,
+    "tags": ["taux de croissance", "démographie", "population du Cameroun", "calcul statistique", "RGPH"],
+    "savoir_officiel": {"classe": "3e", "serie_label": null, "module_numero": "G2", "savoir_numero": "I"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-geographie-2021-officiel-cameroun.pdf",
+    "epreuve_titre": "BEPC - Épreuve officielle de Géographie 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bepc-geographie-2021-officiel-cameroun-ex1-qA2.2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau de recensement affiche des chiffres bruts, 935 166 habitants ici, 3 174 437 là, mais ces nombres seuls ne disent rien de la vitesse à laquelle une région se peuple. Le taux de croissance transforme cette masse de chiffres en une information comparable d'une région à l'autre : le Littoral s'est-il peuplé plus vite que l'Ouest, et de combien ? C'est exactement ce que le BEPC te demande de calculer à partir d'un tableau de recensement, et c'est une compétence que tu retrouveras aussi bien en géographie de la population qu'en économie."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lire un tableau statistique à double entrée (régions en ligne, années en colonne)",
+        "Calculer une différence entre deux grands nombres sans erreur d'arrondi",
+        "Convertir une fraction en pourcentage en la multipliant par 100"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule du taux de croissance d'une population",
+      "contenu_markdown": "Le taux de croissance (ou taux de variation) d'une population entre deux dates rapporte l'accroissement observé, c'est-à-dire la population finale moins la population initiale, à la population de départ. Le résultat, multiplié par 100, s'exprime en pourcentage.\n\nCe calcul repose toujours sur trois éléments lus dans le tableau source : la population de la date la plus ancienne ($P_i$), la population de la date la plus récente ($P_f$), et rien d'autre - aucune autre colonne du tableau n'entre dans le calcul, même si d'autres années intermédiaires y figurent.\n\nUn résultat positif signifie que la population a augmenté sur la période ; un résultat négatif (rare au Cameroun, sauf pour des zones précises en cas de crise) signifierait une baisse de population.",
+      "formule_principale": "\\tau = \\dfrac{P_f - P_i}{P_i} \\times 100",
+      "variantes": [
+        {
+          "nom": "Taux de croissance annuel moyen",
+          "quand_utiliser": "Quand la question demande explicitement un rythme \"par an\" plutôt que la variation totale entre deux dates",
+          "contenu_markdown": "Le taux de croissance annuel moyen $r$ vérifie $P_f = P_i \\times (1+r)^n$, où $n$ est le nombre d'années séparant les deux dates (une croissance composée, comme des intérêts qui s'accumulent chaque année). On en déduit $r = \\left(\\dfrac{P_f}{P_i}\\right)^{\\frac{1}{n}} - 1$, exprimé ensuite en pourcentage. Cette méthode est plus longue et n'est utilisée au BEPC que si l'énoncé précise explicitement \"taux annuel moyen\" ; dans tous les autres cas, la formule du taux de croissance global entre les deux dates suffit."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "D'après le tableau du recensement du Cameroun, la région du Littoral comptait 935 166 habitants en 1976 et 3 174 437 habitants en 2013. Calcule le taux de croissance de la population du Littoral entre 1976 et 2013.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la population initiale et la population finale",
+          "justification": "Le taux de croissance compare toujours un état de départ (l'année la plus ancienne) à un état d'arrivée (l'année la plus récente)",
+          "resultat_markdown": "$P_i = 935\\,166$ habitants en 1976 ; $P_f = 3\\,174\\,437$ habitants en 2013"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'accroissement de population",
+          "justification": "L'accroissement mesure la population supplémentaire gagnée sur la période, avant de la rapporter à la population de départ",
+          "resultat_markdown": "$P_f - P_i = 3\\,174\\,437 - 935\\,166 = 2\\,239\\,271$ habitants supplémentaires"
+        },
+        {
+          "numero": 3,
+          "action": "Rapporter l'accroissement à la population initiale",
+          "justification": "Diviser par la population de départ permet de comparer cet accroissement à la taille de départ de la région, indépendamment de sa population absolue",
+          "resultat_markdown": "$\\dfrac{2\\,239\\,271}{935\\,166} \\approx 2,3945$"
+        },
+        {
+          "numero": 4,
+          "action": "Convertir le résultat en pourcentage",
+          "justification": "Multiplier par 100 exprime le résultat sous une forme lisible et comparable d'une région à l'autre",
+          "resultat_markdown": "$2,3945 \\times 100 \\approx 239,45\\ \\%$"
+        }
+      ],
+      "conclusion_markdown": "La population du Littoral a augmenté de 239,45 % entre 1976 et 2013 : elle a plus que triplé sur la période, ce qui traduit une forte attractivité économique et migratoire de la région, portée notamment par le port et l'industrie de Douala."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser l'accroissement par la population finale au lieu de la population initiale",
+          "pourquoi_faux": "Le taux de croissance mesure la variation par rapport au point de départ, pas par rapport au point d'arrivée : diviser par $P_f$ sous-estime systématiquement le taux réel.",
+          "correction_markdown": "Toujours diviser par $P_i$, la population de la date la plus ancienne, jamais celle de la date la plus récente."
+        },
+        {
+          "erreur_markdown": "Oublier de multiplier par 100 et donner le résultat sous forme décimale (\"2,39\" au lieu de \"239 %\")",
+          "pourquoi_faux": "Un taux de croissance s'exprime en pourcentage par convention ; un correcteur du BEPC attend \"239,45 %\", pas \"2,3945\", même si la valeur numérique est correcte.",
+          "correction_markdown": "Terminer systématiquement le calcul par une multiplication par 100 et noter le symbole %."
+        },
+        {
+          "erreur_markdown": "Arrondir les effectifs de population avant de calculer la différence (par exemple utiliser \"3,17 million\" au lieu de 3 174 437)",
+          "pourquoi_faux": "Un arrondi précoce sur des effectifs à 7 chiffres modifie sensiblement le résultat final, alors que le calcul exact ne prend pas plus de temps avec une calculatrice.",
+          "correction_markdown": "Recopier les effectifs complets du tableau et n'arrondir qu'à la toute fin, sur le pourcentage final."
+        },
+        {
+          "erreur_markdown": "Confondre le taux de croissance total d'une population (celui calculé ici, à partir des effectifs d'un recensement) avec le taux de natalité ou le taux d'accroissement naturel",
+          "pourquoi_faux": "Le taux calculé ici regroupe tous les facteurs de variation de la population (naissances, décès, migrations), puisqu'il compare simplement deux effectifs totaux ; le taux de natalité, lui, ne mesure que les naissances rapportées à la population.",
+          "correction_markdown": "Ne pas chercher à expliquer le taux par une seule cause (natalité ou migration) sauf si la question le demande explicitement : le calcul lui-même ne porte que sur les effectifs du tableau."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "En 1976, la région du Nord-Ouest comptait 980 531 habitants. En 2013, elle en comptait 1 900 547 (projection). Calcule le taux de croissance de la population du Nord-Ouest entre 1976 et 2013.",
+          "solution_markdown": "1. Population initiale et finale : $P_i = 980\\,531$ (1976) ; $P_f = 1\\,900\\,547$ (2013).\n2. Accroissement : $P_f - P_i = 1\\,900\\,547 - 980\\,531 = 920\\,016$ habitants supplémentaires.\n3. Rapport à la population initiale : $\\dfrac{920\\,016}{980\\,531} \\approx 0,9383$.\n4. Conversion en pourcentage : $0,9383 \\times 100 \\approx 93,83\\ \\%$.\n\nLa population du Nord-Ouest a donc augmenté de 93,83 % entre 1976 et 2013 : elle a presque doublé sur la période."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "D'après le même tableau de recensement, la région de l'Est comptait 366 235 habitants en 1976 et 824 204 habitants en 2013. Calcule le taux de croissance de la population de l'Est sur cette période, puis compare-le à celui du Littoral (239,45 %, voir l'exemple résolu). Que peux-tu en conclure sur le rythme de peuplement des deux régions ?",
+          "solution_markdown": "1. Population initiale et finale : $P_i = 366\\,235$ (1976) ; $P_f = 824\\,204$ (2013).\n2. Accroissement : $824\\,204 - 366\\,235 = 457\\,969$ habitants supplémentaires.\n3. Rapport à la population initiale : $\\dfrac{457\\,969}{366\\,235} \\approx 1,2505$.\n4. Conversion en pourcentage : $1,2505 \\times 100 \\approx 125,05\\ \\%$.\n\nLa population de l'Est a donc augmenté de 125,05 % entre 1976 et 2013, contre 239,45 % pour le Littoral. Le Littoral s'est peuplé presque deux fois plus vite que l'Est sur la même période : cet écart traduit l'attractivité économique et portuaire de Douala, pôle industriel et commercial majeur, face à une région de l'Est moins urbanisée, plus enclavée et moins industrialisée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le tableau donne aussi la population totale du Cameroun : 7 663 246 habitants en 1976 et 21 143 237 habitants en 2013. a) Calcule le taux de croissance de la population totale du Cameroun sur cette période. b) Sachant que la période s'étend sur 37 ans, calcule le taux de croissance annuel moyen à l'aide de la formule présentée dans la variante de ce cours, puis compare les deux résultats obtenus.",
+          "solution_markdown": "**a) Taux de croissance global**\n\n1. Population initiale et finale : $P_i = 7\\,663\\,246$ (1976) ; $P_f = 21\\,143\\,237$ (2013).\n2. Accroissement : $21\\,143\\,237 - 7\\,663\\,246 = 13\\,479\\,991$ habitants supplémentaires.\n3. Rapport à la population initiale : $\\dfrac{13\\,479\\,991}{7\\,663\\,246} \\approx 1,7590$.\n4. Conversion en pourcentage : $1,7590 \\times 100 \\approx 175,90\\ \\%$.\n\nLa population du Cameroun a donc augmenté de 175,90 % entre 1976 et 2013.\n\n**b) Taux de croissance annuel moyen**\n\nLe nombre d'années séparant les deux dates est $n = 2013 - 1976 = 37$ ans. Le rapport $\\dfrac{P_f}{P_i} = \\dfrac{21\\,143\\,237}{7\\,663\\,246} \\approx 2,7590$ correspond au facteur multiplicatif total de la population sur la période (elle a été multipliée par environ 2,76).\n\n$$r = \\left(2,7590\\right)^{\\frac{1}{37}} - 1 \\approx 1,0278 - 1 = 0,0278$$\n\nSoit $r \\approx 2,78\\ \\%$ par an.\n\n**Comparaison** : le taux global sur 37 ans (175,90 %) paraît spectaculaire, alors que le taux annuel moyen (2,78 %) semble modeste. Les deux résultats ne se contredisent pas : ils mesurent la même croissance à deux échelles de temps différentes. Un taux annuel de seulement 2,78 %, appliqué chaque année pendant 37 ans, suffit à multiplier la population par près de 2,76 - exactement comme un capital placé à intérêts composés qui, sans jamais bondir d'une année sur l'autre, finit par doubler ou tripler sur plusieurs décennies."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le taux de croissance compare toujours la population d'arrivée à la population de départ, jamais l'inverse : $\\tau = \\dfrac{P_f - P_i}{P_i} \\times 100$.",
+        "N'arrondis les effectifs qu'à la toute fin du calcul, jamais avant de faire la différence $P_f - P_i$.",
+        "Un taux de croissance élevé sur une longue période ne signifie pas une croissance annuelle explosive : un taux annuel modeste, composé sur plusieurs décennies, peut suffire à tripler une population.",
+        "Ce calcul revient dans presque tous les sujets de géographie qui donnent un tableau démographique par région ou par pays : maîtriser la formule une fois pour toutes fait gagner du temps sur n'importe quel sujet.",
+        "Au BEPC, ce type de question évalue la vérification des savoir-faire : la rigueur du calcul compte autant que la formule elle-même, y compris l'unité (%) et le nombre de décimales retenues."
+      ]
+    }
+  ]
+}

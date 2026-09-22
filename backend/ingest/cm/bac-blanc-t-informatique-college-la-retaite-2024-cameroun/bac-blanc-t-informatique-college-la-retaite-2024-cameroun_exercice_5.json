@@ -1,0 +1,156 @@
+{
+  "epreuve_source": "bac-blanc-t-informatique-college-la-retaite-2024-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "filiere_serie_a": null,
+  "serie": "TI",
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "institution": "Collège de la Retraite",
+  "annee": 2024,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "statut": "brouillon",
+  "numero_exercice": "5",
+  "introduction_markdown": null,
+  "points": 5,
+  "groupes": [
+    "PARTIE II : PROGRAMMATION WEB (10 points)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-blanc-t-informatique-college-la-retaite-2024-cameroun_exercice_5_fig_1.png",
+      "page_source": 3,
+      "type": "document",
+      "legende": "Formulaire à reproduire (champs NOM, PRENOM, AGE, TELEPHONE, MONTANT et boutons SOUMETTRE/ANNULER)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "bac-blanc-t-informatique-college-la-retaite-2024-cameroun_exercice_5_fig_2.png",
+      "page_source": 3,
+      "type": "document",
+      "legende": "Capture de la barre d'adresse du navigateur après soumission : onglet localhost/tp/page1.php, adresse localhost/tp/enregistrement.php",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2 : Évaluation des compétences (5 points)**\n\nOn considère l'extrait de formulaire ci-dessous ![fig-1](bac-blanc-t-informatique-college-la-retaite-2024-cameroun_exercice_5_fig_1.png) et la capture de la barre d'adresse obtenue lors de sa soumission ![fig-2](bac-blanc-t-informatique-college-la-retaite-2024-cameroun_exercice_5_fig_2.png), extraits d'un logiciel de gestion des cotisations des membres d'une association. En effet, l'application actuelle rencontre des problèmes, et le président de l'association sollicite votre aide pour lui concevoir une version améliorée. En vous basant sur vos connaissances et compétences en programmation Web, indiquez comment vous allez procéder en répondant aux questions ci-après.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Reproduire le code de ce formulaire en tenant compte de : la méthode d'envoi utilisée ; l'organisation du formulaire dans un tableau ; le réceptionnaire du formulaire soumis ; le fait que chaque champ du formulaire porte le nom de son étiquette ; le fait que les champs noms, prénoms et montant sont obligatoires et contrôlés par le navigateur. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn formulaire HTML se décrit avec une balise <form> dont les attributs method (verbe HTTP d'envoi) et action (page qui réceptionne les données) déterminent son comportement ; un champ devient obligatoire, avec contrôle assuré par le navigateur lui-même avant tout envoi, dès qu'on lui ajoute l'attribut HTML5 required.\n\nLa capture de la barre d'adresse fournie avec l'énoncé (figure 2) montre, après soumission, une URL propre (`localhost/tp/enregistrement.php`) sans aucun paramètre visible : c'est la signature d'un envoi en méthode **POST** (une méthode GET afficherait les valeurs saisies dans l'URL, sous la forme `enregistrement.php?nom=...&prenom=...`). Le réceptionnaire du formulaire est donc `enregistrement.php`, désigné par l'attribut `action`.\n\n```html\n<form method=\"post\" action=\"enregistrement.php\">\n    <table>\n        <tr><td>NOM</td><td><input type=\"text\" name=\"nom\" required></td></tr>\n        <tr><td>PRENOM</td><td><input type=\"text\" name=\"prenom\" required></td></tr>\n        <tr><td>AGE</td><td><input type=\"text\" name=\"age\"></td></tr>\n        <tr><td>TELEPHONE</td><td><input type=\"text\" name=\"telephone\"></td></tr>\n        <tr><td>MONTANT</td><td><input type=\"text\" name=\"montant\" required></td></tr>\n    </table>\n    <input type=\"submit\" value=\"SOUMETTRE\">\n    <input type=\"reset\" value=\"ANNULER\">\n</form>\n```\n\n### Piège à éviter\nLe bouton « ANNULER » du formulaire d'origine (figure 1) doit réinitialiser les champs, pas les soumettre : utilise `<input type=\"reset\">` et non `<input type=\"submit\">` pour ce bouton, sous peine d'envoyer un formulaire vide au serveur.\n\n### Conseil\nLe seul indice fourni pour déduire la méthode d'envoi est l'absence de paramètres dans l'URL après soumission (figure 2) : entraîne-toi à repérer ce type d'indice visuel, fréquent dans les sujets de programmation Web qui fournissent une capture d'écran plutôt qu'un énoncé purement textuel.",
+      "themes": [
+        "Formulaires HTML",
+        "Méthodes GET/POST",
+        "Validation HTML5 (required)"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex5-q1-1",
+          "competence": "Construction d'un formulaire HTML avec validation navigateur",
+          "contenu_markdown": "Un formulaire HTML se décrit avec une balise <form> dont les attributs method (verbe HTTP d'envoi) et action (page qui réceptionne les données) déterminent son comportement ; un champ devient obligatoire, avec contrôle assuré par le navigateur lui-même avant tout envoi, dès qu'on lui ajoute l'attribut HTML5 required.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Proposer un code JavaScript qui vérifie que le montant saisi est supérieur ou égal à 5000 F, et que le formulaire n'est soumis que si tout est correctement saisi. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne vérification JavaScript exécutée au moment de la soumission s'accroche à l'évènement onsubmit du formulaire : la fonction appelée doit renvoyer false pour bloquer l'envoi si la saisie est invalide, et true pour le laisser se poursuivre.\n\n```html\n<form name=\"monFormulaire\" method=\"post\" action=\"enregistrement.php\" onsubmit=\"return verifierMontant();\">\n```\n\n```javascript\nfunction verifierMontant() {\n    var montant = document.forms[\"monFormulaire\"][\"montant\"].value;\n    if (isNaN(parseFloat(montant)) || parseFloat(montant) < 5000) {\n        alert(\"Le montant doit être un nombre supérieur ou égal à 5000 FCFA.\");\n        return false;\n    }\n    return true;\n}\n```\n\n### Piège à éviter\nComparer directement `montant < 5000` sans conversion préalable compare en réalité deux chaînes de caractères si `montant` n'a pas été converti avec `parseFloat()` : le résultat devient alors imprévisible (comparaison lexicographique) plutôt qu'une vraie comparaison numérique.\n\n### Conseil\nRetourner explicitement `false` dans le gestionnaire `onsubmit` est ce qui empêche réellement l'envoi : une fonction qui se contente d'afficher une alerte sans `return false` n'empêche jamais la soumission du formulaire.",
+      "themes": [
+        "Validation JavaScript côté client",
+        "Évènement onsubmit"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex5-q2-1",
+          "competence": "Validation JavaScript avant soumission d'un formulaire",
+          "contenu_markdown": "Une vérification JavaScript exécutée au moment de la soumission s'accroche à l'évènement onsubmit du formulaire : la fonction appelée doit renvoyer false pour bloquer l'envoi si la saisie est invalide, et true pour le laisser se poursuivre.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Écrire un code PHP qui : récupère les informations saisies dans le formulaire dans les variables de mêmes noms ; se connecte au serveur `192.168.10.12` ; sélectionne la base de données `cotisation` ; insère les données récupérées dans la table `participation`, dont les champs sont (Num, Noms, prenoms, age, telephone, montant, date), sachant que la date correspond à la date système d'enregistrement. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nUn script PHP de traitement de formulaire suit toujours la même succession d'étapes : récupérer les données soumises (superglobale \\$_POST), établir la connexion au serveur de base de données, sélectionner la base voulue, puis exécuter la requête d'insertion - la date système s'obtient avec la fonction date(), sans jamais être saisie par l'utilisateur.\n\n```php\n<?php\n// Récupération des informations saisies dans le formulaire\n$nom = $_POST['nom'];\n$prenom = $_POST['prenom'];\n$age = $_POST['age'];\n$telephone = $_POST['telephone'];\n$montant = $_POST['montant'];\n$date = date(\"Y-m-d\");\n\n// Connexion au serveur\n$connexion = mysqli_connect(\"192.168.10.12\", \"root\", \"\");\nif (!$connexion) {\n    die(\"Erreur de connexion : \" . mysqli_connect_error());\n}\n\n// Selection de la base de donnees\nmysqli_select_db($connexion, \"cotisation\");\n\n// Insertion des donnees dans la table participation\n$requete = \"INSERT INTO participation (Noms, prenoms, age, telephone, montant, date)\n             VALUES ('$nom', '$prenom', '$age', '$telephone', '$montant', '$date')\";\nmysqli_query($connexion, $requete);\n?>\n```\n\nLe champ `Num` n'apparaît volontairement pas dans la liste des colonnes de l'`INSERT` : il s'agit très probablement de la clé primaire de la table, gérée automatiquement par le SGBD (auto-incrément), qui n'a donc pas besoin d'être renseignée par le script.\n\n### Piège à éviter\nInsérer directement les valeurs de `$_POST` dans la requête SQL, comme fait ici pour rester au niveau attendu de l'exercice, expose en réalité à une injection SQL dans une application réelle : un formulaire de production doit utiliser des requêtes préparées (`mysqli_prepare` / `bind_param`) plutôt que de la concaténation de chaînes.\n\n### Conseil\nSépare toujours mentalement les quatre étapes (récupération, connexion, sélection de la base, insertion) : c'est exactement l'ordre dans lequel un examinateur attend de les voir apparaître dans ta copie, et cela évite d'oublier une étape.",
+      "themes": [
+        "PHP et MySQL (mysqli)",
+        "Traitement de formulaire",
+        "Date système en PHP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex5-q3-1",
+          "competence": "Connexion, sélection et insertion MySQL depuis PHP",
+          "contenu_markdown": "Un script PHP de traitement de formulaire suit toujours la même succession d'étapes : récupérer les données soumises (superglobale $_POST), établir la connexion au serveur de base de données, sélectionner la base voulue, puis exécuter la requête d'insertion - la date système s'obtient avec la fonction date(), sans jamais être saisie par l'utilisateur.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Écrire un extrait de code PHP qui affiche la table `participation` sous forme d'un tableau HTML. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nAfficher le contenu d'une table sous forme de tableau HTML consiste à exécuter une requête SELECT, puis à parcourir chaque ligne du résultat avec une boucle (while associée à mysqli_fetch_assoc), en générant une ligne <tr> par enregistrement.\n\n```php\n<?php\n$resultat = mysqli_query($connexion, \"SELECT * FROM participation\");\necho \"<table border='1'>\";\necho \"<tr><th>Num</th><th>Noms</th><th>Prenoms</th><th>Age</th><th>Telephone</th><th>Montant</th><th>Date</th></tr>\";\nwhile ($ligne = mysqli_fetch_assoc($resultat)) {\n    echo \"<tr>\";\n    echo \"<td>\" . $ligne['Num'] . \"</td>\";\n    echo \"<td>\" . $ligne['Noms'] . \"</td>\";\n    echo \"<td>\" . $ligne['prenoms'] . \"</td>\";\n    echo \"<td>\" . $ligne['age'] . \"</td>\";\n    echo \"<td>\" . $ligne['telephone'] . \"</td>\";\n    echo \"<td>\" . $ligne['montant'] . \"</td>\";\n    echo \"<td>\" . $ligne['date'] . \"</td>\";\n    echo \"</tr>\";\n}\necho \"</table>\";\n?>\n```\n\n### Piège à éviter\nOuvrir la balise `<table>` à l'intérieur de la boucle `while` (au lieu de l'ouvrir une seule fois avant) génère une balise `<table>` par ligne de résultat, ce qui casse totalement la mise en forme du tableau HTML final.",
+      "themes": [
+        "Affichage de données MySQL en HTML",
+        "Boucle de parcours de résultats"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex5-q4-1",
+          "competence": "Affichage HTML d'un résultat de requête MySQL",
+          "contenu_markdown": "Afficher le contenu d'une table sous forme de tableau HTML consiste à exécuter une requête SELECT, puis à parcourir chaque ligne du résultat avec une boucle (while associée à mysqli_fetch_assoc), en générant une ligne <tr> par enregistrement.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "formulaire HTML",
+    "methode POST",
+    "validation JavaScript",
+    "PHP mysqli",
+    "insertion base de donnees",
+    "affichage tableau HTML",
+    "Terminale TI"
+  ],
+  "incertitudes": [
+    "savoir_officiel non renseigné : référentiel non accessible depuis cet environnement (voir remarque détaillée dans l'exercice 1).",
+    "Aucun cours généré à partir des rappels de méthode de cet exercice dans cette passe (priorité donnée à la complétude et à l exactitude des corrigés sur les 5 exercices) ; à traiter lors d une prochaine exécution du traitement en lot."
+  ]
+}

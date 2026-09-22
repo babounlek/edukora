@@ -1,0 +1,126 @@
+[
+  {
+    "external_id": "cqc-endomorphisme-faible-0",
+    "theme": "endomorphisme",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "C-E", "module_numero": "28", "savoir_numero": "I"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $E$ un espace vectoriel réel de dimension 3, muni d'une base $(\\vec u,\\vec v,\\vec w)$. On considère l'endomorphisme $f$ de $E$ défini par $f(\\vec u)=2\\vec u-\\vec w$, $f(\\vec v)=\\vec v+3\\vec w$, $f(\\vec w)=-\\vec u+\\vec v$. Donner la matrice de $f$ dans la base $(\\vec u,\\vec v,\\vec w)$.",
+    "corrige_markdown": "### Rappel de méthode\nLa matrice d'un endomorphisme dans une base donnée se construit colonne par colonne : la $k$-ième colonne contient les coordonnées de l'image du $k$-ième vecteur de base, exprimées dans cette même base.\n\n### Corrigé\nOn lit les coordonnées de chaque image dans la base $(\\vec u,\\vec v,\\vec w)$ : $f(\\vec u)=2\\vec u+0\\vec v-\\vec w$ donne la colonne $(2,0,-1)$, $f(\\vec v)=0\\vec u+\\vec v+3\\vec w$ donne la colonne $(0,1,3)$, et $f(\\vec w)=-\\vec u+\\vec v+0\\vec w$ donne la colonne $(-1,1,0)$.\n\n$$M=\\begin{pmatrix}2&0&-1\\\\0&1&1\\\\-1&3&0\\end{pmatrix}$$",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6591]
+  },
+  {
+    "external_id": "cqc-endomorphisme-faible-1",
+    "theme": "endomorphisme",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "C-E", "module_numero": "28", "savoir_numero": "I"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $E$ un espace vectoriel réel de dimension 2, muni d'une base $(\\vec p,\\vec q)$. On considère l'endomorphisme $g$ de $E$ défini par $g(\\vec p)=3\\vec p-6\\vec q$ et $g(\\vec q)=-\\vec p+2\\vec q$. $g$ est-il un isomorphisme de $E$ ?",
+    "corrige_markdown": "### Rappel de méthode\nEn dimension finie, un endomorphisme est un isomorphisme si et seulement si l'image d'une base est encore une base de l'espace d'arrivée, ce qui équivaut à un déterminant non nul de sa matrice. Dès que les colonnes de la matrice sont proportionnelles, ce déterminant est nul.\n\n### Corrigé\nDans la base $(\\vec p,\\vec q)$, la matrice de $g$ est $M=\\begin{pmatrix}3&-1\\\\-6&2\\end{pmatrix}$, dont les colonnes vérifient $(3,-6)=-3\\times(-1,2)$ : elles sont colinéaires. Son déterminant vaut $\\det(M)=3\\times2-(-1)\\times(-6)=6-6=0$.\n\nOn le vérifie aussi directement : $g(\\vec p)+3g(\\vec q)=(3\\vec p-6\\vec q)+3(-\\vec p+2\\vec q)=\\vec 0$, donc le vecteur non nul $\\vec p+3\\vec q$ appartient à $\\ker g$. $g$ n'est donc pas injectif, donc pas un isomorphisme de $E$.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "Oui, car $(g(\\vec p),g(\\vec q))$ est une famille libre de $E$."},
+      {"lettre": "b", "texte": "Non, car $g(\\vec p)$ et $g(\\vec q)$ sont colinéaires, donc le déterminant de la matrice de $g$ est nul."},
+      {"lettre": "c", "texte": "Non, car $E$ et l'espace d'arrivée n'ont pas la même dimension."},
+      {"lettre": "d", "texte": "On ne peut pas conclure sans connaître l'image d'un troisième vecteur."}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [6547]
+  },
+  {
+    "external_id": "cqc-endomorphisme-moyenne-0",
+    "theme": "endomorphisme",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "C-E", "module_numero": "28", "savoir_numero": "I"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $E$ le plan vectoriel muni de sa base canonique $(\\vec\\imath,\\vec\\jmath)$. On considère l'endomorphisme $h$ de $E$ défini par $h(\\vec\\imath)=4\\vec\\imath+6\\vec\\jmath$ et $h(\\vec\\jmath)=2\\vec\\imath+3\\vec\\jmath$. Déterminer une équation cartésienne du noyau de $h$, puis une équation cartésienne de l'image de $h$.",
+    "corrige_markdown": "### Rappel de méthode\nLe noyau d'un endomorphisme est l'ensemble des vecteurs dont l'image est nulle : on le détermine en résolvant le système obtenu en annulant les deux coordonnées de l'image. L'image, elle, est le sous-espace engendré par les images des vecteurs de base.\n\n### Corrigé\nPour $\\vec u=x\\vec\\imath+y\\vec\\jmath$, $h(\\vec u)=x(4\\vec\\imath+6\\vec\\jmath)+y(2\\vec\\imath+3\\vec\\jmath)=(4x+2y)\\vec\\imath+(6x+3y)\\vec\\jmath$.\n\n$h(\\vec u)=\\vec 0 \\iff \\begin{cases}4x+2y=0\\\\6x+3y=0\\end{cases}$. Les deux équations sont proportionnelles (la seconde vaut $1,5$ fois la première) et se ramènent toutes deux à $2x+y=0$.\n\nÉquation cartésienne du noyau : $2x+y=0$.\n\nL'image de $h$ est engendrée par $h(\\vec\\imath)=(4,6)$ et $h(\\vec\\jmath)=(2,3)$ ; or $(4,6)=2\\times(2,3)$, donc $\\mathrm{Im}\\,h=\\mathrm{Vect}\\big((2,3)\\big)$, une droite. Un couple $(x,y)$ appartient à cette droite si et seulement s'il est colinéaire à $(2,3)$, c'est-à-dire $3x-2y=0$.\n\nÉquation cartésienne de l'image : $3x-2y=0$.\n\nVérification : $\\dim\\ker h+\\dim\\mathrm{Im}\\,h=1+1=2=\\dim E$, conforme au théorème du rang.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6837]
+  },
+  {
+    "external_id": "cqc-endomorphisme-moyenne-1",
+    "theme": "endomorphisme",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "C-E", "module_numero": "28", "savoir_numero": "I"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $E$ un espace vectoriel réel de dimension 3, muni d'une base $(\\vec a,\\vec b,\\vec c)$. On considère l'endomorphisme $k$ de $E$ défini par $k(\\vec a)=2\\vec a-\\vec b$, $k(\\vec b)=\\vec a+\\vec c$, $k(\\vec c)=\\vec b-\\vec c$. Quelle est la valeur de $\\det(M)$, où $M$ est la matrice de $k$ dans la base $(\\vec a,\\vec b,\\vec c)$, et qu'en déduit-on pour $k$ ?",
+    "corrige_markdown": "### Rappel de méthode\nUn endomorphisme en dimension finie est un isomorphisme si et seulement si le déterminant de sa matrice dans une base quelconque est non nul ; ce déterminant se calcule par développement selon une ligne ou une colonne.\n\n### Corrigé\nLes coordonnées des images donnent $M=\\begin{pmatrix}2&1&0\\\\-1&0&1\\\\0&1&-1\\end{pmatrix}$ (colonnes : coordonnées de $k(\\vec a)$, $k(\\vec b)$, $k(\\vec c)$).\n\nEn développant selon la première ligne :\n$$\\det(M)=2\\big(0\\times(-1)-1\\times1\\big)-1\\big((-1)\\times(-1)-1\\times0\\big)+0\\big((-1)\\times1-0\\times0\\big)$$\n$$=2\\times(-1)-1\\times1+0=-2-1=-3$$\n\n$\\det(M)=-3\\neq0$, donc $k$ est un isomorphisme de $E$.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "$\\det(M)=-3$, donc $k$ est un isomorphisme de $E$."},
+      {"lettre": "b", "texte": "$\\det(M)=3$, donc $k$ est un isomorphisme de $E$."},
+      {"lettre": "c", "texte": "$\\det(M)=0$, donc $k$ n'est pas un isomorphisme de $E$."},
+      {"lettre": "d", "texte": "$\\det(M)=-1$, donc $k$ n'est pas un isomorphisme de $E$."}
+    ],
+    "reponse_correcte": "a",
+    "source_exercises": [6547]
+  },
+  {
+    "external_id": "cqc-endomorphisme-moyenne-2",
+    "theme": "endomorphisme",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "C-E", "module_numero": "28", "savoir_numero": "I"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $E$ un espace vectoriel réel de dimension 3, muni d'une base $(\\vec{e_1},\\vec{e_2},\\vec{e_3})$. On considère l'endomorphisme $n$ de $E$ défini par $n(\\vec{e_1})=\\vec{e_1}+2\\vec{e_2}-\\vec{e_3}$, $n(\\vec{e_2})=2\\vec{e_1}+4\\vec{e_2}-2\\vec{e_3}$, $n(\\vec{e_3})=\\vec{e_2}+\\vec{e_3}$. Déterminer une base du noyau de $n$, puis une équation cartésienne de l'image de $n$.",
+    "corrige_markdown": "### Rappel de méthode\nOn détermine le noyau en résolvant $n(x\\vec{e_1}+y\\vec{e_2}+z\\vec{e_3})=\\vec 0$, un système linéaire en $x,y,z$. L'image est engendrée par les images des vecteurs de base ; quand elle est de dimension 2, son équation cartésienne s'obtient en éliminant les paramètres d'une combinaison linéaire générale de deux vecteurs directeurs indépendants.\n\n### Corrigé\nPour $\\vec u=x\\vec{e_1}+y\\vec{e_2}+z\\vec{e_3}$ :\n$$n(\\vec u)=(x+2y)\\vec{e_1}+(2x+4y+z)\\vec{e_2}+(-x-2y+z)\\vec{e_3}$$\n\n$n(\\vec u)=\\vec 0$ donne le système $\\begin{cases}x+2y=0\\\\2x+4y+z=0\\\\-x-2y+z=0\\end{cases}$. La première équation donne $x=-2y$. En reportant dans la deuxième : $2(-2y)+4y+z=z=0$. La troisième équation devient alors $-(-2y)-2y+0=0$, toujours vraie : elle n'apporte pas de condition supplémentaire.\n\nLe noyau est donc l'ensemble des vecteurs tels que $x=-2y$ et $z=0$, avec $y$ libre : en posant $y=1$, une base du noyau est $\\big(-2\\vec{e_1}+\\vec{e_2}\\big)$, et $\\dim\\ker n=1$.\n\nPour l'image, $n(\\vec{e_2})=2\\,n(\\vec{e_1})$ : ce vecteur n'apporte rien de nouveau, donc $\\mathrm{Im}\\,n=\\mathrm{Vect}\\big(n(\\vec{e_1}),n(\\vec{e_3})\\big)=\\mathrm{Vect}\\big((1,2,-1),(0,1,1)\\big)$, de dimension 2 (les deux vecteurs ne sont pas colinéaires).\n\nUn triplet $(x,y,z)$ de cette image s'écrit $x=\\lambda$, $y=2\\lambda+\\mu$, $z=-\\lambda+\\mu$ pour des réels $\\lambda,\\mu$. De la première égalité $\\lambda=x$, de la troisième $\\mu=z+\\lambda=z+x$. En reportant dans la deuxième : $y=2x+(z+x)=3x+z$.\n\nÉquation cartésienne de l'image : $3x-y+z=0$.\n\nVérification : $\\dim\\ker n+\\dim\\mathrm{Im}\\,n=1+2=3=\\dim E$, conforme au théorème du rang.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6837]
+  },
+  {
+    "external_id": "cqc-endomorphisme-elevee-0",
+    "theme": "endomorphisme",
+    "savoir_officiel": {"classe": "Tle", "serie_label": "C-E", "module_numero": "28", "savoir_numero": "I"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"},
+      {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $E$ un espace vectoriel réel de dimension 3, muni d'une base $(\\vec\\alpha,\\vec\\beta,\\vec\\gamma)$. On considère l'endomorphisme $m$ de $E$ défini par $m(\\vec\\alpha)=\\vec\\beta$, $m(\\vec\\beta)=\\vec\\gamma$, $m(\\vec\\gamma)=\\vec\\beta+\\vec\\gamma$, et le sous-espace $G=\\mathrm{Vect}(\\vec\\alpha,\\vec\\beta)$.\n\na) Déterminer une base de $\\ker m$, et vérifier que $E=\\ker m\\oplus G$, c'est-à-dire que $G$ est un supplémentaire de $\\ker m$ dans $E$.\n\nb) On note $\\theta$ la restriction de $m$ à $G$. Démontrer que $\\theta$ est une application linéaire bijective de $G$ sur $\\mathrm{Im}\\,m$.",
+    "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une restriction d'un endomorphisme à un supplémentaire de son noyau réalise une bijection vers l'image, on établit séparément l'injectivité (le supplémentaire ne rencontre le noyau qu'au vecteur nul) et la surjectivité (tout antécédent se décompose de façon unique comme somme d'un élément du noyau et d'un élément du supplémentaire, grâce à la somme directe).\n\n### Corrigé\n**a)** Pour $\\vec u=x\\vec\\alpha+y\\vec\\beta+z\\vec\\gamma$, $m(\\vec u)=x\\vec\\beta+y\\vec\\gamma+z(\\vec\\beta+\\vec\\gamma)=(x+z)\\vec\\beta+(y+z)\\vec\\gamma$.\n\n$m(\\vec u)=\\vec 0 \\iff x+z=0 \\text{ et } y+z=0 \\iff x=-z \\text{ et } y=-z$. En posant $z=1$, une base de $\\ker m$ est $\\big(-\\vec\\alpha-\\vec\\beta+\\vec\\gamma\\big)$, donc $\\dim\\ker m=1$.\n\nTout vecteur de $G=\\mathrm{Vect}(\\vec\\alpha,\\vec\\beta)$ a une coordonnée nulle selon $\\vec\\gamma$, alors qu'un vecteur non nul de $\\ker m$ a toujours une coordonnée non nulle selon $\\vec\\gamma$ : donc $\\ker m\\cap G=\\{\\vec 0\\}$. Comme $\\dim\\ker m+\\dim G=1+2=3=\\dim E$ et que l'intersection est réduite au vecteur nul, la somme est directe : $E=\\ker m\\oplus G$.\n\n**b)** $\\theta$ est linéaire comme restriction de l'application linéaire $m$ à $G$.\n\n*Injectivité.* Soit $\\vec x\\in G$ tel que $\\theta(\\vec x)=\\vec 0$. Comme $\\theta(\\vec x)=m(\\vec x)$, on a $\\vec x\\in\\ker m$. Or $\\vec x\\in G$ par hypothèse, donc $\\vec x\\in\\ker m\\cap G=\\{\\vec 0\\}$, d'où $\\vec x=\\vec 0$ : $\\theta$ est injective.\n\n*Surjectivité sur $\\mathrm{Im}\\,m$.* Soit $\\vec y\\in\\mathrm{Im}\\,m$, donc $\\vec y=m(\\vec x)$ pour un certain $\\vec x\\in E$. D'après $E=\\ker m\\oplus G$, on écrit de façon unique $\\vec x=\\vec x_k+\\vec x_G$ avec $\\vec x_k\\in\\ker m$ et $\\vec x_G\\in G$. Alors $\\vec y=m(\\vec x)=m(\\vec x_k)+m(\\vec x_G)=\\vec 0+\\theta(\\vec x_G)=\\theta(\\vec x_G)$ : tout élément de $\\mathrm{Im}\\,m$ admet donc un antécédent dans $G$ par $\\theta$.\n\n$\\theta$ est injective et surjective de $G$ sur $\\mathrm{Im}\\,m$ : c'est donc une bijection linéaire de $G$ sur $\\mathrm{Im}\\,m$.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [7782]
+  }
+]

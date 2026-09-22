@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-executer-script-javascript-pas-a-pas-tle-tronc-commun",
+  "meta": {
+    "titre": "Exécuter un script JavaScript pas à pas",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique et programmation JavaScript",
+    "duree_estimee_min": 25,
+    "tags": [
+      "JavaScript",
+      "exécution de script",
+      "fonction",
+      "variable",
+      "condition if else"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-informatique-theorique-officiel-2016",
+    "epreuve_titre": "Baccalauréat ESG - Épreuve théorique d'Informatique - Séries A, C, D - session 2016",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-c-d-informatique-theorique-officiel-2016-ex2-qII.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un sujet d'informatique demande souvent de prédire ce qu'affichera un programme sans le faire tourner sur un ordinateur. Cette compétence sert autant à répondre correctement à ce type de question en examen qu'à comprendre plus tard pourquoi ton propre code ne fait pas ce que tu attendais. Elle repose sur une idée simple : un ordinateur ne devine rien, il exécute les instructions exactement dans l'ordre où elles doivent l'être, une par une. Apprendre à faire ce travail à la main, ligne après ligne, revient à penser comme la machine elle-même."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer et lire une variable en JavaScript (var nom = valeur ;)",
+        "Connaître les quatre opérations arithmétiques de base et l'ordre des priorités (parenthèses, puis multiplication/division, puis addition/soustraction)",
+        "Comprendre le rôle d'une fonction et de son instruction return"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Simuler l'exécution ligne par ligne",
+      "contenu_markdown": "Exécuter un script à la main consiste à tenir à jour, au fur et à mesure de la lecture du code, la valeur contenue dans chaque variable. On suit les instructions dans leur ordre réel d'exécution, pas dans leur ordre d'écriture sur la page quand une fonction est appelée ailleurs que là où elle est définie : dès qu'une ligne affecte une valeur à une variable (avec le signe =), on met à jour cette valeur ; dès qu'une ligne appelle une fonction, on va exécuter le corps de cette fonction avant de revenir à la ligne d'appel. Une fonction qui contient une instruction return s'arrête à cette ligne et renvoie la valeur indiquée à l'endroit où elle a été appelée.",
+      "formule_principale": "return(valeur) -> arrête la fonction et renvoie « valeur » à l'appelant",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que `var note1=12 ;`, `var note2=13 ;` et que la fonction `moyenne` est définie par :\n\n```javascript\nfunction moyenne (note1, note2) {\nVar moyenne=(note1+note2)/2 ;\nreturn(moyenne) ;}\n```\n\ndéterminer le contenu de la variable `moyenne` après l'appel `moyenne(note1, note2)`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever les valeurs affectées aux variables d'entrée",
+          "justification": "Les lignes 4 et 5 du script affectent respectivement note1 et note2 avant l'appel de la fonction.",
+          "resultat_markdown": "$note1 = 12,\\; note2 = 13$"
+        },
+        {
+          "numero": 2,
+          "action": "Entrer dans le corps de la fonction moyenne",
+          "justification": "L'appel moyenne(note1, note2) transmet les valeurs de note1 et note2 aux paramètres de la fonction, qui portent ici le même nom.",
+          "resultat_markdown": "Dans la fonction, note1 vaut 12 et note2 vaut 13"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'expression affectée à la variable locale moyenne",
+          "justification": "La ligne moyenne=(note1+note2)/2 applique d'abord l'addition entre parenthèses, puis la division.",
+          "resultat_markdown": "$moyenne = (12+13)/2 = 25/2 = 12,5$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer l'instruction return",
+          "justification": "return(moyenne) ; arrête l'exécution de la fonction et renvoie la valeur de moyenne à l'endroit où la fonction a été appelée.",
+          "resultat_markdown": "La fonction renvoie la valeur $12,5$"
+        }
+      ],
+      "conclusion_markdown": "Après exécution, la variable moyenne contient la valeur 12,5 : c'est cette valeur, et uniquement elle, qui sera ensuite testée par la structure conditionnelle if (moyenne>=10) pour décider de la réussite ou de l'échec."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre directement avec le message final affiché par le programme (« Vous avez réussi... » ou « Echec ») quand la question porte sur le contenu d'une variable intermédiaire comme moyenne.",
+          "pourquoi_faux": "Le programme calcule plusieurs variables successives (moyenne, puis decision) : répondre avec le résultat d'une variable qui n'est pas celle demandée revient à répondre à une autre question que celle posée, même si le raisonnement de calcul est juste.",
+          "correction_markdown": "Repère précisément quelle variable est visée par la question, puis arrête ton exécution manuelle exactement à la ligne qui lui affecte sa valeur finale, sans continuer le programme au-delà."
+        },
+        {
+          "erreur_markdown": "Additionner note1 et note2 puis oublier de diviser par 2, ou diviser avant d'additionner.",
+          "pourquoi_faux": "L'expression (note1+note2)/2 impose, par les parenthèses, de calculer d'abord la somme entre parenthèses avant d'appliquer la division : inverser l'ordre change le résultat (par exemple 12+13/2 donnerait 18,5 au lieu de 12,5).",
+          "correction_markdown": "Repère toujours les parenthèses d'une expression avant de calculer : elles indiquent l'opération à effectuer en priorité, exactement comme en mathématiques."
+        },
+        {
+          "erreur_markdown": "Croire que la variable moyenne définie à l'intérieur de la fonction est la même chose que la variable decision déclarée en dehors de la fonction, et mélanger leurs valeurs.",
+          "pourquoi_faux": "Ce sont deux variables distinctes, définies à des endroits différents du script, qui jouent des rôles différents : moyenne stocke un résultat de calcul numérique, decision stocke un message texte déterminé ensuite à partir de ce résultat.",
+          "correction_markdown": "Note séparément, dans ton brouillon, chaque variable rencontrée avec son nom exact et sa valeur au fur et à mesure de la lecture du script, sans jamais réutiliser un nom de variable pour une autre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On donne le script suivant :\n\n```javascript\nvar a=8 ;\nvar b=2 ;\nfunction produit(a,b){\nvar resultat=a*b ;\nreturn(resultat) ;}\n```\n\nQuel sera le contenu de la variable resultat après l'appel produit(a,b) ?",
+          "solution_markdown": "On relève d'abord les valeurs affectées : a = 8 et b = 2. La fonction produit reçoit ces deux valeurs comme paramètres. La ligne resultat=a*b calcule 8×2 = 16. L'instruction return(resultat) ; renvoie cette valeur. La variable resultat contient donc 16."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On donne le script suivant :\n\n```javascript\nvar x=15 ;\nvar y=5 ;\nfunction ecart(x,y){\nvar diff=x-y ;\nif (diff>0){\nresultat=\"positif\" ;}\nelse{\nresultat=\"négatif ou nul\" ;}\nreturn(resultat) ;}\n```\n\nQuel sera le contenu de la variable resultat après l'appel ecart(x,y) ?",
+          "solution_markdown": "On relève les valeurs affectées : x = 15 et y = 5. La ligne diff=x-y calcule 15-5 = 10. La condition if (diff>0) est testée : 10 est bien supérieur à 0, la condition est vraie. On exécute donc la branche if, qui affecte resultat=\"positif\" ;, et on ignore la branche else. L'instruction return(resultat) ; renvoie cette valeur. La variable resultat contient donc la chaîne de caractères \"positif\"."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On donne le script suivant :\n\n```javascript\nvar note1=8 ;\nvar note2=9 ;\nvar note3=10 ;\nfunction moyenneGenerale(note1,note2,note3){\nvar total=note1+note2+note3 ;\nvar moyenne=total/3 ;\nif (moyenne>=10){\ndecision=\"Admis\" ;}\nelse{\ndecision=\"Ajourné\" ;}\nreturn(decision) ;}\n```\n\nQuel sera le contenu de la variable decision après l'appel moyenneGenerale(note1,note2,note3) ? Justifier chaque étape du calcul.",
+          "solution_markdown": "On relève les valeurs affectées : note1 = 8, note2 = 9, note3 = 10. La ligne total=note1+note2+note3 calcule 8+9+10 = 27. La ligne moyenne=total/3 calcule 27/3 = 9. La condition if (moyenne>=10) est testée : 9 n'est pas supérieur ou égal à 10, la condition est fausse. On exécute donc la branche else, qui affecte decision=\"Ajourné\" ;, et on ignore la branche if. L'instruction return(decision) ; renvoie cette valeur. La variable decision contient donc la chaîne de caractères \"Ajourné\"."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à un script, construis d'abord la liste des variables et de leurs valeurs au fil de la lecture, avant de te lancer dans un calcul.",
+        "Une fonction s'exécute dans l'ordre de ses lignes internes, pas dans l'ordre où elle apparaît sur la page par rapport à son appel : repère où elle est appelée, puis va lire son corps.",
+        "Une instruction return arrête immédiatement la fonction : tout ce qui suit dans le corps de la fonction n'est pas exécuté.",
+        "Une condition if...else n'exécute jamais les deux branches : identifie si la condition est vraie ou fausse avant de choisir la bonne branche.",
+        "Au BAC, ce type de question apparaît systématiquement dans la partie Programmation de l'épreuve d'Informatique, souvent sous forme de QCM portant sur le contenu final d'une variable précise."
+      ]
+    }
+  ]
+}

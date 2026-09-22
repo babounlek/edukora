@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-architecture-des-dossiers-d-un-serveur-local-wampserver-repertoire-www-tle-ti",
+  "meta": {
+    "titre": "Architecture des dossiers d'un serveur local WampServer (répertoire www)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Serveurs Web et hébergement local",
+    "duree_estimee_min": 15,
+    "tags": [
+      "WampServer",
+      "www",
+      "arborescence",
+      "hébergement local"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q6.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour que ton serveur Apache local retrouve les fichiers de ton site, il ne suffit pas de les enregistrer n'importe où sur ton disque : WampServer réserve un dossier précis, et un seul, pour cet usage."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de serveur Web local",
+        "Notion d'arborescence de fichiers (dossiers, sous-dossiers)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le dossier www, racine de tous les sites locaux",
+      "contenu_markdown": "WampServer place, à l'intérieur de son dossier d'installation, un répertoire nommé `www` qui sert de racine à tous les sites Web développés en local : chaque site doit être placé dans son propre sous-dossier de `www` pour devenir accessible par Apache. Un site placé dans `www\\monsite` devient ainsi accessible depuis le navigateur à l'adresse `http://localhost/monsite`.",
+      "formule_principale": "\\texttt{C:\\textbackslash wamp64\\textbackslash www\\textbackslash}\\ \\text{(ou }\\texttt{C:\\textbackslash wamp\\textbackslash www\\textbackslash}\\text{ en version 32 bits)}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le répertoire de WampServer où sont stockés en local les dossiers d'un site Web, comme celui contenant le script `verif_motdepasse.php` de l'exercice 2.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le dossier racine réservé par WampServer",
+          "justification": "Apache ne sert que les fichiers placés dans ce dossier précis, jamais un dossier arbitraire du disque.",
+          "resultat_markdown": "`C:\\wamp64\\www` (le chemin exact dépend de la version installée, 32 ou 64 bits)."
+        },
+        {
+          "numero": 2,
+          "action": "Situer le script de l'exercice dans cette arborescence",
+          "justification": "Pour être accessible via http://localhost, le script doit se trouver quelque part sous ce dossier www.",
+          "resultat_markdown": "Le fichier `verif_motdepasse.php` devrait se trouver, par exemple, dans `C:\\wamp64\\www\\monsite\\verif_motdepasse.php`."
+        },
+        {
+          "numero": 3,
+          "action": "En déduire l'adresse d'accès depuis le navigateur",
+          "justification": "L'adresse locale reproduit directement l'arborescence sous www.",
+          "resultat_markdown": "`http://localhost/monsite/verif_motdepasse.php`"
+        }
+      ],
+      "conclusion_markdown": "Le dossier `www` est donc le point de passage obligé de tout fichier destiné à être servi par Apache en local : un fichier placé ailleurs sur le disque ne sera jamais accessible via `http://localhost`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer le site directement à la racine du disque ou dans un dossier quelconque (ex. Bureau, Documents).",
+          "pourquoi_faux": "Apache ne surveille que le dossier `www` configuré lors de l'installation de WampServer : un fichier placé ailleurs, même valide, ne répondra jamais à une requête `http://localhost`.",
+          "correction_markdown": "Toujours vérifier que le dossier du site se trouve bien sous `www`, en cas de page « 404 » ou « non trouvée » lors d'un test en local."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un site nommé « boutique » doit être accessible à l'adresse http://localhost/boutique. Dans quel dossier faut-il le placer ?",
+          "solution_markdown": "`C:\\wamp64\\www\\boutique`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un fichier `index.php` est placé directement dans `C:\\wamp64\\www` (pas dans un sous-dossier). Quelle adresse permet d'y accéder ?",
+          "solution_markdown": "`http://localhost/index.php` (ou simplement `http://localhost`, Apache cherchant par défaut un fichier `index.php` ou `index.html` à la racine du dossier demandé)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi renommer le dossier `www` de WampServer (par exemple en `siteWeb`) sans modifier aucun réglage d'Apache rend tous les sites précédemment fonctionnels inaccessibles.",
+          "solution_markdown": "Apache est configuré, au moment de l'installation de WampServer, avec un fichier de configuration (`httpd.conf`) qui indique explicitement le chemin du dossier racine à surveiller - par défaut `C:\\wamp64\\www`. Renommer ce dossier sans modifier ce fichier de configuration ne change rien à ce qu'Apache va chercher : il continuera à chercher un dossier nommé `www`, qui n'existe plus, et renverra une erreur pour toute requête. Pour que le nouveau nom fonctionne, il faudrait modifier manuellement la directive `DocumentRoot` du fichier de configuration Apache pour qu'elle pointe vers le nouveau nom de dossier."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "WampServer réserve un dossier unique, `www`, comme racine de tous les sites accessibles en local.",
+        "Chaque site doit être placé dans son propre sous-dossier de `www` pour devenir accessible via http://localhost.",
+        "L'adresse locale d'un fichier reproduit directement son chemin sous www.",
+        "Un fichier placé hors de www, même valide, reste invisible pour Apache tant que la configuration n'est pas modifiée."
+      ]
+    }
+  ]
+}

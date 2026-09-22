@@ -1,0 +1,57 @@
+{
+  "cours_id": "cours-indices-formule-brute-regle-saturation-1ere-cd",
+  "meta": {
+    "titre": "Déterminer les indices x et y d'une formule brute CxHyOz",
+    "matiere": "Chimie",
+    "pays": "cm",
+    "serie": "C, D",
+    "sous_theme": "Détermination d'une formule brute organique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "formule brute",
+      "règle de saturation",
+      "valence du carbone",
+      "isomérie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-chimie-2004-officiel-cameroun",
+    "epreuve_titre": "Chimie - Probatoire C, D - Session 2004 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-chimie-2004-officiel-cameroun-ex1-q1.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": {
+    "accroche": "Une seule équation, deux inconnues x et y : comment un chimiste retrouve-t-il pourtant une réponse unique ? En s'appuyant sur une contrainte que l'énoncé ne donne jamais explicitement — la valence du carbone.",
+    "prerequis": [
+      "Connaître la masse molaire du composé (souvent obtenue à partir d'un pourcentage massique, voir le cours associé).",
+      "Savoir que le carbone est tétravalent (4 liaisons), l'hydrogène monovalent, l'oxygène divalent.",
+      "Connaître la formule générale d'un hydrocarbure saturé acyclique : $C_nH_{2n+2}$."
+    ],
+    "regle": "Pour une formule brute $C_xH_yO_z$ de masse molaire connue $M$, on écrit d'abord l'équation de masse :\n\n$$12x + y + 16z = M$$\n\nCette équation seule ne détermine pas x et y de façon unique. On la complète par la **règle de saturation** : dans une molécule acyclique sans liaison multiple entre carbones (composé saturé), le nombre d'atomes d'hydrogène ne peut jamais dépasser $2x+2$ (au-delà, il n'y a plus assez de valences libres sur les carbones pour les accueillir). On teste alors les valeurs entières de x à partir de 1, on calcule y correspondant, et on retient le premier couple où $0 < y \\le 2x+2$ et y pair. Si l'énoncé précise une insaturation (double ou triple liaison, cycle), on adapte la borne supérieure de y en conséquence ($y \\le 2x$ pour une insaturation, $y \\le 2x-2$ pour deux, etc.).",
+    "exemple_resolu": "**Énoncé.** $M_A = 46\\ g/mol$ pour un composé $C_xH_yO$. Déterminer x et y.\n\n**Résolution.** $12x+y+16=46 \\Rightarrow 12x+y=30$.\n- $x=1$ : $y=18$, mais $2(1)+2=4$ : rejeté (bien trop d'hydrogènes pour un seul carbone).\n- $x=2$ : $y=6$, et $2(2)+2=6$ : la limite de saturation est atteinte exactement, ce couple est accepté.\n- $x=3$ : $y=-6$ : impossible (négatif).\n\nLe couple retenu est $x=2$, $y=6$, soit $A=C_2H_6O$ (formule saturée, sans insaturation, cohérente avec $y=2x+2$).",
+    "erreurs_classiques": [
+      "Arrêter le test au premier couple entier trouvé sans vérifier la contrainte $y \\le 2x+2$ : un couple mathématiquement possible peut être chimiquement impossible.",
+      "Oublier que y doit être un nombre pair pour une molécule neutre ne contenant que C, H et O (parité imposée par les règles de valence) — un y impair signale une erreur de calcul.",
+      "Continuer à tester des valeurs de x après avoir dépassé la limite de saturation : au-delà, tous les couples suivants donnent un y encore plus grand relativement à x, donc restent invalides."
+    ],
+    "exercices_application": [
+      {
+        "enonce": "Un composé $C_xH_yO$ a une masse molaire de 60 g/mol. Déterminer x et y.",
+        "solution": "$12x+y+16=60 \\Rightarrow 12x+y=44$. $x=3$ : $y=8=2(3)+2$, valide. $C_3H_8O$."
+      },
+      {
+        "enonce": "Un composé $C_xH_yO_2$ a une masse molaire de 74 g/mol. Déterminer x et y.",
+        "solution": "$12x+y+32=74 \\Rightarrow 12x+y=42$. $x=3$ : $y=6$, or $2(3)+2=8\\ge6$ : valide. $C_3H_6O_2$."
+      },
+      {
+        "enonce": "Un hydrocarbure (sans oxygène) $C_xH_y$ a une masse molaire de 28 g/mol et comporte une double liaison. Déterminer x et y.",
+        "solution": "$12x+y=28$. Avec une insaturation, $y\\le2x$. $x=2$ : $y=4=2(2)$ : valide. $C_2H_4$ (éthène)."
+      }
+    ],
+    "synthese": "Déterminer x et y à partir de la seule masse molaire exige de combiner l'équation de masse avec la règle de saturation du carbone ($y \\le 2x+2$ pour un composé saturé acyclique, réduite d'autant d'unités que d'insaturations). Tester les valeurs de x par ordre croissant et s'arrêter au premier couple valide est la méthode la plus sûre."
+  }
+}

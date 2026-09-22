@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-le-modele-tcp-ip-tle-ti",
+  "meta": {
+    "titre": "Le modèle TCP/IP",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques",
+    "duree_estimee_min": 18,
+    "tags": [
+      "TCP/IP",
+      "adressage IP",
+      "protocole réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qA.3-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand deux ordinateurs très différents (marques, systèmes d'exploitation) parviennent quand même à échanger des données sur Internet, c'est parce qu'ils suivent tous les deux les mêmes règles de communication : la suite de protocoles TCP/IP, aujourd'hui à la base de la quasi-totalité des réseaux."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse IP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Identifier puis acheminer",
+      "contenu_markdown": "**TCP/IP** est la suite de protocoles standard qui régit les communications sur la majorité des réseaux actuels, dont Internet. **IP** (Internet Protocol) attribue une adresse unique à chaque machine et achemine les paquets de données d'une machine à l'autre ; **TCP** (Transmission Control Protocol) découpe les données en paquets, vérifie leur bonne arrivée et les réassemble dans l'ordre à destination. Le protocole **ICMP**, utilisé par la commande ping, fait également partie de cette suite. La présence d'une adresse IP fonctionnelle sur une machine est le signe le plus direct que sa pile TCP/IP est installée et active.",
+      "formule_principale": "TCP/IP = IP (adressage/acheminement) + TCP (fiabilité/ordre) + ICMP (diagnostic) + ...",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Justifier que le protocole TCP/IP est bien exécuté sur un ordinateur portable, à partir des deux captures fournies.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever l'indice de la première capture",
+          "justification": "La présence d'une adresse IP est un indicateur direct de la pile TCP/IP",
+          "resultat_markdown": "La capture 1 affiche « Adresse IP principale : 127.0.0.1 » : la machine possède donc une adresse IP fonctionnelle."
+        },
+        {
+          "numero": 2,
+          "action": "Relever l'indice de la seconde capture",
+          "justification": "Une commande réseau qui fonctionne confirme que la pile réseau est opérationnelle",
+          "resultat_markdown": "La capture 2 montre l'exécution réussie de `ping 127.0.0.1`, qui repose sur ICMP, lui-même intégré à la suite TCP/IP."
+        },
+        {
+          "numero": 3,
+          "action": "Combiner les deux indices pour conclure",
+          "justification": "Une adresse IP active et une commande réseau fonctionnelle attestent ensemble du protocole utilisé",
+          "resultat_markdown": "Les deux observations convergent vers le même protocole en fonctionnement."
+        }
+      ],
+      "conclusion_markdown": "TCP/IP est bien le protocole exécuté sur cet ordinateur, confirmé à la fois par la présence d'une adresse IP et par le bon fonctionnement de la commande ping."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre \"Ethernet\" à la question du protocole réseau exécuté",
+          "pourquoi_faux": "Ethernet est une technologie de réseau local (couche physique/liaison), pas le protocole qui gère l'adressage et l'acheminement logique des données : les deux coexistent à des niveaux différents.",
+          "correction_markdown": "Distingue le support/la technologie de connexion (Ethernet, Wi-Fi) du protocole qui organise la communication logique (TCP/IP) : une question sur \"le protocole réseau exécuté\" avec une adresse IP à l'appui pointe presque toujours vers TCP/IP."
+        },
+        {
+          "erreur_markdown": "Justifier uniquement par \"parce que ça marche\", sans citer d'élément précis des captures",
+          "pourquoi_faux": "Une justification doit s'appuyer sur des observations concrètes tirées du document fourni, pas sur une impression générale.",
+          "correction_markdown": "Cite toujours l'élément exact de la capture (l'adresse IP affichée, le résultat de la commande) qui prouve ton affirmation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel protocole attribue une adresse unique à chaque machine d'un réseau IP ?",
+          "solution_markdown": "Le protocole **IP** (Internet Protocol), l'un des deux piliers de la suite TCP/IP."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quel est le rôle du protocole TCP au sein de la suite TCP/IP, en complément d'IP ?",
+          "solution_markdown": "TCP (Transmission Control Protocol) découpe les données à transmettre en paquets, vérifie que chaque paquet arrive bien à destination (retransmission en cas de perte) et les réassemble dans le bon ordre à l'arrivée, alors qu'IP se contente d'adresser et d'acheminer chaque paquet indépendamment, sans garantie de fiabilité ni d'ordre."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une machine possède une adresse IP valide mais ne parvient à joindre aucun autre hôte du réseau, ni même à recevoir de réponse à un ping vers sa propre adresse de bouclage (127.0.0.1). Que peut-on en déduire sur l'état de sa pile TCP/IP ?",
+          "solution_markdown": "Si même un ping vers 127.0.0.1 échoue, le problème n'est pas lié au support physique ni à la configuration réseau externe (câble, Wi-Fi, adresse attribuée par le réseau), puisque cette adresse ne quitte jamais la machine. Cela indique une anomalie interne à la pile TCP/IP elle-même sur cette machine (pilote réseau corrompu, service réseau désactivé, pare-feu local mal configuré bloquant même le trafic interne). La possession d'une adresse IP configurée ne suffit donc pas à garantir que la pile TCP/IP fonctionne réellement : le test de bouclage sert précisément à vérifier ce point avant même de suspecter le réseau externe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "TCP/IP est la suite de protocoles standard qui régit la majorité des réseaux actuels, dont Internet.",
+        "IP adresse et achemine les données ; TCP garantit leur fiabilité et leur ordre d'arrivée.",
+        "ICMP, utilisé par ping, fait partie de cette même suite de protocoles.",
+        "La présence d'une adresse IP fonctionnelle est un indice direct qu'une pile TCP/IP est active.",
+        "Au BAC TI, une question de justification attend toujours un ou plusieurs éléments précis du document fourni, jamais une affirmation générale non appuyée."
+      ]
+    }
+  ]
+}

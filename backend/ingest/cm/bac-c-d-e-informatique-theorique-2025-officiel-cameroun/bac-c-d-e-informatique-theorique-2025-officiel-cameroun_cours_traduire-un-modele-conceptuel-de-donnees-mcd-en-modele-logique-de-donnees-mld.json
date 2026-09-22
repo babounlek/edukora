@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-traduire-un-modele-conceptuel-de-donnees-mcd-en-modele-logique-de-donnees-mld-tle-tronc-commun",
+  "meta": {
+    "titre": "Traduire un Modèle Conceptuel de Données (MCD) en Modèle Logique de Données (MLD)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Modélisation Merise - passage MCD vers MLD",
+    "duree_estimee_min": 25,
+    "tags": [
+      "MLD",
+      "passage MCD-MLD",
+      "clés étrangères",
+      "association n,n"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qB-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un MCD est une belle représentation conceptuelle, mais aucun logiciel de base de données ne sait le lire directement : il faut le traduire en tables, avec des clés primaires et étrangères. Trois règles suffisent pour ne jamais se tromper, quelle que soit la complexité du schéma de départ."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un MCD : entités, associations, cardinalités (voir le cours sur la construction du MCD)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois règles de traduction MCD vers MLD",
+      "contenu_markdown": "**Règle 1** : chaque entité devient une table, son identifiant devient clé primaire.\n\n**Règle 2** : pour une association (1,n)-(1,1), la clé primaire du côté dont la cardinalité maximale vaut n migre comme clé étrangère dans la table du côté dont la cardinalité maximale vaut 1.\n\n**Règle 3** : pour une association (n,n) (les deux cardinalités maximales valent n), l'association devient elle-même une table, portant les clés primaires des deux entités reliées (devenues clés étrangères) ainsi que les éventuels attributs qu'elle porte.\n\nUne astuce pour ne jamais se tromper de sens à la règle 2 : la clé étrangère se place toujours du côté de la cardinalité maximale **1**, jamais du côté du **n**."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire l'association Passe (Client 1,n - Commande 1,1) et l'association Concerne (Commande 1,n - Article 0,n, avec l'attribut Quantite) en MLD.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traiter l'association Passe : identifier le côté à cardinalité maximale 1",
+          "justification": "COMMANDE porte la cardinalité maximale 1 (une commande a un seul client).",
+          "resultat_markdown": "La clé étrangère #IdClient migre dans COMMANDE : COMMANDE(NumCom, Date, #IdClient)."
+        },
+        {
+          "numero": 2,
+          "action": "Traiter l'association Concerne : constater que les deux cardinalités maximales valent n",
+          "justification": "Ni COMMANDE ni ARTICLE ne peut recevoir seule la clé de l'autre sans dupliquer l'information.",
+          "resultat_markdown": "L'association devient sa propre table."
+        },
+        {
+          "numero": 3,
+          "action": "Construire la table association avec les deux clés étrangères et l'attribut porté",
+          "justification": "Quantite est un attribut de l'association Concerne, il doit donc rester rattaché à cette table.",
+          "resultat_markdown": "CONCERNE(#NumCom, #IdArt, Quantite)."
+        }
+      ],
+      "conclusion_markdown": "On obtient une traduction correcte des deux associations, en appliquant à chacune la règle adaptée à ses cardinalités maximales (1 contre n, ou n contre n)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Vouloir traduire une association (n,n) en migrant une seule clé étrangère",
+          "pourquoi_faux": "C'est impossible sans perte d'information : une commande porte sur plusieurs articles et un article apparaît dans plusieurs commandes, une seule ligne de table ne peut pas représenter cette réalité à double sens.",
+          "correction_markdown": "Dès que les deux cardinalités maximales d'une association valent n, créer systématiquement une table association dédiée."
+        },
+        {
+          "erreur_markdown": "Placer la clé étrangère du mauvais côté (dans la table à cardinalité maximale n)",
+          "pourquoi_faux": "Si la clé étrangère est placée du côté n, une même valeur de clé étrangère devrait pouvoir référencer plusieurs lignes, ce qu'une clé étrangère ne permet pas de représenter correctement (elle référence une seule ligne).",
+          "correction_markdown": "Toujours vérifier : la clé étrangère va du côté de la cardinalité maximale 1, jamais du côté n."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire l'entité ARTICLE(IdArt, NomArt, PrixUnitaire) en MLD.",
+          "solution_markdown": "ARTICLE(IdArt, NomArt, PrixUnitaire), IdArt devenant clé primaire (aucune association à traiter dans cette question isolée)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une association Diriger relie ENTREPRISE (1,1) et DIRECTEUR (0,1) : chaque entreprise a un seul directeur, chaque directeur dirige au plus une entreprise. Comment traduire cette association en MLD ?",
+          "solution_markdown": "Les deux cardinalités maximales valent 1 : on peut migrer la clé étrangère dans n'importe laquelle des deux tables (c'est un cas particulier où le choix est libre), par exemple ENTREPRISE(IdEntreprise, NomEntreprise, #IdDirecteur) ou, de façon équivalente, DIRECTEUR(IdDirecteur, NomDirecteur, #IdEntreprise). Le choix se fait alors selon la logique métier (quelle table est la plus naturelle à interroger), les deux traductions étant correctes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une association ternaire relie ÉLÈVE, MATIÈRE et ENSEIGNANT (un enseignant donne une matière donnée à un élève donné), avec l'attribut porté Note. Toutes les cardinalités maximales valent n. Comment traduire cette association en MLD, et pourquoi le principe reste-t-il le même que pour une association binaire (n,n) ?",
+          "solution_markdown": "L'association ternaire devient elle-même une table, portant les trois clés primaires des entités reliées (devenues clés étrangères) ainsi que l'attribut Note qu'elle porte : NOTATION(#IdEleve, #IdMatiere, #IdEnseignant, Note). Le principe reste le même que pour une association binaire (n,n) : dès qu'une association ne peut pas être réduite à la migration d'une seule clé étrangère sans perte d'information (ici, un élève a plusieurs notes selon la matière et l'enseignant), elle doit devenir sa propre table portant toutes les clés des entités qu'elle relie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque entité devient une table, son identifiant devient clé primaire.",
+        "Association (1,n)-(1,1) : la clé étrangère migre toujours du côté de la cardinalité maximale 1.",
+        "Association (n,n) (binaire ou ternaire) : elle devient sa propre table, portant les clés étrangères de toutes les entités reliées et ses éventuels attributs propres.",
+        "Un attribut porté par une association (comme Quantite ou Note) reste toujours dans la table qui traduit cette association, jamais dans l'une des tables d'entité."
+      ]
+    }
+  ]
+}

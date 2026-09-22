@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-calcul-cumulatif-distance-technique-bepc",
+  "meta": {
+    "titre": "Calcul cumulatif d'une distance à partir d'un texte technique",
+    "matiere": "Éducation Physique et Sportive",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Athlétisme - Règles et mesures de la piste",
+    "duree_estimee_min": 20,
+    "tags": [
+      "décalage",
+      "piste d'athlétisme",
+      "calcul cumulatif",
+      "couloirs",
+      "athlétisme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-eps-2019-cameroun",
+    "epreuve_titre": "BEPC - Épreuve théorique d'Éducation Physique et Sportive - Session 2019",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-eps-2019-cameroun-ex2-q3.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur une piste d'athlétisme, les couloirs extérieurs sont plus longs que les couloirs intérieurs à cause des virages : sans correction, l'athlète du couloir 8 courrait plusieurs mètres de plus que celui du couloir 1 sur le même 400 m. Cette différence se retrouve partout où un document technique donne une règle d'augmentation progressive : un tarif qui grimpe par palier, une dose qui s'ajoute à chaque étape, une distance qui s'allonge à chaque tour. Savoir calculer une valeur cumulée à partir d'une règle d'augmentation lue dans un texte, c'est une compétence qui dépasse largement l'EPS : elle permet de transformer une explication écrite en un résultat chiffré exact, étape par étape, sans jamais se perdre entre les valeurs intermédiaires."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Addition et soustraction de nombres décimaux",
+        "Lecture attentive d'un texte pour en extraire des données numériques",
+        "Notion de suite de valeurs qui s'obtiennent les unes à partir des autres (récurrence simple)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode du calcul cumulatif pas à pas",
+      "contenu_markdown": "Quand un texte technique donne une valeur de départ connue, puis une règle d'augmentation d'une étape à la suivante, la valeur d'une étape quelconque ne se calcule jamais directement à partir de la valeur de départ : elle se construit étape par étape, chaque valeur s'obtenant en ajoutant l'augmentation à la valeur immédiatement précédente.\n\nFormellement, si $V_1$ est la valeur de référence et $a_n$ l'augmentation entre l'étape $n$ et l'étape $n+1$, alors :\n\n$$V_{n+1} = V_n + a_n$$\n\nCette relation doit être appliquée autant de fois qu'il y a d'étapes à franchir depuis la référence : pour atteindre $V_3$ à partir de $V_1$, il faut passer obligatoirement par $V_2$, jamais additionner directement $a_1$ et $a_2$ à $V_1$ sans vérifier qu'ils s'appliquent bien au même intervalle. Si l'augmentation change de valeur en cours de route (ce qui est le cas dans le texte sur les couloirs, où le premier passage utilise 7,04 m et tous les suivants 7,66 m), il faut repérer précisément à partir de quelle étape la nouvelle valeur s'applique.",
+      "formule_principale": "V_{n+1} = V_n + a_n",
+      "variantes": [
+        {
+          "nom": "Calcul direct de l'écart total entre deux étapes non consécutives",
+          "quand_utiliser": "Quand seule la différence totale entre deux étapes éloignées est demandée, sans besoin des valeurs intermédiaires",
+          "contenu_markdown": "Plutôt que de reconstruire toutes les valeurs intermédiaires, on peut additionner directement toutes les augmentations comprises entre les deux étapes : l'écart total entre l'étape 1 et l'étape $n$ est la somme $a_1 + a_2 + \\cdots + a_{n-1}$. Cette méthode donne le même résultat que le calcul pas à pas, mais elle est plus rapide quand seul l'écart final est demandé, pas les valeurs intermédiaires elles-mêmes."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "D'après le document de l'épreuve BEPC EPS 2019, une piste d'athlétisme de 400 m a une longueur qui augmente de 7,04 m du couloir 1 au couloir 2, puis de 7,66 m à chaque couloir suivant. Calculer la longueur réelle du couloir 3.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la valeur de référence (couloir 1)",
+          "justification": "Le texte donne 400 m comme longueur officielle de la course, qui correspond au couloir 1.",
+          "resultat_markdown": "$V_1 = 400$ m"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la longueur du couloir 2",
+          "justification": "Le passage du couloir 1 au couloir 2 augmente la distance de 7,04 m, une valeur propre à ce premier passage.",
+          "resultat_markdown": "$V_2 = V_1 + 7{,}04 = 400 + 7{,}04 = 407{,}04$ m"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier l'augmentation applicable au passage suivant",
+          "justification": "Le texte précise qu'à partir du couloir 2, chaque passage à un couloir suivant augmente la distance de 7,66 m, une valeur différente de celle du premier passage.",
+          "resultat_markdown": "Augmentation du couloir 2 au couloir 3 : $7{,}66$ m"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la longueur du couloir 3",
+          "justification": "On applique la relation $V_{n+1}=V_n+a_n$ à partir de la valeur du couloir 2, pas à partir du couloir 1.",
+          "resultat_markdown": "$V_3 = V_2 + 7{,}66 = 407{,}04 + 7{,}66 = 414{,}70$ m"
+        }
+      ],
+      "conclusion_markdown": "La longueur réelle du couloir 3 est de 414,70 m. On vient de démontrer que le calcul cumulatif exige de passer par chaque étape intermédiaire (ici le couloir 2) et d'utiliser, à chaque étape, l'augmentation qui lui correspond réellement, plutôt qu'une valeur unique appliquée à toutes les étapes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer directement $400 + 7{,}66 \\times 2$ pour obtenir la longueur du couloir 3.",
+          "pourquoi_faux": "Cette méthode applique deux fois la même augmentation (7,66 m), alors que le texte précise que le premier passage, du couloir 1 au couloir 2, utilise une augmentation différente (7,04 m). Elle ignore la règle d'exception donnée explicitement pour la première étape.",
+          "correction_markdown": "Toujours vérifier, avant de multiplier une augmentation par le nombre d'étapes, que cette augmentation est bien identique à chaque étape ; ici, seul le passage du couloir 2 au couloir 3 (et les suivants) utilise 7,66 m."
+        },
+        {
+          "erreur_markdown": "Additionner 7,04 m et 7,66 m directement à la valeur du couloir 1 pour obtenir la longueur du couloir 3, sans passer par le couloir 2.",
+          "pourquoi_faux": "Le résultat numérique final ($400+7{,}04+7{,}66=414{,}70$) est ici correct par coïncidence de l'addition, mais cette méthode masque l'étape intermédiaire du couloir 2, qui est pourtant indispensable si une question demande sa longueur propre, et qui devient risquée d'erreur pour un calcul à quatre couloirs ou plus.",
+          "correction_markdown": "Reconstruire systématiquement chaque valeur intermédiaire, même quand seul le résultat final est demandé : cela sécurise le calcul et permet de répondre aussi à une question portant sur une étape intermédiaire."
+        },
+        {
+          "erreur_markdown": "Considérer que l'augmentation reste constante d'un couloir à l'autre parce que le texte ne donne qu'un seul chiffre à première lecture.",
+          "pourquoi_faux": "Une lecture rapide du texte laisse penser qu'une seule valeur d'augmentation s'applique partout, alors que le texte distingue explicitement le premier passage (7,04 m, lié à la marge supplémentaire de 10 cm du couloir 1) des passages suivants (7,66 m).",
+          "correction_markdown": "Relire le texte une seconde fois en soulignant chaque valeur numérique et l'étape précise à laquelle elle s'applique, avant de commencer le moindre calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une augmentation de 7,66 m s'applique à chaque couloir à partir du couloir 3. Sachant que le couloir 3 mesure 414,70 m, calculer la longueur réelle du couloir 4.",
+          "solution_markdown": "On applique la relation $V_{n+1}=V_n+a_n$ avec $V_3 = 414{,}70$ m et $a_3 = 7{,}66$ m.\n\n$V_4 = 414{,}70 + 7{,}66 = 422{,}36$ m.\n\nLa longueur réelle du couloir 4 est de 422,36 m."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sur une piste de 800 m (deux tours de piste de 400 m), quelle est la longueur réelle du couloir 2, sachant que l'augmentation de 7,04 m donnée dans le texte correspond à un seul tour de piste de 400 m ?",
+          "solution_markdown": "Sur une course de 800 m, l'athlète parcourt deux tours complets de la piste, donc traverse deux fois les portions courbes qui créent l'écart de longueur entre couloirs. L'augmentation de 7,04 m donnée pour un tour de 400 m doit donc être comptée deux fois : $2 \\times 7{,}04 = 14{,}08$ m.\n\nLa longueur de référence du couloir 1 sur 800 m est $V_1 = 800$ m.\n\n$V_2 = 800 + 14{,}08 = 814{,}08$ m.\n\nLa longueur réelle du couloir 2 sur une course de 800 m est de 814,08 m."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un athlète est placé dans le couloir 5 d'une piste réglementaire, pour une course de 400 m. En utilisant les mêmes augmentations que dans le texte (7,04 m du couloir 1 au couloir 2, puis 7,66 m pour chaque passage suivant), calculer la longueur réelle du couloir 5, puis le décalage total entre le couloir 1 et le couloir 5.",
+          "solution_markdown": "On construit les valeurs couloir par couloir :\n\n$V_1 = 400$ m\n\n$V_2 = V_1 + 7{,}04 = 400 + 7{,}04 = 407{,}04$ m\n\n$V_3 = V_2 + 7{,}66 = 407{,}04 + 7{,}66 = 414{,}70$ m\n\n$V_4 = V_3 + 7{,}66 = 414{,}70 + 7{,}66 = 422{,}36$ m\n\n$V_5 = V_4 + 7{,}66 = 422{,}36 + 7{,}66 = 430{,}02$ m\n\nLa longueur réelle du couloir 5 est de 430,02 m.\n\nLe décalage total entre le couloir 1 et le couloir 5 vaut :\n\nDécalage = $V_5 - V_1 = 430{,}02 - 400 = 30{,}02$ m.\n\nOn retrouve le même résultat en additionnant directement les augmentations intermédiaires : $7{,}04 + 7{,}66 + 7{,}66 + 7{,}66 = 30{,}02$ m."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à un texte qui donne une valeur de départ et une règle d'augmentation, construis toujours les valeurs intermédiaires une par une : $V_{n+1}=V_n+a_n$, jamais un raccourci qui saute une étape.",
+        "Vérifie toujours si l'augmentation est unique ou si elle change à un moment précis du texte, comme le premier passage (7,04 m) qui diffère des suivants (7,66 m) sur une piste d'athlétisme.",
+        "Pour obtenir seulement l'écart total entre deux étapes éloignées, tu peux additionner directement toutes les augmentations intermédiaires, sans reconstruire chaque valeur, si les valeurs intermédiaires elles-mêmes ne sont pas demandées.",
+        "Une relecture du texte technique, en soulignant chaque nombre et l'étape à laquelle il s'applique, évite la quasi-totalité des erreurs sur ce type de calcul.",
+        "Au BEPC, ce type de raisonnement apparaît dans la partie Évaluation des compétences de l'épreuve d'EPS, sous forme de situation-problème appuyée sur un document technique à exploiter avec tes connaissances personnelles."
+      ]
+    }
+  ]
+}

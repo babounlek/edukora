@@ -1,0 +1,203 @@
+{
+  "epreuve_source": "bac-c-e-2026-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathematiques",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2026",
+  "duree_epreuve": "4h",
+  "coefficient": "7(C) / 6(E)",
+  "serie": "C/E",
+  "nature_epreuve": null,
+  "numero_exercice": "2",
+  "points": 4.5,
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 (4,5 points)**",
+  "questions": [
+    {
+      "numero": "I.1",
+      "enonce_markdown": "Une étude sur la météo d'une ville particulière a établi que dans cette ville chaque jour, il pleut ou il fait beau temps. La probabilité qu'il pleuve le premier jour est $\\frac13$. S'il fait beau temps un jour, la probabilité qu'il fasse beau temps le lendemain est $\\frac35$ ; s'il pleut un jour, la probabilité qu'il pleuve le lendemain est $\\frac23$.\n\nQuelle est la probabilité qu'il fasse beau temps le deuxième jour ?",
+      "corrige_markdown": "### Rappel de méthode\nDans un système à deux états (ici « il pleut » / « il fait beau »), la probabilité d'être dans un état donné un jour $n+1$ s'obtient par la formule des probabilités totales à partir de l'état de la veille : $P(\\text{état }n+1) = P(\\text{état A la veille})\\times P(\\text{état }n+1 \\mid \\text{A la veille}) + P(\\text{état B la veille})\\times P(\\text{état }n+1 \\mid \\text{B la veille})$. On construit ainsi la suite de probabilités de proche en proche, jour après jour.\n\n### Corrigé détaillé\n\n**Étape 1 - probabilités du premier jour.**\n$P(\\text{pluie}_1)=\\dfrac13$, donc $P(\\text{beau}_1)=1-\\dfrac13=\\dfrac23$ (les deux états sont complémentaires chaque jour).\n\n**Étape 2 - probabilités conditionnelles données par l'énoncé.**\n$P(\\text{beau}_{n+1}\\mid\\text{beau}_n)=\\dfrac35$ donc $P(\\text{pluie}_{n+1}\\mid\\text{beau}_n)=\\dfrac25$.\n$P(\\text{pluie}_{n+1}\\mid\\text{pluie}_n)=\\dfrac23$ donc $P(\\text{beau}_{n+1}\\mid\\text{pluie}_n)=\\dfrac13$.\n\n**Étape 3 - formule des probabilités totales pour le jour 2.**\n$$P(\\text{beau}_2) = P(\\text{beau}_1)\\times P(\\text{beau}_2\\mid\\text{beau}_1) + P(\\text{pluie}_1)\\times P(\\text{beau}_2\\mid\\text{pluie}_1)$$\n$$P(\\text{beau}_2) = \\frac23\\times\\frac35 + \\frac13\\times\\frac13 = \\frac{6}{15}+\\frac19$$\nMise au même dénominateur $45$ : $\\dfrac{6}{15}=\\dfrac{18}{45}$ et $\\dfrac19=\\dfrac{5}{45}$.\n$$P(\\text{beau}_2) = \\frac{18}{45}+\\frac{5}{45} = \\frac{23}{45}$$\n\nLa probabilité qu'il fasse beau temps le deuxième jour est $\\dfrac{23}{45}$.",
+      "themes": [
+        "probabilités",
+        "probabilités totales",
+        "chaîne à deux états"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-e-2026-cameroun-ex2-qI.1-1",
+          "competence": "Probabilités totales dans un système à deux états",
+          "contenu_markdown": "### Rappel de méthode\nDans un système à deux états (ici « il pleut » / « il fait beau »), la probabilité d'être dans un état donné un jour $n+1$ s'obtient par la formule des probabilités totales à partir de l'état de la veille : $P(\\text{état }n+1) = P(\\text{état A la veille})\\times P(\\text{état }n+1 \\mid \\text{A la veille}) + P(\\text{état B la veille})\\times P(\\text{état }n+1 \\mid \\text{B la veille})$. On construit ainsi la suite de probabilités de proche en proche, jour après jour.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I.2",
+      "enonce_markdown": "Quelle est la probabilité qu'il pleuve le troisième jour ?",
+      "corrige_markdown": "### Corrigé détaillé\n\n**Étape 1 - calculer $P(\\text{pluie}_2)$.**\n$$P(\\text{pluie}_2) = P(\\text{beau}_1)\\times P(\\text{pluie}_2\\mid\\text{beau}_1) + P(\\text{pluie}_1)\\times P(\\text{pluie}_2\\mid\\text{pluie}_1) = \\frac23\\times\\frac25+\\frac13\\times\\frac23 = \\frac{4}{15}+\\frac29$$\nAu dénominateur $45$ : $\\dfrac{4}{15}=\\dfrac{12}{45}$, $\\dfrac29=\\dfrac{10}{45}$, donc $P(\\text{pluie}_2)=\\dfrac{22}{45}$.\nVérification : $P(\\text{beau}_2)+P(\\text{pluie}_2) = \\dfrac{23}{45}+\\dfrac{22}{45}=\\dfrac{45}{45}=1$. ✓ (cohérent, les deux états sont bien complémentaires)\n\n**Étape 2 - calculer $P(\\text{pluie}_3)$ à partir du jour 2.**\n$$P(\\text{pluie}_3) = P(\\text{beau}_2)\\times P(\\text{pluie}_3\\mid\\text{beau}_2) + P(\\text{pluie}_2)\\times P(\\text{pluie}_3\\mid\\text{pluie}_2) = \\frac{23}{45}\\times\\frac25+\\frac{22}{45}\\times\\frac23$$\n$$P(\\text{pluie}_3) = \\frac{46}{225}+\\frac{44}{135}$$\nLe PPCM de $225=3^2\\times5^2$ et $135=3^3\\times5$ est $675=3^3\\times5^2$ :\n$$\\frac{46}{225}=\\frac{46\\times3}{675}=\\frac{138}{675}, \\qquad \\frac{44}{135}=\\frac{44\\times5}{675}=\\frac{220}{675}$$\n$$P(\\text{pluie}_3) = \\frac{138+220}{675} = \\frac{358}{675}$$\n$358=2\\times179$ (179 premier) et $675=3^3\\times5^2$ n'ont aucun facteur commun : la fraction est déjà irréductible.\n\nLa probabilité qu'il pleuve le troisième jour est $\\dfrac{358}{675}$ (environ $0{,}530$).\n\n### Conseil\nCalcule systématiquement les deux probabilités complémentaires ($P(\\text{beau}_n)$ et $P(\\text{pluie}_n)$) à chaque étape et vérifie que leur somme vaut $1$ : c'est le contrôle le plus rapide pour repérer une erreur avant de propager le calcul au jour suivant.",
+      "themes": [
+        "probabilités",
+        "probabilités totales",
+        "chaîne à deux états"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "I.3.a",
+      "enonce_markdown": "On désigne par $P_n$ la probabilité pour qu'il fasse beau temps le $n$-ième jour.\n\nMontrer que pour tout entier naturel non nul $n$, $P_{n+1}=\\dfrac{4}{15}P_n+\\dfrac13$.",
+      "corrige_markdown": "### Corrigé détaillé\n\nPar définition, $P(\\text{pluie}_n) = 1-P_n$ (états complémentaires). La formule des probabilités totales appliquée au jour $n+1$ donne :\n$$P_{n+1} = P_n\\times P(\\text{beau}_{n+1}\\mid\\text{beau}_n) + (1-P_n)\\times P(\\text{beau}_{n+1}\\mid\\text{pluie}_n) = P_n\\times\\frac35+(1-P_n)\\times\\frac13$$\nOn développe :\n$$P_{n+1} = \\frac35P_n + \\frac13-\\frac13P_n = \\left(\\frac35-\\frac13\\right)P_n+\\frac13$$\n$$\\frac35-\\frac13 = \\frac{9}{15}-\\frac{5}{15} = \\frac{4}{15}$$\nD'où $P_{n+1}=\\dfrac{4}{15}P_n+\\dfrac13$, pour tout entier naturel non nul $n$.",
+      "themes": [
+        "probabilités",
+        "suite définie par récurrence"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "I.3.b",
+      "enonce_markdown": "Montrer que la suite de terme général $Q_n=P_n-\\dfrac{5}{11}$ est une suite géométrique.",
+      "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une suite définie par une relation affine $u_{n+1}=au_n+b$ (avec $a\\neq1$) donne naissance à une suite géométrique, on cherche d'abord le point fixe $\\ell$ de la relation, solution de $\\ell=a\\ell+b$, puis on pose $v_n=u_n-\\ell$. On montre alors que $v_{n+1}=a\\,v_n$ en remplaçant $u_n$ par $v_n+\\ell$ dans la relation de départ : le terme constant s'annule exactement grâce au choix de $\\ell$, ne laissant que la relation de proportionnalité caractéristique d'une suite géométrique.\n\n### Corrigé détaillé\n\n**Étape 1 - identifier le point fixe (justifie le choix de $\\frac{5}{11}$).**\nLe point fixe $\\ell$ vérifie $\\ell=\\dfrac{4}{15}\\ell+\\dfrac13$, soit $\\ell-\\dfrac{4}{15}\\ell=\\dfrac13$, soit $\\dfrac{11}{15}\\ell=\\dfrac13$, d'où $\\ell=\\dfrac13\\times\\dfrac{15}{11}=\\dfrac{15}{33}=\\dfrac{5}{11}$. C'est bien pour cette raison que l'énoncé fait apparaître $\\dfrac{5}{11}$ dans $Q_n$.\n\n**Étape 2 - exprimer $Q_{n+1}$ en fonction de $Q_n$.**\n$$Q_{n+1} = P_{n+1}-\\frac{5}{11} = \\left(\\frac{4}{15}P_n+\\frac13\\right)-\\frac{5}{11}$$\nOn remplace $P_n=Q_n+\\dfrac{5}{11}$ :\n$$Q_{n+1} = \\frac{4}{15}\\left(Q_n+\\frac{5}{11}\\right)+\\frac13-\\frac{5}{11} = \\frac{4}{15}Q_n+\\frac{4}{15}\\times\\frac{5}{11}+\\frac13-\\frac{5}{11}$$\n$$\\frac{4}{15}\\times\\frac{5}{11} = \\frac{20}{165}=\\frac{4}{33}, \\qquad \\frac13-\\frac{5}{11} = \\frac{11-15}{33}=-\\frac{4}{33}$$\nLes deux termes constants s'annulent exactement :\n$$Q_{n+1} = \\frac{4}{15}Q_n+\\frac{4}{33}-\\frac{4}{33} = \\frac{4}{15}Q_n$$\n\n**Conclusion.** $(Q_n)$ vérifie $Q_{n+1}=\\dfrac{4}{15}Q_n$ pour tout $n$ : c'est une suite géométrique de raison $\\dfrac{4}{15}$.",
+      "themes": [
+        "suites numériques",
+        "suite géométrique",
+        "point fixe d'une relation affine"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-e-2026-cameroun-ex2-qI.3.b-1",
+          "competence": "Suite géométrique associée à une relation affine (point fixe)",
+          "contenu_markdown": "### Rappel de méthode\nPour montrer qu'une suite définie par une relation affine $u_{n+1}=au_n+b$ (avec $a\\neq1$) donne naissance à une suite géométrique, on cherche d'abord le point fixe $\\ell$ de la relation, solution de $\\ell=a\\ell+b$, puis on pose $v_n=u_n-\\ell$. On montre alors que $v_{n+1}=a\\,v_n$ en remplaçant $u_n$ par $v_n+\\ell$ dans la relation de départ : le terme constant s'annule exactement grâce au choix de $\\ell$, ne laissant que la relation de proportionnalité caractéristique d'une suite géométrique.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "I.3.c",
+      "enonce_markdown": "Exprimer alors $P_n$ en fonction de $n$.",
+      "corrige_markdown": "### Corrigé détaillé\n\n**Étape 1 - terme initial de $(Q_n)$.**\n$P_1=P(\\text{beau}_1)=\\dfrac23$ (donnée de départ). Donc :\n$$Q_1 = P_1-\\frac{5}{11} = \\frac23-\\frac{5}{11} = \\frac{22-15}{33} = \\frac{7}{33}$$\n\n**Étape 2 - formule explicite de $(Q_n)$.**\n$(Q_n)$ est géométrique de raison $\\dfrac{4}{15}$ et de premier terme $Q_1=\\dfrac{7}{33}$, donc pour tout $n\\geq1$ :\n$$Q_n = Q_1\\times\\left(\\frac{4}{15}\\right)^{n-1} = \\frac{7}{33}\\left(\\frac{4}{15}\\right)^{n-1}$$\n\n**Étape 3 - revenir à $P_n$.**\n$$P_n = Q_n+\\frac{5}{11} = \\frac{5}{11}+\\frac{7}{33}\\left(\\frac{4}{15}\\right)^{n-1}$$\n\n**Étape 4 - vérification sur $n=2$.**\n$P_2 = \\dfrac{5}{11}+\\dfrac{7}{33}\\times\\dfrac{4}{15} = \\dfrac{5}{11}+\\dfrac{28}{495}$. Avec $\\dfrac{5}{11}=\\dfrac{225}{495}$, on obtient $P_2=\\dfrac{253}{495}$. Comme $253=11\\times23$ et $495=11\\times45$, on simplifie : $P_2=\\dfrac{23}{45}$, qui correspond exactement au résultat de la question I.1. Le calcul est confirmé.\n\nPour tout entier naturel non nul $n$ : $P_n = \\dfrac{5}{11}+\\dfrac{7}{33}\\left(\\dfrac{4}{15}\\right)^{n-1}$.\n\n### Conseil\nUne fois la formule générale obtenue, retrouve avec elle un résultat déjà calculé directement (ici $P_2$) : c'est la vérification la plus fiable, bien plus parlante qu'une simple relecture du calcul algébrique.",
+      "themes": [
+        "suites numériques",
+        "suite géométrique",
+        "expression explicite d'une suite"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "II.1",
+      "enonce_markdown": "Dans le plan complexe rapporté à un repère orthonormé direct $(O;\\vec u,\\vec v)$, on considère la transformation plane $S$ dont l'expression analytique est $\\begin{cases}x'=x\\sqrt2+y\\sqrt6\\\\y'=-x\\sqrt6+y\\sqrt2\\end{cases}$ et l'ensemble $(H)$ des points $M(x,y)$ tels que $64x^2-36y^2=576$.\n\nDonner l'écriture complexe de la transformation plane $S$.",
+      "corrige_markdown": "### Rappel de méthode\nUne transformation plane d'expression analytique $\\begin{cases}x'=ax+by\\\\y'=-bx+ay\\end{cases}$ (ou $\\begin{cases}x'=ax-by\\\\y'=bx+ay\\end{cases}$) est une similitude plane directe de centre $O$ : son écriture complexe est $z'=cz$ avec $c=a+ib$ (ou $c=a-ib$ selon le signe), car la multiplication complexe $(a+ib)(x+iy)=(ax-by)+i(bx+ay)$ reproduit exactement ce type de système. Le rapport de la similitude est alors $|c|$ et son angle est $\\arg(c)$.\n\n### Corrigé détaillé\n\n**Étape 1 - identifier la forme du système.**\n$S$ : $\\begin{cases}x'=\\sqrt2\\,x+\\sqrt6\\,y\\\\y'=-\\sqrt6\\,x+\\sqrt2\\,y\\end{cases}$. On pose $z=x+iy$ et cherche $c=a+ib$ tel que $z'=cz$, c'est-à-dire $x'=ax-by$ et $y'=bx+ay$.\n\n**Étape 2 - identifier $a$ et $b$.**\nEn comparant terme à terme : $ax-by=\\sqrt2\\,x+\\sqrt6\\,y \\Rightarrow a=\\sqrt2,\\ -b=\\sqrt6 \\Rightarrow b=-\\sqrt6$.\nOn vérifie avec la deuxième ligne : $bx+ay = -\\sqrt6\\,x+\\sqrt2\\,y$, ce qui correspond exactement à l'expression donnée de $y'$. Les deux équations sont cohérentes avec les mêmes valeurs de $a$ et $b$.\n\n**Conclusion.** $c=a+ib=\\sqrt2-i\\sqrt6$, donc l'écriture complexe de $S$ est :\n$$z' = (\\sqrt2-i\\sqrt6)\\,z$$",
+      "themes": [
+        "nombres complexes",
+        "transformations planes",
+        "similitude directe"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-e-2026-cameroun-ex2-qII.1-1",
+          "competence": "Écriture complexe d'une similitude plane directe",
+          "contenu_markdown": "### Rappel de méthode\nUne transformation plane d'expression analytique $\\begin{cases}x'=ax+by\\\\y'=-bx+ay\\end{cases}$ (ou $\\begin{cases}x'=ax-by\\\\y'=bx+ay\\end{cases}$) est une similitude plane directe de centre $O$ : son écriture complexe est $z'=cz$ avec $c=a+ib$ (ou $c=a-ib$ selon le signe), car la multiplication complexe $(a+ib)(x+iy)=(ax-by)+i(bx+ay)$ reproduit exactement ce type de système. Le rapport de la similitude est alors $|c|$ et son angle est $\\arg(c)$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.2",
+      "enonce_markdown": "Donner la nature et les éléments caractéristiques de la transformation plane $S$.",
+      "corrige_markdown": "### Rappel de méthode\nUne similitude plane directe d'écriture complexe $z'=cz$ (sans terme constant) est de centre $O$ (point fixe, car $z=0$ est l'unique solution de $z=cz$ quand $c\\neq1$), de rapport $k=|c|$ et d'angle $\\theta=\\arg(c)$, l'angle et le module se retrouvant en calculant $\\cos\\theta=\\dfrac{\\mathrm{Re}(c)}{|c|}$ et $\\sin\\theta=\\dfrac{\\mathrm{Im}(c)}{|c|}$ puis en identifiant l'angle correspondant, plutôt qu'en récitant une valeur d'angle mémorisée.\n\n### Corrigé détaillé\n\n**Étape 1 - centre.**\n$z'=cz$ sans terme constant : $O$ (d'affixe $0$) est invariant, donc $S$ est une similitude directe de centre $O$.\n\n**Étape 2 - rapport.**\n$$|c| = |\\sqrt2-i\\sqrt6| = \\sqrt{(\\sqrt2)^2+(\\sqrt6)^2} = \\sqrt{2+6} = \\sqrt8 = 2\\sqrt2$$\n\n**Étape 3 - angle : calcul séparé de $\\cos\\theta$ et $\\sin\\theta$.**\n$$\\cos\\theta = \\frac{\\sqrt2}{2\\sqrt2} = \\frac12, \\qquad \\sin\\theta = \\frac{-\\sqrt6}{2\\sqrt2} = -\\frac{\\sqrt6}{2\\sqrt2} = -\\frac{\\sqrt3}{2}$$\n(en simplifiant $\\dfrac{\\sqrt6}{\\sqrt2}=\\sqrt3$). Le couple $\\left(\\cos\\theta,\\sin\\theta\\right)=\\left(\\dfrac12,-\\dfrac{\\sqrt3}{2}\\right)$ correspond à $\\theta=-\\dfrac{\\pi}{3}$.\n\n**Conclusion.** $S$ est la similitude plane directe de centre $O$, de rapport $2\\sqrt2$ et d'angle $-\\dfrac{\\pi}{3}$ (soit $-60°$).",
+      "themes": [
+        "nombres complexes",
+        "similitude directe",
+        "module et argument"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-e-2026-cameroun-ex2-qII.2-1",
+          "competence": "Nature et éléments caractéristiques d'une similitude directe",
+          "contenu_markdown": "### Rappel de méthode\nUne similitude plane directe d'écriture complexe $z'=cz$ (sans terme constant) est de centre $O$ (point fixe, car $z=0$ est l'unique solution de $z=cz$ quand $c\\neq1$), de rapport $k=|c|$ et d'angle $\\theta=\\arg(c)$, l'angle et le module se retrouvant en calculant $\\cos\\theta=\\dfrac{\\mathrm{Re}(c)}{|c|}$ et $\\sin\\theta=\\dfrac{\\mathrm{Im}(c)}{|c|}$ puis en identifiant l'angle correspondant, plutôt qu'en récitant une valeur d'angle mémorisée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "II.3",
+      "enonce_markdown": "Prouver que $(H)$ est une hyperbole et donner son excentricité.",
+      "corrige_markdown": "### Rappel de méthode\nPour reconnaître la nature d'une conique d'équation $Ax^2+By^2=C$ centrée en $O$, on divise par $C$ pour la mettre sous forme réduite $\\dfrac{x^2}{a^2}\\pm\\dfrac{y^2}{b^2}=1$. Un signe $-$ entre les deux termes signale une hyperbole, d'équation réduite $\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=1$, pour laquelle $c^2=a^2+b^2$ (distance du centre à chaque foyer) et l'excentricité vaut $e=\\dfrac{c}{a}>1$.\n\n### Corrigé détaillé\n\n**Étape 1 - mettre $(H)$ sous forme réduite.**\n$(H)$ : $64x^2-36y^2=576$. On divise les deux membres par $576$ :\n$$\\frac{64x^2}{576}-\\frac{36y^2}{576} = 1$$\n$$\\frac{576}{64}=9 \\quad\\text{et}\\quad \\frac{576}{36}=16$$\n$$\\frac{x^2}{9}-\\frac{y^2}{16}=1$$\n\n**Étape 2 - identifier la nature.**\nCette équation est de la forme $\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=1$ avec $a^2=9$ et $b^2=16$ (les deux termes sont de signes opposés) : $(H)$ est donc une hyperbole, centrée en $O$, d'axe focal $(Ox)$, avec $a=3$ et $b=4$.\n\n**Étape 3 - calculer $c$ puis l'excentricité.**\n$$c^2 = a^2+b^2 = 9+16 = 25 \\quad\\Rightarrow\\quad c=5$$\n$$e = \\frac{c}{a} = \\frac53$$\n\n**Conclusion.** $(H)$ est une hyperbole de centre $O$, de demi-axe transverse $a=3$, de demi-axe non transverse $b=4$, de foyers $(\\pm5\\,;\\,0)$, et d'excentricité $e=\\dfrac53$.\n\n### Piège à éviter\nNe confonds pas la relation entre $a$, $b$, $c$ d'une hyperbole ($c^2=a^2+b^2$) avec celle d'une ellipse ($c^2=a^2-b^2$) : le signe $-$ dans l'équation réduite de l'hyperbole se traduit par un signe $+$ dans la relation entre les paramètres, pas l'inverse.",
+      "themes": [
+        "coniques",
+        "hyperbole",
+        "excentricité"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-e-2026-cameroun-ex2-qII.3-1",
+          "competence": "Reconnaître une hyperbole et calculer son excentricité",
+          "contenu_markdown": "### Rappel de méthode\nPour reconnaître la nature d'une conique d'équation $Ax^2+By^2=C$ centrée en $O$, on divise par $C$ pour la mettre sous forme réduite $\\dfrac{x^2}{a^2}\\pm\\dfrac{y^2}{b^2}=1$. Un signe $-$ entre les deux termes signale une hyperbole, d'équation réduite $\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=1$, pour laquelle $c^2=a^2+b^2$ (distance du centre à chaque foyer) et l'excentricité vaut $e=\\dfrac{c}{a}>1$.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "probabilités totales",
+    "suite géométrique",
+    "point fixe",
+    "similitude directe",
+    "écriture complexe",
+    "hyperbole",
+    "excentricité",
+    "coniques"
+  ],
+  "incertitudes": [
+    "Rappels de méthode des questions I.1, I.3.b, II.1, II.2 et II.3 non encore développés en cours complet dans cette passe, faute de volume disponible (cours_genere=false, cours_id=null pour chacun) - à traiter lors d'un prochain lot.",
+    "Les questions I.2, I.3.a et I.3.c ne comportent pas de bloc '### Rappel de méthode' distinct : elles réutilisent directement la méthode déjà rappelée en I.1 (probabilités totales) ou I.3.b (suite géométrique associée à un point fixe) sans qu'une répétition apporte une valeur pédagogique supplémentaire ; le corrigé détaillé de chacune reste néanmoins autonome et sans étape masquée."
+  ],
+  "statut": "brouillon",
+  "matiere_normalisee": "MATHS",
+  "classe": "Tle"
+}

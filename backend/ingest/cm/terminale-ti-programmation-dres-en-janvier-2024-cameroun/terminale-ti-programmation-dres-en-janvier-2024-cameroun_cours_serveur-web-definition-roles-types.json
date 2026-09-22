@@ -1,0 +1,92 @@
+{
+  "cours_id": "cours-serveur-web-definition-roles-types-dres-jan2024",
+  "meta": {
+    "titre": "Le serveur web : definition, roles et types (statique/dynamique)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation web - serveur",
+    "duree_estimee_min": 15,
+    "tags": [
+      "serveur web",
+      "serveur http",
+      "statique",
+      "dynamique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 3,
+    "rappel_id": "rdm-dres2024-ex3-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'ecrire une ligne de PHP, il faut savoir ce qui recoit et traite une requete de navigateur : le serveur web, dans l'une de ses deux grandes variantes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une requete HTTP et un navigateur web"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Definir, distinguer et illustrer les types de serveur web",
+      "contenu_markdown": "Un **serveur web** est un logiciel (generalement associe a une machine dediee) qui recoit les requetes HTTP envoyees par des clients (navigateurs) et leur retourne en reponse les ressources demandees : pages HTML, images, ou resultats de scripts executes a la volee. Le **serveur HTTP** designe la meme chose : c'est le logiciel qui traite le protocole HTTP pour repondre aux requetes.\n\nUn serveur met ses ressources a disposition d'autres ordinateurs (les clients) via un **reseau** (local ou Internet) : sans reseau, il n'y a pas de communication client-serveur possible.\n\nOn distingue deux types de serveur selon le contenu renvoye : le **serveur statique** renvoie des fichiers HTML tels quels, sans traitement (exemples : Apache HTTP Server, Nginx en mode simple) ; le **serveur dynamique** execute un script cote serveur (comme du PHP) avant de renvoyer une page generee a la volee, souvent a partir de donnees d'une base de donnees (exemples : Apache couple a PHP, IIS couple a ASP.NET)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un site affiche toujours le meme contenu quel que soit le visiteur, sans jamais interroger de base de donnees. S'agit-il d'un serveur statique ou dynamique ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Observer la variabilite du contenu",
+          "justification": "Le contenu ne change jamais, quel que soit le visiteur ou le moment.",
+          "resultat_markdown": "Aucune generation de contenu a la volee n'est necessaire."
+        },
+        {
+          "numero": 2,
+          "action": "Conclure sur le type de serveur",
+          "justification": "Un serveur qui renvoie un fichier HTML fixe sans traitement est un serveur statique.",
+          "resultat_markdown": "Il s'agit d'un serveur statique."
+        }
+      ],
+      "conclusion_markdown": "L'absence de generation de contenu variable est le signe d'un serveur statique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser qu'un serveur peut fonctionner sans reseau, du moment qu'il gere des ressources.",
+          "pourquoi_faux": "La notion meme de serveur repose sur la mise a disposition de ressources a d'autres machines via un reseau ; sans reseau, il n'y a pas de relation client-serveur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un site e-commerce affiche un stock de produits different selon les mises a jour de la base de donnees. Serveur statique ou dynamique ?",
+          "solution_markdown": "Serveur dynamique, puisque le contenu depend de donnees interrogees a chaque requete."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un serveur web repond aux requetes HTTP des clients via un reseau.",
+        "Serveur HTTP et serveur web designent la meme chose.",
+        "Serveur statique : fichiers fixes. Serveur dynamique : contenu genere par un script (ex. PHP)."
+      ]
+    }
+  ]
+}

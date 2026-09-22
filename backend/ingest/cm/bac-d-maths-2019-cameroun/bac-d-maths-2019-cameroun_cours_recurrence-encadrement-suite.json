@@ -1,0 +1,19 @@
+{
+  "cours_id": "cours-recurrence-encadrement-suite-exponentielle-terminale-d-ti",
+  "meta": {"titre": "Démontrer par récurrence un encadrement d'une suite définie via une exponentielle", "cours_id": "cours-recurrence-encadrement-suite-exponentielle-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D & TI", "sous_theme": "Suites — récurrence et exponentielle", "tags": ["récurrence", "encadrement", "fonction exponentielle"], "duree_estimee_minutes": 8, "epreuve_source": "bac-d-maths-2019-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2019-cameroun-ex3-q1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Pour une suite définie via une exponentielle, la stricte positivité de l'exponentielle et sa croissance stricte permettent souvent d'établir un encadrement par récurrence sans calcul numérique complexe."},
+    {"type": "prerequis", "items_markdown": ["Principe de récurrence (initialisation, hérédité)", "e^x > 0 pour tout réel x, et e est strictement croissante"]},
+    {"type": "regle", "titre": "Exploiter positivité et croissance de l'exponentielle", "contenu_markdown": "Pour encadrer $U_{n+1}=-\\frac13e^{f(U_n)}$ : la positivité de l'exponentielle donne directement $U_{n+1}<0$ ; la croissance de l'exponentielle, combinée à l'hypothèse de récurrence sur $U_n$, permet d'obtenir une majoration de $e^{f(U_n)}$, d'où une minoration de $U_{n+1}$ après changement de signe.", "formule_principale": "e^x>0 toujours ; e croissante ⟹ x≤a ⟹ e^x≤e^a", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Vn+1=-e^(2Vn)/2, V0=0. Montrer que Vn≤0 pour tout n (hérédité seule).", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Positivité", "justification": "e^(2Vn)>0", "resultat_markdown": "Vn+1<0"}
+    ], "conclusion_markdown": "L'hérédité découle directement de la positivité de l'exponentielle."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Multiplier une inégalité par un coefficient négatif sans inverser le sens de l'inégalité", "pourquoi_faux": "Multiplier ou diviser une inégalité par un nombre négatif inverse systématiquement son sens ; oublier cette inversion (fréquente ici à cause du signe -1/3 devant l'exponentielle) fausse toute la conclusion de l'hérédité.", "correction_markdown": "Toujours vérifier explicitement le signe du coefficient multiplicatif à chaque étape d'une chaîne d'inégalités, et inverser le sens dès que ce coefficient est négatif."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Wn+1=-e^(Wn-2)/4, W0=-1. Montrer que Wn≤0 pour tout n implique Wn+1<0.", "solution_markdown": "e^(Wn-2)>0 pour tout Wn, donc Wn+1=-e^(Wn-2)/4<0, indépendamment de la valeur précise de Wn (juste besoin de la positivité de l'exponentielle)."},
+      {"numero": 2, "difficulte": "facile", "enonce_markdown": "Pourquoi la majoration Un+1≤0 ne nécessite-t-elle pas d'utiliser l'hypothèse de récurrence, contrairement à la minoration ?", "solution_markdown": "La majoration Un+1≤0 découle uniquement du fait que l'exponentielle est toujours strictement positive, quelle que soit la valeur de Un ; en revanche, la minoration nécessite de savoir jusqu'où Un peut aller (borne supérieure via l'hypothèse de récurrence) pour majorer l'exponentielle correspondante."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La positivité de l'exponentielle donne souvent directement une des deux bornes de l'encadrement, sans besoin de l'hypothèse de récurrence.", "La croissance de l'exponentielle, combinée à l'hypothèse de récurrence, permet d'établir l'autre borne.", "Toujours inverser le sens des inégalités lors d'une multiplication par un coefficient négatif."]}
+  ]
+}

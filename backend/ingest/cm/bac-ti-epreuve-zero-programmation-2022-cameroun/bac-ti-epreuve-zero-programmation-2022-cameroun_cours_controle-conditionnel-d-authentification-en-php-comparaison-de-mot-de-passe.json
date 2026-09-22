@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-controle-conditionnel-d-authentification-en-php-comparaison-de-mot-de-passe-tle-ti",
+  "meta": {
+    "titre": "Contrôle conditionnel d'authentification en PHP (comparaison de mot de passe)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation serveur (PHP)",
+    "duree_estimee_min": 20,
+    "tags": [
+      "PHP",
+      "authentification",
+      "if",
+      "mot de passe"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Vérifier un mot de passe, ce n'est jamais plus compliqué qu'une comparaison entre deux valeurs : celle saisie par l'utilisateur, et celle enregistrée dans la base. Toute la difficulté consiste à bien enchaîner les deux issues possibles de cette comparaison."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structures conditionnelles if/else en PHP",
+        "Lecture d'une ligne de résultat MySQL (mysql_fetch_array)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Comparer, puis brancher sur les deux issues possibles",
+      "contenu_markdown": "Un contrôle d'authentification typique récupère d'abord la ligne correspondant à l'utilisateur recherché (`mysql_fetch_array`), puis compare la valeur saisie par le visiteur à la valeur stockée dans cette ligne avec un test `if`. Si les deux valeurs diffèrent, le script affiche un message d'erreur et propose de ressaisir les informations ; si elles sont identiques, il confirme l'accès. Les deux branches (`if` et `else`) doivent toujours être prévues, jamais une seule, pour que l'utilisateur reçoive un retour quel que soit le résultat de la comparaison.",
+      "formule_principale": "if ($saisi != $enregistre) { erreur } else { accepté }",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer ce que fait le bloc des lignes 32 à 38 du script de l'exercice 2.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la donnée déjà récupérée avant ce bloc",
+          "justification": "Le bloc étudié utilise `$ligne`, qui vient d'être rempli juste avant par mysql_fetch_array.",
+          "resultat_markdown": "Ligne 33 : `$ligne = mysql_fetch_array($resultat);` récupère la ligne de l'utilisateur trouvé."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la comparaison effectuée",
+          "justification": "C'est le cœur du contrôle d'authentification : comparer le mot de passe saisi à celui enregistré.",
+          "resultat_markdown": "Ligne 34 : `if($motdepasse != $ligne[\"motdepasse_utilisateur\"]):` compare les deux valeurs."
+        },
+        {
+          "numero": 3,
+          "action": "Décrire l'action déclenchée si la comparaison est vraie (mots de passe différents)",
+          "justification": "C'est le cas d'échec de l'authentification, qui doit permettre à l'utilisateur de réessayer.",
+          "resultat_markdown": "Lignes 35-38 : affichage de « Mot de passe incorrect ! Essayez à nouveau. » puis nouvel appel à `print_form()` pour ressaisir les identifiants."
+        }
+      ],
+      "conclusion_markdown": "Ce bloc traite donc uniquement le cas où le mot de passe saisi ne correspond pas à celui enregistré ; le cas contraire (mot de passe correct) est traité par le `else` qui suit, aux lignes 39 à 42."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décrire uniquement le message affiché, sans expliquer la comparaison qui déclenche son affichage.",
+          "pourquoi_faux": "Une réponse qui se limite à « ça affiche que le mot de passe est incorrect » ne montre pas que le mécanisme de comparaison (ligne 34) a été compris, seulement que le texte du message a été lu.",
+          "correction_markdown": "Toujours remonter à la condition qui déclenche l'affichage avant de décrire ce qui s'affiche : condition, puis conséquence."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire un bloc PHP qui affiche « Accès autorisé » si une variable `$role` vaut exactement « admin », et « Accès refusé » sinon.",
+          "solution_markdown": "```php\nif ($role == \"admin\") {\n    echo \"Accès autorisé\";\n} else {\n    echo \"Accès refusé\";\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Après avoir récupéré une ligne `$ligne` d'une table `clients` via `mysql_fetch_array`, écrire le test qui affiche « Client fidèle » si `$ligne[\"nombre_achats\"]` est supérieur ou égal à 10, et « Nouveau client » sinon.",
+          "solution_markdown": "```php\nif ($ligne[\"nombre_achats\"] >= 10) {\n    echo \"Client fidèle\";\n} else {\n    echo \"Nouveau client\";\n}\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le script compare directement `$motdepasse` (saisi en clair par l'utilisateur) à `$ligne[\"motdepasse_utilisateur\"]` (stocké dans la base). Pourquoi cette comparaison directe pose-t-elle un problème de sécurité si le mot de passe est stocké en clair dans la base, et quelle fonction PHP moderne permettrait de corriger ce problème ?",
+          "solution_markdown": "Si le mot de passe est stocké en clair (non chiffré) dans la table `utilisateurs`, toute personne ayant accès à la base de données (administrateur malveillant, fuite de données, injection SQL) peut lire directement tous les mots de passe des utilisateurs, ce qui est une faille de sécurité grave, d'autant plus qu'un utilisateur réutilise souvent le même mot de passe sur plusieurs sites. La bonne pratique consiste à stocker un hachage du mot de passe (avec la fonction `password_hash()`), jamais le mot de passe lui-même, puis à comparer avec `password_verify($motdepasse, $ligne[\"motdepasse_utilisateur\"])` au moment de la connexion plutôt qu'avec un simple `!=`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un contrôle d'authentification compare toujours une valeur saisie à une valeur de référence issue de la base.",
+        "Les deux issues de la comparaison (correspondance ou non) doivent chacune produire un retour visible pour l'utilisateur.",
+        "Décrire un extrait de code commence par identifier ce qui est comparé, puis ce qui est déclenché dans chaque branche.",
+        "Stocker un mot de passe en clair dans une base de données est une pratique dangereuse : un hachage (password_hash/password_verify) est la norme actuelle."
+      ]
+    }
+  ]
+}

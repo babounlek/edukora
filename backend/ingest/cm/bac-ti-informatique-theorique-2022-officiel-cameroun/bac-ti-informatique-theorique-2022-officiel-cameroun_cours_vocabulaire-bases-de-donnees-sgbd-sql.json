@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-vocabulaire-bd-sgbd-sql-tle-ti",
+  "meta": {
+    "titre": "Vocabulaire des bases de données relationnelles : SGBD et langage SQL",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction aux bases de données",
+    "duree_estimee_min": 18,
+    "tags": [
+      "base de données",
+      "SGBD",
+      "SQL",
+      "vocabulaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'écrire la moindre requête, il faut savoir nommer précisément les trois couches qui composent le monde des bases de données : la base elle-même, le logiciel qui la gère, et le langage qui permet de lui parler. Une question de vocabulaire mal répondue au tout début d'un sujet de bases de données coûte des points qui ne dépendent pourtant d'aucune compétence technique avancée."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Avoir déjà manipulé un tableau de données structuré (fichier tableur, liste).",
+        "Comprendre la notion de logiciel comme intermédiaire entre l'utilisateur et une ressource informatique."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois couches, trois définitions",
+      "contenu_markdown": "Une **base de données** est un ensemble structuré et organisé de données, stockées durablement, destinées à être partagées par plusieurs utilisateurs ou applications tout en limitant les redondances. Un **SGBD** (Système de Gestion de Base de Données) est le logiciel qui permet de créer une base de données, d'y insérer, modifier, supprimer et interroger des données, tout en garantissant leur cohérence, leur sécurité et l'accès simultané de plusieurs utilisateurs. Le **langage SQL** est le langage normalisé utilisé pour dialoguer avec un SGBD relationnel : il se décompose en langage de définition de données (CREATE, ALTER) et en langage de manipulation de données (INSERT, UPDATE, DELETE, SELECT).\n\nLa hiérarchie à retenir : la base de données est la RESSOURCE, le SGBD est l'OUTIL qui la gère, SQL est le LANGAGE utilisé avec cet outil.",
+      "formule_principale": "Base de données (les données) <- gérée par -> SGBD (le logiciel) <- piloté en -> SQL (le langage)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une école utilise un logiciel MySQL pour stocker les notes de ses élèves dans des tables reliées entre elles, et le personnel administratif tape des instructions comme SELECT ou INSERT pour consulter ou modifier ces notes. Identifier, dans cette situation, ce qui correspond à la base de données, au SGBD et au langage SQL.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer ce qui constitue l'ensemble des données elles-mêmes",
+          "justification": "La base de données est toujours la ressource stockée, jamais le logiciel ni les instructions qui la manipulent.",
+          "resultat_markdown": "Les notes des élèves, organisées dans des tables reliées entre elles, constituent la base de données."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer le logiciel qui gère cet ensemble de données",
+          "justification": "Le SGBD est le logiciel intermédiaire, nommé explicitement dans l'énoncé.",
+          "resultat_markdown": "MySQL est le SGBD utilisé."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer le langage utilisé pour dialoguer avec ce logiciel",
+          "justification": "Le langage SQL se reconnaît à ses instructions caractéristiques.",
+          "resultat_markdown": "Les instructions SELECT et INSERT tapées par le personnel administratif relèvent du langage SQL."
+        }
+      ],
+      "conclusion_markdown": "Les notes = la base de données ; MySQL = le SGBD ; SELECT/INSERT = des instructions du langage SQL utilisé pour dialoguer avec ce SGBD."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « MySQL » à une question qui demande de définir le langage SQL",
+          "pourquoi_faux": "MySQL est un SGBD, un logiciel parmi d'autres qui SUPPORTE le langage SQL ; ce n'est pas le langage lui-même, qui est une norme utilisable par plusieurs SGBD différents.",
+          "correction_markdown": "Retiens que plusieurs SGBD différents (MySQL, Oracle, PostgreSQL...) peuvent tous comprendre le même langage SQL, avec de petites variantes de syntaxe."
+        },
+        {
+          "erreur_markdown": "Confondre base de données et SGBD en les traitant comme synonymes",
+          "pourquoi_faux": "La base de données désigne les données elles-mêmes ; le SGBD désigne le logiciel qui les gère. Un même SGBD peut gérer plusieurs bases de données différentes.",
+          "correction_markdown": "Pose-toi la question « est-ce que je parle du CONTENU ou de l'OUTIL ? » avant de répondre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une entreprise stocke la liste de ses clients et de leurs commandes dans des tables gérées par le logiciel PostgreSQL. Identifier ce qui correspond à la base de données et ce qui correspond au SGBD dans cette situation.",
+          "solution_markdown": "La base de données est constituée de l'ensemble des tables contenant la liste des clients et de leurs commandes. Le SGBD est PostgreSQL, le logiciel qui gère cette base de données."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Expliquer en une phrase pourquoi on peut dire que MySQL, Oracle et PostgreSQL sont trois logiciels différents mais qu'ils comprennent tous, à quelques variantes près, le même langage SQL.",
+          "solution_markdown": "MySQL, Oracle et PostgreSQL sont trois SGBD développés par des éditeurs différents, avec des fonctionnalités propres à chacun, mais ils implémentent tous le même standard SQL pour dialoguer avec leurs bases de données respectives, avec parfois de petites variantes syntaxiques propres à chaque éditeur (comme la clause AFTER, reconnue par MySQL mais pas par Oracle)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un développeur affirme : « Je n'ai pas besoin d'apprendre le SGBD utilisé par mon entreprise, il me suffit de connaître le langage SQL. » Discuter la validité de cette affirmation.",
+          "solution_markdown": "L'affirmation est partiellement vraie mais incomplète. Le cœur du langage SQL (SELECT, INSERT, UPDATE, DELETE, WHERE, ORDER BY, les jointures) est standardisé et fonctionne de façon quasiment identique sur la plupart des SGBD relationnels. Cependant, chaque SGBD ajoute ses propres extensions : fonctions spécifiques, types de données propriétaires, clauses non standardisées (comme AFTER), et outils d'administration entièrement propres à chaque logiciel. Un développeur qui ignore totalement le SGBD utilisé risque d'écrire du SQL qui échoue sur ce SGBD précis, ou de se priver de fonctionnalités avancées propres à cet outil."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Base de données = les données elles-mêmes, organisées et stockées durablement.",
+        "SGBD = le logiciel qui gère cette base de données (créer, modifier, interroger, sécuriser).",
+        "Langage SQL = le langage normalisé pour dialoguer avec un SGBD relationnel, décomposé en langage de définition de données (CREATE, ALTER) et langage de manipulation de données (SELECT, INSERT, UPDATE, DELETE).",
+        "Plusieurs SGBD différents comprennent tous, à quelques variantes près, le même langage SQL de base.",
+        "Au BAC TI, cette question de vocabulaire ouvre presque systématiquement la partie base de données du sujet : une réponse précise (les trois couches distinguées clairement) rapporte l'intégralité des points sans nécessiter de calcul."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-role-du-serveur-dns-terminale-ti",
+  "meta": {
+    "titre": "Rôle du serveur DNS",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Services et protocoles Internet",
+    "duree_estimee_min": 15,
+    "tags": [
+      "DNS",
+      "résolution de noms",
+      "serveur DNS",
+      "protocoles Internet"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q8-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Personne ne retient l'adresse IP d'un site web pour le visiter : on tape un nom, comme www.google.com, jamais une suite de chiffres. Pourtant, en coulisses, c'est bien une adresse IP qui permet d'atteindre le bon serveur. Un service discret assure cette traduction à chaque visite, sans que l'utilisateur ne s'en aperçoive jamais : le DNS."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'adresse IP",
+        "Notion de nom de domaine (URL)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction du serveur DNS",
+      "contenu_markdown": "Le serveur DNS (Domain Name System) assure la traduction entre un nom de domaine, lisible par l'utilisateur (www.google.com), et l'adresse IP du serveur qui héberge réellement ce site, seule exploitable par les équipements réseau pour acheminer les données. Sans cette traduction préalable, aucune requête HTTP ne pourrait être envoyée, faute de savoir vers quelle adresse IP la diriger.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un utilisateur saisit www.google.com dans son navigateur. La configuration réseau de sa machine indique un serveur DNS à l'adresse 192.168.43.1. Décrire le rôle joué par ce serveur dans l'ouverture de la page.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la donnée manquante avant tout transfert",
+          "justification": "Le navigateur connaît le nom saisi mais aucune adresse IP à contacter.",
+          "resultat_markdown": "Le navigateur ne connaît que le nom « www.google.com », pas l'adresse IP du serveur qui héberge ce site."
+        },
+        {
+          "numero": 2,
+          "action": "Envoyer la requête de résolution au serveur DNS",
+          "justification": "Le serveur DNS configuré (192.168.43.1) est chargé de répondre à cette question précise.",
+          "resultat_markdown": "La machine interroge le serveur DNS 192.168.43.1 en lui demandant l'adresse IP correspondant à « www.google.com »."
+        },
+        {
+          "numero": 3,
+          "action": "Recevoir la réponse et poursuivre la connexion",
+          "justification": "Une fois l'adresse IP connue, le navigateur peut enfin contacter le vrai serveur web.",
+          "resultat_markdown": "Le serveur DNS renvoie l'adresse IP du serveur Google ; le navigateur peut alors lui envoyer sa requête HTTP pour obtenir la page."
+        }
+      ],
+      "conclusion_markdown": "Le DNS agit comme un préalable obligatoire à toute connexion par nom de domaine : sans sa réponse, aucune requête HTTP ne pourrait être adressée au bon serveur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décrire le DNS comme le serveur qui héberge le site web visité",
+          "pourquoi_faux": "Le serveur DNS ne fait que répondre à une question de traduction (nom vers IP) : il n'héberge aucun contenu de site, cette fonction relève d'un serveur web totalement distinct.",
+          "correction_markdown": "Présente le DNS uniquement comme un service de traduction/résolution, jamais comme un hébergeur de contenu."
+        },
+        {
+          "erreur_markdown": "Croire que le DNS est nécessaire même quand on saisit directement une adresse IP dans le navigateur",
+          "pourquoi_faux": "Si l'utilisateur connaît déjà l'adresse IP et la saisit directement, aucune traduction n'est nécessaire : le DNS n'intervient que lorsqu'un NOM doit être converti en adresse.",
+          "correction_markdown": "Précise que le DNS n'intervient que pour la résolution d'un nom de domaine, pas pour une connexion directe par adresse IP."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Décrire en une phrase le rôle du serveur DNS.",
+          "solution_markdown": "Le serveur DNS traduit un nom de domaine, lisible par l'utilisateur, en l'adresse IP du serveur correspondant, seule exploitable par les équipements réseau pour acheminer les données."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un utilisateur reçoit le message d'erreur « Ce site est inaccessible, l'adresse IP du serveur n'a pas été trouvée » alors qu'il peut, dans le même navigateur, ouvrir sans problème un site en saisissant directement son adresse IP. Expliquer d'où vient probablement le problème.",
+          "solution_markdown": "Comme l'accès direct par adresse IP fonctionne, la connexion Internet elle-même n'est pas en cause. Le message d'erreur mentionnant explicitement l'échec de résolution de l'adresse IP du serveur pointe vers une panne ou une mauvaise configuration du serveur DNS : la machine n'arrive pas à joindre son serveur DNS, ou celui-ci ne répond pas, ce qui empêche la traduction du nom de domaine saisi en adresse IP, sans empêcher pour autant une connexion directe par IP qui n'a besoin d'aucune résolution de nom."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi une machine conserve, en pratique, les résultats de résolution DNS récents dans un cache local, et quelle conséquence cela peut avoir si l'adresse IP d'un site change entre-temps.",
+          "solution_markdown": "Interroger le serveur DNS à chaque visite d'un même site ralentirait inutilement la navigation et surchargerait le serveur DNS de requêtes répétées pour la même traduction. La machine conserve donc en mémoire (cache DNS), pour une durée limitée, les correspondances nom-adresse IP déjà obtenues, afin de les réutiliser directement sans nouvelle requête. Conséquence : si l'adresse IP réelle du site change avant l'expiration de cette durée de cache, la machine continue d'utiliser, pendant un moment, l'ancienne adresse IP mémorisée, ce qui peut rendre le site temporairement inaccessible ou la rediriger vers un serveur qui n'héberge plus le contenu attendu, jusqu'à ce que le cache expire et qu'une nouvelle résolution DNS soit effectuée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le DNS traduit un nom de domaine en l'adresse IP du serveur correspondant.",
+        "Aucune requête HTTP ne peut être envoyée avant que cette traduction n'ait eu lieu.",
+        "Le DNS ne fait que répondre à une question de traduction ; il n'héberge jamais le contenu du site visité.",
+        "Une connexion directe par adresse IP n'a pas besoin de DNS, puisqu'aucun nom n'a besoin d'être traduit.",
+        "Les résultats DNS sont mis en cache localement pour un temps limité, ce qui peut retarder la prise en compte d'un changement d'adresse IP."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "cours_id": "cours-diagnostiquer-coupure-surcharge-bepc",
+  "meta": {
+    "titre": "Diagnostiquer une coupure d'électricité : surcharge et calibre du fusible",
+    "matiere": "Physique-Chimie-Technologie",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Électricité - diagnostic et sécurité des installations",
+    "duree_estimee_min": 35,
+    "tags": [
+      "surcharge",
+      "fusible",
+      "calibre",
+      "intensité totale",
+      "diagnostic",
+      "démarche scientifique",
+      "circuit dédié"
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": "",
+      "module_numero": "2",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-pct-2024-cameroun",
+    "epreuve_titre": "BEPC Physique-Chimie-Technologie 2024 Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-pct-2024-cameroun-ex3-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tout s'éteint d'un coup au moment où l'on allume un appareil de plus. La tentation est d'accuser le fournisseur d'électricité. Neuf fois sur dix, c'est faux : le calcul le montre en trois lignes, et il désigne le vrai coupable, qui est le circuit lui-même."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la relation entre puissance, tension et intensité",
+        "Savoir que les intensités s'ajoutent dans un montage en dérivation",
+        "Connaître le rôle du fusible et la notion de calibre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Additionner les intensités, comparer au calibre",
+      "contenu_markdown": "Dans une installation domestique, tous les appareils sont branchés **en dérivation**. Les intensités qu'ils appellent s'**additionnent** dans le conducteur commun :\n\n$$I_{totale} = I_1 + I_2 + I_3 + \\ldots$$\n\nLe **fusible** protège ce conducteur commun. Son **calibre** est l'intensité au-delà de laquelle il fond.\n\n**Le critère de diagnostic :**\n\n$$I_{totale} > I_{calibre} \\ \\Longrightarrow \\ \\text{le fusible fond, tout le circuit est coupé}$$\n\n**La démarche de diagnostic, en cinq temps.**\n\n1. **Écarter les hypothèses fausses** en les vérifiant, plutôt qu'en les rejetant d'autorité. Si l'on soupçonne la tension, on la mesure.\n2. **Relever l'indice temporel.** Une coupure survenue **au moment précis** où un appareil a été mis en marche désigne cet appareil, non un défaut permanent.\n3. **Calculer l'intensité avant** l'événement, et vérifier qu'elle passait.\n4. **Calculer l'intensité après**, et la comparer au calibre.\n5. **Conclure et proposer des solutions**, en distinguant l'immédiat du durable.\n\n**Quand l'énoncé donne des puissances au lieu d'intensités**, on convertit d'abord :\n\n$$I = \\frac{P}{U}$$\n\n**Le point que le barème valorise.** Faire les **deux** calculs, avant et après, est ce qui explique pourquoi la coupure est survenue **à cet instant-là**. Un seul total ne l'explique pas.\n\n**Ce qu'il ne faut jamais proposer comme solution.** Remplacer le fusible par un calibre supérieur, ou par un fil quelconque, sans changer les conducteurs. Le point faible se déplacerait alors du tableau vers l'intérieur des murs, où rien ne le surveille.",
+      "formule_principale": "I_{totale} = \\sum I_k \\qquad ; \\qquad I_{totale} > I_{calibre} \\Rightarrow \\text{coupure}",
+      "variantes": [
+        {
+          "nom": "Diagnostic à partir des puissances",
+          "quand_utiliser": "Quand l'énoncé donne les puissances des appareils au lieu de leurs intensités",
+          "contenu_markdown": "Deux voies équivalentes. On peut convertir chaque puissance en intensité par $I = \\dfrac{P}{U}$ puis additionner, ou bien additionner les puissances et convertir une seule fois : $I_{totale} = \\dfrac{P_{totale}}{U}$. La seconde voie est plus rapide et évite d'accumuler les arrondis. On peut aussi raisonner directement en puissance en calculant la puissance maximale admissible, $P_{max} = U \\times I_{calibre}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une cuisine protégée par un fusible de 32 A fonctionnent un four (9 A), un lave-linge (8 A), un micro-onde (4 A) et six lampes (1 A chacune). Tout s'éteint au moment où l'on allume la plaque de cuisson (6 A). Expliquer.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écarter d'abord l'hypothèse de la tension",
+          "justification": "La démarche scientifique impose de vérifier une hypothèse avant de la rejeter ; l'oscillogramme a établi que la tension valait bien 220 V à 50 Hz.",
+          "resultat_markdown": "La tension du secteur est conforme : la coupure ne vient pas de là."
+        },
+        {
+          "numero": 2,
+          "action": "Relever l'indice temporel de l'énoncé",
+          "justification": "C'est lui qui oriente tout le diagnostic : la coupure n'est pas survenue à n'importe quel moment.",
+          "resultat_markdown": "Tout s'est éteint **au moment précis** où la plaque de cuisson a été allumée."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'intensité totale avant la mise en marche de la plaque",
+          "justification": "Les appareils sont en dérivation : leurs intensités s'ajoutent. Les six lampes comptent six fois.",
+          "resultat_markdown": "$$I_{avant} = 9 + 8 + 4 + 6 \\times 1 = 27\\ \\text{A}$$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier que cette intensité passait",
+          "justification": "Il faut établir que l'installation fonctionnait normalement avant l'événement.",
+          "resultat_markdown": "$27\\ \\text{A} < 32\\ \\text{A}$ : le fusible supportait cette charge."
+        },
+        {
+          "numero": 5,
+          "action": "Calculer l'intensité totale après",
+          "justification": "On ajoute l'intensité de l'appareil mis en marche.",
+          "resultat_markdown": "$$I_{après} = 27 + 6 = 33\\ \\text{A}$$"
+        },
+        {
+          "numero": 6,
+          "action": "Comparer au calibre du fusible",
+          "justification": "C'est la comparaison qui conclut le diagnostic.",
+          "resultat_markdown": "$33\\ \\text{A} > 32\\ \\text{A}$ : le calibre est dépassé."
+        },
+        {
+          "numero": 7,
+          "action": "Conclure",
+          "justification": "On nomme la cause et l'on rappelle que le fusible a joué son rôle, ce qui évite qu'on l'incrimine.",
+          "resultat_markdown": "Il s'agit d'une **surcharge** : le fusible a fondu et coupé tout le circuit. Il n'est pas en cause, il a rempli exactement sa fonction."
+        }
+      ],
+      "conclusion_markdown": "La tension est conforme ; la coupure vient d'une surcharge. L'intensité est passée de 27 A à 33 A en allumant la plaque, dépassant les 32 A du fusible, qui a fondu et coupé l'ensemble du circuit."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de multiplier par le nombre d'appareils identiques",
+          "pourquoi_faux": "Compter une seule lampe au lieu de six donne 28 A au total, valeur inférieure au calibre : on conclurait que le fusible n'aurait pas dû fondre, et toute l'explication s'effondre.",
+          "correction_markdown": "Relis l'énoncé en soulignant les quantités : « six lampes » impose $6 \\times 1$ A."
+        },
+        {
+          "erreur_markdown": "Ne faire qu'un seul calcul, après l'événement",
+          "pourquoi_faux": "Trouver 33 A et conclure à la surcharge est juste, mais incomplet : cela n'explique pas pourquoi tout fonctionnait une minute plus tôt. Le barème valorise la comparaison des deux états.",
+          "correction_markdown": "Fais toujours les deux calculs, avant et après. C'est cette comparaison qui constitue la démarche scientifique demandée."
+        },
+        {
+          "erreur_markdown": "Accuser le fusible d'être défectueux",
+          "pourquoi_faux": "Le fusible a fondu parce que l'intensité a dépassé son calibre : c'est précisément sa fonction. Le déclarer défectueux revient à reprocher à un garde-fou d'avoir arrêté une chute.",
+          "correction_markdown": "Écris explicitement que le fusible a joué son rôle. C'est ce qui distingue un diagnostic d'une accusation."
+        },
+        {
+          "erreur_markdown": "Proposer de remplacer le fusible par un calibre supérieur",
+          "pourquoi_faux": "Un fusible de 40 A sur des conducteurs prévus pour 32 A laisserait passer un courant que les fils ne supportent pas. Le point faible se déplacerait du tableau vers l'intérieur des murs, avec un risque d'incendie que rien ne signalerait.",
+          "correction_markdown": "La solution durable est de **répartir** la charge sur plusieurs circuits, ou de créer un circuit dédié avec des conducteurs de section adaptée."
+        },
+        {
+          "erreur_markdown": "Conclure sans proposer de solution",
+          "pourquoi_faux": "L'énoncé demande de « proposer une explication » dans une évaluation de compétences : identifier la cause sans dire quoi faire ne répond qu'à la moitié de l'attente.",
+          "correction_markdown": "Termine par deux solutions au moins, l'une immédiate et gratuite, l'autre durable."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit protégé par un fusible de 16 A alimente trois appareils appelant respectivement 5 A, 6 A et 4 A. Le fusible va-t-il fondre ? Justifier.",
+          "solution_markdown": "**Étape 1 - additionner les intensités.** Les appareils sont en dérivation :\n\n$$I_{totale} = 5 + 6 + 4 = 15\\ \\text{A}$$\n\n**Étape 2 - comparer au calibre.**\n\n$$15\\ \\text{A} < 16\\ \\text{A}$$\n\n**Conclusion.** L'intensité totale reste inférieure au calibre : le fusible **ne fond pas**, les trois appareils peuvent fonctionner ensemble.\n\n**Remarque.** La marge n'est que de 1 A. Brancher un quatrième appareil, même modeste, ferait basculer le circuit en surcharge."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une prise sous 220 V est protégée par un fusible de 10 A. On y branche successivement un téléviseur de 120 W, un ventilateur de 80 W et un fer à repasser de 1000 W. Déterminer, par le calcul, à partir de quel appareil le fusible fond.",
+          "solution_markdown": "**Étape 1 - convertir chaque puissance en intensité.**\n\n$$I = \\frac{P}{U}$$\n\n$$I_{TV} = \\frac{120}{220} \\approx 0,55\\ \\text{A} \\quad ; \\quad I_{vent} = \\frac{80}{220} \\approx 0,36\\ \\text{A} \\quad ; \\quad I_{fer} = \\frac{1000}{220} \\approx 4,55\\ \\text{A}$$\n\n**Étape 2 - cumuler au fur et à mesure.**\n\n| Appareils branchés | Intensité totale | Comparaison à 10 A |\n|---|---|---|\n| Téléviseur | 0,55 A | passe |\n| + ventilateur | 0,91 A | passe |\n| + fer à repasser | 5,46 A | passe |\n\n**Étape 3 - conclure.** Même avec les trois appareils, l'intensité totale ne vaut que 5,46 A, bien en dessous des 10 A du calibre. Le fusible **ne fond à aucun moment**.\n\n**Étape 4 - déterminer la marge disponible.** La puissance maximale admissible vaut :\n\n$$P_{max} = U \\times I_{calibre} = 220 \\times 10 = 2200\\ \\text{W}$$\n\nLes trois appareils consomment $120 + 80 + 1000 = 1200$ W. Il reste donc 1000 W disponibles, soit de quoi brancher une bouilloire de 1500 W ? Non : $1200 + 1500 = 2700\\ \\text{W} > 2200\\ \\text{W}$. Une bouilloire ferait fondre le fusible."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un logement, le circuit de la cuisine est protégé par un fusible de 32 A sous 220 V et alimente en permanence un réfrigérateur (2 A) et quatre lampes (1 A chacune). La famille utilise en outre, selon les moments, un four (9 A), un lave-linge (8 A), un micro-onde (4 A) et une plaque de cuisson (6 A). Déterminer quelles combinaisons d'appareils occasionnels sont possibles, puis proposer une réorganisation durable du circuit en la justifiant.",
+          "solution_markdown": "**Étape 1 - calculer la charge permanente.** Le réfrigérateur et les lampes fonctionnent en continu :\n\n$$I_{perm} = 2 + 4 \\times 1 = 6\\ \\text{A}$$\n\n**Étape 2 - calculer la marge disponible pour les appareils occasionnels.**\n\n$$I_{disponible} = 32 - 6 = 26\\ \\text{A}$$\n\n**Étape 3 - examiner les combinaisons.**\n\n| Combinaison | Intensité | Total avec permanent | Verdict |\n|---|---|---|---|\n| Four seul | 9 A | 15 A | possible |\n| Four + lave-linge | 17 A | 23 A | possible |\n| Four + lave-linge + micro-onde | 21 A | 27 A | possible |\n| Four + lave-linge + plaque | 23 A | 29 A | possible |\n| Four + lave-linge + micro-onde + plaque | 27 A | **33 A** | **impossible** |\n| Four + micro-onde + plaque | 19 A | 25 A | possible |\n| Lave-linge + micro-onde + plaque | 18 A | 24 A | possible |\n\n**Étape 4 - dégager la règle pratique.** Les quatre appareils occasionnels totalisent 27 A, soit 1 A de trop compte tenu de la charge permanente. **Trois d'entre eux passent, jamais les quatre.**\n\nLa marge est donc très étroite : l'installation fonctionne à 97 % de sa capacité dès que trois appareils tournent ensemble.\n\n**Étape 5 - proposer une réorganisation durable.**\n\n*Solution retenue : créer un circuit dédié à la plaque de cuisson.*\n\n1. **Justification technique.** La plaque est l'appareil dont l'usage est le plus prévisible et le plus concentré dans le temps, en fin de journée, précisément quand le four et le lave-linge risquent de tourner aussi. L'isoler libère 6 A sur le circuit principal.\n2. **Nouveau bilan.** Le circuit cuisine descend à $27 - 6 = 21$ A au maximum, soit une marge de 11 A sur les 32 A. Les trois appareils restants peuvent fonctionner ensemble sans aucune restriction.\n3. **Dimensionnement du nouveau circuit.** La plaque appelant 6 A, un disjoncteur de 10 A et des conducteurs de 1,5 mm² suffiraient. En pratique, on prévoit 16 A et 2,5 mm² pour permettre le remplacement futur par une plaque plus puissante.\n4. **Protection des personnes.** Ajouter en tête un **disjoncteur différentiel 30 mA**, qui protège contre l'électrocution. Le fusible, lui, ne protège que l'installation.\n\n*Solutions écartées, et pourquoi.*\n\n- **Augmenter le calibre à 40 A** : les conducteurs existants sont dimensionnés pour 32 A. Ils s'échaufferaient en permanence, avec un risque d'incendie dans les gaines encastrées, hors de toute surveillance. Solution à proscrire.\n- **Se contenter d'organiser les usages** : cela fonctionne, mais repose entièrement sur la vigilance des occupants. Le jour où l'on oublie, le fusible fond, et le réfrigérateur s'arrête aussi, ce qui n'est pas anodin.\n\n**Conclusion.** L'installation actuelle est fonctionnelle mais saturée. La création d'un circuit dédié à la plaque de cuisson, protégé séparément et coiffé d'un différentiel, est la seule solution qui traite la cause plutôt que le symptôme. Son coût, un disjoncteur et quelques mètres de câble, est sans commune mesure avec le risque évité."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "En dérivation, les intensités s'**additionnent** dans le conducteur commun protégé par le fusible.",
+        "Le fusible fond dès que l'intensité totale dépasse son **calibre**. C'est son rôle, pas un défaut.",
+        "Compte chaque appareil autant de fois qu'il apparaît : six lampes valent $6 \\times 1$ A.",
+        "Fais les **deux** calculs, avant et après l'événement : c'est ce qui explique le moment de la coupure.",
+        "Quand l'énoncé donne des puissances, convertis par $I = \\dfrac{P}{U}$ avant d'additionner.",
+        "Ne propose jamais d'augmenter le calibre sans changer les conducteurs : le danger se déplacerait dans les murs.",
+        "Au BEPC, cette analyse vaut la moitié de la partie B, soit 5 points. La démarche compte autant que le résultat."
+      ]
+    }
+  ]
+}

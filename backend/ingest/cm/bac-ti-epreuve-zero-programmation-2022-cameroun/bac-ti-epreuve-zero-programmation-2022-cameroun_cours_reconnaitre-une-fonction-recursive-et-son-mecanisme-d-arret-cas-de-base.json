@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-reconnaitre-une-fonction-recursive-et-son-mecanisme-d-arret-cas-de-base-tle-ti",
+  "meta": {
+    "titre": "Reconnaître une fonction récursive et son mécanisme d'arrêt (cas de base)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Récursivité en langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "langage C",
+      "récursivité",
+      "cas de base",
+      "auto-appel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex4-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction qui s'appelle elle-même peut sembler paradoxale au premier abord : comment une fonction encore en train de s'exécuter peut-elle se relancer ? La réponse tient dans un mécanisme précis, dont deux ingrédients garantissent qu'il ne tourne jamais indéfiniment."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de fonction et d'appel de fonction en C",
+        "Structure conditionnelle if/else"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Auto-appel + cas de base atteignable",
+      "contenu_markdown": "Une fonction est récursive lorsqu'elle contient, dans son propre corps, un appel à elle-même. Pour qu'une telle fonction se termine, deux ingrédients sont indispensables : un **cas de base**, une situation simple où la fonction renvoie une valeur directement sans appel récursif supplémentaire, et une garantie que chaque appel récursif se **rapproche** de ce cas de base (en général parce qu'un paramètre diminue strictement à chaque appel). Sans cas de base atteignable, la fonction s'appellerait indéfiniment jusqu'à épuiser la mémoire réservée aux appels de fonctions (pile d'exécution).",
+      "formule_principale": "fonction(n) { if (cas de base) return valeur; else return ... fonction(n réduit) ...; }",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Justifier pourquoi la fonction `calcul(int x, int n)` de l'exercice 4, qui contient un appel à `calcul(...)` à la fois dans sa branche paire et sa branche impaire, est bien récursive et se termine toujours.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le ou les auto-appels",
+          "justification": "C'est la condition nécessaire et suffisante pour parler de récursivité.",
+          "resultat_markdown": "Ligne 8 : `return calcul(x*x, n/2);` et ligne 11 : `return x*calcul(x*x,(n-1)/2);`"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer le cas de base",
+          "justification": "C'est la situation qui arrête la chaîne d'appels sans nouvel auto-appel.",
+          "resultat_markdown": "Ligne 3-4 : `if(n==0) { return 1; }`"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier que le paramètre se rapproche du cas de base à chaque appel",
+          "justification": "Sans cette garantie, rien n'empêcherait une chaîne d'appels infinie même en présence d'un cas de base.",
+          "resultat_markdown": "Le second paramètre passe de n à n/2 (ou (n-1)/2) à chaque appel : il diminue strictement et atteint 0 en un nombre fini d'étapes."
+        }
+      ],
+      "conclusion_markdown": "La fonction `calcul` est donc récursive (elle s'appelle elle-même) et sa terminaison est garantie par un cas de base atteignable en un nombre fini d'étapes, puisque n est systématiquement divisé par 2 à chaque appel."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer qu'une fonction est récursive dès qu'elle contient une boucle.",
+          "pourquoi_faux": "Une boucle (for, while) répète des instructions SANS jamais rappeler la fonction elle-même : ce n'est pas de la récursivité, c'est de l'itération. Les deux mécanismes peuvent résoudre des problèmes similaires, mais ne se définissent pas de la même façon.",
+          "correction_markdown": "Chercher spécifiquement un appel de la fonction à ELLE-MÊME dans son propre corps, pas seulement une répétition d'instructions."
+        },
+        {
+          "erreur_markdown": "Se contenter de dire « elle s'appelle elle-même » sans mentionner le cas de base.",
+          "pourquoi_faux": "Une fonction qui s'appelle elle-même SANS cas de base atteignable n'est pas une récursivité correcte : c'est une boucle infinie déguisée, qui provoquerait un dépassement de pile (stack overflow) à l'exécution.",
+          "correction_markdown": "Toujours compléter la justification par la mention explicite du cas de base et de sa progression garantie vers celui-ci."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La fonction suivante calcule-t-elle une factorielle de façon récursive ? Justifier.\n```c\nint fact(int n) {\n    if (n == 0) return 1;\n    else return n * fact(n - 1);\n}\n```",
+          "solution_markdown": "Oui : `fact` s'appelle elle-même ligne « return n * fact(n-1); ». Le cas de base est `n == 0`, qui renvoie 1 directement. Le paramètre n diminue de 1 à chaque appel, ce qui garantit d'atteindre 0 en exactement n appels si n est positif au départ."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La fonction suivante contient un appel à elle-même, mais ne se termine jamais pour n > 0. Identifier l'erreur.\n```c\nint compte(int n) {\n    if (n == 0) return 0;\n    else return 1 + compte(n);\n}\n```",
+          "solution_markdown": "Le paramètre transmis à l'appel récursif est `n`, inchangé, au lieu de `n - 1` : le paramètre ne se rapproche jamais du cas de base `n == 0`. Chaque appel relance `compte(n)` avec exactement la même valeur, ce qui provoque une chaîne d'appels infinie (et un dépassement de pile à l'exécution). La correction consiste à écrire `compte(n - 1)`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une fonction peut être récursive sans être directement auto-référente dans son propre corps, via un mécanisme appelé récursivité croisée (ou mutuelle) : une fonction A appelle une fonction B, qui elle-même rappelle A. Expliquer pourquoi cette forme reste bien de la récursivité, et ce qu'elle exige pour se terminer.",
+          "solution_markdown": "La récursivité croisée reste de la récursivité au sens large car A finit par déclencher, indirectement, un nouvel appel à A lui-même via B : la définition de la récursivité ne se limite pas à l'auto-appel DIRECT, elle inclut tout cycle d'appels qui revient, même indirectement, à la fonction de départ. Pour se terminer, ce mécanisme exige la même chose que la récursivité directe : au moins un cas de base (dans A ou dans B, ou dans les deux) et une garantie que le cycle d'appels A->B->A->... se rapproche de ce cas de base à chaque tour, généralement via un paramètre partagé qui diminue de façon cohérente entre les deux fonctions."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fonction récursive contient un appel à elle-même (direct) ou à une chaîne de fonctions qui y revient (croisée).",
+        "Un cas de base est indispensable : il renvoie une valeur sans nouvel appel récursif.",
+        "Le ou les paramètres de l'appel récursif doivent se rapprocher strictement du cas de base à chaque appel.",
+        "Sans ces deux garanties réunies, la récursivité ne se termine jamais et provoque un dépassement de pile à l'exécution."
+      ]
+    }
+  ]
+}

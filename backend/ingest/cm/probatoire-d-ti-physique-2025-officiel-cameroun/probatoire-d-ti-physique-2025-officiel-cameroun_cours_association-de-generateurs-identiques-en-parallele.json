@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-association-generateurs-parallele-1ere-d-ti",
+  "meta": {
+    "titre": "Association de générateurs identiques en parallèle",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Modélisation du fonctionnement d'un circuit électrique",
+    "duree_estimee_min": 18,
+    "tags": [
+      "générateurs en parallèle",
+      "générateur équivalent",
+      "force électromotrice",
+      "résistance interne"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D-TI",
+      "module_numero": "4",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2025-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Séries D, TI - Cameroun - Session 2025",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2025-officiel-cameroun-ex3-qA.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une seule pile s'épuise vite si elle doit alimenter un appareil gourmand en courant : brancher plusieurs piles identiques en parallèle permet de fournir un courant plus important sans changer la tension délivrée. Ce montage, très utilisé en pratique, obéit à une règle simple qu'il vaut mieux savoir redémontrer que réciter de mémoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi du générateur $U = E - rI$",
+        "Loi des nœuds ($I = i_1 + i_2 + \\ldots$)",
+        "Notion de tension commune aux bornes de dipôles en parallèle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Générateur équivalent à n générateurs identiques en parallèle",
+      "contenu_markdown": "Lorsque $n$ générateurs identiques, chacun de f.é.m. $E_0$ et de résistance interne $r_0$, sont montés en parallèle, ils peuvent être remplacés par un générateur unique équivalent qui conserve la même force électromotrice mais dont la résistance interne est divisée par $n$. Ce résultat se redémontre à partir de la loi du générateur et de la symétrie de l'association : ne jamais l'appliquer sans être capable de refaire ce raisonnement.",
+      "formule_principale": "E_{eq} = E_0 \\qquad ; \\qquad r_{eq} = \\dfrac{r_0}{n}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On monte en parallèle deux générateurs identiques de caractéristiques $(E_0 = 3\\ \\text{V}\\, ;\\, r_0 = 2\\ \\Omega)$. Déterminer les caractéristiques du générateur équivalent.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser la loi de chaque générateur",
+          "justification": "Les deux générateurs, en parallèle, partagent la même tension $U$ à leurs bornes.",
+          "resultat_markdown": "$U = E_0 - r_0 i_1$ et $U = E_0 - r_0 i_2$"
+        },
+        {
+          "numero": 2,
+          "action": "Exploiter la symétrie de l'association",
+          "justification": "Deux générateurs identiques soumis à la même tension débitent nécessairement le même courant.",
+          "resultat_markdown": "$i_1 = i_2 = I/2$, où $I = i_1+i_2$ est le courant total"
+        },
+        {
+          "numero": 3,
+          "action": "Réécrire la loi en fonction du courant total",
+          "justification": "On substitue $i_1 = I/2$ dans la loi du générateur.",
+          "resultat_markdown": "$U = E_0 - \\dfrac{r_0}{2} I$"
+        },
+        {
+          "numero": 4,
+          "action": "Identifier le générateur équivalent",
+          "justification": "On compare à la forme générale $U = E_{eq} - r_{eq}I$.",
+          "resultat_markdown": "$E_{eq} = E_0 = 3\\ \\text{V}$ ; $r_{eq} = r_0/2 = 1\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "Le générateur équivalent conserve la f.é.m. de chaque générateur individuel mais devient deux fois plus « fort », c'est-à-dire moins résistant, capable de débiter un courant plus important avec une chute de tension moindre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser la force électromotrice par le nombre de générateurs, comme on le ferait pour une association en série.",
+          "pourquoi_faux": "En parallèle, chaque générateur impose individuellement la même tension à vide $E_0$ ; associer plusieurs générateurs identiques ne peut pas réduire cette valeur commune, seule la résistance interne équivalente diminue.",
+          "correction_markdown": "Retiens que seule la résistance interne se divise par $n$ dans une association en parallèle de générateurs identiques ; la f.é.m. reste inchangée."
+        },
+        {
+          "erreur_markdown": "Appliquer la même formule à des générateurs non identiques (f.é.m. ou résistances internes différentes).",
+          "pourquoi_faux": "La démonstration repose entièrement sur la symétrie ($i_1 = i_2$), qui n'est valable que si les générateurs sont rigoureusement identiques ; avec des générateurs différents, chacun débite un courant différent et le calcul du générateur équivalent est plus complexe.",
+          "correction_markdown": "Vérifie toujours que l'énoncé précise bien des générateurs identiques avant d'utiliser $E_{eq}=E_0$ et $r_{eq}=r_0/n$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Trois générateurs identiques de caractéristiques $(E_0 = 4{,}5\\ \\text{V}\\, ;\\, r_0 = 3\\ \\Omega)$ sont montés en parallèle. Déterminer les caractéristiques du générateur équivalent.",
+          "solution_markdown": "$E_{eq} = E_0 = 4{,}5\\ \\text{V}$ ; $r_{eq} = r_0/n = 3/3 = 1\\ \\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur équivalent obtenu par association de $n$ générateurs identiques en parallèle a pour caractéristiques $(E_{eq} = 6\\ \\text{V}\\, ;\\, r_{eq} = 0{,}5\\ \\Omega)$. Sachant que chaque générateur individuel a une résistance interne $r_0 = 2\\ \\Omega$, déterminer $n$ et la f.é.m. $E_0$ de chaque générateur.",
+          "solution_markdown": "$E_0 = E_{eq} = 6\\ \\text{V}$ (la f.é.m. ne change pas). De $r_{eq} = r_0/n$, on tire $n = r_0/r_{eq} = 2/0{,}5 = 4$ générateurs."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux générateurs identiques $(E_0 = 6\\ \\text{V}\\, ;\\, r_0 = 4\\ \\Omega)$ montés en parallèle alimentent un résistor $R = 3\\ \\Omega$ branché à leurs bornes communes. Calculer le courant total $I$ débité par l'association, puis le courant $i_1$ traversant chaque générateur.",
+          "solution_markdown": "Le générateur équivalent a pour caractéristiques $E_{eq} = 6\\ \\text{V}$ et $r_{eq} = 4/2 = 2\\ \\Omega$. Le circuit devient un simple circuit série (générateur équivalent + résistor) : par la loi de Pouillet, $I = \\dfrac{E_{eq}}{R+r_{eq}} = \\dfrac{6}{3+2} = \\dfrac{6}{5} = 1{,}2\\ \\text{A}$. Par symétrie, chaque générateur réel débite la moitié de ce courant total : $i_1 = I/2 = 0{,}6\\ \\text{A}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour $n$ générateurs identiques en parallèle : $E_{eq} = E_0$ (inchangée) et $r_{eq} = r_0/n$ (divisée par $n$).",
+        "Ce résultat vient de la symétrie de l'association : générateurs identiques + tension commune impose des courants individuels égaux.",
+        "Cette formule ne s'applique qu'à des générateurs strictement identiques ; sinon, il faut repartir de la loi des nœuds et de la loi de chaque générateur séparément.",
+        "Une fois le générateur équivalent trouvé, le reste du circuit se traite comme un circuit série ordinaire.",
+        "Cette association en parallèle est un classique du Probatoire, souvent enchaînée avec un calcul de courant dans un circuit complet, comme aux questions suivantes de ce même exercice."
+      ]
+    }
+  ]
+}

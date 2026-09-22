@@ -384,6 +384,21 @@ class CoursListView(generics.ListAPIView):
             qs = qs.filter(subject__code=subject)
         if cursus_id := params.get("cursus"):
             qs = qs.filter(cursus__id=cursus_id)
+        if savoir_id := params.get("savoir"):
+            # Même relation que quiz.services.construire_parcours (Cours.tags ->
+            # Tag.savoir_officiel) - permet à /parcours de proposer "voir tous les
+            # cours" d'un savoir au-delà de son plafond d'affichage
+            # (PARCOURS_COURS_PAR_SAVOIR_MAX). EXISTS() plutôt qu'un JOIN sur tags -
+            # même raison que le filtre `search` plus bas.
+            savoir_match = Tag.objects.filter(cours=OuterRef("pk"), savoir_officiel_id=savoir_id)
+            qs = qs.filter(Exists(savoir_match))
+        if theme_id := params.get("theme"):
+            # Pendant de `savoir` ci-dessus pour les matières en mode Parcours par
+            # fréquence (voir quiz.services.construire_parcours_par_frequence) : le
+            # thème EST directement le Tag, sans passer par Tag.savoir_officiel
+            # (démontré non fiable, voir sa docstring) - filtre direct sur l'id.
+            theme_match = Tag.objects.filter(cours=OuterRef("pk"), id=theme_id)
+            qs = qs.filter(Exists(theme_match))
         if country := params.get("country"):
             # cursus vide = notion commune à toutes les séries de tout pays (voir
             # Cours.cursus) - exclue par erreur si on filtrait juste sur cursus__country.
@@ -419,7 +434,21 @@ class CoursListView(generics.ListAPIView):
         # (utile pour l'admin, pas pour un visiteur qui veut voir les derniers cours
         # ajoutés). published_at n'est jamais renseigné en pratique (aucun code ne
         # l'écrit) donc pas fiable pour ce tri, contrairement à created_at.
-        return qs.distinct().order_by("-created_at")
+        ordering = ["-created_at"]
+        if sous_theme_prioritaire := params.get("sous_theme_prioritaire"):
+            # Fait remonter les cours du même sous-thème (voir RelatedCours côté
+            # frontend, qui l'utilise pour les suggestions sous un cours) sans les
+            # filtrer exclusivement : un sous-thème donné ne compte souvent qu'un ou
+            # deux cours, un filtre strict laisserait la section vide la plupart du
+            # temps plutôt que de retomber sur le reste de la matière/du cursus.
+            qs = qs.annotate(
+                _meme_sous_theme=Case(
+                    When(sous_theme=sous_theme_prioritaire, then=0), default=1, output_field=IntegerField(),
+                ),
+            )
+            ordering = ["_meme_sous_theme", *ordering]
+
+        return qs.distinct().order_by(*ordering)
 
     def list(self, request, *args, **kwargs):
         """Comme generics.ListAPIView.list(), à ceci près que le contexte de

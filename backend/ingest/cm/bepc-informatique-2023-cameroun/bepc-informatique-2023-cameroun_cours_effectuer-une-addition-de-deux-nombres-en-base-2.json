@@ -1,0 +1,170 @@
+{
+  "cours_id": "cours-effectuer-une-addition-de-deux-nombres-en-base-2-3e",
+  "meta": {
+    "titre": "Additionner deux nombres en base 2",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Numération binaire et opérations",
+    "duree_estimee_min": 30,
+    "tags": [
+      "base 2",
+      "binaire",
+      "addition binaire",
+      "retenue",
+      "conversion base 2 base 10",
+      "numération"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2023-cameroun",
+    "epreuve_titre": "BEPC Informatique - Cameroun, session 2023 (MINESEC/DECC), épreuve théorique",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2023-cameroun-ex2-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ordinateur ne sait manipuler que deux états : le courant passe ou il ne passe pas, 1 ou 0. Tout ce qu'il calcule, il le calcule donc en base 2. Additionner deux nombres binaires, c'est refaire à la main ce que fait le processeur des milliards de fois par seconde. Et la bonne nouvelle, c'est que tu sais déjà le faire : la technique est exactement celle de l'addition posée que tu pratiques depuis le primaire, avec une seule table de retenue à réapprendre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir poser et effectuer une addition en base 10 avec retenues",
+        "Connaître les puissances de 2 jusqu'à 2^8 (1, 2, 4, 8, 16, 32, 64, 128, 256)",
+        "Savoir convertir un nombre de la base 2 vers la base 10"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La table d'addition binaire et la technique de la retenue",
+      "contenu_markdown": "En base 2, il n'existe que deux chiffres : **0** et **1**. Le chiffre 2 n'existe pas, exactement comme le chiffre 10 n'existe pas en base 10. Dès qu'une colonne totalise 2, on écrit ce total sur deux chiffres et la partie gauche part en retenue.\n\n**La table complète, à connaître par cœur :**\n\n| Opération | Résultat | Ce qu'on écrit |\n|---|---|---|\n| $0 + 0$ | $0$ | on pose 0, pas de retenue |\n| $0 + 1$ | $1$ | on pose 1, pas de retenue |\n| $1 + 0$ | $1$ | on pose 1, pas de retenue |\n| $1 + 1$ | $(10)_2$ | on pose 0, on retient 1 |\n| $1 + 1 + 1$ | $(11)_2$ | on pose 1, on retient 1 |\n\nLa dernière ligne correspond au cas où une retenue arrive sur une colonne qui contient déjà deux 1.\n\n**La marche à suivre, toujours la même :**\n\n1. Poser l'addition en alignant les deux nombres **par la droite**, comme en base 10.\n2. Traiter les colonnes une par une, en partant de la droite.\n3. Pour chaque colonne, additionner les deux chiffres **plus la retenue** venue de la colonne précédente.\n4. Poser le chiffre de droite du résultat, reporter celui de gauche en retenue sur la colonne suivante.\n5. Ne pas oublier d'écrire la dernière retenue si elle existe : elle forme le chiffre de tête du résultat.\n6. Contrôler le résultat en repassant par la base 10.",
+      "formule_principale": "(1)_2 + (1)_2 = (10)_2 \\quad\\text{soit : je pose } 0 \\text{ et je retiens } 1",
+      "variantes": [
+        {
+          "nom": "Contrôle par conversion en base 10",
+          "quand_utiliser": "Systématiquement, dès que le résultat est trouvé",
+          "contenu_markdown": "On convertit chaque opérande en base 10 en multipliant chaque chiffre par la puissance de 2 de son rang (le rang du chiffre le plus à droite valant 0), on additionne en base 10, puis on convertit le résultat trouvé en base 2 pour comparer. Si les deux nombres coïncident, l'addition binaire est juste. Ce contrôle prend moins d'une minute sur des nombres de quatre ou cinq chiffres."
+        },
+        {
+          "nom": "Addition de plus de deux nombres binaires",
+          "quand_utiliser": "Quand l'énoncé demande une somme de trois opérandes ou plus",
+          "contenu_markdown": "On n'additionne jamais trois nombres binaires d'un seul coup : la table ne le prévoit pas et les retenues deviennent ingérables. On additionne les deux premiers, puis on ajoute le troisième au résultat obtenu, et ainsi de suite. Chaque addition partielle reste une addition à deux opérandes, donc entièrement couverte par la table."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Effectuer en base 2 l'opération suivante : $(1111)_2 + (110)_2$",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser l'addition en alignant les chiffres par la droite",
+          "justification": "Comme en base 10, ce sont les rangs qui doivent se correspondre : les unités sous les unités, les rangs 1 sous les rangs 1, etc. Le nombre le plus court est simplement décalé vers la droite.",
+          "resultat_markdown": "```\n     1 1 1 1\n  +    1 1 0\n  -----------\n```"
+        },
+        {
+          "numero": 2,
+          "action": "Traiter la colonne de rang 0 (la plus à droite)",
+          "justification": "On applique la table : $1 + 0 = 1$, un cas sans retenue.",
+          "resultat_markdown": "On pose **1**. Retenue transmise à la colonne suivante : **0**."
+        },
+        {
+          "numero": 3,
+          "action": "Traiter la colonne de rang 1",
+          "justification": "Les deux chiffres valent 1 et il n'y a pas de retenue entrante : c'est le cas $1 + 1 = (10)_2$ de la table.",
+          "resultat_markdown": "On pose **0**. Retenue transmise : **1**."
+        },
+        {
+          "numero": 4,
+          "action": "Traiter la colonne de rang 2",
+          "justification": "Les deux chiffres valent 1 et une retenue de 1 arrive de la colonne précédente : $1 + 1 + 1 = (11)_2$, la dernière ligne de la table.",
+          "resultat_markdown": "On pose **1**. Retenue transmise : **1**."
+        },
+        {
+          "numero": 5,
+          "action": "Traiter la colonne de rang 3",
+          "justification": "Le second nombre n'a plus de chiffre à ce rang : on le complète par 0. Avec la retenue entrante, le calcul est $1 + 0 + 1 = (10)_2$.",
+          "resultat_markdown": "On pose **0**. Retenue transmise : **1**."
+        },
+        {
+          "numero": 6,
+          "action": "Traiter la retenue finale",
+          "justification": "Il ne reste plus aucun chiffre des opérandes, mais une retenue de 1 subsiste. Elle devient le chiffre de tête du résultat. L'oublier fausserait tout le calcul.",
+          "resultat_markdown": "On pose **1**.\n\nAddition complète :\n\n```\n   Retenues :  1 1 1 0\n                 1 1 1 1\n   +               1 1 0\n   ----------------------\n               1 0 1 0 1\n```"
+        },
+        {
+          "numero": 7,
+          "action": "Contrôler le résultat en base 10",
+          "justification": "Chaque chiffre est multiplié par la puissance de 2 correspondant à son rang. Si la somme en base 10 des deux opérandes est égale à la valeur du résultat converti, l'addition est vérifiée.",
+          "resultat_markdown": "$(1111)_2 = 8 + 4 + 2 + 1 = 15$\n\n$(110)_2 = 4 + 2 + 0 = 6$\n\n$15 + 6 = 21$\n\n$(10101)_2 = 16 + 0 + 4 + 0 + 1 = 21$. Les deux valeurs coïncident."
+        }
+      ],
+      "conclusion_markdown": "On a établi que $(1111)_2 + (110)_2 = (10101)_2$, résultat confirmé par le contrôle en base 10 ($15 + 6 = 21$). La démarche mobilise trois automatismes : l'alignement par la droite, la table de retenue, et l'écriture de la retenue finale."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $1 + 1 = 2$ dans une colonne et obtenir un résultat contenant le chiffre 2, par exemple $(1111)_2 + (110)_2 = (1221)_2$",
+          "pourquoi_faux": "En base 2, l'alphabet des chiffres se limite à 0 et 1. Un résultat qui contient un 2 n'est pas un nombre binaire, il ne veut rien dire. C'est la transposition mécanique de l'addition décimale, sans avoir changé de table.",
+          "correction_markdown": "Dès qu'une colonne atteint 2, applique la règle : je pose 0, je retiens 1. Relis toujours ton résultat final et vérifie qu'il ne contient que des 0 et des 1 : c'est un contrôle qui prend deux secondes."
+        },
+        {
+          "erreur_markdown": "Oublier la retenue finale et écrire $(0101)_2$ au lieu de $(10101)_2$",
+          "pourquoi_faux": "La retenue sortante de la colonne la plus à gauche est un chiffre du résultat à part entière : elle représente la puissance de 2 immédiatement supérieure. L'oublier fait passer le résultat de 21 à 5, soit une erreur d'un facteur 4.",
+          "correction_markdown": "Après la dernière colonne, pose-toi systématiquement la question : « reste-t-il une retenue ? » Si oui, écris-la. Le résultat d'une addition binaire comporte souvent un chiffre de plus que le plus long des deux opérandes."
+        },
+        {
+          "erreur_markdown": "Aligner les nombres par la gauche, en écrivant 110 sous les trois premiers chiffres de 1111",
+          "pourquoi_faux": "L'alignement par la gauche fait additionner des chiffres de rangs différents, donc des puissances de 2 différentes. C'est aussi faux que d'additionner les dizaines avec les unités en base 10.",
+          "correction_markdown": "Aligne toujours par la droite, sur le chiffre des unités (rang 0). Si les deux nombres n'ont pas la même longueur, complète mentalement le plus court par des 0 à gauche : $(110)_2$ s'écrit alors $(0110)_2$, et l'alignement devient évident."
+        },
+        {
+          "erreur_markdown": "Reporter la retenue sur la colonne de droite au lieu de la colonne de gauche",
+          "pourquoi_faux": "Une retenue représente un dépassement vers la puissance **supérieure** de 2, donc vers la gauche. La reporter vers la droite reviendrait à additionner une quantité déjà traitée, et l'addition ne se terminerait jamais.",
+          "correction_markdown": "Le sens de progression est constant : on calcule de la droite vers la gauche, et les retenues se propagent dans le même sens. Écris-les au-dessus de la colonne de gauche avant de passer à la colonne suivante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Effectuer en base 2 : $(101)_2 + (11)_2$. Vérifier le résultat en base 10.",
+          "solution_markdown": "**Addition posée.**\n\n```\n   Retenues :  1 1\n                1 0 1\n   +              1 1\n   ------------------\n              1 0 0 0\n```\n\n**Détail colonne par colonne.**\n\n- Rang 0 : $1 + 1 = (10)_2$. On pose **0**, on retient **1**.\n- Rang 1 : $0 + 1 = 1$, plus la retenue 1, donc $1 + 1 = (10)_2$. On pose **0**, on retient **1**.\n- Rang 2 : $1 + 0 = 1$, plus la retenue 1, donc $1 + 1 = (10)_2$. On pose **0**, on retient **1**.\n- Rang 3 : il ne reste que la retenue. On pose **1**.\n\n**Résultat :** $(101)_2 + (11)_2 = (1000)_2$\n\n**Vérification en base 10.**\n\n$(101)_2 = 4 + 0 + 1 = 5$ ; $(11)_2 = 2 + 1 = 3$ ; $5 + 3 = 8$.\n\n$(1000)_2 = 1 \\times 2^3 = 8$. Les deux valeurs coïncident, le résultat est juste."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Effectuer en base 2 : $(10110)_2 + (1101)_2$. Vérifier le résultat en base 10.",
+          "solution_markdown": "**Addition posée.**\n\n```\n   Retenues :  1 1 1 0 0\n                1 0 1 1 0\n   +              1 1 0 1\n   --------------------------\n              1 0 0 0 1 1\n```\n\n**Détail colonne par colonne.**\n\n- Rang 0 : $0 + 1 = 1$. On pose **1**, retenue **0**.\n- Rang 1 : $1 + 0 = 1$, pas de retenue entrante. On pose **1**, retenue **0**.\n- Rang 2 : $1 + 1 = (10)_2$. On pose **0**, retenue **1**.\n- Rang 3 : $0 + 1 = 1$, plus la retenue 1, donc $(10)_2$. On pose **0**, retenue **1**.\n- Rang 4 : $1 + 0 = 1$, plus la retenue 1, donc $(10)_2$. On pose **0**, retenue **1**.\n- Rang 5 : il ne reste que la retenue. On pose **1**.\n\n**Résultat :** $(10110)_2 + (1101)_2 = (100011)_2$\n\n**Vérification en base 10.**\n\n$(10110)_2 = 16 + 0 + 4 + 2 + 0 = 22$ ; $(1101)_2 = 8 + 4 + 0 + 1 = 13$ ; $22 + 13 = 35$.\n\n$(100011)_2 = 32 + 0 + 0 + 0 + 2 + 1 = 35$. Le résultat est confirmé."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un microprocesseur ne dispose que de 4 bits pour stocker le résultat d'une addition. Effectuer $(1001)_2 + (1000)_2$, puis expliquer ce qui se produit si le résultat doit tenir sur 4 bits seulement.",
+          "solution_markdown": "**Étape 1 : effectuer l'addition sans contrainte de taille.**\n\n```\n   Retenues :  1 0 0 0\n                1 0 0 1\n   +            1 0 0 0\n   ---------------------\n              1 0 0 0 1\n```\n\nDétail : rang 0 : $1 + 0 = 1$, on pose 1. Rang 1 : $0 + 0 = 0$. Rang 2 : $0 + 0 = 0$. Rang 3 : $1 + 1 = (10)_2$, on pose **0** et on retient **1**. Rang 4 : il ne reste que la retenue, on pose **1**.\n\n**Résultat mathématique :** $(1001)_2 + (1000)_2 = (10001)_2$\n\n**Étape 2 : vérifier en base 10.**\n\n$(1001)_2 = 8 + 0 + 0 + 1 = 9$ ; $(1000)_2 = 8$ ; $9 + 8 = 17$.\n\n$(10001)_2 = 16 + 0 + 0 + 0 + 1 = 17$. Le calcul est juste.\n\n**Étape 3 : analyser la contrainte des 4 bits.**\n\nLe résultat $(10001)_2$ comporte **5 chiffres binaires**, donc 5 bits. Avec 4 bits seulement, le processeur ne peut représenter que les entiers de $(0000)_2 = 0$ à $(1111)_2 = 15$. Or le résultat vaut 17, il sort de cet intervalle.\n\nLe bit de tête, celui qui provient de la retenue finale, ne trouve pas de place : il est perdu. Le processeur ne conserve alors que les 4 bits de droite, soit $(0001)_2 = 1$, au lieu de 17.\n\n**Étape 4 : nommer le phénomène et conclure.**\n\nCette perte du bit de poids fort s'appelle un **dépassement de capacité** (en anglais *overflow*). Le processeur signale la situation en positionnant un indicateur spécial, appelé retenue de sortie, que le programme peut tester.\n\nCe phénomène explique une limite bien concrète des machines : c'est parce que le nombre de bits réservés à une donnée est fini que tout ordinateur possède une valeur maximale au-delà de laquelle il ne sait plus compter juste."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "En base 2, seuls les chiffres 0 et 1 existent. Si le chiffre 2 apparaît dans ton résultat, tu as oublié une retenue.",
+        "Une seule ligne de table à retenir vraiment : $1 + 1 = (10)_2$, autrement dit je pose 0 et je retiens 1. Tout le reste se déduit de l'addition ordinaire.",
+        "Aligne toujours par la droite et complète le nombre le plus court par des 0 à gauche : les rangs se correspondent alors d'eux-mêmes.",
+        "La retenue finale est un chiffre du résultat, pas un reste à jeter. C'est l'oubli le plus coûteux de cet exercice.",
+        "Contrôle systématiquement en base 10 : convertis les deux opérandes, additionne, convertis ton résultat et compare. Trente secondes pour transformer un résultat probable en résultat certain.",
+        "Au BEPC, l'addition binaire tombe seule (« effectuer en base 2 ») ou comme étape d'un exercice sur les conversions de bases. Dans les deux cas, la conversion base 2 vers base 10 est l'outil de vérification à connaître."
+      ]
+    }
+  ]
+}

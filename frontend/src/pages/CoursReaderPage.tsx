@@ -154,6 +154,7 @@ export function CoursReaderPage() {
           countryCode={cours.subject.country.code.toLowerCase()}
           cursusId={cours.cursus[0]?.id}
           excludeId={cours.id}
+          sousTheme={cours.sous_theme || undefined}
         />
       )}
     </div>

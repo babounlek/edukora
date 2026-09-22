@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-select-jointure-tri-filtre-tle-ti",
+  "meta": {
+    "titre": "Interroger une base de données avec SELECT : jointure, tri et filtre",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "SQL : interroger les données (SELECT)",
+    "duree_estimee_min": 28,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "JOIN",
+      "WHERE",
+      "ORDER BY"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "SELECT est l'instruction la plus utilisée de tout le langage SQL, et pourtant celle qui se complexifie le plus vite : une simple lecture de colonnes devient vite un tri, une jointure entre deux tables, puis un filtre précis sur les résultats. Ce cours construit ces trois briques une par une, dans l'ordre où elles se combinent naturellement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier une clé primaire et une clé étrangère dans un schéma relationnel.",
+        "Savoir lire un schéma de plusieurs tables reliées entre elles."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "SELECT, JOIN, WHERE, ORDER BY : les quatre briques d'une requête d'interrogation",
+      "contenu_markdown": "La structure de base `SELECT colonnes FROM table` affiche les colonnes demandées d'une seule table. Dès que les colonnes à afficher proviennent de deux tables différentes, il faut les joindre avec `INNER JOIN autre_table ON condition_de_jointure`, la condition égalant toujours la clé primaire d'une table à la clé étrangère qui la référence dans l'autre. La clause `WHERE condition` filtre ensuite les lignes du résultat selon un critère, en s'appliquant après la jointure éventuelle. La clause `ORDER BY colonne [ASC|DESC]` trie enfin les lignes du résultat final.\n\nCes quatre briques se combinent toujours dans le même ordre d'écriture : SELECT ... FROM ... [JOIN ... ON ...] [WHERE ...] [ORDER BY ...].",
+      "formule_principale": "SELECT colonnes FROM table1 [INNER JOIN table2 ON table1.cle = table2.cle_etrangere] [WHERE condition] [ORDER BY colonne]"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête SQL qui affiche le nom de chaque client et le solde de son compte, uniquement pour les clients dont le solde est négatif, triés par solde croissant. On dispose des tables CLIENT(Num_Client, Nom, Prenom, Ville_client) et COMPTE(Num_Compte, #Num_Agence, #Num_Client, Solde).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les colonnes à afficher et les tables dont elles proviennent",
+          "justification": "Première étape systématique : savoir QUOI afficher et D'OÙ ça vient.",
+          "resultat_markdown": "Nom vient de CLIENT, Solde vient de COMPTE : deux tables différentes, une jointure est nécessaire."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la jointure sur la clé commune",
+          "justification": "La condition de jointure relie toujours la clé primaire d'une table à la clé étrangère qui la référence dans l'autre.",
+          "resultat_markdown": "INNER JOIN COMPTE ON CLIENT.Num_Client = COMPTE.Num_Client"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter le filtre demandé",
+          "justification": "Le filtre s'exprime toujours après la jointure, dans une clause WHERE.",
+          "resultat_markdown": "WHERE COMPTE.Solde < 0"
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter le tri demandé",
+          "justification": "Le tri est la dernière brique de la requête, appliquée sur le résultat déjà filtré.",
+          "resultat_markdown": "ORDER BY COMPTE.Solde ASC"
+        }
+      ],
+      "conclusion_markdown": "```sql\nSELECT CLIENT.Nom, COMPTE.Solde\nFROM CLIENT\nINNER JOIN COMPTE ON CLIENT.Num_Client = COMPTE.Num_Client\nWHERE COMPTE.Solde < 0\nORDER BY COMPTE.Solde ASC;\n```"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la condition de jointure (ON ...) et n'écrire que FROM table1, table2",
+          "pourquoi_faux": "Sans condition de jointure explicite, le SGBD associe CHAQUE ligne de la première table à CHAQUE ligne de la seconde (produit cartésien), ce qui produit un résultat incohérent.",
+          "correction_markdown": "Vérifie systématiquement qu'une clause ON relie explicitement les deux tables sur leur clé commune avant de considérer la requête terminée."
+        },
+        {
+          "erreur_markdown": "Placer la clause WHERE avant la clause de jointure, ou ORDER BY avant WHERE",
+          "pourquoi_faux": "SQL impose un ordre syntaxique strict des clauses ; un ordre différent provoque une erreur de syntaxe.",
+          "correction_markdown": "Mémorise l'ordre fixe des clauses : SELECT-FROM-JOIN-WHERE-ORDER BY, toujours dans cet ordre, même si certaines clauses sont absentes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête qui affiche le nom et le prénom de tous les clients, triés par prénom décroissant.",
+          "solution_markdown": "```sql\nSELECT Nom, Prenom FROM CLIENT ORDER BY Prenom DESC;\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête qui affiche le nom du client et le montant de chaque emprunt, uniquement pour les emprunts d'un montant supérieur à 500000. On dispose des tables CLIENT(Num_Client, Nom, Prenom, Ville_client) et EMPRUNT(Num_Emprunt, #Num_Agence, #Num_Client, Montant).",
+          "solution_markdown": "```sql\nSELECT CLIENT.Nom, EMPRUNT.Montant\nFROM CLIENT\nINNER JOIN EMPRUNT ON CLIENT.Num_Client = EMPRUNT.Num_Client\nWHERE EMPRUNT.Montant > 500000;\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On dispose de AGENCE(Num_Agence, Nom_Agence, Ville_Agence, Actif), CLIENT(Num_Client, Nom, Prenom, Ville_client) et COMPTE(Num_Compte, #Num_Agence, #Num_Client, Solde). Écrire la requête qui affiche le nom de l'agence, le nom du client et le solde du compte, pour les comptes gérés par une agence active et dont le solde dépasse 100000, triés par nom d'agence croissant puis par solde décroissant. Expliquer pourquoi deux jointures successives sont nécessaires.",
+          "solution_markdown": "Les trois informations demandées proviennent de TROIS tables différentes : il faut donc deux jointures successives, la table COMPTE servant de pivot puisqu'elle porte les deux clés étrangères vers les deux autres tables.\n\n```sql\nSELECT AGENCE.Nom_Agence, CLIENT.Nom, COMPTE.Solde\nFROM COMPTE\nINNER JOIN AGENCE ON COMPTE.Num_Agence = AGENCE.Num_Agence\nINNER JOIN CLIENT ON COMPTE.Num_Client = CLIENT.Num_Client\nWHERE AGENCE.Actif = TRUE AND COMPTE.Solde > 100000\nORDER BY AGENCE.Nom_Agence ASC, COMPTE.Solde DESC;\n```\nLe tri sur deux colonnes trie d'abord par le premier critère, puis, à égalité de nom d'agence, départage par le second critère - la même logique qu'un tri alphabétique suivi d'un tri numérique en cas d'ex æquo."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SELECT ... FROM ... affiche des colonnes d'une table ; dès que deux tables sont concernées, une jointure INNER JOIN ... ON ... devient nécessaire.",
+        "La condition de jointure relie toujours la clé primaire d'une table à la clé étrangère qui la référence dans l'autre.",
+        "WHERE filtre les lignes du résultat ; ORDER BY trie le résultat final, croissant (ASC) ou décroissant (DESC).",
+        "L'ordre syntaxique des clauses est fixe : SELECT-FROM-JOIN-WHERE-ORDER BY.",
+        "Au BAC TI, la quasi-totalité des questions de type « afficher... » se résout en identifiant d'abord les tables concernées, puis en appliquant ces quatre briques dans l'ordre : c'est une méthode, pas une improvisation au cas par cas."
+      ]
+    }
+  ]
+}

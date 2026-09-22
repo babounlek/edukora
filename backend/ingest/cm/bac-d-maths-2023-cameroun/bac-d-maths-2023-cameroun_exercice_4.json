@@ -14,71 +14,150 @@
   "titre_exercice": "Partie A — Exercice 4 : étude d'une fonction rationnelle auxiliaire g, primitive, puis étude de f=ln(-x/(x+1))",
   "points": 4.25,
   "figures": [],
-  "enonce_intro_markdown": "**PARTIE A : ÉVALUATION DES RESSOURCES.** On considère la fonction $g$ définie sur $]-1;0[$ par $g(x)=\\dfrac1{x^2+x}$.",
+  "enonce_intro_markdown": "**PARTIE A : ÉVALUATION DES RESSOURCES.**\n\n**Exercice 4 (4,25 points)**\n\nOn considère la fonction $g$ définie sur $]-1;0[$ par $g(x)=\\dfrac1{x^2+x}$.",
   "questions": [
     {
       "numero": "1a",
       "points": "0,5pt",
       "enonce_markdown": "Calculer les limites de $g$ à droite en $-1$ et à gauche en $0$.",
-      "rappels_de_methode": [{"cours_id": "cours-calculer-les-limites-aux-bornes-dun-intervalle-pour-une-fonction-rationnelle-terminale-d", "texte": "Pour une fonction 1/u(x), il faut d'abord étudier le signe de u(x) au voisinage du point étudié pour déterminer si u(x) tend vers 0+ ou 0-, ce qui donne respectivement +∞ ou -∞ pour la limite de 1/u(x)."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-les-limites-aux-bornes-dun-intervalle-pour-une-fonction-rationnelle-terminale-d",
+          "texte": "Pour une fonction 1/u(x), il faut d'abord étudier le signe de u(x) au voisinage du point étudié pour déterminer si u(x) tend vers 0+ ou 0-, ce qui donne respectivement +∞ ou -∞ pour la limite de 1/u(x)."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nPour calculer $\\lim\\dfrac1{u(x)}$ quand $u(x)\\to0$, il faut déterminer le SIGNE de $u(x)$ au voisinage du point considéré : si $u(x)\\to0^+$, alors $\\dfrac1{u(x)}\\to+\\infty$ ; si $u(x)\\to0^-$, alors $\\dfrac1{u(x)}\\to-\\infty$.\n\n### Corrigé détaillé\nOn écrit $g(x)=\\dfrac1{x(x+1)}$ (en factorisant $x^2+x=x(x+1)$).\n\n**Limite à droite en $-1$.** Quand $x\\to-1^+$ (avec $x\\in]-1;0[$) : $x\\to-1$ (négatif) et $x+1\\to0^+$ (car $x>-1$). Le produit $x(x+1)$ tend donc vers $(-1)\\times0^+=0^-$ (un nombre négatif proche de zéro fois un nombre positif proche de zéro donne un produit négatif proche de zéro).\n$$\\lim_{x\\to-1^+}g(x)=\\lim_{x\\to-1^+}\\frac1{x(x+1)}=\\frac1{0^-}=-\\infty$$\n\n**Limite à gauche en $0$.** Quand $x\\to0^-$ (avec $x\\in]-1;0[$) : $x\\to0^-$ et $x+1\\to1$ (positif). Le produit $x(x+1)$ tend donc vers $0^-\\times1=0^-$.\n$$\\lim_{x\\to0^-}g(x)=\\lim_{x\\to0^-}\\frac1{x(x+1)}=\\frac1{0^-}=-\\infty$$\n\n**Conclusion.** $\\displaystyle\\lim_{x\\to-1^+}g(x)=-\\infty$ et $\\displaystyle\\lim_{x\\to0^-}g(x)=-\\infty$.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "limites",
+        "asymptote verticale",
+        "fonction rationnelle"
+      ]
     },
     {
       "numero": "1b",
       "points": "0,5pt",
       "enonce_markdown": "Étudier les variations de $g$.",
-      "rappels_de_methode": [{"cours_id": "cours-etudier-les-variations-dune-fonction-de-la-forme-1-sur-u-terminale-d", "texte": "Pour g=1/u, la dérivée est g'=-u'/u² ; comme u² est toujours positif (là où u ne s'annule pas), le signe de g' est l'opposé du signe de u'."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etudier-les-variations-dune-fonction-de-la-forme-1-sur-u-terminale-d",
+          "texte": "Pour g=1/u, la dérivée est g'=-u'/u² ; comme u² est toujours positif (là où u ne s'annule pas), le signe de g' est l'opposé du signe de u'."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nPour $g=\\dfrac1u$ avec $u$ dérivable et non nulle, $g'=-\\dfrac{u'}{u^2}$. Comme $u^2>0$ (sauf où $u$ s'annule), le signe de $g'$ est l'opposé du signe de $u'$.\n\n### Corrigé détaillé\nOn pose $u(x)=x^2+x$, donc $u'(x)=2x+1$, et $g(x)=\\dfrac1{u(x)}$, donc :\n$$g'(x)=-\\frac{u'(x)}{u(x)^2}=-\\frac{2x+1}{(x^2+x)^2}$$\n\n**Signe de $g'$.** Le dénominateur $(x^2+x)^2$ est toujours strictement positif sur $]-1;0[$ (car $x^2+x\\neq0$ sur cet intervalle). Le signe de $g'(x)$ est donc l'opposé du signe de $2x+1$.\n\n$2x+1=0\\iff x=-\\dfrac12$.\n\n- Pour $x\\in\\left]-1;-\\dfrac12\\right[$ : $2x+1<0$, donc $g'(x)=-\\dfrac{(\\text{négatif})}{(\\text{positif})}>0$ : $g$ est **croissante**.\n- Pour $x\\in\\left]-\\dfrac12;0\\right[$ : $2x+1>0$, donc $g'(x)=-\\dfrac{(\\text{positif})}{(\\text{positif})}<0$ : $g$ est **décroissante**.\n\n**Valeur en $x=-\\dfrac12$.**\n$$g\\left(-\\frac12\\right)=\\frac1{\\left(-\\frac12\\right)^2+\\left(-\\frac12\\right)}=\\frac1{\\frac14-\\frac12}=\\frac1{-\\frac14}=-4$$\n\n**Conclusion.** $g$ est strictement croissante sur $\\left]-1;-\\dfrac12\\right]$, de $-\\infty$ à $-4$, puis strictement décroissante sur $\\left[-\\dfrac12;0\\right[$, de $-4$ à $-\\infty$. La valeur maximale de $g$ sur $]-1;0[$ est donc $-4$, atteinte en $x=-\\dfrac12$.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "dérivée",
+        "sens de variation",
+        "tableau de variations"
+      ]
     },
     {
       "numero": "1c",
       "points": "0,25pt",
       "enonce_markdown": "En déduire que pour tout réel $x$ de l'intervalle $]-1;0[$, $g(x)<0$.",
-      "rappels_de_methode": [{"cours_id": "cours-deduire-le-signe-dune-fonction-a-partir-de-son-maximum-sur-un-intervalle-terminale-d", "texte": "Si le maximum d'une fonction sur un intervalle est strictement négatif, alors la fonction est strictement négative en tout point de cet intervalle."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deduire-le-signe-dune-fonction-a-partir-de-son-maximum-sur-un-intervalle-terminale-d",
+          "texte": "Si le maximum d'une fonction sur un intervalle est strictement négatif, alors la fonction est strictement négative en tout point de cet intervalle."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nSi la valeur MAXIMALE d'une fonction sur un intervalle est strictement négative, alors la fonction est strictement négative en tout point de cet intervalle (puisque toute valeur prise par la fonction est inférieure ou égale à ce maximum).\n\n### Corrigé détaillé\nD'après la question 1.b), le maximum de $g$ sur $]-1;0[$ est $g\\left(-\\dfrac12\\right)=-4$, atteint en $x=-\\dfrac12$. Pour tout $x\\in\\,]-1;0[$ :\n$$g(x)\\leq g\\left(-\\frac12\\right)=-4<0$$\n\n**Conclusion.** Pour tout $x\\in\\,]-1;0[$, $g(x)<0$.\n\n### Conseil\nOn peut aussi le vérifier directement, sans passer par le tableau de variations : sur $]-1;0[$, $x<0$ et $x+1>0$, donc le produit $x(x+1)$ est négatif, donc $g(x)=\\dfrac1{x(x+1)}$, inverse d'un nombre négatif, est lui-même négatif. Les deux méthodes se confirment mutuellement.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "extremum",
+        "signe d'une fonction",
+        "sens de variation"
+      ]
     },
     {
       "numero": "1d",
       "points": "0,5pt",
       "enonce_markdown": "Montrer que pour tout réel $x$ de l'intervalle $]-1;0[$, $g(x)=\\dfrac1x-\\dfrac1{x+1}$.",
-      "rappels_de_methode": [{"cours_id": "cours-decomposer-une-fraction-rationnelle-en-elements-simples-1-sur-x-fois-x-plus-1-terminale-d", "texte": "Pour vérifier une décomposition en éléments simples 1/[x(x+1)]=1/x-1/(x+1), il suffit de réduire le membre de droite au même dénominateur et de constater qu'il redonne le membre de gauche."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-decomposer-une-fraction-rationnelle-en-elements-simples-1-sur-x-fois-x-plus-1-terminale-d",
+          "texte": "Pour vérifier une décomposition en éléments simples 1/[x(x+1)]=1/x-1/(x+1), il suffit de réduire le membre de droite au même dénominateur et de constater qu'il redonne le membre de gauche."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nPour vérifier une égalité entre une fraction et une somme de fractions plus simples, on réduit le second membre au même dénominateur et l'on compare au premier membre.\n\n### Corrigé détaillé\nOn part du membre de droite et on le réduit au même dénominateur $x(x+1)$ :\n$$\\frac1x-\\frac1{x+1}=\\frac{(x+1)}{x(x+1)}-\\frac{x}{x(x+1)}=\\frac{(x+1)-x}{x(x+1)}=\\frac1{x(x+1)}$$\n\nOr $x(x+1)=x^2+x$, donc :\n$$\\frac1x-\\frac1{x+1}=\\frac1{x^2+x}=g(x)$$\n\n**Conclusion.** Pour tout $x\\in\\,]-1;0[$ (valeurs pour lesquelles $x\\neq0$ et $x+1\\neq0$), $g(x)=\\dfrac1x-\\dfrac1{x+1}$.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "fonction rationnelle",
+        "décomposition",
+        "fractions"
+      ]
     },
     {
       "numero": "1e",
       "points": "0,5pt",
       "enonce_markdown": "En déduire sur $]-1;0[$, la primitive $G$ de $g$ qui s'annule en $-\\dfrac12$.",
-      "rappels_de_methode": [{"cours_id": "cours-determiner-la-primitive-qui-sannule-en-un-point-donne-terminale-d", "texte": "Après avoir intégré terme à terme (primitives de 1/x et 1/(x+1) sont des logarithmes), on détermine la constante d'intégration en imposant que la primitive s'annule au point donné."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-la-primitive-qui-sannule-en-un-point-donne-terminale-d",
+          "texte": "Après avoir intégré terme à terme (primitives de 1/x et 1/(x+1) sont des logarithmes), on détermine la constante d'intégration en imposant que la primitive s'annule au point donné."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nUne primitive de $\\dfrac1x-\\dfrac1{x+1}$ s'obtient en primitivant terme à terme, sachant que sur un intervalle où $x<0$, une primitive de $\\dfrac1x$ est $\\ln(-x)$, et sur un intervalle où $x+1>0$, une primitive de $\\dfrac1{x+1}$ est $\\ln(x+1)$.\n\n### Corrigé détaillé\nD'après la question 1.d), $g(x)=\\dfrac1x-\\dfrac1{x+1}$. Sur $]-1;0[$, on a $x<0$ (donc $|x|=-x$) et $x+1>0$ (donc $|x+1|=x+1$).\n\n**Primitivation terme à terme.**\n$$\\int g(x)\\,dx=\\int\\frac1x\\,dx-\\int\\frac1{x+1}\\,dx=\\ln(-x)-\\ln(x+1)+C=\\ln\\left(\\frac{-x}{x+1}\\right)+C$$\n\n(le regroupement des logarithmes est licite car $-x>0$ et $x+1>0$ sur l'intervalle, donc leur quotient est positif).\n\n**Détermination de $C$ par la condition $G\\left(-\\dfrac12\\right)=0$.**\n$$G\\left(-\\frac12\\right)=\\ln\\left(\\frac{-\\left(-\\frac12\\right)}{-\\frac12+1}\\right)+C=\\ln\\left(\\frac{\\frac12}{\\frac12}\\right)+C=\\ln(1)+C=0+C=C$$\n\nOn impose $G\\left(-\\dfrac12\\right)=0$, donc $C=0$.\n\n**Conclusion.** La primitive de $g$ sur $]-1;0[$ qui s'annule en $-\\dfrac12$ est :\n$$G(x)=\\ln\\left(\\frac{-x}{x+1}\\right)$$",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "primitive",
+        "fonction logarithme",
+        "condition initiale"
+      ]
     },
     {
       "numero": "2a",
       "points": "1pt",
       "enonce_markdown": "On considère la fonction $f$ définie sur $]-1;0[$ par $f(x)=\\ln\\left(\\dfrac{-x}{x+1}\\right)$. Déterminer les limites de $f$ aux bornes de l'intervalle $]-1;0[$.",
-      "rappels_de_methode": [{"cours_id": "cours-calculer-la-limite-dune-fonction-composee-avec-le-logarithme-terminale-d", "texte": "Pour calculer la limite d'un logarithme composé ln(h(x)), on détermine d'abord la limite de h(x) : si elle vaut +∞, la limite du logarithme est +∞ ; si elle vaut 0+, la limite du logarithme est -∞."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-la-limite-dune-fonction-composee-avec-le-logarithme-terminale-d",
+          "texte": "Pour calculer la limite d'un logarithme composé ln(h(x)), on détermine d'abord la limite de h(x) : si elle vaut +∞, la limite du logarithme est +∞ ; si elle vaut 0+, la limite du logarithme est -∞."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nPour calculer $\\lim\\ln(h(x))$, on détermine d'abord $\\lim h(x)$ : si cette limite vaut $+\\infty$, alors $\\lim\\ln(h(x))=+\\infty$ ; si elle vaut $0^+$, alors $\\lim\\ln(h(x))=-\\infty$ (car $\\ln$ tend vers $-\\infty$ quand son argument tend vers $0$ par valeurs positives).\n\n### Corrigé détaillé\nOn étudie d'abord la limite de $h(x)=\\dfrac{-x}{x+1}$ à chaque borne.\n\n**Limite à droite en $-1$.** Quand $x\\to-1^+$ : $-x\\to1$ et $x+1\\to0^+$ (car $x>-1$). Donc $h(x)=\\dfrac{-x}{x+1}\\to\\dfrac1{0^+}=+\\infty$.\n$$\\lim_{x\\to-1^+}f(x)=\\lim_{x\\to-1^+}\\ln(h(x))=\\ln(+\\infty)=+\\infty$$\n\n**Limite à gauche en $0$.** Quand $x\\to0^-$ : $-x\\to0^+$ (car $x<0$, donc $-x>0$) et $x+1\\to1$. Donc $h(x)=\\dfrac{-x}{x+1}\\to\\dfrac{0^+}1=0^+$.\n$$\\lim_{x\\to0^-}f(x)=\\lim_{x\\to0^-}\\ln(h(x))=\\ln(0^+)=-\\infty$$\n\n**Conclusion.** $\\displaystyle\\lim_{x\\to-1^+}f(x)=+\\infty$ et $\\displaystyle\\lim_{x\\to0^-}f(x)=-\\infty$.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "limites",
+        "fonction logarithme",
+        "asymptote verticale"
+      ]
     },
     {
       "numero": "2b",
       "points": "0,5pt",
       "enonce_markdown": "Montrer que pour tout réel $x\\in\\,]-1;0[$, $f'(x)=g(x)$.",
-      "rappels_de_methode": [{"cours_id": "cours-deriver-une-fonction-du-type-ln-de-u-sur-v-et-lidentifier-a-une-fonction-connue-terminale-d", "texte": "En écrivant f=ln(-x)-ln(x+1), on dérive terme à terme : la dérivée de ln(-x) est 1/x et celle de ln(x+1) est 1/(x+1), ce qui reconstitue exactement l'expression de g trouvée précédemment."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deriver-une-fonction-du-type-ln-de-u-sur-v-et-lidentifier-a-une-fonction-connue-terminale-d",
+          "texte": "En écrivant f=ln(-x)-ln(x+1), on dérive terme à terme : la dérivée de ln(-x) est 1/x et celle de ln(x+1) est 1/(x+1), ce qui reconstitue exactement l'expression de g trouvée précédemment."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nOn dérive $f(x)=\\ln(-x)-\\ln(x+1)$ terme à terme : la dérivée de $\\ln(-x)$ est $\\dfrac{(-x)'}{-x}=\\dfrac{-1}{-x}=\\dfrac1x$, et la dérivée de $\\ln(x+1)$ est $\\dfrac1{x+1}$.\n\n### Corrigé détaillé\nOn réécrit $f(x)=\\ln\\left(\\dfrac{-x}{x+1}\\right)=\\ln(-x)-\\ln(x+1)$ (même décomposition que $G$ à la question 1.e, la formule étant identique).\n\n**Dérivation terme à terme.**\n$$f'(x)=\\big[\\ln(-x)\\big]'-\\big[\\ln(x+1)\\big]'=\\frac{(-x)'}{-x}-\\frac{(x+1)'}{x+1}=\\frac{-1}{-x}-\\frac1{x+1}=\\frac1x-\\frac1{x+1}$$\n\n**Identification avec g.** D'après la question 1.d), $g(x)=\\dfrac1x-\\dfrac1{x+1}$.\n\n**Conclusion.** $f'(x)=\\dfrac1x-\\dfrac1{x+1}=g(x)$, pour tout $x\\in\\,]-1;0[$.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "dérivée",
+        "fonction logarithme"
+      ]
     },
     {
       "numero": "2c",
       "points": "0,5pt",
       "enonce_markdown": "En déduire le sens de variation de $f$ sur $]-1;0[$.",
-      "rappels_de_methode": [{"cours_id": "cours-deduire-le-sens-de-variation-a-partir-du-signe-dune-derivee-deja-etudiee-terminale-d", "texte": "Si f'=g et que le signe de g est déjà connu, on transfère directement ce signe à f' pour conclure sur le sens de variation de f, sans refaire l'étude de signe."}],
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deduire-le-sens-de-variation-a-partir-du-signe-dune-derivee-deja-etudiee-terminale-d",
+          "texte": "Si f'=g et que le signe de g est déjà connu, on transfère directement ce signe à f' pour conclure sur le sens de variation de f, sans refaire l'étude de signe."
+        }
+      ],
       "corrige_markdown": "### Rappel de méthode\nUne fonction dérivable dont la dérivée est strictement négative sur un intervalle y est strictement décroissante. Si l'on sait déjà que $f'=g$ et que $g$ a un signe connu, ce signe se transfère directement à $f'$.\n\n### Corrigé détaillé\nD'après la question 2.b), $f'(x)=g(x)$ pour tout $x\\in\\,]-1;0[$. Or, d'après la question 1.c), $g(x)<0$ pour tout $x\\in\\,]-1;0[$.\n\n**Conclusion.** $f'(x)<0$ pour tout $x\\in\\,]-1;0[$, donc $f$ est strictement **décroissante** sur $]-1;0[$.",
-      "figures": []
+      "figures": [],
+      "themes": [
+        "sens de variation",
+        "signe de la dérivée",
+        "fonction logarithme"
+      ]
     }
   ]
 }

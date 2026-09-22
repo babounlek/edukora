@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-traduire-algorigramme-en-algorithme-structure-premiere-ti",
+  "meta": {
+    "titre": "Traduire un algorigramme (organigramme) en algorithme structuré (pseudo-code)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Algorigrammes et algorithmique",
+    "duree_estimee_min": 18,
+    "tags": [
+      "algorigramme",
+      "algorithme structuré",
+      "pseudo-code",
+      "tant que",
+      "si sinon"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex2-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorigramme est visuel, un algorithme structuré (pseudo-code) est textuel : les deux décrivent exactement le même raisonnement, avec deux notations différentes. Savoir passer de l'un à l'autre sans en trahir la logique est une compétence directement transférable à n'importe quel langage de programmation réel."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les symboles de l'algorigramme (rectangle, losange, parallélogramme, ovale)",
+        "Connaître les structures de contrôle du pseudo-code (`Tant que`, `Si...Sinon`, `Pour`)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une correspondance symbole par symbole",
+      "contenu_markdown": "Traduire un algorigramme en algorithme structuré consiste à remplacer chaque figure géométrique (rectangle d'action, losange de test, parallélogramme d'entrée/sortie) par l'instruction textuelle équivalente, en respectant exactement le même enchaînement et les mêmes conditions.",
+      "formule_principale": "Losange + retour en arrière = boucle Tant que ; Losange sans retour = Si...Sinon",
+      "variantes": [
+        {
+          "nom": "Repérer une boucle vs un simple test",
+          "quand_utiliser": "Pour ne pas confondre un losange de boucle et un losange de branchement simple",
+          "contenu_markdown": "Si une flèche part d'un losange et REVIENT en arrière vers une étape précédente, c'est une boucle (`Tant que`). Si les deux branches d'un losange se rejoignent plus loin SANS jamais revenir en arrière, c'est un simple `Si...Sinon`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en algorithme structuré l'algorigramme suivant : Début ; S←0 ; K←0 ; Tant que K<50 (retour en arrière si vrai) : Lire(X), Si X>0 Alors S←S+X Sinon N←N+1, K←K+1 ; à la sortie : Afficher(S), Afficher(N) ; Fin.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la structure de boucle",
+          "justification": "Le losange `K<50` a une branche qui revient en arrière (vers le test lui-même) : c'est une boucle Tant que",
+          "resultat_markdown": "`Tant que K<50 faire ... FinTantQue`"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la structure conditionnelle imbriquée",
+          "justification": "Le losange `X>0` a ses deux branches (Oui/Non) qui se rejoignent avant `K←K+1`, sans retour en arrière : c'est un Si...Sinon simple",
+          "resultat_markdown": "`Si X>0 Alors S←S+X Sinon N←N+1 FinSi`"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler dans l'ordre exact de l'algorigramme",
+          "justification": "Respecter scrupuleusement l'ordre des rectangles : initialisation, puis boucle contenant lecture-test-incrémentation, puis affichages finaux",
+          "resultat_markdown": "```\nDébut\n    S ← 0\n    K ← 0\n    N ← 0\n    Tant que K < 50 faire\n        Lire(X)\n        Si X > 0 alors\n            S ← S + X\n        Sinon\n            N ← N + 1\n        FinSi\n        K ← K + 1\n    FinTantQue\n    Afficher(S)\n    Afficher(N)\nFin\n```"
+        }
+      ],
+      "conclusion_markdown": "Chaque symbole de l'algorigramme trouve une traduction textuelle précise, et l'ordre des instructions dans le pseudo-code respecte exactement l'ordre des flèches du schéma d'origine - aucune étape n'est ni ajoutée ni supprimée dans la traduction."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer l'incrémentation du compteur de boucle avant le traitement conditionnel, alors que le schéma la place après",
+          "pourquoi_faux": "L'ordre des rectangles sur l'algorigramme reflète l'ordre réel d'exécution : si `K←K+1` est dessiné après la structure `Si...Sinon`, c'est qu'elle s'exécute réellement après elle, pas avant.",
+          "correction_markdown": "Suis le fil des flèches du schéma dans l'ordre exact où elles se présentent, sans réorganiser les instructions par habitude ou par intuition."
+        },
+        {
+          "erreur_markdown": "Oublier de fermer une structure de contrôle (`FinSi`, `FinTantQue`)",
+          "pourquoi_faux": "Sans ces bornes de fermeture, on ne sait plus où s'arrête le corps d'un `Si` ou d'une boucle, ce qui rend l'algorithme ambigu, voire faux si d'autres instructions suivent.",
+          "correction_markdown": "Prends l'habitude d'écrire la structure de contrôle en entier (ouverture ET fermeture) avant de remplir son contenu, pour ne jamais oublier la fermeture."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en pseudo-code un algorigramme qui : lit deux nombres A et B, puis affiche leur somme.",
+          "solution_markdown": "```\nDébut\n    Lire(A)\n    Lire(B)\n    S ← A + B\n    Afficher(S)\nFin\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire en pseudo-code un algorigramme qui : lit un nombre N, puis affiche \"Positif\" si N>0, \"Négatif\" si N<0, et \"Nul\" sinon (trois branches, pas deux).",
+          "solution_markdown": "```\nDébut\n    Lire(N)\n    Si N > 0 alors\n        Afficher(\"Positif\")\n    Sinon\n        Si N < 0 alors\n            Afficher(\"Négatif\")\n        Sinon\n            Afficher(\"Nul\")\n        FinSi\n    FinSi\nFin\n```\nUn schéma à trois branches se traduit par un `Si...Sinon` imbriquant un second `Si...Sinon` dans sa branche `Sinon`, technique appelée \"Sinon Si\" en cascade."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un algorigramme contient une boucle dont le losange de test se trouve APRÈS le rectangle d'action (et non avant), avec un retour en arrière vers ce même rectangle si la condition est vérifiée. Quelle structure de contrôle textuelle correspond le mieux à ce schéma, et en quoi diffère-t-elle d'un `Tant que` où le test précède l'action ?",
+          "solution_markdown": "Un schéma où l'action s'exécute D'ABORD, puis où le test décide s'il faut RECOMMENCER cette action, correspond à un `Répéter ... Jusqu'à` (ou, en langage plus proche du C, un `do...while`) plutôt qu'à un `Tant que` classique. La différence essentielle est que l'action s'exécute obligatoirement au moins une fois avant le premier test, alors qu'un `Tant que` teste la condition AVANT toute exécution du corps et peut donc ne jamais l'exécuter si la condition est fausse dès le départ. Reconnaître cette différence dans le sens des flèches de l'algorigramme (est-ce que le rectangle d'action précède ou suit le losange de test ?) est indispensable pour choisir la bonne structure de contrôle en pseudo-code, exactement comme on le ferait pour distinguer un `while` d'un `do...while` en langage C."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque symbole de l'algorigramme (rectangle, losange, parallélogramme) a une traduction textuelle précise en pseudo-code.",
+        "Un losange dont une branche revient en arrière signale une boucle (`Tant que`) ; un losange dont les deux branches se rejoignent sans retour signale un simple `Si...Sinon`.",
+        "Respecte scrupuleusement l'ordre des flèches du schéma : ne réorganise jamais les instructions par intuition.",
+        "N'oublie jamais de refermer chaque structure de contrôle (`FinSi`, `FinTantQue`) : une structure mal fermée rend l'algorithme ambigu.",
+        "Cette compétence de traduction est directement réutilisable pour convertir ensuite le pseudo-code en un vrai langage de programmation (C, Python...), une étape suivante fréquente à l'examen."
+      ]
+    }
+  ]
+}

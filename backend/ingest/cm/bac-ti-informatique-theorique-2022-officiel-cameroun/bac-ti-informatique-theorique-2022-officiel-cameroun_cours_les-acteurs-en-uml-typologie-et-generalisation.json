@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-acteurs-uml-typologie-tle-ti",
+  "meta": {
+    "titre": "Les acteurs en UML : typologie et relations de généralisation",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de cas d'utilisation : les acteurs",
+    "duree_estimee_min": 22,
+    "tags": [
+      "UML",
+      "acteur primaire",
+      "acteur secondaire",
+      "généralisation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tous les acteurs d'un système ne se valent pas : certains initient une action, d'autres se contentent d'y participer ; certains partagent une grande partie de leurs droits avec d'autres, au point qu'il serait absurde de les redessiner à chaque fois. Ce cours te donne les deux outils qui organisent les acteurs entre eux : la distinction acteur primaire/secondaire, et la relation de généralisation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir définir un acteur et un cas d'utilisation en UML (cours précédent).",
+        "Avoir déjà vu la notion d'héritage ou de catégorie générale/catégorie particulière, même en dehors de l'informatique."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Typologie des acteurs et généralisation",
+      "contenu_markdown": "Un **acteur primaire** est celui pour le compte duquel un cas d'utilisation est réalisé : c'est lui qui initie l'interaction et qui en retire le bénéfice principal. Un **acteur secondaire** est sollicité par le système au cours du déroulement du cas d'utilisation, sans en être à l'origine - cette distinction se fait toujours par rapport à un cas d'utilisation précis, jamais dans l'absolu : un même acteur peut être primaire pour un cas et secondaire pour un autre.\n\nQuand plusieurs acteurs partagent une partie de leurs droits et de leurs cas d'utilisation, on modélise cette parenté par une **relation de généralisation** : une flèche à tête triangulaire creuse, tracée de l'acteur spécialisé (enfant) vers l'acteur général (parent). L'acteur spécialisé hérite alors automatiquement de tous les cas d'utilisation de son parent, et peut en posséder d'autres qui lui sont propres.",
+      "formule_principale": "Enfant --généralisation--> Parent  (l'enfant hérite de tous les cas d'utilisation du parent)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une bibliothèque scolaire, trois catégories d'abonné existent : l'élève, l'enseignant et l'élève externe, qui partagent tous l'accès de base aux services de la bibliothèque. Représenter la relation entre ces trois acteurs.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le point commun entre les trois catégories",
+          "justification": "Une relation de généralisation ne se justifie que si un ensemble de droits est réellement partagé par plusieurs acteurs.",
+          "resultat_markdown": "Les trois catégories partagent le statut de base d'abonné : consultation du catalogue, emprunt d'ouvrages."
+        },
+        {
+          "numero": 2,
+          "action": "Créer un acteur générique qui représente ce point commun",
+          "justification": "La généralisation a besoin d'un parent explicite vers lequel faire pointer les flèches, même si ce parent n'est pas nommément cité dans l'énoncé.",
+          "resultat_markdown": "L'acteur générique Abonné est introduit comme parent commun des trois catégories."
+        },
+        {
+          "numero": 3,
+          "action": "Tracer une flèche de généralisation de chaque enfant vers le parent",
+          "justification": "La flèche pointe toujours vers l'acteur le plus général, jamais l'inverse.",
+          "resultat_markdown": "Trois flèches à tête triangulaire creuse : Élève → Abonné, Enseignant → Abonné, Élève externe → Abonné."
+        }
+      ],
+      "conclusion_markdown": "Les trois catégories d'abonné héritent ainsi automatiquement de tous les cas d'utilisation associés à Abonné, tout en pouvant se voir attribuer des cas d'utilisation propres si l'énoncé le précisait."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tracer une flèche de généralisation entre deux acteurs enfants (par exemple Élève → Élève externe)",
+          "pourquoi_faux": "Aucun des deux n'est un cas particulier de l'autre : ils sont chacun une spécialisation distincte d'un même parent, pas l'un de l'autre.",
+          "correction_markdown": "Avant de tracer une flèche de généralisation, vérifie que l'acteur de départ EST BIEN un cas particulier de l'acteur d'arrivée, pas seulement un acteur « proche » de lui."
+        },
+        {
+          "erreur_markdown": "Considérer la distinction acteur primaire/secondaire comme une propriété fixe d'un acteur, valable pour tout le diagramme",
+          "pourquoi_faux": "Cette distinction est relative à un cas d'utilisation précis : un bibliothécaire peut être acteur primaire pour « Gérer les emprunts » et acteur secondaire pour « Payer les droits d'accès » d'un abonné.",
+          "correction_markdown": "Reformule toujours la question comme « primaire ou secondaire par rapport à tel cas d'utilisation », jamais dans l'absolu."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un système de gestion de notes, on distingue l'acteur Professeur et l'acteur Professeur principal, ce dernier ayant en plus le droit d'éditer le bulletin de la classe. Représenter la relation entre ces deux acteurs.",
+          "solution_markdown": "Le Professeur principal partage tous les droits d'un Professeur ordinaire et en possède un de plus (éditer le bulletin de la classe) : c'est une relation de généralisation, avec Professeur principal comme enfant et Professeur comme parent. On trace une flèche à tête triangulaire creuse de Professeur principal vers Professeur. Le Professeur principal hérite ainsi de tous les cas d'utilisation de Professeur, et se voit attribuer en plus le cas d'utilisation propre « Éditer le bulletin de la classe »."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour le cas d'utilisation « Retirer de l'argent » d'un distributeur automatique, le Client déclenche l'opération et le Système bancaire valide la transaction en arrière-plan. Identifier l'acteur primaire et l'acteur secondaire de ce cas d'utilisation précis.",
+          "solution_markdown": "Le **Client** est l'acteur primaire : c'est lui qui initie la demande de retrait et qui en retire le bénéfice direct. Le **Système bancaire** est l'acteur secondaire : il est sollicité par le système au cours du déroulement du retrait, sans être à l'origine de la demande."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un site de commerce en ligne distingue trois acteurs : Visiteur (qui peut seulement consulter le catalogue), Client inscrit (qui peut en plus passer commande) et Client VIP (qui peut en plus bénéficier d'une livraison prioritaire). Construire la hiérarchie de généralisation complète entre ces trois acteurs, et justifier l'ordre des flèches.",
+          "solution_markdown": "La hiérarchie s'organise en chaîne, car chaque catégorie ajoute des droits à la précédente sans en retirer aucun. Client inscrit possède tous les droits de Visiteur et en ajoute un (passer commande) : flèche de généralisation de Client inscrit vers Visiteur. Client VIP possède à son tour tous les droits de Client inscrit et en ajoute un (livraison prioritaire) : flèche de généralisation de Client VIP vers Client inscrit. La hiérarchie complète est donc Client VIP → Client inscrit → Visiteur, chaque flèche pointant vers l'acteur immédiatement plus général - on ne trace jamais directement Client VIP → Visiteur, ce qui ferait perdre l'information que Client VIP hérite d'abord des droits de Client inscrit."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Acteur primaire = celui qui initie le cas d'utilisation et en retire le bénéfice ; acteur secondaire = celui qui est sollicité en cours de route - cette distinction se juge toujours par rapport à un cas d'utilisation précis.",
+        "La relation de généralisation entre acteurs se dessine par une flèche à tête triangulaire creuse, de l'enfant (spécialisé) vers le parent (général).",
+        "L'enfant hérite de tous les cas d'utilisation du parent, et peut en avoir d'autres en plus, jamais l'inverse.",
+        "Ne relie jamais deux acteurs enfants directement entre eux : passe toujours par le parent commun.",
+        "Au BAC TI, cette hiérarchie d'acteurs est souvent la première étape avant de construire le diagramme de cas d'utilisation complet : elle évite de dupliquer les mêmes associations pour chaque sous-catégorie d'acteur."
+      ]
+    }
+  ]
+}

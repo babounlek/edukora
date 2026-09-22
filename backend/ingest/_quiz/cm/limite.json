@@ -1,0 +1,115 @@
+[
+  {
+    "external_id": "cqc-limite-faible-0",
+    "theme": "limite",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "21", "savoir_numero": "VIII"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "E"}, {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "TI"}
+    ],
+    "enonce_markdown": "Soit $g$ une fonction dont la courbe représentative admet pour asymptote horizontale, en $-\\infty$, la droite d'équation $y=2$. On note $A(\\lambda)$, exprimée en unités d'aire, l'aire du domaine plan compris entre la courbe de $g$, cette asymptote, et les droites d'équations $x=\\lambda$ et $x=0$, où $\\lambda$ est un réel strictement négatif. Une étude intégrale préalable, que tu admets, établit que pour tout $\\lambda<0$ :\n$$A(\\lambda) = 3 - (\\lambda+2)e^{\\lambda}.$$\nDétermine $\\displaystyle\\lim_{\\lambda\\to-\\infty} A(\\lambda)$. Cette aire admet-elle une limite finie ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour lever une forme indéterminée du type produit polynôme $\\times$ exponentielle en $-\\infty$, on utilise la limite de référence des croissances comparées $\\displaystyle\\lim_{X\\to-\\infty} X\\,e^{X} = 0$ : l'exponentielle l'emporte toujours sur le polynôme, aussi grand soit son degré.\n\n### Corrigé\n\nDéveloppons le terme à étudier :\n$$(\\lambda+2)e^{\\lambda} = \\lambda e^{\\lambda} + 2e^{\\lambda}.$$\n\nD'une part, par croissances comparées, $\\displaystyle\\lim_{\\lambda\\to-\\infty} \\lambda e^{\\lambda} = 0$. D'autre part, $\\displaystyle\\lim_{\\lambda\\to-\\infty} e^{\\lambda} = 0$, donc $\\displaystyle\\lim_{\\lambda\\to-\\infty} 2e^{\\lambda}=0$.\n\nPar somme de limites :\n$$\\lim_{\\lambda\\to-\\infty} (\\lambda+2)e^{\\lambda} = 0+0 = 0.$$\n\nDonc :\n$$\\lim_{\\lambda\\to-\\infty} A(\\lambda) = \\lim_{\\lambda\\to-\\infty}\\big[3-(\\lambda+2)e^{\\lambda}\\big] = 3-0 = 3.$$\n\nL'aire $A(\\lambda)$ admet donc bien une limite **finie**, égale à $3$ unités d'aire : le terme exponentiel, dominé par la décroissance de $e^{\\lambda}$, finit par disparaître complètement.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6597]
+  },
+  {
+    "external_id": "cqc-limite-faible-1",
+    "theme": "limite",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "21", "savoir_numero": "VIII"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "E"}, {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "TI"}
+    ],
+    "enonce_markdown": "Soit $h$ une fonction dont la courbe représentative admet pour asymptote verticale la droite d'équation $x=0$. On note $A(\\lambda)$, exprimée en unités d'aire, l'aire du domaine plan compris entre la courbe de $h$, l'axe des abscisses, et les droites d'équations $x=\\lambda$ et $x=1$, où $\\lambda \\in\\,]0\\,;\\,1[$. Une étude intégrale préalable, que tu admets, établit que pour tout $\\lambda\\in\\,]0\\,;\\,1[$ :\n$$A(\\lambda) = -2\\ln(\\lambda) + 5.$$\nQuelle est la limite de $A(\\lambda)$ lorsque $\\lambda$ tend vers $0$ par valeurs supérieures ($\\lambda\\to 0^{+}$) ?",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand une borne d'intégration se rapproche d'une valeur où la fonction intégrée présente une asymptote verticale, l'aire correspondante peut diverger vers $+\\infty$ : c'est la conséquence directe, sur l'aire, du comportement infini de la fonction au voisinage de cette asymptote, et non une erreur de calcul.\n\n### Corrigé\n\nQuand $\\lambda \\to 0^{+}$, on a $\\ln(\\lambda) \\to -\\infty$ (limite de référence du logarithme népérien en $0^{+}$).\n\nDonc $-2\\ln(\\lambda) \\to -2\\times(-\\infty) = +\\infty$ (un coefficient négatif devant une limite $-\\infty$ donne $+\\infty$).\n\nPar somme avec la constante $5$ :\n$$\\lim_{\\lambda\\to 0^{+}} A(\\lambda) = \\lim_{\\lambda\\to 0^{+}}\\big[-2\\ln(\\lambda)+5\\big] = +\\infty.$$\n\nLa bonne réponse est **b**. (L'option a ignore complètement le terme logarithmique ; l'option c confond le signe et croit que $-2$ fois $-\\infty$ redonne $-\\infty$ ; l'option d confond la diminution de la largeur du domaine, quand $\\lambda\\to 0$, avec une diminution de l'aire, alors que c'est justement l'inverse ici à cause de l'asymptote verticale.)",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "a", "texte": "5"},
+      {"lettre": "b", "texte": "+∞"},
+      {"lettre": "c", "texte": "-∞"},
+      {"lettre": "d", "texte": "0"}
+    ],
+    "reponse_correcte": "b",
+    "source_exercises": [6827]
+  },
+  {
+    "external_id": "cqc-limite-moyenne-0",
+    "theme": "limite",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "21", "savoir_numero": "VIII"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "E"}, {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "TI"}
+    ],
+    "enonce_markdown": "Soit $f$ une fonction dont la courbe représentative admet pour asymptote oblique, en $+\\infty$, la droite $(\\Delta)$ d'équation $y=2x+1$, la courbe étant située au-dessus de $(\\Delta)$. On note $A(\\lambda)$, exprimée en unités d'aire, l'aire du domaine plan compris entre la courbe de $f$, la droite $(\\Delta)$, et les droites d'équations $x=1$ et $x=\\lambda$, où $\\lambda > 1$. Une étude par intégration par parties, que tu admets, établit que pour tout $\\lambda>1$ :\n$$A(\\lambda) = 5e^{-1} - (2\\lambda+3)e^{-\\lambda}.$$\nDétermine $\\displaystyle\\lim_{\\lambda\\to+\\infty} A(\\lambda)$. Cette aire admet-elle une limite finie ou infinie ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour lever une forme indéterminée du type polynôme $\\times$ exponentielle en $+\\infty$, on utilise la limite de référence des croissances comparées $\\displaystyle\\lim_{\\lambda\\to+\\infty} \\lambda\\,e^{-\\lambda} = 0$ : la décroissance de l'exponentielle l'emporte toujours sur la croissance du polynôme.\n\n### Corrigé\n\nDéveloppons le terme à étudier :\n$$(2\\lambda+3)e^{-\\lambda} = 2\\lambda e^{-\\lambda} + 3e^{-\\lambda}.$$\n\nPar croissances comparées, $\\displaystyle\\lim_{\\lambda\\to+\\infty} \\lambda e^{-\\lambda} = 0$, donc $\\displaystyle\\lim_{\\lambda\\to+\\infty} 2\\lambda e^{-\\lambda} = 0$. De plus $\\displaystyle\\lim_{\\lambda\\to+\\infty} e^{-\\lambda} = 0$, donc $\\displaystyle\\lim_{\\lambda\\to+\\infty} 3e^{-\\lambda}=0$.\n\nPar somme de limites :\n$$\\lim_{\\lambda\\to+\\infty} (2\\lambda+3)e^{-\\lambda} = 0.$$\n\nDonc :\n$$\\lim_{\\lambda\\to+\\infty} A(\\lambda) = 5e^{-1} - 0 = \\dfrac{5}{e}.$$\n\nL'aire $A(\\lambda)$ admet donc une limite **finie**, égale à $\\dfrac{5}{e}$ unités d'aire (soit environ $1{,}84$ u.a.) : au fur et à mesure que $\\lambda$ grandit, l'écart entre la courbe de $f$ et son asymptote oblique $(\\Delta)$ se resserre si vite (exponentiellement) que l'aire accumulée entre elles cesse pratiquement de croître. (On remarque au passage que $A(1) = 5e^{-1}-5e^{-1}=0$, ce qui est cohérent : quand $\\lambda=1$, le domaine se réduit à un segment de largeur nulle.)",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6597]
+  },
+  {
+    "external_id": "cqc-limite-moyenne-1",
+    "theme": "limite",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "21", "savoir_numero": "VIII"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "E"}, {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "TI"}
+    ],
+    "enonce_markdown": "Soit $k$ une fonction dont la courbe représentative admet pour asymptote verticale la droite d'équation $x=0$. On note $A(\\lambda)$, exprimée en unités d'aire, l'aire du domaine plan compris entre la courbe de $k$, l'axe des abscisses, et les droites d'équations $x=\\lambda$ et $x=1$, où $\\lambda \\in\\,]0\\,;\\,1]$. Une étude intégrale préalable, que tu admets, établit que pour tout $\\lambda\\in\\,]0\\,;\\,1]$ :\n$$A(\\lambda) = -3\\ln(\\lambda) + 2\\ln(\\lambda+2) - 2\\ln 2.$$\nDétermine $\\displaystyle\\lim_{\\lambda\\to 0^{+}} A(\\lambda)$. Cette aire admet-elle une limite finie ? Justifie en identifiant précisément le terme responsable de ce comportement.",
+    "corrige_markdown": "### Rappel de méthode\n\nDans une expression combinant plusieurs termes logarithmiques, il faut examiner séparément le comportement de chacun à la borne étudiée : certains peuvent diverger tandis que d'autres restent bornés. Si l'un des termes tend vers $+\\infty$ (parce qu'une borne d'intégration se rapproche d'une asymptote verticale) et qu'aucun autre terme ne compense cette divergence, l'aire diverge elle aussi : ce n'est pas une erreur de calcul, mais la traduction attendue de la présence de l'asymptote à l'intérieur (ou au bord) du domaine d'intégration.\n\n### Corrigé\n\nÉtudions séparément chaque terme quand $\\lambda \\to 0^{+}$ :\n\n- $-3\\ln(\\lambda)$ : comme $\\ln(\\lambda)\\to-\\infty$ quand $\\lambda\\to 0^{+}$, on a $-3\\ln(\\lambda) \\to +\\infty$.\n- $2\\ln(\\lambda+2)$ : quand $\\lambda\\to 0^{+}$, $\\lambda+2 \\to 2$, donc par continuité de $\\ln$ en $2$, ce terme tend vers la valeur **finie** $2\\ln 2$.\n- $-2\\ln 2$ : c'est une constante.\n\nEn regroupant les deux derniers termes, qui se compensent exactement à la limite :\n$$2\\ln(\\lambda+2) - 2\\ln 2 \\;\\xrightarrow[\\lambda\\to 0^{+}]{}\\; 2\\ln2 - 2\\ln2 = 0.$$\n\nDonc :\n$$\\lim_{\\lambda\\to 0^{+}} A(\\lambda) = \\underbrace{(+\\infty)}_{-3\\ln(\\lambda)} + \\underbrace{0}_{2\\ln(\\lambda+2)-2\\ln2} = +\\infty.$$\n\nL'aire $A(\\lambda)$ **diverge** vers $+\\infty$ : c'est le terme $-3\\ln(\\lambda)$, seul terme non borné de l'expression, qui impose ce comportement, conséquence directe du fait que la borne $\\lambda$ se rapproche de l'asymptote verticale $x=0$ de la courbe de $k$. Ce n'est pas une erreur de calcul : plus $\\lambda$ se rapproche de $0$, plus la portion du domaine proche de l'asymptote verticale contient une aire de plus en plus grande.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6827]
+  },
+  {
+    "external_id": "cqc-limite-moyenne-2",
+    "theme": "limite",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "21", "savoir_numero": "VIII"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "E"}, {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "TI"}
+    ],
+    "enonce_markdown": "Pour un réel $\\lambda$ fixé, on considère la fonction $g_\\lambda$ définie, pour $x$ assez grand pour que $3e^{x}+\\lambda>0$, par :\n$$g_\\lambda(x) = \\ln\\left(3e^{x}+\\lambda\\right) - x.$$\nDétermine $\\displaystyle\\lim_{x\\to+\\infty} g_\\lambda(x)$. Le résultat que tu obtiens dépend-il de la valeur du paramètre $\\lambda$ ?",
+    "corrige_markdown": "### Rappel de méthode\n\nQuand une expression combine, à l'intérieur d'un logarithme, un terme exponentiel dominant et un terme constant qui devient négligeable devant lui, on met le terme exponentiel dominant en facteur : $\\ln\\big(Ae^{x}+\\lambda\\big) = \\ln(Ae^{x}) + \\ln\\!\\left(1+\\dfrac{\\lambda}{A}e^{-x}\\right)$, grâce à la propriété $\\ln(uv)=\\ln u+\\ln v$. On conclut ensuite par continuité de $\\ln$ en $1$.\n\n### Corrigé\n\nPour $x$ assez grand, $3e^{x}>0$, donc on peut mettre $3e^{x}$ en facteur à l'intérieur du logarithme :\n$$3e^{x}+\\lambda = 3e^{x}\\left(1+\\dfrac{\\lambda}{3}e^{-x}\\right).$$\n\nDonc :\n$$\\ln\\left(3e^{x}+\\lambda\\right) = \\ln\\left(3e^{x}\\right) + \\ln\\left(1+\\dfrac{\\lambda}{3}e^{-x}\\right) = \\ln 3 + x + \\ln\\left(1+\\dfrac{\\lambda}{3}e^{-x}\\right).$$\n\nPar conséquent :\n$$g_\\lambda(x) = \\ln 3 + x + \\ln\\left(1+\\dfrac{\\lambda}{3}e^{-x}\\right) - x = \\ln 3 + \\ln\\left(1+\\dfrac{\\lambda}{3}e^{-x}\\right).$$\n\nQuand $x\\to+\\infty$, $e^{-x}\\to 0$, donc $\\dfrac{\\lambda}{3}e^{-x}\\to 0$ **quelle que soit la valeur fixée de $\\lambda$**. Ainsi $1+\\dfrac{\\lambda}{3}e^{-x}\\to 1$, et par continuité de $\\ln$ en $1$ :\n$$\\ln\\left(1+\\dfrac{\\lambda}{3}e^{-x}\\right) \\xrightarrow[x\\to+\\infty]{} \\ln(1) = 0.$$\n\nDonc :\n$$\\lim_{x\\to+\\infty} g_\\lambda(x) = \\ln 3 + 0 = \\ln 3.$$\n\nLe résultat, $\\ln 3$, **ne dépend pas** de $\\lambda$ : quelle que soit la valeur fixée du paramètre, le terme qui le contient est \"absorbé\" par la décroissance de $e^{-x}$ vers $0$ quand $x\\to+\\infty$.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6673]
+  },
+  {
+    "external_id": "cqc-limite-elevee-0",
+    "theme": "limite",
+    "savoir_officiel": {"classe": "1ere", "serie_label": "C-E", "module_numero": "21", "savoir_numero": "VIII"},
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "E"}, {"examen": "probatoire", "serie": "C"},
+      {"examen": "probatoire", "serie": "E"}, {"examen": "bac", "serie": "TI"}
+    ],
+    "enonce_markdown": "Soit $p$ une fonction et $(D)$ une droite associée à sa courbe représentative. On note $A(\\lambda)$, exprimée en unités d'aire, l'aire du domaine plan compris entre la courbe de $p$, la droite $(D)$, et les droites d'équations $x=1$ et $x=\\lambda$, où $\\lambda > 1$. Une étude intégrale préalable, que tu admets, établit que pour tout $\\lambda>1$ :\n$$A(\\lambda) = 2\\lambda\\ln(\\lambda) - 2\\lambda\\ln(\\lambda+3) + 7.$$\nDétermine $\\displaystyle\\lim_{\\lambda\\to+\\infty} A(\\lambda)$. (Indication : on pourra regrouper les deux termes logarithmiques, poser $u=\\dfrac{3}{\\lambda}$, puis utiliser la limite de référence $\\displaystyle\\lim_{u\\to 0}\\dfrac{\\ln(1+u)}{u}=1$.)",
+    "corrige_markdown": "### Rappel de méthode\n\nPour lever une forme indéterminée du type \"$\\infty \\times 0$\" faisant intervenir $\\lambda$ multiplié par une différence de deux logarithmes qui tend vers $0$, on regroupe d'abord les deux logarithmes en un seul avec $\\ln a - \\ln b = \\ln\\dfrac{a}{b}$, puis on effectue un changement de variable qui fait réapparaître la limite de référence $\\displaystyle\\lim_{u\\to 0}\\dfrac{\\ln(1+u)}{u}=1$ (qui traduit que le nombre dérivé de $\\ln$ en $1$ vaut $1$).\n\n### Corrigé\n\n**Regroupement des logarithmes.** Pour $\\lambda>1$ :\n$$2\\lambda\\ln(\\lambda) - 2\\lambda\\ln(\\lambda+3) = 2\\lambda\\big[\\ln(\\lambda)-\\ln(\\lambda+3)\\big] = 2\\lambda\\ln\\!\\left(\\dfrac{\\lambda}{\\lambda+3}\\right) = -2\\lambda\\ln\\!\\left(\\dfrac{\\lambda+3}{\\lambda}\\right) = -2\\lambda\\ln\\!\\left(1+\\dfrac{3}{\\lambda}\\right).$$\n\n**Changement de variable.** Posons $u=\\dfrac{3}{\\lambda}$. Quand $\\lambda\\to+\\infty$, $u\\to 0^{+}$, et $\\lambda = \\dfrac{3}{u}$, donc :\n$$-2\\lambda\\ln\\!\\left(1+\\dfrac{3}{\\lambda}\\right) = -2\\times\\dfrac{3}{u}\\times\\ln(1+u) = -6\\times\\dfrac{\\ln(1+u)}{u}.$$\n\n**Application de la limite de référence.** Comme $\\displaystyle\\lim_{u\\to 0}\\dfrac{\\ln(1+u)}{u}=1$ :\n$$\\lim_{\\lambda\\to+\\infty}\\big[2\\lambda\\ln(\\lambda)-2\\lambda\\ln(\\lambda+3)\\big] = -6\\times 1 = -6.$$\n\n**Conclusion.**\n$$\\lim_{\\lambda\\to+\\infty} A(\\lambda) = -6+7 = 1.$$\n\nL'aire $A(\\lambda)$ admet donc une limite **finie**, égale à $1$ unité d'aire. (Vérification par un développement limité : $\\ln(1+u) = u - \\dfrac{u^2}{2}+\\cdots$, donc $-2\\lambda\\ln(1+u) = -6+\\dfrac{9}{\\lambda}-\\cdots \\to -6$ quand $\\lambda\\to+\\infty$, ce qui confirme le résultat.)",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6597]
+  }
+]

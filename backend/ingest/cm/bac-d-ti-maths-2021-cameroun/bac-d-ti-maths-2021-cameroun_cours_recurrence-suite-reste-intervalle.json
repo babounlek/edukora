@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-recurrence-suite-recurrente-reste-intervalle-terminale-d-ti",
+  "meta": {"titre": "Démontrer par récurrence qu'une suite récurrente reste dans un intervalle", "cours_id": "cours-recurrence-suite-recurrente-reste-intervalle-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D-TI", "sous_theme": "Suites — récurrence, stabilité", "tags": ["récurrence", "suite récurrente", "stabilité d'intervalle"], "duree_estimee_minutes": 8, "epreuve_source": "bac-d-ti-maths-2021-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2021-cameroun-ex3-5a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Une fois la stabilité d'un intervalle par une fonction démontrée, une simple récurrence en une ligne suffit pour garantir que TOUS les termes d'une suite récurrente restent dans cet intervalle."},
+    {"type": "prerequis", "items_markdown": ["Stabilité d'un intervalle par une fonction déjà démontrée (f([a;b])⊂[a;b])", "Principe de récurrence : initialisation puis hérédité"]},
+    {"type": "regle", "titre": "Initialiser puis utiliser la stabilité pour l'hérédité", "contenu_markdown": "Pour démontrer par récurrence que $U_n\\in[a;b]$ pour tout $n$ (suite définie par $U_{n+1}=f(U_n)$), on vérifie l'initialisation ($U_0\\in[a;b]$), puis pour l'hérédité, on suppose $U_n\\in[a;b]$ et on applique directement la stabilité de l'intervalle : $f(U_n)\\in[a;b]$, donc $U_{n+1}\\in[a;b]$.", "formule_principale": "U0∈[a;b] et f([a;b])⊂[a;b] ⟹ Un∈[a;b] pour tout n (récurrence)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "U0=2, Un+1=√(Un+2), avec [1;2] stable par x↦√(x+2). Montrer que Un∈[1;2] pour tout n.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Initialisation", "justification": "U0=2∈[1;2]", "resultat_markdown": "vraie"},
+      {"numero": 2, "action": "Hérédité", "justification": "Un∈[1;2] ⟹ f(Un)∈[1;2] (stabilité)", "resultat_markdown": "Un+1∈[1;2]"}
+    ], "conclusion_markdown": "Par récurrence, Un∈[1;2] pour tout n."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Refaire toute l'étude de variation de f à l'intérieur de la démonstration par récurrence, au lieu de simplement invoquer la stabilité déjà démontrée dans une question précédente", "pourquoi_faux": "Une fois la stabilité de l'intervalle établie (souvent dans une question antérieure du même exercice), la répéter dans la récurrence est redondant et alourdit inutilement la rédaction ; il suffit d'y faire explicitement référence.", "correction_markdown": "Référencer explicitement le résultat de stabilité déjà démontré (\"d'après la question X\") plutôt que de refaire toute l'étude de variation dans la démonstration par récurrence."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "V0=5, Vn+1=g(Vn), avec [3;6] stable par g. Rédiger la structure de la récurrence montrant Vn∈[3;6] pour tout n.", "solution_markdown": "Initialisation : V0=5∈[3;6]. Hérédité : si Vn∈[3;6], alors g(Vn)∈[3;6] (stabilité de [3;6] par g), donc Vn+1∈[3;6]. Conclusion : par récurrence, Vn∈[3;6] pour tout n∈ℕ."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Que se passerait-il si U0 n'appartenait PAS à l'intervalle [a;b] stable par f ?", "solution_markdown": "L'initialisation de la récurrence échouerait dès le départ : on ne pourrait pas garantir que U1=f(U0) reste dans [a;b], ni aucun terme suivant, car toute la démonstration repose sur le fait que le premier terme appartient déjà à l'intervalle stable."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La stabilité d'un intervalle, une fois démontrée, permet une récurrence très simple pour montrer que toute la suite y reste.", "L'hérédité se réduit à une application directe de cette stabilité, sans nouvelle étude de variation.", "L'initialisation (premier terme dans l'intervalle) reste indispensable et doit être vérifiée explicitement."]}
+  ]
+}

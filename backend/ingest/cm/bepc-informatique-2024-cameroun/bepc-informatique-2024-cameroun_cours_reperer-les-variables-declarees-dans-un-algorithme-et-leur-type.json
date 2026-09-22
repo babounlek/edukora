@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-reperer-les-variables-declarees-dans-un-algorithme-et-leur-type-3e",
+  "meta": {
+    "titre": "Repérer les variables déclarées dans un algorithme et leur type",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : variables et types de données",
+    "duree_estimee_min": 15,
+    "tags": [
+      "variable",
+      "type",
+      "déclaration",
+      "algorithme",
+      "mémoire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2024-cameroun",
+    "epreuve_titre": "BEPC Informatique - Cameroun, session 2024 (MINESEC-DECC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2024-cameroun-ex2-q4.2.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme qui traite une note doit d'abord réserver un endroit en mémoire pour la ranger et lui donner un nom. Cet endroit nommé, c'est la variable. Savoir la repérer dans la partie déclarative, avec son type, est la deuxième question classique de l'exercice d'algorithmique au BEPC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir reconnaître les trois parties d'un algorithme",
+        "Savoir distinguer un nombre entier d'un nombre décimal"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déclarer une variable : un nom et un type",
+      "contenu_markdown": "Une **variable** est un emplacement de la mémoire, désigné par un **nom**, dont le contenu peut changer pendant l'exécution de l'algorithme.\n\nElle se déclare dans la partie déclarative, sous la forme :\n\n```\nVariable nom : type ;\n```\n\nLe **type** indique la nature des valeurs que la variable peut recevoir :\n\n| Type | Valeurs possibles | Exemple |\n|---|---|---|\n| entier | nombres entiers | 15, -3 |\n| réel | nombres à virgule | 12,5 ; 13,33 |\n| caractère | un seul signe | 'A', '?' |\n| chaîne | une suite de signes | \"BEPC\" |\n| booléen | vrai ou faux | vrai |\n\nDans `Variable Note : réel ;`, le nom est **Note** et le type est **réel**. Le type réel se justifie ici parce qu'une note peut valoir 12,5.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le nom de la variable manipulée dans l'algorithme suivant.\n\n```\nAlgorithme Réussite\nVariable Note : réel ;\nDébut\n    Ecrire (\"saisir une valeur \") ;\n    Lire (Note) ;\n    Si Note > = 10 alors\n        Ecrire (\"vous avez réussi au BEPC\") ;\n    Sinon\n        Ecrire (\"vous avez échoué au BEPC\") ;\nFin\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la partie déclarative",
+          "justification": "Elle se situe entre l'en-tête et le mot-clé Début, et commence par le mot-clé Variable.",
+          "resultat_markdown": "Ligne concernée : `Variable Note : réel ;`"
+        },
+        {
+          "numero": 2,
+          "action": "Séparer le nom du type",
+          "justification": "Dans la déclaration, le nom précède les deux-points, le type les suit.",
+          "resultat_markdown": "Nom : `Note`. Type : `réel`."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier l'usage de cette variable dans le corps",
+          "justification": "Une variable déclarée est normalement utilisée plus bas ; ici elle reçoit la valeur saisie puis sert dans le test.",
+          "resultat_markdown": "`Lire (Note)` lui donne une valeur, `Si Note > = 10` l'utilise : il s'agit bien de la variable manipulée."
+        },
+        {
+          "numero": 4,
+          "action": "Formuler la réponse complète",
+          "justification": "Donner le type en plus du nom sécurise le point si le correcteur l'attend.",
+          "resultat_markdown": "La variable manipulée est **Note**, de type **réel**."
+        }
+      ],
+      "conclusion_markdown": "L'algorithme manipule une seule variable, Note, déclarée de type réel : elle reçoit la valeur saisie au clavier puis sert de base au test."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « réel »",
+          "pourquoi_faux": "C'est le type de la variable, pas son nom : le type dit quelle sorte de valeurs elle accepte, le nom sert à la désigner.",
+          "correction_markdown": "Le nom est le mot placé avant les deux-points."
+        },
+        {
+          "erreur_markdown": "Répondre « 13 »",
+          "pourquoi_faux": "13 est une valeur prise par la variable au moment de l'exécution, pas la variable elle-même.",
+          "correction_markdown": "La variable est le contenant, la valeur est le contenu : le contenu change, le nom reste."
+        },
+        {
+          "erreur_markdown": "Prendre le message affiché pour une variable",
+          "pourquoi_faux": "« saisir une valeur » est un texte entre guillemets affiché à l'écran ; il n'a pas été déclaré dans la partie déclarative.",
+          "correction_markdown": "Une variable figure toujours dans la partie déclarative : c'est le seul endroit où la chercher."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans la déclaration `Variable Age : entier ;`, donne le nom et le type de la variable.",
+          "solution_markdown": "Le nom est Age, le type est entier. Le nom précède les deux-points, le type les suit."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi la variable Note est-elle déclarée de type réel plutôt que de type entier ?",
+          "solution_markdown": "Parce qu'une note n'est pas nécessairement un nombre entier : 12,5 ou 14,75 sont des notes courantes. Une variable de type entier ne peut recevoir que des nombres sans virgule ; saisir 12,5 provoquerait une erreur ou une troncature à 12, ce qui fausserait le test Note >= 10 dans les cas limites. Le type réel accepte la partie décimale et convient donc à toute note."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un algorithme doit lire le nom d'un élève, son âge et sa moyenne, puis dire s'il est admis. Écris la partie déclarative complète en justifiant chaque type.",
+          "solution_markdown": "```\nAlgorithme Admission\nVariable Nom : chaîne ;\n         Age : entier ;\n         Moyenne : réel ;\n         Admis : booléen ;\n```\nNom est de type chaîne parce qu'il contient une suite de caractères, par exemple \"Ngono\". Age est de type entier : on compte les années en nombres entiers. Moyenne est de type réel : une moyenne comporte presque toujours une partie décimale, comme 13,33. Admis est de type booléen : il ne peut prendre que deux valeurs, vrai ou faux, ce qui correspond exactement au résultat de la décision. Choisir le type, c'est choisir la nature des valeurs attendues, jamais au hasard."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une variable est un emplacement de mémoire nommé, dont le contenu peut changer.",
+        "Elle se déclare sous la forme Variable nom : type ; le nom est avant les deux-points, le type après.",
+        "Ne confonds jamais le nom (Note), le type (réel) et la valeur (13).",
+        "Le type se choisit d'après la nature des valeurs : entier pour un âge, réel pour une moyenne, chaîne pour un nom, booléen pour un vrai ou faux.",
+        "Au BEPC, on te demande le nom de la variable manipulée : réponds par le nom et ajoute le type, cela ne coûte rien et peut rapporter."
+      ]
+    }
+  ]
+}

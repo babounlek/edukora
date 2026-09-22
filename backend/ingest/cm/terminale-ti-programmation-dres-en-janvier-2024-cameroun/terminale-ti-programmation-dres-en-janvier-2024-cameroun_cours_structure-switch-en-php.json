@@ -1,0 +1,99 @@
+{
+  "cours_id": "cours-structure-switch-en-php-dres-jan2024",
+  "meta": {
+    "titre": "La structure switch en PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "PHP - structures conditionnelles",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "switch",
+      "case",
+      "break",
+      "default"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 5,
+    "rappel_id": "rdm-dres2024-ex5-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une longue chaine de if/elseif qui compare toujours la meme variable a des valeurs differentes se recrit avantageusement avec une structure switch, plus lisible."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre la structure if/elseif/else en PHP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Syntaxe et regles de la structure switch",
+      "contenu_markdown": "La structure `switch ($variable) { case valeur1: ...; break; case valeur2: ...; break; default: ...; }` compare une meme variable a une serie de valeurs candidates (`case`). Chaque cas se termine normalement par `break`, qui interrompt le switch : sans lui, l'execution se poursuivrait dans le cas suivant (comportement de « fall-through »). Lorsque plusieurs valeurs doivent declencher exactement le meme traitement, on empile plusieurs `case` consecutifs sans instruction entre eux : le dernier de la serie porte alors le bloc de code commun, partage par tous les cas empiles au-dessus. Le cas `default` joue le role du `else` final, execute si aucune valeur ne correspond."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Reecrire avec un switch : if ($jour == \"samedi\" or $jour == \"dimanche\") { echo \"week-end\"; } else { echo \"jour ouvre\"; }",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la variable comparee",
+          "justification": "$jour est comparee a plusieurs valeurs candidates.",
+          "resultat_markdown": "switch ($jour) { ... }"
+        },
+        {
+          "numero": 2,
+          "action": "Empiler les cas partageant le meme traitement",
+          "justification": "samedi et dimanche doivent produire le meme resultat.",
+          "resultat_markdown": "case \"samedi\":\ncase \"dimanche\":\n    echo \"week-end\";\n    break;"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter le cas par defaut",
+          "justification": "Toute autre valeur de $jour doit afficher 'jour ouvre'.",
+          "resultat_markdown": "default:\n    echo \"jour ouvre\";"
+        }
+      ],
+      "conclusion_markdown": "L'empilement de case sans break intermediaire permet de factoriser un traitement commun a plusieurs valeurs."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le break a la fin d'un case, en pensant que le switch s'arrete automatiquement des qu'un cas correspond.",
+          "pourquoi_faux": "Sans break, l'execution continue (fall-through) dans le case suivant meme si sa condition n'a pas ete testee, ce qui execute des instructions non voulues."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que se passe-t-il si l'on oublie le break apres le premier case d'un switch qui en contient trois ?",
+          "solution_markdown": "L'execution continue dans le case suivant (et potentiellement les suivants) jusqu'au premier break rencontre ou la fin du switch, executant du code non desire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "switch compare une meme variable a plusieurs valeurs candidates (case).",
+        "break est necessaire pour eviter le fall-through vers le case suivant.",
+        "Des case empiles sans instruction entre eux partagent le meme bloc de traitement."
+      ]
+    }
+  ]
+}

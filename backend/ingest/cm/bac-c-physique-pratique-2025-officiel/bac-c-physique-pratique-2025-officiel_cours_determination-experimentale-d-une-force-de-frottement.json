@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-determination-experimentale-d-une-force-de-frottement-terminale-c",
+  "meta": {
+    "titre": "Détermination expérimentale d'une force de frottement à partir du TCI",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Dynamique du solide",
+    "duree_estimee_min": 20,
+    "tags": [
+      "force de frottement",
+      "théorème du centre d'inertie",
+      "application numérique",
+      "plan incliné"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat C - Physique Pratique - Mouvement sur un plan incliné avec frottement (2025, Cameroun, officiel)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-pratique-2025-officiel-ex1-q6-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le frottement est une force qu'on ne mesure presque jamais directement avec un instrument : ni règle, ni chronomètre ne la donnent en newtons. C'est précisément l'intérêt d'une manipulation comme celle du mobile sur plan incliné - elle transforme des mesures de distance et de temps, faciles à réaliser, en une force qu'on ne pourrait pas peser autrement. Ce passage d'une relation théorique à une valeur numérique est l'aboutissement de toute la démarche expérimentale."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Avoir établi la relation a = g sinα - f/m à partir du théorème du centre d'inertie",
+        "Avoir déterminé expérimentalement la valeur de l'accélération a",
+        "Savoir isoler une variable dans une équation littérale"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Isoler f dans la relation du mouvement",
+      "contenu_markdown": "À partir de la relation établie par le théorème du centre d'inertie :\n\n$$a = g\\sin\\alpha - \\dfrac{f}{m}$$\n\non isole $f$ en trois étapes algébriques simples :\n\n$$\\dfrac{f}{m} = g\\sin\\alpha - a \\qquad\\Longrightarrow\\qquad f = m\\left(g\\sin\\alpha - a\\right)$$\n\nCette expression montre que la force de frottement se déduit de l'écart entre l'accélération théorique sans frottement ($g\\sin\\alpha$) et l'accélération réellement mesurée ($a$) : plus cet écart est grand, plus le frottement est important. Un résultat physiquement cohérent doit vérifier $0 \\le f < mg\\sin\\alpha$ pour un mobile qui accélère bien en descendant (si $f$ dépassait $mg\\sin\\alpha$, le mobile ne descendrait pas du tout).",
+      "formule_principale": "f = m(g\\sin\\alpha - a)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un mobile de masse $m=0{,}5\\text{ kg}$ descend un plan incliné d'angle $\\alpha=30°$ ($g=10\\text{ m·s}^{-2}$) avec une accélération mesurée $a\\approx1{,}54\\text{ m·s}^{-2}$. Déterminer l'intensité de la force de frottement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler f dans la relation a = g sinα - f/m",
+          "justification": "L'inconnue à déterminer est f ; il faut réarranger l'équation pour l'exprimer en fonction des grandeurs connues.",
+          "resultat_markdown": "$$f = m(g\\sin\\alpha - a)$$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer g sinα",
+          "justification": "Ce terme représente l'accélération théorique qu'aurait le mobile en l'absence de tout frottement.",
+          "resultat_markdown": "$$g\\sin\\alpha = 10\\times\\sin(30°) = 10\\times0{,}5 = 5{,}0\\ \\text{m·s}^{-2}$$"
+        },
+        {
+          "numero": 3,
+          "action": "Effectuer l'application numérique",
+          "justification": "Remplacer chaque grandeur par sa valeur numérique dans l'expression de f.",
+          "resultat_markdown": "$$f = 0{,}5\\times(5{,}0-1{,}54) = 0{,}5\\times3{,}46 \\approx 1{,}73\\ \\text{N}$$"
+        }
+      ],
+      "conclusion_markdown": "La force de frottement vaut $f\\approx1{,}73\\text{ N}$. Cette valeur est bien positive et inférieure au poids du mobile ($mg=5\\text{ N}$), ce qui est cohérent : le frottement freine le mouvement sans l'empêcher, puisque le mobile accélère malgré tout ($a>0$)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $g$ à la place de $g\\sin\\alpha$ dans le calcul final, en oubliant la projection sur le plan incliné.",
+          "pourquoi_faux": "Seule la composante du poids parallèle au plan ($mg\\sin\\alpha$) intervient dans le mouvement le long du plan ; utiliser $g$ seul reviendrait à traiter le mobile comme s'il était en chute libre verticale.",
+          "correction_markdown": "Recalcule systématiquement $g\\sin\\alpha$ à partir de la valeur numérique de l'angle donnée dans l'énoncé, avant toute soustraction avec l'accélération mesurée."
+        },
+        {
+          "erreur_markdown": "Oublier de multiplier par la masse m à la fin, et donner comme réponse $g\\sin\\alpha-a$ directement.",
+          "pourquoi_faux": "$g\\sin\\alpha-a$ est une accélération (en m·s⁻²), pas une force : sans la multiplication par $m$, le résultat n'a pas l'unité newton attendue pour une force.",
+          "correction_markdown": "Vérifie systématiquement l'unité du résultat final : une force s'exprime en newtons (N), jamais en m·s⁻²."
+        },
+        {
+          "erreur_markdown": "Trouver une valeur de f négative ou supérieure à mg sans remettre en question le calcul.",
+          "pourquoi_faux": "Une force de frottement négative n'a pas de sens physique (elle deviendrait motrice au lieu de résistante) ; une valeur trop grande contredirait le fait que le mobile accélère effectivement.",
+          "correction_markdown": "Si le résultat obtenu est physiquement incohérent, recontrôle d'abord le calcul de l'accélération a puis celui de gsinα, avant de conclure à un frottement aberrant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un mobile de masse $m=1{,}0\\text{ kg}$ descend un plan incliné d'angle $\\alpha=45°$ sans aucun frottement. Déterminer son accélération, puis vérifier que la relation $f=m(g\\sin\\alpha-a)$ donne bien $f=0$.",
+          "solution_markdown": "Sans frottement, $a=g\\sin\\alpha=10\\times\\sin(45°)=10\\times0{,}707\\approx7{,}07\\text{ m·s}^{-2}$. En remplaçant dans $f=m(g\\sin\\alpha-a)=1{,}0\\times(7{,}07-7{,}07)=0\\text{ N}$ : la relation redonne bien un frottement nul, ce qui confirme sa cohérence dans le cas limite sans frottement."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un mobile de masse $m=0{,}3\\text{ kg}$ est lâché sans vitesse initiale sur un plan incliné d'angle $\\alpha=20°$. L'exploitation d'un graphe d=f(t²) donne une pente K=0,40 m·s⁻². Déterminer l'intensité de la force de frottement.",
+          "solution_markdown": "Accélération : $a=2K=2\\times0{,}40=0{,}80\\text{ m·s}^{-2}$.\n\n$g\\sin\\alpha=10\\times\\sin(20°)=10\\times0{,}342=3{,}42\\text{ m·s}^{-2}$.\n\n$f=m(g\\sin\\alpha-a)=0{,}3\\times(3{,}42-0{,}80)=0{,}3\\times2{,}62\\approx0{,}79\\text{ N}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour un mobile de masse $m$ sur un plan incliné d'angle $\\alpha$, on admet que la force de frottement provient du frottement solide et vaut $f=\\mu mg\\cos\\alpha$, où $\\mu$ est le coefficient de frottement (sans dimension) entre le mobile et le plan. À partir de la relation $f=m(g\\sin\\alpha-a)$ établie expérimentalement, exprimer $\\mu$ en fonction de $g$, $\\alpha$ et $a$, puis calculer sa valeur pour $\\alpha=30°$, $a=1{,}54\\text{ m·s}^{-2}$, $g=10\\text{ m·s}^{-2}$.",
+          "solution_markdown": "En égalant les deux expressions de $f$ : $\\mu mg\\cos\\alpha = m(g\\sin\\alpha-a)$. En simplifiant par $m$ puis en isolant $\\mu$ :\n$$\\mu = \\dfrac{g\\sin\\alpha-a}{g\\cos\\alpha}$$\nApplication numérique : $g\\sin\\alpha=5{,}0\\text{ m·s}^{-2}$ (calculé précédemment), $g\\cos\\alpha=10\\times\\cos(30°)=10\\times0{,}866\\approx8{,}66\\text{ m·s}^{-2}$.\n$$\\mu = \\dfrac{5{,}0-1{,}54}{8{,}66} = \\dfrac{3{,}46}{8{,}66} \\approx 0{,}40$$\nCe coefficient sans dimension, de l'ordre de 0,4, est une valeur réaliste pour un frottement solide entre deux matériaux courants (bois sur bois, plastique sur métal rugueux), ce qui confirme la cohérence physique de l'ensemble de la démarche expérimentale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La force de frottement se déduit de la relation $f=m(g\\sin\\alpha-a)$, obtenue en isolant f dans l'équation du théorème du centre d'inertie.",
+        "Recalcule toujours $g\\sin\\alpha$ à partir de l'angle réel de l'énoncé, jamais $g$ seul : c'est la composante du poids le long du plan qui intervient.",
+        "N'oublie jamais la multiplication finale par la masse m : le résultat intermédiaire (gsinα - a) est une accélération, pas encore une force.",
+        "Vérifie systématiquement la cohérence physique du résultat : une force de frottement doit être positive et rester inférieure à la composante motrice du poids mgsinα.",
+        "Au BAC, cette dernière question d'une épreuve pratique de mécanique clôt généralement la démarche expérimentale : elle valide, par un résultat numérique cohérent, l'ensemble du protocole de mesure et de tracé graphique qui l'a précédée."
+      ]
+    }
+  ]
+}

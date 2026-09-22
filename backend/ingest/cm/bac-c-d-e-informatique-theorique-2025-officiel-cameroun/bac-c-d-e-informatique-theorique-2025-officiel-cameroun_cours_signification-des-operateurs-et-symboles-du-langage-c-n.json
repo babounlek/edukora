@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-signification-des-operateurs-et-symboles-du-langage-c-n-tle-tronc-commun",
+  "meta": {
+    "titre": "Signification des opérateurs et symboles du langage C (\\n, &, ++, +=)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Syntaxe de base du langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "opérateurs C",
+      "syntaxe C",
+      "scanf",
+      "printf"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex3-q6-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un programme en C est truffé de petits symboles (\\n, &, ++, +=) qui semblent presque décoratifs, mais qui changent radicalement le comportement du programme s'ils sont mal utilisés - souvent sans qu'aucune erreur de compilation ne t'avertisse du problème."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe de base d'un programme C : variables, printf, scanf."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Quatre symboles, quatre rôles bien distincts",
+      "contenu_markdown": "**`\\n`** : séquence d'échappement représentant un saut de ligne, utilisée dans une chaîne de caractères affichée.\n\n**`&`** : opérateur d'adresse, qui renvoie l'adresse mémoire d'une variable plutôt que sa valeur - indispensable avec scanf pour que la fonction puisse modifier la variable.\n\n**`++`** : opérateur d'incrémentation, qui ajoute 1 à la valeur d'une variable (raccourci de i = i + 1).\n\n**`+=`** : opérateur d'affectation composée, qui ajoute une quantité quelconque à une variable et range le résultat dans cette même variable (raccourci de a = a + b)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer la différence entre scanf(\"%d\", note) et scanf(\"%d\", &note).",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler ce qu'attend scanf comme argument",
+          "justification": "scanf a besoin de savoir OÙ écrire la valeur lue, pas seulement sa valeur actuelle.",
+          "resultat_markdown": "scanf a besoin de l'adresse mémoire de la variable, pas de sa valeur."
+        },
+        {
+          "numero": 2,
+          "action": "Analyser scanf(\"%d\", note) - sans &",
+          "justification": "note (sans &) transmet la VALEUR actuelle de la variable, pas son adresse.",
+          "resultat_markdown": "Erreur de logique : scanf reçoit un nombre au lieu d'une adresse, et ne peut pas savoir où écrire la valeur saisie."
+        },
+        {
+          "numero": 3,
+          "action": "Analyser scanf(\"%d\", &note) - avec &",
+          "justification": "&note transmet l'ADRESSE mémoire de la variable note.",
+          "resultat_markdown": "scanf peut écrire la valeur saisie directement à cette adresse, donc dans la variable note elle-même."
+        }
+      ],
+      "conclusion_markdown": "On comprend ainsi pourquoi l'opérateur & est indispensable avec scanf : sans lui, la fonction n'a aucun moyen de modifier la variable de l'appelant."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le & devant une variable passée à scanf",
+          "pourquoi_faux": "Le programme compile parfois quand même (avec un simple avertissement), mais scanf ne peut pas modifier la variable puisqu'il ne reçoit que sa valeur et non son adresse : la variable reste inchangée après la lecture, provoquant un comportement imprévisible ou un plantage selon les cas.",
+          "correction_markdown": "Vérifier systématiquement la présence du & devant chaque variable simple passée à scanf (à l'exception des chaînes de caractères déclarées comme tableaux, qui sont déjà des adresses)."
+        },
+        {
+          "erreur_markdown": "Confondre ++ et += en pensant qu'ils font « la même chose en plus court »",
+          "pourquoi_faux": "++ n'ajoute toujours QUE 1 à la variable (incrément fixe), alors que += permet d'ajouter n'importe quelle quantité choisie : ce ne sont pas deux écritures interchangeables du même calcul.",
+          "correction_markdown": "Réserver ++ au cas précis de l'ajout de 1 (compteurs de boucle), et += à tout ajout d'une quantité variable."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que fait l'instruction printf(\"Bonjour\\nAu revoir\");  à l'affichage ?",
+          "solution_markdown": "Elle affiche « Bonjour » puis passe à la ligne suivante avant d'afficher « Au revoir » : les deux mots apparaissent sur deux lignes séparées, grâce au \\n."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle est la valeur de x après les instructions suivantes : int x = 5; x += 3; x++;",
+          "solution_markdown": "x += 3 donne x = 5 + 3 = 8. Puis x++ donne x = 8 + 1 = 9. Valeur finale : x = 9."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un étudiant écrit : int total = 0; scanf(\"%d\", total); total++; Identifier la ou les erreurs, expliquer pourquoi le programme peut planter à l'exécution malgré une compilation qui n'affiche qu'un avertissement, et corriger le code.",
+          "solution_markdown": "L'erreur se situe dans scanf(\"%d\", total); : il manque le symbole & devant total, qui devrait s'écrire scanf(\"%d\", &total);. Sans le &, scanf reçoit la VALEUR de total (soit 0) interprétée comme une adresse mémoire, et tente d'écrire la valeur saisie à cette adresse 0 - une zone mémoire non autorisée par le système d'exploitation, ce qui provoque généralement un plantage (violation d'accès mémoire) à l'exécution, même si le compilateur n'a émis qu'un simple avertissement (warning) plutôt qu'une erreur bloquante. Code corrigé : int total = 0; scanf(\"%d\", &total); total++;"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "\\n saute une ligne dans un texte affiché ; & donne l'adresse mémoire d'une variable ; ++ ajoute 1 ; += ajoute une quantité quelconque.",
+        "scanf a toujours besoin de l'adresse (&) de la variable où écrire la valeur lue, jamais de sa valeur.",
+        "Un oubli de & compile souvent avec un simple avertissement, mais peut planter le programme à l'exécution : ne jamais ignorer un avertissement du compilateur sur ce point.",
+        "++ est réservé à l'ajout fixe de 1 ; += permet d'ajouter n'importe quelle quantité, les deux ne sont pas interchangeables."
+      ]
+    }
+  ]
+}

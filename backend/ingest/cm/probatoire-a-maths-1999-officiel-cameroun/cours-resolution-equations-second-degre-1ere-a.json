@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-resolution-equations-second-degre-1ere-a",
+  "meta": {
+    "titre": "Résolution d'équations du second degré par le discriminant",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Équations et inéquations",
+    "duree_estimee_min": 25,
+    "tags": [
+      "discriminant",
+      "équation du second degré",
+      "racines",
+      "factorisation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-1999-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Cameroun - Session 1999 (MINEDUC-OBC)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-maths-1999-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu cherches un nombre inconnu et tout ce que tu sais de lui, c'est une relation où il apparaît élevé au carré : « la somme des carrés de trois entiers consécutifs vaut 245 », par exemple. Ramener ce genre de problème à une équation de la forme $ax^2+bx+c=0$ ne suffit pas : il faut ensuite savoir la résoudre à coup sûr, quel que soit le nombre de solutions réelles. C'est exactement ce que permet le discriminant : un seul calcul qui te dit d'emblée combien de solutions existent, et te donne la formule pour les obtenir."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Développer et réduire une expression algébrique (identités remarquables).",
+        "Calculer une racine carrée d'un nombre positif.",
+        "Résoudre une équation du premier degré."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode du discriminant",
+      "contenu_markdown": "Pour une équation du second degré $ax^2+bx+c=0$ avec $a\\neq 0$, on calcule le discriminant $\\Delta = b^2-4ac$. Son signe détermine entièrement le nombre de solutions réelles :\n\n- si $\\Delta>0$, deux solutions réelles distinctes $x_1=\\dfrac{-b-\\sqrt{\\Delta}}{2a}$ et $x_2=\\dfrac{-b+\\sqrt{\\Delta}}{2a}$ ;\n- si $\\Delta=0$, une unique solution (racine double) $x_0=\\dfrac{-b}{2a}$ ;\n- si $\\Delta<0$, aucune solution réelle.",
+      "formule_principale": "\\Delta = b^2 - 4ac",
+      "variantes": [
+        {
+          "nom": "Résolution par factorisation directe",
+          "quand_utiliser": "Quand une racine évidente ou une identité remarquable saute aux yeux (ex. racine entière simple, forme a²-b²).",
+          "contenu_markdown": "Si l'équation se laisse factoriser directement, par exemple $x^2-5x+6=(x-2)(x-3)$, on résout en annulant chaque facteur : c'est plus rapide que le discriminant, mais cela demande de repérer la factorisation, ce qui n'est pas toujours immédiat. En cas de doute, le discriminant fonctionne toujours et donne le même résultat."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $n^2+2n-80=0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les coefficients a, b, c",
+          "justification": "L'équation est déjà sous forme standard $an^2+bn+c=0$.",
+          "resultat_markdown": "$a=1,\\; b=2,\\; c=-80$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le discriminant",
+          "justification": "On applique $\\Delta = b^2-4ac$.",
+          "resultat_markdown": "$\\Delta = 2^2-4\\times1\\times(-80) = 4+320 = 324$"
+        },
+        {
+          "numero": 3,
+          "action": "Analyser le signe de Δ et calculer sa racine carrée",
+          "justification": "$\\Delta>0$ : deux solutions réelles distinctes existent. Comme $324=18^2$, $\\sqrt{\\Delta}=18$.",
+          "resultat_markdown": "$\\sqrt{\\Delta}=18$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer les formules des racines",
+          "justification": "On substitue $a$, $b$ et $\\sqrt{\\Delta}$ dans les formules de $n_1$ et $n_2$.",
+          "resultat_markdown": "$n_1=\\dfrac{-2-18}{2}=-10 \\quad ; \\quad n_2=\\dfrac{-2+18}{2}=8$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions est $S=\\{-10\\,;8\\}$. Les deux valeurs sont à conserver tant que l'énoncé ne restreint pas explicitement l'ensemble des solutions attendues (par exemple aux entiers naturels)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\Delta = b^2 + 4ac$ en oubliant le signe moins.",
+          "pourquoi_faux": "La formule est $b^2-4ac$. Le signe moins vient de la mise sous forme canonique de $ax^2+bx+c$ ; l'inverser change radicalement le nombre de solutions trouvées.",
+          "correction_markdown": "Toujours recopier la formule complète $\\Delta = b^2-4ac$ avant de substituer les valeurs numériques, plutôt que de la réciter de mémoire au moment de calculer."
+        },
+        {
+          "erreur_markdown": "Rejeter une solution négative parce qu'elle « paraît bizarre » dans le contexte de l'énoncé.",
+          "pourquoi_faux": "Une solution négative n'est fausse que si l'énoncé restreint explicitement l'ensemble de recherche (entiers naturels, longueur, effectif...). Sans cette restriction écrite noir sur blanc, elle reste une solution valable.",
+          "correction_markdown": "Relis l'énoncé avant d'écarter une solution : ne l'élimine que si un mot précis t'y autorise (« naturel », « positif », « longueur »...)."
+        },
+        {
+          "erreur_markdown": "Oublier le cas $\\Delta=0$ et répondre systématiquement soit « deux solutions », soit « pas de solution ».",
+          "pourquoi_faux": "$\\Delta=0$ correspond à une racine double $x_0=-b/(2a)$ : il y a bien une solution, unique, mais pas absence de solution.",
+          "correction_markdown": "Distingue systématiquement les trois cas $\\Delta>0$, $\\Delta=0$, $\\Delta<0$ avant de conclure, même quand le cas $\\Delta=0$ ne se présente pas dans l'exercice du jour."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ : $x^2-7x+12=0$.",
+          "solution_markdown": "$a=1,\\;b=-7,\\;c=12$. $\\Delta = (-7)^2-4\\times1\\times12 = 49-48=1$. $\\Delta>0$, $\\sqrt{\\Delta}=1$. $x_1=\\dfrac{7-1}{2}=3 \\quad ; \\quad x_2=\\dfrac{7+1}{2}=4$. $S=\\{3\\,;4\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer les valeurs du réel $k$ pour lesquelles l'équation $x^2+kx+9=0$ admet une racine double.",
+          "solution_markdown": "Une racine double correspond à $\\Delta=0$. Ici $a=1,\\;b=k,\\;c=9$, donc $\\Delta=k^2-4\\times1\\times9=k^2-36$. $\\Delta=0 \\iff k^2=36 \\iff k=6 \\text{ ou } k=-6$. Il existe donc deux valeurs de $k$ qui conviennent : $k=6$ et $k=-6$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ le système $x+y=5$ et $xy=6$. (Indication : $x$ et $y$ sont solutions d'une même équation du second degré.)",
+          "solution_markdown": "Si $x$ et $y$ vérifient $x+y=5$ et $xy=6$, ils sont les deux solutions de l'équation $t^2-(x+y)t+xy=0$, soit $t^2-5t+6=0$. $\\Delta = (-5)^2-4\\times1\\times6=25-24=1>0$, $\\sqrt{\\Delta}=1$. $t_1=\\dfrac{5-1}{2}=2 \\quad ; \\quad t_2=\\dfrac{5+1}{2}=3$. Les couples solutions du système sont donc $(x\\,;y)=(2\\,;3)$ et $(x\\,;y)=(3\\,;2)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à $ax^2+bx+c=0$, identifie toujours $a$, $b$, $c$ avant tout calcul.",
+        "Le signe de $\\Delta=b^2-4ac$ décide seul du nombre de solutions réelles : trois cas, trois conclusions différentes.",
+        "Si $\\Delta=0$, il y a une solution (double), jamais zéro.",
+        "Ne rejette une solution que si l'énoncé restreint explicitement l'ensemble dans lequel tu cherches.",
+        "Au Probatoire comme au BAC, ce calcul apparaît rarement seul : il conclut souvent une mise en équation (problème concret) ou prépare l'étude du signe d'un trinôme dans un exercice plus long. Maîtriser le discriminant est un automatisme de base, pas une fin en soi."
+      ]
+    }
+  ]
+}

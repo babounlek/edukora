@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-incrementation-et-decrementation-en-php-pre-operateur-et-post-operateur-tle-ti",
+  "meta": {
+    "titre": "Incrémentation et décrémentation en PHP : pré-opérateur et post-opérateur",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Opérateurs en PHP",
+    "duree_estimee_min": 20,
+    "tags": [
+      "incrémentation",
+      "décrémentation",
+      "pré-opérateur",
+      "post-opérateur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.10-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "`$y = $x--;` et `$y = --$x;` se ressemblent trait pour trait, et pourtant elles ne produisent jamais le même résultat. Cette différence, minime à l'écrit, est pourtant l'une des questions pièges les plus fréquentes sur les opérateurs en PHP comme en C."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir affecter une valeur à une variable en PHP",
+        "Connaître le principe d'une instruction exécutée dans l'ordre du code"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Avant ou après : tout dépend de la position de l'opérateur",
+      "contenu_markdown": "L'opérateur `++` (incrémentation) ou `--` (décrémentation) se comporte différemment selon sa position par rapport à la variable. En **post-opérateur** (`$x--` ou `$x++`), la variable est d'abord lue dans son état actuel, cette valeur est utilisée dans l'expression, **puis** la variable est modifiée. En **pré-opérateur** (`--$x` ou `++$x`), la variable est modifiée **d'abord**, et c'est cette nouvelle valeur qui est utilisée dans l'expression."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "\\$x=15; \\$y=\\$x--; \\$z=--\\$x; Donne la valeur de x, y et z à la fin de l'exécution.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser x",
+          "justification": "Première affectation du code",
+          "resultat_markdown": "\\$x = 15"
+        },
+        {
+          "numero": 2,
+          "action": "Évaluer \\$y=\\$x--;",
+          "justification": "Post-décrémentation : \\$y reçoit la valeur actuelle de \\$x avant toute modification, puis \\$x diminue de 1",
+          "resultat_markdown": "\\$y = 15, puis \\$x devient 14"
+        },
+        {
+          "numero": 3,
+          "action": "Évaluer \\$z=--\\$x;",
+          "justification": "Pré-décrémentation : \\$x diminue de 1 d'abord, puis \\$z reçoit cette nouvelle valeur",
+          "resultat_markdown": "\\$x devient 13, puis \\$z = 13"
+        }
+      ],
+      "conclusion_markdown": "À la fin de l'exécution : x = 13, y = 15, z = 13."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décrémenter \\$x avant de calculer \\$y dans \\$y=\\$x--;",
+          "pourquoi_faux": "Le post-opérateur utilise toujours l'ancienne valeur avant toute modification : \\$y ne peut donc pas valoir 14 à cette étape.",
+          "correction_markdown": "Retiens la règle : post-opérateur, on lit puis on modifie ; pré-opérateur, on modifie puis on lit."
+        },
+        {
+          "erreur_markdown": "Confondre incrémentation et décrémentation dans la lecture rapide du symbole",
+          "pourquoi_faux": "-- et ++ ne se distinguent que par un seul caractère, une lecture trop rapide inverse facilement le sens de l'opération.",
+          "correction_markdown": "Relis toujours deux fois le symbole exact avant de commencer le calcul, surtout sous la pression du temps limité d'un examen."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "\\$a=10; \\$b=\\$a++; Donne les valeurs de \\$a et \\$b.",
+          "solution_markdown": "\\$b reçoit la valeur actuelle de \\$a (10) avant incrémentation, donc \\$b = 10, puis \\$a devient 11."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "\\$a=10; \\$b=++\\$a; Donne les valeurs de \\$a et \\$b.",
+          "solution_markdown": "\\$a est incrémenté d'abord (il devient 11), puis \\$b reçoit cette nouvelle valeur : \\$a = 11 et \\$b = 11."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "\\$x=5; \\$y=\\$x++ + --\\$x; Donne la valeur finale de \\$y et de \\$x, en détaillant chaque étape.",
+          "solution_markdown": "L'expression combine deux opérateurs sur la même variable, à évaluer dans l'ordre d'écriture de gauche à droite. `$x++` : on lit d'abord \\$x (5), donc cette partie vaut 5, puis \\$x devient 6. `--$x` : \\$x est décrémenté d'abord, donc \\$x devient 5, et cette partie vaut 5. On calcule alors \\$y = 5 + 5 = 10. À la fin : \\$x = 5 et \\$y = 10."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Post-opérateur (\\$x--, \\$x++) : on utilise l'ancienne valeur, puis la variable change.",
+        "Pré-opérateur (--\\$x, ++\\$x) : la variable change d'abord, puis on utilise la nouvelle valeur.",
+        "La même règle s'applique aussi bien en PHP qu'en langage C : elle n'est pas propre à un seul langage.",
+        "Sur ce type de question, décompose toujours l'exécution ligne par ligne plutôt que de répondre de tête : c'est la source d'erreur la plus fréquente et la plus évitable."
+      ]
+    }
+  ]
+}

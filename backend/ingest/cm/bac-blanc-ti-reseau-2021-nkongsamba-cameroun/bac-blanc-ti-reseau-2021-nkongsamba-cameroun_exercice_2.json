@@ -1,0 +1,133 @@
+{
+  "epreuve_source": "bac-blanc-ti-reseau-2021-nkongsamba-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Réseaux, Internet et Sécurité Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "institution": "Lycée Bilingue de Nkongsamba",
+  "annee": 2021,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "introduction_markdown": "Aucun document en dehors de ceux remis aux candidats par les examinateurs n'est autorisé.",
+  "groupes": [],
+  "numero_exercice": "2",
+  "points": "3",
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2**\n\nL'adressage IPV4 a assez rapidement introduit la possibilité de structurer les adresses d'un réseau IP en sous réseaux.\nUne entreprise dont l'informatique était basée sur de petites architectures réseaux hétérogènes (Novell, ...) décide de passer à Internet. Après en avoir fait la demande l'entreprise a obtenu l'adresse 193.1.1.0. Compte tenu de l'organisation actuelle de l'entreprise l'ingénieur système doit définir au moins 6 sous-réseaux. Compte tenu de l'évolution prévisible de l'entreprise, l'ingénieur système pense que le sous-réseau le plus important peut comporter à moyen terme 25 hôtes.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1) Déterminer le masque de sous réseau correspondant à l'adresse 193.1.1.0 en justifiant la réponse. *[0,5pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour déterminer le masque par défaut d'une adresse IPv4, il faut d'abord lire la valeur de son premier octet afin d'en déduire la classe (Classe A de 1 à 126, Classe B de 128 à 191, Classe C de 192 à 223), puis appliquer le masque par défaut associé à cette classe (255.0.0.0 pour A, 255.255.0.0 pour B, 255.255.255.0 pour C).\n\n### Corrigé détaillé\nLe premier octet de l'adresse 193.1.1.0 est **193**. En binaire, 193 = 11000001, dont les trois premiers bits sont 110, ce qui correspond à la plage 192 à 223 : l'adresse appartient donc à la **classe C**.\n\nLe masque par défaut associé à la classe C réserve les trois premiers octets à l'identification du réseau et laisse le dernier octet pour les machines : masque par défaut = **255.255.255.0** (soit /24).\n\n### Piège à éviter\nNe pas confondre les bornes des classes : 192 à 223 pour la classe C, à ne pas mélanger avec 128 à 191 (classe B, masque 255.255.0.0) qui donnerait un découpage totalement différent.\n\n### Conseil\nMémorise les trois bornes dans l'ordre : Classe A (1-126, masque 255.0.0.0), Classe B (128-191, masque 255.255.0.0), Classe C (192-223, masque 255.255.255.0). La valeur 127 est réservée à la boucle locale et n'appartient à aucune classe utilisable.",
+      "themes": [
+        "classes d'adresses IPv4",
+        "masque par défaut"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex2-q1-0",
+          "competence": "Déterminer la classe et le masque par défaut d'une adresse IPv4",
+          "contenu_markdown": "Pour déterminer le masque par défaut d'une adresse IPv4, il faut d'abord lire la valeur de son premier octet afin d'en déduire la classe (Classe A de 1 à 126, Classe B de 128 à 191, Classe C de 192 à 223), puis appliquer le masque par défaut associé à cette classe (255.0.0.0 pour A, 255.255.0.0 pour B, 255.255.255.0 pour C).",
+          "cours_genere": true,
+          "cours_id": "cours-classes-adresses-masques-nkongsamba-2021"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2) Pour définir un découpage en au moins 6 sous-réseaux, indiquer le nombre de bit à emprunter par l'ingénieur système et en déduire le nouveau masque de sous-réseau qui sera utilisé pour chaque sous-réseau sous la notation décimale pointée et sous la notation /n. *[1pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour découper un réseau en au moins N sous-réseaux, il faut emprunter n bits à la partie hôte, où n est le plus petit entier tel que 2 puissance n soit supérieur ou égal à N. Le nouveau masque s'obtient en ajoutant ces n bits empruntés au masque par défaut.\n\n### Corrigé détaillé\nIl faut au moins 6 sous-réseaux, donc chercher le plus petit n tel que 2ⁿ ≥ 6.\n\n- n = 1 : 2¹ = 2 sous-réseaux (insuffisant, 2 < 6)\n- n = 2 : 2² = 4 sous-réseaux (insuffisant, 4 < 6)\n- n = 3 : 2³ = 8 sous-réseaux (suffisant, 8 ≥ 6)\n\nIl faut donc emprunter **3 bits** à la partie hôte.\n\nLe masque par défaut de la classe C (question 1) est /24, soit 255.255.255.0. En ajoutant les 3 bits empruntés, le nouveau masque devient **/27**.\n\nSur le dernier octet, les 3 premiers bits (côté fort) deviennent des bits de réseau : 11100000 en binaire = 128+64+32 = **224**.\n\nNouveau masque de sous-réseau :\n- Notation décimale pointée : **255.255.255.224**\n- Notation /n : **/27**\n\n**Vérification croisée** : avec n = 3, il reste 8 - 3 = 5 bits pour les hôtes, soit 2⁵ - 2 = 30 machines maximum par sous-réseau (calcul détaillé à la question 3). Cela satisfait bien la seconde exigence de l'énoncé (au moins 25 hôtes dans le plus grand sous-réseau), alors qu'un choix de n = 4 (qui donnerait 16 sous-réseaux) ne laisserait plus que 2⁴ - 2 = 14 hôtes par sous-réseau, insuffisant pour les 25 hôtes requis. Le choix n = 3 est donc le seul qui satisfait simultanément les deux contraintes de l'énoncé.\n\n### Piège à éviter\nNe pas s'arrêter à la première condition (6 sous-réseaux) sans vérifier que le nombre d'hôtes obtenu par sous-réseau reste compatible avec le besoin de 25 hôtes annoncé dans l'énoncé : un choix de n plus grand que nécessaire réduirait le nombre d'hôtes disponibles par sous-réseau.\n\n### Conseil\nDans un exercice de VLSM qui donne deux contraintes (nombre de sous-réseaux ET nombre d'hôtes), calcule toujours les deux à partir du même n et vérifie qu'elles sont satisfaites ensemble avant de conclure.",
+      "themes": [
+        "VLSM",
+        "emprunt de bits",
+        "sous-réseaux"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex2-q2-0",
+          "competence": "Déterminer le nombre de bits à emprunter et le nouveau masque pour un nombre de sous-réseaux donné",
+          "contenu_markdown": "Pour découper un réseau en au moins N sous-réseaux, il faut emprunter n bits à la partie hôte, où n est le plus petit entier tel que 2 puissance n soit supérieur ou égal à N. Le nouveau masque s'obtient en ajoutant ces n bits empruntés au masque par défaut.",
+          "cours_genere": true,
+          "cours_id": "cours-emprunt-de-bits-vlsm-nkongsamba-2021"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3) Déterminer le nombre maximum de machines que peut contenir chaque sous-réseau. *[0,5pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe nombre maximal de machines (hôtes) utilisables dans un sous-réseau se calcule par la formule 2 puissance h moins 2, où h est le nombre de bits restés disponibles pour la partie hôte après l'emprunt : on retire systématiquement 2 adresses, celle du réseau lui-même et celle de diffusion (broadcast), qui ne peuvent jamais être attribuées à une machine.\n\n### Corrigé détaillé\nAvec un masque /27, il reste 32 - 27 = 5 bits pour la partie hôte (sur les 8 bits du dernier octet, 3 ont été empruntés à la question 2, il en reste 8 - 3 = 5).\n\nNombre maximal de machines par sous-réseau = 2⁵ - 2 = 32 - 2 = **30 machines**.\n\nLes 2 adresses retirées correspondent à l'adresse du sous-réseau lui-même (tous les bits hôtes à 0) et à l'adresse de diffusion du sous-réseau (tous les bits hôtes à 1), qui ne peuvent jamais être attribuées à une machine.\n\n### Piège à éviter\nNe pas oublier de soustraire les 2 adresses réservées : répondre 32 machines (2⁵ sans soustraction) est l'erreur la plus fréquente sur ce type de question.\n\n### Conseil\nRetiens le réflexe : nombre d'hôtes utilisables = 2 puissance (nombre de bits hôtes restants) moins 2, jamais 2 puissance (bits hôtes restants) tout court.",
+      "themes": [
+        "nombre d'hôtes",
+        "sous-réseaux",
+        "masque /27"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex2-q3-0",
+          "competence": "Calculer le nombre maximal d'hôtes d'un sous-réseau à partir de son masque",
+          "contenu_markdown": "Le nombre maximal de machines (hôtes) utilisables dans un sous-réseau se calcule par la formule 2 puissance h moins 2, où h est le nombre de bits restés disponibles pour la partie hôte après l'emprunt : on retire systématiquement 2 adresses, celle du réseau lui-même et celle de diffusion (broadcast), qui ne peuvent jamais être attribuées à une machine.",
+          "cours_genere": true,
+          "cours_id": "cours-nombre-hotes-sous-reseau-nkongsamba-2021"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4) Intéressons nous au deuxième sous réseau du découpage précédant. Déterminer la plus petite adresse utilisable ainsi que la plus grande adresse utilisable *[1pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour lister les sous-réseaux issus d'un découpage, on calcule la taille d'un bloc par 2 puissance h (h étant le nombre de bits hôtes), puis on énumère les sous-réseaux successifs par pas de cette taille dans l'octet concerné. Dans chaque sous-réseau, la première adresse (bits hôtes à 0) et la dernière (bits hôtes à 1) sont réservées, si bien que la plage utilisable va de la première adresse plus 1 à la dernière adresse moins 1.\n\n### Corrigé détaillé\nAvec 5 bits hôtes (question 3), la taille d'un bloc de sous-réseau est 2⁵ = 32 adresses. Les sous-réseaux se succèdent donc par pas de 32 dans le dernier octet :\n\n- Sous-réseau 1 : 193.1.1.**0** à 193.1.1.**31**\n- Sous-réseau 2 : 193.1.1.**32** à 193.1.1.**63**\n- Sous-réseau 3 : 193.1.1.**64** à 193.1.1.**95**\n- (et ainsi de suite jusqu'au 8e sous-réseau, 193.1.1.224 à 193.1.1.255)\n\nLe **deuxième sous-réseau** est donc 193.1.1.32/27, dont l'adresse réseau est 193.1.1.32 et l'adresse de diffusion 193.1.1.63.\n\nLa plage utilisable exclut ces deux adresses réservées :\n- Plus petite adresse utilisable : **193.1.1.33**\n- Plus grande adresse utilisable : **193.1.1.62**\n\n### Piège à éviter\nNe pas inclure l'adresse de sous-réseau (193.1.1.32) ni l'adresse de diffusion (193.1.1.63) dans la plage utilisable : elles délimitent le sous-réseau mais ne peuvent être attribuées à aucune machine.\n\n### Conseil\nPour retrouver rapidement le numéro d'un sous-réseau, multiplie (numéro du sous-réseau moins 1) par la taille du bloc : le 2e sous-réseau commence donc à 1 × 32 = 32, ce qui confirme 193.1.1.32.",
+      "themes": [
+        "plage d'adresses utilisables",
+        "sous-réseaux",
+        "adresse de diffusion"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex2-q4-0",
+          "competence": "Déterminer la plage d'adresses utilisables d'un sous-réseau donné",
+          "contenu_markdown": "Pour lister les sous-réseaux issus d'un découpage, on calcule la taille d'un bloc par 2 puissance h (h étant le nombre de bits hôtes), puis on énumère les sous-réseaux successifs par pas de cette taille dans l'octet concerné. Dans chaque sous-réseau, la première adresse (bits hôtes à 0) et la dernière (bits hôtes à 1) sont réservées, si bien que la plage utilisable va de la première adresse plus 1 à la dernière adresse moins 1.",
+          "cours_genere": true,
+          "cours_id": "cours-plage-adresses-utilisables-sous-reseau-nkongsamba-2021"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "VLSM",
+    "sous-réseaux",
+    "masque /27",
+    "adresse réseau",
+    "adresse de diffusion",
+    "adresse utilisable",
+    "classe C"
+  ],
+  "incertitudes": [
+    "Le fichier référentiel backend/programme/fixtures/programme_officiel_cm_informatique.json n'a pas été trouvé sur le système de fichiers : savoir_officiel n'a pu être renseigné pour aucune sous-question de cet exercice."
+  ],
+  "statut": "brouillon"
+}

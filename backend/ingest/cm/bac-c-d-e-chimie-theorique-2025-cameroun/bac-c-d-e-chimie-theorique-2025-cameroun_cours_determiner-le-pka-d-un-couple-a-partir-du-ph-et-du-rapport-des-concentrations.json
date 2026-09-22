@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-determiner-le-pka-d-un-couple-a-partir-du-ph-et-du-rapport-des-concentrations-tle-cde",
+  "meta": {
+    "titre": "Déterminer le pKa d'un couple à partir du pH et du rapport des concentrations",
+    "matiere": "Chimie",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Solutions aqueuses - Couples acide-base et relation d'Henderson",
+    "duree_estimee_min": 30,
+    "tags": [
+      "relation d'Henderson",
+      "pKa",
+      "couple acide-base",
+      "diagramme de prédominance",
+      "solution tampon"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-chimie-theorique-2025-cameroun",
+    "epreuve_titre": "BAC Chimie théorique - Cameroun, séries C, D et E, session 2025 (Office du Baccalauréat du Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-chimie-theorique-2025-cameroun-ex2-q2-2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un pharmacien veut savoir si un principe actif sera absorbé dans l'estomac (pH 2) ou dans l'intestin (pH 8). Un biologiste cherche à comprendre pourquoi le sang maintient son pH à 7,4. Dans les deux cas, la réponse tient dans une seule relation, qui lie le pH d'une solution au rapport des concentrations des deux formes d'un couple acide-base. Cette relation est aussi celle qui te permet, au BAC, de calculer un $pK_a$ en deux lignes à partir d'une simple mesure de pH."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier l'acide et la base conjuguée d'un couple $AH/A^{-}$ ou $BH^{+}/B$",
+        "Connaître la définition de la constante d'acidité $K_a = \\dfrac{[H_3O^{+}][A^{-}]}{[AH]}$",
+        "Manipuler les logarithmes : $\\log(ab) = \\log a + \\log b$ et $\\log\\dfrac{a}{b} = \\log a - \\log b$",
+        "Savoir que $pH = -\\log[H_3O^{+}]$ et $pK_a = -\\log K_a$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La relation d'Henderson et le diagramme de prédominance",
+      "contenu_markdown": "Pour un couple acide-base $AH/A^{-}$, la constante d'acidité s'écrit\n\n$$K_a = \\frac{[H_3O^{+}]\\,[A^{-}]}{[AH]}$$\n\nEn prenant l'opposé du logarithme décimal de chaque membre :\n\n$$-\\log K_a = -\\log[H_3O^{+}] - \\log\\frac{[A^{-}]}{[AH]}$$\n\nsoit $pK_a = pH - \\log\\dfrac{[A^{-}]}{[AH]}$, ce qui se réécrit sous la forme la plus utilisée, la **relation d'Henderson** :\n\n$$\\boxed{\\,pH = pK_a + \\log\\frac{[\\text{base}]}{[\\text{acide}]}\\,}$$\n\n**La base est toujours au numérateur.** C'est le point sur lequel se joue la moitié des erreurs.\n\n**Trois lectures immédiates de cette relation**\n\n- Si $[\\text{base}] = [\\text{acide}]$, alors $pH = pK_a$. C'est le cas du mélange équimolaire, et aussi celui de la demi-équivalence d'un dosage.\n- Si $pH > pK_a$, alors $\\log\\dfrac{[\\text{base}]}{[\\text{acide}]} > 0$, donc la **base prédomine**.\n- Si $pH < pK_a$, l'**acide prédomine**.\n\nD'où le diagramme de prédominance, à tracer systématiquement au brouillon :\n\n```\nacide prédomine  |  base prédomine\n-----------------|------------------>  pH\n               pKa\n```\n\n**Utilisation pour un couple de type $BH^{+}/B$**\n\nLa forme de la relation ne change pas, seule l'identification des espèces change. Pour $NH_4^{+}/NH_3$, l'acide est $NH_4^{+}$ et la base est $NH_3$ :\n\n$$pH = pK_a + \\log\\frac{[NH_3]}{[NH_4^{+}]}$$",
+      "formule_principale": "pH = pK_a + \\log\\dfrac{[\\text{base}]}{[\\text{acide}]}",
+      "variantes": [
+        {
+          "nom": "Forme inversée, utile quand l'énoncé donne le rapport acide/base",
+          "quand_utiliser": "Quand la donnée fournie est $\\dfrac{[\\text{acide}]}{[\\text{base}]}$ plutôt que son inverse, comme dans une analyse de dosage.",
+          "contenu_markdown": "$$pK_a = pH + \\log\\frac{[\\text{acide}]}{[\\text{base}]}$$\n\nC'est strictement la même relation, réécrite en utilisant $\\log\\dfrac{1}{x} = -\\log x$. L'utiliser directement évite une inversion de fraction, donc une source d'erreur."
+        },
+        {
+          "nom": "Passage par la constante d'acidité",
+          "quand_utiliser": "Quand on connaît $[H_3O^{+}]$ et les deux concentrations du couple, et que l'on veut contrôler le résultat par un second chemin.",
+          "contenu_markdown": "On calcule d'abord $K_a = \\dfrac{[H_3O^{+}][A^{-}]}{[AH]}$, puis $pK_a = -\\log K_a$. Les deux voies doivent donner exactement la même valeur : c'est une vérification gratuite et très appréciée du correcteur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On dispose d'une solution aqueuse d'ammoniac de $pH = 10{,}8$. Pour cette solution, le rapport des concentrations est $\\dfrac{[NH_3]}{[NH_4^{+}]} = 25$. Déterminer le $pK_a$ du couple $NH_4^{+}/NH_3$. *(Exercice 2, question 2-2 de l'épreuve source - 1 point)*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'acide et la base du couple",
+          "justification": "L'ordre du couple s'écrit toujours acide/base ; ici $NH_4^{+}$ peut céder un proton, $NH_3$ peut en capter un.",
+          "resultat_markdown": "Acide : $NH_4^{+}$. Base conjuguée : $NH_3$. Le rapport fourni par l'énoncé, $\\dfrac{[NH_3]}{[NH_4^{+}]}$, est donc bien le rapport base/acide."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la relation d'Henderson pour ce couple",
+          "justification": "La base occupe le numérateur du logarithme.",
+          "resultat_markdown": "$$pH = pK_a + \\log\\frac{[NH_3]}{[NH_4^{+}]}$$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler le pKa",
+          "justification": "C'est l'inconnue du problème ; on fait passer le terme logarithmique dans l'autre membre.",
+          "resultat_markdown": "$$pK_a = pH - \\log\\frac{[NH_3]}{[NH_4^{+}]}$$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le logarithme du rapport",
+          "justification": "Le calcul se fait à la calculatrice, mais il se contrôle mentalement : $\\log 25 = \\log 100 - \\log 4 = 2 - 0{,}602$.",
+          "resultat_markdown": "$$\\log 25 = 1{,}398$$"
+        },
+        {
+          "numero": 5,
+          "action": "Effectuer l'application numérique",
+          "justification": "On soustrait la valeur trouvée au pH donné.",
+          "resultat_markdown": "$$pK_a = 10{,}8 - 1{,}398 = 9{,}402 \\approx 9{,}4$$"
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier la cohérence par le diagramme de prédominance",
+          "justification": "Le rapport base/acide vaut 25, donc supérieur à 1 : la base doit prédominer, ce qui impose $pH > pK_a$.",
+          "resultat_markdown": "$10{,}8 > 9{,}4$ : la base $NH_3$ prédomine bien, conformément au rapport de 25. Le résultat est en outre proche de la valeur tabulée $9{,}2$ pour ce couple."
+        }
+      ],
+      "conclusion_markdown": "Le $pK_a$ du couple $NH_4^{+}/NH_3$ vaut environ $9{,}4$. On vient d'obtenir une constante thermodynamique à partir d'une simple mesure de pH et d'un rapport de concentrations."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $pH = pK_a + \\log\\dfrac{[\\text{acide}]}{[\\text{base}]}$, c'est-à-dire inverser le rapport.",
+          "pourquoi_faux": "Cette écriture inverse le signe du terme logarithmique. Dans l'exemple traité, elle donnerait $pK_a = 10{,}8 + 1{,}398 = 12{,}2$, une valeur incompatible avec le couple de l'ammoniac et physiquement absurde puisqu'elle ferait prédominer l'acide alors que le rapport annonce 25 fois plus de base.",
+          "correction_markdown": "Mémorise la relation dans le sens qui la rend évidente : ajouter de la base fait monter le pH, donc la base doit être au numérateur pour que le logarithme augmente. Vérifie ensuite avec le diagramme de prédominance."
+        },
+        {
+          "erreur_markdown": "Confondre $pK_a$ et $K_a$ dans l'application numérique, en écrivant par exemple $pK_a = 10{,}8 - 25$.",
+          "pourquoi_faux": "Le terme à soustraire n'est pas le rapport lui-même mais son **logarithme décimal**. Oublier le logarithme conduit ici à $pK_a = -14{,}2$, une valeur impossible.",
+          "correction_markdown": "Écris la relation littérale complète avant toute substitution, avec le symbole $\\log$ bien visible ; ne remplace les lettres par des chiffres qu'à la dernière ligne."
+        },
+        {
+          "erreur_markdown": "Appliquer la relation d'Henderson à une solution d'acide fort ou de base forte.",
+          "pourquoi_faux": "La relation suppose l'existence d'un couple dont les **deux** formes coexistent en solution. Un acide fort est totalement dissocié : sa forme $AH$ n'existe plus, le rapport n'a pas de sens et $pK_a$ n'est pas défini dans l'eau.",
+          "correction_markdown": "Réserve la relation d'Henderson aux couples **faibles**. Pour un acide fort de concentration $C$, on écrit directement $pH = -\\log C$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une solution d'acide éthanoïque et d'éthanoate de sodium a un pH de $5{,}0$. Le $pK_a$ du couple $CH_3COOH/CH_3COO^{-}$ vaut $4{,}8$.\n\n1. Calculer le rapport $\\dfrac{[CH_3COO^{-}]}{[CH_3COOH]}$.\n2. Quelle est l'espèce prédominante ?",
+          "solution_markdown": "**1. Calcul du rapport**\n\nOn part de la relation d'Henderson appliquée au couple :\n\n$$pH = pK_a + \\log\\frac{[CH_3COO^{-}]}{[CH_3COOH]}$$\n\nOn isole le terme logarithmique :\n\n$$\\log\\frac{[CH_3COO^{-}]}{[CH_3COOH]} = pH - pK_a = 5{,}0 - 4{,}8 = 0{,}2$$\n\nOn passe à l'exponentielle de base 10 :\n\n$$\\frac{[CH_3COO^{-}]}{[CH_3COOH]} = 10^{0{,}2} = 1{,}58$$\n\n**2. Espèce prédominante**\n\nLe rapport est supérieur à 1 : la base conjuguée $CH_3COO^{-}$ est environ $1{,}6$ fois plus concentrée que l'acide, elle **prédomine**.\n\nContrôle par le diagramme : $pH = 5{,}0 > pK_a = 4{,}8$, la base prédomine. Les deux raisonnements concordent."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On prépare une solution en dissolvant $0{,}10$ mol d'acide méthanoïque $HCOOH$ et $0{,}040$ mol de méthanoate de sodium $HCOONa$ dans de l'eau, pour un volume final de $1{,}0$ L. Le pH mesuré vaut $3{,}4$.\n\n1. Déterminer le $pK_a$ du couple $HCOOH/HCOO^{-}$.\n2. Cette solution est-elle une bonne solution tampon ? Justifier.\n3. Quel volume de solution de soude à $1{,}0\\ mol\\cdot L^{-1}$ faudrait-il ajouter pour obtenir $pH = pK_a$ (on négligera la variation de volume) ?",
+          "solution_markdown": "**1. Détermination du $pK_a$**\n\nLe méthanoate de sodium est un solide ionique totalement dissocié : il apporte $0{,}040$ mol d'ions $HCOO^{-}$. Dans $1{,}0$ L :\n\n$$[HCOOH] = 0{,}10\\ mol\\cdot L^{-1} \\qquad ; \\qquad [HCOO^{-}] = 0{,}040\\ mol\\cdot L^{-1}$$\n\n$$pK_a = pH - \\log\\frac{[HCOO^{-}]}{[HCOOH]} = 3{,}4 - \\log\\frac{0{,}040}{0{,}10} = 3{,}4 - \\log 0{,}40$$\n\n$$\\log 0{,}40 = -0{,}398$$\n\n$$pK_a = 3{,}4 + 0{,}398 = 3{,}80$$\n\nValeur cohérente avec le $pK_a$ tabulé de l'acide méthanoïque, $3{,}8$.\n\n**2. Qualité du tampon**\n\nLe rapport base/acide vaut $0{,}40$, donc compris entre $0{,}1$ et $10$ : le pH est dans l'intervalle $pK_a \\pm 1$, c'est-à-dire $[2{,}8\\ ;\\ 4{,}8]$. La solution possède donc bien un effet tampon, mais il n'est pas maximal : le pouvoir tampon serait optimal pour un rapport égal à 1.\n\n**3. Volume de soude pour atteindre $pH = pK_a$**\n\n$pH = pK_a$ exige $[HCOO^{-}] = [HCOOH]$. La soude transforme l'acide en base conjuguée selon\n\n$$HCOOH + HO^{-} \\longrightarrow HCOO^{-} + H_2O$$\n\nNotons $n$ la quantité de soude ajoutée. Après réaction :\n\n- $n(HCOOH) = 0{,}10 - n$\n- $n(HCOO^{-}) = 0{,}040 + n$\n\nL'égalité recherchée s'écrit :\n\n$$0{,}10 - n = 0{,}040 + n \\quad \\Longrightarrow \\quad 0{,}060 = 2n \\quad \\Longrightarrow \\quad n = 0{,}030\\ \\text{mol}$$\n\nLe volume de soude correspondant vaut :\n\n$$V = \\frac{n}{C} = \\frac{0{,}030}{1{,}0} = 0{,}030\\ \\text{L} = 30\\ \\text{mL}$$\n\n**Vérification** : après ajout, $n(HCOOH) = 0{,}070$ mol et $n(HCOO^{-}) = 0{,}070$ mol. Le rapport vaut bien 1, donc $pH = pK_a = 3{,}8$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le sang humain est tamponné par le couple $CO_2,\\!H_2O\\,/\\,HCO_3^{-}$ de $pK_a = 6{,}1$ à $37\\ ^{\\circ}\\text{C}$. Le pH sanguin normal est de $7{,}40$.\n\n1. Calculer le rapport $\\dfrac{[HCO_3^{-}]}{[CO_2,\\!H_2O]}$ dans le sang normal.\n2. Lors d'une acidose respiratoire, ce rapport chute à $10$. Calculer le nouveau pH.\n3. Sachant qu'un tampon est d'autant plus efficace que le rapport est proche de 1, commenter l'efficacité de ce tampon et expliquer pourquoi l'organisme l'utilise malgré tout.",
+          "solution_markdown": "**1. Rapport dans le sang normal**\n\n$$\\log\\frac{[HCO_3^{-}]}{[CO_2,\\!H_2O]} = pH - pK_a = 7{,}40 - 6{,}1 = 1{,}30$$\n\n$$\\frac{[HCO_3^{-}]}{[CO_2,\\!H_2O]} = 10^{1{,}30} = 20$$\n\nIl y a environ 20 fois plus d'ions hydrogénocarbonate que de dioxyde de carbone dissous.\n\n**2. pH en cas d'acidose respiratoire**\n\n$$pH = pK_a + \\log 10 = 6{,}1 + 1{,}0 = 7{,}1$$\n\nLe pH chute de $7{,}40$ à $7{,}10$. Cette baisse de $0{,}3$ unité, apparemment modeste, correspond à un doublement de la concentration en ions $H_3O^{+}$ et met la vie en danger.\n\n**3. Commentaire sur l'efficacité**\n\nAvec un rapport de 20, le pH sanguin se situe à $1{,}3$ unité au-dessus du $pK_a$ : on est en dehors de la zone $pK_a \\pm 1$ où le pouvoir tampon est le meilleur. Ce tampon est donc, sur le papier, mal centré et peu efficace contre un apport de base.\n\nL'organisme le compense par deux atouts qu'aucun tampon de laboratoire ne possède. D'une part, le tampon est **ouvert** : le $CO_2$ dissous est en équilibre avec le $CO_2$ des poumons, et la ventilation ajuste en permanence le dénominateur. D'autre part, les reins régulent le numérateur en éliminant ou en réabsorbant les ions $HCO_3^{-}$. Un tampon dont on peut régler indépendamment les deux termes du rapport devient bien plus puissant qu'un tampon fermé, même mal centré.\n\nCe raisonnement montre que la relation d'Henderson ne se contente pas de fournir un nombre : elle indique quels leviers physiologiques agissent sur le pH."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une seule relation à connaître par cœur : $pH = pK_a + \\log\\dfrac{[\\text{base}]}{[\\text{acide}]}$, avec la **base au numérateur**.",
+        "Elle se démontre en trois lignes à partir de $K_a = \\dfrac{[H_3O^{+}][A^{-}]}{[AH]}$ : si tu hésites sur le sens du rapport, refais la démonstration plutôt que de deviner.",
+        "Quand $pH = pK_a$, les deux formes du couple sont en quantités égales : c'est le mélange équimolaire, c'est aussi la demi-équivalence d'un dosage.",
+        "Trace toujours le diagramme de prédominance au brouillon : il te dit instantanément si ton résultat est plausible, avant même de vérifier le calcul.",
+        "Au BAC séries C, D et E, cette relation sert à trois usages : calculer un $pK_a$ à partir d'un pH mesuré, identifier un acide inconnu en comparant son $pK_a$ à un tableau, et justifier le caractère tampon d'un mélange."
+      ]
+    }
+  ]
+}

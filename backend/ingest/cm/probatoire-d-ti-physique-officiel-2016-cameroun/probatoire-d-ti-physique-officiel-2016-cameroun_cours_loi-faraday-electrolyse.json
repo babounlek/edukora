@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-loi-faraday-electrolyse-premiere-d-ti",
+  "meta": {
+    "titre": "Application de la loi de Faraday pour calculer une masse déposée par électrolyse",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Électricité - Électrolyse et transformations forcées",
+    "duree_estimee_min": 22,
+    "tags": [
+      "loi de Faraday",
+      "électrolyse",
+      "quantité de matière",
+      "dépôt métallique par électrolyse"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2016-cameroun",
+    "epreuve_titre": "Épreuve de physique au Probatoire, séries D et TI - 2016 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2016-officiel-cameroun-ex3-qA.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de temps faut-il laisser passer un courant pour recouvrir un objet d'une fine couche de cuivre bien précise ? La loi de Faraday transforme cette question, apparemment chimique, en un simple calcul électrique : elle relie directement la charge électrique ayant traversé un circuit à la quantité de matière transformée à une électrode."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition de l'intensité du courant électrique : $I = \\dfrac{Q}{t}$",
+        "Notion de mole et de masse molaire",
+        "Demi-équation de réduction d'un ion métallique à une électrode"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Faraday",
+      "contenu_markdown": "Lorsqu'un courant d'intensité $I$ traverse un circuit pendant une durée $t$, la charge électrique transportée vaut $Q = I \\times t$. Si cette charge sert à réduire (ou oxyder) un ion métallique selon une demi-équation échangeant $n_e$ électrons par ion, la quantité de matière $n$ de métal déposé (ou consommé) est donnée par la loi de Faraday : $n = \\dfrac{Q}{n_e \\times F}$, où $F = 96500\\,\\text{C/mol}$ est la constante de Faraday (charge portée par une mole d'électrons). La masse correspondante s'obtient ensuite par $m = n \\times M$, où $M$ est la masse molaire du métal.",
+      "formula_principale": "n = \\dfrac{I \\times t}{n_e \\times F} \\quad ; \\quad m = n \\times M"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une pile Daniell débite un courant d'intensité $I = 0,25\\,\\text{A}$ pendant une heure. Calculer la masse de cuivre déposée à la cathode ($F = 96500\\,\\text{C/mol}$, $M_{Cu} = 63,5\\,\\text{g/mol}$).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la durée en secondes et calculer la charge électrique",
+          "justification": "$Q = I \\times t$, avec $t$ exprimé en secondes",
+          "resultat_markdown": "$t = 1\\,\\text{h} = 3600\\,\\text{s}$ ; $Q = 0,25 \\times 3600 = 900\\,\\text{C}$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le nombre d'électrons échangés par ion à la cathode",
+          "justification": "$Cu^{2+} + 2e^- \\rightarrow Cu$ : chaque ion $Cu^{2+}$ capte 2 électrons",
+          "resultat_markdown": "$n_e = 2$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la quantité de matière puis la masse de cuivre déposée",
+          "justification": "Loi de Faraday puis $m = n \\times M$",
+          "resultat_markdown": "$n_{Cu} = \\dfrac{900}{2\\times 96500} \\approx 4,663\\times10^{-3}\\,\\text{mol}$ ; $m = 4,663\\times10^{-3}\\times 63,5 \\approx 0,296\\,\\text{g}$"
+        }
+      ],
+      "conclusion_markdown": "La masse de cuivre déposée à la cathode après une heure vaut environ 0,296 g."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement la durée en heures dans le calcul de la charge $Q = I\\times t$.",
+          "pourquoi_faux": "L'intensité est exprimée en ampères, c'est-à-dire en coulombs par seconde : la durée doit impérativement être en secondes pour que $Q$ soit exprimée en coulombs.",
+          "correction_markdown": "Convertis systématiquement toute durée en secondes avant de calculer une charge électrique, quelle que soit l'unité donnée dans l'énoncé (heures, minutes...)."
+        },
+        {
+          "erreur_markdown": "Prendre $n_e = 1$ par défaut, sans regarder la charge réelle de l'ion métallique concerné.",
+          "pourquoi_faux": "Le nombre d'électrons échangés dépend directement de la charge de l'ion : un ion $M^{2+}$ échange 2 électrons, un ion $M^{3+}$ en échange 3, jamais 1 par défaut.",
+          "correction_markdown": "Lis toujours la charge de l'ion métallique dans la demi-équation de réduction avant de fixer $n_e$ : elle est directement indiquée par l'exposant de l'ion."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un courant d'intensité $I = 2\\,\\text{A}$ traverse un électrolyseur pendant $10\\,\\text{minutes}$. Calculer la charge électrique transportée.",
+          "solution_markdown": "$t = 10\\times 60 = 600\\,\\text{s}$ ; $Q = I\\times t = 2\\times 600 = 1200\\,\\text{C}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la masse d'argent ($M_{Ag}=108\\,\\text{g/mol}$) déposée à une cathode par un courant de $1\\,\\text{A}$ pendant $30\\,\\text{minutes}$, sachant que la demi-équation de réduction est $Ag^+ + e^- \\rightarrow Ag$ ($F=96500\\,\\text{C/mol}$).",
+          "solution_markdown": "$Q = I\\times t = 1\\times1800=1800\\,\\text{C}$ ($t=30\\,\\text{min}=1800\\,\\text{s}$).\n\n$n_e=1$ (un seul électron par ion $Ag^+$).\n\n$n_{Ag} = \\dfrac{1800}{1\\times 96500} \\approx 1,865\\times10^{-2}\\,\\text{mol}$.\n\n$m = n_{Ag}\\times M_{Ag} \\approx 1,865\\times10^{-2}\\times108 \\approx 2,01\\,\\text{g}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux électrolyseurs sont placés en série dans le même circuit : l'un dépose du cuivre ($n_e=2$), l'autre de l'argent ($n_e=1$). Sachant que le même courant $I$ traverse les deux pendant la même durée $t$, comparer le nombre de moles de métal déposées dans chaque électrolyseur.",
+          "solution_markdown": "En série, le même courant $I$ traverse les deux électrolyseurs pendant la même durée $t$ : la charge électrique $Q=I\\times t$ qui les traverse est donc identique dans les deux cas.\n\nD'après la loi de Faraday, $n = \\dfrac{Q}{n_e\\times F}$ : à charge $Q$ égale, la quantité de matière déposée est inversement proportionnelle à $n_e$.\n\nPour l'argent ($n_e=1$) : $n_{Ag}=\\dfrac{Q}{F}$. Pour le cuivre ($n_e=2$) : $n_{Cu}=\\dfrac{Q}{2F} = \\dfrac{n_{Ag}}{2}$.\n\nOn dépose donc deux fois plus de moles d'argent que de moles de cuivre pour une même charge électrique : l'ion qui échange le moins d'électrons est déposé en plus grande quantité molaire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Faraday relie une grandeur électrique (la charge $Q=I\\times t$) à une grandeur chimique (la quantité de matière déposée ou consommée).",
+        "Toute durée doit être convertie en secondes avant de calculer une charge électrique.",
+        "Le nombre d'électrons échangés $n_e$ se lit directement sur la charge de l'ion dans sa demi-équation de réduction (ou d'oxydation).",
+        "La masse déposée s'obtient en deux temps : d'abord la quantité de matière par la loi de Faraday, ensuite la masse par $m=n\\times M$.",
+        "Cette méthode s'applique aussi bien au fonctionnement d'une pile (dépôt à la cathode) qu'à une électrolyse forcée par un générateur extérieur."
+      ]
+    }
+  ]
+}

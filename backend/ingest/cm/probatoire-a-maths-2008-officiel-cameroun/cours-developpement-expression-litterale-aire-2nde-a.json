@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-developpement-expression-litterale-aire-2nde-a",
+  "meta": {
+    "titre": "Développement d'une expression littérale pour modéliser une aire",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Calcul littéral",
+    "duree_estimee_min": 25,
+    "tags": [
+      "distributivité",
+      "développement",
+      "aire",
+      "mise en équation"
+    ],
+    "savoir_officiel": {
+      "classe": "2nde",
+      "serie_label": "A",
+      "module_numero": "17",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2008-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2008 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-maths-2008-officiel-cameroun-ex1-q2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un terrain qu'on agrandit d'un côté et qu'on réduit de l'autre, un carton dont on découpe les coins pour former une boîte, un jardin entouré d'une allée : dans tous ces problèmes, une aire dépend d'une inconnue $x$, et il faut l'écrire sous une forme qu'on peut ensuite manipuler, résoudre ou étudier. Cette écriture passe presque toujours par un développement de produit. Maîtriser ce passage entre un dessin et une expression algébrique est ce qui permet de transformer n'importe quel problème géométrique concret en équation résoluble."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la distributivité simple $k(a+b)=ka+kb$",
+        "Savoir calculer une aire de rectangle (longueur × largeur)",
+        "Réduire une expression en regroupant les termes semblables"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La double distributivité",
+      "contenu_markdown": "Pour développer un produit de deux sommes, on multiplie chaque terme du premier facteur par chaque terme du second, puis on additionne les quatre produits obtenus :\n\n$$(a+b)(c+d)=ac+ad+bc+bd$$\n\nDans un problème géométrique, cette formule sert le plus souvent à calculer l'aire d'un rectangle dont la longueur et la largeur dépendent toutes les deux d'une même inconnue $x$.",
+      "formule_principale": "(a+b)(c+d)=ac+ad+bc+bd",
+      "variantes": [
+        {
+          "nom": "Calcul par différence d'aires",
+          "quand_utiliser": "Quand la figure est une aire totale à laquelle on retranche une aire intérieure (bordure, cadre, allée)",
+          "contenu_markdown": "Plutôt que de développer directement l'aire de la bordure, il est souvent plus simple de calculer l'aire totale de la figure et l'aire de la partie intérieure séparément, puis de soustraire la seconde à la première : $\\mathscr{A}_{\\text{bordure}}=\\mathscr{A}_{\\text{totale}}-\\mathscr{A}_{\\text{intérieure}}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un champ rectangulaire mesure 70 m de long et 30 m de large. On augmente sa largeur de $x$ mètres et on diminue sa longueur de $2x$ mètres. Exprimer en fonction de $x$ l'aire du nouveau champ.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire les nouvelles dimensions en fonction de $x$",
+          "justification": "La longueur diminue de $2x$, la largeur augmente de $x$ : on retranche et on ajoute directement aux dimensions initiales",
+          "resultat_markdown": "nouvelle longueur $=70-2x$ ; nouvelle largeur $=30+x$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'aire comme un produit",
+          "justification": "L'aire d'un rectangle est le produit de sa longueur par sa largeur",
+          "resultat_markdown": "$\\mathscr{A}(x)=(70-2x)(30+x)$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer par double distributivité",
+          "justification": "On multiplie chaque terme du premier facteur par chaque terme du second : $70\\times30$, $70\\times x$, $-2x\\times30$, $-2x\\times x$",
+          "resultat_markdown": "$\\mathscr{A}(x)=2100+70x-60x-2x^2$"
+        },
+        {
+          "numero": 4,
+          "action": "Réduire l'expression",
+          "justification": "On regroupe les termes en $x$ entre eux",
+          "resultat_markdown": "$\\mathscr{A}(x)=-2x^2+10x+2100$"
+        }
+      ],
+      "conclusion_markdown": "L'aire du nouveau champ, en fonction de $x$, est $\\mathscr{A}(x)=-2x^2+10x+2100$ (en $m^2$)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'un des quatre produits de la double distributivité, par exemple ne calculer que $70\\times30$ et $-2x\\times x$",
+          "pourquoi_faux": "Les quatre produits sont tous nécessaires : en sauter un revient à perdre un terme entier de l'expression finale, ce qui fausse tout calcul ultérieur (équation, dérivée, etc.).",
+          "correction_markdown": "Compte explicitement les quatre produits un par un (par exemple en les numérotant) plutôt que de développer de tête."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe en distribuant un facteur négatif, par exemple écrire $-2x\\times30=60x$ au lieu de $-60x$",
+          "pourquoi_faux": "Le signe du facteur se propage à chaque produit : oublier ce signe change la nature de la fonction obtenue (un terme censé être négatif devient positif).",
+          "correction_markdown": "Écris chaque facteur avec son signe entre parenthèses avant de multiplier, par exemple $(-2x)\\times(30)$, pour ne pas l'oublier en cours de calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Développer et réduire $(x+5)(x+3)$.",
+          "solution_markdown": "$$(x+5)(x+3)=x\\times x+x\\times3+5\\times x+5\\times3=x^2+3x+5x+15$$\n\n$$=x^2+8x+15$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un rectangle a pour longueur $(2x+3)$ cm et pour largeur $(x-1)$ cm. Exprimer son aire en fonction de $x$, sous forme développée et réduite.",
+          "solution_markdown": "$$\\mathscr{A}(x)=(2x+3)(x-1)=2x\\times x+2x\\times(-1)+3\\times x+3\\times(-1)$$\n\n$$=2x^2-2x+3x-3=2x^2+x-3$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une plaque carrée de côté 12 cm sert à fabriquer une boîte sans couvercle : on découpe un carré de côté $x$ dans chaque coin, puis on replie les bords. Exprimer en fonction de $x$ l'aire de la base de la boîte (le fond, une fois les coins retirés et les bords repliés).",
+          "solution_markdown": "Après avoir découpé un carré de côté $x$ dans chaque coin et replié les bords vers le haut, le fond de la boîte est un carré de côté $(12-2x)$ (on retire $x$ de chaque côté du carré initial, donc $2x$ au total sur chaque dimension).\n\n$$\\mathscr{A}(x)=(12-2x)(12-2x)=(12-2x)^2$$\n\nEn développant avec l'identité remarquable $(a-b)^2=a^2-2ab+b^2$ :\n$$\\mathscr{A}(x)=144-48x+4x^2$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Traduis d'abord l'énoncé en nouvelles dimensions littérales avant d'écrire le moindre produit.",
+        "Une aire de rectangle reste toujours un produit longueur × largeur, même quand ces deux grandeurs dépendent de $x$.",
+        "La double distributivité $(a+b)(c+d)=ac+ad+bc+bd$ demande quatre produits : ne jamais en sauter un.",
+        "Vérifie le signe de chaque terme distribué, en particulier quand un facteur est négatif.",
+        "Cette écriture développée est presque toujours l'étape qui prépare la question suivante : équation, dérivée, ou étude de signe."
+      ]
+    }
+  ]
+}

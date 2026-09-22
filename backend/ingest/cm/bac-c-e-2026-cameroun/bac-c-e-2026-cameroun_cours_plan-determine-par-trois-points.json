@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-plan-determine-par-trois-points-terminale-c-e",
+  "meta": {
+    "titre": "Déterminer l'équation cartésienne d'un plan à partir de trois points",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "C/E",
+    "sous_theme": "Géométrie dans l'espace",
+    "duree_estimee_min": 25,
+    "tags": [
+      "plan",
+      "produit vectoriel",
+      "vecteur normal",
+      "équation cartésienne",
+      "géométrie dans l'espace"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-2026-cameroun",
+    "epreuve_titre": "Baccalauréat C/E - Mathématiques - 2026 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-e-2026-cameroun-ex1-qI.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un architecte donne trois points de repère sur un chantier et veut savoir si un mur plan peut réellement passer par ces trois points, et laquelle de ses équations le décrit. C'est exactement le problème que tu résous dès qu'on te donne trois points de l'espace et qu'on te demande l'équation du plan qui les contient : au BAC, cette compétence sert de brique de départ à une bonne partie des exercices de géométrie dans l'espace (distances, intersections, symétries). Tu connais déjà les vecteurs et le produit scalaire dans le plan - il s'agit maintenant de les faire travailler en trois dimensions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer les coordonnées d'un vecteur à partir de deux points : $\\overrightarrow{AB}=B-A$.",
+        "Savoir reconnaître si deux vecteurs sont colinéaires (coordonnées proportionnelles).",
+        "Connaître le produit scalaire de deux vecteurs de l'espace.",
+        "Savoir écrire l'équation cartésienne d'un plan connaissant un point et un vecteur normal."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Plan déterminé par trois points, via le produit vectoriel",
+      "contenu_markdown": "Trois points $A$, $B$, $C$ de l'espace déterminent un plan si et seulement s'ils ne sont pas alignés, c'est-à-dire si $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ ne sont pas colinéaires. Dans ce cas, le vecteur $\\vec n=\\overrightarrow{AB}\\wedge\\overrightarrow{AC}$ (produit vectoriel) est orthogonal à la fois à $\\overrightarrow{AB}$ et à $\\overrightarrow{AC}$, donc orthogonal à tout le plan $(ABC)$ : c'est un vecteur normal au plan. L'équation cartésienne s'obtient alors en écrivant que, pour tout point $M(x,y,z)$ du plan, $\\vec n\\cdot\\overrightarrow{AM}=0$.",
+      "formule_principale": "\\vec n = \\overrightarrow{AB}\\wedge\\overrightarrow{AC}, \\qquad \\vec n\\cdot\\overrightarrow{AM}=0",
+      "variantes": [
+        {
+          "nom": "Méthode par système (sans produit vectoriel)",
+          "quand_utiliser": "Si le produit vectoriel n'est pas encore au programme ou pour vérifier un résultat.",
+          "contenu_markdown": "On cherche directement $a,b,c,d$ tels que $ax+by+cz+d=0$ soit vérifiée par $A$, $B$ et $C$ : cela donne un système de 3 équations à 4 inconnues (une inconnue reste libre car une équation de plan est définie à un facteur multiplicatif près), que l'on résout en fixant par exemple $a=1$ quand c'est possible."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'espace muni d'un repère orthonormé $(O;\\vec\\imath,\\vec\\jmath,\\vec k)$, on considère $A(1;-1;0)$, $B(0;-1;1)$ et $C(2;1;1)$. Démontrer que $A$, $B$, $C$ déterminent un plan et donner une équation cartésienne de ce plan.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les vecteurs $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$",
+          "justification": "Ce sont les deux vecteurs du plan à partir desquels on va construire la normale.",
+          "resultat_markdown": "$\\overrightarrow{AB}=(-1;0;1)$, $\\overrightarrow{AC}=(1;2;1)$"
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier que $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ ne sont pas colinéaires",
+          "justification": "Sans cette vérification, les trois points pourraient être alignés et ne définiraient aucun plan unique.",
+          "resultat_markdown": "Les coordonnées ne sont pas proportionnelles ($\\frac{1}{-1}\\neq\\frac{2}{0}$, division par 0 impossible) : $A,B,C$ ne sont pas alignés."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le produit vectoriel $\\vec n=\\overrightarrow{AB}\\wedge\\overrightarrow{AC}$",
+          "justification": "Ce vecteur est orthogonal au plan $(ABC)$, c'est le vecteur normal recherché.",
+          "resultat_markdown": "$\\vec n=(0\\times1-1\\times2\\,;\\,1\\times1-(-1)\\times1\\,;\\,-1\\times2-0\\times1)=(-2;2;-2)$, simplifié en $(1;-1;1)$"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire l'équation cartésienne à l'aide de $A$ et $\\vec n$",
+          "justification": "Un point $M(x,y,z)$ appartient au plan si et seulement si $\\vec n\\cdot\\overrightarrow{AM}=0$.",
+          "resultat_markdown": "$1(x-1)-1(y+1)+1(z-0)=0 \\Rightarrow x-y+z-2=0$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier avec $B$ et $C$",
+          "justification": "Une vérification indépendante confirme qu'aucune erreur de calcul ne s'est glissée dans le produit vectoriel.",
+          "resultat_markdown": "$B$ : $0-(-1)+1-2=0$ ✓. $C$ : $2-1+1-2=0$ ✓."
+        }
+      ],
+      "conclusion_markdown": "Le plan $(ABC)$ a pour équation cartésienne $x-y+z-2=0$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $\\overrightarrow{AB}$ et $\\overrightarrow{BC}$ (ou une autre paire ne partant pas du même point) sans adapter le point de référence dans l'équation finale.",
+          "pourquoi_faux": "Le produit vectoriel reste valide, mais l'équation $\\vec n\\cdot\\overrightarrow{AM}=0$ doit alors utiliser le même point que celui choisi pour construire les deux vecteurs, sinon l'équation obtenue ne passe plus par les trois points.",
+          "correction_markdown": "Toujours utiliser le même point de départ (ici $A$) pour les deux vecteurs directeurs ET pour écrire $\\overrightarrow{AM}$ dans l'équation finale."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier la non-colinéarité de $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ avant de conclure que les trois points déterminent un plan.",
+          "pourquoi_faux": "Si les trois points sont alignés, ils appartiennent à une infinité de plans différents : il n'y a alors pas UN plan $(ABC)$ bien défini, et la question \"donner une équation cartésienne\" n'a pas de réponse unique.",
+          "correction_markdown": "Toujours justifier explicitement la non-colinéarité (rapport de coordonnées non égal, ou produit vectoriel non nul) avant de donner l'équation."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe dans le calcul du produit vectoriel, en particulier sur la deuxième coordonnée.",
+          "pourquoi_faux": "La formule du produit vectoriel $(u_2v_3-u_3v_2\\,;\\,u_3v_1-u_1v_3\\,;\\,u_1v_2-u_2v_1)$ a un signe qui alterne sur la deuxième coordonnée par rapport aux deux autres : l'oublier inverse le sens du vecteur normal (ce qui ne change pas le plan, mais peut fausser un calcul d'angle ou de réflexion utilisant ensuite ce vecteur).",
+          "correction_markdown": "Mémorise la formule ligne par ligne avec ses signes $(+,-,+)$, ou vérifie systématiquement en calculant $\\vec n\\cdot\\overrightarrow{AB}$ et $\\vec n\\cdot\\overrightarrow{AC}$ : les deux doivent valoir $0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'espace muni d'un repère orthonormé, on donne $A(1;0;0)$, $B(0;1;0)$, $C(0;0;1)$. Montrer que $A,B,C$ déterminent un plan et en donner une équation cartésienne.",
+          "solution_markdown": "$\\overrightarrow{AB}=(-1;1;0)$, $\\overrightarrow{AC}=(-1;0;1)$ : coordonnées non proportionnelles ($\\frac{-1}{-1}=1\\neq\\frac{1}{0}$, division impossible), donc $A,B,C$ non alignés.\n\n$\\vec n=\\overrightarrow{AB}\\wedge\\overrightarrow{AC} = (1\\times1-0\\times0\\,;\\,0\\times(-1)-(-1)\\times1\\,;\\,(-1)\\times0-1\\times(-1)) = (1;1;1)$.\n\nÉquation : $1(x-1)+1(y-0)+1(z-0)=0 \\Rightarrow x+y+z-1=0$.\n\nVérification : $B(0;1;0)$ : $0+1+0-1=0$ ✓. $C(0;0;1)$ : $0+0+1-1=0$ ✓."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On donne $A(2;1;-1)$, $B(1;3;0)$, $C(-1;0;2)$. Le point $D(0;5;4)$ appartient-il au plan $(ABC)$ ?",
+          "solution_markdown": "$\\overrightarrow{AB}=(-1;2;1)$, $\\overrightarrow{AC}=(-3;-1;3)$ : non proportionnelles, $A,B,C$ non alignés.\n\n$\\vec n = \\overrightarrow{AB}\\wedge\\overrightarrow{AC} = (2\\times3-1\\times(-1)\\,;\\,1\\times(-3)-(-1)\\times3\\,;\\,(-1)\\times(-1)-2\\times(-3)) = (6+1\\,;\\,-3+3\\,;\\,1+6) = (7;0;7)$, simplifié en $(1;0;1)$.\n\nÉquation du plan avec $A(2;1;-1)$ : $1(x-2)+0(y-1)+1(z+1)=0 \\Rightarrow x+z-1=0$.\n\nTest de $D(0;5;4)$ : $0+4-1=3\\neq0$. $D$ n'appartient donc pas au plan $(ABC)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On donne $A(1;1;1)$, $B(2;0;3)$ et un réel $m$, $C(0;m;1)$. Déterminer les valeurs de $m$ pour lesquelles $A$, $B$, $C$ NE déterminent PAS de plan (c'est-à-dire sont alignés).",
+          "solution_markdown": "$\\overrightarrow{AB}=(1;-1;2)$, $\\overrightarrow{AC}=(-1;m-1;0)$.\n\n$A,B,C$ sont alignés si et seulement si $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ sont colinéaires, c'est-à-dire si leur produit vectoriel est nul :\n$$\\vec n = \\overrightarrow{AB}\\wedge\\overrightarrow{AC} = \\big((-1)\\times0-2\\times(m-1)\\,;\\,2\\times(-1)-1\\times0\\,;\\,1\\times(m-1)-(-1)\\times(-1)\\big)$$\n$$\\vec n = \\big(-2(m-1)\\,;\\,-2\\,;\\,(m-1)-1\\big) = \\big(-2m+2\\,;\\,-2\\,;\\,m-2\\big)$$\nLa deuxième coordonnée vaut $-2$, qui n'est jamais nulle : $\\vec n$ n'est donc jamais le vecteur nul, quelle que soit la valeur de $m$.\n\nConclusion : il n'existe aucune valeur de $m$ pour laquelle $A$, $B$, $C$ soient alignés - ces trois points déterminent toujours un plan, quel que soit $m\\in\\mathbb R$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois points déterminent un plan seulement s'ils ne sont pas alignés : vérifie toujours que $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$ ne sont pas colinéaires avant de conclure.",
+        "Le produit vectoriel $\\overrightarrow{AB}\\wedge\\overrightarrow{AC}$ donne directement un vecteur normal au plan, sans passer par un système à résoudre.",
+        "L'équation cartésienne s'obtient avec $\\vec n\\cdot\\overrightarrow{AM}=0$, en utilisant le même point de référence que celui choisi pour former les deux vecteurs directeurs.",
+        "Vérifie systématiquement ton équation avec les deux autres points connus : c'est le contrôle le plus rapide et le plus fiable.",
+        "Cette compétence est un prérequis quasi systématique des exercices de géométrie dans l'espace au BAC C/E : intersections de droites et de plans, distances, symétries, projections."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+ "cours_id": "cours-droite-regression-x-en-y-1ere-ce",
+ "meta": {
+  "titre": "Déterminer la droite de régression de x en y",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistiques à deux variables",
+  "duree_estimee_min": 30,
+  "tags": ["droite de régression", "variance", "covariance", "ajustement affine", "point moyen"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qB3a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Il y a **deux** droites de régression, pas une. Celle de $y$ en $x$ sert à prévoir $y$ connaissant $x$ ; celle de $x$ en $y$ fait l'inverse. Elles ne coïncident pas, et leurs coefficients directeurs se calculent avec des dénominateurs différents — $V(x)$ pour l'une, $V(y)$ pour l'autre. Choisir la mauvaise ne donne pas un résultat approximatif : il donne un résultat sans aucun rapport. La question à se poser est simple : **que cherche-t-on à prévoir ?**"
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir calculer une moyenne",
+    "Connaître la formule développée de la variance",
+    "Savoir ce qu'est la covariance de deux caractères",
+    "Savoir écrire l'équation d'une droite passant par un point de coefficient directeur donné"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux droites, deux dénominateurs",
+   "contenu_markdown": "**Les deux droites de régression.**\n\n| Droite | Équation | Coefficient directeur | Usage |\n|---|---|---|---|\n| de $y$ en $x$ | $y = ax+b$ | $a = \\dfrac{\\operatorname{Cov}(x,y)}{V(x)}$ | prévoir $y$ connaissant $x$ |\n| de $x$ en $y$ | $x = a'y+b'$ | $a' = \\dfrac{\\operatorname{Cov}(x,y)}{V(y)}$ | prévoir $x$ connaissant $y$ |\n\nLe **numérateur est le même** — la covariance — mais le **dénominateur change** : la variance de la variable qui sert de point de départ à la prévision.\n\n**Les ordonnées à l'origine.**\n\n$$b = \\bar{y} - a\\bar{x} \\qquad ; \\qquad b' = \\bar{x} - a'\\bar{y}$$\n\nElles se déduisent du fait que **les deux droites passent par le point moyen** $G\\left(\\bar{x}\\,;\\,\\bar{y}\\right)$.\n\n**La variance, formule développée.**\n\n$$V(y) = \\frac{1}{n}\\sum y_{i}^{2} - \\bar{y}^{2}$$\n\nC'est la forme la plus commode en calcul : elle évite de soustraire la moyenne à chaque terme.\n\n**La covariance.**\n\n$$\\operatorname{Cov}(x,y) = \\frac{1}{n}\\sum x_{i}y_{i} - \\bar{x}\\,\\bar{y}$$\n\nSon **signe** donne le sens de la liaison : positif, les deux caractères varient dans le même sens ; négatif, en sens contraires.\n\n**La méthode, en cinq gestes.**\n\n1. **Identifier** quelle droite est demandée, d'après ce qu'on veut prévoir.\n2. **Calculer** la variance du caractère qui servira de point de départ.\n3. **Calculer** le coefficient directeur.\n4. **Calculer** l'ordonnée à l'origine par le point moyen.\n5. **Contrôler** en vérifiant que la droite passe par $G$.\n\n**Le contrôle par l'ordre de grandeur.** C'est le plus rentable. Ici, les cylindrées se comptent en **milliers**, les puissances en **dizaines** : le coefficient $a'$ qui transforme une cylindrée en puissance est donc nécessairement très petit, de l'ordre du centième.\n\nUn $a'$ proche de $1$ ou de $30$ signale que les deux variances ont été interverties.\n\n**Le contrôle par le point moyen.** Substitue $\\bar{y}$ dans l'équation : tu dois retrouver $\\bar{x}$. C'est immédiat et cela valide tout le calcul.\n\n**Les deux droites se coupent en $G$**, et l'angle entre elles mesure la qualité de l'ajustement : plus elles sont proches, meilleure est la corrélation. Elles coïncident si et seulement si les points sont exactement alignés.",
+   "formule_principale": "x = a'y + b' \\qquad \\text{avec} \\qquad a' = \\frac{\\operatorname{Cov}(x,y)}{V(y)} \\quad \\text{et} \\quad b' = \\bar{x} - a'\\bar{y}",
+   "variantes": [
+    {
+     "nom": "Droite de régression de y en x",
+     "quand_utiliser": "Quand on veut prévoir $y$ connaissant $x$",
+     "contenu_markdown": "$$y = ax+b \\qquad \\text{avec} \\qquad a = \\frac{\\operatorname{Cov}(x,y)}{V(x)} \\quad \\text{et} \\quad b = \\bar{y}-a\\bar{x}$$\n\nC'est la droite la plus fréquemment demandée. Pour le sujet 2005, elle permettrait de prévoir une **cylindrée** à partir d'une **puissance** — l'inverse de ce que demande la question.\n\nSon coefficient directeur serait de l'ordre de $30$, puisqu'il transforme des chevaux en centimètres cubes."
+    },
+    {
+     "nom": "Coefficient de corrélation",
+     "quand_utiliser": "Pour mesurer la qualité de l'ajustement",
+     "contenu_markdown": "$$r = \\frac{\\operatorname{Cov}(x,y)}{\\sigma(x)\\,\\sigma(y)} = \\pm\\sqrt{a \\times a'}$$\n\nIl est compris entre $-1$ et $1$. Plus $\\left|r\\right|$ est proche de $1$, meilleur est l'ajustement affine ; proche de $0$, la liaison linéaire est faible.\n\nRemarque : $r^{2} = a \\times a'$, produit des deux coefficients directeurs. Les deux droites coïncident si et seulement si $\\left|r\\right| = 1$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Pour les huit voitures — puissances de moyenne $\\bar{x} = 61{,}5$ et cylindrées de moyenne $\\bar{y} = 1825$ — la covariance vaut $\\operatorname{Cov}(x,y) = 4662{,}5$. Écrire une équation cartésienne de la droite de régression de $x$ en $y$. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier la droite demandée",
+     "justification": "L'énoncé demande explicitement celle de $x$ en $y$, et la question suivante prévoira une puissance à partir d'une cylindrée",
+     "resultat_markdown": "Il faut $x = a'y+b'$ avec $a' = \\dfrac{\\operatorname{Cov}(x,y)}{V(y)}$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer les carrés des cylindrées",
+     "justification": "Pour la formule développée de la variance",
+     "resultat_markdown": "$10^{6}$ ; $2{,}56 \\cdot 10^{6}$ ; $3{,}24 \\cdot 10^{6}$ ; $2{,}89 \\cdot 10^{6}$ ; $3{,}61 \\cdot 10^{6}$ ; $4 \\cdot 10^{6}$ ; $4{,}41 \\cdot 10^{6}$ ; $6{,}25 \\cdot 10^{6}$"
+    },
+    {
+     "numero": 3,
+     "action": "Sommer, en millions",
+     "justification": "Terme à terme, pour limiter les erreurs",
+     "resultat_markdown": "$1+2{,}56 = 3{,}56$ ; $+3{,}24 = 6{,}80$ ; $+2{,}89 = 9{,}69$ ; $+3{,}61 = 13{,}30$ ; $+4 = 17{,}30$ ; $+4{,}41 = 21{,}71$ ; $+6{,}25 = 27{,}96$"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer la variance",
+     "justification": "$V(y) = \\dfrac{1}{n}\\sum y_{i}^{2} - \\bar{y}^{2}$",
+     "resultat_markdown": "$V(y) = \\dfrac{27\\,960\\,000}{8} - 1825^{2} = 3\\,495\\,000 - 3\\,330\\,625 = 164\\,375$"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer le coefficient directeur",
+     "justification": "Covariance divisée par la variance de $y$",
+     "resultat_markdown": "$a' = \\dfrac{4662{,}5}{164\\,375} \\approx 0{,}028\\,365$"
+    },
+    {
+     "numero": 6,
+     "action": "Contrôler l'ordre de grandeur",
+     "justification": "Le coefficient transforme des cm³ en chevaux",
+     "resultat_markdown": "Une valeur de l'ordre du centième est attendue : $0{,}0284$ est cohérent"
+    },
+    {
+     "numero": 7,
+     "action": "Calculer l'ordonnée à l'origine",
+     "justification": "$b' = \\bar{x} - a'\\bar{y}$",
+     "resultat_markdown": "$0{,}028\\,365 \\times 1825 \\approx 51{,}77$, donc $b' \\approx 61{,}5 - 51{,}77 = 9{,}73$"
+    },
+    {
+     "numero": 8,
+     "action": "Écrire l'équation",
+     "justification": "En arrondissant convenablement",
+     "resultat_markdown": "$x = 0{,}0284\\,y + 9{,}73$"
+    },
+    {
+     "numero": 9,
+     "action": "Contrôler par le point moyen",
+     "justification": "La droite doit passer par $G(61{,}5\\,;\\,1825)$",
+     "resultat_markdown": "$0{,}028\\,365 \\times 1825 + 9{,}73 \\approx 51{,}77 + 9{,}73 = 61{,}50 = \\bar{x}$. Conforme"
+    }
+   ],
+   "conclusion_markdown": "L'équation est $x = 0{,}0284\\,y + 9{,}73$. Retiens le point décisif : c'est **$V(y)$** qui figure au dénominateur, et non $V(x)$, parce qu'on prévoit $x$ à partir de $y$. Et retiens le contrôle d'ordre de grandeur : les cylindrées se comptent en milliers, les puissances en dizaines, donc le coefficient est nécessairement de l'ordre du centième. Un $a'$ proche de $30$ signalerait que les deux variances ont été interverties."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Utiliser $V(x)$ au lieu de $V(y)$",
+     "pourquoi_faux": "C'est l'erreur centrale. La droite de régression de $x$ en $y$ a pour coefficient $\\dfrac{\\operatorname{Cov}}{V(y)}$. Avec $V(x)$, on obtiendrait la pente de **l'autre** droite, environ $33$ au lieu de $0{,}028$.",
+     "correction_markdown": "Retiens : le dénominateur est la variance de la variable **explicative**, celle qu'on connaît. Ici on connaît la cylindrée $y$, donc $V(y)$."
+    },
+    {
+     "erreur_markdown": "Ne pas contrôler l'ordre de grandeur",
+     "pourquoi_faux": "Une pente de $33$ signifierait qu'un centimètre cube supplémentaire ajoute $33$ chevaux : absurde. Le contrôle d'ordre de grandeur détecte l'inversion en deux secondes.",
+     "correction_markdown": "Demande-toi ce que le coefficient **transforme** : des cm³ en chevaux ici, donc de gros nombres en petits, donc un coefficient très petit."
+    },
+    {
+     "erreur_markdown": "Se tromper dans la formule développée de la variance",
+     "pourquoi_faux": "$V(y) = \\dfrac{1}{n}\\sum y_{i}^{2} - \\bar{y}^{2}$ : la moyenne est élevée au carré **après** avoir été calculée, pas avant. Écrire $\\dfrac{1}{n}\\left(\\sum y_{i}\\right)^{2}$ donnerait un résultat très différent.",
+     "correction_markdown": "Distingue « moyenne des carrés » et « carré de la moyenne » : la variance est leur différence, et elle est toujours positive."
+    },
+    {
+     "erreur_markdown": "Oublier de vérifier le passage par $G$",
+     "pourquoi_faux": "C'est le contrôle le plus simple et le plus sûr de tout l'exercice. Sans lui, une erreur sur $b'$ passe inaperçue et se propage à l'estimation finale.",
+     "correction_markdown": "Substitue $\\bar{y}$ dans l'équation : tu dois retrouver $\\bar{x}$. Une ligne de calcul."
+    },
+    {
+     "erreur_markdown": "Arrondir trop tôt",
+     "pourquoi_faux": "Arrondir $a'$ à $0{,}03$ avant de calculer $b'$ donnerait $b' = 61{,}5 - 54{,}75 = 6{,}75$ au lieu de $9{,}73$ — soit une erreur de plus de $40\\,\\%$ sur l'ordonnée à l'origine.",
+     "correction_markdown": "Garde au moins cinq chiffres significatifs dans les calculs intermédiaires, et n'arrondis qu'au moment d'écrire le résultat final."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Une série double de cinq couples a pour moyennes $\\bar{x} = 4$ et $\\bar{y} = 20$, pour variances $V(x) = 8$ et $V(y) = 50$, et pour covovariance $\\operatorname{Cov}(x,y) = 18$. Écrire les équations des deux droites de régression, et vérifier qu'elles passent toutes deux par le point moyen.",
+     "solution_markdown": "**Première droite - $y$ en $x$.**\n\n$$a = \\dfrac{\\operatorname{Cov}(x,y)}{V(x)} = \\dfrac{18}{8} = 2{,}25$$\n\n$$b = \\bar{y} - a\\bar{x} = 20 - 2{,}25 \\times 4 = 20 - 9 = 11$$\n\n$$y = 2{,}25x + 11$$\n\n*Contrôle :* pour $x = 4$, on obtient $9+11 = 20 = \\bar{y}$. Conforme.\n\n**Seconde droite - $x$ en $y$.**\n\n$$a' = \\dfrac{\\operatorname{Cov}(x,y)}{V(y)} = \\dfrac{18}{50} = 0{,}36$$\n\n$$b' = \\bar{x} - a'\\bar{y} = 4 - 0{,}36 \\times 20 = 4 - 7{,}2 = -3{,}2$$\n\n$$x = 0{,}36y - 3{,}2$$\n\n*Contrôle :* pour $y = 20$, on obtient $7{,}2-3{,}2 = 4 = \\bar{x}$. Conforme.\n\n**Étape - les deux droites sont-elles la même ?**\n\nRéécrivons la seconde sous la forme $y = \\dots$ :\n\n$$x = 0{,}36y - 3{,}2 \\qquad \\Longrightarrow \\qquad 0{,}36y = x + 3{,}2 \\qquad \\Longrightarrow \\qquad y = \\dfrac{x+3{,}2}{0{,}36} \\approx 2{,}778x + 8{,}889$$\n\nÀ comparer à $y = 2{,}25x + 11$.\n\n**Les deux droites sont distinctes**, de pentes $2{,}25$ et $2{,}778$.\n\n**Étape - le coefficient de corrélation.**\n\n$$r^{2} = a \\times a' = 2{,}25 \\times 0{,}36 = 0{,}81$$\n\n$$r = \\sqrt{0{,}81} = 0{,}9$$\n\nLa covariance étant positive, $r = +0{,}9$ : la corrélation est **forte et positive**.\n\n**Interprétation.** Un coefficient de $0{,}9$ indique un ajustement affine de bonne qualité. Les deux droites sont proches sans être confondues, ce qui est cohérent : elles coïncideraient seulement pour $\\left|r\\right| = 1$.\n\n**Ce qu'il faut retenir.** Les deux droites se coupent toujours en $G$, et le produit de leurs coefficients directeurs vaut $r^{2}$. C'est le lien le plus direct entre régression et corrélation."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Pour la série $(2\\,;\\,30)$, $(4\\,;\\,50)$, $(6\\,;\\,55)$, $(8\\,;\\,75)$, $(10\\,;\\,90)$, calculer les moyennes, les variances, la covariance, puis l'équation de la droite de régression de $x$ en $y$.",
+     "solution_markdown": "**Étape 1 - les moyennes.**\n\n$$\\bar{x} = \\dfrac{2+4+6+8+10}{5} = \\dfrac{30}{5} = 6$$\n\n$$\\bar{y} = \\dfrac{30+50+55+75+90}{5} = \\dfrac{300}{5} = 60$$\n\n**Étape 2 - la variance de $x$.**\n\nCarrés : $4$, $16$, $36$, $64$, $100$, de somme $220$.\n\n$$V(x) = \\dfrac{220}{5} - 36 = 44 - 36 = 8$$\n\n**Étape 3 - la variance de $y$.**\n\nCarrés : $900$, $2500$, $3025$, $5625$, $8100$.\n\nSomme : $900+2500 = 3400$ ; $+3025 = 6425$ ; $+5625 = 12\\,050$ ; $+8100 = 20\\,150$.\n\n$$V(y) = \\dfrac{20\\,150}{5} - 3600 = 4030 - 3600 = 430$$\n\n**Étape 4 - la covariance.**\n\nProduits $x_{i}y_{i}$ : $60$, $200$, $330$, $600$, $900$.\n\nSomme : $60+200 = 260$ ; $+330 = 590$ ; $+600 = 1190$ ; $+900 = 2090$.\n\n$$\\operatorname{Cov}(x,y) = \\dfrac{2090}{5} - 6 \\times 60 = 418 - 360 = 58$$\n\n**Étape 5 - la droite de $x$ en $y$.**\n\n$$a' = \\dfrac{58}{430} \\approx 0{,}134\\,88$$\n\n$$b' = 6 - 0{,}134\\,88 \\times 60 = 6 - 8{,}0930 = -2{,}0930$$\n\n$$x \\approx 0{,}1349\\,y - 2{,}093$$\n\n**Étape 6 - contrôle par le point moyen.**\n\n$$0{,}134\\,88 \\times 60 - 2{,}093 = 8{,}093 - 2{,}093 = 6 = \\bar{x}$$\n\nConforme.\n\n**Étape 7 - contrôle par le coefficient de corrélation.**\n\n$$a = \\dfrac{58}{8} = 7{,}25$$\n\n$$r^{2} = a \\times a' = 7{,}25 \\times 0{,}134\\,88 \\approx 0{,}978$$\n\n$$r \\approx 0{,}989$$\n\nLa corrélation est **très forte** : l'ajustement est excellent, ce qui se voit aussi sur le nuage, presque parfaitement aligné.\n\n**Étape 8 - vérifier sur un point.**\n\nPour $y = 90$, la droite prévoit\n\n$$x = 0{,}1349 \\times 90 - 2{,}093 = 12{,}14 - 2{,}09 = 10{,}05$$\n\nà comparer à la valeur observée $x = 10$. Écart de $0{,}05$ : excellent.\n\n**Ce qu'il faut retenir.** Organise les calculs en tableau : une colonne pour $x_{i}$, une pour $y_{i}$, une pour $x_{i}^{2}$, une pour $y_{i}^{2}$, une pour $x_{i}y_{i}$. Les cinq sommes donnent alors tout — moyennes, variances, covariance — sans risque de mélange."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Démontrer que les deux droites de régression d'une série double se coupent au point moyen $G$, puis que le produit de leurs coefficients directeurs vaut $r^{2}$. En déduire à quelle condition les deux droites sont confondues, et interpréter.",
+     "solution_markdown": "**Première partie - passage par $G$.**\n\n**Étape 1 - la droite de $y$ en $x$.**\n\nSon équation est $y = ax+b$ avec $b = \\bar{y}-a\\bar{x}$.\n\nSubstituons $x = \\bar{x}$ :\n\n$$y = a\\bar{x} + \\bar{y} - a\\bar{x} = \\bar{y}$$\n\n**Le point $G\\left(\\bar{x}\\,;\\,\\bar{y}\\right)$ appartient à cette droite.**\n\n**Étape 2 - la droite de $x$ en $y$.**\n\nSon équation est $x = a'y+b'$ avec $b' = \\bar{x}-a'\\bar{y}$.\n\nSubstituons $y = \\bar{y}$ :\n\n$$x = a'\\bar{y} + \\bar{x} - a'\\bar{y} = \\bar{x}$$\n\n**Le point $G$ appartient également à cette droite.**\n\n**Étape 3 - conclure.**\n\nLes deux droites passent par $G$. Si elles sont distinctes, elles se coupent en ce point et en lui seul.\n\n*Remarque :* ce n'est pas fortuit. Les ordonnées à l'origine sont **construites** pour cela, par les formules $b = \\bar{y}-a\\bar{x}$ et $b' = \\bar{x}-a'\\bar{y}$.\n\n**Seconde partie - le produit des coefficients.**\n\n**Étape 4 - calculer le produit.**\n\n$$a \\times a' = \\dfrac{\\operatorname{Cov}(x,y)}{V(x)} \\times \\dfrac{\\operatorname{Cov}(x,y)}{V(y)} = \\dfrac{\\left[\\operatorname{Cov}(x,y)\\right]^{2}}{V(x)\\,V(y)}$$\n\n**Étape 5 - reconnaître le coefficient de corrélation.**\n\nPar définition,\n\n$$r = \\dfrac{\\operatorname{Cov}(x,y)}{\\sigma(x)\\,\\sigma(y)} = \\dfrac{\\operatorname{Cov}(x,y)}{\\sqrt{V(x)}\\sqrt{V(y)}}$$\n\nDonc\n\n$$r^{2} = \\dfrac{\\left[\\operatorname{Cov}(x,y)\\right]^{2}}{V(x)\\,V(y)} = a \\times a'$$\n\n**Démontré.**\n\n**Troisième partie - droites confondues.**\n\n**Étape 6 - traduire la condition.**\n\nLes deux droites passent déjà par $G$. Elles sont donc confondues si et seulement si elles ont la **même direction**.\n\nRéécrivons la seconde sous forme $y = \\dots$, ce qui suppose $a' \\neq 0$ :\n\n$$x = a'y+b' \\qquad \\Longrightarrow \\qquad y = \\dfrac{1}{a'}x - \\dfrac{b'}{a'}$$\n\nSa pente vaut $\\dfrac{1}{a'}$.\n\nLa condition de confusion est donc\n\n$$a = \\dfrac{1}{a'} \\qquad \\Longleftrightarrow \\qquad a \\times a' = 1 \\qquad \\Longleftrightarrow \\qquad r^{2} = 1$$\n\n$$\\left|r\\right| = 1$$\n\n**Étape 7 - interpréter.**\n\nUn coefficient de corrélation de valeur absolue $1$ signifie que les points du nuage sont **exactement alignés**.\n\nDans ce cas, il n'y a plus d'ajustement à faire : la droite passe par tous les points, et prévoir $y$ à partir de $x$ ou l'inverse revient exactement au même.\n\n**Étape 8 - le cas opposé.**\n\nSi $r = 0$, alors $\\operatorname{Cov}(x,y) = 0$, donc $a = a' = 0$.\n\nLa droite de $y$ en $x$ devient $y = \\bar{y}$, **horizontale** ; celle de $x$ en $y$ devient $x = \\bar{x}$, **verticale**.\n\nElles sont perpendiculaires, et aucune ne prévoit quoi que ce soit : connaître $x$ n'apporte aucune information sur $y$.\n\n**Étape 9 - synthèse.**\n\n| $\\left|r\\right|$ | Angle entre les droites | Qualité de l'ajustement |\n|---|---|---|\n| $1$ | nul, droites confondues | parfait |\n| proche de $1$ | faible | bon |\n| proche de $0$ | proche de $90^{\\circ}$ | mauvais |\n| $0$ | droit | nul |\n\n**Ce qu'il faut retenir.** L'**angle entre les deux droites** est une mesure visuelle de la qualité de l'ajustement. Deux droites presque confondues signalent une forte corrélation ; deux droites presque perpendiculaires, l'absence de liaison linéaire. C'est la lecture géométrique du coefficient $r$."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Il y a **deux** droites de régression : celle de $y$ en $x$ et celle de $x$ en $y$.",
+    "Le numérateur est le même — la covariance — mais le **dénominateur** est la variance de la variable connue.",
+    "Droite de $x$ en $y$ : $a' = \\dfrac{\\operatorname{Cov}(x,y)}{V(y)}$ et $b' = \\bar{x} - a'\\bar{y}$.",
+    "Choisis la droite selon ce que tu veux **prévoir**, pas selon l'ordre des lettres.",
+    "Les deux droites passent par le point moyen $G$ : c'est le contrôle le plus sûr.",
+    "Contrôle l'ordre de grandeur du coefficient : que transforme-t-il, et en quoi ?",
+    "Variance : $V(y) = \\dfrac{1}{n}\\sum y_{i}^{2} - \\bar{y}^{2}$, moyenne des carrés moins carré de la moyenne.",
+    "Covariance : $\\operatorname{Cov}(x,y) = \\dfrac{1}{n}\\sum x_{i}y_{i} - \\bar{x}\\bar{y}$, et son signe donne le sens de la liaison.",
+    "N'arrondis qu'à la fin : un arrondi prématuré sur $a'$ fausse gravement $b'$.",
+    "$a \\times a' = r^{2}$ : les droites coïncident si et seulement si $\\left|r\\right| = 1$.",
+    "Organise les calculs en tableau : cinq colonnes, cinq sommes, tout en découle."
+   ]
+  }
+ ]
+}

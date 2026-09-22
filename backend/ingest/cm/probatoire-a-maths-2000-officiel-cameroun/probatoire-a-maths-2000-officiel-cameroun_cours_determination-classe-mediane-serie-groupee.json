@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-determination-classe-mediane-serie-groupee-premiere-a",
+  "meta": {
+    "titre": "Détermination de la classe médiane d'une série statistique groupée",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 15,
+    "tags": [
+      "classe médiane",
+      "effectif cumulé",
+      "fréquence cumulée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-MATHS-2000-CM",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2000 (Cameroun, MINEDUC-OBC)",
+    "correction_id": null,
+    "exercice_numero": "B",
+    "rappel_id": "rdm-probatoire-a-maths-2000-officiel-cameroun-exB-qI.4-1",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La médiane partage une série statistique en deux moitiés de même effectif. Pour une série groupée en classes, on ne cherche pas une valeur médiane exacte mais une classe médiane : celle qui contient la valeur du milieu. Le tableau des effectifs cumulés déjà construit permet de la trouver directement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tableau des effectifs (ou fréquences) cumulés croissants",
+        "Notion de rang dans une série ordonnée",
+        "Division par 2"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Repérer où le cumul franchit la moitié de l'effectif",
+      "contenu_markdown": "La classe médiane est la classe dans laquelle l'effectif cumulé croissant atteint ou dépasse $N/2$ pour la première fois (de façon équivalente, dans laquelle la fréquence cumulée croissante atteint ou dépasse 50 %). On repère la première borne où $\\mathrm{ECC}\\geq N/2$ : la classe médiane est celle qui se termine à cette borne.",
+      "formule_principale": "\\text{classe médiane} : \\mathrm{ECC}(\\text{borne inf.}) < \\dfrac{N}{2} \\leq \\mathrm{ECC}(\\text{borne sup.})",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un échantillon de 30 pains a pour effectifs cumulés croissants 1, 2, 4, 7, 12, 18, 22, 26, 28, 30 aux bornes 52,5 à 57. Justifier que la classe médiane est $[54,5\\,;55[$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le rang médian",
+          "justification": "La médiane correspond à la moitié de l'effectif total.",
+          "resultat_markdown": "$N=30$, donc $N/2=15$"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer où le cumul franchit 15",
+          "justification": "On compare les effectifs cumulés successifs à 15 jusqu'à trouver le premier qui l'atteint ou le dépasse.",
+          "resultat_markdown": "ECC(54,5)$=12<15$ et ECC(55)$=18\\geq15$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la classe médiane",
+          "justification": "Le rang 15 se situe entre les deux bornes identifiées.",
+          "resultat_markdown": "La classe médiane est $[54,5\\,;55[$"
+        }
+      ],
+      "conclusion_markdown": "On peut confirmer avec les fréquences : FCC(54,5)$=40\\,\\%<50\\,\\%$ et FCC(55)$=60\\,\\%\\geq50\\,\\%$, ce qui donne exactement le même résultat."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher une classe où l'effectif cumulé est exactement égal à $N/2$",
+          "pourquoi_faux": "Le rang médian tombe rarement exactement sur un effectif cumulé du tableau : il faut chercher la classe où le cumul passe de strictement en dessous à au-dessus (ou égal) de $N/2$.",
+          "correction_markdown": "Comparer $N/2$ à chaque effectif cumulé successif jusqu'à trouver le premier qui l'atteint ou le dépasse."
+        },
+        {
+          "erreur_markdown": "Confondre classe modale et classe médiane",
+          "pourquoi_faux": "La classe modale est celle du plus grand effectif ; la classe médiane est celle qui contient le milieu de la série ordonnée : ce sont deux notions indépendantes, qui peuvent coïncider ou non.",
+          "correction_markdown": "Toujours utiliser le cumul (croissant) pour la médiane, jamais la comparaison directe des effectifs par classe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série de 40 valeurs a des effectifs cumulés croissants 10, 18, 30, 40 pour 4 classes. Quel est le rang médian, et quelle classe le contient ?",
+          "solution_markdown": "Rang médian $=40/2=20$. ECC(2ᵉ borne)$=18<20$ et ECC(3ᵉ borne)$=30\\geq20$ : la classe médiane est la 3ᵉ classe."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série de 50 valeurs a pour fréquences cumulées croissantes 15 %, 45 %, 70 %, 100 % à 4 bornes successives. Quelle est la classe médiane ?",
+          "solution_markdown": "On cherche où la fréquence cumulée franchit 50 %. FCC(2ᵉ borne)$=45\\,\\%<50\\,\\%$ et FCC(3ᵉ borne)$=70\\,\\%\\geq50\\,\\%$ : la classe médiane est la 3ᵉ classe (entre la 2ᵉ et la 3ᵉ borne)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 24 valeurs a pour effectifs cumulés croissants 6, 12, 18, 24 à 4 bornes. Le rang médian tombe exactement sur ECC$=12$. Que peut-on dire de la médiane dans ce cas particulier ?",
+          "solution_markdown": "Rang médian $=24/2=12$, qui coïncide exactement avec l'effectif cumulé de la 2ᵉ borne : la médiane se situe alors précisément à cette borne, à la frontière entre la 2ᵉ et la 3ᵉ classe, plutôt qu'à l'intérieur d'une seule classe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La classe médiane se trouve toujours à partir du tableau des effectifs (ou fréquences) cumulés croissants, jamais des effectifs bruts.",
+        "Le rang médian est $N/2$ (ou 50 % en fréquence) : on cherche la première classe où le cumul l'atteint ou le dépasse.",
+        "Classe modale (plus grand effectif) et classe médiane (milieu de la série cumulée) sont deux notions différentes, à ne pas confondre.",
+        "Justifier une classe médiane demande toujours deux comparaisons : le cumul juste avant est strictement inférieur à $N/2$, celui à la borne recherchée est supérieur ou égal."
+      ]
+    }
+  ]
+}

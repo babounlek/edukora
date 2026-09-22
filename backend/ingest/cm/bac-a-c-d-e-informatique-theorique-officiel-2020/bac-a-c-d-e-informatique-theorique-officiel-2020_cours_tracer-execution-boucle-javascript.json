@@ -1,0 +1,152 @@
+{
+  "cours_id": "cours-tracer-execution-boucle-javascript-tle-tronc-commun",
+  "meta": {
+    "titre": "Tracer l'exécution d'une boucle avec condition en JavaScript",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique et structures de contrôle en JavaScript",
+    "duree_estimee_min": 30,
+    "tags": [
+      "boucle for",
+      "condition if",
+      "trace d'exécution",
+      "JavaScript",
+      "algorithmique"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "BAC A, C, D, E - Épreuve théorique d'Informatique - Session 2020 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2020-ex2-q2.e-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une bonne partie des exercices de programmation au BAC ne demande pas d'écrire du code, mais de le lire et d'en prédire le résultat : combien de fois une instruction s'exécute, quelle valeur finale prend une variable. C'est exactement le genre de question qui revient chaque année en Informatique, sous la forme d'un petit script JavaScript à exécuter mentalement. Tu sais déjà ce qu'est une boucle et un test conditionnel pris séparément ; ce cours te montre comment les combiner pour suivre, ligne par ligne, ce que fait réellement un programme qui contient les deux à la fois."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe de base d'une boucle for en JavaScript (initialisation, condition d'arrêt, incrémentation)",
+        "Savoir écrire et lire un test conditionnel if...else",
+        "Connaître les opérateurs arithmétiques de base, en particulier le modulo % (reste de la division entière)",
+        "Savoir déclarer et modifier une variable avec var"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode du tableau de trace",
+      "contenu_markdown": "Pour prévoir ce que fait un script qui combine une boucle et une condition, la seule méthode fiable est de dérouler le programme itération par itération, sans sauter aucune étape, en notant à chaque tour la valeur de chaque variable concernée. On procède toujours dans le même ordre : on part de la valeur initiale de la variable de boucle, on vérifie la condition d'arrêt, on évalue le test conditionnel interne s'il y en a un, on met à jour les variables concernées, puis on incrémente la variable de boucle avant de recommencer. La boucle s'arrête dès que sa condition d'arrêt devient fausse.\n\nÀ chaque itération, l'instruction protégée par un if ne s'exécute que si la condition du test est vraie à cette itération précise, jamais par défaut.\n\nUne méthode équivalente, plus visuelle, consiste à construire un véritable tableau de trace avec une colonne par variable et une ligne par itération : cette présentation est particulièrement utile dès que plusieurs variables évoluent en parallèle, car elle évite d'oublier de mettre à jour l'une d'entre elles.",
+      "formule_principale": "for(initialisation; condition; incrementation) { if(test) { action } }",
+      "variantes": [
+        {
+          "nom": "Tableau de trace explicite",
+          "quand_utiliser": "Quand plusieurs variables évoluent simultanément dans la boucle, pour ne pas en perdre le fil",
+          "contenu_markdown": "Construire un tableau avec une colonne par variable (ici i, pair(i), s) et une ligne par itération, en le remplissant valeur par valeur avant de lire le résultat final dans la dernière ligne."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère le script JavaScript suivant :\n\n```html\n<script language=''javaScript''>\n    function pair(nombre){\n        if(nombre%2==0){return true} ;\n        else {return false} ;\n    }\n    var s=0;\n    for(var i=0; i<10;i++){\n        if(pair(i)==true){\n            s=s+i;\n        }\n    }\n    Alert (s);\n</script>\n```\n\n(version corrigée des coquilles d'impression du sujet source : `if(pair(i)==true){` et `s=s+i;`)\n\nCombien de fois l'instruction s=s+i est-elle exécutée, et quelle est la valeur finale de s ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la fonction auxiliaire pair(nombre)",
+          "justification": "Avant de dérouler la boucle, il faut savoir ce que renvoie l'appel pair(i) à chaque itération.",
+          "resultat_markdown": "pair(nombre) renvoie true si nombre%2==0 (nombre pair), false sinon."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier les bornes de la boucle for",
+          "justification": "La boucle for(var i=0; i<10; i++) fixe la plage de valeurs prises par i.",
+          "resultat_markdown": "i prend successivement les valeurs 0,1,2,3,4,5,6,7,8,9 (10 valeurs, la condition i<10 exclut 10)."
+        },
+        {
+          "numero": 3,
+          "action": "Dérouler la boucle itération par itération et noter le résultat de pair(i)",
+          "justification": "Le test if(pair(i)==true) décide, à chaque tour, si s est mis à jour.",
+          "resultat_markdown": "i=0: pair(0)=true ; i=1: pair(1)=false ; i=2: pair(2)=true ; i=3: pair(3)=false ; i=4: pair(4)=true ; i=5: pair(5)=false ; i=6: pair(6)=true ; i=7: pair(7)=false ; i=8: pair(8)=true ; i=9: pair(9)=false."
+        },
+        {
+          "numero": 4,
+          "action": "Compter les itérations où le test est vrai",
+          "justification": "Seules ces itérations exécutent réellement s=s+i.",
+          "resultat_markdown": "Le test est vrai pour i=0,2,4,6,8, soit 5 itérations : l'instruction s=s+i s'exécute 5 fois."
+        },
+        {
+          "numero": 5,
+          "action": "Cumuler la valeur de s sur ces itérations",
+          "justification": "s part de 0 et accumule uniquement les valeurs de i retenues à l'étape précédente.",
+          "resultat_markdown": "s = 0+0 = 0, puis 0+2=2, puis 2+4=6, puis 6+6=12, puis 12+8=20."
+        }
+      ],
+      "conclusion_markdown": "L'instruction s=s+i s'exécute 5 fois, et la variable s vaut 20 à la fin de l'exécution du script : ce script calcule la somme des nombres pairs de 0 à 9."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter les itérations de la boucle (10) au lieu des itérations où le test interne est vrai (5)",
+          "pourquoi_faux": "La boucle for s'exécute bien 10 fois, mais l'instruction s=s+i est protégée par un if : elle ne s'exécute que les tours où ce test est vrai, pas à chaque tour de boucle.",
+          "correction_markdown": "Toujours distinguer le nombre de tours de la boucle du nombre d'exécutions de l'instruction protégée par le if intérieur : ce sont deux comptages différents dès qu'un test conditionnel est imbriqué dans la boucle."
+        },
+        {
+          "erreur_markdown": "Oublier que i<10 exclut la valeur 10 et faire varier i de 0 à 10 (11 valeurs)",
+          "pourquoi_faux": "La condition d'arrêt d'une boucle for s'évalue avant chaque itération : dès que i vaut 10, i<10 est faux et la boucle s'arrête sans exécuter son corps pour i=10.",
+          "correction_markdown": "Relis toujours la condition d'arrêt comme une limite strictement exclusive quand l'opérateur est < (ou >) : i<10 signifie que la dernière valeur exécutée est 9, jamais 10."
+        },
+        {
+          "erreur_markdown": "Confondre pair(i)==true avec pair(i)=true (un seul signe égal)",
+          "pourquoi_faux": "Un seul signe égal est une affectation, pas une comparaison : pair(i)=true tenterait d'assigner la valeur true à l'appel de fonction, ce qui est syntaxiquement invalide en JavaScript. Le test de comparaison exige toujours == (ou ===).",
+          "correction_markdown": "Vérifie systématiquement qu'un test à l'intérieur d'un if utilise bien == ou === et non =, particulièrement en lecture rapide où les deux se ressemblent."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On exécute le script suivant :\n\n```html\nvar s = 0;\nfor(var i=1; i<=5; i++){\n    s = s + i;\n}\n```\n\nQuelle est la valeur finale de s ?",
+          "solution_markdown": "La boucle fait varier i de 1 à 5 inclus (la condition i<=5 inclut la borne 5). Aucun test conditionnel ne protège l'instruction s=s+i : elle s'exécute donc à chaque tour, pour i=1,2,3,4,5.\n\ns = 0+1=1, puis 1+2=3, puis 3+3=6, puis 6+4=10, puis 10+5=15.\n\nLa valeur finale de s est 15."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On exécute le script suivant :\n\n```html\nvar s = 0;\nvar c = 0;\nfor(var i=1; i<=10; i++){\n    if(i%3==0){\n        s = s + i;\n        c = c + 1;\n    }\n}\n```\n\nCombien de fois le bloc à l'intérieur du if s'exécute-t-il, et quelles sont les valeurs finales de s et de c ?",
+          "solution_markdown": "La boucle fait varier i de 1 à 10 inclus. Le test i%3==0 est vrai lorsque i est un multiple de 3.\n\nParmi les valeurs de 1 à 10, les multiples de 3 sont : 3, 6, 9, soit 3 valeurs.\n\nLe bloc à l'intérieur du if s'exécute donc 3 fois (pour i=3, i=6, i=9).\n\ns accumule ces trois valeurs : s = 0+3=3, puis 3+6=9, puis 9+9=18. La valeur finale de s est 18.\n\nc compte le nombre de fois où le bloc s'exécute : c = 0+1=1, puis 1+1=2, puis 2+1=3. La valeur finale de c est 3."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On exécute le script suivant, qui combine une boucle et un test conditionnel imbriqué dans un autre test :\n\n```html\nvar s = 0;\nfor(var i=1; i<=6; i++){\n    if(i%2==0){\n        if(i%4==0){\n            s = s + 10;\n        } else {\n            s = s + 1;\n        }\n    }\n}\n```\n\nQuelle est la valeur finale de s ? Détaille le passage de chaque valeur de i.",
+          "solution_markdown": "La boucle fait varier i de 1 à 6 inclus. Seules les valeurs paires de i (test i%2==0) entrent dans le bloc externe ; parmi elles, un second test distingue les multiples de 4 (i%4==0, qui ajoutent 10) des autres valeurs paires (qui ajoutent 1).\n\ni=1 : impair, i%2==0 est faux, aucune instruction exécutée.\n\ni=2 : pair, on entre dans le bloc. i%4 = 2%4 = 2, différent de 0 : on exécute la branche else, s = s+1 = 0+1 = 1.\n\ni=3 : impair, aucune instruction exécutée.\n\ni=4 : pair, on entre dans le bloc. i%4 = 4%4 = 0 : on exécute la branche if interne, s = s+10 = 1+10 = 11.\n\ni=5 : impair, aucune instruction exécutée.\n\ni=6 : pair, on entre dans le bloc. i%4 = 6%4 = 2, différent de 0 : on exécute la branche else, s = s+1 = 11+1 = 12.\n\nÀ la fin de l'exécution, la variable s vaut 12."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à une boucle qui contient un test conditionnel, distingue toujours le nombre de tours de la boucle du nombre de fois où l'instruction protégée par le if s'exécute réellement.",
+        "Déroule la boucle valeur par valeur de la variable de boucle : ne saute jamais une itération, même quand le test semble évident.",
+        "Une condition d'arrêt du type i<N exclut la valeur N elle-même ; i<=N l'inclut. Cette nuance change le nombre total d'itérations.",
+        "Le modulo % est l'outil de base pour tester la parité (i%2==0) ou l'appartenance à une table de multiples (i%3==0, i%4==0) : identifie-le dès que tu le vois dans un test.",
+        "Au BAC, ce type de question (compter des exécutions, calculer une valeur finale accumulée) est l'un des exercices de programmation les plus fréquents en Informatique : maîtriser le tableau de trace te fait gagner un temps précieux et évite les erreurs de comptage."
+      ]
+    }
+  ]
+}

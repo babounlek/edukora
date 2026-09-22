@@ -1,0 +1,36 @@
+{
+  "type": "cours",
+  "cours_id": "cours-derouler-trace-execution-pseudocode-bepc-informatique",
+  "meta": {
+    "titre": "Dérouler la trace d'exécution d'un algorithme",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Initiation à l'algorithmique",
+    "duree_estimee_min": 12,
+    "tags": ["boucle TantQue", "variables"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bepc-1-2026-s1-ex4-q4-0"
+  },
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Un algorithme ne se devine pas : il se déroule, ligne par ligne, comme si tu étais toi-même l'ordinateur qui l'exécute."},
+    {"type": "prerequis", "items": ["Notion de variable", "Notion de boucle et de condition"]},
+    {"type": "regle", "titre": "Comment dérouler une trace d'exécution", "contenu_markdown": "Dérouler la trace d'un algorithme consiste à simuler son exécution pas à pas, en notant dans un tableau l'état de chaque variable après chaque instruction. À chaque passage dans une boucle, on vérifie explicitement le test de la condition avant d'exécuter le bloc, y compris le dernier passage qui fait échouer le test et arrête la boucle.", "formule_principale": null, "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Dérouler la trace de cet extrait pour N = 3 : `P <- 1; i <- 1; TantQue (i <= N) faire P <- P * i; i <- i + 1; FinTantQue`.", "etapes": [
+      {"numero": 1, "action": "Initialiser le tableau de trace", "justification": "Avant la boucle, P vaut 1 et i vaut 1.", "resultat_markdown": "P=1, i=1."},
+      {"numero": 2, "action": "Dérouler chaque passage jusqu'à l'échec du test", "justification": "i=1: 1≤3 vrai, P=1*1=1, i=2 ; i=2: 2≤3 vrai, P=1*2=2, i=3 ; i=3: 3≤3 vrai, P=2*3=6, i=4 ; i=4: 4≤3 faux, arrêt.", "resultat_markdown": "P vaut finalement 6."}
+    ], "conclusion_markdown": "À la fin de l'exécution, P vaut 6 (c'est-à-dire $1 \\times 2 \\times 3$, la factorielle de 3)."},
+    {"type": "erreurs_classiques", "items": [
+      {"erreur_markdown": "Oublier de vérifier le dernier test qui fait échouer la condition et arrête la boucle.", "pourquoi_faux": "Sans ce dernier test explicite, on risque d'exécuter un passage de trop (ou de moins), ce qui fausse le résultat final.", "correction_markdown": "Écris toujours la ligne du tableau où le test échoue, même si elle n'exécute plus le bloc : c'est ce qui prouve que la boucle s'arrête au bon moment."}
+    ]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyenne", "enonce_markdown": "Dérouler la trace de `C <- 0; i <- 1; TantQue (i <= 3) faire C <- C + 2; i <- i + 1; FinTantQue` et donner la valeur finale de C.", "solution_markdown": "i=1: C=2, i=2 ; i=2: C=4, i=3 ; i=3: C=6, i=4 ; i=4: 4≤3 faux, arrêt. C vaut finalement 6."}
+    ]},
+    {"type": "synthese", "items_markdown": [
+      "Dérouler = simuler l'exécution ligne par ligne dans un tableau",
+      "Noter l'état de chaque variable après chaque instruction",
+      "Toujours vérifier explicitement le test qui arrête la boucle"
+    ]}
+  ]
+}

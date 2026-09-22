@@ -377,6 +377,46 @@ class MapTagsToSavoirOfficielCommandTests(TestCase):
         self.assertEqual(Tag.objects.get(name="Lois de Kepler").savoir_officiel_id, savoir.pk)
 
 
+class AuditCoherenceTagsSavoirCommandTests(TestCase):
+    """`manage.py audit_coherence_tags_savoir` - voir programme.management.commands.
+    audit_coherence_tags_savoir. Réutilise catalog.ingestion._tag_en_conflit_avec_un_
+    autre_savoir (même détection que les gardes de _link_tags_to_savoir), rejouée sur
+    des tags déjà rattachés plutôt qu'au moment de l'ingestion - le but est de retrouver
+    après coup un rattachement posé avant l'existence des gardes (ou à la main dans
+    TagAdmin), comme "racine évidente" -> TRIGONOMETRIE le 2026-09-07."""
+
+    def setUp(self):
+        self.maths = Subject.objects.get(country__code="CM", code="MATHS")
+        module = Module.objects.create(subject=self.maths, classe="Tle", serie_label="C-E", numero="90", titre="Module test")
+        self.savoir_a = Savoir.objects.create(module=module, numero="I", intitule="Savoir A")
+        self.savoir_b = Savoir.objects.create(module=module, numero="II", intitule="Savoir B")
+        self.savoir_b_ref = {"classe": "Tle", "serie_label": "C-E", "module_numero": "90", "savoir_numero": "II"}
+
+    def test_flags_a_tag_conflicting_with_a_question_pointing_elsewhere(self):
+        # Simule un rattachement déjà posé avant l'existence des gardes (ou via
+        # TagAdmin, formulaire libre sans garde) - la commande doit le retrouver.
+        Tag.objects.create(name="conflit", savoir_officiel=self.savoir_a)
+
+        payload = _exercise_payload("bac-maths-audit-1", theme="conflit")
+        payload["questions"][0]["savoir_officiel"] = self.savoir_b_ref
+        ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-audit-1"))
+
+        out = StringIO()
+        call_command("audit_coherence_tags_savoir", subject="MATHS", stdout=out)
+
+        self.assertIn("'conflit'", out.getvalue())
+        self.assertIn("1/1 tag(s)", out.getvalue())
+
+    def test_does_not_flag_a_tag_without_any_conflicting_usage(self):
+        Tag.objects.create(name="tranquille", savoir_officiel=self.savoir_a)
+
+        out = StringIO()
+        call_command("audit_coherence_tags_savoir", subject="MATHS", stdout=out)
+
+        self.assertNotIn("tranquille", out.getvalue())
+        self.assertIn("aucun conflit", out.getvalue())
+
+
 class AuditCouvertureProgrammeCommandTests(TestCase):
     """`manage.py audit_couverture_programme` - voir
     programme.management.commands.audit_couverture_programme. Les quatre sections

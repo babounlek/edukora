@@ -1,0 +1,182 @@
+{
+  "cours_id": "cours-suite-auxiliaire-geometrique-p1c",
+  "meta": {
+    "titre": "Démontrer qu'une suite auxiliaire est géométrique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "niveau": "1ere",
+    "serie": "C, E",
+    "sous_theme": "Suites numériques - suite auxiliaire",
+    "duree_estimee_min": 45,
+    "tags": [
+      "suite géométrique",
+      "suite auxiliaire",
+      "récurrence",
+      "raison",
+      "terme général"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C-E",
+      "module_numero": "21",
+      "savoir_numero": "VIII"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2000-cameroun",
+    "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2000 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-maths-2000-cameroun-ex1-q3b-6",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite définie par $U_{n+1} = \\frac{5U_n+3}{U_n+3}$ résiste à toute tentative directe : on ne devine pas son terme général, et le calcul des premiers termes n'apprend rien. L'énoncé fournit alors une seconde suite, apparue de nulle part, dont il suffit de montrer qu'elle est géométrique. Tout se débloque d'un coup."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition d'une suite géométrique",
+        "Savoir réduire une somme de fractions au même dénominateur",
+        "Savoir résoudre une équation du premier degré à une inconnue"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer $V_{n+1}$ et faire apparaître $V_n$",
+      "contenu_markdown": "**Le problème type.** Une suite $(U_n)$ est définie par récurrence, souvent par une relation **homographique** :\n\n$$U_{n+1} = \\frac{aU_n+b}{cU_n+d}$$\n\nUne telle suite n'est ni arithmétique ni géométrique, et son terme général est inaccessible directement. L'énoncé introduit alors une suite auxiliaire, presque toujours de la forme :\n\n$$V_n = \\frac{U_n - \\alpha}{U_n - \\beta}$$\n\n**La méthode, en quatre temps.**\n\n**1. Partir de $V_{n+1}$, jamais de $V_n$.** On écrit la définition avec l'indice $n+1$ :\n\n$$V_{n+1} = \\frac{U_{n+1} - \\alpha}{U_{n+1} - \\beta}$$\n\n**2. Substituer $U_{n+1}$ et traiter séparément numérateur et dénominateur.** C'est le point décisif. On calcule d'abord $U_{n+1} - \\alpha$, puis $U_{n+1} - \\beta$, chacun réduit au même dénominateur $cU_n+d$. On obtient deux fractions de **même dénominateur**.\n\n**3. Former le quotient.** Le dénominateur commun se simplifie, et il reste un rapport de deux expressions du premier degré en $U_n$, qui doit se factoriser en $q \\times V_n$.\n\n**4. Conclure et donner le premier terme.** On énonce que $(V_n)$ est géométrique de raison $q$, puis on calcule $V_0$ (ou $V_1$) à partir de la valeur initiale de $(U_n)$.\n\n**L'exploitation qui suit toujours.**\n\n$$V_n = V_0 \\times q^{\\,n}$$\n\npuis on **inverse** la relation de définition pour revenir à $U_n$ : on multiplie en croix, on regroupe les termes en $U_n$, on factorise.\n\n$$V_n = \\frac{U_n-\\alpha}{U_n-\\beta} \\ \\Longrightarrow \\ U_n(V_n - 1) = \\beta V_n - \\alpha \\ \\Longrightarrow \\ U_n = \\frac{\\beta V_n - \\alpha}{V_n - 1}$$\n\n**La vérification obligatoire.** Toute expression de $U_n$ doit être testée sur $n = 0$ : elle doit redonner la valeur initiale de l'énoncé.",
+      "formule_principale": "V_{n+1} = q \\times V_n \\quad \\text{avec } q \\text{ constant} \\ \\Longrightarrow \\ V_n = V_0 \\times q^{\\,n}",
+      "variantes": [
+        {
+          "nom": "Le cas de la suite auxiliaire arithmétique",
+          "quand_utiliser": "Quand la relation de récurrence est de la forme $U_{n+1} = \\frac{aU_n}{bU_n+c}$",
+          "contenu_markdown": "Si la relation de récurrence n'a pas de terme constant au numérateur, la suite auxiliaire pertinente est souvent $V_n = \\dfrac{1}{U_n}$, et elle se révèle **arithmétique** et non géométrique. La méthode est la même : on calcule $V_{n+1}$, on substitue, et l'on cherche cette fois à obtenir $V_{n+1} = V_n + r$. On conclut alors par $V_n = V_0 + nr$. Le réflexe à avoir : lire la forme de la suite auxiliaire proposée par l'énoncé, elle indique déjà ce qu'on va trouver."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La suite $(U_n)$ est définie par $U_0 = 1$ et $U_{n+1} = \\dfrac{5U_n+3}{U_n+3}$, et la suite $(V_n)$ par $V_n = \\dfrac{U_n-3}{U_n+1}$. Démontrer que $(V_n)$ est géométrique, en préciser le premier terme et la raison, puis exprimer $V_n$ et $U_n$ en fonction de $n$.",
+      "epreuve_source": "Probatoire C et E, Mathématiques, session 2000, Cameroun, exercice 1, questions 3b et 3c",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire $V_{n+1}$ avec sa définition",
+          "justification": "On ne part jamais de $V_n$ : c'est $V_{n+1}$ qu'il faut transformer.",
+          "resultat_markdown": "$V_{n+1} = \\dfrac{U_{n+1}-3}{U_{n+1}+1}$ avec $U_{n+1} = \\dfrac{5U_n+3}{U_n+3}$."
+        },
+        {
+          "numero": 2,
+          "action": "Transformer le numérateur seul",
+          "justification": "On réduit au même dénominateur $U_n+3$ pour faire apparaître un facteur $(U_n-3)$.",
+          "resultat_markdown": "$U_{n+1} - 3 = \\dfrac{5U_n+3-3(U_n+3)}{U_n+3} = \\dfrac{2U_n-6}{U_n+3} = \\dfrac{2(U_n-3)}{U_n+3}$"
+        },
+        {
+          "numero": 3,
+          "action": "Transformer le dénominateur seul",
+          "justification": "Même travail, pour faire apparaître un facteur $(U_n+1)$.",
+          "resultat_markdown": "$U_{n+1} + 1 = \\dfrac{5U_n+3+U_n+3}{U_n+3} = \\dfrac{6U_n+6}{U_n+3} = \\dfrac{6(U_n+1)}{U_n+3}$"
+        },
+        {
+          "numero": 4,
+          "action": "Former le quotient et simplifier",
+          "justification": "Le dénominateur commun $U_n+3$ disparaît, et le rapport $\\frac{2}{6}$ apparaît.",
+          "resultat_markdown": "$V_{n+1} = \\dfrac{2(U_n-3)}{6(U_n+1)} = \\dfrac{1}{3} \\times \\dfrac{U_n-3}{U_n+1} = \\dfrac{1}{3}V_n$"
+        },
+        {
+          "numero": 5,
+          "action": "Conclure sur la nature et calculer le premier terme",
+          "justification": "La raison est la constante trouvée ; le premier terme se calcule avec $U_0$.",
+          "resultat_markdown": "$(V_n)$ est géométrique de raison $q = \\dfrac{1}{3}$, et $V_0 = \\dfrac{1-3}{1+1} = -1$."
+        },
+        {
+          "numero": 6,
+          "action": "Exprimer $V_n$",
+          "justification": "Formule du terme général d'une suite géométrique.",
+          "resultat_markdown": "$V_n = -\\left(\\dfrac{1}{3}\\right)^n$"
+        },
+        {
+          "numero": 7,
+          "action": "Inverser la relation pour obtenir $U_n$",
+          "justification": "On multiplie en croix, on regroupe les termes en $U_n$, on factorise.",
+          "resultat_markdown": "$V_n(U_n+1) = U_n-3 \\Rightarrow U_n(V_n-1) = -3-V_n \\Rightarrow U_n = \\dfrac{3+V_n}{1-V_n} = \\dfrac{3-\\left(\\frac13\\right)^n}{1+\\left(\\frac13\\right)^n}$"
+        },
+        {
+          "numero": 8,
+          "action": "Vérifier sur les premiers termes",
+          "justification": "Contrôle indispensable de toute inversion de relation.",
+          "resultat_markdown": "$n=0$ : $\\dfrac{3-1}{1+1} = 1 = U_0$ ✔ ; $n=1$ : $\\dfrac{8/3}{4/3} = 2 = U_1$ ✔"
+        }
+      ],
+      "conclusion_markdown": "La suite $(V_n)$ est géométrique de premier terme $-1$ et de raison $\\frac13$, d'où $V_n = -\\left(\\frac13\\right)^n$ et $U_n = \\dfrac{3-\\left(\\frac13\\right)^n}{1+\\left(\\frac13\\right)^n}$, qui converge vers $3$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Partir de $V_n$ au lieu de $V_{n+1}$",
+          "pourquoi_faux": "En partant de $V_n$ on tourne en rond : rien ne relie $V_n$ à lui-même. La relation de récurrence porte sur $U_{n+1}$, c'est donc $V_{n+1}$ qu'il faut développer pour pouvoir l'utiliser.",
+          "correction_markdown": "Premier geste, toujours : écrire $V_{n+1} = \\dfrac{U_{n+1}-\\alpha}{U_{n+1}-\\beta}$, puis substituer."
+        },
+        {
+          "erreur_markdown": "Réduire numérateur et dénominateur en une seule ligne",
+          "pourquoi_faux": "En traitant les deux d'un coup, on obtient une fraction de fractions illisible et l'on ne voit plus la simplification. Les deux calculs doivent être menés **séparément** avant d'être divisés l'un par l'autre.",
+          "correction_markdown": "Écris trois blocs distincts : le numérateur, le dénominateur, puis le quotient."
+        },
+        {
+          "erreur_markdown": "Oublier de préciser le premier terme",
+          "pourquoi_faux": "Une suite géométrique n'est déterminée que par **deux** données : sa raison et son premier terme. La question demande explicitement les deux, et le barème les compte séparément.",
+          "correction_markdown": "Termine toujours par le calcul de $V_0$ à partir de la valeur initiale de $(U_n)$."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe en inversant la relation",
+          "pourquoi_faux": "Le passage de $V_n U_n + V_n = U_n - 3$ à $U_n(V_n-1) = -3 - V_n$ demande de faire changer de signe le terme $V_n$ en le passant à droite. C'est l'endroit où la moitié des copies se trompent.",
+          "correction_markdown": "Après inversion, teste sur $n=0$ : si tu ne retrouves pas la valeur initiale, c'est là que se trouve l'erreur."
+        },
+        {
+          "erreur_markdown": "Conclure que $(U_n)$ est géométrique",
+          "pourquoi_faux": "Ce n'est pas $(U_n)$ qui est géométrique, c'est la suite auxiliaire $(V_n)$. La suite $(U_n)$ n'a aucune de ces propriétés : elle converge d'ailleurs vers $3$, ce qu'une suite géométrique de raison positive différente de 1 ne ferait pas.",
+          "correction_markdown": "Sois précis dans la rédaction : « la suite $(V_n)$ est géométrique », et jamais l'autre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La suite $(U_n)$ est définie par $U_0 = 2$ et $U_{n+1} = \\dfrac{U_n+1}{2}$. On pose $V_n = U_n - 1$. Démontrer que $(V_n)$ est géométrique et en déduire $U_n$.",
+          "solution_markdown": "**Étape 1 — calculer $V_{n+1}$.**\n\n$$V_{n+1} = U_{n+1} - 1 = \\frac{U_n+1}{2} - 1 = \\frac{U_n + 1 - 2}{2} = \\frac{U_n-1}{2}$$\n\n**Étape 2 — reconnaître $V_n$.**\n\n$$V_{n+1} = \\frac{1}{2}(U_n - 1) = \\frac{1}{2}V_n$$\n\nLa suite $(V_n)$ est donc **géométrique de raison** $q = \\dfrac{1}{2}$.\n\n**Étape 3 — premier terme.**\n\n$$V_0 = U_0 - 1 = 2 - 1 = 1$$\n\n**Étape 4 — terme général.**\n\n$$V_n = 1 \\times \\left(\\frac{1}{2}\\right)^n = \\left(\\frac{1}{2}\\right)^n$$\n\n**Étape 5 — revenir à $U_n$.**\n\n$$U_n = V_n + 1 = \\left(\\frac{1}{2}\\right)^n + 1$$\n\n**Vérification.** $n=0$ : $1+1 = 2 = U_0$ ✔. $n=1$ : $\\frac12 + 1 = \\frac32$, et directement $U_1 = \\frac{2+1}{2} = \\frac32$ ✔."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La suite $(U_n)$ est définie par $U_0 = 0$ et $U_{n+1} = \\dfrac{3U_n+2}{U_n+2}$. On pose $V_n = \\dfrac{U_n-2}{U_n+1}$. Démontrer que $(V_n)$ est géométrique, puis exprimer $U_n$ en fonction de $n$ et déterminer sa limite.",
+          "solution_markdown": "**Étape 1 — le numérateur.**\n\n$$U_{n+1} - 2 = \\frac{3U_n+2}{U_n+2} - 2 = \\frac{3U_n + 2 - 2U_n - 4}{U_n+2} = \\frac{U_n - 2}{U_n+2}$$\n\n**Étape 2 — le dénominateur.**\n\n$$U_{n+1} + 1 = \\frac{3U_n+2}{U_n+2} + 1 = \\frac{3U_n + 2 + U_n + 2}{U_n+2} = \\frac{4U_n+4}{U_n+2} = \\frac{4(U_n+1)}{U_n+2}$$\n\n**Étape 3 — le quotient.**\n\n$$V_{n+1} = \\frac{U_n-2}{4(U_n+1)} = \\frac{1}{4} \\times \\frac{U_n-2}{U_n+1} = \\frac{1}{4}V_n$$\n\nLa suite $(V_n)$ est **géométrique de raison** $q = \\dfrac{1}{4}$.\n\n**Étape 4 — premier terme et terme général.**\n\n$$V_0 = \\frac{0-2}{0+1} = -2 \\qquad \\text{d'où} \\qquad V_n = -2\\left(\\frac{1}{4}\\right)^n$$\n\n**Étape 5 — inversion.**\n\n$$V_n(U_n+1) = U_n - 2$$\n$$V_nU_n + V_n = U_n - 2$$\n$$U_n(V_n - 1) = -2 - V_n$$\n$$U_n = \\frac{2+V_n}{1-V_n} = \\frac{2 - 2\\left(\\frac14\\right)^n}{1 + 2\\left(\\frac14\\right)^n}$$\n\n**Étape 6 — vérification.**\n\n$n=0$ : $\\dfrac{2-2}{1+2} = 0 = U_0$ ✔\n\n$n=1$ : $\\dfrac{2 - \\frac12}{1 + \\frac12} = \\dfrac{3/2}{3/2} = 1$, et directement $U_1 = \\dfrac{0+2}{0+2} = 1$ ✔\n\n**Étape 7 — limite.**\n\nComme $0 < \\frac14 < 1$, on a $\\left(\\frac14\\right)^n \\to 0$, donc :\n\n$$\\lim_{n \\to +\\infty} U_n = \\frac{2-0}{1+0} = 2$$\n\n**Remarque.** La limite $2$ n'est pas un hasard : c'est le nombre $\\alpha$ qui figure au numérateur de $V_n$. On montre en général que la limite d'une telle suite est l'une des solutions de l'équation $x = \\dfrac{ax+b}{cx+d}$, dite **point fixe** de la fonction associée. Ici : $x(x+2) = 3x+2$, soit $x^2 - x - 2 = 0$, de racines $2$ et $-1$ — précisément les deux constantes de la suite auxiliaire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On considère la suite définie par $U_0 = 4$ et $U_{n+1} = \\dfrac{4U_n - 6}{U_n - 1}$. Expliquer comment déterminer soi-même la suite auxiliaire pertinente, puis mener le calcul jusqu'à l'expression de $U_n$.",
+          "solution_markdown": "**Étape 1 — comprendre d'où vient la suite auxiliaire.**\n\nAu Probatoire, l'énoncé fournit toujours $V_n$. Mais elle n'est pas arbitraire : elle se construit à partir des **points fixes** de la fonction homographique associée.\n\nUn point fixe est un réel $x$ tel que la suite, si elle y arrive, y reste : $f(x) = x$. Si la suite converge, c'est nécessairement vers un tel point.\n\n**Étape 2 — chercher les points fixes.**\n\n$$x = \\frac{4x-6}{x-1}$$\n$$x(x-1) = 4x - 6$$\n$$x^2 - x - 4x + 6 = 0$$\n$$x^2 - 5x + 6 = 0$$\n\nDiscriminant : $\\Delta = 25 - 24 = 1$, donc :\n\n$$x_1 = \\frac{5-1}{2} = 2 \\qquad ; \\qquad x_2 = \\frac{5+1}{2} = 3$$\n\n**Étape 3 — construire la suite auxiliaire.**\n\nLorsqu'il existe **deux** points fixes distincts $\\alpha$ et $\\beta$, la suite auxiliaire à poser est :\n\n$$V_n = \\frac{U_n - \\alpha}{U_n - \\beta}$$\n\nIci, prenons $\\alpha = 2$ et $\\beta = 3$ :\n\n$$V_n = \\frac{U_n-2}{U_n-3}$$\n\n**Étape 4 — vérifier qu'elle est géométrique.**\n\n*Numérateur :*\n\n$$U_{n+1} - 2 = \\frac{4U_n-6}{U_n-1} - 2 = \\frac{4U_n - 6 - 2U_n + 2}{U_n-1} = \\frac{2U_n-4}{U_n-1} = \\frac{2(U_n-2)}{U_n-1}$$\n\n*Dénominateur :*\n\n$$U_{n+1} - 3 = \\frac{4U_n-6}{U_n-1} - 3 = \\frac{4U_n - 6 - 3U_n + 3}{U_n-1} = \\frac{U_n-3}{U_n-1}$$\n\n*Quotient :*\n\n$$V_{n+1} = \\frac{2(U_n-2)}{U_n-3} = 2 \\times \\frac{U_n-2}{U_n-3} = 2V_n$$\n\nLa suite $(V_n)$ est **géométrique de raison** $q = 2$.\n\n**Étape 5 — terme général.**\n\n$$V_0 = \\frac{4-2}{4-3} = 2 \\qquad \\text{d'où} \\qquad V_n = 2 \\times 2^n = 2^{\\,n+1}$$\n\n**Étape 6 — inversion.**\n\n$$V_n(U_n - 3) = U_n - 2$$\n$$U_n(V_n - 1) = 3V_n - 2$$\n$$U_n = \\frac{3V_n-2}{V_n-1} = \\frac{3 \\times 2^{n+1} - 2}{2^{n+1}-1}$$\n\n**Étape 7 — vérification.**\n\n$n=0$ : $\\dfrac{6-2}{2-1} = 4 = U_0$ ✔\n\n$n=1$ : $\\dfrac{12-2}{4-1} = \\dfrac{10}{3}$, et directement $U_1 = \\dfrac{16-6}{4-1} = \\dfrac{10}{3}$ ✔\n\n**Étape 8 — limite.**\n\n$$U_n = \\frac{3 \\times 2^{n+1} - 2}{2^{n+1}-1} = \\frac{3 - 2 \\times 2^{-(n+1)}}{1 - 2^{-(n+1)}} \\ \\longrightarrow \\ 3$$\n\nLa suite converge vers $3$, c'est-à-dire vers le point fixe $\\beta$ figurant au **dénominateur** de $V_n$. Ce n'est pas fortuit : comme la raison $q = 2$ est supérieure à $1$, $V_n$ tend vers l'infini, donc $\\dfrac{U_n-2}{U_n-3}$ devient très grand, ce qui n'est possible que si $U_n$ se rapproche de $3$.\n\n**La règle générale.** Avec deux points fixes $\\alpha$ et $\\beta$ :\n- si $|q| < 1$, la suite converge vers $\\alpha$, le point fixe du **numérateur** ;\n- si $|q| > 1$, elle converge vers $\\beta$, celui du **dénominateur**.\n\nOn peut donc, en pratique, choisir l'ordre des points fixes pour obtenir la raison qu'on préfère : intervertir $\\alpha$ et $\\beta$ remplace $q$ par $\\frac1q$.\n\n**Ce qu'il faut retenir.** L'énoncé du Probatoire donne toujours $V_n$, mais savoir d'où elle sort permet de contrôler qu'on ne l'a pas mal recopiée, et de comprendre pourquoi le calcul aboutit — ce qui est plus solide que de l'appliquer à l'aveugle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La suite auxiliaire sert à contourner une récurrence **homographique**, dont le terme général est inaccessible directement.",
+        "Méthode invariable : partir de $V_{n+1}$, substituer $U_{n+1}$, traiter **séparément** numérateur et dénominateur, puis former le quotient.",
+        "Le dénominateur commun se simplifie toujours : c'est le signe que le calcul est sur la bonne voie.",
+        "Conclure exige **deux** données : la raison $q$ et le premier terme $V_0$.",
+        "Terme général : $V_n = V_0 \\times q^{\\,n}$.",
+        "Le retour à $U_n$ se fait en multipliant en croix, regroupant les termes en $U_n$ et factorisant.",
+        "Contrôle obligatoire : l'expression de $U_n$ testée en $n=0$ doit redonner la valeur initiale de l'énoncé."
+      ]
+    }
+  ]
+}

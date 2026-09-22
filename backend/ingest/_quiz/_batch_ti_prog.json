@@ -1,0 +1,210 @@
+[
+  {
+    "competence": "factorielle",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C-E",
+      "module_numero": "22",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10537,
+        "enonce_markdown": "Dire ce que le script permet de faire. *[0,25 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nPour identifier ce que calcule un script numérique, on remplace chaque bloc de code par l'opération mathématique qu'il traduit (une boucle for qui multiplie i à chaque tour calcule une factorielle), puis on assemble ces briques pour reconnaître une formule connue.\n\nUne fois la saisie validée (p ≤ n, les deux positifs ou nuls), le script calcule :\n\n- `for (i=1;i<=n;i++) { o=o*i; }` avec `o` initialisé à 1 : ceci calcule $o = n!$ (factorielle de n).\n- `for (i=1;i<=p;i++) { s=s*i; }` avec `s` initialisé à 1 : ceci calcule $s = p!$ (factorielle de p).\n- `a=n-p; for (i=1;i<=a;i++) { m=m*i; }` avec `m` initialisé à 1 : ceci calcule $m = (n-p)!$ (factorielle de n-p).\n- `y=s*m;` donne $y = p! \\times (n-p)!$.\n- `z=o/y;` donne :\n$$z = \\frac{n!}{p! \\times (n-p)!}$$\n\nCette expression est exactement la formule du nombre de combinaisons de $p$ éléments choisis parmi $n$, notée $C_n^p$ ou $\\binom{n}{p}$, utilisée en dénombrement.\n\n**Ce que permet le script** : calculer le nombre de combinaisons possibles de $p$ éléments pris parmi $n$ éléments (le nombre de façons de choisir $p$ objets parmi $n$ sans tenir compte de l'ordre).\n\n### Conseil\nReconnaître la formule $\\dfrac{n!}{p!(n-p)!}$ à vue est un gain de temps précieux : dès que tu la repères dans un script, tu sais immédiatement qu'il s'agit d'un calcul de combinaison, sans avoir besoin de dérouler chaque boucle en détail."
+      },
+      {
+        "exercise_id": 10586,
+        "enonce_markdown": "**5.** Exécuter pas à pas ce programme lorsque la valeur de x = 6.\n\n*NB : il est conseillé d'utiliser un tableau pour une meilleure lisibilité de la trace d'exécution.* *[2 pts]*",
+        "corrige_markdown": "### Rappel de méthode\nExécuter pas à pas une fonction récursive consiste à dérouler séparément sa phase de descente, où chaque appel en déclenche un nouveau avant de pouvoir se terminer, puis sa phase de remontée, où chaque appel en attente reprend son calcul dès que l'appel suivant lui a renvoyé sa valeur, dans l'ordre exactement inverse de la descente.\n\nAvec `x = 6`, le test `x > 8 || x < 1` (ligne 9) est faux (6 est bien compris entre 1 et 8), le programme entre donc dans le `else` et exécute `f = factorielle(6);` (ligne 13).\n\n**Phase de descente** - chaque appel teste `a == 1` ; le test étant faux jusqu'à `a = 1`, chaque appel doit attendre le résultat du suivant avant de pouvoir calculer le sien :\n\n| Appel | Test `a == 1` | Instruction exécutée | En attente de |\n|---|---|---|---|\n| `factorielle(6)` | 6 == 1 : faux | `a *= factorielle(5);` | retour de `factorielle(5)` |\n| `factorielle(5)` | 5 == 1 : faux | `a *= factorielle(4);` | retour de `factorielle(4)` |\n| `factorielle(4)` | 4 == 1 : faux | `a *= factorielle(3);` | retour de `factorielle(3)` |\n| `factorielle(3)` | 3 == 1 : faux | `a *= factorielle(2);` | retour de `factorielle(2)` |\n| `factorielle(2)` | 2 == 1 : faux | `a *= factorielle(1);` | retour de `factorielle(1)` |\n| `factorielle(1)` | 1 == 1 : vrai | `return 1;` | (rien, la pile commence à se dépiler) |\n\n**Phase de remontée** - une fois `factorielle(1)` renvoyé 1, chaque appel en attente reprend son calcul dans l'ordre inverse de la descente :\n\n| Retour depuis | Calcul effectué | Valeur renvoyée |\n|---|---|---|\n| `factorielle(1)` | - (cas de base) | 1 |\n| `factorielle(2)` | `a = 2 * 1` | 2 |\n| `factorielle(3)` | `a = 3 * 2` | 6 |\n| `factorielle(4)` | `a = 4 * 6` | 24 |\n| `factorielle(5)` | `a = 5 * 24` | 120 |\n| `factorielle(6)` | `a = 6 * 120` | 720 |\n\nLe résultat final `720` remonte jusqu'à `f = factorielle(6);` (ligne 13) : la variable `f` vaut alors `720`, et l'instruction `printf(\"Factorielle %u égal %u\n\", x, f);` (ligne 14) affiche à l'écran :\n\n```\nFactorielle 6 égal 720\n```\n\n### Piège à éviter\nUne erreur très répandue consiste à multiplier les valeurs au fur et à mesure de la descente (par exemple croire que `factorielle(6)` calcule `6 * 5` dès son premier passage). En réalité, aucune multiplication n'a lieu tant que `factorielle(1)` n'a pas renvoyé sa valeur : toute la phase de descente ne fait qu'empiler des appels en attente, et tous les calculs se produisent uniquement pendant la remontée.\n\n### Conseil\nPour ne jamais te tromper sur une trace récursive, sépare toujours ta réponse en deux tableaux distincts, descente puis remontée, plutôt que d'essayer de tout faire tenir sur une seule ligne par appel : c'est exactement ce que suggère l'énoncé en conseillant d'utiliser un tableau."
+      }
+    ]
+  },
+  {
+    "competence": "structure conditionnelle",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10533,
+        "enonce_markdown": "Écrire l'algorithme associé à cet algorigramme. *[0,75 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nTraduire un algorigramme en algorithme structuré consiste à remplacer chaque figure géométrique (rectangle d'action, losange de test, parallélogramme d'entrée/sortie) par l'instruction textuelle équivalente, en respectant exactement le même enchaînement et les mêmes conditions.\n\nLe losange `K<50` suivi d'un retour en arrière après `K=K+1` traduit une boucle `Tant que`. Le losange `X>0` à l'intérieur traduit un `Si...Sinon` imbriqué dans cette boucle.\n\n```\nAlgorithme Somme_Positifs_Comptage\nVariables\n    S, K, N, X : entiers\nDébut\n    S ← 0\n    K ← 0\n    N ← 0\n    Tant que K < 50 faire\n        Lire(X)\n        Si X > 0 alors\n            S ← S + X\n        Sinon\n            N ← N + 1\n        FinSi\n        K ← K + 1\n    FinTantQue\n    Afficher(S)\n    Afficher(N)\nFin\n```\n\n### Piège à éviter\nPlacer l'instruction `K ← K + 1` avant la lecture de `X` inverserait l'ordre réel de l'algorigramme : sur le schéma, l'incrémentation de `K` n'intervient qu'après le traitement complet de `X` (après la branche Si/Sinon), juste avant de reboucler sur le test `K<50`.\n\n### Conseil\nRecopie d'abord la structure de contrôle globale (ici Tant que ... Si ... Sinon ... FinSi ... FinTantQue) avant de remplir le détail des instructions : cela évite d'oublier une borne de fermeture (FinSi, FinTantQue)."
+      },
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**7.** Réécrire le bout de code de la ligne 47 à 53 en utilisant la structure de contrôle simple **if**. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nToute structure `if(condition) {...} else {...}` à deux branches strictement complémentaires peut être réécrite sans `else`, en remplaçant la seconde branche par un second `if` testant la condition inverse (négation logique de la première).\n\nLe code original teste `!$result` dans le premier `if`, puis exécute la branche alternative dans le `else`. La condition inverse de `!$result` est `$result` (vrai quand la requête a réussi). La réécriture sans `else` donne :\n\n```php\n47 if(!$result) {\n48 echo \"<script type=\\\"text/javascript\\\">\n49 alert('Erreur : \".$result->error.\"')</script>\";\n50 }\n51 if($result) {\n52 echo \"<script type=\\\"text/javascript\\\"> alert('Vos modifications sont enregistrées');\n           window.location='index.html';</script>\";\n53 }\n```\n\nLes deux `if` sont mutuellement exclusifs par construction, puisque `$result` et `!$result` ne peuvent jamais être vrais en même temps : le comportement du programme reste donc rigoureusement identique à la version avec `else`, une seule des deux branches s'exécutant à chaque passage.\n\n### Piège à éviter\nUne erreur fréquente consiste à réécrire le second bloc avec la même condition `!$result` recopiée par réflexe au lieu de la négation correcte. Vérifie toujours que la condition du second `if` est bien l'inverse logique de celle du premier, sans quoi les deux branches peuvent s'exécuter ensemble ou ne jamais s'exécuter du tout.\n\n### Conseil\nFace à une conversion if/else vers if simple, identifie d'abord la condition du if de départ, puis écris sa négation avant même de recopier le contenu des blocs : cela évite l'erreur classique de recopier deux fois la même condition."
+      }
+    ]
+  },
+  {
+    "competence": "SQL",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**6.** Écrire la requête qui crée la table **client** manipulée dans ce code. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nL'instruction SQL `CREATE TABLE nom_table (colonne1 type, colonne2 type, ...)` crée une nouvelle table dans une base de données, en définissant pour chaque colonne un nom et un type de données ; une colonne peut en outre être désignée clé primaire pour identifier chaque ligne de façon unique.\n\nLe code manipule la table **client** à travers les colonnes `id_client` (utilisée dans les clauses `WHERE id_client='$code'`), `nom`, `prenom`, `ville` et `mail` (lues dans `$coord[1]`, `$coord[2]`, `$coord[5]` et `$coord[6]`, et mises à jour lignes 40 à 43). La requête de création correspondante est :\n\n```sql\nCREATE TABLE client (\n    id_client INT(11) NOT NULL AUTO_INCREMENT,\n    nom VARCHAR(30) NOT NULL,\n    prenom VARCHAR(30) NOT NULL,\n    ville VARCHAR(40),\n    mail VARCHAR(50),\n    PRIMARY KEY (id_client)\n);\n```\n\n`id_client` est déclarée clé primaire auto-incrémentée puisqu'elle sert d'identifiant unique de chaque client dans toutes les requêtes du script. Les tailles des champs `VARCHAR` (30, 40, 50) reprennent les attributs `maxlength` des champs de saisie correspondants dans le formulaire HTML (lignes 27 à 29), ce qui garantit que la colonne peut toujours contenir la plus longue valeur saisissable par l'utilisateur.\n\n### Piège à éviter\n`$coord[3]` et `$coord[4]` n'apparaissent jamais dans le code fourni : la table **client** comporte donc très probablement d'autres colonnes que celles listées ci-dessus (par exemple téléphone, adresse), non manipulées par ce script précis. Le sujet ne donnant pas leur nom exact, il est admis de ne créer que les colonnes réellement identifiables dans le code, à condition de le signaler clairement plutôt que d'inventer des noms de colonnes au hasard.\n\n### Conseil\nFais toujours correspondre la taille des colonnes `VARCHAR` de ta table aux attributs `maxlength` visibles dans le formulaire HTML associé : c'est un indice fiable, systématiquement présent dans ce type de sujet, pour deviner une taille de champ cohérente sans l'inventer au hasard."
+      },
+      {
+        "exercise_id": 10621,
+        "enonce_markdown": "Ecrire la requete qui cree la base de donnees manipulee dans ce code. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nEn SQL, la base de données se crée avec `CREATE DATABASE nom_base;`, et le nom à utiliser se lit dans le code qui s'y connecte : en mysqli, c'est le quatrième argument du constructeur `new mysqli(hôte, utilisateur, mot_de_passe, base)`. On ne confond pas la création de la base avec celle des tables, qui utilise `CREATE TABLE`. Attention : la requête se termine par un point-virgule et le nom doit être identique à celui du script.\n\nLa base de donnees manipulee (ligne 28 : `new mysqli(\"localhost\",\"root\",\"\", \"magasin\")`) se nomme `magasin` :\n\n```sql\nCREATE DATABASE magasin;\n```"
+      },
+      {
+        "exercise_id": 10624,
+        "enonce_markdown": "En considerant les libelles de la figure 1, ecrire la requete SQL qui cree la base de donnees manipulee dans ce code. (1 pt)",
+        "corrige_markdown": "### Rappel de méthode\nOn crée une base avec `CREATE DATABASE nom;`, on la sélectionne avec `USE nom;`, puis on crée chaque table avec `CREATE TABLE nom (colonne type contrainte, ...);`. Chaque colonne reçoit un type adapté (`INT`, `VARCHAR(n)`, `DATE`…), la clé primaire est déclarée par `PRIMARY KEY` et un identifiant automatique par `AUTO_INCREMENT`. Attention : les noms de colonnes doivent correspondre à ceux utilisés dans les requêtes du script, et les types doivent convenir aux données saisies (un numéro de téléphone se stocke en `VARCHAR`).\n\nD'apres les libelles de la figure 1 (NomP, Ville, Sexe, Tel, Res_Test, Etat_Vac, Nom_Vac) et les colonnes effectivement utilisees par l'instruction INSERT du script (id_client, nomP, ville, Tel, NomVac), la requete SQL qui cree la base de donnees manipulee dans ce code est :\n\n```sql\nCREATE DATABASE PATIENT;\nUSE PATIENT;\nCREATE TABLE patient (\n    id_client INT AUTO_INCREMENT PRIMARY KEY,\n    nomP VARCHAR(50),\n    ville VARCHAR(50),\n    Tel VARCHAR(15),\n    NomVac VARCHAR(50)\n);\n```"
+      }
+    ]
+  },
+  {
+    "competence": "MySQL",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10571,
+        "enonce_markdown": "**5.** Relève dans la liste suivante un serveur Web et un serveur de données : **PERL, ZEUS, MYSQLI, MYSQL, HTTPS, Apache, Javascript, Web Protocol, PHP**. *[0,25 pt x 2 = 0,5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nUn serveur Web distribue des pages en réponse à des requêtes HTTP (exemple : Apache), tandis qu'un serveur de données (ou SGBD, système de gestion de base de données) stocke et gère des données interrogeables par requêtes SQL (exemple : MySQL) : ce sont deux logiciels aux rôles différents, même lorsqu'ils sont installés sur la même machine.\n\nDans la liste proposée (PERL, ZEUS, MYSQLI, MYSQL, HTTPS, Apache, Javascript, Web Protocol, PHP), le serveur Web est **Apache** et le serveur de données est **MySQL**. Les autres éléments de la liste ne sont ni l'un ni l'autre : PERL et PHP sont des langages de script, JavaScript est un langage de script côté client, HTTPS est un protocole de communication sécurisé (pas un logiciel serveur), « Web Protocol » n'est pas une dénomination réelle, et MYSQLI est l'extension PHP qui permet de dialoguer avec le serveur MySQL, non un serveur en tant que tel.\n\n### Piège à éviter\nNe confonds jamais MySQL et MySQLI : MySQL est le serveur de données lui-même, MySQLI (« MySQL Improved ») est seulement l'extension PHP utilisée dans la Capture 1 (`mysqli_connect`, `mysqli_query`) pour s'y connecter depuis un script PHP. C'est l'erreur la plus fréquente sur cette question.\n\n### Conseil\nRepère le mot-clé du domaine : un « serveur » distribue ou stocke quelque chose en continu (pages ou données), alors qu'un langage ou un protocole ne fait qu'exprimer une instruction ou une règle d'échange. Ce repère élimine rapidement PERL, PHP, JavaScript et HTTPS de la liste."
+      },
+      {
+        "exercise_id": 10574,
+        "enonce_markdown": "**4.** Donner les rôles des extensions PHP suivantes : `mysql_query()`, `mysql_select_db()`, `mysql_fetch_array()`. *[0,75 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nL'ancienne extension `mysql_*` de PHP fournit une fonction dédiée à chaque étape du dialogue avec une base MySQL : sélectionner la base à utiliser, envoyer une requête SQL, puis parcourir le résultat renvoyé ligne par ligne.\n\n- **`mysql_select_db(\"php\", $bd)`** (ligne 22) : sélectionne, sur la connexion `$bd` déjà ouverte, la base de données à utiliser pour les requêtes suivantes (ici la base nommée `php`).\n- **`mysql_query($sql)`** (ligne 25) : envoie la requête SQL contenue dans la variable `$sql` au serveur MySQL et renvoie un identifiant de résultat exploitable par les autres fonctions `mysql_*`.\n- **`mysql_fetch_array($resultat)`** (ligne 33) : extrait, du résultat renvoyé par `mysql_query`, la ligne courante sous forme de tableau accessible à la fois par index numérique et par nom de colonne (ex. `$ligne[\"motdepasse_utilisateur\"]`).\n\n### Piège à éviter\nNe confonds pas `mysql_connect()` (établir la connexion au serveur MySQL, ligne 19) avec `mysql_select_db()` (choisir la base à l'intérieur de cette connexion, ligne 22) : ce sont deux étapes distinctes et successives, jamais interchangeables.\n\n### Conseil\nMentionne que cette extension `mysql_*` est aujourd'hui obsolète et retirée des versions récentes de PHP (remplacée par `mysqli_*` ou PDO) : une remarque de ce type, en fin de réponse, montre une culture technique à jour sans jamais être exigée par le barème."
+      },
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**5.2.** De la ligne de code 14. *[0.5 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nEn PHP, l'extension mysqli permet de dialoguer avec un serveur MySQL au moyen d'un objet de connexion, créé une seule fois avec `new mysqli(hôte, utilisateur, mot de passe, base)`, puis utilisé pour envoyer des requêtes et systématiquement refermé avec `close()` une fois le travail terminé.\n\n```php\n14 $idcom = new mysqli(\"localhost\",\"root\",\"\", \"magasin\");\n```\n\nCette ligne crée un objet `mysqli`, stocké dans la variable `$idcom`, représentant une connexion au serveur de base de données. Les quatre arguments précisent respectivement : l'hôte du serveur MySQL (`localhost`, c'est-à-dire la machine locale), le nom d'utilisateur (`root`), le mot de passe (une chaîne vide `\"\"`, cas typique d'une installation de développement) et le nom de la base de données à utiliser (`magasin`). C'est cet objet `$idcom` qui sera ensuite utilisé pour exécuter toutes les requêtes SQL du script (`$idcom->query(...)`) et qui devra être refermé avec `$idcom->close()` une fois le traitement terminé (lignes 35 et 55 du code).\n\n### Piège à éviter\nUn mot de passe vide (`\"\"`) n'est acceptable que sur un poste de développement local. Dans un projet réel destiné à être hébergé, laisser un compte `root` sans mot de passe est une faille de sécurité majeure : le correcteur peut valoriser une réponse qui le signale, même si la question ne le demande pas explicitement."
+      },
+      {
+        "exercise_id": 10621,
+        "enonce_markdown": "Decrire a l'aide d'un schema le fonctionnement d'une page web dynamique. (0,5 pt)",
+        "corrige_markdown": "### Rappel de méthode\nUne page web dynamique est générée au moment de la requête, contrairement à une page statique. Le schéma suit toujours le même cycle : le navigateur envoie une requête HTTP au serveur web, qui transmet le script à l'interpréteur (PHP) ; celui-ci interroge au besoin le SGBD, reçoit les données, construit une page HTML, puis le serveur la renvoie au navigateur. Un bon schéma nomme chaque acteur et numérote les échanges dans l'ordre. Attention : le navigateur ne voit jamais le code PHP, seulement le HTML produit.\n\nUne page web dynamique, contrairement a une page statique, genere son contenu HTML au moment de la requete, en fonction des donnees saisies par l'utilisateur et/ou du contenu d'une base de donnees. Le cycle complet, applique au cas de la recherche d'article, se deroule en six etapes :\n\n![Schema du fonctionnement d'une page web dynamique : navigateur, serveur web + PHP, serveur MySQL, et cycle requete/reponse en 6 etapes](/media/figures/cm/bac-ti-programmation-2022-officiel-cameroun_exercice_2_fig_2.webp)\n\n1. Le navigateur (client) envoie une requete HTTP (methode POST) contenant le mot-cle saisi.\n2. Le serveur web recoit la requete et transmet le script a l'interpreteur PHP, qui execute le code situe entre `<?php` et `?>` ; ce code construit une requete SQL a partir du mot-cle recu.\n3. Le serveur de base de donnees (MySQL) execute cette requete SQL et renvoie les lignes trouvees.\n4. Le script PHP parcourt ces lignes (boucles `for`/`while`) et construit dynamiquement le tableau HTML de resultats.\n5. Le serveur web renvoie la page HTML complete (formulaire + tableau de resultats) au navigateur.\n6. Le navigateur affiche cette page a l'utilisateur.\n\nC'est cette generation du HTML \"a la demande\", a partir de donnees variables, qui distingue la page dynamique d'une page statique dont le contenu HTML est fige a l'avance sur le serveur."
+      }
+    ]
+  },
+  {
+    "competence": "CREATE TABLE",
+    "pays": "cm",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "cible": {
+      "nombre_items": 6,
+      "repartition_difficulte": {
+        "FAIBLE": 2,
+        "MOYENNE": 3,
+        "ELEVEE": 1
+      }
+    },
+    "materiel_reference": [
+      {
+        "exercise_id": 10585,
+        "enonce_markdown": "**6.** Écrire la requête qui crée la table **client** manipulée dans ce code. *[1 pt]*",
+        "corrige_markdown": "### Rappel de méthode\nL'instruction SQL `CREATE TABLE nom_table (colonne1 type, colonne2 type, ...)` crée une nouvelle table dans une base de données, en définissant pour chaque colonne un nom et un type de données ; une colonne peut en outre être désignée clé primaire pour identifier chaque ligne de façon unique.\n\nLe code manipule la table **client** à travers les colonnes `id_client` (utilisée dans les clauses `WHERE id_client='$code'`), `nom`, `prenom`, `ville` et `mail` (lues dans `$coord[1]`, `$coord[2]`, `$coord[5]` et `$coord[6]`, et mises à jour lignes 40 à 43). La requête de création correspondante est :\n\n```sql\nCREATE TABLE client (\n    id_client INT(11) NOT NULL AUTO_INCREMENT,\n    nom VARCHAR(30) NOT NULL,\n    prenom VARCHAR(30) NOT NULL,\n    ville VARCHAR(40),\n    mail VARCHAR(50),\n    PRIMARY KEY (id_client)\n);\n```\n\n`id_client` est déclarée clé primaire auto-incrémentée puisqu'elle sert d'identifiant unique de chaque client dans toutes les requêtes du script. Les tailles des champs `VARCHAR` (30, 40, 50) reprennent les attributs `maxlength` des champs de saisie correspondants dans le formulaire HTML (lignes 27 à 29), ce qui garantit que la colonne peut toujours contenir la plus longue valeur saisissable par l'utilisateur.\n\n### Piège à éviter\n`$coord[3]` et `$coord[4]` n'apparaissent jamais dans le code fourni : la table **client** comporte donc très probablement d'autres colonnes que celles listées ci-dessus (par exemple téléphone, adresse), non manipulées par ce script précis. Le sujet ne donnant pas leur nom exact, il est admis de ne créer que les colonnes réellement identifiables dans le code, à condition de le signaler clairement plutôt que d'inventer des noms de colonnes au hasard.\n\n### Conseil\nFais toujours correspondre la taille des colonnes `VARCHAR` de ta table aux attributs `maxlength` visibles dans le formulaire HTML associé : c'est un indice fiable, systématiquement présent dans ce type de sujet, pour deviner une taille de champ cohérente sans l'inventer au hasard."
+      },
+      {
+        "exercise_id": 10624,
+        "enonce_markdown": "En considerant les libelles de la figure 1, ecrire la requete SQL qui cree la base de donnees manipulee dans ce code. (1 pt)",
+        "corrige_markdown": "### Rappel de méthode\nOn crée une base avec `CREATE DATABASE nom;`, on la sélectionne avec `USE nom;`, puis on crée chaque table avec `CREATE TABLE nom (colonne type contrainte, ...);`. Chaque colonne reçoit un type adapté (`INT`, `VARCHAR(n)`, `DATE`…), la clé primaire est déclarée par `PRIMARY KEY` et un identifiant automatique par `AUTO_INCREMENT`. Attention : les noms de colonnes doivent correspondre à ceux utilisés dans les requêtes du script, et les types doivent convenir aux données saisies (un numéro de téléphone se stocke en `VARCHAR`).\n\nD'apres les libelles de la figure 1 (NomP, Ville, Sexe, Tel, Res_Test, Etat_Vac, Nom_Vac) et les colonnes effectivement utilisees par l'instruction INSERT du script (id_client, nomP, ville, Tel, NomVac), la requete SQL qui cree la base de donnees manipulee dans ce code est :\n\n```sql\nCREATE DATABASE PATIENT;\nUSE PATIENT;\nCREATE TABLE patient (\n    id_client INT AUTO_INCREMENT PRIMARY KEY,\n    nomP VARCHAR(50),\n    ville VARCHAR(50),\n    Tel VARCHAR(15),\n    NomVac VARCHAR(50)\n);\n```"
+      }
+    ]
+  }
+]

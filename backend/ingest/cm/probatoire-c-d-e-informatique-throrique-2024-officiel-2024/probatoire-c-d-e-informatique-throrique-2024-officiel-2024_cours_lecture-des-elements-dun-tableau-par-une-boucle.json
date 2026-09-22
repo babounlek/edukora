@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-lecture-des-elements-dun-tableau-par-une-boucle-1ere-tronc-commun",
+  "meta": {
+    "titre": "Lecture des éléments d'un tableau par une boucle",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique - tableaux et boucles",
+    "duree_estimee_min": 20,
+    "tags": [
+      "tableau",
+      "boucle Pour",
+      "saisie de données",
+      "indice"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex3-q2-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Demander à un utilisateur de saisir 30 notes d'élèves une par une, en écrivant 30 fois la même instruction Lire, serait absurde. La solution est de confier cette répétition à une boucle : une seule ligne d'instruction, exécutée autant de fois que nécessaire, suffit alors à remplir tout un tableau, chaque tour de boucle remplissant une case différente."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la déclaration d'un tableau (Var T : tableau [1..N] de type)",
+        "Savoir utiliser une boucle Pour"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Remplir un tableau case par case",
+      "contenu_markdown": "Dans une boucle qui parcourt un tableau, l'instruction Lire(NomTableau[i]) demande à l'utilisateur de saisir une valeur au clavier, puis la range dans la case d'indice i du tableau. Répétée par une boucle Pour i allant de 1 à N, cette instruction remplit progressivement tout le tableau, case après case : à chaque tour, l'indice i change, donc une valeur différente est stockée à un emplacement différent, jusqu'à ce que toutes les cases de 1 à N soient remplies.",
+      "formule_principale": "\\text{Pour } i \\text{ allant de } 1 \\text{ à } N \\text{ faire } \\text{Lire}(T[i]) \\text{ Finpour} \\Rightarrow \\text{remplit } T[1], T[2], \\dots, T[N]",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'algorithme de gestion des notes, expliquer le rôle de la ligne 12 : `Lire (Note[i]);`, placée à l'intérieur de la boucle `Pour i allant de 1 à N faire` (ligne 10).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce que fait l'instruction Lire(Note[i]) à elle seule",
+          "justification": "Lire(Note[i]) demande une saisie au clavier et la range dans la case d'indice i du tableau Note.",
+          "resultat_markdown": "Une seule valeur est saisie et stockée à un seul indice, à chaque exécution de cette ligne."
+        },
+        {
+          "numero": 2,
+          "action": "Dérouler mentalement les trois premiers tours avec N=3, pour rendre l'effet concret",
+          "justification": "À chaque tour de la boucle Pour, i prend une valeur différente (1, puis 2, puis 3), donc Note[i] désigne une case différente à chaque fois.",
+          "resultat_markdown": "Tour i=1 : saisie rangée dans Note[1]. Tour i=2 : saisie rangée dans Note[2]. Tour i=3 : saisie rangée dans Note[3]."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur l'effet global de la ligne 12 combinée à la boucle",
+          "justification": "La répétition de la même ligne, combinée à la variation de l'indice i, suffit à remplir tout le tableau sans jamais écrire N lignes différentes.",
+          "resultat_markdown": "Le tableau Note est rempli intégralement, de Note[1] à Note[N], par une seule ligne d'instruction répétée N fois."
+        }
+      ],
+      "conclusion_markdown": "La ligne 12 saisit une note et la range dans la case d'indice i ; répétée par la boucle, elle remplit tout le tableau Note."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que Lire(Note[i]) lit toutes les valeurs du tableau en une seule exécution",
+          "pourquoi_faux": "Une seule case est concernée à chaque exécution de cette ligne : c'est la répétition par la boucle, pas l'instruction Lire elle-même, qui remplit tout le tableau.",
+          "correction_markdown": "Toujours distinguer l'effet d'une seule ligne (une case) de l'effet cumulé de la boucle entière (tout le tableau)."
+        },
+        {
+          "erreur_markdown": "Oublier que l'indice de tableau commence à 1 en pseudo-code, contrairement à 0 en langage C",
+          "pourquoi_faux": "Cette différence de convention entre le pseudo-code et le C est une source fréquente d'erreur de traduction, notamment sur les bornes de la boucle.",
+          "correction_markdown": "Vérifier systématiquement la borne de départ de l'indice avant de traduire ou d'interpréter une boucle sur un tableau."
+        },
+        {
+          "erreur_markdown": "Utiliser un même nom de variable pour désigner à la fois l'indice et la valeur contenue dans la case",
+          "pourquoi_faux": "L'indice (la position, comme i=3) et la valeur stockée (le contenu de Note[3]) sont deux informations différentes : les confondre rend le raisonnement incompréhensible dès que le tableau contient plusieurs valeurs distinctes.",
+          "correction_markdown": "Toujours garder des noms distincts : un nom pour l'indice (i), un nom pour le tableau (Note), et Note[i] pour désigner la valeur à la position i."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire les lignes d'algorithme qui remplissent un tableau Age de 5 entiers saisis au clavier.",
+          "solution_markdown": "```\nVar Age : tableau [1..5] de entiers ;\n    i : entier ;\nPour i allant de 1 à 5 faire\n    Ecrire (\"Entrez l'âge n° \", i) ;\n    Lire (Age[i]) ;\nFinpour\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire une boucle qui affiche chaque élément d'un tableau Note[1..N], déjà rempli, précédé de son indice (par exemple « Note 1 : 14 »).",
+          "solution_markdown": "```\nPour i allant de 1 à N faire\n    Ecrire (\"Note \", i, \" : \", Note[i]) ;\nFinpour\n```\n\nContrairement à l'exemple résolu qui remplissait le tableau (Lire), cette boucle le parcourt en lecture seule pour afficher son contenu (Ecrire), avec la même logique de variation de l'indice i."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire une boucle qui remplit un tableau de N réels, en refusant (et en redemandant la saisie) toute valeur négative saisie par l'utilisateur.",
+          "solution_markdown": "```\nVar T : tableau [1..N] de réels ;\n    i : entier ;\nPour i allant de 1 à N faire\n    Lire (T[i]) ;\n    TantQue (T[i] < 0) faire\n        Ecrire (\"Valeur négative refusée, recommencez : \") ;\n        Lire (T[i]) ;\n    FinTantQue\nFinpour\n```\n\nIci, une structure répétitive TantQue est imbriquée à l'intérieur de la boucle Pour : le nombre de resaisies nécessaires n'est pas connu à l'avance (cela dépend de l'utilisateur), ce qui justifie l'usage d'un TantQue plutôt que d'un second Pour."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Lire(T[i]) range une seule valeur dans une seule case, celle d'indice i.",
+        "C'est la répétition par la boucle Pour, combinée à la variation de i, qui remplit tout le tableau.",
+        "Ne confonds jamais l'indice (la position) avec la valeur stockée à cette position.",
+        "Vérifie toujours la borne de départ de l'indice : 1 en pseudo-code dans la plupart des sujets camerounais, souvent 0 en langage C.",
+        "Cette structure Pour...Lire(T[i])...Finpour est le bloc de base à reconnaître immédiatement dans n'importe quel algorithme manipulant un tableau au Probatoire."
+      ]
+    }
+  ]
+}

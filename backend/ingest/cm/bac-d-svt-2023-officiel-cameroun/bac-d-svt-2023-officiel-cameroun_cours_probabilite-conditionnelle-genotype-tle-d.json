@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-probabilite-conditionnelle-genotype-tle-d",
+  "meta": {
+    "titre": "Calculer la probabilité conditionnelle du génotype d'un individu sain issu de parents hétérozygotes",
+    "matiere": "SVT",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Génétique humaine",
+    "duree_estimee_min": 30,
+    "tags": [
+      "probabilité conditionnelle",
+      "croisement génétique",
+      "génotype",
+      "hérédité récessive"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-SVT-2023-CM-OFFICIEL",
+    "epreuve_titre": "Baccalauréat série D - Épreuve théorique de Sciences de la Vie et de la Terre, Éducation à l'Environnement, Hygiène et Biotechnologie (SVTEEHB) - Session 2023 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-d-svt-2023-officiel-cameroun-ex4-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux parents hétérozygotes ont un enfant en parfaite santé : quelle est la probabilité que cet enfant soit lui-même porteur de l'allèle responsable de la maladie ? La réponse spontanée, « 2 chances sur 4 », est fausse. Le fait que l'enfant soit phénotypiquement sain élimine une possibilité entière de l'échiquier de croisement, et cette élimination change la valeur du calcul : c'est tout l'enjeu de la probabilité conditionnelle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Échiquier de croisement (carré de Punnett) pour Aa x Aa",
+        "Notion de génotype et de phénotype",
+        "Notion de probabilité conditionnelle (probabilité sachant une information supplémentaire)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Restreindre l'univers des possibles au phénotype observé",
+      "contenu_markdown": "Lorsque les deux parents d'un individu sont hétérozygotes connus (Aa x Aa), l'échiquier de croisement donne une répartition brute de 1/4 AA, 2/4 Aa, 1/4 aa parmi tous les enfants possibles. Mais si l'on sait, en plus, que cet individu est phénotypiquement sain, il faut exclure la possibilité aa (puisqu'un individu aa serait atteint), et ne raisonner que sur les génotypes compatibles avec ce phénotype sain, à savoir AA et Aa, qui représentent ensemble 1/4 + 2/4 = 3/4 de l'effectif total. La probabilité conditionnelle que cet individu soit hétérozygote (Aa), sachant qu'il est sain, s'obtient alors en divisant la probabilité d'être Aa (2/4) par la probabilité d'être sain (3/4), soit (2/4)/(3/4) = 2/3. Cette probabilité de 2/3 est différente de la probabilité brute de 2/4 lue directement sur l'échiquier : c'est cette probabilité conditionnelle, et elle seule, qu'il faut utiliser dans tout calcul ultérieur (par exemple un calcul de risque pour la génération suivante).",
+      "formule_principale": "P(Aa \\mid \\text{sain}) = \\dfrac{P(Aa)}{P(AA) + P(Aa)} = \\dfrac{2/4}{3/4} = \\dfrac{2}{3}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Deux parents hétérozygotes (Aa) pour une affection récessive ont un fils phénotypiquement sain. Calculer la probabilité que ce fils soit porteur (hétérozygote) de l'allèle responsable de l'affection.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Établir l'échiquier de croisement Aa x Aa",
+          "justification": "Chaque parent transmet aléatoirement l'un de ses deux allèles (A ou a) à son enfant, indépendamment l'un de l'autre.",
+          "resultat_markdown": "L'échiquier donne : 1/4 AA, 2/4 Aa, 1/4 aa."
+        },
+        {
+          "numero": 2,
+          "action": "Exclure les génotypes incompatibles avec le phénotype observé",
+          "justification": "Le fils est phénotypiquement sain, donc il ne peut pas être aa (qui correspondrait à un individu atteint).",
+          "resultat_markdown": "Seuls les génotypes AA (1/4) et Aa (2/4) restent possibles, représentant ensemble 3/4 de l'effectif total."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la probabilité conditionnelle d'être Aa parmi les individus sains",
+          "justification": "La probabilité conditionnelle se calcule en rapportant la probabilité du génotype recherché (Aa) à la probabilité totale des génotypes compatibles avec le phénotype observé (AA ou Aa).",
+          "resultat_markdown": "$$P(Aa \\mid \\text{sain}) = \\dfrac{2/4}{3/4} = \\dfrac{2}{3}$$"
+        }
+      ],
+      "conclusion_markdown": "La probabilité que ce fils phénotypiquement sain soit porteur de l'allèle responsable de l'affection est de 2/3, une valeur supérieure à la simple lecture brute de l'échiquier (2/4), parce que l'information selon laquelle il est sain élimine une partie des possibilités initiales."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre directement 2/4 (ou 1/2) à la question, en lisant l'échiquier de croisement sans tenir compte de l'information sur le phénotype de l'individu.",
+          "pourquoi_faux": "Le 2/4 lu sur l'échiquier est la probabilité D'ÊTRE Aa PARMI TOUS LES ENFANTS POSSIBLES, y compris les aa atteints. Dès que l'on sait que l'individu est phénotypiquement sain, l'univers des possibles se réduit aux seuls génotypes AA et Aa : il faut recalculer la probabilité à l'intérieur de cet univers réduit.",
+          "correction_markdown": "Dès qu'un énoncé précise le phénotype d'un individu issu d'un croisement connu, considère cela comme un signal fort qu'il faut calculer une probabilité conditionnelle, pas lire la probabilité brute de l'échiquier."
+        },
+        {
+          "erreur_markdown": "Diviser par 4 au lieu de diviser par 3/4 (c'est-à-dire oublier de recalculer le dénominateur en fonction des seuls génotypes compatibles avec le phénotype observé).",
+          "pourquoi_faux": "Le dénominateur de la probabilité conditionnelle doit être la probabilité totale de l'événement conditionnant (ici, être phénotypiquement sain, soit 3/4), pas la totalité de l'échiquier (qui vaut toujours 1, ou 4/4).",
+          "correction_markdown": "Vérifie toujours que la somme des probabilités que tu utilises au dénominateur correspond bien à la probabilité de la condition connue (ici 3/4 pour « être sain »), pas à autre chose."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux parents hétérozygotes (Aa) pour une affection récessive ont une fille phénotypiquement saine. Écrire, sans les calculer, les deux probabilités (brute et conditionnelle) que cette fille soit hétérozygote.",
+          "solution_markdown": "La probabilité brute, lue directement sur l'échiquier de croisement Aa x Aa (1/4 AA, 2/4 Aa, 1/4 aa), est de 2/4 (soit 1/2). La probabilité conditionnelle, sachant que la fille est phénotypiquement saine (donc en excluant le génotype aa), est de (2/4)/(3/4), soit 2/3."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux parents hétérozygotes (Aa) pour une affection récessive ont deux enfants, tous deux phénotypiquement sains. Le fait d'avoir deux enfants sains plutôt qu'un seul change-t-il la probabilité conditionnelle calculée pour CHACUN de ces deux enfants pris individuellement ? Justifier.",
+          "solution_markdown": "Non, la probabilité conditionnelle calculée pour chaque enfant pris individuellement ne change pas : elle reste de 2/3 pour chacun des deux enfants sains. En effet, chaque fécondation est un événement indépendant des autres : le génotype du premier enfant n'influence en rien le tirage aléatoire des allèles lors de la conception du second enfant. La probabilité conditionnelle P(Aa | sain) = 2/3 se calcule pour un individu sain donné, indépendamment du nombre total d'enfants du couple ou de leur statut respectif ; elle s'applique donc identiquement à chacun des deux enfants sains, considérés séparément."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un individu est issu du croisement de deux parents hétérozygotes (Aa x Aa) pour une affection récessive, et est phénotypiquement sain. Il a lui-même un enfant avec un conjoint dont on sait avec certitude qu'il est homozygote non porteur (AA). Calculer la probabilité que cet enfant soit lui-même hétérozygote (Aa).",
+          "solution_markdown": "Il faut d'abord établir la probabilité conditionnelle que l'individu sain soit lui-même hétérozygote : P(Aa | sain) = (2/4)/(3/4) = 2/3 (voir la règle du cours). Le conjoint étant homozygote non porteur (AA) avec certitude, deux cas doivent être envisagés pour l'individu sain, pondérés par leurs probabilités respectives : soit il est lui-même AA (probabilité 1/3, calculée de façon symétrique à 2/3, puisque P(AA | sain) = (1/4)/(3/4) = 1/3), et dans ce cas le croisement AA x AA ne donne que des enfants AA (aucun risque d'hétérozygotie) ; soit il est Aa (probabilité 2/3), et dans ce cas le croisement Aa x AA donne 1/2 d'enfants Aa et 1/2 d'enfants AA. La probabilité totale que l'enfant soit hétérozygote est donc : P(enfant Aa) = P(individu Aa) x P(enfant Aa | parents Aa x AA) = 2/3 x 1/2 = 1/3. La probabilité que cet enfant soit hétérozygote est donc de 1/3."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand un individu issu d'un croisement connu a un phénotype connu, ne lis jamais directement la probabilité brute de l'échiquier : calcule une probabilité conditionnelle restreinte aux génotypes compatibles avec ce phénotype.",
+        "La formule est : probabilité du génotype recherché divisée par la probabilité totale des génotypes compatibles avec le phénotype observé.",
+        "Pour un croisement Aa x Aa et un individu phénotypiquement sain, la probabilité conditionnelle d'être hétérozygote est 2/3, jamais 2/4.",
+        "Cette probabilité conditionnelle, une fois calculée, remplace la fréquence populationnelle dans tout calcul de risque ultérieur pour la génération suivante.",
+        "Au BAC, la formulation « sachant qu'il est phénotypiquement sain » ou « sachant qu'il n'est pas atteint » est le signal explicite qu'une probabilité conditionnelle, et non une lecture brute de l'échiquier, est attendue."
+      ]
+    }
+  ]
+}

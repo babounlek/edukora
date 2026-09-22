@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-representation-et-organisation-des-donnees-dans-un-ordinateur-3e",
+  "meta": {
+    "titre": "Représentation et organisation des données dans un ordinateur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Représentation de l'information",
+    "duree_estimee_min": 30,
+    "tags": [
+      "donnée",
+      "information",
+      "système de fichiers",
+      "dossier",
+      "arborescence",
+      "base de données"
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": null,
+      "module_numero": "301",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2026-cameroun",
+    "epreuve_titre": "BEPC Cameroun - Épreuve théorique d'informatique - Session 2026",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2026-cameroun-ex2-q1-1",
+    "rappels_lies": [
+      "rdm-bepc-informatique-2026-cameroun-ex2-q2-1"
+    ],
+    "correction_id": "corr-bepc-informatique-2026-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu enregistres une photo sur une clé USB, tu la retrouves trois mois plus tard en deux clics. Entre-temps, cette photo n'a jamais été « une photo » pour la machine : elle n'était qu'une longue suite de 0 et de 1 rangée à un endroit précis. Comprendre ce qu'est une donnée et comment elle est rangée explique pourquoi un fichier mal nommé se perd, pourquoi un dossier bien construit fait gagner des heures, et pourquoi le même fichier peut s'ouvrir sur une machine et pas sur une autre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir que l'ordinateur ne manipule que des 0 et des 1",
+        "Savoir enregistrer un fichier et créer un dossier sur un ordinateur",
+        "Reconnaître une extension de fichier (.docx, .jpg, .mp3) et savoir qu'elle indique le type du fichier"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la donnée brute au fichier organisé",
+      "contenu_markdown": "**La donnée**\n\n> Une **donnée** est la représentation d'une information sous une forme codée conventionnelle, directement exploitable par un ordinateur en vue de son enregistrement, de son traitement ou de sa transmission.\n\nTrois idées à faire figurer dans toute définition : c'est une *représentation* (une écriture, pas la chose elle-même), elle est *codée* (au bout du compte, en binaire), elle est *destinée au traitement automatique*.\n\n**Donnée et information ne sont pas synonymes**\n\n| | Donnée | Information |\n|---|---|---|\n| Position | en entrée du traitement | en sortie du traitement |\n| Sens | brute, sans signification propre | interprétée, porteuse de sens |\n| Exemple | `12` | « la moyenne de l'élève est 12 sur 20, il est admis » |\n\nLe schéma du traitement de l'information se retient en trois mots : **données → traitement → information**.\n\n**L'organisation des données : le système de fichiers**\n\nLes données ne sont pas déversées en vrac sur le disque. Elles sont rangées par un mécanisme appelé **système de fichiers**, géré par le système d'exploitation :\n\n- chaque ensemble de données porte un **nom** et une **extension** qui indique son type : `releve.docx`, `photo.jpg` ;\n- les fichiers sont regroupés dans des **dossiers** (ou répertoires) ;\n- les dossiers s'emboîtent les uns dans les autres et forment une **arborescence** partant d'un dossier racine.\n\n```\nDisque C:\n  └── Documents\n        ├── BEPC\n        │     ├── informatique.docx\n        │     └── maths.docx\n        └── Photos\n              └── ceremonie.jpg\n```\n\nLe **chemin d'accès** décrit la descente dans cette arborescence : `C:\\Documents\\BEPC\\informatique.docx`.\n\n**Un second mécanisme : la base de données**\n\nQuand les données sont nombreuses et de même nature, on les range dans une **base de données**, organisée en tables faites de lignes (les enregistrements) et de colonnes (les champs). Un système de gestion de base de données en assure la recherche et la mise à jour.\n\n| Matricule | Nom | Classe | Moyenne |\n|---|---|---|---|\n| 3A012 | ABENA | 3e A | 12,5 |\n| 3A013 | BILOA | 3e A | 09,75 |",
+      "formule_principale": "Données \\rightarrow Traitement \\rightarrow Information",
+      "variantes": [
+        {
+          "nom": "Choisir entre système de fichiers et base de données",
+          "quand_utiliser": "Quand une question demande quel mécanisme d'organisation convient à une situation donnée",
+          "contenu_markdown": "Le système de fichiers convient à des données peu nombreuses et de natures variées : les documents personnels d'un utilisateur, un mélange de textes, d'images et de vidéos. La base de données convient à des données nombreuses, répétitives et de même structure, que l'on doit trier, filtrer et mettre à jour : les élèves d'un établissement, les articles d'une boutique, les patients d'un hôpital. Le critère décisif est la régularité de la structure : si toutes les fiches ont les mêmes rubriques, la base de données s'impose."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Questions tirées de l'épreuve du BEPC 2026 : « Dans le contexte de l'informatique, définir le terme Donnée » (1pt), puis « Donner un (01) mécanisme d'organisation des données dans un ordinateur » (1pt).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la restriction « dans le contexte de l'informatique »",
+          "justification": "Le mot « donnée » a un sens courant (un renseignement) et un sens informatique précis. La restriction impose le second : il faut parler de codage et de traitement automatique.",
+          "resultat_markdown": "Définition à orienter vers le codage et l'exploitation par la machine."
+        },
+        {
+          "numero": 2,
+          "action": "Construire la définition avec ses trois composantes",
+          "justification": "Représentation, forme codée, exploitabilité par l'ordinateur : chacune est attendue par le barème.",
+          "resultat_markdown": "« Une donnée est la représentation d'une information sous une forme codée conventionnelle, exploitable par un ordinateur en vue de son enregistrement, de son traitement ou de sa transmission. »"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter la distinction avec l'information",
+          "justification": "C'est elle que le correcteur cherche pour départager une copie qui a compris d'une copie qui a récité.",
+          "resultat_markdown": "« Prise isolément, une donnée brute n'a pas de sens : c'est son traitement qui la transforme en information. »"
+        },
+        {
+          "numero": 4,
+          "action": "Pour la seconde question, nommer un mécanisme et le décrire",
+          "justification": "La consigne dit « donner (01) » : un seul mécanisme, mais nommé et décrit, sinon la réponse reste un mot isolé.",
+          "resultat_markdown": "« Le système de fichiers : les données sont enregistrées dans des fichiers nommés, regroupés dans des dossiers emboîtés qui forment une arborescence. »"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier qu'on n'a pas répondu par un support de stockage",
+          "justification": "« Le disque dur » ou « la clé USB » désignent où les données sont conservées, pas comment elles sont rangées. La question porte sur le comment.",
+          "resultat_markdown": "La réponse cite bien un mécanisme d'organisation, pas un support : elle est recevable."
+        }
+      ],
+      "conclusion_markdown": "Les deux points sont acquis : une définition qui articule représentation, codage et traitement, puis un mécanisme d'organisation nommé et décrit en une phrase."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire « une donnée, c'est une information ».",
+          "pourquoi_faux": "Les deux mots occupent deux places distinctes dans le schéma du traitement : la donnée est en entrée, l'information en sortie. Les confondre revient à dire que le traitement ne sert à rien.",
+          "correction_markdown": "Définir la donnée comme la matière première, puis ajouter la phrase de distinction : « c'est son traitement qui la transforme en information »."
+        },
+        {
+          "erreur_markdown": "Répondre « le disque dur » à la question sur le mécanisme d'organisation des données.",
+          "pourquoi_faux": "Le disque dur est un support de stockage : il dit *où* les données sont conservées. Le mécanisme dit *comment* elles sont structurées et retrouvées. Ce sont deux questions différentes.",
+          "correction_markdown": "Citer le système de fichiers, ou la base de données, et décrire la structure en une phrase."
+        },
+        {
+          "erreur_markdown": "Penser qu'un dossier occupe de la place et contient physiquement les fichiers.",
+          "pourquoi_faux": "Un dossier est une entrée logique du système de fichiers : il enregistre la liste des fichiers qui lui sont rattachés et l'endroit du disque où chacun est écrit. Les octets des fichiers ne sont pas « à l'intérieur » du dossier.",
+          "correction_markdown": "Retenir que le dossier est une étiquette de rangement, et que c'est le système d'exploitation qui fait le lien entre cette étiquette et l'emplacement physique."
+        },
+        {
+          "erreur_markdown": "Croire que renommer l'extension d'un fichier (`photo.jpg` en `photo.docx`) change la nature du fichier.",
+          "pourquoi_faux": "L'extension n'est qu'une indication de type destinée au système d'exploitation pour choisir le logiciel d'ouverture. Le contenu binaire, lui, reste inchangé : le fichier renommé ne s'ouvrira simplement plus correctement.",
+          "correction_markdown": "Ne jamais modifier une extension pour convertir un fichier ; utiliser un logiciel de conversion, qui réécrit réellement les données dans le nouveau format."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Parmi les éléments suivants, indiquer lesquels sont des données et lesquels sont des informations : (a) 09,75 ; (b) « Biloa a une moyenne de 09,75 sur 20, elle est ajournée » ; (c) 3A013 ; (d) le bulletin trimestriel de la classe de 3e A.",
+          "solution_markdown": "(a) **Donnée** : le nombre 09,75 pris isolément ne dit rien. Est-ce une moyenne, un prix, une température ? Sans contexte, aucune signification.\n\n(b) **Information** : la phrase relie le nombre à un élève, à une échelle (sur 20) et à une conclusion (ajournée). Elle a du sens et permet une décision.\n\n(c) **Donnée** : 3A013 est un matricule, une suite de caractères qui identifie un élève. Prise seule, elle n'informe sur rien.\n\n(d) **Information** : le bulletin est le résultat du traitement de toutes les notes de la classe. Il présente des moyennes, des rangs et des appréciations directement exploitables par le conseil de classe.\n\n**Règle appliquée** : demande-toi si l'élément, lu seul, permet de comprendre ou de décider quelque chose. Si oui, c'est une information ; sinon, c'est une donnée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Tu dois ranger sur ton ordinateur tes cours, tes devoirs et tes photos de trois années scolaires. Proposer une arborescence de dossiers, la représenter, et justifier ton choix en deux phrases.",
+          "solution_markdown": "**Arborescence proposée**\n\n```\nDisque D:\n  └── Scolarite\n        ├── 5e\n        │     ├── Cours\n        │     └── Devoirs\n        ├── 4e\n        │     ├── Cours\n        │     └── Devoirs\n        └── 3e\n              ├── Cours\n              │     ├── Informatique\n              │     └── Mathematiques\n              └── Devoirs\n  └── Photos\n        ├── 2024\n        └── 2025\n```\n\n**Étapes du raisonnement**\n\n1. Séparer d'abord ce qui n'a aucun rapport : la scolarité d'un côté, les photos de l'autre. Deux branches indépendantes à la racine.\n2. À l'intérieur de la scolarité, classer par année, car c'est le critère qui ne change jamais de sens : un cours de 4e restera toujours un cours de 4e.\n3. À l'intérieur d'une année, séparer les cours des devoirs, puis les cours par matière si le volume le justifie.\n\n**Justification**\n\nLe classement par année puis par nature garantit qu'un nouveau fichier a toujours un emplacement évident, ce qui est le seul critère qui compte pour une arborescence : si tu hésites au moment d'enregistrer, le classement est mauvais. Descendre au-delà de trois ou quatre niveaux rendrait au contraire l'accès plus long que la recherche."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "L'intendant de ton collège gère les 800 élèves de l'établissement dans des fichiers de traitement de texte, un par classe. Expliquer pourquoi une base de données serait mieux adaptée, en citant trois avantages concrets.",
+          "solution_markdown": "**Situation actuelle**\n\nChaque classe a son fichier de traitement de texte. Les mêmes rubriques (nom, matricule, date de naissance, paiement de la scolarité) sont recopiées dans une vingtaine de documents indépendants.\n\n**Avantage 1 : la recherche devient immédiate**\n\nPour retrouver un élève dont on ignore la classe, il faut aujourd'hui ouvrir les fichiers un par un. Dans une base de données, une requête sur le champ « Nom » interroge les 800 enregistrements d'un seul coup et répond en une seconde.\n\n**Avantage 2 : les données cessent d'être dupliquées et contradictoires**\n\nSi un élève change de classe, son enregistrement doit aujourd'hui être supprimé d'un fichier et recréé dans un autre. Toute erreur de recopie crée deux versions différentes du même élève. Dans une base, l'élève existe une seule fois et seul son champ « Classe » est modifié.\n\n**Avantage 3 : les traitements groupés deviennent possibles**\n\nCalculer le nombre d'élèves n'ayant pas soldé la scolarité, trier par date de naissance, éditer la liste des candidats au BEPC : ce sont des opérations d'une ligne dans une base de données, alors qu'elles demandent un comptage manuel dans vingt fichiers séparés.\n\n**Conclusion**\n\nLa base de données s'impose ici parce que les 800 fiches ont exactement la même structure. C'est le critère décisif : structure régulière et volume important appellent une base de données, structure variée et faible volume se contentent du système de fichiers."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une donnée est une représentation codée, exploitable par la machine : ni la chose elle-même, ni son interprétation.",
+        "Retiens le schéma en trois mots : données, traitement, information. Il te donne à lui seul la différence entre les deux termes.",
+        "Le support (disque, clé USB) dit où ; le mécanisme (système de fichiers, base de données) dit comment. Ne réponds jamais l'un pour l'autre.",
+        "Une arborescence est réussie quand tu n'hésites jamais sur l'emplacement d'un nouveau fichier.",
+        "Structure régulière et gros volume appellent une base de données ; contenus variés et peu nombreux se rangent très bien en fichiers et dossiers.",
+        "Au BEPC, cette notion se présente presque toujours en deux temps : définir « donnée », puis citer un mécanisme d'organisation. Prépare les deux réponses ensemble."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+ "cours_id": "cours-demontrer-fonction-paire-1ere-ce",
+ "meta": {
+  "titre": "Démontrer qu'une fonction est paire",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Parité et symétries",
+  "duree_estimee_min": 20,
+  "tags": ["parité", "fonction paire", "valeur absolue", "axe de symétrie", "ensemble de définition"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VII"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qB4b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "La parité est le premier outil d'économie d'une étude de fonction : elle divise le travail par deux. Une fonction paire étudiée sur les positifs se complète par symétrie sur les négatifs, sans un calcul de plus. Mais c'est aussi la question où l'on perd le plus facilement un demi-point, pour une raison qui n'a rien de calculatoire : la démonstration comporte **deux** conditions, et la première — la symétrie du domaine — est presque toujours oubliée."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la définition d'une fonction paire et d'une fonction impaire",
+    "Savoir déterminer un ensemble de définition",
+    "Manipuler les inégalités et leur multiplication par $-1$",
+    "Connaître la propriété $\\left|-x\\right| = \\left|x\\right|$"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux conditions, jamais une seule",
+   "contenu_markdown": "**La définition.** Une fonction $g$ est **paire** lorsque **deux** conditions sont réunies :\n\n1. son ensemble de définition $D_{g}$ est **symétrique par rapport à $0$**, c'est-à-dire que $x \\in D_{g}$ entraîne $-x \\in D_{g}$ ;\n2. pour tout $x \\in D_{g}$ : $g(-x) = g(x)$.\n\n**La fonction impaire.** Même première condition, et $g(-x) = -g(x)$ pour la seconde.\n\n**Pourquoi la première condition ?** Sans elle, l'écriture $g(-x)$ n'a **pas de sens** pour certains $x$. Une fonction définie sur $[0\\,;\\,6]$ ne peut être paire, même si son expression le suggère : $g(-1)$ n'existe pas, donc l'égalité $g(-1) = g(1)$ ne peut être testée.\n\n**Comment démontrer la symétrie du domaine.** Pour un intervalle $[-a\\,;\\,a]$ :\n\n$$x \\in [-a\\,;\\,a] \\iff -a \\leqslant x \\leqslant a \\iff -a \\leqslant -x \\leqslant a \\iff -x \\in [-a\\,;\\,a]$$\n\nLe passage du milieu utilise la multiplication par $-1$, qui **inverse** les deux inégalités. Deux lignes suffisent, mais il faut les écrire.\n\n**La méthode, en trois gestes.**\n\n1. **Vérifier** que $D_{g}$ est symétrique par rapport à $0$.\n2. **Calculer** $g(-x)$ en substituant $-x$ à $x$ dans l'expression.\n3. **Comparer** à $g(x)$ et conclure.\n\n**L'outil des fonctions avec valeur absolue.** La propriété clé est\n\n$$\\left|-x\\right| = \\left|x\\right| \\qquad \\text{pour tout réel } x$$\n\nElle rend la démonstration immédiate : toute fonction de la forme $g(x) = f\\left(\\left|x\\right|\\right)$ est paire, quelle que soit $f$, dès que son domaine est symétrique.\n\n**Reconnaître la parité sur l'expression.** Un polynôme est pair si et seulement si il ne contient que des puissances **paires** de $x$ ; impair, seulement des puissances **impaires**. Un polynôme mêlant les deux, comme $\\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$, n'est ni pair ni impair — et c'est précisément pour cela que la composition avec la valeur absolue est intéressante.\n\n**La conséquence graphique.** La courbe d'une fonction **paire** admet l'**axe des ordonnées** pour axe de symétrie. Celle d'une fonction **impaire** admet l'**origine** pour centre de symétrie.\n\n**Le gain pratique.** On étudie la fonction sur la moitié positive du domaine, puis on complète par symétrie. Variations, extremums, courbe : tout se déduit.\n\n**Attention à la troisième possibilité.** Une fonction peut n'être **ni paire ni impaire**, et c'est le cas le plus fréquent. Pour le montrer, un seul contre-exemple suffit : trouver un $x$ tel que $g(-x) \\neq g(x)$ **et** $g(-x) \\neq -g(x)$.",
+   "formule_principale": "g \\text{ paire} \\iff D_{g} \\text{ symétrique et } \\forall x \\in D_{g},\\ g(-x) = g(x)",
+   "variantes": [
+    {
+     "nom": "Démontrer qu'une fonction est impaire",
+     "quand_utiliser": "Quand on soupçonne une symétrie par rapport à l'origine",
+     "contenu_markdown": "Même première condition sur le domaine, puis on vérifie\n\n$$g(-x) = -g(x)$$\n\nUne conséquence à connaître : si $0$ appartient au domaine d'une fonction impaire, alors $g(0) = -g(0)$, donc $g(0) = 0$. La courbe passe nécessairement par l'origine.\n\nC'est un test rapide : si $g(0) \\neq 0$, la fonction ne peut pas être impaire, et le calcul est inutile."
+    },
+    {
+     "nom": "Symétrie par rapport à une droite verticale quelconque",
+     "quand_utiliser": "Quand l'axe de symétrie n'est pas l'axe des ordonnées",
+     "contenu_markdown": "La courbe de $g$ admet la droite d'équation $x = a$ pour axe de symétrie si\n\n$$g(a+h) = g(a-h) \\qquad \\text{pour tout } h \\text{ tel que } a \\pm h \\in D_{g}$$\n\nLa parité en est le cas particulier $a = 0$.\n\nC'est cette propriété qui justifie que toute parabole est symétrique par rapport à la droite $x = -\\dfrac{b}{2a}$, sans être paire pour autant."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit $f$ définie sur $[0\\,;\\,6]$ et $g$ définie de $[-6\\,;\\,6]$ vers $\\mathbb{R}$ par $g(x) = f\\left(\\left|x\\right|\\right)$. Justifier que $g$ est une fonction paire. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Écrire l'ensemble de définition",
+     "justification": "Il est donné par l'énoncé",
+     "resultat_markdown": "$D_{g} = [-6\\,;\\,6]$"
+    },
+    {
+     "numero": 2,
+     "action": "Partir d'un élément du domaine",
+     "justification": "Première condition à vérifier : la symétrie",
+     "resultat_markdown": "Soit $x \\in [-6\\,;\\,6]$, c'est-à-dire $-6 \\leqslant x \\leqslant 6$"
+    },
+    {
+     "numero": 3,
+     "action": "Multiplier par $-1$",
+     "justification": "La multiplication par un nombre négatif inverse le sens des deux inégalités",
+     "resultat_markdown": "$-6 \\leqslant -x \\leqslant 6$, c'est-à-dire $-x \\in [-6\\,;\\,6]$"
+    },
+    {
+     "numero": 4,
+     "action": "Conclure sur la symétrie du domaine",
+     "justification": "Tout élément a son opposé dans le domaine",
+     "resultat_markdown": "$D_{g}$ est symétrique par rapport à $0$"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer $g(-x)$",
+     "justification": "On applique la définition de $g$ au point $-x$",
+     "resultat_markdown": "$g(-x) = f\\left(\\left|-x\\right|\\right)$"
+    },
+    {
+     "numero": 6,
+     "action": "Utiliser la propriété de la valeur absolue",
+     "justification": "Pour tout réel $x$, $\\left|-x\\right| = \\left|x\\right|$ : un nombre et son opposé ont la même distance à zéro",
+     "resultat_markdown": "$g(-x) = f\\left(\\left|x\\right|\\right)$"
+    },
+    {
+     "numero": 7,
+     "action": "Reconnaître $g(x)$",
+     "justification": "C'est exactement la définition de $g$",
+     "resultat_markdown": "$g(-x) = g(x)$ pour tout $x \\in [-6\\,;\\,6]$"
+    },
+    {
+     "numero": 8,
+     "action": "Conclure",
+     "justification": "Les deux conditions de la définition sont vérifiées",
+     "resultat_markdown": "$g$ est une fonction **paire**, et sa courbe admet l'axe des ordonnées pour axe de symétrie"
+    }
+   ],
+   "conclusion_markdown": "La démonstration tient en huit lignes, dont quatre pour la symétrie du domaine — la partie que presque tout le monde saute. Retiens surtout la portée du résultat : la parité de $g$ est ce qui permettra, à la question suivante, de construire sa courbe **sans aucun calcul**, par simple symétrie de celle de $f$. Elle explique aussi rétrospectivement le point anguleux en $0$ : les deux demi-tangentes, images l'une de l'autre par la symétrie, ont des coefficients directeurs opposés."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Oublier de vérifier la symétrie de l'ensemble de définition",
+     "pourquoi_faux": "C'est la moitié de la définition. Une fonction vérifiant $g(-x) = g(x)$ mais définie sur $[0\\,;\\,6]$ n'est pas paire : $g(-1)$ n'existe pas, et l'égalité ne peut même pas être testée.",
+     "correction_markdown": "Écris les deux lignes : partir de $-6 \\leqslant x \\leqslant 6$, multiplier par $-1$, conclure. C'est une omission que les correcteurs relèvent systématiquement."
+    },
+    {
+     "erreur_markdown": "Ne pas inverser les inégalités en multipliant par $-1$",
+     "pourquoi_faux": "Multiplier une inégalité par un nombre négatif **inverse** son sens. Écrire « $-6 \\leqslant x \\leqslant 6$ donc $6 \\leqslant -x \\leqslant -6$ » produit un encadrement absurde, dont les bornes sont dans le mauvais ordre.",
+     "correction_markdown": "Après multiplication, réordonne : $-6 \\leqslant -x \\leqslant 6$. Et vérifie sur un exemple : $x = 4$ donne $-x = -4$, qui appartient bien à $[-6\\,;\\,6]$."
+    },
+    {
+     "erreur_markdown": "Confondre $\\left|-x\\right|$ et $-\\left|x\\right|$",
+     "pourquoi_faux": "$\\left|-x\\right| = \\left|x\\right|$ est toujours **positif**, tandis que $-\\left|x\\right|$ est toujours **négatif**. La confusion donnerait $g(-x) = f\\left(-\\left|x\\right|\\right)$, quantité qui n'est même pas définie ici puisque $f$ n'existe que sur $[0\\,;\\,6]$.",
+     "correction_markdown": "Le signe moins est **à l'intérieur** de la valeur absolue : il disparaît. Vérifie numériquement : $\\left|-3\\right| = 3 = \\left|3\\right|$."
+    },
+    {
+     "erreur_markdown": "Vérifier la parité sur un ou deux exemples numériques",
+     "pourquoi_faux": "Constater que $g(-2) = g(2)$ ne prouve rien : la définition exige l'égalité pour **tout** $x$ du domaine. Une vérification numérique est un contrôle, jamais une démonstration.",
+     "correction_markdown": "Raisonne littéralement, avec un $x$ quelconque. Garde les valeurs numériques pour vérifier ton résultat, pas pour l'établir."
+    },
+    {
+     "erreur_markdown": "Croire que toute fonction est paire ou impaire",
+     "pourquoi_faux": "La plupart des fonctions ne sont **ni l'une ni l'autre**. Ici, $f(x) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$ mêle une puissance paire et une puissance impaire : elle n'est ni paire ni impaire. C'est justement la composition avec la valeur absolue qui **fabrique** la parité.",
+     "correction_markdown": "Repère les puissances : un polynôme n'est pair que s'il ne contient que des exposants pairs. Sinon, cherche un contre-exemple pour montrer qu'il n'est ni pair ni impair."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Étudier la parité des fonctions suivantes, définies sur $\\mathbb{R}$ sauf mention contraire : $p(x) = 3x^{4} - 2x^{2} + 7$ ; $q(x) = x^{3} - 5x$ ; $r(x) = x^{2} + x$ ; $s(x) = \\dfrac{1}{x^{2}+1}$.",
+     "solution_markdown": "**La fonction $p$.**\n\nDomaine $\\mathbb{R}$, symétrique par rapport à $0$.\n\n$$p(-x) = 3(-x)^{4} - 2(-x)^{2} + 7 = 3x^{4} - 2x^{2} + 7 = p(x)$$\n\n(Les exposants sont pairs, donc les signes moins disparaissent.)\n\n**$p$ est paire.**\n\n**La fonction $q$.**\n\nDomaine $\\mathbb{R}$, symétrique.\n\n$$q(-x) = (-x)^{3} - 5(-x) = -x^{3} + 5x = -\\left(x^{3} - 5x\\right) = -q(x)$$\n\n**$q$ est impaire.**\n\n*Contrôle :* $q(0) = 0$, ce qui est nécessaire pour une fonction impaire définie en $0$. Conforme.\n\n**La fonction $r$.**\n\nDomaine $\\mathbb{R}$, symétrique.\n\n$$r(-x) = x^{2} - x$$\n\nComparons à $r(x) = x^{2} + x$ et à $-r(x) = -x^{2} - x$.\n\nPrenons $x = 1$ : $r(1) = 2$, $r(-1) = 0$, $-r(1) = -2$.\n\nOn a $r(-1) = 0 \\neq 2 = r(1)$ et $r(-1) = 0 \\neq -2 = -r(1)$.\n\n**$r$ n'est ni paire ni impaire.** Un seul contre-exemple suffit à l'établir.\n\n**La fonction $s$.**\n\nLe dénominateur $x^{2}+1$ ne s'annule jamais, donc $D_{s} = \\mathbb{R}$, symétrique.\n\n$$s(-x) = \\dfrac{1}{(-x)^{2}+1} = \\dfrac{1}{x^{2}+1} = s(x)$$\n\n**$s$ est paire.**\n\n**La règle générale pour les polynômes.** Un polynôme est pair si et seulement si il ne contient que des exposants **pairs** ; impair, seulement des exposants **impairs**. Le terme constant compte comme un exposant $0$, qui est pair. Un polynôme mêlant les deux types n'est ni pair ni impair.\n\n*Vérification :* $p$ contient $x^{4}$, $x^{2}$ et $x^{0}$ : tous pairs. $q$ contient $x^{3}$ et $x^{1}$ : tous impairs. $r$ contient $x^{2}$ et $x^{1}$ : mélangés. Conforme aux trois résultats."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $g$ définie par $g(x) = \\dfrac{x^{2}-1}{\\left|x\\right|+2}$. Déterminer son ensemble de définition, montrer qu'elle est paire, puis expliquer comment cette propriété simplifie son étude.",
+     "solution_markdown": "**Étape 1 - l'ensemble de définition.**\n\nLe dénominateur $\\left|x\\right| + 2$ est toujours supérieur ou égal à $2$, puisqu'une valeur absolue est positive. Il ne s'annule donc jamais :\n\n$$D_{g} = \\mathbb{R}$$\n\n**Étape 2 - la symétrie du domaine.**\n\n$\\mathbb{R}$ est symétrique par rapport à $0$ : si $x \\in \\mathbb{R}$, alors $-x \\in \\mathbb{R}$. Condition vérifiée.\n\n**Étape 3 - calculer $g(-x)$.**\n\n$$g(-x) = \\dfrac{(-x)^{2}-1}{\\left|-x\\right|+2}$$\n\nAu numérateur, $(-x)^{2} = x^{2}$.\n\nAu dénominateur, $\\left|-x\\right| = \\left|x\\right|$.\n\n$$g(-x) = \\dfrac{x^{2}-1}{\\left|x\\right|+2} = g(x)$$\n\n**Étape 4 - conclure.**\n\nLes deux conditions étant vérifiées, **$g$ est paire**. Sa courbe admet l'axe des ordonnées pour axe de symétrie.\n\n**Étape 5 - le gain pour l'étude.**\n\nLa parité permet de restreindre toute l'étude à $[0\\,;\\,+\\infty[$, puis de compléter par symétrie :\n\n1. **Expression simplifiée.** Sur $[0\\,;\\,+\\infty[$, on a $\\left|x\\right| = x$, donc\n\n$$g(x) = \\dfrac{x^{2}-1}{x+2}$$\n\nLa valeur absolue disparaît, et la fonction devient une fraction rationnelle ordinaire, bien plus commode à dériver.\n\n2. **Variations.** Celles obtenues sur $[0\\,;\\,+\\infty[$ se transposent sur $]-\\infty\\,;\\,0]$ **en sens inverse** : si $g$ croît sur $[a\\,;\\,b]$ avec $a \\geqslant 0$, alors elle décroît sur $[-b\\,;\\,-a]$.\n\n3. **Extremums.** Un minimum en $x_{0} > 0$ s'accompagne d'un minimum de **même valeur** en $-x_{0}$.\n\n4. **Courbe.** On trace la moitié droite, puis on la symétrise par rapport à l'axe des ordonnées.\n\n5. **Limites.** $\\lim_{x \\to -\\infty} g(x) = \\lim_{x \\to +\\infty} g(x)$, une seule limite à calculer.\n\n**En pratique, le travail est divisé par deux.**\n\n**Contrôle numérique.** $g(1) = \\dfrac{0}{3} = 0$ et $g(-1) = \\dfrac{0}{3} = 0$. Puis $g(2) = \\dfrac{3}{4}$ et $g(-2) = \\dfrac{3}{4}$. Conforme.\n\n**Remarque.** La parité est ici **fabriquée** par la valeur absolue au dénominateur. Sans elle, la fonction $\\dfrac{x^{2}-1}{x+2}$ n'est ni paire ni impaire, et admet même une asymptote verticale en $x = -2$ que la version avec valeur absolue n'a pas."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Démontrer que toute fonction $f$ définie sur $\\mathbb{R}$ s'écrit de manière **unique** comme la somme d'une fonction paire et d'une fonction impaire. Appliquer à $f(x) = x^{3} + 2x^{2} - x + 5$, puis à $f(x) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$.",
+     "solution_markdown": "**Première partie - l'existence.**\n\n**Étape 1 - poser les candidats.**\n\nSupposons que $f = p + i$ avec $p$ paire et $i$ impaire. Alors pour tout réel $x$ :\n\n$$f(x) = p(x) + i(x)$$\n\n$$f(-x) = p(-x) + i(-x) = p(x) - i(x)$$\n\n**Étape 2 - résoudre le système.**\n\nEn additionnant les deux lignes :\n\n$$f(x) + f(-x) = 2p(x) \\qquad \\Longrightarrow \\qquad p(x) = \\dfrac{f(x)+f(-x)}{2}$$\n\nEn soustrayant :\n\n$$f(x) - f(-x) = 2i(x) \\qquad \\Longrightarrow \\qquad i(x) = \\dfrac{f(x)-f(-x)}{2}$$\n\n**Étape 3 - vérifier que ces fonctions conviennent.**\n\nParité de $p$ :\n\n$$p(-x) = \\dfrac{f(-x)+f(x)}{2} = p(x)$$\n\nL'addition étant commutative, l'égalité est immédiate. **$p$ est paire.**\n\nImparité de $i$ :\n\n$$i(-x) = \\dfrac{f(-x)-f(x)}{2} = -\\dfrac{f(x)-f(-x)}{2} = -i(x)$$\n\n**$i$ est impaire.**\n\nEt leur somme :\n\n$$p(x) + i(x) = \\dfrac{f(x)+f(-x)}{2} + \\dfrac{f(x)-f(-x)}{2} = \\dfrac{2f(x)}{2} = f(x)$$\n\n**L'existence est établie.**\n\n**Seconde partie - l'unicité.**\n\nLe raisonnement de l'étape 2 montre que **si** une telle décomposition existe, **alors** $p$ et $i$ sont nécessairement données par ces formules. Il n'y a donc pas d'autre choix possible : la décomposition est unique.\n\n**Troisième partie - première application.**\n\nSoit $f(x) = x^{3} + 2x^{2} - x + 5$.\n\n$$f(-x) = -x^{3} + 2x^{2} + x + 5$$\n\n**Partie paire :**\n\n$$p(x) = \\dfrac{\\left(x^{3}+2x^{2}-x+5\\right) + \\left(-x^{3}+2x^{2}+x+5\\right)}{2} = \\dfrac{4x^{2}+10}{2} = 2x^{2}+5$$\n\n**Partie impaire :**\n\n$$i(x) = \\dfrac{\\left(x^{3}+2x^{2}-x+5\\right) - \\left(-x^{3}+2x^{2}+x+5\\right)}{2} = \\dfrac{2x^{3}-2x}{2} = x^{3}-x$$\n\n**Vérification :** $2x^{2}+5+x^{3}-x = x^{3}+2x^{2}-x+5$. Conforme.\n\n**Observation.** Pour un polynôme, la décomposition consiste simplement à **séparer les exposants pairs des exposants impairs**. Le calcul par les formules n'est qu'une manière de le formaliser.\n\n**Quatrième partie - seconde application.**\n\nSoit $f(x) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$, la fonction du Probatoire 2014.\n\nEn séparant selon la parité des exposants :\n\n$$p(x) = \\dfrac{1}{2}x^{2} + 9 \\qquad ; \\qquad i(x) = -\\dfrac{3}{2}x$$\n\n**Interprétation du point anguleux.** Rappelons que $g(x) = f\\left(\\left|x\\right|\\right)$. Décomposons :\n\n$$g(x) = p\\left(\\left|x\\right|\\right) + i\\left(\\left|x\\right|\\right) = \\left(\\dfrac{1}{2}x^{2} + 9\\right) - \\dfrac{3}{2}\\left|x\\right|$$\n\nLa partie paire, $\\dfrac{1}{2}x^{2}+9$, est **inchangée** par la valeur absolue : c'est un polynôme parfaitement dérivable.\n\nLa partie impaire, en revanche, devient $-\\dfrac{3}{2}\\left|x\\right|$ : c'est un multiple de la fonction valeur absolue, qui n'est pas dérivable en $0$.\n\n**Conclusion.** Le point anguleux de $g$ en $0$ vient **entièrement de la partie impaire de $f$**. Si $f$ avait été paire — c'est-à-dire si $i$ avait été nulle — alors $g$ aurait coïncidé avec $f$ et aurait été partout dérivable.\n\n**Le lien avec le critère $f'(0) = 0$.** La dérivée de la partie paire s'annule toujours en $0$ ; celle de la partie impaire, jamais, sauf si cette partie est nulle. Donc $f'(0) = i'(0)$, et le critère « $g$ dérivable en $0$ si et seulement si $f'(0) = 0$ » revient exactement à dire que la partie impaire de $f$ a une dérivée nulle en $0$.\n\n**Ce qu'il faut retenir.** La décomposition paire-impaire n'est pas un exercice formel : elle **explique** le comportement de $f\\left(\\left|x\\right|\\right)$. La partie paire traverse la transformation sans dommage, la partie impaire se replie et fabrique le coin."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Une fonction est paire si son domaine est symétrique par rapport à $0$ **et** si $g(-x) = g(x)$ partout.",
+    "N'oublie jamais la première condition : c'est l'omission la plus sanctionnée.",
+    "Pour démontrer la symétrie du domaine, multiplie l'encadrement par $-1$ en **inversant** les inégalités.",
+    "$\\left|-x\\right| = \\left|x\\right|$ : c'est ce qui rend toute fonction $f\\left(\\left|x\\right|\\right)$ paire.",
+    "Ne confonds pas $\\left|-x\\right|$, toujours positif, et $-\\left|x\\right|$, toujours négatif.",
+    "Un polynôme est pair s'il ne contient que des exposants pairs, impair s'il n'en contient que d'impairs.",
+    "La plupart des fonctions ne sont ni paires ni impaires : un seul contre-exemple suffit à le montrer.",
+    "Une vérification numérique est un contrôle, jamais une démonstration : raisonne littéralement.",
+    "Courbe d'une fonction paire : symétrique par rapport à l'axe des ordonnées. Impaire : symétrique par rapport à l'origine.",
+    "Une fonction impaire définie en $0$ vérifie nécessairement $g(0) = 0$ : test rapide.",
+    "La parité divise l'étude par deux : on travaille sur les positifs, on complète par symétrie."
+   ]
+  }
+ ]
+}

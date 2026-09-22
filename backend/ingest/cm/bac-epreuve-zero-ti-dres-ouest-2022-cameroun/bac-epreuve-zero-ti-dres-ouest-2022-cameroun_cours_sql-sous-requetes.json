@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-sql-sous-requetes-tle-ti",
+  "meta": {
+    "titre": "Les sous-requêtes en SQL",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "sous-requete",
+      "AVG",
+      "comparaison a un agregat"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex2-q4.5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment comparer chaque appartement à la moyenne de TOUS les appartements, alors que cette moyenne elle-même doit être calculée par une requête ? La réponse SQL consiste à imbriquer une requête à l'intérieur d'une autre : c'est la sous-requête, l'un des outils les plus puissants, et les plus redoutés, du langage SQL."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une requête SQL avec WHERE et une fonction d'agrégation comme AVG.",
+        "Connaître la différence entre GROUP BY (moyenne par groupe) et une moyenne générale sur toute la table."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une sous-requête comme valeur unique",
+      "contenu_markdown": "Une sous-requête est une requête SQL complète, placée entre parenthèses, à l'endroit où l'on attend une valeur. Lorsqu'elle est utilisée après un opérateur de comparaison (`>`, `<`, `=`), elle doit impérativement renvoyer une seule valeur, typiquement le résultat d'une fonction d'agrégation calculée sur l'ensemble d'une table, sans clause GROUP BY. La requête principale compare alors chaque ligne à cette valeur unique, calculée une fois pour toutes avant la comparaison.",
+      "formule_principale": "SELECT ... FROM table WHERE colonne > (SELECT AVG(colonne) FROM table);"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui liste le nom des représentants et la référence des appartements dont le prix de vente dépasse la moyenne générale des prix de vente.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la sous-requête qui calcule la moyenne générale",
+          "justification": "« La moyenne des prix de vente » sans précision de groupe signale une moyenne calculée sur toute la table, sans GROUP BY.",
+          "resultat_markdown": "`(SELECT AVG(pxvente) FROM APPARTEMENT)`"
+        },
+        {
+          "numero": 2,
+          "action": "Comparer chaque appartement à cette moyenne",
+          "justification": "La sous-requête renvoie une seule valeur : elle peut être utilisée directement après un `>`.",
+          "resultat_markdown": "`WHERE A.pxvente > (SELECT AVG(pxvente) FROM APPARTEMENT)`"
+        },
+        {
+          "numero": 3,
+          "action": "Joindre pour obtenir le nom du représentant",
+          "justification": "Le nom du représentant n'est pas dans APPARTEMENT : il faut joindre REPRESENTANT pour l'afficher.",
+          "resultat_markdown": "```sql\nSELECT R.nomrep, A.ref\nFROM APPARTEMENT A\nJOIN REPRESENTANT R ON A.coderep = R.coderep\nWHERE A.pxvente > (SELECT AVG(pxvente) FROM APPARTEMENT);\n```"
+        }
+      ],
+      "conclusion_markdown": "La sous-requête calcule une moyenne générale unique, la requête principale, complétée d'une jointure, compare chaque appartement à cette valeur de référence."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ajouter un GROUP BY dans la sous-requête de la moyenne générale",
+          "pourquoi_faux": "Un GROUP BY produirait une moyenne par groupe (par secteur, par exemple), donc plusieurs valeurs : la comparaison avec `>` échouerait, cet opérateur exigeant une valeur unique en face de lui.",
+          "correction_markdown": "Vérifie que ta sous-requête, utilisée après `>`, `<` ou `=`, ne comporte aucun GROUP BY : elle doit renvoyer une seule valeur, jamais plusieurs lignes."
+        },
+        {
+          "erreur_markdown": "Confondre cette moyenne générale avec la moyenne par secteur de l'exercice précédent",
+          "pourquoi_faux": "Les deux calculs utilisent la même fonction AVG, mais répondent à des questions différentes : une moyenne par secteur (avec GROUP BY) et une moyenne unique sur toute la table (sans GROUP BY) ne sont pas interchangeables.",
+          "correction_markdown": "Relis toujours l'énoncé : « la moyenne » au singulier, sans précision de groupe, signale une moyenne générale sans GROUP BY."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui liste les appartements dont la superficie dépasse la superficie moyenne de tous les appartements.",
+          "solution_markdown": "```sql\nSELECT *\nFROM APPARTEMENT\nWHERE superficie > (SELECT AVG(superficie) FROM APPARTEMENT);\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrivez la requête qui affiche les appartements dont le prix de vente est égal au prix de vente maximum de toute la table.",
+          "solution_markdown": "```sql\nSELECT *\nFROM APPARTEMENT\nWHERE pxvente = (SELECT MAX(pxvente) FROM APPARTEMENT);\n```\nLa sous-requête `(SELECT MAX(pxvente) FROM APPARTEMENT)` renvoie le prix le plus élevé de toute la table, une valeur unique ; la requête principale ne conserve que l'appartement, ou les appartements, dont le prix correspond exactement à cette valeur maximale."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui liste les représentants (nomrep, prenomrep) qui gèrent un nombre d'appartements supérieur au nombre moyen d'appartements gérés par représentant.",
+          "solution_markdown": "```sql\nSELECT R.nomrep, R.prenomrep\nFROM REPRESENTANT R\nJOIN APPARTEMENT A ON R.coderep = A.coderep\nGROUP BY R.coderep, R.nomrep, R.prenomrep\nHAVING COUNT(A.ref) > (\n  SELECT AVG(nb) FROM (\n    SELECT COUNT(*) AS nb\n    FROM APPARTEMENT\n    GROUP BY coderep\n  ) AS comptage_par_representant\n);\n```\nCette requête combine deux niveaux d'agrégation. Le sous-total interne (la sous-requête imbriquée nommée `comptage_par_representant`) calcule, pour chaque représentant, son nombre d'appartements gérés via un premier GROUP BY. La sous-requête englobante calcule ensuite la moyenne de ces sous-totaux, obtenant ainsi le nombre moyen d'appartements par représentant sur l'ensemble de l'agence. La requête principale regroupe enfin les appartements par représentant (deuxième GROUP BY) et ne conserve, grâce à HAVING, que les représentants dont le nombre d'appartements gérés dépasse cette moyenne calculée en amont. Ce niveau d'imbrication à deux étages illustre la puissance des sous-requêtes pour répondre à des questions de gestion qui comparent un détail à un agrégat lui-même construit à partir d'autres agrégats."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une sous-requête est une requête complète, entre parenthèses, utilisée là où l'on attend une valeur.",
+        "Après un opérateur de comparaison (`>`, `<`, `=`), la sous-requête doit renvoyer une seule valeur : jamais de GROUP BY dans ce cas précis.",
+        "« La moyenne », sans précision de groupe, signale une moyenne générale à calculer sans GROUP BY, à ne pas confondre avec une moyenne par catégorie.",
+        "Au BAC, toute comparaison entre une ligne et un agrégat global (« supérieur à la moyenne », « égal au maximum ») est le signal d'une sous-requête à écrire."
+      ]
+    }
+  ]
+}

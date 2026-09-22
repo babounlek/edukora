@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-denombrement-principe-multiplicatif-premiere-a",
+  "meta": {
+    "titre": "Dénombrement par principe multiplicatif",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Dénombrement",
+    "duree_estimee_min": 20,
+    "tags": [
+      "principe multiplicatif",
+      "dénombrement",
+      "cas exclus"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-MATHS-2000-CM",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2000 (Cameroun, MINEDUC-OBC)",
+    "correction_id": null,
+    "exercice_numero": "B",
+    "rappel_id": "rdm-probatoire-a-maths-2000-officiel-cameroun-exB-qII.1-1",
+    "rappels_lies": [
+      "rdm-probatoire-a-maths-2000-officiel-cameroun-exB-qII.2-1"
+    ]
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de plaques d'immatriculation différentes peut-on créer ? Combien de mots de passe possibles avec certaines contraintes ? Toutes ces questions se résolvent avec un seul outil : le principe multiplicatif. Il suffit de décomposer l'objet à compter en une suite d'étapes indépendantes et de multiplier le nombre de choix à chaque étape."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Multiplication d'entiers",
+        "Puissances d'un nombre entier",
+        "Lecture attentive d'un énoncé pour repérer les positions fixées et les positions libres"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le principe multiplicatif",
+      "contenu_markdown": "Si un objet se construit par une succession de $k$ choix indépendants, offrant respectivement $n_1, n_2, \\ldots, n_k$ possibilités, le nombre total d'objets possibles est le produit $n_1\\times n_2\\times\\cdots\\times n_k$. Quand un ou plusieurs cas sont explicitement exclus par l'énoncé (une valeur interdite, une configuration impossible), on calcule d'abord le total sans restriction, puis on retranche le nombre de cas exclus, à condition que ces cas exclus soient effectivement comptés dans le total de départ.",
+      "formule_principale": "\\text{nombre total} = n_1\\times n_2\\times\\cdots\\times n_k",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un numéro d'immatriculation comporte une province fixée, une série (lettre) fixée, et une suite de 4 chiffres différente de 0000. Calculer le nombre de véhicules possibles.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les positions fixées et les positions libres",
+          "justification": "La province et la série sont imposées par l'énoncé ; seule la suite de 4 chiffres varie.",
+          "resultat_markdown": "4 positions libres, chacune avec 10 valeurs possibles (0 à 9)"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le principe multiplicatif",
+          "justification": "Les 4 chiffres sont choisis indépendamment, avec répétition autorisée.",
+          "resultat_markdown": "$10\\times10\\times10\\times10=10^4=10\\,000$"
+        },
+        {
+          "numero": 3,
+          "action": "Retrancher le cas explicitement exclu",
+          "justification": "L'énoncé exclut la suite 0000, qui fait partie des $10\\,000$ suites comptées.",
+          "resultat_markdown": "$10\\,000-1=9\\,999$"
+        }
+      ],
+      "conclusion_markdown": "Il y a $9\\,999$ véhicules possibles pour cette province et cette série."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de retrancher un cas explicitement exclu par l'énoncé",
+          "pourquoi_faux": "Le total obtenu par le principe multiplicatif compte tous les cas, y compris ceux que l'énoncé interdit explicitement.",
+          "correction_markdown": "Toujours relire l'énoncé pour repérer une exclusion, et la retrancher en toute fin de calcul."
+        },
+        {
+          "erreur_markdown": "Retrancher un cas déjà rendu impossible par une autre contrainte",
+          "pourquoi_faux": "Si une position est déjà fixée à une valeur non nulle, une suite qui commencerait par 0000 est déjà impossible : retrancher encore reviendrait à soustraire un cas qui n'a jamais été compté.",
+          "correction_markdown": "Vérifier si le cas exclu appartient réellement à l'ensemble compté avant de le retrancher."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un code secret comporte 3 chiffres, chacun de 0 à 9, sans restriction. Combien de codes différents existe-t-il ?",
+          "solution_markdown": "3 positions libres, 10 valeurs chacune : $10\\times10\\times10=1\\,000$ codes possibles."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un code secret comporte 4 chiffres, tous différents de 0000 et de 1234. Combien de codes différents sont possibles ?",
+          "solution_markdown": "Total sans restriction : $10^4=10\\,000$. Deux cas explicitement exclus (0000 et 1234), tous deux comptés dans ce total : $10\\,000-2=9\\,998$ codes possibles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une plaque comporte 2 lettres (parmi 26) suivies de 3 chiffres, le premier chiffre ne pouvant pas être 0. Combien de plaques différentes existe-t-il ?",
+          "solution_markdown": "Les 2 lettres offrent $26\\times26$ possibilités. Le premier chiffre a 9 valeurs possibles (1 à 9), les deux suivants 10 chacun : $9\\times10\\times10$. Par principe multiplicatif : $26\\times26\\times9\\times10\\times10=26^2\\times900=676\\times900=608\\,400$ plaques possibles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Décompose toujours l'objet à dénombrer en une suite d'étapes indépendantes avant de multiplier.",
+        "Le nombre de choix à chaque étape se lit directement dans l'énoncé : positions fixées (1 seul choix) ou libres (plusieurs valeurs possibles).",
+        "Une exclusion explicite se retranche seulement si le cas exclu fait réellement partie du total compté.",
+        "Vérifier si une position déjà fixée rend une exclusion automatiquement impossible évite de retrancher un cas à tort."
+      ]
+    }
+  ]
+}

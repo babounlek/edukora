@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-classer-des-valeurs-avec-la-fonction-rang-dans-un-tableur-tle-toutes-series",
+  "meta": {
+    "titre": "Classer des valeurs avec la fonction RANG dans un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Production d'un document à l'aide d'un tableur - fonctions",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableur",
+      "fonction RANG",
+      "classement",
+      "références absolues",
+      "tri"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-b-c-d-e-informatique-facultatif-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat ESG - Épreuve Pratique Facultative (Sujet N° 1) - Informatique - Cameroun - 2025",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-b-c-d-e-informatique-facultatif-2025-officiel-cameroun-ex1-q8-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Classer des articles du plus vendu au moins vendu, des élèves du premier au dernier, ou des ventes de la meilleure à la pire : ce besoin de classement revient dans presque tous les tableaux de gestion. Trier manuellement une colonne fonctionne pour quelques lignes, mais devient vite risqué dès que le tableau s'allonge ou que les données changent après le tri. Le tableur propose une fonction dédiée, RANG, qui calcule le classement de chaque valeur automatiquement, sans jamais déplacer une seule ligne du tableau d'origine. C'est cette fonction qui a permis, dans l'épreuve de facture, d'obtenir la colonne « Ordre de préférence » sans avoir à trier la liste des articles."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une formule simple dans un tableur (signe égal, références de cellules).",
+        "Connaître la différence entre référence relative (B2) et référence absolue (\\$B\\$2), et savoir utiliser la touche F4 ou taper le symbole \\$ pour fixer une référence.",
+        "Savoir recopier une formule sur plusieurs lignes à l'aide de la poignée de recopie."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fonction RANG",
+      "contenu_markdown": "La fonction RANG renvoie la position d'une valeur au sein d'un ensemble de valeurs comparées, sans modifier l'ordre des lignes du tableau. Elle prend trois arguments : la valeur dont on cherche le rang, la plage complète des valeurs à comparer, et un indicateur d'ordre optionnel. Quand cet indicateur vaut 0 ou n'est pas précisé, le classement est décroissant (la plus grande valeur reçoit le rang 1) ; quand il vaut 1, le classement est croissant (la plus petite valeur reçoit le rang 1). Le point le plus important de cette fonction, et la source la plus fréquente d'erreur, concerne le deuxième argument : la plage de comparaison doit rester strictement identique pour toutes les lignes du tableau, faute de quoi une valeur ne serait comparée qu'à une partie des autres. Or, quand cette formule est recopiée d'une ligne à l'autre, une référence relative se décale automatiquement, ce qui déplacerait la plage de comparaison à chaque ligne. La solution consiste à fixer cette plage en référence absolue, en plaçant le symbole \\$ devant la lettre de colonne et devant le numéro de ligne (par exemple \\$B\\$2:\\$B\\$5) : une référence ainsi fixée reste inchangée quelle que soit la ligne où la formule est recopiée.",
+      "formule_principale": "=RANG(valeur;plage\\_absolue;ordre)",
+      "variantes": [
+        {
+          "nom": "Classement décroissant (du plus grand au plus petit)",
+          "quand_utiliser": "Pour classer les valeurs les plus élevées en premier : quantités les plus vendues, notes les plus hautes, chiffres d'affaires les plus importants.",
+          "contenu_markdown": "=RANG(B2;\\$B\\$2:\\$B\\$5;0) ou =RANG(B2;\\$B\\$2:\\$B\\$5) : le troisième argument à 0, ou absent, produit un classement décroissant."
+        },
+        {
+          "nom": "Classement croissant (du plus petit au plus grand)",
+          "quand_utiliser": "Pour classer les valeurs les plus faibles en premier : temps de course les plus courts, dépenses les plus basses, délais les plus rapides.",
+          "contenu_markdown": "=RANG(B2;\\$B\\$2:\\$B\\$5;1) : le troisième argument à 1 inverse le sens du classement."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une facture liste les quantités vendues de quatre articles : Savon 15 (B2), Parfum 13 (B3), Pommade 14 (B4), Dentifrice 10 (B5). Déterminer, à l'aide de la fonction RANG, l'ordre de préférence de chaque article, l'article le plus vendu recevant le rang 1.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le sens du classement demandé",
+          "justification": "L'article le plus vendu doit recevoir le rang 1 : il s'agit donc d'un classement décroissant (la plus grande quantité en tête), pas croissant.",
+          "resultat_markdown": "Classement décroissant : troisième argument de RANG égal à 0 (ou omis)."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la formule pour le premier article (Savon, en E2)",
+          "justification": "Le premier argument est la valeur à classer (B2), le deuxième la plage complète des quantités à comparer, fixée en référence absolue pour rester stable lors de la recopie.",
+          "resultat_markdown": "En E2 : =RANG(B2;\\$B\\$2:\\$B\\$5;0)"
+        },
+        {
+          "numero": 3,
+          "action": "Recopier la formule vers E3, E4 et E5",
+          "justification": "Grâce aux symboles \\$ dans \\$B\\$2:\\$B\\$5, la plage de comparaison reste identique sur les quatre lignes ; seule la référence relative B2 se décale en B3, B4, B5.",
+          "resultat_markdown": "E3 : =RANG(B3;\\$B\\$2:\\$B\\$5;0). E4 : =RANG(B4;\\$B\\$2:\\$B\\$5;0). E5 : =RANG(B5;\\$B\\$2:\\$B\\$5;0)"
+        },
+        {
+          "numero": 4,
+          "action": "Lire les rangs obtenus",
+          "justification": "Le tableur compare chaque quantité (15, 13, 14, 10) à l'ensemble des quatre quantités et attribue le rang 1 à la plus grande.",
+          "resultat_markdown": "Savon (15) : rang 1. Pommade (14) : rang 2. Parfum (13) : rang 3. Dentifrice (10) : rang 4."
+        }
+      ],
+      "conclusion_markdown": "La colonne « Ordre de préférence » est entièrement calculée sans avoir trié une seule ligne du tableau d'origine : le Savon, article le plus vendu, obtient le rang 1, et le Dentifrice, le moins vendu, le rang 4."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier la formule =RANG(B2;B2:B5;0) sans fixer la plage de comparaison en référence absolue.",
+          "pourquoi_faux": "Lors de la recopie vers E3, la référence relative B2:B5 se décale automatiquement en B3:B6, qui inclut une cellule vide et exclut la première quantité : chaque ligne est alors comparée à une plage différente et fausse, ce qui produit des rangs incohérents ou des erreurs.",
+          "correction_markdown": "Fixer systématiquement la plage de comparaison avec le symbole \\$ des deux côtés (\\$B\\$2:\\$B\\$5) avant de recopier la formule."
+        },
+        {
+          "erreur_markdown": "Se tromper sur le troisième argument (indiquer 1 pour classer le plus vendu en premier).",
+          "pourquoi_faux": "Un troisième argument à 1 produit un classement croissant : la plus petite valeur reçoit alors le rang 1, ce qui inverse complètement le classement attendu et place l'article le moins vendu en tête.",
+          "correction_markdown": "Relire la consigne avant d'écrire la formule : « le plus grand en premier » signifie toujours un classement décroissant, donc un troisième argument à 0 ou omis."
+        },
+        {
+          "erreur_markdown": "Comparer une valeur à une plage qui ne contient pas toutes les lignes concernées, par exemple \\$B\\$2:\\$B\\$4 alors que le tableau va jusqu'à la ligne 5.",
+          "pourquoi_faux": "Le Dentifrice (ligne 5) ne serait alors comparé à aucune autre valeur en dehors de sa propre plage tronquée, ou recevrait un classement incohérent avec les trois premiers articles réellement comparés entre eux.",
+          "correction_markdown": "Vérifier, avant de valider la formule, que la plage de comparaison couvre bien l'intégralité des lignes de données, de la première à la dernière."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une feuille de calcul contient les notes de trois élèves en B2, B3 et B4 : 14, 17 et 9. Écrire la formule à saisir en C2 pour obtenir le rang de l'élève de la ligne 2, l'élève ayant la meilleure note recevant le rang 1, puis donner les trois rangs obtenus après recopie.",
+          "solution_markdown": "### Rappel de méthode\nLe rang d'une valeur au sein d'un ensemble s'obtient avec la fonction RANG, en précisant la valeur, la plage complète fixée en référence absolue, et l'ordre du classement.\n\nEn C2 : =RANG(B2;\\$B\\$2:\\$B\\$4;0), formule à recopier ensuite vers C3 et C4. La meilleure note reçoit le rang 1 : l'élève avec 17 (ligne 3) obtient le rang 1, l'élève avec 14 (ligne 2) le rang 2, l'élève avec 9 (ligne 4) le rang 3."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un tableau de résultats sportifs indique en B2:B6 les temps réalisés par cinq coureurs, en secondes (52, 48, 55, 47, 50). Écrire la formule à saisir en C2 pour classer les coureurs du plus rapide au plus lent (le temps le plus court reçoit le rang 1), puis donner le rang du coureur de la ligne 4.",
+          "solution_markdown": "### Rappel de méthode\nQuand la valeur la plus faible doit recevoir le rang 1 (ici le temps le plus court), le classement est croissant : le troisième argument de la fonction RANG doit valoir 1, et non 0.\n\nEn C2 : =RANG(B2;\\$B\\$2:\\$B\\$6;1), formule à recopier vers C3, C4, C5 et C6. Le coureur de la ligne 4 a réalisé 47 secondes, le temps le plus court de la série : il obtient donc le rang 1."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un tableau de ventes annuelles liste en B2:B7 le chiffre d'affaires de six vendeurs. On souhaite non seulement classer les vendeurs du meilleur au moins bon (colonne C), mais aussi afficher en colonne D la mention « Prime » pour le vendeur classé premier et « - » pour les autres, à l'aide d'une formule combinant RANG et la fonction SI. Écrire les formules à saisir en C2 et en D2, à recopier ensuite sur les six lignes.",
+          "solution_markdown": "### Rappel de méthode\nCombiner deux fonctions consiste à utiliser le résultat de l'une comme condition de l'autre : ici, la fonction SI teste si le rang calculé par RANG est égal à 1 pour décider quel texte afficher.\n\nEn C2 : =RANG(B2;\\$B\\$2:\\$B\\$7;0), qui calcule le rang du chiffre d'affaires de la ligne 2 parmi les six vendeurs, classement décroissant (le plus gros chiffre d'affaires en premier). En D2 : =SI(C2=1;\"Prime\";\"-\"), qui affiche « Prime » si le rang calculé en C2 vaut 1, et « - » dans tous les autres cas. Les deux formules sont ensuite recopiées de la ligne 2 à la ligne 7 : la référence absolue \\$B\\$2:\\$B\\$7 dans la formule RANG garantit que la comparaison reste correcte sur toutes les lignes, et la référence relative C2 dans la formule SI s'adapte à chaque ligne pour tester le rang qui lui correspond."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La fonction RANG calcule la position d'une valeur dans un ensemble sans jamais trier ni déplacer les lignes du tableau.",
+        "Le troisième argument décide du sens du classement : 0 (ou absent) pour la plus grande valeur en premier, 1 pour la plus petite valeur en premier - relis toujours la consigne avant de choisir.",
+        "La plage de comparaison doit impérativement être fixée en référence absolue (\\$B\\$2:\\$B\\$5) avant de recopier la formule, sinon chaque ligne compare la valeur à une plage décalée et fausse.",
+        "RANG se combine naturellement avec d'autres fonctions, comme SI, pour déclencher une action ou un affichage particulier selon le classement obtenu.",
+        "Au BAC comme au BEPC, la fonction RANG est l'une des fonctions de tableur les plus régulièrement demandées dans les épreuves pratiques, sous des habillages variés : ordre de préférence, classement de notes, classement de performances."
+      ]
+    }
+  ]
+}

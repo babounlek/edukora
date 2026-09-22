@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-derouler-a-la-main-l-execution-d-un-algorithme-conditionnel-3e",
+  "meta": {
+    "titre": "Dérouler à la main l'exécution d'un algorithme conditionnel",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : trace d'exécution",
+    "duree_estimee_min": 20,
+    "tags": [
+      "trace d'exécution",
+      "structure conditionnelle",
+      "algorithme",
+      "variables",
+      "affichage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2024-cameroun",
+    "epreuve_titre": "BEPC Informatique - Cameroun, session 2024 (MINESEC-DECC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2024-cameroun-ex2-q4.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Que se passe-t-il si la note vaut 13 ? » Pour répondre, pas besoin d'ordinateur : il suffit de jouer soi-même le rôle de la machine, ligne après ligne. Cette technique s'appelle la trace d'exécution. Elle est demandée à chaque exercice d'algorithmique du BEPC et elle sert aussi, plus tard, à retrouver ses propres erreurs de programmation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme en pseudo-code et reconnaître ses instructions",
+        "Savoir reconnaître une structure conditionnelle Si … Alors … Sinon",
+        "Savoir comparer deux nombres (13 >= 10)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Suivre les instructions dans l'ordre en notant tout ce qui change",
+      "contenu_markdown": "**Dérouler** un algorithme, c'est parcourir ses instructions dans l'ordre en notant, à chaque étape, la valeur de chaque variable et ce qui s'affiche à l'écran.\n\nTrois instructions à savoir interpréter :\n\n- `Ecrire (\"texte\")` : affiche le texte tel quel, sans le modifier ;\n- `Ecrire (variable)` : affiche la **valeur** de la variable, pas son nom ;\n- `Lire (variable)` : la variable reçoit la valeur saisie au clavier.\n\nPour une structure `Si condition Alors ... Sinon ...`, la règle est stricte : on évalue d'abord la condition, on décide si elle est **vraie** ou **fausse**, puis on n'exécute **que la branche correspondante**. L'autre branche est ignorée.\n\nLa présentation attendue est un tableau :\n\n| Étape | Instruction | Valeur des variables | Affichage |\n|---|---|---|---|",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer le résultat après exécution de l'algorithme suivant si Note = 13.\n\n```\nAlgorithme Réussite\nVariable Note : réel ;\nDébut\n    Ecrire (\"saisir une valeur \") ;\n    Lire (Note) ;\n    Si Note > = 10 alors\n        Ecrire (\"vous avez réussi au BEPC\") ;\n    Sinon\n        Ecrire (\"vous avez échoué au BEPC\") ;\nFin\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exécuter la première instruction",
+          "justification": "`Ecrire (\"saisir une valeur \")` affiche un texte fixe, entre guillemets : c'est l'invite adressée à l'utilisateur.",
+          "resultat_markdown": "Affichage : saisir une valeur. La variable Note n'a pas encore de valeur."
+        },
+        {
+          "numero": 2,
+          "action": "Exécuter la lecture",
+          "justification": "`Lire (Note)` range dans la variable Note la valeur saisie au clavier ; l'énoncé impose Note = 13.",
+          "resultat_markdown": "Note = 13."
+        },
+        {
+          "numero": 3,
+          "action": "Évaluer la condition",
+          "justification": "La condition s'écrit Note >= 10. On y remplace Note par sa valeur actuelle.",
+          "resultat_markdown": "$13 \\ge 10$ : la condition est **vraie**."
+        },
+        {
+          "numero": 4,
+          "action": "Choisir la branche à exécuter",
+          "justification": "La condition étant vraie, seule la partie Alors s'exécute ; la partie Sinon est ignorée.",
+          "resultat_markdown": "Branche Alors : `Ecrire (\"vous avez réussi au BEPC\")`."
+        },
+        {
+          "numero": 5,
+          "action": "Donner l'affichage final",
+          "justification": "On rassemble tout ce qui est apparu à l'écran, dans l'ordre.",
+          "resultat_markdown": "L'écran affiche : saisir une valeur, puis **vous avez réussi au BEPC**."
+        }
+      ],
+      "conclusion_markdown": "Avec Note = 13, l'algorithme affiche le message « vous avez réussi au BEPC ». Le message « vous avez échoué au BEPC » n'apparaît jamais dans cette exécution, puisque la branche Sinon n'est pas exécutée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Afficher les deux messages",
+          "pourquoi_faux": "Une structure alternative n'exécute qu'une seule de ses deux branches : c'est précisément son rôle de choisir.",
+          "correction_markdown": "Évalue la condition, écris « vraie » ou « fausse » sur ta copie, puis n'exécute que la branche correspondante."
+        },
+        {
+          "erreur_markdown": "Oublier le message affiché avant la lecture",
+          "pourquoi_faux": "L'instruction Ecrire placée avant Lire produit un affichage réel, même si ce n'est qu'une invite.",
+          "correction_markdown": "Quand la question demande ce qui apparaît à l'écran, reprends toutes les instructions Ecrire exécutées, dans l'ordre."
+        },
+        {
+          "erreur_markdown": "Se tromper sur le cas d'égalité",
+          "pourquoi_faux": "La condition Note >= 10 est vraie quand Note vaut exactement 10 : le symbole >= inclut l'égalité.",
+          "correction_markdown": "Traite toujours à part le cas limite : avec Note = 10, l'élève a réussi ; avec Note = 9,5, il a échoué."
+        },
+        {
+          "erreur_markdown": "Croire que la valeur de Note change après le test",
+          "pourquoi_faux": "Un test lit la variable mais ne la modifie pas ; seules une lecture ou une affectation changent sa valeur.",
+          "correction_markdown": "Dans ton tableau de trace, recopie la même valeur tant qu'aucune instruction ne l'a modifiée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Reprends le même algorithme avec Note = 7. Quel message s'affiche ?",
+          "solution_markdown": "La condition Note >= 10 devient 7 >= 10, ce qui est faux. C'est donc la branche Sinon qui s'exécute et l'écran affiche « vous avez échoué au BEPC », après l'invite « saisir une valeur ». La branche Alors est ignorée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprends le même algorithme avec Note = 10 et justifie soigneusement ta réponse.",
+          "solution_markdown": "La condition est Note >= 10, c'est-à-dire 10 >= 10. Le symbole >= signifie « supérieur ou égal » : l'égalité satisfait donc la condition, qui est vraie. L'algorithme affiche « vous avez réussi au BEPC ». C'est le cas limite à connaître : si l'algorithme avait été écrit avec Note > 10, la condition aurait été fausse pour 10 et l'élève aurait été déclaré en échec, ce qui ne correspond pas à la règle réelle du BEPC."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dresse le tableau de trace complet de l'algorithme suivant pour Note = 8 :\n```\nAlgorithme Rattrapage\nVariable Note, Bonus : réel ;\nDébut\n    Lire (Note) ;\n    Bonus <- 2 ;\n    Note <- Note + Bonus ;\n    Si Note >= 10 Alors\n        Ecrire (\"admis après rattrapage\") ;\n    Sinon\n        Ecrire (\"non admis\") ;\n    Finsi\nFin\n```",
+          "solution_markdown": "| Étape | Instruction | Note | Bonus | Affichage |\n|---|---|---|---|---|\n| 1 | Lire (Note) | 8 | non définie | - |\n| 2 | Bonus <- 2 | 8 | 2 | - |\n| 3 | Note <- Note + Bonus | 10 | 2 | - |\n| 4 | Si Note >= 10 | 10 | 2 | condition vraie |\n| 5 | branche Alors | 10 | 2 | admis après rattrapage |\n\nÉtape 3 en détail : l'affectation calcule d'abord le membre de droite avec les valeurs actuelles, soit 8 + 2 = 10, puis range ce résultat dans Note, dont l'ancienne valeur 8 est perdue. Étape 4 : la condition 10 >= 10 est vraie grâce au cas d'égalité. L'écran affiche donc « admis après rattrapage »."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dérouler un algorithme, c'est jouer le rôle de la machine ligne après ligne, sans rien deviner.",
+        "Présente ta trace dans un tableau instruction / valeur des variables / affichage : c'est la forme attendue et elle t'évite les oublis.",
+        "Dans un Si … Alors … Sinon, une seule branche s'exécute : écris d'abord « condition vraie » ou « condition fausse ».",
+        "Le symbole >= inclut l'égalité : traite toujours le cas limite à part.",
+        "Une affectation calcule d'abord la droite, puis remplace l'ancienne valeur : note bien le changement dans ton tableau.",
+        "Cette question ferme presque toujours l'exercice d'algorithmique du BEPC : elle rapporte les points les plus sûrs de la partie."
+      ]
+    }
+  ]
+}

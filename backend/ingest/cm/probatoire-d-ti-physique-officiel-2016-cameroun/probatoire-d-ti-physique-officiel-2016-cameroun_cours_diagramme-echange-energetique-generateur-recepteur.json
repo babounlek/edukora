@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-diagramme-echange-energetique-generateur-recepteur-premiere-d-ti",
+  "meta": {
+    "titre": "Construction du diagramme d'échange énergétique d'un générateur et d'un récepteur actif",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Électricité - Puissance et énergie électriques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "diagramme d'échange énergétique",
+      "bilan de puissance",
+      "générateur électrique",
+      "récepteur actif"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2016-cameroun",
+    "epreuve_titre": "Épreuve de physique au Probatoire, séries D et TI - 2016 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2016-officiel-cameroun-ex3-qB.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un générateur ne transmet jamais toute l'énergie qu'il produit, et un récepteur ne reçoit jamais toute l'énergie utile sans en perdre une part en chemin. Représenter ces deux pertes sous forme d'un diagramme à flèches rend visible, d'un seul coup d'œil, où va vraiment l'énergie électrique dans chaque dipôle d'un circuit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de Pouillet généralisée dans un circuit série",
+        "Puissance dissipée par effet Joule : $P=R\\times I^2$",
+        "Distinction entre puissance totale, puissance utile et puissance perdue pour un générateur et pour un récepteur actif"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire le diagramme d'échange énergétique",
+      "contenu_markdown": "Le diagramme d'échange énergétique d'un dipôle représente, par des flèches, la puissance qui entre dans le dipôle, celle qui en ressort utilement, et celle qui est perdue par effet Joule à l'intérieur. Pour un générateur (force électromotrice $E$, résistance interne $r$, tension aux bornes $U$), la puissance entrante est la puissance totale produite $P_{totale}=E\\times I$, la puissance perdue est $P_{Joule}=r\\times I^2$, et la puissance utile sortante, transmise au reste du circuit, est $P_{utile}=U\\times I$, avec $U=E-r\\times I$. Pour un récepteur actif comme un électrolyseur ou un moteur (force contre-électromotrice $E'$, résistance interne $r'$, tension à ses bornes $U'$), la puissance entrante est la puissance électrique reçue $P_{reçue}=U'\\times I$, avec $U'=E'+r'\\times I$, la puissance perdue est $P_{Joule}'=r'\\times I^2$, et la puissance utile sortante (convertie en une autre forme d'énergie : chimique, mécanique...) est $P_{utile}'=E'\\times I$. Dans les deux cas, la puissance entrante est toujours égale à la somme de la puissance utile et de la puissance Joule : c'est cette égalité qui permet de vérifier chaque diagramme.",
+      "formula_principale": "P_{entrante} = P_{utile} + P_{Joule}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur ($E=16,25\\,\\text{V}$ ; $r=0,5\\,\\Omega$) et un électrolyseur ($E'=10\\,\\text{V}$ ; $r'=1,5\\,\\Omega$) sont parcourus par un courant $I=0,5\\,\\text{A}$. Établir le diagramme d'échange énergétique de chacun des deux dipôles.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la tension aux bornes du générateur et ses trois puissances",
+          "justification": "$U=E-r\\times I$ ; $P_{totale}=E\\times I$ ; $P_{Joule}=r\\times I^2$ ; $P_{utile}=U\\times I$",
+          "resultat_markdown": "$U=16,25-0,25=16,0\\,\\text{V}$ ; $P_{totale}=8,125\\,\\text{W}$ ; $P_{Joule}=0,125\\,\\text{W}$ ; $P_{utile}=8,0\\,\\text{W}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la tension aux bornes de l'électrolyseur et ses trois puissances",
+          "justification": "$U'=E'+r'\\times I$ ; $P_{reçue}=U'\\times I$ ; $P_{Joule}'=r'\\times I^2$ ; $P_{utile}'=E'\\times I$",
+          "resultat_markdown": "$U'=10+0,75=10,75\\,\\text{V}$ ; $P_{reçue}=5,375\\,\\text{W}$ ; $P_{Joule}'=0,375\\,\\text{W}$ ; $P_{utile}'=5,0\\,\\text{W}$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier chaque diagramme par l'égalité puissance entrante = puissance utile + puissance Joule",
+          "justification": "Contrôle de cohérence obligatoire avant de conclure",
+          "resultat_markdown": "Générateur : $8,0+0,125=8,125\\,\\text{W}$ ✓. Électrolyseur : $5,0+0,375=5,375\\,\\text{W}$ ✓"
+        }
+      ],
+      "conclusion_markdown": "Les deux diagrammes d'échange énergétique sont cohérents : chaque puissance entrante se répartit exactement entre puissance utile et puissance perdue par effet Joule."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $E\\times I$ comme puissance utile du générateur, au lieu de $U\\times I$.",
+          "pourquoi_faux": "$E\\times I$ est la puissance TOTALE produite par le générateur, avant toute perte ; la puissance réellement utile, transmise au reste du circuit, est toujours $U\\times I$, avec $U$ la tension aux bornes (inférieure à $E$ à cause de la chute de tension interne $r\\times I$).",
+          "correction_markdown": "Retiens que la puissance utile d'un générateur se calcule toujours avec la tension à ses bornes $U$, jamais avec sa force électromotrice $E$ directement."
+        },
+        {
+          "erreur_markdown": "Intervertir, pour le récepteur actif, la puissance reçue et la puissance utile, en prenant $E'\\times I$ comme puissance entrante.",
+          "pourquoi_faux": "Un récepteur actif reçoit de l'énergie électrique du circuit ($U'\\times I$, avec $U'>E'$) ; il n'en restitue utilement qu'une partie sous une autre forme ($E'\\times I$), le reste étant perdu par effet Joule dans sa résistance interne.",
+          "correction_markdown": "Pour un récepteur actif, la grandeur entrante est toujours la puissance électrique $U'\\times I$ (avec $U'=E'+r'\\times I$), jamais $E'\\times I$ qui est la puissance utile."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur ($E=6\\,\\text{V}$ ; $r=0,5\\,\\Omega$) débite un courant $I=2\\,\\text{A}$. Calculer $P_{totale}$, $P_{Joule}$ et $P_{utile}$.",
+          "solution_markdown": "$P_{totale}=E\\times I=6\\times2=12\\,\\text{W}$.\n\n$P_{Joule}=r\\times I^2=0,5\\times4=2\\,\\text{W}$.\n\n$P_{utile}=P_{totale}-P_{Joule}=12-2=10\\,\\text{W}$ (on peut vérifier : $U=E-rI=6-1=5\\,\\text{V}$, et $U\\times I=5\\times2=10\\,\\text{W}$, cohérent)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur électrique, récepteur actif ($E'=8\\,\\text{V}$ ; $r'=1\\,\\Omega$), est parcouru par un courant $I=2\\,\\text{A}$. Calculer $P_{reçue}$, $P_{Joule}'$ et $P_{utile}'$ (puissance mécanique).",
+          "solution_markdown": "$U'=E'+r'\\times I=8+2=10\\,\\text{V}$.\n\n$P_{reçue}=U'\\times I=10\\times2=20\\,\\text{W}$.\n\n$P_{Joule}'=r'\\times I^2=1\\times4=4\\,\\text{W}$.\n\n$P_{utile}'=E'\\times I=8\\times2=16\\,\\text{W}$ (vérification : $16+4=20\\,\\text{W}$, cohérent)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un circuit série ne comportant qu'un générateur ($E$, $r$) et un récepteur actif ($E'$, $r'$), sans autre résistor, montrer que la puissance utile sortant du générateur ($U\\times I$) est exactement égale à la puissance reçue par le récepteur actif ($U'\\times I$), et interpréter ce résultat.",
+          "solution_markdown": "En l'absence de tout autre résistor, la tension aux bornes du générateur $U=E-r\\times I$ est directement appliquée aux bornes du récepteur actif, donc $U=U'$ (même tension, car les deux dipôles sont directement reliés par des fils sans résistance).\n\nComme les deux dipôles sont parcourus par le même courant $I$ (montage série), on a immédiatement $U\\times I = U'\\times I$, c'est-à-dire $P_{utile,générateur}=P_{reçue,récepteur}$.\n\nCe résultat traduit une idée physique simple : dans un circuit sans autre élément résistif, toute la puissance électrique utile transmise par le générateur au reste du circuit est intégralement reçue par le récepteur actif - rien ne se perd « en chemin » entre les deux dipôles, puisque le fil de liaison est supposé sans résistance. Toute perte a lieu à l'intérieur même de chaque dipôle, jamais entre eux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le diagramme d'échange énergétique distingue toujours trois puissances : entrante, utile, et perdue par effet Joule.",
+        "Pour un générateur, la puissance utile se calcule avec $U\\times I$ (tension aux bornes), pas avec $E\\times I$ (puissance totale).",
+        "Pour un récepteur actif, la puissance reçue se calcule avec $U'\\times I$, et la puissance utile avec $E'\\times I$ - jamais l'inverse.",
+        "L'égalité $P_{entrante}=P_{utile}+P_{Joule}$ est le test de cohérence à appliquer systématiquement après avoir tracé un diagramme.",
+        "Ce diagramme synthétise en une seule image tous les calculs de puissance d'un exercice de bilan énergétique, et en constitue naturellement la dernière étape."
+      ]
+    }
+  ]
+}

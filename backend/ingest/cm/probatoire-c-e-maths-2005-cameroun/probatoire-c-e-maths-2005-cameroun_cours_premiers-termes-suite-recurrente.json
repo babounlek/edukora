@@ -1,0 +1,191 @@
+{
+ "cours_id": "cours-premiers-termes-suite-recurrente-1ere-ce",
+ "meta": {
+  "titre": "Calculer les premiers termes d'une suite définie par récurrence",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Suites numériques",
+  "duree_estimee_min": 20,
+  "tags": ["suite récurrente", "calcul de termes", "fraction", "point fixe", "conjecture"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VIII"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA4a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Calculer trois termes d'une suite récurrente n'a rien de difficile — c'est trois fois le même calcul. Mais deux réflexes séparent une réponse correcte d'une réponse rentable. Le premier : garder les **fractions** jusqu'au bout, où les erreurs de décimales n'ont pas prise. Le second : **regarder** les valeurs obtenues. Elles augmentent, se resserrent, et convergent vers un nombre déjà rencontré trois questions plus tôt. C'est cette observation que l'énoncé prépare."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir substituer une valeur dans une expression",
+    "Maîtriser l'addition et la division de fractions",
+    "Comprendre le principe d'une définition par récurrence",
+    "Connaître la notion de point fixe d'une fonction"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "De proche en proche, en gardant les fractions",
+   "contenu_markdown": "**La définition par récurrence.** Une suite est définie par récurrence lorsqu'on se donne :\n\n- un **premier terme**, par exemple $u_{0}$ ;\n- une **relation** exprimant chaque terme à partir du précédent, $u_{n+1} = f\\left(u_{n}\\right)$.\n\nChaque terme se calcule donc **de proche en proche** : on ne peut pas obtenir $u_{5}$ sans avoir calculé $u_{1}$, $u_{2}$, $u_{3}$ et $u_{4}$.\n\n**La méthode, en trois gestes.**\n\n1. **Substituer** le terme connu dans la relation.\n2. **Calculer**, en gardant les fractions.\n3. **Répéter** pour le terme suivant.\n\n**Garder les fractions.** C'est le conseil le plus rentable. Les valeurs exactes se manipulent sans perte, alors que les décimales arrondis s'accumulent : trois arrondis successifs peuvent fausser la troisième décimale, et rendre l'observation finale douteuse.\n\n**La division de deux fractions de même dénominateur** se simplifie d'elle-même :\n\n$$\\frac{\\dfrac{a}{d}}{\\dfrac{b}{d}} = \\frac{a}{d} \\times \\frac{d}{b} = \\frac{a}{b}$$\n\nIl suffit donc de diviser les numérateurs. C'est ce qui rend les calculs de cette suite très rapides.\n\n**Reconnaître la fonction associée.** La relation $u_{n+1} = \\dfrac{u_{n}+1}{u_{n}+2}$ s'écrit $u_{n+1} = f\\left(u_{n}\\right)$ avec\n\n$$f(x) = \\frac{x+1}{x+2}$$\n\nqui est précisément la fonction étudiée dans la partie A. Tous les résultats obtenus sur $f$ — variations, points fixes, courbe — s'appliquent donc à la suite.\n\n**Observer les valeurs.** Après le calcul, il faut **regarder** :\n\n- les termes augmentent-ils, diminuent-ils, oscillent-ils ?\n- se resserrent-ils autour d'une valeur ?\n- cette valeur a-t-elle déjà été rencontrée ?\n\nIci, les termes $0$ ; $0{,}5$ ; $0{,}6$ ; $0{,}615$ approchent visiblement $0{,}618$, valeur du **point fixe** $\\dfrac{-1+\\sqrt{5}}{2}$ trouvé à la question 2.a).\n\n**Pourquoi le point fixe ?** Si la suite converge vers $\\ell$ et que $f$ est continue, alors en passant à la limite dans $u_{n+1} = f\\left(u_{n}\\right)$ on obtient $\\ell = f(\\ell)$. La limite est nécessairement un point fixe.\n\n**Le contrôle de vraisemblance.** Les termes doivent rester dans l'ensemble de définition de $f$. Ici tous sont positifs, donc bien supérieurs à $-2$.",
+   "formule_principale": "u_{n+1} = f\\left(u_{n}\\right) \\qquad \\text{avec } u_{0} \\text{ donné}",
+   "variantes": [
+    {
+     "nom": "Suite définie explicitement",
+     "quand_utiliser": "Quand $u_{n}$ s'exprime directement en fonction de $n$",
+     "contenu_markdown": "Une suite peut aussi être définie par une **formule explicite**, du type $u_{n} = g(n)$.\n\nChaque terme se calcule alors **indépendamment** des autres : on obtient $u_{100}$ sans passer par les cent premiers.\n\nC'est la différence essentielle avec une définition par récurrence, où le calcul est nécessairement séquentiel. Transformer une définition récurrente en formule explicite est d'ailleurs l'un des objectifs classiques des exercices sur les suites."
+    },
+    {
+     "nom": "Suite arithmético-géométrique",
+     "quand_utiliser": "Quand $u_{n+1} = a\\,u_{n} + b$",
+     "contenu_markdown": "Ce cas particulier se résout complètement. On cherche le point fixe $\\ell = a\\ell + b$, soit $\\ell = \\dfrac{b}{1-a}$ pour $a \\neq 1$, puis on pose $v_{n} = u_{n} - \\ell$.\n\nLa suite $\\left(v_{n}\\right)$ est alors **géométrique** de raison $a$, ce qui donne $u_{n}$ explicitement.\n\nLa suite étudiée ici n'est pas de ce type — la relation est homographique, non affine — mais l'idée du changement de variable centré sur le point fixe reste la même."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit $\\left(u_{n}\\right)$ la suite définie par $u_{0} = 0$ et $u_{n+1} = \\dfrac{u_{n}+1}{u_{n}+2}$ pour tout entier naturel $n$. Calculer $u_{1}$, $u_{2}$ et $u_{3}$. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Reconnaître la fonction associée",
+     "justification": "La relation s'écrit $u_{n+1} = f\\left(u_{n}\\right)$",
+     "resultat_markdown": "$f(x) = \\dfrac{x+1}{x+2}$, la fonction étudiée dans toute la partie A"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer $u_{1}$",
+     "justification": "On substitue $u_{0} = 0$",
+     "resultat_markdown": "$u_{1} = \\dfrac{0+1}{0+2} = \\dfrac{1}{2}$"
+    },
+    {
+     "numero": 3,
+     "action": "Substituer $u_{1}$ dans la relation",
+     "justification": "On calcule séparément numérateur et dénominateur",
+     "resultat_markdown": "$u_{2} = \\dfrac{\\dfrac{1}{2}+1}{\\dfrac{1}{2}+2} = \\dfrac{\\dfrac{3}{2}}{\\dfrac{5}{2}}$"
+    },
+    {
+     "numero": 4,
+     "action": "Simplifier la division",
+     "justification": "Deux fractions de même dénominateur : il suffit de diviser les numérateurs",
+     "resultat_markdown": "$u_{2} = \\dfrac{3}{5}$"
+    },
+    {
+     "numero": 5,
+     "action": "Substituer $u_{2}$",
+     "justification": "On met au même dénominateur avant de diviser",
+     "resultat_markdown": "$u_{3} = \\dfrac{\\dfrac{3}{5}+\\dfrac{5}{5}}{\\dfrac{3}{5}+\\dfrac{10}{5}} = \\dfrac{\\dfrac{8}{5}}{\\dfrac{13}{5}}$"
+    },
+    {
+     "numero": 6,
+     "action": "Simplifier",
+     "justification": "Même dénominateur $5$ : on divise les numérateurs",
+     "resultat_markdown": "$u_{3} = \\dfrac{8}{13}$"
+    },
+    {
+     "numero": 7,
+     "action": "Rassembler les résultats",
+     "justification": "On donne les valeurs exactes puis approchées",
+     "resultat_markdown": "$u_{1} = \\dfrac{1}{2} = 0{,}5$, $u_{2} = \\dfrac{3}{5} = 0{,}6$, $u_{3} = \\dfrac{8}{13} \\approx 0{,}615$"
+    },
+    {
+     "numero": 8,
+     "action": "Observer la tendance",
+     "justification": "C'est ce que la question prépare",
+     "resultat_markdown": "Les valeurs $0$ ; $0{,}5$ ; $0{,}6$ ; $0{,}615$ **augmentent** en se **resserrant**"
+    },
+    {
+     "numero": 9,
+     "action": "Rapprocher du point fixe",
+     "justification": "La question 2.a) avait trouvé les solutions de $f(x) = x$",
+     "resultat_markdown": "Les termes semblent converger vers $\\dfrac{-1+\\sqrt{5}}{2} \\approx 0{,}618$"
+    }
+   ],
+   "conclusion_markdown": "Les trois termes valent $\\dfrac{1}{2}$, $\\dfrac{3}{5}$ et $\\dfrac{8}{13}$. Deux remarques. D'abord, garde les fractions : les divisions de fractions de même dénominateur se simplifient d'elles-mêmes, et les valeurs restent exactes. Ensuite, regarde les numérateurs et dénominateurs : $1$, $2$ ; $3$, $5$ ; $8$, $13$ — ce sont des nombres de **Fibonacci**. Ce n'est pas un hasard, et cela explique la convergence vers l'inverse du nombre d'or."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Convertir en décimaux à chaque étape",
+     "pourquoi_faux": "Les arrondis s'accumulent. Avec $u_{2} \\approx 0{,}6$ arrondi, on obtient $u_{3} \\approx 0{,}6154$, mais avec un arrondi plus grossier l'écart devient sensible et l'observation finale perd sa netteté.",
+     "correction_markdown": "Garde les fractions jusqu'au bout. Les décimales ne servent qu'à la toute fin, pour observer la tendance."
+    },
+    {
+     "erreur_markdown": "Se tromper dans la division de fractions",
+     "pourquoi_faux": "$\\dfrac{3/2}{5/2}$ vaut $\\dfrac{3}{5}$, pas $\\dfrac{15}{4}$ ni $\\dfrac{3 \\times 5}{2 \\times 2}$. Diviser par une fraction, c'est multiplier par son inverse.",
+     "correction_markdown": "Quand les deux dénominateurs sont égaux, ils se simplifient : il ne reste que le quotient des numérateurs. Vérifie numériquement : $\\dfrac{1{,}5}{2{,}5} = 0{,}6 = \\dfrac{3}{5}$."
+    },
+    {
+     "erreur_markdown": "Croire que la suite est arithmétique ou géométrique",
+     "pourquoi_faux": "Les différences $0{,}5$ ; $0{,}1$ ; $0{,}015$ ne sont pas constantes, et les quotients non plus. La suite n'est ni arithmétique ni géométrique : la relation de récurrence est **homographique**.",
+     "correction_markdown": "Vérifie avant de conclure : calcule deux différences consécutives et deux quotients. Si aucun n'est constant, la suite n'est d'aucun des deux types classiques."
+    },
+    {
+     "erreur_markdown": "Sauter un terme",
+     "pourquoi_faux": "Une suite récurrente se calcule strictement de proche en proche. On ne peut pas obtenir $u_{3}$ directement à partir de $u_{0}$ : il faut passer par $u_{1}$ et $u_{2}$.",
+     "correction_markdown": "Numérote clairement chaque calcul et vérifie que tu utilises bien le terme précédent, pas le premier."
+    },
+    {
+     "erreur_markdown": "Ne pas observer les valeurs obtenues",
+     "pourquoi_faux": "Ce n'est pas une erreur de calcul, mais on manque le sens de la question. Les trois termes calculés préparent la construction graphique et la conjecture sur la limite.",
+     "correction_markdown": "Ajoute une ligne d'observation : « les termes augmentent en se resserrant autour de $0{,}618$, valeur du point fixe trouvé à la question 2.a) »."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Calculer les quatre premiers termes des suites suivantes : $\\left(a_{n}\\right)$ définie par $a_{0} = 1$ et $a_{n+1} = 3a_{n} - 2$ ; $\\left(b_{n}\\right)$ définie par $b_{0} = 2$ et $b_{n+1} = \\dfrac{1}{2}b_{n} + 3$. Décrire le comportement de chacune.",
+     "solution_markdown": "**La suite $\\left(a_{n}\\right)$.**\n\n$$a_{0} = 1$$\n\n$$a_{1} = 3 \\times 1 - 2 = 1$$\n\n$$a_{2} = 3 \\times 1 - 2 = 1$$\n\n$$a_{3} = 1$$\n\n**La suite est constante.**\n\n*Explication :* le point fixe de $f(x) = 3x-2$ vérifie $\\ell = 3\\ell - 2$, soit $2\\ell = 2$, donc $\\ell = 1$. Or $a_{0} = 1$ est précisément ce point fixe : la suite y reste indéfiniment.\n\n*Remarque :* si l'on avait pris $a_{0} = 2$, on obtiendrait $4$, $10$, $28$ — une divergence rapide, car $\\left|f'(\\ell)\\right| = 3 > 1$ rend le point fixe **répulsif**.\n\n**La suite $\\left(b_{n}\\right)$.**\n\n$$b_{0} = 2$$\n\n$$b_{1} = \\dfrac{1}{2} \\times 2 + 3 = 1 + 3 = 4$$\n\n$$b_{2} = \\dfrac{1}{2} \\times 4 + 3 = 2 + 3 = 5$$\n\n$$b_{3} = \\dfrac{1}{2} \\times 5 + 3 = 2{,}5 + 3 = 5{,}5$$\n\n**La suite croît en se resserrant.**\n\n*Le point fixe :* $\\ell = \\dfrac{1}{2}\\ell + 3$, soit $\\dfrac{1}{2}\\ell = 3$, donc $\\ell = 6$.\n\n*Les écarts au point fixe :*\n\n| $n$ | $b_{n}$ | $6 - b_{n}$ |\n|---|---|---|\n| $0$ | $2$ | $4$ |\n| $1$ | $4$ | $2$ |\n| $2$ | $5$ | $1$ |\n| $3$ | $5{,}5$ | $0{,}5$ |\n\nChaque écart est **la moitié** du précédent : la suite des écarts est géométrique de raison $\\dfrac{1}{2}$.\n\n*Conséquence :* $\\left|f'(\\ell)\\right| = \\dfrac{1}{2} < 1$, le point fixe est **attractif**, et la suite converge vers $6$.\n\n**Comparaison.**\n\n| | $\\left(a_{n}\\right)$ | $\\left(b_{n}\\right)$ |\n|---|---|---|\n| Point fixe | $1$ | $6$ |\n| $\\left|f'(\\ell)\\right|$ | $3 > 1$ | $\\dfrac{1}{2} < 1$ |\n| Nature du point fixe | répulsif | attractif |\n| Comportement | constante (car $a_{0} = \\ell$) | converge vers $6$ |\n\n**Ce qu'il faut retenir.** Le point fixe et le coefficient $\\left|f'(\\ell)\\right|$ décident du comportement : inférieur à $1$, la suite converge vers le point fixe ; supérieur à $1$, elle s'en éloigne — sauf si elle y démarre exactement."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $\\left(u_{n}\\right)$ définie par $u_{0} = 0$ et $u_{n+1} = \\dfrac{u_{n}+1}{u_{n}+2}$. Calculer $u_{4}$ et $u_{5}$ sous forme de fractions irréductibles, puis identifier la loi de formation des numérateurs et dénominateurs.",
+     "solution_markdown": "**Étape 1 - rappeler les termes connus.**\n\n$$u_{0} = 0 = \\dfrac{0}{1} \\qquad u_{1} = \\dfrac{1}{2} \\qquad u_{2} = \\dfrac{3}{5} \\qquad u_{3} = \\dfrac{8}{13}$$\n\n**Étape 2 - calculer $u_{4}$.**\n\n$$u_{4} = \\dfrac{\\dfrac{8}{13}+1}{\\dfrac{8}{13}+2} = \\dfrac{\\dfrac{8+13}{13}}{\\dfrac{8+26}{13}} = \\dfrac{\\dfrac{21}{13}}{\\dfrac{34}{13}} = \\dfrac{21}{34}$$\n\n*Valeur approchée :* $\\dfrac{21}{34} \\approx 0{,}61765$.\n\n**Étape 3 - calculer $u_{5}$.**\n\n$$u_{5} = \\dfrac{\\dfrac{21}{34}+1}{\\dfrac{21}{34}+2} = \\dfrac{\\dfrac{21+34}{34}}{\\dfrac{21+68}{34}} = \\dfrac{55}{89}$$\n\n*Valeur approchée :* $\\dfrac{55}{89} \\approx 0{,}61798$.\n\n**Étape 4 - lister les fractions.**\n\n$$\\dfrac{0}{1} \\quad \\dfrac{1}{2} \\quad \\dfrac{3}{5} \\quad \\dfrac{8}{13} \\quad \\dfrac{21}{34} \\quad \\dfrac{55}{89}$$\n\n**Étape 5 - identifier les nombres.**\n\nNumérateurs : $0$, $1$, $3$, $8$, $21$, $55$.\n\nDénominateurs : $1$, $2$, $5$, $13$, $34$, $89$.\n\nEn les entrelaçant : $0$, $1$, $1$, $2$, $3$, $5$, $8$, $13$, $21$, $34$, $55$, $89$.\n\n**Ce sont les nombres de Fibonacci**, définis par $F_{0} = 0$, $F_{1} = 1$ et $F_{n+2} = F_{n+1}+F_{n}$.\n\n**Étape 6 - énoncer la loi.**\n\n$$u_{n} = \\dfrac{F_{2n}}{F_{2n+1}}$$\n\n*Vérification :* pour $n = 3$, $F_{6} = 8$ et $F_{7} = 13$, d'où $u_{3} = \\dfrac{8}{13}$. Conforme.\n\nPour $n = 5$, $F_{10} = 55$ et $F_{11} = 89$, d'où $u_{5} = \\dfrac{55}{89}$. Conforme.\n\n**Étape 7 - démontrer la récurrence sur les numérateurs.**\n\nSupposons $u_{n} = \\dfrac{p}{q}$. Alors\n\n$$u_{n+1} = \\dfrac{\\dfrac{p}{q}+1}{\\dfrac{p}{q}+2} = \\dfrac{p+q}{p+2q}$$\n\nLe nouveau numérateur est $p+q$, et le nouveau dénominateur $p+2q = (p+q)+q$.\n\nAvec $p = F_{2n}$ et $q = F_{2n+1}$ :\n\n$$p+q = F_{2n}+F_{2n+1} = F_{2n+2}$$\n\n$$(p+q)+q = F_{2n+2}+F_{2n+1} = F_{2n+3}$$\n\nDonc $u_{n+1} = \\dfrac{F_{2n+2}}{F_{2n+3}}$ : la loi se propage. **Démontré.**\n\n**Étape 8 - la limite.**\n\nLe quotient de deux nombres de Fibonacci consécutifs converge vers l'inverse du nombre d'or :\n\n$$\\lim_{n \\to +\\infty} \\dfrac{F_{n}}{F_{n+1}} = \\dfrac{\\sqrt{5}-1}{2} \\approx 0{,}618$$\n\nC'est exactement le point fixe $\\dfrac{-1+\\sqrt{5}}{2}$ de $f$. Cohérent.\n\n**Ce qu'il faut retenir. ** Garder les fractions exactes n'est pas qu'une question de précision : c'est ce qui rend visible la structure cachée. Avec des décimales, la suite de Fibonacci serait restée invisible."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $\\left(u_{n}\\right)$ définie par $u_{0} = 3$ et $u_{n+1} = \\dfrac{1}{2}\\left(u_{n} + \\dfrac{2}{u_{n}}\\right)$. Calculer $u_{1}$, $u_{2}$ et $u_{3}$ sous forme exacte et approchée, déterminer les points fixes de la fonction associée, et interpréter le comportement observé.",
+     "solution_markdown": "**Étape 1 - la fonction associée.**\n\n$$f(x) = \\dfrac{1}{2}\\left(x + \\dfrac{2}{x}\\right) = \\dfrac{x^{2}+2}{2x} \\qquad \\text{définie pour } x \\neq 0$$\n\n**Étape 2 - calculer $u_{1}$.**\n\n$$u_{1} = \\dfrac{1}{2}\\left(3 + \\dfrac{2}{3}\\right) = \\dfrac{1}{2} \\times \\dfrac{9+2}{3} = \\dfrac{11}{6} \\approx 1{,}8333$$\n\n**Étape 3 - calculer $u_{2}$.**\n\n$$u_{2} = \\dfrac{1}{2}\\left(\\dfrac{11}{6} + \\dfrac{2}{11/6}\\right) = \\dfrac{1}{2}\\left(\\dfrac{11}{6} + \\dfrac{12}{11}\\right)$$\n\nAu dénominateur commun $66$ :\n\n$$\\dfrac{11}{6} = \\dfrac{121}{66} \\qquad ; \\qquad \\dfrac{12}{11} = \\dfrac{72}{66}$$\n\n$$u_{2} = \\dfrac{1}{2} \\times \\dfrac{193}{66} = \\dfrac{193}{132} \\approx 1{,}46212$$\n\n**Étape 4 - calculer $u_{3}$.**\n\n$$u_{3} = \\dfrac{1}{2}\\left(\\dfrac{193}{132} + \\dfrac{264}{193}\\right)$$\n\nAu dénominateur commun $132 \\times 193 = 25\\,476$ :\n\n$$\\dfrac{193}{132} = \\dfrac{37\\,249}{25\\,476} \\qquad ; \\qquad \\dfrac{264}{193} = \\dfrac{34\\,848}{25\\,476}$$\n\n$$u_{3} = \\dfrac{1}{2} \\times \\dfrac{72\\,097}{25\\,476} = \\dfrac{72\\,097}{50\\,952} \\approx 1{,}41497$$\n\n**Étape 5 - les points fixes.**\n\n$$f(x) = x \\iff \\dfrac{x^{2}+2}{2x} = x \\iff x^{2}+2 = 2x^{2} \\iff x^{2} = 2$$\n\n$$\\ell = \\sqrt{2} \\qquad \\text{ou} \\qquad \\ell = -\\sqrt{2}$$\n\nNumériquement, $\\sqrt{2} \\approx 1{,}414214$.\n\n**Étape 6 - comparer.**\n\n| $n$ | $u_{n}$ | $u_{n} - \\sqrt{2}$ |\n|---|---|---|\n| $0$ | $3$ | $1{,}5858$ |\n| $1$ | $1{,}83333$ | $0{,}41912$ |\n| $2$ | $1{,}46212$ | $0{,}04791$ |\n| $3$ | $1{,}41497$ | $0{,}00076$ |\n\n**La convergence vers $\\sqrt{2}$ est spectaculaire :** le nombre de décimales exactes **double** à chaque étape.\n\n**Étape 7 - expliquer.**\n\nCalculons la dérivée :\n\n$$f'(x) = \\dfrac{1}{2}\\left(1 - \\dfrac{2}{x^{2}}\\right)$$\n\nEn $\\ell = \\sqrt{2}$ :\n\n$$f'\\left(\\sqrt{2}\\right) = \\dfrac{1}{2}\\left(1 - \\dfrac{2}{2}\\right) = \\dfrac{1}{2}(1-1) = 0$$\n\n**La dérivée s'annule au point fixe.** C'est ce qui produit la convergence **quadratique** : l'écart est à peu près élevé au carré à chaque étape, au lieu d'être simplement multiplié par une constante.\n\n*Vérification :* $0{,}419^{2} \\approx 0{,}176$, à comparer à l'écart suivant $0{,}048$ — l'ordre de grandeur est bon, à un facteur près.\n\n**Étape 8 - identifier la méthode.**\n\nCette suite est la **méthode de Héron** pour calculer une racine carrée, connue depuis l'Antiquité, et redécouverte comme cas particulier de la méthode de Newton.\n\nPour approcher $\\sqrt{a}$, on itère\n\n$$u_{n+1} = \\dfrac{1}{2}\\left(u_{n} + \\dfrac{a}{u_{n}}\\right)$$\n\n**Étape 9 - le second point fixe.**\n\nLe point $-\\sqrt{2}$ est également fixe, avec $f'\\left(-\\sqrt{2}\\right) = 0$ : il est tout aussi attractif.\n\nMais la suite ne peut l'atteindre depuis $u_{0} = 3 > 0$, car tous les termes restent positifs : si $u_{n} > 0$, alors $u_{n+1} = \\dfrac{1}{2}\\left(u_{n}+\\dfrac{2}{u_{n}}\\right) > 0$.\n\nC'est le **signe du premier terme** qui décide vers lequel des deux points fixes la suite converge.\n\n**Ce qu'il faut retenir.** La valeur $f'(\\ell)$ ne dit pas seulement **si** la suite converge, mais **à quelle vitesse**. Nulle, la convergence est extrêmement rapide — trois itérations suffisent ici pour cinq décimales exactes de $\\sqrt{2}$."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Une suite récurrente se calcule **de proche en proche** : on ne peut pas sauter de terme.",
+    "Garde les **fractions** jusqu'au bout : les décimales n'interviennent qu'à la fin.",
+    "Diviser deux fractions de même dénominateur revient à diviser les numérateurs.",
+    "Reconnais la fonction associée $f$ : tous les résultats obtenus sur elle s'appliquent à la suite.",
+    "**Observe** les valeurs : croissent-elles, se resserrent-elles, autour de quoi ?",
+    "La limite d'une suite récurrente convergente est nécessairement un **point fixe** de $f$.",
+    "Vérifie que les termes restent dans l'ensemble de définition de $f$.",
+    "$\\left|f'(\\ell)\\right| < 1$ rend le point fixe attractif, $> 1$ le rend répulsif.",
+    "Une dérivée nulle au point fixe donne une convergence extrêmement rapide.",
+    "Ne conclus pas trop vite à une suite arithmétique ou géométrique : vérifie différences et quotients."
+   ]
+  }
+ ]
+}

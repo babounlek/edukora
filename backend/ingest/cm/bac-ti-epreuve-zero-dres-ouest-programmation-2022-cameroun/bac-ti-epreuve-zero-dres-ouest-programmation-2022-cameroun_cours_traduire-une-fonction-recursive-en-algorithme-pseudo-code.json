@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-traduire-une-fonction-recursive-en-algorithme-pseudo-code-tle-ti",
+  "meta": {
+    "titre": "Traduire une fonction récursive en algorithme (pseudo-code)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Algorithmique et récursivité",
+    "duree_estimee_min": 15,
+    "tags": [
+      "pseudo-code",
+      "algorithme récursif",
+      "traduction C vers algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex2-q8-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un jury de BAC TI ne demande pas toujours d'écrire du C : il arrive qu'il faille expliquer un algorithme dans un langage indépendant de toute syntaxe précise, le pseudo-code. Traduire une fonction récursive dans ce langage demande de séparer clairement ce qui relève de la logique de ce qui relève de la syntaxe du C."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une fonction récursive simple en C",
+        "Connaître les mots-clés de base du pseudo-code (Si/Sinon/FinSi, Retourner, Fonction/Fin)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Garder la logique, changer la syntaxe",
+      "contenu_markdown": "Traduire une fonction récursive en pseudo-code consiste à reprendre sa structure conditionnelle exacte, cas de base et cas récursif, en remplaçant uniquement la syntaxe du C par les mots-clés habituels du langage algorithmique : `if`/`else` devient `Si`/`Sinon`/`FinSi`, `return` devient `Retourner`, et l'en-tête de la fonction précise le type du paramètre et le type de retour sans la syntaxe des accolades. Aucune étape du raisonnement ne doit être ajoutée ni supprimée : seule la forme change, jamais la logique."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduis en pseudo-code la fonction int som(int a){ if(a==0){ return 0;} else{return a+som(a-1);}}",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire l'en-tête de la fonction",
+          "justification": "Le pseudo-code exprime le type du paramètre et le type de retour sans la syntaxe C",
+          "resultat_markdown": "Fonction som(a : entier) : entier"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire le cas de base",
+          "justification": "if(a==0){ return 0;} devient une structure conditionnelle en pseudo-code",
+          "resultat_markdown": "Si a = 0 alors / Retourner 0"
+        },
+        {
+          "numero": 3,
+          "action": "Traduire le cas récursif",
+          "justification": "else{return a+som(a-1);} garde le même appel récursif, seule la syntaxe change",
+          "resultat_markdown": "Sinon / Retourner a + som(a - 1) / FinSi"
+        }
+      ],
+      "conclusion_markdown": "```\nFonction som(a : entier) : entier\nDébut\n   Si a = 0 alors\n      Retourner 0\n   Sinon\n      Retourner a + som(a - 1)\n   FinSi\nFin\n```\nLa logique de la fonction C est intégralement préservée dans cette traduction."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le cas de base dans la traduction",
+          "pourquoi_faux": "Sans lui, l'algorithme obtenu ne s'arrêterait jamais, exactement comme le programme C planterait par débordement de pile si la condition a==0 était absente.",
+          "correction_markdown": "Vérifie toujours que chaque cas du code source (base et récursif) a bien son équivalent dans le pseudo-code."
+        },
+        {
+          "erreur_markdown": "Ajouter des détails de syntaxe C (points-virgules, accolades) dans le pseudo-code",
+          "pourquoi_faux": "Le pseudo-code est justement indépendant de la syntaxe d'un langage particulier : y mêler des éléments de C trahit une confusion entre les deux niveaux.",
+          "correction_markdown": "Relis ta traduction en te demandant si elle resterait compréhensible pour quelqu'un qui ne connaît pas le C."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduis en pseudo-code : int estPositif(int x){ if(x>=0){return 1;} else{return 0;}}",
+          "solution_markdown": "Fonction estPositif(x : entier) : entier\nDébut\n   Si x >= 0 alors\n      Retourner 1\n   Sinon\n      Retourner 0\n   FinSi\nFin"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduis en pseudo-code la fonction récursive fact : int fact(int n){ if(n==0){return 1;} else{return n*fact(n-1);}}",
+          "solution_markdown": "Fonction fact(n : entier) : entier\nDébut\n   Si n = 0 alors\n      Retourner 1\n   Sinon\n      Retourner n * fact(n - 1)\n   FinSi\nFin"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une fonction C calcule le PGCD par récursivité : int pgcd(int a, int b){ if(b==0){return a;} else{return pgcd(b, a%b);}}. Traduis-la en pseudo-code, en faisant attention au nombre de paramètres.",
+          "solution_markdown": "Fonction pgcd(a : entier, b : entier) : entier\nDébut\n   Si b = 0 alors\n      Retourner a\n   Sinon\n      Retourner pgcd(b, a modulo b)\n   FinSi\nFin\n\nLa fonction ayant deux paramètres formels (a et b), l'en-tête du pseudo-code doit impérativement les mentionner tous les deux, dans le même ordre que la déclaration C ; l'opérateur % du C se traduit par le mot « modulo » en pseudo-code."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Traduire une fonction récursive en pseudo-code conserve exactement sa logique : cas de base et cas récursif.",
+        "Seule la syntaxe change : if/else devient Si/Sinon/FinSi, return devient Retourner.",
+        "N'ajoute jamais un détail de syntaxe C (point-virgule, accolade) dans une traduction en pseudo-code.",
+        "Une fonction à plusieurs paramètres doit tous les conserver, dans le même ordre, dans l'en-tête traduite."
+      ]
+    }
+  ]
+}

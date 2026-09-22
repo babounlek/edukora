@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-specificateurs-de-format-en-c-premiere-ti",
+  "meta": {
+    "titre": "Spécificateurs de format en C (printf et scanf)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Entrées-sorties en langage C",
+    "duree_estimee_min": 15,
+    "tags": [
+      "printf",
+      "scanf",
+      "%d",
+      "%c",
+      "%f",
+      "spécificateur de format"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex1-q5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment `printf()` sait-il si la valeur que tu lui donnes est un nombre entier, un texte ou un nombre à virgule, alors qu'en mémoire tout n'est jamais que des suites de bits ? La réponse tient dans un petit code de deux caractères que tu places toi-même dans la chaîne de format : le spécificateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir utiliser `printf()` pour afficher un texte simple",
+        "Connaître les types de base du C (`int`, `char`, `float`)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les spécificateurs de format, un langage partagé par plusieurs fonctions",
+      "contenu_markdown": "En C, les indicateurs de format `%c`, `%d` et `%f` décrivent le type de donnée à lire ou à afficher : `%c` pour un caractère, `%d` pour un entier, `%f` pour un nombre décimal (réel en virgule flottante). Ils ne sont pas propres à une seule fonction : toute la famille des fonctions de formatage du C les utilise, aussi bien en écriture (`printf()`, `sprintf()`, `fprintf()`) qu'en lecture (`scanf()`, `sscanf()`, `fscanf()`).",
+      "formule_principale": "%c = caractère, %d = entier, %f = décimal - valables avec printf ET scanf",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire les instructions permettant de lire l'âge (entier) et la taille (décimale, en mètres) d'un utilisateur, puis de les réafficher.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déclarer les variables adaptées",
+          "justification": "Un âge est un entier, une taille en mètres est un nombre décimal",
+          "resultat_markdown": "```c\nint age;\nfloat taille;\n```"
+        },
+        {
+          "numero": 2,
+          "action": "Lire les valeurs avec `scanf()`",
+          "justification": "Le spécificateur utilisé doit correspondre au type de la variable, précédée de `&` pour donner son adresse mémoire à `scanf()`",
+          "resultat_markdown": "```c\nscanf(\"%d\", &age);\nscanf(\"%f\", &taille);\n```"
+        },
+        {
+          "numero": 3,
+          "action": "Réafficher les valeurs avec `printf()`",
+          "justification": "Les mêmes spécificateurs `%d` et `%f` s'utilisent aussi en affichage, mais cette fois sans `&`",
+          "resultat_markdown": "```c\nprintf(\"Age : %d, Taille : %f\", age, taille);\n```"
+        }
+      ],
+      "conclusion_markdown": "Les mêmes spécificateurs (`%d`, `%f`) servent aussi bien à lire qu'à afficher : c'est le type de la variable qui impose le spécificateur, pas la fonction utilisée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que `%c`, `%d`, `%f` ne fonctionnent qu'avec `printf()`",
+          "pourquoi_faux": "Ces spécificateurs décrivent un type de donnée, indépendamment de la fonction qui les utilise : `scanf()` s'appuie exactement sur les mêmes codes pour savoir quel type de valeur lire.",
+          "correction_markdown": "Retiens que le spécificateur est lié au TYPE de la donnée (entier, caractère, décimal), jamais à une seule fonction précise."
+        },
+        {
+          "erreur_markdown": "Utiliser `%d` pour lire un `float`, ou `%f` pour lire un `int`",
+          "pourquoi_faux": "Le spécificateur indique à `scanf()`/`printf()` comment interpréter les bits de la variable ; un mauvais spécificateur lit ou affiche des bits n'importe comment, produisant une valeur absurde sans provoquer d'erreur de compilation.",
+          "correction_markdown": "Vérifie toujours que le spécificateur correspond exactement au type déclaré de la variable (`%d` pour `int`, `%f` pour `float`/`double`, `%c` pour `char`)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel spécificateur de format utiliser pour lire ou afficher une variable de type `char` ?",
+          "solution_markdown": "`%c`, le spécificateur dédié au format caractère."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Corriger l'instruction suivante si elle contient une erreur : `int nombre; scanf(\"%f\", &nombre);`",
+          "solution_markdown": "L'instruction est fautive : `nombre` est déclaré `int`, mais `%f` est le spécificateur du type `float`. La lecture interprèterait mal les bits stockés en mémoire. Instruction corrigée : `scanf(\"%d\", &nombre);`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi `scanf(\"%d\", age);` (sans le `&` devant `age`) provoque-t-il un comportement incorrect, alors que `printf(\"%d\", age);` (toujours sans `&`) fonctionne parfaitement ?",
+          "solution_markdown": "`printf()` a seulement besoin de LIRE la valeur de `age` pour l'afficher : lui passer directement `age` suffit. `scanf()`, à l'inverse, doit ÉCRIRE une valeur dans la variable `age` : pour cela, il a besoin de connaître l'adresse mémoire de cette variable (où écrire), pas sa valeur actuelle. `&age` fournit cette adresse ; sans `&`, `scanf()` reçoit la valeur de `age` comme si c'était une adresse, ce qui provoque une écriture à un endroit imprévisible de la mémoire (comportement indéterminé, souvent un plantage du programme)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`%c` = caractère, `%d` = entier, `%f` = décimal (réel en virgule flottante).",
+        "Ces spécificateurs sont partagés par toute la famille des fonctions de formatage du C, pas seulement `printf()`.",
+        "Le spécificateur doit toujours correspondre exactement au type de la variable manipulée.",
+        "`scanf()` a besoin de `&` devant chaque variable (sauf les tableaux et chaînes) pour connaître son adresse mémoire ; `printf()` n'en a jamais besoin.",
+        "Une question \"vrai ou faux\" qui ajoute le mot \"uniquement\" à une affirmation par ailleurs correcte est un piège classique : vérifie toujours si une restriction de ce type est réellement justifiée avant de répondre \"vrai\"."
+      ]
+    }
+  ]
+}

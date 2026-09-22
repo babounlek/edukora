@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-cumul-de-reductions-conditionnelles-en-javascript-if-independants-tle-ti",
+  "meta": {
+    "titre": "Cumul de réductions conditionnelles en JavaScript (if indépendants)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 25,
+    "tags": [
+      "JavaScript",
+      "conditions cumulées",
+      "if",
+      "pourcentage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex1-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Certaines réductions s'additionnent, d'autres s'excluent. Une carte de fidélité et une promotion de fin de mois se cumulent souvent chez un commerçant ; deux places de cinéma en tarif réduit ne se cumulent jamais avec un tarif plein. Programmer correctement une réduction commence par identifier, dans l'énoncé, laquelle de ces deux logiques s'applique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structures conditionnelles if en JavaScript",
+        "Lecture de la valeur d'un champ de formulaire (value)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "If indépendants pour des conditions cumulables, if/else if pour des conditions exclusives",
+      "contenu_markdown": "Quand un énoncé accorde plusieurs avantages sous plusieurs conditions distinctes, sans jamais dire que ces conditions s'excluent, chaque condition doit être testée par un `if` totalement indépendant des autres, et son effet ajouté à un total accumulé dans une variable. À l'inverse, des conditions réellement exclusives (« si... sinon si... sinon ») se traduisent par une chaîne `if / else if / else`, qui s'arrête à la première condition vraie. Le signal textuel à repérer dans l'énoncé : plusieurs puces introduites chacune par « Si... il/elle reçoit... » annoncent presque toujours des conditions cumulables, pas exclusives.",
+      "formule_principale": "total = 0; if (cond1) total += a; if (cond2) total += b;",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire une fonction JavaScript qui calcule la réduction totale sur l'impôt d'un employé : 2 % si c'est une femme, 1 % supplémentaire si elle a 3 personnes à charge, 2 % supplémentaire si elle en a 4.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser la réduction totale à 0",
+          "justification": "Un employé qui ne remplit aucune condition ne doit recevoir aucune réduction.",
+          "resultat_markdown": "`var reduction = 0;`"
+        },
+        {
+          "numero": 2,
+          "action": "Tester la condition sur le genre",
+          "justification": "C'est une condition indépendante du nombre de personnes à charge : une femme sans personne à charge reçoit déjà 2 %.",
+          "resultat_markdown": "`if (document.monFormulaire.genre.value == \"Femme\") { reduction = reduction + 2; }`"
+        },
+        {
+          "numero": 3,
+          "action": "Tester séparément les deux seuils de personnes à charge",
+          "justification": "Les deux seuils (3 et 4 personnes) sont mutuellement exclusifs entre eux (on ne peut pas avoir à la fois exactement 3 et exactement 4 personnes à charge), mais restent chacun indépendants de la condition sur le genre.",
+          "resultat_markdown": "`if (nbPersonnes == 3) { reduction = reduction + 1; }`\n`if (nbPersonnes == 4) { reduction = reduction + 2; }`"
+        }
+      ],
+      "conclusion_markdown": "Une employée ayant 3 personnes à charge cumule bien 2 % (genre) + 1 % (personnes à charge) = 3 % de réduction totale, ce que trois `if` indépendants calculent correctement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chaîner les trois conditions avec `else if`.",
+          "pourquoi_faux": "Dès que la première condition vraie est rencontrée (par exemple le genre), les suivantes ne sont plus testées : une femme avec 3 personnes à charge ne recevrait alors que 2 % au lieu de 3 %, ce qui contredit l'énoncé.",
+          "correction_markdown": "Réserver `else if` aux conditions réellement exclusives ; ici, utiliser trois `if` indépendants."
+        },
+        {
+          "erreur_markdown": "Comparer directement la valeur du champ « personnes à charge » sans la convertir en nombre.",
+          "pourquoi_faux": "Un champ de formulaire renvoie toujours une chaîne de caractères (`\"3\"`), jamais un nombre. Une comparaison stricte `\"3\" === 3` renverrait `false` en JavaScript.",
+          "correction_markdown": "Convertir la valeur lue avec `parseInt(...)` avant de la comparer à un nombre entier."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un magasin accorde 5 % de réduction aux clients de plus de 60 ans, et 3 % supplémentaires aux clients porteurs d'une carte de fidélité. Écrire la fonction JavaScript qui calcule la réduction totale, sachant que les deux avantages se cumulent.",
+          "solution_markdown": "```javascript\nfunction calculReduction() {\n    var reduction = 0;\n    if (age > 60) { reduction = reduction + 5; }\n    if (carteFidelite) { reduction = reduction + 3; }\n    return reduction;\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exercice précédent, mais cette fois le magasin plafonne la réduction totale à 6 % même si les deux conditions sont vraies. Adapter la fonction.",
+          "solution_markdown": "```javascript\nfunction calculReduction() {\n    var reduction = 0;\n    if (age > 60) { reduction = reduction + 5; }\n    if (carteFidelite) { reduction = reduction + 3; }\n    if (reduction > 6) { reduction = 6; }\n    return reduction;\n}\n```\nLe plafond s'applique après le cumul des deux réductions, avec un test supplémentaire qui ramène `reduction` à 6 si le total dépasse cette limite."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un barème accorde une réduction de 10 % si le montant de la commande dépasse 50 000 F, OU de 15 % si le client possède une carte VIP, mais jamais les deux à la fois (le client obtient la réduction la plus avantageuse pour lui). Écrire la fonction correspondante.",
+          "solution_markdown": "```javascript\nfunction calculReduction(montant, carteVIP) {\n    var reduction = 0;\n    if (carteVIP) {\n        reduction = 15;\n    } else if (montant > 50000) {\n        reduction = 10;\n    }\n    return reduction;\n}\n```\nIci, contrairement à l'exemple de l'exercice, les deux avantages ne se cumulent pas et le client garde la réduction la plus intéressante (15 %) : la structure attendue est donc `if / else if`, pas deux `if` indépendants qui additionneraient les deux pourcentages à tort."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Des conditions cumulables (l'énoncé ne dit jamais qu'elles s'excluent) se testent avec des `if` indépendants.",
+        "Des conditions réellement exclusives se testent avec `if / else if`, pour ne retenir que la première vérifiée.",
+        "Une valeur issue d'un champ de formulaire est toujours une chaîne de caractères : la convertir avec `parseInt` ou `parseFloat` avant toute comparaison numérique.",
+        "Relire l'énoncé pour repérer le mot ou la structure qui signale le cumul (plusieurs puces indépendantes) ou l'exclusion (« ou », « le plus avantageux ») avant de choisir la structure conditionnelle."
+      ]
+    }
+  ]
+}

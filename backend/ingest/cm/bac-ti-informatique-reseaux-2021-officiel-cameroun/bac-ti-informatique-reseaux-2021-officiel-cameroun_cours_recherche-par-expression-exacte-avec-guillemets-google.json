@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-recherche-par-expression-exacte-avec-guillemets-google-terminale-ti",
+  "meta": {
+    "titre": "Recherche par expression exacte avec guillemets (Google)",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Recherche avancée sur le Web",
+    "duree_estimee_min": 15,
+    "tags": [
+      "recherche par expression exacte",
+      "guillemets",
+      "opérateurs Google",
+      "précision",
+      "opérateurs de recherche avancée",
+      "Google"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex2-q5a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux recherches qui utilisent exactement les trois mêmes mots peuvent renvoyer des résultats radicalement différents, uniquement à cause de deux petits caractères : les guillemets. Comprendre cette différence permet de choisir, selon le besoin, entre une recherche très large et une recherche très précise."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Usage de base d'un moteur de recherche par mots-clés"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La recherche par expression exacte",
+      "contenu_markdown": "Placer un groupe de mots entre guillemets ('...' ou \"...\") impose au moteur de recherche de retrouver cette expression EXACTE, dans cet ordre précis et sans mot intercalé, plutôt que de chercher chaque mot indépendamment. Cette contrainte rend la recherche plus **précise** (les résultats correspondent réellement à l'expression visée) mais généralement moins **nombreuse** (les pages où les mots seraient dispersés ou dans un autre ordre sont exclues).",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Comparer chiffre pandémie Afrique filetype:pdf et 'chiffre pandémie Afrique' filetype:pdf du point de vue de la précision des résultats.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Analyser la commande sans guillemets",
+          "justification": "Sans guillemets, chaque mot est traité indépendamment par le moteur de recherche.",
+          "resultat_markdown": "chiffre pandémie Afrique filetype:pdf retient tout PDF contenant les trois mots, n'importe où et dans n'importe quel ordre."
+        },
+        {
+          "numero": 2,
+          "action": "Analyser la commande avec guillemets",
+          "justification": "Les guillemets imposent l'expression exacte, dans l'ordre indiqué.",
+          "resultat_markdown": "'chiffre pandémie Afrique' filetype:pdf ne retient que les PDF où ces trois mots apparaissent consécutivement, exactement dans cet ordre."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer la précision des deux résultats",
+          "justification": "Une contrainte plus stricte élimine les correspondances approximatives.",
+          "resultat_markdown": "La commande avec guillemets est la plus précise : elle élimine les documents où les mots seraient présents mais éparpillés ou dans un ordre différent."
+        }
+      ],
+      "conclusion_markdown": "Les guillemets transforment une recherche par mots-clés indépendants en une recherche d'expression figée, ce qui accroît la précision au prix du nombre de résultats."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que les guillemets augmentent le nombre de résultats parce qu'ils « précisent » la recherche",
+          "pourquoi_faux": "Précision et volume évoluent en sens inverse : une contrainte plus stricte (l'expression exacte) élimine mécaniquement des pages qui auraient été retenues sans cette contrainte, donc réduit le nombre total de résultats.",
+          "correction_markdown": "Retiens que plus une recherche est précise (guillemets, opérateurs), moins elle retourne de résultats, mais plus ils sont pertinents."
+        },
+        {
+          "erreur_markdown": "Utiliser les guillemets sur un seul mot isolé en pensant que cela change quelque chose",
+          "pourquoi_faux": "Les guillemets n'ont d'effet que sur un GROUPE de mots, en figeant leur ordre et leur proximité ; sur un seul mot, ils ne changent rien au résultat par rapport au même mot sans guillemets.",
+          "correction_markdown": "Réserve les guillemets aux expressions de plusieurs mots dont l'ordre et la proximité comptent réellement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la commande qui recherche exactement l'expression « intelligence artificielle » (dans cet ordre précis), plutôt que les deux mots séparément.",
+          "solution_markdown": "\"intelligence artificielle\""
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un chercheur veut retrouver des articles citant précisément la formule « développement durable » et non des articles parlant séparément de développement ET de durabilité. Quelle syntaxe utiliser, et pourquoi la recherche sans guillemets ne conviendrait-elle pas ?",
+          "solution_markdown": "Utiliser \"développement durable\" entre guillemets. Sans guillemets, la commande développement durable retiendrait aussi bien les pages contenant l'expression exacte que celle contenant les deux mots séparément et sans rapport (par exemple un article sur le développement économique qui, ailleurs dans le texte, évoquerait la durabilité d'un produit), ce qui produirait un bruit important sans rapport avec la notion précise recherchée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi une recherche par expression exacte entre guillemets peut, dans certains cas, ne renvoyer AUCUN résultat alors que la même recherche sans guillemets en renvoie des milliers, et ce que cela révèle sur l'expression recherchée.",
+          "solution_markdown": "Une recherche par expression exacte n'aboutit que si cette suite précise de mots, dans cet ordre et sans rien entre eux, existe réellement telle quelle sur au moins une page indexée par le moteur de recherche. Si l'expression est en réalité rarement (ou jamais) formulée ainsi mot pour mot dans les documents existants, même si chaque mot pris séparément est très courant, la recherche exacte peut ne renvoyer aucun résultat. Cela révèle que l'expression recherchée est probablement une reformulation personnelle de l'utilisateur plutôt qu'une formule réellement employée dans les textes existants : il est alors préférable de revenir à une recherche sans guillemets, ou de tester une formulation légèrement différente, plus proche du vocabulaire réellement utilisé sur le sujet."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Les guillemets imposent une expression exacte, dans l'ordre précis indiqué, sans mot intercalé.",
+        "Une recherche entre guillemets est plus précise mais retourne généralement moins de résultats.",
+        "Les guillemets n'ont d'effet utile que sur un groupe de plusieurs mots, pas sur un mot isolé.",
+        "L'absence totale de résultat avec guillemets peut signaler une formulation qui n'existe pas telle quelle dans les documents réels."
+      ]
+    }
+  ]
+}

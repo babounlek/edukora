@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-loi-binomiale-probabilite-exactement-k-succes-terminale-d-ti",
+  "meta": {"titre": "Calculer la probabilité d'obtenir exactement k succès (loi binomiale)", "cours_id": "cours-loi-binomiale-probabilite-exactement-k-succes-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D & TI", "sous_theme": "Probabilités — loi binomiale", "tags": ["loi binomiale", "coefficient binomial", "épreuves répétées"], "duree_estimee_minutes": 8, "epreuve_source": "bac-d-maths-2019-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2019-cameroun-ex1-q3a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Répéter n fois une épreuve à deux issues, de façon indépendante, permet de calculer la probabilité d'un nombre exact de succès grâce à la formule de la loi binomiale, combinant coefficient binomial et puissances des probabilités."},
+    {"type": "prerequis", "items_markdown": ["Calcul d'un coefficient binomial C(n,k)", "Notion d'épreuves indépendantes répétées à l'identique"]},
+    {"type": "regle", "titre": "Formule de la loi binomiale", "contenu_markdown": "Pour $n$ répétitions indépendantes d'une épreuve de probabilité de succès $p$, la probabilité d'obtenir exactement $k$ succès est $P(X=k)=\\dbinom nk p^k(1-p)^{n-k}$.", "formule_principale": "P(X=k) = C(n,k) × p^k × (1-p)^(n-k)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "4 épreuves indépendantes, p=0,2. Probabilité d'exactement 2 succès.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Coefficient binomial", "justification": "C(4,2)", "resultat_markdown": "6"},
+      {"numero": 2, "action": "Puissances", "justification": "0,2²×0,8²", "resultat_markdown": "0,04×0,64=0,0256"},
+      {"numero": 3, "action": "Multiplier", "justification": "6×0,0256", "resultat_markdown": "0,1536"}
+    ], "conclusion_markdown": "P(X=2)=0,1536."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Inverser les exposants de p et (1-p), en élevant p à la puissance (n-k) et (1-p) à la puissance k", "pourquoi_faux": "L'exposant de p (probabilité de succès) doit être k (le nombre de succès recherché), et l'exposant de (1-p) (probabilité d'échec) doit être (n-k) (le nombre d'échecs correspondant) ; inverser ces deux exposants donne un résultat complètement différent et incorrect.", "correction_markdown": "Toujours associer p à l'exposant k (succès) et (1-p) à l'exposant n-k (échecs), jamais l'inverse."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "6 épreuves indépendantes, p=0,1. Probabilité d'exactement 2 succès.", "solution_markdown": "C(6,2)=15. p²=0,01. (1-p)^4=0,9^4=0,6561. P=15×0,01×0,6561=0,098415."},
+      {"numero": 2, "difficulte": "facile", "enonce_markdown": "Pourquoi le coefficient binomial C(n,k) intervient-il dans cette formule ?", "solution_markdown": "Le coefficient binomial C(n,k) compte le nombre de façons différentes de choisir lesquelles des n épreuves sont des succès (parmi les k succès et n-k échecs) ; chaque arrangement possible a la même probabilité p^k(1-p)^(n-k), donc il faut multiplier par ce nombre de façons pour obtenir la probabilité totale."}
+    ]},
+    {"type": "synthese", "items_markdown": ["La loi binomiale calcule la probabilité d'exactement k succès sur n épreuves indépendantes identiques.", "La formule combine un coefficient binomial et les puissances de p et (1-p) avec les bons exposants.", "Ne jamais inverser les exposants de p (succès) et (1-p) (échecs)."]}
+  ]
+}

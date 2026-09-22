@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-determiner-inductance-a-partir-de-la-frequence-de-resonance-terminale-c",
+  "meta": {
+    "titre": "Déterminer l'inductance d'une bobine à partir de la fréquence de résonance d'intensité",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité - résonance d'un circuit RLC série",
+    "duree_estimee_min": 20,
+    "tags": ["résonance d'intensité", "circuit RLC série", "inductance", "lecture graphique"],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat C - Physique Théorique (2025, Cameroun, officiel)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-theorique-2025-officiel-ex3-q1.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une simple courbe en cloche, tracée à partir de mesures d'intensité, suffit à déterminer une caractéristique interne d'une bobine que l'on ne pourrait pas lire directement sur son étiquette. À la résonance, un circuit RLC série revèle son secret : la fréquence à laquelle l'intensité est maximale ne dépend que de L et C, jamais de la résistance du circuit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir représenter et exploiter un circuit RLC série alimenté par un GBF.",
+        "Connaître la notion de résonance d'intensité (intensité efficace maximale)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Fréquence de résonance et inductance",
+      "contenu_markdown": "À la résonance d'intensité d'un circuit RLC série, l'intensité efficace $I$ est maximale. La fréquence de résonance $N_0$ vérifie :\n\n$$N_0 = \\frac{1}{2\\pi\\sqrt{LC}}$$\n\nCette relation est indépendante de la résistance totale du circuit (elle ne dépend que de $L$ et $C$). En isolant $L$ :\n\n$$L = \\frac{1}{4\\pi^2 N_0^2 C}$$\n\nIl suffit donc de lire $N_0$ sur le graphe $I=f(N)$ (abscisse du sommet de la courbe) pour en déduire $L$, connaissant $C$.",
+      "formule_principale": "L = \\dfrac{1}{4\\pi^2 N_0^2 C}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un graphe I=f(N) présente un maximum pour N0=500 Hz. Sachant que C=5 µF, déterminer l'inductance L de la bobine.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire la fréquence de résonance sur le graphe",
+          "justification": "N0 est l'abscisse du sommet de la courbe I=f(N), là où l'intensité efficace est maximale.",
+          "resultat_markdown": "$N_0 = 500$ Hz."
+        },
+        {
+          "numero": 2,
+          "action": "Isoler L dans la relation N0=1/(2π√(LC))",
+          "justification": "On élève au carré puis on isole L pour obtenir une formule directement calculable.",
+          "resultat_markdown": "$L = \\dfrac{1}{4\\pi^2 N_0^2 C}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numériquement",
+          "justification": "Application numérique avec N0=500 Hz et C=5×10⁻⁶ F.",
+          "resultat_markdown": "$L = \\dfrac{1}{4\\pi^2\\times(500)^2\\times5\\times10^{-6}} \\approx 2{,}03\\times10^{-2}$ H $= 20{,}3$ mH."
+        }
+      ],
+      "conclusion_markdown": "L'inductance de la bobine vaut environ 20,3 mH, une valeur typique pour une bobine de laboratoire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire la fréquence de résonance à l'endroit où I=Imax/√2 (bande passante) au lieu du sommet de la courbe.",
+          "pourquoi_faux": "N0 correspond exclusivement à l'abscisse du MAXIMUM de la courbe I=f(N) ; les fréquences où I=Imax/√2 délimitent la bande passante, une notion différente utilisée pour calculer le facteur de qualité, pas l'inductance.",
+          "correction_markdown": "Identifie toujours précisément le sommet de la courbe (intensité maximale) avant de lire N0, sans le confondre avec les bornes de la bande passante."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir C en farads (F) avant le calcul, en le laissant en microfarads (µF).",
+          "pourquoi_faux": "La formule L=1/(4π²N0²C) exige des unités SI (C en farads, N0 en hertz) pour donner L directement en henrys ; un oubli de conversion fausse le résultat d'un facteur 10⁶.",
+          "correction_markdown": "Convertis systématiquement C en farads (1 µF = 10⁻⁶ F) avant toute application numérique."
+        },
+        {
+          "erreur_markdown": "Penser que la résistance R ou r du circuit influence la valeur de N0.",
+          "pourquoi_faux": "La fréquence de résonance d'intensité ne dépend que de L et C ; la résistance totale du circuit influence uniquement la valeur du maximum d'intensité Imax (plus la résistance est faible, plus le pic est haut et étroit), pas sa position sur l'axe des fréquences.",
+          "correction_markdown": "Retiens que N0=1/(2π√(LC)) ne fait intervenir ni R ni r : ne les utilise donc jamais dans ce calcul, même si elles sont données par ailleurs dans l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit RLC série, avec C=2 µF, entre en résonance d'intensité pour N0=800 Hz. Calculer L.",
+          "solution_markdown": "$$L = \\frac{1}{4\\pi^2N_0^2C} = \\frac{1}{4\\pi^2\\times(800)^2\\times2\\times10^{-6}}$$\n\nCalcul du dénominateur : $(800)^2=640\\,000$ ; $4\\pi^2\\approx39{,}48$ ; $39{,}48\\times640\\,000\\approx2{,}527\\times10^{7}$ ; $\\times2\\times10^{-6}\\approx50{,}53$.\n\n$$L \\approx \\frac{1}{50{,}53} \\approx 1{,}98\\times10^{-2}\\ \\text{H} \\approx 19{,}8\\ \\text{mH}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit RLC série a une inductance L=10 mH et un condensateur C=4 µF. Calculer la fréquence de résonance N0 attendue.",
+          "solution_markdown": "$$N_0 = \\frac{1}{2\\pi\\sqrt{LC}} = \\frac{1}{2\\pi\\sqrt{10\\times10^{-3}\\times4\\times10^{-6}}}$$\n\nCalcul de $LC$ : $10\\times10^{-3}\\times4\\times10^{-6}=4\\times10^{-8}$.\n\n$$\\sqrt{4\\times10^{-8}} = 2\\times10^{-4}$$\n\n$$N_0 = \\frac{1}{2\\pi\\times2\\times10^{-4}} = \\frac{1}{1{,}257\\times10^{-3}} \\approx 796\\ \\text{Hz}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux circuits RLC série, identiques en tout point sauf la valeur de leur capacité (C1=5 µF pour le premier, C2=20 µF pour le second), sont testés séparément. Sans recalculer numériquement les deux fréquences de résonance, détermine le rapport N0(circuit 1)/N0(circuit 2), sachant que C2=4×C1.",
+          "solution_markdown": "D'après $N_0=\\dfrac{1}{2\\pi\\sqrt{LC}}$, à $L$ fixée, $N_0$ est inversement proportionnelle à $\\sqrt{C}$ :\n\n$$\\frac{N_0(1)}{N_0(2)} = \\frac{1/\\sqrt{LC_1}}{1/\\sqrt{LC_2}} = \\sqrt{\\frac{C_2}{C_1}}$$\n\nComme $C_2=4\\times C_1$ :\n\n$$\\frac{N_0(1)}{N_0(2)} = \\sqrt{4} = 2$$\n\nLa fréquence de résonance du premier circuit (plus petite capacité) est donc le DOUBLE de celle du second, sans qu'il soit nécessaire de connaître la valeur de L ni de calculer numériquement chaque fréquence : multiplier C par 4 divise N0 par $\\sqrt4=2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "À la résonance d'intensité d'un circuit RLC série, N0=1/(2π√(LC)) : cette fréquence ne dépend que de L et C, jamais de la résistance du circuit.",
+        "N0 se lit sur le graphe I=f(N) comme l'abscisse du SOMMET de la courbe (intensité maximale), à ne pas confondre avec les bornes de la bande passante.",
+        "L=1/(4π²N0²C) permet de remonter à l'inductance d'une bobine à partir d'une mesure purement graphique de N0.",
+        "N0 est inversement proportionnelle à √(LC) : multiplier C (ou L) par un facteur k divise N0 par √k.",
+        "Au BAC, cette méthode de détermination expérimentale de L (ou de C) à partir d'une courbe de résonance est un classique des exercices de circuits RLC série, souvent couplé à une question de représentation du montage."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-ecrire-le-resultat-d-une-requete-sql-select-avec-clause-where-terminale",
+  "meta": {
+    "titre": "Écrire le résultat d'une requête SQL SELECT avec clause WHERE",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données et SQL",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "WHERE",
+      "bases de données",
+      "filtrage de données"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-e-abi-informatique-theorique-officiel-2017",
+    "epreuve_titre": "BAC A, C, D, E et ABI - Épreuve théorique d'Informatique - 2017 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2017-ex3-q4.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Imagine une table de notes avec des centaines de lignes : tu ne veux pas les lire toutes une par une pour trouver les élèves qui ont eu plus de 15 sur 20. La requête SQL `SELECT` associée à la clause `WHERE` fait exactement ce travail à ta place : elle parcourt la table et ne te montre que les lignes qui t'intéressent. C'est l'instruction la plus utilisée de tout le langage SQL, et une valeur sûre au BAC Informatique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table dans une base de données (lignes et colonnes)",
+        "Connaître la syntaxe de base d'une requête SELECT * FROM nom_table"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Filtrer les lignes d'une table avec WHERE",
+      "contenu_markdown": "La requête `SELECT * FROM nom_table;` affiche toutes les colonnes de toutes les lignes d'une table, sans exception. Ajouter une clause `WHERE condition` restreint le résultat aux seules lignes qui vérifient cette condition : chaque ligne est testée une par une, et seules celles qui satisfont la condition apparaissent dans le résultat final. Les opérateurs de comparaison utilisables dans une condition sont les mêmes qu'en mathématiques : `=`, `<>` (différent), `<`, `>`, `<=`, `>=`.",
+      "formule_principale": "SELECT colonnes FROM table WHERE condition;",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une table `Classement` contient les colonnes Code, Matière et Moyenne suivantes : R1/Anglais/13, M1/Informatique/15, P2/Physique/16, O2/Droit/12, S1/Géographie/17. Écrire le résultat de la requête `SELECT * FROM Classement WHERE (Moyenne <= 15);`",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la condition de filtrage",
+          "justification": "La clause WHERE indique explicitement le critère que doit vérifier chaque ligne pour apparaître dans le résultat",
+          "resultat_markdown": "La condition à tester sur chaque ligne est : Moyenne <= 15."
+        },
+        {
+          "numero": 2,
+          "action": "Tester la condition ligne par ligne, dans l'ordre de la table",
+          "justification": "Une requête SELECT... WHERE examine chaque ligne indépendamment des autres, sans en oublier aucune",
+          "resultat_markdown": "R1 (13) : 13 <= 15, vrai, ligne retenue.\nM1 (15) : 15 <= 15, vrai (l'égalité est incluse dans <=), ligne retenue.\nP2 (16) : 16 <= 15, faux, ligne exclue.\nO2 (12) : 12 <= 15, vrai, ligne retenue.\nS1 (17) : 17 <= 15, faux, ligne exclue."
+        },
+        {
+          "numero": 3,
+          "action": "Reconstituer le résultat avec uniquement les lignes retenues, dans leur ordre d'origine",
+          "justification": "Une requête SELECT sans clause ORDER BY conserve l'ordre des lignes tel qu'il apparaît dans la table",
+          "resultat_markdown": "| Code | Matière | Moyenne |\n|---|---|---|\n| R1 | Anglais | 13 |\n| M1 | Informatique | 15 |\n| O2 | Droit | 12 |"
+        }
+      ],
+      "conclusion_markdown": "La requête renvoie exactement les trois lignes dont la moyenne est inférieure ou égale à 15 : R1, M1 et O2, dans cet ordre, puisqu'aucun tri n'a été demandé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Exclure la ligne M1 (Moyenne = 15) du résultat de `WHERE Moyenne <= 15`",
+          "pourquoi_faux": "L'opérateur `<=` signifie « inférieur OU égal » : une valeur strictement égale à la borne fait partie du résultat, ce n'est pas une exception à traiter avec prudence.",
+          "correction_markdown": "Relis toujours l'opérateur avec attention : `<` exclut la borne, `<=` l'inclut. Teste chaque ligne littéralement contre le symbole écrit dans l'énoncé, jamais contre ta propre intuition de ce que « la limite » devrait être."
+        },
+        {
+          "erreur_markdown": "Modifier l'ordre des lignes dans le résultat, par exemple en les triant par moyenne croissante",
+          "pourquoi_faux": "SQL ne trie jamais spontanément un résultat : sans clause `ORDER BY` explicite dans la requête, les lignes conservent l'ordre dans lequel elles apparaissent dans la table d'origine.",
+          "correction_markdown": "Ne réordonne le résultat que si la requête contient elle-même un `ORDER BY` ; sinon, recopie les lignes retenues dans leur ordre d'apparition initial dans la table."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "En reprenant la table Classement (R1/Anglais/13, M1/Informatique/15, P2/Physique/16, O2/Droit/12, S1/Géographie/17), écrire le résultat de `SELECT * FROM Classement WHERE (Moyenne > 15);`",
+          "solution_markdown": "On teste Moyenne > 15 (strictement supérieur, la valeur 15 est exclue) sur chaque ligne : R1 (13) faux, M1 (15) faux (15 n'est pas strictement supérieur à 15), P2 (16) vrai, O2 (12) faux, S1 (17) vrai. Résultat :\n\n| Code | Matière | Moyenne |\n|---|---|---|\n| P2 | Physique | 16 |\n| S1 | Géographie | 17 |"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire le résultat de `SELECT Code, Matière FROM Classement WHERE (Matière = 'Informatique');`",
+          "solution_markdown": "La condition ne teste ici que la colonne Matière, et la requête ne demande que deux colonnes (Code et Matière), pas la Moyenne. Une seule ligne vérifie Matière = 'Informatique' : M1. Résultat :\n\n| Code | Matière |\n|---|---|\n| M1 | Informatique |"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire le résultat de `SELECT * FROM Classement WHERE (Moyenne >= 12) AND (Moyenne <= 16);`, puis expliquer en une phrase la différence avec une requête qui utiliserait OR à la place de AND.",
+          "solution_markdown": "On teste la double condition sur chaque ligne : R1 (13) vérifie 12<=13<=16, retenue ; M1 (15) vérifie 12<=15<=16, retenue ; P2 (16) vérifie 12<=16<=16, retenue ; O2 (12) vérifie 12<=12<=16, retenue ; S1 (17) ne vérifie pas 17<=16, exclue. Résultat :\n\n| Code | Matière | Moyenne |\n|---|---|---|\n| R1 | Anglais | 13 |\n| M1 | Informatique | 15 |\n| P2 | Physique | 16 |\n| O2 | Droit | 12 |\n\nAvec `AND`, une ligne n'est retenue que si elle vérifie les DEUX conditions à la fois (ici, être à la fois >= 12 ET <= 16) ; avec `OR`, une ligne serait retenue dès qu'elle vérifie AU MOINS UNE des deux conditions, ce qui inclurait alors aussi une ligne comme S1 (17), puisque 17 >= 12 est vrai même si 17 <= 16 est faux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SELECT * FROM table; affiche tout ; ajouter WHERE condition restreint le résultat aux lignes qui vérifient cette condition.",
+        "Teste la condition ligne par ligne, jamais par intuition globale sur la table.",
+        "<= et >= incluent la borne ; < et > l'excluent : relis toujours l'opérateur exact avant de trancher.",
+        "Sans ORDER BY, le résultat garde l'ordre d'origine de la table.",
+        "Au BAC, cette compétence revient dans presque toutes les épreuves d'Informatique dès qu'une table de données est fournie : maîtriser WHERE, c'est sécuriser plusieurs points à coup sûr."
+      ]
+    }
+  ]
+}

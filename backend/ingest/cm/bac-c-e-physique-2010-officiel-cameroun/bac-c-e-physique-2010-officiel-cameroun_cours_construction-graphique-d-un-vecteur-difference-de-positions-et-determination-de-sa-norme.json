@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-construction-graphique-vecteur-difference-de-positions-tle-c-e",
+  "meta": {
+    "titre": "Construction graphique d'un vecteur difference de positions et determination de sa norme",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Mecanique - methodes graphiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "construction vectorielle",
+      "regle du parallelogramme",
+      "derivee seconde discrete"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2010 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-e-physique-2010-officiel-cameroun-ex4-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant l'informatique, les physiciens deduisaient une acceleration d'un mouvement observe sans jamais deriver une seule equation : ils construisaient des vecteurs, a la regle et au compas, sur les positions successives du mobile. Ce cours restitue cette methode graphique, toujours d'actualite en travaux pratiques."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Construction d'un vecteur entre deux points",
+        "Regle du parallelogramme pour la somme de deux vecteurs",
+        "Notion de symetrie geometrique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire un vecteur somme de deux differences de positions",
+      "contenu_markdown": "Pour trois positions successives $G_{k-2}$, $G_k$, $G_{k+2}$ d'un mobile, le vecteur $\\vec A_k = \\vec{G_kG_{k+2}} + \\vec{G_kG_{k-2}}$ se construit en tracant les deux vecteurs reliant $G_k$ a chacun des deux autres points, puis en appliquant la regle du parallelogramme pour obtenir leur somme. Lorsque les trois points sont regulierement espaces sur une trajectoire courbe (ex. un cercle), ce vecteur pointe vers l'interieur de la courbure, sa norme se mesurant directement sur la construction graphique.",
+      "formule_principale": "\\vec A_k = \\vec{G_kG_{k+2}} + \\vec{G_kG_{k-2}} = \\vec{OG_{k+2}} + \\vec{OG_{k-2}} - 2\\vec{OG_k}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur un cercle de rayon $4{,}5\\ \\text{cm}$, trois points $G_{k-2}$, $G_k$, $G_{k+2}$ sont espaces de $15^\\circ$ chacun. Determiner la norme du vecteur $\\vec A_k$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer G_k sur l'axe de reference et les deux autres points a +/-30 degres",
+          "justification": "L'ecart angulaire entre G_{k-2} et G_{k+2}, en passant par G_k, vaut 2 fois 15 degres = 30 degres de chaque cote",
+          "resultat_markdown": "$G_k$ a l'angle $0^\\circ$, $G_{k+2}$ a $-30^\\circ$, $G_{k-2}$ a $+30^\\circ$ (rayon $4{,}5\\ \\text{cm}$)"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer le vecteur somme par symetrie",
+          "justification": "Les composantes tangentielles des deux vecteurs individuels s'annulent par symetrie",
+          "resultat_markdown": "$\\vec A_k$ est purement radial, dirige vers le centre du cercle"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer sa norme",
+          "justification": "Formule generale $A_k = 2r(\\cos2\\theta - 1)$ en valeur absolue",
+          "resultat_markdown": "$\\|\\vec A_k\\| = 2\\times4{,}5\\times(1-\\cos30^\\circ) = 9\\times(1-0{,}866) \\approx 1{,}21\\ \\text{cm}$"
+        }
+      ],
+      "conclusion_markdown": "Cette construction, purement geometrique, revele que le vecteur somme pointe systematiquement vers le centre de courbure de la trajectoire : c'est cette propriete qui, une fois convertie en acceleration, confirme le caractere centripete du mouvement etudie."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Construire $\\vec A_k$ en sommant $\\vec{G_{k+2}G_k}$ et $\\vec{G_{k-2}G_k}$ au lieu de $\\vec{G_kG_{k+2}}$ et $\\vec{G_kG_{k-2}}$ (inverser le sens des vecteurs)",
+          "pourquoi_faux": "Inverser le sens de chaque vecteur individuel inverse le sens du vecteur somme final : le resultat pointerait alors vers l'exterieur de la courbe au lieu de son centre, ce qui est physiquement incorrect pour une acceleration centripete.",
+          "correction_markdown": "Toujours verifier scrupuleusement le sens de chaque vecteur (point de depart, point d'arrivee) avant toute construction ou tout calcul."
+        },
+        {
+          "erreur_markdown": "Croire que $\\vec A_k$ pointe toujours vers le centre du cercle pour n'importe quelle trajectoire",
+          "pourquoi_faux": "Ce resultat (pointer vers le centre) est specifique a une trajectoire circulaire a vitesse angulaire reguliere ; pour une trajectoire quelconque, $\\vec A_k$ pointe vers le centre de courbure LOCAL de la trajectoire a cet endroit, qui n'est pas necessairement un point fixe unique.",
+          "correction_markdown": "Ne generaliser le resultat 'vers le centre' qu'au cas d'une trajectoire effectivement circulaire, jamais par defaut."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sur un cercle de rayon $r=3{,}0\\ \\text{cm}$, deux points sont espaces de $20^\\circ$ de part et d'autre d'un point central $G_k$ (donc $40^\\circ$ d'ecart angulaire total). Calculer la norme du vecteur $A_k$.",
+          "solution_markdown": "$A_k = 2r(1-\\cos40^\\circ) = 2\\times3{,}0\\times(1-0{,}766) = 6{,}0\\times0{,}234 \\approx 1{,}40\\ \\text{cm}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Expliquer, sans calcul, pourquoi le vecteur $\\vec A_k$ est nul si les trois points sont alignes (trajectoire rectiligne, mouvement uniforme).",
+          "solution_markdown": "Pour un mouvement rectiligne uniforme, les intervalles entre positions successives sont egaux en direction et en norme : $\\vec{G_kG_{k+2}}$ et $\\vec{G_kG_{k-2}}$ sont alors deux vecteurs colineaires, de meme norme, mais de sens opposes. Leur somme est donc rigoureusement nulle, ce qui traduit l'absence d'acceleration dans un mouvement rectiligne uniforme."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer, par un calcul general, que pour trois points regulierement espaces d'un angle $\\theta$ sur un cercle de rayon $r$, la norme de $\\vec A_k$ vaut $2r(1-\\cos2\\theta)$, et verifier que cette expression tend vers 0 quand $\\theta$ tend vers 0.",
+          "solution_markdown": "En placant $G_k$ a l'angle 0, $G_{k+2}$ a $-2\\theta$ et $G_{k-2}$ a $+2\\theta$ (rayon $r$) : $\\vec A_k = \\vec{OG_{k+2}}+\\vec{OG_{k-2}}-2\\vec{OG_k}$. En coordonnees, la composante $y$ s'annule par symetrie et la composante $x$ vaut $r\\cos2\\theta + r\\cos2\\theta - 2r = 2r(\\cos2\\theta-1)$, soit une norme $\\|\\vec A_k\\| = 2r(1-\\cos2\\theta)$ (valeur absolue). Quand $\\theta\\to0$, un developpement limite donne $\\cos2\\theta \\approx 1-2\\theta^2$, donc $\\|\\vec A_k\\| \\approx 2r\\times2\\theta^2 = 4r\\theta^2 \\to 0$ : la formule est bien coherente avec l'absence d'acceleration a la limite d'un mouvement rectiligne (angle nul)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le vecteur $\\vec A_k=\\vec{G_kG_{k+2}}+\\vec{G_kG_{k-2}}$ se construit toujours a partir de $G_k$, jamais vers $G_k$ : le sens des deux vecteurs individuels est essentiel.",
+        "Sur une trajectoire circulaire a espacement angulaire regulier, ce vecteur pointe systematiquement vers le centre du cercle, par symetrie des composantes tangentielles.",
+        "Pour un mouvement rectiligne uniforme, ce vecteur est rigoureusement nul : c'est la signature graphique de l'absence d'acceleration.",
+        "La formule generale $\\|\\vec A_k\\|=2r(1-\\cos2\\theta)$ relie directement cette construction geometrique a l'angle d'ecart entre positions successives.",
+        "Au BAC, cette construction sert d'etape intermediaire indispensable avant de calculer une acceleration a partir d'un enregistrement de positions."
+      ]
+    }
+  ]
+}

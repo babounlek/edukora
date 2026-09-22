@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-notion-de-base-de-donnees-tle-ti",
+  "meta": {
+    "titre": "La notion de base de données",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Développement des bases de données",
+    "duree_estimee_min": 20,
+    "tags": [
+      "base de donnees",
+      "SGBD",
+      "redondance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'écrire la moindre requête SQL, il faut savoir précisément ce que l'on interroge : une base de données n'est pas un simple tas de fichiers, c'est une organisation pensée pour résoudre des problèmes bien réels que rencontre toute entreprise qui gère des informations en grand nombre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un fichier informatique et à quoi sert un logiciel de gestion."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Définition et utilité",
+      "contenu_markdown": "Une base de données est un ensemble structuré et organisé de données, enregistrées sur un support informatique de façon durable, conçu pour être interrogé et mis à jour efficacement par plusieurs utilisateurs ou applications à la fois. Elle est gérée par un logiciel spécialisé, le Système de Gestion de Base de Données (SGBD). Son utilité tient en quatre points : éviter la redondance et la duplication des données ; garantir la cohérence et l'intégrité de l'information (une donnée n'est mise à jour qu'à un seul endroit) ; permettre un accès partagé, sécurisé et simultané par plusieurs utilisateurs ; faciliter l'interrogation rapide au moyen d'un langage dédié comme le SQL."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Définissez l'expression « base de données » et donnez son utilité.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Définir la base de données",
+          "justification": "La définition doit mentionner la structuration, le support durable et la gestion par un SGBD.",
+          "resultat_markdown": "Une base de données est un ensemble structuré et organisé de données, enregistrées durablement et gérées par un SGBD."
+        },
+        {
+          "numero": 2,
+          "action": "Lister l'utilité en évitant la redondance",
+          "justification": "Un stockage en fichiers dispersés duplique souvent la même information plusieurs fois.",
+          "resultat_markdown": "Une base de données évite la redondance et la duplication des données."
+        },
+        {
+          "numero": 3,
+          "action": "Lister l'utilité liée à la cohérence et au partage",
+          "justification": "Une base centralisée garantit qu'une même donnée reste cohérente pour tous ses utilisateurs.",
+          "resultat_markdown": "Elle garantit la cohérence des données et permet un accès partagé et sécurisé par plusieurs utilisateurs à la fois."
+        }
+      ],
+      "conclusion_markdown": "Une base de données structure, centralise et protège l'information : c'est cette triple garantie qui justifie son utilité par rapport à de simples fichiers."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Définir une base de données comme un simple fichier ou un ensemble de fichiers",
+          "pourquoi_faux": "Un fichier ne garantit ni structuration selon un modèle, ni gestion centralisée par un logiciel dédié : c'est précisément ce qui distingue une base de données d'un simple stockage de fichiers.",
+          "correction_markdown": "Mentionne toujours la structuration selon un modèle et la gestion par un SGBD dans ta définition."
+        },
+        {
+          "erreur_markdown": "Réduire l'utilité d'une base de données au seul stockage de grandes quantités de données",
+          "pourquoi_faux": "Le volume n'est pas le critère décisif : même une petite base de données apporte un bénéfice réel en cohérence et en accès partagé par rapport à des fichiers dispersés.",
+          "correction_markdown": "Insiste sur la cohérence, l'absence de redondance et le partage, pas seulement sur la taille des données stockées."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel logiciel spécialisé gère une base de données ?",
+          "solution_markdown": "Un Système de Gestion de Base de Données, ou SGBD."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une entreprise stocke les coordonnées de ses clients dans un fichier Excel par agence, chaque agence tenant sa propre copie. Quel problème une base de données centralisée résoudrait-elle ici ?",
+          "solution_markdown": "Elle résoudrait le problème de redondance et d'incohérence : si un client change d'adresse, chaque agence doit corriger sa propre copie du fichier, avec le risque que certaines copies restent obsolètes ou divergentes. Une base de données centralisée ne stocke l'information qu'une seule fois, accessible et mise à jour par toutes les agences simultanément."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquez pourquoi l'accès « simultané et sécurisé » par plusieurs utilisateurs, cité comme une utilité de la base de données, est particulièrement difficile à obtenir avec de simples fichiers partagés sur un réseau.",
+          "solution_markdown": "Avec de simples fichiers partagés, rien n'empêche deux utilisateurs d'ouvrir et de modifier le même fichier en même temps : les modifications de l'un peuvent écraser celles de l'autre lors de l'enregistrement, sans qu'aucun mécanisme ne détecte ni ne prévienne ce conflit. Un SGBD, à l'inverse, contrôle les accès concurrents : il peut verrouiller temporairement une donnée en cours de modification, ordonner les écritures simultanées et garantir que chaque utilisateur voit une version cohérente des données, ce qu'un simple système de fichiers partagés ne sait pas faire nativement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une base de données est un ensemble structuré et organisé de données, géré par un SGBD.",
+        "Quatre bénéfices à retenir : moins de redondance, plus de cohérence, accès partagé sécurisé, interrogation rapide en SQL.",
+        "Ne définis jamais une base de données comme un simple fichier : la structuration et la gestion par un SGBD sont les deux critères qui comptent.",
+        "Cette définition ouvre presque toujours la partie « bases de données » d'un sujet de Systèmes d'Information : elle doit être sue parfaitement, sans approximation."
+      ]
+    }
+  ]
+}

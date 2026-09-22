@@ -1,0 +1,36 @@
+{
+  "type": "cours",
+  "cours_id": "cours-role-variable-accumulateur-bepc-informatique",
+  "meta": {
+    "titre": "Déterminer le rôle d'une variable dans un algorithme",
+    "matiere": "informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Initiation à l'algorithmique",
+    "duree_estimee_min": 10,
+    "tags": ["variables"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-informatique-bepc-1-2026-s1-ex4-q3-0"
+  },
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Une variable ne dit pas à quoi elle sert par son nom : c'est en observant ce qu'on lui fait, ligne après ligne, qu'on découvre son vrai rôle."},
+    {"type": "prerequis", "items": ["Notion de variable", "Notion d'affectation"]},
+    {"type": "regle", "titre": "Comment déterminer le rôle d'une variable", "contenu_markdown": "Pour déterminer le rôle d'une variable, on observe trois éléments : sa valeur initiale (souvent avant une boucle), ce qui lui est affecté à chaque passage (une addition, une comparaison, une nouvelle valeur saisie), et son usage final (affichée, comparée, réutilisée). Une variable initialisée à 0 puis augmentée à chaque passage d'une boucle est presque toujours un accumulateur, qui construit progressivement un total.", "formule_principale": null, "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Dans un algorithme, une variable `Compteur` est initialisée à 0 avant une boucle, puis `Compteur <- Compteur + 1` est exécuté à chaque passage. Quel est son rôle ?", "etapes": [
+      {"numero": 1, "action": "Observer la valeur initiale", "justification": "Compteur commence à 0.", "resultat_markdown": "Valeur de départ neutre pour un comptage."},
+      {"numero": 2, "action": "Observer ce qui lui est ajouté à chaque passage", "justification": "Compteur reçoit +1 à chaque tour de boucle.", "resultat_markdown": "Elle augmente de 1 à chaque répétition."}
+    ], "conclusion_markdown": "Compteur est un compteur de passages : elle compte le nombre de fois où la boucle s'exécute, chaque tour ajoutant 1 à sa valeur."},
+    {"type": "erreurs_classiques", "items": [
+      {"erreur_markdown": "Confondre un accumulateur de somme (`S <- S + i`, qui ajoute une valeur qui change) et un simple compteur (`C <- C + 1`, qui ajoute toujours 1).", "pourquoi_faux": "Les deux se ressemblent syntaxiquement mais ne mesurent pas la même chose : l'un totalise des valeurs variables, l'autre compte des passages.", "correction_markdown": "Regarde précisément ce qui est ajouté à chaque passage : une valeur qui change (souvent liée au compteur de boucle) signale un accumulateur de somme ; la constante 1 signale un simple compteur."}
+    ]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyenne", "enonce_markdown": "Une variable `P` est initialisée à 1 avant une boucle, puis `P <- P * i` est exécuté à chaque passage, `i` allant de 1 à N. Quel est le rôle de `P` ?", "solution_markdown": "P est un accumulateur de produit : elle calcule progressivement le produit de tous les entiers de 1 à N (c'est-à-dire la factorielle de N)."}
+    ]},
+    {"type": "synthese", "items_markdown": [
+      "Observer la valeur initiale, ce qui est ajouté à chaque passage, et l'usage final",
+      "Initialisée à 0 puis augmentée d'une valeur variable → accumulateur de somme",
+      "Initialisée à 0 puis augmentée de 1 → compteur de passages"
+    ]}
+  ]
+}

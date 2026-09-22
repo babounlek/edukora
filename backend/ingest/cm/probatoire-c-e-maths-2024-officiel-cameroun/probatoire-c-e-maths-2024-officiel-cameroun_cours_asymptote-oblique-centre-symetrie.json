@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-asymptote-oblique-centre-symetrie-1ere-c-e",
+  "meta": {
+    "titre": "Asymptote oblique et centre de symétrie d'une fonction rationnelle",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Étude de fonctions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "asymptote oblique",
+      "centre de symétrie",
+      "fonction rationnelle",
+      "division euclidienne",
+      "étude de fonction"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2024-officiel-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2024",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex3-q2a-0",
+    "rappels_lies": [
+      "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex3-q2b-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Beaucoup d'élèves savent calculer une limite infinie, mais bloquent dès qu'il s'agit de prouver qu'une droite oblique (ni horizontale, ni verticale) est asymptote à une courbe : la limite seule ne suffit pas, il faut une écriture différente de la fonction. Ce cours te donne la méthode systématique (division euclidienne) pour trouver cette asymptote, et un bonus qui en découle presque gratuitement : le centre de symétrie de la courbe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Division euclidienne de deux polynômes",
+        "Calcul de limites d'une fonction rationnelle en $+\\infty$ et $-\\infty$",
+        "Définition d'une asymptote (verticale, horizontale, oblique)",
+        "Condition algébrique définissant un centre de symétrie d'une courbe"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trouver une asymptote oblique par division euclidienne",
+      "contenu_markdown": "Pour une fonction rationnelle $f(x)=\\dfrac{P(x)}{Q(x)}$ avec $\\deg P=\\deg Q+1$, on effectue la division euclidienne de $P$ par $Q$ : $P(x)=Q(x)(ax+b)+R(x)$ avec $\\deg R<\\deg Q$. On obtient alors $f(x)=ax+b+\\dfrac{R(x)}{Q(x)}$. Comme $\\dfrac{R(x)}{Q(x)}\\to0$ quand $x\\to\\pm\\infty$, la droite $y=ax+b$ est asymptote oblique à la courbe. Si de plus $\\dfrac{R(x)}{Q(x)}=\\dfrac{k}{x-c}$ (cas d'un dénominateur du premier degré), le point $\\Omega(c\\,;ac+b)$, intersection des deux asymptotes (verticale $x=c$ et oblique $y=ax+b$), est automatiquement centre de symétrie de la courbe.",
+      "formule_principale": "f(x)=\\dfrac{P(x)}{Q(x)}=ax+b+\\dfrac{R(x)}{Q(x)},\\quad \\lim_{x\\to\\pm\\infty}\\dfrac{R(x)}{Q(x)}=0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f(x)=\\dfrac{4x^2-4x-2}{2x-3}$. Démontrer que $y=2x+1$ est asymptote à $(C_f)$, puis que $\\Omega\\left(\\frac32\\,;4\\right)$ est centre de symétrie de $(C_f)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Effectuer la division euclidienne du numérateur par le dénominateur",
+          "justification": "Le degré du numérateur (2) dépasse d'exactement 1 celui du dénominateur (1) : une asymptote oblique est attendue.",
+          "resultat_markdown": "$4x^2-4x-2=(2x-3)(2x+1)+1$, donc $f(x)=2x+1+\\dfrac{1}{2x-3}$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la limite du reste en ±∞",
+          "justification": "$f(x)-(2x+1)=\\dfrac1{2x-3}$, quotient dont le dénominateur tend vers $\\pm\\infty$ alors que le numérateur reste constant.",
+          "resultat_markdown": "$\\lim_{x\\to\\pm\\infty}\\dfrac1{2x-3}=0$, donc $y=2x+1$ est asymptote à $(C_f)$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer f(3-x) pour vérifier la condition de centre de symétrie",
+          "justification": "$\\Omega\\left(\\frac32;4\\right)$ : on teste $f(2\\times\\frac32-x)+f(x)=2\\times4=8$.",
+          "resultat_markdown": "$f(3-x)=2(3-x)+1+\\dfrac1{2(3-x)-3}=7-2x-\\dfrac1{2x-3}$."
+        },
+        {
+          "numero": 4,
+          "action": "Sommer f(x) et f(3-x)",
+          "justification": "Les termes en $x$ et les termes en $\\frac1{2x-3}$ s'éliminent deux à deux.",
+          "resultat_markdown": "$f(x)+f(3-x)=(2x+1+\\frac1{2x-3})+(7-2x-\\frac1{2x-3})=8=2\\times4$."
+        }
+      ],
+      "conclusion_markdown": "L'écriture $f(x)=2x+1+\\frac1{2x-3}$, obtenue une seule fois par division euclidienne, a permis de traiter à la fois l'asymptote oblique et le centre de symétrie : c'est le principal intérêt de cette méthode par rapport à un calcul de limite isolé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer qu'une droite est asymptote uniquement parce que $f(x)$ \"ressemble\" à $2x+1$ pour $x$ grand, sans calcul de limite.",
+          "pourquoi_faux": "Une ressemblance visuelle n'est pas une preuve : il faut démontrer que $f(x)-(2x+1)$ tend vers $0$, ce qui exige l'écriture explicite du reste de la division.",
+          "correction_markdown": "Effectue systématiquement la division euclidienne pour obtenir une expression exacte de $f(x)-(ax+b)$, jamais une approximation."
+        },
+        {
+          "erreur_markdown": "Confondre la condition de centre de symétrie ($f(2a-x)+f(x)=2b$) avec celle d'un axe de symétrie vertical ($f(2a-x)=f(x)$).",
+          "pourquoi_faux": "Ce sont deux figures de symétrie différentes (point contre droite) avec des conditions algébriques distinctes.",
+          "correction_markdown": "Mémorise les deux formules séparément, et vérifie toujours laquelle est demandée (un point ou une droite verticale) avant de calculer."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que $2a-x$ appartient bien au domaine de $f$ avant de calculer $f(2a-x)$.",
+          "pourquoi_faux": "Si $2a-x$ sort du domaine pour certaines valeurs de $x$ du domaine, la relation de symétrie n'est pas valable partout.",
+          "correction_markdown": "Vérifie explicitement, comme dans l'exemple résolu, que $2a-x\\in D_f\\Leftrightarrow x\\in D_f$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $g(x)=\\dfrac{x^2+1}{x}$. Démontrer que $y=x$ est asymptote à la courbe de $g$.",
+          "solution_markdown": "Division euclidienne : $x^2+1=x\\times x+1$, donc $g(x)=x+\\dfrac1x$. Ainsi $g(x)-x=\\dfrac1x\\xrightarrow[x\\to\\pm\\infty]{}0$. **La droite $y=x$ est donc asymptote à la courbe de $g$ en $+\\infty$ et en $-\\infty$.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $h(x)=\\dfrac{2x^2-3x+1}{x-1}$. Trouver l'asymptote oblique à la courbe de $h$, puis le centre de symétrie de cette courbe.",
+          "solution_markdown": "Division euclidienne de $2x^2-3x+1$ par $x-1$ : $2x^2-3x+1=(x-1)(2x-1)+0$ (vérifions : $(x-1)(2x-1)=2x^2-x-2x+1=2x^2-3x+1$, exact, reste nul). Donc $h(x)=2x-1$ pour tout $x\\neq1$ : **la courbe de $h$ est en fait une droite privée du point d'abscisse $1$** (pas d'asymptote oblique distincte de la courbe elle-même, et pas de centre de symétrie au sens habituel, puisque $h$ est déjà affine). Ce cas particulier montre l'intérêt de toujours vérifier si le reste de la division est réellement non nul avant de conclure à une authentique branche hyperbolique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $k(x)=\\dfrac{x^2-2x+5}{x-2}$. Démontrer que la courbe de $k$ admet un centre de symétrie que l'on précisera, puis déterminer les coordonnées des points de la courbe où la tangente est parallèle à l'asymptote oblique.",
+          "solution_markdown": "Division euclidienne : $x^2-2x+5=(x-2)(x)+5$ (vérification : $(x-2)x=x^2-2x$, reste $5$). Donc $k(x)=x+\\dfrac5{x-2}$, asymptote oblique $y=x$, asymptote verticale $x=2$. Le centre de symétrie est à l'intersection des deux asymptotes : $\\Omega(2\\,;2)$ (car $y=x$ en $x=2$ donne $y=2$). Vérification : $k(4-x)=(4-x)+\\dfrac5{(4-x)-2}=4-x+\\dfrac5{2-x}=4-x-\\dfrac5{x-2}$, donc $k(x)+k(4-x)=\\left(x+\\frac5{x-2}\\right)+\\left(4-x-\\frac5{x-2}\\right)=4=2\\times2$ ✓.\n\nPour la tangente parallèle à l'asymptote ($y=x$, pente $1$) : $k'(x)=1-\\dfrac5{(x-2)^2}$ (dérivée de $\\frac{5}{x-2}$ étant $-\\frac{5}{(x-2)^2}$). On cherche $k'(x)=1\\Leftrightarrow-\\dfrac5{(x-2)^2}=0$, ce qui est impossible ($-5\\neq0$) : **il n'existe aucun point où la tangente soit parallèle à l'asymptote oblique** (la tangente s'en rapproche seulement à l'infini, sans jamais lui être parallèle)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une asymptote oblique se démontre par une division euclidienne suivie d'un calcul de limite du reste, jamais par une simple ressemblance de formule.",
+        "L'écriture $f(x)=ax+b+\\frac{R(x)}{Q(x)}$ sert deux fois : pour l'asymptote, et pour le centre de symétrie quand le dénominateur est du premier degré.",
+        "Le centre de symétrie d'une fonction homographique ou de ce type est toujours à l'intersection de ses deux asymptotes.",
+        "Vérifie toujours que $2a-x$ reste dans le domaine de $f$ avant d'utiliser la condition $f(2a-x)+f(x)=2b$.",
+        "Cette double question (asymptote oblique + centre de symétrie) est un grand classique de l'étude de fonction au Probatoire scientifique : elle apparaît sous une forme quasi identique presque chaque année."
+      ]
+    }
+  ]
+}

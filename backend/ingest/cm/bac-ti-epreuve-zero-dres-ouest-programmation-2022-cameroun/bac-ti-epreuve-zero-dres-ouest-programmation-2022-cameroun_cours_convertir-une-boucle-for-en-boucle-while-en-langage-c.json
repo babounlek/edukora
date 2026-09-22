@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-convertir-une-boucle-for-en-boucle-while-en-langage-c-tle-ti",
+  "meta": {
+    "titre": "Convertir une boucle for en boucle while en langage C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures itératives en langage C",
+    "duree_estimee_min": 15,
+    "tags": [
+      "boucle for",
+      "boucle while",
+      "équivalence des structures itératives"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex2-q10-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "for et while sont deux façons d'écrire la même idée : répéter un bloc d'instructions tant qu'une condition est vraie. Savoir passer de l'une à l'autre sans rien changer au comportement du programme est une compétence testée très régulièrement, et qui se résume à une seule règle de réorganisation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une boucle for en C",
+        "Savoir écrire une boucle while en C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois ingrédients, un seul ordre différent",
+      "contenu_markdown": "Une boucle `for(initialisation; condition; incrementation){ corps }` contient exactement les mêmes trois ingrédients qu'une boucle `while` correctement construite : une initialisation, une condition d'arrêt et une incrémentation. La conversion consiste à replacer chacun de ces trois éléments à sa position naturelle en `while` : l'**initialisation** est placée avant la boucle, la **condition** devient celle du `while`, sans aucune modification, et l'**incrémentation** devient la toute dernière instruction à l'intérieur du corps de la boucle."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Convertis en boucle while : for(i=0;i<=N-1;i++){ printf(\"%d\",i); }",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Extraire l'initialisation et la placer avant la boucle",
+          "justification": "i=0 doit s'exécuter une seule fois, avant le premier test de la condition",
+          "resultat_markdown": "i=0;"
+        },
+        {
+          "numero": 2,
+          "action": "Reprendre la condition sans modification dans le while",
+          "justification": "La condition d'arrêt reste identique entre les deux structures",
+          "resultat_markdown": "while(i<=N-1){ ... }"
+        },
+        {
+          "numero": 3,
+          "action": "Placer l'incrémentation en dernière instruction du corps",
+          "justification": "i++ doit s'exécuter à chaque tour, après le corps, exactement comme dans la boucle for d'origine",
+          "resultat_markdown": "printf(\"%d\",i); i++;"
+        }
+      ],
+      "conclusion_markdown": "i=0; while(i<=N-1){ printf(\"%d\",i); i++; } reproduit exactement le comportement de la boucle for d'origine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer l'incrémentation en tête du corps de la boucle while",
+          "pourquoi_faux": "Dans le for d'origine, l'incrémentation s'exécute après le corps à chaque tour ; la placer en tête décale tout le comportement de la boucle d'un cran.",
+          "correction_markdown": "L'incrémentation doit toujours rester la toute dernière instruction du corps du while."
+        },
+        {
+          "erreur_markdown": "Oublier complètement l'incrémentation dans la boucle while",
+          "pourquoi_faux": "Sans elle, la condition reste éternellement vraie (ou fausse), et la boucle tourne indéfiniment ou ne s'exécute jamais.",
+          "correction_markdown": "Vérifie systématiquement que les trois ingrédients (initialisation, condition, incrémentation) du for d'origine se retrouvent bien quelque part dans ta conversion en while."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertis en while : for(i=1;i<=5;i++){ printf(\"%d \",i);}",
+          "solution_markdown": "i=1;\nwhile(i<=5){\n  printf(\"%d \",i);\n  i++;\n}"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertis en while : for(i=10;i>0;i--){ printf(\"%d \",i);}",
+          "solution_markdown": "i=10;\nwhile(i>0){\n  printf(\"%d \",i);\n  i--;\n}\n\nL'incrémentation i++ du for classique devient ici une décrémentation i--, mais le principe de conversion reste identique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Convertis en while la boucle suivante, qui contient un saut de valeur : for(i=0;i<20;i=i+2){ printf(\"%d \",i);}. Vérifie ensuite que les deux boucles affichent exactement les mêmes valeurs.",
+          "solution_markdown": "i=0;\nwhile(i<20){\n  printf(\"%d \",i);\n  i=i+2;\n}\n\nLes deux boucles affichent 0 2 4 6 8 10 12 14 16 18 : l'incrémentation i=i+2 (et non i++) est reportée telle quelle en dernière instruction du corps du while, sans généraliser à tort vers un simple i++."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une boucle for contient trois ingrédients : initialisation, condition, incrémentation.",
+        "En while, l'initialisation passe avant la boucle, la condition reste identique, l'incrémentation devient la dernière instruction du corps.",
+        "Oublier l'incrémentation ou mal la placer transforme la boucle en boucle infinie ou en boucle qui ne s'exécute jamais.",
+        "Cette conversion fonctionne quelle que soit la forme de l'incrémentation (i++, i--, i=i+2...), tant qu'elle est reportée fidèlement."
+      ]
+    }
+  ]
+}

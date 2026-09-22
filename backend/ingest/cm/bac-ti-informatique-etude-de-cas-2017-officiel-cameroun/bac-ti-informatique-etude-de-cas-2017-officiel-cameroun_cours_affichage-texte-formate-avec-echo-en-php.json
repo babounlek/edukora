@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-affichage-texte-formate-echo-php-tle-ti",
+  "meta": {
+    "titre": "Afficher du texte formaté en PHP avec echo",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases du langage PHP - affichage",
+    "duree_estimee_min": 20,
+    "tags": [
+      "PHP",
+      "echo",
+      "balises HTML",
+      "mise en forme de texte"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un script PHP ne se contente pas d'envoyer du texte brut au navigateur : il envoie une réponse que le navigateur va lui-même interpréter comme du HTML. Cela veut dire qu'on peut mélanger, dans une seule instruction `echo`, du texte normal et des balises de mise en forme, pour obtenir un résultat visuellement enrichi, exactement comme si on avait écrit du HTML pur. Ce cours donne la méthode pour construire ce genre d'affichage sans erreur de balisage."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire un script PHP minimal entre `<?php` et `?>`.",
+        "Connaître les balises HTML de base `<b>` (gras) et `<u>` (souligné)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Insérer des balises HTML dans une chaîne echo",
+      "contenu_markdown": "L'instruction `echo \"...\";` envoie au navigateur exactement le contenu de la chaîne qui la suit. Comme le navigateur interprète cette sortie comme du HTML, toute balise HTML placée à l'intérieur de la chaîne (entre guillemets) produit son effet de mise en forme habituel : `<b>...</b>` affiche son contenu en gras, `<u>...</u>` l'affiche souligné. Lorsque plusieurs balises doivent s'appliquer au même texte, on les imbrique en respectant une règle stricte : la dernière balise ouverte doit être la première refermée, exactement comme des parenthèses. Écrire `<b><u>texte</u></b>` est donc correct, tandis que `<b><u>texte</b></u>` casse la structure d'imbrication.",
+      "formule_principale": "\\texttt{echo\\ \"texte\\ <b><u>mot</u></b>\\ texte\";}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire un petit code PHP permettant d'afficher la phrase « J'aime la Programmation en PHP. », le mot « Programmation » devant apparaître en gras et souligné.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la structure minimale du script",
+          "justification": "Tout script PHP s'ouvre par `<?php` et se ferme par `?>`.",
+          "resultat_markdown": "`<?php` ... `?>`"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir l'instruction d'affichage",
+          "justification": "`echo` affiche à l'écran la chaîne qui lui est passée en argument.",
+          "resultat_markdown": "`echo \"...\";`"
+        },
+        {
+          "numero": 3,
+          "action": "Entourer le seul mot concerné par les deux balises, dans le bon ordre d'imbrication",
+          "justification": "Le mot « Programmation » doit être à la fois en gras (`<b>`) et souligné (`<u>`) ; on ferme les balises dans l'ordre inverse de leur ouverture.",
+          "resultat_markdown": "`echo \"J'aime la <b><u>Programmation</u></b> en PHP.\";`"
+        }
+      ],
+      "conclusion_markdown": "Le script complet `<?php echo \"J'aime la <b><u>Programmation</u></b> en PHP.\"; ?>` affiche la phrase demandée avec le mot « Programmation » en gras et souligné."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `echo \"J'aime la <b><u>Programmation</b></u> en PHP.\";` (balises refermées dans le mauvais ordre).",
+          "pourquoi_faux": "La balise ouverte en dernier (`<u>`) doit être refermée en premier ; inverser l'ordre casse la structure d'imbrication du HTML, ce qui peut provoquer un rendu incohérent selon le navigateur.",
+          "correction_markdown": "Toujours refermer les balises comme des parenthèses : la dernière ouverte est la première fermée, soit `<b><u>...</u></b>`."
+        },
+        {
+          "erreur_markdown": "Oublier le point-virgule à la fin de l'instruction `echo`.",
+          "pourquoi_faux": "En PHP, chaque instruction doit se terminer par un point-virgule ; son absence provoque une erreur de syntaxe qui empêche l'exécution du script.",
+          "correction_markdown": "Relire systématiquement la fin de chaque ligne de code PHP pour vérifier la présence du point-virgule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire un code PHP qui affiche : « Bienvenue au BAC ! » avec le mot « BAC » en gras.",
+          "solution_markdown": "```php\n<?php\n    echo \"Bienvenue au <b>BAC</b> !\";\n?>\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un code PHP qui affiche : « La session 2017 approche. », avec « session » en italique et « 2017 » à la fois en gras et souligné.",
+          "solution_markdown": "```php\n<?php\n    echo \"La <i>session</i> <b><u>2017</u></b> approche.\";\n?>\n```\nLa balise `<i>` s'applique seule à « session », tandis que « 2017 » reçoit les deux balises `<b>` et `<u>` imbriquées correctement."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire un code PHP qui déclare une variable `$matiere` contenant la chaîne « Informatique », puis affiche la phrase « J'étudie l'Informatique en série TI. » en utilisant cette variable, avec le contenu de la variable affiché en gras.",
+          "solution_markdown": "```php\n<?php\n    $matiere = \"Informatique\";\n    echo \"J'étudie l'<b>\" . $matiere . \"</b> en série TI.\";\n?>\n```\nLa variable `$matiere` est concaténée avec le reste de la phrase grâce à l'opérateur `.` : chaque morceau de texte fixe reste entre guillemets, la variable est insérée entre deux points de concaténation, et la balise `<b>` entoure uniquement le contenu variable."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`echo` envoie au navigateur exactement le contenu de la chaîne qu'on lui passe, y compris les balises HTML qu'elle contient.",
+        "Insérer une balise HTML dans une chaîne `echo` produit son effet de mise en forme habituel, car le navigateur interprète la sortie comme du HTML.",
+        "Les balises imbriquées se referment toujours dans l'ordre inverse de leur ouverture, comme des parenthèses.",
+        "N'oublie jamais le point-virgule final : c'est l'erreur de syntaxe la plus fréquente et la plus vite corrigée une fois qu'on y pense.",
+        "Cette compétence est systématiquement testée en première question de la partie PHP au BAC TI : elle vérifie la maîtrise du couple `echo` + balises HTML avant d'aborder des structures plus complexes."
+      ]
+    }
+  ]
+}

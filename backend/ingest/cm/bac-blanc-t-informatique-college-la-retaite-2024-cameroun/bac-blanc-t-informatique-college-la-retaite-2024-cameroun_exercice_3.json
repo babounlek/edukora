@@ -1,0 +1,181 @@
+{
+  "epreuve_source": "bac-blanc-t-informatique-college-la-retaite-2024-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "filiere_serie_a": null,
+  "serie": "TI",
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "institution": "Collège de la Retraite",
+  "annee": 2024,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "statut": "brouillon",
+  "numero_exercice": "3",
+  "introduction_markdown": null,
+  "points": 4,
+  "groupes": [
+    "PARTIE I : PROGRAMMATION EN LANGAGE C (10 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 (4 points)**\n\nSoit le programme C suivant :\n\n```c\n1  #include<stdio.h>\n2  #define taille 7\n3  int T[taille];\n4  int i, j, elt, n, a;\n5  int main(){\n6  do{\n7    printf(\"donner la taille du tableau :\");\n8    scanf(\"%d\", &n);\n9  }while((n<5)||(n>20));\n10 do{\n11   printf(\"donner le premier element du tableau :\");\n12   scanf(\"%d\", &T[0]);\n13 }while((T[0]<-10)||(T[0]>10));\n14 for(i=1; i<n; i++){\n15   do{\n16     printf(\"donner l'element %d :\", i);\n17     scanf(\"%d\", &T[i]);\n18   }while(T[i]>T[i-1]);\n19 }\n20 printf(\"Donner un entier .\");\n21 scanf(\"%d\", &a);\n22 i=0;\n23 do{\n24   i+=1;\n25 }while(T[i]>a);\n26 int p=i;\n27 printf(\"P=%d\",p);\n28     return 0;\n29 }\n```",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Donner le rôle de la séquence des lignes 10 à 19. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nComprendre le rôle d'une séquence de lecture avec validation demande de repérer, pour chaque `do…while`, la condition de resaisie : elle indique la contrainte que doit respecter chaque valeur acceptée.\n\nLes lignes 10 à 13 lisent la première valeur du tableau, `T[0]`, en la resaisissant tant qu'elle n'est pas comprise entre -10 et 10 : `T[0]` est donc garanti appartenir à l'intervalle [-10, 10]. Les lignes 14 à 19 lisent ensuite, une par une, les n-1 valeurs suivantes `T[1]` à `T[n-1]`, chacune étant resaisie tant qu'elle reste strictement supérieure à la valeur précédente `T[i-1]` : chaque nouvelle valeur acceptée est donc toujours inférieure ou égale à la précédente. Au total, cette séquence remplit le tableau `T` avec n valeurs rangées en ordre décroissant (au sens large), la première étant comprise entre -10 et 10.\n\n### Piège à éviter\nNe confonds pas « strictement supérieur » (condition de resaisie, ligne 18) et « supérieur ou égal » : la condition `T[i]>T[i-1]` autorise deux valeurs consécutives égales à passer la validation - la suite obtenue est décroissante au sens large, pas strictement décroissante.",
+      "themes": [
+        "Validation de saisie (do-while)",
+        "Construction d'une suite ordonnée"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex3-q1-1",
+          "competence": "Rôle d'une séquence de lecture validée",
+          "contenu_markdown": "Comprendre le rôle d'une séquence de lecture avec validation demande de repérer, pour chaque `do…while`, la condition de resaisie : elle indique la contrainte que doit respecter chaque valeur acceptée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "**2.a.** Soit le tableau `T` suivant, donné indépendamment de la séquence précédente : `T = [-2, 1, 5, 7, 12, 26]` (indices 0 à 5). Pour chaque valeur de `a`, donner la valeur de `P` obtenue après exécution des lignes 22 à 26, pour `a=6` puis `a=26`. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nExécuter à la main les lignes 22 à 26 consiste à suivre pas à pas la variable `i`, qui part de 0 et s'incrémente tant que `T[i]` reste strictement supérieur à `a` - la valeur finale de `i` (rangée dans `p`) est donc le premier indice, à partir de 1, où le tableau cesse de dépasser `a`.\n\nPour `a=6` : `i` passe de 0 à 1 ; on teste `T[1]=1>6`, ce qui est faux, donc la boucle s'arrête dès le premier passage. On obtient **P=1**. Pour `a=26` : `i` passe de 0 à 1 ; on teste `T[1]=1>26`, également faux, donc la boucle s'arrête là aussi dès le premier passage. On obtient également **P=1**.\n\n### Piège à éviter\nLes deux valeurs de `a` (6 et 26) donnent ici le même résultat P=1, ce qui peut surprendre : ce n'est pas une erreur de calcul, c'est une conséquence du tableau `T` donné, qui est rangé en ordre croissant (`T[1]=1` est déjà la plus petite valeur après `T[0]`) alors que l'algorithme n'est réellement utile que sur un tableau rangé en ordre décroissant, comme le garantit la séquence des lignes 10 à 19 étudiée en question 1. Ce constat prépare directement la question 2.b.",
+      "themes": [
+        "Trace d'exécution",
+        "Recherche dans un tableau trié"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex3-q2a-1",
+          "competence": "Trace d'exécution d'une boucle de recherche",
+          "contenu_markdown": "Exécuter à la main les lignes 22 à 26 consiste à suivre pas à pas la variable `i`, qui part de 0 et s'incrémente tant que `T[i]` reste strictement supérieur à `a` - la valeur finale de `i` (rangée dans `p`) est donc le premier indice, à partir de 1, où le tableau cesse de dépasser `a`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2b",
+      "enonce_markdown": "**2.b.** En déduire le rôle de la variable `P` utilisée dans ce programme. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe rôle d'une variable de résultat se déduit en généralisant ce qui a été observé lors de la trace : ici, `P` reçoit l'indice `i` auquel la boucle des lignes 22 à 25 s'est arrêtée.\n\nLorsque le tableau `T` est rangé en ordre décroissant - ce que garantit la première partie du programme -, `P` représente le rang du premier élément de `T`, à partir de l'indice 1, qui n'est plus strictement supérieur à `a` : autrement dit, le nombre d'éléments de `T` strictement supérieurs à `a`, augmenté de 1. C'est exactement la spécification donnée à la question suivante : `P` doit valoir n+1 dès que a >= T[n].\n\n### Conseil\nQuand un énoncé te demande de « déduire » le rôle d'une variable après une trace, formule ta réponse sous forme d'une règle générale (« P compte... », « P donne la position de... »), pas seulement une répétition du calcul déjà fait : c'est ce passage du cas particulier à la règle générale qui est noté ici.",
+      "themes": [
+        "Rôle d'une variable dans un algorithme",
+        "Recherche de seuil"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex3-q2b-1",
+          "competence": "Déduction du rôle d'une variable à partir d'une trace",
+          "contenu_markdown": "Le rôle d'une variable de résultat se déduit en généralisant ce qui a été observé lors de la trace : ici, `P` reçoit l'indice `i` auquel la boucle des lignes 22 à 25 s'est arrêtée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2c",
+      "enonce_markdown": "**2.c.** La valeur de `P` doit être égale à n+1 pour toute valeur de `a` telle que a >= T[n]. Modifier la séquence des lignes 22 à 27 de ce programme pour donner une valeur valide à `P`, quelle que soit la valeur de `a`. *[0.5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne boucle de recherche qui avance dans un tableau doit toujours être protégée par une condition qui l'empêche de dépasser la dernière case valide, en plus de la condition « métier » qui décrit ce qu'on cherche.\n\nDans la version originale, `do{ i+=1; }while(T[i]>a);` ne contient aucune protection de ce type : si `a` est plus petit que toutes les valeurs présentes dans `T`, `i` continue de grandir au-delà du nombre d'éléments réellement saisis (variable `n`), et finit par lire des cases non initialisées, puis hors du tableau. Il suffit d'ajouter, dans la condition du `while`, une vérification que `i` reste strictement inférieur à `n` :\n\n```c\ni = 0;\ndo {\n    i += 1;\n} while ((i < n) && (T[i] > a));\np = i;\n```\n\nGrâce au « et » (`&&`), la boucle s'arrête désormais aussi bien quand on trouve un élément non supérieur à `a` que lorsqu'on a examiné tous les éléments réellement saisis (`i` atteint `n`), ce qui donne alors à `P` la valeur `n`.\n\n### Piège à éviter\nAjouter la protection `i<n` en second dans le `&&` plutôt qu'en premier fonctionnerait presque toujours ici, mais il est plus sûr de toujours placer en premier la condition qui garantit que l'accès suivant est valide : le C évalue un `&&` de gauche à droite et s'arrête dès qu'un opérande est faux (évaluation paresseuse), donc `(i<n) && (T[i]>a)` ne lira jamais `T[i]` si `i` est déjà hors limites, alors que `(T[i]>a) && (i<n)` le ferait.\n\n### Conseil\nCe réflexe - toujours protéger l'indice avant de l'utiliser pour accéder au tableau - s'applique à toute boucle de recherche que tu écriras, pas seulement à cet exercice.",
+      "themes": [
+        "Protection des accès tableau",
+        "Évaluation paresseuse des opérateurs logiques"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex3-q2c-1",
+          "competence": "Protection d'une boucle de recherche contre le débordement",
+          "contenu_markdown": "Une boucle de recherche qui avance dans un tableau doit toujours être protégée par une condition qui l'empêche de dépasser la dernière case valide, en plus de la condition « métier » qui décrit ce qu'on cherche.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Réécrire la boucle `for()` présente dans cet algorithme en utilisant la boucle `while()`. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne boucle `for(init; condition; incrément){ corps }` se réécrit toujours en boucle `while` en plaçant l'initialisation avant la boucle, la condition inchangée dans le `while`, et l'incrément comme dernière instruction du corps.\n\nLa boucle visée est celle des lignes 14 à 19, `for(i=1; i<n; i++){ ... }`, qui contient elle-même un `do…while` de validation :\n\n```c\ni = 1;\nwhile (i < n) {\n    do {\n        printf(\"donner l'element %d :\", i);\n        scanf(\"%d\", &T[i]);\n    } while (T[i] > T[i-1]);\n    i++;\n}\n```\n\n### Piège à éviter\nOublier de placer `i++` en toute dernière instruction du corps du `while` transforme la boucle en boucle infinie (puisque `i` ne serait alors jamais incrémenté) : c'est l'erreur la plus fréquente dans ce type de conversion.",
+      "themes": [
+        "Équivalence for/while",
+        "Boucles imbriquées"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex3-q3-1",
+          "competence": "Conversion d'une boucle for en boucle while",
+          "contenu_markdown": "Une boucle `for(init; condition; incrément){ corps }` se réécrit toujours en boucle `while` en plaçant l'initialisation avant la boucle, la condition inchangée dans le `while`, et l'incrément comme dernière instruction du corps.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Traduire la séquence des lignes 10 à 13 en algorithmique. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nTraduire un `do…while` du C en pseudocode « Répéter…Jusqu'à » demande de bien inverser la condition : le C répète tant que sa condition est vraie, alors que l'algorithmique répète jusqu'à ce que la sienne devienne vraie - il faut donc écrire la négation logique de la condition C.\n\nLa condition C est `(T[0]<-10)||(T[0]>10)` (on resaisit tant que la valeur est hors de l'intervalle [-10,10]) ; sa négation est `(T[0]>=-10) ET (T[0]<=10)` (on s'arrête dès que la valeur est dans l'intervalle) :\n\n```\nRépéter\n    Écrire (\"donner le premier element du tableau :\")\n    Lire (T[0])\nJusqu'à ( (T[0] >= -10) ET (T[0] <= 10) )\n```\n\n### Piège à éviter\nRecopier la condition du `while` telle quelle dans un `Jusqu'à` (sans la nier) est l'erreur la plus fréquente sur ce type de conversion : le pseudocode obtenu boucle alors indéfiniment sur une valeur déjà valide, exactement le contraire de l'effet recherché.",
+      "themes": [
+        "Traduction algorithme/C",
+        "Structures répétitives"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex3-q4-1",
+          "competence": "Conversion do-while C vers Répéter...Jusqu'à algorithmique",
+          "contenu_markdown": "Traduire un `do…while` du C en pseudocode « Répéter…Jusqu'à » demande de bien inverser la condition : le C répète tant que sa condition est vraie, alors que l'algorithmique répète jusqu'à ce que la sienne devienne vraie - il faut donc écrire la négation logique de la condition C.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "recherche de seuil",
+    "do while",
+    "validation de saisie",
+    "boucle for/while",
+    "debordement de tableau",
+    "Terminale TI"
+  ],
+  "incertitudes": [
+    "Incohérence relevée dans le code source : n (taille demandée par l'utilisateur, lignes 6-9) peut valoir jusqu'à 20, alors que le tableau T est déclaré avec une capacité fixe de 7 cases (#define taille 7) : pour toute valeur de n supérieure à 7, le remplissage de T (lignes 14-19) écrirait hors des bornes du tableau (comportement indéterminé). Ce point n'affecte pas les réponses demandées (qui portent sur un tableau à 6 éléments donné indépendamment), mais mérite d'être signalé.",
+    "Le tableau T=[-2,1,5,7,12,26] donné pour la question 2 ne peut pas résulter d'une exécution réelle des lignes 6-19 du programme (qui imposent une suite décroissante à partir de T[1]) ; il est donc traité comme un exemple indépendant fourni pour tester isolément la séquence des lignes 22-26, conformément à l'énoncé.",
+    "Les exemples illustratifs de la question 2.c (mention de T[6], a=26 et a=-47 donnant tous deux P=6) semblent se référer à un tableau générique à 7 éléments distinct de celui, à 6 éléments, donné en 2.a - traités ici comme une explication abstraite de la règle recherchée, non comme une donnée numérique supplémentaire à tracer.",
+    "savoir_officiel non renseigné : référentiel non accessible depuis cet environnement (voir remarque détaillée dans l'exercice 1).",
+    "Aucun cours généré à partir des rappels de méthode de cet exercice dans cette passe (priorité donnée à la complétude et à l exactitude des corrigés sur les 5 exercices) ; à traiter lors d une prochaine exécution du traitement en lot."
+  ]
+}

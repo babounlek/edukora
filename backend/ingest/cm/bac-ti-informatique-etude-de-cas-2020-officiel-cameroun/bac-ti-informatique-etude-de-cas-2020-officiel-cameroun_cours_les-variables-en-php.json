@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-les-variables-en-php-tle-ti",
+  "meta": {
+    "titre": "Les variables en PHP",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases du langage PHP",
+    "duree_estimee_min": 15,
+    "tags": [
+      "variables",
+      "PHP",
+      "affectation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q4.2-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois qu'un script PHP doit se souvenir d'une information, ne serait-ce que le temps d'une page, il la range dans une variable. Savoir repérer une variable, son nom et sa valeur dans un extrait de code est le tout premier réflexe de lecture avant de comprendre ce que fait réellement un script."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir reconnaître une instruction PHP terminée par un point-virgule",
+        "Savoir ce qu'est une chaîne de caractères (texte entre guillemets ou apostrophes)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le symbole \\$ et l'affectation",
+      "contenu_markdown": "En PHP, toute variable commence par le symbole `$`, suivi d'un nom qui commence par une lettre ou un underscore. Une variable est créée dès sa première affectation avec le signe `=` : à gauche le nom de la variable, à droite la valeur qui lui est attribuée (une valeur littérale, ou le résultat d'un appel de fonction). PHP n'exige pas de déclarer le type de la variable à l'avance : elle peut contenir un nombre, une chaîne de caractères, un tableau, ou une ressource (comme une connexion à une base de données), selon ce qui lui est affecté.",
+      "formule_principale": "\\texttt{\\$nomDeVariable = valeur;}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code de VIPBoutique, identifier deux variables initialisées à leur création et préciser leur valeur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer chaque symbole \\$ suivi d'un signe = dans le code",
+          "justification": "C'est la signature d'une affectation, donc d'une variable qui reçoit une valeur",
+          "resultat_markdown": "\\$bd (ligne 2), \\$sql (ligne 5), \\$req (ligne 6), \\$donnees (ligne 7, dans la boucle)."
+        },
+        {
+          "numero": 2,
+          "action": "Distinguer celles dont la valeur de création est directement lisible",
+          "justification": "\\$donnees change de valeur à chaque tour de boucle : elle n'a pas de valeur unique \"à sa création\" au sens d'une valeur simple à citer",
+          "resultat_markdown": "\\$bd et \\$sql sont affectées une seule fois, dès leur première apparition, avec une valeur identifiable."
+        },
+        {
+          "numero": 3,
+          "action": "Donner la valeur de chacune",
+          "justification": "La valeur est ce qui se trouve à droite du signe =",
+          "resultat_markdown": "\\$bd = résultat de mysql_connect('localhost', 'login', 'password') ; \\$sql = 'SELECT nom, prenom, pointdevue FROM Client'."
+        }
+      ],
+      "conclusion_markdown": "Deux variables initialisées à leur création : \\$bd (ressource de connexion) et \\$sql (chaîne de la requête SQL)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le symbole \\$ en citant le nom d'une variable (écrire \"bd\" au lieu de \"\\$bd\")",
+          "pourquoi_faux": "Sans le \\$, ce n'est plus une variable en PHP : \"bd\" serait interprété comme une constante ou un mot non défini.",
+          "correction_markdown": "Prends l'habitude de toujours recopier le \\$ avec le nom de la variable, y compris à l'oral d'un examen."
+        },
+        {
+          "erreur_markdown": "Citer \\$donnees comme \"initialisée à sa création\" avec une valeur fixe",
+          "pourquoi_faux": "\\$donnees est réaffectée à chaque tour de la boucle while : sa valeur dépend du résultat de mysql_fetch_assoc() à cet instant, elle n'a pas de valeur de création unique.",
+          "correction_markdown": "Une variable réaffectée dans une boucle n'est pas un bon exemple pour une question sur la valeur \"à la création\" : préfère une variable affectée une seule fois, en dehors de toute boucle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'instruction `$prix = 1500;`, quel est le nom de la variable et quelle est sa valeur ?",
+          "solution_markdown": "Le nom de la variable est `$prix`, sa valeur est `1500` (un nombre entier)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que contient la variable `$total` après l'exécution des deux lignes suivantes ?\n```php\n$total = 10;\n$total = $total + 5;\n```",
+          "solution_markdown": "`$total` vaut `15`. La première ligne l'initialise à 10 ; la seconde la réaffecte en ajoutant 5 à sa valeur précédente (10 + 5 = 15). Une variable PHP peut être réaffectée autant de fois que nécessaire, sa valeur finale est celle de la dernière affectation exécutée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans le code de VIPBoutique, pourquoi peut-on dire que la variable `$req` (ligne 6) dépend directement de la variable `$sql` (ligne 5) ?",
+          "solution_markdown": "La ligne 6 s'écrit `$req = mysql_query($sql) or die(...);` : la fonction `mysql_query()` reçoit `$sql` en paramètre et exécute la requête SQL qu'elle contient. La valeur affectée à `$req` (le résultat de la requête) dépend donc directement du contenu de `$sql` au moment de l'appel : si `$sql` change, `$req` change en conséquence. C'est un exemple de dépendance entre variables, très courant dès qu'un script PHP enchaîne plusieurs étapes de traitement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une variable PHP commence toujours par \\$, suivi d'un nom.",
+        "Elle est créée dès sa première affectation avec le signe =.",
+        "PHP ne demande pas de préciser le type de la variable à l'avance.",
+        "Une variable réaffectée dans une boucle n'a pas de valeur de création unique : elle change à chaque itération.",
+        "Au BAC TI, une question de lecture de code commence presque toujours par repérer les variables avant de comprendre les instructions qui les manipulent."
+      ]
+    }
+  ]
+}

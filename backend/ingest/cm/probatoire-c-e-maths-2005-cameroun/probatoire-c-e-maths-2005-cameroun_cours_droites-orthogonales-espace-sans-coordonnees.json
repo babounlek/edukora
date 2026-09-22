@@ -1,0 +1,185 @@
+{
+ "cours_id": "cours-droites-orthogonales-espace-sans-coordonnees-1ere-ce",
+ "meta": {
+  "titre": "Démontrer que deux droites de l'espace sont orthogonales sans coordonnées",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Géométrie dans l'espace",
+  "duree_estimee_min": 30,
+  "tags": ["géométrie dans l'espace", "cube", "droites orthogonales", "droite perpendiculaire à un plan", "démonstration synthétique"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "24",
+   "savoir_numero": "I"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex3-q1-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Dans le plan, deux droites orthogonales se coupent. Dans l'espace, elles peuvent parfaitement s'ignorer — passer l'une au-dessus de l'autre sans jamais se rencontrer — et rester orthogonales. C'est le cas de $(GF)$ et $(HC)$ dans un cube : elles ne sont pas même coplanaires. La démonstration se fait alors par un détour, et ce détour est toujours le même : trouver un **plan** qui contient l'une et auquel l'autre est perpendiculaire."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Distinguer droites perpendiculaires et droites orthogonales dans l'espace",
+    "Connaître le théorème caractérisant une droite perpendiculaire à un plan",
+    "Connaître les propriétés du cube : faces carrées, arêtes parallèles",
+    "Savoir qu'une droite parallèle à une perpendiculaire à un plan lui est aussi perpendiculaire"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Passer par un plan perpendiculaire",
+   "contenu_markdown": "**Le vocabulaire, d'abord.** Dans l'espace, deux notions distinctes :\n\n| Terme | Définition |\n|---|---|\n| **perpendiculaires** | les droites sont **sécantes** et forment un angle droit |\n| **orthogonales** | leurs vecteurs directeurs sont orthogonaux, qu'elles se coupent ou non |\n\nDeux droites perpendiculaires sont orthogonales ; la réciproque est fausse. Employer « perpendiculaires » pour des droites non coplanaires est une faute de vocabulaire que les correcteurs relèvent systématiquement.\n\n**Le théorème central.** Si une droite $(d)$ est perpendiculaire à un plan $(\\mathcal{P})$, alors $(d)$ est **orthogonale à toutes les droites** de $(\\mathcal{P})$ — sans exception, qu'elles rencontrent $(d)$ ou non.\n\n**Comment établir qu'une droite est perpendiculaire à un plan.** Il suffit — et il faut — qu'elle soit orthogonale à **deux droites sécantes** de ce plan :\n\n$$(d) \\perp (d_{1}) \\ \\text{ et } \\ (d) \\perp (d_{2}) \\ \\text{ avec } (d_{1}), (d_{2}) \\subset (\\mathcal{P}) \\text{ sécantes} \\implies (d) \\perp (\\mathcal{P})$$\n\n**Deux droites sécantes, jamais une seule.** Une droite orthogonale à une seule droite d'un plan n'a aucune raison d'être perpendiculaire à ce plan. C'est l'erreur de démonstration la plus fréquente du chapitre.\n\n**Le transport par parallélisme.** Si $(d) \\perp (\\mathcal{P})$ et $(d') \\parallel (d)$, alors $(d') \\perp (\\mathcal{P})$. Cela permet de travailler sur une droite commode puis de transporter le résultat.\n\n**La méthode, en quatre gestes.**\n\n1. **Choisir** un plan contenant l'une des deux droites — dans un cube, une face fait presque toujours l'affaire.\n2. **Trouver** une droite perpendiculaire à ce plan, éventuellement parallèle à la seconde droite.\n3. **Démontrer** cette perpendicularité par deux droites sécantes du plan.\n4. **Conclure** par le théorème central.\n\n**Dans un cube, les faits utilisables sans démonstration.**\n\n- Chaque face est un **carré** : ses côtés consécutifs sont perpendiculaires.\n- Les arêtes se répartissent en trois directions, deux à deux orthogonales.\n- Deux faces opposées sont parallèles, et se correspondent sommet par sommet.\n- Une arête est perpendiculaire aux deux faces qu'elle rencontre.\n\n**Le réflexe.** Pour montrer que deux arêtes ou diagonales d'un cube sont orthogonales, cherche la face qui contient la première et l'arête perpendiculaire à cette face parallèle à la seconde.",
+   "formule_principale": "(d) \\perp (\\mathcal{P}) \\text{ et } (\\Delta) \\subset (\\mathcal{P}) \\implies (d) \\perp (\\Delta)",
+   "variantes": [
+    {
+     "nom": "Démonstration par le produit scalaire",
+     "quand_utiliser": "Quand un repère orthonormé est disponible ou facile à poser",
+     "contenu_markdown": "On calcule les coordonnées de deux vecteurs directeurs et l'on vérifie que leur produit scalaire est nul :\n\n$$\\vec{u} \\cdot \\vec{v} = xx' + yy' + zz' = 0$$\n\nC'est plus rapide, mais cela suppose un repère **orthonormé** — sans quoi la formule est fausse. Dans le sujet 2005, l'énoncé demande d'ailleurs les deux méthodes successivement : la synthétique en question 1, l'analytique en question 2.b."
+    },
+    {
+     "nom": "Décomposition vectorielle sans repère",
+     "quand_utiliser": "Quand on veut un calcul mais sans coordonnées",
+     "contenu_markdown": "On exprime les deux vecteurs sur une base d'arêtes du cube, puis on développe le produit scalaire en utilisant l'orthogonalité deux à deux des arêtes.\n\nPour un cube d'arête $a$ avec $\\vec{\\imath}$, $\\vec{\\jmath}$, $\\vec{k}$ trois arêtes issues d'un même sommet :\n\n$$\\overrightarrow{GF} = -a\\,\\vec{\\imath} \\qquad ; \\qquad \\overrightarrow{HC} = a\\,\\vec{\\jmath} - a\\,\\vec{k}$$\n\n$$\\overrightarrow{GF} \\cdot \\overrightarrow{HC} = -a^{2}\\,\\vec{\\imath}\\cdot\\vec{\\jmath} + a^{2}\\,\\vec{\\imath}\\cdot\\vec{k} = 0 + 0 = 0$$\n\nLa méthode est rigoureuse et ne demande aucun repère explicite."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCDEFGH$ est un cube de centre $O$, de face avant $ABFE$ et de face arrière $DCGH$, les points $E$, $F$, $G$, $H$ étant respectivement au-dessus de $A$, $B$, $C$, $D$. Justifier que les droites $(GF)$ et $(HC)$ sont orthogonales. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Choisir un plan contenant $(HC)$",
+     "justification": "Les points $D$, $C$, $G$, $H$ sont les quatre sommets d'une même face, et $[HC]$ en est une diagonale",
+     "resultat_markdown": "$(HC) \\subset (DCGH)$"
+    },
+    {
+     "numero": 2,
+     "action": "Situer $(GF)$ par rapport aux arêtes",
+     "justification": "$EFGH$ et $ABCD$ sont deux faces parallèles se correspondant sommet par sommet, donc $\\overrightarrow{GF} = \\overrightarrow{CB} = \\overrightarrow{DA}$",
+     "resultat_markdown": "$(GF) \\parallel (AD)$"
+    },
+    {
+     "numero": 3,
+     "action": "Première perpendicularité",
+     "justification": "$ABCD$ est un carré, donc ses côtés consécutifs sont perpendiculaires",
+     "resultat_markdown": "$(AD) \\perp (DC)$, et $(DC) \\subset (DCGH)$"
+    },
+    {
+     "numero": 4,
+     "action": "Seconde perpendicularité",
+     "justification": "$ADHE$ est un carré, face latérale du cube, donc ses côtés consécutifs sont perpendiculaires",
+     "resultat_markdown": "$(AD) \\perp (DH)$, et $(DH) \\subset (DCGH)$"
+    },
+    {
+     "numero": 5,
+     "action": "Vérifier que les deux droites sont sécantes",
+     "justification": "C'est la condition indispensable du théorème",
+     "resultat_markdown": "$(DC)$ et $(DH)$ se coupent en $D$ et sont toutes deux contenues dans $(DCGH)$"
+    },
+    {
+     "numero": 6,
+     "action": "Conclure à la perpendicularité au plan",
+     "justification": "Une droite orthogonale à deux droites sécantes d'un plan lui est perpendiculaire",
+     "resultat_markdown": "$(AD) \\perp (DCGH)$"
+    },
+    {
+     "numero": 7,
+     "action": "Transporter par parallélisme",
+     "justification": "$(GF) \\parallel (AD)$, et une parallèle à une perpendiculaire à un plan lui est perpendiculaire",
+     "resultat_markdown": "$(GF) \\perp (DCGH)$"
+    },
+    {
+     "numero": 8,
+     "action": "Appliquer le théorème central",
+     "justification": "Une droite perpendiculaire à un plan est orthogonale à toutes les droites de ce plan",
+     "resultat_markdown": "$(GF)$ est orthogonale à $(HC)$"
+    }
+   ],
+   "conclusion_markdown": "Les droites $(GF)$ et $(HC)$ sont **orthogonales**, et non perpendiculaires : elles ne se coupent pas et ne sont même pas coplanaires. Retiens le schéma de la démonstration, il revient à chaque épreuve de géométrie dans l'espace : un plan contenant la première droite, une perpendiculaire à ce plan parallèle à la seconde, et surtout **deux** droites sécantes pour établir cette perpendicularité."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Écrire que les droites sont « perpendiculaires »",
+     "pourquoi_faux": "Deux droites perpendiculaires sont sécantes. Ici $(GF)$ et $(HC)$ ne se coupent pas et ne sont pas coplanaires : le terme exact est **orthogonales**.",
+     "correction_markdown": "Réserve « perpendiculaires » aux droites sécantes. Dans un cube, deux droites portées par des faces différentes sont rarement coplanaires : vérifie avant de choisir le mot."
+    },
+    {
+     "erreur_markdown": "N'utiliser qu'une seule droite du plan",
+     "pourquoi_faux": "Écrire « $(AD) \\perp (DC)$ donc $(AD) \\perp (DCGH)$ » est faux : une infinité de droites sont orthogonales à $(DC)$ sans être perpendiculaires au plan. Il faut **deux** droites sécantes.",
+     "correction_markdown": "Nomme explicitement les deux droites, précise leur point d'intersection, et vérifie qu'elles sont bien toutes deux dans le plan. Trois vérifications, trois lignes."
+    },
+    {
+     "erreur_markdown": "Utiliser deux droites parallèles du plan",
+     "pourquoi_faux": "Deux droites parallèles ne définissent qu'une seule direction : une droite orthogonale à cette direction peut faire n'importe quel angle avec le plan. La condition de sécance est essentielle.",
+     "correction_markdown": "Vérifie que les deux droites choisies se **coupent**. Dans une face de cube, prends deux côtés consécutifs, jamais deux côtés opposés."
+    },
+    {
+     "erreur_markdown": "Affirmer que $(GF) \\parallel (AD)$ sans le justifier",
+     "pourquoi_faux": "Ce parallélisme repose sur la structure du cube : les faces $ABCD$ et $EFGH$ sont parallèles et se correspondent sommet par sommet, donc $\\overrightarrow{GF} = \\overrightarrow{CB} = \\overrightarrow{DA}$. Ce n'est pas une évidence de dessin.",
+     "correction_markdown": "Justifie par l'égalité vectorielle, en nommant les faces concernées. Une ligne suffit, et elle rend la démonstration complète."
+    },
+    {
+     "erreur_markdown": "Lire la figure sans vérifier la correspondance des sommets",
+     "pourquoi_faux": "Selon la convention de nommage, $E$ peut être au-dessus de $A$ ou d'un autre sommet. Une lecture erronée fausse tous les parallélismes et rend la démonstration incohérente.",
+     "correction_markdown": "Relève la convention sur la figure de l'énoncé : ici face avant $ABFE$, face arrière $DCGH$, et $E$, $F$, $G$, $H$ au-dessus de $A$, $B$, $C$, $D$. Note-la avant de commencer."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "$ABCDEFGH$ est un cube, $E$, $F$, $G$, $H$ étant au-dessus de $A$, $B$, $C$, $D$. Démontrer que la droite $(AE)$ est orthogonale à la droite $(BD)$, puis à la droite $(BG)$ — ou expliquer pourquoi ce n'est pas le cas.",
+     "solution_markdown": "**Première partie - $(AE)$ et $(BD)$.**\n\n**Étape 1 - choisir le plan.**\n\nLes points $B$ et $D$ appartiennent à la face $ABCD$, et $[BD]$ en est une diagonale :\n\n$$(BD) \\subset (ABCD)$$\n\n**Étape 2 - montrer que $(AE) \\perp (ABCD)$.**\n\nL'arête $[AE]$ est perpendiculaire à deux côtés consécutifs de la face $ABCD$ :\n\n- $(AE) \\perp (AB)$, car $ABFE$ est un carré ;\n- $(AE) \\perp (AD)$, car $ADHE$ est un carré.\n\nLes droites $(AB)$ et $(AD)$ sont **sécantes en $A$** et contenues dans $(ABCD)$.\n\nDonc $(AE) \\perp (ABCD)$.\n\n**Étape 3 - conclure.**\n\n$(AE)$ étant perpendiculaire au plan $(ABCD)$, elle est orthogonale à toutes ses droites, en particulier à $(BD)$.\n\n**Les droites $(AE)$ et $(BD)$ sont orthogonales.**\n\n*Remarque :* elles ne sont pas perpendiculaires, car elles ne se coupent pas — $A$ n'appartient pas à $(BD)$.\n\n**Seconde partie - $(AE)$ et $(BG)$.**\n\n**Étape 4 - situer $(BG)$.**\n\nLe segment $[BG]$ joint $B$, sommet de la face inférieure, à $G$, sommet de la face supérieure situé au-dessus de $C$. Ce n'est ni une arête ni une diagonale de face : c'est une diagonale de la face $BCGF$.\n\nEn effet, $B$, $C$, $G$, $F$ sont les quatre sommets d'une même face latérale, et $[BG]$ en est une diagonale.\n\n**Étape 5 - calculer.**\n\nPlaçons-nous dans le repère $\\left(A\\,;\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AE}\\right)$ avec un cube d'arête $1$ :\n\n$$A(0\\,;\\,0\\,;\\,0) \\quad B(1\\,;\\,0\\,;\\,0) \\quad E(0\\,;\\,0\\,;\\,1) \\quad G(1\\,;\\,1\\,;\\,1)$$\n\n$$\\overrightarrow{AE} = (0\\,;\\,0\\,;\\,1) \\qquad ; \\qquad \\overrightarrow{BG} = (0\\,;\\,1\\,;\\,1)$$\n\n$$\\overrightarrow{AE} \\cdot \\overrightarrow{BG} = 0 + 0 + 1 = 1 \\neq 0$$\n\n**Les droites $(AE)$ et $(BG)$ ne sont pas orthogonales.**\n\n**Étape 6 - interpréter.**\n\nLa droite $(BG)$ n'est pas contenue dans le plan $(ABCD)$ : elle en sort, et sa composante verticale la rapproche de la direction de $(AE)$.\n\nOn peut même calculer l'angle : $\\left\\|\\overrightarrow{AE}\\right\\| = 1$, $\\left\\|\\overrightarrow{BG}\\right\\| = \\sqrt{2}$, donc\n\n$$\\cos\\theta = \\dfrac{1}{1 \\times \\sqrt{2}} = \\dfrac{\\sqrt{2}}{2} \\qquad \\Longrightarrow \\qquad \\theta = 45^{\\circ}$$\n\n**Ce qu'il faut retenir.** Le théorème ne s'applique que si la seconde droite est **contenue dans le plan**. Dès qu'elle en sort, il ne dit plus rien, et l'orthogonalité peut être vraie comme fausse : il faut calculer."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABCDEFGH$ est un cube. Démontrer, sans coordonnées, que la diagonale $(AG)$ est orthogonale à la droite $(BD)$, puis à la droite $(BE)$. En déduire que $(AG)$ est perpendiculaire au plan $(BDE)$.",
+     "solution_markdown": "**Première partie - $(AG) \\perp (BD)$.**\n\n**Étape 1 - trouver un plan contenant $(BD)$ auquel $(AG)$ serait perpendiculaire.**\n\nLa voie directe est délicate. Utilisons plutôt le plan $(ACGE)$, qui est le plan diagonal contenant $(AG)$.\n\nMontrons que $(BD) \\perp (ACGE)$ :\n\n- $(BD) \\perp (AC)$, car les diagonales d'un carré sont perpendiculaires, et $(AC) \\subset (ACGE)$ ;\n- $(BD) \\perp (AE)$, car $(AE)$ est perpendiculaire au plan $(ABCD)$ qui contient $(BD)$, et $(AE) \\subset (ACGE)$.\n\nLes droites $(AC)$ et $(AE)$ sont **sécantes en $A$** et contenues dans $(ACGE)$.\n\nDonc $(BD) \\perp (ACGE)$.\n\n**Étape 2 - conclure.**\n\n$(AG) \\subset (ACGE)$, donc $(BD)$ est orthogonale à $(AG)$.\n\n**Seconde partie - $(AG) \\perp (BE)$.**\n\n**Étape 3 - par symétrie.**\n\nConsidérons cette fois le plan diagonal $(ADGF)$, qui contient également $(AG)$.\n\nMontrons que $(BE) \\perp (ADGF)$ :\n\n- $(BE) \\perp (AF)$, car $ABFE$ est un carré et $[BE]$, $[AF]$ en sont les deux diagonales, donc perpendiculaires ; et $(AF) \\subset (ADGF)$ ;\n- $(BE) \\perp (AD)$, car $(AD)$ est perpendiculaire au plan $(ABFE)$ qui contient $(BE)$ ; et $(AD) \\subset (ADGF)$.\n\nLes droites $(AF)$ et $(AD)$ sont **sécantes en $A$** et contenues dans $(ADGF)$.\n\nDonc $(BE) \\perp (ADGF)$, et comme $(AG) \\subset (ADGF)$ :\n\n**$(AG)$ est orthogonale à $(BE)$.**\n\n**Troisième partie - $(AG) \\perp (BDE)$.**\n\n**Étape 4 - vérifier les hypothèses du théorème.**\n\nLes droites $(BD)$ et $(BE)$ sont toutes deux contenues dans le plan $(BDE)$, et elles sont **sécantes en $B$**.\n\nOr $(AG)$ est orthogonale à chacune d'elles.\n\n**Étape 5 - conclure.**\n\n$$(AG) \\perp (BDE)$$\n\n**Étape 6 - contrôle analytique.**\n\nDans le repère $\\left(A\\,;\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AE}\\right)$ :\n\n$$\\overrightarrow{AG} = (1\\,;\\,1\\,;\\,1) \\qquad \\overrightarrow{BD} = (-1\\,;\\,1\\,;\\,0) \\qquad \\overrightarrow{BE} = (-1\\,;\\,0\\,;\\,1)$$\n\n$$\\overrightarrow{AG} \\cdot \\overrightarrow{BD} = -1+1+0 = 0 \\qquad ; \\qquad \\overrightarrow{AG} \\cdot \\overrightarrow{BE} = -1+0+1 = 0$$\n\nConforme.\n\n**Remarque.** Le triangle $BDE$ est **équilatéral** : ses trois côtés sont des diagonales de face, de longueur $\\sqrt{2}$. La grande diagonale $(AG)$ lui est perpendiculaire et le perce en son centre de gravité. C'est une configuration classique, qui explique la symétrie d'ordre $3$ du cube autour de sa grande diagonale."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "$SABCD$ est une pyramide de sommet $S$, dont la base $ABCD$ est un carré de centre $O$, et telle que $(SO)$ soit perpendiculaire au plan de base. Démontrer que $(SO) \\perp (AC)$ et $(SO) \\perp (BD)$, puis que $(AC) \\perp (SBD)$. En déduire que $(AC) \\perp (SB)$ et $(AC) \\perp (SD)$.",
+     "solution_markdown": "**Première partie - les deux orthogonalités immédiates.**\n\n**Étape 1 - appliquer directement l'hypothèse.**\n\nPar hypothèse, $(SO) \\perp (ABCD)$. Le théorème central donne alors que $(SO)$ est orthogonale à **toutes** les droites du plan de base.\n\nOr $(AC)$ et $(BD)$ sont les deux diagonales du carré, donc contenues dans $(ABCD)$ :\n\n$$(SO) \\perp (AC) \\qquad \\text{et} \\qquad (SO) \\perp (BD)$$\n\n*Remarque :* ici les droites se **coupent** en $O$, centre du carré. Elles sont donc à la fois orthogonales et perpendiculaires — le terme fort est licite.\n\n**Seconde partie - $(AC) \\perp (SBD)$.**\n\n**Étape 2 - identifier deux droites sécantes du plan $(SBD)$.**\n\nLe plan $(SBD)$ contient les droites $(BD)$ et $(SO)$ — cette dernière parce que $O$, centre du carré, est le milieu de $[BD]$, donc appartient à $(BD) \\subset (SBD)$, et $S$ appartient au plan par définition.\n\nCes deux droites se coupent en $O$.\n\n**Étape 3 - vérifier les deux orthogonalités.**\n\n- $(AC) \\perp (BD)$ : les diagonales d'un carré sont perpendiculaires.\n- $(AC) \\perp (SO)$ : établi à l'étape 1.\n\n**Étape 4 - conclure.**\n\n$(AC)$ est orthogonale à deux droites sécantes du plan $(SBD)$, donc\n\n$$(AC) \\perp (SBD)$$\n\n**Troisième partie - les conséquences.**\n\n**Étape 5 - appliquer le théorème central.**\n\n$(AC)$ étant perpendiculaire au plan $(SBD)$, elle est orthogonale à **toutes** les droites de ce plan.\n\nOr $(SB)$ et $(SD)$ sont contenues dans $(SBD)$, puisque $S$, $B$, $D$ appartiennent tous trois à ce plan.\n\n$$(AC) \\perp (SB) \\qquad \\text{et} \\qquad (AC) \\perp (SD)$$\n\n**Étape 6 - vérification analytique.**\n\nPosons le repère orthonormé d'origine $O$, avec le carré de côté $2$ pour éviter les fractions :\n\n$$A(-1\\,;\\,-1\\,;\\,0) \\quad B(1\\,;\\,-1\\,;\\,0) \\quad C(1\\,;\\,1\\,;\\,0) \\quad D(-1\\,;\\,1\\,;\\,0) \\quad S(0\\,;\\,0\\,;\\,h)$$\n\n$$\\overrightarrow{AC} = (2\\,;\\,2\\,;\\,0) \\qquad ; \\qquad \\overrightarrow{SB} = (1\\,;\\,-1\\,;\\,-h)$$\n\n$$\\overrightarrow{AC} \\cdot \\overrightarrow{SB} = 2 - 2 + 0 = 0$$\n\nConforme, et ce **quelle que soit** la hauteur $h$ de la pyramide.\n\n**Étape 7 - interpréter.**\n\nL'indépendance en $h$ n'est pas fortuite : elle traduit que le résultat ne tient pas à la forme particulière de la pyramide, mais à la seule symétrie du carré combinée à la verticalité de $(SO)$.\n\n**Ce qu'il faut retenir.** La démonstration procède en **cascade** : une perpendicularité à un plan donne des orthogonalités à des droites, qui donnent à leur tour une nouvelle perpendicularité à un plan, qui donne de nouvelles orthogonalités. C'est le mécanisme fondamental de la géométrie de l'espace, et il permet de conclure très loin à partir d'une seule hypothèse."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "**Perpendiculaires** signifie sécantes et à angle droit ; **orthogonales** ne suppose aucune intersection.",
+    "Une droite perpendiculaire à un plan est orthogonale à **toutes** les droites de ce plan.",
+    "Pour établir qu'une droite est perpendiculaire à un plan, il faut **deux droites sécantes** de ce plan.",
+    "Deux droites parallèles du plan ne suffisent jamais : la sécance est essentielle.",
+    "Une parallèle à une perpendiculaire à un plan lui est aussi perpendiculaire.",
+    "Le schéma type : un plan contenant la première droite, une perpendiculaire à ce plan parallèle à la seconde.",
+    "Dans un cube : faces carrées, arêtes en trois directions orthogonales, faces opposées parallèles.",
+    "Relève la convention de nommage sur la figure avant de commencer.",
+    "Si la seconde droite n'est pas dans le plan, le théorème ne dit rien : il faut calculer.",
+    "Les démonstrations s'enchaînent en cascade : orthogonalités puis perpendicularité puis nouvelles orthogonalités."
+   ]
+  }
+ ]
+}

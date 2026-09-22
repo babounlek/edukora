@@ -1,0 +1,129 @@
+{
+  "epreuve_source": "epreuve-hamonise-c-d-e-informatique-2025-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "annee": 2025,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "nature_epreuve": "theorique",
+  "institution": "Délégation Régionale des Enseignements Secondaires de l'Adamaoua - Inspection Régionale de Pédagogie chargée de l'Enseignement de l'Informatique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "filiere_serie_a": null,
+  "numero_exercice": "4",
+  "points": "3",
+  "introduction_markdown": null,
+  "groupes": [
+    "PARTIE III : ALGORITHMIQUE ET PROGRAMMATION (6 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE III : ALGORITHMIQUE ET PROGRAMMATION (6 points)**\n\n**Exercice 1 : Algorithmique (3 points)**\n\nLors d'un défilé, les élèves sont alignés en rang du plus petit au plus grand. L'organisateur veut retrouver rapidement un élève en fonction de sa taille. L'algorithme de recherche ci-dessous permet de retrouver la position de l'élève dans le rang à partir de sa taille.\n\n```pseudo\n1  Algorithme Rechercher_Eleve\n2  Variable Tailles : Tableau [1..5] d'Entier ;\n3            Taille_Recherchée, i : Entier ;\n4            Trouve : Booléen ;\n5  Début\n6      Afficher (\"Entrez la taille recherchée : \") ;\n7      Lire (Taille_Recherchée) ;\n8      Trouve ← Faux ;\n9      Pour i allant de 1 à 5 Faire\n10          Si (Tailles[i] = Taille_Recherchee) Alors\n11               Afficher (\"Élève trouvé à la position \", i) ;\n12               Trouve ← Vrai ;\n13          FinSi\n14     FinPour\n15          Si (Trouve = Faux) Alors\n16             Afficher (\"Élève non trouvé\") ;\n17          FinSi\n18 Fin\n```\n\nÀ partir de vos connaissances, vous êtes appelé à aider l'organisateur à y arriver en répondant aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Identifier dans cet algorithme une structure de données et une structure itérative. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne structure de données est l'objet déclaré dans l'en-tête de l'algorithme pour organiser plusieurs valeurs (ici un tableau) ; une structure itérative est l'instruction qui répète un bloc d'actions tant qu'une condition ou un compteur le justifie (ici une boucle Pour ou Tant que).\n\n**Structure de données** : le tableau **Tailles** déclaré ligne 2 (Tableau [1..5] d'Entier), qui stocke les cinq tailles des élèves du rang.\n\n**Structure itérative** : la boucle **Pour i allant de 1 à 5 Faire ... FinPour** (lignes 9 à 14), qui parcourt chaque case du tableau Tailles pour comparer sa valeur à Taille_Recherchée.",
+      "themes": [
+        "structure de données",
+        "structure itérative",
+        "tableau",
+        "boucle Pour"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex4-q1-0",
+          "competence": "Identifier une structure de données et une structure itérative dans un algorithme",
+          "contenu_markdown": "Une structure de données est l'objet déclaré dans l'en-tête de l'algorithme pour organiser plusieurs valeurs (ici un tableau) ; une structure itérative est l'instruction qui répète un bloc d'actions tant qu'une condition ou un compteur le justifie (ici une boucle Pour ou Tant que).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Réécrire sur votre feuille de la ligne 9 à la ligne 14 en utilisant la boucle Tant que. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne boucle Pour i allant de a à b Faire gère automatiquement l'initialisation, le test et l'incrémentation du compteur ; pour la transformer en boucle Tant que, il faut réintroduire ces trois éléments explicitement : initialiser i avant la boucle, tester la condition i <= b en tête de boucle, puis incrémenter i à la fin de chaque tour, juste avant de retester la condition.\n\n**Étape 1.** Avant la boucle, on initialise le compteur : i ← 1.\n\n**Étape 2.** La condition de poursuite de la boucle Pour (i allant de 1 à 5) devient la condition de la boucle Tant que : i <= 5.\n\n**Étape 3.** Le corps de la boucle (lignes 10 à 13) reste inchangé.\n\n**Étape 4.** On ajoute l'incrémentation i ← i + 1 en fin de corps de boucle, faute de quoi la boucle Tant que ne progresserait jamais et tournerait indéfiniment.\n\n```pseudo\n9   i ← 1 ;\n9'  Tant que (i <= 5) Faire\n10          Si (Tailles[i] = Taille_Recherchee) Alors\n11               Afficher (\"Élève trouvé à la position \", i) ;\n12               Trouve ← Vrai ;\n13          FinSi\n13' i ← i + 1 ;\n14  FinTantQue\n```\n\n### Piège à éviter\nN'oublie jamais l'incrémentation i ← i + 1 à l'intérieur de la boucle Tant que : contrairement à la boucle Pour, rien ne fait avancer le compteur automatiquement, et son absence provoque une boucle infinie.",
+      "themes": [
+        "boucle Pour",
+        "boucle Tant que",
+        "conversion de boucle"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex4-q2-0",
+          "competence": "Transformer une boucle Pour en boucle Tant que en algorithmique",
+          "contenu_markdown": "Une boucle Pour i allant de a à b Faire gère automatiquement l'initialisation, le test et l'incrémentation du compteur ; pour la transformer en boucle Tant que, il faut réintroduire ces trois éléments explicitement : initialiser i avant la boucle, tester la condition i <= b en tête de boucle, puis incrémenter i à la fin de chaque tour, juste avant de retester la condition.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Exécuter cet algorithme en utilisant le tableau suivant : Tailles[i] = {150 ; 155 ; 160 ; 165 ; 170} et Taille_Recherchée = 160. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nExécuter un algorithme à la main consiste à dérouler chaque tour de boucle un par un, en notant à chaque étape la valeur testée et l'action déclenchée, sans sauter aucun tour même quand le résultat final paraît évident.\n\n**Initialisation** : Trouve ← Faux, Taille_Recherchée = 160.\n\n| i | Tailles[i] | Tailles[i] = 160 ? | Action |\n|---|---|---|---|\n| 1 | 150 | Non | rien |\n| 2 | 155 | Non | rien |\n| 3 | 160 | Oui | Afficher \"Élève trouvé à la position 3\" ; Trouve ← Vrai |\n| 4 | 165 | Non | rien |\n| 5 | 170 | Non | rien |\n\n**Fin de boucle** : Trouve = Vrai, donc le test des lignes 15-17 n'affiche pas \"Élève non trouvé\".\n\nRésultat affiché par l'algorithme : **Élève trouvé à la position 3**.",
+      "themes": [
+        "trace d'exécution",
+        "boucle Pour",
+        "recherche séquentielle"
+      ],
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMP101",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex4-q3-0",
+          "competence": "Réaliser la trace d'exécution d'un algorithme de recherche séquentielle",
+          "contenu_markdown": "Exécuter un algorithme à la main consiste à dérouler chaque tour de boucle un par un, en notant à chaque étape la valeur testée et l'action déclenchée, sans sauter aucun tour même quand le résultat final paraît évident.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "informatique",
+    "terminale",
+    "algorithmique",
+    "tableau",
+    "boucle Pour",
+    "boucle Tant que",
+    "trace d'exécution",
+    "recherche séquentielle"
+  ],
+  "incertitudes": [
+    "Les rappels de méthode des questions 1, 2 et 3 de cet exercice restent sans cours associé dans cette passe (cours_genere: false, cours_id: null) : seuls 2 rappels de toute l'épreuve ont été retenus pour génération de cours, conformément à la limite du mode automatisation. Le rappel de la question 2 (transformation Pour → Tant que) recouvre une compétence déjà publiée dans le corpus edukora sous un intitulé équivalent, ce qui a pesé dans le choix de ne pas la retenir une seconde fois ici."
+  ],
+  "statut": "brouillon"
+}

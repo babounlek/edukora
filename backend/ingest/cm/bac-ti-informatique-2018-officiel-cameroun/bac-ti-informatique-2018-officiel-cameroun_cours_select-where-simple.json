@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-select-where-simple-tle-ti",
+  "meta": {
+    "titre": "Sélectionner des données d'une seule table avec une condition (SELECT ... WHERE)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL - Interrogation de données (LID)",
+    "duree_estimee_min": 16,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "WHERE",
+      "langage d'interrogation de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q7-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Interroger une base de données commence presque toujours par la question la plus simple possible : afficher un sous-ensemble de lignes qui vérifient un critère précis, sans avoir besoin de combiner plusieurs tables. C'est la première requête d'interrogation qu'on apprend, et la plus fréquente au quotidien."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un tuple et un attribut dans une table relationnelle.",
+        "Savoir écrire une condition d'égalité simple avec WHERE."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Choisir les colonnes, filtrer les lignes",
+      "contenu_markdown": "L'instruction SELECT affiche des colonnes d'une table ; l'étoile `*` affiche toutes les colonnes disponibles, ou on peut lister précisément celles qu'on veut voir apparaître. La clause WHERE restreint les tuples affichés à ceux qui vérifient une condition portant sur une ou plusieurs colonnes : une égalité (colonne = valeur), une comparaison numérique (colonne > valeur), ou un intervalle (BETWEEN). Une valeur textuelle comparée dans cette condition s'écrit toujours entre apostrophes ; une valeur numérique s'écrit sans apostrophes. Sur une seule table, sans avoir besoin d'aucune jointure, cette structure SELECT ... FROM ... WHERE ... suffit à répondre à la grande majorité des questions d'interrogation simples.",
+      "formule_principale": "SELECT colonnes FROM table WHERE condition;"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrivez la requête SQL qui affiche la liste des enseignants d'informatique de la table ENSEIGNANT.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir les colonnes à afficher",
+          "justification": "La question demande la liste des enseignants, sans préciser de colonnes particulières : on affiche donc l'ensemble des colonnes disponibles.",
+          "resultat_markdown": "SELECT *"
+        },
+        {
+          "numero": 2,
+          "action": "Indiquer la table interrogée",
+          "justification": "Les enseignants sont enregistrés dans la table ENSEIGNANT.",
+          "resultat_markdown": "FROM ENSEIGNANT"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la condition de filtrage",
+          "justification": "Seuls les enseignants dont la discipline vaut exactement 'Informatique' doivent apparaître.",
+          "resultat_markdown": "```sql\nSELECT *\nFROM ENSEIGNANT\nWHERE Discipline = 'Informatique';\n```"
+        }
+      ],
+      "conclusion_markdown": "D'après l'extrait fourni, cette requête renverrait les tuples de DZOULA Fernand et de BABA Souley, les deux seuls enseignants d'informatique visibles dans l'extrait."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire WHERE Discipline = Informatique, sans apostrophes autour de la valeur textuelle",
+          "pourquoi_faux": "Sans apostrophes, le moteur SQL interprète Informatique comme le nom d'une colonne ou d'une variable, pas comme une chaîne de caractères à comparer, ce qui provoque une erreur de syntaxe ou un résultat incorrect.",
+          "correction_markdown": "Encadre systématiquement toute valeur textuelle comparée dans une condition par des apostrophes simples."
+        },
+        {
+          "erreur_markdown": "Oublier la clause FROM en pensant qu'elle est implicite",
+          "pourquoi_faux": "Sans FROM, le moteur ne sait pas dans quelle table chercher les colonnes demandées : la requête est syntaxiquement incomplète et ne peut pas s'exécuter.",
+          "correction_markdown": "Vérifie toujours que ta requête comporte les trois clauses dans l'ordre : SELECT, FROM, puis WHERE si un filtrage est nécessaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrivez la requête SQL qui affiche tous les livres dont le statut vaut 'disponible', dans la table LIVRE (ISBN, Titre, Statut).",
+          "solution_markdown": "```sql\nSELECT *\nFROM LIVRE\nWHERE Statut = 'disponible';\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrivez la requête SQL qui affiche uniquement la désignation et le prix unitaire des produits dont le stock est strictement inférieur à 5 unités, dans la table PRODUIT (CodeProduit, Designation, PrixUnitaire, QuantiteStock).",
+          "solution_markdown": "```sql\nSELECT Designation, PrixUnitaire\nFROM PRODUIT\nWHERE QuantiteStock < 5;\n```\nSeules les deux colonnes demandées sont listées après SELECT, plutôt que d'utiliser `*` : on n'affiche que l'information réellement utile à la question posée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrivez la requête SQL qui affiche les enseignants de la table ENSEIGNANT âgés de moins de 40 ans ET dont la discipline est 'Informatique'. Expliquez comment combiner les deux conditions.",
+          "solution_markdown": "```sql\nSELECT *\nFROM ENSEIGNANT\nWHERE Age < 40 AND Discipline = 'Informatique';\n```\nL'opérateur AND combine les deux conditions dans une seule clause WHERE : un tuple n'apparaît dans le résultat que s'il vérifie les DEUX conditions simultanément (âge strictement inférieur à 40 ET discipline Informatique), pas l'une ou l'autre seulement. D'après l'extrait fourni, BABA Souley (33 ans, Informatique) vérifierait cette double condition, tandis que DZOULA Fernand (59 ans, Informatique) en serait exclu malgré sa discipline correspondante, à cause de son âge."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SELECT colonnes FROM table WHERE condition affiche les colonnes choisies pour les tuples qui vérifient la condition.",
+        "L'étoile `*` affiche toutes les colonnes ; liste des colonnes précises quand seule une partie de l'information est utile.",
+        "Une valeur textuelle comparée dans WHERE s'écrit toujours entre apostrophes, une valeur numérique jamais.",
+        "L'opérateur AND combine plusieurs conditions qui doivent TOUTES être vraies à la fois pour qu'un tuple apparaisse dans le résultat.",
+        "Au BAC TI, cette structure de base (SELECT, FROM, WHERE) suffit à répondre à la majorité des questions d'interrogation sur une seule table, sans qu'aucune jointure ne soit nécessaire."
+      ]
+    }
+  ]
+}

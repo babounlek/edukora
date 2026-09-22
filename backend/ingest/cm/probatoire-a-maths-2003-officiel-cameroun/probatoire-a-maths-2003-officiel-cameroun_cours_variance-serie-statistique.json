@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-variance-serie-statistique-premiere-a",
+  "meta": {
+    "titre": "Calcul de la variance d'une série statistique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques descriptives",
+    "duree_estimee_min": 20,
+    "tags": [
+      "variance",
+      "statistiques",
+      "moyenne pondérée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-MATHS-2003-CAMEROUN",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2003 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2003-officiel-cameroun-ex2-qI.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La moyenne d'une série résume ses valeurs en un seul nombre, mais elle ne dit rien de la dispersion des données autour de cette moyenne : deux séries peuvent avoir la même moyenne tout en étant très différentes. La variance mesure cette dispersion. Ce cours montre comment la calculer à partir d'un tableau d'effectifs et d'une moyenne déjà connue."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer la moyenne pondérée d'une série statistique",
+        "Calculer le carré d'un nombre décimal",
+        "Additionner des produits effectif × valeur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule de la variance",
+      "contenu_markdown": "La variance d'une série statistique se calcule par la formule $V=\\overline{x^2}-\\left(\\bar{x}\\right)^2$, où $\\bar{x}$ est la moyenne de la série et $\\overline{x^2}$ est la moyenne des carrés des valeurs, calculée par $\\overline{x^2}=\\dfrac{\\sum n_i x_i^2}{N}$. Cette formule évite de calculer chaque écart $(x_i-\\bar x)$ individuellement : il suffit de connaître la moyenne des carrés et le carré de la moyenne.",
+      "formule_principale": "V = \\overline{x^2} - (\\bar{x})^2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que la moyenne de la série des beignets consommés (tableau complété : effectifs 55, 209, 407, 253, 176, 0 pour les modalités 0 à 5, effectif total 1100) vaut 2,26, calculer la variance de cette série.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer chaque terme $n_i x_i^2$",
+          "justification": "La moyenne des carrés nécessite de multiplier chaque effectif par le carré de la modalité correspondante.",
+          "resultat_markdown": "$0,\\ 209,\\ 1628,\\ 2277,\\ 2816,\\ 0$"
+        },
+        {
+          "numero": 2,
+          "action": "Sommer ces termes",
+          "justification": "Le numérateur de $\\overline{x^2}$ est la somme de tous les termes $n_ix_i^2$.",
+          "resultat_markdown": "$0+209+1628+2277+2816+0=6930$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la moyenne des carrés",
+          "justification": "On divise la somme obtenue par l'effectif total N.",
+          "resultat_markdown": "$\\overline{x^2}=\\dfrac{6930}{1100}=6,3$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le carré de la moyenne",
+          "justification": "La moyenne $\\bar x=2,26$ est donnée par l'énoncé.",
+          "resultat_markdown": "$(2,26)^2=5,1076$"
+        },
+        {
+          "numero": 5,
+          "action": "Appliquer la formule de la variance",
+          "justification": "On soustrait le carré de la moyenne à la moyenne des carrés.",
+          "resultat_markdown": "$V=6,3-5,1076=1,1924$"
+        }
+      ],
+      "conclusion_markdown": "La variance de la série vaut $V=1,1924$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $(\\bar{x})^2$ appliqué à chaque effectif au lieu de $\\overline{x^2}$",
+          "pourquoi_faux": "$\\overline{x^2}$ est la moyenne des CARRÉS des valeurs ; $(\\bar x)^2$ est le CARRÉ de la moyenne. Ce sont deux quantités différentes qu'il ne faut jamais confondre dans la formule.",
+          "correction_markdown": "Calcule d'abord $\\overline{x^2}$ à partir des effectifs et des carrés des modalités, puis soustrais $(\\bar x)^2$ une seule fois à la fin."
+        },
+        {
+          "erreur_markdown": "Oublier un terme $n_ix_i^2$ dans la somme, notamment pour la modalité d'effectif nul",
+          "pourquoi_faux": "Même un effectif nul doit apparaître dans le calcul (son terme vaut 0), pour ne pas perdre le fil de la série complète et éviter une erreur de comptage des modalités.",
+          "correction_markdown": "Écris tous les termes $n_ix_i^2$ dans un tableau avant de les additionner, y compris ceux qui valent 0."
+        },
+        {
+          "erreur_markdown": "Utiliser l'effectif total avant complétion du tableau",
+          "pourquoi_faux": "Si le tableau des effectifs comporte encore des cases manquantes, la moyenne des carrés calculée sera fausse.",
+          "correction_markdown": "Complète toujours entièrement le tableau des effectifs avant de calculer une variance."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série statistique a pour effectifs $n_1=10$, $n_2=20$, $n_3=10$ associés aux modalités $x_1=1$, $x_2=2$, $x_3=3$ (effectif total $N=40$). Sachant que la moyenne de cette série vaut $2$, calculer sa variance.",
+          "solution_markdown": "On calcule d'abord $\\overline{x^2}$ : $1^2\\times10=10$, $2^2\\times20=80$, $3^2\\times10=90$. La somme vaut $10+80+90=180$, donc $\\overline{x^2}=\\dfrac{180}{40}=4,5$.\n\nOn calcule $(\\bar x)^2=2^2=4$.\n\nLa variance vaut $V=4,5-4=0,5$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série statistique a pour effectifs $n_0=5$, $n_1=15$, $n_2=25$, $n_3=5$ associés aux modalités $0,1,2,3$ (effectif total $N=50$). Calculer la moyenne puis la variance de cette série.",
+          "solution_markdown": "On calcule d'abord la moyenne : $\\sum n_ix_i=0\\times5+1\\times15+2\\times25+3\\times5=0+15+50+15=80$, donc $\\bar x=\\dfrac{80}{50}=1,6$.\n\nOn calcule ensuite $\\overline{x^2}$ : $0^2\\times5=0$, $1^2\\times15=15$, $2^2\\times25=100$, $3^2\\times5=45$. La somme vaut $0+15+100+45=160$, donc $\\overline{x^2}=\\dfrac{160}{50}=3,2$.\n\nOn calcule $(\\bar x)^2=(1,6)^2=2,56$.\n\nLa variance vaut $V=3,2-2,56=0,64$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série statistique de 100 observations est répartie sur les modalités 1, 2, 3, 4 avec des effectifs égaux entre les modalités 1 et 4, et égaux entre les modalités 2 et 3. L'effectif commun des modalités 1 et 4 vaut 20. Calculer la moyenne, puis la variance de cette série.",
+          "solution_markdown": "L'effectif commun des modalités 2 et 3 se déduit du total : $2\\times20+2\\times n=100$, donc $40+2n=100$, soit $n=30$. Les effectifs sont donc $n_1=20$, $n_2=30$, $n_3=30$, $n_4=20$.\n\nOn calcule la moyenne : $\\sum n_ix_i=1\\times20+2\\times30+3\\times30+4\\times20=20+60+90+80=250$, donc $\\bar x=\\dfrac{250}{100}=2,5$.\n\nOn calcule $\\overline{x^2}$ : $1^2\\times20=20$, $2^2\\times30=120$, $3^2\\times30=270$, $4^2\\times20=320$. La somme vaut $20+120+270+320=730$, donc $\\overline{x^2}=\\dfrac{730}{100}=7,3$.\n\nOn calcule $(\\bar x)^2=(2,5)^2=6,25$.\n\nLa variance vaut $V=7,3-6,25=1,05$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La variance mesure la dispersion d'une série autour de sa moyenne : plus elle est grande, plus les valeurs sont étalées.",
+        "La formule à retenir est $V=\\overline{x^2}-(\\bar x)^2$ : moyenne des carrés moins carré de la moyenne, jamais l'inverse.",
+        "Calcule systématiquement $\\overline{x^2}$ dans un tableau intermédiaire avant d'appliquer la formule finale.",
+        "Complète toujours entièrement un tableau d'effectifs avant de calculer une variance à partir de ce tableau.",
+        "Au Probatoire, la moyenne est souvent donnée dans l'énoncé pour ce type de question : ne recalcule pas ce qui est déjà fourni, utilise-le directement."
+      ]
+    }
+  ]
+}

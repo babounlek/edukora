@@ -1,0 +1,187 @@
+{
+ "cours_id": "cours-mediane-serie-effectifs-1ere-ce",
+ "meta": {
+  "titre": "Déterminer la médiane d'une série statistique à effectifs",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistiques à une variable",
+  "duree_estimee_min": 20,
+  "tags": ["médiane", "effectifs cumulés croissants", "série statistique", "effectif total", "paramètre de position"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2006-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2006 (Cameroun)",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-c-e-maths-2006-cameroun-ex1-q4i-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "La médiane partage l'effectif en deux, pas les valeurs. C'est la nuance qui fait toute la difficulté : elle ne se lit ni au milieu du tableau, ni comme moyenne des valeurs extrêmes. Il faut compter les **individus**, un à un, jusqu'à atteindre la moitié — et c'est exactement ce que font les effectifs cumulés croissants. Un tableau supplémentaire, une ligne de plus, et la réponse se lit sans hésitation."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir calculer un effectif total",
+    "Savoir construire des effectifs cumulés croissants",
+    "Distinguer une valeur du caractère et un effectif",
+    "Savoir déterminer la parité d'un entier"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Compter les individus, pas les valeurs",
+   "contenu_markdown": "**La définition.** La médiane $M_{e}$ d'une série partage l'effectif en deux parts égales :\n\n- au moins la **moitié** des individus ont une valeur inférieure ou égale à $M_{e}$ ;\n- au moins la moitié une valeur supérieure ou égale à $M_{e}$.\n\n**Le rang du terme médian.** Il dépend de la **parité** de l'effectif total $N$ :\n\n| Parité de $N$ | Médiane |\n|---|---|\n| **impair** | valeur du terme de rang $\\dfrac{N+1}{2}$ |\n| **pair** | demi-somme des termes de rangs $\\dfrac{N}{2}$ et $\\dfrac{N}{2}+1$ |\n\nVérifie **d'abord** la parité : les deux cas ne se traitent pas de la même façon.\n\n**Les effectifs cumulés croissants.** On ajoute les effectifs de proche en proche :\n\n$$\\text{ECC}_{i} = n_{1}+n_{2}+\\dots+n_{i}$$\n\nIls indiquent combien d'individus ont une valeur **inférieure ou égale** à $x_{i}$. Le dernier vaut nécessairement $N$ : c'est un contrôle immédiat.\n\n**La méthode, en quatre gestes.**\n\n1. **Calculer** l'effectif total $N$ et en déterminer la parité.\n2. **Déterminer** le rang du terme médian.\n3. **Dresser** la ligne des effectifs cumulés croissants.\n4. **Localiser** le rang cherché : la médiane est la valeur correspondante.\n\n**La localisation.** Si $\\text{ECC}_{i-1} < r \\leqslant \\text{ECC}_{i}$, alors le terme de rang $r$ a pour valeur $x_{i}$.\n\nAutrement dit : on cherche la **première** colonne dont l'effectif cumulé atteint ou dépasse le rang.\n\n**La médiane est une valeur du caractère.** C'est une note, un âge, une taille — jamais un rang ni un effectif. Confondre le rang $15$ avec la valeur $15$ est l'erreur la plus fréquente.\n\n**Médiane et moyenne ne coïncident pas.** La médiane dépend de l'**ordre** des valeurs, la moyenne de leur **somme**. Une valeur extrême déplace fortement la moyenne et très peu la médiane — c'est pourquoi la médiane est dite **robuste**.\n\n**Le contrôle.** Compte les individus de part et d'autre : il doit y en avoir au moins $\\dfrac{N}{2}$ dans chaque sens, la médiane étant comptée des deux côtés.",
+   "formule_principale": "N \\text{ impair} : M_{e} = \\text{valeur du terme de rang } \\frac{N+1}{2}",
+   "variantes": [
+    {
+     "nom": "Médiane d'une série à classes",
+     "quand_utiliser": "Quand les valeurs sont regroupées en intervalles",
+     "contenu_markdown": "On repère d'abord la **classe médiane**, celle où l'effectif cumulé atteint $\\dfrac{N}{2}$, puis on interpole linéairement à l'intérieur :\n\n$$M_{e} = a + \\frac{\\dfrac{N}{2} - \\text{ECC}_{\\text{avant}}}{n_{\\text{classe}}} \\times (b-a)$$\n\noù $[a\\,;\\,b[$ est la classe médiane.\n\nLa médiane obtenue est alors une **estimation**, puisqu'on ignore la répartition exacte à l'intérieur de la classe."
+    },
+    {
+     "nom": "Quartiles",
+     "quand_utiliser": "Pour préciser la dispersion",
+     "contenu_markdown": "Le premier quartile $Q_{1}$ est la valeur du terme de rang $\\dfrac{N}{4}$ arrondi par excès, le troisième $Q_{3}$ celle du rang $\\dfrac{3N}{4}$.\n\nL'**écart interquartile** $Q_{3}-Q_{1}$ mesure la dispersion autour de la médiane, sans être affecté par les valeurs extrêmes — au contraire de l'étendue ou de l'écart-type."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Le tableau donne les notes des élèves de Première C : notes $4$, $7$, $10$, $13$, $16$ d'effectifs respectifs $6$, $5$, $7$, $4$, $7$. La médiane vaut-elle a) $13$, b) $7$, c) $10$, ou d) $11$ ? (Probatoire C et E, Cameroun, 2006.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Calculer l'effectif total",
+     "justification": "Somme des effectifs, terme à terme",
+     "resultat_markdown": "$6+5 = 11$ ; $+7 = 18$ ; $+4 = 22$ ; $+7 = 29$. Donc $N = 29$"
+    },
+    {
+     "numero": 2,
+     "action": "Déterminer la parité",
+     "justification": "Elle décide de la formule à employer",
+     "resultat_markdown": "$29$ est **impair**"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer le rang du terme médian",
+     "justification": "Pour un effectif impair, le rang vaut $\\dfrac{N+1}{2}$",
+     "resultat_markdown": "$\\dfrac{29+1}{2} = 15$"
+    },
+    {
+     "numero": 4,
+     "action": "Dresser les effectifs cumulés croissants",
+     "justification": "Ils localisent chaque rang",
+     "resultat_markdown": "| Note | $4$ | $7$ | $10$ | $13$ | $16$ |\n|---|---|---|---|---|---|\n| Effectif | $6$ | $5$ | $7$ | $4$ | $7$ |\n| ECC | $6$ | $11$ | $18$ | $22$ | $29$ |"
+    },
+    {
+     "numero": 5,
+     "action": "Contrôler le dernier cumul",
+     "justification": "Il doit valoir l'effectif total",
+     "resultat_markdown": "$29 = N$. Conforme"
+    },
+    {
+     "numero": 6,
+     "action": "Localiser le rang 15",
+     "justification": "On cherche le premier cumul qui l'atteint ou le dépasse",
+     "resultat_markdown": "Rangs $1$ à $6$ : note $4$. Rangs $7$ à $11$ : note $7$. Rangs $12$ à $18$ : note $10$"
+    },
+    {
+     "numero": 7,
+     "action": "Conclure",
+     "justification": "Le rang $15$ tombe dans la tranche $12$ à $18$",
+     "resultat_markdown": "Le $15^{\\text{e}}$ élève a la note $10$ : la médiane vaut $10$, réponse **c)**"
+    },
+    {
+     "numero": 8,
+     "action": "Écarter la réponse d)",
+     "justification": "Elle correspond probablement à une confusion avec la moyenne",
+     "resultat_markdown": "La moyenne vaut $\\dfrac{293}{29} \\approx 10{,}1$, ce qui n'est pas $11$ non plus"
+    },
+    {
+     "numero": 9,
+     "action": "Contrôler la répartition",
+     "justification": "Au moins la moitié de part et d'autre",
+     "resultat_markdown": "$18$ élèves ont une note $\\leqslant 10$ et $29-11 = 18$ ont une note $\\geqslant 10$. Les deux dépassent $14{,}5$. Conforme"
+    }
+   ],
+   "conclusion_markdown": "La médiane vaut $10$. Deux points de vigilance. La médiane est une **valeur du caractère** — ici une note — et non un rang ni un effectif : confondre le rang $15$ avec la valeur $15$ est l'erreur classique. Et vérifie d'abord la **parité** de $N$ : pour un effectif pair, la médiane serait la demi-somme de deux valeurs, ce qui n'est pas la même formule."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Lire la valeur centrale du tableau",
+     "pourquoi_faux": "La note $10$ se trouve bien au centre du tableau ici, mais c'est une coïncidence : le tableau range les **valeurs**, pas les individus. Avec des effectifs différents, la médiane serait ailleurs.",
+     "correction_markdown": "Passe systématiquement par les effectifs cumulés. La position dans le tableau ne renseigne en rien sur la médiane."
+    },
+    {
+     "erreur_markdown": "Confondre le rang et la valeur",
+     "pourquoi_faux": "Le rang du terme médian vaut $15$, mais la médiane est la **note** de cet élève, soit $10$. Répondre $15$ confondrait un numéro d'ordre avec une note.",
+     "correction_markdown": "Le rang sert à localiser ; c'est la valeur correspondante qui est la médiane. Deux quantités de natures différentes."
+    },
+    {
+     "erreur_markdown": "Ne pas vérifier la parité de $N$",
+     "pourquoi_faux": "Pour $N$ pair, la médiane est la demi-somme des termes de rangs $\\dfrac{N}{2}$ et $\\dfrac{N}{2}+1$, ce qui peut donner une valeur qui n'apparaît pas dans le tableau.",
+     "correction_markdown": "Calcule $N$ et regarde sa parité avant de choisir la formule. Ici $29$ est impair, d'où un rang unique."
+    },
+    {
+     "erreur_markdown": "Confondre médiane et moyenne",
+     "pourquoi_faux": "La médiane partage l'**effectif**, la moyenne équilibre les **valeurs**. Elles ne coïncident que pour des distributions symétriques. Ici, $10$ contre $10{,}1$ : proches mais distinctes.",
+     "correction_markdown": "La médiane se lit sur les cumuls, la moyenne se calcule par $\\dfrac{\\sum n_{i}x_{i}}{N}$. Deux paramètres, deux méthodes."
+    },
+    {
+     "erreur_markdown": "Se tromper dans les effectifs cumulés",
+     "pourquoi_faux": "Une erreur d'addition décale toutes les tranches et fausse la localisation. Le contrôle est pourtant immédiat : le dernier cumul doit valoir $N$.",
+     "correction_markdown": "Vérifie que le dernier effectif cumulé égale l'effectif total. Ici $29 = 29$. Conforme."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Déterminer la médiane des deux séries suivantes. Série A : valeurs $2$, $5$, $8$, $11$ d'effectifs $3$, $7$, $6$, $4$. Série B : valeurs $1$, $3$, $6$, $9$ d'effectifs $5$, $5$, $4$, $6$.",
+     "solution_markdown": "**Série A.**\n\n*Effectif total :* $3+7 = 10$ ; $+6 = 16$ ; $+4 = 20$. Donc $N = 20$, **pair**.\n\n*Rangs médians :* $\\dfrac{20}{2} = 10$ et $11$.\n\n*Effectifs cumulés :*\n\n| Valeur | $2$ | $5$ | $8$ | $11$ |\n|---|---|---|---|---|\n| Effectif | $3$ | $7$ | $6$ | $4$ |\n| ECC | $3$ | $10$ | $16$ | $20$ |\n\n*Localisation.* Rangs $1$ à $3$ : valeur $2$. Rangs $4$ à $10$ : valeur $5$. Rangs $11$ à $16$ : valeur $8$.\n\nLe $10^{\\text{e}}$ terme vaut $5$, le $11^{\\text{e}}$ vaut $8$.\n\n*Médiane :*\n\n$$M_{e} = \\dfrac{5+8}{2} = 6{,}5$$\n\n**Remarque importante.** La valeur $6{,}5$ **n'apparaît pas** dans la série. C'est normal pour un effectif pair : la médiane est une demi-somme, pas nécessairement une valeur observée.\n\n**Série B.**\n\n*Effectif total :* $5+5 = 10$ ; $+4 = 14$ ; $+6 = 20$. Donc $N = 20$, **pair**.\n\n*Rangs médians :* $10$ et $11$.\n\n*Effectifs cumulés :*\n\n| Valeur | $1$ | $3$ | $6$ | $9$ |\n|---|---|---|---|---|\n| Effectif | $5$ | $5$ | $4$ | $6$ |\n| ECC | $5$ | $10$ | $14$ | $20$ |\n\n*Localisation.* Rangs $1$ à $5$ : valeur $1$. Rangs $6$ à $10$ : valeur $3$. Rangs $11$ à $14$ : valeur $6$.\n\nLe $10^{\\text{e}}$ vaut $3$, le $11^{\\text{e}}$ vaut $6$.\n\n*Médiane :*\n\n$$M_{e} = \\dfrac{3+6}{2} = 4{,}5$$\n\n**Contrôle.** Dans les deux cas, le dernier cumul vaut $20 = N$. Conforme.\n\n**Ce qu'il faut retenir.** Pour un effectif **pair**, la médiane peut ne pas figurer parmi les valeurs observées. C'est la différence essentielle avec le cas impair, où elle est toujours l'une d'elles."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Pour la série du sujet — notes $4$, $7$, $10$, $13$, $16$ d'effectifs $6$, $5$, $7$, $4$, $7$ — calculer la moyenne, la médiane, le mode et l'étendue. Commenter les positions relatives de la moyenne et de la médiane.",
+     "solution_markdown": "**Étape 1 - la moyenne.**\n\n$$\\sum n_{i}x_{i} = 6 \\times 4 + 5 \\times 7 + 7 \\times 10 + 4 \\times 13 + 7 \\times 16$$\n\n$$= 24+35+70+52+112$$\n\nTerme à terme : $24+35 = 59$ ; $+70 = 129$ ; $+52 = 181$ ; $+112 = 293$.\n\n$$\\bar{x} = \\dfrac{293}{29} \\approx 10{,}10$$\n\n**Étape 2 - la médiane.**\n\nÉtablie dans le cours : $M_{e} = 10$.\n\n**Étape 3 - le mode.**\n\nLe mode est la valeur de **plus grand effectif**.\n\nEffectifs : $6$, $5$, $7$, $4$, $7$. Le maximum, $7$, est atteint **deux fois** : pour les notes $10$ et $16$.\n\n**La série est bimodale**, de modes $10$ et $16$.\n\n**Étape 4 - l'étendue.**\n\n$$e = 16-4 = 12$$\n\n**Étape 5 - comparer moyenne et médiane.**\n\n$$M_{e} = 10 \\qquad ; \\qquad \\bar{x} \\approx 10{,}10$$\n\nLa moyenne est très légèrement **supérieure** à la médiane.\n\n**Étape 6 - interpréter cet écart.**\n\nUn tel écart, positif mais faible, signale une distribution **légèrement étirée vers la droite** : quelques notes élevées tirent la moyenne vers le haut sans déplacer la médiane.\n\nDe fait, sept élèves ont $16$, la note maximale — un effectif important à l'extrémité supérieure.\n\n**Étape 7 - vérifier par un calcul.**\n\nRemplaçons les sept notes de $16$ par des $20$, ce qui ne change **pas** la médiane :\n\n*Nouvelle somme :* $293 - 7 \\times 16 + 7 \\times 20 = 293-112+140 = 321$.\n\n*Nouvelle moyenne :* $\\dfrac{321}{29} \\approx 11{,}07$.\n\n*Nouvelle médiane :* le rang $15$ tombe toujours dans la tranche des notes $10$. Elle vaut toujours **$10$**.\n\n**La moyenne a augmenté de près d'un point, la médiane n'a pas bougé.**\n\n**Étape 8 - conclure.**\n\nC'est la propriété de **robustesse** de la médiane : elle est insensible aux valeurs extrêmes, alors que la moyenne les intègre pleinement.\n\nC'est pourquoi on préfère la médiane pour décrire des salaires ou des revenus, où quelques valeurs très élevées déforment la moyenne.\n\n**Ce qu'il faut retenir.** Les quatre paramètres décrivent des aspects différents : la moyenne équilibre les valeurs, la médiane partage l'effectif, le mode indique le plus fréquent, l'étendue mesure l'amplitude. Aucun ne remplace les autres."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Une série de $N$ valeurs a pour médiane $M_{e}$. Démontrer que la somme $\\displaystyle\\sum_{i} \\left|x_{i}-a\\right|$ est minimale pour $a = M_{e}$. Illustrer sur la série du sujet en comparant les valeurs obtenues pour $a = 10$ et $a = 11$.",
+     "solution_markdown": "**Étape 1 - poser le problème.**\n\nOn cherche à minimiser\n\n$$f(a) = \\sum_{i=1}^{N} \\left|x_{i}-a\\right|$$\n\noù les $x_{i}$ sont les $N$ valeurs de la série, rangées dans l'ordre croissant.\n\n**Étape 2 - étudier l'effet d'un petit déplacement.**\n\nSupposons qu'on augmente $a$ de $h > 0$, avec $h$ assez petit pour qu'aucun $x_{i}$ ne soit franchi.\n\nPour chaque $x_{i} < a$, le terme $\\left|x_{i}-a\\right| = a-x_{i}$ **augmente** de $h$.\n\nPour chaque $x_{i} > a$, le terme $\\left|x_{i}-a\\right| = x_{i}-a$ **diminue** de $h$.\n\n**Étape 3 - le bilan.**\n\nNotons $p$ le nombre de valeurs strictement inférieures à $a$, et $q$ le nombre de valeurs strictement supérieures.\n\n$$f(a+h) - f(a) = h(p - q)$$\n\n**Étape 4 - en déduire le sens de variation.**\n\n- Si $p < q$ : la différence est **négative**, donc augmenter $a$ **diminue** $f$.\n- Si $p > q$ : augmenter $a$ **augmente** $f$.\n- Si $p = q$ : $f$ est localement constante.\n\n**Étape 5 - conclure.**\n\nLe minimum est atteint lorsque $p$ et $q$ s'équilibrent, c'est-à-dire quand $a$ partage l'effectif en deux parts égales.\n\n**C'est exactement la définition de la médiane.**\n\n$$\\boxed{f \\text{ est minimale pour } a = M_{e}}$$\n\n**Étape 6 - remarque sur la moyenne.**\n\nLe même raisonnement mené sur $\\sum\\left(x_{i}-a\\right)^{2}$ donne un minimum en $a = \\bar{x}$ : la **moyenne** minimise la somme des carrés des écarts.\n\nLes deux paramètres minimisent donc deux critères différents :\n\n| Paramètre | Minimise |\n|---|---|\n| médiane | $\\sum\\left|x_{i}-a\\right|$ |\n| moyenne | $\\sum\\left(x_{i}-a\\right)^{2}$ |\n\n**Étape 7 - illustration numérique sur la série du sujet.**\n\nRappel : notes $4$, $7$, $10$, $13$, $16$ d'effectifs $6$, $5$, $7$, $4$, $7$.\n\n*Calcul pour $a = 10$, la médiane :*\n\n| Note | Effectif | $\\left|x-10\\right|$ | Contribution |\n|---|---|---|---|\n| $4$ | $6$ | $6$ | $36$ |\n| $7$ | $5$ | $3$ | $15$ |\n| $10$ | $7$ | $0$ | $0$ |\n| $13$ | $4$ | $3$ | $12$ |\n| $16$ | $7$ | $6$ | $42$ |\n\n$$f(10) = 36+15+0+12+42 = 105$$\n\n*Calcul pour $a = 11$ :*\n\n| Note | Effectif | $\\left|x-11\\right|$ | Contribution |\n|---|---|---|---|\n| $4$ | $6$ | $7$ | $42$ |\n| $7$ | $5$ | $4$ | $20$ |\n| $10$ | $7$ | $1$ | $7$ |\n| $13$ | $4$ | $2$ | $8$ |\n| $16$ | $7$ | $5$ | $35$ |\n\n$$f(11) = 42+20+7+8+35 = 112$$\n\n**Étape 8 - comparer.**\n\n$$f(10) = 105 < 112 = f(11)$$\n\n**La médiane donne bien la plus petite somme.**\n\n**Étape 9 - vérifier la formule de l'étape 3.**\n\nEn passant de $a = 10$ à $a = 11$, on a $h = 1$.\n\nNombre de valeurs strictement inférieures à $10$ : $6+5 = 11$.\n\nNombre strictement supérieures : $4+7 = 11$.\n\nMais il faut aussi compter les $7$ valeurs **égales** à $10$, qui passent du côté inférieur : elles contribuent $+7$.\n\n$$f(11)-f(10) = 1 \\times (11+7-11) = 7$$\n\nEt de fait $112-105 = 7$. **Conforme.**\n\n**Ce qu'il faut retenir.** La médiane n'est pas seulement une convention de partage : c'est le point qui **minimise la distance totale** aux données. C'est cette propriété qui la rend pertinente en pratique, par exemple pour placer un entrepôt au plus près de ses clients."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "La médiane partage l'**effectif** en deux parts égales, pas les valeurs.",
+    "Vérifie d'abord la **parité** de $N$ : les deux cas ne se traitent pas pareil.",
+    "$N$ impair : valeur du terme de rang $\\dfrac{N+1}{2}$.",
+    "$N$ pair : demi-somme des termes de rangs $\\dfrac{N}{2}$ et $\\dfrac{N}{2}+1$, qui peut ne pas être une valeur observée.",
+    "Dresse la ligne des effectifs cumulés croissants : elle localise chaque rang.",
+    "Le dernier cumul doit valoir $N$ : contrôle immédiat.",
+    "La médiane est une **valeur du caractère**, jamais un rang ni un effectif.",
+    "Ne la lis pas au centre du tableau : la position des valeurs ne renseigne pas sur l'effectif.",
+    "Médiane et moyenne ne coïncident que pour des distributions symétriques.",
+    "La médiane est **robuste** : insensible aux valeurs extrêmes, contrairement à la moyenne.",
+    "Elle minimise la somme des distances $\\sum\\left|x_{i}-a\\right|$."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-calculer-le-nombre-d-adresses-hotes-utilisables-dans-un-sous-reseau-ipv4-tle-tronc-commun",
+  "meta": {
+    "titre": "Calculer le nombre d'adresses hôtes utilisables dans un sous-réseau IPv4",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Adressage IP et sous-réseaux",
+    "duree_estimee_min": 25,
+    "tags": [
+      "adressage IP",
+      "notation CIDR",
+      "sous-réseau",
+      "adresse réseau",
+      "adresse de diffusion",
+      "hôtes utilisables"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT002",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "epreuve-hamonise-c-d-e-informatique-2025-cameroun",
+    "epreuve_titre": "Examen Régional Harmonisé - Terminale, Séries C-D-E - Épreuve théorique d'Informatique - Session 2025 (Région de l'Adamaoua)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex1-q2d-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un administrateur réseau qui installe un routeur dans une PME doit répondre à une question très concrète : combien de postes, imprimantes et serveurs pourra-t-on brancher sur ce sous-réseau avant de devoir en créer un second ? Cette question revient à chaque exercice de réseau au BAC dès qu'une adresse IP et un masque sont donnés. Ce cours te montre comment passer directement du masque au nombre exact de machines que le sous-réseau peut accueillir, avec la même formule à chaque fois."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Convertir un nombre en écriture binaire (puissances de 2)",
+        "Savoir qu'une adresse IPv4 comporte 32 bits répartis en 4 octets",
+        "Lire une adresse IP en notation CIDR (adresse/n) et distinguer partie réseau et partie hôte",
+        "Savoir déterminer l'adresse réseau et l'adresse de diffusion d'un sous-réseau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule 2 puissance n moins 2",
+      "contenu_markdown": "Une adresse IPv4 comporte 32 bits. Avec un masque /n, les n premiers bits forment la partie réseau (fixe pour toutes les machines du sous-réseau) et les 32-n bits restants forment la partie hôte, qui varie d'une machine à l'autre. Le nombre total de combinaisons possibles sur ces 32-n bits est 2^(32-n). Mais deux de ces combinaisons ne peuvent jamais être attribuées à une machine : celle où tous les bits hôte valent 0 (l'adresse réseau, qui désigne le sous-réseau lui-même) et celle où tous les bits hôte valent 1 (l'adresse de diffusion, qui désigne toutes les machines du sous-réseau à la fois). Le nombre d'adresses réellement utilisables pour des hôtes est donc toujours 2 de moins que le total théorique.",
+      "formule_principale": "Nombre d'hôtes utilisables = 2^(32-n) - 2, où n est le nombre de bits du masque",
+      "variantes": [
+        {
+          "nom": "Calcul direct à partir du nombre de bits hôte",
+          "quand_utiliser": "Quand l'énoncé donne directement le nombre de bits restants pour la partie hôte plutôt que le masque complet",
+          "contenu_markdown": "Si h désigne le nombre de bits hôte (h = 32 - n), la formule s'écrit simplement 2^h - 2. C'est la même formule, seulement reformulée pour éviter de refaire la soustraction 32 - n à chaque fois si h est déjà connu."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une adresse 192.168.13.1/24 est attribuée à un routeur E2 d'un réseau local. Déterminer le nombre d'adresses utilisables pour les hôtes (machines) de ce sous-réseau.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le nombre de bits réservés à la partie réseau",
+          "justification": "Le masque est donné en notation CIDR : /24 signifie que les 24 premiers bits de l'adresse forment la partie réseau.",
+          "resultat_markdown": "n = 24 bits pour la partie réseau"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le nombre de bits restants pour la partie hôte",
+          "justification": "Une adresse IPv4 comporte 32 bits au total ; les bits non réservés au réseau forment la partie hôte.",
+          "resultat_markdown": "h = 32 - 24 = 8 bits pour la partie hôte"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le nombre total de combinaisons possibles sur la partie hôte",
+          "justification": "Avec h bits, le nombre de combinaisons binaires possibles est 2^h.",
+          "resultat_markdown": "2^8 = 256 combinaisons possibles"
+        },
+        {
+          "numero": 4,
+          "action": "Retrancher les deux adresses non attribuables à une machine",
+          "justification": "Parmi ces 256 combinaisons, celle où la partie hôte vaut 0 (192.168.13.0) est l'adresse réseau, et celle où elle vaut 255 (192.168.13.255) est l'adresse de diffusion : aucune des deux ne peut être attribuée à un poste, un serveur ou une imprimante.",
+          "resultat_markdown": "256 - 2 = 254"
+        }
+      ],
+      "conclusion_markdown": "Le sous-réseau 192.168.13.0/24 peut accueillir au maximum **254 machines**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre 256 (oublier de retrancher les 2 adresses réservées)",
+          "pourquoi_faux": "256 est le nombre total de combinaisons binaires possibles sur la partie hôte, pas le nombre d'adresses utilisables. Deux de ces combinaisons (tous les bits hôte à 0, tous les bits hôte à 1) désignent le sous-réseau lui-même et sa diffusion générale, jamais une machine précise.",
+          "correction_markdown": "Toujours écrire la formule complète 2^h - 2 et effectuer la soustraction avant de donner le résultat final, jamais s'arrêter à 2^h."
+        },
+        {
+          "erreur_markdown": "Confondre le nombre de bits réseau (n) et le nombre de bits hôte (h) dans la formule",
+          "pourquoi_faux": "Utiliser 2^24 - 2 au lieu de 2^8 - 2 pour un masque /24 inverse complètement le calcul : le masque /24 signifie que 24 bits sont FIXES (partie réseau), donc ce sont les 32-24 = 8 bits restants qui varient et comptent pour les hôtes.",
+          "correction_markdown": "Calcule toujours d'abord h = 32 - n avant d'appliquer la formule ; ne jamais utiliser directement le nombre après la barre oblique comme exposant."
+        },
+        {
+          "erreur_markdown": "Appliquer la formule à un /31 ou un /32 sans remarquer leur cas particulier",
+          "pourquoi_faux": "Avec /31, h = 1 bit, donc 2^1 - 2 = 0 adresse utilisable par la formule générale, alors qu'en pratique ce masque est parfois utilisé pour des liaisons point à point à deux adresses (cas particulier hors programme du Tronc commun). Avec /32, h = 0, la formule donne un résultat négatif qui n'a pas de sens : ce masque désigne une seule machine précise, pas un sous-réseau.",
+          "correction_markdown": "Au niveau Tronc commun, applique la formule 2^h - 2 pour des masques usuels (/24, /25, /26...) où h est au moins égal à 2 ; signale un doute si l'énoncé donne un masque extrême (/31 ou /32) plutôt que d'appliquer la formule mécaniquement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une adresse 10.0.0.5/24 est attribuée à un poste de travail. Déterminer le nombre d'adresses utilisables pour les hôtes de ce sous-réseau.",
+          "solution_markdown": "**Étape 1.** Le masque /24 réserve n = 24 bits à la partie réseau.\n\n**Étape 2.** Il reste h = 32 - 24 = 8 bits pour la partie hôte.\n\n**Étape 3.** Nombre total de combinaisons : 2^8 = 256.\n\n**Étape 4.** On retranche l'adresse réseau et l'adresse de diffusion : 256 - 2 = **254 adresses utilisables**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un serveur reçoit l'adresse 172.16.5.10/26. Déterminer le nombre de bits réservés à la partie hôte, puis le nombre d'adresses utilisables pour les hôtes de ce sous-réseau.",
+          "solution_markdown": "**Étape 1.** Le masque /26 réserve n = 26 bits à la partie réseau.\n\n**Étape 2.** Il reste h = 32 - 26 = 6 bits pour la partie hôte.\n\n**Étape 3.** Nombre total de combinaisons : 2^6 = 64.\n\n**Étape 4.** On retranche l'adresse réseau et l'adresse de diffusion : 64 - 2 = **62 adresses utilisables**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une entreprise dispose du sous-réseau 192.168.20.0/27 et souhaite savoir si elle peut y brancher 28 machines (postes, imprimantes et serveurs confondus). Justifier la réponse par le calcul, puis proposer, si nécessaire, le masque le plus proche qui conviendrait.",
+          "solution_markdown": "**Étape 1.** Le masque /27 réserve n = 27 bits à la partie réseau, donc h = 32 - 27 = 5 bits pour la partie hôte.\n\n**Étape 2.** Nombre total de combinaisons : 2^5 = 32.\n\n**Étape 3.** Nombre d'adresses utilisables : 32 - 2 = 30.\n\n**Étape 4.** 30 adresses utilisables sont suffisantes pour 28 machines (30 ≥ 28) : le sous-réseau /27 convient, sans qu'il soit nécessaire de changer de masque.\n\n**Remarque.** Si l'entreprise avait eu besoin de 31 machines ou plus, il aurait fallu libérer un bit supplémentaire pour la partie hôte, donc passer à un masque /26 (h = 6 bits, soit 2^6 - 2 = 62 adresses utilisables)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à un masque /n, calcule d'abord h = 32 - n : c'est ce nombre de bits hôte, jamais n lui-même, qui entre dans la formule.",
+        "La formule à retenir est toujours 2^h - 2 : le \"- 2\" retire systématiquement l'adresse réseau et l'adresse de diffusion, qui ne désignent jamais une machine précise.",
+        "Plus le masque est \"grand\" (proche de /32), moins il reste de bits hôte, donc moins le sous-réseau peut accueillir de machines : un /24 accueille 254 machines, un /27 seulement 30.",
+        "Au BAC, cette question suit presque toujours le calcul de l'adresse réseau et de l'adresse de diffusion dans le même exercice : les trois calculs s'enchaînent à partir des mêmes bits hôte, autant les mener dans le même brouillon."
+      ]
+    }
+  ]
+}

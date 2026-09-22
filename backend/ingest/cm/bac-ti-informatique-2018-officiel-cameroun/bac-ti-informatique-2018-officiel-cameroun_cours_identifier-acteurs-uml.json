@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-identifier-acteurs-uml-tle-ti",
+  "meta": {
+    "titre": "Identifier les acteurs d'un système en UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de cas d'utilisation",
+    "duree_estimee_min": 22,
+    "tags": [
+      "UML",
+      "acteur",
+      "diagramme de cas d'utilisation",
+      "généralisation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex1-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de dessiner le moindre diagramme, il faut savoir répondre à une question simple : qui se sert de ce système ? Se tromper sur les acteurs fausse tout le reste du diagramme de cas d'utilisation, puisque chaque cas d'utilisation se définit justement par rapport à l'acteur qui le déclenche."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un système d'information et à quoi sert un diagramme de cas d'utilisation.",
+        "Savoir lire un texte de cas d'entreprise pour en extraire les personnes et rôles cités."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un acteur interagit, il ne se contente pas d'exister",
+      "contenu_markdown": "Un acteur est toute entité externe au système - une personne, un rôle, une organisation, ou même un autre système - qui échange directement de l'information avec lui. Le critère décisif n'est ni l'importance hiérarchique de la personne, ni le fait qu'elle soit citée dans l'énoncé, mais l'action qu'elle déclenche elle-même sur le système : consulter, saisir, valider, éditer. Quand plusieurs acteurs partagent une partie de leurs actions mais que l'un d'eux dispose de droits supplémentaires, on modélise cette situation par une relation de généralisation (une flèche à tête triangulaire creuse) de l'acteur spécialisé vers l'acteur général : l'acteur spécialisé hérite alors automatiquement de toutes les actions de l'acteur général, sans qu'il soit besoin de les répéter pour lui.",
+      "formule_principale": "Acteur = entité externe qui interagit directement avec le système (jamais qui se contente d'en parler)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "SOCOPRO confie à ses employés la réalisation des locations, après vérification de la disponibilité. Pour chaque service offert, un employé responsable est seul habilité à éditer le récapitulatif des locations de son service. Le planning des locations peut par ailleurs être consulté par tout le monde, employés et habitants de la ville confondus. Identifiez les acteurs de ce système.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister toutes les personnes ou rôles cités dans le texte",
+          "justification": "On part de tout ce qui est mentionné avant de trier ce qui interagit réellement avec le système.",
+          "resultat_markdown": "Employé, responsable de service, habitant de la ville, et le Directeur qui décrit les règles du système."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier que chacun déclenche bien une action sur le système",
+          "justification": "Un acteur doit interagir directement avec le système, pas seulement être mentionné dans le contexte.",
+          "resultat_markdown": "L'employé effectue une location et consulte le planning ; l'habitant de la ville consulte aussi le planning ; le responsable de service édite le récapitulatif. Le Directeur, lui, ne déclenche aucune action : il fixe seulement les règles de fonctionnement en amont, ce n'est donc pas un acteur."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer une éventuelle relation de généralisation entre acteurs",
+          "justification": "Le responsable de service est décrit comme un employé disposant d'un droit supplémentaire, pas comme une personne totalement différente.",
+          "resultat_markdown": "Le Responsable de service hérite des actions de l'Employé (généralisation), et dispose en plus du droit propre d'éditer le récapitulatif de son service."
+        }
+      ],
+      "conclusion_markdown": "Trois acteurs retenus : Employé, Responsable de service (spécialisation d'Employé) et Visiteur/habitant de la ville - le Directeur, qui ne fait qu'énoncer les règles, en est exclu."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ajouter comme acteur une personne qui décrit seulement les règles de fonctionnement du système, sans jamais l'utiliser elle-même",
+          "pourquoi_faux": "Un directeur ou un client qui explique en préambule comment le système doit fonctionner ne devient pas automatiquement un acteur : il faut qu'il interagisse LUI-MÊME avec le système une fois en service, pas seulement qu'il en fixe les règles au départ.",
+          "correction_markdown": "Pour chaque personne citée dans l'énoncé, demande-toi quelle action précise du système elle déclenche elle-même ; si aucune réponse ne vient, ce n'est pas un acteur."
+        },
+        {
+          "erreur_markdown": "Créer deux acteurs totalement séparés, Bibliothécaire et Responsable, sans les relier",
+          "pourquoi_faux": "Cela obligerait à redessiner sur le Responsable toutes les associations déjà tracées sur le Bibliothécaire, et masquerait le fait qu'un responsable EST avant tout un bibliothécaire avec un droit en plus.",
+          "correction_markdown": "Dès qu'un acteur hérite des droits d'un autre en ajoutant seulement un droit supplémentaire, trace une généralisation entre les deux plutôt que de dupliquer leurs associations."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un système de gestion de cybercafé, le gérant enregistre les sessions des clients et encaisse le paiement ; les clients se contentent d'utiliser un poste. Identifiez les acteurs.",
+          "solution_markdown": "Deux acteurs : le Gérant (enregistre les sessions, encaisse les paiements) et le Client (utilise un poste, ce qui suppose qu'il déclenche au moins l'action « démarrer une session » sur le système). Aucune généralisation n'est nécessaire ici, les deux acteurs ayant des rôles disjoints."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un hôtel confie l'enregistrement des réservations à ses réceptionnistes. Le directeur de l'hôtel est lui-même un ancien réceptionniste et peut, en plus des tâches courantes, générer le rapport d'occupation mensuel de l'hôtel. Identifiez les acteurs et justifiez toute relation entre eux.",
+          "solution_markdown": "Deux acteurs : Réceptionniste (enregistre les réservations) et Directeur, relié à Réceptionniste par une généralisation puisque le directeur peut réaliser toutes les tâches d'un réceptionniste, avec en plus le droit propre de générer le rapport d'occupation mensuel. La généralisation évite de redessiner sur Directeur l'association déjà tracée vers « Enregistrer une réservation »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un site de vente en ligne interagit avec un service bancaire externe pour valider automatiquement chaque paiement par carte, sans intervention humaine de part et d'autre. Ce service bancaire est-il un acteur du système ? Justifiez, puis proposez une manière de le représenter s'il l'est.",
+          "solution_markdown": "Oui, le service bancaire est un acteur, bien qu'il ne s'agisse pas d'une personne : la définition UML d'un acteur inclut toute entité externe au système qui échange directement de l'information avec lui, y compris un autre système informatique. Il se représente exactement comme un acteur humain (un pictogramme en forme de personnage stylisé, ou plus rigoureusement un rectangle stéréotypé `<<système>>` selon les conventions retenues), relié par une association au cas d'utilisation « Valider un paiement », sans qu'aucune intervention humaine ne soit nécessaire de son côté pour que l'interaction ait lieu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un acteur est une entité externe au système qui interagit directement avec lui, jamais une personne qui se contente d'en fixer les règles.",
+        "Pour repérer un acteur, cherche l'action que la personne (ou le système externe) déclenche elle-même, pas son rang dans l'énoncé.",
+        "Un acteur externe non humain (un autre système, un service bancaire) est un acteur au même titre qu'une personne.",
+        "Deux acteurs qui partagent des actions, l'un ayant un droit en plus, se relient par une généralisation - jamais par la duplication de leurs associations.",
+        "Au BAC TI, l'identification des acteurs conditionne directement la question suivante sur les cas d'utilisation : une erreur ici se propage sur tout le diagramme."
+      ]
+    }
+  ]
+}

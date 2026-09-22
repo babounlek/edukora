@@ -1,0 +1,85 @@
+[
+  {
+    "external_id": "cqc-probabilite-faible-0",
+    "theme": "probabilité",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}],
+    "enonce_markdown": "Dans un atelier, on dispose de $4$ jetons numérotés de $1$ à $4$ et de $4$ casiers numérotés de $1$ à $4$. Chaque jeton est déposé indépendamment des trois autres dans l'un des quatre casiers, choisi au hasard (plusieurs jetons peuvent donc se retrouver dans le même casier). On admet que les $4^4$ répartitions possibles des jetons dans les casiers sont équiprobables.\n\nQuelle est la probabilité que chaque casier reçoive exactement un jeton ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsque $n$ objets distincts sont répartis indépendamment et au hasard dans $n$ emplacements distincts (chaque objet choisissant son emplacement parmi les $n$ possibles), l'univers compte $n^n$ répartitions équiprobables. L'événement « chaque emplacement reçoit exactement un objet » correspond aux répartitions qui établissent une bijection entre les objets et les emplacements ; il y en a $n!$ (le nombre de permutations de $n$ objets). La probabilité de cet événement vaut donc $\\dfrac{n!}{n^n}$.\n\n### Corrigé\n\nIci $n = 4$.\n\nLe nombre total de répartitions possibles est $4^4 = 256$.\n\nUne répartition où chaque casier reçoit exactement un jeton établit une bijection entre les $4$ jetons et les $4$ casiers : il y en a $4! = 24$.\n\nLa probabilité cherchée est donc :\n$$P = \\frac{4!}{4^4} = \\frac{24}{256} = \\frac{3}{32}$$\n\n**Vérification** : pour $n = 1$, la formule $\\dfrac{n!}{n^n}$ donne $\\dfrac{1}{1} = 1$, ce qui est cohérent puisqu'un unique jeton placé dans un unique casier y tombe nécessairement seul. Le résultat $\\dfrac{3}{32} \\approx 0,094$ est par ailleurs plausible : il est nettement inférieur à $1$, ce qui traduit le fait qu'obtenir une répartition parfaitement bijective est rare parmi les $256$ répartitions possibles.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6530]
+  },
+  {
+    "external_id": "cqc-probabilite-faible-1",
+    "theme": "probabilité",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}],
+    "enonce_markdown": "Un candidat au permis de conduire doit réussir deux épreuves indépendantes pour être reçu : l'épreuve du code, qu'il réussit avec une probabilité de $0,75$, et l'épreuve pratique de conduite, qu'il réussit indépendamment de la précédente avec une probabilité de $0,6$.\n\nQuelle est la probabilité que ce candidat réussisse les deux épreuves et soit donc reçu au permis ?",
+    "corrige_markdown": "### Rappel de méthode\n\nSi deux événements $A$ et $B$ sont indépendants, la probabilité qu'ils se réalisent tous les deux est $P(A \\cap B) = P(A) \\times P(B)$. Cette règle du produit reste valable même lorsque $P(A)$ et $P(B)$ sont différentes : l'indépendance ne suppose pas que les deux épreuves aient la même probabilité de succès, seulement qu'elles n'ont aucune influence l'une sur l'autre.\n\n### Corrigé\n\nNotons $A$ l'événement « le candidat réussit l'épreuve du code » et $B$ l'événement « il réussit l'épreuve pratique ». On a $P(A) = 0,75$ et $P(B) = 0,6$, avec $A$ et $B$ indépendants.\n\nLa probabilité qu'il réussisse les deux épreuves est :\n$$P(A \\cap B) = P(A) \\times P(B) = 0,75 \\times 0,6 = 0,45$$\n\nLa bonne réponse est **A**.\n\n**Vérification** : $0,45$ est compris entre $0$ et $1$, et il est inférieur à chacune des probabilités $0,75$ et $0,6$, ce qui est cohérent puisque réussir les deux épreuves à la fois est un événement plus restrictif que réussir une seule d'entre elles. Les distracteurs correspondent à des erreurs classiques : B) $0,675$ est la moyenne des deux probabilités au lieu de leur produit ; C) $0,15$ est leur différence ; D) $1,35$ est leur somme, une valeur supérieure à $1$ qui ne peut donc pas être une probabilité.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "0,45"},
+      {"lettre": "B", "texte": "0,675"},
+      {"lettre": "C", "texte": "0,15"},
+      {"lettre": "D", "texte": "1,35"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [6540]
+  },
+  {
+    "external_id": "cqc-probabilite-moyenne-0",
+    "theme": "probabilité",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}],
+    "enonce_markdown": "Trois capteurs électroniques $E_1$, $E_2$, $E_3$ fonctionnent de manière indépendante et fournissent chacun, au hasard, la valeur $1$ ou la valeur $0$, avec :\n$$P(E_1 = 1) = \\frac{1}{5}, \\qquad P(E_2 = 1) = \\frac{1}{4}, \\qquad P(E_3 = 1) = \\frac{1}{3}$$\n(et la valeur $0$ avec la probabilité complémentaire, dans chaque cas).\n\nDans un repère orthonormé de l'espace, on considère le point $M(E_1 + 1,\\ E_2 + 2,\\ E_3 - 1)$, dont les coordonnées dépendent ainsi du résultat des trois capteurs. Soit $(D)$ la droite passant par le point $A(1, 2, -1)$ et de vecteur directeur $\\vec{u}(0, 0, 1)$.\n\nQuelle est la probabilité que le point $M$ appartienne à la droite $(D)$ ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUn point $M(x, y, z)$ appartient à une droite $(D)$ passant par un point $A(x_A, y_A, z_A)$ et de vecteur directeur $\\vec{u}(\\alpha, \\beta, \\gamma)$ si et seulement si le vecteur $\\overrightarrow{AM}$ est colinéaire à $\\vec{u}$, c'est-à-dire s'il existe un réel $t$ tel que $x = x_A + \\alpha t$, $y = y_A + \\beta t$, $z = z_A + \\gamma t$. Lorsqu'une composante de $\\vec{u}$ est nulle, la coordonnée correspondante de $M$ est nécessairement égale à celle de $A$ ; lorsqu'une composante est non nulle, la coordonnée correspondante de $M$ est libre, car $t$ peut toujours être choisi pour l'atteindre.\n\n### Corrigé\n\nLe vecteur directeur de $(D)$ est $\\vec{u}(0, 0, 1)$ : ses deux premières composantes sont nulles, la troisième ne l'est pas. D'après le rappel, $M(x, y, z)$ appartient à $(D)$ si et seulement si :\n$$x = 1 \\quad \\text{et} \\quad y = 2$$\nla coordonnée $z$ pouvant prendre n'importe quelle valeur réelle (le paramètre $t$ s'ajuste toujours en conséquence).\n\nOr $M = (E_1 + 1,\\ E_2 + 2,\\ E_3 - 1)$, donc :\n- $x = 1 \\iff E_1 + 1 = 1 \\iff E_1 = 0$\n- $y = 2 \\iff E_2 + 2 = 2 \\iff E_2 = 0$\n- $z = E_3 - 1$ : aucune condition sur $E_3$, quelle que soit sa valeur.\n\nL'événement « $M \\in (D)$ » équivaut donc exactement à « $E_1 = 0$ et $E_2 = 0$ », les capteurs $E_1$ et $E_2$ étant indépendants. On a :\n$$P(E_1 = 0) = 1 - \\frac{1}{5} = \\frac{4}{5}, \\qquad P(E_2 = 0) = 1 - \\frac{1}{4} = \\frac{3}{4}$$\n\nLa probabilité cherchée est donc :\n$$P(M \\in (D)) = P(E_1 = 0) \\times P(E_2 = 0) = \\frac{4}{5} \\times \\frac{3}{4} = \\frac{3}{5}$$\n\n**Vérification** : le résultat $\\dfrac{3}{5} = 0,6$ ne dépend logiquement que de $E_1$ et $E_2$, $E_3$ n'intervenant pas dans la condition ; en recalculant séparément $\\left(1-\\frac{1}{5}\\right)$ et $\\left(1-\\frac{1}{4}\\right)$ puis leur produit, on retrouve bien $\\frac{4}{5}\\times\\frac{3}{4}=\\frac{3}{5}$, ce qui confirme la cohérence du résultat.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6540]
+  },
+  {
+    "external_id": "cqc-probabilite-moyenne-1",
+    "theme": "probabilité",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}],
+    "enonce_markdown": "On tire au hasard un couple $(x, y)$ parmi les $49$ couples d'entiers relatifs tels que $x \\in \\{-3, -2, -1, 0, 1, 2, 3\\}$ et $y \\in \\{-3, -2, -1, 0, 1, 2, 3\\}$, chaque couple ayant la même probabilité d'être tiré. On pose $z = x + iy$.\n\nQuelle est la probabilité que $|z| = 3$ ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour un nombre complexe $z = x + iy$ avec $x, y$ réels, le module vérifie $|z| = \\sqrt{x^2 + y^2}$. La condition $|z| = r$ (avec $r \\geqslant 0$) équivaut donc à $x^2 + y^2 = r^2$. Lorsque le couple $(x, y)$ est tiré au hasard dans un ensemble fini équiprobable, la probabilité de cet événement s'obtient en dénombrant les couples qui vérifient cette équation, puis en divisant par le nombre total de couples possibles.\n\n### Corrigé\n\nL'univers compte $7 \\times 7 = 49$ couples équiprobables, ce qui correspond bien à l'énoncé.\n\nLa condition $|z| = 3$ équivaut à $x^2 + y^2 = 9$, avec $x, y \\in \\{-3, -2, -1, 0, 1, 2, 3\\}$.\n\nCherchons tous les couples $(x, y)$ de cet ensemble vérifiant $x^2 + y^2 = 9$, en balayant les valeurs de $x$ :\n- $x = -3$ : $y^2 = 0 \\Rightarrow y = 0$ → couple $(-3, 0)$\n- $x = -2$ : $y^2 = 5$, non carré parfait → aucun\n- $x = -1$ : $y^2 = 8$, non carré parfait → aucun\n- $x = 0$ : $y^2 = 9 \\Rightarrow y = 3$ ou $y = -3$ → couples $(0, 3)$ et $(0, -3)$\n- $x = 1$ : $y^2 = 8$ → aucun\n- $x = 2$ : $y^2 = 5$ → aucun\n- $x = 3$ : $y^2 = 0 \\Rightarrow y = 0$ → couple $(3, 0)$\n\nOn obtient exactement $4$ couples favorables : $(-3, 0)$, $(0, 3)$, $(0, -3)$, $(3, 0)$.\n\nLa probabilité cherchée est donc :\n$$P(|z| = 3) = \\frac{4}{49}$$\n\n**Vérification** : ces quatre couples correspondent géométriquement aux points à coordonnées entières du cercle de centre $O$ et de rayon $3$ inclus dans le carré $[-3,3]\\times[-3,3]$ ; ce sont bien les seuls, puisque $9$ ne se décompose comme somme de deux carrés d'entiers pris parmi $\\{0,1,4,9\\}$ que sous la forme $9+0$ (les décompositions $1+8$, $4+5$ n'utilisent pas des carrés parfaits pour le second terme). Le résultat $\\dfrac{4}{49}$ est cohérent avec un événement plutôt rare parmi les $49$ couples possibles.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6571]
+  },
+  {
+    "external_id": "cqc-probabilite-moyenne-2",
+    "theme": "probabilité",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}],
+    "enonce_markdown": "Une urne contient $6$ jetons numérotés de $1$ à $6$. On tire simultanément et au hasard $3$ jetons parmi les $6$ ; les $\\binom{6}{3} = 20$ tirages possibles sont équiprobables. Un tirage est déclaré « gagnant » si la somme des numéros des trois jetons tirés est supérieure ou égale à $13$.\n\nQuelle est la probabilité qu'un tirage soit gagnant ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'on tire simultanément $k$ éléments parmi $n$, l'univers est l'ensemble des parties à $k$ éléments, de cardinal $\\binom{n}{k}$, toutes ces parties étant équiprobables sous l'hypothèse du tirage au hasard. Pour calculer la probabilité d'un événement portant sur une propriété numérique du tirage (ici, une somme), il faut traduire la condition en une propriété dénombrable, puis compter explicitement les tirages qui la vérifient.\n\n### Corrigé\n\nL'univers compte $\\binom{6}{3} = 20$ tirages possibles.\n\nLa somme des six jetons de l'urne vaut $1+2+3+4+5+6=21$. Si un tirage de $3$ jetons a pour somme $S$, les $3$ jetons non tirés ont pour somme $21-S$. La condition « $S \\geqslant 13$ » équivaut donc à « $21-S \\leqslant 8$ », c'est-à-dire que les $3$ jetons NON tirés doivent avoir une somme inférieure ou égale à $8$.\n\nEn classant les parties à $3$ éléments de $\\{1,\\dots,6\\}$ par somme croissante, on trouve : $\\{1,2,3\\}=6$, $\\{1,2,4\\}=7$, $\\{1,2,5\\}=8$, $\\{1,3,4\\}=8$, puis $\\{1,2,6\\}=9$, $\\{1,3,5\\}=9$, $\\{2,3,4\\}=9$, et toutes les suivantes valent $9$ ou plus. Il y a donc exactement $4$ parties de somme $\\leqslant 8$.\n\nEn passant à leurs compléments, les $4$ tirages gagnants (de somme $\\geqslant 13$) sont : $\\{4,5,6\\}$ (complément de $\\{1,2,3\\}$), $\\{3,5,6\\}$ (complément de $\\{1,2,4\\}$), $\\{3,4,6\\}$ (complément de $\\{1,2,5\\}$), $\\{2,5,6\\}$ (complément de $\\{1,3,4\\}$).\n\nLa probabilité cherchée est donc :\n$$P(\\text{gagnant}) = \\frac{4}{20} = \\frac{1}{5}$$\n\n**Vérification** : par dénombrement direct de leurs sommes, $\\{4,5,6\\}=15$, $\\{3,5,6\\}=14$, $\\{3,4,6\\}=13$, $\\{2,5,6\\}=13$ atteignent bien toutes $13$ ou plus, et ce sont les quatre seuls triplets dans ce cas (le cinquième plus grand, $\\{2,4,6\\}$, ne vaut que $12$) : la méthode du complément et le dénombrement direct s'accordent, ce qui confirme $P=\\dfrac{1}{5}$.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6577]
+  },
+  {
+    "external_id": "cqc-probabilite-elevee-0",
+    "theme": "probabilité",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}],
+    "enonce_markdown": "Un système d'alarme comporte trois capteurs indépendants $C_1$, $C_2$, $C_3$, de fiabilités différentes car issus de trois technologies distinctes : la probabilité que $C_1$ fonctionne correctement est $0,9$, celle que $C_2$ fonctionne correctement est $0,8$, celle que $C_3$ fonctionne correctement est $0,7$. Le système déclenche l'alarme si et seulement si au moins deux des trois capteurs fonctionnent correctement.\n\nQuelle est la probabilité que l'alarme se déclenche ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsque plusieurs événements indépendants ont des probabilités différentes, on ne peut pas appliquer une formule toute faite fondée sur une seule probabilité répétée : il faut décomposer l'événement en cas disjoints exhaustifs (ici, « exactement deux fonctionnent » et « exactement trois fonctionnent »), calculer la probabilité de chaque cas comme un produit de probabilités individuelles - en prenant, pour chaque élément non concerné par le cas, sa probabilité complémentaire de panne - puis additionner les probabilités de ces cas disjoints.\n\n### Corrigé\n\nNotons $p_1 = 0,9$, $p_2 = 0,8$, $p_3 = 0,7$ les probabilités de bon fonctionnement de $C_1, C_2, C_3$, et $q_1 = 0,1$, $q_2 = 0,2$, $q_3 = 0,3$ les probabilités de panne correspondantes ($q_i = 1 - p_i$).\n\n**Cas « les trois fonctionnent »** :\n$$P_3 = p_1 p_2 p_3 = 0,9 \\times 0,8 \\times 0,7 = 0,504$$\n\n**Cas « exactement deux fonctionnent »** (trois sous-cas exclusifs selon lequel des trois tombe en panne) :\n$$P_2 = p_1 p_2 q_3 + p_1 q_2 p_3 + q_1 p_2 p_3$$\n$$= (0,9)(0,8)(0,3) + (0,9)(0,2)(0,7) + (0,1)(0,8)(0,7)$$\n$$= 0,216 + 0,126 + 0,056 = 0,398$$\n\nL'événement « l'alarme se déclenche » est la réunion disjointe de ces deux cas, donc :\n$$P(\\text{alarme}) = P_3 + P_2 = 0,504 + 0,398 = 0,902$$\n\n**Vérification (contrôle indépendant par le complément)** : calculons les cas restants, « aucun ne fonctionne » et « exactement un fonctionne », qui doivent compléter le résultat à $1$.\n$$P_0 = q_1 q_2 q_3 = (0,1)(0,2)(0,3) = 0,006$$\n$$P_1 = p_1 q_2 q_3 + q_1 p_2 q_3 + q_1 q_2 p_3 = (0,9)(0,2)(0,3) + (0,1)(0,8)(0,3) + (0,1)(0,2)(0,7) = 0,054 + 0,024 + 0,014 = 0,092$$\nOn vérifie que $P_0 + P_1 + P_2 + P_3 = 0,006 + 0,092 + 0,398 + 0,504 = 1$, ce qui confirme qu'aucune erreur ne s'est glissée dans les quatre cas, et donc que $P(\\text{alarme}) = 0,902$ est correct.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6577, 6540]
+  }
+]

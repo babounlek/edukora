@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-installer-un-serveur-web-local-pour-executer-des-scripts-php-tle-ti",
+  "meta": {
+    "titre": "Installer un serveur Web local pour exécuter des scripts PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Chaîne de développement web",
+    "duree_estimee_min": 20,
+    "tags": [
+      "WAMP",
+      "XAMPP",
+      "serveur local",
+      "htdocs"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.12.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un script PHP tout juste terminé sur l'ordinateur ne s'exécute pas par magie en double-cliquant dessus : le navigateur afficherait alors un simple fichier texte, pas le résultat attendu. Pour qu'un script PHP fonctionne réellement, il faut d'abord lui donner un serveur qui sait l'exécuter."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un serveur Web",
+        "Savoir ce qu'est une URL locale (localhost)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Quatre étapes pour exécuter un script PHP en local",
+      "contenu_markdown": "Pour rendre un fichier PHP accessible en local via un navigateur, il faut : **installer** une suite logicielle regroupant Apache, PHP et MySQL (par exemple WAMPServer, XAMPP ou une installation LAMP sous Linux) ; **placer** le fichier dans le dossier racine que ce serveur surveille (`www` pour WAMP, `htdocs` pour XAMPP), éventuellement dans un sous-dossier propre au projet ; **démarrer** les services nécessaires (Apache, et MySQL si le script en a besoin) depuis le panneau de contrôle de la suite installée ; enfin **accéder** au fichier depuis un navigateur via l'adresse `http://localhost/nom_du_fichier.php`, jamais en ouvrant le fichier directement depuis l'explorateur."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un script `table.php` vient d'être écrit sur un ordinateur équipé de WAMPServer. Décris la procédure complète pour le rendre accessible via le navigateur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier que WAMPServer est installé",
+          "justification": "Sans suite Apache+PHP+MySQL, aucun fichier PHP ne peut être interprété",
+          "resultat_markdown": "WAMPServer est déjà présent sur la machine dans cet exemple"
+        },
+        {
+          "numero": 2,
+          "action": "Copier table.php dans le dossier www de WAMP",
+          "justification": "C'est ce dossier qu'Apache surveille et sert par défaut",
+          "resultat_markdown": "Le fichier se trouve, par exemple, à l'emplacement C:\\wamp64\\www\\table.php"
+        },
+        {
+          "numero": 3,
+          "action": "Démarrer les services depuis l'icône WAMP",
+          "justification": "Apache doit être actif pour répondre aux requêtes HTTP locales",
+          "resultat_markdown": "L'icône de WAMP passe au vert, signe que les services tournent"
+        },
+        {
+          "numero": 4,
+          "action": "Ouvrir le navigateur à l'adresse http://localhost/table.php",
+          "justification": "Cette adresse cible directement Apache, qui interprète le fichier PHP avant de répondre",
+          "resultat_markdown": "La page générée par le script s'affiche correctement dans le navigateur"
+        }
+      ],
+      "conclusion_markdown": "Le script est désormais accessible et interprété correctement, exactement comme il le serait sur un vrai serveur en ligne."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ouvrir le fichier .php par double clic depuis l'explorateur de fichiers",
+          "pourquoi_faux": "Le navigateur afficherait alors le fichier via le protocole file:///, sans passer par aucun serveur : le code PHP ne serait jamais interprété.",
+          "correction_markdown": "Accède toujours au fichier via http://localhost/..., jamais via un chemin de fichier local."
+        },
+        {
+          "erreur_markdown": "Oublier de démarrer les services Apache et MySQL avant de tester le script",
+          "pourquoi_faux": "Sans ces services actifs, l'adresse http://localhost/... ne répond à aucune requête, même si le fichier est bien placé au bon endroit.",
+          "correction_markdown": "Vérifie toujours l'état des services (icône verte pour WAMP) avant de conclure à une erreur dans le code."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cite le nom du dossier racine utilisé par WAMPServer pour héberger les fichiers PHP.",
+          "solution_markdown": "Le dossier `www`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un fichier `contact.php` est placé dans un sous-dossier `projet` du dossier racine du serveur. Quelle adresse faut-il saisir dans le navigateur pour y accéder ?",
+          "solution_markdown": "`http://localhost/projet/contact.php`"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève place correctement son fichier dans le dossier www et démarre WAMP, mais l'icône reste orange (et non verte). Que peut-il vérifier avant de conclure que son code PHP est en cause ?",
+          "solution_markdown": "Une icône orange signale généralement qu'un des deux services (Apache ou MySQL) n'a pas démarré correctement, souvent parce qu'un autre programme occupe déjà le port utilisé (le port 80 pour Apache, ou 3306 pour MySQL, entrent parfois en conflit avec Skype ou un autre serveur déjà installé). L'élève doit d'abord régler ce conflit de port (ou fermer le programme concurrent) avant même de chercher une erreur dans son script PHP, qui ne peut de toute façon pas être testé tant que le serveur n'est pas pleinement démarré."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un fichier PHP a besoin d'un serveur Web (Apache) pour être interprété : il ne s'exécute jamais par simple double clic.",
+        "La procédure tient en quatre étapes : installer, placer dans le dossier racine, démarrer les services, accéder via http://localhost/...",
+        "WAMP utilise le dossier www, XAMPP utilise htdocs : le nom exact dépend de la suite installée.",
+        "Une icône de contrôle qui n'est pas verte signale presque toujours un problème de service ou de port, à régler avant de chercher une erreur dans le code lui-même."
+      ]
+    }
+  ]
+}

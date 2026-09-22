@@ -5,6 +5,7 @@ import { ArrowLeft, Lock } from "lucide-react"
 import { getCours, previewCours } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Cours, CoursPreview } from "@/api/types"
+import { useAuth } from "@/context/AuthContext"
 import { formatCursusGroups } from "@/lib/cursus"
 import { capitaliserTheme } from "@/lib/utils"
 import { useSeo } from "@/lib/seo"
@@ -20,6 +21,7 @@ import { coursListPath, coursReaderPath } from "@/lib/countryPath"
 export function CoursDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
+  const { isAuthenticated, isLoading: authLoading } = useAuth()
 
   const [cours, setCours] = useState<Cours | null>(null)
   const [preview, setPreview] = useState<CoursPreview | null>(null)
@@ -44,6 +46,18 @@ export function CoursDetailPage() {
         }
       })
   }, [slug])
+
+  // Le premier appel ci-dessus part avant que la session ne soit reconfirmée (voir
+  // AuthContext - l'access token ne survit jamais à un rechargement de page) : un
+  // abonné qui arrive ici juste après un F5 peut recevoir un has_access calculé en
+  // anonyme, ce qui bloquait aussi à tort la redirection automatique ci-dessous. On
+  // recharge une fois la session confirmée - jamais déclenché pour un visiteur
+  // réellement anonyme (isAuthenticated resterait false), donc sans coût pour
+  // l'aperçu public.
+  useEffect(() => {
+    if (authLoading || !isAuthenticated || !slug) return
+    getCours(slug).then(setCours).catch(() => {})
+  }, [authLoading, isAuthenticated, slug])
 
   useEffect(() => {
     if (!cours || cours.has_access) return
@@ -73,7 +87,7 @@ export function CoursDetailPage() {
 
   if (!cours || cours.has_access) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
         <div className="flex flex-col gap-3">
           <Skeleton className="h-8 w-3/4" />
           <Skeleton className="h-5 w-1/2" />
@@ -84,7 +98,7 @@ export function CoursDetailPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       <Link
         to={coursListPath(cours.subject.country.code.toLowerCase())}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"

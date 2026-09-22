@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-calculer-aire-sous-courbe-solution-equation-diff-exponentielle-terminale-d-ti",
+  "meta": {"titre": "Calculer l'aire sous la courbe d'une solution exponentielle positive d'une équation différentielle", "cours_id": "cours-calculer-aire-sous-courbe-solution-equation-diff-exponentielle-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D & TI", "sous_theme": "Équations différentielles — calcul d'aire", "tags": ["aire", "intégrale", "exponentielle", "équation différentielle"], "duree_estimee_minutes": 7, "epreuve_source": "bac-d-maths-2018-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2018-cameroun-ex1-q2c"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "L'aire sous la courbe d'une solution exponentielle positive d'une équation différentielle se calcule par une intégrale directe, sans valeur absolue, puisque l'exponentielle ne change jamais de signe."},
+    {"type": "prerequis", "items_markdown": ["Primitive de Ce^(kx) : (C/k)e^(kx)", "Propriété e^(k ln n)=n^k pour simplifier les évaluations aux bornes"]},
+    {"type": "regle", "titre": "Intégrer directement (fonction positive), simplifier via e^(k ln n)=n^k", "contenu_markdown": "Pour une solution $f(x)=Ce^{kx}$ (toujours positive si $C>0$), l'aire entre l'axe des abscisses, la courbe et les droites $x=p$, $x=q$ est $\\int_p^qCe^{kx}dx=\\left[\\dfrac Ck e^{kx}\\right]_p^q$. Quand une borne fait intervenir un logarithme (ex. $q=\\ln n$), on simplifie $e^{k\\ln n}=n^k$ pour obtenir une valeur exacte sans approximation décimale.", "formule_principale": "aire=∫Ce^(kx)dx=[C/k × e^(kx)], avec e^(k ln n)=n^k pour simplifier", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "f(x)=2e^{-x}, f(0)=2. Calculer l'aire entre l'axe des abscisses, la courbe, x=0 et x=ln4.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Primitive", "justification": "∫2e^(-x)dx=-2e^(-x)", "resultat_markdown": "F(x)=-2e^{-x}"},
+      {"numero": 2, "action": "Évaluer en ln4", "justification": "e^(-ln4)=4^(-1)=1/4", "resultat_markdown": "F(ln4)=-2×1/4=-1/2"},
+      {"numero": 3, "action": "Évaluer en 0 et soustraire", "justification": "F(0)=-2", "resultat_markdown": "aire=-1/2-(-2)=3/2"}
+    ], "conclusion_markdown": "Aire=3/2 unité d'aire."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Ajouter une valeur absolue autour de l'intégrale par réflexe, alors que la fonction exponentielle est toujours strictement positive et ne nécessite donc aucune précaution de signe", "pourquoi_faux": "La valeur absolue n'est utile que lorsque la fonction change de signe sur l'intervalle considéré ; une exponentielle positive multipliée par une constante positive ne change jamais de signe, l'intégrale directe donne donc déjà l'aire correcte.", "correction_markdown": "Avant d'intégrer, vérifier le signe de la fonction sur l'intervalle : si elle est positive partout (cas fréquent pour Ce^(kx) avec C>0), intégrer directement sans valeur absolue."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "f(x)=e^{2x}. Calculer l'aire sous la courbe entre x=0 et x=ln2.", "solution_markdown": "Primitive: (1/2)e^{2x}. F(ln2)=(1/2)×e^{2ln2}=(1/2)×4=2. F(0)=1/2. Aire=2-1/2=3/2."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Pourquoi peut-on simplifier e^{-2ln3} en 1/9 sans calculatrice ?", "solution_markdown": "e^{-2ln3}=e^{ln(3^{-2})}=3^{-2}=1/9, en utilisant la propriété e^{ln(x)}=x appliquée à x=3^{-2}, elle-même réécriture de -2ln3=ln(3^{-2}) via les propriétés du logarithme."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Une exponentielle positive s'intègre directement, sans valeur absolue, pour donner l'aire cherchée.", "La propriété e^(k ln n)=n^k permet d'obtenir des valeurs exactes (fractions) aux bornes logarithmiques, sans approximation décimale.", "Toujours vérifier le signe de la fonction avant d'intégrer pour justifier l'absence de valeur absolue."]}
+  ]
+}

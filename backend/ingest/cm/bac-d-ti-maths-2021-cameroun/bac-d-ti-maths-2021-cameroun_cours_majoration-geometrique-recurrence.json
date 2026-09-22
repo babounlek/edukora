@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-deduire-majoration-geometrique-recurrence-terminale-d-ti",
+  "meta": {"titre": "Déduire une majoration géométrique de l'écart d'une suite à son point fixe", "cours_id": "cours-deduire-majoration-geometrique-recurrence-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D-TI", "sous_theme": "Suites — majoration par récurrence", "tags": ["récurrence", "majoration géométrique", "point fixe"], "duree_estimee_minutes": 8, "epreuve_source": "bac-d-ti-maths-2021-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2021-cameroun-ex3-5c"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "En appliquant successivement, par récurrence, l'inégalité reliant deux termes consécutifs d'une suite à leur point fixe, on obtient une majoration géométrique explicite de l'écart en fonction du rang n."},
+    {"type": "prerequis", "items_markdown": ["Inégalité |Un+1-α|≤k|Un-α| déjà établie", "Principe de récurrence : initialisation puis hérédité"]},
+    {"type": "regle", "titre": "Récurrence donnant une puissance de k", "contenu_markdown": "À partir de $|U_{n+1}-\\alpha|\\leq k|U_n-\\alpha|$, une récurrence immédiate donne $|U_n-\\alpha|\\leq k^n|U_0-\\alpha|$ pour tout $n$ : à chaque étape, on multiplie la majoration précédente par $k$, ce qui accumule une puissance $n$-ième de $k$.", "formule_principale": "|Un+1-α|≤k|Un-α| pour tout n ⟹ |Un-α|≤k^n|U0-α|", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "|Vn+1-β|≤0,25|Vn-β| pour tout n, avec |V0-β|≤2. Majorer |Vn-β|.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Appliquer la récurrence", "justification": "puissance n-ième de 0,25", "resultat_markdown": "|Vn-β|≤0,25^n×|V0-β|"},
+      {"numero": 2, "action": "Substituer la majoration initiale", "justification": "|V0-β|≤2", "resultat_markdown": "|Vn-β|≤2×0,25^n"}
+    ], "conclusion_markdown": "|Vn-β|≤2×0,25^n."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier de majorer |U0-α| par une valeur explicite quand la majoration finale doit être un nombre pur (comme (1/2)^n sans facteur multiplicatif)", "pourquoi_faux": "Si l'écart initial |U0-α| n'est pas majoré par 1 (ou par la valeur nécessaire), le résultat final ne se réduit pas exactement à k^n mais reste k^n multiplié par ce facteur initial ; il faut donc établir cette majoration de l'écart initial séparément si le résultat visé est une puissance pure.", "correction_markdown": "Toujours vérifier explicitement la majoration de l'écart initial |U0-α| nécessaire pour obtenir la forme finale demandée du résultat."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "|Wn+1-γ|≤(1/3)|Wn-γ| pour tout n, avec |W0-γ|≤1. Montrer que |Wn-γ|≤(1/3)^n.", "solution_markdown": "Par récurrence : initialisation n=0, |W0-γ|≤1=(1/3)^0. Hérédité : si |Wn-γ|≤(1/3)^n, alors |Wn+1-γ|≤(1/3)|Wn-γ|≤(1/3)×(1/3)^n=(1/3)^(n+1). Conclusion par récurrence."},
+      {"numero": 2, "difficulte": "facile", "enonce_markdown": "Pourquoi cette majoration géométrique est-elle si utile pour la suite de la démonstration (convergence de la suite) ?", "solution_markdown": "Parce qu'une suite géométrique de raison strictement comprise entre 0 et 1 (ici k^n) tend vers 0 quand n tend vers l'infini, ce qui permettra ensuite, par le théorème des gendarmes, de conclure que l'écart |Un-α| tend lui aussi vers 0, donc que Un converge vers α."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Une récurrence simple transforme l'inégalité entre deux termes consécutifs en une majoration géométrique explicite en k^n.", "Cette majoration nécessite de connaître (ou de majorer) l'écart initial |U0-α|.", "Cette étape prépare directement la démonstration de la convergence de la suite via le théorème des gendarmes."]}
+  ]
+}

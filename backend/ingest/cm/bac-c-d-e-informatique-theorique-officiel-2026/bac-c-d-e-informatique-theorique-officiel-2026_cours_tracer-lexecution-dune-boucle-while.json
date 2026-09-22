@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-tracer-execution-boucle-while-1ere-tronc-commun",
+  "meta": {
+    "titre": "Tracer l'exécution d'une boucle while",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique et programmation - structures itératives",
+    "duree_estimee_min": 25,
+    "tags": ["boucle while", "trace d'exécution", "structure itérative", "simulation d'algorithme"],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-officiel-2026",
+    "epreuve_titre": "BAC C-D-E Informatique Théorique 2026 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex5-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un programme qui contient une boucle, une question revient sans cesse à l'examen : que vaut telle variable une fois la boucle terminée ? Deviner la réponse ou la calculer de tête mène presque toujours à une erreur, surtout quand plusieurs variables évoluent en même temps. La trace d'exécution est la méthode qui élimine ce risque : elle transforme le code en un tableau que l'on remplit ligne après ligne, exactement comme le ferait l'ordinateur, jusqu'à obtenir la valeur finale avec certitude plutôt que par intuition."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une boucle while (tant que) et sa condition",
+        "Comprendre ce qu'est une instruction d'affectation (attribuer une nouvelle valeur à une variable)",
+        "Savoir distinguer une variable de sa valeur à un instant donné"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode de la trace d'exécution",
+      "contenu_markdown": "Tracer l'exécution d'un programme consiste à simuler son déroulement à la main, en notant dans un tableau la valeur de chaque variable après chaque instruction qui la modifie. Pour une boucle while, la démarche est toujours la même : noter les valeurs initiales des variables juste avant la boucle, puis, pour chaque itération, évaluer d'abord la condition avec les valeurs courantes (vraie ou fausse ?), exécuter le bloc d'instructions si la condition est vraie en mettant à jour chaque variable modifiée dans l'ordre où les instructions apparaissent, et répéter ce cycle jusqu'à ce que le test de la condition soit fausse. La dernière ligne du tableau doit toujours être le test qui fait sortir de la boucle, jamais la dernière itération qui l'exécute encore.",
+      "formule_principale": "Tant que la condition est vraie : exécuter le bloc, mettre à jour les variables, puis retester la condition",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un programme en langage C initialise `i=1 ; T=1 ;` puis exécute la boucle `while (i<=n) { T=T*p ; i=i+1 ; }`. Donner la trace d'exécution avec p=4 et n=3, et trouver la valeur finale de T.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Noter les valeurs initiales des variables avant la boucle",
+          "justification": "La trace doit partir de l'état exact du programme au moment où il atteint la boucle, pas d'une valeur supposée",
+          "resultat_markdown": "Avant la boucle : i=1, T=1, p=4, n=3."
+        },
+        {
+          "numero": 2,
+          "action": "Tester la condition, exécuter le bloc si elle est vraie, et mettre à jour les variables dans l'ordre du code",
+          "justification": "Chaque itération applique exactement les instructions du bloc dans leur ordre d'écriture : d'abord T=T*p, ensuite i=i+1",
+          "resultat_markdown": "Itération 1 : i=1, test 1<=3 vrai. T=1*4=4. i=1+1=2.\n\nItération 2 : i=2, test 2<=3 vrai. T=4*4=16. i=2+1=3.\n\nItération 3 : i=3, test 3<=3 vrai. T=16*4=64. i=3+1=4."
+        },
+        {
+          "numero": 3,
+          "action": "Retester la condition avec les nouvelles valeurs pour constater la sortie de la boucle",
+          "justification": "La boucle ne s'arrête que lorsque le test échoue réellement : il faut donc l'exécuter une dernière fois, même si aucune instruction du bloc n'est plus exécutée ensuite",
+          "resultat_markdown": "Test : i=4, 4<=3 est faux. La boucle s'arrête. Aucune nouvelle itération n'a lieu."
+        }
+      ],
+      "conclusion_markdown": "La boucle s'est exécutée exactement trois fois avant que le test ne devienne faux, et la variable T vaut 64 à la sortie de la boucle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Mettre à jour i avant de calculer T dans la même itération (inverser l'ordre des deux instructions du bloc)",
+          "pourquoi_faux": "L'ordinateur exécute les instructions strictement dans l'ordre où elles sont écrites dans le code. Si T=T*p est écrite avant i=i+1, inverser cet ordre dans la trace change la valeur utilisée sans que rien dans le code ne le justifie.",
+          "correction_markdown": "Recopie l'ordre exact des instructions du bloc tel qu'il apparaît dans le code, sans jamais le réorganiser pour ta propre commodité."
+        },
+        {
+          "erreur_markdown": "Arrêter la trace dès que la dernière itération utile a été exécutée, sans noter le test qui échoue",
+          "pourquoi_faux": "Sans ce dernier test, rien ne prouve que la boucle s'arrête au bon moment ni que le nombre d'itérations comptées est correct : on peut facilement se tromper d'une itération en plus ou en moins.",
+          "correction_markdown": "Termine toujours la trace par la ligne du test qui devient faux, même si elle ne modifie plus aucune variable : c'est elle qui justifie l'arrêt de la boucle."
+        },
+        {
+          "erreur_markdown": "Recalculer T à partir de sa valeur initiale à chaque itération au lieu de repartir de sa valeur la plus récente (par exemple écrire T=1*4 puis de nouveau T=1*4 au lieu de T=4*4)",
+          "pourquoi_faux": "Une variable garde la valeur de sa dernière affectation jusqu'à la suivante : T=T*p utilise la valeur de T obtenue à l'itération précédente, pas sa valeur d'origine.",
+          "correction_markdown": "Avant chaque nouvelle itération, relis la valeur de T inscrite à la ligne précédente du tableau : c'est elle, et uniquement elle, qui sert de point de départ au calcul suivant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un programme initialise `i=1 ; S=0 ;` puis exécute `while (i<=4) { S=S+i ; i=i+1 ; }`. Donner la trace d'exécution et la valeur finale de S.",
+          "solution_markdown": "Avant la boucle : i=1, S=0.\n\nItération 1 : i=1, test 1<=4 vrai. S=0+1=1. i=2.\n\nItération 2 : i=2, test 2<=4 vrai. S=1+2=3. i=3.\n\nItération 3 : i=3, test 3<=4 vrai. S=3+3=6. i=4.\n\nItération 4 : i=4, test 4<=4 vrai. S=6+4=10. i=5.\n\nTest : i=5, 5<=4 est faux. La boucle s'arrête.\n\nLa valeur finale de S est 10 (la somme des entiers de 1 à 4)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un programme initialise `i=5 ; P=1 ;` puis exécute `while (i>=1) { P=P*i ; i=i-1 ; }`. Donner la trace d'exécution et la valeur finale de P. Attention, la boucle est ici décroissante.",
+          "solution_markdown": "Avant la boucle : i=5, P=1.\n\nItération 1 : i=5, test 5>=1 vrai. P=1*5=5. i=4.\n\nItération 2 : i=4, test 4>=1 vrai. P=5*4=20. i=3.\n\nItération 3 : i=3, test 3>=1 vrai. P=20*3=60. i=2.\n\nItération 4 : i=2, test 2>=1 vrai. P=60*2=120. i=1.\n\nItération 5 : i=1, test 1>=1 vrai. P=120*1=120. i=0.\n\nTest : i=0, 0>=1 est faux. La boucle s'arrête.\n\nLa valeur finale de P est 120 : le programme calcule la factorielle de 5 (5! = 120), même méthode qu'une boucle croissante, seule la condition et le sens de variation de i changent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un programme initialise `i=1 ; n=6 ; c=0 ;` puis exécute `while (i<=n) { if (i%2==0) { c=c+1 ; } i=i+1 ; }`. Donner la trace d'exécution et la valeur finale de c (indication : i%2==0 signifie « i est pair »).",
+          "solution_markdown": "Avant la boucle : i=1, n=6, c=0.\n\nItération 1 : i=1, test 1<=6 vrai. i est impair (1%2=1, différent de 0) : le bloc du if ne s'exécute pas, c reste à 0. i=2.\n\nItération 2 : i=2, test 2<=6 vrai. i est pair (2%2=0) : c=0+1=1. i=3.\n\nItération 3 : i=3, test 3<=6 vrai. i est impair : c reste à 1. i=4.\n\nItération 4 : i=4, test 4<=6 vrai. i est pair : c=1+1=2. i=5.\n\nItération 5 : i=5, test 5<=6 vrai. i est impair : c reste à 2. i=6.\n\nItération 6 : i=6, test 6<=6 vrai. i est pair : c=2+1=3. i=7.\n\nTest : i=7, 7<=6 est faux. La boucle s'arrête.\n\nLa valeur finale de c est 3 : le programme compte les nombres pairs entre 1 et 6 (2, 4 et 6). Cet exercice combine la trace d'une boucle avec celle d'une condition imbriquée : à chaque itération, il faut d'abord évaluer le if avant de continuer, exactement comme pour toute autre instruction du bloc."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une trace d'exécution suit toujours le même schéma : valeurs initiales, puis pour chaque itération le test de la condition, l'exécution du bloc dans l'ordre exact du code, la mise à jour des variables.",
+        "Une variable garde sa dernière valeur affectée jusqu'à la prochaine instruction qui la modifie : repars toujours de la valeur la plus récente inscrite dans ton tableau, jamais de la valeur initiale.",
+        "La trace se termine par le test qui échoue, pas par la dernière itération exécutée : c'est ce test qui prouve et explique l'arrêt de la boucle.",
+        "La même méthode s'applique à une boucle croissante ou décroissante, avec ou sans condition imbriquée à l'intérieur : seule la condition de la boucle change, la démarche de trace reste identique.",
+        "Au BAC comme au Probatoire, ce type de question accompagne presque toujours un exercice de lecture de code : la maîtrise de la trace d'exécution conditionne la réussite de questions valant plusieurs points, bien au-delà de la seule boucle while."
+      ]
+    }
+  ]
+}

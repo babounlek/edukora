@@ -1,0 +1,86 @@
+{
+  "cours_id": "cours-probatoire-d-maths-officiel-2011-cameroun-denombrement-plusieurs-categories-exactes",
+  "meta": {
+    "titre": "Dénombrer une composition avec une contrainte exacte sur plusieurs catégories",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Combinaisons, principe multiplicatif, catégories multiples",
+    "duree_estimee_min": 20,
+    "tags": [
+      "dénombrement",
+      "combinaisons",
+      "principe multiplicatif",
+      "catégories multiples"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "22",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2011-cameroun",
+    "epreuve_titre": "Probatoire D Mathématiques officiel 2011 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2011-cameroun-ex2-q3b-1",
+    "rappels_lies": [
+      "rdm-probatoire-d-maths-officiel-2011-cameroun-ex2-q3a-1",
+      "rdm-probatoire-d-maths-officiel-2011-cameroun-ex2-q3b-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Composer une épreuve avec \"exactement un exercice de statistique et un exercice de trigonométrie\" ressemble à un simple choix de deux catégories — mais l'épreuve compte TROIS exercices, pas deux. Où va se loger ce troisième exercice ? La réponse, souvent manquée, est qu'il ne peut appartenir à AUCUNE des deux catégories déjà fixées, sans quoi la condition \"exactement un\" serait violée."
+    },
+    {
+      "type": "prerequis",
+      "contenu_markdown": "Nombre de combinaisons $C_n^k$, principe multiplicatif (choix successifs indépendants), partition d'un ensemble en catégories disjointes."
+    },
+    {
+      "type": "regle",
+      "formule_principale": "Pour composer un ensemble de $k$ éléments à partir d'une population partitionnée en plusieurs catégories disjointes, avec une contrainte \"exactement $j_1$ de la catégorie 1, exactement $j_2$ de la catégorie 2, ...\", il faut d'abord identifier explicitement la provenance de CHACUN des $k$ éléments (y compris ceux non contraints), puis multiplier les combinaisons $C_{n_i}^{\\,j_i}$ correspondant à chaque catégorie ainsi déterminée.",
+      "variantes": [
+        "Si le nombre d'éléments à choisir dépasse la somme des contraintes explicites (ex : 3 éléments à choisir, mais seulement 2 catégories contraintes \"exactement 1 chacune\"), le ou les éléments restants doivent provenir d'une catégorie qui n'est PAS l'une des catégories déjà contraintes — sinon la condition d'exactitude serait violée pour cette catégorie.",
+        "Si une population n'est partitionnée qu'en exactement autant de catégories que de contraintes posées (aucune catégorie \"neutre\" disponible), la contrainte peut devenir impossible à satisfaire : il faut toujours vérifier qu'une catégorie neutre existe bien avant d'appliquer la formule."
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "etapes": [
+        "Une épreuve se compose de 3 exercices choisis parmi 18 (répartis en 4 de statistique, 9 d'équations, 5 de trigonométrie) et d'1 problème parmi 10.",
+        "On veut exactement 1 exercice de statistique ET exactement 1 exercice de trigonométrie. Cela ne fixe que 2 des 3 exercices : où va le 3ᵉ ?",
+        "Le 3ᵉ exercice ne peut pas être un 2ᵉ exercice de statistique (sinon on aurait 2 exercices de statistique, violant \"exactement 1\"), ni un 2ᵉ exercice de trigonométrie (même raison) : il doit obligatoirement provenir de la catégorie neutre restante, les équations (9 exercices).",
+        "On multiplie donc les 4 choix indépendants : $C_4^1$ (statistique) $\\times\\,C_5^1$ (trigonométrie) $\\times\\,C_9^1$ (équations, le 3ᵉ exercice) $\\times\\,C_{10}^1$ (problème) $=4\\times5\\times9\\times10=1800$."
+      ]
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Multiplier seulement $C_4^1\\times C_5^1\\times C_{10}^1$ en oubliant complètement le 3ᵉ exercice : cela dénombrerait des épreuves à seulement 2 exercices, ne correspondant pas à l'énoncé (qui en impose 3).",
+        "Choisir le 3ᵉ exercice parmi les $18-1-1=16$ exercices restants (après avoir retiré un exercice de chaque catégorie contrainte) : cela inclurait par erreur d'autres exercices de statistique ou de trigonométrie, violant la condition \"exactement un\".",
+        "Oublier que le choix du problème (catégorie totalement indépendante des exercices) doit aussi être intégré dans le produit final, même s'il n'est pas concerné par la contrainte \"exactement un type X\"."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Une équipe de 5 joueurs est formée à partir d'un groupe de 20 personnes réparties en 8 attaquants, 7 milieux, 5 défenseurs. Dénombrer les équipes contenant exactement 2 attaquants et exactement 1 défenseur (les 2 joueurs restants provenant nécessairement des milieux).",
+        "Reprendre l'exemple résolu ci-dessus et calculer le nombre d'épreuves contenant exactement 2 exercices d'équations et exactement 1 exercice de statistique (en identifiant correctement d'où doit provenir le 3ᵉ élément, ou en constatant qu'ici les 3 exercices sont déjà tous attribués)."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant d'appliquer le principe multiplicatif, il faut identifier la provenance de CHACUN des éléments à choisir, y compris ceux non explicitement contraints par l'énoncé.",
+        "Un élément non contraint par une catégorie \"exactement j\" doit provenir d'une catégorie neutre, distincte de toutes celles déjà fixées par une contrainte d'exactitude.",
+        "Le nombre total s'obtient en multipliant les combinaisons de chaque catégorie ainsi déterminée, catégories multipliées entre elles étant indépendantes."
+      ]
+    }
+  ]
+}

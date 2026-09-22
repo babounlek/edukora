@@ -41,6 +41,22 @@ HISTOIRE_SEULE = {
     "bepc-histoire-2025-cameroun.pdf",
     "bepc-histoire-2024-blanc-cameroun",
     "bepc-histoire-2018-cameroun.pdf",
+    # Repérées le 2026-09-14 : signalées par l'utilisateur sur le BAC A/ABI 2023, puis
+    # généralisées aux autres années/séries du même repère "abi-histoire"/
+    # "probatoire...histoire" - chaque exercice du JSON source ne couvre qu'un thème
+    # d'histoire (décolonisation, guerre froide, impérialisme...), jamais de géographie.
+    "bac-a-abi-histoire-2020-officiel-cameroun.pdf",
+    "bac-a-abi-histoire-2022-officiel-cameroun.pdf",
+    "bac-a-abi-histoire-2023-officiel-cameroun",
+    "bac-a-abi-histoire-2025-officiel-cameroun.pdf",
+    "probatoire-c-d-e-ti-histoire-2020-officiel-cameroun.pdf",
+    "probatoire-c-d-e-ti-histoire-2023-officiel-cameroun.pdf",
+    "probatoire-c-d-e-ti-histoire-2024-officiel-cameroun.pdf",
+    # Repérée le 2026-09-14 (2) : nouvelle ingestion du jour, même bug de tagging sur un
+    # repère "probatoire...histoire" (coquille "probatore" dans le nom de fichier
+    # source, conservée telle quelle) - traité de Versailles, révolution industrielle,
+    # colonisation de l'Afrique, aucun contenu de géographie.
+    "probatoire-c-d-e-ti-histoire-2022-officiel-cameroun",
 }
 GEOGRAPHIE_SEULE = {
     "bac-c-d-ti-geographie-2025-cameroun.pdf",
@@ -52,6 +68,15 @@ GEOGRAPHIE_SEULE = {
     "bepc-geographie-2019-cameroun.pdf",
     "probatoire-c-d-e-ti-geographie-2018-cameroun.pdf",
     "bepc-geographie-2026-cameroun",
+    # Repérée le 2026-09-14 dans le même repassage : exercice 1 (démographie, débit
+    # d'un cours d'eau) et exercice 2 (déforestation/gibier) sont tous deux de la
+    # géographie pure.
+    "bepc-geographie-2021-officiel-cameroun.pdf",
+    # Repérée le 2026-09-14 (2) : nouvelle ingestion du jour, même bug de tagging sur un
+    # repère "abi-geographie" (coquille "probatore" dans le nom de fichier source,
+    # conservée telle quelle) - démographie africaine, exode rural, immigration, aucun
+    # contenu d'histoire.
+    "probatoire-a-abi-geographie-2025-officiel-cameroun.pdf",
 }
 
 

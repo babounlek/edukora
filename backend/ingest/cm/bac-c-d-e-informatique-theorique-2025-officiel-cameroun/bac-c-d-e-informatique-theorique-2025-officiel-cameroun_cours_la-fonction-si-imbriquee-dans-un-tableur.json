@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-la-fonction-si-imbriquee-dans-un-tableur-tle-tronc-commun",
+  "meta": {
+    "titre": "La fonction SI imbriquée dans un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Fonctions du tableur",
+    "duree_estimee_min": 20,
+    "tags": [
+      "SI imbriqué",
+      "fonction SI",
+      "tableur",
+      "conditions à plusieurs seuils"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex1-q11d-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Attribuer une mention (faible, insuffisant, passable...) à partir d'une moyenne demande de tester PLUSIEURS seuils, pas un seul. Une seule fonction SI ne suffit pas : il faut apprendre à les emboîter les unes dans les autres, dans le bon ordre, sans faire exploser la complexité de la formule."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe de base de la fonction SI : SI(condition;valeur_si_vrai;valeur_si_faux)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Emboîter plusieurs SI pour tester plusieurs seuils",
+      "contenu_markdown": "Quand une valeur peut se ranger dans plus de deux catégories selon des seuils, on emboîte plusieurs fonctions SI les unes dans les autres : chaque SI ne teste qu'UN SEUL seuil, et renvoie, en cas d'échec, un nouveau test SI pour le seuil suivant.\n\nMéthode : tester d'abord le seuil le PLUS BAS (ou le plus haut, selon le sens choisi). Si ce premier test échoue, on sait déjà que la valeur a dépassé ce seuil : le second SI n'a donc plus besoin de re-tester cette première condition, seulement la suivante.",
+      "formule_principale": "=SI(condition1;resultat1;SI(condition2;resultat2;resultat3))"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Attribuer à une moyenne en F5 la mention « faible » si Moy < 7, « insuffisant » si 7 ≤ Moy < 10, « passable » si Moy ≥ 10.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tester d'abord le seuil le plus bas",
+          "justification": "Si F5 < 7, la mention est directement déterminée, sans autre test nécessaire.",
+          "resultat_markdown": "SI(F5<7;\"faible\"; ... )"
+        },
+        {
+          "numero": 2,
+          "action": "Traiter le cas où le premier test échoue (donc F5 ≥ 7)",
+          "justification": "Il reste à distinguer 7 ≤ Moy < 10 de Moy ≥ 10 : un second test suffit, puisque F5 ≥ 7 est déjà acquis.",
+          "resultat_markdown": "SI(F5<10;\"insuffisant\";\"passable\")"
+        },
+        {
+          "numero": 3,
+          "action": "Emboîter le second SI comme troisième argument du premier",
+          "justification": "C'est la structure d'emboîtement qui permet de gérer les trois cas avec seulement deux tests.",
+          "resultat_markdown": "=SI(F5<7;\"faible\";SI(F5<10;\"insuffisant\";\"passable\"))"
+        }
+      ],
+      "conclusion_markdown": "On obtient une formule qui gère correctement les trois catégories avec seulement deux tests emboîtés, en exploitant le fait que chaque échec de test apporte déjà une information (la valeur a dépassé le seuil précédent)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Re-tester la condition déjà acquise dans le second SI (par exemple SI(F5>=7 ET F5<10;...))",
+          "pourquoi_faux": "Dès que le premier SI a échoué, on sait déjà que F5 ≥ 7 : revérifier cette condition dans le second test est inutile et complique la formule sans changer le résultat.",
+          "correction_markdown": "Ne tester, dans chaque SI imbriqué, que la condition qui n'a pas encore été établie par les tests précédents."
+        },
+        {
+          "erreur_markdown": "Inverser l'ordre des seuils (tester d'abord Moy ≥ 10)",
+          "pourquoi_faux": "Rien n'empêche techniquement de commencer par le seuil le plus haut, mais mélanger l'ordre des bornes sans adapter la logique des tests suivants (< ou ≥ dans le bon sens) est une source fréquente d'erreur qui inverse silencieusement des catégories.",
+          "correction_markdown": "Choisir un seul sens de parcours (du plus bas au plus haut, ou l'inverse) et le garder cohérent sur toute la formule emboîtée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire une formule qui affiche « Admis » si la moyenne en B2 est supérieure ou égale à 10, sinon « Recalé ».",
+          "solution_markdown": "=SI(B2>=10;\"Admis\";\"Recalé\")  (un seul seuil suffit ici, pas besoin d'emboîtement)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire une formule à deux niveaux qui affiche « Échec » si la moyenne en C2 est inférieure à 8, « Rattrapage » si elle est entre 8 (inclus) et 10 (exclu), et « Admis » à partir de 10.",
+          "solution_markdown": "=SI(C2<8;\"Échec\";SI(C2<10;\"Rattrapage\";\"Admis\"))"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut classer une moyenne D2 en 4 catégories : « Insuffisant » (<8), « Passable » (8 à <10), « Assez bien » (10 à <14), « Bien » (≥14). Combien de fonctions SI faut-il emboîter, et écrire la formule complète.",
+          "solution_markdown": "Il faut 3 fonctions SI emboîtées pour distinguer 4 catégories : une catégorisation à N seuils nécessite toujours N fonctions SI imbriquées (chaque SI ajouté permet de distinguer une catégorie supplémentaire). Formule : =SI(D2<8;\"Insuffisant\";SI(D2<10;\"Passable\";SI(D2<14;\"Assez bien\";\"Bien\")))"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un SI imbriqué se construit du seuil le plus bas vers le plus haut (ou l'inverse), en testant à chaque étage un seul nouveau seuil.",
+        "Chaque échec d'un test SI apporte déjà une information : ne jamais la re-tester dans le SI suivant.",
+        "Nombre de SI nécessaires pour N catégories : toujours N-1 fonctions SI emboîtées.",
+        "Vérifie toujours la cohérence du sens choisi (< ou ≥) sur toute la chaîne de SI imbriqués avant de valider la formule."
+      ]
+    }
+  ]
+}

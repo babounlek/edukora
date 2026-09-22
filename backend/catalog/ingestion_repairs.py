@@ -100,6 +100,28 @@ def _dedupe_question_enonce(enonce_markdown, exercise_intro):
 # épreuves, voir mémoire projet project_intro_bare_lettered_partie_header_bug).
 _INTRO_PART_HEADER_RE = re.compile(rf"\*\*\s*(Partie\s+\S|[IVX]{{1,4}}{_PART_LABEL_SEPARATOR})", re.IGNORECASE)
 
+# Même repère que ci-dessus ("**Partie B**", "**II.**"...), mais balisé en titre
+# Markdown ("## Partie B — ...", "### III. ...") plutôt qu'en gras - constaté sur le
+# format d'évaluation par compétences (APC) camerounais, où "Partie B" est parfois
+# rendu comme un titre plutôt qu'en "**gras**". Regex FRÈRE, volontairement séparé de
+# _INTRO_PART_HEADER_RE plutôt que fusionné dedans, exactement pour la raison que
+# documente _BARE_LETTERED_PART_HEADER_RE plus bas à propos de sa propre séparation
+# d'avec _INTRO_PART_HEADER_RE : ce dernier sert aussi à _flag_part_headers_in_intro,
+# qui suppose qu'un repère de Partie DANS l'intro est mal placé (il devrait porter sur
+# la première Question de cette partie, pas sur l'intro partagée de tout l'exercice) -
+# hypothèse fausse ici, puisque "Partie B" désigne ici l'exercice ENTIER (une
+# situation-problème à elle seule), pas une sous-question de son intro (constaté en le
+# fusionnant dans _INTRO_PART_HEADER_RE puis en observant la fausse incertitude
+# "repère de partie" ajoutée à tort sur l'exercice 4 de mathematiques-bac-c-2021 après
+# ré-ingestion). Seule sert ce garde-fou-ci (_repair_missing_exercise_heading) : sans
+# lui, un exercice dont l'intro commence par un titre Markdown "## Partie B" plutôt que
+# par "Exercice N" est cru sans repère et se voit injecter un second "**Exercice N
+# (points)**" en double au-dessus (mathematiques-bac-c-2021 exercice 4/id=6923,
+# bac-a-abi-maths-2022-cameroun exercice 4 - scan corpus du 2026-08-30).
+_MARKDOWN_HEADING_PART_HEADER_RE = re.compile(
+    rf"^#{{1,4}}\s*(Partie\s+\S|[IVX]{{1,4}}{_PART_LABEL_SEPARATOR})", re.IGNORECASE
+)
+
 # Repère de PARTIE lettré sous forme courte ("**A. Évaluation des ressources (10
 # points)**"), sans le mot "Partie" - forme observée sur le format d'évaluation par
 # compétences (APC) camerounais, distincte de "**PARTIE A : ...**" (déjà couverte par
@@ -304,15 +326,59 @@ def _convert_literal_newlines(text):
 # 2 lettres consécutives suivent (aucune commande LaTeX standard ne se limite à une
 # seule lettre - protège aussi la variable isolée d'une ligne suivante, ex.
 # "...=7\\a-2b-2c=18").
-_BACKSLASH_RUN_BEFORE_LETTERS_RE = re.compile(r"\\+(?=[a-zA-Z]{2})")
+#
+# Ce filtre "2 lettres" reste cependant insuffisant seul : un VRAI séparateur de ligne
+# `\\` (déjà correct) directement suivi d'une ligne qui commence par deux variables
+# adjacentes sans opérateur - un produit implicite ("ab", "cX", "ax"...) - ressemble
+# alors exactement à une commande à 2 lettres doublée, et se fait qualifier à tort
+# (repéré sur mathematiques-probatoire-a-2013 exercice 4 : "$a+b=320\\ab=17500$"
+# collapsait le séparateur en "\ab=17500", un système à deux inconnues devenant un
+# système à une seule ligne avec une pseudo-commande "\ab" inconnue de KaTeX, rendue en
+# rouge sans lever d'exception ; même motif sur deux Cours "changement de variable" /
+# "méthode de substitution" avec "\\cX+dY=k_2" et "\\ax+by=p"). Une VRAIE commande
+# LaTeX doublée fait presque toujours 3 lettres ou plus (mathbb, sqrt, text, dfrac,
+# cdot, times...) ; les rares commandes à exactement 2 lettres qui apparaissent en
+# clair dans ce corpus (comparaisons, ensembles) sont énumérées explicitement plutôt
+# que déduites - tout le reste à 2 lettres est traité comme deux variables adjacentes,
+# jamais comme une commande.
+_BACKSLASH_RUN_BEFORE_LETTERS_RE = re.compile(r"\\+(?=([a-zA-Z]+))")
+
+_SHORT_LATEX_COMMANDS = frozenset(
+    {"in", "ni", "to", "ne", "le", "ge", "pm", "mp", "ll", "gg", "lt", "gt", "ln"}
+)
+
+
+def _is_doubled_command_letter_run(letters):
+    return len(letters) >= 3 or letters in _SHORT_LATEX_COMMANDS
+
+
+# Symétrique du cas ci-dessus mais sur l'AUTRE angle mort : une commande à un seul
+# symbole d'échappement ("\%", "\,"...) doublée par la même couche d'échappement en
+# trop ("\\%", "\\,") n'est jamais repérée par la règle "lettres" ci-dessus (% et ,
+# n'en sont pas), et un "%" non protégé ouvre un commentaire LaTeX qui avale tout le
+# reste de la ligne, y compris les accolades/parenthèses/`$` de fermeture qui suivent
+# (repéré sur Cours "polygone des fréquences cumulées croissantes" :
+# "\text{FCC en \\%})$" - le "\\" est lu comme un retour à la ligne, puis "%)$" comme
+# un commentaire, d'où l'erreur KaTeX "Unexpected end of input ... expected '}'"). Un
+# VRAI séparateur de ligne suivi d'une virgule ou d'un pourcentage en clair n'a pas de
+# sens mathématique - contrairement au cas "lettres", aucune liste blanche n'est donc
+# nécessaire ici : toute suite paire de longueur >= 2 suivie de "%" ou "," est réduite
+# de moitié.
+_BACKSLASH_RUN_BEFORE_SYMBOL_RE = re.compile(r"\\+(?=[%,])")
 
 
 def _halve_doubled_backslash_runs(text):
-    def repl(match):
-        run = match.group(0)
+    def halve_if_even(run):
         return run[: len(run) // 2] if len(run) % 2 == 0 else run
 
-    return _BACKSLASH_RUN_BEFORE_LETTERS_RE.sub(repl, text)
+    def repl_letters(match):
+        run = match.group(0)
+        if len(run) % 2 != 0 or not _is_doubled_command_letter_run(match.group(1)):
+            return run
+        return halve_if_even(run)
+
+    text = _BACKSLASH_RUN_BEFORE_LETTERS_RE.sub(repl_letters, text)
+    return _BACKSLASH_RUN_BEFORE_SYMBOL_RE.sub(lambda m: halve_if_even(m.group(0)), text)
 
 
 _MAX_UNESCAPE_LAYERS = 5
@@ -598,8 +664,27 @@ def _repair_narrow_array_columns(value):
 # repère pourtant bien présent passait inaperçu et _repair_missing_exercise_heading lui
 # injectait un second repère "**Exercice N (points)**", français celui-là, juste
 # au-dessus (bepc-anglais-2025-officiel + bac-c-d-anglais-2014, scan du 2026-08-30).
+# "Section" (ex. "**SECTION A: GRAMMAR**") est le repère qu'ouvrent la plupart des
+# épreuves d'Anglais - une Section EST un Exercise à part entière (jamais un groupe de
+# plusieurs Exercise, contrairement à "Partie"), donc sa place est ici et non dans
+# _INTRO_PART_HEADER_RE/_BARE_LETTERED_PART_HEADER_RE. catalog.rendering.
+# _REFERENCE_EXERCICE_RE (utilisé par _exercise_titre_et_points) et
+# _BARE_MATIERE_EXCLUDE_RE plus bas dans ce fichier reconnaissent déjà "Section" au même
+# titre qu'"Exercice"/"Problème" - seul ce regex-ci l'ignorait encore, ce qui faisait
+# croire à _repair_missing_exercise_heading que le repère était absent et lui faisait
+# injecter un second "**Exercice N**" au-dessus d'un "**SECTION A**" déjà présent
+# (scan corpus du 2026-08-30 : 47 épreuves d'Anglais - BAC A/BAC C-D-E-TI/BEPC de 1999 à
+# 2025 - 191 exercices touchés, découvert via bepc-anglais-2023-cameroun).
+# "Sujet" (ex. "**Sujet I**", "**Sujet 2 : commentaire composé**") est le repère
+# qu'ouvrent les épreuves à dissertation au choix (Philosophie, Littérature/Culture
+# Générale, Économie, Français "expression écrite") : "le candidat traitera au choix
+# l'un des N sujets proposés", chaque Sujet étant une alternative autonome (jamais une
+# suite d'Exercise séquentiels à traiter tous) - même statut qu'"Exercice"/"Section" ici,
+# donc même bug sans lui : _repair_missing_exercise_heading injectait un "**Exercice
+# N**" au-dessus d'un "**Sujet I**" déjà présent (scan corpus du 2026-09-06 : 23
+# épreuves, 57 exercices, découvert via bac-c-d-philo-officiel-2011-cameroun).
 _EXERCISE_LABEL_RE = re.compile(
-    r"^\s*(?:#{1,4}\s*)?(?:\*\*\s*)?(Exercice|Exercise|Probl[eè]me)\b\s*(?:n\s*[°ºo]\s*)?([IVXLC]+|\d+)?",
+    r"^\s*(?:#{1,4}\s*)?(?:\*\*\s*)?(Exercice|Exercise|Probl[eè]me|Section|Sujet)\b\s*(?:n\s*[°ºo]\s*)?([IVXLC]+|\d+)?",
     re.IGNORECASE,
 )
 
@@ -877,9 +962,19 @@ def _repair_missing_exercise_heading(data):
     # corpus du 2026-08-30. `stripped` reste la base de _has_own_reference_further_down
     # ci-dessous : elle parcourt déjà tout le texte, chapeau compris.
     stripped_sans_chapeau = _skip_leading_italic_chapeau(stripped)
+    # `premiere_ligne` seule (ci-dessus) ne suffit pas quand un repère "Section" - voir
+    # _EXERCISE_LABEL_RE - est lui-même précédé d'un chapeau entièrement en italique
+    # ("*(Answer all the questions)*\n\n**SECTION A: GRAMMAR**") : `premiere_ligne` est
+    # alors le chapeau, jamais la Section qui le suit. `_exercise_label_key` s'ancre en
+    # DÉBUT de chaîne (pas seulement sur la 1re ligne), donc l'appliquer directement à
+    # `stripped_sans_chapeau` (déjà débarrassé du chapeau) suffit à retrouver ce repère
+    # sans dupliquer la recherche de fin de ligne - bepc-anglais-2023-cameroun, exercice
+    # 1, scan corpus du 2026-08-30.
     if (
         _exercise_label_key(premiere_ligne)
+        or _exercise_label_key(stripped_sans_chapeau)
         or _INTRO_PART_HEADER_RE.match(stripped_sans_chapeau)
+        or _MARKDOWN_HEADING_PART_HEADER_RE.match(stripped_sans_chapeau)
         or _BARE_LETTERED_PART_HEADER_RE.match(stripped_sans_chapeau)
         or _BARE_EVALUATION_HEADER_RE.match(stripped_sans_chapeau)
         or _BARE_SITUATION_PROBLEME_HEADER_RE.match(stripped_sans_chapeau)

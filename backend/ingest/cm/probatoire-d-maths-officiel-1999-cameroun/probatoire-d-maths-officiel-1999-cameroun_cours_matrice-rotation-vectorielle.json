@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-matrice-rotation-vectorielle-1ere-d",
+  "meta": {
+    "titre": "Matrice d'une rotation vectorielle dans une base orthonormée directe",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Transformations affines du plan",
+    "duree_estimee_min": 25,
+    "tags": [
+      "rotation vectorielle",
+      "matrice de rotation",
+      "transformations du plan",
+      "trigonométrie"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "23",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-1999-cameroun",
+    "epreuve_titre": "Probatoire D - Mathématiques - Session 1999 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-1999-cameroun-ex3-qC3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Faire tourner un vecteur d'un certain angle est une opération géométrique intuitive : on la voit, on peut la dessiner. Mais pour la manipuler par le calcul (composer deux rotations, appliquer une rotation à un vecteur donné par ses coordonnées), il faut savoir l'écrire sous forme de matrice. Ce cours montre comment cette matrice se construit directement à partir de l'angle de rotation, sans rien apprendre par cœur au-delà de la formule elle-même."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Cosinus et sinus d'un angle, valeurs remarquables",
+        "Coordonnées d'un vecteur dans une base orthonormée",
+        "Notion de matrice 2×2 et d'application linéaire du plan dans lui-même"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La matrice d'une rotation vectorielle d'angle θ",
+      "contenu_markdown": "Dans une base orthonormée directe $(\\vec{i},\\vec{j})$, la rotation vectorielle $r$ d'angle $\\theta$ a pour matrice $M=\\begin{pmatrix}\\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta\\end{pmatrix}$. Cette matrice s'obtient en calculant l'image de chaque vecteur de base par la rotation : l'image de $\\vec{i}$ tourné de $\\theta$ a pour coordonnées $(\\cos\\theta,\\sin\\theta)$, et forme la première colonne de $M$ ; l'image de $\\vec{j}$ (qui est $\\vec{i}$ tourné de $90°$ de plus) a pour coordonnées $(-\\sin\\theta,\\cos\\theta)$, et forme la deuxième colonne. Pour connaître l'image d'un vecteur quelconque $\\vec{v}$ de coordonnées $(x,y)$, on calcule $M\\begin{pmatrix}x\\\\y\\end{pmatrix}$.",
+      "formule_principale": "M=\\begin{pmatrix}\\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta\\end{pmatrix}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On appelle $g$ la rotation vectorielle de $E$ d'angle $\\theta=\\dfrac{2\\pi}{3}$. Déterminer la matrice de $g$ dans la base $(\\vec{i},\\vec{j})$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'angle de rotation $\\theta$",
+          "justification": "La matrice dépend uniquement de cet angle ; il doit être connu avant toute chose.",
+          "resultat_markdown": "$\\theta=\\dfrac{2\\pi}{3}$ (déterminé à la question précédente à partir de $\\cos\\theta=-\\frac{1}{2}$ et $\\sin\\theta=\\frac{\\sqrt{3}}{2}$)."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule générale de la matrice de rotation",
+          "justification": "La matrice d'une rotation vectorielle d'angle $\\theta$ dans une base orthonormée directe suit toujours le même schéma.",
+          "resultat_markdown": "$M=\\begin{pmatrix}\\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta\\end{pmatrix}$"
+        },
+        {
+          "numero": 3,
+          "action": "Remplacer $\\cos\\theta$ et $\\sin\\theta$ par leurs valeurs",
+          "justification": "$\\cos\\left(\\frac{2\\pi}{3}\\right)=-\\frac{1}{2}$ et $\\sin\\left(\\frac{2\\pi}{3}\\right)=\\frac{\\sqrt{3}}{2}$.",
+          "resultat_markdown": "$M=\\begin{pmatrix}-\\dfrac{1}{2} & -\\dfrac{\\sqrt{3}}{2} \\\\[4pt] \\dfrac{\\sqrt{3}}{2} & -\\dfrac{1}{2}\\end{pmatrix}$"
+        }
+      ],
+      "conclusion_markdown": "La rotation vectorielle d'angle $\\dfrac{2\\pi}{3}$ dans la base $(\\vec{i},\\vec{j})$ a pour matrice $M=\\begin{pmatrix}-\\frac{1}{2} & -\\frac{\\sqrt{3}}{2} \\\\ \\frac{\\sqrt{3}}{2} & -\\frac{1}{2}\\end{pmatrix}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $M=\\begin{pmatrix}\\cos\\theta & \\sin\\theta \\\\ -\\sin\\theta & \\cos\\theta\\end{pmatrix}$ (inversion des deux termes en sinus).",
+          "pourquoi_faux": "Cette matrice correspond à la rotation d'angle $-\\theta$ (le sens inverse), pas d'angle $\\theta$ : inverser la position des deux $\\sin\\theta$ change le sens de rotation.",
+          "correction_markdown": "Retenir que le signe moins est toujours en haut à droite de la matrice, jamais en bas à gauche."
+        },
+        {
+          "erreur_markdown": "Oublier que la formule suppose une base orthonormée directe.",
+          "pourquoi_faux": "Dans une base indirecte, le sens de la rotation apparente s'inverse, et la matrice n'est plus la même.",
+          "correction_markdown": "Toujours vérifier que la base utilisée est bien orthonormée directe avant d'appliquer telle quelle la formule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la matrice de la rotation vectorielle d'angle $\\theta=\\dfrac{\\pi}{2}$ dans une base orthonormée directe $(\\vec{i},\\vec{j})$.",
+          "solution_markdown": "$\\cos\\left(\\frac{\\pi}{2}\\right)=0$ et $\\sin\\left(\\frac{\\pi}{2}\\right)=1$.\n\n$$M=\\begin{pmatrix}0 & -1 \\\\ 1 & 0\\end{pmatrix}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un vecteur $\\vec{w}$ a pour coordonnées $(2,-1)$ dans une base orthonormée directe $(\\vec{i},\\vec{j})$. Déterminer les coordonnées de l'image de $\\vec{w}$ par la rotation vectorielle d'angle $\\theta=\\dfrac{\\pi}{3}$.",
+          "solution_markdown": "$\\cos\\left(\\frac{\\pi}{3}\\right)=\\frac{1}{2}$ et $\\sin\\left(\\frac{\\pi}{3}\\right)=\\frac{\\sqrt{3}}{2}$, donc $M=\\begin{pmatrix}\\frac{1}{2} & -\\frac{\\sqrt{3}}{2} \\\\ \\frac{\\sqrt{3}}{2} & \\frac{1}{2}\\end{pmatrix}$.\n\nLes coordonnées de l'image sont données par $M\\begin{pmatrix}2\\\\-1\\end{pmatrix}$ :\n\nPremière coordonnée : $\\frac{1}{2}(2)+\\left(-\\frac{\\sqrt{3}}{2}\\right)(-1)=1+\\frac{\\sqrt{3}}{2}$.\n\nDeuxième coordonnée : $\\frac{\\sqrt{3}}{2}(2)+\\frac{1}{2}(-1)=\\sqrt{3}-\\frac{1}{2}$.\n\nL'image de $\\vec{w}$ a pour coordonnées $\\left(1+\\dfrac{\\sqrt{3}}{2}\\,;\\,\\sqrt{3}-\\dfrac{1}{2}\\right)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer l'angle $\\theta\\in[0,2\\pi[$ de la rotation vectorielle dont la matrice est $M=\\begin{pmatrix}0 & 1 \\\\ -1 & 0\\end{pmatrix}$, puis étudier ce qui se passe si l'on applique cette rotation deux fois de suite.",
+          "solution_markdown": "En comparant $M$ à la forme générale $\\begin{pmatrix}\\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta\\end{pmatrix}$ : $\\cos\\theta=0$, et $-\\sin\\theta=1$ donne $\\sin\\theta=-1$ (cohérent avec le terme en bas à gauche, $\\sin\\theta=-1$).\n\nLe couple $(\\cos\\theta,\\sin\\theta)=(0,-1)$ correspond à $\\theta=\\dfrac{3\\pi}{2}$ dans $[0,2\\pi[$.\n\nAppliquer la rotation deux fois de suite revient à composer $g$ avec elle-même, ce qui correspond à une rotation d'angle $2\\theta=3\\pi$, soit $\\pi$ modulo $2\\pi$ (puisque $3\\pi-2\\pi=\\pi$). La rotation d'angle $\\pi$ n'est pas l'identité (c'est la symétrie centrale par rapport à l'origine, de matrice $-I$) : appliquer deux fois cette rotation ne redonne donc pas le vecteur de départ. Pour que $g\\circ g$ soit l'identité, il faudrait $2\\theta \\equiv 0 \\ [2\\pi]$, c'est-à-dire $\\theta \\equiv 0 \\ [\\pi]$, ce qui n'est pas le cas ici."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La matrice d'une rotation vectorielle d'angle $\\theta$ dans une base orthonormée directe est toujours $\\begin{pmatrix}\\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta\\end{pmatrix}$ : retiens la position du signe moins, en haut à droite.",
+        "Chaque colonne de la matrice est l'image d'un vecteur de base : première colonne = image de $\\vec{i}$, deuxième colonne = image de $\\vec{j}$.",
+        "Pour appliquer la rotation à un vecteur donné par ses coordonnées, multiplie la matrice par le vecteur colonne correspondant.",
+        "Une erreur de signe dans cette matrice inverse le sens de la rotation (transforme $+\\theta$ en $-\\theta$) : vérifie toujours ton résultat sur un cas simple, comme l'image de $\\vec{i}$.",
+        "Au Probatoire et au BAC, cette notion s'articule presque toujours avec un calcul préalable d'angle via cosinus et sinus dans la même partie d'exercice : les deux compétences se travaillent ensemble."
+      ]
+    }
+  ]
+}

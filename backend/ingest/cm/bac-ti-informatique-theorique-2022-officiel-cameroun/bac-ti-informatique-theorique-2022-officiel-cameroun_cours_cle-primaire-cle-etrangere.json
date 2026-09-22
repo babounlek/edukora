@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-cle-primaire-etrangere-tle-ti",
+  "meta": {
+    "titre": "Clé primaire et clé étrangère dans un schéma relationnel",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Schéma relationnel : les clés",
+    "duree_estimee_min": 20,
+    "tags": [
+      "clé primaire",
+      "clé étrangère",
+      "schéma relationnel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sans un identifiant unique par ligne, impossible de distinguer deux clients homonymes ; sans un moyen de relier une commande à son client, impossible de savoir qui a commandé quoi. Les clés primaires et étrangères sont les deux mécanismes qui rendent un schéma relationnel utilisable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table (lignes et colonnes) dans une base de données.",
+        "Comprendre la notion d'identifiant unique."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Identifier une ligne, relier deux tables",
+      "contenu_markdown": "La **clé primaire** d'une table est l'attribut qui identifie de façon unique chaque ligne de cette table : deux lignes ne peuvent jamais avoir la même valeur de clé primaire, et cette valeur ne peut jamais être vide. Dans la notation utilisée au BAC, la clé primaire est soulignée dans le schéma relationnel.\n\nUne **clé étrangère** est un attribut d'une table qui reprend la valeur de la clé primaire d'une autre table, afin de matérialiser un lien entre les deux. Dans la notation utilisée au BAC, une clé étrangère est précédée du symbole `#`.",
+      "formule_principale": "Clé primaire (soulignée) = identifie une ligne de SA table  ;  Clé étrangère (#) = pointe vers la clé primaire D'UNE AUTRE table"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le schéma COMPTE(Num_Compte, #Num_Agence, #Num_Client, Solde), identifier la clé primaire et les clés étrangères, puis expliquer à quoi sert chacune.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'attribut souligné dans le schéma",
+          "justification": "La clé primaire est toujours l'attribut souligné, en tête du schéma le plus souvent.",
+          "resultat_markdown": "Num_Compte est la clé primaire de la table COMPTE."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les attributs précédés du symbole #",
+          "justification": "Une clé étrangère est toujours marquée par ce symbole dans la notation utilisée.",
+          "resultat_markdown": "#Num_Agence et #Num_Client sont deux clés étrangères."
+        },
+        {
+          "numero": 3,
+          "action": "Retrouver la table d'origine de chaque clé étrangère",
+          "justification": "Une clé étrangère reprend toujours le nom d'une clé primaire définie ailleurs.",
+          "resultat_markdown": "Num_Agence renvoie à la clé primaire de la table AGENCE ; Num_Client renvoie à la clé primaire de la table CLIENT."
+        }
+      ],
+      "conclusion_markdown": "Num_Compte identifie chaque compte de façon unique ; #Num_Agence indique l'agence gestionnaire de ce compte ; #Num_Client indique le client titulaire de ce compte."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Considérer qu'un attribut précédé de # est automatiquement aussi la clé primaire de sa propre table",
+          "pourquoi_faux": "Une clé étrangère et une clé primaire sont deux rôles indépendants : un même attribut peut être clé étrangère sans être la clé primaire de cette même table.",
+          "correction_markdown": "Vérifie séparément le soulignement (clé primaire de LA table) et le symbole # (clé étrangère vers UNE AUTRE table) : ce sont deux informations distinctes."
+        },
+        {
+          "erreur_markdown": "Oublier qu'une clé étrangère porte le même nom que la clé primaire qu'elle référence",
+          "pourquoi_faux": "Une clé étrangère n'introduit jamais une information réellement nouvelle : elle recopie le nom d'une clé primaire déjà définie dans une autre table.",
+          "correction_markdown": "Dès que tu repères un attribut précédé de #, cherche dans les autres tables du schéma laquelle porte ce même nom en clé primaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le schéma EMPRUNT(Num_Emprunt, #Num_Agence, #Num_Client, Montant), identifier la clé primaire de la table.",
+          "solution_markdown": "La clé primaire de la table EMPRUNT est **Num_Emprunt**, l'attribut souligné qui identifie chaque emprunt de façon unique."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans le schéma AGENCE(Num_Agence, Nom_Agence, Ville_Agence, Actif), expliquer pourquoi cette table ne contient aucune clé étrangère.",
+          "solution_markdown": "Aucun attribut de la table AGENCE n'est précédé du symbole #, ce qui signifie qu'aucun de ses attributs ne référence la clé primaire d'une autre table. AGENCE est une table « racine » dans ce schéma : elle ne dépend d'aucune autre table pour exister, à l'inverse de COMPTE ou EMPRUNT."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On te donne le schéma LIGNE_COMMANDE(#Num_Commande, #Num_Produit, Quantite), sans qu'aucun attribut ne soit souligné individuellement, mais avec la précision que la COMBINAISON des deux attributs identifie chaque ligne de façon unique. Expliquer ce que représente cette clé primaire composée, et pourquoi les deux attributs sont à la fois soulignés (ensemble) ET précédés de #.",
+          "solution_markdown": "Il s'agit d'une **clé primaire composée** : aucune des deux colonnes prise isolément ne suffit à identifier une ligne, mais leur COMBINAISON le fait (une commande donnée ne contient qu'une seule ligne pour un produit donné). Les deux attributs sont donc soulignés ensemble pour indiquer qu'ils forment collectivement la clé primaire. Ils sont en même temps précédés de # car chacun, pris individuellement, est aussi une clé étrangère : Num_Commande référence la clé primaire de COMMANDE, Num_Produit référence la clé primaire de PRODUIT. Ce cas illustre qu'un attribut peut cumuler les deux rôles à la fois dans une table qui matérialise une relation plusieurs-à-plusieurs."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La clé primaire (soulignée) identifie de façon unique chaque ligne de SA propre table ; elle ne peut jamais être vide ni dupliquée.",
+        "La clé étrangère (précédée de #) reprend la clé primaire d'UNE AUTRE table, pour matérialiser un lien entre les deux.",
+        "Ces deux rôles sont indépendants : un attribut peut être l'un, l'autre, les deux, ou aucun des deux.",
+        "Une clé primaire peut être composée de plusieurs attributs, notamment dans les tables qui matérialisent une relation plusieurs-à-plusieurs.",
+        "Au BAC TI, cette question se résout entièrement par la lecture attentive du schéma fourni : elle ne demande aucun calcul, seulement de la rigueur de lecture."
+      ]
+    }
+  ]
+}

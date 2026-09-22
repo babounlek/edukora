@@ -1,0 +1,36 @@
+{
+  "type": "cours",
+  "cours_id": "cours-estimation-effectif-seuil-probatoire-maths",
+  "meta": {
+    "titre": "Estimation d'un effectif cumulé à un seuil intermédiaire par interpolation linéaire",
+    "matiere": "mathematiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 12,
+    "tags": ["interpolation linéaire", "effectifs cumulés croissants"]
+  },
+  "source": {
+    "rappel_id": "rdi-ep-cm-maths-probatoire-d-ti-1-2026-s1-ex1-q4-0"
+  },
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Un seuil qui tombe au milieu d'une classe n'a pas d'effectif cumulé tout fait : l'interpolation linéaire permet de l'estimer sans en connaître la répartition exacte."},
+    {"type": "prerequis", "items": ["Notion d'effectif cumulé croissant", "Notion de proportionnalité"]},
+    {"type": "regle", "titre": "Estimer un effectif cumulé à un seuil intermédiaire", "contenu_markdown": "Quand un seuil $s$ tombe à l'intérieur d'une classe $[a;b[$ (et non sur une borne), on estime l'effectif cumulé en ce seuil en supposant que les individus de la classe se répartissent uniformément entre $a$ et $b$ : $$ECC(s)\\approx ECC(a)+\\dfrac{s-a}{b-a}\\times e_{[a;b[}$$ où $e_{[a;b[}$ est l'effectif de la classe concernée.", "formule_principale": "ECC(s) ≈ ECC(a) + (s-a)/(b-a) × effectif de la classe", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Une classe $[20;30[$ a un effectif de $40$, avec $ECC(20)=60$. Estimer $ECC(26)$.", "etapes": [
+      {"numero": 1, "action": "Identifier la classe et ses bornes", "justification": "26 appartient à [20;30[.", "resultat_markdown": "a=20, b=30, effectif=40, ECC(20)=60."},
+      {"numero": 2, "action": "Appliquer la formule d'interpolation", "justification": "26 se situe aux 6/10e de la classe.", "resultat_markdown": "ECC(26)≈60+(26-20)/(30-20)×40=60+6/10×40=60+24=84."}
+    ], "conclusion_markdown": "$ECC(26)\\approx84$."},
+    {"type": "erreurs_classiques", "items": [
+      {"erreur_markdown": "Utiliser l'effectif total de la série au lieu de l'effectif de la seule classe concernée dans la formule d'interpolation.", "pourquoi_faux": "L'interpolation ne répartit que les individus de LA classe où tombe le seuil, pas l'ensemble de la série.", "correction_markdown": "Identifie d'abord la classe qui contient le seuil, puis n'utilise que son propre effectif dans le calcul."}
+    ]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Une classe [50;60[ a un effectif de 20, avec ECC(50)=90. Estimer ECC(55).", "solution_markdown": "ECC(55)≈90+(55-50)/(60-50)×20=90+5/10×20=90+10=100."}
+    ]},
+    {"type": "synthese", "items_markdown": [
+      "L'interpolation linéaire suppose une répartition uniforme à l'intérieur d'une classe",
+      "ECC(s) ≈ ECC(borne inférieure) + proportion × effectif de la classe",
+      "N'utiliser que l'effectif de la classe concernée, jamais l'effectif total"
+    ]}
+  ]
+}

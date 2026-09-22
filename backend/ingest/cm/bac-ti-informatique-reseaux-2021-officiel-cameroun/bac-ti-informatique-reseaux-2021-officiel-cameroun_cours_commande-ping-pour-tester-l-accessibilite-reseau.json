@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-commande-ping-pour-tester-l-accessibilite-reseau-terminale-ti",
+  "meta": {
+    "titre": "Commande ping pour tester l'accessibilité réseau",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Outils de diagnostic réseau",
+    "duree_estimee_min": 15,
+    "tags": [
+      "commande ping",
+      "test de connectivité",
+      "diagnostic réseau",
+      "VMware",
+      "protocole ICMP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q14-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de chercher une panne compliquée sur un réseau, un technicien commence presque toujours par la vérification la plus simple qui soit : est-ce que les deux machines arrivent, au moins, à se joindre ? Une seule commande, connue de tout technicien réseau, répond à cette question en quelques secondes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion d'adresse IP",
+        "Notion de réseau virtuel créé par un logiciel de virtualisation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Tester une connexion réseau avec ping",
+      "contenu_markdown": "La commande **ping** suivie d'une adresse IP (ou d'un nom de machine) envoie des paquets de test vers cette adresse et attend une réponse. Si des réponses sont reçues, la machine cible est accessible à travers le réseau ; en l'absence de réponse (délai dépassé), la machine est injoignable, ce qui peut venir d'un câble débranché, d'un pare-feu, d'une mauvaise adresse ou d'un réseau mal configuré.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une machine virtuelle doit vérifier qu'elle peut joindre la machine physique qui l'héberge, dont l'adresse sur le réseau virtuel partagé (VMnet1) est 192.168.22.1. Indiquer la commande à exécuter et interpréter un résultat positif.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'adresse à tester",
+          "justification": "La commande ping doit cibler l'adresse de la machine à joindre sur le réseau concerné.",
+          "resultat_markdown": "L'adresse de la machine physique sur le réseau virtuel VMnet1 est 192.168.22.1."
+        },
+        {
+          "numero": 2,
+          "action": "Formuler la commande complète",
+          "justification": "La syntaxe de base est « ping » suivi directement de l'adresse IP cible.",
+          "resultat_markdown": "Commande à exécuter : ping 192.168.22.1"
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter le résultat obtenu",
+          "justification": "Une réponse reçue confirme l'accessibilité réseau entre les deux machines.",
+          "resultat_markdown": "Si la commande affiche des lignes de réponse avec un temps de réponse (par exemple « Réponse de 192.168.22.1 : octets=32 temps<1ms »), la machine virtuelle peut effectivement atteindre la machine physique à travers le réseau VMnet1."
+        }
+      ],
+      "conclusion_markdown": "La commande ping 192.168.22.1 confirme, en quelques secondes, si la communication réseau entre la machine virtuelle et son hôte fonctionne correctement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser l'adresse du réseau externe (Wi-Fi) de la machine physique au lieu de son adresse sur le réseau virtuel partagé avec la VM",
+          "pourquoi_faux": "La machine virtuelle ne communique avec l'hôte que via l'adaptateur réseau virtuel qui les relie (ici VMnet1) ; l'adresse de l'hôte sur son réseau Wi-Fi externe appartient à un réseau différent, inaccessible directement depuis la VM sur ce chemin.",
+          "correction_markdown": "Identifie toujours, avant de pinguer, sur quel réseau (physique ou virtuel) les deux machines communiquent réellement, et utilise l'adresse de l'hôte sur CE réseau précis."
+        },
+        {
+          "erreur_markdown": "Conclure à une panne réseau dès le premier paquet perdu",
+          "pourquoi_faux": "La perte d'un seul paquet parmi plusieurs peut être ponctuelle (congestion passagère) et ne traduit pas nécessairement une panne ; c'est l'absence de TOUTE réponse qui signale un problème de connectivité.",
+          "correction_markdown": "Attends la fin de la série de paquets envoyés par ping avant de conclure, et regarde le taux global de perte plutôt qu'un seul paquet isolé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la commande permettant de tester l'accessibilité de la machine d'adresse 10.0.0.5.",
+          "solution_markdown": "ping 10.0.0.5"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un technicien exécute ping 192.168.1.10 et obtient le message « Délai d'attente de la demande dépassé » pour chaque paquet envoyé. Citer deux causes possibles de cet échec.",
+          "solution_markdown": "1) La machine cible (192.168.1.10) est éteinte, déconnectée du réseau, ou son câble/Wi-Fi est débranché/désactivé. 2) Un pare-feu, sur la machine cible ou sur un équipement intermédiaire, bloque explicitement les paquets ping (protocole ICMP), même si la machine est par ailleurs allumée et connectée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi un ping réussi vers une adresse IP ne garantit pas nécessairement qu'un service applicatif particulier (par exemple un serveur web sur cette même machine) soit lui aussi accessible.",
+          "solution_markdown": "La commande ping teste uniquement l'accessibilité de la machine au niveau réseau, en utilisant le protocole ICMP, indépendamment de toute application installée dessus. Un serveur web, lui, dépend d'un service applicatif particulier (par exemple un logiciel serveur HTTP) qui doit être démarré, correctement configuré, et dont le port réseau utilisé (souvent le port 80 ou 443) ne doit pas être bloqué par un pare-feu applicatif spécifique à ce service. Une machine peut donc parfaitement répondre au ping (elle est physiquement et réseau-ment joignable) tout en étant incapable de servir une page web, si le service web lui-même est arrêté, mal configuré, ou si son port précis est filtré alors que le trafic ICMP du ping ne l'est pas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La commande ping <adresse> teste l'accessibilité réseau d'une machine en envoyant des paquets et en attendant une réponse.",
+        "Une réponse reçue confirme la connectivité ; l'absence de réponse signale un problème (panne, pare-feu, mauvaise adresse).",
+        "Il faut toujours cibler l'adresse de la machine sur le réseau réellement partagé entre les deux machines concernées.",
+        "Un ping réussi ne garantit l'accessibilité que du réseau, jamais celle d'un service applicatif particulier hébergé sur la machine."
+      ]
+    }
+  ]
+}

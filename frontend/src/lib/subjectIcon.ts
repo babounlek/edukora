@@ -4,6 +4,7 @@ import {
   BookOpen,
   Brain,
   Code2,
+  Database,
   Dna,
   Dumbbell,
   FlaskConical,
@@ -17,6 +18,7 @@ import {
   Scale,
   Sigma,
   TrendingUp,
+  Wifi,
   Wrench,
   type LucideIcon,
 } from "lucide-react"
@@ -50,6 +52,9 @@ const SUBJECT_ICONS: Record<string, LucideIcon> = {
   LITTERATURE: BookOpen,
   EPS: Dumbbell,
   INFORMATIQUE: Code2,
+  PROGRAMMATION: Code2,
+  SYSTEMES_INFORMATION: Database,
+  RESEAUX_SECURITE: Wifi,
 }
 
 export function subjectIcon(code: string): LucideIcon {

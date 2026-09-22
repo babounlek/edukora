@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-update-set-where-tle-ti",
+  "meta": {
+    "titre": "Mettre à jour des données avec UPDATE ... SET ... WHERE",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL - Manipulation de données (LMD)",
+    "duree_estimee_min": 18,
+    "tags": [
+      "SQL",
+      "UPDATE",
+      "SET",
+      "WHERE",
+      "langage de manipulation de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q6-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une information enregistrée n'est jamais figée pour toujours : une affectation change, une adresse est corrigée, un statut évolue. UPDATE est la commande qui permet de corriger une donnée déjà en base sans devoir supprimer puis réinsérer tout le tuple concerné."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une condition avec WHERE dans une requête SQL.",
+        "Savoir ce qu'est un tuple et un attribut dans une table relationnelle."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "SET pour la nouvelle valeur, WHERE pour la cible",
+      "contenu_markdown": "L'instruction UPDATE modifie la valeur d'une ou plusieurs colonnes pour les tuples qui vérifient la condition de la clause WHERE. La clause SET précise quelle colonne change et sa nouvelle valeur (colonne = nouvelle_valeur, plusieurs modifications séparées par des virgules), tandis que WHERE cible précisément les tuples concernés - exactement comme pour un DELETE. Omettre la clause WHERE mettrait à jour la TOTALITÉ des tuples de la table avec la même nouvelle valeur, une erreur aux conséquences potentiellement lourdes sur une vraie base de données.",
+      "formule_principale": "UPDATE table SET colonne = nouvelle_valeur WHERE condition;"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "En scrutant la décision d'affectation de chaque enseignant durant le recensement, il apparaît que l'enseignante de matricule 995M24 est en réalité professeur d'ESF, et non d'EPS comme initialement enregistré. Donnez la requête SQL qui met à jour la discipline qu'elle enseigne.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la colonne à modifier et sa nouvelle valeur",
+          "justification": "Seule la discipline change, pas les autres colonnes de son tuple.",
+          "resultat_markdown": "SET Discipline = 'ESF'"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la condition qui cible précisément cette enseignante",
+          "justification": "Le matricule 995M24 identifie de façon unique le tuple concerné, exactement le rôle d'une clé primaire.",
+          "resultat_markdown": "WHERE Matricule = '995M24'"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la requête complète",
+          "justification": "On respecte la syntaxe UPDATE table SET colonne = valeur WHERE condition;",
+          "resultat_markdown": "```sql\nUPDATE ENSEIGNANT\nSET Discipline = 'ESF'\nWHERE Matricule = '995M24';\n```"
+        }
+      ],
+      "conclusion_markdown": "Seule la discipline de l'enseignante 995M24 change ; toutes les autres colonnes de son tuple, et tous les autres tuples de la table, restent strictement inchangés."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la clause WHERE dans un UPDATE",
+          "pourquoi_faux": "Sans WHERE, la mise à jour s'applique à TOUS les tuples de la table : ici, tous les enseignants se retrouveraient avec la discipline 'ESF', pas seulement Mme OVAH Sandrine.",
+          "correction_markdown": "Avant de considérer un UPDATE terminé, vérifie systématiquement qu'il porte une clause WHERE qui cible précisément le ou les tuples voulus."
+        },
+        {
+          "erreur_markdown": "Utiliser le Nom de l'enseignante comme condition, plutôt que son Matricule",
+          "pourquoi_faux": "Si un autre enseignant portait le même nom (homonymie), la mise à jour s'appliquerait à tort à plusieurs tuples à la fois, faute de cibler un identifiant réellement unique.",
+          "correction_markdown": "Cible toujours une mise à jour par la clé primaire de la table quand elle est disponible, jamais par un attribut qui pourrait se répéter."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le livre d'ISBN '978-2-1111-0001-1' vient d'être rendu à la bibliothèque. Écrivez la requête SQL qui met à jour son statut à 'disponible' dans la table LIVRE (ISBN, Titre, Statut).",
+          "solution_markdown": "```sql\nUPDATE LIVRE\nSET Statut = 'disponible'\nWHERE ISBN = '978-2-1111-0001-1';\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le magasin décide d'augmenter de 100 FCFA le prix unitaire du produit de code 'P045' dans la table PRODUIT (CodeProduit, Designation, PrixUnitaire, QuantiteStock). Écrivez la requête SQL correspondante, sachant que son prix actuel n'est pas connu à l'avance.",
+          "solution_markdown": "```sql\nUPDATE PRODUIT\nSET PrixUnitaire = PrixUnitaire + 100\nWHERE CodeProduit = 'P045';\n```\nLa nouvelle valeur peut s'exprimer à partir de l'ancienne valeur de la même colonne (PrixUnitaire + 100) : SQL calcule d'abord la valeur actuelle du tuple ciblé avant d'appliquer l'incrément, ce qui évite d'avoir à connaître le prix exact au moment d'écrire la requête."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une entreprise souhaite augmenter de 5% le salaire de TOUS les employés dont le poste est 'ingénieur', dans une table EMPLOYE (Matricule, Nom, Poste, Salaire). Écrivez la requête SQL correspondante, puis expliquez pourquoi cette mise à jour peut concerner plusieurs tuples à la fois, contrairement à l'exemple de Mme OVAH Sandrine.",
+          "solution_markdown": "```sql\nUPDATE EMPLOYE\nSET Salaire = Salaire * 1.05\nWHERE Poste = 'ingénieur';\n```\nCette mise à jour peut concerner plusieurs tuples à la fois parce que la condition WHERE Poste = 'ingénieur' ne porte pas sur une clé primaire (unique par construction), mais sur un attribut ordinaire susceptible d'être partagé par plusieurs employés : contrairement au Matricule 995M24 qui ne désigne qu'une seule enseignante, plusieurs employés peuvent occuper le poste d'ingénieur en même temps, et la requête met alors à jour le salaire de chacun d'eux simultanément, en une seule exécution."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "UPDATE table SET colonne = valeur WHERE condition modifie uniquement les tuples qui vérifient la condition.",
+        "Un UPDATE sans clause WHERE modifie la totalité des tuples de la table : vérifie toujours sa présence avant de considérer une requête terminée.",
+        "Cible une mise à jour par la clé primaire quand elle est disponible, jamais par un attribut susceptible de se répéter.",
+        "La nouvelle valeur peut dépendre de l'ancienne (colonne = colonne + valeur), SQL calculant d'abord la valeur actuelle du tuple ciblé.",
+        "Selon la condition choisie, un UPDATE peut modifier un seul tuple (clé primaire) ou plusieurs à la fois (attribut partagé) : vérifie toujours laquelle des deux situations correspond à l'énoncé avant d'écrire la condition."
+      ]
+    }
+  ]
+}

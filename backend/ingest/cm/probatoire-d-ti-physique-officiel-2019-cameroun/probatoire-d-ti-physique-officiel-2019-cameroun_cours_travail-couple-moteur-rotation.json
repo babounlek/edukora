@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-travail-couple-moteur-rotation-premiere",
+  "meta": {
+    "titre": "Travail d'un couple moteur constant lors d'une rotation",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Mécanique du solide en rotation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "couple moteur",
+      "théorème de l'énergie cinétique",
+      "rotation",
+      "travail"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2019-cameroun",
+    "epreuve_titre": "Épreuve de physique au probatoire D et TI 2019 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2019-cameroun-ex1-qB21-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un moteur électrique met en rotation un rotor initialement au repos, un ventilateur démarre puis atteint sa vitesse de croisière, une meuleuse accélère jusqu'à son régime nominal : dans tous ces cas, c'est un couple moteur qui fournit l'énergie nécessaire à la mise en rotation. De même qu'une force fournit un travail lors d'un déplacement en translation, un couple fournit un travail lors d'une rotation. Ce cours établit la relation entre ce travail et l'énergie cinétique de rotation acquise, un passage obligé de tout exercice sur le démarrage d'un moteur ou d'un rotor."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer l'énergie cinétique de rotation d'un solide, $E_c = \\frac12 J_\\Delta \\omega^2$",
+        "Convertir un nombre de tours $n$ en angle balayé $\\theta$ (en radians)",
+        "Théorème de l'énergie cinétique en translation, par analogie"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Travail d'un couple moteur constant et théorème de l'énergie cinétique en rotation",
+      "contenu_markdown": "Lorsqu'un couple moteur de moment constant $M$ fait tourner un solide d'un angle $\\theta$ (exprimé en radians), le travail qu'il fournit vaut $W = M\\theta$, exactement comme le travail d'une force constante vaut $W = Fd$ en translation. Si le solide effectue $n$ tours complets, l'angle balayé vaut $\\theta = 2\\pi n$ (chaque tour correspondant à un angle de $2\\pi$ radians), si bien que le travail du couple s'écrit $W = 2\\pi n M$. Le théorème de l'énergie cinétique, sous sa forme générale, reste valable pour un solide en rotation : la variation de son énergie cinétique entre deux instants est égale à la somme des travaux des actions extérieures (couples et forces) qui s'exercent sur lui pendant cet intervalle.",
+      "formule_principale": "\\Delta E_c = W(M) = M\\theta = 2\\pi n M",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un rotor, initialement au repos, est mis en rotation par un couple moteur de moment constant $M$. Il effectue $n$ tours avant d'atteindre le plein régime, où son énergie cinétique vaut $E_{c,\\text{régime}}$. Exprimer la variation de l'énergie cinétique du rotor entre le repos et le plein régime en fonction de $M$ et $n$, puis en déduire une expression de $n$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les états initial et final",
+          "justification": "Le rotor part du repos (vitesse angulaire nulle, donc énergie cinétique nulle) et atteint le plein régime.",
+          "resultat_markdown": "$E_{c,\\text{repos}} = 0$ et $E_{c,\\text{régime}}$ est l'énergie cinétique à atteindre."
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer le travail du couple moteur sur $n$ tours",
+          "justification": "Le seul couple qui travaille pendant la mise en rotation est le couple moteur (les frottements ne sont pas pris en compte ici) ; il agit sur un angle $\\theta = 2\\pi n$.",
+          "resultat_markdown": "$$W(M) = M\\theta = 2\\pi n M$$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le théorème de l'énergie cinétique",
+          "justification": "La variation d'énergie cinétique est égale au travail du couple moteur, seule action qui travaille.",
+          "resultat_markdown": "$$\\Delta E_c = E_{c,\\text{régime}} - 0 = 2\\pi n M \\quad\\Rightarrow\\quad \\boxed{\\Delta E_c = 2\\pi n M}$$"
+        },
+        {
+          "numero": 4,
+          "action": "Isoler $n$",
+          "justification": "On résout l'équation précédente pour la seule inconnue $n$, en supposant $M$ et $E_{c,\\text{régime}}$ connus.",
+          "resultat_markdown": "$$n = \\dfrac{E_{c,\\text{régime}}}{2\\pi M}$$"
+        }
+      ],
+      "conclusion_markdown": "La relation $\\Delta E_c = 2\\pi n M$ relie directement le nombre de tours effectués au moment du couple moteur et à l'énergie cinétique acquise : elle permet de calculer l'un dès que les deux autres sont connus."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $\\theta = n$ (nombre de tours) directement dans $W = M\\theta$, sans convertir en radians.",
+          "pourquoi_faux": "Le moment d'un couple se combine avec un angle en radians pour donner un travail en joules ; un nombre de tours n'est pas un angle en radians tant qu'il n'a pas été multiplié par $2\\pi$.",
+          "correction_markdown": "Retiens le réflexe : $n$ tours $= 2\\pi n$ radians, toujours, avant tout calcul de travail d'un couple."
+        },
+        {
+          "erreur_markdown": "Ajouter un travail résistant (frottements) sans que l'énoncé ne le mentionne explicitement.",
+          "pourquoi_faux": "Si l'énoncé ne parle que d'un couple moteur et ne mentionne aucun frottement, il faut considérer que c'est la seule action qui travaille ; ajouter un terme non donné revient à résoudre un problème différent de celui posé.",
+          "correction_markdown": "Ne fais intervenir dans le bilan des travaux que les actions explicitement mentionnées par l'énoncé, ni plus, ni moins."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur applique un couple constant $M = 0{,}5$ N·m à un rotor initialement au repos, qui effectue $n = 20$ tours avant d'atteindre son régime. Calculer l'énergie cinétique acquise par le rotor.",
+          "solution_markdown": "$$\\Delta E_c = 2\\pi n M = 2\\pi \\times 20 \\times 0{,}5 = 20\\pi$$\n\n$$\\Delta E_c \\approx 62{,}8 \\text{ J}$$\n\nLe rotor partant du repos, cette variation est directement l'énergie cinétique acquise : $E_{c,\\text{régime}} \\approx 62{,}8$ J."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un rotor doit acquérir une énergie cinétique de $E_{c,\\text{régime}} = 300$ J en effectuant exactement $n = 150$ tours à partir du repos. Quel moment de couple constant $M$ le moteur doit-il fournir ?",
+          "solution_markdown": "$$\\Delta E_c = 2\\pi n M \\quad\\Rightarrow\\quad M = \\dfrac{\\Delta E_c}{2\\pi n}$$\n\n$$M = \\dfrac{300}{2\\pi \\times 150} = \\dfrac{300}{942{,}5}$$\n\n$$M \\approx 0{,}318 \\text{ N·m}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un rotor de moment d'inertie $J_\\Delta = 4{,}0\\times10^{-2}$ kg·m² doit atteindre une fréquence de rotation $N = 1200$ tr/min à partir du repos, sous l'effet d'un couple moteur constant $M = 0{,}12$ N·m. Calculer le nombre de tours $n$ nécessaires, puis la durée $\\Delta t$ de cette mise en rotation en supposant l'accélération angulaire elle-même constante (indication : pour une accélération angulaire constante partant du repos, $\\bar\\omega = \\omega_{\\text{final}}/2$ et $\\theta = \\bar\\omega \\times \\Delta t$).",
+          "solution_markdown": "**Calcul de $n$ :**\n\n$$N_s = \\dfrac{1200}{60} = 20 \\text{ tr/s} \\qquad \\omega = 2\\pi \\times 20 = 40\\pi \\approx 125{,}7 \\text{ rad/s}$$\n\n$$E_{c,\\text{régime}} = \\frac12 J_\\Delta \\omega^2 = \\frac12 \\times 4{,}0\\times10^{-2} \\times (125{,}7)^2 \\approx 0{,}02 \\times 15801 \\approx 316{,}0 \\text{ J}$$\n\n$$n = \\dfrac{E_{c,\\text{régime}}}{2\\pi M} = \\dfrac{316{,}0}{2\\pi \\times 0{,}12} = \\dfrac{316{,}0}{0{,}754}$$\n\n$$n \\approx 419 \\text{ tours}$$\n\n**Calcul de $\\Delta t$ :** partant du repos avec une accélération angulaire constante, la vitesse angulaire moyenne sur la phase de démarrage vaut $\\bar\\omega = \\dfrac{0 + \\omega}{2} = \\dfrac{\\omega}{2}$, et l'angle total balayé $\\theta = 2\\pi n$ vérifie $\\theta = \\bar\\omega \\times \\Delta t$ :\n\n$$\\Delta t = \\dfrac{\\theta}{\\bar\\omega} = \\dfrac{2\\pi n}{\\omega/2} = \\dfrac{2 \\times 2\\pi n}{\\omega}$$\n\n$$\\Delta t = \\dfrac{2 \\times 2\\pi \\times 419}{125{,}7} = \\dfrac{5266}{125{,}7}$$\n\n$$\\Delta t \\approx 41{,}9 \\text{ s}$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le travail d'un couple moteur de moment constant $M$ sur une rotation d'angle $\\theta$ (en radians) vaut $W = M\\theta$, l'équivalent en rotation du travail $W = Fd$ d'une force en translation.",
+        "Pour $n$ tours complets, $\\theta = 2\\pi n$ : ne jamais oublier ce facteur $2\\pi$ avant de calculer un travail de couple.",
+        "Le théorème de l'énergie cinétique s'applique en rotation exactement comme en translation : $\\Delta E_c$ égale la somme des travaux des actions extérieures.",
+        "Partant du repos, la variation d'énergie cinétique est directement l'énergie cinétique finale : $\\Delta E_c = E_{c,\\text{régime}}$.",
+        "Cette relation permet de calculer indifféremment $M$, $n$ ou $E_c$ dès que les deux autres grandeurs sont connues : identifie toujours en premier l'inconnue demandée avant de choisir dans quel sens utiliser la formule."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-repertoire-racine-documentroot-d-un-serveur-web-ti-2021",
+  "meta": {
+    "titre": "Répertoire racine (DocumentRoot) d'un serveur web",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Environnement de développement web",
+    "duree_estimee_min": 15,
+    "tags": [
+      "DocumentRoot",
+      "serveur web",
+      "hébergement",
+      "htdocs"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex1-qII-2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi un fichier PHP placé n'importe où sur le disque dur d'un serveur n'est-il pas automatiquement accessible depuis un navigateur ? Parce que le serveur web ne regarde jamais l'intégralité du disque : il ne sert que ce qui se trouve dans un dossier bien précis, qu'il faut connaître avant de placer le moindre fichier destiné à être visité en ligne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un serveur web (voir le cours sur la pile logicielle d'un serveur web)",
+        "Comprendre la notion de chemin de fichier (dossier, sous-dossier)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le répertoire racine délimite la zone publique du serveur",
+      "contenu_markdown": "Le **répertoire racine** (ou racine des documents, *DocumentRoot*) est le dossier que le serveur web considère comme point de départ pour traduire une URL en fichier réel sur le disque. Quand un navigateur demande `http://localhost/monsite/page.php`, le serveur web recherche ce fichier à partir de son répertoire racine (par exemple `htdocs` pour WAMP/XAMPP, `www` pour d'autres distributions), en suivant le chemin `/monsite/page.php` à l'intérieur de ce dossier.\n\nTout fichier destiné à être accessible par une URL doit donc se trouver dans le répertoire racine ou l'un de ses sous-dossiers. Un fichier placé ailleurs sur le disque, même sur la même machine, reste invisible depuis le navigateur : il n'existe tout simplement pas du point de vue du serveur web, qui ne cherche jamais en dehors de sa racine configurée."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Spécifier le rôle du répertoire racine du serveur d'hébergement d'une application web.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Définir le répertoire racine",
+          "justification": "Poser la définition avant d'en expliquer la conséquence pratique",
+          "resultat_markdown": "Le répertoire racine (DocumentRoot) est le dossier de référence à partir duquel le serveur web traduit chaque URL en chemin de fichier réel."
+        },
+        {
+          "numero": 2,
+          "action": "Expliquer la conséquence pour un développeur",
+          "justification": "C'est cette conséquence pratique qui répond réellement à la question du rôle",
+          "resultat_markdown": "Tout fichier à rendre accessible par une URL doit être placé dans ce dossier ou un sous-dossier, faute de quoi il reste invisible pour le navigateur."
+        }
+      ],
+      "conclusion_markdown": "Le répertoire racine délimite la frontière entre ce qui est publiquement accessible via une URL et le reste du système de fichiers du serveur, resté privé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que n'importe quel fichier du serveur, où qu'il soit placé, est accessible depuis un navigateur",
+          "pourquoi_faux": "Le serveur web ne sert que les fichiers situés dans son répertoire racine configuré (ou un sous-dossier) ; le reste du disque reste totalement invisible pour une requête HTTP.",
+          "correction_markdown": "Toujours vérifier que le fichier à publier est bien placé dans le dossier racine (htdocs, www...) attendu par le serveur."
+        },
+        {
+          "erreur_markdown": "Confondre le répertoire racine du serveur web avec le répertoire racine du système d'exploitation (C:\\ ou /)",
+          "pourquoi_faux": "Ce sont deux notions différentes : le répertoire racine du serveur web est un sous-dossier particulier du système de fichiers, pas la racine absolue du disque.",
+          "correction_markdown": "Préciser toujours qu'il s'agit du dossier configuré pour le serveur web (par exemple htdocs), pas de la racine générale du système."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner le nom usuel du répertoire racine dans une installation WAMP ou XAMPP.",
+          "solution_markdown": "htdocs (situé généralement dans C:\\wamp\\www ou C:\\xampp\\htdocs selon la distribution)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un fichier secret.php contenant un mot de passe est placé juste à côté du dossier htdocs, mais pas dedans. Peut-il être atteint depuis un navigateur en tapant son URL ?",
+          "solution_markdown": "Non. Puisqu'il n'est pas à l'intérieur du répertoire racine (ni d'un de ses sous-dossiers), le serveur web ne peut pas le traduire en réponse à une requête HTTP : il reste totalement invisible depuis un navigateur, quelle que soit l'URL tentée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi est-il recommandé de placer les fichiers de configuration sensibles d'une application (mots de passe de connexion à la base de données, clés secrètes) légèrement en dehors du répertoire racine du site, tout en les rendant accessibles au code PHP ?",
+          "solution_markdown": "PHP, contrairement au navigateur, peut inclure un fichier situé n'importe où sur le disque avec include ou require, sans passer par une URL. Placer un fichier de configuration hors du répertoire racine garantit qu'il ne peut jamais être atteint directement par une requête HTTP (même en cas d'erreur de configuration du serveur qui afficherait le code PHP en clair au lieu de l'exécuter), tout en restant utilisable par le script PHP lui-même via un chemin relatif ou absolu du système de fichiers."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le répertoire racine (DocumentRoot) est le dossier à partir duquel le serveur web traduit une URL en fichier réel.",
+        "Seuls les fichiers placés dans ce dossier, ou un sous-dossier, sont accessibles par une URL.",
+        "htdocs (WAMP/XAMPP) ou www sont les noms usuels de ce dossier selon la distribution utilisée.",
+        "Cette notion explique pourquoi certains fichiers sensibles sont volontairement placés hors du répertoire racine, tout en restant utilisables par le code serveur lui-même."
+      ]
+    }
+  ]
+}

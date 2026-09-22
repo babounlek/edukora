@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-determination-d-une-adresse-ipv4-valide-dans-un-reseau-donne-terminale-ti",
+  "meta": {
+    "titre": "Détermination d'une adresse IPv4 valide dans un réseau donné",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage IPv4 et sous-réseaux",
+    "duree_estimee_min": 20,
+    "tags": [
+      "adressage IPv4",
+      "sous-réseau",
+      "masque de sous-réseau",
+      "réseau physique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q6-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ajouter un nouvel ordinateur à un réseau existant ne consiste pas à choisir une adresse IP au hasard : une adresse mal choisie isole la machine du reste du réseau, ou pire, entre en conflit avec une adresse déjà utilisée. Une méthode simple, fondée sur le masque de sous-réseau, permet de générer à coup sûr une adresse valable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notation décimale pointée d'une adresse IPv4",
+        "Notion de masque de sous-réseau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire une adresse IPv4 valide dans un réseau donné",
+      "contenu_markdown": "Deux machines appartiennent au même réseau quand la partie de leur adresse IP couverte par le masque (mise à 1) est identique ; seule la partie hôte (couverte par les 0 du masque) peut varier.\n\nMéthode : identifier l'adresse réseau et le masque, garder identiques les octets couverts par le masque, choisir une valeur pour la partie hôte différente de 0 (adresse réseau), de la valeur maximale (adresse de diffusion) et de toute adresse déjà attribuée sur ce réseau.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le réseau physique d'un ordinateur est 192.168.43.0 avec un masque 255.255.255.0. Les adresses 192.168.43.1 et 192.168.43.228 sont déjà utilisées. Proposer une adresse IPv4 valide pour un nouvel ordinateur du même réseau physique.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la partie fixe (réseau) et la partie variable (hôte)",
+          "justification": "Le masque 255.255.255.0 couvre les trois premiers octets : ils forment la partie réseau, fixe pour toutes les machines du réseau.",
+          "resultat_markdown": "Partie réseau fixe : 192.168.43. Partie hôte variable : le dernier octet, de 0 à 255."
+        },
+        {
+          "numero": 2,
+          "action": "Écarter les valeurs interdites de la partie hôte",
+          "justification": "0 désigne l'adresse réseau elle-même, 255 désigne l'adresse de diffusion : ni l'une ni l'autre ne peut être attribuée à un ordinateur.",
+          "resultat_markdown": "Valeurs interdites : 0 (réseau) et 255 (diffusion). Valeurs déjà prises : 1 et 228."
+        },
+        {
+          "numero": 3,
+          "action": "Choisir une valeur restante libre",
+          "justification": "Toute valeur entre 2 et 254, non déjà utilisée, convient.",
+          "resultat_markdown": "Adresse valide proposée : 192.168.43.50 (par exemple)."
+        }
+      ],
+      "conclusion_markdown": "Une adresse IPv4 valide dans un réseau donné se construit en conservant sa partie réseau et en choisissant, pour sa partie hôte, une valeur libre, ni nulle ni maximale."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Proposer l'adresse de diffusion (ici 192.168.43.255) comme adresse d'un ordinateur",
+          "pourquoi_faux": "L'adresse de diffusion est réservée pour envoyer un message à toutes les machines du réseau à la fois ; elle ne peut jamais être attribuée à une seule machine.",
+          "correction_markdown": "Élimine systématiquement la valeur maximale de la partie hôte (255 pour un masque en /24) avant de proposer une adresse."
+        },
+        {
+          "erreur_markdown": "Proposer une adresse d'un réseau virtuel différent (par exemple 192.168.22.x) en pensant qu'il s'agit du même réseau physique",
+          "pourquoi_faux": "Deux réseaux avec des préfixes différents (192.168.43.0 et 192.168.22.0) sont deux réseaux distincts, même s'ils appartiennent à la même machine hôte via un adaptateur virtuel.",
+          "correction_markdown": "Vérifie toujours que le préfixe réseau (partie couverte par le masque) de l'adresse proposée est identique à celui du réseau demandé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le réseau 172.16.5.0/24 contient déjà l'ordinateur 172.16.5.10. Proposer une adresse valide pour un second ordinateur du même réseau.",
+          "solution_markdown": "Toute adresse entre 172.16.5.1 et 172.16.5.254, différente de 172.16.5.10 : par exemple 172.16.5.20."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le réseau 10.0.0.0 utilise le masque 255.255.0.0. L'adresse 10.0.200.5 appartient-elle à ce réseau ? Justifier, puis proposer une seconde adresse valide de ce même réseau.",
+          "solution_markdown": "Le masque 255.255.0.0 couvre les deux premiers octets : la partie réseau est 10.0, la partie hôte couvre les deux derniers octets (200.5 dans ce cas). Comme 10.0.200.5 commence bien par 10.0, elle appartient au réseau 10.0.0.0/16. Une seconde adresse valide, avec la même partie réseau et une partie hôte différente, non nulle et non maximale : par exemple 10.0.1.1."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un réseau utilise l'adresse 192.168.10.0 avec le masque 255.255.255.192 (au lieu de 255.255.255.0). Expliquer en quoi la plage d'adresses disponibles pour les hôtes de ce réseau diffère de celle d'un masque classique en 255.255.255.0, et proposer une adresse valide.",
+          "solution_markdown": "Le masque 255.255.255.192 correspond à 26 bits de réseau (au lieu de 24 pour 255.255.255.0) : il réserve 2 bits supplémentaires à la partie réseau, ce qui réduit la partie hôte à seulement 6 bits, soit 64 adresses au lieu de 256, dont 62 utilisables (en écartant l'adresse réseau 192.168.10.0 et l'adresse de diffusion 192.168.10.63). Ce découpage plus fin permet de créer plusieurs petits sous-réseaux à partir d'un seul bloc d'adresses, au prix d'un nombre d'hôtes possibles par sous-réseau plus restreint. Une adresse valide dans ce sous-réseau : 192.168.10.30 (comprise entre 192.168.10.1 et 192.168.10.62)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une adresse IPv4 valide conserve la partie réseau imposée par le masque et varie uniquement sur la partie hôte.",
+        "La valeur d'hôte 0 désigne l'adresse réseau, la valeur maximale désigne l'adresse de diffusion : les deux sont interdites pour un ordinateur.",
+        "Un réseau virtuel (adaptateur VMware, VirtualBox...) constitue un réseau distinct, même hébergé sur la même machine physique.",
+        "Toujours vérifier qu'une adresse proposée n'est pas déjà attribuée à une autre machine du réseau."
+      ]
+    }
+  ]
+}

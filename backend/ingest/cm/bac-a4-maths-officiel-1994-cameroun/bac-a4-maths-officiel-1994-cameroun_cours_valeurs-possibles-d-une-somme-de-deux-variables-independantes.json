@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-valeurs-possibles-d-une-somme-de-deux-variables-independantes-tle-a",
+  "meta": {
+    "titre": "Déterminer les valeurs possibles d'une somme de deux variables aléatoires",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Variables aléatoires",
+    "duree_estimee_min": 20,
+    "tags": [
+      "variable aléatoire",
+      "somme de variables aléatoires",
+      "probabilités"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a4-maths-officiel-1994-cameroun",
+    "epreuve_titre": "BAC Mathematiques - Serie A (A4 bilingue) - Session 1994 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a4-maths-officiel-1994-cameroun-ex1-q2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux dés lancés ensemble : chacun a son propre lot de résultats possibles, mais c'est souvent leur SOMME qui intéresse le joueur ou l'assureur. Passer des valeurs de chaque variable séparée aux valeurs de leur somme demande une méthode précise, sans quoi on oublie des cas ou on en invente qui n'existent pas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable aléatoire et son ensemble de valeurs possibles $X(\\Omega)$.",
+        "Savoir qu'une expérience « on jette deux dés » combine les résultats des deux dés.",
+        "Être à l'aise avec l'addition d'entiers."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Valeurs possibles d'une somme de deux variables",
+      "contenu_markdown": "Si $X=A+B$ où $A$ et $B$ sont deux variables aléatoires indépendantes prenant chacune un nombre fini de valeurs, alors une valeur possible de $X$ s'obtient en additionnant une valeur possible de $A$ à une valeur possible de $B$. Pour ne rien oublier, on combine SYSTÉMATIQUEMENT chaque valeur de $A$ avec chaque valeur de $B$ (autant de sommes que le produit du nombre de valeurs de $A$ par le nombre de valeurs de $B$), puis on ne conserve que les sommes DISTINCTES obtenues, car plusieurs couples peuvent donner la même somme.",
+      "formule_principale": "X(\\Omega)=\\{a+b \\mid a\\in A(\\Omega),\\ b\\in B(\\Omega)\\}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le dé A prend les valeurs 1, 3 ou 5 ; le dé B prend les valeurs 2, 4 ou 6. On pose $X=A+B$. Déterminer les valeurs possibles de $X$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les valeurs possibles de chaque variable",
+          "justification": "C'est la première information nécessaire avant toute combinaison.",
+          "resultat_markdown": "$A(\\Omega)=\\{1;3;5\\}$ et $B(\\Omega)=\\{2;4;6\\}$."
+        },
+        {
+          "numero": 2,
+          "action": "Combiner chaque valeur de A avec chaque valeur de B",
+          "justification": "Il y a $3\\times 3=9$ couples possibles, qu'il faut tous examiner pour n'en oublier aucun.",
+          "resultat_markdown": "$1{+}2=3$, $1{+}4=5$, $1{+}6=7$, $3{+}2=5$, $3{+}4=7$, $3{+}6=9$, $5{+}2=7$, $5{+}4=9$, $5{+}6=11$."
+        },
+        {
+          "numero": 3,
+          "action": "Ne conserver que les sommes distinctes",
+          "justification": "Plusieurs couples donnent la même somme (par exemple $1+6=7$ et $3+4=7$) : ces répétitions ne créent pas une nouvelle valeur possible.",
+          "resultat_markdown": "Les valeurs obtenues sont $3,5,7,7,7,9,9,11$, soit, sans répétition, $\\{3;5;7;9;11\\}$."
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des valeurs possibles de $X$ est $X(\\Omega)=\\{3\\,;5\\,;7\\,;9\\,;11\\}$ : uniquement des valeurs impaires, car la somme d'un nombre impair et d'un nombre pair est toujours impaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Se contenter d'additionner les listes terme à terme dans l'ordre où elles sont écrites : $1+2$, $3+4$, $5+6$, en ignorant les autres combinaisons.",
+          "pourquoi_faux": "Cette méthode ne teste que 3 couples sur les 9 réellement possibles : elle oublie que le dé A ET le dé B varient indépendamment l'un de l'autre, pas seulement « en même temps, dans le même ordre ».",
+          "correction_markdown": "Construire systématiquement les $3\\times 3=9$ couples (ou plus généralement le produit du nombre de valeurs de chaque variable), par exemple à l'aide d'un tableau à double entrée."
+        },
+        {
+          "erreur_markdown": "Compter une valeur plusieurs fois dans $X(\\Omega)$ parce qu'elle apparaît dans plusieurs couples, par exemple écrire $X(\\Omega)=\\{3;5;5;7;7;7;9;9;11\\}$.",
+          "pourquoi_faux": "$X(\\Omega)$ est un ENSEMBLE de valeurs possibles, pas une liste de couples : chaque valeur n'y figure qu'une seule fois, même si plusieurs couples y mènent (leur nombre interviendra plus tard, dans le calcul de la probabilité).",
+          "correction_markdown": "Toujours simplifier l'ensemble final en ne gardant que les valeurs distinctes : $X(\\Omega)=\\{3;5;7;9;11\\}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$A$ prend les valeurs 0 ou 1, $B$ prend les valeurs 10 ou 20. On pose $X=A+B$. Déterminer $X(\\Omega)$.",
+          "solution_markdown": "On combine chaque valeur de $A$ avec chaque valeur de $B$ : $0+10=10$, $0+20=20$, $1+10=11$, $1+20=21$.\n\nCes quatre sommes sont toutes distinctes, donc $X(\\Omega)=\\{10;11;20;21\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$A$ prend les valeurs 1, 2 ou 3, $B$ prend les valeurs 1 ou 2. On pose $X=A+B$. Déterminer $X(\\Omega)$.",
+          "solution_markdown": "On combine les $3\\times 2=6$ couples : $1{+}1=2$, $1{+}2=3$, $2{+}1=3$, $2{+}2=4$, $3{+}1=4$, $3{+}2=5$.\n\nLes sommes distinctes obtenues sont $2,3,4,5$, donc $X(\\Omega)=\\{2;3;4;5\\}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$A$ prend les valeurs $-1$, $0$ ou $1$, et $B$ prend les mêmes valeurs $-1$, $0$ ou $1$. On pose $X=A+B$. Déterminer $X(\\Omega)$ et indiquer, pour chaque valeur, le nombre de couples $(a,b)$ qui la réalisent.",
+          "solution_markdown": "On combine les $3\\times 3=9$ couples possibles. Les sommes obtenues sont : $-1{-}1=-2$ ; $-1{+}0=-1$ et $0{-}1=-1$ ; $-1{+}1=0$, $0{+}0=0$ et $1{-}1=0$ ; $0{+}1=1$ et $1{+}0=1$ ; $1{+}1=2$.\n\nL'ensemble des valeurs distinctes est $X(\\Omega)=\\{-2;-1;0;1;2\\}$.\n\nNombre de couples par valeur : $-2$ (1 couple), $-1$ (2 couples), $0$ (3 couples), $1$ (2 couples), $2$ (1 couple) - soit $1+2+3+2+1=9$ couples au total, ce qui correspond bien aux $3\\times 3$ combinaisons de départ."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour trouver les valeurs possibles de $X=A+B$, combine CHAQUE valeur de $A$ avec CHAQUE valeur de $B$ : jamais seulement une liste terme à terme dans l'ordre d'écriture.",
+        "Le nombre de couples à examiner est le produit du nombre de valeurs de $A$ par le nombre de valeurs de $B$.",
+        "$X(\\Omega)$ ne retient que les sommes DISTINCTES : plusieurs couples peuvent mener à la même valeur, mais elle ne compte qu'une fois dans l'ensemble.",
+        "Le nombre de couples menant à chaque valeur sera réutilisé juste après, pour construire la loi de probabilité de $X$ : garde cette information au brouillon.",
+        "Au BAC, cette étape prépare presque toujours une loi de probabilité ou un calcul d'espérance : une valeur oubliée ici fausse tout le reste de l'exercice."
+      ]
+    }
+  ]
+}

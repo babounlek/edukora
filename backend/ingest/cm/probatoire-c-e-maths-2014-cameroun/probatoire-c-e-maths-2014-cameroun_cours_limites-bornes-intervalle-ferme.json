@@ -1,0 +1,184 @@
+{
+ "cours_id": "cours-limites-bornes-intervalle-ferme-1ere-ce",
+ "meta": {
+  "titre": "Calculer les limites d'une fonction aux bornes d'un intervalle fermé",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Limites et continuité",
+  "duree_estimee_min": 20,
+  "tags": ["limites aux bornes", "continuité", "fonction polynôme", "intervalle fermé", "ensemble de définition"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "V"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qB1-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "« Calculer les limites aux bornes » déclenche chez beaucoup un réflexe automatique : chercher $\\pm\\infty$, traquer une forme indéterminée, annoncer une asymptote. Or si l'ensemble de définition est un intervalle **fermé** et la fonction continue, il n'y a rien de tout cela. La limite est simplement la valeur de la fonction au point. La question ne teste pas une technique de calcul : elle teste si l'on a lu l'ensemble de définition."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir déterminer l'ensemble de définition d'une fonction",
+    "Distinguer intervalle ouvert et intervalle fermé",
+    "Savoir qu'une fonction polynôme est continue sur $\\mathbb{R}$",
+    "Calculer l'image d'un réel par une fonction polynôme"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Borne fermée et fonction continue : la limite est la valeur",
+   "contenu_markdown": "**Le principe.** Si $a$ appartient à l'ensemble de définition de $f$ et que $f$ est continue en $a$, alors\n\n$$\\lim_{x \\to a} f(x) = f(a)$$\n\nIl n'y a **aucune forme indéterminée** à lever, aucun calcul de limite au sens technique : on substitue.\n\n**Les fonctions continues à connaître.** Sont continues sur tout leur ensemble de définition :\n\n- les fonctions **polynômes**, continues sur $\\mathbb{R}$ tout entier ;\n- les fonctions **rationnelles**, continues partout où le dénominateur ne s'annule pas ;\n- les fonctions racine carrée, sinus, cosinus, sur leur domaine.\n\n**La distinction décisive : borne ouverte ou fermée ?**\n\n| Situation | Ce qu'il faut faire |\n|---|---|\n| Borne **fermée**, appartenant à $D_{f}$ | Substituer : la limite est $f(a)$ |\n| Borne **ouverte** finie, exclue de $D_{f}$ | Calculer une vraie limite, souvent infinie |\n| Borne infinie | Étudier le comportement asymptotique |\n\n**La méthode, en trois gestes.**\n\n1. **Écrire** l'ensemble de définition et repérer ses bornes.\n2. **Justifier** la continuité par une phrase : « $f$ est un polynôme, donc continue sur $\\mathbb{R}$, en particulier sur $[0\\,;\\,6]$ ».\n3. **Substituer** chaque borne dans l'expression de $f$.\n\n**La phrase qui rapporte le point.** C'est l'étape 2 que le barème attend. Sans elle, la substitution ressemble à un raccourci non justifié ; avec elle, c'est une application propre d'un théorème du cours.\n\n**Notation des limites à droite et à gauche.** En une borne inférieure fermée, la limite ne peut être prise qu'à droite ; en une borne supérieure, qu'à gauche :\n\n$$\\lim_{x \\to 0^{+}} f(x) \\qquad ; \\qquad \\lim_{x \\to 6^{-}} f(x)$$\n\nLa fonction n'existe pas de l'autre côté : parler de la limite « en $0$ » sans préciser n'aurait pas de sens.\n\n**La conséquence graphique.** Aucune branche infinie, aucune asymptote. La courbe est un **arc** limité, dont les deux extrémités sont des points parfaitement déterminés du plan. C'est l'information que la question prépare pour le tracé demandé plus loin.\n\n**Pourquoi l'intervalle est-il fermé ?** Dans un problème de modélisation, l'ensemble de définition n'est pas choisi par le mathématicien mais **imposé par la situation**. Ici $x = AM$ est une longueur sur un côté de longueur $6$ : elle ne peut ni être négative ni dépasser $6$. Étudier $f$ sur $\\mathbb{R}$ serait hors sujet.",
+   "formule_principale": "a \\in D_{f} \\text{ et } f \\text{ continue en } a \\implies \\lim_{x \\to a} f(x) = f(a)",
+   "variantes": [
+    {
+     "nom": "Borne ouverte où le dénominateur s'annule",
+     "quand_utiliser": "Pour une fonction rationnelle, en une valeur interdite",
+     "contenu_markdown": "Si $f(x) = \\dfrac{N(x)}{D(x)}$ avec $D(a) = 0$ et $N(a) \\neq 0$, alors la limite en $a$ est infinie, et son signe dépend du côté d'approche :\n\n$$\\lim_{x \\to a^{+}} f(x) = \\pm\\infty \\qquad ; \\qquad \\lim_{x \\to a^{-}} f(x) = \\mp\\infty$$\n\nOn étudie le signe du dénominateur au voisinage de $a$ pour trancher. La droite d'équation $x = a$ est alors **asymptote verticale** à la courbe.\n\nRien de tel ici : $f$ est un polynôme, elle n'a aucune valeur interdite."
+    },
+    {
+     "nom": "Prolongement par continuité",
+     "quand_utiliser": "Quand la limite en une borne exclue existe et est finie",
+     "contenu_markdown": "Si $a$ n'appartient pas à $D_{f}$ mais que $\\lim_{x \\to a} f(x) = \\ell$ est finie, on peut **prolonger** $f$ par continuité en posant $f(a) = \\ell$. La fonction ainsi obtenue est continue en $a$.\n\nC'est le cas typique d'une fraction dont numérateur et dénominateur s'annulent ensemble, comme $\\dfrac{x^{2}-1}{x-1}$ en $x = 1$, dont la limite vaut $2$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit $f$ la fonction définie de l'intervalle $[0\\,;\\,6]$ vers $\\mathbb{R}$ par $f(x) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$. Calculer les limites de $f$ aux bornes de son ensemble de définition. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Écrire l'ensemble de définition",
+     "justification": "Il est imposé par l'énoncé, et non déduit de l'expression de $f$",
+     "resultat_markdown": "$D_{f} = [0\\,;\\,6]$, de bornes $0$ et $6$"
+    },
+    {
+     "numero": 2,
+     "action": "Observer que les bornes appartiennent au domaine",
+     "justification": "Les crochets sont fermés des deux côtés",
+     "resultat_markdown": "$0 \\in D_{f}$ et $6 \\in D_{f}$ : aucune borne n'est exclue"
+    },
+    {
+     "numero": 3,
+     "action": "Justifier la continuité",
+     "justification": "C'est la phrase que le barème attend",
+     "resultat_markdown": "$f$ est une fonction polynôme du second degré, donc continue sur $\\mathbb{R}$, en particulier sur $[0\\,;\\,6]$"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer $f(0)$",
+     "justification": "La limite en une borne fermée est la valeur de la fonction",
+     "resultat_markdown": "$f(0) = \\dfrac{1}{2} \\times 0 - \\dfrac{3}{2} \\times 0 + 9 = 9$"
+    },
+    {
+     "numero": 5,
+     "action": "Conclure pour la borne inférieure",
+     "justification": "La limite ne peut être prise qu'à droite, la fonction n'existant pas à gauche de $0$",
+     "resultat_markdown": "$\\displaystyle\\lim_{x \\to 0^{+}} f(x) = 9$"
+    },
+    {
+     "numero": 6,
+     "action": "Calculer $f(6)$",
+     "justification": "Substitution directe",
+     "resultat_markdown": "$f(6) = \\dfrac{36}{2} - \\dfrac{3}{2} \\times 6 + 9 = 18 - 9 + 9 = 18$"
+    },
+    {
+     "numero": 7,
+     "action": "Conclure pour la borne supérieure",
+     "justification": "La limite ne peut être prise qu'à gauche",
+     "resultat_markdown": "$\\displaystyle\\lim_{x \\to 6^{-}} f(x) = 18$"
+    },
+    {
+     "numero": 8,
+     "action": "Interpréter graphiquement",
+     "justification": "Deux limites finies aux deux bornes signifient une courbe bornée",
+     "resultat_markdown": "La courbe ne présente aucune branche infinie : c'est un arc de parabole d'extrémités $(0\\,;\\,9)$ et $(6\\,;\\,18)$"
+    }
+   ],
+   "conclusion_markdown": "Les deux limites valent $9$ et $18$. Note ce que la question n'était **pas** : ni recherche de forme indéterminée, ni asymptote, ni comportement en l'infini. Le seul vrai travail était de lire l'ensemble de définition et d'en tirer les conséquences. Et cette lecture n'est pas gratuite : l'intervalle $[0\\,;\\,6]$ vient de la contrainte géométrique $0 \\leqslant AM \\leqslant 6$ de la partie A."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Calculer les limites en $-\\infty$ et $+\\infty$",
+     "pourquoi_faux": "L'ensemble de définition est le segment $[0\\,;\\,6]$, pas $\\mathbb{R}$. La fonction n'est tout simplement pas définie en dehors, et parler de son comportement à l'infini n'a aucun sens ici.",
+     "correction_markdown": "Relis l'ensemble de définition avant toute chose. Les bornes d'un intervalle sont ses extrémités, pas $\\pm\\infty$, sauf si l'intervalle est effectivement non borné."
+    },
+    {
+     "erreur_markdown": "Chercher une asymptote verticale",
+     "pourquoi_faux": "Une asymptote verticale suppose une limite infinie en une valeur finie, donc en général un dénominateur qui s'annule. Ici $f$ est un polynôme : elle n'a aucune valeur interdite et reste bornée sur $[0\\,;\\,6]$.",
+     "correction_markdown": "Vérifie la nature de la fonction avant de chercher des asymptotes. Un polynôme sur un segment fermé n'en a jamais."
+    },
+    {
+     "erreur_markdown": "Substituer sans justifier la continuité",
+     "pourquoi_faux": "Le passage de la limite à la valeur n'est légitime que par continuité. Sans cette phrase, la substitution est un raccourci non justifié, souvent sanctionné.",
+     "correction_markdown": "Écris en une ligne : « $f$ est un polynôme donc continue sur $[0\\,;\\,6]$ ». C'est la phrase qui transforme un calcul en démonstration."
+    },
+    {
+     "erreur_markdown": "Omettre les indications $0^{+}$ et $6^{-}$",
+     "pourquoi_faux": "En une borne du domaine, la fonction n'existe que d'un seul côté. Écrire $\\lim_{x \\to 0} f(x)$ suggère une limite bilatérale qui n'a pas de sens ici.",
+     "correction_markdown": "Précise le côté : à droite pour la borne inférieure, à gauche pour la borne supérieure. C'est une notation, mais elle montre que tu as compris la situation."
+    },
+    {
+     "erreur_markdown": "Se tromper dans le calcul de $f(6)$ en oubliant le coefficient $\\dfrac{1}{2}$",
+     "pourquoi_faux": "Écrire $f(6) = 36 - 9 + 9 = 36$ oublie de diviser $36$ par $2$. La valeur correcte est $18$, et l'erreur fausserait ensuite le tableau de variation et le tracé.",
+     "correction_markdown": "Écris chaque terme séparément : $\\dfrac{1}{2} \\times 36 = 18$, puis $-\\dfrac{3}{2} \\times 6 = -9$, puis $+9$. Trois calculs distincts valent mieux qu'une ligne mentale."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soit $g$ définie sur $[-2\\,;\\,4]$ par $g(x) = x^{3} - 3x + 1$. Calculer les limites de $g$ aux bornes de son ensemble de définition, puis préciser si sa courbe admet des branches infinies.",
+     "solution_markdown": "**Étape 1 - l'ensemble de définition et ses bornes.**\n\n$$D_{g} = [-2\\,;\\,4]$$\n\nLes deux bornes $-2$ et $4$ appartiennent au domaine, puisque les crochets sont fermés.\n\n**Étape 2 - justifier la continuité.**\n\n$g$ est une fonction polynôme, donc continue sur $\\mathbb{R}$, en particulier sur $[-2\\,;\\,4]$.\n\n**Étape 3 - la limite en $-2$.**\n\n$$g(-2) = (-2)^{3} - 3 \\times (-2) + 1 = -8 + 6 + 1 = -1$$\n\n$$\\lim_{x \\to (-2)^{+}} g(x) = -1$$\n\n**Étape 4 - la limite en $4$.**\n\n$$g(4) = 64 - 12 + 1 = 53$$\n\n$$\\lim_{x \\to 4^{-}} g(x) = 53$$\n\n**Étape 5 - les branches infinies.**\n\nLes deux limites sont **finies**, et la fonction est continue sur un segment fermé : elle y est donc bornée.\n\n**La courbe de $g$ ne présente aucune branche infinie.** C'est un arc de courbe d'extrémités $(-2\\,;\\,-1)$ et $(4\\,;\\,53)$.\n\n**Remarque.** La fonction $x \\mapsto x^{3} - 3x + 1$ étudiée sur $\\mathbb{R}$ tout entier aurait, elle, des limites infinies en $\\pm\\infty$ et deux branches paraboliques. C'est bien la restriction au segment qui change tout : la même expression, deux comportements radicalement différents selon le domaine."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $h$ définie par $h(x) = \\dfrac{2x+1}{x-3}$ sur l'intervalle $\\left[0\\,;\\,3\\right[$. Calculer les limites de $h$ aux bornes de cet intervalle, et interpréter graphiquement.",
+     "solution_markdown": "**Étape 1 - repérer la nature des bornes.**\n\n$$D_{h} = \\left[0\\,;\\,3\\right[$$\n\nLa borne $0$ est **fermée** : elle appartient au domaine.\n\nLa borne $3$ est **ouverte** : elle est exclue, et pour cause, le dénominateur $x - 3$ s'y annule.\n\nLes deux bornes exigent donc des traitements différents.\n\n**Étape 2 - la limite en $0$.**\n\n$h$ est une fonction rationnelle, continue sur tout intervalle où son dénominateur ne s'annule pas. Comme $0 - 3 = -3 \\neq 0$, elle est continue en $0$ :\n\n$$\\lim_{x \\to 0^{+}} h(x) = h(0) = \\dfrac{1}{-3} = -\\dfrac{1}{3}$$\n\n**Étape 3 - la limite en $3$, par la gauche.**\n\nÉtudions séparément numérateur et dénominateur au voisinage de $3$ :\n\n- Numérateur : $2x + 1 \\to 2 \\times 3 + 1 = 7 > 0$.\n- Dénominateur : $x - 3 \\to 0$, et comme $x < 3$, on a $x - 3 < 0$, donc $x - 3 \\to 0^{-}$.\n\nUn numérateur tendant vers une constante strictement positive divisé par un dénominateur tendant vers $0$ **par valeurs négatives** donne\n\n$$\\lim_{x \\to 3^{-}} h(x) = -\\infty$$\n\n**Étape 4 - interprétation graphique.**\n\nEn $x = 0$ : la courbe part du point $\\left(0\\,;\\,-\\dfrac{1}{3}\\right)$, qui lui appartient.\n\nEn $x = 3$ : la limite est infinie, donc **la droite d'équation $x = 3$ est asymptote verticale** à la courbe, que celle-ci longe en descendant.\n\n**Contrôle numérique.** $h(2{,}9) = \\dfrac{6{,}8}{-0{,}1} = -68$, et $h(2{,}99) = \\dfrac{6{,}98}{-0{,}01} = -698$. La descente vers $-\\infty$ est confirmée.\n\n**Ce qu'il faut retenir.** Ce n'est pas la fonction qui décide du traitement, c'est la **nature de la borne**. Une même fonction rationnelle appelle une simple substitution en une borne fermée, et une étude de signe en une borne ouverte où le dénominateur s'annule."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Une boîte sans couvercle est fabriquée à partir d'une plaque carrée de côté $20$ cm, en découpant à chaque coin un carré de côté $x$ puis en relevant les bords. Exprimer le volume $V(x)$ de la boîte, préciser l'ensemble de définition **imposé par la situation**, calculer les limites de $V$ à ses bornes et interpréter concrètement chacune d'elles.",
+     "solution_markdown": "**Étape 1 - exprimer le volume.**\n\nAprès découpe des quatre coins et relevage, la boîte a pour base un carré de côté $20 - 2x$ (on retire $x$ de chaque côté) et pour hauteur $x$.\n\n$$V(x) = x(20 - 2x)^{2}$$\n\n**Étape 2 - développer.**\n\n$$(20-2x)^{2} = 400 - 80x + 4x^{2}$$\n\n$$V(x) = 400x - 80x^{2} + 4x^{3}$$\n\n**Étape 3 - déterminer l'ensemble de définition imposé par la situation.**\n\nDeux contraintes physiques :\n\n- la hauteur doit être positive : $x \\geqslant 0$ ;\n- le côté de la base doit être positif : $20 - 2x \\geqslant 0$, soit $x \\leqslant 10$.\n\n$$D_{V} = [0\\,;\\,10]$$\n\nOn garde l'intervalle **fermé**, car les cas limites, quoique dégénérés, restent mathématiquement définis.\n\n**Étape 4 - les limites aux bornes.**\n\n$V$ est une fonction polynôme, donc continue sur $\\mathbb{R}$, en particulier sur $[0\\,;\\,10]$.\n\n$$\\lim_{x \\to 0^{+}} V(x) = V(0) = 0 \\times 400 = 0$$\n\n$$\\lim_{x \\to 10^{-}} V(x) = V(10) = 10 \\times (20 - 20)^{2} = 10 \\times 0 = 0$$\n\n**Étape 5 - interpréter concrètement.**\n\nEn $x = 0$ : on ne découpe rien, on ne relève rien. La « boîte » reste une plaque plate, de hauteur nulle, donc de volume nul.\n\nEn $x = 10$ : on découpe des carrés de côté $10$ à chaque coin, ce qui consomme toute la plaque. La base disparaît, et le volume est nul.\n\n**Le volume s'annule aux deux extrémités et est strictement positif entre les deux : il existe donc un maximum à l'intérieur de l'intervalle.**\n\n**Étape 6 - localiser ce maximum.**\n\n$$V'(x) = 400 - 160x + 12x^{2} = 4\\left(3x^{2} - 40x + 100\\right)$$\n\nDiscriminant : $\\Delta = 1600 - 1200 = 400$, donc $\\sqrt{\\Delta} = 20$.\n\n$$x_{1} = \\dfrac{40 - 20}{6} = \\dfrac{10}{3} \\qquad ; \\qquad x_{2} = \\dfrac{40 + 20}{6} = 10$$\n\nLa racine $x_{2} = 10$ est une borne du domaine ; la racine utile est donc $x = \\dfrac{10}{3} \\approx 3{,}33$ cm.\n\n$$V\\left(\\dfrac{10}{3}\\right) = \\dfrac{10}{3} \\times \\left(20 - \\dfrac{20}{3}\\right)^{2} = \\dfrac{10}{3} \\times \\left(\\dfrac{40}{3}\\right)^{2} = \\dfrac{10}{3} \\times \\dfrac{1600}{9} = \\dfrac{16000}{27} \\approx 592{,}6 \\text{ cm}^{3}$$\n\n**Conclusion.** Le volume maximal, environ $593$ cm³, est atteint pour une découpe de $\\dfrac{10}{3}$ cm, soit le sixième du côté de la plaque.\n\n**Ce qu'il faut retenir.** Dans un problème de modélisation, l'ensemble de définition n'est jamais donné gratuitement : il traduit des contraintes concrètes. Et les limites aux bornes ont, elles aussi, un sens physique — ici deux configurations dégénérées de volume nul, qui **garantissent** l'existence d'un maximum intérieur."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Si $a$ appartient à $D_{f}$ et que $f$ est continue en $a$, la limite en $a$ est simplement $f(a)$.",
+    "Une fonction polynôme est continue sur $\\mathbb{R}$ : aucune forme indéterminée sur un segment fermé.",
+    "Lis l'ensemble de définition **avant** de chercher quoi que ce soit : c'est lui qui dicte le traitement.",
+    "Distingue borne fermée (substitution), borne ouverte finie (vraie limite, souvent infinie) et borne infinie (comportement asymptotique).",
+    "Écris la phrase de continuité : c'est elle qui justifie la substitution et rapporte le point.",
+    "Précise le côté : $0^{+}$ pour une borne inférieure, $6^{-}$ pour une borne supérieure.",
+    "Deux limites finies aux bornes signifient une courbe bornée, sans branche infinie ni asymptote.",
+    "Dans un problème de modélisation, l'ensemble de définition traduit des contraintes concrètes : ne l'élargis pas.",
+    "Une limite nulle aux deux bornes avec une fonction positive à l'intérieur garantit l'existence d'un extremum intérieur."
+   ]
+  }
+ ]
+}

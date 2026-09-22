@@ -1,0 +1,59 @@
+{
+  "cours_id": "bepc-informatique-2020-officiel-cameroun-cours-conversion-decimal-binaire",
+  "meta": {
+    "titre": "Convertir un nombre décimal en binaire",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Représentation de l'information - codage binaire",
+    "duree_estimee_min": 20,
+    "tags": [
+      "conversion binaire",
+      "décimal",
+      "représentation de l'information",
+      "BEPC"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2020-officiel-cameroun",
+    "epreuve_titre": "BEPC Informatique 2020 (Cameroun, officiel)",
+    "exercice_numero": "2",
+    "rappel_id": "rm-info2020-ex2-q1",
+    "rappels_lies": [
+      "rm-info2020-ex2-q1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ordinateur ne comprend que deux états électriques : allumé ou éteint, 0 ou 1. Comment alors représente-t-il un nombre aussi ordinaire que 123 ? C'est tout l'enjeu de la conversion décimal-binaire."
+    },
+    {
+      "type": "prerequis",
+      "contenu_markdown": "Connaître les puissances de 2 usuelles : 2⁰=1, 2¹=2, 2²=4, 2³=8, 2⁴=16, 2⁵=32, 2⁶=64, 2⁷=128."
+    },
+    {
+      "type": "regle",
+      "contenu_markdown": "Pour convertir un nombre décimal en binaire, deux méthodes équivalentes existent :\n\n**Méthode des divisions successives** : diviser le nombre par 2, noter le reste (0 ou 1), puis recommencer avec le quotient obtenu, jusqu'à obtenir un quotient nul. Le résultat binaire se lit en prenant les restes de bas en haut.\n\n**Méthode de décomposition en puissances de 2** : trouver la plus grande puissance de 2 inférieure ou égale au nombre, la soustraire, et répéter l'opération avec le reste, jusqu'à atteindre 0. Chaque puissance de 2 utilisée correspond à un bit à 1, les autres positions valant 0."
+    },
+    {
+      "type": "exemple_resolu",
+      "contenu_markdown": "Convertir 123 en binaire par décomposition en puissances de 2 :\n\n123 - 64 (2⁶) = 59 → bit 2⁶ = 1\n59 - 32 (2⁵) = 27 → bit 2⁵ = 1\n27 - 16 (2⁴) = 11 → bit 2⁴ = 1\n11 - 8 (2³) = 3 → bit 2³ = 1\n3 - 4 (2²) impossible (4 > 3) → bit 2² = 0\n3 - 2 (2¹) = 1 → bit 2¹ = 1\n1 - 1 (2⁰) = 0 → bit 2⁰ = 1\n\nEn lisant les bits de 2⁶ à 2⁰ : **(123)₁₀ = (1111011)₂**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "contenu_markdown": "Oublier d'inscrire un 0 pour une puissance de 2 non utilisée dans la décomposition (erreur de décalage de tous les bits suivants) ; confondre l'ordre de lecture des restes dans la méthode des divisions successives (le premier reste obtenu est le bit de poids faible, donc le dernier à écrire)."
+    },
+    {
+      "type": "exercices_application",
+      "contenu_markdown": "1. Convertir en binaire les nombres suivants : 45, 200, 17.\n2. Convertir en décimal le nombre binaire 1011010.\n3. Vérifier le résultat de l'exemple résolu (123) en additionnant les puissances de 2 correspondant aux bits à 1 du résultat obtenu."
+    },
+    {
+      "type": "synthese",
+      "contenu_markdown": "Convertir un nombre décimal en binaire revient à l'exprimer comme une somme de puissances de 2 : chaque puissance utilisée donne un bit à 1, chaque puissance non utilisée donne un bit à 0, la lecture se faisant de la puissance la plus élevée à la plus faible."
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "cours_id": "cours-suite-arithmetico-geometrique-1ere-c-e",
+  "meta": {
+    "titre": "Suites arithmético-géométriques : ramener u(n+1)=au(n)+b à une suite géométrique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "suite arithmético-géométrique",
+      "suite géométrique",
+      "changement de variable",
+      "point fixe"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2024-officiel-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2024",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex4-q3a-0",
+    "rappels_lies": [
+      "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex4-q3b-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le niveau d'un réservoir rechargé puis partiellement vidé chaque jour, un capital qui rapporte un intérêt fixe après un retrait régulier : de nombreuses situations concrètes produisent une suite qui n'est ni arithmétique ni géométrique, mais un mélange des deux, de la forme $u_{n+1}=au_n+b$. Ce cours donne la méthode, toujours la même, pour ramener une telle suite à une suite géométrique ordinaire, dont tu sais déjà tout calculer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition et terme général d'une suite géométrique ($v_n=v_0q^n$)",
+        "Notion de suite définie par récurrence",
+        "Résolution d'une équation du premier degré (recherche d'un point fixe)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le changement de variable par le point fixe",
+      "contenu_markdown": "Soit $(u_n)$ définie par $u_{n+1}=au_n+b$ avec $a\\neq1$. Le réel $c$ tel que $c=ac+b$ (point fixe de la relation) permet de poser $v_n=u_n-c$ : alors $(v_n)$ est géométrique de raison $a$. En effet, $v_{n+1}=u_{n+1}-c=(au_n+b)-c=a(u_n-c)+(ac+b-c)=a v_n+(c-c)=a v_n$, la dernière égalité utilisant précisément $ac+b=c$. On calcule ensuite $v_n=v_0a^n$, puis $u_n=v_n+c$.",
+      "formule_principale": "u_{n+1}=au_n+b,\\; a\\neq1 \\;\\Longrightarrow\\; v_n=u_n-c \\text{ géométrique de raison } a, \\text{ où } c=\\dfrac{b}{1-a}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pour $x=\\dfrac\\pi4$, la suite $(u_n)$ vérifie $u_0=450$ et $u_{n+1}=\\dfrac16u_n+25$. On pose $v_n=u_n-30$. Démontrer que $(v_n)$ est géométrique, préciser son premier terme et sa raison, puis exprimer $u_n$ en fonction de $n$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier que 30 est bien le point fixe de la relation",
+          "justification": "Le point fixe $c$ vérifie $c=\\frac16c+25$.",
+          "resultat_markdown": "$c=\\frac16c+25 \\Leftrightarrow \\frac56c=25 \\Leftrightarrow c=30$, ce qui correspond bien à la constante choisie dans l'énoncé."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer v(n+1) en fonction de v(n)",
+          "justification": "$v_n=u_n-30$, donc $u_n=v_n+30$ ; on substitue dans la relation de récurrence de $(u_n)$.",
+          "resultat_markdown": "$v_{n+1}=u_{n+1}-30=\\left(\\frac16u_n+25\\right)-30=\\frac16(v_n+30)-5=\\frac16v_n$."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la nature géométrique et le premier terme",
+          "justification": "Le rapport $v_{n+1}/v_n=\\frac16$ est constant, et $v_0=u_0-30=450-30=420$.",
+          "resultat_markdown": "$(v_n)$ est géométrique de premier terme $v_0=420$ et de raison $\\frac16$."
+        },
+        {
+          "numero": 4,
+          "action": "Exprimer v(n) puis u(n) en fonction de n",
+          "justification": "Terme général d'une suite géométrique, puis retour à $u_n$ via $u_n=v_n+30$.",
+          "resultat_markdown": "$v_n=420\\left(\\frac16\\right)^n$, donc $u_n=420\\left(\\frac16\\right)^n+30$."
+        }
+      ],
+      "conclusion_markdown": "Une seule constante bien choisie ($c=30$, point fixe de la relation) a suffi à transformer une suite compliquée en une suite géométrique classique, entièrement calculable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher à calculer directement $u_n$ en fonction de $n$ sans passer par le changement de variable $v_n=u_n-c$.",
+          "pourquoi_faux": "Une suite arithmético-géométrique n'a pas de formule directe simple : sans ce changement de variable, il faut calculer terme après terme, ce qui est long et source d'erreurs.",
+          "correction_markdown": "Passe systématiquement par la suite auxiliaire $(v_n)$ dès que tu reconnais une relation $u_{n+1}=au_n+b$ avec $a\\neq1$."
+        },
+        {
+          "erreur_markdown": "Se tromper de constante $c$, par exemple en prenant $c=u_0$ au lieu du point fixe de la relation.",
+          "pourquoi_faux": "Seul le point fixe $c=ac+b$ garantit que $(v_n)$ devient géométrique ; toute autre constante donne une suite $(v_n)$ qui n'est ni géométrique ni arithmétique.",
+          "correction_markdown": "Résous toujours l'équation $c=ac+b$ pour trouver la bonne constante, ne devine jamais une valeur."
+        },
+        {
+          "erreur_markdown": "Oublier de revenir à $u_n$ après avoir trouvé la formule de $v_n$.",
+          "pourquoi_faux": "La question posée porte en général sur $u_n$, pas sur $v_n$ : une réponse qui s'arrête à $v_n$ est incomplète.",
+          "correction_markdown": "Termine toujours par la substitution $u_n=v_n+c$ pour répondre effectivement à la question posée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $(w_n)$ définie par $w_0=10$ et $w_{n+1}=2w_n-5$. Déterminer $c$ tel que $(w_n-c)$ soit géométrique, puis exprimer $w_n$ en fonction de $n$.",
+          "solution_markdown": "$c=2c-5\\Leftrightarrow c=5$. Posons $z_n=w_n-5$ : $z_{n+1}=w_{n+1}-5=(2w_n-5)-5=2w_n-10=2(w_n-5)=2z_n$. $(z_n)$ est géométrique de raison $2$ et de premier terme $z_0=w_0-5=10-5=5$. Donc $z_n=5\\times2^n$, et **$w_n=5\\times2^n+5$.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $(t_n)$ définie par $t_0=3$ et $t_{n+1}=\\dfrac13t_n+4$. Démontrer que $(t_n-6)$ est géométrique, en préciser la raison, et calculer $t_3$.",
+          "solution_markdown": "Point fixe : $c=\\frac13c+4\\Leftrightarrow\\frac23c=4\\Leftrightarrow c=6$. Posons $s_n=t_n-6$ : $s_{n+1}=t_{n+1}-6=(\\frac13t_n+4)-6=\\frac13(s_n+6)-2=\\frac13s_n$. **$(s_n)$ est géométrique de raison $\\frac13$**, de premier terme $s_0=t_0-6=3-6=-3$. Donc $s_n=-3\\times\\left(\\frac13\\right)^n$, et $t_n=-3\\left(\\frac13\\right)^n+6$. Pour $n=3$ : $t_3=-3\\times\\frac1{27}+6=-\\frac19+6=\\frac{-1+54}{9}=\\frac{53}{9}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une suite $(p_n)$ vérifie $p_0=1000$ et $p_{n+1}=0{,}8p_n+200$. Montrer que $(p_n)$ est majorée par $1000$ et minorée par une limite que l'on précisera, sans utiliser explicitement la suite auxiliaire (raisonnement par le point fixe et le sens de variation).",
+          "solution_markdown": "Point fixe : $c=0{,}8c+200\\Leftrightarrow0{,}2c=200\\Leftrightarrow c=1000$. Comme $p_0=1000=c$, la suite auxiliaire $v_n=p_n-c$ vérifie $v_0=0$, et $(v_n)$ étant géométrique de raison $0{,}8$, on a $v_n=0\\times(0{,}8)^n=0$ pour tout $n$. **Donc $p_n=1000$ pour tout $n$ : la suite est constante**, égale à sa limite $1000$ dès le premier terme, car $u_0$ coïncidait déjà avec le point fixe de la relation. Ce cas particulier (suite constante) montre que si $u_0=c$, la suite \"arithmético-géométrique\" est en réalité déjà stationnaire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à $u_{n+1}=au_n+b$ avec $a\\neq1$, cherche systématiquement le point fixe $c=ac+b$.",
+        "Le changement de variable $v_n=u_n-c$ transforme toujours cette suite en suite géométrique de raison $a$.",
+        "N'oublie jamais l'étape finale : revenir à $u_n=v_n+c$ pour répondre à la question réellement posée.",
+        "Si $u_0$ est déjà égal au point fixe $c$, la suite est constante dès le départ : un cas particulier à savoir repérer rapidement.",
+        "Ce type de suite modélise très naturellement des situations concrètes (réservoir, capital, population) : au Probatoire, elle est presque toujours suivie d'une mise en situation, comme dans l'exercice source de ce cours."
+      ]
+    }
+  ]
+}

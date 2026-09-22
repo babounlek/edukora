@@ -10,23 +10,27 @@ interface RelatedCoursProps {
   countryCode: string
   cursusId?: number
   excludeId: number
+  // Sous-thème du cours consulté (voir catalog.Cours.sous_theme) - les cours qui le
+  // partagent remontent en tête des suggestions plutôt que de se retrouver noyés dans
+  // le reste de la matière (voir CoursListView.sous_theme_prioritaire côté backend).
+  sousTheme?: string
 }
 
 /** Même patron que RelatedEpreuves - même matière + même série que le cours consulté, en écartant ce qui a déjà été lu. */
-export function RelatedCours({ subjectCode, subjectLabel, countryCode, cursusId, excludeId }: RelatedCoursProps) {
+export function RelatedCours({ subjectCode, subjectLabel, countryCode, cursusId, excludeId, sousTheme }: RelatedCoursProps) {
   const [relatedCours, setRelatedCours] = useState<Cours[]>([])
 
   useEffect(() => {
-    listCours(
-      cursusId
-        ? { subject: subjectCode, cursus: cursusId, exclude_read: true }
-        : { subject: subjectCode, country: countryCode, exclude_read: true },
-    )
+    listCours({
+      ...(cursusId ? { subject: subjectCode, cursus: cursusId } : { subject: subjectCode, country: countryCode }),
+      exclude_read: true,
+      ...(sousTheme ? { sous_theme_prioritaire: sousTheme } : {}),
+    })
       .then((data) => {
         setRelatedCours(data.results.filter((c) => c.id !== excludeId).slice(0, 4))
       })
       .catch(() => {})
-  }, [subjectCode, countryCode, cursusId, excludeId])
+  }, [subjectCode, countryCode, cursusId, excludeId, sousTheme])
 
   if (relatedCours.length === 0) return null
 

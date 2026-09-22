@@ -1,0 +1,189 @@
+--- SKILL_actuel.md	2026-09-20 10:37:12.688386000 +0100
++++ SKILL_propose.md	2026-09-20 10:40:28.967642500 +0100
+@@ -29,6 +29,8 @@
+ | Côte d'Ivoire (`ci`) | BEPC (fin de collège), BAC (pas de Probatoire) | A1 (Lettres-Philo), A2 (Lettres-Langues), C (Maths-Sciences Physiques), D (Maths-Sciences de la Vie et de la Terre). Les séries techniques (E, F1-F7, G1, G2) existent dans le vrai système ivoirien mais ne sont pas encore intégrées côté plateforme - si l'épreuve relève d'une série technique, le signaler dans `incertitudes` plutôt que d'assigner un code au hasard |
+ | Bénin (`bj`) | BEPC (fin de collège), BAC (pas de Probatoire) | A (Lettres), C (Mathématiques-Physique), D (Sciences Expérimentales), G (Économie-Gestion) |
+ 
++**Cameroun - codes de série : jamais de sous-série inventée.** La Série A camerounaise s'écrit `"A"` (avec `filiere_serie_a: "abi"` pour l'A4 Bilingue), jamais `"A1,A2,A3,A4,A5"` ni `"A1"` : A1/A2 sont des codes ivoiriens (tableau ci-dessus) et l'ingestion échoue avec « Cursus introuvable pour pays=Cameroun, examen='probatoire', série='A1' ». Constaté sur probatoire-a-informatique-theorique-2026 (3 exercices rejetés). Un en-tête qui annonce « Séries A1 à A5 » pour le Cameroun désigne la Série A.
++
+ **Coefficients indicatifs Terminale, Cameroun uniquement** (pour calibrer l'exigence quand le coefficient n'est pas indiqué sur l'épreuve) :
+ - Série C : Maths (coeff élevé), Physique-Chimie, Français, Philosophie, Anglais
+ - Série D : Maths, Physique-Chimie, SVT (coeff élevé), Français, Philosophie, Anglais
+@@ -218,6 +220,8 @@
+ 
+ **Le bloc `### Rappel de méthode` reste UN SEUL paragraphe, sans aucune ligne blanche à l'intérieur** : la plateforme détecte la fin de ce bloc à la première ligne blanche rencontrée après le titre - tout ce qui suit cette ligne blanche (deuxième paragraphe compris) n'est jamais mis en valeur dans l'encadré, et le lien "Voir le cours complet" qui s'y rattache automatiquement ne le retrouve plus. Le principe général (2-4 lignes, point 1) et son application chiffrée au cas précis (point 2, "Corrigé détaillé étape par étape") sont donc deux paragraphes TOUJOURS distincts : le second ne doit jamais rejoindre le premier sous le même titre, même séparé d'une seule ligne blanche - il commence directement après, sans titre propre, à la suite naturelle du bloc Rappel. Erreur constatée : un Rappel rédigé sur deux paragraphes - le principe général, une ligne blanche, puis l'application numérique à cet exercice précis (valeurs, notation indexée du type $C_1, C_2...$) - au lieu de couper après la seule phrase de principe général (bac-blanc-c-d-e-chimie-2026-cameroun exercice 2, sous-question 1a ; scan corpus du 2026-08-31, lien "Voir le cours complet" alors introuvable sous son propre encadré). La même épreuve traitait pourtant correctement des sous-questions voisines (le principe général seul dans le Rappel, l'application détachée juste après) : relire chaque bloc Rappel une fois rédigé pour vérifier qu'aucune ligne blanche n'y apparaît avant son titre suivant (`### Piège à éviter`/`### Conseil`) ou avant la sous-question suivante.
+ 
++**Correspondance stricte entre `rappels_de_methode` et les titres du corrigé.** Pour chaque sous-question, le nombre d'objets dans `questions[].rappels_de_methode` est égal au nombre de titres `### Rappel de méthode` de son `corrige_markdown`, chacun dans son PROPRE bloc (un titre + un paragraphe par rappel : jamais deux rappels fusionnés sous un seul titre). Trois défauts constatés, tous bloquants au tunnel (« N rappel(s) en base mais 0 titre(s) `### Rappel de méthode` dans le corrigé ») : (a) les rappels sont déclarés dans le JSON mais leur texte n'apparaît nulle part dans le corrigé (bac-ti-programmation-2024 : 19 ; bac-ti-SI-2024 : 21) ; (b) le rappel est écrit en ligne « **Rappel de methode.** texte… » au lieu du titre de niveau 3 (bac-ti-programmation-2025, bac-ti-reseau-2023, probatoire 2026, vogt-2021 : 50+) ; (c) deux rappels d'une même sous-question réunis dans un bloc unique (vogt-2021 q1, reseau-2023 ex.2/3 : « 3 rappels, 2 titres »). Le titre s'écrit avec l'accent : `### Rappel de méthode`. (d) **`contenu_markdown` différent du bloc du corrigé** : le rappel déclaré contient la RÉPONSE (ou une reformulation) alors que le bloc du corrigé contient la méthode - la plateforme apparie par préfixe exact, ne trouve aucun bloc et entasse tous les « Voir le cours complet » en fin d'exercice au lieu de les placer sous chaque encadré (constaté le 2026-09-20 : 56 rappels sur 5 lots, reseau-2023, probatoire 2026 A et C/D/E, programmation-2025, vogt-2021). Règle : copier-coller, caractère pour caractère, le paragraphe qui suit le titre dans `contenu_markdown` ; si deux rappels partagent un bloc, ils portent le même texte.
++
+ **Ne pas fusionner vérification et conseil** : la vérification renforcée de l'étape 4 du processus (ex. recalcul indépendant d'une distance pour confirmer un rayon) est une étape de fiabilité interne, pas un conseil pédagogique pour l'élève. Si elle a une valeur pédagogique réelle pour l'élève (ex. "voici comment vous-même vérifier votre résultat le jour J"), elle peut apparaître dans le bloc Conseil - mais alors reformulée du point de vue de l'élève, pas comme un aparté d'auto-contrôle du rédacteur.
+ 
+ ---
+@@ -473,9 +477,9 @@
+   **Piège déjà rencontré, à l'origine de rejets en série** : le nom de dossier de l'épreuve se termine par le pays (`ingest/cm/bac-c-physique-2024-cameroun/...`), ce qui pousse à lire `origine` comme « d'où vient cette épreuve ? » et à y écrire `"Cameroun"`. Les 5 exercices de l'épreuve partent alors avec la même valeur invalide et l'épreuve entière est rejetée. Le pays **a son propre champ, `pays`** (voir la règle dédiée ci-dessus), alimenté par le segment `<code_pays>` du chemin `ingest/<code_pays>/<epreuve>/` : c'est le seul endroit du JSON où il apparaît. Ne jamais le faire entrer dans `origine`, `examen` ou `serie`. Valeurs interdites dans `origine`, vues ou prévisibles : `"Cameroun"`, `"cm"`, `"MINESEC"`, `"Office du Bac"`, `"BAC C 2024"`, le nom du fichier PDF (celui-ci va dans `epreuve_source`, et nulle part ailleurs).
+ - **`matiere` : liste fermée, jamais une formulation inventée** (même règle que `origine`/`examen` ci-dessus, voir aussi le rappel en fin de compétence). Recopier l'un des intitulés suivants - toute valeur hors de cette liste, et hors du tableau de rattachement juste en dessous, fait rejeter l'exercice ou le cours à l'ingestion avec le message `Matière inconnue : '<valeur>'.` :
+ 
+-  `Mathématiques` · `Physique` · `Chimie` · `Physique-Chimie` (réservé, voir la règle dédiée juste après) · `Physique-Chimie-Technologie` · `SVT` · `Français` · `Philosophie` · `Histoire-Géographie` · `Anglais` · `Espagnol` · `Économie` · `Droit` · `Éducation Civique` · `Littérature` · `EPS` · `Informatique` (BEPC et BAC C/D/E théorique UNIQUEMENT, jamais en Série TI) · `Programmation` · `Systèmes d'Information` · `Réseaux, Internet et Sécurité Informatique` (ces trois dernières : Série TI uniquement) · `Dessin`
++  `Mathématiques` · `Physique` · `Chimie` · `Physique-Chimie` (réservé, voir la règle dédiée juste après) · `Physique-Chimie-Technologie` · `SVT` · `Français` · `Philosophie` · `Histoire-Géographie` · `Anglais` · `Espagnol` · `Économie` · `Droit` · `Éducation Civique` · `Littérature` · `EPS` · `Informatique` (BEPC, Probatoire A et C/D/E, BAC C/D/E théorique UNIQUEMENT ; jamais en Série TI) · `Programmation` · `Systèmes d'Information` · `Réseaux, Internet et Sécurité Informatique` (ces trois dernières : Série TI uniquement) · `Dessin`
+ 
+-  **Série TI, jamais `Informatique`.** Décision du 2026-09-17 : en Série TI (Probatoire et BAC), l'Informatique se décompose toujours en trois matières distinctes - `Programmation` (algorithmique, langage C, programmation web), `Systèmes d'Information` (bases de données, UML, modélisation ; c'est aussi l'ancien « Informatique Théorique ») et `Réseaux, Internet et Sécurité Informatique` (réseaux, adressage IP, Internet, cloud, sécurité) - choisir celle que l'épreuve examine réellement, sur la lecture de son contenu, jamais `Informatique` par réflexe. `matiere` s'applique aussi aux cours (`meta.matiere`). La plateforme REFUSE à l'ingestion un exercice ou un cours de Série TI déclaré `Informatique` (erreur d'ingestion explicite) : un fichier ainsi produit ne sera pas ingéré.
++  **Série TI, jamais `Informatique`.** Décision du 2026-09-17 : en Série TI (Probatoire et BAC), l'Informatique se décompose toujours en trois matières distinctes - `Programmation` (algorithmique, langage C, programmation web), `Systèmes d'Information` (bases de données, UML, modélisation ; c'est aussi l'ancien « Informatique Théorique ») et `Réseaux, Internet et Sécurité Informatique` (réseaux, adressage IP, Internet, cloud, sécurité) - choisir celle que l'épreuve examine réellement, sur la lecture de son contenu, jamais `Informatique` par réflexe. `matiere` s'applique aussi aux cours (`meta.matiere`). La plateforme REFUSE à l'ingestion un exercice ou un cours de Série TI déclaré `Informatique` (erreur d'ingestion explicite) : un fichier ainsi produit ne sera pas ingéré. **Cas d'erreur en série** : 6 lots TI livrés d'affilée avec `"matiere": "Informatique"` (bac-ti-programmation-2024/2025, bac-ti-reseau-2023, terminale-ti-SI-vogt-2021…), soit environ 90 fichiers (exercices ET cours) rejetés d'un coup. Avant de livrer un lot dont `serie` contient `TI`, relire `matiere` de CHAQUE exercice ET `meta.matiere` de CHAQUE cours (voir l'auto-contrôle « Checklist de sortie de lot »). **Le nom du dossier ne décide jamais de la série** : `probatoire-ti-SI-2026` contenait en réalité l'épreuve « Probatoire C/D - théorique d'informatique » (série `C, D, E`, matière `Informatique`) ; lire la série dans l'en-tête du sujet, et nommer le dossier d'après ce qu'on y a lu.
+ 
+   **Table de rattachement** - le sujet source emploie souvent un intitulé différent pour désigner la même discipline (nomenclature d'une autre époque, sigle, intitulé officiel remis à jour) : rattacher à l'intitulé canonique ci-dessus, ne jamais recopier l'intitulé source tel quel ni inventer une formulation voisine.
+ 
+@@ -626,7 +630,7 @@
+   | Champ | Seules valeurs acceptées |
+   |---|---|
+   | `pays` | `cm` \| `sn` \| `ci` \| `bj` \| `tg` \| `bf` \| `td` \| `ga` \| `cf` \| `cd` \| `cg` \| `gw` \| `ml` \| `ne` (jamais `null`) |
+-  | `examen` | `bepc` \| `bfem` \| `probatoire` \| `bac` \| `autre` |
++  | `examen` | `bepc` \| `bfem` \| `probatoire` \| `bac` \| `autre` - **jamais** `controle`, `devoir`, `composition`, `sequence`, `evaluation` : un contrôle, un devoir harmonisé ou une composition d'établissement se rattache au NIVEAU visé (`bac` pour une Terminale, `probatoire` pour une Première, `bepc` pour une 3e) et se distingue par `origine: "etablissement"` (+ `etablissement`). Constaté : `"examen": "controle"` sur terminale-ti-SI-vogt-2021-cameroun (4 exercices rejetés) ; `bac_blanc` est de la même famille de dérive |
+   | `origine` | `officiel` \| `examen blanc` \| `sujet zero` \| `etablissement` \| `autre` |
+   | `serie` | un ou plusieurs codes exacts du référentiel du pays traité, séparés par des virgules, ou `null` |
+   | `nature_epreuve` | `theorique` \| `pratique` \| `null` (champ optionnel) |
+@@ -644,7 +648,7 @@
+ - **Vérification obligatoire avant de finaliser le JSON (QCM)** : pour chaque sous-question `"type_reponse": "qcm"`, relire `reponse_correcte` et confirmer qu'elle correspond exactement (lettre ou texte) à une entrée de `choix`. Une valeur vide ou qui ne correspond à aucune entrée fait échouer l'ingestion côté plateforme - l'exercice entier est alors rejeté, pas seulement la sous-question concernée. Corriger avant de livrer plutôt que de laisser la plateforme le découvrir au moment de l'ingestion.
+ - **Ne jamais inclure la fiche d'identité (En-tête standardisé, section précédente) dans `corrige_markdown`** : ces informations sont déjà structurées dans les champs `pays`, `matiere`, `serie`, `examen`, `origine`, `etablissement`, `annee`, `duree_epreuve`, `coefficient` du JSON. L'en-tête texte est utile en mode interactif (un corrigé livré seul) mais la plateforme ne l'affiche jamais dans le corps du contenu - c'est le frontend et le PDF qui affichent ces champs dans leur propre en-tête visuel, à partir des champs structurés uniquement, jamais depuis du texte libre
+ - **`questions[].numero`** : 10 caractères maximum (limite de stockage côté plateforme, qui rejette tout l'exercice si dépassée). Un repère de sous-question long comme "Présentation", "Conclusion" ou "Bonus" dépasse déjà cette limite à lui seul - abréger (ex. "Présent.", "Conclu.", "Bonus") plutôt que d'utiliser le mot complet. Ce champ reste un simple repère de tri, jamais le texte affiché à l'élève (qui vient de `enonce_markdown`) : l'abréger ne perd donc aucune information visible.
+-- **Accents et caractères français dans tous les champs texte** (`enonce_markdown`, `corrige_markdown`, `contenu_markdown`, `competence`, `themes`…) : toujours l'orthographe française complète (é, è, ê, à, ç, œ, ï…), jamais du texte « désaccentué » (« systeme », « reseau », « definition », « peripherique »). Constaté sur probatoire-blanc-ti-SI-bayangam-2023 : tout le lot écrit sans accents, ce qui donne un corrigé peu lisible pour l'élève et des thèmes en doublon avec leur forme accentuée (« reseau » / « réseau »). Le sujet source peut être saisi sans accents : ce n'est pas une raison de les omettre dans le corrigé.
++- **Accents et caractères français dans tous les champs texte** (`enonce_markdown`, `corrige_markdown`, `contenu_markdown`, `competence`, `themes`…) : toujours l'orthographe française complète (é, è, ê, à, ç, œ, ï…), jamais du texte « désaccentué » (« systeme », « reseau », « definition », « peripherique »). Constaté sur probatoire-blanc-ti-SI-bayangam-2023 : tout le lot écrit sans accents, ce qui donne un corrigé peu lisible pour l'élève et des thèmes en doublon avec leur forme accentuée (« reseau » / « réseau »). Le sujet source peut être saisi sans accents : ce n'est pas une raison de les omettre dans le corrigé. **Récidive constatée le 2026-09-20 sur 8 lots sur 9** (vogt-2021, bac-ti-SI-2024, bac-ti-programmation-2024/2025, bac-ti-reseau-2023, probatoire-ti-SI-2023, probatoire 2026 C/D/E et A) : corrigés, rappels et thèmes livrés sans accents (« Definir », « systeme », « resultat »), ET cours idem, y compris `meta.titre` (« Elaborer un diagramme de sequences ») - les élèves voient ces titres. Les seuls endroits sans accent sont les identifiants (`cours_id`, slugs, noms de fichier, `epreuve_source`), le CODE (blocs et `code inline`, noms de tables/champs/classes, chaînes affichées par un programme) et les valeurs de listes fermées. `meta.titre`, `meta.sous_theme`, `meta.tags`, `themes`, `competence`, les légendes de figures et tous les textes des sections d'un cours sont accentués. Un thème désaccentué recrée un doublon de Tag (« methode de developpement » / « méthode de développement » : 5 groupes fusionnés à la main). **Auto-contrôle avant de livrer** : la « Checklist de sortie de lot » ci-dessous signale les mots courants restés sans accent hors code ; en trouver = reprendre le fichier, pas le livrer.
+ - **`questions[].rappels_de_methode`** : extraire chaque bloc `### Rappel de méthode` du corrigé de CETTE sous-question comme un objet distinct, rattaché à elle (pas à une autre sous-question du même exercice). Cinq clés, et seulement ces cinq : `id`, `competence`, `contenu_markdown`, `cours_genere`, `cours_id` - jamais de clé alternative (constaté : `texte` à la place de `contenu_markdown`, une entrée réduite à `cours_id`+`texte` sans `id`). L'ingestion ne lit que ces cinq clés précises : une entrée sans `id` fait rejeter tout l'exercice, et même quand l'id est par ailleurs récupérable, un contenu placé sous une clé inconnue comme `texte` n'est jamais lu - le rappel est alors créé vide plutôt qu'avec le contenu voulu. `cours_genere` et `cours_id` restent toujours `false`/`null` dans le JSON d'exercice, y compris en traitement en lot : ce n'est jamais la compétence qui pose ce lien. La plateforme le renseigne elle-même, une fois le cours ingéré séparément (voir "Génération des cours en lot") - inutile d'anticiper une valeur ici, elle serait de toute façon ignorée à l'ingestion.
+ 
+   **⚠ Règle de fidélité absolue pour `contenu_markdown`** : ce champ doit contenir une copie littérale, caractère par caractère, du texte qui suit le titre `### Rappel de méthode` dans le `corrige_markdown` de la sous-question à laquelle ce rappel est rattaché. La plateforme utilise une correspondance de chaîne exacte pour localiser et injecter visuellement ce bloc dans le corrigé affiché — toute reformulation, même légère (synonyme, ordre des mots, ponctuation), casse cette correspondance silencieusement et le rappel disparaît pour l'élève. Ne pas résumer, ne pas reformuler, ne pas "améliorer" : copier-coller. Ce texte reste, par construction, une règle générale et non un extrait de la réponse chiffrée (voir « Le contenu sous `### Rappel de méthode` est une règle générale, jamais un extrait de la réponse » dans le Template obligatoire) : si le `corrige_markdown` source mélange règle générale et application dans le même bloc `### Rappel de méthode`, corriger le corrigé source avant d'en extraire le rappel, plutôt que de recopier un extrait de l'application chiffrée dans `contenu_markdown`.
+@@ -674,10 +678,12 @@
+ 
+ **Catalogue de titres existants - à demander si absent.** Avant de traiter un dossier, si l'environnement (tâche planifiée, runner) ne l'a pas déjà fourni, demander la liste des titres de `Cours` déjà publiés pour la matière et le pays traités (`Cours.objects.filter(subject=..., statut=VALIDE).values_list("titre", flat=True)`). L'ingestion (`ingest_cours`) rattache de toute façon tout nouveau cours à un titre déjà existant (comparaison insensible à la casse) plutôt que de le dupliquer - mais elle le fait après avoir reçu le JSON complet, donc après que la compétence ait déjà rédigé les 7 sections en pure perte. Le catalogue permet d'éviter ce travail inutile en amont :
+ - **Le nom de la compétence correspond exactement (insensible à la casse, mêmes principes que la comparaison faite à l'ingestion) à un titre du catalogue** : ne pas rédiger les 7 sections. Émettre uniquement le squelette minimal requis pour que l'ingestion rattache ce rappel au cours existant - `cours_id` (un identifiant nouveau, déterministe, dérivé du rappel comme d'habitude ; l'ingestion ne le trouvera pas par `external_id` et retombera sur la correspondance de titre), `meta.titre` copié à l'identique du catalogue, `source.rappel_id`, et `sections: []`. Ne jamais deviner qu'une correspondance existe sur une simple ressemblance de formulation - "Résolution d'équations du second degré" et "Étude du signe d'un trinôme" sont deux notions distinctes même si elles apparaissent souvent ensemble ; en cas de doute, générer le cours complet plutôt que risquer un rattachement à une notion différente.
++- **Un squelette (`sections: []`) n'est valable QUE s'il rattache le rappel à un titre RÉELLEMENT présent dans le catalogue fourni, identique accents compris, ET s'il porte tous les champs obligatoires de l'ingestion : `cours_id`, `meta.titre`, `meta.matiere` (règle de la Série TI comprise), `source.rappel_id`.** Deux défauts constatés le 2026-09-20 : 9 « squelettes » de bac-ti-SI-2025 sans `meta.matiere` et sans catalogue correspondant (le titre existait sans accents, le nouveau avec) - coquilles vides, rejetées à l'ingestion ; ~70 cours de 6 lots avec `source.rappel_id: null`, rejetés en bloc (« Champs obligatoires manquants : cours_id, meta.titre, meta.matiere, source.rappel_id »). Sans catalogue, ou au moindre doute sur l'égalité des titres : cours complet en 7 sections, jamais un squelette « par prudence ».
+ - **Aucune correspondance** : générer le cours complet, normalement.
+ - Si aucun catalogue n'a été fourni et ne peut être obtenu, générer chaque cours complet - l'ingestion reste le filet de sécurité qui empêche la publication d'un doublon, seule l'économie de génération est perdue.
+ - **Un rappel par cours en sortie**, jamais un cours partagé explicitement par plusieurs rappels dans le JSON : si deux rappels de la même épreuve désignent la même compétence, chacun produit son propre fichier cours (complet ou squelette selon la règle ci-dessus) avec son propre `source.rappel_id` - c'est l'ingestion, pas la compétence, qui les fait converger vers le même `Cours` en base via la correspondance de titre.
+ - **Nommage** : `<nom_epreuve>_cours_<competence_slug>.json`, dans le même dossier que les JSON d'exercices et les PNG de figures de l'épreuve. Le `competence_slug` est dérivé du champ `competence` du rappel (minuscules, accents supprimés, espaces en tirets).
++- **Aucun rappel sans cours, aucun cours sans rappel.** Chaque objet de `questions[].rappels_de_methode` donne un fichier cours dont `source.rappel_id` est l'`id` exact de CE rappel (jamais `null`, jamais reconstruit). Quand la notion est déjà couverte par un autre cours du même lot, ne pas laisser le rappel orphelin : émettre un squelette valide (règle précédente) vers le titre de ce cours. Constaté : 29 rappels de 6 lots sans aucun cours associé, rattachés à la main a posteriori.
+ - **Traçabilité obligatoire** : `source.epreuve_id`, `source.epreuve_titre`, `source.exercice_numero` et `source.rappel_id` sont toujours renseignés en lot, même pour un squelette de doublon - c'est ce qui permet à l'ingestion de retrouver le `RappelDeMethode` à rattacher. `correction_id` peut rester `null` si l'identifiant est attribué par la plateforme au moment de l'ingestion.
+ - **Exemple résolu de la section 4** (cours complet uniquement) : privilégier l'exercice de l'épreuve source qui a fait naître le rappel, avec `epreuve_source: true`. Ne construire un exemple ad hoc que si l'exercice d'origine est trop long ou dépend d'une figure illisible.
+ - **Référentiel pays non confirmé** : le cours hérite de l'incertitude du corrigé. Mettre `meta.serie` à `null` plutôt qu'un code deviné, et reprendre la mention dans les `incertitudes` de l'exercice source.
+@@ -888,6 +894,109 @@
+ 
+ ---
+ 
++## Checklist de sortie de lot (auto-contrôle AVANT de déclarer un dossier livré)
++
++Les défauts de format ci-dessus se répètent d'un lot à l'autre (6 à 8 lots sur 9 le 2026-09-20) : les relire ne suffit pas, il faut les MESURER. Avant de livrer un dossier d'épreuve, exécuter le script ci-dessous (Python standard, aucune dépendance, pas de Docker requis) et ne livrer que sur `LOT PROPRE` ; chaque `[ALERTE]` est soit corrigée, soit justifiée dans le compte rendu final.
++
++```bash
++python verifier_lot.py <dossier_epreuve>   # ex. ingest/cm/bac-ti-reseau-2023-officiel-cameroun
++```
++
++Le script contrôle : `examen` dans la liste fermée ; Série TI ⇒ `matiere` parmi les trois matières TI (exercices ET cours) ; Cameroun ⇒ pas de `A1..A5` ; nombre de `rappels_de_methode` = nombre de titres `### Rappel de méthode` par sous-question, aucun rappel « en ligne » ; chaque sous-question a des `themes` ; chaque cours a `cours_id`, `meta.titre`, `meta.matiere` et un `source.rappel_id` qui existe dans les exercices du dossier ; squelettes signalés ; mots courants sans accent hors code ; `$` littéral hors code. Il ne remplace pas `tunnel_validation.sh` (thèmes, rendu KaTeX), il le précède.
++
++```python
++"""Auto-contrôle d'un dossier d'épreuve avant livraison (stdlib uniquement).
++Usage : python verifier_lot.py <dossier_epreuve>   -> code 1 si un défaut BLOQUANT."""
++import glob, json, re, sys, os
++
++EXAMENS = {"bepc", "bfem", "probatoire", "bac", "autre"}
++MATIERES_TI = {"Programmation", "Systèmes d'Information", "Réseaux, Internet et Sécurité Informatique"}
++# mots courants qui, écrits sans accent, trahissent un texte « désaccentué » (hors code)
++SANS_ACCENT = re.compile(
++    r"\b(systeme|systemes|reseau|reseaux|methode|methodes|donnees|definir|definition|resultat|resultats|"
++    r"etape|etapes|ecrire|probleme|modele|precedent|verifier|determiner|caracteristique|caracteristiques|"
++    r"generale|utilise|realise|eleve|evenement|requete|selection|proprietes|periph\w+|memoire|numerique|"
++    r"specifique|deduire|elaborer|representer|identifier_)\b", re.I)
++
++
++def hors_code(s):
++    s = re.sub(r"```.*?```", " ", s, flags=re.S)
++    return re.sub(r"`[^`\n]*`", " ", s)
++
++
++def textes(o, chemin=""):
++    if isinstance(o, dict):
++        for k, v in o.items():
++            yield from textes(v, chemin + "/" + k)
++    elif isinstance(o, list):
++        for i, v in enumerate(o):
++            yield from textes(v, "%s[%d]" % (chemin, i))
++    elif isinstance(o, str):
++        yield chemin, o
++
++
++def main(d):
++    bloq, alertes = [], []
++    rappel_ids = set()
++    exos = sorted(glob.glob(os.path.join(d, "*_exercice_[0-9]*.json")))
++    coursf = sorted(glob.glob(os.path.join(d, "*_cours_*.json")))
++    for f in exos:
++        j = json.load(open(f, encoding="utf-8")); n = os.path.basename(f)
++        if j.get("examen") not in EXAMENS:
++            bloq.append("%s : examen=%r hors liste (contrôle/devoir/composition → niveau visé + origine « etablissement »)" % (n, j.get("examen")))
++        serie = str(j.get("serie") or "")
++        if re.search(r"\bTI\b", serie) and j.get("matiere") not in MATIERES_TI:
++            bloq.append("%s : série TI mais matiere=%r (Programmation | Systèmes d'Information | Réseaux, Internet et Sécurité Informatique)" % (n, j.get("matiere")))
++        if re.search(r"\bA[1-5]\b", serie) and j.get("pays") == "cm":
++            bloq.append("%s : Cameroun, série %r → le code est « A » (jamais A1..A5)" % (n, serie))
++        for q in j.get("questions", []):
++            rds = q.get("rappels_de_methode") or []
++            c = q.get("corrige_markdown") or ""
++            titres = len(re.findall(r"^###\s*Rappel de m[eé]thode\s*$", c, flags=re.M))
++            for r in rds: rappel_ids.add(r.get("id"))
++            if re.search(r"\*\*Rappel de m[eé]thode\.?\*\*", c):
++                bloq.append("%s q%s : « **Rappel de méthode.** » en ligne → titre « ### Rappel de méthode » exigé" % (n, q.get("numero")))
++            if len(rds) != titres:
++                bloq.append("%s q%s : %d rappel(s) déclaré(s) mais %d titre(s) « ### Rappel de méthode » dans le corrigé" % (n, q.get("numero"), len(rds), titres))
++            blocs = [re.sub(r"\A###\s*Rappel de m[eé]thode\s*\n+", "", m.group(0)).strip()
++                     for m in re.finditer(r"###\s*Rappel de m[eé]thode\s*\n+.*?(?=\n{2,}|\n#{1,6}[ \t]|\n---|\Z)", c, flags=re.S | re.I)]
++            for r in rds:
++                ct = (r.get("contenu_markdown") or "").strip()
++                if blocs and not any(ct and (ct.startswith(b) or b.startswith(ct)) for b in blocs):
++                    bloq.append("%s q%s : rappel %s - contenu_markdown n'est pas la copie littérale d'un bloc du corrigé (lien « Voir le cours complet » rejeté en fin d'exercice)" % (n, q.get("numero"), r.get("id")))
++            if not q.get("themes"):
++                bloq.append("%s q%s : aucun thème" % (n, q.get("numero")))
++        sa = sum(len(SANS_ACCENT.findall(hors_code(t))) for _, t in textes(j) if len(t) > 30)
++        if sa > 3: alertes.append("%s : %d mot(s) courant(s) sans accent hors code (texte désaccentué ?)" % (n, sa))
++    for f in coursf:
++        c = json.load(open(f, encoding="utf-8")); n = os.path.basename(f)
++        m, s = c.get("meta") or {}, c.get("source") or {}
++        if not (c.get("cours_id") and m.get("titre") and m.get("matiere")):
++            bloq.append("%s : cours_id / meta.titre / meta.matiere manquant (même pour un squelette)" % n)
++        if not s.get("rappel_id"):
++            bloq.append("%s : source.rappel_id nul" % n)
++        elif rappel_ids and s["rappel_id"] not in rappel_ids:
++            bloq.append("%s : source.rappel_id=%r absent des exercices du dossier" % (n, s["rappel_id"]))
++        if str(m.get("serie") or "") == "TI" and m.get("matiere") == "Informatique":
++            bloq.append("%s : série TI et matiere « Informatique »" % n)
++        if not c.get("sections"):
++            alertes.append("%s : squelette (sections vides) - valable seulement si le titre est IDENTIQUE, accents compris, à un titre du catalogue" % n)
++        if SANS_ACCENT.search(m.get("titre") or ""):
++            alertes.append("%s : titre sans accents" % n)
++        for chemin, t in textes(c):
++            if re.search(r"(?<![\$`])\$(?!\$)", hors_code(t)) and hors_code(t).count("$") % 2:
++                alertes.append("%s %s : `$` littéral hors code" % (n, chemin)); break
++    print("Dossier %s : %d exercice(s), %d cours" % (d, len(exos), len(coursf)))
++    for b in bloq: print("[BLOQUANT]", b)
++    for a in alertes: print("[ALERTE]", a)
++    print("LOT PROPRE" if not bloq else "LOT À CORRIGER")
++    return 1 if bloq else 0
++
++
++if __name__ == "__main__":
++    sys.exit(main(sys.argv[1]))
++```
++
+ ## Tunnel de validation - dernière étape obligatoire de tout round d'ingestion
+ 
+ Un round n'est JAMAIS déclaré terminé sur la seule foi de « l'ingestion n'a pas échoué » : les écarts constatés jusqu'ici (rendu KaTeX cassé, questions sans thème, quasi-doublons de thèmes, QCM incohérent) passaient l'ingestion sans erreur et n'apparaissaient qu'après coup, en obligeant à lancer des campagnes de rattrapage. Après l'ingestion, lancer depuis la racine du dépôt (`D:\edukora`) :
+@@ -899,6 +1008,7 @@
+ `<since>` = durée depuis le début du round (`2h`, `90m`, `1d`) ou datetime ISO : le tunnel ne valide que le contenu créé ou modifié depuis cet instant. Il enchaîne (1) la structure - Question sans thème, QCM incohérent (BLOQUANT) ; (2) le vocabulaire de thèmes - quasi-doublons de Tag, thèmes partagés entre matières (ALERTE) ; (3) la couverture - quiz/cours manquants pour les thèmes touchés (INFO) ; (4) le rendu - le VRAI moteur KaTeX/remark sur ce périmètre.
+ 
+ - La sortie `TUNNEL VALIDÉ` (code 0) est exigée avant de conclure ; la citer dans le rapport final.
++- `ingerer_et_valider.sh` sort en 0 quand tout est « déjà existant, ignoré » : le périmètre du tunnel est alors vide et cette sortie ne prouve rien. Sur un dossier déjà ingéré, valider avec `tunnel_validation.sh <since>` (fenêtre couvrant la réingestion). Après correction d'un exercice déjà en base, le réingérer avec `force=True` (jamais tout le lot) ; un cours déjà en base ne se met pas à jour par réingestion (`ingest_cours` est idempotent sur `cours_id`) : le supprimer puis le réingérer. La boucle complète (classer les erreurs, corriger, réingérer, valider) est celle du skill `tunnel-completude-edukora`.
+ - BLOQUANT ou échec de rendu : corriger la donnée (JSON source) puis réingérer. Si la même anomalie revient d'un round à l'autre, la signaler à l'utilisateur comme défaut de plateforme (`catalog/rendering.py`, `catalog/ingestion_repairs.py`) au lieu de la repatcher à la main.
+ - ALERTE de quasi-doublon de Tag : soit un thème équivalent existe déjà (reprendre sa forme exacte dans le JSON et réingérer), soit les deux sont réellement distincts, et le rapport le dit explicitement. Jamais de fusion en masse sans l'utilisateur.
+ - Avant de fournir des `themes`, quand la base est accessible (`docker exec edukora-backend-1`), chercher la forme existante du thème (accents, singulier/pluriel, casse) plutôt que d'en inventer une variante : c'est la source des quasi-doublons.
+@@ -920,5 +1030,5 @@
+ - Ne jamais clore un traitement en lot en laissant un rappel de méthode sans cours associé sans l'avoir signalé dans le compte rendu final à l'utilisateur (jamais dans les `incertitudes` de l'exercice, qui ne sont pas un journal de traitement) - un rappel orphelin passe inaperçu jusqu'à ce qu'un élève clique sur un lien vide
+ - Ne jamais corriger un exercice dépendant d'une figure sans avoir inspecté visuellement la page qui la contient ; ne jamais inventer le contenu d'une figure illisible
+ - Ne jamais se contenter de décrire en texte un tracé que le corrigé doit produire (construction géométrique, courbe, schéma, graphique) : le réaliser en image, voir « Figures produites dans le corrigé »
+-- Ne jamais laisser un `$` littéral (variable PHP, référence de tableur, symbole monétaire) hors d'un span ou bloc de code ni échappé : voir « Le caractère `$` hors formule doit toujours être protégé »
++- Ne jamais laisser un `$` littéral (variable PHP, référence de tableur, symbole monétaire) hors d'un span ou bloc de code ni échappé : voir « Le caractère `$` hors formule doit toujours être protégé » - la règle vaut pour TOUS les champs texte d'un cours, pas seulement `contenu_markdown` : `resultat_markdown`, `pourquoi_faux`, `solution_markdown`, `items`, `items_markdown` (constaté : `echo $?` et `while($ligne = mysqli_fetch_assoc(...))` nus dans deux cours de programmation, échecs du rendu KaTeX au tunnel). Tout fragment de code en prose se met entre accents graves.
+ - Ne jamais déclarer un round d'ingestion terminé sans la sortie `TUNNEL VALIDÉ` de `scripts/tunnel_validation.sh` (voir « Tunnel de validation »)
+\ No newline at end of file

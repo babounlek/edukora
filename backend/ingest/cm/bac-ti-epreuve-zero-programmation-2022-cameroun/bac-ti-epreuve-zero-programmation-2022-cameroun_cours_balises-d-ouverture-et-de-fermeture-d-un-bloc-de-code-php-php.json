@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-balises-d-ouverture-et-de-fermeture-d-un-bloc-de-code-php-php-tle-ti",
+  "meta": {
+    "titre": "Balises d'ouverture et de fermeture d'un bloc de code PHP (<?php ... ?>)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation serveur (PHP)",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "syntaxe",
+      "balises"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un fichier PHP mélange souvent du HTML classique et du code PHP dans le même document : le serveur a besoin d'un signal clair pour savoir, ligne par ligne, s'il doit recopier le texte tel quel ou exécuter une instruction."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure de base d'un fichier HTML"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "<?php ouvre un bloc de code, ?> le referme",
+      "contenu_markdown": "La balise `<?php` signale au serveur que tout ce qui suit doit être interprété comme du code PHP, jusqu'à la balise fermante `?>` rencontrée plus loin. Entre ces deux balises, on peut écrire des instructions PHP (affectations, conditions, boucles, définitions de fonctions) ; en dehors, le contenu du fichier est du HTML recopié tel quel dans la réponse envoyée au navigateur. Un même fichier peut ouvrir et fermer plusieurs blocs `<?php ... ?>` à différents endroits, pour alterner code PHP et HTML autant de fois que nécessaire.",
+      "formule_principale": "<?php ... instructions PHP ... ?>",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer le rôle de la ligne 6 du script de l'exercice 2, qui contient `<?php`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer ce qui précède la ligne 6",
+          "justification": "Les lignes 1 à 5 sont du HTML pur (<html>, <head>, <title>, </head>, <body>), recopié tel quel.",
+          "resultat_markdown": "5 lignes de HTML classique avant la balise."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la fonction de la balise elle-même",
+          "justification": "`<?php` ne calcule rien : elle sert uniquement de signal de transition pour le parseur du serveur.",
+          "resultat_markdown": "La ligne 6 ouvre un bloc de code PHP."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer ce que ce bloc contient",
+          "justification": "Le bloc ouvert ligne 6 contient la définition de la fonction print_form(), qui sera exécutée plus loin dans le script.",
+          "resultat_markdown": "La ligne 7 définit `function print_form( ) { ... }`, à l'intérieur du bloc PHP ouvert ligne 6."
+        }
+      ],
+      "conclusion_markdown": "La ligne 6 marque donc le passage du HTML statique au code PHP dynamique qui va, plus loin dans le script, vérifier le mot de passe saisi."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que `<?php` doit obligatoirement se trouver en toute première ligne du fichier.",
+          "pourquoi_faux": "Rien n'impose que le bloc PHP commence dès la première ligne : un fichier peut très bien débuter par du HTML pur, comme c'est le cas ici (lignes 1 à 5), avant d'ouvrir son premier bloc PHP.",
+          "correction_markdown": "Repérer la balise `<?php` à l'endroit où elle apparaît réellement dans le fichier, sans supposer qu'elle doit être en première position."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire un mini-script qui affiche « Bonjour » suivi de la date du jour, en mélangeant HTML et PHP : un titre HTML `<h1>Accueil</h1>`, puis un bloc PHP qui affiche la date.",
+          "solution_markdown": "```php\n<h1>Accueil</h1>\n<?php\n    echo \"Bonjour, nous sommes le \" . date(\"d/m/Y\");\n?>\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un fichier PHP doit afficher un tableau HTML de 3 lignes, où chaque ligne est générée par une boucle PHP. Écrire ce script en alternant balises PHP et HTML.",
+          "solution_markdown": "```php\n<table>\n<?php for ($i = 1; $i <= 3; $i++) { ?>\n    <tr><td>Ligne <?php echo $i; ?></td></tr>\n<?php } ?>\n</table>\n```\nLe bloc PHP s'ouvre et se referme plusieurs fois dans le même fichier : une première fois pour la boucle `for`, une seconde fois à l'intérieur du HTML généré pour afficher la valeur de `$i`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi un fichier qui contient uniquement du code PHP, sans aucun HTML, gagne-t-il à omettre la balise fermante `?>` en toute fin de fichier (pratique recommandée par de nombreux guides de style PHP) ?",
+          "solution_markdown": "Si un espace ou une ligne vide se trouve accidentellement après la balise fermante `?>` en fin de fichier, cet espace est envoyé tel quel au navigateur comme s'il s'agissait de HTML, ce qui peut provoquer des erreurs difficiles à diagnostiquer (notamment avec les fonctions qui envoient des en-têtes HTTP, lesquelles doivent être envoyées avant tout contenu). Omettre la balise fermante finale, quand le fichier ne contient que du PHP, élimine ce risque : PHP considère implicitement que le code se termine à la fin du fichier."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`<?php` ouvre un bloc de code PHP, `?>` le referme : tout le reste du fichier est du HTML recopié tel quel.",
+        "Un même fichier peut alterner plusieurs blocs PHP et sections HTML, autant de fois que nécessaire.",
+        "La balise ne calcule rien par elle-même : elle sert uniquement de signal pour le parseur du serveur.",
+        "Un fichier purement PHP peut, par prudence, omettre la balise fermante finale pour éviter d'envoyer un caractère parasite après elle."
+      ]
+    }
+  ]
+}

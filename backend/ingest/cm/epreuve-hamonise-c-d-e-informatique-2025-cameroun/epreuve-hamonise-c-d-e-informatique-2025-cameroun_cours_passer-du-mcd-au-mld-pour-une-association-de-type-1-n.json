@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-passer-mcd-mld-association-1n-bac-informatique-2025",
+  "meta": {
+    "titre": "Passer du MCD au MLD pour une association de type 1,N",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données",
+    "duree_estimee_min": 30,
+    "tags": [
+      "MCD",
+      "MLD",
+      "base de données",
+      "cardinalité",
+      "clé étrangère"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "epreuve-hamonise-c-d-e-informatique-2025-cameroun",
+    "epreuve_titre": "Examen régional harmonisé - Épreuve théorique d'Informatique - Séries C, D, E - Session 2025 (Adamaoua, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Construire un bon MCD ne sert à rien si l'on ne sait pas ensuite le traduire correctement en tables prêtes à être créées dans une base de données : c'est le rôle du passage au MLD (Modèle Logique de Données). L'erreur la plus fréquente consiste à créer une table supplémentaire pour chaque association, alors que seules les associations plusieurs-à-plusieurs en ont besoin. Ce cours donne la règle exacte pour une association binaire de type 1,N, la plus fréquente au Baccalauréat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier les entités et leurs identifiants (clé primaire) sur un MCD",
+        "Savoir lire les cardinalités d'une association sur un MCD (minimum,maximum de chaque côté)",
+        "Distinguer une association de type 1,N d'une association de type N,N"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La migration de clé pour une association 1,N",
+      "contenu_markdown": "Pour transformer une association binaire de type 1,N en MLD, la clé primaire de l'entité située du côté de cardinalité maximale 1 migre comme clé étrangère dans la table de l'entité située du côté de cardinalité maximale N ; aucune table supplémentaire n'est créée pour l'association elle-même, contrairement à une association N,N.\n\nLa méthode comporte trois étapes. D'abord, repérer sur le MCD le côté de cardinalité maximale 1 (l'entité \"père\") et le côté de cardinalité maximale N (l'entité \"fils\"). Ensuite, créer une table pour chaque entité, avec sa clé primaire propre. Enfin, ajouter dans la table de l'entité \"fils\" une colonne supplémentaire qui reprend la clé primaire de l'entité \"père\", marquée comme clé étrangère (symbole # ou mention explicite).\n\nSi l'association porte elle-même des propriétés (par exemple une date ou une quantité), ces propriétés migrent avec la clé étrangère, dans la table \"fils\".",
+      "formule_principale": "Entité côté 1 -> clé primaire migre en clé étrangère dans la table de l'entité côté N",
+      "variantes": [
+        {
+          "nom": "Association 1,N porteuse de propriétés",
+          "quand_utiliser": "Quand l'association elle-même porte des attributs (par exemple une date d'affectation, une quantité).",
+          "contenu_markdown": "Ces attributs migrent, comme la clé étrangère, dans la table de l'entité côté N : ils ne créent pas de table séparée, à la différence d'une association N,N où ils resteraient dans la table de jonction."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur le MCD construit précédemment, l'association SOLDE relie CLIENT (cardinalité 1,n) à FACTURE (cardinalité 1,1). Déduisez le MLD correspondant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le type d'association",
+          "justification": "Le type d'association détermine la règle de passage à appliquer",
+          "resultat_markdown": "L'association SOLDE porte les cardinalités (1,n) côté CLIENT et (1,1) côté FACTURE : c'est une association de type 1,N, le côté \"1\" étant CLIENT et le côté \"N\" étant FACTURE."
+        },
+        {
+          "numero": 2,
+          "action": "Créer les tables des deux entités avec leur clé primaire",
+          "justification": "Chaque entité du MCD devient une table avec sa propre clé primaire",
+          "resultat_markdown": "CLIENT (code_unique, contact, nom, adresse) — clé primaire code_unique.\nFACTURE (numero_fact, libellé, montant) — clé primaire numero_fact."
+        },
+        {
+          "numero": 3,
+          "action": "Faire migrer la clé primaire du côté 1 vers la table du côté N",
+          "justification": "C'est la règle centrale du passage MCD vers MLD pour une association 1,N",
+          "resultat_markdown": "La clé primaire de CLIENT (code_unique) migre comme clé étrangère dans la table FACTURE : FACTURE (numero_fact, libellé, montant, #code_unique), où #code_unique référence CLIENT.code_unique."
+        }
+      ],
+      "conclusion_markdown": "Aucune table n'est créée pour l'association SOLDE elle-même : la migration de clé suffit à représenter une association de type 1,N dans le modèle logique de données."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Créer une table intermédiaire pour l'association 1,N, comme s'il s'agissait d'une association N,N",
+          "pourquoi_faux": "Une table de jonction n'est nécessaire que pour représenter une association plusieurs-à-plusieurs, pas une association 1,N",
+          "correction_markdown": "Toujours vérifier le type exact de l'association avant de choisir la règle de passage : migration de clé pour 1,N, table de jonction pour N,N"
+        },
+        {
+          "erreur_markdown": "Faire migrer la clé du mauvais côté (de l'entité N vers l'entité 1)",
+          "pourquoi_faux": "Cela inverserait le sens de la relation et rendrait le modèle incohérent avec les cardinalités du MCD",
+          "correction_markdown": "Toujours identifier précisément quel côté porte la cardinalité maximale 1 avant de faire migrer sa clé"
+        },
+        {
+          "erreur_markdown": "Oublier de marquer la clé étrangère (symbole # ou mention explicite) dans la table de destination",
+          "pourquoi_faux": "Sans ce marquage, on ne distingue plus une clé étrangère d'un attribut ordinaire",
+          "correction_markdown": "Toujours signaler explicitement la clé étrangère dans la table où elle migre"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un MCD relie ELEVE (1,1) à CLASSE (1,n) par l'association APPARTENIR. Déduisez le MLD.",
+          "solution_markdown": "L'association APPARTENIR est de type 1,N : le côté 1 est CLASSE, le côté N est ELEVE. La clé primaire de CLASSE migre donc comme clé étrangère dans la table ELEVE.\n\nCLASSE (code_classe, libelle)\n\nELEVE (matricule, nom, prenom, #code_classe)"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un MCD relie AUTEUR (1,1) à LIVRE (1,n) par l'association ECRIRE, l'association ne portant aucune propriété. Déduisez le MLD.",
+          "solution_markdown": "L'association ECRIRE est de type 1,N : le côté 1 est AUTEUR, le côté N est LIVRE. La clé primaire d'AUTEUR migre comme clé étrangère dans la table LIVRE.\n\nAUTEUR (id_auteur, nom, prenom)\n\nLIVRE (isbn, titre, annee_publication, #id_auteur)"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un MCD relie DEPARTEMENT (1,1) à EMPLOYE (1,n) par l'association AFFECTER, cette association portant une propriété date_affectation. Déduisez le MLD.",
+          "solution_markdown": "L'association AFFECTER est de type 1,N : le côté 1 est DEPARTEMENT, le côté N est EMPLOYE. La clé primaire de DEPARTEMENT migre comme clé étrangère dans la table EMPLOYE, et la propriété portée par l'association (date_affectation) migre avec elle dans cette même table, puisqu'une association 1,N ne crée jamais de table séparée.\n\nDEPARTEMENT (code_dept, nom_dept)\n\nEMPLOYE (matricule, nom, prenom, #code_dept, date_affectation)"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une association 1,N ne crée jamais de table supplémentaire : seule une clé migre.",
+        "La clé primaire de l'entité côté 1 migre comme clé étrangère dans la table de l'entité côté N.",
+        "Les propriétés portées par l'association migrent avec la clé étrangère, dans la même table.",
+        "Signalez toujours explicitement la clé étrangère (symbole # ou mention) dans la table de destination.",
+        "Seule une association N,N exige la création d'une table de jonction séparée."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-effectifs-cumules-decroissants-polygone-1ere-A",
+  "meta": {
+    "titre": "Effectifs cumulés décroissants et polygone associé",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "effectifs cumulés décroissants",
+      "polygone statistique",
+      "série groupée"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathematiques - Cameroun - Session 2010",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2010-officiel-cameroun-ex2-q1-0",
+    "rappels_lies": [
+      "rdm-probatoire-a-maths-2010-officiel-cameroun-ex2-q2-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un centre d'examen veut savoir combien de candidats ont obtenu au moins 12 sur 20, ou au moins 8 sur 20 : cette information ne se lit pas directement sur un tableau d'effectifs simples, elle se construit en cumulant les effectifs à partir du haut de l'échelle. C'est le rôle des effectifs cumulés décroissants, et leur représentation graphique, le polygone, permet en plus une lecture visuelle rapide."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lire un tableau d'effectifs groupés en classes",
+        "Placer un point dans un repère à partir de ses coordonnées",
+        "Faire une addition et une soustraction simples"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire les effectifs cumulés décroissants",
+      "contenu_markdown": "L'effectif cumulé décroissant (ECD) associé à une borne de classe est le nombre de valeurs de la série supérieures ou égales à cette borne. On part de l'effectif total $N$ à la première borne, puis on retranche à chaque étape l'effectif de la classe qui vient d'être dépassée. Le dernier ECD, à la borne supérieure de la dernière classe, vaut toujours 0.\n\nLe polygone des ECD s'obtient en plaçant, pour chaque borne, le point (borne, ECD), puis en reliant ces points consécutifs par des segments de droite : la ligne obtenue est toujours décroissante ou constante, jamais croissante.",
+      "formule_principale": "ECD(\\text{borne suivante}) = ECD(\\text{borne}) - \\text{effectif de la classe}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une série de notes est groupée en classes : $[0,4[$ (effectif 3), $[4,8[$ (effectif 9), $[8,12[$ (effectif 15), $[12,16[$ (effectif 5), $[16,20[$ (effectif 3). Dresser le tableau des ECD puis construire le polygone associé.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'effectif total",
+          "justification": "L'ECD à la première borne vaut toujours l'effectif total",
+          "resultat_markdown": "$N=3+9+15+5+3=35$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer chaque ECD par soustractions successives",
+          "justification": "On retranche à chaque étape l'effectif de la classe qui vient d'être dépassée",
+          "resultat_markdown": "$ECD(0)=35$, $ECD(4)=35-3=32$, $ECD(8)=32-9=23$, $ECD(12)=23-15=8$, $ECD(16)=8-5=3$, $ECD(20)=3-3=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Placer les points et tracer le polygone",
+          "justification": "Chaque couple (borne, ECD) devient un point du repère, relié au suivant par un segment",
+          "resultat_markdown": "Points $(0,35),(4,32),(8,23),(12,8),(16,3),(20,0)$ reliés dans cet ordre"
+        }
+      ],
+      "conclusion_markdown": "Le polygone obtenu est une ligne strictement décroissante de 35 à 0, ce qui est cohérent avec la définition même d'un effectif cumulé décroissant."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner les effectifs de gauche à droite comme pour un cumul croissant",
+          "pourquoi_faux": "Le cumul décroissant part du total et DIMINUE à chaque classe : l'additionner comme un cumul croissant inverse complètement la logique et donne une suite croissante au lieu de décroissante.",
+          "correction_markdown": "Pars toujours de l'effectif total à la première borne, puis retranche progressivement, jamais l'inverse."
+        },
+        {
+          "erreur_markdown": "Oublier le dernier ECD, qui doit valoir 0 à la borne supérieure de la dernière classe",
+          "pourquoi_faux": "Un tableau d'ECD incomplet, qui s'arrête à un effectif non nul, ne représente pas fidèlement le fait qu'aucune valeur ne dépasse la borne maximale de la série.",
+          "correction_markdown": "Vérifie systématiquement que ton dernier ECD tombe à 0 : c'est un contrôle rapide de l'exactitude de tes soustractions."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série a pour classes $[0,10[$ (effectif 4), $[10,20[$ (effectif 6). Dresser le tableau des ECD.",
+          "solution_markdown": "$N=10$. $ECD(0)=10$, $ECD(10)=10-4=6$, $ECD(20)=6-6=0$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série a pour classes $[0,5[$ (effectif 2), $[5,10[$ (effectif 7), $[10,15[$ (effectif 6), $[15,20[$ (effectif 5). Dresser le tableau des ECD et donner l'ECD correspondant à la borne 10.",
+          "solution_markdown": "$N=2+7+6+5=20$. $ECD(0)=20$, $ECD(5)=20-2=18$, $ECD(10)=18-7=11$, $ECD(15)=11-6=5$, $ECD(20)=5-5=0$. L'ECD à la borne 10 est 11 : cela signifie que 11 valeurs de la série sont supérieures ou égales à 10."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 50 valeurs a un ECD de 32 à la borne 8 et un ECD de 14 à la borne 12. Quel est l'effectif de la classe $[8,12[$ ?",
+          "solution_markdown": "L'effectif d'une classe se retrouve par différence entre deux ECD consécutifs : effectif de $[8,12[$ $= ECD(8)-ECD(12) = 32-14=18$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'ECD à une borne compte les valeurs supérieures ou égales à cette borne : il part du total et diminue.",
+        "Chaque ECD s'obtient en retranchant l'effectif de la classe précédente à l'ECD qui la précède.",
+        "Le dernier ECD, à la borne supérieure de la dernière classe, vaut toujours 0 : c'est le contrôle systématique à faire.",
+        "Le polygone des ECD relie les points (borne, ECD) par des segments : la ligne obtenue est toujours décroissante ou constante.",
+        "Au Probatoire, cette construction précède presque toujours le calcul de la médiane ou d'autres paramètres de position lus graphiquement."
+      ]
+    }
+  ]
+}

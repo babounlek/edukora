@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-ecrire-une-formule-de-calcul-dans-une-cellule-d-un-tableur-3e",
+  "meta": {
+    "titre": "Écrire une formule de calcul dans une cellule d'un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Tableur",
+    "duree_estimee_min": 25,
+    "tags": [
+      "tableur",
+      "formule",
+      "références de cellules",
+      "facture",
+      "Excel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BEPC-2021-INFORMATIQUE",
+    "epreuve_titre": "BEPC Épreuve Théorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2021-cameroun-ex2-q2.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une boutique vend 35 savons à 500 F l'unité. Tu peux poser la multiplication à la main, une fois. Mais s'il y a quarante articles sur la facture et que les prix changent chaque mois, la main ne suit plus. Le tableur fait ce travail à ta place, à condition de lui écrire la bonne formule : c'est tout l'enjeu de cette question, présente à presque chaque BEPC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir repérer une cellule par sa référence (lettre de colonne + numéro de ligne : A1, B2, D2)",
+        "Connaître les quatre opérations et savoir traduire un énoncé en calcul"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Écrire une formule dans une cellule",
+      "contenu_markdown": "Une formule de tableur obéit à trois règles, sans exception.\n\n1. **Elle commence par le signe `=`.** C'est ce signe qui indique au tableur qu'il doit calculer au lieu d'afficher du texte.\n2. **Elle désigne les données par leurs références de cellule**, jamais par les nombres eux-mêmes : `=B2*C2`, pas `=500*35`.\n3. **Elle s'écrit dans la cellule où doit apparaître le résultat.** La formule reste invisible sur la feuille ; seule sa valeur s'affiche.\n\nLes opérateurs de calcul :\n\n| Opération | Opérateur | Exemple |\n|---|---|---|\n| Addition | `+` | `=B2+C2` |\n| Soustraction | `-` | `=B2-C2` |\n| Multiplication | `*` | `=B2*C2` |\n| Division | `/` | `=B2/C2` |\n| Puissance | `^` | `=B2^2` |\n\n**Références relatives.** Écrites simplement `B2`, elles se décalent quand on recopie la formule : recopiée une ligne plus bas, `=B2*C2` devient `=B3*C3`. C'est ce qui permet de remplir toute une colonne d'un seul geste avec la poignée de recopie.\n\n**Références absolues.** Écrites `$B$2`, elles ne bougent pas à la recopie. On les emploie pour un coefficient unique rangé dans une seule cellule, par exemple un taux de TVA en B10 : `=D2*$B$10`.",
+      "formule_principale": "=B2*C2",
+      "variantes": [
+        {
+          "nom": "Passer par une fonction plutôt qu'un opérateur",
+          "quand_utiliser": "Quand le calcul porte sur beaucoup de cellules à la fois",
+          "contenu_markdown": "`=PRODUIT(B2;C2)` remplace `=B2*C2`, et `=SOMME(B2:B10)` remplace `=B2+B3+...+B10`. Sur deux cellules, l'opérateur est plus court ; sur une plage entière, la fonction évite d'écrire vingt références à la main. Attention au séparateur d'arguments, le point-virgule dans la version française du tableur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le tableau ci-dessous est l'extrait de la facture d'un client. Écrire, sans reproduire le tableau, une formule permettant de calculer le montant total du savon dans la cellule D2.\n\n| | A | B | C | D |\n|---|---|---|---|---|\n| **1** | Article | Prix unitaire | Quantité | Montant total |\n| **2** | Savon | 500 | 35 | |",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire l'énoncé en formule mathématique",
+          "justification": "Le montant total d'un article s'obtient en multipliant son prix unitaire par la quantité achetée.",
+          "resultat_markdown": "Montant total = Prix unitaire × Quantité"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la référence de chaque donnée",
+          "justification": "On croise la lettre de la colonne et le numéro de la ligne. Le prix unitaire du savon est à l'intersection de la colonne B et de la ligne 2 ; la quantité, à l'intersection de la colonne C et de la ligne 2.",
+          "resultat_markdown": "Prix unitaire : **B2** (500). Quantité : **C2** (35)."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer la cellule de destination",
+          "justification": "Le résultat doit s'afficher dans la colonne « Montant total », sur la ligne du savon.",
+          "resultat_markdown": "Cellule de destination : **D2**."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la formule avec le signe = et les références",
+          "justification": "On remplace les mots de l'étape 1 par les références de l'étape 2, et on fait précéder le tout du signe égal.",
+          "resultat_markdown": "`=B2*C2`"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler la valeur attendue",
+          "justification": "On effectue mentalement le calcul pour vérifier que la formule est cohérente : $500 \\times 35 = 500 \\times 30 + 500 \\times 5 = 15\\,000 + 2\\,500 = 17\\,500$.",
+          "resultat_markdown": "D2 affichera 17 500."
+        }
+      ],
+      "conclusion_markdown": "La formule à saisir en D2 est `=B2*C2`, ou sa variante `=PRODUIT(B2;C2)`. Elle affiche 17 500 et se recalcule automatiquement si le prix ou la quantité change."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `=500*35`.",
+          "pourquoi_faux": "La formule donne le bon nombre aujourd'hui, mais elle contient les valeurs en dur : si le prix du savon passe à 600, D2 continue d'afficher 17 500, faux. Recopiée sur la ligne d'un autre article, elle reste bloquée sur le savon.",
+          "correction_markdown": "N'écris jamais un nombre dans une formule quand ce nombre figure déjà dans une cellule : utilise sa référence."
+        },
+        {
+          "erreur_markdown": "Oublier le signe `=` et saisir `B2*C2`.",
+          "pourquoi_faux": "Sans le signe égal, le tableur ne reconnaît pas une formule : il enregistre la suite de caractères comme du texte et l'affiche telle quelle dans la cellule.",
+          "correction_markdown": "Prends l'habitude de taper le `=` avant même de réfléchir au calcul."
+        },
+        {
+          "erreur_markdown": "Utiliser la virgule comme séparateur d'arguments : `=PRODUIT(B2,C2)`.",
+          "pourquoi_faux": "La version française du tableur attend un point-virgule ; la virgule y est le séparateur décimal. La formule est alors refusée ou mal interprétée.",
+          "correction_markdown": "Écris `=PRODUIT(B2;C2)` avec un point-virgule."
+        },
+        {
+          "erreur_markdown": "Écrire la formule dans la cellule qui contient une donnée, par exemple en C2.",
+          "pourquoi_faux": "La formule remplacerait la quantité par le résultat et se calculerait à partir d'une cellule qu'elle vient d'écraser : le tableur signale alors une référence circulaire.",
+          "correction_markdown": "Écris toujours la formule dans la cellule vide où le résultat doit apparaître, ici D2."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sur la même facture, la ligne 3 contient : A3 = Sucre, B3 = 750, C3 = 12. Écrire la formule qui calcule le montant total du sucre en D3, puis donner la valeur affichée.",
+          "solution_markdown": "Même raisonnement qu'en D2, une ligne plus bas : le prix unitaire est en B3, la quantité en C3.\n\nFormule à saisir en D3 : `=B3*C3`\n\nValeur affichée : $750 \\times 12 = 9\\,000$.\n\nOn aurait pu l'obtenir sans rien taper, en recopiant D2 vers le bas avec la poignée de recopie : les références relatives se décalent seules et donnent `=B3*C3`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La facture comporte des articles sur les lignes 2 à 6, avec leurs montants totaux déjà calculés en D2, D3, D4, D5, D6. Écrire en D7 la formule donnant le total général de la facture, de deux façons différentes.",
+          "solution_markdown": "Le total général est la somme des cinq montants.\n\nPremière façon, avec l'opérateur d'addition :\n\n`=D2+D3+D4+D5+D6`\n\nSeconde façon, avec la fonction SOMME appliquée à la plage D2:D6 :\n\n`=SOMME(D2:D6)`\n\nLes deux donnent le même résultat. La seconde est préférable : elle reste courte si la facture compte trente articles, et le signe `:` désigne toute la plage continue de D2 à D6."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La boutique applique une remise de 5 % sur chaque montant total. Le taux de remise est rangé une seule fois, dans la cellule **B10**. Écrire en E2 la formule donnant le montant après remise, de sorte qu'elle reste correcte quand on la recopie en E3, E4, E5 et E6.",
+          "solution_markdown": "Le montant après remise vaut le montant total diminué de la remise :\n\nMontant après remise = Montant total − Montant total × taux\n\nSoit, en factorisant : Montant après remise = Montant total × (1 − taux).\n\nLe montant total du premier article est en D2 : cette référence doit se décaler à la recopie, elle reste donc **relative**. Le taux, lui, est toujours en B10 quelle que soit la ligne : cette référence ne doit pas se décaler, elle doit être **absolue**, écrite `$B$10`.\n\nFormule à saisir en E2 :\n\n`=D2*(1-$B$10)`\n\nRecopiée en E3, elle devient `=D3*(1-$B$10)` : la première référence a suivi la ligne, la seconde est restée fixée sur le taux. C'est exactement le comportement voulu.\n\nAvec une référence relative `B10`, la recopie en E3 donnerait `=D3*(1-B11)`, et B11 étant vide, le tableur multiplierait par $(1-0) = 1$ : aucune remise ne serait appliquée, sans le moindre message d'erreur. C'est l'erreur la plus coûteuse de tout le chapitre, parce qu'elle ne se voit pas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Toute formule commence par `=`, sinon le tableur affiche du texte.",
+        "Désigne les données par leurs références (B2, C2), jamais par les nombres : c'est ce qui rend le calcul automatique.",
+        "Écris la formule dans la cellule où doit apparaître le résultat, jamais dans une cellule qui contient déjà une donnée.",
+        "Références relatives pour ce qui change d'une ligne à l'autre, références absolues avec des `$` pour un coefficient unique.",
+        "En version française, le séparateur d'arguments d'une fonction est le point-virgule.",
+        "Au BEPC, la question type est : « écrire la formule permettant de calculer le montant total dans la cellule D2 » : une ligne à écrire, un point à prendre."
+      ]
+    }
+  ]
+}

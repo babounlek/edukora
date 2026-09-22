@@ -5,11 +5,12 @@ import { ArrowLeft, ArrowRight, BookOpenText, Crown, FileDown, GraduationCap, Lo
 import { getEpreuve, previewEpreuve } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Epreuve, EpreuvePreview } from "@/api/types"
+import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
-import { EpreuveSommaire, exerciceAnchorId } from "@/components/EpreuveSommaire"
+import { exerciceAnchorId } from "@/components/EpreuveSommaire"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { BackToTopBar } from "@/components/BackToTopBar"
@@ -23,6 +24,7 @@ export function EpreuveDetailPage() {
   const { country, slug } = useParams<{ country?: string; slug: string }>()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { isAuthenticated, isLoading: authLoading } = useAuth()
 
   const [epreuve, setEpreuve] = useState<Epreuve | null>(null)
   const [preview, setPreview] = useState<EpreuvePreview | null>(null)
@@ -48,6 +50,17 @@ export function EpreuveDetailPage() {
       })
   }, [slug])
 
+  // Le premier appel ci-dessus part avant que la session ne soit reconfirmée (voir
+  // AuthContext - l'access token ne survit jamais à un rechargement de page) : un
+  // abonné qui arrive ici juste après un F5 peut recevoir un has_access calculé en
+  // anonyme. On recharge une fois la session confirmée pour corriger un has_access
+  // qui aurait été sous-évalué - jamais déclenché pour un visiteur réellement
+  // anonyme (isAuthenticated resterait false), donc sans coût pour l'aperçu public.
+  useEffect(() => {
+    if (authLoading || !isAuthenticated || !slug) return
+    getEpreuve(slug).then(setEpreuve)
+  }, [authLoading, isAuthenticated, slug])
+
   useEffect(() => {
     // ?ref=pdf_sujet : posé par le PDF du sujet généré (voir backend
     // catalog.sujet_pdf._lesson_deep_link) sur son propre CTA - seule façon de
@@ -67,6 +80,18 @@ export function EpreuveDetailPage() {
     // cette page n'est jamais atteinte pour une inédite (voir EpreuveInediteDetailPage).
     previewEpreuve(epreuve.slug as string).then(setPreview).catch(() => {})
   }, [epreuve])
+
+  useEffect(() => {
+    // Le sujet arrive en asynchrone (effet ci-dessus) : au moment où le navigateur
+    // traite le #hash d'une URL partagée (ex. .../exercices d'un thème, posé par
+    // ThemeExercicesPage), la cible n'existe pas encore dans le DOM et le saut n'a pas
+    // lieu. On le rejoue une fois les exercices rendus - même correctif que
+    // EpreuveReaderPage, jamais au montage.
+    if (!preview) return
+    const id = window.location.hash.slice(1)
+    if (!id) return
+    document.getElementById(id)?.scrollIntoView()
+  }, [preview])
 
   useEffect(() => {
     // Recanonicalise vers /{pays}/epreuves/{slug} dès que le pays réel de l'épreuve
@@ -93,7 +118,7 @@ export function EpreuveDetailPage() {
 
   if (!epreuve) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
         <div className="flex flex-col gap-3">
           <Skeleton className="h-8 w-3/4" />
           <Skeleton className="h-5 w-1/2" />
@@ -103,15 +128,8 @@ export function EpreuveDetailPage() {
     )
   }
 
-  // Décidé sur exercises_count (déjà là avec l'épreuve) et non sur preview.exercises,
-  // qui arrive une requête plus tard : sinon la page se réagence sous les yeux du
-  // visiteur une fois le sujet chargé. Même seuil et même grille que le lecteur
-  // (EpreuveReaderPage) - un sommaire d'une seule entrée ne ferait que rétrécir la
-  // colonne de lecture.
-  const hasSommaire = epreuve.exercises_count > 1
-
   return (
-    <div className={`mx-auto px-4 py-8 sm:px-6 ${hasSommaire ? "max-w-5xl" : "max-w-3xl"}`}>
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       <Link
         to={epreuvesListPath(epreuve.subject.country.code.toLowerCase())}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
@@ -200,14 +218,12 @@ export function EpreuveDetailPage() {
               </div>
             )}
             {preview.exercises.length > 0 ? (
-              <div
-                className={
-                  hasSommaire
-                    ? "lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:items-start lg:gap-10"
-                    : undefined
-                }
-              >
-                {hasSommaire && <EpreuveSommaire exercises={preview.exercises} />}
+              <div>
+                {/* Sommaire (EpreuveSommaire) volontairement masqué pour l'instant : la
+                    grille à colonne latérale de 220px rétrécissait la colonne de lecture
+                    en dessous de la largeur pleine (voir InediteTentativePage/
+                    EpreuveInediteDetailPage, passés à max-w-5xl sans sidebar) - à
+                    réintroduire une fois sa place repensée dans une mise en page large. */}
                 <div className="flex min-w-0 flex-col gap-8">
                   {preview.exercises.map((exercise) => (
                     <div

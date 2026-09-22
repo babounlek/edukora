@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-puissance-mecanique-chute-eau-1ere-d-ti",
+  "meta": {
+    "titre": "Puissance mécanique disponible dans une chute d'eau",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Conversions d'énergie au cours d'un mouvement",
+    "duree_estimee_min": 20,
+    "tags": [
+      "barrage hydroélectrique",
+      "puissance mécanique",
+      "énergie potentielle de pesanteur",
+      "débit massique"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D-TI",
+      "module_numero": "2",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2025-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Séries D, TI - Cameroun - Session 2025",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2025-officiel-cameroun-ex4-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un barrage hydroélectrique ne fabrique pas d'énergie : il capte celle que l'eau possède déjà en altitude, sous forme d'énergie potentielle de pesanteur, et la convertit en énergie mécanique utilisable par une turbine. Savoir calculer la puissance ainsi disponible, à partir du seul débit et de la hauteur de chute, permet de vérifier si une installation peut atteindre la puissance voulue."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Énergie potentielle de pesanteur $E_{pp} = mgh$",
+        "Notion de débit volumique et de masse volumique",
+        "Définition de la puissance comme énergie par unité de temps"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De l'énergie potentielle à la puissance disponible",
+      "contenu_markdown": "Chaque seconde, une masse d'eau $D_m$ (le débit massique) tombe d'une hauteur $h$ et cède à la turbine son énergie potentielle de pesanteur $D_m \\, g \\, h$. Cette énergie cédée par seconde constitue précisément la puissance mécanique disponible pour actionner la turbine. Le débit massique s'obtient à partir du débit volumique $D_v$ (donné en m³/s) et de la masse volumique de l'eau $\\rho_{eau}$.",
+      "formule_principale": "P_{disponible} = \\rho_{eau} \\, D_v \\, g \\, h"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un barrage a un débit $D_v = 300\\ \\text{m}^3.\\text{s}^{-1}$ et une hauteur de chute $h = 78{,}3\\ \\text{m}$. On donne $g = 10{,}0\\ \\text{N.kg}^{-1}$ et $\\rho_{eau} = 1000\\ \\text{kg.m}^{-3}$. Le fonctionnement en plein régime de l'alternateur exige une puissance mécanique $P_m = 235 \\times 10^6\\ \\text{W}$. Examiner si le barrage peut fournir cette puissance.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le débit massique",
+          "justification": "Le débit massique convertit le volume d'eau par seconde en masse d'eau par seconde.",
+          "resultat_markdown": "$D_m = \\rho_{eau} D_v = 1000 \\times 300 = 3{,}00 \\times 10^5\\ \\text{kg.s}^{-1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance mécanique disponible",
+          "justification": "On applique la formule de la puissance issue de la chute d'eau.",
+          "resultat_markdown": "$P_{disponible} = D_m \\, g \\, h = 3{,}00\\times10^5 \\times 10{,}0 \\times 78{,}3 = 2{,}349 \\times 10^8\\ \\text{W} = 234{,}9\\times 10^6\\ \\text{W}$"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer à la puissance exigée",
+          "justification": "La comparaison des deux puissances tranche la question posée.",
+          "resultat_markdown": "$234{,}9 \\times 10^6\\ \\text{W} < 235 \\times 10^6\\ \\text{W}$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure",
+          "justification": "La puissance disponible étant strictement inférieure à la puissance exigée, l'alternateur ne peut pas atteindre son plein régime.",
+          "resultat_markdown": "Le barrage ne peut pas, tout juste, faire fonctionner l'alternateur en plein régime."
+        }
+      ],
+      "conclusion_markdown": "Cet exemple illustre bien l'intérêt de calculer la puissance exacte plutôt que de l'estimer : l'écart entre les deux puissances est ici si faible (0,04 %) qu'un arrondi trop rapide inverserait la conclusion."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement le débit volumique $D_v$ dans la formule $P = D_v \\, g \\, h$, en oubliant de le convertir en débit massique.",
+          "pourquoi_faux": "L'énergie potentielle de pesanteur $E_{pp} = mgh$ se calcule avec une masse, pas un volume : sans la multiplication par $\\rho_{eau}$, le résultat obtenu n'a pas la bonne dimension physique et n'est pas homogène à une puissance en watts.",
+          "correction_markdown": "Vérifie toujours l'homogénéité : $[\\rho][D_v][g][h] = (\\text{kg.m}^{-3})(\\text{m}^3.\\text{s}^{-1})(\\text{m.s}^{-2})(\\text{m}) = \\text{kg.m}^2.\\text{s}^{-3} = \\text{W}$, ce qui confirme que le débit massique, pas le débit volumique seul, doit apparaître dans la formule."
+        },
+        {
+          "erreur_markdown": "Arrondir prématurément un résultat proche d'un seuil de comparaison (ex. 234,9 arrondi à 235).",
+          "pourquoi_faux": "Un arrondi trop tôt peut faire disparaître un écart réel entre deux grandeurs à comparer, menant à une conclusion physiquement fausse (égalité au lieu d'infériorité, ou l'inverse).",
+          "correction_markdown": "Garde toujours au moins une décimale de plus que nécessaire jusqu'à la comparaison finale, et n'arrondis qu'au moment d'énoncer la conclusion, jamais avant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un barrage a un débit $D_v = 50\\ \\text{m}^3.\\text{s}^{-1}$ et une hauteur de chute $h = 20{,}0\\ \\text{m}$. Calculer la puissance mécanique disponible ($g=10{,}0\\ \\text{N.kg}^{-1}$, $\\rho_{eau}=1000\\ \\text{kg.m}^{-3}$).",
+          "solution_markdown": "$D_m = 1000\\times50 = 5{,}0\\times10^4\\ \\text{kg.s}^{-1}$. $P = D_m g h = 5{,}0\\times10^4\\times10{,}0\\times20{,}0 = 1{,}0\\times10^7\\ \\text{W} = 10\\ \\text{MW}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un barrage doit fournir une puissance mécanique $P = 4{,}0\\times10^7\\ \\text{W}$ avec une hauteur de chute $h = 40{,}0\\ \\text{m}$. Déterminer le débit volumique minimal nécessaire.",
+          "solution_markdown": "De $P = \\rho_{eau} D_v g h$, on tire $D_v = \\dfrac{P}{\\rho_{eau} g h} = \\dfrac{4{,}0\\times10^7}{1000\\times10{,}0\\times40{,}0} = \\dfrac{4{,}0\\times10^7}{4{,}0\\times10^5} = 100\\ \\text{m}^3.\\text{s}^{-1}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux barrages ont le même débit $D_v = 200\\ \\text{m}^3.\\text{s}^{-1}$. Le barrage A a une hauteur de chute $h_A = 50\\ \\text{m}$, le barrage B une hauteur $h_B = 100\\ \\text{m}$. Calculer le rapport des puissances mécaniques disponibles $P_A/P_B$, sans recalculer chaque puissance séparément, puis commenter.",
+          "solution_markdown": "Comme $D_v$, $\\rho_{eau}$ et $g$ sont identiques pour les deux barrages, $P = \\rho_{eau} D_v g h$ est directement proportionnelle à $h$ : $\\dfrac{P_A}{P_B} = \\dfrac{h_A}{h_B} = \\dfrac{50}{100} = 0{,}5$. Le barrage A ne fournit que la moitié de la puissance du barrage B, à débit identique : la hauteur de chute est donc un levier au moins aussi déterminant que le débit pour la puissance d'un barrage hydroélectrique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La puissance mécanique disponible dans une chute d'eau s'écrit $P = \\rho_{eau} D_v g h$, jamais avec le débit volumique seul.",
+        "Le débit massique $D_m = \\rho_{eau} D_v$ est l'étape intermédiaire qui rend la formule homogène à une puissance en watts.",
+        "Toujours vérifier l'homogénéité $\\text{kg.m}^{-3} \\times \\text{m}^3.\\text{s}^{-1} \\times \\text{m.s}^{-2} \\times \\text{m} = \\text{W}$ si un doute subsiste sur la formule.",
+        "Ne jamais arrondir avant une comparaison à un seuil : un écart faible en valeur relative peut rester décisif.",
+        "Cette formule est la brique de base de tout exercice de situation-problème sur une centrale hydroélectrique, souvent suivie d'un calcul de puissance électrique via le rendement de l'alternateur."
+      ]
+    }
+  ]
+}

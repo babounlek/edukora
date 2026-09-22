@@ -1,0 +1,142 @@
+{
+  "cours_id": "cours-theoreme-du-rang-noyau-image-terminale-c-e",
+  "meta": {
+    "titre": "Théorème du rang : noyau et image d'un endomorphisme",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "C/E",
+    "sous_theme": "Algèbre linéaire",
+    "duree_estimee_min": 30,
+    "tags": [
+      "endomorphisme",
+      "noyau",
+      "image",
+      "théorème du rang",
+      "algèbre linéaire",
+      "espace vectoriel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-2026-cameroun",
+    "epreuve_titre": "Baccalauréat C/E - Mathématiques - 2026 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-e-2026-cameroun-ex1-qII.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un endomorphisme donné par les images de trois vecteurs de base, deux questions reviennent presque systématiquement au BAC : quels vecteurs sont \"écrasés\" (envoyés sur $\\vec 0$) et quel sous-espace est réellement atteint par cette transformation ? Ce sont exactement le noyau et l'image. Le théorème du rang relie leurs dimensions par une seule égalité, ce qui permet de déduire l'une à partir de l'autre sans refaire tout le travail deux fois."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un endomorphisme et calculer l'image d'un vecteur par linéarité.",
+        "Résoudre un système linéaire à plusieurs inconnues.",
+        "Savoir ce qu'est une famille libre et une base d'un espace vectoriel.",
+        "Connaître la notion de sous-espace vectoriel engendré par une famille de vecteurs ($\\mathrm{Vect}(\\ldots)$)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Noyau, image, et théorème du rang",
+      "contenu_markdown": "Pour un endomorphisme $\\varphi$ d'un espace vectoriel $E$ de dimension finie $n$ :\n\nLe noyau $\\ker\\varphi=\\{\\vec v\\in E\\mid\\varphi(\\vec v)=\\vec 0\\}$ se détermine en résolvant le système $\\varphi(\\vec v)=\\vec 0$, où $\\vec v=x\\vec\\imath+y\\vec\\jmath+z\\vec k$ est décomposé sur la base de départ.\n\nL'image $\\mathrm{Im}\\,\\varphi=\\{\\varphi(\\vec v)\\mid \\vec v\\in E\\}$ est toujours engendrée par les images des vecteurs d'une base de $E$ : $\\mathrm{Im}\\,\\varphi=\\mathrm{Vect}(\\varphi(\\vec\\imath),\\varphi(\\vec\\jmath),\\varphi(\\vec k))$. Une base de $\\mathrm{Im}\\,\\varphi$ s'obtient en extrayant de cette famille génératrice une sous-famille libre maximale.\n\nLe théorème du rang relie les deux : $\\dim(\\ker\\varphi)+\\dim(\\mathrm{Im}\\,\\varphi)=\\dim E=n$. Connaître l'une des deux dimensions donne immédiatement l'autre, sans calcul supplémentaire.",
+      "formule_principale": "\\dim(\\ker\\varphi)+\\dim(\\mathrm{Im}\\,\\varphi)=\\dim E",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$E$ est un espace vectoriel de dimension 3, de base $(\\vec\\imath,\\vec\\jmath,\\vec k)$, et $\\varphi$ l'endomorphisme tel que $\\varphi(\\vec\\imath)=\\vec\\imath-2\\vec k$, $\\varphi(\\vec\\jmath)=\\vec\\jmath+2\\vec k$, $\\varphi(\\vec k)=-\\vec\\imath+2\\vec k$. Déterminer $\\ker\\varphi$ puis $\\mathrm{Im}\\,\\varphi$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décomposer un vecteur générique $\\vec v=x\\vec\\imath+y\\vec\\jmath+z\\vec k$ et calculer $\\varphi(\\vec v)$",
+          "justification": "La linéarité de $\\varphi$ permet d'écrire $\\varphi(\\vec v)$ à partir des images connues des vecteurs de base.",
+          "resultat_markdown": "$\\varphi(\\vec v) = x(\\vec\\imath-2\\vec k)+y(\\vec\\jmath+2\\vec k)+z(-\\vec\\imath+2\\vec k) = (x-z)\\vec\\imath+y\\vec\\jmath+(-2x+2y+2z)\\vec k$"
+        },
+        {
+          "numero": 2,
+          "action": "Résoudre $\\varphi(\\vec v)=\\vec 0$",
+          "justification": "Le noyau est par définition l'ensemble des solutions de cette équation.",
+          "resultat_markdown": "$\\begin{cases}x-z=0\\\\y=0\\\\-2x+2y+2z=0\\end{cases}$ donne $x=z$, $y=0$, la 3e équation étant automatiquement vérifiée."
+        },
+        {
+          "numero": 3,
+          "action": "Décrire $\\ker\\varphi$",
+          "justification": "Un seul paramètre libre subsiste ($x$) : le noyau est une droite vectorielle.",
+          "resultat_markdown": "$\\ker\\varphi=\\{x(\\vec\\imath+\\vec k)\\mid x\\in\\mathbb R\\}=\\mathrm{Vect}(\\vec\\imath+\\vec k)$, donc $\\dim(\\ker\\varphi)=1$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer le théorème du rang",
+          "justification": "Cela donne directement la dimension de l'image, sans recalcul.",
+          "resultat_markdown": "$\\dim(\\mathrm{Im}\\,\\varphi)=3-1=2$ : l'image est un plan vectoriel."
+        },
+        {
+          "numero": 5,
+          "action": "Trouver une base de $\\mathrm{Im}\\,\\varphi$ parmi $\\varphi(\\vec\\imath),\\varphi(\\vec\\jmath),\\varphi(\\vec k)$",
+          "justification": "On cherche une relation entre les trois générateurs naturels de l'image pour en extraire deux vecteurs libres.",
+          "resultat_markdown": "$\\varphi(\\vec k)=-\\varphi(\\vec\\imath)$, donc $\\varphi(\\vec k)$ est inutile ; $\\varphi(\\vec\\imath)=(1,0,-2)$ et $\\varphi(\\vec\\jmath)=(0,1,2)$ ne sont pas colinéaires."
+        }
+      ],
+      "conclusion_markdown": "$\\ker\\varphi=\\mathrm{Vect}(\\vec\\imath+\\vec k)$ (droite) et $\\mathrm{Im}\\,\\varphi=\\mathrm{Vect}(\\vec\\imath-2\\vec k\\,;\\,\\vec\\jmath+2\\vec k)$ (plan), avec $1+2=3=\\dim E$, conformément au théorème du rang."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure que $\\ker\\varphi=\\{\\vec 0\\}$ dès qu'un système semble n'avoir \"que\" trois équations pour trois inconnues, sans remarquer qu'une équation est redondante avec les autres.",
+          "pourquoi_faux": "Le nombre d'équations n'indique pas directement la dimension du noyau : ce qui compte est le nombre d'équations réellement indépendantes après résolution. Ici la 3e équation se simplifie en $0=0$ une fois les deux premières utilisées, laissant un degré de liberté.",
+          "correction_markdown": "Résous le système jusqu'au bout et compte le nombre de paramètres réellement libres dans la solution générale : c'est ce nombre qui donne $\\dim(\\ker\\varphi)$, pas le nombre d'équations de départ."
+        },
+        {
+          "erreur_markdown": "Prendre directement $\\varphi(\\vec\\imath),\\varphi(\\vec\\jmath),\\varphi(\\vec k)$ comme base de l'image sans vérifier qu'ils sont indépendants.",
+          "pourquoi_faux": "Ces trois vecteurs engendrent toujours $\\mathrm{Im}\\,\\varphi$, mais ne forment une base que s'ils sont linéairement indépendants - ce qui est impossible ici puisque $\\dim(\\mathrm{Im}\\,\\varphi)=2<3$ : l'un des trois est nécessairement combinaison des deux autres.",
+          "correction_markdown": "Utilise d'abord le théorème du rang pour connaître à l'avance le nombre de vecteurs à garder dans la base, puis cherche activement une relation de dépendance entre les générateurs naturels."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que les vecteurs restants (après avoir écarté les dépendants) sont bien indépendants entre eux.",
+          "pourquoi_faux": "Écarter un vecteur dépendant ne garantit pas automatiquement que les vecteurs restants forment une famille libre : il faut le vérifier séparément (coordonnées non proportionnelles, ou déterminant non nul si on a exactement 2 ou 3 vecteurs à tester).",
+          "correction_markdown": "Vérifie systématiquement la non-proportionnalité des coordonnées des vecteurs retenus avant de conclure qu'ils forment une base de l'image."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$E$ est de dimension 3, de base $(\\vec\\imath,\\vec\\jmath,\\vec k)$. $\\psi$ est l'endomorphisme défini par $\\psi(\\vec\\imath)=\\vec\\imath$, $\\psi(\\vec\\jmath)=\\vec 0$, $\\psi(\\vec k)=\\vec k$. Déterminer $\\ker\\psi$ et $\\mathrm{Im}\\,\\psi$.",
+          "solution_markdown": "Pour $\\vec v=x\\vec\\imath+y\\vec\\jmath+z\\vec k$ : $\\psi(\\vec v)=x\\vec\\imath+0+z\\vec k=x\\vec\\imath+z\\vec k$.\n\n$\\psi(\\vec v)=\\vec 0 \\iff x=0 \\text{ et } z=0$, avec $y$ quelconque. Donc $\\ker\\psi=\\{y\\vec\\jmath\\mid y\\in\\mathbb R\\}=\\mathrm{Vect}(\\vec\\jmath)$, droite vectorielle, $\\dim(\\ker\\psi)=1$.\n\nPar le théorème du rang, $\\dim(\\mathrm{Im}\\,\\psi)=3-1=2$. Les générateurs naturels sont $\\psi(\\vec\\imath)=\\vec\\imath$, $\\psi(\\vec\\jmath)=\\vec 0$ (inutile), $\\psi(\\vec k)=\\vec k$ : $\\vec\\imath$ et $\\vec k$ sont non colinéaires, donc $\\mathrm{Im}\\,\\psi=\\mathrm{Vect}(\\vec\\imath;\\vec k)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$E$ est de dimension 3, base $(\\vec\\imath,\\vec\\jmath,\\vec k)$. $\\chi$ est l'endomorphisme défini par $\\chi(\\vec\\imath)=\\vec\\imath+\\vec\\jmath$, $\\chi(\\vec\\jmath)=2\\vec\\imath+2\\vec\\jmath$, $\\chi(\\vec k)=\\vec k$. Déterminer $\\ker\\chi$ et une base de $\\mathrm{Im}\\,\\chi$.",
+          "solution_markdown": "Pour $\\vec v=x\\vec\\imath+y\\vec\\jmath+z\\vec k$ :\n$\\chi(\\vec v) = x(\\vec\\imath+\\vec\\jmath)+y(2\\vec\\imath+2\\vec\\jmath)+z\\vec k = (x+2y)\\vec\\imath+(x+2y)\\vec\\jmath+z\\vec k$.\n\n$\\chi(\\vec v)=\\vec 0 \\iff x+2y=0 \\text{ et } z=0$, soit $x=-2y$, $z=0$, $y$ libre. $\\ker\\chi = \\{y(-2\\vec\\imath+\\vec\\jmath)\\mid y\\in\\mathbb R\\}=\\mathrm{Vect}(-2\\vec\\imath+\\vec\\jmath)$, droite vectorielle, $\\dim(\\ker\\chi)=1$.\n\nThéorème du rang : $\\dim(\\mathrm{Im}\\,\\chi)=3-1=2$. Or $\\chi(\\vec\\jmath)=2\\chi(\\vec\\imath)$ (colinéaire), donc à écarter. $\\chi(\\vec\\imath)=(1,1,0)$ et $\\chi(\\vec k)=(0,0,1)$ sont non colinéaires : $\\mathrm{Im}\\,\\chi=\\mathrm{Vect}(\\vec\\imath+\\vec\\jmath\\,;\\,\\vec k)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$E$ de dimension 3, base $(\\vec\\imath,\\vec\\jmath,\\vec k)$. $\\rho$ endomorphisme défini par $\\rho(\\vec\\imath)=\\vec\\imath+\\vec\\jmath+\\vec k$, $\\rho(\\vec\\jmath)=2\\vec\\imath+2\\vec\\jmath+2\\vec k$, $\\rho(\\vec k)=-\\vec\\imath-\\vec\\jmath-\\vec k$. Montrer que $\\ker\\rho$ est un plan vectoriel et en donner une base.",
+          "solution_markdown": "On remarque d'abord que $\\rho(\\vec\\jmath)=2\\rho(\\vec\\imath)$ et $\\rho(\\vec k)=-\\rho(\\vec\\imath)$ : les trois images sont colinéaires à $\\vec u=\\vec\\imath+\\vec\\jmath+\\vec k$. Donc $\\mathrm{Im}\\,\\rho=\\mathrm{Vect}(\\vec u)$, droite vectorielle, $\\dim(\\mathrm{Im}\\,\\rho)=1$ (car $\\vec u\\neq\\vec 0$).\n\nThéorème du rang : $\\dim(\\ker\\rho)=3-1=2$ : $\\ker\\rho$ est bien un plan vectoriel.\n\nPour une base : $\\rho(\\vec v)=x\\vec u+2y\\vec u-z\\vec u=(x+2y-z)\\vec u$. $\\rho(\\vec v)=\\vec 0 \\iff x+2y-z=0$ (car $\\vec u\\neq\\vec 0$), soit $z=x+2y$, avec $x,y$ libres. En prenant successivement $(x,y)=(1,0)$ puis $(x,y)=(0,1)$ : $\\ker\\rho=\\mathrm{Vect}(\\vec\\imath+\\vec k\\,;\\,\\vec\\jmath+2\\vec k)$ - on vérifie que ces deux vecteurs sont non colinéaires, donc forment bien une base du plan $\\ker\\rho$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le noyau se calcule en résolvant $\\varphi(\\vec v)=\\vec 0$ après décomposition de $\\vec v$ sur la base de départ.",
+        "L'image est toujours engendrée par les images des vecteurs de la base de départ : il suffit ensuite d'en extraire une famille libre.",
+        "Le théorème du rang $\\dim(\\ker\\varphi)+\\dim(\\mathrm{Im}\\,\\varphi)=\\dim E$ permet de déduire la dimension de l'un à partir de l'autre, sans double calcul.",
+        "Une équation redondante dans le système du noyau (qui se simplifie en $0=0$) est le signal qu'un paramètre reste libre : ne l'ignore jamais.",
+        "Au BAC C/E, cette compétence est systématiquement suivie d'une question sur une nouvelle base construite à partir des vecteurs du noyau et de l'image : repère cette progression classique."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-systemes-de-numeration-et-formats-d-ecriture-des-nombres-3e",
+  "meta": {
+    "titre": "Systèmes de numération et formats d'écriture des nombres",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Systèmes de numération",
+    "duree_estimee_min": 35,
+    "tags": [
+      "systèmes de numération",
+      "binaire",
+      "octal",
+      "décimal",
+      "hexadécimal",
+      "conversion de base"
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": null,
+      "module_numero": "301",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2026-cameroun",
+    "epreuve_titre": "BEPC Cameroun - Épreuve théorique d'informatique - Session 2026",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2026-cameroun-ex2-q4-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-informatique-2026-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans les paramètres d'un logiciel de dessin, une couleur s'écrit `#1AF`. Sur la fiche technique d'une carte réseau, une adresse s'écrit `00:1A:2B:3C:4D:5E`. Ces écritures ne sont pas du charabia : ce sont des nombres, écrits dans une base autre que celle de tous les jours. Savoir reconnaître la base à laquelle appartient un nombre, puis le ramener en décimal, est la première compétence attendue en 3e, et celle qui revient le plus souvent au BEPC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Maîtriser les puissances : $2^0$ à $2^{10}$, et $16^0$, $16^1$, $16^2$",
+        "Savoir poser une multiplication et une addition de nombres entiers",
+        "Savoir effectuer une division euclidienne et en identifier le quotient et le reste"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître une base et convertir en décimal",
+      "contenu_markdown": "**Ce qu'est une base**\n\nUn système de numération de base $b$ écrit tous les nombres à l'aide de $b$ symboles seulement, les chiffres de 0 à $b-1$. Quand $b$ dépasse 10, on complète les dix chiffres usuels par des lettres.\n\n| Base | Nom | Symboles autorisés |\n|---|---|---|\n| 2 | binaire | 0, 1 |\n| 8 | octal | 0 à 7 |\n| 10 | décimal | 0 à 9 |\n| 16 | hexadécimal | 0 à 9 puis A, B, C, D, E, F |\n\nEn hexadécimal, la correspondance des lettres est à connaître par cœur :\n\n> **A = 10, B = 11, C = 12, D = 13, E = 14, F = 15**\n\n**Première compétence : identifier la base d'un nombre**\n\nOn regarde les symboles employés et on retient la plus petite base qui les autorise tous. Un seul symbole interdit élimine la base.\n\n- `1011` peut être binaire (tous ses symboles sont 0 ou 1).\n- `275` ne peut pas être binaire, le 2 et le 7 y étant interdits ; en revanche 7 est le plus grand chiffre de l'octal, donc `275` peut être octal, décimal ou hexadécimal.\n- `1AF` contient un `A` : ni binaire, ni octal, ni décimal. Il est hexadécimal.\n\n**Seconde compétence : convertir vers le décimal**\n\n> Chaque chiffre est multiplié par la base élevée à la puissance de son rang, les rangs se comptant de droite à gauche à partir de 0. On additionne ensuite les produits obtenus.\n\nPour un nombre de trois chiffres $c_2c_1c_0$ en base $b$ :\n\n$$(c_2c_1c_0)_b = c_2 \\times b^2 + c_1 \\times b^1 + c_0 \\times b^0$$\n\n**Sens inverse : du décimal vers une base $b$**\n\nOn divise le nombre par $b$, on note le reste, on recommence avec le quotient jusqu'à obtenir un quotient nul. Le résultat se lit en remontant, du dernier reste au premier.",
+      "formule_principale": "(c_2c_1c_0)_b = c_2 \\times b^2 + c_1 \\times b^1 + c_0 \\times b^0",
+      "variantes": [
+        {
+          "nom": "Passage direct binaire ↔ hexadécimal par paquets de 4 bits",
+          "quand_utiliser": "Quand il faut convertir un nombre binaire long en hexadécimal, ou l'inverse, sans passer par le décimal",
+          "contenu_markdown": "Puisque $16 = 2^4$, un chiffre hexadécimal correspond exactement à quatre bits. On découpe donc le nombre binaire en paquets de 4 bits en partant de la droite, en complétant par des zéros à gauche si nécessaire, puis on traduit chaque paquet séparément.\n\nExemple avec $(110101111)_2$ : les paquets sont $0001\\ |\\ 1010\\ |\\ 1111$, qui valent respectivement 1, 10 et 15, c'est-à-dire 1, A et F. On obtient donc $(1AF)_{16}$.\n\nCette méthode est beaucoup plus rapide que le passage par le décimal, et elle ne comporte aucune division."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Question tirée de l'épreuve du BEPC 2026 : « Identifier le format de représentation des données suivant : (1AF). » (1pt)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever un par un les symboles du nombre",
+          "justification": "L'identification d'une base repose uniquement sur les symboles employés : il faut donc commencer par les lister explicitement, sans en survoler aucun.",
+          "resultat_markdown": "Le nombre (1AF) emploie trois symboles : `1`, `A` et `F`."
+        },
+        {
+          "numero": 2,
+          "action": "Éliminer la base 2",
+          "justification": "Le binaire n'autorise que les symboles 0 et 1.",
+          "resultat_markdown": "Le `A` n'est pas autorisé en base 2 : le binaire est éliminé."
+        },
+        {
+          "numero": 3,
+          "action": "Éliminer la base 8",
+          "justification": "L'octal n'autorise que les chiffres de 0 à 7.",
+          "resultat_markdown": "Le `A` n'est pas un chiffre de 0 à 7 : l'octal est éliminé."
+        },
+        {
+          "numero": 4,
+          "action": "Éliminer la base 10",
+          "justification": "Le décimal n'autorise que les chiffres de 0 à 9.",
+          "resultat_markdown": "Ni le `A` ni le `F` ne sont des chiffres de 0 à 9 : le décimal est éliminé."
+        },
+        {
+          "numero": 5,
+          "action": "Tester la base 16",
+          "justification": "L'hexadécimal autorise les chiffres 0 à 9 et les lettres A à F.",
+          "resultat_markdown": "`1` est un chiffre autorisé, `A` vaut 10 et `F` vaut 15 : les trois symboles sont admis. Le nombre est donc écrit en hexadécimal, ce que l'on note $(1AF)_{16}$."
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier par conversion en décimal",
+          "justification": "Une conversion qui aboutit à un entier positif cohérent confirme que l'interprétation de la base est correcte.",
+          "resultat_markdown": "$(1AF)_{16} = 1 \\times 16^2 + 10 \\times 16^1 + 15 \\times 16^0 = 1 \\times 256 + 10 \\times 16 + 15 \\times 1 = 256 + 160 + 15 = 431$."
+        }
+      ],
+      "conclusion_markdown": "Le nombre (1AF) est écrit en hexadécimal, c'est-à-dire en base 16, et il vaut 431 en base 10. L'identification a été obtenue par élimination successive des bases, jamais par intuition."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Attribuer la valeur 11 à la lettre `A` en pensant que `A` prolonge la suite 0, 1, ..., 9, 10.",
+          "pourquoi_faux": "La numérotation commence à 0, pas à 1. Le dixième symbole est le chiffre 9, qui vaut 9 ; le onzième symbole est `A`, qui vaut 10. Décaler cette table d'un rang fausse toutes les conversions ultérieures.",
+          "correction_markdown": "Écrire la table complète au brouillon en début d'épreuve : A=10, B=11, C=12, D=13, E=14, F=15."
+        },
+        {
+          "erreur_markdown": "Compter les rangs à partir de 1 et écrire $(1AF)_{16} = 1 \\times 16^3 + 10 \\times 16^2 + 15 \\times 16^1$.",
+          "pourquoi_faux": "Le rang du chiffre le plus à droite vaut 0, ce qui donne $16^0 = 1$. Partir de 1 multiplie tout le résultat par 16 et donne 6896 au lieu de 431.",
+          "correction_markdown": "Écrire les rangs sous les chiffres avant de calculer : sous `1`, `A`, `F`, noter 2, 1, 0."
+        },
+        {
+          "erreur_markdown": "Compter les rangs de gauche à droite.",
+          "pourquoi_faux": "En numération de position, la valeur d'un chiffre croît vers la gauche : les unités sont à droite, exactement comme en décimal où le 5 de 253 vaut 5 et non 500. Inverser le sens inverse tout le nombre.",
+          "correction_markdown": "Toujours partir du chiffre le plus à droite, lui donner le rang 0, et progresser vers la gauche."
+        },
+        {
+          "erreur_markdown": "Conclure que `275` est forcément décimal.",
+          "pourquoi_faux": "Tous ses symboles (2, 7 et 5) sont autorisés en octal comme en décimal. Sans indication de base, l'écriture est ambiguë : deux lectures sont possibles, $(275)_8 = 189$ et $(275)_{10} = 275$.",
+          "correction_markdown": "N'affirmer une base que si un symbole l'impose. Sinon, signaler l'ambiguïté ou s'en tenir à l'indice de base fourni par l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour chacun des nombres suivants, indiquer la ou les bases dans lesquelles il peut être écrit, en justifiant : (a) 1101 ; (b) 3F8 ; (c) 490 ; (d) 777.",
+          "solution_markdown": "**(a) 1101**\n\nSymboles employés : `1` et `0`. Tous deux sont autorisés en base 2, en base 8, en base 10 et en base 16.\n\nCe nombre peut donc s'écrire dans **toutes ces bases**. Sa valeur, elle, change : $(1101)_2 = 13$, alors que $(1101)_{10} = 1101$.\n\n**(b) 3F8**\n\nLe symbole `F` n'existe qu'à partir de la base 16. Le nombre est donc **hexadécimal** et lui seul.\n\n**(c) 490**\n\nLe chiffre `9` interdit le binaire et l'octal (dont les chiffres s'arrêtent à 7). Il reste le **décimal** et l'**hexadécimal**.\n\n**(d) 777**\n\nLe chiffre `7` est le plus grand chiffre de l'octal, donc autorisé. Le nombre peut être **octal**, **décimal** ou **hexadécimal**, mais pas binaire.\n\n**Méthode appliquée à chaque fois** : repérer le plus grand symbole du nombre, puis retenir toutes les bases strictement supérieures à sa valeur."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir $(2D)_{16}$ en décimal, puis convertir le résultat obtenu en binaire. Vérifier la cohérence des deux résultats.",
+          "solution_markdown": "**Étape 1 : de l'hexadécimal vers le décimal**\n\nLe nombre a deux chiffres. Le chiffre de droite, `D`, est au rang 0 ; le chiffre de gauche, `2`, est au rang 1.\n\nOn remplace `D` par sa valeur : $D = 13$.\n\n$$(2D)_{16} = 2 \\times 16^1 + 13 \\times 16^0$$\n$$(2D)_{16} = 2 \\times 16 + 13 \\times 1$$\n$$(2D)_{16} = 32 + 13$$\n$$(2D)_{16} = 45$$\n\n**Étape 2 : du décimal vers le binaire, par divisions successives**\n\nOn divise par 2 et on note les restes :\n\n| Division | Quotient | Reste |\n|---|---|---|\n| $45 \\div 2$ | 22 | 1 |\n| $22 \\div 2$ | 11 | 0 |\n| $11 \\div 2$ | 5 | 1 |\n| $5 \\div 2$ | 2 | 1 |\n| $2 \\div 2$ | 1 | 0 |\n| $1 \\div 2$ | 0 | 1 |\n\nOn lit les restes du dernier au premier, donc de bas en haut : **101101**.\n\nDonc $45 = (101101)_2$.\n\n**Étape 3 : vérification**\n\nPremière vérification, en repartant du binaire vers le décimal :\n\n$$(101101)_2 = 1 \\times 32 + 0 \\times 16 + 1 \\times 8 + 1 \\times 4 + 0 \\times 2 + 1 \\times 1 = 32 + 8 + 4 + 1 = 45$$\n\nSeconde vérification, par la méthode des paquets de 4 bits. On complète 101101 à gauche pour obtenir deux paquets : $0010\\ |\\ 1101$. Le premier paquet vaut 2, le second vaut $8+4+1 = 13$, soit `D`. On retrouve bien $(2D)_{16}$.\n\nLes deux vérifications concordent : $(2D)_{16} = 45 = (101101)_2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une couleur se code en informatique par trois composantes rouge, verte et bleue, chacune écrite sur deux chiffres hexadécimaux. Expliquer pourquoi chaque composante prend une valeur entre 0 et 255, puis déterminer les trois composantes décimales de la couleur `#FF8000`.",
+          "solution_markdown": "**Pourquoi chaque composante va de 0 à 255**\n\nUne composante s'écrit avec deux chiffres hexadécimaux. Le plus petit nombre à deux chiffres hexadécimaux est `00`, le plus grand est `FF`.\n\nValeur minimale :\n\n$$(00)_{16} = 0 \\times 16 + 0 = 0$$\n\nValeur maximale :\n\n$$(FF)_{16} = 15 \\times 16^1 + 15 \\times 16^0 = 240 + 15 = 255$$\n\nUne composante prend donc l'une des 256 valeurs comprises entre 0 et 255.\n\nOn retrouve ce résultat autrement : chaque chiffre hexadécimal représente 4 bits, donc deux chiffres représentent 8 bits, soit exactement un octet. Or $2^8 = 256$ combinaisons, numérotées de 0 à 255.\n\n**Décomposition de `#FF8000`**\n\nLes six chiffres se lisent deux par deux, dans l'ordre rouge, vert, bleu :\n\n- rouge : `FF`\n- vert : `80`\n- bleu : `00`\n\n**Conversion de chaque composante**\n\nRouge : $(FF)_{16} = 15 \\times 16 + 15 = 240 + 15 = 255$.\n\nVert : $(80)_{16} = 8 \\times 16 + 0 \\times 1 = 128 + 0 = 128$.\n\nBleu : $(00)_{16} = 0 \\times 16 + 0 \\times 1 = 0$.\n\n**Conclusion**\n\nLa couleur `#FF8000` a pour composantes rouge 255, vert 128, bleu 0. Le rouge est au maximum, le vert à la moitié, le bleu absent : c'est un orange vif, ce que confirme l'observation de la couleur affichée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une base $b$ n'utilise que les symboles de 0 à $b-1$ : c'est le seul critère pour identifier la base d'un nombre écrit sans indice.",
+        "Un seul symbole interdit élimine une base. Procède par élimination, du binaire vers l'hexadécimal.",
+        "Apprends la table A=10 à F=15 par cœur et recopie-la au brouillon dès le début de l'épreuve.",
+        "Le rang du chiffre le plus à droite vaut 0, jamais 1. Écris les rangs sous les chiffres avant de calculer.",
+        "Pour convertir vers le décimal, multiplie chaque chiffre par la base puissance son rang, puis additionne. Pour l'inverse, divise successivement par la base et lis les restes à l'envers.",
+        "Un nombre dont tous les symboles sont des chiffres de 0 à 7 est ambigu : ne tranche que si l'énoncé indique la base.",
+        "Au BEPC, cette notion tombe sous deux formes : identifier la base d'une écriture, et convertir d'une base à une autre. Les deux se traitent avec la même décomposition par rangs."
+      ]
+    }
+  ]
+}

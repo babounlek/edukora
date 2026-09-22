@@ -1,0 +1,179 @@
+{
+ "cours_id": "cours-image-barycentre-par-rotation-1ere-ce",
+ "meta": {
+  "titre": "Déterminer l'image d'un barycentre par une rotation",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Transformations du plan et barycentre",
+  "duree_estimee_min": 30,
+  "tags": ["rotation", "conservation du barycentre", "application affine", "image d'un point", "relation vectorielle"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "IV"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qA3c-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Face à « déterminer l'image de $G$ par la rotation $r$ », le premier réflexe est souvent de poser un repère et de calculer. C'est possible, mais long, et l'expression analytique d'une rotation d'angle $-\\dfrac{\\pi}{2}$ est un nid à erreurs de signe. Or une rotation conserve les barycentres : si $G$ pèse $3$ sur $M$ et $1$ sur $I$, son image pèse exactement $3$ sur $r(M)$ et $1$ sur $r(I)$. Trois lignes suffisent, sans un seul calcul de coordonnées."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la caractérisation vectorielle du barycentre et la relation de réduction",
+    "Savoir déterminer l'image d'un point par une rotation dont on connaît centre et angle",
+    "Savoir qu'une rotation conserve les milieux et les longueurs",
+    "Manipuler les vecteurs opposés"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Une rotation conserve les barycentres",
+   "contenu_markdown": "**La propriété.** Une rotation est une application **affine** : elle conserve les barycentres. Si\n\n$$G = \\operatorname{bar}\\left\\{P(\\alpha)\\,;\\,Q(\\beta)\\right\\}$$\n\nalors\n\n$$r(G) = \\operatorname{bar}\\left\\{r(P)(\\alpha)\\,;\\,r(Q)(\\beta)\\right\\}$$\n\nLes **coefficients ne changent pas** : seuls les points sont remplacés par leurs images.\n\n**Ce que cela couvre.** La même propriété vaut pour les translations, homothéties, symétries et toutes les applications affines. En particulier, une rotation conserve :\n\n- les **milieux** (barycentre de coefficients égaux) ;\n- l'**alignement** et le parallélisme ;\n- les **longueurs** et les rapports de longueurs ;\n- les **angles** en valeur absolue, et même en signe puisqu'une rotation est directe.\n\n**La méthode, en trois gestes.**\n\n1. **Identifier** complètement la rotation : centre et angle.\n2. **Calculer les images des points de base** du barycentre — souvent des sommets ou des milieux, donc immédiats sur la figure.\n3. **Recopier** l'écriture barycentrique en remplaçant les points par leurs images, coefficients inchangés.\n\n**Le passage à la relation vectorielle.** Pour conclure sous la forme demandée, on utilise la relation de réduction : si $G' = \\operatorname{bar}\\left\\{N(\\alpha)\\,;\\,J(\\beta)\\right\\}$, alors pour **tout** point $P$ :\n\n$$(\\alpha + \\beta)\\,\\overrightarrow{PG'} = \\alpha\\,\\overrightarrow{PN} + \\beta\\,\\overrightarrow{PJ}$$\n\n**Le geste décisif : choisir $P$ intelligemment.** En prenant $P$ égal à l'un des deux points de base, le terme correspondant s'annule et la relation se simplifie d'un coup. Si l'on veut faire apparaître $\\overrightarrow{NJ}$, on choisit $P = J$, ce qui annule $\\overrightarrow{JJ}$.\n\n**Les images des sommets d'un carré direct.** Pour la rotation de centre $O$ et d'angle $-\\dfrac{\\pi}{2}$ dans un carré direct $ABCD$, chaque sommet va sur le **précédent** dans l'ordre alphabétique :\n\n$$A \\mapsto D \\qquad B \\mapsto A \\qquad C \\mapsto B \\qquad D \\mapsto C$$\n\nLa justification tient en deux points : le centre est équidistant des quatre sommets, et deux sommets consécutifs d'un carré direct sont vus depuis $O$ sous un angle de $\\dfrac{\\pi}{2}$.\n\n**Le renversement final.** Attention au sens des vecteurs demandé. Passer de $\\overrightarrow{JG'}$ à $\\overrightarrow{G'J}$ change le signe, et passer simultanément de $\\overrightarrow{JN}$ à $\\overrightarrow{NJ}$ le rechange : les deux inversions se compensent, et le coefficient reste positif.",
+   "formule_principale": "G = \\operatorname{bar}\\left\\{P(\\alpha)\\,;\\,Q(\\beta)\\right\\} \\implies r(G) = \\operatorname{bar}\\left\\{r(P)(\\alpha)\\,;\\,r(Q)(\\beta)\\right\\}",
+   "variantes": [
+    {
+     "nom": "Détermination analytique de l'image",
+     "quand_utiliser": "Quand la rotation est donnée par son expression dans un repère, ou qu'aucune structure barycentrique n'est disponible",
+     "contenu_markdown": "Pour la rotation de centre $\\Omega\\left(x_{0}\\,;\\,y_{0}\\right)$ et d'angle $\\theta$, l'image $M'\\left(x'\\,;\\,y'\\right)$ d'un point $M(x\\,;\\,y)$ vérifie\n\n$$x' - x_{0} = \\left(x - x_{0}\\right)\\cos\\theta - \\left(y - y_{0}\\right)\\sin\\theta$$\n\n$$y' - y_{0} = \\left(x - x_{0}\\right)\\sin\\theta + \\left(y - y_{0}\\right)\\cos\\theta$$\n\nCette méthode est incontournable en géométrie analytique. Mais en géométrie pure elle oblige à introduire un repère qui n'était pas demandé, et les signes de $\\sin\\theta$ pour $\\theta$ négatif y sont une source d'erreurs classique."
+    },
+    {
+     "nom": "Conservation par une homothétie ou une translation",
+     "quand_utiliser": "Quand la transformation n'est pas une rotation mais reste affine",
+     "contenu_markdown": "La conservation du barycentre ne tient pas à la nature particulière de la rotation, mais au fait qu'elle est affine. Elle vaut donc identiquement pour une translation, une homothétie, une symétrie centrale ou axiale, ou toute composée de ces transformations.\n\nEn revanche, seules les isométries conservent les **longueurs**. Une homothétie de rapport $k$ multiplie toutes les longueurs par $|k|$, tout en conservant les barycentres et les rapports."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCD$ est un carré direct de centre $O$, $I$ le milieu de $[AB]$, $J$ le milieu de $[AD]$, et $M$, $N$ deux points de $[AD]$ et $[DC]$. La rotation $r$, de centre $O$ et d'angle $-\\dfrac{\\pi}{2}$, transforme $M$ en $N$. On a établi que $G = \\operatorname{bar}\\left\\{M(3)\\,;\\,I(1)\\right\\}$. Soit $G'$ l'image de $G$ par $r$. Justifier que $\\overrightarrow{G'J} = \\dfrac{3}{4}\\,\\overrightarrow{NJ}$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Déterminer l'image de $B$",
+     "justification": "Les quatre sommets sont sur le cercle de centre $O$, régulièrement espacés dans le sens trigonométrique : $\\operatorname{mes}\\left(\\overrightarrow{OB}\\,;\\,\\overrightarrow{OA}\\right) = -\\dfrac{\\pi}{2}$ et $OB = OA$",
+     "resultat_markdown": "$r(B) = A$"
+    },
+    {
+     "numero": 2,
+     "action": "Rappeler l'image de $A$",
+     "justification": "C'est la donnée de l'énoncé, confirmée par le même raisonnement sur le cercle circonscrit",
+     "resultat_markdown": "$r(A) = D$"
+    },
+    {
+     "numero": 3,
+     "action": "En déduire l'image de $I$",
+     "justification": "Une rotation conserve les milieux ; $I$ est le milieu de $[AB]$, donc son image est le milieu de $\\left[r(A)\\,r(B)\\right] = [DA]$",
+     "resultat_markdown": "$r(I) = J$, puisque $J$ est par définition le milieu de $[AD]$"
+    },
+    {
+     "numero": 4,
+     "action": "Appliquer la conservation du barycentre",
+     "justification": "Une rotation est affine : les coefficients sont inchangés, seuls les points sont remplacés",
+     "resultat_markdown": "$G' = r(G) = \\operatorname{bar}\\left\\{r(M)(3)\\,;\\,r(I)(1)\\right\\} = \\operatorname{bar}\\left\\{N(3)\\,;\\,J(1)\\right\\}$"
+    },
+    {
+     "numero": 5,
+     "action": "Écrire la relation de réduction",
+     "justification": "Valable pour tout point $P$, avec $3 + 1 = 4$ comme somme des coefficients",
+     "resultat_markdown": "$4\\,\\overrightarrow{PG'} = 3\\,\\overrightarrow{PN} + \\overrightarrow{PJ}$"
+    },
+    {
+     "numero": 6,
+     "action": "Choisir $P = J$",
+     "justification": "Ce choix annule le dernier terme, puisque $\\overrightarrow{JJ} = \\vec{0}$",
+     "resultat_markdown": "$4\\,\\overrightarrow{JG'} = 3\\,\\overrightarrow{JN}$, soit $\\overrightarrow{JG'} = \\dfrac{3}{4}\\,\\overrightarrow{JN}$"
+    },
+    {
+     "numero": 7,
+     "action": "Renverser les deux vecteurs",
+     "justification": "$\\overrightarrow{G'J} = -\\overrightarrow{JG'}$ et $\\overrightarrow{NJ} = -\\overrightarrow{JN}$ : les deux changements de signe se compensent",
+     "resultat_markdown": "$\\overrightarrow{G'J} = -\\dfrac{3}{4}\\,\\overrightarrow{JN} = \\dfrac{3}{4}\\,\\overrightarrow{NJ}$"
+    }
+   ],
+   "conclusion_markdown": "On a bien $\\overrightarrow{G'J} = \\dfrac{3}{4}\\,\\overrightarrow{NJ}$. Retiens l'économie de la démarche : aucun repère, aucune coordonnée, aucune expression analytique de la rotation. Seulement deux images de points élémentaires — $r(B) = A$, donc $r(I) = J$ — et la conservation du barycentre. C'est ce type de raisonnement que le barème valorise en série C."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Modifier les coefficients en passant aux images",
+     "pourquoi_faux": "Écrire $G' = \\operatorname{bar}\\left\\{N(1)\\,;\\,J(3)\\right\\}$ en intervertissant, ou changer les valeurs, produit un tout autre point. La transformation agit sur les **points**, jamais sur les pondérations.",
+     "correction_markdown": "Recopie l'écriture à l'identique en ne remplaçant que les noms des points : $\\left\\{M(3)\\,;\\,I(1)\\right\\}$ devient $\\left\\{N(3)\\,;\\,J(1)\\right\\}$, dans le même ordre."
+    },
+    {
+     "erreur_markdown": "Se lancer dans un calcul de coordonnées",
+     "pourquoi_faux": "Ce n'est pas faux, mais il faut poser un repère absent de l'énoncé, écrire l'expression analytique de la rotation d'angle $-\\dfrac{\\pi}{2}$ — où $\\cos\\theta = 0$ et $\\sin\\theta = -1$ — puis calculer. Plusieurs fois plus long, et le signe de $\\sin\\theta$ piège de nombreux candidats.",
+     "correction_markdown": "Dès qu'un point est donné comme barycentre, cherche les images des points de base plutôt que ses coordonnées. Réserve l'analytique aux transformations données par des formules."
+    },
+    {
+     "erreur_markdown": "Se tromper sur le sens de rotation et écrire $r(B) = C$",
+     "pourquoi_faux": "L'angle vaut $-\\dfrac{\\pi}{2}$, donc la rotation tourne dans le sens des aiguilles d'une montre : dans un carré direct, chaque sommet va sur le **précédent**, pas sur le suivant. Avec $r(B) = C$, on obtiendrait $r(I)$ = milieu de $[DC]$, et toute la suite serait fausse.",
+     "correction_markdown": "Vérifie la cohérence avec la donnée $r(A) = D$ : si $A$ va sur $D$, qui le précède, alors $B$ va sur $A$. Le sens est le même pour tous les points."
+    },
+    {
+     "erreur_markdown": "Oublier de justifier que $r$ conserve les milieux",
+     "pourquoi_faux": "Le passage de $r(A) = D$ et $r(B) = A$ à $r(I) = J$ repose sur la conservation du milieu, qui est un cas particulier de la conservation du barycentre. Ce n'est pas une évidence à passer sous silence.",
+     "correction_markdown": "Une phrase suffit : « $r$ conserve les milieux, donc l'image du milieu de $[AB]$ est le milieu de $[DA]$ ». C'est d'ailleurs la même propriété que celle qu'on utilise ensuite pour $G$."
+    },
+    {
+     "erreur_markdown": "Se tromper dans le renversement final des vecteurs",
+     "pourquoi_faux": "Conclure $\\overrightarrow{G'J} = -\\dfrac{3}{4}\\,\\overrightarrow{NJ}$ oublie que **les deux** vecteurs sont renversés, et que les signes se compensent. Le résultat demandé a un coefficient positif.",
+     "correction_markdown": "Écris explicitement les deux inversions : $\\overrightarrow{G'J} = -\\overrightarrow{JG'} = -\\dfrac{3}{4}\\overrightarrow{JN} = +\\dfrac{3}{4}\\overrightarrow{NJ}$. Chaque égalité doit être visible."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "$ABC$ est un triangle équilatéral direct de centre $G$. Soit $r$ la rotation de centre $G$ et d'angle $\\dfrac{2\\pi}{3}$, qui transforme $A$ en $B$, $B$ en $C$ et $C$ en $A$. Soit $K$ le barycentre de $\\left\\{A(2)\\,;\\,B(1)\\right\\}$. Déterminer l'image de $K$ par $r$, puis montrer que $GK = GK'$ où $K' = r(K)$.",
+     "solution_markdown": "**Étape 1 - appliquer la conservation du barycentre.**\n\nLa rotation $r$ conserve les barycentres, et les coefficients restent inchangés :\n\n$$K' = r(K) = \\operatorname{bar}\\left\\{r(A)(2)\\,;\\,r(B)(1)\\right\\} = \\operatorname{bar}\\left\\{B(2)\\,;\\,C(1)\\right\\}$$\n\n**L'image de $K$ est le barycentre de $\\left\\{B(2)\\,;\\,C(1)\\right\\}$.**\n\n**Étape 2 - situer les deux points.**\n\nLes coefficients étant proportionnels aux distances opposées :\n\n$$\\overrightarrow{AK} = \\dfrac{1}{3}\\,\\overrightarrow{AB} \\qquad ; \\qquad \\overrightarrow{BK'} = \\dfrac{1}{3}\\,\\overrightarrow{BC}$$\n\nLe point $K$ est donc au tiers de $[AB]$ à partir de $A$, et $K'$ au tiers de $[BC]$ à partir de $B$ : la même position, transportée d'un côté au suivant.\n\n**Étape 3 - l'égalité des distances au centre.**\n\nUne rotation est une **isométrie** : elle conserve les distances. Comme $r(G) = G$ (le centre est invariant) et $r(K) = K'$ :\n\n$$GK = r(G)\\,r(K) = GK'$$\n\n**Conclusion.** $GK = GK'$ : les points $K$ et $K'$ sont sur un même cercle de centre $G$.\n\n**Contrôle.** L'angle $\\operatorname{mes}\\left(\\overrightarrow{GK}\\,;\\,\\overrightarrow{GK'}\\right)$ vaut $\\dfrac{2\\pi}{3}$, l'angle de la rotation. Appliquée trois fois, $r$ redonne l'identité, donc $K$, $K'$ et le troisième point $K'' = \\operatorname{bar}\\left\\{C(2)\\,;\\,A(1)\\right\\}$ forment un triangle équilatéral de centre $G$.\n\n**Remarque.** Cette invariance du centre est ce qui distingue une rotation d'une translation : c'est son unique point fixe."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABCD$ est un carré direct de centre $O$ et de côté $4$. Soit $r$ la rotation de centre $O$ et d'angle $\\dfrac{\\pi}{2}$, et $E$ le barycentre de $\\left\\{A(1)\\,;\\,B(3)\\right\\}$. Déterminer $E' = r(E)$ sous forme barycentrique, puis calculer la longueur $EE'$.",
+     "solution_markdown": "**Étape 1 - les images des sommets.**\n\nL'angle vaut $+\\dfrac{\\pi}{2}$ : la rotation tourne dans le sens trigonométrique, donc chaque sommet va sur le **suivant** dans l'ordre alphabétique du carré direct :\n\n$$r(A) = B \\qquad r(B) = C \\qquad r(C) = D \\qquad r(D) = A$$\n\n**Étape 2 - conservation du barycentre.**\n\n$$E' = \\operatorname{bar}\\left\\{r(A)(1)\\,;\\,r(B)(3)\\right\\} = \\operatorname{bar}\\left\\{B(1)\\,;\\,C(3)\\right\\}$$\n\n**Étape 3 - placer les points en coordonnées.**\n\nPrenons le repère orthonormé centré en $A$ avec $\\overrightarrow{i} = \\dfrac{1}{4}\\overrightarrow{AB}$ et $\\overrightarrow{j} = \\dfrac{1}{4}\\overrightarrow{AD}$ :\n\n$$A(0\\,;\\,0) \\qquad B(4\\,;\\,0) \\qquad C(4\\,;\\,4) \\qquad D(0\\,;\\,4)$$\n\nDe $E = \\operatorname{bar}\\left\\{A(1)\\,;\\,B(3)\\right\\}$, la relation de réduction en prenant $A$ comme origine donne\n\n$$4\\,\\overrightarrow{AE} = 3\\,\\overrightarrow{AB} \\qquad \\Longrightarrow \\qquad \\overrightarrow{AE} = \\dfrac{3}{4}\\overrightarrow{AB} \\qquad \\Longrightarrow \\qquad E(3\\,;\\,0)$$\n\nDe même, avec $B$ comme origine :\n\n$$\\overrightarrow{BE'} = \\dfrac{3}{4}\\overrightarrow{BC} \\qquad \\Longrightarrow \\qquad E'(4\\,;\\,3)$$\n\n**Étape 4 - calculer $EE'$.**\n\n$$EE'^{2} = (4-3)^{2} + (3-0)^{2} = 1 + 9 = 10$$\n\n$$EE' = \\sqrt{10}$$\n\n**Contrôle par la longueur $OE$.** Le centre a pour coordonnées $O(2\\,;\\,2)$, donc\n\n$$OE^{2} = (3-2)^{2} + (0-2)^{2} = 1 + 4 = 5$$\n\nLe triangle $OEE'$ est isocèle en $O$ (car $OE = OE'$, la rotation conservant les distances au centre) avec un angle au sommet de $\\dfrac{\\pi}{2}$. Il est donc rectangle isocèle, et\n\n$$EE'^{2} = OE^{2} + OE'^{2} = 5 + 5 = 10$$\n\nConforme au calcul direct.\n\n**Ce qu'il faut retenir.** Pour une rotation d'un quart de tour, le triangle formé par le centre, un point et son image est **toujours** rectangle isocèle : $EE' = OE\\sqrt{2}$. C'est un raccourci très rentable en épreuve."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $r$ une rotation de centre $\\Omega$ et d'angle $\\theta$, et soient $P$, $Q$ deux points distincts d'images $P'$, $Q'$. Soit $G = \\operatorname{bar}\\left\\{P(\\alpha)\\,;\\,Q(\\beta)\\right\\}$ avec $\\alpha + \\beta \\neq 0$. **Démontrer** que $r(G) = \\operatorname{bar}\\left\\{P'(\\alpha)\\,;\\,Q'(\\beta)\\right\\}$, sans admettre la conservation du barycentre. En déduire que $r$ conserve les rapports de longueurs sur une droite.",
+     "solution_markdown": "**Première partie - la démonstration.**\n\n**Étape 1 - poser le point candidat.**\n\nNotons $H$ le barycentre de $\\left\\{P'(\\alpha)\\,;\\,Q'(\\beta)\\right\\}$, qui existe puisque $\\alpha + \\beta \\neq 0$. Il s'agit de montrer que $H = r(G)$.\n\n**Étape 2 - exprimer $G$ à partir de $\\Omega$.**\n\nLa relation de réduction appliquée en $P = \\Omega$ donne\n\n$$(\\alpha + \\beta)\\,\\overrightarrow{\\Omega G} = \\alpha\\,\\overrightarrow{\\Omega P} + \\beta\\,\\overrightarrow{\\Omega Q}$$\n\nDe même pour $H$ :\n\n$$(\\alpha + \\beta)\\,\\overrightarrow{\\Omega H} = \\alpha\\,\\overrightarrow{\\Omega P'} + \\beta\\,\\overrightarrow{\\Omega Q'}$$\n\n**Étape 3 - utiliser la linéarité de la rotation vectorielle.**\n\nNotons $\\rho$ l'application qui, à un vecteur, associe le vecteur obtenu en le tournant de l'angle $\\theta$. Par définition de la rotation de centre $\\Omega$ :\n\n$$\\overrightarrow{\\Omega P'} = \\rho\\left(\\overrightarrow{\\Omega P}\\right) \\qquad ; \\qquad \\overrightarrow{\\Omega Q'} = \\rho\\left(\\overrightarrow{\\Omega Q}\\right)$$\n\nOr $\\rho$ est **linéaire** : tourner une somme de vecteurs d'un même angle revient à tourner chaque vecteur puis à additionner, et tourner un vecteur multiplié par un réel revient à multiplier le vecteur tourné. Donc\n\n$$\\alpha\\,\\overrightarrow{\\Omega P'} + \\beta\\,\\overrightarrow{\\Omega Q'} = \\alpha\\,\\rho\\left(\\overrightarrow{\\Omega P}\\right) + \\beta\\,\\rho\\left(\\overrightarrow{\\Omega Q}\\right) = \\rho\\left(\\alpha\\,\\overrightarrow{\\Omega P} + \\beta\\,\\overrightarrow{\\Omega Q}\\right)$$\n\n**Étape 4 - conclure.**\n\nEn substituant l'expression de l'étape 2 :\n\n$$(\\alpha + \\beta)\\,\\overrightarrow{\\Omega H} = \\rho\\left((\\alpha + \\beta)\\,\\overrightarrow{\\Omega G}\\right) = (\\alpha + \\beta)\\,\\rho\\left(\\overrightarrow{\\Omega G}\\right)$$\n\nEn divisant par $\\alpha + \\beta$, non nul :\n\n$$\\overrightarrow{\\Omega H} = \\rho\\left(\\overrightarrow{\\Omega G}\\right)$$\n\nCette égalité signifie exactement que $H$ est l'image de $G$ par la rotation de centre $\\Omega$ et d'angle $\\theta$ :\n\n$$H = r(G)$$\n\n**La conservation du barycentre est démontrée.**\n\n**Seconde partie - conservation des rapports.**\n\nSoient $P$, $G$, $Q$ trois points alignés, avec $G$ entre $P$ et $Q$. Posons\n\n$$\\lambda = \\dfrac{PG}{PQ} \\in \\left]0\\,;\\,1\\right[$$\n\n**Étape 5 - traduire en barycentre.**\n\nLa relation $\\overrightarrow{PG} = \\lambda\\,\\overrightarrow{PQ}$ équivaut à\n\n$$G = \\operatorname{bar}\\left\\{P(1-\\lambda)\\,;\\,Q(\\lambda)\\right\\}$$\n\n**Étape 6 - appliquer la première partie.**\n\n$$r(G) = \\operatorname{bar}\\left\\{P'(1-\\lambda)\\,;\\,Q'(\\lambda)\\right\\} \\qquad \\Longrightarrow \\qquad \\overrightarrow{P'r(G)} = \\lambda\\,\\overrightarrow{P'Q'}$$\n\n**Étape 7 - conclure.**\n\n$$\\dfrac{P'\\,r(G)}{P'Q'} = \\lambda = \\dfrac{PG}{PQ}$$\n\n**Le rapport est conservé.**\n\n**Remarque sur la portée du résultat.** La démonstration n'a utilisé que la **linéarité** de $\\rho$, jamais le fait qu'elle conserve les longueurs. La conclusion vaut donc pour toute application affine : translation, homothétie, symétrie, ou composée quelconque.\n\nEn revanche, la conservation des **longueurs** elles-mêmes exige que $\\rho$ soit une isométrie vectorielle, ce qui est le cas d'une rotation mais pas d'une homothétie de rapport différent de $\\pm 1$.\n\n**Ce qu'il faut retenir.** Conservation des rapports et conservation des longueurs sont deux propriétés distinctes. La première tient à l'affinité, la seconde à l'isométrie. Une homothétie possède la première sans la seconde."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Une rotation conserve les barycentres : $r\\left(\\operatorname{bar}\\left\\{P(\\alpha)\\,;\\,Q(\\beta)\\right\\}\\right) = \\operatorname{bar}\\left\\{r(P)(\\alpha)\\,;\\,r(Q)(\\beta)\\right\\}$.",
+    "Les coefficients sont **inchangés** : seuls les points sont remplacés par leurs images.",
+    "En conséquence, une rotation conserve milieux, alignement, parallélisme, longueurs et rapports.",
+    "Pour conclure sous forme vectorielle, utilise $(\\alpha+\\beta)\\,\\overrightarrow{PG'} = \\alpha\\,\\overrightarrow{PN} + \\beta\\,\\overrightarrow{PJ}$ avec un $P$ bien choisi.",
+    "Choisir $P$ égal à l'un des points de base annule un terme et simplifie tout d'un coup.",
+    "Dans un carré direct et une rotation d'angle $-\\dfrac{\\pi}{2}$, chaque sommet va sur le **précédent** ; d'angle $+\\dfrac{\\pi}{2}$, sur le suivant.",
+    "Renverser les deux vecteurs d'une égalité ne change pas le coefficient : les deux signes se compensent.",
+    "Le centre d'une rotation est son unique point fixe : $r(\\Omega) = \\Omega$.",
+    "Pour un quart de tour, le triangle centre-point-image est rectangle isocèle : $PP' = \\Omega P\\sqrt{2}$.",
+    "Évite le passage aux coordonnées quand une structure barycentrique est disponible : c'est plus court et moins risqué."
+   ]
+  }
+ ]
+}

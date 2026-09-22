@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-equations-horaires-projectile-champ-pesanteur-tle-c-e",
+  "meta": {
+    "titre": "Etablissement des equations horaires du mouvement d'un projectile dans le champ de pesanteur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Mecanique - mouvement d'un projectile",
+    "duree_estimee_min": 25,
+    "tags": [
+      "deuxieme loi de Newton",
+      "mouvement d'un projectile",
+      "equations horaires"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2011 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-e-physique-2011-officiel-cameroun-ex4-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ballon lance obliquement, une balle de golf, un obus : tous suivent la meme trajectoire caracteristique en forme d'arc, la parabole. Cette forme n'est pas un hasard : elle decoule directement de l'application de la deuxieme loi de Newton a un mouvement soumis au seul poids."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Deuxieme loi de Newton (theoreme du centre d'inertie)",
+        "Projection d'un vecteur vitesse initiale sur deux axes",
+        "Integration successive d'une acceleration constante"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Equations horaires d'un projectile dans le champ de pesanteur uniforme",
+      "contenu_markdown": "Un projectile lance avec une vitesse initiale $\\vec V_A$ (angle $\\alpha$ avec l'horizontale), soumis au seul poids (air neglige), a une acceleration $\\vec a=\\vec g$ constante, soit $a_x=0$ et $a_y=-g$ (axe $Oy$ vertical vers le haut). Par deux integrations successives (vitesse puis position), avec les conditions initiales de vitesse ($V_A\\cos\\alpha$, $V_A\\sin\\alpha$) et de position ($x_A$, $y_A$), on obtient les equations horaires.",
+      "formule_principale": "x(t) = x_A + (V_A\\cos\\alpha)\\,t \\qquad y(t) = y_A + (V_A\\sin\\alpha)\\,t - \\dfrac{1}{2}gt^2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un projectile est lance depuis l'origine ($x_A=0$, $y_A=0$) avec une vitesse initiale $V_A=20\\ \\text{m/s}$ faisant un angle $\\alpha=30^\\circ$ avec l'horizontale. Etablir ses equations horaires ($g=10\\ \\text{m/s}^2$).",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer la deuxieme loi de Newton et projeter",
+          "justification": "Seul le poids agit : a_x=0, a_y=-g",
+          "resultat_markdown": "$a_x = 0 \\qquad a_y = -10\\ \\text{m/s}^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Integrer pour obtenir les composantes de la vitesse",
+          "justification": "Conditions initiales : v_x0=V_A.cos(alpha), v_y0=V_A.sin(alpha)",
+          "resultat_markdown": "$v_x(t) = 20\\cos(30^\\circ) \\approx 17{,}3\\ \\text{m/s}$ (constant), $v_y(t) = 20\\sin(30^\\circ) - 10t = 10-10t$"
+        },
+        {
+          "numero": 3,
+          "action": "Integrer une seconde fois pour obtenir les equations horaires",
+          "justification": "Conditions initiales de position nulles",
+          "resultat_markdown": "$x(t) = 17{,}3\\,t \\qquad y(t) = 10t - 5t^2$"
+        }
+      ],
+      "conclusion_markdown": "En eliminant le temps entre $x(t)$ et $y(t)$, on retrouverait l'equation de la trajectoire $y=f(x)$, qui est bien celle d'une parabole - la signature caracteristique de tout mouvement de projectile dans un champ de pesanteur uniforme."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le signe negatif de a_y (prendre a_y=+g au lieu de -g)",
+          "pourquoi_faux": "Avec un axe Oy oriente vers le haut, le poids (vertical, vers le bas) donne une acceleration negative ; une erreur de signe inverserait completement la forme de la trajectoire (le projectile 'monterait' indefiniment au lieu de retomber).",
+          "correction_markdown": "Toujours preciser l'orientation des axes avant d'ecrire les composantes de l'acceleration, et verifier la coherence du signe avec le sens physique du poids."
+        },
+        {
+          "erreur_markdown": "Melanger les conditions initiales de vitesse (V_A.cos(alpha), V_A.sin(alpha)) avec celles de position (x_A, y_A)",
+          "pourquoi_faux": "Ce sont deux integrations successives, chacune avec sa propre constante d'integration (vitesse initiale pour la premiere, position initiale pour la seconde) : les confondre fausse completement les equations horaires.",
+          "correction_markdown": "Toujours ecrire explicitement les deux etapes d'integration separement, avec leurs conditions initiales respectives clairement identifiees."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Ecrire les composantes a_x et a_y de l'acceleration d'un projectile soumis au seul poids, axe Oy vertical vers le haut.",
+          "solution_markdown": "$a_x = 0$, $a_y = -g$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un projectile est lance depuis $(0,0)$ avec $V_A=15\\ \\text{m/s}$ et $\\alpha=45^\\circ$ ($g=10\\ \\text{m/s}^2$). Etablir x(t) et y(t).",
+          "solution_markdown": "$v_{x0}=15\\cos45^\\circ\\approx10{,}6\\ \\text{m/s}$, $v_{y0}=15\\sin45^\\circ\\approx10{,}6\\ \\text{m/s}$. $x(t)=10{,}6\\,t$, $y(t)=10{,}6\\,t-5t^2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En eliminant le temps t entre x(t) et y(t) (cas general, lancement depuis l'origine), montrer que la trajectoire y=f(x) est une parabole.",
+          "solution_markdown": "De $x=(V_A\\cos\\alpha)t$, on tire $t=\\dfrac{x}{V_A\\cos\\alpha}$. En reportant dans $y=(V_A\\sin\\alpha)t-\\frac12gt^2$ : $y = x\\tan\\alpha - \\dfrac{g}{2V_A^2\\cos^2\\alpha}x^2$. C'est une fonction du second degre en $x$ (coefficient de $x^2$ negatif) : la trajectoire est bien une parabole, tournee vers le bas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un projectile soumis au seul poids a une acceleration constante $\\vec a=\\vec g$ : $a_x=0$, $a_y=-g$ (axe Oy vers le haut).",
+        "Deux integrations successives, avec les conditions initiales de vitesse puis de position, donnent les equations horaires x(t) et y(t).",
+        "Le mouvement horizontal est uniforme (vx constant), le mouvement vertical est uniformement accelere.",
+        "L'elimination du temps entre x(t) et y(t) donne l'equation d'une parabole : c'est la trajectoire caracteristique de tout mouvement de projectile."
+      ]
+    }
+  ]
+}

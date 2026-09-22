@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-la-carte-graphique-et-la-chaine-daffichage-tle-ti",
+  "meta": {
+    "titre": "La carte graphique et la chaîne d'affichage",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "carte graphique",
+      "GPU",
+      "RAMDAC",
+      "VGA"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3-qA.4.1-0",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3-qA.4.2-0",
+      "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3-qA.4.3-0"
+    ],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Entre les calculs invisibles effectués à l'intérieur de l'ordinateur et l'image visible sur l'écran, il y a toujours un composant qui fait le pont : la carte graphique. Comprendre son schéma interne, c'est comprendre comment un nombre binaire devient une couleur affichée à l'écran."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est la RAM",
+        "Savoir qu'un écran affiche une image à partir d'un signal électrique reçu"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du calcul numérique au signal d'affichage",
+      "contenu_markdown": "La carte graphique traite et convertit les données numériques de l'ordinateur pour produire un signal exploitable par un écran. Le **GPU** calcule l'image à afficher et la stocke dans la **mémoire vidéo** (une RAM dédiée). Pour une sortie analogique comme le CRT, le **RAMDAC** (Random Access Memory Digital-to-Analog Converter) lit ensuite cette mémoire vidéo et convertit les données numériques en signal analogique au format VGA. Une sortie numérique comme le DVI n'a pas besoin de cette conversion et transmet directement les données numériques de la mémoire vidéo.",
+      "formule_principale": "GPU -> Mémoire vidéo -> RAMDAC (conversion numérique -> analogique) -> sortie CRT (VGA) | -> sortie DVI (numérique directe)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "À partir du schéma fonctionnel d'une carte graphique (GPU, mémoire vidéo, RAMDAC, sorties DVI et CRT), donner le rôle de la carte graphique, définir RAM et CRT, et identifier l'élément responsable de la conversion vers le format VGA.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Donner le rôle global de la carte graphique",
+          "justification": "C'est la fonction d'ensemble avant d'entrer dans le détail de chaque composant",
+          "resultat_markdown": "Traiter et convertir les données numériques de l'ordinateur en un signal d'affichage exploitable par un écran."
+        },
+        {
+          "numero": 2,
+          "action": "Définir RAM et CRT",
+          "justification": "Ce sont les deux acronymes du schéma à expliciter",
+          "resultat_markdown": "RAM (Random Access Memory) : mémoire vive à accès aléatoire, ici la mémoire vidéo qui stocke l'image en cours d'affichage. CRT (Cathode Ray Tube) : technologie d'écran à tube cathodique."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier l'élément responsable de la conversion vers le format VGA",
+          "justification": "Le schéma place cet élément juste avant la sortie CRT",
+          "resultat_markdown": "Le RAMDAC, qui lit la mémoire vidéo et convertit ses données numériques en signal analogique VGA envoyé vers la sortie CRT."
+        }
+      ],
+      "conclusion_markdown": "La carte graphique convertit les données numériques en signal d'affichage ; le RAMDAC assure spécifiquement la conversion numérique-analogique nécessaire à une sortie CRT au format VGA."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Attribuer le rôle de conversion VGA au GPU plutôt qu'au RAMDAC",
+          "pourquoi_faux": "Le GPU calcule l'image (traitement des données), mais ne réalise pas lui-même la conversion numérique-analogique : c'est une fonction spécifique confiée au RAMDAC, un composant distinct sur le schéma.",
+          "correction_markdown": "Suis toujours le sens des flèches du schéma : le GPU alimente la mémoire vidéo, et c'est seulement le RAMDAC, positionné juste avant la sortie CRT, qui effectue la conversion vers le format analogique VGA."
+        },
+        {
+          "erreur_markdown": "Croire que la sortie DVI a aussi besoin du RAMDAC",
+          "pourquoi_faux": "Le DVI est une interface numérique : elle transmet directement les données numériques de la mémoire vidéo à l'écran, sans conversion analogique, contrairement au CRT qui exige un signal analogique VGA.",
+          "correction_markdown": "Associe toujours RAMDAC à une sortie analogique (VGA/CRT) : une sortie numérique (DVI, HDMI, DisplayPort) n'a pas besoin de cette conversion."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifie l'acronyme GPU ?",
+          "solution_markdown": "Graphics Processing Unit (unité de traitement graphique) : le processeur dédié au calcul des images sur la carte graphique."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi une carte graphique possède-t-elle sa propre mémoire vidéo, plutôt que d'utiliser uniquement la mémoire RAM centrale de l'ordinateur ?",
+          "solution_markdown": "Une mémoire vidéo dédiée, directement reliée au GPU par un accès très rapide, évite d'encombrer le bus qui relie la RAM centrale au microprocesseur, lequel doit rester disponible pour les autres traitements de l'ordinateur. Elle permet aussi un accès beaucoup plus rapide et prévisible aux données d'image (essentiel pour un rafraîchissement fluide de l'écran) que si le GPU devait systématiquement solliciter la mémoire centrale, partagée avec le reste du système."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur équipé uniquement d'une sortie DVI (pas de sortie CRT/VGA) peut-il se passer totalement d'un RAMDAC sur sa carte graphique ? Expliquer ce que cela implique pour la conception de la carte.",
+          "solution_markdown": "Oui, en théorie : si la carte graphique ne propose que des sorties numériques (DVI, HDMI, DisplayPort), aucune conversion numérique-analogique n'est nécessaire, et un RAMDAC devient superflu pour ces sorties précises. En pratique, de nombreuses cartes graphiques modernes conservent malgré tout un RAMDAC ou un circuit équivalent pour rester compatibles avec d'anciens écrans à entrée VGA/CRT, mais une carte graphique conçue exclusivement pour du matériel entièrement numérique peut effectivement se passer de cette conversion et simplifier d'autant son schéma interne, réduisant coût et consommation électrique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La carte graphique convertit les données numériques traitées par l'ordinateur en un signal d'affichage.",
+        "Le GPU calcule l'image et la stocke dans la mémoire vidéo (une RAM dédiée).",
+        "Le RAMDAC convertit les données numériques de la mémoire vidéo en signal analogique VGA, pour une sortie CRT.",
+        "Une sortie numérique (DVI) transmet directement les données sans passer par cette conversion.",
+        "Au BAC TI, un schéma de carte graphique se lit toujours dans le sens des flèches : GPU -> mémoire vidéo -> RAMDAC -> sortie analogique, ou directement vers une sortie numérique."
+      ]
+    }
+  ]
+}

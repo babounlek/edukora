@@ -1,0 +1,140 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-officiel-2026.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "examen": "bac",
+  "serie": "C, D, E",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2026,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "filiere_serie_a": null,
+  "statut": "brouillon",
+  "numero_exercice": "2",
+  "introduction_markdown": null,
+  "points": 3,
+  "groupes": [
+    "PARTIE II : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (7 points)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-c-d-e-informatique-theorique-officiel-2026_exercice_2_fig_1.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "MCD complet de l'agence de location de salles de spectacle : entités PERSONNE, RESERVATION, SALLE avec leurs propriétés et identifiants, associations EFFECTUER et CONCERNER, cardinalités (0,n)/(1,1) et (1,n)/(0,n)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**PARTIE II : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (7 points)**\n\n**Exercice 1 : Systèmes d'Information (3 points)**\n\nLe Directeur d'une agence de location des salles de spectacle fait appel à vous pour informatiser son SI pour la gestion de ces salles. Les règles de gestion suivantes ont été retenues :\n\nRG1 : Une personne peut effectuer plusieurs réservations et une réservation est effectuée par une seule personne.\n\nRG2 : Une réservation concerne une ou plusieurs salles ; une salle peut être concernée par plusieurs réservations.\n\nRG3 : Une personne est caractérisée par un code unique, son nom, son prénom, son contact et son numéro de CNI.\n\nRG4 : Une réservation comporte un numéro unique et est datée.\n\nRG5 : Une salle possède un numéro unique, un nom, une capacité et une adresse.\n\nTravail à faire : à partir de vos connaissances sur la modélisation d'un SI, élaborer le MCD de cette agence de location en faisant ressortir :",
+  "questions": [
+    {
+      "numero": "a",
+      "enonce_markdown": "Les entités avec leurs propriétés et leurs identifiants. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nConstruire un Modèle Conceptuel de Données commence par repérer, dans les règles de gestion, les objets du monde réel que le système doit mémoriser durablement : chaque objet qui possède une existence propre et un identifiant unique devient une entité, et chaque information qui le caractérise devient une propriété de cette entité, l'identifiant étant la propriété qui permet de distinguer sans ambiguïté deux occurrences de la même entité.\n\nLes règles de gestion RG3, RG4 et RG5 décrivent chacune un objet distinct que le système doit mémoriser, avec un identifiant unique explicite : la personne (RG3), la réservation (RG4) et la salle (RG5). Ce sont donc les trois entités du MCD.\n\nL'entité PERSONNE regroupe les informations données par RG3 : Code_Personne (identifiant, souligné), Nom, Prenom, Contact, N_CNI.\n\nL'entité RESERVATION regroupe les informations données par RG4 : N_Reservation (identifiant, souligné), Date_Reservation.\n\nL'entité SALLE regroupe les informations données par RG5 : N_Salle (identifiant, souligné), Nom_Salle, Capacite, Adresse.\n\n![fig-1](bac-c-d-e-informatique-theorique-officiel-2026_exercice_2_fig_1.png)\n\nLe schéma ci-dessus représente les trois entités avec, pour chacune, son identifiant souligné en tête de la liste de ses propriétés.\n\n### Piège à éviter\nNe classe pas le numéro de CNI ou le numéro de réservation comme une simple propriété parmi d'autres : c'est justement parce qu'il est unique et permet de retrouver une seule occurrence de l'entité qu'il joue le rôle d'identifiant, et il doit être souligné dans le schéma.",
+      "themes": [
+        "Modèle Conceptuel de Données",
+        "Entités et identifiants",
+        "Modélisation d'un système d'information"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex2-qa-0",
+          "competence": "Identifier les entités, propriétés et identifiants d'un MCD",
+          "contenu_markdown": "Construire un Modèle Conceptuel de Données commence par repérer, dans les règles de gestion, les objets du monde réel que le système doit mémoriser durablement : chaque objet qui possède une existence propre et un identifiant unique devient une entité, et chaque information qui le caractérise devient une propriété de cette entité, l'identifiant étant la propriété qui permet de distinguer sans ambiguïté deux occurrences de la même entité.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "b",
+      "enonce_markdown": "Les relations entre les entités. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne relation (ou association) du MCD relie deux entités lorsque les règles de gestion décrivent une action ou un lien direct entre elles ; son nom est en général un verbe à l'infinitif qui traduit cette action, et elle se représente par un losange relié par un trait à chacune des entités concernées.\n\nRG1 établit un lien entre la personne et la réservation : une personne effectue une réservation. Cette relation est donc nommée EFFECTUER et relie l'entité PERSONNE à l'entité RESERVATION.\n\nRG2 établit un lien entre la réservation et la salle : une réservation concerne une ou plusieurs salles. Cette relation est donc nommée CONCERNER et relie l'entité RESERVATION à l'entité SALLE.\n\n![fig-1](bac-c-d-e-informatique-theorique-officiel-2026_exercice_2_fig_1.png)\n\nLe schéma ci-dessus montre les deux relations EFFECTUER et CONCERNER, chacune représentée par un losange relié aux deux entités qu'elle met en jeu.\n\n### Conseil\nNomme toujours une relation par le verbe employé dans la règle de gestion qui la décrit (« effectuer », « concerner ») plutôt que par un nom générique comme « lien » ou « association » : c'est ce que le correcteur recherche en premier sur le schéma.",
+      "themes": [
+        "Modèle Conceptuel de Données",
+        "Associations entre entités",
+        "Modélisation d'un système d'information"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex2-qb-0",
+          "competence": "Identifier les associations d'un MCD à partir des règles de gestion",
+          "contenu_markdown": "Une relation (ou association) du MCD relie deux entités lorsque les règles de gestion décrivent une action ou un lien direct entre elles ; son nom est en général un verbe à l'infinitif qui traduit cette action, et elle se représente par un losange relié par un trait à chacune des entités concernées.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "c",
+      "enonce_markdown": "La représentation des cardinalités. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa cardinalité d'une entité vis-à-vis d'une relation s'exprime par un couple (minimum, maximum) qui indique, pour une occurrence donnée de cette entité, le nombre minimal et le nombre maximal de fois où elle participe à la relation ; le minimum vaut 0 si la participation est facultative ou 1 si elle est obligatoire, et le maximum vaut 1 si l'occurrence participe au plus une fois ou n si elle peut participer un nombre illimité de fois.\n\nLa règle RG1 précise qu'une personne peut effectuer plusieurs réservations, y compris aucune si elle n'a encore rien réservé : la personne participe donc de 0 à n fois à la relation EFFECTUER, d'où la cardinalité (0,n) côté PERSONNE. Elle précise aussi qu'une réservation est effectuée par une seule personne : la réservation participe donc exactement une fois à cette relation, d'où la cardinalité (1,1) côté RESERVATION.\n\nLa règle RG2 précise qu'une réservation concerne une ou plusieurs salles : la réservation participe donc au moins une fois et au plus n fois à la relation CONCERNER, d'où la cardinalité (1,n) côté RESERVATION. Elle précise qu'une salle peut être concernée par plusieurs réservations, y compris par aucune si elle n'a encore jamais été réservée, d'où la cardinalité (0,n) côté SALLE.\n\n![fig-1](bac-c-d-e-informatique-theorique-officiel-2026_exercice_2_fig_1.png)\n\nLe schéma ci-dessus porte ces quatre cardinalités sur les branches qui relient chaque entité à sa relation : (0,n) et (1,1) de part et d'autre de EFFECTUER, (1,n) et (0,n) de part et d'autre de CONCERNER.\n\n### Piège à éviter\nNe recopie pas mécaniquement (1,n) partout : le minimum de la cardinalité doit toujours être justifié par la règle de gestion elle-même (obligatoire ou facultatif), pas supposé par habitude. Ici, seule la réservation est obligatoirement liée à une personne (1,1) et à au moins une salle (1,n) ; la personne et la salle, elles, peuvent exister sans être immédiatement engagées dans une réservation, d'où leurs cardinalités (0,n).",
+      "themes": [
+        "Modèle Conceptuel de Données",
+        "Cardinalités",
+        "Règles de gestion"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-officiel-2026-ex2-qc-0",
+          "competence": "Déterminer les cardinalités d'un MCD à partir des règles de gestion",
+          "contenu_markdown": "La cardinalité d'une entité vis-à-vis d'une relation s'exprime par un couple (minimum, maximum) qui indique, pour une occurrence donnée de cette entité, le nombre minimal et le nombre maximal de fois où elle participe à la relation ; le minimum vaut 0 si la participation est facultative ou 1 si elle est obligatoire, et le maximum vaut 1 si l'occurrence participe au plus une fois ou n si elle peut participer un nombre illimité de fois.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "MCD",
+    "Modèle Conceptuel de Données",
+    "entités",
+    "identifiants",
+    "associations",
+    "cardinalités",
+    "règles de gestion",
+    "systèmes d'information"
+  ],
+  "incertitudes": [
+    "Le \"Travail à faire\" de cet exercice n'est pas numéroté dans le sujet source (trois puces sans lettre a)/b)/c)), mais chacune porte un barème explicitement distinct (1,5 pt / 0,5 pt / 1 pt) : scindé en sous-questions a/b/c conformément à la règle de segmentation par points distincts.",
+      "La figure fig-1 est une construction du corrigé (le MCD demandé), pas une figure extraite du sujet source qui n'en contient aucune : origine_figure = \"corrige\". Elle a été vérifiée cohérente avec les cinq règles de gestion RG1 à RG5 du sujet réel avant réutilisation."
+  ]
+}

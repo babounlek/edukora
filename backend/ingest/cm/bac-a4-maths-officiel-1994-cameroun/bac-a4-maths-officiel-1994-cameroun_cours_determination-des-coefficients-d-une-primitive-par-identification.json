@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-determination-des-coefficients-d-une-primitive-par-identification-tle-a",
+  "meta": {
+    "titre": "Déterminer les coefficients d'une primitive de forme donnée par identification",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Primitives et intégrales",
+    "duree_estimee_min": 25,
+    "tags": [
+      "primitive",
+      "identification de coefficients",
+      "étude de fonctions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a4-maths-officiel-1994-cameroun",
+    "epreuve_titre": "BAC Mathematiques - Serie A (A4 bilingue) - Session 1994 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a4-maths-officiel-1994-cameroun-ex3-q6a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trouver une primitive « à l'aveugle » est souvent impossible sans formulaire avancé. Mais quand l'énoncé donne déjà la FORME de la primitive (à des coefficients près), le problème change complètement de nature : il suffit de dériver cette forme, comparer avec la fonction à primitiver, et résoudre un système sur les coefficients inconnus."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir dériver un produit de fonctions.",
+        "Savoir identifier les coefficients de deux polynômes égaux.",
+        "Savoir résoudre un système de deux équations à deux inconnues."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode des coefficients indéterminés pour une primitive",
+      "contenu_markdown": "Quand une fonction $F$ de forme connue (par exemple $F(x)=(ax+b)e^{-x}$, avec $a$ et $b$ inconnus) doit être une primitive d'une fonction $f$ donnée, on dérive l'expression de $F$, on factorise le résultat pour faire apparaître un polynôme en $x$, puis on identifie ce polynôme, terme à terme (coefficient de $x$, terme constant), avec celui de $f$ : l'égalité $F'=f$ devant être vraie pour TOUT $x$, chaque coefficient du polynôme obtenu doit être égal au coefficient correspondant de $f$, ce qui fournit un système d'équations sur $a$ et $b$.",
+      "formule_principale": "F'(x)=f(x) \\text{ pour tout } x \\iff \\text{les polynômes associés ont les mêmes coefficients}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer $a$ et $b$ tels que $F(x)=(ax+b)e^{-x}$ soit une primitive de $f(x)=4xe^{-x}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver $F(x)=(ax+b)e^{-x}$",
+          "justification": "On applique la formule du produit $(uv)'=u'v+uv'$ avec $u(x)=ax+b$ et $v(x)=e^{-x}$.",
+          "resultat_markdown": "$F'(x)=a\\,e^{-x}+(ax+b)\\times(-e^{-x})=e^{-x}\\big[a-(ax+b)\\big]=e^{-x}\\big[-ax+(a-b)\\big]$."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'égalité $F'(x)=f(x)$ pour tout $x$",
+          "justification": "C'est la condition demandée par l'énoncé : $F$ doit être une primitive de $f$.",
+          "resultat_markdown": "$e^{-x}\\big[-ax+(a-b)\\big]=4xe^{-x}$ pour tout $x$, donc, en simplifiant par $e^{-x}\\neq 0$, $-ax+(a-b)=4x$ pour tout $x$."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier les coefficients terme à terme",
+          "justification": "Deux polynômes sont égaux pour tout $x$ si et seulement si leurs coefficients (de $x$, puis constant) sont égaux un à un.",
+          "resultat_markdown": "Coefficient de $x$ : $-a=4$, donc $a=-4$. Terme constant : $a-b=0$, donc $b=a=-4$."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier le résultat par dérivation directe",
+          "justification": "Une vérification indépendante confirme le calcul avant de conclure.",
+          "resultat_markdown": "$F(x)=(-4x-4)e^{-x}$, $F'(x)=-4e^{-x}+4(x+1)e^{-x}=e^{-x}(-4+4x+4)=4xe^{-x}=f(x)$. Le résultat est confirmé."
+        }
+      ],
+      "conclusion_markdown": "Les coefficients cherchés sont $a=-4$ et $b=-4$, soit $F(x)=-4(x+1)e^{-x}$, une primitive de $f(x)=4xe^{-x}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Simplifier par $e^{-x}$ des deux côtés de l'égalité sans le préciser, ou oublier cette simplification et essayer d'identifier des coefficients sur une expression encore multipliée par $e^{-x}$.",
+          "pourquoi_faux": "L'identification terme à terme ne fonctionne que sur des POLYNÔMES en $x$ : il faut d'abord factoriser et simplifier par $e^{-x}$ (jamais nul) pour se ramener à une égalité de polynômes avant d'identifier quoi que ce soit.",
+          "correction_markdown": "Toujours vérifier que $e^{-x}$ (ou tout facteur commun jamais nul) apparaît des deux côtés de l'égalité, le simplifier explicitement, puis identifier sur ce qui reste."
+        },
+        {
+          "erreur_markdown": "Résoudre les deux équations du système dans le désordre ou en substituant une valeur incorrecte, par exemple utiliser $b=4$ au lieu de $b=a=-4$.",
+          "pourquoi_faux": "La seconde équation ($a-b=0$) donne $b=a$, PAS $b=$ une constante fixe indépendante de $a$ : il faut résoudre le système dans l'ordre, en substituant la valeur de $a$ déjà trouvée.",
+          "correction_markdown": "Résoudre d'abord l'équation la plus simple (souvent celle du coefficient de $x$), puis substituer cette valeur dans la seconde équation pour trouver l'inconnue restante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer $a$ tel que $F(x)=ax^2$ soit une primitive de $f(x)=6x$.",
+          "solution_markdown": "$$F'(x)=2ax.$$\n\nOn veut $F'(x)=f(x)$, soit $2ax=6x$ pour tout $x$, donc $2a=6$, d'où $a=3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer $a$ et $b$ tels que $F(x)=(ax+b)e^{2x}$ soit une primitive de $f(x)=(4x+3)e^{2x}$.",
+          "solution_markdown": "$$F'(x)=a\\,e^{2x}+(ax+b)\\times 2e^{2x}=e^{2x}\\big[2ax+(a+2b)\\big].$$\n\nOn veut $2ax+(a+2b)=4x+3$ pour tout $x$ : coefficient de $x$, $2a=4\\Rightarrow a=2$ ; terme constant, $a+2b=3\\Rightarrow 2+2b=3\\Rightarrow b=\\dfrac{1}{2}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer $a$, $b$ et $c$ tels que $F(x)=(ax^2+bx+c)e^{-x}$ soit une primitive de $f(x)=(x^2-1)e^{-x}$.",
+          "solution_markdown": "$$F'(x)=(2ax+b)e^{-x}+(ax^2+bx+c)\\times(-e^{-x})=e^{-x}\\big[-ax^2+(2a-b)x+(b-c)\\big].$$\n\nOn identifie avec $f(x)=(x^2-1)e^{-x}$, soit $-ax^2+(2a-b)x+(b-c)=x^2+0x-1$ pour tout $x$ :\n\nCoefficient de $x^2$ : $-a=1\\Rightarrow a=-1$. Coefficient de $x$ : $2a-b=0\\Rightarrow b=2a=-2$. Terme constant : $b-c=-1\\Rightarrow c=b+1=-1$.\n\nDonc $a=-1$, $b=-2$, $c=-1$, soit $F(x)=(-x^2-2x-1)e^{-x}=-(x+1)^2e^{-x}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand la forme d'une primitive est donnée à des coefficients près, dérive cette forme puis compare avec la fonction à primitiver : c'est toujours plus rapide que de chercher une primitive « à l'aveugle ».",
+        "Simplifie systématiquement par le facteur commun jamais nul (souvent une exponentielle) avant d'identifier les coefficients.",
+        "L'identification de deux polynômes égaux pour tout $x$ se fait coefficient par coefficient, du degré le plus élevé au terme constant.",
+        "Résous le système dans l'ordre : commence par l'équation la plus simple, puis substitue son résultat dans les suivantes.",
+        "Vérifie toujours le résultat final par une dérivation directe et indépendante : c'est la garantie qu'aucune erreur de signe ne s'est glissée dans le système."
+      ]
+    }
+  ]
+}

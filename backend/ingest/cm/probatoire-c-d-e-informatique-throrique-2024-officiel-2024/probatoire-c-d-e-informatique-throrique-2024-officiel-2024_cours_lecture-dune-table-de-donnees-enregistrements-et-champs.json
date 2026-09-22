@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-lecture-dune-table-de-donnees-enregistrements-et-champs-1ere-tronc-commun",
+  "meta": {
+    "titre": "Lecture d'une table de données : enregistrements et champs",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données - vocabulaire fondamental",
+    "duree_estimee_min": 15,
+    "tags": [
+      "base de données",
+      "table",
+      "enregistrement",
+      "champ"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex2-q4.1-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une liste de classe ressemble beaucoup à une table de base de données : chaque élève occupe une ligne, et chaque colonne (nom, matricule, moyenne) décrit une caractéristique commune à tous les élèves. Ce vocabulaire de ligne et de colonne, en base de données, porte des noms précis, enregistrement et champ, que tout exercice sur une table demande de savoir compter et distinguer sans hésitation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Avoir déjà manipulé un tableau organisé en lignes et colonnes (feuille de calcul, tableau papier)",
+        "Savoir ce qu'est une donnée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Enregistrement et champ",
+      "contenu_markdown": "Dans une table d'une base de données, la première ligne (l'en-tête) donne le nom de chaque colonne : ces colonnes sont appelées des champs, et représentent chacune une caractéristique commune à tous les éléments de la table. Chaque ligne qui suit l'en-tête est appelée un enregistrement : elle regroupe les valeurs de tous les champs pour un même élément. Compter les enregistrements revient donc à compter les lignes de données, sans jamais compter la ligne d'en-tête ; compter les champs revient à compter les colonnes, c'est-à-dire les intitulés donnés en en-tête.",
+      "formule_principale": "\\text{Nombre d'enregistrements} = \\text{nombre de lignes de données (hors en-tête)} \\quad ; \\quad \\text{Nombre de champs} = \\text{nombre de colonnes}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un extrait de la table **ARTICLES** d'une boutique se présente ainsi :\n\n| Reference | Designation | PrixUnitaire | Quantite | Categorie |\n|---|---|---|---|---|\n| 102E78 | Riz | 12000 | 55 | Alimentaire |\n| 205R12 | Plat | 1500 | 102 | Cuisine |\n| 780G08 | Savon | 500 | 455 | Entretien |\n\nDéterminer le nombre d'enregistrements puis le nombre de champs de cette table.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la ligne d'en-tête et l'écarter du décompte",
+          "justification": "La première ligne ne contient pas les données d'un article : elle donne uniquement les noms des colonnes (Reference, Designation, PrixUnitaire, Quantite, Categorie).",
+          "resultat_markdown": "L'en-tête n'est pas un enregistrement."
+        },
+        {
+          "numero": 2,
+          "action": "Compter les lignes de données restantes",
+          "justification": "Chaque ligne restante correspond à un article différent, donc à un enregistrement.",
+          "resultat_markdown": "3 lignes de données (102E78, 205R12, 780G08) : la table comporte **3 enregistrements**."
+        },
+        {
+          "numero": 3,
+          "action": "Compter les colonnes de l'en-tête",
+          "justification": "Chaque intitulé de colonne correspond à un champ.",
+          "resultat_markdown": "5 intitulés (Reference, Designation, PrixUnitaire, Quantite, Categorie) : la table comporte **5 champs**."
+        }
+      ],
+      "conclusion_markdown": "La table ARTICLES comporte donc 3 enregistrements et 5 champs."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter la ligne d'en-tête comme un enregistrement supplémentaire",
+          "pourquoi_faux": "L'en-tête ne décrit aucun élément réel de la table : elle donne seulement les noms des champs, pas une donnée.",
+          "correction_markdown": "Toujours exclure la ligne d'en-tête du décompte des enregistrements."
+        },
+        {
+          "erreur_markdown": "Répondre au nombre de champs en comptant les lignes, ou au nombre d'enregistrements en comptant les colonnes",
+          "pourquoi_faux": "Les deux notions sont orientées dans des directions opposées : le champ se lit à la verticale (une colonne), l'enregistrement se lit à l'horizontale (une ligne).",
+          "correction_markdown": "Associer champ à colonne (vertical) et enregistrement à ligne (horizontal) une fois pour toutes."
+        },
+        {
+          "erreur_markdown": "Oublier une colonne lors du comptage quand la table s'étend sur plusieurs lignes visuelles à l'écran ou sur le papier",
+          "pourquoi_faux": "Une table mal recopiée ou coupée en deux visuellement peut donner l'impression qu'il y a moins de colonnes qu'en réalité.",
+          "correction_markdown": "Recompter systématiquement les intitulés de la ligne d'en-tête d'un bout à l'autre avant de répondre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une table ELEVES comporte les colonnes Matricule, Nom, Prenom, Classe et 4 lignes de données. Donner son nombre d'enregistrements et son nombre de champs.",
+          "solution_markdown": "Les 4 lignes de données correspondent à 4 enregistrements. Les 4 intitulés de colonnes (Matricule, Nom, Prenom, Classe) correspondent à 4 champs."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une table COMMANDES comporte 6 colonnes (NumCommande, Client, Produit, Quantite, PrixUnitaire, Date) et 10 lignes de données, suivies d'une ligne de total qui additionne les montants mais ne décrit aucune commande réelle. Combien d'enregistrements réels comporte cette table ?",
+          "solution_markdown": "La ligne de total n'appartient pas à la table au sens strict : elle ne décrit pas une commande, c'est un résultat calculé ajouté visuellement en bas du tableau. Les enregistrements réels restent les 10 lignes de commandes, soit **10 enregistrements** (et 6 champs)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On fusionne la table ARTICLES (3 enregistrements, 5 champs : Reference, Designation, PrixUnitaire, Quantite, Categorie) avec une table LIVRAISON (3 enregistrements, 2 champs : Reference, DateLivraison) en utilisant le champ commun Reference, chaque référence correspondant à exactement une livraison. Combien d'enregistrements et de champs comporte la table résultante ?",
+          "solution_markdown": "Chaque article correspond à exactement une livraison (correspondance un pour un) : la table résultante comporte donc toujours **3 enregistrements**, un par article. Pour les champs, on additionne les champs des deux tables sans compter deux fois le champ commun Reference qui sert de lien : $5 + 2 - 1 = 6$ champs (Reference, Designation, PrixUnitaire, Quantite, Categorie, DateLivraison)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un champ est une colonne : il décrit une caractéristique commune à tous les éléments de la table.",
+        "Un enregistrement est une ligne de données : il regroupe les valeurs de tous les champs pour un seul élément.",
+        "La ligne d'en-tête ne compte jamais comme un enregistrement, elle donne seulement les noms des champs.",
+        "Pour ne jamais te tromper de sens, associe champ à colonne (verticale) et enregistrement à ligne (horizontale).",
+        "Cette distinction, apparemment simple, est systématiquement testée en tout début d'exercice de base de données au Probatoire et au BEPC : une confusion ici coûte des points faciles."
+      ]
+    }
+  ]
+}

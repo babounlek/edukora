@@ -1,0 +1,112 @@
+{
+  "epreuve_source": "bepc-blanc-2017-fosso-cameroun",
+  "numero_exercice": "2",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": null,
+  "filiere_serie_a": null,
+  "examen": "bepc",
+  "origine": "etablissement",
+  "etablissement": "Institut Polyvalent Fosso",
+  "institution": null,
+  "annee": "2017",
+  "duree_epreuve": "1h",
+  "coefficient": "2",
+  "introduction_markdown": null,
+  "points": 6,
+  "groupes": [],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 : Organisation et traitement de l'information (6 points)**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Poser et effectuer les deux opérations suivantes en respectant la base indiquée pour chacune : $111001 - 1110$, ces deux nombres étant écrits en base 2, avec un résultat à exprimer en base 10 ; puis $95B - 76FA$, ces deux nombres étant écrits en base 16, avec un résultat à exprimer en base 16. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nPour effectuer une opération entre deux nombres écrits dans une base autre que 10, on peut convertir chaque nombre en base 10, effectuer l'opération de façon classique puis reconvertir si besoin dans la base demandée. C'est la méthode la plus sûre lorsque le résultat doit être exprimé dans une base différente de celle des opérandes.\n\n### Corrigé\n**Première opération : $111001_2 - 1110_2$, résultat attendu en base 10.**\n\nOn convertit d'abord chaque nombre binaire en base 10, en utilisant les puissances de 2 associées à la position de chaque chiffre, de la droite vers la gauche, en commençant par $2^0$ :\n\n$$111001_2 = 1\\times2^5 + 1\\times2^4 + 1\\times2^3 + 0\\times2^2 + 0\\times2^1 + 1\\times2^0 = 32+16+8+0+0+1 = 57$$\n\n$$1110_2 = 1\\times2^3 + 1\\times2^2 + 1\\times2^1 + 0\\times2^0 = 8+4+2+0 = 14$$\n\nOn effectue ensuite la soustraction en base 10 :\n\n$$111001_2 - 1110_2 = 57 - 14 = \\boxed{43}$$\n\n**Seconde opération : $95B_{16} - 76FA_{16}$, résultat attendu en base 16.**\n\nOn pose les deux nombres en alignant leurs chiffres de poids faible, en complétant $95B_{16}$ par un zéro à gauche pour qu'il compte autant de chiffres que $76FA_{16}$ :\n\n$$095B_{16}\\ \\text{et}\\ 76FA_{16}$$\n\nOn convertit chaque nombre en base 10 pour comparer leur valeur (rappel des chiffres hexadécimaux : A=10, B=11, C=12, D=13, E=14, F=15) :\n\n$$095B_{16} = 0\\times16^3 + 9\\times16^2 + 5\\times16^1 + 11\\times16^0 = 0+2304+80+11 = 2395$$\n\n$$76FA_{16} = 7\\times16^3 + 6\\times16^2 + 15\\times16^1 + 10\\times16^0 = 28672+1536+240+10 = 30458$$\n\nLe second nombre (76FA₁₆ = 30458 en base 10) est strictement supérieur au premier (95B₁₆ = 2395 en base 10) : l'opération posée telle qu'énoncée donne donc un résultat négatif. On calcule d'abord l'écart entre les deux valeurs :\n\n$$30458 - 2395 = 28063$$\n\nOn reconvertit 28063 en base 16 par divisions successives par 16 :\n\n$$28063 = 1753\\times16 + 15\\ (F)$$\n$$1753 = 109\\times16 + 9$$\n$$109 = 6\\times16 + 13\\ (D)$$\n$$6 = 0\\times16 + 6$$\n\nEn lisant les restes du dernier obtenu au premier : $28063_{10} = 6D9F_{16}$.\n\n$$95B_{16} - 76FA_{16} = -(76FA_{16} - 95B_{16}) = \\boxed{-6D9F_{16}}$$\n\n### Piège à éviter\nAvant de poser une soustraction, compare toujours l'ordre de grandeur des deux nombres, au besoin en les convertissant en base 10 : si le second terme est plus grand que le premier, le résultat est négatif, et il faut le traiter comme tel plutôt que de multiplier les emprunts jusqu'au bout sans en tenir compte.\n\n### Conseil\nSur cette question précise, l'énoncé donne $95B_{16} - 76FA_{16}$ dans cet ordre, ce qui produit un résultat négatif - une situation plus rare dans ce type d'exercice, où l'on soustrait en général le plus petit nombre au plus grand. Si un résultat négatif te surprend sur une opération de ce genre le jour de l'épreuve, vérifie d'abord la conversion des deux nombres en base 10 : si l'écart est confirmé, le résultat négatif est correct, ce n'est pas nécessairement une erreur de ta part.",
+      "themes": [
+        "conversion binaire-décimal",
+        "conversion hexadécimale-décimale",
+        "soustraction en base non décimale",
+        "systèmes de numération"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-blanc-2017-fosso-cameroun-ex2-q1-0",
+          "competence": "Conversion et opérations entre systèmes de numération (binaire, décimal, hexadécimal)",
+          "contenu_markdown": "Pour effectuer une opération entre deux nombres écrits dans une base autre que 10, on peut convertir chaque nombre en base 10, effectuer l'opération de façon classique puis reconvertir si besoin dans la base demandée. C'est la méthode la plus sûre lorsque le résultat doit être exprimé dans une base différente de celle des opérandes.",
+          "cours_genere": true,
+          "cours_id": "cours-conversion-et-operations-entre-systemes-de-numeration-binaire-decimal-hexadecimal-3e"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Convertir $-48$ en base 2 sur 8 bits. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nPour représenter un nombre négatif en binaire sur un nombre de bits donné, on utilise la notation en complément à deux : on écrit la valeur absolue du nombre en binaire sur le nombre de bits imposé, on inverse chaque bit (complément à un), puis on ajoute 1 au résultat obtenu.\n\n### Corrigé\n**Étape 1 - écrire 48 en binaire sur 8 bits.**\n\n$48 = 32+16 = 2^5+2^4$, donc :\n\n$$48_{10} = 0011\\,0000_2$$\n\n**Étape 2 - inverser chaque bit (complément à un).**\n\n$$0011\\,0000 \\longrightarrow 1100\\,1111$$\n\n**Étape 3 - ajouter 1 au résultat (complément à deux).**\n\n$$1100\\,1111 + 1 = 1101\\,0000$$\n\n$$-48_{10} = \\boxed{1101\\,0000_2}$$\n\n**Vérification.** On reconvertit $11010000_2$ en appliquant le complément à deux en sens inverse : on inverse chaque bit ($00101111$), on ajoute 1 ($00110000_2 = 48_{10}$), et comme le bit de poids fort de $11010000$ vaut 1 (nombre négatif), on retrouve bien $-48$.\n\n### Piège à éviter\nN'oublie pas l'étape « +1 » du complément à deux : s'arrêter au complément à un, c'est-à-dire à la simple inversion des bits, donne une représentation différente qui n'est pas celle utilisée pour coder les entiers négatifs.\n\n### Conseil\nPour vérifier rapidement ton résultat, additionne le nombre positif d'origine et sa représentation en complément à deux : la somme doit valoir $2^8 = 256$ (en ignorant la retenue qui dépasse les 8 bits). Ici $48 + 208 = 256$, puisque $1101\\,0000_2 = 208$ lu comme un nombre non signé, ce qui confirme le calcul.",
+      "themes": [
+        "complément à deux",
+        "représentation des nombres négatifs",
+        "codage sur 8 bits"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-blanc-2017-fosso-cameroun-ex2-q2-0",
+          "competence": "Représentation des nombres négatifs en complément à deux",
+          "contenu_markdown": "Pour représenter un nombre négatif en binaire sur un nombre de bits donné, on utilise la notation en complément à deux : on écrit la valeur absolue du nombre en binaire sur le nombre de bits imposé, on inverse chaque bit (complément à un), puis on ajoute 1 au résultat obtenu.",
+          "cours_genere": true,
+          "cours_id": "cours-representation-des-nombres-negatifs-en-complement-a-deux-3e"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Calculer le temps que mettra un fichier de 640 Ko à être transféré si le débit de transfert est de 512 bits/seconde. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nLe temps de transfert d'un fichier se calcule par la formule $t = \\dfrac{\\text{taille du fichier (en bits)}}{\\text{débit (en bits/s)}}$. La taille étant ici donnée en octets (Ko) et le débit en bits par seconde, il faut d'abord convertir la taille du fichier dans la même unité que le débit.\n\n### Corrigé\n**Étape 1 - convertir la taille du fichier en bits.**\n\nOn retient la convention $1\\text{ Ko} = 1000$ octets et $1\\text{ octet} = 8$ bits :\n\n$$640\\text{ Ko} = 640\\times1000 = 640\\,000\\text{ octets}$$\n$$640\\,000\\text{ octets} = 640\\,000\\times8 = 5\\,120\\,000\\text{ bits}$$\n\n**Étape 2 - appliquer la formule du temps de transfert.**\n\n$$t = \\dfrac{\\text{taille en bits}}{\\text{débit}} = \\dfrac{5\\,120\\,000}{512} = 10\\,000\\text{ secondes}$$\n\n**Étape 3 - convertir en heures, minutes, secondes pour une lecture plus parlante.**\n\n$$10\\,000\\text{ s} = 2\\text{ h } 46\\text{ min } 40\\text{ s}$$\n\nEn effet, $2\\text{ h} = 7200\\text{ s}$, puis $10\\,000 - 7200 = 2800\\text{ s}$, soit $46\\text{ min} = 2760\\text{ s}$ et un reste de $40\\text{ s}$.\n\n$$\\boxed{t = 10\\,000\\text{ s} = 2\\text{ h } 46\\text{ min } 40\\text{ s}}$$\n\n### Piège à éviter\nNe divise jamais directement 640 (en Ko) par 512 (en bits/s) sans conversion préalable : les deux grandeurs ne sont pas dans la même unité (octets contre bits). La présence simultanée de « Ko » et de « bits » dans un énoncé doit immédiatement déclencher une conversion avant tout calcul.\n\n### Conseil\nCertains cours utilisent la convention $1\\text{ Ko} = 1024$ octets plutôt que $1000$ : si ton enseignant l'impose, refais le calcul avec ce facteur - la démarche, conversion en bits puis division par le débit, reste identique, seul le résultat numérique final change légèrement.",
+      "themes": [
+        "débit de transfert",
+        "conversion d'unités",
+        "octet et bit"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bepc-blanc-2017-fosso-cameroun-ex2-q3-0",
+          "competence": "Calcul d'un temps de transfert à partir d'un débit",
+          "contenu_markdown": "Le temps de transfert d'un fichier se calcule par la formule $t = \\dfrac{\\text{taille du fichier (en bits)}}{\\text{débit (en bits/s)}}$. La taille étant ici donnée en octets (Ko) et le débit en bits par seconde, il faut d'abord convertir la taille du fichier dans la même unité que le débit.",
+          "cours_genere": true,
+          "cours_id": "cours-calcul-d-un-temps-de-transfert-a-partir-d-un-debit-3e"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "conversion de base",
+    "binaire",
+    "hexadécimal",
+    "complément à deux",
+    "débit de transfert",
+    "informatique BEPC"
+  ],
+  "incertitudes": [
+    "Référentiel programme officiel Informatique (backend/programme/fixtures/programme_officiel_cm_informatique.json) non accessible dans cet environnement de traitement : savoir_officiel laissé à null sur toutes les sous-questions ; à compléter lors d'une passe de tagging disposant d'un accès au dépôt edukora.",
+    "Question 2.1 : l'énoncé donne littéralement l'opération 95B en base 16 moins 76FA en base 16. Or 76FA (base 16) = 30458 en base 10 est numériquement supérieur à 95B (base 16) = 2395 en base 10 : l'opération telle qu'énoncée produit donc un résultat négatif (-6D9F en base 16), ce qui est inhabituel pour ce type d'exercice de soustraction posée. Le corrigé traite fidèlement l'opération dans l'ordre donné par le sujet et signale explicitement ce point plutôt que d'inverser silencieusement les deux opérandes.",
+    "Question 2.3 : l'énoncé ne précise pas si 1 Ko doit être compris comme 1000 octets ou comme 1024 octets. Le corrigé retient la convention 1 Ko = 1000 octets, qui conduit à un résultat rond (10 000 s) cohérent avec les valeurs choisies par l'énoncé (640 Ko et 512 bits/s) ; la méthode reste valable avec la convention 1024 si celle-ci est imposée par le cours suivi par le candidat."
+  ],
+  "statut": "brouillon"
+}

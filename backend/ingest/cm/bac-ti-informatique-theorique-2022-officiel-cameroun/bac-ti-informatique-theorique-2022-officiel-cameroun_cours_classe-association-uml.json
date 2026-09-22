@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-classe-association-tle-ti",
+  "meta": {
+    "titre": "La classe-association en UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de classes : la classe-association",
+    "duree_estimee_min": 22,
+    "tags": [
+      "UML",
+      "classe-association",
+      "diagramme de classes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex2-q2c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Certaines informations n'appartiennent ni à l'une ni à l'autre des deux classes qu'elles relient, mais au LIEN lui-même entre elles. Les loger malgré tout dans l'une des deux classes est une erreur de modélisation fréquente, qui complique inutilement la suite du projet. La classe-association est l'outil UML fait exactement pour ce cas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une association entre deux classes et ses multiplicités.",
+        "Savoir ce qu'est un attribut d'une classe."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Quand une information appartient au lien, pas à une classe",
+      "contenu_markdown": "Une **classe-association** est une classe UML rattachée par un trait en pointillés à une association entre deux autres classes. Elle sert à porter les attributs ou les opérations qui caractérisent spécifiquement CE lien précis entre deux objets, plutôt que l'une ou l'autre des classes prises séparément.\n\nLe signal qui doit alerter : une information qui change de valeur à chaque nouvelle combinaison des deux classes reliées, sans appartenir clairement à l'une ou à l'autre. Si l'on tente de placer cette information comme attribut d'une des deux classes, elle finit par s'écraser ou se dupliquer de façon incohérente - c'est le signe qu'il fallait une classe-association.",
+      "formule_principale": "ClasseA -- association -- ClasseB, avec ClasseAssociation reliée en pointillés au trait d'association"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un Client peut occuper plusieurs Chambres au fil de ses séjours, et une Chambre peut être occupée par plusieurs Clients au fil du temps. Chaque séjour a une date d'arrivée, une date de départ et un coût qui lui sont propres. Modéliser cette situation.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier si les informations peuvent se rattacher à une seule des deux classes",
+          "justification": "Avant de créer une classe-association, il faut écarter la possibilité plus simple d'un attribut ordinaire.",
+          "resultat_markdown": "Non : une Chambre a plusieurs dates d'arrivée différentes selon les séjours, et un Client aussi. Aucune des deux classes ne peut porter ces attributs de façon cohérente."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire que l'information appartient au lien lui-même",
+          "justification": "C'est exactement le signal qui caractérise le besoin d'une classe-association.",
+          "resultat_markdown": "Les dates et le coût caractérisent chaque combinaison précise (ce client, cette chambre, cette période) : ils appartiennent à l'association Client-Chambre."
+        },
+        {
+          "numero": 3,
+          "action": "Créer la classe-association et la relier en pointillés",
+          "justification": "C'est la notation UML normalisée pour ce cas de figure.",
+          "resultat_markdown": "Une classe Occupation, avec les attributs dateArrivée, dateDépart et coût, reliée par un trait pointillé à l'association Client-Chambre."
+        }
+      ],
+      "conclusion_markdown": "La classe Occupation permet à un même Client d'avoir plusieurs occupations, à une même Chambre d'avoir plusieurs occupations, et à chaque occupation de porter ses propres dates et son propre coût, sans aucune duplication incohérente d'attributs."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer les attributs dateArrivée et dateDépart directement dans la classe Client, en imaginant une liste de dates par client",
+          "pourquoi_faux": "Cela oblige à gérer des listes d'attributs à l'intérieur d'une classe, ce qui n'est pas ce que représente un attribut UML ordinaire ; l'information se retrouve mal structurée.",
+          "correction_markdown": "Dès qu'une information dépend de la COMBINAISON de deux objets, pense classe-association plutôt qu'attribut d'une des deux classes."
+        },
+        {
+          "erreur_markdown": "Confondre une classe-association avec une simple classe intermédiaire reliée par deux associations ordinaires, sans trait pointillé",
+          "pourquoi_faux": "Sans le trait pointillé qui la rattache explicitement à l'association qu'elle qualifie, la classe perd son statut de classe-association.",
+          "correction_markdown": "N'oublie jamais le trait en pointillés entre la classe-association et le trait d'association qu'elle qualifie."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un Etudiant est inscrit à plusieurs Matieres, et une Matiere compte plusieurs Etudiants inscrits ; chaque inscription porte une note obtenue par cet étudiant dans cette matière précise. Identifier la classe-association nécessaire et ses attributs.",
+          "solution_markdown": "La classe-association nécessaire est **Inscription**, reliée en pointillés à l'association entre Etudiant et Matiere. Elle porte l'attribut `note`, qui caractérise précisément la combinaison (cet étudiant, cette matière) et ne peut être rattaché de façon cohérente ni à Etudiant seul ni à Matiere seule."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un Acteur joue dans plusieurs Films, et un Film comporte plusieurs Acteurs. Le cachet versé à un acteur dépend à la fois de l'acteur et du film précis. Modéliser cette situation avec une classe-association et expliquer pourquoi un simple attribut `cachet` sur la classe Acteur serait insuffisant.",
+          "solution_markdown": "La classe-association **Role**, reliée en pointillés à l'association Acteur-Film, porte l'attribut `cachet`. Un attribut `cachet` placé directement sur la classe Acteur serait insuffisant car un même acteur touche des cachets différents selon les films : un seul attribut sur Acteur ne pourrait stocker qu'une seule valeur par acteur, alors que le cachet varie selon la combinaison (cet acteur, ce film)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une entreprise de location de véhicules relie ses Clients à ses Vehicules par un contrat de location. Chaque location porte une date de début, une date de fin, un kilométrage de départ et un kilométrage d'arrivée. On souhaite en plus savoir, pour chaque location, quel Employe de l'agence a validé le contrat. Modéliser l'ensemble en expliquant pourquoi l'information sur l'employé validateur peut rester rattachée à la classe-association.",
+          "solution_markdown": "La classe-association **Location**, reliée en pointillés à l'association Client-Vehicule, porte les attributs dateDebut, dateFin, kilometrageDepart et kilometrageArrivee. Pour l'employé validateur, il s'agit d'une association ORDINAIRE supplémentaire : Location porte une association vers la classe Employe (multiplicité 1 côté Employe), en plus de son rattachement en pointillés à l'association Client-Vehicule. Une classe-association reste en effet une classe UML à part entière : elle peut porter ses propres attributs ET participer à ses propres associations vers d'autres classes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une classe-association porte les informations qui caractérisent le LIEN entre deux classes, pas l'une ou l'autre des classes prises séparément.",
+        "Le signal à repérer : une information qui varie selon la COMBINAISON de deux objets, jamais selon un seul des deux pris isolément.",
+        "Notation : un trait en pointillés relie la classe-association au trait d'association qu'elle qualifie.",
+        "Une classe-association reste une classe à part entière : elle peut porter ses propres attributs et même ses propres associations vers d'autres classes.",
+        "Au BAC TI, repérer une classe-association déjà présente sur un diagramme fourni est une question fréquente et rapide à traiter une fois le réflexe acquis : chercher le trait en pointillés, jamais un losange."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-trace-d-execution-d-une-fonction-recursive-en-langage-c-tle-ti",
+  "meta": {
+    "titre": "Trace d'exécution d'une fonction récursive en langage C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Récursivité en langage C",
+    "duree_estimee_min": 30,
+    "tags": [
+      "récursivité",
+      "trace d'exécution",
+      "cas de base",
+      "pile d'appels"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex2-q7-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction qui s'appelle elle-même semble tourner en rond, et pourtant elle s'arrête et produit un résultat précis. Comprendre pourquoi demande de dérouler patiemment chaque appel, un par un, sans sauter d'étape : c'est exactement ce qu'on appelle une trace d'exécution."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une fonction récursive simple",
+        "Connaître la notion de cas de base et de cas récursif"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Descendre jusqu'au cas de base, puis remonter",
+      "contenu_markdown": "Tracer l'exécution d'une fonction récursive consiste à dérouler ses appels dans l'ordre réel d'exécution. On **descend** d'abord : chaque appel récursif en déclenche un autre avec une valeur plus proche du cas de base, jusqu'à atteindre ce cas de base (où la fonction renvoie une valeur immédiate, sans nouvel appel). On **remonte** ensuite : chaque appel en attente reçoit le résultat de l'appel qu'il avait déclenché, et calcule à son tour sa propre valeur de retour, jusqu'à obtenir le résultat final de l'appel initial."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Trace l'exécution de som(5), où som(a) renvoie 0 si a==0, et a+som(a-1) sinon.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Descendre : som(5) appelle som(4)",
+          "justification": "a=5 n'est pas le cas de base, on applique donc a+som(a-1)",
+          "resultat_markdown": "som(5) = 5 + som(4), en attente du résultat de som(4)"
+        },
+        {
+          "numero": 2,
+          "action": "Descendre encore : som(4), som(3), som(2), som(1)",
+          "justification": "Chaque appel relance le même raisonnement avec une valeur plus petite",
+          "resultat_markdown": "som(4)=4+som(3), som(3)=3+som(2), som(2)=2+som(1), som(1)=1+som(0)"
+        },
+        {
+          "numero": 3,
+          "action": "Atteindre le cas de base som(0)",
+          "justification": "a==0 déclenche le cas de base, qui renvoie directement 0 sans nouvel appel",
+          "resultat_markdown": "som(0) = 0"
+        },
+        {
+          "numero": 4,
+          "action": "Remonter en recomposant chaque résultat en attente",
+          "justification": "Chaque appel suspendu reçoit maintenant la valeur qu'il attendait",
+          "resultat_markdown": "som(1)=1+0=1, som(2)=2+1=3, som(3)=3+3=6, som(4)=4+6=10, som(5)=5+10=15"
+        }
+      ],
+      "conclusion_markdown": "som(5) vaut 15, obtenu après une descente jusqu'au cas de base som(0) puis une remontée qui recompose chaque résultat intermédiaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "S'arrêter à la première ligne de la descente (som(5) = 5 + som(4)) sans continuer",
+          "pourquoi_faux": "Cette ligne seule ne donne aucune valeur numérique : som(4) reste une expression non calculée tant qu'on n'a pas atteint le cas de base.",
+          "correction_markdown": "Continue systématiquement la descente jusqu'au cas de base avant de commencer à remonter et calculer des valeurs numériques."
+        },
+        {
+          "erreur_markdown": "Oublier le cas de base dans la trace et laisser la récursion continuer indéfiniment sur le papier",
+          "pourquoi_faux": "Sans identifier clairement où s'arrête la descente, la trace devient confuse et peut suggérer à tort que le programme ne s'arrête jamais.",
+          "correction_markdown": "Repère toujours en premier la condition du cas de base (ici a==0) avant de commencer la trace : elle indique où la descente doit s'arrêter."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Trace l'exécution de som(2).",
+          "solution_markdown": "som(2) = 2+som(1) ; som(1) = 1+som(0) ; som(0) = 0 (cas de base). Remontée : som(1) = 1+0 = 1 ; som(2) = 2+1 = 3. Résultat : som(2) = 3."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une fonction fact(n) renvoie 1 si n==0, et n*fact(n-1) sinon. Trace l'exécution de fact(4).",
+          "solution_markdown": "Descente : fact(4)=4*fact(3), fact(3)=3*fact(2), fact(2)=2*fact(1), fact(1)=1*fact(0), fact(0)=1 (cas de base). Remontée : fact(1)=1*1=1, fact(2)=2*1=2, fact(3)=3*2=6, fact(4)=4*6=24. Résultat : fact(4) = 24."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une fonction récursive est appelée avec une valeur négative, par exemple som(-1), alors que le cas de base ne teste que a==0. Que se passe-t-il, et pourquoi est-ce dangereux ?",
+          "solution_markdown": "La suite des appels devient som(-1)=-1+som(-2), som(-2)=-2+som(-3), et ainsi de suite : la valeur de a s'éloigne de plus en plus de 0 au lieu de s'en rapprocher, puisqu'elle décroît indéfiniment sans jamais atteindre exactement 0. Le cas de base n'est donc jamais atteint, et les appels récursifs s'empilent sans fin jusqu'à provoquer un débordement de la pile d'appels (stack overflow), qui arrête le programme avec une erreur. C'est pour cette raison que le programme de l'exercice utilise une boucle do...while qui redemande une saisie tant que n est négatif, avant même d'appeler som(n) : cela garantit que la fonction ne reçoit jamais de valeur négative."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une trace de fonction récursive se déroule en deux temps : la descente jusqu'au cas de base, puis la remontée qui recompose les résultats.",
+        "Le cas de base est la condition qui arrête la récursion sans nouvel appel : identifie-la toujours en premier.",
+        "Une trace incomplète (arrêtée avant le cas de base) ne donne aucune valeur numérique exploitable.",
+        "Un appel récursif jamais réduit vers le cas de base (par exemple avec une valeur négative non filtrée) provoque un débordement de pile : c'est pourquoi les valeurs d'entrée sont souvent contrôlées avant l'appel."
+      ]
+    }
+  ]
+}

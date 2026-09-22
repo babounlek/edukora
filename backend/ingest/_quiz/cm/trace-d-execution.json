@@ -1,0 +1,151 @@
+[
+  {
+    "external_id": "cqc-trace-d-execution-faible-0",
+    "theme": "trace d'exécution",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On exécute la suite d'instructions suivante :\n\n```c\nint a = 2, b = 5;\na = a + b;\nb = a - b;\na = a - b;\n```\n\nQuelles sont les valeurs de `a` et de `b` à la fin ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour faire la trace d'une suite d'affectations, on note la valeur de chaque variable après chaque instruction, dans l'ordre, en utilisant à chaque fois les valeurs **courantes**.\n\n### Corrigé\n\nTrace : au départ `a = 2`, `b = 5`. Après `a = a + b`, `a = 7`. Après `b = a - b`, `b = 7 - 5 = 2`. Après `a = a - b`, `a = 7 - 2 = 5`. Les valeurs finales sont **a = 5 et b = 2** : ces instructions échangent les deux variables sans variable auxiliaire.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "a = 7 et b = 5"
+      },
+      {
+        "lettre": "B",
+        "texte": "a = 5 et b = 2"
+      },
+      {
+        "lettre": "C",
+        "texte": "a = 2 et b = 5"
+      },
+      {
+        "lettre": "D",
+        "texte": "a = 7 et b = 2"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10561,
+      10563,
+      10572,
+      10576
+    ]
+  },
+  {
+    "external_id": "cqc-trace-d-execution-faible-1",
+    "theme": "trace d'exécution",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Faire la trace d'exécution du code suivant (valeurs de `i` et de `s` à chaque tour) et donner la valeur finale de `s` :\n\n```c\nint s = 0;\nfor (int i = 1; i <= 4; i++)\n    s = s + i * i;\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nUne trace d'exécution se présente sous forme de tableau : une ligne par tour de boucle, une colonne par variable, pour lire l'évolution des valeurs sans rien sauter.\n\n### Corrigé\n\n| Tour | i | i × i | s |\n|------|---|-------|---|\n| 1 | 1 | 1 | 1 |\n| 2 | 2 | 4 | 5 |\n| 3 | 3 | 9 | 14 |\n| 4 | 4 | 16 | 30 |\n\nLa valeur finale de `s` est **30**, somme des carrés des entiers de 1 à 4.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10561,
+      10563,
+      10572,
+      10576
+    ]
+  },
+  {
+    "external_id": "cqc-trace-d-execution-moyenne-2",
+    "theme": "trace d'exécution",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère le tableau `T = [3, 1, 4, 1, 5]` (indices 0 à 4) et le code :\n\n```c\nint max = T[0];\nfor (int i = 1; i < 5; i++)\n    if (T[i] > max)\n        max = T[i];\n```\n\nFaire la trace d'exécution (valeur de `T[i]` et de `max` à chaque tour), donner la valeur finale de `max` et le nombre de fois où `max` est modifiée.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour tracer un parcours de tableau, on note à chaque tour l'indice, l'élément lu, le résultat du test et la valeur de la variable modifiée éventuellement.\n\n### Corrigé\n\nAu départ `max = 3`.\n\n| i | T[i] | T[i] > max ? | max après |\n|---|------|--------------|-----------|\n| 1 | 1 | non | 3 |\n| 2 | 4 | oui | 4 |\n| 3 | 1 | non | 4 |\n| 4 | 5 | oui | 5 |\n\nLa valeur finale de `max` est **5**, et `max` est modifiée **2 fois** (aux tours `i = 2` et `i = 4`).",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10561,
+      10563,
+      10572,
+      10576
+    ]
+  },
+  {
+    "external_id": "cqc-trace-d-execution-moyenne-3",
+    "theme": "trace d'exécution",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Quelle est la valeur de `r` à la fin de l'exécution du code suivant ?\n\n```c\nint n = 5, r = 1;\nwhile (n > 1) {\n    r = r * n;\n    n = n - 2;\n}\n```",
+    "corrige_markdown": "### Rappel de méthode\n\nOn suit conjointement les variables modifiées par la boucle et on vérifie la condition avant chaque tour, y compris pour arrêter la boucle.\n\n### Corrigé\n\nDépart : `n = 5`, `r = 1`. Tour 1 (`5 > 1`) : `r = 5`, `n = 3`. Tour 2 (`3 > 1`) : `r = 15`, `n = 1`. Le test `1 > 1` est faux : la boucle s'arrête avec **r = 15**. La valeur 120 serait $5!$, mais le pas de la boucle est de 2 et non de 1.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "120"
+      },
+      {
+        "lettre": "B",
+        "texte": "15"
+      },
+      {
+        "lettre": "C",
+        "texte": "5"
+      },
+      {
+        "lettre": "D",
+        "texte": "3"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10561,
+      10563,
+      10572,
+      10576
+    ]
+  },
+  {
+    "external_id": "cqc-trace-d-execution-elevee-4",
+    "theme": "trace d'exécution",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère la fonction récursive suivante :\n\n```c\nint f(int n) {\n    if (n == 0) return 0;\n    return n % 10 + f(n / 10);\n}\n```\n\nFaire la trace de l'appel `f(345)` : indiquer la suite des appels (phase de descente), les valeurs retournées lors de la remontée, le nombre total d'appels et le résultat.",
+    "corrige_markdown": "### Rappel de méthode\n\nLa trace d'une fonction récursive se fait en deux phases : la descente (chaque appel déclenche le suivant jusqu'au cas de base), puis la remontée (chaque appel en attente calcule sa valeur dès que l'appel suivant lui répond, dans l'ordre inverse).\n\n### Corrigé\n\n**Descente** : `f(345)` appelle `f(34)`, qui appelle `f(3)`, qui appelle `f(0)`, cas de base qui retourne 0. Il y a **4 appels** au total.\n\n**Remontée** :\n\n| Appel | Calcul | Valeur retournée |\n|-------|--------|------------------|\n| `f(0)` | cas de base | 0 |\n| `f(3)` | 3 % 10 + f(0) = 3 + 0 | 3 |\n| `f(34)` | 34 % 10 + f(3) = 4 + 3 | 7 |\n| `f(345)` | 345 % 10 + f(34) = 5 + 7 | 12 |\n\nLe résultat est **12**, somme des chiffres de 345.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10561,
+      10563,
+      10572,
+      10576
+    ]
+  }
+]

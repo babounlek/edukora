@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-resolution-systeme-deux-equations-lineaires-1ere-a",
+  "meta": {
+    "titre": "Résolution d'un système de deux équations linéaires à deux inconnues (méthode de substitution)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Systèmes d'équations",
+    "duree_estimee_min": 25,
+    "tags": [
+      "système d'équations",
+      "substitution",
+      "équations linéaires"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2006 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-maths-2006-officiel-cameroun-ex1-q1-0",
+    "rappels_lies": [
+      "rdm-probatoire-a-maths-2006-officiel-cameroun-ex1-q2b-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un chauffeur pèse son chargement, un commerçant compte sa caisse, un technicien calibre deux quantités liées par deux contraintes différentes : dans chacun de ces cas, deux grandeurs inconnues sont reliées par deux relations distinctes, et il faut les retrouver toutes les deux en même temps. C'est exactement ce que permet un système de deux équations à deux inconnues. La méthode de substitution transforme ce double problème en un calcul classique à une seule inconnue, en trois étapes reproductibles."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résoudre une équation du premier degré à une inconnue",
+        "Manipuler une expression littérale (développer, réduire)",
+        "Isoler une variable dans une égalité"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode de substitution",
+      "contenu_markdown": "Un système de deux équations linéaires à deux inconnues $x$ et $y$ s'écrit sous la forme $\\begin{cases} ax+by=c \\\\ dx+ey=f \\end{cases}$. La méthode de substitution consiste à isoler une des deux inconnues dans l'équation la plus simple, celle où son coefficient vaut 1 si possible, puis à remplacer cette expression dans l'AUTRE équation, ce qui donne une équation à une seule inconnue. On résout cette équation, puis on revient à la première relation pour trouver la seconde inconnue.",
+      "formule_principale": "\\begin{cases} ax+by=c \\\\ dx+ey=f \\end{cases}",
+      "variantes": [
+        {
+          "nom": "Méthode par combinaison linéaire",
+          "quand_utiliser": "Quand aucune inconnue n'a un coefficient égal à 1 et que les coefficients d'une même inconnue sont faciles à égaler",
+          "contenu_markdown": "On multiplie une ou les deux équations par des nombres bien choisis pour que les coefficients d'une même inconnue soient opposés, puis on additionne les deux équations pour éliminer cette inconnue."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $(S)$ : $\\begin{cases} 28x+16y=416 \\\\ x+y=20 \\end{cases}$",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler une inconnue dans l'équation la plus simple",
+          "justification": "Dans la seconde équation, $y$ a un coefficient égal à 1 : c'est la plus simple à isoler.",
+          "resultat_markdown": "$y=20-x$"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer cette expression dans l'autre équation",
+          "justification": "Remplacer $y$ par $20-x$ dans la première équation élimine $y$ et ne laisse plus qu'une inconnue, $x$.",
+          "resultat_markdown": "$28x+16(20-x)=416$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer et réduire",
+          "justification": "On distribue 16 sur $(20-x)$ puis on regroupe les termes en $x$.",
+          "resultat_markdown": "$28x+320-16x=416 \\Rightarrow 12x=96$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre l'équation obtenue",
+          "justification": "On isole $x$ en divisant par son coefficient.",
+          "resultat_markdown": "$x=8$"
+        },
+        {
+          "numero": 5,
+          "action": "Revenir à la première relation pour trouver $y$",
+          "justification": "La relation $y=20-x$ établie à l'étape 1 donne directement $y$ une fois $x$ connu.",
+          "resultat_markdown": "$y=20-8=12$"
+        }
+      ],
+      "conclusion_markdown": "Le système admet pour unique solution le couple $(8\\,;\\,12)$. La vérification dans les deux équations de départ ($28\\times 8+16\\times 12=416$ et $8+12=20$) confirme le résultat."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Substituer $y=20-x$ dans l'équation dont elle est tirée (la seconde équation elle-même)",
+          "pourquoi_faux": "On retombe sur $x+(20-x)=20$, soit $20=20$ : une identité toujours vraie, qui ne donne aucune information sur la valeur de $x$.",
+          "correction_markdown": "Substitue toujours l'expression isolée dans l'AUTRE équation du système, celle qui n'a pas servi à l'isoler."
+        },
+        {
+          "erreur_markdown": "Oublier de distribuer le coefficient lors de la substitution, en écrivant $28x+16\\times 20-x=416$",
+          "pourquoi_faux": "Le coefficient 16 doit multiplier l'expression entière $(20-x)$, pas seulement le terme constant 20 : c'est une parenthèse qu'il faut développer en entier.",
+          "correction_markdown": "Écris systématiquement la substitution avec parenthèses explicites : $28x+16(20-x)=416$, puis développe terme à terme."
+        },
+        {
+          "erreur_markdown": "S'arrêter à la valeur de $x$ sans calculer $y$",
+          "pourquoi_faux": "La solution d'un système à deux inconnues est un couple $(x\\,;\\,y)$, pas une seule valeur : le travail n'est terminé que lorsque les deux inconnues sont déterminées.",
+          "correction_markdown": "Reviens systématiquement à la relation isolée à la première étape pour calculer la seconde inconnue, dès que la première est connue."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $\\begin{cases} x+y=10 \\\\ 2x+3y=24 \\end{cases}$.",
+          "solution_markdown": "De la première équation, $y=10-x$. En substituant dans la seconde : $2x+3(10-x)=24 \\Rightarrow 2x+30-3x=24 \\Rightarrow -x=-6 \\Rightarrow x=6$. Puis $y=10-6=4$. La solution est $(6\\,;\\,4)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux nombres $a$ et $b$ ont une somme de 35 et vérifient $3a-b=25$. Déterminer $a$ et $b$.",
+          "solution_markdown": "On pose le système $\\begin{cases} a+b=35 \\\\ 3a-b=25 \\end{cases}$. De la première équation, $b=35-a$. En substituant : $3a-(35-a)=25 \\Rightarrow 3a-35+a=25 \\Rightarrow 4a=60 \\Rightarrow a=15$. Puis $b=35-15=20$. Donc $a=15$ et $b=20$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un artisan fabrique deux types de paniers : le panier A coûte 1500 F à produire, le panier B coûte 2000 F. Un lot de 15 paniers a coûté 26 000 F à produire. Combien de paniers de chaque type le lot contient-il ?",
+          "solution_markdown": "On note $a$ le nombre de paniers A et $b$ le nombre de paniers B. Le lot contient 15 paniers : $a+b=15$. Le coût total est de 26 000 F : $1500a+2000b=26000$. De la première équation, $b=15-a$. En substituant : $1500a+2000(15-a)=26000 \\Rightarrow 1500a+30000-2000a=26000 \\Rightarrow -500a=-4000 \\Rightarrow a=8$. Puis $b=15-8=7$. Le lot contient donc 8 paniers A et 7 paniers B. Vérification : $1500\\times 8+2000\\times 7=12000+14000=26000$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un système à deux inconnues se résout en ramenant le problème à une seule inconnue : isole, substitue, résous.",
+        "Isole toujours l'inconnue dont le coefficient vaut 1 quand c'est possible : cela évite de manipuler des fractions inutiles.",
+        "Substitue dans l'AUTRE équation que celle qui a servi à isoler, jamais dans la même.",
+        "Une solution de système est un couple : ne t'arrête jamais après avoir trouvé une seule des deux inconnues.",
+        "Au Probatoire, ce type de système apparaît souvent caché dans un problème concret (mélange, chargement, coût de production) : la vraie difficulté est de le construire, la résolution elle-même est mécanique une fois le système posé."
+      ]
+    }
+  ]
+}

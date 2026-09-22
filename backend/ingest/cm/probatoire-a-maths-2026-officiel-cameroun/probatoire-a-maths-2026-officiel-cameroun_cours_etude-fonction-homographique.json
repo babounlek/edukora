@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-etude-fonction-homographique-1ere-a",
+  "meta": {
+    "titre": "Étude d'une fonction homographique : asymptotes, variations et construction",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Étude de fonctions",
+    "duree_estimee_min": 40,
+    "tags": [
+      "fonction homographique",
+      "asymptote",
+      "dérivée d'un quotient",
+      "tableau de variations",
+      "tangente"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2026-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques (officiel, Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-maths-2026-officiel-cameroun-ex3-q3-0",
+    "rappels_lies": [
+      "rdm-probatoire-a-maths-2026-officiel-cameroun-ex3-q1-0",
+      "rdm-probatoire-a-maths-2026-officiel-cameroun-ex3-q2-0",
+      "rdm-probatoire-a-maths-2026-officiel-cameroun-ex3-q4-0",
+      "rdm-probatoire-a-maths-2026-officiel-cameroun-ex3-q5-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction dont l'expression est une simple fraction de deux expressions du premier degré cache en réalité une courbe très reconnaissable : deux branches qui s'approchent indéfiniment de deux droites, sans jamais les toucher. Une fois que tu sais repérer ces deux droites (les asymptotes), la fonction homographique devient l'une des études de fonction les plus rapides à mener entièrement, du calcul de la dérivée jusqu'au tracé de la courbe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dérivée d'un quotient $f=\\dfrac{u}{v}$",
+        "Calcul de limites d'une fonction rationnelle",
+        "Équation de la tangente à une courbe en un point",
+        "Lecture et construction d'un tableau de variations"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Fonction homographique : forme, asymptotes et sens de variation",
+      "contenu_markdown": "Une fonction homographique s'écrit $f(x)=\\dfrac{ax+b}{cx+d}$ (avec $c\\neq0$ et $ad-bc\\neq0$). Elle admet toujours une asymptote verticale à l'endroit où le dénominateur s'annule, et une asymptote horizontale égale au quotient $\\dfrac{a}{c}$ des coefficients directeurs (obtenue en écrivant $f(x)=\\dfrac{a}{c}-\\dfrac{k}{cx+d}$ pour une constante $k$ bien choisie). Sa dérivée, calculée par la formule du quotient, se simplifie toujours en $f'(x)=\\dfrac{ad-bc}{(cx+d)^2}$ : comme $(cx+d)^2$ est toujours positif, le signe de $f'$ est CONSTANT sur tout le domaine, égal au signe de $ad-bc$. La fonction est donc strictement monotone (croissante ou décroissante) sur chacun des deux intervalles qui composent son domaine, sans jamais changer de sens de variation.",
+      "formule_principale": "f(x)=\\dfrac{ax+b}{cx+d} \\quad\\Longrightarrow\\quad f'(x)=\\dfrac{ad-bc}{(cx+d)^2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Étudier la fonction $f(x)=\\dfrac{3x+2}{x+1}$ sur $D=[-5\\,;-1[\\,\\cup\\,]-1\\,;3]$, et construire sa courbe $(C)$ ainsi que sa tangente $(T)$ au point d'abscisse $0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'asymptote verticale",
+          "justification": "Le dénominateur $x+1$ s'annule en $x=-1$, valeur exclue du domaine.",
+          "resultat_markdown": "Asymptote verticale : $x=-1$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier l'asymptote horizontale",
+          "justification": "On écrit $f(x)=\\dfrac{3x+2}{x+1}=\\dfrac{3(x+1)-1}{x+1}=3-\\dfrac{1}{x+1}$ : quand $x\\to\\pm\\infty$, le terme $\\dfrac{1}{x+1}$ tend vers 0.",
+          "resultat_markdown": "Asymptote horizontale : $y=3$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la dérivée",
+          "justification": "Avec $u=3x+2$, $u'=3$, $v=x+1$, $v'=1$, on applique $f'=\\dfrac{u'v-uv'}{v^2}$.",
+          "resultat_markdown": "$f'(x)=\\dfrac{3(x+1)-(3x+2)}{(x+1)^2}=\\dfrac{1}{(x+1)^2}$"
+        },
+        {
+          "numero": 4,
+          "action": "Étudier le signe de $f'$ et en déduire le sens de variation",
+          "justification": "$(x+1)^2>0$ pour tout $x\\neq-1$, donc $f'(x)>0$ partout où $f$ est définie.",
+          "resultat_markdown": "$f$ est strictement croissante sur $[-5\\,;-1[$ et sur $]-1\\,;3]$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer les valeurs et limites aux bornes",
+          "justification": "On évalue $f$ aux bornes du domaine et on étudie la limite au voisinage de l'asymptote verticale.",
+          "resultat_markdown": "$f(-5)=3{,}25$, $\\lim_{x\\to-1^-}f(x)=+\\infty$, $\\lim_{x\\to-1^+}f(x)=-\\infty$, $f(3)=2{,}75$"
+        },
+        {
+          "numero": 6,
+          "action": "Déterminer la tangente au point d'abscisse 0",
+          "justification": "On utilise $y=f'(x_0)(x-x_0)+f(x_0)$ avec $x_0=0$, $f(0)=2$ et $f'(0)=1$.",
+          "resultat_markdown": "$(T) : y=x+2$"
+        },
+        {
+          "numero": 7,
+          "action": "Construire la courbe",
+          "justification": "On trace d'abord les deux asymptotes en pointillés, puis chaque branche en s'appuyant sur les valeurs et le sens de variation trouvés.",
+          "resultat_markdown": "Deux branches strictement croissantes de part et d'autre de $x=-1$, s'approchant des asymptotes $x=-1$ et $y=3$ sans les toucher, avec la tangente $(T)$ qui touche $(C)$ au point $(0\\,;2)$."
+        }
+      ],
+      "conclusion_markdown": "On vient de mener une étude complète de fonction homographique : asymptotes, dérivée, sens de variation, tableau de variations et construction graphique, en s'appuyant à chaque étape sur les résultats précédents plutôt que sur des calculs isolés."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher l'asymptote horizontale en calculant la limite terme à terme sans factoriser, et conclure à tort qu'il n'y a pas d'asymptote.",
+          "pourquoi_faux": "Une limite de quotient de deux expressions qui tendent chacune vers l'infini est une forme indéterminée : il faut d'abord réécrire l'expression (ici en isolant la partie constante) avant de conclure.",
+          "correction_markdown": "Réécris systématiquement $f(x)=\\dfrac{ax+b}{cx+d}$ sous la forme $\\dfrac{a}{c}-\\dfrac{k}{cx+d}$ avant de prendre la limite en $\\pm\\infty$ : la partie $\\dfrac{k}{cx+d}$ tend alors clairement vers 0."
+        },
+        {
+          "erreur_markdown": "Affirmer que $f$ est croissante « sur $D$ » sans préciser qu'elle l'est séparément sur chacun des deux intervalles.",
+          "pourquoi_faux": "$f$ passe de $+\\infty$ à $-\\infty$ en traversant $x=-1$ : elle n'est pas monotone sur $D$ tout entier, seulement sur chaque intervalle qui le compose.",
+          "correction_markdown": "Rédige toujours la conclusion du sens de variation intervalle par intervalle : « $f$ est strictement croissante sur $[-5\\,;-1[$ » ET « $f$ est strictement croissante sur $]-1\\,;3]$ », jamais une seule phrase globale."
+        },
+        {
+          "erreur_markdown": "Tracer une courbe qui traverse l'asymptote verticale ou qui la touche.",
+          "pourquoi_faux": "Par définition, une asymptote est une droite dont la courbe se rapproche indéfiniment sans jamais l'atteindre.",
+          "correction_markdown": "Trace toujours les asymptotes en pointillés AVANT la courbe, et vérifie ensuite que chaque branche s'en approche sans la couper."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $g(x)=\\dfrac{2x+1}{x-2}$ définie sur $\\mathbb{R}\\setminus\\{2\\}$. Déterminer les asymptotes de sa courbe représentative.",
+          "solution_markdown": "Le dénominateur $x-2$ s'annule en $x=2$ : la droite $x=2$ est asymptote verticale. On écrit $g(x)=\\dfrac{2(x-2)+5}{x-2}=2+\\dfrac{5}{x-2}$ : quand $x\\to\\pm\\infty$, $\\dfrac{5}{x-2}\\to0$, donc $g(x)\\to2$. **La droite $y=2$ est asymptote horizontale, la droite $x=2$ est asymptote verticale.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour la fonction $g(x)=\\dfrac{2x+1}{x-2}$ de l'exercice précédent, calculer $g'(x)$ et déterminer le sens de variation de $g$.",
+          "solution_markdown": "Avec $u=2x+1$, $u'=2$, $v=x-2$, $v'=1$ : $g'(x)=\\dfrac{2(x-2)-(2x+1)}{(x-2)^2}=\\dfrac{2x-4-2x-1}{(x-2)^2}=\\dfrac{-5}{(x-2)^2}$. Comme $(x-2)^2>0$ pour $x\\neq2$, le numérateur $-5$ étant négatif, $g'(x)<0$ partout. **$g$ est donc strictement décroissante sur $]-\\infty\\,;2[$ et sur $]2\\,;+\\infty[$** (contrairement à l'exemple du cours où $ad-bc$ était positif, ici $ad-bc=2\\times(-2)-1\\times1=-5$ est négatif, d'où la décroissance)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h(x)=\\dfrac{2x+1}{x-2}$. Déterminer une équation de la tangente à la courbe de $h$ au point d'abscisse $x_0=3$, puis déterminer les coordonnées du point d'intersection de cette tangente avec l'asymptote horizontale.",
+          "solution_markdown": "On calcule $h(3)=\\dfrac{7}{1}=7$ et $h'(3)=\\dfrac{-5}{(3-2)^2}=-5$ (formule établie à l'exercice précédent). La tangente en $x_0=3$ a pour équation $y=h'(3)(x-3)+h(3)=-5(x-3)+7=-5x+15+7=-5x+22$. L'asymptote horizontale est $y=2$ (établie à l'exercice 1) : on cherche $x$ tel que $-5x+22=2$, soit $5x=20$, soit $x=4$. **La tangente coupe l'asymptote horizontale au point de coordonnées $(4\\,;2)$.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fonction homographique $f(x)=\\dfrac{ax+b}{cx+d}$ a toujours une asymptote verticale (où $cx+d=0$) et une asymptote horizontale (obtenue en isolant la partie constante).",
+        "Sa dérivée se simplifie toujours en $f'(x)=\\dfrac{ad-bc}{(cx+d)^2}$ : le signe de $f'$ est constant, il ne dépend que du signe de $ad-bc$.",
+        "La fonction est strictement monotone sur chaque intervalle de son domaine, jamais sur le domaine entier s'il est coupé par l'asymptote verticale.",
+        "Trace toujours les deux asymptotes en pointillés avant la courbe : elles guident tout le tracé.",
+        "Ce type d'étude tombe très régulièrement au Probatoire et au BAC, souvent enchaîné avec le calcul d'une tangente : maîtriser l'enchaînement complet (asymptotes, dérivée, variations, tangente, construction) te fait gagner un temps précieux le jour de l'examen."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-fonctions-javascript-conditionnelles-a-partir-de-cases-a-cocher-checkbox-tle-ti",
+  "meta": {
+    "titre": "Fonctions JavaScript conditionnelles à partir de cases à cocher (checkbox)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 25,
+    "tags": [
+      "JavaScript",
+      "checkbox",
+      "checked",
+      "if",
+      "formulaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex1-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une case à cocher sur un formulaire ne vaut jamais « oui » ou « non » directement : elle est cochée ou elle ne l'est pas, et c'est à ton script JavaScript de traduire cet état en une action concrète, ici l'ajout d'un montant au salaire d'un employé."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Syntaxe d'une fonction JavaScript",
+        "Accès aux champs d'un formulaire via document.nomFormulaire.nomChamp"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La propriété booléenne checked",
+      "contenu_markdown": "Chaque case à cocher d'un formulaire possède une propriété `checked`, qui vaut `true` si elle est cochée et `false` sinon. On y accède avec `document.nomFormulaire.nomChamp.checked`. Comme cette propriété est déjà un booléen, elle s'utilise directement dans un test : `if (document.monFormulaire.bonus.checked) { ... }` se lit « si la case bonus est cochée ». Lorsque plusieurs cases indépendantes peuvent chacune ajouter leur propre montant, on les teste avec des `if` séparés (jamais un `if...else`), pour permettre de cumuler leurs effets si plusieurs cases sont cochées en même temps.",
+      "formule_principale": "if (document.formulaire.champ.checked) { ... }",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la fonction JavaScript `CalculAddition()` qui renvoie 5000 si la case Bonus est cochée, 7500 si la case Allocation est cochée.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser une variable de résultat à 0",
+          "justification": "Si aucune case n'est cochée, le supplément à ajouter doit être nul, pas indéfini.",
+          "resultat_markdown": "`var supplement = 0;`"
+        },
+        {
+          "numero": 2,
+          "action": "Tester chaque case indépendamment avec sa propre condition if",
+          "justification": "Les deux cases sont deux suppléments distincts qui doivent pouvoir, techniquement, se cumuler si l'utilisateur les coche toutes les deux.",
+          "resultat_markdown": "`if (document.monFormulaire.bonus.checked) { supplement = supplement + 5000; }`\n`if (document.monFormulaire.allocation.checked) { supplement = supplement + 7500; }`"
+        },
+        {
+          "numero": 3,
+          "action": "Renvoyer la variable de résultat",
+          "justification": "La fonction doit produire une valeur utilisable par le script qui l'appelle, pas seulement l'afficher.",
+          "resultat_markdown": "`return supplement;`"
+        }
+      ],
+      "conclusion_markdown": "La fonction `CalculAddition()` renvoie ainsi 0, 5000, 7500 ou 12500 selon la combinaison de cases cochées par l'utilisateur au moment de l'appel."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `if (bonus.checked = true)` avec un seul signe égal.",
+          "pourquoi_faux": "Un seul `=` est une affectation, pas un test : cette instruction force `checked` à `true` et l'expression entière vaut toujours `true`, quelle que soit la case réellement cochée.",
+          "correction_markdown": "Utiliser directement `if (bonus.checked)` (la propriété est déjà un booléen) ou, si l'on tient à une comparaison explicite, `if (bonus.checked == true)` avec deux signes égal."
+        },
+        {
+          "erreur_markdown": "Enchaîner les deux cases avec `else if` au lieu de deux `if` séparés.",
+          "pourquoi_faux": "Avec `else if`, dès que la première condition (Bonus coché) est vraie, la seconde n'est plus testée du tout : un utilisateur qui coche les deux cases ne recevrait alors que 5000 F au lieu de 12500 F.",
+          "correction_markdown": "Utiliser deux blocs `if` totalement indépendants dès que deux cases peuvent, en théorie, être cochées simultanément."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire une fonction JavaScript `estMajeur()` qui renvoie `true` si une case à cocher nommée `majeur` est cochée, `false` sinon.",
+          "solution_markdown": "```javascript\nfunction estMajeur() {\n    return document.monFormulaire.majeur.checked;\n}\n```\nLa propriété `checked` est déjà le booléen recherché ; la fonction n'a besoin d'aucun test explicite, seulement de le renvoyer directement."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un formulaire propose trois options de livraison sous forme de cases à cocher : Express (+2000 F), Assurance (+500 F), Emballage cadeau (+300 F). Écrire une fonction qui calcule le supplément total de livraison.",
+          "solution_markdown": "```javascript\nfunction calculLivraison() {\n    var total = 0;\n    if (document.monFormulaire.express.checked) { total = total + 2000; }\n    if (document.monFormulaire.assurance.checked) { total = total + 500; }\n    if (document.monFormulaire.emballage.checked) { total = total + 300; }\n    return total;\n}\n```\nLes trois options étant cumulables entre elles (rien n'interdit de choisir Express ET Assurance), les trois tests restent indépendants les uns des autres."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Reprendre l'exercice précédent en imposant cette fois que l'option Emballage cadeau ne soit facturée que si Express est également cochée. Modifier la fonction en conséquence.",
+          "solution_markdown": "```javascript\nfunction calculLivraison() {\n    var total = 0;\n    if (document.monFormulaire.express.checked) {\n        total = total + 2000;\n        if (document.monFormulaire.emballage.checked) {\n            total = total + 300;\n        }\n    }\n    if (document.monFormulaire.assurance.checked) { total = total + 500; }\n    return total;\n}\n```\nLa dépendance entre les deux options se traduit par l'imbrication du test Emballage à l'intérieur du test Express : Emballage n'est examinée que si Express est déjà vraie, ce qui reproduit exactement la contrainte énoncée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`checked` est déjà un booléen : pas besoin de le comparer explicitement à `true` ou `false`.",
+        "Deux cases indépendantes se testent avec deux `if` séparés, jamais un `if...else`, pour permettre leur cumul.",
+        "Une variable de résultat initialisée à 0 avant les tests garantit une valeur correcte même si aucune case n'est cochée.",
+        "Des options dépendantes l'une de l'autre (l'une ne compte que si l'autre est cochée) se traduisent par un test imbriqué, pas par deux tests indépendants."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-debit-de-donnees-definition-et-unites-tle-ti",
+  "meta": {
+    "titre": "Le débit de données : définition et unités",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques - vocabulaire de base",
+    "duree_estimee_min": 15,
+    "tags": [
+      "débit",
+      "bit par seconde",
+      "réseaux",
+      "vitesse de transfert"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Cette connexion offre 10 Mbps », « ce fichier se télécharge à 6,83 Kio/s » : ces phrases, on les lit partout, sans toujours savoir précisément ce qu'elles mesurent. Comprendre le débit de données, c'est comprendre ce qui distingue une connexion rapide d'une connexion lente, et pourquoi le même fichier peut mettre une seconde ou une heure à arriver selon le réseau emprunté."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une information numérique se mesure en bits et en octets (1 octet = 8 bits).",
+        "Connaître les préfixes kilo, méga, giga appliqués à une unité informatique."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une vitesse, pas une quantité",
+      "contenu_markdown": "Le débit de données est la quantité d'informations transmise sur une liaison de communication par unité de temps : il mesure une vitesse de transfert, jamais un volume total. Il s'exprime en bits par seconde (bit/s, ou son abréviation bps) pour les débits de connexion (« 10 Mbps »), ou en octets par seconde (et ses multiples Kio/s, Mio/s) pour la vitesse d'un transfert de fichier déjà en cours. Le point commun de toutes ces unités est la présence du « par seconde » : sans lui, on mesure une quantité de données (un volume, comme la taille d'un fichier), pas un débit.",
+      "formule_principale": "\\text{Débit} = \\dfrac{\\text{Quantité de données transmise}}{\\text{Durée du transfert}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un extrait de capture d'aspirateur de site web affiche « Taux de transfert : 24,15 KiB/s (6,83 KiB/s) ». Expliquer ce que représente cette information.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'unité utilisée",
+          "justification": "KiB/s (kibioctets par seconde) est une unité de débit, reconnaissable à son « par seconde ».",
+          "resultat_markdown": "L'unité indique bien une vitesse de transfert, pas un volume total téléchargé."
+        },
+        {
+          "numero": 2,
+          "action": "Interpréter la valeur numérique",
+          "justification": "La valeur exprime la quantité de données réellement transférée chaque seconde au moment de la capture.",
+          "resultat_markdown": "24,15 KiB/s (ou 6,83 KiB/s pour la deuxième valeur donnée) signifie qu'environ 24,15 (ou 6,83) kibioctets sont téléchargés chaque seconde."
+        },
+        {
+          "numero": 3,
+          "action": "Relier ce débit à la durée totale d'un transfert",
+          "justification": "Un débit connu permet de calculer une durée de transfert dès que la taille totale du fichier est connue.",
+          "resultat_markdown": "durée = taille totale / débit"
+        }
+      ],
+      "conclusion_markdown": "La ligne « Taux de transfert » de la capture est un débit de données : elle donne la vitesse à laquelle les octets circulent, information indispensable pour estimer la durée d'un téléchargement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le débit (une vitesse) avec la taille du fichier déjà téléchargé (un volume), par exemple répondre « le débit est de 6,58 MiB » en reprenant la ligne « Octets écrits » de la capture.",
+          "pourquoi_faux": "6,58 MiB, sans « par seconde », est un volume déjà transféré à un instant donné, pas une vitesse de transfert.",
+          "correction_markdown": "Chercher systématiquement le « par seconde » (ou son abréviation /s) pour identifier la ligne qui exprime réellement un débit."
+        },
+        {
+          "erreur_markdown": "Confondre bit et octet dans une unité de débit, par exemple lire « 10 Mbps » comme 10 méga-octets par seconde.",
+          "pourquoi_faux": "« bps » (minuscule) désigne des bits par seconde, alors que « Mio/s » ou « MB/s » désignent des octets par seconde, huit fois plus grands à valeur numérique égale.",
+          "correction_markdown": "Toujours vérifier si l'unité utilise un « b » minuscule (bit) ou un « B »/« o » (octet) avant de comparer deux débits entre eux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une box internet annonce un débit descendant de 8 Mbps. Que signifie ce nombre ?",
+          "solution_markdown": "Cela signifie que la connexion peut recevoir jusqu'à 8 mégabits de données chaque seconde : c'est une mesure de vitesse de transfert, pas la taille d'un fichier téléchargeable."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un transfert de fichier affiche « 512 Kio/s ». Combien de kibioctets seront transférés en 10 secondes à ce débit constant ?",
+          "solution_markdown": "Quantité = débit × durée = 512 Kio/s × 10 s = 5120 Kio."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux connexions sont comparées : la première affiche un débit de 2 Mbps, la seconde un débit de 200 Kio/s. Laquelle est la plus rapide ? (Rappel : 1 octet = 8 bits.)",
+          "solution_markdown": "Il faut ramener les deux débits à la même unité. Convertissons 2 Mbps (mégabits par seconde) en kibioctets par seconde : 2 Mbps = 2000 kbit/s (approximativement, en base 1000) = 2000 / 8 = 250 Kio/s environ.\n\nLa première connexion (≈250 Kio/s) est donc plus rapide que la seconde (200 Kio/s), bien que son nombre affiché (2) paraisse plus petit que celui de la seconde (200) : c'est bien la conversion dans une unité commune qui permet la comparaison, jamais la comparaison directe des nombres bruts affichés dans des unités différentes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le débit de données mesure une vitesse de transfert, toujours rapportée à une seconde.",
+        "Une quantité sans « par seconde » (un volume, une taille de fichier) n'est jamais un débit.",
+        "Bit et octet ne sont pas la même unité : un octet vaut 8 bits, d'où l'importance de vérifier la casse (b minuscule contre B/o majuscule).",
+        "Pour comparer deux débits exprimés dans des unités différentes, il faut toujours les convertir dans une unité commune avant de conclure.",
+        "Cette notion de base ouvre systématiquement les questions de réseaux au BAC TI, avant des calculs plus poussés de durée de transfert."
+      ]
+    }
+  ]
+}

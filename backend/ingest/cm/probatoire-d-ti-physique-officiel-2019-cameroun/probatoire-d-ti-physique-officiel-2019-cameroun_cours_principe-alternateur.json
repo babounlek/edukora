@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-principe-alternateur-premiere",
+  "meta": {
+    "titre": "Principe de l'alternateur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "alternateur",
+      "induction électromagnétique",
+      "loi de Faraday",
+      "tension alternative"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2019-cameroun",
+    "epreuve_titre": "Épreuve de physique au probatoire D et TI 2019 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2019-cameroun-ex3-qB1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La dynamo d'un vélo qui allume un phare sans aucune pile, une centrale électrique qui produit le courant qui alimente une ville entière : dans les deux cas, le même principe physique est à l'œuvre, l'induction électromagnétique, mis en pratique dans une machine appelée alternateur. Comprendre ce principe permet de répondre aux questions de cours sur la production d'électricité, mais aussi de mieux aborder les calculs de f.é.m. induite qui en découlent."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de flux magnétique à travers une surface",
+        "Notion qualitative de force électromotrice (f.é.m.)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Principe de l'alternateur",
+      "contenu_markdown": "Le principe d'un alternateur repose sur le phénomène d'induction électromagnétique : lorsque le flux du champ magnétique à travers une bobine varie au cours du temps, il apparaît aux bornes de cette bobine une force électromotrice (f.é.m.) induite, donnée par la loi de Faraday $e = -\\dfrac{d\\Phi}{dt}$. Dans un alternateur, cette variation de flux est obtenue en faisant tourner un aimant (le rotor, appelé aussi inducteur) devant une bobine fixe (le stator, ou induit), ou inversement en faisant tourner la bobine dans un champ magnétique fixe.",
+      "formule_principale": "e(t) = -\\dfrac{d\\Phi}{dt}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer pourquoi la tension recueillie aux bornes d'un alternateur est alternative (et non continue), en partant du principe de l'induction électromagnétique.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décrire la cause de la variation de flux",
+          "justification": "L'induction n'apparaît que si le flux magnétique à travers la bobine varie ; dans un alternateur, cette variation vient de la rotation du rotor (aimant) devant la bobine fixe.",
+          "resultat_markdown": "Le rotor tourne à vitesse angulaire constante $\\omega$ ; l'angle entre l'axe de l'aimant et l'axe de la bobine varie donc continûment et périodiquement au cours du temps."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire l'allure du flux magnétique à travers la bobine",
+          "justification": "Le flux à travers une bobine dépend de l'orientation relative de l'aimant et de la bobine (il est maximal quand l'aimant est aligné avec l'axe de la bobine, nul quand il lui est perpendiculaire) : cette orientation variant de façon sinusoïdale avec la rotation, le flux varie lui-même de façon sinusoïdale, du type $\\Phi(t) = \\Phi_{max}\\cos(\\omega t)$.",
+          "resultat_markdown": "$\\Phi(t)$ est une fonction périodique, de période $T = 2\\pi/\\omega$, qui change de signe deux fois par tour du rotor."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la loi de Faraday pour obtenir la f.é.m. induite",
+          "justification": "La dérivée d'une fonction sinusoïdale est elle-même une fonction sinusoïdale (de même période), donc $e(t) = -d\\Phi/dt$ est elle aussi périodique et change de signe au même rythme que $\\Phi(t)$.",
+          "resultat_markdown": "$e(t)$ est une tension qui oscille entre une valeur positive et une valeur négative à chaque tour du rotor : elle est donc **alternative**, et non continue (qui garderait un signe constant)."
+        }
+      ],
+      "conclusion_markdown": "La tension produite par un alternateur est alternative parce que le flux magnétique qui la génère varie périodiquement en changeant de signe, du fait de la rotation continue du rotor : c'est cette rotation périodique, et non un choix arbitraire, qui impose la nature alternative de la tension obtenue."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre l'alternateur avec une pile ou un générateur de tension continue, en pensant que toute machine tournante produit nécessairement du courant continu.",
+          "pourquoi_faux": "C'est le mécanisme même de l'alternateur (rotation continue provoquant une variation périodique du flux) qui impose une tension alternative : un courant continu nécessiterait un dispositif supplémentaire (un redresseur, ou un système de balais-collecteur comme dans une dynamo) pour transformer cette tension alternative en tension continue.",
+          "correction_markdown": "Retiens que « alternateur » et « alternatif » partagent la même racine pour une bonne raison : la tension produite change nécessairement de signe périodiquement, tant qu'aucun dispositif de redressement n'est ajouté."
+        },
+        {
+          "erreur_markdown": "Croire que c'est le courant qui crée directement la tension, en oubliant le rôle intermédiaire du flux magnétique.",
+          "pourquoi_faux": "La loi de Faraday relie la f.é.m. induite à la variation du flux magnétique, pas directement à un courant : c'est la rotation du rotor qui fait varier le flux, et c'est cette variation de flux qui induit la tension, avant même qu'un courant ne circule dans un circuit fermé.",
+          "correction_markdown": "Rédige toujours l'explication du principe dans l'ordre causal correct : rotation $\\rightarrow$ variation du flux $\\rightarrow$ f.é.m. induite (loi de Faraday) $\\rightarrow$ éventuellement courant si le circuit est fermé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer les deux éléments principaux d'un alternateur et préciser lequel est généralement mobile (le rotor) et lequel est généralement fixe (le stator).",
+          "solution_markdown": "Un alternateur comporte un aimant (inducteur) et une bobine (induit). Le plus souvent, l'aimant constitue le rotor (partie mobile, en rotation), tandis que la bobine constitue le stator (partie fixe) ; le principe reste le même si la configuration est inversée (bobine mobile, aimant fixe)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un alternateur tourne deux fois plus vite qu'auparavant (sa vitesse angulaire double). Que devient la période de la tension alternative produite, et que devient sa fréquence ?",
+          "solution_markdown": "La période du flux (et donc de la tension induite) est $T = 2\\pi/\\omega$ : si $\\omega$ double, $T$ est divisé par 2 (la tension oscille deux fois plus vite).\n\nLa fréquence $f = 1/T = \\omega/(2\\pi)$ est donc, elle, multipliée par 2 : doubler la vitesse de rotation double la fréquence de la tension alternative produite."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un alternateur possède un rotor à une seule paire de pôles (un seul aimant Nord-Sud), qui produit une f.é.m. de fréquence 50 Hz lorsqu'il tourne à une certaine vitesse. Un second alternateur, tournant à la même vitesse de rotation mécanique, possède un rotor à deux paires de pôles (deux aimants opposés répartis symétriquement) : sa f.é.m. change alors deux fois plus vite pour un même tour mécanique complet. Quelle est la fréquence de la tension produite par ce second alternateur ?",
+          "solution_markdown": "Avec une seule paire de pôles, un tour mécanique complet du rotor correspond exactement à une période électrique complète (le flux repasse par la même valeur après un tour) : la fréquence électrique est alors égale à la fréquence de rotation mécanique, ici 50 Hz.\n\nAvec deux paires de pôles, la configuration magnétique se répète deux fois par tour mécanique (la bobine « voit » deux alternances Nord-Sud au lieu d'une pour un même tour) : la fréquence électrique produite est donc le double de la fréquence mécanique de rotation.\n\n$$f_{\\text{élec}} = 2 \\times f_{\\text{méca}} = 2 \\times 50 = 100 \\text{ Hz}$$\n\nPlus généralement, pour un alternateur à $p$ paires de pôles, $f_{\\text{élec}} = p \\times f_{\\text{méca}}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un alternateur produit une tension par induction électromagnétique : la rotation d'un aimant devant une bobine (ou inversement) fait varier le flux magnétique qui la traverse.",
+        "La loi de Faraday, $e = -d\\Phi/dt$, relie cette variation de flux à la f.é.m. induite recueillie aux bornes de la bobine.",
+        "La rotation étant continue et périodique, le flux (et donc la f.é.m.) varie lui-même périodiquement en changeant de signe : c'est ce qui rend la tension produite alternative, et non continue.",
+        "Doubler la vitesse de rotation double la fréquence de la tension produite ; le nombre de paires de pôles du rotor multiplie lui aussi directement cette fréquence.",
+        "Ce principe est la base de toute question de cours sur la production d'électricité par un alternateur, qu'il s'agisse d'une dynamo de bicyclette ou d'une centrale électrique."
+      ]
+    }
+  ]
+}

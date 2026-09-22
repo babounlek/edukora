@@ -1,0 +1,126 @@
+[
+  {
+    "external_id": "cqc-primitives-faible-0",
+    "theme": "primitives",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x) = 8x^3 - 6x^2 + x - 5$.\n\nDéterminer une primitive $F$ de $f$ sur $\\mathbb{R}$.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour primitiver une somme de fonctions usuelles, on utilise la linéarité des primitives : chaque terme se primitive indépendamment des autres, en appliquant à $x^n$ la règle $x^n \\to \\dfrac{x^{n+1}}{n+1}$, puis en multipliant par le coefficient du terme et en additionnant tous les résultats obtenus.\n\n### Corrigé\n\nOn primitive $f$ terme à terme sur $\\mathbb{R}$.\n\nUne primitive de $8x^3$ est $8\\times\\dfrac{x^4}{4}=2x^4$.\n\nUne primitive de $-6x^2$ est $-6\\times\\dfrac{x^3}{3}=-2x^3$.\n\nUne primitive de $x$ est $\\dfrac{x^2}{2}$.\n\nUne primitive de $-5$ (fonction constante) est $-5x$.\n\nEn additionnant ces quatre résultats, une primitive de $f$ sur $\\mathbb{R}$ est :\n\n$$F(x) = 2x^4 - 2x^3 + \\dfrac{x^2}{2} - 5x + C, \\quad C \\in \\mathbb{R}$$\n\n**Vérification** : $F'(x) = 8x^3 - 6x^2 + x - 5 = f(x)$. Conforme.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-faible-1",
+    "theme": "primitives",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur l'intervalle $\\left]-\\dfrac25;+\\infty\\right[$ par $f(x) = \\dfrac{1}{5x+2}$.\n\nParmi les quatre expressions suivantes, laquelle est une primitive $F$ de $f$ sur cet intervalle ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour une fonction de la forme $f(x) = \\dfrac{1}{ax+b}$ avec $a \\neq 0$, une primitive sur un intervalle où $ax+b$ garde un signe constant est $F(x) = \\dfrac1a\\ln\\lvert ax+b\\rvert + C$ : il faut diviser par le coefficient $a$ de $x$, jamais l'oublier ni le multiplier.\n\n### Corrigé\n\nIci $a=5$ et $b=2$. Sur $\\left]-\\dfrac25;+\\infty\\right[$, on a $5x+2>0$, donc $\\lvert5x+2\\rvert=5x+2$.\n\nUne primitive de $f$ sur cet intervalle est donc :\n\n$$F(x) = \\dfrac15\\ln(5x+2) + C, \\quad C \\in \\mathbb{R}$$\n\n**Vérification** : $F'(x) = \\dfrac15\\times\\dfrac{5}{5x+2} = \\dfrac{1}{5x+2} = f(x)$. Conforme.\n\nLa réponse **B** oublie de diviser par $5$ ; la réponse **C** inverse le signe ; la réponse **D** multiplie par $5$ au lieu de diviser. La bonne réponse est **A**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "$F(x) = \\dfrac15\\ln(5x+2) + C$"},
+      {"lettre": "B", "texte": "$F(x) = \\ln(5x+2) + C$"},
+      {"lettre": "C", "texte": "$F(x) = -\\dfrac15\\ln(5x+2) + C$"},
+      {"lettre": "D", "texte": "$F(x) = 5\\ln(5x+2) + C$"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-moyenne-2",
+    "theme": "primitives",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x) = \\dfrac{6x-5}{3x^2-5x+7}$.\n\n1) Justifier que le dénominateur ne s'annule jamais sur $\\mathbb{R}$.\n\n2) Déterminer une primitive $F$ de $f$ sur $\\mathbb{R}$.",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'une fonction a la forme $\\dfrac{u'}{u}$, où $u$ est une fonction dérivable ne s'annulant pas sur un intervalle $I$, une primitive sur $I$ est $\\ln\\lvert u\\rvert$ (ou simplement $\\ln u$ si $u$ reste positive sur $I$). Il faut toujours vérifier que le numérateur est exactement la dérivée du dénominateur avant d'appliquer cette formule.\n\n### Corrigé\n\n**1) Signe du dénominateur.** Posons $u(x) = 3x^2-5x+7$. Son discriminant vaut $\\Delta = (-5)^2 - 4\\times3\\times7 = 25-84=-59 < 0$. Comme $\\Delta<0$ et que le coefficient dominant $3$ est positif, $u(x)>0$ pour tout $x$ réel : le dénominateur ne s'annule jamais sur $\\mathbb{R}$, donc $f$ est bien définie sur $\\mathbb{R}$ tout entier.\n\n**2) Primitive.** On calcule $u'(x) = 6x-5$, ce qui est exactement le numérateur de $f$. Donc $f = \\dfrac{u'}{u}$, et comme $u$ reste strictement positive sur $\\mathbb{R}$ :\n\n$$F(x) = \\ln(3x^2-5x+7) + C, \\quad C \\in \\mathbb{R}$$\n\n**Vérification** : $F'(x) = \\dfrac{6x-5}{3x^2-5x+7} = f(x)$. Conforme.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-moyenne-3",
+    "theme": "primitives",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur $\\mathbb{R}$ par $f(x) = (10x-1)e^{5x^2-x}$.\n\nDéterminer une primitive $F$ de $f$ sur $\\mathbb{R}$.",
+    "corrige_markdown": "### Rappel de méthode\n\nLorsqu'une fonction a la forme $u'e^u$, où $u$ est une fonction dérivable, une primitive est $e^u$ : il suffit de reconnaître, dans le facteur qui multiplie l'exponentielle, la dérivée exacte de l'exposant.\n\n### Corrigé\n\nPosons $u(x) = 5x^2-x$, donc $u'(x) = 10x-1$. On reconnaît alors :\n\n$$f(x) = u'(x)\\,e^{u(x)}$$\n\nUne primitive de $f$ sur $\\mathbb{R}$ est donc :\n\n$$F(x) = e^{5x^2-x} + C, \\quad C \\in \\mathbb{R}$$\n\n**Vérification** : en dérivant $F$ comme une composée, $F'(x) = (10x-1)e^{5x^2-x} = f(x)$. Conforme.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-moyenne-4",
+    "theme": "primitives",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"}
+    ],
+    "enonce_markdown": "On considère la fonction $h$ définie sur l'intervalle $]-2;+\\infty[$ par $h(x) = 3x^2 + 4 + \\dfrac{5}{x+2}$.\n\nParmi les quatre fonctions $H$ proposées ci-dessous, une seule est une primitive de $h$ sur cet intervalle. En dérivant chacune d'elles, identifier la primitive correcte.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour vérifier qu'une fonction $H$ proposée est une primitive de $h$ sur un intervalle $I$, il suffit de dériver $H$ et de comparer le résultat à $h$ : si $H'(x)=h(x)$ pour tout $x$ de $I$, alors $H$ convient ; sinon un facteur, un signe ou un exposant a été mal ajusté quelque part.\n\n### Corrigé\n\nOn dérive chacune des quatre propositions, sur $]-2;+\\infty[$ où $x+2>0$.\n\n**A.** $H(x) = x^3+4x+5\\ln(x+2)$ donne $H'(x) = 3x^2+4+\\dfrac{5}{x+2} = h(x)$. Conforme.\n\n**B.** $H(x) = x^3+4x+\\ln(x+2)$ donne $H'(x) = 3x^2+4+\\dfrac{1}{x+2}$ : il manque le facteur $5$ devant le terme logarithmique, donc $H'\\neq h$.\n\n**C.** $H(x) = x^2+4x+5\\ln(x+2)$ donne $H'(x) = 2x+4+\\dfrac{5}{x+2}$ : l'exposant du premier terme n'a pas été augmenté lors de la primitivation de $3x^2$ (il fallait $x^3$, pas $x^2$), donc $H'\\neq h$.\n\n**D.** $H(x) = x^3+4x-5\\ln(x+2)$ donne $H'(x) = 3x^2+4-\\dfrac{5}{x+2}$ : le signe du terme logarithmique est inversé, donc $H'\\neq h$.\n\nSeule la proposition **A** vérifie $H'=h$ sur $]-2;+\\infty[$. La bonne réponse est **A**.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "$H(x) = x^3 + 4x + 5\\ln(x+2)$"},
+      {"lettre": "B", "texte": "$H(x) = x^3 + 4x + \\ln(x+2)$"},
+      {"lettre": "C", "texte": "$H(x) = x^2 + 4x + 5\\ln(x+2)$"},
+      {"lettre": "D", "texte": "$H(x) = x^3 + 4x - 5\\ln(x+2)$"}
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": []
+  },
+  {
+    "external_id": "cqc-primitives-elevee-5",
+    "theme": "primitives",
+    "savoir_officiel": null,
+    "matiere": "Mathématiques",
+    "cursus": [
+      {"examen": "bac", "serie": "D"},
+      {"examen": "bac", "serie": "A"},
+      {"examen": "bac", "serie": "C"},
+      {"examen": "bac", "serie": "E"}
+    ],
+    "enonce_markdown": "Soit $f$ la fonction définie sur l'intervalle $\\left]-\\dfrac73;+\\infty\\right[$ par $f(x) = 2x + 3 + \\dfrac{6}{3x+7}$.\n\nDéterminer la primitive $F$ de $f$ sur cet intervalle telle que $F(-2) = 5$.",
+    "corrige_markdown": "### Rappel de méthode\n\nOn détermine d'abord la primitive générale $F_0(x)+C$ de $f$, en primitivant chaque terme par les formules usuelles. Puis, si l'énoncé impose une condition $F(x_0)=y_0$, on remplace $x$ par $x_0$ dans cette expression générale, on pose le résultat égal à $y_0$, et on résout l'équation du premier degré obtenue en $C$.\n\n### Corrigé\n\n**Primitive générale.** On primitive $f$ terme à terme sur $\\left]-\\dfrac73;+\\infty\\right[$, intervalle sur lequel $3x+7>0$.\n\nUne primitive de $2x$ est $x^2$.\n\nUne primitive de $3$ est $3x$.\n\nPour $\\dfrac{6}{3x+7}$ : en posant $u(x)=3x+7$, on a $u'(x)=3$, donc $\\dfrac{6}{3x+7}=2\\times\\dfrac{u'(x)}{u(x)}$, dont une primitive est $2\\ln\\lvert u(x)\\rvert=2\\ln(3x+7)$ (positif sur l'intervalle considéré).\n\nLa primitive générale de $f$ est donc :\n\n$$F_0(x) = x^2+3x+2\\ln(3x+7)+C, \\quad C \\in \\mathbb{R}$$\n\n**Détermination de $C$.** Le point $x_0=-2$ appartient bien à l'intervalle $\\left]-\\dfrac73;+\\infty\\right[$ puisque $-2>-\\dfrac73\\approx-2{,}33$. On calcule :\n\n$$F(-2) = (-2)^2+3\\times(-2)+2\\ln\\big(3\\times(-2)+7\\big)+C = 4-6+2\\ln(1)+C = -2+C$$\n\ncar $\\ln(1)=0$. Comme $F(-2)=5$ :\n\n$$-2+C=5 \\iff C=7$$\n\n**Conclusion.** La primitive cherchée est :\n\n$$F(x) = x^2+3x+2\\ln(3x+7)+7$$\n\n**Vérification** : $F'(x) = 2x+3+2\\times\\dfrac{3}{3x+7} = 2x+3+\\dfrac{6}{3x+7} = f(x)$, et $F(-2)=4-6+2\\ln1+7=4-6+0+7=5$. Conforme.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": []
+  }
+]

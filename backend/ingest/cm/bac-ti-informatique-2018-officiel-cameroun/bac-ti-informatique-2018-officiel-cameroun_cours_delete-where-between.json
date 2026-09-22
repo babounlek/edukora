@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-delete-where-between-tle-ti",
+  "meta": {
+    "titre": "Lire et interpréter une requête SQL de suppression (DELETE ... WHERE ... BETWEEN)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL - Manipulation de données (LMD)",
+    "duree_estimee_min": 18,
+    "tags": [
+      "SQL",
+      "DELETE",
+      "WHERE",
+      "BETWEEN",
+      "langage de manipulation de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un sujet de bases de données ne demande pas seulement d'écrire des requêtes : il demande aussi de savoir en LIRE une déjà écrite, et d'en décrire précisément l'effet. C'est un exercice différent, qui teste ta compréhension plutôt que ta seule mémorisation de syntaxe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un tuple et une clause de condition dans une requête SQL.",
+        "Connaître la syntaxe de base d'une instruction DELETE."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une suppression toujours guidée par sa condition",
+      "contenu_markdown": "L'instruction DELETE FROM table WHERE condition supprime définitivement tous les tuples qui vérifient cette condition, et seulement ceux-là - jamais la table elle-même, qui continue d'exister, vide de ces tuples. Lire une telle requête revient à identifier précisément ce que dit la condition : l'opérateur BETWEEN valeur1 AND valeur2 sélectionne tous les tuples dont la colonne testée est comprise entre valeur1 et valeur2, les deux bornes étant TOUJOURS incluses dans l'intervalle, contrairement à ce que suggère parfois son nom en anglais.",
+      "formule_principale": "DELETE FROM table WHERE colonne BETWEEN v1 AND v2;  →  supprime les tuples avec v1 ≤ colonne ≤ v2"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Que fait la requête SQL suivante ?\n```sql\nDELETE FROM ENSEIGNANT\nWHERE Age BETWEEN 44 AND 59;\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la table concernée",
+          "justification": "DELETE FROM désigne la table sur laquelle porte la suppression.",
+          "resultat_markdown": "La table concernée est ENSEIGNANT."
+        },
+        {
+          "numero": 2,
+          "action": "Traduire la condition de la clause WHERE",
+          "justification": "BETWEEN 44 AND 59 inclut les deux bornes 44 et 59, pas seulement les valeurs strictement comprises entre elles.",
+          "resultat_markdown": "La condition retient tous les enseignants dont l'âge est compris entre 44 et 59 ans inclus."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la condition aux tuples visibles dans l'extrait fourni",
+          "justification": "Vérifier concrètement quels tuples seraient supprimés ancre la lecture abstraite dans le cas réel.",
+          "resultat_markdown": "DZOULA Fernand (59 ans) et DJAMBONG Owen (46 ans) vérifient la condition et seraient supprimés ; SIMO (37 ans), ATANGANA (35 ans) et BABA (33 ans) ne le sont pas."
+        }
+      ],
+      "conclusion_markdown": "La requête supprime définitivement de la table ENSEIGNANT tous les enseignants âgés de 44 à 59 ans inclus, sans toucher aux enseignants plus jeunes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que BETWEEN 44 AND 59 exclut l'une des deux bornes, par exemple qu'un enseignant de 59 ans ne serait pas concerné",
+          "pourquoi_faux": "BETWEEN inclut systématiquement les deux bornes de l'intervalle en SQL, contrairement à une inégalité stricte (< ou >) qui, elle, exclurait la valeur limite.",
+          "correction_markdown": "Retiens que BETWEEN v1 AND v2 équivaut exactement à (colonne >= v1 AND colonne <= v2), avec les deux signes ≥ et ≤ inclusifs."
+        },
+        {
+          "erreur_markdown": "Décrire l'effet de la requête en disant qu'elle « affiche » les enseignants concernés",
+          "pourquoi_faux": "DELETE ne renvoie jamais de résultat à afficher : contrairement à SELECT, il supprime silencieusement les tuples concernés, sans les montrer à l'utilisateur qui exécute la requête.",
+          "correction_markdown": "Distingue toujours DELETE (supprime, sans rien afficher) de SELECT (affiche, sans rien supprimer) avant de décrire l'effet d'une requête."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que fait la requête suivante ?\n```sql\nDELETE FROM LIVRE\nWHERE Statut = 'perdu';\n```",
+          "solution_markdown": "Elle supprime de la table LIVRE tous les tuples (livres) dont le statut vaut exactement 'perdu', et laisse inchangés tous les autres livres."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que fait la requête suivante, sachant que la table PRODUIT contient une colonne QuantiteStock ?\n```sql\nDELETE FROM PRODUIT\nWHERE QuantiteStock BETWEEN 0 AND 0;\n```",
+          "solution_markdown": "Elle supprime tous les produits dont la quantité en stock est comprise entre 0 et 0 inclus, c'est-à-dire exactement égale à 0 : en pratique, c'est équivalent à écrire WHERE QuantiteStock = 0, bien que BETWEEN avec deux bornes identiques soit une formulation plus rare que l'égalité directe pour ce cas précis. La requête supprime donc tous les produits actuellement en rupture de stock."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un administrateur exécute par erreur la requête suivante sur la table ENSEIGNANT, en oubliant d'ajouter une clause WHERE :\n```sql\nDELETE FROM ENSEIGNANT;\n```\nQuel est l'effet de cette requête, et en quoi diffère-t-il fondamentalement de celui d'un DELETE avec condition ?",
+          "solution_markdown": "Sans clause WHERE, la condition de suppression s'applique implicitement à TOUS les tuples de la table : la requête supprime donc l'intégralité des enseignants enregistrés dans ENSEIGNANT, sans aucune exception. La table elle-même continue d'exister (sa structure, ses colonnes et ses contraintes restent intactes), mais elle est désormais complètement vide. C'est une différence fondamentale avec un DELETE conditionné par WHERE, qui ne retire que le sous-ensemble de tuples vérifiant la condition : l'absence de WHERE transforme une suppression ciblée en suppression totale, une erreur aux conséquences potentiellement irréversibles sur une vraie base de données si aucune sauvegarde n'existe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "DELETE FROM table WHERE condition supprime tous les tuples qui vérifient la condition, jamais la table elle-même.",
+        "BETWEEN v1 AND v2 inclut toujours les deux bornes v1 et v2, pas seulement les valeurs strictement comprises entre elles.",
+        "DELETE ne retourne jamais de résultat à afficher, contrairement à SELECT : ne confonds jamais les deux effets en décrivant une requête.",
+        "Un DELETE sans clause WHERE supprime la totalité des tuples de la table, une erreur aux conséquences lourdes sur une vraie base de données.",
+        "Au BAC TI, une question qui demande « que fait cette requête ? » attend une description précise et concrète, si possible illustrée sur les données réellement fournies dans l'énoncé."
+      ]
+    }
+  ]
+}

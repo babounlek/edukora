@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-denombrement-coefficient-multinomial-premiere-a",
+  "meta": {
+    "titre": "Dénombrement : répartition d'éléments distincts en groupes (coefficient multinomial)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Dénombrement et combinatoire",
+    "duree_estimee_min": 22,
+    "tags": [
+      "dénombrement",
+      "multinomial",
+      "combinaisons"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2004 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2004-officiel-cameroun-ex2-qI-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Répartir des personnes ou des objets distincts dans plusieurs groupes de tailles fixées, une équipe de direction, un jury, des lots à distribuer, est un problème de dénombrement extrêmement fréquent. Le coefficient multinomial permet de compter toutes ces répartitions sans en lister aucune."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de factorielle $n!$",
+        "Combinaisons $\\binom{n}{p}$ et leur formule"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le coefficient multinomial",
+      "contenu_markdown": "Pour répartir $n$ éléments distincts en $k$ groupes de tailles fixées $n_1,n_2,\\ldots,n_k$ (avec $n_1+n_2+\\cdots+n_k=n$), sans distinction d'ordre à l'intérieur de chaque groupe, le nombre de répartitions possibles est $\\dfrac{n!}{n_1!\\,n_2!\\,\\cdots\\,n_k!}$.",
+      "formule_principale": "\\dfrac{n!}{n_1!\\,n_2!\\,\\cdots\\,n_k!}",
+      "variantes": [
+        {
+          "nom": "Méthode par combinaisons successives",
+          "quand_utiliser": "Quand on préfère raisonner étape par étape plutôt qu'appliquer directement la formule multinomiale",
+          "contenu_markdown": "On choisit d'abord les $n_1$ éléments du premier groupe parmi les $n$ ($\\binom{n}{n_1}$ façons), puis les $n_2$ éléments du second groupe parmi les $n-n_1$ restants ($\\binom{n-n_1}{n_2}$ façons), et ainsi de suite. Le produit de ces combinaisons donne le même résultat que la formule multinomiale."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Six personnes doivent se répartir librement les fonctions suivantes : 1 président, 2 vice-présidents et 3 secrétaires. Déterminer le nombre de répartitions possibles.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les tailles des groupes",
+          "justification": "Les 6 personnes se répartissent en 3 groupes de tailles fixées : $1$, $2$ et $3$, dont la somme vaut bien $6$.",
+          "resultat_markdown": "$n=6,\\ n_1=1,\\ n_2=2,\\ n_3=3$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule multinomiale",
+          "justification": "Les postes à l'intérieur d'un même groupe (les deux vice-présidences, les trois secrétariats) sont équivalents entre eux, sans ordre.",
+          "resultat_markdown": "$\\dfrac{6!}{1!\\,2!\\,3!}=\\dfrac{720}{1\\times2\\times6}=\\dfrac{720}{12}=60$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier par la méthode des combinaisons successives",
+          "justification": "Une seconde méthode indépendante confirme le résultat.",
+          "resultat_markdown": "$\\binom{6}{1}\\times\\binom{5}{2}\\times\\binom{3}{3}=6\\times10\\times1=60$"
+        }
+      ],
+      "conclusion_markdown": "Il y a exactement $60$ répartitions possibles des postes entre les six personnes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier par $2!$ pour les vice-présidents alors qu'on vient d'utiliser $\\binom{5}{2}$ pour les choisir",
+          "pourquoi_faux": "$\\binom{5}{2}$ compte déjà les paires sans tenir compte de l'ordre : multiplier ensuite par $2!$ reviendrait à compter deux fois chaque paire, comme si les deux vice-présidents étaient différenciés.",
+          "correction_markdown": "N'utilise $p!$ au dénominateur que dans la formule multinomiale elle-même ; si tu choisis par combinaisons successives, ne réintroduis pas d'ordre après coup."
+        },
+        {
+          "erreur_markdown": "Utiliser un arrangement $A_6^1\\times A_5^2\\times A_3^3$ au lieu de combinaisons",
+          "pourquoi_faux": "Un arrangement tient compte de l'ordre à l'intérieur du groupe, ce qui correspondrait à des postes de vice-président numérotés 1 et 2 : ce n'est pas le cas ici, les deux vice-présidents ont le même statut.",
+          "correction_markdown": "Vérifie toujours si les éléments d'un même groupe sont interchangeables (combinaison) ou distingués par un rang (arrangement) avant de choisir la formule."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que $n_1+n_2+\\cdots+n_k=n$",
+          "pourquoi_faux": "Si les tailles des groupes ne totalisent pas $n$, la formule multinomiale ne s'applique plus telle quelle : il faudrait alors gérer les personnes non affectées à un groupe.",
+          "correction_markdown": "Additionne systématiquement les tailles annoncées avant d'appliquer la formule, pour t'assurer qu'aucune personne n'est oubliée ni comptée deux fois."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "De combien de façons peut-on répartir 4 livres distincts entre 2 étagères, 2 livres sur chaque étagère (les étagères étant distinguées par leur position, mais l'ordre des livres sur une étagère n'important pas) ?",
+          "solution_markdown": "$n=4$, groupes de tailles $2$ et $2$. Nombre de répartitions $=\\dfrac{4!}{2!\\,2!}=\\dfrac{24}{4}=6$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une classe de 10 élèves doit former un groupe de 3 délégués (sans hiérarchie entre eux) et laisser les 7 autres non délégués. De combien de façons peut-on constituer ce groupe de délégués ?",
+          "solution_markdown": "Il s'agit de choisir 3 élèves parmi 10 sans ordre, un cas particulier de la formule multinomiale avec seulement deux groupes ($3$ et $7$) : $\\dfrac{10!}{3!\\,7!}=\\binom{10}{3}=\\dfrac{10\\times9\\times8}{3\\times2\\times1}=120$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Huit personnes doivent se répartir en une équipe de 4 pour un premier atelier, une équipe de 3 pour un second atelier, et une personne isolée qui n'assiste à aucun atelier. Déterminer le nombre de répartitions possibles.",
+          "solution_markdown": "$n=8$, groupes de tailles $4,3,1$ (somme $=8$). Nombre de répartitions $=\\dfrac{8!}{4!\\,3!\\,1!}=\\dfrac{40320}{24\\times6\\times1}=\\dfrac{40320}{144}=280$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Repère d'abord les tailles des groupes annoncés dans l'énoncé et vérifie que leur somme donne bien l'effectif total.",
+        "Le coefficient multinomial $\\dfrac{n!}{n_1!\\,n_2!\\,\\cdots}$ s'applique dès que l'ordre à l'intérieur de chaque groupe ne compte pas.",
+        "Une combinaison simple $\\binom{n}{p}$ est un cas particulier du coefficient multinomial à deux groupes (le groupe choisi et le reste).",
+        "Vérifie toujours ton résultat par une seconde méthode (combinaisons successives) avant de le donner comme réponse définitive à l'examen."
+      ]
+    }
+  ]
+}

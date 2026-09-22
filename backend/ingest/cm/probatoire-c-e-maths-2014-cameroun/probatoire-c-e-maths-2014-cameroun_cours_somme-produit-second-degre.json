@@ -1,0 +1,159 @@
+{
+ "cours_id": "cours-somme-produit-second-degre-1ere-ce",
+ "meta": {
+  "titre": "Résoudre un système somme-produit par l'équation du second degré",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Équations du second degré",
+  "duree_estimee_min": 30,
+  "tags": [
+   "somme et produit",
+   "discriminant",
+   "équation du second degré",
+   "système symétrique"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex1-q1b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Deux nombres dont on connaît la somme et le produit : la situation revient sans cesse, en géométrie (deux dimensions d'un rectangle d'aire et de périmètre donnés), en trigonométrie (deux sinus dont on connaît la somme et le produit), en physique (deux résistances). Chercher ces deux nombres à tâtons peut marcher sur des entiers simples, mais devient impossible dès que des radicaux apparaissent. Il existe une méthode qui donne les deux nombres à coup sûr, et elle tient en une équation du second degré."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Résoudre une équation du second degré $ax^{2}+bx+c=0$ par le discriminant",
+    "Développer une identité remarquable $(a\\pm b)^{2}$",
+    "Calculer avec des radicaux : $\\left(\\sqrt{k}\\right)^{2}=k$"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Somme et produit : les deux nombres sont les racines d'un trinôme",
+   "contenu_markdown": "Soient $S$ et $P$ deux réels. Les couples $(a\\,;\\,b)$ de réels vérifiant\n\n$$\\begin{cases} a+b=S \\\\ ab=P \\end{cases}$$\n\nsont exactement les couples formés des deux racines de l'équation\n\n$$t^{2}-S\\,t+P=0$$\n\n**Pourquoi ?** Si $a$ et $b$ sont deux réels, alors $(t-a)(t-b)=t^{2}-(a+b)t+ab=t^{2}-St+P$. Les nombres $a$ et $b$ sont donc les valeurs qui annulent ce trinôme, c'est-à-dire ses racines.\n\n**Conséquence pratique.** On calcule $\\Delta=S^{2}-4P$ :\n\n- si $\\Delta>0$, il existe deux couples solutions, symétriques l'un de l'autre : $\\left(\\dfrac{S-\\sqrt{\\Delta}}{2}\\,;\\,\\dfrac{S+\\sqrt{\\Delta}}{2}\\right)$ et le couple obtenu en échangeant les deux valeurs ;\n- si $\\Delta=0$, il existe un seul couple, $\\left(\\dfrac{S}{2}\\,;\\,\\dfrac{S}{2}\\right)$ ;\n- si $\\Delta<0$, le système n'a aucune solution réelle.\n\n**Attention à l'ordre des inconnues.** Le système est symétrique en $a$ et $b$ : dès que $\\Delta>0$, il admet **deux** couples solutions dans $\\mathbb{R}^{2}$, et non un seul.",
+   "formule_principale": "t^{2}-St+P=0\\quad\\text{avec}\\quad \\Delta=S^{2}-4P",
+   "variantes": [
+    {
+     "nom": "Méthode par substitution",
+     "quand_utiliser": "Quand $S$ et $P$ sont des entiers petits et que les racines sont visibles à l'œil",
+     "contenu_markdown": "On tire $b=S-a$ de la première équation et on reporte dans la seconde : $a(S-a)=P$, soit $a^{2}-Sa+P=0$. On retrouve exactement le même trinôme, ce qui confirme la règle. Cette voie est plus longue à rédiger, mais elle a l'avantage de ne rien exiger de mémorisé."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Résoudre dans $\\mathbb{R}^{2}$ le système $\\begin{cases} a+b=\\dfrac{\\sqrt{3}+1}{2} \\\\ ab=\\dfrac{\\sqrt{3}}{4} \\end{cases}$ (Probatoire C et E, Cameroun, 2014).",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier $S$ et $P$",
+     "justification": "Le système est déjà sous la forme somme-produit",
+     "resultat_markdown": "$S=\\dfrac{\\sqrt{3}+1}{2}$ et $P=\\dfrac{\\sqrt{3}}{4}$"
+    },
+    {
+     "numero": 2,
+     "action": "Écrire le trinôme associé",
+     "justification": "Les nombres cherchés sont les racines de $t^{2}-St+P=0$",
+     "resultat_markdown": "$t^{2}-\\dfrac{\\sqrt{3}+1}{2}\\,t+\\dfrac{\\sqrt{3}}{4}=0$"
+    },
+    {
+     "numero": 3,
+     "action": "Développer $S^{2}$",
+     "justification": "Identité remarquable $(a+b)^{2}=a^{2}+2ab+b^{2}$, avec $\\left(\\sqrt{3}\\right)^{2}=3$",
+     "resultat_markdown": "$S^{2}=\\dfrac{\\left(\\sqrt{3}+1\\right)^{2}}{4}=\\dfrac{3+2\\sqrt{3}+1}{4}=\\dfrac{4+2\\sqrt{3}}{4}$"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer le discriminant",
+     "justification": "$\\Delta=S^{2}-4P$, avec $4P=4\\times\\dfrac{\\sqrt{3}}{4}=\\sqrt{3}=\\dfrac{4\\sqrt{3}}{4}$",
+     "resultat_markdown": "$\\Delta=\\dfrac{4+2\\sqrt{3}}{4}-\\dfrac{4\\sqrt{3}}{4}=\\dfrac{4-2\\sqrt{3}}{4}$"
+    },
+    {
+     "numero": 5,
+     "action": "Extraire $\\sqrt{\\Delta}$",
+     "justification": "On reconnaît un carré : $\\left(\\dfrac{\\sqrt{3}-1}{2}\\right)^{2}=\\dfrac{3-2\\sqrt{3}+1}{4}=\\dfrac{4-2\\sqrt{3}}{4}$, et $\\dfrac{\\sqrt{3}-1}{2}>0$ car $\\sqrt{3}>1$",
+     "resultat_markdown": "$\\sqrt{\\Delta}=\\dfrac{\\sqrt{3}-1}{2}$"
+    },
+    {
+     "numero": 6,
+     "action": "Calculer les deux racines",
+     "justification": "$t=\\dfrac{S\\pm\\sqrt{\\Delta}}{2}$ ; on additionne puis on soustrait deux fractions de même dénominateur avant de diviser par $2$",
+     "resultat_markdown": "$t_{1}=\\dfrac{\\dfrac{\\sqrt{3}+1-\\sqrt{3}+1}{2}}{2}=\\dfrac{1}{2}$ et $t_{2}=\\dfrac{\\dfrac{\\sqrt{3}+1+\\sqrt{3}-1}{2}}{2}=\\dfrac{\\sqrt{3}}{2}$"
+    },
+    {
+     "numero": 7,
+     "action": "Vérifier",
+     "justification": "On recalcule la somme et le produit des deux valeurs trouvées",
+     "resultat_markdown": "$\\dfrac{1}{2}+\\dfrac{\\sqrt{3}}{2}=\\dfrac{1+\\sqrt{3}}{2}=S$ et $\\dfrac{1}{2}\\times\\dfrac{\\sqrt{3}}{2}=\\dfrac{\\sqrt{3}}{4}=P$"
+    }
+   ],
+   "conclusion_markdown": "L'ensemble des solutions est $S=\\left\\{\\left(\\dfrac{1}{2}\\,;\\,\\dfrac{\\sqrt{3}}{2}\\right)\\;;\\;\\left(\\dfrac{\\sqrt{3}}{2}\\,;\\,\\dfrac{1}{2}\\right)\\right\\}$. On vient de montrer qu'un système somme-produit, même à coefficients irrationnels, se résout intégralement par un unique calcul de discriminant."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Écrire le trinôme $t^{2}+St+P=0$ au lieu de $t^{2}-St+P=0$",
+     "pourquoi_faux": "Le développement de $(t-a)(t-b)$ donne $t^{2}-(a+b)t+ab$ : c'est bien $-S$ qui apparaît devant $t$. Avec le mauvais signe, on résout le système de somme $-S$, et l'on obtient les opposés des nombres cherchés.",
+     "correction_markdown": "Retiens le trinôme sous la forme $t^{2}-St+P=0$ : le signe moins accompagne la somme, le plus accompagne le produit. Un contrôle immédiat : pour $S=5$ et $P=6$, le trinôme $t^{2}-5t+6$ a bien pour racines $2$ et $3$."
+    },
+    {
+     "erreur_markdown": "Ne donner qu'un seul couple solution",
+     "pourquoi_faux": "La résolution est demandée dans $\\mathbb{R}^{2}$, donc en couples **ordonnés**. Comme le système est symétrique, si $\\left(\\alpha\\,;\\,\\beta\\right)$ est solution, $\\left(\\beta\\,;\\,\\alpha\\right)$ l'est aussi, et c'est un couple différent.",
+     "correction_markdown": "Dès que $\\Delta>0$, écris systématiquement les deux couples dans l'ensemble solution."
+    },
+    {
+     "erreur_markdown": "Conclure « pas de solution » dès que $\\Delta$ contient un radical",
+     "pourquoi_faux": "Un discriminant comme $\\dfrac{4-2\\sqrt{3}}{4}$ n'a rien d'impossible : il est positif, car $2\\sqrt{3}\\approx 3{,}46<4$. C'est le **signe** de $\\Delta$ qui décide, pas son apparence.",
+     "correction_markdown": "Avant de conclure, encadre numériquement : ici $\\sqrt{3}\\approx 1{,}73$, donc $4-2\\sqrt{3}\\approx 0{,}54>0$. Cherche ensuite si $\\Delta$ n'est pas un carré parfait déguisé."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Résoudre dans $\\mathbb{R}^{2}$ : $\\begin{cases} a+b=7 \\\\ ab=12 \\end{cases}$",
+     "solution_markdown": "Ici $S=7$ et $P=12$. Les nombres cherchés sont les racines de $t^{2}-7t+12=0$.\n\nDiscriminant : $\\Delta=(-7)^{2}-4\\times 1\\times 12=49-48=1>0$, donc $\\sqrt{\\Delta}=1$.\n\nRacines : $t_{1}=\\dfrac{7-1}{2}=\\dfrac{6}{2}=3$ et $t_{2}=\\dfrac{7+1}{2}=\\dfrac{8}{2}=4$.\n\nVérification : $3+4=7$ et $3\\times 4=12$.\n\n$$S=\\left\\{(3\\,;\\,4)\\;;\\;(4\\,;\\,3)\\right\\}$$"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Résoudre dans $\\mathbb{R}^{2}$ : $\\begin{cases} a+b=\\sqrt{2} \\\\ ab=-\\dfrac{1}{2} \\end{cases}$",
+     "solution_markdown": "$S=\\sqrt{2}$ et $P=-\\dfrac{1}{2}$. Trinôme associé : $t^{2}-\\sqrt{2}\\,t-\\dfrac{1}{2}=0$.\n\nDiscriminant : $\\Delta=\\left(\\sqrt{2}\\right)^{2}-4\\times 1\\times\\left(-\\dfrac{1}{2}\\right)=2+2=4>0$, donc $\\sqrt{\\Delta}=2$.\n\nRacines : $t_{1}=\\dfrac{\\sqrt{2}-2}{2}$ et $t_{2}=\\dfrac{\\sqrt{2}+2}{2}$.\n\nVérification de la somme : $\\dfrac{\\sqrt{2}-2}{2}+\\dfrac{\\sqrt{2}+2}{2}=\\dfrac{2\\sqrt{2}}{2}=\\sqrt{2}$.\n\nVérification du produit, avec l'identité $(u-v)(u+v)=u^{2}-v^{2}$ :\n\n$$\\frac{\\sqrt{2}-2}{2}\\times\\frac{\\sqrt{2}+2}{2}=\\frac{\\left(\\sqrt{2}\\right)^{2}-2^{2}}{4}=\\frac{2-4}{4}=-\\frac{1}{2}$$\n\n$$S=\\left\\{\\left(\\frac{\\sqrt{2}-2}{2}\\,;\\,\\frac{\\sqrt{2}+2}{2}\\right)\\;;\\;\\left(\\frac{\\sqrt{2}+2}{2}\\,;\\,\\frac{\\sqrt{2}-2}{2}\\right)\\right\\}$$"
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Un rectangle a pour périmètre $26$ cm et pour aire $40$ cm$^{2}$. Déterminer ses dimensions. Existe-t-il un rectangle de périmètre $26$ cm et d'aire $50$ cm$^{2}$ ?",
+     "solution_markdown": "**Premier rectangle.** Notons $L$ et $\\ell$ ses dimensions. Le périmètre vaut $2(L+\\ell)=26$, donc\n\n$$L+\\ell=13$$\n\net l'aire donne $L\\ell=40$. On est en présence d'un système somme-produit avec $S=13$ et $P=40$.\n\nTrinôme : $t^{2}-13t+40=0$. Discriminant : $\\Delta=169-160=9>0$, donc $\\sqrt{\\Delta}=3$.\n\nRacines : $t_{1}=\\dfrac{13-3}{2}=5$ et $t_{2}=\\dfrac{13+3}{2}=8$.\n\nLes dimensions sont donc $8$ cm et $5$ cm. Vérification : périmètre $2(8+5)=26$ cm, aire $8\\times 5=40$ cm$^{2}$.\n\n**Second rectangle.** Cette fois $S=13$ et $P=50$, d'où\n\n$$\\Delta=13^{2}-4\\times 50=169-200=-31<0$$\n\nLe trinôme n'a aucune racine réelle : il n'existe **aucun** rectangle de périmètre $26$ cm et d'aire $50$ cm$^{2}$.\n\n**Interprétation.** À périmètre fixé, l'aire d'un rectangle est maximale pour le carré, ici de côté $\\dfrac{13}{2}=6{,}5$ cm et d'aire $6{,}5^{2}=42{,}25$ cm$^{2}$. Toute aire supérieure à $42{,}25$ cm$^{2}$ est impossible, ce que le signe de $\\Delta$ traduit exactement."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Dès qu'un énoncé te donne une somme et un produit, ne cherche pas les deux nombres à tâtons : écris le trinôme $t^{2}-St+P=0$.",
+    "Le signe moins va avec la somme, le signe plus avec le produit. Teste sur $S=5$, $P=6$ si tu hésites.",
+    "Le discriminant $\\Delta=S^{2}-4P$ décide de tout : deux couples si $\\Delta>0$, un seul si $\\Delta=0$, aucun si $\\Delta<0$.",
+    "Dans $\\mathbb{R}^{2}$, n'oublie jamais le second couple : le système est symétrique, les deux ordres comptent.",
+    "Vérifie toujours en recalculant la somme et le produit des racines trouvées : c'est un contrôle de dix secondes.",
+    "Au Probatoire, cette méthode apparaît rarement seule : elle sert de marchepied à une équation trigonométrique, à un problème d'aire ou à une factorisation. Repère la forme somme-produit derrière l'habillage de l'énoncé."
+   ]
+  }
+ ]
+}

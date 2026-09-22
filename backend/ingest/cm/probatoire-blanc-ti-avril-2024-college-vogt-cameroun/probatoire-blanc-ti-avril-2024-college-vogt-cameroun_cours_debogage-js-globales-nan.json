@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-debogage-js-globales-nan-premiere-ti",
+  "meta": {
+    "titre": "Débogage JavaScript : portée des variables globales et valeurs undefined/NaN",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "JavaScript et débogage",
+    "duree_estimee_min": 18,
+    "tags": [
+      "JavaScript",
+      "var",
+      "portée globale",
+      "NaN",
+      "undefined",
+      "débogage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex5-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un script qui fonctionne parfaitement pour les deux premiers élèves d'un tableau, puis affiche soudain \"NaN\" pour le troisième sans qu'aucune ligne ne signale d'erreur : c'est l'un des bugs les plus déroutants pour un débutant, et l'un des plus révélateurs du fonctionnement réel des variables en JavaScript."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer une variable avec `var` en JavaScript",
+        "Connaître les opérations arithmétiques de base en JavaScript"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "var hors fonction = variable globale partagée par tous les scripts de la page",
+      "contenu_markdown": "En JavaScript classique (scripts non modulaires, hors mode strict), une variable déclarée avec `var` en dehors de toute fonction est globale : la redéclarer avec `var` dans un autre bloc `<script>` de la même page ne crée pas une nouvelle variable, elle réutilise et peut écraser la même variable globale que celle déjà utilisée plus haut dans la page. Toute opération arithmétique impliquant une variable jamais assignée (`undefined`) renvoie `NaN` (Not a Number).",
+      "formule_principale": "nombre + undefined = NaN ; NaN op n'importe_quoi = NaN",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer pourquoi ce code affiche `NaN` : \n```javascript\nvar total;\ntotal = prix + quantite;\ndocument.write(total);\n```\nsachant que `prix` a été déclarée par `var prix;` plus haut dans la page, mais jamais assignée.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier l'état de chaque variable utilisée",
+          "justification": "`prix` est déclarée mais jamais assignée : elle vaut `undefined`",
+          "resultat_markdown": "`prix` = `undefined` ; `quantite` = supposée correctement assignée à un nombre."
+        },
+        {
+          "numero": 2,
+          "action": "Évaluer l'opération `prix + quantite`",
+          "justification": "Toute opération arithmétique avec `undefined` renvoie `NaN`",
+          "resultat_markdown": "`prix + quantite` = `undefined + nombre` = `NaN`."
+        },
+        {
+          "numero": 3,
+          "action": "Suivre la propagation du NaN",
+          "justification": "`total` reçoit directement le résultat de ce calcul",
+          "resultat_markdown": "`total` = `NaN`, affiché tel quel par `document.write(total)`."
+        }
+      ],
+      "conclusion_markdown": "Le `NaN` affiché ne vient jamais de la ligne `document.write` elle-même : il faut toujours remonter le calcul en arrière jusqu'à la variable qui n'a jamais reçu de valeur numérique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher l'erreur uniquement sur la ligne où `NaN` est affiché",
+          "pourquoi_faux": "`NaN` est un résultat qui se propage : la ligne d'affichage ne fait que révéler un problème apparu plus tôt, souvent dans une variable jamais correctement assignée.",
+          "correction_markdown": "Remonte systématiquement la chaîne des calculs : de quelle variable vient le `NaN` ? D'où vient CETTE variable ? Jusqu'à trouver la variable jamais assignée."
+        },
+        {
+          "erreur_markdown": "Penser que chaque bloc `<script>` d'une page a ses propres variables, isolées des autres blocs",
+          "pourquoi_faux": "Sans fonction ni module, tous les blocs `<script>` d'une même page partagent le même espace global : une variable déclarée avec `var` dans un bloc reste accessible (et modifiable) dans tous les blocs suivants.",
+          "correction_markdown": "Si plusieurs blocs `<script>` réutilisent les mêmes noms de variables (`F`, `Note`...), traite-les comme UNE SEULE variable partagée, pas comme des variables indépendantes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que vaut `resultat` après ce code : `var a; var resultat = a + 5;` ?",
+          "solution_markdown": "`resultat` vaut `NaN` : `a` est déclarée mais jamais assignée (`undefined`), et `undefined + 5` donne `NaN`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un script contient : `var note; note = 15; var moyenne = (note + bonus) / 2;` où `bonus` n'a jamais été déclarée ni assignée nulle part dans la page. Que se passe-t-il, et est-ce le même type d'erreur qu'une variable simplement non assignée (`undefined`) ?",
+          "solution_markdown": "Ici, c'est une erreur différente et plus grave : `bonus` n'existe pas du tout (elle n'a même pas été déclarée avec `var` quelque part dans la page), alors qu'une variable `undefined` a au moins été déclarée sans être assignée. L'utilisation d'un identifiant jamais déclaré provoque une erreur d'exécution (\"bonus is not defined\") qui arrête immédiatement le script à cette ligne, plutôt que de simplement produire un `NaN` et continuer l'exécution comme le ferait `undefined`. Il faut donc distinguer : une variable déclarée mais non assignée (`undefined`, propage un `NaN` en silence) et une variable jamais déclarée du tout (erreur bloquante)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur une page qui traite les notes de plusieurs élèves avec un bloc `<script>` par élève, pourquoi est-il risqué de réutiliser les mêmes noms de variables (`F`, `Note`, `Moy`) d'un bloc à l'autre, même si chaque bloc les redéclare avec `var` ?",
+          "solution_markdown": "Redéclarer une variable avec `var` dans un nouveau bloc `<script>` ne crée jamais une variable isolée : comme tous ces blocs partagent le même espace global, cette redéclaration réutilise simplement la même variable déjà existante. Si un bloc oublie d'assigner correctement l'une de ces variables réutilisées (par exemple en assignant par erreur `F` au lieu de `F1`), la valeur laissée par le bloc PRÉCÉDENT reste présente en mémoire : un calcul peut alors sembler fonctionner (afficher un nombre plausible) alors qu'il utilise en réalité une valeur périmée, appartenant à un autre élève. C'est une source de bugs particulièrement sournoise, car elle ne produit pas toujours une erreur visible (comme un `NaN`) : parfois, elle produit un résultat numérique tout à fait crédible, mais faux. La bonne pratique consiste à donner un nom UNIQUE à chaque variable par élève (`F1`, `F2`, `F3`...) ou, mieux encore, à regrouper le traitement dans une fonction, où les variables locales ne se contaminent jamais d'un appel à l'autre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`var` hors fonction crée une variable globale, partagée par TOUS les blocs `<script>` de la page.",
+        "Une variable déclarée mais jamais assignée vaut `undefined` ; toute opération arithmétique avec `undefined` donne `NaN`.",
+        "Face à un `NaN`, remonte le calcul en arrière jusqu'à la variable jamais correctement assignée : ne cherche jamais l'erreur uniquement sur la ligne d'affichage.",
+        "Réutiliser les mêmes noms de variables globales dans plusieurs blocs `<script>` est une source fréquente de bugs, parfois silencieux (valeur périmée réutilisée sans provoquer de `NaN`).",
+        "Donner un nom unique à chaque variable (ou regrouper le code dans des fonctions avec variables locales) évite ce type d'erreur à la source."
+      ]
+    }
+  ]
+}

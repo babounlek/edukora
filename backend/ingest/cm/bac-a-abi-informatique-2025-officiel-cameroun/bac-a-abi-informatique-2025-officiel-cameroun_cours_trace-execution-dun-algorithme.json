@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-trace-execution-dun-algorithme-1ere-tronc-commun",
+  "meta": {
+    "titre": "Établir la trace d'exécution d'un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique - notions élémentaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "algorithme",
+      "trace d'exécution",
+      "variables",
+      "affectation",
+      "débogage manuel"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMP101",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-ABI-INFORMATIQUE-2025-CM",
+    "epreuve_titre": "Épreuve théorique d'informatique au probatoire A et ABI 2025 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-abi-informatique-2025-officiel-cameroun-ex2-qA3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un correcteur d'informatique demande souvent : « donne le résultat produit par cet algorithme pour telle entrée », sans jamais te laisser exécuter le programme sur un ordinateur. Cette compétence, qui consiste à dérouler un algorithme à la main comme si tu étais toi-même le processeur, s'appelle la trace d'exécution. Elle sert aussi bien à vérifier qu'un algorithme fonctionne correctement qu'à détecter une erreur avant même d'avoir écrit une seule ligne de code exécutable. Maîtriser la trace d'exécution, c'est apprendre à lire un algorithme comme une machine le lit, instruction après instruction."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lire un algorithme écrit en pseudo-code (mots-clés Lire, Ecrire, Variable, Début/Fin)",
+        "Distinguer une instruction de lecture (Lire), une instruction de calcul ou d'affectation (←) et une instruction d'affichage (Ecrire)",
+        "Effectuer les quatre opérations arithmétiques de base"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode de la trace d'exécution",
+      "contenu_markdown": "Établir la trace d'exécution d'un algorithme consiste à simuler son déroulement à la main, instruction par instruction, dans l'ordre exact où elles sont écrites, en notant à chaque étape la valeur que prend chaque variable. La méthode se résume en trois règles : on exécute une seule instruction à la fois, jamais deux en même temps ; on ne met à jour que la ou les variables concernées par l'instruction en cours, les autres gardent leur dernière valeur connue ; et on construit un tableau avec une colonne par variable et une ligne par instruction exécutée, pour ne perdre aucune étape en cours de route.",
+      "formule_principale": "Trace = tableau (une colonne par variable) x (une ligne par instruction)",
+      "variantes": [
+        {
+          "nom": "Trace en ligne, sans tableau",
+          "quand_utiliser": "Pour un algorithme très court, à une seule variable qui change.",
+          "contenu_markdown": "On peut noter directement, sous forme de phrase, l'état de la variable après chaque instruction (par exemple X←5 puis X←X+1 donne X=6). Cette forme devient vite illisible dès que plusieurs variables changent : le tableau reste la méthode à privilégier dès qu'un algorithme dépasse deux ou trois instructions."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner la trace d'exécution de l'algorithme *Moyenne2* ci-dessous pour X = 15 et Y = 25.\n\n```\nAlgorithme Moyenne2\n Variable X, Y, Moy2 : réel\n  Début\n   Lire(X) ;\n   Lire(Y) ;\n   Moy2 ← (X+Y)/2 ;\nEcrire(Moy2)\nFin\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les variables de l'algorithme et préparer le tableau de trace",
+          "justification": "L'algorithme déclare trois variables réelles : X, Y et Moy2. Le tableau de trace doit donc comporter une colonne pour chacune.",
+          "resultat_markdown": "Colonnes du tableau : X | Y | Moy2"
+        },
+        {
+          "numero": 2,
+          "action": "Exécuter Lire(X)",
+          "justification": "Cette instruction demande la saisie de la valeur de X, donnée par l'énoncé : X = 15.",
+          "resultat_markdown": "X = 15 ; Y = - ; Moy2 = -"
+        },
+        {
+          "numero": 3,
+          "action": "Exécuter Lire(Y)",
+          "justification": "Cette instruction demande la saisie de la valeur de Y, donnée par l'énoncé : Y = 25. X garde sa valeur précédente.",
+          "resultat_markdown": "X = 15 ; Y = 25 ; Moy2 = -"
+        },
+        {
+          "numero": 4,
+          "action": "Exécuter Moy2 ← (X+Y)/2",
+          "justification": "On calcule d'abord la somme X+Y = 15+25 = 40, puis on divise par 2 : 40/2 = 20. Cette valeur est affectée à Moy2.",
+          "resultat_markdown": "X = 15 ; Y = 25 ; Moy2 = 20"
+        },
+        {
+          "numero": 5,
+          "action": "Exécuter Ecrire(Moy2)",
+          "justification": "Cette instruction affiche à l'écran la valeur actuelle de Moy2, sans la modifier.",
+          "resultat_markdown": "Affichage à l'écran : 20"
+        }
+      ],
+      "conclusion_markdown": "La trace d'exécution montre que, pour X = 15 et Y = 25, l'algorithme Moyenne2 affiche la valeur 20, qui est bien la moyenne arithmétique des deux nombres saisis."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Donner directement le résultat final (Moy2 = 20) sans dérouler les étapes intermédiaires du tableau de trace.",
+          "pourquoi_faux": "La trace d'exécution est une démarche évaluée pour elle-même, pas seulement pour son résultat : un correcteur note la capacité à suivre l'état de chaque variable à chaque instruction, ce qui prouve la compréhension du déroulement de l'algorithme, pas seulement la capacité à calculer une moyenne.",
+          "correction_markdown": "Toujours présenter un tableau avec une ligne par instruction exécutée, même quand le résultat final semble évident."
+        },
+        {
+          "erreur_markdown": "Mettre à jour Moy2 avant d'avoir lu X et Y, en écrivant par exemple Moy2 = 20 dès la première ligne du tableau.",
+          "pourquoi_faux": "Les instructions s'exécutent dans l'ordre où elles sont écrites, jamais dans le désordre : Moy2 ne peut recevoir de valeur qu'après que X et Y aient été lus, puisque son calcul dépend d'eux.",
+          "correction_markdown": "Respecter scrupuleusement l'ordre d'écriture de l'algorithme : une variable garde une valeur non définie (un tiret) tant que l'instruction qui la calcule n'a pas encore été exécutée dans la trace."
+        },
+        {
+          "erreur_markdown": "Inverser les valeurs de X et Y dans le tableau, par exemple en notant X = 25, Y = 15.",
+          "pourquoi_faux": "L'ordre de saisie est fixé par l'algorithme lui-même (Lire(X) puis Lire(Y)) : la première valeur donnée dans l'énoncé correspond toujours à la première instruction Lire rencontrée, pas à l'ordre de citation dans la phrase de l'énoncé.",
+          "correction_markdown": "Repérer d'abord quelle instruction Lire correspond à quelle variable avant de reporter les valeurs numériques données par l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner la trace d'exécution de l'algorithme suivant pour A = 8 :\n\n```\nAlgorithme Double\n Variable A, B : entier\n  Début\n   Lire(A) ;\n   B ← A * 2 ;\n   Ecrire(B)\nFin\n```",
+          "solution_markdown": "On construit un tableau à deux colonnes, A et B.\n\n| Instruction exécutée | A | B |\n|---|---|---|\n| Lire(A) | 8 | - |\n| B ← A * 2 | 8 | 16 |\n| Ecrire(B) | 8 | 16 (affiché) |\n\nLire(A) saisit la valeur donnée par l'énoncé : A = 8. L'instruction B ← A * 2 calcule 8 * 2 = 16 et affecte ce résultat à B. Ecrire(B) affiche ensuite 16 à l'écran. La trace montre que l'algorithme affiche 16 pour A = 8."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner la trace d'exécution de l'algorithme suivant pour X = 4 et Y = 3 :\n\n```\nAlgorithme Compare\n Variable X, Y, Z : entier\n  Début\n   Lire(X) ;\n   Lire(Y) ;\n   Z ← X - Y ;\n   Si Z > 0 Alors\n     Ecrire(\"X est plus grand\")\n   Sinon\n     Ecrire(\"Y est plus grand ou égal\")\n   FinSi\nFin\n```",
+          "solution_markdown": "On construit un tableau à trois colonnes, X, Y et Z, puis on ajoute une ligne pour le test conditionnel.\n\n| Instruction exécutée | X | Y | Z |\n|---|---|---|---|\n| Lire(X) | 4 | - | - |\n| Lire(Y) | 4 | 3 | - |\n| Z ← X - Y | 4 | 3 | 1 |\n\nLire(X) saisit X = 4, Lire(Y) saisit Y = 3. L'instruction Z ← X - Y calcule 4 - 3 = 1 et affecte ce résultat à Z.\n\nOn évalue ensuite la condition Si Z > 0 Alors : Z vaut 1, et 1 > 0 est vrai. C'est donc la branche Alors qui s'exécute : l'algorithme affiche \"X est plus grand\". La branche Sinon n'est jamais exécutée dans ce cas et ne doit donc pas apparaître dans la trace."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Donner la trace d'exécution de l'algorithme suivant pour N = 4, qui calcule la somme des N premiers entiers naturels non nuls :\n\n```\nAlgorithme SommeN\n Variable N, i, S : entier\n  Début\n   Lire(N) ;\n   S ← 0 ;\n   Pour i de 1 à N Faire\n     S ← S + i ;\n   FinPour\n   Ecrire(S)\nFin\n```",
+          "solution_markdown": "On construit un tableau à trois colonnes, N, i et S, avec une ligne par passage dans la boucle Pour.\n\n| Instruction exécutée | N | i | S |\n|---|---|---|---|\n| Lire(N) | 4 | - | - |\n| S ← 0 | 4 | - | 0 |\n| Tour 1 : S ← S + i (i=1) | 4 | 1 | 1 |\n| Tour 2 : S ← S + i (i=2) | 4 | 2 | 3 |\n| Tour 3 : S ← S + i (i=3) | 4 | 3 | 6 |\n| Tour 4 : S ← S + i (i=4) | 4 | 4 | 10 |\n| Ecrire(S) | 4 | 4 | 10 (affiché) |\n\nLire(N) saisit N = 4. S ← 0 initialise l'accumulateur à 0, étape indispensable avant toute boucle d'accumulation. La boucle Pour i de 1 à N Faire exécute ensuite l'instruction S ← S + i pour chaque valeur de i de 1 à 4 : au tour 1, S = 0 + 1 = 1 ; au tour 2, S = 1 + 2 = 3 ; au tour 3, S = 3 + 3 = 6 ; au tour 4, S = 6 + 4 = 10. Une fois i = 4 atteint, la boucle se termine, et Ecrire(S) affiche 10, qui correspond bien à la somme 1+2+3+4."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour tracer un algorithme, ouvre un tableau avec une colonne par variable et une ligne par instruction : c'est ta meilleure protection contre les étourderies.",
+        "N'exécute jamais deux instructions à la fois, même quand le calcul te paraît évident : l'ordinateur, lui, les exécute une par une, dans l'ordre où elles sont écrites.",
+        "Une variable non encore lue ou calculée n'a pas de valeur : indique un tiret plutôt que de deviner un nombre.",
+        "Face à une structure conditionnelle (Si...Alors...Sinon) ou répétitive (Pour...Faire), la trace doit aussi indiquer quelle branche est exécutée et pourquoi, pas seulement les valeurs numériques.",
+        "Au probatoire comme au BAC, la trace d'exécution est l'un des exercices les plus fréquents du module Algorithmique : automatiser cette méthode te fait gagner un temps précieux le jour de l'épreuve."
+      ]
+    }
+  ]
+}

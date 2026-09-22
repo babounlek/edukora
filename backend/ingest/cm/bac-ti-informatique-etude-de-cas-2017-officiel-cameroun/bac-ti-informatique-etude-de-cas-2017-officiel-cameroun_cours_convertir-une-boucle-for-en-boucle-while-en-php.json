@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-convertir-for-en-while-php-tle-ti",
+  "meta": {
+    "titre": "Convertir une boucle for en boucle while",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases du langage PHP - boucles",
+    "duree_estimee_min": 20,
+    "tags": [
+      "PHP",
+      "boucle for",
+      "boucle while",
+      "conversion de boucle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q4c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "`for` et `while` sont deux façons d'écrire la même idée : répéter un bloc d'instructions tant qu'une condition reste vraie. Savoir passer de l'une à l'autre est une compétence classique d'examen, qui oblige à comprendre ce que la syntaxe compacte du `for` cache réellement, plutôt que de se contenter de la reconnaître par habitude."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe d'une boucle `for` : `for (initialisation; condition; pas)`.",
+        "Savoir qu'une boucle `while (condition) { ... }` répète son bloc tant que la condition reste vraie."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Extraire les trois ingrédients du for, les replacer à trois endroits différents",
+      "contenu_markdown": "Une boucle `for (initialisation; condition; pas) { corps }` contient toujours trois éléments regroupés dans son en-tête. Pour la convertir en `while`, on sépare ces trois éléments et on les replace chacun à un endroit précis : l'initialisation devient une instruction isolée placée juste AVANT le `while` ; la condition devient la condition du `while ( ... )` ; le pas devient la toute DERNIÈRE instruction à l'intérieur du bloc `while`, après le corps original de la boucle. Oublier l'un des trois éléments - en particulier le pas, qui était implicite dans l'en-tête du `for` - transforme la boucle `while` en boucle infinie.",
+      "formule_principale": "for\\ (I;\\ C;\\ P)\\ \\{corps\\} \\;\\equiv\\; I;\\ \\ while\\ (C)\\ \\{corps;\\ P;\\}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Convertir en boucle `while` le code `for ($numero = 0; $numero < 5; $numero++) { echo $prenoms[$numero]; echo \"<br />\"; }`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Extraire les trois éléments de l'en-tête du for",
+          "justification": "Initialisation, condition et pas sont les trois parties séparées par des points-virgules dans l'en-tête.",
+          "resultat_markdown": "Initialisation : `$numero = 0`. Condition : `$numero < 5`. Pas : `$numero++`."
+        },
+        {
+          "numero": 2,
+          "action": "Placer l'initialisation avant le while",
+          "justification": "La variable de boucle doit exister et avoir sa valeur de départ avant que la condition ne soit testée pour la première fois.",
+          "resultat_markdown": "`$numero = 0;` puis, à la ligne suivante, `while (...)`."
+        },
+        {
+          "numero": 3,
+          "action": "Placer la condition dans le while et le pas en fin de bloc",
+          "justification": "Le pas doit être exécuté à chaque tour, après le corps de la boucle, pour que la condition finisse par devenir fausse.",
+          "resultat_markdown": "`while ($numero < 5) { echo $prenoms[$numero]; echo \"<br />\"; $numero++; }`"
+        }
+      ],
+      "conclusion_markdown": "Le code équivalent en `while` est : `$numero = 0; while ($numero < 5) { echo $prenoms[$numero]; echo \"<br />\"; $numero++; }` - il produit exactement le même affichage que le `for` d'origine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire le `while` sans placer `$numero++;` à l'intérieur du bloc.",
+          "pourquoi_faux": "Sans incrémentation, `$numero` reste éternellement égal à 0, la condition `$numero < 5` reste toujours vraie, et le programme boucle indéfiniment sans jamais s'arrêter.",
+          "correction_markdown": "Vérifie systématiquement que le pas du `for` d'origine a bien été recopié comme dernière instruction du bloc `while`."
+        },
+        {
+          "erreur_markdown": "Initialiser `$numero` à l'intérieur du bloc `while`, au lieu de le faire avant.",
+          "pourquoi_faux": "Si `$numero = 0;` est placé à l'intérieur du bloc, il serait exécuté à chaque tour, ramenant systématiquement `$numero` à 0 : la boucle ne progresserait jamais et deviendrait infinie.",
+          "correction_markdown": "L'initialisation ne s'exécute qu'une seule fois, avant le début de la boucle : elle doit impérativement être placée avant le mot-clé `while`, jamais dans son bloc."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir en boucle `while` le code `for ($i = 0; $i < 3; $i++) { echo $i; }`.",
+          "solution_markdown": "```php\n$i = 0;\nwhile ($i < 3) {\n    echo $i;\n    $i++;\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir en boucle `while` le code `for ($i = 10; $i > 0; $i--) { echo $i; echo \" \"; }`.",
+          "solution_markdown": "```php\n$i = 10;\nwhile ($i > 0) {\n    echo $i;\n    echo \" \";\n    $i--;\n}\n```\nL'initialisation part de 10, la condition reste `$i > 0`, et le pas devient une décrémentation `$i--` placée en fin de bloc, puisque la boucle d'origine comptait à rebours."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Convertir en boucle `while` le code `for ($i = 0, $somme = 0; $i < 5; $i++) { $somme += $i; }`, où le `for` initialise ici deux variables séparées par une virgule.",
+          "solution_markdown": "```php\n$i = 0;\n$somme = 0;\nwhile ($i < 5) {\n    $somme += $i;\n    $i++;\n}\n```\nLorsqu'un `for` initialise plusieurs variables séparées par une virgule dans son en-tête, chacune devient une instruction distincte placée avant le `while` : `$i = 0;` et `$somme = 0;` sur deux lignes séparées. Le reste de la conversion (condition, pas) suit exactement la même méthode que pour un `for` à une seule variable."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un `for (I; C; P)` se convertit en `while` en séparant ses trois éléments : `I` avant le `while`, `C` dans sa parenthèse, `P` en dernière ligne de son bloc.",
+        "Le piège numéro un est d'oublier le pas à l'intérieur du bloc `while`, ce qui crée une boucle infinie.",
+        "L'initialisation ne s'exécute qu'une fois : elle doit rester à l'extérieur du bloc `while`, jamais à l'intérieur.",
+        "Si le `for` initialise plusieurs variables séparées par une virgule, chacune devient sa propre ligne d'initialisation avant le `while`.",
+        "Cette conversion est un classique du BAC TI : elle vérifie que le candidat comprend le mécanisme réel d'une boucle, pas seulement sa syntaxe de surface."
+      ]
+    }
+  ]
+}

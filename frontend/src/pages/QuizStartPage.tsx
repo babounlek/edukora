@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useEffect, useRef, useState } from "react"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import {
   ArrowRight,
   CheckCircle2,
@@ -49,6 +49,16 @@ export function QuizStartPage() {
   const { isAuthenticated, isLoading: authLoading } = useAuth()
   const navigate = useNavigate()
 
+  // Lancement direct depuis un bouton "Quiz" externe (voir ThemesFrequents.tsx) -
+  // `cursus` prime sur le premier abonnement actif tant qu'il en fait partie, `theme`
+  // déclenche lancer() dès que ce cursus est effectivement sélectionné (voir l'effet
+  // plus bas). Sans abonnement actif sur ce cursus précis, ces paramètres restent
+  // simplement sans effet - la page retombe sur son comportement normal.
+  const [searchParams] = useSearchParams()
+  const cursusParam = searchParams.get("cursus")
+  const themeParam = searchParams.get("theme")
+  const themeAutoLanceRef = useRef(false)
+
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [selectedCursus, setSelectedCursus] = useState("")
@@ -74,8 +84,14 @@ export function QuizStartPage() {
       const active = subs.filter((sub) => sub.is_active)
       setSubscriptions(active)
       setSubscriptionsLoaded(true)
-      if (active.length > 0) setSelectedCursus(String(active[0].cursus.id))
+      const viaParam = cursusParam && active.some((sub) => String(sub.cursus.id) === cursusParam)
+      if (viaParam) setSelectedCursus(cursusParam)
+      else if (active.length > 0) setSelectedCursus(String(active[0].cursus.id))
     })
+    // cursusParam volontairement absent des deps : un changement d'URL après coup ne
+    // doit pas redéclencher un nouvel appel listMySubscriptions(), seule la valeur au
+    // moment où l'authentification se résout compte.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authLoading, isAuthenticated])
 
   // Uniquement les matières ayant déjà une banque de quiz pour CE cursus (voir
@@ -100,9 +116,9 @@ export function QuizStartPage() {
 
   /**
    * Démarre une séance. Sans `theme` : la configuration du formulaire. Avec `theme` :
-   * un entraînement ciblé sur ce seul thème - toujours en pratique libre (un test de
-   * niveau sur un thème unique n'a pas de sens) et sans filtre matière, déjà impliqué
-   * par le thème lui-même.
+   * un entraînement ciblé lancé depuis un lien externe (voir l'auto-lancement plus
+   * bas) - toujours en pratique libre (un test de niveau sur un thème unique n'a pas
+   * de sens) et sans filtre matière, déjà impliqué par le thème lui-même.
    */
   async function lancer(theme?: number) {
     // Un thème ciblé porte déjà sa matière ; sans lui, le formulaire exige désormais
@@ -132,6 +148,21 @@ export function QuizStartPage() {
       setStartingThemeId(null)
     }
   }
+
+  // Lancement automatique depuis ThemesFrequents.tsx (bouton "Quiz") - n'attend que
+  // selectedCursus rejoigne effectivement cursusParam (donc que l'abonnement
+  // correspondant ait été trouvé ci-dessus), jamais un simple montage : sinon l'appel
+  // partirait avant que la sélection ne soit prête. Une seule tentative (themeAutoLanceRef)
+  // même si lancer() échoue - pas de boucle de relance sur une session qui ne peut pas
+  // s'ouvrir (ex. thème sans aucune question, déjà géré par le bouton désactivé côté
+  // ThemesFrequents mais un lien direct pourrait contourner ce garde-fou).
+  useEffect(() => {
+    if (themeAutoLanceRef.current) return
+    if (!themeParam || !cursusParam || selectedCursus !== cursusParam) return
+    themeAutoLanceRef.current = true
+    lancer(Number(themeParam))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCursus, cursusParam, themeParam])
 
   if (authLoading || !subscriptionsLoaded) {
     return (

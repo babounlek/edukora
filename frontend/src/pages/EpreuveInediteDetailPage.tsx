@@ -37,7 +37,7 @@ export function EpreuveInediteDetailPage() {
   useSeo({
     title: epreuve?.title ?? "Épreuve inédite",
     description: epreuve
-      ? `${epreuve.subject.label} - épreuve inédite jamais vue, jamais publiée ailleurs.`
+      ? `${epreuve.subject.label} - épreuve inédite originale conçue par Edukora, jamais tirée des annales.`
       : undefined,
   })
 
@@ -131,7 +131,7 @@ export function EpreuveInediteDetailPage() {
 
   if (!epreuve) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
         <div className="flex flex-col gap-3">
           <Skeleton className="h-8 w-3/4" />
           <Skeleton className="h-5 w-1/2" />
@@ -149,7 +149,7 @@ export function EpreuveInediteDetailPage() {
   const apercuDejaTitre = /^[\s#*]*exercice\s+\S/i.test(epreuve.apercu_enonce_markdown ?? "")
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       <Link
         to={epreuvesListPath(country)}
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
@@ -186,8 +186,9 @@ export function EpreuveInediteDetailPage() {
         </div>
 
         <p className="text-sm text-muted-foreground">
-          Une épreuve d'examen jamais vue, jamais publiée ailleurs - même niveau, même structure, même barème que
-          l'examen réel. Le seul moyen de te tester en conditions réelles sans déjà connaître les réponses.
+          Une épreuve originale conçue par Edukora, jamais tirée des annales - même niveau, même structure, même
+          barème que l'examen réel. Le seul moyen de te tester en conditions réelles sans déjà connaître les
+          réponses.
         </p>
 
         {/* Aperçu public minimal : une seule question, jamais le sujet entier (voir
@@ -210,8 +211,8 @@ export function EpreuveInediteDetailPage() {
 
         <div className="mt-2 flex flex-wrap gap-2 border-t border-border pt-5">
           {/* Contrairement à "Cours associés" plus bas, le PDF du sujet n'est PAS un teaser :
-              il ne doit apparaître que pour un abonné Max de ce cursus (has_access), sous
-              peine de proposer un bouton qui échoue systématiquement en 403 côté serveur
+              il ne doit apparaître que pour un abonné Jusqu'à l'Examen de ce cursus (has_access),
+              sous peine de proposer un bouton qui échoue systématiquement en 403 côté serveur
               (voir inedit.views.download_sujet_pdf, gated par has_access_inedite). */}
           {epreuve.sujet_pdf_disponible && epreuve.has_access && (
             <Button size="lg" variant="outline" onClick={handleDownloadPdf} disabled={downloading}>
@@ -228,7 +229,7 @@ export function EpreuveInediteDetailPage() {
             <div className="flex w-full flex-col gap-3 rounded-lg border border-dashed border-border bg-muted/40 p-4">
               <p className="flex items-center gap-1.5 text-sm font-medium">
                 <Lock className="size-4 shrink-0" />
-                Réservée aux formules qui incluent les épreuves inédites (Max, Pack Examen) sur ce cursus.
+                Réservée aux abonnés Jusqu'à l'Examen de ce cursus.
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <Button asChild size="lg" className="w-fit">

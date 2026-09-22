@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-identifier-l-algorithme-calcule-par-une-fonction-recursive-exponentiation-rapide-tle-ti",
+  "meta": {
+    "titre": "Identifier l'algorithme calculé par une fonction récursive (exponentiation rapide)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Récursivité en langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "langage C",
+      "exponentiation rapide",
+      "analyse d'algorithme",
+      "puissance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex4-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un code source, aussi clair soit-il, ne dit pas toujours directement « ce que » calcule un algorithme : c'est parfois seulement en observant les résultats produits pour plusieurs entrées, et en reconnaissant un motif mathématique connu, qu'on peut le nommer avec certitude."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Trace d'exécution d'une fonction récursive",
+        "Propriétés élémentaires des puissances (x^a * x^b = x^(a+b))"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître un motif mathématique connu dans le résultat",
+      "contenu_markdown": "Déduire ce que fait un programme à partir d'une trace d'exécution consiste à comparer le résultat numérique obtenu à des opérations mathématiques usuelles (somme, produit, puissance, PGCD...) appliquées aux mêmes valeurs d'entrée, plutôt qu'à reformuler le code ligne par ligne. Ici, la structure même du code (`x*x` au carré, `n/2` divisé par deux) est un indice fort d'un lien avec les puissances : la propriété $x^n = (x^2)^{n/2}$ si n est pair, et $x^n = x \\times (x^2)^{(n-1)/2}$ si n est impair, est précisément celle qu'exploite l'**exponentiation rapide (par élévations au carré successives)**, un algorithme classique qui calcule $x^n$ en $O(\\log n)$ opérations au lieu de $O(n)$ pour une multiplication répétée n fois.",
+      "formule_principale": "x^n = (x^2)^(n/2) si n pair ; x^n = x * (x^2)^((n-1)/2) si n impair",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "À partir du résultat calcul(5, 10) = 9 765 625 obtenu par la trace d'exécution, déduire ce que calcule cette fonction.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Comparer le résultat obtenu à une opération connue sur les mêmes entrées",
+          "justification": "5 et 10 sont les entrées ; il s'agit de tester si le résultat correspond à une opération usuelle sur ces deux nombres.",
+          "resultat_markdown": "$5^{10} = 9\\,765\\,625$ : le résultat correspond exactement à x élevé à la puissance n."
+        },
+        {
+          "numero": 2,
+          "action": "Confirmer ce lien à partir de la structure du code, pas seulement du résultat numérique",
+          "justification": "Un seul exemple numérique ne suffit jamais à prouver une généralité ; la structure du code (x mis au carré, n divisé par 2) doit corroborer l'hypothèse.",
+          "resultat_markdown": "`x*x` correspond à $x^2$, et `n/2` correspond à répartir l'exposant en deux moitiés égales : exactement le principe de l'exponentiation rapide."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer l'algorithme",
+          "justification": "Nommer précisément l'algorithme (pas seulement dire « il calcule une puissance ») montre une compréhension de la technique employée.",
+          "resultat_markdown": "Il s'agit de l'exponentiation rapide (élévation au carré successive), qui calcule $x^n$ en $O(\\log n)$ appels."
+        }
+      ],
+      "conclusion_markdown": "La fonction `calcul(x, n)` calcule donc $x^n$ par l'algorithme d'exponentiation rapide, bien plus efficace qu'une multiplication répétée n fois."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure à partir d'un seul exemple numérique sans vérifier la structure du code.",
+          "pourquoi_faux": "Un résultat numérique isolé peut coïncider par hasard avec plusieurs opérations différentes ; c'est la structure du code (x au carré, n divisé par 2) qui confirme réellement qu'il s'agit d'une puissance, pas seulement le résultat d'un cas particulier.",
+          "correction_markdown": "Toujours relier le résultat numérique observé à la logique du code elle-même, jamais à une simple coïncidence de chiffres."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une fonction récursive teste `if (n==0) return a; else return a + f(a, n-1);` où f est appelée f(a,n). Sachant que f(3, 4) = 12, déduire ce que calcule cette fonction.",
+          "solution_markdown": "f(3,4) = 12 = 3*4 : la fonction additionne a à elle-même n fois, ce qui revient à calculer le produit a×n. Structurellement, chaque appel ajoute une occurrence de `a` et décrémente n de 1, ce qui confirme une multiplication par additions répétées."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une fonction récursive `g(n)` vérifie g(0)=0, g(1)=1, et g(n) = g(n-1) + g(n-2) pour n ≥ 2. Calculer g(5) puis nommer la suite mathématique calculée.",
+          "solution_markdown": "g(2)=g(1)+g(0)=1 ; g(3)=g(2)+g(1)=2 ; g(4)=g(3)+g(2)=3 ; g(5)=g(4)+g(3)=5. Cette suite (0,1,1,2,3,5,...), où chaque terme est la somme des deux précédents, est la suite de Fibonacci."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une variante de la fonction calcul de l'exercice remplace toutes les multiplications par des additions (x+x au lieu de x*x, x+calcul(...) au lieu de x*calcul(...)). Sans dérouler de trace complète, déduire par analogie ce que cette variante calculerait, et pourquoi.",
+          "solution_markdown": "L'exponentiation rapide repose sur la propriété $x^n = (x^2)^{n/2}$, qui relie la multiplication répétée (puissance) à l'opération de mise au carré (multiplication). En remplaçant systématiquement chaque multiplication par une addition, la même structure d'algorithme (division de n par 2, cas pair/impair) calculerait cette fois le produit $x \\times n$ par additions répétées, exactement selon le même principe que l'exercice 1 de cette série : `x+x` joue alors le rôle que jouait `x*x` (doubler x remplace élever x au carré), et l'addition finale sur la branche impaire remplace la multiplication finale. C'est la transposition directe de l'exponentiation rapide à la multiplication rapide par doublement, un algorithme utilisant exactement la même charpente logique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Identifier un algorithme à partir d'une trace consiste à reconnaître un motif mathématique connu dans le résultat, pas à reformuler le code.",
+        "La structure du code (ici x au carré, n divisé par 2) doit toujours corroborer l'hypothèse déduite du résultat numérique.",
+        "Nommer précisément l'algorithme reconnu (exponentiation rapide) va plus loin qu'un simple constat du résultat.",
+        "Ce type de question revient régulièrement au BAC TI : savoir reconnaître factorielle, Fibonacci, PGCD (algorithme d'Euclide) et exponentiation rapide dans leur forme récursive est un investissement rentable."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+[
+  {
+    "external_id": "cqc-loi-binomiale-faible-0",
+    "theme": "loi binomiale",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "On dispose d'un jeu de 32 cartes contenant exactement 4 rois. On tire une carte au hasard, on note sa valeur, puis on la remet dans le jeu avant de mélanger et de tirer à nouveau. On répète cette expérience 3 fois de suite, dans les mêmes conditions et indépendamment les unes des autres. On note $X$ le nombre de tirages ayant donné un roi parmi les 3 tirages effectués.\n\n1. Justifier que $X$ suit une loi binomiale dont on précisera les paramètres.\n2. Déterminer la loi de probabilité de $X$ (chaque valeur sera donnée sous forme de fraction de dénominateur $512$, puis en valeur décimale arrondie à $10^{-3}$ près).",
+    "corrige_markdown": "### Rappel de méthode\n\nRépéter $n$ fois, de façon indépendante, une même épreuve à deux issues de probabilité $p$ et $1-p$ définit un schéma de Bernoulli ; le nombre de succès suit alors une loi binomiale $\\mathcal B(n,p)$, et pour tout entier $k$ compris entre $0$ et $n$, $P(X=k)=\\binom{n}{k}p^{k}(1-p)^{n-k}$.\n\n### Corrigé\n\n**1. Identification du schéma de Bernoulli.**\nChaque tirage constitue une épreuve à deux issues : « obtenir un roi » (succès, probabilité $p=\\dfrac{4}{32}=\\dfrac18$) ou « ne pas obtenir un roi » (échec, probabilité $1-p=\\dfrac78$). La carte tirée étant remise dans le jeu avant le tirage suivant, la composition du jeu est identique à chaque tirage : les 3 tirages sont donc des répétitions **identiques** de la même épreuve. De plus, la remise et le mélange font que le résultat d'un tirage n'a aucune influence sur les tirages suivants : les 3 tirages sont **indépendants**. On a bien un schéma de Bernoulli répété $n=3$ fois de paramètre $p=\\dfrac18$, donc $X\\sim\\mathcal B\\left(3,\\dfrac18\\right)$.\n\n**2. Loi de probabilité de $X$.**\nPour $k\\in\\{0,1,2,3\\}$, $P(X=k)=\\binom{3}{k}\\left(\\dfrac18\\right)^{k}\\left(\\dfrac78\\right)^{3-k}$.\n\n$P(X=0)=\\binom{3}{0}\\left(\\dfrac18\\right)^{0}\\left(\\dfrac78\\right)^{3}=1\\times1\\times\\dfrac{343}{512}=\\dfrac{343}{512}\\approx0{,}670$\n\n$P(X=1)=\\binom{3}{1}\\left(\\dfrac18\\right)^{1}\\left(\\dfrac78\\right)^{2}=3\\times\\dfrac18\\times\\dfrac{49}{64}=\\dfrac{147}{512}\\approx0{,}287$\n\n$P(X=2)=\\binom{3}{2}\\left(\\dfrac18\\right)^{2}\\left(\\dfrac78\\right)^{1}=3\\times\\dfrac{1}{64}\\times\\dfrac78=\\dfrac{21}{512}\\approx0{,}041$\n\n$P(X=3)=\\binom{3}{3}\\left(\\dfrac18\\right)^{3}\\left(\\dfrac78\\right)^{0}=1\\times\\dfrac{1}{512}\\times1=\\dfrac{1}{512}\\approx0{,}002$\n\n**Vérification.** $343+147+21+1=512$, donc $\\dfrac{343}{512}+\\dfrac{147}{512}+\\dfrac{21}{512}+\\dfrac{1}{512}=\\dfrac{512}{512}=1$ : la somme des probabilités vaut bien $1$.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6571]
+  },
+  {
+    "external_id": "cqc-loi-binomiale-faible-1",
+    "theme": "loi binomiale",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "Un archer tire 4 flèches sur une cible, dans des conditions identiques et indépendantes les unes des autres. On admet que la probabilité qu'il atteigne la cible à chaque tir est $p=0{,}5$. On note $X$ le nombre de flèches ayant atteint la cible parmi les 4 tirs.\n\nQuelle est la probabilité que l'archer atteigne la cible exactement 2 fois sur les 4 tirs ?",
+    "corrige_markdown": "### Rappel de méthode\n\nRépéter $n$ fois, de façon indépendante, une même épreuve à deux issues de probabilité $p$ et $1-p$ définit un schéma de Bernoulli ; le nombre de succès suit alors une loi binomiale $\\mathcal B(n,p)$, avec $P(X=k)=\\binom{n}{k}p^{k}(1-p)^{n-k}$ pour tout $k$ entre $0$ et $n$.\n\n### Corrigé\n\nLes 4 tirs sont effectués dans des conditions identiques (même probabilité $p=0{,}5$ de toucher la cible à chaque tir) et indépendantes (le résultat d'un tir n'influence pas les tirs suivants, par hypothèse de l'énoncé) : c'est un schéma de Bernoulli répété $n=4$ fois de paramètre $p=0{,}5$, donc $X\\sim\\mathcal B(4;0{,}5)$.\n\n$P(X=2)=\\binom{4}{2}\\times0{,}5^{2}\\times0{,}5^{2}=6\\times0{,}25\\times0{,}25=6\\times0{,}0625=0{,}375$\n\nLa bonne réponse est donc **C**.\n\nPourquoi les autres options sont fausses : l'option **B** ($0{,}25$) correspond à l'erreur $\\binom{4}{2}=4$ au lieu de $6$ ; l'option **A** ($0{,}0625$) oublie complètement le coefficient binomial, en ne gardant que $0{,}5^{2}\\times0{,}5^{2}$ ; l'option **D** ($0{,}5$) confond la probabilité avec la simple proportion $\\dfrac{2}{4}$.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {"lettre": "A", "texte": "0,0625"},
+      {"lettre": "B", "texte": "0,25"},
+      {"lettre": "C", "texte": "0,375"},
+      {"lettre": "D", "texte": "0,5"}
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [6857]
+  },
+  {
+    "external_id": "cqc-loi-binomiale-moyenne-2",
+    "theme": "loi binomiale",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "Lors d'une séance d'entraînement, un footballeur tire 5 penalties de façon indépendante et dans des conditions identiques. On admet que la probabilité qu'il marque à chaque tir est $p=0{,}8$. On note $X$ le nombre de penalties marqués parmi les 5 tirés.\n\nCalculer la probabilité que le footballeur marque au moins 4 penalties sur les 5 tirés.",
+    "corrige_markdown": "### Rappel de méthode\n\nRépéter $n$ fois, de façon indépendante, une même épreuve à deux issues de probabilité $p$ et $1-p$ définit un schéma de Bernoulli ; le nombre de succès suit alors une loi binomiale $\\mathcal B(n,p)$. Pour calculer $P(X\\geqslant k)$, on décompose l'événement en une somme de probabilités ponctuelles incompatibles, $P(X\\geqslant k)=P(X=k)+P(X=k+1)+\\cdots+P(X=n)$, chaque terme se calculant avec $P(X=j)=\\binom{n}{j}p^{j}(1-p)^{n-j}$.\n\n### Corrigé\n\n**Identification du schéma.** Chaque penalty est une épreuve à deux issues : « marquer » (succès, probabilité $p=0{,}8$) ou « ne pas marquer » (échec, probabilité $0{,}2$). Les 5 tirs sont effectués dans des conditions identiques (même probabilité $p$ à chaque tir) et sont indépendants (la réussite d'un tir n'influence pas les tirs suivants, par hypothèse de l'énoncé) : on a donc bien un schéma de Bernoulli répété $n=5$ fois de paramètre $p=0{,}8$, soit $X\\sim\\mathcal B(5;0{,}8)$.\n\n**Calcul.** « Au moins 4 penalties marqués » signifie $X\\geqslant4$, c'est-à-dire $X=4$ ou $X=5$, deux événements incompatibles :\n$$P(X\\geqslant4)=P(X=4)+P(X=5)$$\n\n$P(X=4)=\\binom{5}{4}\\times0{,}8^{4}\\times0{,}2^{1}=5\\times0{,}4096\\times0{,}2=0{,}4096$\n\n$P(X=5)=\\binom{5}{5}\\times0{,}8^{5}\\times0{,}2^{0}=1\\times0{,}32768\\times1=0{,}32768$\n\n$$P(X\\geqslant4)=0{,}4096+0{,}32768=0{,}73728$$\n\nLe footballeur a donc une probabilité d'environ $0{,}737$ de marquer au moins 4 penalties sur les 5 tirés, soit environ 73,7 % de chances.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6571, 6857]
+  },
+  {
+    "external_id": "cqc-loi-binomiale-moyenne-3",
+    "theme": "loi binomiale",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "Dans un jeu télévisé, un candidat doit répondre au hasard aux 4 dernières questions d'un quiz. Chaque question propose 5 réponses possibles, une seule étant correcte, et le candidat choisit sa réponse indépendamment d'une question à l'autre. On note $X$ le nombre de bonnes réponses données par le candidat parmi ces 4 questions.\n\nLe gain final $G$ du candidat, exprimé en francs CFA, est donné par $G=2000X-500$ (chaque bonne réponse rapporte 2000 F, mais une mise initiale de 500 F est retenue quel que soit le résultat).\n\n1. Justifier que $X$ suit une loi binomiale dont on précisera les paramètres, puis déterminer l'ensemble des valeurs possibles de $G$.\n2. Calculer la probabilité que le candidat reparte avec un gain strictement positif.",
+    "corrige_markdown": "### Rappel de méthode\n\nRépéter $n$ fois, de façon indépendante, une même épreuve à deux issues de probabilité $p$ et $1-p$ définit un schéma de Bernoulli ; le nombre de succès suit alors une loi binomiale $\\mathcal B(n,p)$. Lorsqu'une variable $N=aX+b$ est une fonction affine de $X$, l'ensemble des valeurs possibles de $N$ s'obtient en appliquant cette relation à chacune des valeurs possibles de $X$, et $P(N=n_0)=P\\!\\left(X=\\dfrac{n_0-b}{a}\\right)$.\n\n### Corrigé\n\n**1. Identification et valeurs possibles de $G$.**\nRépondre au hasard à une question à 5 choix, une seule étant correcte, est une épreuve à deux issues : « bonne réponse » (succès, probabilité $p=\\dfrac15$) ou « mauvaise réponse » (échec, probabilité $\\dfrac45$). Les 4 questions sont traitées dans les mêmes conditions (mêmes 5 choix, un seul correct à chaque fois) et le choix du candidat à une question n'influence pas son choix aux questions suivantes (indépendance donnée par l'énoncé). Donc $X\\sim\\mathcal B\\left(4,\\dfrac15\\right)$, et $X$ prend ses valeurs dans $\\{0,1,2,3,4\\}$.\n\nComme $G=2000X-500$, on obtient l'ensemble des valeurs possibles de $G$ en appliquant cette relation à chaque valeur de $X$ :\n\n| $X$ | 0 | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|---|\n| $G$ | $-500$ | $1500$ | $3500$ | $5500$ | $7500$ |\n\nDonc $G\\in\\{-500;1500;3500;5500;7500\\}$.\n\n**2. Probabilité d'un gain strictement positif.**\n$G>0 \\iff 2000X-500>0 \\iff X>0{,}25 \\iff X\\geqslant1$ (car $X$ est entier).\n\n$$P(G>0)=P(X\\geqslant1)=1-P(X=0)$$\n\n$P(X=0)=\\binom{4}{0}\\left(\\dfrac15\\right)^{0}\\left(\\dfrac45\\right)^{4}=1\\times1\\times\\dfrac{256}{625}=0{,}4096$\n\n$$P(G>0)=1-0{,}4096=0{,}5904$$\n\nLe candidat a donc une probabilité de $0{,}5904$ de repartir avec un gain strictement positif, soit environ 59 % de chances.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6577]
+  },
+  {
+    "external_id": "cqc-loi-binomiale-moyenne-4",
+    "theme": "loi binomiale",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "On lance $n$ fois de suite une pièce de monnaie parfaitement équilibrée ($n$ entier, $n\\geqslant2$), les lancers étant effectués indépendamment les uns des autres. On note $X$ le nombre de fois où l'on obtient « pile » parmi les $n$ lancers.\n\n1. Justifier que $X$ suit une loi binomiale dont on précisera les paramètres en fonction de $n$.\n2. Exprimer, en fonction de $n$, la probabilité $P(X=2)$ d'obtenir exactement deux fois « pile ».\n3. Application : calculer $P(X=2)$ lorsque $n=6$.",
+    "corrige_markdown": "### Rappel de méthode\n\nRépéter $n$ fois, de façon indépendante, une même épreuve à deux issues de probabilité $p$ et $1-p$ définit un schéma de Bernoulli ; le nombre de succès suit alors une loi binomiale $\\mathcal B(n,p)$ avec $P(X=k)=\\binom{n}{k}p^{k}(1-p)^{n-k}$. Lorsque $n$ reste un paramètre littéral, on conserve $\\binom{n}{k}$ sous forme littérale plutôt que de le développer numériquement.\n\n### Corrigé\n\n**1. Identification du schéma.** Chaque lancer est une épreuve à deux issues : « obtenir pile » (succès, probabilité $p=\\dfrac12$ car la pièce est équilibrée) ou « obtenir face » (échec, probabilité $\\dfrac12$). Les $n$ lancers sont effectués dans des conditions identiques (même pièce, même probabilité à chaque lancer) et sont indépendants (donné par l'énoncé). Donc $X\\sim\\mathcal B\\left(n,\\dfrac12\\right)$.\n\n**2. Formule littérale de $P(X=2)$.**\n$$P(X=2)=\\binom{n}{2}\\left(\\dfrac12\\right)^{2}\\left(\\dfrac12\\right)^{n-2}=\\binom{n}{2}\\left(\\dfrac12\\right)^{n}=\\dfrac{n(n-1)}{2}\\times\\dfrac{1}{2^{n}}=\\dfrac{n(n-1)}{2^{n+1}}$$\n\n**3. Application pour $n=6$.**\n$$P(X=2)=\\dfrac{6\\times5}{2^{7}}=\\dfrac{30}{128}=\\dfrac{15}{64}$$\n\nVérification directe : $\\binom{6}{2}\\left(\\dfrac12\\right)^{6}=15\\times\\dfrac{1}{64}=\\dfrac{15}{64}\\approx0{,}234$, ce qui confirme la formule littérale obtenue à la question 2.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6610]
+  },
+  {
+    "external_id": "cqc-loi-binomiale-elevee-5",
+    "theme": "loi binomiale",
+    "matiere": "Mathématiques",
+    "cursus": [{"examen": "bac", "serie": "C"}, {"examen": "bac", "serie": "E"}, {"examen": "bac", "serie": "D"}, {"examen": "bac", "serie": "A"}],
+    "enonce_markdown": "Un laboratoire médical analyse 6 échantillons sanguins prélevés sur des patients différents, de façon indépendante les uns des autres. On admet que, pour des raisons épidémiologiques, chaque échantillon a une probabilité $p=0{,}3$ d'être positif à un test donné, cette probabilité étant la même pour les 6 échantillons. On note $X$ le nombre d'échantillons positifs parmi les 6 analysés.\n\n1. Justifier que $X$ suit une loi binomiale dont on précisera les paramètres.\n2. Calculer la probabilité qu'entre 2 et 4 échantillons (bornes incluses) soient positifs.",
+    "corrige_markdown": "### Rappel de méthode\n\nRépéter $n$ fois, de façon indépendante, une même épreuve à deux issues de probabilité $p$ et $1-p$ définit un schéma de Bernoulli ; le nombre de succès suit alors une loi binomiale $\\mathcal B(n,p)$ avec $P(X=k)=\\binom{n}{k}p^{k}(1-p)^{n-k}$. Une probabilité du type $P(a\\leqslant X\\leqslant b)$ se calcule en sommant les probabilités ponctuelles incompatibles $P(X=a)+P(X=a+1)+\\cdots+P(X=b)$.\n\n### Corrigé\n\n**1. Identification du schéma.** Chaque analyse est une épreuve à deux issues : « échantillon positif » (succès, probabilité $p=0{,}3$) ou « échantillon négatif » (échec, probabilité $0{,}7$), cette probabilité étant supposée identique pour les 6 échantillons (donnée par l'énoncé). Les analyses sont indépendantes les unes des autres, puisque prélevées sur des patients différents (donné par l'énoncé). On a donc un schéma de Bernoulli répété $n=6$ fois de paramètre $p=0{,}3$, soit $X\\sim\\mathcal B(6;0{,}3)$.\n\n**2. Calcul de $P(2\\leqslant X\\leqslant4)$.**\n$$P(2\\leqslant X\\leqslant4)=P(X=2)+P(X=3)+P(X=4)$$\n\n$P(X=2)=\\binom{6}{2}\\times0{,}3^{2}\\times0{,}7^{4}=15\\times0{,}09\\times0{,}2401=0{,}324135$\n\n$P(X=3)=\\binom{6}{3}\\times0{,}3^{3}\\times0{,}7^{3}=20\\times0{,}027\\times0{,}343=0{,}18522$\n\n$P(X=4)=\\binom{6}{4}\\times0{,}3^{4}\\times0{,}7^{2}=15\\times0{,}0081\\times0{,}49=0{,}059535$\n\n$$P(2\\leqslant X\\leqslant4)=0{,}324135+0{,}18522+0{,}059535=0{,}568890$$\n\n**Vérification numérique.** En calculant aussi $P(X=0)=0{,}7^{6}=0{,}117649$, $P(X=1)=\\binom{6}{1}\\times0{,}3\\times0{,}7^{5}=0{,}302526$, $P(X=5)=\\binom{6}{5}\\times0{,}3^{5}\\times0{,}7=0{,}010206$ et $P(X=6)=0{,}3^{6}=0{,}000729$, la somme des sept probabilités vaut $0{,}117649+0{,}302526+0{,}324135+0{,}18522+0{,}059535+0{,}010206+0{,}000729=1$, ce qui confirme la cohérence de l'ensemble du calcul.\n\nIl y a donc une probabilité d'environ $0{,}569$ que le nombre d'échantillons positifs parmi les 6 soit compris entre 2 et 4, soit environ 56,9 % de chances.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [6571, 6857]
+  }
+]

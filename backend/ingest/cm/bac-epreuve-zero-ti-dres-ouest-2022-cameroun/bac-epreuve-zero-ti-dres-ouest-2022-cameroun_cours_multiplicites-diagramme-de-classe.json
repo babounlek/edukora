@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-multiplicites-diagramme-de-classe-tle-ti",
+  "meta": {
+    "titre": "Les multiplicités dans un diagramme de classe UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagrammes UML structurels",
+    "duree_estimee_min": 20,
+    "tags": [
+      "multiplicite",
+      "diagramme de classe",
+      "cardinalite"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex1-q2c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Savoir qu'un bus est relié à des sièges ne suffit pas : encore faut-il préciser combien de sièges, et si un siège peut appartenir à plusieurs bus à la fois. C'est le rôle des multiplicités, ces petits nombres écrits aux extrémités d'une relation, souvent négligés alors qu'ils portent une information indispensable à toute implémentation réelle du système."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier une relation entre deux classes (association, agrégation, composition) et ses deux extrémités."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire et écrire une multiplicité",
+      "contenu_markdown": "Une multiplicité s'écrit toujours sous la forme minimum..maximum, et se lit du côté de la classe à laquelle elle s'applique, jamais du côté d'où part la lecture. Les valeurs les plus courantes sont : `1` (exactement un), `0..1` (zéro ou un), `0..*` (zéro ou plusieurs, aucune limite haute) et `1..*` (au moins un, sans limite haute). Pour déterminer chaque multiplicité, il faut se poser deux questions à chaque extrémité de la relation : « combien au minimum ? » et « combien au maximum ? ».",
+      "formule_principale": "Multiplicité = minimum..maximum (lue du côté de la classe concernée)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un bus est composé d'exactement une carrosserie et d'au moins un siège. Un bus peut transporter zéro ou plusieurs personnes, mais une personne n'est transportée, à un instant donné, que par un seul bus. Déterminez les multiplicités de ces relations.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Multiplicité de Bus vis-à-vis de Carrosserie",
+          "justification": "L'énoncé dit « exactement une carrosserie » : minimum et maximum valent tous les deux 1.",
+          "resultat_markdown": "Côté Carrosserie : multiplicité `1`."
+        },
+        {
+          "numero": 2,
+          "action": "Multiplicité de Carrosserie vis-à-vis de Bus",
+          "justification": "Une carrosserie équipe un seul bus à la fois, ni plus ni moins.",
+          "resultat_markdown": "Côté Bus : multiplicité `1`."
+        },
+        {
+          "numero": 3,
+          "action": "Multiplicité de Bus vis-à-vis de Siege",
+          "justification": "L'énoncé dit « au moins un siège » : minimum 1, pas de maximum précisé.",
+          "resultat_markdown": "Côté Siege : multiplicité `1..*`."
+        },
+        {
+          "numero": 4,
+          "action": "Multiplicité de Personne vis-à-vis de Bus",
+          "justification": "Un bus peut transporter zéro ou plusieurs personnes : minimum 0, pas de maximum.",
+          "resultat_markdown": "Côté Personne : multiplicité `0..*`."
+        },
+        {
+          "numero": 5,
+          "action": "Multiplicité de Bus vis-à-vis de Personne",
+          "justification": "Une personne est transportée par un seul bus à la fois : exactement un.",
+          "resultat_markdown": "Côté Bus (pour la relation transporte) : multiplicité `1`."
+        }
+      ],
+      "conclusion_markdown": "Chaque multiplicité résulte de deux réponses simples : le minimum et le maximum d'instances de la classe voisine, lus du côté de cette classe."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire la multiplicité du mauvais côté de la relation",
+          "pourquoi_faux": "La multiplicité placée près d'une classe décrit combien d'instances de CETTE classe interviennent, pas combien d'instances de la classe opposée.",
+          "correction_markdown": "Avant d'écrire un chiffre, demande-toi explicitement : « ce nombre compte des instances de quelle classe, celle qui est juste à côté du chiffre ? »"
+        },
+        {
+          "erreur_markdown": "Écrire une multiplicité minimale de 0 pour un composant obligatoire",
+          "pourquoi_faux": "Si l'énoncé affirme qu'un objet est composé d'un élément qui doit nécessairement exister (une carrosserie pour un bus, par exemple), le minimum ne peut pas être 0 : cela contredirait la contrainte métier énoncée.",
+          "correction_markdown": "Relis l'énoncé à la recherche des mots « toujours », « au moins », « obligatoirement » avant de fixer un minimum à 0 par réflexe de prudence."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un `Pays` possède une et une seule `Capitale`, et une `Capitale` appartient à un seul `Pays`. Donnez les deux multiplicités de cette relation.",
+          "solution_markdown": "Multiplicité `1` des deux côtés : un pays a exactement une capitale, une capitale appartient à exactement un pays."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un `Enseignant` peut donner cours à zéro, une ou plusieurs `Classe`, et une `Classe` est encadrée par un seul `Enseignant` principal. Donnez les multiplicités des deux côtés de cette relation, en justifiant chaque valeur.",
+          "solution_markdown": "Côté Classe (vu depuis Enseignant) : `0..*`, car un enseignant peut n'avoir aucune classe ou en avoir plusieurs, sans limite fixée par l'énoncé. Côté Enseignant (vu depuis Classe) : `1`, car une classe a exactement un enseignant principal, ni zéro ni plusieurs."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une `Commande` en ligne comporte au moins une `LigneCommande`, et chaque `LigneCommande` appartient à une seule `Commande`. Chaque `LigneCommande` porte elle-même sur un seul `Produit`, mais un `Produit` peut apparaître dans zéro, une ou plusieurs lignes de commandes différentes. Représentez les deux relations avec leurs multiplicités, puis expliquez pourquoi la relation Commande-LigneCommande doit être une composition alors que la relation LigneCommande-Produit reste une simple association.",
+          "solution_markdown": "Pour Commande-LigneCommande : côté LigneCommande, multiplicité `1..*` (une commande comporte au moins une ligne) ; côté Commande, multiplicité `1` (une ligne appartient à une seule commande). Pour LigneCommande-Produit : côté Produit, multiplicité `1` (une ligne porte sur un seul produit) ; côté LigneCommande, multiplicité `0..*` (un produit peut apparaître dans plusieurs lignes, ou dans aucune). La relation Commande-LigneCommande doit être une composition parce qu'une ligne de commande n'a aucun sens et ne doit plus exister si la commande qui la contient est supprimée (elle ne survit pas au tout). La relation LigneCommande-Produit reste une simple association parce qu'un produit continue d'exister au catalogue même si toutes les lignes de commande qui le référencent sont supprimées : il n'y a pas de dépendance de survie du produit envers la ligne de commande, contrairement à la ligne de commande envers sa commande."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une multiplicité s'écrit minimum..maximum et se lit toujours du côté de la classe concernée par le chiffre.",
+        "Valeurs à connaître : `1` (exactement un), `0..1` (zéro ou un), `0..*` (aucune limite), `1..*` (au moins un).",
+        "Deux questions systématiques à chaque extrémité : combien au minimum, combien au maximum.",
+        "Au BAC, une multiplicité minimale de 0 doit toujours pouvoir se justifier par l'énoncé : ne l'écris jamais par prudence si le texte affirme une obligation."
+      ]
+    }
+  ]
+}

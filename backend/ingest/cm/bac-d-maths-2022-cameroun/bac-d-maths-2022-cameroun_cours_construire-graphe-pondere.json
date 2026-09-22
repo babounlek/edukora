@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-construire-un-graphe-pondere-a-partir-dun-tableau-de-distances-terminale-d",
+  "meta": {"titre": "Construire un graphe pondéré à partir d'un tableau de distances", "cours_id": "cours-construire-un-graphe-pondere-a-partir-dun-tableau-de-distances-terminale-d", "matiere": "Mathématiques", "niveau": "Terminale D", "sous_theme": "Graphes — construction", "tags": ["graphe pondéré", "sommets", "arêtes"], "duree_estimee_minutes": 8, "epreuve_source": "bac-d-maths-2022-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2022-cameroun-ex3-1a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Construire un graphe pondéré à partir d'un tableau de liaisons revient à transformer chaque ligne du tableau en une arête étiquetée reliant deux sommets, en respectant les contraintes de disposition éventuellement précisées."},
+    {"type": "prerequis", "items_markdown": ["Notion de sommet et d'arête dans un graphe", "Lecture d'un tableau à trois colonnes (origine, destination, poids)"]},
+    {"type": "regle", "titre": "Un sommet par lieu, une arête étiquetée par liaison", "contenu_markdown": "Pour construire un graphe pondéré à partir d'un tableau donnant, pour chaque liaison, son origine, sa destination et son poids : on crée un sommet par lieu distinct, puis pour chaque ligne du tableau, une arête reliant les deux sommets correspondants, étiquetée par le poids indiqué. Toute contrainte de disposition donnée dans l'énoncé (par exemple un quadrilatère) doit être respectée dans le placement des sommets.", "formule_principale": "1 ligne du tableau = 1 arête pondérée entre 2 sommets", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Tableau : P-Q=4, Q-R=7, P-R=9. Décrire le graphe pondéré correspondant.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Créer les sommets", "justification": "3 lieux distincts", "resultat_markdown": "sommets P, Q, R"},
+      {"numero": 2, "action": "Créer les arêtes", "justification": "3 lignes du tableau", "resultat_markdown": "P-Q(4), Q-R(7), P-R(9)"}
+    ], "conclusion_markdown": "Un triangle PQR avec les trois arêtes pondérées correspondantes."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier de créer une arête pour chaque ligne du tableau, en particulier les liaisons \"diagonales\" qui ne font pas partie du contour principal de la figure imposée", "pourquoi_faux": "Chaque ligne du tableau correspond à une liaison RÉELLE du réseau, qu'elle fasse partie du contour extérieur de la figure ou d'une diagonale intérieure ; en omettre une fausse ensuite tout calcul de plus court chemin utilisant cette liaison.", "correction_markdown": "Toujours vérifier, ligne par ligne du tableau, qu'une arête correspondante a bien été tracée dans le graphe, y compris les liaisons non évidentes visuellement."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Tableau : X-Y=3, X-Z=5, Y-Z=2, Y-W=6. Combien de sommets et d'arêtes le graphe comporte-t-il ?", "solution_markdown": "4 sommets (X,Y,Z,W) et 4 arêtes (une par ligne du tableau)."},
+      {"numero": 2, "difficulte": "facile", "enonce_markdown": "Pourquoi le graphe construit ici est-il dit \"non orienté\" ?", "solution_markdown": "Parce que chaque liaison (arête) peut être parcourue dans les deux sens (la distance de A à B est la même que de B à A), contrairement à un graphe orienté où le sens de parcours importerait."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Chaque lieu distinct du tableau devient un sommet du graphe.", "Chaque ligne du tableau devient une arête pondérée reliant les deux sommets correspondants.", "Toute contrainte de disposition géométrique donnée dans l'énoncé doit être respectée lors du placement des sommets."]}
+  ]
+}

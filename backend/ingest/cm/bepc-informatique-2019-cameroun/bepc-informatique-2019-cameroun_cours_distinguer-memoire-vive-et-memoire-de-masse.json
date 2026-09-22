@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-distinguer-memoire-vive-et-memoire-de-masse-3e",
+  "meta": {
+    "titre": "Distinguer mémoire vive et mémoire de masse",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Architecture d'un ordinateur",
+    "duree_estimee_min": 25,
+    "tags": [
+      "mémoire vive",
+      "RAM",
+      "mémoire de masse",
+      "disque dur",
+      "volatilité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2019-cameroun",
+    "epreuve_titre": "BEPC Informatique 2019 - Cameroun (MINESEC/DECC)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bepc-informatique-2019-cameroun-ex1-q3.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu tapes une page entière sans l'enregistrer, une coupure de courant survient, tout est perdu. Le même jour, tu éteins normalement ton ordinateur et tu retrouves le lendemain tous tes fichiers intacts. Ces deux expériences contradictoires s'expliquent par une seule notion : l'ordinateur possède deux sortes de mémoires, l'une qui oublie tout dès qu'on coupe le courant, l'autre qui n'oublie rien. Savoir les distinguer est au programme, et c'est aussi ce qui t'évitera de perdre un devoir."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir reconnaître une barrette de mémoire vive et un disque dur sur une photo.",
+        "Savoir ce qu'est un fichier et ce que signifie « enregistrer ».",
+        "Connaître les unités de mesure de la capacité : octet, Ko, Mo, Go."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux mémoires, deux rôles opposés",
+      "contenu_markdown": "Un ordinateur ne se contente pas d'une seule mémoire, parce qu'aucune technologie ne réunit à la fois la très grande vitesse et la conservation durable à faible coût. Il en utilise donc deux, complémentaires.\n\n**La mémoire vive (RAM, *Random Access Memory*)** conserve les programmes et les données **en cours d'utilisation**. Elle est très rapide, mais **volatile** : son contenu s'efface dès que l'alimentation électrique est coupée. Sa capacité se compte en giga-octets (2 Go, 4 Go, 8 Go). Physiquement, c'est une barrette fine et allongée enfichée sur la carte mère.\n\n**La mémoire de masse** conserve **durablement** le système d'exploitation, les logiciels installés et les fichiers de l'utilisateur. Elle est plus lente que la RAM, mais **non volatile** : son contenu subsiste hors tension. Sa capacité se compte en centaines de giga-octets ou en téra-octets. Le disque dur en est le représentant principal, aux côtés du disque SSD, de la clé USB, de la carte mémoire et du CD/DVD.\n\n| | Mémoire vive (RAM) | Mémoire de masse (disque dur) |\n|---|---|---|\n| Conservation | temporaire | permanente |\n| Volatilité | volatile | non volatile |\n| Vitesse | très rapide | plus lente |\n| Capacité usuelle | quelques Go | plusieurs centaines de Go |\n| Contenu | programmes et données en cours | système, logiciels, fichiers |\n\nLe mot de l'énoncé décide de la réponse : **« temporaire » appelle la mémoire vive, « permanent » appelle la mémoire de masse.**",
+      "formule_principale": "temporaire \\Rightarrow volatile \\Rightarrow RAM \\qquad ; \\qquad permanent \\Rightarrow non\\ volatile \\Rightarrow disque\\ dur"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Parmi les composants d'une planche photo (1 bloc d'alimentation, 2 disque dur, 3 carte mère, 4 barrette de RAM, 5 câble de connexion), indiquer lequel permet de conserver les données de manière temporaire, puis lequel permet de les conserver de manière permanente. *(BEPC Informatique 2019, Partie I, questions 3.b et 3.c)*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traduire l'expression « de manière temporaire »",
+          "justification": "Le vocabulaire de l'énoncé est un signal : il faut le convertir en propriété technique avant de chercher le composant.",
+          "resultat_markdown": "Temporaire = qui ne survit pas à l'extinction de la machine = volatile."
+        },
+        {
+          "numero": 2,
+          "action": "Chercher parmi les cinq composants celui qui est volatile",
+          "justification": "Le bloc d'alimentation ne stocke rien, la carte mère non plus, le câble encore moins. Restent le disque dur et la barrette.",
+          "resultat_markdown": "Seule la barrette de mémoire vive est volatile : composant 4."
+        },
+        {
+          "numero": 3,
+          "action": "Traduire l'expression « de manière permanente »",
+          "justification": "Même démarche pour la question suivante.",
+          "resultat_markdown": "Permanent = qui subsiste après extinction = non volatile."
+        },
+        {
+          "numero": 4,
+          "action": "Chercher le composant non volatile",
+          "justification": "Parmi les deux mémoires de la planche, il ne reste que le disque dur.",
+          "resultat_markdown": "Composant 2, le disque dur."
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier la cohérence des deux réponses",
+          "justification": "Deux questions consécutives portant sur des propriétés opposées doivent recevoir deux composants différents.",
+          "resultat_markdown": "Réponses : 4 (barrette de mémoire vive) pour le temporaire, 2 (disque dur) pour le permanent."
+        }
+      ],
+      "conclusion_markdown": "Les deux réponses se déduisent d'un seul adjectif : volatile ou non volatile. Toute la difficulté de ce type de question tient dans cette traduction du vocabulaire courant vers le vocabulaire technique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « le processeur » pour le stockage temporaire.",
+          "pourquoi_faux": "Le processeur est l'organe de traitement : il exécute des instructions, il ne conserve pas les données de travail. On confond ici « ce qui manipule » et « ce qui garde ».",
+          "correction_markdown": "Retiens la répartition des rôles : le processeur calcule, la mémoire vive garde le temps du calcul, le disque dur garde après."
+        },
+        {
+          "erreur_markdown": "Croire qu'un fichier enregistré reste en mémoire vive.",
+          "pourquoi_faux": "Enregistrer, c'est justement recopier depuis la mémoire vive vers la mémoire de masse. Tant que l'enregistrement n'a pas eu lieu, le document n'existe que dans une mémoire volatile, donc il disparaît à la coupure de courant.",
+          "correction_markdown": "Prends l'habitude d'enregistrer régulièrement pendant ton travail : chaque enregistrement transfère ton document du volatile vers le permanent."
+        },
+        {
+          "erreur_markdown": "Écrire que la mémoire de masse est « meilleure » que la mémoire vive parce qu'elle est plus grande et permanente.",
+          "pourquoi_faux": "Les deux mémoires ne sont pas en concurrence, elles sont complémentaires. Un ordinateur qui n'aurait qu'un disque dur serait d'une lenteur inutilisable, car le processeur passerait son temps à attendre les données.",
+          "correction_markdown": "Formule la relation ainsi : le disque dur conserve, la mémoire vive accélère. On a besoin des deux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classe les supports suivants en deux colonnes, mémoire vive ou mémoire de masse : barrette de RAM, clé USB, disque dur, carte mémoire d'un téléphone, DVD.",
+          "solution_markdown": "**Solution.**\n\n- **Mémoire vive** : barrette de RAM.\n- **Mémoire de masse** : clé USB, disque dur, carte mémoire d'un téléphone, DVD.\n\nLe critère de tri est unique : le contenu survit-il à l'extinction de l'appareil ? Il survit dans tous les cas sauf pour la barrette de RAM. La clé USB et la carte mémoire, malgré leur petite taille, sont bien des mémoires de masse : elles conservent les fichiers hors tension."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève rédige un devoir pendant deux heures sur un ordinateur, sans jamais l'enregistrer. Une coupure de courant survient. Explique, en utilisant les mots « mémoire vive », « volatile » et « mémoire de masse », pourquoi son travail est perdu, et indique la précaution qu'il aurait dû prendre.",
+          "solution_markdown": "**Solution.**\n\n1. Pendant la frappe, le texte du devoir est conservé dans la **mémoire vive** de l'ordinateur, parce que c'est là que le logiciel de traitement de texte range les données en cours d'utilisation.\n2. La mémoire vive est **volatile** : son contenu n'existe que tant que l'alimentation électrique est maintenue. Une coupure de courant vide donc instantanément toutes ses cellules.\n3. Tant que l'élève n'a pas cliqué sur « Enregistrer », aucune copie du texte n'a été recopiée vers la **mémoire de masse** (le disque dur), seule mémoire non volatile de la machine. Il n'existe donc plus aucune trace du devoir après la coupure.\n4. Précaution à prendre : enregistrer le document dès les premières lignes, puis régulièrement pendant la frappe (raccourci `Ctrl + S`). Chaque enregistrement recopie l'état courant du document de la mémoire vive vers le disque dur, où il survit à toute coupure. L'activation de l'enregistrement automatique du logiciel apporte une sécurité supplémentaire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux ordinateurs sont proposés au même prix. Le premier a 2 Go de mémoire vive et 1 To de disque dur ; le second a 8 Go de mémoire vive et 250 Go de disque dur. Un élève veut surtout ouvrir plusieurs logiciels en même temps sans ralentissement ; un photographe veut surtout stocker des milliers de photos. Conseille chacun d'eux en justifiant.",
+          "solution_markdown": "**Solution.**\n\n**Rappel des rôles.** La mémoire vive détermine le nombre de programmes et la quantité de données que la machine peut manipuler **en même temps** : c'est elle qui conditionne la fluidité. Le disque dur détermine la quantité de fichiers que la machine peut **conserver** : c'est lui qui conditionne l'espace de stockage.\n\n**Conseil à l'élève.** Son besoin est d'ouvrir plusieurs logiciels simultanément. Chaque logiciel ouvert occupe une part de la mémoire vive ; quand celle-ci est saturée, le système est contraint d'utiliser le disque dur comme mémoire de substitution, beaucoup plus lent, et la machine devient poussive. Le second ordinateur, avec ses **8 Go de mémoire vive**, répond donc à son besoin, même si son disque de 250 Go est plus modeste.\n\n**Conseil au photographe.** Son besoin est de conserver un très grand nombre de fichiers image. Ce besoin porte sur la capacité de la mémoire de masse, pas sur la fluidité. Le premier ordinateur, avec son disque de **1 To**, offre quatre fois plus d'espace que le second. C'est celui qu'il faut lui conseiller. On peut ajouter qu'un disque externe viendrait utilement compléter cette capacité, alors qu'on ne peut pas « ajouter » de la mémoire vive aussi facilement sur toutes les machines.\n\n**Conclusion.** La bonne machine n'est pas la plus puissante dans l'absolu, mais celle dont la mémoire abondante correspond à l'usage : vive pour la fluidité, de masse pour la conservation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux mémoires, deux rôles : la mémoire vive garde pendant le travail, la mémoire de masse garde après.",
+        "Le mot volatile est la clé : la RAM est volatile, le disque dur ne l'est pas.",
+        "Dans un énoncé, « temporaire » désigne toujours la mémoire vive et « permanent » toujours la mémoire de masse.",
+        "Enregistrer, c'est recopier de la mémoire vive vers la mémoire de masse. Tant que tu n'as pas enregistré, ton travail est en sursis.",
+        "La mémoire vive se compte en giga-octets, la mémoire de masse en centaines de giga-octets ou en téra-octets : un écart de capacité de l'ordre de cent fois.",
+        "Au BEPC, cette notion tombe sous forme de question à réponse courte (« quel composant conserve les données de manière temporaire ? ») ou de tableau comparatif à compléter : la ligne volatile / non volatile suffit à répondre aux deux."
+      ]
+    }
+  ]
+}

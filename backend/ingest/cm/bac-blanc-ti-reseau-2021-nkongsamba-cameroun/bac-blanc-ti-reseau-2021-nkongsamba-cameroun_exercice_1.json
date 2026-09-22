@@ -1,0 +1,196 @@
+{
+  "epreuve_source": "bac-blanc-ti-reseau-2021-nkongsamba-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Réseaux, Internet et Sécurité Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "institution": "Lycée Bilingue de Nkongsamba",
+  "annee": 2021,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "introduction_markdown": "Aucun document en dehors de ceux remis aux candidats par les examinateurs n'est autorisé.",
+  "groupes": [],
+  "numero_exercice": "1",
+  "points": "5",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-blanc-ti-reseau-2021-nkongsamba-cameroun_exercice_1_fig_1.png",
+      "page_source": 1,
+      "type": "document",
+      "legende": "Résultat de la commande ipconfig /all sous Windows 10 : carte Ethernet (média déconnecté) et carte réseau sans fil Wi-Fi (adresse IPv4 192.168.43.184, DHCP activé)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 1**\n\n**PARTIE I : RESEAUX INFORMATIQUES (8pts)**\n\nSoit l'image suivante obtenue via l'invite de commande du système d'exploitation Windows 10.\n\n![fig-1](bac-blanc-ti-reseau-2021-nkongsamba-cameroun_exercice_1_fig_1.png)",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1) Indiquer la commande ayant permis d'obtenir les informations présentes sur l'image *[0,5pt]*",
+      "corrige_markdown": "### Rappel de méthode\nSous Windows, la commande `ipconfig` seule n'affiche que l'essentiel pour chaque carte réseau active : l'adresse IPv4, le masque de sous-réseau et la passerelle par défaut. Dès que l'affichage montre en plus l'adresse physique (MAC), l'état du DHCP, la description du modèle de carte, un bail (obtenu/expirant) ou les serveurs DNS, c'est que l'option `/all` a été ajoutée.\n\n### Corrigé détaillé\nL'image affiche, pour chacune des deux cartes réseau, des informations qu'`ipconfig` seul ne fournit jamais : la description précise du modèle de carte (« Qualcomm Atheros AR8172/8176/8178 PCI-E », « Carte réseau Broadcom 802.11n »), l'adresse physique de chaque carte (20-25-64-1E-B9-1F et 34-23-87-F2-98-9D), l'état d'activation du DHCP, le bail DHCP obtenu et expirant, le DUID de client DHCPv6 et l'état de NetBIOS sur TCP/IP.\n\nCette richesse de détails, en particulier la présence de l'adresse physique et des dates de bail, est la signature caractéristique de l'option `/all`.\n\nLa commande exécutée est donc : `ipconfig /all`\n\n### Piège à éviter\nNe pas répondre simplement « ipconfig » : cette commande de base n'affiche que l'adresse IPv4, le masque de sous-réseau et la passerelle par défaut de chaque carte active, jamais l'adresse physique ni les informations DHCP détaillées visibles ici.\n\n### Conseil\nDès qu'un énoncé montre une adresse MAC, un état DHCP détaillé ou un bail dans une capture d'invite de commandes, le réflexe immédiat doit être : c'est `/all` qui a été utilisé.",
+      "themes": [
+        "commandes réseau Windows",
+        "ipconfig /all"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex1-q1-0",
+          "competence": "Reconnaître l'usage d'ipconfig /all à partir du niveau de détail affiché",
+          "contenu_markdown": "Sous Windows, la commande `ipconfig` seule n'affiche que l'essentiel pour chaque carte réseau active : l'adresse IPv4, le masque de sous-réseau et la passerelle par défaut. Dès que l'affichage montre en plus l'adresse physique (MAC), l'état du DHCP, la description du modèle de carte, un bail (obtenu/expirant) ou les serveurs DNS, c'est que l'option `/all` a été ajoutée.",
+          "cours_genere": true,
+          "cours_id": "cours-lire-commande-ipconfig-nkongsamba-2021"
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2) La commande **Ping** permet de vérifier la communication entre deux équipements connectés au réseau. Indiquer le protocole utilisé lors de l'exécution de la commande **ping**. *[0,5pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa commande `ping` ne transporte aucune donnée applicative : elle sert uniquement à tester la joignabilité d'un hôte distant, grâce à un protocole de la couche réseau dédié aux messages de contrôle, distinct de TCP et UDP qui transportent les données.\n\n### Corrigé détaillé\nLe protocole utilisé lors de l'exécution de la commande ping est **ICMP** (Internet Control Message Protocol).\n\nConcrètement, `ping` envoie un message ICMP de type « Echo Request » (demande d'écho) vers la machine cible. Si celle-ci est joignable, elle répond par un message ICMP de type « Echo Reply » (réponse d'écho). Le temps écoulé entre l'envoi de la requête et la réception de la réponse permet de mesurer la latence de la liaison réseau, et l'absence de réponse signale un problème de connectivité, de configuration ou de filtrage.\n\n### Piège à éviter\nNe pas confondre avec TCP ou UDP : `ping` n'établit aucune connexion et ne transporte aucune donnée applicative, il n'utilise donc ni l'un ni l'autre.\n\n### Conseil\nAssocie systématiquement « ping » à « ICMP » et à la paire « Echo Request / Echo Reply » : cette association revient très fréquemment dans les épreuves de réseaux.",
+      "themes": [
+        "commande ping",
+        "protocole ICMP"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex1-q2-0",
+          "competence": "Identifier le protocole mobilisé par la commande ping",
+          "contenu_markdown": "La commande `ping` ne transporte aucune donnée applicative : elle sert uniquement à tester la joignabilité d'un hôte distant, grâce à un protocole de la couche réseau dédié aux messages de contrôle, distinct de TCP et UDP qui transportent les données.",
+          "cours_genere": true,
+          "cours_id": "cours-la-commande-ping-et-le-protocole-icmp-nkongsamba-2021"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3) indiquer le type d'adressage qui a été utilisé lors de la configuration de la carte réseau sans fil WI-FI et justifier la réponse donnée. *[1pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour déterminer si une carte réseau utilise un adressage statique ou dynamique, il faut examiner l'attribut « DHCP activé » et la présence d'un bail (durée de location de l'adresse) dans le résultat d'ipconfig /all : un DHCP activé accompagné d'un bail obtenu/expirant signale un adressage dynamique.\n\n### Corrigé détaillé\nL'analyse de la carte « réseau sans fil Wi-Fi » montre trois indices concordants : « DHCP activé : Oui », un « Serveur DHCP : 192.168.43.253 », ainsi qu'un « Bail obtenu : jeudi 6 mai 2021 17:25:34 » et un « Bail expirant : jeudi 6 mai 2021 18:25:33 ».\n\nLa carte Wi-Fi utilise donc un **adressage dynamique (DHCP)**.\n\n**Justification** : l'adresse IPv4 (192.168.43.184) n'a pas été saisie manuellement par un utilisateur. Elle a été attribuée automatiquement, pour une durée limitée d'une heure (de 17h25 à 18h25), par un serveur DHCP identifié à l'adresse 192.168.43.253. Le fait que cette attribution soit limitée dans le temps par un bail, renouvelable à son expiration, est la caractéristique même de l'adressage dynamique : une adresse fixe configurée manuellement (adressage statique) n'aurait jamais de bail associé.\n\n### Piège à éviter\nNe pas conclure uniquement sur « DHCP activé : Oui » : cette seule case ne suffit pas à démontrer un adressage dynamique tant que l'on n'a pas vérifié la présence effective d'un bail limité dans le temps.\n\n### Conseil\nRepère toujours trois indices ensemble pour conclure avec certitude à un adressage dynamique : DHCP activé = Oui, une adresse de serveur DHCP renseignée, et une paire bail obtenu / bail expirant.",
+      "themes": [
+        "adressage IP",
+        "DHCP",
+        "adressage dynamique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex1-q3-0",
+          "competence": "Reconnaître un adressage dynamique (DHCP) à partir d'une capture ipconfig /all",
+          "contenu_markdown": "Pour déterminer si une carte réseau utilise un adressage statique ou dynamique, il faut examiner l'attribut « DHCP activé » et la présence d'un bail (durée de location de l'adresse) dans le résultat d'ipconfig /all : un DHCP activé accompagné d'un bail obtenu/expirant signale un adressage dynamique.",
+          "cours_genere": true,
+          "cours_id": "cours-modes-d-adressage-ip-dhcp-nkongsamba-2021"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4) Identifier la topologie logique utilisée dans la première carte réseau et décrire son fonctionnement *[1pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa topologie logique décrit la façon dont les données circulent réellement et dont les stations accèdent au support de transmission, indépendamment du câblage physique réel. Le réseau Ethernet fonctionne selon une topologie logique en bus : toutes les stations partagent logiquement un seul support de communication, même si elles sont câblées physiquement en étoile autour d'un commutateur.\n\n### Corrigé détaillé\nLa carte « Ethernet Ethernet » (première carte listée) utilise la technologie Ethernet. Sa topologie logique est donc une **topologie en bus** : toutes les trames émises par une machine sont logiquement diffusées à l'ensemble des machines connectées au même segment, comme si elles partageaient un unique support de transmission, même si le câblage physique réel (aujourd'hui presque toujours une étoile autour d'un commutateur) donne une impression différente.\n\n**Fonctionnement** : pour gérer l'accès à ce support logiquement partagé et éviter que deux machines n'émettent en même temps, Ethernet utilise la méthode d'accès **CSMA/CD** (Carrier Sense Multiple Access with Collision Detection) :\n1. Chaque station écoute le support avant d'émettre (Carrier Sense) ; si le support est libre, elle émet.\n2. Plusieurs stations peuvent chercher à émettre en même temps (Multiple Access).\n3. Si deux trames sont émises simultanément, une collision est détectée (Collision Detection) : les deux stations arrêtent immédiatement d'émettre.\n4. Chaque station retransmet ensuite après un délai d'attente aléatoire, ce qui réduit la probabilité d'une nouvelle collision.\n\n### Piège à éviter\nNe pas répondre « topologie en étoile » en se basant sur le câblage physique généralement utilisé aujourd'hui via un commutateur : la question porte sur la topologie **logique**, c'est à dire la façon dont les données circulent réellement, pas sur la disposition physique des câbles.\n\n### Conseil\nRetiens la distinction fondamentale : topologie physique = disposition réelle des câbles (souvent étoile) ; topologie logique = façon dont les données circulent réellement (bus pour Ethernet, anneau à jeton pour Token Ring).",
+      "themes": [
+        "topologie logique",
+        "Ethernet",
+        "CSMA/CD"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex1-q4-0",
+          "competence": "La topologie logique du réseau Ethernet et la méthode d'accès CSMA/CD",
+          "contenu_markdown": "La topologie logique décrit la façon dont les données circulent réellement et dont les stations accèdent au support de transmission, indépendamment du câblage physique réel. Le réseau Ethernet fonctionne selon une topologie logique en bus : toutes les stations partagent logiquement un seul support de communication, même si elles sont câblées physiquement en étoile autour d'un commutateur.",
+          "cours_genere": true,
+          "cours_id": "cours-topologie-logique-csma-cd-nkongsamba-2021"
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "5) Identifier l'adresse MAC de la deuxième carte réseau et présenter la différence qui existe entre une adresse MAC et une adresse IP *[1pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne différence valable entre adresse MAC et adresse IP compare le même critère pour les deux adresses : leur attribution (gravée en usine contre configurée par un administrateur ou un serveur DHCP), leur portée (locale contre inter-réseaux) et leur format (48 bits en hexadécimal contre 32 bits en décimal pointé pour l'IPv4).\n\n### Corrigé détaillé\n**Adresse MAC de la deuxième carte réseau** (carte réseau sans fil Wi-Fi) : **34-23-87-F2-98-9D**.\n\n**Différence entre adresse MAC et adresse IP** :\n\n- **Attribution** : l'adresse MAC est gravée par le constructeur dans la carte réseau, elle est fixe et unique au monde. L'adresse IP est attribuée par un administrateur ou par un serveur DHCP selon le réseau de connexion, et peut donc changer.\n- **Portée** : l'adresse MAC identifie une machine uniquement sur son réseau local, elle n'est jamais transmise au-delà d'un routeur (couche 2, liaison de données). L'adresse IP permet d'acheminer des données à travers plusieurs réseaux interconnectés, y compris Internet (couche 3, réseau).\n- **Format** : l'adresse MAC s'écrit sur 48 bits en hexadécimal (6 octets, ex. 34-23-87-F2-98-9D). L'adresse IPv4 s'écrit sur 32 bits, présentée en décimal pointé (4 octets, ex. 192.168.43.184).\n\n### Piège à éviter\nNe pas inverser les rôles : ce n'est pas l'adresse IP qui identifie une carte réseau de façon permanente, et ce n'est pas l'adresse MAC qui permet le routage entre réseaux différents.\n\n### Conseil\nPour retenir la différence, associe la MAC à une carte d'identité gravée à la naissance (fixe, unique, matérielle) et l'IP à une adresse postale (peut changer selon l'endroit où l'on se trouve, attribuée logiquement).",
+      "themes": [
+        "adresse MAC",
+        "adresse IP",
+        "couches OSI"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex1-q5-0",
+          "competence": "Distinguer adresse MAC et adresse IP",
+          "contenu_markdown": "Une différence valable entre adresse MAC et adresse IP compare le même critère pour les deux adresses : leur attribution (gravée en usine contre configurée par un administrateur ou un serveur DHCP), leur portée (locale contre inter-réseaux) et leur format (48 bits en hexadécimal contre 32 bits en décimal pointé pour l'IPv4).",
+          "cours_genere": true,
+          "cours_id": "cours-differences-mac-ip-nkongsamba-2021"
+        }
+      ]
+    },
+    {
+      "numero": "6",
+      "enonce_markdown": "6) La première carte réseau relie cet ordinateur au réseau via un connecteur ST. Indiquer le type de câble réseau qui a été raccordé à ce connecteur et citer un autre connecteur pouvant remplacer le connecteur ST pour le même type de câble. *[1pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe connecteur ST (Straight Tip) et le connecteur SC (Subscriber Connector) sont tous deux des connecteurs réservés aux câbles à fibre optique ; ils ne sont jamais utilisés avec des câbles en cuivre (paire torsadée ou coaxial).\n\n### Corrigé détaillé\nLe connecteur ST est exclusivement utilisé avec des câbles à **fibre optique**. Le câble raccordé à la première carte réseau via ce connecteur est donc un **câble à fibre optique**.\n\nUn autre connecteur pouvant remplacer le connecteur ST pour ce même type de câble (fibre optique) est le connecteur **SC** (Subscriber Connector).\n\n### Piège à éviter\nNe pas répondre RJ45 : ce connecteur est réservé aux câbles à paires torsadées (cuivre), jamais à la fibre optique. De même, le connecteur BNC est réservé au câble coaxial (cuivre), pas à la fibre.\n\n### Conseil\nMémorise l'association par famille de support : paire torsadée → RJ45 ; câble coaxial → connecteur BNC ; fibre optique → connecteurs ST ou SC.",
+      "themes": [
+        "câbles réseau",
+        "connecteurs fibre optique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex1-q6-0",
+          "competence": "Identifier le type de câble à partir du connecteur (ST/SC = fibre optique)",
+          "contenu_markdown": "Le connecteur ST (Straight Tip) et le connecteur SC (Subscriber Connector) sont tous deux des connecteurs réservés aux câbles à fibre optique ; ils ne sont jamais utilisés avec des câbles en cuivre (paire torsadée ou coaxial).",
+          "cours_genere": true,
+          "cours_id": "cours-connecteurs-fibre-optique-st-sc-nkongsamba-2021"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "ipconfig /all",
+    "ping",
+    "ICMP",
+    "DHCP",
+    "adressage dynamique",
+    "topologie logique",
+    "CSMA/CD",
+    "Ethernet",
+    "adresse MAC",
+    "adresse IP",
+    "connecteur ST",
+    "connecteur SC",
+    "fibre optique"
+  ],
+  "incertitudes": [
+    "Le fichier référentiel backend/programme/fixtures/programme_officiel_cm_informatique.json n'a pas été trouvé sur le système de fichiers : savoir_officiel n'a pu être renseigné pour aucune sous-question de cet exercice."
+  ],
+  "statut": "brouillon"
+}

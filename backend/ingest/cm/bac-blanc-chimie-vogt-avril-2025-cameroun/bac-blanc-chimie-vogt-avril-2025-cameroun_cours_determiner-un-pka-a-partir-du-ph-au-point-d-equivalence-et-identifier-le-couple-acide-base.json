@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-pka-point-equivalence-identification-couple-terminale",
+  "meta": {
+    "titre": "Déterminer un pKa à partir du pH au point d'équivalence et identifier le couple acide/base",
+    "matiere": "Chimie",
+    "pays": "cm",
+    "serie": "C, D",
+    "sous_theme": "Dosages pH-métriques - exploitation numérique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "pKa",
+      "point d'équivalence",
+      "hydrolyse",
+      "identification d'un couple acide/base"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat Blanc - Épreuve Pratique de Chimie - Collège F.-X. Vogt (avril 2025, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-blanc-chimie-vogt-avril-2025-cameroun-ex2-q2.3.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le pH mesuré au point d'équivalence d'un dosage n'est pas qu'une simple coordonnée de graphique : il contient, caché dans sa valeur, le pKa du couple acide/base mis en jeu. Cette relation permet d'identifier une espèce chimique inconnue sans aucune autre mesure que le dosage lui-même, en comparant le pKa retrouvé à une table de valeurs connues."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de pKa et de constante d'acidité Ka",
+        "Calcul d'une concentration par dilution dans un volume total"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "BH+ seul en solution se comporte comme un acide faible isolé",
+      "contenu_markdown": "Au point d'équivalence d'un dosage acide fort / base faible, la solution ne contient plus, pour l'essentiel, que la forme acide conjuguée BH+ de la base dosée, diluée dans le volume total (VB + VA,E). BH+ se comporte alors comme un acide faible isolé dans l'eau : sa dissociation partielle ($BH^+ + H_2O \\rightleftharpoons B + H_3O^+$) fixe le pH de la solution selon la relation approchée, valable dès que la concentration $C'$ de BH+ est très supérieure à $K_a$ :\n\n$$pH_E = \\frac{1}{2}(pK_a - \\log C') \\quad\\Longrightarrow\\quad pK_a = 2\\,pH_E + \\log C'$$\n\nUne fois le pKa calculé, on l'identifie en le comparant aux valeurs tabulées de couples acide/base connus : le couple dont le pKa est le plus proche numériquement désigne l'espèce recherchée.",
+      "formule_principale": "pKa = 2·pHE + log C'",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Au point d'équivalence d'un dosage (VB = 20 mL, VA,E = 20 mL), le pH mesuré vaut 5,1. La concentration de l'acide dosant est CA = 0,01 mol/L. Trois couples candidats ont pour pKa : 7,3 ; 9,2 ; 10,7. Identifier le couple acide/base mis en jeu.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la concentration C' de BH+ au point d'équivalence",
+          "justification": "BH+ est dilué dans le volume total VB + VA,E, avec une quantité de matière égale à celle de B initialement présente (ou d'acide versé à l'équivalence).",
+          "resultat_markdown": "C' = (CA × VA,E)/(VB + VA,E) = (0,01 × 20)/40 = 5,0×10⁻³ mol/L."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la relation pKa = 2 pHE + log C'",
+          "justification": "Cette relation découle de l'approximation d'un acide faible seul en solution, valable ici car C' >> Ka pour les trois couples candidats.",
+          "resultat_markdown": "pKa = 2×5,1 + log(5,0×10⁻³) = 10,2 - 2,30 ≈ 7,9."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer la valeur trouvée aux pKa des couples candidats",
+          "justification": "Le couple recherché est celui dont le pKa tabulé est le plus proche de la valeur calculée.",
+          "resultat_markdown": "Écarts : |7,9-7,3| = 0,6 ; |7,9-9,2| = 1,3 ; |7,9-10,7| = 2,8. Le couple de pKa = 7,3 est le plus proche, de loin."
+        }
+      ],
+      "conclusion_markdown": "Le couple identifié est celui de pKa = 7,3 ; l'écart résiduel (0,6 unité) s'explique par l'imprécision inévitable d'une détermination graphique du point d'équivalence, mais reste très inférieur à l'écart avec les autres candidats, ce qui rend l'identification fiable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la concentration initiale CB de la base, plutôt que sa concentration C' après dilution au point d'équivalence.",
+          "pourquoi_faux": "Au point d'équivalence, le volume total de solution a changé (VB + VA,E au lieu de VB seul) : la concentration de BH+ formé doit tenir compte de cette dilution.",
+          "correction_markdown": "Calcule toujours C' en divisant par le volume TOTAL à l'équivalence (VB + VA,E), jamais par VB seul."
+        },
+        {
+          "erreur_markdown": "Chercher une correspondance exacte, au dixième près, entre le pKa calculé et une valeur tabulée.",
+          "pourquoi_faux": "Une détermination graphique du point d'équivalence comporte toujours une part d'imprécision (lecture du pH, position exacte de E) ; exiger une correspondance parfaite mène à rejeter à tort la bonne réponse.",
+          "correction_markdown": "Compare les ÉCARTS entre le pKa calculé et chaque candidat : le plus petit écart, nettement inférieur aux autres, désigne le bon couple, même sans coïncidence exacte."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une solution d'acide faible seul, de concentration C = 2,0×10⁻² mol/L, a un pH de 3,4. Calculer le pKa de ce couple acide/base.",
+          "solution_markdown": "pKa = 2×pH + log C = 2×3,4 + log(2,0×10⁻²) = 6,8 + (-1,70) = 5,1."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un dosage a pour équivalence VB = 25 mL, VA,E = 15 mL, avec CA = 0,020 mol/L et pHE = 4,8. Calculer la concentration C' de BH+ à l'équivalence, puis le pKa du couple mis en jeu.",
+          "solution_markdown": "C' = (CA × VA,E)/(VB+VA,E) = (0,020×15)/40 = 7,5×10⁻³ mol/L. pKa = 2×4,8 + log(7,5×10⁻³) = 9,6 - 2,12 = 7,5."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour un dosage donné, on trouve un pKa calculé de 4,2, alors que les trois seuls couples disponibles dans la table de référence ont pour pKa 7,3 ; 9,2 et 10,7, tous très éloignés de 4,2. Que doit-on conclure, et quelle attitude adopter plutôt que de forcer une identification ?",
+          "solution_markdown": "Aucun des trois couples proposés n'est un candidat plausible : l'écart avec chacun (3,1 ; 5,0 ; 6,5) est bien trop important pour être attribué à une simple imprécision graphique. Il faut conclure que la base dosée ne correspond à aucun des couples de la table fournie, et le signaler explicitement (dans les incertitudes du corrigé) plutôt que d'assigner arbitrairement le couple le « moins pire » des trois : une identification forcée sans justification numérique solide serait trompeuse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Au point d'équivalence d'un dosage acide fort / base faible, la solution contient essentiellement BH+ seul, dilué dans le volume total.",
+        "La relation pKa = 2 pHE + log C' permet de calculer le pKa du couple à partir des seules données du dosage.",
+        "N'oublie jamais de recalculer la concentration C' après dilution à l'équivalence, jamais la concentration initiale.",
+        "Identifie le couple par comparaison d'écarts : le plus petit écart, nettement plus petit que les autres, désigne la bonne réponse.",
+        "Un écart résiduel entre le pKa calculé et le pKa tabulé (imprécision graphique) est normal et doit être signalé, pas masqué ; un écart trop important pour tous les candidats signale au contraire qu'aucun ne convient."
+      ]
+    }
+  ]
+}

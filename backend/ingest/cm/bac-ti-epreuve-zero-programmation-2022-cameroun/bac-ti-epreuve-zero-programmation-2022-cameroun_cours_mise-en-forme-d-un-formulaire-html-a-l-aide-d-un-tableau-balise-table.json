@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-mise-en-forme-d-un-formulaire-html-a-l-aide-d-un-tableau-balise-table-tle-ti",
+  "meta": {
+    "titre": "Mise en forme d'un formulaire HTML à l'aide d'un tableau (balise <table>)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 25,
+    "tags": [
+      "formulaire",
+      "table",
+      "tr",
+      "td",
+      "mise en page HTML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex1-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formulaire avec cinq champs, écrit sans aucune mise en page, s'affiche souvent comme une colonne désordonnée où les étiquettes et les zones de saisie ne s'alignent pas. Le sujet demande justement de résoudre ce problème avec l'outil le plus simple disponible en HTML : le tableau."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Balise <form> et champs de saisie (<input>, <select>)",
+        "Structure de base d'un tableau HTML : <table>, <tr>, <td>"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une ligne par champ, une colonne pour l'étiquette, une colonne pour la saisie",
+      "contenu_markdown": "Pour aligner proprement un formulaire, on place chaque champ dans sa propre ligne `<tr>` : l'étiquette qui décrit le champ occupe la première cellule `<td>`, et le contrôle de saisie correspondant occupe la seconde. Le nombre de lignes du tableau est donc directement fixé par le nombre de champs (et de boutons) à afficher : compter précisément ce nombre avant d'écrire le code évite de se tromper de structure.",
+      "formule_principale": "<table><tr><td>Étiquette :</td><td><input ...></td></tr>...</table>",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Construire, sous forme de tableau à 7 lignes et 2 colonnes, le formulaire *Calculateur de salaire* qui doit afficher : Salaire brut, Bonus, Allocation, Genre, Personnes à charge, et les boutons Calculer et Effacer.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les champs à afficher dans l'ordre voulu",
+          "justification": "Le nombre et l'ordre des lignes du tableau doivent reproduire exactement l'ordre d'apparition des champs sur la figure du sujet.",
+          "resultat_markdown": "Salaire brut, Bonus, Allocation, Genre, Personnes à charge, bouton Calculer, bouton Effacer -> 7 éléments"
+        },
+        {
+          "numero": 2,
+          "action": "Ouvrir une ligne <tr> par élément de la liste",
+          "justification": "L'énoncé impose 7 lignes : une ligne par champ ou par bouton, jamais deux champs regroupés sur la même ligne.",
+          "resultat_markdown": "7 balises `<tr>` successives à l'intérieur d'une seule balise `<table>`"
+        },
+        {
+          "numero": 3,
+          "action": "Répartir étiquette et champ sur les deux colonnes de chaque ligne",
+          "justification": "La première <td> porte le texte descriptif (ex. « Salaire brut : »), la seconde porte le contrôle de saisie (input, select) ou reste vide pour les lignes de bouton.",
+          "resultat_markdown": "`<tr><td>Salaire brut :</td><td><input type=\"text\" name=\"salaireBrut\"> FCFA</td></tr>`"
+        }
+      ],
+      "conclusion_markdown": "Le tableau complet compte bien 7 lignes et 2 colonnes, avec les boutons Calculer et Effacer occupant chacun leur propre ligne (deuxième colonne laissée vide) plutôt que d'être regroupés."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Regrouper les deux boutons Calculer et Effacer sur une seule ligne pour « gagner de la place ».",
+          "pourquoi_faux": "Cela ramène le tableau à 6 lignes au lieu des 7 demandées explicitement par l'énoncé : le nombre de lignes fait partie du barème, pas seulement l'exactitude fonctionnelle du formulaire.",
+          "correction_markdown": "Compter les lignes une à une à partir de la liste des champs avant de commencer à écrire le code, puis vérifier ce compte une fois le tableau terminé."
+        },
+        {
+          "erreur_markdown": "Utiliser des balises `<th>` au lieu de `<td>` pour les étiquettes.",
+          "pourquoi_faux": "`<th>` est réservé aux en-têtes de colonnes ou de lignes d'un tableau de données ; une étiquette de formulaire n'est pas un en-tête de tableau, c'est une donnée de présentation comme le champ qui lui fait face.",
+          "correction_markdown": "Réserver `<th>` aux tableaux qui présentent réellement des données tabulaires (comme un tableau de notes), et utiliser `<td>` pour la mise en page d'un formulaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire, sous forme de tableau à 2 lignes et 2 colonnes, un formulaire qui demande un nom et un prénom.",
+          "solution_markdown": "```html\n<table>\n  <tr><td>Nom :</td><td><input type=\"text\" name=\"nom\"></td></tr>\n  <tr><td>Prénom :</td><td><input type=\"text\" name=\"prenom\"></td></tr>\n</table>\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Ajouter une troisième ligne à l'exercice précédent pour un champ « Date de naissance » de type date, puis une quatrième ligne pour un bouton Valider seul dans sa ligne.",
+          "solution_markdown": "```html\n<table>\n  <tr><td>Nom :</td><td><input type=\"text\" name=\"nom\"></td></tr>\n  <tr><td>Prénom :</td><td><input type=\"text\" name=\"prenom\"></td></tr>\n  <tr><td>Date de naissance :</td><td><input type=\"date\" name=\"dateNaissance\"></td></tr>\n  <tr><td><input type=\"submit\" value=\"Valider\"></td><td></td></tr>\n</table>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un formulaire utilise `<table>` pour sa mise en page, comme dans cet exercice. Citer une limite de cette approche par rapport à une mise en page en CSS (par exemple avec `display: flex` ou `display: grid`), et expliquer pourquoi elle reste néanmoins acceptée dans ce type d'exercice scolaire.",
+          "solution_markdown": "Un tableau HTML mélange structure de contenu et présentation visuelle : sémantiquement, `<table>` est censé représenter des données tabulaires, pas organiser la mise en page d'un formulaire, ce que le HTML moderne confie normalement au CSS (Flexbox, Grid). Cette confusion rend le code plus difficile à adapter à un affichage mobile et moins accessible aux lecteurs d'écran. Elle reste néanmoins largement utilisée et acceptée dans un contexte scolaire d'introduction au Web, car elle ne nécessite aucune notion de CSS et produit un alignement immédiat et prévisible avec un minimum de code, ce qui correspond exactement à l'objectif pédagogique de cet exercice."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tableau de mise en page associe une ligne à un champ : étiquette en première colonne, saisie en seconde colonne.",
+        "Le nombre de lignes annoncé par l'énoncé (ici 7) se compte AVANT de rédiger le code, à partir de la liste des champs et des boutons.",
+        "Un bouton occupe sa propre ligne s'il doit être compté séparément dans le barème, même si sa seconde colonne reste vide.",
+        "Retenir la valeur des cases à cocher (`value=\"5000\"`, `value=\"7500\"`) directement dans le HTML simplifie ensuite l'écriture du JavaScript qui les exploite."
+      ]
+    }
+  ]
+}

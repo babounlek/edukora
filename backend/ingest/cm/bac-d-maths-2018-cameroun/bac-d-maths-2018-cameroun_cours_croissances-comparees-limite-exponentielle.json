@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-calculer-limite-fonction-exponentielle-croissances-comparees-terminale-d-ti",
+  "meta": {"titre": "Calculer une limite polynôme×exponentielle par les croissances comparées", "cours_id": "cours-calculer-limite-fonction-exponentielle-croissances-comparees-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D & TI", "sous_theme": "Limites — croissances comparées", "tags": ["limite", "croissances comparées", "exponentielle"], "duree_estimee_minutes": 6, "epreuve_source": "bac-d-maths-2018-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2018-cameroun-ex3-q1"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "L'exponentielle l'emporte toujours sur le polynôme, dans les deux sens : elle écrase le polynôme en -∞ (le produit tend vers 0) et elle explose plus vite que lui en +∞ (le produit tend vers +∞)."},
+    {"type": "prerequis", "items_markdown": ["Limite de référence : lim(x→-∞) xe^x=0", "Limite de référence : lim(x→+∞) xe^x=+∞"]},
+    {"type": "regle", "titre": "Ramener l'expression à la forme xe^x par factorisation", "contenu_markdown": "Pour calculer une limite du type $x e^{ax+b}$, on factorise pour faire apparaître $xe^x$ : $xe^{ax+b}=x\\times e^{ax}\\times e^b$. Si $a=1$, on a directement $e^b\\times xe^x$, dont la limite se lit sur les limites de référence : $0$ en $-\\infty$, $+\\infty$ en $+\\infty$ (le signe de $e^b>0$ ne change rien).", "formule_principale": "xe^(x+cte) = e^(cte)×xe^x → 0 en -∞, → +∞ en +∞", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Calculer lim(x→-∞) x²e^(x-2).", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Factoriser", "justification": "x²e^(x-2)=e^(-2)×x²e^x", "resultat_markdown": "e^{-2}×x²e^x"},
+      {"numero": 2, "action": "Appliquer la croissance comparée", "justification": "lim(x→-∞) x²e^x=0", "resultat_markdown": "limite = 0"}
+    ], "conclusion_markdown": "lim(x→-∞) x²e^(x-2)=0."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Conclure hâtivement que x×e^(x-1) tend vers -∞×0 (forme indéterminée non résolue) sans reconnaître qu'il s'agit précisément d'un cas de croissance comparée à résultat connu (0)", "pourquoi_faux": "La forme -∞×0 est effectivement indéterminée en général, mais la croissance comparée xe^x→0 en -∞ est un résultat de cours qui LÈVE précisément cette indétermination : il faut la citer explicitement plutôt que de rester bloqué sur la forme indéterminée initiale.", "correction_markdown": "Toujours reformuler l'expression pour faire apparaître exactement la forme xe^x (ou x^ne^x) de la croissance comparée connue, ce qui lève immédiatement l'indétermination."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Calculer lim(x→+∞) 3xe^(x+1).", "solution_markdown": "3xe^(x+1)=3e×xe^x. Comme xe^x→+∞, la limite est +∞."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Calculer lim(x→-∞) (x+5)e^(x-1).", "solution_markdown": "(x+5)e^(x-1)=xe^(x-1)+5e^(x-1). Le premier terme →0 (croissance comparée), le second →5×0=0 (car e^(x-1)→0). Somme: limite=0."}
+    ]},
+    {"type": "synthese", "items_markdown": ["xe^x→0 en -∞ et →+∞ en +∞ : résultat de référence à mobiliser explicitement.", "Toute expression du type (polynôme)×e^(x+cte) se ramène à ce résultat par factorisation de la constante exponentielle.", "Ne jamais rester bloqué sur une forme indéterminée sans avoir cherché à la reformuler en une croissance comparée connue."]}
+  ]
+}

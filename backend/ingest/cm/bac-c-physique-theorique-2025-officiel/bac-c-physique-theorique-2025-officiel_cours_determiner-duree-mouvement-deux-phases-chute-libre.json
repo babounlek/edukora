@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-determiner-duree-mouvement-deux-phases-chute-libre-terminale-c",
+  "meta": {
+    "titre": "Déterminer la durée totale d'un mouvement composé de deux phases (propulsion puis chute libre)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Mécanique - chute libre et mouvement composé",
+    "duree_estimee_min": 25,
+    "tags": ["chute libre", "équation du second degré", "mouvement en deux phases", "cinématique"],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat C - Physique Théorique (2025, Cameroun, officiel)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-physique-theorique-2025-officiel-ex5-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fusée qui perd son propulseur en plein vol ne s'arrête pas : elle continue de monter par inertie, ralentit, atteint un sommet, puis retombe. Calculer quand un tel objet repasse par un point donné exige de résoudre une équation du second degré - mais surtout de ne jamais oublier d'où l'on compte le temps."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir établir l'équation horaire d'une chute libre avec vitesse initiale non nulle.",
+        "Savoir résoudre une équation du second degré et interpréter physiquement ses deux racines."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résoudre le retour à une position donnée en chute libre",
+      "contenu_markdown": "Un corps, à l'instant où il devient libre de tout autre force que son poids, se trouve à l'altitude $H$ avec une vitesse $v_A$ dirigée vers le haut. Sur l'axe (Oz) orienté vers le haut, avec $\\tau$ le temps écoulé depuis cet instant :\n\n$$z(\\tau) = H + v_A\\tau - \\frac12g\\tau^2$$\n\nLe retour à une altitude donnée $z=0$ correspond à l'équation du second degré :\n\n$$\\frac12g\\tau^2 - v_A\\tau - H = 0$$\n\nSeule la racine POSITIVE de cette équation a un sens physique. Si le mouvement comporte une phase antérieure de durée $t_1$ (propulsion, lancement...), le temps total depuis l'origine du mouvement est $T=t_1+\\tau$, jamais $\\tau$ seul.",
+      "formule_principale": "\\tau = \\dfrac{v_A+\\sqrt{v_A^2+2gH}}{g}",
+      "variantes": [
+        {
+          "nom": "Méthode par décomposition montée + chute",
+          "quand_utiliser": "Pour vérifier indépendamment le résultat obtenu par résolution directe de l'équation du second degré.",
+          "contenu_markdown": "Décomposer le mouvement en une montée jusqu'au sommet (durée $t_{montée}=v_A/g$, hauteur supplémentaire $\\Delta h=v_A^2/(2g)$), suivie d'une chute libre depuis ce sommet, sans vitesse initiale, sur la hauteur totale $H+\\Delta h$ (durée $t_{chute}=\\sqrt{2(H+\\Delta h)/g}$). Le temps total $\\tau=t_{montée}+t_{chute}$ doit coïncider avec la racine positive trouvée directement."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un corps, propulsé depuis un point O, atteint le point A (altitude H=1015,14 m) après 15 s, avec une vitesse vA=135,35 m·s⁻¹ dirigée vers le haut. Le propulseur s'arrête alors, et le corps poursuit son mouvement en chute libre. Déterminer le temps total, depuis le lancement, avant que le corps ne repasse par le point O.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser l'équation du retour au point O",
+          "justification": "z(τ)=0 correspond au retour à l'altitude de départ, avec τ le temps écoulé depuis A.",
+          "resultat_markdown": "$4{,}9\\tau^2 - 135{,}35\\tau - 1015{,}14 = 0$"
+        },
+        {
+          "numero": 2,
+          "action": "Résoudre l'équation du second degré",
+          "justification": "Seule la racine positive a un sens physique.",
+          "resultat_markdown": "$\\Delta\\approx38\\,216{,}37$ ; $\\tau = \\dfrac{135{,}35+\\sqrt{38\\,216{,}37}}{9{,}8} \\approx33{,}76$ s."
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter la durée de la phase propulsée",
+          "justification": "Le temps demandé est compté depuis le LANCEMENT (en O), pas depuis l'arrêt du propulseur (en A).",
+          "resultat_markdown": "$T = t_1+\\tau = 15+33{,}76 \\approx48{,}76$ s."
+        }
+      ],
+      "conclusion_markdown": "Le corps repasse par le point O environ 48,76 secondes après le lancement, et non 33,76 secondes (erreur fréquente consistant à oublier la première phase du mouvement)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'ajouter la durée t1 de la première phase, en donnant τ seul comme réponse finale.",
+          "pourquoi_faux": "τ ne représente que le temps écoulé DEPUIS le point A, pas depuis le lancement du mouvement en O ; répondre τ seul revient à ignorer une partie entière du mouvement décrit par l'énoncé.",
+          "correction_markdown": "Relis toujours attentivement à partir de QUEL instant le temps est demandé (lancement, ou un point intermédiaire), et ajoute si nécessaire la durée des phases précédentes."
+        },
+        {
+          "erreur_markdown": "Retenir la racine négative de l'équation du second degré, ou hésiter entre les deux racines.",
+          "pourquoi_faux": "Une des deux racines est systématiquement négative dans ce type de problème (elle correspondrait à un instant antérieur au début de la chute libre, donc physiquement inexistant dans le contexte étudié) ; seule la racine positive correspond à un temps réel.",
+          "correction_markdown": "Calcule toujours les deux racines, mais élimine systématiquement celle qui est négative avant de conclure, en le justifiant explicitement (« seule la racine positive est physiquement acceptable »)."
+        },
+        {
+          "erreur_markdown": "Confondre la hauteur totale atteinte au sommet avec la hauteur H du point de départ de la phase de chute libre.",
+          "pourquoi_faux": "H est l'altitude du point A (où la chute libre commence), pas l'altitude maximale atteinte ensuite : le corps continue de monter après A, sous l'effet de sa vitesse résiduelle vA, avant de redescendre.",
+          "correction_markdown": "Distingue toujours clairement l'altitude de DÉPART de la phase de chute libre (H, avec vitesse vA non nulle) de l'altitude MAXIMALE atteinte ensuite (H+Δh, avec Δh=vA²/(2g))."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un objet est lancé verticalement vers le haut depuis le sol (altitude 0) avec une vitesse initiale v0=20 m·s⁻¹, sans phase de propulsion préalable (t1=0). On prend g=10 m·s⁻². Déterminer le temps total avant son retour au sol.",
+          "solution_markdown": "Équation du retour au sol : $z(t)=v_0t-\\frac12gt^2=0$, soit $t(v_0-\\frac12gt)=0$.\n\nLes solutions sont $t=0$ (instant du lancement) et $t=\\dfrac{2v_0}{g}=\\dfrac{2\\times20}{10}=4{,}0$ s.\n\nLa solution physiquement pertinente pour le retour au sol est $t=4{,}0$ s. Comme il n'y a pas de phase de propulsion préalable ($t_1=0$), le temps total depuis le lancement est directement $T=4{,}0$ s."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un corps atteint un point A (altitude H=200 m, vitesse vA=30 m·s⁻¹ vers le haut) après une phase de propulsion de durée t1=8,0 s. On prend g=9,8 m·s⁻². Déterminer le temps total, depuis le lancement, avant le retour au point de départ (altitude 0).",
+          "solution_markdown": "Équation du retour à l'altitude 0, avec τ le temps écoulé depuis A :\n\n$$4{,}9\\tau^2 - 30\\tau - 200 = 0$$\n\nDiscriminant : $\\Delta = 30^2+4\\times4{,}9\\times200 = 900+3920 = 4820$.\n\n$$\\sqrt{4820} \\approx 69{,}43$$\n\n$$\\tau = \\frac{30+69{,}43}{9{,}8} \\approx \\frac{99{,}43}{9{,}8} \\approx10{,}15\\ \\text{s}$$\n\nTemps total depuis le lancement :\n\n$$T = t_1+\\tau = 8{,}0+10{,}15 \\approx18{,}15\\ \\text{s}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Reprends les données de l'exemple résolu du cours (H=1015,14 m, vA=135,35 m·s⁻¹, g=9,80 m·s⁻²). Détermine l'altitude maximale atteinte par le corps après l'arrêt du propulseur, puis vérifie, par la méthode de décomposition montée+chute, que le temps total τ obtenu coïncide avec celui trouvé par résolution directe de l'équation du second degré (τ≈33,76 s).",
+          "solution_markdown": "**Hauteur supplémentaire gagnée après A :**\n\n$$\\Delta h = \\frac{v_A^2}{2g} = \\frac{(135{,}35)^2}{2\\times9{,}8} = \\frac{18\\,319{,}62}{19{,}6} \\approx934{,}67\\ \\text{m}$$\n\n**Altitude maximale atteinte :**\n\n$$z_{max} = H+\\Delta h \\approx1015{,}14+934{,}67 = 1949{,}81\\ \\text{m}$$\n\n**Durée de la montée depuis A (vitesse nulle au sommet) :**\n\n$$t_{montée} = \\frac{v_A}{g} = \\frac{135{,}35}{9{,}8} \\approx13{,}81\\ \\text{s}$$\n\n**Durée de la chute libre depuis le sommet (sans vitesse initiale) jusqu'au point O :**\n\n$$t_{chute} = \\sqrt{\\frac{2z_{max}}{g}} = \\sqrt{\\frac{2\\times1949{,}81}{9{,}8}} = \\sqrt{397{,}92} \\approx19{,}95\\ \\text{s}$$\n\n**Temps total depuis A :**\n\n$$\\tau = t_{montée}+t_{chute} \\approx13{,}81+19{,}95 = 33{,}76\\ \\text{s}$$\n\nCe résultat coïncide exactement avec celui obtenu par résolution directe de l'équation du second degré, ce qui confirme la validité du calcul par les deux méthodes indépendantes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un mouvement composé de deux phases (propulsion puis chute libre) exige de résoudre une équation du second degré pour la seconde phase, PUIS d'ajouter la durée de la première phase si le temps est demandé depuis le lancement.",
+        "Élimine systématiquement la racine négative de l'équation du second degré : seule la racine positive a un sens physique dans ce contexte.",
+        "Distingue toujours l'altitude de départ de la chute libre (avec vitesse non nulle) de l'altitude maximale atteinte ensuite, qui se calcule séparément via Δh=v²/(2g).",
+        "Vérifie systématiquement un résultat obtenu par résolution directe à l'aide d'une méthode indépendante (décomposition montée + chute) : deux méthodes concordantes donnent une confiance bien plus grande dans le résultat final.",
+        "Au BAC, ce type de problème en plusieurs phases teste autant la maîtrise des équations horaires que l'attention portée à la question précise posée (temps depuis quel instant ?) : une bonne résolution mathématique peut être invalidée par une lecture trop rapide de la consigne."
+      ]
+    }
+  ]
+}

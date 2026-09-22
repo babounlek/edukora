@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-virtualisation-et-bande-passante-definitions-terminale-ti",
+  "meta": {
+    "titre": "Virtualisation et bande passante : définitions",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Vocabulaire fondamental des réseaux",
+    "duree_estimee_min": 15,
+    "tags": [
+      "virtualisation",
+      "bande passante",
+      "vocabulaire réseau",
+      "VMware"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un technicien qui doit installer trois systèmes d'exploitation différents pour tester un logiciel n'a pas besoin d'acheter trois ordinateurs : un seul suffit, à condition de savoir le partager intelligemment. C'est exactement le problème que résout la virtualisation. Une fois ce partage mis en place, une nouvelle question se pose aussitôt : combien de données ce partage peut-il faire circuler chaque seconde ? C'est la bande passante qui répond à cette question, et les deux notions se retrouvent partout dès qu'on lit la configuration d'un réseau."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un système d'exploitation et un ordinateur physique",
+        "Connaître la notion de support de transmission (câble, liaison sans fil)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Définir un dispositif ou une capacité réseau",
+      "contenu_markdown": "Une définition technique répond toujours à la question « à quoi cela sert-il ? » ou « que mesure-t-on ? », jamais « quel logiciel ou quel exemple l'illustre ? ».\n\nLa **virtualisation** est la technique qui permet, à partir d'une seule machine physique, de créer plusieurs machines virtuelles indépendantes, chacune avec ses propres ressources logiques simulées à partir du matériel réel.\n\nLa **bande passante** est la quantité maximale de données qu'un support de transmission peut transporter par unité de temps, exprimée en bit/s (et ses multiples kbit/s, Mbit/s, Gbit/s).",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La sortie d'IPCONFIG /ALL d'un ordinateur affiche une carte « Ethernet VMware Network Adapter VMnet1 ». Expliquer ce que révèle cette ligne et donner la définition de la bande passante que pourrait avoir cette carte.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le mot-clé qui trahit la virtualisation",
+          "justification": "Le nom d'une carte réseau virtuelle contient toujours le nom du logiciel qui l'a créée.",
+          "resultat_markdown": "« VMware » apparaît dans le nom de la carte : la machine héberge donc un logiciel de virtualisation, ici VMware, qui a créé cette carte réseau virtuelle pour ses machines virtuelles."
+        },
+        {
+          "numero": 2,
+          "action": "Relier cette observation à la définition de la virtualisation",
+          "justification": "La définition doit s'appliquer au cas observé, pas rester abstraite.",
+          "resultat_markdown": "Cette carte virtuelle permet à une ou plusieurs machines virtuelles, simulées sur cette même machine physique, de communiquer sur un réseau comme si elles disposaient chacune de leur propre carte réseau."
+        },
+        {
+          "numero": 3,
+          "action": "Définir la bande passante applicable à cette carte",
+          "justification": "La bande passante reste une notion générale de capacité, même appliquée à une carte virtuelle.",
+          "resultat_markdown": "La bande passante de cette carte virtuelle est la quantité maximale de données qu'elle peut transporter par seconde entre la machine hôte et ses machines virtuelles, exprimée en bit/s."
+        }
+      ],
+      "conclusion_markdown": "Une carte réseau, physique ou virtuelle, se décrit toujours par sa fonction (ici, relier des machines virtuelles à l'hôte) et par sa capacité (sa bande passante), jamais par le seul nom du logiciel qui l'a créée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Définir la virtualisation par « c'est VMware » ou « c'est VirtualBox »",
+          "pourquoi_faux": "VMware et VirtualBox sont des logiciels qui mettent en œuvre la virtualisation, ce ne sont pas des définitions de la notion elle-même. Un logiciel change, la définition doit rester valable pour tous les logiciels de virtualisation.",
+          "correction_markdown": "Définir toujours par la fonction : créer des machines virtuelles indépendantes à partir d'une seule machine physique, quel que soit le logiciel utilisé."
+        },
+        {
+          "erreur_markdown": "Confondre bande passante et débit réel",
+          "pourquoi_faux": "La bande passante est une capacité théorique maximale du support ; le débit réel, souvent inférieur, dépend en plus du trafic, de la distance et des équipements traversés.",
+          "correction_markdown": "Présente la bande passante comme une limite haute théorique, et précise si besoin que le débit réel peut lui être inférieur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Définir la virtualisation en une phrase, sans citer de nom de logiciel.",
+          "solution_markdown": "La virtualisation est la technique qui permet, à partir d'une seule machine physique, de créer et faire fonctionner plusieurs machines virtuelles indépendantes, chacune disposant de ses propres ressources logiques simulées à partir des ressources matérielles réelles de l'hôte."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une liaison Internet annonce une bande passante de 8 Mbit/s. Expliquer pourquoi un téléchargement peut malgré tout s'effectuer à un débit mesuré de 6 Mbit/s.",
+          "solution_markdown": "8 Mbit/s est la capacité maximale théorique de la liaison, sa bande passante. Le débit réellement observé (6 Mbit/s) peut être inférieur à cause du partage de la liaison avec d'autres usages, de la qualité du signal, de la congestion du réseau du fournisseur d'accès ou des limites du serveur distant : la bande passante fixe un plafond, elle ne garantit pas de l'atteindre en permanence."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une entreprise possède trois serveurs physiques sous-utilisés (chacun à 20 % de charge). Proposer, en utilisant la virtualisation, une réorganisation qui réduit le nombre de machines physiques sans réduire les services rendus, et indiquer une limite de cette solution liée à la bande passante.",
+          "solution_markdown": "Les trois serveurs sous-utilisés peuvent être remplacés par un seul serveur physique plus puissant, sur lequel on installe un logiciel de virtualisation créant trois machines virtuelles, une par service initialement hébergé. Chaque machine virtuelle conserve son propre système et ses propres ressources logiques, tout en partageant le même matériel physique, ce qui réduit le nombre de machines à acheter et à entretenir. Limite liée à la bande passante : les trois machines virtuelles partagent désormais la même carte réseau physique de l'hôte ; si leur trafic cumulé dépasse la bande passante de cette carte, chacune subira un ralentissement qu'elle n'aurait pas connu sur un serveur physique dédié."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La virtualisation crée plusieurs machines virtuelles indépendantes à partir d'une seule machine physique.",
+        "Une définition technique porte sur la fonction, jamais sur le nom d'un logiciel qui l'illustre.",
+        "La bande passante est une capacité maximale théorique, exprimée en bit/s, à ne pas confondre avec le débit réel observé.",
+        "Le nom d'une carte réseau virtuelle (« VMnetX », « VirtualBox Host-Only ») révèle directement le logiciel de virtualisation installé.",
+        "Au BAC TI, ces deux notions sont systématiquement réutilisées ensemble dans les exercices d'analyse de configuration réseau (IPCONFIG, ifconfig)."
+      ]
+    }
+  ]
+}

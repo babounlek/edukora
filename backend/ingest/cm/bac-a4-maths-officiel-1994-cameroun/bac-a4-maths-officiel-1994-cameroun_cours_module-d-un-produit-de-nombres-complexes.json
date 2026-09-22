@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-module-d-un-produit-de-nombres-complexes-tle-a",
+  "meta": {
+    "titre": "Calculer le module d'un produit de nombres complexes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Nombres complexes",
+    "duree_estimee_min": 20,
+    "tags": [
+      "nombres complexes",
+      "module d'un nombre complexe"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a4-maths-officiel-1994-cameroun",
+    "epreuve_titre": "BAC Mathematiques - Serie A (A4 bilingue) - Session 1994 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a4-maths-officiel-1994-cameroun-ex2-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Recalculer la forme algébrique complète d'un nombre complexe juste pour en tirer le module est souvent un détour inutile. Le module d'un produit se calcule directement à partir des modules des facteurs, sans jamais avoir besoin de connaître leur forme algébrique développée."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer le module d'un nombre complexe sous forme algébrique : $|a+ib|=\\sqrt{a^2+b^2}$.",
+        "Avoir déjà rencontré la notion de produit de deux nombres complexes."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Module d'un produit",
+      "contenu_markdown": "Le module d'un produit de deux nombres complexes est égal au produit de leurs modules : $|z\\times w|=|z|\\times|w|$. Cette propriété se généralise à un produit de plusieurs facteurs, et permet en particulier de calculer directement le module de chaque terme d'une suite $z_{n+1}=k\\,z_n$ en multipliant simplement le module précédent par $|k|$, sans repasser par la forme algébrique.",
+      "formule_principale": "|z\\times w|=|z|\\times|w|"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On sait que $z_0=\\dfrac{\\sqrt{2}}{2}(1+i)$ et que $z_1=(1-i)z_0$, $z_2=(1-i)z_1$, $z_3=(1-i)z_2$. Calculer les modules de $z_0$, $z_1$, $z_2$, $z_3$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $|z_0|$ directement à partir de sa forme algébrique",
+          "justification": "$z_0$ n'est pas encore issu d'un produit à cette étape : on utilise la formule de base du module.",
+          "resultat_markdown": "$|z_0|=\\dfrac{\\sqrt{2}}{2}\\times|1+i|=\\dfrac{\\sqrt{2}}{2}\\times\\sqrt{2}=1$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le module du facteur multiplicatif commun",
+          "justification": "Chaque terme suivant s'obtient en multipliant le précédent par $(1-i)$ : il suffit de connaître $|1-i|$ une seule fois.",
+          "resultat_markdown": "$|1-i|=\\sqrt{1^2+(-1)^2}=\\sqrt{2}$."
+        },
+        {
+          "numero": 3,
+          "action": "Multiplier successivement par $|1-i|=\\sqrt{2}$",
+          "justification": "Le module d'un produit est le produit des modules : à chaque étape, on multiplie le module précédent par $\\sqrt{2}$.",
+          "resultat_markdown": "$|z_1|=\\sqrt{2}\\times 1=\\sqrt{2}$ ; $|z_2|=\\sqrt{2}\\times\\sqrt{2}=2$ ; $|z_3|=\\sqrt{2}\\times 2=2\\sqrt{2}$."
+        }
+      ],
+      "conclusion_markdown": "Les modules sont $|z_0|=1$, $|z_1|=\\sqrt{2}$, $|z_2|=2$, $|z_3|=2\\sqrt{2}$, obtenus sans jamais avoir eu besoin de développer la forme algébrique de $z_1$, $z_2$ ou $z_3$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner les modules au lieu de les multiplier : écrire $|z\\times w|=|z|+|w|$.",
+          "pourquoi_faux": "Le module se comporte comme une valeur absolue vis-à-vis de la multiplication (produit des modules), pas de l'addition. Cette confusion vient souvent d'une analogie erronée avec l'inégalité triangulaire $|z+w|\\leq |z|+|w|$, qui concerne la SOMME, pas le produit.",
+          "correction_markdown": "Retenir clairement que pour un PRODUIT de deux complexes, les modules se MULTIPLIENT : $|zw|=|z|\\times|w|$."
+        },
+        {
+          "erreur_markdown": "Recalculer inutilement la forme algébrique complète de chaque terme de la suite avant d'en extraire le module.",
+          "pourquoi_faux": "C'est correct mais beaucoup plus long et source d'erreurs de calcul, alors que la propriété du module d'un produit donne le résultat directement, terme après terme.",
+          "correction_markdown": "Dès qu'une suite de complexes est définie par des multiplications successives par un même facteur, calcule une fois pour toutes le module de ce facteur, puis multiplie-le en chaîne."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer $|z|$ où $z=(2+2i)(1-i)$, en utilisant la propriété du module d'un produit.",
+          "solution_markdown": "$$|2+2i|=\\sqrt{2^2+2^2}=\\sqrt{8}=2\\sqrt{2},\\qquad |1-i|=\\sqrt{1^2+(-1)^2}=\\sqrt{2}.$$\n\n$$|z|=|2+2i|\\times|1-i|=2\\sqrt{2}\\times\\sqrt{2}=2\\times 2=4.$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On pose $u_0=3$ et $u_{n+1}=(1+i)u_n$ pour tout $n\\geq 0$. Calculer $|u_0|$, $|u_1|$, $|u_2|$ et $|u_3|$.",
+          "solution_markdown": "$$|u_0|=3,\\qquad |1+i|=\\sqrt{1^2+1^2}=\\sqrt{2}.$$\n\nEn multipliant successivement par $\\sqrt{2}$ :\n\n$$|u_1|=3\\sqrt{2},\\qquad |u_2|=3\\sqrt{2}\\times\\sqrt{2}=6,\\qquad |u_3|=6\\sqrt{2}.$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On pose $z=(1+i\\sqrt{3})^3(1-i)^2$. Calculer $|z|$ sans développer aucune puissance sous forme algébrique.",
+          "solution_markdown": "On utilise la généralisation de la propriété du module à une puissance : $|z^n|=|z|^n$.\n\n$$|1+i\\sqrt{3}|=\\sqrt{1^2+(\\sqrt{3})^2}=\\sqrt{1+3}=2,\\qquad |(1+i\\sqrt{3})^3|=2^3=8.$$\n\n$$|1-i|=\\sqrt{2},\\qquad |(1-i)^2|=(\\sqrt{2})^2=2.$$\n\n$$|z|=|(1+i\\sqrt{3})^3|\\times|(1-i)^2|=8\\times 2=16.$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le module d'un produit est le produit des modules : $|zw|=|z|\\times|w|$, jamais une somme.",
+        "Cette propriété se généralise aux puissances : $|z^n|=|z|^n$.",
+        "Dans une suite de complexes définis par multiplications successives par un même facteur, calcule une seule fois le module de ce facteur, puis multiplie-le en chaîne : c'est plus rapide et plus fiable que de repasser par la forme algébrique à chaque étape.",
+        "Cette méthode fournit aussi un moyen de vérification : le module obtenu directement sur la forme algébrique finale doit coïncider avec celui obtenu par produits successifs.",
+        "Au BAC, cette propriété est particulièrement utile dès qu'un exercice combine calcul algébrique et étude de modules sur la même suite de nombres complexes."
+      ]
+    }
+  ]
+}

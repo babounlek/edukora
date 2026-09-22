@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-mediane-serie-statistique-continue-1ere-a",
+  "meta": {
+    "titre": "Calcul de la médiane d'une série statistique continue par interpolation linéaire",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "médiane",
+      "interpolation linéaire",
+      "série continue",
+      "classe médiane"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2008-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2008 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2008-officiel-cameroun-ex2-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La médiane partage une population en deux groupes de taille égale : la moitié des individus a une valeur inférieure, l'autre moitié une valeur supérieure. Quand les données sont regroupées en classes plutôt qu'en valeurs isolées, on ne connaît pas l'âge exact de chaque joueur ou le revenu exact de chaque ménage : il faut donc estimer la médiane à l'intérieur de la classe où elle se trouve, avec une méthode précise plutôt qu'une simple lecture approximative du milieu de la classe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer des effectifs cumulés croissants",
+        "Connaître la notion d'effectif total d'une série",
+        "Maîtriser les proportions et le calcul d'un rapport"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Localiser la classe médiane, puis interpoler",
+      "contenu_markdown": "Dans une série continue de N individus, la médiane est la valeur qui sépare la série en deux parties égales, chacune de N/2 individus. On la situe d'abord en cherchant la classe médiane : c'est la première classe pour laquelle l'effectif cumulé croissant atteint ou dépasse N/2.\n\nOn calcule ensuite sa valeur exacte par interpolation linéaire à l'intérieur de cette classe :\n$$Me = L + \\frac{\\frac{N}{2}-CF}{f}\\times h$$\navec $L$ la borne inférieure de la classe médiane, $CF$ l'effectif cumulé croissant de la classe précédente, $f$ l'effectif de la classe médiane, et $h$ son amplitude.",
+      "formule_principale": "Me = L + \\dfrac{\\frac{N}{2}-CF}{f}\\times h",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une série de 100 individus a pour effectifs : $[6,10[$ : 10, $[10,14[$ : 14, $[14,18[$ : 12, $[18,22[$ : 20, $[22,26[$ : 16, $[26,30[$ : 18, $[30,34[$ : 6, $[34,38[$ : 4. Déterminer la médiane de cette série.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer N/2",
+          "justification": "L'effectif total est $N=100$",
+          "resultat_markdown": "$N/2=50$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les effectifs cumulés croissants jusqu'à dépasser 50",
+          "justification": "On additionne progressivement les effectifs depuis la première classe",
+          "resultat_markdown": "$[6,10[:10 \\quad [10,14[:24 \\quad [14,18[:36 \\quad [18,22[:56$"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier la classe médiane",
+          "justification": "$36<50<56$ : c'est dans la classe $[18,22[$ que l'effectif cumulé croissant dépasse 50 pour la première fois",
+          "resultat_markdown": "classe médiane $=[18,22[$, avec $L=18$, $CF=36$, $f=20$, $h=4$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la formule d'interpolation",
+          "justification": "On remplace chaque lettre par sa valeur",
+          "resultat_markdown": "$Me=18+\\dfrac{50-36}{20}\\times4=18+\\dfrac{14}{20}\\times4=18+2{,}8=20{,}8$"
+        }
+      ],
+      "conclusion_markdown": "La médiane de cette série est $Me=20{,}8$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre le milieu de la classe médiane comme valeur de la médiane, ici $\\dfrac{18+22}{2}=20$",
+          "pourquoi_faux": "Cette valeur ignore la répartition réelle des individus à l'intérieur de la classe : elle suppose implicitement que N/2 tombe exactement au milieu, ce qui n'est presque jamais le cas.",
+          "correction_markdown": "Utilise systématiquement la formule d'interpolation, qui tient compte de la position exacte de N/2 par rapport aux effectifs cumulés déjà comptés."
+        },
+        {
+          "erreur_markdown": "Chercher la classe médiane en utilisant les effectifs cumulés décroissants au lieu des effectifs cumulés croissants",
+          "pourquoi_faux": "La classe médiane se repère par le dépassement de N/2 dans le sens croissant : utiliser le mauvais sens de cumul peut désigner une classe totalement différente.",
+          "correction_markdown": "Calcule toujours les effectifs cumulés croissants spécifiquement pour cette étape, même si l'exercice a par ailleurs demandé un tableau décroissant."
+        },
+        {
+          "erreur_markdown": "Utiliser l'effectif cumulé croissant de la classe médiane elle-même à la place de celui de la classe précédente pour $CF$",
+          "pourquoi_faux": "$CF$ doit représenter les individus déjà comptés AVANT d'entrer dans la classe médiane, pas ceux comptés après ; se tromper ici fausse tout le résultat de l'interpolation.",
+          "correction_markdown": "Relis toujours la ligne juste avant la classe médiane dans le tableau des effectifs cumulés croissants pour identifier $CF$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série de 50 individus a pour effectifs cumulés croissants : $[0,10[:8$, $[10,20[:22$, $[20,30[:38$, $[30,40[:50$. Déterminer la classe médiane.",
+          "solution_markdown": "$N/2=25$. Comme $22<25<38$, la médiane se trouve dans la classe $[20,30[$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre la série de l'exercice 1 (classe médiane $[20,30[$, avec $CF=22$, $f=16$, $h=10$) et calculer la valeur exacte de la médiane.",
+          "solution_markdown": "$$Me=20+\\frac{25-22}{16}\\times10=20+\\frac{3}{16}\\times10=20+1{,}875=21{,}875$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 80 individus est répartie en classes d'amplitude 5, à partir de 0. On sait que $ECC(15)=30$ et $ECC(20)=50$ (effectifs cumulés croissants), et que la médiane vaut exactement 17. Retrouver l'effectif de la classe médiane $[15,20[$.",
+          "solution_markdown": "$N/2=40$. Comme $30<40<50$, la classe médiane est bien $[15,20[$, avec $L=15$, $CF=30$, $h=5$.\n\nOn utilise la formule en sens inverse pour retrouver $f$ :\n$$17=15+\\frac{40-30}{f}\\times5$$\n$$2=\\frac{10}{f}\\times5=\\frac{50}{f}$$\n$$f=\\frac{50}{2}=25$$\n\nL'effectif de la classe médiane $[15,20[$ est 25."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La classe médiane se repère avec les effectifs cumulés CROISSANTS : c'est la première classe où l'on dépasse N/2.",
+        "La médiane n'est jamais le simple milieu de la classe médiane, sauf coïncidence : elle s'obtient par interpolation linéaire.",
+        "La formule $Me=L+\\dfrac{N/2-CF}{f}\\times h$ demande quatre valeurs précises : $L$, $CF$, $f$, $h$, toutes lues sur le tableau des effectifs cumulés croissants.",
+        "$CF$ est l'effectif cumulé AVANT la classe médiane, jamais celui de la classe médiane elle-même.",
+        "Cette méthode est directement réutilisable pour les quartiles, qui suivent le même principe avec N/4 et 3N/4."
+      ]
+    }
+  ]
+}

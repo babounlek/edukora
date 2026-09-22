@@ -1,0 +1,161 @@
+[
+  {
+    "external_id": "cqc-factorielle-faible-0",
+    "theme": "factorielle",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère l'algorithme suivant, où `n` vaut 5 :\n\n```\nf <- 1\nPour i de 1 à n faire\n    f <- f x i\nFinPour\nAfficher f\n```\n\nQuelle valeur cet algorithme affiche-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle qui multiplie une variable, initialisée à 1, par le compteur `i` à chaque tour calcule le produit $1 \\times 2 \\times \\dots \\times n$, c'est-à-dire la factorielle $n!$.\n\n### Corrigé\n\nLe compteur `i` prend les valeurs 1, 2, 3, 4, 5 et `f` évolue ainsi : 1, 2, 6, 24, 120. L'algorithme calcule $5!$ et affiche donc **120**. La réponse 15 correspondrait à une somme et non à un produit.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "15"
+      },
+      {
+        "lettre": "B",
+        "texte": "24"
+      },
+      {
+        "lettre": "C",
+        "texte": "120"
+      },
+      {
+        "lettre": "D",
+        "texte": "720"
+      }
+    ],
+    "reponse_correcte": "C",
+    "source_exercises": [
+      10537,
+      10586
+    ]
+  },
+  {
+    "external_id": "cqc-factorielle-faible-1",
+    "theme": "factorielle",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Par convention, $0! = 1$. On reprend l'algorithme itératif de la factorielle :\n\n```\nf <- 1\nPour i de 1 à n faire\n    f <- f x i\nFinPour\nAfficher f\n```\n\nQue se passe-t-il quand `n` vaut 0, et pourquoi le résultat affiché est-il correct ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne boucle `Pour i de 1 à n` ne s'exécute aucune fois quand `n` est inférieur à 1 : le résultat est alors la valeur d'initialisation de l'accumulateur.\n\n### Corrigé\n\nPour `n = 0`, la borne 0 est inférieure au début 1 : le corps de la boucle n'est jamais exécuté et `f` garde sa valeur initiale 1. L'algorithme affiche donc **1**, ce qui est bien $0! = 1$. C'est pour cela qu'un accumulateur de produit s'initialise à 1 (élément neutre de la multiplication) et jamais à 0.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10537,
+      10586
+    ]
+  },
+  {
+    "external_id": "cqc-factorielle-moyenne-2",
+    "theme": "factorielle",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La fonction C suivante devrait retourner `n!`, mais elle retourne toujours 0, quelle que soit la valeur de `n` :\n\n```c\nint fact(int n) {\n    int f = 0;\n    for (int i = 1; i <= n; i++)\n        f = f * i;\n    return f;\n}\n```\n\nExpliquer l'erreur puis écrire la fonction corrigée.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn accumulateur de produit doit être initialisé à l'élément neutre de la multiplication, soit 1. Initialisé à 0, tout produit ultérieur reste nul.\n\n### Corrigé\n\nL'erreur est l'initialisation `int f = 0;` : comme $0 \\times i = 0$ à chaque tour, `f` reste égal à 0 et la fonction retourne 0 pour tout `n`.\n\nFonction corrigée :\n\n```c\nint fact(int n) {\n    int f = 1;\n    for (int i = 1; i <= n; i++)\n        f = f * i;\n    return f;\n}\n```\n\nVérification : `fact(4)` donne successivement 1, 2, 6, 24, donc 24.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10537,
+      10586
+    ]
+  },
+  {
+    "external_id": "cqc-factorielle-moyenne-3",
+    "theme": "factorielle",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère la fonction récursive suivante :\n\n```c\nint g(int n) {\n    if (n <= 1) return 1;\n    return n * g(n - 1);\n}\n```\n\nCombien d'appels de la fonction `g` (l'appel initial compris) sont effectués pour évaluer `g(4)` ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour compter les appels d'une fonction récursive, on déroule la descente jusqu'au cas de base : chaque appel qui ne satisfait pas la condition d'arrêt en déclenche exactement un nouveau.\n\n### Corrigé\n\nLa descente est `g(4)`, `g(3)`, `g(2)`, `g(1)`. Le cas de base `n <= 1` est atteint avec `g(1)` : il n'y a pas d'appel supplémentaire. Il y a donc **4 appels**. La valeur retournée est $4 \\times 3 \\times 2 \\times 1 = 24$, mais l'énoncé demande le nombre d'appels, pas le résultat.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "3"
+      },
+      {
+        "lettre": "B",
+        "texte": "4"
+      },
+      {
+        "lettre": "C",
+        "texte": "5"
+      },
+      {
+        "lettre": "D",
+        "texte": "24"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10537,
+      10586
+    ]
+  },
+  {
+    "external_id": "cqc-factorielle-elevee-4",
+    "theme": "factorielle",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      },
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On dispose de la fonction `fact` (factorielle, type de retour `int` sur 32 bits, valeurs de $-2^{31}$ à $2^{31}-1$).\n\n1. Écrire en C une fonction `comb(int n, int p)` qui utilise `fact` pour retourner le nombre de combinaisons $\\binom{n}{p} = \\dfrac{n!}{p!\\,(n-p)!}$.\n2. Donner la valeur de `comb(6, 2)`.\n3. À partir de quelle valeur de `n` l'appel `fact(n)` dépasse-t-il la capacité d'un `int` sur 32 bits ?",
+    "corrige_markdown": "### Rappel de méthode\n\nUne formule à base de factorielles se traduit par des appels à `fact`, en surveillant la capacité du type : les factorielles croissent très vite et dépassent vite la plage d'un entier sur 32 bits.\n\n### Corrigé\n\n1. ```c\n   int comb(int n, int p) {\n       return fact(n) / (fact(p) * fact(n - p));\n   }\n   ```\n2. `comb(6, 2)` = $\\dfrac{720}{2 \\times 24} = \\dfrac{720}{48} = 15$.\n3. $12! = 479\\,001\\,600$ tient dans un `int` (inférieur à $2\\,147\\,483\\,647$), mais $13! = 6\\,227\\,020\\,800$ le dépasse : le débordement apparaît **dès `n = 13`**. Cette limite s'applique aussi à `comb` dès que `n >= 13`, même si le résultat final serait petit.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10537,
+      10586
+    ]
+  }
+]

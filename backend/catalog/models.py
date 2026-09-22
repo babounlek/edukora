@@ -8,7 +8,12 @@ from django.utils.text import slugify
 # "La courbe ci-contre...", "le tableau ci-dessous..." : renvoi explicite à une figure
 # supposée visible - voir Question.references_missing_figure.
 _MISSING_FIGURE_REFERENCE_RE = re.compile(r"\bci[- ]contre\b|\bci[- ]dessous\b|\bci[- ]apr[eè]s\b", re.IGNORECASE)
-_IMAGE_PLACEHOLDER_RE = re.compile(r"!\[[^\]]*\]\([^)]+\)")
+# `.*?` (non-greedy, pas `[^\]]*`) : un texte alternatif/légende de figure peut
+# légitimement contenir un `]` (ex. notation d'intervalle ouvert "]0;pi[" dans une
+# légende de courbe) - `[^\]]*` s'arrête au premier `]` rencontré, qui n'est alors
+# pas le bon, et le placeholder entier passe inaperçu pour ce regex (constaté en
+# production sur des questions dont la figure existait bien).
+_IMAGE_PLACEHOLDER_RE = re.compile(r"!\[.*?\]\([^)]+\)")
 
 
 def _join_fr(items):
@@ -216,11 +221,6 @@ SUBJECT_FAMILIES = {
     "PROGRAMMATION": "INFORMATIQUE",
     "SYSTEMES_INFORMATION": "INFORMATIQUE",
     "RESEAUX_SECURITE": "INFORMATIQUE",
-SUBJECT_FAMILIES = {
-    "PHYSIQUE": "PHYSIQUE_CHIMIE",
-    "CHIMIE": "PHYSIQUE_CHIMIE",
-    "HISTOIRE": "HISTOIRE_GEO",
-    "GEOGRAPHIE": "HISTOIRE_GEO",
 }
 
 

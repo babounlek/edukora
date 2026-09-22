@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-statistiques-mediane-interpolation-lineaire-1ere-a",
+  "meta": {
+    "titre": "Statistiques : médiane par interpolation linéaire",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "statistiques",
+      "médiane",
+      "interpolation linéaire",
+      "série groupée"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathématiques - Cameroun - Session 2007",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2007-officiel-cameroun-ex2-qB.II.b.ii-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La moyenne peut être trompeuse : quelques valeurs extrêmes suffisent à la déformer. La médiane, elle, indique la valeur qui partage exactement la série en deux moitiés égales - un repère plus robuste pour savoir où se situe \"le milieu\" réel des élèves."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer les effectifs cumulés croissants d'une série groupée",
+        "Résoudre une proportion simple (produit en croix)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Interpolation linéaire pour la médiane",
+      "contenu_markdown": "La médiane $Me$ d'une série de $N$ individus correspond à l'effectif cumulé $\\dfrac{N}{2}$. On repère, parmi les effectifs cumulés croissants, la classe $[a,b[$ dans laquelle $\\dfrac{N}{2}$ se situe (c'est-à-dire la première classe dont l'ECC dépasse ou atteint $\\dfrac{N}{2}$). On applique alors l'interpolation linéaire, qui suppose que les individus sont répartis uniformément à l'intérieur de cette classe : $Me = a + \\dfrac{\\frac{N}{2}-\\text{ECC}_{avant}}{\\text{ECC}_{classe}-\\text{ECC}_{avant}}\\times(b-a)$, où $\\text{ECC}_{avant}$ est l'effectif cumulé croissant juste avant la classe médiane, et $\\text{ECC}_{classe}$ celui de la classe médiane elle-même.",
+      "formule_principale": "Me = a + \\dfrac{\\frac{N}{2}-\\text{ECC}_{avant}}{\\text{ECC}_{classe}-\\text{ECC}_{avant}}\\times(b-a)",
+      "variantes": [
+        {
+          "nom": "Lecture graphique",
+          "quand_utiliser": "Quand le polygone des fréquences cumulées croissantes est déjà tracé.",
+          "contenu_markdown": "On projette l'ordonnée $50\\%$ sur le polygone, puis on lit l'abscisse correspondante : cette lecture graphique doit donner une valeur cohérente avec le calcul par interpolation linéaire."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer la médiane de la série de 50 notes dont les effectifs cumulés croissants sont $1\\,;\\,14\\,;\\,44\\,;\\,50$ sur les classes $[0,5[,[5,10[,[10,15[,[15,20[$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'effectif médian $\\dfrac{N}{2}$",
+          "justification": "La médiane correspond à l'individu qui partage la série en deux effectifs égaux.",
+          "resultat_markdown": "$\\dfrac{N}{2}=\\dfrac{50}{2}=25$"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la classe médiane",
+          "justification": "On cherche la première classe dont l'ECC atteint ou dépasse $25$ : après $[5,10[$, ECC$=14<25$ ; après $[10,15[$, ECC$=44\\geq25$.",
+          "resultat_markdown": "La classe médiane est $[10,15[$, avec $\\text{ECC}_{avant}=14$ (classe $[5,10[$) et $\\text{ECC}_{classe}=44$."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule d'interpolation linéaire",
+          "justification": "On remplace $a=10$, $b=15$, $\\text{ECC}_{avant}=14$, $\\text{ECC}_{classe}=44$, $\\dfrac{N}{2}=25$.",
+          "resultat_markdown": "$Me = 10+\\dfrac{25-14}{44-14}\\times(15-10) = 10+\\dfrac{11}{30}\\times5$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la valeur numérique finale",
+          "justification": "On simplifie la fraction obtenue.",
+          "resultat_markdown": "$Me = 10+\\dfrac{55}{30} = 10+\\dfrac{11}{6} \\approx 10+1{,}83 \\approx 11{,}83$"
+        }
+      ],
+      "conclusion_markdown": "La médiane de la série est $Me\\approx11{,}83$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre la médiane avec le centre de la classe médiane (ici $12{,}5$ au lieu de $11{,}83$).",
+          "pourquoi_faux": "Le centre de classe représente une moyenne conventionnelle de toute la classe, alors que la médiane tient compte de la position exacte de $\\frac{N}{2}$ entre les deux effectifs cumulés qui encadrent la classe médiane.",
+          "correction_markdown": "Toujours appliquer l'interpolation linéaire complète, jamais le simple centre de la classe médiane, sauf indication contraire explicite de l'énoncé."
+        },
+        {
+          "erreur_markdown": "Utiliser l'effectif cumulé décroissant à la place du croissant pour repérer la classe médiane, ou mélanger les deux dans la formule.",
+          "pourquoi_faux": "La formule d'interpolation utilisée ici est construite sur les effectifs cumulés croissants : mélanger avec les décroissants change la classe repérée et fausse le calcul.",
+          "correction_markdown": "Reste cohérent avec un seul type de cumul (croissant) du début à la fin du calcul de la médiane par cette méthode."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série de 20 individus a pour effectifs cumulés croissants $4\\,;\\,10\\,;\\,20$ sur les classes $[0,10[,[10,20[,[20,30[$. Déterminer la classe médiane.",
+          "solution_markdown": "$\\dfrac{N}{2}=\\dfrac{20}{2}=10$\n\nOn cherche la première classe dont l'ECC atteint ou dépasse $10$ : après $[0,10[$, ECC$=4<10$ ; après $[10,20[$, ECC$=10$, qui atteint exactement $10$.\n\nLa classe médiane est $[10,20[$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec les données de l'exercice précédent, calculer la médiane par interpolation linéaire.",
+          "solution_markdown": "Classe médiane $[10,20[$, avec $\\text{ECC}_{avant}=4$ (classe $[0,10[$) et $\\text{ECC}_{classe}=10$.\n\n$Me = 10+\\dfrac{10-4}{10-4}\\times(20-10) = 10+\\dfrac{6}{6}\\times10 = 10+10=20$\n\nLa médiane est $Me=20$. \n\n(Ce cas particulier, où $\\frac{N}{2}$ tombe exactement sur la borne supérieure de la classe médiane, donne une médiane égale à cette borne.)"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 60 individus groupés en classes de largeur 10 a pour effectifs cumulés croissants $10\\,;\\,25\\,;\\,45\\,;\\,60$ sur $[0,10[,[10,20[,[20,30[,[30,40[$. Calculer la médiane, puis vérifier la cohérence du résultat en comparant avec la classe modale si les effectifs propres sont $10,15,20,15$.",
+          "solution_markdown": "$\\dfrac{N}{2}=\\dfrac{60}{2}=30$\n\nOn cherche la classe médiane : après $[10,20[$, ECC$=25<30$ ; après $[20,30[$, ECC$=45\\geq30$.\n\nClasse médiane $[20,30[$, avec $\\text{ECC}_{avant}=25$, $\\text{ECC}_{classe}=45$.\n\n$Me = 20+\\dfrac{30-25}{45-25}\\times(30-20) = 20+\\dfrac{5}{20}\\times10 = 20+2{,}5=22{,}5$\n\nLa médiane est $Me=22{,}5$.\n\n**Vérification de cohérence** : les effectifs propres des classes sont $10,15,20,15$ ; le plus grand est $20$, atteint par la classe $[20,30[$, qui est donc la classe modale. La médiane ($22{,}5$) appartient bien à cette même classe modale : c'est cohérent, la médiane se situe naturellement dans la zone où les individus sont les plus nombreux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La médiane correspond toujours à l'effectif cumulé $\\dfrac{N}{2}$, jamais à $N$ ou à un autre repère.",
+        "Repère d'abord la classe médiane (la première dont l'ECC atteint ou dépasse $\\frac{N}{2}$) avant d'appliquer la formule d'interpolation.",
+        "La médiane n'est presque jamais égale au centre de la classe médiane : c'est une valeur interpolée, plus précise.",
+        "Une lecture graphique sur le polygone des fréquences cumulées (projection de l'ordonnée $50\\%$) doit confirmer le résultat calculé par interpolation.",
+        "Médiane, moyenne et classe modale racontent trois histoires complémentaires sur une série : au Probatoire, sache toujours dire ce que chacune apporte de plus par rapport aux deux autres."
+      ]
+    }
+  ]
+}

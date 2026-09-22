@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-structures-de-controle-et-structures-de-donnees-en-algorithmique-1ere-tronc-commun",
+  "meta": {
+    "titre": "Structures de contrôle et structures de données en algorithmique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique - structures fondamentales",
+    "duree_estimee_min": 25,
+    "tags": [
+      "structure de contrôle",
+      "structure alternative",
+      "structure répétitive",
+      "structure de données",
+      "tableau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex3-q1.1-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme, aussi long soit-il, ne se construit qu'à partir d'une poignée d'ingrédients de base qui se répètent inlassablement : décider entre deux chemins, répéter un bloc d'instructions, et ranger plusieurs valeurs sous un même nom. Reconnaître ces briques dans un algorithme donné, avant même de comprendre ce qu'il calcule, est la première compétence testée dans presque tout exercice d'algorithmique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme en pseudo-code (instructions Lire, Ecrire, affectation ←)",
+        "Connaître la notion de variable et de condition logique (vraie ou fausse)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois structures de contrôle, une structure de données de base",
+      "contenu_markdown": "Une structure de contrôle organise l'ordre dans lequel les instructions d'un algorithme s'exécutent. On en distingue trois types : la structure séquentielle, qui exécute les instructions les unes après les autres dans l'ordre où elles sont écrites (le cas par défaut, sans mot-clé particulier) ; la structure alternative Si...Alors...Sinon...Finsi, qui choisit entre deux traitements selon qu'une condition est vraie ou fausse ; et la structure répétitive (Pour...Faire...Finpour ou TantQue...Faire...FinTantQue), qui répète un bloc d'instructions plusieurs fois. Une structure de données, à l'inverse, ne contrôle pas l'exécution : elle organise le stockage de plusieurs valeurs, comme le tableau, qui range une série de valeurs de même type sous un nom unique, chacune repérée par un indice.",
+      "formule_principale": "\\text{Structure de contrôle} \\Rightarrow \\text{ordonne l'exécution} \\quad ; \\quad \\text{Structure de données} \\Rightarrow \\text{organise le stockage}",
+      "variantes": [
+        {
+          "nom": "Pour vs TantQue",
+          "quand_utiliser": "Pour quand le nombre de répétitions est connu à l'avance ; TantQue quand l'arrêt dépend d'une condition dont on ne connaît pas le nombre de vérifications à l'avance",
+          "contenu_markdown": "La boucle Pour convient lorsqu'on sait dès le départ combien de fois répéter (par exemple, parcourir un tableau de taille N connue). La boucle TantQue convient lorsque l'arrêt dépend d'un événement imprévisible à l'avance, comme attendre qu'un utilisateur saisisse une valeur correcte."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'algorithme suivant gère les notes des élèves lors d'un devoir :\n\n```\n1.  Algorithme somme_produit_moyenne ;\n2.  Var Note : tableau [1..N] de réels ;\n3.      N, i : entiers ;\n4.      S, P, M : réels ;\n5.  Début\n6.      Si (N=0) alors\n7.          Ecrire (\"pas de notes à gérer\") ;\n8.      Sinon\n9.          S ← 0 ; P ← 1 ;\n10.         Pour i allant de 1 à N faire\n11.             Ecrire (\"Entrez la note n° \", i) ;\n12.             Lire (Note[i]) ;\n13.             S ← S+Note[i] ;\n14.             P ← P * Note[i] ;\n15.         Finpour\n16.         M ← S/N ;\n17.         Ecrire (\"la somme des Notes est : \",S) ;\n18.         Ecrire (\"le produit des Notes est : \", P) ;\n19.         Ecrire (\"la moyenne des Notes est : \",M) ;\n20.     Finsi\n21. Fin.\n```\n\nIdentifier dans cet algorithme deux structures de contrôle et une structure de données.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les mots-clés caractéristiques d'une structure alternative",
+          "justification": "Si...Alors...Sinon...Finsi est la signature exacte de la structure alternative en pseudo-code.",
+          "resultat_markdown": "Lignes 6 à 20 : **Si (N=0) alors ... Sinon ... Finsi**, une structure alternative."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les mots-clés caractéristiques d'une structure répétitive",
+          "justification": "Pour...Faire...Finpour est la signature exacte de la structure répétitive à nombre de tours connu.",
+          "resultat_markdown": "Lignes 10 à 15 : **Pour i allant de 1 à N faire ... Finpour**, une structure répétitive."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer la structure qui organise le stockage plutôt que l'exécution",
+          "justification": "La déclaration Note : tableau [1..N] de réels ne contrôle rien : elle réserve un espace pour ranger N valeurs sous un même nom.",
+          "resultat_markdown": "Ligne 2 : **Note : tableau [1..N] de réels**, une structure de données."
+        }
+      ],
+      "conclusion_markdown": "Cet algorithme combine donc une structure alternative, une structure répétitive, et une structure de données de type tableau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer la condition (N=0) elle-même comme une structure de contrôle",
+          "pourquoi_faux": "Une condition est un simple ingrédient testé par une structure : c'est l'instruction Si qui utilise cette condition qui constitue la structure de contrôle, pas la condition seule.",
+          "correction_markdown": "Toujours citer le couple complet de mots-clés (Si...Alors...Sinon...Finsi, ou Pour...Faire...Finpour), jamais la condition isolée."
+        },
+        {
+          "erreur_markdown": "Citer Lire ou Ecrire comme une structure de contrôle",
+          "pourquoi_faux": "Lire et Ecrire sont de simples instructions d'entrée-sortie : elles ne changent jamais l'ordre dans lequel les instructions s'exécutent.",
+          "correction_markdown": "Réserver le terme structure de contrôle aux trois familles Séquence, Alternative, Répétition."
+        },
+        {
+          "erreur_markdown": "Confondre le tableau (structure de données) avec la boucle Pour qui sert à le parcourir (structure de contrôle)",
+          "pourquoi_faux": "Le tableau stocke les valeurs, la boucle organise seulement l'ordre dans lequel on les lit ou on les écrit : ce sont deux rôles complémentaires mais distincts.",
+          "correction_markdown": "Se demander : est-ce que cet élément range des valeurs (donnée), ou est-ce qu'il décide de l'ordre d'exécution (contrôle) ?"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'algorithme donné en exemple, citer précisément la ligne de début et la ligne de fin de la structure alternative complète.",
+          "solution_markdown": "La structure alternative complète s'étend de la ligne 6 (`Si (N=0) alors`) à la ligne 20 (`Finsi`), englobant le cas Sinon des lignes 8 à 19."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un algorithme utilisant une structure répétitive Pour pour afficher les carrés des nombres entiers de 1 à 10.",
+          "solution_markdown": "```\nAlgorithme carres ;\nVar i : entier ;\nDébut\n    Pour i allant de 1 à 10 faire\n        Ecrire (i, \" au carré vaut \", i*i) ;\n    Finpour\nFin.\n```\n\nLa boucle Pour convient ici car le nombre de répétitions (10) est connu avant même de commencer à exécuter l'algorithme."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Modifier l'algorithme somme_produit_moyenne pour qu'il compte, en plus, le nombre de notes supérieures ou égales à 10, en utilisant une structure alternative imbriquée dans la boucle Pour.",
+          "solution_markdown": "On ajoute une variable Nb (entier) initialisée à 0, et on teste chaque note lue à l'intérieur de la boucle existante :\n\n```\n2.  Var Note : tableau [1..N] de réels ;\n3.      N, i, Nb : entiers ;\n4.      S, P, M : réels ;\n5.  Début\n6.      Si (N=0) alors\n7.          Ecrire (\"pas de notes à gérer\") ;\n8.      Sinon\n9.          S ← 0 ; P ← 1 ; Nb ← 0 ;\n10.         Pour i allant de 1 à N faire\n11.             Ecrire (\"Entrez la note n° \", i) ;\n12.             Lire (Note[i]) ;\n13.             S ← S+Note[i] ;\n14.             P ← P * Note[i] ;\n14.5.           Si (Note[i] >= 10) alors\n14.6.               Nb ← Nb + 1 ;\n14.7.           Finsi\n15.         Finpour\n16.         M ← S/N ;\n...\n19.5.       Ecrire (\"nombre de notes >= 10 : \", Nb) ;\n20.     Finsi\n21. Fin.\n```\n\nLa structure alternative (lignes 14.5 à 14.7) est ici imbriquée à l'intérieur de la structure répétitive (lignes 10 à 15) : à chaque tour de boucle, on teste la note qui vient d'être lue, et on incrémente Nb uniquement si elle atteint 10 ou plus."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois structures de contrôle seulement : séquence, alternative (Si...Sinon...Finsi), répétition (Pour ou TantQue).",
+        "Une structure de données comme le tableau range des valeurs, elle ne contrôle jamais l'ordre d'exécution.",
+        "Ne cite jamais une condition seule, ni une instruction Lire/Ecrire, comme une structure de contrôle.",
+        "Les structures peuvent s'imbriquer : une alternative peut se trouver à l'intérieur d'une boucle, comme dans l'exercice d'approfondissement.",
+        "Cette identification des structures ouvre presque systématiquement l'exercice d'algorithmique au Probatoire : elle vaut des points faciles à condition de nommer les bons mots-clés, pas seulement de décrire leur effet."
+      ]
+    }
+  ]
+}

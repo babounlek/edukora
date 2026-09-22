@@ -1,0 +1,257 @@
+{
+  "epreuve_source": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+  "numero_exercice": "2",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "C, D, E",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2025,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "introduction_markdown": null,
+  "points": "7",
+  "groupes": [],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun_exercice_2_fig_1.png",
+      "page_source": 3,
+      "type": "schema",
+      "legende": "MCD donné à traduire en MLD : entités Client, Commande, Article, Fournisseur reliées par les associations Passe, Concerne (portant Quantite) et fournir",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun_exercice_2_fig_2.png",
+      "page_source": 2,
+      "type": "schema",
+      "legende": "MCD construit en réponse à la question A.2 : entités Forum, Rubrique, Message, Auteur reliées par les associations Composer, Publier et Ecrire",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2**\n\n**PARTIE II : SYSTÈMES D'INFORMATION ET BASES DE DONNÉES (07 PTS)**\n\n**A - Modélisation d'un MCD**",
+  "questions": [
+    {
+      "numero": "A1",
+      "enonce_markdown": "On souhaite mettre sur pied un système d'information simplifié pour la gestion de forums de discussion, décrit par le texte suivant : un forum est identifié par un code unique et renseigné par un nom, une description du sujet qu'il traite, une adresse URL et l'adresse électronique de l'administrateur. Il est composé de plusieurs rubriques. Une rubrique d'un forum donné est identifiée par un code et renseignée par un titre et une date de création. Dans une même rubrique, des internautes peuvent publier plusieurs messages. Un message, relatif à une rubrique donnée et provenant d'un auteur donné, est identifié par un numéro et caractérisé par un titre, un texte et une date de publication. Un auteur, défini par un identificateur unique, est connu par un pseudonyme et un mot de passe ; il est décrit par un profil portant l'adresse e-mail, le nom, la date de naissance, le genre, la profession et la ville.\n\n**1.** Identifier les entités et les associations de cette situation. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nIdentifier les entités et associations d'un système d'information consiste à relire le texte phrase par phrase : chaque objet identifié par un code ou un numéro propre est une entité ; chaque verbe qui relie deux entités (« compose », « publie », « écrit »...) est une association.\n\n**Repérage des entités** (chaque objet possède un identifiant propre explicitement cité) :\n- **FORUM**, identifié par un *code unique*\n- **RUBRIQUE**, identifiée par un *code* (propre à un forum donné)\n- **MESSAGE**, identifié par un *numéro*\n- **AUTEUR**, identifié par un *identificateur unique*\n\nLe « profil » de l'auteur (e-mail, nom, date de naissance, genre, profession, ville) n'est pas une entité séparée : le texte ne lui donne aucun identifiant propre, ce ne sont que des attributs supplémentaires qui décrivent l'entité AUTEUR.\n\n**Repérage des associations** (verbes reliant deux entités) :\n- « Il [le forum] est **composé** de plusieurs rubriques » → association **Composer** entre FORUM et RUBRIQUE\n- « des internautes peuvent **publier** plusieurs messages » [dans une rubrique] → association **Publier** entre RUBRIQUE et MESSAGE\n- « un message [...] provenant d'un auteur donné » → association **Écrire** entre AUTEUR et MESSAGE\n\n### Piège à éviter\nNe transforme pas le « profil » de l'auteur en entité séparée sous prétexte qu'il regroupe plusieurs attributs : en Merise, un ensemble d'attributs ne devient une entité que s'il possède son propre identifiant. Ici, aucun identifiant de « profil » n'est donné : ces attributs restent rattachés à AUTEUR.",
+      "themes": [
+        "Merise",
+        "modèle conceptuel de données",
+        "entités",
+        "associations"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qA1-0",
+          "competence": "Identifier les entités et associations d'un système d'information",
+          "contenu_markdown": "Identifier les entités et associations d'un système d'information consiste à relire le texte phrase par phrase : chaque objet identifié par un code ou un numéro propre est une entité ; chaque verbe qui relie deux entités (« compose », « publie », « écrit »...) est une association.",
+          "cours_genere": true,
+          "cours_id": "cours-identifier-les-entites-et-associations-d-un-systeme-d-information-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "A2",
+      "enonce_markdown": "**2.** Représenter le Modèle Conceptuel de Données (MCD) de ce système. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nConstruire un MCD consiste à représenter chaque entité par un rectangle portant son identifiant souligné et ses attributs, à relier les entités liées par une ellipse portant le nom de l'association, puis à poser sur chaque branche la cardinalité (minimum, maximum) de participation de l'entité à l'association.\n\n**Étape 1 - Poser les entités et leurs attributs** (déduits de la question précédente) :\n- FORUM (codeForum, nomForum, descriptionForum, urlForum, emailAdmin)\n- RUBRIQUE (codeRub, titreRub, dateCreationRub)\n- MESSAGE (numMessage, titreMessage, texteMessage, datePublication)\n- AUTEUR (idAuteur, pseudonyme, motDePasse, email, nom, dateNaissance, genre, profession, ville)\n\n**Étape 2 - Déterminer la cardinalité de l'association Composer (FORUM - RUBRIQUE).** Un forum donné regroupe plusieurs rubriques : côté FORUM, la cardinalité est (1,n). Une rubrique donnée appartient à un seul forum (« une rubrique **d'un forum donné** ») : côté RUBRIQUE, la cardinalité est (1,1).\n\n**Étape 3 - Déterminer la cardinalité de l'association Publier (RUBRIQUE - MESSAGE).** Une rubrique peut contenir plusieurs messages, mais peut aussi n'en contenir aucun juste après sa création : côté RUBRIQUE, la cardinalité est (0,n). Un message donné est publié dans une seule rubrique (« un message relatif à **une rubrique donnée** ») : côté MESSAGE, la cardinalité est (1,1).\n\n**Étape 4 - Déterminer la cardinalité de l'association Écrire (AUTEUR - MESSAGE).** Un auteur peut écrire plusieurs messages au fil du temps : côté AUTEUR, la cardinalité est (1,n). Un message donné provient d'un seul auteur (« un message [...] provenant **d'un auteur donné** ») : côté MESSAGE, la cardinalité est (1,1).\n\n**Étape 5 - Assembler le schéma.** Le modèle obtenu est le suivant :\n\n![fig-2](bac-c-d-e-informatique-theorique-2025-officiel-cameroun_exercice_2_fig_2.png)\n\n### Piège à éviter\nLa cardinalité minimale de RUBRIQUE dans l'association Publier n'est pas automatiquement 1 : une rubrique tout juste créée peut ne contenir encore aucun message. Mettre systématiquement (1,n) partout où l'on hésite, sans se poser la question du cas limite (l'objet vient d'être créé, est-il déjà lié à l'autre ?), est l'erreur la plus fréquente sur les cardinalités minimales.\n\n### Conseil\nPour ne jamais te tromper de sens sur une cardinalité, pose-toi systématiquement la question « combien de fois CETTE entité peut-elle apparaître pour UNE occurrence de l'autre entité ? » du point de vue de l'entité sur laquelle tu écris le nombre - jamais l'inverse.",
+      "themes": [
+        "MCD",
+        "cardinalités",
+        "Merise"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qA2-0",
+          "competence": "Construire un Modèle Conceptuel de Données (MCD) : entités, associations, cardinalités",
+          "contenu_markdown": "Construire un MCD consiste à représenter chaque entité par un rectangle portant son identifiant souligné et ses attributs, à relier les entités liées par une ellipse portant le nom de l'association, puis à poser sur chaque branche la cardinalité (minimum, maximum) de participation de l'entité à l'association.",
+          "cours_genere": true,
+          "cours_id": "cours-construire-un-modele-conceptuel-de-donnees-mcd-entites-associations-cardinalites-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "B",
+      "enonce_markdown": "On donne le Modèle Conceptuel de Données suivant :\n\n![fig-1](bac-c-d-e-informatique-theorique-2025-officiel-cameroun_exercice_2_fig_1.png)\n\nTraduire ce MCD en Modèle Logique de Données (MLD). *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour passer d'un MCD à un MLD : chaque entité devient une table dont l'identifiant devient clé primaire ; pour une association (1,n)-(1,1), la clé primaire du côté « n » migre comme clé étrangère dans la table du côté « 1 » ; pour une association (n,n) portant ou non un attribut, l'association devient elle-même une table portant les deux clés étrangères (et l'attribut porté).\n\nLe MCD à traduire est le suivant :\n\n![fig-1](bac-c-d-e-informatique-theorique-2025-officiel-cameroun_exercice_2_fig_1.png)\n\n**Étape 1 - Traduire les entités.** Chaque entité devient une table, son identifiant souligné devient clé primaire :\n- CLIENT (**IdClient**, NomClient, PrenomClient, TelClient)\n- COMMANDE (**NumCom**, Date)\n- ARTICLE (**IdArt**, NomArt, PrixUnitaire)\n- FOURNISSEUR (**NumFour**, NomFour, Adresse, Telephone)\n\n**Étape 2 - Traduire l'association Passe (Client 1,n - Commande 1,1).** Le côté dont la cardinalité maximale vaut 1 (ici COMMANDE) reçoit comme clé étrangère la clé primaire de l'autre entité :\n- COMMANDE (**NumCom**, Date, #IdClient)\n\n**Étape 3 - Traduire l'association fournir (Article 1,1 - Fournisseur 1,n).** Même principe : le côté dont la cardinalité maximale vaut 1 (ici ARTICLE) reçoit la clé étrangère de l'autre entité :\n- ARTICLE (**IdArt**, NomArt, PrixUnitaire, #NumFour)\n\n**Étape 4 - Traduire l'association Concerne (Commande 1,n - Article 0,n), qui porte l'attribut Quantite.** Les deux cardinalités maximales valent n : ni COMMANDE ni ARTICLE ne peut recevoir seule la clé de l'autre sans dupliquer l'information. L'association devient donc **sa propre table**, portant les clés primaires des deux entités reliées (devenues clés étrangères) ainsi que l'attribut Quantite qu'elle porte :\n- CONCERNE (**#NumCom, #IdArt**, Quantite)\n\n**Modèle Logique de Données obtenu :**\n\n```\nCLIENT (IdClient, NomClient, PrenomClient, TelClient)\nCOMMANDE (NumCom, Date, #IdClient)\nARTICLE (IdArt, NomArt, PrixUnitaire, #NumFour)\nCONCERNE (#NumCom, #IdArt, Quantite)\nFOURNISSEUR (NumFour, NomFour, Adresse, Telephone)\n```\n\n### Piège à éviter\nFace à une association (n,n) comme Concerne, l'erreur classique consiste à vouloir la traiter comme les deux autres (migration d'une seule clé étrangère). C'est impossible sans perte d'information : une commande porte sur plusieurs articles et un article apparaît dans plusieurs commandes, une seule ligne de table ne peut pas représenter cette réalité. Seule la création d'une table association résout le problème, et c'est aussi la table naturelle pour y loger un attribut porté comme Quantite.\n\n### Conseil\nUne astuce rapide pour ne jamais te tromper de sens : la clé étrangère se place toujours du côté de la cardinalité maximale **1**, jamais du côté du **n**. Vérifie ce sens sur chaque association avant de conclure ta traduction.",
+      "themes": [
+        "MLD",
+        "passage MCD-MLD",
+        "clés étrangères",
+        "association n,n"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qB-0",
+          "competence": "Traduire un Modèle Conceptuel de Données (MCD) en Modèle Logique de Données (MLD)",
+          "contenu_markdown": "Pour passer d'un MCD à un MLD : chaque entité devient une table dont l'identifiant devient clé primaire ; pour une association (1,n)-(1,1), la clé primaire du côté « n » migre comme clé étrangère dans la table du côté « 1 » ; pour une association (n,n) portant ou non un attribut, l'association devient elle-même une table portant les deux clés étrangères (et l'attribut porté).",
+          "cours_genere": true,
+          "cours_id": "cours-traduire-un-modele-conceptuel-de-donnees-mcd-en-modele-logique-de-donnees-mld-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "C1",
+      "enonce_markdown": "Une base de données permettant la gestion des commandes dans un supermarché se présente comme suit :\n\n```\nCLIENT (IdCli, NomCli, PrenomCli, Adresse)\nPRODUIT (Ref, NomProd, Prix)\nCOMMANDE (NumCom, DateCom, #IdCli)\nDETAILCOMMAND (NumCom, Ref, Quantite)\n```\n\n**1.** Définir les termes suivants : *base de données*, *requête SQL*. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne base de données se définit par ce qu'elle organise (des données, sans redondance, partagées), une requête SQL par ce qu'elle permet de faire (interroger ou modifier cette organisation dans un langage normalisé).\n\n**Base de données** : ensemble structuré et organisé de données, enregistrées de façon cohérente et la moins redondante possible, conçu pour être consulté, mis à jour et partagé par plusieurs utilisateurs ou applications.\n\n**Requête SQL** : instruction écrite dans le langage SQL (Structured Query Language), langage normalisé d'interrogation et de manipulation des bases de données relationnelles, qui permet de créer des structures (tables), d'y insérer, modifier, supprimer ou consulter des données.\n\n### Conseil\nCite toujours l'expansion du sigle SQL (Structured Query Language) dans ta définition : c'est un réflexe simple qui montre au correcteur une connaissance précise, pas seulement un vocabulaire mémorisé par cœur.",
+      "themes": [
+        "base de données",
+        "SQL",
+        "vocabulaire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qC1-0",
+          "competence": "Définitions : base de données et requête SQL",
+          "contenu_markdown": "Une base de données se définit par ce qu'elle organise (des données, sans redondance, partagées), une requête SQL par ce qu'elle permet de faire (interroger ou modifier cette organisation dans un langage normalisé).",
+          "cours_genere": true,
+          "cours_id": "cours-definitions-base-de-donnees-et-requete-sql-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "C2",
+      "enonce_markdown": "**2.** Écrire la requête de création de la table COMMANDE. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nCREATE TABLE déclare une nouvelle table en listant chacune de ses colonnes avec son type de données, puis en désignant sa clé primaire (PRIMARY KEY) et, le cas échéant, ses clés étrangères (FOREIGN KEY ... REFERENCES ...).\n\nLa table COMMANDE (NumCom, DateCom, #IdCli) comporte une clé primaire NumCom, une date, et une clé étrangère IdCli qui référence la table CLIENT.\n\n```sql\nCREATE TABLE COMMANDE (\n    NumCom VARCHAR(10) PRIMARY KEY,\n    DateCom DATE,\n    IdCli VARCHAR(10),\n    FOREIGN KEY (IdCli) REFERENCES CLIENT(IdCli)\n);\n```\n\n### Piège à éviter\nOublier la contrainte FOREIGN KEY sur IdCli est une erreur fréquente qui « fonctionne » techniquement (la table se crée quand même) mais ne traduit pas fidèlement le schéma logique fourni : le # devant IdCli dans l'énoncé signale précisément une clé étrangère à déclarer, pas une colonne ordinaire.",
+      "themes": [
+        "SQL",
+        "CREATE TABLE",
+        "clé étrangère"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qC2-0",
+          "competence": "Écrire une requête SQL de création de table (CREATE TABLE)",
+          "contenu_markdown": "CREATE TABLE déclare une nouvelle table en listant chacune de ses colonnes avec son type de données, puis en désignant sa clé primaire (PRIMARY KEY) et, le cas échéant, ses clés étrangères (FOREIGN KEY ... REFERENCES ...).",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-creation-de-table-create-table-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "C3",
+      "enonce_markdown": "**3.** Écrire la requête qui affiche les noms des clients et leurs dates de commande respectives. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour afficher des colonnes issues de deux tables liées par une clé étrangère, il faut joindre ces deux tables en indiquant explicitement la colonne de correspondance (clé primaire d'un côté, clé étrangère de l'autre).\n\nOn veut afficher le nom des clients (table CLIENT) et la date de leurs commandes (table COMMANDE). Le lien entre les deux tables se fait par IdCli, présent comme clé primaire dans CLIENT et comme clé étrangère dans COMMANDE.\n\n```sql\nSELECT NomCli, DateCom\nFROM CLIENT\nINNER JOIN COMMANDE ON CLIENT.IdCli = COMMANDE.IdCli;\n```\n\n### Piège à éviter\nÉcrire `SELECT NomCli, DateCom FROM CLIENT, COMMANDE;` sans condition de jointure produit un produit cartésien (chaque client associé à chaque commande, y compris celles qui ne sont pas les siennes) : la clause `ON` (ou la condition `WHERE CLIENT.IdCli = COMMANDE.IdCli` en syntaxe SQL classique) n'est jamais optionnelle dès que deux tables interviennent dans le FROM.",
+      "themes": [
+        "SQL",
+        "SELECT",
+        "jointure"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qC3-0",
+          "competence": "Écrire une requête SQL de sélection avec jointure (SELECT ... JOIN)",
+          "contenu_markdown": "Pour afficher des colonnes issues de deux tables liées par une clé étrangère, il faut joindre ces deux tables en indiquant explicitement la colonne de correspondance (clé primaire d'un côté, clé étrangère de l'autre).",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-selection-avec-jointure-select-join-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "C4",
+      "enonce_markdown": "**4.** Écrire la requête pour changer le prix du produit « carton de sucre » de 3500 à 7500. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUPDATE modifie la valeur d'une ou plusieurs colonnes pour les lignes d'une table qui vérifient une condition ; sans clause WHERE, la modification s'applique par erreur à toutes les lignes de la table.\n\nOn veut changer le prix (colonne Prix de la table PRODUIT) du produit dont le nom (NomProd) est « carton de sucre », en le faisant passer à 7500.\n\n```sql\nUPDATE PRODUIT\nSET Prix = 7500\nWHERE NomProd = 'carton de sucre';\n```\n\n### Piège à éviter\nOmettre la clause WHERE changerait le prix de **tous** les produits de la base à 7500, pas seulement celui du carton de sucre : sur une requête UPDATE (comme sur DELETE), la clause WHERE n'est jamais un détail facultatif.",
+      "themes": [
+        "SQL",
+        "UPDATE"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qC4-0",
+          "competence": "Écrire une requête SQL de mise à jour (UPDATE)",
+          "contenu_markdown": "UPDATE modifie la valeur d'une ou plusieurs colonnes pour les lignes d'une table qui vérifient une condition ; sans clause WHERE, la modification s'applique par erreur à toutes les lignes de la table.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-de-mise-a-jour-update-tle-tronc-commun"
+        }
+      ]
+    },
+    {
+      "numero": "C5",
+      "enonce_markdown": "**5.** Écrire la requête pour insérer un nouveau client ('02T32', 'Bissa', 'Edmond', 'rue 24 Douala'). *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nINSERT INTO ajoute une nouvelle ligne dans une table en donnant, dans l'ordre déclaré (ou explicitement listé), une valeur pour chaque colonne concernée.\n\nLa table CLIENT a pour schéma (IdCli, NomCli, PrenomCli, Adresse). On insère un nouveau client dans cet ordre exact : '02T32' (IdCli), 'Bissa' (NomCli), 'Edmond' (PrenomCli), 'rue 24 Douala' (Adresse).\n\n```sql\nINSERT INTO CLIENT (IdCli, NomCli, PrenomCli, Adresse)\nVALUES ('02T32', 'Bissa', 'Edmond', 'rue 24 Douala');\n```\n\n### Conseil\nLister explicitement les noms de colonnes après le nom de la table (comme ci-dessus) plutôt que d'écrire seulement `INSERT INTO CLIENT VALUES (...)` : la requête reste correcte même si l'ordre des colonnes de la table venait à changer, et le correcteur voit immédiatement que tu maîtrises la syntaxe complète, pas seulement le raccourci.",
+      "themes": [
+        "SQL",
+        "INSERT INTO"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qC5-0",
+          "competence": "Écrire une requête SQL d'insertion (INSERT INTO)",
+          "contenu_markdown": "INSERT INTO ajoute une nouvelle ligne dans une table en donnant, dans l'ordre déclaré (ou explicitement listé), une valeur pour chaque colonne concernée.",
+          "cours_genere": true,
+          "cours_id": "cours-ecrire-une-requete-sql-d-insertion-insert-into-tle-tronc-commun"
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "MCD",
+    "MLD",
+    "Merise",
+    "entités",
+    "associations",
+    "cardinalités",
+    "SQL",
+    "CREATE TABLE",
+    "jointure",
+    "UPDATE",
+    "INSERT INTO"
+  ],
+  "incertitudes": [
+    "Le fichier référentiel backend/programme/fixtures/programme_officiel_cm_informatique.json n'a pas été trouvé sur le système de fichiers : savoir_officiel n'a pu être renseigné pour aucune sous-question de cet exercice.",
+    "Question A.1/A.2 : le texte source ne précise pas de nom explicite pour les associations (« composé de », « publier », « provenant de ») ; les noms Composer/Publier/Ecrire retenus dans le corrigé sont des choix pédagogiques usuels, pas une citation littérale de l'énoncé.",
+    "Le MCD de la question A.2 suppose que numMessage est un identifiant global (unique pour tout le forum) ; l'énoncé pourrait aussi être lu comme une numérotation relative à chaque rubrique (identifiant relatif), ce que le niveau attendu au BAC ne demande pas de modéliser (association identifiante) - simplification signalée par prudence."
+  ],
+  "statut": "brouillon"
+}

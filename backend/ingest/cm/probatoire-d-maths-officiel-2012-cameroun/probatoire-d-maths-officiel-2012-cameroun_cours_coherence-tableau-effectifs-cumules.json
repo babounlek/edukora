@@ -1,0 +1,87 @@
+{
+  "cours_id": "cours-probatoire-d-maths-officiel-2012-cameroun-coherence-tableau-effectifs-cumules",
+  "meta": {
+    "titre": "Reconstituer un tableau statistique par recoupement (ECC / ECD)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Effectifs cumulés croissants et décroissants, vérification de cohérence",
+    "duree_estimee_min": 20,
+    "tags": [
+      "série statistique groupée",
+      "effectifs cumulés croissants",
+      "effectifs cumulés décroissants",
+      "cohérence de données"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "22",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2012-cameroun",
+    "epreuve_titre": "Probatoire D Mathématiques officiel 2012 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2012-cameroun-ex2-q1-1",
+    "rappels_lies": [
+      "rdm-probatoire-d-maths-officiel-2012-cameroun-ex2-q1-1",
+      "rdm-probatoire-d-maths-officiel-2012-cameroun-ex2-q3-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau d'effectifs cumulés croissants (ECC) et décroissants (ECD) contient presque toujours plus d'informations que de cases remplies : chaque effectif, chaque ECC et chaque ECD sont liés entre eux par des relations précises. Savoir exploiter ces relations permet non seulement de compléter un tableau partiellement rempli, mais aussi de détecter — et de corriger intelligemment — une éventuelle valeur erronée."
+    },
+    {
+      "type": "prerequis",
+      "contenu_markdown": "Définition de l'effectif cumulé croissant (ECC) et de l'effectif cumulé décroissant (ECD) d'une série statistique groupée en classes, notion d'effectif total N."
+    },
+    {
+      "type": "regle",
+      "formule_principale": "Pour une série groupée en classes d'effectifs $e_1,\\ldots,e_n$ et d'effectif total N : $ECC_i=e_1+\\cdots+e_i$ (cumul depuis le début), $ECD_i=e_i+\\cdots+e_n$ (cumul jusqu'à la fin), et pour tout $i$ : $ECC_i+ECD_{i+1}=N$ (les deux cumuls se complètent exactement, sans chevauchement ni trou, à la frontière entre la classe $i$ et la classe $i+1$).",
+      "variantes": [
+        "Cas particuliers utiles : $ECC_n=N$ (le dernier ECC est l'effectif total), $ECD_1=N$ (le premier ECD est l'effectif total), $ECD_n=e_n$ (le dernier ECD est l'effectif de la seule dernière classe).",
+        "Méthode de vérification croisée : si une valeur semble incohérente avec le reste du tableau, on calcule ce qu'elle DEVRAIT valoir à partir des autres données fiables, et on compare — un écart signale une donnée à corriger, pas une contradiction mathématique à accepter telle quelle."
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "etapes": [
+        "On dispose de $e_1=40$, $e_3=30$, $e_4=20$ (effectifs directs), et de deux valeurs \"80\" imprimées : l'une pour l'ECC de la classe 2, l'autre pour l'ECD de la même classe 2 — plus une valeur ECD$_5=10$.",
+        "Test 1 : si ECC$_2$=80 est correct, alors $e_2=80-e_1=40$. Avec ECD$_5=e_5=10$, on obtient $N=e_1+e_2+e_3+e_4+e_5=140$, d'où ECD$_2$ attendu $=N-ECC_1=140-40=100$ — incompatible avec le \"80\" imprimé pour ECD$_2$.",
+        "Test 2 : si ECD$_2$=80 est correct, alors $e_2+e_3+e_4+e_5=80$, soit $e_2=80-30-20-10=20$. On obtient $N=e_1+e_2+e_3+e_4+e_5=120$, d'où ECC$_2$ attendu $=e_1+e_2=40+20=60$ — cette fois cohérent avec TOUTES les autres données (ECD$_5=10$ ✓, et rien d'autre ne le contredit).",
+        "Le Test 2 étant le seul intégralement cohérent, on retient $e_2=20$, $N=120$, et on corrige la case ECC$_2$ imprimée \"80\" en \"60\" (probable erreur de recopie depuis la ligne ECD juste en dessous).",
+        "Une fois le tableau reconstitué, la cohérence complète se vérifie ligne par ligne : ECC = 40, 60, 90, 110, 120 et ECD = 120, 80, 60, 30, 10, avec bien ECC$_i$+ECD$_{i+1}$=120 pour chaque $i$."
+      ]
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        "Accepter telle quelle une donnée incohérente sans la confronter au reste du tableau : deux valeurs identiques imprimées à des endroits différents ne sont pas nécessairement toutes deux correctes.",
+        "Choisir arbitrairement laquelle des deux valeurs contradictoires corriger, sans tester méthodiquement les deux hypothèses et vérifier laquelle reproduit la cohérence de l'ENSEMBLE du tableau (pas seulement d'une case isolée).",
+        "Oublier la relation $ECC_i+ECD_{i+1}=N$, qui est l'outil le plus rapide pour repérer une incohérence sans reconstruire tout le tableau à la main."
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        "Un tableau à 4 classes donne $e_1=15$, ECC$_2$=35, $e_3=25$, ECD$_3$=45. Déterminer $e_2$, $e_4$ et l'effectif total N, en vérifiant la cohérence de chaque déduction.",
+        "Dans un tableau où deux valeurs semblent se contredire (comme dans l'exemple résolu), décrire la démarche méthodique à suivre pour déterminer laquelle des deux est la plus probablement erronée."
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "ECC et ECD d'une même classe sont liés à l'effectif total par $ECC_i+ECD_{i+1}=N$ : cette relation permet de vérifier ou de déduire des valeurs manquantes.",
+        "Face à une incohérence, on teste chaque hypothèse de correction séparément et on retient celle qui reproduit une cohérence totale avec toutes les autres données du tableau.",
+        "Une reconstitution de tableau n'est acceptée que si elle est vérifiée à la fois par les effectifs, les ECC et les ECD, ligne par ligne."
+      ]
+    }
+  ]
+}

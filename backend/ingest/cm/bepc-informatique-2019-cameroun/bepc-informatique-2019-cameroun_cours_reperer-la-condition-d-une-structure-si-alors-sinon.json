@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-reperer-la-condition-d-une-structure-si-alors-sinon-3e",
+  "meta": {
+    "titre": "Repérer la condition d'une structure Si...Alors...Sinon",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "structure conditionnelle",
+      "condition booléenne",
+      "opérateurs de comparaison",
+      "et",
+      "ou",
+      "pseudo-code"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2019-cameroun",
+    "epreuve_titre": "BEPC Informatique 2019 - Cameroun (MINESEC/DECC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2019-cameroun-ex2-q3.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un distributeur de billets vérifie ton code avant de délivrer l'argent, un jeu vérifie si tu as gagné, un formulaire vérifie que tu as bien rempli tous les champs. Derrière chacune de ces vérifications se trouve la même structure algorithmique : Si telle chose est vraie, Alors faire ceci, Sinon faire cela. Savoir isoler exactement la condition dans un algorithme est la première compétence évaluée sur ce chapitre, et c'est aussi celle qui permet ensuite de comprendre ce que fait le programme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme en pseudo-code (Algorithme, Variable, Debut, Fin).",
+        "Connaître les instructions `Lire` et `Ecrire`.",
+        "Savoir comparer deux nombres et connaître les symboles $<$, $>$, $\\leq$, $\\geq$, $=$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La condition, et rien d'autre",
+      "contenu_markdown": "Une **condition** est une expression **booléenne** : elle ne peut prendre que deux valeurs, **vrai** ou **faux**. Elle sert à orienter le déroulement de l'algorithme.\n\n**La structure conditionnelle complète** s'écrit :\n\n```\nSi (condition) Alors\n    instructions exécutées si la condition est vraie\nSinon\n    instructions exécutées si la condition est fausse\nFinSi\n```\n\nLa condition est **exactement ce qui se trouve entre `Si` et `Alors`**. Ni le mot `Si`, ni le mot `Alors`, ni les instructions qui suivent n'en font partie.\n\nLa forme **simple**, sans `Sinon`, existe également :\n\n```\nSi (condition) Alors\n    instructions\nFinSi\n```\n\n**Les opérateurs de comparaison** construisent les conditions simples : $=$ (égal), $\\neq$ (différent), $<$ (strictement inférieur), $>$ (strictement supérieur), $\\leq$ (inférieur ou égal), $\\geq$ (supérieur ou égal).\n\n**Les opérateurs logiques** relient plusieurs conditions simples en une condition composée :\n\n| Opérateur | La condition composée est vraie… | Exemple |\n|---|---|---|\n| `et` | quand les **deux** conditions sont vraies | `(N >= 1 et N <= 10)` : N est dans l'intervalle |\n| `ou` | quand **au moins une** des deux est vraie | `(N < 1 ou N > 10)` : N est hors de l'intervalle |\n| `non` | quand la condition est fausse | `non(N = 0)` équivaut à `N <> 0` |\n\n**Point de vigilance capital.** `(N < 1 ou N > 10)` et `(N >= 1 et N <= 10)` sont deux conditions **opposées** : la première est vraie quand N sort de l'intervalle, la seconde quand il y est. Elles décrivent le même intervalle mais déclenchent des branches inverses. Confondre `et` et `ou` inverse tout le comportement de l'algorithme.",
+      "formule_principale": "Si\\ (\\underbrace{condition}_{expression\\ vraie\\ ou\\ fausse})\\ Alors\\ \\ldots\\ Sinon\\ \\ldots\\ FinSi"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'algorithme suivant, identifier la condition.\n\n```\nAlgorithme bon_nombre\n  Variable N : Entier ;\n  Debut\n    Ecrire(\"Entrez un nombre entre 1 et 10\") ;\n    Lire(N) ;\n      Si (N < 1 ou N > 10) Alors\n        Ecrire(\"Mauvaise réponse. Recommencez\") ;\n      Sinon\n        Ecrire(\"Bravo !!! Ce nombre est bien compris entre 1 et 10\") ;\n      FinSi\n  Fin\n```\n\n*(BEPC Informatique 2019, Partie II, question 3.b)*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la structure conditionnelle dans l'algorithme",
+          "justification": "Une condition n'existe que dans une structure conditionnelle ou une boucle : c'est là qu'il faut regarder, pas ailleurs.",
+          "resultat_markdown": "La structure commence à la ligne `Si (N < 1 ou N > 10) Alors` et se termine à `FinSi`."
+        },
+        {
+          "numero": 2,
+          "action": "Délimiter ce qui se trouve entre `Si` et `Alors`",
+          "justification": "C'est la définition même de la condition : tout ce qui est avant `Si` ou après `Alors` en est exclu.",
+          "resultat_markdown": "La condition est `(N < 1 ou N > 10)`."
+        },
+        {
+          "numero": 3,
+          "action": "Analyser la structure interne de cette condition",
+          "justification": "Comprendre la condition permet ensuite de répondre à la question sur le rôle de l'algorithme.",
+          "resultat_markdown": "Elle est composée de deux conditions simples, `N < 1` et `N > 10`, reliées par l'opérateur logique `ou`."
+        },
+        {
+          "numero": 4,
+          "action": "Interpréter la condition",
+          "justification": "On traduit l'expression symbolique en langage courant, ce qui vaut souvent des points supplémentaires.",
+          "resultat_markdown": "La condition est vraie dès que l'une au moins des deux comparaisons est vraie, c'est-à-dire dès que N est en dehors de l'intervalle allant de 1 à 10."
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier sur des valeurs",
+          "justification": "Un test rapide sur deux ou trois valeurs confirme l'interprétation.",
+          "resultat_markdown": "Pour N = 0 : `0 < 1` est vrai, donc la condition est vraie. Pour N = 5 : `5 < 1` est faux et `5 > 10` est faux, donc la condition est fausse. Pour N = 12 : `12 > 10` est vrai, donc la condition est vraie."
+        }
+      ],
+      "conclusion_markdown": "La condition de cet algorithme est `(N < 1 ou N > 10)`. Elle est vraie lorsque le nombre saisi sort de l'intervalle de 1 à 10, ce qui déclenche le message d'erreur, et fausse dans le cas contraire, ce qui déclenche le message de félicitation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier toute la ligne `Si (N < 1 ou N > 10) Alors` comme réponse.",
+          "pourquoi_faux": "Les mots `Si` et `Alors` sont les mots-clés de la structure ; ils encadrent la condition mais n'en font pas partie. La réponse attendue est l'expression seule.",
+          "correction_markdown": "Réponds uniquement par ce qui figure entre les deux mots-clés : `(N < 1 ou N > 10)`."
+        },
+        {
+          "erreur_markdown": "Confondre l'opérateur `ou` et l'opérateur `et` dans une condition d'intervalle.",
+          "pourquoi_faux": "Écrire `(N < 1 et N > 10)` donne une condition qui n'est **jamais** vraie : aucun nombre ne peut être à la fois plus petit que 1 et plus grand que 10. L'algorithme afficherait alors toujours le message de félicitation, même pour N = 100.",
+          "correction_markdown": "Retiens la règle : pour dire « en dehors de l'intervalle », on utilise `ou` ; pour dire « à l'intérieur de l'intervalle », on utilise `et`."
+        },
+        {
+          "erreur_markdown": "Prendre l'instruction qui suit `Alors` pour la condition.",
+          "pourquoi_faux": "`Ecrire(\"Mauvaise réponse. Recommencez\")` est l'action exécutée quand la condition est vraie, pas la condition elle-même. Une condition ne fait rien, elle est seulement vraie ou fausse.",
+          "correction_markdown": "Pose-toi la question : « cette expression peut-elle être vraie ou fausse ? » Une instruction d'affichage ne le peut pas ; une comparaison, oui."
+        },
+        {
+          "erreur_markdown": "Utiliser le symbole `=` pour comparer alors qu'il sert à affecter.",
+          "pourquoi_faux": "Dans beaucoup de langages, `=` affecte une valeur à une variable et `==` compare. En pseudo-code scolaire, l'affectation s'écrit le plus souvent avec une flèche `←` et la comparaison avec `=`, mais l'ambiguïté demeure si l'on n'y prend pas garde.",
+          "correction_markdown": "En pseudo-code, écris `N ← 5` pour affecter et `N = 5` pour comparer, et respecte cette distinction dans toute la copie."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la condition qui traduit chacune des phrases suivantes : (a) le nombre A est positif ; (b) l'âge est compris entre 12 et 18 ans, bornes incluses ; (c) la note est différente de 20.",
+          "solution_markdown": "**Solution.**\n\n(a) « A est positif » signifie que A est supérieur ou égal à zéro :\n\n`(A >= 0)`\n\nSi l'énoncé disait « strictement positif », on écrirait `(A > 0)`.\n\n(b) « compris entre 12 et 18, bornes incluses » impose deux contraintes qui doivent être satisfaites **en même temps**, donc l'opérateur `et` :\n\n`(age >= 12 et age <= 18)`\n\n(c) « différente de 20 » se traduit directement par l'opérateur de différence :\n\n`(note <> 20)`\n\nOn peut aussi écrire `non(note = 20)`, qui est équivalent."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit l'algorithme suivant. Identifie la condition, puis indique ce qui s'affiche pour M = 8, M = 10 et M = 15.\n\n```\nAlgorithme mention\n  Variable M : Entier ;\n  Debut\n    Lire(M) ;\n      Si (M >= 10) Alors\n        Ecrire(\"Admis\") ;\n      Sinon\n        Ecrire(\"Ajourné\") ;\n      FinSi\n  Fin\n```",
+          "solution_markdown": "**Solution.**\n\n**Identification de la condition.** Ce qui se trouve entre `Si` et `Alors` est :\n\n`(M >= 10)`\n\nC'est une condition simple, construite avec l'opérateur de comparaison « supérieur ou égal ».\n\n**Déroulement pour chaque valeur.**\n\n- **M = 8** : la condition `8 >= 10` est **fausse**. L'algorithme exécute la branche `Sinon` et affiche `Ajourné`.\n- **M = 10** : la condition `10 >= 10` est **vraie**, car l'opérateur `>=` inclut le cas d'égalité. L'algorithme exécute la branche `Alors` et affiche `Admis`.\n- **M = 15** : la condition `15 >= 10` est **vraie**. L'algorithme affiche `Admis`.\n\n**Point d'attention.** Le cas M = 10 est celui qui distingue `>=` de `>`. Avec la condition `(M > 10)`, un élève ayant exactement 10 aurait été déclaré ajourné. Le choix de l'opérateur, sur cette seule borne, change la décision."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un lycée accorde une bourse à un élève si sa moyenne est supérieure ou égale à 14 **et** si son revenu familial est inférieur à 300 000 F CFA. Écris la structure conditionnelle correspondante, puis réécris-la sous une forme équivalente utilisant l'opérateur `ou` pour tester le refus.",
+          "solution_markdown": "**Solution.**\n\n**Première écriture : tester l'acceptation.**\n\nLes deux exigences doivent être satisfaites simultanément, donc l'opérateur `et` :\n\n```\nSi (moyenne >= 14 et revenu < 300000) Alors\n    Ecrire(\"Bourse accordée\") ;\nSinon\n    Ecrire(\"Bourse refusée\") ;\nFinSi\n```\n\n**Seconde écriture : tester le refus.**\n\nLa bourse est refusée dès qu'**au moins une** des deux exigences n'est pas satisfaite : soit la moyenne est insuffisante, soit le revenu est trop élevé. La négation d'un `et` donne un `ou`, et chaque comparaison s'inverse :\n\n- la négation de `moyenne >= 14` est `moyenne < 14` ;\n- la négation de `revenu < 300000` est `revenu >= 300000`.\n\nD'où :\n\n```\nSi (moyenne < 14 ou revenu >= 300000) Alors\n    Ecrire(\"Bourse refusée\") ;\nSinon\n    Ecrire(\"Bourse accordée\") ;\nFinSi\n```\n\n**Vérification sur des cas concrets.**\n\n| moyenne | revenu | 1re écriture | 2e écriture |\n|---|---|---|---|\n| 16 | 200 000 | accordée | accordée |\n| 12 | 200 000 | refusée | refusée |\n| 16 | 400 000 | refusée | refusée |\n| 12 | 400 000 | refusée | refusée |\n\nLes deux écritures donnent le même résultat dans les quatre cas possibles : elles sont bien équivalentes.\n\n**Ce que cet exercice enseigne.** Passer de `et` à `ou` en niant une condition composée oblige à inverser **chaque** comparaison, sans en oublier aucune. C'est la règle de De Morgan, que tu retrouveras au lycée ; au BEPC, il suffit d'en connaître l'effet pratique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La condition est exactement ce qui se trouve entre `Si` et `Alors` : ni plus, ni moins.",
+        "Une condition est vraie ou fausse, jamais autre chose. Si une expression ne peut pas répondre à cette question, ce n'est pas une condition.",
+        "`et` exige que les deux conditions soient vraies ; `ou` se contente d'une seule. Cette différence inverse le comportement de l'algorithme.",
+        "Pour dire « à l'intérieur d'un intervalle », utilise `et` ; pour dire « en dehors », utilise `ou`.",
+        "Teste toujours ta condition sur deux ou trois valeurs, dont les bornes : c'est là que se cachent les erreurs entre `>` et `>=`.",
+        "Au BEPC, on te demande d'identifier une condition dans un algorithme donné, puis d'en écrire une à partir d'une phrase en français : les deux exercices se préparent avec la même méthode de traduction."
+      ]
+    }
+  ]
+}

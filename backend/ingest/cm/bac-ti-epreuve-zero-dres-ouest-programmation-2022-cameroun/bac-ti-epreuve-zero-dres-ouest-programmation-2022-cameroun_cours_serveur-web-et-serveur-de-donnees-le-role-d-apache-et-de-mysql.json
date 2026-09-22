@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-serveur-web-et-serveur-de-donnees-le-role-d-apache-et-de-mysql-tle-ti",
+  "meta": {
+    "titre": "Serveur Web et serveur de données : le rôle d'Apache et de MySQL",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Architecture d'une application web",
+    "duree_estimee_min": 20,
+    "tags": [
+      "Apache",
+      "MySQL",
+      "serveur de données",
+      "architecture web"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une suite comme WAMP installe d'un coup Apache, MySQL et PHP sur ton ordinateur. Pourquoi trois logiciels différents pour faire fonctionner une seule application web ? Parce qu'ils ne rendent pas le même service : l'un distribue des pages, l'autre stocke des données, et le troisième fait le lien entre les deux."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le rôle général d'un serveur Web",
+        "Savoir ce qu'est une base de données"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux serveurs, deux métiers",
+      "contenu_markdown": "Un **serveur Web** (par exemple Apache) reçoit les requêtes HTTP des navigateurs et y répond en renvoyant des pages, statiques ou générées dynamiquement par un script. Un **serveur de données** (ou SGBD, système de gestion de base de données, par exemple MySQL) stocke des données de façon structurée et répond aux requêtes SQL qui les interrogent ou les modifient.\n\nCes deux logiciels collaborent mais restent indépendants : un script PHP, exécuté par le serveur Web, agit comme un intermédiaire qui interroge le serveur de données (via une extension comme mysqli) puis met en forme le résultat en HTML avant de le renvoyer au navigateur."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Parmi cette liste, identifie le serveur Web et le serveur de données : PERL, ZEUS, MYSQLI, MYSQL, HTTPS, Apache, Javascript, Web Protocol, PHP.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écarter les langages de script (PERL, PHP, Javascript)",
+          "justification": "Un langage exprime des instructions, il ne stocke ni ne distribue rien tout seul",
+          "resultat_markdown": "PERL, PHP et Javascript sont éliminés"
+        },
+        {
+          "numero": 2,
+          "action": "Écarter les protocoles et dénominations non reconnues (HTTPS, Web Protocol)",
+          "justification": "Un protocole définit une règle d'échange, ce n'est pas un logiciel serveur en soi",
+          "resultat_markdown": "HTTPS et « Web Protocol » sont éliminés"
+        },
+        {
+          "numero": 3,
+          "action": "Distinguer MYSQL de MYSQLI",
+          "justification": "MySQL est le serveur de données lui-même ; MySQLI est l'extension PHP qui permet de s'y connecter, pas un serveur",
+          "resultat_markdown": "MYSQL est retenu comme serveur de données, MYSQLI est éliminé"
+        },
+        {
+          "numero": 4,
+          "action": "Identifier le serveur Web restant",
+          "justification": "Apache est un logiciel serveur Web reconnu ; ZEUS, bien que réellement un ancien serveur Web, n'est pas celui utilisé dans le contexte de l'épreuve",
+          "resultat_markdown": "Apache est retenu comme serveur Web"
+        }
+      ],
+      "conclusion_markdown": "Le serveur Web retenu est Apache, le serveur de données retenu est MySQL."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre MYSQLI au lieu de MYSQL pour le serveur de données",
+          "pourquoi_faux": "MYSQLI est le nom de l'extension PHP (« MySQL Improved ») utilisée pour dialoguer avec le serveur, pas le nom du serveur lui-même.",
+          "correction_markdown": "Le serveur de données s'appelle MySQL ; MySQLI n'est qu'un outil PHP pour s'y connecter."
+        },
+        {
+          "erreur_markdown": "Considérer PHP comme un serveur parce qu'il « tourne sur le serveur »",
+          "pourquoi_faux": "PHP est un langage de script interprété par le serveur Web, pas un serveur en tant que tel : il ne reçoit aucune requête HTTP directement.",
+          "correction_markdown": "Réserve le mot « serveur » aux logiciels qui écoutent et répondent directement à des requêtes (HTTP pour le Web, SQL pour les données)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "MySQL est-il un serveur Web ou un serveur de données ?",
+          "solution_markdown": "Un serveur de données (SGBD) : il stocke et gère des données interrogeables par SQL."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Explique en une phrase pourquoi MySQLI n'est pas un serveur.",
+          "solution_markdown": "MySQLI est une extension du langage PHP qui fournit des fonctions (`mysqli_connect`, `mysqli_query`...) pour dialoguer avec un serveur MySQL ; elle ne stocke ni ne distribue rien elle-même."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une suite WAMP est installée sur un ordinateur, mais seul le service Apache est démarré, pas MySQL. Un script PHP qui affiche une page sans interroger de base de données fonctionne-t-il ? Et un script qui exécute une requête SQL ?",
+          "solution_markdown": "Le premier script fonctionne normalement : il n'a besoin que du serveur Web (Apache) pour être interprété et renvoyé au navigateur, sans jamais solliciter MySQL. Le second script échoue en revanche dès l'appel à `mysqli_connect`, puisque le serveur de données MySQL n'est pas démarré et ne peut répondre à aucune requête SQL."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un serveur Web (Apache) distribue des pages ; un serveur de données (MySQL) stocke et gère des données.",
+        "Ne confonds jamais MySQL (le serveur) et MySQLI (l'extension PHP qui permet de s'y connecter).",
+        "PHP et JavaScript sont des langages, pas des serveurs : ils ne répondent pas eux-mêmes à des requêtes.",
+        "Dans une application comme WAMP, ces logiciels sont installés ensemble mais restent des services indépendants, qui peuvent être démarrés ou arrêtés séparément."
+      ]
+    }
+  ]
+}

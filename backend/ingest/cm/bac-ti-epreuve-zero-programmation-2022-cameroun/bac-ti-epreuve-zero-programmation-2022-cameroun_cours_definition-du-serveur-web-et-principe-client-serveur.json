@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-definition-du-serveur-web-et-principe-client-serveur-tle-ti",
+  "meta": {
+    "titre": "Définition du serveur Web et principe client-serveur",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Serveurs Web et hébergement local",
+    "duree_estimee_min": 20,
+    "tags": [
+      "serveur Web",
+      "client-serveur",
+      "HTTP",
+      "Apache"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q6.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois qu'un navigateur affiche une page, une machine quelque part a reçu une demande, l'a traitée, puis a renvoyé une réponse. Cette machine et le logiciel qui l'anime portent un nom précis : le serveur Web."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de réseau et d'adresse (URL)",
+        "Distinction entre un logiciel client et un logiciel serveur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le serveur Web répond aux requêtes HTTP des navigateurs",
+      "contenu_markdown": "Un serveur Web est un logiciel installé sur une machine (locale ou distante) qui écoute les requêtes HTTP envoyées par des clients (navigateurs), les traite - en exécutant si besoin des scripts côté serveur comme PHP - puis renvoie une réponse, le plus souvent une page HTML. Ce fonctionnement illustre le modèle client-serveur : le client (navigateur) initie toujours la communication en envoyant une requête, le serveur ne répond jamais de sa propre initiative. Apache et Nginx sont les deux logiciels serveurs Web les plus répandus.",
+      "formule_principale": "Client (navigateur) --requête HTTP--> Serveur Web --réponse HTML--> Client",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Définir le serveur Web mentionné dans l'énoncé, qui héberge la base de données implémentée avec WampServer.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce que reçoit le serveur",
+          "justification": "Le point de départ de toute réponse d'un serveur Web est une requête HTTP envoyée par un client.",
+          "resultat_markdown": "Une requête HTTP envoyée par le navigateur du candidat, provoquée par la soumission du formulaire de connexion."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier ce que fait le serveur avec cette requête",
+          "justification": "C'est ici qu'intervient l'exécution du script PHP décrit dans l'exercice.",
+          "resultat_markdown": "Le serveur exécute le script `verif_motdepasse.php` (interrogation de la base MySQL, comparaison du mot de passe)."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier ce que renvoie le serveur",
+          "justification": "C'est la réponse finale, seule chose que le navigateur affichera réellement.",
+          "resultat_markdown": "Une page HTML contenant le message adapté (accepté ou refusé)."
+        }
+      ],
+      "conclusion_markdown": "Le serveur Web est donc l'intermédiaire logiciel qui reçoit la demande du navigateur, déclenche le traitement PHP nécessaire, et renvoie une réponse exploitable par ce navigateur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le serveur Web (logiciel comme Apache) avec le serveur de base de données (MySQL).",
+          "pourquoi_faux": "Ce sont deux logiciels distincts, souvent installés ensemble (comme dans WampServer) mais avec des rôles différents : le serveur Web sert les pages et exécute PHP, le serveur de base de données stocke et interroge les données.",
+          "correction_markdown": "Toujours préciser lequel des deux logiciels est concerné quand la question porte sur un environnement qui les regroupe tous les deux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer le nom du logiciel serveur Web inclus dans WampServer.",
+          "solution_markdown": "Apache."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ami affirme que « le serveur Web, c'est l'ordinateur qui affiche la page ». Corriger cette affirmation.",
+          "solution_markdown": "C'est l'inverse : l'ordinateur qui AFFICHE la page est le client (celui qui exécute le navigateur et envoie la requête). Le serveur Web est la machine qui REÇOIT cette requête, exécute le traitement nécessaire et RENVOIE la page - c'est donc la machine hébergeant le site, pas celle du visiteur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi, dans un développement local avec WampServer, l'ordinateur du développeur joue à la fois le rôle de client ET de serveur.",
+          "solution_markdown": "En développement local, un seul et même ordinateur héberge le serveur Web (Apache, démarré via WampServer) et exécute également le navigateur qui consulte le site. Le navigateur envoie sa requête à `localhost` (ou `127.0.0.1`), qui désigne la machine elle-même : la requête ne quitte donc jamais physiquement l'ordinateur, mais le principe client-serveur reste identique - un processus (le navigateur, client) envoie une requête à un autre processus (Apache, serveur), qui y répond, tous deux tournant simplement sur la même machine plutôt que sur deux machines séparées comme en production."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le serveur Web est un logiciel qui reçoit des requêtes HTTP, les traite, et renvoie une réponse (souvent du HTML).",
+        "Le modèle client-serveur veut que le client initie toujours l'échange ; le serveur ne répond jamais spontanément.",
+        "Apache et Nginx sont les logiciels serveurs Web les plus courants ; WampServer inclut Apache comme serveur Web.",
+        "En local, une même machine joue à la fois le rôle de client (navigateur) et de serveur (Apache) : le principe reste identique à un déploiement en production."
+      ]
+    }
+  ]
+}

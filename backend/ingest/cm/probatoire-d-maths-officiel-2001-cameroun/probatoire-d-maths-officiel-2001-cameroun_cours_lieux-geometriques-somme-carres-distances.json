@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-lieux-geometriques-somme-carres-distances-1ere-d",
+  "meta": {
+    "titre": "Lieux géométriques définis par MA² + MB² = k",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Barycentres et lieux géométriques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "lieu géométrique",
+      "relation de la médiane",
+      "cercle",
+      "barycentre"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "23",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2001-cameroun",
+    "epreuve_titre": "Probatoire D - Mathématiques - Session 2001 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2001-cameroun-ex3-qI2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un énoncé demande de décrire l'ensemble des points $M$ vérifiant une égalité portant sur des distances au carré, l'intuition (« ça doit être un cercle ») ne suffit pas : il faut une formule pour le prouver et trouver son centre et son rayon exacts. Ce cours donne cette formule, la relation de la médiane, qui transforme n'importe quelle égalité $MA^2+MB^2=k$ en équation de cercle en trois lignes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul vectoriel de base (relation de Chasles)",
+        "Distance entre deux points, carré d'une distance",
+        "Équation d'un cercle (centre, rayon)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La relation de la médiane",
+      "contenu_markdown": "Si $I$ est le milieu du segment $[AB]$, alors pour tout point $M$ du plan : $MA^2+MB^2=2MI^2+\\dfrac{AB^2}{2}$. Cette identité se démontre en écrivant $\\vec{MA}=\\vec{MI}+\\vec{IA}$ et $\\vec{MB}=\\vec{MI}+\\vec{IB}$, en développant les carrés scalaires $MA^2=\\vec{MA}^2$ et $MB^2=\\vec{MB}^2$, et en utilisant $\\vec{IA}=-\\vec{IB}$ (car $I$ est le milieu de $[AB]$) pour faire disparaître les termes croisés. Une fois cette identité posée, résoudre $MA^2+MB^2=k$ revient à résoudre $MI^2=\\dfrac{1}{2}\\left(k-\\dfrac{AB^2}{2}\\right)$, qui est l'équation d'un cercle de centre $I$ dès que le second membre est positif.",
+      "formule_principale": "MA^2+MB^2 = 2MI^2+\\dfrac{AB^2}{2}",
+      "variantes": [
+        {
+          "nom": "Produit scalaire MA·MB = k",
+          "quand_utiliser": "Quand l'énoncé porte sur $\\vec{MA}\\cdot\\vec{MB}$ plutôt que sur une somme de carrés.",
+          "contenu_markdown": "Avec les mêmes notations, $\\vec{MA}\\cdot\\vec{MB}=MI^2-\\dfrac{AB^2}{4}$ : l'ensemble des points $M$ tels que $\\vec{MA}\\cdot\\vec{MB}=k$ est encore un cercle de centre $I$, de rayon $\\sqrt{k+\\dfrac{AB^2}{4}}$ (à condition que cette quantité soit positive)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$A$ et $B$ sont deux points tels que $AB=5$ cm et $I$ est le milieu de $[AB]$. Déterminer l'ensemble des points $M$ du plan tels que $MA^2+MB^2=\\dfrac{125}{2}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la relation de la médiane",
+          "justification": "Cette identité relie $MA^2+MB^2$ à $MI^2$, quel que soit le point $M$.",
+          "resultat_markdown": "$MA^2+MB^2=2MI^2+\\dfrac{AB^2}{2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Remplacer $AB$ par sa valeur numérique",
+          "justification": "$AB=5$, donc $AB^2=25$.",
+          "resultat_markdown": "$MA^2+MB^2=2MI^2+\\dfrac{25}{2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Injecter la condition de l'énoncé et isoler $MI^2$",
+          "justification": "On remplace $MA^2+MB^2$ par $\\dfrac{125}{2}$ (donnée de l'énoncé) et on résout en $MI^2$.",
+          "resultat_markdown": "$2MI^2+\\dfrac{25}{2}=\\dfrac{125}{2} \\implies 2MI^2=50 \\implies MI^2=25 \\implies MI=5$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble cherché est le cercle de centre $I$ et de rayon $5$ cm."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $MA^2+MB^2=2MI^2+AB^2$ (oubli du facteur $\\dfrac{1}{2}$ devant $AB^2$).",
+          "pourquoi_faux": "La relation de la médiane fait apparaître $\\dfrac{AB^2}{2}$, pas $AB^2$ : oublier ce facteur double l'écart et fausse tout le calcul du rayon.",
+          "correction_markdown": "Mémorise la formule complète avec son facteur $\\dfrac{1}{2}$, ou redémontre-la rapidement si un doute persiste le jour de l'épreuve."
+        },
+        {
+          "erreur_markdown": "Conclure à un cercle sans vérifier que $MI^2$ trouvé est positif.",
+          "pourquoi_faux": "Si la valeur de $k$ donnée dans l'énoncé conduisait à $MI^2<0$, l'ensemble cherché serait vide (aucun point $M$ ne conviendrait), pas un cercle.",
+          "correction_markdown": "Vérifie toujours le signe de $MI^2$ avant de conclure à un cercle et d'en extraire le rayon."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$A$ et $B$ sont deux points tels que $AB=6$ cm, $I$ le milieu de $[AB]$. Déterminer l'ensemble des points $M$ tels que $MA^2+MB^2=50$.",
+          "solution_markdown": "$MA^2+MB^2=2MI^2+\\dfrac{AB^2}{2}=2MI^2+\\dfrac{36}{2}=2MI^2+18$.\n\n$2MI^2+18=50 \\implies 2MI^2=32 \\implies MI^2=16 \\implies MI=4$.\n\nL'ensemble cherché est le cercle de centre $I$ et de rayon $4$ cm."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$A$ et $B$ sont deux points tels que $AB=8$ cm, $I$ le milieu de $[AB]$. Déterminer l'ensemble des points $M$ tels que $MA^2+MB^2=32$.",
+          "solution_markdown": "$MA^2+MB^2=2MI^2+\\dfrac{64}{2}=2MI^2+32$.\n\n$2MI^2+32=32 \\implies 2MI^2=0 \\implies MI=0$.\n\nL'ensemble cherché se réduit au seul point $I$ (un « cercle de rayon $0$ »). C'est cohérent : $\\dfrac{AB^2}{2}=32$ est la valeur MINIMALE possible de $MA^2+MB^2$, atteinte uniquement quand $M=I$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$A$ et $B$ sont deux points tels que $AB=10$ cm, $I$ le milieu de $[AB]$. Montrer que l'ensemble des points $M$ tels que $MA^2+MB^2=40$ est vide.",
+          "solution_markdown": "$MA^2+MB^2=2MI^2+\\dfrac{100}{2}=2MI^2+50$.\n\n$2MI^2+50=40 \\implies 2MI^2=-10 \\implies MI^2=-5$.\n\nUn carré ne peut jamais être négatif : $MI^2=-5$ est impossible quel que soit le point $M$. L'ensemble cherché est donc vide - aucun point du plan ne vérifie l'égalité demandée. Cela s'explique par le fait que $\\dfrac{AB^2}{2}=50$ est la valeur minimale possible de $MA^2+MB^2$ (atteinte en $M=I$) : demander une valeur inférieure, comme $40$, ne peut être satisfait par aucun point."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La relation de la médiane $MA^2+MB^2=2MI^2+\\dfrac{AB^2}{2}$ transforme toute égalité sur une somme de carrés de distances en équation portant sur $MI$ seul.",
+        "Résoudre $MA^2+MB^2=k$ revient à isoler $MI^2=\\dfrac{1}{2}\\left(k-\\dfrac{AB^2}{2}\\right)$ : cercle de centre $I$ si cette quantité est strictement positive, point unique $I$ si elle est nulle, ensemble vide si elle est négative.",
+        "La variante avec le produit scalaire, $\\vec{MA}\\cdot\\vec{MB}=MI^2-\\dfrac{AB^2}{4}$, se traite exactement de la même façon, avec un signe différent devant $AB^2$.",
+        "$\\dfrac{AB^2}{2}$ est la valeur MINIMALE possible de $MA^2+MB^2$ (atteinte quand $M=I$) : un réflexe de vérification rapide avant même de résoudre l'équation.",
+        "Ce type de question apparaît très régulièrement au Probatoire dans la partie barycentre/géométrie vectorielle : reconnaître immédiatement la relation de la médiane fait gagner un temps précieux."
+      ]
+    }
+  ]
+}

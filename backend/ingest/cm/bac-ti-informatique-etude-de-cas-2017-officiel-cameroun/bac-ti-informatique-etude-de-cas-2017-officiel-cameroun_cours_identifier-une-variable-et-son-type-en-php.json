@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-identifier-variable-et-type-php-tle-ti",
+  "meta": {
+    "titre": "Identifier une variable PHP et déterminer son type",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases du langage PHP - variables et types",
+    "duree_estimee_min": 20,
+    "tags": [
+      "PHP",
+      "variables",
+      "types de données",
+      "tableau",
+      "entier",
+      "chaîne de caractères"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex1-q4a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant même de comprendre ce que fait un programme, il faut savoir de quoi il parle : quelles données il manipule, et sous quelle forme. En PHP, cette étape passe par le repérage systématique des variables et de leur type, une compétence de lecture de code indispensable avant d'analyser le comportement d'un script, quelle que soit sa complexité."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'en PHP, toute variable commence par le symbole `$`.",
+        "Connaître les types de données de base : entier, chaîne de caractères, tableau."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Repérer le `$`, puis remonter à la première affectation",
+      "contenu_markdown": "Une variable PHP se reconnaît immédiatement à son préfixe `$`, quel que soit l'endroit du code où elle apparaît (y compris dans l'en-tête d'une boucle `for`). Pour déterminer son type, on remonte à la valeur qui lui est affectée lors de sa première apparition : une liste de valeurs entre `array(...)` (ou entre crochets `[...]` dans les versions récentes de PHP) donne un tableau ; une valeur numérique sans point décimal donne un entier (`int`) ; une valeur numérique avec point décimal donne un flottant (`float`) ; un texte entre guillemets donne une chaîne de caractères (`string`) ; les valeurs `true`/`false` donnent un booléen (`bool`).",
+      "formule_principale": "\\$\\text{variable} = \\text{valeur} \\;\\Rightarrow\\; \\text{le type de la valeur détermine le type de la variable}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier les variables du code `$prenoms = array(\"RENE\", \"DIDIER\", \"PAUL\"); for ($numero = 0; $numero < 3; $numero++) { echo $prenoms[$numero]; }` et préciser leur type.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Balayer le code de haut en bas et souligner chaque `$`",
+          "justification": "C'est la seule façon de ne laisser passer aucune variable, y compris celles cachées dans l'en-tête d'une boucle.",
+          "resultat_markdown": "Deux occurrences trouvées : `$prenoms` et `$numero`."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer le type de `$prenoms`",
+          "justification": "Elle reçoit une liste de trois valeurs entre `array(...)`, chacune étant un texte entre guillemets.",
+          "resultat_markdown": "`$prenoms` est un tableau (`array`) de chaînes de caractères (`string`)."
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer le type de `$numero`",
+          "justification": "Elle reçoit la valeur `0`, un nombre entier sans point décimal, dans l'en-tête du `for`.",
+          "resultat_markdown": "`$numero` est un entier (`int`)."
+        }
+      ],
+      "conclusion_markdown": "Le code utilise deux variables : `$prenoms`, un tableau de chaînes de caractères, et `$numero`, un entier servant de compteur de boucle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier `$numero` parce qu'elle n'apparaît que dans l'en-tête de la boucle `for` et non dans une ligne d'affectation isolée.",
+          "pourquoi_faux": "L'en-tête d'un `for` contient une véritable affectation (`$numero = 0`) : c'est une variable à part entière, avec son propre type, même si elle sert « seulement » de compteur.",
+          "correction_markdown": "Lire aussi l'en-tête des boucles lors du repérage des variables, pas seulement le corps du programme."
+        },
+        {
+          "erreur_markdown": "Dire que `$prenoms` est une « chaîne de caractères » parce que ses éléments sont des chaînes.",
+          "pourquoi_faux": "Le type d'une variable est celui de la structure qui la contient dans son ensemble, pas celui de ses éléments internes : `$prenoms` contient plusieurs valeurs organisées en liste, c'est donc un tableau, dont chaque élément est lui-même une chaîne.",
+          "correction_markdown": "Distinguer le type du contenant (ici : tableau) du type des éléments qu'il contient (ici : chaînes de caractères) - les deux informations sont utiles et souvent toutes deux demandées."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Identifier la variable du code `$age = 17;` et préciser son type.",
+          "solution_markdown": "La variable est `$age`. Elle reçoit la valeur `17`, un nombre entier sans point décimal : son type est donc entier (`int`)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Identifier les variables du code `$notes = array(12.5, 8, 15.75); $moyenne = 0;` et préciser le type de chacune.",
+          "solution_markdown": "`$notes` est un tableau (`array`), dont les éléments sont des nombres à virgule (`float`) pour `12.5` et `15.75`, et un entier (`int`) pour `8` - PHP autorise un tableau à contenir des valeurs de types différents.\n\n`$moyenne` reçoit la valeur `0`, un entier sans point décimal : son type initial est donc entier (`int`), même si elle est destinée à recevoir plus tard une valeur décimale."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans le code `$eleve = \"Paul\"; $reussite = true; $notes = array(\"Maths\" => 14, \"PHP\" => 16);`, identifier chaque variable, préciser son type, et indiquer en quoi le tableau `$notes` diffère du tableau `$prenoms` vu dans l'exemple résolu.",
+          "solution_markdown": "`$eleve` reçoit un texte entre guillemets : son type est chaîne de caractères (`string`).\n\n`$reussite` reçoit la valeur `true` : son type est booléen (`bool`).\n\n`$notes` reçoit une liste de valeurs, donc son type est tableau (`array`), avec des entiers comme éléments (`14` et `16`).\n\nLa différence avec `$prenoms` est que `$notes` est un **tableau associatif** : chaque élément est accessible par une clé textuelle (`\"Maths\"`, `\"PHP\"`) plutôt que par un indice numérique automatique (0, 1, 2...) comme dans `$prenoms`. Les deux restent cependant du même type PHP global : `array`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Toute variable PHP se reconnaît à son préfixe `$`, y compris dans l'en-tête d'une boucle.",
+        "Le type d'une variable se déduit de la valeur qui lui est affectée lors de sa première apparition dans le code.",
+        "Une liste entre `array(...)` donne un tableau ; distingue toujours le type du tableau lui-même du type de ses éléments.",
+        "Ne néglige jamais les variables « discrètes » (compteurs de boucle, variables temporaires) : elles comptent autant que les autres dans une question d'identification.",
+        "Cette compétence de lecture précède toute analyse plus poussée (simulation d'exécution, calcul de résultat) : c'est systématiquement la première étape testée sur un extrait de code au BAC TI."
+      ]
+    }
+  ]
+}

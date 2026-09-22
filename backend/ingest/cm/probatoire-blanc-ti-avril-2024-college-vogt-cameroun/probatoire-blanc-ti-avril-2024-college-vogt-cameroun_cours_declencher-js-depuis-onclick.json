@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-declencher-js-depuis-onclick-premiere-ti",
+  "meta": {
+    "titre": "Déclencher une fonction JavaScript depuis un événement HTML (onclick)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "JavaScript et événements",
+    "duree_estimee_min": 10,
+    "tags": [
+      "onclick",
+      "événement",
+      "bouton",
+      "gestionnaire d'événement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "7",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex7-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un bouton \"Calculer\" qui ne calcule jamais rien au clic : le code semble complet, la fonction `moyenne()` existe bien quelque part dans le script, et pourtant rien ne se passe. Il manque souvent une seule chose - le pont entre le clic de l'utilisateur et l'appel de cette fonction."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une fonction JavaScript simple",
+        "Connaître la balise `<input type=\"button\">`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "onclick, le pont entre le clic et le code",
+      "contenu_markdown": "Pour qu'un bouton HTML déclenche une fonction JavaScript lors d'un clic, il faut lui associer un gestionnaire d'événement, le plus souvent l'attribut `onclick`, dont la valeur est l'appel de la fonction à exécuter (`onclick=\"nomDeLaFonction()\"`).",
+      "formule_principale": "<input type=\"button\" value=\"...\" onclick=\"maFonction()\">",
+      "variantes": [
+        {
+          "nom": "Autres événements courants",
+          "quand_utiliser": "Selon l'action de l'utilisateur à détecter",
+          "contenu_markdown": "`onchange` (quand la valeur d'un champ change), `onsubmit` (quand un formulaire est soumis), `onmouseover` (quand la souris survole un élément)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un bouton \"Calculer\" doit appeler une fonction `calculerMoyenne()` définie ailleurs dans la page. Écrire le bouton correspondant.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Créer le bouton",
+          "justification": "Un bouton d'action utilise `<input type=\"button\">` (ou `<button>`)",
+          "resultat_markdown": "`<input type=\"button\" value=\"Calculer\">`"
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter le gestionnaire d'événement",
+          "justification": "`onclick` relie le clic à l'appel de la fonction",
+          "resultat_markdown": "`onclick=\"calculerMoyenne()\"`"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler l'instruction complète",
+          "justification": "Combiner tous les attributs dans une seule balise",
+          "resultat_markdown": "`<input type=\"button\" value=\"Calculer\" onclick=\"calculerMoyenne()\">`"
+        }
+      ],
+      "conclusion_markdown": "Sans `onclick`, la fonction `calculerMoyenne()` resterait définie mais jamais appelée : rien ne se produirait au clic sur le bouton."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire un attribut sans nom avant le signe égal, comme `=\"maFonction()\"`",
+          "pourquoi_faux": "Un attribut HTML s'écrit toujours `nom=\"valeur\"` : sans nom d'attribut, le navigateur ignore cette portion mal formée, et aucun événement n'est réellement attaché au bouton.",
+          "correction_markdown": "Vérifie toujours qu'un nom d'attribut valide (`onclick`, `onchange`...) précède le signe égal."
+        },
+        {
+          "erreur_markdown": "Oublier les parenthèses dans `onclick=\"maFonction\"` (au lieu de `maFonction()`)",
+          "pourquoi_faux": "Sans parenthèses, `maFonction` désigne la fonction elle-même comme référence, mais ne l'exécute pas : selon le contexte, cela peut ne rien déclencher du tout.",
+          "correction_markdown": "N'oublie jamais les parenthèses `()` pour réellement APPELER (exécuter) la fonction depuis l'attribut d'événement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire l'attribut à ajouter à un bouton pour qu'il appelle la fonction `afficherMessage()` au clic.",
+          "solution_markdown": "`onclick=\"afficherMessage()\"`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Corriger cette instruction si elle contient une erreur : `<input type=\"button\" value=\"Valider\" onclick=\"verifier\">`",
+          "solution_markdown": "Il manque les parenthèses après le nom de la fonction : `onclick=\"verifier\"` référence la fonction sans l'appeler. Instruction corrigée : `<input type=\"button\" value=\"Valider\" onclick=\"verifier()\">`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Quelle différence de fonctionnement existe-t-il entre attacher `onclick` directement dans le HTML (`<input onclick=\"f()\">`) et l'attacher depuis un script séparé avec `document.getElementById('monBouton').onclick = f;` ? Pourquoi cette seconde méthode est-elle souvent préférée dans un vrai projet ?",
+          "solution_markdown": "Les deux méthodes déclenchent la fonction au clic, mais la première mélange le HTML (structure) et le JavaScript (comportement) directement dans la même balise, alors que la seconde les sépare complètement : le fichier HTML ne contient plus aucune trace de JavaScript, tout le comportement est regroupé dans un fichier de script distinct. Cette séparation est souvent préférée dans un vrai projet pour les mêmes raisons que la séparation HTML/CSS vue plus haut dans cette épreuve : le code devient plus lisible, plus facile à maintenir (modifier le comportement du bouton ne demande de toucher qu'au fichier JavaScript), et plus facile à réutiliser sur plusieurs boutons similaires sans dupliquer l'attribut `onclick` partout. Note aussi une différence technique : `element.onclick = f;` (sans les parenthèses après `f`) attache la fonction ELLE-MÊME comme gestionnaire, à exécuter plus tard au clic, alors que `f()` dans le HTML est déjà un appel textuel interprété par le navigateur au moment du clic."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`onclick=\"nomFonction()\"` déclenche l'appel de `nomFonction()` quand l'utilisateur clique sur l'élément.",
+        "Un attribut mal formé (sans nom avant le signe égal) est simplement ignoré par le navigateur : rien ne se déclenche.",
+        "N'oublie jamais les parenthèses après le nom de la fonction dans l'attribut `onclick`.",
+        "D'autres événements existent selon l'action à détecter : `onchange`, `onsubmit`, `onmouseover`...",
+        "Dans un projet réel, séparer le JavaScript du HTML (plutôt que d'utiliser `onclick` directement dans la balise) améliore la lisibilité et la maintenabilité du code, au même titre que séparer CSS et HTML."
+      ]
+    }
+  ]
+}

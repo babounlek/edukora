@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-conversion-et-operations-entre-systemes-de-numeration-binaire-decimal-hexadecimal-3e",
+  "meta": {
+    "titre": "Conversion et opérations entre systèmes de numération (binaire, décimal, hexadécimal)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Systèmes de numération",
+    "duree_estimee_min": 30,
+    "tags": [
+      "binaire",
+      "hexadécimal",
+      "conversion de base",
+      "soustraction en base non décimale"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "BEPC Blanc N°1 - Institut Polyvalent Fosso - Épreuve d'Informatique théorique (session avril 2017, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-blanc-2017-fosso-cameroun-ex2-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ordinateur compte en binaire, un développeur écrit souvent en hexadécimal (les couleurs d'une page web, par exemple, s'écrivent #FF0000), et un être humain raisonne naturellement en décimal. Savoir passer d'un système à l'autre, puis effectuer une opération entre deux nombres écrits dans une base qui n'est pas la base 10, est une compétence qui revient dans presque toutes les épreuves d'Informatique. La bonne nouvelle : une seule méthode, bien maîtrisée, permet de traiter n'importe quelle base."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les puissances de 2 usuelles (1, 2, 4, 8, 16, 32, 64...)",
+        "Savoir que les chiffres hexadécimaux vont de 0 à 9 puis de A (10) à F (15)",
+        "Savoir effectuer une division euclidienne (quotient et reste)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Convertir vers la base 10, opérer, reconvertir si nécessaire",
+      "contenu_markdown": "**Convertir un nombre d'une base $B$ vers la base 10** : on multiplie chaque chiffre par $B$ élevé à la puissance de sa position (en partant de 0 à droite), puis on additionne tous les termes.\n\n$$\\text{valeur} = \\sum_{i} \\text{chiffre}_i \\times B^{i}$$\n\n**Convertir un nombre de la base 10 vers une base $B$** : on effectue des divisions euclidiennes successives par $B$, en conservant les restes ; le résultat s'obtient en lisant les restes du dernier obtenu au premier.\n\n**Effectuer une opération entre deux nombres écrits dans une base non décimale** : la méthode la plus sûre consiste à convertir chaque nombre en base 10, effectuer l'opération normalement, puis reconvertir le résultat dans la base demandée si celle-ci n'est pas la base 10.\n\n**Avant de soustraire, toujours comparer les deux valeurs** (au besoin en les convertissant en base 10) : si le second terme est plus grand que le premier, le résultat de la soustraction est négatif.",
+      "formule_principale": "\\text{valeur} = \\sum_{i} \\text{chiffre}_i \\times B^{i}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Poser et effectuer les opérations suivantes dans les bases précisées : $111001_2 - 1110_2$ en base 10, et $95B_{16} - 76FA_{16}$ en base 16.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir 111001₂ en base 10",
+          "justification": "On applique la formule de conversion, chiffre par chiffre, du poids fort au poids faible.",
+          "resultat_markdown": "$111001_2 = 1\\times2^5+1\\times2^4+1\\times2^3+0\\times2^2+0\\times2^1+1\\times2^0 = 32+16+8+0+0+1 = 57$"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir 1110₂ en base 10",
+          "justification": "Même méthode, appliquée au second opérande.",
+          "resultat_markdown": "$1110_2 = 1\\times2^3+1\\times2^2+1\\times2^1+0\\times2^0 = 8+4+2+0 = 14$"
+        },
+        {
+          "numero": 3,
+          "action": "Effectuer la soustraction en base 10",
+          "justification": "Les deux nombres étant maintenant dans la même base, on applique la soustraction usuelle.",
+          "resultat_markdown": "$57 - 14 = 43$"
+        },
+        {
+          "numero": 4,
+          "action": "Convertir 95B₁₆ et 76FA₁₆ en base 10 pour comparer leur valeur",
+          "justification": "Avant toute soustraction en base non décimale, il faut vérifier quel nombre est le plus grand.",
+          "resultat_markdown": "$95B_{16} = 9\\times16^2+5\\times16+11 = 2304+80+11 = 2395$ ; $76FA_{16} = 7\\times16^3+6\\times16^2+15\\times16+10 = 28672+1536+240+10 = 30458$"
+        },
+        {
+          "numero": 5,
+          "action": "Constater que 76FA₁₆ est plus grand que 95B₁₆, calculer l'écart, puis reconvertir en base 16",
+          "justification": "Le second terme étant supérieur au premier, la soustraction posée dans cet ordre donne un résultat négatif ; on calcule l'écart absolu avant de reconvertir.",
+          "resultat_markdown": "$30458-2395 = 28063$. Divisions successives par 16 : $28063=1753\\times16+15\\,(F)$, $1753=109\\times16+9$, $109=6\\times16+13\\,(D)$, $6=0\\times16+6$. D'où $28063_{10}=6D9F_{16}$, et $95B_{16}-76FA_{16} = -6D9F_{16}$."
+        }
+      ],
+      "conclusion_markdown": "La même méthode - convertir en base 10, opérer, reconvertir - traite aussi bien une opération binaire dont le résultat doit être donné en décimal, qu'une opération hexadécimale dont le résultat reste en hexadécimal, y compris lorsque ce résultat est négatif."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner ou soustraire les chiffres d'un nombre en base $B$ comme s'ils étaient en base 10 (par exemple traiter F comme s'il valait 5 au lieu de 15).",
+          "pourquoi_faux": "Chaque chiffre hexadécimal au-delà de 9 a une valeur précise (A=10, B=11, C=12, D=13, E=14, F=15) ; l'oublier fausse totalement la conversion en base 10 et donc tout calcul ultérieur.",
+          "correction_markdown": "Avant toute conversion, écris la correspondance A-F = 10-15 en marge de ta copie si besoin, pour ne pas te tromper sous la pression du temps."
+        },
+        {
+          "erreur_markdown": "Se lancer dans une soustraction posée directement en base $B$ sans avoir vérifié laquelle des deux valeurs est la plus grande.",
+          "pourquoi_faux": "Une soustraction posée suppose implicitement que le premier terme est plus grand ; sinon, les emprunts s'enchaînent sans jamais aboutir à un résultat cohérent si on ignore le signe négatif.",
+          "correction_markdown": "Convertis toujours les deux opérandes en base 10 avant de poser l'opération, ne serait-ce que mentalement, pour savoir à l'avance si le résultat sera positif ou négatif."
+        },
+        {
+          "erreur_markdown": "Oublier de compléter par des zéros à gauche le nombre le plus court avant de poser une opération colonne par colonne.",
+          "pourquoi_faux": "Sans cette étape, les chiffres ne sont pas alignés sur la bonne position (unités, seizaines, etc.), ce qui fausse tous les calculs de retenue ou d'emprunt.",
+          "correction_markdown": "Complète systématiquement le nombre le plus court avec des zéros non significatifs jusqu'à ce que les deux nombres aient le même nombre de chiffres."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir $10110_2$ en base 10.",
+          "solution_markdown": "$10110_2 = 1\\times2^4+0\\times2^3+1\\times2^2+1\\times2^1+0\\times2^0 = 16+0+4+2+0 = 22$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Effectuer, dans les bases précisées : $11001_2 - 101_2$, résultat en base 10.",
+          "solution_markdown": "$11001_2 = 1\\times2^4+1\\times2^3+0\\times2^2+0\\times2^1+1\\times2^0 = 16+8+0+0+1 = 25$. $101_2 = 1\\times2^2+0\\times2^1+1\\times2^0 = 4+0+1 = 5$. Donc $11001_2-101_2 = 25-5 = 20$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Effectuer $2A_{16} - 3F_{16}$ et donner le résultat en base 16, en précisant son signe.",
+          "solution_markdown": "On convertit d'abord en base 10 : $2A_{16} = 2\\times16+10 = 42$ ; $3F_{16} = 3\\times16+15 = 63$. Comme $63 > 42$, le résultat est négatif. On calcule l'écart : $63-42=21$. On reconvertit 21 en base 16 : $21 = 1\\times16+5$, donc $21_{10}=15_{16}$. Ainsi $2A_{16}-3F_{16} = -15_{16}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour convertir vers la base 10, multiplie chaque chiffre par la base élevée à la puissance de sa position, en partant de 0 à droite.",
+        "Pour convertir depuis la base 10, divise successivement par la base cible et lis les restes du dernier au premier.",
+        "Face à une opération entre deux nombres écrits dans une base non décimale, convertis, opère, reconvertis : c'est la méthode la plus fiable, quelle que soit la base.",
+        "Avant de poser une soustraction, compare toujours les deux valeurs en base 10 : un résultat négatif n'est pas une erreur si le second terme est réellement le plus grand.",
+        "Cette compétence est mobilisée dans presque toute épreuve d'Informatique du BEPC, isolément ou combinée à un calcul de complément à deux ou de codage."
+      ]
+    }
+  ]
+}

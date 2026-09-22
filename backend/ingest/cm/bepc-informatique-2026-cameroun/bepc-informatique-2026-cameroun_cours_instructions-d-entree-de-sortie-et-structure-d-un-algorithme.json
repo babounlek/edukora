@@ -1,0 +1,162 @@
+{
+  "cours_id": "cours-instructions-d-entree-de-sortie-et-structure-d-un-algorithme-3e",
+  "meta": {
+    "titre": "Instructions d'entrée, de sortie et structure d'un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Initiation à l'algorithmique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "instruction d'entrée",
+      "instruction de sortie",
+      "Lire",
+      "Ecrire",
+      "partie déclarative",
+      "corps de l'algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2026-cameroun",
+    "epreuve_titre": "BEPC Cameroun - Épreuve théorique d'informatique - Session 2026",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bepc-informatique-2026-cameroun-ex4-q3a-1",
+    "rappels_lies": [
+      "rdm-bepc-informatique-2026-cameroun-ex4-q4-1"
+    ],
+    "correction_id": "corr-bepc-informatique-2026-cameroun-ex4"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme enfermé sur lui-même ne sert à rien : il doit recevoir des informations de l'extérieur et rendre ses résultats. Deux instructions suffisent à ouvrir ces deux portes, `Lire` et `Ecrire`. Elles semblent évidentes, et pourtant elles piègent presque une copie sur deux au BEPC, parce que leur nom décrit l'action de la machine et non celle de l'utilisateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et savoir la déclarer",
+        "Savoir reconnaître un périphérique d'entrée (clavier, souris) et un périphérique de sortie (écran, imprimante)",
+        "Savoir lire un algorithme écrit en pseudo-code et repérer les mots-clés `Debut` et `Fin`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Entrée, sortie et anatomie d'un algorithme",
+      "contenu_markdown": "**La règle du point de vue**\n\n> Le sens d'une instruction d'entrée ou de sortie se détermine du point de vue de la **machine**, jamais de l'utilisateur.\n\n| Instruction | Sens du transfert | Périphérique | Nature |\n|---|---|---|---|\n| `Lire(variable)` | du clavier **vers** la mémoire | clavier | entrée |\n| `Ecrire(message)` | de la mémoire **vers** l'écran | écran | sortie |\n\nLe croisement qui trompe : `Lire` correspond à ce que l'élève, lui, *écrit* au clavier. Trace une flèche dans chaque sens la première fois, tu ne t'y reprendras plus.\n\n**Ce que fait exactement chaque instruction**\n\n- `Lire(Moyenne)` met l'algorithme en attente d'une saisie, puis range la valeur saisie dans la variable `Moyenne`. Elle modifie donc le contenu de la mémoire.\n- `Ecrire(\"Veuillez saisir la moyenne\")` affiche un texte. Elle ne récupère rien et ne modifie aucune variable, même si le texte parle de saisie.\n\n**L'anatomie d'un algorithme**\n\n```\nAlgorithme NomDeLAlgorithme     <- en-tête\n    Variable ... : ... ;        <- partie déclarative\nDebut                           <- ouverture du corps\n    instruction 1 ;\n    instruction 2 ;             <- corps de l'algorithme\n    ...\nFin                             <- fermeture du corps\n```\n\n**Ce qui compte comme instruction, et ce qui ne compte pas**\n\n> Sont des **instructions** les actions exécutables situées entre `Debut` et `Fin` : affichages, lectures, affectations, et les structures de contrôle elles-mêmes.\n>\n> Ne sont **pas** des instructions : l'en-tête `Algorithme`, la partie déclarative, et les délimiteurs `Debut`, `Fin`, `Sinon`, `Finsi`, qui se contentent d'ouvrir ou de fermer un bloc.\n\nLa raison est simple : une déclaration réserve un emplacement mémoire *avant* l'exécution, elle ne fait rien pendant. Un délimiteur, lui, n'exécute aucune action, il balise le texte.\n\n**Compter les instructions**\n\nOn dresse la liste ligne par ligne et on classe chaque ligne dans l'une des deux catégories ci-dessus. Compter les lignes du texte donnerait un résultat faux, puisque `Debut`, `Sinon`, `Finsi` et `Fin` occupent chacun une ligne sans rien exécuter.\n\nQuand une structure alternative est présente, deux conventions de décompte circulent : compter l'alternative comme une instruction à part entière, ou ne compter que les instructions simples qu'elle contient. Le plus sûr est d'annoncer les deux : « 4 instructions simples et 1 structure alternative, soit 5 instructions ».",
+      "formule_principale": "Lire = clavier \\rightarrow mémoire  ;  Ecrire = mémoire \\rightarrow écran",
+      "variantes": [
+        {
+          "nom": "Le couple invite + lecture",
+          "quand_utiliser": "Chaque fois qu'on écrit soi-même un algorithme demandant une donnée à l'utilisateur",
+          "contenu_markdown": "Une instruction de lecture s'accompagne toujours d'une instruction d'affichage qui la précède, pour indiquer à l'utilisateur ce qu'il doit saisir :\n\n```\nEcrire(\"Veuillez saisir la moyenne\");\nLire(Moyenne);\n```\n\nSans l'invite, l'utilisateur voit un curseur clignoter sans savoir quoi taper. C'est ce couple que l'on retrouve au début de presque tous les algorithmes du programme, et les correcteurs le repèrent immédiatement quand il manque."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Questions tirées de l'épreuve du BEPC 2026, portant sur l'algorithme `Decision` : « Relever dans cet algorithme une instruction d'entrée » (0,5pt), puis « Déterminer le nombre d'instructions de cet algorithme » (1pt).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Chercher le mot-clé de lecture dans le corps de l'algorithme",
+          "justification": "Une seule instruction fait entrer une donnée dans la mémoire, et elle porte toujours le même mot-clé : `Lire`.",
+          "resultat_markdown": "L'algorithme contient une unique occurrence de ce mot-clé : `Lire(Moyenne);`"
+        },
+        {
+          "numero": 2,
+          "action": "Écarter l'invite de saisie",
+          "justification": "`Ecrire(\"Veuillez saisir la moyenne\");` annonce une saisie mais ne récupère aucune donnée. Ce qui compte est ce que l'instruction fait, pas ce qu'elle annonce.",
+          "resultat_markdown": "Cette ligne est une instruction de sortie, pas d'entrée. Réponse à la première question : `Lire(Moyenne);`"
+        },
+        {
+          "numero": 3,
+          "action": "Dresser la liste complète des lignes et classer chacune",
+          "justification": "Le décompte exige de séparer les actions exécutables des délimiteurs et de la déclaration. Une liste écrite évite d'en oublier ou d'en compter deux fois.",
+          "resultat_markdown": "Non comptées : `Algorithme Decision`, `Variable Moyenne : Reel ;`, `Debut`, `Sinon`, `Finsi`, `Fin`. Comptées : `Ecrire(\"Veuillez saisir la moyenne\");`, `Lire(Moyenne);`, `Si(Moyenne>=10) alors`, `Ecrire(\"Admis au BEPC\");`, `Ecrire(\"Recalé au BEPC\");`"
+        },
+        {
+          "numero": 4,
+          "action": "Additionner les instructions retenues",
+          "justification": "Le décompte doit apparaître explicitement pour être vérifiable par le correcteur.",
+          "resultat_markdown": "$1 + 1 + 1 + 1 + 1 = 5$ instructions."
+        },
+        {
+          "numero": 5,
+          "action": "Effectuer un second décompte par une autre convention, à titre de contrôle",
+          "justification": "Vérifier par une seconde méthode confirme le premier résultat et prépare la réponse à l'éventuelle convention du correcteur.",
+          "resultat_markdown": "En ne retenant que les instructions simples : `Ecrire`, `Lire`, `Ecrire`, `Ecrire`, soit 4. Les deux décomptes se rejoignent : $4 + 1 = 5$."
+        },
+        {
+          "numero": 6,
+          "action": "Rédiger la réponse en explicitant la composition",
+          "justification": "Une réponse détaillée reste valable quelle que soit la convention retenue au barème.",
+          "resultat_markdown": "« L'algorithme comporte 5 instructions : 4 instructions simples (3 `Ecrire` et 1 `Lire`) et 1 structure de contrôle alternative. »"
+        }
+      ],
+      "conclusion_markdown": "L'instruction d'entrée est `Lire(Moyenne);`, et l'algorithme comporte 5 instructions, dont le détail a été explicité pour rester valable quelle que soit la convention de décompte du correcteur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Désigner `Ecrire(\"Veuillez saisir la moyenne\");` comme instruction d'entrée.",
+          "pourquoi_faux": "Cette ligne affiche un message, elle ne récupère aucune donnée. Le fait qu'elle parle de saisie ne change pas ce qu'elle exécute : elle envoie du texte vers l'écran, donc c'est une sortie.",
+          "correction_markdown": "Se demander dans quel sens circule l'information : vers la mémoire, c'est une entrée ; depuis la mémoire, c'est une sortie."
+        },
+        {
+          "erreur_markdown": "Croire que `Lire` sert à afficher, puisque l'utilisateur lit ce qui est à l'écran.",
+          "pourquoi_faux": "Le nom de l'instruction décrit ce que fait la machine : elle lit ce que l'utilisateur tape. Raisonner du point de vue de l'utilisateur inverse systématiquement les deux instructions.",
+          "correction_markdown": "Adopter une fois pour toutes le point de vue de la machine et mémoriser les deux flèches : clavier → mémoire pour `Lire`, mémoire → écran pour `Ecrire`."
+        },
+        {
+          "erreur_markdown": "Compter les lignes du texte pour répondre à la question du nombre d'instructions.",
+          "pourquoi_faux": "`Debut`, `Sinon`, `Finsi` et `Fin` occupent chacun une ligne sans exécuter la moindre action. Ce comptage donnerait 11 au lieu de 5.",
+          "correction_markdown": "Classer chaque ligne avant de compter : action exécutable ou simple délimiteur."
+        },
+        {
+          "erreur_markdown": "Inclure la déclaration `Variable Moyenne : Reel ;` dans le décompte des instructions.",
+          "pourquoi_faux": "La déclaration réserve un emplacement mémoire avant que l'exécution ne commence : elle appartient à la partie déclarative, située avant le `Debut`, et non au corps de l'algorithme.",
+          "correction_markdown": "Ne compter que ce qui se trouve strictement entre `Debut` et `Fin`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour chacune des instructions suivantes, indiquer s'il s'agit d'une entrée ou d'une sortie, et préciser le périphérique concerné : (a) `Lire(Nom)` ; (b) `Ecrire(\"Bonjour\")` ; (c) `Ecrire(\"Entrez votre nom\")` ; (d) `Lire(Age)`.",
+          "solution_markdown": "**(a) `Lire(Nom)`**\n\nEntrée. La valeur saisie au clavier est transférée vers la variable `Nom` en mémoire. Périphérique concerné : le clavier.\n\n**(b) `Ecrire(\"Bonjour\")`**\n\nSortie. Le texte part de la mémoire vers l'affichage. Périphérique concerné : l'écran.\n\n**(c) `Ecrire(\"Entrez votre nom\")`**\n\nSortie, malgré le contenu du message. C'est le cas piège : l'instruction annonce une saisie mais ne la réalise pas. Elle se contente d'afficher un texte. Périphérique concerné : l'écran.\n\n**(d) `Lire(Age)`**\n\nEntrée. La valeur saisie est rangée dans la variable `Age`. Périphérique concerné : le clavier.\n\n**Règle appliquée à chaque fois** : le mot-clé décide, pas le contenu du message. `Lire` est toujours une entrée, `Ecrire` est toujours une sortie."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Compter les instructions de l'algorithme suivant en justifiant chaque exclusion :\n\n```\nAlgorithme Perimetre\n    Variable Longueur, Largeur, P : Reel ;\nDebut\n    Ecrire(\"Longueur ?\");\n    Lire(Longueur);\n    Ecrire(\"Largeur ?\");\n    Lire(Largeur);\n    P <- 2 * (Longueur + Largeur);\n    Ecrire(\"Perimetre = \", P);\nFin\n```",
+          "solution_markdown": "**Classement ligne par ligne**\n\n| Ligne | Comptée ? | Motif |\n|---|---|---|\n| `Algorithme Perimetre` | non | en-tête, donne seulement un nom à l'algorithme |\n| `Variable Longueur, Largeur, P : Reel ;` | non | partie déclarative, située avant le `Debut` |\n| `Debut` | non | délimiteur d'ouverture du corps |\n| `Ecrire(\"Longueur ?\");` | oui | instruction de sortie |\n| `Lire(Longueur);` | oui | instruction d'entrée |\n| `Ecrire(\"Largeur ?\");` | oui | instruction de sortie |\n| `Lire(Largeur);` | oui | instruction d'entrée |\n| `P <- 2 * (Longueur + Largeur);` | oui | instruction d'affectation |\n| `Ecrire(\"Perimetre = \", P);` | oui | instruction de sortie |\n| `Fin` | non | délimiteur de fermeture du corps |\n\n**Décompte**\n\n$$1 + 1 + 1 + 1 + 1 + 1 = 6$$\n\nL'algorithme comporte **6 instructions** : 3 instructions de sortie, 2 instructions d'entrée et 1 affectation.\n\n**Remarque sur l'absence d'ambiguïté**\n\nCet algorithme ne contient aucune structure de contrôle. La question du décompte des `Si` ne se pose donc pas, et les deux conventions donnent ici le même résultat.\n\n**Remarque sur la déclaration groupée**\n\nLa ligne `Variable Longueur, Largeur, P : Reel ;` déclare trois variables d'un coup. Elle reste une seule ligne de déclaration, et surtout elle n'est pas une instruction : elle n'aurait pas compté davantage si elle avait été écrite sur trois lignes séparées."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève écrit l'algorithme suivant, qui ne fonctionne pas comme prévu. Identifier les erreurs, les corriger, puis compter les instructions de la version corrigée.\n\n```\nAlgorithme Achat\n    Variable Prix : Reel ;\nDebut\n    Lire(\"Quel est le prix ?\");\n    Ecrire(Prix);\n    Si (Prix > 5000) alors\n        Lire(\"Achat trop cher\");\n    Finsi\nFin\n```",
+          "solution_markdown": "**Erreur 1 : `Lire(\"Quel est le prix ?\")`**\n\n`Lire` attend le nom d'une variable dans laquelle ranger la saisie, pas un message. Écrire un texte entre guillemets à cet endroit n'a aucun sens : il n'y a nulle part où stocker la valeur.\n\nCorrection : séparer l'invite et la lecture.\n\n```\nEcrire(\"Quel est le prix ?\");\nLire(Prix);\n```\n\n**Erreur 2 : `Ecrire(Prix)` placé après une lecture manquante**\n\nDans la version de l'élève, `Prix` n'a jamais reçu de valeur puisque la ligne précédente ne rangeait rien. L'affichage porterait donc sur un contenu indéfini. Une fois l'erreur 1 corrigée, cette ligne devient valide, mais elle fait doublon avec l'invite : on peut la conserver pour confirmer la saisie.\n\n**Erreur 3 : `Lire(\"Achat trop cher\")`**\n\nMême confusion, dans l'autre sens : le but est manifestement d'afficher un message, ce qui relève de `Ecrire`, pas de `Lire`.\n\nCorrection : `Ecrire(\"Achat trop cher\");`\n\n**Algorithme corrigé**\n\n```\nAlgorithme Achat\n    Variable Prix : Reel ;\nDebut\n    Ecrire(\"Quel est le prix ?\");\n    Lire(Prix);\n    Ecrire(Prix);\n    Si (Prix > 5000) alors\n        Ecrire(\"Achat trop cher\");\n    Finsi\nFin\n```\n\n**Décompte des instructions de la version corrigée**\n\nComptées : `Ecrire(\"Quel est le prix ?\")`, `Lire(Prix)`, `Ecrire(Prix)`, la structure `Si ... Finsi`, `Ecrire(\"Achat trop cher\")`.\n\n$$1 + 1 + 1 + 1 + 1 = 5$$\n\nSoit **5 instructions** : 4 instructions simples (3 `Ecrire` et 1 `Lire`) et 1 structure alternative réduite.\n\nNon comptées : l'en-tête, la déclaration, `Debut`, `Finsi` et `Fin`.\n\n**Ce que l'exercice met en évidence**\n\nLes trois erreurs viennent toutes de la même confusion entre `Lire` et `Ecrire`. Adopter le point de vue de la machine les élimine d'un coup : `Lire` reçoit une variable, `Ecrire` reçoit un message ou une valeur à afficher."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Raisonne du point de vue de la machine : `Lire` fait entrer une donnée du clavier vers la mémoire, `Ecrire` fait sortir une information de la mémoire vers l'écran.",
+        "`Lire` prend toujours un nom de variable ; `Ecrire` prend un message ou une valeur. Un texte entre guillemets dans un `Lire` est toujours une erreur.",
+        "Une invite affichée avant la saisie n'est pas une entrée, quel que soit le texte qu'elle contient.",
+        "Un algorithme se divise en trois parties : en-tête, partie déclarative, corps entre `Debut` et `Fin`.",
+        "Ne comptent comme instructions que les actions exécutables du corps. Déclarations et délimiteurs sont exclus.",
+        "Quand une alternative est présente, annonce le détail : « 4 instructions simples et 1 structure alternative, soit 5 ». Ta réponse reste valable quelle que soit la convention du correcteur.",
+        "Au BEPC, ces deux questions valent souvent 1,5 point à elles seules et se traitent en une minute. Elles sont parmi les plus rentables de l'épreuve."
+      ]
+    }
+  ]
+}

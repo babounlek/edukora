@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-bilan-energetique-effet-joule-calorimetrie-1ere-d-ti",
+  "meta": {
+    "titre": "Bilan énergétique et effet Joule (méthode calorimétrique)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Aspects énergétiques des circuits électriques",
+    "duree_estimee_min": 28,
+    "tags": [
+      "effet Joule",
+      "calorimétrie",
+      "bilan énergétique",
+      "résistance électrique"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D-TI",
+      "module_numero": "4",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2023-CM",
+    "epreuve_titre": "Probatoire Physique Série D et TI - Session 2023 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-d-ti-physique-2023-officiel-cameroun-ex4-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une bouilloire électrique, un radiateur, un fer à repasser : tous chauffent grâce au même phénomène, l'effet Joule, la conversion d'énergie électrique en chaleur au passage d'un courant dans une résistance. En plongeant un résistor dans l'eau d'un calorimètre et en mesurant simplement une élévation de température, on peut remonter à la valeur de sa résistance, sans jamais mesurer directement de tension à ses bornes : c'est une méthode radicalement différente de la loi d'Ohm, mais tout aussi rigoureuse."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Effet Joule : $W = R I^2 t$",
+        "Chaleur échangée par un calorimètre : $Q = (\\mu+m)C_e\\Delta\\theta$",
+        "Principe de conservation de l'énergie"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Bilan énergétique calorimétrique",
+      "contenu_markdown": "Lorsqu'un résistor de résistance $X$, parcouru par un courant constant d'intensité $I$ pendant une durée $t$, est plongé dans un calorimètre, toute l'énergie électrique qu'il dissipe par effet Joule, $W = X \\times I^2 \\times t$, est intégralement transférée sous forme de chaleur $Q$ à l'eau et au calorimètre. En écrivant l'égalité $W = Q$ entre l'énergie fournie et la chaleur reçue, on peut déterminer $X$ à partir de mesures purement calorimétriques (masse, température, durée), sans mesurer aucune tension.",
+      "formule_principale": "X \\times I^2 \\times t = (\\mu+m)\\,C_e\\,\\Delta\\theta",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un résistor $X$ est parcouru par un courant $I = 0,40\\ \\text{A}$ pendant $t = 600\\ \\text{s}$, plongé dans un calorimètre de valeur en eau $\\mu = 20\\ \\text{g}$ contenant $m = 150\\ \\text{g}$ d'eau ($C_e = 4180\\ \\text{J}\\cdot\\text{kg}^{-1}\\cdot°\\text{C}^{-1}$). La température s'élève de $\\Delta\\theta = 4\\ °\\text{C}$. Déterminer $X$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir les masses en kilogrammes",
+          "justification": "$C_e$ est donnée en $\\text{J}\\cdot\\text{kg}^{-1}\\cdot°\\text{C}^{-1}$, il faut donc des masses en kg.",
+          "resultat_markdown": "$\\mu = 0,020\\ \\text{kg}$ ; $m = 0,150\\ \\text{kg}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la chaleur reçue par le calorimètre",
+          "justification": "$Q = (\\mu+m)C_e\\Delta\\theta$",
+          "resultat_markdown": "$Q = (0,020+0,150) \\times 4180 \\times 4 = 0,170 \\times 4180 \\times 4 = 2\\,842,4\\ \\text{J}$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'égalité énergétique et isoler $X$",
+          "justification": "$W = Q \\Rightarrow X I^2 t = Q \\Rightarrow X = \\dfrac{Q}{I^2 t}$",
+          "resultat_markdown": "$X = \\dfrac{2\\,842,4}{(0,40)^2 \\times 600} = \\dfrac{2\\,842,4}{0,16 \\times 600} = \\dfrac{2\\,842,4}{96} \\approx 29,6\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "La résistance du résistor vaut environ $29,6\\ \\Omega$, déterminée uniquement à partir de mesures thermiques."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de convertir les masses (grammes vers kilogrammes) avant d'appliquer $Q = (\\mu+m)C_e\\Delta\\theta$",
+          "pourquoi_faux": "$C_e$ est définie en J.kg$^{-1}$.°C$^{-1}$ : utiliser des grammes directement multiplie le résultat de $Q$ par 1000 par rapport à la valeur correcte.",
+          "correction_markdown": "Convertis systématiquement toutes les masses en kilogrammes avant tout calcul avec $C_e$."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir la durée en secondes lorsqu'elle est donnée en minutes ou en minutes et secondes",
+          "pourquoi_faux": "La formule $W = XI^2t$ exige $t$ en secondes ; une durée laissée en minutes fausse le résultat d'un facteur 60.",
+          "correction_markdown": "Convertis toujours une durée du type \"20 min 48 s\" en secondes totales avant tout calcul : $20\\times60+48 = 1\\,248\\ \\text{s}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un résistor dissipe une énergie $W = 5\\,000\\ \\text{J}$ dans un calorimètre en $t = 500\\ \\text{s}$, parcouru par un courant $I = 1,0\\ \\text{A}$. Calculer sa résistance.",
+          "solution_markdown": "$X = \\dfrac{W}{I^2 t} = \\dfrac{5\\,000}{1,0^2 \\times 500} = 10\\ \\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un calorimètre de valeur en eau $\\mu = 15\\ \\text{g}$ contient $m = 200\\ \\text{g}$ d'eau ($C_e = 4180\\ \\text{J}\\cdot\\text{kg}^{-1}\\cdot°\\text{C}^{-1}$). Un résistor $X = 25\\ \\Omega$ y est plongé et parcouru par $I = 0,5\\ \\text{A}$ pendant $t = 400\\ \\text{s}$. Calculer l'élévation de température attendue.",
+          "solution_markdown": "$W = X I^2 t = 25 \\times (0,5)^2 \\times 400 = 25 \\times 0,25 \\times 400 = 2\\,500\\ \\text{J}$. Comme $Q = W$, $\\Delta\\theta = \\dfrac{Q}{(\\mu+m)C_e} = \\dfrac{2\\,500}{(0,015+0,200)\\times4180} = \\dfrac{2\\,500}{0,215\\times4180} = \\dfrac{2\\,500}{898,7} \\approx 2,78\\ °\\text{C}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux méthodes indépendantes sont utilisées pour mesurer la même résistance $X$ : une méthode électrique directe (loi de Pouillet) donnant $X_{elec} = 7,31\\ \\Omega$, et une méthode calorimétrique donnant $X_{calo} = 7,28\\ \\Omega$. La valeur annoncée par le fabricant est $7,3\\ \\Omega \\pm 5\\ \\%$. Conclure sur la cohérence de l'ensemble des résultats.",
+          "solution_markdown": "La tolérance de $\\pm5\\ \\%$ sur $7,3\\ \\Omega$ correspond à l'intervalle $[6,935\\,;\\,7,665]\\ \\Omega$. Les deux valeurs mesurées, $7,31\\ \\Omega$ (méthode électrique) et $7,28\\ \\Omega$ (méthode calorimétrique), appartiennent toutes deux à cet intervalle et sont, de plus, très proches l'une de l'autre (écart de $0,03\\ \\Omega$, soit environ $0,4\\ \\%$). Deux méthodes physiquement indépendantes conduisant à des résultats aussi proches renforcent fortement la confiance dans la valeur annoncée par le fabricant : c'est exactement ce type de recoupement qui constitue une démarche scientifique rigoureuse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'égalité $W = Q$ relie l'énergie électrique dissipée par effet Joule à la chaleur reçue par le calorimètre.",
+        "Convertis systématiquement masses (en kg) et durée (en s) avant tout calcul avec $C_e$.",
+        "Cette méthode calorimétrique mesure une résistance sans jamais mesurer de tension : elle est indépendante de la loi d'Ohm classique.",
+        "Recouper une mesure électrique et une mesure calorimétrique d'une même grandeur est une démarche scientifique valorisée au Probatoire comme au BAC."
+      ]
+    }
+  ]
+}

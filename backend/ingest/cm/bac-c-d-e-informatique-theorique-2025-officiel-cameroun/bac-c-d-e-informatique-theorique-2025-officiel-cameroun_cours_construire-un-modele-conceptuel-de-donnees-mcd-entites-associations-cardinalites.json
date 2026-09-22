@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-construire-un-modele-conceptuel-de-donnees-mcd-entites-associations-cardinalites-tle-tronc-commun",
+  "meta": {
+    "titre": "Construire un Modèle Conceptuel de Données (MCD) : entités, associations, cardinalités",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Modélisation Merise - MCD",
+    "duree_estimee_min": 30,
+    "tags": [
+      "MCD",
+      "cardinalités",
+      "Merise",
+      "modèle conceptuel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex2-qA2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois les entités et associations repérées dans le texte, il reste l'étape la plus délicate du MCD : poser les bonnes cardinalités. C'est elle qui transforme une simple liste d'entités en un schéma qui reflète fidèlement les règles de gestion décrites par l'énoncé."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier les entités et les associations d'un texte descriptif (voir le cours dédié)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire le MCD en 3 temps : entités, associations, cardinalités",
+      "contenu_markdown": "**Étape 1** : poser chaque entité comme un rectangle portant son identifiant souligné en première ligne, puis ses attributs.\n\n**Étape 2** : relier par une ellipse (portant le nom de l'association) chaque paire d'entités liées par un verbe du texte.\n\n**Étape 3, la plus délicate** : poser sur chaque branche la cardinalité (minimum, maximum) de participation de l'entité à l'association, en se posant systématiquement la question « combien de fois CETTE entité peut-elle apparaître pour UNE occurrence de l'AUTRE entité ? ».\n\nLe minimum vaut 0 si la participation est facultative (l'entité peut exister sans être liée), 1 si elle est obligatoire. Le maximum vaut 1 si l'entité ne peut être liée qu'à une seule occurrence de l'autre, n s'il peut y en avoir plusieurs."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un forum (1,n) est composé de rubriques (1,1) : construire cette portion du MCD et justifier les deux cardinalités.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Se placer du côté de RUBRIQUE et se demander : à combien de forums une rubrique appartient-elle ?",
+          "justification": "Le texte précise « une rubrique d'un forum donné » : une seule.",
+          "resultat_markdown": "Minimum 1 (obligatoire), maximum 1 (un seul forum) → cardinalité (1,1) côté RUBRIQUE."
+        },
+        {
+          "numero": 2,
+          "action": "Se placer du côté de FORUM et se demander : à combien de rubriques un forum est-il lié ?",
+          "justification": "Le texte précise « il est composé de plusieurs rubriques ».",
+          "resultat_markdown": "Minimum 1 (un forum a au moins une rubrique dans cet énoncé), maximum n (plusieurs) → cardinalité (1,n) côté FORUM."
+        },
+        {
+          "numero": 3,
+          "action": "Assembler le schéma avec les deux cardinalités posées sur les bonnes branches",
+          "justification": "Chaque cardinalité se place du côté de l'entité qu'elle décrit, jamais de l'autre côté.",
+          "resultat_markdown": "FORUM (1,n) -- Composer -- RUBRIQUE (1,1)."
+        }
+      ],
+      "conclusion_markdown": "On obtient une association correctement cardinalisée en appliquant systématiquement la même question à chaque entité, ce qui évite d'inverser accidentellement les deux cardinalités."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inverser le sens de lecture des cardinalités",
+          "pourquoi_faux": "Écrire (1,n) du côté de RUBRIQUE et (1,1) du côté de FORUM inverserait complètement le sens : cela signifierait qu'une rubrique contient plusieurs forums et qu'un forum appartient à une seule rubrique, l'exact opposé de l'énoncé.",
+          "correction_markdown": "Toujours répéter la question « combien de fois CETTE entité apparaît pour UNE occurrence de l'AUTRE » en se plaçant successivement du point de vue de chaque entité, jamais en devinant le sens."
+        },
+        {
+          "erreur_markdown": "Systématiser (1,n) partout par prudence, sans vérifier le minimum",
+          "pourquoi_faux": "Le minimum d'une cardinalité n'est pas toujours 1 : une rubrique tout juste créée peut ne contenir encore aucun message, ce qui donne un minimum de 0, pas 1. Mettre (1,n) partout par réflexe ignore ce cas limite.",
+          "correction_markdown": "Pour chaque cardinalité, se poser explicitement la question du cas limite : l'entité peut-elle exister SANS être liée à l'autre au moment de sa création ?"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "« Une classe contient plusieurs élèves ; un élève appartient à une seule classe. » Donner les cardinalités de l'association Appartenir entre ÉLÈVE et CLASSE.",
+          "solution_markdown": "Côté ÉLÈVE : (1,1) - un élève appartient à une seule classe. Côté CLASSE : (1,n) ou (0,n) selon qu'on considère qu'une classe doit obligatoirement contenir au moins un élève ou qu'elle peut exister vide (classe nouvellement créée) - (1,n) si l'énoncé garantit qu'une classe a toujours au moins un élève."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "« Un client peut passer plusieurs commandes, ou n'en avoir jamais passé. Une commande est toujours passée par un seul client. » Donner les cardinalités de l'association Passer entre CLIENT et COMMANDE.",
+          "solution_markdown": "Côté CLIENT : (0,n) - un client peut n'avoir passé aucune commande (minimum 0) ou plusieurs (maximum n). Côté COMMANDE : (1,1) - une commande est toujours rattachée à exactement un client (obligatoire et unique)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "« Un enseignant peut encadrer zéro, un ou plusieurs mémoires d'étudiants. Un mémoire est encadré par un seul enseignant, sauf pour les mémoires en cotutelle qui en ont exactement deux. » Cette dernière précision (cotutelle à deux encadrants) pose-t-elle un problème pour modéliser l'association Encadrer avec une cardinalité MAXIMALE de 1 côté MÉMOIRE ? Proposer une solution.",
+          "solution_markdown": "Oui, cela pose un problème : si certains mémoires ont exactement DEUX encadrants (cotutelle), la cardinalité maximale côté MÉMOIRE ne peut pas rester (1,1), car un mémoire pourrait alors être lié à 2 occurrences de l'association Encadrer. La solution consiste à fixer la cardinalité côté MÉMOIRE à (1,2) si le maximum de 2 encadrants (cotutelle) est absolu et connu à l'avance, ou plus généralement (1,n) si l'on veut rester ouvert à un nombre variable d'encadrants sans figer ce maximum dans le modèle. Ce cas illustre qu'il faut toujours vérifier le maximum RÉEL décrit par l'énoncé avant de poser une cardinalité (1,1) par habitude, en particulier quand un cas particulier (ici la cotutelle) contredit la règle générale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le MCD se construit en trois temps : entités (rectangles + identifiant souligné), associations (ellipses + nom), cardinalités (sur chaque branche).",
+        "Pour poser une cardinalité, se placer systématiquement du côté de l'entité décrite et se demander : combien de fois apparaît-elle pour une occurrence de l'autre ?",
+        "Le minimum d'une cardinalité (0 ou 1) dépend d'un cas limite réel : l'entité peut-elle exister sans être liée dès sa création ?",
+        "Toujours vérifier le maximum réellement décrit par l'énoncé (parfois ce n'est pas 1, à cause d'un cas particulier comme une cotutelle) avant de figer une cardinalité par habitude."
+      ]
+    }
+  ]
+}

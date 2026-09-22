@@ -1,0 +1,204 @@
+{
+  "epreuve_source": "bac-d-ti-maths-2021-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "serie": "D-TI",
+  "examen": "Baccalauréat",
+  "origine": "officielle",
+  "etablissement": null,
+  "annee": 2021,
+  "duree_epreuve": "4h",
+  "coefficient": 4,
+  "numero_exercice": 3,
+  "titre_exercice": "Étude d'une équation, stabilité d'intervalle et convergence d'une suite récurrente",
+  "points": 4.25,
+  "figures": [],
+  "enonce_intro_markdown": "On définit les fonctions $h$ et $k$ sur $]0,+\\infty[$ par : $h(x)=e^{\\frac{x+1}x}$ et $k(x)=-x+x\\ln x$.",
+  "questions": [
+    {
+      "numero": "1",
+      "points": "1pt",
+      "enonce_markdown": "Démontrer que l'équation $k(x)=1$ admet une unique solution $\\alpha$ dans $[3;4]$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-existence-unicite-solution-ivt-monotonie-terminale-d-ti",
+          "texte": "Pour démontrer l'existence et l'unicité d'une solution à une équation f(x)=c sur un intervalle, on montre que f est continue et strictement monotone sur cet intervalle, puis on vérifie que c est compris entre les valeurs de f aux bornes (théorème de la bijection, cas particulier du théorème des valeurs intermédiaires)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer l'existence et l'unicité d'une solution à une équation $f(x)=c$ sur un intervalle, on montre que $f$ est continue et strictement monotone sur cet intervalle (théorème de la bijection), puis on vérifie que $c$ est bien compris entre les valeurs prises par $f$ aux bornes de l'intervalle.\n\n$k$ est dérivable (donc continue) sur $]0,+\\infty[$ comme somme et produit de fonctions usuelles, en particulier sur $[3;4]$.\n\nCalculons $k'(x)$ : $k(x)=-x+x\\ln x$, donc $k'(x)=-1+\\ln x+x\\times\\dfrac1x=-1+\\ln x+1=\\ln x$.\n\nPour $x\\in[3;4]$, on a $x>1$ donc $\\ln x>0$ : ainsi $k'(x)>0$ sur $[3;4]$, ce qui signifie que $k$ est strictement croissante sur cet intervalle.\n\nCalculons les valeurs aux bornes :\n\n$k(3)=-3+3\\ln3\\approx-3+3\\times1{,}0986\\approx0{,}296$\n\n$k(4)=-4+4\\ln4\\approx-4+4\\times1{,}3863\\approx1{,}445$\n\nOn a donc $k(3)\\approx0{,}296<1$ et $k(4)\\approx1{,}445>1$, donc $1\\in]k(3),k(4)[$.\n\nComme $k$ est continue et strictement croissante sur $[3;4]$, et que $1$ est strictement compris entre $k(3)$ et $k(4)$, d'après le théorème de la bijection, l'équation $k(x)=1$ admet une unique solution $\\alpha$ dans $[3;4]$.",
+      "themes": [
+        "théorème de la bijection",
+        "monotonie stricte",
+        "existence unicité",
+        "Analyse — théorème de la bijection"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "2",
+      "points": "0,25pt",
+      "enonce_markdown": "Démontrer que $k(x)=1$ si et seulement si $h(x)=x$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-equivalence-deux-equations-passage-exponentielle-terminale-d-ti",
+          "texte": "Pour démontrer l'équivalence entre une équation logarithmique et une équation exponentielle, on isole le logarithme d'un côté, puis on applique la fonction exponentielle aux deux membres (fonction strictement croissante, donc l'équivalence est préservée)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer l'équivalence entre une équation et une équation exponentielle associée, on isole d'abord le logarithme d'un côté de l'égalité, puis on applique la fonction exponentielle aux deux membres — une opération réversible qui préserve l'équivalence, car $\\exp$ est une bijection strictement croissante.\n\nPartons de $k(x)=1$, c'est-à-dire $-x+x\\ln x=1$.\n\n$-x+x\\ln x=1\\Leftrightarrow x\\ln x=x+1\\Leftrightarrow\\ln x=\\dfrac{x+1}x$ (en divisant par $x$, ce qui est licite car $x>0$ sur le domaine de définition)\n\nAppliquons la fonction exponentielle aux deux membres (opération réversible car $\\exp$ est une bijection strictement croissante de $\\mathbb{R}$ dans $]0,+\\infty[$) :\n\n$\\ln x=\\dfrac{x+1}x\\Leftrightarrow e^{\\ln x}=e^{\\frac{x+1}x}\\Leftrightarrow x=e^{\\frac{x+1}x}$\n\nOr, par définition, $h(x)=e^{\\frac{x+1}x}$. Donc :\n\n$k(x)=1\\Leftrightarrow x=h(x)\\Leftrightarrow h(x)=x$",
+      "themes": [
+        "équivalence",
+        "exponentielle",
+        "logarithme",
+        "Analyse — fonctions logarithme et exponentielle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "3",
+      "points": "0,5pt",
+      "enonce_markdown": "Démontrer que pour tout $x$ élément de $[3;4]$, $h(x)$ est aussi un élément de $[3;4]$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-demontrer-stabilite-intervalle-fonction-sens-variation-terminale-d-ti",
+          "texte": "Pour démontrer qu'un intervalle est stable par une fonction (image de l'intervalle incluse dans lui-même), on étudie le sens de variation de la fonction sur cet intervalle, puis on calcule les images des bornes : l'image de l'intervalle est alors l'intervalle délimité par ces deux valeurs."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer qu'un intervalle est stable par une fonction, on étudie d'abord le sens de variation de la fonction sur cet intervalle, puis on calcule les images des bornes : l'image de l'intervalle est alors l'intervalle délimité par ces deux valeurs (dans l'ordre déterminé par le sens de variation), qu'il suffit ensuite de comparer à l'intervalle de départ.\n\nÉtudions le sens de variation de $h$ sur $[3;4]$. On peut écrire $h(x)=e^{\\frac{x+1}x}=e^{1+\\frac1x}$.\n\n$h'(x)=e^{1+\\frac1x}\\times\\left(-\\dfrac1{x^2}\\right)=-\\dfrac1{x^2}h(x)$\n\nComme $h(x)>0$ (une exponentielle est toujours strictement positive) et $-\\dfrac1{x^2}<0$ pour tout $x>0$, on a $h'(x)<0$ sur $]0,+\\infty[$ : $h$ est donc strictement décroissante sur $[3;4]$.\n\nPuisque $h$ est strictement décroissante sur $[3;4]$, l'image de l'intervalle $[3;4]$ par $h$ est l'intervalle $[h(4),h(3)]$.\n\nCalculons ces deux valeurs :\n\n$h(3)=e^{\\frac{3+1}3}=e^{\\frac43}\\approx e^{1{,}333}\\approx3{,}79$\n\n$h(4)=e^{\\frac{4+1}4}=e^{\\frac54}=e^{1{,}25}\\approx3{,}49$\n\nOn obtient donc $h([3;4])=[h(4);h(3)]\\approx[3{,}49;3{,}79]$.\n\nComme $3\\leq3{,}49$ et $3{,}79\\leq4$, on a bien $[3{,}49;3{,}79]\\subset[3;4]$.\n\nDonc pour tout $x\\in[3;4]$, $h(x)\\in[3;4]$.",
+      "themes": [
+        "stabilité d'intervalle",
+        "sens de variation",
+        "image d'un intervalle",
+        "Analyse — stabilité d'intervalle"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "4",
+      "points": "0,5pt",
+      "enonce_markdown": "Démontrer que $|h'(x)|\\leq\\dfrac12$ pour tout $x$ élément de $[3;4]$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-majorer-valeur-absolue-derivee-intervalle-ferme-terminale-d-ti",
+          "texte": "Pour majorer la valeur absolue d'une dérivée sur un intervalle fermé, on majore séparément chaque facteur de son expression en utilisant les bornes de l'intervalle et le sens de variation de chaque facteur, puis on combine ces majorations."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour majorer la valeur absolue d'une dérivée sur un intervalle fermé, on majore séparément chaque facteur de son expression, en utilisant les bornes de l'intervalle et le sens de variation (croissant ou décroissant) de chaque facteur, puis on combine ces majorations.\n\nD'après la question 3, $h'(x)=-\\dfrac1{x^2}h(x)$, donc $|h'(x)|=\\dfrac{h(x)}{x^2}$ (car $h(x)>0$ et $x^2>0$).\n\n**Majoration de $h(x)$** : $h$ est strictement décroissante sur $[3;4]$ (question 3), donc son maximum sur cet intervalle est atteint en $x=3$ : pour tout $x\\in[3;4]$, $h(x)\\leq h(3)=e^{\\frac43}$.\n\n**Minoration de $x^2$** : la fonction $x\\mapsto x^2$ est strictement croissante sur $[3;4]$ (car $x>0$), donc son minimum est atteint en $x=3$ : pour tout $x\\in[3;4]$, $x^2\\geq3^2=9$.\n\nEn combinant ces deux résultats (numérateur majoré, dénominateur minoré, tous deux positifs) :\n\n$|h'(x)|=\\dfrac{h(x)}{x^2}\\leq\\dfrac{e^{4/3}}9$\n\nIl reste à vérifier que $\\dfrac{e^{4/3}}9\\leq\\dfrac12$, c'est-à-dire $e^{4/3}\\leq4{,}5$.\n\nOr $e^{4/3}\\approx3{,}79<4{,}5$. L'inégalité est donc vérifiée.\n\nOn a donc bien $|h'(x)|\\leq\\dfrac{e^{4/3}}9<\\dfrac12$ pour tout $x\\in[3;4]$, ce qui donne en particulier $|h'(x)|\\leq\\dfrac12$.",
+      "themes": [
+        "majoration",
+        "valeur absolue",
+        "dérivée",
+        "Analyse — majoration"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "5a",
+      "points": "0,5pt",
+      "enonce_markdown": "Soit U la suite définie par $U_0=3$ et $U_{n+1}=h(U_n)$ pour tout $n\\in\\mathbb{N}$. Démontrer par récurrence que pour tout entier naturel $n$, $U_n\\in[3;4]$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-recurrence-suite-recurrente-reste-intervalle-terminale-d-ti",
+          "texte": "Pour démontrer par récurrence qu'une suite définie par une relation Un+1=f(Un) reste dans un intervalle donné, on vérifie l'initialisation (le premier terme appartient à l'intervalle), puis on montre l'hérédité en utilisant la stabilité de l'intervalle par f démontrée au préalable."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer par récurrence qu'une suite définie par une relation $U_{n+1}=f(U_n)$ reste dans un intervalle donné, on vérifie l'initialisation (le premier terme appartient à l'intervalle), puis on montre l'hérédité en s'appuyant sur la stabilité de l'intervalle par $f$, déjà établie au préalable.\n\nSoit la propriété $P(n)$ : « $U_n\\in[3;4]$ ».\n\n**Initialisation** : $U_0=3$, et $3\\in[3;4]$. Donc $P(0)$ est vraie.\n\n**Hérédité** : supposons $P(n)$ vraie pour un entier naturel $n$ donné, c'est-à-dire $U_n\\in[3;4]$. D'après la question 3, $h([3;4])\\subset[3;4]$, donc $h(U_n)\\in[3;4]$. Or $U_{n+1}=h(U_n)$ par définition de la suite. Donc $U_{n+1}\\in[3;4]$ : $P(n+1)$ est vraie.\n\n**Conclusion** : par le principe de récurrence, $P(n)$ est vraie pour tout entier naturel $n$, c'est-à-dire $U_n\\in[3;4]$ pour tout $n\\in\\mathbb{N}$.",
+      "themes": [
+        "récurrence",
+        "suite récurrente",
+        "stabilité d'intervalle",
+        "Suites — récurrence, stabilité"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "5b",
+      "points": "0,5pt",
+      "enonce_markdown": "Démontrer que pour tout entier naturel $n$, $|U_{n+1}-\\alpha|\\leq\\dfrac12|U_n-\\alpha|$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-inegalite-accroissements-finis-suite-recurrente-terminale-d-ti",
+          "texte": "Pour majorer l'écart entre deux termes consécutifs d'une suite récurrente et son point fixe, on applique l'inégalité des accroissements finis à la fonction f entre le terme courant et le point fixe, en utilisant une majoration de |f'| déjà établie sur l'intervalle."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour majorer l'écart entre un terme d'une suite récurrente $U_{n+1}=f(U_n)$ et le point fixe $\\alpha$ de $f$, on applique l'inégalité des accroissements finis à $f$ entre $U_n$ et $\\alpha$, en s'appuyant sur une majoration de $|f'|$ déjà établie sur l'intervalle contenant ces deux valeurs.\n\nRappelons que $\\alpha$ vérifie $k(\\alpha)=1$ (question 1), donc d'après l'équivalence de la question 2, $h(\\alpha)=\\alpha$ : $\\alpha$ est un point fixe de $h$.\n\nD'après la question 5a, $U_n\\in[3;4]$ pour tout $n$, et $\\alpha\\in[3;4]$ (question 1). Sur l'intervalle $[3;4]$, on sait (question 4) que $|h'(x)|\\leq\\dfrac12$.\n\nD'après l'inégalité des accroissements finis appliquée à $h$ entre $U_n$ et $\\alpha$ (tous deux dans $[3;4]$, intervalle sur lequel $h$ est dérivable) :\n\n$|h(U_n)-h(\\alpha)|\\leq\\dfrac12|U_n-\\alpha|$\n\nOr $h(U_n)=U_{n+1}$ (définition de la suite) et $h(\\alpha)=\\alpha$ (point fixe). Donc :\n\n$|U_{n+1}-\\alpha|\\leq\\dfrac12|U_n-\\alpha|$\n\npour tout entier naturel $n$.",
+      "themes": [
+        "accroissements finis",
+        "point fixe",
+        "majoration",
+        "Suites — inégalité des accroissements finis"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "5c",
+      "points": "0,5pt",
+      "enonce_markdown": "En déduire que pour tout entier naturel $n$, $|U_n-\\alpha|\\leq\\left(\\dfrac12\\right)^n$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deduire-majoration-geometrique-recurrence-terminale-d-ti",
+          "texte": "Pour déduire une majoration géométrique de l'écart d'une suite à son point fixe, on applique successivement l'inégalité obtenue à chaque étape (par récurrence ou par itération directe), ce qui fait apparaître une puissance du facteur de contraction multipliant l'écart initial."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour déduire une majoration géométrique de l'écart d'une suite à son point fixe à partir d'une inégalité reliant deux termes consécutifs, on applique cette inégalité successivement (par récurrence), ce qui fait apparaître une puissance du facteur de contraction multipliant l'écart initial.\n\nMontrons par récurrence la propriété $Q(n)$ : « $|U_n-\\alpha|\\leq\\left(\\dfrac12\\right)^n|U_0-\\alpha|$ ».\n\n**Initialisation** : pour $n=0$, $\\left(\\dfrac12\\right)^0|U_0-\\alpha|=|U_0-\\alpha|$, l'inégalité est une égalité, donc vraie.\n\n**Hérédité** : supposons $Q(n)$ vraie. D'après la question 5b, $|U_{n+1}-\\alpha|\\leq\\dfrac12|U_n-\\alpha|$. En combinant avec l'hypothèse de récurrence :\n\n$|U_{n+1}-\\alpha|\\leq\\dfrac12|U_n-\\alpha|\\leq\\dfrac12\\times\\left(\\dfrac12\\right)^n|U_0-\\alpha|=\\left(\\dfrac12\\right)^{n+1}|U_0-\\alpha|$\n\nDonc $Q(n+1)$ est vraie.\n\n**Conclusion** : par récurrence, $|U_n-\\alpha|\\leq\\left(\\dfrac12\\right)^n|U_0-\\alpha|$ pour tout $n\\in\\mathbb{N}$.\n\nIl reste à majorer $|U_0-\\alpha|$. On a $U_0=3$ et $\\alpha\\in[3;4]$ (question 1), donc $|U_0-\\alpha|=\\alpha-3\\leq4-3=1$.\n\nEn substituant cette majoration :\n\n$|U_n-\\alpha|\\leq\\left(\\dfrac12\\right)^n\\times1=\\left(\\dfrac12\\right)^n$\n\npour tout entier naturel $n$.",
+      "themes": [
+        "récurrence",
+        "majoration géométrique",
+        "point fixe",
+        "Suites — majoration par récurrence"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "5d",
+      "points": "0,5pt",
+      "enonce_markdown": "Démontrer que la suite U est convergente et déterminer sa limite.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-convergence-suite-vers-point-fixe-majoration-tendant-zero-terminale-d-ti",
+          "texte": "Pour démontrer la convergence d'une suite vers un point fixe à partir d'une majoration de l'écart qui tend vers zéro, on invoque le théorème des gendarmes (ou théorème de comparaison) : si 0 majore par une suite tendant vers 0, l'écart lui-même tend vers 0, donc la suite converge vers ce point fixe."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer la convergence d'une suite vers un point fixe à partir d'une majoration de l'écart qui tend vers zéro, on invoque le théorème des gendarmes (ou théorème de comparaison) : si l'écart est encadré entre $0$ et une suite qui tend vers $0$, l'écart lui-même tend vers $0$, ce qui signifie que la suite converge vers ce point fixe.\n\nD'après la question 5c, pour tout $n\\in\\mathbb{N}$ :\n\n$0\\leq|U_n-\\alpha|\\leq\\left(\\dfrac12\\right)^n$\n\nOr $\\left(\\dfrac12\\right)^n\\to0$ quand $n\\to+\\infty$ (car $0<\\dfrac12<1$, suite géométrique de raison strictement comprise entre $0$ et $1$).\n\nPar le théorème des gendarmes (ou théorème d'encadrement), on en déduit que $|U_n-\\alpha|\\to0$ quand $n\\to+\\infty$.\n\nOr $|U_n-\\alpha|\\to0$ signifie exactement que $U_n\\to\\alpha$.\n\nLa suite $U$ est donc convergente, et sa limite est $\\alpha$ (l'unique solution de $k(x)=1$ dans $[3;4]$ trouvée à la question 1).",
+      "themes": [
+        "convergence",
+        "point fixe",
+        "théorème des gendarmes",
+        "Suites — convergence, théorème des gendarmes"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    }
+  ],
+  "matiere_normalisee": "MATHS"
+}

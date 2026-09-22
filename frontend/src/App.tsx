@@ -8,7 +8,6 @@ import { ThemeProvider, useTheme } from "@/components/theme-provider"
 import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { OnboardingModal } from "@/components/OnboardingModal"
-import { InstallPrompt } from "@/components/InstallPrompt"
 import { ErrorBoundary } from "@/components/ErrorBoundary"
 import { RouteFallback } from "@/components/RouteFallback"
 import { ScrollToTop } from "@/components/ScrollToTop"
@@ -20,6 +19,8 @@ import { COUNTRY_STORAGE_KEY, DEFAULT_COUNTRY_CODE } from "@/lib/countryPath"
 // aucune raison de le télécharger avant qu'un élève ouvre effectivement un contenu.
 const CataloguePage = lazy(() => import("@/pages/CataloguePage").then((m) => ({ default: m.CataloguePage })))
 const EpreuvesListPage = lazy(() => import("@/pages/EpreuvesListPage").then((m) => ({ default: m.EpreuvesListPage })))
+const ThemesFrequentsPage = lazy(() => import("@/pages/ThemesFrequentsPage").then((m) => ({ default: m.ThemesFrequentsPage })))
+const ThemeExercicesPage = lazy(() => import("@/pages/ThemeExercicesPage").then((m) => ({ default: m.ThemeExercicesPage })))
 const EpreuveDetailPage = lazy(() => import("@/pages/EpreuveDetailPage").then((m) => ({ default: m.EpreuveDetailPage })))
 const EpreuveInediteDetailPage = lazy(() => import("@/pages/EpreuveInediteDetailPage").then((m) => ({ default: m.EpreuveInediteDetailPage })))
 const EpreuveReaderPage = lazy(() => import("@/pages/EpreuveReaderPage").then((m) => ({ default: m.EpreuveReaderPage })))
@@ -79,6 +80,8 @@ function App() {
                       <Route path="/" element={<RootRedirect />} />
                       <Route path="/:country" element={<CataloguePage />} />
                       <Route path="/:country/epreuves" element={<EpreuvesListPage />} />
+                      <Route path="/:country/themes-frequents" element={<ThemesFrequentsPage />} />
+                      <Route path="/:country/themes-frequents/:tagId/exercices" element={<ThemeExercicesPage />} />
                       <Route path="/:country/cours" element={<CoursListPage />} />
                       <Route path="/:country/epreuves/:slug" element={<EpreuveDetailPage />} />
                       <Route path="/:country/epreuves/:slug/lire" element={<EpreuveReaderPage />} />
@@ -118,7 +121,6 @@ function App() {
               <Footer />
             </div>
             <OnboardingModal />
-            <InstallPrompt />
           </CountryProvider>
         </BrowserRouter>
       </AuthProvider>

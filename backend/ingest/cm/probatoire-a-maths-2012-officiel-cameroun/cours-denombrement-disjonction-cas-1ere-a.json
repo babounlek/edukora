@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-denombrement-disjonction-cas-1ere-a",
+  "meta": {
+    "titre": "Dénombrement par disjonction de cas (union exclusive de deux événements)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Dénombrement",
+    "duree_estimee_min": 25,
+    "tags": [
+      "dénombrement",
+      "disjonction de cas",
+      "complémentaire",
+      "combinaisons"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2012-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2012 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2012-officiel-cameroun-ex2-qII.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Exactement l'un des deux », « au moins un des deux », « aucun des deux » : ces formulations, très proches en apparence, ne comptent pas du tout la même chose. Se tromper d'interprétation est l'une des erreurs les plus fréquentes en dénombrement, alors que la méthode pour ne jamais s'y perdre tient en une seule idée : découper la situation en cas qui ne se recouvrent pas, puis les compter séparément avant de les additionner."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dénombrement par produit de choix indépendants",
+        "Dénombrement avec éléments imposés dans un tirage"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Découper en cas exclusifs, ou passer par le complémentaire",
+      "contenu_markdown": "Pour compter les situations où « exactement un » de deux éléments A et B est présent (jamais les deux, jamais aucun), on distingue deux cas qui ne se recouvrent pas : A présent et B absent, puis B présent et A absent. On additionne les deux dénombrements obtenus, car un même résultat ne peut jamais appartenir aux deux cas à la fois. Une méthode de contrôle indépendante existe toujours : passer par le complémentaire, c'est-à-dire soustraire du total les deux cas déjà connus par ailleurs (A et B tous deux présents, A et B tous deux absents).",
+      "formule_principale": "\\text{Exactement un} = (\\text{A présent, B absent}) + (\\text{B présent, A absent})",
+      "variantes": [
+        {
+          "nom": "Méthode par complémentaire",
+          "quand_utiliser": "Quand les cas « les deux présents » et « aucun présent » sont déjà connus ou faciles à calculer",
+          "contenu_markdown": "Exactement un des deux $=$ Total $-$ (les deux présents) $-$ (aucun présent). Cette formule sert surtout de vérification indépendante du calcul direct par cas."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un groupe de danse de 5 filles et 6 garçons est formé à partir de 10 filles (dont Anne) et 10 garçons (dont Jean Pierre) présélectionnés. Combien de groupes contiennent une seule des deux personnes citées, Anne et Jean Pierre ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter le cas « Anne présente, Jean Pierre absent »",
+          "justification": "4 filles restent à choisir parmi les 9 autres filles ; les 6 garçons se choisissent parmi les 9 autres garçons, Jean Pierre exclu",
+          "resultat_markdown": "$C_9^4\\times C_9^6=126\\times84=10\\,584$"
+        },
+        {
+          "numero": 2,
+          "action": "Compter le cas « Jean Pierre présent, Anne absente »",
+          "justification": "5 filles se choisissent parmi les 9 autres filles, Anne exclue ; 5 garçons restent à choisir parmi les 9 autres garçons",
+          "resultat_markdown": "$C_9^5\\times C_9^5=126\\times126=15\\,876$"
+        },
+        {
+          "numero": 3,
+          "action": "Additionner les deux cas, car ils sont exclusifs",
+          "justification": "Un groupe ne peut pas appartenir aux deux cas à la fois",
+          "resultat_markdown": "$10\\,584+15\\,876=26\\,460$"
+        }
+      ],
+      "conclusion_markdown": "$26\\,460$ groupes contiennent exactement une des deux personnes citées. On peut vérifier ce résultat par le complémentaire : Total ($52\\,920$) moins les deux présents ($15\\,876$) moins aucun présent ($10\\,584$) redonne $26\\,460$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre « exactement un » avec « au moins un »",
+          "pourquoi_faux": "« Au moins un » inclut le cas où les deux sont présents, alors qu'« exactement un » l'exclut explicitement.",
+          "correction_markdown": "Reformule toujours la condition en français simple avant de calculer : « l'un des deux, mais pas les deux » aide à repérer qu'il s'agit d'un « exactement un »."
+        },
+        {
+          "erreur_markdown": "Oublier qu'un des deux cas exclusifs peut être compté deux fois si les catégories ne sont pas bien séparées",
+          "pourquoi_faux": "Si les deux cas se recoupent (par exemple si on ne précise pas explicitement l'absence de l'autre personne dans chaque cas), certains groupes sont comptés en double.",
+          "correction_markdown": "Vérifie toujours qu'un cas impose explicitement l'absence de l'autre élément, pas seulement la présence du premier."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un tirage de 3 boules parmi 5 rouges et 4 vertes, combien de tirages contiennent au moins une boule rouge ? (Indication : passer par le complémentaire « aucune rouge ».)",
+          "solution_markdown": "Total des tirages de 3 boules parmi 9 : $C_9^3=84$. Tirages sans rouge (3 vertes parmi 4) : $C_4^3=4$. Au moins une rouge : $84-4=80$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un jury de 3 personnes est choisi parmi 5 hommes (dont M. Ela) et 4 femmes (dont Mme Biya). Combien de jurys de 3 personnes contiennent M. Ela ou Mme Biya, mais pas les deux ?",
+          "solution_markdown": "Cas 1, M. Ela présent, Mme Biya absente : $C_8^2$ pour compléter parmi les 8 autres, moins les tirages contenant encore Mme Biya... Méthode directe : compléter 2 places parmi les 4 hommes restants et les 3 femmes restantes (Biya exclue), soit $C_7^2=21$. Cas 2, Mme Biya présente, M. Ela absent : compléter 2 places parmi les 4 femmes restantes et 4 hommes restants (Ela exclu), soit $C_7^2=21$. Total : $21+21=42$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Reprendre l'exercice précédent et vérifier le résultat par la méthode du complémentaire, sachant que le nombre total de jurys de 3 personnes parmi les 9 candidats est $C_9^3=84$, que le nombre de jurys contenant à la fois M. Ela et Mme Biya est $C_7^1=7$, et que le nombre de jurys ne contenant ni l'un ni l'autre est $C_7^3=35$.",
+          "solution_markdown": "Par complémentaire : $84-7-35=42$, ce qui confirme exactement le résultat obtenu par la méthode directe des deux cas exclusifs."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "« Exactement un des deux » se calcule en additionnant deux cas exclusifs : A présent et B absent, puis B présent et A absent.",
+        "Ne confonds jamais « exactement un » avec « au moins un » : la formulation exacte de l'énoncé décide de la méthode.",
+        "Le passage par le complémentaire (Total moins les deux cas connus) est le meilleur moyen de vérifier un résultat obtenu par addition directe.",
+        "Cette méthode de disjonction de cas se généralise à toute situation où deux conditions s'excluent mutuellement."
+      ]
+    }
+  ]
+}

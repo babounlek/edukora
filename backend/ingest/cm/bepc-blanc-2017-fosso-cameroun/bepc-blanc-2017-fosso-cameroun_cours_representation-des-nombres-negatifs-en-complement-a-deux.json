@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-representation-des-nombres-negatifs-en-complement-a-deux-3e",
+  "meta": {
+    "titre": "Représentation des nombres négatifs en complément à deux",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Systèmes de numération",
+    "duree_estimee_min": 22,
+    "tags": [
+      "complément à deux",
+      "nombres négatifs",
+      "codage binaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "BEPC Blanc N°1 - Institut Polyvalent Fosso - Épreuve d'Informatique théorique (session avril 2017, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-blanc-2017-fosso-cameroun-ex2-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le binaire ne connaît que des 0 et des 1 : pas de signe « moins » disponible dans son alphabet. Pourtant, un ordinateur doit bien pouvoir représenter et calculer avec des nombres négatifs. La solution retenue par presque tous les systèmes informatiques s'appelle le complément à deux : une méthode qui paraît un peu artificielle la première fois qu'on la rencontre, mais qui devient un automatisme en trois étapes une fois comprise."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir convertir un nombre décimal positif en binaire",
+        "Savoir inverser un bit (0 devient 1, 1 devient 0)",
+        "Savoir additionner deux nombres en binaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le complément à deux, en trois étapes",
+      "contenu_markdown": "Pour représenter $-N$ en binaire sur un nombre de bits fixé :\n\n1. Écrire $N$ (la valeur absolue) en binaire, sur le nombre de bits imposé, en complétant par des zéros à gauche si nécessaire.\n2. Inverser chaque bit : les 0 deviennent des 1, les 1 deviennent des 0 (c'est le **complément à un**).\n3. Ajouter 1 au résultat obtenu : c'est le **complément à deux**, qui représente $-N$.\n\nCette représentation a une propriété remarquable : le bit de poids fort (le plus à gauche) vaut 0 pour un nombre positif et 1 pour un nombre négatif, ce qui permet de reconnaître le signe d'un seul coup d'œil. Pour vérifier un résultat, on peut aussi additionner $N$ et sa représentation en complément à deux : la somme doit valoir $2^{n}$ (où $n$ est le nombre de bits), en ignorant la retenue qui dépasse la capacité.",
+      "formule_principale": "\\text{complément à deux}(N) = \\overline{N} + 1",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Convertir $-48$ en base 2 sur 8 bits.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire 48 en binaire sur 8 bits",
+          "justification": "On part toujours de la valeur absolue du nombre, écrite sur le nombre de bits imposé par l'énoncé.",
+          "resultat_markdown": "$48 = 32+16 = 2^5+2^4$, donc $48_{10} = 0011\\,0000_2$."
+        },
+        {
+          "numero": 2,
+          "action": "Inverser chaque bit (complément à un)",
+          "justification": "C'est la deuxième étape du procédé, avant l'ajout de 1.",
+          "resultat_markdown": "$0011\\,0000 \\rightarrow 1100\\,1111$"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter 1 au résultat (complément à deux)",
+          "justification": "Cette dernière étape est celle qu'on oublie le plus souvent ; elle est indispensable pour obtenir la représentation finale.",
+          "resultat_markdown": "$1100\\,1111 + 1 = 1101\\,0000$, donc $-48_{10} = 1101\\,0000_2$."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier le résultat en additionnant 48 et sa représentation",
+          "justification": "Une vérification rapide permet de détecter une erreur avant de rendre sa copie.",
+          "resultat_markdown": "$1101\\,0000_2$ lu comme un nombre non signé vaut $128+64+16=208$. Or $48+208=256=2^8$, ce qui confirme le calcul."
+        }
+      ],
+      "conclusion_markdown": "La représentation en complément à deux de $-48$ sur 8 bits est $1101\\,0000_2$ ; le bit de poids fort valant 1 confirme immédiatement qu'il s'agit d'un nombre négatif."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "S'arrêter après l'inversion des bits, sans ajouter 1 (rendre le complément à un pour le complément à deux).",
+          "pourquoi_faux": "Le complément à un est une étape intermédiaire, pas la représentation finale utilisée pour coder les entiers négatifs : il manque l'ajout de 1 qui définit le complément à deux.",
+          "correction_markdown": "Vérifie toujours que ta réponse finale comporte bien les trois étapes : écriture en binaire, inversion, puis addition de 1."
+        },
+        {
+          "erreur_markdown": "Oublier de compléter le nombre binaire par des zéros à gauche pour atteindre le nombre de bits imposé, avant d'inverser les bits.",
+          "pourquoi_faux": "Si le nombre de bits de départ est incorrect, l'inversion et l'ajout de 1 se font sur un nombre de positions erroné, ce qui fausse toute la représentation finale.",
+          "correction_markdown": "Compte toujours le nombre de bits obtenus après la première étape et complète par des zéros à gauche si nécessaire, avant de passer à l'inversion."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir $-5$ en base 2 sur 8 bits.",
+          "solution_markdown": "$5_{10} = 0000\\,0101_2$. Inversion : $1111\\,1010$. Ajout de 1 : $1111\\,1011$. Donc $-5_{10} = 1111\\,1011_2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir $-100$ en base 2 sur 8 bits.",
+          "solution_markdown": "$100 = 64+32+4 = 2^6+2^5+2^2$, donc $100_{10} = 0110\\,0100_2$. Inversion : $1001\\,1011$. Ajout de 1 : $1001\\,1100$. Donc $-100_{10} = 1001\\,1100_2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un octet ne peut coder que des valeurs de $-128$ à $127$ en complément à deux signé. Expliquer pourquoi $-48$ peut être codé sur 8 bits mais pas $-200$, et indiquer sur combien de bits il faudrait travailler pour coder $-200$.",
+          "solution_markdown": "Sur 8 bits en complément à deux, le bit de poids fort sert de bit de signe et les 7 bits restants codent une amplitude maximale de $2^7=128$ : les valeurs représentables vont donc de $-128$ à $127$. Comme $-48$ appartient à cet intervalle, il se code sans problème sur 8 bits (on a trouvé $1101\\,0000_2$). En revanche, $-200$ sort de cet intervalle ($-200 < -128$) : 8 bits ne suffisent pas. Il faut passer à 16 bits, qui permettent de coder les valeurs de $-32768$ à $32767$ (amplitude $2^{15}=32768$), ce qui couvre largement $-200$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le complément à deux se construit en trois étapes : écrire la valeur absolue en binaire, inverser tous les bits, puis ajouter 1.",
+        "Le bit de poids fort indique le signe : 0 pour un nombre positif, 1 pour un nombre négatif.",
+        "Vérifie ton résultat en additionnant le nombre positif et sa représentation : la somme doit valoir $2^n$ pour $n$ bits.",
+        "Le nombre de bits fixe l'intervalle de valeurs représentables (par exemple $-128$ à $127$ sur 8 bits) : un nombre trop grand en valeur absolue nécessite davantage de bits.",
+        "Cette méthode est directement exploitée dans les exercices de conversion du BEPC d'Informatique, souvent juste après une question sur les conversions de bases classiques."
+      ]
+    }
+  ]
+}

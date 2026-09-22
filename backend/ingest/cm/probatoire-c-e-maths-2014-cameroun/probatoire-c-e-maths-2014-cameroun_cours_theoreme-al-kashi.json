@@ -1,0 +1,196 @@
+{
+ "cours_id": "cours-theoreme-al-kashi-1ere-ce",
+ "meta": {
+  "titre": "Calculer une longueur par le théorème d'Al-Kashi",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Relations métriques dans le triangle",
+  "duree_estimee_min": 30,
+  "tags": ["théorème d'Al-Kashi", "loi des cosinus", "relations métriques", "triangle", "diagonale du carré"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "IV"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qA2a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Le théorème de Pythagore ne fonctionne que dans un triangle rectangle. Dès que l'angle n'est plus droit, la relation $a^2 = b^2 + c^2$ devient fausse — mais pas de beaucoup. Al-Kashi mesure exactement l'écart : il ajoute un terme correctif proportionnel au cosinus de l'angle. Quand cet angle vaut $90^{\\circ}$, le cosinus s'annule et l'on retrouve Pythagore. C'est donc une généralisation, pas une formule concurrente à mémoriser en plus."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître le théorème de Pythagore",
+    "Connaître les valeurs remarquables du cosinus, en particulier $\\cos 45^{\\circ} = \\dfrac{\\sqrt{2}}{2}$",
+    "Savoir que les diagonales d'un carré sont ses bissectrices",
+    "Manipuler les radicaux dans un calcul numérique"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Pythagore corrigé par un cosinus",
+   "contenu_markdown": "**L'énoncé.** Dans un triangle $ABC$ quelconque :\n\n$$BC^{2} = AB^{2} + AC^{2} - 2 \\times AB \\times AC \\times \\cos\\widehat{A}$$\n\nLe côté calculé, $[BC]$, est celui **opposé** à l'angle utilisé, $\\widehat{A}$. Les deux autres côtés, $[AB]$ et $[AC]$, sont ceux qui **encadrent** cet angle.\n\n**Les trois écritures.** La formule s'écrit de trois façons, une par sommet. En notant $a = BC$, $b = AC$, $c = AB$ :\n\n$$a^{2} = b^{2} + c^{2} - 2bc\\cos\\widehat{A}$$\n\n$$b^{2} = a^{2} + c^{2} - 2ac\\cos\\widehat{B}$$\n\n$$c^{2} = a^{2} + b^{2} - 2ab\\cos\\widehat{C}$$\n\n**Quand l'utiliser.** Il faut connaître **deux côtés et l'angle qu'ils forment** ; on obtient alors le troisième côté. C'est le cas dit « deux côtés et l'angle compris ». Si l'angle connu n'est pas celui compris entre les deux côtés, la formule ne s'applique pas directement.\n\n**Le signe du terme correctif.** Le cosinus porte tout le comportement de la formule :\n\n- $\\widehat{A} = 90^{\\circ}$ : $\\cos\\widehat{A} = 0$, on retrouve Pythagore.\n- $\\widehat{A}$ aigu : $\\cos\\widehat{A} > 0$, on **retranche** quelque chose, donc $a^2 < b^2 + c^2$.\n- $\\widehat{A}$ obtus : $\\cos\\widehat{A} < 0$, le terme retranché est négatif, donc $a^2 > b^2 + c^2$.\n\nCe contrôle qualitatif détecte immédiatement une erreur de signe.\n\n**Dans un carré.** Les diagonales étant les bissectrices des angles droits, elles forment un angle de $45^{\\circ}$ avec chaque côté. Le centre $O$ est équidistant des quatre sommets, à la demi-diagonale. Pour un carré de côté $c$ :\n\n$$\\text{diagonale} = c\\sqrt{2} \\qquad ; \\qquad OA = \\frac{c\\sqrt{2}}{2} \\qquad ; \\qquad OA^{2} = \\frac{c^{2}}{2}$$\n\nCes trois données, jointes à $\\cos 45^{\\circ} = \\dfrac{\\sqrt{2}}{2}$, suffisent à traiter tout triangle formé par le centre et deux points des côtés.",
+   "formule_principale": "BC^{2} = AB^{2} + AC^{2} - 2 \\times AB \\times AC \\times \\cos\\widehat{A}",
+   "variantes": [
+    {
+     "nom": "Calculer un angle au lieu d'un côté",
+     "quand_utiliser": "Quand les trois côtés sont connus et qu'on cherche un angle",
+     "contenu_markdown": "La formule s'inverse. En isolant le cosinus :\n\n$$\\cos\\widehat{A} = \\frac{AB^{2} + AC^{2} - BC^{2}}{2 \\times AB \\times AC}$$\n\nC'est le cas dit « trois côtés connus ». Le signe du numérateur donne immédiatement la nature de l'angle : positif pour un angle aigu, négatif pour un angle obtus, nul pour un angle droit."
+    },
+    {
+     "nom": "Formulation vectorielle",
+     "quand_utiliser": "Quand on travaille avec le produit scalaire",
+     "contenu_markdown": "Al-Kashi n'est rien d'autre que le développement du carré scalaire de $\\overrightarrow{BC} = \\overrightarrow{AC} - \\overrightarrow{AB}$ :\n\n$$BC^{2} = \\left(\\overrightarrow{AC} - \\overrightarrow{AB}\\right)^{2} = AC^{2} + AB^{2} - 2\\,\\overrightarrow{AB} \\cdot \\overrightarrow{AC}$$\n\net le produit scalaire vaut $AB \\times AC \\times \\cos\\widehat{A}$. Cette lecture est utile parce qu'elle permet de retrouver la formule quand on l'a oubliée : il suffit de développer un carré."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCD$ est un carré de centre $O$ et de côté $AB = 6$. Les points $M$ et $N$ appartiennent respectivement à $[AD]$ et $[DC]$, avec $AM = DN$. Montrer que $OM^{2} = 18 - 6\\,AM + AM^{2} = ON^{2}$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Calculer la diagonale du carré",
+     "justification": "Le triangle $ABC$ est rectangle en $B$ avec $AB = BC = 6$ : on applique Pythagore",
+     "resultat_markdown": "$AC^{2} = 6^{2} + 6^{2} = 36 + 36 = 72$, donc $AC = \\sqrt{72} = 6\\sqrt{2}$"
+    },
+    {
+     "numero": 2,
+     "action": "En déduire la demi-diagonale",
+     "justification": "Le centre $O$ est le milieu de chaque diagonale",
+     "resultat_markdown": "$OA = OD = \\dfrac{6\\sqrt{2}}{2} = 3\\sqrt{2}$, donc $OA^{2} = OD^{2} = 9 \\times 2 = 18$"
+    },
+    {
+     "numero": 3,
+     "action": "Identifier les angles à $45^{\\circ}$",
+     "justification": "Les diagonales d'un carré sont les bissectrices de ses angles droits",
+     "resultat_markdown": "$\\widehat{OAD} = \\dfrac{90^{\\circ}}{2} = 45^{\\circ}$ et $\\widehat{ODC} = \\dfrac{90^{\\circ}}{2} = 45^{\\circ}$"
+    },
+    {
+     "numero": 4,
+     "action": "Transporter ces angles sur $M$ et $N$",
+     "justification": "$M$ appartient à $[AD]$ donc $\\widehat{OAM} = \\widehat{OAD}$ ; $N$ appartient à $[DC]$ donc $\\widehat{ODN} = \\widehat{ODC}$",
+     "resultat_markdown": "$\\widehat{OAM} = 45^{\\circ}$ et $\\widehat{ODN} = 45^{\\circ}$"
+    },
+    {
+     "numero": 5,
+     "action": "Poser Al-Kashi dans le triangle $OAM$",
+     "justification": "On connaît $OA$, $AM$ et l'angle $\\widehat{OAM}$ qu'ils forment : c'est exactement le cas « deux côtés et l'angle compris »",
+     "resultat_markdown": "$OM^{2} = OA^{2} + AM^{2} - 2 \\times OA \\times AM \\times \\cos 45^{\\circ}$"
+    },
+    {
+     "numero": 6,
+     "action": "Calculer le coefficient du terme correctif",
+     "justification": "On remplace $OA$ par $3\\sqrt{2}$ et $\\cos 45^{\\circ}$ par $\\dfrac{\\sqrt{2}}{2}$",
+     "resultat_markdown": "$2 \\times 3\\sqrt{2} \\times \\dfrac{\\sqrt{2}}{2} = 3\\sqrt{2} \\times \\sqrt{2} = 3 \\times 2 = 6$"
+    },
+    {
+     "numero": 7,
+     "action": "Conclure pour $OM$",
+     "justification": "On substitue $OA^{2} = 18$ et le coefficient $6$",
+     "resultat_markdown": "$OM^{2} = 18 + AM^{2} - 6\\,AM = 18 - 6\\,AM + AM^{2}$"
+    },
+    {
+     "numero": 8,
+     "action": "Refaire le calcul dans le triangle $ODN$",
+     "justification": "Même configuration : $OD^{2} = 18$, angle de $45^{\\circ}$, donc même coefficient $6$",
+     "resultat_markdown": "$ON^{2} = 18 + DN^{2} - 6\\,DN$"
+    },
+    {
+     "numero": 9,
+     "action": "Utiliser l'hypothèse de l'énoncé",
+     "justification": "L'énoncé impose $DN = AM$",
+     "resultat_markdown": "$ON^{2} = 18 - 6\\,AM + AM^{2} = OM^{2}$"
+    },
+    {
+     "numero": 10,
+     "action": "Contrôler sur un cas particulier",
+     "justification": "Pour $AM = 3$, le point $M$ est le milieu de $[AD]$, donc $OM$ vaut la moitié du côté, soit $3$",
+     "resultat_markdown": "La formule donne $18 - 18 + 9 = 9 = 3^{2}$ : cohérent"
+    }
+   ],
+   "conclusion_markdown": "Les deux longueurs sont égales : $OM^{2} = 18 - 6\\,AM + AM^{2} = ON^{2}$. Deux remarques. D'abord, l'égalité $OM = ON$ qui en découle sert directement à la question suivante, où elle place $O$ sur la médiatrice de $[MN]$. Ensuite, le calcul est le **même** dans les deux triangles : la symétrie de la figure, que la rotation exprimera, était déjà visible dans les données."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Appliquer Pythagore alors que le triangle n'est pas rectangle",
+     "pourquoi_faux": "Écrire $OM^{2} = OA^{2} + AM^{2} = 18 + AM^{2}$ oublie tout le terme correctif $-6\\,AM$. Le triangle $OAM$ a un angle de $45^{\\circ}$ en $A$, pas de $90^{\\circ}$.",
+     "correction_markdown": "Vérifie systématiquement la présence d'un angle droit **avant** d'invoquer Pythagore. En son absence, c'est Al-Kashi qui s'applique, et Pythagore n'en est qu'un cas particulier."
+    },
+    {
+     "erreur_markdown": "Utiliser un angle qui n'est pas compris entre les deux côtés",
+     "pourquoi_faux": "La formule relie le côté opposé à l'angle : dans $BC^2 = AB^2 + AC^2 - 2\\,AB\\,AC\\cos\\widehat{A}$, l'angle $\\widehat{A}$ est celui du sommet commun à $[AB]$ et $[AC]$. Prendre $\\widehat{B}$ ou $\\widehat{C}$ donne un résultat faux.",
+     "correction_markdown": "Repère d'abord le côté cherché, puis prends l'angle du sommet **opposé** à ce côté. Les deux côtés qui apparaissent au carré sont ceux qui partent de ce sommet."
+    },
+    {
+     "erreur_markdown": "Oublier le facteur $2$ devant le produit",
+     "pourquoi_faux": "Écrire $-AB \\times AC \\times \\cos\\widehat{A}$ divise le terme correctif par deux. Ici cela donnerait $-3\\,AM$ au lieu de $-6\\,AM$, et le contrôle sur $AM = 3$ échouerait.",
+     "correction_markdown": "Retiens la formule par le développement vectoriel $\\left(\\overrightarrow{AC} - \\overrightarrow{AB}\\right)^2$ : le double produit d'une identité remarquable porte naturellement le facteur $2$."
+    },
+    {
+     "erreur_markdown": "Confondre $\\cos 45^{\\circ} = \\dfrac{\\sqrt{2}}{2}$ avec $\\dfrac{1}{2}$ ou $\\dfrac{\\sqrt{3}}{2}$",
+     "pourquoi_faux": "$\\dfrac{1}{2}$ est $\\cos 60^{\\circ}$ et $\\dfrac{\\sqrt{3}}{2}$ est $\\cos 30^{\\circ}$. Le coefficient deviendrait $3\\sqrt{2}$ ou $3\\sqrt{6}$ au lieu de $6$, et le résultat ne serait plus entier.",
+     "correction_markdown": "Le fait que le calcul aboutisse à des coefficients **entiers** est le signe qu'on a utilisé la bonne valeur. Une expression finale encombrée de radicaux dans un énoncé qui annonce $18 - 6\\,AM + AM^{2}$ signale une erreur."
+    },
+    {
+     "erreur_markdown": "Refaire tout le calcul pour $ON$ sans voir qu'il est identique",
+     "pourquoi_faux": "Ce n'est pas une erreur de fond, mais une perte de temps considérable en épreuve. Les deux triangles $OAM$ et $ODN$ ont exactement les mêmes données : demi-diagonale, angle de $45^{\\circ}$, et $DN = AM$.",
+     "correction_markdown": "Écris une phrase : « le même calcul dans le triangle $ODN$, avec $OD = OA$ et $\\widehat{ODN} = 45^{\\circ}$, donne... ». Le correcteur attend la reconnaissance de la symétrie, pas la répétition."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Dans un triangle $ABC$, on donne $AB = 5$, $AC = 8$ et $\\widehat{A} = 60^{\\circ}$. Calculer $BC$.",
+     "solution_markdown": "**Étape 1 - identifier la configuration.**\n\nOn connaît deux côtés, $[AB]$ et $[AC]$, et l'angle $\\widehat{A}$ qu'ils forment. C'est exactement le cas d'application d'Al-Kashi, et le côté cherché est celui opposé à $\\widehat{A}$.\n\n**Étape 2 - poser la formule.**\n\n$$BC^{2} = AB^{2} + AC^{2} - 2 \\times AB \\times AC \\times \\cos\\widehat{A}$$\n\n**Étape 3 - substituer.**\n\nAvec $\\cos 60^{\\circ} = \\dfrac{1}{2}$ :\n\n$$BC^{2} = 25 + 64 - 2 \\times 5 \\times 8 \\times \\dfrac{1}{2} = 89 - 40 = 49$$\n\n**Étape 4 - conclure.**\n\n$$BC = \\sqrt{49} = 7$$\n\n**Contrôle qualitatif.** L'angle $\\widehat{A}$ est aigu, donc on doit avoir $BC^2 < AB^2 + AC^2$, c'est-à-dire $49 < 89$. Conforme.\n\n**Contrôle par l'inégalité triangulaire.** $8 - 5 = 3 < 7 < 13 = 8 + 5$. Le triangle est bien constructible.\n\n**Remarque.** Le résultat tombe sur un entier, ce qui n'a rien d'automatique. Cela vient de $\\cos 60^{\\circ} = \\dfrac{1}{2}$, la seule valeur remarquable rationnelle. Avec $45^{\\circ}$ ou $30^{\\circ}$, un radical subsisterait en général."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Un triangle a pour côtés $7$, $9$ et $12$. Déterminer la mesure, arrondie au degré, de son plus grand angle, et préciser sa nature.",
+     "solution_markdown": "**Étape 1 - repérer l'angle cherché.**\n\nDans un triangle, le plus grand angle est opposé au plus grand côté. Notons $a = 12$ le plus grand côté, $b = 9$ et $c = 7$, et $\\widehat{A}$ l'angle opposé à $[BC]$.\n\n**Étape 2 - utiliser la forme inversée d'Al-Kashi.**\n\n$$\\cos\\widehat{A} = \\dfrac{b^{2} + c^{2} - a^{2}}{2bc}$$\n\n**Étape 3 - calculer le numérateur.**\n\n$$b^{2} + c^{2} - a^{2} = 81 + 49 - 144 = 130 - 144 = -14$$\n\nLe numérateur est **négatif** : l'angle est donc obtus. C'est déjà une information, avant même le calcul du quotient.\n\n**Étape 4 - calculer le cosinus.**\n\n$$2bc = 2 \\times 9 \\times 7 = 126$$\n\n$$\\cos\\widehat{A} = \\dfrac{-14}{126} = -\\dfrac{1}{9} \\approx -0{,}1111$$\n\n**Étape 5 - conclure.**\n\n$$\\widehat{A} = \\arccos\\left(-\\dfrac{1}{9}\\right) \\approx 96^{\\circ}$$\n\n**Le plus grand angle mesure environ $96^{\\circ}$ : le triangle est obtusangle.**\n\n**Contrôle.** L'angle est proche de $90^{\\circ}$, ce qui est cohérent avec $12^2 = 144$ à peine supérieur à $7^2 + 9^2 = 130$. Plus l'écart entre ces deux quantités est faible, plus l'angle est proche de l'angle droit.\n\n**Ce qu'il faut retenir.** Le **signe** du numérateur $b^2 + c^2 - a^2$ suffit à déterminer la nature de l'angle, sans aucun calcul de quotient ni de cosinus inverse : positif pour aigu, nul pour droit, négatif pour obtus."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "$ABCD$ est un carré de centre $O$ et de côté $c$. Un point $M$ décrit le segment $[AD]$ et l'on pose $AM = x$, avec $0 \\leqslant x \\leqslant c$. Exprimer $OM^{2}$ en fonction de $x$ et de $c$, puis déterminer la position de $M$ pour laquelle la longueur $OM$ est minimale. Interpréter géométriquement le résultat.",
+     "solution_markdown": "**Étape 1 - les données du triangle $OAM$.**\n\nLa diagonale du carré vaut $c\\sqrt{2}$, donc\n\n$$OA = \\dfrac{c\\sqrt{2}}{2} \\qquad \\text{et} \\qquad OA^{2} = \\dfrac{2c^{2}}{4} = \\dfrac{c^{2}}{2}$$\n\nLa diagonale $(AC)$ étant la bissectrice de l'angle droit en $A$, l'angle $\\widehat{OAM}$ vaut $45^{\\circ}$.\n\n**Étape 2 - appliquer Al-Kashi.**\n\n$$OM^{2} = OA^{2} + AM^{2} - 2 \\times OA \\times AM \\times \\cos 45^{\\circ}$$\n\nCalcul du coefficient :\n\n$$2 \\times \\dfrac{c\\sqrt{2}}{2} \\times \\dfrac{\\sqrt{2}}{2} = \\dfrac{c \\times 2}{2} = c$$\n\nD'où\n\n$$OM^{2} = \\dfrac{c^{2}}{2} + x^{2} - cx = x^{2} - cx + \\dfrac{c^{2}}{2}$$\n\n**Contrôle.** Pour $c = 6$ on retrouve $x^2 - 6x + 18$, exactement la formule du sujet 2014.\n\n**Étape 3 - minimiser.**\n\nPosons $f(x) = x^{2} - cx + \\dfrac{c^{2}}{2}$. C'est un trinôme du second degré de coefficient dominant $1 > 0$ : sa courbe est une parabole tournée vers le haut, et elle atteint son minimum au sommet, d'abscisse\n\n$$x_{0} = \\dfrac{c}{2}$$\n\nCette valeur appartient bien à l'intervalle $[0\\,;\\,c]$, donc le minimum est effectivement atteint.\n\n**Étape 4 - calculer le minimum.**\n\n$$f\\left(\\dfrac{c}{2}\\right) = \\dfrac{c^{2}}{4} - \\dfrac{c^{2}}{2} + \\dfrac{c^{2}}{2} = \\dfrac{c^{2}}{4}$$\n\nDonc\n\n$$OM_{\\min} = \\sqrt{\\dfrac{c^{2}}{4}} = \\dfrac{c}{2}$$\n\n**Étape 5 - interprétation géométrique.**\n\nLa valeur $x = \\dfrac{c}{2}$ correspond au **milieu** de $[AD]$. Et la longueur minimale $\\dfrac{c}{2}$ est exactement la distance du centre $O$ au côté $[AD]$.\n\nCe n'est pas un hasard : parmi tous les points d'une droite, celui qui est le plus proche d'un point extérieur est le **pied de la perpendiculaire**. Or $O$ est le centre du carré, donc à égale distance des quatre côtés, et le pied de la perpendiculaire issue de $O$ sur $(AD)$ est le milieu de ce côté.\n\n**Conclusion.** $OM$ est minimale lorsque $M$ est le milieu de $[AD]$, et vaut alors $\\dfrac{c}{2}$, c'est-à-dire la distance de $O$ à la droite $(AD)$.\n\n**Contrôle aux bornes.** En $x = 0$ : $f(0) = \\dfrac{c^2}{2}$, soit $OM = OA = \\dfrac{c\\sqrt{2}}{2}$. Conforme. En $x = c$ : $f(c) = c^2 - c^2 + \\dfrac{c^2}{2} = \\dfrac{c^2}{2}$, soit $OM = OD$. Conforme également, et l'égalité des deux valeurs traduit la symétrie de la figure par rapport à la médiatrice de $[AD]$.\n\n**Ce qu'il faut retenir.** Une longueur exprimée par Al-Kashi devient une fonction du second degré du paramètre : l'optimiser revient à chercher le sommet d'une parabole. C'est le pont entre la géométrie et l'analyse, et c'est précisément l'articulation entre les parties A et B du problème du Probatoire 2014."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Al-Kashi généralise Pythagore : $BC^{2} = AB^{2} + AC^{2} - 2\\,AB\\,AC\\cos\\widehat{A}$, et l'on retrouve Pythagore quand $\\widehat{A} = 90^{\\circ}$.",
+    "Le côté calculé est **opposé** à l'angle utilisé ; les deux côtés au carré sont ceux qui encadrent cet angle.",
+    "Configuration d'emploi : deux côtés et l'angle compris entre eux.",
+    "La forme inversée $\\cos\\widehat{A} = \\dfrac{b^{2}+c^{2}-a^{2}}{2bc}$ donne un angle à partir des trois côtés.",
+    "Le signe de $b^{2}+c^{2}-a^{2}$ donne la nature de l'angle : positif pour aigu, nul pour droit, négatif pour obtus.",
+    "N'oublie pas le facteur $2$ du terme correctif : c'est le double produit d'une identité remarquable.",
+    "Dans un carré de côté $c$ : diagonale $c\\sqrt{2}$, demi-diagonale $\\dfrac{c\\sqrt{2}}{2}$, et angles de $45^{\\circ}$ entre diagonales et côtés.",
+    "Contrôle ton résultat sur un cas particulier facile à visualiser, comme le milieu d'un côté.",
+    "Une longueur calculée par Al-Kashi avec un paramètre donne un trinôme du second degré : la minimiser revient à chercher le sommet d'une parabole."
+   ]
+  }
+ ]
+}

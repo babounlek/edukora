@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-regle-gestion-classes-tle-ti",
+  "meta": {
+    "titre": "Traduire une règle de gestion en classes et associations UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de classes : des règles de gestion au modèle",
+    "duree_estimee_min": 24,
+    "tags": [
+      "UML",
+      "règle de gestion",
+      "multiplicité",
+      "diagramme de classes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex2-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un cahier des charges regorge de phrases en langage courant qu'il faut transformer en un schéma précis : « un client ne peut avoir qu'un seul compte actif », « une chambre appartient à un seul hôtel ». Cette traduction, de la phrase vers le diagramme, ne consiste jamais à dessiner au hasard, mais à repérer méthodiquement quelles classes une règle concerne et comment la représenter."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire les multiplicités et les rôles sur une association UML.",
+        "Savoir identifier les classes concernées par une phrase du cahier des charges."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la phrase à la multiplicité",
+      "contenu_markdown": "Une règle de gestion est une contrainte métier que le futur système doit respecter, exprimée en langage courant. La traduire en UML consiste à identifier les classes qu'elle met en jeu, puis à choisir la multiplicité de l'association entre elles qui rend cette contrainte impossible à violer dans le modèle. Les formulations les plus fréquentes se traduisent ainsi : « un seul » devient `1`, « plusieurs, obligatoirement au moins un » devient `1..*`, « plusieurs, éventuellement aucun » devient `0..*` (souvent noté `*`), « au plus un, éventuellement aucun » devient `0..1`.\n\nQuand la règle porte sur une information propre au lien entre deux classes plutôt que sur le nombre d'objets reliés, ce n'est plus une question de multiplicité mais de classe-association.",
+      "formule_principale": "« un seul » -> 1  ;  « plusieurs, au moins un » -> 1..*  ;  « éventuellement aucun » -> 0..* (*)  ;  « au plus un » -> 0..1"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le système de gestion d'un hôtel, la règle suivante doit être respectée : « un hôtel emploie plusieurs employés, mais un seul d'entre eux en assure la direction. » Traduire cette règle en classes et multiplicités.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les classes concernées par la règle",
+          "justification": "Toute règle de gestion met en jeu au moins deux classes reliées par une association.",
+          "resultat_markdown": "La règle concerne les classes Hotel et Employé."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer qu'il s'agit en réalité de deux contraintes distinctes dans la même phrase",
+          "justification": "« emploie plusieurs » et « un seul en assure la direction » ne portent pas sur la même association.",
+          "resultat_markdown": "Deux associations distinctes sont nécessaires entre Hotel et Employé : une pour l'emploi, une pour la direction."
+        },
+        {
+          "numero": 3,
+          "action": "Traduire chaque contrainte en multiplicité",
+          "justification": "« plusieurs employés » se traduit par 1..* côté Employé ; « un seul en assure la direction » se traduit par 1 côté Employé pour cette association précise.",
+          "resultat_markdown": "Association « emploie » : 1 côté Hotel, 1..* côté Employé (rôle -employés). Association « est dirigé par » : 1 côté Hotel, 1 côté Employé (rôle -directeur)."
+        }
+      ],
+      "conclusion_markdown": "Deux associations distinctes, chacune avec sa propre multiplicité et son propre nom de rôle, traduisent fidèlement les deux contraintes portées par une seule phrase du cahier des charges."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Fusionner deux contraintes distinctes d'une même phrase en une seule association",
+          "pourquoi_faux": "Une phrase du cahier des charges peut contenir plusieurs règles de gestion différentes ; les fusionner fait perdre une partie de l'information réellement exigée.",
+          "correction_markdown": "Découpe systématiquement une phrase longue en propositions séparées par « mais », « et », une virgule."
+        },
+        {
+          "erreur_markdown": "Traduire « peut avoir plusieurs » par une multiplicité 1..* au lieu de 0..*",
+          "pourquoi_faux": "« peut avoir » autorise le cas où il n'y en a aucun, ce que seule la notation 0..* permet.",
+          "correction_markdown": "Traque le mot « peut » dans l'énoncé : il signale presque toujours une borne inférieure à 0, jamais à 1."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Règle de gestion : « une commande contient au moins un produit. » Identifier les classes concernées et la multiplicité à placer côté Produit.",
+          "solution_markdown": "Les classes concernées sont Commande et Produit. « Au moins un » se traduit par la multiplicité `1..*` du côté Produit : une commande est associée à un ou plusieurs produits, jamais à zéro."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Règle de gestion : « un enseignant peut être responsable d'au plus une classe, mais n'est pas obligé de l'être. » Traduire cette règle en multiplicité entre les classes Enseignant et Classe.",
+          "solution_markdown": "« Au plus une, pas obligé de l'être » combine une borne supérieure de 1 et une borne inférieure de 0 : la multiplicité appropriée côté Classe est `0..1`. Un enseignant est responsable d'aucune ou d'une seule classe, jamais de plusieurs."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un système de gestion scolaire porte la règle : « un élève est inscrit dans une seule classe à la fois, une classe accueille entre 20 et 60 élèves, et chaque classe a un seul professeur principal parmi les enseignants qui y interviennent. » Identifier toutes les classes concernées, et traduire chacune des trois contraintes.",
+          "solution_markdown": "Trois classes sont concernées : Eleve, Classe et Enseignant. Contrainte 1 : association Eleve-Classe, multiplicité `1` côté Classe. Contrainte 2 : cette même association porte, côté Eleve, la multiplicité `20..60`, une multiplicité intervallaire numérique parfaitement valide en UML, exprimant une borne inférieure ET supérieure précises. Contrainte 3 : une association DISTINCTE entre Classe et Enseignant, nommée « a pour professeur principal », de multiplicité `1` côté Enseignant - à ne pas confondre avec une éventuelle association plus générale « intervient dans », de multiplicité `*` des deux côtés."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Traduire une règle de gestion consiste à identifier les classes qu'elle met en jeu, puis à choisir la multiplicité qui rend la contrainte impossible à violer dans le modèle.",
+        "Une phrase longue cache souvent plusieurs règles distinctes : découpe-la en propositions séparées avant de traduire.",
+        "« un seul » = 1 ; « plusieurs, au moins un » = 1..* ; « peut avoir » = 0..* ; « au plus un » = 0..1 - et une multiplicité intervallaire (ex. 20..60) reste valide quand l'énoncé donne des bornes numériques précises.",
+        "Une règle qui porte sur une information du lien entre deux classes appelle une classe-association, pas seulement une multiplicité.",
+        "Au BAC TI, cette compétence de traduction distingue un diagramme juste d'un diagramme qui « a l'air juste » : le correcteur vérifie que chaque règle citée se retrouve précisément dans une multiplicité ou une association du schéma."
+      ]
+    }
+  ]
+}

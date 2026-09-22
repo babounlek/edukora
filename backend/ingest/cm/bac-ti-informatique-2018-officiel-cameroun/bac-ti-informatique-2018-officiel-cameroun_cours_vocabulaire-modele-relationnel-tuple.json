@@ -1,0 +1,115 @@
+{
+  "cours_id": "cours-vocabulaire-modele-relationnel-tuple-tle-ti",
+  "meta": {
+    "titre": "Vocabulaire du modèle relationnel : tuple et attribut",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction aux bases de données relationnelles",
+    "duree_estimee_min": 16,
+    "tags": [
+      "base de données",
+      "modèle relationnel",
+      "tuple",
+      "attribut",
+      "vocabulaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant d'écrire la moindre requête SQL, un sujet de bases de données vérifie toujours que tu maîtrises le vocabulaire du modèle relationnel. Table, tuple, attribut : trois mots que tu vas utiliser dans toutes tes réponses, et qu'un correcteur du MINESEC attend d'entendre avec précision, pas de façon approximative."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un tableau à lignes et colonnes.",
+        "Avoir déjà vu une table de base de données présentée sous forme de tableau."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Table, tuple, attribut : trois niveaux de lecture",
+      "contenu_markdown": "Dans le modèle relationnel, une table (ou relation) organise les données en lignes et en colonnes. Une colonne s'appelle un attribut : elle représente une caractéristique commune à toutes les lignes de la table (par exemple, la discipline enseignée). Une ligne s'appelle un tuple (ou n-uplet) : c'est une association de valeurs, une par attribut, qui représente une occurrence précise de l'entité modélisée par la table - un enseignant précis, avec son nom, son prénom et sa discipline propres. Le nombre d'attributs d'une table est fixe (déterminé à la création de la table), tandis que le nombre de tuples évolue librement à mesure que des lignes sont ajoutées ou supprimées.",
+      "formule_principale": "Table = ensemble de tuples  ;  Tuple = une ligne (valeurs)  ;  Attribut = une colonne (caractéristique)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La table ENSEIGNANT du CES de Bambam contient, entre autres, la ligne : matricule, DZOULA, Fernand, Informatique, 59 ans, date d'intégration. Définissez le terme tuple en vous appuyant sur cet exemple.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Définir le tuple de façon générale",
+          "justification": "La définition doit rester valable pour n'importe quelle table, pas seulement pour ENSEIGNANT.",
+          "resultat_markdown": "Un tuple est une ligne d'une table : une association de valeurs, une par attribut, qui représente une occurrence précise de l'entité modélisée."
+        },
+        {
+          "numero": 2,
+          "action": "Illustrer avec la ligne de DZOULA Fernand",
+          "justification": "L'illustration ancre la définition abstraite dans le cas concret fourni par l'énoncé.",
+          "resultat_markdown": "La ligne regroupant le matricule, DZOULA, Fernand, Informatique, 59 ans et sa date d'intégration constitue un tuple de la table ENSEIGNANT : elle représente un enseignant précis, distinct de tous les autres tuples de la même table."
+        }
+      ],
+      "conclusion_markdown": "Un tuple n'est jamais une colonne ni une table entière : c'est précisément une ligne, l'ensemble des valeurs qui décrivent un seul enregistrement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre que le tuple est « une colonne de la table »",
+          "pourquoi_faux": "C'est l'inverse : une colonne est un attribut, une ligne est un tuple. Confondre les deux fait perdre la totalité des points sur cette question, même si le vocabulaire employé semble proche.",
+          "correction_markdown": "Retiens l'association : ligne = tuple, colonne = attribut - jamais l'inverse."
+        },
+        {
+          "erreur_markdown": "Définir le tuple uniquement par un exemple, sans formuler la règle générale",
+          "pourquoi_faux": "Un exemple seul ne prouve pas que tu comprends la notion en général ; le correcteur attend une définition transférable à n'importe quelle autre table.",
+          "correction_markdown": "Donne toujours la définition générale d'abord (« une ligne, une association de valeurs... »), l'exemple ne venant qu'en illustration ensuite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une table CLIENT comportant les colonnes codeClient, nom, ville, combien d'attributs cette table possède-t-elle ?",
+          "solution_markdown": "Trois attributs : codeClient, nom, ville."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une table PRODUIT contient actuellement 40 tuples. Un magasin ajoute 5 nouveaux produits à son catalogue. Combien de tuples la table PRODUIT contient-elle désormais, et le nombre d'attributs de la table a-t-il changé ?",
+          "solution_markdown": "La table contient désormais 45 tuples (40 + 5 nouvelles lignes ajoutées). Le nombre d'attributs, lui, n'a pas changé : ajouter des tuples (des lignes, donc des produits) ne modifie jamais la structure de la table, c'est-à-dire la liste de ses colonnes, qui reste fixée depuis sa création."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux tuples différents d'une même table peuvent-ils avoir exactement les mêmes valeurs pour tous leurs attributs, sauf pour la clé primaire ? Justifiez en vous appuyant sur la notion de tuple.",
+          "solution_markdown": "Oui, c'est parfaitement possible : rien n'empêche deux enseignants distincts de porter le même nom, la même discipline et le même âge (une simple coïncidence), tant que leurs valeurs de clé primaire (le matricule) restent différentes. Chaque tuple reste alors une occurrence à part entière, précisément parce que le modèle relationnel ne repose pas sur l'unicité de CHAQUE attribut, mais sur l'unicité garantie par la seule clé primaire : deux tuples peuvent se ressembler sur tous les autres attributs sans jamais devenir un seul et même tuple, du moment que leur clé primaire les distingue."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une table organise les données en lignes (tuples) et en colonnes (attributs).",
+        "Un tuple est une ligne : une association de valeurs, une par attribut, représentant une occurrence précise de l'entité modélisée.",
+        "Un attribut est une colonne : une caractéristique commune à tous les tuples de la table.",
+        "Le nombre d'attributs d'une table est fixé à sa création ; le nombre de tuples évolue librement au fil des insertions et suppressions.",
+        "Au BAC TI, cette question de vocabulaire ouvre presque toujours la partie bases de données : la maîtriser solidement sécurise des points faciles avant les questions sur les requêtes SQL elles-mêmes."
+      ]
+    }
+  ]
+}

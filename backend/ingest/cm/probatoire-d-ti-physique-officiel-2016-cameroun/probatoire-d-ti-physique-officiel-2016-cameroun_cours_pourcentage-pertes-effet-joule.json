@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-pourcentage-pertes-effet-joule-premiere-d-ti",
+  "meta": {
+    "titre": "Calcul du pourcentage de pertes par effet Joule dans un circuit série",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Électricité - Puissance et énergie électriques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "puissance électrique",
+      "effet Joule",
+      "rendement énergétique",
+      "bilan de puissance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2016-cameroun",
+    "epreuve_titre": "Épreuve de physique au Probatoire, séries D et TI - 2016 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2016-officiel-cameroun-ex3-qB.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une partie de l'énergie fournie par un générateur ne sert jamais à l'usage prévu du circuit : elle se dissipe en chaleur dans les résistances, y compris à l'intérieur du générateur lui-même. Chiffrer cette part perdue permet de juger l'efficacité réelle d'un circuit électrique, exactement comme un rendement en mécanique ou en thermodynamique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de Pouillet généralisée dans un circuit série",
+        "Puissance dissipée par effet Joule dans une résistance : $P = R\\times I^2$",
+        "Puissance totale fournie par un générateur : $P = E\\times I$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Pourcentage de pertes par effet Joule",
+      "contenu_markdown": "La puissance totale fournie par un générateur de force électromotrice $E$ parcouru par un courant $I$ vaut $P_{totale}=E\\times I$. Dans un circuit série, l'effet Joule dissipe de la puissance dans chaque résistance traversée par le courant, y compris la résistance interne du générateur et celle d'un éventuel récepteur actif : la puissance totale dissipée par effet Joule vaut $P_{Joule} = \\left(\\sum R_i\\right)\\times I^2$, où $\\sum R_i$ est la somme de TOUTES les résistances du circuit. Le pourcentage de pertes par effet Joule s'obtient en rapportant cette puissance dissipée à la puissance totale fournie.",
+      "formula_principale": "\\%_{Joule} = \\dfrac{P_{Joule}}{P_{totale}}\\times 100 = \\dfrac{\\left(\\sum R_i\\right)\\times I^2}{E\\times I}\\times 100"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit série de force électromotrice $E=16,25\\,\\text{V}$ est parcouru par un courant $I=0,5\\,\\text{A}$ ; la résistance totale de toutes les résistances du circuit (résistor, ampèremètre, générateur, électrolyseur) vaut $12,5\\,\\Omega$. Calculer le pourcentage de pertes par effet Joule.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance totale fournie par le générateur",
+          "justification": "$P_{totale}=E\\times I$",
+          "resultat_markdown": "$P_{totale} = 16,25\\times 0,5 = 8,125\\,\\text{W}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance totale dissipée par effet Joule",
+          "justification": "$P_{Joule}=\\left(\\sum R_i\\right)\\times I^2$, avec la résistance totale de toutes les résistances du circuit",
+          "resultat_markdown": "$P_{Joule} = 12,5\\times 0,5^2 = 12,5\\times 0,25 = 3,125\\,\\text{W}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le pourcentage de pertes",
+          "justification": "$\\%_{Joule}=\\dfrac{P_{Joule}}{P_{totale}}\\times100$",
+          "resultat_markdown": "$\\%_{Joule} = \\dfrac{3,125}{8,125}\\times 100 \\approx 38,5\\,\\%$"
+        }
+      ],
+      "conclusion_markdown": "Environ 38,5 % de l'énergie fournie par le générateur est perdue par effet Joule dans ce circuit."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne calculer $P_{Joule}$ qu'avec la résistance du résistor visible sur le schéma, en oubliant la résistance interne du générateur et celle d'un éventuel récepteur actif.",
+          "pourquoi_faux": "L'effet Joule se produit dans TOUTE résistance traversée par un courant, y compris celles internes au générateur et au récepteur actif ; les omettre sous-estime fortement la puissance réellement dissipée.",
+          "correction_markdown": "Fais toujours la somme de toutes les résistances du circuit série avant de calculer $P_{Joule}$, en reprenant l'inventaire déjà établi pour la loi de Pouillet."
+        },
+        {
+          "erreur_markdown": "Diviser $P_{Joule}$ par la puissance utile plutôt que par la puissance totale pour calculer le pourcentage de pertes.",
+          "pourquoi_faux": "Un pourcentage de pertes se rapporte toujours à la grandeur de référence complète, ici la puissance totale fournie par le générateur, jamais à une puissance déjà partielle.",
+          "correction_markdown": "Vérifie toujours que le dénominateur d'un pourcentage de pertes correspond bien à la grandeur totale, pas à ce qu'il en reste après les pertes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de force électromotrice $E=6\\,\\text{V}$ débite un courant $I=1\\,\\text{A}$ dans un circuit dont la résistance totale vaut $4\\,\\Omega$. Calculer le pourcentage de pertes par effet Joule.",
+          "solution_markdown": "$P_{totale}=6\\times1=6\\,\\text{W}$ ; $P_{Joule}=4\\times1^2=4\\,\\text{W}$ ; $\\%_{Joule}=\\dfrac{4}{6}\\times100\\approx66,7\\,\\%$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit série, sans autre résistor, comporte un générateur ($E=12\\,\\text{V}$ ; $r=1\\,\\Omega$) et un moteur, récepteur actif ($E'=6\\,\\text{V}$ ; $r'=1\\,\\Omega$). Calculer l'intensité du courant puis le pourcentage de pertes par effet Joule.",
+          "solution_markdown": "Loi de Pouillet généralisée : $E=(r+r')\\times I+E' \\Rightarrow I=\\dfrac{E-E'}{r+r'}=\\dfrac{12-6}{1+1}=3\\,\\text{A}$.\n\n$P_{totale}=E\\times I=12\\times3=36\\,\\text{W}$.\n\n$P_{Joule}=(r+r')\\times I^2=2\\times9=18\\,\\text{W}$.\n\n$\\%_{Joule}=\\dfrac{18}{36}\\times100=50\\,\\%$ : la moitié de l'énergie fournie est ici perdue par effet Joule, l'autre moitié ($P_{mécanique}=E'\\times I=6\\times3=18\\,\\text{W}$) étant convertie en énergie mécanique utile par le moteur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit série ne comporte qu'un générateur ($E$, $r$) et un résistor $R$ (sans récepteur actif). Montrer que le pourcentage de pertes par effet Joule dans la résistance interne $r$ du générateur, rapporté à la puissance totale fournie, ne dépend que du rapport $r/R$, et non de l'intensité du courant.",
+          "solution_markdown": "Dans ce circuit, la loi de Pouillet donne $E=(R+r)\\times I$, donc $I=\\dfrac{E}{R+r}$.\n\nLa puissance totale fournie vaut $P_{totale}=E\\times I=(R+r)\\times I^2$.\n\nLa puissance perdue par effet Joule dans la seule résistance interne $r$ du générateur vaut $P_r=r\\times I^2$.\n\nLe pourcentage correspondant vaut :\n\n$\\%_r=\\dfrac{P_r}{P_{totale}}=\\dfrac{r\\times I^2}{(R+r)\\times I^2}=\\dfrac{r}{R+r}$\n\nLe facteur $I^2$ s'élimine entièrement : ce pourcentage ne dépend donc que du rapport $r/R$ entre les deux résistances du circuit, jamais de l'intensité du courant qui le traverse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La puissance totale fournie par un générateur vaut toujours $P_{totale}=E\\times I$.",
+        "La puissance dissipée par effet Joule se calcule avec la résistance TOTALE du circuit série, jamais avec une seule résistance choisie arbitrairement.",
+        "Un pourcentage de pertes se rapporte toujours à la puissance totale de référence, jamais à une puissance déjà réduite.",
+        "Un bilan de puissance complet (puissance utile + pertes Joule = puissance totale) permet toujours de vérifier un calcul de pourcentage.",
+        "Ce calcul de rendement énergétique complète naturellement un calcul de loi de Pouillet : les deux exploitent les mêmes valeurs de $E$, $I$ et des résistances du circuit."
+      ]
+    }
+  ]
+}

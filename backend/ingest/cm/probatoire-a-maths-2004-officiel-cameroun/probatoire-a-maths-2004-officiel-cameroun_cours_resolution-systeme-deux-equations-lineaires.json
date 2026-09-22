@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-resolution-systeme-deux-equations-lineaires-premiere-a",
+  "meta": {
+    "titre": "Résolution d'un système de deux équations linéaires à deux inconnues",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Équations et systèmes",
+    "duree_estimee_min": 20,
+    "tags": [
+      "système linéaire",
+      "combinaison",
+      "substitution",
+      "équations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2004 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-maths-2004-officiel-cameroun-ex1-qI1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Beaucoup de problèmes concrets, un partage d'argent entre deux personnes, deux notes à retrouver, deux vitesses inconnues, se traduisent par deux égalités liant les deux mêmes inconnues. Résoudre un tel système, c'est trouver le seul couple de valeurs qui satisfait les deux égalités en même temps. C'est une compétence que tu retrouveras à chaque fois qu'un énoncé donne deux informations sur deux grandeurs inconnues."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calcul littéral et résolution d'une équation du premier degré à une inconnue",
+        "Distinguer une égalité vraie pour toute valeur d'une égalité vraie pour une seule valeur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode par combinaison linéaire",
+      "contenu_markdown": "Un système de deux équations à deux inconnues $x$ et $y$ se résout en éliminant l'une des deux inconnues : on additionne ou on soustrait les deux équations (éventuellement après les avoir multipliées par un nombre) de façon à faire disparaître une inconnue. On obtient alors une équation à une seule inconnue, qu'on résout normalement. On remplace ensuite la valeur trouvée dans l'une des deux équations de départ pour obtenir la seconde inconnue.",
+      "formule_principale": "\\begin{cases} ax+by=e \\\\ cx+dy=f \\end{cases}",
+      "variantes": [
+        {
+          "nom": "Méthode par substitution",
+          "quand_utiliser": "Quand une des deux équations exprime déjà directement une inconnue en fonction de l'autre (ou s'y ramène facilement)",
+          "contenu_markdown": "On isole une inconnue dans une équation (par exemple $y=e-ax$ à partir de la première), puis on remplace cette expression dans la seconde équation. On obtient une équation à une seule inconnue à résoudre, puis on revient à l'expression isolée pour trouver la seconde inconnue."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}$ le système : $\\begin{cases} x+y=22 \\\\ 2x+y=30 \\end{cases}$",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir l'inconnue à éliminer",
+          "justification": "Les deux équations contiennent toutes les deux $y$ avec le même coefficient (1) : soustraire les deux équations fera directement disparaître $y$.",
+          "resultat_markdown": "On soustrait la première équation à la seconde."
+        },
+        {
+          "numero": 2,
+          "action": "Effectuer la soustraction membre à membre",
+          "justification": "$(2x+y)-(x+y)$ élimine $y$ et donne $x$ seul.",
+          "resultat_markdown": "$(2x+y)-(x+y)=30-22$\n\n$x=8$"
+        },
+        {
+          "numero": 3,
+          "action": "Substituer $x$ dans la première équation",
+          "justification": "Une fois $x$ connu, la première équation ne contient plus qu'une inconnue, $y$.",
+          "resultat_markdown": "$8+y=22\\ \\Rightarrow\\ y=14$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier dans la seconde équation",
+          "justification": "Une vérification dans l'équation qui n'a pas servi à trouver $y$ confirme que le couple satisfait bien tout le système.",
+          "resultat_markdown": "$2\\times 8+14=16+14=30$ : vérifié."
+        }
+      ],
+      "conclusion_markdown": "L'unique solution du système est le couple $S=\\{(8\\,;14)\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Soustraire les deux équations sans faire attention à l'ordre : écrire $(x+y)-(2x+y)$ un coup, $(2x+y)-(x+y)$ le coup suivant, au hasard.",
+          "pourquoi_faux": "Changer l'ordre de la soustraction change le signe du résultat : la première version donne $-x=-8$ donc $x=8$ aussi par heureux hasard ici, mais avec d'autres coefficients l'erreur de signe change complètement la valeur trouvée.",
+          "correction_markdown": "Fixe une convention avant de commencer, toujours (deuxième équation) moins (première équation) par exemple, et garde-la pour tout le système."
+        },
+        {
+          "erreur_markdown": "Trouver $x$ et $y$ puis s'arrêter sans vérifier.",
+          "pourquoi_faux": "Une erreur de calcul lors de la combinaison ou de la substitution passe totalement inaperçue si on ne revérifie pas dans les équations de départ.",
+          "correction_markdown": "Replace toujours les deux valeurs trouvées dans les deux équations initiales, pas seulement celle qui a servi au calcul final."
+        },
+        {
+          "erreur_markdown": "Multiplier une seule équation par un nombre pour aligner les coefficients, mais ne multiplier qu'un seul terme au lieu de tous les termes de l'équation.",
+          "pourquoi_faux": "Une équation reste une égalité seulement si on multiplie absolument tous ses termes, des deux côtés du signe égal, par le même nombre.",
+          "correction_markdown": "Écris explicitement chaque terme multiplié avant de simplifier, ne saute jamais cette étape même si elle paraît évidente."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ le système $\\begin{cases} x+y=10 \\\\ x-y=2 \\end{cases}$.",
+          "solution_markdown": "On additionne les deux équations pour éliminer $y$ :\n\n$(x+y)+(x-y)=10+2$\n\n$2x=12$\n\n$x=6$\n\nOn remplace dans la première équation : $6+y=10$, donc $y=4$.\n\nVérification : $6-4=2$, conforme.\n\n$S=\\{(6\\,;4)\\}$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ le système $\\begin{cases} 2x+3y=13 \\\\ x-y=1 \\end{cases}$.",
+          "solution_markdown": "On isole $x$ dans la seconde équation : $x=y+1$.\n\nOn remplace dans la première équation :\n\n$2(y+1)+3y=13$\n\n$2y+2+3y=13$\n\n$5y=11$\n\n$y=\\dfrac{11}{5}=2,2$\n\nOn revient à $x=y+1=2,2+1=3,2$.\n\nVérification : $2\\times 3,2+3\\times 2,2=6,4+6,6=13$, conforme.\n\n$S=\\{(3,2\\,;2,2)\\}$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux nombres ont une somme de $50$. Le triple du premier diminué du second vaut $30$. Déterminer ces deux nombres.",
+          "solution_markdown": "Notons $x$ le premier nombre et $y$ le second.\n\nLa somme vaut $50$ : $x+y=50$.\n\nLe triple du premier diminué du second vaut $30$ : $3x-y=30$.\n\nOn additionne les deux équations pour éliminer $y$ :\n\n$(x+y)+(3x-y)=50+30$\n\n$4x=80$\n\n$x=20$\n\nOn remplace dans la première équation : $20+y=50$, donc $y=30$.\n\nVérification : $3\\times 20-30=60-30=30$, conforme.\n\nLes deux nombres sont $20$ et $30$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux équations, deux inconnues : additionne ou soustrais pour faire disparaître une inconnue, jamais les deux à la fois.",
+        "Une fois une inconnue trouvée, remplace-la dans l'équation la plus simple pour obtenir la seconde.",
+        "Vérifie systématiquement ton couple solution dans les DEUX équations de départ.",
+        "Cette méthode revient à chaque examen dès qu'un énoncé donne deux informations sur deux grandeurs inconnues, souvent caché dans un problème concret à mettre en équation d'abord."
+      ]
+    }
+  ]
+}

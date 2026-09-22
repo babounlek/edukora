@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-fleche-et-portee-tir-parabolique-tle-c-e",
+  "meta": {
+    "titre": "Calcul de la fleche et de la portee d'un mouvement de projectile",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Mecanique - mouvement d'un projectile",
+    "duree_estimee_min": 25,
+    "tags": [
+      "fleche d'un tir",
+      "portee d'un tir",
+      "mouvement parabolique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2011 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-e-physique-2011-officiel-cameroun-ex4-q2.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Jusqu'ou ira le projectile, et a quelle hauteur maximale montera-t-il ? Ces deux questions, tres concretes (portee d'un tir sportif, trajectoire d'un ballon), se resolvent directement a partir des equations horaires deja etablies, sans avoir besoin d'aucune donnee supplementaire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Equations horaires x(t) et y(t) d'un projectile",
+        "Condition v_y=0 pour caracteriser le sommet de la trajectoire",
+        "Resolution d'une equation du second degre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Fleche et portee d'un tir parabolique",
+      "contenu_markdown": "La **fleche** $H$ est la hauteur maximale gagnee par le projectile au-dessus de son point de lancement. Elle est atteinte quand $v_y=0$, a l'instant $t_H=v_{0y}/g$, et vaut $H=\\dfrac{v_{0y}^2}{2g}$ (attention : $H$ est une hauteur *gagnee depuis le lancement*, pas l'ordonnee maximale absolue si $y_0\\neq0$). La **portee** $X$ est la distance horizontale parcourue jusqu'au retour a l'altitude de reference ($y=0$) : on resout $y(t)=0$ pour trouver l'instant d'impact $t_{imp}$ (racine positive), puis $X=v_{0x}\\,t_{imp}$.",
+      "formule_principale": "H = \\dfrac{v_{0y}^2}{2g} \\qquad X = v_{0x}\\,t_{imp} \\ \\text{avec } y(t_{imp})=0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un projectile est lance avec $v_{0x}=6\\ \\text{m/s}$, $v_{0y}=10\\ \\text{m/s}$, depuis $y_0=2\\ \\text{m}$ ($g=10\\ \\text{m/s}^2$). Calculer la fleche H et la portee X.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la fleche H",
+          "justification": "Formule directe H=v0y^2/(2g)",
+          "resultat_markdown": "$H = \\dfrac{10^2}{2\\times10} = \\dfrac{100}{20} = 5\\ \\text{m}$"
+        },
+        {
+          "numero": 2,
+          "action": "Poser et resoudre y(t)=0 pour trouver l'instant d'impact",
+          "justification": "y(t)=y0+v0y.t-0,5.g.t^2=0",
+          "resultat_markdown": "$2+10t-5t^2=0 \\Leftrightarrow 5t^2-10t-2=0$. Discriminant $\\Delta=100+40=140$. $t_{imp}=\\dfrac{10+\\sqrt{140}}{10}\\approx\\dfrac{10+11{,}83}{10}\\approx2{,}18\\ \\text{s}$ (racine positive retenue)"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la portee X = v0x . t_imp",
+          "justification": "Mouvement horizontal uniforme",
+          "resultat_markdown": "$X = 6\\times2{,}18 \\approx 13{,}1\\ \\text{m}$"
+        }
+      ],
+      "conclusion_markdown": "On remarque que le sommet ($t_H=v_{0y}/g=1{,}0\\ \\text{s}$) est atteint bien avant l'impact ($t_{imp}\\approx2{,}18\\ \\text{s}$) : la deuxieme moitie de la trajectoire, plus longue en temps, correspond a la chute depuis le sommet jusqu'au sol, sur une hauteur $H+y_0=7\\ \\text{m}$ superieure a la hauteur de montee."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre la fleche H avec l'ordonnee maximale y_max lue ou calculee",
+          "pourquoi_faux": "$H$ est la hauteur gagnee *depuis le point de lancement*, alors que $y_{max}=y_0+H$ est l'altitude absolue maximale (par rapport a l'origine des ordonnees) : si $y_0\\neq0$, les deux grandeurs different.",
+          "correction_markdown": "Toujours preciser si l'on calcule $H$ (hauteur relative au lancement) ou $y_{max}$ (altitude absolue), et convertir de l'un a l'autre via $y_{max}=y_0+H$."
+        },
+        {
+          "erreur_markdown": "Retenir la racine negative de l'equation du second degre y(t)=0",
+          "pourquoi_faux": "Physiquement, seul un instant posterieur au lancement ($t>0$) a un sens ; la racine negative de l'equation, purement mathematique, ne correspond a aucun evenement reel.",
+          "correction_markdown": "Toujours calculer les deux racines du discriminant, puis ne retenir que la racine positive (et superieure a l'instant du sommet) comme instant d'impact."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Ecrire la formule de la fleche H en fonction de v0y et g.",
+          "solution_markdown": "$H = \\dfrac{v_{0y}^2}{2g}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un projectile est lance avec $v_{0y}=14\\ \\text{m/s}$ ($g=10\\ \\text{m/s}^2$) depuis le sol ($y_0=0$). Calculer sa fleche H et l'instant t_H auquel elle est atteinte.",
+          "solution_markdown": "$H = \\dfrac{14^2}{2\\times10} = \\dfrac{196}{20} = 9{,}8\\ \\text{m}$. $t_H = v_{0y}/g = 14/10 = 1{,}4\\ \\text{s}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un projectile est lance depuis le sol ($y_0=0$) avec $v_{0x}=8\\ \\text{m/s}$ et $v_{0y}=6\\ \\text{m/s}$ ($g=10\\ \\text{m/s}^2$). Montrer que, dans ce cas particulier (y0=0), l'instant d'impact vaut exactement le double de l'instant du sommet, puis calculer la portee X.",
+          "solution_markdown": "$y(t)=v_{0y}t-\\frac12gt^2=t(v_{0y}-\\frac12gt)=0$ donne $t=0$ (lancement) ou $t_{imp}=2v_{0y}/g$. Or $t_H=v_{0y}/g$, donc $t_{imp}=2t_H$ : la trajectoire est symetrique par rapport au sommet quand $y_0=0$. Numeriquement, $t_{imp}=2\\times6/10=1{,}2\\ \\text{s}$, et $X=v_{0x}\\times t_{imp}=8\\times1{,}2=9{,}6\\ \\text{m}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La fleche H (hauteur gagnee depuis le lancement) est atteinte quand v_y=0, a l'instant $t_H=v_{0y}/g$, et vaut $H=v_{0y}^2/(2g)$.",
+        "La portee X necessite de resoudre l'equation du second degre y(t)=0 pour trouver l'instant d'impact (racine positive retenue), puis X=v0x.t_imp.",
+        "Ne jamais confondre la fleche H (relative au lancement) avec l'altitude maximale absolue y_max=y0+H si y0 est non nul.",
+        "Quand le lancement se fait depuis le sol (y0=0), la trajectoire est symetrique par rapport au sommet : t_imp=2.t_H."
+      ]
+    }
+  ]
+}

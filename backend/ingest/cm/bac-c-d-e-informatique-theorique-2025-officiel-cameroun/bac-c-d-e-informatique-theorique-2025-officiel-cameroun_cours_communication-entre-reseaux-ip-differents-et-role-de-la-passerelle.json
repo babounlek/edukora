@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-communication-entre-reseaux-ip-differents-et-role-de-la-passerelle-tle-tronc-commun",
+  "meta": {
+    "titre": "Communication entre réseaux IP différents et rôle de la passerelle",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Adressage IP et routage",
+    "duree_estimee_min": 20,
+    "tags": [
+      "adresse réseau",
+      "passerelle",
+      "routage",
+      "communication IP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex1-q9-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux adresses IP qui se ressemblent ne garantissent pas que leurs machines peuvent se parler directement. Ce qui compte vraiment, c'est de savoir comparer leurs adresses RÉSEAU, pas leurs adresses complètes : une méthode simple et systématique évite toute erreur sur ce type de question, très fréquent au BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déterminer la classe et le masque par défaut d'une adresse IP (voir le cours dédié)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Comparer deux adresses réseau pour savoir si deux machines communiquent directement",
+      "contenu_markdown": "Deux machines ne peuvent communiquer directement (sans passer par un routeur) que si elles appartiennent au même réseau IP. Pour le vérifier :\n\n1. Déterminer la classe et le masque par défaut de chaque adresse.\n2. Appliquer le masque pour obtenir l'adresse réseau de chaque machine (les octets couverts par des 255 dans le masque sont conservés, ceux couverts par des 0 sont mis à 0).\n3. Comparer les deux adresses réseau obtenues : si elles sont identiques, les machines sont sur le même réseau et peuvent communiquer directement ; sinon, il faut un routeur (une passerelle) pour relier les deux réseaux."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une machine d'adresse 128.100.0.11 peut-elle communiquer directement avec une machine d'adresse 19.168.5.13 ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la classe et le masque de la première adresse",
+          "justification": "128 ∈ [128;191] → classe B, masque 255.255.0.0.",
+          "resultat_markdown": "Adresse réseau de 128.100.0.11 : 128.100.0.0."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer la classe et le masque de la seconde adresse",
+          "justification": "19 ∈ [0;127] → classe A, masque 255.0.0.0.",
+          "resultat_markdown": "Adresse réseau de 19.168.5.13 : 19.0.0.0."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer les deux adresses réseau",
+          "justification": "128.100.0.0 ≠ 19.0.0.0.",
+          "resultat_markdown": "Les deux machines sont sur des réseaux différents."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure et indiquer la solution",
+          "justification": "Deux réseaux différents ne communiquent qu'à travers un routeur.",
+          "resultat_markdown": "Non, communication directe impossible ; il faut faire passer les échanges par un routeur (une passerelle) qui relie les deux réseaux."
+        }
+      ],
+      "conclusion_markdown": "On obtient une conclusion argumentée en comparant explicitement les deux adresses réseau, pas les adresses complètes, ce qui est la seule méthode fiable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Comparer directement les adresses IP complètes au premier coup d'œil",
+          "pourquoi_faux": "Deux adresses peuvent sembler « proches » numériquement sans appartenir au même réseau (par exemple 128.100.0.11 et 128.101.0.20 ne sont pas sur le même réseau, voir le cours sur les classes IP) : seule la comparaison des adresses RÉSEAU, obtenues après application du masque, est fiable.",
+          "correction_markdown": "Toujours calculer l'adresse réseau de chaque machine avant de conclure, jamais comparer les adresses IP brutes."
+        },
+        {
+          "erreur_markdown": "Oublier de proposer une solution quand la communication directe est impossible",
+          "pourquoi_faux": "La question ne s'arrête pas à « non » : elle demande explicitement ce qu'il faut faire pour que la communication devienne possible.",
+          "correction_markdown": "Toujours conclure par la solution (passer par un routeur/une passerelle, ou reconfigurer les machines sur un même réseau) quand la réponse est négative."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux machines ont pour adresses 192.168.1.5 et 192.168.1.20, avec le masque par défaut de leur classe. Peuvent-elles communiquer directement ?",
+          "solution_markdown": "Classe C (premier octet 192), masque 255.255.255.0. Adresse réseau des deux machines : 192.168.1.0 dans les deux cas. Les adresses réseau sont identiques : oui, elles peuvent communiquer directement."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux machines ont pour adresses 10.0.0.5 et 172.16.0.8, avec le masque par défaut de leur classe. Peuvent-elles communiquer directement ? Que faut-il faire sinon ?",
+          "solution_markdown": "10.0.0.5 : classe A (premier octet 10), masque 255.0.0.0, adresse réseau 10.0.0.0. 172.16.0.8 : classe B (premier octet 172, dans l'intervalle 128-191), masque 255.255.0.0, adresse réseau 172.16.0.0. Les deux adresses réseau sont différentes : non, elles ne peuvent pas communiquer directement. Il faut un routeur configuré pour relier ces deux réseaux."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une entreprise veut que deux machines d'adresses 128.100.0.11 et 128.101.0.20 (masques par défaut de classe B) puissent communiquer SANS passer par un routeur. Sans changer leurs trois premiers chiffres (128.10x), proposer une solution en modifiant uniquement leur masque de sous-réseau, et expliquer pourquoi elle fonctionne.",
+          "solution_markdown": "En reconfigurant les deux machines avec un masque plus court, par exemple 255.254.0.0 au lieu de 255.255.0.0, les deux premiers octets ne sont alors plus intégralement dédiés à l'identification du réseau : le calcul de l'adresse réseau change en tenant compte du bit supplémentaire libéré. Avec ce masque, 128.100 et 128.101 partagent alors le même préfixe de réseau vu au niveau du bit, et les deux machines se retrouvent sur le même réseau logique, ce qui permet une communication directe sans routeur. Cela fonctionne parce que la frontière entre partie réseau et partie machine n'est pas figée par la classe : elle est définie par le masque effectivement utilisé, que l'on peut ajuster (sous-réseautage) pour regrouper ou séparer des machines selon les besoins."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux machines communiquent directement seulement si elles ont la même adresse RÉSEAU (adresse complète appliquée au masque), pas seulement des adresses qui se ressemblent.",
+        "Méthode systématique : classe → masque → adresse réseau → comparaison.",
+        "Si les adresses réseau diffèrent, la solution est un routeur (une passerelle) qui relie les deux réseaux.",
+        "Une question de ce type demande toujours une conclusion ET une solution quand la réponse est négative : ne jamais s'arrêter au diagnostic."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-convertir-un-nombre-entier-de-la-base-10-vers-la-base-2-3e",
+  "meta": {
+    "titre": "Convertir un nombre entier de la base 10 vers la base 2",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Numération et codage de l'information : bases 10 et 2",
+    "duree_estimee_min": 25,
+    "tags": [
+      "numération",
+      "base 2",
+      "binaire",
+      "divisions successives",
+      "conversion",
+      "bit"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2024-cameroun",
+    "epreuve_titre": "BEPC Informatique - Cameroun, session 2024 (MINESEC-DECC)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2024-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'ordinateur ne connaît que deux états : le courant passe ou il ne passe pas, 1 ou 0. Tout ce qu'il manipule - textes, images, musiques - finit donc écrit en base 2. Savoir passer de notre écriture habituelle, la base 10, à celle de la machine est le premier geste technique du programme d'informatique, et il tombe presque à chaque session."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir effectuer une division euclidienne et identifier le quotient et le reste",
+        "Connaître les puissances de 2 jusqu'à 2^10 : 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode des divisions successives par 2",
+      "contenu_markdown": "Pour convertir un entier de la **base 10** vers la **base 2** :\n\n1. diviser le nombre par 2 et noter le **reste** (0 ou 1) ;\n2. recommencer avec le **quotient** obtenu ;\n3. s'arrêter quand le quotient devient **nul** ;\n4. lire les restes **en remontant**, du dernier obtenu vers le premier.\n\nChaque chiffre binaire obtenu s'appelle un **bit**.\n\nPour revenir de la base 2 à la base 10, on fait la somme des puissances de 2 correspondant aux bits égaux à 1, le bit le plus à droite valant $2^0$ :\n\n$$(b_n \\dots b_1 b_0)_2 = b_n \\times 2^n + \\dots + b_1 \\times 2^1 + b_0 \\times 2^0$$\n\nCette seconde opération sert de **vérification** systématique après chaque conversion.\n\nUne remarque utile pour les capacités de mémoire : en informatique, les multiples se comptent en puissances de 2, $1\\ \\text{Ko} = 2^{10} = 1024$ octets, $1\\ \\text{Mo} = 1024\\ \\text{Ko}$, $1\\ \\text{Go} = 1024\\ \\text{Mo}$. La norme internationale, elle, réserve le préfixe kilo à 1000 et note 1024 octets « 1 Kio » (kibioctet). Précise toujours la convention que tu utilises quand tu calcules une capacité.",
+      "formule_principale": "(31)_{10} = (11111)_2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Effectuer la conversion suivante : $(31)_{10} = (\\dots)_2$",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Diviser 31 par 2",
+          "justification": "Première division de la suite : on note le quotient et le reste.",
+          "resultat_markdown": "$31 = 2 \\times 15 + 1$, quotient 15, reste **1**"
+        },
+        {
+          "numero": 2,
+          "action": "Diviser le quotient 15 par 2",
+          "justification": "On recommence avec le quotient précédent, jamais avec le nombre de départ.",
+          "resultat_markdown": "$15 = 2 \\times 7 + 1$, quotient 7, reste **1**"
+        },
+        {
+          "numero": 3,
+          "action": "Diviser 7 par 2",
+          "justification": "Même opération.",
+          "resultat_markdown": "$7 = 2 \\times 3 + 1$, quotient 3, reste **1**"
+        },
+        {
+          "numero": 4,
+          "action": "Diviser 3 par 2",
+          "justification": "Même opération.",
+          "resultat_markdown": "$3 = 2 \\times 1 + 1$, quotient 1, reste **1**"
+        },
+        {
+          "numero": 5,
+          "action": "Diviser 1 par 2",
+          "justification": "Le quotient devient nul : c'est le signal d'arrêt.",
+          "resultat_markdown": "$1 = 2 \\times 0 + 1$, quotient 0, reste **1**"
+        },
+        {
+          "numero": 6,
+          "action": "Lire les restes en remontant",
+          "justification": "Le dernier reste obtenu devient le chiffre de gauche, le premier reste devient celui de droite.",
+          "resultat_markdown": "$(31)_{10} = (11111)_2$"
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier par la somme des puissances de 2",
+          "justification": "La conversion inverse doit redonner le nombre de départ, sinon il y a une erreur.",
+          "resultat_markdown": "$16 + 8 + 4 + 2 + 1 = 31$, la conversion est exacte"
+        }
+      ],
+      "conclusion_markdown": "Trente et un s'écrit 11111 en base 2, sur cinq bits. La vérification par les puissances de 2 confirme le résultat : c'est elle qui sécurise le point le jour de l'examen."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire les restes dans l'ordre où on les a obtenus",
+          "pourquoi_faux": "Le premier reste correspond au bit de poids le plus faible, celui de droite : lire de haut en bas inverse tout le nombre.",
+          "correction_markdown": "Sur 31 l'erreur reste invisible, tous les restes valant 1. Sur 13, les restes obtenus dans l'ordre sont 1, 0, 1, 1 : lus à l'endroit ils donneraient 1011, alors que la bonne réponse est $(13)_{10} = (1101)_2$. Prends l'habitude de remonter, même quand cela ne change rien."
+        },
+        {
+          "erreur_markdown": "Continuer à diviser le nombre de départ au lieu du quotient",
+          "pourquoi_faux": "La méthode est une chaîne : chaque division porte sur le quotient de la précédente.",
+          "correction_markdown": "Écris les divisions les unes sous les autres en recopiant le quotient à gauche de la ligne suivante ; l'erreur devient impossible."
+        },
+        {
+          "erreur_markdown": "S'arrêter quand le quotient vaut 1",
+          "pourquoi_faux": "Il reste une division à faire : $1 = 2 \\times 0 + 1$, qui fournit le bit de gauche.",
+          "correction_markdown": "On s'arrête seulement quand le quotient est **nul**, jamais quand il vaut 1."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier",
+          "pourquoi_faux": "Une erreur de reste ne se voit pas à la relecture : le nombre binaire obtenu paraît toujours plausible.",
+          "correction_markdown": "Refais systématiquement la somme des puissances de 2 : deux lignes, et le résultat est garanti."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir $(13)_{10}$ en base 2.",
+          "solution_markdown": "Divisions successives : $13 = 2 \\times 6 + 1$ (reste 1) ; $6 = 2 \\times 3 + 0$ (reste 0) ; $3 = 2 \\times 1 + 1$ (reste 1) ; $1 = 2 \\times 0 + 1$ (reste 1). Le quotient est nul, on arrête. Lecture des restes en remontant : 1, 1, 0, 1. Donc $(13)_{10} = (1101)_2$. Vérification : $8 + 4 + 0 + 1 = 13$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir $(45)_{10}$ en base 2, puis vérifier le résultat.",
+          "solution_markdown": "Divisions successives : $45 = 2 \\times 22 + 1$ (reste 1) ; $22 = 2 \\times 11 + 0$ (reste 0) ; $11 = 2 \\times 5 + 1$ (reste 1) ; $5 = 2 \\times 2 + 1$ (reste 1) ; $2 = 2 \\times 1 + 0$ (reste 0) ; $1 = 2 \\times 0 + 1$ (reste 1). Lecture en remontant : 1, 0, 1, 1, 0, 1. Donc $(45)_{10} = (101101)_2$. Vérification : $32 + 0 + 8 + 4 + 0 + 1 = 45$. Le résultat est exact, et il occupe six bits."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "a) Convertir $(1100100)_2$ en base 10. b) Combien de bits faut-il au minimum pour écrire le nombre 100 en base 2 ?",
+          "solution_markdown": "a) On attribue à chaque bit sa puissance de 2, en partant de la droite avec $2^0$ : les bits valent, de gauche à droite, $1 \\times 2^6$, $1 \\times 2^5$, $0 \\times 2^4$, $0 \\times 2^3$, $1 \\times 2^2$, $0 \\times 2^1$, $0 \\times 2^0$. La somme donne $64 + 32 + 0 + 0 + 4 + 0 + 0 = 100$. Donc $(1100100)_2 = (100)_{10}$.\n\nb) L'écriture obtenue comporte sept chiffres et commence par 1 : il faut donc 7 bits au minimum. On peut le retrouver sans conversion en encadrant 100 par deux puissances de 2 : $64 \\le 100 < 128$, c'est-à-dire $2^6 \\le 100 < 2^7$. Un nombre compris entre $2^6$ et $2^7 - 1$ s'écrit avec 7 bits."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Conversion vers la base 2 : divisions successives par 2 jusqu'à un quotient nul, puis lecture des restes en remontant.",
+        "Le premier reste obtenu est le bit de droite, le dernier est le bit de gauche.",
+        "Vérifie toujours en refaisant la somme des puissances de 2 : c'est rapide et cela sécurise le point.",
+        "Apprends par cœur les puissances de 2 jusqu'à 1024 : elles servent aussi pour les capacités de mémoire.",
+        "Repère les nombres remarquables : $2^n$ s'écrit 1 suivi de $n$ zéros, et $2^n - 1$ s'écrit avec $n$ chiffres 1 (ainsi $31 = 2^5 - 1 = 11111_2$).",
+        "Cette conversion tombe presque à chaque session du BEPC dans la partie traitement de l'information."
+      ]
+    }
+  ]
+}

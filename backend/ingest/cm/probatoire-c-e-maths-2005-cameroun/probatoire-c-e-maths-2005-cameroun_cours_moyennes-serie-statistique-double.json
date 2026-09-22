@@ -1,0 +1,187 @@
+{
+ "cours_id": "cours-moyennes-serie-statistique-double-1ere-ce",
+ "meta": {
+  "titre": "Calculer les moyennes d'une série statistique double",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistiques à deux variables",
+  "duree_estimee_min": 20,
+  "tags": ["moyenne", "série statistique double", "point moyen", "contrôle de vraisemblance"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qB2-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Additionner huit nombres et diviser par huit : difficile de faire plus élémentaire. Et pourtant c'est là que se perd le plus de points de tout l'exercice de statistiques — non par méconnaissance, mais par étourderie. Une somme faite mentalement, une erreur de report, et la droite de régression est fausse, l'estimation finale aussi. Deux précautions suffisent : additionner **terme à terme en écrivant les résultats intermédiaires**, et contrôler que chaque moyenne tombe à l'intérieur de la plage des valeurs."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir calculer une moyenne arithmétique",
+    "Savoir additionner une liste de nombres sans erreur",
+    "Comprendre ce qu'est une série statistique double",
+    "Savoir placer un point dans un repère"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux moyennes séparées, un point moyen",
+   "contenu_markdown": "**La moyenne arithmétique.** Pour une série de $n$ valeurs $x_{1}$, …, $x_{n}$ :\n\n$$\\bar{x} = \\frac{x_{1}+x_{2}+\\dots+x_{n}}{n} = \\frac{1}{n}\\sum_{i=1}^{n} x_{i}$$\n\n**Pour une série double**, on calcule les deux moyennes **séparément**, chacune sur son propre caractère. Il n'y a aucune interaction entre les deux calculs.\n\n**Le point moyen.** Le point de coordonnées\n\n$$G\\left(\\bar{x}\\,;\\,\\bar{y}\\right)$$\n\ns'appelle le **point moyen** du nuage. C'est le centre de gravité des points du nuage, chacun affecté du même poids.\n\n**Sa propriété fondamentale.** **Toute droite d'ajustement passe par $G$** — droite de régression de $y$ en $x$, droite de régression de $x$ en $y$, droite de Mayer. C'est ce qui fait de $G$ le contrôle le plus rentable de tout l'exercice.\n\n**La méthode, en quatre gestes.**\n\n1. **Additionner** les valeurs du premier caractère, terme à terme.\n2. **Diviser** par l'effectif.\n3. **Répéter** pour le second caractère.\n4. **Contrôler** que chaque moyenne est dans la plage des valeurs.\n\n**Additionner terme à terme.** C'est le conseil décisif. Écris les résultats intermédiaires :\n\n$$35+55 = 90 \\;;\\; +60 = 150 \\;;\\; +60 = 210 \\;;\\; +65 = 275 \\;;\\; \\dots$$\n\nUne somme de huit nombres faite mentalement est la première source d'erreur de tout l'exercice — et cette erreur se propage à la droite de régression puis à l'estimation finale.\n\n**Le contrôle de vraisemblance.** Une moyenne est toujours **comprise entre** la plus petite et la plus grande valeur :\n\n$$\\min \\leqslant \\bar{x} \\leqslant \\max$$\n\nUne moyenne hors de cet intervalle signale immédiatement une erreur de somme ou de division.\n\n**Un second contrôle.** Pour un nuage assez régulier, la moyenne est proche du **milieu** de la plage. Ici $\\dfrac{35+75}{2} = 55$, à comparer à $\\bar{x} = 61{,}5$ : l'écart est modéré, ce qui est cohérent avec une répartition légèrement décalée vers les fortes puissances.\n\n**Les moyennes avec effectifs.** Si chaque valeur $x_{i}$ est observée $n_{i}$ fois, la moyenne devient\n\n$$\\bar{x} = \\frac{\\sum n_{i}x_{i}}{\\sum n_{i}}$$\n\nDans le sujet 2005, chaque voiture compte pour une : tous les effectifs valent $1$.",
+   "formule_principale": "\\bar{x} = \\frac{1}{n}\\sum x_{i} \\qquad ; \\qquad G\\left(\\bar{x}\\,;\\,\\bar{y}\\right)",
+   "variantes": [
+    {
+     "nom": "Moyenne par changement d'origine",
+     "quand_utiliser": "Quand les valeurs sont grandes et proches les unes des autres",
+     "contenu_markdown": "On choisit une valeur de référence $x_{0}$ proche du centre, on calcule les écarts $d_{i} = x_{i}-x_{0}$, puis :\n\n$$\\bar{x} = x_{0} + \\bar{d}$$\n\nPour les cylindrées, en prenant $x_{0} = 1800$ : les écarts sont $-800$, $-200$, $0$, $-100$, $100$, $200$, $300$, $700$, de somme $200$, donc $\\bar{d} = 25$ et $\\bar{y} = 1825$.\n\nLes nombres manipulés sont bien plus petits, et l'erreur moins probable. C'est un excellent **contrôle** du calcul direct."
+    },
+    {
+     "nom": "Variance et écart-type",
+     "quand_utiliser": "Quand on veut mesurer la dispersion",
+     "contenu_markdown": "La moyenne ne dit rien de la dispersion. Celle-ci se mesure par la **variance** :\n\n$$V(x) = \\frac{1}{n}\\sum\\left(x_{i}-\\bar{x}\\right)^{2} = \\frac{1}{n}\\sum x_{i}^{2} - \\bar{x}^{2}$$\n\nL'**écart-type** en est la racine carrée, et il s'exprime dans la même unité que les données — ce qui le rend directement interprétable.\n\nCes quantités interviennent dans les formules de la droite de régression."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Les huit voitures ont pour puissances $35$, $55$, $60$, $60$, $65$, $70$, $72$, $75$ chevaux et pour cylindrées $1000$, $1600$, $1800$, $1700$, $1900$, $2000$, $2100$, $2500$ cm³. Calculer la puissance moyenne et la cylindrée moyenne. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Additionner les puissances, terme à terme",
+     "justification": "On écrit chaque résultat intermédiaire",
+     "resultat_markdown": "$35+55 = 90$ ; $+60 = 150$ ; $+60 = 210$ ; $+65 = 275$ ; $+70 = 345$ ; $+72 = 417$ ; $+75 = 492$"
+    },
+    {
+     "numero": 2,
+     "action": "Diviser par l'effectif",
+     "justification": "Huit voitures",
+     "resultat_markdown": "$\\bar{x} = \\dfrac{492}{8} = 61{,}5$"
+    },
+    {
+     "numero": 3,
+     "action": "Conclure pour la puissance",
+     "justification": "En donnant l'unité",
+     "resultat_markdown": "La puissance moyenne est de $61{,}5$ chevaux"
+    },
+    {
+     "numero": 4,
+     "action": "Additionner les cylindrées, terme à terme",
+     "justification": "Même précaution",
+     "resultat_markdown": "$1000+1600 = 2600$ ; $+1800 = 4400$ ; $+1700 = 6100$ ; $+1900 = 8000$ ; $+2000 = 10\\,000$ ; $+2100 = 12\\,100$ ; $+2500 = 14\\,600$"
+    },
+    {
+     "numero": 5,
+     "action": "Diviser",
+     "justification": "Toujours huit voitures",
+     "resultat_markdown": "$\\bar{y} = \\dfrac{14\\,600}{8} = 1825$"
+    },
+    {
+     "numero": 6,
+     "action": "Conclure pour la cylindrée",
+     "justification": "Avec l'unité",
+     "resultat_markdown": "La cylindrée moyenne est de $1825$ cm³"
+    },
+    {
+     "numero": 7,
+     "action": "Contrôler la première moyenne",
+     "justification": "Elle doit être comprise entre le minimum et le maximum",
+     "resultat_markdown": "$35 \\leqslant 61{,}5 \\leqslant 75$. Conforme"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler la seconde",
+     "justification": "Même vérification",
+     "resultat_markdown": "$1000 \\leqslant 1825 \\leqslant 2500$. Conforme"
+    },
+    {
+     "numero": 9,
+     "action": "Donner le point moyen",
+     "justification": "Il servira à toutes les questions suivantes",
+     "resultat_markdown": "$G(61{,}5\\,;\\,1825)$, à placer sur la figure de la question 1.a)"
+    }
+   ],
+   "conclusion_markdown": "La puissance moyenne vaut $61{,}5$ chevaux et la cylindrée moyenne $1825$ cm³, d'où le point moyen $G(61{,}5\\,;\\,1825)$. Retiens le conseil décisif : additionne **terme à terme en écrivant les résultats intermédiaires**. Une somme de huit nombres faite mentalement est la première source d'erreur de tout l'exercice, et cette erreur se propage ensuite sur la droite de régression puis sur l'estimation finale."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Faire la somme mentalement",
+     "pourquoi_faux": "Huit nombres à trois ou quatre chiffres : la probabilité d'erreur est élevée, et rien ne la signale. L'erreur se propage ensuite à toutes les questions suivantes.",
+     "correction_markdown": "Écris chaque résultat intermédiaire. Cela prend dix secondes de plus et rend l'erreur visible à la relecture."
+    },
+    {
+     "erreur_markdown": "Diviser par le mauvais effectif",
+     "pourquoi_faux": "Il y a huit voitures, donc huit valeurs — même si deux d'entre elles partagent la puissance $60$. Diviser par $7$ parce qu'on ne compte qu'une fois cette valeur donnerait $\\bar{x} \\approx 70{,}3$, hors de proportion.",
+     "correction_markdown": "Compte les **individus**, pas les valeurs distinctes. Ici la valeur $60$ apparaît deux fois et compte donc deux fois."
+    },
+    {
+     "erreur_markdown": "Oublier les unités",
+     "pourquoi_faux": "Une moyenne s'exprime dans l'unité des données : des chevaux pour la puissance, des centimètres cubes pour la cylindrée. Un nombre nu est une réponse incomplète en statistique.",
+     "correction_markdown": "Rédige une phrase : « la puissance moyenne est de $61{,}5$ chevaux ». Le contexte fait partie de la réponse."
+    },
+    {
+     "erreur_markdown": "Ne pas contrôler la vraisemblance",
+     "pourquoi_faux": "Une moyenne est toujours comprise entre le minimum et le maximum. Un résultat hors de cet intervalle signale une erreur immédiate, mais encore faut-il faire la vérification.",
+     "correction_markdown": "Compare la moyenne obtenue aux valeurs extrêmes de la série. Deux secondes, et l'erreur grossière est écartée."
+    },
+    {
+     "erreur_markdown": "Ne pas placer le point moyen sur la figure",
+     "pourquoi_faux": "Toute droite d'ajustement passe par $G$. Sans lui, on perd le contrôle le plus simple des questions suivantes, où l'on trace justement cette droite.",
+     "correction_markdown": "Reporte $G(61{,}5\\,;\\,1825)$ sur le nuage dès qu'il est calculé, avec un symbole distinct."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Calculer les moyennes de la série double $(4\\,;\\,120)$, $(7\\,;\\,150)$, $(9\\,;\\,180)$, $(12\\,;\\,210)$, $(18\\,;\\,290)$, puis vérifier le résultat par la méthode du changement d'origine.",
+     "solution_markdown": "**Étape 1 - la moyenne des abscisses, calcul direct.**\n\n$$4+7 = 11 \\;;\\; +9 = 20 \\;;\\; +12 = 32 \\;;\\; +18 = 50$$\n\n$$\\bar{x} = \\dfrac{50}{5} = 10$$\n\n**Étape 2 - la moyenne des ordonnées, calcul direct.**\n\n$$120+150 = 270 \\;;\\; +180 = 450 \\;;\\; +210 = 660 \\;;\\; +290 = 950$$\n\n$$\\bar{y} = \\dfrac{950}{5} = 190$$\n\n$$G(10\\,;\\,190)$$\n\n**Étape 3 - contrôle de vraisemblance.**\n\n$4 \\leqslant 10 \\leqslant 18$ et $120 \\leqslant 190 \\leqslant 290$. Conforme.\n\n**Étape 4 - vérification par changement d'origine, sur les abscisses.**\n\nPrenons $x_{0} = 10$.\n\nÉcarts : $-6$, $-3$, $-1$, $2$, $8$.\n\nSomme : $-6-3-1+2+8 = 0$.\n\n$$\\bar{d} = \\dfrac{0}{5} = 0 \\qquad \\Longrightarrow \\qquad \\bar{x} = 10+0 = 10$$\n\n**Conforme.**\n\n*Remarque :* une somme d'écarts nulle signifie que la valeur de référence choisie **était** la moyenne. C'est le meilleur contrôle possible.\n\n**Étape 5 - vérification par changement d'origine, sur les ordonnées.**\n\nPrenons $y_{0} = 180$, valeur centrale de la série.\n\nÉcarts : $-60$, $-30$, $0$, $30$, $110$.\n\nSomme : $-60-30+0+30+110 = 50$.\n\n$$\\bar{d} = \\dfrac{50}{5} = 10 \\qquad \\Longrightarrow \\qquad \\bar{y} = 180+10 = 190$$\n\n**Conforme.**\n\n**Étape 6 - observer.**\n\nLes écarts manipulés — au plus $110$ — sont bien plus petits que les valeurs initiales, qui atteignent $290$. Le risque d'erreur en est réduit d'autant.\n\n**Ce qu'il faut retenir.** Le changement d'origine n'est pas seulement un raccourci : c'est une **méthode de vérification indépendante**. Deux calculs menés différemment aboutissant au même résultat valent mieux qu'une relecture."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Une série donne les valeurs $x$ avec leurs effectifs : $x = 2$ (effectif $5$), $x = 5$ (effectif $8$), $x = 9$ (effectif $4$), $x = 12$ (effectif $3$). Calculer la moyenne. Puis, sachant que le point moyen d'un nuage de $10$ points est $G(6\\,;\\,20)$ et qu'on ajoute un onzième point $(17\\,;\\,42)$, déterminer le nouveau point moyen.",
+     "solution_markdown": "**Première partie - moyenne avec effectifs.**\n\n**Étape 1 - la formule.**\n\n$$\\bar{x} = \\dfrac{\\sum n_{i}x_{i}}{\\sum n_{i}}$$\n\n**Étape 2 - le dénominateur.**\n\n$$\\sum n_{i} = 5+8+4+3 = 20$$\n\nL'effectif total est de $20$ individus.\n\n**Étape 3 - le numérateur.**\n\n$$5 \\times 2 = 10$$\n\n$$8 \\times 5 = 40$$\n\n$$4 \\times 9 = 36$$\n\n$$3 \\times 12 = 36$$\n\n$$\\sum n_{i}x_{i} = 10+40+36+36 = 122$$\n\n**Étape 4 - la moyenne.**\n\n$$\\bar{x} = \\dfrac{122}{20} = 6{,}1$$\n\n*Contrôle :* $2 \\leqslant 6{,}1 \\leqslant 12$. Conforme.\n\n*Second contrôle :* la valeur $5$ ayant le plus gros effectif, la moyenne doit être proche d'elle, mais tirée vers le haut par les valeurs $9$ et $12$. On obtient $6{,}1$ : cohérent.\n\n**Seconde partie - ajout d'un point.**\n\n**Étape 5 - retrouver les sommes initiales.**\n\nDe $\\bar{x} = 6$ pour $10$ points :\n\n$$\\sum x_{i} = 10 \\times 6 = 60$$\n\nDe $\\bar{y} = 20$ :\n\n$$\\sum y_{i} = 10 \\times 20 = 200$$\n\n**Étape 6 - ajouter le onzième point.**\n\n$$\\sum x_{i}' = 60+17 = 77$$\n\n$$\\sum y_{i}' = 200+42 = 242$$\n\n**Étape 7 - le nouveau point moyen.**\n\n$$\\bar{x}' = \\dfrac{77}{11} = 7$$\n\n$$\\bar{y}' = \\dfrac{242}{11} = 22$$\n\n$$G'(7\\,;\\,22)$$\n\n**Étape 8 - interpréter le déplacement.**\n\nLe point ajouté, $(17\\,;\\,42)$, est très au-dessus et très à droite de l'ancien point moyen $G(6\\,;\\,20)$.\n\nIl **tire** donc le point moyen dans sa direction : de $6$ à $7$ en abscisse, de $20$ à $22$ en ordonnée.\n\n**Étape 9 - quantifier le déplacement.**\n\nEn abscisse, le déplacement vaut\n\n$$7 - 6 = 1 = \\dfrac{17-6}{11}$$\n\nEn ordonnée :\n\n$$22-20 = 2 = \\dfrac{42-20}{11}$$\n\n**La règle générale :** ajouter un point $\\left(x_{0}\\,;\\,y_{0}\\right)$ à un nuage de $n$ points de moyenne $G$ déplace celle-ci de $\\dfrac{x_{0}-\\bar{x}}{n+1}$ en abscisse.\n\n**Ce qu'il faut retenir.** Le déplacement du point moyen est **inversement proportionnel** à l'effectif : plus le nuage est gros, moins un point nouveau l'influence. C'est pourquoi un point atypique pèse lourd sur un petit échantillon et peu sur un grand."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Pour les huit voitures du sujet, calculer les deux moyennes, puis la variance et l'écart-type de la puissance. En déduire le pourcentage de voitures dont la puissance s'écarte de la moyenne de moins d'un écart-type, et commenter.",
+     "solution_markdown": "**Étape 1 - les moyennes.**\n\n$$\\bar{x} = \\dfrac{492}{8} = 61{,}5 \\text{ chevaux} \\qquad ; \\qquad \\bar{y} = \\dfrac{14\\,600}{8} = 1825 \\text{ cm}^{3}$$\n\n**Étape 2 - la variance, méthode des écarts.**\n\n$$V(x) = \\dfrac{1}{n}\\sum\\left(x_{i}-\\bar{x}\\right)^{2}$$\n\n| $x_{i}$ | $x_{i}-61{,}5$ | Carré |\n|---|---|---|\n| $35$ | $-26{,}5$ | $702{,}25$ |\n| $55$ | $-6{,}5$ | $42{,}25$ |\n| $60$ | $-1{,}5$ | $2{,}25$ |\n| $60$ | $-1{,}5$ | $2{,}25$ |\n| $65$ | $3{,}5$ | $12{,}25$ |\n| $70$ | $8{,}5$ | $72{,}25$ |\n| $72$ | $10{,}5$ | $110{,}25$ |\n| $75$ | $13{,}5$ | $182{,}25$ |\n\n**Étape 3 - sommer les carrés.**\n\n$$702{,}25+42{,}25 = 744{,}5$$\n\n$$744{,}5+2{,}25+2{,}25 = 749$$\n\n$$749+12{,}25 = 761{,}25 \\;;\\; +72{,}25 = 833{,}5 \\;;\\; +110{,}25 = 943{,}75 \\;;\\; +182{,}25 = 1126$$\n\n$$V(x) = \\dfrac{1126}{8} = 140{,}75$$\n\n**Étape 4 - contrôle par la formule développée.**\n\n$$V(x) = \\dfrac{1}{n}\\sum x_{i}^{2} - \\bar{x}^{2}$$\n\nCarrés des puissances : $1225$, $3025$, $3600$, $3600$, $4225$, $4900$, $5184$, $5625$.\n\nSomme :\n\n$$1225+3025 = 4250 \\;;\\; +3600 = 7850 \\;;\\; +3600 = 11\\,450 \\;;\\; +4225 = 15\\,675$$\n\n$$15\\,675+4900 = 20\\,575 \\;;\\; +5184 = 25\\,759 \\;;\\; +5625 = 31\\,384$$\n\n$$\\dfrac{31\\,384}{8} = 3923 \\qquad ; \\qquad \\bar{x}^{2} = 61{,}5^{2} = 3782{,}25$$\n\n$$V(x) = 3923 - 3782{,}25 = 140{,}75$$\n\n**Conforme au calcul par les écarts.**\n\n**Étape 5 - l'écart-type.**\n\n$$\\sigma(x) = \\sqrt{140{,}75} \\approx 11{,}86 \\text{ chevaux}$$\n\n**Étape 6 - l'intervalle d'un écart-type.**\n\n$$\\left[\\bar{x}-\\sigma \\,;\\, \\bar{x}+\\sigma\\right] = \\left[61{,}5-11{,}86 \\,;\\, 61{,}5+11{,}86\\right] = \\left[49{,}64 \\,;\\, 73{,}36\\right]$$\n\n**Étape 7 - compter les voitures dans cet intervalle.**\n\n| $x_{i}$ | Dans $[49{,}64\\,;\\,73{,}36]$ ? |\n|---|---|\n| $35$ | non |\n| $55$ | oui |\n| $60$ | oui |\n| $60$ | oui |\n| $65$ | oui |\n| $70$ | oui |\n| $72$ | oui |\n| $75$ | non |\n\n**Six voitures sur huit**, soit\n\n$$\\dfrac{6}{8} = 0{,}75 = 75\\,\\%$$\n\n**Étape 8 - commenter.**\n\nTrois quarts des voitures ont une puissance s'écartant de moins d'un écart-type de la moyenne. Les deux exceptions sont les **extrêmes** de la série : la moins puissante ($35$ ch) et la plus puissante ($75$ ch).\n\nCette proportion de $75\\,\\%$ est cohérente avec ce qu'on observe habituellement sur des données réelles, où l'intervalle d'un écart-type contient typiquement entre $60$ et $75\\,\\%$ des observations.\n\n**Étape 9 - interpréter l'écart-type.**\n\nUn écart-type de $11{,}86$ chevaux pour une moyenne de $61{,}5$ donne un **coefficient de variation** de\n\n$$\\dfrac{11{,}86}{61{,}5} \\approx 0{,}193 \\approx 19\\,\\%$$\n\nLa dispersion est donc **modérée** : les puissances sont assez homogènes autour de leur moyenne.\n\n**Ce qu'il faut retenir.** La moyenne seule ne décrit pas une série : deux séries de même moyenne peuvent être très différentes. L'écart-type complète l'information en mesurant la dispersion, et il s'exprime dans la même unité que les données — ce qui le rend directement interprétable."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "$\\bar{x} = \\dfrac{1}{n}\\sum x_{i}$ : somme des valeurs divisée par l'effectif.",
+    "Pour une série double, calcule les deux moyennes **séparément**.",
+    "Additionne **terme à terme en écrivant les résultats intermédiaires** : c'est la première source d'erreur.",
+    "Compte les **individus**, pas les valeurs distinctes : une valeur répétée compte plusieurs fois.",
+    "Donne les unités : une moyenne s'exprime dans l'unité des données.",
+    "Contrôle : la moyenne est toujours comprise entre le minimum et le maximum.",
+    "Le point moyen $G\\left(\\bar{x}\\,;\\,\\bar{y}\\right)$ appartient à **toute** droite d'ajustement.",
+    "Place $G$ sur la figure dès qu'il est calculé.",
+    "Le changement d'origine réduit la taille des nombres et fournit une vérification indépendante.",
+    "Avec effectifs : $\\bar{x} = \\dfrac{\\sum n_{i}x_{i}}{\\sum n_{i}}$.",
+    "Le déplacement du point moyen après ajout d'un point est inversement proportionnel à l'effectif."
+   ]
+  }
+ ]
+}

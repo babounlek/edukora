@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-les-commandes-reseau-sous-windows-cli-tle-ti",
+  "meta": {
+    "titre": "Les commandes réseau sous Windows (CLI)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques",
+    "duree_estimee_min": 12,
+    "tags": [
+      "ipconfig",
+      "invite de commandes",
+      "diagnostic Windows"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qB.4.1-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sans ouvrir le moindre menu graphique, un simple mot tapé dans l'invite de commandes suffit à révéler toute la configuration réseau d'un poste Windows : c'est souvent le premier réflexe d'un technicien avant même de lancer un ping."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ouvrir l'invite de commandes Windows (cmd)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "ipconfig, la commande de référence",
+      "contenu_markdown": "Sous Windows, la commande **`ipconfig`** affiche la configuration IP de base de chaque interface réseau (adresse IP, masque de sous-réseau, passerelle). La variante **`ipconfig /all`** ajoute des informations détaillées supplémentaires (adresse MAC, serveurs DNS, bail DHCP). Ces commandes lisent simplement la configuration actuelle de la machine, sans tester la moindre connectivité vers l'extérieur (contrairement à `ping`).",
+      "formule_principale": "ipconfig          ipconfig /all",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'adresse IP de l'équipement A est 192.168.122.50. Quelle commande DOS permet de lire cette configuration IP sur l'écran ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le besoin exprimé",
+          "justification": "Il faut distinguer \"lire une configuration existante\" de \"tester une connexion\"",
+          "resultat_markdown": "On veut simplement afficher la configuration IP déjà attribuée à la machine, pas tester une connectivité."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir la commande Windows correspondante",
+          "justification": "ipconfig est la commande dédiée à l'affichage de la configuration IP locale",
+          "resultat_markdown": "La commande `ipconfig` (ou `ipconfig /all` pour le détail complet) répond exactement à ce besoin."
+        }
+      ],
+      "conclusion_markdown": "La commande ipconfig affiche directement à l'écran la configuration IP de la machine, ici l'adresse 192.168.122.50 de l'équipement A."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre \"ping\" à une question qui demande de LIRE la configuration IP existante",
+          "pourquoi_faux": "ping teste la joignabilité d'une autre machine, il n'affiche jamais la configuration IP de la machine locale.",
+          "correction_markdown": "Distingue toujours \"afficher sa propre configuration\" (ipconfig) de \"tester la joignabilité d'un autre hôte\" (ping) : ce sont deux commandes aux rôles différents."
+        },
+        {
+          "erreur_markdown": "Écrire \"ipconfig\" sans le \\i minuscule ou avec une orthographe approximative (\"ip config\", avec espace)",
+          "pourquoi_faux": "La commande s'écrit en un seul mot, sans espace : \"ip config\" n'est pas reconnue par l'invite de commandes.",
+          "correction_markdown": "Recopie toujours la syntaxe exacte d'une commande dans une réponse d'examen, espace compris (ou absent)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle commande affiche l'adresse IP d'un poste Windows ?",
+          "solution_markdown": "`ipconfig`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle est la différence entre `ipconfig` et `ipconfig /all` ?",
+          "solution_markdown": "`ipconfig` seul affiche les informations essentielles (adresse IP, masque de sous-réseau, passerelle par défaut) de chaque interface réseau. `ipconfig /all` affiche en plus des informations détaillées : adresse MAC de chaque carte, serveurs DNS utilisés, informations sur le bail DHCP (date d'obtention et d'expiration de l'adresse), et le nom d'hôte de la machine."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un technicien veut vérifier à la fois la configuration IP d'un poste ET s'il peut joindre la passerelle du réseau. Quelles commandes doit-il utiliser, dans quel ordre, et pourquoi cet ordre a-t-il du sens ?",
+          "solution_markdown": "Il doit d'abord exécuter `ipconfig` (ou `ipconfig /all`) pour lire la configuration actuelle du poste, en particulier l'adresse de la passerelle par défaut. Ensuite seulement, il peut exécuter `ping <adresse_de_la_passerelle>` pour tester si cette passerelle répond. Cet ordre a du sens car il est impossible de tester la joignabilité d'une adresse que l'on ne connaît pas encore : ipconfig fournit l'information nécessaire (l'adresse à cibler) avant que ping ne puisse être utilisé de façon pertinente."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "ipconfig affiche la configuration IP de base d'un poste Windows (adresse, masque, passerelle).",
+        "ipconfig /all ajoute des informations détaillées (adresse MAC, DNS, bail DHCP).",
+        "ipconfig lit une configuration existante, il ne teste aucune connectivité (contrairement à ping).",
+        "La syntaxe des commandes réseau doit être recopiée exactement, sans espace ni faute.",
+        "Au BAC TI, une question sur \"quelle commande lire/afficher\" pointe presque toujours vers ipconfig, une question \"tester/vérifier la joignabilité\" pointe vers ping."
+      ]
+    }
+  ]
+}

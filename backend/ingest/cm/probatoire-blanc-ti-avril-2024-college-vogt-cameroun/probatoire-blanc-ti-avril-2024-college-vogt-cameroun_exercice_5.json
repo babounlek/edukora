@@ -1,0 +1,78 @@
+{
+  "epreuve_source": "probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+  "numero_exercice": "5",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "etablissement",
+  "etablissement": "Collège Mgr. François-Xavier VOGT",
+  "institution": null,
+  "annee": 2024,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "introduction_markdown": null,
+  "points": "1",
+  "groupes": [
+    "PARTIE II : PROGRAMMATION DES SITES WEB STATIQUES ET DYNAMIQUES (6 pts)",
+    "B- Évaluation des compétences (4,25 pts)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "probatoire-blanc-ti-avril-2024-college-vogt-cameroun_exercice_5_fig_1.png",
+      "page_source": 4,
+      "type": "document",
+      "legende": "Capture d'écran du navigateur : tableau des notes avec Moyenne = NaN pour SAMIRATOU",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "enonce"
+    }
+  ],
+  "enonce_intro_markdown": "**Exercice 2 (1 pt)**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Il y a un an, le frère d'un élève de la PTI avait sérieusement critiqué l'enseignant d'Algorithme & Programmation, lui reprochant d'enseigner encore le code HTML alors qu'il existe des CMS pour faciliter les tâches. Un jour, à l'aide d'un CMS, un code fut réalisé par Bintou : le code source encore ouvert, un mouvement de doigt par inadvertance enfonça la touche \"backspace\" et un caractère fut effacé. À l'interprétation, le résultat affiche une erreur de fond par l'expression NaN.\n\n**Consigne** : après lecture du code et observation de la capture d'écran, préciser la ligne de code qui fait problème et la corriger.\n\n*NB : une ligne normale mais repérée comme fausse retranche le point.*\n\n![fig-1](probatoire-blanc-ti-avril-2024-college-vogt-cameroun_exercice_5_fig_1.png)\n\n```html\n<!DOCTYPE html>\n<html><head><title></title></head>\n<body> <table border=\"2\">\n<tr>\n<td>Nom</td>\n<td>Francais</td>\n<td>Anglais</td>\n<td>Moyenne</td></tr>\n<tr>\n<td>KONFOR</td>\n<td><script type=\"text/javascript\">\nvar F; var Note;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote=F;\ndocument.write(\"\"+Note);\n</script></td>\n<td><script type=\"text/javascript\">\nvar A; var M;\nA=parseInt(prompt(\"entrer la note d'Anglais\"));\nM = A ;\ndocument.write(\"\"+M);\n</script></td>\n<td><script type=\"text/javascript\">\nMoy=(M+Note)/2;\ndocument.write(\"\"+Moy)\n</script></td>\n<tr>\n<td>TANTOH</td>\n<td><script type=\"text/javascript\">\nvar F;var Note ;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote=F;\ndocument.write(\"\"+Note);\n</script></td>\n<td><script type=\"text/javascript\">\nvar A; var M;\nA=parseInt(prompt(\"entrer la note d'Anglais\"));\nM = A ;\ndocument.write(\"\"+M);\n</script></td>\n<td><script type=\"text/javascript\">\nMoy=(M+Note)/2;\ndocument.write(\"\"+Moy)\n</script></td>\n<tr>\n<td>SAMIRATOU</td>\n<td><script type=\"text/javascript\">\nvar F1; var Note1 ;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote1=F1;\ndocument.write(\"\"+Note);\n</script></td>\n<td><script type=\"text/javascript\">\nvar A1; var M1;\nA1=parseInt(prompt(\"entrer la note d'Anglais\"));\nM1 = A1 ;\ndocument.write(\"\"+M1);</script></td>\n<td><script type=\"text/javascript\">\nMoy1=(M1+Note1)/2;\ndocument.write(\"\"+Moy1)\n</script></td>\n</body></html>\n```",
+      "corrige_markdown": "### Rappel de méthode\nEn JavaScript classique (scripts non modulaires, hors mode strict), une variable déclarée avec var en dehors de toute fonction est globale : la redéclarer avec var dans un autre bloc <script> de la même page ne crée pas une nouvelle variable, elle réutilise et peut écraser la même variable globale que celle déjà utilisée plus haut dans la page.\n\n**Repérage de la ligne fautive**\n\nDans le bloc `<script>` de la ligne \"SAMIRATOU\" :\n```javascript\nvar F1; var Note1 ;\nF=parseInt(prompt(\"entrer la note de Francais\"));\nNote1=F1;\ndocument.write(\"\"+Note);\n```\nLa ligne `F1` et `Note1` sont bien déclarées, mais l'instruction de saisie assigne le résultat à `F` (variable globale déjà utilisée pour KONFOR et TANTOH), pas à `F1`. Résultat : `F1` reste déclarée mais **jamais assignée**, donc `undefined`.\n\n**Propagation de l'erreur**\n\nLa ligne suivante, `Note1=F1;`, affecte donc `undefined` à `Note1`. Puis, dans le bloc `<script>` de la colonne Moyenne :\n```javascript\nMoy1=(M1+Note1)/2;\n```\n`M1` est un nombre valide (assigné correctement via `A1`/`M1`), mais `Note1` vaut `undefined`. En JavaScript, toute opération arithmétique impliquant `undefined` renvoie `NaN` (Not a Number) : `M1 + undefined` donne déjà `NaN`, et `NaN / 2` reste `NaN`. C'est exactement la valeur affichée dans la colonne Moyenne de la ligne SAMIRATOU.\n\n**Ligne à corriger** : `F=parseInt(prompt(\"entrer la note de Francais\"));` doit devenir :\n```javascript\nF1=parseInt(prompt(\"entrer la note de Francais\"));\n```\nUne fois cette correction faite, `F1` reçoit bien la note saisie, `Note1=F1` devient un nombre valide, et `Moy1=(M1+Note1)/2` calcule une moyenne correcte au lieu de `NaN`.\n\n### Piège à éviter\nIl ne faut pas se laisser distraire par la ligne `document.write(\"\"+Note);` de la même série de blocs, qui affiche `Note` (variable globale laissée par le bloc TANTOH) au lieu de `Note1` : cette ligne affiche par coïncidence une valeur numérique plausible (donc sans NaN visible), mais elle constitue une **deuxième erreur bien réelle** du même code (elle affiche la note de Français du candidat précédent, pas celle de SAMIRATOU). La consigne demande cependant de répérer la ou les lignes ayant produit **NaN** : seule l'erreur sur `F1` en est directement responsable, la note NB de l'énoncé prévenant justement qu'une ligne \"normale\" mais désignée à tort comme fautive fait perdre le point.\n\n### Conseil\nPour retrouver ce genre de bogue rapidement, pars du résultat inattendu (ici `NaN` dans Moyenne) et remonte le calcul étape par étape : `Moy1` dépend de `M1` et `Note1` -> `Note1` dépend de `F1` -> `F1` n'est jamais assigné. Cette remontée en arrière est plus fiable que de relire tout le code dans l'ordre de haut en bas.",
+      "themes": [
+        "JavaScript",
+        "Portée des variables globales",
+        "Débogage",
+        "NaN",
+        "undefined"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex5-q1-0",
+          "competence": "Débogage JavaScript : portée des variables globales et valeurs undefined/NaN",
+          "contenu_markdown": "En JavaScript classique (scripts non modulaires, hors mode strict), une variable déclarée avec var en dehors de toute fonction est globale : la redéclarer avec var dans un autre bloc <script> de la même page ne crée pas une nouvelle variable, elle réutilise et peut écraser la même variable globale que celle déjà utilisée plus haut dans la page.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "JavaScript",
+    "NaN",
+    "undefined",
+    "variable globale",
+    "débogage",
+    "document.write",
+    "prompt"
+  ],
+  "incertitudes": [
+    "Matière Informatique en principe couverte par le référentiel programme officiel edukora, mais le fichier backend/programme/fixtures/programme_officiel_cm_informatique.json est introuvable sur cet environnement : savoir_officiel laissé à null par manque d'accès au référentiel."
+  ],
+  "statut": "brouillon"
+}

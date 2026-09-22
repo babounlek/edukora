@@ -1,0 +1,142 @@
+{
+  "epreuve_source": "epreuve-hamonise-c-d-e-informatique-2025-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "annee": 2025,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "nature_epreuve": "theorique",
+  "institution": "Délégation Régionale des Enseignements Secondaires de l'Adamaoua - Inspection Régionale de Pédagogie chargée de l'Enseignement de l'Informatique",
+  "numero_exercice": "2",
+  "points": "3",
+  "introduction_markdown": null,
+  "groupes": [
+    "PARTIE II : SYSTÈMES D'INFORMATIONS ET BASES DE DONNÉES (7 points)"
+  ],
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "epreuve-hamonise-c-d-e-informatique-2025-cameroun_exercice_2_fig_1.png",
+      "page_source": null,
+      "type": "schema",
+      "legende": "Modèle Conceptuel de Données (MCD) construit dans le corrigé : entités CLIENT et FACTURE reliées par l'association SOLDE, cardinalités (1,n) côté CLIENT et (1,1) côté FACTURE",
+      "indispensable": false,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**PARTIE II : SYSTÈMES D'INFORMATIONS ET BASES DE DONNÉES (7 points)**\n\n**Exercice 1 : Systèmes d'information (3 points)**\n\nVotre ami dirige une startup. Il souhaite mettre en place une plateforme permettant à ses clients de solder leurs factures. La plateforme devra fonctionner selon les règles de gestion suivantes :\n\n- Un client est caractérisé par un code_unique, un contact, un nom et une adresse.\n- Une facture est caractérisée par un numéro_fact, un libellé et un montant.\n- Un client peut solder une ou plusieurs factures mais une facture est soldée par un seul client.\n\nÀ partir des règles de gestion de la plateforme, il vous est demandé d'aider votre ami à mettre en place cette plateforme en répondant aux questions suivantes.",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Identifier les entités en proposant l'identifiant de chacune. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne entité regroupe les objets du réel décrits par les mêmes propriétés (attributs) ; son identifiant est l'attribut, cité explicitement dans les règles de gestion, qui distingue sans ambiguïté chaque occurrence de cette entité les unes des autres.\n\nLes règles de gestion décrivent deux objets aux propriétés propres : le client et la facture. Ce sont les deux entités du système.\n\n**Entité CLIENT**, identifiant : **code_unique** (chaque client possède un code unique qui le distingue de tout autre client).\n\n**Entité FACTURE**, identifiant : **numero_fact** (chaque facture possède un numéro qui la distingue de toute autre facture).",
+      "themes": [
+        "MCD",
+        "entités",
+        "identifiant"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex2-q1-0",
+          "competence": "Identifier les entités et leurs identifiants à partir de règles de gestion",
+          "contenu_markdown": "Une entité regroupe les objets du réel décrits par les mêmes propriétés (attributs) ; son identifiant est l'attribut, cité explicitement dans les règles de gestion, qui distingue sans ambiguïté chaque occurrence de cette entité les unes des autres.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Construire le MCD correspondant à cette description en ressortant les cardinalités. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUn MCD relie deux entités par une association nommée (souvent un verbe), et chaque branche de l'association porte une cardinalité minimum,maximum qui répond à la question : pour une occurrence de cette entité, à combien d'occurrences de l'autre entité, via cette association, est-elle liée au minimum et au maximum.\n\n**Étape 1.** Les deux entités identifiées à la question 1 sont CLIENT (code_unique, contact, nom, adresse) et FACTURE (numero_fact, libellé, montant).\n\n**Étape 2.** La règle de gestion \"un client peut solder une ou plusieurs factures\" donne, côté CLIENT, une cardinalité minimale de 1 et maximale de n : cardinalité **(1,n)**.\n\n**Étape 3.** La règle de gestion \"une facture est soldée par un seul client\" donne, côté FACTURE, une cardinalité minimale de 1 et maximale de 1 : cardinalité **(1,1)**.\n\n**Étape 4.** L'association qui relie les deux entités porte le verbe de l'action décrite dans les règles de gestion : **SOLDE**.\n\nLe MCD obtenu :\n\n![fig-1](epreuve-hamonise-c-d-e-informatique-2025-cameroun_exercice_2_fig_1.png)\n\n### Piège à éviter\nVérifie toujours quelle cardinalité tu inscris de quel côté : la cardinalité (1,n) se lit du côté de l'entité qui participe plusieurs fois à l'association (ici CLIENT, qui solde plusieurs factures), jamais du côté de l'entité qui n'y participe qu'une fois (ici FACTURE, soldée par un seul client).",
+      "themes": [
+        "MCD",
+        "cardinalités",
+        "association"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex2-q2-0",
+          "competence": "Construire un MCD et déterminer les cardinalités à partir de règles de gestion",
+          "contenu_markdown": "Un MCD relie deux entités par une association nommée (souvent un verbe), et chaque branche de l'association porte une cardinalité minimum,maximum qui répond à la question : pour une occurrence de cette entité, à combien d'occurrences de l'autre entité, via cette association, est-elle liée au minimum et au maximum.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Déduire le MLD issu de ce MCD. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour transformer une association binaire de type 1,N en MLD, la clé primaire de l'entité située du côté de cardinalité maximale 1 migre comme clé étrangère dans la table de l'entité située du côté de cardinalité maximale N ; aucune table supplémentaire n'est créée pour l'association elle-même, contrairement à une association N,N.\n\n**Étape 1.** Sur le MCD construit à la question 2, l'association SOLDE porte les cardinalités (1,n) côté CLIENT et (1,1) côté FACTURE : c'est une association de type 1,N.\n\n**Étape 2.** La règle de passage MCD vers MLD pour ce type d'association fait migrer la clé primaire de l'entité côté \"1\" (CLIENT) comme clé étrangère dans la table de l'entité côté \"n\" (FACTURE).\n\nRéponse :\n\nCLIENT (**code_unique**, contact, nom, adresse)\n\nFACTURE (**numero_fact**, libellé, montant, #code_unique)\n\noù #code_unique est une clé étrangère référençant CLIENT.code_unique.\n\n### Piège à éviter\nNe crée jamais de table séparée pour l'association SOLDE : une table intermédiaire n'est nécessaire que pour les associations de type N,N (plusieurs-à-plusieurs), pas pour une association 1,N comme celle-ci.",
+      "themes": [
+        "MCD vers MLD",
+        "cardinalités",
+        "clé étrangère"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex2-q3-0",
+          "competence": "Passer du MCD au MLD pour une association de type 1,N",
+          "contenu_markdown": "Pour transformer une association binaire de type 1,N en MLD, la clé primaire de l'entité située du côté de cardinalité maximale 1 migre comme clé étrangère dans la table de l'entité située du côté de cardinalité maximale N ; aucune table supplémentaire n'est créée pour l'association elle-même, contrairement à une association N,N.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "informatique",
+    "terminale",
+    "systèmes d'information",
+    "MCD",
+    "MLD",
+    "entités",
+    "association",
+    "cardinalités",
+    "clé étrangère",
+    "modèle conceptuel de données"
+  ],
+  "incertitudes": [
+    "La figure fig-1 (MCD entités CLIENT/FACTURE, association SOLDE) est produite dans le corrigé (aucune figure de ce type n'apparaît dans l'énoncé source, qui demande explicitement de construire le MCD) : origine_figure = \"corrige\", indispensable = false (le corrigé de la question 2 reste compréhensible en texte, la figure vient l'illustrer).",
+    "Le rappel de méthode de la question 3 (« Passer du MCD au MLD pour une association de type 1,N ») correspond à un titre déjà publié dans le corpus edukora sous ce même intitulé exact ; le cours associé est donc livré en squelette de rattachement (sections vides) plutôt qu'en cours complet, conformément à la règle de déduplication par titre du mode automatisation. Les rappels des questions 1 et 2 de cet exercice restent sans cours dans cette passe (cours_genere: false, cours_id: null)."
+  ],
+  "statut": "brouillon",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "filiere_serie_a": null
+}

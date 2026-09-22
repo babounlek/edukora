@@ -1,0 +1,154 @@
+{
+  "epreuve_source": "bac-a-c-d-e-informatique-theorique-officiel-2013.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "A, C, D, E",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2013,
+  "duree_epreuve": "1h",
+  "coefficient": "2",
+  "introduction_markdown": null,
+  "groupes": [],
+  "figures": [],
+  "statut": "brouillon",
+  "numero_exercice": "3",
+  "points": "7",
+  "enonce_intro_markdown": "**III. Traitement de l'information et base de données (07 points)**",
+  "questions": [
+    {
+      "numero": "3.1",
+      "enonce_markdown": "**3.1** Donnez la signification des termes et sigles suivants : Téléchargement, WWW, HTML, requête. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nLe vocabulaire informatique mêle des mots français courants comme \"téléchargement\" et des sigles anglais devenus des standards du web (WWW, HTML) ou de la gestion des données (requête) ; connaître leur signification précise évite les confusions dans la pratique comme à l'examen.\n\n1. Téléchargement : opération qui consiste à transférer un fichier ou des données depuis un serveur distant (ou Internet) vers son propre ordinateur.\n2. WWW (World Wide Web) : système de pages web reliées entre elles par des liens hypertextes, consultables via Internet à l'aide d'un navigateur.\n3. HTML (HyperText Markup Language) : langage de balisage utilisé pour structurer et afficher le contenu des pages web.\n4. Requête : instruction envoyée à une base de données (ou à un moteur de recherche) pour en extraire, modifier ou manipuler des informations précises.\n\n### Piège à éviter\nNe confonds pas Internet, l'infrastructure et le réseau mondial, avec le WWW, un des services qui fonctionne sur cette infrastructure au même titre que la messagerie ou le FTP : le WWW n'est qu'une partie d'Internet, pas son synonyme.",
+      "themes": [
+        "Vocabulaire informatique",
+        "Téléchargement",
+        "World Wide Web",
+        "HTML",
+        "Requête"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2013-ex3-q3.1-1",
+          "competence": "Vocabulaire informatique et sigles du web",
+          "contenu_markdown": "Le vocabulaire informatique mêle des mots français courants comme \"téléchargement\" et des sigles anglais devenus des standards du web (WWW, HTML) ou de la gestion des données (requête) ; connaître leur signification précise évite les confusions dans la pratique comme à l'examen.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.2",
+      "enonce_markdown": "**3.2** La table « candidat » suivante est contenue dans une base de données appelée « BD_ELEVES » :\n\n| Nom | Prénom | Classe | Age |\n|---|---|---|---|\n| EKASSI | Jean Blaise | 6ème 2 | 10 |\n| AKOA | Pierre Paul | Tle C | 17 |\n| FOTSO | Jean De Dieu | 2 C | 15 |\n\nDonnez le résultat de la commande :\n\n```sql\nselect (Nom) from Liste where Age = 17\n```\n\n*[2,5 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nUne requête de sélection s'écrit sous la forme générale `SELECT <champs> FROM <table> WHERE <condition>` ; elle affiche uniquement les champs demandés, pour les seules lignes de la table qui vérifient la condition posée après `WHERE`.\n\nLe sujet vient de présenter la table « candidat », mais la commande interroge une table nommée « Liste ». Il s'agit très probablement de la même table désignée sous un autre nom dans l'énoncé de la commande : on raisonne donc sur le contenu de la table « candidat » donnée plus haut.\n\n1. Isoler la table concernée : c'est la table « candidat » (avec les colonnes Nom, Prénom, Classe, Age).\n2. Appliquer la condition posée après `WHERE` : `Age = 17`. On parcourt chaque ligne de la table et on retient celles où la colonne Age vaut 17.\n   - EKASSI : Age = 10, ne correspond pas.\n   - AKOA : Age = 17, correspond.\n   - FOTSO : Age = 15, ne correspond pas.\n   Une seule ligne vérifie la condition : celle d'AKOA Pierre Paul.\n3. Appliquer la sélection posée après `SELECT` : seul le champ `Nom` est demandé, pas la ligne complète.\n\nLe résultat de la commande est donc : **AKOA**.\n\n### Piège à éviter\nNe retourne pas toute la ligne d'AKOA : la commande ne sélectionne que le champ « Nom », à cause de `select (Nom)`, donc la réponse attendue est uniquement « AKOA », pas la ligne complète avec prénom, classe et âge.\n\n### Conseil\nPour ne rater aucune requête de ce type, procède toujours dans le même ordre : repère d'abord la table concernée après `FROM`, puis filtre les lignes avec la condition posée après `WHERE`, et seulement à la fin, ne garde que les colonnes demandées après `SELECT`.",
+      "themes": [
+        "Requête SQL",
+        "Clause WHERE",
+        "Base de données",
+        "Sélection de données"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2013-ex3-q3.2-1",
+          "competence": "Interroger une base de données avec une requête SELECT",
+          "contenu_markdown": "Une requête de sélection s'écrit sous la forme générale `SELECT <champs> FROM <table> WHERE <condition>` ; elle affiche uniquement les champs demandés, pour les seules lignes de la table qui vérifient la condition posée après `WHERE`.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.3",
+      "enonce_markdown": "**3.3** Sur une page HTML, citez trois endroits où l'on peut insérer un code JavaScript. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLe code JavaScript peut être inséré à plusieurs endroits d'une page HTML selon le besoin, script commun à toute la page, réaction à un évènement précis, ou réutilisation dans plusieurs pages ; connaître ces emplacements permet de structurer correctement une page web dynamique.\n\nTrois endroits où insérer du code JavaScript dans une page HTML :\n1. Dans l'en-tête de la page, entre les balises `<head>` et `</head>`, à l'intérieur d'une balise `<script>`.\n2. Dans le corps de la page, entre les balises `<body>` et `</body>`, à l'intérieur d'une balise `<script>`.\n3. En tant qu'attribut d'une balise HTML (JavaScript dit \"en ligne\"), par exemple dans un attribut d'évènement comme `onclick=\"...\"`.\n\nUne quatrième possibilité, également acceptée : dans un fichier `.js` externe, appelé depuis la page HTML par `<script src=\"fichier.js\"></script>`.\n\n### Piège à éviter\nNe confonds pas « où insérer le code », question posée ici, avec « comment écrire le code » : la question porte uniquement sur l'emplacement dans la structure HTML, pas sur la syntaxe JavaScript elle-même.",
+      "themes": [
+        "JavaScript",
+        "Insertion de script dans une page HTML",
+        "Balise script"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2013-ex3-q3.3-1",
+          "competence": "Insertion du JavaScript dans une page HTML",
+          "contenu_markdown": "Le code JavaScript peut être inséré à plusieurs endroits d'une page HTML selon le besoin, script commun à toute la page, réaction à un évènement précis, ou réutilisation dans plusieurs pages ; connaître ces emplacements permet de structurer correctement une page web dynamique.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3.4",
+      "enonce_markdown": "**3.4** Écrivez le symbole qui prend couramment l'appellation « arobase ». *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nCertains symboles informatiques sont couramment désignés par un nom qui n'est pas leur nom officiel ; l'arobase est l'exemple le plus connu, popularisé par son usage dans les adresses de messagerie électronique.\n\nLe symbole qui prend couramment l'appellation « arobase » est **@**.\n\n### Conseil\nRetiens que ce symbole sépare, dans une adresse e-mail, le nom d'utilisateur du nom du serveur de messagerie, par exemple nom.utilisateur@fournisseur.com.",
+      "themes": [
+        "Symboles informatiques",
+        "Adresse électronique",
+        "Arobase"
+      ],
+      "savoir_officiel": {
+        "classe": "4e",
+        "serie_label": null,
+        "module_numero": "401",
+        "savoir_numero": "IV"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2013-ex3-q3.4-1",
+          "competence": "Symboles informatiques courants",
+          "contenu_markdown": "Certains symboles informatiques sont couramment désignés par un nom qui n'est pas leur nom officiel ; l'arobase est l'exemple le plus connu, popularisé par son usage dans les adresses de messagerie électronique.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "SQL",
+    "requête",
+    "base de données",
+    "JavaScript",
+    "arobase",
+    "HTML",
+    "WWW"
+  ],
+  "incertitudes": [
+    "3.1 : la question regroupe quatre sigles/termes relevant de domaines distincts du référentiel (réseau/téléchargement, web/HTML, base de données/requête) en un seul item non décomposable ; aucun savoir unique ne recouvre nettement l'ensemble, savoir_officiel laissé à null.",
+    "3.2 : la commande donnée dans le sujet interroge une table nommée « Liste » alors que la table présentée juste avant se nomme « candidat » (incohérence de nommage présente dans le sujet source lui-même, transcrite fidèlement dans enonce_markdown) ; le corrigé traite la commande comme portant sur la table « candidat », seule table fournie par l'énoncé.",
+    "Rappels de méthode non coursés dans cette passe (traitement partiel, voir section cours) : rdm-bac-a-c-d-e-informatique-theorique-officiel-2013-ex3-q3.1-1, rdm-bac-a-c-d-e-informatique-theorique-officiel-2013-ex3-q3.4-1 restent à coursifier dans une passe ultérieure. Les rappels ex3-q3.2-1 et ex3-q3.3-1 sont couverts par un cours complet produit dans cette même passe (voir fichiers _cours_*.json)."
+  ]
+}

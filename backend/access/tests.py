@@ -331,7 +331,11 @@ class ReadLessonAPITests(TestCase):
         # La référence de l'exercice/le préambule partagé doivent rester visibles même
         # quand l'élève lit le corrigé sans déplier l'énoncé complet (voir
         # EpreuveReaderPage.tsx, qui affiche ce champ hors du EnonceToggle) - voir
-        # Lesson.exercises_breakdown.
+        # Lesson.exercises_breakdown. Le repère "Exercice 1 (6 points)" lui-même est un
+        # repère nu (numéro + barème entre parenthèses, sans sous-titre réel) et
+        # disparaît de l'intro pour cette Lesson à exercice unique - voir
+        # rendering._strip_solo_exercise_heading, testé indépendamment dans
+        # catalog.tests.LessonExercisesBreakdownTests.test_solo_exercise_heading_is_stripped_from_intro.
         Exercise.objects.create(
             lesson=self.lesson, numero_exercice="1",
             enonce_intro_markdown="**Exercice 1 (6 points)**\n\nDonnées communes.",
@@ -347,7 +351,7 @@ class ReadLessonAPITests(TestCase):
         response = self.client.get(f"/access/read/{self.lesson.id}/")
 
         exercise_data = response.data["exercises"][0]
-        self.assertEqual(exercise_data["enonce_intro_markdown"], "**Exercice 1 (6 points)**\n\nDonnées communes.")
+        self.assertEqual(exercise_data["enonce_intro_markdown"], "Données communes.")
         self.assertEqual(exercise_data["enonce_markdown"], "Question posée.")
 
     def test_read_exposes_the_epreuve_wide_introduction_separately_from_the_exercises(self):

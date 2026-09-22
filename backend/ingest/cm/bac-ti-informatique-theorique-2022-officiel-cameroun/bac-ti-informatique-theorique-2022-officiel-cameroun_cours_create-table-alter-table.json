@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-create-alter-table-tle-ti",
+  "meta": {
+    "titre": "Définir et modifier la structure d'une table en SQL (CREATE TABLE, ALTER TABLE)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "SQL : langage de définition de données",
+    "duree_estimee_min": 24,
+    "tags": [
+      "SQL",
+      "CREATE TABLE",
+      "ALTER TABLE",
+      "DDL"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de pouvoir stocker la moindre donnée, il faut d'abord donner une forme à la table qui va l'accueillir - et cette forme n'est jamais figée pour toujours : un nouveau besoin métier peut exiger d'ajouter une colonne des mois après la création initiale. CREATE TABLE et ALTER TABLE gouvernent respectivement la naissance et l'évolution d'une table."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le vocabulaire de base des bases de données (table, colonne, clé primaire, clé étrangère).",
+        "Savoir lire un schéma relationnel avec ses clés soulignées et ses clés étrangères marquées #."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "CREATE pour naître, ALTER pour évoluer",
+      "contenu_markdown": "L'instruction `CREATE TABLE nom_table (colonne1 type1, ..., PRIMARY KEY (...), FOREIGN KEY (...) REFERENCES autre_table(colonne))` crée une nouvelle table en définissant, pour chaque colonne, son nom et son type de données, puis en déclarant explicitement la clé primaire et les éventuelles clés étrangères.\n\nL'instruction `ALTER TABLE nom_table ADD COLUMN nouvelle_colonne type [AFTER colonne_existante]` modifie une table déjà créée en lui ajoutant une nouvelle colonne, sans toucher aux données déjà présentes. La clause optionnelle `AFTER` précise la position de la nouvelle colonne (spécifique à certains SGBD comme MySQL).",
+      "formule_principale": "CREATE TABLE nom (col type, ..., PRIMARY KEY(...), FOREIGN KEY(...) REFERENCES ...);   ALTER TABLE nom ADD COLUMN col type;"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire l'instruction SQL qui crée la table CLIENT(Num_Client, Nom, Prenom, Ville_client), avec Num_Client comme clé primaire.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les colonnes avec un type de données plausible pour chacune",
+          "justification": "Chaque colonne d'une table SQL doit avoir un type explicite.",
+          "resultat_markdown": "Num_Client (identifiant texte court), Nom (texte), Prenom (texte), Ville_client (texte)."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir des types SQL concrets",
+          "justification": "VARCHAR(n) convient pour du texte de longueur limitée et raisonnable.",
+          "resultat_markdown": "Num_Client VARCHAR(10), Nom VARCHAR(50), Prenom VARCHAR(50), Ville_client VARCHAR(50)."
+        },
+        {
+          "numero": 3,
+          "action": "Déclarer la clé primaire",
+          "justification": "La clé primaire doit être explicitement désignée dans l'instruction CREATE TABLE.",
+          "resultat_markdown": "Num_Client VARCHAR(10) PRIMARY KEY."
+        }
+      ],
+      "conclusion_markdown": "```sql\nCREATE TABLE CLIENT (\n    Num_Client   VARCHAR(10)  PRIMARY KEY,\n    Nom          VARCHAR(50),\n    Prenom       VARCHAR(50),\n    Ville_client VARCHAR(50)\n);\n```"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de déclarer la clé primaire dans une instruction CREATE TABLE",
+          "pourquoi_faux": "Sans clé primaire déclarée, rien n'empêche la base d'accepter deux lignes strictement identiques, ce qui casse l'intégrité de la table.",
+          "correction_markdown": "Repère systématiquement, avant d'écrire un CREATE TABLE, quel attribut du schéma relationnel fourni est souligné : c'est lui qui devient PRIMARY KEY."
+        },
+        {
+          "erreur_markdown": "Utiliser AFTER dans une instruction ALTER TABLE sans savoir si le SGBD cible le supporte",
+          "pourquoi_faux": "La clause AFTER est une extension propre à certains SGBD (MySQL notamment) et n'est pas reconnue par tous (Oracle, par exemple).",
+          "correction_markdown": "Si le SGBD cible n'est pas précisé ou ne supporte pas AFTER, omets simplement cette clause : la colonne sera ajoutée en dernière position, ce qui reste une réponse valide."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire l'instruction SQL qui crée la table AGENCE(Num_Agence, Nom_Agence, Ville_Agence, Actif), avec Num_Agence comme clé primaire.",
+          "solution_markdown": "```sql\nCREATE TABLE AGENCE (\n    Num_Agence   VARCHAR(10)  PRIMARY KEY,\n    Nom_Agence   VARCHAR(50),\n    Ville_Agence VARCHAR(50),\n    Actif        BOOLEAN\n);\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire l'instruction SQL qui ajoute une colonne Email de type VARCHAR(100) à la table CLIENT, après la colonne Ville_client.",
+          "solution_markdown": "```sql\nALTER TABLE CLIENT ADD COLUMN Email VARCHAR(100) AFTER Ville_client;\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire l'instruction SQL complète qui crée la table EMPRUNT(Num_Emprunt, #Num_Agence, #Num_Client, Montant), avec deux clés étrangères vers AGENCE et CLIENT déjà créées. Expliquer pourquoi l'ordre de création des tables est important.",
+          "solution_markdown": "```sql\nCREATE TABLE EMPRUNT (\n    Num_Emprunt VARCHAR(10)   PRIMARY KEY,\n    Num_Agence  VARCHAR(10),\n    Num_Client  VARCHAR(10),\n    Montant     DECIMAL(12,2),\n    FOREIGN KEY (Num_Agence) REFERENCES AGENCE(Num_Agence),\n    FOREIGN KEY (Num_Client) REFERENCES CLIENT(Num_Client)\n);\n```\nL'ordre de création est important car une clause FOREIGN KEY exige que la table référencée existe déjà au moment où le SGBD exécute l'instruction. Créer EMPRUNT avant AGENCE ou CLIENT provoquerait une erreur, le SGBD ne pouvant pas résoudre une référence vers une table encore inexistante."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CREATE TABLE définit la structure d'une nouvelle table : colonnes, types, clé primaire et clés étrangères.",
+        "ALTER TABLE ADD COLUMN ajoute une colonne à une table déjà existante, sans toucher aux données déjà présentes.",
+        "La clause AFTER n'est pas universelle : elle reste optionnelle et propre à certains SGBD.",
+        "Une clause FOREIGN KEY exige que la table référencée existe déjà : l'ordre de création suit toujours les dépendances du schéma.",
+        "Au BAC TI, ces deux instructions reviennent presque systématiquement dans la partie SQL du sujet : les maîtriser garantit des points rapides, sans ambiguïté d'interprétation."
+      ]
+    }
+  ]
+}

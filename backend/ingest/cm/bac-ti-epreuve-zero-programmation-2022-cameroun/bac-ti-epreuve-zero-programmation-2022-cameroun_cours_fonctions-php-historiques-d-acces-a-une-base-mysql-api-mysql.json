@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-fonctions-php-historiques-d-acces-a-une-base-mysql-api-mysql-tle-ti",
+  "meta": {
+    "titre": "Fonctions PHP historiques d'accès à une base MySQL (API mysql_*)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation serveur (PHP)",
+    "duree_estimee_min": 25,
+    "tags": [
+      "PHP",
+      "MySQL",
+      "mysql_query",
+      "mysql_select_db",
+      "mysql_fetch_array"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Interroger une base de données depuis un script PHP suit toujours la même chorégraphie en trois temps : se connecter, choisir la base, envoyer une requête, puis récupérer le résultat ligne par ligne. Les anciennes fonctions `mysql_*` de PHP donnaient un nom précis à chacune de ces étapes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de base de données et de table",
+        "Syntaxe de base d'une requête SQL SELECT"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une fonction par étape du dialogue avec MySQL",
+      "contenu_markdown": "Le dialogue entre un script PHP et une base MySQL suit quatre étapes successives, chacune confiée à une fonction dédiée dans l'ancienne API `mysql_*` : `mysql_connect()` établit la connexion au serveur MySQL ; `mysql_select_db()` choisit, sur cette connexion, la base de données à utiliser pour les requêtes suivantes ; `mysql_query()` envoie une requête SQL et renvoie un identifiant de résultat ; `mysql_fetch_array()` extrait ce résultat une ligne à la fois, sous forme de tableau accessible par index ou par nom de colonne. Cette extension a été retirée de PHP depuis la version 7, remplacée par `mysqli_*` ou par PDO, qui protègent notamment contre les injections SQL.",
+      "formule_principale": "connect -> select_db -> query -> fetch_array (une ligne à la fois)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le rôle de `mysql_query()`, `mysql_select_db()` et `mysql_fetch_array()` dans le script de vérification de mot de passe de l'exercice 2.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer mysql_select_db dans le script",
+          "justification": "Ligne 22 : `mysql_select_db(\"php\", $bd);` choisit la base « php » sur la connexion `$bd` déjà ouverte.",
+          "resultat_markdown": "Sélectionne la base de données à utiliser pour les requêtes suivantes."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer mysql_query dans le script",
+          "justification": "Ligne 25 : `mysql_query($sql)` envoie la requête stockée dans `$sql` (recherche d'un utilisateur par son nom).",
+          "resultat_markdown": "Envoie une requête SQL au serveur et renvoie un identifiant de résultat."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer mysql_fetch_array dans le script",
+          "justification": "Ligne 33 : `mysql_fetch_array($resultat)` récupère la ligne de la table utilisateurs correspondant à l'utilisateur trouvé.",
+          "resultat_markdown": "Extrait une ligne du résultat sous forme de tableau, exploitable ensuite via `$ligne[\"motdepasse_utilisateur\"]`."
+        }
+      ],
+      "conclusion_markdown": "Ces trois fonctions couvrent, dans l'ordre, le choix de la base, l'envoi de la requête et la lecture du résultat : elles ne sont jamais interchangeables, chacune correspond à une étape précise et obligatoire du dialogue avec MySQL."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre `mysql_connect()` et `mysql_select_db()`.",
+          "pourquoi_faux": "`mysql_connect()` établit la connexion au SERVEUR MySQL (avec un identifiant et un mot de passe), tandis que `mysql_select_db()` choisit ensuite quelle BASE utiliser sur cette connexion déjà ouverte : un même serveur MySQL héberge en général plusieurs bases.",
+          "correction_markdown": "Retenir l'ordre logique : d'abord se connecter au serveur, ensuite seulement choisir la base à l'intérieur de ce serveur."
+        },
+        {
+          "erreur_markdown": "Croire que `mysql_fetch_array()` renvoie toutes les lignes du résultat d'un coup.",
+          "pourquoi_faux": "Cette fonction ne renvoie qu'UNE seule ligne à chaque appel, celle qui suit la dernière ligne déjà lue. Pour parcourir plusieurs lignes, il faut l'appeler plusieurs fois, typiquement dans une boucle `while`.",
+          "correction_markdown": "Si le résultat peut contenir plusieurs lignes, utiliser `while ($ligne = mysql_fetch_array($resultat)) { ... }` pour les parcourir toutes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la ligne de code qui sélectionne la base nommée « boutique » sur une connexion déjà stockée dans `$connexion`.",
+          "solution_markdown": "`mysql_select_db(\"boutique\", $connexion);`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un script qui affiche le nom de chaque produit d'une table `produits`, en parcourant tous les résultats d'une requête `SELECT nom FROM produits`.",
+          "solution_markdown": "```php\n$resultat = mysql_query(\"SELECT nom FROM produits\");\nwhile ($ligne = mysql_fetch_array($resultat)) {\n    echo $ligne[\"nom\"] . \"<br>\";\n}\n```\nLa boucle `while` répète l'appel à `mysql_fetch_array()` jusqu'à ce qu'il ne reste plus de ligne à lire (la fonction renvoie alors `false`, ce qui arrête la boucle)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le script de l'exercice construit sa requête ainsi : `$sql = \"select * from utilisateurs where nom_utilisateur = '$nom_utilisateur'\";`. Expliquer pourquoi cette façon d'écrire la requête est aujourd'hui considérée comme une faille de sécurité (injection SQL), sans réécrire le code.",
+          "solution_markdown": "La valeur de `$nom_utilisateur`, saisie librement par l'utilisateur dans le formulaire, est insérée directement dans le texte de la requête SQL sans aucun contrôle ni échappement. Un utilisateur malveillant pourrait alors saisir, à la place d'un nom d'utilisateur normal, un texte contenant lui-même du SQL (par exemple `' OR '1'='1`), ce qui transformerait la condition `WHERE` de la requête et pourrait permettre de contourner la vérification du mot de passe. C'est ce qu'on appelle une injection SQL : la solution consiste à utiliser des requêtes préparées (disponibles avec `mysqli_*` ou PDO, pas avec l'ancienne API `mysql_*`), qui séparent strictement le texte de la requête des valeurs saisies par l'utilisateur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`mysql_connect()` ouvre la connexion au serveur, `mysql_select_db()` choisit la base à l'intérieur de cette connexion.",
+        "`mysql_query()` envoie une requête SQL et renvoie un identifiant de résultat, jamais les données elles-mêmes.",
+        "`mysql_fetch_array()` extrait UNE ligne à chaque appel : plusieurs lignes s'obtiennent avec une boucle `while`.",
+        "Cette API `mysql_*` est retirée de PHP depuis la version 7 (remplacée par `mysqli_*` ou PDO) et présente des risques d'injection SQL quand une valeur saisie par l'utilisateur est insérée directement dans le texte d'une requête."
+      ]
+    }
+  ]
+}

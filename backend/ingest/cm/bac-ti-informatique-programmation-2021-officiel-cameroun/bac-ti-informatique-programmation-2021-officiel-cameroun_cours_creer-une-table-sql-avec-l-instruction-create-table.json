@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-creer-une-table-sql-avec-l-instruction-create-table-ti-2021",
+  "meta": {
+    "titre": "Créer une table SQL avec l'instruction CREATE TABLE",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases de données (SQL)",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "CREATE TABLE",
+      "clé primaire",
+      "type de colonne",
+      "conception de base de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex1-qII-6-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de pouvoir stocker la moindre donnée dans une base MySQL, il faut d'abord lui décrire précisément la forme que ces données prendront : combien de colonnes, quel type de contenu pour chacune, laquelle identifie chaque ligne de façon unique. C'est exactement le rôle de l'instruction CREATE TABLE."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une base de données et une table (lignes et colonnes)",
+        "Connaître les grands types de données SQL (entier, texte)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "CREATE TABLE : nom, colonnes, types et clé primaire",
+      "contenu_markdown": "L'instruction `CREATE TABLE nom_table (colonne1 type1, colonne2 type2, ...);` crée une nouvelle table dans la base de données actuellement sélectionnée. Chaque colonne reçoit un nom et un type qui contraint la nature des valeurs qu'elle peut contenir (`INT` pour un entier, `VARCHAR(n)` pour du texte de longueur maximale `n`, `DATE` pour une date...).\n\nUne colonne peut recevoir des contraintes supplémentaires : `NOT NULL` interdit qu'elle reste vide, `AUTO_INCREMENT` fait progresser automatiquement sa valeur à chaque nouvelle ligne insérée (utile pour un identifiant). La clause `PRIMARY KEY (colonne)` désigne la **clé primaire** : la colonne qui identifie chaque ligne de façon unique, condition indispensable pour ensuite retrouver, modifier ou supprimer une ligne précise sans ambiguïté (par exemple avec `WHERE id = ...`).",
+      "formule_principale": "CREATE TABLE nom_table (colonne1 TYPE1, colonne2 TYPE2, ..., PRIMARY KEY (colonne_cle));"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire la requête qui crée la table client manipulée par le code de l'exercice, sachant que ce code lit et modifie les colonnes id_client, nom, prenom, ville et mail.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les colonnes identifiables dans le code fourni",
+          "justification": "Seules les colonnes réellement utilisées peuvent être déduites avec certitude",
+          "resultat_markdown": "id_client (clause WHERE id_client=...), nom, prenom (indices 1 et 2 de \\$coord), ville, mail (indices 5 et 6 de \\$coord)."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir un type adapté à chaque colonne",
+          "justification": "Le type doit correspondre à la nature de la donnée et à sa taille maximale attendue",
+          "resultat_markdown": "id_client : INT (identifiant numérique). nom, prenom : VARCHAR(30) (attribut maxlength=\"30\" du formulaire). ville : VARCHAR(40). mail : VARCHAR(50)."
+        },
+        {
+          "numero": 3,
+          "action": "Désigner la clé primaire",
+          "justification": "id_client identifie chaque client de façon unique dans toutes les requêtes du script",
+          "resultat_markdown": "PRIMARY KEY (id_client), avec AUTO_INCREMENT pour que chaque nouveau client reçoive automatiquement un identifiant différent."
+        },
+        {
+          "numero": 4,
+          "action": "Assembler la requête complète",
+          "justification": "Réunir toutes les colonnes et contraintes dans la syntaxe CREATE TABLE",
+          "resultat_markdown": "```sql\nCREATE TABLE client (\n    id_client INT(11) NOT NULL AUTO_INCREMENT,\n    nom VARCHAR(30) NOT NULL,\n    prenom VARCHAR(30) NOT NULL,\n    ville VARCHAR(40),\n    mail VARCHAR(50),\n    PRIMARY KEY (id_client)\n);\n```"
+        }
+      ],
+      "conclusion_markdown": "La table client ainsi créée contient au minimum les cinq colonnes identifiables dans le code, avec id_client comme clé primaire auto-incrémentée, ce qui permet toutes les opérations effectuées par le script (SELECT ... WHERE id_client=..., UPDATE ... WHERE id_client=...)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la clé primaire",
+          "pourquoi_faux": "Sans clé primaire, rien ne garantit qu'un id_client donné identifie une seule ligne : deux clients pourraient accidentellement partager le même identifiant, ce qui casserait toute requête WHERE id_client=...",
+          "correction_markdown": "Toujours désigner une clé primaire dès la création d'une table destinée à être interrogée par identifiant."
+        },
+        {
+          "erreur_markdown": "Choisir des tailles de VARCHAR arbitraires, sans lien avec le code fourni",
+          "pourquoi_faux": "Une taille trop petite tronquerait des données valides acceptées par le formulaire HTML (dont les attributs maxlength fixent déjà une limite cohérente) ; une taille arbitraire et non justifiée n'est pas convaincante dans un corrigé.",
+          "correction_markdown": "Toujours faire correspondre la taille des colonnes VARCHAR aux attributs maxlength du formulaire associé, quand ils sont donnés dans l'énoncé."
+        },
+        {
+          "erreur_markdown": "Inventer des colonnes non identifiables dans le code (par exemple telephone, adresse) en leur donnant un nom au hasard",
+          "pourquoi_faux": "Le code fourni ne manipule jamais les index 3 et 4 du tableau \\$coord : leur existence est probable mais leur nom exact n'est identifiable nulle part dans l'énoncé.",
+          "correction_markdown": "Se limiter aux colonnes réellement identifiables dans le code, et signaler explicitement que d'autres colonnes non manipulées peuvent exister, plutôt que d'inventer des noms au hasard."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la requête qui crée une table produit avec deux colonnes : id_produit (entier, clé primaire auto-incrémentée) et nom_produit (texte de 50 caractères maximum, obligatoire).",
+          "solution_markdown": "```sql\nCREATE TABLE produit (\n    id_produit INT(11) NOT NULL AUTO_INCREMENT,\n    nom_produit VARCHAR(50) NOT NULL,\n    PRIMARY KEY (id_produit)\n);\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Ajouter à la table produit précédente une colonne prix qui doit toujours contenir une valeur décimale (par exemple 12.50), jamais vide.",
+          "solution_markdown": "```sql\nCREATE TABLE produit (\n    id_produit INT(11) NOT NULL AUTO_INCREMENT,\n    nom_produit VARCHAR(50) NOT NULL,\n    prix DECIMAL(10,2) NOT NULL,\n    PRIMARY KEY (id_produit)\n);\n```\nDECIMAL(10,2) réserve 10 chiffres au total, dont 2 après la virgule, adapté à une valeur monétaire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une table commande doit mémoriser, pour chaque commande, l'identifiant du client qui l'a passée, en garantissant que cet identifiant corresponde toujours à un client réellement existant dans la table client. Quelle clause SQL, en plus de PRIMARY KEY, permet d'imposer cette contrainte, et comment s'écrit-elle ?",
+          "solution_markdown": "La clause **FOREIGN KEY** (clé étrangère) impose qu'une colonne ne puisse contenir qu'une valeur déjà présente dans la clé primaire d'une autre table :\n```sql\nCREATE TABLE commande (\n    id_commande INT(11) NOT NULL AUTO_INCREMENT,\n    id_client INT(11) NOT NULL,\n    date_commande DATE,\n    PRIMARY KEY (id_commande),\n    FOREIGN KEY (id_client) REFERENCES client(id_client)\n);\n```\nCette contrainte empêche d'insérer une commande référençant un id_client qui n'existe pas dans la table client, garantissant ainsi la cohérence entre les deux tables."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CREATE TABLE nom (colonne type, ...) crée une table en définissant le nom et le type de chaque colonne.",
+        "PRIMARY KEY désigne la colonne qui identifie chaque ligne de façon unique, indispensable pour cibler une ligne précise avec WHERE.",
+        "AUTO_INCREMENT fait progresser automatiquement un identifiant numérique à chaque nouvelle ligne.",
+        "Les tailles de colonnes texte (VARCHAR) se déduisent souvent des contraintes déjà visibles ailleurs dans l'énoncé (attribut maxlength d'un formulaire, par exemple).",
+        "Ne jamais inventer une colonne dont le nom n'est identifiable nulle part dans l'énoncé ou le code fourni : signaler plutôt l'incertitude."
+      ]
+    }
+  ]
+}

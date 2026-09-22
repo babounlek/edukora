@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-transformer-une-fonction-recursive-en-boucle-iterative-for-ti-2021",
+  "meta": {
+    "titre": "Transformer une fonction récursive en boucle itérative (for)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Récursivité en langage C",
+    "duree_estimee_min": 30,
+    "tags": [
+      "récursivité",
+      "boucle for",
+      "itération",
+      "accumulateur",
+      "factorielle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex2-q9-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tout ce qu'une fonction récursive peut calculer, une boucle peut également le calculer, souvent avec moins de mémoire utilisée (pas d'empilement d'appels) et parfois plus simplement à lire pour un algorithme répétitif comme la factorielle. Savoir convertir l'un vers l'autre est une compétence à double sens, aussi utile pour simplifier un code que pour comprendre en profondeur ce qu'une récursion calcule réellement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le principe de la récursivité (cas de base, cas récursif)",
+        "Savoir écrire et lire une boucle for en C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Remplacer la récursion par un accumulateur mis à jour dans une boucle",
+      "contenu_markdown": "Convertir une fonction récursive qui accumule un résultat (par multiplication, addition...) en version itérative suit toujours la même démarche :\n\n1. Identifier l'**élément neutre** de l'opération accumulée (0 pour une addition, 1 pour une multiplication) : c'est la valeur initiale de l'accumulateur avant la boucle.\n2. Identifier la **plage de valeurs** parcourue par les appels récursifs successifs (ici, les entiers de 1 à x).\n3. Remplacer chaque appel récursif par un **tour de boucle**, qui met à jour l'accumulateur exactement comme le ferait l'étape correspondante de la récursion.\n\n```c\naccumulateur = element_neutre;\nfor (i = premiere_valeur; i <= derniere_valeur; i++) {\n    accumulateur = accumulateur OPERATION i;\n}\n```\n\nCette transformation fonctionne parce que la récursion et la boucle parcourent au fond la même suite de calculs, dans un ordre parfois différent (la récursion calcule souvent en partant de la fin grâce à la remontée, la boucle calcule en partant du début), mais qui produit le même résultat final grâce aux propriétés de commutativité et d'associativité de l'opération accumulée (l'ordre des multiplications, par exemple, ne change jamais le produit final)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Réécrire le programme de calcul de factorielle sans la fonction factorielle(), en utilisant la boucle for.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'élément neutre de l'opération accumulée",
+          "justification": "La factorielle accumule un produit : son élément neutre est 1",
+          "resultat_markdown": "f = 1; (élément neutre de la multiplication, jamais 0)."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la plage parcourue par la boucle",
+          "justification": "La récursion parcourait les entiers de x jusqu'à 1 ; la boucle peut les parcourir dans l'autre sens, de 1 à x, sans changer le résultat",
+          "resultat_markdown": "for (unsigned int i = 1; i <= x; i++) : i varie de 1 à x inclus."
+        },
+        {
+          "numero": 3,
+          "action": "Mettre à jour l'accumulateur à chaque tour",
+          "justification": "Chaque tour de boucle reproduit une multiplication de la récursion",
+          "resultat_markdown": "f *= i; à chaque tour de boucle."
+        },
+        {
+          "numero": 4,
+          "action": "Assembler le programme complet, sans la fonction factorielle()",
+          "justification": "Conserver la structure générale (saisie, contrôle de la plage 1-8) tout en remplaçant uniquement le calcul récursif",
+          "resultat_markdown": "```c\n#include <stdio.h>\n#include <stdlib.h>\nunsigned int f, x;\nint main() {\n    puts(\"Entrez une valeur entière entre 1 et 8: \");\n    scanf(\"%d\", &x);\n    if(x > 8 || x < 1) {\n        printf(\"On a dit entre 1 to 8 !\");\n    }\n    else {\n        f = 1;\n        for (unsigned int i = 1; i <= x; i++) {\n            f *= i;\n        }\n        printf(\"Factorielle %u égal %u\\n\", x, f);\n    }\n    exit(EXIT_SUCCESS);\n}\n```"
+        }
+      ],
+      "conclusion_markdown": "Pour x = 6, la boucle calcule 1×1=1, 1×2=2, 2×3=6, 6×4=24, 24×5=120, 120×6=720, exactement le même résultat que la trace récursive obtenue à la question précédente : les deux versions sont bien équivalentes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Initialiser l'accumulateur à 0 au lieu de 1",
+          "pourquoi_faux": "Toute multiplication par 0 renvoie systématiquement 0 : l'accumulateur resterait nul quel que soit x, quel que soit le nombre de tours de boucle.",
+          "correction_markdown": "Toujours initialiser l'accumulateur d'une multiplication à 1 (élément neutre de la multiplication), jamais à 0 (élément neutre de l'addition, utile seulement pour une somme)."
+        },
+        {
+          "erreur_markdown": "Écrire la condition de boucle i < x au lieu de i <= x",
+          "pourquoi_faux": "Avec i < x, le dernier facteur x lui-même ne serait jamais inclus dans le produit : la boucle calculerait (x-1)!, pas x!.",
+          "correction_markdown": "Toujours vérifier la borne exacte de la boucle en la testant mentalement sur une petite valeur (par exemple x=3) avant de généraliser."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la boucle for qui calcule la somme des entiers de 1 à n dans un accumulateur s.",
+          "solution_markdown": "```c\ns = 0;\nfor (int i = 1; i <= n; i++) {\n    s += i;\n}\n```\nL'accumulateur d'une somme s'initialise à 0 (élément neutre de l'addition), contrairement à celui d'un produit qui s'initialise à 1."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une fonction récursive puissance(a, n) calcule aⁿ par puissance(a,n) = a × puissance(a, n-1), avec puissance(a,0) = 1. Écrire sa version itérative avec une boucle for.",
+          "solution_markdown": "```c\nint puissance(int a, int n) {\n    int resultat = 1;\n    for (int i = 1; i <= n; i++) {\n        resultat *= a;\n    }\n    return resultat;\n}\n```\nL'accumulateur resultat démarre à 1 (élément neutre de la multiplication) et se multiplie par a exactement n fois, reproduisant les n appels récursifs de la version récursive."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Toute fonction récursive peut-elle être convertie aussi simplement en une boucle for unique ? Discuter à partir de l'exemple d'une fonction récursive qui parcourt un arbre (structure avec plusieurs branches à chaque nœud, comme un dossier contenant plusieurs sous-dossiers).",
+          "solution_markdown": "Non : la conversion présentée ici fonctionne bien pour une récursivité « linéaire », où chaque appel n'en déclenche qu'un seul suivant (comme factorielle(a-1)), ce qui correspond exactement à une seule boucle qui avance pas à pas. Une fonction qui parcourt une structure arborescente (par exemple lister tous les fichiers d'un dossier et de tous ses sous-dossiers) déclenche potentiellement PLUSIEURS appels récursifs à chaque étape (un par sous-dossier), ce qu'une seule boucle for ne peut pas reproduire directement : sa conversion itérative demande une structure de données supplémentaire pour mémoriser explicitement les branches encore à visiter (une pile ou une file gérée à la main), plutôt qu'une simple boucle avec un accumulateur. La conversion directe en boucle for reste donc réservée aux récursions linéaires comme celle de cet exercice."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Convertir une récursion linéaire en boucle consiste à remplacer chaque appel récursif par un tour de boucle qui met à jour un accumulateur.",
+        "L'accumulateur démarre toujours à l'élément neutre de l'opération répétée : 0 pour une somme, 1 pour un produit.",
+        "Bien vérifier la borne de la boucle (<= plutôt que <) pour ne perdre aucun terme du calcul.",
+        "Cette conversion ne s'applique simplement qu'aux récursions linéaires (un seul appel récursif par étape) ; une récursion à branchements multiples demande une structure de données supplémentaire.",
+        "Comparer le résultat de la version itérative à la trace récursive déjà établie est le moyen le plus sûr de vérifier une conversion."
+      ]
+    }
+  ]
+}

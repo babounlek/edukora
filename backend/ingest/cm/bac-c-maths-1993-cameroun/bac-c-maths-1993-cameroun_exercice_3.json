@@ -14,56 +14,127 @@
   "titre_exercice": "Exercice 3 : carré inscrit dans un cercle, similitude directe transformant deux sommets, écriture complexe",
   "points": 5,
   "figures": [],
-  "enonce_intro_markdown": "Soit $ABCD$ un carré de centre $I$ inscrit dans un cercle $\\mathcal C$, tel qu'une mesure en radians de l'angle $(\\overrightarrow{AB},\\overrightarrow{AD})$ soit $+\\dfrac\\pi2$. On note $S$ la similitude directe plane de centre $B$ qui transforme $A$ en $D$, et $D'$, $I'$ les images respectives de $D$ et $I$ par $S$.\n\n**Note sur une coquille du document source (question 2c).** L'énoncé transcrit demande d'évaluer l'aire du disque délimité par $\\mathcal C'$, « cercle image de $\\mathcal C$ par la similitude $S'$ » — or aucune similitude notée $S'$ n'est définie dans l'énoncé : seule la similitude $S$ l'est, et $D'$, $I'$ sont les images de points (pas une seconde similitude). Il s'agit manifestement d'une coquille de saisie (le symbole \" ′ \" du cercle $\\mathcal C'$ s'étant accidentellement propagé au nom de la similitude) : c'est bien l'image de $\\mathcal C$ par la similitude $S$ (sans prime) qui est calculée ci-dessous.",
+  "enonce_intro_markdown": "Soit $ABCD$ un carré de centre $I$ inscrit dans un cercle $\\mathcal C$, tel qu'une mesure en radians de l'angle $(\\overrightarrow{AB},\\overrightarrow{AD})$ soit $+\\dfrac\\pi2$. On note $S$ la similitude directe plane de centre $B$ qui transforme $A$ en $D$, et $D'$, $I'$ les images respectives de $D$ et $I$ par $S$.",
   "questions": [
     {
       "numero": "1a",
       "points": "0,5pt",
       "enonce_markdown": "Tracer un carré $ABCD$ de centre $I$ inscrit dans un cercle $\\mathcal C$ et tel qu'une mesure en radians de l'angle $(\\overrightarrow{AB},\\overrightarrow{AD})$ soit $+\\dfrac\\pi2$.",
-      "rappels_de_methode": [{"cours_id": "cours-construire-carre-angle-oriente-donne-terminale-c", "texte": "Pour construire un carré ABCD avec un angle orienté (AB,AD)=+π/2 donné, on place A et B, puis on construit D comme image de B par la rotation de centre A et d'angle +π/2, et enfin C par symétrie ou translation pour compléter le carré."}],
-      "corrige_markdown": "### Rappel de méthode\nPour construire un carré $ABCD$ tel que l'angle orienté $(\\overrightarrow{AB},\\overrightarrow{AD})$ vaille $+\\dfrac\\pi2$, on place d'abord $A$ et $B$ (déterminant le côté $AB$), puis on construit $D$ comme image de $B$ par la rotation de centre $A$ et d'angle $+\\dfrac\\pi2$ (rotation directe, sens trigonométrique), ce qui garantit $AD=AB$ et l'angle voulu. Le sommet $C$ complète le carré (par exemple $C=B+\\overrightarrow{AD}$).\n\n**Construction.** On place $A$ et $B$ distants de la longueur du côté souhaitée. On construit $D$, image de $B$ par la rotation de centre $A$ et d'angle $+\\dfrac\\pi2$ (sens trigonométrique direct, antihoraire). On complète le carré $ABCD$ en plaçant $C=B+(D-A)$ (translation de $B$ par le vecteur $\\overrightarrow{AD}$).\n\n**Le centre $I$** est le point d'intersection des diagonales $[AC]$ et $[BD]$, milieu commun de ces deux diagonales.\n\n**Le cercle $\\mathcal C$ circonscrit au carré** a pour centre $I$ et passe par les quatre sommets $A$, $B$, $C$, $D$ (rayon égal à la demi-diagonale du carré)."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-construire-carre-angle-oriente-donne-terminale-c",
+          "texte": "Pour construire un carré ABCD avec un angle orienté (AB,AD)=+π/2 donné, on place A et B, puis on construit D comme image de B par la rotation de centre A et d'angle +π/2, et enfin C par symétrie ou translation pour compléter le carré."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour construire un carré $ABCD$ tel que l'angle orienté $(\\overrightarrow{AB},\\overrightarrow{AD})$ vaille $+\\dfrac\\pi2$, on place d'abord $A$ et $B$ (déterminant le côté $AB$), puis on construit $D$ comme image de $B$ par la rotation de centre $A$ et d'angle $+\\dfrac\\pi2$ (rotation directe, sens trigonométrique), ce qui garantit $AD=AB$ et l'angle voulu. Le sommet $C$ complète le carré (par exemple $C=B+\\overrightarrow{AD}$).\n\n**Construction.** On place $A$ et $B$ distants de la longueur du côté souhaitée. On construit $D$, image de $B$ par la rotation de centre $A$ et d'angle $+\\dfrac\\pi2$ (sens trigonométrique direct, antihoraire). On complète le carré $ABCD$ en plaçant $C=B+(D-A)$ (translation de $B$ par le vecteur $\\overrightarrow{AD}$).\n\n**Le centre $I$** est le point d'intersection des diagonales $[AC]$ et $[BD]$, milieu commun de ces deux diagonales.\n\n**Le cercle $\\mathcal C$ circonscrit au carré** a pour centre $I$ et passe par les quatre sommets $A$, $B$, $C$, $D$ (rayon égal à la demi-diagonale du carré).",
+      "themes": [
+        "carré",
+        "cercle",
+        "construction géométrique",
+        "rotation"
+      ]
     },
     {
       "numero": "1b",
       "points": "0,5pt",
       "enonce_markdown": "Calculer en fonction de la distance $AB$ l'aire du disque délimité par $\\mathcal C$.",
-      "rappels_de_methode": [{"cours_id": "cours-aire-disque-circonscrit-carre-cote-donne-terminale-c", "texte": "Le rayon du cercle circonscrit à un carré de côté a est la demi-diagonale, R=a√2/2 ; l'aire du disque est alors πR²=πa²/2."}],
-      "corrige_markdown": "### Rappel de méthode\nLe rayon du cercle circonscrit à un carré de côté $a$ est la demi-diagonale du carré : $R=\\dfrac{a\\sqrt2}2$ (car la diagonale d'un carré de côté $a$ vaut $a\\sqrt2$, théorème de Pythagore). L'aire du disque délimité par ce cercle est $\\pi R^2$.\n\n**Notons $a=AB$ le côté du carré. Rayon du cercle circonscrit :**\n\n$$R=\\dfrac{a\\sqrt2}2$$\n\n**Calcul de l'aire du disque.**\n\n$$\\text{Aire}=\\pi R^2=\\pi\\left(\\dfrac{a\\sqrt2}2\\right)^2=\\pi\\times\\dfrac{2a^2}4=\\dfrac{\\pi a^2}2$$\n\n**L'aire du disque délimité par $\\mathcal C$ est $\\dfrac{\\pi\\,AB^2}2$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-aire-disque-circonscrit-carre-cote-donne-terminale-c",
+          "texte": "Le rayon du cercle circonscrit à un carré de côté a est la demi-diagonale, R=a√2/2 ; l'aire du disque est alors πR²=πa²/2."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLe rayon du cercle circonscrit à un carré de côté $a$ est la demi-diagonale du carré : $R=\\dfrac{a\\sqrt2}2$ (car la diagonale d'un carré de côté $a$ vaut $a\\sqrt2$, théorème de Pythagore). L'aire du disque délimité par ce cercle est $\\pi R^2$.\n\n**Notons $a=AB$ le côté du carré. Rayon du cercle circonscrit :**\n\n$$R=\\dfrac{a\\sqrt2}2$$\n\n**Calcul de l'aire du disque.**\n\n$$\\text{Aire}=\\pi R^2=\\pi\\left(\\dfrac{a\\sqrt2}2\\right)^2=\\pi\\times\\dfrac{2a^2}4=\\dfrac{\\pi a^2}2$$\n\n**L'aire du disque délimité par $\\mathcal C$ est $\\dfrac{\\pi\\,AB^2}2$.**",
+      "themes": [
+        "aire",
+        "cercle circonscrit",
+        "théorème de Pythagore"
+      ]
     },
     {
       "numero": "2a",
       "points": "0,75pt",
       "enonce_markdown": "Préciser les éléments géométriques de $S$.",
-      "rappels_de_methode": [{"cours_id": "cours-determiner-rapport-angle-similitude-vecteurs-carre-terminale-c", "texte": "Pour déterminer le rapport k et l'angle θ d'une similitude directe de centre B envoyant A sur D, on calcule le quotient complexe (zD-zB)/(zA-zB) dans un repère local attaché à la figure : son module donne k, son argument donne θ."}],
-      "corrige_markdown": "### Rappel de méthode\nPour déterminer le rapport $k$ et l'angle $\\theta$ d'une similitude directe de centre $B$ envoyant $A$ sur $D$, on calcule, dans un repère local attaché à la figure (le résultat étant indépendant du repère choisi, seule la forme du carré comptant), le quotient $\\dfrac{z_D-z_B}{z_A-z_B}=k\\,e^{i\\theta}$ : son module donne $k$, son argument donne $\\theta$.\n\n**Repère local de calcul.** Pour déterminer $k$ et $\\theta$ (grandeurs intrinsèques à la figure, indépendantes du repère), on place temporairement $A(0\\,;\\,0)$, $B(1\\,;\\,0)$ ; comme l'angle $(\\overrightarrow{AB},\\overrightarrow{AD})=+\\dfrac\\pi2$, on a $D(0\\,;\\,1)$, puis $C(1\\,;\\,1)$ (carré direct de côté $1$).\n\n**Calcul du quotient $\\dfrac{z_D-z_B}{z_A-z_B}$**, avec $z_A=0$, $z_B=1$, $z_D=i$ :\n\n$$\\dfrac{z_D-z_B}{z_A-z_B}=\\dfrac{i-1}{0-1}=\\dfrac{i-1}{-1}=1-i$$\n\n**Module :** $|1-i|=\\sqrt{1^2+(-1)^2}=\\sqrt2$.\n\n**Argument :** $1-i=\\sqrt2\\left(\\cos\\left(-\\dfrac\\pi4\\right)+i\\sin\\left(-\\dfrac\\pi4\\right)\\right)$, donc $\\arg(1-i)=-\\dfrac\\pi4$.\n\n**$S$ est la similitude directe de centre $B$, de rapport $k=\\sqrt2$ et d'angle $\\theta=-\\dfrac\\pi4$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-rapport-angle-similitude-vecteurs-carre-terminale-c",
+          "texte": "Pour déterminer le rapport k et l'angle θ d'une similitude directe de centre B envoyant A sur D, on calcule le quotient complexe (zD-zB)/(zA-zB) dans un repère local attaché à la figure : son module donne k, son argument donne θ."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour déterminer le rapport $k$ et l'angle $\\theta$ d'une similitude directe de centre $B$ envoyant $A$ sur $D$, on calcule, dans un repère local attaché à la figure (le résultat étant indépendant du repère choisi, seule la forme du carré comptant), le quotient $\\dfrac{z_D-z_B}{z_A-z_B}=k\\,e^{i\\theta}$ : son module donne $k$, son argument donne $\\theta$.\n\n**Repère local de calcul.** Pour déterminer $k$ et $\\theta$ (grandeurs intrinsèques à la figure, indépendantes du repère), on place temporairement $A(0\\,;\\,0)$, $B(1\\,;\\,0)$ ; comme l'angle $(\\overrightarrow{AB},\\overrightarrow{AD})=+\\dfrac\\pi2$, on a $D(0\\,;\\,1)$, puis $C(1\\,;\\,1)$ (carré direct de côté $1$).\n\n**Calcul du quotient $\\dfrac{z_D-z_B}{z_A-z_B}$**, avec $z_A=0$, $z_B=1$, $z_D=i$ :\n\n$$\\dfrac{z_D-z_B}{z_A-z_B}=\\dfrac{i-1}{0-1}=\\dfrac{i-1}{-1}=1-i$$\n\n**Module :** $|1-i|=\\sqrt{1^2+(-1)^2}=\\sqrt2$.\n\n**Argument :** $1-i=\\sqrt2\\left(\\cos\\left(-\\dfrac\\pi4\\right)+i\\sin\\left(-\\dfrac\\pi4\\right)\\right)$, donc $\\arg(1-i)=-\\dfrac\\pi4$.\n\n**$S$ est la similitude directe de centre $B$, de rapport $k=\\sqrt2$ et d'angle $\\theta=-\\dfrac\\pi4$.**",
+      "themes": [
+        "similitude directe",
+        "nombres complexes",
+        "rapport et angle"
+      ]
     },
     {
       "numero": "2b",
       "points": "1pt",
       "enonce_markdown": "Prouver que $I'=C$ et en déduire que $C$ est le milieu du segment $[B,D']$.",
-      "rappels_de_methode": [{"cours_id": "cours-prouver-image-point-similitude-deduire-milieu-terminale-c", "texte": "Pour prouver qu'une similitude S de centre B envoie I sur C, on calcule le vecteur image via zI'-zB=k·e^(iθ)(zI-zB) ; puis, comme S(B)=B et que S préserve les milieux, on déduit S(milieu[B,D])=milieu[B,S(D)]."}],
-      "corrige_markdown": "### Rappel de méthode\nPour prouver qu'une similitude $S$ de centre $B$, rapport $k$, angle $\\theta$, envoie un point $I$ sur un point $C$, on calcule le vecteur image via $z_{I'}-z_B=k\\,e^{i\\theta}(z_I-z_B)$ et on vérifie que le résultat coïncide avec $z_C-z_B$. Ensuite, puisqu'une similitude préserve les milieux et que $S(B)=B$ (le centre est un point fixe), on a $S(\\text{milieu}[B,D])=\\text{milieu}\\big(S(B),S(D)\\big)=\\text{milieu}[B,D']$.\n\n**Preuve que $I'=C$, dans le repère local de la question 2a** ($A(0;0)$, $B(1;0)$, $D(0;1)$, $C(1;1)$, et $I$ centre du carré, milieu de $[A,C]$) :\n\n$$z_I=\\dfrac{z_A+z_C}2=\\dfrac{0+(1+i)}2=\\dfrac12+\\dfrac12i$$\n\n**Calcul de $z_I-z_B$ :**\n\n$$z_I-z_B=\\left(\\dfrac12+\\dfrac12i\\right)-1=-\\dfrac12+\\dfrac12i$$\n\n**Application de la similitude ($k\\,e^{i\\theta}=1-i$, question 2a) :**\n\n$$z_{I'}-z_B=(1-i)\\left(-\\dfrac12+\\dfrac12i\\right)=-\\dfrac12+\\dfrac12i+\\dfrac12i-\\dfrac12i^2=-\\dfrac12+i+\\dfrac12=i$$\n\n$$z_{I'}=z_B+i=1+i$$\n\n**Or $z_C=1+i$ (coordonnées $(1;1)$ posées ci-dessus) : $z_{I'}=z_C$, donc $I'=C$.**\n\n**Déduction que $C$ est le milieu de $[B,D']$.** Dans le carré $ABCD$, $I$ est le milieu commun des deux diagonales $[AC]$ et $[BD]$ : en particulier, $I=\\text{milieu}[B,D]$.\n\nComme $S$ est une similitude, elle préserve les milieux : $S(\\text{milieu}[B,D])=\\text{milieu}\\big(S(B),S(D)\\big)$.\n\nOr $S(B)=B$ (le centre d'une similitude est un point fixe) et $S(D)=D'$ (par définition), donc :\n\n$$I'=S(I)=\\text{milieu}[B,D']$$\n\n**Comme $I'=C$ (résultat établi ci-dessus), on obtient $C=\\text{milieu}[B,D']$.**\n\n### Conseil\nCette démonstration combine un calcul explicite (via l'écriture complexe de la similitude, dans un repère local) et une propriété générale des similitudes (préservation des milieux) : le calcul explicite prouve $I'=C$, la propriété générale relie ensuite $I'$ à $\\text{milieu}[B,D']$, sans nécessiter de nouveau calcul."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-prouver-image-point-similitude-deduire-milieu-terminale-c",
+          "texte": "Pour prouver qu'une similitude S de centre B envoie I sur C, on calcule le vecteur image via zI'-zB=k·e^(iθ)(zI-zB) ; puis, comme S(B)=B et que S préserve les milieux, on déduit S(milieu[B,D])=milieu[B,S(D)]."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour prouver qu'une similitude $S$ de centre $B$, rapport $k$, angle $\\theta$, envoie un point $I$ sur un point $C$, on calcule le vecteur image via $z_{I'}-z_B=k\\,e^{i\\theta}(z_I-z_B)$ et on vérifie que le résultat coïncide avec $z_C-z_B$. Ensuite, puisqu'une similitude préserve les milieux et que $S(B)=B$ (le centre est un point fixe), on a $S(\\text{milieu}[B,D])=\\text{milieu}\\big(S(B),S(D)\\big)=\\text{milieu}[B,D']$.\n\n**Preuve que $I'=C$, dans le repère local de la question 2a** ($A(0;0)$, $B(1;0)$, $D(0;1)$, $C(1;1)$, et $I$ centre du carré, milieu de $[A,C]$) :\n\n$$z_I=\\dfrac{z_A+z_C}2=\\dfrac{0+(1+i)}2=\\dfrac12+\\dfrac12i$$\n\n**Calcul de $z_I-z_B$ :**\n\n$$z_I-z_B=\\left(\\dfrac12+\\dfrac12i\\right)-1=-\\dfrac12+\\dfrac12i$$\n\n**Application de la similitude ($k\\,e^{i\\theta}=1-i$, question 2a) :**\n\n$$z_{I'}-z_B=(1-i)\\left(-\\dfrac12+\\dfrac12i\\right)=-\\dfrac12+\\dfrac12i+\\dfrac12i-\\dfrac12i^2=-\\dfrac12+i+\\dfrac12=i$$\n\n$$z_{I'}=z_B+i=1+i$$\n\n**Or $z_C=1+i$ (coordonnées $(1;1)$ posées ci-dessus) : $z_{I'}=z_C$, donc $I'=C$.**\n\n**Déduction que $C$ est le milieu de $[B,D']$.** Dans le carré $ABCD$, $I$ est le milieu commun des deux diagonales $[AC]$ et $[BD]$ : en particulier, $I=\\text{milieu}[B,D]$.\n\nComme $S$ est une similitude, elle préserve les milieux : $S(\\text{milieu}[B,D])=\\text{milieu}\\big(S(B),S(D)\\big)$.\n\nOr $S(B)=B$ (le centre d'une similitude est un point fixe) et $S(D)=D'$ (par définition), donc :\n\n$$I'=S(I)=\\text{milieu}[B,D']$$\n\n**Comme $I'=C$ (résultat établi ci-dessus), on obtient $C=\\text{milieu}[B,D']$.**\n\n### Conseil\nCette démonstration combine un calcul explicite (via l'écriture complexe de la similitude, dans un repère local) et une propriété générale des similitudes (préservation des milieux) : le calcul explicite prouve $I'=C$, la propriété générale relie ensuite $I'$ à $\\text{milieu}[B,D']$, sans nécessiter de nouveau calcul.",
+      "themes": [
+        "similitude directe",
+        "milieu",
+        "nombres complexes"
+      ]
     },
     {
       "numero": "2c",
       "points": "0,75pt",
-      "enonce_markdown": "Soit $\\mathcal C'$ le cercle image de $\\mathcal C$ par la similitude $S$ (voir la note de correction en tête de ce fichier) ; évaluer l'aire du disque délimité par $\\mathcal C'$.",
-      "rappels_de_methode": [{"cours_id": "cours-aire-disque-image-similitude-rapport-terminale-c", "texte": "L'image d'un cercle par une similitude de rapport k est un cercle de rayon multiplié par k ; l'aire du disque image est donc multipliée par k²."}],
-      "corrige_markdown": "### Rappel de méthode\nL'image d'un cercle de rayon $R$ par une similitude de rapport $k$ est un cercle de rayon $kR$ : l'aire du disque image est donc multipliée par $k^2$ par rapport à l'aire du disque initial.\n\n**D'après la question 2a, $S$ a pour rapport $k=\\sqrt2$, donc $k^2=2$.**\n\n**D'après la question 1b, l'aire du disque délimité par $\\mathcal C$ est $\\dfrac{\\pi\\,AB^2}2$.**\n\n**Aire du disque délimité par $\\mathcal C'=S(\\mathcal C)$ :**\n\n$$\\text{Aire}(\\mathcal C')=k^2\\times\\text{Aire}(\\mathcal C)=2\\times\\dfrac{\\pi\\,AB^2}2=\\pi\\,AB^2$$\n\n**L'aire du disque délimité par $\\mathcal C'$ est $\\pi\\,AB^2$.**"
+      "enonce_markdown": "Soit $\\mathcal C'$ le cercle image de $\\mathcal C$ par la similitude $S$ ; évaluer l'aire du disque délimité par $\\mathcal C'$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-aire-disque-image-similitude-rapport-terminale-c",
+          "texte": "L'image d'un cercle par une similitude de rapport k est un cercle de rayon multiplié par k ; l'aire du disque image est donc multipliée par k²."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'image d'un cercle de rayon $R$ par une similitude de rapport $k$ est un cercle de rayon $kR$ : l'aire du disque image est donc multipliée par $k^2$ par rapport à l'aire du disque initial.\n\n**D'après la question 2a, $S$ a pour rapport $k=\\sqrt2$, donc $k^2=2$.**\n\n**D'après la question 1b, l'aire du disque délimité par $\\mathcal C$ est $\\dfrac{\\pi\\,AB^2}2$.**\n\n**Aire du disque délimité par $\\mathcal C'=S(\\mathcal C)$ :**\n\n$$\\text{Aire}(\\mathcal C')=k^2\\times\\text{Aire}(\\mathcal C)=2\\times\\dfrac{\\pi\\,AB^2}2=\\pi\\,AB^2$$\n\n**L'aire du disque délimité par $\\mathcal C'$ est $\\pi\\,AB^2$.**",
+      "themes": [
+        "similitude directe",
+        "cercle",
+        "aire"
+      ]
     },
     {
       "numero": "3a",
       "points": "0,75pt",
       "enonce_markdown": "On suppose le plan rapporté à un repère orthonormé $(O,\\vec\\imath,\\vec\\jmath)$ dans lequel $B$ a pour coordonnées $(1,1)$. Donner l'écriture complexe de la similitude $S$.",
-      "rappels_de_methode": [{"cours_id": "cours-ecriture-complexe-similitude-directe-centre-rapport-angle-terminale-c", "texte": "L'écriture complexe d'une similitude directe de centre Ω (affixe ω), de rapport k et d'angle θ est z'=ω+k·e^(iθ)(z-ω)."}],
-      "corrige_markdown": "### Rappel de méthode\nL'écriture complexe d'une similitude directe de centre $\\Omega$ (affixe $\\omega$), de rapport $k$ et d'angle $\\theta$, est $z'=\\omega+k\\,e^{i\\theta}(z-\\omega)$.\n\n**D'après la question 2a, $k\\,e^{i\\theta}=1-i$ (rapport $\\sqrt2$, angle $-\\frac\\pi4$).**\n\n**Le centre $B$ a pour affixe $\\omega=1+i$ (coordonnées $(1,1)$).**\n\n**Écriture complexe de $S$ :**\n\n$$z'=(1+i)+(1-i)\\big(z-(1+i)\\big)$$\n\n**Développement.**\n\n$$z'=(1+i)+(1-i)z-(1-i)(1+i)$$\n\n**Calcul de $(1-i)(1+i)=1-i^2=1+1=2$.**\n\n$$z'=(1+i)+(1-i)z-2=(1-i)z+(i-1)=(1-i)z-(1-i)=(1-i)(z-1)$$\n\n**$S$ a pour écriture complexe $z'=(1-i)(z-1)$.**\n\n**Vérification : $S(B)=B$.** Avec $z=1+i$ : $z'=(1-i)\\big((1+i)-1\\big)=(1-i)(i)=i-i^2=i+1=1+i$ ✓ (le centre est bien un point fixe)."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-ecriture-complexe-similitude-directe-centre-rapport-angle-terminale-c",
+          "texte": "L'écriture complexe d'une similitude directe de centre Ω (affixe ω), de rapport k et d'angle θ est z'=ω+k·e^(iθ)(z-ω)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'écriture complexe d'une similitude directe de centre $\\Omega$ (affixe $\\omega$), de rapport $k$ et d'angle $\\theta$, est $z'=\\omega+k\\,e^{i\\theta}(z-\\omega)$.\n\n**D'après la question 2a, $k\\,e^{i\\theta}=1-i$ (rapport $\\sqrt2$, angle $-\\frac\\pi4$).**\n\n**Le centre $B$ a pour affixe $\\omega=1+i$ (coordonnées $(1,1)$).**\n\n**Écriture complexe de $S$ :**\n\n$$z'=(1+i)+(1-i)\\big(z-(1+i)\\big)$$\n\n**Développement.**\n\n$$z'=(1+i)+(1-i)z-(1-i)(1+i)$$\n\n**Calcul de $(1-i)(1+i)=1-i^2=1+1=2$.**\n\n$$z'=(1+i)+(1-i)z-2=(1-i)z+(i-1)=(1-i)z-(1-i)=(1-i)(z-1)$$\n\n**$S$ a pour écriture complexe $z'=(1-i)(z-1)$.**\n\n**Vérification : $S(B)=B$.** Avec $z=1+i$ : $z'=(1-i)\\big((1+i)-1\\big)=(1-i)(i)=i-i^2=i+1=1+i$ ✓ (le centre est bien un point fixe).",
+      "themes": [
+        "similitude directe",
+        "écriture complexe",
+        "repère orthonormé"
+      ]
     },
     {
       "numero": "3b",
       "points": "0,75pt",
       "enonce_markdown": "Si un point $M$ du plan a pour coordonnées $(x,y)$ dans ce repère et $M'$ son image par $S$ pour coordonnées $(x',y')$, écrire les relations entre $x',y'$ et $x,y$.",
-      "rappels_de_methode": [{"cours_id": "cours-relations-coordonnees-image-similitude-partie-reelle-imaginaire-terminale-c", "texte": "Pour obtenir les relations entre x',y' et x,y à partir de l'écriture complexe z'=f(z), on développe z'=x'+iy' en substituant z=x+iy, puis on identifie parties réelle et imaginaire."}],
-      "corrige_markdown": "### Rappel de méthode\nPour obtenir les relations entre les coordonnées $(x',y')$ de l'image et $(x,y)$ du point de départ, à partir de l'écriture complexe $z'=f(z)$, on substitue $z=x+iy$, on développe complètement, puis on identifie la partie réelle (donnant $x'$) et la partie imaginaire (donnant $y'$).\n\n**D'après la question 3a, $z'=(1-i)(z-1)$, avec $z=x+iy$.**\n\n**Développement.**\n\n$$z'=(1-i)(x-1+iy)=(x-1+iy)-i(x-1+iy)$$\n\n$$=(x-1)+iy-i(x-1)-i^2y=(x-1)+iy-i(x-1)+y$$\n\n**Regroupement des parties réelle et imaginaire.**\n\n$$=\\big[(x-1)+y\\big]+i\\big[y-(x-1)\\big]=(x+y-1)+i(-x+y+1)$$\n\n**Identification avec $z'=x'+iy'$ :**\n\n$$x'=x+y-1\\qquad y'=-x+y+1$$\n\n**Vérification avec $B(1,1)$ :** $x'=1+1-1=1$, $y'=-1+1+1=1$, soit $B'=(1,1)=B$ ✓ (point fixe, cohérent avec le centre de la similitude)."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-relations-coordonnees-image-similitude-partie-reelle-imaginaire-terminale-c",
+          "texte": "Pour obtenir les relations entre x',y' et x,y à partir de l'écriture complexe z'=f(z), on développe z'=x'+iy' en substituant z=x+iy, puis on identifie parties réelle et imaginaire."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour obtenir les relations entre les coordonnées $(x',y')$ de l'image et $(x,y)$ du point de départ, à partir de l'écriture complexe $z'=f(z)$, on substitue $z=x+iy$, on développe complètement, puis on identifie la partie réelle (donnant $x'$) et la partie imaginaire (donnant $y'$).\n\n**D'après la question 3a, $z'=(1-i)(z-1)$, avec $z=x+iy$.**\n\n**Développement.**\n\n$$z'=(1-i)(x-1+iy)=(x-1+iy)-i(x-1+iy)$$\n\n$$=(x-1)+iy-i(x-1)-i^2y=(x-1)+iy-i(x-1)+y$$\n\n**Regroupement des parties réelle et imaginaire.**\n\n$$=\\big[(x-1)+y\\big]+i\\big[y-(x-1)\\big]=(x+y-1)+i(-x+y+1)$$\n\n**Identification avec $z'=x'+iy'$ :**\n\n$$x'=x+y-1\\qquad y'=-x+y+1$$\n\n**Vérification avec $B(1,1)$ :** $x'=1+1-1=1$, $y'=-1+1+1=1$, soit $B'=(1,1)=B$ ✓ (point fixe, cohérent avec le centre de la similitude).",
+      "themes": [
+        "similitude directe",
+        "écriture complexe",
+        "coordonnées"
+      ]
     }
   ]
 }

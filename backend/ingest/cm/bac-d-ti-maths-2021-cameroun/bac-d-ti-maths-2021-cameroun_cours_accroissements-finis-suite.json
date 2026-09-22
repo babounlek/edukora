@@ -1,0 +1,20 @@
+{
+  "cours_id": "cours-inegalite-accroissements-finis-suite-recurrente-terminale-d-ti",
+  "meta": {"titre": "Appliquer l'inégalité des accroissements finis à une suite récurrente", "cours_id": "cours-inegalite-accroissements-finis-suite-recurrente-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D-TI", "sous_theme": "Suites — inégalité des accroissements finis", "tags": ["accroissements finis", "point fixe", "majoration"], "duree_estimee_minutes": 10, "epreuve_source": "bac-d-ti-maths-2021-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2021-cameroun-ex3-5b"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "L'inégalité des accroissements finis relie directement l'écart entre deux images par une fonction à l'écart entre leurs antécédents, via une majoration de la dérivée : un outil clé pour l'étude de convergence des suites récurrentes."},
+    {"type": "prerequis", "items_markdown": ["Majoration de |f'| déjà établie sur l'intervalle d'étude", "α point fixe de f : f(α)=α"]},
+    {"type": "regle", "titre": "Appliquer l'IAF entre Un et le point fixe", "contenu_markdown": "Si $|f'(x)|\\leq k$ sur un intervalle contenant $U_n$ et $\\alpha$ (point fixe de $f$), l'inégalité des accroissements finis donne $|f(U_n)-f(\\alpha)|\\leq k|U_n-\\alpha|$. Comme $f(U_n)=U_{n+1}$ et $f(\\alpha)=\\alpha$, on obtient $|U_{n+1}-\\alpha|\\leq k|U_n-\\alpha|$.", "formule_principale": "|f'|≤k sur [a;b] ⟹ |f(Un)-f(α)|≤k|Un-α|, soit |Un+1-α|≤k|Un-α|", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "|g'(x)|≤0,3 sur [2;5], β point fixe de g dans [2;5], Wn+1=g(Wn). Majorer |Wn+1-β|.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Appliquer l'IAF", "justification": "g(Wn)-g(β)", "resultat_markdown": "|g(Wn)-g(β)|≤0,3|Wn-β|"},
+      {"numero": 2, "action": "Substituer point fixe et définition de la suite", "justification": "g(Wn)=Wn+1, g(β)=β", "resultat_markdown": "|Wn+1-β|≤0,3|Wn-β|"}
+    ], "conclusion_markdown": "|Wn+1-β|≤0,3|Wn-β|."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Oublier de vérifier que Un ET α appartiennent bien tous les deux à l'intervalle où la majoration de |f'| a été établie", "pourquoi_faux": "L'inégalité des accroissements finis, telle qu'utilisée ici, exige que la majoration de |f'| soit valable sur TOUT le segment reliant Un et α ; si l'un des deux points sort de l'intervalle considéré, la majoration n'est plus garantie.", "correction_markdown": "Toujours vérifier explicitement (souvent via un résultat de stabilité d'intervalle déjà démontré) que Un et α appartiennent tous deux à l'intervalle sur lequel |f'| a été majorée."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "|h'(x)|≤0,4 sur [1;3], γ point fixe de h dans [1;3], Xn+1=h(Xn) avec X0∈[1;3]. Écrire l'inégalité reliant Xn+1 et Xn.", "solution_markdown": "|Xn+1-γ|≤0,4|Xn-γ|, obtenue en appliquant l'IAF à h entre Xn et γ (tous deux dans [1;3])."},
+      {"numero": 2, "difficulte": "facile", "enonce_markdown": "Pourquoi cette inégalité est-elle la clé pour démontrer qu'une suite récurrente converge vers son point fixe ?", "solution_markdown": "Parce qu'elle montre que l'écart à α diminue d'un facteur au moins k<1 à chaque étape, ce qui permet, par récurrence, de majorer cet écart par une suite géométrique de raison k tendant vers 0, garantissant ainsi la convergence de la suite vers α."}
+    ]},
+    {"type": "synthese", "items_markdown": ["L'inégalité des accroissements finis relie l'écart entre deux termes consécutifs d'une suite récurrente à l'écart du terme précédent au point fixe.", "Elle s'appuie sur une majoration de |f'| déjà établie et sur le fait que α est un point fixe de f.", "Cette inégalité est l'étape clé qui prépare la démonstration de convergence de la suite."]}
+  ]
+}

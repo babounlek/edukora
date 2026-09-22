@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-mesure-resistance-loi-de-pouillet-1ere-d-ti",
+  "meta": {
+    "titre": "Mesure indirecte d'une résistance par la loi de Pouillet",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Mesures électriques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi de Pouillet",
+      "loi d'Ohm",
+      "circuit en série",
+      "mesure de résistance",
+      "démarche scientifique"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D-TI",
+      "module_numero": "1",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2023-CM",
+    "epreuve_titre": "Probatoire Physique Série D et TI - Session 2023 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-d-ti-physique-2023-officiel-cameroun-ex4-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un technicien retrouve un composant dont l'étiquette est effacée : comment vérifier sa valeur sans le sortir du circuit ? En mesurant simplement le courant qui le traverse dans un montage connu, grâce à la loi de Pouillet. Cette méthode, très simple à mettre en œuvre avec un générateur, un ampèremètre et une résistance connue, permet de déterminer n'importe quelle résistance inconnue avec une bonne précision, et surtout de juger si une valeur annoncée (par exemple par un code de couleurs) est fiable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm aux bornes d'un résistor",
+        "Notion de force électromotrice et de résistance interne d'un générateur",
+        "Circuit électrique en série : même intensité en tout point"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Pouillet",
+      "contenu_markdown": "Dans un circuit électrique en série comportant un générateur de force électromotrice $E$ et de résistance interne $r$, associé à un ou plusieurs résistors de résistances connues, l'intensité du courant qui circule est donnée par la loi de Pouillet : $I = \\dfrac{E}{r + \\sum R_i}$, où $\\sum R_i$ est la somme de toutes les résistances du circuit en série. Si l'une de ces résistances est inconnue, connaître $I$, $E$, $r$ et les autres résistances permet de la déterminer par inversion de cette relation.",
+      "formule_principale": "I = \\dfrac{E}{r + \\sum R_i}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur de force électromotrice $E = 12\\ \\text{V}$ et de résistance interne $r = 0,5\\ \\Omega$ est branché en série avec un résistor connu $R = 10\\ \\Omega$ et un résistor inconnu $X$. L'ampèremètre indique $I = 0,80\\ \\text{A}$. Déterminer $X$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la loi de Pouillet pour ce circuit",
+          "justification": "Trois éléments résistifs sont en série : $r$, $R$ et $X$.",
+          "resultat_markdown": "$E = (r + R + X) \\times I$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler $X$",
+          "justification": "Division par $I$ puis soustraction de $r$ et $R$.",
+          "resultat_markdown": "$X = \\dfrac{E}{I} - r - R$"
+        },
+        {
+          "numero": 3,
+          "action": "Application numérique",
+          "justification": "$E = 12\\ \\text{V}$, $I = 0,80\\ \\text{A}$, $r = 0,5\\ \\Omega$, $R = 10\\ \\Omega$",
+          "resultat_markdown": "$X = \\dfrac{12}{0,80} - 0,5 - 10 = 15 - 0,5 - 10 = 4,5\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "La résistance inconnue vaut $X = 4,5\\ \\Omega$, obtenue uniquement à partir de la mesure de l'intensité dans le circuit."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la résistance interne $r$ du générateur dans le bilan",
+          "pourquoi_faux": "Un générateur réel n'est jamais parfait : sa résistance interne consomme une partie de la tension. La négliger fausse systématiquement le calcul de $X$, même si $r$ paraît petite.",
+          "correction_markdown": "Inclus toujours $r$ dans la somme des résistances en série, sauf mention explicite d'un générateur idéal."
+        },
+        {
+          "erreur_markdown": "Confondre un circuit en série et un circuit avec dérivation dans l'application de la loi de Pouillet",
+          "pourquoi_faux": "La loi de Pouillet, sous cette forme simple, ne s'applique qu'à un unique circuit en série où l'intensité est la même partout ; en présence de dérivations, il faut d'abord déterminer les résistances équivalentes.",
+          "correction_markdown": "Vérifie toujours le schéma du montage avant d'appliquer directement $I = E/(r+\\sum R_i)$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur $E = 6\\ \\text{V}$, $r = 1\\ \\Omega$, alimente en série un résistor $R = 5\\ \\Omega$. Calculer l'intensité du courant.",
+          "solution_markdown": "$I = \\dfrac{E}{r+R} = \\dfrac{6}{1+5} = 1\\ \\text{A}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur $E = 9\\ \\text{V}$, $r = 1\\ \\Omega$, un résistor connu $R = 7\\ \\Omega$ et un résistor inconnu $X$ sont en série ; l'ampèremètre indique $I = 0,45\\ \\text{A}$. Calculer $X$.",
+          "solution_markdown": "$X = \\dfrac{E}{I} - r - R = \\dfrac{9}{0,45} - 1 - 7 = 20 - 1 - 7 = 12\\ \\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un circuit en série, deux mesures indépendantes de la même résistance inconnue $X$ donnent $X_1 = 12,05\\ \\Omega$ et $X_2 = 11,90\\ \\Omega$. Le code de couleurs du composant annonce $12\\ \\Omega$ avec une tolérance de $\\pm 5\\ \\%$. Ces deux mesures sont-elles compatibles avec la valeur annoncée ?",
+          "solution_markdown": "La tolérance de $\\pm5\\ \\%$ sur $12\\ \\Omega$ correspond à un intervalle $[12 - 0,6\\,;\\,12 + 0,6] = [11,4\\,;\\,12,6]\\ \\Omega$. Les deux valeurs mesurées, $12,05\\ \\Omega$ et $11,90\\ \\Omega$, appartiennent toutes les deux à cet intervalle : les deux mesures sont donc compatibles avec la valeur annoncée par le code de couleurs, et confirment sa fiabilité."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Pouillet $I = \\dfrac{E}{r+\\sum R_i}$ permet de déterminer une résistance inconnue à partir d'une simple mesure d'intensité.",
+        "N'oublie jamais la résistance interne $r$ du générateur dans le bilan des résistances en série.",
+        "Pour juger d'un accord expérimental, compare toujours l'écart relatif (en %) à la tolérance annoncée, jamais seulement les chiffres bruts.",
+        "Cette méthode de mesure indirecte est un grand classique des situations-problèmes du Probatoire et du BAC en électricité."
+      ]
+    }
+  ]
+}

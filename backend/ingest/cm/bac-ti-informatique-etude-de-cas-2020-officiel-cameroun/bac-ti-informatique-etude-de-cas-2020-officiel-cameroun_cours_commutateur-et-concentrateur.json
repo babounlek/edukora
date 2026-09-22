@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-commutateur-et-concentrateur-tle-ti",
+  "meta": {
+    "titre": "Commutateur et concentrateur",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques",
+    "duree_estimee_min": 18,
+    "tags": [
+      "switch",
+      "hub",
+      "adresse MAC",
+      "couche liaison"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qB.1-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux équipements se ressemblent beaucoup sur un schéma réseau : une boîte avec plusieurs ports, reliée à plusieurs ordinateurs. Pourtant, l'un diffuse aveuglément tout ce qu'il reçoit, l'autre sait précisément à qui l'envoyer. Cette différence, invisible sur un schéma, change tout au fonctionnement réel du réseau."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une carte réseau et une adresse",
+        "Avoir une idée de ce qu'est une trame de données"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Diffuser à tous, ou commuter vers le bon port",
+      "contenu_markdown": "Un **concentrateur (hub)** est un équipement de couche 1 (physique) : il ne connaît aucune adresse et se contente de diffuser (broadcaster) toute trame reçue sur un port vers **tous** les autres ports, que la donnée les concerne ou non. Un **commutateur (switch)** est un équipement de couche 2 (liaison de données) : il apprend l'adresse MAC de chaque équipement connecté à chacun de ses ports et transmet une trame reçue **uniquement** vers le port du destinataire réel, ce qui limite le trafic inutile et les collisions.",
+      "formule_principale": "Hub = diffusion vers tous les ports (couche 1) | Switch = envoi ciblé selon l'adresse MAC (couche 2)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur le schéma du réseau de l'énoncé (Switch 1 relie A, B, C ; Hub 1 relie F, G), illustrer la différence fondamentale entre commutateur et concentrateur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir un exemple de communication via le hub",
+          "justification": "Le hub illustre le comportement de diffusion",
+          "resultat_markdown": "F envoie une donnée destinée à un autre poste que G. Le Hub 1 diffuse cette donnée vers tous ses ports, donc G la reçoit aussi, même si elle ne lui est pas destinée."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir un exemple équivalent via le switch",
+          "justification": "Le switch illustre le comportement de commutation ciblée",
+          "resultat_markdown": "A envoie une donnée destinée à C. Le Switch 1 la transmet uniquement vers le port de C, sans l'envoyer au port de B."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer les deux comportements",
+          "justification": "La comparaison directe met en évidence la différence fondamentale",
+          "resultat_markdown": "Le hub diffuse sans discernement, le switch cible précisément le destinataire réel grâce à l'adresse MAC qu'il a apprise."
+        }
+      ],
+      "conclusion_markdown": "Le hub diffuse toute trame vers tous ses ports (couche physique), le switch la commute vers le seul port du destinataire réel (couche liaison de données), un exemple concret pris sur A/B/C (switch) et F/G (hub) du schéma."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Réduire la différence à \"le switch est plus rapide que le hub\"",
+          "pourquoi_faux": "La vitesse peut effectivement différer, mais ce n'est pas la différence FONDAMENTALE demandée : la vraie différence est le principe de fonctionnement (diffusion aveugle contre commutation ciblée par adresse MAC), la vitesse n'en est qu'une conséquence.",
+          "correction_markdown": "Réponds toujours d'abord en termes de PRINCIPE (couche 1 vs couche 2, diffusion vs commutation par adresse), la conséquence sur la performance vient en complément, jamais à la place."
+        },
+        {
+          "erreur_markdown": "Prendre un exemple qui ne montre pas réellement le comportement décrit",
+          "pourquoi_faux": "La question demande explicitement d'illustrer avec un exemple CONCRET pris sur le schéma : une réponse purement théorique, sans jamais nommer A, B, C, F ou G, perd les points liés à l'illustration.",
+          "correction_markdown": "Nomme toujours les équipements précis du schéma (ici A, B, C pour le switch ; F, G pour le hub) dans ton exemple, jamais une généralité abstraite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "À quelle couche du modèle réseau appartient un concentrateur (hub) ?",
+          "solution_markdown": "À la couche 1 (couche physique) : il ne traite aucune adresse, il ne fait que répéter le signal électrique reçu vers tous ses ports."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi un réseau construit uniquement avec des concentrateurs (hubs) subit-il plus de collisions qu'un réseau équivalent construit avec des commutateurs (switchs) ?",
+          "solution_markdown": "Comme un hub diffuse chaque trame reçue vers tous ses ports, tous les équipements connectés partagent en réalité le même « domaine de collision » : si deux équipements émettent en même temps, leurs signaux se percutent électriquement sur ce support partagé. Un switch, en isolant chaque port et en n'envoyant les trames qu'au destinataire réel, limite ce partage et réduit fortement le risque de collision, chaque liaison switch-équipement devenant son propre domaine de collision."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un technicien remplace un hub par un switch dans un petit réseau, sans changer aucun câble ni aucune adresse IP. Le remplacement suffit-il, à lui seul, à améliorer la confidentialité des échanges entre deux postes précis du réseau ? Justifier.",
+          "solution_markdown": "Oui, ce remplacement améliore déjà la confidentialité, même sans aucun autre changement. Avec un hub, toute trame envoyée par un poste était diffusée vers tous les autres postes connectés, qui pouvaient donc potentiellement l'intercepter (en mode « écoute », un logiciel sur n'importe quel poste du hub pouvait capter tout le trafic du segment). Avec un switch, une trame envoyée par A vers C n'est transmise qu'au port physique de C : les autres postes connectés au même switch ne la reçoivent normalement plus du tout, ce qui réduit mécaniquement la surface d'interception, même si ce n'est pas un chiffrement à proprement parler et ne protège pas contre des techniques d'attaque plus avancées (comme l'usurpation d'adresse MAC)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le hub (concentrateur) diffuse toute trame reçue vers tous ses ports, sans connaître aucune adresse.",
+        "Le switch (commutateur) apprend les adresses MAC et transmet chaque trame uniquement vers le port du destinataire réel.",
+        "Le hub opère en couche 1 (physique), le switch en couche 2 (liaison de données).",
+        "Un réseau à base de switchs réduit les collisions et améliore la confidentialité par rapport à un hub.",
+        "Au BAC TI, une question de différence \"illustrée sur un schéma\" attend systématiquement un exemple nommé (des lettres précises du schéma), jamais une réponse purement théorique."
+      ]
+    }
+  ]
+}

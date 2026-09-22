@@ -22,6 +22,9 @@ const SUBJECT_SHORT_LABELS: Record<string, string> = {
   LITTERATURE: "Littérature",
   EPS: "EPS",
   INFORMATIQUE: "Info",
+  PROGRAMMATION: "Prog.",
+  SYSTEMES_INFORMATION: "SI",
+  RESEAUX_SECURITE: "Réseaux",
 }
 
 /** Repli sur le libellé complet pour un code qui n'existe pas encore dans cette liste

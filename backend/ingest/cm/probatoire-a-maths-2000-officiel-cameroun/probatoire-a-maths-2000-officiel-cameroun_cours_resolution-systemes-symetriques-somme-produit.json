@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-resolution-systemes-symetriques-somme-produit-premiere-a",
+  "meta": {
+    "titre": "Résolution de systèmes symétriques par somme et produit",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Systèmes d'équations",
+    "duree_estimee_min": 25,
+    "tags": [
+      "système symétrique",
+      "somme et produit",
+      "identités remarquables"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-A-MATHS-2000-CM",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2000 (Cameroun, MINEDUC-OBC)",
+    "correction_id": null,
+    "exercice_numero": "A",
+    "rappel_id": "rdm-probatoire-a-maths-2000-officiel-cameroun-exA-qI-1",
+    "rappels_lies": []
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un système de deux équations où $x$ et $y$ jouent un rôle symétrique (le système reste identique si on échange $x$ et $y$), inutile de se lancer dans une substitution laborieuse. Une méthode courte permet de retrouver $x$ et $y$ en quelques lignes : passer par leur somme et leur produit. C'est la méthode à utiliser chaque fois qu'un système donne à la fois un produit $xy$ et une somme de carrés $x^2+y^2$, une configuration fréquente au Probatoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Identités remarquables $(a+b)^2$ et $(a-b)^2$",
+        "Résolution d'une équation du second degré",
+        "Racine carrée d'un nombre positif"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode somme-produit",
+      "contenu_markdown": "Si $x$ et $y$ vérifient un système symétrique, on pose $S=x+y$ et $P=xy$. Les identités remarquables relient $S$, $P$ et $x^2+y^2$ : $(x+y)^2=x^2+y^2+2xy$ et $(x-y)^2=x^2+y^2-2xy$. Une fois $S$ et $D=x-y$ connus, $x$ et $y$ s'obtiennent par $x=\\dfrac{S+D}{2}$ et $y=\\dfrac{S-D}{2}$. Une contrainte de signe donnée par l'énoncé (comme $x<y$) permet de choisir le signe de $D$, jamais celui de $S$.",
+      "formule_principale": "(x+y)^2=x^2+y^2+2xy \\quad;\\quad (x-y)^2=x^2+y^2-2xy",
+      "variantes": [
+        {
+          "nom": "Résolution par équation du second degré",
+          "quand_utiliser": "Quand seuls $S$ et $P$ sont connus, sans contrainte de signe sur $x-y$",
+          "contenu_markdown": "$x$ et $y$ sont alors les deux racines de l'équation $t^2-St+P=0$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $\\begin{cases} xy=40 \\\\ x^2+y^2=116 \\\\ x<y \\end{cases}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $(x+y)^2$",
+          "justification": "On utilise $(x+y)^2=x^2+y^2+2xy$ pour faire apparaître le produit $xy$, déjà connu.",
+          "resultat_markdown": "$(x+y)^2=116+2\\times40=196$, donc $x+y=14$ ou $x+y=-14$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $(x-y)^2$",
+          "justification": "On utilise de même $(x-y)^2=x^2+y^2-2xy$.",
+          "resultat_markdown": "$(x-y)^2=116-80=36$, donc $x-y=6$ ou $x-y=-6$"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir le signe de $x-y$",
+          "justification": "La condition $x<y$ équivaut à $x-y<0$.",
+          "resultat_markdown": "$x-y=-6$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre les deux cas possibles pour $x+y$",
+          "justification": "On combine $S$ et $D$ dans chacun des deux cas restants.",
+          "resultat_markdown": "Cas $S=14$ : $x=4$, $y=10$. Cas $S=-14$ : $x=-10$, $y=-4$."
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions est $\\{(4\\,;10)\\,;(-10\\,;-4)\\}$, chaque couple vérifiant bien $xy=40$ et $x<y$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Garder $x-y=6$ sans tenir compte de la condition $x<y$",
+          "pourquoi_faux": "$x-y=6$ signifierait $x>y$, ce qui contredit directement la condition imposée par l'énoncé.",
+          "correction_markdown": "Toujours déterminer le signe de $x-y$ à partir de la contrainte donnée avant de combiner avec $S$."
+        },
+        {
+          "erreur_markdown": "Oublier le second couple (cas $S=-14$)",
+          "pourquoi_faux": "$(x+y)^2=196$ a deux racines carrées, $14$ et $-14$ : les deux doivent être examinées séparément, sauf contrainte sur le signe de $S$.",
+          "correction_markdown": "Explorer systématiquement les deux valeurs possibles de $S$ avant de conclure."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier les solutions dans les équations de départ",
+          "pourquoi_faux": "Une erreur de calcul lors de la combinaison de $S$ et $D$ passe facilement inaperçue.",
+          "correction_markdown": "Toujours substituer chaque couple trouvé dans $xy$ et $x^2+y^2$ pour confirmer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $\\begin{cases} x+y=7 \\\\ xy=12 \\end{cases}$.",
+          "solution_markdown": "$x$ et $y$ sont les racines de $t^2-7t+12=0$. Discriminant : $\\Delta=49-48=1$. Racines : $t=\\dfrac{7\\pm1}{2}$, soit $t=4$ ou $t=3$. L'ensemble des solutions (sans contrainte d'ordre) est $\\{(3\\,;4)\\,;(4\\,;3)\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $\\begin{cases} xy=21 \\\\ x^2+y^2=58 \\\\ x>y \\end{cases}$.",
+          "solution_markdown": "$(x+y)^2=58+42=100$, donc $x+y=10$ ou $x+y=-10$. $(x-y)^2=58-42=16$, donc $x-y=4$ ou $x-y=-4$. La condition $x>y$ impose $x-y=4$. Cas $S=10$ : $x=7$, $y=3$ (on vérifie $xy=21$). Cas $S=-10$ : $x=-3$, $y=-7$ (on vérifie $xy=21$ et $x>y$). L'ensemble des solutions est $\\{(7\\,;3)\\,;(-3\\,;-7)\\}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ le système $\\begin{cases} x^2+y^2=25 \\\\ xy=-12 \\\\ x<y \\end{cases}$.",
+          "solution_markdown": "$(x+y)^2=25-24=1$, donc $x+y=1$ ou $x+y=-1$. $(x-y)^2=25+24=49$, donc $x-y=7$ ou $x-y=-7$. La condition $x<y$ impose $x-y=-7$. Cas $S=1$ : $x=\\dfrac{1-7}{2}=-3$, $y=\\dfrac{1+7}{2}=4$ (on vérifie $xy=-12$). Cas $S=-1$ : $x=\\dfrac{-1-7}{2}=-4$, $y=\\dfrac{-1+7}{2}=3$ (on vérifie $xy=-12$). L'ensemble des solutions est $\\{(-3\\,;4)\\,;(-4\\,;3)\\}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un système symétrique en $x$ et $y$ se reconnaît au fait qu'échanger $x$ et $y$ ne change rien aux équations.",
+        "Les identités $(x+y)^2=x^2+y^2+2xy$ et $(x-y)^2=x^2+y^2-2xy$ transforment le système en un système plus simple sur $S=x+y$ et $D=x-y$.",
+        "Une racine carrée donne toujours deux valeurs possibles : les deux doivent être examinées, sauf si une contrainte du problème permet d'en écarter une.",
+        "Une contrainte comme $x<y$ sert uniquement à choisir le signe de $D=x-y$, jamais celui de $S$.",
+        "Cette méthode revient souvent au Probatoire et au Baccalauréat dans les systèmes non linéaires et les problèmes qui demandent de retrouver deux nombres à partir de leur somme et de leur produit."
+      ]
+    }
+  ]
+}

@@ -38,6 +38,9 @@ class Command(BaseCommand):
                 "dont le nom du tag ne suffit alors pas à savoir ce qu'elles recouvrent."
             ),
         )
+        parser.add_argument(
+            "--matiere", help="Code de matière (ex. PROGRAMMATION, MATHS) : ne sélectionne que cette matière.",
+        )
         parser.add_argument("--output", help="Fichier où écrire le JSON (défaut : stdout).")
 
     def handle(self, *args, **options):
@@ -51,6 +54,7 @@ class Command(BaseCommand):
             limit=options["limit"],
             floor=options["floor"],
             min_questions=options["min_questions"],
+            subject_code=options["matiere"],
         )
 
         output = json.dumps(requests, ensure_ascii=False, indent=2)

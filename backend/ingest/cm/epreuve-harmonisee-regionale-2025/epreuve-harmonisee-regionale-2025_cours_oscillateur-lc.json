@@ -1,0 +1,52 @@
+{
+  "cours_id": "cours-cm-physique-bac-c-oscillateur-lc",
+  "meta": {
+    "titre": "L'oscillateur électrique LC libre : établir et résoudre l'équation différentielle",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité — circuit LC, oscillations électriques libres",
+    "duree_estimee_min": 25,
+    "tags": ["circuit LC", "oscillateur électrique", "équation différentielle", "loi des mailles", "pulsation propre"],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "epreuve-harmonisee-regionale-2025",
+    "epreuve_titre": "Évaluations Harmonisées Régionales — Physique Théorique — BAC C — DRES-NORD 2025",
+    "exercice_numero": "3",
+    "rappel_id": "rm-harmreg2025-ex3-a1",
+    "rappels_lies": ["rm-harmreg2025-ex3-a1"],
+    "correction_id": "epreuve-harmonisee-regionale-2025_exercice_3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un condensateur chargé, relié à une simple bobine, peut faire osciller sa charge indéfiniment (en théorie) sans aucun générateur : c'est le principe de base de tous les circuits oscillants utilisés en radiofréquence, des postes radio aux téléphones portables. Comprendre comment établir l'équation qui gouverne ces oscillations est une compétence centrale du programme de Terminale C."
+    },
+    {
+      "type": "prerequis",
+      "contenu_markdown": "Avant d'aborder ce cours, il faut maîtriser : la relation charge-tension d'un condensateur (q = Cu), la loi de la bobine idéale (u = L di/dt, avec i = dq/dt), la loi des mailles (somme des tensions nulle sur une maille fermée), et la résolution d'une équation différentielle du second ordre à coefficients constants de la forme x'' + ω²x = 0 (solution sinusoïdale)."
+    },
+    {
+      "type": "regle",
+      "contenu_markdown": "**Mise en équation d'un circuit LC série (résistance négligeable).**\n\nOn considère un condensateur de capacité C, chargé initialement avec une charge q₀, relié à une bobine d'inductance L (résistance nulle). On note q(t) la charge portée par l'armature du condensateur reliée à un point A du circuit, et i(t) = dq/dt le courant circulant dans la maille.\n\n**Étape 1 :** exprimer la tension entre les deux points A et B qui délimitent les deux dipôles, de deux façons différentes — une fois en passant par le condensateur, une fois en passant par la bobine :\n\n- Aux bornes du condensateur : $u_{AB} = \\dfrac{q}{C}$\n- Aux bornes de la bobine (résistance négligeable) : $u_{AB} = L\\dfrac{di}{dt} = L\\dfrac{d^2q}{dt^2}$\n\n**Étape 2 :** la tension u_AB étant unique entre A et B (loi des mailles), on égale les deux expressions :\n\n$$\\dfrac{q}{C} = L\\dfrac{d^2q}{dt^2}$$\n\n**Étape 3 :** on réarrange pour obtenir l'équation différentielle canonique de l'oscillateur harmonique :\n\n$$\\dfrac{d^2q}{dt^2} + \\dfrac{1}{LC}q = 0 \\quad \\text{soit} \\quad \\ddot{q} + \\omega_0^2 q = 0 \\ \\text{ avec } \\ \\omega_0^2 = \\dfrac{1}{LC}$$\n\n**La solution** de cette équation est une fonction sinusoïdale du temps : q(t) = q₀cos(ω₀t + φ), avec ω₀ = 1/√(LC) la pulsation propre du circuit, et la fréquence propre associée f₀ = ω₀/(2π) = 1/(2π√(LC))."
+    },
+    {
+      "type": "exemple_resolu",
+      "contenu_markdown": "**Énoncé :** Pour L = 2,29×10⁻⁴ H, calculer la capacité C du condensateur qu'il faut pour que la charge q oscille avec une fréquence f = 105 MHz.\n\n**Résolution :**\n\n1. On part de la relation f₀ = 1/(2π√(LC)), qu'on inverse pour isoler C :\n\n$$C = \\dfrac{1}{L(2\\pi f)^2}$$\n\n2. On convertit f en unités SI : f = 105×10⁶ Hz = 1,05×10⁸ Hz.\n\n3. On calcule (2πf)² : $2\\pi f \\approx 6{,}597\\times10^{8}\\ \\text{rad/s}$, donc $(2\\pi f)^2 \\approx 4{,}352\\times10^{17}\\ \\text{s}^{-2}$.\n\n4. On calcule C : $C = \\dfrac{1}{2{,}29\\times10^{-4}\\times4{,}352\\times10^{17}} = \\dfrac{1}{9{,}967\\times10^{13}} \\approx 1{,}00\\times10^{-14}\\ \\text{F}$\n\n**Résultat :** C ≈ 1,00×10⁻¹⁴ F = 10,0 fF (femtofarads), une valeur très faible mais cohérente avec une fréquence d'oscillation élevée (105 MHz, domaine radiofréquence)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "contenu_markdown": "**Erreur 1 :** oublier le facteur (2π) et confondre la pulsation ω₀ avec la fréquence f dans la formule C = 1/(Lω₀²), en utilisant directement f à la place de ω₀ = 2πf — ceci fausse le résultat d'un facteur (2π)² ≈ 39,5.\n\n**Erreur 2 :** ne pas mettre au carré le terme (2πf) dans la formule de C, ou se tromper dans l'ordre des opérations lors du calcul numérique en plusieurs étapes.\n\n**Erreur 3 :** dans l'établissement de l'équation différentielle, écrire une équation de mailles incohérente en mélangeant les signes de u_C et u_L (oublier que la loi des mailles impose l'égalité des deux expressions de u_AB, et non leur somme)."
+    },
+    {
+      "type": "exercices_application",
+      "contenu_markdown": "**Exercice 1.** Un circuit LC série (résistance négligeable) comporte une bobine d'inductance L = 10 mH et un condensateur de capacité C = 1 μF. Calculer la pulsation propre ω₀, la fréquence propre f₀ et la période propre T₀ de ce circuit.\n\n**Exercice 2.** Un circuit LC oscille à une fréquence f₀ = 1 MHz avec un condensateur de capacité C = 100 pF. Calculer l'inductance L nécessaire.\n\n**Exercice 3.** Démontrer que l'énergie totale E = (1/2)Li² + (1/2)q²/C se conserve au cours du temps dans un circuit LC idéal (sans résistance), en utilisant l'équation différentielle établie dans ce cours."
+    },
+    {
+      "type": "synthese",
+      "contenu_markdown": "Un circuit LC série sans résistance oscille librement selon l'équation différentielle d²q/dt² + q/(LC) = 0, obtenue en égalant les deux expressions de la tension u_AB (via le condensateur, q/C, et via la bobine, L d²q/dt²), conséquence directe de la loi des mailles. La solution est sinusoïdale, de pulsation propre ω₀ = 1/√(LC) et de fréquence propre f₀ = 1/(2π√(LC)) : ces relations permettent de calculer n'importe laquelle des trois grandeurs (L, C, f₀) connaissant les deux autres."
+    }
+  ]
+}

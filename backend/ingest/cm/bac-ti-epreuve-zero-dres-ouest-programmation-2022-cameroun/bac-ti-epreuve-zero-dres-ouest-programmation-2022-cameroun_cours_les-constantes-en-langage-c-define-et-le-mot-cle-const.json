@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-les-constantes-en-langage-c-define-et-le-mot-cle-const-tle-ti",
+  "meta": {
+    "titre": "Les constantes en langage C : #define et le mot-clé const",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Variables et types en langage C",
+    "duree_estimee_min": 15,
+    "tags": [
+      "constante",
+      "#define",
+      "const",
+      "préprocesseur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex2-q4.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau de 5 élèves aujourd'hui pourrait devoir en accueillir 40 demain. Recopier le chiffre 5 à dix endroits différents du code obligerait à corriger dix lignes pour ce seul changement. Une constante nommée règle ce problème en centralisant la valeur à un seul endroit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer une variable en C",
+        "Savoir ce qu'est le préprocesseur (notion de #include)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "#define : un remplacement textuel avant compilation",
+      "contenu_markdown": "En langage C, une constante symbolique se déclare le plus souvent avec la directive de préprocesseur `#define NOM valeur`. Avant la compilation proprement dite, le préprocesseur remplace **textuellement** chaque occurrence de `NOM` par `valeur` dans tout le fichier : le compilateur ne voit donc jamais `NOM`, seulement sa valeur substituée. On peut aussi déclarer une constante avec le mot-clé `const` (`const int N = 5;`), qui crée cette fois une vraie variable, typée, mais dont la modification est interdite par le compilateur.",
+      "variantes": [
+        {
+          "nom": "#define",
+          "quand_utiliser": "Constante simple, remplacement textuel, valable dans tout le fichier dès sa définition",
+          "contenu_markdown": "`#define N 5` : chaque `N` du code est remplacé par `5` avant compilation."
+        },
+        {
+          "nom": "const",
+          "quand_utiliser": "Quand on veut une vraie variable typée, dont la portée peut être limitée à un bloc",
+          "contenu_markdown": "`const int N = 5;` : `N` est une variable de type int, dont toute tentative de modification est rejetée par le compilateur."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le programme de gestion des élèves, `#define N 5` est utilisé aux lignes 13 et 15. Explique ce que fait le préprocesseur avec cette ligne.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la définition de la constante",
+          "justification": "Elle se trouve en tête de fichier, ligne 3 : #define N 5",
+          "resultat_markdown": "N est associé textuellement à la valeur 5"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer chaque occurrence de N dans le code",
+          "justification": "Le préprocesseur doit remplacer toutes les occurrences, pas seulement la première",
+          "resultat_markdown": "N apparaît ligne 13 (struct Eleve Lyclamo[N];) et ligne 15 (for(i=0;i<=N-1;i++))"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le remplacement textuel avant compilation",
+          "justification": "C'est le rôle exact du préprocesseur, avant que le compilateur n'intervienne",
+          "resultat_markdown": "Le code transmis au compilateur devient struct Eleve Lyclamo[5]; et for(i=0;i<=5-1;i++)"
+        }
+      ],
+      "conclusion_markdown": "Le programme se comporte exactement comme s'il avait été écrit avec 5 à ces deux endroits, sans que le compilateur ne voie jamais le nom N."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire #define N 5; avec un point-virgule final",
+          "pourquoi_faux": "Le point-virgule ferait partie du remplacement textuel : chaque occurrence de N deviendrait \"5;\", ce qui peut casser la syntaxe environnante (par exemple dans un tableau [N]).",
+          "correction_markdown": "N'ajoute jamais de point-virgule à la fin d'une ligne #define."
+        },
+        {
+          "erreur_markdown": "Croire que #define crée une variable comme une déclaration classique",
+          "pourquoi_faux": "#define n'est pas une instruction C, mais une directive de préprocesseur : il n'y a pas de variable N en mémoire, seulement un remplacement de texte effectué avant la compilation.",
+          "correction_markdown": "Si tu as besoin d'une vraie variable constante et typée, utilise plutôt const, pas #define."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la ligne qui définit une constante TAILLE valant 10 avec #define.",
+          "solution_markdown": "`#define TAILLE 10`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle est la différence principale entre #define PI 3.14 et const float PI = 3.14; ?",
+          "solution_markdown": "#define effectue un simple remplacement textuel avant compilation, sans créer de variable typée ni vérifier de type ; const crée une véritable variable de type float, dont le compilateur interdit toute modification ultérieure, avec vérification de type."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève écrit #define CARRE(x) x*x puis utilise CARRE(2+3) dans son code. Quel résultat obtient-il réellement, et pourquoi n'est-ce pas 25 ?",
+          "solution_markdown": "Le préprocesseur remplace textuellement CARRE(2+3) par 2+3*2+3, sans jamais évaluer (2+3) comme un tout avant la substitution. En respectant les priorités des opérateurs, cette expression vaut 2 + (3*2) + 3 = 2+6+3 = 11, et non 25 comme on l'attendrait pour (2+3)². C'est un piège classique du remplacement purement textuel de #define : il faudrait écrire #define CARRE(x) ((x)*(x)) pour obtenir le résultat correct, en parenthésant systématiquement chaque paramètre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "#define NOM valeur remplace textuellement chaque occurrence de NOM par valeur, avant la compilation.",
+        "const type NOM = valeur; crée une vraie variable typée, dont la modification est interdite par le compilateur.",
+        "N'ajoute jamais de point-virgule à la fin d'une ligne #define : il ferait partie du remplacement.",
+        "Une constante nommée centralise une valeur utilisée à plusieurs endroits : un seul changement suffit à la faire évoluer partout dans le programme."
+      ]
+    }
+  ]
+}

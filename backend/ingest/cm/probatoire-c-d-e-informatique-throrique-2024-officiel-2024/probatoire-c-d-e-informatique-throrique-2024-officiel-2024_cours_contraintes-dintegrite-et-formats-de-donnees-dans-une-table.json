@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-contraintes-dintegrite-et-formats-de-donnees-dans-une-table-1ere-tronc-commun",
+  "meta": {
+    "titre": "Contraintes d'intégrité et formats de données dans une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données - conception d'une table",
+    "duree_estimee_min": 20,
+    "tags": [
+      "contrainte d'intégrité",
+      "clé primaire",
+      "format de données",
+      "type de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex2-q5.1-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une boutique ne peut pas se permettre d'enregistrer deux articles différents sous la même référence, ni une quantité en stock négative : ce genre d'erreur rendrait toute la base de données incohérente. Les contraintes d'intégrité sont les règles que l'on impose à chaque colonne d'une table pour empêcher ce genre de situation avant même qu'elle ne se produise, plutôt que de la corriger après coup."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le vocabulaire table, enregistrement, champ",
+        "Savoir repérer une colonne dont les valeurs sont toutes différentes les unes des autres"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Choisir la bonne contrainte selon le rôle de la colonne",
+      "contenu_markdown": "Une contrainte d'intégrité est une règle imposée à une colonne pour garantir la cohérence et la fiabilité des données qu'elle contient. Le choix de la contrainte dépend du rôle de la colonne dans la table : une colonne qui identifie chaque enregistrement de façon unique (aucune valeur ne se répète, aucune valeur n'est vide) doit porter la contrainte de clé primaire ; une colonne numérique doit porter une contrainte sur son type (Numérique Entier ou Numérique Décimal) et, si besoin, sur la plage de valeurs acceptées (par exemple une quantité qui ne peut pas être négative) ; une colonne textuelle libre porte simplement une contrainte de type Texte, parfois limitée à une longueur maximale.",
+      "formule_principale": "\\text{Colonne identifiant chaque enregistrement} \\Rightarrow \\text{clé primaire (unique, non nulle)} \\quad ; \\quad \\text{Colonne numérique} \\Rightarrow \\text{type + plage de valeurs}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Reprenons la table **ARTICLES** :\n\n| Reference | Designation | PrixUnitaire | Quantite | Categorie |\n|---|---|---|---|---|\n| 102E78 | Riz | 12000 | 55 | Alimentaire |\n| 205R12 | Plat | 1500 | 102 | Cuisine |\n| 780G08 | Savon | 500 | 455 | Entretien |\n\nProposer une contrainte d'intégrité pour la colonne Reference, puis un format de valeur pour la colonne Quantite.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Examiner les valeurs de la colonne Reference",
+          "justification": "102E78, 205R12 et 780G08 sont trois valeurs toutes différentes, aucune ne se répète : cette colonne identifie donc chaque article de façon unique.",
+          "resultat_markdown": "Reference joue le rôle d'identifiant unique de chaque article."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la contrainte appropriée pour Reference",
+          "justification": "Une colonne qui identifie chaque enregistrement de façon unique doit porter la contrainte de clé primaire, qui impose l'unicité et interdit toute valeur vide.",
+          "resultat_markdown": "Reference est déclarée **clé primaire**."
+        },
+        {
+          "numero": 3,
+          "action": "Examiner les valeurs de la colonne Quantite",
+          "justification": "55, 102 et 455 sont des nombres entiers représentant un stock, qui ne peut jamais être négatif.",
+          "resultat_markdown": "Quantite est de type **Numérique - Entier**, avec la contrainte de domaine Quantite >= 0."
+        }
+      ],
+      "conclusion_markdown": "Reference reçoit la contrainte de clé primaire, Quantite reçoit un type numérique entier positif."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Proposer un format Numérique pour la colonne Reference parce qu'elle contient des chiffres",
+          "pourquoi_faux": "Une référence comme 102E78 mélange chiffres et lettres : ce n'est pas un nombre sur lequel on peut effectuer un calcul, mais un code alphanumérique. La question posée porte de plus sur une contrainte (clé primaire), pas sur un type de champ.",
+          "correction_markdown": "Retenir que Reference reste de type Texte (ou Alphanumérique) même si elle contient des chiffres, et que la contrainte attendue ici est l'unicité (clé primaire)."
+        },
+        {
+          "erreur_markdown": "Proposer uniquement « Quantite >= 0 » sans préciser le type de base de la colonne",
+          "pourquoi_faux": "Une contrainte de domaine (la plage de valeurs) complète la définition du type, elle ne la remplace pas : sans préciser Numérique Entier, la base ne sait toujours pas quel genre de valeur stocker.",
+          "correction_markdown": "Toujours donner le type de base avant, si besoin, d'ajouter une contrainte de plage."
+        },
+        {
+          "erreur_markdown": "Désigner PrixUnitaire comme clé primaire parce que les valeurs semblent variées",
+          "pourquoi_faux": "Rien n'empêche deux articles différents d'avoir exactement le même prix : cette colonne ne peut donc pas garantir l'unicité de chaque enregistrement.",
+          "correction_markdown": "Vérifier systématiquement si une répétition de valeur est possible avant de proposer une colonne comme clé primaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une table ELEVES, la colonne Matricule ne contient jamais deux fois la même valeur. Quelle contrainte d'intégrité lui proposer ?",
+          "solution_markdown": "Matricule identifie chaque élève de façon unique : elle doit porter la contrainte de **clé primaire** (unique et non nulle)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Proposer un format de valeur adapté pour une colonne DateNaissance dans une table ELEVES.",
+          "solution_markdown": "DateNaissance doit être de type **Date** (au format jj/mm/aaaa), avec une contrainte de domaine imposant qu'elle soit antérieure à la date du jour (un élève ne peut pas naître dans le futur)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une table INSCRIPTIONS comporte les colonnes NumInscription (jamais répété), Matricule, CodeMatiere et Note (notée sur 20). Proposer une contrainte pour NumInscription et un format complet pour Note.",
+          "solution_markdown": "NumInscription ne se répète jamais : il joue le rôle d'identifiant unique de chaque ligne d'inscription, il porte donc la contrainte de **clé primaire**. Note représente une évaluation chiffrée sur 20 : son type est **Numérique - Décimal** (pour autoriser des notes comme 14,5), complété par la contrainte de domaine $0 \\leq \\text{Note} \\leq 20$, qui empêche toute valeur hors barème."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une contrainte d'intégrité protège la fiabilité d'une colonne en limitant les valeurs qu'elle peut recevoir.",
+        "Une colonne dont les valeurs ne se répètent jamais et ne peuvent pas être vides est une bonne candidate pour la clé primaire.",
+        "Une colonne numérique se définit par son type (Entier ou Décimal) avant même de préciser une éventuelle plage de valeurs.",
+        "Vérifie toujours si une répétition de valeur est possible avant de proposer une colonne comme clé primaire : un prix, une quantité ou une note peuvent se répéter, un identifiant ne le doit jamais.",
+        "Au Probatoire, cette question type « proposer une contrainte » se corrige en argumentant à partir des valeurs réellement visibles dans la table donnée, jamais en récitant une règle générale sans preuve."
+      ]
+    }
+  ]
+}

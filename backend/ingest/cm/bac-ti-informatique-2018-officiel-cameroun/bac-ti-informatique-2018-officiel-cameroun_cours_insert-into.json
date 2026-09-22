@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-insert-into-tle-ti",
+  "meta": {
+    "titre": "Insérer un enregistrement avec INSERT INTO",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL - Manipulation de données (LMD)",
+    "duree_estimee_min": 16,
+    "tags": [
+      "SQL",
+      "INSERT INTO",
+      "langage de manipulation de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une table fraîchement créée est vide : la première chose à faire est d'y ajouter des données réelles. C'est le rôle d'INSERT INTO, la commande la plus utilisée du langage de manipulation de données au quotidien d'une base."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un tuple et un attribut dans une table relationnelle.",
+        "Connaître la structure d'une table déjà créée (ses colonnes et leurs types)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Colonnes et valeurs, dans le même ordre",
+      "contenu_markdown": "L'instruction INSERT INTO ajoute un nouveau tuple à une table existante. On précise le nom de la table, puis la liste ordonnée des colonnes concernées entre parenthèses, puis le mot-clé VALUES suivi de la liste des valeurs correspondantes, dans EXACTEMENT le même ordre que les colonnes. Une valeur textuelle ou une date s'écrit toujours entre apostrophes simples ; un nombre s'écrit sans apostrophes. Omettre la liste des colonnes est possible mais dangereux : il faut alors fournir une valeur pour CHAQUE colonne de la table, dans l'ordre exact de sa création, ce qui casse silencieusement la requête si la structure de la table change un jour.",
+      "formule_principale": "INSERT INTO table (col1, col2, ...) VALUES (valeur1, valeur2, ...);"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Madame OVAH Sandrine, âgée de 26 ans, a été intégrée dans le corps des enseignants depuis le 27/12/2015 avec le matricule 995M24, et vient d'être affectée en tant que professeur d'EPS. Écrivez la requête SQL qui l'insère dans la table ENSEIGNANT.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les colonnes concernées et leur ordre",
+          "justification": "La table ENSEIGNANT comporte Matricule, Nom, Prenom, Discipline, Age, DateIntegration : toutes les valeurs de l'énoncé y correspondent.",
+          "resultat_markdown": "(Matricule, Nom, Prenom, Discipline, Age, DateIntegration)"
+        },
+        {
+          "numero": 2,
+          "action": "Associer chaque valeur à sa colonne, dans le même ordre",
+          "justification": "995M24 est le matricule, OVAH le nom, Sandrine le prénom, EPS la discipline actuelle, 26 l'âge, et 2015-12-27 la date d'intégration au format standard AAAA-MM-JJ.",
+          "resultat_markdown": "('995M24', 'OVAH', 'Sandrine', 'EPS', 26, '2015-12-27')"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la requête complète",
+          "justification": "On respecte la syntaxe INSERT INTO table (colonnes) VALUES (valeurs);",
+          "resultat_markdown": "```sql\nINSERT INTO ENSEIGNANT (Matricule, Nom, Prenom, Discipline, Age, DateIntegration)\nVALUES ('995M24', 'OVAH', 'Sandrine', 'EPS', 26, '2015-12-27');\n```"
+        }
+      ],
+      "conclusion_markdown": "La discipline enregistrée est EPS, conformément à l'affectation initiale décrite dans l'énoncé - une éventuelle correction ultérieure de cette discipline relèvera d'une requête UPDATE distincte, jamais d'un nouvel INSERT."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire l'âge entre apostrophes : '26' au lieu de 26",
+          "pourquoi_faux": "Age est une colonne numérique (INT) : y insérer une valeur entre apostrophes la traite comme du texte, ce qui peut fonctionner par tolérance de certains moteurs mais reste une erreur de cohérence de type, susceptible de fausser des comparaisons ultérieures.",
+          "correction_markdown": "N'utilise des apostrophes que pour le texte et les dates ; laisse toujours un nombre entier ou décimal sans apostrophes."
+        },
+        {
+          "erreur_markdown": "Changer l'ordre des valeurs par rapport à l'ordre des colonnes déclarées",
+          "pourquoi_faux": "SQL associe chaque valeur à la colonne de MÊME POSITION dans la liste, jamais par son sens apparent : inverser Nom et Prenom, par exemple, insérerait Sandrine comme nom et OVAH comme prénom sans qu'aucune erreur ne soit signalée.",
+          "correction_markdown": "Vérifie toujours, colonne par colonne, que chaque valeur occupe la même position que la colonne à laquelle elle correspond."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrivez la requête SQL qui insère dans la table LIVRE (ISBN, Titre, Statut) le livre d'ISBN '978-2-1111-0001-1', intitulé 'Une saison au Congo', actuellement 'disponible'.",
+          "solution_markdown": "```sql\nINSERT INTO LIVRE (ISBN, Titre, Statut)\nVALUES ('978-2-1111-0001-1', 'Une saison au Congo', 'disponible');\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La table PRODUIT (CodeProduit, Designation, PrixUnitaire, QuantiteStock) doit accueillir un nouveau produit : code 'P045', désignation 'Cahier 200 pages', prix unitaire 750 FCFA, stock initial de 0 unité. Écrivez la requête d'insertion.",
+          "solution_markdown": "```sql\nINSERT INTO PRODUIT (CodeProduit, Designation, PrixUnitaire, QuantiteStock)\nVALUES ('P045', 'Cahier 200 pages', 750, 0);\n```\nUn stock de 0 reste une valeur numérique valide et doit être insérée comme 0, jamais laissée vide ou omise : une colonne non renseignée serait interprétée comme NULL (« valeur inconnue »), ce qui n'a pas le même sens qu'un stock connu et effectivement nul."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La table COMMANDE (NumeroCommande, DateCommande, MatriculeEnseignant) porte une contrainte FOREIGN KEY sur MatriculeEnseignant, qui référence ENSEIGNANT(Matricule). Que se passe-t-il si l'on tente d'insérer une commande avec MatriculeEnseignant = '000X00', alors qu'aucun enseignant ne porte ce matricule dans ENSEIGNANT ? Expliquez, puis proposez une requête d'insertion valide pour un enseignant réellement existant, comme 995M24.",
+          "solution_markdown": "L'insertion échouerait et serait rejetée par le système de gestion de base de données : la contrainte FOREIGN KEY interdit précisément qu'une valeur de MatriculeEnseignant ne corresponde à aucun tuple existant dans ENSEIGNANT, afin de garantir qu'aucune commande ne pointe vers un enseignant fictif. Une insertion valide, pour un enseignant réellement existant, s'écrirait :\n```sql\nINSERT INTO COMMANDE (NumeroCommande, DateCommande, MatriculeEnseignant)\nVALUES ('CMD-045', '2024-03-10', '995M24');\n```\nCette requête réussit car '995M24' correspond bien à un tuple déjà présent dans ENSEIGNANT."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "INSERT INTO ajoute un nouveau tuple : nom de la table, liste des colonnes, puis VALUES et la liste des valeurs dans le même ordre.",
+        "Les valeurs textuelles et les dates s'écrivent entre apostrophes, jamais les nombres.",
+        "L'ordre des valeurs doit correspondre exactement à l'ordre des colonnes déclarées dans la requête, pas à leur sens apparent.",
+        "Une valeur numérique réellement nulle (comme un stock de 0) doit être insérée explicitement, pas omise.",
+        "Au BAC TI, cette requête suit presque toujours la question sur la création de la table : reprends les mêmes noms de colonnes et les mêmes types que ceux définis dans le CREATE TABLE."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-ecrire-des-formules-de-calcul-dans-un-tableur-tle-toutes-series",
+  "meta": {
+    "titre": "Écrire des formules de calcul dans un tableur (multiplication, somme, pourcentage, différence)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Production d'un document à l'aide d'un tableur",
+    "duree_estimee_min": 30,
+    "tags": [
+      "tableur",
+      "formule",
+      "SOMME",
+      "pourcentage",
+      "recopie de formule",
+      "facture"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-b-c-d-e-informatique-facultatif-2025-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat ESG - Épreuve Pratique Facultative (Sujet N° 1) - Informatique - Cameroun - 2025",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a-b-c-d-e-informatique-facultatif-2025-officiel-cameroun-ex1-q3-0",
+    "rappels_lies": [
+      "rdm-bac-a-b-c-d-e-informatique-facultatif-2025-officiel-cameroun-ex1-q4-0",
+      "rdm-bac-a-b-c-d-e-informatique-facultatif-2025-officiel-cameroun-ex1-q5-0",
+      "rdm-bac-a-b-c-d-e-informatique-facultatif-2025-officiel-cameroun-ex1-q6-0",
+      "rdm-bac-a-b-c-d-e-informatique-facultatif-2025-officiel-cameroun-ex1-q7-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Devant une facture à compléter sur ordinateur, deux réflexes s'opposent : calculer les montants de tête puis les recopier au clavier, ou laisser le tableur les calculer lui-même à partir des cellules déjà saisies. Le second réflexe est celui qu'un examinateur du BAC attend et qu'un employeur attend aussi : une feuille de calcul qui reste juste même si un prix ou une quantité change après coup. Ce cours explique comment construire une chaîne de formules qui part des données brutes d'une facture (quantité, prix unitaire) jusqu'au net à payer, en passant par le total et la remise, sans jamais retaper un résultat à la main."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir se repérer dans une feuille de calcul : identifier une cellule par sa colonne (lettre) et sa ligne (nombre), par exemple D2.",
+        "Savoir saisir du texte et des nombres dans les cellules d'un tableur.",
+        "Connaître les quatre opérations arithmétiques de base (addition, soustraction, multiplication, pourcentage)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire une chaîne de formules dans un tableur",
+      "contenu_markdown": "Une formule de tableur commence toujours par le signe égal (=), qui indique au logiciel qu'il doit calculer un résultat plutôt qu'afficher du texte. Après le signe égal, une formule combine des références de cellules (comme B2 ou D6) et des opérateurs (+, -, *, /) ou des fonctions prédéfinies (comme SOMME). Utiliser une référence de cellule plutôt qu'une valeur recopiée à la main est ce qui rend la formule vivante : si la valeur de la cellule référencée change, le résultat de la formule se recalcule automatiquement, sans aucune intervention. Une facture typique combine quatre types de calculs qui s'enchaînent, chacun s'appuyant sur le résultat du précédent : le montant d'une ligne (quantité multipliée par le prix unitaire), le total (somme de tous les montants), le montant d'une remise (total multiplié par un taux exprimé en pourcentage), et le net à payer (total diminué du montant de la remise). Lorsque le même calcul doit être répété sur plusieurs lignes semblables (un montant par article, par exemple), la recopie de formule (par cliquer-glisser sur la poignée en bas à droite de la cellule) évite de la retaper : le tableur ajuste automatiquement les références d'une ligne à l'autre, à condition que ces références soient relatives, c'est-à-dire écrites sans le symbole \\$.",
+      "formule_principale": "\\text{Montant} = \\text{Quantité} \\times \\text{Prix unitaire}",
+      "variantes": [
+        {
+          "nom": "Somme d'une plage avec la fonction SOMME",
+          "quand_utiliser": "Pour additionner plusieurs cellules consécutives (une colonne de montants, par exemple), plutôt que d'écrire une addition cellule par cellule.",
+          "contenu_markdown": "=SOMME(D2:D5) additionne toutes les cellules de D2 à D5 incluses. La fonction reste lisible et correcte même si le nombre de lignes de la facture augmente, contrairement à une addition écrite terme à terme."
+        },
+        {
+          "nom": "Pourcentage appliqué à une cellule",
+          "quand_utiliser": "Pour calculer un montant de remise, de taxe ou de majoration à partir d'un taux déjà saisi dans une cellule au format pourcentage.",
+          "contenu_markdown": "=D6*D7 calcule directement le produit d'un montant (D6) par un taux affiché en pourcentage (D7, par exemple 10%) : le tableur convertit seul l'affichage 10% en la valeur décimale 0,10 utilisée dans le calcul."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une facture recense les ventes de quatre articles (Savon : 15 unités à 1350 F ; Parfum : 13 unités à 8500 F ; Pommade : 14 unités à 2500 F ; Dentifrice : 10 unités à 1750 F, colonnes B et C, lignes 2 à 5). Une remise de 10% (cellule D7) s'applique sur le total. Calculer, à l'aide de formules, le montant de chaque article (colonne D, lignes 2 à 5), le total à payer (D6), le montant de la remise (D8) et le net à payer (D9).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le montant de la première ligne (Savon)",
+          "justification": "Le montant d'une ligne de facture est le produit de la quantité par le prix unitaire ; en D2, la formule doit référencer B2 (quantité) et C2 (prix unitaire).",
+          "resultat_markdown": "En D2 : =B2*C2, soit 15 × 1350 = 20 250"
+        },
+        {
+          "numero": 2,
+          "action": "Recopier cette formule sur les trois autres articles",
+          "justification": "Les lignes 3, 4 et 5 suivent la même logique de calcul ; la recopie par cliquer-glisser de D2 vers D5 adapte automatiquement les références relatives B et C à chaque ligne.",
+          "resultat_markdown": "D3 : =B3*C3 = 13 × 8500 = 110 500. D4 : =B4*C4 = 14 × 2500 = 35 000. D5 : =B5*C5 = 10 × 1750 = 17 500"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le total à payer",
+          "justification": "Le total est la somme des quatre montants obtenus ; la fonction SOMME appliquée à la plage D2:D5 évite d'additionner terme à terme.",
+          "resultat_markdown": "En D6 : =SOMME(D2:D5) = 20 250 + 110 500 + 35 000 + 17 500 = 183 250"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le montant de la remise",
+          "justification": "Le montant de la remise est le produit du total par le taux de remise ; référencer la cellule D7 (10%) plutôt que retaper 10% garde le calcul dynamique si le taux change.",
+          "resultat_markdown": "En D8 : =D6*D7 = 183 250 × 0,10 = 18 325"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer le net à payer",
+          "justification": "Le net à payer est le total diminué du montant de la remise déjà calculé en D8.",
+          "resultat_markdown": "En D9 : =D6-D8 = 183 250 − 18 325 = 164 925"
+        }
+      ],
+      "conclusion_markdown": "La facture est entièrement calculée par une chaîne de cinq formules, chacune s'appuyant sur le résultat de la précédente : le net à payer s'élève à 164 925 F. Aucune valeur n'a été retapée à la main, ce qui signifie que toute correction d'une quantité, d'un prix ou du taux de remise recalculerait automatiquement l'ensemble de la facture."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer le résultat de tête et le taper directement dans la cellule (par exemple taper 20250 dans D2 au lieu de =B2*C2).",
+          "pourquoi_faux": "Le résultat affiché est peut-être correct, mais la cellule ne contient alors aucune formule : si la quantité ou le prix change ensuite, le montant affiché reste faux, et un correcteur qui vérifie la présence d'une formule (en cliquant sur la cellule) ne trouve rien à évaluer.",
+          "correction_markdown": "Toujours passer par le signe égal et les références de cellules, même quand le calcul semble trivial : =B2*C2 plutôt que 20250."
+        },
+        {
+          "erreur_markdown": "Écrire une formule de pourcentage avec une valeur figée, comme =D6*10%, au lieu de référencer la cellule qui contient déjà ce taux.",
+          "pourquoi_faux": "La formule donne certes le bon résultat pour ce taux précis, mais elle perd tout intérêt de calcul automatique : si le taux de remise change dans l'énoncé ou dans une nouvelle version de la facture, il faut alors modifier la formule elle-même au lieu de simplement modifier une cellule.",
+          "correction_markdown": "Référencer systématiquement la cellule contenant le taux (=D6*D7) plutôt que de recopier sa valeur dans la formule."
+        },
+        {
+          "erreur_markdown": "Inverser l'ordre d'une soustraction, par exemple écrire =D8-D6 au lieu de =D6-D8 pour calculer le net à payer.",
+          "pourquoi_faux": "Le net à payer doit être inférieur au total, jamais négatif dans un contexte normal de facture ; inverser l'ordre produit un résultat négatif qui n'a aucun sens commercial, signe immédiat d'une erreur de construction de la formule.",
+          "correction_markdown": "Vérifier l'ordre de grandeur du résultat obtenu : un net à payer négatif ou supérieur au total signale toujours une formule mal construite, à corriger avant de continuer."
+        },
+        {
+          "erreur_markdown": "Retaper la formule manuellement sur chaque ligne au lieu d'utiliser la recopie, avec le risque de se tromper de référence sur une des lignes (par exemple écrire =B3*C2 au lieu de =B3*C3).",
+          "pourquoi_faux": "Une erreur de référence lors d'une saisie manuelle répétée est fréquente et difficile à repérer visuellement, car le résultat affiché reste un nombre plausible même s'il est faux.",
+          "correction_markdown": "Utiliser systématiquement la recopie de formule (cliquer-glisser ou double-clic sur la poignée) dès qu'un même calcul doit être répété sur plusieurs lignes similaires."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une feuille de calcul contient en B2 la quantité 8 et en C2 le prix unitaire 2000. Écrire la formule à saisir en D2 pour obtenir le montant de cette ligne, puis donner le résultat affiché.",
+          "solution_markdown": "### Rappel de méthode\nLe montant d'une ligne s'obtient toujours en multipliant la quantité par le prix unitaire à l'aide d'une formule qui référence les deux cellules concernées.\n\nSe positionner sur la cellule D2, taper =B2*C2 puis valider avec la touche Entrée. Le tableur calcule 8 × 2000 = 16 000. La cellule D2 affiche donc 16 000."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une facture de fournitures scolaires liste 3 articles avec leurs montants déjà calculés en D2, D3 et D4 (respectivement 4500, 12 000 et 7 200). Une remise de 5% s'applique sur le total, ce taux étant saisi en D6. Écrire les formules permettant d'obtenir, dans cet ordre, le total à payer (en D5), le montant de la remise (en D7) et le net à payer (en D8), puis calculer chaque résultat.",
+          "solution_markdown": "### Rappel de méthode\nUn total se calcule avec la fonction SOMME appliquée à la plage des montants, un montant de remise est le produit du total par le taux de remise déjà saisi dans une cellule, et le net à payer est le total diminué de ce montant de remise.\n\nEn D5 : =SOMME(D2:D4), soit 4500 + 12 000 + 7 200 = 23 700. En D7 : =D5*D6, soit 23 700 × 0,05 = 1 185. En D8 : =D5-D7, soit 23 700 − 1 185 = 22 515. Le net à payer s'élève donc à 22 515 F."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une facture applique en plus de la remise habituelle une taxe supplémentaire de 2,5% calculée sur le net après remise (et non sur le total initial). Sachant que le total est en D6 (183 250), le taux de remise en D7 (10%) et le taux de taxe en D10 (2,5%), écrire la suite complète de formules permettant d'obtenir le montant de la remise (D8), le net après remise (D9), le montant de la taxe (D11) et le montant final à payer (D12), puis calculer chaque résultat.",
+          "solution_markdown": "### Rappel de méthode\nLorsque plusieurs pourcentages s'appliquent successivement, chacun doit être calculé sur la base qui lui est propre (ici la taxe se calcule sur le net après remise, pas sur le total initial) : il faut donc terminer entièrement le premier enchaînement de calculs avant de démarrer le second, en réutilisant son résultat comme nouvelle base.\n\nEn D8 (montant de la remise) : =D6*D7, soit 183 250 × 0,10 = 18 325. En D9 (net après remise) : =D6-D8, soit 183 250 − 18 325 = 164 925. En D11 (montant de la taxe) : =D9*D10, soit 164 925 × 0,025 = 4 123,125. En D12 (montant final à payer) : =D9+D11, soit 164 925 + 4 123,125 = 169 048,125. Le montant final à payer, arrondi à l'unité, s'élève donc à 169 048 F."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une formule de tableur commence toujours par le signe égal et référence des cellules plutôt que de recopier des valeurs calculées de tête.",
+        "Le montant d'une ligne de facture, c'est toujours quantité multipliée par prix unitaire : =B2*C2, jamais un nombre tapé directement.",
+        "La fonction SOMME(plage) additionne une colonne entière de montants sans avoir à écrire une addition terme à terme.",
+        "Un pourcentage déjà saisi dans une cellule (au format 10%) se multiplie directement avec une autre cellule : le tableur convertit seul l'affichage en valeur décimale.",
+        "La recopie de formule (poignée en bas à droite de la cellule) adapte automatiquement les références relatives à chaque nouvelle ligne : elle évite les erreurs de saisie répétée.",
+        "Au BAC comme au BEPC, ce type d'exercice de facture chiffrée revient systématiquement en épreuve pratique de tableur : maîtriser cet enchaînement de formules (montant, total, remise, net à payer) est un automatisme à avoir avant le jour de l'épreuve."
+      ]
+    }
+  ]
+}

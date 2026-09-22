@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-distinguer-donnees-traitements-tle-ti",
+  "meta": {
+    "titre": "Distinguer données et traitements d'une classe",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de classes",
+    "duree_estimee_min": 16,
+    "tags": [
+      "UML",
+      "donnée",
+      "traitement",
+      "attribut",
+      "opération",
+      "approche objet"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex1-q9-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une classe UML rassemble toujours deux types de membres, et confondre les deux catégories fait perdre des points même quand la classe est par ailleurs bien construite. Ce cours affine la distinction déjà vue en construisant une classe : ici, il s'agit de trier rapidement, sous pression d'examen, ce qui relève de l'un ou de l'autre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir représenter une classe UML avec ses attributs et ses opérations.",
+        "Savoir ce qu'est un objet et son état à un instant donné."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ce que l'objet EST contre ce qu'il SAIT FAIRE",
+      "contenu_markdown": "Les données, ou attributs, décrivent ce qu'un objet EST à un instant donné : une valeur stockée, qui caractérise son état (un nom, un salaire, une date). Les traitements, ou opérations (aussi appelées méthodes), décrivent ce qu'un objet SAIT FAIRE : une action qu'il est capable d'exécuter, qui peut éventuellement modifier son propre état ou celui d'un autre objet. Un test simple permet de trancher en cas de doute : une donnée se répond par une valeur (un nombre, un texte, une date), un traitement se répond par un verbe à l'infinitif. Une même classe rassemble nécessairement les deux catégories : une classe réduite à des données serait une simple structure sans comportement, une classe réduite à des traitements n'aurait aucun état à manipuler.",
+      "formule_principale": "Donnée = valeur figée (ce que l'objet EST)  ;  Traitement = action exécutable (ce que l'objet SAIT FAIRE)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "En reprenant la classe Employé du cas SOCOPRO, dont les membres sont matricule, nom, poste, dateEmbauche, salaire, effectuerLocation(), verifierDisponibilite() et consulterPlanning(), identifiez deux données et deux traitements portant sur cette classe.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer le test à chaque membre de la classe",
+          "justification": "Une donnée se répond par une valeur, un traitement se répond par un verbe à l'infinitif.",
+          "resultat_markdown": "matricule, nom, poste, dateEmbauche, salaire répondent tous par une valeur : ce sont des données. effectuerLocation(), verifierDisponibilite(), consulterPlanning() répondent tous par un verbe à l'infinitif : ce sont des traitements."
+        },
+        {
+          "numero": 2,
+          "action": "Sélectionner deux données parmi les candidats identifiés",
+          "justification": "La question n'exige que deux exemples, pas la liste exhaustive.",
+          "resultat_markdown": "Deux données : matricule, salaire."
+        },
+        {
+          "numero": 3,
+          "action": "Sélectionner deux traitements parmi les candidats identifiés",
+          "justification": "Même exigence côté traitements : deux exemples suffisent.",
+          "resultat_markdown": "Deux traitements : effectuerLocation(), verifierDisponibilite()."
+        }
+      ],
+      "conclusion_markdown": "Deux données (matricule, salaire) décrivent ce que l'employé EST ; deux traitements (effectuerLocation, verifierDisponibilite) décrivent ce qu'il SAIT FAIRE dans le système - les deux catégories cohabitent sans jamais se confondre au sein de la même classe Employé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer un résultat calculé, comme « le récapitulatif des locations », comme une donnée de la classe Employé",
+          "pourquoi_faux": "Ce récapitulatif n'est pas une valeur stockée en permanence chez chaque employé : c'est un résultat produit à la demande par un traitement (une opération d'édition), recalculé chaque fois qu'on le consulte.",
+          "correction_markdown": "Avant de citer une donnée, vérifie qu'elle est réellement stockée en permanence pour l'objet, et non recalculée à chaque demande - dans ce second cas, c'est un traitement."
+        },
+        {
+          "erreur_markdown": "Citer « vérifier » seul, sans complément, comme traitement",
+          "pourquoi_faux": "Un traitement doit rester précis et actionnable : « vérifier » seul ne dit pas ce qui est vérifié, ce qui rend le diagramme ambigu pour quiconque le relit.",
+          "correction_markdown": "Formule toujours un traitement avec son complément d'action complet : « vérifierDisponibilite() », jamais « vérifier() » seul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une classe Livre porte les membres suivants : isbn, titre, statut, emprunter(), rendre(). Identifiez une donnée et un traitement de cette classe.",
+          "solution_markdown": "Une donnée : isbn (ou titre, ou statut). Un traitement : emprunter() (ou rendre())."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une classe CompteBancaire porte les membres numero, solde, consulterSolde(), effectuerVirement(). Un élève hésite à classer « solde » comme un traitement, en expliquant que le solde « change » à chaque opération. Corrigez ce raisonnement.",
+          "solution_markdown": "« Solde » reste une donnée, pas un traitement : le fait qu'une valeur puisse changer au fil du temps ne la transforme pas en action. Une donnée décrit l'état de l'objet à un instant donné, et cet état peut évoluer ; ce qui distingue une donnée d'un traitement n'est donc pas sa capacité à changer, mais sa nature - une valeur stockée (donnée) contre une action exécutable qui, elle, peut faire changer cette valeur (traitement, comme effectuerVirement() qui modifie le solde)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une classe Commande porte les membres numero, montantTotal, ligneDeCommandes, calculerMontantTotal(), valider(). Sachant que montantTotal est en réalité recalculé automatiquement chaque fois qu'une ligne de commande est ajoutée ou retirée, discutez si montantTotal doit vraiment figurer comme une donnée stockée de la classe, ou plutôt comme le résultat d'un traitement.",
+          "solution_markdown": "Si montantTotal est systématiquement recalculé à partir de ligneDeCommandes à chaque modification, il ne s'agit pas d'une donnée réellement autonome mais d'une valeur dérivée, entièrement déterminée par calculerMontantTotal() et par le contenu de ligneDeCommandes. Deux traitements corrects sont alors possibles selon la convention retenue : soit ne pas le représenter du tout comme attribut et le documenter uniquement comme résultat de calculerMontantTotal(), soit le conserver comme attribut mais en précisant qu'il s'agit d'un attribut dérivé (convention UML notée par une barre oblique devant son nom : `/montantTotal`), pour signaler explicitement qu'il ne doit jamais être modifié directement mais uniquement recalculé par le traitement associé. Dans les deux cas, la donnée qui a une existence propre et indépendante reste ligneDeCommandes, pas montantTotal."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une donnée répond à la question « quelle valeur ? », un traitement répond à la question « quelle action ? ».",
+        "Un résultat recalculé à la demande n'est jamais une donnée stockée, mais le produit d'un traitement.",
+        "Le fait qu'une valeur change dans le temps ne la transforme pas en traitement : une donnée peut parfaitement évoluer et rester une donnée.",
+        "Formule toujours un traitement avec son complément d'action complet, jamais un verbe seul et ambigu.",
+        "Au BAC TI, cette distinction teste ta compréhension réelle de l'approche objet, au-delà du simple dessin d'un rectangle UML : elle prépare directement la lecture d'un diagramme de classes plus complexe."
+      ]
+    }
+  ]
+}

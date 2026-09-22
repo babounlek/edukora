@@ -1,0 +1,192 @@
+{
+ "cours_id": "cours-equation-avec-racine-carree-1ere-ce",
+ "meta": {
+  "titre": "Résoudre une équation contenant une racine carrée",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Équations irrationnelles",
+  "duree_estimee_min": 25,
+  "tags": ["équation irrationnelle", "racine carrée", "condition d'existence", "élévation au carré", "solution parasite"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2006-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2006 (Cameroun)",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-probatoire-c-e-maths-2006-cameroun-ex1-q1-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Élever au carré fait disparaître la racine — mais au prix d'une perte d'information. L'opération transforme $a = b$ en $a^{2} = b^{2}$, ce qui est aussi vrai si $a = -b$ : on récupère donc des solutions qui n'en sont pas. Ces **solutions parasites** ne sont pas un accident, ce sont une conséquence mécanique de la méthode. La parade est simple et se pose **avant** le calcul : deux conditions, qui délimitent d'emblée l'intervalle de recherche."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir qu'une racine carrée n'est définie que pour un radicande positif",
+    "Savoir qu'une racine carrée est toujours positive ou nulle",
+    "Savoir résoudre une équation du second degré",
+    "Savoir résoudre une inéquation du premier degré"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux conditions avant d'élever au carré",
+   "contenu_markdown": "**Le problème.** L'équation\n\n$$\\sqrt{A} = B$$\n\nn'équivaut **pas** à $A = B^{2}$. Cette dernière est aussi vérifiée par les valeurs pour lesquelles $\\sqrt{A} = -B$, qui ne sont pas solutions.\n\n**Les deux conditions.**\n\n1. **Existence de la racine** : $A \\geqslant 0$.\n2. **Positivité du second membre** : $B \\geqslant 0$, puisqu'une racine carrée l'est toujours.\n\n**L'équivalence complète.**\n\n$$\\sqrt{A} = B \\iff \\begin{cases} A \\geqslant 0 \\\\ B \\geqslant 0 \\\\ A = B^{2} \\end{cases}$$\n\nEn réalité, la première condition découle de la troisième combinée à la seconde, mais on la pose par sécurité.\n\n**Sous ces conditions, l'élévation au carré est une équivalence** : deux quantités positives sont égales si et seulement si leurs carrés le sont.\n\n**La méthode, en cinq gestes.**\n\n1. **Poser** les deux conditions et en déduire l'intervalle de recherche.\n2. **Élever** au carré.\n3. **Résoudre** l'équation polynomiale obtenue.\n4. **Écarter** les solutions hors de l'intervalle.\n5. **Vérifier** les solutions retenues dans l'équation de départ.\n\n**Poser les conditions avant, pas après.** C'est le conseil décisif. En délimitant d'emblée l'intervalle, la vérification finale se réduit à un simple test d'appartenance, et les points de méthode sont acquis.\n\n**Pourquoi les points de méthode comptent.** Le barème récompense les conditions autant que le calcul. Une résolution correcte sans conditions perd la moitié des points ; des conditions bien posées avec une erreur de calcul en conservent une partie.\n\n**Le contrôle final.** Substitue chaque solution retenue dans l'équation **de départ**, pas dans l'équation carrée. C'est la seule vérification qui ait un sens.\n\n**Un cas particulier fréquent.** Si le second membre est un nombre **négatif**, l'équation n'a **aucune** solution, sans aucun calcul : une racine carrée ne peut être négative.",
+   "formule_principale": "\\sqrt{A} = B \\iff \\begin{cases} B \\geqslant 0 \\\\ A = B^{2} \\end{cases}",
+   "variantes": [
+    {
+     "nom": "Équation à deux racines carrées",
+     "quand_utiliser": "Quand les deux membres contiennent un radical",
+     "contenu_markdown": "$$\\sqrt{A} = \\sqrt{B} \\iff \\begin{cases} A \\geqslant 0 \\\\ A = B \\end{cases}$$\n\nIci **une seule** condition suffit, car les deux membres sont automatiquement positifs. L'élévation au carré est directement une équivalence.\n\nC'est le cas le plus simple, et il ne produit jamais de solution parasite."
+    },
+    {
+     "nom": "Inéquation avec racine carrée",
+     "quand_utiliser": "Quand le symbole est une inégalité",
+     "contenu_markdown": "$$\\sqrt{A} < B \\iff \\begin{cases} A \\geqslant 0 \\\\ B > 0 \\\\ A < B^{2} \\end{cases}$$\n\nMais\n\n$$\\sqrt{A} > B \\iff \\begin{cases} A \\geqslant 0 \\\\ B < 0 \\end{cases} \\quad \\text{ou} \\quad \\begin{cases} B \\geqslant 0 \\\\ A > B^{2} \\end{cases}$$\n\nLe second cas se **dédouble** : si le second membre est négatif, l'inégalité est automatiquement vraie dès que la racine existe. C'est une dissymétrie à retenir."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $\\sqrt{4-x} = x-2$. (Probatoire C et E, Cameroun, 2006.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Poser la condition d'existence",
+     "justification": "Le radicande doit être positif ou nul",
+     "resultat_markdown": "$4-x \\geqslant 0$, soit $x \\leqslant 4$"
+    },
+    {
+     "numero": 2,
+     "action": "Poser la condition de positivité",
+     "justification": "Une racine carrée est toujours positive ou nulle, donc le second membre doit l'être",
+     "resultat_markdown": "$x-2 \\geqslant 0$, soit $x \\geqslant 2$"
+    },
+    {
+     "numero": 3,
+     "action": "En déduire l'intervalle de recherche",
+     "justification": "Les deux conditions doivent être simultanément vérifiées",
+     "resultat_markdown": "L'équation ne peut avoir de solution que dans $[2\\,;\\,4]$"
+    },
+    {
+     "numero": 4,
+     "action": "Élever au carré",
+     "justification": "Sur cet intervalle, les deux membres sont positifs : l'opération est une équivalence",
+     "resultat_markdown": "$4-x = (x-2)^{2}$"
+    },
+    {
+     "numero": 5,
+     "action": "Développer",
+     "justification": "Identité remarquable",
+     "resultat_markdown": "$(x-2)^{2} = x^{2}-4x+4$, donc $4-x = x^{2}-4x+4$"
+    },
+    {
+     "numero": 6,
+     "action": "Réduire",
+     "justification": "On regroupe tout dans un membre",
+     "resultat_markdown": "$0 = x^{2}-4x+4-4+x$, soit $x^{2}-3x = 0$"
+    },
+    {
+     "numero": 7,
+     "action": "Résoudre par factorisation",
+     "justification": "Un facteur commun $x$ apparaît",
+     "resultat_markdown": "$x(x-3) = 0$, donc $x = 0$ ou $x = 3$"
+    },
+    {
+     "numero": 8,
+     "action": "Écarter $x = 0$",
+     "justification": "Cette valeur n'appartient pas à $[2\\,;\\,4]$",
+     "resultat_markdown": "Vérification directe : $\\sqrt{4-0} = 2$ alors que $0-2 = -2$, et $2 \\neq -2$"
+    },
+    {
+     "numero": 9,
+     "action": "Retenir $x = 3$",
+     "justification": "Cette valeur appartient à l'intervalle",
+     "resultat_markdown": "$2 \\leqslant 3 \\leqslant 4$"
+    },
+    {
+     "numero": 10,
+     "action": "Vérifier",
+     "justification": "Dans l'équation de départ",
+     "resultat_markdown": "$\\sqrt{4-3} = \\sqrt{1} = 1$ et $3-2 = 1$. L'égalité est vérifiée, donc $S = \\left\\{3\\right\\}$"
+    }
+   ],
+   "conclusion_markdown": "L'ensemble des solutions est $S = \\left\\{3\\right\\}$. Le point décisif est la condition $x-2 \\geqslant 0$ : c'est **elle** qui élimine $x = 0$. Sans elle, on conserverait deux solutions dont une est fausse — $x = 0$ vérifie bien l'équation **au carré**, mais pas l'équation de départ, puisqu'elle exigerait une racine carrée négative. Pose ces conditions avant le calcul, jamais après."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Élever au carré sans poser de condition",
+     "pourquoi_faux": "On obtient alors deux solutions, $0$ et $3$, dont la première est parasite. C'est la conséquence mécanique de l'élévation au carré, qui ne distingue pas $a = b$ de $a = -b$.",
+     "correction_markdown": "Pose les deux conditions **avant** de calculer : radicande positif, second membre positif. L'intervalle obtenu élimine ensuite les parasites d'un simple test d'appartenance."
+    },
+    {
+     "erreur_markdown": "Oublier la condition de positivité du second membre",
+     "pourquoi_faux": "C'est la condition la plus souvent omise, et c'est celle qui élimine ici la solution parasite. La condition d'existence seule, $x \\leqslant 4$, laisserait passer $x = 0$.",
+     "correction_markdown": "Retiens : une racine carrée est **toujours** positive ou nulle. Donc ce à quoi elle est égale doit l'être aussi."
+    },
+    {
+     "erreur_markdown": "Se tromper en développant $(x-2)^{2}$",
+     "pourquoi_faux": "Le développement donne $x^{2}-4x+4$, avec un double produit $-4x$. Écrire $x^{2}-4$ ou $x^{2}+4$ change entièrement l'équation.",
+     "correction_markdown": "Écris l'identité remarquable en entier, avec ses trois termes. Et contrôle numériquement : pour $x = 3$, $(3-2)^{2} = 1$ et $9-12+4 = 1$. Conforme."
+    },
+    {
+     "erreur_markdown": "Vérifier dans l'équation carrée au lieu de l'équation initiale",
+     "pourquoi_faux": "Toutes les solutions de l'équation polynomiale vérifient l'équation carrée : la vérification n'y apprend rien. Seule la substitution dans l'équation **de départ** discrimine.",
+     "correction_markdown": "Substitue dans $\\sqrt{4-x} = x-2$, en calculant séparément les deux membres."
+    },
+    {
+     "erreur_markdown": "Se lancer dans un calcul quand le second membre est négatif",
+     "pourquoi_faux": "Si le second membre est un nombre négatif, l'équation n'a aucune solution : une racine carrée ne peut l'égaler. Le calcul est inutile.",
+     "correction_markdown": "Regarde d'abord le signe du second membre. S'il est constamment négatif, conclus immédiatement : $S = \\emptyset$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Résoudre dans $\\mathbb{R}$ les équations $\\sqrt{x+3} = 2$, $\\sqrt{2x-1} = -3$ et $\\sqrt{x^{2}-4} = \\sqrt{3x}$.",
+     "solution_markdown": "**Première équation : $\\sqrt{x+3} = 2$.**\n\n*Conditions.* Le radicande doit être positif : $x+3 \\geqslant 0$, soit $x \\geqslant -3$. Le second membre $2$ est positif : condition automatiquement vérifiée.\n\n*Élévation au carré.*\n\n$$x+3 = 4 \\qquad \\Longrightarrow \\qquad x = 1$$\n\n*Vérification.* $1 \\geqslant -3$ : la condition est respectée. Et $\\sqrt{1+3} = \\sqrt{4} = 2$. Conforme.\n\n$$S = \\left\\{1\\right\\}$$\n\n**Deuxième équation : $\\sqrt{2x-1} = -3$.**\n\n*Condition de positivité du second membre.* Il vaut $-3$, qui est **négatif**.\n\nOr une racine carrée est toujours positive ou nulle : elle ne peut valoir $-3$.\n\n$$S = \\emptyset$$\n\n*Remarque.* Aucun calcul n'était nécessaire. Élever au carré donnerait $2x-1 = 9$, soit $x = 5$, qui est une solution **entièrement parasite** : $\\sqrt{9} = 3 \\neq -3$.\n\n**Troisième équation : $\\sqrt{x^{2}-4} = \\sqrt{3x}$.**\n\n*Conditions.* Les deux radicandes doivent être positifs :\n\n$$x^{2}-4 \\geqslant 0 \\qquad \\text{et} \\qquad 3x \\geqslant 0$$\n\nLe premier trinôme, de racines $-2$ et $2$, est positif à l'extérieur : $x \\leqslant -2$ ou $x \\geqslant 2$.\n\nLe second donne $x \\geqslant 0$.\n\nL'intersection est $x \\geqslant 2$.\n\n*Élévation au carré.* Les deux membres étant des racines carrées, ils sont positifs : l'opération est une équivalence.\n\n$$x^{2}-4 = 3x \\qquad \\Longrightarrow \\qquad x^{2}-3x-4 = 0$$\n\n*Résolution.* Racine évidente : $-1$, car $1+3-4 = 0$. L'autre vaut $\\dfrac{c}{a} \\div (-1) = 4$.\n\nVérifions : $(x+1)(x-4) = x^{2}-3x-4$. Conforme.\n\n*Sélection.* $x = -1$ n'appartient pas à $[2\\,;\\,+\\infty[$ : rejetée. $x = 4$ y appartient : retenue.\n\n*Vérification.* $\\sqrt{16-4} = \\sqrt{12}$ et $\\sqrt{12}$. Conforme.\n\n$$S = \\left\\{4\\right\\}$$\n\n**Ce qu'il faut retenir.** Trois situations distinctes : une équation ordinaire, une équation impossible détectable d'un coup d'œil, et une équation à deux racines où **une seule** condition suffit puisque les deux membres sont automatiquement positifs."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $\\sqrt{x+5} = x-1$, puis l'inéquation $\\sqrt{x+5} < x-1$.",
+     "solution_markdown": "**Première partie - l'équation.**\n\n*Conditions.*\n\n$$x+5 \\geqslant 0 \\quad \\Longrightarrow \\quad x \\geqslant -5$$\n\n$$x-1 \\geqslant 0 \\quad \\Longrightarrow \\quad x \\geqslant 1$$\n\nIntervalle de recherche : $x \\geqslant 1$.\n\n*Élévation au carré.*\n\n$$x+5 = (x-1)^{2} = x^{2}-2x+1$$\n\n$$0 = x^{2}-2x+1-x-5 \\qquad \\Longrightarrow \\qquad x^{2}-3x-4 = 0$$\n\n*Résolution.* Racine évidente $-1$, autre racine $4$.\n\n*Sélection.* $-1 < 1$ : rejetée. $4 \\geqslant 1$ : retenue.\n\n*Vérification.* $\\sqrt{4+5} = \\sqrt{9} = 3$ et $4-1 = 3$. Conforme.\n\n$$S_{1} = \\left\\{4\\right\\}$$\n\n**Seconde partie - l'inéquation.**\n\n*Conditions.* Les mêmes : $x \\geqslant 1$, puisque le second membre doit être positif pour dépasser une racine carrée.\n\n*Élévation au carré.* Sur $[1\\,;\\,+\\infty[$, les deux membres sont positifs et la fonction carré est croissante : l'inégalité se conserve.\n\n$$x+5 < (x-1)^{2} \\qquad \\Longrightarrow \\qquad x^{2}-3x-4 > 0$$\n\n*Signe du trinôme.* De racines $-1$ et $4$, coefficient dominant positif : il est **positif à l'extérieur** des racines.\n\n$$x < -1 \\qquad \\text{ou} \\qquad x > 4$$\n\n*Intersection avec la condition $x \\geqslant 1$.*\n\n$$S_{2} = \\left]4\\,;\\,+\\infty\\right[$$\n\n*Vérification numérique.* Pour $x = 5$ : $\\sqrt{10} \\approx 3{,}16$ et $5-1 = 4$. On a bien $3{,}16 < 4$. Conforme.\n\nPour $x = 2$ : $\\sqrt{7} \\approx 2{,}65$ et $2-1 = 1$. On a $2{,}65 > 1$ : $2$ n'est pas solution. Conforme.\n\n**Étape - le lien entre les deux.**\n\nLa solution de l'inéquation stricte est l'intervalle situé **après** la solution de l'équation. C'est logique : la fonction $x \\mapsto (x-1) - \\sqrt{x+5}$ s'annule en $4$ et change de signe.\n\n**Ce qu'il faut retenir.** Pour une inéquation $\\sqrt{A} < B$, les conditions sont les mêmes que pour l'équation, et l'élévation au carré conserve le sens de l'inégalité — parce que la fonction carré est croissante sur les positifs."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Résoudre dans $\\mathbb{R}$ l'équation $\\sqrt{x+7} - \\sqrt{x} = 1$, puis déterminer selon les valeurs du réel $m$ le nombre de solutions de $\\sqrt{x+7} - \\sqrt{x} = m$.",
+     "solution_markdown": "**Première partie - le cas $m = 1$.**\n\n**Étape 1 - conditions d'existence.**\n\n$$x+7 \\geqslant 0 \\quad \\text{et} \\quad x \\geqslant 0 \\qquad \\Longrightarrow \\qquad x \\geqslant 0$$\n\n**Étape 2 - isoler une racine.**\n\n$$\\sqrt{x+7} = 1 + \\sqrt{x}$$\n\nLe second membre est **positif** puisque $\\sqrt{x} \\geqslant 0$ : la condition supplémentaire est automatiquement vérifiée.\n\n**Étape 3 - élever au carré.**\n\n$$x+7 = \\left(1+\\sqrt{x}\\right)^{2} = 1 + 2\\sqrt{x} + x$$\n\n**Étape 4 - simplifier.**\n\nLes termes en $x$ s'éliminent :\n\n$$7 = 1 + 2\\sqrt{x} \\qquad \\Longrightarrow \\qquad 2\\sqrt{x} = 6 \\qquad \\Longrightarrow \\qquad \\sqrt{x} = 3$$\n\n**Étape 5 - conclure.**\n\n$$x = 9$$\n\n*Vérification.* $\\sqrt{16} - \\sqrt{9} = 4-3 = 1$. Conforme.\n\n$$S = \\left\\{9\\right\\}$$\n\n**Seconde partie - discussion selon $m$.**\n\n**Étape 6 - étudier la fonction.**\n\nPosons, pour $x \\geqslant 0$ :\n\n$$f(x) = \\sqrt{x+7}-\\sqrt{x}$$\n\n**Étape 7 - transformer par la quantité conjuguée.**\n\n$$f(x) = \\dfrac{\\left(\\sqrt{x+7}-\\sqrt{x}\\right)\\left(\\sqrt{x+7}+\\sqrt{x}\\right)}{\\sqrt{x+7}+\\sqrt{x}} = \\dfrac{(x+7)-x}{\\sqrt{x+7}+\\sqrt{x}} = \\dfrac{7}{\\sqrt{x+7}+\\sqrt{x}}$$\n\nCette écriture est bien plus commode.\n\n**Étape 8 - étudier les variations.**\n\nLe dénominateur $\\sqrt{x+7}+\\sqrt{x}$ est **strictement croissant** sur $[0\\,;\\,+\\infty[$, et strictement positif.\n\nDonc $f$, qui en est l'inverse multiplié par $7$, est **strictement décroissante**.\n\n**Étape 9 - les valeurs extrêmes.**\n\n*En $x = 0$ :*\n\n$$f(0) = \\dfrac{7}{\\sqrt{7}+0} = \\sqrt{7} \\approx 2{,}646$$\n\n*En $+\\infty$ :* le dénominateur tend vers $+\\infty$, donc\n\n$$\\lim_{x \\to +\\infty} f(x) = 0$$\n\n**Étape 10 - le tableau de variation.**\n\n$f$ est strictement décroissante de $\\sqrt{7}$ à $0$, ces deux bornes étant respectivement atteinte et non atteinte.\n\nL'image de $[0\\,;\\,+\\infty[$ par $f$ est donc $\\left]0\\,;\\,\\sqrt{7}\\right]$.\n\n**Étape 11 - conclure la discussion.**\n\n| Valeurs de $m$ | Nombre de solutions |\n|---|---|\n| $m \\leqslant 0$ | aucune |\n| $0 < m \\leqslant \\sqrt{7}$ | **une** |\n| $m > \\sqrt{7}$ | aucune |\n\n**Étape 12 - vérifier sur trois valeurs.**\n\n*Pour $m = 1$ :* $0 < 1 \\leqslant 2{,}646$, donc une solution. On a trouvé $x = 9$. Conforme.\n\n*Pour $m = \\sqrt{7}$ :* la solution est $x = 0$, puisque $f(0) = \\sqrt{7}$. Conforme.\n\n*Pour $m = 3 > \\sqrt{7}$ :* aucune solution. Vérifions : $\\sqrt{x+7} = 3+\\sqrt{x}$ donnerait $x+7 = 9+6\\sqrt{x}+x$, soit $6\\sqrt{x} = -2$ : impossible. Conforme.\n\n**Étape 13 - interpréter.**\n\nLa quantité $\\sqrt{x+7}-\\sqrt{x}$ mesure l'écart entre deux racines carrées de nombres distants de $7$. Cet écart **décroît** quand $x$ augmente — c'est la traduction du fait que la fonction racine carrée s'aplatit.\n\nSon maximum, $\\sqrt{7}$, est atteint tout au début, en $x = 0$.\n\n**Ce qu'il faut retenir.** Multiplier par la **quantité conjuguée** transforme une différence de racines en un quotient sans radical au numérateur. C'est la technique standard pour lever les indéterminations et pour étudier ce type de fonction."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "$\\sqrt{A} = B$ équivaut à $A = B^{2}$ **sous les conditions** $A \\geqslant 0$ et $B \\geqslant 0$.",
+    "Pose les deux conditions **avant** d'élever au carré, jamais après.",
+    "La condition de positivité du second membre est la plus souvent oubliée, et c'est elle qui élimine les parasites.",
+    "L'intervalle obtenu réduit la vérification finale à un test d'appartenance.",
+    "Vérifie toujours dans l'équation **de départ**, pas dans l'équation carrée.",
+    "Si le second membre est négatif, conclus immédiatement : aucune solution.",
+    "Pour $\\sqrt{A} = \\sqrt{B}$, une seule condition suffit : les deux membres sont positifs d'office.",
+    "L'élévation au carré conserve le sens d'une inégalité entre quantités positives.",
+    "Pour $\\sqrt{A} > B$ avec $B$ pouvant être négatif, la résolution se **dédouble**.",
+    "La quantité conjuguée transforme une différence de racines en un quotient sans radical."
+   ]
+  }
+ ]
+}

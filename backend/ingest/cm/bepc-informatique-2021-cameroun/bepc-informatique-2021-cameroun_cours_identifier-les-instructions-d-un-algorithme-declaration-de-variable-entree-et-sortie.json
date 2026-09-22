@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-identifier-les-instructions-d-un-algorithme-declaration-de-variable-entree-et-sortie-3e",
+  "meta": {
+    "titre": "Identifier les instructions d'un algorithme : déclaration de variable, entrée et sortie",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "algorithme",
+      "déclaration de variable",
+      "lecture",
+      "écriture",
+      "types de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BEPC-2021-INFORMATIQUE",
+    "epreuve_titre": "BEPC Épreuve Théorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-informatique-2021-cameroun-ex3-q2.a-0",
+    "rappels_lies": [
+      "rdm-bepc-informatique-2021-cameroun-ex3-q2.b-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Devant un algorithme écrit au tableau, la question tombe toujours : « où est la déclaration de variable ? », « quelle ligne fait entrer la donnée ? ». Ce n'est pas de la mémorisation : chaque ligne d'un algorithme a un rôle repérable à sa forme. Une fois ces rôles identifiés, tu lis n'importe quel algorithme du programme en quelques secondes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un algorithme : une suite finie et ordonnée d'instructions",
+        "Connaître les types de données de base : entier, réel, caractère, chaîne, booléen"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Anatomie d'un algorithme : quatre zones, quatre familles d'instructions",
+      "contenu_markdown": "Tout algorithme se présente en trois blocs, toujours dans cet ordre.\n\n1. **L'en-tête** : `Algorithme <nom>`. Il nomme l'algorithme, sans rien exécuter.\n2. **La partie déclarative**, entre l'en-tête et `Début`. On y trouve les **déclarations de variables**, de la forme `Variable <nom> : <type>;`. Déclarer, c'est réserver en mémoire un emplacement portant un nom et annoncer le genre de valeur qu'il contiendra. Aucune valeur n'y est encore rangée.\n3. **Le corps**, entre `Début` et `Fin`. Il contient les instructions réellement exécutées, dans l'ordre où elles sont écrites.\n\nDans le corps, on distingue quatre familles :\n\n| Famille | Mot-clé | Ce qu'elle fait |\n|---|---|---|\n| Entrée (lecture) | `Lire (x)` | fait entrer dans la variable x une valeur saisie au clavier |\n| Sortie (écriture) | `Ecrire (...)` | affiche un message ou la valeur d'une variable à l'écran |\n| Affectation | `x <- expression` | range dans x le résultat d'un calcul |\n| Structure conditionnelle | `Si ... Alors ... Sinon ... Fin Si` | choisit entre deux traitements selon qu'une condition est vraie ou fausse |\n\n> Le repère décisif : **`Lire` fait entrer une donnée, `Ecrire` fait sortir une information**. Le contenu du message affiché n'y change rien, même s'il contient le mot « saisir ».",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Repérer une déclaration quand plusieurs variables sont regroupées",
+          "quand_utiliser": "Quand l'algorithme déclare plusieurs variables sur une même ligne",
+          "contenu_markdown": "On rencontre souvent `Variables a, b, somme : Entier;`. C'est une seule ligne mais trois déclarations : trois emplacements sont réservés, tous du même type. Si les types diffèrent, il faut plusieurs lignes : `Variable nom : Chaîne;` puis `Variable age : Entier;`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'algorithme suivant, identifier une instruction d'entrée de données et une déclaration de variable.\n\n```\nAlgorithme  Résultat\n    Variable M : Réel;\nDébut\n    Ecrire (\" Saisir la moyenne M du candidat\") ;\n    Lire (M);\n    Si (M >= 10) Alors\n        Ecrire (\"Admis\") ;\n    Sinon\n        Ecrire (\" Refusé\") ;\n    Fin Si\nFin\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Délimiter les trois blocs",
+          "justification": "On repère l'en-tête, puis les mots `Début` et `Fin` qui encadrent le corps.",
+          "resultat_markdown": "En-tête : `Algorithme Résultat`. Partie déclarative : la ligne située juste après. Corps : de `Début` à `Fin`."
+        },
+        {
+          "numero": 2,
+          "action": "Chercher la déclaration dans la partie déclarative",
+          "justification": "Une déclaration a la forme `Variable <nom> : <type>;` et se trouve avant `Début`.",
+          "resultat_markdown": "`Variable M : Réel;`"
+        },
+        {
+          "numero": 3,
+          "action": "Expliquer ce que fait cette déclaration",
+          "justification": "Elle réserve un emplacement mémoire nommé M et fixe le genre de valeur qu'il accueillera.",
+          "resultat_markdown": "M contiendra un nombre réel. Le type Réel est nécessaire : une moyenne peut valoir 12,5, ce qu'un type Entier ne représenterait pas."
+        },
+        {
+          "numero": 4,
+          "action": "Chercher l'instruction d'entrée dans le corps",
+          "justification": "Une instruction d'entrée porte le mot-clé `Lire` et prend pour argument le nom d'une variable.",
+          "resultat_markdown": "`Lire (M);`"
+        },
+        {
+          "numero": 5,
+          "action": "Écarter le faux candidat",
+          "justification": "La ligne `Ecrire (\" Saisir la moyenne M du candidat\")` contient le mot « saisir », mais son mot-clé est `Ecrire` : elle affiche un message et ne lit rien.",
+          "resultat_markdown": "C'est une instruction de sortie, pas d'entrée."
+        },
+        {
+          "numero": 6,
+          "action": "Contrôler la cohérence de l'ensemble",
+          "justification": "La variable M est d'abord déclarée, puis remplie par `Lire`, puis testée par `Si (M >= 10)`. L'ordre est logique.",
+          "resultat_markdown": "Les deux réponses demandées sont bien `Lire (M);` pour l'entrée et `Variable M : Réel;` pour la déclaration."
+        }
+      ],
+      "conclusion_markdown": "Une déclaration se reconnaît à sa position (avant Début) et à sa forme (nom : type) ; une instruction d'entrée se reconnaît au mot-clé Lire, jamais au sens du message affiché."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Désigner `Ecrire (\" Saisir la moyenne M du candidat\")` comme instruction d'entrée.",
+          "pourquoi_faux": "On se laisse guider par le sens du message plutôt que par le mot-clé. Cette ligne se contente d'afficher un texte pour prévenir l'utilisateur ; c'est la ligne suivante, `Lire (M)`, qui attend réellement une valeur au clavier. Les sujets d'examen tendent ce piège volontairement.",
+          "correction_markdown": "Regarde le mot-clé et lui seul : `Ecrire` = sortie, `Lire` = entrée."
+        },
+        {
+          "erreur_markdown": "Confondre déclaration et affectation.",
+          "pourquoi_faux": "`Variable M : Réel;` réserve un emplacement sans y ranger de valeur. `M <- 12` range la valeur 12 dans un emplacement déjà réservé. Ce sont deux opérations distinctes, et la déclaration vient toujours en premier.",
+          "correction_markdown": "Retiens : la déclaration donne un nom et un type, l'affectation donne une valeur."
+        },
+        {
+          "erreur_markdown": "Chercher la déclaration dans le corps de l'algorithme.",
+          "pourquoi_faux": "Les déclarations se placent avant `Début`, dans la partie déclarative. Chercher entre `Début` et `Fin` fait perdre du temps et conduit parfois à citer une affectation à la place.",
+          "correction_markdown": "Balaye toujours la zone située entre le nom de l'algorithme et `Début` : la déclaration ne peut être que là."
+        },
+        {
+          "erreur_markdown": "Oublier le type dans la réponse et écrire seulement « M ».",
+          "pourquoi_faux": "Une déclaration comprend le nom et le type ; citer le seul nom de variable ne montre pas que la ligne a été identifiée comme déclaration.",
+          "correction_markdown": "Recopie la ligne entière du sujet, ponctuation comprise : `Variable M : Réel;`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans l'algorithme du cours, citer une instruction de sortie.",
+          "solution_markdown": "Une instruction de sortie porte le mot-clé `Ecrire`. L'algorithme en contient trois :\n\n- `Ecrire (\" Saisir la moyenne M du candidat\") ;`\n- `Ecrire (\"Admis\") ;`\n- `Ecrire (\" Refusé\") ;`\n\nCiter l'une des trois suffit."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit l'algorithme suivant :\n\n```\nAlgorithme Perimetre\n    Variables L, l, P : Réel;\nDébut\n    Ecrire (\"Entrez la longueur et la largeur\");\n    Lire (L);\n    Lire (l);\n    P <- 2*(L+l);\n    Ecrire (\"Le périmètre vaut : \", P);\nFin\n```\n\nCiter la déclaration de variables, les instructions d'entrée, l'affectation, et dire combien d'emplacements mémoire sont réservés.",
+          "solution_markdown": "**Déclaration de variables** : `Variables L, l, P : Réel;`\n\nElle réserve **trois** emplacements mémoire, nommés L, l et P, tous de type Réel : une seule ligne, mais trois déclarations.\n\n**Instructions d'entrée** : `Lire (L);` et `Lire (l);`, deux instructions distinctes, car chaque `Lire` remplit une seule variable.\n\n**Affectation** : `P <- 2*(L+l);`. Elle calcule d'abord l'expression à droite de la flèche, puis range le résultat dans P. P n'est jamais saisi au clavier : il est calculé.\n\nLes deux `Ecrire` sont des instructions de sortie."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève propose l'algorithme suivant pour calculer le double d'un nombre :\n\n```\nAlgorithme Double\nDébut\n    Lire (N);\n    D <- 2*N;\n    Ecrire (D);\nFin\n```\n\nDire ce qui manque, expliquer la conséquence, et réécrire l'algorithme correctement.",
+          "solution_markdown": "Il manque toute la **partie déclarative** : ni N ni D ne sont déclarés.\n\nConséquence : quand l'instruction `Lire (N)` s'exécute, aucun emplacement mémoire nommé N n'a été réservé et aucun type ne lui a été associé. La machine ne sait ni où ranger la valeur saisie, ni sous quelle forme la coder. Le même problème se pose pour D à l'affectation. En algorithmique comme dans les langages de programmation correspondants (Pascal, C), une variable non déclarée provoque une erreur avant même l'exécution.\n\nIl faut aussi remarquer que D n'est pas saisi mais **calculé** : il doit être déclaré au même titre que N, bien qu'il ne fasse l'objet d'aucun `Lire`. C'est l'erreur de raisonnement la plus fréquente ici, celle qui consiste à ne déclarer que les variables lues au clavier.\n\nVersion corrigée :\n\n```\nAlgorithme Double\n    Variables N, D : Entier;\nDébut\n    Ecrire (\"Entrez un nombre entier\");\n    Lire (N);\n    D <- 2*N;\n    Ecrire (\"Le double vaut : \", D);\nFin\n```\n\nUn message d'invitation avant le `Lire` a été ajouté : il n'est pas obligatoire au sens strict, mais sans lui l'utilisateur voit un écran vide et ne sait pas ce qu'on attend de lui."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois blocs, toujours dans l'ordre : en-tête, déclarations, puis corps entre Début et Fin.",
+        "Une déclaration se trouve avant Début et s'écrit `Variable nom : type;` ; elle réserve la place sans donner de valeur.",
+        "`Lire` fait entrer une donnée, `Ecrire` fait sortir une information : c'est le mot-clé qui décide, jamais le contenu du message.",
+        "Déclare aussi les variables que tu calcules, pas seulement celles que tu lis au clavier.",
+        "Choisis le type en pensant aux valeurs possibles : une moyenne est un Réel, un nombre d'élèves un Entier.",
+        "Au BEPC, la question « identifier dans cet algorithme une instruction d'entrée et une déclaration de variable » vaut couramment 2 points."
+      ]
+    }
+  ]
+}

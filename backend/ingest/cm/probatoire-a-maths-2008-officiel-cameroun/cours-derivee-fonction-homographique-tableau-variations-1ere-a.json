@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-derivee-fonction-homographique-tableau-variations-1ere-a",
+  "meta": {
+    "titre": "Dérivée d'une fonction homographique et tableau de variations",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Fonctions dérivées",
+    "duree_estimee_min": 35,
+    "tags": [
+      "dérivée",
+      "fonction homographique",
+      "tableau de variations",
+      "limites"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "19",
+      "savoir_numero": "IV"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2008-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2008 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-maths-2008-officiel-cameroun-ex3-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction homographique, de la forme $\\dfrac{ax+b}{cx+d}$, décrit par exemple un coût moyen par unité produite ou une concentration qui se dilue : elle croît ou décroît en permanence, sans jamais changer de sens, mais s'approche indéfiniment d'une valeur limite sans jamais l'atteindre. Comprendre comment dériver ce type de fonction et dresser son tableau de variations permet de prévoir tout son comportement, du bord gauche au bord droit de son domaine, sans avoir à calculer une infinité de valeurs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une fonction homographique sous la forme $a+\\dfrac{b}{x+c}$",
+        "Connaître la dérivée d'une fonction puissance et d'une somme",
+        "Savoir calculer une limite simple d'un quotient"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dériver, étudier le signe, conclure sur les limites",
+      "contenu_markdown": "Une fois la fonction écrite sous la forme $f(x)=a+\\dfrac{b}{x+c}$, on la dérive terme à terme. La constante $a$ a une dérivée nulle. Pour le second terme, on utilise :\n$$\\left(\\frac{k}{x+p}\\right)'=\\frac{-k}{(x+p)^2}$$\n\nComme $(x+p)^2$ est toujours strictement positif (sauf en $x=-p$, exclu du domaine), le signe de $f'(x)$ ne dépend que du signe de $-k$ : il est donc constant sur tout l'intervalle de définition, ce qui donne une fonction strictement monotone (toujours croissante ou toujours décroissante). Le tableau de variations rassemble ce sens de variation avec les limites de $f$ calculées aux bornes de son intervalle de définition.",
+      "formule_principale": "\\left(\\dfrac{k}{x+p}\\right)'=\\dfrac{-k}{(x+p)^2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La fonction $f$ est définie sur $]-1\\,;8]$ par $f(x)=\\dfrac12-\\dfrac{7}{2(x+1)}$. Calculer $f'(x)$ et dresser le tableau de variations de $f$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver terme à terme",
+          "justification": "La constante $\\frac12$ a une dérivée nulle ; on applique la formule à $\\dfrac{7}{2(x+1)}=\\dfrac72\\times\\dfrac{1}{x+1}$ avec $k=\\frac72$",
+          "resultat_markdown": "$f'(x)=0-\\left(\\dfrac{-\\frac72}{(x+1)^2}\\right)=\\dfrac{7}{2(x+1)^2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe de $f'(x)$",
+          "justification": "$(x+1)^2>0$ sur tout le domaine ($x\\neq-1$), et $7>0$, $2>0$",
+          "resultat_markdown": "$f'(x)>0$ pour tout $x\\in\\,]-1\\,;8]$, donc $f$ est strictement croissante"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la limite en $x=8$ (borne fermée)",
+          "justification": "On substitue directement, la fonction étant définie en ce point",
+          "resultat_markdown": "$f(8)=\\dfrac{8-6}{2(8+1)}=\\dfrac{2}{18}=\\dfrac19$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la limite quand $x\\to-1^+$ (borne ouverte)",
+          "justification": "$(x+1)\\to0^+$, donc $\\dfrac{7}{2(x+1)}\\to+\\infty$, donc $-\\dfrac{7}{2(x+1)}\\to-\\infty$",
+          "resultat_markdown": "$\\displaystyle\\lim_{x\\to-1^+}f(x)=-\\infty$"
+        }
+      ],
+      "conclusion_markdown": "$f$ est strictement croissante sur $]-1\\,;8]$, avec $\\lim_{x\\to-1^+}f(x)=-\\infty$ et $f(8)=\\dfrac19$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dériver directement $\\dfrac{x-6}{2(x+1)}$ avec la formule du quotient $(u/v)'=\\dfrac{u'v-uv'}{v^2}$, sans être passé par la forme $a+\\dfrac{b}{x+c}$",
+          "pourquoi_faux": "Ce calcul reste possible mais demande de développer un numérateur plus complexe, avec un risque d'erreur de signe ou de calcul bien plus élevé.",
+          "correction_markdown": "Réutilise systématiquement l'écriture $a+\\dfrac{b}{x+c}$ obtenue à l'étape précédente de l'exercice : elle rend la dérivation presque immédiate."
+        },
+        {
+          "erreur_markdown": "Oublier le signe moins dans la formule $\\left(\\dfrac{k}{x+p}\\right)'=\\dfrac{-k}{(x+p)^2}$",
+          "pourquoi_faux": "Ce signe détermine tout le sens de variation de la fonction : l'oublier peut faire conclure à une décroissance là où la fonction croît, ou inversement.",
+          "correction_markdown": "Mémorise la formule avec son signe moins intégré, plutôt que de la reconstruire de tête à chaque exercice."
+        },
+        {
+          "erreur_markdown": "Confondre borne fermée et borne ouverte dans le tableau de variations, par exemple écrire une flèche jusqu'à une valeur numérique sur une borne exclue",
+          "pourquoi_faux": "Une borne ouverte n'est jamais atteinte : la fonction s'en approche indéfiniment (limite), mais aucune valeur numérique de $f$ n'existe à cette borne précise.",
+          "correction_markdown": "Distingue bien dans ton tableau une valeur atteinte (borne fermée, crochet fermé) d'une limite (borne ouverte, crochet ouvert, souvent une valeur infinie)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f$ définie sur $\\mathbb{R}\\setminus\\{2\\}$ par $f(x)=3+\\dfrac{4}{x-2}$. Calculer $f'(x)$.",
+          "solution_markdown": "La constante 3 a une dérivée nulle. On applique la formule au second terme avec $k=4$ :\n$$f'(x)=\\frac{-4}{(x-2)^2}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $g$ définie sur $]0\\,;+\\infty[$ par $g(x)=5-\\dfrac{2}{x}$. Étudier le signe de $g'(x)$ et en déduire le sens de variation de $g$.",
+          "solution_markdown": "On écrit $g(x)=5-\\dfrac{2}{x}=5+\\dfrac{-2}{x}$, donc $k=-2$ dans la formule (attention, ici le terme est déjà négatif) :\n$$g'(x)=\\frac{-(-2)}{x^2}=\\frac{2}{x^2}$$\n\nSur $]0\\,;+\\infty[$, $x^2>0$, donc $g'(x)>0$ : $g$ est strictement croissante sur cet intervalle."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h$ définie sur $]-3\\,;5]$ par $h(x)=\\dfrac{2x+1}{x+3}$. Écrire $h(x)$ sous la forme $a+\\dfrac{b}{x+3}$, calculer $h'(x)$, puis dresser le tableau de variations de $h$.",
+          "solution_markdown": "On écrit $2x+1=2(x+3)-5$ (on vérifie : $2(x+3)-5=2x+6-5=2x+1$, correct).\n\n$$h(x)=\\frac{2(x+3)-5}{x+3}=2-\\frac{5}{x+3}$$\n\nOn dérive avec $k=5$ :\n$$h'(x)=\\frac{-(-5)}{(x+3)^2}=\\frac{5}{(x+3)^2}$$\n\nComme $(x+3)^2>0$ sur $]-3\\,;5]$, $h'(x)>0$ : $h$ est strictement croissante.\n\nLimite quand $x\\to-3^+$ : $(x+3)\\to0^+$, donc $\\dfrac{5}{x+3}\\to+\\infty$, donc $h(x)\\to-\\infty$.\n\nValeur en $x=5$ (borne fermée) : $h(5)=\\dfrac{11}{8}$.\n\n$h$ est donc strictement croissante sur $]-3\\,;5]$, de $-\\infty$ (limite) à $\\dfrac{11}{8}$ (valeur atteinte)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Écrire d'abord la fonction sous la forme $a+\\dfrac{b}{x+c}$ rend la dérivation presque automatique.",
+        "La formule $\\left(\\dfrac{k}{x+p}\\right)'=\\dfrac{-k}{(x+p)^2}$ s'apprend avec son signe moins : c'est lui qui décide du sens de variation.",
+        "Un dénominateur au carré est toujours positif : le signe de la dérivée d'une fonction homographique ne change jamais sur un intervalle où elle est définie.",
+        "Une borne fermée donne une valeur atteinte, une borne ouverte donne une limite : ne confonds jamais les deux dans un tableau.",
+        "Ce type d'étude revient systématiquement au Probatoire comme au BAC : elle prépare directement l'équation de la tangente et l'étude des courbes associées."
+      ]
+    }
+  ]
+}

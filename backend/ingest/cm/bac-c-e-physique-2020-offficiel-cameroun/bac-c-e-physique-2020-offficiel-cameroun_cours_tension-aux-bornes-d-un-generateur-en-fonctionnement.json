@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-tension-bornes-generateur-1ere-c-e",
+  "meta": {
+    "titre": "Tension aux bornes d'un générateur en fonctionnement",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Modélisation du fonctionnement d'un circuit électrique",
+    "duree_estimee_min": 16,
+    "tags": [
+      "tension aux bornes",
+      "loi du générateur",
+      "voltmètre",
+      "vérification croisée"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C",
+      "module_numero": "4",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-physique-2020-offficiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Séries C, E - Cameroun - Session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-e-physique-2020-offficiel-cameroun-ex3-q3.2.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un voltmètre placé aux bornes d'un générateur en fonctionnement n'affiche jamais exactement sa f.é.m. : ce cours te montre comment prévoir précisément ce qu'il va indiquer, et surtout comment vérifier ton résultat par une seconde méthode, un réflexe qui rapporte des points le jour de l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi du générateur $U = E - rI$",
+        "Loi de Pouillet pour calculer $I$ dans un circuit série"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer et vérifier la tension aux bornes d'un générateur",
+      "contenu_markdown": "La tension indiquée par un voltmètre placé aux bornes d'un générateur en fonctionnement se calcule directement par la loi du générateur, à condition de connaître l'intensité qui le traverse réellement. Cette même tension peut aussi se retrouver, dans un circuit série, en appliquant la loi d'Ohm au reste du circuit (tout ce qui n'est pas le générateur) : les deux méthodes doivent donner rigoureusement le même résultat, ce qui permet de vérifier son calcul.",
+      "formule_principale": "U = E - rI \\qquad \\text{et, de façon équivalente dans un circuit série,} \\qquad U = I \\times R_{reste\\ du\\ circuit}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur de f.é.m. $E = 6\\ \\text{V}$ et de résistance interne $r = 3\\ \\Omega$ alimente, en série, un résistor $R = 10\\ \\Omega$ et un ampèremètre de résistance $g = 0{,}5\\ \\Omega$. Déterminer l'indication d'un voltmètre placé aux bornes du générateur, en vérifiant le résultat par deux méthodes.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'intensité du courant (loi de Pouillet)",
+          "justification": "On additionne toutes les résistances du circuit puis on divise la f.é.m. par cette somme.",
+          "resultat_markdown": "$I = \\dfrac{E}{R + r + g} = \\dfrac{6}{10 + 3 + 0{,}5} = \\dfrac{6}{13{,}5} \\approx 0{,}444\\ \\text{A}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $U$ par la loi du générateur",
+          "justification": "On applique $U = E - rI$ avec l'intensité trouvée.",
+          "resultat_markdown": "$U = 6 - 3 \\times 0{,}444 = 6 - 1{,}33 = 4{,}67\\ \\text{V}$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier par la loi d'Ohm sur le reste du circuit",
+          "justification": "Le reste du circuit (hors générateur) est constitué de $R$ et $g$ en série, tous deux traversés par la même intensité $I$.",
+          "resultat_markdown": "$U = I \\times (R + g) = 0{,}444 \\times 10{,}5 = 4{,}67\\ \\text{V}$"
+        },
+        {
+          "numero": 4,
+          "action": "Comparer les deux résultats",
+          "justification": "Les deux valeurs obtenues par des méthodes indépendantes doivent coïncider.",
+          "resultat_markdown": "Les deux calculs donnent $4{,}67\\ \\text{V}$ : le résultat est confirmé"
+        }
+      ],
+      "conclusion_markdown": "Le voltmètre indique $4{,}67\\ \\text{V}$ : la coïncidence des deux méthodes de calcul est la meilleure garantie que le résultat est correct, une vérification à toujours pratiquer quand le temps de l'épreuve le permet."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre $E$ (f.é.m., valeur fixe du générateur) et $U$ (tension en fonctionnement, qui dépend du courant débité).",
+          "pourquoi_faux": "$E$ est une caractéristique intrinsèque du générateur, indépendante de ce qui est branché ; $U$ dépend, elle, du courant réellement débité, donc du reste du circuit.",
+          "correction_markdown": "Ne donne jamais $E$ comme réponse à une question demandant l'indication d'un voltmètre en fonctionnement : calcule systématiquement $U = E - rI$."
+        },
+        {
+          "erreur_markdown": "Considérer que la vérification par une seconde méthode est une perte de temps à l'examen.",
+          "pourquoi_faux": "Un calcul vérifié par deux méthodes indépendantes qui coïncident élimine tout risque d'erreur de calcul non détectée, ce qui vaut largement les quelques secondes supplémentaires nécessaires.",
+          "correction_markdown": "Prends l'habitude de vérifier systématiquement un résultat de circuit électrique par une seconde méthode quand c'est possible : cela devient vite un réflexe rapide, pas une perte de temps."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.é.m. $E = 4{,}5\\ \\text{V}$ et de résistance interne $r = 0{,}5\\ \\Omega$ débite un courant $I = 2\\ \\text{A}$. Calculer la tension $U$ à ses bornes.",
+          "solution_markdown": "$U = E - rI = 4{,}5 - 0{,}5 \\times 2 = 4{,}5 - 1 = 3{,}5\\ \\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur de f.é.m. $E = 9\\ \\text{V}$ alimente en série un résistor $R = 40\\ \\Omega$ ; la résistance interne du générateur est $r = 2\\ \\Omega$. Calculer $I$ par la loi de Pouillet, puis $U$ par les deux méthodes (loi du générateur et loi d'Ohm sur $R$), et vérifier leur cohérence.",
+          "solution_markdown": "$I = \\dfrac{E}{R+r} = \\dfrac{9}{42} \\approx 0{,}214\\ \\text{A}$. Par la loi du générateur : $U = E - rI = 9 - 2 \\times 0{,}214 = 9 - 0{,}429 = 8{,}57\\ \\text{V}$. Par la loi d'Ohm sur $R$ : $U = RI = 40 \\times 0{,}214 = 8{,}57\\ \\text{V}$. Les deux méthodes coïncident, ce qui confirme le résultat."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un générateur de résistance interne $r$ inconnue et de f.é.m. $E = 12\\ \\text{V}$ alimente un résistor $R = 22\\ \\Omega$ en série. On mesure $U = 11\\ \\text{V}$ aux bornes du générateur. Déterminer $r$ en combinant les deux relations disponibles (loi du générateur et loi d'Ohm sur $R$), sans passer par la loi de Pouillet.",
+          "solution_markdown": "La loi d'Ohm sur $R$ donne directement $I = U/R = 11/22 = 0{,}5\\ \\text{A}$ (puisque $U$ est aussi la tension aux bornes de $R$ dans ce circuit à deux dipôles). En reportant dans la loi du générateur $U = E - rI$, on tire $r = \\dfrac{E - U}{I} = \\dfrac{12 - 11}{0{,}5} = \\dfrac{1}{0{,}5} = 2\\ \\Omega$. Cette méthode, qui n'utilise pas explicitement la loi de Pouillet, illustre que les deux lois (générateur et Ohm) suffisent toujours à résoudre un circuit série simple, la loi de Pouillet n'étant qu'un raccourci pratique quand on connaît déjà toutes les résistances."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La tension aux bornes d'un générateur en fonctionnement se calcule par $U = E - rI$, jamais en confondant $U$ et $E$.",
+        "Dans un circuit série, cette même tension s'obtient aussi par la loi d'Ohm appliquée au reste du circuit : les deux calculs doivent coïncider.",
+        "Vérifier systématiquement un résultat par une seconde méthode indépendante est le réflexe le plus rentable en électrocinétique.",
+        "$U$ diminue quand $I$ augmente : plus un générateur débite de courant, plus sa tension chute par rapport à sa f.é.m.",
+        "Au Probatoire, une question 'donner l'indication d'un appareil de mesure' attend un calcul complet, jamais une simple lecture supposée sur un schéma non gradué."
+      ]
+    }
+  ]
+}

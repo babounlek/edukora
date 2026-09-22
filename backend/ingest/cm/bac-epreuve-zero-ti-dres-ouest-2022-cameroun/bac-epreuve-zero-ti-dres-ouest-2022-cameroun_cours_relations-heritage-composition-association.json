@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-relations-heritage-composition-association-tle-ti",
+  "meta": {
+    "titre": "Choisir entre héritage, composition et association dans un diagramme de classe",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagrammes UML structurels",
+    "duree_estimee_min": 25,
+    "tags": [
+      "heritage",
+      "composition",
+      "association",
+      "diagramme de classe"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex1-q2b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois les classes posées, la question la plus délicate d'un diagramme de classe arrive : quel type de trait dessiner entre elles ? Trois questions simples, posées dans le bon ordre, suffisent presque toujours à trancher entre héritage, composition et simple association, les trois relations les plus fréquentes des sujets d'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les cinq symboles de relation du diagramme de classe (association, généralisation, agrégation, composition, dépendance).",
+        "Avoir déjà identifié les classes et leurs attributs."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois questions pour choisir la bonne relation",
+      "contenu_markdown": "Face à deux classes A et B, pose-toi successivement : « est-ce que B EST UN A particulier ? » (si oui, c'est une généralisation, B hérite de A) ; sinon, « est-ce que B est un COMPOSANT de A qui ne peut pas exister sans lui ? » (si oui, c'est une composition, symbolisée par un losange plein du côté de A) ; sinon, « A et B sont-ils simplement en relation, chacun pouvant exister indépendamment de l'autre ? » (si oui, c'est une simple association). Cet ordre de questions n'est pas arbitraire : l'héritage et la composition sont des relations fortes et structurantes, l'association est la relation par défaut quand aucune des deux premières ne s'applique."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un `Eleve` et un `Conducteur` sont chacun un type de `Personne`. Un `Bus` est composé d'une `Carrosserie` et de `Siege`. Un `Bus` transporte des `Personne`. Déterminez la nature de chacune de ces trois relations.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tester Eleve/Conducteur face à Personne",
+          "justification": "Un élève « est une » personne, un conducteur « est une » personne : le test « est-ce un A particulier » est positif.",
+          "resultat_markdown": "Eleve et Conducteur héritent de Personne (généralisation)."
+        },
+        {
+          "numero": 2,
+          "action": "Tester Carrosserie et Siege face à Bus",
+          "justification": "Une carrosserie et des sièges n'ont pas de raison d'exister en dehors du bus auquel ils appartiennent : le test « composant qui ne survit pas sans le tout » est positif.",
+          "resultat_markdown": "Bus est composé de Carrosserie et de Siege (composition, losange plein côté Bus)."
+        },
+        {
+          "numero": 3,
+          "action": "Tester Bus face à Personne",
+          "justification": "Un bus transporte des personnes, mais un élève ou un conducteur continue d'exister indépendamment du bus qui le transporte à un instant donné : ni héritage, ni composition ne s'appliquent.",
+          "resultat_markdown": "Bus est associé à Personne par une simple association, nommée « transporte »."
+        }
+      ],
+      "conclusion_markdown": "Trois relations, trois réponses différentes aux mêmes trois questions : « est-ce un A ? », « est-ce un composant indissociable de A ? », sinon, association simple."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Modéliser toute relation entre deux classes par une association, par défaut",
+          "pourquoi_faux": "L'association est la relation la plus faible ; l'utiliser systématiquement fait perdre l'information importante qu'apporte un héritage (« est un ») ou une composition (le composant ne survit pas au tout).",
+          "correction_markdown": "Teste toujours d'abord l'héritage, puis la composition, avant de te rabattre sur l'association."
+        },
+        {
+          "erreur_markdown": "Modéliser une relation de transport ou d'usage temporaire par une composition",
+          "pourquoi_faux": "La composition implique que la partie ne survit pas à la destruction du tout : ce n'est pas le cas d'une personne transportée par un bus, qui continue d'exister même si ce bus est retiré du service.",
+          "correction_markdown": "Pose-toi systématiquement la question de la survie : si l'élément « contenu » continue d'exister sans le tout, ce n'est jamais une composition."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une `Roue` ne peut exister, dans ce système, que montée sur une `Voiture` précise, et disparaît avec elle. Quelle relation UML choisir entre `Voiture` et `Roue` ?",
+          "solution_markdown": "Une composition : la roue est un composant qui ne survit pas à la destruction de la voiture à laquelle elle appartient (losange plein du côté Voiture)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un `Etudiant` s'inscrit à plusieurs `Cours`, et un `Cours` accueille plusieurs `Etudiant`. Ni l'étudiant ni le cours ne disparaissent si l'autre est supprimé. Quelle relation choisir, et pourquoi n'est-ce ni un héritage ni une composition ?",
+          "solution_markdown": "Il s'agit d'une simple association. Ce n'est pas un héritage car un étudiant n'« est » pas un cours (et réciproquement) ; ce n'est pas une composition car aucun des deux ne dépend de l'existence de l'autre pour survivre : un étudiant reste étudiant même si tous ses cours sont annulés, et un cours peut exister sans aucun étudiant inscrit."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une classe `Chapitre` ne peut exister que rattachée à un `Livre` précis (si le livre est supprimé du système, tous ses chapitres le sont aussi), mais un `Auteur` peut écrire plusieurs `Livre`, et un `Livre` continue d'exister dans le catalogue même après le décès de son auteur. Modélisez les deux relations (Livre-Chapitre et Auteur-Livre) et justifiez pourquoi elles ne sont pas de même nature malgré leur ressemblance apparente (un livre est « lié » à ses chapitres comme à son auteur).",
+          "solution_markdown": "La relation Livre-Chapitre est une composition : un chapitre ne survit pas à la suppression du livre auquel il appartient, ce qui correspond exactement à la définition d'une appartenance forte (losange plein du côté Livre). La relation Auteur-Livre, en revanche, est une simple association : bien que chaque livre ait un auteur, le livre continue d'exister indépendamment de la survie de son auteur, il n'y a donc pas de dépendance de survie entre les deux classes. La ressemblance apparente (les deux relations relient un « contenant » à un élément qui lui est associé) ne doit pas masquer le critère décisif : seule la dépendance de survie de l'élément contenu envers le tout signale une composition ; son absence ramène systématiquement à une simple association."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois questions dans l'ordre : « est-ce un A ? » (généralisation), sinon « est-ce un composant qui ne survit pas sans A ? » (composition), sinon association simple.",
+        "L'héritage se lit « est un » ; la composition se lit « est composé de, et ne survit pas sans » ; l'association se lit « est en relation avec », sans dépendance de survie.",
+        "Le critère décisif entre composition et association est toujours la survie de l'élément contenu si le tout disparaît.",
+        "Au BAC, justifie toujours ton choix de relation par une phrase du type « ...ne peut pas exister sans... » ou « ...continue d'exister même si... » : c'est exactement ce raisonnement que le correcteur attend de voir écrit."
+      ]
+    }
+  ]
+}

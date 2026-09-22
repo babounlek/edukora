@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-choisir-un-type-entier-selon-sa-plage-de-valeurs-en-c-ti-2021",
+  "meta": {
+    "titre": "Choisir un type entier selon sa plage de valeurs en C",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Types et variables en langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "types entiers",
+      "unsigned long long",
+      "dépassement de capacité",
+      "langage C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex2-q8-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le langage C propose plusieurs types pour représenter un nombre entier, chacun avec sa propre taille en mémoire et donc sa propre plage de valeurs représentables. Choisir le bon type revient toujours à répondre à la même question concrète : quelle est la plus grande valeur que mon programme devra un jour manipuler ?"
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le type unsigned int et sa plage de valeurs (voir le cours dédié)",
+        "Savoir qu'un type occupe un nombre fixe d'octets en mémoire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Plus d'octets, plus grande plage : hiérarchie des types entiers en C",
+      "contenu_markdown": "Chaque type entier du C occupe un nombre d'octets fixe (dépendant en partie du compilateur et de l'architecture, mais stable dans les grandes lignes sur les systèmes actuels), qui détermine directement sa plage de valeurs représentables :\n\n| Type | Taille usuelle | Plage usuelle (non signé) |\n|---|---|---|\n| `unsigned char` | 1 octet | 0 à 255 |\n| `unsigned short` | 2 octets | 0 à 65 535 |\n| `unsigned int` | 4 octets | 0 à 4 294 967 295 |\n| `unsigned long` | 4 ou 8 octets (dépend du système) | jusqu'à 2⁶⁴-1 |\n| `unsigned long long` | 8 octets | 0 à 18 446 744 073 709 551 615 |\n\nLe type `unsigned long long` (souvent noté `unsigned long long int`) est le type entier standard le plus large disponible en C : c'est celui qu'on choisit dès qu'un calcul risque de dépasser la capacité d'un `unsigned int`, sans avoir besoin de représenter de valeurs négatives.\n\nPour un nombre qui doit rester positif (comme un résultat de factorielle), toujours préférer la version `unsigned` du type choisi : elle double la plus grande valeur positive représentable par rapport à la version signée de même taille, puisqu'aucun bit n'est gaspillé sur la représentation d'un signe inutile."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sachant que unsigned int ne peut contenir une valeur plus grande que 8!, proposer un type de donnée qui peut contenir le plus grand nombre possible pour ce programme.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler la limite du type actuel",
+          "justification": "unsigned int plafonne à 4 294 967 295, largement suffisant pour 8! = 40320 mais pas pour de plus grandes factorielles",
+          "resultat_markdown": "unsigned int (4 octets) plafonne à 4 294 967 295."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le type entier standard le plus large disponible en C",
+          "justification": "La question demande le type contenant le PLUS GRAND nombre possible, pas seulement un type suffisant",
+          "resultat_markdown": "unsigned long long (8 octets), plafonnant à 18 446 744 073 709 551 615."
+        },
+        {
+          "numero": 3,
+          "action": "Justifier le choix de la version non signée",
+          "justification": "Un résultat de factorielle n'est jamais négatif",
+          "resultat_markdown": "Puisque le résultat attendu (une factorielle) est toujours positif, unsigned évite de gaspiller la moitié de la plage sur des valeurs négatives inutiles à ce calcul."
+        }
+      ],
+      "conclusion_markdown": "unsigned long long est le type qui repousse le plus loin la limite « entre 1 et 8 » imposée par le programme, en autorisant des factorielles bien plus grandes sans dépassement de capacité."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Proposer simplement « long » sans préciser « long long » ni « unsigned »",
+          "pourquoi_faux": "long seul, selon le système, peut avoir exactement la même taille que int (4 octets) et n'apporter alors aucun gain de plage ; il faut préciser long long pour garantir 8 octets sur la quasi-totalité des compilateurs actuels.",
+          "correction_markdown": "Toujours préciser long long (pas seulement long) quand on veut garantir la plus grande plage possible, et ajouter unsigned si les valeurs négatives sont inutiles."
+        },
+        {
+          "erreur_markdown": "Proposer float ou double pour représenter un résultat de factorielle censé rester un entier exact",
+          "pourquoi_faux": "Les types à virgule flottante ne représentent exactement que certaines valeurs : au-delà d'un certain seuil, ils perdent en précision sur les grands entiers, ce qui peut produire un résultat légèrement faux plutôt qu'un dépassement franc et détectable.",
+          "correction_markdown": "Pour un résultat qui doit rester un entier exact, toujours choisir un type entier plus large, jamais un type à virgule flottante, même si sa plage affichée semble plus grande."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un compteur ne dépassera jamais 200 et reste toujours positif. Quel est le type le plus économe en mémoire pour le représenter ?",
+          "solution_markdown": "unsigned char (1 octet, plage 0 à 255), amplement suffisant et le plus économe en mémoire parmi les types courants."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un programme doit stocker une population mondiale approximative, de l'ordre de 8 milliards, toujours positive. unsigned int convient-il ? Justifier et proposer un type adapté si nécessaire.",
+          "solution_markdown": "unsigned int ne convient pas : sa plage plafonne à environ 4,29 milliards, inférieure aux 8 milliards à représenter. unsigned long long (plage jusqu'à environ 18,4 trillions) convient largement."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Même avec unsigned long long, il existe une valeur de n à partir de laquelle factorielle(n) dépasse encore sa capacité (2⁶⁴-1 ≈ 1,8 × 10¹⁹). Que peut-on répondre à un énoncé qui demanderait de calculer une factorielle de n'importe quelle taille, sans jamais risquer de dépassement, quel que soit le type entier choisi ?",
+          "solution_markdown": "Aucun type entier natif de taille fixe ne peut garantir l'absence de dépassement pour une factorielle de taille arbitraire, puisque la factorielle croît plus vite que n'importe quelle plage fixe de bits. La solution consiste alors à abandonner les types entiers natifs au profit d'une représentation en « grands nombres » (arithmétique en précision arbitraire, souvent implémentée avec un tableau ou une chaîne de chiffres et des fonctions de calcul dédiées), une technique qui dépasse le cadre des types de base du C mais qui répond au besoin réel d'un calcul sans limite de taille."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Plus un type entier occupe d'octets, plus sa plage de valeurs représentables est étendue.",
+        "unsigned long long (8 octets) est le type entier standard le plus large disponible en C.",
+        "unsigned se justifie dès que le résultat attendu ne peut jamais être négatif : cela double la plus grande valeur positive représentable.",
+        "Un type à virgule flottante n'est jamais une bonne réponse pour représenter un grand entier exact : privilégier toujours un type entier plus large."
+      ]
+    }
+  ]
+}

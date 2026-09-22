@@ -1,0 +1,191 @@
+{
+ "cours_id": "cours-variations-fonction-homographique-1ere-ce",
+ "meta": {
+  "titre": "Étudier les variations d'une fonction homographique",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Dérivation",
+  "duree_estimee_min": 25,
+  "tags": ["dérivée d'un quotient", "sens de variation", "tableau de variation", "fonction homographique", "signe de la dérivée"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VI"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "4",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex4-qA1b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "La dérivée d'une homographique réserve une bonne surprise : son numérateur est une **constante**. Le signe ne dépend donc de rien, et la fonction est monotone sur chacun de ses deux intervalles — toujours dans le même sens. Encore faut-il ne pas développer le dénominateur : laissé sous forme de carré, il est visiblement positif, et l'étude du signe tient en une ligne. Développé, on perd cette évidence et l'on s'engage dans un tableau de signes inutile."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la formule de dérivation d'un quotient",
+    "Savoir qu'un carré est positif ou nul",
+    "Connaître le lien entre signe de la dérivée et sens de variation",
+    "Savoir dresser un tableau de variation avec une valeur interdite"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Numérateur constant, dénominateur au carré",
+   "contenu_markdown": "**La formule du quotient.**\n\n$$\\left(\\frac{u}{v}\\right)' = \\frac{u'v - uv'}{v^{2}}$$\n\nL'ordre du numérateur importe : c'est $u'v$ **moins** $uv'$, jamais l'inverse.\n\n**La dérivée d'une homographique.** Pour $f(x) = \\dfrac{ax+b}{cx+d}$, on a $u' = a$ et $v' = c$, donc\n\n$$f'(x) = \\frac{a(cx+d) - (ax+b)c}{(cx+d)^{2}} = \\frac{acx+ad-acx-bc}{(cx+d)^{2}} = \\frac{ad-bc}{(cx+d)^{2}}$$\n\n**Le numérateur est une constante**, $ad-bc$, indépendante de $x$. C'est le fait décisif.\n\n**Le signe se lit immédiatement.** Le dénominateur $(cx+d)^{2}$ est un carré, donc **strictement positif** partout où la fonction est définie. Le signe de $f'$ est donc celui de $ad-bc$ :\n\n| Signe de $ad-bc$ | Sens de variation |\n|---|---|\n| $> 0$ | $f$ strictement **croissante** sur chaque intervalle |\n| $< 0$ | $f$ strictement **décroissante** sur chaque intervalle |\n| $= 0$ | $f$ est constante : ce n'est plus une homographique |\n\n**Ne développe jamais le dénominateur.** Laissé sous forme $(cx+d)^{2}$, il est visiblement positif. Développé en $c^{2}x^{2}+2cdx+d^{2}$, cette évidence disparaît et l'on est tenté d'étudier un signe qui n'en a pas besoin.\n\n**La méthode, en quatre gestes.**\n\n1. **Identifier** $u$, $v$, $u'$, $v'$.\n2. **Appliquer** la formule et réduire le **numérateur** seulement.\n3. **Conclure** sur le signe, sans toucher au dénominateur.\n4. **Dresser** le tableau, en marquant la valeur interdite par une double barre.\n\n**L'avertissement essentiel.** Une homographique est monotone sur **chacun** de ses deux intervalles, mais **jamais sur leur réunion**. Écrire « $f$ est croissante sur $\\mathbb{R} \\setminus \\left\\{-2\\right\\}$ » est faux : entre les deux branches, la fonction saute de $+\\infty$ à $-\\infty$.\n\n**La double barre.** Dans le tableau, la valeur interdite se marque par une double barre verticale, qui signale que la fonction n'y est pas définie et que le tableau se lit en deux morceaux indépendants.\n\n**Le contrôle par l'écriture décomposée.** Pour $f(x) = \\alpha + \\dfrac{\\beta}{cx+d}$, la dérivée vaut\n\n$$f'(x) = -\\frac{\\beta c}{(cx+d)^{2}}$$\n\nElle donne le même signe, et permet de vérifier le calcul en deux lignes.",
+   "formule_principale": "f(x) = \\frac{ax+b}{cx+d} \\implies f'(x) = \\frac{ad-bc}{(cx+d)^{2}}",
+   "variantes": [
+    {
+     "nom": "Étude par l'écriture décomposée",
+     "quand_utiliser": "Quand on veut éviter la formule du quotient",
+     "contenu_markdown": "L'écriture $f(x) = 1 - \\dfrac{1}{x+2}$ permet de conclure sans dériver un quotient.\n\nLa fonction $x \\mapsto \\dfrac{1}{x+2}$ est décroissante sur $\\left]-2\\,;\\,+\\infty\\right[$, donc son opposée est croissante, et ajouter la constante $1$ ne change rien.\n\n**$f$ est croissante.** Le raisonnement est plus rapide, mais le Probatoire attend en général le passage explicite par la dérivée."
+    },
+    {
+     "nom": "Dérivée d'un quotient plus général",
+     "quand_utiliser": "Quand numérateur ou dénominateur est de degré supérieur",
+     "contenu_markdown": "La formule reste la même, mais le numérateur de $f'$ n'est plus constant : c'est un polynôme dont il faut **étudier le signe**, généralement par le discriminant.\n\nLe dénominateur, lui, reste un carré donc positif : c'est toujours le seul numérateur qui décide. Cette observation vaut pour **tout** quotient, quel que soit le degré."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Soit $f(x) = \\dfrac{x+1}{x+2}$. Étudier les variations de $f$ sur $\\left]-2\\,;\\,+\\infty\\right[$ et dresser son tableau de variation, sachant que $\\lim_{x \\to (-2)^{+}} f(x) = -\\infty$ et $\\lim_{x \\to +\\infty} f(x) = 1$. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier $u$ et $v$",
+     "justification": "$f$ est le quotient de deux fonctions affines",
+     "resultat_markdown": "$u(x) = x+1$ et $v(x) = x+2$, donc $u'(x) = 1$ et $v'(x) = 1$"
+    },
+    {
+     "numero": 2,
+     "action": "Appliquer la formule du quotient",
+     "justification": "$\\left(\\dfrac{u}{v}\\right)' = \\dfrac{u'v-uv'}{v^{2}}$",
+     "resultat_markdown": "$f'(x) = \\dfrac{1 \\times (x+2) - (x+1) \\times 1}{(x+2)^{2}}$"
+    },
+    {
+     "numero": 3,
+     "action": "Réduire le numérateur",
+     "justification": "On développe et l'on simplifie, en surveillant le signe moins",
+     "resultat_markdown": "$(x+2)-(x+1) = x+2-x-1 = 1$"
+    },
+    {
+     "numero": 4,
+     "action": "Écrire la dérivée",
+     "justification": "Le dénominateur reste sous forme de carré",
+     "resultat_markdown": "$f'(x) = \\dfrac{1}{(x+2)^{2}}$"
+    },
+    {
+     "numero": 5,
+     "action": "Étudier le signe",
+     "justification": "Numérateur constant égal à $1 > 0$, dénominateur carré strictement positif pour $x \\neq -2$",
+     "resultat_markdown": "$f'(x) > 0$ pour tout $x \\in \\left]-2\\,;\\,+\\infty\\right[$"
+    },
+    {
+     "numero": 6,
+     "action": "Conclure sur le sens de variation",
+     "justification": "Une dérivée strictement positive caractérise la stricte croissance",
+     "resultat_markdown": "$f$ est **strictement croissante** sur $\\left]-2\\,;\\,+\\infty\\right[$"
+    },
+    {
+     "numero": 7,
+     "action": "Dresser le tableau",
+     "justification": "On reporte les limites établies à la question précédente",
+     "resultat_markdown": "$$\n\\begin{array}{|c|ccc|}\n\\hline x & -2 & & +\\infty \\\\\n\\hline f'(x) & \\| & + & \\\\\n\\hline & & & 1 \\\\\nf & & \\nearrow & \\\\\n & -\\infty & & \\\\\n\\hline\n\\end{array}\n$$"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler numériquement",
+     "justification": "Deux valeurs suffisent à vérifier le sens",
+     "resultat_markdown": "$f(-1) = \\dfrac{0}{1} = 0$ et $f(0) = \\dfrac{1}{2}$ : la fonction augmente bien"
+    },
+    {
+     "numero": 9,
+     "action": "Contrôler la cohérence avec l'asymptote",
+     "justification": "La fonction croît vers $1$ sans jamais l'atteindre",
+     "resultat_markdown": "Toutes les valeurs prises sont strictement inférieures à $1$, conformément à $f(x) - 1 = -\\dfrac{1}{x+2} < 0$"
+    }
+   ],
+   "conclusion_markdown": "La fonction est strictement croissante sur $\\left]-2\\,;\\,+\\infty\\right[$, de $-\\infty$ à $1$. Retiens le point clé : le numérateur de $f'$ est une **constante**, ce qui rend l'étude du signe immédiate. Et note la restriction de l'énoncé : $f$ est aussi croissante sur $\\left]-\\infty\\,;\\,-2\\right[$, mais **pas** sur la réunion des deux intervalles. L'énoncé a d'ailleurs pris soin de limiter l'étude à une seule branche."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Inverser l'ordre au numérateur de la dérivée",
+     "pourquoi_faux": "La formule est $u'v - uv'$, pas $uv' - u'v$. L'inversion change le signe de la dérivée, donc le sens de variation : on conclurait à une fonction décroissante.",
+     "correction_markdown": "Retiens l'ordre par la place de l'apostrophe : le terme **avec** l'apostrophe sur $u$ vient en premier. Et contrôle numériquement avec deux valeurs de $f$."
+    },
+    {
+     "erreur_markdown": "Développer le dénominateur",
+     "pourquoi_faux": "Écrire $x^{2}+4x+4$ au lieu de $(x+2)^{2}$ n'est pas faux, mais on perd l'évidence de la positivité et l'on est tenté d'étudier inutilement le signe d'un trinôme.",
+     "correction_markdown": "Laisse toujours le dénominateur sous forme de carré. Une seule phrase suffit alors : « un carré est strictement positif là où il ne s'annule pas »."
+    },
+    {
+     "erreur_markdown": "Écrire que $f$ est croissante sur $\\mathbb{R} \\setminus \\left\\{-2\\right\\}$",
+     "pourquoi_faux": "La monotonie ne vaut que sur un **intervalle**. Entre les deux branches, la fonction saute de $+\\infty$ à $-\\infty$ : elle décroît globalement en traversant la valeur interdite.",
+     "correction_markdown": "Énonce le sens de variation **intervalle par intervalle** : croissante sur $\\left]-\\infty\\,;\\,-2\\right[$ et croissante sur $\\left]-2\\,;\\,+\\infty\\right[$, sans jamais réunir les deux."
+    },
+    {
+     "erreur_markdown": "Oublier la double barre dans le tableau",
+     "pourquoi_faux": "Sans elle, le tableau suggère que la fonction est définie en $-2$ et qu'elle y passe continûment. La double barre signale la discontinuité et découpe le tableau en deux parties indépendantes.",
+     "correction_markdown": "Marque la valeur interdite par une double barre verticale dans chaque ligne du tableau, et n'y écris aucune valeur de $f$."
+    },
+    {
+     "erreur_markdown": "Se tromper en réduisant le numérateur",
+     "pourquoi_faux": "Le calcul $(x+2)-(x+1)$ exige de distribuer le signe moins : $x+2-x-1 = 1$. Oublier de changer le signe du $1$ donnerait $x+2-x+1 = 3$, ce qui ne change pas la conclusion ici mais fausserait un autre exercice.",
+     "correction_markdown": "Écris les parenthèses, puis supprime-les dans une étape distincte. Et contrôle par la formule générale : $ad-bc = 1 \\times 2 - 1 \\times 1 = 1$. Conforme."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Étudier les variations de $g(x) = \\dfrac{3x-1}{x+4}$ et de $h(x) = \\dfrac{2-x}{x+1}$ sur chacun des intervalles de leur ensemble de définition.",
+     "solution_markdown": "**La fonction $g$.**\n\n**Étape 1 - ensemble de définition.**\n\n$$D_{g} = \\mathbb{R} \\setminus \\left\\{-4\\right\\}$$\n\n**Étape 2 - dériver.**\n\n$u(x) = 3x-1$, $v(x) = x+4$, donc $u' = 3$ et $v' = 1$ :\n\n$$g'(x) = \\dfrac{3(x+4) - (3x-1)}{(x+4)^{2}} = \\dfrac{3x+12-3x+1}{(x+4)^{2}} = \\dfrac{13}{(x+4)^{2}}$$\n\n*Contrôle par la formule générale :* $ad-bc = 3 \\times 4 - (-1) \\times 1 = 12+1 = 13$. Conforme.\n\n**Étape 3 - conclure.**\n\nLe numérateur vaut $13 > 0$ et le dénominateur est un carré strictement positif.\n\n**$g$ est strictement croissante sur $\\left]-\\infty\\,;\\,-4\\right[$ et sur $\\left]-4\\,;\\,+\\infty\\right[$.**\n\n**La fonction $h$.**\n\n**Étape 4 - ensemble de définition.**\n\n$$D_{h} = \\mathbb{R} \\setminus \\left\\{-1\\right\\}$$\n\n**Étape 5 - dériver.**\n\n$u(x) = 2-x$, $v(x) = x+1$, donc $u' = -1$ et $v' = 1$ :\n\n$$h'(x) = \\dfrac{(-1)(x+1) - (2-x)(1)}{(x+1)^{2}} = \\dfrac{-x-1-2+x}{(x+1)^{2}} = \\dfrac{-3}{(x+1)^{2}}$$\n\n*Contrôle :* $ad-bc = (-1) \\times 1 - 2 \\times 1 = -1-2 = -3$. Conforme.\n\n**Étape 6 - conclure.**\n\nLe numérateur vaut $-3 < 0$, le dénominateur est positif.\n\n**$h$ est strictement décroissante sur $\\left]-\\infty\\,;\\,-1\\right[$ et sur $\\left]-1\\,;\\,+\\infty\\right[$.**\n\n**Étape 7 - contrôles numériques.**\n\n*Pour $g$ :* $g(0) = \\dfrac{-1}{4} = -0{,}25$ et $g(1) = \\dfrac{2}{5} = 0{,}4$. Croissance confirmée.\n\n*Pour $h$ :* $h(0) = \\dfrac{2}{1} = 2$ et $h(1) = \\dfrac{1}{2} = 0{,}5$. Décroissance confirmée.\n\n**Ce qu'il faut retenir.** La formule $ad-bc$ donne le numérateur de la dérivée **sans aucun calcul intermédiaire**. Un seul nombre à calculer, un seul signe à lire : c'est le raccourci le plus rentable sur les homographiques."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Soit $f(x) = \\dfrac{x+1}{x+2}$. Dresser le tableau de variation complet de $f$ sur son ensemble de définition, en incluant les deux branches. Expliquer pourquoi $f$ n'est pas croissante sur $\\mathbb{R} \\setminus \\left\\{-2\\right\\}$, en exhibant un contre-exemple.",
+     "solution_markdown": "**Étape 1 - les limites sur les deux branches.**\n\n*En $-\\infty$ :* $\\lim f(x) = 1$ (quotient des coefficients dominants).\n\n*À gauche de $-2$ :* numérateur $\\to -1 < 0$, dénominateur $\\to 0^{-}$, donc $\\lim = +\\infty$.\n\n*À droite de $-2$ :* $\\lim = -\\infty$.\n\n*En $+\\infty$ :* $\\lim = 1$.\n\n**Étape 2 - la dérivée.**\n\n$$f'(x) = \\dfrac{1}{(x+2)^{2}} > 0 \\qquad \\text{pour tout } x \\neq -2$$\n\n**Étape 3 - le tableau complet.**\n\n$$\n\\begin{array}{|c|ccccc|}\n\\hline x & -\\infty & & -2 & & +\\infty \\\\\n\\hline f'(x) & & + & \\| & + & \\\\\n\\hline & & +\\infty & \\| & & 1 \\\\\nf & \\nearrow & & \\| & \\nearrow & \\\\\n & 1 & & \\| & -\\infty & \\\\\n\\hline\n\\end{array}\n$$\n\n**Lecture :** sur $\\left]-\\infty\\,;\\,-2\\right[$, $f$ croît de $1$ à $+\\infty$. Sur $\\left]-2\\,;\\,+\\infty\\right[$, elle croît de $-\\infty$ à $1$.\n\n**Étape 4 - le contre-exemple.**\n\nPrenons $x_{1} = -3$ et $x_{2} = 0$, avec $x_{1} < x_{2}$.\n\n$$f(-3) = \\dfrac{-3+1}{-3+2} = \\dfrac{-2}{-1} = 2$$\n\n$$f(0) = \\dfrac{1}{2} = 0{,}5$$\n\nOn a $x_{1} < x_{2}$ mais $f(x_{1}) = 2 > 0{,}5 = f(x_{2})$.\n\n**La fonction ne conserve donc pas l'ordre : elle n'est pas croissante sur $\\mathbb{R} \\setminus \\left\\{-2\\right\\}$.**\n\n**Étape 5 - interpréter.**\n\nLe théorème « $f' > 0$ implique $f$ croissante » ne vaut que sur un **intervalle**. Or $\\mathbb{R} \\setminus \\left\\{-2\\right\\}$ est une réunion de deux intervalles disjoints, pas un intervalle.\n\nEntre les deux branches, la fonction « redescend » brutalement de $+\\infty$ à $-\\infty$, ce qui détruit la monotonie globale sans contredire la dérivée positive.\n\n**Ce qu'il faut retenir.** L'hypothèse « sur un intervalle » du théorème n'est pas décorative. Une réunion d'intervalles ne convient pas, et une fonction de dérivée partout positive peut parfaitement ne pas être croissante sur son ensemble de définition."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Soit $m$ un réel et $f_{m}(x) = \\dfrac{x+m}{mx+1}$. Déterminer l'ensemble de définition et les variations de $f_{m}$ selon les valeurs de $m$, en identifiant tous les cas particuliers.",
+     "solution_markdown": "**Étape 1 - repérer le cas dégénéré du dénominateur.**\n\n*Si $m = 0$ :* $f_{0}(x) = \\dfrac{x+0}{0+1} = x$. Ce n'est plus une homographique mais la fonction identité, définie sur $\\mathbb{R}$ et strictement croissante.\n\n*Si $m \\neq 0$ :* le dénominateur s'annule pour $x = -\\dfrac{1}{m}$, d'où\n\n$$D_{f_{m}} = \\mathbb{R} \\setminus \\left\\{-\\dfrac{1}{m}\\right\\}$$\n\n**Étape 2 - le cas où la fonction est constante.**\n\nUne fonction $\\dfrac{ax+b}{cx+d}$ est constante si $ad-bc = 0$. Ici $a = 1$, $b = m$, $c = m$, $d = 1$ :\n\n$$ad - bc = 1 \\times 1 - m \\times m = 1 - m^{2}$$\n\n$$1 - m^{2} = 0 \\iff m = 1 \\text{ ou } m = -1$$\n\n*Pour $m = 1$ :* $f_{1}(x) = \\dfrac{x+1}{x+1} = 1$ pour $x \\neq -1$. **Fonction constante** égale à $1$.\n\n*Pour $m = -1$ :* $f_{-1}(x) = \\dfrac{x-1}{-x+1} = \\dfrac{x-1}{-(x-1)} = -1$ pour $x \\neq 1$. **Fonction constante** égale à $-1$.\n\n**Étape 3 - le cas général.**\n\nPour $m \\notin \\left\\{-1\\,;\\,0\\,;\\,1\\right\\}$, la dérivée vaut\n\n$$f_{m}'(x) = \\dfrac{1-m^{2}}{(mx+1)^{2}}$$\n\nLe dénominateur est un carré strictement positif. Le signe est donc celui de $1-m^{2}$.\n\n**Étape 4 - étudier le signe de $1-m^{2}$.**\n\n$$1-m^{2} = (1-m)(1+m)$$\n\nC'est un trinôme de coefficient dominant $-1 < 0$, de racines $-1$ et $1$ : il est **positif entre** les racines, négatif à l'extérieur.\n\n| Valeurs de $m$ | Signe de $1-m^{2}$ | Variations de $f_{m}$ |\n|---|---|---|\n| $m < -1$ | $< 0$ | décroissante sur chaque intervalle |\n| $m = -1$ | $= 0$ | constante égale à $-1$ |\n| $-1 < m < 0$ | $> 0$ | croissante sur chaque intervalle |\n| $m = 0$ | $= 1 > 0$ | croissante sur $\\mathbb{R}$ ($f_{0}(x) = x$) |\n| $0 < m < 1$ | $> 0$ | croissante sur chaque intervalle |\n| $m = 1$ | $= 0$ | constante égale à $1$ |\n| $m > 1$ | $< 0$ | décroissante sur chaque intervalle |\n\n**Étape 5 - vérifier sur trois valeurs.**\n\n*Pour $m = 2$ :* $f_{2}(x) = \\dfrac{x+2}{2x+1}$, et $1-m^{2} = -3 < 0$ : décroissante.\n\nContrôle : $f_{2}(0) = 2$ et $f_{2}(1) = \\dfrac{3}{3} = 1$. Décroissance confirmée.\n\n*Pour $m = \\dfrac{1}{2}$ :* $1-m^{2} = \\dfrac{3}{4} > 0$ : croissante.\n\nContrôle : $f_{1/2}(0) = \\dfrac{1/2}{1} = 0{,}5$ et $f_{1/2}(2) = \\dfrac{2{,}5}{2} = 1{,}25$. Croissance confirmée.\n\n*Pour $m = -1$ :* $f_{-1}(0) = \\dfrac{-1}{1} = -1$ et $f_{-1}(2) = \\dfrac{1}{-1} = -1$. Constance confirmée.\n\n**Étape 6 - remarque sur les asymptotes.**\n\nDans le cas général, l'asymptote horizontale a pour équation $y = \\dfrac{a}{c} = \\dfrac{1}{m}$, et l'asymptote verticale $x = -\\dfrac{1}{m}$.\n\nLeur point de rencontre $\\left(-\\dfrac{1}{m}\\,;\\,\\dfrac{1}{m}\\right)$ décrit la seconde bissectrice $y = -x$ quand $m$ varie.\n\n**Ce qu'il faut retenir.** Une discussion sur une homographique à paramètre exige **trois** vérifications : le coefficient dominant du dénominateur peut s'annuler, la quantité $ad-bc$ peut s'annuler — la fonction est alors constante — et c'est seulement ensuite que le signe de $ad-bc$ donne le sens de variation."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Dérivée d'un quotient : $\\left(\\dfrac{u}{v}\\right)' = \\dfrac{u'v-uv'}{v^{2}}$, avec $u'v$ **en premier**.",
+    "Pour une homographique, la dérivée vaut $\\dfrac{ad-bc}{(cx+d)^{2}}$ : le numérateur est une **constante**.",
+    "Ne développe jamais le dénominateur : laissé au carré, il est visiblement positif.",
+    "Le signe de la dérivée est celui de $ad-bc$, et il ne dépend pas de $x$.",
+    "$ad-bc = 0$ signifie que la fonction est constante : ce n'est plus une homographique.",
+    "La monotonie vaut sur **chaque intervalle**, jamais sur leur réunion.",
+    "Marque la valeur interdite par une double barre dans le tableau.",
+    "Contrôle par la formule $ad-bc$ : un seul produit croisé à calculer.",
+    "Contrôle numérique avec deux valeurs de $f$ pour confirmer le sens.",
+    "Avec un paramètre : vérifie d'abord si le dénominateur dégénère, puis si $ad-bc$ s'annule."
+   ]
+  }
+ ]
+}

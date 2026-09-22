@@ -1,0 +1,97 @@
+{
+  "cours_id": "cours-boucle-for-et-accumulateur-somme-en-c-dres-jan2024",
+  "meta": {
+    "titre": "Lire une boucle for a accumulateur et en deduire son role",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage C - boucles",
+    "duree_estimee_min": 15,
+    "tags": [
+      "boucle for",
+      "accumulateur",
+      "trace d'execution"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 2,
+    "rappel_id": "rdm-dres2024-ex2-q6-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une variable initialisee a 0 avant une boucle, puis augmentee a chaque tour : c'est la signature d'un accumulateur, presque toujours utilise pour calculer une somme ou un total."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre la syntaxe de la boucle for en C"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaitre un schema d'accumulation dans une boucle for",
+      "contenu_markdown": "Pour deduire le role d'un programme contenant une boucle, on repere d'abord la variable initialisee juste avant la boucle (ici `som = 0`), puis on observe comment elle est modifiee a chaque iteration (ici `som += n`, ou n est une valeur nouvellement saisie a chaque tour). Ce schema - initialisation a 0, puis cumul a chaque iteration - caracterise un **accumulateur de somme** : le programme calcule donc le total des valeurs saisies au cours des iterations de la boucle, et l'affiche apres la sortie de la boucle."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un programme initialise produit=1 avant une boucle for(i=1;i<=5;i++) qui execute produit *= i. Que calcule ce programme ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Reperer l'initialisation",
+          "justification": "produit=1 avant la boucle indique un accumulateur, initialise a l'element neutre de la multiplication.",
+          "resultat_markdown": "produit part de 1 (element neutre pour un produit, comme 0 l'est pour une somme)."
+        },
+        {
+          "numero": 2,
+          "action": "Analyser la mise a jour",
+          "justification": "produit *= i multiplie l'accumulateur par i a chaque tour.",
+          "resultat_markdown": "A chaque iteration, produit est multiplie par la valeur courante de i."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure",
+          "justification": "Pour i allant de 1 a 5, cela calcule 1*1*2*3*4*5.",
+          "resultat_markdown": "Le programme calcule 5! (factorielle de 5), soit 120."
+        }
+      ],
+      "conclusion_markdown": "Un accumulateur initialise a 1 et multiplie a chaque tour calcule un produit (ici une factorielle)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'initialiser l'accumulateur avant la boucle (par exemple ne pas ecrire som=0).",
+          "pourquoi_faux": "Sans initialisation explicite, la variable contient une valeur indeterminee (memoire non initialisee), et le total calcule serait incorrect et imprevisible."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un programme initialise compteur=0 avant une boucle qui incremente compteur de 1 a chaque passage. Que calcule ce programme ?",
+          "solution_markdown": "Il compte le nombre de fois que la boucle s'est executee (un compteur d'iterations)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un accumulateur initialise a 0 puis augmente a chaque iteration calcule une somme.",
+        "Un accumulateur initialise a 1 puis multiplie a chaque iteration calcule un produit.",
+        "On identifie le role d'une boucle en observant son initialisation et sa mise a jour."
+      ]
+    }
+  ]
+}

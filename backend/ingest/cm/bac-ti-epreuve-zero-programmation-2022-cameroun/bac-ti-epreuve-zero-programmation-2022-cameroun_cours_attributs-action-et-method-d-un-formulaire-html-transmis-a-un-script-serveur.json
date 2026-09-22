@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-attributs-action-et-method-d-un-formulaire-html-transmis-a-un-script-serveur-tle-ti",
+  "meta": {
+    "titre": "Attributs action et method d'un formulaire HTML transmis à un script serveur",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation serveur (PHP)",
+    "duree_estimee_min": 15,
+    "tags": [
+      "formulaire",
+      "action",
+      "method",
+      "POST",
+      "GET",
+      "PHP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formulaire rempli par un visiteur ne se traite jamais tout seul : il faut lui dire, dans sa propre balise, où envoyer les données et selon quelle méthode. Ces deux informations tiennent en deux attributs, faciles à repérer une fois qu'on sait où regarder."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Structure de la balise <form>",
+        "Notion de requête HTTP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "action indique la page de traitement, method indique le mode d'envoi",
+      "contenu_markdown": "L'attribut `action` de la balise `<form>` contient l'adresse (souvent relative) de la page ou du script qui va recevoir les données une fois le formulaire soumis. L'attribut `method` précise la façon dont ces données sont transmises : `GET` les ajoute visiblement à l'URL (adaptée à une recherche, jamais à une donnée sensible), `POST` les place dans le corps de la requête HTTP, invisibles dans l'URL (adaptée à un mot de passe ou à un formulaire qui modifie des données). Côté serveur PHP, les données reçues en `GET` sont lues dans `$_GET[...]`, celles reçues en `POST` dans `$_POST[...]`.",
+      "formule_principale": "<form action=\"page.php\" method=\"POST\">",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Identifier, dans la balise `<form action=\"verif_motdepasse.php\" method=\"POST\">` de l'exercice 2, la page de traitement et la méthode de récupération des données.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'attribut action",
+          "justification": "C'est la réponse directe à « quelle page va traiter les données ? ».",
+          "resultat_markdown": "`action=\"verif_motdepasse.php\"` : c'est le fichier `verif_motdepasse.php` qui traite les données saisies."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer l'attribut method",
+          "justification": "C'est la réponse directe à « comment les données sont-elles transmises ? ».",
+          "resultat_markdown": "`method=\"POST\"` : les données sont envoyées dans le corps de la requête."
+        },
+        {
+          "numero": 3,
+          "action": "Relier method au mode de récupération côté serveur",
+          "justification": "Le choix POST/GET détermine directement le tableau superglobal utilisé côté PHP pour lire chaque champ.",
+          "resultat_markdown": "Côté PHP, les champs seraient récupérés via `$_POST[\"nom_utilisateur\"]` et `$_POST[\"motdepasse\"]`."
+        }
+      ],
+      "conclusion_markdown": "La page verif_motdepasse.php reçoit donc les identifiants saisis via le tableau `$_POST`, ce qui est cohérent avec la nature sensible d'un mot de passe."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre uniquement « POST » sans préciser à quel attribut cela correspond.",
+          "pourquoi_faux": "Une réponse doit citer explicitement l'attribut concerné (`method`) pour montrer que le candidat sait où et comment cette information est déclarée dans le code, pas seulement la deviner.",
+          "correction_markdown": "Toujours citer l'attribut ET sa valeur ensemble : « l'attribut method vaut POST »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur de recherche interne à un site utilise `<form action=\"recherche.php\" method=\"GET\">`. Quelle page traite la recherche, et pourquoi GET est-il un choix pertinent ici ?",
+          "solution_markdown": "La page `recherche.php` traite la recherche. GET est pertinent car le mot-clé recherché n'est pas une donnée sensible, et son apparition dans l'URL (ex. `recherche.php?motcle=informatique`) permet à l'utilisateur de partager ou de mettre en favori directement le lien vers ses résultats de recherche."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réécrire la balise `<form>` de l'exercice 2 pour qu'elle transmette les données à une page nommée `traiter_connexion.php`, en conservant une méthode adaptée à un mot de passe.",
+          "solution_markdown": "`<form action=\"traiter_connexion.php\" method=\"POST\">` : `action` change de valeur pour pointer vers la nouvelle page, `method` reste POST car un mot de passe reste une donnée sensible."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un formulaire de connexion a été codé par erreur avec `method=\"GET\"`. Décrire une conséquence concrète et observable de cette erreur pour l'utilisateur.",
+          "solution_markdown": "Après soumission du formulaire, l'URL de la page affichée contiendrait en clair le nom d'utilisateur et le mot de passe (ex. `traiter_connexion.php?nom_utilisateur=jean&motdepasse=1234`). Ce mot de passe resterait visible dans la barre d'adresse du navigateur, serait enregistré dans l'historique de navigation, et pourrait apparaître dans les journaux (logs) du serveur web ou d'un proxy intermédiaire - autant d'endroits où une donnée aussi sensible ne devrait jamais apparaître en clair."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`action` répond à « vers quelle page ? », `method` répond à « de quelle manière ? » : les deux attributs vivent dans la même balise `<form>`.",
+        "GET expose les données dans l'URL, POST les transmet dans le corps de la requête : POST est le choix attendu pour toute donnée sensible.",
+        "Le choix de method détermine directement le tableau PHP à utiliser côté serveur : `$_GET` ou `$_POST`.",
+        "Une question qui demande « la page ET la méthode » attend une réponse en deux parties, chacune reliée explicitement à son attribut."
+      ]
+    }
+  ]
+}

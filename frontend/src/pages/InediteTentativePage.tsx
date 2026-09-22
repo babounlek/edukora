@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
+import rehypeRaw from "rehype-raw"
 import { ArrowLeft, Check, FileDown, Flag, Timer, X } from "lucide-react"
 
 import {
@@ -30,7 +31,7 @@ function ChoixText({ texte }: { texte: string }) {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkMath]}
-      rehypePlugins={[rehypeKatex]}
+      rehypePlugins={[rehypeRaw, rehypeKatex]}
       components={{ p: ({ children }) => <>{children}</> }}
     >
       {texte}
@@ -42,8 +43,11 @@ interface FlatQuestion extends TentativeInediteQuestion {
   numero_exercice: string
   points: string
   // Pile de repères de groupe de l'exercice parent (voir TentativeInediteExercice.
-  // groupes) - comparée entre deux questions consécutives pour savoir si un en-tête de
-  // groupe doit s'afficher (voir isNewGroupe plus bas), jamais utilisée pour naviguer.
+  // groupes) - un seul en-tête par exercice, affiché quand isNewExercice (voir plus
+  // bas). Distinct de `groupe_local` (hérité de TentativeInediteQuestion via le spread
+  // ci-dessous) : celui-ci peut changer PLUSIEURS fois au sein d'un même exercice, pour
+  // scinder ses questions en sous-sections successives (ex. "Vérification des savoirs"
+  // puis "Vérification des savoir-faire") - voir isNewGroupeLocal plus bas.
   groupes: string[]
   // Renommé (et non `enonce_intro_markdown`) une fois aplati sur la question : à ce
   // niveau, plus rien ne rappelle qu'il appartient à l'exercice, et le confondre avec
@@ -145,7 +149,7 @@ export function InediteTentativePage() {
 
   if (!tentative || questions.length === 0) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10">
+      <div className="mx-auto max-w-5xl px-4 py-10">
         <Skeleton className="mb-6 h-4 w-32" />
         <Skeleton className="mb-3 h-6 w-full" />
         <Skeleton className="h-4 w-3/4" />
@@ -244,7 +248,7 @@ export function InediteTentativePage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl animate-fade-up px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-8 sm:px-6">
       <Link
         to={`${epreuvesListPath(tentative.country.toLowerCase())}?origine=INEDITE`}
         className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
@@ -253,68 +257,95 @@ export function InediteTentativePage() {
         Quitter l'épreuve
       </Link>
 
-      <div className="sticky top-0 z-10 -mx-4 mb-5 flex flex-wrap items-center gap-2 border-b border-border bg-background/95 px-4 py-3 backdrop-blur-sm sm:-mx-6 sm:px-6">
-        <Badge variant="secondary">{tentative.cursus_display}</Badge>
-        <Badge variant="outline">
-          {answeredCount} / {questions.length} répondues
-        </Badge>
-
-        {tentative.sujet_pdf_disponible && (
-          <Button
-            size="sm"
-            variant="outline"
-            disabled={downloadingSujet}
-            onClick={handleDownloadSujet}
-            title="Ouvrir l'épreuve en PDF"
-          >
-            <FileDown className="size-3.5" />
-            {downloadingSujet ? "Ouverture..." : "PDF"}
-          </Button>
-        )}
-
-        {!tentative.exam_mode_started_at && !tentative.submitted_at && tentative.duree_minutes && (
-          <div className="ml-auto flex items-center gap-2">
-            {answeredCount > 0 && (
-              <span className="text-xs text-muted-foreground">Disponible avant ta première réponse</span>
+      {/* Barre d'actions "flottante" : carte sticky arrondie plutôt qu'un bandeau
+          plein-bleed - deux rangées (identité/utilitaires en haut, progression en bas)
+          au lieu d'un unique flex-wrap où badges et boutons se mélangeaient sans
+          hiérarchie visuelle. */}
+      <div className="sticky top-[72px] z-10 mb-6 rounded-xl border border-border bg-background/95 px-4 py-3 shadow-sm backdrop-blur-sm sm:px-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">{tentative.cursus_display}</Badge>
+            {tentative.sujet_pdf_disponible && (
+              <Button
+                size="sm"
+                variant="ghost"
+                disabled={downloadingSujet}
+                onClick={handleDownloadSujet}
+                title="Ouvrir l'épreuve en PDF"
+              >
+                <FileDown className="size-3.5" />
+                {downloadingSujet ? "Ouverture..." : "PDF"}
+              </Button>
             )}
-            <Button size="sm" variant="outline" disabled={startingExam || answeredCount > 0} onClick={handleStartExamMode}>
-              <Timer className="size-3.5" />
-              Mode examen ({tentative.duree_minutes} min)
-            </Button>
           </div>
-        )}
 
-        {remainingSeconds !== null && (
-          <Badge
-            variant={remainingSeconds <= 300 ? "warning" : "outline"}
-            className="ml-auto flex items-center gap-1 tabular-nums"
-          >
-            <Timer className="size-3" />
-            {formatDuration(remainingSeconds)}
-          </Badge>
-        )}
+          <div className="flex flex-wrap items-center gap-2">
+            {!tentative.exam_mode_started_at && !tentative.submitted_at && tentative.duree_minutes && (
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={startingExam || answeredCount > 0}
+                onClick={handleStartExamMode}
+                title={answeredCount > 0 ? "Disponible avant ta première réponse" : undefined}
+              >
+                <Timer className="size-3.5" />
+                Mode examen ({tentative.duree_minutes} min)
+              </Button>
+            )}
 
-        {tentative.correction_disponible && (
-          <Button size="sm" variant="ghost" onClick={() => setShowCorrection((v) => !v)}>
-            {showCorrection ? "Masquer la correction" : "Afficher la correction"}
-          </Button>
-        )}
+            {remainingSeconds !== null && (
+              <Badge
+                variant={remainingSeconds <= 300 ? "warning" : "outline"}
+                className="flex items-center gap-1 tabular-nums"
+              >
+                <Timer className="size-3" />
+                {formatDuration(remainingSeconds)}
+              </Badge>
+            )}
 
-        {!tentative.submitted_at ? (
-          <Button size="sm" disabled={submitting} onClick={handleFinish}>
-            Terminer l'épreuve
-          </Button>
-        ) : (
-          <Button asChild size="sm">
-            <Link to={`/inedit/tentative/${tentative.id}/resultat`}>Voir mon résultat</Link>
-          </Button>
-        )}
+            {tentative.correction_disponible && (
+              <Button size="sm" variant="ghost" onClick={() => setShowCorrection((v) => !v)}>
+                {showCorrection ? "Masquer la correction" : "Afficher la correction"}
+              </Button>
+            )}
+
+            {!tentative.submitted_at ? (
+              <Button size="sm" disabled={submitting} onClick={handleFinish}>
+                Terminer l'épreuve
+              </Button>
+            ) : (
+              <Button asChild size="sm">
+                <Link to={`/inedit/tentative/${tentative.id}/resultat`}>Voir mon résultat</Link>
+              </Button>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-3 flex items-center gap-2.5">
+          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary">
+            <div
+              className="h-full rounded-full bg-primary transition-all"
+              style={{ width: `${questions.length ? (answeredCount / questions.length) * 100 : 0}%` }}
+            />
+          </div>
+          <span className="shrink-0 text-xs font-medium tabular-nums text-muted-foreground">
+            {answeredCount} / {questions.length} répondues
+          </span>
+        </div>
       </div>
 
       {error && <p className="mb-4 text-sm text-destructive">{error}</p>}
 
       {questions.map((question, index) => {
         const isNewExercice = index === 0 || question.numero_exercice !== questions[index - 1].numero_exercice
+        // Sous-partie locale (voir QuestionInedite.groupe_local côté backend) - peut
+        // changer PLUSIEURS fois au sein d'un même exercice, contrairement à `groupes`
+        // ci-dessous (un seul en-tête par exercice). Comparée à la question précédente,
+        // pas seulement à isNewExercice : sans ça un exercice scindé en deux sous-parties
+        // ("Vérification des savoirs" puis "des savoir-faire") afficherait les deux
+        // repères d'un coup en tête, avant sa toute première question.
+        const isNewGroupeLocal =
+          !!question.groupe_local && (isNewExercice || question.groupe_local !== questions[index - 1].groupe_local)
         const isFlagged = flaggedIds.has(question.id)
         return (
           <div key={question.id}>
@@ -345,6 +376,17 @@ export function InediteTentativePage() {
                   </article>
                 )}
               </>
+            )}
+
+            {isNewGroupeLocal && (
+              <p
+                className={cn(
+                  "mb-3 text-sm font-semibold text-foreground",
+                  isNewExercice ? "mt-0" : "mt-8 border-t border-dashed border-border pt-6",
+                )}
+              >
+                {question.groupe_local}
+              </p>
             )}
 
             <div className="flex items-start justify-between gap-2">

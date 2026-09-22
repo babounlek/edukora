@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-petites-oscillations-periode-propre-pendule-pesant-tle-c-e",
+  "meta": {
+    "titre": "Approximation des petites oscillations et periode propre d'un pendule pesant",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Mecanique - oscillateurs mecaniques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "approximation des petits angles",
+      "periode propre",
+      "oscillateur harmonique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2011 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2011-officiel-cameroun-ex2-q1.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "L'equation exacte d'un pendule pesant, avec son terme en $\\sin\\theta$, n'a pas de solution simple. Mais pour de faibles amplitudes - typiquement moins de 15 degres - une approximation d'apparence anodine transforme ce probleme insoluble en un exercice classique d'oscillateur harmonique, avec une periode independante de l'amplitude."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Equation differentielle d'un pendule pesant",
+        "Developpement limite de sin(theta) pour theta petit",
+        "Equation differentielle et periode d'un oscillateur harmonique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Approximation des petites oscillations",
+      "contenu_markdown": "Pour de petites amplitudes ($\\theta$ exprime en radians, typiquement $\\theta<0{,}3\\ \\text{rad}\\approx17^\\circ$), on approxime $\\sin\\theta \\approx \\theta$. L'equation differentielle $\\ddot\\theta+\\omega_0^2\\sin\\theta=0$ devient alors lineaire : $\\ddot\\theta+\\omega_0^2\\theta=0$, equation caracteristique d'un oscillateur harmonique de pulsation propre $\\omega_0=\\sqrt{mgd/J_\\Delta}$ et de periode propre $T_0=2\\pi/\\omega_0$, independante de l'amplitude des oscillations (isochronisme des petites oscillations).",
+      "formule_principale": "T_0 = 2\\pi\\sqrt{\\dfrac{J_\\Delta}{mgd}}",
+      "variantes": [
+        "\\text{Pour une tige homogene autour d'une extremite : } T_0 = 2\\pi\\sqrt{\\dfrac{2L}{3g}}"
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Montrer que les oscillations de faible amplitude d'une tige homogene de longueur $L=1{,}2\\ \\text{m}$, pivotant autour d'une extremite, sont sinusoidales, et calculer leur periode propre ($g=9{,}8\\ \\text{m/s}^2$).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lineariser l'equation differentielle",
+          "justification": "Approximation sin(theta) ~ theta pour theta petit",
+          "resultat_markdown": "$\\ddot\\theta+\\dfrac{3g}{2L}\\sin\\theta=0 \\;\\xrightarrow{\\theta\\ \\text{petit}}\\; \\ddot\\theta+\\dfrac{3g}{2L}\\theta=0$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la pulsation propre et conclure sur la nature sinusoidale",
+          "justification": "L'equation lineaire obtenue est celle d'un oscillateur harmonique",
+          "resultat_markdown": "$\\omega_0^2=\\dfrac{3g}{2L}$ : l'equation $\\ddot\\theta+\\omega_0^2\\theta=0$ admet des solutions sinusoidales $\\theta(t)=\\theta_m\\cos(\\omega_0t+\\varphi)$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numeriquement la periode propre",
+          "justification": "$T_0=2\\pi/\\omega_0$",
+          "resultat_markdown": "$\\omega_0=\\sqrt{\\dfrac{3\\times9{,}8}{2\\times1{,}2}}=\\sqrt{12{,}25}=3{,}5\\ \\text{rad/s}$, $T_0=\\dfrac{2\\pi}{3{,}5}\\approx1{,}80\\ \\text{s}$"
+        }
+      ],
+      "conclusion_markdown": "La periode propre ne depend que de la longueur de la tige et de $g$, jamais de l'amplitude (tant que celle-ci reste faible) ni de la masse : c'est cette independance a l'amplitude qui fait des pendules des horloges fiables."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer l'approximation sin(theta) ~ theta pour des angles importants (superieurs a 20-30 degres)",
+          "pourquoi_faux": "L'approximation n'est valable que pour de petits angles (en radians) ; au-dela d'environ 15-20 degres, l'erreur devient significative et la periode reelle depend de l'amplitude (anisochronisme).",
+          "correction_markdown": "Toujours verifier que l'enonce precise 'oscillations de faible amplitude' avant d'utiliser $T_0=2\\pi\\sqrt{J_\\Delta/(mgd)}$."
+        },
+        {
+          "erreur_markdown": "Croire que la periode propre depend de la masse du pendule",
+          "pourquoi_faux": "La masse apparait a la fois dans $J_\\Delta$ (proportionnel a $m$) et dans le moment du poids (proportionnel a $m$) : elle se simplifie toujours dans le rapport $J_\\Delta/(mgd)$.",
+          "correction_markdown": "Retenir que, comme pour un satellite, la periode d'un pendule pesant ne depend jamais de sa masse, seulement de sa geometrie et de $g$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Ecrire l'equation differentielle lineaire obtenue apres approximation des petites oscillations, a partir de $\\ddot\\theta+\\omega_0^2\\sin\\theta=0$.",
+          "solution_markdown": "$\\ddot\\theta + \\omega_0^2\\theta = 0$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la periode propre d'une tige homogene de longueur $L=0{,}8\\ \\text{m}$ oscillant autour d'une extremite ($g=9{,}8\\ \\text{m/s}^2$).",
+          "solution_markdown": "$T_0 = 2\\pi\\sqrt{\\dfrac{2L}{3g}} = 2\\pi\\sqrt{\\dfrac{1{,}6}{29{,}4}} = 2\\pi\\sqrt{0{,}0544} \\approx 2\\pi\\times0{,}233 \\approx 1{,}47\\ \\text{s}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux tiges homogenes de meme longueur $L$ mais de masses differentes $m_1$ et $m_2$ oscillent chacune autour d'une extremite. Comparer leurs periodes propres.",
+          "solution_markdown": "$T_0=2\\pi\\sqrt{2L/(3g)}$ ne depend ni de $m_1$ ni de $m_2$ : les deux tiges, de meme longueur, ont exactement la meme periode propre, quelle que soit leur masse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour de faibles amplitudes, $\\sin\\theta\\approx\\theta$ (theta en radians) : l'equation du pendule pesant devient lineaire.",
+        "Cette linearisation transforme le pendule pesant en oscillateur harmonique de pulsation propre $\\omega_0=\\sqrt{mgd/J_\\Delta}$.",
+        "La periode propre $T_0=2\\pi\\sqrt{J_\\Delta/(mgd)}$ est independante de l'amplitude (isochronisme) et de la masse.",
+        "L'approximation n'est valable que pour de petits angles ; au-dela, la periode reelle depend de l'amplitude."
+      ]
+    }
+  ]
+}

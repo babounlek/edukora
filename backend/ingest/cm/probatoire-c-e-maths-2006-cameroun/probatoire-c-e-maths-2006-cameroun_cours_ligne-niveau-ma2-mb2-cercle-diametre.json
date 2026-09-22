@@ -1,0 +1,191 @@
+{
+ "cours_id": "cours-ligne-niveau-ma2-mb2-cercle-diametre-1ere-ce",
+ "meta": {
+  "titre": "Déterminer l'ensemble des points M tels que MA² + MB² = k",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Lignes de niveau",
+  "duree_estimee_min": 30,
+  "tags": ["relation de la médiane", "ligne de niveau", "cercle", "milieu", "cercle de diamètre donné"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2006-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2006 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2006-cameroun-ex2-q2a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Il existe une valeur de $k$ pour laquelle la ligne de niveau $MA^{2}+MB^{2} = k$ devient exactement le **cercle de diamètre $[AB]$** : c'est $k = AB^{2}$. Et ce n'est pas une curiosité — c'est le théorème de Pythagore déguisé. Dire $MA^{2}+MB^{2} = AB^{2}$, c'est dire que le triangle $AMB$ est rectangle en $M$, donc que $M$ voit $[AB]$ sous un angle droit. Reconnaître ce cas fait gagner tout le raisonnement."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la relation de la médiane",
+    "Savoir déterminer le milieu d'un segment",
+    "Connaître la caractérisation du cercle de diamètre donné",
+    "Connaître la réciproque du théorème de Pythagore"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "La relation de la médiane ramène à une seule distance",
+   "contenu_markdown": "**La relation de la médiane.** Soit $I$ le milieu de $[AB]$. Pour **tout** point $M$ du plan :\n\n$$MA^{2}+MB^{2} = 2\\,MI^{2} + \\frac{AB^{2}}{2}$$\n\nElle remplace une somme de deux distances au carré par **une seule**, mesurée depuis le milieu.\n\n**La méthode, en quatre gestes.**\n\n1. **Introduire** le milieu $I$ de $[AB]$.\n2. **Calculer** $AB$, donc le terme constant $\\dfrac{AB^{2}}{2}$.\n3. **Isoler** $MI^{2}$.\n4. **Discuter** le signe obtenu et conclure.\n\n**La discussion.**\n\n| Valeur de $MI^{2}$ | Ensemble |\n|---|---|\n| $> 0$ | cercle de centre $I$ et de rayon $\\sqrt{MI^{2}}$ |\n| $= 0$ | le point $I$ seul |\n| $< 0$ | ensemble vide |\n\n**Le terme constant est $\\dfrac{AB^{2}}{2}$**, pas $AB^{2}$ ni $\\left(\\dfrac{AB}{2}\\right)^{2} = \\dfrac{AB^{2}}{4}$. Ces trois valeurs sont différentes et l'erreur fausse le rayon.\n\n**Le cas remarquable $k = AB^{2}$.** Alors\n\n$$2\\,MI^{2} + \\frac{AB^{2}}{2} = AB^{2} \\qquad \\Longrightarrow \\qquad MI^{2} = \\frac{AB^{2}}{4} \\qquad \\Longrightarrow \\qquad MI = \\frac{AB}{2}$$\n\nOn obtient exactement le **cercle de diamètre $[AB]$**.\n\n**Pourquoi ce n'est pas un hasard.** L'égalité $MA^{2}+MB^{2} = AB^{2}$ est la relation de Pythagore dans le triangle $AMB$ avec l'angle droit en $M$. Par la réciproque du théorème, elle caractérise donc les points voyant $[AB]$ sous un angle droit — c'est-à-dire le cercle de diamètre $[AB]$.\n\n**Trois caractérisations du même cercle.**\n\n$$M \\in \\mathcal{C}\\left([AB]\\right) \\iff MI = \\frac{AB}{2} \\iff \\overrightarrow{MA} \\cdot \\overrightarrow{MB} = 0 \\iff MA^{2}+MB^{2} = AB^{2}$$\n\nSavoir passer de l'une à l'autre est ce qui rend l'exercice rapide.\n\n**Le minimum de la somme.** La quantité $MA^{2}+MB^{2}$ atteint son minimum $\\dfrac{AB^{2}}{2}$ au milieu $I$, et là seulement. Toute valeur de $k$ inférieure donne un ensemble vide.\n\n**Le contrôle.** Substitue un point connu — souvent $A$ lui-même. Pour $M = A$ : $0+AB^{2} = AB^{2}$, donc $A$ appartient à la ligne de niveau $k = AB^{2}$. Et de fait $IA = \\dfrac{AB}{2}$ : le point $A$ est sur le cercle de diamètre $[AB]$.",
+   "formule_principale": "MA^{2}+MB^{2} = 2\\,MI^{2} + \\frac{AB^{2}}{2}",
+   "variantes": [
+    {
+     "nom": "Ligne de niveau du produit scalaire",
+     "quand_utiliser": "Quand la condition porte sur $\\overrightarrow{MA} \\cdot \\overrightarrow{MB}$",
+     "contenu_markdown": "$$\\overrightarrow{MA} \\cdot \\overrightarrow{MB} = MI^{2} - \\frac{AB^{2}}{4}$$\n\nL'ensemble $\\overrightarrow{MA} \\cdot \\overrightarrow{MB} = k$ est donc aussi un **cercle de centre $I$**, de rayon $\\sqrt{k+\\dfrac{AB^{2}}{4}}$ quand cette quantité est positive.\n\nPour $k = 0$, on retrouve le cercle de diamètre $[AB]$. Les deux lignes de niveau — somme des carrés et produit scalaire — décrivent la même famille de cercles concentriques."
+    },
+    {
+     "nom": "Ligne de niveau de la différence",
+     "quand_utiliser": "Quand la condition est $MA^{2}-MB^{2} = k$",
+     "contenu_markdown": "La différence se factorise et donne une **droite**, non un cercle :\n\n$$MA^{2}-MB^{2} = 2\\,\\overrightarrow{AB} \\cdot \\overrightarrow{IM}$$\n\nL'équation $MA^{2}-MB^{2} = k$ décrit donc une droite **perpendiculaire à $(AB)$**.\n\nRetiens la différence de nature : la somme donne un cercle, la différence une droite."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCD$ est un rectangle avec $AB = 10$ et $BC = 4$. On note $(\\Gamma)$ l'ensemble des points $M$ du plan tels que $MA^{2}+MB^{2} = 100$. Démontrer que $(\\Gamma)$ est un cercle dont on précisera le centre $I$ et le rayon $R$. (Probatoire C et E, Cameroun, 2006.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Introduire le milieu",
+     "justification": "C'est le point requis par la relation de la médiane",
+     "resultat_markdown": "Soit $I$ le milieu de $[AB]$. Avec $A(0\\,;\\,0)$ et $B(10\\,;\\,0)$ : $I(5\\,;\\,0)$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer le terme constant",
+     "justification": "$AB = 10$, donc $\\dfrac{AB^{2}}{2} = \\dfrac{100}{2}$",
+     "resultat_markdown": "$\\dfrac{AB^{2}}{2} = 50$"
+    },
+    {
+     "numero": 3,
+     "action": "Écrire la relation de la médiane",
+     "justification": "Valable pour tout point $M$ du plan",
+     "resultat_markdown": "$MA^{2}+MB^{2} = 2\\,MI^{2} + 50$"
+    },
+    {
+     "numero": 4,
+     "action": "Traduire l'équation de $(\\Gamma)$",
+     "justification": "On substitue la valeur imposée",
+     "resultat_markdown": "$2\\,MI^{2}+50 = 100$"
+    },
+    {
+     "numero": 5,
+     "action": "Isoler $MI^{2}$",
+     "justification": "Arithmétique",
+     "resultat_markdown": "$2\\,MI^{2} = 50$, donc $MI^{2} = 25$"
+    },
+    {
+     "numero": 6,
+     "action": "Discuter le signe",
+     "justification": "$25 > 0$ : l'ensemble est un cercle",
+     "resultat_markdown": "$MI = 5$"
+    },
+    {
+     "numero": 7,
+     "action": "Conclure",
+     "justification": "Ensemble des points à distance constante d'un point fixe",
+     "resultat_markdown": "$(\\Gamma)$ est le **cercle de centre $I$, milieu de $[AB]$, et de rayon $R = 5$ cm**"
+    },
+    {
+     "numero": 8,
+     "action": "Reconnaître la configuration",
+     "justification": "Le rayon vaut la moitié de $AB$",
+     "resultat_markdown": "$R = 5 = \\dfrac{AB}{2}$ : $(\\Gamma)$ est le **cercle de diamètre $[AB]$**"
+    },
+    {
+     "numero": 9,
+     "action": "Contrôler sur le point $A$",
+     "justification": "Substitution dans la condition de départ",
+     "resultat_markdown": "$AA^{2}+AB^{2} = 0+100 = 100$ : le point $A$ appartient à $(\\Gamma)$, ce qui est cohérent avec $IA = 5 = R$"
+    }
+   ],
+   "conclusion_markdown": "$(\\Gamma)$ est le cercle de centre $I$, milieu de $[AB]$, et de rayon $5$ cm — autrement dit le **cercle de diamètre $[AB]$**. Ce n'est pas une coïncidence : la valeur imposée $k = 100$ est exactement $AB^{2}$, et l'égalité $MA^{2}+MB^{2} = AB^{2}$ traduit le théorème de Pythagore dans un triangle rectangle en $M$. Reconnaître ce cas particulier permet d'anticiper le résultat, et cohérent avec la question 1 qui montrait que $E$ voit $[AB]$ sous un angle droit."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Se tromper dans le terme constant",
+     "pourquoi_faux": "Il vaut $\\dfrac{AB^{2}}{2} = 50$, et non $AB^{2} = 100$ ni $\\left(\\dfrac{AB}{2}\\right)^{2} = 25$. Avec $100$, on obtiendrait $MI = 0$ ; avec $25$, on obtiendrait $MI^{2} = 37{,}5$. Trois résultats différents.",
+     "correction_markdown": "Retiens la formule exacte : $2\\,MI^{2}+\\dfrac{AB^{2}}{2}$. Le coefficient $2$ devant $MI^{2}$, la division par $2$ du carré de la longueur."
+    },
+    {
+     "erreur_markdown": "Oublier le facteur $2$ devant $MI^{2}$",
+     "pourquoi_faux": "Écrire $MI^{2}+50 = 100$ donnerait $MI^{2} = 50$, soit $MI = 5\\sqrt{2} \\approx 7{,}07$ au lieu de $5$. Le cercle serait trop grand, et $A$ n'y appartiendrait plus.",
+     "correction_markdown": "Contrôle sur le point $A$ : il doit vérifier la condition. Si ce n'est pas le cas avec ton rayon, reprends le calcul."
+    },
+    {
+     "erreur_markdown": "Ne pas discuter le signe",
+     "pourquoi_faux": "Si $MI^{2}$ était négatif, l'ensemble serait **vide** ; s'il était nul, réduit au point $I$. Conclure « cercle » sans regarder est un raisonnement incomplet.",
+     "correction_markdown": "Mentionne la discussion, même brièvement : « $25 > 0$, donc l'ensemble est un cercle »."
+    },
+    {
+     "erreur_markdown": "Confondre le rayon et le diamètre",
+     "pourquoi_faux": "Le rayon vaut $5$, le diamètre $10$. Annoncer « cercle de rayon $10$ » double la taille du cercle, et le point $A$ ne s'y trouve plus.",
+     "correction_markdown": "Le rayon est la distance $MI$ trouvée. Vérifie qu'il vaut bien la moitié du diamètre annoncé."
+    },
+    {
+     "erreur_markdown": "Ne pas reconnaître le cercle de diamètre $[AB]$",
+     "pourquoi_faux": "Ce n'est pas une erreur de calcul, mais on manque le lien avec la question 1 et avec la question suivante. Le barème valorise cette reconnaissance.",
+     "correction_markdown": "Compare le rayon trouvé à $\\dfrac{AB}{2}$. S'ils coïncident, dis-le : c'est le cercle de diamètre $[AB]$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soient $A$ et $B$ tels que $AB = 8$. Déterminer l'ensemble des points $M$ tels que $MA^{2}+MB^{2} = 64$, puis $MA^{2}+MB^{2} = 32$, puis $MA^{2}+MB^{2} = 20$.",
+     "solution_markdown": "**Préliminaire.** Soit $I$ le milieu de $[AB]$. La relation de la médiane donne\n\n$$MA^{2}+MB^{2} = 2\\,MI^{2}+\\dfrac{64}{2} = 2\\,MI^{2}+32$$\n\n**Premier cas : $k = 64$.**\n\n$$2\\,MI^{2}+32 = 64 \\qquad \\Longrightarrow \\qquad MI^{2} = 16 \\qquad \\Longrightarrow \\qquad MI = 4$$\n\n**Cercle de centre $I$ et de rayon $4$.**\n\n*Reconnaissance :* $4 = \\dfrac{AB}{2}$, et $k = 64 = AB^{2}$. C'est le **cercle de diamètre $[AB]$**. Conforme au cas remarquable.\n\n**Deuxième cas : $k = 32$.**\n\n$$2\\,MI^{2}+32 = 32 \\qquad \\Longrightarrow \\qquad MI^{2} = 0 \\qquad \\Longrightarrow \\qquad MI = 0$$\n\n**L'ensemble est réduit au point $I$**, milieu de $[AB]$.\n\n*Vérification :* pour $M = I$, $IA = IB = 4$, donc $16+16 = 32$. Conforme.\n\n**Troisième cas : $k = 20$.**\n\n$$2\\,MI^{2}+32 = 20 \\qquad \\Longrightarrow \\qquad 2\\,MI^{2} = -12 \\qquad \\Longrightarrow \\qquad MI^{2} = -6$$\n\nUn carré ne peut être négatif.\n\n**L'ensemble est vide.**\n\n**Synthèse.**\n\nLe seuil critique est $\\dfrac{AB^{2}}{2} = 32$ :\n\n| Valeur de $k$ | Ensemble |\n|---|---|\n| $k > 32$ | cercle de rayon $\\sqrt{\\dfrac{k-32}{2}}$ |\n| $k = 32$ | le point $I$ |\n| $k < 32$ | vide |\n\n**Interprétation.** La quantité $MA^{2}+MB^{2}$ ne descend jamais en dessous de $32$ : c'est son **minimum**, atteint au milieu. C'est pourquoi aucune valeur inférieure n'est réalisable.\n\n**Ce qu'il faut retenir.** Le terme constant $\\dfrac{AB^{2}}{2}$ n'est pas qu'un coefficient de formule : c'est la valeur **minimale** de la somme, et donc le seuil qui départage les trois cas."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABC$ est un triangle rectangle en $A$ avec $AB = 6$ et $AC = 8$. Déterminer l'ensemble des points $M$ tels que $MB^{2}+MC^{2} = 74$, puis vérifier que $A$ lui appartient et interpréter.",
+     "solution_markdown": "**Étape 1 - calculer $BC$.**\n\nLe triangle étant rectangle en $A$ :\n\n$$BC^{2} = AB^{2}+AC^{2} = 36+64 = 100 \\qquad \\Longrightarrow \\qquad BC = 10$$\n\n**Étape 2 - appliquer la relation de la médiane.**\n\nSoit $I$ le milieu de $[BC]$ :\n\n$$MB^{2}+MC^{2} = 2\\,MI^{2}+\\dfrac{BC^{2}}{2} = 2\\,MI^{2}+50$$\n\n**Étape 3 - résoudre.**\n\n$$2\\,MI^{2}+50 = 74 \\qquad \\Longrightarrow \\qquad MI^{2} = 12 \\qquad \\Longrightarrow \\qquad MI = 2\\sqrt{3}$$\n\n**L'ensemble est le cercle de centre $I$ et de rayon $2\\sqrt{3} \\approx 3{,}46$.**\n\n**Étape 4 - le point $A$ appartient-il ?**\n\nCalculons directement :\n\n$$AB^{2}+AC^{2} = 36+64 = 100 \\neq 74$$\n\n**Non**, le point $A$ n'appartient pas à cet ensemble.\n\n**Étape 5 - où se trouve-t-il alors ?**\n\n$$AB^{2}+AC^{2} = 100 = BC^{2}$$\n\nC'est exactement le cas remarquable : $A$ appartient au **cercle de diamètre $[BC]$**, de rayon $5$.\n\n*Vérification :* dans un triangle rectangle, le milieu de l'hypoténuse est équidistant des trois sommets, donc $IA = \\dfrac{BC}{2} = 5$. Conforme.\n\n**Étape 6 - comparer les deux cercles.**\n\n| Ensemble | Rayon |\n|---|---|\n| $MB^{2}+MC^{2} = 74$ | $2\\sqrt{3} \\approx 3{,}46$ |\n| $MB^{2}+MC^{2} = 100$ | $5$ |\n\nLe premier est **intérieur** au second, et $A$ se trouve sur le second.\n\n**Étape 7 - position de $A$ par rapport au premier.**\n\n$$IA = 5 > 2\\sqrt{3} \\approx 3{,}46$$\n\nLe point $A$ est **extérieur** au cercle cherché. Cohérent avec $100 > 74$.\n\n**Étape 8 - interpréter.**\n\nPlus la valeur $k$ est grande, plus le cercle est grand : la fonction $M \\mapsto MB^{2}+MC^{2}$ **croît** quand on s'éloigne de $I$.\n\nC'est logique : elle vaut $2\\,MI^{2}+50$, fonction croissante de $MI$.\n\n**Ce qu'il faut retenir.** Le signe de $\\left(MA^{2}+MB^{2}\\right) - k$ situe immédiatement un point par rapport à la ligne de niveau : négatif à l'intérieur, nul dessus, positif à l'extérieur. Aucun calcul de distance n'est nécessaire."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Démontrer l'équivalence entre les trois caractérisations du cercle de diamètre $[AB]$ : $MI = \\dfrac{AB}{2}$, $\\overrightarrow{MA} \\cdot \\overrightarrow{MB} = 0$, et $MA^{2}+MB^{2} = AB^{2}$. Appliquer au point $E$ du sujet.",
+     "solution_markdown": "**Étape 1 - les trois formules de base.**\n\nAvec $I$ milieu de $[AB]$, on dispose de :\n\n$$\\overrightarrow{MA} \\cdot \\overrightarrow{MB} = MI^{2}-\\dfrac{AB^{2}}{4} \\qquad \\text{(1)}$$\n\n$$MA^{2}+MB^{2} = 2\\,MI^{2}+\\dfrac{AB^{2}}{2} \\qquad \\text{(2)}$$\n\n**Étape 2 - première équivalence.**\n\nDe (1) :\n\n$$\\overrightarrow{MA} \\cdot \\overrightarrow{MB} = 0 \\iff MI^{2} = \\dfrac{AB^{2}}{4} \\iff MI = \\dfrac{AB}{2}$$\n\nla dernière équivalence étant licite puisque les deux quantités sont positives.\n\n**Étape 3 - seconde équivalence.**\n\nDe (2) :\n\n$$MA^{2}+MB^{2} = AB^{2} \\iff 2\\,MI^{2}+\\dfrac{AB^{2}}{2} = AB^{2}$$\n\n$$\\iff 2\\,MI^{2} = \\dfrac{AB^{2}}{2} \\iff MI^{2} = \\dfrac{AB^{2}}{4} \\iff MI = \\dfrac{AB}{2}$$\n\n**Étape 4 - conclure.**\n\nLes trois conditions équivalent toutes à $MI = \\dfrac{AB}{2}$, donc entre elles :\n\n$$MI = \\dfrac{AB}{2} \\iff \\overrightarrow{MA} \\cdot \\overrightarrow{MB} = 0 \\iff MA^{2}+MB^{2} = AB^{2}$$\n\n**Étape 5 - démontrer la relation (2) elle-même.**\n\nInsérons $I$ par Chasles :\n\n$$MA^{2} = \\left(\\overrightarrow{MI}+\\overrightarrow{IA}\\right)^{2} = MI^{2}+2\\,\\overrightarrow{MI} \\cdot \\overrightarrow{IA}+IA^{2}$$\n\n$$MB^{2} = MI^{2}+2\\,\\overrightarrow{MI} \\cdot \\overrightarrow{IB}+IB^{2}$$\n\nEn sommant, et comme $\\overrightarrow{IA}+\\overrightarrow{IB} = \\vec{0}$ :\n\n$$MA^{2}+MB^{2} = 2\\,MI^{2}+IA^{2}+IB^{2} = 2\\,MI^{2}+2 \\times \\dfrac{AB^{2}}{4} = 2\\,MI^{2}+\\dfrac{AB^{2}}{2}$$\n\n**Démontré.**\n\n**Étape 6 - interpréter la troisième caractérisation.**\n\nL'égalité $MA^{2}+MB^{2} = AB^{2}$ est **exactement** la relation de Pythagore dans le triangle $AMB$, avec l'hypoténuse $[AB]$.\n\nPar la **réciproque du théorème de Pythagore**, elle caractérise donc les triangles rectangles en $M$.\n\nLes trois caractérisations disent donc la même chose sous trois langages : **métrique** (distance au milieu), **vectoriel** (produit scalaire nul), **pythagoricien** (somme des carrés).\n\n**Étape 7 - application au point $E$ du sujet.**\n\nRappel : $A(0\\,;\\,0)$, $B(10\\,;\\,0)$, $E(2\\,;\\,4)$, $I(5\\,;\\,0)$.\n\n*Caractérisation métrique :*\n\n$$IE = \\sqrt{(2-5)^{2}+(4-0)^{2}} = \\sqrt{9+16} = 5 = \\dfrac{AB}{2}$$\n\n*Caractérisation vectorielle :*\n\n$$\\overrightarrow{EA} \\cdot \\overrightarrow{EB} = (-2)(8)+(-4)(-4) = -16+16 = 0$$\n\n*Caractérisation pythagoricienne :*\n\n$$EA^{2} = 4+16 = 20 \\qquad ; \\qquad EB^{2} = 64+16 = 80$$\n\n$$EA^{2}+EB^{2} = 100 = AB^{2}$$\n\n**Les trois concordent : $E$ appartient au cercle de diamètre $[AB]$.**\n\n**Étape 8 - laquelle choisir en épreuve ?**\n\n| Situation | Caractérisation la plus rapide |\n|---|---|\n| coordonnées disponibles | produit scalaire ou distance |\n| longueurs connues | Pythagore |\n| résultat antérieur sur l'angle | vectorielle, en une ligne |\n\nDans le sujet 2006, la question 1 ayant établi le produit scalaire nul, la caractérisation vectorielle répond à la question 2.b) **sans aucun calcul**.\n\n**Ce qu'il faut retenir.** Une même propriété géométrique admet plusieurs traductions. Savoir passer de l'une à l'autre, et **choisir la plus économique selon ce qu'on a déjà établi**, est ce qui distingue une résolution rapide d'une résolution laborieuse."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Relation de la médiane : $MA^{2}+MB^{2} = 2\\,MI^{2}+\\dfrac{AB^{2}}{2}$, avec $I$ milieu de $[AB]$.",
+    "Le terme constant est $\\dfrac{AB^{2}}{2}$, ni $AB^{2}$ ni $\\dfrac{AB^{2}}{4}$.",
+    "N'oublie pas le facteur $2$ devant $MI^{2}$.",
+    "Isole $MI^{2}$ puis **discute le signe** : positif donne un cercle, nul un point, négatif l'ensemble vide.",
+    "$\\dfrac{AB^{2}}{2}$ est le **minimum** de la somme, atteint au milieu : c'est le seuil des trois cas.",
+    "Cas remarquable : $k = AB^{2}$ donne exactement le **cercle de diamètre** $[AB]$.",
+    "Ce n'est pas un hasard : $MA^{2}+MB^{2} = AB^{2}$ est Pythagore avec l'angle droit en $M$.",
+    "Trois caractérisations équivalentes : $MI = \\dfrac{AB}{2}$, $\\overrightarrow{MA} \\cdot \\overrightarrow{MB} = 0$, $MA^{2}+MB^{2} = AB^{2}$.",
+    "Choisis la plus économique selon ce que les questions précédentes ont établi.",
+    "La **somme** donne un cercle ; la **différence** $MA^{2}-MB^{2}$ donne une droite."
+   ]
+  }
+ ]
+}

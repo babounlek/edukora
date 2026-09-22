@@ -1,0 +1,143 @@
+{
+  "cours_id": "cours-construire-le-polygone-des-effectifs-cumules-croissants-1ere-a",
+  "meta": {
+    "titre": "Construire le polygone des effectifs cumulés croissants",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "statistiques",
+      "polygone des effectifs cumulés",
+      "représentation graphique"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2001-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathematiques - Session 2001 (Cameroun)",
+    "exercice_numero": "B",
+    "rappel_id": "rdm-probatoire-a-maths-2001-officiel-cameroun-exB-q1c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau de chiffres montre les valeurs, mais un graphique montre leur allure d'un seul coup d'œil. Le polygone des effectifs cumulés croissants transforme la colonne ECC du tableau en une courbe qui monte régulièrement, et dont la pente indique directement où se concentrent les effectifs. C'est aussi l'outil qui permet ensuite de lire graphiquement une médiane ou des quartiles, des notions qui prolongent directement ce que ce cours met en place."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Compléter un tableau statistique de données groupées (colonne ECC)",
+        "Placer un point dans un repère orthogonal à partir de ses coordonnées",
+        "Respecter une échelle imposée sur les deux axes d'un repère"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construction du polygone des effectifs cumulés croissants",
+      "contenu_markdown": "Le polygone des effectifs cumulés croissants relie par des segments de droite les points $(b\\,;\\,\\text{ECC})$, où $b$ est la borne supérieure de chaque classe. On y ajoute un premier point d'ordonnée nulle, placé à la borne inférieure de la toute première classe : avant cette borne, aucun individu n'a encore été compté.\n\nLa construction se fait en trois temps : graduer les deux axes selon l'échelle imposée, placer chaque point du tableau, puis relier les points consécutifs par des segments de droite (jamais une courbe lissée).",
+      "formule_principale": "\\text{point de la classe } [b_1\\,;b_2[\\ :\\ (b_2\\,;\\,\\text{ECC})",
+      "variantes": [
+        {
+          "nom": "Polygone des effectifs cumulés décroissants",
+          "quand_utiliser": "Quand l'énoncé demande la répartition des individus au-delà de chaque valeur plutôt qu'en deçà",
+          "contenu_markdown": "On construit le polygone symétrique en cumulant les effectifs à partir de la fin de la série : chaque point a pour ordonnée le nombre d'individus dont la valeur est supérieure ou égale à la borne inférieure de la classe. La méthode de construction (points reliés par des segments) reste identique."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Construire le polygone des effectifs cumulés croissants de la série des tailles de 40 individus, avec les effectifs cumulés croissants $3\\,;\\,11\\,;\\,21\\,;\\,31\\,;\\,38\\,;\\,40$ pour les classes de bornes supérieures $160\\,;\\,165\\,;\\,170\\,;\\,175\\,;\\,180\\,;\\,185$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ajouter le point de départ",
+          "justification": "Avant la borne inférieure de la première classe, l'effectif cumulé est nul",
+          "resultat_markdown": "$(155\\,;0)$"
+        },
+        {
+          "numero": 2,
+          "action": "Lister les points suivants à partir du tableau",
+          "justification": "Chaque point a pour abscisse la borne supérieure d'une classe et pour ordonnée son ECC",
+          "resultat_markdown": "$(160\\,;3)\\,;\\,(165\\,;11)\\,;\\,(170\\,;21)\\,;\\,(175\\,;31)\\,;\\,(180\\,;38)\\,;\\,(185\\,;40)$"
+        },
+        {
+          "numero": 3,
+          "action": "Graduer les axes selon l'échelle imposée",
+          "justification": "1 cm pour 5 unités sur chaque axe",
+          "resultat_markdown": "Axe des abscisses de 155 à 185 de 5 en 5 ; axe des ordonnées de 0 à 40 de 5 en 5"
+        },
+        {
+          "numero": 4,
+          "action": "Relier les points consécutifs par des segments de droite",
+          "justification": "Le polygone des effectifs cumulés est toujours une ligne brisée, jamais une courbe lissée",
+          "resultat_markdown": "Ligne brisée croissante du point $(155\\,;0)$ au point $(185\\,;40)$"
+        }
+      ],
+      "conclusion_markdown": "Le polygone obtenu est une ligne brisée strictement croissante, avec la pente la plus forte entre 160 et 175, là où les effectifs de classe sont les plus élevés."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer le premier point à l'ordonnée du premier effectif au lieu de 0",
+          "pourquoi_faux": "À la borne inférieure de la première classe, aucun individu n'a encore été compté : l'effectif cumulé y est nécessairement nul.",
+          "correction_markdown": "Toujours démarrer le polygone au point (borne inférieure de la première classe ; 0)."
+        },
+        {
+          "erreur_markdown": "Relier les points par une courbe lissée plutôt que par des segments de droite",
+          "pourquoi_faux": "Le polygone des effectifs cumulés est par définition une ligne brisée : lisser la courbe fait perdre l'information de la répartition classe par classe.",
+          "correction_markdown": "Utiliser une règle pour tracer des segments de droite entre deux points consécutifs, jamais une courbe à main levée."
+        },
+        {
+          "erreur_markdown": "Utiliser une échelle différente de celle imposée par l'énoncé",
+          "pourquoi_faux": "Le barème sanctionne le non-respect de l'échelle imposée, même si le tracé est par ailleurs correct.",
+          "correction_markdown": "Relire l'énoncé avant de graduer les axes et respecter scrupuleusement l'échelle donnée sur chaque axe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Lister les points du polygone des effectifs cumulés croissants pour une série répartie en 3 classes de bornes supérieures $10\\,;\\,20\\,;\\,30$ et d'effectifs cumulés croissants $5\\,;\\,15\\,;\\,25$, sachant que la première classe commence à $0$.",
+          "solution_markdown": "Les points à placer sont $(0\\,;0)\\,;\\,(10\\,;5)\\,;\\,(20\\,;15)\\,;\\,(30\\,;25)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série de 80 individus est répartie en 5 classes de bornes supérieures $5\\,;\\,10\\,;\\,15\\,;\\,20\\,;\\,25$ et d'effectifs respectifs $10\\,;\\,20\\,;\\,25\\,;\\,15\\,;\\,10$ (première classe commençant à 0). Calculer les effectifs cumulés croissants puis lister les points du polygone.",
+          "solution_markdown": "Effectifs cumulés croissants : $10\\,;\\,30\\,;\\,55\\,;\\,70\\,;\\,80$. Points du polygone : $(0\\,;0)\\,;\\,(5\\,;10)\\,;\\,(10\\,;30)\\,;\\,(15\\,;55)\\,;\\,(20\\,;70)\\,;\\,(25\\,;80)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur le polygone des effectifs cumulés croissants d'une série de 80 individus, on lit graphiquement que l'ordonnée 40 (la moitié de l'effectif total) correspond à une abscisse de 14. Que représente cette valeur, et à quelle classe appartient-elle si les classes ont pour bornes $10\\,;\\,15\\,;\\,20$ ?",
+          "solution_markdown": "L'abscisse correspondant à la moitié de l'effectif cumulé total est la médiane de la série. Ici la médiane est approximativement $14$, une valeur qui appartient à la classe $[10\\,;15[$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le premier point du polygone est toujours d'ordonnée nulle, placé à la borne inférieure de la première classe.",
+        "Chaque point suivant a pour abscisse la borne supérieure d'une classe et pour ordonnée son effectif cumulé croissant.",
+        "Les points se relient uniquement par des segments de droite, jamais par une courbe lissée.",
+        "Respecte toujours l'échelle imposée par l'énoncé sur les deux axes : c'est un critère de barème à part entière.",
+        "Ce polygone sert ensuite à lire graphiquement la médiane d'une série : une compétence directement liée à celle-ci."
+      ]
+    }
+  ]
+}

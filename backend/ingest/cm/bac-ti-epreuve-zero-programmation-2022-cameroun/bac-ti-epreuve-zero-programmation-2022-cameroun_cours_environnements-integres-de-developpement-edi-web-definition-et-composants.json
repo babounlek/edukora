@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-environnements-integres-de-developpement-edi-web-definition-et-composants-tle-ti",
+  "meta": {
+    "titre": "Environnements Intégrés de Développement (EDI) Web : définition et composants",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Serveurs Web et hébergement local",
+    "duree_estimee_min": 25,
+    "tags": [
+      "EDI",
+      "WampServer",
+      "XAMPP",
+      "Apache",
+      "MySQL",
+      "PHP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex2-q6.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Installer séparément un serveur Web, un interpréteur PHP et un serveur MySQL, puis les faire communiquer entre eux, demande des réglages fastidieux. Un environnement intégré de développement Web réunit ces trois briques en une seule installation, prête à l'emploi."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de serveur Web",
+        "Notion de base de données"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois composants réunis en une seule installation",
+      "contenu_markdown": "Un environnement intégré de développement (EDI) Web regroupe, en une seule installation configurée pour fonctionner ensemble, un **serveur Web** (le plus souvent Apache, qui reçoit les requêtes HTTP), un **interpréteur de langage serveur** (PHP, qui exécute les scripts dynamiques) et **un système de gestion de bases de données** (MySQL ou MariaDB, qui stocke et interroge les données). WampServer, cité dans l'énoncé, en est un exemple sous Windows ; **XAMPP** (multiplateforme), **MAMP** (macOS) et **EasyPHP** en sont d'autres. Le sigle WAMP résume d'ailleurs directement ces trois composants : Windows, Apache, MySQL, PHP.",
+      "formule_principale": "EDI Web = Serveur Web + Interpréteur de langage serveur + SGBD",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Citer un autre exemple d'EDI Web que WampServer, puis citer trois éléments constitutifs d'un tel environnement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Citer un exemple alternatif",
+          "justification": "L'énoncé demande explicitement un exemple différent de celui déjà cité (WampServer).",
+          "resultat_markdown": "XAMPP (ou MAMP, ou EasyPHP)."
+        },
+        {
+          "numero": 2,
+          "action": "Décomposer les trois composants attendus",
+          "justification": "Ces trois éléments correspondent exactement aux trois dernières lettres du sigle WAMP/XAMPP.",
+          "resultat_markdown": "Un serveur Web (Apache), un interpréteur de langage serveur (PHP), un système de gestion de bases de données (MySQL/MariaDB)."
+        },
+        {
+          "numero": 3,
+          "action": "Relier ces composants au script de l'exercice",
+          "justification": "Chacun des trois composants intervient effectivement dans le fonctionnement du script étudié.",
+          "resultat_markdown": "Apache sert le fichier verif_motdepasse.php, PHP l'exécute, MySQL stocke la table utilisateurs interrogée par ce script."
+        }
+      ],
+      "conclusion_markdown": "Un environnement intégré de développement Web est donc défini par ses trois composants indissociables, réunis pour permettre de développer et tester un site dynamique en local sans configuration séparée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer phpMyAdmin comme l'un des trois composants principaux d'un EDI Web.",
+          "pourquoi_faux": "phpMyAdmin est un outil d'administration graphique fourni en plus dans WampServer et XAMPP, mais ce n'est ni un serveur Web, ni un interpréteur de langage, ni un SGBD à proprement parler : c'est une interface qui facilite l'utilisation du SGBD, pas le SGBD lui-même.",
+          "correction_markdown": "Réserver la réponse aux trois composants fonctionnels essentiels (serveur Web, interpréteur, SGBD) et mentionner phpMyAdmin séparément, comme un outil fourni en plus."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le sigle LAMP désigne un environnement de développement Web sous Linux. Décomposer ce sigle par analogie avec WAMP.",
+          "solution_markdown": "LAMP = Linux (système d'exploitation) + Apache (serveur Web) + MySQL (SGBD) + PHP (interpréteur de langage serveur) : c'est l'équivalent de WAMP, mais sur système Linux plutôt que Windows."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un développeur installe séparément Apache, puis PHP, puis MySQL, en configurant lui-même leur communication. A-t-il utilisé un environnement intégré de développement ? Justifier.",
+          "solution_markdown": "Non : un environnement intégré de développement (EDI) désigne une solution qui installe et pré-configure ces trois composants EN UNE SEULE FOIS, prêts à fonctionner ensemble. Installer et relier les trois logiciels séparément revient au même résultat fonctionnel, mais ne correspond pas à la définition d'un EDI, qui repose justement sur le gain de temps et la simplicité d'une installation unique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi un environnement comme WampServer ou XAMPP, pratique pour développer en local, est-il généralement déconseillé pour héberger un site accessible publiquement sur Internet ?",
+          "solution_markdown": "Ces environnements sont conçus et configurés pour la simplicité et la rapidité de mise en place en local, pas pour la sécurité d'un serveur exposé publiquement : mots de passe par défaut souvent vides (comme le compte `root` sans mot de passe utilisé dans le script de l'exercice), interface d'administration (phpMyAdmin) parfois accessible sans restriction, options de sécurité désactivées par défaut pour ne pas gêner le développement. Un hébergement public nécessite une configuration serveur dédiée, avec des mots de passe robustes, un pare-feu, des mises à jour de sécurité régulières et des permissions de fichiers restreintes - un niveau d'exigence que WampServer ne vise pas."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un EDI Web réunit trois composants indissociables : serveur Web, interpréteur de langage serveur, SGBD.",
+        "WampServer (Windows), XAMPP (multiplateforme), MAMP (macOS) et EasyPHP sont des exemples courants d'EDI Web.",
+        "Le sigle de chaque EDI (WAMP, XAMPP, LAMP) encode directement ses composants : il suffit souvent de le décomposer pour répondre.",
+        "phpMyAdmin est un outil d'administration fourni en plus, pas l'un des trois composants fonctionnels essentiels de l'EDI."
+      ]
+    }
+  ]
+}

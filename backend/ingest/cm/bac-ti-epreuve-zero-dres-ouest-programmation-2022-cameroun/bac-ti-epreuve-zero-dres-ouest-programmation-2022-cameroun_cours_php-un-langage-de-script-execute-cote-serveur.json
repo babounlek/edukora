@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-php-un-langage-de-script-execute-cote-serveur-tle-ti",
+  "meta": {
+    "titre": "PHP : un langage de script exécuté côté serveur",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à PHP",
+    "duree_estimee_min": 20,
+    "tags": [
+      "PHP",
+      "langage côté serveur",
+      "sécurité du code"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.2-0",
+    "rappels_lies": [
+      "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.4-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Affiche le code source d'une page dans ton navigateur (clic droit, « Afficher le code source ») : tu verras du HTML, du CSS, parfois du JavaScript, mais jamais le code PHP qui a pourtant servi à construire cette page. Ce n'est pas un hasard : c'est la conséquence directe de la façon dont PHP fonctionne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le principe du modèle client-serveur",
+        "Savoir repérer les balises `<?php ... ?>` dans un fichier"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un langage interprété avant l'envoi au navigateur",
+      "contenu_markdown": "PHP signifie « PHP: Hypertext Preprocessor », un acronyme récursif (son propre sigle apparaît dans sa définition). C'est un langage de script **exécuté côté serveur** : quand le serveur reçoit une requête pour un fichier `.php`, il interprète entièrement le code PHP qu'il contient avant de renvoyer une réponse, et seul le résultat de cette exécution (généralement du HTML) est transmis au navigateur.\n\nCette exécution côté serveur donne à PHP deux avantages majeurs sur un langage côté client comme JavaScript : le code source n'est jamais visible ni modifiable par le visiteur (ce qui protège, par exemple, les identifiants de connexion à une base de données), et PHP peut accéder directement aux ressources du serveur, en particulier aux bases de données, aux fichiers et au système, ce qu'un script exécuté dans le navigateur ne peut jamais faire."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le fichier `enregistrement.php` contient les identifiants de connexion à la base de données « Habillement » (login, mot de passe). Explique pourquoi ces informations restent protégées même si un visiteur malintentionné essaie d'examiner le code de la page.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Le visiteur demande la page enregistrement.php",
+          "justification": "Toute consultation commence par une requête HTTP vers le serveur",
+          "resultat_markdown": "Le serveur reçoit la demande et localise le fichier correspondant"
+        },
+        {
+          "numero": 2,
+          "action": "Le serveur interprète le code PHP avant de répondre",
+          "justification": "Les balises `<?php ... ?>` déclenchent l'exécution du code qu'elles contiennent, y compris les lignes définissant `$login` et `$pswd`",
+          "resultat_markdown": "Les instructions PHP s'exécutent, mais restent invisibles pour l'extérieur"
+        },
+        {
+          "numero": 3,
+          "action": "Seul le résultat de l'exécution est envoyé",
+          "justification": "PHP remplace tout le bloc `<?php ... ?>` par ce que ses instructions ont produit (ici, le tableau HTML des articles), jamais par le code lui-même",
+          "resultat_markdown": "Le navigateur ne reçoit que du HTML, sans aucune trace du login ni du mot de passe"
+        }
+      ],
+      "conclusion_markdown": "Le visiteur ne peut donc jamais lire `$login = \"root\";` en consultant le code source de la page, puisque cette ligne a été exécutée et non transmise."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que PHP s'exécute dans le navigateur, comme JavaScript",
+          "pourquoi_faux": "Si c'était le cas, le code PHP (et les identifiants qu'il contient) serait visible dans le code source de la page, ce qui n'est jamais observé en pratique.",
+          "correction_markdown": "PHP s'exécute uniquement côté serveur, avant l'envoi de la réponse : mémorise ce point comme la différence fondamentale avec JavaScript."
+        },
+        {
+          "erreur_markdown": "Donner comme avantage de PHP « il est plus simple que JavaScript »",
+          "pourquoi_faux": "La simplicité relative d'un langage n'est pas un critère technique solide et dépend largement du niveau de l'élève : ce n'est pas l'argument attendu par un correcteur.",
+          "correction_markdown": "Appuie-toi toujours sur un avantage technique vérifiable : la confidentialité du code source, ou l'accès direct aux ressources serveur (bases de données, fichiers)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifie l'acronyme PHP ?",
+          "solution_markdown": "PHP: Hypertext Preprocessor."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un développeur hésite entre écrire la vérification du mot de passe d'un utilisateur en JavaScript ou en PHP. Lequel choisir, et pourquoi ?",
+          "solution_markdown": "PHP, exécuté côté serveur : si la vérification était faite en JavaScript, un visiteur pourrait lire le code de vérification dans le navigateur (ou le désactiver), et donc contourner la sécurité. Faite en PHP, la vérification reste invisible et incontournable depuis le navigateur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une page mélange PHP et JavaScript : le PHP calcule un total à partir de la base de données, puis une variable JavaScript affiche ce total avec une animation. Explique dans quel ordre les deux langages interviennent réellement.",
+          "solution_markdown": "Le PHP s'exécute entièrement en premier, côté serveur, avant que la page ne soit envoyée : il calcule le total et l'insère directement dans le HTML renvoyé (par exemple en écrivant `var total = 150;` dans le code généré). Ce n'est qu'une fois cette page HTML reçue par le navigateur que le JavaScript s'exécute à son tour, côté client, en lisant cette valeur déjà calculée pour l'animer. PHP et JavaScript ne s'exécutent donc jamais en même temps : PHP termine son travail avant que JavaScript ne commence le sien."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "PHP signifie « PHP: Hypertext Preprocessor » et s'exécute côté serveur, jamais dans le navigateur.",
+        "Seul le résultat de l'exécution PHP (généralement du HTML) parvient au client : le code source PHP reste invisible.",
+        "Cette exécution côté serveur permet à PHP d'accéder directement aux bases de données et aux fichiers du serveur.",
+        "Au BAC TI, cet avantage de confidentialité et d'accès serveur revient systématiquement dans les questions comparant PHP et JavaScript."
+      ]
+    }
+  ]
+}

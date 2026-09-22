@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-interpreter-rapport-analyse-antivirus-tle-ti",
+  "meta": {
+    "titre": "Interpréter un rapport d'analyse antivirus",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique - diagnostic de sécurité",
+    "duree_estimee_min": 20,
+    "tags": [
+      "rapport antivirus",
+      "fichiers infectés",
+      "fichiers cachés",
+      "diagnostic de sécurité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex3-q3-1",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex3-q5-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un rapport d'analyse antivirus affiche une dizaine de chiffres en quelques lignes : scannés, détectés, nettoyés, cachés... Sans méthode, on peut facilement répondre à côté en confondant deux lignes voisines. Ce cours donne le réflexe de lecture qui permet de répondre juste, quelle que soit la question posée sur un tel rapport."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un logiciel antivirus et à quoi sert une analyse complète du système.",
+        "Savoir lire un tableau de résultats organisé en catégories."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Chercher le mot exact de la question dans le rapport",
+      "contenu_markdown": "Un rapport d'analyse antivirus organise ses résultats par catégorie (fichiers, registre, éléments cachés), chaque catégorie affichant généralement trois valeurs : le nombre d'éléments analysés (« Scanned »), le nombre d'éléments identifiés comme problématiques (« Detected » pour une infection, « Hidden » pour un élément caché), et le nombre d'éléments déjà traités (« Cleaned », « Fixed », « Unhidden »). Pour répondre à une question sur un tel rapport, il faut chercher la ligne dont le nom correspond EXACTEMENT au mot-clé de la question posée, sans se laisser influencer par une valeur voisine qui répond à une autre question.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un rapport affiche « File Scanned : 2369, File Detected : 6, File Cleaned : 0 » et « Path Scanned : 307, Path Hidden : 0, Path Unhidden : 0 ». Répondre à deux questions : l'ordinateur est-il infecté ? Contient-il des fichiers cachés ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Répondre à la question de l'infection",
+          "justification": "La présence d'une infection se lit sur la ligne « Detected » de la catégorie Virus/Fichiers.",
+          "resultat_markdown": "« File Detected : 6 » : oui, l'ordinateur est infecté, 6 fichiers ont été détectés comme infectés."
+        },
+        {
+          "numero": 2,
+          "action": "Ne pas se laisser distraire par « File Cleaned : 0 »",
+          "justification": "Cette ligne décrit le traitement déjà effectué, pas l'existence de l'infection.",
+          "resultat_markdown": "« File Cleaned : 0 » signifie seulement qu'aucun des 6 fichiers infectés n'a encore été nettoyé, cela ne remet pas en cause l'infection elle-même."
+        },
+        {
+          "numero": 3,
+          "action": "Répondre à la question des fichiers cachés",
+          "justification": "La présence de fichiers cachés se lit sur la ligne « Hidden » de la catégorie dédiée.",
+          "resultat_markdown": "« Path Hidden : 0 » : non, aucun chemin caché n'a été détecté parmi les 307 chemins analysés."
+        }
+      ],
+      "conclusion_markdown": "Deux questions voisines en apparence (infection, fichiers cachés) demandent en réalité de lire deux lignes complètement différentes du rapport : « Detected » pour l'une, « Hidden » pour l'autre - jamais la même valeur pour les deux."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « non, pas d'infection » en s'appuyant sur « File Cleaned : 0 » plutôt que sur « File Detected ».",
+          "pourquoi_faux": "« Cleaned » décrit une action de traitement déjà réalisée, pas la présence ou l'absence d'infection : une valeur de 0 sur cette ligne ne dit rien sur le nombre de fichiers infectés eux-mêmes.",
+          "correction_markdown": "Repère toujours la ligne « Detected » (ou l'équivalent le plus proche du mot-clé de la question) avant de conclure, jamais une ligne voisine qui semble aller dans le même sens."
+        },
+        {
+          "erreur_markdown": "Confondre « Scanned » (nombre d'éléments analysés) avec le nombre d'éléments réellement problématiques.",
+          "pourquoi_faux": "« Scanned » indique seulement combien d'éléments ont été passés en revue par l'analyse, sans préjuger du résultat : un grand nombre scanné ne signifie ni beaucoup ni peu d'infections.",
+          "correction_markdown": "Ne jamais répondre à une question sur une infection ou un élément caché en citant simplement la valeur « Scanned »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un rapport affiche « Value Scanned : 1114, Value Detected : 53, Value Fixed : 0 » pour la catégorie Registre. Le registre de cet ordinateur contient-il des valeurs problématiques ? Justifier.",
+          "solution_markdown": "Oui : « Value Detected : 53 » indique que 53 valeurs du registre ont été détectées comme problématiques parmi les 1114 analysées, même si « Value Fixed : 0 » montre qu'aucune n'a encore été corrigée à ce stade."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un rapport affiche « Path Scanned : 500, Path Hidden : 12, Path Unhidden : 12 ». Que peut-on en conclure sur l'état actuel de l'ordinateur concernant les fichiers cachés ?",
+          "solution_markdown": "12 chemins cachés avaient été détectés (« Path Hidden : 12 »), mais « Path Unhidden : 12 » indique que ces 12 chemins ont tous été démasqués (rendus visibles à nouveau) par l'antivirus. À l'état actuel, après ce traitement, aucun fichier caché suspect ne subsiste donc sur cet ordinateur : les 12 détections ont été entièrement traitées."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un rapport affiche « File Scanned : 5000, File Detected : 0, File Cleaned : 0 ». Un technicien en déduit que l'antivirus n'a servi à rien puisqu'aucune action de nettoyage n'a eu lieu. Cette conclusion est-elle correcte ? Discuter.",
+          "solution_markdown": "Cette conclusion est incorrecte. « File Detected : 0 » signifie qu'aucun fichier infecté n'a été trouvé parmi les 5000 fichiers analysés : c'est un résultat positif (l'ordinateur est sain), pas un échec de l'antivirus. « File Cleaned : 0 » est alors la conséquence logique de « File Detected : 0 » : il n'y a simplement rien à nettoyer puisqu'aucune infection n'a été détectée.\n\nAffirmer que l'antivirus « n'a servi à rien » revient à confondre deux situations très différentes : un antivirus qui échoue à détecter une infection réellement présente (grave défaillance) et un antivirus qui confirme, après une analyse complète et fonctionnelle, qu'aucune infection n'existe (résultat rassurant et utile). Le rapport prouve au contraire que l'analyse s'est bien déroulée sur l'ensemble des 5000 fichiers, avec un résultat sain."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un rapport d'analyse antivirus organise ses résultats en catégories, chacune avec ses propres lignes Scanned / Detected / Cleaned (ou équivalent).",
+        "« Detected » (ou « Hidden ») répond à la question « y a-t-il un problème ? » ; « Cleaned »/« Fixed »/« Unhidden » répond à « ce problème a-t-il déjà été traité ? ».",
+        "« Scanned » indique seulement le volume analysé, jamais le résultat de l'analyse.",
+        "Cherche toujours la ligne dont le nom correspond exactement au mot-clé de la question posée, jamais une ligne voisine par habitude.",
+        "Cette lecture rigoureuse d'un rapport de sécurité est directement transférable à d'autres outils de diagnostic informatique rencontrés en dehors de l'examen."
+      ]
+    }
+  ]
+}

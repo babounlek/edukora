@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-types-messages-diagramme-sequence-tle-ti",
+  "meta": {
+    "titre": "Les types de messages dans un diagramme de séquence UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagrammes UML comportementaux",
+    "duree_estimee_min": 15,
+    "tags": [
+      "message synchrone",
+      "message asynchrone",
+      "UML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex1-q1.5c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toutes les flèches d'un diagramme de séquence ne se ressemblent pas tout à fait : la forme exacte de leur pointe transporte une information à part entière, celle du type de communication entre les deux lignes de vie. Apprendre à lire cette pointe, c'est lire une information que le trait lui-même ne dit pas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un message dans un diagramme de séquence (flèche horizontale nommée reliant deux lignes de vie)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trait et pointe : deux informations distinctes",
+      "contenu_markdown": "Le style du trait indique le sens de la communication : un trait plein représente un appel (l'envoi d'un message), un trait pointillé représente un retour (la réponse à un appel précédent). La forme de la pointe indique, elle, le type de synchronisation : un message synchrone se termine par une pointe pleine, en triangle rempli, et bloque l'émetteur jusqu'à la réponse du récepteur ; un message asynchrone se termine par une pointe ouverte, en forme de chevron, et n'attend pas de réponse immédiate pour continuer.",
+      "formule_principale": "Trait plein = appel, trait pointillé = retour  ;  pointe pleine = synchrone, pointe ouverte = asynchrone"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur un diagramme, toutes les flèches se terminent par une pointe ouverte en forme de chevron, jamais par un triangle plein. Quel type de message est utilisé sur ce diagramme ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Observer la forme de la pointe",
+          "justification": "C'est la forme de la pointe, et non le style du trait, qui distingue synchrone d'asynchrone.",
+          "resultat_markdown": "Toutes les pointes sont ouvertes, en forme de chevron."
+        },
+        {
+          "numero": 2,
+          "action": "Écarter l'hypothèse du message synchrone",
+          "justification": "Un message synchrone se reconnaît à une pointe pleine et triangulaire, absente ici.",
+          "resultat_markdown": "Aucune flèche ne porte de triangle plein : il ne s'agit donc pas de messages synchrones."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur le type de message",
+          "justification": "La pointe ouverte en chevron est la signature exclusive du message asynchrone.",
+          "resultat_markdown": "Les messages représentés sont des messages asynchrones."
+        }
+      ],
+      "conclusion_markdown": "La forme de la pointe, seule, détermine si un message est synchrone (pointe pleine) ou asynchrone (pointe ouverte en chevron)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Déduire « message synchrone » du seul fait que le trait est plein",
+          "pourquoi_faux": "Le trait plein indique un appel par opposition à un trait pointillé qui indique un retour ; il ne dit rien sur la synchronisation, qui dépend uniquement de la forme de la pointe.",
+          "correction_markdown": "Regarde toujours la pointe de la flèche, jamais seulement son trait, pour déterminer synchrone ou asynchrone."
+        },
+        {
+          "erreur_markdown": "Penser qu'un message asynchrone ne reçoit jamais de réponse",
+          "pourquoi_faux": "Un message asynchrone peut tout à fait être suivi d'un message de retour (généralement en trait pointillé) ; la différence avec le message synchrone est que l'émetteur n'est pas bloqué en attente de ce retour, il peut continuer son activité en parallèle.",
+          "correction_markdown": "Ne confonds pas « asynchrone » avec « sans réponse » : l'émetteur n'attend simplement pas la réponse pour poursuivre son propre traitement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle forme de pointe caractérise un message synchrone ?",
+          "solution_markdown": "Une pointe pleine, en forme de triangle rempli."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un diagramme représente un message « Vérifier stock » se terminant par une pointe pleine triangulaire, suivi d'un message de retour en trait pointillé « Stock disponible ». Que peut-on en déduire sur le comportement de l'émetteur pendant cet échange ?",
+          "solution_markdown": "Le message « Vérifier stock » étant synchrone (pointe pleine), l'émetteur reste bloqué, en attente, tant qu'il n'a pas reçu le message de retour « Stock disponible » : il ne peut poursuivre son propre traitement qu'une fois cette réponse reçue."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi un scénario de commande en ligne, où plusieurs services indépendants (paiement, stock, livraison) doivent être sollicités sans que le client n'attende la fin de chacun avant que les autres ne démarrent, s'appuierait-il plutôt sur des messages asynchrones que sur des messages synchrones ?",
+          "solution_markdown": "Avec des messages synchrones, chaque service sollicité bloquerait l'émetteur jusqu'à sa réponse : les trois vérifications (paiement, stock, livraison) s'exécuteraient alors nécessairement les unes après les autres, ce qui allonge le temps de traitement total et immobilise inutilement le processus appelant à chaque étape. Avec des messages asynchrones, l'émetteur peut solliciter les trois services sans attendre leur réponse immédiate, ce qui permet de les traiter en parallèle et de récupérer chaque résultat au fur et à mesure qu'il devient disponible : le scénario global gagne en réactivité, ce qui est précisément l'intérêt du message asynchrone dans un système où plusieurs traitements indépendants peuvent progresser simultanément."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le style du trait (plein ou pointillé) indique le sens de la communication : appel ou retour.",
+        "La forme de la pointe (pleine ou ouverte) indique le type de synchronisation : synchrone ou asynchrone.",
+        "Message synchrone : pointe pleine, l'émetteur attend la réponse avant de continuer.",
+        "Message asynchrone : pointe ouverte en chevron, l'émetteur poursuit sans attendre la réponse.",
+        "Au BAC, ne réponds jamais à partir du seul style du trait : c'est un piège fréquent qui fait perdre les points de cette question, pourtant simple une fois la bonne observation faite."
+      ]
+    }
+  ]
+}

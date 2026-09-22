@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-calculer-une-probabilite-de-tirage-simultane-via-les-combinaisons-terminale-d",
+  "meta": {"titre": "Calculer une probabilité de tirage simultané via les combinaisons", "cours_id": "cours-calculer-une-probabilite-de-tirage-simultane-via-les-combinaisons-terminale-d", "matiere": "Mathématiques", "niveau": "Terminale D", "sous_theme": "Probabilités — combinatoire", "tags": ["combinaisons", "tirage simultané", "équiprobabilité"], "duree_estimee_minutes": 10, "epreuve_source": "bac-d-maths-2022-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2022-cameroun-ex3-3a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Un tirage simultané (sans ordre) se compte toujours avec des combinaisons ; combiner intelligemment ces combinaisons (par couleur, par catégorie) permet de calculer des probabilités complexes rapidement."},
+    {"type": "prerequis", "items_markdown": ["Notion de combinaison C(n,k) = nombre de façons de choisir k objets parmi n, sans tenir compte de l'ordre", "Équiprobabilité d'un tirage au hasard"]},
+    {"type": "regle", "titre": "Dénombrer avec des combinaisons puis diviser", "contenu_markdown": "Pour un tirage simultané de $k$ objets parmi $n$ (équiprobable), le nombre total de tirages possibles est $\\binom nk$. La probabilité d'un événement est le nombre de tirages favorables (dénombrés eux aussi via des combinaisons appropriées) divisé par $\\binom nk$.", "formule_principale": "P(événement) = (nombre de tirages favorables via combinaisons) / C(n,k)", "variantes": ["Pour un événement de type \"même catégorie\", sommer les C(effectif catégorie, k) sur chaque catégorie"]},
+    {"type": "exemple_resolu", "enonce_markdown": "Une boîte a 4 boules bleues et 6 boules noires. On tire 3 boules simultanément. Calculer P(3 boules bleues).", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Total des tirages", "justification": "C(10,3)", "resultat_markdown": "120"},
+      {"numero": 2, "action": "Tirages favorables", "justification": "C(4,3)", "resultat_markdown": "4"},
+      {"numero": 3, "action": "Calculer la probabilité", "justification": "4/120", "resultat_markdown": "1/30"}
+    ], "conclusion_markdown": "P=1/30."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Utiliser des arrangements (avec ordre) au lieu de combinaisons pour un tirage SIMULTANÉ, où l'ordre n'a par définition aucune importance", "pourquoi_faux": "Un tirage simultané ne distingue pas l'ordre dans lequel les objets sont sortis de la boîte ; utiliser des arrangements (qui comptent l'ordre) surcompterait chaque tirage plusieurs fois, faussant complètement le résultat.", "correction_markdown": "Toujours utiliser des combinaisons (et non des arrangements) pour dénombrer un tirage simultané, où l'ordre des objets tirés n'a pas d'importance."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Boîte de 5 rouges et 3 vertes. Tirage simultané de 2 boules. Calculer P(2 rouges).", "solution_markdown": "C(8,2)=28. C(5,2)=10. P=10/28=5/14."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Pourquoi utiliser l'événement contraire est-il souvent plus rapide pour calculer une probabilité de type \"au moins une catégorie différente\" ?", "solution_markdown": "Parce que dénombrer directement tous les cas \"différents\" nécessite souvent de sommer plusieurs termes de combinaisons croisées, alors que l'événement contraire (\"tous identiques\" ou \"aucun\") est souvent beaucoup plus simple à dénombrer, puis on soustrait sa probabilité à 1."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Un tirage simultané se dénombre toujours avec des combinaisons, jamais avec des arrangements.", "La probabilité d'un événement est le rapport (tirages favorables)/(tirages totaux), tous deux comptés en combinaisons.", "Recourir à l'événement contraire simplifie souvent le calcul quand l'événement direct est complexe à dénombrer."]}
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-sql-jointures-where-tle-ti",
+  "meta": {
+    "titre": "Combiner jointures et conditions en SQL (JOIN et WHERE)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "JOIN",
+      "WHERE",
+      "jointure"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex2-q4.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une base relationnelle bien conçue, l'information qu'on cherche est presque toujours répartie sur plusieurs tables : le nom d'un client dans une table, le prix d'un bien dans une autre, l'identité de son représentant dans une troisième. Savoir reconstituer cette information dispersée grâce à des jointures est la compétence SQL la plus utile au quotidien d'un gestionnaire de base de données."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une requête SQL avec WHERE.",
+        "Connaître la notion de clé primaire et de clé étrangère dans un schéma relationnel."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Joindre puis filtrer",
+      "contenu_markdown": "Une jointure (`JOIN ... ON ...`) relie deux tables en appariant les lignes dont la clé étrangère de l'une correspond à la clé primaire de l'autre, produisant un résultat combiné qui expose côte à côte les colonnes des deux tables. Lorsqu'un critère de filtrage porte sur des colonnes situées dans des tables différentes, il faut d'abord joindre toutes les tables nécessaires, puis appliquer la clause WHERE, qui cumule les conditions avec l'opérateur AND (toutes les conditions doivent être vraies simultanément) ou les alterne avec OR (au moins une condition doit être vraie).",
+      "formule_principale": "SELECT ... FROM T1 JOIN T2 ON T1.cle = T2.cle WHERE condition1 AND condition2;"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui liste les appartements situés à Yaoundé et gérés par le représentant ABANDA Jules.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer dans quelle table se trouve chaque critère",
+          "justification": "La ville du client est dans CLIENT, le nom du représentant est dans REPRESENTANT, mais on veut afficher des informations d'APPARTEMENT.",
+          "resultat_markdown": "Trois tables concernées : APPARTEMENT, CLIENT, REPRESENTANT."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire les jointures nécessaires",
+          "justification": "APPARTEMENT porte les clés étrangères vers CLIENT et REPRESENTANT : ce sont elles qui servent de condition de jointure.",
+          "resultat_markdown": "```sql\nFROM APPARTEMENT A\nJOIN CLIENT C ON A.codeclt = C.codeclt\nJOIN REPRESENTANT R ON A.coderep = R.coderep\n```"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter les conditions de filtrage cumulées",
+          "justification": "Il faut vérifier simultanément la ville ET le nom ET le prénom du représentant : trois conditions reliées par AND.",
+          "resultat_markdown": "```sql\nWHERE C.villeclt = 'Yaoundé'\n  AND R.nomrep = 'ABANDA'\n  AND R.prenomrep = 'Jules';\n```"
+        }
+      ],
+      "conclusion_markdown": "Trois tables, trois conditions cumulées par AND : les jointures rassemblent l'information dispersée, WHERE ne garde que les lignes qui satisfont tous les critères à la fois."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire une seule condition `nomrep = 'ABANDA Jules'`",
+          "pourquoi_faux": "Le nom et le prénom sont deux colonnes distinctes dans la table REPRESENTANT ; une seule chaîne combinant les deux ne correspondra jamais à leur contenu respectif.",
+          "correction_markdown": "Sépare toujours nom et prénom en deux conditions distinctes, reliées par AND."
+        },
+        {
+          "erreur_markdown": "Oublier une jointure et obtenir une erreur ou un résultat incorrect",
+          "pourquoi_faux": "Si une colonne du WHERE ou du SELECT provient d'une table qui n'a pas été jointe, la requête échoue ou ne peut pas résoudre cette colonne.",
+          "correction_markdown": "Avant d'écrire le WHERE, liste toutes les tables d'où proviennent tes conditions et tes colonnes affichées, et vérifie que chacune est bien jointe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui liste le nom des clients (nomclt) et la référence de leurs appartements (ref).",
+          "solution_markdown": "```sql\nSELECT C.nomclt, A.ref\nFROM CLIENT C\nJOIN APPARTEMENT A ON C.codeclt = A.codeclt;\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrivez la requête qui liste les appartements (référence et prix) gérés par le représentant de code 'R012'.",
+          "solution_markdown": "```sql\nSELECT A.ref, A.pxvente\nFROM APPARTEMENT A\nWHERE A.coderep = 'R012';\n```\nAucune jointure n'est ici nécessaire : le code du représentant est déjà présent directement dans la table APPARTEMENT comme clé étrangère `coderep`, il n'y a donc pas besoin d'aller chercher son nom dans la table REPRESENTANT pour filtrer sur ce critère."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le schéma de référence utilisé dans les exemples de ce cours est celui d'une agence immobilière : `CLIENT(codeclt, nomclt, prenomclt, adresseclt, CPclt, villeclt)`, `APPARTEMENT(ref, superficie, pxvente, secteur, #coderep, #codeclt)`, `REPRESENTANT(coderep, nomrep, prenomrep)`. Écrivez la requête qui liste le nom et le prénom des clients (nomclt, prenomclt) qui possèdent un appartement de plus de 100 m² géré par un représentant nommé DIFFO, en n'affichant chaque client qu'une seule fois même s'il possède plusieurs appartements concernés.",
+          "solution_markdown": "```sql\nSELECT DISTINCT C.nomclt, C.prenomclt\nFROM CLIENT C\nJOIN APPARTEMENT A ON C.codeclt = A.codeclt\nJOIN REPRESENTANT R ON A.coderep = R.coderep\nWHERE A.superficie > 100\n  AND R.nomrep = 'DIFFO';\n```\nLes deux jointures rassemblent, pour chaque appartement, la ville et le nom du client d'une part, l'identité du représentant d'autre part ; la clause WHERE cumule les deux conditions (superficie et nom du représentant). Le mot-clé `DISTINCT`, ajouté juste après SELECT, élimine les doublons qui apparaîtraient si un même client possédait plusieurs appartements répondant tous deux aux critères, garantissant qu'il n'apparaît qu'une seule fois dans le résultat final."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une jointure relie deux tables via une clé étrangère et une clé primaire, avec la syntaxe `JOIN ... ON ...`.",
+        "Repère d'abord, pour chaque condition et chaque colonne affichée, la table d'où elle provient : c'est ce qui indique combien de jointures écrire.",
+        "WHERE cumule les conditions avec AND (toutes vraies à la fois) ou les alterne avec OR (au moins une vraie).",
+        "Au BAC, une question qui mélange des critères de plusieurs tables (ville du client, nom du représentant, prix de l'appartement) annonce presque toujours une requête à jointures multiples."
+      ]
+    }
+  ]
+}

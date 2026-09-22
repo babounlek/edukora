@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-lecture-algorigramme-entree-sortie-premiere-ti",
+  "meta": {
+    "titre": "Lecture d'un algorigramme : identifier les variables d'entrée et de sortie",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Algorigrammes et algorithmique",
+    "duree_estimee_min": 12,
+    "tags": [
+      "algorigramme",
+      "organigramme",
+      "variable d'entrée",
+      "variable de sortie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex2-q1-0",
+    "rappels_lies": [
+      "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex2-q2-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant même de comprendre CE QUE fait un algorigramme, il faut savoir lire QUI lui parle : quelles informations il reçoit de l'extérieur, et quelles informations il restitue à la fin. Ce repérage rapide - souvent noté sur seulement 0,5 point à l'examen - conditionne pourtant la compréhension de tout le reste du schéma."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les symboles de base d'un algorigramme (ovale début/fin, rectangle d'action, losange de test, parallélogramme d'entrée/sortie)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Repérer les instructions Lire et Afficher",
+      "contenu_markdown": "Dans un algorigramme, une **variable d'entrée** est une donnée fournie de l'extérieur au traitement (typiquement via une instruction `Lire`/`Read`) : c'est elle qui alimente les calculs, mais elle n'est jamais elle-même le résultat final communiqué à l'utilisateur. Une **variable de sortie** est une donnée restituée à l'utilisateur à la fin (ou au cours) du traitement, typiquement via une instruction `Afficher`/`Ecrire` : elle porte le résultat que le traitement avait pour but de produire.",
+      "formule_principale": "Lire(X) -> X est une entrée ; Afficher(Y) -> Y est une sortie",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un algorigramme lit une température en Celsius, calcule son équivalent en Fahrenheit, puis affiche ce résultat. Identifier les variables d'entrée et de sortie.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'instruction de lecture",
+          "justification": "L'énoncé précise que l'algorigramme \"lit une température en Celsius\"",
+          "resultat_markdown": "`Lire(celsius)` : `celsius` est une variable d'entrée."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer l'instruction d'affichage",
+          "justification": "L'énoncé précise que l'algorigramme \"affiche ce résultat\" (le Fahrenheit calculé)",
+          "resultat_markdown": "`Afficher(fahrenheit)` : `fahrenheit` est une variable de sortie."
+        },
+        {
+          "numero": 3,
+          "action": "Classer la variable intermédiaire",
+          "justification": "`fahrenheit` est calculée à partir de `celsius` mais n'est ni lue ni... en fait si, elle EST affichée",
+          "resultat_markdown": "`celsius` = entrée uniquement ; `fahrenheit` = sortie (car affichée), bien qu'elle soit calculée en interne."
+        }
+      ],
+      "conclusion_markdown": "Une variable calculée par le traitement peut très bien être une variable de sortie si elle est affichée à la fin : le critère n'est jamais \"a-t-elle été calculée ou lue tel quel\", mais uniquement \"apparaît-elle dans une instruction Lire (entrée) ou Afficher (sortie)\"."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre une variable de comptage interne (compteur de boucle) avec une variable d'entrée",
+          "pourquoi_faux": "Un compteur comme `K` dans une boucle `Tant que K<50` n'est jamais lu depuis l'extérieur : il est initialisé et incrémenté automatiquement par l'algorithme lui-même, ce n'est donc ni une entrée ni une sortie.",
+          "correction_markdown": "Ne retiens comme variable d'entrée que celles qui apparaissent explicitement dans une instruction `Lire(...)`, jamais un simple compteur de boucle."
+        },
+        {
+          "erreur_markdown": "Oublier une des variables affichées quand plusieurs `Afficher(...)` se suivent",
+          "pourquoi_faux": "Chaque instruction `Afficher` distincte introduit une variable de sortie à part entière ; en omettre une revient à donner une réponse incomplète.",
+          "correction_markdown": "Relis bien tout le schéma jusqu'à la fin (jusqu'au symbole \"Fin\") avant de conclure sur la liste complète des sorties."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un algorigramme contient les instructions `Lire(A)`, `Lire(B)`, puis `S ← A+B`, puis `Afficher(S)`. Identifier les variables d'entrée et de sortie.",
+          "solution_markdown": "Variables d'entrée : `A` et `B` (toutes deux lues). Variable de sortie : `S` (seule variable affichée)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un algorigramme lit un nombre `N`, calcule sa moitié `M` et son double `D`, mais n'affiche que `D`. `M` est-elle une variable de sortie ? Justifier.",
+          "solution_markdown": "Non, `M` n'est pas une variable de sortie : bien qu'elle soit calculée, elle n'apparaît dans aucune instruction `Afficher`. Seule `D` est une variable de sortie ici, car c'est la seule valeur restituée à l'utilisateur. `M` reste une variable de calcul interne, ni entrée ni sortie."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une variable peut-elle être à la fois une variable d'entrée ET une variable de sortie dans le même algorigramme ? Donner un exemple si oui, ou justifier pourquoi non.",
+          "solution_markdown": "Oui, c'est possible : rien n'empêche qu'une même variable soit d'abord lue, puis réaffichée sans modification (ou après une modification qui la laisse porteuse d'une information utile en sortie). Exemple : `Lire(X)`, puis un traitement qui ne modifie pas `X`, puis `Afficher(X)` en fin de programme pour rappeler à l'utilisateur la valeur qu'il avait saisie, à côté du résultat calculé. La règle reste la même dans tous les cas : c'est la présence de la variable dans une instruction `Lire` qui en fait une entrée, et sa présence dans une instruction `Afficher` qui en fait une sortie - les deux ne s'excluent pas mutuellement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une variable d'entrée apparaît dans une instruction `Lire(...)` : elle est fournie par l'utilisateur.",
+        "Une variable de sortie apparaît dans une instruction `Afficher(...)` : elle est restituée à l'utilisateur.",
+        "Un compteur de boucle interne (comme `K` dans `Tant que K<50`) n'est ni une entrée ni une sortie.",
+        "Une variable calculée peut être une sortie si elle est affichée, même si elle n'a jamais été lue directement.",
+        "Cette question, souvent notée à peine 0,25 ou 0,5 point, est un gain de points rapide si tu repères d'abord tous les symboles `Lire` et `Afficher` du schéma avant de répondre à quoi que ce soit d'autre."
+      ]
+    }
+  ]
+}

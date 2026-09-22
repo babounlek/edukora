@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-barycentre-partiel-1ere-c-e",
+  "meta": {
+    "titre": "Barycentre partiel : réduire et regrouper un système de points pondérés",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Barycentres",
+    "duree_estimee_min": 30,
+    "tags": [
+      "barycentre",
+      "barycentre partiel",
+      "relation de Chasles",
+      "milieu d'un segment"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2024-officiel-cameroun",
+    "epreuve_titre": "Probatoire C, E - Mathématiques - Cameroun - Session 2024",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex2-q3bi-0",
+    "rappels_lies": [
+      "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex2-q3a-0",
+      "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex2-q3bii-0",
+      "rdm-probatoire-c-e-maths-2024-officiel-cameroun-ex2-q4-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Trouver le centre de gravité d'un système de quatre ou cinq points paraît compliqué si l'on doit tout recalculer d'un coup. Le théorème du barycentre partiel permet une astuce redoutable : regrouper certains points en un seul \"point équivalent\", puis continuer le calcul avec moins de points. C'est l'outil qui transforme des exercices barycentriques à l'apparence complexe en une suite de manipulations simples."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition vectorielle d'un barycentre",
+        "Relation de Chasles",
+        "Barycentre de deux points à coefficients égaux (le milieu)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le théorème du barycentre partiel",
+      "contenu_markdown": "Si $G$ est le barycentre du système $\\{(A_1,m_1),\\dots,(A_k,m_k),(A_{k+1},m_{k+1}),\\dots,(A_p,m_p)\\}$, et si $H$ est le barycentre du sous-système $\\{(A_1,m_1),\\dots,(A_k,m_k)\\}$ (de masse totale $m_1+\\dots+m_k$ non nulle), alors $G$ est aussi le barycentre du système réduit $\\{(H,m_1+\\dots+m_k),(A_{k+1},m_{k+1}),\\dots,(A_p,m_p)\\}$ : on peut remplacer plusieurs points par leur barycentre commun, affecté de la somme de leurs coefficients, sans changer le barycentre global.",
+      "formule_principale": "G=\\mathrm{bar}\\{(A_1,m_1),\\dots,(A_k,m_k),\\dots\\} = \\mathrm{bar}\\{(H,\\textstyle\\sum_{i=1}^k m_i),\\dots\\} \\text{ où } H=\\mathrm{bar}\\{(A_1,m_1),\\dots,(A_k,m_k)\\}",
+      "variantes": [
+        {
+          "nom": "Sens inverse : éclater un point en sous-système",
+          "quand_utiliser": "Quand un point du système est lui-même connu comme barycentre d'autres points, et qu'on veut le remplacer par ceux-ci.",
+          "contenu_markdown": "Si $B=\\mathrm{bar}\\{(M,3),(C,1)\\}$ (masse totale $4$), alors dans tout système contenant $(B,m_B)$, on peut remplacer $B$ par $\\{(M,\\frac34m_B),(C,\\frac14m_B)\\}$ sans changer le barycentre global."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On donne $K=\\mathrm{bar}\\{(A,2),(C,1)\\}$, $L=\\mathrm{bar}\\{(A,1),(B,2)\\}$, $M=\\mathrm{bar}\\{(B,-4),(C,1)\\}$. Sachant que $B=\\mathrm{bar}\\{(M,3),(C,1)\\}$, montrer que $L=\\mathrm{bar}\\{(A,2),(M,3),(C,1)\\}$, puis que $L$ est le milieu de $[KM]$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Remplacer B par le sous-système qui le définit, avec son coefficient réparti",
+          "justification": "$B=\\mathrm{bar}\\{(M,3),(C,1)\\}$, de masse totale $4$ ; dans $L=\\mathrm{bar}\\{(A,1),(B,2)\\}$, le coefficient $2$ de $B$ se répartit en $2\\times\\frac34=\\frac32$ sur $M$ et $2\\times\\frac14=\\frac12$ sur $C$.",
+          "resultat_markdown": "$L=\\mathrm{bar}\\{(A,1),(M,\\frac32),(C,\\frac12)\\}$, soit, en doublant tous les coefficients, $L=\\mathrm{bar}\\{(A,2),(M,3),(C,1)\\}$."
+        },
+        {
+          "numero": 2,
+          "action": "Regrouper A et C, dont le barycentre commun est déjà connu (K)",
+          "justification": "$A$ et $C$ portent les coefficients $2$ et $1$ dans l'écriture de $L$ ; leur barycentre, de masse totale $2+1=3$, est exactement $K=\\mathrm{bar}\\{(A,2),(C,1)\\}$ d'après l'énoncé.",
+          "resultat_markdown": "$L=\\mathrm{bar}\\{(K,3),(M,3)\\}$."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure grâce à l'égalité des deux coefficients",
+          "justification": "Deux coefficients égaux et non nuls définissent le milieu du segment joignant les deux points.",
+          "resultat_markdown": "$L$ est le milieu de $[KM]$."
+        }
+      ],
+      "conclusion_markdown": "Deux applications successives du théorème du barycentre partiel (une fois pour éclater $B$, une fois pour regrouper $A$ et $C$) ont suffi à faire apparaître un résultat géométrique remarquable, un milieu de segment, à partir d'une écriture barycentrique qui semblait ne rien avoir de particulier."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "En remplaçant un point par son sous-système, recopier directement les coefficients du sous-système sans les repondérer par le coefficient d'origine du point remplacé.",
+          "pourquoi_faux": "Si $B$ porte le coefficient $2$ et que $B=\\mathrm{bar}\\{(M,3),(C,1)\\}$, remplacer $B$ par $(M,3),(C,1)$ tel quel change la masse totale du système et donc potentiellement le barycentre.",
+          "correction_markdown": "Multiplie toujours les coefficients du sous-système par (coefficient du point remplacé) / (masse totale du sous-système), comme dans l'étape 1 de l'exemple."
+        },
+        {
+          "erreur_markdown": "Regrouper deux points qui n'apparaissent pas réellement avec les coefficients qu'on leur suppose dans l'écriture courante du système.",
+          "pourquoi_faux": "Le regroupement n'est valable qu'avec les coefficients EFFECTIVEMENT présents dans l'écriture du moment, qui peuvent avoir changé après une étape de réduction précédente.",
+          "correction_markdown": "Relis toujours l'écriture du système obtenue à l'étape précédente avant de choisir quels points regrouper."
+        },
+        {
+          "erreur_markdown": "Conclure au milieu d'un segment alors que les deux coefficients finaux ne sont pas rigoureusement égaux.",
+          "pourquoi_faux": "La propriété \"barycentre = milieu\" exige des coefficients STRICTEMENT égaux, pas seulement proches ou proportionnels dans un rapport quelconque.",
+          "correction_markdown": "Vérifie l'égalité exacte des deux coefficients avant d'invoquer la propriété du milieu."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $G=\\mathrm{bar}\\{(A,3),(B,1),(C,2)\\}$. Sachant que $I=\\mathrm{bar}\\{(A,3),(B,1)\\}$, exprimer $G$ comme barycentre de deux points.",
+          "solution_markdown": "$A$ et $B$ portent les coefficients $3$ et $1$, de masse totale $4$, exactement celle de $I$. Par le théorème du barycentre partiel : **$G=\\mathrm{bar}\\{(I,4),(C,2)\\}$.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $G=\\mathrm{bar}\\{(A,1),(B,1),(C,2)\\}$. Montrer que $G$ est le milieu de $[JC]$, où $J$ est le milieu de $[AB]$.",
+          "solution_markdown": "$A$ et $B$ portent des coefficients égaux ($1$ et $1$) : leur barycentre est le milieu $J=\\mathrm{bar}\\{(A,1),(B,1)\\}$, de masse totale $2$. Par le théorème du barycentre partiel, $G=\\mathrm{bar}\\{(J,2),(C,2)\\}$. Les coefficients de $J$ et $C$ sont maintenant égaux ($2$ et $2$) : **$G$ est donc le milieu de $[JC]$.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$ABCD$ est un tétraèdre. On pose $G=\\mathrm{bar}\\{(A,1),(B,1),(C,1),(D,1)\\}$ (isobarycentre). Montrer que $G$ est le milieu du segment joignant les milieux de $[AB]$ et de $[CD]$.",
+          "solution_markdown": "Notons $I$ le milieu de $[AB]=\\mathrm{bar}\\{(A,1),(B,1)\\}$ (masse totale $2$) et $J$ le milieu de $[CD]=\\mathrm{bar}\\{(C,1),(D,1)\\}$ (masse totale $2$). Par le théorème du barycentre partiel appliqué deux fois (regroupement de $A,B$ d'une part, de $C,D$ d'autre part) : $G=\\mathrm{bar}\\{(I,2),(J,2)\\}$. Les coefficients de $I$ et $J$ sont égaux ($2$ et $2$) : **$G$ est le milieu de $[IJ]$**, où $I$ est le milieu de $[AB]$ et $J$ le milieu de $[CD]$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le théorème du barycentre partiel permet de remplacer un sous-groupe de points par leur barycentre commun, affecté de la somme de leurs coefficients.",
+        "Dans l'autre sens, un point déjà connu comme barycentre d'un sous-système peut être « éclaté » à condition de répartir son coefficient proportionnellement.",
+        "Deux coefficients égaux et non nuls signalent presque toujours un milieu à faire apparaître : cherche activement ce genre de regroupement.",
+        "Vérifie systématiquement, à chaque étape de réduction, que la masse totale du système reste cohérente avec celle de départ.",
+        "Cette technique est la clé de la quasi-totalité des exercices de barycentres à trois points ou plus au programme du Probatoire."
+      ]
+    }
+  ]
+}

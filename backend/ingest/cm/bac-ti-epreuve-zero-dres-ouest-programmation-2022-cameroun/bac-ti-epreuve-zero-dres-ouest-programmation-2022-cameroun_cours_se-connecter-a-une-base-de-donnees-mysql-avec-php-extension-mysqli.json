@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-se-connecter-a-une-base-de-donnees-mysql-avec-php-extension-mysqli-tle-ti",
+  "meta": {
+    "titre": "Se connecter à une base de données MySQL avec PHP (extension mysqli)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "PHP et bases de données",
+    "duree_estimee_min": 30,
+    "tags": [
+      "mysqli_connect",
+      "mysqli_query",
+      "mysqli_fetch_array",
+      "base de données MySQL"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.6.1-0",
+    "rappels_lies": [
+      "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.6.2-0",
+      "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.7.2-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un formulaire d'enregistrement n'a de sens que si les données saisies vont réellement quelque part. En PHP, ce quelque part est presque toujours une base de données MySQL, et le chemin pour l'atteindre suit toujours les trois mêmes étapes, que le script soit simple ou complexe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire un script PHP de base (variables, echo, boucle while)",
+        "Connaître le vocabulaire élémentaire d'une base de données (table, ligne, colonne)",
+        "Savoir écrire une requête SQL SELECT simple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Se connecter, interroger, parcourir",
+      "contenu_markdown": "Dialoguer avec une base MySQL depuis un script PHP suit toujours trois étapes. **Se connecter** : `mysqli_connect($serveur, $login, $mot_de_passe, $base)` ouvre une connexion et renvoie une ressource utilisable ensuite (ou `false` en cas d'échec, à intercepter avec `or die(...)`). **Interroger** : `mysqli_query($connexion, $sql)` exécute une requête SQL et renvoie l'ensemble des lignes trouvées. **Parcourir** : `mysqli_fetch_array($resultat)` extrait une ligne à la fois sous forme de tableau et renvoie `false` quand il n'y en a plus, ce qui permet de l'utiliser directement comme condition d'une boucle `while`.\n\nCe dernier point mérite d'être détaillé : `while($ligne = mysqli_fetch_array($resultat)){ ... }` fonctionne parce que l'affectation `$ligne = ...` a elle-même pour valeur ce qui vient d'être affecté, donc `false` dès qu'il n'y a plus de ligne, ce qui arrête naturellement la boucle."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écris et commente le code PHP qui se connecte à la base « Habillement » sur le serveur local, exécute la requête `SELECT * FROM Article`, puis affiche le numéro de chaque article.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ouvrir la connexion au serveur MySQL",
+          "justification": "Aucune requête n'est possible avant d'avoir établi une connexion valide",
+          "resultat_markdown": "`$con = mysqli_connect(\"localhost\",\"root\",\"\", \"Habillement\") or die('erreur de connexion');`"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire et exécuter la requête SQL",
+          "justification": "La requête doit être exécutée via la connexion établie à l'étape précédente",
+          "resultat_markdown": "`$sql = 'SELECT * FROM Article';`\n`$resultat = mysqli_query($con, $sql);`"
+        },
+        {
+          "numero": 3,
+          "action": "Parcourir le résultat ligne par ligne",
+          "justification": "`mysqli_fetch_array` renvoie une ligne à chaque appel et `false` une fois toutes les lignes lues",
+          "resultat_markdown": "`while($row = mysqli_fetch_array($resultat)){ echo $row['numero'].\"<br>\"; }`"
+        },
+        {
+          "numero": 4,
+          "action": "Fermer la connexion",
+          "justification": "Une bonne pratique consiste à libérer la ressource une fois le traitement terminé",
+          "resultat_markdown": "`mysqli_close($con);`"
+        }
+      ],
+      "conclusion_markdown": "Le script affiche ainsi le numéro de chaque article de la table, ligne par ligne, en suivant exactement l'enchaînement connexion, requête, parcours."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appeler mysqli_query avant mysqli_connect",
+          "pourquoi_faux": "`mysqli_query` a besoin d'une ressource de connexion valide comme premier argument : sans connexion déjà établie, cette ressource n'existe pas encore.",
+          "correction_markdown": "Respecte toujours l'ordre connexion puis requête puis parcours, jamais l'inverse."
+        },
+        {
+          "erreur_markdown": "Oublier `or die(...)` après mysqli_connect",
+          "pourquoi_faux": "Si la connexion échoue silencieusement, les erreurs suivantes (sur `mysqli_query`, par exemple) deviennent difficiles à comprendre puisque leur véritable cause, l'absence de connexion, n'a jamais été signalée.",
+          "correction_markdown": "Ajoute systématiquement `or die('message clair')` après un appel qui peut échouer, en particulier `mysqli_connect`."
+        },
+        {
+          "erreur_markdown": "Utiliser `$row[0]` en pensant obtenir la première colonne nommée alors que la table a une colonne technique cachée",
+          "pourquoi_faux": "L'indice numérique correspond à l'ordre réel des colonnes de la table, qui peut inclure un identifiant auto-incrémenté non visible dans un aperçu simplifié des données.",
+          "correction_markdown": "En cas de doute sur l'ordre des colonnes, préfère les clés associatives (`$row['nom_de_colonne']`), plus explicites et moins fragiles."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle fonction PHP permet d'ouvrir une connexion à un serveur MySQL ?",
+          "solution_markdown": "`mysqli_connect(serveur, login, mot_de_passe, base)`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris le code PHP complet qui se connecte à une base « Ecole » sur « localhost » avec le login « admin » et le mot de passe « secret », puis affiche le nombre total de lignes renvoyées par la requête `SELECT * FROM Eleve`.",
+          "solution_markdown": "```php\n<?php\n$con = mysqli_connect(\"localhost\",\"admin\",\"secret\",\"Ecole\") or die('erreur de connexion');\n$sql = 'SELECT * FROM Eleve';\n$resultat = mysqli_query($con, $sql);\necho mysqli_num_rows($resultat);\nmysqli_close($con);\n?>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris un script complet qui affiche, dans un tableau HTML, le nom et la note de chaque élève de la table `Eleve` dont la note est supérieure ou égale à 10.",
+          "solution_markdown": "```php\n<?php\n$con = mysqli_connect(\"localhost\",\"root\",\"\",\"Ecole\") or die('erreur de connexion');\n$sql = 'SELECT nom, note FROM Eleve WHERE note >= 10';\n$resultat = mysqli_query($con, $sql);\necho '<table border=\"1\"><tr><th>Nom</th><th>Note</th></tr>';\nwhile($row = mysqli_fetch_array($resultat)){\n  echo '<tr><td>'.$row['nom'].'</td><td>'.$row['note'].'</td></tr>';\n}\necho '</table>';\nmysqli_close($con);\n?>\n```\nLa condition `note >= 10` est placée directement dans la requête SQL (clause `WHERE`), ce qui évite de récupérer puis de filtrer manuellement en PHP des lignes qui ne seraient pas affichées."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dialoguer avec MySQL en PHP suit toujours trois étapes : connexion, requête, parcours du résultat.",
+        "`mysqli_connect` renvoie une ressource de connexion ou `false` : sécurise toujours cet appel avec `or die(...)`.",
+        "`mysqli_query` exécute la requête, `mysqli_fetch_array` la parcourt ligne par ligne et vaut `false` une fois épuisée, d'où son usage naturel comme condition de boucle `while`.",
+        "Préfère les clés associatives (`$row['colonne']`) aux indices numériques quand la structure exacte de la table n'est pas garantie."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-effectifs-cumules-croissants-1ere-a",
+  "meta": {
+    "titre": "Effectifs cumulés croissants : dénombrement à partir d'un tableau statistique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistique descriptive - séries groupées",
+    "duree_estimee_min": 15,
+    "tags": [
+      "effectifs cumulés",
+      "dénombrement",
+      "tableau statistique"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2006 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2006-officiel-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Combien de candidats ont eu la moyenne ? », « Combien d'employés ont au moins 10 ans d'ancienneté ? » : ce type de question ne demande pas de lire un seul effectif dans le tableau, mais d'en additionner plusieurs. Savoir repérer rapidement quelles classes cumuler évite de perdre du temps ou de se tromper de seuil le jour de l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lire un tableau statistique groupé en classes",
+        "Identifier la classe correspondant à un seuil donné"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Cumuler les effectifs au-delà d'un seuil",
+      "contenu_markdown": "Pour compter les individus dont la valeur du caractère est au moins égale à un seuil $s$, on repère la classe qui commence exactement à $s$ (ou qui le contient), puis on additionne les effectifs de cette classe et de toutes les classes suivantes. Pour un seuil « au plus », on cumule au contraire les classes précédentes.",
+      "formule_principale": "\\text{effectif cumulé} \\geq s = \\sum_{\\text{classes à partir de } s} n_i",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "À partir du tableau d'ancienneté (classes $[0,4[$ à $[24,28[$, effectifs 5, 15, 20, 10, 30, 5, 15), déterminer le nombre de fonctionnaires ayant au moins 16 ans d'ancienneté.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la classe qui commence au seuil demandé",
+          "justification": "Le seuil « au moins 16 ans » correspond à la classe qui débute exactement à 16, à savoir $[16,20[$.",
+          "resultat_markdown": "Classe de départ : $[16,20[$"
+        },
+        {
+          "numero": 2,
+          "action": "Lister toutes les classes à partir de ce seuil",
+          "justification": "« Au moins 16 ans » inclut cette classe et toutes celles qui la suivent, jusqu'à la fin du tableau.",
+          "resultat_markdown": "$[16,20[,\\;[20,24[,\\;[24,28[$"
+        },
+        {
+          "numero": 3,
+          "action": "Additionner les effectifs de ces classes",
+          "justification": "Le nombre total d'individus concernés est la somme de leurs effectifs respectifs.",
+          "resultat_markdown": "$30+5+15=50$"
+        }
+      ],
+      "conclusion_markdown": "50 fonctionnaires sur les 100 enquêtés ont au moins 16 ans d'ancienneté."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inclure par erreur la classe précédant le seuil (ici $[12,16[$)",
+          "pourquoi_faux": "Le seuil « au moins 16 » exclut tout ce qui est strictement inférieur à 16 ; la classe $[12,16[$ contient des valeurs allant jusqu'à 16 exclu, donc aucune valeur de cette classe n'atteint réellement 16.",
+          "correction_markdown": "Repère avec précision la borne inférieure de la classe qui correspond exactement au seuil demandé, et démarre le cumul à partir d'elle, jamais avant."
+        },
+        {
+          "erreur_markdown": "Cumuler les effectifs dans le mauvais sens (additionner les classes inférieures au lieu des classes supérieures)",
+          "pourquoi_faux": "« Au moins » un seuil signifie supérieur ou égal, ce qui correspond aux classes situées après ce seuil dans le tableau, pas avant.",
+          "correction_markdown": "Avant de cumuler, formule la question en une phrase claire : « au moins » regarde vers la droite du tableau, « au plus » regarde vers la gauche."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Avec le même tableau d'ancienneté, combien de fonctionnaires ont moins de 8 ans d'ancienneté ?",
+          "solution_markdown": "« Moins de 8 ans » correspond aux classes $[0,4[$ et $[4,8[$, d'effectifs 5 et 15. Total : $5+15=20$ fonctionnaires."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Toujours avec ce tableau, combien de fonctionnaires ont une ancienneté comprise entre 8 et 20 ans (bornes incluse côté 8, exclue côté 20) ?",
+          "solution_markdown": "Cet intervalle correspond aux classes $[8,12[$, $[12,16[$ et $[16,20[$, d'effectifs 20, 10 et 30. Total : $20+10+30=60$ fonctionnaires."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sachant que 50 fonctionnaires ont au moins 16 ans d'ancienneté, retrouver ce résultat autrement, à partir de l'effectif total de la série et du nombre de fonctionnaires ayant moins de 16 ans.",
+          "solution_markdown": "L'effectif total est 100. Les fonctionnaires ayant moins de 16 ans se répartissent dans les classes $[0,4[$, $[4,8[$, $[8,12[$, $[12,16[$, d'effectifs 5, 15, 20, 10, soit un total de $5+15+20+10=50$. Le nombre de fonctionnaires ayant au moins 16 ans s'obtient alors par complémentarité : $100-50=50$, ce qui confirme le résultat direct. Cette méthode par complémentaire est souvent plus rapide quand le seuil est proche du milieu du tableau."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "« Au moins un seuil » signifie cumuler les effectifs de la classe qui commence à ce seuil et de toutes celles qui suivent.",
+        "« Au plus un seuil » signifie cumuler dans l'autre sens, les classes qui précèdent ce seuil.",
+        "Repère toujours la borne exacte du seuil dans le tableau avant de commencer le cumul, pour ne pas inclure ou exclure une classe par erreur.",
+        "En cas de doute sur le sens du cumul, calcule par complémentaire : effectif total moins l'effectif du sens opposé donne le même résultat et permet de vérifier ton calcul."
+      ]
+    }
+  ]
+}

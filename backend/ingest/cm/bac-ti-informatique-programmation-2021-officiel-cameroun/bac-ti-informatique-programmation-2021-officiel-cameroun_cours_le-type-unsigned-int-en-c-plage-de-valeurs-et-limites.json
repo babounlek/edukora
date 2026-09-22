@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-le-type-unsigned-int-en-c-plage-de-valeurs-et-limites-ti-2021",
+  "meta": {
+    "titre": "Le type unsigned int en C : plage de valeurs et limites",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Types et variables en langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "unsigned int",
+      "types entiers",
+      "langage C",
+      "dépassement de capacité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex2-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un programme qui calcule une factorielle finit toujours par produire un nombre énorme. Choisir le bon type pour stocker ce résultat n'est pas un détail : un type trop étroit produit un résultat faux sans le moindre message d'erreur, ce qui rend l'erreur particulièrement difficile à repérer si on ne connaît pas la plage de valeurs exacte du type utilisé."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une variable en C occupe un nombre fixe d'octets en mémoire",
+        "Connaître la notion de bit et d'octet"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "unsigned int : un entier non signé, plage 0 à 2³²-1",
+      "contenu_markdown": "Le type `unsigned int` désigne un entier non signé, codé le plus souvent sur **4 octets (32 bits)** sur les architectures actuelles. Le mot-clé `unsigned` (« non signé ») indique qu'aucun bit n'est réservé au signe : tous les bits représentent la valeur elle-même, qui est donc toujours positive ou nulle.\n\nSa plage de valeurs représentables va de **0** à **2³²-1**, soit **4 294 967 295**. Toute tentative de dépasser cette borne supérieure provoque un **dépassement de capacité** (*overflow*) : la valeur « boucle » silencieusement à 0 sans provoquer d'erreur de compilation ni d'exécution, ce qui rend ce type de bug particulièrement traître.\n\nComparé à `int` (signé, même taille de 4 octets), `unsigned int` sacrifie la possibilité de représenter des valeurs négatives pour doubler la plus grande valeur positive représentable (`int` plafonne à 2 147 483 647, la moitié de `unsigned int`).",
+      "formule_principale": "0 \\leqslant \\text{unsigned int} \\leqslant 2^{32}-1"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Décrire de façon précise le type de base utilisé dans le programme de calcul de factorielle (unsigned int f, x; et le type de factorielle()).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier où le type apparaît dans le code",
+          "justification": "Repérer toutes les déclarations concernées avant de les décrire",
+          "resultat_markdown": "unsigned int f, x; (ligne 4), et le type de retour/paramètre de factorielle (lignes 5 et 18)."
+        },
+        {
+          "numero": 2,
+          "action": "Donner la taille et la plage de valeurs du type",
+          "justification": "C'est l'information la plus utile pour comprendre les limites du programme",
+          "resultat_markdown": "4 octets (32 bits), plage de 0 à 4 294 967 295."
+        },
+        {
+          "numero": 3,
+          "action": "Relier cette plage à la contrainte de l'énoncé",
+          "justification": "L'énoncé limite explicitement la saisie entre 1 et 8, ce que ce type explique",
+          "resultat_markdown": "8! = 40320 reste largement dans la plage d'un unsigned int, mais la contrainte 1-8 anticipe un usage du programme où un type plus étroit (par exemple unsigned char, 1 octet, plafonnant à 255) serait insuffisant : elle protège en réalité contre une saisie hors de la plage voulue par l'énoncé, pas contre un dépassement réel d'unsigned int à ce stade."
+        }
+      ],
+      "conclusion_markdown": "unsigned int est un entier non signé de 4 octets, capable de représenter 0 à 4 294 967 295, ce qui suffit très largement pour calculer 8!, mais deviendrait insuffisant pour des factorielles beaucoup plus grandes (au-delà de 12!, qui dépasse déjà cette plage)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décrire unsigned int simplement comme « un entier », sans préciser sa taille ni sa plage",
+          "pourquoi_faux": "Une description incomplète ne permet pas de justifier pourquoi une limite comme « entre 1 et 8 » a été imposée dans le programme : c'est précisément la plage de valeurs qui donne son sens à cette contrainte.",
+          "correction_markdown": "Toujours donner taille en octets/bits et plage de valeurs exacte quand la question demande une description « précise » d'un type."
+        },
+        {
+          "erreur_markdown": "Croire qu'un dépassement de capacité sur un entier non signé provoque une erreur visible à l'exécution",
+          "pourquoi_faux": "En C, un dépassement de unsigned int ne provoque ni erreur de compilation ni plantage : la valeur reprend simplement à 0 après avoir dépassé le maximum, produisant un résultat silencieusement faux.",
+          "correction_markdown": "Toujours vérifier qu'une valeur calculée reste dans la plage attendue avant de faire confiance au résultat, en particulier pour des calculs qui grandissent vite (factorielle, puissance)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner la plus grande valeur représentable par un unsigned int sur 4 octets.",
+          "solution_markdown": "2³²-1 = 4 294 967 295."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "À partir de quelle valeur de n, factorielle(n) dépasse-t-elle la capacité d'un unsigned int sur 4 octets ? (12! = 479 001 600, 13! = 6 227 020 800)",
+          "solution_markdown": "13! = 6 227 020 800 dépasse déjà 4 294 967 295 : c'est donc à partir de n = 13 que le résultat ne peut plus être représenté correctement par un unsigned int, alors que 12! = 479 001 600 reste dans la plage valide."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un unsigned int contient la valeur 0, et le programme exécute ensuite l'instruction x = x - 1;. Quelle valeur x contient-il après cette instruction, et pourquoi ?",
+          "solution_markdown": "x contient 4 294 967 295 (la valeur maximale du type). Comme unsigned int ne peut jamais représenter de valeur négative, soustraire 1 à 0 « boucle » vers l'autre extrémité de la plage représentable, exactement comme un compteur qui repart du maximum après avoir atteint zéro : c'est un dépassement de capacité par le bas (underflow), tout aussi silencieux que le dépassement par le haut."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "unsigned int occupe généralement 4 octets (32 bits) et représente les entiers de 0 à 2³²-1.",
+        "Aucun bit n'est réservé au signe : toute la plage sert à des valeurs positives, au prix de l'impossibilité de représenter un nombre négatif.",
+        "Un dépassement de capacité sur ce type ne provoque ni erreur ni plantage : la valeur boucle silencieusement, ce qui en fait un bug particulièrement difficile à détecter.",
+        "Toujours vérifier que la plage du type choisi couvre bien la plus grande valeur que le programme peut produire, en particulier pour un calcul qui croît vite comme une factorielle."
+      ]
+    }
+  ]
+}

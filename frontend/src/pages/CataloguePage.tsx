@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react"
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, Clock, Crown, GraduationCap, Layers, Target } from "lucide-react"
+import { ArrowRight, BookOpen, Clock, Compass, Crown, GraduationCap, Layers, Target, TrendingUp } from "lucide-react"
 
 import heroStudent from "@/assets/hero-student.jpg"
 import {
@@ -16,7 +16,13 @@ import {
 import { trackEvent } from "@/lib/analytics"
 import { examCodesFor, examLevelsFor, joinExamLevelsFr } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
-import { coursListPath, epreuveInediteDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
+import {
+  coursListPath,
+  epreuveInediteDetailPath,
+  epreuveReaderPath,
+  epreuvesListPath,
+  themesFrequentsPath,
+} from "@/lib/countryPath"
 import { cn, formatAmount } from "@/lib/utils"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { useAuth } from "@/context/AuthContext"
@@ -281,6 +287,19 @@ export function CataloguePage() {
               </Button>
             </div>
 
+            {/* Mention légère plutôt qu'une carte à part entière (voir la discussion
+                produit) : l'accueil vient d'être volontairement réduit à trois piliers
+                (Épreuves/Cours/Quiz, voir "accueil/catalogue split") et le classement
+                n'a pas de sens sans qu'une matière/série soit choisie - ThemesFrequentsPage
+                s'en charge, pas cette page. */}
+            <Link
+              to={themesFrequentsPath(country ?? "")}
+              className="mt-3 flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+            >
+              <TrendingUp className="size-3.5 text-primary" />
+              Découvre les thèmes qui reviennent le plus à ton examen
+              <ArrowRight className="size-3" />
+            </Link>
           </div>
           <img
             src={heroStudent}
@@ -440,11 +459,15 @@ export function CataloguePage() {
       )}
 
       {/* Les portes d'entrée du produit. Rien sur cette page ne disait qu'elles
-          existent : il fallait les déduire du menu du header. "Épreuves Inédites"
-          rejoint la grille (voir dore=true sur CarteUnivers) - jusqu'ici son unique
-          présence sur cette page était l'encart vedette plus bas, entièrement masqué
-          quand aucune inédite récente n'a d'aperçu public (voir inediteVedette). Cette
-          carte-ci ne dépend que de inediteRecenteData.count : elle reste visible même
+          existent : il fallait les déduire du menu du header. Grille à exactement
+          quatre cartes (jamais un nombre impair qui laisserait une orpheline sur sa
+          propre ligne, constaté à l'écran) - "Épreuves Inédites" en sort volontairement
+          pour un bandeau pleine largeur ci-dessous plutôt que de rejoindre la grille :
+          le produit le plus cher de la maison mérite de se distinguer, pas de se fondre
+          dans le même gabarit que les trois portes d'entrée gratuites. Jusqu'ici son
+          unique présence sur cette page était l'encart vedette plus bas, entièrement
+          masqué quand aucune inédite récente n'a d'aperçu public (voir inediteVedette).
+          Ce bandeau ne dépend que de inediteRecenteData.count : il reste visible même
           quand l'encart vedette ne l'est pas. */}
       <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         <h2 className="font-display text-xl font-semibold">Comment travailler sur Edukora</h2>
@@ -464,22 +487,95 @@ export function CataloguePage() {
             to={coursListPath(country ?? "")}
           />
           <CarteUnivers
+            icon={<Compass className="size-5" />}
+            titre="Parcours"
+            chiffre={null}
+            description="Ton itinéraire personnalisé : les savoirs pas encore maîtrisés, classés par fréquence à l'examen, savoir par savoir jusqu'au programme complet."
+            to="/parcours"
+          />
+          <CarteUnivers
             icon={<Target className="size-5" />}
             titre="Quiz"
             chiffre={null}
             description="Il repère les thèmes où tu échoues et te les repropose au bon moment, jusqu'à ce qu'ils soient acquis."
             to="/quiz"
           />
-          {inediteRecenteData && inediteRecenteData.count > 0 && (
-            <CarteUnivers
-              dore
-              icon={<Crown className="size-5" />}
-              titre="Épreuves Inédites"
-              chiffre={null}
-              description="Un sujet d'examen jamais vu, jamais publié ailleurs - même niveau, même barème que l'épreuve réelle, dans les conditions du jour J."
-              to={`${epreuvesListPath(country ?? "")}?origine=INEDITE`}
-            />
-          )}
+        </div>
+        {inediteRecenteData && inediteRecenteData.count > 0 && (
+          <Link
+            to={`${epreuvesListPath(country ?? "")}?origine=INEDITE`}
+            className="group mt-5 flex flex-col items-start gap-4 rounded-2xl border border-gold/40 bg-gradient-to-b from-gold/5 to-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-lg hover:shadow-gold/10 sm:flex-row sm:items-center sm:gap-5 sm:p-6"
+          >
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
+              <Crown className="size-5" />
+            </span>
+            <div className="flex-1">
+              <h3 className="flex flex-wrap items-center gap-2 font-display text-lg font-semibold">
+                Épreuves Inédites
+                <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-gold uppercase">
+                  Exclusif
+                </span>
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Un sujet original conçu par Edukora, jamais tiré des annales - même niveau, même barème que l'épreuve réelle, dans les conditions du jour J.
+              </p>
+            </div>
+            <span className="flex shrink-0 items-center gap-1.5 text-sm font-medium text-gold">
+              Explorer
+              <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+            </span>
+          </Link>
+        )}
+      </section>
+
+      {/* Différenciation face aux annales/corrigés déjà gratuits sur Internet (audit UX
+          externe, 2026-09-04) - la grille "Comment travailler" ci-dessus dit CE QUE le
+          produit contient, jamais POURQUOI ça vaut mieux qu'un PDF trouvé ailleurs. Les
+          quatre points reprennent des mécanismes déjà montrés plus haut sur cette même
+          page (quiz, corrigés pas à pas, thèmes fréquents, inédites) plutôt que des
+          promesses nouvelles - jamais un argument que le reste de la page ne prouve pas. */}
+      <section className="mx-auto max-w-5xl px-4 pb-10 sm:px-6">
+        <h2 className="font-display text-xl font-semibold">Pourquoi Edukora ?</h2>
+        <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+          Les annales et leurs corrigés existent déjà gratuitement sur Internet. Voici ce qu'Edukora fait en plus.
+        </p>
+        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Target className="size-5" />
+            </span>
+            <h3 className="mt-3 font-display text-base font-semibold">Tu sais quoi réviser</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Le quiz repère tes lacunes et te fait réviser exactement ce qu'il faut, au bon moment.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <GraduationCap className="size-5" />
+            </span>
+            <h3 className="mt-3 font-display text-base font-semibold">Tu comprends, pas seulement tu mémorises</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Des cours structurés et des corrigés expliqués étape par étape, pas juste le résultat final.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <TrendingUp className="size-5" />
+            </span>
+            <h3 className="mt-3 font-display text-base font-semibold">Tu vises ce qui tombe vraiment</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Le classement des thèmes les plus posés à ton examen, calculé sur les vraies annales.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-gold/30 bg-gold/5 p-5">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-gold/15 text-gold">
+              <Crown className="size-5" />
+            </span>
+            <h3 className="mt-3 font-display text-base font-semibold">Tu te testes sur l'inconnu</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Des épreuves inédites, jamais tirées des annales, pour vérifier que tu maîtrises vraiment le programme.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -511,8 +607,8 @@ export function CataloguePage() {
             </div>
             <h2 className="mt-3 font-display text-xl font-semibold">{inediteVedette.title}</h2>
             <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-              Une épreuve d'examen jamais vue, jamais publiée ailleurs - même niveau, même barème que l'examen réel.
-              Voici la première question, en accès libre.
+              Une épreuve originale conçue par Edukora, jamais tirée des annales - même niveau, même barème que
+              l'examen réel. Voici la première question, en accès libre.
             </p>
             <div className="mt-5 rounded-xl border border-border bg-card p-5 sm:p-6">
               <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gold">Aperçu</p>
@@ -560,7 +656,7 @@ export function CataloguePage() {
               <div className="flex-1">
                 <h2 className="font-display text-base font-semibold">Des épreuves inédites t'attendent</h2>
                 <p className="mt-0.5 text-sm text-muted-foreground">
-                  Des sujets jamais publiés ailleurs, dans les conditions du jour J.
+                  Des sujets originaux conçus par Edukora, dans les conditions du jour J.
                 </p>
               </div>
               <Button asChild>
@@ -582,6 +678,39 @@ export function CataloguePage() {
           en un clic (voir /epreuves?gratuit=true). Le catalogue complet, lui, vit sur sa
           propre URL (voir EpreuvesListPage) plutôt qu'en bas de celle-ci. */}
       <SocialProofSection />
+
+      {/* Dernière section avant le footer (audit UX externe, 2026-09-04) : la page
+          démontrait la valeur du produit (démo de corrigé, inédites, preuve sociale)
+          sans jamais pousser explicitement vers l'abonnement - un visiteur convaincu
+          n'avait que le menu du header pour trouver /tarifs. Pas de prix ici : ils
+          dépendent du cursus (voir PricingPage/Plan.effective_price), les répéter en
+          dur ici les désynchroniserait silencieusement de la vraie grille. */}
+      <section className="mx-auto max-w-5xl px-4 pb-14 sm:px-6">
+        <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 text-center sm:p-10">
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
+              backgroundSize: "24px 24px",
+            }}
+          />
+          <div className="relative">
+            <h2 className="font-display text-2xl font-semibold">Prêt à commencer ?</h2>
+            <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
+              Un seul abonnement, valable jusqu'à ton examen, moins cher chaque mois qui passe. Paiement par Mobile
+              Money, sans engagement.
+            </p>
+            <div className="mt-5 flex justify-center">
+              <Button size="lg" asChild>
+                <Link to="/tarifs">
+                  Voir les tarifs
+                  <ArrowRight />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

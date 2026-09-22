@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-construire-une-adresse-electronique-valide-3e",
+  "meta": {
+    "titre": "Construire une adresse électronique valide",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Internet et services associés",
+    "duree_estimee_min": 20,
+    "tags": [
+      "adresse e-mail",
+      "messagerie électronique",
+      "nom de domaine",
+      "arobase",
+      "Internet"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BEPC-2021-INFORMATIQUE",
+    "epreuve_titre": "BEPC Épreuve Théorique d'Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bepc-informatique-2021-cameroun-ex4-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une adresse électronique mal écrite, et le message n'arrive nulle part : ni erreur visible, ni client au bout du fil. Une seule espace ou une arobase oubliée suffit. Savoir construire une adresse valide, c'est aussi savoir vérifier celle qu'on te dicte au téléphone, et c'est un point assuré au BEPC dès que tu connais la structure."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est le courrier électronique et à quoi il sert",
+        "Savoir qu'un serveur de messagerie porte un nom de domaine (gmail.com, yahoo.fr)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La structure d'une adresse électronique",
+      "contenu_markdown": "Une adresse électronique se compose de trois parties, toujours dans le même ordre et sans aucune espace :\n\n```\nidentifiant@nom_de_domaine.extension\n```\n\n- **L'identifiant** (ou nom d'utilisateur) désigne la boîte aux lettres : `contact`, `service.clients`, `paul.mbarga`. Il peut contenir des lettres, des chiffres, un point, un tiret ou un tiret bas, mais jamais d'espace ni d'accent.\n- **L'arobase `@`** sépare l'utilisateur du serveur. Elle se lit « chez » : `contact@bata.cm` signifie « la boîte contact, chez bata.cm ».\n- **Le nom de domaine** identifie le serveur de messagerie : celui de l'entreprise (`bata.cm`) ou celui d'un fournisseur gratuit (`gmail.com`, `yahoo.fr`).\n- **L'extension**, à la fin du nom de domaine après un point, indique le type d'organisation ou le pays : `.com` (commercial), `.org` (organisation), `.cm` (Cameroun), `.fr` (France), `.net`.\n\n> Une adresse valide contient **exactement une arobase** et **au moins un point après l'arobase**. Ces deux contrôles suffisent à écarter la quasi-totalité des adresses fausses.",
+      "formule_principale": "identifiant@nom_de_domaine.extension",
+      "variantes": [
+        {
+          "nom": "Adresse professionnelle ou adresse gratuite",
+          "quand_utiliser": "Quand l'énoncé précise l'usage de l'adresse",
+          "contenu_markdown": "Si l'entreprise possède son propre nom de domaine, on écrit `contact@bata.cm` : l'adresse porte le nom de la marque, ce qui inspire confiance. Si elle n'en a pas, une adresse gratuite reste valable : `bata.cameroun@gmail.com`. Les deux formes sont acceptées à l'examen dès lors que la structure est respectée."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'entreprise BATA souhaite communiquer directement avec ses clients par courrier électronique. Donner un exemple d'adresse e-mail qu'elle peut utiliser.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir l'identifiant en fonction de l'usage demandé",
+          "justification": "L'énoncé précise « pour communiquer directement avec ses clients » : l'identifiant doit désigner un service de contact, pas une personne.",
+          "resultat_markdown": "Identifiant retenu : `contact` (ou `service.clients`, `info`)."
+        },
+        {
+          "numero": 2,
+          "action": "Placer le séparateur",
+          "justification": "L'arobase sépare obligatoirement l'identifiant du nom de domaine.",
+          "resultat_markdown": "`contact@`"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir le nom de domaine",
+          "justification": "L'entreprise s'appelle BATA et exerce au Cameroun : son domaine reprend logiquement le nom de la marque.",
+          "resultat_markdown": "`bata`"
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter l'extension",
+          "justification": "L'extension `.cm` correspond au Cameroun ; `.com` conviendrait aussi pour une entreprise commerciale.",
+          "resultat_markdown": "`bata.cm`"
+        },
+        {
+          "numero": 5,
+          "action": "Assembler et vérifier",
+          "justification": "On relit l'adresse en contrôlant les deux points de vigilance : une seule arobase, un point après l'arobase, aucune espace.",
+          "resultat_markdown": "`contact@bata.cm` : une arobase, un point après l'arobase, aucune espace. L'adresse est valide."
+        }
+      ],
+      "conclusion_markdown": "L'adresse `contact@bata.cm` respecte la structure identifiant@nom_de_domaine.extension et correspond à l'usage demandé. D'autres réponses convenaient : `info@bata.com`, `service.clients@bata.cm`, `bata.cameroun@gmail.com`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'arobase : `contactbata.cm`.",
+          "pourquoi_faux": "Sans arobase, rien ne distingue le nom de la boîte du nom du serveur : le logiciel de messagerie ne sait pas à quel serveur remettre le message et refuse l'adresse.",
+          "correction_markdown": "Compte les arobases avant de valider : il en faut exactement une."
+        },
+        {
+          "erreur_markdown": "Oublier l'extension : `contact@bata`.",
+          "pourquoi_faux": "Un nom de domaine se termine toujours par une extension. Sans elle, le serveur reste introuvable sur Internet.",
+          "correction_markdown": "Vérifie qu'il y a au moins un point après l'arobase."
+        },
+        {
+          "erreur_markdown": "Laisser une espace : `contact @ bata.cm`.",
+          "pourquoi_faux": "Aucune espace n'est admise dans une adresse électronique. Le message part avec une adresse tronquée ou est rejeté d'emblée.",
+          "correction_markdown": "Écris l'adresse d'un seul trait, sans lever le stylo, et relis-la caractère par caractère."
+        },
+        {
+          "erreur_markdown": "Employer une adresse personnelle sans rapport avec la demande.",
+          "pourquoi_faux": "Une adresse du type `jean1998@yahoo.fr` est structurellement correcte mais ne répond pas à la consigne : l'entreprise doit communiquer avec ses clients sous son propre nom, pas sous celui d'un employé.",
+          "correction_markdown": "Relis la consigne et choisis un identifiant qui en reprend l'intention : `contact`, `info`, `service.clients`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Parmi les adresses suivantes, indiquer celles qui sont valides et justifier pour chaque rejet : `paul.mbarga@gmail.com`, `paul.mbarga.gmail.com`, `paul@lycee@edu.cm`, `info@bata`.",
+          "solution_markdown": "- `paul.mbarga@gmail.com` : **valide**. Une arobase, un point après l'arobase, aucune espace.\n- `paul.mbarga.gmail.com` : **invalide**. Aucune arobase : rien ne sépare l'identifiant du domaine.\n- `paul@lycee@edu.cm` : **invalide**. Deux arobases ; il ne peut y en avoir qu'une.\n- `info@bata` : **invalide**. Aucun point après l'arobase, donc aucune extension."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un établissement scolaire nommé Collège de la Réussite, situé au Cameroun, veut une adresse pour recevoir les demandes d'inscription. Proposer une adresse et justifier chaque partie.",
+          "solution_markdown": "Proposition : `inscriptions@collegereussite.cm`\n\n- Identifiant `inscriptions` : il annonce l'usage exact de la boîte, conformément à la demande.\n- Arobase : elle sépare la boîte du serveur.\n- Nom de domaine `collegereussite` : il reprend le nom de l'établissement, sans espace ni accent, ces deux caractères étant interdits.\n- Extension `.cm` : elle correspond au Cameroun. `.org` conviendrait également pour un établissement.\n\nVérification : une seule arobase, un point après l'arobase, aucune espace. L'adresse est valide."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un employé reçoit un message provenant de `service-client@bata-cm.info` lui demandant son mot de passe. L'adresse officielle de l'entreprise est `contact@bata.cm`. Expliquer ce qui doit alerter l'employé et ce qu'il doit faire.",
+          "solution_markdown": "L'adresse est **structurellement valide** : une arobase, un point après l'arobase, aucune espace. La validité de la forme ne prouve donc rien sur l'honnêteté de l'expéditeur, et c'est là tout le piège.\n\nTrois signaux doivent alerter.\n\nLe **nom de domaine diffère** de celui de l'entreprise : `bata-cm.info` n'est pas `bata.cm`. Le tiret et l'extension `.info` créent un domaine qui ressemble à l'original sans être lui. N'importe qui peut acheter un tel domaine.\n\nLa **demande elle-même est anormale** : aucun service informatique sérieux ne réclame un mot de passe par courriel. Le mot de passe se saisit uniquement sur la page d'authentification du service concerné.\n\nL'**urgence et l'autorité** invoquées dans ce type de message servent à empêcher la réflexion.\n\nCe procédé porte un nom : l'**hameçonnage** (phishing). Il ne repose sur aucun virus, ce qui explique qu'un antivirus ne le bloque pas toujours.\n\nCe que l'employé doit faire : ne pas répondre, ne cliquer sur aucun lien du message, signaler le courriel au responsable informatique, puis le supprimer. En cas de doute sur une demande légitime, il contacte l'entreprise par un canal qu'il connaît déjà, jamais en répondant au message suspect."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une adresse s'écrit identifiant@nom_de_domaine.extension, sans la moindre espace.",
+        "Deux contrôles suffisent à repérer une adresse fausse : exactement une arobase, et au moins un point après elle.",
+        "Choisis l'identifiant selon l'usage demandé : `contact` ou `info` pour une entreprise, ton nom pour une adresse personnelle.",
+        "L'extension indique le pays ou le type d'organisation : .cm, .fr, .com, .org.",
+        "Une adresse bien formée n'est pas pour autant une adresse de confiance : vérifie toujours le nom de domaine avant de répondre.",
+        "Au BEPC, la question « donner un exemple d'adresse e-mail » vaut 1 point : il se prend en une ligne, à condition de ne rien oublier de la structure."
+      ]
+    }
+  ]
+}

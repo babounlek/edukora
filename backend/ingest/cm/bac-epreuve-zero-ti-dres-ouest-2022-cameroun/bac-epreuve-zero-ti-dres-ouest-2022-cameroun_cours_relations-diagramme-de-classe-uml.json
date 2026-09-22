@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-relations-diagramme-de-classe-uml-tle-ti",
+  "meta": {
+    "titre": "Les relations dans un diagramme de classe UML",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagrammes UML structurels",
+    "duree_estimee_min": 25,
+    "tags": [
+      "association",
+      "generalisation",
+      "agregation",
+      "composition",
+      "dependance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-epreuve-zero-ti-dres-ouest-2022-cameroun",
+    "epreuve_titre": "Épreuve zéro du Baccalauréat série TI - Systèmes d'Information - DRES-Ouest - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-epreuve-zero-ti-dres-ouest-2022-cameroun-ex1-q1.6-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un diagramme de classe raconte une histoire silencieuse à travers ses traits et ses pointes de flèche : chaque forme dessinée à l'extrémité d'un trait a un sens précis et change complètement l'interprétation de la relation entre deux classes. Savoir lire ce vocabulaire graphique est la compétence la plus rentable du programme UML, tant elle revient à chaque exercice de modélisation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une classe UML (rectangle avec nom, attributs, méthodes) et ce qu'est une instance de classe."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les cinq symboles de relation à connaître",
+      "contenu_markdown": "Un trait plein sans aucune pointe représente une association : un simple lien structurel entre deux classes, sans hiérarchie ni notion de tout et de partie. Un trait plein terminé par un triangle à pointe ouverte, non rempli, représente une généralisation : la relation d'héritage entre une classe mère et une classe fille, qui « est une » spécialisation de la première. Un trait plein débutant par un losange évidé, non rempli, représente une agrégation : une relation d'appartenance faible, où l'élément contenu peut exister indépendamment de l'ensemble qui le regroupe. Un trait plein débutant par un losange plein, rempli en noir, représente une composition : une relation d'appartenance forte, où l'élément contenu ne survit pas à la destruction du tout. Un trait discontinu terminé par une pointe ouverte représente enfin une dépendance : une classe qui utilise ponctuellement une autre, sans la posséder durablement.",
+      "variantes": [
+        {
+          "nom": "Astuce du losange",
+          "quand_utiliser": "Pour distinguer rapidement agrégation et composition",
+          "contenu_markdown": "Un losange évidé (vide) laisse l'objet contenu libre d'exister sans le tout : c'est l'agrégation. Un losange plein (noir) retient l'objet : sans le tout, il disparaît aussi, c'est la composition."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un tableau présente cinq lignes de symboles : un trait plein sans pointe, un trait plein terminé par un triangle ouvert, un trait plein débutant par un losange évidé, un trait plein débutant par un losange plein, un trait discontinu terminé par une pointe ouverte. Nommez chacune de ces relations.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le trait sans aucune pointe",
+          "justification": "L'absence de toute pointe ou de tout losange signale la relation la plus générale, sans hiérarchie ni possession.",
+          "resultat_markdown": "Ligne 1 : association."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le triangle ouvert",
+          "justification": "Un triangle à pointe ouverte, non rempli, est le symbole exclusif de l'héritage.",
+          "resultat_markdown": "Ligne 2 : généralisation."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier le losange évidé",
+          "justification": "Un losange non rempli signale une appartenance faible.",
+          "resultat_markdown": "Ligne 3 : agrégation."
+        },
+        {
+          "numero": 4,
+          "action": "Identifier le losange plein",
+          "justification": "Un losange rempli en noir signale une appartenance forte.",
+          "resultat_markdown": "Ligne 4 : composition."
+        },
+        {
+          "numero": 5,
+          "action": "Identifier le trait discontinu",
+          "justification": "Un trait en pointillés, distinct des quatre traits pleins précédents, signale une relation d'usage ponctuel.",
+          "resultat_markdown": "Ligne 5 : dépendance."
+        }
+      ],
+      "conclusion_markdown": "Cinq symboles, cinq relations : trait nu (association), triangle ouvert (généralisation), losange évidé (agrégation), losange plein (composition), trait pointillé (dépendance)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre agrégation et composition à cause du même mot « losange »",
+          "pourquoi_faux": "Les deux symboles partagent la forme du losange, mais seul le remplissage les distingue : un losange vide n'implique pas la disparition de l'objet contenu, un losange plein oui.",
+          "correction_markdown": "Vérifie toujours si le losange est rempli en noir (composition) ou laissé blanc (agrégation), jamais sa seule présence."
+        },
+        {
+          "erreur_markdown": "Confondre généralisation et dépendance à cause de la pointe ouverte",
+          "pourquoi_faux": "Une généralisation utilise un TRIANGLE à pointe ouverte sur un trait PLEIN, alors qu'une dépendance utilise une simple flèche (pas un triangle) sur un trait DISCONTINU : le style du trait et la forme exacte de la pointe comptent tous les deux.",
+          "correction_markdown": "Regarde à la fois le style du trait (plein ou pointillé) et la forme de la tête (triangle ou simple flèche) avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel symbole représente une relation d'héritage entre deux classes UML ?",
+          "solution_markdown": "Un trait plein terminé par un triangle à pointe ouverte, non rempli, dirigé vers la classe mère."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une classe `Bibliotheque` est reliée à une classe `Livre` par un trait plein débutant par un losange évidé du côté de `Bibliotheque`. Interprétez cette relation, et expliquez ce qui se passerait pour un livre si la bibliothèque fermait définitivement.",
+          "solution_markdown": "Il s'agit d'une agrégation : la bibliothèque regroupe des livres, mais chaque livre peut exister indépendamment d'elle (le losange est évidé, pas plein). Si la bibliothèque fermait définitivement, les livres continueraient d'exister (ils pourraient par exemple être transférés dans une autre bibliothèque), car l'agrégation n'implique pas de dépendance de survie entre le tout et ses parties."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une classe `Commande` utilise ponctuellement une classe `CalculateurTVA` pour obtenir un montant de taxe, sans jamais la stocker comme attribut permanent. Quel symbole de relation faut-il utiliser entre ces deux classes, et pourquoi n'est-ce ni une composition ni une agrégation ?",
+          "solution_markdown": "Il faut utiliser une dépendance, symbolisée par un trait discontinu terminé par une pointe ouverte, dirigée de `Commande` vers `CalculateurTVA`. Ce n'est ni une composition ni une agrégation parce que ces deux relations supposent un lien structurel durable, matérialisé par un attribut de la classe qui référence en permanence l'autre classe (le tout possède ses parties en continu). Ici, `Commande` ne conserve aucune référence permanente vers `CalculateurTVA` : elle l'utilise ponctuellement, le temps d'un calcul, ce qui correspond précisément à une dépendance, la relation la plus faible et la plus temporaire du diagramme de classe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trait plein sans pointe : association (lien simple, sans hiérarchie).",
+        "Trait plein + triangle ouvert : généralisation (héritage, « est un »).",
+        "Trait plein + losange évidé : agrégation (appartenance faible, l'objet contenu survit).",
+        "Trait plein + losange plein : composition (appartenance forte, l'objet contenu ne survit pas).",
+        "Trait discontinu + pointe ouverte : dépendance (usage ponctuel, sans possession).",
+        "Au BAC, nomme toujours la relation en observant DEUX critères ensemble : le style du trait (plein ou pointillé) et la forme exacte de la tête (rien, triangle, losange évidé ou losange plein)."
+      ]
+    }
+  ]
+}

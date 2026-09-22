@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-interpreter-une-requete-sql-select-where-avec-plusieurs-conditions-tle-ti",
+  "meta": {
+    "titre": "Interpréter une requête SQL SELECT...WHERE avec plusieurs conditions",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Requêtes SQL en PHP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "WHERE",
+      "opérateur AND"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.9-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à une requête SQL imprimée dans un code PHP, il est tentant de la lire comme une phrase et de deviner son résultat. C'est risqué : une seule condition oubliée dans la lecture d'un `WHERE` change complètement la liste des lignes renvoyées. Apprendre à croiser chaque ligne d'une table avec chaque condition évite ce genre d'erreur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une requête SQL SELECT simple",
+        "Connaître le vocabulaire de base d'une table (ligne, colonne)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "WHERE avec AND : toutes les conditions à la fois",
+      "contenu_markdown": "Une requête `SELECT * FROM table WHERE condition1 AND condition2` ne renvoie que les lignes qui vérifient **simultanément** chacune des conditions reliées par `AND`. Une ligne qui vérifie une seule des deux conditions est exclue du résultat, tout comme une ligne qui n'en vérifie aucune.\n\nPour interpréter une telle requête sans erreur, la méthode la plus sûre consiste à examiner chaque ligne de la table une par une, et à noter pour chacune si elle vérifie ou non chaque condition prise séparément, avant de conclure sur l'ensemble."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une table Article contient six lignes. La requête `SELECT * FROM Article WHERE designation =\"chemise\" AND couleur=\"rouge\"` est exécutée. Détermine les lignes renvoyées.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lister les deux conditions séparément",
+          "justification": "Il faut d'abord bien identifier ce que chaque condition exige avant de les croiser",
+          "resultat_markdown": "Condition 1 : designation = \"chemise\". Condition 2 : couleur = \"rouge\"."
+        },
+        {
+          "numero": 2,
+          "action": "Examiner chaque ligne de la table par rapport aux deux conditions",
+          "justification": "Une lecture ligne par ligne évite d'oublier une condition ou une ligne",
+          "resultat_markdown": "Ligne (chemise, Rouge) : les deux conditions sont vérifiées. Ligne (Pantalons, Bleue) : aucune des deux. Ligne (Chaussure, Noire) : aucune des deux. Ligne (Chemise, Verte) : seule la désignation correspond, pas la couleur."
+        },
+        {
+          "numero": 3,
+          "action": "Ne retenir que les lignes qui vérifient les deux conditions à la fois",
+          "justification": "L'opérateur AND exige la vérification simultanée, pas seulement l'une des deux",
+          "resultat_markdown": "Seules les lignes (chemise, Rouge) sont conservées dans le résultat final"
+        }
+      ],
+      "conclusion_markdown": "Le résultat de la requête ne contient que les articles dont la désignation est « chemise » et la couleur « rouge », à l'exclusion de toute autre combinaison."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne vérifier qu'une seule des deux conditions",
+          "pourquoi_faux": "Un élève pressé compare parfois seulement la désignation et oublie de vérifier la couleur, ce qui laisse passer à tort des lignes qui ne satisfont pas la requête complète.",
+          "correction_markdown": "Coche mentalement (ou par écrit) chaque condition pour chaque ligne avant de conclure : les deux doivent être vraies pour un AND."
+        },
+        {
+          "erreur_markdown": "Croire que la comparaison de chaînes en SQL est toujours sensible à la casse",
+          "pourquoi_faux": "Par défaut, la plupart des configurations MySQL comparent les chaînes sans tenir compte de la casse : \"Chemise\" et \"chemise\" sont alors considérées comme égales.",
+          "correction_markdown": "Ne rejette pas une ligne uniquement à cause d'une majuscule différente : vérifie plutôt chaque condition indépendamment de la casse, sauf mention contraire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une table Eleve contient un élève (nom=\"Paul\", classe=\"Tle TI\"). La requête `SELECT * FROM Eleve WHERE classe=\"Tle TI\" AND nom=\"Paul\"` est exécutée. Cet élève apparaît-il dans le résultat ?",
+          "solution_markdown": "Oui : les deux conditions (classe et nom) sont vérifiées simultanément par cette ligne."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une table Produit contient : (Stylo, 200), (Cahier, 500), (Stylo, 500), en colonnes (designation, prix). Quelles lignes renvoie `SELECT * FROM Produit WHERE designation=\"Stylo\" AND prix=500` ?",
+          "solution_markdown": "Seule la ligne (Stylo, 500) : la première ligne (Stylo, 200) échoue sur le prix, la deuxième (Cahier, 500) échoue sur la désignation."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En reprenant la table Article de six lignes (numero, designation, couleur), écris la requête SQL qui renvoie tous les articles rouges, quelle que soit leur désignation, puis indique combien de lignes elle renvoie sur cette table précise : (1,chemise,Rouge), (2,Pantalons,Bleue), (3,chemise,Rouge), (4,chemise,Rouge), (5,Chaussure,Noire), (6,Chemise,Verte).",
+          "solution_markdown": "`SELECT * FROM Article WHERE couleur=\"rouge\"`\n\nTrois lignes sont renvoyées : (1,chemise,Rouge), (3,chemise,Rouge) et (4,chemise,Rouge). Les lignes 2, 5 et 6 sont exclues car leur couleur n'est pas rouge, y compris la ligne 6 dont la désignation aurait pourtant satisfait une condition sur « chemise »."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "WHERE condition1 AND condition2 ne conserve que les lignes qui vérifient les deux conditions à la fois.",
+        "Lis toujours une requête à conditions multiples ligne par ligne, en cochant chaque condition séparément.",
+        "MySQL compare généralement les chaînes sans tenir compte de la casse par défaut : une majuscule différente ne suffit pas à exclure une ligne.",
+        "Cette méthode de lecture ligne par ligne se généralise à n'importe quel nombre de conditions reliées par AND."
+      ]
+    }
+  ]
+}

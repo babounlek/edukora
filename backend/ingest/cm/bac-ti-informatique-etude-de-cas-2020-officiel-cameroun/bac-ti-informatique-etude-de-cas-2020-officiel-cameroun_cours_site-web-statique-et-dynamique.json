@@ -1,0 +1,123 @@
+{
+  "cours_id": "cours-site-web-statique-et-dynamique-tle-ti",
+  "meta": {
+    "titre": "Site web statique et site web dynamique",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Conception de sites web",
+    "duree_estimee_min": 15,
+    "tags": [
+      "site web",
+      "statique",
+      "dynamique",
+      "hébergement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q1-0",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q2-0"
+    ],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tape l'adresse d'un blog qui affiche toujours le même texte depuis des années : c'est un site statique. Tape maintenant l'adresse d'un site marchand dont le contenu change selon tes clics, tes recherches, ou les avis laissés par d'autres visiteurs : c'est un site dynamique. Comprendre cette différence, c'est comprendre pourquoi certains sites ont besoin d'un langage comme PHP et d'une base de données derrière eux, et d'autres non."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une page HTML et un navigateur web",
+        "Avoir une idée de ce qu'est un serveur (une machine qui répond à des requêtes)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Contenu figé ou contenu généré à la demande",
+      "contenu_markdown": "Un **site web statique** est composé de pages HTML écrites à l'avance : leur contenu ne change pas d'une visite à l'autre, sauf si le développeur modifie lui-même le fichier. Un **site web dynamique** génère ses pages à la demande, au moment où le visiteur les consulte, en exécutant un programme côté serveur (PHP, par exemple) qui va souvent interroger une base de données pour construire le contenu affiché. C'est ce mécanisme qui permet à un site d'afficher un contenu personnalisé, mis à jour, ou de conserver une information saisie par le visiteur (un avis, une inscription, un panier).",
+      "formule_principale": "Statique = HTML figé | Dynamique = programme serveur + base de données",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le responsable de VIPBoutique veut publier ses produits et recueillir les avis de ses clients par Internet. Quel type de site doit-on lui proposer, et pourquoi ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les besoins exprimés",
+          "justification": "Il faut distinguer ce qui relève d'un simple affichage de ce qui relève d'une interaction avec le visiteur",
+          "resultat_markdown": "Deux besoins : publier des produits (affichage, pourrait être statique) et **recueillir les avis des clients** (le visiteur doit pouvoir saisir une information qui sera conservée)."
+        },
+        {
+          "numero": 2,
+          "action": "Confronter ces besoins aux capacités d'un site statique",
+          "justification": "Un site statique ne peut exécuter aucun traitement côté serveur : il ne peut ni recevoir, ni stocker, ni réafficher une saisie",
+          "resultat_markdown": "Un site statique afficherait les produits, mais serait incapable d'enregistrer un avis client soumis via un formulaire : il n'a aucun moyen de traiter ni de conserver cette donnée."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur le type de site nécessaire",
+          "justification": "Dès qu'une saisie du visiteur doit être conservée et réutilisée, un langage serveur et une base de données deviennent indispensables",
+          "resultat_markdown": "Un **site dynamique** s'impose, combinant PHP (traitement du formulaire d'avis) et une base de données MySQL (stockage des avis et des produits)."
+        }
+      ],
+      "conclusion_markdown": "Dès qu'un site doit accepter une saisie du visiteur et la conserver, un site statique ne suffit plus : il faut un site dynamique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser qu'un site est \"dynamique\" simplement parce qu'il contient une animation ou un menu déroulant en JavaScript",
+          "pourquoi_faux": "Le JavaScript s'exécute dans le navigateur du visiteur (côté client) : il peut animer une page, mais ne modifie jamais le contenu réellement stocké sur le serveur. La dynamique dont on parle ici est côté serveur.",
+          "correction_markdown": "Pour juger si un site est dynamique, demande-toi : « son contenu change-t-il selon les données stockées sur le serveur (base de données, fichiers), sans que le développeur ne retouche le code » ? Si oui, c'est dynamique."
+        },
+        {
+          "erreur_markdown": "Croire qu'un site dynamique n'a pas besoin de HTML",
+          "pourquoi_faux": "Le PHP ne remplace pas le HTML : il le génère. Le navigateur du visiteur ne reçoit jamais de code PHP, seulement le HTML que PHP a produit.",
+          "correction_markdown": "Retiens la chaîne complète : le serveur exécute le PHP, qui produit du HTML, qui est envoyé au navigateur, qui l'affiche."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un site vitrine d'une petite entreprise ne présente que ses coordonnées et ses horaires, jamais modifiés. Est-ce un site statique ou dynamique ?",
+          "solution_markdown": "C'est un site **statique** : son contenu ne dépend d'aucune saisie de visiteur ni d'aucune base de données, il reste identique tant que le développeur ne modifie pas lui-même le fichier HTML."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un site affiche la météo du jour en se connectant à un service externe à chaque visite. S'agit-il d'un site dynamique ? Justifier.",
+          "solution_markdown": "Oui, c'est un site **dynamique** : le contenu affiché (la météo) change à chaque consultation en fonction d'une donnée récupérée au moment de la requête, ce qui suppose un traitement exécuté côté serveur à chaque visite, exactement comme une interrogation de base de données."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un site combine des pages « À propos » toujours identiques et un espace « Avis clients » alimenté par les visiteurs. Peut-on qualifier ce site globalement de statique ou dynamique, et pourquoi ce distinguo est-il utile pour l'architecte du site ?",
+          "solution_markdown": "Le site est globalement **dynamique**, car dès qu'une seule fonctionnalité nécessite un traitement serveur et une base de données (ici les avis clients), l'ensemble du site doit être bâti sur une architecture dynamique pour héberger cette fonctionnalité. Les pages « À propos » restent du contenu statique du point de vue du visiteur, même si elles sont techniquement servies par le même serveur dynamique. Cette distinction évite de sur-dimensionner l'infrastructure si aucune page n'en a réellement besoin, ou à l'inverse d'oublier de la prévoir dès qu'une seule fonctionnalité interactive existe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un site statique affiche toujours le même contenu HTML, écrit une fois pour toutes.",
+        "Un site dynamique génère ses pages à la demande grâce à un langage serveur (PHP) et, le plus souvent, une base de données.",
+        "Dès qu'un visiteur doit pouvoir saisir une information qui sera conservée (avis, inscription, commande), un site dynamique devient nécessaire.",
+        "Le PHP s'exécute côté serveur et ne produit que du HTML final envoyé au navigateur : le visiteur ne voit jamais le code PHP.",
+        "Au BAC TI, cette distinction sert souvent d'entrée en matière à une étude de cas : elle justifie ensuite tout le choix des outils et du langage utilisés."
+      ]
+    }
+  ]
+}

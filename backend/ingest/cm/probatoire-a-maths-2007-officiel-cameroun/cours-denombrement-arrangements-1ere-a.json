@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-denombrement-arrangements-1ere-a",
+  "meta": {
+    "titre": "Dénombrement : arrangements et principe multiplicatif",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Dénombrement",
+    "duree_estimee_min": 25,
+    "tags": [
+      "dénombrement",
+      "arrangements",
+      "principe multiplicatif",
+      "combinaisons"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathématiques - Cameroun - Session 2007",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2007-officiel-cameroun-ex2-qB.I-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un comité de quatre membres doit désigner un président et un vice-président. Combien de duos différents peut-on former ? La réponse n'est pas la même que si l'on demandait simplement de choisir deux représentants sans distinction de rôle : dès que l'ordre ou la fonction compte, on entre dans le domaine des arrangements."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer une factorielle $n!$",
+        "Distinguer une situation où l'ordre compte d'une situation où il ne compte pas"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Principe multiplicatif et arrangements",
+      "contenu_markdown": "Quand une situation se décompose en plusieurs choix successifs indépendants, le nombre total de possibilités est le PRODUIT du nombre de choix à chaque étape (principe multiplicatif). Choisir $p$ éléments parmi $n$, en tenant compte de l'ORDRE (ou de rôles distincts) et sans répétition, est un arrangement : le nombre d'arrangements de $p$ éléments parmi $n$ est $A_n^p=\\dfrac{n!}{(n-p)!}$. Si l'ordre ne compte pas, on utilise à la place une combinaison $C_n^p=\\dfrac{n!}{p!(n-p)!}$.",
+      "formule_principale": "A_n^p = \\dfrac{n!}{(n-p)!}",
+      "variantes": [
+        {
+          "nom": "Combinaison (ordre indifférent)",
+          "quand_utiliser": "Quand on choisit un groupe de $p$ éléments parmi $n$ sans distinguer de rôle ni d'ordre entre eux (ex. former une équipe sans postes différenciés).",
+          "contenu_markdown": "Le nombre de choix possibles est $C_n^p=\\dfrac{n!}{p!(n-p)!}$, toujours inférieur ou égal à $A_n^p$ puisqu'on ne compte plus les réarrangements d'un même groupe comme des possibilités distinctes."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On veut choisir un président et un vice-président dans un comité de quatre membres. Combien de possibilités a-t-on ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le nombre de choix pour le premier rôle (président)",
+          "justification": "Les 4 membres du comité sont tous éligibles au poste de président.",
+          "resultat_markdown": "$4$ choix possibles pour le président"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le nombre de choix pour le second rôle (vice-président)",
+          "justification": "Une fois le président désigné, il reste $3$ membres disponibles (la même personne ne peut pas cumuler les deux rôles).",
+          "resultat_markdown": "$3$ choix possibles pour le vice-président"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le principe multiplicatif",
+          "justification": "Les deux choix sont successifs et dépendants (le second dépend du premier, mais le nombre de possibilités à chaque étape reste fixe) : on multiplie les deux nombres de choix.",
+          "resultat_markdown": "$4\\times3=12$"
+        },
+        {
+          "numero": 4,
+          "action": "Retrouver ce résultat avec la formule des arrangements",
+          "justification": "On choisit $p=2$ rôles distincts parmi $n=4$ membres, sans répétition : c'est exactement la définition d'un arrangement $A_4^2$.",
+          "resultat_markdown": "$A_4^2=\\dfrac{4!}{(4-2)!}=\\dfrac{4!}{2!}=\\dfrac{24}{2}=12$"
+        }
+      ],
+      "conclusion_markdown": "Il y a $12$ façons différentes de désigner un président et un vice-président parmi les quatre membres du comité."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser une combinaison $C_4^2=6$ au lieu d'un arrangement $A_4^2=12$.",
+          "pourquoi_faux": "La combinaison ne distingue pas les rôles : elle compterait \"Paul et Marie\" comme une seule possibilité, sans dire lequel des deux est président. Or (Paul président, Marie vice-présidente) et (Marie présidente, Paul vice-président) sont deux situations concrètes différentes.",
+          "correction_markdown": "Dès que les rôles ou l'ordre changent la situation concrète, utiliser un arrangement, pas une combinaison."
+        },
+        {
+          "erreur_markdown": "Oublier que le nombre de choix diminue à la deuxième étape (écrire $4\\times4=16$ au lieu de $4\\times3=12$).",
+          "pourquoi_faux": "Une même personne ne peut pas occuper les deux postes à la fois : une fois le président choisi, il ne reste plus que $3$ membres disponibles pour le second poste, pas $4$.",
+          "correction_markdown": "Toujours vérifier si les choix successifs se font SANS répétition (le nombre de possibilités diminue à chaque étape) ou AVEC répétition (il reste constant)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un groupe de 5 amis veut désigner un chauffeur et un navigateur pour un trajet. Combien de possibilités a-t-on ?",
+          "solution_markdown": "Pour le poste de chauffeur, il y a $5$ choix possibles.\n\nUne fois le chauffeur désigné, il reste $4$ amis pour le poste de navigateur.\n\nPar le principe multiplicatif : $5\\times4=20$.\n\nVérification par la formule des arrangements : $A_5^2=\\dfrac{5!}{3!}=\\dfrac{120}{6}=20$.\n\nIl y a $20$ possibilités."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un bureau d'association de 6 membres doit élire un président, un secrétaire et un trésorier (trois postes distincts). Combien de bureaux différents peut-on former ?",
+          "solution_markdown": "Pour le président : $6$ choix possibles.\n\nUne fois le président désigné, pour le secrétaire : $5$ choix possibles (il reste 5 membres).\n\nUne fois président et secrétaire désignés, pour le trésorier : $4$ choix possibles.\n\nPar le principe multiplicatif : $6\\times5\\times4=120$.\n\nVérification par la formule des arrangements ($p=3$ rôles parmi $n=6$) : $A_6^3=\\dfrac{6!}{(6-3)!}=\\dfrac{6!}{3!}=\\dfrac{720}{6}=120$.\n\nIl y a $120$ bureaux différents possibles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans le même bureau de 6 membres, on veut maintenant seulement choisir un comité de 3 membres SANS distinction de rôle (aucun poste particulier). Combien de comités différents peut-on former ? Comparer ce résultat avec celui de l'exercice précédent et expliquer l'écart.",
+          "solution_markdown": "Ici, l'ordre ne compte plus : on cherche une combinaison, pas un arrangement.\n\n$C_6^3=\\dfrac{6!}{3!(6-3)!}=\\dfrac{6!}{3!\\times3!}=\\dfrac{720}{6\\times6}=\\dfrac{720}{36}=20$\n\nIl y a $20$ comités différents possibles.\n\n**Comparaison** : l'exercice précédent (bureau avec 3 postes distincts) donnait $120$ possibilités, alors que celui-ci n'en donne que $20$. Le rapport entre les deux est $\\dfrac{120}{20}=6=3!$ : chaque groupe de 3 personnes (compté une seule fois dans la combinaison) peut être organisé en $3!=6$ façons différentes selon qui occupe quel poste (arrangement). C'est exactement la relation générale $A_n^p=C_n^p\\times p!$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pose-toi toujours la question : \"l'ordre ou les rôles changent-ils la situation concrète ?\" Si oui, arrangement ; si non, combinaison.",
+        "Le principe multiplicatif (multiplier le nombre de choix à chaque étape successive) redonne toujours le même résultat qu'une formule d'arrangement : les deux méthodes se recoupent, utilise celle qui te semble la plus rapide.",
+        "Sans répétition, le nombre de choix diminue à chaque étape ($4$, puis $3$, puis $2$...) : ne réutilise jamais le nombre total de départ à chaque étape.",
+        "La relation $A_n^p=C_n^p\\times p!$ relie les deux notions : un arrangement, c'est une combinaison à laquelle on ajoute l'organisation des rôles.",
+        "Au Probatoire et au BAC, ce type de question apparaît souvent comme une question courte et rapportant peu de points : ne perds pas de temps à hésiter entre les formules, identifie d'abord si l'ordre compte."
+      ]
+    }
+  ]
+}

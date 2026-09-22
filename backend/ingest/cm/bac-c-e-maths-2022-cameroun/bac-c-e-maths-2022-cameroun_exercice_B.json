@@ -1,0 +1,107 @@
+{
+  "epreuve_source": "bac-c-e-maths-2022-cameroun.pdf",
+  "matiere": "Mathematiques",
+  "serie": "C/E",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": "2022",
+  "duree_epreuve": "4h",
+  "coefficient": "7(C) / 6(E)",
+  "numero_exercice": "B",
+  "points": 15,
+  "enonce_intro_markdown": "**Partie B : Évaluation des compétences (15 points)**\\n\\n**Situation.** Trois gisements de gaz $A$, $B$ et $C$ présentant chacun $100$ milliards de m³ de quantité, ont été découverts dans un pays. L'inauguration a eu lieu une certaine année (année $0$) prise comme origine des temps $t$ (en années). L'exploitation du gaz des gisements $A$ et $B$ avait commencé à la date $t=0$ et celle du gisement $C$ légèrement avant. Seulement, à la date $t=1$, la quantité totale du gaz extraite de chacun des gisements $A$ et $C$ était de $5{,}01$ milliards de m³.\\n\\n— Pour le gisement $A$ et à partir de la 2ᵉ année, la quantité de gaz extraite chaque année augmente de $0{,}75$ milliards de m³ par rapport à celle de l'année précédente.\\n\\n— Pour les gisements $B$ et $C$, les ingénieurs pétrochimistes savent que si $q(t)$ est la quantité totale (en milliards de m³) de gaz extraite de chacun de ces gisements à la date $t$, alors le taux d'extraction ou de consommation de gaz du gisement à cette date $t$ est $q'(t)$ (milliards de m³ par an).\\n\\n• Au niveau du gisement $B$, ce taux est $\\\\left(\\\\dfrac1{2t+1}+0{,}02t\\\\right)$ milliard de m³ par an.\\n\\n• Au niveau du gisement $C$, ces taux (aux dates $t$) sont proportionnels aux quantités de gaz extraites à ces dates. À la date $t=1$ ce taux était $5{,}01$ milliards de m³ par an.\\n\\n**Tâches.**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. En combien d'années le gisement $A$ s'épuisera-t-il ?",
+      "corrige_markdown": "### Rappel de methode\\nLa quantite extraite chaque annee forme une suite arithmetique a_n (a_1=5,01, raison 0,75 a partir de l'annee 2) ; la quantite cumulee apres N annees est la somme des N premiers termes S(N)=N*a_1+0,75*N(N-1)/2. On resout S(N)>=100 pour trouver le plus petit entier N convenable, en comparant S(11) et S(12).\\n\\n### Corrige\\n**Modélisation.** Soit $a_n$ la quantité extraite durant l'année $n$ ($n\\\\geq1$). À la date $t=1$ (après 1 an), la quantité cumulée est $a_1=5{,}01$. La suite $(a_n)$ est arithmétique de raison $r=0{,}75$ (augmentation chaque année à partir de la 2ᵉ) : $a_n=5{,}01+0{,}75(n-1)$.\\n\\n**Quantité cumulée après $N$ années** (somme d'une suite arithmétique) :\\n\\n$$S(N)=\\\\sum_{n=1}^Na_n=Na_1+0{,}75\\\\times\\\\dfrac{N(N-1)}2=5{,}01N+0{,}375N(N-1)=0{,}375N^2+4{,}635N$$\\n\\n**Recherche du plus petit $N$ tel que $S(N)\\\\geq100$** (épuisement du gisement) :\\n\\n$S(11)=0{,}375\\\\times121+4{,}635\\\\times11=96{,}36<100$ (gisement pas encore épuisé après 11 ans).\\n\\n$S(12)=0{,}375\\\\times144+4{,}635\\\\times12=109{,}62\\\\geq100$ (le seuil de $100$ milliards de m³ est franchi pendant la 12ᵉ année).\\n\\n**Le gisement $A$ s'épuisera en $12$ ans** (durant la 12ᵉ année d'exploitation) *(vérifié par calcul formel)*.",
+      "themes": [
+        "suite arithmétique",
+        "somme des termes",
+        "modélisation"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2022-pb-0",
+          "competence": "S(N)=0,375N^2+4,635N ; comparer S(11) et S(12) a 100",
+          "contenu_markdown": "La quantite extraite chaque annee forme une suite arithmetique a_n (a_1=5,01, raison 0,75 a partir de l'annee 2) ; la quantite cumulee apres N annees est la somme des N premiers termes S(N)=N*a_1+0,75*N(N-1)/2. On resout S(N)>=100 pour trouver le plus petit entier N convenable, en comparant S(11) et S(12).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "savoir_officiel": null,
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Combien d'années d'extraction suffiront à ce pays pour épuiser le contenu du gisement $B$ ?",
+      "corrige_markdown": "### Rappel de methode\\nq_B(t) s'obtient en integrant le taux q'(t)=1/(2t+1)+0,02t avec la condition q_B(0)=0 (extraction commencant a t=0) ; on resout ensuite q_B(t)=100 (numeriquement, l'equation etant transcendante).\\n\\n### Corrige\\n$q_B(t)=\\\\displaystyle\\\\int_0^tq_B'(s)\\\\,ds=\\\\int_0^t\\\\left(\\\\dfrac1{2s+1}+0{,}02s\\\\right)ds=\\\\left[\\\\dfrac12\\\\ln(2s+1)+0{,}01s^2\\\\right]_0^t=\\\\dfrac12\\\\ln(2t+1)+0{,}01t^2$\\n\\n(car $q_B(0)=0$ : l'exploitation de $B$ commence à $t=0$, rien n'est encore extrait).\\n\\n**Épuisement** : $q_B(t)=100\\\\iff\\\\dfrac12\\\\ln(2t+1)+0{,}01t^2=100$.\\n\\nCette équation transcendante (mêlant terme logarithmique et terme quadratique) se résout numériquement : le terme $0{,}01t^2$ domine largement pour les grandes valeurs de $t$ ($0{,}01t^2\\\\approx100\\\\Rightarrow t\\\\approx100$, ajusté par la contribution logarithmique).\\n\\n**On trouve $t\\\\approx98{,}7$, soit $99$ années** (arrondi à l'année supérieure) *(résolution numérique vérifiée par calcul formel : $q_B(98{,}67)\\\\approx100$)*.",
+      "themes": [
+        "primitive",
+        "résolution numérique",
+        "modélisation par intégrale"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2022-pb-1",
+          "competence": "q_B(t)=(1/2)ln(2t+1)+0,01t^2, resoudre =100 numeriquement (t≈98,7)",
+          "contenu_markdown": "q_B(t) s'obtient en integrant le taux q'(t)=1/(2t+1)+0,02t avec la condition q_B(0)=0 (extraction commencant a t=0) ; on resout ensuite q_B(t)=100 (numeriquement, l'equation etant transcendante).",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "savoir_officiel": null,
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Après l'inauguration, combien d'années faudra-t-il à ce pays pour vider le gisement $C$ de son contenu ?",
+      "corrige_markdown": "### Rappel de methode\\nq_C'(t)=k*q_C(t) (taux proportionnel a la quantite) est une equation differentielle lineaire du premier ordre, de solution q_C(t)=Ce^{kt}. Les deux donnees a t=1 (q_C(1)=5,01 ET q_C'(1)=5,01) permettent de determiner k=1 directement (car q_C'(1)=k*q_C(1) impose k=q_C'(1)/q_C(1)=1), puis C via q_C(1)=5,01. On resout enfin q_C(t)=100.\\n\\n### Corrige\\nLe taux d'extraction de $C$ est proportionnel à la quantité déjà extraite : $q_C'(t)=k\\\\,q_C(t)$ pour une constante $k$. C'est l'équation différentielle $y'=ky$, de solution générale $q_C(t)=Ce^{kt}$.\\n\\n**Détermination de $k$.** On dispose de deux informations à $t=1$ : $q_C(1)=5{,}01$ (quantité cumulée, donnée commune à $A$ et $C$) et $q_C'(1)=5{,}01$ (taux, donné spécifiquement pour $C$). Or $q_C'(1)=k\\\\,q_C(1)$, donc :\\n\\n$$5{,}01=k\\\\times5{,}01\\\\ \\\\Longrightarrow\\\\ k=1$$\\n\\n**Détermination de $C$.** $q_C(1)=Ce^1=5{,}01\\\\Rightarrow C=\\\\dfrac{5{,}01}e$.\\n\\n$$q_C(t)=\\\\dfrac{5{,}01}e\\\\,e^t=5{,}01\\\\,e^{t-1}$$\\n\\n**Épuisement** : $q_C(t)=100\\\\iff5{,}01e^{t-1}=100\\\\iff e^{t-1}=\\\\dfrac{100}{5{,}01}\\\\iff t=1+\\\\ln\\\\!\\\\left(\\\\dfrac{100}{5{,}01}\\\\right)$\\n\\n**$t=1+\\\\ln\\\\!\\\\left(\\\\dfrac{100}{5{,}01}\\\\right)\\\\approx3{,}99$**, soit **environ $4$ ans** après l'inauguration *(vérifié par calcul formel)*.",
+      "themes": [
+        "équation différentielle y'=ky",
+        "croissance exponentielle",
+        "modélisation"
+      ],
+      "difficulte_estimee": "difficile",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac2022-pb-2",
+          "competence": "q_C'=k*q_C, k=1 via les deux donnees en t=1, q_C(t)=5,01e^{t-1}",
+          "contenu_markdown": "q_C'(t)=k*q_C(t) (taux proportionnel a la quantite) est une equation differentielle lineaire du premier ordre, de solution q_C(t)=Ce^{kt}. Les deux donnees a t=1 (q_C(1)=5,01 ET q_C'(1)=5,01) permettent de determiner k=1 directement (car q_C'(1)=k*q_C(1) impose k=q_C'(1)/q_C(1)=1), puis C via q_C(1)=5,01. On resout enfin q_C(t)=100.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ],
+      "savoir_officiel": null,
+      "reponse_correcte": ""
+    }
+  ],
+  "mots_cles_recherche": [
+    "suite arithmétique",
+    "équation différentielle",
+    "modélisation",
+    "croissance exponentielle",
+    "évaluation par compétences",
+    "BAC C/E Cameroun"
+  ],
+  "incertitudes": [
+    {
+      "type": "sous-barème absent de la source",
+      "description": "La source (« Bac Mathématiques 2022 Cameroun série C-E », recueil groupe-reussite.fr, conforme au format « évaluation par ressources / évaluation par compétences » introduit dans la réforme du BAC camerounais) indique le barème par exercice et par partie (Exercice 1 = 5 pts, Exercice 2 = 5 pts, Exercice 3 = 5 pts, Partie B = 15 pts, soit 30 points au total), mais ne détaille pas le barème de chaque sous-question. La répartition interne utilisée ici est une estimation raisonnable respectant scrupuleusement le total officiel de chaque exercice/partie."
+    }
+  ],
+  "figures": [],
+  "statut": "brouillon",
+  "pays": "cm",
+  "matiere_normalisee": "MATHS",
+  "classe": "Tle"
+}

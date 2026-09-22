@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-traduire-un-algorithme-en-programme-c-structure-d-un-programme-c-tle-tronc-commun",
+  "meta": {
+    "titre": "Traduire un algorithme en programme C : structure d'un programme C",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Traduction pseudo-code vers langage C",
+    "duree_estimee_min": 30,
+    "tags": [
+      "traduction algorithme-C",
+      "tableaux en C",
+      "boucle for",
+      "structure d'un programme C"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex3-q7-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme en pseudo-code et son équivalent en C se ressemblent beaucoup... et c'est justement ce qui rend la traduction piégeuse : quelques différences discrètes (l'indexation des tableaux, les types de variables, la syntaxe des boucles) peuvent transformer un algorithme juste en un programme qui compile mais donne de mauvais résultats."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe de base d'un programme C (variables, printf, scanf, for, if).",
+        "Savoir lire un algorithme en pseudo-code avec tableau et boucle Pour."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Cinq correspondances à connaître entre pseudo-code et langage C",
+      "contenu_markdown": "**Déclaration de tableau** : `Note[1..10] de réels` (indices 1 à 10) devient `float Note[10];` en C (indices 0 à 9) - le nombre d'éléments reste 10, mais l'indexation change de base.\n\n**Boucle Pour** : `Pour i allant de 1 à 10 faire ... Finpour` devient `for (i = 0; i < 10; i++) { ... }` si l'on adapte les indices à la base 0, ou `for (i = 1; i <= 10; i++)` si l'on préfère garder des indices de 1 à 10 (auquel cas le tableau doit être déclaré avec une case de plus : `float Note[11];`, la case 0 restant inutilisée).\n\n**Lecture au clavier** : `Lire(x)` devient `scanf(\"%f\", &x);` (ne jamais oublier le `&`, voir le cours sur les opérateurs C).\n\n**Affichage** : `Ecrire(...)` devient `printf(...)` avec les spécificateurs de format adaptés au type de chaque valeur (`%d` pour un entier, `%f` pour un réel, `%s` pour une chaîne).\n\n**Types cohérents** : toute variable qui accumule ou divise des valeurs réelles doit être déclarée `float` (ou `double`) en C, même si le pseudo-code d'origine la déclarait par erreur comme un entier."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Traduire en C l'instruction pseudo-code : Pour i allant de 1 à 5 faire Lire(T[i]) ; Somme ← Somme + T[i] ; Finpour, avec T un tableau de 5 réels et Somme un réel initialisé à 0.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déclarer les variables avec des types cohérents",
+          "justification": "T contient des réels, Somme accumule des réels.",
+          "resultat_markdown": "float T[5]; float Somme = 0; int i;"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire la boucle Pour en for, en adaptant les indices",
+          "justification": "Le pseudo-code indexe de 1 à 5 ; en C, on choisit l'indexation 0 à 4.",
+          "resultat_markdown": "for (i = 0; i < 5; i++) { ... }"
+        },
+        {
+          "numero": 3,
+          "action": "Traduire la lecture avec l'opérateur d'adresse",
+          "justification": "scanf a besoin de l'adresse de l'élément du tableau.",
+          "resultat_markdown": "scanf(\"%f\", &T[i]);"
+        },
+        {
+          "numero": 4,
+          "action": "Traduire l'accumulation avec l'opérateur +=",
+          "justification": "Somme ← Somme + T[i] se raccourcit naturellement en C.",
+          "resultat_markdown": "Somme += T[i];"
+        }
+      ],
+      "conclusion_markdown": "On obtient une traduction fidèle et idiomatique en C, avec des indices, des types et des opérateurs cohérents avec le langage cible."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Garder l'indexation de 1 à N du pseudo-code sans adapter la déclaration du tableau",
+          "pourquoi_faux": "Un tableau C déclaré `float T[5];` n'a que les indices valides 0 à 4 : accéder à T[5] (en gardant l'indexation 1 à 5 du pseudo-code sans adaptation) lit ou écrit en dehors du tableau, un comportement indéfini qui peut corrompre d'autres données ou planter le programme, sans forcément d'erreur immédiate.",
+          "correction_markdown": "Soit adapter systématiquement les indices à la base 0 (recommandé), soit déclarer le tableau avec une case supplémentaire si l'on tient à garder l'indexation à partir de 1."
+        },
+        {
+          "erreur_markdown": "Utiliser %d pour afficher ou lire une variable float",
+          "pourquoi_faux": "Le spécificateur de format doit correspondre exactement au type de la variable : %d attend un entier, %f un réel. Utiliser %d avec une variable float lit ou affiche des données corrompues (mauvaise interprétation des octets en mémoire), sans erreur de compilation.",
+          "correction_markdown": "Toujours faire correspondre le spécificateur de printf/scanf au type réel de la variable : %d pour int, %f pour float/double, %s pour une chaîne de caractères."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Traduire en C l'instruction pseudo-code : Ecrire(\"Résultat : \", x) où x est un entier.",
+          "solution_markdown": "printf(\"Resultat : %d\", x);"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Traduire en C l'algorithme suivant : Variable Nbre : entier ; Debut Nbre ← 0 ; Pour i allant de 1 à 20 faire Lire(x) ; Si (x > 0) Nbre ← Nbre + 1 ; Finsi Finpour Ecrire(Nbre) ; Fin (x est un entier lu à chaque itération, non conservé dans un tableau).",
+          "solution_markdown": "#include <stdio.h>\n\nint main(void) {\n    int Nbre = 0, x, i;\n    for (i = 0; i < 20; i++) {\n        scanf(\"%d\", &x);\n        if (x > 0) {\n            Nbre++;\n        }\n    }\n    printf(\"%d\\n\", Nbre);\n    return 0;\n}"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un pseudo-code utilise un tableau Notes[1..30] de réels et une boucle Pour i de 1 à 30 qui affiche, à chaque itération, « Note n°i : valeur ». En choisissant de garder l'indexation à partir de 1 en C (plutôt que de tout décaler à 0), écrire la déclaration du tableau et la boucle for correspondantes, puis expliquer le compromis fait sur la taille réellement allouée.",
+          "solution_markdown": "float Notes[31]; // case 0 inutilisée, pour garder Notes[1] a Notes[30]\nint i;\nfor (i = 1; i <= 30; i++) {\n    printf(\"Note n%cd : %.2f\\n\", '°', Notes[i]);\n}\n\nLe compromis fait est d'allouer une case supplémentaire (31 au lieu de 30) pour que les indices 1 à 30 utilisés dans le pseudo-code correspondent exactement aux mêmes indices en C, au prix d'un élément d'indice 0 qui reste inutilisé et gaspille un peu de mémoire (ici négligeable, un seul float). Cette approche évite d'avoir à décaler mentalement chaque indice du pseudo-code (i devient i-1) lors de la traduction, ce qui réduit le risque d'erreur de traduction, au prix d'une case mémoire inutilisée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Adapter systématiquement l'indexation des tableaux : 1..N en pseudo-code devient 0..N-1 en C (ou N+1 cases si l'on garde l'indexation à partir de 1).",
+        "Pour allant de a à b en pseudo-code devient for (i = a; i <= b; i++) en C, à adapter selon le choix d'indexation retenu.",
+        "Ne jamais oublier le & devant une variable simple passée à scanf.",
+        "Faire correspondre exactement le spécificateur de printf/scanf (%d, %f, %s) au type réel de chaque variable, et déclarer float/double toute variable qui accumule ou divise des valeurs réelles."
+      ]
+    }
+  ]
+}

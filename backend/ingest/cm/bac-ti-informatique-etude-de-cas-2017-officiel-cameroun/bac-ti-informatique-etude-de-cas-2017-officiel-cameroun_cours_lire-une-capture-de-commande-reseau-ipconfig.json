@@ -1,0 +1,116 @@
+{
+  "cours_id": "cours-lire-commande-ipconfig-tle-ti",
+  "meta": {
+    "titre": "Lire une capture de commande réseau : ipconfig",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques - outils de diagnostic",
+    "duree_estimee_min": 15,
+    "tags": [
+      "ipconfig",
+      "ligne de commande Windows",
+      "diagnostic réseau",
+      "configuration IP",
+      "ipconfig /all",
+      "commandes réseau Windows"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex2-q4.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un problème de connexion réseau, le premier réflexe d'un technicien est presque toujours le même : ouvrir une invite de commandes et taper une commande de diagnostic pour voir, en quelques lignes, toute la configuration réseau de la machine. Savoir reconnaître cette commande et interpréter sa sortie est une compétence pratique directement utile, bien au-delà de l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ouvrir une invite de commandes Windows.",
+        "Connaître le vocabulaire de base d'une configuration IP (adresse IP, masque, passerelle)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "ipconfig et son option /all",
+      "contenu_markdown": "Dans l'invite de commandes Windows, la commande `ipconfig` affiche un résumé de la configuration IP des cartes réseau de la machine : adresse IP, masque de sous-réseau, passerelle par défaut. Ajoutée de l'option `/all`, elle donne un rapport beaucoup plus détaillé pour chaque carte réseau : nom de la machine, adresse physique (MAC), état du DHCP, serveurs DNS, dates de bail. Reconnaître laquelle des deux formes a été utilisée se fait en observant le niveau de détail affiché : la présence d'informations comme l'adresse physique ou les dates de bail signale à coup sûr l'option `/all`.",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une capture affiche, entre autres lignes : `Adresse physique . . . : 00-16-D4-9F-82-61`, `DHCP activé . . . : Oui`, `Bail obtenu . . . : jeudi 6 février 2014 08:53:55`. Identifier la commande utilisée pour produire cette capture.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le niveau de détail affiché",
+          "justification": "Adresse physique, statut DHCP et dates de bail ne figurent pas dans le résumé simple de `ipconfig`.",
+          "resultat_markdown": "Ces informations détaillées ne s'affichent qu'avec l'option `/all`."
+        },
+        {
+          "numero": 2,
+          "action": "Conclure sur la commande utilisée",
+          "justification": "Seule l'option `/all` de `ipconfig` fait apparaître ce niveau de détail.",
+          "resultat_markdown": "La commande utilisée est `ipconfig /all`."
+        }
+      ],
+      "conclusion_markdown": "La présence de l'adresse physique et des dates de bail dans la capture confirme sans ambiguïté que la commande tapée était `ipconfig /all`, et non `ipconfig` seule."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre simplement « ipconfig » en voyant une capture qui affiche pourtant l'adresse physique et le bail DHCP.",
+          "pourquoi_faux": "`ipconfig` sans option n'affiche que l'essentiel (adresse IP, masque, passerelle) : l'adresse physique et les dates de bail sont des informations propres à l'option `/all`.",
+          "correction_markdown": "Vérifier systématiquement la présence d'informations détaillées (adresse physique, DHCP, DNS, bail) avant de conclure sur la forme exacte de la commande utilisée."
+        },
+        {
+          "erreur_markdown": "Confondre `ipconfig` (Windows) avec `ifconfig` (Linux/Unix), qui affichent des informations similaires mais avec une syntaxe différente.",
+          "pourquoi_faux": "Le contexte de la capture (chemin `C:\\Documents and Settings\\...`, invite de commandes) indique clairement un environnement Windows, où la commande correcte est `ipconfig`, avec un p.",
+          "correction_markdown": "Repérer les indices du système d'exploitation (chemin de fichiers, style de l'invite) avant de nommer la commande utilisée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle commande Windows permet d'afficher rapidement l'adresse IP et la passerelle par défaut d'une machine, sans détail supplémentaire ?",
+          "solution_markdown": "`ipconfig`, utilisée sans aucune option."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un technicien veut vérifier si une machine a bien obtenu son adresse IP par DHCP ou si elle a été configurée manuellement. Quelle commande doit-il utiliser, et quelle ligne du résultat va-t-il consulter ?",
+          "solution_markdown": "Il doit utiliser `ipconfig /all`, puis consulter la ligne « DHCP activé » : si elle indique « Oui », l'adresse a été obtenue automatiquement par DHCP ; si elle indique « Non », l'adresse a été configurée manuellement (adresse IP statique)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi, en cas de panne réseau, un technicien commence souvent par exécuter `ipconfig /release` puis `ipconfig /renew`, plutôt que directement `ipconfig /all`.",
+          "solution_markdown": "`ipconfig /all` ne fait qu'afficher la configuration actuelle : elle est utile pour diagnostiquer un problème (voir si l'adresse IP est incohérente, si le DHCP a échoué), mais elle ne corrige rien.\n\n`ipconfig /release` libère volontairement l'adresse IP actuellement attribuée par le serveur DHCP (la machine perd temporairement sa configuration réseau), puis `ipconfig /renew` force une nouvelle demande d'adresse auprès du serveur DHCP. Cette séquence permet de résoudre de nombreux problèmes de connexion liés à une adresse IP mal attribuée ou à un bail expiré, en forçant une réattribution propre, alors qu'un simple `ipconfig /all` se contente d'observer la situation sans la modifier."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`ipconfig` affiche un résumé de la configuration réseau ; `ipconfig /all` en donne le détail complet.",
+        "La présence de l'adresse physique, du statut DHCP ou des dates de bail signale que l'option `/all` a été utilisée.",
+        "`ipconfig` est une commande Windows ; son équivalent sous Linux/Unix est `ifconfig` (ou `ip addr` sur les systèmes récents).",
+        "Cette commande est le premier réflexe de diagnostic réseau, avant d'envisager des actions correctives comme `/release` et `/renew`.",
+        "Savoir lire une telle capture est une compétence directement transférable dans un contexte professionnel de maintenance informatique, et pas seulement un exercice d'examen."
+      ]
+    }
+  ]
+}

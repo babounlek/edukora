@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-les-commentaires-en-php-tle-ti",
+  "meta": {
+    "titre": "Les commentaires en PHP",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Bases du langage PHP",
+    "duree_estimee_min": 10,
+    "tags": [
+      "commentaires",
+      "PHP",
+      "documentation du code"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1-q4.5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Six mois après avoir écrit un script, même son auteur peut avoir oublié pourquoi telle ligne existe. Le commentaire est la note que le développeur laisse pour lui-même ou pour ceux qui liront son code après lui - un texte que PHP lit, mais n'exécute jamais."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir repérer une ligne de code PHP simple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du texte ignoré par l'interpréteur",
+      "contenu_markdown": "Un commentaire est une portion de texte que l'interpréteur PHP ignore totalement lors de l'exécution : il n'a aucun effet sur le programme, il sert uniquement à le documenter. Un **commentaire mono-ligne** commence par `//` (ou par `#`) et s'arrête automatiquement à la fin de la ligne. Un **commentaire multi-lignes** s'ouvre par `/*` et se ferme par `*/`, pouvant ainsi s'étendre sur plusieurs lignes.",
+      "formule_principale": "// commentaire mono-ligne     /* commentaire multi-lignes */",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le code de VIPBoutique, identifier par son numéro la ligne qui correspond à un commentaire mono-ligne.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Parcourir chaque ligne à la recherche du symbole // ou #",
+          "justification": "Ce sont les marqueurs de début d'un commentaire mono-ligne en PHP",
+          "resultat_markdown": "La ligne 4 commence par `//POINTDEVUE indique si un client est d'accord pour un produit ou pas`."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier qu'aucune instruction exécutable ne se trouve sur cette ligne",
+          "justification": "Un commentaire mono-ligne annule tout ce qui le suit jusqu'à la fin de la ligne",
+          "resultat_markdown": "Toute la ligne 4 est constituée du commentaire : rien n'est exécuté sur cette ligne."
+        }
+      ],
+      "conclusion_markdown": "La ligne 4 est le commentaire mono-ligne du script : elle documente le rôle du champ pointdevue sans influencer l'exécution."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'un commentaire peut modifier le comportement du programme s'il contient du code désactivé",
+          "pourquoi_faux": "Même si le texte d'un commentaire ressemble à du code PHP valide, il n'est jamais exécuté : l'interpréteur le saute entièrement.",
+          "correction_markdown": "Un commentaire, aussi élaboré soit-il, reste toujours invisible pour l'exécution du programme - c'est justement ce qui permet de désactiver temporairement une ligne de code pendant un test."
+        },
+        {
+          "erreur_markdown": "Confondre un commentaire multi-lignes mal fermé avec un simple texte",
+          "pourquoi_faux": "Si un `/*` n'est jamais refermé par un `*/`, tout le code qui suit, y compris des instructions normales, est avalé par le commentaire jusqu'à la prochaine fermeture rencontrée - une source d'erreur fréquente.",
+          "correction_markdown": "Vérifie toujours qu'un commentaire multi-lignes ouvert par `/*` possède bien son `*/` de fermeture avant la prochaine instruction utile."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "`# Calcul du prix TTC` est-il un commentaire valide en PHP ?",
+          "solution_markdown": "Oui : `#` est, au même titre que `//`, un marqueur valide de commentaire mono-ligne en PHP."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle est la différence entre `// texte` et `/* texte */` ?",
+          "solution_markdown": "`// texte` est un commentaire mono-ligne : il s'arrête automatiquement à la fin de la ligne physique. `/* texte */` est un commentaire multi-lignes : il commence à `/*` et continue, même sur plusieurs lignes, jusqu'à rencontrer `*/`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un développeur veut désactiver temporairement les trois lignes suivantes pour tester son script sans elles :\n```php\n$a = 1;\n$b = 2;\n$c = $a + $b;\n```\nQuelle solution est la plus adaptée, et pourquoi pas une succession de trois `//` ?",
+          "solution_markdown": "La solution la plus adaptée est d'encadrer les trois lignes par un commentaire multi-lignes : `/* $a = 1; $b = 2; $c = $a + $b; */`. Une succession de trois `//` fonctionnerait aussi (chaque ligne commentée séparément), mais demande de répéter le marqueur sur chaque ligne et devient vite lourd à retirer ensuite ; le commentaire multi-lignes ne nécessite qu'une seule ouverture et une seule fermeture pour désactiver un bloc entier, quelle que soit sa longueur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un commentaire est ignoré par l'interpréteur PHP : il n'a aucun effet sur l'exécution.",
+        "`//` ou `#` ouvrent un commentaire mono-ligne, qui s'arrête en fin de ligne.",
+        "`/* ... */` ouvre un commentaire multi-lignes, qui continue jusqu'à sa fermeture explicite.",
+        "Un commentaire multi-lignes mal fermé peut avaler du code utile par erreur.",
+        "Au BAC TI, identifier un commentaire par son numéro de ligne demande simplement de repérer le bon symbole d'ouverture, sans confondre avec une chaîne de caractères contenant ces mêmes symboles."
+      ]
+    }
+  ]
+}

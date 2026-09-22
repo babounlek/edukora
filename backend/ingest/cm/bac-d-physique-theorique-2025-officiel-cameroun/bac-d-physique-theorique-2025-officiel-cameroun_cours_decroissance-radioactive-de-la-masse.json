@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-decroissance-radioactive-de-la-masse-terminale-d",
+  "meta": {
+    "titre": "Décroissance radioactive de la masse",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Radioactivité",
+    "duree_estimee_min": 20,
+    "tags": [
+      "décroissance radioactive",
+      "période radioactive",
+      "loi de décroissance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-D-PHYSIQUE-2025-CM",
+    "epreuve_titre": "Baccalaureat Physique - Serie D - 2025 - Cameroun (epreuve officielle, theorique)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-d-physique-theorique-2025-officiel-cameroun-ex3-q3.1.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Après chaque période radioactive écoulée, il ne reste jamais plus de la moitié des noyaux radioactifs initiaux, quelle que soit la quantité de départ. Cette loi, d'une simplicité trompeuse, permet de calculer en quelques lignes la masse restante d'une substance radioactive après n'importe quelle durée, à condition de bien compter le nombre de périodes écoulées."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de période radioactive $T$",
+        "Proportionnalité entre masse et nombre de noyaux pour une espèce donnée",
+        "Manipulation des puissances (calcul de $(1/2)^n$)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de décroissance radioactive appliquée à la masse",
+      "contenu_markdown": "Le nombre de noyaux radioactifs restants dans un échantillon diminue au cours du temps selon la loi de décroissance radioactive :\n\n$$N(t) = N_0\\left(\\dfrac{1}{2}\\right)^{t/T}$$\n\noù $N_0$ est le nombre de noyaux à $t=0$, $T$ la période radioactive, et $t/T$ le nombre de périodes écoulées entre $0$ et $t$. La masse d'une espèce radioactive étant directement proportionnelle au nombre de ses noyaux (à travers la masse molaire, qui ne change pas), cette même loi s'applique intégralement à la masse :\n\n$$m(t) = m_0\\left(\\dfrac{1}{2}\\right)^{t/T}$$\n\nLa clé de ce calcul est de déterminer correctement le nombre de périodes écoulées $t/T$ : ce nombre n'a pas besoin d'être entier, mais quand il l'est (2, 3, 4 périodes...), le calcul se réduit à des divisions successives par 2.",
+      "formule_principale": "m(t) = m_0\\left(\\dfrac{1}{2}\\right)^{t/T}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un échantillon contient initialement $m_0 = 8,0$ g d'un élément radioactif de période $T = 3,0$ jours. Déterminer la masse restante après $t = 9,0$ jours.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le nombre de périodes écoulées",
+          "justification": "$t/T$ donne le nombre de fois où la masse a été divisée par 2.",
+          "resultat_markdown": "$\\dfrac{t}{T} = \\dfrac{9,0}{3,0} = 3$ périodes écoulées"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la loi de décroissance",
+          "justification": "$m(t) = m_0(1/2)^{t/T}$.",
+          "resultat_markdown": "$m(9,0) = 8,0 \\times \\left(\\dfrac{1}{2}\\right)^3 = 8,0 \\times 0,125$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la masse restante",
+          "justification": "On effectue la multiplication finale.",
+          "resultat_markdown": "$m(9,0) = 1,0\\ \\text{g}$"
+        }
+      ],
+      "conclusion_markdown": "Après 9,0 jours, soit 3 périodes, il reste $m = 1,0$ g de l'élément radioactif, ce qui correspond bien à une division par $2^3 = 8$ de la masse initiale."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier la masse par $\\dfrac{1}{2}\\times \\dfrac{t}{T}$ au lieu de $\\left(\\dfrac{1}{2}\\right)^{t/T}$",
+          "pourquoi_faux": "La décroissance radioactive n'est pas linéaire mais exponentielle (par divisions successives par 2 à chaque période) : le nombre de périodes est un EXPOSANT, pas un facteur multiplicatif.",
+          "correction_markdown": "Écris toujours la loi sous forme d'une puissance, $m(t) = m_0(1/2)^{t/T}$, et calcule l'exposant $t/T$ avant d'élever $1/2$ à cette puissance."
+        },
+        {
+          "erreur_markdown": "Oublier que $m_0$ dans la formule désigne la masse à $t=0$, pas la masse totale de l'échantillon si celui-ci contient un mélange",
+          "pourquoi_faux": "Si l'échantillon contient plusieurs espèces chimiques ou une espèce radioactive diluée dans une substance stable, seule la masse de l'espèce RADIOACTIVE suit cette loi de décroissance, pas la masse totale de l'échantillon.",
+          "correction_markdown": "Identifie précisément quelle masse est radioactive dans l'énoncé avant d'appliquer la loi de décroissance."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un échantillon radioactif de masse initiale $m_0 = 4,0$ g a une période $T = 2,0$ jours. Calculer la masse restante après $t = 4,0$ jours.",
+          "solution_markdown": "Le nombre de périodes écoulées est $t/T = 4,0/2,0 = 2$. $m(t) = m_0(1/2)^2 = 4,0 \\times 0,25 = 1,0\\ \\text{g}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un échantillon radioactif a une masse initiale $m_0 = 20$ g et une période $T = 6,0$ h. Déterminer la masse restante après $t = 18$ h.",
+          "solution_markdown": "Le nombre de périodes écoulées vaut $t/T = 18/6,0 = 3$. $m(t) = 20 \\times (1/2)^3 = 20 \\times 0,125 = 2,5\\ \\text{g}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un échantillon radioactif de période $T$ a perdu $75\\,\\%$ de sa masse initiale. Exprimer le temps $t$ écoulé en fonction de $T$.",
+          "solution_markdown": "Perdre $75\\,\\%$ de la masse initiale signifie qu'il en reste $25\\,\\% = 1/4$, donc $m(t)/m_0 = 1/4 = (1/2)^2$. En identifiant l'exposant avec $t/T$ dans la loi $m(t) = m_0(1/2)^{t/T}$, on obtient $t/T = 2$, soit $t = 2T$ : il a fallu l'équivalent de deux périodes radioactives pour perdre les trois quarts de la masse initiale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La masse d'une espèce radioactive suit la même loi de décroissance que le nombre de ses noyaux : $m(t) = m_0(1/2)^{t/T}$.",
+        "Le nombre de périodes écoulées, $t/T$, est un EXPOSANT, jamais un facteur multiplicatif.",
+        "Après une période, il reste la moitié de la masse initiale ; après deux périodes, un quart ; après trois, un huitième.",
+        "Assure-toi que $t$ et $T$ sont exprimés dans la même unité avant de calculer leur rapport.",
+        "Au BAC, cette loi permet de calculer une masse restante à une date donnée, ou inversement de retrouver un temps écoulé à partir d'une fraction de masse restante."
+      ]
+    }
+  ]
+}

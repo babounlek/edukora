@@ -1,0 +1,161 @@
+{
+ "cours_id": "cours-estimation-droite-ajustement-1ere-ce",
+ "meta": {
+  "titre": "Estimer une valeur à l'aide d'une droite d'ajustement",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistique à deux variables",
+  "duree_estimee_min": 25,
+  "tags": ["estimation", "extrapolation", "interpolation", "droite de régression", "unités"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex2-q2c-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "C'est la question qui donne son sens à tout l'exercice : à quoi bon calculer une droite si l'on n'en tire aucune prévision ? Combien de visiteurs dans vingt ans, quelle puissance pour une cylindrée jamais testée, quelle note pour un temps de révision inhabituel. Le calcul lui-même tient en une ligne. Ce qui distingue une bonne copie, c'est ce qui l'entoure : la bonne unité, et une phrase lucide sur ce que vaut vraiment la prévision."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Disposer de l'équation d'une droite de régression",
+    "Distinguer la droite de $Y$ en $X$ de celle de $X$ en $Y$",
+    "Effectuer un calcul numérique avec des décimaux et arrondir selon une précision demandée"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Substituer, convertir, commenter",
+   "contenu_markdown": "**Le principe.** Estimer, c'est remplacer la variable connue par sa valeur dans l'équation de la droite d'ajustement, puis lire le résultat.\n\n$$\\text{Droite } y = ax + b \\quad \\Longrightarrow \\quad \\text{estimation de } y \\text{ pour } x = x_0 \\ : \\ y_0 = a x_0 + b$$\n\n**Trois gestes, dans cet ordre.**\n\n1. **Choisir la bonne droite.** Si l'on connaît $x$ et cherche $y$, c'est la régression de $Y$ en $X$. Si l'on connaît $y$ et cherche $x$, c'est celle de $X$ en $Y$. Se tromper de droite donne un résultat sans rapport.\n2. **Substituer et calculer**, puis arrondir selon la précision demandée par l'énoncé.\n3. **Revenir à l'unité de l'énoncé.** C'est l'étape que l'on oublie le plus souvent : si $y$ se compte en milliers, le nombre obtenu est un nombre de milliers, pas un effectif.\n\n**Interpolation ou extrapolation ?** La distinction est essentielle et elle est notée.\n\n| Situation | Nom | Fiabilité |\n|---|---|---|\n| $x_0$ à l'intérieur de la plage des valeurs observées | interpolation | bonne, l'ajustement a été validé sur cette plage |\n| $x_0$ à l'extérieur de cette plage | extrapolation | à commenter, rien ne garantit que la tendance se prolonge |\n\n**Ce qu'une extrapolation suppose.** Elle admet que la relation affine constatée sur les données observées continue de valoir au-delà. C'est une hypothèse de modèle, pas un résultat mathématique. Plus $x_0$ s'éloigne de la plage étudiée, plus cette hypothèse devient fragile.\n\n**Une phrase suffit.** Signaler en une ligne que la valeur demandée sort de la plage observée, et que l'estimation n'a de valeur que si la tendance se maintient, est systématiquement valorisé au barème.",
+   "formule_principale": "y_0 = a x_0 + b",
+   "variantes": [
+    {
+     "nom": "Lecture graphique de l'estimation",
+     "quand_utiliser": "Quand la droite est déjà tracée et que la précision demandée est faible",
+     "contenu_markdown": "On repère $x_0$ sur l'axe des abscisses, on monte verticalement jusqu'à la droite d'ajustement, puis on lit l'ordonnée. Cette lecture est instantanée mais imprécise, et elle est impossible si $x_0$ sort de la fenêtre du graphique, ce qui est fréquent en extrapolation. On annonce alors le résultat avec un signe $\\approx$ et l'on précise qu'il s'agit d'une lecture graphique."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "La fréquentation d'un site touristique, observée sur les années de rang $1$ à $7$, est ajustée par la droite de régression de $Y$ en $X$ d'équation $y = 1{,}43x - 1{,}15$, où $y$ désigne le nombre de visiteurs **en milliers**. En déduire une estimation du nombre de personnes qui visiteront ce site l'année de rang $31$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier la variable connue et celle à estimer",
+     "justification": "On connaît le rang de l'année, on cherche la fréquentation : c'est bien la droite de $Y$ en $X$ qu'il faut",
+     "resultat_markdown": "$x_0 = 31$, on cherche $y$"
+    },
+    {
+     "numero": 2,
+     "action": "Substituer dans l'équation",
+     "justification": "On remplace $x$ par $31$",
+     "resultat_markdown": "$y = 1{,}43 \\times 31 - 1{,}15$"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer le produit",
+     "justification": "On décompose pour éviter l'erreur : $1{,}43 \\times 30 = 42{,}9$ puis on ajoute $1{,}43$",
+     "resultat_markdown": "$1{,}43 \\times 31 = 42{,}9 + 1{,}43 = 44{,}33$"
+    },
+    {
+     "numero": 4,
+     "action": "Retrancher l'ordonnée à l'origine",
+     "justification": "Le terme constant est négatif, on soustrait donc $1{,}15$",
+     "resultat_markdown": "$y = 44{,}33 - 1{,}15 = 43{,}18$"
+    },
+    {
+     "numero": 5,
+     "action": "Revenir à l'unité de l'énoncé",
+     "justification": "Le caractère $Y$ est exprimé en milliers de personnes",
+     "resultat_markdown": "$43{,}18 \\text{ milliers} = 43\\,180 \\text{ personnes}$"
+    },
+    {
+     "numero": 6,
+     "action": "Situer $x_0$ par rapport aux données",
+     "justification": "Les rangs observés vont de $1$ à $7$, et l'on demande le rang $31$",
+     "resultat_markdown": "Il s'agit d'une **extrapolation**, et même d'une extrapolation lointaine"
+    },
+    {
+     "numero": 7,
+     "action": "Contrôler la vraisemblance du calcul",
+     "justification": "On teste la droite sur une valeur observée : pour $x = 6$, la série donne $y = 8$",
+     "resultat_markdown": "$1{,}43 \\times 6 - 1{,}15 = 7{,}43$, proche de $8$ : la droite est bien ajustée sur la plage observée, le calcul n'est donc pas en cause"
+    }
+   ],
+   "conclusion_markdown": "On estime à environ $43\\,180$ visiteurs la fréquentation du site l'année de rang $31$. Le contrôle de l'étape 7 est important : il montre que le grand écart entre cette valeur et les données observées vient de l'éloignement du rang $31$, non d'une erreur de calcul. Cette estimation ne vaut que si la croissance constatée sur sept ans se maintient pendant plus de vingt ans encore."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Oublier l'unité et répondre « $43{,}18$ personnes »",
+     "pourquoi_faux": "Le caractère $Y$ est défini en **milliers** de personnes dès l'énoncé du tableau. Répondre $43{,}18$ personnes est un contresens d'un facteur mille, et c'est l'erreur la plus sanctionnée de la question, car elle montre que le contexte n'a pas été lu.",
+     "correction_markdown": "Relis l'intitulé de la ligne du tableau avant de conclure : « nombre de personnes **en milliers** ». Écris la conversion explicitement, sur une ligne à part."
+    },
+    {
+     "erreur_markdown": "Substituer la valeur dans la mauvaise variable",
+     "pourquoi_faux": "Remplacer $y$ par $31$ dans $y = 1{,}43x - 1{,}15$ donnerait $x = \\dfrac{31 + 1{,}15}{1{,}43} \\approx 22{,}5$, c'est-à-dire un rang d'année, alors qu'on cherchait une fréquentation.",
+     "correction_markdown": "Écris explicitement, avant de calculer : « on connaît $x = 31$, on cherche $y$ ». Cette phrase d'une ligne empêche l'inversion."
+    },
+    {
+     "erreur_markdown": "Présenter l'extrapolation comme une prévision fiable",
+     "pourquoi_faux": "Le rang $31$ est plus de quatre fois supérieur au plus grand rang observé. Rien dans les données ne garantit que la croissance linéaire se poursuive sur vingt-quatre années supplémentaires : le site peut saturer, la tendance s'infléchir, le contexte changer.",
+     "correction_markdown": "Ajoute une phrase du type : « le rang $31$ sort largement de la plage observée, de $1$ à $7$ ; cette estimation n'a de valeur que si la tendance se maintient ». Elle est attendue au barème."
+    },
+    {
+     "erreur_markdown": "Douter du calcul parce que le résultat paraît énorme",
+     "pourquoi_faux": "Une valeur très supérieure aux données observées n'est pas suspecte en soi lorsqu'on extrapole loin : c'est le comportement normal d'une droite de pente positive. Refaire trois fois le calcul est une perte de temps.",
+     "correction_markdown": "Teste plutôt la droite sur une valeur du tableau : si elle redonne une valeur proche de l'observation, le calcul est fiable, et l'écart vient uniquement de l'éloignement de $x_0$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "La droite de régression de $Y$ en $X$ d'une série a pour équation $y = 3{,}5x + 12$, où $y$ désigne un chiffre d'affaires en milliers de francs. Les valeurs de $x$ observées vont de $1$ à $9$. Estimer le chiffre d'affaires correspondant à $x = 5$, puis à $x = 20$, et commenter la fiabilité de chaque estimation.",
+     "solution_markdown": "**Estimation pour $x = 5$.**\n\n$$y = 3{,}5 \\times 5 + 12 = 17{,}5 + 12 = 29{,}5$$\n\nSoit $29{,}5$ milliers de francs, c'est-à-dire $29\\,500$ francs.\n\n**Fiabilité.** La valeur $5$ appartient à la plage observée $[1 ; 9]$ : il s'agit d'une **interpolation**. L'ajustement ayant été validé sur cette plage, l'estimation est fiable.\n\n**Estimation pour $x = 20$.**\n\n$$y = 3{,}5 \\times 20 + 12 = 70 + 12 = 82$$\n\nSoit $82$ milliers de francs, c'est-à-dire $82\\,000$ francs.\n\n**Fiabilité.** La valeur $20$ est plus du double de la plus grande valeur observée : il s'agit d'une **extrapolation** lointaine. L'estimation suppose que la croissance affine se prolonge bien au-delà des données, hypothèse que rien ne confirme. Elle doit être présentée comme un ordre de grandeur.\n\n**Ce qu'il faut retenir.** Le calcul est identique dans les deux cas ; c'est le commentaire qui diffère, et c'est lui que le barème distingue."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Une série double vérifie $\\bar{x} = 8$, $\\bar{y} = 30$, $\\operatorname{Cov}(X,Y) = 21$ et $V(X) = 6$. Déterminer la droite de régression de $Y$ en $X$, puis estimer $y$ pour $x = 11$. Vérifier enfin que la droite passe par le point moyen.",
+     "solution_markdown": "**Étape 1 - coefficient directeur.**\n\n$$a = \\dfrac{\\operatorname{Cov}(X,Y)}{V(X)} = \\dfrac{21}{6} = 3{,}5$$\n\n**Étape 2 - ordonnée à l'origine.**\n\n$$b = \\bar{y} - a\\bar{x} = 30 - 3{,}5 \\times 8 = 30 - 28 = 2$$\n\n**Équation de la droite.**\n\n$$y = 3{,}5x + 2$$\n\n**Étape 3 - estimation pour $x = 11$.**\n\n$$y = 3{,}5 \\times 11 + 2 = 38{,}5 + 2 = 40{,}5$$\n\n**Étape 4 - contrôle par le point moyen.**\n\nPour $x = \\bar{x} = 8$ :\n\n$$3{,}5 \\times 8 + 2 = 28 + 2 = 30 = \\bar{y}$$\n\nLa droite passe bien par $G(8 ; 30)$, ce qui valide les deux coefficients.\n\n**Commentaire.** La valeur $x = 11$ dépasse la moyenne $\\bar{x} = 8$, mais l'énoncé ne précise pas la plage des valeurs observées. On ne peut donc pas trancher entre interpolation et extrapolation : il faudrait connaître la plus grande valeur de $x$ dans la série. C'est une information qu'il convient de réclamer ou, à défaut, de signaler comme manquante."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Pour une série double, la droite de régression de $Y$ en $X$ a pour équation $y = 2x + 3$ et celle de $X$ en $Y$ a pour équation $x = 0{,}4y + 1{,}2$. Déterminer les coordonnées du point moyen, puis le coefficient de corrélation linéaire. Enfin, estimer $y$ pour $x = 10$ par les deux droites, et expliquer l'écart obtenu.",
+     "solution_markdown": "**Étape 1 - le point moyen.**\n\nLes deux droites de régression passent toutes deux par le point moyen $G(\\bar{x} ; \\bar{y})$ : c'est donc leur point d'intersection. On résout le système\n\n$$\\begin{cases} y = 2x + 3 \\\\ x = 0{,}4y + 1{,}2 \\end{cases}$$\n\nEn substituant la première équation dans la seconde :\n\n$$x = 0{,}4(2x + 3) + 1{,}2 = 0{,}8x + 1{,}2 + 1{,}2 = 0{,}8x + 2{,}4$$\n\n$$x - 0{,}8x = 2{,}4 \\quad \\Longrightarrow \\quad 0{,}2x = 2{,}4 \\quad \\Longrightarrow \\quad x = 12$$\n\nPuis $y = 2 \\times 12 + 3 = 27$.\n\n$$G(12 ; 27)$$\n\n**Étape 2 - le coefficient de corrélation.**\n\nOn a $a = 2$ et $a' = 0{,}4$. Or le produit des deux coefficients directeurs vaut $r^2$ :\n\n$$r^2 = a \\times a' = 2 \\times 0{,}4 = 0{,}8$$\n\n$$|r| = \\sqrt{0{,}8} \\approx 0{,}894$$\n\nLes deux coefficients étant positifs, la covariance l'est aussi, donc\n\n$$r \\approx 0{,}89$$\n\n**Contrôle.** $0{,}89$ appartient bien à $[-1 ; 1]$, et la corrélation est forte, ce qui est cohérent avec deux droites assez proches l'une de l'autre.\n\n**Étape 3 - estimation par la droite de $Y$ en $X$.**\n\n$$y = 2 \\times 10 + 3 = 23$$\n\n**Étape 4 - estimation par l'autre droite.**\n\nOn utilise $x = 0{,}4y + 1{,}2$ avec $x = 10$ :\n\n$$10 = 0{,}4y + 1{,}2 \\quad \\Longrightarrow \\quad 0{,}4y = 8{,}8 \\quad \\Longrightarrow \\quad y = 22$$\n\n**Étape 5 - expliquer l'écart.**\n\nLes deux estimations diffèrent : $23$ contre $22$. Ce n'est pas une erreur de calcul, mais la conséquence directe du fait que les deux droites sont **distinctes**.\n\nChacune minimise une quantité différente : la droite de $Y$ en $X$ minimise la somme des carrés des écarts **verticaux**, celle de $X$ en $Y$ la somme des carrés des écarts **horizontaux**. Elles ne coïncident que si $|r| = 1$, c'est-à-dire si les points sont exactement alignés.\n\nIci $|r| \\approx 0{,}89$, sensiblement inférieur à $1$ : les deux droites forment un petit angle, ce qui explique l'écart d'une unité sur l'estimation.\n\n**Conclusion pratique.** Pour prévoir $y$ connaissant $x$, c'est la droite de $Y$ en $X$ qu'il faut employer, donc $y \\approx 23$. Utiliser l'autre droite dans ce sens est un contresens méthodologique, même si le résultat numérique en est proche."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Estimer, c'est substituer : remplace la variable connue par sa valeur dans l'équation de la droite d'ajustement.",
+    "Choisis la bonne droite : pour prévoir $y$ à partir de $x$, c'est la régression de $Y$ en $X$.",
+    "Écris avant de calculer : « on connaît $x = \\ldots$, on cherche $y$ ». Cette phrase empêche l'inversion des variables.",
+    "Reviens à l'unité de l'énoncé : un résultat en milliers doit être converti, et cette conversion s'écrit.",
+    "Situe la valeur demandée par rapport à la plage observée : interpolation si elle est dedans, extrapolation si elle est dehors.",
+    "Une extrapolation se commente en une phrase : elle suppose que la tendance se prolonge, ce que rien ne garantit.",
+    "Un résultat très supérieur aux données n'est pas suspect en extrapolation : teste la droite sur une valeur du tableau pour t'en assurer.",
+    "Au Probatoire, cette question clôt l'exercice de statistique double : elle réutilise la droite calculée juste avant, donc une erreur antérieure s'y propage entièrement."
+   ]
+  }
+ ]
+}

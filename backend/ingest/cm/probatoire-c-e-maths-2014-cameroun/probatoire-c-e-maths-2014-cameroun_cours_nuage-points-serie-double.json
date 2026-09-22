@@ -1,0 +1,160 @@
+{
+ "cours_id": "cours-nuage-points-serie-double-1ere-ce",
+ "meta": {
+  "titre": "Représenter le nuage de points d'une série statistique double",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Statistique à deux variables",
+  "duree_estimee_min": 25,
+  "tags": ["nuage de points", "série statistique double", "point moyen", "échelle", "ajustement affine"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex2-q1-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Un tableau de chiffres ne dit rien à l'oeil. Les mêmes chiffres placés dans un repère racontent immédiatement une histoire : la fréquentation monte-t-elle avec les années, la cylindrée avec la puissance, la note avec le temps de révision ? Le nuage de points est le premier geste de toute étude statistique à deux variables, et c'est lui qui décide si un ajustement affine a du sens. Le tracer proprement prend deux minutes ; le bâcler fait manquer l'essentiel de l'exercice."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Placer un point dans un repère à partir de ses coordonnées",
+    "Calculer la moyenne d'une série de valeurs",
+    "Choisir une échelle adaptée à une plage de valeurs"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Un point par individu, jamais de ligne brisée",
+   "contenu_markdown": "**Définition.** Une série statistique double associe, à chaque individu $i$, un couple de valeurs $(x_i ; y_i)$. Le **nuage de points** est l'ensemble des $n$ points\n\n$$M_i(x_i ; y_i)$$\n\nplacés dans un repère où l'axe des abscisses porte le premier caractère et l'axe des ordonnées le second.\n\n**Trois règles de tracé.**\n\n1. **Un point par individu**, marqué par une croix ou un point net. On ne relie jamais les points entre eux : une ligne brisée suggérerait que les valeurs intermédiaires ont été mesurées, ce qui est faux.\n2. **Des échelles adaptées**, choisies pour que tous les points tiennent dans la figure sans la tasser. Le repère n'a aucune raison d'être orthonormé : les deux caractères n'ont ni la même nature ni le même ordre de grandeur.\n3. **Le point moyen** $G(\\bar{x} ; \\bar{y})$, placé dès que la suite de l'exercice porte sur un ajustement, et marqué distinctement des points de la série.\n\n**Le point moyen.** Ses coordonnées sont les moyennes des deux caractères :\n\n$$\\bar{x} = \\dfrac{1}{n}\\sum x_i \\qquad ; \\qquad \\bar{y} = \\dfrac{1}{n}\\sum y_i$$\n\nToute droite d'ajustement obtenue par la méthode des moindres carrés passe par ce point : c'est le contrôle le plus rapide des questions suivantes.\n\n**Ce que le nuage sert à décider.** Son allure répond à une question : les points s'organisent-ils autour d'une droite ? Si oui, un ajustement affine est légitime et le coefficient de corrélation le confirmera. Sinon, il faudrait un autre modèle.",
+   "formule_principale": "M_i(x_i ; y_i) \\quad\\text{et}\\quad G(\\bar{x} ; \\bar{y})",
+   "variantes": [
+    {
+     "nom": "Nuage avec points confondus",
+     "quand_utiliser": "Quand deux individus ont exactement le même couple de valeurs",
+     "contenu_markdown": "Deux individus identiques donnent un seul point visible, ce qui fausse la lecture visuelle de la densité. On le signale alors par un marqueur différent, ou par un chiffre indiquant l'effectif de ce point. Attention à ne pas confondre ce cas avec celui de deux individus de même abscisse mais d'ordonnées différentes, qui donnent bien deux points distincts alignés verticalement."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "On s'est intéressé au nombre de personnes ayant visité un site touristique sur $7$ ans.\n\n| Rang de l'année ($X$) | $1$ | $2$ | $3$ | $4$ | $5$ | $6$ | $7$ |\n|---|---|---|---|---|---|---|---|\n| Nombre de personnes en milliers ($Y$) | $1{,}5$ | $2$ | $3{,}5$ | $1$ | $6$ | $8$ | $10$ |\n\nReprésenter le nuage de points de cette série. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Lister les points",
+     "justification": "Chaque colonne du tableau fournit un couple, donc un point du nuage",
+     "resultat_markdown": "$M_1(1 ; 1{,}5)$, $M_2(2 ; 2)$, $M_3(3 ; 3{,}5)$, $M_4(4 ; 1)$, $M_5(5 ; 6)$, $M_6(6 ; 8)$, $M_7(7 ; 10)$"
+    },
+    {
+     "numero": 2,
+     "action": "Repérer les plages de valeurs",
+     "justification": "C'est ce qui détermine les échelles et le format de la figure",
+     "resultat_markdown": "Les abscisses vont de $1$ à $7$, les ordonnées de $1$ à $10$"
+    },
+    {
+     "numero": 3,
+     "action": "Choisir les échelles",
+     "justification": "On veut une figure lisible, ni tassée ni démesurée ; ici les deux plages sont comparables",
+     "resultat_markdown": "$1$ cm pour $1$ unité sur les deux axes : la figure tient dans un rectangle de $7$ cm sur $10$ cm"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer la moyenne des abscisses",
+     "justification": "Somme des sept premiers entiers : $1+2+3+4+5+6+7 = 28$",
+     "resultat_markdown": "$\\bar{x} = \\dfrac{28}{7} = 4$"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer la moyenne des ordonnées",
+     "justification": "Somme terme à terme : $1{,}5+2 = 3{,}5$ ; $+3{,}5 = 7$ ; $+1 = 8$ ; $+6 = 14$ ; $+8 = 22$ ; $+10 = 32$",
+     "resultat_markdown": "$\\bar{y} = \\dfrac{32}{7} \\approx 4{,}57$"
+    },
+    {
+     "numero": 6,
+     "action": "Placer les sept points puis le point moyen",
+     "justification": "Le point moyen se marque différemment, pour ne pas le confondre avec un individu de la série",
+     "resultat_markdown": "$G(4 ; 4{,}57)$, marqué par une croix cerclée"
+    },
+    {
+     "numero": 7,
+     "action": "Interpréter l'allure",
+     "justification": "On décrit la tendance et l'on signale les points atypiques",
+     "resultat_markdown": "Le nuage est nettement croissant ; seul $M_4(4 ; 1)$ s'écarte franchement de la tendance, en se plaçant très en dessous"
+    }
+   ],
+   "conclusion_markdown": "Le nuage obtenu est croissant et sensiblement aligné, à l'exception du point $M_4$ : un ajustement affine est donc envisageable, ce que le coefficient de corrélation de la question suivante viendra confirmer. On vient de voir que le tracé n'est pas une fin en soi, mais l'outil qui autorise, ou non, la suite de l'étude."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Relier les points du nuage par une ligne brisée",
+     "pourquoi_faux": "Une ligne brisée affirme que la grandeur prend, entre deux individus, les valeurs intermédiaires du segment. Rien ne le justifie : entre l'année de rang $3$ et celle de rang $4$, il n'existe aucune mesure. Le seul tracé légitime est celui d'une droite d'ajustement, et seulement après avoir vérifié qu'un ajustement affine a du sens.",
+     "correction_markdown": "Laisse les points isolés. Si une droite doit apparaître, c'est la droite de régression, tracée après calcul, et non un assemblage de segments."
+    },
+    {
+     "erreur_markdown": "Vouloir un repère orthonormé pour un nuage statistique",
+     "pourquoi_faux": "Les deux caractères mesurent des grandeurs différentes, souvent d'ordres de grandeur très éloignés : des chevaux et des centimètres cubes, des années et des milliers de personnes. Imposer la même unité sur les deux axes rendrait la figure illisible, tassée sur une ligne.",
+     "correction_markdown": "Choisis chaque échelle indépendamment, en fonction de la plage de valeurs du caractère concerné, et note-la explicitement en marge de la figure."
+    },
+    {
+     "erreur_markdown": "Confondre deux points de même abscisse avec un seul point",
+     "pourquoi_faux": "Deux individus peuvent partager la même valeur du premier caractère tout en différant sur le second : ils donnent alors deux points distincts, alignés verticalement. Les fusionner supprime un individu de la série et fausse toutes les moyennes.",
+     "correction_markdown": "Compte les points placés sur ta figure : il doit y en avoir exactement autant que d'individus, ici sept."
+    },
+    {
+     "erreur_markdown": "Oublier de placer le point moyen",
+     "pourquoi_faux": "Ce n'est pas une omission de présentation : le point moyen est le seul point par lequel la droite d'ajustement passe à coup sûr. Sans lui, le contrôle graphique des questions suivantes devient impossible.",
+     "correction_markdown": "Calcule $\\bar{x}$ et $\\bar{y}$ dès le tracé du nuage, même quand l'énoncé ne le demande qu'à la question suivante."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Représenter le nuage de points de la série suivante et placer le point moyen.\n\n| $x_i$ | $2$ | $4$ | $6$ | $8$ |\n|---|---|---|---|---|\n| $y_i$ | $5$ | $8$ | $10$ | $13$ |",
+     "solution_markdown": "**Les quatre points.**\n\n$$M_1(2 ; 5) \\quad M_2(4 ; 8) \\quad M_3(6 ; 10) \\quad M_4(8 ; 13)$$\n\n**Échelles.** Les abscisses vont de $2$ à $8$, les ordonnées de $5$ à $13$. Une échelle de $1$ cm pour $1$ unité sur les deux axes convient.\n\n**Point moyen.**\n\n$$\\bar{x} = \\dfrac{2+4+6+8}{4} = \\dfrac{20}{4} = 5$$\n\n$$\\bar{y} = \\dfrac{5+8+10+13}{4} = \\dfrac{36}{4} = 9$$\n\nOn place donc $G(5 ; 9)$.\n\n**Tracé.** Les quatre points sont placés isolément, puis $G$ est marqué différemment.\n\n**Lecture.** Les points progressent régulièrement vers le haut à droite. Les accroissements successifs de $y$ pour un pas de $2$ en $x$ valent $3$, $2$ et $3$ : très réguliers. Un ajustement affine est nettement justifié.\n\n**Contrôle.** Le point moyen $G(5 ; 9)$ doit tomber au milieu du nuage, ce qui est bien le cas : il est entouré de deux points à sa gauche et de deux à sa droite."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Le tableau ci-dessous donne, pour six élèves, le temps de révision $x$ en heures et la note obtenue $y$ sur $20$.\n\n| $x_i$ | $1$ | $2$ | $3$ | $3$ | $5$ | $6$ |\n|---|---|---|---|---|---|---|\n| $y_i$ | $6$ | $9$ | $11$ | $14$ | $15$ | $18$ |\n\nReprésenter le nuage, placer le point moyen, et dire si un ajustement affine paraît justifié.",
+     "solution_markdown": "**Étape 1 - les six points.**\n\n$$M_1(1 ; 6) \\quad M_2(2 ; 9) \\quad M_3(3 ; 11) \\quad M_4(3 ; 14) \\quad M_5(5 ; 15) \\quad M_6(6 ; 18)$$\n\nAttention : $M_3$ et $M_4$ ont la même abscisse $3$ mais des ordonnées différentes. Ce sont **deux** points distincts, alignés verticalement, et non un seul.\n\n**Étape 2 - échelles.** Abscisses de $1$ à $6$, ordonnées de $6$ à $18$. On prend $1$ cm pour $1$ heure en abscisse, et $1$ cm pour $2$ points de note en ordonnée.\n\n**Étape 3 - point moyen.**\n\n$$\\bar{x} = \\dfrac{1+2+3+3+5+6}{6} = \\dfrac{20}{6} = \\dfrac{10}{3} \\approx 3{,}33$$\n\n$$\\bar{y} = \\dfrac{6+9+11+14+15+18}{6} = \\dfrac{73}{6} \\approx 12{,}17$$\n\nOn place $G(3{,}33 ; 12{,}17)$.\n\n**Étape 4 - interprétation.** Les points progressent régulièrement du bas à gauche vers le haut à droite. Les deux élèves ayant révisé $3$ heures ont obtenu $11$ et $14$ : c'est la seule dispersion notable, et elle reste modérée au regard de l'étendue des notes.\n\n**Conclusion.** Un ajustement affine paraît **justifié** : le nuage ne présente ni courbure ni point aberrant, et la tendance croissante est nette.\n\n**Contrôle.** Six points doivent apparaître sur la figure, dont deux à l'abscisse $3$. Si l'on n'en compte que cinq, les points $M_3$ et $M_4$ ont été confondus."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Une série double a pour point moyen $G(5 ; 12)$. On ajoute à la série un huitième individu de coordonnées $(13 ; 4)$, alors qu'elle en comptait sept. Déterminer les coordonnées du nouveau point moyen, puis expliquer pourquoi un tel individu peut rendre un ajustement affine trompeur.",
+     "solution_markdown": "**Étape 1 - retrouver les sommes de la série initiale.**\n\nLe point moyen des sept premiers individus est $G(5 ; 12)$, donc\n\n$$\\dfrac{1}{7}\\sum_{i=1}^{7} x_i = 5 \\quad \\Longrightarrow \\quad \\sum_{i=1}^{7} x_i = 35$$\n\n$$\\dfrac{1}{7}\\sum_{i=1}^{7} y_i = 12 \\quad \\Longrightarrow \\quad \\sum_{i=1}^{7} y_i = 84$$\n\n**Étape 2 - ajouter le huitième individu.**\n\n$$\\sum_{i=1}^{8} x_i = 35 + 13 = 48 \\qquad ; \\qquad \\sum_{i=1}^{8} y_i = 84 + 4 = 88$$\n\n**Étape 3 - calculer le nouveau point moyen.**\n\n$$\\bar{x}' = \\dfrac{48}{8} = 6 \\qquad ; \\qquad \\bar{y}' = \\dfrac{88}{8} = 11$$\n\nLe nouveau point moyen est $G'(6 ; 11)$.\n\n**Étape 4 - mesurer le déplacement.**\n\nLe point moyen s'est déplacé de $(+1 ; -1)$, alors qu'un seul individu sur huit a été ajouté. Ce déplacement est considérable : il représente $20\\,\\%$ de l'abscisse initiale.\n\n**Étape 5 - interpréter.**\n\nLe nouvel individu est **atypique** : son abscisse $13$ est très supérieure à la moyenne des autres, tandis que son ordonnée $4$ est très inférieure. Il tire donc le nuage dans une direction opposée à la tendance générale.\n\nOr la droite de régression passe obligatoirement par le point moyen, et son coefficient directeur dépend de la covariance, elle-même très sensible aux écarts extrêmes. Un tel point, appelé **point aberrant** ou point de levier, peut donc à lui seul faire basculer la droite d'ajustement et inverser la conclusion.\n\n**Ce qu'il faut en retenir.** Le tracé du nuage sert précisément à repérer ces individus **avant** tout calcul. Un point manifestement à l'écart doit être signalé, et l'on précise alors si on le conserve ou si on l'écarte de l'ajustement, en justifiant ce choix."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Un individu, un point : place les $n$ couples $(x_i ; y_i)$ isolément, sans jamais les relier.",
+    "Le repère d'un nuage statistique n'a aucune raison d'être orthonormé : choisis chaque échelle selon la plage du caractère concerné.",
+    "Écris les échelles retenues en marge de la figure : elles sont notées, et elles prouvent que la consigne a été lue.",
+    "Calcule et place le point moyen $G(\\bar{x} ; \\bar{y})$ dès le tracé : toute droite d'ajustement passera par lui.",
+    "Compte les points placés : il doit y en avoir exactement autant que d'individus, même quand deux d'entre eux partagent une abscisse.",
+    "Décris l'allure en une phrase et signale les points atypiques : c'est ce qui justifie, ou non, l'ajustement affine.",
+    "Au Probatoire, le nuage ouvre l'exercice de statistique double : covariance, corrélation et régression en découlent, et la figure sert de contrôle à chacune de ces trois questions."
+   ]
+  }
+ ]
+}

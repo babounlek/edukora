@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-les-procedures-de-recuperation-de-donnees-tle-ti",
+  "meta": {
+    "titre": "Les procédures de récupération de données",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique",
+    "duree_estimee_min": 18,
+    "tags": [
+      "récupération de données",
+      "disque externe",
+      "panne système"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3-qB.5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un ordinateur qui refuse de démarrer ne signifie pas toujours que les données qu'il contenait sont perdues : tant que le disque dur lui-même est en bon état, il existe une méthode simple et fiable pour aller chercher un fichier précis, sans jamais dépendre du système d'exploitation en panne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un disque dur peut être démonté d'une unité centrale et connecté à un autre ordinateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Contourner le système en panne plutôt que le réparer dans l'urgence",
+      "contenu_markdown": "Quand seul le système d'exploitation est défaillant et que le disque dur reste physiquement sain, les données restent intactes et accessibles. La procédure consiste à **contourner** le système en panne plutôt qu'à tenter de le réparer avant d'avoir sécurisé les données : démonter le disque (ou le configurer en disque secondaire), le connecter à un ordinateur fonctionnel (en interne ou via un boîtier USB externe), puis copier le dossier recherché vers un support sûr depuis cet ordinateur sain. Une alternative sans démontage consiste à démarrer la machine en panne sur un support amovible contenant un système d'exploitation autonome (clé USB ou disque live).",
+      "formule_principale": "Disque sain + système en panne -> accéder aux données depuis un AUTRE environnement, jamais réparer avant de copier",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une défaillance du système d'exploitation empêche un ordinateur de démarrer normalement, le disque dur étant en bon état. Expliquer la procédure pour récupérer un dossier de ce disque.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier précisément ce qui est en panne et ce qui ne l'est pas",
+          "justification": "La procédure dépend entièrement de ce diagnostic initial",
+          "resultat_markdown": "Le système d'exploitation est défaillant, mais le disque dur - et donc les données qu'il contient - reste en bon état."
+        },
+        {
+          "numero": 2,
+          "action": "Démonter le disque dur de l'unité centrale en panne",
+          "justification": "Il faut sortir le disque de l'environnement défaillant pour y accéder autrement",
+          "resultat_markdown": "Le disque dur est retiré de l'unité centrale (ou configuré en disque secondaire/esclave)."
+        },
+        {
+          "numero": 3,
+          "action": "Connecter ce disque à un ordinateur fonctionnel",
+          "justification": "Un environnement sain est nécessaire pour lire le disque normalement",
+          "resultat_markdown": "Connexion en second disque interne, ou via un boîtier/adaptateur USB (disque externe), sur un ordinateur qui démarre normalement."
+        },
+        {
+          "numero": 4,
+          "action": "Localiser et copier le dossier recherché",
+          "justification": "C'est l'objectif final de la procédure",
+          "resultat_markdown": "Depuis l'ordinateur sain, le disque récupéré apparaît comme un lecteur supplémentaire : le dossier recherché est localisé puis copié vers un support sûr."
+        }
+      ],
+      "conclusion_markdown": "En démontant le disque sain et en le connectant à un ordinateur fonctionnel, on accède directement aux données recherchées sans dépendre du système d'exploitation en panne."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Vouloir réinstaller ou réparer le système d'exploitation directement sur ce disque avant toute récupération",
+          "pourquoi_faux": "Toute réinstallation risque d'écraser ou de rendre inaccessibles les données existantes avant même d'avoir pu les récupérer, notamment si l'installateur reformate la partition système.",
+          "correction_markdown": "Sécurise toujours les données recherchées AVANT d'envisager la moindre réparation ou réinstallation du système sur le disque d'origine."
+        },
+        {
+          "erreur_markdown": "Proposer de formater le disque puis d'y réinstaller un système pour \"recommencer proprement\"",
+          "pourquoi_faux": "Le formatage effacerait justement les données que l'on cherche à récupérer : c'est l'inverse total de l'objectif recherché dans cette situation précise.",
+          "correction_markdown": "Retiens que l'objectif ici est de préserver et copier des données existantes, jamais de repartir sur un disque vierge."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un disque dur sain démonté d'un ordinateur en panne est connecté en externe via un boîtier USB à un autre ordinateur. Comment apparaît-il généralement sur ce second ordinateur ?",
+          "solution_markdown": "Il apparaît comme un lecteur supplémentaire (un disque externe), dont on peut parcourir le contenu normalement depuis l'explorateur de fichiers."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Quelle alternative existe à la récupération pour éviter de démonter physiquement le disque dur de l'unité centrale en panne ?",
+          "solution_markdown": "Démarrer l'ordinateur en panne directement sur un support amovible contenant un système d'exploitation autonome (une clé USB bootable ou un disque live), ce qui permet d'accéder au disque interne sans passer par le système d'exploitation corrompu installé sur ce disque, et donc de copier les fichiers recherchés vers un support externe sans jamais démonter physiquement le disque."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un utilisateur affirme qu'il vaut mieux commencer par tenter de réparer le système d'exploitation en panne (réparation automatique de Windows, par exemple) avant d'envisager la récupération du dossier. Ce raisonnement est-il prudent dans le cas décrit par l'énoncé ? Justifier.",
+          "solution_markdown": "Ce raisonnement n'est pas le plus prudent quand un dossier précis doit impérativement être récupéré. Une réparation automatique du système d'exploitation, même présentée comme sûre, peut dans certains cas échouer, nécessiter une réinstallation complète, ou modifier des structures du disque (partitions, table de démarrage) de façon imprévisible sur un système déjà instable. Tant que le dossier recherché n'a pas été copié en lieu sûr, toute manipulation qui touche au disque d'origine comporte un risque, même faible, de rendre les données définitivement inaccessibles. La démarche la plus prudente reste donc de sécuriser d'abord le dossier recherché (en accédant au disque depuis un environnement sain, sans y écrire), avant d'envisager une quelconque tentative de réparation du système d'exploitation sur ce même disque."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand le disque dur est sain, les données restent accessibles même si le système d'exploitation est en panne.",
+        "La procédure de base : démonter le disque, le connecter à un ordinateur fonctionnel, copier les données recherchées.",
+        "Une alternative sans démontage : démarrer sur un support amovible autonome (clé USB ou disque live).",
+        "Ne jamais réparer ou reformater le disque d'origine avant d'avoir sécurisé les données recherchées.",
+        "Au BAC TI, cette procédure combine plusieurs notions déjà vues (disque dur, formatage, systèmes d'exploitation) dans un scénario concret de maintenance."
+      ]
+    }
+  ]
+}

@@ -16,6 +16,7 @@ import remarkMath from "remark-math"
 import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
 import remarkRehype from "remark-rehype"
+import rehypeRaw from "rehype-raw"
 import rehypeKatex from "rehype-katex"
 
 import {
@@ -30,7 +31,8 @@ import {
  * étape 2 (voir sa SKILL.md). Prend en entrée le JSON produit par la commande Django
  * `dump_rendering_corpus` (un enregistrement par champ markdown réellement affiché à
  * l'élève) et fait tourner le VRAI moteur de rendu (remark-math/remark-gfm/
- * remark-breaks/rehype-katex, même chaîne que EpreuveMarkdown.tsx) sur chacun -
+ * remark-breaks/rehype-raw/rehype-katex, même chaîne que EpreuveMarkdown.tsx) sur
+ * chacun -
  * jamais une vérification par regex seule, qui a déjà historiquement manqué de vrais
  * bugs (voir la note "how to apply" de project_epreuve_reader_latex_rendering_fixes
  * dans la mémoire du projet).
@@ -129,6 +131,23 @@ function findDelimiterImbalance(markdown: string): string | null {
       continue
     }
 
+    // Un span de code (`` `...` ``, fence de longueur quelconque) est tokenisé comme
+    // du code avant que remark-math ne considère le moindre "$" : tout "$" à
+    // l'intérieur - ex. `` `$B$10` `` ou `` `$` `` pour documenter un symbole en
+    // toutes lettres - est donc invisible au vrai moteur et ne doit pas compter ici
+    // non plus (faux positif constaté sur Cours#5017/5009 "bureautique" : "$" isolé
+    // dans `` `$` `` faisait déborder la pile alors que le rendu réel est correct).
+    // Suit la règle CommonMark : la fin d'un span est la PROCHAINE suite de backticks
+    // de la MÊME longueur ; sans fermeture, les backticks sont du texte littéral.
+    if (char === "`") {
+      let fenceLen = 0
+      while (markdown[i + fenceLen] === "`") fenceLen += 1
+      const fence = "`".repeat(fenceLen)
+      const closeIdx = markdown.indexOf(fence, i + fenceLen)
+      i = closeIdx === -1 ? i + fenceLen : closeIdx + fenceLen
+      continue
+    }
+
     if (char === "$") {
       const token = markdown[i + 1] === "$" ? "$$" : "$"
 
@@ -160,7 +179,8 @@ function buildProcessor(pipeline: CorpusRecord["pipeline"]) {
   }
 
   return processor
-    .use(remarkRehype)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
     .use(rehypeKatex)
 }
 

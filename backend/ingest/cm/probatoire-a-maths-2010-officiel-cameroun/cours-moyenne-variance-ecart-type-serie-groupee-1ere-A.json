@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-moyenne-variance-ecart-type-serie-groupee-1ere-A",
+  "meta": {
+    "titre": "Moyenne, variance et écart type d'une série groupée en classes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "moyenne",
+      "variance",
+      "écart type",
+      "centre de classe"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathematiques - Cameroun - Session 2010",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2010-officiel-cameroun-ex2-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux classes peuvent avoir la même moyenne de notes tout en étant très différentes : dans l'une, tout le monde tourne autour de la moyenne, dans l'autre, les résultats sont très dispersés entre de très bonnes et de très mauvaises notes. La moyenne seule ne raconte pas cette différence : il faut la variance et l'écart type pour mesurer la dispersion d'une série autour de sa moyenne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer le centre d'une classe (milieu de l'intervalle)",
+        "Calculer une somme pondérée $\\sum n_ix_i$",
+        "Calculer un carré et une racine carrée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Moyenne, variance et écart type",
+      "contenu_markdown": "Pour une série groupée en classes, on remplace chaque classe par son centre $x_i$ (milieu de l'intervalle) affecté de l'effectif $n_i$ de la classe. Avec $N=\\sum n_i$ l'effectif total :\n\n- Moyenne : $\\bar{x}=\\dfrac{1}{N}\\displaystyle\\sum n_ix_i$\n- Variance : $V=\\dfrac{1}{N}\\displaystyle\\sum n_ix_i^2-\\bar{x}^2$\n- Écart type : $\\sigma=\\sqrt{V}$\n\nPlus l'écart type est grand, plus la série est dispersée autour de sa moyenne.",
+      "formule_principale": "V=\\frac{1}{N}\\sum n_ix_i^2-\\bar{x}^2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une série a pour classes $[0,4[$ (effectif 3), $[4,8[$ (effectif 9), $[8,12[$ (effectif 15), $[12,16[$ (effectif 5), $[16,20[$ (effectif 3). Calculer la moyenne, la variance et l'écart type.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer les centres de classes et l'effectif total",
+          "justification": "Le centre d'une classe $[a,b[$ est $(a+b)/2$",
+          "resultat_markdown": "$x_i=2,6,10,14,18$ pour $n_i=3,9,15,5,3$ ; $N=35$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $\\sum n_ix_i$",
+          "justification": "Nécessaire pour la moyenne",
+          "resultat_markdown": "$3\\times2+9\\times6+15\\times10+5\\times14+3\\times18=6+54+150+70+54=334$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la moyenne",
+          "justification": "$\\bar{x}=\\dfrac{1}{N}\\sum n_ix_i$",
+          "resultat_markdown": "$\\bar{x}=\\dfrac{334}{35}\\approx9{,}54$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $\\sum n_ix_i^2$",
+          "justification": "Nécessaire pour la variance",
+          "resultat_markdown": "$3\\times4+9\\times36+15\\times100+5\\times196+3\\times324=12+324+1500+980+972=3788$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la variance puis l'écart type",
+          "justification": "$V=\\dfrac{1}{N}\\sum n_ix_i^2-\\bar{x}^2$ puis $\\sigma=\\sqrt{V}$",
+          "resultat_markdown": "$V=\\dfrac{3788}{35}-9{,}54^2\\approx108{,}23-91{,}07\\approx17{,}16$ ; $\\sigma\\approx4{,}14$"
+        }
+      ],
+      "conclusion_markdown": "La série a pour moyenne $\\bar{x}\\approx9{,}54$, pour variance $V\\approx17{,}16$ et pour écart type $\\sigma\\approx4{,}14$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser les bornes des classes (par exemple 0 et 4) au lieu de leur centre (2) dans les calculs",
+          "pourquoi_faux": "La série groupée en classes n'a de sens statistique qu'à travers le centre de chaque classe, qui représente au mieux les valeurs qu'elle contient. Utiliser les bornes fausse tous les calculs dès la première somme.",
+          "correction_markdown": "Calcule systématiquement le centre de chaque classe avant toute autre opération."
+        },
+        {
+          "erreur_markdown": "Calculer $\\bar{x}^2$ en élevant au carré une valeur déjà arrondie de la moyenne",
+          "pourquoi_faux": "Arrondir trop tôt propage une erreur dans le calcul de la variance, qui peut devenir sensiblement fausse après plusieurs arrondis successifs.",
+          "correction_markdown": "Garde les valeurs exactes (fractions) le plus longtemps possible, et n'arrondis qu'au tout dernier résultat."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classes $[0,10[$ (effectif 4, centre 5), $[10,20[$ (effectif 6, centre 15). Calculer la moyenne.",
+          "solution_markdown": "$N=10$. $\\sum n_ix_i=4\\times5+6\\times15=20+90=110$. $\\bar{x}=110/10=11$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Classes $[0,10[$ (effectif 4, centre 5), $[10,20[$ (effectif 6, centre 15). Calculer la variance et l'écart type.",
+          "solution_markdown": "$\\sum n_ix_i^2=4\\times25+6\\times225=100+1350=1450$. $V=1450/10-11^2=145-121=24$. $\\sigma=\\sqrt{24}\\approx4{,}90$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de moyenne $\\bar{x}=10$ et d'effectif total $N=20$ vérifie $\\sum n_ix_i^2=2200$. Calculer son écart type.",
+          "solution_markdown": "$V=\\dfrac{2200}{20}-10^2=110-100=10$. $\\sigma=\\sqrt{10}\\approx3{,}16$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour une série groupée, remplace toujours chaque classe par son centre avant de calculer quoi que ce soit.",
+        "La moyenne se calcule avec $\\sum n_ix_i$, la variance avec $\\sum n_ix_i^2$ : ce sont deux sommes différentes, ne les confonds pas.",
+        "La variance se calcule en soustrayant $\\bar{x}^2$ à la moyenne des carrés, jamais l'inverse.",
+        "L'écart type est la racine carrée de la variance : il s'exprime dans la même unité que les valeurs de la série, contrairement à la variance.",
+        "Un écart type élevé signale une série dispersée ; un écart type faible signale des valeurs regroupées autour de la moyenne."
+      ]
+    }
+  ]
+}

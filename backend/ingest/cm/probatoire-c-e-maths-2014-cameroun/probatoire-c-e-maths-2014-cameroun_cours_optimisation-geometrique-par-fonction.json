@@ -1,0 +1,185 @@
+{
+ "cours_id": "cours-optimisation-geometrique-par-fonction-1ere-ce",
+ "meta": {
+  "titre": "Résoudre un problème d'optimisation géométrique par l'étude d'une fonction",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Optimisation et modélisation",
+  "duree_estimee_min": 30,
+  "tags": ["optimisation", "minimum", "modélisation géométrique", "aire", "intervalle admissible"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "21",
+   "savoir_numero": "VI"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qB2c-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "« Où placer le point pour que l'aire soit la plus petite possible ? » La question est géométrique, la réponse est analytique. Entre les deux, un pont : exprimer la grandeur à optimiser en fonction d'une variable, et laisser la dérivée faire le travail. Ce mouvement — traduire, étudier, retraduire — est l'un des plus rentables du programme, parce qu'il transforme un problème qui semble demander de l'intuition en un calcul entièrement mécanique. Une seule précaution, mais elle est décisive : ne jamais oublier que la variable est **contrainte** par la figure."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir exprimer une aire ou une longueur en fonction d'un paramètre",
+    "Savoir dresser un tableau de variation",
+    "Savoir déterminer un extremum à partir des variations",
+    "Savoir traduire une contrainte géométrique en inégalité"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Traduire, étudier, retraduire",
+   "contenu_markdown": "**Le schéma en cinq temps.** Tout problème d'optimisation géométrique suit la même trame :\n\n1. **Choisir la variable** et la nommer, en précisant ce qu'elle mesure sur la figure.\n2. **Exprimer** la grandeur à optimiser en fonction de cette variable.\n3. **Déterminer l'intervalle admissible**, imposé par la géométrie.\n4. **Étudier** la fonction sur cet intervalle : dérivée, signe, tableau.\n5. **Retraduire** le résultat en langage géométrique, et vérifier l'admissibilité.\n\n**L'étape que tout le monde néglige : l'intervalle admissible.** La variable n'est pas libre. Une longueur est positive ; un point d'un segment ne peut sortir de ce segment ; une aire ne peut excéder celle de la figure qui la contient. Ces contraintes déterminent un intervalle, et l'optimisation ne se fait que **sur cet intervalle**.\n\n**Pourquoi c'est décisif.** Le sommet d'une parabole, ou plus généralement le point où $f'$ s'annule, peut parfaitement tomber **en dehors** de l'intervalle admissible. Dans ce cas :\n\n- la fonction est **monotone** sur l'intervalle ;\n- l'extremum est atteint sur une **borne**, pas au sommet ;\n- répondre « le sommet » serait une réponse fausse.\n\nD'où la règle : **vérifie toujours que la valeur trouvée appartient à l'intervalle admissible.** C'est une ligne, et les correcteurs la cherchent systématiquement.\n\n**Ouvert ou fermé ?** Si l'énoncé exclut les positions dégénérées — ici $M \\neq A$ et $M \\neq D$ — l'intervalle admissible est **ouvert**. On étudie alors souvent la fonction sur l'intervalle fermé, plus commode, puis on vérifie que l'extremum trouvé n'est pas sur une borne exclue.\n\n**Le choix de la variable.** Il n'est pas unique, et un bon choix simplifie tout. Privilégie :\n\n- une longueur plutôt qu'un angle, si la figure est rectiligne ;\n- une variable dont **toutes** les autres grandeurs se déduisent simplement ;\n- une variable qui rend l'expression polynomiale plutôt que fractionnaire.\n\n**Ne pas refaire ce qui est acquis.** Dans un problème structuré, les questions précédentes ont déjà fourni l'expression de la grandeur et l'étude de la fonction. La question d'optimisation ne demande alors que le **raccordement** : identifier que la grandeur cherchée est bien la fonction étudiée, et conclure. Chercher à tout refaire est une perte de temps.\n\n**La réponse attendue.** Elle est **géométrique**, pas analytique. Pas « $x = \\dfrac{3}{2}$ » mais « le point $M$ doit être placé sur $[AD]$ à une distance $\\dfrac{3}{2}$ de $A$ ». Et l'on donne la valeur de l'extremum avec son **unité**.",
+   "formule_principale": "\\text{grandeur} = f(x) \\text{ sur } I_{\\text{admissible}} \\implies \\text{extremum lu sur le tableau de variation de } f",
+   "variantes": [
+    {
+     "nom": "Optimisation sans dérivation, par la forme canonique",
+     "quand_utiliser": "Quand la grandeur s'exprime par un trinôme du second degré",
+     "contenu_markdown": "Un trinôme atteint son extremum au sommet, d'abscisse $-\\dfrac{b}{2a}$, sans qu'aucune dérivation soit nécessaire. La forme canonique $a\\left(x-\\alpha\\right)^{2} + \\beta$ donne directement le résultat.\n\nC'est plus rapide, mais le Probatoire attend en général le passage par la dérivée, qui est la méthode générale. Réserve la forme canonique au **contrôle** de ton résultat."
+    },
+    {
+     "nom": "Optimisation d'une somme de produit constant",
+     "quand_utiliser": "Quand deux grandeurs de produit constant apparaissent",
+     "contenu_markdown": "Si $xy = k$ avec $x$, $y$ positifs, alors la somme $x + y$ est **minimale** quand $x = y = \\sqrt{k}$.\n\nRéciproquement, si $x + y = s$ est constante, le **produit** $xy$ est maximal quand $x = y = \\dfrac{s}{2}$.\n\nCes deux résultats permettent de résoudre de tête un grand nombre de problèmes classiques — clôture de périmètre donné, boîte de volume donné — et servent d'excellent contrôle."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCD$ est un carré de côté $6$, $I$ le milieu de $[AB]$, $M$ un point de $[AD]$ avec $AM = x$, $M \\neq A$ et $M \\neq D$, et $N$ le point de $[DC]$ tel que $DN = x$. On a établi que l'aire du triangle $IMN$ vaut $\\mathcal{A}(x) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9 = f(x)$, et que $f$ admet sur $[0\\,;\\,6]$ un minimum $\\dfrac{63}{8}$ atteint en $x = \\dfrac{3}{2}$. Déterminer la valeur de $x$ pour laquelle l'aire du triangle $IMN$ est minimale. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier la variable et ce qu'elle mesure",
+     "justification": "Elle a été posée à la partie A",
+     "resultat_markdown": "$x = AM$, distance du point $M$ au sommet $A$ le long du côté $[AD]$"
+    },
+    {
+     "numero": 2,
+     "action": "Faire le lien entre géométrie et analyse",
+     "justification": "La question 4c) de la partie A a établi cette égalité",
+     "resultat_markdown": "$\\mathcal{A}(x) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9 = f(x)$ : minimiser l'aire revient exactement à minimiser $f$"
+    },
+    {
+     "numero": 3,
+     "action": "Déterminer l'intervalle admissible",
+     "justification": "$M$ appartient à $[AD]$ de longueur $6$, avec $M \\neq A$ et $M \\neq D$",
+     "resultat_markdown": "$0 < x < 6$, c'est-à-dire $x \\in \\left]0\\,;\\,6\\right[$"
+    },
+    {
+     "numero": 4,
+     "action": "Réutiliser l'étude de fonction",
+     "justification": "La question b) a établi que $f(x) \\geqslant f\\left(\\dfrac{3}{2}\\right)$ pour tout $x \\in [0\\,;\\,6]$",
+     "resultat_markdown": "Sur $[0\\,;\\,6]$, $f$ admet un minimum $\\dfrac{63}{8}$, atteint uniquement en $x = \\dfrac{3}{2}$"
+    },
+    {
+     "numero": 5,
+     "action": "Vérifier l'admissibilité",
+     "justification": "Étape indispensable : le minimum ne compte que s'il est atteignable",
+     "resultat_markdown": "$\\dfrac{3}{2} = 1{,}5$ appartient bien à $\\left]0\\,;\\,6\\right[$, et n'est aucune des deux bornes exclues"
+    },
+    {
+     "numero": 6,
+     "action": "Retraduire en langage géométrique",
+     "justification": "La réponse attendue porte sur la position du point, pas sur la variable",
+     "resultat_markdown": "L'aire est minimale lorsque $M$ est placé sur $[AD]$ à la distance $\\dfrac{3}{2}$ de $A$"
+    },
+    {
+     "numero": 7,
+     "action": "Donner la valeur du minimum avec son unité",
+     "justification": "Une aire s'exprime en unités d'aire",
+     "resultat_markdown": "L'aire minimale vaut $\\dfrac{63}{8} = 7{,}875$ unités d'aire"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler la vraisemblance",
+     "justification": "L'aire minimale doit être positive et inférieure à celle du carré",
+     "resultat_markdown": "$0 < 7{,}875 < 36$, et $\\dfrac{7{,}875}{36} \\approx 21{,}9\\,\\%$ du carré : plausible"
+    }
+   ],
+   "conclusion_markdown": "L'aire du triangle $IMN$ est minimale pour $AM = \\dfrac{3}{2}$, et vaut alors $\\dfrac{63}{8}$ unités d'aire. Deux remarques. D'abord, la question ne demandait presque aucun calcul nouveau : tout était acquis, il fallait **raccorder**. Ensuite, l'étape 5 n'est pas une formalité — si le sommet de la parabole était tombé hors de $\\left]0\\,;\\,6\\right[$, la fonction aurait été monotone sur l'intervalle admissible et la réponse aurait été entièrement différente."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Oublier de vérifier que la valeur trouvée est admissible",
+     "pourquoi_faux": "Le sommet d'une parabole peut tomber hors de l'intervalle imposé par la figure. La fonction y serait alors monotone et l'extremum atteint sur une borne. Répondre « le sommet » sans vérifier est un raisonnement incomplet, même quand la réponse se trouve être juste.",
+     "correction_markdown": "Écris explicitement : « $\\dfrac{3}{2}$ appartient à $\\left]0\\,;\\,6\\right[$ ». Une ligne, systématiquement réclamée par les correcteurs."
+    },
+    {
+     "erreur_markdown": "Ne pas déterminer l'intervalle admissible",
+     "pourquoi_faux": "Sans lui, on ne sait pas sur quel ensemble optimiser, et l'étude de fonction perd son ancrage géométrique. C'est aussi ce qui permet de repérer qu'un extremum mathématique peut être géométriquement impossible.",
+     "correction_markdown": "Traduis chaque contrainte de la figure en inégalité : $M$ sur $[AD]$ donne $0 \\leqslant x \\leqslant 6$, et les exclusions $M \\neq A$, $M \\neq D$ rendent l'intervalle ouvert."
+    },
+    {
+     "erreur_markdown": "Refaire toute l'étude de fonction déjà menée",
+     "pourquoi_faux": "Ce n'est pas faux, mais dans un problème structuré les questions précédentes ont déjà tout établi. Recalculer la dérivée et redresser le tableau consomme un temps précieux sans rapporter de point supplémentaire.",
+     "correction_markdown": "Repère ce qui est acquis et cite-le : « d'après la question b), $f$ admet un minimum en $\\dfrac{3}{2}$ ». La question d'optimisation ne demande que le raccordement."
+    },
+    {
+     "erreur_markdown": "Répondre par la seule valeur de $x$",
+     "pourquoi_faux": "La question est géométrique : elle porte sur la position d'un point. Une réponse purement numérique ne referme pas la boucle entre l'analyse et la figure.",
+     "correction_markdown": "Formule la conclusion en langage géométrique — « $M$ doit être à $1{,}5$ unité de $A$ sur le côté $[AD]$ » — et donne la valeur de l'aire avec son unité."
+    },
+    {
+     "erreur_markdown": "Confondre la variable et la grandeur optimisée",
+     "pourquoi_faux": "Le minimum de $f$ vaut $\\dfrac{63}{8}$ : c'est l'**aire**. La valeur $\\dfrac{3}{2}$ est celle de $x$, c'est-à-dire la **position** qui réalise ce minimum. Les intervertir donne une réponse absurde.",
+     "correction_markdown": "Nomme les deux : « l'aire minimale vaut $\\dfrac{63}{8}$, atteinte pour $x = \\dfrac{3}{2}$ ». L'abscisse dit **où**, l'ordonnée dit **combien**."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "On dispose de $80$ mètres de grillage pour clôturer un enclos rectangulaire. Déterminer les dimensions qui rendent l'aire maximale, et calculer cette aire.",
+     "solution_markdown": "**Étape 1 - choisir la variable.**\n\nNotons $x$ la longueur d'un côté, en mètres.\n\n**Étape 2 - exprimer l'autre dimension.**\n\nLe périmètre vaut $80$, donc la somme de deux côtés consécutifs vaut $40$ :\n\n$$2(x + y) = 80 \\qquad \\Longrightarrow \\qquad y = 40 - x$$\n\n**Étape 3 - exprimer l'aire.**\n\n$$\\mathcal{A}(x) = x(40 - x) = -x^{2} + 40x$$\n\n**Étape 4 - l'intervalle admissible.**\n\nLes deux dimensions doivent être strictement positives :\n\n$$x > 0 \\qquad \\text{et} \\qquad 40 - x > 0$$\n\n$$x \\in \\left]0\\,;\\,40\\right[$$\n\n**Étape 5 - optimiser.**\n\n$$\\mathcal{A}'(x) = -2x + 40 = 0 \\iff x = 20$$\n\nLe coefficient dominant $-1$ étant négatif, la parabole est tournée vers le bas : $x = 20$ donne bien un **maximum**.\n\n**Étape 6 - vérifier l'admissibilité.**\n\n$$20 \\in \\left]0\\,;\\,40\\right[$$\n\nLa valeur est admissible.\n\n**Étape 7 - retraduire.**\n\nPour $x = 20$, on a $y = 40 - 20 = 20$ : l'enclos est un **carré** de côté $20$ m.\n\n$$\\mathcal{A}(20) = 20 \\times 20 = 400 \\text{ m}^{2}$$\n\n**Conclusion.** L'aire maximale, $400$ m², est obtenue pour un enclos carré de $20$ m de côté.\n\n**Contrôle par le résultat classique.** Deux nombres de somme constante ont un produit maximal quand ils sont **égaux** : ici $x = y = 20$. Conforme.\n\n**Contrôle numérique.** Pour $x = 15$ : aire $= 15 \\times 25 = 375 < 400$. Pour $x = 25$ : aire $= 25 \\times 15 = 375 < 400$. Le maximum en $20$ est confirmé."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABC$ est un triangle rectangle en $A$ avec $AB = 6$ et $AC = 8$. Un point $M$ décrit $[AB]$ avec $AM = x$. On construit le rectangle $AMPN$ où $N$ appartient à $[AC]$ et $P$ appartient à l'hypoténuse $[BC]$. Exprimer l'aire de ce rectangle en fonction de $x$, et déterminer sa valeur maximale.",
+     "solution_markdown": "**Étape 1 - exprimer $AN$ en fonction de $x$.**\n\nLe point $P$ appartient à $[BC]$, et $PM$ est parallèle à $(AC)$ puisque $AMPN$ est un rectangle.\n\nDans le triangle $ABC$, la droite $(MP)$ étant parallèle à $(AC)$, le théorème de Thalès donne\n\n$$\\dfrac{MP}{AC} = \\dfrac{BM}{BA}$$\n\nOr $BM = AB - AM = 6 - x$, donc\n\n$$MP = 8 \\times \\dfrac{6-x}{6} = \\dfrac{8(6-x)}{6} = \\dfrac{4(6-x)}{3}$$\n\nComme $AMPN$ est un rectangle, $AN = MP$.\n\n**Étape 2 - l'aire.**\n\n$$\\mathcal{A}(x) = AM \\times AN = x \\times \\dfrac{4(6-x)}{3} = \\dfrac{4x(6-x)}{3} = \\dfrac{24x - 4x^{2}}{3}$$\n\n**Étape 3 - l'intervalle admissible.**\n\nLe point $M$ appartient à $[AB]$ de longueur $6$ :\n\n$$x \\in [0\\,;\\,6]$$\n\n(Les bornes correspondent à des rectangles dégénérés, d'aire nulle.)\n\n**Étape 4 - optimiser.**\n\n$$\\mathcal{A}'(x) = \\dfrac{24 - 8x}{3}$$\n\n$$\\mathcal{A}'(x) = 0 \\iff 24 - 8x = 0 \\iff x = 3$$\n\nLe coefficient dominant $-\\dfrac{4}{3}$ étant négatif, il s'agit bien d'un maximum.\n\n**Étape 5 - vérifier l'admissibilité.**\n\n$$3 \\in [0\\,;\\,6]$$\n\nAdmissible.\n\n**Étape 6 - calculer et retraduire.**\n\n$$\\mathcal{A}(3) = \\dfrac{4 \\times 3 \\times 3}{3} = 12$$\n\nEt $AN = \\dfrac{4 \\times 3}{3} = 4$.\n\n**Conclusion.** L'aire est maximale pour $AM = 3$, c'est-à-dire quand $M$ est le **milieu** de $[AB]$. Le rectangle mesure alors $3 \\times 4$, et son aire vaut $12$ unités d'aire.\n\n**Contrôle.** L'aire du triangle $ABC$ vaut $\\dfrac{6 \\times 8}{2} = 24$. Le rectangle maximal en occupe exactement la **moitié**.\n\n**Remarque.** Ce rapport de $\\dfrac{1}{2}$ est un résultat général : le plus grand rectangle inscrit dans un triangle rectangle, avec deux côtés sur les côtés de l'angle droit, occupe toujours la moitié du triangle, quelles que soient ses dimensions. Le sommet $P$ est alors le milieu de l'hypoténuse."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "$ABCD$ est un carré de côté $6$, $I$ le milieu de $[AB]$, $M$ un point de $[AD]$ avec $AM = x$, et $N$ le point de $[DC]$ tel que $DN = x$. On sait que $\\mathcal{A}(IMN) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9$. On suppose maintenant que le point $M$ est astreint à rester dans la portion $[3\\,;\\,6]$ du côté, c'est-à-dire dans la moitié la plus éloignée de $A$. Déterminer la position de $M$ qui minimise l'aire, et expliquer pourquoi la réponse diffère du cas général.",
+     "solution_markdown": "**Étape 1 - la fonction et le nouvel intervalle.**\n\n$$f(x) = \\dfrac{1}{2}x^{2} - \\dfrac{3}{2}x + 9 \\qquad \\text{sur} \\qquad I = [3\\,;\\,6]$$\n\n**Étape 2 - localiser le sommet par rapport à l'intervalle.**\n\n$$f'(x) = x - \\dfrac{3}{2} \\qquad ; \\qquad f'(x) = 0 \\iff x = \\dfrac{3}{2}$$\n\n**La valeur $\\dfrac{3}{2}$ n'appartient pas à $[3\\,;\\,6]$** : elle est strictement à gauche de l'intervalle. C'est tout l'enjeu de cet exercice.\n\n**Étape 3 - étudier le signe de $f'$ sur le nouvel intervalle.**\n\nPour tout $x \\in [3\\,;\\,6]$ :\n\n$$x \\geqslant 3 > \\dfrac{3}{2} \\qquad \\Longrightarrow \\qquad f'(x) = x - \\dfrac{3}{2} \\geqslant 3 - \\dfrac{3}{2} = \\dfrac{3}{2} > 0$$\n\nLa dérivée est **strictement positive** sur tout l'intervalle : elle ne s'y annule jamais.\n\n**Étape 4 - conclure sur les variations.**\n\n$f$ est **strictement croissante** sur $[3\\,;\\,6]$. Le tableau ne comporte qu'une flèche.\n\n**Étape 5 - déterminer le minimum.**\n\nLa croissance conserve les inégalités : pour tout $x \\in [3\\,;\\,6]$,\n\n$$x \\geqslant 3 \\qquad \\Longrightarrow \\qquad f(x) \\geqslant f(3)$$\n\n$$f(3) = \\dfrac{9}{2} - \\dfrac{9}{2} + 9 = 9$$\n\n**Le minimum vaut $9$, atteint à la borne $x = 3$.**\n\n**Étape 6 - retraduire.**\n\nL'aire du triangle $IMN$ est minimale lorsque $M$ est placé exactement au **milieu** de $[AD]$, c'est-à-dire à la limite gauche de la zone autorisée. L'aire vaut alors $9$ unités d'aire.\n\n**Étape 7 - expliquer la différence avec le cas général.**\n\nDans le problème original, sur $\\left]0\\,;\\,6\\right[$, le minimum valait $\\dfrac{63}{8} = 7{,}875$ et était atteint en $x = \\dfrac{3}{2}$, **à l'intérieur** de l'intervalle. La contrainte supplémentaire $x \\geqslant 3$ interdit désormais cette position.\n\nLe sommet de la parabole étant à gauche de la nouvelle zone, on n'en observe plus que la branche **croissante**. L'aire est donc d'autant plus petite que $M$ est proche du bord gauche autorisé, et le minimum migre du sommet vers la **borne**.\n\n**Comparaison chiffrée.** $9 > 7{,}875$ : la contrainte a **augmenté** le minimum atteignable, ce qui est logique — restreindre le choix ne peut jamais améliorer un optimum.\n\n**Contrôle.** $f(6) = 18$, valeur bien supérieure à $f(3) = 9$, ce qui confirme la croissance.\n\n**Ce qu'il faut retenir.** L'extremum d'un problème d'optimisation dépend autant de la **fonction** que de l'**intervalle**. C'est exactement pourquoi la vérification d'admissibilité n'est pas une formalité : c'est elle qui décide si l'extremum est intérieur ou frontalier. En économie comme en géométrie, on dit qu'une contrainte est « active » quand elle change ainsi la solution."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Schéma en cinq temps : choisir la variable, exprimer la grandeur, déterminer l'intervalle admissible, étudier, retraduire.",
+    "L'intervalle admissible est **imposé par la figure** : traduis chaque contrainte géométrique en inégalité.",
+    "Vérifie **toujours** que la valeur trouvée appartient à cet intervalle : c'est la ligne la plus réclamée par les correcteurs.",
+    "Si le point d'annulation de $f'$ est hors de l'intervalle, la fonction y est monotone et l'extremum est sur une borne.",
+    "Une exclusion du type $M \\neq A$ rend l'intervalle ouvert : vérifie que l'extremum n'est pas sur une borne exclue.",
+    "Ne refais pas l'étude de fonction déjà menée aux questions précédentes : cite-la et raccorde.",
+    "La réponse attendue est **géométrique** : la position du point, et la valeur de l'extremum avec son unité.",
+    "Ne confonds pas la variable, qui dit **où**, et la valeur de la fonction, qui dit **combien**.",
+    "Contrôle la vraisemblance : une aire partielle doit être positive et inférieure à celle de la figure globale.",
+    "Deux nombres de somme constante ont un produit maximal quand ils sont égaux : bon contrôle pour les problèmes de clôture."
+   ]
+  }
+ ]
+}

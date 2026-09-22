@@ -1236,6 +1236,36 @@ class EpreuveInediteDetailAPITests(TestCase):
         self.assertEqual(response.data["apercu_enonce_markdown"], "QCM ?")
         self.assertEqual(response.data["apercu_numero_exercice"], "1")
 
+    def test_apercu_enonce_markdown_includes_the_exercice_shared_intro(self):
+        # Bug corrigé (2026-08-31) : un exercice dont le support partagé (tableau de
+        # données, situation-problème) vit dans enonce_intro_markdown rendait l'aperçu
+        # inintelligible, la question seule n'ayant plus aucun sens sans ce support.
+        blueprint, _ = ingest_blueprint(_blueprint_payload(external_id="bp-avec-intro"), self.country)
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+        payload = _epreuve_payload(
+            external_id="ep-avec-intro", blueprint_external_id="bp-avec-intro",
+            exercices=[{
+                "numero_exercice": "1", "points": "8",
+                "enonce_intro_markdown": "**Exercice 1 (8 points)**\n\nTableau de données fourni ici.",
+                "questions": [{
+                    "numero": "1", "ordre": 1,
+                    "enonce_markdown": "Calculer la moyenne de cette série.", "corrige_markdown": "Corrigé.",
+                    "type_reponse": "ouverte", "themes": ["Suites numériques"],
+                }],
+            }],
+        )
+        epreuve, _ = ingest_epreuve_inedite(payload, self.country)
+        epreuve.statut = StatutContenu.VALIDE
+        epreuve.save(update_fields=["statut"])
+
+        response = self.client.get(f"/inedit/epreuves/{epreuve.id}/")
+
+        self.assertEqual(
+            response.data["apercu_enonce_markdown"],
+            "**Exercice 1 (8 points)**\n\nTableau de données fourni ici.\n\nCalculer la moyenne de cette série.",
+        )
+
     def test_apercu_enonce_markdown_is_none_without_any_exercice(self):
         blueprint, _ = ingest_blueprint(_blueprint_payload(external_id="bp-vide-detail"), self.country)
         blueprint.statut = StatutContenu.VALIDE

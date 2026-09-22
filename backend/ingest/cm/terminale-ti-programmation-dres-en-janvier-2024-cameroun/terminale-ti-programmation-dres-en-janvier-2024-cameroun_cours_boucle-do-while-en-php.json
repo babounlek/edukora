@@ -1,0 +1,91 @@
+{
+  "cours_id": "cours-boucle-do-while-en-php-dres-jan2024",
+  "meta": {
+    "titre": "La boucle do...while en PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "PHP - boucles",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PHP",
+      "boucle do while",
+      "sommation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "terminale-ti-programmation-dres-en-janvier-2024-cameroun",
+    "epreuve_titre": "Epreuve de programmation - Examen Blanc BAC ESG TI, DRES-EN, janvier 2024",
+    "exercice_numero": 4,
+    "rappel_id": "rdm-dres2024-ex4-qc-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une boucle qui doit s'executer au moins une fois, meme quand la condition serait deja fausse au depart, a besoin d'une construction particuliere : do...while."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaitre les boucles for et while en PHP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Syntaxe et usage de la boucle do...while",
+      "contenu_markdown": "La boucle `do { ... } while (condition);` execute d'abord le corps de la boucle une premiere fois, sans verification prealable, puis teste la condition **apres** chaque iteration : si elle est vraie, une nouvelle iteration a lieu, sinon la boucle s'arrete. Elle differe ainsi de `for` et `while`, qui testent la condition **avant** chaque iteration et peuvent donc ne jamais executer leur corps si la condition est fausse des le depart."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Ecrire une boucle do...while qui affiche les nombres de 1 a 5.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Initialiser le compteur avant la boucle",
+          "justification": "Contrairement au for, l'initialisation n'est pas integree a l'en-tete du do...while.",
+          "resultat_markdown": "$i = 1;"
+        },
+        {
+          "numero": 2,
+          "action": "Ecrire le corps et la condition",
+          "justification": "Le corps s'execute avant le test de la condition d'arret.",
+          "resultat_markdown": "do { echo $i; $i++; } while ($i <= 5);"
+        }
+      ],
+      "conclusion_markdown": "Le compteur doit etre initialise avant le do, et incremente a l'interieur du bloc, avant le test final."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le point-virgule final apres la condition while(...) d'une boucle do...while.",
+          "pourquoi_faux": "Contrairement a for et while, l'instruction do...while se termine par un point-virgule obligatoire apres la parenthese de condition, car c'est la seule des trois formes de boucle a se lire comme une instruction complete se terminant apres son test."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle est la difference essentielle entre while et do...while ?",
+          "solution_markdown": "while teste la condition avant chaque iteration (peut ne jamais s'executer) ; do...while teste apres chaque iteration (s'execute toujours au moins une fois)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "do...while execute le corps au moins une fois, avant tout test de condition.",
+        "La condition est testee apres chaque iteration, contrairement a for et while.",
+        "Ne pas oublier le point-virgule final apres while(condition);"
+      ]
+    }
+  ]
+}

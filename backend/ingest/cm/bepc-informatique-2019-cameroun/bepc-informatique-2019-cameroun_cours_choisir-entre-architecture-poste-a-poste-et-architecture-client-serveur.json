@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-choisir-entre-architecture-poste-a-poste-et-architecture-client-serveur-3e",
+  "meta": {
+    "titre": "Choisir entre architecture poste à poste et architecture client/serveur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Réseaux informatiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "architecture réseau",
+      "client/serveur",
+      "poste à poste",
+      "peer to peer",
+      "serveur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2019-cameroun",
+    "epreuve_titre": "BEPC Informatique 2019 - Cameroun (MINESEC/DECC)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bepc-informatique-2019-cameroun-ex1-q4.b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux ordinateurs reliés par un câble pour échanger des photos, et un réseau d'entreprise où toutes les machines vont chercher leurs données sur une machine centrale : dans les deux cas il y a un réseau, mais l'organisation des rôles n'a rien à voir. L'examen demande régulièrement de proposer « le type d'architecture à mettre en place » dans une situation donnée. La bonne réponse ne se devine pas : elle se lit dans l'énoncé, à condition de savoir quel mot chercher."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir définir un réseau informatique.",
+        "Savoir ce qu'est un serveur et ce qu'est un poste de travail.",
+        "Connaître les équipements d'interconnexion de base (switch, routeur)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux architectures, deux répartitions des rôles",
+      "contenu_markdown": "L'**architecture** d'un réseau décrit la façon dont les rôles sont répartis entre les machines. Deux architectures sont au programme.\n\n**Architecture poste à poste** (*peer to peer*, parfois écrite « d'égal à égal »). Toutes les machines sont au même niveau : chacune peut, selon le moment, demander un service à une autre (rôle de client) ou en rendre un (rôle de serveur). Aucune machine ne commande les autres.\n\n- Avantages : simple à installer, peu coûteuse, aucune machine dédiée à acheter.\n- Inconvénients : sécurité faible, sauvegardes dispersées, ingérable au-delà d'une dizaine de postes.\n- Usage typique : deux à cinq postes dans un petit bureau ou à la maison.\n\n**Architecture client/serveur.** Une machine centrale, le **serveur**, centralise les ressources (fichiers, base de données, applications, comptes utilisateurs) et rend des services. Les autres machines, les **clients**, lui adressent leurs demandes et reçoivent ses réponses.\n\n- Avantages : administration centralisée, sécurité et sauvegardes maîtrisées, montée en charge possible.\n- Inconvénients : coût d'une machine dédiée, panne du serveur bloquante pour tout le réseau.\n- Usage typique : entreprise, établissement scolaire, administration.\n\n**Comment trancher dans un énoncé.** Cherche s'il existe une machine centrale qui commande ou qui centralise. Si l'énoncé parle de « machine centrale », de « serveur », d'« ordres venus d'un poste unique » ou de « données centralisées », la réponse est l'architecture client/serveur. Si toutes les machines sont décrites comme équivalentes, c'est le poste à poste.\n\n**Ne pas confondre architecture et topologie.** La topologie (bus, étoile, anneau, maillée) décrit la **forme du câblage** ; l'architecture décrit la **répartition des rôles**. Un réseau en étoile peut être poste à poste ou client/serveur : ce sont deux questions différentes.",
+      "formule_principale": "machine\\ centrale\\ qui\\ commande \\Rightarrow architecture\\ client/serveur"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le personnel d'une quincaillerie souhaite permettre aux différentes machines de communiquer entre elles et de recevoir en même temps leurs ordres d'une machine centrale. Proposer le type d'architecture réseau à mettre en place. *(BEPC Informatique 2019, Partie I, question 4.b)*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer que la question porte sur l'architecture, pas sur la topologie",
+          "justification": "Le sujet écrit « type d'architecture » : répondre « étoile » serait hors sujet.",
+          "resultat_markdown": "On choisira entre poste à poste et client/serveur."
+        },
+        {
+          "numero": 2,
+          "action": "Relire l'énoncé en cherchant l'indice décisif",
+          "justification": "L'énoncé d'un exercice de réseau contient presque toujours la phrase qui impose la réponse.",
+          "resultat_markdown": "« …recevoir en même temps leurs ordres d'une machine centrale »."
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter cet indice",
+          "justification": "« Machine centrale » et « ordres » signifient qu'une machine commande et que les autres exécutent : les rôles ne sont pas équivalents.",
+          "resultat_markdown": "Il existe un serveur et des clients."
+        },
+        {
+          "numero": 4,
+          "action": "Écarter l'architecture poste à poste",
+          "justification": "Le poste à poste suppose des machines de même niveau, sans machine directrice. La situation décrite est l'inverse.",
+          "resultat_markdown": "L'architecture poste à poste ne convient pas."
+        },
+        {
+          "numero": 5,
+          "action": "Conclure et préciser la mise en œuvre",
+          "justification": "Une conclusion appliquée à la situation vaut mieux qu'un mot isolé.",
+          "resultat_markdown": "Architecture **client/serveur** : une machine (ou une machine dédiée) jouera le rôle de serveur, hébergera les données communes et transmettra les instructions aux quatre autres postes, qui seront les clients."
+        }
+      ],
+      "conclusion_markdown": "L'architecture retenue est donc l'architecture client/serveur, et ce choix se justifie par une phrase précise de l'énoncé, pas par une préférence personnelle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « étoile » ou « bus » à une question sur l'architecture.",
+          "pourquoi_faux": "Ce sont des topologies, c'est-à-dire des formes de câblage. La question porte sur la répartition des rôles entre les machines, ce qui est une tout autre notion.",
+          "correction_markdown": "Repère le mot de la question : « architecture » appelle poste à poste ou client/serveur ; « topologie » appelle bus, étoile, anneau ou maillée."
+        },
+        {
+          "erreur_markdown": "Choisir le client/serveur simplement parce que « c'est mieux ».",
+          "pourquoi_faux": "Une architecture ne se choisit pas dans l'absolu mais en fonction du besoin décrit. Pour deux ordinateurs à la maison, un serveur dédié serait un investissement inutile.",
+          "correction_markdown": "Justifie toujours ton choix par une phrase de l'énoncé : c'est cette justification qui rapporte le point, plus encore que le mot juste."
+        },
+        {
+          "erreur_markdown": "Croire que l'architecture client/serveur exige un ordinateur d'un type particulier.",
+          "pourquoi_faux": "N'importe quel ordinateur du réseau peut jouer le rôle de serveur : c'est un rôle logiciel, pas une catégorie de matériel. Les serveurs dédiés du commerce ne font qu'apporter plus de puissance et de fiabilité.",
+          "correction_markdown": "Formule ainsi : « le serveur est la machine qui rend le service, pas nécessairement une machine spéciale »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour chacune des situations suivantes, indique l'architecture la plus adaptée : (a) deux ordinateurs à la maison qui s'échangent des photos ; (b) une banque dont 50 postes consultent le même fichier de comptes clients.",
+          "solution_markdown": "**Solution.**\n\n(a) **Architecture poste à poste.** Les deux machines sont équivalentes, l'échange est occasionnel, aucune n'a besoin de commander l'autre. Installer un serveur pour deux postes serait disproportionné.\n\n(b) **Architecture client/serveur.** Le fichier des comptes clients doit être unique, à jour et sécurisé : il est donc hébergé sur un serveur central auquel les 50 postes clients adressent leurs demandes. Cette centralisation garantit que tous les employés voient la même information et permet de sauvegarder les données en un seul endroit."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un cybercafé de huit postes veut que chaque client s'identifie par un compte, que la durée de connexion soit décomptée automatiquement, et que l'historique de facturation soit conservé. Propose l'architecture à mettre en place et justifie en trois arguments.",
+          "solution_markdown": "**Solution.**\n\n**Architecture proposée : client/serveur.**\n\n1. **Les comptes doivent être centralisés.** Un client peut s'installer sur n'importe lequel des huit postes ; son compte et son crédit de temps doivent donc être connus de tous les postes. Cela n'est possible que si une machine centrale détient la liste des comptes et que les huit postes l'interrogent : c'est la définition du modèle client/serveur.\n2. **Le décompte du temps doit être arbitré par une seule machine.** Si chaque poste gérait son propre décompte, un client pourrait changer de poste pour repartir de zéro. Le serveur, en centralisant le chronométrage, rend cette fraude impossible.\n3. **L'historique de facturation doit être conservé en un seul endroit.** Le gérant doit pouvoir éditer ses recettes sans passer d'un poste à l'autre. Une base de données unique sur le serveur répond à ce besoin et facilite la sauvegarde.\n\n**Ce qu'il faudrait ajouter matériellement** : un ordinateur tenant le rôle de serveur, un commutateur pour relier les huit postes, et un routeur pour l'accès à Internet."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le serveur d'un établissement scolaire tombe en panne un matin. Décris les conséquences pour les utilisateurs, puis explique comment une architecture poste à poste aurait réagi dans la même situation. Conclus sur ce que cette comparaison révèle des deux architectures.",
+          "solution_markdown": "**Solution.**\n\n**Conséquences de la panne dans une architecture client/serveur.**\n\n1. Les élèves ne peuvent plus ouvrir de session si les comptes utilisateurs sont gérés par le serveur : les postes clients demandent une authentification à une machine qui ne répond plus.\n2. Les fichiers de cours et les travaux enregistrés sur le serveur deviennent inaccessibles, même si les postes clients fonctionnent parfaitement.\n3. L'imprimante partagée pilotée par le serveur ne reçoit plus les travaux d'impression.\n4. L'accès à Internet peut lui-même être interrompu si le serveur assurait aussi ce service.\n\nAutrement dit, une seule panne paralyse l'ensemble du réseau : c'est le point faible de la centralisation.\n\n**Réaction d'une architecture poste à poste dans la même situation.**\n\n1. Chaque poste détient ses propres comptes et ses propres fichiers : la panne d'une machine ne prive que son utilisateur.\n2. Les autres postes continuent de travailler et de s'échanger des fichiers normalement.\n3. En revanche, les fichiers stockés sur la machine en panne sont inaccessibles et n'ont probablement pas été sauvegardés, puisque personne n'administre l'ensemble.\n\n**Conclusion de la comparaison.**\n\nLa centralisation du modèle client/serveur est à la fois sa force et sa faiblesse : elle apporte la sécurité, l'administration unifiée et la sauvegarde d'un seul point, mais elle concentre le risque sur ce même point. Le poste à poste est plus résistant à la panne d'une machine, mais il ne garantit ni la sécurité ni la sauvegarde. En pratique, on retient le client/serveur dès que le nombre de postes dépasse la dizaine, et on compense sa fragilité par des sauvegardes régulières et, dans les installations importantes, par un second serveur de secours."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Architecture égale répartition des rôles ; topologie égale forme du câblage. Ne mélange jamais les deux vocabulaires.",
+        "Poste à poste : toutes les machines sont au même niveau. Client/serveur : une machine centrale rend le service, les autres le demandent.",
+        "Cherche dans l'énoncé les mots « machine centrale », « serveur », « données centralisées » : ils imposent le client/serveur.",
+        "Justifie toujours ton choix en citant la phrase de l'énoncé qui le fonde. Le mot juste sans justification vaut la moitié du point.",
+        "Le client/serveur apporte sécurité et administration centralisée, mais la panne du serveur bloque tout le réseau.",
+        "Au BEPC, la question se présente sous la forme « proposer le type d'architecture réseau à mettre en place » : deux réponses possibles seulement, et l'énoncé contient toujours l'indice qui départage."
+      ]
+    }
+  ]
+}

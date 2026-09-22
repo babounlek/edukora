@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-denombrer-un-tirage-avec-une-dose-de-chaque-categorie-terminale-d-ti",
+  "meta": {"titre": "Dénombrer un tirage contenant un élément de chaque catégorie", "cours_id": "cours-denombrer-un-tirage-avec-une-dose-de-chaque-categorie-terminale-d-ti", "matiere": "Mathématiques", "niveau": "Terminale D-TI", "sous_theme": "Dénombrement — principe multiplicatif", "tags": ["combinaisons", "principe multiplicatif", "tirage par catégorie"], "duree_estimee_minutes": 8, "epreuve_source": "bac-d-ti-maths-2021-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-ti-maths-2021-cameroun-ex1-3a"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "Dénombrer un tirage exigeant exactement un élément de chaque catégorie revient simplement à multiplier les effectifs de chaque catégorie entre eux, un cas particulier très simple du principe multiplicatif."},
+    {"type": "prerequis", "items_markdown": ["Combinaison d'un seul élément parmi n : C(n,1)=n", "Principe multiplicatif pour des choix indépendants successifs"]},
+    {"type": "regle", "titre": "Multiplier les effectifs de chaque catégorie", "contenu_markdown": "Pour dénombrer les tirages contenant exactement un élément de chacune de $k$ catégories d'effectifs $n_1,n_2,\\dots,n_k$, on choisit un élément dans chaque catégorie séparément (chaque choix vaut $n_i$), puis on multiplie ces choix indépendants : le nombre total est $n_1\\times n_2\\times\\cdots\\times n_k$.", "formule_principale": "nombre de tirages (1 par catégorie) = n1 × n2 × ... × nk", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Un lot contient 5 objets rouges, 3 verts et 8 bleus. Combien de tirages simultanés de 3 objets contiennent exactement un objet de chaque couleur ?", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Choisir 1 rouge", "justification": "C(5,1)=5", "resultat_markdown": "5 choix"},
+      {"numero": 2, "action": "Choisir 1 vert puis 1 bleu", "justification": "C(3,1)=3, C(8,1)=8", "resultat_markdown": "3 choix, 8 choix"},
+      {"numero": 3, "action": "Multiplier", "justification": "5×3×8", "resultat_markdown": "120"}
+    ], "conclusion_markdown": "120 tirages possibles avec un objet de chaque couleur."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Utiliser une combinaison globale C(n,k) sur l'effectif total au lieu de multiplier les combinaisons par catégorie", "pourquoi_faux": "La combinaison C(n,k) sur l'effectif total compte TOUS les tirages possibles de k objets, sans distinguer les catégories ; pour compter uniquement les tirages avec un représentant de CHAQUE catégorie, il faut impérativement multiplier les choix catégorie par catégorie.", "correction_markdown": "Toujours décomposer le dénombrement catégorie par catégorie avant de recourir au principe multiplicatif, plutôt que d'utiliser une combinaison globale."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "facile", "enonce_markdown": "Une urne contient 4 boules blanches, 6 noires et 2 grises. Combien de tirages simultanés de 3 boules contiennent une boule de chaque couleur ?", "solution_markdown": "4×6×2=48 tirages."},
+      {"numero": 2, "difficulte": "moyen", "enonce_markdown": "Pourquoi ce dénombrement s'exprime-t-il naturellement comme une fonction polynomiale des effectifs quand ceux-ci dépendent d'un paramètre n ?", "solution_markdown": "Parce que le produit des effectifs (chacun potentiellement une expression en n) donne, après développement, un polynôme en n : c'est exactement pourquoi ce type de dénombrement se prête à une étude de variations ultérieure pour trouver le n optimal."}
+    ]},
+    {"type": "synthese", "items_markdown": ["Dénombrer un tirage avec un élément de chaque catégorie revient à multiplier les effectifs de chaque catégorie.", "Ce principe est un cas particulier du principe multiplicatif, avec des combinaisons d'un seul élément à chaque étape.", "Le résultat s'exprime souvent comme un polynôme quand les effectifs dépendent d'un paramètre."]}
+  ]
+}

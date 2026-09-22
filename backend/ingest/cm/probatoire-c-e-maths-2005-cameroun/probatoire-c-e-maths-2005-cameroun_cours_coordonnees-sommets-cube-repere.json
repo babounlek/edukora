@@ -1,0 +1,191 @@
+{
+ "cours_id": "cours-coordonnees-sommets-cube-repere-1ere-ce",
+ "meta": {
+  "titre": "Déterminer les coordonnées des sommets d'un cube dans un repère lié à ses arêtes",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Géométrie analytique de l'espace",
+  "duree_estimee_min": 20,
+  "tags": ["géométrie analytique de l'espace", "repère orthonormé", "coordonnées", "cube", "relation de Chasles"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "24",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex3-q2a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Choisir un repère porté par les arêtes d'un cube, c'est ramener toute la géométrie de l'espace à des $0$ et des $1$. Chaque sommet devient un triplet de bits, chaque arête un vecteur de base, et les calculs de produit scalaire deviennent triviaux. Une seule précaution, mais elle est absolue : lire l'**ordre** des vecteurs de base donné par l'énoncé. Il n'est presque jamais l'ordre alphabétique, et l'intervertir fausse la moitié des coordonnées."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir décomposer un vecteur sur une base de l'espace",
+    "Maîtriser la relation de Chasles dans l'espace",
+    "Savoir ce qu'est un repère orthonormé",
+    "Connaître les propriétés du cube : faces carrées, arêtes parallèles deux à deux"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Décomposer sur les trois vecteurs de base",
+   "contenu_markdown": "**Le principe.** Dans un repère $\\left(A\\,;\\,\\vec{\\imath}\\,,\\,\\vec{\\jmath}\\,,\\,\\vec{k}\\right)$, les coordonnées d'un point $M$ sont les coefficients de la décomposition\n\n$$\\overrightarrow{AM} = x\\,\\vec{\\imath} + y\\,\\vec{\\jmath} + z\\,\\vec{k} \\qquad \\Longrightarrow \\qquad M(x\\,;\\,y\\,;\\,z)$$\n\n**Le repère est orthonormé** lorsque les trois vecteurs de base sont deux à deux orthogonaux et de norme $1$. Pour un cube d'arête $1$, trois arêtes issues d'un même sommet remplissent exactement ces conditions.\n\n**La méthode, en trois gestes.**\n\n1. **Identifier** l'origine et les trois vecteurs de base, dans l'ordre donné par l'énoncé.\n2. **Placer** les sommets immédiats : l'origine et les trois extrémités des vecteurs de base.\n3. **Décomposer** les autres sommets par la relation de Chasles.\n\n**Les sommets immédiats.** Ils se lisent sans aucun calcul :\n\n$$A(0\\,;\\,0\\,;\\,0) \\qquad \\text{extrémité de } \\vec{\\imath} : (1\\,;\\,0\\,;\\,0) \\qquad \\text{de } \\vec{\\jmath} : (0\\,;\\,1\\,;\\,0) \\qquad \\text{de } \\vec{k} : (0\\,;\\,0\\,;\\,1)$$\n\n**Les autres sommets** se décomposent en somme de deux ou trois vecteurs de base :\n\n| Type de sommet | Nombre de coordonnées non nulles |\n|---|---|\n| origine | $0$ |\n| voisin de l'origine (relié par une arête) | $1$ |\n| opposé sur une face | $2$ |\n| opposé dans le cube | $3$ |\n\n**Le sommet diamétralement opposé** a donc toutes ses coordonnées égales à $1$. C'est un contrôle immédiat.\n\n**L'ordre des vecteurs de base est décisif.** Si l'énoncé écrit $\\left(A\\,;\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AE}\\right)$, alors :\n\n- la **première** coordonnée se lit sur $\\overrightarrow{AD}$, donc $D(1\\,;\\,0\\,;\\,0)$ ;\n- la **deuxième** sur $\\overrightarrow{AB}$, donc $B(0\\,;\\,1\\,;\\,0)$.\n\nIntervertir $\\overrightarrow{AD}$ et $\\overrightarrow{AB}$ échange les rôles de $D$ et $B$, donc aussi ceux de $H$ et $F$.\n\n**Lire la figure d'abord.** La convention de nommage — quelle face est devant, quel sommet est au-dessus de quel autre — n'est pas universelle. Elle est fixée par la figure de l'énoncé, et c'est elle qui détermine toutes les coordonnées.\n\n**Les contrôles à mener.**\n\n- Le sommet opposé à l'origine doit avoir pour coordonnées $(1\\,;\\,1\\,;\\,1)$.\n- La grande diagonale doit mesurer $\\sqrt{1+1+1} = \\sqrt{3}$.\n- Une diagonale de face doit mesurer $\\sqrt{2}$.\n- Une arête doit mesurer $1$.",
+   "formule_principale": "\\overrightarrow{AM} = x\\,\\vec{\\imath} + y\\,\\vec{\\jmath} + z\\,\\vec{k} \\iff M(x\\,;\\,y\\,;\\,z)",
+   "variantes": [
+    {
+     "nom": "Cube d'arête a",
+     "quand_utiliser": "Quand l'arête n'est pas unitaire",
+     "contenu_markdown": "Deux choix se présentent, et il ne faut pas les mélanger.\n\n**Base normée :** on prend $\\vec{\\imath} = \\dfrac{1}{a}\\overrightarrow{AD}$ et ses analogues. Le repère est orthonormé, et les coordonnées des sommets valent $0$ ou $a$.\n\n**Base non normée :** on prend $\\vec{\\imath} = \\overrightarrow{AD}$ directement. Les coordonnées valent $0$ ou $1$, mais le repère n'est **pas** orthonormé si $a \\neq 1$, et la formule $\\vec{u}\\cdot\\vec{v} = xx'+yy'+zz'$ devient fausse.\n\nEn épreuve, l'énoncé impose presque toujours $a = 1$ pour éviter cette ambiguïté."
+    },
+    {
+     "nom": "Repère centré au centre du cube",
+     "quand_utiliser": "Pour exploiter les symétries",
+     "contenu_markdown": "En plaçant l'origine au centre $O$ du cube d'arête $2$, les huit sommets ont pour coordonnées tous les triplets $(\\pm 1\\,;\\,\\pm 1\\,;\\,\\pm 1)$.\n\nCette symétrie rend immédiates les questions de symétrie centrale et de sphère inscrite ou circonscrite. En revanche, les calculs d'arêtes y sont un peu moins directs."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $AB = 1$, de face avant $ABFE$ et de face arrière $DCGH$, les points $E$, $F$, $G$, $H$ étant respectivement au-dessus de $A$, $B$, $C$, $D$. L'espace est rapporté au repère orthonormé $\\left(A\\,;\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AE}\\right)$. Déterminer les coordonnées des points $G$, $F$, $H$ et $C$. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier les vecteurs de base dans l'ordre",
+     "justification": "L'énoncé les donne explicitement",
+     "resultat_markdown": "$\\vec{\\imath} = \\overrightarrow{AD}$, $\\vec{\\jmath} = \\overrightarrow{AB}$, $\\vec{k} = \\overrightarrow{AE}$"
+    },
+    {
+     "numero": 2,
+     "action": "Vérifier que le repère est orthonormé",
+     "justification": "Trois arêtes issues d'un même sommet d'un cube d'arête $1$",
+     "resultat_markdown": "Elles sont deux à deux orthogonales et de norme $AB = 1$ : le repère est bien orthonormé"
+    },
+    {
+     "numero": 3,
+     "action": "Placer les sommets immédiats",
+     "justification": "Ce sont l'origine et les extrémités des trois vecteurs de base",
+     "resultat_markdown": "$A(0\\,;\\,0\\,;\\,0)$, $D(1\\,;\\,0\\,;\\,0)$, $B(0\\,;\\,1\\,;\\,0)$, $E(0\\,;\\,0\\,;\\,1)$"
+    },
+    {
+     "numero": 4,
+     "action": "Décomposer $\\overrightarrow{AC}$",
+     "justification": "$ABCD$ est un carré, donc $\\overrightarrow{BC} = \\overrightarrow{AD}$",
+     "resultat_markdown": "$\\overrightarrow{AC} = \\overrightarrow{AB} + \\overrightarrow{BC} = \\vec{\\jmath} + \\vec{\\imath}$, d'où $C(1\\,;\\,1\\,;\\,0)$"
+    },
+    {
+     "numero": 5,
+     "action": "Décomposer $\\overrightarrow{AF}$",
+     "justification": "$F$ est au-dessus de $B$, donc $\\overrightarrow{BF} = \\overrightarrow{AE}$",
+     "resultat_markdown": "$\\overrightarrow{AF} = \\overrightarrow{AB} + \\overrightarrow{AE} = \\vec{\\jmath} + \\vec{k}$, d'où $F(0\\,;\\,1\\,;\\,1)$"
+    },
+    {
+     "numero": 6,
+     "action": "Décomposer $\\overrightarrow{AH}$",
+     "justification": "$H$ est au-dessus de $D$, donc $\\overrightarrow{DH} = \\overrightarrow{AE}$",
+     "resultat_markdown": "$\\overrightarrow{AH} = \\overrightarrow{AD} + \\overrightarrow{AE} = \\vec{\\imath} + \\vec{k}$, d'où $H(1\\,;\\,0\\,;\\,1)$"
+    },
+    {
+     "numero": 7,
+     "action": "Décomposer $\\overrightarrow{AG}$",
+     "justification": "$G$ est au-dessus de $C$, donc $\\overrightarrow{CG} = \\overrightarrow{AE}$",
+     "resultat_markdown": "$\\overrightarrow{AG} = \\overrightarrow{AC} + \\overrightarrow{AE} = \\vec{\\imath} + \\vec{\\jmath} + \\vec{k}$, d'où $G(1\\,;\\,1\\,;\\,1)$"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler par le sommet opposé",
+     "justification": "$G$ est diamétralement opposé à $A$ : ses trois coordonnées doivent valoir $1$",
+     "resultat_markdown": "$G(1\\,;\\,1\\,;\\,1)$. Conforme"
+    },
+    {
+     "numero": 9,
+     "action": "Contrôler par la grande diagonale",
+     "justification": "Elle doit mesurer $\\sqrt{3}$ pour un cube d'arête $1$",
+     "resultat_markdown": "$AG = \\sqrt{1+1+1} = \\sqrt{3}$. Conforme"
+    }
+   ],
+   "conclusion_markdown": "Les quatre coordonnées sont $C(1\\,;\\,1\\,;\\,0)$, $F(0\\,;\\,1\\,;\\,1)$, $H(1\\,;\\,0\\,;\\,1)$ et $G(1\\,;\\,1\\,;\\,1)$. En pratique, il n'est même pas nécessaire de passer par Chasles : la correspondance sommet par sommet lue sur la figure — $E$, $F$, $G$, $H$ au-dessus de $A$, $B$, $C$, $D$ — donne les quatre résultats d'un coup. Mais attention à l'ordre des vecteurs de base : ici $\\overrightarrow{AD}$ vient **avant** $\\overrightarrow{AB}$, ce qui n'est pas l'ordre alphabétique."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Intervertir les deux premiers vecteurs de base",
+     "pourquoi_faux": "L'énoncé écrit $\\left(A\\,;\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AE}\\right)$ : la première coordonnée se lit sur $\\overrightarrow{AD}$. Prendre l'ordre alphabétique donnerait $B(1\\,;\\,0\\,;\\,0)$ et $D(0\\,;\\,1\\,;\\,0)$, ce qui échange $F$ et $H$ et fausse tous les calculs suivants.",
+     "correction_markdown": "Recopie l'ordre des vecteurs de base en tête de ta solution, avant tout calcul. C'est une ligne, et elle évite l'erreur la plus coûteuse de la question."
+    },
+    {
+     "erreur_markdown": "Ne pas lire la convention de nommage sur la figure",
+     "pourquoi_faux": "Selon les conventions, $E$ peut être au-dessus de $A$, ou $ABCDEFGH$ peut désigner deux faces $ABCD$ et $EFGH$ dans un ordre différent. La figure de l'énoncé tranche, et elle seule.",
+     "correction_markdown": "Note explicitement : face avant $ABFE$, face arrière $DCGH$, $E$ au-dessus de $A$. Cette phrase justifie ensuite toutes les décompositions."
+    },
+    {
+     "erreur_markdown": "Confondre $C$ et $G$",
+     "pourquoi_faux": "$C$ est un sommet de la base, donc sa troisième coordonnée est nulle : $C(1\\,;\\,1\\,;\\,0)$. Le point $G$ est celui du dessus : $G(1\\,;\\,1\\,;\\,1)$.",
+     "correction_markdown": "La troisième coordonnée distingue le bas du haut : $0$ pour la base, $1$ pour la face supérieure. Un coup d'œil suffit à trancher."
+    },
+    {
+     "erreur_markdown": "Affirmer que le repère est orthonormé sans le vérifier",
+     "pourquoi_faux": "Ce sera vrai ici, mais c'est ce qui autorise la formule $\\vec{u}\\cdot\\vec{v} = xx'+yy'+zz'$ aux questions suivantes. Sans cette vérification, le calcul de produit scalaire n'est pas justifié.",
+     "correction_markdown": "Une incise suffit : « les trois arêtes issues de $A$ sont deux à deux orthogonales et de norme $1$, donc le repère est orthonormé »."
+    },
+    {
+     "erreur_markdown": "Oublier de contrôler",
+     "pourquoi_faux": "Une erreur de coordonnée à cette question fausse tout l'exercice : produits scalaires, équation de sphère, volume du prisme. Le coût est disproportionné.",
+     "correction_markdown": "Deux contrôles en dix secondes : le sommet opposé à l'origine vaut $(1\\,;\\,1\\,;\\,1)$, et la grande diagonale mesure $\\sqrt{3}$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $1$, $E$, $F$, $G$, $H$ étant au-dessus de $A$, $B$, $C$, $D$. Dans le repère $\\left(A\\,;\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AE}\\right)$, donner les coordonnées des huit sommets, puis celles du centre du cube et du centre de la face $BCGF$.",
+     "solution_markdown": "**Étape 1 - l'ordre des vecteurs de base.**\n\nIci l'ordre est $\\overrightarrow{AB}$, $\\overrightarrow{AD}$, $\\overrightarrow{AE}$ : la première coordonnée se lit sur $\\overrightarrow{AB}$.\n\n**Étape 2 - les huit sommets.**\n\n*Base $ABCD$*, de troisième coordonnée nulle :\n\n$$A(0\\,;\\,0\\,;\\,0) \\quad B(1\\,;\\,0\\,;\\,0) \\quad C(1\\,;\\,1\\,;\\,0) \\quad D(0\\,;\\,1\\,;\\,0)$$\n\n*Face supérieure $EFGH$*, obtenue en ajoutant $\\vec{k}$ :\n\n$$E(0\\,;\\,0\\,;\\,1) \\quad F(1\\,;\\,0\\,;\\,1) \\quad G(1\\,;\\,1\\,;\\,1) \\quad H(0\\,;\\,1\\,;\\,1)$$\n\n**Étape 3 - le centre du cube.**\n\nC'est le milieu de la grande diagonale $[AG]$ :\n\n$$O\\left(\\dfrac{0+1}{2}\\,;\\,\\dfrac{0+1}{2}\\,;\\,\\dfrac{0+1}{2}\\right) = \\left(\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\right)$$\n\n*Contrôle :* on peut aussi le calculer comme milieu de $[BH]$ : $\\left(\\dfrac{1+0}{2}\\,;\\,\\dfrac{0+1}{2}\\,;\\,\\dfrac{0+1}{2}\\right)$. Même résultat. Les quatre grandes diagonales se coupent bien en un point unique.\n\n**Étape 4 - le centre de la face $BCGF$.**\n\nC'est le milieu d'une diagonale de cette face, par exemple $[BG]$ :\n\n$$\\left(\\dfrac{1+1}{2}\\,;\\,\\dfrac{0+1}{2}\\,;\\,\\dfrac{0+1}{2}\\right) = \\left(1\\,;\\,\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\right)$$\n\n*Contrôle par l'autre diagonale $[CF]$ :* $\\left(\\dfrac{1+1}{2}\\,;\\,\\dfrac{1+0}{2}\\,;\\,\\dfrac{0+1}{2}\\right) = \\left(1\\,;\\,\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\right)$. Conforme.\n\n**Étape 5 - remarque.**\n\nLe centre de la face $BCGF$ a pour première coordonnée $1$, ce qui est cohérent : cette face est contenue dans le plan $x = 1$.\n\nPlus généralement, le centre d'une face a **une** coordonnée valant $0$ ou $1$ — celle de la direction perpendiculaire à la face — et les deux autres valant $\\dfrac{1}{2}$."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $a = 3$, $E$, $F$, $G$, $H$ au-dessus de $A$, $B$, $C$, $D$. On munit l'espace du repère orthonormé $\\left(A\\,;\\,\\vec{\\imath}\\,,\\,\\vec{\\jmath}\\,,\\,\\vec{k}\\right)$ où $\\vec{\\imath} = \\dfrac{1}{3}\\overrightarrow{AB}$, $\\vec{\\jmath} = \\dfrac{1}{3}\\overrightarrow{AD}$, $\\vec{k} = \\dfrac{1}{3}\\overrightarrow{AE}$. Donner les coordonnées des huit sommets, puis calculer les longueurs $AG$, $AC$ et $BH$.",
+     "solution_markdown": "**Étape 1 - comprendre la normalisation.**\n\nLes vecteurs de base sont les arêtes **divisées par $3$**, donc de norme $1$ : le repère est orthonormé.\n\nEn conséquence, $\\overrightarrow{AB} = 3\\vec{\\imath}$, et le point $B$ a pour coordonnées $(3\\,;\\,0\\,;\\,0)$.\n\n**Étape 2 - les huit sommets.**\n\n$$A(0\\,;\\,0\\,;\\,0) \\quad B(3\\,;\\,0\\,;\\,0) \\quad C(3\\,;\\,3\\,;\\,0) \\quad D(0\\,;\\,3\\,;\\,0)$$\n\n$$E(0\\,;\\,0\\,;\\,3) \\quad F(3\\,;\\,0\\,;\\,3) \\quad G(3\\,;\\,3\\,;\\,3) \\quad H(0\\,;\\,3\\,;\\,3)$$\n\n**Étape 3 - la grande diagonale $AG$.**\n\n$$\\overrightarrow{AG} = (3\\,;\\,3\\,;\\,3)$$\n\n$$AG = \\sqrt{9+9+9} = \\sqrt{27} = 3\\sqrt{3}$$\n\n*Contrôle par la formule générale :* la grande diagonale d'un cube d'arête $a$ vaut $a\\sqrt{3} = 3\\sqrt{3}$. Conforme.\n\n**Étape 4 - la diagonale de face $AC$.**\n\n$$\\overrightarrow{AC} = (3\\,;\\,3\\,;\\,0)$$\n\n$$AC = \\sqrt{9+9} = \\sqrt{18} = 3\\sqrt{2}$$\n\n*Contrôle :* la diagonale d'une face carrée de côté $a$ vaut $a\\sqrt{2} = 3\\sqrt{2}$. Conforme.\n\n**Étape 5 - la diagonale $BH$.**\n\n$$\\overrightarrow{BH} = H - B = (0-3\\,;\\,3-0\\,;\\,3-0) = (-3\\,;\\,3\\,;\\,3)$$\n\n$$BH = \\sqrt{9+9+9} = 3\\sqrt{3}$$\n\n*Interprétation :* $[BH]$ est aussi une **grande diagonale** du cube, ce qui explique qu'elle ait la même longueur que $[AG]$. Les quatre grandes diagonales $[AG]$, $[BH]$, $[CE]$ et $[DF]$ mesurent toutes $a\\sqrt{3}$ et se coupent au centre.\n\n**Étape 6 - piège à signaler.**\n\nSi l'on avait posé $\\vec{\\imath} = \\overrightarrow{AB}$ sans diviser par $3$, les coordonnées auraient valu $0$ ou $1$, mais le repère n'aurait **pas** été orthonormé : les vecteurs de base auraient eu pour norme $3$.\n\nLa formule $AG = \\sqrt{x^{2}+y^{2}+z^{2}}$ aurait alors donné $\\sqrt{3}$ au lieu de $3\\sqrt{3}$ : un facteur $3$ d'erreur.\n\n**Ce qu'il faut retenir.** Un repère est orthonormé si les vecteurs de base sont de norme **$1$**. Pour un cube d'arête $a \\neq 1$, il faut donc les diviser par $a$ — et les coordonnées des sommets valent alors $0$ ou $a$, pas $0$ ou $1$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $1$, dans le repère $\\left(A\\,;\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AE}\\right)$. Déterminer les coordonnées du point $I$, intersection de la droite $(AG)$ avec le plan $(BDE)$. Vérifier que $I$ est le centre de gravité du triangle $BDE$, et calculer le rapport $\\dfrac{AI}{AG}$.",
+     "solution_markdown": "**Étape 1 - les coordonnées utiles.**\n\n$$A(0\\,;\\,0\\,;\\,0) \\quad B(1\\,;\\,0\\,;\\,0) \\quad D(0\\,;\\,1\\,;\\,0) \\quad E(0\\,;\\,0\\,;\\,1) \\quad G(1\\,;\\,1\\,;\\,1)$$\n\n**Étape 2 - équation du plan $(BDE)$.**\n\nCherchons une équation de la forme $\\alpha x + \\beta y + \\gamma z = \\delta$.\n\nEn substituant les trois points :\n\n- $B(1\\,;\\,0\\,;\\,0)$ : $\\alpha = \\delta$ ;\n- $D(0\\,;\\,1\\,;\\,0)$ : $\\beta = \\delta$ ;\n- $E(0\\,;\\,0\\,;\\,1)$ : $\\gamma = \\delta$.\n\nEn prenant $\\delta = 1$, on obtient $\\alpha = \\beta = \\gamma = 1$ :\n\n$$(BDE) : \\quad x + y + z = 1$$\n\n*Vérification :* les trois points donnent bien $1+0+0 = 1$, $0+1+0 = 1$, $0+0+1 = 1$. Conforme.\n\n**Étape 3 - représentation paramétrique de $(AG)$.**\n\nUn point $M$ de la droite vérifie $\\overrightarrow{AM} = t\\,\\overrightarrow{AG}$ avec $t$ réel, et $\\overrightarrow{AG} = (1\\,;\\,1\\,;\\,1)$ :\n\n$$M(t\\,;\\,t\\,;\\,t)$$\n\n**Étape 4 - intersection.**\n\nOn reporte dans l'équation du plan :\n\n$$t + t + t = 1 \\qquad \\Longrightarrow \\qquad 3t = 1 \\qquad \\Longrightarrow \\qquad t = \\dfrac{1}{3}$$\n\n$$I\\left(\\dfrac{1}{3}\\,;\\,\\dfrac{1}{3}\\,;\\,\\dfrac{1}{3}\\right)$$\n\n**Étape 5 - vérifier que $I$ est le centre de gravité de $BDE$.**\n\nLe centre de gravité d'un triangle est le point dont chaque coordonnée est la **moyenne** des coordonnées des trois sommets :\n\n$$x_{G} = \\dfrac{1+0+0}{3} = \\dfrac{1}{3} \\qquad y_{G} = \\dfrac{0+1+0}{3} = \\dfrac{1}{3} \\qquad z_{G} = \\dfrac{0+0+1}{3} = \\dfrac{1}{3}$$\n\n**C'est exactement $I$.** Le point d'intersection est donc bien le centre de gravité du triangle $BDE$.\n\n**Étape 6 - le rapport.**\n\nDe $\\overrightarrow{AI} = \\dfrac{1}{3}\\overrightarrow{AG}$ :\n\n$$\\dfrac{AI}{AG} = \\dfrac{1}{3}$$\n\n**Étape 7 - interpréter.**\n\nLa grande diagonale $[AG]$ perce le plan $(BDE)$ au tiers de sa longueur depuis $A$.\n\nPar symétrie, elle perce également le plan $(CFH)$ — l'analogue du côté de $G$ — aux deux tiers. Ces deux plans découpent donc la diagonale en trois segments égaux.\n\n**Étape 8 - confirmer la perpendicularité.**\n\nLe vecteur normal au plan $(BDE)$ se lit sur son équation : $\\vec{n}(1\\,;\\,1\\,;\\,1)$.\n\nOr $\\overrightarrow{AG} = (1\\,;\\,1\\,;\\,1) = \\vec{n}$ : la droite $(AG)$ est **dirigée par le vecteur normal** au plan, donc perpendiculaire à ce plan.\n\nCela confirme analytiquement le résultat classique : la grande diagonale d'un cube est perpendiculaire au plan du triangle équilatéral formé par les trois sommets voisins de son extrémité.\n\n**Ce qu'il faut retenir.** Lire un vecteur normal directement sur l'équation d'un plan — les coefficients de $x$, $y$, $z$ — est l'outil le plus rentable de la géométrie analytique de l'espace. Il donne d'un coup la perpendicularité, la distance et les angles."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Les coordonnées d'un point sont les coefficients de $\\overrightarrow{AM}$ décomposé sur les trois vecteurs de base.",
+    "Recopie l'**ordre** des vecteurs de base avant tout calcul : il n'est presque jamais l'ordre alphabétique.",
+    "Un repère est orthonormé si les vecteurs de base sont deux à deux orthogonaux et de norme **$1$**.",
+    "Pour un cube d'arête $a \\neq 1$, divise les arêtes par $a$ pour normer — les coordonnées valent alors $0$ ou $a$.",
+    "Nombre de coordonnées non nulles : $0$ pour l'origine, $1$ pour un voisin, $2$ pour un opposé de face, $3$ pour l'opposé du cube.",
+    "Le sommet diamétralement opposé à l'origine a pour coordonnées $(1\\,;\\,1\\,;\\,1)$ : contrôle immédiat.",
+    "Longueurs de référence : arête $1$, diagonale de face $\\sqrt{2}$, grande diagonale $\\sqrt{3}$.",
+    "Lis la convention de nommage sur la figure : elle fixe toutes les coordonnées.",
+    "Le centre du cube est le milieu d'une grande diagonale ; le centre d'une face, le milieu d'une de ses diagonales.",
+    "Une erreur ici fausse tout l'exercice : contrôle avant de poursuivre."
+   ]
+  }
+ ]
+}

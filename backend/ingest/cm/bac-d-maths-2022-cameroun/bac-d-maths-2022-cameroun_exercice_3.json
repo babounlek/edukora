@@ -1,0 +1,181 @@
+{
+  "epreuve_source": "bac-d-maths-2022-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Mathématiques",
+  "nature_epreuve": null,
+  "serie": "D",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2022,
+  "duree_epreuve": "4h",
+  "coefficient": "4",
+  "numero_exercice": 3,
+  "titre_exercice": "Partie A — Exercice 3 : graphe pondéré et Dijkstra, régression linéaire, probabilités",
+  "points": 4.0,
+  "figures": [
+    {
+      "id": "fig-2",
+      "fichier": null,
+      "page_source": 1,
+      "type": "graphe",
+      "legende": "Graphe pondéré du réseau ferroviaire à 5 gares A,B,C,D,E, avec ABCD formant un quadrilatère extérieur au triangle CDE ; arêtes pondérées A-B=2, A-C=6, A-D=5, B-C=3, C-D=1, C-E=3, D-E=4 (distances en centaines de km).",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "enonce_intro_markdown": "**PARTIE A : ÉVALUATION DES RESSOURCES.**\n\n**Note sur le barème.** Le document source ne fait apparaître aucune répartition des points par sous-question pour cet exercice : seul le total de 4 points est indiqué. La répartition ci-dessous est une estimation raisonnable proposée à titre indicatif.\n\n**1.** Le réseau ferroviaire d'un pays compte cinq gares $A$, $B$, $C$, $D$ et $E$, reliées de la façon suivante :\n\n| Allant de | à | Distance (centaines de km) |\n|---|---|---|\n| A | B | 2 |\n| A | C | 6 |\n| A | D | 5 |\n| B | C | 3 |\n| C | D | 1 |\n| C | E | 3 |\n| D | E | 4 |\n\n**2.** Les droites de régression de $x$ en $y$ et de $y$ en $x$ d'une série statistique double sont respectivement données par : $x=0{,}135y+6{,}65$ et $y=6x-38$.\n\n**3.** Une boîte contient $3$ boules vertes, $2$ boules rouges et $5$ boules jaunes. On tire simultanément $2$ boules de la boîte et on suppose que tous les tirages sont équiprobables.",
+  "questions": [
+    {
+      "numero": "1a",
+      "points": "0,5pt",
+      "enonce_markdown": "Construire un graphe pondéré associé à ce réseau, sur lequel $ABCD$ est un quadrilatère extérieur au triangle $CDE$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-construire-un-graphe-pondere-a-partir-dun-tableau-de-distances-terminale-d",
+          "texte": "Construire un graphe pondéré consiste à représenter chaque lieu par un sommet et chaque liaison directe par une arête étiquetée du poids (distance) correspondant, en respectant les contraintes géométriques données sur la disposition des sommets."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nConstruire un graphe pondéré consiste à représenter chaque lieu par un sommet, et chaque liaison directe par une arête reliant les deux sommets correspondants, étiquetée du poids (ici la distance) donné dans le tableau.\n\n### Corrigé détaillé (description de la construction, à réaliser sur papier)\n\n**Sommets.** Cinq sommets $A$, $B$, $C$, $D$, $E$.\n\n**Arêtes et poids** (lues directement dans le tableau) :\n$$A\\text{-}B=2\\quad A\\text{-}C=6\\quad A\\text{-}D=5\\quad B\\text{-}C=3\\quad C\\text{-}D=1\\quad C\\text{-}E=3\\quad D\\text{-}E=4$$\n\n**Disposition imposée par l'énoncé.** $A$, $B$, $C$, $D$ forment un quadrilatère (par exemple $A$ en haut, $B$ à gauche, $C$ en bas, $D$ à droite, reliés dans cet ordre par les arêtes du quadrilatère $AB$, $BC$, $CD$, ainsi que les diagonales $AC$, $AD$ qui existent aussi comme arêtes), et $C$, $D$, $E$ forment un triangle EXTÉRIEUR à ce quadrilatère (c'est-à-dire que $E$ est placé à l'extérieur du quadrilatère $ABCD$, relié à $C$ et $D$ par les arêtes $CE$ et $DE$, formant ainsi le triangle $CDE$ accolé au quadrilatère le long du côté commun $[CD]$).\n\n**Remarque de transparence.** Cette construction graphique ne peut pas être produite comme fichier image dans ce corrigé ; la description ci-dessus (sommets, arêtes, poids, disposition relative) fournit toutes les données nécessaires pour la réaliser fidèlement à la main.",
+      "figures": [
+        "fig-2"
+      ],
+      "themes": [
+        "graphe pondéré",
+        "sommets",
+        "arêtes",
+        "Graphes — construction"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "1b",
+      "points": "1pt",
+      "enonce_markdown": "Déterminer par l'algorithme de DIJKSTRA, le plus court chemin de $A$ à $E$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-appliquer-lalgorithme-de-dijkstra-pour-trouver-le-plus-court-chemin-terminale-d",
+          "texte": "L'algorithme de Dijkstra construit progressivement, à partir du sommet de départ, la distance minimale vers chaque sommet en visitant à chaque étape le sommet non-visité de plus petite distance provisoire, et en mettant à jour les distances de ses voisins."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'algorithme de Dijkstra part du sommet de départ (distance $0$, les autres $+\\infty$), puis répète : choisir le sommet NON ENCORE VISITÉ de plus petite distance provisoire, le marquer visité, et mettre à jour (si c'est plus court) la distance provisoire de chacun de ses voisins non visités par (distance du sommet actuel + poids de l'arête).\n\n### Corrigé détaillé\nOn part de $A$ : $d(A)=0$, tous les autres sommets à $+\\infty$.\n\n**Étape 1 — visiter A (d=0).** Mise à jour des voisins : $d(B)=\\min(\\infty,0+2)=2$ ; $d(C)=\\min(\\infty,0+6)=6$ ; $d(D)=\\min(\\infty,0+5)=5$.\n\n**Étape 2 — visiter B (d=2, le plus petit non visité).** Voisin C : $d(C)=\\min(6,2+3)=\\min(6,5)=5$ (mis à jour, via B).\n\n**Étape 3 — visiter C ou D (tous deux à d=5) ; on visite C.** Voisins : $D$ : $d(D)=\\min(5,5+1)=\\min(5,6)=5$ (inchangé, reste via A). $E$ : $d(E)=\\min(\\infty,5+3)=8$.\n\n**Étape 4 — visiter D (d=5).** Voisin $E$ : $d(E)=\\min(8,5+4)=\\min(8,9)=8$ (inchangé, reste via C).\n\n**Étape 5 — visiter E (d=8).** Tous les sommets sont visités, l'algorithme se termine.\n\n**Reconstitution du chemin.** $d(C)=5$ a été obtenu via $B$ (étape 2), et $d(E)=8$ a été obtenu via $C$ (étape 3). Le chemin est donc $A\\to B\\to C\\to E$.\n\n**Vérification.** $A\\text{-}B\\text{-}C\\text{-}E$ : $2+3+3=8$. Comparaison avec les autres chemins possibles : $A\\text{-}D\\text{-}E$ : $5+4=9>8$ ; $A\\text{-}C\\text{-}E$ : $6+3=9>8$. Le chemin $A\\text{-}B\\text{-}C\\text{-}E$ est bien le plus court.\n\n**Conclusion.** Le plus court chemin de $A$ à $E$ est $A\\to B\\to C\\to E$, de longueur totale $8$ centaines de km, soit $800$km.",
+      "figures": [
+        "fig-2"
+      ],
+      "themes": [
+        "Dijkstra",
+        "graphe pondéré",
+        "plus court chemin",
+        "Graphes — plus court chemin"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "2a",
+      "points": "0,5pt",
+      "enonce_markdown": "Déterminer les coordonnées du point moyen du nuage de cette série.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-determiner-le-point-moyen-a-partir-des-deux-droites-de-regression-terminale-d",
+          "texte": "Le point moyen d'une série statistique double est l'unique point d'intersection des deux droites de régression, obtenu en résolvant le système formé par leurs deux équations."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLe point moyen $(\\bar x;\\bar y)$ d'une série statistique double appartient TOUJOURS aux deux droites de régression (de $y$ en $x$ et de $x$ en $y$) : c'est donc leur unique point d'intersection, que l'on trouve en résolvant le système formé par leurs deux équations.\n\n### Corrigé détaillé\nOn résout le système :\n$$\\begin{cases}x=0{,}135y+6{,}65\\\\y=6x-38\\end{cases}$$\n\n**Substitution.** On remplace $y$ par $6x-38$ dans la première équation :\n$$x=0{,}135(6x-38)+6{,}65$$\n$$x=0{,}81x-5{,}13+6{,}65$$\n$$x-0{,}81x=1{,}52$$\n$$0{,}19x=1{,}52$$\n$$x=\\frac{1{,}52}{0{,}19}=8$$\n\n**Calcul de y.**\n$$y=6\\times8-38=48-38=10$$\n\n**Vérification avec la première équation.** $0{,}135\\times10+6{,}65=1{,}35+6{,}65=8$ ✓.\n\n**Conclusion.** Le point moyen du nuage est $G(8\\,;\\,10)$.",
+      "figures": [],
+      "themes": [
+        "point moyen",
+        "droites de régression",
+        "système d'équations",
+        "Statistiques à deux variables — régression"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "2b",
+      "points": "0,5pt",
+      "enonce_markdown": "Déterminer le coefficient de corrélation linéaire entre $x$ et $y$, puis l'interpréter.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-le-coefficient-de-correlation-lineaire-via-le-produit-des-pentes-terminale-d",
+          "texte": "Le carré du coefficient de corrélation linéaire est égal au produit des pentes des deux droites de régression (y en x et x en y) ; le signe de r est celui de ces pentes."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi $y=ax+b$ est la droite de régression de $y$ en $x$ (pente $a$) et $x=a'y+b'$ celle de $x$ en $y$ (pente $a'$), alors le coefficient de corrélation linéaire vérifie $r^2=a\\times a'$, et $r$ a le même signe que $a$ et $a'$ (qui ont nécessairement le même signe).\n\n### Corrigé détaillé\n**Identification des pentes.** $y=6x-38$ donne $a=6$. $x=0{,}135y+6{,}65$ donne $a'=0{,}135$.\n\n**Calcul de $r^2$.**\n$$r^2=a\\times a'=6\\times0{,}135=0{,}81$$\n\n**Calcul de r.**\n$$r=\\pm\\sqrt{0{,}81}=\\pm0{,}9$$\n\nComme $a=6>0$ et $a'=0{,}135>0$ (les deux pentes sont positives), la corrélation est positive :\n$$r=0{,}9$$\n\n**Interprétation.** $r=0{,}9$ est proche de $1$ (en valeur absolue), ce qui indique une corrélation linéaire forte et positive entre $x$ et $y$ : l'ajustement affine est très pertinent, et $x$ et $y$ évoluent globalement dans le même sens.\n\n**Conclusion.** $r=0{,}9$, corrélation linéaire forte et positive.",
+      "figures": [],
+      "themes": [
+        "coefficient de corrélation",
+        "droites de régression",
+        "interprétation",
+        "Statistiques à deux variables — corrélation"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "3a",
+      "points": "0,75pt",
+      "enonce_markdown": "Calculer la probabilité d'obtenir deux boules de la même couleur.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-probabilite-de-tirage-simultane-via-les-combinaisons-terminale-d",
+          "texte": "Pour un tirage simultané de k objets parmi n (équiprobable), le nombre de tirages possibles est C(n,k) ; la probabilité d'un événement est le nombre de tirages favorables (comptés via des combinaisons) divisé par C(n,k)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour un tirage simultané de $k$ objets parmi $n$, équiprobable, le nombre total de tirages possibles est $\\binom nk$. La probabilité d'un événement est le nombre de tirages favorables (comptés via des combinaisons appropriées) divisé par $\\binom nk$.\n\n### Corrigé détaillé\nLa boîte contient $3+2+5=10$ boules. Le nombre total de tirages de $2$ boules parmi $10$ est :\n$$\\binom{10}2=\\frac{10\\times9}2=45$$\n\n**Tirages favorables (même couleur).** On additionne les tirages de 2 boules de même couleur pour chaque couleur :\n$$\\binom32=3\\quad\\text{(vertes)}\\qquad\\binom22=1\\quad\\text{(rouges)}\\qquad\\binom52=10\\quad\\text{(jaunes)}$$\n\n$$\\text{Total favorable}=3+1+10=14$$\n\n**Calcul de la probabilité.**\n$$P(\\text{même couleur})=\\frac{14}{45}$$\n\n**Conclusion.** $P(\\text{deux boules de la même couleur})=\\dfrac{14}{45}$.",
+      "figures": [],
+      "themes": [
+        "combinaisons",
+        "tirage simultané",
+        "équiprobabilité",
+        "Probabilités — combinatoire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    },
+    {
+      "numero": "3b",
+      "points": "0,75pt",
+      "enonce_markdown": "Calculer la probabilité d'obtenir deux boules de couleurs différentes.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-une-probabilite-de-tirage-simultane-via-les-combinaisons-terminale-d",
+          "texte": "L'événement complémentaire de « même couleur » est « couleurs différentes » ; sa probabilité s'obtient par P(différentes)=1-P(même couleur)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\n« Deux boules de couleurs différentes » est l'événement CONTRAIRE de « deux boules de la même couleur » : $P(\\text{différentes})=1-P(\\text{même couleur})$.\n\n### Corrigé détaillé\nD'après la question 3.a), $P(\\text{même couleur})=\\dfrac{14}{45}$.\n\n$$P(\\text{différentes})=1-\\frac{14}{45}=\\frac{45}{45}-\\frac{14}{45}=\\frac{31}{45}$$\n\n**Conclusion.** $P(\\text{deux boules de couleurs différentes})=\\dfrac{31}{45}$.\n\n### Conseil\nUtiliser l'événement contraire est beaucoup plus rapide que de recompter directement tous les tirages « couleurs différentes » (qui exigerait de sommer $\\binom31\\binom21+\\binom31\\binom51+\\binom21\\binom51$, plus long) : toujours envisager cette stratégie quand l'événement complémentaire est plus simple à dénombrer.",
+      "figures": [],
+      "themes": [
+        "combinaisons",
+        "tirage simultané",
+        "équiprobabilité",
+        "Probabilités — combinatoire"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": null,
+      "type_reponse": null,
+      "choix": [],
+      "reponse_correcte": ""
+    }
+  ],
+  "matiere_normalisee": "MATHS",
+  "classe": "Tle"
+}

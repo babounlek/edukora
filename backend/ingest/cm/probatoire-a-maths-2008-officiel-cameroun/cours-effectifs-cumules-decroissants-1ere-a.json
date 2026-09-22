@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-effectifs-cumules-decroissants-1ere-a",
+  "meta": {
+    "titre": "Effectifs cumulés décroissants et leur représentation graphique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Statistiques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "effectifs cumulés",
+      "statistiques",
+      "série continue",
+      "diagramme"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2008-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Session 2008 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-a-maths-2008-officiel-cameroun-ex2-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de joueurs ont au moins 20 ans dans une académie de football ? Combien de candidats ont un âge supérieur ou égal à une borne donnée ? Ce type de question, très fréquent dans les enquêtes réelles, ne se lit pas directement sur un tableau d'effectifs par classe : il faut cumuler les effectifs à partir d'une borne jusqu'à la fin de la série. C'est exactement ce que permettent les effectifs cumulés décroissants, un outil aussi utile pour lire une répartition que pour préparer le calcul de la médiane."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un tableau statistique organisé en classes",
+        "Additionner des effectifs",
+        "Placer des points dans un repère et tracer un graphique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer et représenter les effectifs cumulés décroissants",
+      "contenu_markdown": "L'effectif cumulé décroissant (ECD) associé à la borne inférieure d'une classe compte le nombre d'individus dont la valeur du caractère est supérieure ou égale à cette borne. On le calcule en additionnant l'effectif de la classe correspondante à ceux de toutes les classes suivantes, en partant de la dernière classe de la série et en remontant vers la première.\n\nPour le représenter : on place, pour chaque borne inférieure, un point d'abscisse cette borne et d'ordonnée l'ECD correspondant, et on relie les points consécutifs par des segments de droite. On ajoute toujours un dernier point à la borne supérieure de la dernière classe, avec une ordonnée nulle, pour montrer que l'effectif retombe à zéro au-delà de la série.",
+      "formule_principale": "ECD(\\text{borne inférieure de la classe } i) = \\sum_{k \\geqslant i} \\text{effectif}_k",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une série statistique donne la répartition d'un effectif de 100 individus en quatre classes : $[0,10[$ : 20, $[10,20[$ : 30, $[20,30[$ : 35, $[30,40[$ : 15. Construire le tableau des effectifs cumulés décroissants.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Partir de la dernière classe",
+          "justification": "L'ECD à la borne 30 compte tous les individus dont la valeur est supérieure ou égale à 30, c'est-à-dire uniquement ceux de la dernière classe",
+          "resultat_markdown": "$ECD(30)=15$"
+        },
+        {
+          "numero": 2,
+          "action": "Remonter à la classe précédente",
+          "justification": "On ajoute l'effectif de la classe $[20,30[$ à l'ECD déjà calculé",
+          "resultat_markdown": "$ECD(20)=35+15=50$"
+        },
+        {
+          "numero": 3,
+          "action": "Continuer à remonter",
+          "justification": "Même principe pour les deux classes restantes",
+          "resultat_markdown": "$ECD(10)=30+50=80 \\quad ; \\quad ECD(0)=20+80=100$"
+        }
+      ],
+      "conclusion_markdown": "Le tableau des effectifs cumulés décroissants est : $ECD(0)=100$, $ECD(10)=80$, $ECD(20)=50$, $ECD(30)=15$, et $ECD(40)=0$ pour fermer la série."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Cumuler dans le mauvais sens, en additionnant depuis la première classe comme pour un effectif cumulé croissant",
+          "pourquoi_faux": "L'ECD compte les individus « au-delà » d'une borne, pas « en dessous » : il faut donc partir de la fin de la série et remonter, pas l'inverse.",
+          "correction_markdown": "Commence toujours le calcul par la dernière classe : son ECD est simplement son propre effectif, ce qui sert de point de départ fiable."
+        },
+        {
+          "erreur_markdown": "Oublier le dernier point du graphique, celui d'ordonnée 0 à la borne supérieure de la dernière classe",
+          "pourquoi_faux": "Sans ce point, le diagramme s'arrête « en l'air » et ne montre pas que l'effectif retombe bien à zéro au-delà de la série.",
+          "correction_markdown": "Ajoute systématiquement ce point avant de tracer, même s'il n'apparaît pas explicitement dans le tableau de données fourni."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une série donne : $[0,5[$ : 8, $[5,10[$ : 12, $[10,15[$ : 10. Calculer les effectifs cumulés décroissants à chaque borne inférieure.",
+          "solution_markdown": "$ECD(10)=10$ (dernière classe)\n\n$ECD(5)=12+10=22$\n\n$ECD(0)=8+22=30$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une série donne : $[10,20[$ : 6, $[20,30[$ : 14, $[30,40[$ : 18, $[40,50[$ : 12. Construire le tableau complet des effectifs cumulés décroissants, en incluant le point qui ferme la série.",
+          "solution_markdown": "$ECD(40)=12$\n\n$ECD(30)=18+12=30$\n\n$ECD(20)=14+30=44$\n\n$ECD(10)=6+44=50$\n\nPoint de fermeture : $ECD(50)=0$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de 200 individus a pour effectifs cumulés décroissants : $ECD(0)=200$, $ECD(20)=150$, $ECD(40)=70$, $ECD(60)=20$, $ECD(80)=0$. Retrouver l'effectif de chacune des quatre classes $[0,20[$, $[20,40[$, $[40,60[$, $[60,80[$.",
+          "solution_markdown": "L'effectif d'une classe est la différence entre l'ECD à sa borne inférieure et l'ECD à sa borne supérieure (qui est la borne inférieure de la classe suivante).\n\nEffectif de $[0,20[$ : $200-150=50$\n\nEffectif de $[20,40[$ : $150-70=80$\n\nEffectif de $[40,60[$ : $70-20=50$\n\nEffectif de $[60,80[$ : $20-0=20$\n\nVérification : $50+80+50+20=200$, ce qui correspond bien à l'effectif total $ECD(0)=200$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'effectif cumulé décroissant compte les individus « au moins égaux » à une borne : on cumule en partant de la fin de la série.",
+        "Le calcul se fait classe par classe, en remontant, chaque ECD s'obtenant en ajoutant l'effectif courant à l'ECD déjà calculé.",
+        "Le diagramme est une ligne brisée strictement décroissante, qui se termine toujours par un point d'ordonnée 0.",
+        "Une échelle bien choisie sur les deux axes rend le diagramme lisible et évite de perdre des points de présentation.",
+        "Ce tableau prépare directement le calcul de la médiane et des quartiles d'une série continue."
+      ]
+    }
+  ]
+}

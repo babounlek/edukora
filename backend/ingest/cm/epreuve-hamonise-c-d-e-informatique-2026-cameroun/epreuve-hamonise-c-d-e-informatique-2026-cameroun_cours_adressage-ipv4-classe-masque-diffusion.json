@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-adressage-ipv4-classe-masque-diffusion-tle-c-d-e",
+  "meta": {
+    "titre": "Adressage IPv4 : classe, masque par défaut et adresse de diffusion",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": "C, D, E",
+    "sous_theme": "Réseaux locaux et adressage IP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "adresse IP",
+      "classe d'adresse",
+      "masque de sous-réseau",
+      "adresse de diffusion",
+      "adressage IPv4"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT002",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "epreuve-hamonise-c-d-e-informatique-2026-cameroun",
+    "epreuve_titre": "Examen Régional Harmonisé - Épreuve Théorique d'Informatique - Terminale C-D-E - Session 2026 (Région de l'Adamaoua)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex1-q6b-0",
+    "rappels_lies": [
+      "rdm-epreuve-hamonise-c-d-e-informatique-2026-cameroun-ex1-q6c-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un administrateur réseau qui reçoit un ordinateur avec l'adresse 192.168.25.8 doit savoir, en quelques secondes, à quel réseau cet ordinateur appartient et quelle est l'adresse qui permet de joindre tous les postes de ce réseau en une seule fois. C'est exactement le type de question posée dans les épreuves d'informatique du BAC dès qu'un schéma de réseau local est fourni. Ce cours te donne la méthode complète pour, à partir d'une simple adresse IP, retrouver sa classe, son masque par défaut, son adresse réseau et son adresse de diffusion, sans jamais avoir à deviner."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une adresse IPv4 s'écrit sous la forme de quatre nombres (octets) séparés par des points, chacun compris entre 0 et 255.",
+        "Savoir ce qu'est un réseau local et un équipement connecté à ce réseau (ordinateur, imprimante, serveur).",
+        "Connaître la notion de masque de sous-réseau comme séparateur entre la partie réseau et la partie hôte d'une adresse IP."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Classe, masque par défaut et adresse de diffusion d'une adresse IPv4",
+      "contenu_markdown": "Une adresse IPv4 se classe uniquement à partir de la valeur de son premier octet. Chaque classe impose un masque par défaut qui fixe la frontière entre la partie réseau (bits fixes pour tous les postes du même réseau) et la partie hôte (bits qui varient d'un poste à l'autre).",
+      "formule_principale": "Classe A : 1-126, masque 255.0.0.0 | Classe B : 128-191, masque 255.255.0.0 | Classe C : 192-223, masque 255.255.255.0",
+      "variantes": [
+        {
+          "nom": "Adresse réseau",
+          "quand_utiliser": "Pour identifier le réseau auquel appartient une adresse IP donnée.",
+          "contenu_markdown": "On met à 0 tous les bits de la partie hôte (ceux que le masque laisse à 0). En classe C, seul le dernier octet est concerné : il devient 0."
+        },
+        {
+          "nom": "Adresse de diffusion (broadcast)",
+          "quand_utiliser": "Pour envoyer un message à tous les postes d'un même réseau en une seule fois.",
+          "contenu_markdown": "On met à 1 tous les bits de la partie hôte. En classe C, seul le dernier octet est concerné : il devient 255, valeur maximale sur un octet."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un poste PC3, connecté au réseau local d'une entreprise, utilise l'adresse IP 192.168.25.8. Déterminer la classe de cette adresse, son masque par défaut et l'adresse de diffusion du réseau correspondant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler le premier octet de l'adresse IP",
+          "justification": "La classe d'une adresse IPv4 se détermine uniquement à partir de la valeur de son premier octet.",
+          "resultat_markdown": "Le premier octet de 192.168.25.8 est $192$."
+        },
+        {
+          "numero": 2,
+          "action": "Situer ce premier octet dans les intervalles de classes",
+          "justification": "L'intervalle 192-223 correspond à la classe C, comme rappelé dans la règle ci-dessus.",
+          "resultat_markdown": "$192 \\in [192\\,;\\,223]$, donc l'adresse 192.168.25.8 est de classe C."
+        },
+        {
+          "numero": 3,
+          "action": "Associer le masque par défaut de la classe trouvée",
+          "justification": "Chaque classe impose un masque par défaut fixe, indépendant de l'adresse précise étudiée.",
+          "resultat_markdown": "La classe C a pour masque par défaut $255.255.255.0$."
+        },
+        {
+          "numero": 4,
+          "action": "Déterminer l'adresse réseau",
+          "justification": "Le masque 255.255.255.0 fixe les trois premiers octets et laisse le dernier octet variable (partie hôte) : on met ce dernier octet à 0 pour obtenir l'adresse réseau.",
+          "resultat_markdown": "Adresse réseau $= 192.168.25.0$."
+        },
+        {
+          "numero": 5,
+          "action": "Déterminer l'adresse de diffusion",
+          "justification": "L'adresse de diffusion met à 1 tous les bits de la partie hôte, donc porte le dernier octet à sa valeur maximale 255.",
+          "resultat_markdown": "Adresse de diffusion $= 192.168.25.255$."
+        }
+      ],
+      "conclusion_markdown": "L'adresse 192.168.25.8 appartient à un réseau de classe C, de masque par défaut 255.255.255.0, d'adresse réseau 192.168.25.0 et d'adresse de diffusion 192.168.25.255 : c'est cette dernière adresse qui permettrait de joindre en une seule fois tous les postes de ce réseau, y compris PC3."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer que toute adresse commençant par 192.168 est « privée donc de classe A ».",
+          "pourquoi_faux": "Le caractère privé ou public d'une adresse (déterminé par des plages réservées comme 192.168.0.0/16) est une notion différente de la classe. La classe se lit uniquement sur le premier octet : 192 appartient à l'intervalle 192-223, donc à la classe C, jamais à la classe A.",
+          "correction_markdown": "Sépare toujours les deux questions : la classe se détermine par l'intervalle du premier octet (A, B ou C), le caractère privé se vérifie séparément sur des plages réservées connues (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)."
+        },
+        {
+          "erreur_markdown": "Deviner un masque de sous-réseau au hasard, par exemple garder 255.255.0.0 pour une adresse de classe C.",
+          "pourquoi_faux": "Le masque par défaut n'est jamais choisi librement : il est entièrement déterminé par la classe de l'adresse. Utiliser le mauvais masque change la frontière entre partie réseau et partie hôte, et fausse tous les calculs suivants (adresse réseau, diffusion, nombre d'hôtes).",
+          "correction_markdown": "Détermine toujours la classe en premier, à partir du premier octet, puis lis le masque par défaut correspondant dans la table de la règle : jamais l'inverse."
+        },
+        {
+          "erreur_markdown": "Confondre adresse réseau et adresse de diffusion, par exemple répondre 192.168.25.0 à une question qui demande l'adresse de diffusion.",
+          "pourquoi_faux": "L'adresse réseau met tous les bits hôte à 0 (elle identifie le réseau lui-même, elle n'est attribuée à aucun poste), tandis que l'adresse de diffusion met tous les bits hôte à 1 (elle sert à joindre tous les postes du réseau en une seule fois). Ce sont deux adresses distinctes aux deux extrémités de la plage du réseau.",
+          "correction_markdown": "Retiens un repère simple : adresse réseau = tous les bits hôte à 0 (le « début » de la plage), adresse de diffusion = tous les bits hôte à 1 (la « fin » de la plage)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer la classe et le masque par défaut de l'adresse IP 10.0.0.5.",
+          "solution_markdown": "Le premier octet de 10.0.0.5 est 10. Cette valeur appartient à l'intervalle 1-126, qui correspond à la classe A. Le masque par défaut de la classe A est 255.0.0.0. L'adresse 10.0.0.5 est donc une adresse de classe A, de masque par défaut 255.0.0.0."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un poste utilise l'adresse IP 172.16.5.20. Déterminer sa classe, son masque par défaut, l'adresse réseau et l'adresse de diffusion correspondantes.",
+          "solution_markdown": "Le premier octet est 172, qui appartient à l'intervalle 128-191 : l'adresse est donc de classe B, de masque par défaut 255.255.0.0. Ce masque fixe les deux premiers octets et laisse les deux derniers octets variables (partie hôte). L'adresse réseau s'obtient en mettant ces deux derniers octets à 0 : 172.16.0.0. L'adresse de diffusion s'obtient en les mettant à leur valeur maximale 255 : 172.16.255.255."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un réseau local de classe C a pour adresse réseau 192.168.100.0 avec le masque par défaut. Déterminer l'adresse de diffusion de ce réseau, puis calculer le nombre maximal de postes (hôtes) que ce réseau peut accueillir, sachant qu'une adresse réseau et une adresse de diffusion ne peuvent jamais être attribuées à un poste.",
+          "solution_markdown": "Le masque par défaut d'une classe C est 255.255.255.0 : seul le dernier octet forme la partie hôte, sur 8 bits. L'adresse de diffusion s'obtient en portant ce dernier octet à sa valeur maximale : 192.168.100.255.\n\nAvec 8 bits réservés à la partie hôte, le nombre total de combinaisons possibles pour ce dernier octet est $2^{8} = 256$ (de 0 à 255). Parmi ces 256 valeurs, il faut retirer la valeur 0, réservée à l'adresse réseau (192.168.100.0), et la valeur 255, réservée à l'adresse de diffusion (192.168.100.255). Le nombre de postes que ce réseau peut réellement accueillir est donc $256 - 2 = 254$ hôtes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Détermine toujours la classe d'une adresse IP à partir de son seul premier octet, jamais à partir de son allure générale ou de son caractère « privé ».",
+        "Une fois la classe connue, le masque par défaut est automatique : classe A → 255.0.0.0, classe B → 255.255.0.0, classe C → 255.255.255.0.",
+        "L'adresse réseau met tous les bits de la partie hôte à 0, l'adresse de diffusion les met tous à 1 : ce sont les deux bornes de la plage du réseau, jamais des adresses de poste.",
+        "En classe C, seul le dernier octet varie : c'est le raccourci le plus rapide pour calculer réseau et diffusion sans passer par le binaire.",
+        "Au BAC, ce type de question accompagne presque toujours un schéma de réseau local : identifie d'abord le type de matériel (switch, routeur), puis raisonne sur l'adressage IP séparément."
+      ]
+    }
+  ]
+}

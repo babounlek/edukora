@@ -1,0 +1,186 @@
+{
+ "cours_id": "cours-aire-triangle-rectangle-parametre-1ere-ce",
+ "meta": {
+  "titre": "Exprimer l'aire d'un triangle rectangle en fonction d'un paramètre",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Aires et modélisation",
+  "duree_estimee_min": 20,
+  "tags": ["aire d'un triangle rectangle", "carré", "paramètre", "modélisation", "mise en équation"],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qA4a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Un carré est une réserve d'angles droits. Chacun de ses quatre sommets en fournit un, gratuitement, et tout triangle appuyé sur deux côtés consécutifs hérite de cet angle droit. L'aire se calcule alors sans chercher aucune hauteur : demi-produit des deux côtés perpendiculaires, et c'est fini. Quand un point mobile est repéré par un paramètre, cette aire devient une fonction de ce paramètre — et c'est ainsi qu'un problème de géométrie se transforme en problème d'analyse."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la formule de l'aire d'un triangle",
+    "Savoir que les angles d'un carré sont droits",
+    "Exprimer une longueur restante par soustraction sur un segment",
+    "Distinguer les données imposées par l'énoncé de celles qui se déduisent de la figure"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Demi-produit des côtés de l'angle droit",
+   "contenu_markdown": "**La formule générale.** L'aire d'un triangle vaut\n\n$$\\mathcal{A} = \\frac{\\text{base} \\times \\text{hauteur}}{2}$$\n\n**Le cas du triangle rectangle.** Si le triangle est rectangle, chacun des deux côtés de l'angle droit est la hauteur relative à l'autre. Aucune construction n'est nécessaire :\n\n$$\\mathcal{A} = \\frac{c_{1} \\times c_{2}}{2}$$\n\noù $c_{1}$ et $c_{2}$ sont les longueurs des deux côtés de l'angle droit.\n\n**Le repérage dans un carré.** Tout triangle dont deux sommets appartiennent à deux côtés **consécutifs** du carré, le troisième étant leur sommet commun, est rectangle en ce sommet. Dans le carré $ABCD$ :\n\n- un triangle appuyé sur $[AB]$ et $[AD]$ est rectangle en $A$ ;\n- un triangle appuyé sur $[AD]$ et $[DC]$ est rectangle en $D$ ;\n\net ainsi de suite pour les quatre sommets.\n\n**La méthode, en trois gestes.**\n\n1. **Localiser** l'angle droit, en repérant le sommet commun aux deux côtés du carré concernés.\n2. **Exprimer** les deux longueurs en fonction du paramètre, en distinguant celles qui sont **imposées** de celles qui se **déduisent** par soustraction.\n3. **Appliquer** la formule et développer.\n\n**Le point délicat : imposé ou déduit ?** C'est là que se perdent la plupart des points. Dans le sujet 2014 :\n\n- $DN = AM = x$ est **imposé** par l'énoncé ;\n- $DM = AD - AM = 6 - x$ est **déduit** de la figure, comme ce qui reste du côté $[AD]$.\n\nDeux longueurs partant du même point $D$, mais l'une vaut $x$ et l'autre $6 - x$. Les confondre fausse l'aire, puis toute la suite du problème.\n\n**Le contrôle aux bornes.** Une expression d'aire en fonction d'un paramètre doit être **positive** sur tout le domaine, et s'annuler exactement lorsque le triangle dégénère. Pour $\\mathcal{A}(MDN) = \\dfrac{x(6-x)}{2}$ sur $[0\\,;\\,6]$ : nulle en $x = 0$ (où $N = D$) et en $x = 6$ (où $M = D$), positive entre les deux. Cohérent.\n\n**Le sens du résultat.** Une aire qui s'exprime par un trinôme du second degré est le pont vers l'analyse : la minimiser ou la maximiser revient à étudier une parabole.",
+   "formule_principale": "\\mathcal{A} = \\frac{c_{1} \\times c_{2}}{2} \\quad \\text{(triangle rectangle)}",
+   "variantes": [
+    {
+     "nom": "Formule trigonométrique de l'aire",
+     "quand_utiliser": "Quand le triangle n'est pas rectangle mais qu'on connaît deux côtés et l'angle compris",
+     "contenu_markdown": "L'aire d'un triangle quelconque vaut\n\n$$\\mathcal{A} = \\frac{1}{2} \\times AB \\times AC \\times \\sin\\widehat{A}$$\n\nOn retrouve le cas rectangle en posant $\\widehat{A} = 90^{\\circ}$, puisque $\\sin 90^{\\circ} = 1$.\n\nCette formule est indispensable dès que l'angle n'est plus droit, notamment dans les triangles appuyés sur une diagonale du carré, où l'angle vaut $45^{\\circ}$ et $\\sin 45^{\\circ} = \\dfrac{\\sqrt{2}}{2}$."
+    },
+    {
+     "nom": "Aire par le déterminant",
+     "quand_utiliser": "Quand les trois sommets sont connus par leurs coordonnées",
+     "contenu_markdown": "Dans un repère orthonormé, l'aire du triangle $ABC$ vaut la moitié de la valeur absolue du déterminant des deux vecteurs issus d'un même sommet :\n\n$$\\mathcal{A} = \\frac{1}{2}\\left|\\det\\left(\\overrightarrow{AB}\\,;\\,\\overrightarrow{AC}\\right)\\right|$$\n\nC'est la méthode la plus rapide en géométrie analytique, et elle ne demande de repérer ni angle droit ni hauteur. Elle constitue un excellent moyen de **vérifier** un résultat obtenu géométriquement."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCD$ est un carré de côté $6$, $I$ le milieu de $[AB]$, $M$ un point de $[AD]$ et $N$ un point de $[DC]$ tels que $AM = DN = x$. Exprimer les aires des triangles $IAM$ et $MDN$ en fonction de $x$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Localiser l'angle droit du triangle $IAM$",
+     "justification": "$I$ appartient à $[AB]$ et $M$ à $[AD]$, deux côtés consécutifs du carré de sommet commun $A$, où l'angle $\\widehat{DAB}$ vaut $90^{\\circ}$",
+     "resultat_markdown": "Le triangle $IAM$ est rectangle en $A$"
+    },
+    {
+     "numero": 2,
+     "action": "Calculer $AI$",
+     "justification": "$I$ est le milieu de $[AB]$, de longueur $6$",
+     "resultat_markdown": "$AI = \\dfrac{AB}{2} = \\dfrac{6}{2} = 3$"
+    },
+    {
+     "numero": 3,
+     "action": "Relever $AM$",
+     "justification": "C'est la donnée directe de l'énoncé",
+     "resultat_markdown": "$AM = x$"
+    },
+    {
+     "numero": 4,
+     "action": "Appliquer la formule",
+     "justification": "Demi-produit des deux côtés de l'angle droit",
+     "resultat_markdown": "$\\mathcal{A}(IAM) = \\dfrac{1}{2} \\times 3 \\times x = \\dfrac{3x}{2}$"
+    },
+    {
+     "numero": 5,
+     "action": "Localiser l'angle droit du triangle $MDN$",
+     "justification": "$M$ appartient à $[AD]$ et $N$ à $[DC]$, deux côtés consécutifs de sommet commun $D$",
+     "resultat_markdown": "Le triangle $MDN$ est rectangle en $D$"
+    },
+    {
+     "numero": 6,
+     "action": "Calculer $DM$ par soustraction",
+     "justification": "$M$ est sur $[AD]$ avec $AM = x$ : la longueur $DM$ est ce qui reste du côté",
+     "resultat_markdown": "$DM = AD - AM = 6 - x$"
+    },
+    {
+     "numero": 7,
+     "action": "Relever $DN$",
+     "justification": "C'est la contrainte $AM = DN$ imposée par l'énoncé — à ne pas confondre avec $DM$",
+     "resultat_markdown": "$DN = AM = x$"
+    },
+    {
+     "numero": 8,
+     "action": "Appliquer la formule",
+     "justification": "Demi-produit des deux côtés de l'angle droit en $D$",
+     "resultat_markdown": "$\\mathcal{A}(MDN) = \\dfrac{1}{2} \\times (6-x) \\times x = \\dfrac{6x - x^{2}}{2} = 3x - \\dfrac{x^{2}}{2}$"
+    },
+    {
+     "numero": 9,
+     "action": "Contrôler aux bornes",
+     "justification": "L'aire doit s'annuler quand le triangle dégénère",
+     "resultat_markdown": "En $x = 0$ : $N = D$, aire nulle, et la formule donne $0$. En $x = 6$ : $M = D$, aire nulle, et la formule donne $18 - 18 = 0$. Cohérent"
+    }
+   ],
+   "conclusion_markdown": "Les deux aires valent $\\mathcal{A}(IAM) = \\dfrac{3x}{2}$ et $\\mathcal{A}(MDN) = \\dfrac{x(6-x)}{2}$. Observe la différence de nature : la première est **linéaire** en $x$, parce qu'une seule des deux longueurs varie ; la seconde est **quadratique**, parce que les deux varient. C'est ce terme en $x^{2}$ qui produira le trinôme de la question c), puis toute l'étude de fonction de la partie B."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Confondre $DM$ et $DN$",
+     "pourquoi_faux": "Ces deux longueurs partent du même point $D$ mais ne sont pas égales : $DN = x$ est **imposé** par l'énoncé, tandis que $DM = 6 - x$ se **déduit** de la position de $M$ sur $[AD]$. Écrire $\\mathcal{A}(MDN) = \\dfrac{x^{2}}{2}$ fausse tout ce qui suit.",
+     "correction_markdown": "Fais un croquis et annote chaque longueur avec son origine : « imposé par l'énoncé » ou « reste du côté ». Puis contrôle en $x = 6$ : l'aire doit être nulle, ce que $\\dfrac{x^2}{2}$ ne donne pas."
+    },
+    {
+     "erreur_markdown": "Chercher une hauteur alors que le triangle est rectangle",
+     "pourquoi_faux": "Ce n'est pas faux, mais c'est du travail inutile : dans un triangle rectangle, chaque côté de l'angle droit **est** la hauteur relative à l'autre. Construire une hauteur oblique complique inutilement et introduit des risques d'erreur.",
+     "correction_markdown": "Avant tout calcul d'aire dans une figure contenant un carré ou un rectangle, cherche l'angle droit. Il est presque toujours là, et il économise plusieurs lignes."
+    },
+    {
+     "erreur_markdown": "Oublier de diviser par $2$",
+     "pourquoi_faux": "Écrire $\\mathcal{A}(IAM) = 3x$ donne l'aire du **rectangle** de côtés $3$ et $x$, soit le double du triangle. L'erreur se propage silencieusement jusqu'à la question c), où le découpage ne bouclera plus.",
+     "correction_markdown": "Contrôle la cohérence globale : la somme des quatre morceaux doit valoir $36$, l'aire du carré. C'est ce test qui révèle l'oubli du facteur $\\dfrac{1}{2}$."
+    },
+    {
+     "erreur_markdown": "Prendre $AI = 6$ au lieu de $3$",
+     "pourquoi_faux": "$I$ est le **milieu** de $[AB]$, donc $AI$ vaut la moitié du côté. Prendre le côté entier revient à confondre $I$ et $B$.",
+     "correction_markdown": "Relis la définition de chaque point avant de l'utiliser dans un calcul. Un milieu divise par deux : c'est simple, et c'est précisément pour cela qu'on l'oublie."
+    },
+    {
+     "erreur_markdown": "Ne pas vérifier la positivité de l'expression obtenue",
+     "pourquoi_faux": "Une aire est toujours positive ou nulle. Une expression comme $\\dfrac{x^{2}-6x}{2}$, négative sur $\\left]0\\,;\\,6\\right[$, signale une erreur de signe qu'un simple regard aurait détectée.",
+     "correction_markdown": "Teste ton expression sur une valeur intermédiaire, par exemple $x = 3$ : le résultat doit être strictement positif. Ce contrôle prend cinq secondes."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "$ABCD$ est un rectangle avec $AB = 8$ et $AD = 5$. Un point $P$ appartient au segment $[AB]$ avec $AP = t$, où $0 \\leqslant t \\leqslant 8$. Exprimer en fonction de $t$ les aires des triangles $APD$ et $PBC$, et vérifier que leur somme est constante.",
+     "solution_markdown": "**Étape 1 - le triangle $APD$.**\n\nLe point $P$ appartient à $[AB]$ et le point $D$ à $[AD]$ : ces deux côtés du rectangle sont consécutifs, de sommet commun $A$. Le triangle $APD$ est donc rectangle en $A$.\n\nSes côtés de l'angle droit valent $AP = t$ et $AD = 5$ :\n\n$$\\mathcal{A}(APD) = \\dfrac{1}{2} \\times t \\times 5 = \\dfrac{5t}{2}$$\n\n**Étape 2 - le triangle $PBC$.**\n\nLe point $P$ appartient à $[AB]$ et $C$ à $[BC]$, deux côtés consécutifs de sommet commun $B$. Le triangle $PBC$ est rectangle en $B$.\n\nSes côtés de l'angle droit valent :\n\n$$PB = AB - AP = 8 - t \\qquad \\text{et} \\qquad BC = AD = 5$$\n\n$$\\mathcal{A}(PBC) = \\dfrac{1}{2} \\times (8-t) \\times 5 = \\dfrac{5(8-t)}{2} = 20 - \\dfrac{5t}{2}$$\n\n**Étape 3 - la somme.**\n\n$$\\mathcal{A}(APD) + \\mathcal{A}(PBC) = \\dfrac{5t}{2} + 20 - \\dfrac{5t}{2} = 20$$\n\n**La somme est constante, égale à $20$, indépendamment de $t$.**\n\n**Interprétation géométrique.** L'aire du rectangle vaut $8 \\times 5 = 40$, et $20$ en est exactement la moitié. Ce n'est pas un hasard : les deux triangles ont la même hauteur $5$, et leurs bases $AP$ et $PB$ se complètent pour former le côté $[AB]$ entier. Leur somme vaut donc $\\dfrac{5 \\times 8}{2} = 20$ quelle que soit la position de $P$.\n\n**Contrôle aux bornes.** En $t = 0$ : le triangle $APD$ dégénère, aire nulle, et $\\mathcal{A}(PBC) = 20$, ce qui est la moitié du rectangle. Conforme.\n\n**Remarque.** Le troisième triangle, $PDC$, occupe donc lui aussi une aire constante de $40 - 20 = 20$. C'est la propriété classique du triangle de base fixe et de sommet mobile sur une parallèle."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABCD$ est un carré de côté $10$. Les points $M$ et $N$ appartiennent respectivement à $[AB]$ et $[AD]$, avec $AM = x$ et $AN = 10 - x$, où $0 \\leqslant x \\leqslant 10$. Exprimer l'aire du triangle $AMN$ en fonction de $x$, puis déterminer la valeur de $x$ pour laquelle cette aire est **maximale**.",
+     "solution_markdown": "**Étape 1 - l'expression de l'aire.**\n\nLe triangle $AMN$ est rectangle en $A$, puisque $M$ appartient à $[AB]$ et $N$ à $[AD]$, deux côtés consécutifs du carré.\n\n$$\\mathcal{A}(x) = \\dfrac{1}{2} \\times AM \\times AN = \\dfrac{1}{2} \\times x \\times (10 - x) = \\dfrac{10x - x^{2}}{2} = -\\dfrac{x^{2}}{2} + 5x$$\n\n**Étape 2 - reconnaître la nature de la fonction.**\n\nC'est un trinôme du second degré de coefficient dominant $a = -\\dfrac{1}{2} < 0$ : sa courbe est une parabole tournée vers le bas, qui admet donc un **maximum** au sommet.\n\n**Étape 3 - abscisse du sommet.**\n\n$$x_{0} = -\\dfrac{b}{2a} = -\\dfrac{5}{2 \\times \\left(-\\dfrac{1}{2}\\right)} = -\\dfrac{5}{-1} = 5$$\n\nCette valeur appartient bien à $[0\\,;\\,10]$ : le maximum est atteint.\n\n**Étape 4 - valeur du maximum.**\n\n$$\\mathcal{A}(5) = -\\dfrac{25}{2} + 25 = \\dfrac{-25 + 50}{2} = \\dfrac{25}{2} = 12{,}5$$\n\n**Conclusion.** L'aire est maximale pour $x = 5$, c'est-à-dire lorsque $M$ et $N$ sont les **milieux** de leurs côtés respectifs, et elle vaut alors $12{,}5$ unités d'aire.\n\n**Contrôle aux bornes.** En $x = 0$ : $M = A$, aire nulle, et la formule donne $0$. En $x = 10$ : $N = A$, aire nulle, et la formule donne $-50 + 50 = 0$. Conforme.\n\n**Contrôle par une méthode alternative.** Le produit $x(10-x)$ de deux nombres de somme constante $10$ est maximal quand ils sont **égaux**, donc pour $x = 5$, où il vaut $25$. L'aire vaut alors $\\dfrac{25}{2}$. Même résultat.\n\n**Remarque.** L'aire maximale, $12{,}5$, ne représente que $\\dfrac{12{,}5}{100} = 12{,}5\\,\\%$ de celle du carré. Un huitième : c'est nettement moins que ce que l'intuition suggère."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "$ABCD$ est un carré de côté $a$. Un point $M$ décrit $[AD]$ avec $AM = x$, et $N$ est le point de $[DC]$ tel que $DN = x$. Soit $I$ le milieu de $[AB]$. Déterminer la valeur de $x$ pour laquelle les triangles $IAM$ et $MDN$ ont la **même aire**, puis comparer cette aire commune à celle du carré.",
+     "solution_markdown": "**Étape 1 - les deux aires.**\n\nLe triangle $IAM$ est rectangle en $A$, avec $AI = \\dfrac{a}{2}$ et $AM = x$ :\n\n$$\\mathcal{A}_{1}(x) = \\dfrac{1}{2} \\times \\dfrac{a}{2} \\times x = \\dfrac{ax}{4}$$\n\nLe triangle $MDN$ est rectangle en $D$, avec $DM = a - x$ et $DN = x$ :\n\n$$\\mathcal{A}_{2}(x) = \\dfrac{1}{2} \\times (a-x) \\times x = \\dfrac{x(a-x)}{2}$$\n\n**Étape 2 - poser l'équation.**\n\n$$\\dfrac{ax}{4} = \\dfrac{x(a-x)}{2}$$\n\n**Étape 3 - résoudre.**\n\nOn multiplie les deux membres par $4$ :\n\n$$ax = 2x(a-x)$$\n\n$$ax = 2ax - 2x^{2}$$\n\n$$2x^{2} - ax = 0$$\n\n$$x(2x - a) = 0$$\n\n**Deux solutions :**\n\n$$x = 0 \\qquad \\text{ou} \\qquad x = \\dfrac{a}{2}$$\n\n**Étape 4 - discuter.**\n\nLa solution $x = 0$ est **dégénérée** : les deux triangles se réduisent alors à des segments, d'aires toutes deux nulles. Elle vérifie l'équation mais ne présente aucun intérêt géométrique.\n\nLa solution utile est donc\n\n$$x = \\dfrac{a}{2}$$\n\nc'est-à-dire lorsque $M$ est le **milieu** de $[AD]$.\n\n**Étape 5 - l'aire commune.**\n\n$$\\mathcal{A}_{1}\\left(\\dfrac{a}{2}\\right) = \\dfrac{a \\times \\dfrac{a}{2}}{4} = \\dfrac{a^{2}}{8}$$\n\n**Vérification par la seconde expression :**\n\n$$\\mathcal{A}_{2}\\left(\\dfrac{a}{2}\\right) = \\dfrac{\\dfrac{a}{2}\\left(a - \\dfrac{a}{2}\\right)}{2} = \\dfrac{\\dfrac{a}{2} \\times \\dfrac{a}{2}}{2} = \\dfrac{a^{2}}{8}$$\n\nLes deux coïncident.\n\n**Étape 6 - comparaison au carré.**\n\nL'aire du carré vaut $a^{2}$, donc\n\n$$\\dfrac{\\mathcal{A}_{1}}{\\mathcal{A}(ABCD)} = \\dfrac{a^{2}/8}{a^{2}} = \\dfrac{1}{8}$$\n\n**Chacun des deux triangles occupe exactement un huitième du carré.**\n\n**Contrôle sur le sujet 2014.** Pour $a = 6$ : $x = 3$, et l'aire commune vaut $\\dfrac{36}{8} = \\dfrac{9}{2} = 4{,}5$. On retrouve bien les valeurs $\\mathcal{A}(IAM) = \\dfrac{3 \\times 3}{2} = \\dfrac{9}{2}$ et $\\mathcal{A}(MDN) = \\dfrac{3 \\times 3}{2} = \\dfrac{9}{2}$ du corrigé. Conforme.\n\n**Remarque sur le résultat.** Le rapport $\\dfrac{1}{8}$ est indépendant de $a$ : c'est le propre des problèmes d'aires en géométrie, où les rapports sont invariants par changement d'échelle. On aurait donc pu raisonner directement sur le carré de côté $1$, puis conclure par homothétie."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Dans un triangle rectangle, l'aire vaut le demi-produit des deux côtés de l'angle droit : aucune hauteur à construire.",
+    "Tout triangle appuyé sur deux côtés consécutifs d'un carré est rectangle en leur sommet commun.",
+    "Distingue les longueurs **imposées** par l'énoncé de celles **déduites** par soustraction : $DN = x$ mais $DM = 6 - x$.",
+    "Vérifie la positivité de l'expression obtenue et son annulation aux cas dégénérés.",
+    "N'oublie pas le facteur $\\dfrac{1}{2}$ : sans lui tu calcules l'aire du rectangle.",
+    "Une aire linéaire en $x$ signale qu'une seule longueur varie ; une aire quadratique, que les deux varient.",
+    "Pour un triangle non rectangle, utilise $\\mathcal{A} = \\dfrac{1}{2}\\,AB \\times AC \\times \\sin\\widehat{A}$.",
+    "En repère, l'aire vaut la moitié de la valeur absolue du déterminant des deux vecteurs issus d'un sommet : bon moyen de contrôle.",
+    "Une aire exprimée par un trinôme du second degré s'optimise en cherchant le sommet de la parabole.",
+    "Les rapports d'aires sont invariants par changement d'échelle : on peut raisonner sur un carré de côté $1$."
+   ]
+  }
+ ]
+}

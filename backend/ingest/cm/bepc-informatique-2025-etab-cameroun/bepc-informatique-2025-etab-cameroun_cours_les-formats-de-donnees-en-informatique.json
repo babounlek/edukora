@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-les-formats-de-donnees-en-informatique-3e-bepc-informatique-2025-etab-cameroun",
+  "meta": {
+    "titre": "Les formats de données en informatique",
+    "matiere": "Informatique",
+    "matiere_normalisee": "INFORMATIQUE",
+    "pays": "cm",
+    "serie": null,
+    "classe": "3e",
+    "sous_theme": "Représentation de l'information",
+    "duree_estimee_min": 25,
+    "tags": ["format de données", "extension de fichier", "codage", "convention d'enregistrement", "compatibilité"],
+    "savoir_officiel": {"classe": "3e", "serie_label": null, "module_numero": "301", "savoir_numero": "II"},
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2025-etab-cameroun",
+    "epreuve_titre": "BEPC blanc n°1 - Collège Mgr François-Xavier Vogt - Épreuve théorique d'informatique - Avril 2025",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2025-etab-cameroun-ex2-q2-1",
+    "rappels_lies": [],
+    "correction_id": "corr-bepc-informatique-2025-etab-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu envoies une photo par WhatsApp, elle s'affiche. Tu envoies le même fichier à un ami qui l'ouvre avec le Bloc-notes : il voit une avalanche de symboles incompréhensibles. Le fichier n'a pourtant pas changé. Ce qui a changé, c'est la convention utilisée pour le relire.\n\nDans la mémoire d'un ordinateur, tout est suite de 0 et de 1. Une même suite peut désigner une lettre, un pixel bleu ou un montant en francs CFA : rien dans les bits eux-mêmes ne dit lequel. Le format de données est précisément l'accord qui lève cette ambiguïté. Ce cours t'apprend à le définir, à le reconnaître et à ne plus le confondre avec le logiciel qui l'ouvre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir que l'ordinateur ne manipule que des 0 et des 1 (le codage binaire)",
+        "Savoir ce qu'est un fichier et reconnaître son nom et son extension",
+        "Connaître le principe du code ASCII : à chaque caractère correspond un nombre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Qu'est-ce qu'un format de données",
+      "contenu_markdown": "**Définition**\n\nUn format de données est la convention qui fixe la manière dont une information est codée, organisée et enregistrée en mémoire ou dans un fichier, afin que tout logiciel respectant cette convention puisse la relire et l'interpréter correctement.\n\nTrois idées sont contenues dans cette phrase, et il faut les tenir ensemble :\n\n1. **Codée** : le format dit avec quel code les symboles sont écrits (ASCII, Unicode, binaire naturel).\n2. **Organisée** : il dit dans quel ordre les éléments se suivent, et souvent où commence et où finit chaque partie.\n3. **Convention partagée** : celui qui enregistre et celui qui relit appliquent la même règle. Sans cet accord, la relecture est impossible.\n\n**Les grandes familles de formats**\n\n| Nature du contenu | Formats courants |\n|---|---|\n| Texte | `.txt`, `.docx`, `.pdf`, `.odt` |\n| Image | `.jpg`, `.png`, `.bmp`, `.gif` |\n| Son | `.mp3`, `.wav` |\n| Vidéo | `.mp4`, `.avi` |\n| Données tabulaires | `.csv`, `.xlsx` |\n| Programme exécutable | `.exe` |\n\n**L'extension n'est pas le format**\n\nL'extension (`.jpg`, `.docx`) est la marque visible qui annonce le format au système d'exploitation, afin qu'il choisisse le bon logiciel d'ouverture. Elle n'est qu'une étiquette : renommer `photo.jpg` en `photo.txt` ne modifie pas un seul bit du contenu, cela trompe simplement le système, qui essaiera de lire l'image comme un texte et n'affichera que des symboles absurdes.\n\n**On parle aussi de format pour les nombres**\n\nAu-delà des fichiers, le mot désigne la façon d'écrire une valeur : format binaire (`1101`), format décimal (`13`), format hexadécimal (`D`). C'est la même idée de convention d'écriture, appliquée à un nombre au lieu d'un document.",
+      "formule_principale": "Format de données = convention de codage + convention d'organisation, partagée entre celui qui écrit et celui qui lit",
+      "variantes": [
+        {
+          "nom": "Formats ouverts et formats propriétaires",
+          "quand_utiliser": "Quand on doit choisir un format pour échanger un document avec quelqu'un dont on ne connaît pas les logiciels",
+          "contenu_markdown": "Un **format ouvert** est publié : n'importe quel éditeur peut écrire un logiciel qui le lit. Exemples : `.txt`, `.csv`, `.png`, `.odt`, `.pdf`.\n\nUn **format propriétaire** appartient à une entreprise, qui n'en publie pas toujours la spécification complète. Exemples : `.docx` de Microsoft, `.psd` d'Adobe.\n\nConséquence pratique : pour envoyer un document à quelqu'un dont tu ignores l'équipement, choisis un format ouvert. Un `.pdf` ou un `.txt` s'ouvre partout, un `.psd` presque nulle part."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Définir **format de données** et citer un exemple utilisé en informatique. *(1 pt)*",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les deux consignes de la question",
+          "justification": "La question contient le verbe « définir » puis le verbe « citer ». Ce sont deux tâches distinctes, notées séparément : sur 1 pt, on compte 0,5 pt pour chacune.",
+          "resultat_markdown": "Tâche 1 : produire une définition. Tâche 2 : produire un exemple concret."
+        },
+        {
+          "numero": 2,
+          "action": "Construire la définition à partir de la fonction du format",
+          "justification": "Une définition se construit en disant à quoi sert la notion. Un format sert à ce qu'une information enregistrée par un logiciel puisse être relue correctement par un autre : c'est donc une convention.",
+          "resultat_markdown": "« Un format de données est la convention qui fixe la manière dont une information est codée, organisée et enregistrée dans un fichier, afin qu'un logiciel puisse la relire et l'interpréter correctement. »"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir un exemple sûr et l'écrire avec son type de contenu",
+          "justification": "Un exemple isolé (« jpg ») est recevable, mais un exemple situé montre que la notion est comprise et non récitée. On précise donc à quel type de contenu il s'applique.",
+          "resultat_markdown": "« Exemple : le format `.jpg`, utilisé pour enregistrer les images. »"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier que l'exemple illustre bien la définition donnée",
+          "justification": "C'est le contrôle qui évite l'erreur la plus fréquente : citer un logiciel au lieu d'un format. On se demande si l'exemple est une convention d'écriture ou un programme.",
+          "resultat_markdown": "`.jpg` est bien une convention d'enregistrement des images, pas un programme : l'exemple est cohérent avec la définition. Si l'on avait écrit « Word », le contrôle aurait échoué, car Word est un logiciel."
+        }
+      ],
+      "conclusion_markdown": "La réponse complète tient en deux phrases : une définition centrée sur le mot **convention**, et un exemple d'extension rattaché à un type de contenu. Les deux demi-points sont acquis."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « Word », « Excel » ou « Photoshop » quand on demande un exemple de format.",
+          "pourquoi_faux": "Ce sont des logiciels, c'est-à-dire des programmes qui manipulent des fichiers. Le format est la convention d'écriture du fichier lui-même. Un même format peut d'ailleurs être ouvert par plusieurs logiciels : un `.docx` s'ouvre avec Word, LibreOffice Writer ou Google Docs.",
+          "correction_markdown": "Cite l'extension, pas le programme : `.docx` et non Word, `.xlsx` et non Excel, `.psd` et non Photoshop."
+        },
+        {
+          "erreur_markdown": "Croire que changer l'extension d'un fichier change son format.",
+          "pourquoi_faux": "L'extension n'est qu'une étiquette lue par le système d'exploitation pour choisir le logiciel d'ouverture. Le contenu du fichier, lui, reste codé selon l'ancienne convention. Renommer `photo.jpg` en `photo.docx` produit un fichier que Word ouvrira, mais ne saura pas interpréter.",
+          "correction_markdown": "Pour changer réellement de format, il faut convertir le fichier avec un logiciel adapté (Enregistrer sous, ou Exporter), ce qui réécrit le contenu selon la nouvelle convention."
+        },
+        {
+          "erreur_markdown": "Définir le format comme « la forme du fichier » ou « la présentation du document ».",
+          "pourquoi_faux": "Cette formulation confond le format de données avec la mise en forme (police, couleurs, marges). Le format de données concerne le codage interne, invisible à l'écran ; la mise en forme concerne l'apparence, visible.",
+          "correction_markdown": "Emploie le mot **convention** ou l'expression **manière dont l'information est codée et enregistrée**. Ce sont les termes que cherche le correcteur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classer les éléments suivants en deux colonnes, **formats** et **logiciels** : `.mp3`, VLC, `.png`, Paint, `.pdf`, Adobe Reader.",
+          "solution_markdown": "On applique le critère : un format est une convention d'écriture, reconnaissable à son extension précédée d'un point ; un logiciel est un programme que l'on lance.\n\n| Formats | Logiciels |\n|---|---|\n| `.mp3` | VLC |\n| `.png` | Paint |\n| `.pdf` | Adobe Reader |\n\nOn remarque que chaque ligne associe un format au logiciel qui l'ouvre habituellement : `.mp3` avec VLC, `.png` avec Paint, `.pdf` avec Adobe Reader. C'est précisément cette proximité d'usage qui fait naître la confusion entre les deux notions."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève enregistre son devoir sous le nom `devoir.docx`. Son professeur ne dispose que d'un ordinateur sans suite bureautique Microsoft et ne parvient pas à ouvrir le fichier. Proposer une solution en une phrase, et justifier par la notion de format.",
+          "solution_markdown": "**Solution proposée** : l'élève doit réenregistrer son devoir dans un format ouvert, par exemple `.pdf`, en utilisant la commande « Enregistrer sous » ou « Exporter » de son traitement de texte.\n\n**Justification** : `.docx` est un format propriétaire de Microsoft ; seul un logiciel connaissant cette convention peut relire correctement le fichier. Le `.pdf` est au contraire un format ouvert, dont la spécification est publiée : tous les systèmes disposent d'un lecteur capable de l'interpréter.\n\n**Ce qu'il ne faut surtout pas faire** : renommer le fichier en `devoir.pdf`. Le nom changerait, mais le contenu resterait écrit selon la convention `.docx` : le lecteur PDF échouerait à l'ouvrir. Le changement de format exige une conversion réelle, pas un changement d'étiquette."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux fichiers pèsent le même nombre d'octets : `note.txt` et `note.jpg`. Peut-on en déduire qu'ils contiennent la même information ? Répondre et justifier en s'appuyant sur la notion de convention de codage.",
+          "solution_markdown": "**Réponse** : non, on ne peut rien en déduire.\n\n**Justification, étape par étape** :\n\n1. Dans les deux fichiers, l'information est physiquement la même chose : une suite de bits, c'est-à-dire de 0 et de 1. La taille en octets ne mesure que la longueur de cette suite.\n2. Rien, dans la suite de bits elle-même, ne dit ce qu'elle représente. C'est le format qui l'indique.\n3. Le format `.txt` prescrit de lire la suite octet par octet et de traduire chaque octet en caractère selon la table ASCII.\n4. Le format `.jpg` prescrit tout autre chose : lire d'abord un en-tête donnant les dimensions de l'image, puis décompresser le reste pour reconstituer les pixels.\n5. Appliquées à une même suite de bits, ces deux conventions produisent donc deux informations totalement différentes.\n\n**Conclusion** : deux fichiers de même taille peuvent porter des informations sans aucun rapport. La taille mesure la quantité de bits, jamais leur signification. Seul le format donne un sens aux bits."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un format de données est une **convention** : elle dit comment l'information est codée et organisée, pour que celui qui relit comprenne ce que celui qui a écrit voulait dire.",
+        "Retiens le mot-clé du barème : convention. Une définition qui parle de « forme » ou de « présentation » manque la notion.",
+        "L'extension est l'étiquette, le format est le contenu. Renommer un fichier ne le convertit pas : il faut passer par « Enregistrer sous ».",
+        "Ne confonds jamais le format et le logiciel : `.docx` est un format, Word est un logiciel. Un même format s'ouvre avec plusieurs logiciels.",
+        "Pour échanger un document sans risque, choisis un format ouvert comme `.pdf`, `.txt` ou `.png`.",
+        "Au BEPC, cette notion tombe sous forme de définition avec exemple (1 pt), ou dans une question de classement associant un fichier au logiciel capable de l'ouvrir."
+      ]
+    }
+  ]
+}

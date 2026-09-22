@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-avantages-et-inconvenients-de-la-virtualisation-terminale-ti",
+  "meta": {
+    "titre": "Avantages et inconvénients de la virtualisation",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Virtualisation",
+    "duree_estimee_min": 15,
+    "tags": [
+      "virtualisation",
+      "avantages",
+      "inconvénients",
+      "mutualisation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Regrouper trois serveurs sur une seule machine grâce à la virtualisation semble une bonne affaire à tous les égards : moins de matériel, moins de factures d'électricité. Mais une question mérite d'être posée avant de généraliser la méthode à toute une salle serveur : que se passe-t-il si cette unique machine tombe en panne, ou si les trois services doivent fonctionner à pleine charge en même temps ? Peser avantages et inconvénients d'un choix technique est une compétence attendue à l'examen autant que la définition elle-même."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition de la virtualisation",
+        "Notion de ressource matérielle (processeur, mémoire)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Évaluer un choix technique par comparaison",
+      "contenu_markdown": "Un avantage ou un inconvénient s'évalue toujours par comparaison avec la situation qu'il remplace : ici, plusieurs machines physiques dédiées contre une seule machine virtualisée.\n\n**Avantage type.** Mutualisation du matériel : plusieurs systèmes fonctionnent sur un seul ordinateur physique, ce qui réduit le coût d'achat, d'entretien et de consommation électrique.\n\n**Inconvénient type.** Partage des ressources : les machines virtuelles se partagent le processeur et la mémoire d'une seule machine physique, donc chacune est moins puissante qu'une machine dédiée, et une panne matérielle de l'hôte rend indisponibles toutes les machines virtuelles à la fois.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une petite entreprise héberge son serveur de messagerie et son serveur de fichiers sur deux machines virtuelles installées sur un seul serveur physique. Analyser un avantage et un risque de cette organisation.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier ce qui est mutualisé",
+          "justification": "L'avantage de la virtualisation vient toujours du partage d'un même matériel.",
+          "resultat_markdown": "Les deux services (messagerie et fichiers) utilisent le même processeur, la même mémoire et la même alimentation électrique, au lieu de deux serveurs physiques distincts."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire l'avantage économique",
+          "justification": "Moins de matériel signifie moins de dépenses d'achat et d'exploitation.",
+          "resultat_markdown": "L'entreprise économise l'achat d'un second serveur physique, ainsi que sa consommation électrique et sa maintenance."
+        },
+        {
+          "numero": 3,
+          "action": "Identifier le risque correspondant",
+          "justification": "Ce qui est mutualisé devient aussi un point de défaillance commun.",
+          "resultat_markdown": "Si le serveur physique tombe en panne, les DEUX services (messagerie ET fichiers) sont interrompus en même temps, alors qu'avec deux serveurs distincts, la panne de l'un n'aurait affecté que le service qu'il hébergeait."
+        }
+      ],
+      "conclusion_markdown": "La virtualisation transforme une économie de matériel en un point de défaillance unique : c'est le compromis fondamental que le technicien doit anticiper avant de la déployer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne citer qu'un avantage vague comme « c'est plus pratique »",
+          "pourquoi_faux": "Une réponse d'examen doit nommer le mécanisme précis (mutualisation du matériel, réduction des coûts), pas une impression générale non justifiée.",
+          "correction_markdown": "Nomme toujours la ressource concrètement mutualisée (matériel, électricité, espace) plutôt qu'un adjectif vague."
+        },
+        {
+          "erreur_markdown": "Présenter un inconvénient de la virtualisation qui décrit en réalité un inconvénient d'Internet ou du cloud",
+          "pourquoi_faux": "La virtualisation concerne le partage d'UNE machine physique entre plusieurs machines virtuelles ; les questions de disponibilité réseau relèvent d'une autre notion (le Cloud Computing).",
+          "correction_markdown": "Vérifie que ton inconvénient porte bien sur le partage de ressources matérielles locales (processeur, mémoire, panne de l'hôte), pas sur la connexion réseau."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Citer un avantage économique de la virtualisation pour une petite entreprise.",
+          "solution_markdown": "La virtualisation permet de faire fonctionner plusieurs serveurs sur une seule machine physique, ce qui réduit le nombre de machines à acheter, à entretenir et à alimenter en électricité."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un administrateur héberge 5 machines virtuelles sur un serveur physique. Un pic d'activité touche simultanément les 5 machines. Expliquer la conséquence probable sur leurs performances.",
+          "solution_markdown": "Les 5 machines virtuelles se partagent le même processeur et la même mémoire physique. Si elles sont toutes sollicitées en même temps, chacune ne dispose plus que d'une fraction réduite des ressources disponibles, ce qui se traduit par un ralentissement général de chacune d'elles, contrairement à des machines physiques dédiées qui conserveraient chacune l'intégralité de leurs propres ressources."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Proposer une mesure technique qui limite le principal inconvénient identifié (panne unique) sans renoncer aux avantages économiques de la virtualisation.",
+          "solution_markdown": "On peut répartir les machines virtuelles sur au moins deux serveurs physiques distincts, reliés par un mécanisme de réplication ou de migration automatique (haute disponibilité) : si l'un des deux serveurs tombe en panne, les machines virtuelles qu'il hébergeait peuvent être redémarrées ou basculées sur l'autre serveur. Cette solution conserve l'essentiel de l'économie de matériel par rapport à une machine physique dédiée par service, tout en évitant qu'une seule panne matérielle n'interrompe tous les services à la fois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'avantage principal de la virtualisation est la mutualisation du matériel, donc une économie de coût et d'énergie.",
+        "L'inconvénient principal est le partage des ressources, donc des performances par machine virtuelle plus limitées qu'en dédié.",
+        "Une panne de la machine physique hôte interrompt en même temps toutes les machines virtuelles qu'elle héberge.",
+        "Un avantage ou un inconvénient d'examen doit toujours nommer précisément la ressource concernée, jamais rester à l'état d'impression générale.",
+        "La haute disponibilité (répartition sur plusieurs hôtes) est la réponse technique standard au risque de panne unique."
+      ]
+    }
+  ]
+}

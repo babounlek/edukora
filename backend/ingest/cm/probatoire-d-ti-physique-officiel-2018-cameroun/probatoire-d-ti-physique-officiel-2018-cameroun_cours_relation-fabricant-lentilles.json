@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-relation-fabricant-lentilles-premiere-d-ti",
+  "meta": {
+    "titre": "Relation du fabricant de lentilles",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Lentilles minces",
+    "duree_estimee_min": 20,
+    "tags": [
+      "lentille mince",
+      "relation du fabricant",
+      "vergence",
+      "rayon de courbure"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2018-CM",
+    "epreuve_titre": "Probatoire D et TI - Physique - 2018 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2018-cameroun-ex2-q1.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment un opticien conçoit-il une lentille qui converge exactement comme il le souhaite ? Tout est une question de géométrie des faces et de matériau : la relation du fabricant relie la forme physique d'une lentille (ses rayons de courbure) à son effet optique (sa vergence), et permet de passer de l'un à l'autre dans les deux sens."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de lentille mince convergente ou divergente",
+        "Notion de vergence $C = 1/f'$",
+        "Indice de réfraction d'un milieu"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Relation du fabricant de lentilles",
+      "contenu_markdown": "Pour une lentille mince taillée dans un verre d'indice $n$, dont les deux faces ont pour rayons de courbure algébriques $R_1$ (face d'entrée) et $R_2$ (face de sortie), la vergence de la lentille vaut $C = \\dfrac{1}{f'} = (n-1)\\left(\\dfrac{1}{R_1} - \\dfrac{1}{R_2}\\right)$. Les rayons sont comptés algébriquement dans le sens de propagation de la lumière : positifs si le centre de courbure de la face est situé après elle (face convexe vue de l'extérieur), négatifs sinon. Pour une lentille symétrique (biconvexe ou biconcave), $R_1 = R$ et $R_2 = -R$, ce qui simplifie la relation en $C = \\dfrac{2(n-1)}{R}$.",
+      "formule_principale": "C = (n-1)\\left(\\dfrac{1}{R_1} - \\dfrac{1}{R_2}\\right)",
+      "variantes": [
+        {
+          "nom": "Lentille plan-convexe",
+          "quand_utiliser": "Une des deux faces est plane (rayon de courbure infini), l'autre convexe.",
+          "contenu_markdown": "Si une face est plane, son rayon de courbure est infini et le terme correspondant dans la relation du fabricant s'annule ($1/R = 0$) : $C = (n-1)/R_{\\text{face courbe}}$, avec le signe adapté selon que la face courbe est en entrée ou en sortie."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une lentille plan-convexe est taillée dans un verre d'indice $n = 1{,}5$ ; sa face plane est à l'avant (face d'entrée) et sa face convexe à l'arrière, de rayon de courbure $|R_2| = 20\\,\\text{cm}$. Calculer sa vergence.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les rayons de courbure algébriques",
+          "justification": "La face avant est plane, donc $R_1 \\to \\infty$ ($1/R_1 = 0$). La face arrière est convexe vue de l'extérieur (le centre de courbure est avant la face, dans le sens de propagation de la lumière), donc $R_2 = -20\\,\\text{cm}$.",
+          "resultat_markdown": "$1/R_1 = 0\\,\\text{cm}^{-1}$ ; $R_2 = -20\\,\\text{cm}$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la relation du fabricant",
+          "justification": "On reporte les deux rayons dans la formule générale.",
+          "resultat_markdown": "$C = (n-1)\\left(\\dfrac{1}{R_1} - \\dfrac{1}{R_2}\\right) = (1{,}5-1)\\left(0 - \\dfrac{1}{-20}\\right) = 0{,}5 \\times \\dfrac{1}{20}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numériquement (en travaillant en mètres)",
+          "justification": "On convertit $R_2 = 20\\,\\text{cm} = 0{,}20\\,\\text{m}$ pour obtenir une vergence en dioptries.",
+          "resultat_markdown": "$C = 0{,}5 \\times \\dfrac{1}{0{,}20} = 0{,}5 \\times 5 = 2{,}5\\,\\delta$"
+        }
+      ],
+      "conclusion_markdown": "La lentille plan-convexe a une vergence $C = 2{,}5\\,\\delta$, donc une distance focale image $f' = 1/C = 0{,}4\\,\\text{m} = 40\\,\\text{cm}$ : c'est une lentille convergente."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $R_2 = +20\\,\\text{cm}$ au lieu de $-20\\,\\text{cm}$ pour une face convexe en sortie.",
+          "pourquoi_faux": "Le signe algébrique dépend de la position du centre de courbure par rapport au sens de propagation de la lumière, pas uniquement de la forme visible de la face : une face convexe vue de l'extérieur en sortie de lentille a son centre de courbure avant elle, donc un rayon négatif dans la convention usuelle.",
+          "correction_markdown": "Dessine systématiquement la lentille avec le sens de propagation de la lumière indiqué, place le centre de courbure de chaque face, puis applique la règle : centre après la face = rayon positif, centre avant la face = rayon négatif."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir les rayons de courbure en mètres avant de calculer une vergence en dioptries.",
+          "pourquoi_faux": "La dioptrie ($\\delta$) est l'unité de vergence associée au mètre ($1\\,\\delta = 1\\,\\text{m}^{-1}$) ; utiliser des centimètres sans conversion donne un résultat cent fois trop grand.",
+          "correction_markdown": "Convertis toujours les distances en mètres avant tout calcul de vergence, ou vérifie l'ordre de grandeur du résultat final (une vergence de lentille usuelle est en général comprise entre quelques dioptries et quelques dizaines de dioptries)."
+        },
+        {
+          "erreur_markdown": "Confondre la vergence $C$ et la distance focale $f'$ dans la réponse finale.",
+          "pourquoi_faux": "Ce sont deux grandeurs inverses l'une de l'autre ($C = 1/f'$) : donner l'une à la place de l'autre change complètement l'ordre de grandeur attendu et peut inverser le sens de la comparaison entre deux lentilles.",
+          "correction_markdown": "Relis toujours la question : si elle demande la vergence, la réponse est en dioptries ; si elle demande la distance focale, la réponse est en mètres ou en centimètres."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une lentille biconvexe symétrique, taillée dans un verre d'indice $n = 1{,}5$, a des faces de rayon de courbure $R = 25\\,\\text{cm}$ chacune. Calculer sa vergence.",
+          "solution_markdown": "Pour une lentille biconvexe symétrique, $C = \\dfrac{2(n-1)}{R} = \\dfrac{2\\times0{,}5}{0{,}25} = \\dfrac{1}{0{,}25} = 4\\,\\delta$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une lentille est taillée dans un verre d'indice $n = 1{,}6$ ; sa face d'entrée est convexe de rayon $R_1 = 15\\,\\text{cm}$, sa face de sortie est concave de rayon $|R_2| = 30\\,\\text{cm}$ (le centre de courbure de la face de sortie est situé avant elle, du côté de la lumière incidente). Calculer sa vergence.",
+          "solution_markdown": "Face d'entrée convexe : centre de courbure après elle, donc $R_1 = +15\\,\\text{cm} = 0{,}15\\,\\text{m}$. Face de sortie : l'énoncé précise que son centre de courbure est situé avant elle (donc dans le même sens que $R_1$), ce qui correspond à $R_2 = +30\\,\\text{cm} = 0{,}30\\,\\text{m}$ dans la convention algébrique. $C = (n-1)\\left(\\dfrac{1}{R_1}-\\dfrac{1}{R_2}\\right) = 0{,}6\\left(\\dfrac{1}{0{,}15} - \\dfrac{1}{0{,}30}\\right) = 0{,}6\\times(6{,}667-3{,}333) = 0{,}6\\times3{,}333 = 2\\,\\delta$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On souhaite tailler une lentille biconvexe symétrique de vergence $C = 8\\,\\delta$ dans un verre d'indice inconnu $n$, avec des rayons de courbure $R = 12{,}5\\,\\text{cm}$. Déterminer l'indice $n$ du verre utilisé.",
+          "solution_markdown": "Pour une lentille biconvexe symétrique, $C = \\dfrac{2(n-1)}{R}$, d'où $n = 1 + \\dfrac{CR}{2}$. En convertissant $R = 12{,}5\\,\\text{cm} = 0{,}125\\,\\text{m}$ : $n = 1 + \\dfrac{8\\times0{,}125}{2} = 1 + \\dfrac{1}{2} = 1{,}5$. Le verre utilisé a un indice $n = 1{,}5$, une valeur courante pour un verre optique standard, ce qui confirme la cohérence physique du résultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La relation du fabricant relie la géométrie d'une lentille (ses rayons de courbure $R_1$, $R_2$ et l'indice $n$ du verre) à son effet optique global (sa vergence $C$).",
+        "Les rayons de courbure sont algébriques : positifs si le centre de courbure est après la face dans le sens de propagation de la lumière, négatifs sinon.",
+        "Pour une lentille symétrique, la relation se simplifie en $C = 2(n-1)/R$ : un cas particulier à connaître pour aller plus vite.",
+        "Travaille toujours en mètres pour obtenir une vergence en dioptries directement exploitable.",
+        "Cette relation est la porte d'entrée de tout exercice d'optique géométrique sur les lentilles minces, aussi bien au Probatoire qu'au Baccalauréat scientifique et technique."
+      ]
+    }
+  ]
+}

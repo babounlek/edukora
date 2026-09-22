@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-interfaces-disque-dur-ide-sata-tle-ti",
+  "meta": {
+    "titre": "Les interfaces de connexion des disques durs : IDE, SATA et alternatives",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique - matériel et interfaces",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SATA",
+      "IDE",
+      "carte mère",
+      "disque dur",
+      "USB",
+      "interfaces de stockage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex3-q8.1-1",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex3-q8.2-1",
+      "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex3-q8.3-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ouvrir un ordinateur pour ajouter un disque dur suppose de savoir où le brancher, et surtout combien de périphériques une carte mère peut réellement accepter. La réponse dépend entièrement du type de port utilisé : IDE et SATA, bien qu'ils servent tous deux à connecter des disques, obéissent à des règles de capacité radicalement différentes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une carte mère et un port de connexion.",
+        "Savoir qu'un disque dur ou un lecteur optique doit être physiquement relié à la carte mère pour fonctionner."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Série contre parallèle, un contre deux périphériques par port",
+      "contenu_markdown": "SATA (Serial ATA) est une interface de connexion des périphériques de stockage à la carte mère, qui transmet les données en série (bit après bit, sur une seule paire de fils) et n'admet qu'un seul périphérique par port, en connexion point à point. IDE (Integrated Drive Electronics, aussi appelée ATA parallèle), l'ancienne norme que SATA a progressivement remplacée, transmettait les données en parallèle sur une large nappe de fils, et admettait jusqu'à deux périphériques par port grâce à une configuration maître/esclave. Au-delà de ces deux interfaces internes, un disque dur (généralement externe) peut aussi être connecté via un port USB, voire un port eSATA (SATA externe) qui conserve les performances du SATA interne tout en permettant un branchement depuis l'extérieur du boîtier.",
+      "formule_principale": "\\text{Nombre total de périphériques} = (\\text{ports IDE} \\times 2) + (\\text{ports SATA} \\times 1)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une carte mère possède 2 ports IDE et 2 ports SATA. Calculer le nombre total de périphériques connectables, puis proposer un autre port permettant de connecter un disque dur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la capacité des ports IDE",
+          "justification": "Chaque port IDE admet jusqu'à 2 périphériques en configuration maître/esclave.",
+          "resultat_markdown": "$2 \\times 2 = 4$ périphériques via les ports IDE."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la capacité des ports SATA",
+          "justification": "Chaque port SATA n'admet qu'un seul périphérique, en connexion point à point.",
+          "resultat_markdown": "$2 \\times 1 = 2$ périphériques via les ports SATA."
+        },
+        {
+          "numero": 3,
+          "action": "Additionner les deux capacités",
+          "justification": "Le total de périphériques connectables est la somme des deux familles de ports.",
+          "resultat_markdown": "$4 + 2 = 6$ périphériques au total."
+        },
+        {
+          "numero": 4,
+          "action": "Proposer un autre port pour un disque dur",
+          "justification": "En dehors des ports internes IDE/SATA, un port USB permet de connecter un disque dur externe.",
+          "resultat_markdown": "Le port USB (ou, en alternative, un port eSATA) permet de connecter un disque dur supplémentaire, en externe."
+        }
+      ],
+      "conclusion_markdown": "Cette carte mère peut connecter 6 périphériques en interne (4 via IDE, 2 via SATA), et davantage encore si l'on compte les disques durs externes reliés par USB, qui ne partagent pas la même limite que les ports internes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer la règle « 2 périphériques par port » à la fois à l'IDE et au SATA, en concluant à tort que 2 ports SATA permettent 4 périphériques.",
+          "pourquoi_faux": "Le SATA utilise une connexion point à point : chaque câble SATA ne relie qu'un seul périphérique à la fois, contrairement à la nappe IDE qui peut en supporter deux en série (maître/esclave).",
+          "correction_markdown": "Ne jamais généraliser la règle de l'IDE au SATA : chaque famille de port a sa propre capacité, à calculer séparément avant toute addition."
+        },
+        {
+          "erreur_markdown": "Répondre « un autre port SATA » à la question demandant un AUTRE type de port pour un disque dur, en dehors d'IDE et SATA.",
+          "pourquoi_faux": "La question demande explicitement un port différent des deux déjà cités dans l'énoncé (IDE et SATA internes) : répondre à nouveau SATA ne constitue pas une alternative.",
+          "correction_markdown": "Bien relire la question pour vérifier si elle demande un port DIFFÉRENT de ceux déjà mentionnés, avant de répondre par un port déjà cité."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que signifie l'acronyme SATA ?",
+          "solution_markdown": "Serial ATA (Serial Advanced Technology Attachment), une interface de connexion série pour périphériques de stockage."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une carte mère possède 1 port IDE et 4 ports SATA. Calculer le nombre total de périphériques de stockage connectables sur cette carte mère.",
+          "solution_markdown": "Port IDE : $1 \\times 2 = 2$ périphériques.\n\nPorts SATA : $4 \\times 1 = 4$ périphériques.\n\nTotal : $2 + 4 = 6$ périphériques."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une carte mère ancienne possède 2 ports IDE, chacun pouvant recevoir un disque dur et un lecteur optique (configuration maître/esclave), et 2 ports SATA. Un technicien souhaite installer 5 disques durs et 1 lecteur optique sur cette machine. Est-ce possible avec la configuration décrite ? Proposer, si nécessaire, une solution utilisant un port supplémentaire vu dans ce cours.",
+          "solution_markdown": "Capacité interne totale : $2$ ports IDE $\\times 2 = 4$ périphériques, plus $2$ ports SATA $\\times 1 = 2$ périphériques, soit $4 + 2 = 6$ périphériques au total - exactement le nombre demandé (5 disques durs + 1 lecteur optique = 6 périphériques).\n\nEn théorie, la capacité totale (6) correspond donc exactement au besoin (6), mais il faut vérifier la répartition pratique : le lecteur optique et un disque dur peuvent partager le même port IDE (maître/esclave), libérant l'autre port IDE pour un second disque dur, et les 2 ports SATA accueillent chacun un disque dur supplémentaire. Cela donne : 2 disques durs sur les 2 ports IDE (un par port, l'un partageant son port avec le lecteur optique), et 2 disques durs sur les 2 ports SATA, soit 4 disques durs et 1 lecteur optique installés - il manque encore 1 disque dur pour atteindre les 5 demandés.\n\nLa solution consiste alors à connecter ce disque dur restant via un port USB externe, comme vu dans ce cours : cela permet d'atteindre les 5 disques durs et 1 lecteur optique demandés, sans dépasser la capacité interne réelle de la carte mère."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "SATA (Serial ATA) transmet les données en série et n'admet qu'un seul périphérique par port.",
+        "IDE (l'ancienne norme, parallèle) admet jusqu'à deux périphériques par port en configuration maître/esclave.",
+        "Le nombre total de périphériques connectables se calcule séparément pour chaque famille de ports avant de les additionner.",
+        "Au-delà des ports internes, un disque dur externe peut être connecté par USB ou par eSATA.",
+        "Cette compétence de calcul de capacité matérielle est un classique de la partie maintenance du BAC TI, souvent posée sous forme de calcul à justifier plutôt que de simple restitution de cours."
+      ]
+    }
+  ]
+}

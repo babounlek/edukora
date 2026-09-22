@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-role-des-equipements-d-interconnexion-reseau-switch-hub-routeur-tle-tronc-commun",
+  "meta": {
+    "titre": "Rôle des équipements d'interconnexion réseau (switch, hub, routeur)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Équipements d'interconnexion réseau",
+    "duree_estimee_min": 20,
+    "tags": [
+      "commutateur",
+      "switch",
+      "hub",
+      "routeur",
+      "équipements réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex1-q6-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur un schéma de réseau, un simple rectangle sans autre précision peut cacher trois équipements très différents : un concentrateur, un commutateur ou un routeur. Savoir les distinguer, c'est comprendre comment circule réellement l'information sur un réseau."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la topologie en étoile et l'idée d'un point central de connexion."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois équipements, trois façons de faire circuler l'information",
+      "contenu_markdown": "**Le concentrateur (hub)** : reçoit un signal sur un port et le retransmet sur TOUS les autres ports, sans distinction de destinataire. Simple mais peu efficace (le réseau se sature vite).\n\n**Le commutateur (switch)** : interconnecte plusieurs machines d'un même réseau local, mais apprend l'adresse MAC de chaque port et n'envoie chaque trame qu'au port du destinataire concerné. Beaucoup plus efficace qu'un hub.\n\n**Le routeur** : relie deux réseaux logiques différents (deux réseaux IP distincts) et choisit le meilleur chemin pour faire transiter les paquets de l'un vers l'autre, par exemple entre un réseau local et Internet.\n\nRetiens la hiérarchie : hub et switch interconnectent des machines d'UN MÊME réseau local ; le routeur relie ENTRE EUX des réseaux différents."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur un schéma, plusieurs postes, un serveur et une imprimante convergent vers un composant noté X, lui-même relié à un routeur donnant accès à Internet. Nommer X et donner son rôle.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Observer ce que relie le composant X",
+          "justification": "X relie plusieurs machines D'UN MÊME réseau local (postes, serveur, imprimante).",
+          "resultat_markdown": "X n'est donc pas un routeur : il n'assure pas la liaison entre deux réseaux différents, ce rôle est déjà tenu par l'équipement séparé noté « Routeur » sur le schéma."
+        },
+        {
+          "numero": 2,
+          "action": "Trancher entre hub et switch",
+          "justification": "Sans autre précision, le contexte moderne (réseau avec serveur, DHCP) oriente vers l'équipement le plus courant aujourd'hui.",
+          "resultat_markdown": "X est un commutateur (switch) : il interconnecte les machines du réseau local en n'envoyant chaque trame qu'à son destinataire."
+        },
+        {
+          "numero": 3,
+          "action": "Décrire le rôle précis attendu",
+          "justification": "Le rôle doit préciser le mécanisme (aiguillage par adresse MAC), pas seulement redire « il relie les machines ».",
+          "resultat_markdown": "Rôle : interconnecter les machines du réseau local et aiguiller chaque trame uniquement vers son destinataire, grâce à l'apprentissage des adresses MAC."
+        }
+      ],
+      "conclusion_markdown": "On obtient un nom d'équipement et un rôle précis, en s'appuyant sur ce que le composant relie réellement (des machines d'un même réseau, pas deux réseaux différents)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre systématiquement « routeur » dès qu'un composant central apparaît sur un schéma",
+          "pourquoi_faux": "Le routeur a un rôle précis : relier deux réseaux IP différents. Un composant qui relie seulement des machines d'un même réseau local (postes, serveur, imprimante) est un commutateur ou un concentrateur, pas un routeur, même s'il occupe une position centrale sur le schéma.",
+          "correction_markdown": "Vérifier ce que le composant relie réellement : des machines d'un même réseau (switch/hub) ou deux réseaux distincts (routeur)."
+        },
+        {
+          "erreur_markdown": "Décrire le rôle du switch comme « il envoie l'information à tout le monde »",
+          "pourquoi_faux": "C'est la description d'un concentrateur (hub), pas d'un commutateur : la caractéristique précise du switch est justement de ne PAS diffuser à tous les ports, mais d'aiguiller vers le seul port concerné.",
+          "correction_markdown": "Pour un switch, toujours préciser l'aiguillage sélectif par adresse MAC, qui est ce qui le distingue du hub."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel équipement relie deux réseaux IP différents entre eux ?",
+          "solution_markdown": "Le routeur : il relie des réseaux logiques distincts et choisit le meilleur chemin pour faire transiter les paquets de l'un vers l'autre."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ancien équipement de réseau local retransmet systématiquement chaque signal reçu sur tous ses ports, ce qui sature rapidement le réseau quand il y a beaucoup de trafic. De quel équipement s'agit-il ?",
+          "solution_markdown": "Un concentrateur (hub) : il ne fait aucune distinction de destinataire et diffuse aveuglément sur tous les ports, contrairement à un commutateur qui apprend les adresses MAC pour n'envoyer la trame qu'au bon port."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un technicien remplace le hub d'un petit réseau local de 20 postes par un switch, sans rien changer d'autre à l'installation. Explique quel problème ce remplacement résout et pourquoi la topologie physique du réseau, elle, ne change pas.",
+          "solution_markdown": "Ce remplacement résout le problème de saturation du réseau causé par la diffusion systématique du hub à tous les ports, y compris ceux qui ne sont pas concernés par la communication : avec 20 postes, chaque trame envoyée par un hub encombrait inutilement les 19 autres liaisons. Le switch, en apprenant les adresses MAC de chaque port, n'achemine désormais chaque trame qu'au port réellement destinataire, ce qui réduit fortement le trafic inutile. La topologie physique (en étoile autour de l'équipement central) ne change pas : seul le mode de fonctionnement interne de l'équipement central change (diffusion aveugle contre aiguillage sélectif), pas la façon dont les câbles sont disposés."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Hub : diffuse à tous les ports, sans distinction (peu efficace).",
+        "Switch : aiguille chaque trame uniquement vers son destinataire grâce à l'adresse MAC (efficace, standard actuel).",
+        "Routeur : relie deux réseaux IP différents, jamais deux machines d'un même réseau local.",
+        "Avant de nommer un équipement sur un schéma, vérifie toujours ce qu'il relie réellement : des machines d'un même réseau, ou deux réseaux distincts."
+      ]
+    }
+  ]
+}

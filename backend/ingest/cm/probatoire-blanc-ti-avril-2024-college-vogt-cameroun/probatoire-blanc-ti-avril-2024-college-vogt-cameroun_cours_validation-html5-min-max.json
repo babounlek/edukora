@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-validation-html5-min-max-premiere-ti",
+  "meta": {
+    "titre": "Validation de saisie HTML5 : attributs min/max d'un champ number",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 10,
+    "tags": [
+      "HTML5",
+      "input number",
+      "min",
+      "max",
+      "validation de formulaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "7",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex7-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un champ de saisie pour un prix ne devrait jamais accepter une valeur négative - et pourtant, par défaut, un simple `<input type=\"number\">` ne s'y oppose pas du tout. HTML5 propose une solution en une seule ligne, sans écrire le moindre JavaScript."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la balise `<input>` et son attribut `type`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "min et max, des bornes déclarées directement en HTML",
+      "contenu_markdown": "Un champ de saisie HTML5 de type `number` accepte, par défaut, aussi bien des valeurs négatives que positives ; pour interdire les valeurs négatives, il faut ajouter explicitement l'attribut `min` avec la borne inférieure autorisée (`min=\"0\"` pour n'accepter que des valeurs positives ou nulles). De même, `max` fixe une borne supérieure.",
+      "formule_principale": "<input type=\"number\" min=\"0\" max=\"100\">",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un champ doit accepter uniquement un âge entre 0 et 120 ans. Écrire l'input HTML5 correspondant.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir le type de champ",
+          "justification": "Un âge est un nombre entier",
+          "resultat_markdown": "`type=\"number\"`"
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter la borne inférieure",
+          "justification": "Un âge ne peut pas être négatif",
+          "resultat_markdown": "`min=\"0\"`"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter la borne supérieure",
+          "justification": "Limiter à une valeur réaliste",
+          "resultat_markdown": "`max=\"120\"`"
+        }
+      ],
+      "conclusion_markdown": "```html\n<input type=\"number\" min=\"0\" max=\"120\">\n```"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que `min=\"0\"` empêche TOUJOURS et IMMÉDIATEMENT la saisie d'un nombre négatif",
+          "pourquoi_faux": "`min` bloque les flèches d'incrémentation/décrémentation et la validation du formulaire, mais un utilisateur peut encore taper \"-5\" au clavier sans qu'aucun message n'apparaisse tant que le formulaire n'est pas soumis ou vérifié par du code.",
+          "correction_markdown": "Pour un contrôle immédiat et total, il faut compléter avec une vérification en JavaScript (par exemple sur l'événement `input` ou `change`)."
+        },
+        {
+          "erreur_markdown": "Écrire `min=0` sans guillemets",
+          "pourquoi_faux": "Bien que de nombreux navigateurs tolèrent une valeur d'attribut sans guillemets pour un nombre simple, ce n'est pas la syntaxe HTML standard recommandée et cela peut poser problème avec des valeurs contenant des espaces ou des caractères spéciaux.",
+          "correction_markdown": "Prends toujours l'habitude d'entourer la valeur d'un attribut de guillemets : `min=\"0\"`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quel attribut ajouter à `<input type=\"number\">` pour interdire les valeurs négatives ?",
+          "solution_markdown": "`min=\"0\"`, qui fixe la valeur minimale acceptée à 0."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un champ de saisie pour une note sur 20, qui n'accepte que des valeurs entre 0 et 20.",
+          "solution_markdown": "```html\n<input type=\"number\" min=\"0\" max=\"20\">\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un formulaire de prix utilise `<input type=\"number\" min=\"0\">` mais aucune vérification JavaScript n'est ajoutée. Un utilisateur malveillant pourrait-il quand même envoyer une valeur négative au serveur ? Expliquer.",
+          "solution_markdown": "Oui, c'est tout à fait possible : l'attribut `min` est une contrainte de validation côté NAVIGATEUR uniquement, appliquée par l'interface (flèches, message de validation à la soumission). Un utilisateur qui maîtrise les outils de développement du navigateur, ou qui envoie directement une requête au serveur sans passer par le formulaire affiché (par exemple avec un outil en ligne de commande), peut parfaitement contourner cette contrainte et envoyer n'importe quelle valeur, y compris négative. C'est pourquoi une règle de sécurité fondamentale en développement web veut qu'on ne fasse JAMAIS confiance uniquement à la validation côté client (HTML/JavaScript) : le serveur doit toujours revérifier lui-même que les données reçues respectent les contraintes attendues, indépendamment de ce que le formulaire affichait."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`min` et `max` sur un `<input type=\"number\">` fixent les bornes de valeurs acceptées par le navigateur.",
+        "`min=\"0\"` interdit les valeurs négatives ; à combiner avec `max` pour une borne supérieure si nécessaire.",
+        "Cette validation reste limitée : elle n'empêche pas totalement une saisie manuelle au clavier tant que le formulaire n'est pas soumis ou vérifié en JavaScript.",
+        "Une validation côté navigateur (HTML/JavaScript) n'est jamais suffisante seule : le serveur doit toujours revérifier les données reçues.",
+        "Au Probatoire, ce type de question (\"que manque-t-il pour empêcher...\") teste ta connaissance des attributs de validation HTML5, une compétence de plus en plus utilisée en programmation web moderne."
+      ]
+    }
+  ]
+}

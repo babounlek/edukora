@@ -1,0 +1,141 @@
+{
+  "cours_id": "cours-diagramme-de-venn-trois-ensembles-terminale-c-e",
+  "meta": {
+    "titre": "Résoudre un problème à trois ensembles avec un diagramme de Venn",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "C/E",
+    "sous_theme": "Dénombrement",
+    "duree_estimee_min": 30,
+    "tags": [
+      "diagramme de Venn",
+      "dénombrement",
+      "trois ensembles",
+      "formule du crible",
+      "situation-problème"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-2026-cameroun",
+    "epreuve_titre": "Baccalauréat C/E - Mathématiques - 2026 - Cameroun",
+    "exercice_numero": "B",
+    "rappel_id": "rdm-bac-c-e-2026-cameroun-exB-qTache1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une entreprise recrute des commerciaux parlant plusieurs langues, un sondage classe des lecteurs selon les journaux qu'ils lisent, une clinique regroupe des patients selon les symptômes qu'ils présentent : dès que trois catégories peuvent se chevaucher, un simple calcul \"j'additionne tout\" compte certaines personnes plusieurs fois. Le diagramme de Venn à trois ensembles règle ce problème de façon systématique, même quand une donnée (le recoupement des trois catégories à la fois) manque et qu'il faut la reconstituer à partir d'une contrainte annexe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le vocabulaire ensembliste de base : union, intersection, cardinal.",
+        "Savoir utiliser la formule du crible à deux ensembles : $\\mathrm{card}(A\\cup B)=\\mathrm{card}(A)+\\mathrm{card}(B)-\\mathrm{card}(A\\cap B)$.",
+        "Savoir résoudre une inéquation simple à une inconnue entière."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les sept zones d'un diagramme de Venn à trois ensembles",
+      "contenu_markdown": "Pour trois ensembles $A$, $B$, $C$, la formule du crible généralisée donne :\n$$\\mathrm{card}(A\\cup B\\cup C) = \\mathrm{card}(A)+\\mathrm{card}(B)+\\mathrm{card}(C) -\\mathrm{card}(A\\cap B)-\\mathrm{card}(A\\cap C)-\\mathrm{card}(B\\cap C)+\\mathrm{card}(A\\cap B\\cap C)$$\nLe diagramme se découpe en 7 zones disjointes : les 3 zones \"un seul ensemble\", les 3 zones \"exactement deux ensembles\", et la zone centrale \"les trois ensembles à la fois\". Si le triple recoupement $x=\\mathrm{card}(A\\cap B\\cap C)$ n'est pas donné directement, on l'introduit comme inconnue : chaque zone \"exactement deux\" s'obtient en retranchant $x$ à l'intersection correspondante (ex. \"$A\\cap B$ seul\" $=\\mathrm{card}(A\\cap B)-x$), et chaque zone \"un seul ensemble\" s'obtient en retranchant du cardinal total de l'ensemble ses deux zones à double appartenance et la zone centrale.",
+      "formule_principale": "\\mathrm{card}(A\\cup B\\cup C) = \\textstyle\\sum \\mathrm{card}(\\text{ens.}) - \\sum \\mathrm{card}(\\text{inter. 2 à 2}) + \\mathrm{card}(A\\cap B\\cap C)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une PME recrute autant de commerciaux hommes que de femmes. Tous parlent au moins une des langues Ewondo (E), Douala (D), Mendjoumba (M). $\\mathrm{card}(E)=15$, $\\mathrm{card}(M)=20$, $\\mathrm{card}(D)=10$, $\\mathrm{card}(E\\cap M)=8$, $\\mathrm{card}(D\\cap M)=9$, $\\mathrm{card}(D\\cap E)=7$. Déterminer le nombre de femmes recrutées.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Introduire $x=\\mathrm{card}(E\\cap D\\cap M)$",
+          "justification": "Le triple recoupement n'est pas donné directement par l'énoncé : c'est l'inconnue à déterminer avant tout calcul de total.",
+          "resultat_markdown": "$x$ inconnue, $x\\geq0$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer chacune des 7 zones en fonction de $x$",
+          "justification": "Chaque zone \"deux ensembles\" perd $x$ par rapport à l'intersection brute ; chaque zone \"un ensemble\" perd ses deux zones à double appartenance et $x$.",
+          "resultat_markdown": "$E$ seul $=x$, $M$ seul $=3+x$, $D$ seul $=x-6$, $E\\cap M$ seul $=8-x$, $D\\cap M$ seul $=9-x$, $D\\cap E$ seul $=7-x$"
+        },
+        {
+          "numero": 3,
+          "action": "Poser les contraintes de positivité de chaque zone",
+          "justification": "Un effectif ne peut jamais être négatif : cela borne les valeurs possibles de $x$.",
+          "resultat_markdown": "$x\\leq7$ (issu des trois zones à deux langues) et $x\\geq6$ (issu de \"$D$ seul\"), donc $x\\in\\{6;7\\}$"
+        },
+        {
+          "numero": 4,
+          "action": "Utiliser la contrainte \"autant d'hommes que de femmes\"",
+          "justification": "Le total des commerciaux, égal à deux fois le nombre de femmes, doit être pair ; cela tranche entre les deux valeurs restantes de $x$.",
+          "resultat_markdown": "Total $=21+x$ ; pair $\\iff x$ impair $\\iff x=7$ (seule valeur impaire dans $\\{6;7\\}$)"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer le total puis le nombre de femmes",
+          "justification": "Avec $x$ connu, le total est déterminé, et il se répartit également entre hommes et femmes.",
+          "resultat_markdown": "Total $=21+7=28$, donc nombre de femmes $=28/2=14$"
+        }
+      ],
+      "conclusion_markdown": "La PME a recruté 14 commerciales femmes (et 14 commerciaux hommes), avec 7 commerciaux parlant les trois langues à la fois."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Supposer que le triple recoupement vaut $0$ quand l'énoncé ne le donne pas explicitement.",
+          "pourquoi_faux": "Rien ne garantit que personne n'appartient aux trois catégories à la fois : c'est une donnée manquante à reconstituer, pas une valeur par défaut. Dans l'exemple, poser $x=0$ donne un total de 21, incompatible avec la contrainte de parité de l'énoncé.",
+          "correction_markdown": "Introduis systématiquement $x$ comme inconnue dès que le triple recoupement n'est pas donné, et cherche les contraintes (positivité des zones, autre donnée de l'énoncé) qui permettent de le déterminer."
+        },
+        {
+          "erreur_markdown": "Additionner directement $\\mathrm{card}(E)+\\mathrm{card}(D)+\\mathrm{card}(M)$ pour obtenir le total de personnes.",
+          "pourquoi_faux": "Cette somme compte deux fois chaque personne appartenant à exactement deux ensembles, et trois fois chaque personne appartenant aux trois : le résultat est largement surestimé.",
+          "correction_markdown": "Utilise toujours la formule du crible complète (avec les termes soustraits et le terme rajouté), jamais une simple addition des trois effectifs."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier que chacune des 7 zones calculées est bien positive ou nulle avant de conclure.",
+          "pourquoi_faux": "Une zone négative signifierait un effectif de personnes négatif, ce qui est impossible : cela indique que la valeur de $x$ choisie ne correspond à aucune situation réelle compatible avec les données de l'énoncé.",
+          "correction_markdown": "Une fois $x$ déterminé, recalcule les 7 zones et vérifie que leur somme redonne bien les effectifs de départ $\\mathrm{card}(E)$, $\\mathrm{card}(D)$, $\\mathrm{card}(M)$ : c'est la meilleure garantie de ne pas avoir commis d'erreur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une classe, 18 élèves pratiquent le football, 15 le basketball, 20 le volleyball, 7 pratiquent football et basketball, 8 pratiquent basketball et volleyball, 6 pratiquent football et volleyball, et 3 pratiquent les trois sports. Chaque élève de la classe pratique au moins un sport. Quel est l'effectif de la classe, et combien d'élèves pratiquent exactement un seul sport ?",
+          "solution_markdown": "Ici $x=\\mathrm{card}(F\\cap B\\cap V)=3$ est donné directement, pas besoin de le reconstituer.\n\n$F$ seul $=18-(7-3)-(6-3)-3=18-4-3-3=8$\n$B$ seul $=15-(7-3)-(8-3)-3=15-4-5-3=3$\n$V$ seul $=20-(8-3)-(6-3)-3=20-5-3-3=9$\n\nZones à exactement deux sports : $F\\cap B$ seul $=7-3=4$, $B\\cap V$ seul $=8-3=5$, $F\\cap V$ seul $=6-3=3$.\n\nEffectif total de la classe (somme des 7 zones, ou formule du crible directement) :\n$$18+15+20-7-8-6+3 = 53-21+3 = 35$$\nLa classe compte 35 élèves.\n\nÉlèves pratiquant exactement un seul sport : $8+3+9=20$.\n\nVérification : $20$ (un seul) $+4+5+3$ (deux seulement) $+3$ (les trois) $=20+12+3=35$, ce qui redonne bien l'effectif total calculé - la répartition en 7 zones est cohérente."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un club sportif propose trois activités : natation (N), tennis (T), athlétisme (A). Tous les membres pratiquent au moins une activité. $\\mathrm{card}(N)=30$, $\\mathrm{card}(T)=25$, $\\mathrm{card}(A)=22$, $\\mathrm{card}(N\\cap T)=10$, $\\mathrm{card}(T\\cap A)=8$, $\\mathrm{card}(N\\cap A)=12$, et le club compte exactement 50 membres. Déterminer le nombre de membres pratiquant les trois activités.",
+          "solution_markdown": "Notons $x=\\mathrm{card}(N\\cap T\\cap A)$. La formule du crible donne :\n$$50 = 30+25+22-10-8-12+x = 47+x$$\n$$x = 50-47 = 3$$\n\nVérification de positivité des zones à deux seulement : $N\\cap T$ seul $=10-3=7\\geq0$, $T\\cap A$ seul $=8-3=5\\geq0$, $N\\cap A$ seul $=12-3=9\\geq0$ : toutes positives, la solution est cohérente.\n\n3 membres pratiquent les trois activités."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une entreprise recrute un nombre pair d'employés, tous parlant au moins une des trois langues anglais (A), espagnol (E), portugais (P). $\\mathrm{card}(A)=12$, $\\mathrm{card}(E)=14$, $\\mathrm{card}(P)=16$, $\\mathrm{card}(A\\cap E)=5$, $\\mathrm{card}(E\\cap P)=6$, $\\mathrm{card}(A\\cap P)=4$. Sachant que le nombre total d'employés est le plus grand possible compatible avec ces données, déterminer ce total.",
+          "solution_markdown": "Notons $x=\\mathrm{card}(A\\cap E\\cap P)$. Les zones \"un seul ensemble\" :\n$A$ seul $=12-(5-x)-(4-x)-x=12-5-4+x=3+x$\n$E$ seul $=14-(5-x)-(6-x)-x=14-5-6+x=3+x$\n$P$ seul $=16-(6-x)-(4-x)-x=16-6-4+x=6+x$\n\nContraintes de positivité des zones \"deux seulement\" : $5-x\\geq0$, $6-x\\geq0$, $4-x\\geq0$, donc $x\\leq4$. Et $x\\geq0$ (un cardinal ne peut être négatif). Donc $x\\in\\{0,1,2,3,4\\}$.\n\nTotal $=12+14+16-5-6-4+x=27+x$. Pour que le total soit le plus grand possible, on prend $x$ maximal, donc $x=4$ : Total $=27+4=31$. Mais $31$ est impair, incompatible avec \"nombre pair d'employés\". On prend alors la plus grande valeur de $x$ dans $\\{0,1,2,3,4\\}$ qui rend $27+x$ pair, c'est-à-dire $x$ impair : $x=3$ convient ($27+3=30$, pair) et c'est la plus grande valeur impaire disponible.\n\nLe nombre total d'employés est donc $30$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand le triple recoupement de trois ensembles n'est pas donné, introduis-le comme inconnue $x$ plutôt que de le supposer nul.",
+        "Chaque zone \"exactement deux ensembles\" s'obtient en retranchant $x$ à l'intersection deux à deux correspondante.",
+        "Chaque zone \"un seul ensemble\" s'obtient en retranchant du cardinal total ses deux zones à double appartenance et le triple recoupement.",
+        "La positivité de toutes les zones borne les valeurs possibles de $x$ ; une contrainte annexe de l'énoncé (parité, total donné, effectif maximal...) permet souvent de le fixer précisément.",
+        "Vérifie toujours ta solution en recalculant les effectifs de départ à partir des 7 zones reconstituées : c'est la garantie qu'aucune donnée de l'énoncé n'a été oubliée ou mal utilisée.",
+        "Au BAC, ce type de situation-problème évalue autant la rigueur de la mise en équation que la capacité à exploiter une contrainte implicite (ici la parité) pour lever une indétermination."
+      ]
+    }
+  ]
+}

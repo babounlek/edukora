@@ -1,0 +1,166 @@
+{
+  "cours_id": "cours-similitude-plane-indirecte-et-elements-caracteristiques-terminale-c",
+  "meta": {
+    "titre": "Similitude plane indirecte : centre, rapport et axe",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Transformations du plan - similitudes planes",
+    "duree_estimee_min": 35,
+    "tags": [
+      "similitude indirecte",
+      "écriture complexe",
+      "rapport",
+      "axe",
+      "symétrie axiale",
+      "homothétie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-maths-1995-cameroun",
+    "epreuve_titre": "BAC Mathématiques - Cameroun, série C, session 1995 (Office du Baccalauréat du Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-maths-1995-cameroun-ex1-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une photocopie agrandie puis retournée face contre vitre : voilà, littéralement, une similitude indirecte. Elle multiplie les longueurs par un facteur constant, comme une similitude directe, mais elle inverse en plus le sens des angles - la figure devient l'image de l'originale dans un miroir. Les nombres complexes rendent cette transformation étonnamment simple à manipuler : tout tient dans un seul coefficient $a$, qui livre à la fois le rapport et l'axe. Encore faut-il savoir qu'une similitude indirecte n'a **pas** d'angle, et que l'argument de $a$ doit être divisé par deux."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Module et argument d'un nombre complexe, forme trigonométrique",
+        "Conjugué d'un nombre complexe et affixe d'un point",
+        "Homothétie de centre $\\Omega$ et de rapport $k$, symétrie orthogonale d'axe une droite",
+        "Écriture complexe d'une similitude directe $z'=az+b$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Écriture complexe et éléments caractéristiques",
+      "contenu_markdown": "**Définition analytique.** Une application du plan dans lui-même est une similitude **indirecte** si et seulement si elle admet une écriture complexe de la forme\n\n$$z'=a\\overline{z}+b,\\qquad a\\in\\mathbb{C}^{*},\\ b\\in\\mathbb{C}.$$\n\nSon **rapport** est $k=|a|$ : pour tous points $M$, $N$ d'images $M'$, $N'$, on a $M'N'=k\\,MN$.\n\n**Point fixe.** Si $|a|\\neq1$, l'équation $\\omega=a\\overline{\\omega}+b$ admet une solution unique : la similitude possède un **centre** $\\Omega$, et son écriture se met sous la forme réduite\n\n$$z'-\\omega=a\\left(\\overline{z}-\\overline{\\omega}\\right).$$\n\nC'est cette forme qu'il faut utiliser dès que le centre est connu : elle donne $a$ en une ligne à partir d'un seul couple (antécédent, image).\n\n**Décomposition canonique.** Écrivons $a=k\\,e^{i\\theta}$ avec $k=|a|$ et $\\theta=\\arg(a)$. Alors\n\n$$S=h\\big(\\Omega,k\\big)\\circ s_{(\\Delta)}=s_{(\\Delta)}\\circ h\\big(\\Omega,k\\big),$$\n\noù $(\\Delta)$ est la droite passant par $\\Omega$ dont l'angle polaire vaut $\\dfrac{\\theta}{2}$.\n\n**Les éléments caractéristiques d'une similitude indirecte de rapport $\\neq1$ sont donc : le centre, le rapport et l'axe.** Jamais un angle - une similitude indirecte ne conserve pas les angles orientés, elle les change en leurs opposés.\n\n**Cas particulier.** Si $k=1$, la transformation est un antidéplacement : soit une symétrie axiale (s'il y a des points fixes), soit une symétrie glissée (sinon), et il n'y a pas de centre.",
+      "formule_principale": "z'-\\omega=a\\left(\\overline{z}-\\overline{\\omega}\\right),\\quad k=|a|,\\quad \\text{angle polaire de }(\\Delta)=\\frac{\\arg a}{2}",
+      "variantes": [
+        {
+          "nom": "Détermination directe de l'axe sans passer par l'argument",
+          "quand_utiliser": "Quand $a$ n'a pas d'argument remarquable, ou quand on veut vérifier l'axe trouvé.",
+          "contenu_markdown": "L'axe $(\\Delta)$ est l'ensemble des points $M$ dont l'image $M'$ est sur la demi-droite $[\\Omega M)$ : ce sont les points « seulement dilatés », non retournés. Analytiquement, on cherche les $z$ tels que $z'-\\omega$ soit un réel positif multiple de $z-\\omega$, soit\n\n$$a\\left(\\overline{z}-\\overline{\\omega}\\right)=k\\,(z-\\omega).$$\n\nEn posant $Z=z-\\omega$, cela s'écrit $a\\overline{Z}=k Z$, dont les solutions forment exactement la droite passant par $O$ d'angle polaire $\\frac{\\arg a}{2}$, translatée en $\\Omega$. Cette variante est plus longue, mais elle évite toute erreur de division par 2 et sert de contrôle."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le plan rapporté à un repère orthonormé $(O,\\vec{i},\\vec{j})$, on donne les points $A$, $B$, $C$ d'affixes respectives $2+i$, $1+i$ et $2-i$. Déterminer les éléments caractéristiques de la similitude indirecte $S$ de centre $A$ qui transforme $B$ en $C$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser la forme réduite centrée en $A$",
+          "justification": "$S$ est indirecte et son centre est donné : sa forme réduite ne dépend plus que du seul coefficient $a$.",
+          "resultat_markdown": "Avec $\\alpha=2+i$, $\\beta=1+i$, $\\gamma=2-i$ : $$z'-\\alpha=a\\left(\\overline{z}-\\overline{\\alpha}\\right).$$"
+        },
+        {
+          "numero": 2,
+          "action": "Traduire $S(B)=C$ et calculer les deux différences",
+          "justification": "Un seul couple (antécédent, image) suffit à déterminer $a$ quand le centre est connu.",
+          "resultat_markdown": "$$\\gamma-\\alpha=(2-i)-(2+i)=-2i,$$ $$\\overline{\\beta}-\\overline{\\alpha}=(1-i)-(2-i)=-1.$$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire $a$",
+          "justification": "On résout $\\gamma-\\alpha=a\\left(\\overline{\\beta}-\\overline{\\alpha}\\right)$, équation du premier degré en $a$.",
+          "resultat_markdown": "$$-2i=a\\times(-1)\\quad\\Longrightarrow\\quad a=2i.$$"
+        },
+        {
+          "numero": 4,
+          "action": "Lire le rapport",
+          "justification": "Le rapport d'une similitude d'écriture $z'=a\\overline{z}+b$ est $|a|$.",
+          "resultat_markdown": "$$k=|2i|=\\sqrt{0^{2}+2^{2}}=2.$$ Contrôle : $AC=|-2i|=2$, $AB=|-1|=1$, donc $\\frac{AC}{AB}=2$."
+        },
+        {
+          "numero": 5,
+          "action": "Déterminer l'argument de $a$ en calculant séparément cosinus et sinus",
+          "justification": "On ne récite pas l'argument : on l'identifie à partir de $\\cos\\theta$ et $\\sin\\theta$.",
+          "resultat_markdown": "$a=2(\\cos\\theta+i\\sin\\theta)$ donne $\\cos\\theta=\\dfrac{0}{2}=0$ et $\\sin\\theta=\\dfrac{2}{2}=1$, d'où $\\theta=\\dfrac{\\pi}{2}$ (modulo $2\\pi$)."
+        },
+        {
+          "numero": 6,
+          "action": "En déduire l'axe",
+          "justification": "L'angle polaire de l'axe vaut la moitié de l'argument de $a$, et l'axe passe par le centre.",
+          "resultat_markdown": "Angle polaire : $\\dfrac{\\theta}{2}=\\dfrac{\\pi}{4}$, donc coefficient directeur $\\tan\\dfrac{\\pi}{4}=1$. La droite passe par $A(2\\,;1)$ : $$(\\Delta)\\;:\\;y-1=x-2,\\qquad\\text{soit}\\qquad y=x-1.$$"
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier par l'écriture complexe complète",
+          "justification": "Le centre est invariant, ce qui détermine $b$ ; on teste ensuite l'image de $B$.",
+          "resultat_markdown": "$2+i=2i(2-i)+b=2+4i+b$, donc $b=-3i$ et $S:z'=2i\\overline{z}-3i$. Test : $2i(1-i)-3i=2+2i-3i=2-i=\\gamma$. $\\checkmark$"
+        }
+      ],
+      "conclusion_markdown": "$S$ est la similitude indirecte de centre $A(2+i)$, de rapport $2$ et d'axe la droite $(\\Delta):y=x-1$. On a déterminé les trois éléments caractéristiques à partir d'un unique coefficient $a=2i$ : le module donne le rapport, l'argument divisé par deux donne la direction de l'axe, le centre était donné."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « $S$ est la similitude indirecte de centre $A$, de rapport 2 et d'angle $\\frac{\\pi}{2}$ ».",
+          "pourquoi_faux": "Une similitude indirecte ne possède pas d'angle : elle transforme tout angle orienté en son opposé, donc aucun angle constant ne la caractérise. Le nombre $\\frac{\\pi}{2}$ est l'argument de $a$, une quantité intermédiaire, pas un élément caractéristique.",
+          "correction_markdown": "Les trois éléments à donner sont : le **centre**, le **rapport**, l'**axe**. L'argument de $a$ ne sert qu'à construire l'axe, en le divisant par 2."
+        },
+        {
+          "erreur_markdown": "Prendre pour axe la droite passant par $\\Omega$ d'angle polaire $\\arg(a)$, ici $\\frac{\\pi}{2}$, c'est-à-dire la verticale $x=2$.",
+          "pourquoi_faux": "La symétrie d'axe une droite d'angle polaire $\\varphi$ a pour écriture complexe $z'-\\omega=e^{2i\\varphi}\\left(\\overline{z}-\\overline{\\omega}\\right)$ : c'est $2\\varphi$, et non $\\varphi$, qui apparaît dans l'argument. Il faut donc résoudre $2\\varphi=\\arg(a)$.",
+          "correction_markdown": "Diviser par 2 : $\\varphi=\\frac{\\arg a}{2}=\\frac{\\pi}{4}$, ce qui donne la droite $y=x-1$. Un test rapide sur l'image de $B$ départage immédiatement les deux réponses."
+        },
+        {
+          "erreur_markdown": "Écrire $\\gamma-\\alpha=a\\left(\\beta-\\alpha\\right)$ en oubliant les conjugués.",
+          "pourquoi_faux": "C'est la relation d'une similitude **directe**. Avec les données de l'exemple, elle donnerait $a=\\frac{-2i}{-1}=2i$ par coïncidence numérique, mais la transformation obtenue serait la similitude directe de centre $A$, de rapport 2 et d'angle $\\frac{\\pi}{2}$ - une rotation-dilatation, pas un retournement. Sur d'autres données, la valeur de $a$ elle-même serait fausse.",
+          "correction_markdown": "Mémoriser la forme avec la barre : $z'-\\omega=a\\left(\\overline{z}-\\overline{\\omega}\\right)$, et penser à conjuguer **l'affixe de l'antécédent et celle du centre**, pas seulement l'une des deux."
+        },
+        {
+          "erreur_markdown": "Chercher le centre en résolvant $z=a\\overline{z}+b$ alors que $|a|=1$.",
+          "pourquoi_faux": "Quand $|a|=1$, l'équation n'a pas de solution unique : soit une droite entière de solutions (symétrie axiale), soit aucune (symétrie glissée). Chercher « le » centre mène à un système impossible ou indéterminé.",
+          "correction_markdown": "Calculer $|a|$ **avant** de chercher un centre. Si $|a|=1$, changer de méthode : il s'agit d'un antidéplacement, et on cherche l'ensemble des points fixes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer les éléments caractéristiques de la similitude $S$ d'écriture complexe $z'=3\\overline{z}+2-4i$... après avoir d'abord vérifié qu'elle est bien indirecte et qu'elle possède un centre.",
+          "solution_markdown": "**Nature.** L'écriture est de la forme $z'=a\\overline{z}+b$ avec $a=3$ et $b=2-4i$ : $S$ est une similitude indirecte.\n\n**Rapport.** $k=|a|=|3|=3$. Comme $k\\neq1$, $S$ possède un centre unique.\n\n**Centre.** On résout $\\omega=3\\overline{\\omega}+2-4i$. Posons $\\omega=x+iy$ avec $x,y$ réels ; alors $\\overline{\\omega}=x-iy$ et l'équation devient\n\n$$x+iy=3x-3iy+2-4i.$$\n\nEn identifiant parties réelle et imaginaire :\n\n$$\\begin{cases}x=3x+2\\\\ y=-3y-4\\end{cases}\\quad\\Longleftrightarrow\\quad\\begin{cases}-2x=2\\\\ 4y=-4\\end{cases}\\quad\\Longleftrightarrow\\quad\\begin{cases}x=-1\\\\ y=-1\\end{cases}$$\n\nLe centre est le point $\\Omega$ d'affixe $-1-i$.\n\n**Axe.** $a=3$ est un réel strictement positif, donc $\\cos\\theta=1$ et $\\sin\\theta=0$, d'où $\\theta=0$. L'angle polaire de l'axe vaut $\\frac{\\theta}{2}=0$ : l'axe est la droite horizontale passant par $\\Omega(-1\\,;-1)$, d'équation $y=-1$.\n\n**Conclusion.** $S$ est la similitude indirecte de centre $\\Omega(-1-i)$, de rapport 3 et d'axe la droite $y=-1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $A$, $B$, $C$ d'affixes respectives $1$, $3+2i$ et $1+4i$. Déterminer l'écriture complexe, le rapport et l'axe de la similitude indirecte de centre $A$ qui transforme $B$ en $C$.",
+          "solution_markdown": "**Forme réduite.** Avec $\\alpha=1$, $\\beta=3+2i$, $\\gamma=1+4i$ :\n\n$$z'-1=a\\left(\\overline{z}-\\overline{1}\\right)=a\\left(\\overline{z}-1\\right).$$\n\n**Calcul de $a$.**\n\n$$\\gamma-\\alpha=(1+4i)-1=4i,\\qquad \\overline{\\beta}-\\overline{\\alpha}=(3-2i)-1=2-2i.$$\n\nDonc\n\n$$a=\\frac{4i}{2-2i}=\\frac{4i(2+2i)}{(2-2i)(2+2i)}=\\frac{8i+8i^{2}}{4+4}=\\frac{-8+8i}{8}=-1+i.$$\n\n**Rapport.** $k=|a|=\\sqrt{(-1)^{2}+1^{2}}=\\sqrt{2}$.\n\n**Axe.** Écrivons $a=\\sqrt{2}(\\cos\\theta+i\\sin\\theta)$ :\n\n$$\\cos\\theta=\\frac{-1}{\\sqrt2}=-\\frac{\\sqrt2}{2},\\qquad \\sin\\theta=\\frac{1}{\\sqrt2}=\\frac{\\sqrt2}{2}.$$\n\nCes deux valeurs identifient $\\theta=\\dfrac{3\\pi}{4}$. L'angle polaire de l'axe vaut donc $\\dfrac{\\theta}{2}=\\dfrac{3\\pi}{8}$, et l'axe est la droite passant par $A(1\\,;0)$ de coefficient directeur $\\tan\\dfrac{3\\pi}{8}$.\n\n**Écriture complexe.** $z'=(-1+i)\\overline{z}+b$ avec $A$ invariant : $1=(-1+i)\\times1+b$, donc $b=1-(-1+i)=2-i$ et\n\n$$S\\;:\\;z'=(-1+i)\\overline{z}+2-i.$$\n\n**Vérification.** $S(B)$ : $(-1+i)(3-2i)+2-i=-3+2i+3i-2i^{2}+2-i=-3+2+2+(2+3-1)i=1+4i=\\gamma$. $\\checkmark$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $S$ la similitude indirecte d'écriture $z'=a\\overline{z}+b$, de rapport $k=|a|\\neq1$ et de centre $\\Omega$ d'affixe $\\omega$. Démontrer que $S\\circ S$ est une homothétie dont on précisera le centre et le rapport. En déduire, pour l'exemple du cours ($a=2i$, $\\omega=2+i$), l'image du point $B(1+i)$ par $S\\circ S$, et vérifier le résultat par un calcul direct.",
+          "solution_markdown": "**Étape 1 - composer.** Utilisons la forme réduite $S(z)=\\omega+a\\left(\\overline{z}-\\overline{\\omega}\\right)$. Alors\n\n$$S\\big(S(z)\\big)=\\omega+a\\left(\\overline{S(z)}-\\overline{\\omega}\\right).$$\n\nCalculons $\\overline{S(z)}$ en conjuguant l'expression de $S(z)$ :\n\n$$\\overline{S(z)}=\\overline{\\omega}+\\overline{a}\\left(z-\\omega\\right).$$\n\nEn reportant :\n\n$$S\\big(S(z)\\big)=\\omega+a\\Big[\\overline{\\omega}+\\overline{a}(z-\\omega)-\\overline{\\omega}\\Big]=\\omega+a\\overline{a}\\,(z-\\omega)=\\omega+|a|^{2}(z-\\omega).$$\n\n**Étape 2 - conclure.** L'égalité $S\\circ S(z)-\\omega=|a|^{2}\\,(z-\\omega)$ est exactement l'écriture complexe de l'homothétie de centre $\\Omega$ et de rapport $|a|^{2}=k^{2}$. Ce rapport est un réel strictement positif : $S\\circ S$ est une homothétie de centre $\\Omega$ et de rapport $k^{2}$, quelle que soit la direction de l'axe.\n\n*Interprétation :* appliquer deux fois un retournement remet la figure à l'endroit ; il ne reste que l'effet d'agrandissement, appliqué deux fois.\n\n**Étape 3 - application numérique.** Avec $a=2i$, $\\omega=2+i$, on a $k=2$ donc $k^{2}=4$. L'image de $B(1+i)$ par $S\\circ S$ est\n\n$$\\omega+4(\\beta-\\omega)=(2+i)+4\\big[(1+i)-(2+i)\\big]=(2+i)+4(-1)=-2+i.$$\n\n**Étape 4 - vérification directe.** On sait que $S(B)=C$, d'affixe $2-i$. Calculons $S(C)$ avec $z'=2i\\overline{z}-3i$ :\n\n$$S(C)=2i\\left(\\overline{2-i}\\right)-3i=2i(2+i)-3i=4i+2i^{2}-3i=-2+i.$$\n\nLes deux résultats coïncident."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une similitude indirecte s'écrit $z'=a\\overline{z}+b$ : c'est la barre de conjugaison qui la distingue d'une similitude directe. Vérifie-la avant tout calcul.",
+        "Trois éléments caractéristiques, et trois seulement : centre, rapport, axe. Pas d'angle.",
+        "Le rapport est $|a|$ ; la direction de l'axe est donnée par $\\frac{\\arg a}{2}$, jamais par $\\arg a$ lui-même. C'est la division par 2 qui est oubliée dans la majorité des copies.",
+        "Quand le centre est donné, un seul couple (antécédent, image) suffit : $z'-\\omega=a\\left(\\overline{z}-\\overline{\\omega}\\right)$ livre $a$ en une ligne.",
+        "Termine toujours par le test « l'image de $B$ est-elle bien $C$ ? » à partir de l'écriture complexe complète : trois lignes qui valident la question entière.",
+        "Au BAC série C, cette question arrive presque toujours à la fin d'un exercice de nombres complexes, après une résolution d'équation qui fournit les affixes. Les points sont répartis entre le calcul de $a$, le rapport et l'axe : traite les trois même si tu doutes de l'un d'eux."
+      ]
+    }
+  ]
+}

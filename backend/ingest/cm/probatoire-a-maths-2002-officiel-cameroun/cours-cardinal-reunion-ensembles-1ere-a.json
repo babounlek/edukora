@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-cardinal-reunion-ensembles-1ere-a",
+  "meta": {
+    "titre": "Cardinal d'une réunion et d'une différence de deux ensembles (diagramme de Venn)",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Ensembles et dénombrement",
+    "duree_estimee_min": 20,
+    "tags": [
+      "ensembles",
+      "diagramme de Venn",
+      "cardinal",
+      "intersection",
+      "réunion"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2002-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Cameroun - Session 2002 (MINEDUC-OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-maths-2002-officiel-cameroun-ex3-q1a-1",
+    "rappels_lies": [
+      "rdm-probatoire-a-maths-2002-officiel-cameroun-ex3-q1b-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un sondage te donne trois nombres : combien de personnes utilisent un produit A, combien utilisent un produit B, et combien utilisent les deux à la fois. Comment retrouver combien n'utilisent QUE A, ou QUE B ? Le piège classique est de confondre « utiliser A » (qui inclut ceux qui utilisent aussi B) avec « n'utiliser que A ». Le diagramme de Venn, associé à une soustraction simple, élimine ce piège une fois pour toutes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Comprendre la notion d'ensemble et d'élément appartenant à un ensemble.",
+        "Savoir ce que représente l'intersection de deux ensembles.",
+        "Additionner et soustraire des entiers."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Cardinaux d'une intersection, d'une différence et d'une réunion",
+      "contenu_markdown": "Pour deux ensembles $A$ et $B$ d'un même univers, on note $n(A)$ le cardinal de $A$ (son nombre d'éléments), $n(A\\cap B)$ le cardinal de leur intersection (éléments communs aux deux). Le nombre d'éléments qui appartiennent à $A$ mais pas à $B$ (n'utilisent que $A$) vaut $n(A)-n(A\\cap B)$ ; de même, $n(B)-n(A\\cap B)$ pour les éléments de $B$ seul. Le cardinal de la réunion, éléments dans $A$ ou dans $B$ (au moins l'un des deux), vaut $n(A\\cup B) = n(A)+n(B)-n(A\\cap B)$.",
+      "formule_principale": "n(A\\cup B) = n(A) + n(B) - n(A\\cap B)",
+      "variantes": [
+        {
+          "nom": "Trois ensembles",
+          "quand_utiliser": "Quand le problème implique trois catégories croisées plutôt que deux.",
+          "contenu_markdown": "La formule se généralise mais avec plus de termes : $n(A\\cup B\\cup C) = n(A)+n(B)+n(C)-n(A\\cap B)-n(A\\cap C)-n(B\\cap C)+n(A\\cap B\\cap C)$. Le diagramme de Venn à trois disques reste la façon la plus sûre de na pas se tromper de zone."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "15 personnes sont interrogées sur l'utilisation de deux dentifrices $A$ et $B$ : 9 utilisent $A$, 10 utilisent $B$, 4 utilisent les deux. Combien de personnes n'utilisent que $A$, n'utilisent que $B$, et combien n'utilisent ni l'un ni l'autre ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer l'intersection au centre du diagramme",
+          "justification": "L'intersection est la donnée la plus contrainte : elle sert de point de départ pour déduire le reste.",
+          "resultat_markdown": "$n(A\\cap B) = 4$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'effectif de A seul et de B seul",
+          "justification": "On retire l'intersection de chaque effectif total.",
+          "resultat_markdown": "$n(A\\text{ seul}) = 9-4=5 \\quad ; \\quad n(B\\text{ seul}) = 10-4=6$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le cardinal de la réunion",
+          "justification": "On applique la formule de la réunion pour connaître le nombre total de personnes utilisant au moins un des deux dentifrices.",
+          "resultat_markdown": "$n(A\\cup B) = 9+10-4 = 15$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire le nombre de personnes n'utilisant ni A ni B",
+          "justification": "L'univers compte 15 personnes en tout : celles qui n'utilisent ni A ni B sont celles qui restent en dehors de la réunion.",
+          "resultat_markdown": "$15-15=0$"
+        }
+      ],
+      "conclusion_markdown": "5 personnes n'utilisent que $A$, 6 n'utilisent que $B$, 4 utilisent les deux, et personne n'utilise ni l'un ni l'autre : les 15 personnes interrogées sont entièrement réparties entre ces trois zones du diagramme."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre que 9 personnes « n'utilisent que $A$ » en recopiant directement l'effectif $n(A)$ donné dans l'énoncé.",
+          "pourquoi_faux": "n(A)=9 compte TOUTES les personnes qui utilisent A, y compris celles qui utilisent aussi B. « N'utiliser que A » exclut justement celles qui utilisent aussi B.",
+          "correction_markdown": "Toujours soustraire l'intersection de l'effectif total avant de répondre à une question qui contient le mot « seulement » ou « que »."
+        },
+        {
+          "erreur_markdown": "Additionner $n(A)$ et $n(B)$ sans soustraire l'intersection pour obtenir le nombre total de personnes concernées par au moins un des deux ensembles.",
+          "pourquoi_faux": "Les personnes de l'intersection sont comptées une fois dans n(A) et une seconde fois dans n(B) : la somme brute compte l'intersection en double.",
+          "correction_markdown": "Utiliser systématiquement $n(A\\cup B)=n(A)+n(B)-n(A\\cap B)$ dès qu'on additionne deux effectifs qui peuvent se chevaucher."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une classe de 30 élèves, 18 pratiquent le football, 12 pratiquent le basketball, et 5 pratiquent les deux sports. Combien d'élèves ne pratiquent que le football ?",
+          "solution_markdown": "$n(\\text{football seul}) = n(\\text{football}) - n(\\text{football}\\cap\\text{basketball}) = 18-5=13$\n\n13 élèves ne pratiquent que le football."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans une classe de 30 élèves, 18 pratiquent le football, 12 pratiquent le basketball, et 5 pratiquent les deux sports. Combien d'élèves ne pratiquent aucun des deux sports ?",
+          "solution_markdown": "On calcule d'abord le nombre d'élèves pratiquant au moins un des deux sports :\n\n$n(\\text{football}\\cup\\text{basketball}) = 18+12-5=25$\n\nLe nombre d'élèves ne pratiquant aucun des deux sports est donc :\n\n$30-25=5$\n\n5 élèves ne pratiquent ni football ni basketball."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un groupe de 50 personnes, 28 parlent l'anglais, 22 parlent l'espagnol, et 6 personnes ne parlent aucune des deux langues. Déterminer combien de personnes parlent les deux langues à la fois.",
+          "solution_markdown": "Le nombre de personnes parlant au moins une des deux langues est $50-6=44$.\n\nOn utilise la formule de la réunion : $n(A\\cup B) = n(A)+n(B)-n(A\\cap B)$, donc :\n\n$44 = 28+22-n(A\\cap B)$\n\n$44 = 50 - n(A\\cap B)$\n\n$n(A\\cap B) = 50-44=6$\n\n6 personnes parlent les deux langues à la fois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un cardinal donné dans l'énoncé pour un ensemble A inclut toujours les éléments qui appartiennent aussi à B : ce n'est jamais directement « A seul ».",
+        "Pour obtenir A seul, soustrais systématiquement le cardinal de l'intersection : $n(A)-n(A\\cap B)$.",
+        "La formule de la réunion $n(A\\cup B)=n(A)+n(B)-n(A\\cap B)$ évite de compter deux fois les éléments communs.",
+        "Vérifie toujours tes résultats en additionnant les trois zones du diagramme (A seul, B seul, intersection) et en comparant au total de l'univers.",
+        "Place systématiquement l'intersection au centre du diagramme avant de déduire les deux croissants latéraux : c'est la méthode la plus fiable pour ne rien compter en double."
+      ]
+    }
+  ]
+}

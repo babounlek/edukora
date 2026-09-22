@@ -1,0 +1,171 @@
+{
+  "cours_id": "cours-cylindree-alesage-course-bepc",
+  "meta": {
+    "titre": "Relier cylindrée, alésage et course d'un piston",
+    "matiere": "Physique-Chimie-Technologie",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Technologie - géométrie des moteurs thermiques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "cylindrée",
+      "alésage",
+      "course",
+      "piston",
+      "volume d'un cylindre",
+      "moteur"
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": "",
+      "module_numero": "2",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-pct-2021-cameroun",
+    "epreuve_titre": "BEPC Physique-Chimie-Technologie 2021 Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-pct-2021-cameroun-ex2-q2-2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur la fiche technique d'un moteur, trois nombres reviennent toujours : la cylindrée, l'alésage et la course. Ils ne sont pas indépendants. Deux d'entre eux suffisent à retrouver le troisième, parce que le volume balayé par un piston n'est rien d'autre que celui d'un cylindre droit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la cylindrée unitaire et la cylindrée totale d'un moteur",
+        "Savoir calculer le volume d'un cylindre",
+        "Savoir isoler une grandeur dans une formule contenant un carré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le piston balaie un cylindre droit",
+      "contenu_markdown": "Le piston se déplace entre le point mort haut et le point mort bas. Le volume qu'il balaie est celui d'un **cylindre droit** :\n- de **diamètre** égal à l'**alésage** $D$, c'est-à-dire le diamètre intérieur du cylindre ;\n- de **hauteur** égale à la **course** $C$, c'est-à-dire la distance entre les deux points morts.\n\nD'où la relation fondamentale :\n\n$$V - v = \\frac{\\pi D^2}{4} \\times C$$\n\noù $V - v$ désigne la **cylindrée unitaire**.\n\n**Les deux formules dérivées :**\n\n$$C = \\frac{4 \\times (V-v)}{\\pi D^2} \\qquad ; \\qquad D = \\sqrt{\\frac{4 \\times (V-v)}{\\pi C}}$$\n\n**Le lien avec la cylindrée totale.** Pour un moteur à $N$ cylindres identiques :\n\n$$V_t = N \\times (V - v)$$\n\n**Le vocabulaire des motoristes.** On compare toujours la course à l'alésage :\n- $C > D$ : moteur **à course longue**, souple, à couple élevé à bas régime ;\n- $C = D$ : moteur **carré** ;\n- $C < D$ : moteur **super-carré**, qui monte haut en régime.\n\n**Les ordres de grandeur.** Sur un moteur d'automobile, alésage et course se situent entre 7 et 10 cm. Un résultat de 2 cm ou de 40 cm signale une erreur.",
+      "formule_principale": "V - v = \\frac{\\pi D^2}{4} \\times C",
+      "variantes": [
+        {
+          "nom": "Partir de la cylindrée totale",
+          "quand_utiliser": "Quand l'énoncé ne donne que la cylindrée totale et le nombre de cylindres",
+          "contenu_markdown": "On calcule d'abord la cylindrée **unitaire** par $V - v = \\dfrac{V_t}{N}$, puis on applique la relation géométrique. L'ordre est important : la formule $\\dfrac{\\pi D^2}{4} \\times C$ décrit **un seul** cylindre. L'appliquer directement à la cylindrée totale donnerait une course $N$ fois trop grande."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un moteur à six cylindres a une cylindrée totale $V_t = 2976\\ \\text{cm}^3$ et un alésage de $8,25$ cm. Déterminer la course du piston.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la cylindrée unitaire",
+          "justification": "La relation géométrique porte sur un seul cylindre : il faut donc y revenir avant tout calcul.",
+          "resultat_markdown": "$$V - v = \\frac{V_t}{N} = \\frac{2976}{6} = 496\\ \\text{cm}^3$$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la relation géométrique",
+          "justification": "Le piston balaie un cylindre droit de diamètre $D$ et de hauteur $C$.",
+          "resultat_markdown": "$$V - v = \\frac{\\pi D^2}{4} \\times C$$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler la course",
+          "justification": "On multiplie les deux membres par 4, puis on divise par $\\pi D^2$.",
+          "resultat_markdown": "$$C = \\frac{4 \\times (V - v)}{\\pi D^2}$$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le carré de l'alésage",
+          "justification": "L'alésage est un diamètre : c'est lui, et non le rayon, qui est élevé au carré dans cette formule.",
+          "resultat_markdown": "$$D^2 = 8,25^2 = 68,0625\\ \\text{cm}^2$$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer le dénominateur",
+          "justification": "On prend $\\pi \\approx 3,14$, valeur suffisante au niveau du BEPC.",
+          "resultat_markdown": "$$\\pi D^2 = 3,14 \\times 68,0625 \\approx 213,72\\ \\text{cm}^2$$"
+        },
+        {
+          "numero": 6,
+          "action": "Effectuer la division finale",
+          "justification": "Le numérateur vaut quatre fois la cylindrée unitaire.",
+          "resultat_markdown": "$$C = \\frac{4 \\times 496}{213,72} = \\frac{1984}{213,72} \\approx 9,28\\ \\text{cm}$$"
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier en remontant le calcul",
+          "justification": "On recalcule la cylindrée unitaire à partir de la course trouvée : elle doit redonner 496 cm³.",
+          "resultat_markdown": "$$\\frac{3,14 \\times 68,0625}{4} \\times 9,28 \\approx 53,43 \\times 9,28 \\approx 496\\ \\text{cm}^3 \\quad \\checkmark$$"
+        }
+      ],
+      "conclusion_markdown": "La course du piston vaut environ $9,28\\ \\text{cm}$, soit $92,8\\ \\text{mm}$. Comme la course dépasse l'alésage de 82,5 mm, il s'agit d'un moteur à course longue."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Prendre l'alésage pour un rayon",
+          "pourquoi_faux": "L'alésage est le **diamètre** intérieur du cylindre. Utiliser $V = \\pi R^2 C$ avec $R = 8,25$ cm donne un volume quatre fois trop grand, donc une course quatre fois trop petite.",
+          "correction_markdown": "Le 4 au dénominateur de $\\dfrac{\\pi D^2}{4}$ est précisément là pour rappeler qu'on part du diamètre. Ne l'oublie jamais."
+        },
+        {
+          "erreur_markdown": "Appliquer la formule directement à la cylindrée totale",
+          "pourquoi_faux": "La relation géométrique décrit **un** cylindre. Employer $V_t$ à la place de $V - v$ donnerait ici une course six fois trop grande, soit plus de 55 cm, valeur absurde pour un moteur.",
+          "correction_markdown": "Divise d'abord par le nombre de cylindres, puis applique la géométrie."
+        },
+        {
+          "erreur_markdown": "Mélanger les unités de longueur et de volume",
+          "pourquoi_faux": "Un volume en $\\text{cm}^3$ impose des longueurs en centimètres. Employer un alésage en millimètres avec une cylindrée en centimètres cubes fausse le résultat d'un facteur 100.",
+          "correction_markdown": "Harmonise les unités dès la ligne des données, avant tout calcul."
+        },
+        {
+          "erreur_markdown": "Ne pas contrôler l'ordre de grandeur",
+          "pourquoi_faux": "Sur un moteur d'automobile, alésage et course sont du même ordre, entre 7 et 10 cm. Un résultat très éloigné de cet intervalle signale une erreur, le plus souvent sur le rayon ou sur le nombre de cylindres.",
+          "correction_markdown": "Compare toujours ta course à l'alésage donné : elles doivent rester comparables."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un cylindre a un alésage de 8 cm et une course de 10 cm. Calculer sa cylindrée unitaire. On prendra $\\pi \\approx 3,14$.",
+          "solution_markdown": "**Formule.**\n\n$$V - v = \\frac{\\pi D^2}{4} \\times C$$\n\n**Calcul du carré de l'alésage.**\n\n$$D^2 = 8^2 = 64\\ \\text{cm}^2$$\n\n**Application numérique.**\n\n$$V - v = \\frac{3,14 \\times 64}{4} \\times 10 = \\frac{200,96}{4} \\times 10 = 50,24 \\times 10 = 502,4\\ \\text{cm}^3$$\n\nLa cylindrée unitaire vaut environ $502\\ \\text{cm}^3$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur à quatre cylindres a une cylindrée totale de 1600 cm³ et une course de 8 cm. Calculer son alésage. On prendra $\\pi \\approx 3,14$.",
+          "solution_markdown": "**Étape 1 - calculer la cylindrée unitaire.**\n\n$$V - v = \\frac{1600}{4} = 400\\ \\text{cm}^3$$\n\n**Étape 2 - isoler le carré de l'alésage.** À partir de $V - v = \\dfrac{\\pi D^2}{4} \\times C$ :\n\n$$D^2 = \\frac{4 \\times (V - v)}{\\pi C}$$\n\n**Étape 3 - appliquer.**\n\n$$D^2 = \\frac{4 \\times 400}{3,14 \\times 8} = \\frac{1600}{25,12} \\approx 63,7\\ \\text{cm}^2$$\n\n**Étape 4 - extraire la racine carrée.**\n\n$$D = \\sqrt{63,7} \\approx 7,98\\ \\text{cm}$$\n\n**Vérification.** $\\dfrac{3,14 \\times 63,7}{4} \\times 8 = 50 \\times 8 = 400\\ \\text{cm}^3$ $\\checkmark$\n\nL'alésage vaut environ 8 cm. Course et alésage étant égaux, il s'agit d'un moteur dit **carré**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux moteurs ont la même cylindrée totale de 2000 cm³ et quatre cylindres chacun. Le moteur A a un alésage de 9,2 cm, le moteur B un alésage de 7,5 cm. Calculer la course de chacun, les classer selon le vocabulaire des motoristes, et expliquer ce que cette différence implique pour l'usage du véhicule. On prendra $\\pi \\approx 3,14$.",
+          "solution_markdown": "**Étape 1 - cylindrée unitaire commune aux deux moteurs.**\n\n$$V - v = \\frac{2000}{4} = 500\\ \\text{cm}^3$$\n\n**Étape 2 - course du moteur A.**\n\n$$D_A^2 = 9,2^2 = 84,64\\ \\text{cm}^2$$\n\n$$C_A = \\frac{4 \\times 500}{3,14 \\times 84,64} = \\frac{2000}{265,77} \\approx 7,53\\ \\text{cm}$$\n\n**Étape 3 - course du moteur B.**\n\n$$D_B^2 = 7,5^2 = 56,25\\ \\text{cm}^2$$\n\n$$C_B = \\frac{4 \\times 500}{3,14 \\times 56,25} = \\frac{2000}{176,63} \\approx 11,32\\ \\text{cm}$$\n\n**Étape 4 - classer les deux moteurs.**\n\n| Moteur | Alésage | Course | Rapport $C/D$ | Type |\n|---|---|---|---|---|\n| A | 9,2 cm | 7,53 cm | 0,82 | **super-carré** |\n| B | 7,5 cm | 11,32 cm | 1,51 | **à course longue** |\n\n**Étape 5 - interpréter la différence.**\n\n*Le moteur A, super-carré.* Sa course est courte, donc le piston parcourt une faible distance à chaque aller-retour. Sa vitesse linéaire moyenne reste modérée même à haut régime : le moteur peut donc **tourner vite** sans usure excessive. Son large alésage laisse en outre la place à de grosses soupapes, qui remplissent mieux le cylindre à haut régime. C'est l'architecture des moteurs sportifs, qui délivrent leur puissance dans les tours élevés.\n\n*Le moteur B, à course longue.* Sa course importante augmente le bras de levier sur le vilebrequin : à pression égale dans le cylindre, le couple produit est plus élevé. Mais la vitesse linéaire du piston croît vite avec le régime, ce qui limite le régime maximal admissible. C'est l'architecture des moteurs de camions, de tracteurs et des Diesel : **beaucoup de couple à bas régime**, peu de puissance en haut.\n\n**Étape 6 - conséquence pour l'usage.**\n\n- Le moteur A conviendra à un véhicule léger et rapide, qu'on fait monter dans les tours.\n- Le moteur B conviendra à un véhicule chargé, qui doit démarrer en côte et tracter, sans jamais avoir besoin de hauts régimes.\n\n**Conclusion.** À cylindrée identique, le choix du couple alésage-course détermine entièrement le caractère du moteur. C'est pourquoi les fiches techniques donnent toujours ces deux valeurs, et pas seulement la cylindrée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le piston balaie un cylindre droit : $V - v = \\dfrac{\\pi D^2}{4} \\times C$.",
+        "L'alésage est un **diamètre**, jamais un rayon. C'est ce que rappelle le 4 au dénominateur.",
+        "La formule décrit **un** cylindre : divise d'abord la cylindrée totale par le nombre de cylindres.",
+        "Course supérieure à l'alésage : moteur à course longue, riche en couple. Course inférieure : moteur super-carré, qui monte en régime.",
+        "Contrôle l'ordre de grandeur : sur une automobile, alésage et course tiennent entre 7 et 10 cm.",
+        "Au BEPC, cette question suit toujours le calcul de la cylindrée unitaire et vaut environ 1 point. Les deux se traitent d'affilée."
+      ]
+    }
+  ]
+}

@@ -14,35 +14,75 @@
   "titre_exercice": "Exercice 2 : nuage de points, point moyen, ajustement affine par la méthode de Mayer, extrapolation",
   "points": 5,
   "figures": [],
-  "enonce_intro_markdown": "Le tableau ci-dessous représente la population $X$ des pays de la zone CEMAC et le nombre $Y$ d'analphabètes de chacun de ces pays (tous exprimés en millions d'habitants).\n\n| Pays | Cameroun | RCA | Congo | Gabon | Guinée Équatoriale | Tchad |\n|---|---|---|---|---|---|---|\n| Population | 13,9 | 3,4 | 2,7 | 1,15 | 0,42 | 7,153 |\n| Nombre d'analphabètes | 3,9337 | 1,9584 | 1,43 | 0,38 | 0,08 | 3,43 |\n\n**Notes sur le document source.** (1) Cet exercice est intitulé \"Exercice 1\" dans le document original, en doublon avec le premier exercice sur les complexes (également intitulé \"Exercice 1\") : il s'agit clairement d'une erreur de numérotation du document source, corrigée ici en \"Exercice 2\" pour la cohérence de l'ensemble. (2) L'énoncé source annonce \"4points\" pour cet exercice, mais la somme des points indiqués pour les quatre sous-questions ($1,5+1+1,5+1$) donne exactement $5$ points, non $4$. Cet écart est signalé ici par souci de transparence ; la valeur $5$ (somme réelle des sous-questions, cohérente avec un total d'épreuve à 20 points une fois combinée aux 4 points de l'exercice 1 et aux 11 points du problème) est retenue comme total de l'exercice.",
+  "enonce_intro_markdown": "Le tableau ci-dessous représente la population $X$ des pays de la zone CEMAC et le nombre $Y$ d'analphabètes de chacun de ces pays (tous exprimés en millions d'habitants).\n\n| Pays | Cameroun | RCA | Congo | Gabon | Guinée Équatoriale | Tchad |\n|---|---|---|---|---|---|---|\n| Population | 13,9 | 3,4 | 2,7 | 1,15 | 0,42 | 7,153 |\n| Nombre d'analphabètes | 3,9337 | 1,9584 | 1,43 | 0,38 | 0,08 | 3,43 |",
   "questions": [
     {
       "numero": "a",
       "points": "1,5pt",
       "enonce_markdown": "Représenter, dans le plan rapporté à un repère orthonormé $(O,\\vec\\imath,\\vec\\jmath)$, le nuage de points associé à cette série statistique (on prendra en abscisse $1$ cm, et en ordonnée $4$ cm, pour un million d'habitants).",
-      "rappels_de_methode": [{"cours_id": "cours-construire-nuage-points-echelles-differentes-terminale-d", "texte": "Pour construire un nuage de points avec des échelles différentes sur les deux axes, on place chaque point (xi,yi) en appliquant l'échelle propre à chaque axe indépendamment, sans jamais utiliser un même facteur de conversion pour les deux coordonnées."}],
-      "corrige_markdown": "### Rappel de méthode\nPour construire un nuage de points avec des échelles différentes sur les deux axes (ici $1$ cm par million en abscisse, $4$ cm par million en ordonnée), on place chaque point $(x_i,y_i)$ en appliquant l'échelle propre à chaque axe INDÉPENDAMMENT, sans jamais utiliser un même facteur de conversion pour les deux coordonnées.\n\n**Liste des six points à placer (population en abscisse, nombre d'analphabètes en ordonnée) :**\n\n- Cameroun : $(13,9\\,;\\,3,9337)$\n- RCA : $(3,4\\,;\\,1,9584)$\n- Congo : $(2,7\\,;\\,1,43)$\n- Gabon : $(1,15\\,;\\,0,38)$\n- Guinée Équatoriale : $(0,42\\,;\\,0,08)$\n- Tchad : $(7,153\\,;\\,3,43)$\n\n**Construction (description).** Sur l'axe des abscisses, chaque unité (million d'habitants) correspond à $1$ cm ; sur l'axe des ordonnées, chaque unité correspond à $4$ cm. Placer chacun des six points en appliquant, pour chaque coordonnée, l'échelle propre à son axe. On observe une tendance globalement croissante et approximativement alignée entre population et nombre d'analphabètes.\n\n### Piège à éviter\nAppliquer par erreur la même échelle ($1$ cm ou $4$ cm) aux deux axes déforme la lecture visuelle de la tendance du nuage : bien respecter les deux échelles distinctes indiquées par l'énoncé, une erreur ici fausserait aussi la pente visuelle de la droite d'ajustement tracée ensuite."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-construire-nuage-points-echelles-differentes-terminale-d",
+          "texte": "Pour construire un nuage de points avec des échelles différentes sur les deux axes, on place chaque point (xi,yi) en appliquant l'échelle propre à chaque axe indépendamment, sans jamais utiliser un même facteur de conversion pour les deux coordonnées."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour construire un nuage de points avec des échelles différentes sur les deux axes (ici $1$ cm par million en abscisse, $4$ cm par million en ordonnée), on place chaque point $(x_i,y_i)$ en appliquant l'échelle propre à chaque axe INDÉPENDAMMENT, sans jamais utiliser un même facteur de conversion pour les deux coordonnées.\n\n**Liste des six points à placer (population en abscisse, nombre d'analphabètes en ordonnée) :**\n\n- Cameroun : $(13,9\\,;\\,3,9337)$\n- RCA : $(3,4\\,;\\,1,9584)$\n- Congo : $(2,7\\,;\\,1,43)$\n- Gabon : $(1,15\\,;\\,0,38)$\n- Guinée Équatoriale : $(0,42\\,;\\,0,08)$\n- Tchad : $(7,153\\,;\\,3,43)$\n\n**Construction (description).** Sur l'axe des abscisses, chaque unité (million d'habitants) correspond à $1$ cm ; sur l'axe des ordonnées, chaque unité correspond à $4$ cm. Placer chacun des six points en appliquant, pour chaque coordonnée, l'échelle propre à son axe. On observe une tendance globalement croissante et approximativement alignée entre population et nombre d'analphabètes.\n\n### Piège à éviter\nAppliquer par erreur la même échelle ($1$ cm ou $4$ cm) aux deux axes déforme la lecture visuelle de la tendance du nuage : bien respecter les deux échelles distinctes indiquées par l'énoncé, une erreur ici fausserait aussi la pente visuelle de la droite d'ajustement tracée ensuite.",
+      "themes": [
+        "nuage de points",
+        "statistiques",
+        "échelle"
+      ]
     },
     {
       "numero": "b",
       "points": "1pt",
       "enonce_markdown": "Déterminer les coordonnées du point moyen $G$ de cette série statistique.",
-      "rappels_de_methode": [{"cours_id": "cours-calculer-point-moyen-serie-double-terminale-d", "texte": "Le point moyen G d'une série statistique double (xi,yi) a pour coordonnées x̄ (moyenne des xi) et ȳ (moyenne des yi), chacune calculée séparément comme la moyenne arithmétique simple des valeurs de la colonne correspondante."}],
-      "corrige_markdown": "### Rappel de méthode\nLe point moyen $G$ d'une série statistique double $(x_i,y_i)$ a pour coordonnées $\\bar x$ (moyenne arithmétique des $x_i$) et $\\bar y$ (moyenne arithmétique des $y_i$), chacune calculée séparément.\n\n**Calcul de $\\bar x$.**\n\n$$\\bar x=\\dfrac{13,9+3,4+2,7+1,15+0,42+7,153}6=\\dfrac{28,723}6\\approx4,787$$\n\n**Calcul de $\\bar y$.**\n\n$$\\bar y=\\dfrac{3,9337+1,9584+1,43+0,38+0,08+3,43}6=\\dfrac{11,2121}6\\approx1,869$$\n\n**Le point moyen a pour coordonnées $G\\approx(4,787\\,;\\,1,869)$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-calculer-point-moyen-serie-double-terminale-d",
+          "texte": "Le point moyen G d'une série statistique double (xi,yi) a pour coordonnées x̄ (moyenne des xi) et ȳ (moyenne des yi), chacune calculée séparément comme la moyenne arithmétique simple des valeurs de la colonne correspondante."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLe point moyen $G$ d'une série statistique double $(x_i,y_i)$ a pour coordonnées $\\bar x$ (moyenne arithmétique des $x_i$) et $\\bar y$ (moyenne arithmétique des $y_i$), chacune calculée séparément.\n\n**Calcul de $\\bar x$.**\n\n$$\\bar x=\\dfrac{13,9+3,4+2,7+1,15+0,42+7,153}6=\\dfrac{28,723}6\\approx4,787$$\n\n**Calcul de $\\bar y$.**\n\n$$\\bar y=\\dfrac{3,9337+1,9584+1,43+0,38+0,08+3,43}6=\\dfrac{11,2121}6\\approx1,869$$\n\n**Le point moyen a pour coordonnées $G\\approx(4,787\\,;\\,1,869)$.**",
+      "themes": [
+        "point moyen",
+        "moyenne",
+        "statistiques"
+      ]
     },
     {
       "numero": "c",
       "points": "1,5pt",
       "enonce_markdown": "Déterminer, en utilisant la méthode de Mayer, une équation cartésienne de la droite d'ajustement affine de ce nuage de points.",
-      "rappels_de_methode": [{"cours_id": "cours-methode-mayer-ajustement-affine-terminale-d", "texte": "La méthode de Mayer consiste à ordonner les points selon x, les répartir en deux groupes de tailles égales, calculer le point moyen de chaque groupe, puis déterminer l'équation de la droite passant par ces deux points moyens."}],
-      "corrige_markdown": "### Rappel de méthode\nLa méthode de Mayer consiste à ordonner les points selon les valeurs de $x$ croissantes, à les répartir en deux groupes de tailles égales (le premier groupe contenant les plus petites valeurs de $x$, le second les plus grandes), à calculer le point moyen de chaque groupe, puis à déterminer l'équation de la droite passant par ces deux points moyens : c'est la droite d'ajustement de Mayer.\n\n**Étape 1 — Ordonner les points par population croissante.**\n\nGuinée Équatoriale $(0,42\\,;\\,0,08)$, Gabon $(1,15\\,;\\,0,38)$, Congo $(2,7\\,;\\,1,43)$, RCA $(3,4\\,;\\,1,9584)$, Tchad $(7,153\\,;\\,3,43)$, Cameroun $(13,9\\,;\\,3,9337)$.\n\n**Étape 2 — Répartir en deux groupes de 3.**\n\nGroupe 1 (petites populations) : Guinée Équatoriale, Gabon, Congo.\n\nGroupe 2 (grandes populations) : RCA, Tchad, Cameroun.\n\n**Étape 3 — Point moyen du Groupe 1.**\n\n$$\\bar x_1=\\dfrac{0,42+1,15+2,7}3=\\dfrac{4,27}3\\approx1,4233$$\n\n$$\\bar y_1=\\dfrac{0,08+0,38+1,43}3=\\dfrac{1,89}3=0,63$$\n\n**Point moyen du Groupe 1 : $G_1\\approx(1,4233\\,;\\,0,63)$.**\n\n**Étape 4 — Point moyen du Groupe 2.**\n\n$$\\bar x_2=\\dfrac{3,4+7,153+13,9}3=\\dfrac{24,453}3=8,151$$\n\n$$\\bar y_2=\\dfrac{1,9584+3,43+3,9337}3=\\dfrac{9,3221}3\\approx3,1074$$\n\n**Point moyen du Groupe 2 : $G_2\\approx(8,151\\,;\\,3,1074)$.**\n\n**Étape 5 — Coefficient directeur de la droite $(G_1G_2)$.**\n\n$$a=\\dfrac{\\bar y_2-\\bar y_1}{\\bar x_2-\\bar x_1}=\\dfrac{3,1074-0,63}{8,151-1,4233}=\\dfrac{2,4774}{6,7277}\\approx0,3682$$\n\n**Étape 6 — Ordonnée à l'origine, via $G_1$.**\n\n$$b=\\bar y_1-a\\times\\bar x_1=0,63-0,3682\\times1,4233\\approx0,63-0,5241\\approx0,1059$$\n\n**L'équation cartésienne de la droite d'ajustement de Mayer est $y\\approx0,3682x+0,1059$.**\n\n### Conseil\nLa droite de Mayer, lorsque les deux groupes ont un effectif égal (comme ici, 3 et 3), passe automatiquement par le point moyen global $G$ de toute la série (question b) : vérifier $y(4,787)\\approx0,3682\\times4,787+0,1059\\approx1,869$, qui coïncide bien avec $\\bar y\\approx1,869$ — une excellente vérification de cohérence des calculs."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-methode-mayer-ajustement-affine-terminale-d",
+          "texte": "La méthode de Mayer consiste à ordonner les points selon x, les répartir en deux groupes de tailles égales, calculer le point moyen de chaque groupe, puis déterminer l'équation de la droite passant par ces deux points moyens."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nLa méthode de Mayer consiste à ordonner les points selon les valeurs de $x$ croissantes, à les répartir en deux groupes de tailles égales (le premier groupe contenant les plus petites valeurs de $x$, le second les plus grandes), à calculer le point moyen de chaque groupe, puis à déterminer l'équation de la droite passant par ces deux points moyens : c'est la droite d'ajustement de Mayer.\n\n**Étape 1 — Ordonner les points par population croissante.**\n\nGuinée Équatoriale $(0,42\\,;\\,0,08)$, Gabon $(1,15\\,;\\,0,38)$, Congo $(2,7\\,;\\,1,43)$, RCA $(3,4\\,;\\,1,9584)$, Tchad $(7,153\\,;\\,3,43)$, Cameroun $(13,9\\,;\\,3,9337)$.\n\n**Étape 2 — Répartir en deux groupes de 3.**\n\nGroupe 1 (petites populations) : Guinée Équatoriale, Gabon, Congo.\n\nGroupe 2 (grandes populations) : RCA, Tchad, Cameroun.\n\n**Étape 3 — Point moyen du Groupe 1.**\n\n$$\\bar x_1=\\dfrac{0,42+1,15+2,7}3=\\dfrac{4,27}3\\approx1,4233$$\n\n$$\\bar y_1=\\dfrac{0,08+0,38+1,43}3=\\dfrac{1,89}3=0,63$$\n\n**Point moyen du Groupe 1 : $G_1\\approx(1,4233\\,;\\,0,63)$.**\n\n**Étape 4 — Point moyen du Groupe 2.**\n\n$$\\bar x_2=\\dfrac{3,4+7,153+13,9}3=\\dfrac{24,453}3=8,151$$\n\n$$\\bar y_2=\\dfrac{1,9584+3,43+3,9337}3=\\dfrac{9,3221}3\\approx3,1074$$\n\n**Point moyen du Groupe 2 : $G_2\\approx(8,151\\,;\\,3,1074)$.**\n\n**Étape 5 — Coefficient directeur de la droite $(G_1G_2)$.**\n\n$$a=\\dfrac{\\bar y_2-\\bar y_1}{\\bar x_2-\\bar x_1}=\\dfrac{3,1074-0,63}{8,151-1,4233}=\\dfrac{2,4774}{6,7277}\\approx0,3682$$\n\n**Étape 6 — Ordonnée à l'origine, via $G_1$.**\n\n$$b=\\bar y_1-a\\times\\bar x_1=0,63-0,3682\\times1,4233\\approx0,63-0,5241\\approx0,1059$$\n\n**L'équation cartésienne de la droite d'ajustement de Mayer est $y\\approx0,3682x+0,1059$.**\n\n### Conseil\nLa droite de Mayer, lorsque les deux groupes ont un effectif égal (comme ici, 3 et 3), passe automatiquement par le point moyen global $G$ de toute la série (question b) : vérifier $y(4,787)\\approx0,3682\\times4,787+0,1059\\approx1,869$, qui coïncide bien avec $\\bar y\\approx1,869$ — une excellente vérification de cohérence des calculs.",
+      "themes": [
+        "méthode de Mayer",
+        "ajustement affine",
+        "équation de droite"
+      ]
     },
     {
       "numero": "d",
       "points": "1pt",
       "enonce_markdown": "Donner une estimation du nombre d'analphabètes qu'aura le Tchad lorsque la population de ce pays atteindra $10,2$ millions d'habitants.",
-      "rappels_de_methode": [{"cours_id": "cours-estimation-extrapolation-equation-ajustement-terminale-d", "texte": "Pour estimer une valeur par extrapolation, on substitue simplement la valeur de x donnée dans l'équation de la droite d'ajustement déjà établie, et on calcule y correspondant."}],
-      "corrige_markdown": "### Rappel de méthode\nPour estimer une valeur par extrapolation à partir d'un ajustement affine, on substitue simplement la valeur de $x$ donnée dans l'équation de la droite d'ajustement déjà établie, et on calcule la valeur de $y$ correspondante.\n\n**Utilisation de l'équation établie à la question c : $y\\approx0,3682x+0,1059$, avec $x=10,2$.**\n\n$$y\\approx0,3682\\times10,2+0,1059$$\n\n$$0,3682\\times10,2\\approx3,7556$$\n\n$$y\\approx3,7556+0,1059\\approx3,8616$$\n\n**Lorsque la population du Tchad atteindra $10,2$ millions d'habitants, le nombre d'analphabètes est estimé à environ $3,86$ millions d'habitants.**\n\n### Piège à éviter\nCette estimation par extrapolation suppose que la tendance affine observée sur l'échantillon actuel des six pays de la CEMAC reste valable pour cette valeur future de $x$ ; l'extrapolation devient de moins en moins fiable à mesure que $x=10,2$ s'éloigne de la plage des valeurs observées dans le tableau (ici, $10,2$ reste raisonnablement proche du maximum observé, $13,9$, donc l'estimation reste acceptable)."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-estimation-extrapolation-equation-ajustement-terminale-d",
+          "texte": "Pour estimer une valeur par extrapolation, on substitue simplement la valeur de x donnée dans l'équation de la droite d'ajustement déjà établie, et on calcule y correspondant."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour estimer une valeur par extrapolation à partir d'un ajustement affine, on substitue simplement la valeur de $x$ donnée dans l'équation de la droite d'ajustement déjà établie, et on calcule la valeur de $y$ correspondante.\n\n**Utilisation de l'équation établie à la question c : $y\\approx0,3682x+0,1059$, avec $x=10,2$.**\n\n$$y\\approx0,3682\\times10,2+0,1059$$\n\n$$0,3682\\times10,2\\approx3,7556$$\n\n$$y\\approx3,7556+0,1059\\approx3,8616$$\n\n**Lorsque la population du Tchad atteindra $10,2$ millions d'habitants, le nombre d'analphabètes est estimé à environ $3,86$ millions d'habitants.**\n\n### Piège à éviter\nCette estimation par extrapolation suppose que la tendance affine observée sur l'échantillon actuel des six pays de la CEMAC reste valable pour cette valeur future de $x$ ; l'extrapolation devient de moins en moins fiable à mesure que $x=10,2$ s'éloigne de la plage des valeurs observées dans le tableau (ici, $10,2$ reste raisonnablement proche du maximum observé, $13,9$, donc l'estimation reste acceptable).",
+      "themes": [
+        "extrapolation",
+        "ajustement affine",
+        "statistiques"
+      ]
     }
   ]
 }

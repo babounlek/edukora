@@ -1,0 +1,143 @@
+{
+  "cours_id": "cours-determiner-la-limite-d-une-fonction-en-une-valeur-interdite-du-domaine-1ere-a",
+  "meta": {
+    "titre": "Déterminer la limite d'une fonction en une valeur interdite du domaine",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Fonctions : limites et continuité",
+    "duree_estimee_min": 20,
+    "tags": [
+      "limites",
+      "asymptote verticale",
+      "lecture graphique"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "19",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2001-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathematiques - Session 2001 (Cameroun)",
+    "exercice_numero": "C",
+    "rappel_id": "rdm-probatoire-a-maths-2001-officiel-cameroun-exC-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une courbe qui part brusquement vers le haut ou vers le bas près d'une valeur interdite du domaine n'est jamais un accident de dessin : c'est le signe d'une asymptote verticale. Savoir lire ce comportement sur un graphique, avant même de connaître l'expression de la fonction, permet de répondre correctement à une question de limites sans calcul, et de vérifier ensuite un calcul algébrique par cohérence visuelle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Distinguer limite à gauche et limite à droite d'une valeur",
+        "Lire un domaine de définition sous forme d'intervalles",
+        "Reconnaître une branche infinie sur un graphique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire une limite en une valeur interdite sur un graphique",
+      "contenu_markdown": "Quand une valeur $x_0$ est exclue du domaine d'une fonction $f$, on distingue :\n\n- la limite à gauche $\\lim\\limits_{x\\to x_0^{-}} f(x)$, obtenue en observant le comportement de la courbe pour des $x$ inférieurs à $x_0$ qui s'en rapprochent ;\n- la limite à droite $\\lim\\limits_{x\\to x_0^{+}} f(x)$, pour des $x$ supérieurs à $x_0$ qui s'en rapprochent.\n\nSi la courbe s'écarte indéfiniment vers le haut, la limite vaut $+\\infty$ ; si elle s'écarte vers le bas, elle vaut $-\\infty$. Dès que l'une de ces deux limites est infinie, la droite $x=x_0$ est asymptote verticale à la courbe.",
+      "formule_principale": "\\lim\\limits_{x\\to x_0^{-}} f(x)\\quad;\\quad \\lim\\limits_{x\\to x_0^{+}} f(x)",
+      "variantes": [
+        {
+          "nom": "Confirmation algébrique par le signe du quotient",
+          "quand_utiliser": "Dès que l'expression de f est connue, sous forme d'un quotient dont le dénominateur s'annule en $x_0$",
+          "contenu_markdown": "Si $f(x)=\\dfrac{u(x)}{v(x)}$ avec $u(x_0)\\neq0$ et $v(x_0)=0$, on étudie le signe de $v(x)$ au voisinage de $x_0$, à gauche et à droite, puis on applique la règle du quotient : un numérateur de signe constant divisé par un dénominateur qui tend vers $0$ en gardant un signe donne $+\\infty$ ou $-\\infty$ selon les signes en présence."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner les limites de $f$ à gauche et à droite de $x_0=-1$, sachant que $f$ est représentée par une courbe définie sur $D=[-5\\,;-1[\\cup]-1\\,;3]$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Observer la branche gauche du domaine",
+          "justification": "$x$ se rapproche de $-1$ par valeurs inférieures",
+          "resultat_markdown": "La courbe monte de plus en plus fort vers le haut"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la limite à gauche",
+          "justification": "Une branche qui s'écarte vers le haut correspond à une limite $+\\infty$",
+          "resultat_markdown": "$\\lim_{x\\to -1^-} f(x)=+\\infty$"
+        },
+        {
+          "numero": 3,
+          "action": "Observer la branche droite du domaine",
+          "justification": "$x$ se rapproche de $-1$ par valeurs supérieures",
+          "resultat_markdown": "La courbe descend de plus en plus fort vers le bas"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire la limite à droite",
+          "justification": "Une branche qui s'écarte vers le bas correspond à une limite $-\\infty$",
+          "resultat_markdown": "$\\lim_{x\\to -1^+} f(x)=-\\infty$"
+        }
+      ],
+      "conclusion_markdown": "La droite d'équation $x=-1$ est asymptote verticale à la courbe, avec des limites infinies de signes opposés de part et d'autre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inverser le sens gauche et droite en le confondant avec la position de la branche sur le dessin",
+          "pourquoi_faux": "« À gauche de $x_0$ » désigne toujours les valeurs de $x$ inférieures à $x_0$, quelle que soit la position visuelle de la branche sur le graphique (en haut, en bas, à droite du dessin).",
+          "correction_markdown": "Se référer uniquement à la valeur de $x$ par rapport à $x_0$ sur l'axe des abscisses, jamais à la position graphique de la branche."
+        },
+        {
+          "erreur_markdown": "Affirmer une limite finie parce que la courbe semble s'arrêter au bord de la feuille",
+          "pourquoi_faux": "Le cadre du graphique est limité par construction : une branche qui atteint le bord du repère en continuant de monter ou descendre indique une limite infinie, pas une valeur finie.",
+          "correction_markdown": "Observer la tendance de la courbe (elle continue de s'écarter de l'axe) plutôt que sa dernière position visible sur le dessin."
+        },
+        {
+          "erreur_markdown": "Conclure une limite sans préciser son signe",
+          "pourquoi_faux": "« La limite est infinie » est une réponse incomplète : $+\\infty$ et $-\\infty$ sont deux résultats distincts qui ne se substituent pas l'un à l'autre.",
+          "correction_markdown": "Toujours préciser le signe de l'infini obtenu, en cohérence avec le sens dans lequel la courbe s'écarte de l'axe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f(x)=\\dfrac{1}{x-2}$. Donner les limites de $f$ à gauche et à droite de $2$.",
+          "solution_markdown": "Le numérateur vaut $1\\neq0$. Quand $x\\to2^-$, $x-2\\to0^-$ (valeurs négatives proches de 0), donc $f(x)\\to-\\infty$. Quand $x\\to2^+$, $x-2\\to0^+$, donc $f(x)\\to+\\infty$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $f(x)=\\dfrac{x+3}{x-1}$. Donner les limites de $f$ à gauche et à droite de $1$.",
+          "solution_markdown": "Le numérateur vaut $1+3=4\\neq0$ en $x=1$. Quand $x\\to1^-$, $x-1\\to0^-$, donc $f(x)\\to-\\infty$ (un nombre proche de 4 divisé par un dénominateur négatif proche de 0). Quand $x\\to1^+$, $x-1\\to0^+$, donc $f(x)\\to+\\infty$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $f(x)=\\dfrac{2-x}{(x+2)^2}$. Donner les limites de $f$ à gauche et à droite de $-2$.",
+          "solution_markdown": "Le numérateur vaut $2-(-2)=4\\neq0$ en $x=-2$. Le dénominateur $(x+2)^2$ est un carré, donc toujours positif au voisinage de $-2$, aussi bien à gauche qu'à droite. Un nombre proche de $4$ divisé par un dénominateur positif proche de $0$ donne $+\\infty$ des deux côtés : $\\lim_{x\\to-2^-}f(x)=\\lim_{x\\to-2^+}f(x)=+\\infty$. Contrairement aux exemples précédents, le dénominateur au carré ne change pas de signe, les deux limites sont donc identiques plutôt qu'opposées."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une valeur interdite du domaine où la courbe s'écarte indéfiniment de l'axe signale une asymptote verticale.",
+        "Distingue toujours la limite à gauche (x inférieurs) de la limite à droite (x supérieurs), même si le dessin les positionne différemment.",
+        "Une branche qui monte donne $+\\infty$, une branche qui descend donne $-\\infty$ : précise toujours le signe.",
+        "Un dénominateur qui change de signe autour de la valeur interdite donne des limites opposées à gauche et à droite ; un dénominateur toujours positif (carré) donne la même limite des deux côtés.",
+        "Une lecture graphique de limite doit toujours être confirmée par le calcul dès que l'expression de la fonction est connue."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-construire-diagramme-cas-utilisation-tle-ti",
+  "meta": {
+    "titre": "Construire un diagramme de cas d'utilisation complet à partir d'un cahier des charges",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de cas d'utilisation : méthode de construction",
+    "duree_estimee_min": 28,
+    "tags": [
+      "UML",
+      "diagramme de cas d'utilisation",
+      "méthode",
+      "construction"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex1-q6-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un diagramme de cas d'utilisation ne se construit jamais au hasard ni du premier coup sur la copie : c'est une méthode en plusieurs étapes, toujours dans le même ordre, qui transforme un texte de cahier des charges en un schéma structuré. Ce cours donne cette méthode pas à pas, pour ne plus jamais se retrouver bloqué devant une feuille blanche le jour de l'examen."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir définir un acteur et un cas d'utilisation.",
+        "Savoir identifier les relations de généralisation entre acteurs et les relations include/extend entre cas d'utilisation (cours précédents)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode en cinq étapes",
+      "contenu_markdown": "Construire un diagramme de cas d'utilisation à partir d'un texte suit toujours le même enchaînement : **1)** recenser tous les acteurs en cherchant qui interagit directement avec le futur système ; **2)** tracer un rectangle qui matérialise la frontière du système, avec son nom à l'intérieur ; **3)** recenser les cas d'utilisation en reformulant chaque service attendu en verbe à l'infinitif + complément, et les placer en ellipses à l'intérieur du rectangle ; **4)** relier chaque acteur par un trait plein aux cas d'utilisation qu'il déclenche ou auxquels il participe ; **5)** ajouter les relations structurantes - généralisation entre acteurs qui partagent des droits, include/extend entre cas d'utilisation liés.\n\nRespecter cet ordre évite l'erreur la plus fréquente : commencer à dessiner avant d'avoir fini de recenser, ce qui oblige presque toujours à tout reprendre en cours de route faute de place ou par oubli d'un élément.",
+      "formule_principale": "Acteurs -> Frontière du système -> Cas d'utilisation -> Associations -> Relations structurantes"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bibliothèque scolaire est gérée par un Gestionnaire (inscriptions, relances) et des Bibliothécaires (emprunts, restitutions, acquisitions) ; les abonnés (Élève, Enseignant, Élève externe, tous spécialisations d'un acteur Abonné) peuvent consulter le catalogue et s'inscrire, ce dernier cas nécessitant parfois le paiement de droits d'accès. Construire le diagramme de cas d'utilisation complet.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Recenser les acteurs",
+          "justification": "Première étape de la méthode : identifier qui interagit avec le système avant toute chose.",
+          "resultat_markdown": "Gestionnaire, Bibliothécaire, Abonné (parent), Élève, Enseignant, Élève externe (enfants d'Abonné)."
+        },
+        {
+          "numero": 2,
+          "action": "Tracer la frontière du système",
+          "justification": "Deuxième étape : délimiter visuellement ce qui appartient au système avant d'y placer les cas d'utilisation.",
+          "resultat_markdown": "Un rectangle intitulé « Système de gestion de la bibliothèque »."
+        },
+        {
+          "numero": 3,
+          "action": "Recenser et placer les cas d'utilisation",
+          "justification": "Troisième étape : reformuler chaque service attendu en verbe à l'infinitif + complément.",
+          "resultat_markdown": "Gérer les inscriptions, Relancer les abonnés en retard, Gérer les emprunts, Gérer les restitutions, Acquérir de nouveaux ouvrages, Consulter le catalogue général, Inscrire, Payer les droits d'accès."
+        },
+        {
+          "numero": 4,
+          "action": "Relier chaque acteur aux cas d'utilisation qu'il déclenche",
+          "justification": "Quatrième étape : un trait plein par interaction directe, y compris quand deux acteurs participent au même cas.",
+          "resultat_markdown": "Gestionnaire relié à Gérer les inscriptions, Relancer les abonnés en retard, Inscrire ; Bibliothécaire relié à Gérer les emprunts, Gérer les restitutions, Acquérir de nouveaux ouvrages ; Abonné relié à Consulter le catalogue général, Inscrire."
+        },
+        {
+          "numero": 5,
+          "action": "Ajouter les relations structurantes",
+          "justification": "Cinquième étape : ce sont elles qui capturent les règles déjà établies dans les questions précédentes du sujet.",
+          "resultat_markdown": "Généralisation de Élève, Enseignant et Élève externe vers Abonné ; relation extend de Payer les droits d'accès vers Inscrire."
+        }
+      ],
+      "conclusion_markdown": "Le diagramme complet respecte les cinq étapes dans l'ordre, sans qu'aucune ne soit sautée : c'est cette discipline, plus que le talent de dessin, qui garantit un diagramme juste et complet le jour de l'examen."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Commencer à tracer les ellipses avant d'avoir terminé de recenser tous les acteurs et cas d'utilisation",
+          "pourquoi_faux": "Le manque de place oblige souvent à resserrer ou déplacer des éléments déjà tracés, ce qui fait perdre du temps et rend le diagramme final confus pour le correcteur.",
+          "correction_markdown": "Toujours dresser au brouillon la liste complète des acteurs et des cas d'utilisation avant de tracer le moindre trait sur la copie définitive."
+        },
+        {
+          "erreur_markdown": "Oublier qu'un même cas d'utilisation peut être relié à plusieurs acteurs à la fois",
+          "pourquoi_faux": "Un élève qui ne relie « Inscrire » qu'à l'Abonné, en oubliant le Gestionnaire qui traite matériellement l'inscription, perd en réalité une information réelle du cahier des charges.",
+          "correction_markdown": "Pour chaque cas d'utilisation, repasse sur le texte source et vérifie si plusieurs acteurs y participent réellement, avant de conclure qu'un seul trait suffit."
+        },
+        {
+          "erreur_markdown": "Ne pas nommer clairement le rectangle de frontière du système",
+          "pourquoi_faux": "Un rectangle sans nom explicite laisse le correcteur deviner de quel système il s'agit, surtout si plusieurs sous-systèmes apparaissent dans le même sujet.",
+          "correction_markdown": "Toujours nommer le rectangle de frontière du système clairement, en haut ou en bas du cadre : ce nom fait partie intégrante du diagramme, pas un simple détail cosmétique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un distributeur automatique de billets est utilisé par un Client (qui retire de l'argent et consulte son solde) et par un Technicien (qui recharge le distributeur). Construire le diagramme de cas d'utilisation correspondant en listant explicitement les cinq étapes appliquées.",
+          "solution_markdown": "Étape 1 : deux acteurs, Client et Technicien. Étape 2 : un rectangle intitulé « Système du distributeur automatique ». Étape 3 : trois cas d'utilisation, Retirer de l'argent, Consulter le solde, Recharger le distributeur. Étape 4 : Client relié à Retirer de l'argent et à Consulter le solde ; Technicien relié à Recharger le distributeur. Étape 5 : aucune relation structurante supplémentaire n'est nécessaire ici, les acteurs et cas d'utilisation étant indépendants les uns des autres - un diagramme sans include, extend ni généralisation reste parfaitement valide quand le cahier des charges ne l'exige pas."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un cabinet médical, un Secrétaire gère les rendez-vous et un Médecin consulte le dossier du patient puis rédige une ordonnance ; la rédaction d'une ordonnance nécessite systématiquement la consultation préalable du dossier du patient. Construire le diagramme de cas d'utilisation.",
+          "solution_markdown": "Étape 1 : deux acteurs, Secrétaire et Médecin. Étape 2 : rectangle « Système de gestion du cabinet médical ». Étape 3 : trois cas d'utilisation, Gérer les rendez-vous, Consulter le dossier du patient, Rédiger une ordonnance. Étape 4 : Secrétaire relié à Gérer les rendez-vous ; Médecin relié à Consulter le dossier du patient et à Rédiger une ordonnance. Étape 5 : puisque la consultation du dossier est systématique à chaque rédaction d'ordonnance, on ajoute une relation include, flèche de Rédiger une ordonnance (cas de base) vers Consulter le dossier du patient (cas inclus)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une plateforme de formation en ligne distingue un Étudiant (qui suit des cours et passe des évaluations) et un Étudiant certifié Premium, spécialisation de l'Étudiant qui bénéficie en plus d'un suivi personnalisé. Passer une évaluation déclenche systématiquement la génération automatique d'une attestation de réussite si la note est suffisante, mais cette génération n'a lieu que dans ce cas précis. Construire le diagramme de cas d'utilisation complet, en identifiant la relation appropriée pour la génération de l'attestation.",
+          "solution_markdown": "Étape 1 : deux acteurs, Étudiant et Étudiant certifié Premium, ce dernier étant une spécialisation du premier. Étape 2 : rectangle « Système de formation en ligne ». Étape 3 : quatre cas d'utilisation, Suivre un cours, Passer une évaluation, Générer une attestation de réussite, Bénéficier d'un suivi personnalisé. Étape 4 : Étudiant relié à Suivre un cours et à Passer une évaluation ; Étudiant certifié Premium relié à Bénéficier d'un suivi personnalisé. Étape 5 : une flèche de généralisation d'Étudiant certifié Premium vers Étudiant ; et pour l'attestation, puisque sa génération ne se produit que sous condition (note suffisante) et non à chaque évaluation, la relation appropriée est extend, flèche de Générer une attestation de réussite (cas d'extension) vers Passer une évaluation (cas de base) - ce n'est pas un include, malgré l'automatisme apparent, car cet automatisme reste conditionné par le résultat obtenu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La construction suit toujours cinq étapes dans le même ordre : acteurs, frontière du système, cas d'utilisation, associations, relations structurantes.",
+        "Ne trace jamais un trait définitif avant d'avoir recensé au brouillon la totalité des acteurs et des cas d'utilisation.",
+        "Un même cas d'utilisation peut légitimement être relié à plusieurs acteurs : vérifie chaque cas un par un plutôt que de supposer un seul acteur par cas.",
+        "Les relations structurantes (généralisation, include, extend) ne s'ajoutent qu'en dernier, une fois la structure de base posée.",
+        "Au BAC TI, cette question de construction complète est presque toujours la plus valorisée en points de la partie modélisation fonctionnelle : une méthode appliquée avec rigueur y rapporte plus de points qu'un talent de dessin."
+      ]
+    }
+  ]
+}

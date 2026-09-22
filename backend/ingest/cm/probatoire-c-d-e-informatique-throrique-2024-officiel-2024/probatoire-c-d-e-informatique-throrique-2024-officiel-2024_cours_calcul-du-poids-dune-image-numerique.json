@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-calcul-du-poids-dune-image-numerique-1ere-tronc-commun",
+  "meta": {
+    "titre": "Calcul du poids d'une image numérique",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Codage et représentation numérique des images",
+    "duree_estimee_min": 20,
+    "tags": [
+      "image numérique",
+      "pixel",
+      "codage binaire",
+      "conversion d'unités"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex1-q5-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex1"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux photos prises avec le même téléphone n'occupent jamais exactement la même place en mémoire, et une photo 4K pèse nettement plus lourd qu'une photo basse résolution. Cette différence ne doit rien au hasard : elle se calcule précisément à partir du nombre de pixels de l'image et du nombre de bits utilisés pour coder la couleur de chacun. Maîtriser ce calcul permet de comprendre pourquoi une carte mémoire se remplit plus ou moins vite selon les réglages de l'appareil photo."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la relation entre bit et octet (1 octet = 8 bits)",
+        "Savoir convertir entre Ko, Mo et Go en utilisant le facteur 1024",
+        "Savoir effectuer une multiplication et des divisions successives"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le poids d'une image non compressée",
+      "contenu_markdown": "Le poids d'une image numérique non compressée se calcule en trois temps : on détermine d'abord son nombre total de pixels en multipliant sa largeur par sa hauteur, on multiplie ensuite ce nombre par la profondeur de codage (le nombre de bits utilisés pour coder la couleur d'un seul pixel) pour obtenir le poids en bits, puis on convertit ce résultat vers l'unité demandée en divisant successivement par 8 (pour passer des bits aux octets), puis par 1024 autant de fois que nécessaire (octets vers Ko, puis Ko vers Mo, puis Mo vers Go).",
+      "formule_principale": "\\text{Poids (bits)} = (\\text{largeur} \\times \\text{hauteur}) \\times \\text{profondeur de codage (bits/pixel)}",
+      "variantes": [
+        {
+          "nom": "Calcul direct en octets",
+          "quand_utiliser": "Quand la profondeur de codage est un multiple de 8 (cas courant : 24 bits = 3 octets par pixel)",
+          "contenu_markdown": "Si chaque pixel utilise un nombre entier d'octets (24 bits = 3 octets, 32 bits = 4 octets), on peut multiplier directement le nombre de pixels par ce nombre d'octets, sans passer par une conversion bits vers octets séparée : $\\text{Poids (octets)} = \\text{nombre de pixels} \\times \\text{octets par pixel}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une caméra capture une image de définition 3840 x 2160 pixels. Calculer sa taille en Méga-octets, sachant qu'un pixel utilise 24 bits et que 1 Ko = 1024 octets.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le nombre total de pixels",
+          "justification": "Le nombre de pixels d'une image rectangulaire est le produit de sa largeur par sa hauteur.",
+          "resultat_markdown": "$$3840 \\times 2160 = 8\\,294\\,400 \\text{ pixels}$$"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir en bits",
+          "justification": "Chaque pixel utilise 24 bits pour coder sa couleur ; on multiplie donc le nombre de pixels par 24.",
+          "resultat_markdown": "$$8\\,294\\,400 \\times 24 = 199\\,065\\,600 \\text{ bits}$$"
+        },
+        {
+          "numero": 3,
+          "action": "Convertir en octets",
+          "justification": "1 octet vaut 8 bits, on divise donc le résultat précédent par 8.",
+          "resultat_markdown": "$$199\\,065\\,600 \\div 8 = 24\\,883\\,200 \\text{ octets}$$"
+        },
+        {
+          "numero": 4,
+          "action": "Convertir en Ko puis en Mo",
+          "justification": "1 Ko = 1024 octets et 1 Mo = 1024 Ko : on divise deux fois de suite par 1024.",
+          "resultat_markdown": "$$24\\,883\\,200 \\div 1024 = 24\\,300 \\text{ Ko} \\qquad 24\\,300 \\div 1024 \\approx 23{,}73 \\text{ Mo}$$"
+        }
+      ],
+      "conclusion_markdown": "L'image pèse environ **23,73 Mo** en mémoire, une fois non compressée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser directement le nombre de bits par 1024 pour obtenir des Ko",
+          "pourquoi_faux": "Le facteur 1024 convertit des octets en Ko, pas des bits en Ko. Sauter la conversion bits vers octets (division par 8) fausse le résultat d'un facteur 8.",
+          "correction_markdown": "Toujours diviser par 8 en premier (bits vers octets), puis seulement ensuite par 1024 autant de fois que nécessaire."
+        },
+        {
+          "erreur_markdown": "Confondre la définition d'une image (sa résolution, en pixels) avec son poids (sa taille en mémoire, en octets)",
+          "pourquoi_faux": "Ce sont deux grandeurs différentes : la définition ne dépend que du nombre de pixels, alors que le poids dépend en plus de la profondeur de codage choisie pour chaque pixel.",
+          "correction_markdown": "Retenir que le poids se déduit de la définition, mais qu'elles ne se confondent jamais dans une réponse d'examen."
+        },
+        {
+          "erreur_markdown": "Utiliser 1000 au lieu de 1024 pour convertir des Ko en Mo",
+          "pourquoi_faux": "En informatique, les unités de mémoire (Ko, Mo, Go) utilisent conventionnellement la base 1024 (puissances de 2), et non la base 1000 utilisée pour les unités décimales usuelles.",
+          "correction_markdown": "Toujours diviser par 1024, sauf mention explicite contraire de l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une image en niveaux de gris de 1000 x 1000 pixels utilise 8 bits par pixel. Calculer son poids en Ko.",
+          "solution_markdown": "Nombre de pixels : $1000 \\times 1000 = 1\\,000\\,000$ pixels.\n\nPoids en bits : $1\\,000\\,000 \\times 8 = 8\\,000\\,000$ bits.\n\nPoids en octets : $8\\,000\\,000 \\div 8 = 1\\,000\\,000$ octets.\n\nPoids en Ko : $1\\,000\\,000 \\div 1024 \\approx 976{,}56$ Ko."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une image Full HD de 1920 x 1080 pixels utilise 24 bits par pixel. Calculer son poids en Mo.",
+          "solution_markdown": "Nombre de pixels : $1920 \\times 1080 = 2\\,073\\,600$ pixels.\n\nPoids en bits : $2\\,073\\,600 \\times 24 = 49\\,766\\,400$ bits.\n\nPoids en octets : $49\\,766\\,400 \\div 8 = 6\\,220\\,800$ octets.\n\nPoids en Ko : $6\\,220\\,800 \\div 1024 \\approx 6075$ Ko.\n\nPoids en Mo : $6075 \\div 1024 \\approx 5{,}93$ Mo."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une carte mémoire de 8 Go doit stocker des photos identiques de 3840 x 2160 pixels codées sur 24 bits (comme dans l'exemple résolu). Déterminer combien de photos peuvent tenir sur cette carte.",
+          "solution_markdown": "Le poids d'une photo a déjà été calculé dans l'exemple résolu : environ 23,73 Mo.\n\nLa capacité de la carte, exprimée dans la même unité : $8 \\text{ Go} = 8 \\times 1024 = 8192 \\text{ Mo}$.\n\nNombre de photos stockables : $8192 \\div 23{,}73 \\approx 345{,}2$.\n\nUne photo ne peut pas être stockée partiellement : on ne conserve que la partie entière. La carte peut donc contenir **345 photos**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le poids d'une image non compressée dépend de deux facteurs seulement : son nombre de pixels et sa profondeur de codage en bits par pixel.",
+        "La chaîne de conversion est toujours la même : pixels vers bits (multiplication), bits vers octets (division par 8), octets vers Ko puis Mo puis Go (divisions successives par 1024).",
+        "Résolution (nombre de pixels) et poids (taille mémoire) sont deux notions liées mais distinctes : ne les confonds jamais dans une copie.",
+        "Pour vérifier ton ordre de grandeur, retiens qu'une image Full HD 24 bits pèse environ 6 Mo : une image 4K, qui a quatre fois plus de pixels, doit peser environ quatre fois plus.",
+        "Ce type de calcul revient très régulièrement au Probatoire et au BEPC d'Informatique, généralement noté sur 1 point : les étapes de conversion comptent autant que le résultat final."
+      ]
+    }
+  ]
+}

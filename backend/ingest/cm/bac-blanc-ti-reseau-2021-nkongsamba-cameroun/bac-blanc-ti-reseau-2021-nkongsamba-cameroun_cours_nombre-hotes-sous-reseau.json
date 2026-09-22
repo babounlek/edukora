@@ -1,0 +1,97 @@
+{
+  "cours_id": "cours-nombre-hotes-sous-reseau-nkongsamba-2021",
+  "meta": {
+    "titre": "Calculer le nombre maximal de machines (hôtes) d'un sous-réseau",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Adressage IPv4 et sous-réseaux",
+    "duree_estimee_min": 15,
+    "tags": [
+      "sous-réseaux",
+      "nombre d'hôtes",
+      "adresse de diffusion",
+      "masque /27"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-blanc-ti-reseau-2021-nkongsamba-cameroun",
+    "epreuve_titre": "Examen blanc - Lycée Bilingue de Nkongsamba - Réseau, Internet et Sécurité informatique - TI - 2021",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-blanc-ti-reseau-2021-nkongsamba-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans tout sous-réseau, deux adresses sont toujours indisponibles pour une machine : celle qui désigne le réseau lui-même, et celle qui désigne la diffusion générale."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer le nombre de bits hôtes restants après un emprunt de bits."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule du nombre d'hôtes utilisables",
+      "contenu_markdown": "Le nombre maximal de machines (hôtes) utilisables dans un sous-réseau se calcule par la formule 2 puissance h moins 2, où h est le nombre de bits restés disponibles pour la partie hôte après l'emprunt : on retire systématiquement 2 adresses, celle du réseau lui-même et celle de diffusion (broadcast), qui ne peuvent jamais être attribuées à une machine."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un sous-réseau utilise un masque /28. Combien de machines peut-il contenir au maximum ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer le nombre de bits hôtes restants",
+          "justification": "32 bits au total moins 28 bits réseau.",
+          "resultat_markdown": "32 - 28 = 4 bits hôtes."
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule 2^h - 2",
+          "justification": "2 adresses sont toujours réservées (réseau et diffusion).",
+          "resultat_markdown": "2⁴ - 2 = 16 - 2 = 14 machines."
+        }
+      ],
+      "conclusion_markdown": "Un masque /28 permet donc 14 machines utilisables par sous-réseau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de soustraire 2 et répondre directement 2^h",
+          "pourquoi_faux": "Cela compterait à tort l'adresse réseau et l'adresse de diffusion comme des adresses de machines valides."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Combien de machines maximum dans un sous-réseau avec 3 bits hôtes restants ?",
+          "solution_markdown": "2³ - 2 = 6 machines."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un masque /30 est souvent utilisé pour relier deux routeurs entre eux. Combien de machines permet-il, et pourquoi ce choix est-il judicieux dans ce cas précis ?",
+          "solution_markdown": "2² - 2 = 2 machines, ce qui correspond exactement aux deux extrémités de la liaison point à point entre les deux routeurs, sans gaspiller d'adresses IP inutilement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Nombre d'hôtes utilisables = 2 puissance (bits hôtes restants) moins 2.",
+        "Les deux adresses toujours retirées sont l'adresse du réseau et l'adresse de diffusion."
+      ]
+    }
+  ]
+}

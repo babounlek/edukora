@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-variation-dun-flux-magnetique-sinusoidal-1ere-d-ti",
+  "meta": {
+    "titre": "Variation d'un flux magnétique sinusoïdal entre deux instants",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 18,
+    "tags": [
+      "flux magnétique",
+      "induction électromagnétique",
+      "fonction sinusoïdale"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2022-cameroun",
+    "epreuve_titre": "Épreuve de physique au probatoire D et TI 2022",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2022-cameroun-ex2-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un alternateur, une plaque à induction, un lecteur de carte bancaire : tous exploitent un flux magnétique qui varie au cours du temps. Avant même de parler de courant induit, il faut savoir calculer simplement la variation d'un flux entre deux instants donnés, y compris quand ce flux suit une loi sinusoïdale. Ce cours donne la méthode, en particulier la lecture du cercle trigonométrique pour évaluer un sinus à un instant donné."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Fonction sinus et cercle trigonométrique",
+        "Notion de flux magnétique à travers une surface"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Variation d'une grandeur entre deux instants",
+      "contenu_markdown": "Pour calculer la variation d'une grandeur qui dépend du temps par une expression $g(t)$, on évalue cette expression aux deux instants considérés puis on calcule la différence $\\Delta g = g(t_1) - g(t_0)$ ; aucune dérivation n'est nécessaire lorsque seule la variation entre deux instants précis est demandée, et non un taux de variation instantané. Pour une fonction sinusoïdale $g(t) = g_0 \\sin(\\omega t)$, l'évaluation à un instant donné se ramène à lire la valeur du sinus après avoir, si besoin, réduit l'angle modulo $2\\pi$.",
+      "formule_principale": "\\Delta g = g(t_1) - g(t_0)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On crée à travers une bobine un flux magnétique variable $\\phi(t) = 0{,}02\\sin(10\\pi t)$ (en Wb). Calculer la variation moyenne du flux magnétique $\\Delta\\phi$ entre $t_0=0$ et $t_1=0{,}25\\ \\text{s}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Évaluer $\\phi$ à l'instant $t_0=0$",
+          "justification": "On substitue $t=0$ dans l'expression de $\\phi(t)$.",
+          "resultat_markdown": "$\\phi(0) = 0{,}02\\sin(0) = 0\\ \\text{Wb}$"
+        },
+        {
+          "numero": 2,
+          "action": "Évaluer $\\phi$ à l'instant $t_1=0{,}25\\ \\text{s}$",
+          "justification": "On substitue $t=0{,}25$ dans l'expression de $\\phi(t)$ : $10\\pi \\times 0{,}25 = 2{,}5\\pi$.",
+          "resultat_markdown": "$\\phi(0{,}25) = 0{,}02\\sin(2{,}5\\pi)$"
+        },
+        {
+          "numero": 3,
+          "action": "Réduire l'angle et lire le sinus sur le cercle trigonométrique",
+          "justification": "$2{,}5\\pi = 2\\pi + 0{,}5\\pi$ ; le sinus est $2\\pi$-périodique, donc $\\sin(2{,}5\\pi) = \\sin(\\pi/2) = 1$.",
+          "resultat_markdown": "$\\phi(0{,}25) = 0{,}02 \\times 1 = 0{,}02\\ \\text{Wb}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la variation",
+          "justification": "$\\Delta\\phi = \\phi(t_1) - \\phi(t_0)$.",
+          "resultat_markdown": "$\\Delta\\phi = 0{,}02 - 0 = 0{,}02\\ \\text{Wb}$"
+        }
+      ],
+      "conclusion_markdown": "La variation moyenne du flux magnétique entre $t_0=0$ et $t_1=0{,}25\\ \\text{s}$ vaut $\\Delta\\phi = 2{,}0 \\times 10^{-2}\\ \\text{Wb}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Évaluer $\\sin(2{,}5\\pi)$ en le confondant avec $\\sin(2{,}5) \\times \\pi$",
+          "pourquoi_faux": "L'argument du sinus est l'angle $2{,}5\\pi$ tout entier, exprimé en radians, pas le nombre $2{,}5$ multiplié séparément par $\\pi$ après coup.",
+          "correction_markdown": "Traite toujours $10\\pi t$ comme un seul angle en radians avant de chercher à le simplifier ou à en extraire un multiple de $2\\pi$."
+        },
+        {
+          "erreur_markdown": "Calculer $\\Delta\\phi$ comme $\\phi(t_0)-\\phi(t_1)$ au lieu de $\\phi(t_1)-\\phi(t_0)$",
+          "pourquoi_faux": "L'ordre des instants change le signe du résultat : une variation entre $t_0$ et $t_1$ se définit toujours comme la valeur finale moins la valeur initiale.",
+          "correction_markdown": "Retiens la convention $\\Delta g = g(\\text{instant final}) - g(\\text{instant initial})$, jamais l'inverse."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un flux magnétique suit $\\phi(t) = 0{,}05\\sin(2\\pi t)$ (Wb). Calculer $\\Delta\\phi$ entre $t_0=0$ et $t_1=0{,}25\\ \\text{s}$.",
+          "solution_markdown": "$\\phi(0)=0$. $\\phi(0{,}25)=0{,}05\\sin(2\\pi\\times0{,}25)=0{,}05\\sin(\\pi/2)=0{,}05\\ \\text{Wb}$. $\\Delta\\phi=0{,}05-0=0{,}05\\ \\text{Wb}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre $\\phi(t)=0{,}02\\sin(10\\pi t)$ (Wb) et calculer $\\Delta\\phi$ entre $t_0=0{,}25\\ \\text{s}$ et $t_1=0{,}50\\ \\text{s}$.",
+          "solution_markdown": "$\\phi(0{,}25)=0{,}02\\sin(2{,}5\\pi)=0{,}02\\times1=0{,}02\\ \\text{Wb}$ (voir l'exemple résolu). $\\phi(0{,}50)=0{,}02\\sin(5\\pi)$ ; $5\\pi=4\\pi+\\pi$, donc $\\sin(5\\pi)=\\sin(\\pi)=0$, d'où $\\phi(0{,}50)=0\\ \\text{Wb}$. $\\Delta\\phi=0-0{,}02=-0{,}02\\ \\text{Wb}$ (le flux diminue sur cet intervalle)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour $\\phi(t)=0{,}02\\sin(10\\pi t)$ (Wb), déterminer le premier instant $t>0$ pour lequel le flux atteint sa valeur maximale, puis calculer la variation $\\Delta\\phi$ entre $t=0$ et cet instant.",
+          "solution_markdown": "Le flux est maximal quand $\\sin(10\\pi t)=1$, soit $10\\pi t = \\pi/2$ (première solution positive), donc $t = \\dfrac{1}{20} = 0{,}05\\ \\text{s}$. À cet instant, $\\phi=0{,}02\\times1=0{,}02\\ \\text{Wb}$. Comme $\\phi(0)=0$, $\\Delta\\phi=0{,}02-0=0{,}02\\ \\text{Wb}$ : c'est la variation maximale que peut atteindre le flux depuis l'origine, puisque l'amplitude de la fonction sinusoïdale est $0{,}02\\ \\text{Wb}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour calculer une variation $\\Delta g$ entre deux instants, évalue $g$ séparément à chaque instant, puis fais la différence finale moins initiale.",
+        "Réduis toujours un angle en multiple de $2\\pi$ avant de lire un sinus ou un cosinus : $\\sin(2{,}5\\pi)=\\sin(0{,}5\\pi)=1$.",
+        "Le cercle trigonométrique reste l'outil le plus rapide et le plus sûr pour ces lectures d'angle, même sous la pression du temps limité de l'examen.",
+        "Ce type de calcul, très fréquent en électromagnétisme (flux, f.é.m. induite), est un classique de l'exercice d'application au Probatoire série D et TI."
+      ]
+    }
+  ]
+}

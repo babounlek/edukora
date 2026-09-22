@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-construction-courbe-f-valeur-absolue-1ere-d",
+  "meta": {
+    "titre": "Construire la courbe de x → f(|x|) à partir de celle de f",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Représentation graphique d'une fonction numérique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "valeur absolue",
+      "fonction paire",
+      "transformation de courbe",
+      "symétrie"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D",
+      "module_numero": "21",
+      "savoir_numero": "VII"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-maths-officiel-2004-cameroun",
+    "epreuve_titre": "Probatoire D - Mathématiques - Session 2004 (Cameroun)",
+    "exercice_numero": "Problème - Partie B",
+    "rappel_id": "rdm-probatoire-d-maths-officiel-2004-cameroun-probleme-qB3a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un exercice qui introduit une nouvelle fonction par $t(x)=f(|x|)$ (ou une variante avec un signe devant) demande presque toujours de construire sa courbe « à l'aide de » celle de $f$, sans repasser par un calcul complet. La règle est toujours la même, et elle réserve un piège classique lorsque $f$ est déjà paire : dans ce cas précis, l'étape censée transformer la courbe ne change en réalité rien du tout."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition d'une fonction paire : f(-x) = f(x) pour tout x du domaine",
+        "Symétries usuelles d'une courbe (par rapport à l'axe des ordonnées, à l'axe des abscisses)",
+        "Définition de la valeur absolue |x|"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construction de la courbe de x ↦ f(|x|)",
+      "contenu_markdown": "Pour tout réel $x$ : si $x\\geq 0$, $|x|=x$ donc $f(|x|)=f(x)$ ; si $x<0$, $|x|=-x>0$ donc $f(|x|)=f(-x)$. La fonction $x\\mapsto f(|x|)$ est TOUJOURS paire, quelle que soit $f$ (même si $f$ elle-même ne l'est pas), car $f(|-x|)=f(|x|)$ pour tout $x$. Sa courbe s'obtient donc ainsi : on garde la partie de $C_f$ correspondant à $x\\geq 0$ (elle ne change pas, puisque $f(|x|)=f(x)$ pour $x\\geq 0$), puis on EFFACE la partie de $C_f$ correspondant à $x<0$ et on la remplace par le symétrique, par rapport à l'axe des ordonnées $(Oy)$, de la partie conservée pour $x\\geq 0$.",
+      "formule_principale": "f(|x|) = f(x) \\text{ si } x\\geq 0, \\quad f(|x|) = f(-x) \\text{ si } x<0",
+      "variantes": [
+        {
+          "nom": "Cas particulier où f est déjà paire",
+          "quand_utiliser": "Chaque fois que la fonction f de départ vérifie déjà f(-x)=f(x) pour tout x (par exemple f(x) qui ne dépend que de x², comme x²-1, ou plus généralement toute fonction paire).",
+          "contenu_markdown": "Si $f$ est déjà paire, alors $f(-x)=f(x)$ pour tout $x$, donc $f(|x|)=f(x)$ pour TOUS les réels $x$ (pas seulement pour $x\\geq 0$) : la courbe de $x\\mapsto f(|x|)$ coïncide alors avec $C_f$ tout entière, sans aucune modification. L'étape « garder $x\\geq0$ puis symétriser » ne change littéralement rien dans ce cas, car la partie qu'on \"efface\" pour $x<0$ était déjà, par définition de la parité de $f$, le symétrique exact de la partie conservée."
+        },
+        {
+          "nom": "Construction de -f(|x|)",
+          "quand_utiliser": "Quand la fonction étudiée comporte en plus un signe moins devant, comme t(x) = -f(|x|).",
+          "contenu_markdown": "On applique d'abord la construction de $f(|x|)$ décrite ci-dessus, puis on prend le symétrique de la courbe obtenue par rapport à l'axe des abscisses $(Ox)$ (chaque point $(x;y)$ devient $(x;-y)$)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f(x)=x^2-1$ et $t(x)=-f(|x|)$. Donner le programme de construction de $C_t$ à partir de $C_f$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier si f est paire",
+          "justification": "Cela détermine si l'étape « garder x≥0 puis symétriser » va réellement modifier la courbe ou non.",
+          "resultat_markdown": "$f(-x)=(-x)^2-1=x^2-1=f(x)$ pour tout $x$ : $f$ est paire."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la courbe de x ↦ f(|x|)",
+          "justification": "f étant déjà paire, f(|x|)=f(x) pour tout x réel, pas seulement pour x≥0.",
+          "resultat_markdown": "La courbe de $x\\mapsto f(|x|)$ est EXACTEMENT $C_f$ tout entière, sans aucune modification."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le signe moins",
+          "justification": "t(x) = -f(|x|) = -f(x) : il reste à prendre le symétrique par rapport à (Ox).",
+          "resultat_markdown": "$C_t$ est le symétrique de $C_f$ tout entière par rapport à l'axe des abscisses $(Ox)$."
+        }
+      ],
+      "conclusion_markdown": "$C_t$ s'obtient en prenant directement le symétrique de $C_f$ (dans son ensemble) par rapport à $(Ox)$, sans étape de restriction-puis-symétrie par rapport à $(Oy)$, car $f$ était déjà paire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer systématiquement « garder $x\\geq 0$, effacer $x<0$, symétriser par rapport à $(Oy)$ » sans vérifier au préalable si $f$ est déjà paire.",
+          "pourquoi_faux": "Quand $f$ est déjà paire, cette manipulation ne produit aucune erreur de résultat final (la courbe obtenue est la même), mais elle fait perdre un temps précieux et peut faire douter inutilement si le tracé semble « ne rien changer ».",
+          "correction_markdown": "Teste systématiquement la parité de $f$ (calcul de $f(-x)$) AVANT de te lancer dans la construction géométrique : si $f$ est déjà paire, tu peux directement affirmer que la courbe de $f(|x|)$ est $C_f$ tout entière."
+        },
+        {
+          "erreur_markdown": "Confondre la construction de $f(|x|)$ (qui agit sur la variable $x$, avant d'appliquer $f$) avec celle de $|f(x)|$ (qui agit sur le résultat, après avoir appliqué $f$).",
+          "pourquoi_faux": "Ce sont deux transformations complètement différentes : $f(|x|)$ symétrise selon l'axe $(Oy)$ (agit sur les abscisses), tandis que $|f(x)|$ relève au-dessus de l'axe des abscisses les portions où $f(x)<0$ (agit sur les ordonnées, symétrie par rapport à $(Ox)$ des parties négatives seulement).",
+          "correction_markdown": "Repère toujours si la valeur absolue porte sur $x$ (à l'intérieur de $f$) ou sur $f(x)$ (à l'extérieur), et applique la construction correspondante — jamais les deux indifféremment."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f(x)=2x-3$. La fonction $x\\mapsto f(|x|)$ est-elle paire ? Décrire sa courbe à partir de $C_f$.",
+          "solution_markdown": "$f(-x)=2(-x)-3=-2x-3\\neq f(x)=2x-3$ en général : $f$ n'est PAS paire.\n\nLa fonction $x\\mapsto f(|x|)$, elle, est toujours paire (quelle que soit $f$). Sa courbe s'obtient en conservant la partie de $C_f$ pour $x\\geq 0$ (une demi-droite partant de $(0;-3)$ avec pente $2$) et en la complétant par son symétrique par rapport à $(Oy)$ pour $x<0$ (formant un « V » à sommet $(0;-3)$)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $f(x)=x^3$. Montrer que f n'est pas paire, puis décrire la courbe de $x\\mapsto f(|x|)$.",
+          "solution_markdown": "$f(-x)=(-x)^3=-x^3=-f(x)\\neq f(x)$ (sauf en $x=0$) : $f$ n'est pas paire (elle est impaire).\n\n$f(|x|)=|x|^3$. Pour $x\\geq0$ : $f(|x|)=x^3$ (identique à $C_f$). Pour $x<0$ : $f(|x|)=(-x)^3=-x^3$, symétrique par rapport à $(Oy)$ de la branche $x\\geq0$. La courbe obtenue est donc $C_f$ pour $x\\geq0$, complétée par son symétrique par rapport à $(Oy)$ pour $x<0$ : ceci donne une courbe paire, bien différente de $C_f$ (qui, elle, était impaire)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $f(x)=x^2+2x$. La fonction $x\\mapsto f(|x|)$ est-elle égale à $f$ ? Construire sa courbe à partir de $C_f$.",
+          "solution_markdown": "$f(-x)=(-x)^2+2(-x)=x^2-2x\\neq f(x)=x^2+2x$ (sauf en $x=0$) : $f$ n'est pas paire, donc $x\\mapsto f(|x|)$ n'est PAS égale à $f$ (contrairement au cas où $f$ est déjà paire).\n\n$C_f$ est une parabole de sommet $(-1;-1)$. La courbe de $f(|x|)$ conserve la branche de $C_f$ pour $x\\geq0$ (qui part de $f(0)=0$ et croît), et la complète par le symétrique de cette même branche par rapport à $(Oy)$ pour $x<0$ : on obtient une courbe paire, en forme de double branche montante de part et d'autre de $(0;0)$, différente de la parabole originale $C_f$ (dont le sommet $(-1;-1)$ n'apparaît plus du tout dans la nouvelle courbe)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La fonction $x\\mapsto f(|x|)$ est TOUJOURS paire, quelle que soit $f$ : sa courbe se construit en gardant $C_f$ pour $x\\geq0$ et en la complétant par sa symétrique par rapport à $(Oy)$ pour $x<0$.",
+        "Si $f$ est déjà paire, cette construction ne change rien : la courbe de $f(|x|)$ est alors $C_f$ tout entière, car la partie \"effacée\" pour $x<0$ était déjà le symétrique exact de la partie conservée.",
+        "Pour $t(x)=-f(|x|)$, il faut ajouter une symétrie par rapport à $(Ox)$ après avoir construit $f(|x|)$.",
+        "Ne pas confondre $f(|x|)$ (valeur absolue à l'intérieur, symétrie par rapport à $(Oy)$) avec $|f(x)|$ (valeur absolue à l'extérieur, relève au-dessus de $(Ox)$ les portions négatives) : ce sont deux transformations différentes."
+      ]
+    }
+  ]
+}

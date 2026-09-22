@@ -1,0 +1,136 @@
+[
+  {
+    "external_id": "cqc-algorithmique-faible-0",
+    "theme": "algorithmique",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère l'algorithme suivant :\n\n```\nLire a, b\ns <- a + b\nAfficher s\n```\n\nQuelles sont les variables d'entrée et la variable de sortie ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLes variables d'entrée sont celles dont la valeur est fournie par l'utilisateur (instruction `Lire`) ; les variables de sortie sont celles dont la valeur est communiquée (instruction `Afficher`) ; les autres sont des variables de travail.\n\n### Corrigé\n\n`Lire a, b` fournit les valeurs de `a` et `b` : ce sont les **entrées**. `Afficher s` communique le résultat : `s` est la **sortie**. `s` n'est pas lue au clavier, elle est calculée à partir de `a` et `b`.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "Entrées : a et b ; sortie : s"
+      },
+      {
+        "lettre": "B",
+        "texte": "Entrée : s ; sorties : a et b"
+      },
+      {
+        "lettre": "C",
+        "texte": "Entrées : a, b et s ; aucune sortie"
+      },
+      {
+        "lettre": "D",
+        "texte": "Aucune entrée ; sortie : a"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10533
+    ]
+  },
+  {
+    "external_id": "cqc-algorithmique-faible-1",
+    "theme": "algorithmique",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Deux variables entières `a` et `b` valent respectivement 3 et 8. On veut échanger leurs contenus.\n\n1. Pourquoi les deux instructions `a <- b` puis `b <- a` ne réalisent-elles pas l'échange ?\n2. Écrire une suite d'instructions correcte et donner les valeurs finales de `a` et `b`.",
+    "corrige_markdown": "### Rappel de méthode\n\nUne affectation écrase l'ancienne valeur de la variable. Pour échanger deux variables, il faut sauvegarder l'une des deux valeurs dans une variable auxiliaire avant de l'écraser.\n\n### Corrigé\n\n1. Après `a <- b`, `a` vaut 8 et l'ancienne valeur 3 est perdue ; l'instruction `b <- a` recopie alors 8 dans `b` : `a` et `b` valent tous deux 8.\n2. Avec une variable auxiliaire `t` :\n\n```\nt <- a\na <- b\nb <- t\n```\n\n`t` prend la valeur 3, `a` prend 8, puis `b` prend 3. Valeurs finales : **a = 8 et b = 3**.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10533
+    ]
+  },
+  {
+    "external_id": "cqc-algorithmique-moyenne-2",
+    "theme": "algorithmique",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Écrire un algorithme qui lit trois nombres `a`, `b` et `c` et affiche le plus grand des trois. Le tester avec `a = 4`, `b = 9`, `c = 6`.",
+    "corrige_markdown": "### Rappel de méthode\n\nPour chercher un maximum, on retient une valeur candidate (initialisée avec le premier nombre), puis on compare successivement chaque autre nombre au candidat en le remplaçant s'il est plus grand.\n\n### Corrigé\n\n```\nLire a, b, c\nmax <- a\nSi b > max alors max <- b\nSi c > max alors max <- c\nAfficher max\n```\n\nTest avec `a = 4`, `b = 9`, `c = 6` : `max` vaut d'abord 4 ; `9 > 4` donc `max` devient 9 ; `6 > 9` est faux donc `max` reste 9. L'algorithme affiche **9**. Les deux `Si` sont indépendants : chaque nombre est comparé au meilleur candidat courant.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10533
+    ]
+  },
+  {
+    "external_id": "cqc-algorithmique-moyenne-3",
+    "theme": "algorithmique",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On considère l'algorithme suivant (`mod` désigne le reste de la division entière) :\n\n```\ns <- 0\nPour i de 1 à 4 faire\n    Si i mod 2 = 0 alors\n        s <- s + i\n    FinSi\nFinPour\nAfficher s\n```\n\nQuelle valeur est affichée ?",
+    "corrige_markdown": "### Rappel de méthode\n\nPour exécuter un algorithme à la main, on suit les valeurs de chaque variable tour par tour ; ici la condition `i mod 2 = 0` ne retient que les valeurs paires de `i`.\n\n### Corrigé\n\nSeules les valeurs paires de `i` sont ajoutées : pour `i = 1` rien, pour `i = 2` `s` devient 2, pour `i = 3` rien, pour `i = 4` `s` devient 6. L'algorithme affiche **6**. La valeur 10 correspondrait à la somme de tous les entiers de 1 à 4.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "4"
+      },
+      {
+        "lettre": "B",
+        "texte": "6"
+      },
+      {
+        "lettre": "C",
+        "texte": "10"
+      },
+      {
+        "lettre": "D",
+        "texte": "2"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10533
+    ]
+  },
+  {
+    "external_id": "cqc-algorithmique-elevee-4",
+    "theme": "algorithmique",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "probatoire",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "On veut savoir si un entier `n` supérieur ou égal à 2 est premier, en cherchant son plus petit diviseur. Voici un algorithme :\n\n```\nLire n\ni <- 2\nTant que (i x i <= n) et (n mod i <> 0) faire\n    i <- i + 1\nFinTantQue\nSi i x i > n alors Afficher \"premier\"\nSinon Afficher \"non premier\"\nFinSi\n```\n\n1. Exécuter l'algorithme pour `n = 17` puis pour `n = 21`, en indiquant combien de fois le corps de la boucle est exécuté.\n2. Expliquer pourquoi il suffit de tester les diviseurs `i` tels que `i x i <= n`.",
+    "corrige_markdown": "### Rappel de méthode\n\nUn algorithme avec une condition composée `et` s'arrête dès que l'une des deux conditions devient fausse ; on identifie alors laquelle est la cause de l'arrêt pour interpréter le résultat.\n\n### Corrigé\n\n1. **n = 17** : `i` vaut 2, 3, 4 (17 n'est divisible par aucun de ces entiers, et `i x i` reste inférieur ou égal à 17), le corps est exécuté **3 fois**, puis `i` vaut 5 et `5 x 5 = 25 > 17` arrête la boucle. Comme `i x i > n`, l'algorithme affiche « premier ».\n   **n = 21** : pour `i = 2`, `21 mod 2 = 1`, le corps est exécuté **1 fois**, `i` vaut 3 ; `21 mod 3 = 0` fait échouer la seconde condition et arrête la boucle avec `i x i = 9 <= 21`. L'algorithme affiche « non premier » (3 divise 21).\n2. Si `n` avait un diviseur `d` strictement supérieur à $\\sqrt{n}$, alors `n / d` serait un diviseur strictement inférieur à $\\sqrt{n}$ et aurait été trouvé avant. Il suffit donc de tester `i` jusqu'à $\\sqrt{n}$, c'est-à-dire tant que `i x i <= n`, ce qui évite de parcourir tous les entiers jusqu'à `n - 1`.",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10533
+    ]
+  }
+]

@@ -1,0 +1,143 @@
+{
+  "cours_id": "cours-resolution-d-une-equation-du-second-degre-2nde-a",
+  "meta": {
+    "titre": "Résolution d'une équation du second degré",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Équations et inéquations",
+    "duree_estimee_min": 20,
+    "tags": [
+      "discriminant",
+      "équation du second degré",
+      "racines"
+    ],
+    "savoir_officiel": {
+      "classe": "2nde",
+      "serie_label": "A",
+      "module_numero": "17",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2001-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathematiques - Session 2001 (Cameroun)",
+    "exercice_numero": "A",
+    "rappel_id": "rdm-probatoire-a-maths-2001-officiel-cameroun-exA-q1a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Beaucoup de problèmes concrets, prix d'achat, longueurs, aires, se traduisent par une équation où l'inconnue apparaît au carré. Impossible de l'isoler directement comme dans une équation du premier degré : il faut une méthode dédiée. Le discriminant répond à ce besoin en un seul calcul, il indique combien de solutions existent et permet de les écrire aussitôt. Cette méthode revient dans presque toutes les études de fonctions polynômes et dans une bonne partie des problèmes de mise en équation du Probatoire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Développer et réduire une expression littérale",
+        "Calculer une racine carrée et reconnaître un carré parfait",
+        "Résoudre une équation du premier degré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode du discriminant",
+      "contenu_markdown": "Une équation du second degré s'écrit $ax^2+bx+c=0$ avec $a\\neq0$. On calcule le discriminant $\\Delta=b^2-4ac$, qui indique le nombre de solutions réelles :\n\n- si $\\Delta>0$, deux solutions distinctes $x_1=\\dfrac{-b-\\sqrt{\\Delta}}{2a}$ et $x_2=\\dfrac{-b+\\sqrt{\\Delta}}{2a}$ ;\n- si $\\Delta=0$, une solution double $x_0=\\dfrac{-b}{2a}$ ;\n- si $\\Delta<0$, aucune solution réelle.",
+      "formule_principale": "\\Delta = b^2-4ac",
+      "variantes": [
+        {
+          "nom": "Résolution par factorisation directe",
+          "quand_utiliser": "Quand une identité remarquable ou une racine évidente est visible sans calcul (ex. $x^2-9=0$, $x^2-5x=0$)",
+          "contenu_markdown": "On factorise directement l'expression : $x^2-9=(x-3)(x+3)=0$ donne $x=3$ ou $x=-3$. Cette méthode va plus vite quand elle s'applique, mais elle ne fonctionne pas systématiquement : le discriminant reste la méthode universelle, valable pour toute équation du second degré."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}$ : $x^2-20x-384=0$",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les coefficients a, b, c",
+          "justification": "L'équation est déjà sous la forme standard $ax^2+bx+c=0$",
+          "resultat_markdown": "$a=1,\\; b=-20,\\; c=-384$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le discriminant",
+          "justification": "On applique $\\Delta=b^2-4ac$",
+          "resultat_markdown": "$\\Delta=(-20)^2-4\\times1\\times(-384)=400+1536=1936$"
+        },
+        {
+          "numero": 3,
+          "action": "Extraire la racine carrée du discriminant",
+          "justification": "$1936$ est un carré parfait : $1936=16\\times121=4^2\\times11^2=44^2$",
+          "resultat_markdown": "$\\sqrt{\\Delta}=44$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer les deux solutions",
+          "justification": "$\\Delta>0$ donc deux solutions distinctes, avec $x_{1,2}=\\dfrac{-b\\pm\\sqrt{\\Delta}}{2a}$",
+          "resultat_markdown": "$x_1=\\dfrac{20-44}{2}=-12 \\quad;\\quad x_2=\\dfrac{20+44}{2}=32$"
+        }
+      ],
+      "conclusion_markdown": "L'ensemble des solutions est $S=\\{-12\\,;32\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\Delta=b^2+4ac$ en oubliant le signe moins",
+          "pourquoi_faux": "La formule est $b^2-4ac$. Ce signe moins vient de la mise sous forme canonique du trinôme ; le changer modifie radicalement le résultat et peut transformer deux solutions réelles en aucune solution.",
+          "correction_markdown": "Recopier systématiquement la formule complète $\\Delta=b^2-4ac$ avant de substituer les valeurs numériques."
+        },
+        {
+          "erreur_markdown": "Oublier le signe de $-b$ dans la formule des racines quand $b$ est déjà négatif",
+          "pourquoi_faux": "Avec $b=-20$, on a $-b=20$. Écrire $x=\\dfrac{b\\pm\\sqrt{\\Delta}}{2a}$ au lieu de $\\dfrac{-b\\pm\\sqrt{\\Delta}}{2a}$ inverse le signe des deux solutions.",
+          "correction_markdown": "Remplacer $-b$ par sa valeur numérique avant de simplifier, en gardant les parenthèses : $-(-20)=20$."
+        },
+        {
+          "erreur_markdown": "Conclure qu'il n'y a pas de solution dès que $\\sqrt{\\Delta}$ n'est pas un entier évident",
+          "pourquoi_faux": "Le discriminant peut très bien ne pas être un carré parfait : $\\sqrt{\\Delta}$ reste alors un nombre réel, éventuellement irrationnel, et l'équation a bien deux solutions dès que $\\Delta>0$.",
+          "correction_markdown": "Ne conclure « pas de solution réelle » que si $\\Delta<0$, jamais parce que $\\sqrt{\\Delta}$ semble compliqué à calculer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ : $x^2-5x+6=0$",
+          "solution_markdown": "$a=1,\\,b=-5,\\,c=6$. $\\Delta=(-5)^2-4\\times1\\times6=25-24=1$, donc $\\sqrt{\\Delta}=1$. $x_1=\\dfrac{5-1}{2}=2$ et $x_2=\\dfrac{5+1}{2}=3$. $S=\\{2\\,;3\\}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}$ : $2x^2-3x-2=0$",
+          "solution_markdown": "$a=2,\\,b=-3,\\,c=-2$. $\\Delta=(-3)^2-4\\times2\\times(-2)=9+16=25$, donc $\\sqrt{\\Delta}=5$. $x_1=\\dfrac{3-5}{4}=-\\dfrac{1}{2}$ et $x_2=\\dfrac{3+5}{4}=2$. $S=\\left\\{-\\dfrac{1}{2}\\,;2\\right\\}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer les valeurs de $k$ pour lesquelles l'équation $x^2+kx+9=0$ admet une racine double.",
+          "solution_markdown": "Une racine double impose $\\Delta=0$. Ici $a=1,\\,b=k,\\,c=9$, donc $\\Delta=k^2-4\\times1\\times9=k^2-36$. L'équation $k^2-36=0$ équivaut à $k^2=36$, donc $k=6$ ou $k=-6$. Pour $k=6$, la racine double vaut $x_0=\\dfrac{-b}{2a}=\\dfrac{-6}{2}=-3$. Pour $k=-6$, $x_0=\\dfrac{6}{2}=3$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à $ax^2+bx+c=0$, identifie toujours $a$, $b$, $c$ avant tout calcul.",
+        "Le signe de $\\Delta=b^2-4ac$ décide du nombre de solutions : trois cas, trois conclusions différentes.",
+        "N'oublie jamais le signe moins devant $b$ dans les formules des racines, surtout quand $b$ est déjà négatif.",
+        "Un $\\Delta$ qui n'est pas un carré parfait n'empêche pas les solutions d'exister : vérifie seulement son signe.",
+        "Au Probatoire, cette méthode réapparaît dans des problèmes concrets qui se ramènent, après mise en équation, à une équation du second degré : reconnaître cette structure fait gagner du temps."
+      ]
+    }
+  ]
+}

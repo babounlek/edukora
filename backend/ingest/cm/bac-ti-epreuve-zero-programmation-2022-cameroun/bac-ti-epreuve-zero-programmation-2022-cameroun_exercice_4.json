@@ -1,0 +1,163 @@
+{
+  "epreuve_source": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+  "numero_exercice": "4",
+  "pays": "cm",
+  "matiere": "Programmation",
+  "nature_epreuve": null,
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "TI",
+  "filiere_serie_a": null,
+  "examen": "bac",
+  "origine": "sujet zero",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2022,
+  "duree_epreuve": "3h",
+  "coefficient": "3",
+  "introduction_markdown": null,
+  "points": "5",
+  "groupes": [
+    "II/ PROGRAMMATION PROCÉDURALE EN C (10 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 4**\n\n**B/** Soit le programme C donné ci-dessous :\n\n```c\n1   int calcul (int x, int n) {\n2       int p ;\n3       if(n==0) {\n4           return 1 ;\n5       }\n6       else {\n7           if(n%2==0) {\n8               return calcul(x*x,n/2);\n9           }\n10          else {\n11              return x*calcul(x*x,(n-1)/2);\n12          }\n13      }\n14  }\n```",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "**1.** Justifier pourquoi cette fonction est dite récursive. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne fonction est dite récursive lorsqu'elle s'appelle elle-même, directement ou indirectement, dans son propre corps, à condition de disposer d'un cas de base qui arrête la chaîne d'appels : sans lui, la fonction s'appellerait indéfiniment.\n\nLa fonction `calcul` s'appelle elle-même à deux endroits de son corps : ligne 8, `return calcul(x*x, n/2)`, et ligne 11, `return x*calcul(x*x,(n-1)/2)`. C'est cette présence d'un appel à `calcul` à l'intérieur même de la définition de `calcul` qui la rend récursive. Le cas de base qui garantit l'arrêt de la récursion est le test `if(n==0)` de la ligne 3 : à chaque appel récursif, le second paramètre est divisé par 2 (`n/2` ou `(n-1)/2`), donc il finit nécessairement par atteindre 0 après un nombre fini d'appels, ce qui déclenche le `return 1` de la ligne 4 et met fin à la chaîne d'appels.\n\n### Piège à éviter\nNe te contente pas de répondre « parce qu'elle contient calcul(...) » : justifie aussi pourquoi cette récursion se termine (l'existence et l'atteignabilité du cas de base), sans quoi la réponse ne distingue pas une fonction récursive correcte d'un appel qui boucle indéfiniment.",
+      "themes": [
+        "langage C",
+        "récursivité",
+        "cas de base"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex4-q1-0",
+          "competence": "Reconnaître une fonction récursive et son mécanisme d'arrêt (cas de base)",
+          "contenu_markdown": "Une fonction est dite récursive lorsqu'elle s'appelle elle-même, directement ou indirectement, dans son propre corps, à condition de disposer d'un cas de base qui arrête la chaîne d'appels : sans lui, la fonction s'appellerait indéfiniment.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "**2.** Ecrire la fonction principale `main()` en C dans laquelle vous feriez l'appel de la fonction donnée ci-dessus avec des valeurs fournies par l'utilisateur. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nAppeler une fonction avec des valeurs fournies par l'utilisateur suppose de déclarer les variables qui recevront ces valeurs, de les lire au clavier avec `scanf`, puis de transmettre ces variables en argument de la fonction et d'afficher la valeur renvoyée.\n\n```c\nint main() {\n    int x, n, resultat;\n\n    printf(\"Entrez la valeur de x : \");\n    scanf(\"%d\", &x);\n    printf(\"Entrez la valeur de n : \");\n    scanf(\"%d\", &n);\n\n    resultat = calcul(x, n);\n\n    printf(\"calcul(%d, %d) = %d\\n\", x, n, resultat);\n\n    return 0;\n}\n```\n\n`x` et `n` sont lus séparément au clavier, chacun précédé d'un message qui précise à l'utilisateur ce qui est attendu. L'appel `calcul(x, n)` transmet ces deux valeurs par copie (passage par valeur, la fonction `calcul` ne modifie d'ailleurs jamais x ou n de l'appelant) et son résultat est stocké dans `resultat` avant d'être affiché.\n\n### Conseil\nAffiche toujours les valeurs de x et n en même temps que le résultat (comme dans `printf` ci-dessus) : cela permet de vérifier immédiatement, à l'exécution, que le résultat correspond bien aux valeurs saisies, sans avoir à les retenir.",
+      "themes": [
+        "langage C",
+        "fonction main",
+        "scanf",
+        "appel de fonction"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex4-q2-0",
+          "competence": "Saisie de paramètres utilisateur pour l'appel d'une fonction en C",
+          "contenu_markdown": "Appeler une fonction avec des valeurs fournies par l'utilisateur suppose de déclarer les variables qui recevront ces valeurs, de les lire au clavier avec `scanf`, puis de transmettre ces variables en argument de la fonction et d'afficher la valeur renvoyée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "**3.** Donner la trace d'exécution de cette fonction avec les valeurs suivantes x = 5 et n = 10. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nTracer l'exécution d'une fonction récursive consiste à dérouler la pile des appels successifs jusqu'au cas de base, puis à remonter cette pile en calculant, à chaque niveau, la valeur renvoyée à partir du résultat déjà obtenu au niveau plus profond.\n\n**Descente (appels successifs, x est mis au carré à chaque étape, n divisé par 2) :**\n\n```\ncalcul(5, 10)      n=10 pair   -> calcul(5*5, 10/2)        = calcul(25, 5)\ncalcul(25, 5)      n=5 impair  -> 25 * calcul(25*25, 2)     = 25 * calcul(625, 2)\ncalcul(625, 2)     n=2 pair    -> calcul(625*625, 1)        = calcul(390625, 1)\ncalcul(390625, 1)  n=1 impair  -> 390625 * calcul(390625², 0) = 390625 * calcul(152587890625, 0)\ncalcul(152587890625, 0)  n=0   -> return 1\n```\n\nL'appel s'arrête bien en un nombre fini d'étapes : n passe de 10 à 5, puis 2, puis 1, puis 0, en 4 divisions, exactement comme attendu pour une récursion qui divise son paramètre par 2 à chaque appel.\n\n**Remontée (chaque niveau utilise le résultat renvoyé par l'appel plus profond) :**\n\n```\ncalcul(390625, 1)  = 390625 * 1         = 390625\ncalcul(625, 2)     = 390625\ncalcul(25, 5)      = 25 * 390625        = 9 765 625\ncalcul(5, 10)      = 9 765 625\n```\n\nLa fonction renvoie donc **9 765 625** pour `calcul(5, 10)`.\n\n### Piège à éviter\nSur la branche impaire (ligne 11), n'oublie pas de multiplier par x **avant** la mise au carré : c'est x (390625 ici), pas x*x, qui multiplie le résultat de l'appel récursif à la remontée du niveau `calcul(390625, 1)`.\n\n### Conseil\nVérifie ton résultat final par un calcul indépendant de $x^n$ : $5^{10} = 9\\,765\\,625$. Si la trace ne retombe pas sur cette valeur, une étape de la descente ou de la remontée contient une erreur de calcul à corriger avant de répondre à la question suivante.",
+      "themes": [
+        "langage C",
+        "récursivité",
+        "trace d'exécution",
+        "pile d'appels"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex4-q3-0",
+          "competence": "Trace d'exécution d'une fonction récursive (pile d'appels)",
+          "contenu_markdown": "Tracer l'exécution d'une fonction récursive consiste à dérouler la pile des appels successifs jusqu'au cas de base, puis à remonter cette pile en calculant, à chaque niveau, la valeur renvoyée à partir du résultat déjà obtenu au niveau plus profond.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "**4.** Déduire ce que fait ce programme. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne fois la trace d'exécution obtenue, identifier ce que calcule une fonction récursive consiste à reconnaître, dans le résultat numérique obtenu, une opération mathématique connue plutôt qu'à se contenter de reformuler le code ligne par ligne.\n\nLe résultat obtenu à la question précédente, $5^{10} = 9\\,765\\,625$, correspond exactement à la valeur renvoyée par `calcul(5, 10)`. La fonction `calcul(x, n)` calcule donc **$x^n$, la puissance n-ième de x**, en exploitant la propriété $x^n = (x^2)^{n/2}$ si n est pair et $x^n = x \\times (x^2)^{(n-1)/2}$ si n est impair : c'est l'algorithme d'**exponentiation rapide (par élévations au carré successives)**, qui calcule $x^n$ en $O(\\log n)$ appels plutôt qu'en $O(n)$ multiplications comme le ferait une boucle multipliant x par lui-même n fois.\n\n### Conseil\nNomme explicitement l'algorithme (« exponentiation rapide » ou « élévation au carré ») si tu le reconnais : au-delà du simple constat $x^n$, cela montre au correcteur une compréhension de la technique employée, pas seulement du résultat numérique.",
+      "themes": [
+        "langage C",
+        "exponentiation rapide",
+        "analyse d'algorithme"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex4-q4-0",
+          "competence": "Identifier l'algorithme calculé par une fonction récursive (exponentiation rapide)",
+          "contenu_markdown": "Une fois la trace d'exécution obtenue, identifier ce que calcule une fonction récursive consiste à reconnaître, dans le résultat numérique obtenu, une opération mathématique connue plutôt qu'à se contenter de reformuler le code ligne par ligne.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "5",
+      "enonce_markdown": "**5.** Réécrire une autre version non récursive de cette fonction en utilisant une structure itérative. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nTransformer une récursion terminale (ou quasi terminale) en boucle consiste à remplacer chaque appel récursif par une nouvelle itération qui met à jour les mêmes variables que celles transmises en paramètre à l'appel récursif, et à accumuler dans une variable séparée les facteurs multipliés sur la branche impaire.\n\n```c\nint calculIteratif(int x, int n) {\n    int resultat = 1;\n\n    while (n > 0) {\n        if (n % 2 != 0) {\n            resultat = resultat * x;\n        }\n        x = x * x;\n        n = n / 2;\n    }\n\n    return resultat;\n}\n```\n\n`resultat` remplace le facteur x accumulé à chaque branche impaire de la version récursive (ligne 11 du code d'origine, `x*calcul(...)`) : il démarre à 1 (l'élément neutre de la multiplication, comme le `return 1` du cas de base) et se voit multiplié par x chaque fois que n est impair. `x` est ensuite mis au carré et `n` divisé par 2 (division entière) à chaque itération, que n soit pair ou impair - la division entière `(n-1)/2` de la branche impaire et `n/2` de la branche paire donnent en effet exactement le même résultat en C (ex. n=5 : `(5-1)/2 = 2` et `5/2 = 2`), ce qui permet d'unifier les deux cas en une seule instruction `n = n / 2` dans la boucle.\n\n### Piège à éviter\nNe mets pas à jour `x` avant de tester s'il faut multiplier `resultat` par l'ancienne valeur de x : l'ordre des instructions à l'intérieur de la boucle (test et multiplication de `resultat`, PUIS mise au carré de x, PUIS division de n) doit être respecté strictement, sinon `resultat` se retrouve multiplié par le mauvais x.\n\n### Conseil\nTeste ta version itérative avec les mêmes valeurs que la trace de la question 3 (x=5, n=10) : si elle ne renvoie pas 9 765 625 comme la version récursive, c'est que l'ordre des trois instructions de la boucle n'est pas respecté.",
+      "themes": [
+        "langage C",
+        "récursivité",
+        "boucle while",
+        "transformation itérative"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": null,
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex4-q5-0",
+          "competence": "Transformation d'une fonction récursive en fonction itérative (boucle)",
+          "contenu_markdown": "Transformer une récursion terminale (ou quasi terminale) en boucle consiste à remplacer chaque appel récursif par une nouvelle itération qui met à jour les mêmes variables que celles transmises en paramètre à l'appel récursif, et à accumuler dans une variable séparée les facteurs multipliés sur la branche impaire.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "langage C",
+    "récursivité",
+    "exponentiation rapide",
+    "trace d'exécution",
+    "boucle while",
+    "fonction récursive"
+  ],
+  "incertitudes": [
+    "Fichier de référentiel programme officiel programme_officiel_cm_informatique.json introuvable sur cette machine : savoir_officiel laissé à null sur toutes les sous-questions de cette épreuve faute de référentiel disponible pour vérifier le rattachement.",
+    "Le barème cumulé de la partie II/ (A/: 2+2+1=5 pts ; B/: 0,5+1+1+0,5+1=4 pts, soit 9 pts au total) n'atteint pas les 10 points annoncés en tête de la section II/ PROGRAMMATION PROCÉDURALE EN C - incohérence de barème présente dans le sujet source, reproduite telle quelle sans correction inventée."
+  ],
+  "statut": "brouillon"
+}

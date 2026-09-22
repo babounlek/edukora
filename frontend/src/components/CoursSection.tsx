@@ -47,7 +47,7 @@ function CoursExerciceApplicationItem({ item, index }: { item: CoursSectionExerc
 export function CoursSection({ section }: { section: CoursSectionData }) {
   if (section.type === "accroche") {
     return (
-      <div className="font-display text-xl italic leading-relaxed text-foreground">
+      <div className="font-display text-xl italic leading-relaxed text-justify text-foreground">
         <EpreuveMarkdown markdown={section.body_markdown} />
       </div>
     )

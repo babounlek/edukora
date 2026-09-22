@@ -1,0 +1,140 @@
+{
+  "cours_id": "cours-rotation-sequence-decalage-terminale-ti",
+  "meta": {
+    "titre": "Faire tourner une séquence (tableau ou chaîne) par décalage",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Algorithmes sur tableaux et chaînes de caractères",
+    "duree_estimee_min": 25,
+    "tags": [
+      "rotation",
+      "tableau",
+      "chaine de caracteres",
+      "decalage d'indices",
+      "tableau temporaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-blanc-t-informatique-college-la-retaite-2024-cameroun",
+    "epreuve_titre": "Baccalauréat Blanc n°2 - Informatique - Terminale TI - Collège de la Retraite (2024)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex2-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Décaler « en rond » les éléments d'un tableau ou les caractères d'une chaîne - faire passer les derniers en tête sans en perdre aucun - revient tout le temps dans les sujets d'algorithmique : rotation d'un mot de passe, permutation circulaire, files tournantes. La méthode est toujours la même, qu'on manipule des entiers ou des caractères : ce cours la construit une fois pour toutes à partir d'un exemple concret déjà résolu."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Déclarer et parcourir un tableau (ou une chaîne, qui est un tableau de char en C)",
+        "Écrire une boucle for avec un compteur",
+        "Comprendre la notion d'indice et de longueur d'un tableau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode du tableau temporaire",
+      "contenu_markdown": "Pour faire passer les `n` derniers éléments d'une séquence de longueur `taille` en tête (une rotation vers la droite d'ordre `n`), le plus sûr est de reconstruire la séquence dans un tableau temporaire plutôt que de modifier la séquence d'origine sur elle-même : on y recopie d'abord les `n` derniers éléments d'origine, puis les `taille-n` éléments restants dans leur ordre initial, avant de recopier ce résultat à la place de la séquence d'origine.",
+      "formule_principale": "temp[k] = original[taille - n + k]  pour k de 0 à n-1 ; puis temp[k] = original[k - n]  pour k de n à taille-1",
+      "variantes": [
+        {
+          "nom": "Décalage en place (sans tableau temporaire)",
+          "quand_utiliser": "Seulement pour une rotation d'un seul cran (n=1), où un unique élément sauvegardé suffit avant d'écraser progressivement le tableau",
+          "contenu_markdown": "Quand n=1, on peut sauvegarder le dernier élément dans une variable, décaler tous les autres d'un cran vers la droite (en partant de la fin pour ne rien écraser trop tôt), puis placer l'élément sauvegardé en tête. C'est ce que fait la boucle `for(j=5;j>=0;j--) T[j+1]=T[j];` d'un exercice de rotation de tableau : elle ne fonctionne que parce qu'un seul élément est déplacé à la fois."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Effectuer la translation d'ordre 1 de la chaîne `ch=\"bonjour\"` (déplacer le dernier caractère vers le début).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la longueur de la séquence et l'ordre de rotation",
+          "justification": "La méthode a besoin de connaître combien d'éléments basculent (n) et la longueur totale (taille) pour savoir où couper la séquence",
+          "resultat_markdown": "`taille = 7` (b-o-n-j-o-u-r), `n = 1`"
+        },
+        {
+          "numero": 2,
+          "action": "Recopier les n derniers éléments en tête du tableau temporaire",
+          "justification": "Ce sont ces éléments qui doivent passer en premier dans la séquence finale",
+          "resultat_markdown": "`temp[0] = ch[taille-1] = ch[6] = 'r'`"
+        },
+        {
+          "numero": 3,
+          "action": "Recopier les (taille-n) éléments restants, dans leur ordre initial, à la suite",
+          "justification": "Ces éléments conservent leur ordre relatif, ils sont seulement décalés de n positions vers la droite",
+          "resultat_markdown": "`temp[1..6] = ch[0..5] = 'b','o','n','j','o','u'`"
+        },
+        {
+          "numero": 4,
+          "action": "Relire le tableau temporaire dans l'ordre",
+          "justification": "Le tableau temporaire contient maintenant la séquence complète après rotation",
+          "resultat_markdown": "`temp = \"rbonjou\"`"
+        }
+      ],
+      "conclusion_markdown": "On retrouve exactement le résultat attendu : `ch=\"bonjour\"` devient `\"rbonjou\"` après une translation d'ordre 1 - la méthode du tableau temporaire fonctionne quelle que soit la valeur de n, alors que le décalage en place ne fonctionne simplement que pour n=1."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire directement dans le tableau d'origine pendant qu'on le lit encore, par exemple `ch[k] = ch[k-n]` sans tableau intermédiaire",
+          "pourquoi_faux": "Cette écriture écrase des valeurs que la suite du calcul doit encore lire : une fois `ch[k-n]` modifié, on perd la valeur d'origine dont un indice ultérieur avait besoin.",
+          "correction_markdown": "Toujours passer par un tableau (ou une chaîne) temporaire distinct, qu'on ne recopie dans l'original qu'une fois entièrement reconstruit."
+        },
+        {
+          "erreur_markdown": "Oublier de replacer le caractère de fin de chaîne '\\0' après reconstruction, en C",
+          "pourquoi_faux": "Sans '\\0' à la bonne position, les fonctions de chaînes (printf(\"%s\"), strlen, strcpy...) continueront de lire au-delà de la fin réelle de la chaîne, jusqu'à rencontrer un octet nul par hasard en mémoire.",
+          "correction_markdown": "Toujours écrire `temp[taille] = '\\0';` avant de recopier le tableau temporaire dans la chaîne d'origine avec `strcpy`."
+        },
+        {
+          "erreur_markdown": "Confondre le nombre d'éléments déplacés (n) avec le nombre de crans de décalage restants (taille - n)",
+          "pourquoi_faux": "Une rotation d'ordre n déplace n éléments vers l'avant, ce qui revient à décaler les (taille-n) éléments restants de n crans vers l'arrière : intervertir ces deux nombres dans les bornes de boucle donne un résultat totalement différent.",
+          "correction_markdown": "Vérifie toujours ta formule sur un exemple très simple et déjà connu (comme le n=1 de ce cours) avant de l'appliquer à un cas plus grand."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Effectuer à la main la translation d'ordre 2 de la chaîne `ch=\"maison\"`.",
+          "solution_markdown": "`taille=6`, `n=2`. Les 2 derniers caractères sont `\"on\"` ; les 4 premiers sont `\"mais\"`. Résultat : `temp = \"on\" + \"mais\" = \"onmais\"`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire, en langage C, une fonction `void rotationDroite(int T[], int taille, int n)` qui effectue une rotation d'ordre `n` sur un tableau d'entiers `T` de longueur `taille`, en utilisant un tableau temporaire.",
+          "solution_markdown": "```c\nvoid rotationDroite(int T[], int taille, int n) {\n    int temp[100];\n    int k;\n    for (k = 0; k < n; k++) temp[k] = T[taille - n + k];\n    for (k = n; k < taille; k++) temp[k] = T[k - n];\n    for (k = 0; k < taille; k++) T[k] = temp[k];\n}\n```\nLa fonction recopie d'abord les `n` derniers éléments de `T` en tête de `temp`, puis les `taille-n` éléments restants à la suite, avant de recopier l'ensemble dans `T`. On suppose ici `taille <= 100` pour simplifier la déclaration de `temp` ; en pratique, on adapterait cette taille au besoin réel."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une rotation d'ordre n appliquée n fois de suite à un tableau de taille `taille` redonne-t-elle toujours le tableau de départ ? Justifier, puis donner une condition sur n et taille pour laquelle une seule rotation d'ordre n suffit à redonner le tableau initial (avec n différent de 0 et taille).",
+          "solution_markdown": "Appliquer une rotation d'ordre n revient à décaler cycliquement chaque élément de n positions. Répéter cette opération k fois revient à décaler de (k×n) positions modulo taille. On retrouve le tableau de départ dès que (k×n) est un multiple de taille, ce qui arrive nécessairement au bout d'au plus `taille` applications (puisque k=taille convient toujours, k×n étant alors un multiple de taille×n donc de taille). Une seule rotation d'ordre n (k=1) suffit à redonner le tableau initial si et seulement si n est déjà un multiple de taille - en excluant n=0 et n=taille (rotations « nulles » explicitement écartées par la question), aucune valeur de n strictement comprise entre 1 et taille-1 ne peut donc, à elle seule, redonner le tableau de départ en une seule application : il faut toujours répéter l'opération."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une rotation d'ordre n déplace les n derniers éléments d'une séquence vers le début, en conservant l'ordre relatif de tous les éléments.",
+        "La méthode la plus sûre, quelle que soit la valeur de n, passe par un tableau ou une chaîne temporaire : jamais d'écriture directe dans la séquence encore en cours de lecture.",
+        "Un décalage en place, élément par élément, n'est fiable que pour une rotation d'un seul cran (n=1).",
+        "En C, pour une chaîne de caractères, ne jamais oublier de replacer le '\\0' final avant d'utiliser à nouveau la chaîne reconstruite.",
+        "Ce type d'exercice apparaît au BAC aussi bien sur des tableaux d'entiers que sur des chaînes de caractères : la méthode de résolution est rigoureusement identique dans les deux cas."
+      ]
+    }
+  ]
+}

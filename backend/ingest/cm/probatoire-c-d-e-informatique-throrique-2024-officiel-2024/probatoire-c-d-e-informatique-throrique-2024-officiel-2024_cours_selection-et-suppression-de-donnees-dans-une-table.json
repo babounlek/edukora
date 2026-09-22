@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-selection-et-suppression-de-donnees-dans-une-table-1ere-tronc-commun",
+  "meta": {
+    "titre": "Sélection et suppression de données dans une table",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données - manipulation de données",
+    "duree_estimee_min": 20,
+    "tags": [
+      "sélection de données",
+      "suppression",
+      "condition",
+      "filtrage"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex2-q6-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Nettoyer le stock d'une boutique en retirant les articles trop chers, ou repérer les élèves dont la moyenne est insuffisante, revient au même problème en base de données : parcourir une table et ne garder que les lignes qui respectent, ou qui ne respectent pas, une condition donnée. C'est l'une des opérations les plus fréquentes sur une table, et l'une des plus faciles à rater par simple inattention."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le vocabulaire enregistrement et champ",
+        "Savoir comparer deux nombres avec les opérateurs >, <, >=, <=, ="
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Supprimer, c'est garder ce qui ne vérifie pas la condition",
+      "contenu_markdown": "Supprimer les enregistrements d'une table qui vérifient une condition donnée revient à ne conserver, dans la table finale, que ceux qui ne la vérifient pas. La démarche est systématique : on examine un à un les enregistrements de la table, on compare la valeur du champ concerné à la condition de suppression donnée, et on exclut de la table finale tout enregistrement pour lequel cette condition est vraie ; tous les autres enregistrements sont recopiés sans modification.",
+      "formule_principale": "\\text{Table finale} = \\{\\ \\text{enregistrements } t \\mid \\text{condition de suppression}(t) \\text{ est FAUSSE} \\ \\}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Reprenons la table **ARTICLES** :\n\n| Reference | Designation | PrixUnitaire | Quantite | Categorie |\n|---|---|---|---|---|\n| 102E78 | Riz | 12000 | 55 | Alimentaire |\n| 205R12 | Plat | 1500 | 102 | Cuisine |\n| 780G08 | Savon | 500 | 455 | Entretien |\n\nReprésenter la table obtenue après avoir supprimé tous les articles qui coûtent plus de 1000.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le champ et la condition de suppression",
+          "justification": "La condition porte sur le champ PrixUnitaire, avec le seuil strict « plus de 1000 », c'est-à-dire PrixUnitaire > 1000.",
+          "resultat_markdown": "Condition de suppression : PrixUnitaire > 1000."
+        },
+        {
+          "numero": 2,
+          "action": "Évaluer la condition pour chaque enregistrement",
+          "justification": "On compare le prix de chaque article au seuil de 1000, un par un.",
+          "resultat_markdown": "Riz : 12 000 > 1000, vraie, à supprimer. Plat : 1500 > 1000, vraie, à supprimer. Savon : 500 > 1000, fausse, à conserver."
+        },
+        {
+          "numero": 3,
+          "action": "Construire la table finale avec les enregistrements conservés",
+          "justification": "Seul Savon ne vérifie pas la condition de suppression : il est donc le seul article encore présent dans la table finale.",
+          "resultat_markdown": "| Reference | Designation | PrixUnitaire | Quantite | Categorie |\n|---|---|---|---|---|\n| 780G08 | Savon | 500 | 455 | Entretien |"
+        }
+      ],
+      "conclusion_markdown": "La table finale ne contient plus qu'un seul article : Savon."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre condition stricte (>) et large (>=) et supprimer par erreur un article dont le prix vaut exactement le seuil",
+          "pourquoi_faux": "« Plus de 1000 » signifie strictement supérieur à 1000 : un article à exactement 1000 F CFA ne vérifie pas cette condition et doit être conservé.",
+          "correction_markdown": "Relire attentivement l'énoncé pour distinguer « plus de » (strict, >) de « au moins » ou « à partir de » (large, >=)."
+        },
+        {
+          "erreur_markdown": "Inverser la logique et garder les enregistrements qui vérifient la condition au lieu de les exclure",
+          "pourquoi_faux": "La condition donnée décrit ce qu'il faut supprimer, pas ce qu'il faut garder : appliquer directement la condition comme un filtre de sélection produit l'exact inverse du résultat attendu.",
+          "correction_markdown": "Toujours reformuler mentalement : « supprimer ceux qui vérifient X » équivaut à « garder ceux qui ne vérifient pas X »."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier chaque enregistrement un par un sur une table plus longue, et sauter une ligne par inattention",
+          "pourquoi_faux": "Une omission sur une seule ligne suffit à produire une table finale fausse, même si la méthode appliquée aux autres lignes est correcte.",
+          "correction_markdown": "Entourer sur le brouillon chaque valeur du champ concerné avant de trancher, ligne après ligne, sans en sauter aucune."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une table NOTES (Matricule, Note) contient quatre lignes avec les notes 8, 12, 15 et 5. Supprimer les élèves ayant une note strictement inférieure à 10. Donner la table finale.",
+          "solution_markdown": "Condition de suppression : Note < 10. Les notes 8 et 5 vérifient cette condition et sont supprimées. Les notes 12 et 15 sont conservées. La table finale ne contient donc plus que les deux enregistrements correspondant aux notes 12 et 15."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans la table ARTICLES de l'exemple résolu, supprimer les articles dont la Quantite est supérieure ou égale à 100. Donner la table finale.",
+          "solution_markdown": "Condition de suppression : Quantite >= 100. Riz (55) ne vérifie pas la condition, conservé. Plat (102) vérifie la condition (102 >= 100), supprimé. Savon (455) vérifie la condition (455 >= 100), supprimé. La table finale ne conserve donc que l'article Riz."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une table ELEVES (Nom, Age, Classe) doit être nettoyée en supprimant tout élève qui a strictement moins de 15 ans OU qui est en classe de 6e. Décrire la démarche pour une condition composée par un OU et l'appliquer à un élève de 13 ans en classe de 4e, puis à un élève de 16 ans en classe de 6e.",
+          "solution_markdown": "Avec une condition composée par un OU, un enregistrement est supprimé dès qu'AU MOINS une des deux conditions est vraie : il n'est pas nécessaire que les deux le soient à la fois.\n\nÉlève de 13 ans en 4e : Age < 15 est vraie (13 < 15), donc l'élève est supprimé, peu importe sa classe.\n\nÉlève de 16 ans en 6e : Age < 15 est fausse (16 n'est pas inférieur à 15), mais Classe = 6e est vraie : au moins une condition étant vraie, cet élève est également supprimé.\n\nSeul un élève qui a 15 ans ou plus ET qui n'est pas en 6e serait conservé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Supprimer selon une condition revient toujours à ne garder que ce qui ne vérifie PAS cette condition.",
+        "Examine chaque enregistrement un par un, sans en sauter aucun, même sur une table courte.",
+        "Distingue toujours une condition stricte (>, <) d'une condition large (>=, <=) : le mot exact de l'énoncé en français en dit long (« plus de » est strict, « au moins » est large).",
+        "Avec une condition composée par un OU, un seul des deux critères vérifié suffit pour déclencher la suppression.",
+        "Cette opération de filtrage est la base de toute requête de sélection en base de données, qu'on la manipule sur papier au Probatoire ou plus tard avec un vrai langage de requête."
+      ]
+    }
+  ]
+}

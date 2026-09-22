@@ -1,0 +1,188 @@
+{
+  "epreuve_source": "epreuve-hamonise-c-d-e-informatique-2025-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "serie": "C, D, E",
+  "examen": "bac",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "annee": 2025,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "nature_epreuve": "theorique",
+  "institution": "Délégation Régionale des Enseignements Secondaires de l'Adamaoua - Inspection Régionale de Pédagogie chargée de l'Enseignement de l'Informatique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "filiere_serie_a": null,
+  "numero_exercice": "3",
+  "points": "4",
+  "introduction_markdown": null,
+  "groupes": [
+    "PARTIE II : SYSTÈMES D'INFORMATIONS ET BASES DE DONNÉES (7 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**Exercice 2 : Bases de Données (4 points)**\n\nLa table CLIENT ci-après est celle de la base de données d'une entreprise qui possède des clients dans plusieurs villes du Cameroun.\n\n**Table CLIENT**\n\n| RefClient | NOM | PRENOM | CONTACT | VILLE |\n|---|---|---|---|---|\n| Clt001 | BABA | JOHN | 222 45 13 15 | MAROUA |\n| Clt002 | DAIROU | JACK | 222 66 15 16 | DOUALA |\n| Clt003 | PIVA | | 222 56 77 88 | MORA |\n| Clt004 | KENFACK | BRICE | 222 65 34 76 | BAFOUSSAM |",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "1. Définir SGBD puis donner un exemple de SGBD relationnel. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nComme tout sigle technique, SGBD se développe d'abord dans sa forme complète avant d'être expliqué, puis un exemple concret vérifie que la définition est comprise.\n\n**SGBD** signifie **Système de Gestion de Base de Données** : un logiciel qui permet de créer, organiser, interroger, modifier et sécuriser les données stockées dans une base de données, comme la table CLIENT ci-dessus.\n\nExemple de SGBD relationnel : **MySQL** (on accepte aussi PostgreSQL, Oracle ou Microsoft Access).",
+      "themes": [
+        "SGBD",
+        "bases de données",
+        "vocabulaire"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex3-q1-0",
+          "competence": "Définir SGBD et citer un exemple de SGBD relationnel",
+          "contenu_markdown": "Comme tout sigle technique, SGBD se développe d'abord dans sa forme complète avant d'être expliqué, puis un exemple concret vérifie que la définition est comprise.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "2. Écrire la commande SQL qui permet de :\n\na) Créer la table CLIENT sachant que les champs prénom et ville contiennent des valeurs de taille variable d'au plus 20 caractères. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa commande CREATE TABLE définit le nom de la table puis, pour chaque colonne, son nom et son type de données ; un texte de taille variable plafonnée à n caractères s'écrit VARCHAR(n), et une clé primaire identifie de façon unique chaque ligne de la table.\n\n**Étape 1.** La table CLIENT comporte cinq colonnes visibles sur l'extrait : RefClient, NOM, PRENOM, CONTACT, VILLE.\n\n**Étape 2.** RefClient identifie chaque ligne de façon unique : c'est la clé primaire.\n\n**Étape 3.** L'énoncé impose VARCHAR(20) pour PRENOM et VILLE. Les autres colonnes reçoivent un type texte raisonnable, non précisé par l'énoncé.\n\n```sql\nCREATE TABLE CLIENT (\n    RefClient VARCHAR(10) PRIMARY KEY,\n    NOM VARCHAR(30),\n    PRENOM VARCHAR(20),\n    CONTACT VARCHAR(15),\n    VILLE VARCHAR(20)\n);\n```\n\n### Conseil\nNe retiens qu'une seule contrainte de taille par énoncé : ici seuls PRENOM et VILLE sont imposés en VARCHAR(20), les autres colonnes peuvent recevoir n'importe quel type texte cohérent (VARCHAR avec une taille raisonnable) sans perdre de points.",
+      "themes": [
+        "SQL",
+        "CREATE TABLE",
+        "types de données"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex3-q2a-0",
+          "competence": "Écrire une requête SQL de création de table avec contrainte de taille (CREATE TABLE)",
+          "contenu_markdown": "La commande CREATE TABLE définit le nom de la table puis, pour chaque colonne, son nom et son type de données ; un texte de taille variable plafonnée à n caractères s'écrit VARCHAR(n), et une clé primaire identifie de façon unique chaque ligne de la table.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2b",
+      "enonce_markdown": "b) Ajouter le client Clt005, SALATA, ADAMA, 222 33 22 11, YAOUNDE. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa commande INSERT INTO ajoute une nouvelle ligne dans une table, en indiquant la table, la liste des colonnes concernées, puis la liste des valeurs correspondantes, dans le même ordre.\n\nLes cinq valeurs fournies correspondent, dans l'ordre de la table CLIENT, aux colonnes RefClient, NOM, PRENOM, CONTACT et VILLE.\n\n```sql\nINSERT INTO CLIENT (RefClient, NOM, PRENOM, CONTACT, VILLE)\nVALUES ('Clt005', 'SALATA', 'ADAMA', '222 33 22 11', 'YAOUNDE');\n```",
+      "themes": [
+        "SQL",
+        "INSERT INTO"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex3-q2b-0",
+          "competence": "Écrire une requête SQL d'insertion de données (INSERT INTO)",
+          "contenu_markdown": "La commande INSERT INTO ajoute une nouvelle ligne dans une table, en indiquant la table, la liste des colonnes concernées, puis la liste des valeurs correspondantes, dans le même ordre.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2c",
+      "enonce_markdown": "c) Afficher le nom et contact des Clients de la ville de Douala et Maroua. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa commande SELECT colonnes FROM table WHERE condition n'affiche que les colonnes demandées, pour les lignes qui vérifient la condition ; quand plusieurs valeurs sont acceptées pour une même colonne, on les relie par OR ou on utilise l'opérateur IN.\n\nLes colonnes demandées sont NOM et CONTACT ; la condition porte sur VILLE, qui doit valoir DOUALA ou MAROUA.\n\n```sql\nSELECT NOM, CONTACT FROM CLIENT WHERE VILLE = 'DOUALA' OR VILLE = 'MAROUA';\n```\n\n### Conseil\nL'écriture WHERE VILLE IN ('DOUALA', 'MAROUA') est strictement équivalente et plus rapide à écrire dès que la liste de valeurs acceptées dépasse deux éléments : les deux formulations sont correctes ici.",
+      "themes": [
+        "SQL",
+        "SELECT WHERE",
+        "opérateur OR"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex3-q2c-0",
+          "competence": "Écrire une requête SQL de sélection combinant une condition avec OR",
+          "contenu_markdown": "La commande SELECT colonnes FROM table WHERE condition n'affiche que les colonnes demandées, pour les lignes qui vérifient la condition ; quand plusieurs valeurs sont acceptées pour une même colonne, on les relie par OR ou on utilise l'opérateur IN.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Exécuter et donner sous forme de recordset (tableau) le résultat de la requête suivante :\n\n```sql\nSELECT Nom, ville FROM Client WHERE RefClient = 'Clt003'\n```\n\n*[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nSELECT colonnes FROM table WHERE condition renvoie uniquement les colonnes demandées, pour la ou les lignes de la table qui respectent exactement la condition ; le résultat se présente sous forme de tableau (recordset), avec une colonne par champ demandé.\n\n**Étape 1.** La condition RefClient = 'Clt003' ne retient qu'une seule ligne de la table CLIENT : celle de PIVA, ville MORA.\n\n**Étape 2.** Seules les colonnes Nom et ville sont demandées, dans cet ordre.\n\n| Nom | ville |\n|---|---|\n| PIVA | MORA |",
+      "themes": [
+        "SQL",
+        "SELECT WHERE",
+        "recordset"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-epreuve-hamonise-c-d-e-informatique-2025-cameroun-ex3-q3-0",
+          "competence": "Interpréter le résultat d'une requête SQL de sélection avec condition (SELECT... WHERE)",
+          "contenu_markdown": "SELECT colonnes FROM table WHERE condition renvoie uniquement les colonnes demandées, pour la ou les lignes de la table qui respectent exactement la condition ; le résultat se présente sous forme de tableau (recordset), avec une colonne par champ demandé.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "informatique",
+    "terminale",
+    "bases de données",
+    "SGBD",
+    "SQL",
+    "CREATE TABLE",
+    "INSERT INTO",
+    "SELECT WHERE",
+    "recordset"
+  ],
+  "incertitudes": [
+    "Le champ prénom de la ligne Clt003 (PIVA) est vide dans le tableau source ; restitué tel quel (cellule vide) dans le tableau markdown de l'énoncé, sans valeur inventée.",
+    "La requête CREATE TABLE proposée choisit des types de données (VARCHAR) raisonnables pour RefClient, NOM et CONTACT, non précisés par l'énoncé au-delà de la contrainte sur PRENOM et VILLE ; toute réponse d'élève utilisant des types cohérents doit être acceptée.",
+    "Les rappels de méthode des questions 1, 2a, 2b, 2c et 3 de cet exercice restent sans cours associé dans cette passe (cours_genere: false, cours_id: null) : seuls 2 rappels de toute l'épreuve ont été retenus pour génération de cours, conformément à la limite du mode automatisation."
+  ],
+  "statut": "brouillon"
+}

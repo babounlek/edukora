@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-saisie-dynamique-d-un-tableau-en-langage-c-scanf-en-boucle-et-passage-par-adresse-tle-ti",
+  "meta": {
+    "titre": "Saisie dynamique d'un tableau en langage C (scanf en boucle et passage par adresse)",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Tableaux et fonctions en langage C",
+    "duree_estimee_min": 25,
+    "tags": [
+      "langage C",
+      "tableau",
+      "scanf",
+      "passage par adresse",
+      "pointeur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex3-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau en C ne se remplit jamais tout seul : il faut lire chaque valeur au clavier, une par une, et les ranger à la bonne place. Le vrai défi n'est pas la boucle elle-même, mais de transmettre correctement, à la fonction qui fait cette saisie, à la fois le tableau à remplir ET la taille lue par l'utilisateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Déclaration d'un tableau en C (int T[TAILLE])",
+        "Boucle for et instruction scanf"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire N, puis remplir les N cases par une boucle, avec un paramètre passé par adresse",
+      "contenu_markdown": "Pour saisir un tableau de taille choisie par l'utilisateur, on lit d'abord cette taille N avec `scanf(\"%d\", ...)`, puis on parcourt les indices de 0 à N-1 dans une boucle `for` pour lire chaque valeur avec `scanf(\"%d\", &T[i])`. Quand cette saisie est confiée à une fonction séparée, le paramètre qui reçoit N doit être un pointeur (`int *n`) : un paramètre C passé par valeur ne renvoie jamais sa modification à la fonction appelante, alors que le tableau, lui, est déjà transmis par adresse dès qu'il est déclaré en paramètre de fonction, sans notation pointeur explicite nécessaire à l'appel.",
+      "formule_principale": "void saisir(int T[], int *n) { scanf(\"%d\", n); for(...) scanf(\"%d\", &T[i]); }",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire une fonction C qui lit la dimension N d'un tableau T d'entiers et remplit ce tableau par des valeurs entrées au clavier.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire la dimension N",
+          "justification": "Le paramètre n étant un pointeur, scanf reçoit directement n, sans & supplémentaire.",
+          "resultat_markdown": "`scanf(\"%d\", n);`"
+        },
+        {
+          "numero": 2,
+          "action": "Parcourir les indices de 0 à N-1",
+          "justification": "Un tableau en C est indexé à partir de 0 ; la dernière case valide est donc l'indice N-1, pas N.",
+          "resultat_markdown": "`for (i = 0; i < *n; i++) { ... }`"
+        },
+        {
+          "numero": 3,
+          "action": "Lire chaque valeur à l'adresse de la case correspondante",
+          "justification": "scanf exige toujours l'adresse de la variable à remplir : &T[i] pour une case de tableau.",
+          "resultat_markdown": "`scanf(\"%d\", &T[i]);`"
+        }
+      ],
+      "conclusion_markdown": "Après exécution, le tableau T de l'appelant contient N valeurs saisies au clavier, et la variable n de l'appelant a également été mise à jour avec la dimension réellement saisie."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `scanf(\"%d\", &n)` alors que `n` est déjà déclaré `int *n` dans la fonction.",
+          "pourquoi_faux": "`&n` donnerait l'adresse du pointeur lui-même (un pointeur vers un pointeur), pas celle de l'entier pointé : scanf écrirait alors à un endroit incorrect en mémoire.",
+          "correction_markdown": "Quand un paramètre est déjà un pointeur, l'utiliser directement dans scanf, sans `&` supplémentaire."
+        },
+        {
+          "erreur_markdown": "Boucler avec `for (i = 1; i <= n; i++)` par réflexe de numérotation « naturelle ».",
+          "pourquoi_faux": "Un tableau C valide va des indices 0 à N-1 ; boucler jusqu'à `i <= n` accède à la case `T[n]`, qui n'existe pas et dont l'accès est un comportement indéfini (dépassement de tableau).",
+          "correction_markdown": "Toujours démarrer à `i = 0` et s'arrêter strictement à `i < n`, jamais `i <= n`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire une fonction qui lit 5 notes (taille fixe, pas de saisie de N) dans un tableau de 5 entiers.",
+          "solution_markdown": "```c\nvoid saisir5Notes(int T[]) {\n    int i;\n    for (i = 0; i < 5; i++) {\n        scanf(\"%d\", &T[i]);\n    }\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Modifier la fonction `saisirTableau` du cours pour qu'elle refuse toute valeur négative saisie (redemande la valeur tant qu'elle est négative).",
+          "solution_markdown": "```c\nvoid saisirTableau(int T[], int *n) {\n    int i;\n    scanf(\"%d\", n);\n    for (i = 0; i < *n; i++) {\n        scanf(\"%d\", &T[i]);\n        while (T[i] < 0) {\n            printf(\"Valeur invalide, recommencez : \");\n            scanf(\"%d\", &T[i]);\n        }\n    }\n}\n```\nLa boucle `while` imbriquée redemande la saisie tant que la valeur reste négative, sans jamais avancer l'indice `i` du `for` extérieur pendant ces répétitions."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi la fonction `saisirTableau` n'a-t-elle pas besoin de recevoir `T` sous la forme `int **T` ou `int *T[]`, contrairement à `n` qui doit être `int *n`, alors que la fonction modifie le contenu des deux ?",
+          "solution_markdown": "En C, un tableau déclaré en paramètre de fonction (`int T[]`) est automatiquement traité comme un pointeur vers son premier élément (`int *T`), même sans écrire explicitement l'étoile : c'est une règle particulière du langage pour les tableaux passés en paramètre. La fonction reçoit donc déjà, de façon implicite, l'adresse du tableau de l'appelant, et toute modification de `T[i]` à l'intérieur de la fonction modifie directement le tableau original. Ce mécanisme n'existe PAS pour les variables simples comme `n` : une variable `int n` passée par valeur est recopiée, et sa modification à l'intérieur de la fonction n'affecte jamais la variable de l'appelant, d'où la nécessité d'un pointeur explicite `int *n` pour ce paramètre-là."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une boucle de saisie parcourt toujours les indices de 0 à N-1, jamais 1 à N.",
+        "`scanf` exige systématiquement une adresse : `&T[i]` pour une case de tableau, `n` directement si `n` est déjà un pointeur.",
+        "Un tableau passé en paramètre de fonction C est déjà, implicitement, un pointeur vers son premier élément.",
+        "Une variable simple (comme la taille N) doit être passée par adresse explicite (`int *n`) pour que sa modification survive à la sortie de la fonction."
+      ]
+    }
+  ]
+}

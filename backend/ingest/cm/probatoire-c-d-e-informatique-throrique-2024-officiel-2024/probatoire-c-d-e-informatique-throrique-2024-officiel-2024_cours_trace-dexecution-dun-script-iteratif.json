@@ -1,0 +1,141 @@
+{
+  "cours_id": "cours-trace-dexecution-dun-script-iteratif-1ere-tronc-commun",
+  "meta": {
+    "titre": "Trace d'exécution d'un script itératif",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Programmation JavaScript - boucles et interaction utilisateur",
+    "duree_estimee_min": 25,
+    "tags": [
+      "trace d'exécution",
+      "boucle for",
+      "JavaScript",
+      "prompt",
+      "alert"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-CM-INFO-THEO-2024",
+    "epreuve_titre": "Probatoire (Séries C, D, E) - Épreuve théorique d'Informatique - Session 2024 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-d-e-informatique-throrique-2024-officiel-2024-ex3-qP2-2.3-1",
+    "rappels_lies": [],
+    "correction_id": "corr-PROBATOIRE-CM-INFO-THEO-2024-ex3"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un script qui contient une boucle, une question revient sans cesse à l'examen : qu'est-ce que ce programme va réellement afficher ? Impossible de le deviner à l'œil, surtout quand la boucle s'exécute plusieurs fois avec des valeurs saisies par l'utilisateur. La seule méthode fiable est de dérouler le script tour par tour, comme le ferait l'ordinateur lui-même, en notant à chaque étape l'état des variables. C'est ce qu'on appelle tracer l'exécution."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe de la boucle for en JavaScript (initialisation ; condition ; incrémentation)",
+        "Savoir ce que font les fonctions prompt() et alert()",
+        "Comprendre la notion de variable accumulatrice (une variable qui se met à jour à chaque tour de boucle)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dérouler une boucle avec un tableau de trace",
+      "contenu_markdown": "Pour prévoir ce qu'un script itératif va afficher, il faut exécuter mentalement la boucle tour par tour en tenant un tableau de trace : à chaque itération, on note la valeur de la variable de contrôle, celle de la variable saisie, et la mise à jour de la variable accumulatrice, jusqu'à ce que la condition de la boucle devienne fausse et que l'exécution en sorte. Trois colonnes suffisent dans la grande majorité des cas : la variable de contrôle (i), la valeur saisie à ce tour, et l'état de la variable accumulatrice après mise à jour. La dernière ligne du tableau, une fois la boucle terminée, donne directement le contenu du message final affiché après la boucle.",
+      "formule_principale": "\\text{for}(i=i_0;\\ i \\le n;\\ i{+}{+})\\ \\{\\ s \\mathrel{+}= nb\\ \\} \\;\\Rightarrow\\; n - i_0 + 1 \\text{ tours}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un script contient : `var s=0; n=parseInt(prompt(\"saisir un nombre\")); for(i=0;i<=n; i++){ nb=parseInt(prompt(\"saisir un entier:\")); s+=nb; } alert(\"Le résultat est:\"+ \" \"+s);`. Dessiner la boîte de dialogue qui donne le résultat pour n=2 et les valeurs de nb suivantes : 1, 2 et 4.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'état des variables avant l'entrée dans la boucle",
+          "justification": "`var s=0;` initialise l'accumulateur à 0, et `n=parseInt(prompt(\"saisir un nombre\"))` range la première saisie de l'utilisateur (2) dans n.",
+          "resultat_markdown": "Avant la boucle : $s = 0$, $n = 2$."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer les bornes réelles de la boucle for",
+          "justification": "La condition d'arrêt est `i<=n`, pas `i<n` : avec n=2, i prend donc les valeurs 0, 1 et 2, ce qui fait 3 tours et non 2.",
+          "resultat_markdown": "La boucle s'exécute pour $i = 0$, $i = 1$ et $i = 2$."
+        },
+        {
+          "numero": 3,
+          "action": "Dérouler chaque tour dans un tableau de trace à trois colonnes",
+          "justification": "À chaque tour, une nouvelle valeur de nb est saisie et immédiatement ajoutée à s par l'instruction s+=nb.",
+          "resultat_markdown": "| i | nb saisi | s = s + nb |\n|---|---|---|\n| 0 | 1 | s = 0 + 1 = 1 |\n| 1 | 2 | s = 1 + 2 = 3 |\n| 2 | 4 | s = 3 + 4 = 7 |"
+        },
+        {
+          "numero": 4,
+          "action": "Lire la dernière ligne du tableau pour connaître l'état final de s",
+          "justification": "Après le tour i=2, la condition i<=n devient fausse pour i=3 (3<=2 est faux), donc la boucle s'arrête et le script passe à l'instruction suivante.",
+          "resultat_markdown": "À la sortie de la boucle, $s = 7$."
+        },
+        {
+          "numero": 5,
+          "action": "En déduire le contenu exact du message final affiché par alert()",
+          "justification": "`alert(\"Le résultat est:\"+ \" \"+s)` concatène le texte fixe et la valeur finale de s.",
+          "resultat_markdown": "La boîte de dialogue affiche : « Le résultat est: 7 »."
+        }
+      ],
+      "conclusion_markdown": "Le script effectue 3 tours de boucle (i=0, 1, 2) et affiche finalement « Le résultat est: 7 », résultat obtenu uniquement en déroulant la boucle tour par tour plutôt qu'en devinant son nombre de répétitions."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter le nombre de tours en soustrayant simplement les bornes sans tenir compte de l'inégalité large ou stricte, par exemple conclure que `for(i=0;i<=n;i++)` avec n=2 fait 2 tours",
+          "pourquoi_faux": "La condition `i<=2` reste vraie pour i=0, i=1 ET i=2 : c'est seulement à i=3 qu'elle devient fausse. La boucle fait donc 3 tours, pas 2.",
+          "correction_markdown": "Compte toujours le nombre de valeurs entières que peut prendre i tant que la condition reste vraie, en incluant la borne si l'inégalité est large (<=  ou >=)."
+        },
+        {
+          "erreur_markdown": "Écrire l'état des variables uniquement au dernier tour, en essayant de calculer directement le résultat final sans dérouler les tours intermédiaires",
+          "pourquoi_faux": "Sans dérouler tour par tour, il est facile d'oublier une saisie ou de se tromper dans l'ordre des opérations, surtout quand plusieurs variables évoluent en parallèle (ici i et s en même temps).",
+          "correction_markdown": "Construis systématiquement un tableau de trace avec une ligne par tour, même pour une boucle courte : la rigueur de la méthode compte plus que sa rapidité apparente."
+        },
+        {
+          "erreur_markdown": "Oublier que chaque `prompt()` ouvre sa propre boîte de dialogue, et ne dessiner qu'une seule fenêtre pour tout le script",
+          "pourquoi_faux": "Chaque appel à prompt() suspend le script et ouvre une nouvelle fenêtre ; ici, prompt() est appelé une fois avant la boucle (pour n) puis une fois par tour de boucle (pour nb), soit 4 fenêtres de saisie au total, plus la fenêtre alert() finale.",
+          "correction_markdown": "Compte le nombre d'appels à prompt()/alert() réellement exécutés dans le script tracé : chacun correspond à une boîte de dialogue distincte, dans l'ordre où le script les rencontre."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Tracer l'exécution du script `var p=1; for(i=1;i<=3;i++){ p=p*i; } alert(\"Produit: \"+p);` et donner le message final affiché.",
+          "solution_markdown": "On dresse le tableau de trace de la boucle `for(i=1;i<=3;i++)`, avec p initialisé à 1 avant la boucle :\n\n| i | p = p * i |\n|---|---|\n| 1 | p = 1 * 1 = 1 |\n| 2 | p = 1 * 2 = 2 |\n| 3 | p = 2 * 3 = 6 |\n\nLa condition i<=3 devient fausse à i=4, donc la boucle s'arrête après le tour i=3. À la sortie de la boucle, p vaut 6. Le message affiché par `alert(\"Produit: \"+p)` est donc : « Produit: 6 »."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Tracer l'exécution du script `var s=0; n=parseInt(prompt(\"n?\")); for(i=1;i<n;i++){ s=s+i; } alert(\"Somme: \"+s);` pour une saisie n=4, et donner le message final affiché.",
+          "solution_markdown": "Ici la condition est `i<n` (inégalité stricte), avec n=4. On dresse le tableau de trace, s initialisé à 0 avant la boucle :\n\n| i | condition i<4 | s = s + i |\n|---|---|---|\n| 1 | vraie | s = 0 + 1 = 1 |\n| 2 | vraie | s = 1 + 2 = 3 |\n| 3 | vraie | s = 3 + 3 = 6 |\n| 4 | fausse | la boucle s'arrête |\n\nContrairement à l'exemple résolu du cours où la condition était `i<=n` (borne incluse), ici la condition stricte `i<n` exclut i=4 : la boucle ne fait que 3 tours (i=1, 2, 3), pas 4. À la sortie, s vaut 6. Le message affiché est donc : « Somme: 6 »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un script contient : `var s=0; var compte=0; n=parseInt(prompt(\"n?\")); for(i=1;i<=n;i++){ nb=parseInt(prompt(\"entier:\")); if(nb>0){ s=s+nb; compte=compte+1; } } alert(\"Somme des positifs: \"+s+\", nombre: \"+compte);`. Tracer son exécution pour n=3 et les valeurs de nb saisies dans l'ordre : 5, -2, 3. Donner le message final affiché.",
+          "solution_markdown": "Cette boucle combine une structure répétitive (for) et une structure alternative (if) exécutée à chaque tour : il faut donc ajouter au tableau de trace une colonne pour la condition `nb>0`, et ne mettre à jour s et compte que lorsque cette condition est vraie.\n\n| i | nb saisi | nb>0 ? | s | compte |\n|---|---|---|---|---|\n| 1 | 5 | vraie | s = 0 + 5 = 5 | compte = 0 + 1 = 1 |\n| 2 | -2 | fausse | s reste 5 | compte reste 1 |\n| 3 | 3 | vraie | s = 5 + 3 = 8 | compte = 1 + 1 = 2 |\n\nLa condition `i<=3` devient fausse à i=4, donc la boucle s'arrête après le tour i=3. À la sortie, s vaut 8 et compte vaut 2. Le message affiché par `alert(\"Somme des positifs: \"+s+\", nombre: \"+compte)` est donc : « Somme des positifs: 8, nombre: 2 »."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Ne devine jamais le résultat d'une boucle : déroule-la tour par tour dans un tableau de trace, une ligne par itération.",
+        "Compte les tours en testant la condition à chaque valeur de i, sans oublier qu'une inégalité large (<=  ou >=) inclut la borne alors qu'une inégalité stricte (< ou >) l'exclut.",
+        "Chaque prompt() et chaque alert() rencontré dans le script correspond à une boîte de dialogue distincte, dans l'ordre exact où le script les exécute.",
+        "La dernière ligne de ton tableau de trace te donne directement l'état des variables au moment où le script affiche son résultat final.",
+        "Si une condition (if) est imbriquée dans la boucle, ajoute-la comme colonne supplémentaire du tableau de trace : elle ne modifie les variables accumulatrices que lorsqu'elle est vraie.",
+        "Au Probatoire, ce type de question (dessiner les boîtes de dialogue ou prévoir un affichage) évalue ta capacité à exécuter un algorithme comme le ferait la machine, pas à deviner son résultat."
+      ]
+    }
+  ]
+}

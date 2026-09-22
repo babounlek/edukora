@@ -1,0 +1,144 @@
+{
+  "cours_id": "cours-ecrire-une-requete-sql-de-mise-a-jour-d-une-donnee-update-tle-tronc-commun",
+  "meta": {
+    "titre": "Écrire une requête SQL de mise à jour d'une donnée (UPDATE)",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données - Langage SQL",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SQL",
+      "UPDATE",
+      "base de données",
+      "modification de données"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-e-abi-informatique-theorique-officiel-2019",
+    "epreuve_titre": "Baccalauréat ESG - Épreuve théorique d'informatique - Séries A, C, D, E et ABI - Cameroun - 2019",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex3-q1c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une base de données n'est jamais figée : un élève change de classe, un client déménage, un stock diminue après une vente. Savoir modifier une donnée déjà enregistrée, sans toucher au reste de la table, est aussi indispensable que savoir la créer. C'est le rôle de l'instruction SQL UPDATE, l'une des quatre opérations de base que tout gestionnaire de base de données doit maîtriser : créer, lire, modifier, supprimer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table, une colonne et une ligne dans une base de données relationnelle",
+        "Connaître la notion de clé primaire",
+        "Savoir écrire une requête SQL simple de type SELECT ... WHERE"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La structure de la requête UPDATE",
+      "contenu_markdown": "La requête UPDATE modifie la valeur d'une ou plusieurs colonnes, pour une ou plusieurs lignes déjà existantes d'une table. Elle s'écrit en trois parties obligatoires : UPDATE nom_table désigne la table à modifier, SET colonne = nouvelle_valeur indique la ou les colonnes à changer et leur nouvelle valeur, plusieurs colonnes étant séparées par des virgules, et WHERE condition cible précisément la ou les lignes concernées. Omettre la clause WHERE modifie la colonne visée sur TOUTES les lignes de la table, ce qui est presque toujours une erreur grave.",
+      "formule_principale": "UPDATE table SET colonne = valeur WHERE condition;",
+      "variantes": [
+        {
+          "nom": "Mise à jour de plusieurs colonnes à la fois",
+          "quand_utiliser": "Quand plusieurs informations changent en même temps pour la même ligne",
+          "contenu_markdown": "Il est possible de modifier plusieurs colonnes dans une seule requête en les séparant par des virgules après SET : UPDATE table SET colonne1 = valeur1, colonne2 = valeur2 WHERE condition ; Cela évite d'écrire deux requêtes UPDATE séparées pour la même ligne."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une table Élève d'une base de données « Gestion_Lycée », l'élève dont le matricule est 10Z356 n'a pas de prénom renseigné. Écrire la requête SQL qui lui attribue le prénom « Andy ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la table et la colonne à modifier",
+          "justification": "L'information à changer est le prénom d'un élève déjà existant dans la table Élève : c'est donc une mise à jour (UPDATE), pas une création de ligne (INSERT).",
+          "resultat_markdown": "Table concernée : `Eleve`. Colonne à modifier : `Prenom`."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la clause SET avec la nouvelle valeur",
+          "justification": "La nouvelle valeur du prénom est la chaîne de caractères 'Andy', qui doit être entre guillemets comme toute valeur textuelle en SQL.",
+          "resultat_markdown": "`SET Prenom = 'Andy'`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la clause WHERE pour cibler la bonne ligne",
+          "justification": "Sans condition WHERE, la mise à jour s'appliquerait au prénom de TOUS les élèves de la table. Il faut cibler la ligne par sa clé primaire, le Matricule, dont la valeur est unique pour chaque élève.",
+          "resultat_markdown": "`WHERE Matricule = '10Z356'`"
+        },
+        {
+          "numero": 4,
+          "action": "Assembler la requête complète",
+          "justification": "Les trois clauses UPDATE, SET et WHERE se combinent dans cet ordre pour former une requête syntaxiquement valide.",
+          "resultat_markdown": "```sql\nUPDATE Eleve\nSET Prenom = 'Andy'\nWHERE Matricule = '10Z356';\n```"
+        }
+      ],
+      "conclusion_markdown": "Cette requête modifie uniquement la colonne Prenom, uniquement sur la ligne dont le Matricule vaut 10Z356 : les trois autres élèves de la table restent inchangés."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire la requête sans clause WHERE : `UPDATE Eleve SET Prenom = 'Andy';`",
+          "pourquoi_faux": "Sans WHERE, la condition de ciblage disparaît : le SGBD applique la modification à TOUTES les lignes de la table. Tous les élèves se retrouveraient avec le prénom 'Andy', ce qui détruirait les données existantes des autres lignes.",
+          "correction_markdown": "Vérifie systématiquement qu'une clause WHERE est présente avant d'exécuter un UPDATE, et qu'elle cible bien une colonne à valeur unique comme une clé primaire."
+        },
+        {
+          "erreur_markdown": "Confondre UPDATE et INSERT INTO pour ajouter une information à un élève qui existe déjà dans la table.",
+          "pourquoi_faux": "INSERT INTO crée une toute nouvelle ligne dans la table : utilisé ici, il créerait un doublon de l'élève 10Z356 au lieu de compléter sa ligne existante, ce qui casserait l'unicité de la clé primaire Matricule.",
+          "correction_markdown": "Utilise UPDATE quand la ligne existe déjà et qu'une seule information doit changer ; réserve INSERT INTO à la création d'un tout nouvel enregistrement."
+        },
+        {
+          "erreur_markdown": "Oublier les guillemets autour d'une valeur textuelle dans la clause SET ou WHERE : `SET Prenom = Andy`.",
+          "pourquoi_faux": "Sans guillemets, le SGBD interprète Andy comme le nom d'une colonne ou d'un identifiant SQL, pas comme une chaîne de caractères littérale, ce qui provoque une erreur de syntaxe ou de référence inconnue.",
+          "correction_markdown": "Place systématiquement entre guillemets toute valeur de type texte, que ce soit dans SET ou dans WHERE ; seules les valeurs numériques s'écrivent sans guillemets."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une table Client (IdClient, Nom, Ville), écrire la requête SQL qui met à jour la ville du client dont l'IdClient vaut 12 en 'Douala'.",
+          "solution_markdown": "La table concernée est Client, la colonne à modifier est Ville, la nouvelle valeur est 'Douala', et la ligne ciblée est celle dont IdClient vaut 12.\n\n```sql\nUPDATE Client\nSET Ville = 'Douala'\nWHERE IdClient = 12;\n```\n\nIdClient étant une valeur numérique, elle s'écrit sans guillemets ; 'Douala' étant une valeur textuelle, elle s'écrit entre guillemets."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans une table Produit (Reference, Designation, Prix, Stock), le prix du produit de référence 'P045' passe de 2500 à 2800 et son stock passe de 10 à 15. Écrire une seule requête SQL qui effectue les deux mises à jour.",
+          "solution_markdown": "Les deux colonnes à modifier (Prix et Stock) concernent la même ligne (Reference = 'P045') : elles peuvent donc être mises à jour dans une seule requête, séparées par une virgule après SET.\n\n```sql\nUPDATE Produit\nSET Prix = 2800, Stock = 15\nWHERE Reference = 'P045';\n```\n\nPrix et Stock étant des valeurs numériques, elles s'écrivent sans guillemets ; seule la valeur de la clé de ciblage 'P045', qui est textuelle, en porte."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans une table Eleve (Matricule, Nom, Prenom, Classe, Sexe), tous les élèves actuellement en classe 'F4S' doivent être promus en 'F5S' à la rentrée suivante. Écrire la requête SQL qui effectue cette mise à jour, et expliquer pourquoi une seule requête suffit même si plusieurs élèves sont concernés.",
+          "solution_markdown": "Contrairement aux exemples précédents où WHERE ciblait une seule ligne via une clé primaire, ici la condition porte sur une colonne (Classe) qui peut être partagée par plusieurs élèves à la fois.\n\n```sql\nUPDATE Eleve\nSET Classe = 'F5S'\nWHERE Classe = 'F4S';\n```\n\nUne seule requête suffit parce que le SGBD applique la modification à TOUTES les lignes qui vérifient la condition WHERE, pas seulement à la première trouvée : chaque élève dont la Classe vaut actuellement 'F4S' verra sa Classe changée en 'F5S' en une seule exécution. C'est précisément pour cette raison que la clause WHERE doit toujours être vérifiée avec soin : une condition trop large modifierait plus de lignes que prévu, une condition trop étroite n'en modifierait qu'une seule alors que plusieurs étaient visées."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une requête UPDATE modifie des lignes déjà existantes ; elle ne crée jamais de nouvelle ligne, contrairement à INSERT INTO.",
+        "La structure à retenir tient en trois mots : UPDATE (quelle table), SET (quelle colonne, quelle nouvelle valeur), WHERE (quelles lignes).",
+        "Une clause WHERE absente ou trop large modifie plus de lignes que prévu, potentiellement toute la table : vérifie-la avant d'exécuter la requête, pas après.",
+        "Une valeur textuelle s'écrit entre guillemets, une valeur numérique s'écrit sans guillemets, aussi bien dans SET que dans WHERE.",
+        "Au BAC, ce type de requête est généralement demandé après avoir identifié une clé primaire ou une condition de filtrage dans un exercice précédent : relie toujours ta requête UPDATE à la clé ou au critère déjà établi."
+      ]
+    }
+  ]
+}

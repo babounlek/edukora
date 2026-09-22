@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-reconnaitre-une-structure-alternative-si-sinon-finsi-dans-un-algorithme-3e",
+  "meta": {
+    "titre": "La structure alternative Si ... Sinon ... Finsi",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : structures de contrôle",
+    "duree_estimee_min": 35,
+    "tags": [
+      "algorithmique",
+      "structure alternative",
+      "condition",
+      "booléen",
+      "Si Sinon Finsi",
+      "structure de contrôle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2023-cameroun",
+    "epreuve_titre": "BEPC Informatique - Cameroun, session 2023 (MINESEC/DECC), épreuve théorique",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-informatique-2023-cameroun-ex3-q1.d-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un distributeur de billets vérifie ton solde avant de délivrer l'argent. Un portail de collège affiche « accès autorisé » ou « accès refusé » selon le badge présenté. Dans les deux cas, la machine prend une décision : elle teste une condition, puis choisit entre deux comportements. C'est exactement ce que fait la structure alternative, la première structure de contrôle que tu rencontres en algorithmique. Sans elle, un algorithme ne pourrait qu'exécuter bêtement la même suite d'actions, quelles que soient les données reçues."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme écrit en pseudo-code (mots-clés Début, Fin, Lire, Ecrire)",
+        "Connaître la notion de variable et de valeur",
+        "Savoir écrire une comparaison mathématique avec les symboles <, >, =, <=, >="
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La structure alternative Si ... alors ... Sinon ... Finsi",
+      "contenu_markdown": "Une **structure alternative** (ou structure conditionnelle) fait dépendre l'exécution d'un groupe d'instructions du résultat d'un test. Elle s'écrit ainsi :\n\n```\nSi (condition) alors\n    instructions exécutées si la condition est VRAIE\nSinon\n    instructions exécutées si la condition est FAUSSE\nFinsi\n```\n\nElle comporte quatre éléments obligatoires :\n\n1. Le mot-clé **Si**, suivi d'une **condition** entre parenthèses. La condition est une expression **booléenne** : elle ne peut valoir que Vrai ou Faux, jamais autre chose.\n2. Le mot-clé **alors**, qui introduit la première branche.\n3. Le mot-clé **Sinon**, qui introduit la seconde branche.\n4. Le mot-clé **Finsi**, qui referme la structure et indique où l'algorithme reprend son cours normal.\n\n**Le principe d'exclusivité** : à chaque exécution, une seule des deux branches est parcourue, jamais les deux, jamais aucune. C'est ce qui donne son nom à la structure, l'alternative désignant un choix entre deux possibilités.\n\nLes conditions se construisent avec les opérateurs de comparaison : $=$ (égal), $\\neq$ (différent), $<$ (inférieur), $>$ (supérieur), $\\leq$ (inférieur ou égal), $\\geq$ (supérieur ou égal). Elles peuvent être combinées avec les opérateurs logiques **ET**, **OU** et **NON**.\n\nQuand on cite une structure alternative dans une copie, on la recopie **en entier**, du `Si` jusqu'au `Finsi`. Amputée d'une de ses parties, elle ne signifie plus rien.",
+      "formule_principale": "\\text{Si (condition) alors } \\ldots \\text{ Sinon } \\ldots \\text{ Finsi}",
+      "variantes": [
+        {
+          "nom": "Forme réduite (sans Sinon)",
+          "quand_utiliser": "Quand il n'y a rien à faire lorsque la condition est fausse",
+          "contenu_markdown": "```\nSi (condition) alors\n    instructions\nFinsi\n```\n\nSi la condition est fausse, l'algorithme saute directement après le `Finsi` sans rien exécuter. Exemple : `Si (note >= 10) alors Ecrire(\"Admis\") ; Finsi` n'affiche rien pour une note inférieure à 10."
+        },
+        {
+          "nom": "Alternatives imbriquées (plus de deux cas)",
+          "quand_utiliser": "Quand le problème comporte trois issues ou plus, par exemple inférieur, égal, supérieur",
+          "contenu_markdown": "On place une nouvelle structure alternative à l'intérieur d'une branche :\n\n```\nSi (nombre < 10) alors\n    Ecrire(\"plus petit que 10\") ;\nSinon\n    Si (nombre = 10) alors\n        Ecrire(\"égal à 10\") ;\n    Sinon\n        Ecrire(\"plus grand que 10\") ;\n    Finsi\nFinsi\n```\n\nChaque `Si` ouvert doit être refermé par son propre `Finsi` : compte-les, il en faut autant d'un côté que de l'autre."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans l'algorithme ci-dessous, identifier la structure alternative et expliquer son fonctionnement.\n\n```\nAlgorithme Comparaison\nVariables nombre : entier ;\nDébut\n    Ecrire (\"entrer un nombre\") ;\n    Lire (nombre) ;\n        Si (nombre < 10) alors\n            Ecrire (\" ce nombre est plus petit que 10\") ;\n        Sinon\n            Ecrire (\"ce nombre est plus grand que 10\") ;\n        Finsi\nFin\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le mot-clé Si dans le corps de l'algorithme",
+          "justification": "Le mot-clé `Si` marque toujours le début d'une structure alternative. Il est ici situé après l'instruction `Lire (nombre) ;`.",
+          "resultat_markdown": "Début de la structure repéré à la ligne `Si (nombre < 10) alors`."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer le Finsi correspondant pour délimiter la fin de la structure",
+          "justification": "La structure ne s'arrête pas à la première instruction rencontrée : elle englobe tout ce qui se trouve jusqu'au `Finsi` qui lui correspond. Sans ce repérage, on recopie une structure incomplète.",
+          "resultat_markdown": "Fin de la structure repérée à la ligne `Finsi`, juste avant le `Fin` de l'algorithme."
+        },
+        {
+          "numero": 3,
+          "action": "Recopier la structure complète",
+          "justification": "C'est la réponse attendue à la question : le bloc entier, du `Si` au `Finsi`, avec les instructions des deux branches.",
+          "resultat_markdown": "```\nSi (nombre < 10) alors\n    Ecrire (\" ce nombre est plus petit que 10\") ;\nSinon\n    Ecrire (\"ce nombre est plus grand que 10\") ;\nFinsi\n```"
+        },
+        {
+          "numero": 4,
+          "action": "Isoler la condition et déterminer sa nature",
+          "justification": "La condition est ce qui figure entre parenthèses après le `Si`. Elle compare la valeur de la variable `nombre` au nombre 10 : le résultat de cette comparaison est nécessairement Vrai ou Faux.",
+          "resultat_markdown": "Condition : `(nombre < 10)`, expression booléenne."
+        },
+        {
+          "numero": 5,
+          "action": "Décrire ce que fait chaque branche",
+          "justification": "Une seule branche s'exécute par passage. Décrire les deux revient à décrire tous les comportements possibles de l'algorithme.",
+          "resultat_markdown": "Si la condition est **vraie**, l'algorithme affiche « ce nombre est plus petit que 10 ». Si elle est **fausse**, il affiche « ce nombre est plus grand que 10 »."
+        },
+        {
+          "numero": 6,
+          "action": "Tester l'algorithme sur des valeurs concrètes",
+          "justification": "Simuler l'exécution est le seul moyen de vérifier qu'on a bien compris la structure, et cela révèle souvent une faiblesse de l'algorithme.",
+          "resultat_markdown": "Pour `nombre = 7` : $7 < 10$ est vrai, l'algorithme affiche « ce nombre est plus petit que 10 ». Correct.\n\nPour `nombre = 25` : $25 < 10$ est faux, l'algorithme affiche « ce nombre est plus grand que 10 ». Correct.\n\nPour `nombre = 10` : $10 < 10$ est faux, l'algorithme affiche « ce nombre est plus grand que 10 ». **Incorrect** : 10 n'est pas plus grand que 10. L'algorithme ne prévoit pas le cas d'égalité."
+        }
+      ],
+      "conclusion_markdown": "La structure alternative de cet algorithme s'étend du `Si (nombre < 10) alors` jusqu'au `Finsi` inclus. Le test sur trois valeurs a montré au passage qu'elle ne traite correctement que deux cas sur trois : il faudrait une alternative imbriquée pour gérer l'égalité à 10."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier seulement la ligne `Si (nombre < 10) alors` en réponse à la question « identifier une structure alternative »",
+          "pourquoi_faux": "Le `Si` seul n'est que l'ouverture de la structure. Une structure alternative est un bloc complet : sans les branches et sans le `Finsi`, elle ne décrit aucun choix et l'algorithme ne saurait pas où reprendre.",
+          "correction_markdown": "Recopie du `Si` jusqu'au `Finsi` inclus, avec les instructions des deux branches. Le mot « structure » du sujet est un indice : on te demande un ensemble, pas une ligne."
+        },
+        {
+          "erreur_markdown": "Confondre la structure alternative avec une structure répétitive (`Tant que`, `Pour`, `Répéter`)",
+          "pourquoi_faux": "Les deux comportent une condition, ce qui explique la confusion, mais elles n'en font pas le même usage. L'alternative teste la condition **une seule fois** et choisit un chemin. La répétitive teste la condition **à chaque tour** et recommence les mêmes instructions tant qu'elle reste vraie.",
+          "correction_markdown": "Regarde le mot-clé de fermeture : `Finsi` ferme une alternative, `FinTantque` ou `FinPour` ferment une répétitive. Et pose-toi la question du nombre de passages : une fois, c'est une alternative ; plusieurs, c'est une boucle."
+        },
+        {
+          "erreur_markdown": "Oublier le `Finsi` en écrivant soi-même une structure alternative",
+          "pourquoi_faux": "Sans `Finsi`, rien n'indique où se termine la branche `Sinon`. Les instructions écrites après, qui devaient s'exécuter dans tous les cas, se retrouvent absorbées dans la branche `Sinon` et ne s'exécutent plus que lorsque la condition est fausse.",
+          "correction_markdown": "Prends l'habitude d'écrire le squelette complet avant de le remplir : tape `Si ... alors`, puis `Sinon`, puis `Finsi`, et seulement ensuite ajoute les instructions dans chaque branche. Tu ne peux alors plus oublier la fermeture."
+        },
+        {
+          "erreur_markdown": "Écrire une condition qui n'est pas booléenne, du type `Si (nombre) alors`",
+          "pourquoi_faux": "Une condition doit pouvoir être évaluée à Vrai ou à Faux. `nombre` est un entier, pas une affirmation : il n'y a rien à évaluer, donc l'algorithme ne peut pas choisir de branche.",
+          "correction_markdown": "Une condition contient toujours un opérateur de comparaison (`<`, `>`, `=`, `<=`, `>=`, `<>`) ou un opérateur logique (`ET`, `OU`, `NON`). Relis ta condition à voix haute : si elle ne forme pas une phrase à laquelle on peut répondre par oui ou par non, elle est mal écrite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire un algorithme qui lit la note d'un élève et affiche « Admis » si cette note est supérieure ou égale à 10, et « Ajourné » dans le cas contraire.",
+          "solution_markdown": "**Étape 1 : identifier les données et les résultats.**\n\nDonnée à lire : la note de l'élève, un nombre pouvant comporter une virgule, donc de type **réel**. Résultat : un message affiché, qui dépend d'un test.\n\n**Étape 2 : formuler la condition.**\n\nLe sujet dit « supérieure ou égale à 10 », ce qui se traduit par `note >= 10`. Le cas d'égalité est inclus, l'opérateur `>=` est donc obligatoire ; écrire `>` exclurait l'élève ayant exactement 10.\n\n**Étape 3 : écrire l'algorithme complet.**\n\n```\nAlgorithme Admission\nVariables note : réel ;\nDébut\n    Ecrire (\"Entrez la note de l'élève : \") ;\n    Lire (note) ;\n    Si (note >= 10) alors\n        Ecrire (\"Admis\") ;\n    Sinon\n        Ecrire (\"Ajourné\") ;\n    Finsi\nFin\n```\n\n**Étape 4 : tester.**\n\nPour `note = 12` : $12 \\geq 10$ est vrai, l'algorithme affiche « Admis ».\n\nPour `note = 10` : $10 \\geq 10$ est vrai, l'algorithme affiche « Admis ». Le cas limite est bien traité.\n\nPour `note = 8` : $8 \\geq 10$ est faux, l'algorithme affiche « Ajourné »."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire un algorithme qui lit un nombre entier et affiche s'il est pair ou impair. (Indication : on dispose de l'opération `nombre MOD 2`, qui donne le reste de la division entière de `nombre` par 2.)",
+          "solution_markdown": "**Étape 1 : traduire la propriété mathématique en condition.**\n\nUn nombre est pair lorsque sa division par 2 tombe juste, c'est-à-dire lorsque le reste de cette division vaut 0. Avec l'opération donnée, cela s'écrit `nombre MOD 2 = 0`.\n\n**Étape 2 : vérifier que la condition couvre bien les deux cas.**\n\nLe reste d'une division par 2 ne peut valoir que 0 ou 1. La condition `nombre MOD 2 = 0` est donc vraie exactement pour les nombres pairs, et fausse exactement pour les impairs. Une seule structure alternative suffit, sans imbrication.\n\n**Étape 3 : écrire l'algorithme.**\n\n```\nAlgorithme Parité\nVariables nombre : entier ;\nDébut\n    Ecrire (\"Entrez un nombre entier : \") ;\n    Lire (nombre) ;\n    Si (nombre MOD 2 = 0) alors\n        Ecrire (\"Ce nombre est pair\") ;\n    Sinon\n        Ecrire (\"Ce nombre est impair\") ;\n    Finsi\nFin\n```\n\n**Étape 4 : tester.**\n\nPour `nombre = 8` : $8$ divisé par $2$ donne $4$ reste $0$, donc `8 MOD 2 = 0`, la condition est vraie et l'algorithme affiche « Ce nombre est pair ».\n\nPour `nombre = 7` : $7$ divisé par $2$ donne $3$ reste $1$, donc `7 MOD 2 = 1`, la condition est fausse et l'algorithme affiche « Ce nombre est impair »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Corriger l'algorithme Comparaison de l'exercice résolu pour qu'il traite correctement le cas où le nombre saisi vaut exactement 10, en affichant alors « ce nombre est égal à 10 ».",
+          "solution_markdown": "**Étape 1 : dénombrer les cas à traiter.**\n\nComparer un nombre à 10 produit trois issues possibles et non deux : inférieur, égal, supérieur. Une structure alternative simple n'offre que deux branches : elle est donc structurellement insuffisante.\n\n**Étape 2 : choisir la construction adaptée.**\n\nOn imbrique une seconde structure alternative dans la branche `Sinon` de la première. La première question posée est « le nombre est-il inférieur à 10 ? ». Si la réponse est non, il reste deux possibilités, égal ou supérieur, que la seconde structure départage.\n\n**Étape 3 : écrire l'algorithme corrigé.**\n\n```\nAlgorithme Comparaison\nVariables nombre : entier ;\nDébut\n    Ecrire (\"entrer un nombre\") ;\n    Lire (nombre) ;\n    Si (nombre < 10) alors\n        Ecrire (\"ce nombre est plus petit que 10\") ;\n    Sinon\n        Si (nombre = 10) alors\n            Ecrire (\"ce nombre est égal à 10\") ;\n        Sinon\n            Ecrire (\"ce nombre est plus grand que 10\") ;\n        Finsi\n    Finsi\nFin\n```\n\n**Étape 4 : contrôler l'équilibre des mots-clés.**\n\nDeux `Si` ont été ouverts, deux `Finsi` les referment. L'indentation rend visible cette correspondance : le `Finsi` intérieur est décalé vers la droite par rapport au `Finsi` extérieur.\n\n**Étape 5 : tester les trois cas.**\n\nPour `nombre = 7` : $7 < 10$ est vrai, affichage « ce nombre est plus petit que 10 ».\n\nPour `nombre = 10` : $10 < 10$ est faux, on passe au `Sinon` ; $10 = 10$ est vrai, affichage « ce nombre est égal à 10 ».\n\nPour `nombre = 25` : $25 < 10$ est faux, on passe au `Sinon` ; $25 = 10$ est faux, affichage « ce nombre est plus grand que 10 ».\n\nLes trois issues sont désormais correctement traitées."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une structure alternative se reconnaît à son squelette complet : Si, alors, Sinon, Finsi. Quand on te demande de l'identifier, recopie ce bloc en entier.",
+        "La condition placée entre parenthèses après le Si est booléenne : elle vaut Vrai ou Faux, rien d'autre. Elle contient donc toujours un opérateur de comparaison ou un opérateur logique.",
+        "Une seule branche s'exécute à chaque passage, jamais les deux. C'est ce qui distingue l'alternative de la simple suite d'instructions.",
+        "Le Finsi n'est pas décoratif : il indique où se termine la structure et où l'algorithme reprend son cours. Autant de Finsi que de Si ouverts.",
+        "Trois issues ou plus imposent des alternatives imbriquées. Vérifie alors ton indentation, c'est elle qui rend le code lisible et qui t'évite d'oublier un Finsi.",
+        "Au BEPC, cette structure est évaluée de trois façons : la repérer dans un algorithme donné, en écrire une à partir d'un énoncé, ou simuler l'exécution d'un algorithme qui en contient une. La méthode du test sur plusieurs valeurs couvre les trois."
+      ]
+    }
+  ]
+}

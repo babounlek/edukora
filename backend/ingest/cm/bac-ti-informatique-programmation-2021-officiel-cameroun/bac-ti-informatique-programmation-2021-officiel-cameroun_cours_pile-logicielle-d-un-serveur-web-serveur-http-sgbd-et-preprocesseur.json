@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-pile-logicielle-d-un-serveur-web-serveur-http-sgbd-et-preprocesseur-ti-2021",
+  "meta": {
+    "titre": "Pile logicielle d'un serveur web : serveur HTTP, SGBD et préprocesseur",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Environnement de développement web",
+    "duree_estimee_min": 20,
+    "tags": [
+      "serveur web",
+      "SGBD",
+      "préprocesseur",
+      "Apache",
+      "MySQL",
+      "PHP",
+      "WAMP",
+      "LAMP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex1-qII-1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant même d'écrire une seule ligne de PHP, un développeur web doit disposer de trois logiciels qui travaillent ensemble en coulisses. Comprendre le rôle de chacun permet de savoir, face à une erreur, où chercher : un problème d'affichage n'a pas la même origine qu'un problème de connexion à la base de données ou qu'un script qui ne s'exécute pas du tout."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une application web (voir le cours dédié)",
+        "Avoir déjà installé ou observé un environnement comme WAMP, XAMPP ou LAMP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois logiciels d'un environnement de développement web dynamique",
+      "contenu_markdown": "Un environnement intégré de développement web dynamique combine toujours trois familles de logiciels, chacune avec un rôle distinct et complémentaire :\n\n**Le serveur web** (Apache, Nginx...) reçoit les requêtes HTTP envoyées par le navigateur, localise le fichier demandé dans son répertoire racine, puis renvoie une réponse HTTP. C'est le point d'entrée de toute requête.\n\n**Le serveur de données**, ou SGBD - Système de Gestion de Base de Données (MySQL, MariaDB, PostgreSQL...), stocke durablement les données de l'application (clients, produits, commandes...) et répond aux requêtes SQL envoyées par les scripts serveur pour lire ou modifier ces données.\n\n**Le préprocesseur** (l'interpréteur PHP, mais aussi Python ou Node.js dans d'autres environnements) exécute le code du langage serveur avant que la page ne parte vers le navigateur : il transforme les instructions PHP en HTML, de sorte que le client ne reçoive jamais le code source du langage serveur.\n\nCes trois éléments assemblés forment une suite complète, souvent distribuée sous un nom unique : WAMP (Windows + Apache + MySQL + PHP), LAMP (Linux...), XAMPP (multiplateforme)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Décrire les éléments constitutifs d'un environnement intégré de développement web (serveur web, serveur de données, préprocesseur), en s'appuyant sur le code fourni dans l'exercice.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la trace du serveur web dans l'énoncé",
+          "justification": "Le serveur web est ce qui rend la page accessible via une URL dans un navigateur",
+          "resultat_markdown": "Le code est décrit comme celui d'une « page web » consultée dans un navigateur : un serveur web (Apache par exemple) sert nécessairement ce fichier au client."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la trace du serveur de données",
+          "justification": "Toute requête SQL suppose un SGBD qui la reçoit et y répond",
+          "resultat_markdown": "La ligne 14 crée une connexion mysqli vers une base nommée magasin : c'est un serveur MySQL qui joue ici le rôle de SGBD."
+        },
+        {
+          "numero": 3,
+          "action": "Repérer la trace du préprocesseur",
+          "justification": "Le langage serveur exécuté avant l'envoi de la page identifie le préprocesseur en jeu",
+          "resultat_markdown": "Tout le code entre <?php et ?> est exécuté par l'interpréteur PHP, qui joue ici le rôle de préprocesseur."
+        }
+      ],
+      "conclusion_markdown": "Les trois éléments de l'environnement intégré apparaissent bien dans cet exercice : un serveur web sert les pages, un serveur MySQL stocke les données de la table client, et l'interpréteur PHP transforme le code serveur en HTML avant l'envoi au navigateur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le serveur web et le serveur de données, en pensant que c'est le même logiciel qui « fait tout »",
+          "pourquoi_faux": "Apache et MySQL sont deux logiciels indépendants avec des rôles différents : l'un sert des fichiers/pages, l'autre stocke des données structurées et répond à des requêtes SQL.",
+          "correction_markdown": "Toujours nommer séparément les trois rôles (serveur web, SGBD, préprocesseur) même si, en pratique, WAMP/XAMPP les installe ensemble d'un seul coup."
+        },
+        {
+          "erreur_markdown": "Oublier de citer un exemple concret pour chaque élément",
+          "pourquoi_faux": "Une réponse purement abstraite (« un logiciel qui gère les données ») est moins convaincante et souvent moins bien notée qu'une réponse illustrée d'un nom réel (MySQL, Apache, PHP).",
+          "correction_markdown": "Prendre l'habitude de toujours associer un exemple concret à chaque rôle décrit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Nommer un exemple concret de logiciel pour chacun des trois rôles : serveur web, SGBD, préprocesseur.",
+          "solution_markdown": "Serveur web : Apache (ou Nginx). SGBD : MySQL (ou MariaDB, PostgreSQL). Préprocesseur : PHP (ou Python, Node.js selon l'environnement)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un développeur constate qu'une page PHP s'affiche correctement mais qu'un formulaire censé enregistrer des données échoue avec une erreur de connexion. Lequel des trois éléments de la pile logicielle est le plus probablement en cause ?",
+          "solution_markdown": "Le serveur de données (SGBD). La page s'affiche correctement, donc le serveur web et le préprocesseur PHP fonctionnent tous deux normalement (le PHP a bien été interprété et a produit du HTML) ; seule l'étape de connexion à la base de données échoue, ce qui pointe vers le SGBD (serveur arrêté, identifiants incorrects, base inexistante)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi il serait incorrect de dire qu'un serveur web « exécute » le code PHP lui-même.",
+          "solution_markdown": "Le serveur web (Apache) reçoit la requête et transmet le fichier .php au préprocesseur PHP, qui est un logiciel distinct chargé d'interpréter ce code. Le serveur web ne fait qu'orchestrer l'échange : il délègue l'exécution du code serveur au préprocesseur, puis renvoie au client le résultat produit par celui-ci. Confondre les deux masque une articulation essentielle de l'architecture web."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois logiciels distincts et complémentaires forment un environnement de développement web dynamique : serveur web, SGBD, préprocesseur.",
+        "Le serveur web (Apache) sert les pages ; le SGBD (MySQL) stocke et restitue les données ; le préprocesseur (PHP) exécute le code serveur.",
+        "WAMP, LAMP et XAMPP ne sont que des noms commerciaux qui regroupent ces trois logiciels en une seule installation.",
+        "Face à une panne, identifier lequel des trois éléments est en cause guide directement le diagnostic : affichage cassé, données inaccessibles, ou code serveur non exécuté n'ont jamais la même origine."
+      ]
+    }
+  ]
+}

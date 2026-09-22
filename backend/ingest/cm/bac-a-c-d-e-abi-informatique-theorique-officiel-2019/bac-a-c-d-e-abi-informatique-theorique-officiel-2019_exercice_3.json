@@ -1,0 +1,186 @@
+{
+  "epreuve_source": "bac-a-c-d-e-abi-informatique-theorique-officiel-2019.pdf",
+  "numero_exercice": "3",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "nature_epreuve": "theorique",
+  "partie_epreuve_francais": null,
+  "variante_sujet": null,
+  "serie": "A, C, D, E",
+  "filiere_serie_a": "abi",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "institution": null,
+  "annee": 2019,
+  "duree_epreuve": "1h",
+  "coefficient": "2",
+  "introduction_markdown": null,
+  "points": "7",
+  "groupes": [],
+  "figures": [],
+  "enonce_intro_markdown": "**Troisième partie : Traitement de l'information et base de données (7 points)**",
+  "questions": [
+    {
+      "numero": "1a",
+      "enonce_markdown": "**1.** Soit la table Élève suivante de la base de données « Gestion_Lycée », présentée selon le modèle relationnel :\n\n| Matricule | Nom | Prénom | Classe | Sexe |\n|---|---|---|---|---|\n| 80Q560 | ZRA | Brice | F5S | M |\n| 10Z356 | KOLOTO | | LSA | M |\n| 12X222 | NSOM | Philippe | USS | M |\n| 66H700 | MGBELE | Bernadette | F4S | F |\n\n**a)** Proposer une clé primaire pour ce tableau. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nUne clé primaire est une colonne (ou un ensemble de colonnes) dont la valeur identifie de façon unique chaque ligne d'une table ; elle ne doit jamais être vide et ne doit jamais se répéter d'une ligne à l'autre.\n\n**a)** Dans la table Élève, la colonne Matricule contient une valeur différente pour chaque élève (80Q560, 10Z356, 12X222, 66H700) alors que Nom, Prénom, Classe et Sexe peuvent se répéter d'un élève à l'autre. La colonne **Matricule** est donc la clé primaire proposée pour cette table.\n\n### Piège à éviter\nNe choisis jamais Nom ou Prénom comme clé primaire : deux élèves peuvent parfaitement porter le même nom, ce qui romprait l'unicité exigée par une clé primaire.",
+      "themes": [
+        "clé primaire",
+        "modèle relationnel",
+        "base de données"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex3-q1a-0",
+          "competence": "Proposer une clé primaire pour une table à partir de ses données",
+          "contenu_markdown": "Une clé primaire est une colonne (ou un ensemble de colonnes) dont la valeur identifie de façon unique chaque ligne d'une table ; elle ne doit jamais être vide et ne doit jamais se répéter d'une ligne à l'autre.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1b",
+      "enonce_markdown": "**b)** Écrire la requête SQL permettant de créer cette table. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nLa création d'une table en SQL utilise l'instruction CREATE TABLE, suivie du nom de la table puis, entre parenthèses, de la liste de ses colonnes avec leur type de données ; la clé primaire se déclare avec la contrainte PRIMARY KEY accolée à la colonne concernée.\n\n**b)** La table Élève comporte cinq colonnes textuelles (Matricule, Nom, Prénom, Classe, Sexe), avec Matricule comme clé primaire identifiée à la question précédente. La requête de création s'écrit :\n\n```sql\nCREATE TABLE Eleve (\n  Matricule VARCHAR(10) PRIMARY KEY,\n  Nom VARCHAR(30),\n  Prenom VARCHAR(30),\n  Classe VARCHAR(10),\n  Sexe CHAR(1)\n);\n```\n\n### Conseil\nAdapte la longueur des VARCHAR à ce que montrent les données de la table, par exemple VARCHAR(10) suffit pour un matricule à 6 caractères : ce n'est pas noté au caractère près, mais un type cohérent avec les données montre que tu as compris leur nature.",
+      "themes": [
+        "SQL",
+        "CREATE TABLE",
+        "création de table"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex3-q1b-0",
+          "competence": "Écrire une requête SQL de création de table (CREATE TABLE)",
+          "contenu_markdown": "La création d'une table en SQL utilise l'instruction CREATE TABLE, suivie du nom de la table puis, entre parenthèses, de la liste de ses colonnes avec leur type de données ; la clé primaire se déclare avec la contrainte PRIMARY KEY accolée à la colonne concernée.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1c",
+      "enonce_markdown": "**c)** Écrire la requête SQL permettant d'ajouter le prénom « Andy » pour l'élève dont le matricule est 10Z356. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nPour modifier la valeur d'une colonne sur une ligne déjà existante d'une table, on utilise l'instruction UPDATE, avec SET pour indiquer la nouvelle valeur et une clause WHERE pour cibler précisément la ligne concernée à l'aide de sa clé primaire.\n\n**c)** L'élève dont le matricule est 10Z356 (KOLOTO) n'a pas encore de prénom renseigné dans la table : il faut mettre à jour cette ligne. La requête s'écrit :\n\n```sql\nUPDATE Eleve\nSET Prenom = 'Andy'\nWHERE Matricule = '10Z356';\n```\n\n### Piège à éviter\nN'oublie jamais la clause WHERE dans un UPDATE : sans elle, la requête modifierait le prénom de TOUS les élèves de la table, pas seulement celui visé.",
+      "themes": [
+        "SQL",
+        "UPDATE",
+        "mise à jour de données"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex3-q1c-0",
+          "competence": "Écrire une requête SQL de mise à jour d'une donnée (UPDATE)",
+          "contenu_markdown": "Pour modifier la valeur d'une colonne sur une ligne déjà existante d'une table, on utilise l'instruction UPDATE, avec SET pour indiquer la nouvelle valeur et une clause WHERE pour cibler précisément la ligne concernée à l'aide de sa clé primaire.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "1d",
+      "enonce_markdown": "**d)** Quel est le résultat de la requête suivante : `SELECT Matricule, Nom, Prénom FROM Elève WHERE Classe = \"USS\" ;` *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nUne requête SELECT colonnes FROM table WHERE condition affiche uniquement les colonnes listées après SELECT, et seulement pour les lignes qui vérifient la condition placée après WHERE ; il faut donc d'abord filtrer les lignes concernées avant de ne retenir que les colonnes demandées.\n\n**d)** La condition `WHERE Classe = \"USS\"` ne retient, parmi les quatre élèves de la table, que celui dont la classe vaut USS : NSOM Philippe (matricule 12X222). Les colonnes demandées sont Matricule, Nom et Prénom. Le résultat de la requête est donc :\n\n| Matricule | Nom | Prénom |\n|---|---|---|\n| 12X222 | NSOM | Philippe |\n\n### Piège à éviter\nVérifie bien la colonne de filtrage (Classe) et non la colonne affichée : ZRA Brice est en F5S et MGBELE Bernadette en F4S, aucun des deux ne vérifie la condition Classe = \"USS\", ils n'apparaissent donc pas dans le résultat.",
+      "themes": [
+        "SQL",
+        "SELECT WHERE",
+        "interrogation de base de données"
+      ],
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex3-q1d-0",
+          "competence": "Interpréter le résultat d'une requête SQL de sélection avec condition (SELECT WHERE)",
+          "contenu_markdown": "Une requête SELECT colonnes FROM table WHERE condition affiche uniquement les colonnes listées après SELECT, et seulement pour les lignes qui vérifient la condition placée après WHERE ; il faut donc d'abord filtrer les lignes concernées avant de ne retenir que les colonnes demandées.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2a",
+      "enonce_markdown": "**2.** Les ordinateurs du Lycée sont connectés à un réseau local. Un des ordinateurs de la salle 105 possède le numéro 172.16.105.3.\n\n**a)** Écrire en binaire ce numéro. *[2 pts]*",
+      "corrige_markdown": "### Rappel de méthode\nUne adresse IPv4 s'écrit sous la forme de quatre nombres décimaux, de 0 à 255, séparés par des points, appelés octets : pour la convertir en binaire, il faut convertir séparément chacun des quatre octets en un nombre binaire sur 8 bits, en complétant par des zéros à gauche si nécessaire.\n\n**a)** Conversion de chaque octet en binaire sur 8 bits, en identifiant les puissances de 2 qui composent chaque nombre :\n\nPour 172 : $172 = 128 + 32 + 8 + 4$, soit $128\\times1 + 64\\times0 + 32\\times1 + 16\\times0 + 8\\times1 + 4\\times1 + 2\\times0 + 1\\times0$. On obtient **10101100**.\n\nPour 16 : $16 = 16$, soit $128\\times0 + 64\\times0 + 32\\times0 + 16\\times1 + 8\\times0 + 4\\times0 + 2\\times0 + 1\\times0$. On obtient **00010000**.\n\nPour 105 : $105 = 64 + 32 + 8 + 1$, soit $128\\times0 + 64\\times1 + 32\\times1 + 16\\times0 + 8\\times1 + 4\\times0 + 2\\times0 + 1\\times1$. On obtient **01101001**.\n\nPour 3 : $3 = 2 + 1$, soit $128\\times0 + 64\\times0 + 32\\times0 + 16\\times0 + 8\\times0 + 4\\times0 + 2\\times1 + 1\\times1$. On obtient **00000011**.\n\nL'adresse 172.16.105.3 s'écrit donc en binaire : **10101100.00010000.01101001.00000011**.\n\n### Conseil\nPour convertir rapidement un octet, retiens les puissances de 2 dans l'ordre décroissant (128, 64, 32, 16, 8, 4, 2, 1) et coche celles dont la somme reconstitue le nombre : c'est plus fiable le jour de l'examen que des divisions successives par 2, qui multiplient les occasions d'erreur de calcul.",
+      "themes": [
+        "conversion décimal-binaire",
+        "adresse IP",
+        "systèmes de numération"
+      ],
+      "savoir_officiel": {
+        "classe": "3e",
+        "serie_label": null,
+        "module_numero": "301",
+        "savoir_numero": "I"
+      },
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex3-q2a-0",
+          "competence": "Convertir chaque octet d'une adresse IP en binaire sur 8 bits",
+          "contenu_markdown": "Une adresse IPv4 s'écrit sous la forme de quatre nombres décimaux, de 0 à 255, séparés par des points, appelés octets : pour la convertir en binaire, il faut convertir séparément chacun des quatre octets en un nombre binaire sur 8 bits, en complétant par des zéros à gauche si nécessaire.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "base de données",
+    "clé primaire",
+    "SQL CREATE TABLE",
+    "SQL UPDATE",
+    "SQL SELECT WHERE",
+    "conversion binaire",
+    "adresse IP",
+    "bac informatique cameroun 2019"
+  ],
+  "incertitudes": [
+    "L'épreuve couvre simultanément les séries A, C, D et E (bandeau « Séries : A-C-D-E & ABI ») ; le champ serie liste les quatre codes, et la mention « ABI » est reportée dans filiere_serie_a plutôt que traitée comme une série distincte.",
+    "Q2a (conversion binaire d'une adresse IP) est rattachée au module 301 de la classe 3e (« Utiliser les systèmes de numération », référentiel BEPC) plutôt qu'à un module Tle : le programme du tronc commun étant cumulatif, cette notion de 3e reste mobilisée au BAC sans qu'un module Tle dédié à la numération binaire n'existe dans le référentiel Informatique actuel.",
+    "4 des 5 rappels de méthode de cet exercice (1a, 1b, 1d, 2a) n'ont pas donné lieu à un cours complet dans cette passe ; seul le rappel de la question 1c (requête SQL UPDATE) a été coursifié : rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex3-q1a-0, rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex3-q1b-0, rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex3-q1d-0 et rdm-bac-a-c-d-e-abi-informatique-theorique-officiel-2019-ex3-q2a-0 restent à coursifier dans une passe ultérieure."
+  ],
+  "statut": "brouillon"
+}

@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-notion-de-structure-de-donnee-premiere-ti",
+  "meta": {
+    "titre": "Notion de structure de donnée",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Types et structures de données",
+    "duree_estimee_min": 15,
+    "tags": [
+      "structure de donnée",
+      "tableau",
+      "type composé",
+      "type primitif"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex1-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Stocker une seule note d'élève dans une variable `int`, c'est simple. Mais comment stocker les 30 notes d'une classe entière, sans créer 30 variables séparées et impossibles à manipuler dans une boucle ? C'est exactement le problème que les structures de données sont conçues pour résoudre : organiser plusieurs valeurs ensemble, de façon exploitable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les types de base du C (`int`, `char`, `float`)",
+        "Savoir déclarer et utiliser une variable simple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Types primitifs et structures de données composées",
+      "contenu_markdown": "Une **structure de donnée** est une manière organisée de stocker et d'organiser un ensemble de données en mémoire, afin de pouvoir les manipuler efficacement (les parcourir, les rechercher, les modifier). On distingue les types **primitifs** (`int`, `char`, `float`, `double`), qui stockent une seule valeur simple, des structures de données **non primitives** (ou composées), qui organisent plusieurs valeurs ensemble selon une logique précise.",
+      "formule_principale": "Type primitif = une seule valeur ; structure de donnée = plusieurs valeurs organisées",
+      "variantes": [
+        {
+          "nom": "Le tableau (array)",
+          "quand_utiliser": "Quand toutes les valeurs à stocker sont du même type et en nombre connu à l'avance",
+          "contenu_markdown": "`int notes[30];` regroupe 30 entiers accessibles chacun par un indice (`notes[0]` à `notes[29]`), ce qui permet de les parcourir facilement avec une boucle `for`."
+        },
+        {
+          "nom": "La structure (mot-clé `struct`)",
+          "quand_utiliser": "Quand on veut regrouper des valeurs de types différents décrivant une même entité (par exemple un élève : nom, âge, moyenne)",
+          "contenu_markdown": "`struct Eleve { char nom[30]; int age; float moyenne; };` regroupe des champs de types différents sous un seul type composé, réutilisable pour créer plusieurs élèves."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un professeur veut stocker les notes de 5 élèves et calculer leur moyenne. Montrer pourquoi un tableau est adapté, plutôt que 5 variables séparées.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Solution sans structure de donnée",
+          "justification": "Cinq variables indépendantes n'ont aucun lien logique entre elles pour le compilateur",
+          "resultat_markdown": "`int note1, note2, note3, note4, note5;` - pour calculer la moyenne, il faut écrire à la main `(note1+note2+note3+note4+note5)/5`, sans pouvoir automatiser avec une boucle."
+        },
+        {
+          "numero": 2,
+          "action": "Solution avec un tableau",
+          "justification": "Un tableau regroupe les 5 valeurs sous un seul nom, indexé de 0 à 4",
+          "resultat_markdown": "`int notes[5];` puis `notes[0]`, `notes[1]`... `notes[4]`."
+        },
+        {
+          "numero": 3,
+          "action": "Calcul de la moyenne avec une boucle",
+          "justification": "L'indice du tableau peut être une variable de boucle, ce qui rend le code réutilisable pour n'importe quel nombre d'élèves",
+          "resultat_markdown": "```c\nint somme = 0;\nfor (int i = 0; i < 5; i++) {\n    somme = somme + notes[i];\n}\nfloat moyenne = somme / 5.0;\n```"
+        }
+      ],
+      "conclusion_markdown": "Le tableau permet de traiter un nombre variable de valeurs avec un code court et générique (une boucle), alors que des variables séparées obligeraient à réécrire une ligne de code par élève supplémentaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer `int`, `float` ou `char` comme exemple de structure de donnée \"non primitive\"",
+          "pourquoi_faux": "Ce sont exactement les types primitifs de base du langage C : ils stockent une seule valeur simple, ils ne relèvent donc pas de la catégorie \"non primitive\" demandée.",
+          "correction_markdown": "Réponds plutôt tableau, structure (`struct`), liste chaînée, pile ou file : ce sont des structures composées, construites à partir des types primitifs."
+        },
+        {
+          "erreur_markdown": "Croire qu'un tableau peut changer de taille librement une fois déclaré",
+          "pourquoi_faux": "En C, la taille d'un tableau classique (`int notes[5];`) est fixée une fois pour toutes à la déclaration : on ne peut ni ajouter ni retirer de case ensuite.",
+          "correction_markdown": "Si le nombre d'éléments doit varier en cours d'exécution, il faut une structure de donnée plus avancée (allocation dynamique, liste chaînée), notion vue plus tard dans le programme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner un exemple de type primitif et un exemple de structure de donnée non primitive.",
+          "solution_markdown": "Type primitif : `int` (ou `char`, `float`). Structure de donnée non primitive : le tableau (`array`), par exemple `int notes[10];`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi un tableau est-il considéré comme une structure de donnée composée, alors que chacune de ses cases contient un simple `int` ?",
+          "solution_markdown": "Ce n'est pas la nature de chaque case qui définit une structure de donnée composée, mais l'organisation d'ensemble : un tableau assemble plusieurs valeurs (chacune de type primitif) sous un seul nom, accessibles par un indice commun. C'est cette organisation - et non le contenu de chaque case - qui en fait une structure de donnée, au même titre qu'une `struct` assemble plusieurs champs sous un seul type."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève doit stocker, pour chaque élève d'une classe, son nom (texte) ET sa moyenne (nombre décimal). Un simple tableau `float moyennes[30];` suffit-il ? Justifier et proposer une meilleure structure.",
+          "solution_markdown": "Non, un tableau `float moyennes[30];` ne stocke que les moyennes : il ne permet pas d'associer chaque moyenne au nom de l'élève correspondant, ni de regrouper des types différents (texte et nombre) pour une même personne. La structure adaptée est une `struct` : `struct Eleve { char nom[30]; float moyenne; };`, puis un tableau de cette structure : `struct Eleve classe[30];`. Chaque `classe[i]` regroupe alors à la fois le nom et la moyenne d'un même élève, ce qui reflète fidèlement la réalité que l'on veut représenter en mémoire."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un type primitif (`int`, `char`, `float`) stocke une seule valeur simple.",
+        "Une structure de donnée organise plusieurs valeurs ensemble, pour les manipuler efficacement (tableau, structure `struct`, liste chaînée...).",
+        "Le tableau est l'exemple non primitif le plus simple et le plus attendu en réponse à une question de cours.",
+        "Une `struct` regroupe des champs de types différents décrivant une même entité, là où un tableau ne regroupe que des valeurs d'un seul et même type.",
+        "Choisir la bonne structure de donnée pour un problème donné est une compétence qui se développe avec la pratique : commence toujours par te demander \"quelles valeurs dois-je stocker ensemble, et de quel type sont-elles ?\""
+      ]
+    }
+  ]
+}

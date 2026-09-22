@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-reecrire-une-structure-if-else-en-une-suite-de-if-simples-ti-2021",
+  "meta": {
+    "titre": "Réécrire une structure if/else en une suite de if simples",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Structures de contrôle (PHP)",
+    "duree_estimee_min": 20,
+    "tags": [
+      "if",
+      "else",
+      "négation logique",
+      "structure conditionnelle",
+      "PHP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex1-qII-7-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un exercice classique consiste à transformer un if/else en une suite de if indépendants, sans jamais changer le comportement du programme. Ce n'est pas un exercice de style gratuit : bien maîtriser cette transformation prouve qu'on comprend vraiment ce qu'une condition et sa négation représentent logiquement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la syntaxe if(condition){...} else {...}",
+        "Savoir écrire la négation d'une condition simple (opérateur !, ou inversion d'un test de comparaison)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Remplacer else par un second if sur la condition inverse",
+      "contenu_markdown": "Une structure `if(condition) { A } else { B }` exécute **exactement une** des deux branches A ou B, jamais les deux, jamais aucune : `condition` et sa négation `!condition` sont mutuellement exclusives et couvrent tous les cas possibles.\n\nOn peut donc toujours réécrire cette structure sans `else`, en remplaçant la seconde branche par un second `if` testant la condition inverse :\n\n```php\nif(condition) { A }\nif(!condition) { B }\n```\n\nLe comportement reste rigoureusement identique, puisque les deux `if` ne peuvent jamais s'exécuter simultanément (leurs conditions sont opposées) ni rester tous deux inactifs (l'un des deux est toujours vrai). La seule étape délicate consiste à écrire correctement la négation de la condition de départ : `!$result` se néglige en `$result` ; une condition comme `$x > 10` se néglige en `$x <= 10`, pas en `$x < 10`."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Réécrire le bout de code suivant en utilisant uniquement la structure de contrôle simple if (sans else) :\n```php\n47 if(!$result) {\n48 echo \"<script type=\\\"text/javascript\\\">\n49 alert('Erreur : \".$result->error.\"')</script>\";\n50 }\n51 else {\n52 echo \"<script type=\\\"text/javascript\\\"> alert('Vos modifications sont enregistrées'); window.location='index.html';</script>\";\n53 }\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la condition du if de départ",
+          "justification": "C'est elle qu'il faudra nier pour le second if",
+          "resultat_markdown": "La condition testée est !\\$result (négation de \\$result)."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la négation de cette condition",
+          "justification": "La négation de !\\$result est \\$result (double négation qui s'annule)",
+          "resultat_markdown": "La négation de !\\$result est \\$result."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire les deux if indépendants avec leurs blocs respectifs",
+          "justification": "Chaque bloc original reste attaché à sa condition, désormais sans else",
+          "resultat_markdown": "```php\nif(!$result) {\n    echo \"<script type=\\\"text/javascript\\\">\n    alert('Erreur : \".$result->error.\"')</script>\";\n}\nif($result) {\n    echo \"<script type=\\\"text/javascript\\\"> alert('Vos modifications sont enregistrées');\n    window.location='index.html';</script>\";\n}\n```"
+        }
+      ],
+      "conclusion_markdown": "Les deux if sont mutuellement exclusifs par construction (\\$result et !\\$result ne sont jamais vrais simultanément), le comportement du programme reste donc rigoureusement identique à la version avec else."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier la même condition dans les deux if, par exemple !\\$result deux fois de suite",
+          "pourquoi_faux": "Si les deux if partagent la même condition, soit les deux blocs s'exécutent en même temps, soit aucun ne s'exécute selon le cas : le comportement ne correspond plus du tout à l'original.",
+          "correction_markdown": "Toujours vérifier explicitement que la condition du second if est bien l'inverse logique de la première, jamais une copie."
+        },
+        {
+          "erreur_markdown": "Se tromper dans la négation d'une condition de comparaison, par exemple négliger \\$x > 10 en \\$x < 10 au lieu de \\$x <= 10",
+          "pourquoi_faux": "\\$x < 10 laisse échapper le cas \\$x == 10, qui ne serait alors traité par aucun des deux if : la négation exacte de > est <=, celle de < est >=.",
+          "correction_markdown": "Mémoriser les quatre paires de négations : > devient <=, < devient >=, == devient !=, et inversement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Réécrire sans else : if(\\$age >= 18) { echo \"majeur\"; } else { echo \"mineur\"; }",
+          "solution_markdown": "```php\nif($age >= 18) { echo \"majeur\"; }\nif($age < 18) { echo \"mineur\"; }\n```\nLa négation de >= est <."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réécrire sans else : if(\\$stock == 0) { echo \"rupture\"; } else { echo \"disponible\"; }",
+          "solution_markdown": "```php\nif($stock == 0) { echo \"rupture\"; }\nif($stock != 0) { echo \"disponible\"; }\n```\nLa négation de == est !=."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi cette technique de conversion (if/else vers deux if indépendants) devient risquée si le code situé entre les deux blocs modifie la variable testée par la condition. Illustrer avec un exemple.",
+          "solution_markdown": "Si une instruction entre les deux blocs modifie la variable testée, la seconde condition n'évalue plus le même état que celui observé par la première, et les deux blocs peuvent alors s'exécuter tous les deux, ou aucun des deux, brisant l'équivalence avec le if/else d'origine :\n```php\nif($result) { echo \"ok\"; }\n$result = false; // modification intercalée\nif($result) { echo \"aussi ok, alors que cela ne devrait jamais arriver !\"; }\n```\nAvec un if/else classique, la seconde branche aurait été évaluée sur la même valeur de \\$result que la première, garantissant l'exclusivité mutuelle. La conversion en deux if indépendants n'est donc rigoureusement sûre que si rien ne modifie la variable testée entre les deux conditions."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un if/else se réécrit toujours en deux if indépendants, en niant la condition du second.",
+        "Les deux if restent mutuellement exclusifs uniquement si la variable testée n'est pas modifiée entre les deux.",
+        "Les négations classiques à connaître : > devient <=, < devient >=, == devient !=.",
+        "Cette transformation, fréquente au BAC TI, sert aussi à vérifier qu'on comprend vraiment le sens logique d'une condition, pas seulement sa syntaxe."
+      ]
+    }
+  ]
+}

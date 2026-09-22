@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-denombrement-combinaisons-1ere-a",
+  "meta": {
+    "titre": "Dénombrement par combinaisons",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Dénombrement",
+    "duree_estimee_min": 25,
+    "tags": [
+      "combinaisons",
+      "dénombrement",
+      "tirage simultané",
+      "principe multiplicatif"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2002-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathématiques - Cameroun - Session 2002 (MINEDUC-OBC)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-a-maths-2002-officiel-cameroun-ex3-q2a-1",
+    "rappels_lies": [
+      "rdm-probatoire-a-maths-2002-officiel-cameroun-ex3-q2b-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Choisir 5 personnes parmi 15 pour un tirage au sort, ce n'est pas comme les ranger dans un ordre précis : l'ordre dans lequel elles sont désignées n'a aucune importance, seul le groupe final compte. Compter ce genre de choix « en vrac » demande un outil spécifique, différent du dénombrement avec ordre : les combinaisons."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer une factorielle $n! = n\\times(n-1)\\times\\cdots\\times2\\times1$.",
+        "Distinguer une situation où l'ordre compte d'une situation où il ne compte pas.",
+        "Simplifier une fraction avant de calculer le résultat final."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le nombre de combinaisons",
+      "contenu_markdown": "Choisir $p$ éléments parmi $n$, simultanément et donc sans tenir compte de l'ordre, se compte avec le nombre de combinaisons $\\dbinom{n}{p} = \\dfrac{n!}{p!(n-p)!}$. Quand un tirage doit respecter une composition imposée, un nombre fixé d'éléments pris dans plusieurs sous-groupes différents, on décompose le choix en plusieurs tirages indépendants dans chaque sous-groupe puis on multiplie les nombres de combinaisons obtenus : c'est le principe multiplicatif.",
+      "formule_principale": "\\dbinom{n}{p} = \\dfrac{n!}{p!(n-p)!}",
+      "variantes": [
+        {
+          "nom": "Arrangements (quand l'ordre compte)",
+          "quand_utiliser": "Quand le tirage attribue un rôle différent à chaque élément choisi (1er, 2e, 3e prix, par exemple), donc que l'ordre du choix a un sens.",
+          "contenu_markdown": "On utilise alors $A_n^p = \\dfrac{n!}{(n-p)!}$, qui compte davantage de possibilités que $\\dbinom{n}{p}$ puisque chaque groupe de $p$ éléments est compté $p!$ fois (une fois par ordre possible)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On choisit au hasard et simultanément 5 personnes parmi 15. Calculer le nombre de choix possibles, puis le nombre de choix contenant exactement 3 personnes parmi un sous-groupe de 4 personnes déterminées.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le type de dénombrement",
+          "justification": "Le mot « simultanément » signale un tirage sans ordre : on utilise les combinaisons.",
+          "resultat_markdown": "Nombre de choix possibles $= \\dbinom{15}{5}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le nombre total de choix",
+          "justification": "On applique la formule des combinaisons avec $n=15$, $p=5$.",
+          "resultat_markdown": "$\\dbinom{15}{5} = \\dfrac{15\\times14\\times13\\times12\\times11}{5\\times4\\times3\\times2\\times1} = \\dfrac{360360}{120}=3003$"
+        },
+        {
+          "numero": 3,
+          "action": "Décomposer la condition imposée en deux tirages indépendants",
+          "justification": "Choisir 3 personnes dans le sous-groupe de 4, puis compléter à 5 en choisissant 2 personnes parmi les 11 restantes.",
+          "resultat_markdown": "$\\dbinom{4}{3}$ pour le sous-groupe, $\\dbinom{11}{2}$ pour le complément"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer chaque combinaison puis appliquer le principe multiplicatif",
+          "justification": "Les deux tirages sont indépendants : on multiplie les possibilités.",
+          "resultat_markdown": "$\\dbinom{4}{3}=4 \\quad ; \\quad \\dbinom{11}{2}=55 \\quad ; \\quad 4\\times55=220$"
+        }
+      ],
+      "conclusion_markdown": "Il y a $3003$ façons de choisir 5 personnes parmi 15, dont $220$ contiennent exactement 3 personnes du sous-groupe de 4 déterminées à l'avance."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $A_n^p=\\dfrac{n!}{(n-p)!}$ pour un tirage « simultané » ou « au hasard sans ordre ».",
+          "pourquoi_faux": "Cette formule compte chaque groupe de p éléments plusieurs fois, une fois pour chaque ordre possible de sélection, ce qui surcompte largement le nombre de choix réels quand l'ordre n'a pas d'importance.",
+          "correction_markdown": "Repérer les mots-clés « simultanément », « en même temps », « un groupe de » qui signalent un tirage sans ordre, donc une combinaison $\\dbinom{n}{p}$."
+        },
+        {
+          "erreur_markdown": "Calculer $\\dbinom{4}{3}$ pour un sous-groupe imposé et considérer le résultat comme la réponse finale, en oubliant qu'il fallait compléter le tirage jusqu'à l'effectif total demandé.",
+          "pourquoi_faux": "La question porte sur un tirage de 5 personnes au total : 3 dans un sous-groupe ne fait que 3 personnes, il manque les 2 autres qui doivent être choisies ailleurs.",
+          "correction_markdown": "Toujours vérifier que la somme des effectifs choisis dans chaque sous-groupe redonne bien l'effectif total du tirage annoncé au départ de la question."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer le nombre de façons de choisir 3 livres parmi 8 livres différents, sans tenir compte de l'ordre.",
+          "solution_markdown": "$\\dbinom{8}{3} = \\dfrac{8\\times7\\times6}{3\\times2\\times1} = \\dfrac{336}{6}=56$\n\nIl y a 56 façons de choisir 3 livres parmi 8."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un club compte 12 membres, dont 5 femmes et 7 hommes. On choisit une délégation de 4 membres. Calculer le nombre de délégations possibles, puis le nombre de délégations composées de 2 femmes et 2 hommes exactement.",
+          "solution_markdown": "Le nombre total de délégations de 4 membres parmi 12 est :\n\n$\\dbinom{12}{4} = \\dfrac{12\\times11\\times10\\times9}{4\\times3\\times2\\times1} = \\dfrac{11880}{24}=495$\n\nPour une délégation de 2 femmes et 2 hommes exactement, on décompose en deux tirages indépendants : choisir 2 femmes parmi 5, et choisir 2 hommes parmi 7.\n\n$\\dbinom{5}{2} = \\dfrac{5\\times4}{2\\times1}=10 \\quad ; \\quad \\dbinom{7}{2}=\\dfrac{7\\times6}{2\\times1}=21$\n\nD'après le principe multiplicatif : $\\dbinom{5}{2}\\times\\dbinom{7}{2} = 10\\times21=210$\n\nIl y a 495 délégations possibles au total, dont 210 comportent exactement 2 femmes et 2 hommes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un groupe de 20 personnes, dont 8 parlent anglais et les autres non, on choisit simultanément 6 personnes. Calculer le nombre de choix contenant au moins 5 personnes parlant anglais.",
+          "solution_markdown": "« Au moins 5 personnes parlant anglais » sur un groupe de 6 signifie exactement 5 ou exactement 6 personnes parlant anglais : ce sont deux cas à additionner, car ils sont incompatibles entre eux (on ne peut pas avoir à la fois exactement 5 et exactement 6).\n\nCas « exactement 5 anglophones » : on choisit 5 personnes parmi les 8 anglophones, et 1 personne parmi les $20-8=12$ non-anglophones.\n\n$\\dbinom{8}{5}\\times\\dbinom{12}{1}$\n\n$\\dbinom{8}{5} = \\dbinom{8}{3} = \\dfrac{8\\times7\\times6}{3\\times2\\times1}=56 \\quad ; \\quad \\dbinom{12}{1}=12$\n\n$56\\times12=672$\n\nCas « exactement 6 anglophones » : on choisit les 6 personnes uniquement parmi les 8 anglophones, aucune parmi les non-anglophones.\n\n$\\dbinom{8}{6} = \\dbinom{8}{2} = \\dfrac{8\\times7}{2\\times1}=28$\n\nLe nombre total de choix contenant au moins 5 anglophones est la somme des deux cas :\n\n$672+28=700$\n\nIl y a 700 choix possibles contenant au moins 5 personnes parlant anglais."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tirage « simultané » ou « au hasard sans ordre » se compte toujours avec une combinaison $\\dbinom{n}{p}$, jamais avec un arrangement.",
+        "La formule $\\dbinom{n}{p}=\\dfrac{n!}{p!(n-p)!}$ se calcule plus vite en simplifiant directement le produit des p plus grands facteurs de n! par p!.",
+        "Quand une condition impose une composition précise (un nombre fixé dans un sous-groupe), décompose le tirage en sous-tirages indépendants et multiplie les résultats.",
+        "Vérifie toujours que la somme des effectifs choisis dans chaque sous-groupe redonne bien l'effectif total demandé par l'énoncé.",
+        "Pour une condition « au moins », additionne les combinaisons de tous les cas compatibles avec cette condition, plutôt que de chercher une formule directe unique.",
+        "Ce type de calcul apparaît fréquemment au Probatoire et au Baccalauréat sous forme de jeux de cartes, tirages de boules ou constitutions de délégations : l'automatisme à avoir est de traduire chaque condition de l'énoncé en un sous-tirage précis avant de calculer quoi que ce soit."
+      ]
+    }
+  ]
+}

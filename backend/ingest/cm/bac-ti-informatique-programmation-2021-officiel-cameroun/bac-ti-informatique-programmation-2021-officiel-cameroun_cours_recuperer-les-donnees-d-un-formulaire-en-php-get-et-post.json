@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-recuperer-les-donnees-d-un-formulaire-en-php-get-et-post-ti-2021",
+  "meta": {
+    "titre": "Récupérer les données d'un formulaire en PHP : $_GET et $_POST",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation serveur (PHP)",
+    "duree_estimee_min": 25,
+    "tags": [
+      "$_GET",
+      "$_POST",
+      "variables superglobales",
+      "formulaire",
+      "méthode HTTP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-PROGRAMMATION-2021",
+    "epreuve_titre": "Baccalauréat Technique, Série TI - Informatique - Épreuve de Programmation - Session 2021",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-info-prog-2021-ex1-qII-4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois qu'un formulaire est envoyé, ses données doivent bien arriver quelque part côté serveur pour être exploitées. PHP les range automatiquement dans deux tableaux prêts à l'emploi, $_GET et $_POST, mais lequel des deux consulter dépend d'un seul détail à repérer dans la balise form du formulaire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un tableau associatif (valeurs indexées par une clé plutôt que par un numéro)",
+        "Connaître la structure d'un formulaire HTML (attributs action et method)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "$_GET et $_POST : deux tableaux superglobaux, un seul lien avec l'attribut method",
+      "contenu_markdown": "**$_GET** et **$_POST** sont des tableaux associatifs **superglobaux** de PHP : accessibles depuis n'importe quel endroit du script, sans déclaration ni import préalable. Chacun contient les données envoyées par un formulaire, indexées par le nom (`name`) de chaque champ.\n\n**$_GET** reçoit les données envoyées par la méthode GET : elles sont ajoutées à la fin de l'URL sous forme `?cle1=valeur1&cle2=valeur2`, restent visibles dans la barre d'adresse, et sont limitées en taille par la longueur maximale d'une URL. Cette méthode convient à des données publiques et courtes (un numéro de page, un identifiant à partager).\n\n**$_POST** reçoit les données envoyées par la méthode POST : elles voyagent dans le corps de la requête HTTP, invisibles dans la barre d'adresse, sans limite pratique de taille. Cette méthode convient aux données sensibles (mots de passe) ou volumineuses (texte d'un formulaire, fichier).\n\nLe choix entre les deux n'est jamais fait par le script PHP lui-même : il découle entièrement de l'attribut `method` de la balise `<form>` qui a envoyé les données (`method=\"get\"` ou `method=\"post\"`). Un script qui lit `$_POST['x']` alors que le formulaire a été envoyé avec `method=\"get\"` ne trouvera jamais la valeur attendue."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer les variables super globales $_GET et $_POST, en s'appuyant sur le formulaire de modification des coordonnées client.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la méthode d'envoi du formulaire",
+          "justification": "C'est elle qui détermine quel tableau superglobal utiliser côté serveur",
+          "resultat_markdown": "`method=\"post\"` (ligne 23 du code de l'exercice)."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire le tableau superglobal attendu côté serveur",
+          "justification": "Un formulaire envoyé en POST doit être lu avec $_POST, jamais $_GET",
+          "resultat_markdown": "Puisque method vaut post, le script lit systématiquement ses données avec $_POST (par exemple $_POST['code'], $_POST['nom'])."
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier la cohérence sur un exemple concret du code",
+          "justification": "Confirmer que la théorie et le code fourni concordent bien",
+          "resultat_markdown": "Ligne 16 : `$code = $idcom->escape_string($_POST['code']);` récupère bien la valeur du champ nommé code, exactement comme attendu pour un envoi en POST."
+        }
+      ],
+      "conclusion_markdown": "$_GET et $_POST donnent tous deux accès aux données d'un formulaire, mais leur usage dépend entièrement de l'attribut method employé pour l'envoyer : ici, method=\"post\" impose l'usage de $_POST partout dans le script."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer que $_GET et $_POST sont interchangeables",
+          "pourquoi_faux": "Chacun ne contient QUE les données envoyées par sa méthode correspondante : un formulaire envoyé en GET ne remplit jamais $_POST, et inversement.",
+          "correction_markdown": "Toujours vérifier l'attribut method du formulaire avant de choisir quel tableau lire côté serveur."
+        },
+        {
+          "erreur_markdown": "Utiliser $_GET pour transmettre un mot de passe",
+          "pourquoi_faux": "Les données envoyées en GET apparaissent en clair dans l'URL, visibles dans l'historique du navigateur et dans les journaux du serveur : un mot de passe y serait exposé.",
+          "correction_markdown": "Toujours transmettre les données sensibles avec method=\"post\", jamais avec method=\"get\"."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un formulaire est envoyé avec <form method=\"get\">, avec un champ nommé recherche. Écrire l'instruction PHP qui récupère sa valeur.",
+          "solution_markdown": "`$valeur = $_GET['recherche'];`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un développeur écrit <form method=\"post\"> mais lit ensuite $_GET['nom'] dans son script PHP. Que va-t-il observer à l'exécution, et pourquoi ?",
+          "solution_markdown": "$_GET['nom'] sera vide (ou provoquera un avertissement d'index inexistant), car les données ont été envoyées en POST et non en GET : $_GET ne contient donc jamais la valeur du champ nom dans ce cas. Il faut lire $_POST['nom'] pour que la méthode d'accès corresponde à la méthode d'envoi réellement utilisée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "PHP propose aussi un tableau $_REQUEST, qui fusionne $_GET, $_POST et $_COOKIE. Pourquoi son usage systématique est-il déconseillé dans un code destiné à durer, malgré son apparente simplicité ?",
+          "solution_markdown": "$_REQUEST masque l'origine réelle d'une donnée (GET, POST ou cookie), ce qui complique la compréhension du code et peut introduire une faille de sécurité si un attaquant parvient à injecter une valeur via une méthode non prévue par le développeur (par exemple faire croire qu'un paramètre vient d'un formulaire POST alors qu'il a en réalité été glissé dans l'URL en GET). Utiliser explicitement $_GET ou $_POST selon la méthode réellement voulue rend le code plus prévisible et plus sûr."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$_GET et $_POST sont deux tableaux associatifs superglobaux, accessibles sans déclaration dans tout le script PHP.",
+        "$_GET lit les données transmises dans l'URL (méthode GET) ; $_POST lit celles transmises dans le corps de la requête (méthode POST).",
+        "Le choix entre les deux n'appartient jamais au script : il est fixé par l'attribut method du formulaire qui a envoyé les données.",
+        "Les données sensibles ou volumineuses passent toujours par POST, jamais par GET.",
+        "Au BAC TI, une erreur fréquente consiste à lire le mauvais tableau : toujours vérifier l'attribut method avant d'écrire $_GET ou $_POST dans le corrigé."
+      ]
+    }
+  ]
+}

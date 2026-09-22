@@ -351,6 +351,10 @@ def _ingest_question_inedite(exercice, data, subject):
         exercice=exercice,
         numero=numero,
         ordre=data.get("ordre") or 1,
+        # Sous-partie locale optionnelle (voir QuestionInedite.groupe_local) - jamais à
+        # recopier dans enonce_intro_markdown de l'exercice parent, qui ne s'affiche
+        # qu'une seule fois en tête de TOUTES ses questions.
+        groupe_local=_strip_em_dash(str(data.get("groupe_local") or "")),
         enonce_markdown=_strip_redundant_exercice_heading(_strip_em_dash(data["enonce_markdown"])),
         corrige_markdown=_strip_em_dash(data["corrige_markdown"]),
         difficulte_estimee=difficulte,

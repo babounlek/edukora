@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-systeme-equations-lineaires-combinaison-1ere-A",
+  "meta": {
+    "titre": "Résolution d'un système de deux équations linéaires par combinaison",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Équations et fonctions numériques",
+    "duree_estimee_min": 20,
+    "tags": [
+      "système d'équations",
+      "méthode par combinaison",
+      "élimination"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Probatoire A - Mathematiques - Cameroun - Session 2010",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-a-maths-2010-officiel-cameroun-ex1-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux commerçants achètent des quantités différentes du même produit à des prix différents et on connaît seulement le total payé par chacun : pour retrouver le prix unitaire de chaque article, il faut résoudre deux équations à la fois. C'est le rôle d'un système de deux équations à deux inconnues, et la méthode par combinaison permet de le résoudre sans jamais deviner."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résoudre une équation du premier degré à une inconnue",
+        "Multiplier une égalité par un nombre des deux côtés du signe égal",
+        "Additionner ou soustraire deux égalités membre à membre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode par combinaison linéaire",
+      "contenu_markdown": "Pour un système $\\begin{cases} ax+by=e \\\\ cx+dy=f \\end{cases}$, on multiplie une ou les deux équations par des coefficients bien choisis pour que les coefficients d'une même inconnue deviennent opposés (ou égaux). On additionne (ou soustrait) alors les deux équations membre à membre : cette inconnue disparaît, il ne reste plus qu'une équation à une inconnue à résoudre. La valeur trouvée est ensuite reportée dans l'une des équations d'origine pour obtenir la seconde inconnue.",
+      "formule_principale": "\\begin{cases} ax+by=e \\\\ cx+dy=f \\end{cases}",
+      "variantes": [
+        {
+          "nom": "Méthode par substitution",
+          "quand_utiliser": "Quand une équation isole facilement une inconnue (coefficient égal à 1)",
+          "contenu_markdown": "On exprime une inconnue en fonction de l'autre à partir d'une équation, puis on remplace cette expression dans la seconde équation. Plus rapide quand un coefficient vaut déjà 1, mais moins systématique que la combinaison quand les coefficients sont quelconques."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ : $\\begin{cases} x+y=-21 \\\\ 3x-5y=10 \\end{cases}$",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir l'inconnue à éliminer et le coefficient multiplicateur",
+          "justification": "Le coefficient de $y$ dans la deuxième équation est $-5$ ; en multipliant la première équation par 5, le coefficient de $y$ devient $+5$, opposé à $-5$",
+          "resultat_markdown": "$\\begin{cases} 5x+5y=-105 \\\\ 3x-5y=10 \\end{cases}$"
+        },
+        {
+          "numero": 2,
+          "action": "Additionner les deux équations membre à membre",
+          "justification": "Les termes en $y$ ($+5y$ et $-5y$) s'annulent",
+          "resultat_markdown": "$5x+5y+3x-5y=-105+10 \\;\\Rightarrow\\; 8x=-95$"
+        },
+        {
+          "numero": 3,
+          "action": "Résoudre l'équation obtenue en $x$",
+          "justification": "Équation du premier degré à une inconnue",
+          "resultat_markdown": "$x=-\\dfrac{95}{8}$"
+        },
+        {
+          "numero": 4,
+          "action": "Reporter $x$ dans une équation d'origine pour trouver $y$",
+          "justification": "On utilise la première équation $x+y=-21$, la plus simple",
+          "resultat_markdown": "$y=-21-x=-21+\\dfrac{95}{8}=-\\dfrac{168}{8}+\\dfrac{95}{8}=-\\dfrac{73}{8}$"
+        }
+      ],
+      "conclusion_markdown": "Le système admet pour unique solution le couple $\\left(-\\dfrac{95}{8}\\,;\\,-\\dfrac{73}{8}\\right)$, vérifié dans la deuxième équation d'origine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Multiplier une seule des deux équations sans vérifier que les coefficients de l'inconnue à éliminer deviennent bien opposés",
+          "pourquoi_faux": "Si les coefficients ne sont pas opposés (ou égaux pour une soustraction), l'addition membre à membre ne fait disparaître aucune inconnue et le calcul suivant est inexploitable.",
+          "correction_markdown": "Avant d'additionner, vérifie explicitement que les deux coefficients de l'inconnue visée sont bien opposés (ou identiques si tu comptes soustraire)."
+        },
+        {
+          "erreur_markdown": "Oublier de multiplier TOUS les termes de l'équation, y compris le second membre",
+          "pourquoi_faux": "Multiplier $x+y=-21$ par 5 sans multiplier le $-21$ donne une équation fausse ($5x+5y=-21$ au lieu de $-105$), ce qui fausse tout le calcul qui suit.",
+          "correction_markdown": "Multiplie chaque terme de l'équation, des deux côtés du signe égal, sans exception."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ : $\\begin{cases} x+y=10 \\\\ x-y=4 \\end{cases}$",
+          "solution_markdown": "On additionne directement (les coefficients de $y$ sont déjà opposés) : $2x=14 \\Rightarrow x=7$. Puis $y=10-7=3$. Solution : $(7\\,;3)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ : $\\begin{cases} 2x+3y=7 \\\\ 4x-y=-7 \\end{cases}$",
+          "solution_markdown": "On multiplie la deuxième équation par 3 : $\\begin{cases} 2x+3y=7 \\\\ 12x-3y=-21 \\end{cases}$. On additionne : $14x=-14 \\Rightarrow x=-1$. Puis $2\\times(-1)+3y=7 \\Rightarrow 3y=9 \\Rightarrow y=3$. Solution : $(-1\\,;3)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Résoudre dans $\\mathbb{R}^2$ : $\\begin{cases} 3x-2y=8 \\\\ 5x+4y=6 \\end{cases}$",
+          "solution_markdown": "On multiplie la première équation par 2 : $\\begin{cases} 6x-4y=16 \\\\ 5x+4y=6 \\end{cases}$. On additionne : $11x=22 \\Rightarrow x=2$. Puis $3\\times2-2y=8 \\Rightarrow 6-2y=8 \\Rightarrow y=-1$. Solution : $(2\\,;-1)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Choisis l'inconnue à éliminer, puis multiplie une ou les deux équations pour rendre ses coefficients opposés.",
+        "Multiplie TOUS les termes de l'équation, y compris le second membre.",
+        "Additionne membre à membre pour faire disparaître l'inconnue choisie, puis résous l'équation restante.",
+        "Reporte la valeur trouvée dans l'équation d'origine la plus simple pour obtenir la seconde inconnue.",
+        "Vérifie la solution dans l'équation qui n'a pas servi au report : c'est le contrôle le plus fiable avant de conclure."
+      ]
+    }
+  ]
+}

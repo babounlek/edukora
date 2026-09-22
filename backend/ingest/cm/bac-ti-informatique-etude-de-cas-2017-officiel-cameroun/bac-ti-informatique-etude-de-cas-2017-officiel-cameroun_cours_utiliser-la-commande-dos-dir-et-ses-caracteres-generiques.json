@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-commande-dos-dir-jokers-tle-ti",
+  "meta": {
+    "titre": "Utiliser la commande DOS DIR et ses caractères génériques",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Maintenance informatique - ligne de commande",
+    "duree_estimee_min": 20,
+    "tags": [
+      "commande DOS",
+      "DIR",
+      "caractères génériques",
+      "jokers",
+      "ligne de commande"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-etude-de-cas-2017-officiel-cameroun",
+    "epreuve_titre": "BAC ESG - Série TI - Informatique - Étude de cas (EPS) - 2017 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex3-q6.1-1",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex3-q6.2-1",
+      "rdm-bac-ti-informatique-etude-de-cas-2017-officiel-cameroun-ex3-q6.3-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Retrouver rapidement tous les fichiers PDF d'un dossier qui en contient des centaines, sans ouvrir un explorateur graphique, est un réflexe de technicien que la ligne de commande rend possible en une seule ligne. La commande `DIR`, associée à ses caractères génériques, est l'un des outils les plus simples et les plus utilisés de la maintenance informatique sous Windows."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ouvrir une invite de commandes Windows.",
+        "Savoir ce qu'est l'extension d'un fichier (la partie après le point dans son nom)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "DIR et ses deux jokers, * et ?",
+      "contenu_markdown": "La commande DOS `DIR` liste le contenu (fichiers et sous-dossiers) du répertoire courant. Utilisée seule, sans aucun paramètre, elle affiche l'intégralité de ce contenu, sans filtre. Associée à un motif contenant un caractère générique, elle filtre cette liste : le caractère `*` remplace n'importe quelle suite de caractères (y compris une suite vide), tandis que le caractère `?` remplace un seul caractère précis. Un motif se décompose toujours en deux parties séparées par un point : la partie « nom » avant le point, la partie « extension » après le point, chacune pouvant contenir ses propres jokers de façon indépendante.",
+      "formule_principale": "\\texttt{DIR\\ motif.extension} \\quad \\text{où}\\ * = \\text{n'importe quelle suite,}\\ ? = \\text{un seul caractère}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer ce que fait chacune des commandes suivantes : `DIR *.PDF`, `DIR PROG*.*`, `DIR`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Analyser `DIR *.PDF`",
+          "justification": "Le `*` remplace n'importe quel nom, la partie extension est fixée à `PDF`.",
+          "resultat_markdown": "Affiche tous les fichiers dont l'extension est `.PDF`, quel que soit leur nom."
+        },
+        {
+          "numero": 2,
+          "action": "Analyser `DIR PROG*.*`",
+          "justification": "Le nom doit commencer par `PROG`, le reste du nom et l'extension sont libres.",
+          "resultat_markdown": "Affiche tous les fichiers et dossiers dont le nom commence par `PROG`, quelle que soit la suite du nom et quelle que soit l'extension."
+        },
+        {
+          "numero": 3,
+          "action": "Analyser `DIR` seule",
+          "justification": "Aucun motif n'est fourni, donc aucun filtre n'est appliqué.",
+          "resultat_markdown": "Affiche l'intégralité du contenu du répertoire courant, fichiers et sous-dossiers confondus."
+        }
+      ],
+      "conclusion_markdown": "Chaque commande applique un filtre différent, du plus restrictif (`*.PDF`, une seule extension) au plus permissif (`DIR` seule, aucun filtre), en passant par un filtre sur le début du nom uniquement (`PROG*.*`)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que `DIR PROG*` (sans le `.* final) ne fonctionne pas ou se comporte très différemment de `DIR PROG*.*`.",
+          "pourquoi_faux": "Dans la pratique, la plupart des interpréteurs DOS/Windows traitent `PROG*` comme équivalent à `PROG*.*` (toute extension acceptée), mais il reste plus rigoureux et plus explicite d'écrire le `.* complet pour ne laisser aucune ambiguïté sur l'intention du filtre.",
+          "correction_markdown": "En cas de doute à l'examen, écris toujours le motif complet avec son `.extension` explicite, plus clair pour le correcteur."
+        },
+        {
+          "erreur_markdown": "Confondre `*` et `?` en les utilisant indifféremment, par exemple répondre que `DIR PROG?.*` se comporte comme `DIR PROG*.*`.",
+          "pourquoi_faux": "`?` ne remplace qu'un seul caractère exactement, alors que `*` remplace n'importe quelle suite de longueur variable (y compris zéro caractère) : `PROG?.*` ne trouverait que des noms de 5 caractères commençant par PROG (comme PROG1), jamais PROGRAMME.",
+          "correction_markdown": "Retiens `*` = suite quelconque, `?` = un seul caractère : ne les substitue jamais l'un à l'autre dans une réponse d'examen."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que fait la commande `DIR *.DOCX` ?",
+          "solution_markdown": "Elle affiche tous les fichiers du répertoire courant dont l'extension est `.DOCX`, quel que soit leur nom."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Que fait la commande `DIR RAPPORT?.TXT` ? Donner un exemple de nom de fichier qui correspondrait à ce motif, et un exemple qui ne correspondrait pas.",
+          "solution_markdown": "Elle affiche les fichiers dont le nom commence par « RAPPORT », suivi d'exactement un caractère quelconque, avec l'extension `.TXT`.\n\nExemple qui correspond : `RAPPORT1.TXT` (un seul caractère après RAPPORT).\n\nExemple qui ne correspond pas : `RAPPORT12.TXT` (deux caractères après RAPPORT, ce que `?` ne peut pas couvrir à lui seul) ni `RAPPORT.TXT` (aucun caractère après RAPPORT, alors que `?` en exige exactement un)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un technicien veut lister, dans un même dossier, tous les fichiers dont le nom se termine par « _2017 », quelle que soit leur extension et quel que soit ce qui précède « _2017 » dans leur nom. Proposer la commande `DIR` adaptée, et expliquer pourquoi un motif comme `DIR *_2017.*` fonctionne alors qu'aucun joker ne précède directement le début du nom.",
+          "solution_markdown": "La commande adaptée est `DIR *_2017.*`.\n\nCela fonctionne car le `*` en début de motif joue exactement le même rôle qu'ailleurs dans le nom : il remplace n'importe quelle suite de caractères, y compris en position initiale. `*_2017` signifie donc « n'importe quel début de nom, suivi obligatoirement de `_2017` ». Le second `*` après le point couvre ensuite n'importe quelle extension.\n\nCette commande afficherait par exemple `rapport_ventes_2017.xlsx`, `photo_2017.jpg` ou `notes_2017.txt`, mais pas `rapport_2018.xlsx` (le suffixe ne correspond pas) ni `2017_rapport.txt` (le `_2017` n'est pas à la fin du nom, avant l'extension)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`DIR` seule affiche tout le contenu du répertoire courant, sans filtre.",
+        "`*` remplace n'importe quelle suite de caractères (même vide) ; `?` remplace exactement un caractère.",
+        "Un motif se lit en deux parties séparées par un point : le nom, puis l'extension, chacune filtrable indépendamment.",
+        "Ne confonds jamais `*` et `?` : leurs comportements sont réellement différents, pas de simples variantes stylistiques.",
+        "Cette maîtrise des jokers en ligne de commande est une compétence pratique de maintenance directement réutilisable, bien au-delà de la commande `DIR` elle-même (on la retrouve avec `COPY`, `DEL`, et dans la plupart des systèmes d'exploitation)."
+      ]
+    }
+  ]
+}

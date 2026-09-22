@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-principes-fondamentaux-de-la-securite-informatique-confidentialite-terminale-ti",
+  "meta": {
+    "titre": "Principes fondamentaux de la sécurité informatique (confidentialité)",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Principes de sécurité informatique",
+    "duree_estimee_min": 15,
+    "tags": [
+      "confidentialité",
+      "principes de sécurité",
+      "chiffrement",
+      "intégrité",
+      "authenticité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex3-q5a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chiffrer un message avant de l'envoyer répond à un objectif de sécurité précis, différent de vérifier que ce message n'a pas été modifié en chemin, ou de prouver qui en est réellement l'auteur. Trois objectifs distincts, trois principes fondamentaux de sécurité informatique, qu'un examinateur attend de voir clairement distingués."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de chiffrement",
+        "Notion de message et d'expéditeur/destinataire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les principes fondamentaux de la sécurité informatique",
+      "contenu_markdown": "La **confidentialité** garantit qu'un message ne peut être compris que par son destinataire légitime, même s'il est intercepté par un tiers : c'est l'objectif recherché par tout chiffrement.\n\nL'**intégrité** garantit qu'un message n'a pas été modifié entre son envoi et sa réception.\n\nL'**authenticité** garantit l'identité réelle de l'expéditeur d'un message.\n\nUn même mécanisme de sécurité (chiffrement, signature) protège en général un seul de ces principes à la fois, sauf combinaison explicite de plusieurs mécanismes.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Jean chiffre un message avant de l'envoyer à son ami, pour que personne d'autre ne puisse le comprendre s'il est intercepté. Identifier le principe de sécurité recherché, et expliquer pourquoi ce chiffrement seul ne garantit pas que le message n'a pas été modifié en chemin.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'objectif recherché par Jean",
+          "justification": "Rendre un message incompréhensible à un tiers correspond exactement à la définition de la confidentialité.",
+          "resultat_markdown": "Jean recherche la confidentialité : seul son ami, capable de déchiffrer le message, doit pouvoir le comprendre."
+        },
+        {
+          "numero": 2,
+          "action": "Distinguer confidentialité et intégrité",
+          "justification": "Le chiffrement protège le CONTENU contre la lecture, pas contre une modification du message chiffré lui-même.",
+          "resultat_markdown": "Un tiers qui intercepte le message chiffré ne peut pas le comprendre (confidentialité assurée), mais pourrait malgré tout altérer certains caractères du message chiffré avant de le laisser poursuivre sa route, sans que le chiffrement seul ne permette de détecter cette altération."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la limite du chiffrement seul",
+          "justification": "Un principe de sécurité protège un aspect précis, jamais tous les aspects à la fois.",
+          "resultat_markdown": "Le chiffrement de César utilisé par Jean garantit la confidentialité du message, mais ne garantit ni son intégrité (absence de modification) ni son authenticité (identité réelle de l'expéditeur)."
+        }
+      ],
+      "conclusion_markdown": "Un mécanisme de sécurité donné répond en général à un seul principe fondamental : le chiffrement protège la confidentialité, pas nécessairement l'intégrité ni l'authenticité du message."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre confidentialité et intégrité",
+          "pourquoi_faux": "La confidentialité protège contre la LECTURE non autorisée d'un message ; l'intégrité protège contre sa MODIFICATION non autorisée. Un message peut être confidentiel (illisible sans la clé) tout en étant altéré sans que cela se voie, si aucun mécanisme d'intégrité n'est mis en place en plus du chiffrement.",
+          "correction_markdown": "Distingue toujours : confidentialité = personne d'autre ne peut LIRE, intégrité = personne d'autre n'a pu MODIFIER."
+        },
+        {
+          "erreur_markdown": "Confondre confidentialité et authenticité",
+          "pourquoi_faux": "La confidentialité concerne la protection du CONTENU du message ; l'authenticité concerne la vérification de l'IDENTITÉ de son expéditeur. Chiffrer un message ne prouve en rien qui l'a réellement envoyé.",
+          "correction_markdown": "Distingue : confidentialité = protéger le contenu, authenticité = prouver l'identité de l'expéditeur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Nommer le principe de sécurité garanti par le chiffrement d'un message.",
+          "solution_markdown": "La confidentialité : seul le destinataire capable de déchiffrer le message peut en comprendre le contenu."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un site web affiche un cadenas dans la barre d'adresse du navigateur (connexion https). Quel principe de sécurité ce cadenas garantit-il principalement concernant les données échangées avec ce site ?",
+          "solution_markdown": "Le cadenas signale une connexion chiffrée (HTTPS, via TLS), qui garantit principalement la confidentialité des données échangées entre le navigateur et le site (elles ne peuvent pas être lues en clair par un tiers qui intercepterait le trafic). TLS apporte en réalité aussi une forme d'intégrité et d'authenticité du serveur (via son certificat), mais l'aspect immédiatement associé au symbole du cadenas dans l'imaginaire courant reste la confidentialité du contenu échangé."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer, à l'aide d'un exemple, pourquoi la confidentialité seule ne suffit pas à garantir la sécurité complète d'un échange, et pourquoi il est parfois nécessaire de combiner chiffrement (confidentialité) et signature numérique (authenticité et intégrité).",
+          "solution_markdown": "Un message chiffré peut rester parfaitement confidentiel (illisible sans la clé) tout en provenant d'un expéditeur usurpé ou en ayant été partiellement altéré en transit, si aucun mécanisme spécifique ne protège son authenticité ou son intégrité. Par exemple, un message bancaire chiffré ordonnant un virement pourrait, en théorie, être intercepté et légèrement modifié (changement du montant ou du bénéficiaire) par un attaquant qui ne parviendrait pas à le déchiffrer mais saurait où se trouvent certains octets sensibles, ou pourrait être remplacé entièrement par un faux message chiffré avec une autre clé, se faisant passer pour l'expéditeur légitime. Une signature numérique, ajoutée en complément du chiffrement, permet de vérifier à la fois que le message provient bien de l'expéditeur annoncé (authenticité) et qu'il n'a subi aucune modification depuis sa signature (intégrité), ce que la seule confidentialité du chiffrement ne garantit pas. Une sécurité complète combine donc en général plusieurs mécanismes, chacun répondant à un principe fondamental différent."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La confidentialité protège le contenu d'un message contre une lecture non autorisée : c'est l'objectif du chiffrement.",
+        "L'intégrité garantit qu'un message n'a pas été modifié ; l'authenticité garantit l'identité de son expéditeur.",
+        "Un mécanisme de sécurité donné (chiffrement) ne protège en général qu'un seul de ces principes à la fois.",
+        "Une sécurité complète combine souvent plusieurs mécanismes (chiffrement et signature) pour couvrir les trois principes ensemble."
+      ]
+    }
+  ]
+}

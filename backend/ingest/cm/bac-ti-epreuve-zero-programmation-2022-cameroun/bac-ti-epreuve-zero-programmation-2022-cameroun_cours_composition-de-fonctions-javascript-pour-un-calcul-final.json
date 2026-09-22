@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-composition-de-fonctions-javascript-pour-un-calcul-final-tle-ti",
+  "meta": {
+    "titre": "Composition de fonctions JavaScript pour un calcul final",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Introduction à la programmation web",
+    "duree_estimee_min": 25,
+    "tags": [
+      "JavaScript",
+      "composition de fonctions",
+      "calcul"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-epreuve-zero-programmation-2022-cameroun",
+    "epreuve_titre": "Baccalauréat ESG, Série TI - Épreuve Zéro PIC - Épreuve de Programmation (session 2022, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-programmation-2022-cameroun-ex1-q5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un calcul de salaire réel ne se fait jamais en une seule formule géante : il combine un salaire de base, des primes, des retenues d'impôts, une assurance, une pension. Programmer ce calcul revient à assembler des briques déjà construites, pas à tout réécrire d'un bloc."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écriture d'une fonction JavaScript avec return",
+        "Appel d'une fonction depuis une autre fonction"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Réutiliser des fonctions déjà écrites plutôt que dupliquer leur logique",
+      "contenu_markdown": "Lorsqu'un calcul final dépend de plusieurs règles déjà programmées séparément dans d'autres fonctions, la bonne pratique consiste à appeler ces fonctions directement (`CalculAddition()`, `CalculReduction()`) et à combiner leurs résultats, plutôt que de recopier leur code à l'intérieur de la nouvelle fonction. Cette réutilisation garantit que toute correction future d'une règle (par exemple un changement de taux d'impôt) ne doit être faite qu'à un seul endroit du programme.",
+      "formule_principale": "resultat = base + f1() - f2() - f3();",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire une fonction JavaScript qui calcule le salaire final d'un employé à partir de son salaire brut, du supplément renvoyé par `CalculAddition()` et de la réduction d'impôt renvoyée par `CalculReduction()`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Récupérer le salaire brut saisi dans le formulaire",
+          "justification": "C'est la base de tous les calculs suivants, à convertir en nombre car un champ de formulaire renvoie une chaîne de caractères.",
+          "resultat_markdown": "`var salaireBrut = parseFloat(document.monFormulaire.salaireBrut.value);`"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le taux d'impôt réellement appliqué",
+          "justification": "Le taux de 18 % annoncé par l'énoncé est diminué de la réduction éventuelle, déjà calculée par une autre fonction.",
+          "resultat_markdown": "`var tauxImpot = 18 - CalculReduction();`"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer séparément chaque retenue à partir du salaire brut",
+          "justification": "L'énoncé décrit trois prélèvements distincts appliqués chacun au salaire brut, pas une cascade de prélèvements successifs.",
+          "resultat_markdown": "`var impot = salaireBrut * tauxImpot / 100;`\n`var assurance = salaireBrut * 7 / 100;`\n`var pension = salaireBrut * 5 / 100;`"
+        },
+        {
+          "numero": 4,
+          "action": "Assembler le résultat final en ajoutant le supplément et en retranchant les trois retenues",
+          "justification": "C'est exactement la formule demandée par l'énoncé : « après avoir ajouté les bonus et retranché les impôts et autres frais ».",
+          "resultat_markdown": "`var salaireFinal = salaireBrut + CalculAddition() - impot - assurance - pension;`"
+        }
+      ],
+      "conclusion_markdown": "La fonction finale ne recalcule jamais elle-même le supplément ou la réduction : elle se contente d'appeler `CalculAddition()` et `CalculReduction()` et d'assembler leurs résultats avec les deux retenues fixes (assurance, pension)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier à l'intérieur de la fonction finale le code des fonctions `CalculAddition` et `CalculReduction` plutôt que de les appeler.",
+          "pourquoi_faux": "Cela duplique la logique à deux endroits du programme : toute correction ultérieure d'une règle (montant du bonus, taux de réduction) devrait alors être répétée partout où elle a été recopiée, avec le risque d'oublier un endroit.",
+          "correction_markdown": "Toujours appeler la fonction existante (`CalculAddition()`) plutôt que de réécrire son contenu, même si cela semble plus rapide sur le moment."
+        },
+        {
+          "erreur_markdown": "Calculer l'assurance et la pension sur le salaire déjà diminué de l'impôt, en cascade.",
+          "pourquoi_faux": "L'énoncé prévoit trois prélèvements indépendants, chacun calculé sur le salaire brut initial ; les appliquer en cascade change le résultat et ne correspond pas à la formule attendue.",
+          "correction_markdown": "Relire l'énoncé pour vérifier si les retenues sont décrites comme indépendantes (« les frais suivants ») ou en cascade, avant de choisir la formule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une fonction `prixHT()` renvoie le prix hors taxes d'un article, une fonction `tva()` renvoie le montant de la TVA. Écrire une fonction `prixTTC()` qui calcule le prix toutes taxes comprises en réutilisant ces deux fonctions.",
+          "solution_markdown": "```javascript\nfunction prixTTC() {\n    return prixHT() + tva();\n}\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une fonction `fraisLivraison()` renvoie des frais de port, une fonction `remise()` renvoie une remise en francs. Écrire une fonction `totalCommande(montantArticles)` qui additionne les articles et les frais de livraison, puis retranche la remise.",
+          "solution_markdown": "```javascript\nfunction totalCommande(montantArticles) {\n    return montantArticles + fraisLivraison() - remise();\n}\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Modifier la fonction `CalculSalaireFinal` du cours pour qu'elle affiche également, dans un champ `resultat` du formulaire, le montant total des retenues (impôt + assurance + pension) en plus du salaire final.",
+          "solution_markdown": "```javascript\nfunction CalculSalaireFinal() {\n    var salaireBrut = parseFloat(document.monFormulaire.salaireBrut.value);\n    var tauxImpot = 18 - CalculReduction();\n    var impot = salaireBrut * tauxImpot / 100;\n    var assurance = salaireBrut * 7 / 100;\n    var pension = salaireBrut * 5 / 100;\n    var totalRetenues = impot + assurance + pension;\n\n    var salaireFinal = salaireBrut + CalculAddition() - totalRetenues;\n\n    document.monFormulaire.resultat.value = salaireFinal;\n    document.monFormulaire.retenues.value = totalRetenues;\n    return salaireFinal;\n}\n```\nRegrouper les trois retenues dans une variable `totalRetenues` avant de l'utiliser deux fois (pour le calcul du salaire final et pour l'affichage) évite de recalculer deux fois la même somme."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un calcul final qui combine plusieurs règles s'écrit en appelant les fonctions qui portent déjà ces règles, jamais en recopiant leur code.",
+        "Chaque grandeur du calcul (impôt, assurance, pension) se calcule séparément avant d'être assemblée dans le résultat final.",
+        "Un champ de formulaire renvoie toujours une chaîne de caractères : la convertir avec `parseFloat` avant tout calcul numérique.",
+        "Vérifie toujours ta fonction finale avec un cas simple à la main (par exemple un salaire brut rond, sans bonus ni réduction) avant de la considérer terminée."
+      ]
+    }
+  ]
+}

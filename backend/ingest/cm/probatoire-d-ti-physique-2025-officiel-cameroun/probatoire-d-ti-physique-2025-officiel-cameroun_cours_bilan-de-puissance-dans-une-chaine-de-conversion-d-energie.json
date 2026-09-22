@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-bilan-puissance-chaine-conversion-rendement-1ere-d-ti",
+  "meta": {
+    "titre": "Bilan de puissance dans une chaîne de conversion d'énergie",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Estimation du bilan de puissance électrique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "rendement",
+      "puissance électrique",
+      "chaîne de conversion d'énergie",
+      "loi P = UI"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "D-TI",
+      "module_numero": "4",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2025-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Séries D, TI - Cameroun - Session 2025",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2025-officiel-cameroun-ex4-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Aucun convertisseur d'énergie n'est parfait : un alternateur, un moteur, un panneau solaire perdent tous une partie de l'énergie qu'ils reçoivent, généralement sous forme de chaleur. Le rendement chiffre exactement cette perte, et permet de remonter d'une puissance d'entrée connue à la puissance utile réellement disponible en sortie, celle qui compte pour l'utilisateur final."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition du rendement comme rapport de deux puissances",
+        "Loi de la puissance électrique $P = UI$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du rendement à la puissance utile, puis au courant délivré",
+      "contenu_markdown": "Le rendement $\\eta$ d'un convertisseur d'énergie, toujours compris entre 0 et 1, est le rapport de la puissance utile qu'il délivre à la puissance qu'il reçoit réellement. Il ne faut jamais appliquer le rendement à une puissance nominale ou maximale théorique lorsque la puissance réellement reçue est différente : c'est cette dernière, la puissance d'entrée réelle, qui doit être multipliée par $\\eta$. Une fois la puissance électrique utile connue, elle se relie au courant délivré par la loi $P = UI$.",
+      "formule_principale": "P_{utile} = \\eta \\times P_{recue\\ reelle} \\qquad ; \\qquad I = \\dfrac{P_{utile}}{U}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un alternateur de rendement $\\eta = 0{,}800$ reçoit réellement une puissance mécanique $P_{disponible} = 234{,}9\\times 10^6\\ \\text{W}$ (inférieure à sa puissance de plein régime) et délivre une tension $U = 2500\\ \\text{kV}$. Le cahier de charges exige un courant $I_{min}=100\\ \\text{A}$. Examiner si le cahier de charges sera rempli.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la puissance mécanique réellement reçue",
+          "justification": "C'est cette puissance réelle, et non la puissance nominale de plein régime, qui doit servir de base au calcul.",
+          "resultat_markdown": "$P_{disponible} = 234{,}9\\times10^6\\ \\text{W}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance électrique produite",
+          "justification": "On applique le rendement à la puissance mécanique réellement reçue.",
+          "resultat_markdown": "$P_{elec} = \\eta \\times P_{disponible} = 0{,}800 \\times 234{,}9\\times10^6 = 187{,}92\\times10^6\\ \\text{W}$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire le courant délivré",
+          "justification": "La loi $P=UI$ relie la puissance électrique, la tension et l'intensité.",
+          "resultat_markdown": "$I = \\dfrac{P_{elec}}{U} = \\dfrac{187{,}92\\times10^6}{2{,}500\\times10^6} = 75{,}2\\ \\text{A}$"
+        },
+        {
+          "numero": 4,
+          "action": "Comparer et conclure",
+          "justification": "On compare le courant obtenu à l'exigence du cahier de charges.",
+          "resultat_markdown": "$75{,}2\\ \\text{A} < 100\\ \\text{A}$ : le cahier de charges ne sera pas rempli."
+        }
+      ],
+      "conclusion_markdown": "Ce résultat illustre l'importance de bien identifier la puissance d'entrée réelle du convertisseur avant d'appliquer le rendement : utiliser par erreur la puissance nominale de plein régime aurait donné un résultat trop optimiste et une conclusion fausse."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer le rendement à la puissance nominale ou de plein régime plutôt qu'à la puissance réellement reçue par le convertisseur.",
+          "pourquoi_faux": "La puissance nominale n'est qu'un seuil de fonctionnement prévu par le constructeur ; si l'installation en amont ne fournit pas cette puissance, le convertisseur ne peut recevoir, et donc convertir, que ce qu'il reçoit réellement.",
+          "correction_markdown": "Avant d'appliquer un rendement, identifie toujours quelle puissance le convertisseur reçoit réellement dans la situation décrite par l'énoncé, pas seulement la puissance qu'il pourrait recevoir en théorie."
+        },
+        {
+          "erreur_markdown": "Convertir une tension en kV vers des V en oubliant un facteur 1000, ou inversement.",
+          "pourquoi_faux": "Une erreur d'un facteur 1000 sur la tension entraîne la même erreur sur le courant calculé via $I=P/U$, ce qui peut faire conclure à tort qu'un cahier de charges est rempli, ou l'inverse.",
+          "correction_markdown": "Écris systématiquement la conversion complète en notation scientifique ($2500\\ \\text{kV} = 2{,}500\\times10^6\\ \\text{V}$) avant de l'utiliser dans un calcul, plutôt que de la garder mentalement en kV."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur électrique de rendement $\\eta = 0{,}90$ reçoit une puissance mécanique $P = 5{,}0\\times10^4\\ \\text{W}$. Calculer la puissance électrique produite.",
+          "solution_markdown": "$P_{elec} = \\eta \\times P = 0{,}90 \\times 5{,}0\\times10^4 = 4{,}5\\times10^4\\ \\text{W}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un alternateur de rendement $\\eta = 0{,}75$ délivre une puissance électrique $P_{elec} = 9{,}0\\times10^6\\ \\text{W}$ sous une tension $U = 20\\ \\text{kV}$. Calculer le courant délivré et la puissance mécanique reçue.",
+          "solution_markdown": "$I = \\dfrac{P_{elec}}{U} = \\dfrac{9{,}0\\times10^6}{2{,}0\\times10^4} = 450\\ \\text{A}$. Puissance mécanique reçue : $P_{mec} = \\dfrac{P_{elec}}{\\eta} = \\dfrac{9{,}0\\times10^6}{0{,}75} = 1{,}2\\times10^7\\ \\text{W}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une installation doit garantir un courant minimal $I_{min} = 200\\ \\text{A}$ sous une tension $U = 100\\ \\text{kV}$, avec un alternateur de rendement $\\eta = 0{,}85$. Déterminer la puissance mécanique minimale que doit recevoir l'alternateur pour satisfaire cette exigence.",
+          "solution_markdown": "Puissance électrique minimale exigée : $P_{elec,min} = U \\times I_{min} = 1{,}0\\times10^5 \\times 200 = 2{,}0\\times10^7\\ \\text{W}$. Puissance mécanique minimale à recevoir : $P_{mec,min} = \\dfrac{P_{elec,min}}{\\eta} = \\dfrac{2{,}0\\times10^7}{0{,}85} \\approx 2{,}35\\times10^7\\ \\text{W}$. Toute installation en amont doit donc fournir au moins cette puissance mécanique pour que le cahier de charges soit respecté."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le rendement s'applique toujours à la puissance réellement reçue par le convertisseur, jamais à une puissance nominale théorique si elle diffère de la réalité.",
+        "$P_{utile} = \\eta \\times P_{recue}$, avec $\\eta$ toujours compris entre 0 et 1.",
+        "Une fois la puissance électrique connue, $I = P/U$ donne directement le courant délivré, à condition de convertir toutes les unités en unités du Système International.",
+        "Deux questions enchaînées dans une situation-problème partagent presque toujours une donnée intermédiaire : réutilise le résultat de la question précédente plutôt que de repartir des données brutes.",
+        "Ce schéma de raisonnement, puissance reçue → rendement → puissance utile → grandeur électrique, s'applique à tout convertisseur d'énergie, pas seulement à un alternateur de barrage."
+      ]
+    }
+  ]
+}

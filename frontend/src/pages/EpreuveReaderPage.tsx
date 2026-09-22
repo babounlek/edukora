@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { EnonceToggle } from "@/components/EnonceToggle"
-import { EpreuveSommaire, exerciceAnchorId } from "@/components/EpreuveSommaire"
+import { exerciceAnchorId } from "@/components/EpreuveSommaire"
 import { ExerciceNav } from "@/components/ExerciceNav"
 import { FicheReader } from "@/components/FicheReader"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
@@ -99,7 +99,7 @@ export function EpreuveReaderPage() {
 
   if (isLoading || (!content && !error)) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
         <Skeleton className="mb-6 h-6 w-40" />
         <Skeleton className="mb-3 h-8 w-2/3" />
         <Skeleton className="h-4 w-full" />
@@ -120,10 +120,7 @@ export function EpreuveReaderPage() {
     )
   }
 
-  // Un sommaire n'a de sens qu'à partir de deux exercices - en dessous, il ne ferait
-  // qu'ajouter une barre sticky et rétrécir la colonne de lecture pour une seule entrée.
   const exercises = content?.exercises ?? []
-  const hasSommaire = content?.lesson_type !== "FICHE" && exercises.length > 1
 
   const article = (
     <article className="prose prose-neutral min-w-0 max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
@@ -146,7 +143,7 @@ export function EpreuveReaderPage() {
   )
 
   return (
-    <div className={`mx-auto px-4 py-8 sm:px-6 ${hasSommaire ? "max-w-5xl" : "max-w-3xl"}`}>
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
         <Link
           to={epreuvesListPath(displayCountry)}
@@ -165,8 +162,6 @@ export function EpreuveReaderPage() {
         <FicheReader title={content.title} header={content.header} markdown={content.content_markdown} />
       ) : (
         <>
-          {/* Titre, badges et PDF restent pleine largeur, au-dessus de la grille : la
-              sidebar du sommaire ne doit commencer qu'au niveau du premier exercice. */}
           <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">{content?.title}</h1>
           {content?.header && (
             <div className="mb-6 mt-3 flex flex-wrap gap-1.5">
@@ -207,14 +202,11 @@ export function EpreuveReaderPage() {
               <EpreuveMarkdown markdown={content.introduction_markdown} />
             </div>
           )}
-          {hasSommaire ? (
-            <div className="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:items-start lg:gap-10">
-              <EpreuveSommaire exercises={exercises} />
-              {article}
-            </div>
-          ) : (
-            article
-          )}
+          {/* Sommaire (EpreuveSommaire) volontairement masqué pour l'instant : sa colonne
+              latérale de 220px rétrécissait la colonne de lecture en dessous de la
+              largeur pleine (voir InediteTentativePage, passé à max-w-5xl sans sidebar) -
+              à réintroduire une fois sa place repensée dans une mise en page large. */}
+          {article}
         </>
       )}
 

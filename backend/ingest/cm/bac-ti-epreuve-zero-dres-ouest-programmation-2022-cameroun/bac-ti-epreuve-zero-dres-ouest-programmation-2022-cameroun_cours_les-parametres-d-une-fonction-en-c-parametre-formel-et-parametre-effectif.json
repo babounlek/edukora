@@ -1,0 +1,117 @@
+{
+  "cours_id": "cours-les-parametres-d-une-fonction-en-c-parametre-formel-et-parametre-effectif-tle-ti",
+  "meta": {
+    "titre": "Les paramètres d'une fonction en C : paramètre formel et paramètre effectif",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Fonctions en langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "paramètre formel",
+      "paramètre effectif",
+      "appel de fonction"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex2-q4.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fonction déclarée avec `int som(int a)` et appelée par `som(n)` : deux noms, `a` et `n`, désignent-ils la même chose ? Presque, mais pas tout à fait. Cette nuance de vocabulaire revient très régulièrement dans les épreuves de langage C."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer une fonction en C avec des paramètres",
+        "Savoir appeler une fonction avec des arguments"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Formel à la déclaration, effectif à l'appel",
+      "contenu_markdown": "Un **paramètre formel** est le nom donné à une valeur d'entrée dans la **déclaration** d'une fonction : il n'existe que dans le contexte de cette fonction, comme une variable locale. Un **paramètre effectif** (ou argument) est la valeur réellement fournie au moment de l'**appel** de cette fonction, à l'endroit précis où elle est invoquée dans le programme.\n\nAu moment de l'exécution de l'appel, la valeur du paramètre effectif est recopiée dans le paramètre formel, qui devient alors utilisable à l'intérieur du corps de la fonction (c'est le principe du passage de paramètre par valeur, le plus courant en C)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans `int som(int a){ ... }` et l'appel `M = som(n);`, identifie le paramètre formel et le paramètre effectif.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la ligne de déclaration de la fonction",
+          "justification": "Le paramètre formel se trouve entre parenthèses dans l'en-tête de la fonction",
+          "resultat_markdown": "`int som(int a)` : `a` est le paramètre formel"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la ligne d'appel de la fonction",
+          "justification": "Le paramètre effectif est la valeur passée entre parenthèses au moment de l'appel",
+          "resultat_markdown": "`M = som(n);` : `n` est le paramètre effectif"
+        },
+        {
+          "numero": 3,
+          "action": "Décrire ce qui se passe au moment de l'appel",
+          "justification": "Le mécanisme de passage de paramètre relie les deux notions",
+          "resultat_markdown": "La valeur de `n` est recopiée dans `a` avant l'exécution du corps de `som`"
+        }
+      ],
+      "conclusion_markdown": "`a` est le paramètre formel de la fonction som, `n` est le paramètre effectif utilisé lors de cet appel précis."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « a » à une question qui demande le paramètre effectif",
+          "pourquoi_faux": "`a` est un nom local à la déclaration de la fonction, il ne désigne jamais une valeur concrète transmise lors d'un appel particulier.",
+          "correction_markdown": "Cherche toujours le paramètre effectif du côté de l'appel de la fonction, jamais du côté de sa déclaration."
+        },
+        {
+          "erreur_markdown": "Croire qu'un paramètre effectif doit être une variable",
+          "pourquoi_faux": "Un paramètre effectif peut aussi être une valeur littérale (`som(5)`) ou le résultat d'une expression (`som(n+1)`), pas seulement le nom d'une variable.",
+          "correction_markdown": "Généralise : le paramètre effectif est tout ce qui est écrit entre parenthèses au moment de l'appel, quelle qu'en soit la forme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans `int carre(int x){ return x*x; }` appelée par `resultat = carre(7);`, identifie le paramètre formel et le paramètre effectif.",
+          "solution_markdown": "`x` est le paramètre formel (déclaration), `7` est le paramètre effectif (appel)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans l'appel `carre(a+1)`, où a vaut 4, quel est le paramètre effectif transmis à la fonction ?",
+          "solution_markdown": "L'expression `a+1` est évaluée avant l'appel, donc le paramètre effectif transmis est la valeur 5."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une fonction `int fois(int a, int b){ return a*b; }` est appelée par `p = fois(som(3), 2);`. Décris l'ordre exact des évaluations et identifie les paramètres effectifs transmis à fois.",
+          "solution_markdown": "L'appel `som(3)` doit d'abord être entièrement évalué puisqu'il constitue lui-même un paramètre effectif de `fois` : som(3) vaut 3+2+1+0 = 6. Les paramètres effectifs transmis à `fois` sont donc 6 (premier argument) et 2 (second argument), et l'appel équivaut à `fois(6, 2)`, qui renvoie 12."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Paramètre formel : nom utilisé dans la déclaration de la fonction, local à cette fonction.",
+        "Paramètre effectif (ou argument) : valeur réellement transmise au moment de l'appel.",
+        "En C, la valeur du paramètre effectif est recopiée dans le paramètre formel (passage par valeur).",
+        "Un paramètre effectif peut être une variable, une valeur littérale ou le résultat d'une expression, y compris un autre appel de fonction."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "cours_id": "cours-formules-duplication-tangente-p1c",
+  "meta": {
+    "titre": "Les formules de duplication et le passage aux tangentes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "niveau": "1ere",
+    "serie": "C, E",
+    "sous_theme": "Trigonométrie - formules de duplication",
+    "duree_estimee_min": 45,
+    "tags": [
+      "duplication",
+      "tangente",
+      "sinus",
+      "cosinus",
+      "formules d'addition",
+      "angle moitié"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "C-E",
+      "module_numero": "21",
+      "savoir_numero": "III"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-maths-2000-cameroun",
+    "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2000 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-e-maths-2000-cameroun-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toutes les formules en tangente se démontrent de la même façon, en une seule ligne : diviser numérateur et dénominateur par $\\cos^2 a$. Ce geste unique transforme n'importe quelle identité en sinus-cosinus en son équivalent en tangentes. Il faut le connaître, parce qu'aucun formulaire ne le remplace."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les formules d'addition $\\cos(a+b)$ et $\\sin(a+b)$",
+        "Savoir que $\\tan a = \\frac{\\sin a}{\\cos a}$",
+        "Savoir manipuler une fraction de fractions"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Des formules d'addition aux formules de duplication",
+      "contenu_markdown": "**Point de départ : les formules d'addition.**\n\n$$\\cos(a+b) = \\cos a \\cos b - \\sin a \\sin b$$\n$$\\sin(a+b) = \\sin a \\cos b + \\cos a \\sin b$$\n\n**Les formules de duplication** s'en déduisent en posant $b = a$ :\n\n$$\\cos 2a = \\cos^2 a - \\sin^2 a \\qquad ; \\qquad \\sin 2a = 2\\sin a \\cos a$$\n\n**Les trois écritures de $\\cos 2a$.** En utilisant $\\cos^2 a + \\sin^2 a = 1$ :\n\n| Forme | Quand l'utiliser |\n|---|---|\n| $\\cos 2a = \\cos^2 a - \\sin^2 a$ | forme **symétrique** : c'est elle qui mène à la tangente |\n| $\\cos 2a = 2\\cos^2 a - 1$ | quand on ne connaît que $\\cos a$ |\n| $\\cos 2a = 1 - 2\\sin^2 a$ | quand on ne connaît que $\\sin a$ |\n\n**La formule en tangente.**\n\n$$\\tan 2a = \\frac{2\\tan a}{1 - \\tan^2 a}$$\n\n**Sa démonstration, en une idée.** On part de la définition, on remplace par les formules de duplication, puis on **divise numérateur et dénominateur par $\\cos^2 a$** :\n\n$$\\tan 2a = \\frac{\\sin 2a}{\\cos 2a} = \\frac{2\\sin a\\cos a}{\\cos^2 a - \\sin^2 a} = \\frac{\\dfrac{2\\sin a}{\\cos a}}{1 - \\dfrac{\\sin^2 a}{\\cos^2 a}} = \\frac{2\\tan a}{1-\\tan^2 a}$$\n\n**Les conditions d'existence.** La formule suppose trois choses, que les énoncés précisent toujours :\n- $\\cos a \\neq 0$, pour que $\\tan a$ existe, soit $a \\neq \\frac{\\pi}{2} + k\\pi$ ;\n- $\\cos 2a \\neq 0$, pour que $\\tan 2a$ existe, soit $a \\neq \\frac{\\pi}{4} + k\\frac{\\pi}{2}$ ;\n- $1 - \\tan^2 a \\neq 0$, qui est en fait **la même condition** que la précédente.\n\n**Le double usage de la formule.** Elle se lit dans les deux sens, et c'est ce qui en fait la puissance :\n\n$$\\text{connaissant } \\tan a \\ \\longrightarrow \\ \\tan 2a \\qquad ; \\qquad \\text{connaissant } \\tan \\frac{a}{2} \\ \\longrightarrow \\ \\tan a$$\n\nLe second sens est celui qui sert dans les problèmes de géométrie faisant intervenir une **bissectrice**, laquelle produit naturellement l'angle moitié.",
+      "formule_principale": "\\tan 2a = \\frac{2\\tan a}{1-\\tan^2 a}",
+      "variantes": [
+        {
+          "nom": "Les formules de l'angle moitié",
+          "quand_utiliser": "Quand l'énoncé pose $t = \\tan\\frac{a}{2}$ et demande d'exprimer sinus et cosinus",
+          "contenu_markdown": "En posant $t = \\tan\\dfrac{a}{2}$, on obtient les trois expressions rationnelles :\n\n$$\\sin a = \\frac{2t}{1+t^2} \\qquad ; \\qquad \\cos a = \\frac{1-t^2}{1+t^2} \\qquad ; \\qquad \\tan a = \\frac{2t}{1-t^2}$$\n\nCes formules transforment toute équation trigonométrique en équation **algébrique** en $t$, ce qui permet de la résoudre par les méthodes ordinaires. Elles ne sont pas exigibles au Probatoire, mais la troisième n'est que la formule de duplication, et les deux premières se démontrent de la même manière, en divisant par $\\cos^2\\frac{a}{2}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Démontrer que $\\tan 2a = \\dfrac{2\\tan a}{1-\\tan^2 a}$, puis l'appliquer : dans un triangle $ABC$ rectangle en $A$, la bissectrice issue de $C$ coupe $[AB]$ en $D$ avec $AD = 33$ et $AC = 99$. Calculer $AB$.",
+      "epreuve_source": "Probatoire C et E, Mathématiques, session 2000, Cameroun, exercice 2",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Partir de la définition de la tangente",
+          "justification": "Toute formule en tangente se ramène à un quotient sinus sur cosinus.",
+          "resultat_markdown": "$\\tan 2a = \\dfrac{\\sin 2a}{\\cos 2a}$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer les formules de duplication",
+          "justification": "On choisit la forme symétrique de $\\cos 2a$, seule compatible avec la suite.",
+          "resultat_markdown": "$\\tan 2a = \\dfrac{2\\sin a\\cos a}{\\cos^2 a - \\sin^2 a}$"
+        },
+        {
+          "numero": 3,
+          "action": "Diviser numérateur et dénominateur par $\\cos^2 a$",
+          "justification": "Opération licite car $\\tan a$ existe, donc $\\cos a \\neq 0$. C'est le geste décisif.",
+          "resultat_markdown": "$\\tan 2a = \\dfrac{2\\tan a}{1-\\tan^2 a}$"
+        },
+        {
+          "numero": 4,
+          "action": "Exploiter la bissectrice dans la figure",
+          "justification": "La bissectrice partage l'angle en deux parts égales : elle fait apparaître l'angle moitié.",
+          "resultat_markdown": "En notant $a$ l'angle $\\widehat{BCA}$, on a $\\text{mes}\\,\\widehat{DCA} = \\dfrac{a}{2}$."
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la tangente de l'angle moitié",
+          "justification": "Le triangle $ADC$ est rectangle en $A$.",
+          "resultat_markdown": "$\\tan\\dfrac{a}{2} = \\dfrac{AD}{AC} = \\dfrac{33}{99} = \\dfrac{1}{3}$"
+        },
+        {
+          "numero": 6,
+          "action": "Appliquer la formule à l'angle moitié",
+          "justification": "On utilise la formule dans le sens « de la moitié vers l'entier ».",
+          "resultat_markdown": "$\\tan a = \\dfrac{2 \\times \\frac13}{1 - \\frac19} = \\dfrac{\\frac23}{\\frac89} = \\dfrac{3}{4}$"
+        },
+        {
+          "numero": 7,
+          "action": "Revenir à la longueur cherchée",
+          "justification": "Dans le triangle $ABC$ rectangle en $A$, $\\tan a = \\frac{AB}{AC}$.",
+          "resultat_markdown": "$\\dfrac{AB}{99} = \\dfrac34$, donc $AB = 74{,}25$ cm, et $BD = 74{,}25 - 33 = 41{,}25$ cm."
+        }
+      ],
+      "conclusion_markdown": "La formule $\\tan 2a = \\frac{2\\tan a}{1-\\tan^2 a}$, appliquée à l'angle moitié fourni par la bissectrice, donne $\\tan a = \\frac34$ puis $AB = 74{,}25$ cm."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $\\cos 2a = 2\\cos^2 a - 1$ dans la démonstration",
+          "pourquoi_faux": "Cette forme est exacte, mais en divisant par $\\cos^2 a$ elle donne $2 - \\frac{1}{\\cos^2 a}$, où la tangente n'apparaît pas. Seule la forme symétrique $\\cos^2 a - \\sin^2 a$ produit $1 - \\tan^2 a$.",
+          "correction_markdown": "Retiens : pour aller vers la tangente, on prend toujours la forme **symétrique** de $\\cos 2a$."
+        },
+        {
+          "erreur_markdown": "Oublier de justifier la division par $\\cos^2 a$",
+          "pourquoi_faux": "Diviser par une quantité suppose qu'elle est non nulle. Ici c'est acquis, puisque l'énoncé garantit l'existence de $\\tan a$, mais le correcteur attend la mention explicite.",
+          "correction_markdown": "Écris une demi-phrase : « $\\tan a$ étant défini, $\\cos a \\neq 0$, la division est licite »."
+        },
+        {
+          "erreur_markdown": "Appliquer la formule au mauvais angle dans le problème géométrique",
+          "pourquoi_faux": "La bissectrice donne $\\tan\\frac{a}{2}$, non $\\tan a$. Appliquer la formule à $a$ calculerait $\\tan 2a$, qui n'a aucun rôle dans la figure.",
+          "correction_markdown": "Demande-toi toujours : quel angle ai-je réellement calculé sur la figure ? Ici c'est la **moitié**, donc la formule sert dans le sens moitié → entier."
+        },
+        {
+          "erreur_markdown": "Confondre $\\tan^2 a$ et $\\tan(a^2)$",
+          "pourquoi_faux": "$\\tan^2 a$ désigne $(\\tan a)^2$, le carré du nombre $\\tan a$. La notation est trompeuse mais universelle.",
+          "correction_markdown": "En cas de doute, écris $(\\tan a)^2$ dans ton brouillon."
+        },
+        {
+          "erreur_markdown": "Négliger les conditions d'existence",
+          "pourquoi_faux": "Pour $a = \\frac{\\pi}{4}$, on a $\\tan a = 1$ et le dénominateur $1 - \\tan^2 a$ s'annule : la formule n'a pas de sens, ce qui est cohérent puisque $\\tan\\frac{\\pi}{2}$ n'existe pas.",
+          "correction_markdown": "Vérifie toujours que le dénominateur ne s'annule pas avant d'appliquer la formule numériquement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Sachant que $\\tan a = \\dfrac{1}{2}$, calculer $\\tan 2a$ puis $\\tan 4a$.",
+          "solution_markdown": "**Calcul de $\\tan 2a$.**\n\n$$\\tan 2a = \\frac{2\\tan a}{1-\\tan^2 a} = \\frac{2 \\times \\frac12}{1 - \\frac14} = \\frac{1}{\\frac34} = \\frac{4}{3}$$\n\n**Calcul de $\\tan 4a$.**\n\nOn applique la même formule, cette fois à l'angle $2a$ :\n\n$$\\tan 4a = \\tan(2 \\times 2a) = \\frac{2\\tan 2a}{1-\\tan^2 2a} = \\frac{2 \\times \\frac43}{1 - \\frac{16}{9}} = \\frac{\\frac83}{-\\frac{7}{9}} = \\frac{8}{3} \\times \\left(-\\frac{9}{7}\\right) = -\\frac{24}{7}$$\n\n**Interprétation du signe.** $\\tan 4a$ est négatif : l'angle $4a$ se situe dans un quadrant où la tangente est négative. Avec $\\tan a = \\frac12$, on a $a \\approx 26{,}6°$, donc $4a \\approx 106{,}4°$, angle du deuxième quadrant — la tangente y est bien négative. Le résultat est cohérent."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Démontrer la formule $\\tan(a+b) = \\dfrac{\\tan a + \\tan b}{1 - \\tan a \\tan b}$, puis en déduire la formule de duplication.",
+          "solution_markdown": "**Étape 1 — partir de la définition.**\n\n$$\\tan(a+b) = \\frac{\\sin(a+b)}{\\cos(a+b)} = \\frac{\\sin a\\cos b + \\cos a\\sin b}{\\cos a\\cos b - \\sin a\\sin b}$$\n\n**Étape 2 — diviser par $\\cos a\\cos b$.**\n\nC'est l'analogue du geste vu en cours : ici le produit à faire disparaître est $\\cos a \\cos b$, non $\\cos^2 a$. L'opération est licite si $\\cos a \\neq 0$ et $\\cos b \\neq 0$, c'est-à-dire si $\\tan a$ et $\\tan b$ existent.\n\n*Numérateur :*\n\n$$\\frac{\\sin a\\cos b + \\cos a\\sin b}{\\cos a\\cos b} = \\frac{\\sin a\\cos b}{\\cos a\\cos b} + \\frac{\\cos a\\sin b}{\\cos a\\cos b} = \\tan a + \\tan b$$\n\n*Dénominateur :*\n\n$$\\frac{\\cos a\\cos b - \\sin a\\sin b}{\\cos a\\cos b} = 1 - \\frac{\\sin a\\sin b}{\\cos a\\cos b} = 1 - \\tan a\\tan b$$\n\n**Étape 3 — conclure.**\n\n$$\\tan(a+b) = \\frac{\\tan a + \\tan b}{1 - \\tan a\\tan b}$$\n\n**Étape 4 — en déduire la duplication.**\n\nIl suffit de poser $b = a$ :\n\n$$\\tan 2a = \\tan(a+a) = \\frac{\\tan a + \\tan a}{1 - \\tan a \\times \\tan a} = \\frac{2\\tan a}{1 - \\tan^2 a}$$\n\n**Ce que montre cet exercice.** La formule de duplication n'est pas une formule à part : c'est le **cas particulier** de la formule d'addition. En retenir une seule suffit, à condition de savoir en déduire l'autre en une ligne."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un triangle $ABC$ rectangle en $A$, on donne $AC = b$ et $AB = c$. La bissectrice issue de $C$ coupe $[AB]$ en $D$. Exprimer $AD$ en fonction de $b$ et $c$, puis retrouver le résultat de l'épreuve avec $b = 99$ et $AD = 33$.",
+          "solution_markdown": "**Étape 1 — poser les notations.**\n\nSoit $a = \\text{mes}\\,\\widehat{BCA}$. Dans le triangle $ABC$ rectangle en $A$ :\n\n$$\\tan a = \\frac{AB}{AC} = \\frac{c}{b}$$\n\nSoit $t = \\tan\\dfrac{a}{2}$. Dans le triangle $ADC$, également rectangle en $A$ :\n\n$$t = \\frac{AD}{AC} = \\frac{AD}{b} \\qquad \\text{donc} \\qquad AD = bt$$\n\n**Étape 2 — relier $t$ et $\\tan a$ par la formule de duplication.**\n\n$$\\tan a = \\frac{2t}{1-t^2} \\qquad \\text{soit} \\qquad \\frac{c}{b} = \\frac{2t}{1-t^2}$$\n\n**Étape 3 — résoudre en $t$.**\n\n$$c(1-t^2) = 2bt$$\n$$ct^2 + 2bt - c = 0$$\n\nÉquation du second degré en $t$, de discriminant :\n\n$$\\Delta = 4b^2 + 4c^2 = 4(b^2+c^2)$$\n\nOr $b^2 + c^2 = AC^2 + AB^2 = BC^2$ par Pythagore. En notant $\\ell = BC$ la longueur de l'hypoténuse :\n\n$$\\sqrt{\\Delta} = 2\\ell$$\n\n$$t = \\frac{-2b \\pm 2\\ell}{2c} = \\frac{-b \\pm \\ell}{c}$$\n\n**Étape 4 — choisir la bonne racine.**\n\nL'angle $\\frac{a}{2}$ est aigu, donc $t > 0$. Comme $\\ell > b$ (l'hypoténuse est le plus grand côté), seule la racine avec le signe $+$ convient :\n\n$$t = \\frac{\\ell - b}{c} = \\frac{\\sqrt{b^2+c^2} - b}{c}$$\n\n**Étape 5 — conclure.**\n\n$$AD = bt = \\frac{b\\left(\\sqrt{b^2+c^2} - b\\right)}{c}$$\n\n**Étape 6 — vérifier sur les données de l'épreuve.**\n\nAvec $b = 99$ et $c = AB = 74{,}25$ :\n\n$$\\ell = \\sqrt{99^2 + 74{,}25^2} = \\sqrt{9801 + 5513{,}0625} = \\sqrt{15314{,}0625} = 123{,}75$$\n\n$$t = \\frac{123{,}75 - 99}{74{,}25} = \\frac{24{,}75}{74{,}25} = \\frac{1}{3}$$\n\n$$AD = 99 \\times \\frac13 = 33 \\quad ✔$$\n\nOn retrouve exactement la donnée de l'énoncé.\n\n**Étape 7 — retrouver la formule autrement.**\n\nLe théorème de la bissectrice affirme que la bissectrice issue de $C$ partage le côté opposé dans le rapport des côtés adjacents :\n\n$$\\frac{AD}{DB} = \\frac{CA}{CB} = \\frac{b}{\\ell}$$\n\nAvec $AD + DB = c$ :\n\n$$AD = c \\times \\frac{b}{b+\\ell} = \\frac{bc}{b+\\ell}$$\n\n*Vérifions que les deux expressions coïncident,* en multipliant numérateur et dénominateur par $(\\ell - b)$ :\n\n$$\\frac{bc}{b+\\ell} = \\frac{bc(\\ell-b)}{(\\ell+b)(\\ell-b)} = \\frac{bc(\\ell-b)}{\\ell^2-b^2} = \\frac{bc(\\ell-b)}{c^2} = \\frac{b(\\ell-b)}{c}$$\n\nLes deux formules sont bien identiques.\n\n**Ce qu'il faut en retenir.** Un même résultat s'obtient par la trigonométrie ou par le théorème de la bissectrice. Disposer des deux voies permet de **vérifier** un résultat, ce qui est précieux dans un problème long où une erreur de calcul isolée ruinerait toute la suite."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Formules de duplication : $\\sin 2a = 2\\sin a\\cos a$ et $\\cos 2a = \\cos^2 a - \\sin^2 a$.",
+        "Trois écritures de $\\cos 2a$ : symétrique, en $\\cos^2 a$, en $\\sin^2 a$. Pour aller vers la tangente, prendre la **symétrique**.",
+        "Le geste unique : **diviser numérateur et dénominateur par $\\cos^2 a$**.",
+        "$\\tan 2a = \\dfrac{2\\tan a}{1-\\tan^2 a}$, valable si $\\cos a \\neq 0$ et $\\tan^2 a \\neq 1$.",
+        "La formule se lit dans les **deux sens** : de $a$ vers $2a$, mais aussi de $\\frac{a}{2}$ vers $a$.",
+        "Une **bissectrice** dans une figure produit toujours un angle moitié : c'est le signal d'employer la formule.",
+        "La duplication est le cas particulier $b=a$ de la formule d'addition : une seule formule à mémoriser."
+      ]
+    }
+  ]
+}

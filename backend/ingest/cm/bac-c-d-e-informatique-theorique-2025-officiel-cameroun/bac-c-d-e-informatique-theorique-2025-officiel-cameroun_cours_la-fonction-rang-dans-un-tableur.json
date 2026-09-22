@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-la-fonction-rang-dans-un-tableur-tle-tronc-commun",
+  "meta": {
+    "titre": "La fonction RANG dans un tableur",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Fonctions du tableur",
+    "duree_estimee_min": 15,
+    "tags": [
+      "RANG",
+      "classement",
+      "références absolues",
+      "tableur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex1-q11c-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Classer des élèves du meilleur au moins bon sans les trier manuellement, c'est exactement ce que fait la fonction RANG. Mais une erreur fréquente sur ses arguments transforme silencieusement un classement décroissant en classement croissant, ou casse le résultat dès qu'on recopie la formule."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir désigner une cellule et une plage de cellules dans un tableur."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "RANG(valeur;plage;ordre)",
+      "contenu_markdown": "La fonction **RANG(valeur;plage;ordre)** donne le classement d'une valeur au sein d'une plage de valeurs comparables :\n\n- **valeur** : la cellule dont on veut connaître le rang.\n- **plage** : l'ensemble des valeurs à comparer entre elles (typiquement toute la colonne des notes ou moyennes).\n- **ordre** : 0 (ou omis) pour un classement décroissant, où la plus grande valeur reçoit le rang 1 ; une valeur différente de 0 pour un classement croissant.\n\nDans un classement scolaire, le meilleur élève doit recevoir le rang 1 : on utilise donc presque toujours l'ordre 0 (décroissant).",
+      "formule_principale": "=RANG(valeur;$plage$;0)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un élève, Gille, a sa moyenne en cellule F4. Les moyennes de tous les élèves occupent F2:F5. Écrire la formule qui donne le rang de Gille.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la cellule dont on cherche le rang",
+          "justification": "C'est la moyenne de Gille, en F4.",
+          "resultat_markdown": "valeur = F4."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la plage de comparaison et la fixer en référence absolue",
+          "justification": "La plage doit rester identique si la formule est recopiée pour d'autres élèves.",
+          "resultat_markdown": "plage = \\$F\\$2:\\$F\\$5."
+        },
+        {
+          "numero": 3,
+          "action": "Choisir l'ordre de classement",
+          "justification": "Un classement scolaire place le meilleur élève au rang 1 : ordre décroissant.",
+          "resultat_markdown": "ordre = 0."
+        },
+        {
+          "numero": 4,
+          "action": "Assembler la formule",
+          "justification": "On combine les trois arguments dans le bon ordre.",
+          "resultat_markdown": "=RANG(F4;\\$F\\$2:\\$F\\$5;0)"
+        }
+      ],
+      "conclusion_markdown": "On obtient une formule de classement fiable, qui reste correcte même si on la recopie pour calculer le rang des autres élèves du tableau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne pas fixer la plage avec des références absolues (\\$)",
+          "pourquoi_faux": "Sans le symbole \\$, recopier la formule vers le bas décale la plage de comparaison ligne par ligne : chaque élève se retrouverait comparé à une plage différente et fausse, au lieu d'être comparé à l'ensemble complet des moyennes.",
+          "correction_markdown": "Toujours figer la plage de comparaison avec des références absolues (\\$F\\$2:\\$F\\$5) avant de recopier la formule pour les autres lignes."
+        },
+        {
+          "erreur_markdown": "Utiliser l'ordre 1 (croissant) par réflexe",
+          "pourquoi_faux": "Avec un ordre croissant, c'est la plus PETITE valeur qui reçoit le rang 1, ce qui inverse complètement un classement scolaire où le meilleur élève doit être premier.",
+          "correction_markdown": "Vérifier systématiquement le troisième argument : 0 pour un classement où le plus grand est premier (cas normal des notes), une valeur non nulle uniquement si l'énoncé demande explicitement l'inverse."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la formule qui donne le rang de la valeur en B2 parmi la plage B2:B20, classement décroissant.",
+          "solution_markdown": "=RANG(B2;\\$B\\$2:\\$B\\$20;0)"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un tableau de temps de course (colonne C, plage C2:C10), le classement doit donner le rang 1 au temps le PLUS COURT. Quel ordre utiliser dans la fonction RANG, et pourquoi ?",
+          "solution_markdown": "Il faut utiliser l'ordre croissant, c'est-à-dire une valeur non nulle pour le troisième argument, par exemple =RANG(C2;\\$C\\$2:\\$C\\$10;1). En effet, contrairement à une moyenne scolaire où la plus grande valeur doit gagner, ici c'est la plus PETITE valeur (le temps le plus court) qui doit recevoir le rang 1 : il faut donc inverser la logique de classement par rapport au cas par défaut (ordre décroissant, argument 0)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux élèves ont exactement la même moyenne, 14. Que se passe-t-il si on applique RANG(valeur;\\$F\\$2:\\$F\\$5;0) à chacun d'eux ? Le tableur attribue-t-il un rang différent aux deux ?",
+          "solution_markdown": "La fonction RANG attribue le MÊME rang aux deux élèves qui ont une valeur strictement identique (ici 14) : par exemple, s'ils sont tous deux les meilleurs de la plage, ils obtiennent tous les deux le rang 1. En revanche, le rang suivant est directement « sauté » : s'il y a deux élèves à égalité au rang 1, le prochain élève moins bien classé reçoit le rang 3, et non le rang 2, car RANG compte combien de valeurs de la plage sont strictement supérieures à la valeur testée, plus 1 - deux valeurs égales au sommet comptent donc pour deux rangs consommés, même si elles partagent le même numéro affiché."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "RANG(valeur;plage;ordre) donne le classement d'une valeur ; ordre 0 = décroissant (le plus grand est premier), ordre différent de 0 = croissant.",
+        "Toujours figer la plage de comparaison en référence absolue (\\$) avant de recopier la formule.",
+        "Un classement scolaire utilise presque toujours l'ordre 0 ; un classement de temps de course utilise souvent l'ordre inverse.",
+        "En cas d'égalité entre deux valeurs, RANG leur attribue le même rang et « saute » le rang suivant."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-create-table-ldd-tle-ti",
+  "meta": {
+    "titre": "Créer une table avec CREATE TABLE (langage de définition de données)",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Langage SQL - Définition de données (LDD)",
+    "duree_estimee_min": 22,
+    "tags": [
+      "SQL",
+      "CREATE TABLE",
+      "langage de définition de données",
+      "types de données"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-2018-officiel-cameroun",
+    "epreuve_titre": "Épreuve de systèmes d'information au Baccalauréat série TI - Session 2018 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-2018-officiel-cameroun-ex2-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de pouvoir insérer, modifier ou interroger la moindre donnée, il faut d'abord donner à la base de données le plan de la table qui va les accueillir. CREATE TABLE est la toute première commande SQL que tu écris dans la vie d'une base : la maîtriser, c'est éviter de devoir tout reconstruire plus tard."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un attribut (colonne) et une clé primaire dans une table relationnelle.",
+        "Savoir identifier la clé primaire d'une table à partir de ses colonnes."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Nommer, typer, contraindre",
+      "contenu_markdown": "L'instruction CREATE TABLE déclare une nouvelle table en trois temps : on nomme la table, on liste chaque colonne suivie de son type de données (entre parenthèses, séparées par des virgules), et on ajoute les contraintes nécessaires, la plus fréquente étant PRIMARY KEY sur la colonne identifiée comme clé primaire. Le choix du type n'est jamais arbitraire : VARCHAR(n) pour du texte de longueur variable (n fixant la longueur maximale), INT pour un nombre entier, DATE pour une date au format standard, DECIMAL ou FLOAT pour un nombre à virgule. Un type mal choisi ne provoque pas toujours une erreur immédiate, mais empêche ensuite certaines opérations légitimes (comparer, trier, calculer) sur cette colonne.",
+      "formule_principale": "CREATE TABLE nom_table (colonne1 type1 [contrainte], colonne2 type2, ...);"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La table ENSEIGNANT du CES de Bambam comporte les colonnes Matricule (clé primaire, format alphanumérique comme 995M24), Nom, Prénom, Discipline, Age et Date d'intégration. Écrivez la requête SQL qui crée cette table.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir le type de chaque colonne",
+          "justification": "Matricule mélange chiffres et lettres (VARCHAR) ; Nom, Prénom, Discipline sont du texte (VARCHAR) ; Age est un nombre entier (INT) ; Date d'intégration est une date (DATE).",
+          "resultat_markdown": "Matricule VARCHAR(10), Nom VARCHAR(30), Prenom VARCHAR(30), Discipline VARCHAR(30), Age INT, DateIntegration DATE."
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter la contrainte PRIMARY KEY sur Matricule",
+          "justification": "Matricule a déjà été identifié comme la clé primaire de la table.",
+          "resultat_markdown": "Matricule VARCHAR(10) PRIMARY KEY."
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la requête complète",
+          "justification": "Toutes les colonnes sont listées entre parenthèses, séparées par des virgules, avant le point-virgule final.",
+          "resultat_markdown": "```sql\nCREATE TABLE ENSEIGNANT (\n    Matricule VARCHAR(10) PRIMARY KEY,\n    Nom VARCHAR(30),\n    Prenom VARCHAR(30),\n    Discipline VARCHAR(30),\n    Age INT,\n    DateIntegration DATE\n);\n```"
+        }
+      ],
+      "conclusion_markdown": "La table ENSEIGNANT est maintenant définie avec une structure fixe : six colonnes typées, dont une seule, Matricule, garantit l'unicité de chaque tuple."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Déclarer Age en VARCHAR par réflexe, parce que les colonnes précédentes sont toutes textuelles",
+          "pourquoi_faux": "Un champ numérique déclaré en texte empêche ensuite toute comparaison numérique correcte (WHERE Age > 40, WHERE Age BETWEEN 44 AND 59) : certains moteurs compareraient alors les âges comme des chaînes de caractères, ce qui donne des résultats incohérents (« 9 » jugé supérieur à « 59 » par exemple).",
+          "correction_markdown": "Relis chaque colonne une par une et demande-toi si elle sera un jour comparée numériquement ou triée chronologiquement ; si oui, choisis INT, DECIMAL ou DATE, jamais VARCHAR."
+        },
+        {
+          "erreur_markdown": "Oublier la contrainte PRIMARY KEY sur la colonne identifiée comme clé primaire",
+          "pourquoi_faux": "Sans cette contrainte, rien n'empêche techniquement d'insérer deux tuples avec le même matricule, ce qui rend la table incohérente avec le modèle relationnel voulu.",
+          "correction_markdown": "Vérifie systématiquement, avant de considérer un CREATE TABLE terminé, que la colonne clé primaire porte bien la mention PRIMARY KEY."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrivez la requête SQL qui crée une table LIVRE avec les colonnes ISBN (clé primaire, texte), Titre (texte) et Statut (texte).",
+          "solution_markdown": "```sql\nCREATE TABLE LIVRE (\n    ISBN VARCHAR(20) PRIMARY KEY,\n    Titre VARCHAR(100),\n    Statut VARCHAR(20)\n);\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrivez la requête SQL qui crée une table PRODUIT avec les colonnes CodeProduit (clé primaire, texte), Designation (texte), PrixUnitaire (nombre décimal) et QuantiteStock (nombre entier).",
+          "solution_markdown": "```sql\nCREATE TABLE PRODUIT (\n    CodeProduit VARCHAR(10) PRIMARY KEY,\n    Designation VARCHAR(50),\n    PrixUnitaire DECIMAL(10,2),\n    QuantiteStock INT\n);\n```\nPrixUnitaire est déclaré en DECIMAL(10,2) plutôt qu'en INT car un prix peut comporter des centimes ; QuantiteStock reste en INT, un nombre d'articles n'ayant pas de sens avec une virgule."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une table COMMANDE doit référencer l'enseignant qui l'a passée, via son Matricule (colonne existant déjà dans la table ENSEIGNANT). Écrivez la requête qui crée COMMANDE avec les colonnes NumeroCommande (clé primaire), DateCommande (date) et MatriculeEnseignant, en garantissant que MatriculeEnseignant renvoie bien vers un enseignant existant de la table ENSEIGNANT.",
+          "solution_markdown": "```sql\nCREATE TABLE COMMANDE (\n    NumeroCommande VARCHAR(15) PRIMARY KEY,\n    DateCommande DATE,\n    MatriculeEnseignant VARCHAR(10),\n    FOREIGN KEY (MatriculeEnseignant) REFERENCES ENSEIGNANT(Matricule)\n);\n```\nLa contrainte FOREIGN KEY garantit qu'aucune commande ne peut être créée avec un MatriculeEnseignant qui ne correspond à aucun tuple existant de la table ENSEIGNANT : c'est le mécanisme qui relie deux tables entre elles dans le modèle relationnel, en s'appuyant sur la clé primaire de la table référencée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CREATE TABLE déclare une nouvelle table : nom, colonnes typées, contraintes, dans cet ordre.",
+        "Choisis le type de chaque colonne selon l'usage qu'on en fera : VARCHAR pour du texte, INT pour un entier, DECIMAL pour un nombre à virgule, DATE pour une date.",
+        "N'oublie jamais la contrainte PRIMARY KEY sur la colonne identifiée comme clé primaire.",
+        "Une clé étrangère (FOREIGN KEY) relie une table à une autre en pointant vers sa clé primaire.",
+        "Au BAC TI, cette requête suit presque toujours la question sur l'identification de la clé primaire : les deux réponses doivent rester cohérentes entre elles."
+      ]
+    }
+  ]
+}

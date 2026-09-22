@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-les-adresses-ip-particulieres-tle-ti",
+  "meta": {
+    "titre": "Les adresses IP particulières",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques",
+    "duree_estimee_min": 15,
+    "tags": [
+      "loopback",
+      "127.0.0.1",
+      "adresses réservées"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qA.5-0",
+    "rappels_lies": [],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toutes les adresses IP ne désignent pas une machine distante quelque part sur le réseau : certaines sont réservées par convention pour des usages très particuliers, à commencer par celle qui permet à un ordinateur de se parler à lui-même."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse IP"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La boucle locale : la machine se parle à elle-même",
+      "contenu_markdown": "Toute la plage d'adresses commençant par **127** (127.0.0.0 à 127.255.255.255) est réservée par convention à la **boucle locale** (loopback). L'adresse **127.0.0.1** en est l'exemple le plus utilisé : elle désigne systématiquement la machine elle-même, quel que soit l'ordinateur qui l'utilise. Une requête envoyée vers 127.0.0.1 ne quitte jamais la machine : elle est traitée directement en interne par la pile TCP/IP, sans passer par aucune carte réseau physique ni sortir sur un réseau réel.",
+      "formule_principale": "127.0.0.1 = la machine elle-même (adresse de bouclage / loopback)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Expliquer à quoi correspond l'adresse IP principale 127.0.0.1 affichée dans la capture des propriétés réseau.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la plage à laquelle appartient cette adresse",
+          "justification": "Le premier octet d'une adresse IP peut signaler une plage réservée",
+          "resultat_markdown": "127.0.0.1 commence par 127 : elle appartient à la plage réservée à la boucle locale."
+        },
+        {
+          "numero": 2,
+          "action": "Rappeler la convention associée à cette plage",
+          "justification": "Une plage réservée a toujours un usage fixe, indépendant de la machine",
+          "resultat_markdown": "Toute adresse en 127.x.x.x désigne la machine locale elle-même, jamais une autre machine du réseau."
+        },
+        {
+          "numero": 3,
+          "action": "En tirer la conséquence pratique",
+          "justification": "Cette convention explique pourquoi cette adresse est si souvent utilisée en test",
+          "resultat_markdown": "127.0.0.1 sert couramment à tester localement le bon fonctionnement de la pile TCP/IP d'une machine, sans dépendre du réseau externe."
+        }
+      ],
+      "conclusion_markdown": "127.0.0.1 est l'adresse de bouclage : elle désigne la machine elle-même, utilisée pour tester sa propre pile réseau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser que 127.0.0.1 est \"l'adresse par défaut\" attribuée à toute nouvelle machine sur un réseau",
+          "pourquoi_faux": "127.0.0.1 n'est jamais l'adresse qu'une machine utilise pour communiquer avec les AUTRES machines du réseau : c'est une adresse purement interne, distincte de l'adresse réseau réelle de la machine (par exemple 192.168.1.10).",
+          "correction_markdown": "Une machine possède presque toujours deux catégories d'adresses IP : 127.0.0.1 (interne, boucle locale) et une ou plusieurs adresses réseau réelles (pour communiquer avec les autres machines)."
+        },
+        {
+          "erreur_markdown": "Confondre adresse de bouclage et adresse privée (comme 192.168.x.x)",
+          "pourquoi_faux": "Une adresse privée (192.168.x.x, 10.x.x.x) désigne bien une machine réelle sur un réseau local et permet de communiquer avec d'autres machines de ce réseau ; l'adresse de bouclage, elle, ne sort jamais de la machine.",
+          "correction_markdown": "Distingue toujours \"adresse réservée à un usage interne\" (127.0.0.1) et \"adresse réservée à un usage privé mais qui communique quand même sur un réseau réel\" (192.168.x.x)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Que désigne toujours l'adresse 127.0.0.1, quel que soit l'ordinateur ?",
+          "solution_markdown": "Elle désigne la machine elle-même (adresse de bouclage / loopback)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pourquoi un développeur teste-t-il souvent son site web local en visitant http://127.0.0.1/ plutôt qu'une adresse réseau réelle ?",
+          "solution_markdown": "Puisque le serveur web tourne sur sa propre machine (en local), l'adresse de bouclage lui permet d'accéder directement à ce serveur sans dépendre d'une carte réseau, d'une adresse IP attribuée par un réseau, ni même d'une connexion réseau active : cela fonctionne de façon identique sur n'importe quelle machine, câblée, Wi-Fi ou totalement déconnectée d'un réseau externe."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un technicien constate qu'un ping vers 127.0.0.1 échoue sur une machine, alors que la carte réseau physique semble fonctionner normalement (elle communique avec d'autres machines). Que peut-on raisonnablement en conclure ?",
+          "solution_markdown": "Puisque 127.0.0.1 ne dépend d'aucune carte réseau physique ni d'aucun câble, un échec sur cette adresse pointe vers un problème logiciel interne à la pile TCP/IP elle-même (service réseau corrompu ou désactivé, pilote réseau défaillant au niveau du système, pare-feu local mal configuré qui bloque même le trafic interne) plutôt que vers un problème matériel ou de configuration réseau externe. Le bon fonctionnement de la carte physique avec d'autres machines montre que le matériel n'est pas en cause : l'anomalie se situe donc dans la configuration logicielle de la machine elle-même."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Toute la plage 127.x.x.x est réservée à la boucle locale (loopback).",
+        "127.0.0.1 désigne systématiquement la machine elle-même, jamais une autre machine.",
+        "Une requête vers 127.0.0.1 ne quitte jamais physiquement la machine.",
+        "Cette adresse sert couramment à tester en local un serveur ou la pile réseau d'une machine.",
+        "Au BAC TI, reconnaître 127.0.0.1 comme adresse de bouclage permet aussitôt d'expliquer des durées de ping nulles ou un test de serveur local."
+      ]
+    }
+  ]
+}

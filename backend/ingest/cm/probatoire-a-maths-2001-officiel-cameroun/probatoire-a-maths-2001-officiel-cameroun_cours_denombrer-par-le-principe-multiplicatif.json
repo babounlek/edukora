@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-denombrer-par-le-principe-multiplicatif-1ere-a",
+  "meta": {
+    "titre": "Dénombrer par le principe multiplicatif",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Dénombrement",
+    "duree_estimee_min": 18,
+    "tags": [
+      "dénombrement",
+      "principe multiplicatif"
+    ],
+    "savoir_officiel": {
+      "classe": "1ere",
+      "serie_label": "A",
+      "module_numero": "20",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-a-maths-2001-officiel-cameroun",
+    "epreuve_titre": "Probatoire A - Mathematiques - Session 2001 (Cameroun)",
+    "exercice_numero": "B",
+    "rappel_id": "rdm-probatoire-a-maths-2001-officiel-cameroun-exB-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Compter le nombre de mots de passe possibles, de plaques d'immatriculation ou de répartitions garçons-filles dans une famille, tous ces problèmes partagent la même structure : une succession de choix indépendants. Plutôt que de lister tous les cas un par un, ce qui devient vite impraticable, le principe multiplicatif donne le résultat en une seule multiplication. C'est le premier réflexe de dénombrement à acquérir, celui sur lequel se construisent ensuite les arrangements et les combinaisons."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Multiplier plusieurs nombres entiers",
+        "Distinguer une situation ordonnée d'une situation non ordonnée",
+        "Représenter une situation par un arbre de choix simple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le principe multiplicatif",
+      "contenu_markdown": "Quand une situation se décompose en $n$ choix successifs et indépendants, offrant respectivement $k_1,\\,k_2,\\,\\dots,\\,k_n$ possibilités, le nombre total de résultats possibles est le produit de ces nombres :\n\n$$k_1\\times k_2\\times\\cdots\\times k_n$$\n\nChaque choix étant indépendant des précédents, aucune possibilité n'est jamais exclue par un choix antérieur.",
+      "formule_principale": "k_1\\times k_2\\times\\cdots\\times k_n",
+      "variantes": [
+        {
+          "nom": "Cas particulier : $n$ choix identiques à $k$ issues chacun",
+          "quand_utiliser": "Quand chaque étape offre le même nombre de possibilités, comme un tirage à pile ou face répété ou une suite de naissances",
+          "contenu_markdown": "Le produit se simplifie en une puissance : $k^n$. C'est le cas des répartitions garçons filles dans une famille de $n$ enfants, où chaque naissance offre $2$ issues, donnant $2^n$ répartitions possibles."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une famille de trois enfants, combien y a-t-il de répartitions possibles garçons filles dans l'ordre des naissances (sans naissance multiple) ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le nombre d'étapes et d'issues par étape",
+          "justification": "Chaque naissance, prise dans l'ordre, est un choix indépendant à deux issues",
+          "resultat_markdown": "3 naissances, 2 issues possibles à chacune (garçon ou fille)"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer le principe multiplicatif",
+          "justification": "Les choix sont indépendants, on multiplie le nombre de possibilités",
+          "resultat_markdown": "$2\\times2\\times2=2^3=8$"
+        }
+      ],
+      "conclusion_markdown": "Il y a 8 répartitions possibles garçons filles dans l'ordre des naissances."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter les répartitions sans tenir compte de l'ordre des naissances",
+          "pourquoi_faux": "« Garçon puis fille puis garçon » et « fille puis garçon puis garçon » sont deux répartitions différentes bien qu'elles comptent le même nombre de garçons : l'ordre est une information à part entière ici.",
+          "correction_markdown": "Vérifier si l'énoncé précise un ordre (dans le temps, dans une file, etc.) : si oui, chaque permutation des mêmes éléments compte comme un résultat distinct."
+        },
+        {
+          "erreur_markdown": "Additionner les possibilités de chaque étape au lieu de les multiplier",
+          "pourquoi_faux": "Additionner reviendrait à compter des choix alternatifs (l'un OU l'autre), alors que la situation combine des choix successifs (l'un ET l'autre, à la suite).",
+          "correction_markdown": "Repérer si les étapes se suivent (choix successifs, multiplication) ou s'excluent (choix alternatif, addition) avant de calculer."
+        },
+        {
+          "erreur_markdown": "Oublier qu'un choix peut se répéter à l'identique d'une étape à l'autre",
+          "pourquoi_faux": "Rien n'empêche ici d'avoir trois garçons de suite : chaque naissance reste indépendante des précédentes, sans restriction.",
+          "correction_markdown": "Ne réduire le nombre de possibilités à une étape que si l'énoncé l'impose explicitement (par exemple, tirage sans remise)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un cadenas à code utilise 2 chiffres, chacun choisi parmi 10 chiffres (de 0 à 9), avec répétition possible. Combien de codes différents existe-t-il ?",
+          "solution_markdown": "Deux choix successifs indépendants à 10 issues chacun : $10\\times10=100$ codes possibles."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un menu de restaurant propose 3 entrées, 4 plats et 2 desserts. Combien de menus complets différents (une entrée, un plat, un dessert) peut-on composer ?",
+          "solution_markdown": "Trois choix successifs indépendants : $3\\times4\\times2=24$ menus possibles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une plaque d'immatriculation est composée de 3 lettres suivies de 3 chiffres. Combien de plaques différentes peut-on former si les lettres et les chiffres peuvent se répéter, sachant que l'alphabet compte 26 lettres ?",
+          "solution_markdown": "Trois choix de lettres parmi 26, puis trois choix de chiffres parmi 10, tous indépendants : $26\\times26\\times26\\times10\\times10\\times10=26^3\\times10^3=17\\,576\\times1\\,000=17\\,576\\,000$ plaques possibles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à une suite de choix successifs et indépendants, multiplie le nombre de possibilités de chaque étape.",
+        "Vérifie si l'ordre compte dans la situation : c'est souvent le signal qu'il faut utiliser le principe multiplicatif plutôt qu'une combinaison.",
+        "Quand chaque étape offre le même nombre $k$ d'issues sur $n$ étapes, le résultat se simplifie en $k^n$.",
+        "N'additionne jamais les possibilités de choix qui se suivent : l'addition est réservée aux choix alternatifs qui s'excluent.",
+        "Ce réflexe de calcul revient dans presque tous les problèmes de dénombrement du Probatoire, avant d'aborder arrangements et combinaisons en Terminale."
+      ]
+    }
+  ]
+}

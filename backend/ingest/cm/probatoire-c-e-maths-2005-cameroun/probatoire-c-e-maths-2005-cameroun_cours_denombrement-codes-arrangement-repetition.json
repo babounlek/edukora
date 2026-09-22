@@ -1,0 +1,186 @@
+{
+ "cours_id": "cours-denombrement-codes-arrangement-repetition-1ere-ce",
+ "meta": {
+  "titre": "Dénombrer des codes en combinant arrangements et listes avec répétition",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Dénombrement",
+  "duree_estimee_min": 25,
+  "tags": ["dénombrement", "arrangement", "principe multiplicatif", "répétition", "p-liste"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "22",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "2",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex2-q4-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "En dénombrement, la difficulté n'est jamais le calcul : c'est le choix de la formule. Et ce choix se lit dans l'énoncé, pas dans le cours. Deux mots suffisent à le décider : « distincts » ou « non nécessairement distincts ». Ils ne sont pas là par hasard, et ils peuvent différer d'une partie du problème à l'autre — c'est précisément le piège de cet exercice, où les chiffres du code obéissent à une règle et les lettres à une autre."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître le principe multiplicatif",
+    "Distinguer les situations où l'ordre compte de celles où il ne compte pas",
+    "Connaître la formule des arrangements",
+    "Savoir calculer une puissance entière"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux questions décident de tout",
+   "contenu_markdown": "**Le principe multiplicatif.** Si un objet se construit par $n$ étapes successives, et que l'étape $i$ offre $p_{i}$ possibilités **indépendamment** des autres, alors le nombre total d'objets est\n\n$$p_{1} \\times p_{2} \\times \\dots \\times p_{n}$$\n\n**Les deux questions à poser pour chaque étape.**\n\n1. L'**ordre** compte-t-il ?\n2. Les **répétitions** sont-elles autorisées ?\n\nLeurs réponses croisées donnent la formule.\n\n| Ordre | Répétition | Objet | Formule |\n|---|---|---|---|\n| oui | oui | $p$-liste | $n^{p}$ |\n| oui | non | arrangement | $A_{n}^{p} = \\dfrac{n!}{(n-p)!}$ |\n| non | non | combinaison | $C_{n}^{p} = \\dfrac{n!}{p!\\,(n-p)!}$ |\n\n**L'arrangement, en pratique.** $A_{n}^{p}$ est le produit de $p$ facteurs décroissants à partir de $n$ :\n\n$$A_{9}^{3} = 9 \\times 8 \\times 7 = 504$$\n\nÀ chaque étape, un élément de moins est disponible, puisqu'on ne peut pas le réutiliser.\n\n**La $p$-liste, en pratique.** Chaque position peut recevoir n'importe lequel des $n$ éléments, indépendamment des autres :\n\n$$4^{2} = 4 \\times 4 = 16$$\n\n**Le cas des codes.** Un code est une **suite ordonnée** : $123$ et $321$ sont des codes différents. L'ordre compte donc toujours, et seule la question de la répétition reste à trancher.\n\n**La méthode, en trois gestes.**\n\n1. **Découper** l'objet en parties indépendantes.\n2. **Dénombrer** chaque partie séparément, en appliquant les deux questions.\n3. **Multiplier** les résultats.\n\n**Le piège des règles mixtes.** Rien n'oblige les différentes parties d'un même objet à obéir à la même règle. Ici, les chiffres sont **distincts** — donc un arrangement — tandis que les lettres sont **non nécessairement distinctes** — donc une liste avec répétition. Appliquer la même formule aux deux est l'erreur la plus fréquente.\n\n**Souligner l'énoncé.** Les expressions « distincts », « non nécessairement distincts », « avec remise », « sans remise », « l'ordre n'importe pas » sont l'énoncé du calcul à faire. Elles sont placées là exprès, et il faut les repérer avant de commencer.\n\n**Le contrôle d'ordre de grandeur.** Le nombre de codes doit être inférieur à celui qu'on obtiendrait sans aucune contrainte. Ici, sans la contrainte de distinction : $9^{3} \\times 4^{2} = 729 \\times 16 = 11\\,664$. Le résultat $8\\,064$ lui est bien inférieur. Cohérent.",
+   "formule_principale": "A_{n}^{p} = n(n-1)\\cdots(n-p+1) \\qquad ; \\qquad \\text{$p$-liste} = n^{p}",
+   "variantes": [
+    {
+     "nom": "Dénombrement par le complémentaire",
+     "quand_utiliser": "Quand la contrainte est du type « au moins un »",
+     "contenu_markdown": "Il est souvent plus simple de compter les cas **interdits** et de les retrancher du total :\n\n$$\\text{cas favorables} = \\text{total} - \\text{cas défavorables}$$\n\nExemple : le nombre de codes de trois chiffres contenant **au moins une** répétition vaut\n\n$$9^{3} - A_{9}^{3} = 729 - 504 = 225$$\n\nCompter directement les répétitions demanderait de distinguer les cas de deux et trois chiffres identiques, ce qui est nettement plus long."
+    },
+    {
+     "nom": "Combinaisons, quand l'ordre ne compte pas",
+     "quand_utiliser": "Pour un tirage simultané ou un choix d'ensemble",
+     "contenu_markdown": "Si l'ordre n'intervient pas — tirage simultané, choix d'un comité, d'une main de cartes — on utilise les combinaisons :\n\n$$C_{n}^{p} = \\frac{A_{n}^{p}}{p!}$$\n\nLa division par $p!$ efface les $p!$ ordres possibles d'un même ensemble.\n\nPour un **code**, l'ordre compte toujours : les combinaisons ne s'appliquent jamais."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Une porte est équipée d'une serrure à code munie des touches $1$, $2$, …, $9$ et des lettres $A$, $B$, $C$, $D$. Un code est formé de trois chiffres **distincts** puis de deux lettres **non nécessairement distinctes**. Combien de codes différents peut-on former ? (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Découper l'objet",
+     "justification": "Un code se compose de deux parties indépendantes",
+     "resultat_markdown": "Une partie chiffrée de trois positions, une partie littérale de deux positions"
+    },
+    {
+     "numero": 2,
+     "action": "Analyser la partie chiffrée",
+     "justification": "Un code est une suite ordonnée, et l'énoncé impose des chiffres **distincts**",
+     "resultat_markdown": "Ordre : oui. Répétition : non. C'est un **arrangement** de $3$ éléments parmi $9$"
+    },
+    {
+     "numero": 3,
+     "action": "Calculer l'arrangement",
+     "justification": "Produit de trois facteurs décroissants à partir de $9$",
+     "resultat_markdown": "$A_{9}^{3} = 9 \\times 8 \\times 7 = 72 \\times 7 = 504$"
+    },
+    {
+     "numero": 4,
+     "action": "Analyser la partie littérale",
+     "justification": "L'ordre compte toujours dans un code, et l'énoncé autorise explicitement la répétition",
+     "resultat_markdown": "Ordre : oui. Répétition : oui. C'est une **liste** de $2$ éléments parmi $4$"
+    },
+    {
+     "numero": 5,
+     "action": "Calculer la liste",
+     "justification": "Chaque position peut recevoir n'importe laquelle des $4$ lettres",
+     "resultat_markdown": "$4^{2} = 4 \\times 4 = 16$"
+    },
+    {
+     "numero": 6,
+     "action": "Appliquer le principe multiplicatif",
+     "justification": "Les deux parties se choisissent indépendamment l'une de l'autre",
+     "resultat_markdown": "$504 \\times 16$"
+    },
+    {
+     "numero": 7,
+     "action": "Effectuer le produit",
+     "justification": "Décomposition pour calculer de tête",
+     "resultat_markdown": "$504 \\times 10 = 5\\,040$ et $504 \\times 6 = 3\\,024$, d'où $5\\,040 + 3\\,024 = 8\\,064$"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler l'ordre de grandeur",
+     "justification": "Sans la contrainte de distinction, on aurait $9^{3} \\times 4^{2}$",
+     "resultat_markdown": "$729 \\times 16 = 11\\,664$, et $8\\,064 < 11\\,664$. Cohérent"
+    }
+   ],
+   "conclusion_markdown": "On peut former $8\\,064$ codes différents. Le point décisif de cet exercice n'est pas le calcul mais la **lecture** : les deux parties du code n'obéissent pas à la même règle. Souligne dans l'énoncé les mots « distincts » et « non nécessairement distinctes » — ils sont l'énoncé du calcul à faire, et ils sont placés là exprès."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Appliquer la même formule aux chiffres et aux lettres",
+     "pourquoi_faux": "Écrire $9 \\times 8 \\times 7 \\times 4 \\times 3 = 6\\,048$ interdit aux lettres de se répéter, alors que l'énoncé l'autorise explicitement. On perd $2\\,016$ codes.",
+     "correction_markdown": "Relis les deux expressions de l'énoncé : « distincts » pour les chiffres, « non nécessairement distinctes » pour les lettres. Deux règles différentes, deux formules différentes."
+    },
+    {
+     "erreur_markdown": "Utiliser une combinaison au lieu d'un arrangement",
+     "pourquoi_faux": "Écrire $C_{9}^{3} = 84$ suppose que l'ordre ne compte pas. Or $123$ et $321$ sont deux codes distincts : l'ordre compte toujours dans un code.",
+     "correction_markdown": "Demande-toi si permuter deux éléments change l'objet. Pour un code, oui : c'est donc un arrangement, jamais une combinaison."
+    },
+    {
+     "erreur_markdown": "Additionner au lieu de multiplier",
+     "pourquoi_faux": "Écrire $504 + 16 = 520$ compte les deux parties comme des **alternatives**, alors qu'elles sont **simultanées** : chaque code comporte à la fois des chiffres et des lettres.",
+     "correction_markdown": "On additionne pour un « ou » exclusif, on multiplie pour un « et ». Ici le code contient des chiffres **et** des lettres : c'est un produit."
+    },
+    {
+     "erreur_markdown": "Compter $10$ chiffres au lieu de $9$",
+     "pourquoi_faux": "L'énoncé précise les touches $1$, $2$, …, $9$ : il n'y a **pas** de touche $0$. Compter $10$ donnerait $A_{10}^{3} = 720$ au lieu de $504$.",
+     "correction_markdown": "Compte explicitement les éléments disponibles avant de calculer. De $1$ à $9$, il y en a neuf, pas dix."
+    },
+    {
+     "erreur_markdown": "Se tromper dans le produit final",
+     "pourquoi_faux": "$504 \\times 16$ se calcule mal de tête. Une erreur d'arithmétique gâche un raisonnement parfaitement juste.",
+     "correction_markdown": "Décompose : $504 \\times 16 = 504 \\times 10 + 504 \\times 6 = 5\\,040 + 3\\,024 = 8\\,064$. Et contrôle l'ordre de grandeur : le résultat doit être inférieur à $9^{3} \\times 4^{2} = 11\\,664$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Une plaque d'immatriculation est formée de deux lettres suivies de trois chiffres. On dispose de $26$ lettres et de $10$ chiffres. Combien de plaques peut-on former si les lettres et les chiffres peuvent se répéter ? Et si tout doit être distinct ?",
+     "solution_markdown": "**Premier cas : répétitions autorisées.**\n\n*Partie littérale :* ordre oui, répétition oui, donc une $2$-liste parmi $26$ :\n\n$$26^{2} = 676$$\n\n*Partie chiffrée :* ordre oui, répétition oui, donc une $3$-liste parmi $10$ :\n\n$$10^{3} = 1\\,000$$\n\n*Total :*\n\n$$676 \\times 1\\,000 = 676\\,000$$\n\n**Second cas : tout distinct.**\n\n*Partie littérale :* arrangement de $2$ parmi $26$ :\n\n$$A_{26}^{2} = 26 \\times 25 = 650$$\n\n*Partie chiffrée :* arrangement de $3$ parmi $10$ :\n\n$$A_{10}^{3} = 10 \\times 9 \\times 8 = 720$$\n\n*Total :*\n\n$$650 \\times 720 = 468\\,000$$\n\n**Comparaison.**\n\n$$\\dfrac{468\\,000}{676\\,000} \\approx 0{,}692$$\n\nLa contrainte de distinction élimine environ $31\\,\\%$ des plaques.\n\n**Contrôle.** Le second résultat doit être **inférieur** au premier, puisqu'il correspond à une contrainte supplémentaire. $468\\,000 < 676\\,000$. Conforme.\n\n**Remarque.** La contrainte de distinction porte séparément sur les lettres et sur les chiffres : une lettre et un chiffre ne peuvent de toute façon pas être « identiques », puisqu'ils appartiennent à des ensembles disjoints."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Un code d'accès comporte quatre chiffres choisis parmi $0$, $1$, …, $9$. Combien de codes comportent **au moins deux chiffres identiques** ? Combien commencent par un chiffre pair et se terminent par un chiffre impair, tous les chiffres étant distincts ?",
+     "solution_markdown": "**Première question - au moins deux chiffres identiques.**\n\n**Étape 1 - passer par le complémentaire.**\n\nCompter directement les cas « au moins deux identiques » exigerait de distinguer plusieurs configurations. Il est bien plus simple de compter le **contraire** : « tous distincts ».\n\n**Étape 2 - le total sans contrainte.**\n\nOrdre oui, répétition oui, donc une $4$-liste parmi $10$ :\n\n$$10^{4} = 10\\,000$$\n\n**Étape 3 - les codes à chiffres tous distincts.**\n\nArrangement de $4$ parmi $10$ :\n\n$$A_{10}^{4} = 10 \\times 9 \\times 8 \\times 7 = 5\\,040$$\n\n**Étape 4 - soustraire.**\n\n$$10\\,000 - 5\\,040 = 4\\,960$$\n\n**$4\\,960$ codes comportent au moins deux chiffres identiques.**\n\n*Contrôle :* la somme des deux catégories doit valoir le total : $5\\,040 + 4\\,960 = 10\\,000$. Conforme.\n\n**Seconde question - premier pair, dernier impair, tous distincts.**\n\n**Étape 5 - les contraintes de position.**\n\nLes chiffres pairs sont $0$, $2$, $4$, $6$, $8$ : il y en a $5$.\n\nLes chiffres impairs sont $1$, $3$, $5$, $7$, $9$ : il y en a $5$.\n\n**Étape 6 - traiter les positions contraintes en premier.**\n\nC'est la règle d'or du dénombrement avec contraintes : on place d'abord les éléments les plus contraints.\n\n*Première position :* $5$ choix parmi les pairs.\n\n*Dernière position :* $5$ choix parmi les impairs. Aucune interférence avec le choix précédent, puisqu'un chiffre pair n'est jamais impair.\n\n**Étape 7 - les positions libres.**\n\nDeux chiffres ont été utilisés, il en reste $8$ disponibles pour les deux positions centrales, qui doivent être distinctes entre elles et des deux autres :\n\n$$A_{8}^{2} = 8 \\times 7 = 56$$\n\n**Étape 8 - multiplier.**\n\n$$5 \\times 56 \\times 5 = 5 \\times 5 \\times 56 = 25 \\times 56 = 1\\,400$$\n\n**$1\\,400$ codes vérifient ces conditions.**\n\n*Contrôle d'ordre de grandeur :* ce nombre doit être inférieur au nombre total de codes à chiffres distincts, soit $5\\,040$. Et de fait $1\\,400 < 5\\,040$. Cohérent.\n\n*Contrôle par proportion :* la probabilité qu'un code à chiffres distincts commence par un pair et finisse par un impair vaut $\\dfrac{1\\,400}{5\\,040} \\approx 0{,}278$, proche de $\\dfrac{1}{2} \\times \\dfrac{5}{9} \\approx 0{,}278$. Conforme.\n\n**Ce qu'il faut retenir.** Deux réflexes : le passage au **complémentaire** pour les contraintes du type « au moins un », et le traitement **prioritaire des positions contraintes** quand certaines places imposent des conditions."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Une serrure comporte les touches $1$ à $9$ et les lettres $A$, $B$, $C$, $D$. Un code est formé de trois chiffres distincts suivis de deux lettres non nécessairement distinctes. Déterminer le nombre de codes contenant **au moins une fois la lettre $A$**, puis le nombre de codes dont les trois chiffres sont en ordre **strictement croissant**.",
+     "solution_markdown": "**Première question - au moins une fois la lettre $A$.**\n\n**Étape 1 - la partie chiffrée n'est pas concernée.**\n\nLa contrainte ne porte que sur les lettres. La partie chiffrée conserve donc ses $A_{9}^{3} = 504$ possibilités.\n\n**Étape 2 - dénombrer les couples de lettres par le complémentaire.**\n\n*Total :* $4^{2} = 16$ couples.\n\n*Sans aucun $A$ :* chaque position ne peut recevoir que $B$, $C$ ou $D$, soit $3$ possibilités :\n\n$$3^{2} = 9$$\n\n*Avec au moins un $A$ :*\n\n$$16 - 9 = 7$$\n\n*Vérification par énumération :* les couples contenant au moins un $A$ sont $AA$, $AB$, $AC$, $AD$, $BA$, $CA$, $DA$. Il y en a bien $7$.\n\n**Étape 3 - multiplier.**\n\n$$504 \\times 7 = 3\\,528$$\n\n**$3\\,528$ codes contiennent au moins une fois la lettre $A$.**\n\n*Contrôle :* la proportion vaut $\\dfrac{3\\,528}{8\\,064} = \\dfrac{7}{16} = 0{,}4375$, ce qui correspond bien à la proportion des couples de lettres concernés. Conforme.\n\n**Seconde question - trois chiffres en ordre strictement croissant.**\n\n**Étape 4 - reconnaître le changement de nature.**\n\nImposer l'ordre croissant, c'est fixer entièrement l'ordre une fois les trois chiffres choisis : à chaque **ensemble** de trois chiffres distincts correspond **exactement une** disposition croissante.\n\nLe dénombrement passe donc des arrangements aux **combinaisons**.\n\n**Étape 5 - calculer.**\n\n$$C_{9}^{3} = \\dfrac{A_{9}^{3}}{3!} = \\dfrac{504}{6} = 84$$\n\n**Étape 6 - vérifier par la formule directe.**\n\n$$C_{9}^{3} = \\dfrac{9!}{3!\\,6!} = \\dfrac{9 \\times 8 \\times 7}{6} = \\dfrac{504}{6} = 84$$\n\nConforme.\n\n**Étape 7 - la partie littérale reste inchangée.**\n\n$$4^{2} = 16$$\n\n**Étape 8 - multiplier.**\n\n$$84 \\times 16 = 1\\,344$$\n\n**$1\\,344$ codes ont leurs trois chiffres en ordre strictement croissant.**\n\n*Contrôle :* la proportion vaut $\\dfrac{1\\,344}{8\\,064} = \\dfrac{1}{6}$. C'est exactement l'inverse de $3! = 6$, le nombre d'ordres possibles pour trois chiffres distincts — et un seul de ces six ordres est croissant. Conforme.\n\n**Ce qu'il faut retenir.** Imposer un ordre à des éléments distincts fait passer d'un arrangement à une **combinaison** : la division par $p!$ efface les $p!$ ordres, dont un seul est retenu. C'est la manière la plus rapide de traiter les contraintes du type « en ordre croissant », « par ordre alphabétique », « du plus grand au plus petit »."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Deux questions par étape : l'ordre compte-t-il, les répétitions sont-elles autorisées ?",
+    "Ordre + répétition : $p$-liste, $n^{p}$. Ordre sans répétition : arrangement, $A_{n}^{p}$. Ni l'un ni l'autre : combinaison, $C_{n}^{p}$.",
+    "Dans un **code**, l'ordre compte toujours : jamais de combinaison, sauf contrainte d'ordre imposée.",
+    "Les parties d'un même objet peuvent obéir à des règles différentes : lis chaque partie séparément.",
+    "Souligne « distincts », « non nécessairement distincts », « avec remise » : ce sont les consignes de calcul.",
+    "On **multiplie** pour un « et », on **additionne** pour un « ou » exclusif.",
+    "Compte explicitement les éléments disponibles : de $1$ à $9$, il y en a neuf.",
+    "Pour « au moins un », passe par le **complémentaire** : total moins cas contraires.",
+    "Avec des positions contraintes, traite-les **en premier**, puis les positions libres.",
+    "Imposer un ordre croissant divise par $p!$ : on passe de l'arrangement à la combinaison.",
+    "Contrôle l'ordre de grandeur : une contrainte supplémentaire diminue toujours le résultat."
+   ]
+  }
+ ]
+}

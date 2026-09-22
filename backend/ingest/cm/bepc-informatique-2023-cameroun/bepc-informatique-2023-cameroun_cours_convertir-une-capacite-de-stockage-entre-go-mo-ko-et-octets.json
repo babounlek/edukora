@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-convertir-une-capacite-de-stockage-entre-go-mo-ko-et-octets-3e",
+  "meta": {
+    "titre": "Convertir une capacité de stockage : octets, Ko, Mo, Go",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Unités de mesure de l'information et conversions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "unités de mesure",
+      "octet",
+      "conversion",
+      "Go Mo Ko",
+      "capacité de stockage",
+      "convention décimale",
+      "convention binaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2023-cameroun",
+    "epreuve_titre": "BEPC Informatique - Cameroun, session 2023 (MINESEC/DECC), épreuve théorique",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bepc-informatique-2023-cameroun-ex2-q1.a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu achètes une clé USB de 8 Go, tu la branches, et le système affiche 7,45 Go. Tu n'as rien perdu : le vendeur et l'ordinateur n'utilisent simplement pas la même règle de calcul. Savoir convertir une capacité de stockage, c'est donc bien plus qu'un exercice scolaire : c'est ce qui te permet de dire à l'avance si un film tient sur ta carte mémoire, si tes photos rentrent dans ton téléphone, ou pourquoi un fichier refuse de partir en pièce jointe. Ce cours te donne la chaîne des unités, les deux conventions qui coexistent, et la méthode pour ne jamais te tromper de sens dans un calcul."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir multiplier et diviser un nombre entier par 1000",
+        "Connaître les préfixes kilo, méga, giga et téra",
+        "Savoir écrire une puissance de 10 et une puissance de 2 (2^10 = 1024)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La chaîne des unités de mesure de l'information",
+      "contenu_markdown": "L'unité de base de la quantité d'information est l'**octet** (symbole : o), qui représente un groupe de 8 bits. Un **bit** est la plus petite information possible : il vaut 0 ou 1.\n\nLes multiples de l'octet se succèdent toujours dans le même ordre :\n\n$$\\text{octet} \\;\\longrightarrow\\; \\text{Ko} \\;\\longrightarrow\\; \\text{Mo} \\;\\longrightarrow\\; \\text{Go} \\;\\longrightarrow\\; \\text{To}$$\n\n**Règle de sens de calcul, à retenir avant tout le reste :**\n\n- Descendre d'un cran (par exemple du Go vers le Mo), c'est **multiplier** par le facteur.\n- Monter d'un cran (par exemple du Mo vers le Go), c'est **diviser** par le facteur.\n\nLe facteur, lui, dépend de la convention imposée par l'énoncé.\n\n| Convention | Facteur | Qui l'utilise |\n|---|---|---|\n| Décimale : 1 Ko = 1000 octets | 1000 = $10^3$ | Fabricants de clés USB, de disques durs, opérateurs de téléphonie |\n| Binaire : 1 Kio = 1024 octets | 1024 = $2^{10}$ | Systèmes d'exploitation (Windows, Linux), mémoire vive |\n\nAvec la convention décimale, la chaîne complète s'écrit :\n\n$$1\\ \\text{Ko} = 1000\\ \\text{o} \\quad ; \\quad 1\\ \\text{Mo} = 1000\\ \\text{Ko} \\quad ; \\quad 1\\ \\text{Go} = 1000\\ \\text{Mo} \\quad ; \\quad 1\\ \\text{To} = 1000\\ \\text{Go}$$\n\nAu BEPC, l'énoncé précise presque toujours la convention entre parenthèses (« On donne : 1 Ko = 1000 octets »). Cette mention n'est pas décorative : elle t'impose le facteur à utiliser. Recopie-la en tête de ta réponse.",
+      "formule_principale": "1\\ \\text{Ko} = 1000\\ \\text{octets} \\;;\\; 1\\ \\text{Mo} = 1000\\ \\text{Ko} \\;;\\; 1\\ \\text{Go} = 1000\\ \\text{Mo}",
+      "variantes": [
+        {
+          "nom": "Convention binaire (1 Kio = 1024 octets)",
+          "quand_utiliser": "Quand l'énoncé donne 1 Ko = 1024 octets, ou quand on interprète l'espace affiché par un système d'exploitation",
+          "contenu_markdown": "La méthode est identique, seul le facteur change : on multiplie ou on divise par 1024 au lieu de 1000. Les unités portent alors officiellement les noms kibi-octet (Kio), mébi-octet (Mio) et gibi-octet (Gio), même si beaucoup d'énoncés scolaires continuent d'écrire Ko, Mo et Go. Exemple : $3\\ \\text{Gio} = 3 \\times 1024 = 3072\\ \\text{Mio}$."
+        },
+        {
+          "nom": "Conversion entre octets et bits",
+          "quand_utiliser": "Quand l'énoncé mélange bits (b) et octets (o), notamment sur les débits de connexion Internet",
+          "contenu_markdown": "1 octet = 8 bits. Pour passer des octets aux bits, on multiplie par 8 ; pour passer des bits aux octets, on divise par 8. Attention à la casse des symboles : **o** désigne l'octet, **b** désigne le bit. Une connexion annoncée à 8 Mb/s transfère donc $8 \\div 8 = 1$ Mo par seconde."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Vous disposez d'une clé USB de capacité 3 Giga-octets (Go). Convertir cette capacité en Mo. (On donne : 1 Ko = 1000 octets.)",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever la convention imposée par l'énoncé",
+          "justification": "Le résultat dépend entièrement du facteur choisi. L'énoncé écrit « On donne : 1 Ko = 1000 octets », donc le facteur est 1000 et non 1024.",
+          "resultat_markdown": "Facteur retenu : $1000$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la chaîne des unités avec ce facteur",
+          "justification": "Chaque cran de la chaîne utilise le même facteur, il suffit donc de le reporter à chaque étape.",
+          "resultat_markdown": "$1\\ \\text{Ko} = 1000\\ \\text{o}$ ; $1\\ \\text{Mo} = 1000\\ \\text{Ko}$ ; $1\\ \\text{Go} = 1000\\ \\text{Mo}$"
+        },
+        {
+          "numero": 3,
+          "action": "Compter le nombre de crans entre l'unité de départ et l'unité d'arrivée",
+          "justification": "On part du Go et on arrive au Mo. Dans la chaîne octet → Ko → Mo → Go, le Mo est le voisin immédiat du Go, en dessous de lui : c'est donc un seul cran vers le bas.",
+          "resultat_markdown": "1 cran vers le bas, donc une seule multiplication par 1000."
+        },
+        {
+          "numero": 4,
+          "action": "Effectuer le calcul",
+          "justification": "Descendre d'un cran, c'est multiplier par le facteur.",
+          "resultat_markdown": "$3\\ \\text{Go} = 3 \\times 1000\\ \\text{Mo} = 3000\\ \\text{Mo}$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier en repassant par les octets",
+          "justification": "Convertir les deux écritures en octets doit donner exactement le même nombre : si ce n'est pas le cas, une multiplication a été faite dans le mauvais sens.",
+          "resultat_markdown": "$3\\ \\text{Go} = 3 \\times 1000 \\times 1000 \\times 1000 = 3\\ 000\\ 000\\ 000$ o.\n\n$3000\\ \\text{Mo} = 3000 \\times 1000 \\times 1000 = 3\\ 000\\ 000\\ 000$ o. Les deux nombres coïncident."
+        }
+      ],
+      "conclusion_markdown": "La capacité de la clé USB vaut **3000 Mo** avec la convention décimale imposée par l'énoncé. On vient de montrer qu'une conversion se ramène toujours à trois décisions : quelle convention, combien de crans, dans quel sens."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Diviser au lieu de multiplier : écrire $3\\ \\text{Go} = 3 \\div 1000 = 0{,}003\\ \\text{Mo}$",
+          "pourquoi_faux": "Le méga-octet est une unité **plus petite** que le giga-octet. Quand l'unité rapetisse, le nombre qui la précède doit grandir : une même quantité s'exprime par un plus grand nombre de petites unités. Trouver 0,003 Mo pour une clé de 3 Go devrait alerter immédiatement, puisque cela reviendrait à dire que la clé contient moins qu'une seule photo.",
+          "correction_markdown": "Avant de calculer, demande-toi si le nombre doit augmenter ou diminuer. Vers une unité plus petite (Go → Mo → Ko → o) : le nombre augmente, donc on multiplie. Vers une unité plus grande (o → Ko → Mo → Go) : le nombre diminue, donc on divise."
+        },
+        {
+          "erreur_markdown": "Utiliser 1024 alors que l'énoncé impose 1000, et répondre $3 \\times 1024 = 3072$ Mo",
+          "pourquoi_faux": "Le résultat n'est pas absurde en soi, il est juste dans l'autre convention. Mais l'énoncé a explicitement fixé la règle du jeu avec « On donne : 1 Ko = 1000 octets ». Ignorer cette donnée, c'est répondre à une question qui n'a pas été posée, et le barème sanctionne alors la démarche entière.",
+          "correction_markdown": "Recopie la convention donnée par l'énoncé en première ligne de ta réponse, avant tout calcul. Ce réflexe te force à la lire et prouve au correcteur que ton choix de facteur est délibéré."
+        },
+        {
+          "erreur_markdown": "Sauter un cran : écrire $3\\ \\text{Go} = 3 \\times 1000 \\times 1000 = 3\\ 000\\ 000$ Mo",
+          "pourquoi_faux": "Multiplier deux fois par 1000 fait descendre de deux crans, ce qui conduit du Go au Ko, pas au Mo. Le résultat obtenu est la capacité exprimée en Ko, avec une étiquette d'unité fausse.",
+          "correction_markdown": "Écris la chaîne complète sur ton brouillon (o, Ko, Mo, Go, To) et pointe du doigt l'unité de départ puis l'unité d'arrivée. Le nombre de multiplications est exactement le nombre de crans franchis, ni plus ni moins."
+        },
+        {
+          "erreur_markdown": "Confondre le symbole o (octet) et le symbole b (bit), et répondre en Mb au lieu de Mo",
+          "pourquoi_faux": "Un octet vaut 8 bits : les deux grandeurs diffèrent d'un facteur 8, ce qui n'est pas négligeable. Une capacité de stockage s'exprime toujours en octets, jamais en bits ; les bits sont réservés aux débits de transmission.",
+          "correction_markdown": "Retiens la règle d'écriture : minuscule **b** pour le bit, minuscule **o** pour l'octet en français (ou majuscule **B** pour *byte* en anglais). Une capacité de disque ou de clé se note en Go, un débit Internet en Mb/s."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir 5 Go en Mo, puis 2500 Ko en Mo. (On donne : 1 Ko = 1000 octets.)",
+          "solution_markdown": "**Première conversion : 5 Go en Mo.**\n\nOn descend d'un cran (Go → Mo), donc on multiplie une fois par 1000 :\n\n$$5\\ \\text{Go} = 5 \\times 1000 = 5000\\ \\text{Mo}$$\n\n**Seconde conversion : 2500 Ko en Mo.**\n\nOn monte d'un cran (Ko → Mo), donc on divise une fois par 1000 :\n\n$$2500\\ \\text{Ko} = 2500 \\div 1000 = 2{,}5\\ \\text{Mo}$$\n\n**Vérification.** 2,5 Mo est bien un nombre plus petit que 2500 Ko : c'est cohérent, puisque le Mo est une unité plus grande que le Ko."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une carte mémoire a une capacité de 16 Go. Chaque photo prise avec un téléphone occupe 4 Mo. Combien de photos au maximum peut-on enregistrer sur cette carte ? (On donne : 1 Ko = 1000 octets.)",
+          "solution_markdown": "**Étape 1 : ramener les deux quantités à la même unité.**\n\nLa capacité est en Go, la taille d'une photo en Mo. On convertit la capacité en Mo, l'unité la plus commode ici :\n\n$$16\\ \\text{Go} = 16 \\times 1000 = 16\\ 000\\ \\text{Mo}$$\n\n**Étape 2 : diviser la capacité totale par la taille d'une photo.**\n\n$$16\\ 000 \\div 4 = 4000$$\n\n**Étape 3 : conclure.**\n\nLa carte mémoire peut contenir **4000 photos** au maximum.\n\n**Vérification.** $4000 \\times 4 = 16\\ 000$ Mo, soit exactement la capacité de la carte. Le calcul est cohérent.\n\n**Remarque.** Dans la réalité, le nombre sera légèrement inférieur : le système de fichiers occupe lui-même une partie de la carte, et toutes les photos ne pèsent pas exactement 4 Mo."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un fabricant annonce un disque dur de 500 Go, en utilisant la convention 1 Ko = 1000 octets. Le système d'exploitation, lui, affiche la capacité en utilisant la convention 1 Kio = 1024 octets. Quelle capacité, en Gio arrondie à l'unité, le système affichera-t-il ? Expliquer pourquoi l'utilisateur a l'impression d'avoir été trompé.",
+          "solution_markdown": "**Étape 1 : convertir la capacité annoncée en octets, avec la convention du fabricant.**\n\n$$500\\ \\text{Go} = 500 \\times 1000 \\times 1000 \\times 1000 = 500\\ 000\\ 000\\ 000\\ \\text{octets}$$\n\nCe nombre d'octets est la seule donnée physique réelle : c'est la quantité d'information que le disque peut effectivement contenir. Il ne change pas selon la convention, seule son **écriture** change.\n\n**Étape 2 : réécrire ce même nombre d'octets avec la convention binaire.**\n\nOn monte de trois crans (octet → Kio → Mio → Gio), donc on divise trois fois par 1024 :\n\n$$500\\ 000\\ 000\\ 000 \\div 1024 = 488\\ 281\\ 250\\ \\text{Kio}$$\n\n$$488\\ 281\\ 250 \\div 1024 \\approx 476\\ 837{,}16\\ \\text{Mio}$$\n\n$$476\\ 837{,}16 \\div 1024 \\approx 465{,}66\\ \\text{Gio}$$\n\n**Étape 3 : conclure.**\n\nLe système affichera environ **466 Gio** (arrondi à l'unité).\n\n**Étape 4 : expliquer l'impression de tromperie.**\n\nL'utilisateur croit avoir perdu 34 Go, alors qu'il n'a rien perdu du tout : le disque contient bien 500 milliards d'octets dans les deux cas. Ce qui change, c'est l'unité de mesure employée pour les compter. Le fabricant compte par paquets de 1000, le système par paquets de 1024, et un paquet plus gros donne évidemment un nombre de paquets plus petit.\n\nOn peut le vérifier par un rapport : $\\dfrac{1000^3}{1024^3} = \\dfrac{1\\ 000\\ 000\\ 000}{1\\ 073\\ 741\\ 824} \\approx 0{,}931$. L'écart d'environ 7 % entre les deux affichages est constant, quelle que soit la taille du disque."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant de convertir, cherche la convention dans l'énoncé et recopie-la : 1000 ou 1024, c'est elle qui commande tout le calcul.",
+        "Écris la chaîne octet, Ko, Mo, Go, To sur ton brouillon et compte les crans à franchir. Le nombre de crans est le nombre de multiplications ou de divisions à faire.",
+        "Vers une unité plus petite, le nombre grandit, donc tu multiplies. Vers une unité plus grande, le nombre diminue, donc tu divises. Un résultat qui va dans le mauvais sens signale une erreur avant même la vérification.",
+        "L'octet (o) et le bit (b) ne se confondent pas : 1 octet = 8 bits. Les capacités se comptent en octets, les débits en bits par seconde.",
+        "Pour vérifier une conversion, exprime les deux écritures en octets : elles doivent donner exactement le même nombre.",
+        "Au BEPC, cette compétence est évaluée sous deux formes : la conversion pure (« convertir 3 Go en Mo ») et la comparaison utile (« ces vidéos tiennent-elles sur la clé ? »). La seconde exige toujours la première : convertis d'abord, compare ensuite."
+      ]
+    }
+  ]
+}

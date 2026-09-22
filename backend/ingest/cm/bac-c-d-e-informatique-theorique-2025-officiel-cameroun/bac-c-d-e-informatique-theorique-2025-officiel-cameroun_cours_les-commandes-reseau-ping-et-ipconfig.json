@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-les-commandes-reseau-ping-et-ipconfig-tle-tronc-commun",
+  "meta": {
+    "titre": "Les commandes réseau PING et IPCONFIG",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Outils de diagnostic réseau",
+    "duree_estimee_min": 15,
+    "tags": [
+      "PING",
+      "IPCONFIG",
+      "diagnostic réseau",
+      "ICMP",
+      "ipconfig /all",
+      "commandes réseau Windows",
+      "protocole ICMP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex1-q10-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand une connexion réseau ne fonctionne pas, deux commandes suffisent souvent à comprendre où se situe le problème : l'une teste si une autre machine répond, l'autre affiche la configuration de la sienne. Deux commandes simples, mais qu'il ne faut surtout pas confondre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse IP."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "PING interroge les autres, IPCONFIG interroge soi-même",
+      "contenu_markdown": "**PING** : commande qui teste l'accessibilité d'une machine distante. Elle envoie des paquets ICMP (« echo request ») à l'adresse indiquée et mesure si, et en combien de temps, une réponse (« echo reply ») revient. Elle permet de vérifier qu'une machine est joignable et d'estimer la qualité de la liaison.\n\n**IPCONFIG** (sous Windows ; ifconfig ou ip a sous Linux) : commande qui affiche la configuration IP courante du poste sur lequel elle est exécutée (adresse IP, masque de sous-réseau, passerelle par défaut...).\n\nRetiens la distinction en une phrase : PING interroge une AUTRE machine pour savoir si elle répond ; IPCONFIG interroge SA PROPRE machine pour connaître sa configuration."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le rôle des commandes PING et IPCONFIG.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la cible de chaque commande",
+          "justification": "C'est la clé pour ne jamais les confondre.",
+          "resultat_markdown": "PING cible une machine distante ; IPCONFIG cible la machine locale elle-même."
+        },
+        {
+          "numero": 2,
+          "action": "Décrire précisément le mécanisme de PING",
+          "justification": "Le mécanisme technique (ICMP echo request/reply) montre une vraie maîtrise de la notion.",
+          "resultat_markdown": "PING envoie un paquet ICMP echo request et attend un echo reply."
+        },
+        {
+          "numero": 3,
+          "action": "Décrire précisément ce qu'affiche IPCONFIG",
+          "justification": "IPCONFIG donne la configuration réseau active du poste.",
+          "resultat_markdown": "IPCONFIG affiche l'adresse IP, le masque de sous-réseau et la passerelle par défaut du poste local."
+        }
+      ],
+      "conclusion_markdown": "On obtient deux rôles clairement distincts, associés chacun à leur mécanisme technique précis, ce qui évite toute confusion à l'examen."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que PING affiche la configuration réseau",
+          "pourquoi_faux": "C'est le rôle d'IPCONFIG. PING ne fait que tester la joignabilité d'une machine distante, il n'affiche aucune information de configuration.",
+          "correction_markdown": "Associer PING au verbe « tester » (une autre machine) et IPCONFIG au verbe « afficher » (sa propre configuration)."
+        },
+        {
+          "erreur_markdown": "Croire qu'un PING qui échoue signifie toujours que le câble est débranché",
+          "pourquoi_faux": "Un PING peut échouer pour de nombreuses raisons (pare-feu qui bloque les paquets ICMP, machine éteinte, mauvaise adresse IP, routeur mal configuré) : l'absence de réponse ne désigne pas systématiquement un problème physique de câblage.",
+          "correction_markdown": "Présenter l'échec d'un PING comme un signal à investiguer, pas comme une preuve automatique d'un problème matériel précis."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle commande utiliser pour connaître l'adresse IP actuelle de son propre ordinateur ?",
+          "solution_markdown": "IPCONFIG (sous Windows) : elle affiche la configuration IP courante du poste, dont son adresse IP."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un technicien veut vérifier si le serveur d'adresse 128.100.10.3 est bien joignable depuis un poste du réseau. Quelle commande utiliser, et que doit-il observer pour conclure que le serveur répond ?",
+          "solution_markdown": "Il doit utiliser la commande PING vers l'adresse 128.100.10.3. S'il reçoit des réponses (echo reply) du serveur, avec un temps de réponse affiché pour chaque paquet envoyé, cela confirme que le serveur est joignable sur le réseau. En l'absence de réponse (délai dépassé, « Request timed out »), le serveur n'est pas joignable dans ces conditions."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un utilisateur ne parvient pas à se connecter à Internet. Décrire, dans l'ordre, comment utiliser IPCONFIG puis PING pour localiser progressivement l'origine du problème.",
+          "solution_markdown": "Étape 1 : exécuter IPCONFIG pour vérifier que le poste possède bien une adresse IP valide, un masque cohérent et une passerelle par défaut renseignée ; si aucune adresse valide n'apparaît, le problème vient de la configuration locale (câble débranché, DHCP inaccessible). Étape 2, si la configuration locale semble correcte : utiliser PING vers la passerelle par défaut (le routeur du réseau local) pour vérifier que le poste peut au moins joindre son propre réseau. Étape 3 : si la passerelle répond, utiliser PING vers une adresse extérieure connue (par exemple un serveur DNS public) pour vérifier si la panne se situe entre le réseau local et Internet plutôt que sur le poste lui-même. Cette démarche en étapes permet de localiser progressivement où se situe la coupure, du poste local vers l'extérieur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "PING teste si une machine distante répond ; IPCONFIG affiche la configuration IP de sa propre machine.",
+        "PING s'appuie sur le protocole ICMP (echo request / echo reply).",
+        "Un échec de PING a plusieurs causes possibles, pas seulement un câble débranché.",
+        "En diagnostic réseau, la démarche classique consiste à vérifier d'abord sa propre configuration (IPCONFIG), puis à tester la joignabilité de proche en proche (PING de la passerelle, puis d'une adresse extérieure)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-rediger-requete-sql-selection-tle-tronc-commun",
+  "meta": {
+    "titre": "Rédiger une requête SQL de sélection avec condition",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Bases de données et SQL",
+    "duree_estimee_min": 20,
+    "tags": [
+      "SQL",
+      "SELECT",
+      "WHERE",
+      "base de données",
+      "requête"
+    ],
+    "savoir_officiel": {
+      "classe": "Tle",
+      "serie_label": "Tronc commun",
+      "module_numero": "TCMT001",
+      "savoir_numero": "II"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-informatique-theorique-officiel-2016",
+    "epreuve_titre": "Baccalauréat ESG - Épreuve théorique d'Informatique - Séries A, C, D - session 2016",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-a-c-d-informatique-theorique-officiel-2016-ex3-qIII.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Interroger une base de données pour en extraire seulement l'information utile est l'usage le plus courant d'un SGBD, que ce soit pour retrouver les candidats admis à un examen ou les clients d'une ville donnée. Une seule instruction, la requête SELECT, permet de répondre à ce type de question sans jamais parcourir une table ligne par ligne à la main. Maîtriser sa structure, c'est se donner un outil réutilisable pour n'importe quelle table, quel que soit son contenu."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire une table de base de données organisée en colonnes et en lignes",
+        "Connaître le vocabulaire de base d'une table : colonne (ou champ) et ligne (ou enregistrement)",
+        "Savoir qu'une chaîne de caractères se distingue d'un nombre par la présence de guillemets"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La structure SELECT ... FROM ... WHERE",
+      "contenu_markdown": "Une requête de sélection SQL répond toujours à trois questions dans le même ordre : quoi afficher (SELECT, suivi du nom des colonnes voulues, ou de * pour toutes les colonnes), d'où le chercher (FROM, suivi du nom de la table), et sous quelle condition retenir une ligne (WHERE, suivi d'une comparaison entre une colonne et une valeur). La clause WHERE est facultative : sans elle, la requête retourne toutes les lignes de la table. Une valeur de type texte se compare toujours entre guillemets (WHERE Décision = \"ADMIS\"), tandis qu'une valeur numérique se compare sans guillemets (WHERE Moyenne >= 10).",
+      "formule_principale": "SELECT colonne(s) FROM table WHERE condition ;",
+      "variantes": [
+        {
+          "nom": "Sélection sans condition",
+          "quand_utiliser": "Quand on veut afficher toutes les lignes d'une table sans filtrage",
+          "contenu_markdown": "On omet simplement la clause WHERE : SELECT * FROM candidats ; retourne alors l'intégralité de la table candidats, toutes lignes confondues."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On dispose de la table candidats (Code_candidat, Nom, Prénom, Examen, Moyenne, Décision, Etablissement). Écrire la requête SQL qui sélectionne les établissements des candidats admis.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la colonne à afficher",
+          "justification": "La question demande l'établissement des candidats, l'information à afficher est donc la colonne Etablissement.",
+          "resultat_markdown": "SELECT (Etablissement)"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la table à interroger",
+          "justification": "Les données recherchées se trouvent dans l'unique table de la base, nommée candidats.",
+          "resultat_markdown": "FROM candidats"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier la condition de sélection",
+          "justification": "Seuls les candidats admis doivent apparaître : la colonne Décision doit être comparée à la valeur texte \"ADMIS\", entre guillemets car il s'agit d'une chaîne de caractères.",
+          "resultat_markdown": "WHERE Décision = \"ADMIS\""
+        },
+        {
+          "numero": 4,
+          "action": "Assembler les trois clauses dans l'ordre SELECT, FROM, WHERE",
+          "justification": "La syntaxe SQL impose cet ordre précis pour que la requête soit valide.",
+          "resultat_markdown": "Select (Etablissement) from candidats where Décision = \"ADMIS\" ;"
+        }
+      ],
+      "conclusion_markdown": "Appliquée à la table de l'exercice, cette requête retourne Lycée d'Akwa et Collège de Mazenod, les deux établissements dont le candidat a la décision ADMIS ; Collège Jean Tabi n'apparaît pas car son candidat a la décision REFUSE."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire WHERE Décision = ADMIS sans guillemets autour de ADMIS.",
+          "pourquoi_faux": "ADMIS est une chaîne de caractères, pas un nombre ni le nom d'une colonne : sans guillemets, le SGBD cherche une colonne nommée ADMIS, qui n'existe pas, et la requête échoue.",
+          "correction_markdown": "Encadre systématiquement de guillemets toute valeur de type texte comparée dans une clause WHERE : WHERE Décision = \"ADMIS\"."
+        },
+        {
+          "erreur_markdown": "Inverser l'ordre des clauses, par exemple écrire FROM candidats SELECT Etablissement.",
+          "pourquoi_faux": "La syntaxe SQL impose l'ordre SELECT puis FROM puis WHERE ; un ordre différent n'est pas reconnu par le SGBD, même si les trois clauses sont présentes.",
+          "correction_markdown": "Mémorise l'ordre à l'aide de la phrase française qu'il traduit : « Sélectionne (quoi), depuis (où), là où (quelle condition) »."
+        },
+        {
+          "erreur_markdown": "Oublier la clause WHERE et sélectionner tous les candidats au lieu des seuls candidats admis.",
+          "pourquoi_faux": "Sans WHERE, la requête SELECT (Etablissement) FROM candidats renvoie l'établissement de toutes les lignes de la table, admis et refusés confondus, ce qui ne répond pas à la question posée.",
+          "correction_markdown": "Avant d'écrire une requête, reformule la question en une phrase du type « je veux telle colonne, de telle table, pour les lignes qui vérifient telle condition » : si un « pour les lignes qui... » apparaît dans ta phrase, une clause WHERE est nécessaire."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Toujours à partir de la table candidats (Code_candidat, Nom, Prénom, Examen, Moyenne, Décision, Etablissement), écrire la requête SQL qui affiche le nom de tous les candidats de la table, sans aucune condition.",
+          "solution_markdown": "L'information à afficher est le nom : SELECT (Nom). La table concernée est candidats : FROM candidats. Aucune condition n'est demandée, la clause WHERE est donc omise. La requête complète s'écrit : Select (Nom) from candidats ;"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la requête SQL qui affiche le code, le nom et la moyenne des candidats dont l'examen est BAA4.",
+          "solution_markdown": "Trois colonnes sont demandées : Code_candidat, Nom et Moyenne, séparées par des virgules après SELECT. La table concernée est candidats. La condition porte sur la colonne Examen, qui doit être égale à la valeur texte \"BAA4\", entre guillemets. La requête complète s'écrit : Select (Code_candidat, Nom, Moyenne) from candidats where Examen = \"BAA4\" ;"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire la requête SQL qui affiche l'établissement des candidats refusés ayant obtenu une moyenne strictement supérieure à 9. Indication : une requête peut combiner deux conditions avec le mot-clé AND.",
+          "solution_markdown": "L'information à afficher est l'établissement : SELECT (Etablissement). La table concernée est candidats. Deux conditions doivent être vraies en même temps : la Décision doit être égale à \"REFUSE\" (chaîne de caractères, entre guillemets) et la Moyenne doit être strictement supérieure à 9 (valeur numérique, sans guillemets). Les deux conditions se combinent avec AND. La requête complète s'écrit : Select (Etablissement) from candidats where Décision = \"REFUSE\" AND Moyenne > 9 ; Appliquée à la table de l'exercice précédent, cette requête retournerait Collège Jean Tabi, dont le candidat 14OBC094 a la décision REFUSE avec une moyenne de 9,02, strictement supérieure à 9."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une requête de sélection répond toujours dans le même ordre à trois questions : quoi (SELECT), d'où (FROM), sous quelle condition (WHERE).",
+        "Une valeur texte se compare toujours entre guillemets, une valeur numérique jamais.",
+        "Sans clause WHERE, une requête SELECT retourne toutes les lignes de la table, pas seulement celles qui t'intéressent.",
+        "Deux conditions peuvent se combiner avec AND quand elles doivent être vraies simultanément.",
+        "Au BAC, ce type de question apparaît dans la partie Bases de données de l'épreuve d'Informatique, le plus souvent sous la forme d'une requête à compléter à partir d'une table donnée en énoncé."
+      ]
+    }
+  ]
+}

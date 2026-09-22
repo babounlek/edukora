@@ -1,0 +1,112 @@
+{
+  "cours_id": "cours-les-methodes-get-et-post-d-un-formulaire-html-tle-ti",
+  "meta": {
+    "titre": "Les méthodes GET et POST d'un formulaire HTML",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Formulaires HTML",
+    "duree_estimee_min": 15,
+    "tags": [
+      "méthode GET",
+      "méthode POST",
+      "formulaire HTML",
+      "requête HTTP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat TI - Épreuve zéro de Programmation (DRES-Ouest, session 2022)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-epreuve-zero-dres-ouest-programmation-2022-cameroun-ex1-qII.11-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux formulaires qui se ressemblent à l'écran peuvent transmettre leurs données de façon totalement différente selon un seul attribut, invisible pour l'utilisateur mais décisif pour la sécurité et le fonctionnement du site : la méthode d'envoi."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure de base d'un formulaire HTML",
+        "Savoir ce qu'est une URL"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "GET dans l'URL, POST dans le corps de la requête",
+      "contenu_markdown": "La méthode **GET** transmet les données du formulaire directement dans l'URL, sous la forme `?nom1=valeur1&nom2=valeur2`. Ces données sont donc visibles, limitées en taille (quelques milliers de caractères selon les navigateurs) et facilement mises en cache, partagées ou mises en favori par l'utilisateur.\n\nLa méthode **POST** transmet les données dans le corps de la requête HTTP, invisibles dans l'URL, sans limite pratique de taille, ce qui la rend mieux adaptée aux données sensibles (mots de passe) ou volumineuses (fichiers, longs textes)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Explique pourquoi le formulaire d'enregistrement d'un article utilise POST, alors que le formulaire de calcul de table de multiplication peut utiliser GET.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la nature de l'opération du premier formulaire",
+          "justification": "Enregistrer un article modifie la base de données : c'est une opération sensible",
+          "resultat_markdown": "L'enregistrement est un effet de bord qui justifie POST, pour ne pas exposer les données dans l'URL et éviter un double envoi accidentel"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la nature de l'opération du second formulaire",
+          "justification": "Calculer une table de multiplication ne modifie rien en base : c'est une simple consultation",
+          "resultat_markdown": "GET convient, l'utilisateur peut même partager l'URL du résultat obtenu"
+        }
+      ],
+      "conclusion_markdown": "Le choix de la méthode dépend de la nature de l'opération : POST pour une modification ou une donnée sensible, GET pour une consultation simple."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer que GET est « moins sécurisé donc à éviter dans tous les cas »",
+          "pourquoi_faux": "GET reste parfaitement adapté à une recherche ou une consultation sans effet de bord, où l'on souhaite justement que l'URL soit partageable.",
+          "correction_markdown": "Choisis la méthode selon la nature des données et l'effet de l'opération, pas selon une règle absolue de sécurité."
+        },
+        {
+          "erreur_markdown": "Croire que la taille des données n'a aucune limite en GET",
+          "pourquoi_faux": "La plupart des navigateurs et serveurs limitent la longueur totale d'une URL, ce qui rend GET impraticable pour de grandes quantités de données.",
+          "correction_markdown": "Réserve POST aux formulaires qui transmettent beaucoup de texte ou des fichiers."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle méthode rend les données visibles dans l'URL ?",
+          "solution_markdown": "La méthode GET."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un formulaire de connexion transmet un identifiant et un mot de passe. Quelle méthode choisir, et pourquoi ?",
+          "solution_markdown": "POST : le mot de passe ne doit jamais apparaître en clair dans l'URL, ni rester dans l'historique du navigateur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un moteur de recherche interne utilise GET pour son champ de recherche. Explique en quoi ce choix profite à l'utilisateur, au-delà de la simple simplicité technique.",
+          "solution_markdown": "Avec GET, chaque recherche produit une URL différente contenant le mot-clé recherché (exemple : `recherche.php?q=ordinateur`). L'utilisateur peut alors mettre cette URL en favori, la partager avec quelqu'un d'autre ou revenir directement au même résultat plus tard, ce qu'une requête POST ne permettrait pas puisque ses données ne figurent dans aucune URL réutilisable."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "GET transmet les données dans l'URL : visibles, limitées en taille, partageables.",
+        "POST transmet les données dans le corps de la requête : invisibles dans l'URL, sans limite pratique de taille.",
+        "Choisis GET pour une consultation sans effet de bord, POST pour une modification ou une donnée sensible.",
+        "Ce choix se traduit directement en PHP par l'usage de $_GET ou de $_POST pour récupérer les données transmises."
+      ]
+    }
+  ]
+}

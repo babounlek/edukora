@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-loi-de-decroissance-radioactive-tle-c-e",
+  "meta": {
+    "titre": "Loi de decroissance radioactive : determination du nombre de noyaux initial et du temps ecoule",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Radioactivite",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi de decroissance radioactive",
+      "constante radioactive",
+      "datation par activite"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2010 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-e-physique-2010-officiel-cameroun-ex3-q3.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La datation au carbone 14, le controle de peremption d'une source medicale, le suivi d'un dechet nucleaire : toutes ces applications reposent sur une seule loi mathematique, la decroissance exponentielle de l'activite radioactive. Ce cours l'etablit et montre comment l'inverser pour retrouver une duree ecoulee."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Definitions de la demi-vie et de l'activite",
+        "Fonction exponentielle et logarithme neperien",
+        "Relation $\\lambda=\\ln2/T$ entre constante radioactive et demi-vie"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de decroissance radioactive et son inversion",
+      "contenu_markdown": "Le nombre de noyaux radioactifs presents decroit exponentiellement, $N(t)=N_0e^{-\\lambda t}$, et l'activite obeit a la meme loi, $A(t)=A_0e^{-\\lambda t}$, avec $\\lambda=\\ln2/T$. Connaissant l'activite initiale $A_0$ et la constante $\\lambda$, on obtient le nombre de noyaux initial $N_0=A_0/\\lambda$. Connaissant en plus une activite mesuree $A$ a une date ulterieure, on retrouve la duree ecoulee en inversant l'exponentielle par un logarithme.",
+      "formule_principale": "N_0 = \\dfrac{A_0}{\\lambda} \\qquad t = \\dfrac{1}{\\lambda}\\ln\\!\\left(\\dfrac{A_0}{A}\\right)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un echantillon de phosphore 32 ($T=14{,}3$ jours) a une activite $A_0=1{,}06\\times10^{16}\\ \\text{Bq}$ a sa date de conditionnement. Estimer le nombre de noyaux presents a cette date.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la constante radioactive lambda",
+          "justification": "Elle relie la demi-vie donnee a l'activite",
+          "resultat_markdown": "$T=14{,}3\\times86400=1{,}236\\times10^6\\ \\text{s}$, $\\lambda=\\ln2/T \\approx5{,}61\\times10^{-7}\\ \\text{s}^{-1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler N0 dans la relation A0 = lambda N0",
+          "justification": "L'activite initiale est directement proportionnelle au nombre de noyaux initial",
+          "resultat_markdown": "$N_0 = A_0/\\lambda$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numeriquement",
+          "justification": "Substitution des valeurs",
+          "resultat_markdown": "$N_0 = 1{,}06\\times10^{16}/5{,}61\\times10^{-7} \\approx 1{,}89\\times10^{22}$ noyaux"
+        }
+      ],
+      "conclusion_markdown": "On vient d'estimer un nombre de noyaux inaccessible a toute mesure directe, uniquement a partir d'une activite et d'une demi-vie : c'est la puissance de cette loi de decroissance, qui relie l'infiniment petit (noyaux) a une grandeur mesurable en laboratoire (activite)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la demi-vie T directement en jours dans le calcul de lambda sans la convertir en secondes",
+          "pourquoi_faux": "L'activite est donnee en becquerels, soit des desintegrations par **seconde** : pour que $\\lambda$ soit homogene, il faut imperativement exprimer $T$ en secondes avant de calculer $\\lambda=\\ln2/T$.",
+          "correction_markdown": "Toujours convertir la demi-vie dans la meme unite de temps que celle implicite dans l'activite (la seconde, pour un resultat en becquerel) avant tout calcul de $\\lambda$."
+        },
+        {
+          "erreur_markdown": "Utiliser $t=T\\times(A_0/A)$ au lieu d'une relation logarithmique pour calculer une duree ecoulee",
+          "pourquoi_faux": "La decroissance est exponentielle, pas lineaire : le rapport $A_0/A$ ne donne jamais directement un multiple de $T$, il faut passer par un logarithme (neperien ou en base 2) pour retrouver la duree correspondante.",
+          "correction_markdown": "Toujours utiliser $t = \\frac{1}{\\lambda}\\ln(A_0/A)$, ou de facon equivalente $t = T\\log_2(A_0/A)$, jamais une simple regle de proportionnalite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un echantillon a une demi-vie $T=10$ jours et une activite initiale $A_0=5{,}0\\times10^{10}\\ \\text{Bq}$. Calculer sa constante radioactive $\\lambda$ (en $\\text{s}^{-1}$) et son nombre initial de noyaux $N_0$.",
+          "solution_markdown": "$T=10\\times86400=8{,}64\\times10^5\\ \\text{s}$. $\\lambda=\\ln2/T=0{,}693/8{,}64\\times10^5\\approx8{,}02\\times10^{-7}\\ \\text{s}^{-1}$. $N_0=A_0/\\lambda=5{,}0\\times10^{10}/8{,}02\\times10^{-7}\\approx6{,}23\\times10^{16}$ noyaux."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Combien de temps faut-il pour que l'activite d'un echantillon de demi-vie $T=5$ jours soit divisee par 8 ?",
+          "solution_markdown": "Diviser par 8, c'est diviser par $2^3$ : il faut donc exactement 3 demi-vies, soit $t=3T=15$ jours."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un laboratoire mesure une activite $A=A_0/1000$ pour un echantillon de demi-vie $T=8$ jours. Estimer le temps ecoule (en jours), sans calculatrice scientifique, sachant que $2^{10}=1024\\approx1000$.",
+          "solution_markdown": "Puisque $2^{10}\\approx1000$, une division de l'activite par $1000$ correspond approximativement a $10$ demi-vies ecoulees. Le temps ecoule est donc $t \\approx 10\\times T = 10\\times8 = 80$ jours. (Verification plus precise : $t=T\\log_2(1000)=8\\times\\frac{\\ln1000}{\\ln2}=8\\times\\frac{6{,}908}{0{,}693}\\approx8\\times9{,}97\\approx79{,}7$ jours, tres proche de l'estimation rapide.)"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'activite (comme le nombre de noyaux) decroit exponentiellement : $A(t)=A_0e^{-\\lambda t}$, avec $\\lambda=\\ln2/T$.",
+        "Convertir systematiquement la demi-vie dans la meme unite de temps que celle de l'activite (la seconde pour un resultat en becquerel) avant tout calcul de $\\lambda$.",
+        "Le nombre initial de noyaux se retrouve par $N_0=A_0/\\lambda$, sans aucune mesure directe de matiere.",
+        "Pour retrouver une duree ecoulee a partir de deux activites mesurees, toujours passer par un logarithme : $t=\\frac{1}{\\lambda}\\ln(A_0/A)$, jamais une regle de proportionnalite simple.",
+        "Au BAC, cette loi sert de base a tous les exercices de datation, de controle de peremption ou de suivi d'une source radioactive au cours du temps."
+      ]
+    }
+  ]
+}

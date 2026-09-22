@@ -1,0 +1,210 @@
+{
+ "cours_id": "cours-nature-solide-volume-prisme-1ere-ce",
+ "meta": {
+  "titre": "Identifier la nature d'un solide et calculer son volume",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Géométrie dans l'espace",
+  "duree_estimee_min": 30,
+  "tags": ["prisme droit", "volume", "cube", "section plane", "translation", "triangle rectangle isocèle"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "24",
+   "savoir_numero": "I"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex3-q3b-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Six sommets, une liste de lettres, et la question : « quelle est la nature de ce solide ? ». La réponse ne se devine pas sur un dessin en perspective, où tout paraît déformé. Elle se lit dans les **coordonnées** : si trois sommets partagent une même coordonnée et les trois autres une autre, on tient deux faces parallèles ; s'il existe un vecteur unique qui envoie chacun des premiers sur l'un des seconds, c'est un prisme. Le volume suit alors immédiatement."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir calculer les coordonnées d'un vecteur",
+    "Savoir reconnaître une translation à partir de vecteurs égaux",
+    "Connaître la formule du volume d'un prisme et d'une pyramide",
+    "Savoir calculer l'aire d'un triangle rectangle"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Deux faces parallèles reliées par une même translation",
+   "contenu_markdown": "**La définition du prisme.** Un solide est un **prisme** lorsqu'il possède deux faces polygonales superposables, situées dans des plans parallèles, et se déduisant l'une de l'autre par une **translation**.\n\nIl est **droit** lorsque le vecteur de cette translation est **orthogonal** au plan des deux faces.\n\n**Le volume.**\n\n$$V_{\\text{prisme}} = \\mathcal{A}_{\\text{base}} \\times h$$\n\noù $h$ est la distance entre les deux plans parallèles. Pour un prisme droit, $h$ est simplement la norme du vecteur de translation.\n\n**La méthode, en cinq gestes.**\n\n1. **Lister** les coordonnées des sommets.\n2. **Repérer** deux groupes de sommets partageant une même coordonnée — ils sont dans des plans parallèles.\n3. **Vérifier** qu'un même vecteur envoie chaque sommet du premier groupe sur un sommet du second.\n4. **Identifier** la base et calculer son aire.\n5. **Vérifier** le caractère droit, puis multiplier.\n\n**Le repérage par les coordonnées.** Si trois points ont tous une ordonnée nulle, ils appartiennent au plan $y = 0$. Si trois autres ont tous une ordonnée égale à $1$, ils appartiennent au plan $y = 1$. Ces deux plans sont parallèles : c'est la première condition, et elle se lit sans aucun calcul.\n\n**La vérification décisive.** Il faut que les **trois** vecteurs joignant les sommets correspondants soient **égaux** :\n\n$$\\overrightarrow{AB} = \\overrightarrow{DC} = \\overrightarrow{HG}$$\n\nSans cette égalité, le solide a bien deux faces parallèles mais ce n'est pas un prisme, et la formule du volume ne s'applique pas.\n\n**Le caractère droit.** Le vecteur de translation doit être orthogonal au plan de base. Si la base est dans le plan $y = 0$ et que le vecteur vaut $(0\\,;\\,1\\,;\\,0)$, il est bien porté par l'axe des $y$, donc perpendiculaire à ce plan.\n\n**Les volumes de référence.**\n\n| Solide | Volume |\n|---|---|\n| cube d'arête $a$ | $a^{3}$ |\n| prisme | $\\mathcal{A}_{\\text{base}} \\times h$ |\n| pyramide | $\\dfrac{1}{3}\\mathcal{A}_{\\text{base}} \\times h$ |\n| tétraèdre | $\\dfrac{1}{3}\\mathcal{A}_{\\text{base}} \\times h$ |\n\nLe facteur $\\dfrac{1}{3}$ distingue les solides à sommet unique des solides à deux bases.\n\n**Le contrôle par symétrie.** Quand un solide semble découper proprement un cube, cherche un argument de symétrie avant de calculer. Si un plan partage le cube en deux morceaux isométriques, chacun vaut la moitié du volume — sans aucun calcul d'aire.\n\n**Le contrôle d'ordre de grandeur.** Un solide inscrit dans un cube d'arête $1$ a un volume compris entre $0$ et $1$. Un résultat hors de cet intervalle signale une erreur.",
+   "formule_principale": "V_{\\text{prisme}} = \\mathcal{A}_{\\text{base}} \\times h",
+   "variantes": [
+    {
+     "nom": "Volume d'une pyramide ou d'un tétraèdre",
+     "quand_utiliser": "Quand le solide a un sommet unique",
+     "contenu_markdown": "$$V = \\frac{1}{3}\\,\\mathcal{A}_{\\text{base}} \\times h$$\n\nLe tétraèdre en est le cas particulier à base triangulaire. Pour un tétraèdre formé par trois arêtes d'un cube d'arête $a$ issues d'un même sommet :\n\n$$V = \\frac{1}{3} \\times \\frac{a^{2}}{2} \\times a = \\frac{a^{3}}{6}$$\n\nsoit le sixième du cube. Six tétraèdres de ce type le remplissent exactement."
+    },
+    {
+     "nom": "Volume par différence",
+     "quand_utiliser": "Quand le solide est un cube privé de morceaux",
+     "contenu_markdown": "On calcule le volume du cube, puis on retranche celui des morceaux retirés :\n\n$$V = V_{\\text{cube}} - \\sum V_{\\text{morceaux}}$$\n\nC'est l'analogue spatial du découpage d'aires, et c'est souvent plus rapide quand le solide cherché est irrégulier mais que son complémentaire se décompose en pyramides simples."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Dans le cube $ABCDEFGH$ d'arête $1$, muni du repère $\\left(A\\,;\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AE}\\right)$, on a $A(0\\,;\\,0\\,;\\,0)$, $H(1\\,;\\,0\\,;\\,1)$, $D(1\\,;\\,0\\,;\\,0)$, $C(1\\,;\\,1\\,;\\,0)$, $B(0\\,;\\,1\\,;\\,0)$, $G(1\\,;\\,1\\,;\\,1)$. Déterminer la nature, puis le volume du solide $AHDCBG$. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Repérer les sommets d'ordonnée nulle",
+     "justification": "Ils appartiennent au plan $y = 0$",
+     "resultat_markdown": "$A(0\\,;\\,0\\,;\\,0)$, $D(1\\,;\\,0\\,;\\,0)$, $H(1\\,;\\,0\\,;\\,1)$"
+    },
+    {
+     "numero": 2,
+     "action": "Repérer les sommets d'ordonnée égale à 1",
+     "justification": "Ils appartiennent au plan $y = 1$",
+     "resultat_markdown": "$B(0\\,;\\,1\\,;\\,0)$, $C(1\\,;\\,1\\,;\\,0)$, $G(1\\,;\\,1\\,;\\,1)$"
+    },
+    {
+     "numero": 3,
+     "action": "Constater le parallélisme des deux plans",
+     "justification": "Deux plans d'équations $y = 0$ et $y = 1$ sont parallèles",
+     "resultat_markdown": "Les triangles $ADH$ et $BCG$ sont dans des plans parallèles"
+    },
+    {
+     "numero": 4,
+     "action": "Vérifier la translation",
+     "justification": "Les trois vecteurs joignant les sommets correspondants doivent être égaux",
+     "resultat_markdown": "$\\overrightarrow{AB} = (0\\,;\\,1\\,;\\,0)$, $\\overrightarrow{DC} = (0\\,;\\,1\\,;\\,0)$, $\\overrightarrow{HG} = (0\\,;\\,1\\,;\\,0)$ : ils sont bien égaux"
+    },
+    {
+     "numero": 5,
+     "action": "Conclure sur la nature",
+     "justification": "Le triangle $ADH$ est l'image de $BCG$ par la translation de vecteur $\\overrightarrow{AB}$",
+     "resultat_markdown": "$AHDCBG$ est un **prisme à base triangulaire**"
+    },
+    {
+     "numero": 6,
+     "action": "Identifier la nature de la base",
+     "justification": "On calcule le produit scalaire des deux côtés issus de $D$",
+     "resultat_markdown": "$\\overrightarrow{DA} = (-1\\,;\\,0\\,;\\,0)$ et $\\overrightarrow{DH} = (0\\,;\\,0\\,;\\,1)$, de produit scalaire nul : le triangle $ADH$ est **rectangle en $D$**"
+    },
+    {
+     "numero": 7,
+     "action": "Constater qu'il est isocèle",
+     "justification": "Les deux côtés de l'angle droit sont des arêtes du cube",
+     "resultat_markdown": "$DA = DH = 1$ : le triangle est rectangle isocèle"
+    },
+    {
+     "numero": 8,
+     "action": "Calculer l'aire de la base",
+     "justification": "Demi-produit des côtés de l'angle droit",
+     "resultat_markdown": "$\\mathcal{A} = \\dfrac{1 \\times 1}{2} = \\dfrac{1}{2}$"
+    },
+    {
+     "numero": 9,
+     "action": "Vérifier le caractère droit",
+     "justification": "Le vecteur de translation $(0\\,;\\,1\\,;\\,0)$ est porté par l'axe des $y$, donc orthogonal au plan $y = 0$",
+     "resultat_markdown": "Le prisme est **droit**, de hauteur $h = AB = 1$"
+    },
+    {
+     "numero": 10,
+     "action": "Calculer le volume",
+     "justification": "Aire de base multipliée par la hauteur",
+     "resultat_markdown": "$V = \\dfrac{1}{2} \\times 1 = \\dfrac{1}{2}$ unité de volume"
+    },
+    {
+     "numero": 11,
+     "action": "Contrôler par symétrie",
+     "justification": "Le plan $(ABGH)$ coupe le cube ; vérifions que les quatre points sont coplanaires",
+     "resultat_markdown": "$\\overrightarrow{AB} = (0\\,;\\,1\\,;\\,0)$ et $\\overrightarrow{AH} = (1\\,;\\,0\\,;\\,1)$ admettent $\\vec{n}(1\\,;\\,0\\,;\\,-1)$ pour normale commune, et $\\overrightarrow{AG} \\cdot \\vec{n} = 1-1 = 0$ : les quatre points sont coplanaires"
+    },
+    {
+     "numero": 12,
+     "action": "Conclure le contrôle",
+     "justification": "Le plan $(ABGH)$ partage le cube en deux solides isométriques",
+     "resultat_markdown": "Le cube ayant pour volume $1$, chaque moitié vaut $\\dfrac{1}{2}$. Conforme"
+    }
+   ],
+   "conclusion_markdown": "Le solide $AHDCBG$ est un prisme droit à base triangulaire, de base le triangle rectangle isocèle $ADH$ et de hauteur l'arête $AB$. Son volume vaut $\\dfrac{1}{2}$ unité de volume. Note que le contrôle des étapes 11 et 12 aurait pu servir de démonstration à lui seul : le plan $(ABGH)$ coupe le cube en deux moitiés isométriques, donc chacune vaut $\\dfrac{1}{2}$. Quand un solide semble découper proprement un cube, cherche d'abord ce genre d'argument de symétrie."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Conclure « prisme » sans vérifier la translation",
+     "pourquoi_faux": "Deux faces parallèles ne suffisent pas : il faut que les trois vecteurs joignant les sommets correspondants soient **égaux**. Sans cela, le solide peut être un tronc de pyramide, et la formule du volume ne s'applique plus.",
+     "correction_markdown": "Calcule explicitement les trois vecteurs et constate leur égalité. Trois lignes, et la nature du solide est établie."
+    },
+    {
+     "erreur_markdown": "Utiliser la formule de la pyramide",
+     "pourquoi_faux": "Le facteur $\\dfrac{1}{3}$ ne concerne que les solides à **sommet unique**. Ici il y a deux bases, donc pas de facteur : $V = \\dfrac{1}{3} \\times \\dfrac{1}{2} = \\dfrac{1}{6}$ serait faux d'un facteur $3$.",
+     "correction_markdown": "Compte les faces polygonales parallèles : deux pour un prisme, une seule pour une pyramide. Le facteur $\\dfrac{1}{3}$ n'apparaît que dans le second cas."
+    },
+    {
+     "erreur_markdown": "Prendre la mauvaise hauteur",
+     "pourquoi_faux": "La hauteur est la **distance entre les deux plans de base**, pas une arête quelconque du solide. Ici c'est $AB = 1$, la norme du vecteur de translation.",
+     "correction_markdown": "Pour un prisme droit, la hauteur est la norme du vecteur de translation. Pour un prisme oblique, c'est la distance entre les plans, plus petite que cette norme."
+    },
+    {
+     "erreur_markdown": "Se tromper d'aire de base",
+     "pourquoi_faux": "Le triangle $ADH$ est rectangle en $D$, d'aire $\\dfrac{1}{2}$. Le prendre pour un carré donnerait $1$, et un volume double de la réalité.",
+     "correction_markdown": "Vérifie l'angle droit par un produit scalaire, puis applique la formule du triangle rectangle : demi-produit des côtés de l'angle droit."
+    },
+    {
+     "erreur_markdown": "Ne pas contrôler l'ordre de grandeur",
+     "pourquoi_faux": "Le solide est contenu dans un cube d'arête $1$, de volume $1$. Tout résultat supérieur à $1$ est absurde, et tout résultat très petit est suspect.",
+     "correction_markdown": "Compare au volume du cube. Ici $\\dfrac{1}{2}$, soit exactement la moitié : plausible, et confirmé par l'argument de symétrie."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $1$, $E$, $F$, $G$, $H$ au-dessus de $A$, $B$, $C$, $D$. Déterminer la nature et le volume du solide $ABDEFH$, puis celui du tétraèdre $ABDE$.",
+     "solution_markdown": "**Première partie - le solide $ABDEFH$.**\n\n**Étape 1 - les coordonnées.**\n\nDans le repère $\\left(A\\,;\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AE}\\right)$ :\n\n$$A(0\\,;\\,0\\,;\\,0) \\quad B(1\\,;\\,0\\,;\\,0) \\quad D(0\\,;\\,1\\,;\\,0) \\quad E(0\\,;\\,0\\,;\\,1) \\quad F(1\\,;\\,0\\,;\\,1) \\quad H(0\\,;\\,1\\,;\\,1)$$\n\n**Étape 2 - repérer les deux groupes.**\n\nLes points $A$, $B$, $D$ ont une cote nulle : plan $z = 0$.\n\nLes points $E$, $F$, $H$ ont une cote égale à $1$ : plan $z = 1$.\n\nLes deux plans sont parallèles.\n\n**Étape 3 - vérifier la translation.**\n\n$$\\overrightarrow{AE} = (0\\,;\\,0\\,;\\,1) \\qquad \\overrightarrow{BF} = (0\\,;\\,0\\,;\\,1) \\qquad \\overrightarrow{DH} = (0\\,;\\,0\\,;\\,1)$$\n\nLes trois vecteurs sont égaux : c'est bien un **prisme**.\n\n**Étape 4 - la base.**\n\nLe triangle $ABD$ a pour côtés issus de $A$ : $\\overrightarrow{AB} = (1\\,;\\,0\\,;\\,0)$ et $\\overrightarrow{AD} = (0\\,;\\,1\\,;\\,0)$, de produit scalaire nul.\n\nIl est **rectangle isocèle en $A$**, d'aire\n\n$$\\mathcal{A} = \\dfrac{1 \\times 1}{2} = \\dfrac{1}{2}$$\n\n**Étape 5 - le caractère droit et le volume.**\n\nLe vecteur $(0\\,;\\,0\\,;\\,1)$ est orthogonal au plan $z = 0$ : le prisme est **droit**, de hauteur $1$.\n\n$$V = \\dfrac{1}{2} \\times 1 = \\dfrac{1}{2}$$\n\n*Contrôle :* le plan $(BDHF)$ partage le cube en deux moitiés isométriques, dont celle-ci. Conforme.\n\n**Seconde partie - le tétraèdre $ABDE$.**\n\n**Étape 6 - la nature.**\n\nQuatre sommets non coplanaires forment un **tétraèdre**. Ici $A$, $B$, $D$, $E$ sont un sommet du cube et ses trois voisins.\n\n**Étape 7 - le volume.**\n\nBase : le triangle $ABD$, d'aire $\\dfrac{1}{2}$.\n\nHauteur : la distance de $E$ au plan $(ABD)$, c'est-à-dire au plan $z = 0$, soit $1$.\n\n$$V = \\dfrac{1}{3} \\times \\dfrac{1}{2} \\times 1 = \\dfrac{1}{6}$$\n\n**Étape 8 - vérifier par un argument de remplissage.**\n\nLe cube d'arête $1$ a pour volume $1$, et $\\dfrac{1}{6} \\times 6 = 1$ : six tétraèdres de ce type remplissent exactement le cube.\n\n**Comparaison des deux résultats.**\n\n$$\\dfrac{V_{\\text{prisme}}}{V_{\\text{tétraèdre}}} = \\dfrac{1/2}{1/6} = 3$$\n\nLe rapport vaut exactement $3$, ce qui est cohérent : même base, même hauteur, et le facteur $\\dfrac{1}{3}$ distingue la pyramide du prisme.\n\n**Ce qu'il faut retenir.** Un prisme et une pyramide de même base et de même hauteur sont dans le rapport $3$. C'est la traduction géométrique du facteur $\\dfrac{1}{3}$, et c'est un excellent contrôle."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $2$. Soient $I$, $J$, $K$ les milieux respectifs de $[AB]$, $[AD]$ et $[AE]$. Déterminer le volume du tétraèdre $AIJK$, puis celui du solide restant après ablation de ce tétraèdre. Exprimer le second en fraction du cube.",
+     "solution_markdown": "**Étape 1 - les coordonnées.**\n\nDans le repère $\\left(A\\,;\\,\\vec{\\imath}\\,,\\,\\vec{\\jmath}\\,,\\,\\vec{k}\\right)$ normé, avec le cube d'arête $2$ :\n\n$$A(0\\,;\\,0\\,;\\,0) \\quad B(2\\,;\\,0\\,;\\,0) \\quad D(0\\,;\\,2\\,;\\,0) \\quad E(0\\,;\\,0\\,;\\,2)$$\n\nLes milieux :\n\n$$I(1\\,;\\,0\\,;\\,0) \\quad J(0\\,;\\,1\\,;\\,0) \\quad K(0\\,;\\,0\\,;\\,1)$$\n\n**Étape 2 - la nature du tétraèdre.**\n\nLes trois arêtes $[AI]$, $[AJ]$, $[AK]$ sont portées par les trois axes, donc **deux à deux orthogonales**, et de même longueur $1$.\n\nC'est un tétraèdre **trirectangle** en $A$.\n\n**Étape 3 - le volume.**\n\nBase : le triangle $AIJ$, rectangle en $A$ de côtés $1$ et $1$ :\n\n$$\\mathcal{A} = \\dfrac{1 \\times 1}{2} = \\dfrac{1}{2}$$\n\nHauteur : la distance de $K$ au plan $(AIJ)$, c'est-à-dire au plan $z = 0$, soit $AK = 1$.\n\n$$V_{AIJK} = \\dfrac{1}{3} \\times \\dfrac{1}{2} \\times 1 = \\dfrac{1}{6}$$\n\n**Étape 4 - le volume du cube.**\n\n$$V_{\\text{cube}} = 2^{3} = 8$$\n\n**Étape 5 - le solide restant.**\n\n$$V_{\\text{restant}} = 8 - \\dfrac{1}{6} = \\dfrac{48-1}{6} = \\dfrac{47}{6} \\approx 7{,}83$$\n\n**Étape 6 - la fraction.**\n\n$$\\dfrac{V_{\\text{restant}}}{V_{\\text{cube}}} = \\dfrac{47/6}{8} = \\dfrac{47}{48} \\approx 0{,}979$$\n\n**Le solide restant représente $\\dfrac{47}{48}$ du cube, soit environ $97{,}9\\,\\%$.**\n\n**Étape 7 - interpréter.**\n\nLe coin retiré est minuscule : ses arêtes ne mesurent que la **moitié** de celles du cube, et le volume d'un tétraèdre trirectangle d'arêtes $c$ vaut $\\dfrac{c^{3}}{6}$.\n\nPour $c = 1$ : $\\dfrac{1}{6}$, à comparer à $8$. Le rapport vaut $\\dfrac{1}{48}$.\n\n**Étape 8 - généraliser.**\n\nSi l'on retirait les huit coins de la même façon, le volume enlevé vaudrait\n\n$$8 \\times \\dfrac{1}{6} = \\dfrac{4}{3}$$\n\nsoit $\\dfrac{4/3}{8} = \\dfrac{1}{6}$ du cube. Le solide obtenu — un cube aux coins tronqués — conserverait donc les cinq sixièmes du volume initial.\n\n**Ce qu'il faut retenir.** Le tétraèdre trirectangle d'arêtes $a$, $b$, $c$ a pour volume $\\dfrac{abc}{6}$. C'est la brique de base de tous les découpages de cube, et le facteur $\\dfrac{1}{6}$ mérite d'être retenu tel quel."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $1$, dans le repère $\\left(A\\,;\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AE}\\right)$. Le plan $(BDE)$ coupe le cube. Déterminer le volume du tétraèdre $ABDE$, puis celui du solide restant. Généraliser en retranchant les quatre tétraèdres analogues des quatre sommets $A$, $C$, $F$, $H$, et déterminer le volume et la nature du solide central obtenu.",
+     "solution_markdown": "**Étape 1 - le tétraèdre $ABDE$.**\n\n$$A(0\\,;\\,0\\,;\\,0) \\quad B(1\\,;\\,0\\,;\\,0) \\quad D(0\\,;\\,1\\,;\\,0) \\quad E(0\\,;\\,0\\,;\\,1)$$\n\nC'est un tétraèdre trirectangle en $A$, d'arêtes $1$ :\n\n$$V_{ABDE} = \\dfrac{1 \\times 1 \\times 1}{6} = \\dfrac{1}{6}$$\n\n**Étape 2 - le solide restant après une seule ablation.**\n\n$$1 - \\dfrac{1}{6} = \\dfrac{5}{6}$$\n\n**Étape 3 - identifier les quatre sommets à tronquer.**\n\nLes sommets $A$, $C$, $F$, $H$ forment un **tétraèdre régulier** inscrit dans le cube. Vérifions-le : leurs distances mutuelles sont toutes des diagonales de face.\n\n$$AC = \\sqrt{1+1+0} = \\sqrt{2}$$\n\n$$AF = \\sqrt{1+0+1} = \\sqrt{2}$$\n\n$$AH = \\sqrt{0+1+1} = \\sqrt{2}$$\n\n$$CF = \\sqrt{(1-1)^{2}+(1-0)^{2}+(0-1)^{2}} = \\sqrt{2}$$\n\nDe même pour $CH$ et $FH$. Les six arêtes valent $\\sqrt{2}$ : le tétraèdre $ACFH$ est **régulier**.\n\n**Étape 4 - les quatre tétraèdres à retrancher.**\n\nÀ chacun des quatre autres sommets — $B$, $D$, $E$, $G$ — correspond un tétraèdre trirectangle formé par ce sommet et ses trois voisins.\n\nPour $B(1\\,;\\,0\\,;\\,0)$, ses voisins sont $A$, $C$ et $F$ : le tétraèdre $BACF$ est trirectangle en $B$, d'arêtes $1$, donc de volume $\\dfrac{1}{6}$.\n\nLes quatre tétraèdres ont chacun ce volume, et ils ne se **chevauchent pas** : chacun occupe un coin distinct.\n\n**Étape 5 - le volume retranché.**\n\n$$4 \\times \\dfrac{1}{6} = \\dfrac{4}{6} = \\dfrac{2}{3}$$\n\n**Étape 6 - le solide central.**\n\n$$V = 1 - \\dfrac{2}{3} = \\dfrac{1}{3}$$\n\n**Étape 7 - identifier ce solide.**\n\nC'est le tétraèdre régulier $ACFH$, dont les quatre sommets sont ceux qu'on n'a pas tronqués.\n\n**Étape 8 - vérifier par le calcul direct.**\n\nCalculons son volume indépendamment. Prenons pour base le triangle $ACF$, équilatéral de côté $\\sqrt{2}$ :\n\n$$\\mathcal{A} = \\dfrac{\\left(\\sqrt{2}\\right)^{2}\\sqrt{3}}{4} = \\dfrac{2\\sqrt{3}}{4} = \\dfrac{\\sqrt{3}}{2}$$\n\nHauteur : distance de $H(0\\,;\\,1\\,;\\,1)$ au plan $(ACF)$.\n\nÉquation du plan $(ACF)$ : cherchons $\\alpha x+\\beta y+\\gamma z = \\delta$ passant par $A(0\\,;\\,0\\,;\\,0)$, donc $\\delta = 0$. Avec $C(1\\,;\\,1\\,;\\,0)$ : $\\alpha+\\beta = 0$. Avec $F(1\\,;\\,0\\,;\\,1)$ : $\\alpha+\\gamma = 0$.\n\nEn prenant $\\alpha = 1$ : $\\beta = \\gamma = -1$, d'où\n\n$$(ACF) : \\quad x - y - z = 0$$\n\nDistance de $H$ :\n\n$$d = \\dfrac{\\left|0-1-1\\right|}{\\sqrt{1+1+1}} = \\dfrac{2}{\\sqrt{3}} = \\dfrac{2\\sqrt{3}}{3}$$\n\nVolume :\n\n$$V = \\dfrac{1}{3} \\times \\dfrac{\\sqrt{3}}{2} \\times \\dfrac{2\\sqrt{3}}{3} = \\dfrac{1}{3} \\times \\dfrac{2 \\times 3}{6} = \\dfrac{1}{3}$$\n\n**Conforme au résultat obtenu par différence.**\n\n**Étape 9 - synthèse.**\n\n| Solide | Volume | Fraction du cube |\n|---|---|---|\n| cube | $1$ | $1$ |\n| un tétraèdre de coin | $\\dfrac{1}{6}$ | $\\dfrac{1}{6}$ |\n| les quatre coins | $\\dfrac{2}{3}$ | $\\dfrac{2}{3}$ |\n| tétraèdre régulier $ACFH$ | $\\dfrac{1}{3}$ | $\\dfrac{1}{3}$ |\n\n**Ce qu'il faut retenir.** Le tétraèdre régulier inscrit dans un cube occupe exactement le **tiers** de son volume. C'est un résultat classique, obtenu ici de deux façons indépendantes : par différence — quatre coins de $\\dfrac{1}{6}$ retranchés — et par calcul direct avec base équilatérale et hauteur. Deux méthodes concordantes valent mieux qu'une relecture."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Un prisme a deux faces superposables dans des plans parallèles, reliées par une **translation**.",
+    "Il est **droit** si le vecteur de translation est orthogonal au plan des bases.",
+    "Repère les deux groupes de sommets par une coordonnée commune : ils sont dans des plans parallèles.",
+    "Vérifie que les vecteurs joignant les sommets correspondants sont **tous égaux** : sans cela, ce n'est pas un prisme.",
+    "$V_{\\text{prisme}} = \\mathcal{A}_{\\text{base}} \\times h$, sans facteur $\\dfrac{1}{3}$.",
+    "$V_{\\text{pyramide}} = \\dfrac{1}{3}\\mathcal{A}_{\\text{base}} \\times h$ : le facteur ne concerne que les solides à sommet unique.",
+    "La hauteur est la distance entre les deux plans de base, pas une arête quelconque.",
+    "Tétraèdre trirectangle d'arêtes $a$, $b$, $c$ : volume $\\dfrac{abc}{6}$.",
+    "Cherche un argument de symétrie : un plan qui coupe un cube en deux moitiés isométriques donne $\\dfrac{1}{2}$ sans calcul.",
+    "Contrôle l'ordre de grandeur : un solide inscrit dans un cube d'arête $1$ a un volume entre $0$ et $1$.",
+    "Le tétraèdre régulier inscrit dans un cube en occupe le tiers."
+   ]
+  }
+ ]
+}

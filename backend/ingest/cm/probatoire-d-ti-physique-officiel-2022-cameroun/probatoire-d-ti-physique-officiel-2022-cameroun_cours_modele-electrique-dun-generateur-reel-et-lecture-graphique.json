@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-modele-electrique-dun-generateur-reel-et-lecture-graphique-1ere-d-ti",
+  "meta": {
+    "titre": "Modèle électrique d'un générateur réel et lecture graphique de E et r",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Électricité : générateurs et mesures",
+    "duree_estimee_min": 20,
+    "tags": [
+      "générateur électrique",
+      "f.é.m.",
+      "résistance interne",
+      "lecture graphique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2022-cameroun",
+    "epreuve_titre": "Épreuve de physique au probatoire D et TI 2022",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2022-cameroun-ex3-q3.1.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une pile neuve n'a jamais tout à fait la tension indiquée dessus dès qu'un courant la traverse : sa tension chute avec l'intensité débitée. Ce comportement, universel à tout générateur réel, se lit directement sur une droite expérimentale, sans calcul compliqué. Ce cours explique comment extraire la f.é.m. et la résistance interne d'un générateur à partir de sa seule caractéristique graphique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Équation d'une droite $y=ax+b$ et lecture de sa pente et de son ordonnée à l'origine",
+        "Notion de f.é.m. et de résistance interne d'un générateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Modèle de Thévenin d'un générateur réel",
+      "contenu_markdown": "Le modèle électrique d'un générateur réel (résistif) relie la tension $U$ à ses bornes et l'intensité $I$ qui le traverse par la relation $U = E - r \\cdot I$ (loi de Pouillet appliquée au générateur seul) : sur la caractéristique $U=f(I)$, qui est une droite décroissante, l'ordonnée à l'origine ($I=0$) donne directement la f.é.m. $E$, et l'opposé de la pente donne la résistance interne $r$.",
+      "formule_principale": "U = E - r \\cdot I",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La caractéristique d'une pile est une droite qui passe par les points $(I=0\\,;\\,U=4{,}5\\ \\text{V})$ et $(I=2{,}0\\ \\text{A}\\,;\\,U=2{,}5\\ \\text{V})$. Déterminer la f.é.m. $E$ et la résistance interne $r$ de cette pile.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire la f.é.m. sur l'ordonnée à l'origine",
+          "justification": "Pour $I=0$, $U=E-r\\times0=E$ : l'ordonnée à l'origine est directement la f.é.m.",
+          "resultat_markdown": "$E = 4{,}5\\ \\text{V}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la pente de la droite entre les deux points relevés",
+          "justification": "$\\text{pente} = \\Delta U / \\Delta I$ entre les deux points donnés.",
+          "resultat_markdown": "$\\text{pente} = \\dfrac{2{,}5-4{,}5}{2{,}0-0} = \\dfrac{-2{,}0}{2{,}0} = -1{,}0\\ \\text{V/A}$"
+        },
+        {
+          "numero": 3,
+          "action": "Identifier la résistance interne à partir de la pente",
+          "justification": "$U=E-rI$ a pour pente $-r$ : la résistance interne est l'opposé de la pente calculée.",
+          "resultat_markdown": "$r = 1{,}0\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "La pile a pour f.é.m. $E=4{,}5\\ \\text{V}$ et pour résistance interne $r=1{,}0\\ \\Omega$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire la f.é.m. à l'intersection de la droite avec l'axe des intensités (U=0) plutôt qu'avec l'axe des tensions (I=0)",
+          "pourquoi_faux": "L'ordonnée à l'origine, qui donne $E$, correspond à $I=0$ (axe vertical), pas à $U=0$ (axe horizontal), qui donne au contraire le courant de court-circuit.",
+          "correction_markdown": "Retiens : $E$ se lit toujours là où la droite coupe l'axe vertical ($I=0$), jamais l'axe horizontal."
+        },
+        {
+          "erreur_markdown": "Annoncer la résistance interne avec le signe négatif de la pente ($r=-1{,}0\\ \\Omega$)",
+          "pourquoi_faux": "Une résistance est par définition une grandeur positive : c'est l'OPPOSÉ de la pente (négative) qui donne $r$, jamais la pente elle-même.",
+          "correction_markdown": "Écris toujours $r = -\\text{pente}$ explicitement avant de conclure, pour ne jamais reporter un signe négatif sur la résistance interne."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une caractéristique de générateur passe par $(0\\,;\\,6{,}0\\ \\text{V})$ et $(1{,}0\\ \\text{A}\\,;\\,4{,}0\\ \\text{V})$. Déterminer $E$ et $r$.",
+          "solution_markdown": "$E=6{,}0\\ \\text{V}$ (ordonnée à l'origine). Pente $=(4{,}0-6{,}0)/(1{,}0-0)=-2{,}0\\ \\text{V/A}$, donc $r=2{,}0\\ \\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une pile a pour caractéristique $U=3{,}0-0{,}5I$ (en volts, $I$ en ampères). Calculer l'intensité de court-circuit (intensité maximale que peut débiter la pile, pour $U=0$).",
+          "solution_markdown": "Pour $U=0$ : $0=3{,}0-0{,}5I_{cc} \\Rightarrow I_{cc}=3{,}0/0{,}5=6{,}0\\ \\text{A}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On associe en série deux piles identiques de f.é.m. $E=4{,}5\\ \\text{V}$ et de résistance interne $r=1{,}0\\ \\Omega$ chacune. Écrire la caractéristique $U=f(I)$ de l'association, et calculer sa f.é.m. et sa résistance interne équivalentes.",
+          "solution_markdown": "En série, les f.é.m. s'additionnent ($E_{eq}=2E=9{,}0\\ \\text{V}$) et les résistances internes s'additionnent aussi ($r_{eq}=2r=2{,}0\\ \\Omega$). La caractéristique de l'association est donc $U=9{,}0-2{,}0I$, avec $E_{eq}=9{,}0\\ \\text{V}$ et $r_{eq}=2{,}0\\ \\Omega$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le modèle $U=E-rI$ décrit tout générateur réel : sa caractéristique $U=f(I)$ est une droite décroissante.",
+        "L'ordonnée à l'origine (pour $I=0$) donne directement la f.é.m. $E$.",
+        "L'opposé de la pente de la droite donne la résistance interne $r$ (toujours positive).",
+        "Une lecture graphique s'annonce toujours avec $\\approx$, jamais avec un signe $=$ strict, et avec une précision cohérente avec les graduations disponibles.",
+        "Choisir deux points bien écartés sur la droite limite l'erreur relative sur la pente calculée : un réflexe à avoir systématiquement en travaux pratiques comme à l'examen."
+      ]
+    }
+  ]
+}

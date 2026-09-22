@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-loi-de-probabilite-d-une-somme-de-deux-variables-independantes-tle-a",
+  "meta": {
+    "titre": "Établir la loi de probabilité d'une somme de deux variables aléatoires indépendantes",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "serie": "A",
+    "sous_theme": "Variables aléatoires",
+    "duree_estimee_min": 30,
+    "tags": [
+      "variable aléatoire",
+      "loi de probabilité",
+      "probabilités",
+      "indépendance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a4-maths-officiel-1994-cameroun",
+    "epreuve_titre": "BAC Mathematiques - Serie A (A4 bilingue) - Session 1994 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-a4-maths-officiel-1994-cameroun-ex1-q2b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Connaître les valeurs possibles d'une somme de deux variables aléatoires ne suffit pas : encore faut-il savoir avec quelle CHANCE chacune de ces valeurs se réalise. C'est là qu'intervient l'indépendance : deux expériences qui ne s'influencent pas l'une l'autre voient leurs probabilités élémentaires se multiplier, un principe aussi simple que puissant une fois bien maîtrisé."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déterminer les valeurs possibles d'une somme de deux variables aléatoires.",
+        "Connaître la définition de deux événements indépendants : $P(A\\cap B)=P(A)\\times P(B)$.",
+        "Savoir organiser un calcul avec plusieurs cas dans un tableau."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi de probabilité d'une somme de variables indépendantes",
+      "contenu_markdown": "Si $X=A+B$ où $A$ et $B$ sont deux variables aléatoires indépendantes, la probabilité d'un couple de résultats $(a,b)$ est le PRODUIT $P(A=a)\\times P(B=b)$, car l'indépendance signifie précisément que le résultat de l'un n'influence pas l'autre. Pour obtenir $P(X=k)$, on additionne les probabilités de TOUS les couples $(a,b)$ qui vérifient $a+b=k$, car ces couples correspondent à des façons différentes et incompatibles d'obtenir la même somme.",
+      "formule_principale": "P(X=k)=\\sum_{a+b=k} P(A=a)\\times P(B=b)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le dé A vérifie $P_1=\\dfrac{1}{6}$, $P_3=\\dfrac{1}{3}$, $P_5=\\dfrac{1}{2}$ ; le dé B vérifie $P_2=P_4=P_6=\\dfrac{1}{3}$. On pose $X=A+B$, avec $X(\\Omega)=\\{3;5;7;9;11\\}$. Donner la loi de probabilité de $X$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la probabilité de chaque couple par produit",
+          "justification": "Les deux dés sont lancés indépendamment, donc $P(A=a,B=b)=P(A=a)\\times P(B=b)$.",
+          "resultat_markdown": "Par exemple $P(A{=}1,B{=}2)=\\dfrac{1}{6}\\times\\dfrac{1}{3}=\\dfrac{1}{18}$, et $P(A{=}3,B{=}2)=\\dfrac{1}{3}\\times\\dfrac{1}{3}=\\dfrac{2}{18}$."
+        },
+        {
+          "numero": 2,
+          "action": "Regrouper les couples selon la somme qu'ils donnent",
+          "justification": "Chaque valeur de $X$ peut être obtenue par plusieurs couples différents, qu'il faut tous retrouver.",
+          "resultat_markdown": "$X=3$ : couple $(1,2)$ seul. $X=5$ : couples $(1,4)$ et $(3,2)$. $X=7$ : couples $(1,6),(3,4),(5,2)$. $X=9$ : couples $(3,6),(5,4)$. $X=11$ : couple $(5,6)$ seul."
+        },
+        {
+          "numero": 3,
+          "action": "Additionner les probabilités des couples de chaque groupe",
+          "justification": "Des couples différents qui donnent la même somme sont des façons incompatibles d'obtenir cette somme : leurs probabilités s'additionnent.",
+          "resultat_markdown": "$P(X{=}3)=\\dfrac{1}{18}$ ; $P(X{=}5)=\\dfrac{1}{18}+\\dfrac{2}{18}=\\dfrac{3}{18}=\\dfrac{1}{6}$ ; $P(X{=}7)=\\dfrac{1}{18}+\\dfrac{2}{18}+\\dfrac{3}{18}=\\dfrac{6}{18}=\\dfrac{1}{3}$ ; $P(X{=}9)=\\dfrac{2}{18}+\\dfrac{3}{18}=\\dfrac{5}{18}$ ; $P(X{=}11)=\\dfrac{3}{18}=\\dfrac{1}{6}$."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier que la somme des probabilités vaut 1",
+          "justification": "La loi de probabilité d'une variable aléatoire couvre tout l'univers : la somme des $P(X=x_i)$ doit toujours valoir 1.",
+          "resultat_markdown": "$\\dfrac{1}{18}+\\dfrac{3}{18}+\\dfrac{6}{18}+\\dfrac{5}{18}+\\dfrac{3}{18}=\\dfrac{18}{18}=1$."
+        }
+      ],
+      "conclusion_markdown": "La loi de $X$ est donnée par $P(X{=}3)=\\dfrac{1}{18}$, $P(X{=}5)=\\dfrac{1}{6}$, $P(X{=}7)=\\dfrac{1}{3}$, $P(X{=}9)=\\dfrac{5}{18}$, $P(X{=}11)=\\dfrac{1}{6}$, une répartition entièrement contrôlée par la somme égale à 1."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner $P(A=a)$ et $P(B=b)$ au lieu de les multiplier pour obtenir la probabilité du couple $(a,b)$.",
+          "pourquoi_faux": "L'addition de probabilités correspond à un « ou » entre deux évènements incompatibles, pas à la réalisation SIMULTANÉE de deux évènements indépendants, qui se traduit par un produit.",
+          "correction_markdown": "Toujours multiplier pour un couple d'évènements indépendants qui se produisent en même temps : $P(A{=}a,B{=}b)=P(A{=}a)\\times P(B{=}b)$."
+        },
+        {
+          "erreur_markdown": "Oublier un couple qui mène pourtant à la même somme, par exemple ne compter que $(1,6)$ et $(5,2)$ pour $X=7$ en oubliant $(3,4)$.",
+          "pourquoi_faux": "Un couple oublié fait sous-estimer $P(X=7)$ et casse l'équilibre global de la loi : la somme finale des probabilités ne vaudra plus 1.",
+          "correction_markdown": "Repartir systématiquement de la liste complète des couples établie à l'étape précédente (valeurs possibles de $X$), et cocher chaque couple au fur et à mesure qu'il est classé."
+        },
+        {
+          "erreur_markdown": "Multiplier les probabilités des couples entre eux au lieu de les additionner, quand plusieurs couples donnent la même somme.",
+          "pourquoi_faux": "Deux couples DIFFÉRENTS qui donnent la même somme sont deux façons EXCLUSIVES d'obtenir cette somme (on ne peut pas avoir à la fois $(1,6)$ et $(3,4)$ lors d'un même lancer) : leurs probabilités s'additionnent, elles ne se multiplient pas.",
+          "correction_markdown": "Retenir la règle : produit pour combiner deux évènements SIMULTANÉS indépendants, somme pour regrouper plusieurs façons EXCLUSIVES d'arriver au même résultat."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$A$ vaut 0 avec probabilité $\\dfrac{1}{2}$ ou 1 avec probabilité $\\dfrac{1}{2}$ ; $B$ vaut 10 avec probabilité $\\dfrac{1}{2}$ ou 20 avec probabilité $\\dfrac{1}{2}$, indépendamment de $A$. Donner la loi de $X=A+B$.",
+          "solution_markdown": "Les quatre couples sont équiprobables, chacun de probabilité $\\dfrac{1}{2}\\times\\dfrac{1}{2}=\\dfrac{1}{4}$ : $(0,10)\\to 10$, $(0,20)\\to 20$, $(1,10)\\to 11$, $(1,20)\\to 21$. Toutes les sommes sont distinctes.\n\n$$P(X{=}10)=P(X{=}11)=P(X{=}20)=P(X{=}21)=\\dfrac{1}{4}.$$\n\nVérification : $4\\times\\dfrac{1}{4}=1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$A$ vaut 1 avec probabilité $\\dfrac{1}{4}$, 2 avec probabilité $\\dfrac{1}{2}$, 3 avec probabilité $\\dfrac{1}{4}$ ; $B$ vaut 1 avec probabilité $\\dfrac{1}{2}$, 2 avec probabilité $\\dfrac{1}{2}$, indépendamment de $A$. Donner la loi de $X=A+B$.",
+          "solution_markdown": "Les couples et leurs probabilités : $(1,1)\\to 2$, $p=\\dfrac{1}{4}\\times\\dfrac{1}{2}=\\dfrac{1}{8}$ ; $(1,2)\\to 3$, $p=\\dfrac{1}{8}$ ; $(2,1)\\to 3$, $p=\\dfrac{1}{2}\\times\\dfrac{1}{2}=\\dfrac{1}{4}$ ; $(2,2)\\to 4$, $p=\\dfrac{1}{4}$ ; $(3,1)\\to 4$, $p=\\dfrac{1}{4}\\times\\dfrac{1}{2}=\\dfrac{1}{8}$ ; $(3,2)\\to 5$, $p=\\dfrac{1}{8}$.\n\nEn regroupant : $P(X{=}2)=\\dfrac{1}{8}$, $P(X{=}3)=\\dfrac{1}{8}+\\dfrac{1}{4}=\\dfrac{3}{8}$, $P(X{=}4)=\\dfrac{1}{4}+\\dfrac{1}{8}=\\dfrac{3}{8}$, $P(X{=}5)=\\dfrac{1}{8}$.\n\nVérification : $\\dfrac{1}{8}+\\dfrac{3}{8}+\\dfrac{3}{8}+\\dfrac{1}{8}=\\dfrac{8}{8}=1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On lance deux fois de suite, indépendamment, un dé équilibré à 4 faces numérotées 1 à 4. Soit $X$ la somme des deux résultats. Donner la loi de probabilité de $X$.",
+          "solution_markdown": "Chaque lancer suit la loi uniforme sur $\\{1,2,3,4\\}$, chaque valeur ayant probabilité $\\dfrac{1}{4}$. Il y a $4\\times 4=16$ couples équiprobables, chacun de probabilité $\\dfrac{1}{16}$.\n\nEn dénombrant les couples par somme : $X=2$ (1 couple : $(1,1)$), $X=3$ (2 couples), $X=4$ (3 couples), $X=5$ (4 couples), $X=6$ (3 couples), $X=7$ (2 couples), $X=8$ (1 couple : $(4,4)$).\n\n$$P(X{=}2)=P(X{=}8)=\\dfrac{1}{16},\\quad P(X{=}3)=P(X{=}7)=\\dfrac{2}{16}=\\dfrac{1}{8},$$\n$$P(X{=}4)=P(X{=}6)=\\dfrac{3}{16},\\quad P(X{=}5)=\\dfrac{4}{16}=\\dfrac{1}{4}.$$\n\nVérification : $\\dfrac{1+2+3+4+3+2+1}{16}=\\dfrac{16}{16}=1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour un couple de résultats simultanés et indépendants, les probabilités se MULTIPLIENT.",
+        "Pour regrouper plusieurs couples différents qui mènent à la même somme, les probabilités s'ADDITIONNENT : produit pour le « et » simultané, somme pour le « ou » exclusif.",
+        "Repartir systématiquement de la liste complète des couples (établie à l'étape des valeurs possibles) pour ne rien oublier lors du regroupement.",
+        "Le contrôle final ne coûte rien et détecte presque toutes les erreurs : la somme de toutes les $P(X=x_i)$ doit valoir exactement 1.",
+        "Cette loi de probabilité sert de base directe au calcul de l'espérance et de la variance de $X$, question quasi systématique juste après au BAC."
+      ]
+    }
+  ]
+}

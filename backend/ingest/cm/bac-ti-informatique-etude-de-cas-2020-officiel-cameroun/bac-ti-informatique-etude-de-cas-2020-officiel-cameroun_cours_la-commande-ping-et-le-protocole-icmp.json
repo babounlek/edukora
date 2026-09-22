@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-la-commande-ping-et-le-protocole-icmp-tle-ti",
+  "meta": {
+    "titre": "La commande PING et le protocole ICMP",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Réseaux informatiques",
+    "duree_estimee_min": 18,
+    "tags": [
+      "ping",
+      "ICMP",
+      "diagnostic réseau",
+      "loopback",
+      "protocole ICMP"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun",
+    "epreuve_titre": "BAC TI - Informatique, Étude de cas (EPS) - Cameroun, session 2020",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qA.2-0",
+    "rappels_lies": [
+      "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qA.6-0",
+      "rdm-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2-qB.4.2-0"
+    ],
+    "correction_id": "corr-bac-ti-informatique-etude-de-cas-2020-officiel-cameroun-ex2"
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Face à un réseau qui « ne marche pas », le premier réflexe de tout technicien est presque toujours le même : lancer un ping. Cette commande simple répond à une question fondamentale avant toute autre investigation : la machine visée répond-elle, oui ou non ?"
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une adresse IP",
+        "Savoir ouvrir une invite de commandes Windows"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Envoyer un signal, attendre l'écho",
+      "contenu_markdown": "La commande **PING** teste l'accessibilité (la joignabilité) d'un hôte sur un réseau IP. Elle envoie des paquets **ICMP** (Internet Control Message Protocol) de type « Echo Request » vers l'adresse indiquée, et mesure le temps mis par la réponse « Echo Reply » à revenir. Un hôte qui répond confirme qu'il est connecté et accessible ; l'absence de réponse (timeout, ou message d'erreur explicite) signale un problème de connectivité, de configuration, ou de filtrage (pare-feu).",
+      "formule_principale": "ping <adresse_IP_ou_nom_dhote>",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Interpréter le résultat de la commande `ping 127.0.0.1`, qui affiche des durées minimale, maximale et moyenne toutes égales à 0 ms.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la nature de l'adresse ciblée",
+          "justification": "Le comportement de ping dépend de si la cible est locale ou distante",
+          "resultat_markdown": "127.0.0.1 est l'adresse de bouclage (loopback) : elle désigne la machine elle-même."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire le trajet réel du paquet ICMP",
+          "justification": "Une adresse de bouclage ne fait jamais sortir la requête sur un support physique",
+          "resultat_markdown": "La requête ne quitte jamais la machine : elle est traitée directement en interne par la pile TCP/IP, sans passer par une carte réseau ni un câble."
+        },
+        {
+          "numero": 3,
+          "action": "Relier ce trajet aux durées observées",
+          "justification": "Un trajet purement interne prend un temps quasi nul comparé à un trajet réseau réel",
+          "resultat_markdown": "Le temps de trajet aller-retour est quasi instantané (moins d'1 ms), ce que Windows arrondit à 0 ms pour le minimum, le maximum et la moyenne."
+        }
+      ],
+      "conclusion_markdown": "Les durées nulles obtenues confirment que la requête ping n'a jamais quitté physiquement la machine, cohérent avec la nature de l'adresse de bouclage 127.0.0.1."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'un ping réussi garantit qu'une application (site web, jeu en ligne...) fonctionnera",
+          "pourquoi_faux": "Ping ne teste que la joignabilité de base au niveau réseau (ICMP) : une application peut échouer pour d'autres raisons (port bloqué, service arrêté) même si le ping réussit.",
+          "correction_markdown": "Présente toujours ping comme un premier test de connectivité, pas comme une garantie de bon fonctionnement de tous les services d'une machine."
+        },
+        {
+          "erreur_markdown": "Oublier que certains hôtes bloquent volontairement ICMP par mesure de sécurité",
+          "pourquoi_faux": "Un pare-feu peut être configuré pour ignorer les requêtes ICMP, ce qui fait échouer un ping même si l'hôte est parfaitement joignable pour d'autres services (comme un site web en HTTP).",
+          "correction_markdown": "Un ping sans réponse ne prouve pas toujours qu'une machine est injoignable : il peut simplement s'agir d'un pare-feu qui filtre ICMP."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle commande permet de tester si l'hôte 192.168.1.1 répond ?",
+          "solution_markdown": "`ping 192.168.1.1`"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ping vers une machine du même réseau local affiche des durées d'environ 1 à 5 ms, jamais 0 ms comme pour 127.0.0.1. Pourquoi cette différence ?",
+          "solution_markdown": "Contrairement à 127.0.0.1, une machine distincte sur le réseau local impose au paquet ICMP de sortir réellement de l'ordinateur émetteur, de traverser un support physique (câble ou ondes radio) et les équipements d'interconnexion (switch, point d'accès), puis de revenir par le même chemin. Ce trajet physique prend un temps mesurable, même court, alors que 127.0.0.1 ne quitte jamais la machine émettrice."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Depuis un poste F (192.168.123.60/255.255.255.0), la commande `ping 192.168.122.50` renvoie « Impossible de joindre l'hôte de destination ». Ce message signifie-t-il la même chose qu'un « délai d'attente de la demande dépassé » (timeout) ? Expliquer la différence.",
+          "solution_markdown": "Non, ce sont deux diagnostics différents. « Impossible de joindre l'hôte de destination » est généralement émis par la machine émettrice ou son routeur local : elle constate qu'elle ne dispose d'aucune route connue vers le réseau de destination (ici, F et A sont sur deux réseaux IP différents sans passerelle configurée) et abandonne l'envoi avant même que le paquet ne parte réellement. Un « délai d'attente de la demande dépassé » (timeout) signifie au contraire que le paquet a bien été envoyé vers une route existante, mais qu'aucune réponse n'est revenue dans le délai prévu (hôte distant éteint, pare-feu qui bloque ICMP, ou congestion réseau). Le premier message pointe vers un problème d'adressage/routage local, le second vers un problème plus loin sur le chemin ou côté de la machine cible."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "PING teste la joignabilité d'un hôte en envoyant des paquets ICMP Echo Request et en attendant un Echo Reply.",
+        "127.0.0.1 (loopback) ne quitte jamais la machine : les durées obtenues sont donc quasi nulles.",
+        "Un ping réussi ne garantit pas qu'une application précise fonctionnera, il ne teste que la couche réseau.",
+        "« Impossible de joindre l'hôte » signale un problème de route/adressage local, un timeout un problème plus loin sur le chemin.",
+        "Au BAC TI, la commande ping revient systématiquement dès qu'une étude de cas aborde le diagnostic ou la vérification d'une configuration réseau."
+      ]
+    }
+  ]
+}

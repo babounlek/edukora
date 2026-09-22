@@ -1,0 +1,151 @@
+[
+  {
+    "external_id": "cqc-mysql-faible-0",
+    "theme": "MySQL",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Dans le client en ligne de commande de MySQL, quelle instruction affiche la liste des bases de données du serveur ?",
+    "corrige_markdown": "### Rappel de méthode\n\nMySQL dispose d'instructions d'administration propres, comme `SHOW`, qui affiche des informations sur le serveur (bases, tables, colonnes), à distinguer des requêtes `SELECT` qui interrogent le contenu des tables.\n\n### Corrigé\n\nL'instruction est `SHOW DATABASES;`. Les autres formulations (`LIST DATABASES`, `SELECT DATABASES`, `DISPLAY BASES`) n'existent pas en MySQL.",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "SHOW DATABASES;"
+      },
+      {
+        "lettre": "B",
+        "texte": "LIST DATABASES;"
+      },
+      {
+        "lettre": "C",
+        "texte": "SELECT DATABASES;"
+      },
+      {
+        "lettre": "D",
+        "texte": "DISPLAY BASES;"
+      }
+    ],
+    "reponse_correcte": "A",
+    "source_exercises": [
+      10571,
+      10574,
+      10585,
+      10621
+    ]
+  },
+  {
+    "external_id": "cqc-mysql-faible-1",
+    "theme": "MySQL",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un développeur vient de se connecter au serveur MySQL avec le client en ligne de commande. Il veut travailler dans la base `ecole`.\n\n1. Quelle instruction sélectionne cette base pour les requêtes suivantes ?\n2. Quelle instruction affiche ensuite la liste des tables de cette base ?",
+    "corrige_markdown": "### Rappel de méthode\n\nAvant d'interroger des tables, il faut désigner la base courante avec `USE`. `SHOW TABLES` liste alors les tables de cette base.\n\n### Corrigé\n\n1. `USE ecole;` définit `ecole` comme base courante.\n2. `SHOW TABLES;` affiche les tables de la base courante.\n\nSans `USE`, une requête sur une table sans préfixe échoue avec l'erreur « No database selected ».",
+    "difficulte_estimee": "FAIBLE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10571,
+      10574,
+      10585,
+      10621
+    ]
+  },
+  {
+    "external_id": "cqc-mysql-moyenne-2",
+    "theme": "MySQL",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Un script PHP se connecte à MySQL avec la ligne suivante :\n\n```php\n$cnx = new mysqli(\"localhost\", \"root\", \"\", \"boutique\");\n```\n\n1. Donner le rôle de chacun des quatre arguments.\n2. Quelle méthode faut-il appeler sur `$cnx` quand le travail avec la base est terminé ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLe constructeur `new mysqli(hôte, utilisateur, mot de passe, base)` ouvre la connexion dans cet ordre précis ; une connexion ouverte se referme explicitement avec `close()`.\n\n### Corrigé\n\n1. - `\"localhost\"` : l'adresse du serveur MySQL (ici la machine locale).\n   - `\"root\"` : le nom de l'utilisateur MySQL utilisé pour se connecter.\n   - `\"\"` : le mot de passe de cet utilisateur (ici vide).\n   - `\"boutique\"` : le nom de la base de données à utiliser.\n2. On appelle `$cnx->close();` pour fermer la connexion et libérer les ressources.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10571,
+      10574,
+      10585,
+      10621
+    ]
+  },
+  {
+    "external_id": "cqc-mysql-moyenne-3",
+    "theme": "MySQL",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "La table `produit` d'une base MySQL contient six lignes dont les prix (en FCFA) sont : 250, 500, 750, 1200, 500 et 3000. Un script PHP exécute :\n\n```php\n$res = $cnx->query(\"SELECT * FROM produit WHERE prix > 500\");\necho $res->num_rows;\n```\n\nQuelle valeur ce script affiche-t-il ?",
+    "corrige_markdown": "### Rappel de méthode\n\nLa propriété `num_rows` d'un résultat `SELECT` donne le nombre de lignes retournées **après** application de la clause `WHERE`, pas le nombre de lignes de la table.\n\n### Corrigé\n\nLa condition `prix > 500` est stricte : elle retient 750, 1200 et 3000, mais pas les prix égaux à 500. Le résultat contient donc 3 lignes et le script affiche **3**. La valeur 6 est le nombre de lignes de la table, et 5 correspondrait à `prix >= 500`.",
+    "difficulte_estimee": "MOYENNE",
+    "type_reponse": "QCM",
+    "choix": [
+      {
+        "lettre": "A",
+        "texte": "6"
+      },
+      {
+        "lettre": "B",
+        "texte": "3"
+      },
+      {
+        "lettre": "C",
+        "texte": "5"
+      },
+      {
+        "lettre": "D",
+        "texte": "4"
+      }
+    ],
+    "reponse_correcte": "B",
+    "source_exercises": [
+      10571,
+      10574,
+      10585,
+      10621
+    ]
+  },
+  {
+    "external_id": "cqc-mysql-elevee-4",
+    "theme": "MySQL",
+    "matiere": "Programmation",
+    "cursus": [
+      {
+        "examen": "bac",
+        "serie": "TI"
+      }
+    ],
+    "enonce_markdown": "Le script PHP suivant échoue avec une erreur MySQL, alors que la connexion `$cnx` et la table `client(nom, ville)` sont correctes :\n\n```php\n$sql = \"INSERT INTO client (nom, ville) VALUES (Paul, Douala)\";\n$cnx->query($sql);\n```\n\n1. Quelle est la cause de l'erreur ?\n2. Écrire la requête corrigée.",
+    "corrige_markdown": "### Rappel de méthode\n\nEn SQL, une valeur de type texte doit être écrite entre apostrophes. Sans elles, MySQL lit le mot comme un nom de colonne ou d'identifiant.\n\n### Corrigé\n\n1. `Paul` et `Douala` sont des chaînes de caractères, mais elles ne sont pas entourées d'apostrophes : MySQL les interprète comme des noms de colonnes et signale une erreur du type « Unknown column 'Paul' in 'field list' ».\n2. Requête corrigée :\n\n```sql\nINSERT INTO client (nom, ville) VALUES ('Paul', 'Douala');\n```",
+    "difficulte_estimee": "ELEVEE",
+    "type_reponse": "OUVERTE",
+    "choix": [],
+    "reponse_correcte": "",
+    "source_exercises": [
+      10571,
+      10574,
+      10585,
+      10621
+    ]
+  }
+]

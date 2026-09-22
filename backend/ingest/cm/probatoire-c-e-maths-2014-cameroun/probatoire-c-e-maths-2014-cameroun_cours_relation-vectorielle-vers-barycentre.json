@@ -1,0 +1,191 @@
+{
+ "cours_id": "cours-relation-vectorielle-vers-barycentre-1ere-ce",
+ "meta": {
+  "titre": "Traduire une relation vectorielle en écriture barycentrique",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Barycentre",
+  "duree_estimee_min": 30,
+  "tags": ["barycentre", "relation vectorielle", "relation de Chasles", "coefficients barycentriques", "colinéarité"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "23",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2014-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2014 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2014-cameroun-ex3-qA3a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Dire qu'un point $M$ est sur la droite $(AD)$, ou qu'il partage $[AD]$ dans un certain rapport, se fait de deux façons : par une relation de colinéarité entre vecteurs, ou par une écriture barycentrique. Les deux disent la même chose. Mais la seconde se prête à des regroupements — c'est l'associativité — que la première ne permet pas. Savoir passer de l'une à l'autre, c'est pouvoir choisir l'outil adapté à la question suivante."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Connaître la définition du barycentre de deux points pondérés",
+    "Maîtriser la relation de Chasles",
+    "Savoir exprimer un vecteur comme multiple d'un autre à partir de longueurs",
+    "Savoir qu'un barycentre n'existe que si la somme des coefficients est non nulle"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Ramener tous les vecteurs à la même origine",
+   "contenu_markdown": "**La définition.** Le point $G$ est le barycentre du système $\\left\\{A(\\alpha)\\,;\\,B(\\beta)\\right\\}$, avec $\\alpha + \\beta \\neq 0$, lorsque\n\n$$\\alpha\\,\\overrightarrow{GA} + \\beta\\,\\overrightarrow{GB} = \\vec{0}$$\n\n**La condition d'existence.** Si $\\alpha + \\beta = 0$, aucun point ne vérifie cette égalité (sauf cas dégénéré $A = B$) : le barycentre n'existe pas. Vérifie donc toujours que la somme des coefficients est non nulle **avant** de conclure.\n\n**Le principe de la conversion.** Toute relation entre vecteurs impliquant $M$ peut se réécrire avec $M$ comme origine commune. Deux règles suffisent :\n\n$$\\overrightarrow{AM} = -\\overrightarrow{MA} \\qquad ; \\qquad \\overrightarrow{DM} = -\\overrightarrow{MD}$$\n\nUne fois tous les vecteurs partant de $M$, la relation prend automatiquement la forme $\\alpha\\,\\overrightarrow{MA} + \\beta\\,\\overrightarrow{MD} = \\vec{0}$, qui est exactement la caractérisation du barycentre.\n\n**La méthode, en quatre gestes.**\n\n1. **Exprimer** les vecteurs en jeu comme multiples d'un même vecteur de référence, par les longueurs et la relation de Chasles.\n2. **Calculer** le coefficient de proportionnalité $k$, en vérifiant que le dénominateur ne s'annule pas.\n3. **Ramener** tous les vecteurs à l'origine $M$ en changeant les signes.\n4. **Chasser** le dénominateur de $k$ et regrouper tout dans un même membre.\n\n**Le contrôle par le signe de $k$.** Si $M$ est situé **entre** $A$ et $D$, les vecteurs $\\overrightarrow{AM}$ et $\\overrightarrow{DM}$ pointent en sens contraires, donc $k < 0$. Si $M$ est à l'extérieur du segment, $k > 0$. Ce contrôle détecte instantanément une confusion entre $\\overrightarrow{DM}$ et $\\overrightarrow{MD}$.\n\n**Les coefficients ne sont définis qu'à un facteur près.** Si $G$ est le barycentre de $\\left\\{A(\\alpha)\\,;\\,B(\\beta)\\right\\}$, il est aussi celui de $\\left\\{A(\\lambda\\alpha)\\,;\\,B(\\lambda\\beta)\\right\\}$ pour tout $\\lambda \\neq 0$. On peut donc simplifier ou changer le signe des deux coefficients à la fois, jamais d'un seul.\n\n**La règle de position.** Pour un barycentre de deux points, le point obtenu est **d'autant plus proche du point le plus lourd**. Le barycentre de $\\left\\{A(6-x)\\,;\\,D(x)\\right\\}$ avec $x$ petit est donc proche de $A$ — ce qui est cohérent avec $AM = x$ petit.",
+   "formule_principale": "\\overrightarrow{MA} = k\\,\\overrightarrow{MD} \\iff M = \\operatorname{bar}\\left\\{A(-1)\\,;\\,D(k)\\right\\}",
+   "variantes": [
+    {
+     "nom": "Passer du barycentre à la relation vectorielle",
+     "quand_utiliser": "Quand l'énoncé donne le barycentre et demande une position ou une construction",
+     "contenu_markdown": "Le sens inverse est tout aussi utile. Si $G$ est le barycentre de $\\left\\{A(\\alpha)\\,;\\,B(\\beta)\\right\\}$, alors pour **tout** point $P$ du plan :\n\n$$(\\alpha + \\beta)\\,\\overrightarrow{PG} = \\alpha\\,\\overrightarrow{PA} + \\beta\\,\\overrightarrow{PB}$$\n\nEn choisissant $P = A$, le premier terme du membre de droite disparaît :\n\n$$\\overrightarrow{AG} = \\frac{\\beta}{\\alpha + \\beta}\\,\\overrightarrow{AB}$$\n\nC'est la forme la plus commode pour **construire** le point ou pour calculer une longueur."
+    },
+    {
+     "nom": "Lecture directe par les longueurs algébriques",
+     "quand_utiliser": "Quand on veut deviner les coefficients avant de les démontrer",
+     "contenu_markdown": "Pour un point $M$ du segment $[AD]$, les coefficients sont proportionnels aux longueurs des segments **opposés** :\n\n$$M = \\operatorname{bar}\\left\\{A(MD)\\,;\\,D(MA)\\right\\}$$\n\nAvec $AM = x$ et $AD = 6$, on a $MD = 6 - x$, d'où immédiatement $M = \\operatorname{bar}\\left\\{A(6-x)\\,;\\,D(x)\\right\\}$.\n\nCette lecture est un excellent moyen de **contrôler** son résultat, mais elle ne remplace pas la démonstration attendue par le correcteur."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCD$ est un carré de côté $6$, et $M$ un point du segment $[AD]$ tel que $AM = x$, avec $M \\neq A$ et $M \\neq D$. Soit $k$ un réel tel que $\\overrightarrow{AM} = k\\,\\overrightarrow{DM}$. Déterminer $k$ en fonction de $x$, et en déduire que $M$ est le barycentre de $A$ et $D$ affectés respectivement des coefficients $6-x$ et $x$. (Probatoire C et E, Cameroun, 2014.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Exprimer $\\overrightarrow{AM}$ en fonction de $\\overrightarrow{AD}$",
+     "justification": "$M$ appartient à $[AD]$ avec $AM = x$ et $AD = 6$ ; les deux vecteurs sont de même sens",
+     "resultat_markdown": "$\\overrightarrow{AM} = \\dfrac{x}{6}\\,\\overrightarrow{AD}$"
+    },
+    {
+     "numero": 2,
+     "action": "Exprimer $\\overrightarrow{DM}$ par la relation de Chasles",
+     "justification": "On passe par $A$ : $\\overrightarrow{DM} = \\overrightarrow{DA} + \\overrightarrow{AM}$, avec $\\overrightarrow{DA} = -\\overrightarrow{AD}$",
+     "resultat_markdown": "$\\overrightarrow{DM} = -\\overrightarrow{AD} + \\dfrac{x}{6}\\,\\overrightarrow{AD} = \\dfrac{x-6}{6}\\,\\overrightarrow{AD}$"
+    },
+    {
+     "numero": 3,
+     "action": "Vérifier que le quotient est licite",
+     "justification": "$M \\neq D$ donc $x \\neq 6$, ce qui assure $\\overrightarrow{DM} \\neq \\vec{0}$",
+     "resultat_markdown": "Le coefficient $\\dfrac{x-6}{6}$ est non nul : la division est possible"
+    },
+    {
+     "numero": 4,
+     "action": "Calculer $k$",
+     "justification": "Les deux vecteurs sont colinéaires à $\\overrightarrow{AD}$ : le rapport est celui de leurs coefficients",
+     "resultat_markdown": "$k = \\dfrac{\\dfrac{x}{6}}{\\dfrac{x-6}{6}} = \\dfrac{x}{x-6}$, c'est-à-dire $k = -\\dfrac{x}{6-x}$"
+    },
+    {
+     "numero": 5,
+     "action": "Ramener les vecteurs à l'origine $M$",
+     "justification": "$\\overrightarrow{AM} = -\\overrightarrow{MA}$ et $\\overrightarrow{DM} = -\\overrightarrow{MD}$ ; les deux signes se simplifient",
+     "resultat_markdown": "$\\overrightarrow{AM} = k\\,\\overrightarrow{DM} \\iff -\\overrightarrow{MA} = -k\\,\\overrightarrow{MD} \\iff \\overrightarrow{MA} = k\\,\\overrightarrow{MD}$"
+    },
+    {
+     "numero": 6,
+     "action": "Substituer et chasser le dénominateur",
+     "justification": "On multiplie les deux membres par $x - 6$, qui est non nul",
+     "resultat_markdown": "$(x-6)\\,\\overrightarrow{MA} = x\\,\\overrightarrow{MD}$, soit $(x-6)\\,\\overrightarrow{MA} - x\\,\\overrightarrow{MD} = \\vec{0}$"
+    },
+    {
+     "numero": 7,
+     "action": "Multiplier par $-1$",
+     "justification": "On change le signe des deux coefficients simultanément, ce qui ne change pas le barycentre",
+     "resultat_markdown": "$(6-x)\\,\\overrightarrow{MA} + x\\,\\overrightarrow{MD} = \\vec{0}$"
+    },
+    {
+     "numero": 8,
+     "action": "Vérifier la condition d'existence",
+     "justification": "La somme des coefficients doit être non nulle",
+     "resultat_markdown": "$(6-x) + x = 6 \\neq 0$ : le barycentre existe"
+    },
+    {
+     "numero": 9,
+     "action": "Contrôler sur un cas particulier",
+     "justification": "Pour $x = 3$, le point $M$ est le milieu de $[AD]$, donc $\\overrightarrow{AM} = -\\overrightarrow{DM}$ et $k$ doit valoir $-1$",
+     "resultat_markdown": "$k = \\dfrac{3}{3-6} = \\dfrac{3}{-3} = -1$ : cohérent, et les coefficients $3$ et $3$ donnent bien le milieu"
+    }
+   ],
+   "conclusion_markdown": "On a $k = \\dfrac{x}{x-6}$, et $M$ est le barycentre du système $\\left\\{A(6-x)\\,;\\,D(x)\\right\\}$. Cette écriture n'est pas une fin en soi : c'est elle qui permettra, à la question suivante, de regrouper $M$ avec $I$ par associativité. La relation de colinéarité initiale, elle, ne s'y prêtait pas."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Confondre $\\overrightarrow{DM}$ et $\\overrightarrow{MD}$ et trouver $k = \\dfrac{x}{6-x}$",
+     "pourquoi_faux": "Le point $M$ est situé **entre** $A$ et $D$ : les vecteurs $\\overrightarrow{AM}$ et $\\overrightarrow{DM}$ pointent en sens contraires, donc $k$ doit être négatif. Un $k$ positif signale immédiatement l'inversion.",
+     "correction_markdown": "Contrôle le signe attendu avant même de calculer : $M$ entre $A$ et $D$ impose $k < 0$. Et vérifie sur $x = 3$, où $k$ doit valoir exactement $-1$."
+    },
+    {
+     "erreur_markdown": "Diviser par $\\overrightarrow{DM}$ sans vérifier qu'il est non nul",
+     "pourquoi_faux": "Si $M = D$, le vecteur $\\overrightarrow{DM}$ est nul et aucun réel $k$ ne convient. L'énoncé exclut ce cas par l'hypothèse $M \\neq D$, qui doit donc être invoquée.",
+     "correction_markdown": "Écris la ligne : « $M \\neq D$ donc $x \\neq 6$, et le quotient est licite ». Une hypothèse d'un énoncé n'est jamais décorative."
+    },
+    {
+     "erreur_markdown": "Changer le signe d'un seul coefficient",
+     "pourquoi_faux": "Passer de $\\left\\{A(x-6)\\,;\\,D(-x)\\right\\}$ à $\\left\\{A(6-x)\\,;\\,D(-x)\\right\\}$ change complètement le point : les coefficients ne sont définis qu'à un facteur **commun** près.",
+     "correction_markdown": "Multiplie toujours les deux coefficients par le même réel non nul. Ici on multiplie par $-1$ : $(x-6\\,;\\,-x)$ devient $(6-x\\,;\\,x)$."
+    },
+    {
+     "erreur_markdown": "Oublier de vérifier que la somme des coefficients est non nulle",
+     "pourquoi_faux": "Sans cette vérification, rien ne garantit que le barycentre existe. Ici la somme vaut $6$, indépendamment de $x$, mais dans d'autres configurations elle peut s'annuler pour certaines valeurs du paramètre.",
+     "correction_markdown": "Calcule la somme explicitement et écris qu'elle est non nulle. C'est une ligne, et elle rend la conclusion valide."
+    },
+    {
+     "erreur_markdown": "Se contenter de la lecture par les longueurs opposées",
+     "pourquoi_faux": "Écrire directement « $M = \\operatorname{bar}\\left\\{A(MD)\\,;\\,D(MA)\\right\\}$ donc $M = \\operatorname{bar}\\left\\{A(6-x)\\,;\\,D(x)\\right\\}$ » donne le bon résultat, mais l'énoncé demande de le **déduire** de $k$. La démarche imposée fait partie de la note.",
+     "correction_markdown": "Utilise cette lecture comme **contrôle**, à la fin, et non comme démonstration. Le barème récompense le passage explicite par la relation vectorielle."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Soient $A$ et $B$ deux points distincts, et $M$ le point défini par $\\overrightarrow{AM} = \\dfrac{2}{5}\\,\\overrightarrow{AB}$. Écrire $M$ comme barycentre de $A$ et $B$, puis préciser sa position sur le segment.",
+     "solution_markdown": "**Étape 1 - ramener les vecteurs à l'origine $M$.**\n\nOn part de $\\overrightarrow{AM} = \\dfrac{2}{5}\\,\\overrightarrow{AB}$ et l'on décompose $\\overrightarrow{AB}$ par Chasles en passant par $M$ :\n\n$$\\overrightarrow{AB} = \\overrightarrow{AM} + \\overrightarrow{MB}$$\n\nD'où\n\n$$\\overrightarrow{AM} = \\dfrac{2}{5}\\left(\\overrightarrow{AM} + \\overrightarrow{MB}\\right)$$\n\n**Étape 2 - regrouper.**\n\n$$\\overrightarrow{AM} - \\dfrac{2}{5}\\overrightarrow{AM} = \\dfrac{2}{5}\\overrightarrow{MB} \\qquad \\Longrightarrow \\qquad \\dfrac{3}{5}\\overrightarrow{AM} = \\dfrac{2}{5}\\overrightarrow{MB}$$\n\nOn multiplie par $5$ :\n\n$$3\\,\\overrightarrow{AM} = 2\\,\\overrightarrow{MB}$$\n\n**Étape 3 - passer à l'origine $M$.**\n\nAvec $\\overrightarrow{AM} = -\\overrightarrow{MA}$ :\n\n$$-3\\,\\overrightarrow{MA} = 2\\,\\overrightarrow{MB} \\qquad \\Longrightarrow \\qquad 3\\,\\overrightarrow{MA} + 2\\,\\overrightarrow{MB} = \\vec{0}$$\n\n**Étape 4 - conclure.**\n\nLa somme des coefficients vaut $3 + 2 = 5 \\neq 0$ : le barycentre existe.\n\n$$M = \\operatorname{bar}\\left\\{A(3)\\,;\\,B(2)\\right\\}$$\n\n**Étape 5 - position.**\n\nLe coefficient de $A$ est le plus grand, donc $M$ est plus proche de $A$ que de $B$. Précisément, $AM = \\dfrac{2}{5}AB$ et $MB = \\dfrac{3}{5}AB$.\n\n**Contrôle par la lecture des longueurs opposées.** $M = \\operatorname{bar}\\left\\{A(MB)\\,;\\,B(MA)\\right\\}$, soit des coefficients proportionnels à $\\dfrac{3}{5}$ et $\\dfrac{2}{5}$, donc à $3$ et $2$. Conforme.\n\n**Remarque.** Retiens l'inversion : le point est proche du coefficient **lourd**, et les coefficients sont proportionnels aux distances **opposées**. Ces deux formulations disent la même chose."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABC$ est un triangle. Un point $M$ vérifie $\\overrightarrow{MA} + 2\\,\\overrightarrow{MB} - 4\\,\\overrightarrow{MC} = \\vec{0}$. Déterminer $M$ comme barycentre, puis exprimer $\\overrightarrow{AM}$ en fonction de $\\overrightarrow{AB}$ et $\\overrightarrow{AC}$. Le point $M$ est-il à l'intérieur du triangle ?",
+     "solution_markdown": "**Étape 1 - lire le barycentre.**\n\nLa relation est déjà sous la forme canonique, avec toutes les origines en $M$. Les coefficients sont $1$, $2$ et $-4$, de somme\n\n$$1 + 2 - 4 = -1 \\neq 0$$\n\nLe barycentre existe donc, et\n\n$$M = \\operatorname{bar}\\left\\{A(1)\\,;\\,B(2)\\,;\\,C(-4)\\right\\}$$\n\n**Étape 2 - changer d'origine pour obtenir $\\overrightarrow{AM}$.**\n\nOn décompose chaque vecteur en passant par $A$ :\n\n$$\\overrightarrow{MA} = -\\overrightarrow{AM} \\qquad \\overrightarrow{MB} = \\overrightarrow{AB} - \\overrightarrow{AM} \\qquad \\overrightarrow{MC} = \\overrightarrow{AC} - \\overrightarrow{AM}$$\n\nEn substituant :\n\n$$-\\overrightarrow{AM} + 2\\left(\\overrightarrow{AB} - \\overrightarrow{AM}\\right) - 4\\left(\\overrightarrow{AC} - \\overrightarrow{AM}\\right) = \\vec{0}$$\n\n**Étape 3 - regrouper les termes en $\\overrightarrow{AM}$.**\n\n$$\\left(-1 - 2 + 4\\right)\\overrightarrow{AM} + 2\\,\\overrightarrow{AB} - 4\\,\\overrightarrow{AC} = \\vec{0}$$\n\n$$\\overrightarrow{AM} = -2\\,\\overrightarrow{AB} + 4\\,\\overrightarrow{AC}$$\n\n**Étape 4 - position du point.**\n\nUn point est à l'intérieur du triangle $ABC$ si et seulement s'il est barycentre de $A$, $B$, $C$ avec des coefficients **tous de même signe**. Ici le coefficient de $C$ est négatif tandis que ceux de $A$ et $B$ sont positifs.\n\n**Le point $M$ est donc à l'extérieur du triangle.**\n\n**Contrôle.** Un coefficient négatif sur $C$ « repousse » le point loin de $C$. Et de fait $\\overrightarrow{AM} = -2\\,\\overrightarrow{AB} + 4\\,\\overrightarrow{AC}$ a des coefficients dont la somme vaut $-2 + 4 = 2 \\neq 1$ : le point ne peut pas être dans le triangle, où cette somme serait comprise entre $0$ et $1$.\n\n**Ce qu'il faut retenir.** Le signe des coefficients renseigne sur la position : tous de même signe donne un point intérieur à l'enveloppe convexe, un signe différent le rejette à l'extérieur."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "$ABCD$ est un carré de côté $a$. Un point $M$ décrit le segment $[AD]$ et l'on pose $AM = x$, avec $0 < x < a$. On sait que $M = \\operatorname{bar}\\left\\{A(a-x)\\,;\\,D(x)\\right\\}$. Soit $N$ le point de $[DC]$ tel que $DN = x$. Montrer que $N = \\operatorname{bar}\\left\\{D(a-x)\\,;\\,C(x)\\right\\}$, puis déterminer l'ensemble décrit par le milieu $K$ de $[MN]$ lorsque $x$ parcourt $\\left]0\\,;\\,a\\right[$.",
+     "solution_markdown": "**Première partie - l'écriture barycentrique de $N$.**\n\nLa configuration est identique à celle de $M$, à un décalage de sommets près : $N$ appartient à $[DC]$ avec $DN = x$ et $DC = a$.\n\nOn a $\\overrightarrow{DN} = \\dfrac{x}{a}\\,\\overrightarrow{DC}$, puis par Chasles\n\n$$\\overrightarrow{CN} = \\overrightarrow{CD} + \\overrightarrow{DN} = -\\overrightarrow{DC} + \\dfrac{x}{a}\\overrightarrow{DC} = \\dfrac{x-a}{a}\\,\\overrightarrow{DC}$$\n\nEn ramenant à l'origine $N$ : $\\overrightarrow{ND} = -\\dfrac{x}{a}\\overrightarrow{DC}$ et $\\overrightarrow{NC} = \\dfrac{a-x}{a}\\overrightarrow{DC}$, donc\n\n$$(a-x)\\,\\overrightarrow{ND} + x\\,\\overrightarrow{NC} = \\left[-\\dfrac{x(a-x)}{a} + \\dfrac{x(a-x)}{a}\\right]\\overrightarrow{DC} = \\vec{0}$$\n\nLa somme des coefficients vaut $a \\neq 0$, donc\n\n$$N = \\operatorname{bar}\\left\\{D(a-x)\\,;\\,C(x)\\right\\}$$\n\n**Deuxième partie - le lieu du milieu.**\n\nPlaçons-nous dans le repère orthonormé $\\left(A\\,;\\,\\overrightarrow{i}\\,;\\,\\overrightarrow{j}\\right)$ où $\\overrightarrow{i} = \\dfrac{1}{a}\\overrightarrow{AB}$ et $\\overrightarrow{j} = \\dfrac{1}{a}\\overrightarrow{AD}$. Les sommets ont alors pour coordonnées\n\n$$A(0\\,;\\,0) \\qquad B(a\\,;\\,0) \\qquad C(a\\,;\\,a) \\qquad D(0\\,;\\,a)$$\n\nLe point $M$ est sur $[AD]$ avec $AM = x$, donc $M(0\\,;\\,x)$.\n\nLe point $N$ est sur $[DC]$ avec $DN = x$ ; comme $D(0\\,;\\,a)$ et $C(a\\,;\\,a)$, on obtient $N(x\\,;\\,a)$.\n\nLe milieu $K$ de $[MN]$ a pour coordonnées\n\n$$x_{K} = \\dfrac{0 + x}{2} = \\dfrac{x}{2} \\qquad ; \\qquad y_{K} = \\dfrac{x + a}{2}$$\n\n**Étape - éliminer le paramètre.**\n\nDe la première égalité on tire $x = 2x_{K}$. En reportant dans la seconde :\n\n$$y_{K} = \\dfrac{2x_{K} + a}{2} = x_{K} + \\dfrac{a}{2}$$\n\n**Le point $K$ décrit donc un morceau de la droite d'équation $y = x + \\dfrac{a}{2}$.**\n\n**Étape - préciser les bornes.**\n\nComme $x$ parcourt $\\left]0\\,;\\,a\\right[$, l'abscisse $x_{K} = \\dfrac{x}{2}$ parcourt $\\left]0\\,;\\,\\dfrac{a}{2}\\right[$.\n\nLes points extrêmes, exclus, correspondent à $x = 0$ et $x = a$ :\n\n- $x \\to 0$ : $K \\to \\left(0\\,;\\,\\dfrac{a}{2}\\right)$, le milieu de $[AD]$.\n- $x \\to a$ : $K \\to \\left(\\dfrac{a}{2}\\,;\\,a\\right)$, le milieu de $[DC]$.\n\n**Conclusion.** Le point $K$ décrit le segment ouvert joignant le milieu de $[AD]$ au milieu de $[DC]$, privé de ses extrémités.\n\n**Contrôle sur un cas particulier.** Pour $x = \\dfrac{a}{2}$, on a $M\\left(0\\,;\\,\\dfrac{a}{2}\\right)$ et $N\\left(\\dfrac{a}{2}\\,;\\,a\\right)$, donc $K\\left(\\dfrac{a}{4}\\,;\\,\\dfrac{3a}{4}\\right)$. Vérification dans l'équation : $\\dfrac{a}{4} + \\dfrac{a}{2} = \\dfrac{3a}{4}$. Conforme.\n\n**Remarque.** La droite obtenue est parallèle à la diagonale $(AC)$, dont l'équation est $y = x$. Ce n'est pas un hasard : $K$ est l'image de $M$ par une transformation affine liée à la rotation de centre $O$ qui échange les deux configurations."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "$G = \\operatorname{bar}\\left\\{A(\\alpha)\\,;\\,B(\\beta)\\right\\}$ signifie $\\alpha\\,\\overrightarrow{GA} + \\beta\\,\\overrightarrow{GB} = \\vec{0}$, avec $\\alpha + \\beta \\neq 0$.",
+    "Pour convertir une relation vectorielle, ramène tous les vecteurs à la même origine : $\\overrightarrow{AM} = -\\overrightarrow{MA}$.",
+    "Chasse ensuite le dénominateur du coefficient pour obtenir des coefficients entiers.",
+    "Les coefficients ne sont définis qu'à un facteur commun non nul près : multiplie-les **tous** par le même réel, jamais un seul.",
+    "Vérifie toujours que la somme des coefficients est non nulle : sans cela le barycentre n'existe pas.",
+    "Contrôle le signe : $M$ entre $A$ et $D$ impose un coefficient de colinéarité négatif.",
+    "Les coefficients sont proportionnels aux distances **opposées** : $M = \\operatorname{bar}\\left\\{A(MD)\\,;\\,D(MA)\\right\\}$.",
+    "Le barycentre est d'autant plus proche du point le plus lourd.",
+    "Des coefficients tous de même signe placent le point dans l'enveloppe convexe ; un signe différent le rejette à l'extérieur.",
+    "Vérifie toujours ton résultat sur un cas simple, comme le milieu, où les coefficients doivent être égaux."
+   ]
+  }
+ ]
+}

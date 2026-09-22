@@ -1,0 +1,137 @@
+{
+  "cours_id": "cours-les-fonctions-de-saisie-affichage-de-chaines-en-c-premiere-ti",
+  "meta": {
+    "titre": "Les fonctions de saisie/affichage de chaînes en C : gets() et puts()",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Entrées-sorties en langage C",
+    "duree_estimee_min": 20,
+    "tags": [
+      "gets",
+      "puts",
+      "strcat",
+      "chaîne de caractères",
+      "entrées-sorties"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex1-q7-0",
+    "rappels_lies": [
+      "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex1-q8-0",
+      "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex1-q9-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "`printf()` et `scanf()` ne sont pas les seules portes d'entrée et de sortie du langage C : quand on manipule des chaînes de caractères entières plutôt que des valeurs formatées, deux autres fonctions, plus simples, prennent le relais - `gets()` pour lire, `puts()` pour afficher."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer un tableau de caractères (`char nom[50];`)",
+        "Connaître la bibliothèque `stdio.h` et son rôle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "gets() et puts(), lecture et affichage d'une chaîne complète",
+      "contenu_markdown": "En C, `gets()` lit une ligne de caractères saisie au clavier et la range dans un tableau de caractères (chaîne) passé en argument. `puts()` affiche à l'écran le contenu d'une chaîne de caractères, en ajoutant automatiquement un retour à la ligne final. Toutes deux appartiennent à la bibliothèque `stdio.h`, au même titre que `printf()` et `scanf()`.",
+      "formule_principale": "gets(tableau); pour lire une ligne - puts(tableau); pour l'afficher (+ retour à la ligne automatique)",
+      "variantes": [
+        {
+          "nom": "fgets(), l'alternative sécurisée",
+          "quand_utiliser": "Dans tout programme réel (au-delà de l'exercice scolaire)",
+          "contenu_markdown": "`fgets(tableau, taille, stdin);` limite explicitement le nombre de caractères lus à `taille`, ce que `gets()` ne fait jamais - c'est pourquoi `gets()` a été retirée du standard C11."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire un programme qui demande le nom d'un utilisateur puis affiche \"Bonjour \" suivi de ce nom, sur une seule ligne, sans utiliser `printf()` ni `scanf()`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déclarer les tableaux nécessaires",
+          "justification": "Il faut un tableau pour recevoir le nom saisi, et un autre pour construire le message final",
+          "resultat_markdown": "```c\nchar prenom[50];\nchar message[70] = \"Bonjour \";\n```"
+        },
+        {
+          "numero": 2,
+          "action": "Afficher la question et lire la réponse",
+          "justification": "`puts()` affiche le texte fixe, `gets()` lit la saisie de l'utilisateur",
+          "resultat_markdown": "```c\nputs(\"Quel est votre prenom ?\");\ngets(prenom);\n```"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler les deux morceaux de texte",
+          "justification": "`puts()` ajoute toujours un retour à la ligne : deux appels séparés afficheraient \"Bonjour\" et le prénom sur deux lignes distinctes, il faut donc les assembler AVANT de les afficher",
+          "resultat_markdown": "```c\nstrcat(message, prenom);\n```"
+        },
+        {
+          "numero": 4,
+          "action": "Afficher le résultat final",
+          "justification": "Un seul appel à `puts()` affiche tout le message assemblé sur une seule ligne",
+          "resultat_markdown": "```c\nputs(message);\n```"
+        }
+      ],
+      "conclusion_markdown": "Le programme complet (`puts()`, `gets()`, `strcat()`, `puts()`) reproduit l'écran demandé sans jamais appeler `printf()` ni `scanf()`, en exploitant le fait que ces trois fonctions appartiennent, elles aussi, à la bibliothèque `stdio.h` (`strcat` à `string.h`)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser `gets()` dans un vrai programme sans s'inquiéter de la taille du tableau",
+          "pourquoi_faux": "`gets()` ne vérifie jamais la taille du tableau destination : elle lit jusqu'au retour à la ligne, quelle que soit la taille réservée, ce qui peut écrire au-delà de sa limite (débordement de tampon) et corrompre la mémoire.",
+          "correction_markdown": "Pour cette raison, `gets()` a été retirée du standard C11 : dans un vrai programme, on lui préfère `fgets()`, qui accepte une taille maximale de lecture."
+        },
+        {
+          "erreur_markdown": "Enchaîner deux `puts()` pour afficher deux morceaux de texte sur la même ligne",
+          "pourquoi_faux": "`puts()` ajoute systématiquement un retour à la ligne après l'affichage : deux appels séparés produisent toujours deux lignes distinctes, jamais une seule.",
+          "correction_markdown": "Pour afficher plusieurs morceaux sur une seule ligne avec `puts()`, il faut d'abord les assembler en une seule chaîne (avec `strcat()`, ou en les écrivant directement dans le même tableau), puis appeler `puts()` une seule fois sur le résultat."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire les instructions qui lisent un nom au clavier dans un tableau `nom[30]` et l'affichent ensuite, sans `printf()` ni `scanf()`.",
+          "solution_markdown": "```c\nchar nom[30];\ngets(nom);\nputs(nom);\n```\n`gets(nom);` lit la ligne saisie et la stocke dans `nom` ; `puts(nom);` affiche ensuite cette chaîne suivie d'un retour à la ligne."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un programme doit afficher \"Score final : 15\" sur une seule ligne, où \"15\" est en réalité stocké dans une chaîne de caractères `score[]` = \"15\" (pas un entier). Écrire le code correspondant sans `printf()`.",
+          "solution_markdown": "```c\nchar score[10] = \"15\";\nchar message[30] = \"Score final : \";\nstrcat(message, score);\nputs(message);\n```\nComme `score` est déjà une chaîne de caractères (pas un entier), il peut être directement concaténé avec `strcat()`, sans conversion préalable."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi `strcat(message, prenom);` exige que `message` ait été déclaré avec une taille suffisante pour contenir à la fois \"Bonjour \" ET le prénom saisi, et ce qui se passe si ce n'est pas le cas.",
+          "solution_markdown": "`strcat()` ajoute le contenu de sa seconde chaîne (`prenom`) à la SUITE de la première (`message`), directement dans le tableau `message` : elle ne crée pas un nouveau tableau plus grand, elle réutilise celui qui existe déjà. Si `message` a été déclaré trop petit pour contenir \"Bonjour \" + le prénom (+ le caractère de fin de chaîne `\\0` obligatoire), `strcat()` écrit quand même au-delà de la taille réservée, ce qui provoque un débordement de tampon : un comportement indéterminé qui peut corrompre d'autres variables en mémoire ou faire planter le programme, exactement comme le risque déjà signalé pour `gets()`. Il faut donc systématiquement prévoir une marge suffisante à la déclaration (par exemple `char message[70]` pour un prénom de 50 caractères maximum plus le texte fixe \"Bonjour \")."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`gets(tableau);` lit une ligne complète saisie au clavier et la stocke dans un tableau de caractères.",
+        "`puts(tableau);` affiche une chaîne de caractères à l'écran, en ajoutant toujours un retour à la ligne final.",
+        "Pour afficher plusieurs morceaux de texte sur une seule ligne avec `puts()`, assemble-les d'abord avec `strcat()` avant l'affichage.",
+        "`gets()` est dangereuse (pas de limite de taille) et retirée du C11 : `fgets()` est l'alternative sécurisée dans un vrai programme.",
+        "Au Probatoire, ces fonctions apparaissent souvent dans des questions \"sans printf() ni scanf()\" : elles servent justement à montrer qu'on maîtrise d'autres portes d'entrée-sortie du langage."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "cours_id": "cours-appliquer-lalgorithme-de-dijkstra-pour-trouver-le-plus-court-chemin-terminale-d",
+  "meta": {"titre": "Appliquer l'algorithme de Dijkstra pour trouver le plus court chemin", "cours_id": "cours-appliquer-lalgorithme-de-dijkstra-pour-trouver-le-plus-court-chemin-terminale-d", "matiere": "Mathématiques", "niveau": "Terminale D", "sous_theme": "Graphes — plus court chemin", "tags": ["Dijkstra", "graphe pondéré", "plus court chemin"], "duree_estimee_minutes": 12, "epreuve_source": "bac-d-maths-2022-cameroun.pdf"},
+  "source": {"rappel_id": "rdm-bac-d-maths-2022-cameroun-ex3-1b"},
+  "sections": [
+    {"type": "accroche", "contenu_markdown": "L'algorithme de Dijkstra construit, étape par étape, la distance minimale du sommet de départ à chaque autre sommet, en ne visitant jamais deux fois le même sommet."},
+    {"type": "prerequis", "items_markdown": ["Graphe pondéré à poids positifs déjà construit", "Notion de distance provisoire, mise à jour à chaque étape"]},
+    {"type": "regle", "titre": "Visiter le plus proche, mettre à jour les voisins", "contenu_markdown": "On initialise $d(\\text{départ})=0$ et $d(\\text{autres})=+\\infty$. À chaque étape : choisir le sommet NON VISITÉ de plus petite distance provisoire, le marquer visité, puis pour chacun de ses voisins non visités, mettre à jour sa distance provisoire par $\\min(\\text{distance actuelle},\\,d(\\text{sommet visité})+\\text{poids de l'arête})$. On répète jusqu'à avoir visité tous les sommets (ou le sommet d'arrivée recherché).", "formule_principale": "d(voisin) = min(d(voisin), d(sommet visité) + poids arête)", "variantes": []},
+    {"type": "exemple_resolu", "enonce_markdown": "Graphe : P-Q=3, P-R=8, Q-R=2. Trouver le plus court chemin de P à R par Dijkstra.", "epreuve_source": false, "etapes": [
+      {"numero": 1, "action": "Visiter P (d=0)", "justification": "initial", "resultat_markdown": "d(Q)=3, d(R)=8"},
+      {"numero": 2, "action": "Visiter Q (d=3, le plus petit)", "justification": "voisin R", "resultat_markdown": "d(R)=min(8,3+2)=5"},
+      {"numero": 3, "action": "Visiter R (d=5)", "justification": "terminé", "resultat_markdown": "chemin P-Q-R"}
+    ], "conclusion_markdown": "Plus court chemin : P-Q-R, distance 5 (au lieu de 8 en allant directement)."},
+    {"type": "erreurs_classiques", "items": [{"erreur_markdown": "Continuer à mettre à jour la distance d'un sommet déjà VISITÉ (marqué définitif), en le traitant comme s'il pouvait encore changer", "pourquoi_faux": "Une fois qu'un sommet est visité, sa distance provisoire devient DÉFINITIVE (c'est la garantie fondamentale de l'algorithme de Dijkstra, valable pour des poids positifs) ; la remettre à jour ensuite fausse tout le raisonnement de l'algorithme.", "correction_markdown": "Ne jamais remettre à jour la distance d'un sommet déjà marqué visité : sa distance est définitivement fixée dès qu'il est visité."}]},
+    {"type": "exercices_application", "items": [
+      {"numero": 1, "difficulte": "moyen", "enonce_markdown": "Graphe : M-N=4, M-O=1, N-O=2, N-P=5, O-P=8. Trouver le plus court chemin de M à P.", "solution_markdown": "Visiter M(0): d(N)=4, d(O)=1. Visiter O(1): d(N)=min(4,1+2)=3, d(P)=min(∞,1+8)=9. Visiter N(3): d(P)=min(9,3+5)=8. Visiter P(8). Chemin : M-O-N-P, distance 8."},
+      {"numero": 2, "difficulte": "facile", "enonce_markdown": "Pourquoi choisit-on à chaque étape le sommet non visité de plus PETITE distance provisoire ?", "solution_markdown": "Parce que cette distance, étant la plus petite parmi celles restant à explorer, ne peut plus être améliorée par un chemin passant par un sommet non encore visité (qui a une distance provisoire au moins aussi grande) : elle est donc garantie définitive."}
+    ]},
+    {"type": "synthese", "items_markdown": ["L'algorithme de Dijkstra visite à chaque étape le sommet non visité de plus petite distance provisoire.", "Les distances des voisins d'un sommet visité sont mises à jour par comparaison (minimum).", "Une fois un sommet visité, sa distance devient définitive et ne doit plus être modifiée."]}
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "cours_id": "cours-protocoles-mobilises-lors-de-l-ouverture-d-une-page-web-dns-et-http-terminale-ti",
+  "meta": {
+    "titre": "Protocoles mobilisés lors de l'ouverture d'une page web (DNS et HTTP)",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Protocoles Internet",
+    "duree_estimee_min": 18,
+    "tags": [
+      "HTTP",
+      "DNS",
+      "navigation web",
+      "protocoles Internet"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex2-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Saisir une simple adresse dans la barre du navigateur déclenche, en réalité, une petite chaîne d'opérations invisibles à l'utilisateur, où interviennent successivement deux protocoles bien distincts. Oublier l'un des deux dans une réponse d'examen, c'est décrire seulement la moitié du mécanisme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de nom de domaine et d'adresse IP",
+        "Notion de protocole réseau"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "DNS puis HTTP : la chaîne d'ouverture d'une page web",
+      "contenu_markdown": "Ouvrir une URL mobilise, dans cet ordre, deux protocoles distincts. D'abord le **DNS** (Domain Name System), qui traduit le nom de domaine saisi (ex. www.google.com) en l'adresse IP du serveur qui héberge le site. Ensuite le **HTTP** (Hyper Text Transfer Protocol), signalé par le préfixe « http:// » (ou « https:// » pour sa variante sécurisée), qui assure le transfert effectif de la page entre ce serveur et le navigateur, une fois son adresse IP connue.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un utilisateur saisit http://www.google.com dans son navigateur pour la première fois de la journée. Décrire, dans l'ordre, les deux protocoles mobilisés avant l'affichage de la page.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Résolution du nom de domaine",
+          "justification": "Le navigateur ne connaît que le nom saisi, pas encore l'adresse IP du serveur.",
+          "resultat_markdown": "Le DNS traduit www.google.com en l'adresse IP du serveur Google à contacter."
+        },
+        {
+          "numero": 2,
+          "action": "Transfert de la page via HTTP",
+          "justification": "Une fois l'adresse IP connue, le navigateur peut dialoguer directement avec le serveur.",
+          "resultat_markdown": "Le navigateur envoie une requête HTTP à cette adresse IP, et le serveur répond en transférant le contenu de la page (texte, images, scripts)."
+        }
+      ],
+      "conclusion_markdown": "Le DNS répond d'abord à la question « où se trouve ce serveur ? », puis le HTTP répond à la question « que contient sa page ? » : les deux protocoles sont indispensables et interviennent dans cet ordre précis."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ne citer que le HTTP en s'appuyant sur le préfixe de l'URL",
+          "pourquoi_faux": "Le préfixe de l'URL ne signale que le protocole de TRANSFERT de la page ; il ne mentionne jamais la résolution de nom, pourtant indispensable et systématiquement effectuée avant toute requête HTTP.",
+          "correction_markdown": "Ne te limite jamais au seul protocole visible dans l'URL : demande-toi toujours comment le nom de domaine a été traduit en adresse IP avant le transfert."
+        },
+        {
+          "erreur_markdown": "Inverser l'ordre et présenter le HTTP avant le DNS",
+          "pourquoi_faux": "Une requête HTTP a besoin de l'adresse IP du serveur pour lui être envoyée ; cette adresse IP n'est disponible qu'après la résolution DNS, qui doit donc obligatoirement précéder.",
+          "correction_markdown": "Retiens fermement l'ordre : DNS d'abord (résolution de nom), HTTP ensuite (transfert de la page)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Nommer les deux protocoles mobilisés lors de l'ouverture d'une page par son nom de domaine, dans l'ordre.",
+          "solution_markdown": "D'abord le DNS (résolution du nom de domaine en adresse IP), puis le HTTP (transfert de la page depuis le serveur)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un utilisateur saisit directement l'adresse IP d'un serveur web (par exemple http://172.217.20.14) au lieu d'un nom de domaine. Le protocole DNS intervient-il dans ce cas ? Justifier.",
+          "solution_markdown": "Non, le DNS n'intervient pas dans ce cas. Le DNS ne sert qu'à traduire un NOM de domaine en adresse IP ; si l'utilisateur connaît et saisit déjà directement l'adresse IP, aucune traduction n'est nécessaire, et le navigateur peut directement envoyer sa requête HTTP à cette adresse. Seul le protocole HTTP intervient alors."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer la différence entre http:// et https:// du point de vue des protocoles utilisés pour transférer la page, une fois l'adresse IP du serveur connue.",
+          "solution_markdown": "Avec http://, le transfert de la page utilise le protocole HTTP seul : les données échangées entre le navigateur et le serveur circulent en clair, lisibles par quiconque intercepterait le trafic. Avec https://, le protocole HTTP est combiné à une couche de chiffrement, TLS (Transport Layer Security, anciennement SSL) : les mêmes données HTTP sont chiffrées avant d'être transmises, ce qui garantit leur confidentialité (et leur intégrité) durant le transport, même si le trafic est intercepté. Dans les deux cas, le DNS intervient de la même façon en amont pour résoudre le nom de domaine ; seule la sécurisation du transfert HTTP change."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le DNS traduit le nom de domaine en adresse IP ; le HTTP transfère ensuite la page depuis cette adresse.",
+        "Les deux protocoles sont indispensables et interviennent dans cet ordre, jamais l'inverse.",
+        "Une connexion directe par adresse IP n'a pas besoin de DNS, seul le HTTP intervient alors.",
+        "https:// ajoute une couche de chiffrement (TLS) au transfert HTTP, sans changer le rôle du DNS en amont."
+      ]
+    }
+  ]
+}

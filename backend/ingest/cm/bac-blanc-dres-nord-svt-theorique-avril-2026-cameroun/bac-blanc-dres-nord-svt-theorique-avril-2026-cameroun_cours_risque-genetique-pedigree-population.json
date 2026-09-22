@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-risque-genetique-pedigree-population-terminale-d",
+  "meta": {
+    "titre": "Calculer un risque génétique en combinant un arbre généalogique et une fréquence de population",
+    "matiere": "SVT",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Génétique humaine - Probabilités et risque génétique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "probabilité génétique",
+      "risque génétique",
+      "arbre généalogique",
+      "fréquence allélique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-blanc-dres-nord-svt-theorique-avril-2026-cameroun",
+    "epreuve_titre": "Évaluation harmonisée Régionale - Épreuve de SVTEEHB Théorique - Baccalauréat - Série D - DRES Nord - Session Avril 2024",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-blanc-dres-nord-svt-theorique-avril-2026-cameroun-ex4-q8-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un couple veut savoir quel est le risque que leur futur enfant soit atteint d'une maladie héréditaire présente dans la famille de l'un des deux, mais absente, à leur connaissance, de la famille de l'autre. Ce genre de question, très concret en conseil génétique, se résout avec les mêmes outils que ceux du cours de Terminale : arbre généalogique d'un côté, fréquence de population de l'autre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déterminer un génotype à partir d'un arbre généalogique (individu atteint, porteur sain, etc.).",
+        "Connaître les probabilités de transmission d'un croisement simple (monohybridisme, tableau de croisement).",
+        "Savoir manipuler des probabilités simples (multiplication de probabilités indépendantes)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer un risque génétique en trois étapes",
+      "contenu_markdown": "Le calcul d'un risque génétique dans une famille se décompose toujours en trois étapes indépendantes, qu'il faut mener séparément avant de les combiner :\n\n1. **Déterminer la probabilité du génotype de chaque parent.** Si l'un des parents appartient à la famille étudiée dans l'arbre généalogique, son génotype (ou la probabilité de chacun de ses génotypes possibles) se déduit de sa position dans l'arbre (a-t-il un parent, un frère, une sœur ou un enfant atteint ?). Si un parent est extérieur à la famille étudiée et qu'aucune information ne permet de préciser son génotype, on utilise la fréquence de l'allèle (ou du génotype porteur) dans la population générale, si elle est donnée par l'énoncé.\n\n2. **Déterminer la probabilité de transmission de l'allèle recherché par chaque parent**, à l'aide d'un tableau de croisement (échiquier) correspondant au génotype (ou à chaque génotype possible) de chacun des deux parents.\n\n3. **Combiner ces probabilités par multiplication**, car il s'agit d'événements indépendants qui doivent tous se réaliser simultanément (le génotype du père ET le génotype de la mère ET le résultat du croisement).",
+      "formule_principale": "P(\\text{événement}) = P(\\text{génotype parent 1}) \\times P(\\text{génotype parent 2}) \\times P(\\text{résultat du croisement})"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une famille, un individu M, non atteint d'une maladie récessive autosomique, a un frère atteint ; ses deux parents sont donc nécessairement hétérozygotes. M se marie avec une femme F, extérieure à la famille, dont on sait que 9 % de la population générale est hétérozygote pour cette maladie (les homozygotes atteints étant, par ailleurs, très rares dans la population et négligés ici). Calcule la probabilité que M et F aient un enfant atteint.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la probabilité du génotype de M",
+          "justification": "Les deux parents de M sont hétérozygotes (Aa × Aa), donc leur descendance suit la répartition 1/4 AA : 2/4 Aa : 1/4 aa ; M n'étant pas atteint, il n'est pas aa, donc son génotype se répartit entre AA et Aa parmi les 3/4 non atteints.",
+          "resultat_markdown": "P(M = Aa) = (2/4) / (3/4) = 2/3."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer la probabilité du génotype de F",
+          "justification": "F est extérieure à la famille : on utilise directement la fréquence donnée dans la population générale.",
+          "resultat_markdown": "P(F = Aa) = 9 % = 0,09."
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer la probabilité que l'enfant soit atteint si les deux parents sont hétérozygotes",
+          "justification": "Le croisement Aa × Aa donne, d'après l'échiquier de croisement, 1/4 d'enfants aa (atteints).",
+          "resultat_markdown": "P(enfant aa | M = Aa et F = Aa) = 1/4."
+        },
+        {
+          "numero": 4,
+          "action": "Combiner les trois probabilités par multiplication",
+          "justification": "Les trois conditions (M hétérozygote, F hétérozygote, transmission de l'allèle a par chacun) doivent se réaliser simultanément : on multiplie donc les probabilités indépendantes.",
+          "resultat_markdown": "P(enfant atteint) = (2/3) × 0,09 × (1/4) = 0,18/12 = 0,015, soit environ 1,5 %."
+        }
+      ],
+      "conclusion_markdown": "M et F ont environ 1,5 % de risque d'avoir un enfant atteint de cette maladie récessive, un risque bien plus faible que si M avait épousé une femme de sa propre famille, mais non nul du fait de la fréquence de l'allèle dans la population générale."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement la probabilité 1/2 comme probabilité d'être porteur sain, en oubliant de la recalculer sachant que l'individu n'est pas atteint.",
+          "pourquoi_faux": "La probabilité brute issue du croisement des parents (par exemple 1/2 Aa dans un croisement Aa × Aa) doit être recalculée sachant que l'individu n'est PAS atteint : il faut diviser par la probabilité totale de ne pas être atteint (ici 3/4), ce qui change le résultat (2/3 et non 1/2).",
+          "correction_markdown": "Dès qu'un individu est décrit comme non atteint, exclu la classe des individus atteints et recalcule les probabilités relatives des génotypes restants."
+        },
+        {
+          "erreur_markdown": "Additionner les probabilités des trois étapes au lieu de les multiplier.",
+          "pourquoi_faux": "Les trois conditions (génotype du père, génotype de la mère, transmission de l'allèle) doivent toutes se réaliser EN MÊME TEMPS pour que l'enfant soit atteint : ce sont des probabilités indépendantes combinées par un ET logique, qui se traduit par une multiplication, pas par une addition.",
+          "correction_markdown": "Retiens : plusieurs conditions requises simultanément → on multiplie ; plusieurs façons alternatives d'aboutir au même résultat → on additionne."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un homme sait qu'il est hétérozygote (Aa) pour une maladie récessive autosomique. Il épouse une femme dont on connaît la fréquence des hétérozygotes dans la population générale : 20 %. Quelle est la probabilité que leur enfant soit atteint ?",
+          "solution_markdown": "P(mère = Aa) = 0,20. Si la mère est Aa, le croisement Aa × Aa donne 1/4 d'enfants atteints (aa). P(enfant atteint) = P(mère Aa) × P(enfant aa | Aa×Aa) = 0,20 × 1/4 = 0,05, soit 5 %."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une femme F1 est hétérozygote certaine (Aa) pour une maladie récessive, car son père est atteint. Elle épouse un homme F2 extérieur à la famille, chez qui la fréquence des hétérozygotes dans la population est de 1/50 (les homozygotes atteints étant négligés). Calcule la probabilité que leur enfant soit atteint.",
+          "solution_markdown": "P(F1 = Aa) = 1 (certaine). P(F2 = Aa) = 1/50. Si les deux parents sont Aa, P(enfant atteint) = 1/4. P(enfant atteint) = 1 × (1/50) × (1/4) = 1/200, soit 0,5 %."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans une famille, un couple non atteint a trois enfants non atteints et un enfant atteint d'une maladie récessive autosomique. Un des trois enfants non atteints, devenu adulte, épouse une personne extérieure à la famille, dont la fréquence des hétérozygotes dans la population est de 4 %. Calcule la probabilité que ce couple ait un enfant atteint, en détaillant chaque étape.",
+          "solution_markdown": "Les parents du couple initial sont nécessairement hétérozygotes (Aa × Aa), puisqu'ils ont un enfant atteint (aa). Parmi leurs enfants non atteints, la répartition est 1/3 AA : 2/3 Aa (comme pour tout individu non atteint issu d'un croisement Aa × Aa). L'enfant non atteint qui se marie a donc P(Aa) = 2/3. Le conjoint extérieur a P(Aa) = 4 % = 0,04. Si les deux parents sont Aa, P(enfant atteint) = 1/4. En combinant : P(enfant atteint) = (2/3) × 0,04 × (1/4) = 0,08/12 ≈ 0,0067, soit environ 0,67 % (un peu moins de 1 chance sur 150)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Décompose toujours un calcul de risque génétique en trois étapes : génotype du père, génotype de la mère, résultat du croisement.",
+        "Utilise l'arbre généalogique pour un individu de la famille étudiée, la fréquence de population pour un individu extérieur.",
+        "N'oublie jamais de recalculer la probabilité d'un génotype sachant qu'un individu est décrit comme non atteint (probabilité conditionnelle).",
+        "Multiplie les probabilités de conditions qui doivent se réaliser simultanément ; ne les additionne jamais dans ce cas.",
+        "Au bac, ce type de calcul clôt souvent un exercice de génétique humaine, après l'étude du mode de transmission (dominance, autosomal/gonosomal) : il ne peut être mené qu'une fois ces informations préalables établies."
+      ]
+    }
+  ]
+}

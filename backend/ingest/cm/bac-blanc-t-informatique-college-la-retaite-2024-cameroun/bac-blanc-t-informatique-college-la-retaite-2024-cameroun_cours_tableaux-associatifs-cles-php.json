@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-tableaux-associatifs-cles-php-terminale-ti",
+  "meta": {
+    "titre": "Clés implicites, clés explicites et écrasement dans un tableau PHP",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Programmation Web - PHP - Tableaux",
+    "duree_estimee_min": 20,
+    "tags": [
+      "tableaux PHP",
+      "cles implicites",
+      "array",
+      "foreach",
+      "count"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-blanc-t-informatique-college-la-retaite-2024-cameroun",
+    "epreuve_titre": "Baccalauréat Blanc n°2 - Informatique - Terminale TI - Collège de la Retraite (2024)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-blanc-t-informatique-college-la-retaite-2024-cameroun-ex4-q6a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau PHP écrit avec `array(1=>'a', 'b', 2=>'c')` semble simple à lire, et pourtant il cache un piège que presque tous les élèves rencontrent une fois : deux éléments peuvent, sans qu'on l'ait voulu, se retrouver à la même adresse et s'écraser l'un l'autre. Ce cours explique comment PHP attribue réellement les clés, pour ne plus jamais se tromper en comptant les éléments d'un tableau mêlant clés explicites et implicites."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir déclarer un tableau PHP avec array()",
+        "Connaître la différence entre une clé et une valeur",
+        "Savoir utiliser une boucle foreach"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Attribution des clés implicites et écrasement",
+      "contenu_markdown": "Dans un tableau PHP, chaque élément écrit SANS clé explicite reçoit automatiquement, au moment même où il est écrit, la clé entière égale au plus grand indice entier déjà attribué JUSQU'À CET ENDROIT de la déclaration, augmenté de 1 (et non le plus grand de tout le tableau si des clés explicites plus grandes apparaissent plus loin). Si une clé - explicite ou implicite - est ensuite réutilisée par un élément ultérieur, ce nouvel élément ne s'ajoute pas : il remplace la valeur déjà présente à cette clé, sans changer sa position d'origine dans l'ordre d'enregistrement du tableau.",
+      "formule_principale": "clé implicite suivante = (plus grand indice entier déjà utilisé avant ce point) + 1",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer le contenu final et la taille du tableau `$tab = array(1=>'Abena', 'loumou', 2=>'Mebenga', 4=>'Medjo', 0=>'Mani');`",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traiter 1=>'Abena'",
+          "justification": "Clé explicite : elle est simplement enregistrée telle quelle",
+          "resultat_markdown": "clé 1 → 'Abena'. Plus grand indice entier connu jusqu'ici : 1."
+        },
+        {
+          "numero": 2,
+          "action": "Traiter 'loumou' (sans clé)",
+          "justification": "Clé implicite : elle vaut le plus grand indice entier connu jusqu'ici (1), augmenté de 1",
+          "resultat_markdown": "clé 2 → 'loumou'. Plus grand indice entier connu jusqu'ici : 2."
+        },
+        {
+          "numero": 3,
+          "action": "Traiter 2=>'Mebenga'",
+          "justification": "Clé explicite qui réutilise la clé 2, déjà attribuée à 'loumou' : la nouvelle valeur écrase l'ancienne, à la même position",
+          "resultat_markdown": "clé 2 → 'Mebenga' (remplace 'loumou', qui disparaît du tableau)"
+        },
+        {
+          "numero": 4,
+          "action": "Traiter 4=>'Medjo' puis 0=>'Mani'",
+          "justification": "Deux clés explicites qui n'ont encore jamais été utilisées : elles s'ajoutent normalement",
+          "resultat_markdown": "clé 4 → 'Medjo' ; clé 0 → 'Mani'"
+        }
+      ],
+      "conclusion_markdown": "Le tableau final contient 4 éléments, aux clés 0, 1, 2 et 4 (dans cet ordre d'enregistrement : 1, 2, 4, 0) : `count($tab)` vaut 4, et non 5 - 'loumou' a disparu, remplacé par 'Mebenga' à la clé 2."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter 'loumou' et 'Mebenga' comme deux éléments distincts du tableau",
+          "pourquoi_faux": "Les deux partagent la même clé (2) : le second écrase le premier au moment de la déclaration, il ne reste donc qu'un seul élément à cette clé dans le tableau final.",
+          "correction_markdown": "Avant de compter les éléments d'un tableau mêlant clés implicites et explicites, réécris-le entièrement clé par clé, dans l'ordre d'écriture, en notant à chaque étape si la clé existe déjà."
+        },
+        {
+          "erreur_markdown": "Croire qu'une clé réécrite plus tard déplace l'élément à la fin du tableau",
+          "pourquoi_faux": "PHP conserve la position d'origine d'une clé dans l'ordre d'enregistrement interne du tableau : seule la VALEUR associée à cette clé change, jamais sa position.",
+          "correction_markdown": "Pour retrouver l'ordre d'affichage d'un `foreach`, garde en tête la position de la PREMIÈRE apparition de chaque clé, pas de sa dernière réécriture."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner la taille du tableau `$t = array(0=>'x', 'y', 'z');` (rappel : 'y' et 'z' n'ont pas de clé explicite).",
+          "solution_markdown": "clé 0 → 'x' (explicite). 'y' reçoit la clé implicite 1 (0+1). 'z' reçoit la clé implicite 2 (1+1). Aucune clé n'est réutilisée : le tableau contient 3 éléments, `count($t)` vaut 3."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner le contenu final et la taille du tableau `$t = array(3=>'a', 'b', 1=>'c', 'd');`",
+          "solution_markdown": "clé 3 → 'a' (explicite, plus grand indice connu : 3). 'b' reçoit la clé implicite 4 (3+1) → clé 4 → 'b' (plus grand indice connu : 4). clé 1 → 'c' (explicite, n'écrase rien, plus grand indice connu reste 4). 'd' reçoit la clé implicite 5 (4+1) → clé 5 → 'd'. Tableau final : {3=>'a', 4=>'b', 1=>'c', 5=>'d'}, soit 4 éléments, `count($t)` vaut 4 (aucun écrasement ici)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un tableau est déclaré par `$t = array(5=>'p', 'q', 'r', 2=>'s', 'u');`. Donner son contenu final, sa taille, et l'ordre d'affichage obtenu par un `foreach ($t as $cle => $valeur)`.",
+          "solution_markdown": "clé 5 → 'p' (plus grand indice connu : 5). 'q' → clé implicite 6 (plus grand indice connu : 6). 'r' → clé implicite 7 (plus grand indice connu : 7). clé 2 → 's' (explicite, n'écrase rien, plus grand indice connu reste 7). 'u' → clé implicite 8 (7+1). Tableau final : {5=>'p', 6=>'q', 7=>'r', 2=>'s', 8=>'u'}, soit 5 éléments (`count($t)` = 5, aucun écrasement cette fois). Ordre du foreach, identique à l'ordre d'écriture puisqu'aucune clé n'est réutilisée : 5=>'p', 6=>'q', 7=>'r', 2=>'s', 8=>'u'."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une clé implicite vaut toujours le plus grand indice entier connu AU MOMENT de sa déclaration, augmenté de 1 - jamais le plus grand indice de tout le tableau fini.",
+        "Réutiliser une clé déjà attribuée écrase la valeur précédente, sans créer de nouvel élément et sans déplacer sa position.",
+        "count() sans second argument ne compte que les éléments réellement présents après tous les écrasements - jamais le nombre d'instructions écrites dans le array().",
+        "foreach affiche toujours les éléments dans leur ordre d'enregistrement interne (première apparition de la clé), jamais dans l'ordre numérique des clés ni dans l'ordre de leur dernière réécriture.",
+        "Ce type de question revient très souvent en Terminale TI sous forme de tableau PHP « piégé » à tracer à la main avant de répondre à count() ou echo."
+      ]
+    }
+  ]
+}

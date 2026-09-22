@@ -1,0 +1,185 @@
+{
+ "cours_id": "cours-equation-cartesienne-sphere-1ere-ce",
+ "meta": {
+  "titre": "Déterminer une équation cartésienne de sphère à partir de son centre et de son rayon",
+  "matiere": "Mathématiques",
+  "pays": "cm",
+  "niveau": "1ere",
+  "serie": "C, E",
+  "sous_theme": "Géométrie analytique de l'espace",
+  "duree_estimee_min": 25,
+  "tags": ["sphère", "équation cartésienne", "géométrie de l'espace", "cube", "sphère inscrite"],
+  "savoir_officiel": {
+   "classe": "1ere",
+   "serie_label": "C-E",
+   "module_numero": "24",
+   "savoir_numero": "II"
+  },
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "probatoire-c-e-maths-2005-cameroun",
+  "epreuve_titre": "Probatoire C et E - Mathématiques - Session 2005 (Cameroun)",
+  "exercice_numero": "3",
+  "rappel_id": "rdm-probatoire-c-e-maths-2005-cameroun-ex3-q3a-1",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Une sphère se décrit par deux données seulement, un centre et un rayon, et son équation s'écrit mécaniquement. Le vrai travail est en amont : **identifier** ce centre et ce rayon à partir de l'énoncé. Pour une sphère inscrite dans un cube, les deux se lisent sur la figure — centre du cube, moitié de l'arête — à condition de ne pas la confondre avec la sphère circonscrite, qui a le même centre mais un rayon $\\sqrt{3}$ fois plus grand."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Savoir calculer une distance dans un repère orthonormé de l'espace",
+    "Savoir déterminer le milieu d'un segment en coordonnées",
+    "Savoir développer un carré",
+    "Distinguer sphère inscrite et sphère circonscrite"
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Centre, rayon, et le carré du rayon au second membre",
+   "contenu_markdown": "**La définition.** La sphère de centre $\\Omega\\left(x_{0}\\,;\\,y_{0}\\,;\\,z_{0}\\right)$ et de rayon $R > 0$ est l'ensemble des points $M$ tels que $\\Omega M = R$.\n\n**L'équation, forme canonique.** Dans un repère orthonormé :\n\n$$\\left(x-x_{0}\\right)^{2} + \\left(y-y_{0}\\right)^{2} + \\left(z-z_{0}\\right)^{2} = R^{2}$$\n\nElle traduit simplement $\\Omega M^{2} = R^{2}$.\n\n**Le second membre vaut $R^{2}$, pas $R$.** C'est l'étourderie la plus fréquente, et elle suffit à faire perdre le point.\n\n**La forme développée.** En développant les trois carrés, on obtient une équation du type\n\n$$x^{2}+y^{2}+z^{2}+ax+by+cz+d = 0$$\n\nRéciproquement, on revient à la forme canonique en **complétant les carrés**, ce qui donne\n\n$$\\left(x+\\frac{a}{2}\\right)^{2}+\\left(y+\\frac{b}{2}\\right)^{2}+\\left(z+\\frac{c}{2}\\right)^{2} = \\frac{a^{2}+b^{2}+c^{2}}{4} - d$$\n\nLe second membre doit être **strictement positif** pour que l'ensemble soit une vraie sphère ; nul, il se réduit à un point ; négatif, il est vide.\n\n**La méthode, en trois gestes.**\n\n1. **Déterminer le centre.**\n2. **Déterminer le rayon.**\n3. **Écrire** l'équation, avec $R^{2}$ au second membre.\n\n**Les deux sphères d'un cube.** Elles ont le **même centre**, le centre du cube, mais des rayons très différents :\n\n| Sphère | Définition | Rayon pour une arête $a$ |\n|---|---|---|\n| **inscrite** | tangente aux six faces | $\\dfrac{a}{2}$ |\n| **circonscrite** | passant par les huit sommets | $\\dfrac{a\\sqrt{3}}{2}$ |\n\nLe rapport vaut $\\sqrt{3} \\approx 1{,}73$ : les confondre fausse le rayon d'un facteur important.\n\n**Le rayon de la sphère inscrite.** Elle est tangente à chaque face, donc son rayon est la **distance du centre à une face**. Pour la face contenue dans le plan $x = 0$ et un centre d'abscisse $\\dfrac{a}{2}$, cette distance vaut $\\dfrac{a}{2}$ : la moitié de l'arête.\n\n**Le point de tangence** est le **centre** de la face, pied de la perpendiculaire abaissée du centre du cube.\n\n**Les contrôles.**\n\n- Substituer le centre d'une face dans l'équation doit donner l'égalité.\n- Substituer un sommet doit donner une valeur **supérieure** à $R^{2}$ pour la sphère inscrite : les sommets sont à l'extérieur.",
+   "formule_principale": "\\left(x-x_{0}\\right)^{2}+\\left(y-y_{0}\\right)^{2}+\\left(z-z_{0}\\right)^{2} = R^{2}",
+   "variantes": [
+    {
+     "nom": "Sphère de diamètre donné",
+     "quand_utiliser": "Quand deux points diamétralement opposés sont connus",
+     "contenu_markdown": "La sphère de diamètre $[AB]$ a pour centre le milieu de $[AB]$ et pour rayon $\\dfrac{AB}{2}$.\n\nSa caractérisation vectorielle est particulièrement commode :\n\n$$\\overrightarrow{MA} \\cdot \\overrightarrow{MB} = 0$$\n\nElle traduit que tout point de la sphère voit le diamètre sous un angle droit — c'est l'analogue spatial de l'angle inscrit dans un demi-cercle."
+    },
+    {
+     "nom": "Sphère circonscrite à un cube",
+     "quand_utiliser": "Quand la sphère doit passer par les huit sommets",
+     "contenu_markdown": "Son centre est le centre du cube, et son rayon la **moitié de la grande diagonale** :\n\n$$R = \\frac{a\\sqrt{3}}{2}$$\n\nPour un cube d'arête $1$ centré en $\\left(\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\right)$ :\n\n$$\\left(x-\\frac{1}{2}\\right)^{2}+\\left(y-\\frac{1}{2}\\right)^{2}+\\left(z-\\frac{1}{2}\\right)^{2} = \\frac{3}{4}$$\n\nÀ comparer au $\\dfrac{1}{4}$ de la sphère inscrite : le rapport des carrés des rayons vaut bien $3$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $1$, dans le repère orthonormé $\\left(A\\,;\\,\\overrightarrow{AD}\\,,\\,\\overrightarrow{AB}\\,,\\,\\overrightarrow{AE}\\right)$ où $A(0\\,;\\,0\\,;\\,0)$ et $G(1\\,;\\,1\\,;\\,1)$. Déterminer une équation cartésienne de la sphère inscrite dans le cube, tangente à toutes ses faces. (Probatoire C et E, Cameroun, 2005.)",
+   "epreuve_source": true,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Identifier le centre",
+     "justification": "Le centre du cube est le milieu de la grande diagonale $[AG]$",
+     "resultat_markdown": "$O\\left(\\dfrac{0+1}{2}\\,;\\,\\dfrac{0+1}{2}\\,;\\,\\dfrac{0+1}{2}\\right) = \\left(\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\right)$"
+    },
+    {
+     "numero": 2,
+     "action": "Identifier le rayon",
+     "justification": "La sphère est tangente à chaque face : son rayon est la distance du centre à une face",
+     "resultat_markdown": "La face $ABFE$ est contenue dans le plan $x = 0$, et la distance de $O$ à ce plan vaut $\\dfrac{1}{2}$"
+    },
+    {
+     "numero": 3,
+     "action": "Confirmer par la propriété générale",
+     "justification": "Le rayon de la sphère inscrite dans un cube vaut la moitié de l'arête",
+     "resultat_markdown": "$R = \\dfrac{1}{2}$. Conforme"
+    },
+    {
+     "numero": 4,
+     "action": "Écrire l'équation, forme canonique",
+     "justification": "On applique la formule avec $R^{2} = \\dfrac{1}{4}$",
+     "resultat_markdown": "$\\left(x-\\dfrac{1}{2}\\right)^{2}+\\left(y-\\dfrac{1}{2}\\right)^{2}+\\left(z-\\dfrac{1}{2}\\right)^{2} = \\dfrac{1}{4}$"
+    },
+    {
+     "numero": 5,
+     "action": "Développer chaque carré",
+     "justification": "$\\left(x-\\dfrac{1}{2}\\right)^{2} = x^{2}-x+\\dfrac{1}{4}$, et de même pour $y$ et $z$",
+     "resultat_markdown": "$x^{2}+y^{2}+z^{2}-x-y-z+\\dfrac{3}{4} = \\dfrac{1}{4}$"
+    },
+    {
+     "numero": 6,
+     "action": "Réduire",
+     "justification": "On fait passer $\\dfrac{1}{4}$ à gauche",
+     "resultat_markdown": "$x^{2}+y^{2}+z^{2}-x-y-z+\\dfrac{1}{2} = 0$"
+    },
+    {
+     "numero": 7,
+     "action": "Contrôler par un point de tangence",
+     "justification": "Le centre de la face $ABFE$ a pour coordonnées $\\left(0\\,;\\,\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\right)$",
+     "resultat_markdown": "$\\left(0-\\dfrac{1}{2}\\right)^{2}+0+0 = \\dfrac{1}{4}$ : ce point appartient bien à la sphère"
+    },
+    {
+     "numero": 8,
+     "action": "Contrôler par un sommet",
+     "justification": "Les sommets doivent être **hors** de la sphère inscrite",
+     "resultat_markdown": "Pour $A(0\\,;\\,0\\,;\\,0)$ : $\\dfrac{1}{4}+\\dfrac{1}{4}+\\dfrac{1}{4} = \\dfrac{3}{4} > \\dfrac{1}{4}$. Le sommet est bien à l'extérieur"
+    }
+   ],
+   "conclusion_markdown": "L'équation est $\\left(x-\\dfrac{1}{2}\\right)^{2}+\\left(y-\\dfrac{1}{2}\\right)^{2}+\\left(z-\\dfrac{1}{2}\\right)^{2} = \\dfrac{1}{4}$, ou sous forme développée $x^{2}+y^{2}+z^{2}-x-y-z+\\dfrac{1}{2} = 0$. Deux points de vigilance. Le second membre vaut $R^{2} = \\dfrac{1}{4}$, et non $R = \\dfrac{1}{2}$. Et la sphère **inscrite** n'est pas la sphère circonscrite : celle-ci passerait par les sommets, avec un rayon $\\dfrac{\\sqrt{3}}{2}$ — le contrôle de l'étape 8 le confirme, puisque $A$ est à distance $\\dfrac{\\sqrt{3}}{2}$ du centre."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Écrire $R$ au lieu de $R^{2}$ au second membre",
+     "pourquoi_faux": "L'équation traduit $\\Omega M^{2} = R^{2}$. Écrire $\\dfrac{1}{2}$ au lieu de $\\dfrac{1}{4}$ décrit une sphère de rayon $\\dfrac{\\sqrt{2}}{2} \\approx 0{,}71$, qui déborderait largement du cube.",
+     "correction_markdown": "Contrôle par un point de tangence connu : le centre d'une face doit vérifier l'équation. C'est immédiat et cela tranche."
+    },
+    {
+     "erreur_markdown": "Confondre sphère inscrite et sphère circonscrite",
+     "pourquoi_faux": "La sphère inscrite touche les six **faces**, rayon $\\dfrac{a}{2}$. La circonscrite passe par les huit **sommets**, rayon $\\dfrac{a\\sqrt{3}}{2}$. Le rapport vaut $\\sqrt{3}$, ce qui est loin d'être négligeable.",
+     "correction_markdown": "Relis l'énoncé : « tangente à toutes les faces » désigne l'inscrite. Les deux sphères ont le même centre, seul le rayon diffère."
+    },
+    {
+     "erreur_markdown": "Se tromper de signe dans la forme canonique",
+     "pourquoi_faux": "L'équation comporte $\\left(x - x_{0}\\right)^{2}$, avec un **moins** : pour $x_{0} = \\dfrac{1}{2}$, c'est $\\left(x-\\dfrac{1}{2}\\right)^{2}$, pas $\\left(x+\\dfrac{1}{2}\\right)^{2}$.",
+     "correction_markdown": "Substitue le centre lui-même : l'équation doit donner $0 = R^{2}$ à gauche, ce qui est faux, mais chaque terme doit s'annuler. Une inversion de signe le révèle immédiatement."
+    },
+    {
+     "erreur_markdown": "Se tromper en développant $\\left(x-\\dfrac{1}{2}\\right)^{2}$",
+     "pourquoi_faux": "Le développement donne $x^{2}-x+\\dfrac{1}{4}$, avec un double produit égal à $-2 \\times x \\times \\dfrac{1}{2} = -x$. Écrire $-\\dfrac{x}{2}$ ou oublier le $\\dfrac{1}{4}$ fausse la forme développée.",
+     "correction_markdown": "La forme développée est facultative : si l'énoncé ne l'exige pas, contente-toi de la forme canonique, qui est plus lisible et moins risquée."
+    },
+    {
+     "erreur_markdown": "Prendre le centre du cube au mauvais endroit",
+     "pourquoi_faux": "Le centre du cube est le milieu d'une **grande diagonale**, pas le milieu d'une arête ni le centre d'une face. Avec $A(0\\,;\\,0\\,;\\,0)$ et $G(1\\,;\\,1\\,;\\,1)$, il vaut $\\left(\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\,;\\,\\dfrac{1}{2}\\right)$.",
+     "correction_markdown": "Vérifie que les trois coordonnées du centre sont égales pour un cube ayant un sommet à l'origine et l'arête sur les axes. Une dissymétrie signale une erreur."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Déterminer le centre et le rayon de la sphère d'équation $x^{2}+y^{2}+z^{2}-4x+6y-2z-11 = 0$, puis préciser si les points $O(0\\,;\\,0\\,;\\,0)$ et $P(2\\,;\\,-3\\,;\\,6)$ lui appartiennent.",
+     "solution_markdown": "**Étape 1 - compléter les carrés.**\n\n$$x^{2}-4x = (x-2)^{2}-4$$\n\n$$y^{2}+6y = (y+3)^{2}-9$$\n\n$$z^{2}-2z = (z-1)^{2}-1$$\n\n**Étape 2 - réécrire l'équation.**\n\n$$(x-2)^{2}-4+(y+3)^{2}-9+(z-1)^{2}-1-11 = 0$$\n\n$$(x-2)^{2}+(y+3)^{2}+(z-1)^{2} = 25$$\n\n**Étape 3 - identifier.**\n\nLe second membre est strictement positif : c'est bien une sphère.\n\n$$\\text{Centre } \\Omega(2\\,;\\,-3\\,;\\,1) \\qquad ; \\qquad \\text{Rayon } R = \\sqrt{25} = 5$$\n\n**Étape 4 - position de $O(0\\,;\\,0\\,;\\,0)$.**\n\nSubstituons dans la forme développée :\n\n$$0+0+0-0+0-0-11 = -11 < 0$$\n\nUn résultat **négatif** signale un point **intérieur**.\n\n*Vérification par la distance :* $\\Omega O^{2} = 4+9+1 = 14$, et $\\sqrt{14} \\approx 3{,}74 < 5$. Conforme.\n\n**Étape 5 - position de $P(2\\,;\\,-3\\,;\\,6)$.**\n\nForme canonique :\n\n$$(2-2)^{2}+(-3+3)^{2}+(6-1)^{2} = 0+0+25 = 25 = R^{2}$$\n\n**Le point $P$ appartient à la sphère.**\n\n*Vérification par la forme développée :* $4+9+36-8-18-12-11 = 49-49 = 0$. Conforme.\n\n**Remarque.** Le point $P$ a les deux premières coordonnées du centre : il est situé exactement « au-dessus » de $\\Omega$, à la distance $R = 5$ selon l'axe des $z$. C'est le pôle nord de la sphère.\n\n**Ce qu'il faut retenir.** Le **signe** obtenu en substituant les coordonnées dans la forme développée donne directement la position : négatif à l'intérieur, nul sur la sphère, positif à l'extérieur. C'est le test le plus rapide, sans aucun calcul de distance."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $2$ dans un repère orthonormé où $A(0\\,;\\,0\\,;\\,0)$ et $G(2\\,;\\,2\\,;\\,2)$. Déterminer les équations de la sphère inscrite et de la sphère circonscrite, puis celle de la sphère tangente aux douze **arêtes** du cube.",
+     "solution_markdown": "**Étape 1 - le centre commun.**\n\nLes trois sphères ont pour centre le centre du cube :\n\n$$O(1\\,;\\,1\\,;\\,1)$$\n\n**Étape 2 - la sphère inscrite.**\n\nRayon : distance du centre à une face, soit la moitié de l'arête.\n\n$$R_{1} = 1$$\n\n$$(x-1)^{2}+(y-1)^{2}+(z-1)^{2} = 1$$\n\n*Contrôle :* le centre de la face $x = 0$ est $(0\\,;\\,1\\,;\\,1)$, et $1+0+0 = 1$. Conforme.\n\n**Étape 3 - la sphère circonscrite.**\n\nRayon : distance du centre à un sommet, soit la moitié de la grande diagonale.\n\n$$R_{2} = \\dfrac{2\\sqrt{3}}{2} = \\sqrt{3}$$\n\n$$(x-1)^{2}+(y-1)^{2}+(z-1)^{2} = 3$$\n\n*Contrôle :* pour $A(0\\,;\\,0\\,;\\,0)$ : $1+1+1 = 3$. Conforme.\n\n**Étape 4 - la sphère tangente aux arêtes.**\n\nCette sphère touche chaque arête en son **milieu**, par symétrie. Prenons l'arête $[AB]$, dont le milieu est $(1\\,;\\,0\\,;\\,0)$ :\n\n$$R_{3}^{2} = (1-1)^{2}+(0-1)^{2}+(0-1)^{2} = 0+1+1 = 2$$\n\n$$R_{3} = \\sqrt{2}$$\n\n$$(x-1)^{2}+(y-1)^{2}+(z-1)^{2} = 2$$\n\n*Contrôle sur une autre arête :* le milieu de $[CG]$ est $(2\\,;\\,2\\,;\\,1)$, et $1+1+0 = 2$. Conforme, ce qui confirme que les douze milieux sont bien équidistants du centre.\n\n**Étape 5 - synthèse.**\n\n| Sphère | Touche | Rayon | $R^{2}$ |\n|---|---|---|---|\n| inscrite | les $6$ faces | $1$ | $1$ |\n| tangente aux arêtes | les $12$ arêtes | $\\sqrt{2}$ | $2$ |\n| circonscrite | les $8$ sommets | $\\sqrt{3}$ | $3$ |\n\n**Étape 6 - remarque.**\n\nLes carrés des rayons valent $1$, $2$ et $3$ : ils suivent exactement le nombre de coordonnées qui s'écartent du centre d'une demi-arête.\n\n- Centre d'une face : **une** coordonnée écartée, $R^{2} = 1$.\n- Milieu d'une arête : **deux** coordonnées écartées, $R^{2} = 2$.\n- Sommet : **trois** coordonnées écartées, $R^{2} = 3$.\n\n**Ce qu'il faut retenir.** Cette progression $1$, $2$, $3$ est générale : pour un cube d'arête $a$, les trois rayons valent $\\dfrac{a}{2}$, $\\dfrac{a\\sqrt{2}}{2}$ et $\\dfrac{a\\sqrt{3}}{2}$. On les retrouve sans calcul en comptant combien de coordonnées séparent le point de contact du centre."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Dans un repère orthonormé, on considère la sphère $(\\mathcal{S})$ de centre $\\Omega(1\\,;\\,2\\,;\\,-1)$ et de rayon $3$, et le plan $(\\mathcal{P})$ d'équation $2x-y+2z+1 = 0$. Déterminer la position relative de $(\\mathcal{S})$ et $(\\mathcal{P})$, puis, en cas d'intersection, le centre et le rayon du cercle obtenu.",
+     "solution_markdown": "**Étape 1 - la distance du centre au plan.**\n\nLa formule de la distance d'un point à un plan d'équation $ax+by+cz+d = 0$ est\n\n$$d\\left(\\Omega\\,;\\,\\mathcal{P}\\right) = \\dfrac{\\left|a x_{0}+b y_{0}+c z_{0}+d\\right|}{\\sqrt{a^{2}+b^{2}+c^{2}}}$$\n\n**Étape 2 - calculer le numérateur.**\n\n$$2 \\times 1 - 2 + 2 \\times (-1) + 1 = 2 - 2 - 2 + 1 = -1$$\n\n$$\\left|-1\\right| = 1$$\n\n**Étape 3 - calculer le dénominateur.**\n\n$$\\sqrt{4+1+4} = \\sqrt{9} = 3$$\n\n**Étape 4 - la distance.**\n\n$$d = \\dfrac{1}{3}$$\n\n**Étape 5 - comparer au rayon.**\n\n$$d = \\dfrac{1}{3} < 3 = R$$\n\n**Le plan coupe la sphère** : l'intersection est un **cercle**.\n\n*Rappel des trois cas :*\n\n| Comparaison | Intersection |\n|---|---|\n| $d > R$ | vide |\n| $d = R$ | un point : le plan est tangent |\n| $d < R$ | un cercle |\n\n**Étape 6 - le rayon du cercle.**\n\nLe centre de la sphère, le centre du cercle et un point du cercle forment un triangle **rectangle** : le rayon de la sphère est l'hypoténuse, la distance $d$ et le rayon $r$ du cercle sont les côtés de l'angle droit.\n\n$$r^{2} = R^{2} - d^{2} = 9 - \\dfrac{1}{9} = \\dfrac{81-1}{9} = \\dfrac{80}{9}$$\n\n$$r = \\dfrac{\\sqrt{80}}{3} = \\dfrac{4\\sqrt{5}}{3} \\approx 2{,}98$$\n\n**Étape 7 - le centre du cercle.**\n\nC'est le **projeté orthogonal** de $\\Omega$ sur le plan. Il s'obtient en partant de $\\Omega$ et en se déplaçant selon le vecteur normal $\\vec{n}(2\\,;\\,-1\\,;\\,2)$, de norme $3$.\n\nUn point de la droite passant par $\\Omega$ et dirigée par $\\vec{n}$ s'écrit\n\n$$M(1+2t\\,;\\,2-t\\,;\\,-1+2t)$$\n\nOn cherche $t$ tel que $M$ appartienne au plan :\n\n$$2(1+2t) - (2-t) + 2(-1+2t) + 1 = 0$$\n\n$$2+4t-2+t-2+4t+1 = 0$$\n\n$$9t - 1 = 0 \\qquad \\Longrightarrow \\qquad t = \\dfrac{1}{9}$$\n\n$$C\\left(1+\\dfrac{2}{9}\\,;\\,2-\\dfrac{1}{9}\\,;\\,-1+\\dfrac{2}{9}\\right) = \\left(\\dfrac{11}{9}\\,;\\,\\dfrac{17}{9}\\,;\\,-\\dfrac{7}{9}\\right)$$\n\n**Étape 8 - contrôler.**\n\n*Le point $C$ appartient-il au plan ?*\n\n$$2 \\times \\dfrac{11}{9} - \\dfrac{17}{9} + 2 \\times \\left(-\\dfrac{7}{9}\\right) + 1 = \\dfrac{22-17-14}{9} + 1 = \\dfrac{-9}{9}+1 = 0$$\n\nConforme.\n\n*La distance $\\Omega C$ vaut-elle $d$ ?*\n\n$$\\Omega C^{2} = \\left(\\dfrac{2}{9}\\right)^{2}+\\left(-\\dfrac{1}{9}\\right)^{2}+\\left(\\dfrac{2}{9}\\right)^{2} = \\dfrac{4+1+4}{81} = \\dfrac{9}{81} = \\dfrac{1}{9}$$\n\n$$\\Omega C = \\dfrac{1}{3} = d$$\n\nConforme.\n\n**Conclusion.** L'intersection est le cercle de centre $\\left(\\dfrac{11}{9}\\,;\\,\\dfrac{17}{9}\\,;\\,-\\dfrac{7}{9}\\right)$ et de rayon $\\dfrac{4\\sqrt{5}}{3}$, contenu dans le plan $(\\mathcal{P})$.\n\n**Ce qu'il faut retenir.** Toute question d'intersection sphère-plan se ramène à **une** comparaison : la distance du centre au plan face au rayon. Et le rayon du cercle s'obtient par Pythagore, $r^{2} = R^{2}-d^{2}$ — la même relation que pour l'intersection d'un cercle et d'une droite dans le plan."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Équation d'une sphère : $\\left(x-x_{0}\\right)^{2}+\\left(y-y_{0}\\right)^{2}+\\left(z-z_{0}\\right)^{2} = R^{2}$.",
+    "Le second membre vaut $R^{2}$, **jamais** $R$.",
+    "Sphère **inscrite** : tangente aux faces, rayon $\\dfrac{a}{2}$. **Circonscrite** : passe par les sommets, rayon $\\dfrac{a\\sqrt{3}}{2}$.",
+    "Les deux ont le même centre : le centre du cube, milieu d'une grande diagonale.",
+    "Le rayon de la sphère inscrite est la distance du centre à une face, et le point de tangence en est le centre.",
+    "La forme développée s'obtient en développant ; on revient à la canonique en complétant les carrés.",
+    "Le signe de la forme développée en un point donne sa position : négatif dedans, nul dessus, positif dehors.",
+    "Contrôle : un centre de face doit vérifier l'équation, un sommet doit donner une valeur supérieure.",
+    "Intersection sphère-plan : compare la distance du centre au plan avec le rayon.",
+    "Rayon du cercle d'intersection : $r^{2} = R^{2}-d^{2}$, par Pythagore."
+   ]
+  }
+ ]
+}

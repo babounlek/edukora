@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-pseudoperiode-et-formule-de-thomson-tle-c-e",
+  "meta": {
+    "titre": "Lecture d'une pseudo-periode et comparaison a la periode propre T0 = 2 pi racine(LC)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Oscillateurs electriques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "formule de Thomson",
+      "pseudo-periode",
+      "circuit LC",
+      "lecture graphique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2010 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2010-officiel-cameroun-ex2-q3b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La formule de Thomson relie deux composants passifs (une bobine et un condensateur) a une duree caracteristique, la periode d'oscillation - exactement comme la formule d'un pendule relie une longueur a une duree. Ce cours l'etablit et montre comment la comparer a une pseudo-periode lue sur un enregistrement reel."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Circuit LC ideal et ses oscillations libres",
+        "Lecture d'une duree sur un enregistrement oscilloscopique (reglage du balayage)",
+        "Notion de pseudo-periode d'un systeme amorti"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La formule de Thomson et la comparaison T versus T0",
+      "contenu_markdown": "La periode propre d'un circuit LC ideal (resistance negligeable) est donnee par la formule de Thomson $T_0=2\\pi\\sqrt{LC}$. Pour un circuit reel amorti, la pseudo-periode $T$ (mesuree entre deux maxima consecutifs sur un enregistrement) est **legerement superieure** a $T_0$, l'ecart restant faible pour un amortissement modere.",
+      "formule_principale": "T_0 = 2\\pi\\sqrt{LC} \\qquad (T > T_0 \\text{ pour un circuit reellement amorti})",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit comprend $L=0{,}12\\ \\text{H}$ et $C=22{,}5\\ \\mu\\text{F}$. Calculer sa periode propre $T_0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir les donnees dans les unites du Systeme International",
+          "justification": "La formule de Thomson exige L en henry et C en farad",
+          "resultat_markdown": "$L=0{,}12\\ \\text{H}$, $C=22{,}5\\times10^{-6}\\ \\text{F}$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule de Thomson",
+          "justification": "Formule directe de la periode propre d'un circuit LC",
+          "resultat_markdown": "$T_0 = 2\\pi\\sqrt{LC} = 2\\pi\\sqrt{0{,}12\\times22{,}5\\times10^{-6}} = 2\\pi\\sqrt{2{,}7\\times10^{-6}}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numeriquement",
+          "justification": "Extraction de la racine puis multiplication par $2\\pi$",
+          "resultat_markdown": "$T_0 \\approx 2\\pi\\times1{,}643\\times10^{-3} \\approx 1{,}03\\times10^{-2}\\ \\text{s} \\approx 10{,}3\\ \\text{ms}$"
+        }
+      ],
+      "conclusion_markdown": "Cette periode propre calculee sert de reference : comparee a la pseudo-periode reellement lue sur l'enregistrement, elle permet de verifier l'inegalite $T>T_0$ attendue pour tout circuit reellement amorti."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de convertir la capacite en farad (rester en microfarad dans le calcul)",
+          "pourquoi_faux": "La formule de Thomson exige des unites SI coherentes (henry, farad, seconde) ; utiliser directement des microfarads fausse le resultat d'un facteur $10^6$.",
+          "correction_markdown": "Toujours convertir systematiquement toutes les grandeurs en unites SI avant tout calcul avec la formule de Thomson."
+        },
+        {
+          "erreur_markdown": "Croire que $T < T_0$ pour un circuit amorti",
+          "pourquoi_faux": "L'amortissement ralentit legerement les oscillations par rapport au cas ideal : la pseudo-periode reelle est toujours **superieure** ou egale a la periode propre ideale, jamais inferieure.",
+          "correction_markdown": "Retenir l'inegalite $T \\geq T_0$, l'egalite n'etant atteinte qu'a la limite d'une resistance nulle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la periode propre d'un circuit LC avec $L=0{,}5\\ \\text{H}$ et $C=2\\ \\mu\\text{F}$.",
+          "solution_markdown": "$T_0=2\\pi\\sqrt{LC}=2\\pi\\sqrt{0{,}5\\times2\\times10^{-6}}=2\\pi\\sqrt{10^{-6}}=2\\pi\\times10^{-3}\\approx6{,}28\\times10^{-3}\\ \\text{s}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit LC doit osciller a une periode propre $T_0=1{,}0\\times10^{-3}\\ \\text{s}$ avec une bobine $L=0{,}1\\ \\text{H}$. Quelle capacite $C$ faut-il choisir ?",
+          "solution_markdown": "De $T_0=2\\pi\\sqrt{LC}$, on tire $LC = (T_0/2\\pi)^2 \\Rightarrow C = \\dfrac{T_0^2}{4\\pi^2 L} = \\dfrac{(10^{-3})^2}{4\\pi^2\\times0{,}1} = \\dfrac{10^{-6}}{3{,}95} \\approx 2{,}53\\times10^{-7}\\ \\text{F} = 0{,}253\\ \\mu\\text{F}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un enregistrement donne une pseudo-periode mesuree $T=1{,}1\\times10^{-2}\\ \\text{s}$ pour le circuit $L=0{,}12\\ \\text{H}$, $C=22{,}5\\ \\mu\\text{F}$ (dont $T_0\\approx1{,}03\\times10^{-2}\\ \\text{s}$, calcule ci-dessus). Cette mesure est-elle coherente avec un circuit reellement amorti ? Justifier.",
+          "solution_markdown": "On compare $T=1{,}1\\times10^{-2}\\ \\text{s}$ a $T_0\\approx1{,}03\\times10^{-2}\\ \\text{s}$ : $T > T_0$, l'ecart etant faible (environ $7\\%$). Cette mesure est **coherente** avec un circuit reellement amorti, ou la resistance de la bobine allonge legerement la pseudo-periode par rapport a la periode propre ideale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La formule de Thomson $T_0=2\\pi\\sqrt{LC}$ donne la periode propre d'un circuit LC ideal (sans resistance) — a n'utiliser qu'avec des grandeurs converties en unites SI.",
+        "Pour un circuit reellement amorti, la pseudo-periode mesuree $T$ (lue sur un enregistrement) est toujours legerement superieure a $T_0$.",
+        "Comparer $T$ et $T_0$ est un moyen de verifier la coherence physique d'une mesure experimentale, jamais un simple exercice de calcul isole.",
+        "La lecture d'une duree sur un enregistrement oscilloscopique se fait toujours en multipliant le nombre de divisions horizontales par le reglage du balayage (en s/div ou ms/div).",
+        "Au BAC, cette comparaison T versus T0 accompagne presque toujours une question demandant de justifier l'existence d'une resistance non negligeable dans le circuit."
+      ]
+    }
+  ]
+}

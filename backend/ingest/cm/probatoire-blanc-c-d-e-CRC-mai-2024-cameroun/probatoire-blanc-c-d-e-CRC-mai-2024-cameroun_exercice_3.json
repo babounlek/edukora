@@ -1,0 +1,141 @@
+{
+  "epreuve_source": "probatoire-blanc-c-d-e-CRC-mai-2024-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Informatique",
+  "matiere_normalisee": "INFORMATIQUE",
+  "classe": "1ere",
+  "nature_epreuve": "theorique",
+  "serie": "C, D, E",
+  "filiere_serie_a": null,
+  "examen": "probatoire",
+  "origine": "examen blanc",
+  "etablissement": null,
+  "institution": "Centre de Répétition la Conquête (CRC)",
+  "annee": 2024,
+  "duree_epreuve": "2h",
+  "coefficient": "2",
+  "introduction_markdown": null,
+  "numero_exercice": "3",
+  "titre_exercice": "Algorithmique et Programmation en C",
+  "points": "4",
+  "groupes": [
+    "PARTIE III : ALGORITHMIQUE ET PROGRAMMATION (8 points)"
+  ],
+  "figures": [],
+  "enonce_intro_markdown": "**PARTIE III : ALGORITHMIQUE ET PROGRAMMATION (8 points)**\n\n**EXERCICE 1 : Algorithmique et Programmation en C (4 points)**",
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Votre camarade veut écrire un programme permettant de calculer la moyenne des notes de cinq élèves, consignées dans le tableau ci-dessous (13 ; 07 ; 08,5 ; 12 ; 10). Ne sachant pas le faire, il vous demande de l'aider.\n\n1. Déclarer en algorithmique ce tableau, sachant que son nom est **notes**. *[0,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nEn algorithmique, un tableau se déclare en précisant son nom, ses bornes d'indices (le nombre d'éléments qu'il contient) et le type des valeurs qu'il stocke.\n\nLe tableau doit contenir les 5 notes des élèves, toutes des valeurs numériques pouvant comporter une décimale (comme 08,5) : le type approprié est donc réel.\n\n**Déclaration : notes : tableau[1..5] de réel.**\n\n### Conseil\nMême si toutes les notes affichées semblent être des nombres simples, vérifie toujours si l'une d'elles comporte une virgule (ici 08,5) avant de choisir le type : cela impose le type réel plutôt qu'entier pour l'ensemble du tableau.",
+      "themes": [
+        "Tableaux",
+        "Déclaration de variables",
+        "Algorithmique"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-blanc-c-d-e-CRC-mai-2024-cameroun-ex3-q1-1",
+          "competence": "Déclarer un tableau en algorithmique",
+          "contenu_markdown": "En algorithmique, un tableau se déclare en précisant son nom, ses bornes d'indices (le nombre d'éléments qu'il contient) et le type des valeurs qu'il stocke.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "2. Écrire l'algorithme permettant de calculer la moyenne de ces notes. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nCalculer une moyenne à partir d'un tableau suit toujours le même schéma : initialiser un accumulateur à zéro, parcourir le tableau avec une boucle pour cumuler la somme des éléments, puis diviser cette somme par le nombre d'éléments.\n\n```\nAlgorithme MoyenneNotes\nVar\n    notes : tableau[1..5] de réel\n    i : entier\n    somme, moyenne : réel\nDébut\n    somme ← 0\n    Pour i de 1 à 5 Faire\n        Lire(notes[i])\n        somme ← somme + notes[i]\n    FinPour\n    moyenne ← somme / 5\n    Ecrire(\"La moyenne est : \", moyenne)\nFin\n```\n\n**L'algorithme lit les 5 notes, cumule leur somme dans la variable somme, puis calcule la moyenne en divisant cette somme par 5.**\n\n### Piège à éviter\nN'oublie pas d'initialiser somme à 0 avant la boucle : une variable non initialisée contient une valeur indéterminée, et la moyenne calculée serait fausse.",
+      "themes": [
+        "Algorithmique",
+        "Boucles",
+        "Traitement de tableaux"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-blanc-c-d-e-CRC-mai-2024-cameroun-ex3-q2-1",
+          "competence": "Calculer une moyenne à partir d'un tableau (algorithme)",
+          "contenu_markdown": "Calculer une moyenne à partir d'un tableau suit toujours le même schéma : initialiser un accumulateur à zéro, parcourir le tableau avec une boucle pour cumuler la somme des éléments, puis diviser cette somme par le nombre d'éléments.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "3. Écrire le programme C permettant de calculer la moyenne de ces notes. *[1 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nTraduire un algorithme en langage C consiste à reprendre exactement la même logique (déclaration, boucle, accumulation, calcul final) en respectant la syntaxe du C : types (float, int), boucle for, et fonctions d'entrée-sortie scanf/printf.\n\n```c\n#include <stdio.h>\n\nint main() {{\n    float notes[5];\n    float somme = 0, moyenne;\n    int i;\n\n    for (i = 0; i < 5; i++) {{\n        printf(\"Entrez la note %d : \", i + 1);\n        scanf(\"%f\", &notes[i]);\n        somme = somme + notes[i];\n    }}\n\n    moyenne = somme / 5;\n    printf(\"La moyenne est : %.2f\\n\", moyenne);\n\n    return 0;\n}}\n```\n\n**Le programme lit successivement les 5 notes dans le tableau notes, cumule leur somme dans la variable somme, puis affiche la moyenne obtenue en divisant cette somme par 5.**\n\n### Piège à éviter\nN'oublie pas le symbole & devant notes[i] dans le scanf : il transmet l'adresse mémoire de la case du tableau, indispensable pour que scanf puisse y écrire la valeur saisie.\n\n### Conseil\nIndexe toujours tes tableaux en C à partir de 0 (de 0 à 4 pour 5 éléments), contrairement à l'algorithme en pseudo-code qui commence souvent à 1 : c'est une source d'erreur fréquente au moment de la traduction.",
+      "themes": [
+        "Langage C",
+        "Tableaux en C",
+        "Boucle for"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-blanc-c-d-e-CRC-mai-2024-cameroun-ex3-q3-1",
+          "competence": "Traduire un algorithme de moyenne en langage C",
+          "contenu_markdown": "Traduire un algorithme en langage C consiste à reprendre exactement la même logique (déclaration, boucle, accumulation, calcul final) en respectant la syntaxe du C : types (float, int), boucle for, et fonctions d'entrée-sortie scanf/printf.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "4. Définir : **paramètre**, **structure de données**, **organigramme**. *[1,5 pt]*",
+      "corrige_markdown": "### Rappel de méthode\nCes trois notions relèvent toutes de l'algorithmique et de la programmation mais désignent des réalités différentes : une donnée transmise à un sous-programme, une manière d'organiser des données en mémoire, et une représentation graphique d'un traitement.\n\n**Paramètre** : variable déclarée dans l'en-tête d'une fonction ou d'une procédure, qui permet de lui transmettre une valeur (ou une adresse) au moment de son appel, pour qu'elle l'utilise dans ses traitements.\n\n**Structure de données** : manière organisée de représenter, stocker et gérer un ensemble de données en mémoire, de façon à en permettre un accès et des modifications efficaces (exemples : tableau, structure/enregistrement, liste chaînée, pile, file).\n\n**Organigramme** : représentation graphique normalisée d'un algorithme, utilisant des symboles conventionnels (ovale pour le début et la fin, rectangle pour un traitement, losange pour un test, flèches pour l'enchaînement), qui décrit visuellement la suite des étapes à exécuter.\n\n### Conseil\nSi tu confonds encore organigramme et algorithme, retiens que l'organigramme est la version dessinée (schéma) de l'algorithme, qui reste lui une suite d'instructions écrites en pseudo-code ou en texte structuré.",
+      "themes": [
+        "Vocabulaire de la programmation",
+        "Structures de données",
+        "Organigramme"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "figures": [],
+      "rappels_de_methode": [
+        {
+          "id": "rdm-probatoire-blanc-c-d-e-CRC-mai-2024-cameroun-ex3-q4-1",
+          "competence": "Définir paramètre, structure de données et organigramme",
+          "contenu_markdown": "Ces trois notions relèvent toutes de l'algorithmique et de la programmation mais désignent des réalités différentes : une donnée transmise à un sous-programme, une manière d'organiser des données en mémoire, et une représentation graphique d'un traitement.",
+          "cours_genere": false,
+          "cours_id": null
+        }
+      ]
+    }
+  ],
+  "mots_cles_recherche": [
+    "tableau",
+    "algorithme",
+    "moyenne",
+    "langage C",
+    "paramètre",
+    "structure de données",
+    "organigramme"
+  ],
+  "incertitudes": [
+    "savoir_officiel non renseigné (null) pour toutes les sous-questions : la matière Informatique figure au périmètre du référentiel programme officiel edukora (backend/programme/fixtures/programme_officiel_cm_informatique.json), mais ce fichier n'était pas accessible dans cet environnement de traitement isolé - à retagger ultérieurement."
+  ],
+  "statut": "brouillon"
+}

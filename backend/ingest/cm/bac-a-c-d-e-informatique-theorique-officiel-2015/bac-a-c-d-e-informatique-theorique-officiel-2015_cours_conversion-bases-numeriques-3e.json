@@ -1,0 +1,157 @@
+{
+  "cours_id": "cours-conversion-bases-numeriques-3e",
+  "meta": {
+    "titre": "Conversion entre les bases binaire, octale et décimale",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Systèmes de numération",
+    "duree_estimee_min": 25,
+    "tags": [
+      "binaire",
+      "octal",
+      "décimal",
+      "conversion de bases",
+      "numération"
+    ],
+    "savoir_officiel": {
+      "classe": "3e",
+      "serie_label": null,
+      "module_numero": "301",
+      "savoir_numero": "I"
+    },
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-a-c-d-e-informatique-theorique-officiel-2015",
+    "epreuve_titre": "Baccalauréat ESG - Séries A, C, D, E - Informatique (Épreuve théorique) - Session 2015",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-a-c-d-e-informatique-theorique-officiel-2015-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque fois que tu vois un mot de passe écrit en binaire, une adresse IP ou un code couleur en hexadécimal, tu manipules en réalité un même nombre exprimé dans des bases différentes. Un ordinateur ne connaît que deux états électriques, 0 et 1, donc il représente tout en binaire, mais cette écriture devient vite illisible pour un humain dès que le nombre grandit. L'octal et le décimal servent alors de raccourcis pratiques pour lire et écrire ces mêmes valeurs plus facilement. Ce cours te donne la méthode pour passer d'une base à l'autre sans erreur, la même que celle exigée à l'examen du Baccalauréat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les puissances de 2 (1, 2, 4, 8, 16, 32...)",
+        "Savoir effectuer une multiplication et une addition posées",
+        "Connaître le principe de position d'un chiffre dans un nombre (unités, dizaines, centaines en base 10)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Conversion binaire vers décimal et binaire vers octal",
+      "contenu_markdown": "Un nombre écrit en base 2 (binaire) n'utilise que les chiffres 0 et 1. Chaque position, en partant de la droite, représente une puissance de 2 croissante : la position 0 vaut $2^0=1$, la position 1 vaut $2^1=2$, la position 2 vaut $2^2=4$, et ainsi de suite. Pour convertir un nombre binaire en décimal, on multiplie chaque chiffre binaire par la puissance de 2 de sa position, puis on additionne tous les résultats. Pour convertir un nombre binaire en octal, on regroupe ses chiffres par paquets de 3 bits en partant de la droite (car $2^3=8$, la base octale), et on convertit chaque paquet séparément en un seul chiffre octal compris entre 0 et 7. Si le nombre de bits n'est pas un multiple de 3, on complète le paquet le plus à gauche avec des zéros non significatifs.",
+      "formule_principale": "N_{10} = \\sum_{i=0}^{n} b_i \\times 2^{i}",
+      "variantes": [
+        {
+          "nom": "Conversion décimal vers binaire par divisions successives",
+          "quand_utiliser": "Quand on part d'un nombre décimal et qu'on veut retrouver son écriture binaire",
+          "contenu_markdown": "On divise le nombre décimal par 2 de façon répétée en conservant à chaque étape le reste (0 ou 1), jusqu'à obtenir un quotient nul. Le nombre binaire s'obtient en lisant les restes obtenus dans l'ordre inverse de leur calcul, du dernier au premier."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Convertir le nombre binaire $101011_2$ en octal et en décimal.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la position de chaque chiffre binaire",
+          "justification": "On numérote les positions de droite à gauche en commençant à 0, pour pouvoir leur associer la puissance de 2 correspondante",
+          "resultat_markdown": "$101011_2$ : positions $5,4,3,2,1,0$ pour les chiffres $1,0,1,0,1,1$"
+        },
+        {
+          "numero": 2,
+          "action": "Multiplier chaque chiffre par la puissance de 2 de sa position",
+          "justification": "C'est la définition même de l'écriture positionnelle en base 2",
+          "resultat_markdown": "$1\\times2^5=32\\ ;\\ 0\\times2^4=0\\ ;\\ 1\\times2^3=8\\ ;\\ 0\\times2^2=0\\ ;\\ 1\\times2^1=2\\ ;\\ 1\\times2^0=1$"
+        },
+        {
+          "numero": 3,
+          "action": "Additionner tous les termes obtenus",
+          "justification": "La valeur décimale est la somme des contributions de chaque position",
+          "resultat_markdown": "$32+0+8+0+2+1=43$"
+        },
+        {
+          "numero": 4,
+          "action": "Regrouper les bits par paquets de 3 en partant de la droite",
+          "justification": "La base octale vaut $2^3=8$ : un paquet de 3 bits correspond exactement à un chiffre octal",
+          "resultat_markdown": "$101011_2 \\to 101\\ |\\ 011$"
+        },
+        {
+          "numero": 5,
+          "action": "Convertir chaque paquet de 3 bits en un chiffre octal",
+          "justification": "On applique la même méthode de conversion binaire-décimal à chaque paquet pris isolément",
+          "resultat_markdown": "$101_2 = 4+0+1 = 5\\quad;\\quad 011_2 = 0+2+1 = 3$"
+        },
+        {
+          "numero": 6,
+          "action": "Juxtaposer les chiffres octaux obtenus dans l'ordre",
+          "justification": "Le paquet le plus à gauche donne le chiffre de plus fort poids en octal",
+          "resultat_markdown": "$101011_2 = 53_8$"
+        }
+      ],
+      "conclusion_markdown": "Le nombre binaire $101011$ vaut donc $43$ en décimal et $53$ en octal, ce qu'on peut vérifier en reconvertissant $53_8$ en décimal : $5\\times8+3=43$, qui correspond bien à la valeur trouvée à l'étape 3."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier qu'un chiffre binaire à 0 ne contribue pas à la somme, et décaler ainsi toutes les puissances de 2 suivantes.",
+          "pourquoi_faux": "Si on saute un chiffre égal à 0 dans le comptage des positions au lieu de simplement lui attribuer une contribution nulle, tous les chiffres à sa gauche se voient attribuer une puissance de 2 trop faible, ce qui fausse tout le résultat.",
+          "correction_markdown": "Toujours numéroter TOUTES les positions du nombre binaire, y compris celles où le chiffre vaut 0, puis multiplier chaque chiffre (0 ou 1) par la puissance de 2 de sa position : un chiffre à 0 donne simplement une contribution nulle, mais la position ne doit jamais être sautée."
+        },
+        {
+          "erreur_markdown": "Regrouper les bits par paquets de 3 en partant de la gauche plutôt que de la droite pour la conversion en octal.",
+          "pourquoi_faux": "Le regroupement doit refléter les puissances de 8 réelles, qui augmentent depuis la droite (unités, huitaines, soixante-quatraines...) : partir de la gauche décale tous les paquets et change complètement la valeur des chiffres octaux obtenus.",
+          "correction_markdown": "Toujours former les paquets de 3 bits en partant du chiffre le plus à droite, quitte à compléter le dernier paquet à gauche avec des zéros non significatifs si le nombre total de bits n'est pas un multiple de 3."
+        },
+        {
+          "erreur_markdown": "Confondre la conversion en octal avec la conversion en décimal, et écrire directement le résultat décimal (43) dans la colonne octale.",
+          "pourquoi_faux": "Le décimal (base 10) et l'octal (base 8) sont deux bases différentes : la valeur 43 n'a de sens qu'en base 10 ; en base 8 la même quantité s'écrit 53, avec des chiffres qui n'ont pas la même signification positionnelle.",
+          "correction_markdown": "Toujours vérifier dans quelle base le résultat est demandé avant de le recopier dans le tableau, et refaire la conversion propre à cette base plutôt que de recopier une valeur déjà obtenue pour une autre base."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Convertir le nombre binaire $110_2$ en décimal et en octal.",
+          "solution_markdown": "1. On numérote les positions à partir de la droite : $1\\times2^2 + 1\\times2^1 + 0\\times2^0$.\n2. On calcule chaque terme : $1\\times4=4$ ; $1\\times2=2$ ; $0\\times1=0$.\n3. On additionne : $4+2+0=6$. Le nombre décimal est $6$.\n4. Pour l'octal, $110$ compte déjà exactement 3 bits, donc un seul paquet : $110_2 = 4+2+0 = 6$.\n5. Le nombre octal est donc $6$ (identique au décimal ici car la valeur est inférieure à 8, donc elle s'écrit avec un seul chiffre dans les deux bases).\n\nRésultat : $110_2 = 6_{10} = 6_8$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertir le nombre binaire $11010_2$ en décimal et en octal.",
+          "solution_markdown": "1. On numérote les positions à partir de la droite (le nombre a 5 bits, positions 4 à 0) : $1\\times2^4 + 1\\times2^3 + 0\\times2^2 + 1\\times2^1 + 0\\times2^0$.\n2. On calcule chaque terme : $1\\times16=16$ ; $1\\times8=8$ ; $0\\times4=0$ ; $1\\times2=2$ ; $0\\times1=0$.\n3. On additionne : $16+8+0+2+0=26$. Le nombre décimal est $26$.\n4. Pour l'octal, il faut des paquets de 3 bits : $11010$ n'a que 5 bits, on complète donc à gauche avec un zéro non significatif pour obtenir 6 bits : $011010$.\n5. On regroupe : $011\\ |\\ 010$. On convertit chaque paquet : $011_2 = 0+2+1 = 3$ ; $010_2 = 0+2+0 = 2$.\n6. Le nombre octal est donc $32$.\n\nVérification : $32_8 = 3\\times8+2 = 26$, ce qui correspond bien à la valeur décimale trouvée à l'étape 3.\n\nRésultat : $11010_2 = 26_{10} = 32_8$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un fichier a une taille codée par le nombre décimal $100$. Convertir cette valeur en binaire par divisions successives, puis en déduire son écriture en octal à partir du résultat binaire obtenu.",
+          "solution_markdown": "1. On divise 100 par 2 de façon répétée en conservant le reste à chaque étape : $100\\div2=50$ reste $0$ ; $50\\div2=25$ reste $0$ ; $25\\div2=12$ reste $1$ ; $12\\div2=6$ reste $0$ ; $6\\div2=3$ reste $0$ ; $3\\div2=1$ reste $1$ ; $1\\div2=0$ reste $1$.\n2. On lit les restes obtenus dans l'ordre inverse de leur calcul, du dernier au premier : $1,1,0,0,1,0,0$.\n3. Le nombre binaire est donc $1100100_2$. Vérification par la méthode directe : $1\\times2^6+1\\times2^5+0\\times2^4+0\\times2^3+1\\times2^2+0\\times2^1+0\\times2^0 = 64+32+0+0+4+0+0 = 100$, ce qui confirme le résultat.\n4. Pour l'octal, on regroupe les bits par paquets de 3 en partant de la droite. Le nombre a 7 bits, on complète donc à gauche avec deux zéros non significatifs pour obtenir 9 bits : $001100100$.\n5. On regroupe : $001\\ |\\ 100\\ |\\ 100$. On convertit chaque paquet : $001_2=1$ ; $100_2=4$ ; $100_2=4$.\n6. Le nombre octal est donc $144$.\n\nVérification finale : $144_8 = 1\\times64+4\\times8+4\\times1 = 64+32+4=100$, qui correspond bien à la valeur décimale de départ.\n\nRésultat : $100_{10} = 1100100_2 = 144_8$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour convertir du binaire vers le décimal, numérote toujours les positions à partir de 0 en partant de la droite, puis multiplie chaque chiffre par la puissance de 2 correspondante avant d'additionner.",
+        "Pour convertir du binaire vers l'octal, regroupe les bits par paquets de 3 en partant de la droite : chaque paquet donne directement un chiffre octal entre 0 et 7.",
+        "Vérifie toujours ton résultat en reconvertissant la valeur trouvée dans la base de départ : les deux calculs doivent coïncider.",
+        "Pour la conversion inverse, décimal vers binaire, utilise la méthode des divisions successives par 2 et lis les restes de bas en haut.",
+        "Au BAC, ce type de conversion apparaît en question de cours isolée, comme ici, ou comme étape préparatoire d'un exercice plus large sur le codage de l'information : maîtriser ce calcul rapidement te fait gagner du temps sur le reste de l'épreuve."
+      ]
+    }
+  ]
+}

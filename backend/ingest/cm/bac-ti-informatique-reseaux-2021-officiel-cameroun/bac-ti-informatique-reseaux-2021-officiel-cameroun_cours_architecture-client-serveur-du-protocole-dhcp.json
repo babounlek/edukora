@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-architecture-client-serveur-du-protocole-dhcp-terminale-ti",
+  "meta": {
+    "titre": "Architecture client-serveur du protocole DHCP",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Architectures réseau",
+    "duree_estimee_min": 15,
+    "tags": [
+      "architecture client-serveur",
+      "DHCP",
+      "architecture réseau"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q15-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chaque service réseau repose sur une organisation précise entre les machines qui l'utilisent : certaines demandent, d'autres répondent. Repérer cette organisation, appelée architecture réseau, permet de comprendre en un coup d'œil comment un service comme le DHCP fonctionne réellement, bien au-delà du seul cas particulier étudié."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de DHCP (attribution automatique d'adresses IP)",
+        "Vocabulaire client / serveur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître une architecture client/serveur",
+      "contenu_markdown": "Une architecture réseau est dite **client/serveur** lorsqu'une machine (le **client**) sollicite un service précis auprès d'une autre machine dédiée (le **serveur**), qui le lui fournit en retour. Le service DHCP illustre exactement ce schéma : une machine qui se connecte au réseau joue le rôle de **client DHCP** en demandant une configuration IP, et un équipement dédié, le **serveur DHCP**, identifié par une adresse propre, la lui attribue (adresse IP, masque, passerelle, durée du bail).",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La sortie IPCONFIG /ALL d'une carte Wi-Fi indique « Serveur DHCP : 192.168.43.1 ». Décrire l'architecture réseau que révèle cette ligne, du point de vue du DHCP.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les deux rôles en présence",
+          "justification": "Une architecture client/serveur suppose toujours deux rôles distincts et complémentaires.",
+          "resultat_markdown": "La machine qui affiche cette configuration est le client DHCP ; l'équipement à l'adresse 192.168.43.1 est le serveur DHCP."
+        },
+        {
+          "numero": 2,
+          "action": "Décrire l'échange entre les deux rôles",
+          "justification": "L'architecture se caractérise par la nature de la demande et de la réponse échangées.",
+          "resultat_markdown": "Le client DHCP a demandé une configuration IP au démarrage ; le serveur DHCP lui a répondu en lui attribuant l'adresse 192.168.43.228, le masque, la passerelle et une durée de bail."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur l'architecture",
+          "justification": "La présence d'un équipement dédié à fournir le service, distinct des machines qui le consomment, caractérise le client/serveur.",
+          "resultat_markdown": "Par rapport au DHCP, cette machine se trouve dans une architecture client/serveur : elle est cliente d'un service rendu par un serveur DHCP distinct."
+        }
+      ],
+      "conclusion_markdown": "Le simple champ « Serveur DHCP » suivi d'une adresse suffit à prouver l'existence d'une architecture client/serveur : un équipement distinct assure ce service pour le compte des autres machines."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre architecture client/serveur et réseau poste à poste (peer-to-peer) sous prétexte que les deux impliquent plusieurs machines",
+          "pourquoi_faux": "Dans une architecture poste à poste, chaque machine peut être tour à tour demandeuse et fournisseuse d'un même service, sans dédier une machine à un rôle fixe ; le DHCP repose au contraire sur un serveur dédié et identifiable, distinct des clients qu'il sert.",
+          "correction_markdown": "Vérifie qu'un équipement dédié et identifié (ici, le serveur DHCP à une adresse propre) fournit le service : c'est ce qui distingue le client/serveur du poste à poste."
+        },
+        {
+          "erreur_markdown": "Répondre uniquement « DHCP » à la question posée sur l'architecture réseau",
+          "pourquoi_faux": "DHCP est le nom du protocole/service, pas celui de l'architecture organisationnelle qu'il utilise : la question demande le type d'organisation (client/serveur), pas le nom du service.",
+          "correction_markdown": "Réponds par le terme d'architecture attendu (client/serveur), en citant le DHCP comme exemple qui l'illustre, pas l'inverse."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans le fonctionnement du DHCP, quel rôle joue la machine qui demande une adresse IP, et quel rôle joue l'équipement qui la lui fournit ?",
+          "solution_markdown": "La machine qui demande une adresse IP joue le rôle de client DHCP ; l'équipement qui la lui fournit joue le rôle de serveur DHCP."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un petit réseau domestique ne compte qu'une seule box Internet, qui joue à la fois le rôle de serveur DHCP, de passerelle par défaut et de serveur DNS pour tous les ordinateurs connectés. Le fait qu'un seul équipement cumule ces trois rôles remet-il en cause la nature client/serveur de l'architecture DHCP ? Justifier.",
+          "solution_markdown": "Non. Le fait qu'un même équipement physique (la box) cumule plusieurs fonctions (serveur DHCP, passerelle, serveur DNS) ne change rien à la nature de chaque relation prise séparément : pour le DHCP précisément, la box reste un serveur DHCP dédié, distinct des ordinateurs clients qui lui demandent une configuration IP. L'architecture client/serveur se définit par la répartition des rôles (qui demande, qui fournit), pas par le nombre de services rendus par un même équipement physique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi, dans un grand réseau d'entreprise comptant plusieurs centaines de postes, l'architecture client/serveur du DHCP est nettement préférable à une configuration manuelle (statique) de chaque poste, du point de vue de l'administration réseau.",
+          "solution_markdown": "Avec une architecture client/serveur DHCP, un seul serveur centralise la distribution des adresses IP, des masques, des passerelles et des serveurs DNS pour l'ensemble des postes clients : un administrateur peut modifier une politique d'adressage (par exemple changer de serveur DNS) en une seule opération sur le serveur, automatiquement répercutée sur tous les postes à leur prochain renouvellement de bail. Avec une configuration statique poste par poste, la même modification nécessiterait de se rendre individuellement sur chacune des centaines de machines, avec un risque élevé d'erreurs de saisie et de conflits d'adresses IP dupliquées entre postes configurés séparément. L'architecture client/serveur du DHCP réduit donc considérablement la charge administrative et les risques d'erreur humaine à grande échelle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une architecture client/serveur répartit deux rôles fixes : le client demande, le serveur fournit un service dédié.",
+        "Le DHCP illustre ce schéma : le poste utilisateur est client DHCP, un équipement dédié est serveur DHCP.",
+        "Le champ « Serveur DHCP » d'une sortie IPCONFIG est la preuve directe de cette architecture.",
+        "Un même équipement (une box, par exemple) peut cumuler plusieurs rôles serveur sans remettre en cause la nature client/serveur de chacun pris séparément.",
+        "À grande échelle, cette architecture centralisée simplifie considérablement l'administration du réseau par rapport à une configuration statique poste par poste."
+      ]
+    }
+  ]
+}

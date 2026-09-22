@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-les-fonctions-conditionnelles-de-tableur-nb-si-et-somme-si-tle-tronc-commun",
+  "meta": {
+    "titre": "Les fonctions conditionnelles de tableur : NB.SI et SOMME.SI",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Fonctions du tableur",
+    "duree_estimee_min": 20,
+    "tags": [
+      "NB.SI",
+      "SOMME.SI",
+      "tableur",
+      "Excel"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-d-e-informatique-theorique-2025-officiel-cameroun",
+    "epreuve_titre": "BAC C, D, E - Épreuve théorique d'informatique (2025, officiel, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-d-e-informatique-theorique-2025-officiel-cameroun-ex1-q11a-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Compter combien d'élèves ont réussi, ou additionner uniquement les notes en dessous de la moyenne, sont deux besoins très courants dans un tableau de notes. Deux fonctions du tableur, NB.SI et SOMME.SI, répondent chacune à un besoin précis, avec la même logique de construction."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir désigner une plage de cellules dans un tableur (par exemple F2:F5)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "NB.SI compte, SOMME.SI additionne",
+      "contenu_markdown": "**NB.SI(plage;critère)** compte, dans une plage de cellules, le nombre de valeurs qui vérifient un critère donné.\n\n**SOMME.SI(plage;critère)** additionne, dans une plage de cellules, uniquement les valeurs qui vérifient un critère donné.\n\nLes deux fonctions partagent la même syntaxe à deux arguments (plage, critère) : seule l'opération finale change (compter contre additionner). Le critère textuel doit toujours être écrit entre guillemets dès qu'il contient un opérateur de comparaison, par exemple `\">=10\"` ou `\"<10\"`.",
+      "formule_principale": "=NB.SI(plage;critère)  et  =SOMME.SI(plage;critère)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un tableau où les moyennes de 4 élèves occupent les cellules F2 à F5, écrire la formule qui compte le nombre de moyennes supérieures ou égales à 10.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la plage concernée",
+          "justification": "Les moyennes des 4 élèves se trouvent en F2:F5.",
+          "resultat_markdown": "Plage : F2:F5."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire le critère de comparaison entre guillemets",
+          "justification": "Un critère avec un opérateur de comparaison doit toujours être une chaîne de caractères.",
+          "resultat_markdown": "Critère : \">=10\"."
+        },
+        {
+          "numero": 3,
+          "action": "Assembler la formule NB.SI",
+          "justification": "On veut COMPTER combien de moyennes vérifient le critère.",
+          "resultat_markdown": "=NB.SI(F2:F5;\">=10\")"
+        }
+      ],
+      "conclusion_markdown": "On obtient une formule de comptage conditionnel directement réutilisable pour n'importe quel critère de seuil sur une colonne de notes."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier les guillemets autour du critère (écrire NB.SI(F2:F5;>=10))",
+          "pourquoi_faux": "Sans guillemets, le tableur ne reconnaît pas `>=10` comme un critère textuel valide et renvoie une erreur de formule.",
+          "correction_markdown": "Toujours mettre entre guillemets tout critère contenant un opérateur de comparaison."
+        },
+        {
+          "erreur_markdown": "Utiliser NB.SI quand on veut un total (et inversement SOMME.SI quand on veut un comptage)",
+          "pourquoi_faux": "NB.SI répond à « combien ? », SOMME.SI répond à « quel total ? » : les deux syntaxes se ressemblent mais ne répondent pas à la même question, et le résultat obtenu en confondant les deux est numériquement plausible mais faux.",
+          "correction_markdown": "Relire la question posée avant de choisir la fonction : « combien de... » → NB.SI ; « quelle est la somme de... » → SOMME.SI."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire la formule qui compte, dans la plage B2:B10, le nombre de cellules dont la valeur est exactement égale à 20.",
+          "solution_markdown": "=NB.SI(B2:B10;20)  (un critère d'égalité simple sur un nombre ne nécessite pas de guillemets)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire la formule qui additionne, dans la plage C2:C15, uniquement les valeurs strictement supérieures à 15.",
+          "solution_markdown": "=SOMME.SI(C2:C15;\">15\")"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On souhaite compter, dans la plage D2:D30 contenant des noms de villes, le nombre de cellules contenant exactement le texte « Douala ». Écrire la formule, puis expliquer pourquoi le critère textuel n'a pas besoin d'opérateur de comparaison ici, contrairement aux exemples numériques précédents.",
+          "solution_markdown": "=NB.SI(D2:D30;\"Douala\")\n\nLe critère n'a pas besoin d'opérateur de comparaison (`=`, `>`, `<`) car on cherche une égalité exacte avec un texte : NB.SI considère par défaut qu'un critère sans opérateur explicite (qu'il soit numérique ou textuel) signifie « égal à ». Les opérateurs `>=`, `<`, etc. ne sont nécessaires que lorsqu'on veut exprimer une comparaison d'ordre (supérieur, inférieur), ce qui n'a de sens que pour des valeurs numériques ou des dates, jamais pour tester une égalité de texte."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "NB.SI(plage;critère) compte ; SOMME.SI(plage;critère) additionne : même syntaxe, opération finale différente.",
+        "Tout critère contenant un opérateur de comparaison (>=, <, <>...) doit être écrit entre guillemets.",
+        "Un critère d'égalité simple (nombre ou texte) n'a pas besoin d'opérateur explicite.",
+        "Relis toujours la question posée avant de choisir entre les deux fonctions : « combien » pour NB.SI, « quel total » pour SOMME.SI."
+      ]
+    }
+  ]
+}

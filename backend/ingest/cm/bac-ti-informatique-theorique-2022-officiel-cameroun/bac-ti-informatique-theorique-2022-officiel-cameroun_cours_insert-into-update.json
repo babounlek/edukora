@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-insert-update-tle-ti",
+  "meta": {
+    "titre": "Modifier des données en SQL : INSERT INTO et UPDATE",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "SQL : langage de manipulation de données",
+    "duree_estimee_min": 22,
+    "tags": [
+      "SQL",
+      "INSERT INTO",
+      "UPDATE",
+      "DML"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex3-q4f-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une base de données qui ne pourrait jamais recevoir de nouvelles lignes ni corriger une valeur existante serait inutile dès le lendemain de sa création. INSERT INTO et UPDATE permettent de faire vivre une base au quotidien - et sont aussi les instructions les plus dangereuses à mal utiliser, une erreur de condition pouvant affecter des données bien au-delà de ce qui était prévu."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire la structure d'une table (colonnes, types).",
+        "Savoir écrire une condition simple avec la clause WHERE."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ajouter une ligne, modifier une ligne",
+      "contenu_markdown": "L'instruction `INSERT INTO table (colonne1, colonne2, ...) VALUES (valeur1, valeur2, ...)` ajoute une nouvelle ligne dans une table, en faisant correspondre chaque valeur à la colonne de même position dans la liste ; les valeurs textuelles s'écrivent entre apostrophes, les valeurs numériques sans apostrophe.\n\nL'instruction `UPDATE table SET colonne = nouvelle_valeur WHERE condition` modifie la valeur d'une ou plusieurs colonnes, pour la ou les lignes qui vérifient la condition précisée après WHERE. Sans clause WHERE, la modification s'applique à TOUTES les lignes de la table, ce qui est presque toujours une erreur grave si l'intention était de ne modifier qu'une ligne précise.",
+      "formule_principale": "INSERT INTO table (cols) VALUES (valeurs);   UPDATE table SET col = valeur WHERE condition;"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un nouveau client (Cli045, Fotso, Marie, Bafoussam) doit être ajouté à la table CLIENT(Num_Client, Nom, Prenom, Ville_client). Six mois plus tard, ce même client déménage à Yaoundé : mettre à jour sa ville.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'instruction d'ajout avec toutes les colonnes de la table",
+          "justification": "INSERT INTO doit fournir une valeur pour chaque colonne listée, dans le même ordre.",
+          "resultat_markdown": "INSERT INTO CLIENT (Num_Client, Nom, Prenom, Ville_client) VALUES ('Cli045', 'Fotso', 'Marie', 'Bafoussam');"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier un critère fiable pour cibler uniquement ce client lors de la mise à jour",
+          "justification": "Un nom seul pourrait correspondre à plusieurs clients homonymes ; la clé primaire garantit de ne cibler que ce client précis.",
+          "resultat_markdown": "La condition doit porter sur Num_Client = 'Cli045', pas sur le Nom seul."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'instruction de mise à jour avec cette condition précise",
+          "justification": "UPDATE sans clause WHERE fiable risquerait de modifier la ville de tous les clients homonymes ou de toute la table.",
+          "resultat_markdown": "UPDATE CLIENT SET Ville_client = 'Yaoundé' WHERE Num_Client = 'Cli045';"
+        }
+      ],
+      "conclusion_markdown": "L'ajout initial fournit une valeur par colonne dans l'ordre exact de la liste ; la mise à jour cible précisément la ligne concernée en filtrant sur la clé primaire, jamais sur un attribut qui pourrait se répéter."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire une instruction UPDATE sans aucune clause WHERE",
+          "pourquoi_faux": "Sans WHERE, la modification s'applique à TOUTES les lignes de la table sans exception : une simple faute d'inattention peut écraser des milliers d'enregistrements en une seule instruction.",
+          "correction_markdown": "Avant de valider un UPDATE, demande-toi : « si je supprimais mentalement la clause WHERE, est-ce que ça me choquerait que TOUTES les lignes soient modifiées ? » Si oui, vérifie une seconde fois sa présence et sa justesse."
+        },
+        {
+          "erreur_markdown": "Filtrer une instruction UPDATE sur un attribut non unique, comme le Nom, en cas d'homonymie possible",
+          "pourquoi_faux": "Si deux clients partagent le même nom, une condition WHERE Nom = '...' modifierait les deux à la fois, alors qu'une seule ligne était visée.",
+          "correction_markdown": "Filtre toujours en priorité sur la clé primaire plutôt que sur un attribut descriptif comme le nom, sauf si l'énoncé précise explicitement qu'aucune homonymie n'est possible."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire l'instruction SQL qui ajoute une nouvelle agence (Ag010, Agence Centrale, Douala, vrai) dans la table AGENCE(Num_Agence, Nom_Agence, Ville_Agence, Actif).",
+          "solution_markdown": "```sql\nINSERT INTO AGENCE (Num_Agence, Nom_Agence, Ville_Agence, Actif)\nVALUES ('Ag010', 'Agence Centrale', 'Douala', TRUE);\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire l'instruction SQL qui désactive (Actif = faux) l'agence dont le numéro est 'Ag003', dans la table AGENCE(Num_Agence, Nom_Agence, Ville_Agence, Actif).",
+          "solution_markdown": "```sql\nUPDATE AGENCE\nSET Actif = FALSE\nWHERE Num_Agence = 'Ag003';\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un client identifié par Num_Client = 'Cli012' vient de se marier et souhaite mettre à jour son nom (nouveau nom : Ndongo) sans changer son prénom ni sa ville. Le comptable tape par erreur : `UPDATE CLIENT SET Nom = 'Ndongo';`. Expliquer précisément ce que produit cette instruction erronée, puis proposer l'instruction corrigée.",
+          "solution_markdown": "L'instruction erronée ne comporte aucune clause WHERE : elle modifie donc le Nom de TOUS les clients de la table CLIENT, en leur attribuant à tous la même valeur 'Ndongo'. C'est une erreur grave et irréversible sans sauvegarde préalable. L'instruction corrigée doit impérativement cibler le seul client concerné via sa clé primaire :\n```sql\nUPDATE CLIENT\nSET Nom = 'Ndongo'\nWHERE Num_Client = 'Cli012';\n```\nCette version ne modifie que la ligne dont Num_Client vaut 'Cli012', laissant tous les autres clients inchangés."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "INSERT INTO table (colonnes) VALUES (valeurs) ajoute une ligne, en faisant correspondre chaque valeur à sa colonne selon l'ordre de la liste.",
+        "UPDATE table SET colonne = valeur WHERE condition modifie uniquement les lignes qui vérifient la condition.",
+        "Sans clause WHERE, un UPDATE modifie TOUTES les lignes de la table : c'est presque toujours une erreur si une seule ligne était visée.",
+        "Filtre toujours une mise à jour sur un identifiant unique fiable, jamais sur un attribut qui pourrait se répéter comme le nom.",
+        "Au BAC TI, une instruction UPDATE sans WHERE alors qu'une seule ligne était visée est l'erreur la plus pénalisée de toute la partie SQL, car elle révèle une incompréhension du fonctionnement réel de l'instruction."
+      ]
+    }
+  ]
+}

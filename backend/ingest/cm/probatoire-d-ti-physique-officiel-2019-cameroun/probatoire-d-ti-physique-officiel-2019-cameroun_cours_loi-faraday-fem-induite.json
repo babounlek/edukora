@@ -1,0 +1,138 @@
+{
+  "cours_id": "cours-loi-faraday-fem-induite-premiere",
+  "meta": {
+    "titre": "Loi de Faraday et f.é.m. induite",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi de Faraday",
+      "f.é.m. induite",
+      "flux magnétique",
+      "dérivée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2019-cameroun",
+    "epreuve_titre": "Épreuve de physique au probatoire D et TI 2019 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2019-cameroun-ex3-qB21-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment passer d'une expression mathématique du flux magnétique, comme $\\Phi(t) = 0{,}2\\cos(1{,}57t)$, à la tension réellement mesurable aux bornes d'une bobine ? La loi de Faraday fournit ce pont entre les deux : elle transforme un problème de physique (l'induction électromagnétique) en un problème de calcul de dérivée, à condition de savoir dériver correctement les fonctions trigonométriques qui décrivent, presque toujours, un flux variable dans le temps."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de flux magnétique variable au cours du temps, $\\Phi(t)$",
+        "Dérivée des fonctions $\\cos(at)$ et $\\sin(at)$ par rapport au temps"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi de Faraday",
+      "contenu_markdown": "La loi de Faraday relie la f.é.m. induite $e(t)$ aux bornes d'une bobine à la variation du flux magnétique $\\Phi(t)$ qui la traverse par la relation $e(t) = -\\dfrac{d\\Phi}{dt}$ : il suffit donc de dériver l'expression du flux par rapport au temps, puis de changer le signe du résultat. Quand le flux est de la forme $\\Phi(t) = \\Phi_{max}\\cos(\\omega t)$, on utilise la règle de dérivation $\\dfrac{d}{dt}[\\cos(\\omega t)] = -\\omega\\sin(\\omega t)$.",
+      "formule_principale": "e(t) = -\\dfrac{d\\Phi}{dt}",
+      "variantes": [
+        {
+          "nom": "Flux en sinus plutôt qu'en cosinus",
+          "quand_utiliser": "Quand l'énoncé donne $\\Phi(t) = \\Phi_{max}\\sin(\\omega t)$ au lieu d'un cosinus",
+          "contenu_markdown": "On utilise alors $\\dfrac{d}{dt}[\\sin(\\omega t)] = \\omega\\cos(\\omega t)$, ce qui donne $e(t) = -\\omega\\Phi_{max}\\cos(\\omega t)$ : la méthode est rigoureusement identique, seule la fonction trigonométrique change."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le flux magnétique à travers une bobine varie selon la loi $\\Phi(t) = 0{,}2\\cos(1{,}57\\,t)$ (en webers). Déterminer l'expression de la f.é.m. induite $e(t)$, puis sa valeur maximale.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les paramètres de l'expression du flux",
+          "justification": "On repère l'amplitude $\\Phi_{max}$ et la pulsation $\\omega$ (ou, ici, la valeur notée $a$) dans l'expression donnée, pour pouvoir appliquer la formule de dérivation.",
+          "resultat_markdown": "$\\Phi(t) = 0{,}2\\cos(1{,}57\\,t)$, donc $\\Phi_{max} = 0{,}2$ Wb et $a = 1{,}57$ rad/s."
+        },
+        {
+          "numero": 2,
+          "action": "Dériver le flux par rapport au temps",
+          "justification": "La dérivée de $\\cos(at)$ par rapport au temps vaut $-a\\sin(at)$.",
+          "resultat_markdown": "$$\\dfrac{d\\Phi}{dt} = 0{,}2 \\times \\big(-1{,}57\\sin(1{,}57\\,t)\\big) = -0{,}314\\sin(1{,}57\\,t)$$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la loi de Faraday",
+          "justification": "$e(t) = -d\\Phi/dt$ : on change le signe du résultat précédent.",
+          "resultat_markdown": "$$e(t) = -\\big(-0{,}314\\sin(1{,}57\\,t)\\big) = 0{,}314\\sin(1{,}57\\,t) \\text{ V}$$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire la valeur maximale de la f.é.m.",
+          "justification": "La fonction $\\sin$ ne dépasse jamais 1 en valeur absolue : le maximum de $e(t)$ est donc atteint quand $\\sin(1{,}57\\,t) = 1$.",
+          "resultat_markdown": "$$E_{max} = 0{,}314 \\text{ V}$$"
+        }
+      ],
+      "conclusion_markdown": "La f.é.m. induite vaut $e(t) = 0{,}314\\sin(1{,}57\\,t)$ V, et sa valeur maximale est 0,314 V."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le signe « moins » de la loi de Faraday et écrire $e(t) = d\\Phi/dt$ directement.",
+          "pourquoi_faux": "La loi de Faraday comporte un signe moins par convention (loi de Lenz incluse) : l'omettre inverse le signe de $e(t)$ à chaque instant, ce qui reste sans conséquence sur la valeur maximale en valeur absolue mais fausse l'expression complète de $e(t)$ et toute question ultérieure sur son signe à un instant donné.",
+          "correction_markdown": "Écris toujours $e(t) = -d\\Phi/dt$ comme un bloc indissociable, jamais $d\\Phi/dt$ suivi d'un signe ajouté après coup : le risque d'oubli est trop grand."
+        },
+        {
+          "erreur_markdown": "Dériver $\\cos(at)$ en $-\\sin(at)$, en oubliant de multiplier par $a$ (dérivation d'une fonction composée).",
+          "pourquoi_faux": "La variable à l'intérieur du cosinus n'est pas $t$ seul mais $at$ : la dérivation d'une fonction composée impose de multiplier par la dérivée de l'intérieur, ici $a$. Oublier ce facteur $a$ fausse à la fois l'expression de $e(t)$ et sa valeur maximale (l'erreur n'est pas seulement un facteur près, elle change la nature physique du résultat si $a \\neq 1$).",
+          "correction_markdown": "Vérifie systématiquement, avant de conclure, que le facteur multiplicatif devant le sinus (ou le cosinus) correspond bien au produit de l'amplitude et de la pulsation, jamais de l'amplitude seule."
+        },
+        {
+          "erreur_markdown": "Confondre la valeur maximale de $e(t)$ avec sa valeur à un instant particulier, comme $t=0$.",
+          "pourquoi_faux": "À $t=0$, $e(0) = 0{,}314\\sin(0) = 0$ : ce n'est manifestement pas la valeur maximale. La valeur maximale d'une fonction sinusoïdale est son amplitude, atteinte quand le sinus ou le cosinus vaut $\\pm 1$, pas à un instant arbitrairement choisi.",
+          "correction_markdown": "Pour trouver une valeur maximale d'une fonction sinusoïdale $A\\sin(\\cdot)$ ou $A\\cos(\\cdot)$, identifie directement l'amplitude $A$ (en valeur absolue) : inutile de dériver à nouveau ni de tester des valeurs particulières de $t$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le flux à travers une bobine varie selon $\\Phi(t) = 0{,}05\\cos(100t)$ (en webers). Déterminer l'expression de la f.é.m. induite $e(t)$ et sa valeur maximale.",
+          "solution_markdown": "$$\\dfrac{d\\Phi}{dt} = 0{,}05 \\times (-100\\sin(100t)) = -5\\sin(100t)$$\n\n$$e(t) = -\\dfrac{d\\Phi}{dt} = 5\\sin(100t) \\text{ V}$$\n\n$$E_{max} = 5 \\text{ V}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le flux à travers une bobine varie selon $\\Phi(t) = 0{,}1\\sin(50t)$ (en webers). Déterminer l'expression de la f.é.m. induite $e(t)$ et sa valeur maximale.",
+          "solution_markdown": "La dérivée de $\\sin(at)$ par rapport au temps vaut $a\\cos(at)$ :\n\n$$\\dfrac{d\\Phi}{dt} = 0{,}1 \\times 50\\cos(50t) = 5\\cos(50t)$$\n\n$$e(t) = -\\dfrac{d\\Phi}{dt} = -5\\cos(50t) \\text{ V}$$\n\n$$E_{max} = 5 \\text{ V}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le flux à travers une bobine est donné par $\\Phi(t) = \\Phi_{max}\\cos(\\omega t)$. Montrer que la valeur maximale de la f.é.m. induite, $E_{max}$, est proportionnelle à la fréquence $f$ de rotation (ou d'oscillation), et calculer le facteur de proportionnalité en fonction de $\\Phi_{max}$.",
+          "solution_markdown": "$$\\dfrac{d\\Phi}{dt} = -\\omega\\Phi_{max}\\sin(\\omega t) \\quad\\Rightarrow\\quad e(t) = -\\dfrac{d\\Phi}{dt} = \\omega\\Phi_{max}\\sin(\\omega t)$$\n\nL'amplitude de $e(t)$, c'est-à-dire sa valeur maximale, est donc :\n\n$$E_{max} = \\omega\\Phi_{max}$$\n\nOr $\\omega = 2\\pi f$ (relation entre pulsation et fréquence), donc :\n\n$$E_{max} = 2\\pi f \\Phi_{max}$$\n\n$E_{max}$ est bien proportionnelle à $f$, avec un facteur de proportionnalité $2\\pi\\Phi_{max}$ : plus la bobine (ou le rotor) tourne vite, plus la f.é.m. maximale produite est grande, à amplitude de flux $\\Phi_{max}$ égale. C'est pourquoi la tension délivrée par une dynamo de vélo augmente avec la vitesse de pédalage."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Faraday, $e(t) = -d\\Phi/dt$, transforme le calcul d'une f.é.m. induite en un calcul de dérivée du flux magnétique.",
+        "Pour un flux en $\\Phi_{max}\\cos(\\omega t)$ ou $\\Phi_{max}\\sin(\\omega t)$, dérive en n'oubliant jamais de multiplier par $\\omega$ (dérivation d'une fonction composée), puis applique le signe moins de la loi de Faraday.",
+        "La valeur maximale d'une fonction sinusoïdale $A\\sin(\\cdot)$ ou $A\\cos(\\cdot)$ est directement son amplitude $|A|$ : inutile de tester des valeurs particulières du temps.",
+        "La f.é.m. maximale induite est proportionnelle à la fréquence de rotation ($E_{max} = 2\\pi f \\Phi_{max}$) : une rotation plus rapide produit une tension plus grande.",
+        "Cette méthode de dérivation s'applique à toute f.é.m. induite dont le flux est donné par une fonction trigonométrique, que ce soit dans un alternateur, une dynamo ou un capteur inductif."
+      ]
+    }
+  ]
+}

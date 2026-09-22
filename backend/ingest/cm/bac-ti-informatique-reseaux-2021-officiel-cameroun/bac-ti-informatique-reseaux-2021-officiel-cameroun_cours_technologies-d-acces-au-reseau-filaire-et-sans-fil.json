@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-technologies-d-acces-au-reseau-filaire-et-sans-fil-terminale-ti",
+  "meta": {
+    "titre": "Technologies d'accès au réseau : filaire et sans fil",
+    "matiere": "Réseaux, Internet et Sécurité Informatique",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Technologies d'accès réseau",
+    "duree_estimee_min": 15,
+    "tags": [
+      "Wi-Fi",
+      "Ethernet",
+      "technologies d'accès réseau",
+      "IPCONFIG"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-TI-INFORMATIQUE-RESEAUX-2021-CM",
+    "epreuve_titre": "Baccalauréat Techniques Industrielles - Épreuve de Réseaux, Internet et Sécurité Informatique - Session 2021 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-reseaux-2021-officiel-cameroun-ex1-q12-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un même ordinateur portable dispose souvent de plusieurs cartes réseau à la fois : une carte filaire, une carte Wi-Fi, parfois une carte virtuelle. Toutes ces cartes apparaissent dans la sortie d'IPCONFIG, mais une seule d'entre elles assure réellement la connexion à un instant donné. Savoir repérer laquelle, et pourquoi, est la compétence testée ici."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de carte réseau",
+        "Lecture d'une sortie IPCONFIG /ALL"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Identifier la technologie d'accès réellement utilisée",
+      "contenu_markdown": "Plusieurs technologies d'accès au réseau existent : l'**Ethernet** filaire (câble RJ45) et le **Wi-Fi** (réseau sans fil, norme IEEE 802.11) sont les deux plus courantes sur un ordinateur.\n\nPour déterminer laquelle est réellement utilisée à un instant donné, il faut identifier, parmi les cartes listées par IPCONFIG /ALL, celle qui porte une adresse IPv4 active (mention « préférée ») et un bail DHCP en cours ; une carte au statut « Média déconnecté » n'est pas utilisée, quelle que soit sa technologie.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une machine affiche une carte « Ethernet Ethernet » au statut « Média déconnecté » et une carte « réseau sans fil Wi-Fi » avec l'adresse IPv4 192.168.43.228 (préférée). Identifier la technologie d'accès utilisée et justifier.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Examiner le statut de chaque carte",
+          "justification": "Le statut du média indique si la carte est réellement connectée.",
+          "resultat_markdown": "La carte Ethernet affiche « Média déconnecté » : elle n'est pas active. La carte Wi-Fi ne mentionne aucun statut de déconnexion et porte une adresse IP."
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier la présence d'une adresse IP active",
+          "justification": "Une carte réellement utilisée porte une adresse IPv4 marquée « préférée » et un bail DHCP.",
+          "resultat_markdown": "La carte Wi-Fi porte l'adresse 192.168.43.228 (préférée), avec bail DHCP obtenu : elle est active."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la technologie utilisée",
+          "justification": "Seule la carte active détermine la technologie réellement employée par la machine.",
+          "resultat_markdown": "La technologie d'accès utilisée est le Wi-Fi, la carte Ethernet filaire n'étant pas connectée."
+        }
+      ],
+      "conclusion_markdown": "Le statut de chaque carte (connectée/déconnectée) et la présence d'une adresse IP active permettent de trancher sans ambiguïté quelle technologie d'accès est réellement utilisée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « Ethernet » simplement parce que cette carte apparaît en premier dans la liste IPCONFIG",
+          "pourquoi_faux": "L'ordre d'affichage des cartes par IPCONFIG ne reflète ni leur importance ni leur état de connexion : il faut examiner le statut de chaque carte individuellement.",
+          "correction_markdown": "Ignore l'ordre d'affichage et vérifie systématiquement le statut du média et la présence d'une adresse IP active pour chaque carte."
+        },
+        {
+          "erreur_markdown": "Oublier de justifier la réponse par un élément précis tiré du document",
+          "pourquoi_faux": "Une réponse sans preuve concrète (statut de connexion, adresse IP active) n'est qu'une affirmation, pas une justification.",
+          "correction_markdown": "Cite toujours l'élément exact de la sortie IPCONFIG qui prouve ta réponse (le statut « Média déconnecté » ou l'adresse IP « préférée »)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une carte réseau affiche le statut « Média déconnecté ». Cette carte assure-t-elle actuellement la connexion de la machine au réseau ?",
+          "solution_markdown": "Non. Le statut « Média déconnecté » signifie qu'aucune liaison physique ou logique active n'existe sur cette carte à cet instant, quelle que soit sa technologie."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ordinateur de bureau ne possède qu'une carte Ethernet filaire, active, avec une adresse IP configurée manuellement (adressage statique). Peut-on tout de même parler de « technologie d'accès au réseau » dans ce cas, alors qu'il n'y a pas de DHCP ?",
+          "solution_markdown": "Oui. La technologie d'accès au réseau (ici, l'Ethernet filaire) désigne le support physique et la norme de transmission utilisés pour connecter la machine au réseau, indépendamment du mode d'adressage (statique ou dynamique) choisi pour son adresse IP. Un adressage statique n'empêche en rien l'utilisation de la technologie Ethernet : les deux notions, technologie d'accès et mode d'adressage, sont indépendantes."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un ordinateur portable dispose d'une carte Ethernet ET d'une carte Wi-Fi, toutes deux actives et connectées simultanément à deux réseaux différents. Expliquer comment la machine détermine, par quelle carte, envoyer un paquet destiné à une adresse IP particulière.",
+          "solution_markdown": "Lorsque plusieurs cartes réseau sont actives simultanément, le système d'exploitation consulte sa table de routage, qui associe à chaque plage d'adresses de destination l'interface (carte réseau) à utiliser et, le cas échéant, une passerelle. Si l'adresse de destination appartient au réseau local de l'une des deux cartes, le paquet est envoyé directement par cette carte. Si la destination est extérieure aux deux réseaux locaux (cas d'Internet), le système utilise la route par défaut, généralement associée à une seule des deux cartes selon sa priorité (souvent la carte filaire, jugée plus fiable, prime sur le Wi-Fi lorsque les deux sont disponibles), afin d'éviter d'envoyer le même trafic par deux chemins à la fois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Ethernet (filaire) et Wi-Fi (sans fil, norme 802.11) sont les deux technologies d'accès les plus courantes.",
+        "Seule la carte au statut connecté, avec une adresse IP active, indique la technologie réellement utilisée.",
+        "Le statut « Média déconnecté » élimine une carte de la réponse, quelle que soit sa technologie.",
+        "Technologie d'accès et mode d'adressage (statique/dynamique) sont deux notions indépendantes.",
+        "Toute réponse doit être justifiée par un élément précis relevé dans la sortie IPCONFIG."
+      ]
+    }
+  ]
+}

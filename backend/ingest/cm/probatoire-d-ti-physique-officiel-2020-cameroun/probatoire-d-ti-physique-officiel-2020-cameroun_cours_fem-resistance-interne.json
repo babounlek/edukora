@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-fem-resistance-interne-1ere-d-ti",
+  "meta": {
+    "titre": "Déterminer la f.é.m. et la résistance interne d'un générateur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Électricité - Générateurs",
+    "duree_estimee_min": 25,
+    "tags": [
+      "f.é.m.",
+      "résistance interne",
+      "loi de Pouillet",
+      "caractéristique U(I)"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2020-CM",
+    "epreuve_titre": "Probatoire D, TI - Physique - 2020 - Cameroun (officiel)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2020-cameroun-ex{ex}-q3-3-2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sans tracer aucun graphe, un simple tableau de mesures (I, U) suffit à déterminer complètement les deux grandeurs qui caractérisent un générateur réel : sa f.é.m. et sa résistance interne. Ce cours donne la méthode exacte pour les extraire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de maille U = E − rI d'un générateur réel",
+        "Résolution d'un système de deux équations à deux inconnues"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Détermination de E et r sans graphe",
+      "contenu_markdown": "Pour un générateur réel de f.é.m. E et de résistance interne r, la relation U = E − rI relie la tension à ses bornes à l'intensité qu'il débite. Cette relation permet de déterminer E et r directement à partir d'un tableau de mesures, sans tracer de graphe : d'une part, la valeur de U relevée pour I = 0 (générateur à vide) donne directement E, puisque U(0) = E − r×0 = E ; d'autre part, en comparant deux réglages (I₁, U₁) et (I₂, U₂), on obtient r = (U₁ − U₂)/(I₂ − I₁), la résistance interne étant l'opposé du taux de variation de U par rapport à I.",
+      "formule_principale": "U = E - rI",
+      "variantes": [
+        {
+          "nom": "Méthode graphique (si un graphe est exigé)",
+          "quand_utiliser": "Quand l'énoncé impose de tracer la caractéristique U(I)",
+          "contenu_markdown": "E est l'ordonnée à l'origine de la droite U(I), et r est l'opposé du coefficient directeur (la pente) de cette droite."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un tableau donne U = 110 V pour I = 0 A et U = 104 V pour I = 12 A, avec des valeurs intermédiaires cohérentes. Déterminer E et r de ce générateur, sans tracer de graphe.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire E directement dans le tableau",
+          "justification": "Pour I = 0, U = E d'après la loi de maille.",
+          "resultat_markdown": "E = 110 V"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir deux réglages pour calculer r",
+          "justification": "On utilise le point à vide et un autre point du tableau.",
+          "resultat_markdown": "(I=0, U=110 V) et (I=12 A, U=104 V)"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer r à partir de ces deux points",
+          "justification": "r = (U(0) − U(12))/(12 − 0), l'opposé de la pente de U en fonction de I.",
+          "resultat_markdown": "r = (110 − 104)/12 = 6/12 = 0,5 Ω"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier avec une valeur intermédiaire du tableau",
+          "justification": "On applique U = E − rI à une autre valeur de I pour confirmer.",
+          "resultat_markdown": "À I = 4 A : U = 110 − 0,5×4 = 108 V, cohérent avec le tableau"
+        }
+      ],
+      "conclusion_markdown": "Ce générateur a une f.é.m. E = 110 V et une résistance interne r = 0,5 Ω, valeurs confirmées par la cohérence avec l'ensemble des points du tableau."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher la valeur de E en prenant la moyenne de toutes les tensions du tableau.",
+          "pourquoi_faux": "E n'est pas une moyenne : c'est précisément la tension au point particulier où I = 0, seul point où la chute de tension rI s'annule exactement.",
+          "correction_markdown": "Toujours identifier dans le tableau la ligne où I = 0 pour lire E directement, sans calcul de moyenne."
+        },
+        {
+          "erreur_markdown": "Calculer r comme U/I à partir d'un seul point du tableau au lieu d'utiliser une variation entre deux points.",
+          "pourquoi_faux": "U/I à un point donné mélange la contribution de E et celle de r ; seule la variation de U rapportée à la variation de I entre deux réglages isole correctement r, en éliminant E.",
+          "correction_markdown": "Toujours utiliser une différence de deux tensions divisée par la différence des deux intensités correspondantes pour calculer r, jamais un simple rapport U/I à un seul point."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur donne U = 6,0 V pour I = 0 A et U = 5,0 V pour I = 2,0 A. Déterminer E et r.",
+          "solution_markdown": "E = 6,0 V (valeur à I = 0). r = (6,0−5,0)/2,0 = 0,5 Ω."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur donne U = 4,5 V pour I = 1,0 A et U = 3,5 V pour I = 3,0 A (le tableau ne comporte pas de valeur à I = 0). Déterminer E et r.",
+          "solution_markdown": "r = (4,5−3,5)/(3,0−1,0) = 1,0/2,0 = 0,5 Ω. En utilisant U = E−rI avec le premier point : E = U + rI = 4,5 + 0,5×1,0 = 5,0 V."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un générateur de f.é.m. E = 12 V et de résistance interne r = 0,2 Ω débite un courant I = 5,0 A dans un circuit. Calculer la tension U à ses bornes, puis la puissance dissipée par effet Joule à l'intérieur du générateur.",
+          "solution_markdown": "U = E − rI = 12 − 0,2×5,0 = 11,0 V. La puissance dissipée par effet Joule dans la résistance interne est Pj = rI² = 0,2×5,0² = 5,0 W."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La relation U = E − rI permet de déterminer E et r sans tracer de graphe.",
+        "E se lit directement dans le tableau à la ligne où I = 0.",
+        "r se calcule par le rapport d'une différence de tensions sur la différence des intensités correspondantes, jamais par U/I à un seul point.",
+        "Vérifie toujours les valeurs trouvées sur un troisième point du tableau avant de conclure."
+      ]
+    }
+  ]
+}

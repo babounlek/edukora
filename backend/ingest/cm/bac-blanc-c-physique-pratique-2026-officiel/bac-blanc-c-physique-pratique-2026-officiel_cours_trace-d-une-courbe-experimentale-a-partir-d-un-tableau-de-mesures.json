@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-trace-courbe-experimentale-terminale",
+  "meta": {
+    "titre": "Tracé d'une courbe expérimentale à partir d'un tableau de mesures",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Méthodologie expérimentale - représentation graphique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "tracé de courbe",
+      "linéarisation",
+      "fonction affine",
+      "échelle graphique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalauréat Blanc - Physique Pratique - Pendule de torsion (2026, Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-blanc-c-physique-pratique-2026-officiel-ex1-q4.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une relation physique qui contient un carré, une racine ou un produit de deux inconnues semble impossible à vérifier directement avec une droite. Le tour de force du tracé graphique en physique expérimentale consiste justement à choisir les bonnes grandeurs à porter en abscisse et en ordonnée pour que la relation, aussi compliquée soit-elle en apparence, devienne une droite. Une fois cette droite obtenue, elle devient un outil de calcul à part entière : sa pente et son ordonnée à l'origine livrent des grandeurs physiques qu'aucune mesure directe n'aurait permis d'obtenir aussi simplement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Reconnaître une fonction affine y = ax + b",
+        "Lire et construire un tableau de valeurs (x ; y)",
+        "Utiliser une échelle graphique (correspondance entre une unité physique et une longueur sur le papier)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Choisir les grandeurs à porter en abscisse et en ordonnée",
+      "contenu_markdown": "Avant de tracer quoi que ce soit, il faut vérifier que la relation physique étudiée peut s'écrire sous la forme d'une fonction affine $y = ax + b$, où $x$ et $y$ sont des grandeurs calculées à partir des mesures brutes (et pas nécessairement les grandeurs mesurées elles-mêmes). Une relation du type $T_0^2 = \\dfrac{8\\pi^2 m}{C}x^2 + \\dfrac{4\\pi^2 I_0}{C}$ n'est pas affine en $x$, mais elle l'est en $x^2$ : en posant $X = x^2$ et $Y = T_0^2$, on obtient $Y = aX + b$, une droite.\n\nUne fois les grandeurs $X$ et $Y$ identifiées et calculées pour chaque mesure :\n\n1. Choisir des échelles adaptées à l'étendue des valeurs de $X$ et de $Y$, de façon que le graphique occupe une portion raisonnable de la feuille (ni trop petit, ni hors cadre) ; respecter les échelles imposées par l'énoncé quand elles sont données.\n2. Placer chaque point $(X_i\\ ;\\ Y_i)$ avec précision.\n3. Vérifier que les points sont sensiblement alignés (une dispersion importante signale une erreur de mesure ou de calcul en amont).\n4. Tracer, à la règle, la droite qui passe au plus près de l'ensemble des points (droite moyenne), sans nécessairement passer exactement par chacun d'eux.",
+      "formule_principale": "Y = aX + b",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "À partir du tableau de $x^2$ (en m²) et $T_0^2$ (en s²) obtenu pour un pendule de torsion, tracer la courbe $T_0^2 = f(x^2)$ avec les échelles $1\\text{ cm}\\leftrightarrow 0,01\\text{ m}^2$ en abscisse et $1\\text{ cm}\\leftrightarrow 0,1\\text{ s}^2$ en ordonnée.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier la nature affine de la relation à tracer",
+          "justification": "La relation théorique T0² = (8π²m/C)x² + (4π²I0/C) est de la forme Y = aX + b avec X = x² et Y = T0².",
+          "resultat_markdown": "Grandeurs à porter en graphique : X = x² en abscisse, Y = T0² en ordonnée."
+        },
+        {
+          "numero": 2,
+          "action": "Construire les axes selon les échelles imposées",
+          "justification": "L'énoncé impose 1 cm ↔ 0,01 m² en abscisse et 1 cm ↔ 0,1 s² en ordonnée : chaque grand carreau du papier millimétré représente ces valeurs.",
+          "resultat_markdown": "Axe des abscisses gradué de 0 à 0,07 m² environ ; axe des ordonnées gradué de 0 à 0,6 s² environ."
+        },
+        {
+          "numero": 3,
+          "action": "Placer les points du tableau",
+          "justification": "Chaque couple (x² ; T0²) du tableau correspond à un point du graphique.",
+          "resultat_markdown": "Points placés : (0,0100 ; 0,340), (0,0225 ; 0,389), (0,0400 ; 0,460), (0,0625 ; 0,549)."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier l'alignement et tracer la droite moyenne",
+          "justification": "Les quatre points sont sensiblement alignés, ce qui confirme la relation affine attendue entre T0² et x².",
+          "resultat_markdown": "Droite moyenne tracée à la règle, passant au plus près des quatre points."
+        }
+      ],
+      "conclusion_markdown": "La courbe obtenue est une droite croissante : cet alignement confirme expérimentalement la relation affine établie par le calcul théorique, et cette droite devient l'outil qui permettra, dans un second temps, de déterminer C et I0 à partir de sa pente et de son ordonnée à l'origine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tracer une courbe passant exactement par chaque point mesuré, en reliant les points un par un.",
+          "pourquoi_faux": "Des mesures expérimentales comportent toujours de petites erreurs ; relier les points un à un fait apparaître ces erreurs comme des variations physiques réelles, alors qu'une droite moyenne les moyenne correctement.",
+          "correction_markdown": "Tracer une droite unique qui passe au plus près de l'ensemble des points, sans nécessairement passer exactement par chacun d'eux."
+        },
+        {
+          "erreur_markdown": "Utiliser une échelle qui ne respecte pas celle imposée par l'énoncé, ou qui écrase le graphique dans un coin de la feuille.",
+          "pourquoi_faux": "Une échelle mal choisie rend la lecture de la pente et de l'ordonnée à l'origine imprécise, ce qui se répercute directement sur les valeurs physiques déduites ensuite.",
+          "correction_markdown": "Respecter systématiquement l'échelle imposée par l'énoncé ; à défaut, choisir une échelle qui utilise la majeure partie de la feuille disponible."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On dispose des points (1,0 ; 2,1), (2,0 ; 4,0), (3,0 ; 5,9) et (4,0 ; 8,1). Ces points semblent-ils correspondre à une relation affine entre les deux grandeurs mesurées ? Justifier brièvement.",
+          "solution_markdown": "Oui. En calculant les écarts successifs entre ordonnées pour des écarts égaux en abscisse (1,0 en abscisse à chaque fois) : 4,0-2,1=1,9 ; 5,9-4,0=1,9 ; 8,1-5,9=2,2, les écarts sont sensiblement constants (environ 2,0 à la dispersion expérimentale près), ce qui est la signature d'une relation affine y = ax + b avec a ≈ 2,0."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une relation physique s'écrit $v^2 = v_0^2 + 2a\\,d$, où $v$ est une vitesse mesurée, $d$ une distance mesurée, et $v_0$, $a$ des constantes à déterminer. Quelles grandeurs porter en abscisse et en ordonnée pour obtenir une droite ?",
+          "solution_markdown": "La relation s'écrit v² = 2a·d + v0², qui est de la forme Y = AX + B avec X = d, Y = v², A = 2a et B = v0². Il faut donc porter d en abscisse et v² (et non v) en ordonnée pour obtenir une droite."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une relation physique s'écrit $\\dfrac{1}{v} = \\dfrac{1}{f} - \\dfrac{1}{u}$ où $v$, $f$ et $u$ sont des longueurs mesurées, $f$ étant une constante inconnue à déterminer et $u$ la grandeur que l'on fait varier. Quelles grandeurs porter en abscisse et en ordonnée pour obtenir une droite, et comment déterminer f à partir de cette droite ?",
+          "solution_markdown": "En réécrivant : $\\dfrac{1}{v} = -\\dfrac{1}{u} + \\dfrac{1}{f}$, la relation est affine en $X = \\dfrac{1}{u}$ et $Y = \\dfrac{1}{v}$, de pente $a = -1$ et d'ordonnée à l'origine $b = \\dfrac{1}{f}$.\\n\\nIl faut donc porter $1/u$ en abscisse et $1/v$ en ordonnée (et non $u$ et $v$ directement). La pente attendue vaut exactement $-1$ (ce qui constitue une vérification de la relation elle-même), et la constante $f$ se déduit de l'ordonnée à l'origine par $f = 1/b$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant de tracer, réécris la relation physique sous la forme Y = aX + b : X et Y ne sont pas toujours les grandeurs mesurées directement, mais des grandeurs calculées à partir d'elles (carré, inverse, produit).",
+        "Respecte toujours l'échelle imposée par l'énoncé, ou choisis une échelle qui utilise la majeure partie de la feuille disponible.",
+        "Place chaque point avec précision, puis vérifie leur alignement avant de tracer quoi que ce soit.",
+        "Trace une droite moyenne unique, au plus près de l'ensemble des points, jamais une ligne brisée reliant les points un à un.",
+        "Cette étape de linéarisation graphique revient dans presque toutes les épreuves pratiques de Physique du BAC et du Probatoire, dès qu'une grandeur ne dépend pas linéairement du paramètre étudié."
+      ]
+    }
+  ]
+}

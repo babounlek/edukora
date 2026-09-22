@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-include-extend-tle-ti",
+  "meta": {
+    "titre": "Les relations entre cas d'utilisation : inclusion et extension",
+    "matiere": "Systèmes d'Information",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "Diagramme de cas d'utilisation : les relations include et extend",
+    "duree_estimee_min": 20,
+    "tags": [
+      "UML",
+      "include",
+      "extend",
+      "cas d'utilisation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-ti-informatique-theorique-2022-officiel-cameroun",
+    "epreuve_titre": "Baccalauréat série TI - Épreuve de Système d'Information - Cameroun - Session 2022",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-ti-informatique-theorique-2022-officiel-cameroun-ex1-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux cas d'utilisation peuvent avoir un lien entre eux sans que ce lien soit de même nature : l'un est parfois un passage obligé de l'autre, parfois un simple complément conditionnel. Confondre les deux fait perdre des points sur une question qui ne demande pourtant qu'un choix entre deux symboles. Ce cours donne le réflexe pour ne plus se tromper."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir définir un cas d'utilisation et le représenter par une ellipse.",
+        "Savoir reconnaître une condition dans un raisonnement (« seulement si », « sauf si »)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Include et extend : un passage obligé contre un complément conditionnel",
+      "contenu_markdown": "La relation `<<include>>` relie un cas d'utilisation de base à un sous-cas qui est systématiquement exécuté à chaque déroulement du cas de base : la flèche part du cas de base et pointe vers le cas inclus. La relation `<<extend>>` relie un cas d'utilisation d'extension à un cas de base qu'il vient compléter uniquement sous certaines conditions : la flèche part cette fois du cas d'extension et pointe vers le cas de base qu'il étend.\n\nLe réflexe à avoir : se demander si ce second cas se produit à chaque fois que le premier se produit, sans exception. Si oui, c'est un `<<include>>`. Si c'est seulement parfois, sous condition, c'est un `<<extend>>`.",
+      "formule_principale": "<<include>> : Base --> Inclus (systématique)   ;   <<extend>> : Extension --> Base (conditionnel)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une bibliothèque, l'inscription d'un abonné suppose parfois le paiement de droits d'accès (élèves et élèves externes), mais jamais pour les enseignants, dont l'accès est gratuit. Déterminer la relation entre les cas d'utilisation « Inscrire » et « Payer les droits d'accès ».",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier si le second cas se produit à chaque exécution du premier",
+          "justification": "C'est le test qui distingue include d'extend.",
+          "resultat_markdown": "Non : les enseignants s'inscrivent sans jamais payer, donc le paiement n'est pas systématique."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la nature conditionnelle du lien",
+          "justification": "Puisque le second cas ne s'exécute que pour certaines catégories d'acteur, il s'agit d'un complément conditionnel, pas d'un passage obligé.",
+          "resultat_markdown": "La relation est une relation extend."
+        },
+        {
+          "numero": 3,
+          "action": "Orienter correctement la flèche",
+          "justification": "Dans une relation extend, la flèche part toujours du cas d'extension vers le cas de base qu'il complète, jamais l'inverse.",
+          "resultat_markdown": "La flèche part de « Payer les droits d'accès » et pointe vers « Inscrire »."
+        }
+      ],
+      "conclusion_markdown": "« Payer les droits d'accès » <<extend>> « Inscrire » : le paiement vient compléter l'inscription uniquement lorsque la catégorie de l'abonné le requiert."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre systématiquement include dès qu'un enchaînement entre deux cas d'utilisation est repéré",
+          "pourquoi_faux": "L'include suppose que le second cas s'exécute à chaque fois, sans aucune exception ; un seul contre-exemple dans l'énoncé suffit à l'invalider.",
+          "correction_markdown": "Cherche toujours dans l'énoncé un cas où le second cas d'utilisation NE se produit PAS : s'il existe, la relation est un extend, pas un include."
+        },
+        {
+          "erreur_markdown": "Inverser le sens de la flèche dans une relation extend (la faire partir du cas de base vers l'extension)",
+          "pourquoi_faux": "Le sens de la flèche indique quel cas dépend de l'autre : dans un extend, c'est le cas d'extension qui a besoin du cas de base pour exister, pas l'inverse.",
+          "correction_markdown": "Retiens que la flèche extend part toujours de l'élément le plus spécifique (l'extension) vers l'élément le plus général (le cas de base)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour retirer de l'argent à un distributeur automatique, la vérification du code confidentiel est une étape obligatoire, exécutée à chaque retrait sans exception. Quelle relation lie « Retirer de l'argent » et « Vérifier le code confidentiel » ?",
+          "solution_markdown": "La vérification du code s'exécute à chaque retrait, sans aucune exception : c'est une relation `<<include>>`, avec la flèche partant du cas de base « Retirer de l'argent » vers le cas inclus « Vérifier le code confidentiel »."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sur un site de commerce en ligne, l'application d'un code de réduction n'intervient que si le client en saisit un au moment de valider sa commande ; la plupart des clients ne le font pas. Quelle relation lie « Valider la commande » et « Appliquer un code de réduction » ?",
+          "solution_markdown": "L'application du code de réduction n'est pas systématique : elle ne se produit que pour les clients qui choisissent d'en saisir un. C'est une relation `<<extend>>`, avec la flèche partant du cas d'extension « Appliquer un code de réduction » vers le cas de base « Valider la commande »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un système de réservation de billets d'avion propose systématiquement, à chaque réservation, le calcul automatique du prix total ; ce calcul intègre en plus, uniquement si le passager le demande, l'ajout d'une assurance annulation qui augmente le prix affiché. Modéliser les relations entre « Réserver un billet », « Calculer le prix total » et « Ajouter une assurance annulation ».",
+          "solution_markdown": "Deux relations distinctes coexistent ici. Le calcul du prix total s'exécute à chaque réservation, sans exception : relation `<<include>>` entre « Réserver un billet » (cas de base) et « Calculer le prix total » (cas inclus), flèche de Réserver un billet vers Calculer le prix total. L'ajout d'une assurance annulation ne concerne que les passagers qui le demandent explicitement : relation `<<extend>>` entre « Ajouter une assurance annulation » (cas d'extension) et « Calculer le prix total » (cas de base qu'elle vient compléter), flèche de Ajouter une assurance annulation vers Calculer le prix total. Ce cas illustre qu'un même cas d'utilisation peut être à la fois le cas inclus d'une relation include ET le cas de base d'une relation extend."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Include relie un cas de base à un sous-cas exécuté systématiquement : la flèche part du cas de base vers le cas inclus.",
+        "Extend relie un cas d'extension à un cas de base qu'il complète sous condition : la flèche part du cas d'extension vers le cas de base.",
+        "Le test décisif : cherche un contre-exemple où le second cas ne se produit pas. S'il existe, c'est un extend ; sinon, c'est un include.",
+        "Un même cas d'utilisation peut être à la fois cas inclus d'une relation et cas de base d'une autre : ne généralise jamais un statut fixe à un cas d'utilisation.",
+        "Au BAC TI, ce choix conditionne directement le sens de la flèche à tracer : un sens inversé fait perdre le point même si le bon symbole a été choisi."
+      ]
+    }
+  ]
+}

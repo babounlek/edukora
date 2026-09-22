@@ -14,56 +14,127 @@
   "titre_exercice": "Exercice 1 : polynôme complexe à coefficients non réels, alignement et triangle rectangle isocèle",
   "points": 5,
   "figures": [],
-  "enonce_intro_markdown": "**A-** On considère le polynôme $p$ défini par $p(z)=z^3-3z^2-3z+5+20i$, $z$ étant un nombre complexe.\n\n**B-** Le plan complexe est rapporté à un repère orthonormé direct $(O,\\vec u,\\vec v)$ ; on prendra $1$cm pour unité graphique. On note $a=1+2i$, $b=-2-i$ et $c=4-i$ les affixes respectives des points $A$, $B$ et $C$.\n\n**Note sur une incohérence du document source.** Le pied de page du document indique « Baccalauréat C&E, Juin 2014 », alors que l'en-tête précise explicitement « Série : D-TI ». Cette mention de pied de page semble être un reliquat de mise en page (modèle réutilisé par l'éditeur du document) plutôt qu'une information sur l'épreuve elle-même : la série retenue pour ce corrigé est celle indiquée en en-tête, D-TI, qui est l'information spécifique à cette épreuve.",
+  "enonce_intro_markdown": "**A-** On considère le polynôme $p$ défini par $p(z)=z^3-3z^2-3z+5+20i$, $z$ étant un nombre complexe.\n\n**B-** Le plan complexe est rapporté à un repère orthonormé direct $(O,\\vec u,\\vec v)$ ; on prendra $1$cm pour unité graphique. On note $a=1+2i$, $b=-2-i$ et $c=4-i$ les affixes respectives des points $A$, $B$ et $C$.",
   "questions": [
     {
       "numero": "A1",
       "points": "0,5pt",
       "enonce_markdown": "Montrer que $1+2i$ est une racine de $p$.",
-      "rappels_de_methode": [{"cours_id": "cours-verifier-racine-polynome-coefficients-complexes-terminale-d-ti", "texte": "Pour vérifier qu'un complexe est racine d'un polynôme à coefficients complexes (non nécessairement réels), on substitue directement et on simplifie ; la propriété des racines conjuguées ne s'applique pas ici car les coefficients ne sont pas tous réels."}],
-      "corrige_markdown": "### Rappel de méthode\nPour vérifier qu'un complexe donné est racine d'un polynôme, on substitue cette valeur dans l'expression et on simplifie jusqu'à obtenir $0$. Ici, les coefficients du polynôme (notamment le terme constant $5+20i$) ne sont pas tous réels : la propriété des racines conjuguées ne s'applique donc pas, et il faut vérifier la racine par substitution directe.\n\n**Calcul de $(1+2i)^2$.**\n\n$$(1+2i)^2=1+4i+4i^2=1+4i-4=-3+4i$$\n\n**Calcul de $(1+2i)^3=(1+2i)(1+2i)^2$.**\n\n$$(1+2i)(-3+4i)=-3+4i-6i+8i^2=-3-2i-8=-11-2i$$\n\n**Substitution dans $p(z)=z^3-3z^2-3z+5+20i$.**\n\n$$p(1+2i)=(-11-2i)-3(-3+4i)-3(1+2i)+5+20i$$\n\n**Développement de chaque terme.**\n\n$$-3(-3+4i)=9-12i\\qquad-3(1+2i)=-3-6i$$\n\n**Assemblage.**\n\n$$p(1+2i)=(-11-2i)+(9-12i)+(-3-6i)+(5+20i)$$\n\n$$=(-11+9-3+5)+(-2-12-6+20)i=0+0i=0$$\n\n**$p(1+2i)=0$ : $1+2i$ est bien racine de $p$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-verifier-racine-polynome-coefficients-complexes-terminale-d-ti",
+          "texte": "Pour vérifier qu'un complexe est racine d'un polynôme à coefficients complexes (non nécessairement réels), on substitue directement et on simplifie ; la propriété des racines conjuguées ne s'applique pas ici car les coefficients ne sont pas tous réels."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour vérifier qu'un complexe donné est racine d'un polynôme, on substitue cette valeur dans l'expression et on simplifie jusqu'à obtenir $0$. Ici, les coefficients du polynôme (notamment le terme constant $5+20i$) ne sont pas tous réels : la propriété des racines conjuguées ne s'applique donc pas, et il faut vérifier la racine par substitution directe.\n\n**Calcul de $(1+2i)^2$.**\n\n$$(1+2i)^2=1+4i+4i^2=1+4i-4=-3+4i$$\n\n**Calcul de $(1+2i)^3=(1+2i)(1+2i)^2$.**\n\n$$(1+2i)(-3+4i)=-3+4i-6i+8i^2=-3-2i-8=-11-2i$$\n\n**Substitution dans $p(z)=z^3-3z^2-3z+5+20i$.**\n\n$$p(1+2i)=(-11-2i)-3(-3+4i)-3(1+2i)+5+20i$$\n\n**Développement de chaque terme.**\n\n$$-3(-3+4i)=9-12i\\qquad-3(1+2i)=-3-6i$$\n\n**Assemblage.**\n\n$$p(1+2i)=(-11-2i)+(9-12i)+(-3-6i)+(5+20i)$$\n\n$$=(-11+9-3+5)+(-2-12-6+20)i=0+0i=0$$\n\n**$p(1+2i)=0$ : $1+2i$ est bien racine de $p$.**",
+      "themes": [
+        "nombres complexes",
+        "racine d'un polynôme",
+        "vérification"
+      ]
     },
     {
       "numero": "A2",
       "points": "0,75pt",
       "enonce_markdown": "Trouver deux nombres complexes $a$ et $b$ tels que, pour tout nombre complexe $z$, on ait $p(z)=(z-1-2i)(z^2+az+b)$.",
-      "rappels_de_methode": [{"cours_id": "cours-factoriser-polynome-degre3-racine-connue-coefficients-complexes-terminale-d-ti", "texte": "Connaissant une racine z0 d'un polynôme de degré 3, on développe (z-z0)(z²+az+b) et on identifie les coefficients avec ceux du polynôme donné, terme à terme."}],
-      "corrige_markdown": "### Rappel de méthode\nConnaissant une racine $z_0$ d'un polynôme de degré $3$, le facteur $(z-z_0)$ le divise sans reste. On développe $(z-z_0)(z^2+az+b)$ et on identifie les coefficients obtenus avec ceux du polynôme donné, terme à terme.\n\n**Développement de $(z-1-2i)(z^2+az+b)$.**\n\n$$(z-1-2i)(z^2+az+b)=z^3+az^2+bz-(1+2i)z^2-(1+2i)az-(1+2i)b$$\n\n$$=z^3+\\big[a-(1+2i)\\big]z^2+\\big[b-(1+2i)a\\big]z-(1+2i)b$$\n\n**Identification avec $p(z)=z^3-3z^2-3z+(5+20i)$.**\n\n**Coefficient de $z^2$ :** $a-(1+2i)=-3\\ \\Longrightarrow\\ a=-3+1+2i=-2+2i$.\n\n**Coefficient de $z$ :** $b-(1+2i)a=-3$. Calculons $(1+2i)a=(1+2i)(-2+2i)=-2+2i-4i+4i^2=-2-2i-4=-6-2i$.\n\nDonc $b-(-6-2i)=-3\\ \\Longrightarrow\\ b=-3-6-2i=-9-2i$.\n\n**Vérification par le terme constant :** $-(1+2i)b=-(1+2i)(-9-2i)=-(-9-2i-18i-4i^2)=-(-9-20i+4)=-(-5-20i)=5+20i$ ✓ (coïncide exactement avec le terme constant de $p$).\n\n**$a=-2+2i$ et $b=-9-2i$.**\n\n**$p(z)=(z-1-2i)\\big(z^2+(-2+2i)z-9-2i\\big)$.**\n\n### Conseil\nToujours terminer l'identification en vérifiant le terme constant : sa coïncidence exacte avec celui du polynôme de départ confirme, indépendamment des calculs intermédiaires, que la factorisation est correcte."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-factoriser-polynome-degre3-racine-connue-coefficients-complexes-terminale-d-ti",
+          "texte": "Connaissant une racine z0 d'un polynôme de degré 3, on développe (z-z0)(z²+az+b) et on identifie les coefficients avec ceux du polynôme donné, terme à terme."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nConnaissant une racine $z_0$ d'un polynôme de degré $3$, le facteur $(z-z_0)$ le divise sans reste. On développe $(z-z_0)(z^2+az+b)$ et on identifie les coefficients obtenus avec ceux du polynôme donné, terme à terme.\n\n**Développement de $(z-1-2i)(z^2+az+b)$.**\n\n$$(z-1-2i)(z^2+az+b)=z^3+az^2+bz-(1+2i)z^2-(1+2i)az-(1+2i)b$$\n\n$$=z^3+\\big[a-(1+2i)\\big]z^2+\\big[b-(1+2i)a\\big]z-(1+2i)b$$\n\n**Identification avec $p(z)=z^3-3z^2-3z+(5+20i)$.**\n\n**Coefficient de $z^2$ :** $a-(1+2i)=-3\\ \\Longrightarrow\\ a=-3+1+2i=-2+2i$.\n\n**Coefficient de $z$ :** $b-(1+2i)a=-3$. Calculons $(1+2i)a=(1+2i)(-2+2i)=-2+2i-4i+4i^2=-2-2i-4=-6-2i$.\n\nDonc $b-(-6-2i)=-3\\ \\Longrightarrow\\ b=-3-6-2i=-9-2i$.\n\n**Vérification par le terme constant :** $-(1+2i)b=-(1+2i)(-9-2i)=-(-9-2i-18i-4i^2)=-(-9-20i+4)=-(-5-20i)=5+20i$ ✓ (coïncide exactement avec le terme constant de $p$).\n\n**$a=-2+2i$ et $b=-9-2i$.**\n\n**$p(z)=(z-1-2i)\\big(z^2+(-2+2i)z-9-2i\\big)$.**\n\n### Conseil\nToujours terminer l'identification en vérifiant le terme constant : sa coïncidence exacte avec celui du polynôme de départ confirme, indépendamment des calculs intermédiaires, que la factorisation est correcte.",
+      "themes": [
+        "nombres complexes",
+        "identification de coefficients",
+        "factorisation"
+      ]
     },
     {
       "numero": "A3",
       "points": "0,75pt",
       "enonce_markdown": "En déduire, dans l'ensemble des nombres complexes, les solutions de l'équation $p(z)=0$.",
-      "rappels_de_methode": [{"cours_id": "cours-resoudre-equation-produit-nul-discriminant-complexe-reel-positif-terminale-d-ti", "texte": "Une équation produit (z-z0)(z²+az+b)=0 se résout en annulant chaque facteur ; pour le second facteur, on calcule le discriminant complexe Δ=a²-4b, qui peut se réduire à un réel positif malgré des coefficients complexes."}],
-      "corrige_markdown": "### Rappel de méthode\nUne équation sous forme de produit $(z-z_0)(z^2+az+b)=0$ se résout en annulant séparément chaque facteur. Pour le second facteur, on calcule le discriminant $\\Delta=a^2-4b$ ; même avec des coefficients $a,b$ complexes, ce discriminant peut se révéler être un réel (positif ou négatif), ce qui simplifie alors la résolution comme dans le cas réel classique.\n\n**D'après la question A2, $p(z)=(z-1-2i)\\big(z^2+(-2+2i)z-9-2i\\big)$.**\n\n$$p(z)=0\\ \\Longleftrightarrow\\ z-1-2i=0\\ \\text{ou}\\ z^2+(-2+2i)z-9-2i=0$$\n\n**Premier facteur :** $z=1+2i$.\n\n**Second facteur : calcul du discriminant**, avec $a=-2+2i$, $b=-9-2i$.\n\n$$a^2=(-2+2i)^2=4-8i+4i^2=4-8i-4=-8i$$\n\n$$\\Delta=a^2-4b=-8i-4(-9-2i)=-8i+36+8i=36$$\n\n**$\\Delta=36$, un réel strictement positif** (malgré des coefficients $a,b$ complexes).\n\n**Calcul des racines** ($\\sqrt\\Delta=6$, racine carrée réelle usuelle) :\n\n$$z=\\dfrac{-a\\pm\\sqrt\\Delta}2=\\dfrac{(2-2i)\\pm6}2$$\n\n$$z_1=\\dfrac{(2-2i)+6}2=\\dfrac{8-2i}2=4-i\\qquad z_2=\\dfrac{(2-2i)-6}2=\\dfrac{-4-2i}2=-2-i$$\n\n**L'ensemble des solutions de $p(z)=0$ est $\\{1+2i\\,;\\,4-i\\,;\\,-2-i\\}$.**\n\n### Conseil\nCes trois solutions coïncident exactement avec les affixes $a=1+2i$, $c=4-i$ et $b=-2-i$ des points $A$, $C$ et $B$ introduits dans la partie B : une bonne lecture d'ensemble de l'exercice permet d'anticiper cette correspondance et de vérifier la cohérence des calculs."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-resoudre-equation-produit-nul-discriminant-complexe-reel-positif-terminale-d-ti",
+          "texte": "Une équation produit (z-z0)(z²+az+b)=0 se résout en annulant chaque facteur ; pour le second facteur, on calcule le discriminant complexe Δ=a²-4b, qui peut se réduire à un réel positif malgré des coefficients complexes."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne équation sous forme de produit $(z-z_0)(z^2+az+b)=0$ se résout en annulant séparément chaque facteur. Pour le second facteur, on calcule le discriminant $\\Delta=a^2-4b$ ; même avec des coefficients $a,b$ complexes, ce discriminant peut se révéler être un réel (positif ou négatif), ce qui simplifie alors la résolution comme dans le cas réel classique.\n\n**D'après la question A2, $p(z)=(z-1-2i)\\big(z^2+(-2+2i)z-9-2i\\big)$.**\n\n$$p(z)=0\\ \\Longleftrightarrow\\ z-1-2i=0\\ \\text{ou}\\ z^2+(-2+2i)z-9-2i=0$$\n\n**Premier facteur :** $z=1+2i$.\n\n**Second facteur : calcul du discriminant**, avec $a=-2+2i$, $b=-9-2i$.\n\n$$a^2=(-2+2i)^2=4-8i+4i^2=4-8i-4=-8i$$\n\n$$\\Delta=a^2-4b=-8i-4(-9-2i)=-8i+36+8i=36$$\n\n**$\\Delta=36$, un réel strictement positif** (malgré des coefficients $a,b$ complexes).\n\n**Calcul des racines** ($\\sqrt\\Delta=6$, racine carrée réelle usuelle) :\n\n$$z=\\dfrac{-a\\pm\\sqrt\\Delta}2=\\dfrac{(2-2i)\\pm6}2$$\n\n$$z_1=\\dfrac{(2-2i)+6}2=\\dfrac{8-2i}2=4-i\\qquad z_2=\\dfrac{(2-2i)-6}2=\\dfrac{-4-2i}2=-2-i$$\n\n**L'ensemble des solutions de $p(z)=0$ est $\\{1+2i\\,;\\,4-i\\,;\\,-2-i\\}$.**\n\n### Conseil\nCes trois solutions coïncident exactement avec les affixes $a=1+2i$, $c=4-i$ et $b=-2-i$ des points $A$, $C$ et $B$ introduits dans la partie B : une bonne lecture d'ensemble de l'exercice permet d'anticiper cette correspondance et de vérifier la cohérence des calculs.",
+      "themes": [
+        "nombres complexes",
+        "équation du second degré",
+        "discriminant"
+      ]
     },
     {
       "numero": "B1",
       "points": "0,75pt",
       "enonce_markdown": "Placer les points $A$, $B$ et $C$ d'affixes respectives $a=1+2i$, $b=-2-i$ et $c=4-i$ dans le repère $(O,\\vec u,\\vec v)$.",
-      "rappels_de_methode": [{"cours_id": "cours-placer-points-plan-complexe-affixes-terminale-d-ti-2014", "texte": "Pour placer un point d'affixe x+iy dans le plan complexe, on reporte x en abscisse et y en ordonnée, à l'échelle donnée par l'unité graphique."}],
-      "corrige_markdown": "### Rappel de méthode\nPour placer un point d'affixe $x+iy$ dans le plan complexe muni du repère $(O,\\vec u,\\vec v)$, on reporte la partie réelle $x$ en abscisse et la partie imaginaire $y$ en ordonnée, à l'échelle fixée par l'unité graphique ($1$cm ici).\n\n**Coordonnées de chaque point.**\n\n$$A(1\\,;\\,2)\\qquad B(-2\\,;\\,-1)\\qquad C(4\\,;\\,-1)$$\n\n**Construction.** $A$ se place à $1$ unité à droite de $O$ et $2$ unités au-dessus ; $B$ à $2$ unités à gauche et $1$ unité en dessous ; $C$ à $4$ unités à droite et $1$ unité en dessous. $B$ et $C$ ont la même ordonnée ($-1$), donc $[BC]$ est horizontal."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-placer-points-plan-complexe-affixes-terminale-d-ti-2014",
+          "texte": "Pour placer un point d'affixe x+iy dans le plan complexe, on reporte x en abscisse et y en ordonnée, à l'échelle donnée par l'unité graphique."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour placer un point d'affixe $x+iy$ dans le plan complexe muni du repère $(O,\\vec u,\\vec v)$, on reporte la partie réelle $x$ en abscisse et la partie imaginaire $y$ en ordonnée, à l'échelle fixée par l'unité graphique ($1$cm ici).\n\n**Coordonnées de chaque point.**\n\n$$A(1\\,;\\,2)\\qquad B(-2\\,;\\,-1)\\qquad C(4\\,;\\,-1)$$\n\n**Construction.** $A$ se place à $1$ unité à droite de $O$ et $2$ unités au-dessus ; $B$ à $2$ unités à gauche et $1$ unité en dessous ; $C$ à $4$ unités à droite et $1$ unité en dessous. $B$ et $C$ ont la même ordonnée ($-1$), donc $[BC]$ est horizontal.",
+      "themes": [
+        "nombres complexes",
+        "affixe",
+        "repère orthonormé"
+      ]
     },
     {
       "numero": "B2",
       "points": "0,5pt",
       "enonce_markdown": "Soit $D$ le point d'affixe $2+3i$ ; montrer que $A$, $B$ et $D$ sont alignés.",
-      "rappels_de_methode": [{"cours_id": "cours-montrer-alignement-trois-points-quotient-reel-terminale-d-ti", "texte": "Trois points A, B, D sont alignés si et seulement si le quotient (zD-zA)/(zB-zA) est un réel (partie imaginaire nulle)."}],
-      "corrige_markdown": "### Rappel de méthode\nTrois points $A$, $B$, $D$ d'affixes $z_A$, $z_B$, $z_D$ sont alignés si et seulement si le quotient $\\dfrac{z_D-z_A}{z_B-z_A}$ est un réel (partie imaginaire nulle), car cela signifie que les vecteurs $\\vec{AD}$ et $\\vec{AB}$ sont colinéaires.\n\n**Calcul du numérateur $z_D-z_A$.**\n\n$$z_D-z_A=(2+3i)-(1+2i)=1+i$$\n\n**Calcul du dénominateur $z_B-z_A$.**\n\n$$z_B-z_A=(-2-i)-(1+2i)=-3-3i$$\n\n**Calcul du quotient**, en factorisant le dénominateur $-3-3i=-3(1+i)$ :\n\n$$\\dfrac{z_D-z_A}{z_B-z_A}=\\dfrac{1+i}{-3(1+i)}=-\\dfrac13$$\n\n**$\\dfrac{z_D-z_A}{z_B-z_A}=-\\dfrac13$, qui est bien un réel.**\n\n**$A$, $B$ et $D$ sont donc alignés.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-montrer-alignement-trois-points-quotient-reel-terminale-d-ti",
+          "texte": "Trois points A, B, D sont alignés si et seulement si le quotient (zD-zA)/(zB-zA) est un réel (partie imaginaire nulle)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nTrois points $A$, $B$, $D$ d'affixes $z_A$, $z_B$, $z_D$ sont alignés si et seulement si le quotient $\\dfrac{z_D-z_A}{z_B-z_A}$ est un réel (partie imaginaire nulle), car cela signifie que les vecteurs $\\vec{AD}$ et $\\vec{AB}$ sont colinéaires.\n\n**Calcul du numérateur $z_D-z_A$.**\n\n$$z_D-z_A=(2+3i)-(1+2i)=1+i$$\n\n**Calcul du dénominateur $z_B-z_A$.**\n\n$$z_B-z_A=(-2-i)-(1+2i)=-3-3i$$\n\n**Calcul du quotient**, en factorisant le dénominateur $-3-3i=-3(1+i)$ :\n\n$$\\dfrac{z_D-z_A}{z_B-z_A}=\\dfrac{1+i}{-3(1+i)}=-\\dfrac13$$\n\n**$\\dfrac{z_D-z_A}{z_B-z_A}=-\\dfrac13$, qui est bien un réel.**\n\n**$A$, $B$ et $D$ sont donc alignés.**",
+      "themes": [
+        "nombres complexes",
+        "alignement",
+        "colinéarité"
+      ]
     },
     {
       "numero": "B3a",
       "points": "1pt",
       "enonce_markdown": "Calculer $\\dfrac{b-a}{c-a}$, mettre le résultat sous la forme algébrique puis sous la forme trigonométrique.",
-      "rappels_de_methode": [{"cours_id": "cours-quotient-forme-algebrique-trigonometrique-terminale-d-ti", "texte": "Pour calculer un quotient de complexes et l'exprimer sous forme trigonométrique, on le met d'abord sous forme algébrique x+iy (en multipliant par le conjugué du dénominateur), puis on détermine son module et son argument."}],
-      "corrige_markdown": "### Rappel de méthode\nPour calculer un quotient de complexes et l'exprimer sous forme trigonométrique, on le met d'abord sous forme algébrique $x+iy$ (en multipliant numérateur et dénominateur par le conjugué du dénominateur), puis on détermine son module $r=\\sqrt{x^2+y^2}$ et son argument $\\theta$ tel que $\\cos\\theta=\\frac xr$, $\\sin\\theta=\\frac yr$.\n\n**Calcul du numérateur $b-a$.**\n\n$$b-a=(-2-i)-(1+2i)=-3-3i$$\n\n**Calcul du dénominateur $c-a$.**\n\n$$c-a=(4-i)-(1+2i)=3-3i$$\n\n**Calcul du quotient**, en factorisant : $-3-3i=-3(1+i)$ et $3-3i=3(1-i)$.\n\n$$\\dfrac{b-a}{c-a}=\\dfrac{-3(1+i)}{3(1-i)}=-\\dfrac{1+i}{1-i}$$\n\n**Multiplication par le conjugué du dénominateur $1+i$.**\n\n$$-\\dfrac{(1+i)(1+i)}{(1-i)(1+i)}=-\\dfrac{(1+i)^2}{1+1}=-\\dfrac{1+2i+i^2}2=-\\dfrac{2i}2=-i$$\n\n**Forme algébrique : $\\dfrac{b-a}{c-a}=0-i=-i$.**\n\n**Détermination du module et de l'argument.** $|-i|=1$. Comme $-i=\\cos\\left(-\\dfrac\\pi2\\right)+i\\sin\\left(-\\dfrac\\pi2\\right)$ :\n\n**Forme trigonométrique : $\\dfrac{b-a}{c-a}=\\cos\\left(-\\dfrac\\pi2\\right)+i\\sin\\left(-\\dfrac\\pi2\\right)$** (module $1$, argument $-\\dfrac\\pi2$)."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-quotient-forme-algebrique-trigonometrique-terminale-d-ti",
+          "texte": "Pour calculer un quotient de complexes et l'exprimer sous forme trigonométrique, on le met d'abord sous forme algébrique x+iy (en multipliant par le conjugué du dénominateur), puis on détermine son module et son argument."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour calculer un quotient de complexes et l'exprimer sous forme trigonométrique, on le met d'abord sous forme algébrique $x+iy$ (en multipliant numérateur et dénominateur par le conjugué du dénominateur), puis on détermine son module $r=\\sqrt{x^2+y^2}$ et son argument $\\theta$ tel que $\\cos\\theta=\\frac xr$, $\\sin\\theta=\\frac yr$.\n\n**Calcul du numérateur $b-a$.**\n\n$$b-a=(-2-i)-(1+2i)=-3-3i$$\n\n**Calcul du dénominateur $c-a$.**\n\n$$c-a=(4-i)-(1+2i)=3-3i$$\n\n**Calcul du quotient**, en factorisant : $-3-3i=-3(1+i)$ et $3-3i=3(1-i)$.\n\n$$\\dfrac{b-a}{c-a}=\\dfrac{-3(1+i)}{3(1-i)}=-\\dfrac{1+i}{1-i}$$\n\n**Multiplication par le conjugué du dénominateur $1+i$.**\n\n$$-\\dfrac{(1+i)(1+i)}{(1-i)(1+i)}=-\\dfrac{(1+i)^2}{1+1}=-\\dfrac{1+2i+i^2}2=-\\dfrac{2i}2=-i$$\n\n**Forme algébrique : $\\dfrac{b-a}{c-a}=0-i=-i$.**\n\n**Détermination du module et de l'argument.** $|-i|=1$. Comme $-i=\\cos\\left(-\\dfrac\\pi2\\right)+i\\sin\\left(-\\dfrac\\pi2\\right)$ :\n\n**Forme trigonométrique : $\\dfrac{b-a}{c-a}=\\cos\\left(-\\dfrac\\pi2\\right)+i\\sin\\left(-\\dfrac\\pi2\\right)$** (module $1$, argument $-\\dfrac\\pi2$).",
+      "themes": [
+        "nombres complexes",
+        "forme algébrique",
+        "forme trigonométrique"
+      ]
     },
     {
       "numero": "B3b",
       "points": "0,75pt",
       "enonce_markdown": "En déduire la nature exacte du triangle $ABC$.",
-      "rappels_de_methode": [{"cours_id": "cours-nature-triangle-rectangle-isocele-quotient-imaginaire-module-1-terminale-d-ti-2014", "texte": "Si (zB-zA)/(zC-zA) est imaginaire pur de module 1, alors AB=AC (isocèle en A) et AB⊥AC (rectangle en A) : le triangle est rectangle isocèle en A."}],
-      "corrige_markdown": "### Rappel de méthode\nSi $\\dfrac{z_B-z_A}{z_C-z_A}$ est imaginaire pur (partie réelle nulle) ET de module $1$, alors $AB=AC$ (le module $1$ traduit l'égalité des longueurs, isocèle en $A$) et $AB\\perp AC$ (l'argument $\\pm\\frac\\pi2$ traduit la perpendicularité, rectangle en $A$) : le triangle est rectangle isocèle en $A$.\n\n**D'après la question B3a, $\\dfrac{b-a}{c-a}=-i$**, imaginaire pur (partie réelle nulle) de module $|-i|=1$.\n\n**Conclusion.** $AB=AC$ (isocèle en $A$) et l'angle en $A$ est droit, car $\\arg(-i)=-\\dfrac\\pi2$ (rectangle en $A$).\n\n**Le triangle $ABC$ est rectangle isocèle en $A$.**\n\n### Conseil\nVérification rapide indépendante : $AB=|b-a|=|-3-3i|=3\\sqrt2$ et $AC=|c-a|=|3-3i|=3\\sqrt2$ : $AB=AC=3\\sqrt2$, confirmant directement l'égalité des longueurs sans repasser par le quotient."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-nature-triangle-rectangle-isocele-quotient-imaginaire-module-1-terminale-d-ti-2014",
+          "texte": "Si (zB-zA)/(zC-zA) est imaginaire pur de module 1, alors AB=AC (isocèle en A) et AB⊥AC (rectangle en A) : le triangle est rectangle isocèle en A."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi $\\dfrac{z_B-z_A}{z_C-z_A}$ est imaginaire pur (partie réelle nulle) ET de module $1$, alors $AB=AC$ (le module $1$ traduit l'égalité des longueurs, isocèle en $A$) et $AB\\perp AC$ (l'argument $\\pm\\frac\\pi2$ traduit la perpendicularité, rectangle en $A$) : le triangle est rectangle isocèle en $A$.\n\n**D'après la question B3a, $\\dfrac{b-a}{c-a}=-i$**, imaginaire pur (partie réelle nulle) de module $|-i|=1$.\n\n**Conclusion.** $AB=AC$ (isocèle en $A$) et l'angle en $A$ est droit, car $\\arg(-i)=-\\dfrac\\pi2$ (rectangle en $A$).\n\n**Le triangle $ABC$ est rectangle isocèle en $A$.**\n\n### Conseil\nVérification rapide indépendante : $AB=|b-a|=|-3-3i|=3\\sqrt2$ et $AC=|c-a|=|3-3i|=3\\sqrt2$ : $AB=AC=3\\sqrt2$, confirmant directement l'égalité des longueurs sans repasser par le quotient.",
+      "themes": [
+        "nombres complexes",
+        "triangle rectangle isocèle",
+        "module",
+        "argument"
+      ]
     }
   ]
 }

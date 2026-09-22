@@ -13,98 +13,228 @@
   "titre_exercice": "Problème : étude complète d'une fonction rationnelle, aire sous la courbe et suite récurrente associée",
   "points": 11,
   "figures": [],
-  "enonce_intro_markdown": "On considère la fonction numérique $f$ définie par $f(x)=\\dfrac{2x^2-3x}{x^2-3x+3}$ ; $(\\Gamma)$ sa courbe représentative dans un repère orthonormé.\n\n**Note sur le barème.** L'énoncé source indique un barème explicite pour toutes les sous-questions sauf la question 6 (\"Montrer que la restriction $g$ de $f$ à $[3;+\\infty[$ est une bijection...\"), pour laquelle aucun point n'est mentionné. La somme des points explicitement indiqués pour les questions 1, 2, 3, 4, 5, 7(a), 7(b), 7(c), 8(a), 8(b-i), 8(b-ii), 8(b-iii) est $1+1,5+0,5+1+2+0,5+1+0,5+0,25+0,5+0,5+0,25=9,5$. Comme le Problème est annoncé à $11$ points, la question 6 se voit attribuer implicitement $11-9,5=1,5$ point. Cette valeur est une reconstruction, signalée ici par souci de transparence plutôt que présentée comme une donnée certaine du document source.",
+  "enonce_intro_markdown": "On considère la fonction numérique $f$ définie par $f(x)=\\dfrac{2x^2-3x}{x^2-3x+3}$ ; $(\\Gamma)$ sa courbe représentative dans un repère orthonormé.",
   "questions": [
     {
       "numero": "1",
       "points": "1pt",
       "enonce_markdown": "Donner le domaine de définition de $f$ et les limites de $f(x)$ lorsque $x$ tend vers l'infini.",
-      "rappels_de_methode": [{"cours_id": "cours-domaine-definition-fonction-rationnelle-discriminant-negatif-terminale-d", "texte": "Une fonction rationnelle est définie partout où son dénominateur ne s'annule pas ; si le dénominateur est un trinôme de discriminant strictement négatif, il ne s'annule jamais et la fonction est définie sur R tout entier. Les limites à l'infini d'une fraction rationnelle s'obtiennent en ne conservant que les termes de plus haut degré au numérateur et au dénominateur."}],
-      "corrige_markdown": "### Rappel de méthode\nUne fonction rationnelle est définie partout où son dénominateur ne s'annule pas ; si ce dénominateur est un trinôme de discriminant strictement négatif, il ne s'annule jamais (et garde un signe constant), donnant une fonction définie sur $\\mathbb R$ tout entier. Les limites à l'infini d'une fraction rationnelle s'obtiennent en ne conservant, au numérateur comme au dénominateur, que les termes de plus haut degré.\n\n**Étude du dénominateur $x^2-3x+3$.**\n\n$$\\Delta=(-3)^2-4\\times1\\times3=9-12=-3$$\n\n**$\\Delta=-3<0$ : le dénominateur ne s'annule jamais sur $\\mathbb R$.**\n\n**Domaine de définition.** $D_f=\\mathbb R$.\n\n**Calcul des limites à l'infini.** On factorise par le terme de plus haut degré ($x^2$) au numérateur et au dénominateur :\n\n$$f(x)=\\dfrac{2x^2-3x}{x^2-3x+3}=\\dfrac{x^2\\left(2-\\frac3x\\right)}{x^2\\left(1-\\frac3x+\\frac3{x^2}\\right)}=\\dfrac{2-\\frac3x}{1-\\frac3x+\\frac3{x^2}}$$\n\n**Quand $x\\to\\pm\\infty$**, les termes $\\dfrac3x$ et $\\dfrac3{x^2}$ tendent vers $0$ :\n\n$$f(x)\\to\\dfrac{2-0}{1-0+0}=\\dfrac21=2$$\n\n**$\\displaystyle\\lim_{x\\to-\\infty}f(x)=\\lim_{x\\to+\\infty}f(x)=2$.**\n\n**Interprétation graphique.** La droite d'équation $y=2$ est asymptote horizontale à $(\\Gamma)$ en $-\\infty$ et en $+\\infty$."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-domaine-definition-fonction-rationnelle-discriminant-negatif-terminale-d",
+          "texte": "Une fonction rationnelle est définie partout où son dénominateur ne s'annule pas ; si le dénominateur est un trinôme de discriminant strictement négatif, il ne s'annule jamais et la fonction est définie sur R tout entier. Les limites à l'infini d'une fraction rationnelle s'obtiennent en ne conservant que les termes de plus haut degré au numérateur et au dénominateur."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nUne fonction rationnelle est définie partout où son dénominateur ne s'annule pas ; si ce dénominateur est un trinôme de discriminant strictement négatif, il ne s'annule jamais (et garde un signe constant), donnant une fonction définie sur $\\mathbb R$ tout entier. Les limites à l'infini d'une fraction rationnelle s'obtiennent en ne conservant, au numérateur comme au dénominateur, que les termes de plus haut degré.\n\n**Étude du dénominateur $x^2-3x+3$.**\n\n$$\\Delta=(-3)^2-4\\times1\\times3=9-12=-3$$\n\n**$\\Delta=-3<0$ : le dénominateur ne s'annule jamais sur $\\mathbb R$.**\n\n**Domaine de définition.** $D_f=\\mathbb R$.\n\n**Calcul des limites à l'infini.** On factorise par le terme de plus haut degré ($x^2$) au numérateur et au dénominateur :\n\n$$f(x)=\\dfrac{2x^2-3x}{x^2-3x+3}=\\dfrac{x^2\\left(2-\\frac3x\\right)}{x^2\\left(1-\\frac3x+\\frac3{x^2}\\right)}=\\dfrac{2-\\frac3x}{1-\\frac3x+\\frac3{x^2}}$$\n\n**Quand $x\\to\\pm\\infty$**, les termes $\\dfrac3x$ et $\\dfrac3{x^2}$ tendent vers $0$ :\n\n$$f(x)\\to\\dfrac{2-0}{1-0+0}=\\dfrac21=2$$\n\n**$\\displaystyle\\lim_{x\\to-\\infty}f(x)=\\lim_{x\\to+\\infty}f(x)=2$.**\n\n**Interprétation graphique.** La droite d'équation $y=2$ est asymptote horizontale à $(\\Gamma)$ en $-\\infty$ et en $+\\infty$.",
+      "themes": [
+        "domaine de définition",
+        "limites",
+        "fonction rationnelle",
+        "discriminant"
+      ]
     },
     {
       "numero": "2",
       "points": "1,5pt",
       "enonce_markdown": "Calculer $f'(x)$ pour tout réel $x$ et dresser le tableau de variations de $f$.",
-      "rappels_de_methode": [{"cours_id": "cours-deriver-fonction-rationnelle-quotient-factoriser-signe-terminale-d", "texte": "Pour dériver un quotient u/v, on applique (u/v)'=(u'v-uv')/v², puis on développe et simplifie le numérateur pour le factoriser et en étudier le signe (souvent via discriminant), le dénominateur v² étant toujours positif."}],
-      "corrige_markdown": "### Rappel de méthode\nPour dériver un quotient $\\dfrac uv$, on applique $\\left(\\dfrac uv\\right)'=\\dfrac{u'v-uv'}{v^2}$, puis on développe et simplifie le numérateur pour le factoriser et en étudier le signe (souvent via discriminant) ; le dénominateur $v^2$ est toujours positif (ou nul si $v$ s'annule, ce qui n'est pas le cas ici d'après la question 1).\n\n**Identification.** $u(x)=2x^2-3x$, $u'(x)=4x-3$ ; $v(x)=x^2-3x+3$, $v'(x)=2x-3$.\n\n**Calcul de $u'v$.**\n\n$$(4x-3)(x^2-3x+3)=4x^3-12x^2+12x-3x^2+9x-9=4x^3-15x^2+21x-9$$\n\n**Calcul de $uv'$.**\n\n$$(2x^2-3x)(2x-3)=4x^3-6x^2-6x^2+9x=4x^3-12x^2+9x$$\n\n**Calcul de $u'v-uv'$.**\n\n$$(4x^3-15x^2+21x-9)-(4x^3-12x^2+9x)=-3x^2+12x-9$$\n\n**Factorisation du numérateur.** $-3x^2+12x-9=-3(x^2-4x+3)$. Discriminant de $x^2-4x+3$ : $\\Delta=16-12=4$, racines $x=\\dfrac{4\\pm2}2=3\\text{ ou }1$. Donc $x^2-4x+3=(x-1)(x-3)$.\n\n$$f'(x)=\\dfrac{-3(x-1)(x-3)}{(x^2-3x+3)^2}$$\n\n**Étude du signe.** Le dénominateur $(x^2-3x+3)^2$ est toujours strictement positif. Le signe de $f'(x)$ est donc celui de $-3(x-1)(x-3)$ : comme $(x-1)(x-3)$ est négatif entre les racines et positif à l'extérieur, $-3(x-1)(x-3)$ (signe opposé, facteur $-3<0$) est **positif entre $1$ et $3$**, et **négatif à l'extérieur de $[1;3]$**.\n\n**Calcul de $f(1)$ et $f(3)$.**\n\n$$f(1)=\\dfrac{2-3}{1-3+3}=\\dfrac{-1}1=-1\\qquad f(3)=\\dfrac{18-9}{9-9+3}=\\dfrac93=3$$\n\n**Tableau de variation de $f$ :**\n\n$$\\begin{array}{c|ccccc}\nx & -\\infty & & 1 & & 3 & & +\\infty \\\\\n\\hline\nf'(x) & & - & 0 & + & 0 & - & \\\\\n\\hline\nf(x) & 2 & \\searrow & -1 & \\nearrow & 3 & \\searrow & 2\n\\end{array}$$"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-deriver-fonction-rationnelle-quotient-factoriser-signe-terminale-d",
+          "texte": "Pour dériver un quotient u/v, on applique (u/v)'=(u'v-uv')/v², puis on développe et simplifie le numérateur pour le factoriser et en étudier le signe (souvent via discriminant), le dénominateur v² étant toujours positif."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour dériver un quotient $\\dfrac uv$, on applique $\\left(\\dfrac uv\\right)'=\\dfrac{u'v-uv'}{v^2}$, puis on développe et simplifie le numérateur pour le factoriser et en étudier le signe (souvent via discriminant) ; le dénominateur $v^2$ est toujours positif (ou nul si $v$ s'annule, ce qui n'est pas le cas ici d'après la question 1).\n\n**Identification.** $u(x)=2x^2-3x$, $u'(x)=4x-3$ ; $v(x)=x^2-3x+3$, $v'(x)=2x-3$.\n\n**Calcul de $u'v$.**\n\n$$(4x-3)(x^2-3x+3)=4x^3-12x^2+12x-3x^2+9x-9=4x^3-15x^2+21x-9$$\n\n**Calcul de $uv'$.**\n\n$$(2x^2-3x)(2x-3)=4x^3-6x^2-6x^2+9x=4x^3-12x^2+9x$$\n\n**Calcul de $u'v-uv'$.**\n\n$$(4x^3-15x^2+21x-9)-(4x^3-12x^2+9x)=-3x^2+12x-9$$\n\n**Factorisation du numérateur.** $-3x^2+12x-9=-3(x^2-4x+3)$. Discriminant de $x^2-4x+3$ : $\\Delta=16-12=4$, racines $x=\\dfrac{4\\pm2}2=3\\text{ ou }1$. Donc $x^2-4x+3=(x-1)(x-3)$.\n\n$$f'(x)=\\dfrac{-3(x-1)(x-3)}{(x^2-3x+3)^2}$$\n\n**Étude du signe.** Le dénominateur $(x^2-3x+3)^2$ est toujours strictement positif. Le signe de $f'(x)$ est donc celui de $-3(x-1)(x-3)$ : comme $(x-1)(x-3)$ est négatif entre les racines et positif à l'extérieur, $-3(x-1)(x-3)$ (signe opposé, facteur $-3<0$) est **positif entre $1$ et $3$**, et **négatif à l'extérieur de $[1;3]$**.\n\n**Calcul de $f(1)$ et $f(3)$.**\n\n$$f(1)=\\dfrac{2-3}{1-3+3}=\\dfrac{-1}1=-1\\qquad f(3)=\\dfrac{18-9}{9-9+3}=\\dfrac93=3$$\n\n**Tableau de variation de $f$ :**\n\n$$\\begin{array}{c|ccccc}\nx & -\\infty & & 1 & & 3 & & +\\infty \\\\\n\\hline\nf'(x) & & - & 0 & + & 0 & - & \\\\\n\\hline\nf(x) & 2 & \\searrow & -1 & \\nearrow & 3 & \\searrow & 2\n\\end{array}$$",
+      "themes": [
+        "dérivée d'un quotient",
+        "tableau de variations",
+        "signe d'un trinôme"
+      ]
     },
     {
       "numero": "3",
       "points": "0,5pt",
       "enonce_markdown": "Calculer $f(x)-2$, en déduire la position de la courbe $(\\Gamma)$ par rapport à son asymptote horizontale.",
-      "rappels_de_methode": [{"cours_id": "cours-etudier-position-courbe-asymptote-horizontale-difference-terminale-d", "texte": "Pour étudier la position d'une courbe par rapport à son asymptote horizontale y=k, on calcule f(x)-k et on étudie son signe : positif signifie courbe au-dessus, négatif signifie courbe en-dessous."}],
-      "corrige_markdown": "### Rappel de méthode\nPour étudier la position d'une courbe par rapport à son asymptote horizontale d'équation $y=k$, on calcule $f(x)-k$ et on étudie son signe : $f(x)-k>0$ signifie la courbe au-dessus de l'asymptote, $f(x)-k<0$ signifie la courbe en-dessous.\n\n**Calcul de $f(x)-2$.**\n\n$$f(x)-2=\\dfrac{2x^2-3x}{x^2-3x+3}-2=\\dfrac{2x^2-3x-2(x^2-3x+3)}{x^2-3x+3}$$\n\n$$=\\dfrac{2x^2-3x-2x^2+6x-6}{x^2-3x+3}=\\dfrac{3x-6}{x^2-3x+3}$$\n\n**$f(x)-2=\\dfrac{3x-6}{x^2-3x+3}$.**\n\n**Étude du signe.** Le dénominateur est toujours strictement positif (question 1). Le signe de $f(x)-2$ est donc celui de $3x-6=3(x-2)$ :\n\n- pour $x<2$ : $f(x)-2<0$\n- pour $x=2$ : $f(x)-2=0$\n- pour $x>2$ : $f(x)-2>0$\n\n**Conclusion.** La courbe $(\\Gamma)$ est **en-dessous** de son asymptote $y=2$ sur $]-\\infty;2[$, **coupe** l'asymptote au point d'abscisse $x=2$, et est **au-dessus** de l'asymptote sur $]2;+\\infty[$."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etudier-position-courbe-asymptote-horizontale-difference-terminale-d",
+          "texte": "Pour étudier la position d'une courbe par rapport à son asymptote horizontale y=k, on calcule f(x)-k et on étudie son signe : positif signifie courbe au-dessus, négatif signifie courbe en-dessous."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour étudier la position d'une courbe par rapport à son asymptote horizontale d'équation $y=k$, on calcule $f(x)-k$ et on étudie son signe : $f(x)-k>0$ signifie la courbe au-dessus de l'asymptote, $f(x)-k<0$ signifie la courbe en-dessous.\n\n**Calcul de $f(x)-2$.**\n\n$$f(x)-2=\\dfrac{2x^2-3x}{x^2-3x+3}-2=\\dfrac{2x^2-3x-2(x^2-3x+3)}{x^2-3x+3}$$\n\n$$=\\dfrac{2x^2-3x-2x^2+6x-6}{x^2-3x+3}=\\dfrac{3x-6}{x^2-3x+3}$$\n\n**$f(x)-2=\\dfrac{3x-6}{x^2-3x+3}$.**\n\n**Étude du signe.** Le dénominateur est toujours strictement positif (question 1). Le signe de $f(x)-2$ est donc celui de $3x-6=3(x-2)$ :\n\n- pour $x<2$ : $f(x)-2<0$\n- pour $x=2$ : $f(x)-2=0$\n- pour $x>2$ : $f(x)-2>0$\n\n**Conclusion.** La courbe $(\\Gamma)$ est **en-dessous** de son asymptote $y=2$ sur $]-\\infty;2[$, **coupe** l'asymptote au point d'abscisse $x=2$, et est **au-dessus** de l'asymptote sur $]2;+\\infty[$.",
+      "themes": [
+        "position relative",
+        "asymptote horizontale",
+        "fonction rationnelle"
+      ]
     },
     {
       "numero": "4",
       "points": "1pt",
       "enonce_markdown": "Donner les équations des tangentes à la courbe $(\\Gamma)$ aux points d'abscisses respectifs $0$ et $2$.",
-      "rappels_de_methode": [{"cours_id": "cours-equation-tangente-courbe-point-donne-terminale-d", "texte": "L'équation de la tangente à la courbe de f au point d'abscisse a est y=f'(a)(x-a)+f(a) : elle nécessite le calcul de f(a) (ordonnée du point) et de f'(a) (coefficient directeur)."}],
-      "corrige_markdown": "### Rappel de méthode\nL'équation de la tangente à la courbe représentative de $f$ au point d'abscisse $a$ est $y=f'(a)(x-a)+f(a)$ : elle nécessite le calcul de $f(a)$ (ordonnée du point de tangence) et de $f'(a)$ (coefficient directeur de la tangente).\n\n**Tangente au point d'abscisse $0$.**\n\n$$f(0)=\\dfrac{0-0}{0-0+3}=\\dfrac03=0$$\n\n$$f'(0)=\\dfrac{-3(0-1)(0-3)}{(0-0+3)^2}=\\dfrac{-3\\times(-1)\\times(-3)}9=\\dfrac{-9}9=-1$$\n\n$$y=f'(0)(x-0)+f(0)=-1\\times x+0=-x$$\n\n**La tangente au point d'abscisse $0$ a pour équation $y=-x$.**\n\n**Tangente au point d'abscisse $2$.**\n\n$$f(2)=\\dfrac{8-6}{4-6+3}=\\dfrac21=2$$\n\n$$f'(2)=\\dfrac{-3(2-1)(2-3)}{(4-6+3)^2}=\\dfrac{-3\\times1\\times(-1)}{1^2}=\\dfrac31=3$$\n\n$$y=f'(2)(x-2)+f(2)=3(x-2)+2=3x-6+2=3x-4$$\n\n**La tangente au point d'abscisse $2$ a pour équation $y=3x-4$.**\n\n### Conseil\nLe point d'abscisse $2$ correspond exactement au point où $(\\Gamma)$ traverse son asymptote horizontale (question 3) : la tangente en ce point particulier est donc une donnée graphique importante pour positionner correctement la courbe lors du tracé."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-equation-tangente-courbe-point-donne-terminale-d",
+          "texte": "L'équation de la tangente à la courbe de f au point d'abscisse a est y=f'(a)(x-a)+f(a) : elle nécessite le calcul de f(a) (ordonnée du point) et de f'(a) (coefficient directeur)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'équation de la tangente à la courbe représentative de $f$ au point d'abscisse $a$ est $y=f'(a)(x-a)+f(a)$ : elle nécessite le calcul de $f(a)$ (ordonnée du point de tangence) et de $f'(a)$ (coefficient directeur de la tangente).\n\n**Tangente au point d'abscisse $0$.**\n\n$$f(0)=\\dfrac{0-0}{0-0+3}=\\dfrac03=0$$\n\n$$f'(0)=\\dfrac{-3(0-1)(0-3)}{(0-0+3)^2}=\\dfrac{-3\\times(-1)\\times(-3)}9=\\dfrac{-9}9=-1$$\n\n$$y=f'(0)(x-0)+f(0)=-1\\times x+0=-x$$\n\n**La tangente au point d'abscisse $0$ a pour équation $y=-x$.**\n\n**Tangente au point d'abscisse $2$.**\n\n$$f(2)=\\dfrac{8-6}{4-6+3}=\\dfrac21=2$$\n\n$$f'(2)=\\dfrac{-3(2-1)(2-3)}{(4-6+3)^2}=\\dfrac{-3\\times1\\times(-1)}{1^2}=\\dfrac31=3$$\n\n$$y=f'(2)(x-2)+f(2)=3(x-2)+2=3x-6+2=3x-4$$\n\n**La tangente au point d'abscisse $2$ a pour équation $y=3x-4$.**\n\n### Conseil\nLe point d'abscisse $2$ correspond exactement au point où $(\\Gamma)$ traverse son asymptote horizontale (question 3) : la tangente en ce point particulier est donc une donnée graphique importante pour positionner correctement la courbe lors du tracé.",
+      "themes": [
+        "tangente à une courbe",
+        "nombre dérivé"
+      ]
     },
     {
       "numero": "5",
       "points": "2pt",
       "enonce_markdown": "Tracer les tangentes précédentes et la courbe $(\\Gamma)$.",
-      "rappels_de_methode": [{"cours_id": "cours-tracer-courbe-avec-tangentes-asymptote-horizontale-terminale-d", "texte": "Pour tracer une courbe avec tangentes et asymptote horizontale, on trace d'abord l'asymptote, on place les points remarquables du tableau de variation avec leurs tangentes, puis on relie en respectant le sens de variation et la position par rapport à l'asymptote déjà établie."}],
-      "corrige_markdown": "### Rappel de méthode\nPour tracer une courbe avec tangentes et asymptote horizontale, on trace d'abord l'asymptote (droite en pointillés), on place les points remarquables du tableau de variation avec leurs tangentes déjà calculées, puis on relie ces éléments en respectant scrupuleusement le sens de variation et la position de la courbe par rapport à l'asymptote (déjà établis aux questions 2 et 3).\n\n**Éléments à reporter, d'après l'étude complète (questions 1 à 4) :**\n\n1. L'asymptote horizontale $y=2$.\n2. Le point minimum local $(1;-1)$.\n3. Le point maximum local $(3;3)$.\n4. Le point $(0;0)$ avec sa tangente $y=-x$.\n5. Le point $(2;2)$ (sur l'asymptote) avec sa tangente $y=3x-4$.\n6. La position de $(\\Gamma)$ par rapport à l'asymptote : en-dessous sur $]-\\infty;2[$, au-dessus sur $]2;+\\infty[$.\n\n**Construction (description) :** tracer l'asymptote $y=2$ ; la courbe arrive de $y=2$ (par en-dessous) en $-\\infty$, descend en passant par $(0;0)$ (tangente $y=-x$) jusqu'au minimum $(1;-1)$, puis remonte en traversant l'asymptote au point $(2;2)$ (tangente $y=3x-4$) jusqu'au maximum $(3;3)$, puis redescend vers $y=2$ (par au-dessus cette fois) quand $x\\to+\\infty$.\n\n### Conseil\nTracer d'abord les deux tangentes (droites $y=-x$ et $y=3x-4$) comme repères avant la courbe elle-même : la courbe doit \"coller\" à chaque tangente au voisinage immédiat de son point de contact, ce qui aide à obtenir un tracé fidèle."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-tracer-courbe-avec-tangentes-asymptote-horizontale-terminale-d",
+          "texte": "Pour tracer une courbe avec tangentes et asymptote horizontale, on trace d'abord l'asymptote, on place les points remarquables du tableau de variation avec leurs tangentes, puis on relie en respectant le sens de variation et la position par rapport à l'asymptote déjà établie."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour tracer une courbe avec tangentes et asymptote horizontale, on trace d'abord l'asymptote (droite en pointillés), on place les points remarquables du tableau de variation avec leurs tangentes déjà calculées, puis on relie ces éléments en respectant scrupuleusement le sens de variation et la position de la courbe par rapport à l'asymptote (déjà établis aux questions 2 et 3).\n\n**Éléments à reporter, d'après l'étude complète (questions 1 à 4) :**\n\n1. L'asymptote horizontale $y=2$.\n2. Le point minimum local $(1;-1)$.\n3. Le point maximum local $(3;3)$.\n4. Le point $(0;0)$ avec sa tangente $y=-x$.\n5. Le point $(2;2)$ (sur l'asymptote) avec sa tangente $y=3x-4$.\n6. La position de $(\\Gamma)$ par rapport à l'asymptote : en-dessous sur $]-\\infty;2[$, au-dessus sur $]2;+\\infty[$.\n\n**Construction (description) :** tracer l'asymptote $y=2$ ; la courbe arrive de $y=2$ (par en-dessous) en $-\\infty$, descend en passant par $(0;0)$ (tangente $y=-x$) jusqu'au minimum $(1;-1)$, puis remonte en traversant l'asymptote au point $(2;2)$ (tangente $y=3x-4$) jusqu'au maximum $(3;3)$, puis redescend vers $y=2$ (par au-dessus cette fois) quand $x\\to+\\infty$.\n\n### Conseil\nTracer d'abord les deux tangentes (droites $y=-x$ et $y=3x-4$) comme repères avant la courbe elle-même : la courbe doit \"coller\" à chaque tangente au voisinage immédiat de son point de contact, ce qui aide à obtenir un tracé fidèle.",
+      "themes": [
+        "tracé de courbe",
+        "tangente à une courbe",
+        "asymptote horizontale"
+      ]
     },
     {
       "numero": "6",
       "points": "1,5pt",
-      "enonce_markdown": "Montrer que la restriction $g$ de $f$ à $[3;+\\infty[$ est une bijection de cet intervalle sur un intervalle $J$ que l'on déterminera. Tracer dans le même repère la courbe représentative de $g^{-1}$.\n\n*(Note : aucun barème n'est indiqué pour cette question dans le document source ; la valeur de 1,5 point retenue ici est une reconstruction destinée à atteindre le total de 11 points du Problème — voir la note en tête de ce fichier.)*",
-      "rappels_de_methode": [{"cours_id": "cours-restriction-bijection-intervalle-monotone-reciproque-terminale-d", "texte": "Pour montrer qu'une restriction de f à un intervalle est une bijection, on invoque la continuité et la stricte monotonie sur cet intervalle (déjà connues du tableau de variation) ; l'intervalle image J s'obtient en appliquant f (ou en observant les limites) aux bornes de l'intervalle de départ, en respectant le sens (ouvert/fermé) selon que la borne est atteinte ou non."}],
-      "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une restriction de $f$ à un intervalle est une bijection sur son image, on invoque la continuité et la stricte monotonie de $f$ sur cet intervalle (déjà établies par le tableau de variation) : une fonction continue et strictement monotone sur un intervalle réalise une bijection de cet intervalle sur son image. L'intervalle image $J$ s'obtient en appliquant $f$ aux bornes de l'intervalle de départ (ou en observant les limites), en respectant le caractère ouvert ou fermé de chaque borne selon qu'elle est atteinte ou non.\n\n**Continuité et monotonie de $g=f|_{[3;+\\infty[}$.** $f$ est continue sur $\\mathbb R$ (fraction rationnelle sans pôle, question 1), donc continue sur $[3;+\\infty[$. D'après le tableau de variation (question 2), $f$ est strictement décroissante sur $[3;+\\infty[$.\n\n**$g$ est donc continue et strictement décroissante sur $[3;+\\infty[$ : c'est une bijection de $[3;+\\infty[$ sur son image $J=g([3;+\\infty[)$.**\n\n**Détermination de $J$.** Comme $g$ est strictement décroissante et continue :\n\n- à la borne $x=3$ (incluse) : $g(3)=f(3)=3$ (question 2), valeur atteinte, donc incluse dans $J$\n- quand $x\\to+\\infty$ : $g(x)\\to2$ (question 1), valeur non atteinte (asymptote), donc exclue de $J$\n\n**$J=g([3;+\\infty[)=\\,]2;3]$.**\n\n**$g:[3;+\\infty[\\ \\to\\ ]2;3]$ est une bijection.**\n\n**Tracé de $g^{-1}$.** La courbe représentative de la bijection réciproque $g^{-1}:\\,]2;3]\\to[3;+\\infty[$ s'obtient par symétrie de la courbe de $g$ (c'est-à-dire la portion de $(\\Gamma)$ sur $[3;+\\infty[$) par rapport à la droite d'équation $y=x$.\n\n### Piège à éviter\nNe pas oublier que la borne $x=2$ correspondant à la limite $2$ de $g$ est EXCLUE de l'intervalle image $J$ (puisque cette limite n'est jamais atteinte, l'asymptote horizontale n'étant jamais touchée) : $J=\\,]2;3]$, avec une borne ouverte en $2$ et fermée en $3$, jamais $[2;3]$."
+      "enonce_markdown": "Montrer que la restriction $g$ de $f$ à $[3;+\\infty[$ est une bijection de cet intervalle sur un intervalle $J$ que l'on déterminera. Tracer dans le même repère la courbe représentative de $g^{-1}$.",
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-restriction-bijection-intervalle-monotone-reciproque-terminale-d",
+          "texte": "Pour montrer qu'une restriction de f à un intervalle est une bijection, on invoque la continuité et la stricte monotonie sur cet intervalle (déjà connues du tableau de variation) ; l'intervalle image J s'obtient en appliquant f (ou en observant les limites) aux bornes de l'intervalle de départ, en respectant le sens (ouvert/fermé) selon que la borne est atteinte ou non."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une restriction de $f$ à un intervalle est une bijection sur son image, on invoque la continuité et la stricte monotonie de $f$ sur cet intervalle (déjà établies par le tableau de variation) : une fonction continue et strictement monotone sur un intervalle réalise une bijection de cet intervalle sur son image. L'intervalle image $J$ s'obtient en appliquant $f$ aux bornes de l'intervalle de départ (ou en observant les limites), en respectant le caractère ouvert ou fermé de chaque borne selon qu'elle est atteinte ou non.\n\n**Continuité et monotonie de $g=f|_{[3;+\\infty[}$.** $f$ est continue sur $\\mathbb R$ (fraction rationnelle sans pôle, question 1), donc continue sur $[3;+\\infty[$. D'après le tableau de variation (question 2), $f$ est strictement décroissante sur $[3;+\\infty[$.\n\n**$g$ est donc continue et strictement décroissante sur $[3;+\\infty[$ : c'est une bijection de $[3;+\\infty[$ sur son image $J=g([3;+\\infty[)$.**\n\n**Détermination de $J$.** Comme $g$ est strictement décroissante et continue :\n\n- à la borne $x=3$ (incluse) : $g(3)=f(3)=3$ (question 2), valeur atteinte, donc incluse dans $J$\n- quand $x\\to+\\infty$ : $g(x)\\to2$ (question 1), valeur non atteinte (asymptote), donc exclue de $J$\n\n**$J=g([3;+\\infty[)=\\,]2;3]$.**\n\n**$g:[3;+\\infty[\\ \\to\\ ]2;3]$ est une bijection.**\n\n**Tracé de $g^{-1}$.** La courbe représentative de la bijection réciproque $g^{-1}:\\,]2;3]\\to[3;+\\infty[$ s'obtient par symétrie de la courbe de $g$ (c'est-à-dire la portion de $(\\Gamma)$ sur $[3;+\\infty[$) par rapport à la droite d'équation $y=x$.\n\n### Piège à éviter\nNe pas oublier que la borne $x=2$ correspondant à la limite $2$ de $g$ est EXCLUE de l'intervalle image $J$ (puisque cette limite n'est jamais atteinte, l'asymptote horizontale n'étant jamais touchée) : $J=\\,]2;3]$, avec une borne ouverte en $2$ et fermée en $3$, jamais $[2;3]$.",
+      "themes": [
+        "théorème de la bijection",
+        "continuité",
+        "monotonie",
+        "tracé de courbe"
+      ]
     },
     {
       "numero": "7a",
       "points": "0,5pt",
       "enonce_markdown": "Soit $\\lambda$ un nombre réel strictement supérieur à $3$. On appelle $A(\\lambda)$ l'aire de la partie du plan délimitée par la courbe $(\\Gamma)$ et la droite d'équation $y=2$ d'une part, les droites d'équations $x=3$ et $x=\\lambda$ d'autre part. Montrer que $A(\\lambda)=\\displaystyle\\int_3^\\lambda\\dfrac{3x-6}{x^2-3x+3}\\,dx$.",
-      "rappels_de_methode": [{"cours_id": "cours-exprimer-aire-integrale-difference-fonction-asymptote-terminale-d", "texte": "L'aire entre une courbe et une droite horizontale y=k sur un intervalle où la courbe est au-dessus de cette droite est l'intégrale de f(x)-k sur cet intervalle."}],
-      "corrige_markdown": "### Rappel de méthode\nL'aire du domaine compris entre une courbe et une droite horizontale $y=k$, sur un intervalle où la courbe est au-dessus de cette droite, est l'intégrale de $f(x)-k$ sur cet intervalle (la différence étant positive, elle donne directement une aire sans valeur absolue).\n\n**Position de $(\\Gamma)$ par rapport à $y=2$ sur $[3;\\lambda]$.** Comme $\\lambda>3>2$, on est sur l'intervalle $[3;\\lambda]\\subset\\,]2;+\\infty[$, où $(\\Gamma)$ est au-dessus de l'asymptote $y=2$ (question 3, $f(x)-2>0$ pour $x>2$).\n\n**L'aire cherchée est donc directement l'intégrale de $f(x)-2$ entre $3$ et $\\lambda$ :**\n\n$$A(\\lambda)=\\int_3^\\lambda\\big[f(x)-2\\big]dx$$\n\n**Réutilisation du résultat de la question 3**, où l'on a établi $f(x)-2=\\dfrac{3x-6}{x^2-3x+3}$ :\n\n$$A(\\lambda)=\\int_3^\\lambda\\dfrac{3x-6}{x^2-3x+3}\\,dx$$\n\n**L'égalité demandée est ainsi démontrée.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-exprimer-aire-integrale-difference-fonction-asymptote-terminale-d",
+          "texte": "L'aire entre une courbe et une droite horizontale y=k sur un intervalle où la courbe est au-dessus de cette droite est l'intégrale de f(x)-k sur cet intervalle."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nL'aire du domaine compris entre une courbe et une droite horizontale $y=k$, sur un intervalle où la courbe est au-dessus de cette droite, est l'intégrale de $f(x)-k$ sur cet intervalle (la différence étant positive, elle donne directement une aire sans valeur absolue).\n\n**Position de $(\\Gamma)$ par rapport à $y=2$ sur $[3;\\lambda]$.** Comme $\\lambda>3>2$, on est sur l'intervalle $[3;\\lambda]\\subset\\,]2;+\\infty[$, où $(\\Gamma)$ est au-dessus de l'asymptote $y=2$ (question 3, $f(x)-2>0$ pour $x>2$).\n\n**L'aire cherchée est donc directement l'intégrale de $f(x)-2$ entre $3$ et $\\lambda$ :**\n\n$$A(\\lambda)=\\int_3^\\lambda\\big[f(x)-2\\big]dx$$\n\n**Réutilisation du résultat de la question 3**, où l'on a établi $f(x)-2=\\dfrac{3x-6}{x^2-3x+3}$ :\n\n$$A(\\lambda)=\\int_3^\\lambda\\dfrac{3x-6}{x^2-3x+3}\\,dx$$\n\n**L'égalité demandée est ainsi démontrée.**",
+      "themes": [
+        "calcul d'aire",
+        "intégrale",
+        "position relative"
+      ]
     },
     {
       "numero": "7b",
       "points": "1pt",
       "enonce_markdown": "Montrer que pour tout $x\\geqslant3$, on a $2x-3\\leqslant3x-6$. En déduire que $\\displaystyle\\int_3^\\lambda\\dfrac{2x-3}{x^2-3x+3}\\,dx\\leqslant A(\\lambda)$.",
-      "rappels_de_methode": [{"cours_id": "cours-comparer-integrales-inegalite-fonctions-meme-signe-terminale-d", "texte": "Pour comparer deux intégrales, on établit d'abord l'inégalité ponctuelle entre les deux fonctions sur l'intervalle considéré, puis on divise par un dénominateur commun strictement positif (l'inégalité est conservée), et on intègre terme à terme (l'intégration conserve les inégalités entre bornes croissantes)."}],
-      "corrige_markdown": "### Rappel de méthode\nPour comparer deux intégrales, on établit d'abord l'inégalité ponctuelle entre les deux fonctions sur l'intervalle considéré, puis, si besoin, on divise par un dénominateur commun strictement positif (l'inégalité est conservée par division par un nombre positif), et enfin on intègre terme à terme : l'intégration conserve les inégalités entre bornes croissantes ($p\\leqslant q$ sur $[a;b]$ avec $a\\leqslant b$ $\\Rightarrow\\int_a^bp\\leqslant\\int_a^bq$).\n\n**Démonstration de l'inégalité ponctuelle $2x-3\\leqslant3x-6$ pour $x\\geqslant3$.**\n\n$$2x-3\\leqslant3x-6\\ \\Longleftrightarrow\\ -3+6\\leqslant3x-2x\\ \\Longleftrightarrow\\ 3\\leqslant x$$\n\n**Cette dernière inégalité, $x\\geqslant3$, est exactement l'hypothèse de l'énoncé : l'inégalité $2x-3\\leqslant3x-6$ est donc vérifiée pour tout $x\\geqslant3$ (avec égalité en $x=3$).**\n\n**Division par le dénominateur commun.** Le dénominateur $x^2-3x+3$ est toujours strictement positif (question 1) : diviser les deux membres de l'inégalité par cette quantité positive conserve le sens de l'inégalité.\n\n$$\\dfrac{2x-3}{x^2-3x+3}\\leqslant\\dfrac{3x-6}{x^2-3x+3}\\quad\\text{pour tout }x\\geqslant3$$\n\n**Intégration terme à terme entre $3$ et $\\lambda$** (avec $\\lambda>3$, donc bornes croissantes) :\n\n$$\\int_3^\\lambda\\dfrac{2x-3}{x^2-3x+3}\\,dx\\leqslant\\int_3^\\lambda\\dfrac{3x-6}{x^2-3x+3}\\,dx$$\n\n**D'après la question 7a, le membre de droite est exactement $A(\\lambda)$ :**\n\n$$\\int_3^\\lambda\\dfrac{2x-3}{x^2-3x+3}\\,dx\\leqslant A(\\lambda)$$\n\n**L'inégalité demandée est ainsi démontrée.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-comparer-integrales-inegalite-fonctions-meme-signe-terminale-d",
+          "texte": "Pour comparer deux intégrales, on établit d'abord l'inégalité ponctuelle entre les deux fonctions sur l'intervalle considéré, puis on divise par un dénominateur commun strictement positif (l'inégalité est conservée), et on intègre terme à terme (l'intégration conserve les inégalités entre bornes croissantes)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour comparer deux intégrales, on établit d'abord l'inégalité ponctuelle entre les deux fonctions sur l'intervalle considéré, puis, si besoin, on divise par un dénominateur commun strictement positif (l'inégalité est conservée par division par un nombre positif), et enfin on intègre terme à terme : l'intégration conserve les inégalités entre bornes croissantes ($p\\leqslant q$ sur $[a;b]$ avec $a\\leqslant b$ $\\Rightarrow\\int_a^bp\\leqslant\\int_a^bq$).\n\n**Démonstration de l'inégalité ponctuelle $2x-3\\leqslant3x-6$ pour $x\\geqslant3$.**\n\n$$2x-3\\leqslant3x-6\\ \\Longleftrightarrow\\ -3+6\\leqslant3x-2x\\ \\Longleftrightarrow\\ 3\\leqslant x$$\n\n**Cette dernière inégalité, $x\\geqslant3$, est exactement l'hypothèse de l'énoncé : l'inégalité $2x-3\\leqslant3x-6$ est donc vérifiée pour tout $x\\geqslant3$ (avec égalité en $x=3$).**\n\n**Division par le dénominateur commun.** Le dénominateur $x^2-3x+3$ est toujours strictement positif (question 1) : diviser les deux membres de l'inégalité par cette quantité positive conserve le sens de l'inégalité.\n\n$$\\dfrac{2x-3}{x^2-3x+3}\\leqslant\\dfrac{3x-6}{x^2-3x+3}\\quad\\text{pour tout }x\\geqslant3$$\n\n**Intégration terme à terme entre $3$ et $\\lambda$** (avec $\\lambda>3$, donc bornes croissantes) :\n\n$$\\int_3^\\lambda\\dfrac{2x-3}{x^2-3x+3}\\,dx\\leqslant\\int_3^\\lambda\\dfrac{3x-6}{x^2-3x+3}\\,dx$$\n\n**D'après la question 7a, le membre de droite est exactement $A(\\lambda)$ :**\n\n$$\\int_3^\\lambda\\dfrac{2x-3}{x^2-3x+3}\\,dx\\leqslant A(\\lambda)$$\n\n**L'inégalité demandée est ainsi démontrée.**",
+      "themes": [
+        "encadrement",
+        "intégrale",
+        "calcul intégral"
+      ]
     },
     {
       "numero": "7c",
       "points": "0,5pt",
       "enonce_markdown": "Quelle est la limite de $A(\\lambda)$ quand $\\lambda$ tend vers $+\\infty$ ?",
-      "rappels_de_methode": [{"cours_id": "cours-primitive-u-prime-sur-u-logarithme-limite-infinie-terminale-d", "texte": "Si le numérateur d'une fraction est exactement la dérivée du dénominateur (forme u'/u), la primitive est ln(u) (ou ln|u|). Pour conclure sur une limite via minoration, on montre que la fonction minorante tend elle-même vers +∞, ce qui force la fonction majorée à tendre aussi vers +∞."}],
-      "corrige_markdown": "### Rappel de méthode\nSi le numérateur d'une fraction est exactement égal à la dérivée du dénominateur (forme $\\frac{u'}u$), sa primitive est $\\ln(u)$ (ou $\\ln|u|$ si $u$ peut être négatif). Pour conclure sur une limite par minoration, on montre que la fonction qui minore tend elle-même vers $+\\infty$ : cela force, par comparaison, la fonction majorée à tendre également vers $+\\infty$.\n\n**Observation clé.** Le numérateur $2x-3$ de la question 7b est exactement la dérivée du dénominateur $x^2-3x+3$ (calculée à la question 2 comme $v'(x)=2x-3$) : la fraction $\\dfrac{2x-3}{x^2-3x+3}$ est donc de la forme $\\dfrac{u'}u$ avec $u(x)=x^2-3x+3>0$.\n\n**Calcul de la primitive et de l'intégrale minorante.**\n\n$$\\int_3^\\lambda\\dfrac{2x-3}{x^2-3x+3}\\,dx=\\Big[\\ln(x^2-3x+3)\\Big]_3^\\lambda=\\ln(\\lambda^2-3\\lambda+3)-\\ln(3^2-3\\times3+3)$$\n\n$$=\\ln(\\lambda^2-3\\lambda+3)-\\ln3$$\n\n**Limite de cette intégrale minorante quand $\\lambda\\to+\\infty$.** Comme $\\lambda^2-3\\lambda+3\\to+\\infty$ (polynôme du second degré, terme dominant $\\lambda^2$), et $\\ln(t)\\to+\\infty$ quand $t\\to+\\infty$ :\n\n$$\\ln(\\lambda^2-3\\lambda+3)-\\ln3\\ \\longrightarrow\\ +\\infty$$\n\n**Conclusion par comparaison.** D'après la question 7b, $A(\\lambda)\\geqslant\\displaystyle\\int_3^\\lambda\\dfrac{2x-3}{x^2-3x+3}\\,dx$ pour tout $\\lambda>3$. Comme le membre de droite tend vers $+\\infty$, et que $A(\\lambda)$ lui est toujours supérieur ou égal, $A(\\lambda)$ est \"poussée\" vers $+\\infty$ également.\n\n**$\\displaystyle\\lim_{\\lambda\\to+\\infty}A(\\lambda)=+\\infty$.**\n\n### Conseil\nCe résultat illustre une utilisation typique de la question 7b : la comparaison d'intégrales établie précédemment n'est pas un exercice isolé, elle sert d'outil direct pour conclure sur la limite demandée ici, sans avoir à calculer explicitement $A(\\lambda)$ elle-même."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-primitive-u-prime-sur-u-logarithme-limite-infinie-terminale-d",
+          "texte": "Si le numérateur d'une fraction est exactement la dérivée du dénominateur (forme u'/u), la primitive est ln(u) (ou ln|u|). Pour conclure sur une limite via minoration, on montre que la fonction minorante tend elle-même vers +∞, ce qui force la fonction majorée à tendre aussi vers +∞."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi le numérateur d'une fraction est exactement égal à la dérivée du dénominateur (forme $\\frac{u'}u$), sa primitive est $\\ln(u)$ (ou $\\ln|u|$ si $u$ peut être négatif). Pour conclure sur une limite par minoration, on montre que la fonction qui minore tend elle-même vers $+\\infty$ : cela force, par comparaison, la fonction majorée à tendre également vers $+\\infty$.\n\n**Observation clé.** Le numérateur $2x-3$ de la question 7b est exactement la dérivée du dénominateur $x^2-3x+3$ (calculée à la question 2 comme $v'(x)=2x-3$) : la fraction $\\dfrac{2x-3}{x^2-3x+3}$ est donc de la forme $\\dfrac{u'}u$ avec $u(x)=x^2-3x+3>0$.\n\n**Calcul de la primitive et de l'intégrale minorante.**\n\n$$\\int_3^\\lambda\\dfrac{2x-3}{x^2-3x+3}\\,dx=\\Big[\\ln(x^2-3x+3)\\Big]_3^\\lambda=\\ln(\\lambda^2-3\\lambda+3)-\\ln(3^2-3\\times3+3)$$\n\n$$=\\ln(\\lambda^2-3\\lambda+3)-\\ln3$$\n\n**Limite de cette intégrale minorante quand $\\lambda\\to+\\infty$.** Comme $\\lambda^2-3\\lambda+3\\to+\\infty$ (polynôme du second degré, terme dominant $\\lambda^2$), et $\\ln(t)\\to+\\infty$ quand $t\\to+\\infty$ :\n\n$$\\ln(\\lambda^2-3\\lambda+3)-\\ln3\\ \\longrightarrow\\ +\\infty$$\n\n**Conclusion par comparaison.** D'après la question 7b, $A(\\lambda)\\geqslant\\displaystyle\\int_3^\\lambda\\dfrac{2x-3}{x^2-3x+3}\\,dx$ pour tout $\\lambda>3$. Comme le membre de droite tend vers $+\\infty$, et que $A(\\lambda)$ lui est toujours supérieur ou égal, $A(\\lambda)$ est \"poussée\" vers $+\\infty$ également.\n\n**$\\displaystyle\\lim_{\\lambda\\to+\\infty}A(\\lambda)=+\\infty$.**\n\n### Conseil\nCe résultat illustre une utilisation typique de la question 7b : la comparaison d'intégrales établie précédemment n'est pas un exercice isolé, elle sert d'outil direct pour conclure sur la limite demandée ici, sans avoir à calculer explicitement $A(\\lambda)$ elle-même.",
+      "themes": [
+        "limites",
+        "primitive",
+        "logarithme"
+      ]
     },
     {
       "numero": "8a",
       "points": "0,25pt",
       "enonce_markdown": "On considère la suite $(u_n)$ définie par : $u_0$ réel donné et pour tout entier naturel $n$, $u_{n+1}=f(u_n)$. Pour $u_0=2$, montrer que la suite $(u_n)$ est constante.",
-      "rappels_de_methode": [{"cours_id": "cours-suite-constante-point-fixe-fonction-terminale-d", "texte": "Si u0 est un point fixe de f (c'est-à-dire f(u0)=u0), alors la suite définie par un+1=f(un) est constante égale à u0 pour tout n."}],
-      "corrige_markdown": "### Rappel de méthode\nSi $u_0$ est un point fixe de $f$ (c'est-à-dire $f(u_0)=u_0$), alors la suite définie par $u_{n+1}=f(u_n)$ est constante, égale à $u_0$ pour tout $n$ : en effet, par récurrence immédiate, si $u_n=u_0$ alors $u_{n+1}=f(u_n)=f(u_0)=u_0$.\n\n**Vérification que $u_0=2$ est un point fixe de $f$.** D'après la question 4, $f(2)=2$.\n\n**$f(u_0)=f(2)=2=u_0$ : $u_0$ est bien un point fixe de $f$.**\n\n**Démonstration par récurrence que $u_n=2$ pour tout $n$.**\n\n- **Initialisation.** $u_0=2$, vrai par définition.\n- **Hérédité.** Supposons $u_n=2$. Alors $u_{n+1}=f(u_n)=f(2)=2$.\n\n**Par récurrence, $u_n=2$ pour tout entier naturel $n$ : la suite $(u_n)$ est constante, égale à $2$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-suite-constante-point-fixe-fonction-terminale-d",
+          "texte": "Si u0 est un point fixe de f (c'est-à-dire f(u0)=u0), alors la suite définie par un+1=f(un) est constante égale à u0 pour tout n."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nSi $u_0$ est un point fixe de $f$ (c'est-à-dire $f(u_0)=u_0$), alors la suite définie par $u_{n+1}=f(u_n)$ est constante, égale à $u_0$ pour tout $n$ : en effet, par récurrence immédiate, si $u_n=u_0$ alors $u_{n+1}=f(u_n)=f(u_0)=u_0$.\n\n**Vérification que $u_0=2$ est un point fixe de $f$.** D'après la question 4, $f(2)=2$.\n\n**$f(u_0)=f(2)=2=u_0$ : $u_0$ est bien un point fixe de $f$.**\n\n**Démonstration par récurrence que $u_n=2$ pour tout $n$.**\n\n- **Initialisation.** $u_0=2$, vrai par définition.\n- **Hérédité.** Supposons $u_n=2$. Alors $u_{n+1}=f(u_n)=f(2)=2$.\n\n**Par récurrence, $u_n=2$ pour tout entier naturel $n$ : la suite $(u_n)$ est constante, égale à $2$.**",
+      "themes": [
+        "suite récurrente",
+        "point fixe"
+      ]
     },
     {
       "numero": "8b-i",
       "points": "0,5pt",
       "enonce_markdown": "On donne $u_0$ tel que $2<u_0<3$. Montrer que pour tout $n$, on a $2<u_n<3$.",
-      "rappels_de_methode": [{"cours_id": "cours-recurrence-encadrement-suite-via-monotonie-fonction-terminale-d", "texte": "Pour démontrer par récurrence qu'une suite reste dans un intervalle stable ]a;b[, on vérifie que f est strictement monotone sur [a;b] avec f(a)=a et f(b)=b (ou l'inverse si décroissante) : alors f envoie ]a;b[ dans lui-même, ce qui permet l'hérédité."}],
-      "corrige_markdown": "### Rappel de méthode\nPour démontrer par récurrence qu'une suite reste dans un intervalle stable $]a;b[$, on vérifie que $f$ est strictement monotone sur $[a;b]$ avec $f(a)=a$ et $f(b)=b$ (croissante) ou $f(a)=b,\\ f(b)=a$ (décroissante) : dans le cas croissant, $f$ envoie alors $]a;b[$ dans $]f(a);f(b)[=]a;b[$ lui-même, ce qui permet l'hérédité de la récurrence.\n\n**Choix de l'intervalle stable.** D'après le tableau de variation (question 2), $f$ est strictement croissante sur $[1;3]$, donc en particulier sur $[2;3]\\subset[1;3]$. On a $f(2)=2$ (question 4) et $f(3)=3$ (question 2).\n\n**$f$ est strictement croissante sur $[2;3]$, avec $f(2)=2$ et $f(3)=3$ : $f$ envoie donc $]2;3[$ dans $]f(2);f(3)[=]2;3[$.**\n\n**Démonstration par récurrence.**\n\n- **Initialisation.** $2<u_0<3$, vrai par hypothèse de l'énoncé.\n- **Hérédité.** Supposons $2<u_n<3$. Comme $f$ est strictement croissante sur $[2;3]$ et $u_n\\in\\,]2;3[$, on a $f(2)<f(u_n)<f(3)$, c'est-à-dire $2<f(u_n)<3$, soit $2<u_{n+1}<3$.\n\n**Par récurrence, $2<u_n<3$ pour tout entier naturel $n$.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-recurrence-encadrement-suite-via-monotonie-fonction-terminale-d",
+          "texte": "Pour démontrer par récurrence qu'une suite reste dans un intervalle stable ]a;b[, on vérifie que f est strictement monotone sur [a;b] avec f(a)=a et f(b)=b (ou l'inverse si décroissante) : alors f envoie ]a;b[ dans lui-même, ce qui permet l'hérédité."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour démontrer par récurrence qu'une suite reste dans un intervalle stable $]a;b[$, on vérifie que $f$ est strictement monotone sur $[a;b]$ avec $f(a)=a$ et $f(b)=b$ (croissante) ou $f(a)=b,\\ f(b)=a$ (décroissante) : dans le cas croissant, $f$ envoie alors $]a;b[$ dans $]f(a);f(b)[=]a;b[$ lui-même, ce qui permet l'hérédité de la récurrence.\n\n**Choix de l'intervalle stable.** D'après le tableau de variation (question 2), $f$ est strictement croissante sur $[1;3]$, donc en particulier sur $[2;3]\\subset[1;3]$. On a $f(2)=2$ (question 4) et $f(3)=3$ (question 2).\n\n**$f$ est strictement croissante sur $[2;3]$, avec $f(2)=2$ et $f(3)=3$ : $f$ envoie donc $]2;3[$ dans $]f(2);f(3)[=]2;3[$.**\n\n**Démonstration par récurrence.**\n\n- **Initialisation.** $2<u_0<3$, vrai par hypothèse de l'énoncé.\n- **Hérédité.** Supposons $2<u_n<3$. Comme $f$ est strictement croissante sur $[2;3]$ et $u_n\\in\\,]2;3[$, on a $f(2)<f(u_n)<f(3)$, c'est-à-dire $2<f(u_n)<3$, soit $2<u_{n+1}<3$.\n\n**Par récurrence, $2<u_n<3$ pour tout entier naturel $n$.**",
+      "themes": [
+        "récurrence",
+        "suite récurrente",
+        "encadrement"
+      ]
     },
     {
       "numero": "8b-ii",
       "points": "0,5pt",
       "enonce_markdown": "Montrer que la suite $(u_n)$ est croissante.",
-      "rappels_de_methode": [{"cours_id": "cours-etudier-croissance-suite-recurrente-signe-f-moins-x-terminale-d", "texte": "Pour étudier la monotonie d'une suite récurrente un+1=f(un), on étudie le signe de f(x)-x sur l'intervalle où évolue la suite : si f(x)-x>0 sur cet intervalle, alors un+1>un pour tout n, donc la suite est croissante."}],
-      "corrige_markdown": "### Rappel de méthode\nPour étudier la monotonie d'une suite récurrente $u_{n+1}=f(u_n)$, on étudie le signe de $f(x)-x$ sur l'intervalle où évolue la suite (déjà déterminé) : si $f(x)-x>0$ sur cet intervalle, alors $u_{n+1}=f(u_n)>u_n$ pour tout $n$ (puisque $u_n$ appartient à cet intervalle), donc la suite est strictement croissante.\n\n**Calcul de $f(x)-x$.**\n\n$$f(x)-x=\\dfrac{2x^2-3x}{x^2-3x+3}-x=\\dfrac{2x^2-3x-x(x^2-3x+3)}{x^2-3x+3}$$\n\n$$=\\dfrac{2x^2-3x-x^3+3x^2-3x}{x^2-3x+3}=\\dfrac{-x^3+5x^2-6x}{x^2-3x+3}=\\dfrac{-x(x^2-5x+6)}{x^2-3x+3}$$\n\n**Factorisation de $x^2-5x+6$.** Discriminant $=25-24=1$, racines $x=\\dfrac{5\\pm1}2=3\\text{ ou }2$. Donc $x^2-5x+6=(x-2)(x-3)$.\n\n$$f(x)-x=\\dfrac{-x(x-2)(x-3)}{x^2-3x+3}$$\n\n**Étude du signe sur $]2;3[$** (intervalle où évolue $(u_n)$, question 8b-i). Pour $x\\in\\,]2;3[$ : $x>0$ ; $(x-2)>0$ ; $(x-3)<0$, donc $(x-2)(x-3)<0$ ; donc $-x(x-2)(x-3)=-(\\text{positif})\\times(\\text{négatif})=\\text{positif}$. Le dénominateur $x^2-3x+3$ est toujours strictement positif.\n\n**$f(x)-x>0$ pour tout $x\\in\\,]2;3[$.**\n\n**Conclusion.** Comme $u_n\\in\\,]2;3[$ pour tout $n$ (question 8b-i), on a $f(u_n)-u_n>0$, c'est-à-dire $u_{n+1}-u_n>0$, soit $u_{n+1}>u_n$.\n\n**La suite $(u_n)$ est donc strictement croissante.**"
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-etudier-croissance-suite-recurrente-signe-f-moins-x-terminale-d",
+          "texte": "Pour étudier la monotonie d'une suite récurrente un+1=f(un), on étudie le signe de f(x)-x sur l'intervalle où évolue la suite : si f(x)-x>0 sur cet intervalle, alors un+1>un pour tout n, donc la suite est croissante."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nPour étudier la monotonie d'une suite récurrente $u_{n+1}=f(u_n)$, on étudie le signe de $f(x)-x$ sur l'intervalle où évolue la suite (déjà déterminé) : si $f(x)-x>0$ sur cet intervalle, alors $u_{n+1}=f(u_n)>u_n$ pour tout $n$ (puisque $u_n$ appartient à cet intervalle), donc la suite est strictement croissante.\n\n**Calcul de $f(x)-x$.**\n\n$$f(x)-x=\\dfrac{2x^2-3x}{x^2-3x+3}-x=\\dfrac{2x^2-3x-x(x^2-3x+3)}{x^2-3x+3}$$\n\n$$=\\dfrac{2x^2-3x-x^3+3x^2-3x}{x^2-3x+3}=\\dfrac{-x^3+5x^2-6x}{x^2-3x+3}=\\dfrac{-x(x^2-5x+6)}{x^2-3x+3}$$\n\n**Factorisation de $x^2-5x+6$.** Discriminant $=25-24=1$, racines $x=\\dfrac{5\\pm1}2=3\\text{ ou }2$. Donc $x^2-5x+6=(x-2)(x-3)$.\n\n$$f(x)-x=\\dfrac{-x(x-2)(x-3)}{x^2-3x+3}$$\n\n**Étude du signe sur $]2;3[$** (intervalle où évolue $(u_n)$, question 8b-i). Pour $x\\in\\,]2;3[$ : $x>0$ ; $(x-2)>0$ ; $(x-3)<0$, donc $(x-2)(x-3)<0$ ; donc $-x(x-2)(x-3)=-(\\text{positif})\\times(\\text{négatif})=\\text{positif}$. Le dénominateur $x^2-3x+3$ est toujours strictement positif.\n\n**$f(x)-x>0$ pour tout $x\\in\\,]2;3[$.**\n\n**Conclusion.** Comme $u_n\\in\\,]2;3[$ pour tout $n$ (question 8b-i), on a $f(u_n)-u_n>0$, c'est-à-dire $u_{n+1}-u_n>0$, soit $u_{n+1}>u_n$.\n\n**La suite $(u_n)$ est donc strictement croissante.**",
+      "themes": [
+        "sens de variation",
+        "suite récurrente",
+        "signe d'une fonction"
+      ]
     },
     {
       "numero": "8b-iii",
       "points": "0,25pt",
       "enonce_markdown": "Que peut-on en déduire sur la suite $(u_n)$ ?",
-      "rappels_de_methode": [{"cours_id": "cours-suite-croissante-majoree-convergente-theoreme-terminale-d", "texte": "Toute suite croissante et majorée est convergente (théorème de la limite monotone)."}],
-      "corrige_markdown": "### Rappel de méthode\nToute suite croissante et majorée est convergente : c'est le théorème de la limite monotone (une suite croissante et majorée converge vers un réel qui est la borne supérieure de l'ensemble de ses valeurs).\n\n**Rassemblement des résultats déjà établis.** La suite $(u_n)$ est croissante (question 8b-ii) et majorée par $3$ (question 8b-i, $u_n<3$ pour tout $n$).\n\n**D'après le théorème de la limite monotone, la suite $(u_n)$ est donc convergente.**\n\n### Conseil\nOn peut aller plus loin (bien que non explicitement demandé) : la limite $L$ d'une suite convergente définie par $u_{n+1}=f(u_n)$, avec $f$ continue, vérifie nécessairement $f(L)=L$ (point fixe). En résolvant $f(x)-x=0$, on trouve $x\\in\\{0,2,3\\}$ (question 8b-ii). Comme $(u_n)$ est croissante à partir d'une valeur $u_0>2$, sa limite $L$ vérifie $L\\geqslant u_0>2$, ce qui exclut $L=0$ et $L=2$ : on en déduit $L=3$, c'est-à-dire que $(u_n)$ converge vers $3$."
+      "rappels_de_methode": [
+        {
+          "cours_id": "cours-suite-croissante-majoree-convergente-theoreme-terminale-d",
+          "texte": "Toute suite croissante et majorée est convergente (théorème de la limite monotone)."
+        }
+      ],
+      "corrige_markdown": "### Rappel de méthode\nToute suite croissante et majorée est convergente : c'est le théorème de la limite monotone (une suite croissante et majorée converge vers un réel qui est la borne supérieure de l'ensemble de ses valeurs).\n\n**Rassemblement des résultats déjà établis.** La suite $(u_n)$ est croissante (question 8b-ii) et majorée par $3$ (question 8b-i, $u_n<3$ pour tout $n$).\n\n**D'après le théorème de la limite monotone, la suite $(u_n)$ est donc convergente.**\n\n### Conseil\nOn peut aller plus loin (bien que non explicitement demandé) : la limite $L$ d'une suite convergente définie par $u_{n+1}=f(u_n)$, avec $f$ continue, vérifie nécessairement $f(L)=L$ (point fixe). En résolvant $f(x)-x=0$, on trouve $x\\in\\{0,2,3\\}$ (question 8b-ii). Comme $(u_n)$ est croissante à partir d'une valeur $u_0>2$, sa limite $L$ vérifie $L\\geqslant u_0>2$, ce qui exclut $L=0$ et $L=2$ : on en déduit $L=3$, c'est-à-dire que $(u_n)$ converge vers $3$.",
+      "themes": [
+        "convergence",
+        "théorème de la limite monotone",
+        "suite récurrente"
+      ]
     }
   ]
 }

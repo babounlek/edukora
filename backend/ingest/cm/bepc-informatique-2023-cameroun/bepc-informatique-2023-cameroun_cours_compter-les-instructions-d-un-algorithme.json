@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-compter-les-instructions-d-un-algorithme-3e",
+  "meta": {
+    "titre": "Compter les instructions d'un algorithme",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Algorithmique : structure d'un algorithme",
+    "duree_estimee_min": 30,
+    "tags": [
+      "algorithmique",
+      "instruction",
+      "déclaration",
+      "structure de contrôle",
+      "analyse d'algorithme",
+      "pseudo-code"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2023-cameroun",
+    "epreuve_titre": "BEPC Informatique - Cameroun, session 2023 (MINESEC/DECC), épreuve théorique",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bepc-informatique-2023-cameroun-ex3-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« Combien d'instructions contient cet algorithme ? » La question paraît anodine, elle est pourtant celle qui piège le plus de candidats au BEPC. La raison est simple : compter des lignes n'est pas compter des instructions. Un algorithme contient des en-têtes, des déclarations, des mots-clés de structure, et seule une partie de ce qu'on y lit correspond à une action réellement exécutée par la machine. Savoir faire ce tri, c'est comprendre de quoi un algorithme est fait."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un algorithme en pseudo-code et repérer les blocs Début et Fin",
+        "Distinguer une déclaration de variable d'une instruction",
+        "Connaître les instructions élémentaires : lecture, écriture, affectation",
+        "Connaître les structures de contrôle : alternative et répétitive"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ce qui compte comme instruction, et ce qui n'en est pas une",
+      "contenu_markdown": "Une **instruction** est un ordre donné à la machine, une action qu'elle exécute. Seul ce qui se trouve **entre `Début` et `Fin`** peut être une instruction.\n\n**Les quatre familles d'instructions au programme :**\n\n| Famille | Forme | Ce qu'elle fait |\n|---|---|---|\n| Entrée | `Lire (variable) ;` | reçoit une valeur saisie au clavier |\n| Sortie | `Ecrire (\"message\") ;` ou `Ecrire (variable) ;` | affiche une information à l'écran |\n| Affectation | `variable <- expression ;` | range une valeur dans une variable |\n| Contrôle | `Si ... Finsi`, `Tant que ... FinTantque`, `Pour ... FinPour` | dirige le déroulement de l'algorithme |\n\n**Ce qui n'est jamais une instruction :**\n\n- l'en-tête `Algorithme NomDeLAlgorithme`, qui ne fait que nommer l'algorithme ;\n- la partie déclarative `Variables nom : type ;`, qui réserve un emplacement mémoire sans exécuter d'action, et qui se situe de toute façon **avant** le `Début` ;\n- les mots-clés de délimitation `Début`, `Fin`, `alors`, `Sinon`, `Finsi`, `FinTantque` : ce sont des bornes, pas des ordres ;\n- les commentaires éventuels.\n\n**La méthode de comptage en deux temps :**\n\n1. Compter les **instructions simples** (entrée, sortie, affectation) : dans les notations qui utilisent le point-virgule, chacune se termine par un `;`. Il suffit donc de compter les points-virgules situés entre `Début` et `Fin`.\n2. Ajouter les **structures de contrôle**, chacune comptant pour une instruction, sans oublier que les instructions situées **à l'intérieur** de ces structures ont déjà été comptées à l'étape 1.\n\nLe total demandé est la somme des deux. La réponse doit toujours être accompagnée de l'énumération : c'est elle qui prouve le raisonnement, et c'est elle qui est notée.",
+      "formule_principale": "\\text{Nombre d'instructions} = \\text{instructions simples} + \\text{structures de contrôle}",
+      "variantes": [
+        {
+          "nom": "Décompte des seules instructions simples",
+          "quand_utiliser": "Quand l'énoncé précise « instructions élémentaires » ou « instructions simples »",
+          "contenu_markdown": "Certains sujets et certains barèmes ne considèrent pas une structure de contrôle comme une instruction à part entière, mais comme un assemblage d'instructions. Le décompte se limite alors aux entrées, sorties et affectations. C'est précisément parce que les deux lectures existent qu'il faut énumérer : une énumération correcte reste valable quel que soit le total retenu par le correcteur."
+        },
+        {
+          "nom": "Décompte des instructions exécutées lors d'un passage",
+          "quand_utiliser": "Quand la question porte sur une exécution précise (« combien d'instructions sont exécutées si l'utilisateur saisit 7 ? »)",
+          "contenu_markdown": "On ne compte plus ce qui est **écrit** mais ce qui est **parcouru**. Dans une structure alternative, une seule branche est exécutée : les instructions de l'autre branche ne comptent pas. Dans une boucle, au contraire, les mêmes instructions comptent autant de fois qu'il y a de tours. Lis bien la question : « contenues dans » et « exécutées par » ne demandent pas la même chose."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Donner le nombre d'instructions contenues dans l'algorithme suivant.\n\n```\nAlgorithme Comparaison\nVariables nombre : entier ;\nDébut\n    Ecrire (\"entrer un nombre\") ;\n    Lire (nombre) ;\n        Si (nombre < 10) alors\n            Ecrire (\" ce nombre est plus petit que 10\") ;\n        Sinon\n            Ecrire (\"ce nombre est plus grand que 10\") ;\n        Finsi\nFin\n```",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Délimiter la zone à examiner",
+          "justification": "Seules les lignes situées entre `Début` et `Fin` peuvent contenir des instructions. Tout ce qui précède le `Début` relève de l'en-tête et des déclarations.",
+          "resultat_markdown": "Zone retenue : de la ligne `Ecrire (\"entrer un nombre\") ;` à la ligne `Finsi`. Lignes écartées : `Algorithme Comparaison` (en-tête) et `Variables nombre : entier ;` (déclaration)."
+        },
+        {
+          "numero": 2,
+          "action": "Compter les instructions simples en s'appuyant sur les points-virgules",
+          "justification": "Dans cette notation, chaque instruction simple se termine par un point-virgule. Compter les points-virgules de la zone délimitée donne donc directement le nombre d'instructions simples, y compris celles qui sont cachées à l'intérieur des branches.",
+          "resultat_markdown": "Quatre points-virgules, donc **4 instructions simples** :\n\n1. `Ecrire (\"entrer un nombre\") ;` (sortie)\n2. `Lire (nombre) ;` (entrée)\n3. `Ecrire (\" ce nombre est plus petit que 10\") ;` (sortie, branche « alors »)\n4. `Ecrire (\"ce nombre est plus grand que 10\") ;` (sortie, branche « Sinon »)"
+        },
+        {
+          "numero": 3,
+          "action": "Repérer les structures de contrôle",
+          "justification": "Une structure de contrôle se repère à son couple de mots-clés d'ouverture et de fermeture. Ici, un seul couple `Si ... Finsi` est présent.",
+          "resultat_markdown": "**1 structure de contrôle** : la structure alternative `Si (nombre < 10) alors ... Sinon ... Finsi`."
+        },
+        {
+          "numero": 4,
+          "action": "Additionner et présenter l'énumération complète",
+          "justification": "Le total seul ne vaut presque rien au barème ; c'est l'énumération qui montre que chaque élément a été correctement identifié.",
+          "resultat_markdown": "| Rang | Instruction | Nature |\n|---|---|---|\n| 1 | `Ecrire (\"entrer un nombre\") ;` | sortie |\n| 2 | `Lire (nombre) ;` | entrée |\n| 3 | `Si (nombre < 10) alors ... Sinon ... Finsi` | structure alternative |\n| 4 | `Ecrire (\" ce nombre est plus petit que 10\") ;` | sortie |\n| 5 | `Ecrire (\"ce nombre est plus grand que 10\") ;` | sortie |\n\nTotal : $4 + 1 = 5$ instructions."
+        },
+        {
+          "numero": 5,
+          "action": "Signaler la lecture concurrente",
+          "justification": "Un correcteur qui ne compte pas la structure alternative attend 4. Mentionner explicitement le mode de comptage retenu met la copie à l'abri des deux côtés.",
+          "resultat_markdown": "« L'algorithme contient 5 instructions, dont 4 instructions simples et 1 structure alternative. » Cette formulation donne le total et sa décomposition, elle reste juste quelle que soit la convention du barème."
+        }
+      ],
+      "conclusion_markdown": "Cet algorithme contient 5 instructions : 4 simples et 1 structure de contrôle. La méthode qui a permis d'y arriver, délimiter puis compter les points-virgules puis ajouter les structures, s'applique telle quelle à n'importe quel algorithme du programme."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter les lignes du texte et répondre 11 (nombre de lignes de l'algorithme)",
+          "pourquoi_faux": "Une ligne n'est pas une instruction. `Début`, `Fin`, `Sinon` et `Finsi` occupent chacune une ligne complète sans qu'aucune action ne soit exécutée : ce sont des bornes de bloc. À l'inverse, une instruction longue pourrait s'étaler sur deux lignes sans compter double.",
+          "correction_markdown": "Ne compte jamais des lignes. Demande-toi pour chaque élément : « la machine exécute-t-elle quelque chose ici ? » Si la réponse est non, l'élément ne compte pas."
+        },
+        {
+          "erreur_markdown": "Compter la déclaration `Variables nombre : entier ;` parmi les instructions et répondre 6",
+          "pourquoi_faux": "Cette ligne se termine par un point-virgule, ce qui la fait ressembler à une instruction, mais elle est située **avant** le `Début`. Elle décrit ce dont l'algorithme a besoin, elle n'ordonne aucune action.",
+          "correction_markdown": "Applique la délimitation avant de compter les points-virgules : trace mentalement un trait après `Début` et un autre avant `Fin`, et ne compte que ce qui se trouve entre les deux."
+        },
+        {
+          "erreur_markdown": "Oublier les instructions situées à l'intérieur des branches et répondre 3",
+          "pourquoi_faux": "Les deux `Ecrire` placés dans les branches `alors` et `Sinon` sont bien des instructions de l'algorithme, même si une seule des deux s'exécute lors d'un passage donné. La question porte sur les instructions **contenues** dans l'algorithme, pas sur celles exécutées lors d'une exécution particulière.",
+          "correction_markdown": "Lis attentivement le verbe de la question. « Contenues » signifie : présentes dans le texte de l'algorithme, toutes branches confondues. « Exécutées » signifierait : parcourues lors d'un passage précis, ce qui est une autre question."
+        },
+        {
+          "erreur_markdown": "Donner le nombre seul, sans énumération",
+          "pourquoi_faux": "Comme deux conventions de décompte coexistent, un chiffre isolé est indéfendable : s'il ne correspond pas à celui du barème, il est simplement compté faux, sans qu'aucun point partiel ne puisse être attribué.",
+          "correction_markdown": "Écris toujours la liste numérotée des instructions avant d'annoncer le total. Même si ton total diffère de celui attendu, l'énumération correcte montre que l'analyse est juste et sauve l'essentiel des points."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner, en les énumérant, le nombre d'instructions de l'algorithme suivant.\n\n```\nAlgorithme Somme\nVariables a, b, s : entier ;\nDébut\n    Ecrire (\"Entrez deux nombres : \") ;\n    Lire (a) ;\n    Lire (b) ;\n    s <- a + b ;\n    Ecrire (\"La somme vaut : \", s) ;\nFin\n```",
+          "solution_markdown": "**Étape 1 : délimiter.**\n\nLes lignes `Algorithme Somme` et `Variables a, b, s : entier ;` sont écartées : en-tête et déclaration.\n\n**Étape 2 : énumérer les instructions simples.**\n\n1. `Ecrire (\"Entrez deux nombres : \") ;` (sortie)\n2. `Lire (a) ;` (entrée)\n3. `Lire (b) ;` (entrée)\n4. `s <- a + b ;` (affectation)\n5. `Ecrire (\"La somme vaut : \", s) ;` (sortie)\n\nOn compte bien 5 points-virgules entre `Début` et `Fin`.\n\n**Étape 3 : repérer les structures de contrôle.**\n\nAucune : cet algorithme est purement séquentiel, les instructions s'exécutent l'une après l'autre dans l'ordre où elles sont écrites.\n\n**Conclusion.** L'algorithme contient **5 instructions**, toutes simples : 2 entrées, 1 affectation et 2 sorties. Ici les deux conventions de décompte donnent le même total, puisqu'il n'y a aucune structure de contrôle."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Énumérer et compter les instructions de l'algorithme suivant, en précisant la nature de chacune.\n\n```\nAlgorithme Moyenne\nVariables note1, note2, moy : réel ;\nDébut\n    Lire (note1) ;\n    Lire (note2) ;\n    moy <- (note1 + note2) / 2 ;\n    Si (moy >= 10) alors\n        Ecrire (\"Admis\") ;\n    Sinon\n        Ecrire (\"Ajourné\") ;\n    Finsi\n    Ecrire (\"Fin du traitement\") ;\nFin\n```",
+          "solution_markdown": "**Étape 1 : délimiter.**\n\nOn écarte `Algorithme Moyenne` et `Variables note1, note2, moy : réel ;`.\n\n**Étape 2 : compter les points-virgules entre Début et Fin.**\n\nOn en trouve 6, donc 6 instructions simples :\n\n1. `Lire (note1) ;` (entrée)\n2. `Lire (note2) ;` (entrée)\n3. `moy <- (note1 + note2) / 2 ;` (affectation)\n4. `Ecrire (\"Admis\") ;` (sortie, branche « alors »)\n5. `Ecrire (\"Ajourné\") ;` (sortie, branche « Sinon »)\n6. `Ecrire (\"Fin du traitement\") ;` (sortie, après la structure)\n\n**Étape 3 : repérer les structures de contrôle.**\n\nUn couple `Si ... Finsi` : 1 structure alternative.\n\n**Étape 4 : conclure.**\n\nTotal : $6 + 1 = \\mathbf{7}$ instructions, dont 6 simples (2 entrées, 1 affectation, 3 sorties) et 1 structure alternative.\n\n**Remarque importante.** La dernière instruction, `Ecrire (\"Fin du traitement\") ;`, est placée **après** le `Finsi` : elle ne fait donc partie d'aucune branche et s'exécute dans tous les cas. Repérer cette position est essentiel, car c'est exactement là que le `Finsi` joue son rôle."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour l'algorithme Moyenne de l'exercice précédent, on demande maintenant : combien d'instructions sont réellement **exécutées** lorsque l'élève obtient la moyenne 8 ? Comparer avec le nombre d'instructions contenues et expliquer l'écart.",
+          "solution_markdown": "**Étape 1 : simuler l'exécution pas à pas.**\n\nSupposons que l'utilisateur saisisse `note1 = 6` et `note2 = 10`.\n\n1. `Lire (note1) ;` exécutée, `note1` reçoit 6.\n2. `Lire (note2) ;` exécutée, `note2` reçoit 10.\n3. `moy <- (note1 + note2) / 2 ;` exécutée : $(6 + 10) \\div 2 = 8$, donc `moy` reçoit 8.\n4. `Si (moy >= 10) alors` : la condition $8 \\geq 10$ est **fausse**. L'algorithme saute la branche « alors » et passe à la branche « Sinon ». La structure alternative est bien exécutée, en tant qu'instruction de contrôle.\n5. `Ecrire (\"Admis\") ;` **non exécutée** : elle appartient à la branche « alors », qui a été sautée.\n6. `Ecrire (\"Ajourné\") ;` exécutée, affichage de « Ajourné ».\n7. `Ecrire (\"Fin du traitement\") ;` exécutée, car située après le `Finsi`.\n\n**Étape 2 : compter les instructions exécutées.**\n\nInstructions exécutées : les 3 premières, la structure alternative, `Ecrire (\"Ajourné\") ;` et `Ecrire (\"Fin du traitement\") ;`, soit **6 instructions**.\n\n**Étape 3 : comparer.**\n\nL'algorithme **contient** 7 instructions ; il en **exécute** 6 pour cette saisie. L'écart vaut 1.\n\n**Étape 4 : expliquer l'écart.**\n\nL'écart vient du principe d'exclusivité de la structure alternative : les deux branches sont écrites dans l'algorithme, mais une seule est parcourue à chaque exécution. L'instruction `Ecrire (\"Admis\") ;` existe donc dans le texte sans être exécutée ici.\n\nLe nombre d'instructions exécutées dépend des données saisies, alors que le nombre d'instructions contenues est une propriété fixe du texte de l'algorithme. Pour une moyenne supérieure ou égale à 10, on exécuterait également 6 instructions, mais ce serait `Ecrire (\"Admis\") ;` au lieu de `Ecrire (\"Ajourné\") ;`.\n\n**Prolongement.** Avec une boucle, l'écart jouerait dans l'autre sens : une instruction écrite une seule fois à l'intérieur d'un `Tant que` peut être exécutée des centaines de fois."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une instruction est une action exécutée par la machine. L'en-tête, les déclarations et les mots-clés de délimitation n'en sont pas.",
+        "Trace la frontière Début / Fin avant de compter quoi que ce soit : tout ce qui est en dehors est hors sujet.",
+        "Compte d'abord les points-virgules de la zone, ce sont tes instructions simples, puis ajoute les structures de contrôle repérées par leurs mots-clés d'ouverture et de fermeture.",
+        "Les instructions cachées dans les branches d'un Si comptent : elles sont contenues dans l'algorithme même si une seule branche s'exécute.",
+        "Donne toujours l'énumération avant le total. Deux conventions de décompte coexistent, et seule l'énumération met ta copie à l'abri des deux.",
+        "Au BEPC, cette question accompagne presque toujours l'analyse d'un algorithme donné (identifier une variable, un type, une structure). Traite-la en dernier : les questions précédentes t'ont déjà fait repérer la moitié des éléments à compter."
+      ]
+    }
+  ]
+}

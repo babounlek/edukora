@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-dom-document-methodes-casse-js-premiere-ti",
+  "meta": {
+    "titre": "Le DOM : objet document, méthodes et sensibilité à la casse en JavaScript",
+    "matiere": "Programmation",
+    "pays": "cm",
+    "serie": "TI",
+    "sous_theme": "JavaScript et manipulation du DOM",
+    "duree_estimee_min": 15,
+    "tags": [
+      "DOM",
+      "document",
+      "getElementsByTagName",
+      "casse",
+      "méthode"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "EP-probatoire-blanc-ti-avril-2024-college-vogt-cameroun",
+    "epreuve_titre": "Probatoire Blanc - Collège Mgr. François-Xavier VOGT - Algorithme & Programmation (Avril 2024)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-blanc-ti-avril-2024-college-vogt-cameroun-ex3-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "`document`, tout en minuscules, est l'un des mots les plus utilisés en JavaScript côté navigateur - et pourtant, une simple majuscule mal placée suffit à faire planter tout un script. Comprendre pourquoi t'évitera l'une des erreurs les plus fréquentes (et les plus frustrantes) du débutant."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'une page HTML chargée dans le navigateur peut être manipulée par JavaScript"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "document (minuscule) et ses méthodes",
+      "contenu_markdown": "En JavaScript, l'objet représentant la page chargée dans le navigateur s'appelle `document`, toujours écrit avec un d minuscule : JavaScript étant sensible à la casse, écrire `Document` (avec une majuscule) provoque une erreur car cet identifiant n'existe pas dans le langage. `document` propose de nombreuses **méthodes** (des actions qu'on peut lui demander d'exécuter), comme `getElementsByTagName(nom)`, qui renvoie la liste de tous les éléments portant cette balise dans la page.",
+      "formule_principale": "document.méthode(...) - jamais Document (majuscule)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Corriger le code suivant et expliquer pourquoi il ne fonctionnait pas : `var liste = Document.getElementsByTagName('p');`",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'objet utilisé",
+          "justification": "Le code appelle une méthode sur `Document`, avec une majuscule",
+          "resultat_markdown": "`Document` (majuscule) n'est pas défini dans le contexte global du navigateur : c'est `document` (minuscule) qui représente la page."
+        },
+        {
+          "numero": 2,
+          "action": "Corriger la casse",
+          "justification": "JavaScript distingue strictement majuscules et minuscules",
+          "resultat_markdown": "```javascript\nvar liste = document.getElementsByTagName('p');\n```"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier le résultat produit",
+          "justification": "`getElementsByTagName` est une méthode qui renvoie une collection d'éléments",
+          "resultat_markdown": "`liste` contient désormais tous les éléments `<p>` de la page, sous forme d'une NodeList (une liste manipulable, par exemple avec une boucle)."
+        }
+      ],
+      "conclusion_markdown": "Une seule lettre en trop (la majuscule) suffisait à provoquer une erreur d'exécution : ce genre d'erreur de casse est l'une des plus fréquentes en JavaScript, précisément parce qu'elle est souvent invisible à l'œil nu si on ne s'y attend pas."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `Document`, `DOCUMENT` ou toute autre variante de casse pour désigner la page",
+          "pourquoi_faux": "Pour l'interpréteur JavaScript, `document`, `Document` et `DOCUMENT` sont trois identifiants totalement différents ; un seul (`document`, tout en minuscules) existe réellement dans l'environnement du navigateur.",
+          "correction_markdown": "Mémorise l'écriture exacte `document`, toujours en minuscules, comme un réflexe."
+        },
+        {
+          "erreur_markdown": "Confondre une méthode (comme `getElementsByTagName()`) avec un événement (comme `onclick`)",
+          "pourquoi_faux": "Une méthode s'exécute immédiatement quand le code l'appelle (elle réalise une action et renvoie souvent un résultat) ; un événement, lui, ne s'exécute qu'en réaction à une action de l'utilisateur (clic, saisie...), pas à la lecture du code.",
+          "correction_markdown": "Demande-toi toujours : \"est-ce que cette instruction s'exécute dès que le code est lu, ou seulement quand l'utilisateur fait quelque chose ?\" - la première option signale une méthode, la seconde un événement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Corriger l'instruction suivante si elle contient une erreur : `DOCUMENT.write(\"Bonjour\");`",
+          "solution_markdown": "L'instruction est fautive : `DOCUMENT` doit s'écrire `document` (minuscules). Instruction corrigée : `document.write(\"Bonjour\");`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "`document.getElementById('titre')` est-elle une méthode ou un événement ? Justifier en une phrase.",
+          "solution_markdown": "C'est une **méthode** : elle s'exécute immédiatement à la lecture du code (elle recherche et renvoie l'élément portant l'identifiant \"titre\"), sans attendre aucune action de l'utilisateur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un élève écrit `var Titre = document.getElementById('titre');` puis, plus loin dans son script, utilise `titre.innerHTML = \"Nouveau texte\";` (sans majuscule cette fois). Le code fonctionne-t-il ? Justifier en reliant ta réponse à la sensibilité à la casse de JavaScript.",
+          "solution_markdown": "Non, le code ne fonctionne pas : la variable a été déclarée avec un T majuscule (`Titre`), alors que la ligne suivante utilise `titre` avec un t minuscule. Exactement comme pour `document`/`Document`, JavaScript traite `Titre` et `titre` comme deux identifiants complètement différents. `titre` (minuscule) n'a jamais été déclaré : JavaScript signalera une erreur (\"titre is not defined\") au moment d'exécuter cette ligne. Cet exemple montre que la sensibilité à la casse de JavaScript ne concerne pas seulement les objets natifs comme `document`, mais absolument tous les identifiants du langage, y compris ceux que le développeur choisit lui-même pour ses propres variables."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`document` désigne la page HTML en cours, toujours écrit en minuscules.",
+        "JavaScript est sensible à la casse : `document`, `Document` et `DOCUMENT` sont trois identifiants différents, un seul existe réellement.",
+        "Une méthode (comme `getElementsByTagName()`) s'exécute immédiatement et renvoie un résultat ; un événement (comme `onclick`) attend une action de l'utilisateur.",
+        "Cette règle de casse s'applique à tous les identifiants JavaScript, y compris ceux que tu déclares toi-même.",
+        "Face à un code qui ne fonctionne pas sans erreur de syntaxe visible, vérifie toujours en premier la casse exacte de chaque identifiant utilisé : c'est l'un des bugs les plus fréquents et les plus rapides à corriger une fois repéré."
+      ]
+    }
+  ]
+}

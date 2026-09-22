@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-schema-circuit-lc-et-branchement-oscilloscope-tle-c-e",
+  "meta": {
+    "titre": "Schema d'un circuit LC et branchement d'un oscilloscope pour visualiser une tension",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Oscillateurs electriques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "circuit LC",
+      "oscilloscope",
+      "schema electrique",
+      "montage en derivation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": null,
+    "epreuve_titre": "Baccalaureat C-E Physique 2010 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-physique-2010-officiel-cameroun-ex2-q1b-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de calculer quoi que ce soit sur un circuit oscillant, il faut savoir le dessiner et savoir comment 'brancher les yeux' dessus pour observer ce qui s'y passe : c'est le role de l'oscilloscope. Ce cours fixe les regles de schematisation d'un circuit LC et de branchement d'un oscilloscope, une competence transversale a tout exercice d'electricite experimentale."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Symboles electriques de base (condensateur, bobine, fils de connexion)",
+        "Notion de tension aux bornes d'un dipole",
+        "Difference entre un branchement en serie et en derivation (parallele)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Schematiser un circuit LC et brancher l'oscilloscope",
+      "contenu_markdown": "Un circuit oscillant LC serie comprend un condensateur $C$ et une bobine (inductance $L$, resistance interne non nulle en pratique) monies en serie, formant une maille fermee. Pour visualiser l'evolution d'une tension (ex. celle du condensateur), l'oscilloscope se branche systematiquement **en derivation (parallele)** aux bornes du dipole etudie, jamais en serie dans le circuit (ce qui l'ouvrirait et empecherait toute circulation de courant).",
+      "formule_principale": "\\text{Oscilloscope} \\;\\parallel\\; \\text{dipole dont on visualise la tension}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un condensateur $C$, prealablement charge, est connecte a $t=0$ en serie avec une bobine d'inductance $L$. Decrire le schema du montage permettant de visualiser $u_C(t)$ a l'oscilloscope.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer les deux composants du circuit oscillant",
+          "justification": "Le circuit LC est une maille fermee simple",
+          "resultat_markdown": "Condensateur $C$ et bobine ($L$, resistance interne $r$) monies en serie, formant une boucle fermee"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier le dipole dont on veut visualiser la tension",
+          "justification": "C'est ce choix qui determine le point de branchement de l'oscilloscope",
+          "resultat_markdown": "On souhaite visualiser $u_C(t)$, la tension aux bornes du condensateur"
+        },
+        {
+          "numero": 3,
+          "action": "Brancher l'oscilloscope en derivation sur ce dipole",
+          "justification": "Un oscilloscope mesure une tension, donc se branche toujours en parallele",
+          "resultat_markdown": "Voie Y de l'oscilloscope reliee aux deux bornes du condensateur (masse sur une borne, voie Y sur l'autre)"
+        }
+      ],
+      "conclusion_markdown": "Le montage decrit permet de visualiser fidelement les oscillations de $u_C(t)$ des la fermeture du circuit a $t=0$ : c'est ce schema, systematique, qu'il faut savoir reproduire pour tout circuit oscillant etudie a l'oscilloscope."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer l'oscilloscope en serie dans le circuit LC",
+          "pourquoi_faux": "Un oscilloscope possede une tres grande resistance d'entree ; le placer en serie ouvrirait quasiment le circuit et empecherait toute oscillation de s'y produire.",
+          "correction_markdown": "Toujours brancher l'oscilloscope en derivation (parallele) aux bornes du dipole dont on veut visualiser la tension."
+        },
+        {
+          "erreur_markdown": "Oublier de relier la masse de l'oscilloscope a une borne commune du circuit",
+          "pourquoi_faux": "Sans reference de masse commune, la mesure de tension affichee par l'oscilloscope n'a pas de sens physique defini.",
+          "correction_markdown": "Toujours identifier et relier explicitement la borne de masse de l'oscilloscope a l'une des bornes du dipole mesure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un generateur alimente un resistor $R$ en serie avec une bobine $L$. Ou brancher un oscilloscope pour visualiser la tension aux bornes de $R$ ?",
+          "solution_markdown": "En derivation (parallele) directement aux bornes du resistor $R$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un circuit RLC serie, on souhaite visualiser simultanement la tension aux bornes du condensateur ET celle aux bornes du resistor. Combien de voies d'oscilloscope faut-il utiliser au minimum, et comment les brancher ?",
+          "solution_markdown": "Il faut utiliser les deux voies (Y1 et Y2) d'un oscilloscope bicourbe : Y1 en derivation aux bornes du condensateur, Y2 en derivation aux bornes du resistor, en veillant a ce que les deux mesures partagent une masse commune (une borne reliee a la masse de l'oscilloscope)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi ne peut-on pas, avec un oscilloscope simple (masse commune obligatoire), visualiser directement la tension aux bornes de la bobine dans un circuit LC serie ou le condensateur est deja relie a la masse par l'une de ses bornes, sans risquer de court-circuiter une partie du circuit ?",
+          "solution_markdown": "Dans un circuit LC serie simple, si une borne du condensateur est deja reliee a la masse de l'oscilloscope (pour visualiser $u_C$), relier une seconde voie directement aux deux bornes de la bobine imposerait de connecter la masse de l'oscilloscope (commune a toutes les voies) a un point du circuit different de celui deja choisi : comme les deux masses des voies Y1 et Y2 sont physiquement le meme point electrique dans l'appareil, cela court-circuiterait la portion du circuit comprise entre ces deux points. Il faut alors soit utiliser une des voies en mode 'differentiel' (deux sondes flottantes), soit deduire $u_L$ indirectement par la loi des mailles a partir des tensions mesurables sans conflit de masse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un circuit LC serie est une simple boucle fermee comprenant le condensateur et la bobine.",
+        "Un oscilloscope mesure toujours une tension, donc se branche toujours en derivation (parallele), jamais en serie.",
+        "La masse de l'oscilloscope doit toujours etre reliee explicitement a une borne du circuit, faute de quoi la mesure n'a pas de sens.",
+        "Avec plusieurs voies partageant une masse commune, attention aux risques de court-circuit si l'on tente de mesurer deux tensions qui ne partagent pas ce meme point de reference.",
+        "Au BAC, ce type de question (schema + branchement) ouvre systematiquement les exercices d'oscillateurs electriques etudies experimentalement."
+      ]
+    }
+  ]
+}

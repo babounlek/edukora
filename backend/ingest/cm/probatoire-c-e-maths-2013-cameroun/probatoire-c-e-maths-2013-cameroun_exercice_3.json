@@ -1,0 +1,354 @@
+{
+ "epreuve_source": "probatoire-c-e-maths-2013-cameroun",
+ "pays": "cm",
+ "matiere": "Mathématiques",
+ "nature_epreuve": null,
+ "partie_epreuve_francais": null,
+ "variante_sujet": null,
+ "filiere_serie_a": null,
+ "serie": "C, E",
+ "examen": "probatoire",
+ "origine": "officiel",
+ "etablissement": null,
+ "institution": null,
+ "annee": 2013,
+ "duree_epreuve": "3 heures",
+ "coefficient": 6,
+ "statut": "brouillon",
+ "numero_exercice": "3",
+ "titre_exercice": "Problème : étude de la fonction rationnelle x²/(2(x−1)), centre de symétrie, discussion paramétrée et suite récurrente associée",
+ "points": 11.0,
+ "figures": [
+  {
+   "id": "fig-1",
+   "fichier": "probatoire-c-e-maths-2013-cameroun_exercice_3_fig_1.png",
+   "page_source": null,
+   "type": "courbe",
+   "legende": "Courbe (C) de f(x)=x²/(2(x−1)) dans un repère orthonormé, avec l'asymptote verticale x=1, l'asymptote oblique y=(x+1)/2, le maximum local A(0 ; 0), le minimum local B(2 ; 2) et le centre de symétrie K(1 ; 1)",
+   "indispensable": true,
+   "lisibilite": "bonne",
+   "origine_figure": "corrige"
+  },
+  {
+   "id": "fig-2",
+   "fichier": "probatoire-c-e-maths-2013-cameroun_exercice_3_fig_2.png",
+   "page_source": null,
+   "type": "graphique",
+   "legende": "Construction en escalier des termes u2=4, u3=8/3, u4=32/15 et u5=512/255 de la suite récurrente, sur la branche x>1 de (C) et la droite y=x, avec le point fixe (2 ; 2)",
+   "indispensable": true,
+   "lisibilite": "bonne",
+   "origine_figure": "corrige"
+  }
+ ],
+ "enonce_intro_markdown": "**Problème (11 points)**\n\n*Le problème comporte deux parties. La partie B utilise la fonction étudiée dans la partie A.*",
+ "questions": [
+  {
+   "numero": "A.1",
+   "points": 1.0,
+   "enonce_markdown": "**Problème (11 points)**\n\n**Partie A**\n\nOn considère la fonction $f$ définie de $\\mathbb{R}-1$ dans $\\mathbb{R}$ par\n\n$$f(x)=\\frac{x^{2}}{2(x-1)}$$\n\n**1.** Déterminer les limites de $f$ aux bornes de son domaine de définition.\n\n*[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nAux bornes infinies, une fonction rationnelle se comporte comme le **quotient de ses termes de plus haut degré**. En un pôle, le numérateur tend vers une constante non nulle et le dénominateur vers $0$ : la limite est infinie, et c'est le **signe du dénominateur** au voisinage du pôle qui décide du signe de cet infini — d'où la nécessité d'étudier séparément la limite à gauche et la limite à droite.\n\n**Étape 1 — préciser l'ensemble de définition.**\n\n$$f(x)=\\frac{x^{2}}{2(x-1)}$$\n\nLe dénominateur $2(x-1)$ s'annule pour $x=1$, donc\n\n$$D_{f}=\\mathbb{R}\\setminus\\{1\\}=\\left]-\\infty\\,;\\,1\\right[\\cup\\left]1\\,;\\,+\\infty\\right[$$\n\nIl y a donc quatre limites à calculer : en $-\\infty$, en $1^{-}$, en $1^{+}$ et en $+\\infty$.\n\n**Étape 2 — limites en $\\pm\\infty$.**\n\nEn l'infini, on compare les termes dominants :\n\n$$f(x)=\\frac{x^{2}}{2x-2}\\underset{x\\to\\pm\\infty}{\\sim}\\frac{x^{2}}{2x}=\\frac{x}{2}$$\n\nPar conséquent\n\n$$\\lim_{x\\to-\\infty}f(x)=\\lim_{x\\to-\\infty}\\frac{x}{2}=-\\infty\\qquad;\\qquad\\lim_{x\\to+\\infty}f(x)=\\lim_{x\\to+\\infty}\\frac{x}{2}=+\\infty$$\n\n*Rédaction rigoureuse par factorisation :*\n\n$$f(x)=\\frac{x^{2}}{2x\\left(1-\\frac{1}{x}\\right)}=\\frac{x}{2}\\times\\frac{1}{1-\\frac{1}{x}}$$\n\nLe second facteur tend vers $1$, le premier vers $\\pm\\infty$ : les limites annoncées suivent.\n\n**Étape 3 — limites en $1$ : étudier le signe du dénominateur.**\n\nLe numérateur tend vers $1^{2}=1>0$, indépendamment du côté.\n\n$$\\begin{array}{c|c|c} & x\\to 1^{-}\\;(x<1) & x\\to 1^{+}\\;(x>1) \\\\ \\hline x-1 & <0 & >0 \\\\ 2(x-1) & \\to 0^{-} & \\to 0^{+} \\\\ f(x)=\\dfrac{\\to 1}{\\to 0^{\\pm}} & \\to -\\infty & \\to +\\infty \\end{array}$$\n\n$$\\lim_{x\\to 1^{-}}f(x)=-\\infty\\qquad;\\qquad\\lim_{x\\to 1^{+}}f(x)=+\\infty$$\n\n**Étape 4 — récapituler.**\n\n$$\\boxed{\\;\\lim_{x\\to-\\infty}f(x)=-\\infty\\quad;\\quad\\lim_{x\\to 1^{-}}f(x)=-\\infty\\quad;\\quad\\lim_{x\\to 1^{+}}f(x)=+\\infty\\quad;\\quad\\lim_{x\\to+\\infty}f(x)=+\\infty\\;}$$\n\n**Étape 5 — contrôler numériquement.**\n\n$f(0{,}9)=\\dfrac{0{,}81}{2\\times(-0{,}1)}=-4{,}05$ et $f(0{,}99)=\\dfrac{0{,}9801}{-0{,}02}\\approx-49$ : la valeur plonge bien vers $-\\infty$.\n\n$f(1{,}1)=\\dfrac{1{,}21}{0{,}2}=6{,}05$ et $f(1{,}01)=\\dfrac{1{,}0201}{0{,}02}\\approx 51$ : la valeur monte bien vers $+\\infty$. Conforme.\n\n### Piège à éviter\nÉcrire « $\\lim_{x\\to 1}f(x)=\\infty$ » sans préciser le côté fait perdre l'essentiel de la question : les deux limites latérales sont **opposées**, et c'est précisément ce contraste qui donne à la courbe ses deux branches infinies de part et d'autre de l'asymptote verticale.\n\n### Conseil\nPour déterminer le signe d'un $0$ au dénominateur, place-toi mentalement juste avant puis juste après le pôle : $x=0{,}99$ donne $x-1=-0{,}01<0$, $x=1{,}01$ donne $x-1=+0{,}01>0$. Un chiffre suffit à trancher.",
+   "themes": [
+    "fonction rationnelle",
+    "limites",
+    "limite en l'infini",
+    "limite à gauche et à droite",
+    "asymptote verticale"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "V"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2013-cameroun-pb-a1-1",
+     "competence": "Calculer les limites d'une fonction rationnelle aux bornes de son ensemble de définition",
+     "contenu_markdown": "Aux bornes infinies, une fonction rationnelle se comporte comme le **quotient de ses termes de plus haut degré**. En un pôle, le numérateur tend vers une constante non nulle et le dénominateur vers $0$ : la limite est infinie, et c'est le **signe du dénominateur** au voisinage du pôle qui décide du signe de cet infini — d'où la nécessité d'étudier séparément la limite à gauche et la limite à droite.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.2",
+   "points": 2.0,
+   "enonce_markdown": "**2.** Calculer la dérivée et dresser le tableau de variation de $f$.\n\n*[2 pts]*",
+   "corrige_markdown": "### Rappel de méthode\nLa dérivée d'un quotient est $\\left(\\dfrac{u}{v}\\right)'=\\dfrac{u'v-uv'}{v^{2}}$. Comme $v^{2}>0$ sur tout l'ensemble de définition, **le signe de $f'$ est celui du numérateur** : il suffit donc de factoriser ce numérateur, d'en dresser le tableau de signes, puis d'en déduire les variations et les extremums locaux.\n\n**Étape 1 — identifier $u$ et $v$.**\n\n$$f(x)=\\frac{u(x)}{v(x)}\\quad\\text{avec}\\quad u(x)=x^{2}\\;,\\;v(x)=2(x-1)=2x-2$$\n\n$$u'(x)=2x\\qquad;\\qquad v'(x)=2$$\n\n**Étape 2 — appliquer la formule du quotient.**\n\n$$f'(x)=\\frac{u'v-uv'}{v^{2}}=\\frac{2x\\times 2(x-1)-x^{2}\\times 2}{\\left[2(x-1)\\right]^{2}}=\\frac{4x(x-1)-2x^{2}}{4(x-1)^{2}}$$\n\n**Étape 3 — développer et factoriser le numérateur.**\n\n$$4x(x-1)-2x^{2}=4x^{2}-4x-2x^{2}=2x^{2}-4x=2x(x-2)$$\n\nd'où\n\n$$f'(x)=\\frac{2x(x-2)}{4(x-1)^{2}}=\\frac{x(x-2)}{2(x-1)^{2}}$$\n\n$$\\boxed{\\;\\forall x\\in\\mathbb{R}\\setminus\\{1\\}\\;,\\quad f'(x)=\\frac{x\\,(x-2)}{2\\,(x-1)^{2}}\\;}$$\n\n**Étape 4 — étudier le signe de $f'$.**\n\nLe dénominateur $2(x-1)^{2}$ est **strictement positif** sur $D_{f}$ : le signe de $f'(x)$ est celui du trinôme $x(x-2)$, qui s'annule en $0$ et en $2$ et qui est du signe de son coefficient dominant $(+)$ à l'extérieur des racines.\n\n$$\\begin{array}{c|ccccccccc} x & -\\infty & & 0 & & 1 & & 2 & & +\\infty \\\\ \\hline x & & - & 0 & + & \\| & + & \\| & + & \\\\ x-2 & & - & \\| & - & \\| & - & 0 & + & \\\\ 2(x-1)^{2} & & + & \\| & + & 0 & + & \\| & + & \\\\ \\hline f'(x) & & + & 0 & - & \\| & - & 0 & + & \\end{array}$$\n\n**Étape 5 — calculer les valeurs remarquables.**\n\n$$f(0)=\\frac{0}{2\\times(-1)}=0\\qquad;\\qquad f(2)=\\frac{4}{2\\times 1}=2$$\n\n**Étape 6 — dresser le tableau de variation.**\n\n$$\\begin{array}{c|ccccccccc} x & -\\infty & & 0 & & 1 & & 2 & & +\\infty \\\\ \\hline f'(x) & & + & 0 & - & \\| & - & 0 & + & \\\\ \\hline & & \\nearrow & 0 & \\searrow & \\| & \\searrow & & \\nearrow & +\\infty \\\\ f & -\\infty & & & & \\| & & 2 & & \\\\ & & & & & -\\infty\\;\\|\\;+\\infty & & & & \\end{array}$$\n\nEn clair :\n\n- $f$ est **strictement croissante** sur $\\left]-\\infty\\,;\\,0\\right]$, de $-\\infty$ à $0$ ;\n- $f$ est **strictement décroissante** sur $\\left[0\\,;\\,1\\right[$, de $0$ à $-\\infty$ ;\n- $f$ est **strictement décroissante** sur $\\left]1\\,;\\,2\\right]$, de $+\\infty$ à $2$ ;\n- $f$ est **strictement croissante** sur $\\left[2\\,;\\,+\\infty\\right[$, de $2$ à $+\\infty$.\n\n**Étape 7 — conclure sur les extremums.**\n\n$f$ admet un **maximum local** égal à $0$ en $x=0$, et un **minimum local** égal à $2$ en $x=2$.\n\n**Étape 8 — contrôler.**\n\n$f(-1)=\\dfrac{1}{2\\times(-2)}=-0{,}5<0=f(0)$ : la croissance avant $0$ est confirmée.\n\n$f(3)=\\dfrac{9}{2\\times 2}=2{,}25>2=f(2)$ : la croissance après $2$ est confirmée.\n\n### Piège à éviter\nLe maximum local vaut $0$ et le minimum local vaut $2$ : le « maximum » est **inférieur** au « minimum ». Ce n'est pas une contradiction — ces extremums sont **locaux** et situés sur deux branches séparées par l'asymptote verticale. Une fonction discontinue en $1$ n'a aucune obligation d'être ordonnée globalement.\n\n### Conseil\nNe développe jamais $\\left[2(x-1)\\right]^{2}$ : garde-le sous forme factorisée $4(x-1)^{2}$. Tu vois immédiatement qu'il est positif, et la simplification par $2$ avec le numérateur devient évidente.",
+   "themes": [
+    "dérivée d'un quotient",
+    "signe de la dérivée",
+    "tableau de variation",
+    "extremum local"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VI"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2013-cameroun-pb-a2-1",
+     "competence": "Dériver un quotient et dresser le tableau de variation",
+     "contenu_markdown": "La dérivée d'un quotient est $\\left(\\dfrac{u}{v}\\right)'=\\dfrac{u'v-uv'}{v^{2}}$. Comme $v^{2}>0$ sur tout l'ensemble de définition, **le signe de $f'$ est celui du numérateur** : il suffit donc de factoriser ce numérateur, d'en dresser le tableau de signes, puis d'en déduire les variations et les extremums locaux.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.3",
+   "points": 1.5,
+   "enonce_markdown": "**3.** Montrer que la courbe $(C)$ représentative de $f$ dans un repère orthonormé $\\left(O\\,;\\,\\vec{\\imath}\\,,\\,\\vec{\\jmath}\\right)$ admet une asymptote oblique et une asymptote verticale, dont on donnera les équations cartésiennes respectives.\n\n*[1,5 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nUne droite $y=ax+b$ est asymptote oblique à $(C)$ en $\\pm\\infty$ lorsque $f(x)-(ax+b)$ tend vers $0$. Le moyen le plus sûr de l'obtenir est d'**écrire $f$ sous la forme $ax+b+\\varepsilon(x)$**, où $\\varepsilon(x)$ est une fraction dont le degré du numérateur est strictement inférieur à celui du dénominateur : le reste $\\varepsilon(x)$ tend alors automatiquement vers $0$.\n\n**Étape 1 — décomposer $f$ par division euclidienne.**\n\nDivisons $x^{2}$ par $x-1$ : $x^{2}=(x-1)(x+1)+1$. En reportant :\n\n$$f(x)=\\frac{x^{2}}{2(x-1)}=\\frac{(x-1)(x+1)+1}{2(x-1)}=\\frac{x+1}{2}+\\frac{1}{2(x-1)}$$\n\n$$\\boxed{\\;\\forall x\\neq 1\\;,\\quad f(x)=\\frac{x+1}{2}+\\frac{1}{2(x-1)}\\;}$$\n\n*Vérification :* $\\dfrac{x+1}{2}+\\dfrac{1}{2(x-1)}=\\dfrac{(x+1)(x-1)+1}{2(x-1)}=\\dfrac{x^{2}-1+1}{2(x-1)}=\\dfrac{x^{2}}{2(x-1)}$. Conforme.\n\n**Étape 2 — asymptote oblique.**\n\nPosons $\\left(\\Delta\\right)\\;:\\;y=\\dfrac{x+1}{2}$. Alors\n\n$$f(x)-\\frac{x+1}{2}=\\frac{1}{2(x-1)}$$\n\nQuand $x\\to\\pm\\infty$, le dénominateur $2(x-1)$ tend vers $\\pm\\infty$, donc\n\n$$\\lim_{x\\to\\pm\\infty}\\left[f(x)-\\frac{x+1}{2}\\right]=0$$\n\nLa droite $\\left(\\Delta\\right)$ est donc **asymptote oblique** à $(C)$ en $-\\infty$ et en $+\\infty$.\n\n$$\\boxed{\\;\\left(\\Delta\\right)\\;:\\;y=\\frac{x+1}{2}=\\frac{1}{2}x+\\frac{1}{2}\\;}$$\n\n**Étape 3 — asymptote verticale.**\n\nLa question 1 a établi $\\displaystyle\\lim_{x\\to 1^{-}}f(x)=-\\infty$ et $\\displaystyle\\lim_{x\\to 1^{+}}f(x)=+\\infty$. Une limite infinie en un point fini caractérise une asymptote verticale :\n\n$$\\boxed{\\;\\left(\\Delta'\\right)\\;:\\;x=1\\;}$$\n\n**Étape 4 — préciser la position de $(C)$ par rapport à $\\left(\\Delta\\right)$.**\n\nLe signe de $f(x)-\\dfrac{x+1}{2}=\\dfrac{1}{2(x-1)}$ est celui de $x-1$ :\n\n- pour $x>1$ : la différence est **positive**, donc $(C)$ est **au-dessus** de $\\left(\\Delta\\right)$ ;\n- pour $x<1$ : la différence est **négative**, donc $(C)$ est **au-dessous** de $\\left(\\Delta\\right)$.\n\nLa courbe ne coupe jamais son asymptote oblique, puisque $\\dfrac{1}{2(x-1)}$ ne s'annule pour aucune valeur de $x$.\n\n**Étape 5 — contrôler numériquement.**\n\nPour $x=101$ : $f(101)=\\dfrac{10201}{200}=51{,}005$ et $\\dfrac{101+1}{2}=51$. L'écart vaut $0{,}005=\\dfrac{1}{200}$, conforme à $\\dfrac{1}{2(x-1)}$.\n\n### Conseil\nLa décomposition obtenue à l'étape 1 est le **couteau suisse** de tout le problème : elle donne l'asymptote oblique (question 3), la position relative (ici), et elle simplifiera considérablement la preuve du centre de symétrie (question 5). Écris-la une fois pour toutes et réutilise-la.",
+   "themes": [
+    "asymptote oblique",
+    "asymptote verticale",
+    "division euclidienne",
+    "position relative courbe-asymptote"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "V"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2013-cameroun-pb-a3-1",
+     "competence": "Établir l'existence d'une asymptote oblique par décomposition de la fonction rationnelle",
+     "contenu_markdown": "Une droite $y=ax+b$ est asymptote oblique à $(C)$ en $\\pm\\infty$ lorsque $f(x)-(ax+b)$ tend vers $0$. Le moyen le plus sûr de l'obtenir est d'**écrire $f$ sous la forme $ax+b+\\varepsilon(x)$**, où $\\varepsilon(x)$ est une fraction dont le degré du numérateur est strictement inférieur à celui du dénominateur : le reste $\\varepsilon(x)$ tend alors automatiquement vers $0$.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.4",
+   "points": 1.5,
+   "enonce_markdown": "**4.** Tracer $(C)$ et ses asymptotes.\n\n*[1,5 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nOn trace **d'abord les asymptotes** — elles forment l'ossature du dessin —, puis on place les points remarquables (extremums, intersections avec les axes), et enfin on relie branche par branche en respectant le tableau de variation et le sens dans lequel chaque branche rejoint chaque asymptote.\n\n**Étape 1 — tracer les deux asymptotes.**\n\n- $\\left(\\Delta'\\right)\\;:\\;x=1$, droite verticale ;\n- $\\left(\\Delta\\right)\\;:\\;y=\\dfrac{x+1}{2}$, droite passant par $(-1\\,;\\,0)$ et $(1\\,;\\,1)$.\n\nElles se coupent au point $K(1\\,;\\,1)$.\n\n**Étape 2 — placer les points remarquables.**\n\n$$\\begin{array}{c|c|c|c|c|c|c} x & -3 & -1 & 0 & 2 & 3 & 5 \\\\ \\hline f(x) & -\\dfrac{9}{8}\\approx-1{,}13 & -\\dfrac{1}{4}=-0{,}25 & 0 & 2 & \\dfrac{9}{4}=2{,}25 & \\dfrac{25}{8}=3{,}125 \\end{array}$$\n\nLe point $A(0\\,;\\,0)$ est à la fois le maximum local et le point d'intersection de $(C)$ avec les deux axes ; $B(2\\,;\\,2)$ est le minimum local.\n\n**Étape 3 — tracer la branche de gauche $\\left(x<1\\right)$.**\n\nElle vient de $-\\infty$ en bas à gauche en longeant $\\left(\\Delta\\right)$ **par dessous**, monte jusqu'au maximum $A(0\\,;\\,0)$ où la tangente est horizontale, puis redescend vers $-\\infty$ en se collant à l'asymptote verticale $x=1$ par la gauche.\n\n**Étape 4 — tracer la branche de droite $\\left(x>1\\right)$.**\n\nElle descend de $+\\infty$ (le long de $x=1$, par la droite), atteint le minimum $B(2\\,;\\,2)$ où la tangente est horizontale, puis remonte vers $+\\infty$ en longeant $\\left(\\Delta\\right)$ **par dessus**.\n\n**Étape 5 — figure obtenue.**\n\n![fig-1](probatoire-c-e-maths-2013-cameroun_exercice_3_fig_1.png)\n\n**Étape 6 — contrôler la cohérence du tracé.**\n\nTrois contrôles rapides valident le dessin :\n\n1. les tangentes en $A$ et $B$ sont horizontales, puisque $f'(0)=f'(2)=0$ ;\n2. la courbe ne coupe jamais $\\left(\\Delta\\right)$, conformément à l'étape 4 de la question 3 ;\n3. les deux branches sont symétriques l'une de l'autre par rapport à $K(1\\,;\\,1)$ — ce que la question 5 va démontrer.\n\n### Piège à éviter\nNe fais pas passer la courbe **au-dessus** de l'asymptote oblique sur la branche de gauche : l'étude de signe impose $(C)$ au-dessous de $\\left(\\Delta\\right)$ pour $x<1$, et au-dessus pour $x>1$. C'est une erreur de tracé fréquente et immédiatement sanctionnée.\n\n### Conseil\nPrends un repère orthonormé d'unité $1\\text{ cm}$ et une fenêtre allant de $-5$ à $7$ en abscisse, de $-5$ à $8$ en ordonnée : elle contient les deux extremums, le point $K$ et suffisamment de chaque branche infinie pour rendre les asymptotes lisibles.",
+   "themes": [
+    "représentation graphique",
+    "tracé de courbe",
+    "asymptotes",
+    "points remarquables"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VII"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2013-cameroun-pb-a4-1",
+     "competence": "Tracer la courbe d'une fonction rationnelle à partir de son tableau de variation et de ses asymptotes",
+     "contenu_markdown": "On trace **d'abord les asymptotes** — elles forment l'ossature du dessin —, puis on place les points remarquables (extremums, intersections avec les axes), et enfin on relie branche par branche en respectant le tableau de variation et le sens dans lequel chaque branche rejoint chaque asymptote.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.5",
+   "points": 1.0,
+   "enonce_markdown": "**5.** Montrer que le point $K(1\\,;\\,1)$ est centre de symétrie de $(C)$.\n\n*[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nLe point $\\Omega(a\\,;\\,b)$ est centre de symétrie de $(C)$ si, pour tout réel $h$ tel que $a+h$ et $a-h$ appartiennent à $D_{f}$, on a $f(a+h)+f(a-h)=2b$. Il faut d'abord vérifier que $D_{f}$ est **symétrique par rapport à $a$**, puis établir cette identité.\n\n**Étape 1 — vérifier la symétrie de l'ensemble de définition.**\n\nIci $a=1$ et $b=1$. Soit $h$ un réel non nul. On a\n\n$$1+h\\in D_{f}\\iff 1+h\\neq 1\\iff h\\neq 0\\qquad\\text{et de même}\\qquad 1-h\\in D_{f}\\iff h\\neq 0$$\n\nL'ensemble $D_{f}=\\mathbb{R}\\setminus\\{1\\}$ est donc bien symétrique par rapport à $x=1$ : la vérification a un sens.\n\n**Étape 2 — calculer $f(1+h)$.**\n\n$$f(1+h)=\\frac{(1+h)^{2}}{2\\left[(1+h)-1\\right]}=\\frac{(1+h)^{2}}{2h}$$\n\n**Étape 3 — calculer $f(1-h)$.**\n\n$$f(1-h)=\\frac{(1-h)^{2}}{2\\left[(1-h)-1\\right]}=\\frac{(1-h)^{2}}{-2h}=-\\frac{(1-h)^{2}}{2h}$$\n\n**Étape 4 — sommer.**\n\n$$f(1+h)+f(1-h)=\\frac{(1+h)^{2}}{2h}-\\frac{(1-h)^{2}}{2h}=\\frac{(1+h)^{2}-(1-h)^{2}}{2h}$$\n\nLe numérateur est une différence de deux carrés :\n\n$$(1+h)^{2}-(1-h)^{2}=\\left[(1+h)-(1-h)\\right]\\left[(1+h)+(1-h)\\right]=(2h)\\times 2=4h$$\n\nd'où\n\n$$f(1+h)+f(1-h)=\\frac{4h}{2h}=2$$\n\n**Étape 5 — conclure.**\n\nPour tout réel $h\\neq 0$ :\n\n$$f(1+h)+f(1-h)=2=2\\times 1$$\n\n$$\\boxed{\\;\\text{Le point }K(1\\,;\\,1)\\text{ est centre de symétrie de }(C).\\;}$$\n\n**Étape 6 — retrouver le résultat par la décomposition.**\n\nEn posant $g(x)=f(x+1)-1$, on obtient à partir de $f(x)=\\dfrac{x+1}{2}+\\dfrac{1}{2(x-1)}$ :\n\n$$g(x)=\\frac{x+2}{2}+\\frac{1}{2x}-1=\\frac{x}{2}+\\frac{1}{2x}$$\n\nOr $g(-x)=-\\dfrac{x}{2}-\\dfrac{1}{2x}=-g(x)$ : la fonction $g$ est **impaire**. Cela signifie exactement que $(C)$, translatée de manière à amener $K$ à l'origine, est symétrique par rapport à l'origine. Conforme.\n\n**Étape 7 — contrôler numériquement.**\n\nPour $h=1$ : $f(2)+f(0)=2+0=2$. Pour $h=2$ : $f(3)+f(-1)=\\dfrac{9}{4}-\\dfrac{1}{4}=2$. Conforme.\n\n### Piège à éviter\nNe confonds pas les deux critères. Un **centre** de symétrie $\\Omega(a\\,;\\,b)$ se teste par $f(a+h)+f(a-h)=2b$ — une **somme**. Un **axe** de symétrie vertical $x=a$ se teste par $f(a+h)=f(a-h)$ — une **égalité**. Utiliser le mauvais critère conduit ici à une impasse.\n\n### Conseil\nQue le point $K$ soit précisément l'intersection des deux asymptotes n'a rien d'un hasard : pour toute fonction homographique ou de la forme $ax+b+\\dfrac{c}{x-\\alpha}$, le point d'intersection des asymptotes **est** le centre de symétrie. Repère-le d'un coup d'œil, puis démontre-le proprement.",
+   "themes": [
+    "centre de symétrie",
+    "fonction impaire",
+    "changement de repère",
+    "symétrie centrale"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VII"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2013-cameroun-pb-a5-1",
+     "competence": "Démontrer qu'un point est centre de symétrie d'une courbe",
+     "contenu_markdown": "Le point $\\Omega(a\\,;\\,b)$ est centre de symétrie de $(C)$ si, pour tout réel $h$ tel que $a+h$ et $a-h$ appartiennent à $D_{f}$, on a $f(a+h)+f(a-h)=2b$. Il faut d'abord vérifier que $D_{f}$ est **symétrique par rapport à $a$**, puis établir cette identité.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "A.6",
+   "points": 1.5,
+   "enonce_markdown": "**6.** $m$ étant un paramètre réel, discuter graphiquement l'existence et le nombre de solutions de l'équation\n\n$$x^{2}+2mx-2m=0$$\n\n*[1,5 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nOn isole le paramètre pour ramener l'équation à la forme $f(x)=k(m)$, puis on compte les points d'intersection de la courbe $(C)$ avec la **droite horizontale** $y=k(m)$. Le tableau de variation fournit directement, pour chaque hauteur $k$, le nombre de ces intersections.\n\n**Étape 1 — vérifier que $x=1$ n'est jamais solution.**\n\nEn remplaçant $x$ par $1$ dans $x^{2}+2mx-2m=0$ :\n\n$$1+2m-2m=1\\neq 0$$\n\nAucune valeur de $m$ ne rend $x=1$ solution. On peut donc supposer $x\\neq 1$ dans toute la suite, et diviser par $2(x-1)$ sans perdre de solution.\n\n**Étape 2 — isoler le paramètre.**\n\n$$x^{2}+2mx-2m=0\\iff x^{2}=-2m(x-1)\\iff\\frac{x^{2}}{2(x-1)}=-m$$\n\n$$\\boxed{\\;x^{2}+2mx-2m=0\\iff f(x)=-m\\;}$$\n\nRésoudre l'équation revient donc à chercher les points d'intersection de $(C)$ avec la droite horizontale $\\left(D_{m}\\right)\\;:\\;y=-m$.\n\n**Étape 3 — lire les intersections sur le tableau de variation.**\n\nNotons $k=-m$ la hauteur de la droite.\n\n- Sur $\\left]-\\infty\\,;\\,1\\right[$, $f$ croît de $-\\infty$ à $0$ puis décroît de $0$ à $-\\infty$ : elle prend donc **deux fois** toute valeur $k<0$, **une seule fois** la valeur $k=0$ (en $x=0$), et **jamais** une valeur $k>0$.\n- Sur $\\left]1\\,;\\,+\\infty\\right[$, $f$ décroît de $+\\infty$ à $2$ puis croît de $2$ à $+\\infty$ : elle prend **deux fois** toute valeur $k>2$, **une seule fois** la valeur $k=2$ (en $x=2$), et **jamais** une valeur $k<2$.\n\n$$\\begin{array}{c|c|c|c} \\text{hauteur }k=-m & \\text{branche gauche} & \\text{branche droite} & \\text{total} \\\\ \\hline k<0 & 2 & 0 & 2 \\\\ k=0 & 1 & 0 & 1 \\\\ 0<k<2 & 0 & 0 & 0 \\\\ k=2 & 0 & 1 & 1 \\\\ k>2 & 0 & 2 & 2 \\end{array}$$\n\n**Étape 4 — traduire en fonction de $m$.**\n\nOn remplace $k$ par $-m$, en n'oubliant pas que l'inégalité **change de sens** :\n\n$$k<0\\iff m>0\\quad;\\quad k=0\\iff m=0\\quad;\\quad 0<k<2\\iff -2<m<0\\quad;\\quad k=2\\iff m=-2\\quad;\\quad k>2\\iff m<-2$$\n\n**Étape 5 — conclure.**\n\n$$\\boxed{\\begin{array}{ll} m<-2\\text{ ou }m>0 & :\\;\\text{deux solutions distinctes} \\\\ m=-2\\text{ ou }m=0 & :\\;\\text{une solution unique (racine double)} \\\\ -2<m<0 & :\\;\\text{aucune solution} \\end{array}}$$\n\n**Étape 6 — contrôler par le discriminant.**\n\nL'équation $x^{2}+2mx-2m=0$ a pour discriminant réduit\n\n$$\\Delta'=m^{2}-1\\times(-2m)=m^{2}+2m=m(m+2)$$\n\nCe produit est strictement positif pour $m<-2$ ou $m>0$, nul pour $m=-2$ ou $m=0$, strictement négatif pour $-2<m<0$. Le décompte algébrique coïncide exactement avec la lecture graphique. Conforme.\n\n**Étape 7 — vérifier un cas particulier.**\n\nPour $m=0$ : l'équation devient $x^{2}=0$, de solution unique $x=0$ (double). Or $f(0)=0=-m$. Conforme.\n\nPour $m=-2$ : l'équation devient $x^{2}-4x+4=0$, soit $(x-2)^{2}=0$, de solution unique $x=2$. Or $f(2)=2=-m$. Conforme.\n\n### Piège à éviter\nLe passage de $k$ à $-m$ **inverse le sens des inégalités**. « $k<0$ » devient « $m>0$ », et non « $m<0$ ». C'est l'erreur qui fait basculer toute la discussion.\n\n### Conseil\nQuand un paramètre apparaît linéairement, cherche systématiquement à l'isoler : l'équation se ramène à $f(x)=\\text{constante}$, et une famille de droites **horizontales** est infiniment plus simple à faire glisser mentalement le long d'un tableau de variation qu'une famille de paraboles.",
+   "themes": [
+    "discussion graphique",
+    "équation paramétrée",
+    "isolement du paramètre",
+    "discriminant",
+    "nombre de solutions"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VII"
+   },
+   "difficulte_estimee": "élevée",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2013-cameroun-pb-a6-1",
+     "competence": "Discuter graphiquement le nombre de solutions d'une équation paramétrée",
+     "contenu_markdown": "On isole le paramètre pour ramener l'équation à la forme $f(x)=k(m)$, puis on compte les points d'intersection de la courbe $(C)$ avec la **droite horizontale** $y=k(m)$. Le tableau de variation fournit directement, pour chaque hauteur $k$, le nombre de ces intersections.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "B.1",
+   "points": 0.75,
+   "enonce_markdown": "**Partie B**\n\nOn considère la suite numérique $\\left(u_{n}\\right)$ définie pour tout entier naturel $n>1$ par la relation\n\n$$u_{n+1}=\\frac{u_{n}^{2}}{2\\left(u_{n}-1\\right)}\\qquad\\text{avec}\\qquad u_{2}=4$$\n\n**1.** Calculer $u_{3}$, $u_{4}$ et $u_{5}$.\n\n*[0,75 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nUne suite définie par $u_{n+1}=\\varphi\\left(u_{n}\\right)$ se calcule **de proche en proche** : chaque terme s'obtient en substituant le précédent dans la relation. On mène les calculs en **fractions exactes**, jamais en valeurs décimales approchées, sous peine d'accumuler les erreurs d'arrondi.\n\n**Étape 1 — identifier la relation.**\n\n$$u_{n+1}=\\frac{u_{n}^{2}}{2\\left(u_{n}-1\\right)}\\qquad\\text{avec}\\qquad u_{2}=4$$\n\nOn reconnaît $u_{n+1}=f\\left(u_{n}\\right)$, où $f$ est exactement la fonction étudiée dans la partie A. C'est le lien qui rendra les questions suivantes immédiates.\n\n**Étape 2 — calculer $u_{3}$.**\n\n$$u_{3}=f\\left(u_{2}\\right)=\\frac{4^{2}}{2(4-1)}=\\frac{16}{6}=\\frac{8}{3}$$\n\n**Étape 3 — calculer $u_{4}$.**\n\n$$u_{4}=f\\left(u_{3}\\right)=\\frac{\\left(\\frac{8}{3}\\right)^{2}}{2\\left(\\frac{8}{3}-1\\right)}=\\frac{\\frac{64}{9}}{2\\times\\frac{5}{3}}=\\frac{\\frac{64}{9}}{\\frac{10}{3}}=\\frac{64}{9}\\times\\frac{3}{10}=\\frac{192}{90}=\\frac{32}{15}$$\n\n**Étape 4 — calculer $u_{5}$.**\n\n$$u_{5}=f\\left(u_{4}\\right)=\\frac{\\left(\\frac{32}{15}\\right)^{2}}{2\\left(\\frac{32}{15}-1\\right)}=\\frac{\\frac{1024}{225}}{2\\times\\frac{17}{15}}=\\frac{\\frac{1024}{225}}{\\frac{34}{15}}=\\frac{1024}{225}\\times\\frac{15}{34}=\\frac{1024}{15\\times 34}=\\frac{1024}{510}=\\frac{512}{255}$$\n\n**Étape 5 — récapituler.**\n\n$$\\boxed{\\;u_{3}=\\frac{8}{3}\\quad;\\quad u_{4}=\\frac{32}{15}\\quad;\\quad u_{5}=\\frac{512}{255}\\;}$$\n\n**Étape 6 — contrôler par les valeurs décimales.**\n\n$$u_{2}=4\\quad;\\quad u_{3}\\approx 2{,}667\\quad;\\quad u_{4}\\approx 2{,}133\\quad;\\quad u_{5}\\approx 2{,}008$$\n\nLes termes décroissent et se rapprochent visiblement de $2$, ce qui est cohérent avec le minimum $f(2)=2$ mis en évidence dans la partie A.\n\n### Conseil\nSimplifie **à chaque étape** : $\\dfrac{192}{90}$ devient $\\dfrac{32}{15}$ en divisant haut et bas par $6$. Sans cette hygiène, les numérateurs explosent et la dernière division devient inextricable à la main.",
+   "themes": [
+    "suite récurrente",
+    "calcul de termes",
+    "fractions",
+    "suite définie par une fonction"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VIII"
+   },
+   "difficulte_estimee": "faible",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2013-cameroun-pb-b1-1",
+     "competence": "Calculer les premiers termes d'une suite définie par récurrence",
+     "contenu_markdown": "Une suite définie par $u_{n+1}=\\varphi\\left(u_{n}\\right)$ se calcule **de proche en proche** : chaque terme s'obtient en substituant le précédent dans la relation. On mène les calculs en **fractions exactes**, jamais en valeurs décimales approchées, sous peine d'accumuler les erreurs d'arrondi.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "B.2",
+   "points": 1.0,
+   "enonce_markdown": "**2.** Placer $u_{2}$, $u_{3}$, $u_{4}$ et $u_{5}$ sur le graphique de la fonction $f$.\n\n*[1 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nPour placer $u_{n+1}=f\\left(u_{n}\\right)$ sur un graphique, on part de $u_{n}$ sur l'axe des abscisses, on **monte verticalement jusqu'à la courbe** $(C)$ — l'ordonnée atteinte est $u_{n+1}$ —, puis on se déplace **horizontalement jusqu'à la droite $y=x$** pour ramener cette ordonnée sur l'axe des abscisses. On recommence autant de fois que nécessaire.\n\n**Étape 1 — préparer le support graphique.**\n\nSur le repère de la question A.4, on ajoute la droite $\\left(\\mathcal{D}\\right)\\;:\\;y=x$, qui sert de « miroir » pour rabattre les ordonnées sur l'axe des abscisses. Seule la branche $x>1$ de $(C)$ est utile, puisque tous les termes de la suite y vivent.\n\n**Étape 2 — placer $u_{2}=4$.**\n\nOn marque le point d'abscisse $4$ sur l'axe des abscisses.\n\n**Étape 3 — construire $u_{3}$.**\n\nOn monte verticalement de $(4\\,;\\,0)$ jusqu'au point de $(C)$ d'abscisse $4$, c'est-à-dire $\\left(4\\,;\\,\\dfrac{8}{3}\\right)$. L'ordonnée atteinte est $u_{3}=\\dfrac{8}{3}$.\n\nOn se déplace ensuite horizontalement jusqu'à la droite $y=x$, atteinte au point $\\left(\\dfrac{8}{3}\\,;\\,\\dfrac{8}{3}\\right)$ : l'abscisse de ce point est $u_{3}$.\n\n**Étape 4 — itérer pour $u_{4}$ puis $u_{5}$.**\n\nOn répète le procédé depuis $u_{3}=\\dfrac{8}{3}$ :\n\n$$u_{3}=\\frac{8}{3}\\approx 2{,}67\\;\\longrightarrow\\;u_{4}=\\frac{32}{15}\\approx 2{,}13\\;\\longrightarrow\\;u_{5}=\\frac{512}{255}\\approx 2{,}008$$\n\n**Étape 5 — figure obtenue.**\n\n![fig-2](probatoire-c-e-maths-2013-cameroun_exercice_3_fig_2.png)\n\n**Étape 6 — lire le comportement sur la figure.**\n\nLes segments dessinent un **escalier descendant** : les abscisses successives $u_{2}$, $u_{3}$, $u_{4}$, $u_{5}$ se resserrent en diminuant, et l'escalier converge visiblement vers le point fixe $(2\\,;\\,2)$, intersection de $(C)$ et de $y=x$.\n\n### Piège à éviter\nIl faut **deux** déplacements par terme, et non un seul : un trait vertical vers la courbe, puis un trait horizontal vers la droite $y=x$. Sauter le second déplacement revient à confondre l'ordonnée $u_{n+1}$ avec une abscisse, et la construction s'effondre dès le terme suivant.\n\n### Conseil\nLe point fixe se lit à l'intersection de $(C)$ et de $y=x$. Ici $f(x)=x\\iff x^{2}=2x(x-1)\\iff x^{2}-2x=0\\iff x(x-2)=0$, soit $x=0$ (exclu, hors de la branche) ou $x=2$. Ce $2$ est la limite vers laquelle l'escalier se dirige : le savoir à l'avance permet de contrôler son propre tracé.",
+   "themes": [
+    "construction en escalier",
+    "suite récurrente",
+    "droite y = x",
+    "point fixe",
+    "lecture graphique"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VIII"
+   },
+   "difficulte_estimee": "moyenne",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2013-cameroun-pb-b2-1",
+     "competence": "Construire les termes d'une suite récurrente en escalier sur le graphique de la fonction",
+     "contenu_markdown": "Pour placer $u_{n+1}=f\\left(u_{n}\\right)$ sur un graphique, on part de $u_{n}$ sur l'axe des abscisses, on **monte verticalement jusqu'à la courbe** $(C)$ — l'ordonnée atteinte est $u_{n+1}$ —, puis on se déplace **horizontalement jusqu'à la droite $y=x$** pour ramener cette ordonnée sur l'axe des abscisses. On recommence autant de fois que nécessaire.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  },
+  {
+   "numero": "B.3",
+   "points": 0.75,
+   "enonce_markdown": "**3.** En déduire le sens de variation de $\\left(u_{n}\\right)$.\n\n*[0,75 pt]*",
+   "corrige_markdown": "### Rappel de méthode\nLe sens de variation d'une suite s'obtient par le **signe de la différence $u_{n+1}-u_{n}$**. Lorsque la suite est définie par $u_{n+1}=f\\left(u_{n}\\right)$, cette différence vaut $f\\left(u_{n}\\right)-u_{n}$, dont le signe se déduit d'une étude préalable de $f(x)-x$ — étude qui n'a de portée que sur un intervalle où l'on a d'abord démontré, par récurrence, que tous les termes se trouvent.\n\n**Étape 1 — établir par récurrence que $u_{n}>2$ pour tout $n\\geqslant 2$.**\n\n*Initialisation :* $u_{2}=4>2$. La propriété est vraie au rang $2$.\n\n*Hérédité :* supposons $u_{n}>2$ pour un certain $n\\geqslant 2$. D'après la partie A, $f$ est strictement croissante sur $\\left[2\\,;\\,+\\infty\\right[$, donc\n\n$$u_{n}>2\\;\\Longrightarrow\\;f\\left(u_{n}\\right)>f(2)\\;\\Longrightarrow\\;u_{n+1}>2$$\n\n*Conclusion :* pour tout entier $n\\geqslant 2$, $u_{n}>2$.\n\n*(Cette étape n'est pas un luxe : elle garantit au passage que $u_{n}-1>1>0$, donc que la suite est bien définie — le dénominateur ne s'annule jamais.)*\n\n**Étape 2 — calculer la différence $u_{n+1}-u_{n}$.**\n\n$$u_{n+1}-u_{n}=\\frac{u_{n}^{2}}{2\\left(u_{n}-1\\right)}-u_{n}=\\frac{u_{n}^{2}-2u_{n}\\left(u_{n}-1\\right)}{2\\left(u_{n}-1\\right)}$$\n\n**Étape 3 — développer et factoriser le numérateur.**\n\n$$u_{n}^{2}-2u_{n}\\left(u_{n}-1\\right)=u_{n}^{2}-2u_{n}^{2}+2u_{n}=-u_{n}^{2}+2u_{n}=-u_{n}\\left(u_{n}-2\\right)$$\n\nd'où\n\n$$u_{n+1}-u_{n}=\\frac{-u_{n}\\left(u_{n}-2\\right)}{2\\left(u_{n}-1\\right)}$$\n\n**Étape 4 — déterminer le signe.**\n\nD'après l'étape 1, $u_{n}>2$, donc :\n\n$$u_{n}>0\\qquad;\\qquad u_{n}-2>0\\qquad;\\qquad 2\\left(u_{n}-1\\right)>2>0$$\n\nLe numérateur $-u_{n}\\left(u_{n}-2\\right)$ est donc strictement négatif et le dénominateur strictement positif :\n\n$$u_{n+1}-u_{n}<0$$\n\n**Étape 5 — conclure.**\n\n$$\\boxed{\\;\\text{La suite }\\left(u_{n}\\right)\\text{ est strictement décroissante à partir du rang }2.\\;}$$\n\n**Étape 6 — contrôler sur les premiers termes.**\n\n$$4>\\frac{8}{3}>\\frac{32}{15}>\\frac{512}{255}\\qquad\\text{soit}\\qquad 4>2{,}667>2{,}133>2{,}008$$\n\nLa décroissance est confirmée, et l'escalier descendant de la question 2 la traduit graphiquement.\n\n**Étape 7 — aller un peu plus loin.**\n\nLa suite est décroissante et minorée par $2$ : elle **converge**. Sa limite $\\ell$ vérifie $\\ell=f(\\ell)$ et $\\ell\\geqslant 2$, c'est-à-dire $\\ell(\\ell-2)=0$ avec $\\ell\\geqslant 2$, donc\n\n$$\\lim_{n\\to+\\infty}u_{n}=2$$\n\n### Piège à éviter\nÉtudier le signe de $u_{n+1}-u_{n}$ **sans avoir d'abord encadré $u_{n}$** ne mène à rien : le signe de $-u_{n}\\left(u_{n}-2\\right)$ dépend entièrement de la position de $u_{n}$ par rapport à $0$ et à $2$. La récurrence de l'étape 1 n'est pas une formalité, c'est ce qui rend le calcul de signe concluant.\n\n### Conseil\nSur la figure en escalier, la position de la courbe par rapport à la droite $y=x$ annonce le résultat : la courbe est **au-dessous** de $y=x$ pour $x>2$, donc $f\\left(u_{n}\\right)<u_{n}$, donc la suite décroît. Le calcul algébrique ne fait que confirmer ce que le dessin montre déjà.",
+   "themes": [
+    "sens de variation d'une suite",
+    "raisonnement par récurrence",
+    "signe de u(n+1) - u(n)",
+    "convergence",
+    "suite minorée"
+   ],
+   "savoir_officiel": {
+    "classe": "1ere",
+    "serie_label": "C-E",
+    "module_numero": "21",
+    "savoir_numero": "VIII"
+   },
+   "difficulte_estimee": "élevée",
+   "type_reponse": "ouverte",
+   "choix": [],
+   "reponse_correcte": "",
+   "rappels_de_methode": [
+    {
+     "id": "rdm-probatoire-c-e-maths-2013-cameroun-pb-b3-1",
+     "competence": "Déterminer le sens de variation d'une suite récurrente en étudiant le signe de u(n+1) − u(n)",
+     "contenu_markdown": "Le sens de variation d'une suite s'obtient par le **signe de la différence $u_{n+1}-u_{n}$**. Lorsque la suite est définie par $u_{n+1}=f\\left(u_{n}\\right)$, cette différence vaut $f\\left(u_{n}\\right)-u_{n}$, dont le signe se déduit d'une étude préalable de $f(x)-x$ — étude qui n'a de portée que sur un intervalle où l'on a d'abord démontré, par récurrence, que tous les termes se trouvent.",
+     "cours_genere": false,
+     "cours_id": null
+    }
+   ]
+  }
+ ],
+ "mots_cles_recherche": [
+  "probatoire",
+  "C et E",
+  "mathématiques",
+  "2013",
+  "Cameroun",
+  "problème",
+  "fonction rationnelle",
+  "limites",
+  "dérivée",
+  "tableau de variation",
+  "asymptote oblique",
+  "centre de symétrie",
+  "discussion graphique",
+  "suite récurrente",
+  "construction en escalier",
+  "sens de variation"
+ ],
+ "incertitudes": [
+  "Le sujet écrit « la fonction f définie de R−1 dans R » : la notation employée désigne l'ensemble des réels privé de 1, c'est-à-dire R \\ {1}. La transcription conserve la notation du sujet ; le corrigé explicite l'ensemble de définition sans ambiguïté.",
+  "La partie B énonce « définie pour tout entier naturel n > 1 » et fournit u2 = 4 : la relation de récurrence produit donc les termes à partir de u3, et la suite n'est définie qu'à partir du rang 2. Le corrigé se conforme strictement à cette indexation.",
+  "Les deux figures sont construites par le correcteur (origine_figure « corrige ») : le sujet demande le tracé, il ne le fournit pas. Aucun élément graphique n'a été prélevé sur le PDF, dont les seules images sont le bandeau décoratif « Be ready for your PROBAT » et le logo de l'éditeur.",
+  "La question A.6 demande une discussion « graphique » : le corrigé la mène par lecture du tableau de variation, comme attendu, et ajoute le contrôle par le discriminant réduit à titre de vérification, sans se substituer à la méthode exigée.",
+  "Le fichier de référentiel `programme_officiel_cm_maths.json` n'était pas accessible depuis l'environnement de traitement : les valeurs de `savoir_officiel` retenues sont celles, déjà utilisées et validées sur les épreuves Probatoire C-E du corpus, dont l'intitulé recouvre sans ambiguïté la notion mobilisée."
+ ]
+}
