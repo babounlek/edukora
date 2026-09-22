@@ -762,8 +762,19 @@ class Exercise(models.Model):
             "Pile ordonnée des repères de groupe (Partie/section romaine/matière) portés par "
             "cet exercice, renseignée depuis le JSON source à l'ingestion - voir catalog."
             "rendering._exercise_group_paths pour le fallback par analyse de texte utilisé "
-            "quand ce champ est vide (tout exercice ingéré avant l'introduction de ce champ, "
-            "ou toute épreuve sans structure imbriquée - cas très majoritaire)."
+            "quand ce champ n'est pas fiable (voir groupes_verifies)."
+        ),
+    )
+    groupes_verifies = models.BooleanField(
+        default=False,
+        help_text=(
+            "True dès que l'ingestion a reçu une clé \"groupes\" explicite dans le JSON source "
+            "(y compris [] volontaire) - voir catalog.ingestion.ingest_exercise. Distingue "
+            "\"correction-experte a bien tranché, aucun groupe ici\" de \"le champ manque, on ne "
+            "sait pas\" : catalog.rendering._fallback_group_paths_if_needed ne relance l'analyse "
+            "de texte fragile (Partie/section romaine détectées par regex) que pour un exercice "
+            "resté à False - jamais pour une leçon entièrement ingérée après l'introduction de "
+            "ce champ, même quand groupes est [] partout (cas très majoritaire)."
         ),
     )
 

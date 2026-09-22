@@ -917,12 +917,14 @@ def _resolve_or_create_tag(name):
         raise IngestionError(f"Plusieurs Tag correspondent à {name!r} à la casse près - ambigu, à corriger à la main.")
     # Variante aux accents/pluriel près d'un Tag existant ("elimination" -> "élimination") :
     # réutilisée plutôt que recréée (voir catalog.tunnel.find_tag_variant).
-    from .tunnel import find_tag_variant
+    from .tunnel import find_tag_variant, register_tag
 
     variante = find_tag_variant(name)
     if variante is not None:
         return variante
-    tag, _ = Tag.objects.get_or_create(name=name)
+    tag, created = Tag.objects.get_or_create(name=name)
+    if created:
+        register_tag(tag)
     return tag
 
 
@@ -1347,11 +1349,22 @@ def _attach_figures(exercise, figures_data, source_dir):
             exercise.save(update_fields=["incertitudes"])
 
 
-def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False):
+def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exiger_groupes=False):
     """
     `exiger_themes=True` (run_ingestion, réingestion admin) rejette l'exercice entier si
     une question n'a aucun thème ; désactivé par défaut pour les appels directs (tests,
     backfills).
+
+    `exiger_groupes=True` rejette l'exercice si le JSON source ne porte pas la clé
+    "groupes" - désactivé par défaut PARTOUT, y compris run_ingestion/réingestion admin
+    (contrairement à exiger_themes) : une bonne part du corpus existant n'a jamais été
+    régénérée depuis l'introduction de ce champ (2026-08-22) et une réingestion légitime
+    d'un exercice ancien (correction d'une coquille, par ex.) ne doit pas se mettre à
+    échouer pour autant - à activer plus tard sur ces deux appelants, une fois un audit
+    du corpus fait (même précaution que la campagne "Question sans thème" avant
+    d'activer exiger_themes). Même désactivé, tout JSON qui porte la clé (y compris [])
+    marque Exercise.groupes_verifies=True, seul signal qui empêche catalog.rendering de
+    retomber sur l'analyse de texte fragile (voir Exercise.groupes_verifies).
 
     Ingère un objet JSON (un exercice). Retourne (exercise, created).
     Lève IngestionError si les champs de classification ne peuvent pas être résolus.
@@ -1651,6 +1664,11 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False):
 
         points = str(data.get("points") or "").split("(")[0].strip()
 
+        if exiger_groupes and "groupes" not in data:
+            raise IngestionError(
+                "groupes manquant : la compétence doit toujours déclarer ce champ, y compris "
+                "[] quand l'exercice n'appartient à aucune section (voir Exercise.groupes_verifies).",
+            )
         groupes = [str(g).strip() for g in data.get("groupes") or [] if str(g).strip()]
 
         exercise = Exercise.objects.create(
@@ -1658,6 +1676,7 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False):
             numero_exercice=numero_exercice,
             points=points,
             groupes=groupes,
+            groupes_verifies="groupes" in data,
             enonce_intro_markdown=_strip_em_dash(str(data.get("enonce_intro_markdown") or "")),
             incertitudes=_drop_processing_notes(data.get("incertitudes") or []),
             statut=StatutContenu.VALIDE,
@@ -2068,10 +2087,52 @@ def run_ingestion(path):
     for file_path, raw in sources_a_reecrire.items():
         _reecrire_source_json(file_path, raw)
 
+    demoted_lessons = _appliquer_gate_publication(lesson_ids)
+
     return {
         "files_found": len(files), "created": created, "skipped": skipped, "errors": errors,
         "lesson_ids": sorted(lesson_ids), "reparations": list(REPARATIONS_JOURNAL),
+        "demoted_lessons": {str(k): v for k, v in demoted_lessons.items()},
     }
+
+
+def _appliquer_gate_publication(lesson_ids):
+    """
+    Garde un Lesson en BROUILLON (invisible côté élève, voir VisibleQuerySet.visibles)
+    tant qu'il porte un point BLOQUANT du tunnel de validation (catalog.tunnel.
+    blocked_lessons) - évite qu'un round d'ingestion publie directement un contenu que
+    le tunnel aurait de toute façon signalé BLOQUANT (thème absent, QCM incohérent,
+    rappel de méthode jamais affiché), au lieu de compter sur un humain pour lancer
+    `valider_ingestion` et repasser en BROUILLON après coup.
+
+    Symétrique : un Lesson déjà BROUILLON pour cette raison redevient VALIDE dès que
+    la cause a disparu (fichier corrigé puis réingéré, y compris via
+    `reingerer_depuis_fichier` qui n'appelle pas `run_ingestion`) - voir son propre
+    appel à cette fonction dans catalog.admin.
+
+    N'agit que sur `lesson_ids` : ne touche jamais un Lesson hors de ce périmètre,
+    même s'il partage la fenêtre temporelle d'un `valider_ingestion --since` lancé en
+    parallèle par une autre session (voir feedback-git-add-single-file-hidden-scope
+    sur les risques de contamination entre sessions concurrentes).
+
+    Retourne {lesson_id: [raison, ...]} pour les Lesson qui restent/redeviennent
+    BROUILLON - jamais levé, ce round d'ingestion a déjà eu lieu, seule sa
+    publication est retardée.
+    """
+    lesson_ids = set(lesson_ids)
+    if not lesson_ids:
+        return {}
+    from .tunnel import blocked_lessons
+
+    demoted = blocked_lessons(lesson_ids)
+    if demoted:
+        Lesson.objects.filter(id__in=demoted).update(statut=StatutContenu.BROUILLON, published_at=None)
+    promus = lesson_ids - set(demoted)
+    if promus:
+        Lesson.objects.filter(id__in=promus, statut=StatutContenu.BROUILLON).update(
+            statut=StatutContenu.VALIDE, published_at=timezone.now(),
+        )
+    return demoted
 
 
 def _reecrire_source_json(file_path, raw):

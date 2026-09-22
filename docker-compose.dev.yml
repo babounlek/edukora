@@ -1,7 +1,21 @@
+# Override optionnel pour le dev SOLO uniquement - voir feedback_docker_backend_no_
+# bind_mount_safe_patch (mémoire projet) : par défaut (docker-compose.yml seul), le
+# backend tourne sur l'image reconstruite, jamais sur le dépôt en direct - c'est le
+# mode sûr quand plusieurs sessions/agents peuvent patcher le conteneur en parallèle
+# (docker compose cp), puisqu'un rebuild ou un bind mount écraserait leurs changements
+# non commités les uns les autres. N'utiliser ce fichier que si vous êtes seul à
+# travailler sur le backend en ce moment :
+#
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d backend
+#
+# Un simple `docker compose up` (sans -f) ignore ce fichier et reste en mode figé.
 services:
-  web:
+  backend:
+    environment:
+      GUNICORN_RELOAD: "1"
     volumes:
-      - .:/app
+      - ./backend:/app
       - static_files:/app/staticfiles
-      - media_files:/app/media
-      - ./logs:/app/logs
+      - ./media:/app/media
+      - ./backend/ingest:/app/ingest
+      - ./protected_media:/app/protected_media

@@ -183,6 +183,27 @@ def find_tag_variant(name, ttl_seconds=60):
     return None
 
 
+def register_tag(tag):
+    """
+    Inscrit `tag` dans l'index de `find_tag_variant` sans attendre le TTL.
+
+    Sans cet appel, un lot qui crée plusieurs thèmes proches à la suite (round de quiz,
+    dossier d'épreuves) ne voit pas ses propres créations précédentes tant que l'index
+    n'a pas expiré (`ttl_seconds`, largement plus long qu'un run) - c'est ce qui a laissé
+    passer des quasi-doublons (ex. "ADN polymérase"/"ADN-polymérase") au sein d'un même
+    round malgré `find_tag_variant`. À appeler juste après tout `Tag.objects.get_or_create`
+    (voir catalog.ingestion._resolve_or_create_tag, quiz.ingestion._resolve_theme).
+    """
+    if _VARIANT_INDEX["built_at"] is None:
+        return  # index pas encore construit, le prochain appel le fera à jour
+    key = tag_key(tag.name)
+    existant = _VARIANT_INDEX["by_key"].get(key)
+    if existant is None:
+        _VARIANT_INDEX["by_key"][key] = tag.id
+    elif existant != tag.id:
+        _VARIANT_INDEX["by_key"][key] = _AMBIGU
+
+
 def _scope_counts(since):
     return {
         "Lesson": _scoped(Lesson.objects.all(), since).count(),
@@ -333,3 +354,56 @@ def gate_couverture(since):
 
 def run_db_gates(since):
     return [*gate_structure(since), *gate_tags(since), *gate_couverture(since)], _scope_counts(since)
+
+
+def blocked_lessons(lesson_ids):
+    """
+    Sous-ensemble de `lesson_ids` qui porte au moins un point BLOQUANT (mêmes règles
+    que `gate_structure`, restreintes à celles qui rendent un Lesson inutilisable pour
+    un élève : thème absent, QCM incohérent, rappel de méthode jamais affiché).
+
+    Contrairement à `gate_structure(since)`, le périmètre est l'ensemble ENTIER des
+    Lesson listées, pas seulement ce qui a été modifié récemment : un exercice non
+    retouché par le run en cours mais resté fautif ne doit pas laisser promouvoir le
+    Lesson auquel il appartient. Utilisé par `catalog.ingestion` pour garder un Lesson
+    en BROUILLON (invisible côté élève) tant que le tunnel ne le valide pas - voir
+    `_appliquer_gate_publication`.
+
+    Retourne {lesson_id: [raison, ...]} plutôt qu'un set nu, pour que l'appelant
+    puisse expliquer le blocage (rapport d'ingestion, message admin).
+    """
+    lesson_ids = set(lesson_ids)
+    if not lesson_ids:
+        return {}
+    raisons = defaultdict(list)
+
+    sans_theme = (
+        Question.objects.filter(exercise__lesson_id__in=lesson_ids, themes__isnull=True)
+        .select_related("exercise")
+    )
+    par_lesson = defaultdict(list)
+    for q in sans_theme:
+        par_lesson[q.exercise.lesson_id].append(f"{q.exercise.numero_exercice}.{q.numero}")
+    for lesson_id, refs in par_lesson.items():
+        raisons[lesson_id].append(f"{len(refs)} question(s) sans thème (ex. {', '.join(refs[:5])})")
+
+    rappels = Exercise.objects.filter(lesson_id__in=lesson_ids, rappels_de_methode__isnull=False).distinct()
+    for ex in rappels:
+        nb_rappels = ex.rappels_de_methode.count()
+        nb_titres = len(_TITRE_RAPPEL.findall(ex.corrige_markdown or ""))
+        if nb_titres == 0:
+            raisons[ex.lesson_id].append(
+                f"exercice {ex.numero_exercice} : {nb_rappels} rappel(s) de méthode jamais affiché(s) "
+                "(aucun titre `### Rappel de méthode` dans le corrigé)",
+            )
+
+    qcm = Question.objects.filter(exercise__lesson_id__in=lesson_ids, type_reponse=TypeReponse.QCM).select_related("exercise")
+    for q in qcm:
+        lettres = {c.get("lettre") for c in (q.choix or []) if isinstance(c, dict)}
+        if len(lettres) < 2 or q.reponse_correcte not in lettres:
+            raisons[q.exercise.lesson_id].append(
+                f"exercice {q.exercise.numero_exercice}.{q.numero} : QCM incohérent "
+                f"(reponse_correcte={q.reponse_correcte!r}, choix={sorted(map(str, lettres))})",
+            )
+
+    return dict(raisons)

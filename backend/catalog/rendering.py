@@ -906,11 +906,14 @@ def _exercise_group_paths(exercises):
 def _fallback_group_paths_if_needed(exercises):
     """{exercise.pk: [...]} via _exercise_group_paths (analyse de texte), calculé
     seulement si au moins un exercice de `exercises` n'a pas encore de Exercise.groupes
-    renseigné en base - {} sans jamais analyser le texte quand toute l'épreuve vient
-    d'une ingestion postérieure à l'introduction de ce champ. Un exercice avec
-    Exercise.groupes non vide n'indexe jamais le résultat (voir les appelants), donc {}
-    est un résultat sûr même si aucun exercice n'a de repère détectable par regex."""
-    if all(exercise.groupes for exercise in exercises):
+    FIABLE (groupes_verifies=False - jamais ingéré avec la clé "groupes" explicite, voir
+    catalog.ingestion.ingest_exercise) - {} sans jamais analyser le texte dès que toute
+    l'épreuve vient d'une ingestion qui a déclaré ce champ, même quand groupes vaut []
+    partout (cas très majoritaire : aucune section, correction-experte l'a confirmé plutôt
+    que de laisser le champ simplement absent). Un exercice avec Exercise.groupes non vide
+    n'indexe jamais le résultat (voir les appelants), donc {} est un résultat sûr même si
+    aucun exercice n'a de repère détectable par regex."""
+    if all(exercise.groupes_verifies for exercise in exercises):
         return {}
     return _exercise_group_paths(exercises)
 

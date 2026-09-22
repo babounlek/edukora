@@ -9,10 +9,10 @@ from django.test import SimpleTestCase, TestCase
 from django.utils import timezone
 
 from .ingestion import ingest_exercise
-from .models import Tag
+from .models import RappelDeMethode, Tag
 from .tunnel import (
-    ALERTE, BLOQUANT, _VARIANT_INDEX, find_tag_variant, gate_structure, gate_tags, parse_since,
-    rappel_est_reponse_deguisee, tag_key,
+    ALERTE, BLOQUANT, _VARIANT_INDEX, blocked_lessons, find_tag_variant, gate_structure, gate_tags, parse_since,
+    rappel_est_reponse_deguisee, register_tag, tag_key,
 )
 
 
@@ -94,6 +94,65 @@ class TunnelGatesTests(TestCase):
         self.assertTrue(any(f.severity == ALERTE and "quasi-doublon" in f.message for f in findings))
 
 
+class BlockedLessonsTests(TestCase):
+    """Périmètre = l'ensemble des Lesson listées, pas une fenêtre temporelle - voir
+    catalog.ingestion._appliquer_gate_publication, qui garde un Lesson en BROUILLON
+    tant que blocked_lessons() le désigne."""
+
+    def _ingest(self, themes, numero="1"):
+        return ingest_exercise(_payload(themes, numero), source_dir=Path("ingest/cm/bac-maths-2024"))[0]
+
+    def test_clean_lesson_is_not_blocked(self):
+        exercise = self._ingest(["Dérivation"])
+        self.assertEqual(blocked_lessons([exercise.lesson_id]), {})
+
+    def test_empty_input_returns_empty_without_querying(self):
+        self.assertEqual(blocked_lessons([]), {})
+
+    def test_question_without_theme_blocks_its_lesson(self):
+        exercise = self._ingest([])
+        raisons = blocked_lessons([exercise.lesson_id])
+        self.assertIn(exercise.lesson_id, raisons)
+        self.assertTrue(any("sans thème" in r for r in raisons[exercise.lesson_id]))
+
+    def test_incoherent_qcm_blocks_its_lesson(self):
+        exercise = self._ingest(["Dérivation"])
+        question = exercise.questions.get()
+        question.type_reponse = "QCM"
+        question.choix = [{"lettre": "a", "texte": "1"}, {"lettre": "b", "texte": "2"}]
+        question.reponse_correcte = "z"
+        question.save()
+        raisons = blocked_lessons([exercise.lesson_id])
+        self.assertIn(exercise.lesson_id, raisons)
+        self.assertTrue(any("QCM incohérent" in r for r in raisons[exercise.lesson_id]))
+
+    def test_rappel_never_shown_blocks_its_lesson(self):
+        exercise = self._ingest(["Dérivation"])
+        exercise.corrige_markdown = "Corrigé, sans le titre du rappel."
+        exercise.save()
+        RappelDeMethode.objects.create(
+            exercise=exercise, external_id="rdm-test", competence="Test",
+            contenu_markdown="Contenu du rappel.",
+        )
+        raisons = blocked_lessons([exercise.lesson_id])
+        self.assertIn(exercise.lesson_id, raisons)
+        self.assertTrue(any("jamais affiché" in r for r in raisons[exercise.lesson_id]))
+
+    def test_a_lesson_outside_the_given_ids_is_never_touched(self):
+        exercise = self._ingest([])
+        self.assertEqual(blocked_lessons([exercise.lesson_id + 1]), {})
+
+    def test_untouched_faulty_exercise_still_blocks_its_lesson(self):
+        # Contrairement à gate_structure(since), le périmètre est le Lesson entier :
+        # un exercice fautif mais non retouché par le run en cours doit quand même
+        # empêcher la promotion du Lesson auquel il appartient.
+        fautif = self._ingest([])
+        propre = self._ingest(["Dérivation"], numero="2")
+        self.assertEqual(fautif.lesson_id, propre.lesson_id)
+        raisons = blocked_lessons([propre.lesson_id])
+        self.assertIn(propre.lesson_id, raisons)
+
+
 class ValiderIngestionCommandTests(TestCase):
     def _run(self, since="1h", **kwargs):
         with tempfile.TemporaryDirectory() as tmp:
@@ -168,6 +227,29 @@ class IngestionReusesTagVariantTests(TestCase):
         Tag.objects.create(name="Limites")
         _VARIANT_INDEX["built_at"] = None
         self.assertIsNone(find_tag_variant("limites"))
+
+    def test_two_new_variants_created_within_the_same_run_still_collapse_to_one_tag(self):
+        # Reproduit le bug corrigé le 2026-09-22 : l'index de find_tag_variant n'était
+        # mis à jour qu'au TTL (60s) - un round de quiz qui invente "ADN polymérase" puis
+        # "ADN-polymérase" quelques instants plus tard, sans qu'aucun des deux n'existait
+        # avant le run, ne se voyait pas lui-même et créait deux Tag quasi-doublons.
+        payload = {
+            "epreuve_source": "bac-maths-2024", "numero_exercice": "1", "matiere": "Mathématiques",
+            "serie": "C", "examen": "BAC",
+            "questions": [
+                {"numero": "1", "enonce_markdown": "Énoncé 1.", "corrige_markdown": "Corrigé 1.", "themes": ["ADN polymérase"]},
+                {"numero": "2", "enonce_markdown": "Énoncé 2.", "corrige_markdown": "Corrigé 2.", "themes": ["ADN-polymérase"]},
+            ],
+        }
+        ingest_exercise(payload, source_dir=Path("ingest/cm/bac-maths-2024"))
+        self.assertEqual(Tag.objects.filter(name__icontains="polymérase").count(), 1)
+
+    def test_register_tag_extends_the_live_index_without_a_rebuild(self):
+        _VARIANT_INDEX["built_at"] = None
+        self.assertIsNone(find_tag_variant("nouveau theme"))  # construit l'index une première fois
+        nouveau = Tag.objects.create(name="Nouveau Theme")
+        register_tag(nouveau)
+        self.assertEqual(find_tag_variant("nouveau theme"), nouveau)
 
 
 class FusionQuasiDoublonsSavoirsTests(TestCase):

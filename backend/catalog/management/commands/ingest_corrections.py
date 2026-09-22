@@ -89,6 +89,12 @@ class Command(BaseCommand):
             self.stdout.write(self.style.ERROR(f"{len(report['errors'])} erreur(s) :"))
             for error in report["errors"]:
                 self.stdout.write(self.style.ERROR(f"  - {error}"))
+        if report.get("demoted_lessons"):
+            self.stdout.write(self.style.ERROR(
+                f"{len(report['demoted_lessons'])} leçon(s) restent en BROUILLON (tunnel non validé, invisibles côté élève) :",
+            ))
+            for lesson_id, raisons in report["demoted_lessons"].items():
+                self.stdout.write(self.style.ERROR(f"  - Lesson#{lesson_id} : " + " ; ".join(raisons)))
 
         # Chaîné ici plutôt que laissé à une exécution manuelle séparée : les deux
         # commandes tournent déjà hors du cycle requête/réponse (jamais depuis le

@@ -109,13 +109,15 @@ def _resolve_theme(theme_name, allow_create=False):
     if len(candidats) > 1:
         raise IngestionError(f"Plusieurs Tag correspondent à {name!r} à la casse près - ambigu, à corriger à la main.")
     # Variante aux accents/pluriel près d'un Tag existant : réutilisée (voir catalog.tunnel).
-    from catalog.tunnel import find_tag_variant
+    from catalog.tunnel import find_tag_variant, register_tag
 
     variante = find_tag_variant(name)
     if variante is not None:
         return variante
     if allow_create:
-        tag, _ = Tag.objects.get_or_create(name=name)
+        tag, created = Tag.objects.get_or_create(name=name)
+        if created:
+            register_tag(tag)
         return tag
     raise IngestionError(
         f"Compétence (Tag) introuvable : {name!r} - doit déjà exister en base (créée via "

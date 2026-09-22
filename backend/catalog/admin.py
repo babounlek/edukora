@@ -8,7 +8,7 @@ from django.core.files.storage import default_storage
 from django.shortcuts import redirect, render
 from django.urls import path
 
-from .ingestion import IngestionError, ingest_exercise, queue_ingestion, read_ingestion_report
+from .ingestion import IngestionError, _appliquer_gate_publication, ingest_exercise, queue_ingestion, read_ingestion_report
 from .models import Cours, Country, Cursus, ExamenLabel, ExamSession, Exercise, Figure, Filiere, Lesson, Question, RappelDeMethode, Series, Subject, Tag, Temoignage
 from .sujet_pdf import queue_sujet_pdf_generation
 
@@ -314,6 +314,7 @@ class ExerciseAdmin(admin.ModelAdmin):
         de deviner un autre chemin.
         """
         reussis = 0
+        lesson_ids = set()
         for exercise in queryset.select_related("lesson__subject__country"):
             lesson = exercise.lesson
             if not lesson.epreuve_source:
@@ -339,13 +340,22 @@ class ExerciseAdmin(admin.ModelAdmin):
 
             try:
                 data = json.loads(json_path.read_text(encoding="utf-8"))
-                ingest_exercise(data, source_dir=source_dir, force=True, exiger_themes=True)
+                reingere, _ = ingest_exercise(data, source_dir=source_dir, force=True, exiger_themes=True)
+                lesson_ids.add(reingere.lesson_id)
                 reussis += 1
             except (IngestionError, OSError, ValueError) as exc:
                 self.message_user(request, f"{exercise} : {exc}", level=messages.ERROR)
 
         if reussis:
             self.message_user(request, f"{reussis} exercice(s) réingéré(s) depuis leur fichier source.")
+
+        demoted = _appliquer_gate_publication(lesson_ids)
+        for lesson_id, raisons in demoted.items():
+            self.message_user(
+                request,
+                f"Lesson#{lesson_id} reste en BROUILLON (tunnel non validé) : " + " ; ".join(raisons),
+                level=messages.WARNING,
+            )
 
 
 @admin.register(Question)

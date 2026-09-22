@@ -2817,10 +2817,13 @@ class LessonExercisesBreakdownTests(TestCase):
         )
         self.lesson.cursus.add(cursus)
 
-    def _exercise(self, numero, statut=StatutContenu.VALIDE, enonce="Énoncé.", corrige="Corrigé.", intro="", points="", groupes=None):
+    def _exercise(
+        self, numero, statut=StatutContenu.VALIDE, enonce="Énoncé.", corrige="Corrigé.", intro="", points="",
+        groupes=None, groupes_verifies=False,
+    ):
         exercise = Exercise.objects.create(
             lesson=self.lesson, numero_exercice=numero, statut=statut, enonce_intro_markdown=intro, points=points,
-            groupes=groupes or [],
+            groupes=groupes or [], groupes_verifies=groupes_verifies,
         )
         Question.objects.create(
             exercise=exercise, numero="1", ordre=1, enonce_markdown=enonce, corrige_markdown=corrige,
@@ -2858,6 +2861,19 @@ class LessonExercisesBreakdownTests(TestCase):
 
         self.assertEqual(breakdown[0]["groupes"], ["Partie A", "I. Activités Numériques"])
         self.assertEqual(breakdown[1]["groupes"], ["Partie A", "II. Autre section"])
+
+    def test_verified_empty_groupes_skips_the_regex_fallback_entirely(self):
+        # Cas très majoritaire : une épreuve sans aucune section, ingérée après
+        # l'introduction de groupes_verifies (voir catalog.ingestion.ingest_exercise,
+        # exiger_groupes). Même si l'intro PORTE un texte qui ressemblerait à un repère
+        # de groupe, la valeur vérifiée ([]) doit primer - la régression que ce champ
+        # corrige étant précisément qu'un [] non distingué d'un champ absent relançait
+        # l'analyse de texte à chaque rendu.
+        self._exercise("1", intro="**Partie A**\n\n**Exercice 1**", groupes=[], groupes_verifies=True)
+
+        breakdown = self.lesson.exercises_breakdown()
+
+        self.assertEqual(breakdown[0]["groupes"], [])
 
     def test_returns_one_entry_per_validated_exercise_in_order(self):
         self._exercise("2", enonce="Deuxieme.", corrige="Corrige 2.")
@@ -4353,6 +4369,24 @@ class ExerciseGroupesIngestionTests(TestCase):
             self._payload(groupes=["Partie A", "  ", ""]), source_dir=Path("ingest/cm/bac-maths-2024"),
         )
         self.assertEqual(exercise.groupes, ["Partie A"])
+
+    def test_explicit_key_marks_groupes_verifies_even_when_empty(self):
+        exercise, _ = ingest_exercise(self._payload(groupes=[]), source_dir=Path("ingest/cm/bac-maths-2024"))
+        self.assertTrue(exercise.groupes_verifies)
+
+    def test_missing_key_leaves_groupes_not_verified(self):
+        exercise, _ = ingest_exercise(self._payload(), source_dir=Path("ingest/cm/bac-maths-2024"))
+        self.assertFalse(exercise.groupes_verifies)
+
+    def test_exiger_groupes_rejects_a_missing_key(self):
+        with self.assertRaises(IngestionError):
+            ingest_exercise(self._payload(), source_dir=Path("ingest/cm/bac-maths-2024"), exiger_groupes=True)
+
+    def test_exiger_groupes_accepts_an_explicit_empty_list(self):
+        exercise, _ = ingest_exercise(
+            self._payload(groupes=[]), source_dir=Path("ingest/cm/bac-maths-2024"), exiger_groupes=True,
+        )
+        self.assertTrue(exercise.groupes_verifies)
 
 
 class OrigineSujetZeroIngestionTests(TestCase):

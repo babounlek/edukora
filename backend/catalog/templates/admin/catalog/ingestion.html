@@ -51,6 +51,24 @@
             {% endfor %}
           </ul>
         {% endif %}
+        {% if report.demoted_lessons %}
+          <p style="color: var(--error-fg, #ba2121);">
+            <strong>{{ report.demoted_lessons|length }} leçon{{ report.demoted_lessons|length|pluralize }}
+            rest{{ report.demoted_lessons|length|pluralize:"e,ent" }} en BROUILLON (tunnel non validé, invisible{{ report.demoted_lessons|length|pluralize }} côté élève) :</strong>
+          </p>
+          <ul>
+            {% for lesson_id, raisons in report.demoted_lessons.items %}
+              <li style="color: var(--error-fg, #ba2121);">
+                Lesson#{{ lesson_id }} :
+                <ul>
+                  {% for raison in raisons %}
+                    <li>{{ raison }}</li>
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
         <p>
           PDF de sujet :
           {% if report.pdf_status == "running" %}
