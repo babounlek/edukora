@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, Check, Lock, PenLine, Sparkles, Target } from "lucide-react"
 
-import { getPlanDuJour, terminerSeanceDuJour } from "@/api/endpoints"
+import { continuerSeanceDuJour, getPlanDuJour, terminerSeanceDuJour } from "@/api/endpoints"
 import type { EtapeSeance, PlanDuJour, Seance } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
@@ -38,6 +38,14 @@ export function SeanceDuJour({ country }: { country: string }) {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["plan-du-jour"] }),
   })
 
+  // La réponse de "continuer" a exactement la forme du plan (voir
+  // quiz.views._charge_utile_plan) : on l'écrit directement dans le cache plutôt que
+  // de réinvalider, pour que la séance suivante s'affiche sans un aller-retour de plus.
+  const continuer = useMutation({
+    mutationFn: continuerSeanceDuJour,
+    onSuccess: (plan) => queryClient.setQueryData(["plan-du-jour"], plan),
+  })
+
   // "Séance affichée" une seule fois par séance, jamais à chaque rendu : le
   // dénominateur du seul chiffre qui compte (combien reviennent faire une séance) ne
   // vaut rien s'il enfle à chaque re-rendu de React.
@@ -58,7 +66,15 @@ export function SeanceDuJour({ country }: { country: string }) {
       <div className="animate-fade-up rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-5 sm:p-6">
         <EnTete plan={data} />
         {data.etat === "deja_fait_aujourdhui" ? (
-          <SeanceFaite plan={data} country={country} />
+          <SeanceFaite
+            plan={data}
+            country={country}
+            onContinuer={() => continuer.mutate()}
+            continuationEnCours={continuer.isPending}
+            // Le serveur a répondu "rien à proposer" : la demande a abouti, il n'y
+            // avait simplement plus rien (voir seance_supplementaire).
+            plusRienAProposer={continuer.isSuccess && continuer.data?.etat === "rien_a_proposer"}
+          />
         ) : (
           <SeanceAFaire
             plan={data}
@@ -169,7 +185,15 @@ function SeanceAFaire({
   )
 }
 
-function SeanceFaite({ plan, country }: { plan: PlanDuJour; country: string }) {
+function SeanceFaite({
+  plan, country, onContinuer, continuationEnCours, plusRienAProposer,
+}: {
+  plan: PlanDuJour
+  country: string
+  onContinuer: () => void
+  continuationEnCours: boolean
+  plusRienAProposer: boolean
+}) {
   const seance = plan.seance as Seance
   return (
     <>
@@ -189,12 +213,27 @@ function SeanceFaite({ plan, country }: { plan: PlanDuJour; country: string }) {
           <> · {plan.seances_cette_semaine} séance{plan.seances_cette_semaine > 1 ? "s" : ""} cette semaine</>
         )}
       </p>
-      <p className="mt-3 text-sm">
-        Prochaine séance demain.{" "}
-        <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
-          Continuer quand même
-        </Link>
-      </p>
+      {/* "Continuer" enchaîne sur une VRAIE séance suivante, jamais sur la liste des
+          thèmes : renvoyer au catalogue quelqu'un qui vient de faire ce qu'on lui a
+          demandé, c'est lui rendre la charge de choisir au moment précis où il
+          méritait qu'on continue à le guider. */}
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <span className="text-sm text-muted-foreground">Prochaine séance demain.</span>
+        <Button variant="outline" size="sm" onClick={onContinuer} disabled={continuationEnCours}>
+          {continuationEnCours ? "Je cherche…" : "Continuer maintenant"}
+          <ArrowRight className="size-4" />
+        </Button>
+      </div>
+      {/* Il n'y avait plus rien à proposer - dit franchement plutôt que par un bouton
+          qui ne fait rien. */}
+      {plusRienAProposer && (
+        <p className="mt-2 text-xs text-muted-foreground">
+          Tu as fait le tour de ce qu'on peut te proposer aujourd'hui.{" "}
+          <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
+            Choisir un thème toi-même
+          </Link>
+        </p>
+      )}
     </>
   )
 }

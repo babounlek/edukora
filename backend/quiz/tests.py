@@ -51,7 +51,7 @@ from .services import (
     TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
     construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir,
     _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
-    revisions_dues, seance_du_jour,
+    revisions_dues, seance_du_jour, seance_supplementaire, terminer_seance,
     seances_terminees_cette_semaine,
 )
 from .views import _clean_quiz_markdown, _question_payload
@@ -2769,3 +2769,112 @@ class PrioriteMatiereTests(TestCase):
 
         self.assertEqual(seance.origine, OrigineSeance.PARCOURS)
         self.assertEqual(seance.subject_id, svt.id)
+
+
+class SeanceSupplementaireTests(TestCase):
+    """
+    "J'ai fini, je veux continuer" doit donner une SÉANCE, pas un catalogue - le lien
+    renvoyait vers la liste des thèmes fréquents, c'est-à-dire qu'il rendait à l'élève
+    la charge de choisir au moment précis où il venait de faire ce qu'on lui demandait.
+    """
+
+    def setUp(self):
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        self.user = User.objects.create_user(phone_number="677900606", password="x")
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+        self.subject = Subject.objects.create(
+            code="MATHS_TEST_SUP", label="Maths (test sup)", country=self.cursus.country,
+        )
+        self.premier_theme = Tag.objects.create(name="premier thème (test sup)")
+        self.second_theme = Tag.objects.create(name="second thème (test sup)")
+        Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def _revision_due(self, theme):
+        self._item(theme)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+    def _item(self, theme):
+        item = CompetenceItem.objects.create(
+            external_id=f"sup-{theme.id}", theme=theme, subject=self.subject,
+            enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
+        )
+        item.cursus.add(self.cursus)
+        return item
+
+    def test_continuer_propose_une_seconde_seance(self):
+        self._revision_due(self.premier_theme)
+        self._revision_due(self.second_theme)
+        premiere = plan_du_jour(self.user, self.cursus)
+        terminer_seance(premiere)
+
+        reponse = self.client.post("/quiz/plan-du-jour/continuer/")
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(reponse.data["etat"], "plan_pret")
+        self.assertEqual(SeanceJournaliere.objects.filter(user=self.user).count(), 2)
+
+    def test_la_seconde_seance_ne_repropose_pas_le_meme_theme(self):
+        self._revision_due(self.premier_theme)
+        self._revision_due(self.second_theme)
+        premiere = plan_du_jour(self.user, self.cursus)
+        terminer_seance(premiere)
+
+        seconde = seance_supplementaire(self.user, self.cursus)
+
+        self.assertNotEqual(seconde.theme_id, premiere.theme_id)
+        self.assertEqual(seconde.ordre, 2)
+
+    def test_continuer_ne_double_pas_une_seance_en_cours(self):
+        self._revision_due(self.premier_theme)
+        self._revision_due(self.second_theme)
+        premiere = plan_du_jour(self.user, self.cursus)
+
+        # Séance pas terminée : "continuer" doit rendre celle qu'il a déjà à faire,
+        # jamais en empiler une seconde par-dessus.
+        self.assertEqual(seance_supplementaire(self.user, self.cursus).id, premiere.id)
+        self.assertEqual(SeanceJournaliere.objects.filter(user=self.user).count(), 1)
+
+    def test_plus_rien_a_proposer_est_dit_franchement(self):
+        self._revision_due(self.premier_theme)
+        premiere = plan_du_jour(self.user, self.cursus)
+        terminer_seance(premiere)
+
+        reponse = self.client.post("/quiz/plan-du-jour/continuer/")
+
+        # Un seul thème disponible, déjà travaillé : mieux vaut le dire que proposer
+        # une seconde fois la même chose.
+        self.assertEqual(reponse.data["etat"], "rien_a_proposer")
+        self.assertIsNone(reponse.data["seance"])
+
+    def test_le_plan_du_jour_rend_la_seance_la_plus_avancee(self):
+        self._revision_due(self.premier_theme)
+        self._revision_due(self.second_theme)
+        terminer_seance(plan_du_jour(self.user, self.cursus))
+        seconde = seance_supplementaire(self.user, self.cursus)
+
+        # Rouvrir la page après avoir demandé une séance de plus doit montrer CETTE
+        # séance, pas celle qu'il a terminée ce matin.
+        self.assertEqual(plan_du_jour(self.user, self.cursus).id, seconde.id)
+
+    def test_les_deux_seances_comptent_dans_la_semaine(self):
+        self._revision_due(self.premier_theme)
+        self._revision_due(self.second_theme)
+        terminer_seance(plan_du_jour(self.user, self.cursus))
+        terminer_seance(seance_supplementaire(self.user, self.cursus))
+
+        # Le compteur annonce des SÉANCES, pas des jours : deux séances faites le même
+        # jour en valent bien deux.
+        self.assertEqual(seances_terminees_cette_semaine(self.user, self.cursus), 2)
+
+    def test_continuer_refuse_sans_abonnement(self):
+        self._revision_due(self.premier_theme)
+        terminer_seance(plan_du_jour(self.user, self.cursus))
+        Subscription.objects.filter(user=self.user).update(expires_at=timezone.now() - timedelta(days=1))
+
+        self.assertEqual(self.client.post("/quiz/plan-du-jour/continuer/").status_code, 403)

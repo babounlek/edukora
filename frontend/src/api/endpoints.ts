@@ -603,3 +603,12 @@ export function optInWhatsApp() {
 export function optOutWhatsApp() {
   return apiRequest<WhatsAppStatus>("/whatsapp/opt-out/", { method: "POST" })
 }
+
+/**
+ * Demande une séance de PLUS pour aujourd'hui (voir quiz.views.continuer_view).
+ * Renvoie la même charge utile que getPlanDuJour - y compris l'état
+ * "rien_a_proposer" quand il n'y avait plus rien à proposer.
+ */
+export function continuerSeanceDuJour() {
+  return apiRequest<PlanDuJour>("/quiz/plan-du-jour/continuer/", { method: "POST" })
+}

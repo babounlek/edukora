@@ -367,13 +367,26 @@ class SeanceJournaliere(models.Model):
         ),
     )
     statut = models.CharField(max_length=10, choices=StatutSeance.choices, default=StatutSeance.PROPOSEE)
+    ordre = models.PositiveSmallIntegerField(
+        default=1,
+        help_text=(
+            "Rang de la séance dans la journée. 1 pour la séance du jour ; au-delà, "
+            "une séance demandée EN PLUS par l'élève qui a fini la sienne et veut "
+            "continuer (voir quiz.services.seance_supplementaire). Jamais créée "
+            "d'office : c'est ce qui préserve la promesse d'une seule chose à faire."
+        ),
+    )
     termine_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["-date"]
+        # Du plus récent au plus avancé dans la journée : `.first()` sur un jour donné
+        # rend donc toujours la séance EN COURS, pas celle déjà terminée ce matin.
+        ordering = ["-date", "-ordre"]
         constraints = [
-            models.UniqueConstraint(fields=["user", "cursus", "date"], name="unique_seance_par_jour"),
+            models.UniqueConstraint(
+                fields=["user", "cursus", "date", "ordre"], name="unique_seance_par_rang_du_jour",
+            ),
         ]
 
     def __str__(self):

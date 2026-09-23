@@ -23,7 +23,7 @@ from .pdf import queue_quiz_fiche_pdf_generation
 from .services import (
     cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision, generer_session,
     maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
-    score_de_la_seance, seance_du_jour, seances_terminees_cette_semaine, terminer_seance,
+    score_de_la_seance, seance_du_jour, seance_supplementaire, seances_terminees_cette_semaine, terminer_seance,
 )
 
 
@@ -659,18 +659,26 @@ def plan_du_jour_view(request):
             "seance": None,
         })
 
-    seance = plan_du_jour(user, cursus)
+    return Response(_charge_utile_plan(user, cursus, plan_du_jour(user, cursus), compte))
+
+
+def _charge_utile_plan(user, cursus, seance, compte):
+    """
+    Réponse commune à plan_du_jour_view et continuer_view : les deux rendent le même
+    écran, et le frontend remplace simplement sa donnée par celle qu'on lui renvoie -
+    deux charges utiles distinctes finiraient par diverger sur un champ.
+    """
     base = {
         "cursus": CursusSerializer(cursus).data,
         "compte_a_rebours": compte,
         "seances_cette_semaine": seances_terminees_cette_semaine(user, cursus),
     }
     if seance is None:
-        return Response({**base, "etat": "rien_a_proposer", "seance": None})
+        return {**base, "etat": "rien_a_proposer", "seance": None}
 
     verrouillee = not _has_active_subscription(user, cursus)
     etat = "deja_fait_aujourdhui" if seance.statut == StatutSeance.TERMINEE else "plan_pret"
-    return Response({**base, "etat": etat, "seance": _serialiser_seance(seance, verrouillee)})
+    return {**base, "etat": etat, "seance": _serialiser_seance(seance, verrouillee)}
 
 
 @api_view(["POST"])
@@ -699,3 +707,26 @@ def terminer_seance_view(request):
         "statut": seance.statut,
         "seances_cette_semaine": seances_terminees_cette_semaine(request.user, cursus),
     })
+
+
+@api_view(["POST"])
+def continuer_view(request):
+    """
+    "J'ai fini ma séance et je veux continuer" : propose une séance de PLUS plutôt que
+    de renvoyer vers un catalogue (voir quiz.services.seance_supplementaire).
+
+    POST et non GET : l'appel CRÉE une séance. C'est aussi pourquoi il faut un clic -
+    une séance supplémentaire fabriquée à la simple lecture de la page détruirait
+    l'état "séance faite", qui est la récompense de la journée.
+
+    Réservé à l'abonné actif, comme le contenu qu'elle enchaîne.
+    """
+    cursus = request.user.cursus_prepare
+    if cursus is None:
+        return Response({"error": "Aucun cursus déclaré."}, status=400)
+    if not _has_active_subscription(request.user, cursus):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+
+    seance = seance_supplementaire(request.user, cursus)
+    compte = ExamSession.compte_a_rebours_pour(cursus)
+    return Response(_charge_utile_plan(request.user, cursus, seance, compte))

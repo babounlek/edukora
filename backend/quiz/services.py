@@ -863,7 +863,7 @@ def plan_du_jour(user, cursus, date=None):
     return seance
 
 
-def _construire_seance(user, cursus):
+def _construire_seance(user, cursus, themes_interdits=frozenset(), avec_calibrage=True):
     """
     Choisit quoi proposer, sans rien écrire en base. Renvoie les `defaults` d'une
     SeanceJournaliere, ou None.
@@ -871,14 +871,20 @@ def _construire_seance(user, cursus):
     Chaque priorité est d'abord essayée en respectant la rotation des matières, puis -
     si aucune ne passe - réessayée sans elle : mieux vaut une troisième séance de
     maths que pas de séance du tout.
+
+    `themes_interdits` : thèmes à ne pas reproposer, quelle que soit la passe. Sert
+    aux séances supplémentaires (voir seance_supplementaire) - une matière peut
+    revenir dans la journée si elle est seule à avoir du contenu, jamais le thème
+    qu'on vient de travailler. `avec_calibrage` : on ne se calibre pas deux fois dans
+    la même journée.
     """
     matieres_recentes = _matieres_recentes(user, cursus)
     for exclues in (matieres_recentes, set()):
         for candidat in (
-            _seance_depuis_revision_due(user, cursus, exclues),
-            _seance_depuis_lecture_en_cours(user, cursus, exclues),
-            _seance_de_calibrage(user, cursus),
-            _seance_depuis_parcours(user, cursus, exclues),
+            _seance_depuis_revision_due(user, cursus, exclues, themes_interdits),
+            _seance_depuis_lecture_en_cours(user, cursus, exclues, themes_interdits),
+            _seance_de_calibrage(user, cursus) if avec_calibrage else None,
+            _seance_depuis_parcours(user, cursus, exclues, themes_interdits),
         ):
             if candidat is not None:
                 return candidat
@@ -896,14 +902,17 @@ def _matieres_recentes(user, cursus):
         for subject_id in SeanceJournaliere.objects.filter(
             user=user, cursus=cursus, statut=StatutSeance.TERMINEE, subject__isnull=False,
         )
-        .order_by("-date")
+        # `-ordre` en second : depuis les séances supplémentaires, une même journée
+        # peut en porter plusieurs, et c'est la DERNIÈRE travaillée qui doit compter
+        # comme la plus récente.
+        .order_by("-date", "-ordre")
         .values_list("subject_id", flat=True)[:ROTATION_MATIERES_RECENTES]
     }
 
 
-def _seance_depuis_revision_due(user, cursus, matieres_exclues):
+def _seance_depuis_revision_due(user, cursus, matieres_exclues, themes_interdits=frozenset()):
     for schedule in revisions_dues(user, cursus):
-        if schedule.subject_id in matieres_exclues:
+        if schedule.subject_id in matieres_exclues or schedule.theme_id in themes_interdits:
             continue
         etapes = _construire_etapes(cursus, schedule.subject, theme=schedule.theme)
         if not etapes:
@@ -917,7 +926,7 @@ def _seance_depuis_revision_due(user, cursus, matieres_exclues):
     return None
 
 
-def _seance_depuis_lecture_en_cours(user, cursus, matieres_exclues):
+def _seance_depuis_lecture_en_cours(user, cursus, matieres_exclues, themes_interdits=frozenset()):
     """
     Reprend un cours ouvert récemment. Au niveau du DOCUMENT, jamais "à l'exercice 3" :
     LectureProgress ne stocke aucune position de lecture (voir access.models), et
@@ -935,6 +944,8 @@ def _seance_depuis_lecture_en_cours(user, cursus, matieres_exclues):
         if cours.subject_id in matieres_exclues:
             continue
         theme = next(iter(cours.tags.all()), None)
+        if theme is not None and theme.id in themes_interdits:
+            continue
         etapes = _construire_etapes(cursus, cours.subject, theme=theme, cours_impose=cours)
         if not etapes:
             continue
@@ -974,7 +985,7 @@ def _seance_de_calibrage(user, cursus):
     }
 
 
-def _seance_depuis_parcours(user, cursus, matieres_exclues):
+def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=frozenset()):
     """
     Le thème suivant du parcours : le plus fréquent à l'examen parmi ceux que l'élève
     n'a pas encore travaillés. À défaut (tout entamé), le moins bien maîtrisé - il
@@ -991,7 +1002,10 @@ def _seance_depuis_parcours(user, cursus, matieres_exclues):
             candidats = [s for module in construire_parcours(user, cursus, subject) for s in module["savoirs"]]
             cle_theme, cle_savoir = None, "id"
 
-        exploitables = [c for c in candidats if c["has_quiz"] or c["cours"]]
+        exploitables = [
+            c for c in candidats
+            if (c["has_quiz"] or c["cours"]) and (cle_theme is None or c[cle_theme] not in themes_interdits)
+        ]
         if not exploitables:
             continue
         jamais_travailles = [c for c in exploitables if c["taux"] is None and not c["a_lu_le_cours"]]
@@ -1123,7 +1137,11 @@ def seance_du_jour(user, cursus, date=None):
     """La séance du jour déjà construite, sans jamais en créer une - contrairement à
     plan_du_jour, dont c'est le rôle. Sert aux appels qui réagissent à une action de
     l'élève (fin de quiz, clôture) et qui n'ont aucune raison de faire naître une
-    séance au passage."""
+    séance au passage.
+
+    La plus AVANCÉE de la journée quand il y en a plusieurs (voir
+    SeanceJournaliere.ordre et son Meta.ordering) : celle qui est en cours, jamais
+    celle qu'il a déjà terminée ce matin."""
     return SeanceJournaliere.objects.filter(
         user=user, cursus=cursus, date=date or timezone.localdate(),
     ).first()
@@ -1306,3 +1324,48 @@ def _subjects_par_priorite(user, cursus):
         return poids * (1 - maitrise.get(subject.id, 0.0))
 
     return sorted(subjects, key=lambda s: (-score(s), s.label))
+
+
+def seance_supplementaire(user, cursus, date=None):
+    """
+    Une séance de PLUS, pour l'élève qui a fini la sienne et veut continuer.
+
+    "Continuer quand même" renvoyait jusqu'ici vers la liste des thèmes fréquents,
+    c'est-à-dire vers le catalogue auquel tout ce travail sert justement à se
+    substituer : on lui disait "voilà ce qu'il faut faire aujourd'hui", il le faisait,
+    et pour sa peine on lui rendait la charge de choisir. Une séance finie doit pouvoir
+    être suivie d'une autre séance, pas d'une liste.
+
+    Jamais créée d'office, seulement sur demande explicite : c'est ce qui préserve la
+    promesse d'une seule chose à faire. Tant que la séance en cours n'est pas terminée,
+    cet appel la renvoie telle quelle plutôt que d'en empiler une deuxième.
+
+    Les thèmes déjà travaillés aujourd'hui sont exclus - reproposer le thème qu'on
+    vient de finir serait la pire réponse possible à "je veux continuer". La matière,
+    elle, peut revenir : sur un cursus où une seule matière a du contenu, l'exclure
+    reviendrait à ne rien proposer.
+
+    Renvoie None quand il n'y a plus rien à proposer.
+    """
+    date = date or timezone.localdate()
+    seances_du_jour = list(SeanceJournaliere.objects.filter(user=user, cursus=cursus, date=date))
+    if not seances_du_jour:
+        return None
+
+    courante = max(seances_du_jour, key=lambda s: s.ordre)
+    if courante.statut != StatutSeance.TERMINEE:
+        return courante
+
+    proposition = _construire_seance(
+        user, cursus,
+        themes_interdits={s.theme_id for s in seances_du_jour if s.theme_id},
+        # On ne se calibre pas deux fois dans la même journée.
+        avec_calibrage=False,
+    )
+    if proposition is None:
+        return None
+
+    seance, _ = SeanceJournaliere.objects.get_or_create(
+        user=user, cursus=cursus, date=date, ordre=courante.ordre + 1, defaults=proposition,
+    )
+    return seance
