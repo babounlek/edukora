@@ -55,6 +55,18 @@ def read_lesson(request, lesson_slug):
     if request.user.is_authenticated:
         LectureProgress.objects.update_or_create(user=request.user, lesson=lesson)
 
+    # Exercices de CETTE épreuve que le lecteur a déjà déclaré avoir traités - une
+    # seule requête pour toute la page. Sert à proposer la validation au bon endroit,
+    # à la fin du corrigé (voir access.ExerciceFait) : c'est le seul moment où l'élève
+    # a réellement de quoi juger s'il a résolu l'exercice.
+    exercices_faits = set()
+    if request.user.is_authenticated:
+        exercices_faits = set(
+            ExerciceFait.objects.filter(user=request.user, exercise__lesson=lesson)
+            .values_list("exercise_id", flat=True),
+        )
+    exercices = [dict(e, fait=e.get("id") in exercices_faits) for e in lesson.exercises_breakdown()]
+
     return Response({
         "id": lesson.id,
         "title": lesson.title,
@@ -68,7 +80,7 @@ def read_lesson(request, lesson_slug):
         # Liste vide pour une Lesson sans Exercise (FICHE...) : le frontend retombe
         # alors sur content_markdown tel quel plutôt que de replier un énoncé qu'on
         # n'a pas isolé.
-        "exercises": lesson.exercises_breakdown(),
+        "exercises": exercices,
         "header": lesson.header_info(),
         "lesson_type": lesson.lesson_type,
         "sujet_pdf_url": request.build_absolute_uri(lesson.sujet_pdf.url) if lesson.sujet_pdf else None,

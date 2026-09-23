@@ -1,9 +1,9 @@
 import { Link, useParams, useSearchParams } from "react-router-dom"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { ArrowLeft, ArrowRight, Check, FileText, Lock, TrendingUp } from "lucide-react"
 
-import { getThemeExercices, marquerExerciceFait } from "@/api/endpoints"
-import type { ThemeExercice, ThemeExercicesResponse } from "@/api/types"
+import { getThemeExercices } from "@/api/endpoints"
+import type { ThemeExercice } from "@/api/types"
 import { useSeo } from "@/lib/seo"
 import { epreuveDetailPath, epreuveReaderPath, themesFrequentsPath } from "@/lib/countryPath"
 import { exerciceAnchorId } from "@/components/EpreuveSommaire"
@@ -32,7 +32,6 @@ export function ThemeExercicesPage() {
   const nb = searchParams.get("nb")
   const total = searchParams.get("total")
 
-  const queryClient = useQueryClient()
   const cleListe = ["theme-exercices", cursusId, tagId, subjectCode]
   const { data, isLoading } = useQuery({
     queryKey: cleListe,
@@ -40,34 +39,6 @@ export function ThemeExercicesPage() {
     enabled: Boolean(cursusId && tagId && subjectCode),
   })
 
-  /**
-   * Bascule "fait", en optimiste : la coche répond au clic et non au réseau. Sur une
-   * connexion lente, attendre l'aller-retour donne l'impression d'un bouton mort et
-   * l'élève clique deux fois - donc coche puis décoche sans le vouloir. En cas
-   * d'échec, on resynchronise et l'état revient de lui-même.
-   */
-  const basculer = useMutation({
-    mutationFn: ({ exercise_id, fait }: ThemeExercice) => marquerExerciceFait(exercise_id, !fait),
-    onMutate: async (exercice) => {
-      await queryClient.cancelQueries({ queryKey: cleListe })
-      const precedent = queryClient.getQueryData<ThemeExercicesResponse>(cleListe)
-      if (precedent) {
-        const exercices = precedent.exercices.map((e) =>
-          e.exercise_id === exercice.exercise_id ? { ...e, fait: !e.fait } : e,
-        )
-        queryClient.setQueryData<ThemeExercicesResponse>(cleListe, {
-          ...precedent,
-          exercices,
-          faits: exercices.filter((e) => e.fait).length,
-        })
-      }
-      return { precedent }
-    },
-    onError: (_erreur, _exercice, contexte) => {
-      if (contexte?.precedent) queryClient.setQueryData(cleListe, contexte.precedent)
-    },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: cleListe }),
-  })
 
   useSeo({
     title: data ? `Exercices sur « ${capitaliserTheme(data.tag)} »` : "Exercices par thème",
@@ -167,11 +138,7 @@ export function ThemeExercicesPage() {
                   : "border-border hover:border-primary/40 hover:bg-accent/40",
               )}
             >
-              <BasculeFait
-                exercice={exercice}
-                enAttente={basculer.isPending && basculer.variables?.exercise_id === exercice.exercise_id}
-                onBasculer={basculer.mutate}
-              />
+              <EtatFait exercice={exercice} />
               {!exercice.has_access && (
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <FileText className="size-4" />
@@ -193,7 +160,7 @@ export function ThemeExercicesPage() {
                   }#${exerciceAnchorId(exercice.numero_exercice)}`}
                 >
                   {exercice.has_access ? (
-                    "Lire"
+                    exercice.fait ? "Revoir" : "Lire"
                   ) : (
                     <>
                       <Lock className="size-3.5" />
@@ -242,7 +209,7 @@ function AvancementFile({
           <p className="mt-0.5 text-sm text-muted-foreground">
             {termine
               ? "Tu as traité tous les exercices de ce thème. Il reviendra en révision au bon moment."
-              : "Tu décides de ce qui est fait - rien n'est coché à ta place."}
+              : "Chaque exercice se valide à la fin de son corrigé, une fois que tu l'as lu."}
           </p>
         </div>
         {suivant && (
@@ -274,35 +241,32 @@ function AvancementFile({
 }
 
 /**
- * La bascule "fait" d'une ligne. Optimiste : la coche répond au clic, pas au réseau -
- * sur une connexion camerounaise moyenne, attendre l'aller-retour donnerait
- * l'impression d'un bouton mort, et l'élève cliquerait deux fois. En cas d'échec, la
- * liste est resynchronisée et l'état revient de lui-même.
+ * L'état "fait" d'une ligne - un INDICATEUR, jamais un contrôle.
+ *
+ * C'était une case à cocher : on pouvait donc valider treize exercices sans en avoir
+ * ouvert un seul, et le compteur sur lequel l'élève juge son avancement ne mesurait
+ * plus rien. La validation a été déplacée à la fin du corrigé, dans le lecteur (voir
+ * ValiderResolution) - le seul endroit où il a de quoi répondre à "tu l'as traité ?".
+ *
+ * Volontairement pas un bouton : rien à cliquer ici, donc rien qui laisse croire
+ * qu'on peut cocher depuis la liste. Pour revenir sur une validation, on rouvre
+ * l'exercice - là où on voit ce qu'on annule.
  */
-function BasculeFait({
-  exercice, enAttente, onBasculer,
-}: {
-  exercice: ThemeExercice
-  enAttente: boolean
-  onBasculer: (exercice: ThemeExercice) => void
-}) {
+function EtatFait({ exercice }: { exercice: ThemeExercice }) {
   if (!exercice.has_access) return null
   return (
-    <button
-      type="button"
-      disabled={enAttente}
-      aria-pressed={exercice.fait}
-      aria-label={exercice.fait ? "Marquer comme non fait" : "Marquer comme fait"}
-      title={exercice.fait ? "Marquer comme non fait" : "Marquer comme fait"}
-      onClick={() => onBasculer(exercice)}
+    <span
+      role="img"
+      aria-label={exercice.fait ? "Exercice validé" : "Exercice pas encore traité"}
+      title={exercice.fait ? "Validé" : "Pas encore traité"}
       className={cn(
-        "flex size-8 shrink-0 items-center justify-center rounded-full border transition-colors disabled:opacity-60",
+        "flex size-8 shrink-0 items-center justify-center rounded-full border",
         exercice.fait
           ? "border-primary bg-primary text-primary-foreground"
-          : "border-border text-muted-foreground hover:border-primary/50 hover:text-primary",
+          : "border-dashed border-border text-transparent",
       )}
     >
       <Check className="size-4" />
-    </button>
+    </span>
   )
 }

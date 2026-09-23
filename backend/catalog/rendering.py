@@ -1063,6 +1063,10 @@ def lesson_exercises_breakdown(lesson):
         titre, points = _exercise_titre_et_points(exercise)
         groupes = exercise.groupes or groupes_par_exercice.get(exercise.pk, [])
         result.append({
+            # Identifiant reel de l'Exercise : ce qui permet de valider sa resolution
+            # depuis la lecture (voir access.ExerciceFait). Le numero seul est un
+            # libelle d'affichage, il ne designe rien de facon fiable.
+            "id": exercise.pk,
             "numero_exercice": exercise.numero_exercice,
             "titre": titre,
             "points": points,

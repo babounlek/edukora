@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { ArrowLeft, FileDown, Unlock } from "lucide-react"
+import { ArrowLeft, Check, FileDown, Unlock } from "lucide-react"
 
-import { getEpreuve, readEpreuve } from "@/api/endpoints"
+import { getEpreuve, marquerExerciceFait, readEpreuve } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { Epreuve, EpreuveContent } from "@/api/types"
+import type { Epreuve, EpreuveContent, EpreuveExercise } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Badge } from "@/components/ui/badge"
@@ -133,6 +133,11 @@ export function EpreuveReaderPage() {
               <EpreuveMarkdown markdown={exercise.enonce_markdown} />
             </EnonceToggle>
             <EpreuveMarkdown markdown={exercise.corrige_markdown} directCoursLinks />
+            {/* La validation vit ICI, après le corrigé, et nulle part ailleurs : c'est
+                le seul endroit où l'élève a de quoi juger s'il a vraiment résolu
+                l'exercice. Une case à cocher sur une liste se coche sans rien avoir lu,
+                et un suivi qu'on peut remplir sans travailler ne mesure plus rien. */}
+            <ValiderResolution exercise={exercise} />
             {exercises.length > 1 && <ExerciceNav exercises={exercises} index={index} />}
           </div>
         ))
@@ -226,6 +231,69 @@ export function EpreuveReaderPage() {
           { to: epreuveDetailPath(displayCountry, slug ?? ""), label: "Retour à la fiche de l'épreuve" },
         ]}
       />
+    </div>
+  )
+}
+
+/**
+ * "Tu as résolu cet exercice ?" - placé à la fin du corrigé, jamais ailleurs.
+ *
+ * Avant, la validation se faisait depuis la liste des exercices d'un thème : on
+ * pouvait donc cocher treize exercices sans en avoir ouvert un seul. Un suivi qu'on
+ * remplit sans travailler ne mesure plus rien, et c'est précisément le chiffre sur
+ * lequel l'élève juge son avancement. La déclaration se fait maintenant là où il vient
+ * de lire l'énoncé ET le corrigé - le seul moment où il a de quoi répondre.
+ *
+ * État local et optimiste : la page du lecteur ne se recharge pas pour si peu, et la
+ * réponse doit être immédiate. En cas d'échec réseau, l'état revient à sa valeur
+ * précédente plutôt que de laisser croire à un enregistrement.
+ */
+function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
+  const [fait, setFait] = useState(exercise.fait)
+  const [enCours, setEnCours] = useState(false)
+
+  // Pas d'identifiant : épreuve inédite ou contenu non sectionné, rien à valider.
+  if (!exercise.id) return null
+
+  async function basculer() {
+    const cible = !fait
+    setFait(cible)
+    setEnCours(true)
+    try {
+      await marquerExerciceFait(exercise.id as number, cible)
+    } catch {
+      setFait(!cible)
+    } finally {
+      setEnCours(false)
+    }
+  }
+
+  return (
+    <div className="not-prose my-6 flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
+      {fait ? (
+        <>
+          <span className="flex items-center gap-2 text-sm font-medium text-primary">
+            <Check className="size-4 shrink-0" />
+            Exercice validé
+          </span>
+          <button
+            type="button"
+            onClick={basculer}
+            disabled={enCours}
+            className="text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
+          >
+            Annuler
+          </button>
+        </>
+      ) : (
+        <>
+          <span className="text-sm text-muted-foreground">Tu as traité cet exercice ?</span>
+          <Button size="sm" variant="outline" onClick={basculer} disabled={enCours}>
+            <Check className="size-4" />
+            Je l'ai fait
+          </Button>
+        </>
+      )}
     </div>
   )
 }

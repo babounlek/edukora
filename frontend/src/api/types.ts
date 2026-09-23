@@ -255,6 +255,11 @@ export interface EpreuveHeader {
 }
 
 export interface EpreuveExercise {
+  // Identifiant reel de l'Exercise - present en lecture abonnee, absent des apercus
+  // publics et des epreuves inedites. Ce qui permet de valider sa resolution.
+  id?: number
+  // Declare par l'eleve a la fin du corrige (voir access.ExerciceFait).
+  fait?: boolean
   numero_exercice: string
   // Libellé de l'exercice extrait de son en-tête d'énoncé ("Exercice 1 : Chimie
   // organique") - chaîne vide quand l'épreuve source n'en portait aucun, le sommaire
