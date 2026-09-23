@@ -956,7 +956,7 @@ def _seance_depuis_revision_due(user, cursus, matieres_exclues, themes_interdits
     for schedule in revisions_dues(user, cursus):
         if schedule.subject_id in matieres_exclues or schedule.theme_id in themes_interdits:
             continue
-        etapes = _construire_etapes(cursus, schedule.subject, theme=schedule.theme)
+        etapes = _construire_etapes(cursus, schedule.subject, theme=schedule.theme, user=user)
         if not _contient_quiz(etapes):
             continue
         return {
@@ -1114,7 +1114,9 @@ def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=fro
         # le classement qui l'a choisi n'est pas rejoué à chaque ajustement de durée,
         # et sans cette trace un aller-retour 25 -> 10 -> 25 minutes le perdrait.
         cours_retenu = Cours.objects.filter(slug=entree["cours"][0]["slug"]).first() if entree["cours"] else None
-        etapes = _construire_etapes(cursus, subject, theme=theme, savoir=savoir, cours_proposes=entree["cours"])
+        etapes = _construire_etapes(
+            cursus, subject, theme=theme, savoir=savoir, cours_proposes=entree["cours"], user=user,
+        )
         # `has_quiz` dit qu'il existe un quiz sur ce thème pour ce cursus ; seul
         # _construire_etapes sait s'il en reste dans le budget de la séance. On
         # redescend donc au candidat suivant plutôt que d'abandonner le parcours.
@@ -1133,9 +1135,36 @@ def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=fro
 
 
 
+def _theme_deja_maitrise(user, cursus, theme):
+    """
+    L'élève a-t-il déjà prouvé qu'il sait faire ? Sert à ne pas lui réimposer la
+    méthode d'un thème qu'il réussit - lui faire relire huit minutes de cours pour
+    quelque chose qu'il maîtrise, c'est le meilleur moyen de lui apprendre à sauter
+    les séances.
+
+    Même seuil que partout ailleurs (SEUIL_MAITRISE), mais sur un échantillon minimal :
+    un thème n'est pas "maîtrisé" sur deux bonnes réponses. Cinq, c'est un quiz de fin
+    de séance complet - la plus petite preuve qui vaille quelque chose.
+    """
+    if theme is None:
+        return False
+    stats = {"total": 0, "reussies": 0}
+    for reponse in QuizAnswer.objects.filter(
+        quiz_question__session__user=user,
+        quiz_question__session__cursus=cursus,
+        quiz_question__competence_item__theme=theme,
+    ):
+        stats["total"] += 1
+        if reponse.est_correcte:
+            stats["reussies"] += 1
+    if stats["total"] < REPONSES_MINIMUM_MAITRISE_THEME:
+        return False
+    return 100 * stats["reussies"] / stats["total"] >= SEUIL_MAITRISE
+
+
 def _construire_etapes(
     cursus, subject, theme=None, savoir=None, cours_impose=None, cours_proposes=None,
-    budget_minutes=BUDGET_SEANCE_MINUTES,
+    budget_minutes=BUDGET_SEANCE_MINUTES, user=None,
 ):
     """
     Relire la méthode, la mettre en pratique sur un vrai sujet d'examen, se vérifier -
@@ -1164,6 +1193,12 @@ def _construire_etapes(
 
     etapes = []
     cours = cours_impose or (cours_proposes[0] if cours_proposes else None)
+    # Un thème déjà maîtrisé n'a pas besoin qu'on en réexplique la méthode : le temps
+    # gagné part en entraînement et en vérification (voir plus bas, le quiz récupère
+    # ce qui n'a pas servi). `cours_impose` échappe à la règle - il vient d'une lecture
+    # que l'élève avait lui-même ouverte, la lui retirer serait absurde.
+    if cours_impose is None and user is not None and _theme_deja_maitrise(user, cursus, theme):
+        cours = None
     if cours is not None and restant >= DUREE_ETAPE_MINUTES["cours"]:
         # construire_parcours* renvoie des dicts {slug, titre, sous_theme}, la lecture
         # en cours un vrai Cours - les deux portent les mêmes deux champs utiles ici.
@@ -1368,6 +1403,11 @@ COEFFICIENT_PAR_DEFAUT = 2.0
 # qu'un seul thème sur toute la matière. Sous ce seuil, la maîtrise est ignorée et
 # seul le coefficient décide.
 REPONSES_MINIMUM_MAITRISE_MATIERE = 10
+
+# Idem pour UN thème (voir _theme_deja_maitrise) : cinq, c'est un quiz de fin de
+# séance complet - la plus petite preuve qui vaille quelque chose. Plus bas que le
+# seuil par matière, qui agrège plusieurs thèmes.
+REPONSES_MINIMUM_MAITRISE_THEME = 5
 
 
 def _coefficient_par_subject(cursus):
@@ -1639,6 +1679,16 @@ def raisons_de_la_seance(seance):
     elif seance.origine == OrigineSeance.LECTURE_EN_COURS:
         raisons.append({"code": "lecture", "texte": "Tu as ouvert ce cours il y a moins de deux jours."})
 
+    if seance.origine != OrigineSeance.LECTURE_EN_COURS and _theme_deja_maitrise(
+        seance.user, seance.cursus, seance.theme,
+    ):
+        # Dit pourquoi l'étape "méthode" manque : sans cette ligne, une séance sans
+        # cours ressemble à un contenu qui manque plutôt qu'à une reconnaissance.
+        raisons.append({
+            "code": "maitrise",
+            "texte": "Tu réussis déjà ce thème : on passe directement à la pratique.",
+        })
+
     elif seance.theme_id:
         # Jamais répondu sur ce thème : c'est là qu'il y a le plus à gagner, et c'est
         # exactement ce que le parcours cherche en premier (voir _seance_depuis_parcours).
@@ -1694,7 +1744,7 @@ def ajuster_duree_seance(user, cursus, minutes, date=None):
 
     etapes = _construire_etapes(
         cursus, seance.subject, theme=seance.theme, savoir=seance.savoir,
-        cours_impose=seance.cours, budget_minutes=minutes,
+        cours_impose=seance.cours, budget_minutes=minutes, user=user,
     )
     if not _contient_quiz(etapes):
         return seance

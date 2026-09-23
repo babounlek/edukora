@@ -3076,6 +3076,22 @@ class PrioriteFrequenceTests(TestCase):
             item.cursus.add(self.cursus)
         return subject, theme
 
+    def _repondre_sur_le_theme(self, subject, theme, nb_reponses, nb_reussies):
+        """Un historique de reponses sur CE theme precis - ce que lit
+        _theme_deja_maitrise pour decider de sauter la methode."""
+        item = CompetenceItem.objects.create(
+            external_id=f"maitrise-{subject.code}-{theme.id}", theme=theme, subject=subject,
+            enonce_markdown="00c9nonc00e9", corrige_markdown="Corrig00e9", statut=StatutContenu.VALIDE,
+        )
+        item.cursus.add(self.cursus)
+        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        for index in range(nb_reponses):
+            quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=index + 1)
+            QuizAnswer.objects.create(
+                quiz_question=quiz_question,
+                resultat_declare=ResultatDeclare.REUSSI if index < nb_reussies else ResultatDeclare.ECHEC,
+            )
+
     def _historique(self, subject):
         """Une réponse quelconque, pour sortir du calibrage et atteindre le parcours."""
         theme = Tag.objects.create(name=f"thème historique {subject.code}")
@@ -3212,3 +3228,34 @@ class PrioriteFrequenceTests(TestCase):
 
         self.assertEqual(seance.etapes, avant)
         self.assertEqual(seance.budget_minutes, 25)
+
+    def test_un_theme_deja_maitrise_saute_la_methode(self):
+        maths, theme = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        # Cinq réponses, toutes bonnes : la plus petite preuve qui vaille quelque chose
+        # (voir REPONSES_MINIMUM_MAITRISE_THEME).
+        self._repondre_sur_le_theme(maths, theme, nb_reponses=5, nb_reussies=5)
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        # Lui réimposer huit minutes de cours sur ce qu'il réussit, c'est lui apprendre
+        # à sauter les séances. Le temps gagné part en pratique.
+        self.assertNotIn("cours", [e["type"] for e in seance.etapes])
+        self.assertIn("quiz", [e["type"] for e in seance.etapes])
+
+    def test_un_echantillon_trop_mince_ne_fait_pas_sauter_la_methode(self):
+        maths, theme = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        self._repondre_sur_le_theme(maths, theme, nb_reponses=2, nb_reussies=2)
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        # Deux bonnes réponses ne font pas une maîtrise - même piège que le classement
+        # des matières, où six réponses reléguaient un coefficient 4 en dernier.
+        self.assertIn("cours", [e["type"] for e in seance.etapes])
+
+    def test_un_theme_rate_garde_la_methode(self):
+        maths, theme = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        self._repondre_sur_le_theme(maths, theme, nb_reponses=5, nb_reussies=1)
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        self.assertIn("cours", [e["type"] for e in seance.etapes])

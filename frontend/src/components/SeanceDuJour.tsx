@@ -210,20 +210,7 @@ function SeanceAFaire({
               J'ai fini
             </Button>
           </div>
-          <ol className="mt-4 flex flex-col gap-1.5">
-            {seance.etapes.map((etape, index) => (
-              <li key={index}>
-                <Link
-                  to={lienEtape(etape, country, plan)}
-                  className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-accent/50"
-                >
-                  <IconeEtape type={etape.type} />
-                  <span className="min-w-0 flex-1 truncate">{etape.libelle}</span>
-                  <span className="shrink-0 text-xs text-muted-foreground">{etape.duree_min} min</span>
-                </Link>
-              </li>
-            ))}
-          </ol>
+          <EtapesParPhase seance={seance} country={country} plan={plan} />
         </>
       )}
 
@@ -559,5 +546,65 @@ function ChoixDuree({
         </button>
       ))}
     </div>
+  )
+}
+
+/**
+ * Les étapes groupées par phase : Comprendre, S'entraîner, Vérifier.
+ *
+ * La liste plate ("Relire la méthode", "Exercice 1", "5 questions") disait CE QU'ON
+ * FAIT sans dire À QUOI ÇA SERT - or c'est la seule chose qui distingue une séance
+ * d'une pile de liens. Nommer les phases rend le trajet lisible d'un coup d'œil, et
+ * rend visible ce qui manque : une séance sans "Comprendre" se lit alors comme une
+ * étape sautée à dessein (thème déjà maîtrisé) plutôt que comme un contenu absent.
+ *
+ * Les phases se déduisent du type de l'étape, sans donnée supplémentaire côté serveur -
+ * cours/exercice/quiz correspondent exactement à comprendre/s'entraîner/vérifier.
+ * Deux exercices tombent donc naturellement sous la même phase, au lieu de produire
+ * deux numéros identiques.
+ *
+ * En dessous de deux phases (séance express : un seul quiz), les en-têtes sont tus :
+ * intituler "Vérifier" une liste d'un seul élément est du bruit, pas de la structure.
+ */
+const PHASES = [
+  { cle: "cours", titre: "Comprendre" },
+  { cle: "exercice", titre: "S'entraîner" },
+  { cle: "quiz", titre: "Vérifier" },
+] as const
+
+function EtapesParPhase({ seance, country, plan }: { seance: Seance; country: string; plan: PlanDuJour }) {
+  const groupes = PHASES
+    .map((phase) => ({ ...phase, etapes: seance.etapes.filter((e) => e.type === phase.cle) }))
+    .filter((phase) => phase.etapes.length > 0)
+  const avecTitres = groupes.length > 1
+
+  return (
+    <ol className="mt-4 flex flex-col gap-3">
+      {groupes.map((phase, index) => (
+        <li key={phase.cle}>
+          {avecTitres && (
+            <p className="mb-1 flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <span className="flex size-5 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
+                {index + 1}
+              </span>
+              {phase.titre}
+            </p>
+          )}
+          <div className="flex flex-col gap-1">
+            {phase.etapes.map((etape) => (
+              <Link
+                key={etape.libelle}
+                to={lienEtape(etape, country, plan)}
+                className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-accent/50"
+              >
+                <IconeEtape type={etape.type} />
+                <span className="min-w-0 flex-1 truncate">{etape.libelle}</span>
+                <span className="shrink-0 text-xs text-muted-foreground">{etape.duree_min} min</span>
+              </Link>
+            ))}
+          </div>
+        </li>
+      ))}
+    </ol>
   )
 }
