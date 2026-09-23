@@ -117,15 +117,25 @@ export function SeanceDuJour({ country }: { country: string }) {
   )
 }
 
+/**
+ * "BAC C · J-243" au-dessus de la séance - mais UNIQUEMENT là où la barre du haut ne
+ * l'affiche pas déjà.
+ *
+ * Le badge du Header est en `hidden sm:inline` : visible à partir de 640 px, et
+ * relégué dans le menu hamburger en dessous. Sans ce `sm:hidden` complémentaire, la
+ * même ligne apparaissait donc deux fois sur desktop, à quelques dizaines de pixels
+ * d'écart ; en la retirant purement et simplement, on l'aurait perdue sur téléphone,
+ * où elle est justement le plus utile. Résultat : affichée exactement une fois, à
+ * toutes les largeurs.
+ */
 function EnTete({ plan }: { plan: PlanDuJour }) {
   const compte = plan.compte_a_rebours ? formatCompteARebours(plan.compte_a_rebours) : ""
   return (
-    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground sm:hidden">
       {plan.cursus?.examen_display}
       {plan.cursus?.series ? ` ${plan.cursus.series.code}` : ""}
-      {/* Le compte à rebours vit ici aussi, pas seulement dans l'en-tête : c'est ce
-          qui transforme "réviser les limites" en "réviser les limites parce qu'il
-          reste 244 jours". Toujours en gris, jamais en rouge. */}
+      {/* Ce qui transforme "réviser les limites" en "réviser les limites parce qu'il
+          reste 243 jours". Toujours en gris, jamais en rouge. */}
       {compte && <span className="normal-case"> · {compte}</span>}
     </p>
   )
