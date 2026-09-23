@@ -57,6 +57,39 @@ génération applique une vérification rigoureuse par item (résolution indépe
 contrôle structurel/factuel selon la matière - voir la section "Rigueur" du skill),
 pas un traitement en lot superficiel qui la court-circuiterait.
 
+## Étape 2 bis - Part de QCM (avant ingestion)
+
+Au moins la moitié des items d'un lot doit être en QCM (voir la règle et sa
+justification dans `concepteur-quiz-competence`). Se vérifie sur les JSON générés,
+AVANT ingestion : une fois ingérés, les items sont immédiatement servables, et
+rattraper la proportion après coup demande une campagne de reprise.
+
+Par le conteneur, comme l'ingestion ci-dessous : il n'y a pas de `python` nu sur le
+PATH de cette machine, et les JSON y sont déjà montés sous `/app/ingest`.
+
+```bash
+docker exec edukora-backend-1 python -c "
+import json, pathlib, sys
+from collections import Counter
+for f in sorted(pathlib.Path('/app/ingest/_quiz/cm').glob('*.json')):
+    items = json.loads(f.read_text(encoding='utf-8'))
+    c = Counter(i.get('type_reponse') for i in items)
+    qcm, total = c.get('QCM', 0), sum(c.values())
+    if total and qcm * 2 < total:
+        print(f'{f.name:50} {qcm:3}/{total:3} QCM  SOUS LA MOITIE')
+"
+```
+
+Remplacer le glob par les seuls fichiers du lot en cours pour ne pas relire tout le
+dossier - il contient l'historique complet (plus de mille fichiers), dont la part de
+QCM mesurée au 2026-09-23 était de 21 % sur 5 984 items, 918 fichiers sous la moitié.
+Ce passif n'est pas à reprendre ici : la règle vaut pour les lots à venir.
+
+Un fichier sous la moitié se corrige en relançant `concepteur-quiz-competence` sur les
+items ouverts qui pouvaient être des QCM - jamais en ajoutant des options de
+remplissage à un énoncé qui ne s'y prête pas. Si la compétence n'est honnêtement pas
+QCMisable, le noter dans le rapport d'étape 4 avec la raison.
+
 ## Étape 3 - Ingestion
 
 ```bash
@@ -87,10 +120,13 @@ masse sans l'utilisateur.
 
 ## Étape 4 - Rapport
 
-Résumer pour l'utilisateur : compétences traitées, items créés, erreurs éventuelles
-(fichier + détail), et la sortie du tunnel (validé, ou anomalies restantes). Ne jamais
-passer sous silence une erreur d'ingestion ni un échec du tunnel, même si le reste du
-lot a réussi ; ne jamais annoncer le lot terminé sans `TUNNEL VALIDÉ`.
+Résumer pour l'utilisateur : compétences traitées, items créés, **part de QCM du lot**
+(voir étape 2 bis), erreurs éventuelles (fichier + détail), et la sortie du tunnel
+(validé, ou anomalies restantes). Ne jamais passer sous silence une erreur
+d'ingestion ni un échec du tunnel, même si le reste du lot a réussi ; ne jamais
+annoncer le lot terminé sans `TUNNEL VALIDÉ`. Un lot livré sous la moitié de QCM se
+signale avec sa raison - c'est un chiffre qui se dégrade en silence si personne ne le
+regarde lot après lot.
 
 ## NFR à respecter
 
