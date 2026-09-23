@@ -1369,3 +1369,63 @@ def seance_supplementaire(user, cursus, date=None):
         user=user, cursus=cursus, date=date, ordre=courante.ordre + 1, defaults=proposition,
     )
     return seance
+
+
+# Nombre de refus acceptés dans une journée avant de rendre la main. Au-delà, ce n'est
+# plus un mauvais tirage, c'est que l'élève sait ce qu'il veut travailler et que nos
+# priorités ne le rejoignent pas aujourd'hui : lui reproposer une dixième séance serait
+# s'obstiner. On lui rend alors le catalogue, qui redevient la bonne réponse.
+REFUS_MAX_PAR_JOUR = 3
+
+
+def remplacer_seance(user, cursus, date=None):
+    """
+    "Ce n'est pas ce que je veux réviser" : remplace la séance du jour par une autre,
+    sur un thème différent.
+
+    Ce lien renvoyait jusqu'ici vers la liste des thèmes fréquents - même défaut que
+    "Continuer quand même" (voir seance_supplementaire) : l'élève signale que notre
+    sélection est à côté, et on lui répond par un catalogue de 130 thèmes. Un coach à
+    qui on dit "pas ça" propose autre chose ; il ne tend pas le sommaire.
+
+    La séance refusée est conservée au statut REMPLACEE, jamais supprimée : elle ne
+    compte pas comme faite, elle ne bloque aucune rotation (voir _matieres_recentes,
+    qui ne regarde que les séances TERMINÉES), et elle reste la trace que notre
+    sélection s'est trompée.
+
+    Renvoie None quand il n'y a plus rien à proposer, ou après REFUS_MAX_PAR_JOUR -
+    à l'appelant d'afficher alors le catalogue, qui redevient la bonne réponse.
+    """
+    date = date or timezone.localdate()
+    seances_du_jour = list(SeanceJournaliere.objects.filter(user=user, cursus=cursus, date=date))
+    if not seances_du_jour:
+        return None
+
+    courante = max(seances_du_jour, key=lambda s: s.ordre)
+    if courante.statut == StatutSeance.TERMINEE:
+        # Refuser une séance déjà faite n'a pas de sens - c'est "continuer" qu'il
+        # voulait (voir seance_supplementaire), et l'écran ne propose de toute façon
+        # pas ce bouton dans cet état.
+        return courante
+    if sum(1 for s in seances_du_jour if s.statut == StatutSeance.REMPLACEE) >= REFUS_MAX_PAR_JOUR:
+        return None
+
+    proposition = _construire_seance(
+        user, cursus,
+        themes_interdits={s.theme_id for s in seances_du_jour if s.theme_id},
+        # On ne se calibre pas deux fois dans la même journée.
+        avec_calibrage=False,
+    )
+    # Rien trouvé : on garde la séance en cours plutôt que de laisser l'élève sans
+    # rien. Marquer REMPLACEE avant d'avoir un remplaçant le laisserait devant un
+    # écran vide - d'où cet ordre, et pas l'inverse.
+    if proposition is None:
+        return None
+
+    remplacante, creee = SeanceJournaliere.objects.get_or_create(
+        user=user, cursus=cursus, date=date, ordre=courante.ordre + 1, defaults=proposition,
+    )
+    if creee:
+        courante.statut = StatutSeance.REMPLACEE
+        courante.save(update_fields=["statut"])
+    return remplacante

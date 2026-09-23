@@ -23,7 +23,8 @@ from .pdf import queue_quiz_fiche_pdf_generation
 from .services import (
     cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision, generer_session,
     maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
-    score_de_la_seance, seance_du_jour, seance_supplementaire, seances_terminees_cette_semaine, terminer_seance,
+    remplacer_seance, score_de_la_seance, seance_du_jour, seance_supplementaire,
+    seances_terminees_cette_semaine, terminer_seance,
 )
 
 
@@ -728,5 +729,26 @@ def continuer_view(request):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     seance = seance_supplementaire(request.user, cursus)
+    compte = ExamSession.compte_a_rebours_pour(cursus)
+    return Response(_charge_utile_plan(request.user, cursus, seance, compte))
+
+
+@api_view(["POST"])
+def autre_chose_view(request):
+    """
+    "Ce n'est pas ce que je veux réviser" : remplace la séance du jour par une autre
+    (voir quiz.services.remplacer_seance), au lieu de renvoyer vers le catalogue.
+
+    Renvoie la charge utile habituelle du plan - avec l'état "rien_a_proposer" quand
+    il n'y a plus d'alternative ou que l'élève a atteint REFUS_MAX_PAR_JOUR, cas où le
+    frontend lui rend la main sur le catalogue.
+    """
+    cursus = request.user.cursus_prepare
+    if cursus is None:
+        return Response({"error": "Aucun cursus déclaré."}, status=400)
+    if not _has_active_subscription(request.user, cursus):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+
+    seance = remplacer_seance(request.user, cursus)
     compte = ExamSession.compte_a_rebours_pour(cursus)
     return Response(_charge_utile_plan(request.user, cursus, seance, compte))

@@ -51,7 +51,8 @@ from .services import (
     TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
     construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir,
     _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
-    revisions_dues, seance_du_jour, seance_supplementaire, terminer_seance,
+    REFUS_MAX_PAR_JOUR, remplacer_seance, revisions_dues, seance_du_jour, seance_supplementaire,
+    terminer_seance,
     seances_terminees_cette_semaine,
 )
 from .views import _clean_quiz_markdown, _question_payload
@@ -2878,3 +2879,108 @@ class SeanceSupplementaireTests(TestCase):
         Subscription.objects.filter(user=self.user).update(expires_at=timezone.now() - timedelta(days=1))
 
         self.assertEqual(self.client.post("/quiz/plan-du-jour/continuer/").status_code, 403)
+
+
+class RemplacerSeanceTests(TestCase):
+    """
+    "Ce n'est pas ce que je veux réviser" doit proposer AUTRE CHOSE, pas le catalogue -
+    même défaut que "Continuer quand même" : l'élève signale que notre sélection est à
+    côté, et on lui répondait par une liste de 130 thèmes.
+    """
+
+    def setUp(self):
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        self.user = User.objects.create_user(phone_number="677900707", password="x")
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+        self.subject = Subject.objects.create(
+            code="MATHS_TEST_REMP", label="Maths (test remp)", country=self.cursus.country,
+        )
+        Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def _revision_due(self, nom):
+        theme = Tag.objects.create(name=nom)
+        item = CompetenceItem.objects.create(
+            external_id=f"remp-{nom}", theme=theme, subject=self.subject,
+            enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
+        )
+        item.cursus.add(self.cursus)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+        return theme
+
+    def test_refuser_propose_un_autre_theme(self):
+        self._revision_due("thème A (remp)")
+        self._revision_due("thème B (remp)")
+        premiere = plan_du_jour(self.user, self.cursus)
+
+        reponse = self.client.post("/quiz/plan-du-jour/autre-chose/")
+
+        self.assertEqual(reponse.data["etat"], "plan_pret")
+        self.assertNotEqual(reponse.data["seance"]["theme"]["id"], premiere.theme_id)
+
+    def test_la_seance_refusee_est_conservee_mais_ne_compte_pas(self):
+        self._revision_due("thème A (remp)")
+        self._revision_due("thème B (remp)")
+        premiere = plan_du_jour(self.user, self.cursus)
+
+        remplacer_seance(self.user, self.cursus)
+
+        premiere.refresh_from_db()
+        # Conservée : c'est la trace que notre sélection s'est trompée. Jamais comptée
+        # comme faite.
+        self.assertEqual(premiere.statut, StatutSeance.REMPLACEE)
+        self.assertEqual(seances_terminees_cette_semaine(self.user, self.cursus), 0)
+
+    def test_le_plan_du_jour_rend_la_remplacante(self):
+        self._revision_due("thème A (remp)")
+        self._revision_due("thème B (remp)")
+        plan_du_jour(self.user, self.cursus)
+        remplacante = remplacer_seance(self.user, self.cursus)
+
+        # Rouvrir la page doit montrer la nouvelle séance, jamais celle qu'il a refusée.
+        self.assertEqual(plan_du_jour(self.user, self.cursus).id, remplacante.id)
+
+    def test_sans_alternative_la_seance_en_cours_est_conservee(self):
+        self._revision_due("thème unique (remp)")
+        premiere = plan_du_jour(self.user, self.cursus)
+
+        reponse = self.client.post("/quiz/plan-du-jour/autre-chose/")
+
+        # Un seul thème disponible : mieux vaut garder la séance que laisser l'élève
+        # devant un écran vide - c'est au frontend de lui rendre le catalogue.
+        self.assertEqual(reponse.data["etat"], "rien_a_proposer")
+        premiere.refresh_from_db()
+        self.assertEqual(premiere.statut, StatutSeance.PROPOSEE)
+        self.assertEqual(plan_du_jour(self.user, self.cursus).id, premiere.id)
+
+    def test_au_dela_de_trois_refus_on_rend_la_main(self):
+        for index in range(REFUS_MAX_PAR_JOUR + 3):
+            self._revision_due(f"thème {index} (remp)")
+        plan_du_jour(self.user, self.cursus)
+        for _ in range(REFUS_MAX_PAR_JOUR):
+            self.assertIsNotNone(remplacer_seance(self.user, self.cursus))
+
+        # Au-delà, ce n'est plus un mauvais tirage : l'élève sait ce qu'il veut, et
+        # s'obstiner à proposer ne l'aide pas.
+        self.assertIsNone(remplacer_seance(self.user, self.cursus))
+
+    def test_refuser_une_seance_deja_terminee_ne_fait_rien(self):
+        self._revision_due("thème A (remp)")
+        self._revision_due("thème B (remp)")
+        premiere = plan_du_jour(self.user, self.cursus)
+        terminer_seance(premiere)
+
+        self.assertEqual(remplacer_seance(self.user, self.cursus).id, premiere.id)
+        self.assertEqual(SeanceJournaliere.objects.filter(user=self.user).count(), 1)
+
+    def test_refuser_refuse_sans_abonnement(self):
+        self._revision_due("thème A (remp)")
+        plan_du_jour(self.user, self.cursus)
+        Subscription.objects.filter(user=self.user).update(expires_at=timezone.now() - timedelta(days=1))
+
+        self.assertEqual(self.client.post("/quiz/plan-du-jour/autre-chose/").status_code, 403)

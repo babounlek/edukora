@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, Check, Lock, PenLine, Sparkles, Target } from "lucide-react"
 
-import { continuerSeanceDuJour, getPlanDuJour, terminerSeanceDuJour } from "@/api/endpoints"
+import { continuerSeanceDuJour, getPlanDuJour, proposerAutreChose, terminerSeanceDuJour } from "@/api/endpoints"
 import type { EtapeSeance, PlanDuJour, Seance } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
@@ -46,6 +46,16 @@ export function SeanceDuJour({ country }: { country: string }) {
     onSuccess: (plan) => queryClient.setQueryData(["plan-du-jour"], plan),
   })
 
+  // Même principe : la réponse EST le plan, on l'écrit dans le cache. Un
+  // "rien_a_proposer" ne doit surtout pas l'écraser - la séance refusée reste à
+  // l'écran, et c'est seulement là qu'on rend la main sur le catalogue.
+  const autreChose = useMutation({
+    mutationFn: proposerAutreChose,
+    onSuccess: (plan) => {
+      if (plan.seance) queryClient.setQueryData(["plan-du-jour"], plan)
+    },
+  })
+
   // "Séance affichée" une seule fois par séance, jamais à chaque rendu : le
   // dénominateur du seul chiffre qui compte (combien reviennent faire une séance) ne
   // vaut rien s'il enfle à chaque re-rendu de React.
@@ -81,6 +91,15 @@ export function SeanceDuJour({ country }: { country: string }) {
             country={country}
             onTerminer={() => terminer.mutate()}
             terminaisonEnCours={terminer.isPending}
+            onAutreChose={() => {
+              // L'évènement part du refus lui-même, jamais du succès du remplacement :
+              // c'est le refus qui est le contre-indicateur à surveiller (au-delà
+              // d'environ 30 % des séances, la sélection n'est pas crédible).
+              trackEvent("plan_theme_ignore", { origine: data.seance?.origine })
+              autreChose.mutate()
+            }}
+            remplacementEnCours={autreChose.isPending}
+            plusRienAProposer={autreChose.isSuccess && autreChose.data?.etat === "rien_a_proposer"}
           />
         )}
       </div>
@@ -103,12 +122,15 @@ function EnTete({ plan }: { plan: PlanDuJour }) {
 }
 
 function SeanceAFaire({
-  plan, country, onTerminer, terminaisonEnCours,
+  plan, country, onTerminer, terminaisonEnCours, onAutreChose, remplacementEnCours, plusRienAProposer,
 }: {
   plan: PlanDuJour
   country: string
   onTerminer: () => void
   terminaisonEnCours: boolean
+  onAutreChose: () => void
+  remplacementEnCours: boolean
+  plusRienAProposer: boolean
 }) {
   const seance = plan.seance as Seance
   const premiere = seance.etapes[0]
@@ -168,19 +190,32 @@ function SeanceAFaire({
       )}
 
       {/* Sortie de secours, volontairement discrète : un plan qu'on ne peut pas
-          contourner est vécu comme une contrainte, mais le remonter au même niveau
+          contourner est vécu comme une contrainte, mais la remonter au même niveau
           que "Commencer" rendrait à l'élève la charge de choisir - exactement ce
-          dont ce bloc le décharge. */}
+          dont ce bloc le décharge.
+
+          Elle propose une AUTRE séance, jamais le catalogue : quand l'élève dit "pas
+          ça", un coach propose autre chose, il ne tend pas le sommaire. Le catalogue
+          ne réapparaît que lorsqu'on a réellement épuisé ce qu'on sait proposer. */}
       <p className="mt-4 text-xs text-muted-foreground">
         Ce n'est pas ce que tu veux réviser ?{" "}
-        <Link
-          to={themesFrequentsPath(country)}
-          onClick={() => trackEvent("plan_theme_ignore", { origine: seance.origine })}
-          className="underline underline-offset-4 hover:text-primary"
+        <button
+          type="button"
+          onClick={onAutreChose}
+          disabled={remplacementEnCours}
+          className="underline underline-offset-4 hover:text-primary disabled:opacity-60"
         >
-          Choisir un autre thème
-        </Link>
+          {remplacementEnCours ? "Je cherche…" : "Propose-moi autre chose"}
+        </button>
       </p>
+      {plusRienAProposer && (
+        <p className="mt-1 text-xs text-muted-foreground">
+          On ne trouve pas mieux pour aujourd'hui.{" "}
+          <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
+            Choisir un thème toi-même
+          </Link>
+        </p>
+      )}
     </>
   )
 }

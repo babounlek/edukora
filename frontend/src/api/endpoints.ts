@@ -612,3 +612,12 @@ export function optOutWhatsApp() {
 export function continuerSeanceDuJour() {
   return apiRequest<PlanDuJour>("/quiz/plan-du-jour/continuer/", { method: "POST" })
 }
+
+/**
+ * "Ce n'est pas ce que je veux réviser" : demande une AUTRE séance pour aujourd'hui,
+ * sur un thème différent (voir quiz.views.autre_chose_view). Même charge utile que
+ * getPlanDuJour, avec "rien_a_proposer" quand il n'y a plus d'alternative.
+ */
+export function proposerAutreChose() {
+  return apiRequest<PlanDuJour>("/quiz/plan-du-jour/autre-chose/", { method: "POST" })
+}

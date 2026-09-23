@@ -24,4 +24,5 @@ urlpatterns = [
     path("plan-du-jour/", views.plan_du_jour_view, name="plan-du-jour"),
     path("plan-du-jour/terminer/", views.terminer_seance_view, name="terminer-seance"),
     path("plan-du-jour/continuer/", views.continuer_view, name="continuer-seance"),
+    path("plan-du-jour/autre-chose/", views.autre_chose_view, name="autre-chose"),
 ]

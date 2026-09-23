@@ -303,6 +303,11 @@ class OrigineSeance(models.TextChoices):
 class StatutSeance(models.TextChoices):
     PROPOSEE = "PROPOSEE", "Proposée"
     TERMINEE = "TERMINEE", "Terminée"
+    # L'élève a dit "ce n'est pas ce que je veux réviser" et on lui en a proposé une
+    # autre (voir quiz.services.remplacer_seance). Conservée plutôt que supprimée :
+    # c'est la trace que notre sélection s'est trompée, et le seul contre-indicateur
+    # honnête de la qualité du plan. Ne compte jamais comme une séance faite.
+    REMPLACEE = "REMPLACEE", "Remplacée"
 
 
 class SeanceJournaliere(models.Model):
