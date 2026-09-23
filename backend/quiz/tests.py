@@ -2322,13 +2322,14 @@ class PlanDuJourTests(TestCase):
 
         self.assertNotEqual(aujourdhui.id, demain.id)
 
-    def test_sans_historique_la_seance_est_un_calibrage(self):
+    def test_le_calibrage_sert_de_repli_quand_le_parcours_na_rien(self):
+        # Une banque de quiz existe, mais aucune épreuve ne porte ce thème : le
+        # parcours n'a rien d'exploitable à proposer. C'est LE cas du calibrage -
+        # jamais la première séance d'un cursus fourni, voir plan_du_jour.
         self._item(self.subject, self.theme)
 
         seance = plan_du_jour(self.user, self.cursus)
 
-        # Placé avant le parcours, sinon il ne se déclencherait jamais - voir
-        # plan_du_jour.
         self.assertEqual(seance.origine, OrigineSeance.DIAGNOSTIC)
         self.assertIsNone(seance.subject)
         self.assertEqual(seance.etapes[0]["n"], 10)
@@ -3095,3 +3096,18 @@ class PrioriteFrequenceTests(TestCase):
         seance = plan_du_jour(self.user, self.cursus)
 
         self.assertTrue(_contient_quiz(seance.etapes))
+
+    def test_un_nouvel_abonne_recoit_une_vraie_seance_pas_un_calibrage(self):
+        """
+        La toute première séance de quelqu'un qui vient de payer doit lui dire quoi
+        réviser, pas le tester. Le calibrage passait devant le parcours et donnait "on
+        situe ton niveau" à un élève dont le cursus regorge pourtant de thèmes -
+        constaté en conditions réelles sur un compte BAC C fraîchement abonné.
+        """
+        maths, theme = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        self.assertEqual(seance.origine, OrigineSeance.PARCOURS)
+        self.assertEqual(seance.theme_id, theme.id)
+        self.assertEqual(seance.subject_id, maths.id)

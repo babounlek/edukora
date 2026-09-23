@@ -836,13 +836,21 @@ def plan_du_jour(user, cursus, date=None):
       1. une révision due (voir revisions_dues) - un thème raté hier passe avant tout ;
       2. une lecture ouverte il y a moins de 48 h - finir ce qu'on a commencé passe
          avant d'ouvrir un nouveau front ;
-      3. un calibrage, pour un élève sans aucun historique de quiz sur ce cursus ;
-      4. le thème suivant du parcours, le plus fréquent à l'examen d'abord.
+      3. le thème du parcours qui revient le plus souvent à l'examen ;
+      4. un calibrage, pour un élève sans historique dont le parcours n'a rien
+         d'exploitable.
 
-    Le calibrage est placé AVANT le parcours, alors que la conception le listait en
-    dernier : en dernier il ne se déclencherait jamais, le parcours ayant toujours un
-    thème à proposer, y compris au tout premier jour. C'est une condition - "aucun
-    historique" - pas une étape de repli.
+    Le calibrage a d'abord été placé DEVANT le parcours, au motif qu'en dernier il ne
+    se déclencherait presque jamais. L'essai en conditions réelles a montré que c'était
+    une erreur : la toute première séance d'un élève qui vient de payer était "on situe
+    ton niveau", c'est-à-dire un test, là où il attendait précisément qu'on lui dise
+    quoi réviser. Un nouvel abonné voit désormais une vraie séance, sur le thème le
+    plus fréquent de son cursus - pour le BAC C, "tableau de variation" en maths, tombé
+    dans 28 des 44 dernières épreuves. C'est cette phrase-là qui justifie l'abonnement,
+    pas une note de départ.
+
+    Le calibrage reste en repli : un cursus dont aucun thème n'est encore exploitable
+    (banque de quiz trop mince, voir _contient_quiz) vaut mieux qu'un écran vide.
     """
     date = date or timezone.localdate()
     existante = SeanceJournaliere.objects.filter(user=user, cursus=cursus, date=date).first()
@@ -883,8 +891,12 @@ def _construire_seance(user, cursus, themes_interdits=frozenset(), avec_calibrag
         for candidat in (
             _seance_depuis_revision_due(user, cursus, exclues, themes_interdits),
             _seance_depuis_lecture_en_cours(user, cursus, exclues, themes_interdits),
-            _seance_de_calibrage(user, cursus) if avec_calibrage else None,
             _seance_depuis_parcours(user, cursus, exclues, themes_interdits),
+            # Le calibrage passe APRÈS le parcours, et non avant : c'est un vrai repli,
+            # pour un cursus dont aucun thème n'est exploitable. Voir la docstring de
+            # plan_du_jour pour pourquoi il était devant, et pourquoi c'était une
+            # erreur.
+            _seance_de_calibrage(user, cursus) if avec_calibrage else None,
         ):
             if candidat is not None:
                 return candidat
