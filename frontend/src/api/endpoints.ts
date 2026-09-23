@@ -22,6 +22,7 @@ import type {
   PaymentInitiateResponse,
   PaymentStatusResponse,
   Plan,
+  PlanDuJour,
   Progression,
   QuizCorrige,
   QuizFichePdfStatus,
@@ -30,6 +31,7 @@ import type {
   QuizSession,
   PlatformStats,
   ResumeMatiere,
+  RevisionDue,
   Subject,
   Subscription,
   Temoignage,
@@ -129,6 +131,9 @@ export function unlinkIdentity(provider: string) {
 export interface UpdateProfileParams {
   full_name?: string
   pseudo?: string | null
+  // Id du Cursus préparé, ou null pour effacer la déclaration - voir
+  // users.serializers.UserProfileUpdateSerializer.
+  cursus_prepare?: number | null
 }
 
 export function updateMe(params: UpdateProfileParams) {
@@ -358,6 +363,11 @@ export interface StartQuizSessionParams {
   // ParcoursPage, qui lance toujours par savoir, jamais par theme.
   savoir?: number
   n?: number
+  // Drapeau "ce quiz est l'étape finale de ma séance du jour" - le serveur ne lui
+  // fait pas confiance pour DÉSIGNER une séance, il ne rattache que la séance du jour
+  // de l'utilisateur (voir quiz.services.rattacher_quiz_a_la_seance). Sert à clore la
+  // séance automatiquement et à en afficher le score.
+  seance?: number
 }
 
 export function startQuizSession(params: StartQuizSessionParams) {
@@ -395,6 +405,21 @@ export function requestQuizFichePdf(sessionId: number) {
   return apiRequest<QuizFichePdfStatus>(`/quiz/sessions/${sessionId}/fiche-pdf/`, { method: "POST" })
 }
 
+/**
+ * Tout l'écran "Aujourd'hui" en un appel : compte à rebours, séance du jour, état.
+ * Le serveur décide de l'état (voir quiz.views.plan_du_jour_view), le frontend
+ * n'en réimplémente aucune règle.
+ */
+export function getPlanDuJour(signal?: AbortSignal) {
+  return apiRequest<PlanDuJour>("/quiz/plan-du-jour/", { signal })
+}
+
+export function terminerSeanceDuJour() {
+  return apiRequest<{ statut: string; seances_cette_semaine: number }>(
+    "/quiz/plan-du-jour/terminer/", { method: "POST" },
+  )
+}
+
 export function getQuizFichePdfStatus(sessionId: number) {
   return apiRequest<QuizFichePdfStatus>(`/quiz/sessions/${sessionId}/fiche-pdf/`)
 }
@@ -423,6 +448,15 @@ export function getParcours(cursus: number, subject: number) {
 
 export function getResumeParcours(cursus: number) {
   return apiRequest<ResumeMatiere[]>(`/quiz/parcours/resume/?cursus=${cursus}`)
+}
+
+/**
+ * File "à réviser" tous cursus confondus (voir quiz.views.list_revisions_dues) -
+ * l'endpoint est en place et testé depuis longtemps, mais plus aucun écran ne
+ * l'appelait depuis la redirection de /revision vers /parcours.
+ */
+export function listRevisionsDues(signal?: AbortSignal) {
+  return apiRequest<RevisionDue[]>("/quiz/revisions/", { signal })
 }
 
 export function listMyInscriptionsInedites() {

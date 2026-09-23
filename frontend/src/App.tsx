@@ -8,6 +8,7 @@ import { ThemeProvider, useTheme } from "@/components/theme-provider"
 import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { OnboardingModal } from "@/components/OnboardingModal"
+import { BottomTabBar } from "@/components/BottomTabBar"
 import { ErrorBoundary } from "@/components/ErrorBoundary"
 import { RouteFallback } from "@/components/RouteFallback"
 import { ScrollToTop } from "@/components/ScrollToTop"
@@ -119,7 +120,12 @@ function App() {
                 </ErrorBoundary>
               </main>
               <Footer />
+              {/* Réserve la hauteur de la barre d'onglets, qui est en position fixe :
+                  sans elle, les derniers liens du pied de page sont recouverts et donc
+                  inatteignables sur mobile. */}
+              <div className="h-14 lg:hidden" aria-hidden="true" />
             </div>
+            <BottomTabBar />
             <OnboardingModal />
           </CountryProvider>
         </BrowserRouter>

@@ -16,6 +16,7 @@ import { listPlans } from "@/api/endpoints"
 import type { Cursus, Plan } from "@/api/types"
 import { cn, formatAmount } from "@/lib/utils"
 import { coursListPath } from "@/lib/countryPath"
+import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
@@ -272,12 +273,23 @@ export function PricingPage() {
 
   const navigate = useNavigate()
   const { country } = useCountry()
+  const { user } = useAuth()
   const [allPlans, setAllPlans] = useState<Plan[]>([])
   const [chargement, setChargement] = useState(true)
   const [selectedCursus, setSelectedCursus] = useState("")
   // Passe à true quand on tente de continuer sans avoir choisi de cursus : le
   // sélecteur se signale au lieu de laisser un bouton inerte sans explication.
   const [cursusManquant, setCursusManquant] = useState(false)
+
+  // Un élève qui a déjà déclaré ce qu'il prépare (voir User.cursus_prepare) n'a pas à
+  // le redire ici : sans cette préselection, il voit la fourchette "4 000-20 000 FCFA"
+  // alors qu'on connaît son prix exact et le nombre de jours qui le justifie. Il reste
+  // libre d'en choisir un autre - le sélecteur n'est pas verrouillé, et son choix
+  // manuel gagne (la condition `!selectedCursus` ci-dessous ne le réécrit jamais).
+  useEffect(() => {
+    if (!user?.cursus_prepare || selectedCursus) return
+    setSelectedCursus(String(user.cursus_prepare.id))
+  }, [user, selectedCursus])
   const cursusRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -519,10 +531,16 @@ export function PricingPage() {
                             {formatAmount(jusquaExamen.effective_price)}
                             <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
                           </p>
+                          {/* Le nombre de jours, pas seulement la date : c'est lui qui
+                              rend le prix lisible. "61 FCFA/jour" isolé ne dit rien tant
+                              qu'on ne sait pas sur combien de jours il court, et c'est
+                              exactement la durée qu'on facture (effective_duration_days,
+                              calculée depuis la prochaine ExamSession). */}
                           <p className="mt-0.5 text-xs text-muted-foreground">
                             ≈ {formatAmount(Math.round(jusquaExamen.effective_price / jusquaExamen.effective_duration_days))} FCFA/jour
                             {" - "}
-                            ton {jusquaExamen.cursus.examen_display} commence le{" "}
+                            {jusquaExamen.effective_duration_days} jours avant ton{" "}
+                            {jusquaExamen.cursus.examen_display}, qui commence le{" "}
                             {formatDateDansNJours(jusquaExamen.effective_duration_days)}
                           </p>
                         </div>

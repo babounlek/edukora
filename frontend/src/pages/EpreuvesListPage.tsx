@@ -37,6 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ReviserTabs } from "@/components/ReviserTabs"
 
 type ViewMode = "cards" | "list"
 
@@ -365,6 +366,7 @@ export function EpreuvesListPage() {
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
+      <ReviserTabs />
       {/* Même gabarit de hero que /quiz, /fiches et /cours. */}
       <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8">
         <div

@@ -21,4 +21,6 @@ urlpatterns = [
     path("subjects/", views.list_quiz_subjects, name="quiz-subjects"),
     path("parcours/", views.parcours, name="parcours"),
     path("parcours/resume/", views.parcours_resume, name="parcours-resume"),
+    path("plan-du-jour/", views.plan_du_jour_view, name="plan-du-jour"),
+    path("plan-du-jour/terminer/", views.terminer_seance_view, name="terminer-seance"),
 ]

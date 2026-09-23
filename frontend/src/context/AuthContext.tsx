@@ -1,9 +1,10 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
 import { toast } from "sonner"
 
-import { getMe } from "@/api/endpoints"
+import { getMe, updateMe } from "@/api/endpoints"
 import { clearAccessToken, logoutRequest, setAccessToken, SESSION_EXPIRED_EVENT } from "@/api/client"
 import type { User } from "@/api/types"
+import { lireCursusPrepareEnAttente, oublierCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 
 interface AuthContextValue {
   user: User | null
@@ -50,6 +51,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     window.addEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired)
     return () => window.removeEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired)
   }, [])
+
+  // Un visiteur qui déclare son examen AVANT de se connecter (l'onboarding s'affiche
+  // dès la première visite, bien avant toute inscription) ne doit pas avoir à le
+  // redire une fois son compte créé : sa déclaration attendait en localStorage, on la
+  // pousse ici, à la première session où il est connecté.
+  //
+  // Jamais par-dessus une déclaration déjà faite sur le compte (celle-ci est plus
+  // récente que ce qui traîne dans le stockage d'un navigateur), et la valeur en
+  // attente est oubliée dans tous les cas - y compris en cas d'échec : la reproposer
+  // à chaque montage transformerait un aller-retour raté en boucle silencieuse.
+  useEffect(() => {
+    if (user === null) return
+    const enAttente = lireCursusPrepareEnAttente()
+    if (enAttente === null) return
+    oublierCursusPrepareEnAttente()
+    if (user.cursus_prepare !== null) return
+    updateMe({ cursus_prepare: enAttente })
+      .then(setUser)
+      .catch(() => {})
+  }, [user])
 
   function login(access: string, newUser: User) {
     setAccessToken(access)

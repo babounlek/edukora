@@ -80,7 +80,7 @@ function CarteMatiere({
 
 export function ParcoursPage() {
   useSeo({
-    title: "Ton parcours",
+    title: "Ma progression",
     description: "Toutes tes matières, avec ce qu'il te reste à découvrir, réviser ou maîtriser.",
   })
 
@@ -171,7 +171,7 @@ export function ParcoursPage() {
             <Compass className="size-5" />
           </div>
           <Eyebrow>Programme officiel, dans l'ordre</Eyebrow>
-          <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Ton parcours</h1>
+          <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Ma progression</h1>
           <p className="mt-3 max-w-md text-lg font-medium leading-snug text-foreground/90">
             Toutes tes matières, avec ce qu'il te reste à découvrir, réviser ou maîtriser.
           </p>

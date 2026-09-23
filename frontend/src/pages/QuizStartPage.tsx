@@ -57,6 +57,12 @@ export function QuizStartPage() {
   const [searchParams] = useSearchParams()
   const cursusParam = searchParams.get("cursus")
   const themeParam = searchParams.get("theme")
+  // Posé par l'étape quiz de la séance du jour (voir SeanceDuJour) : transmis tel quel
+  // au serveur, qui s'en sert seulement comme drapeau "ce quiz vient du plan".
+  const seanceParam = searchParams.get("seance")
+  // Nombre de questions imposé par l'appelant (l'étape quiz d'une séance annonce sa
+  // taille et son budget temps) - sinon le formulaire garde son propre défaut.
+  const nParam = Number(searchParams.get("n"))
   const themeAutoLanceRef = useRef(false)
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
@@ -134,7 +140,8 @@ export function QuizStartPage() {
         mode: modeEffectif,
         subject: theme ? undefined : Number(selectedSubject),
         theme,
-        n,
+        n: Number.isInteger(nParam) && nParam > 0 ? nParam : n,
+        seance: seanceParam ? Number(seanceParam) : undefined,
       })
       trackEvent("quiz_started", { cursus_id: Number(selectedCursus), mode: modeEffectif })
       navigate(`/quiz/session/${session.id}`)

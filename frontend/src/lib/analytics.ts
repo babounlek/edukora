@@ -16,6 +16,14 @@ export type AnalyticsEventName =
   | "pdf_sujet_inedit_landing"
   | "pdf_fiche_sujet_landing"
   | "pdf_fiche_corrige_landing"
+  // Plan du jour. "plan_seance_terminee" est volontairement ABSENT de cette liste :
+  // il est enregistré côté serveur, parce qu'une séance se clôt le plus souvent toute
+  // seule à la fin de son quiz, sans clic à observer ici (voir
+  // quiz.views._tracer_seance_terminee).
+  | "plan_affiche"
+  | "plan_seance_demarree"
+  | "plan_verrouille_clic"
+  | "plan_theme_ignore"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

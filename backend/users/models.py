@@ -154,6 +154,27 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text="Renseigné une seule fois, à l'inscription, si un code de parrainage valide a été fourni.",
     )
 
+    cursus_prepare = models.ForeignKey(
+        "catalog.Cursus", null=True, blank=True, on_delete=models.SET_NULL, related_name="eleves",
+        help_text="Cursus que l'utilisateur prépare, déclaré par lui - base du compte à rebours "
+                  "jusqu'à l'examen et, plus tard, de la séance du jour.",
+    )
+    """
+    Distinct des Subscription de l'utilisateur, et volontairement : un visiteur
+    déclare ce qu'il prépare AVANT de payer quoi que ce soit, et c'est justement à ce
+    moment-là que la date d'examen doit le convaincre. Le déduire des abonnements
+    actifs (ce que fait ParcoursPage aujourd'hui) le rendrait inconnu de tout
+    non-abonné, c'est-à-dire de la totalité des gens à convertir.
+
+    Une seule valeur, jamais un M2M : un redoublant ou un candidat libre peut
+    préparer deux cursus, mais l'intérêt d'un plan quotidien est qu'il n'y ait qu'une
+    réponse à "quoi réviser ce soir". Les autres cursus restent accessibles par les
+    abonnements, comme avant.
+
+    SET_NULL plutôt que PROTECT : retirer un Cursus du référentiel ne doit jamais
+    être bloqué par des déclarations d'élèves, qui se redemandent en une question.
+    """
+
     objects = UserManager()
 
     USERNAME_FIELD = "phone_number"

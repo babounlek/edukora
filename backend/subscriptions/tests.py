@@ -549,3 +549,44 @@ class ParrainageAcrossPaymentChannelsTests(TestCase):
         self.assertEqual(ParrainageRecompense.objects.filter(parrain=self.parrain).count(), 1)
         self.assertTrue(ParrainageRecompense.objects.filter(transaction=transaction).exists())
         self.assertFalse(ParrainageRecompense.objects.filter(manual_payment=manual).exists())
+
+
+class CursusPrepareDeduitDeLAbonnementTests(TestCase):
+    """
+    Payer pour un cursus est la déclaration la plus forte de ce qu'on prépare : elle
+    est reprise telle quelle pour le compte à rebours, mais jamais par-dessus ce que
+    l'élève a lui-même déclaré.
+    """
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677900202", password="x")
+        self.cursus = _cursus()
+
+    def test_un_premier_abonnement_declare_le_cursus(self):
+        Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.cursus_prepare_id, self.cursus.id)
+
+    def test_une_declaration_existante_nest_jamais_ecrasee(self):
+        autre = Cursus.objects.exclude(pk=self.cursus.pk).first()
+        self.user.cursus_prepare = autre
+        self.user.save(update_fields=["cursus_prepare"])
+
+        Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
+
+        self.user.refresh_from_db()
+        # Un parent qui achète un second cursus, ou un rattrapage sur une ancienne
+        # série, ne doit pas réécrire le choix de l'élève.
+        self.assertEqual(self.user.cursus_prepare_id, autre.id)
+
+    def test_une_prolongation_ne_change_rien_non_plus(self):
+        Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
+        autre = Cursus.objects.exclude(pk=self.cursus.pk).first()
+        self.user.cursus_prepare = autre
+        self.user.save(update_fields=["cursus_prepare"])
+
+        Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.cursus_prepare_id, autre.id)

@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
-import { listCursus } from "@/api/endpoints"
+import { listCursus, updateMe } from "@/api/endpoints"
 import type { Cursus } from "@/api/types"
+import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { epreuvesListPath } from "@/lib/countryPath"
+import { memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { examCodesFor } from "@/lib/cursus"
 import { countryFlagClassName } from "@/lib/countryFlag"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-// Mis en veilleuse à la demande (2026-08-18) : plus aucun visiteur ne voit cet écran
-// pour l'instant. Un seul flag à repasser à `true` pour le rétablir - rien d'autre
-// dans ce fichier n'a changé, y compris hasCompletedOnboarding/markOnboardingDone qui
-// continuent d'exister mais ne sont plus jamais appelés tant qu'il reste à `false`.
-const ONBOARDING_ENABLED = false
+// Mis en veilleuse le 2026-08-18, rétabli le 2026-09-22 : l'écran ne sert plus
+// seulement à préfiltrer le catalogue, il est devenu le seul endroit où un visiteur
+// déclare ce qu'il prépare (voir finish -> users.models.User.cursus_prepare). Sans
+// lui, le compte à rebours jusqu'à l'examen ne s'affiche que pour les abonnés, dont
+// la déclaration est déduite de leur achat - c'est-à-dire pour les seules personnes
+// qui n'ont plus besoin d'être convaincues.
+const ONBOARDING_ENABLED = true
 
 const ONBOARDING_DONE_KEY = "edukamer_onboarding_done"
 
@@ -40,6 +44,7 @@ function markOnboardingDone() {
   }
 }
 
+
 /**
  * Écran affiché une seule fois, à la première arrivée sur le catalogue d'un pays -
  * avant, un nouveau visiteur devait lui-même trouver les sélecteurs Matière/Cursus pour
@@ -56,6 +61,7 @@ export function OnboardingModal() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const { country, countries, setCountry } = useCountry()
+  const { isAuthenticated, updateUser } = useAuth()
 
   const [dismissed, setDismissed] = useState(hasCompletedOnboarding)
   const [step, setStep] = useState<Step>("pays")
@@ -94,7 +100,26 @@ export function OnboardingModal() {
     markOnboardingDone()
     setDismissed(true)
     setCountry(selectedCountry)
+    declarerCursusPrepare(cursus)
     navigate(`${epreuvesListPath(selectedCountry)}?cursus=${cursus.id}`, { replace: true })
+  }
+
+  /**
+   * Le choix ne sert plus seulement à préfiltrer la liste d'épreuves : il devient la
+   * déclaration "voilà ce que je prépare", sur laquelle repose le compte à rebours.
+   *
+   * Jamais bloquant - ni attente, ni message d'erreur si l'enregistrement échoue :
+   * l'utilisateur a demandé à voir ses épreuves, il les voit. Une déclaration perdue
+   * se redemande, une navigation interrompue ne se rattrape pas.
+   */
+  function declarerCursusPrepare(cursus: Cursus) {
+    if (!isAuthenticated) {
+      memoriserCursusPrepareEnAttente(cursus.id)
+      return
+    }
+    updateMe({ cursus_prepare: cursus.id })
+      .then(updateUser)
+      .catch(() => {})
   }
 
   function handlePickCountry(code: string) {

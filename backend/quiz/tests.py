@@ -30,6 +30,7 @@ from django.utils import timezone
 from rest_framework.test import APIClient
 
 from access.models import LectureProgress
+from analytics.models import AnalyticsEvent, EventName
 from catalog.ingestion import IngestionError
 from catalog.models import (
     Cours, Country, Cursus, Difficulte, Examen, Exercise, Lesson, LessonType, Origine, Question, RappelDeMethode,
@@ -41,14 +42,17 @@ from users.models import User
 
 from .ingestion import ingest_competence_item, run_ingestion, select_quiz_batch
 from .models import (
-    CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, RevisionSchedule, StatutFichePdf,
+    CompetenceItem, ModeQuiz, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, RevisionSchedule,
+    SeanceJournaliere, StatutFichePdf, StatutSeance,
 )
 from .services import (
-    LEITNER_INTERVALS_JOURS, PARCOURS_COURS_PAR_SAVOIR_MAX, PARCOURS_FREQUENCE_OCCURRENCES_MIN,
-    SEUIL_MINIMUM_THEMES_PARCOURS, SUBJECTS_PARCOURS_PAR_FREQUENCE, TAGS_ALIAS_PARCOURS_FREQUENCE,
-    TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours, construire_parcours_par_frequence,
-    enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir, maitrise_par_theme, resume_parcours,
-    revisions_dues,
+    BUDGET_SEANCE_MINUTES, LEITNER_INTERVALS_JOURS, PARCOURS_COURS_PAR_SAVOIR_MAX,
+    PARCOURS_FREQUENCE_OCCURRENCES_MIN, SEUIL_MINIMUM_THEMES_PARCOURS, SUBJECTS_PARCOURS_PAR_FREQUENCE,
+    TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
+    construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir,
+    _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
+    revisions_dues, seance_du_jour,
+    seances_terminees_cette_semaine,
 )
 from .views import _clean_quiz_markdown, _question_payload
 
@@ -2216,3 +2220,552 @@ class QuizSubjectsApiTests(TestCase):
         response = self.client.get(f"/quiz/subjects/?cursus={self.cursus.id}")
 
         self.assertEqual([s["id"] for s in response.data], [self.subject_avec_quiz.id])
+
+
+class PlanDuJourTests(TestCase):
+    """
+    Le plan quotidien tient sur deux promesses : une seule chose à faire, et LA MÊME
+    toute la journée. Ces tests couvrent l'ordre de priorité, le déterminisme, la
+    rotation des matières et le gating - c'est-à-dire tout ce qui, en cassant, ferait
+    redevenir l'accueil un catalogue.
+    """
+
+    def setUp(self):
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        self.user = User.objects.create_user(phone_number="677900303", password="x")
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+        self.subject = Subject.objects.create(
+            code="MATHS_TEST_PLAN", label="Maths (test plan)", country=self.cursus.country,
+        )
+        self.autre_subject = Subject.objects.create(
+            code="SVT_TEST_PLAN", label="SVT (test plan)", country=self.cursus.country,
+        )
+        self.theme = Tag.objects.create(name="dérivée (test plan)")
+        self.autre_theme = Tag.objects.create(name="génétique (test plan)")
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def _item(self, subject, theme):
+        item = CompetenceItem.objects.create(
+            external_id=f"test-plan-{subject.code}-{theme.id}",
+            theme=theme, subject=subject, enonce_markdown="Énoncé", corrige_markdown="Corrigé",
+            statut=StatutContenu.VALIDE,
+        )
+        item.cursus.add(self.cursus)
+        return item
+
+    def _epreuve_sur_le_theme(self, subject, theme, annee=2024):
+        lesson = Lesson.objects.create(
+            title=f"Épreuve {subject.code} {annee}", subject=subject, year=annee,
+            lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+        )
+        lesson.cursus.add(self.cursus)
+        question = _make_question(lesson, "1")
+        question.themes.add(theme)
+        return lesson
+
+    def _abonner(self):
+        Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
+
+    def _historique_de_quiz(self):
+        """
+        Une réponse déjà donnée sur ce cursus, pour sortir du cas "élève tout neuf" et
+        donc du calibrage. Nécessaire dès qu'un test met en scène une RevisionSchedule
+        : en vrai, une échéance de révision ne peut EXISTER qu'après une réponse ratée
+        (voir enregistrer_resultat_pour_revision, appelé par answer_question) - un
+        élève sans historique n'en a jamais.
+        """
+        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(
+            session=session, competence_item=self._item(self.subject, self.theme), ordre=1,
+        )
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.ECHEC)
+
+    def test_une_revision_due_passe_avant_tout(self):
+        self._item(self.subject, self.theme)
+        self._epreuve_sur_le_theme(self.subject, self.theme)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        self.assertEqual(seance.origine, OrigineSeance.REVISION_DUE)
+        self.assertEqual(seance.theme_id, self.theme.id)
+
+    def test_la_meme_seance_toute_la_journee(self):
+        self._item(self.subject, self.theme)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+        premiere = plan_du_jour(self.user, self.cursus)
+        deuxieme = plan_du_jour(self.user, self.cursus)
+
+        # Le point non négociable : trois ouvertures dans la journée, une seule séance.
+        self.assertEqual(premiere.id, deuxieme.id)
+        self.assertEqual(SeanceJournaliere.objects.filter(user=self.user).count(), 1)
+
+    def test_le_lendemain_donne_une_nouvelle_seance(self):
+        self._item(self.subject, self.theme)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+        aujourdhui = plan_du_jour(self.user, self.cursus)
+        demain = plan_du_jour(self.user, self.cursus, date=timezone.localdate() + timedelta(days=1))
+
+        self.assertNotEqual(aujourdhui.id, demain.id)
+
+    def test_sans_historique_la_seance_est_un_calibrage(self):
+        self._item(self.subject, self.theme)
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        # Placé avant le parcours, sinon il ne se déclencherait jamais - voir
+        # plan_du_jour.
+        self.assertEqual(seance.origine, OrigineSeance.DIAGNOSTIC)
+        self.assertIsNone(seance.subject)
+        self.assertEqual(seance.etapes[0]["n"], 10)
+
+    def test_la_rotation_evite_la_matiere_des_deux_dernieres_seances(self):
+        self._item(self.subject, self.theme)
+        self._item(self.autre_subject, self.autre_theme)
+        for jour in (2, 1):
+            SeanceJournaliere.objects.create(
+                user=self.user, cursus=self.cursus, date=timezone.localdate() - timedelta(days=jour),
+                origine=OrigineSeance.REVISION_DUE, subject=self.subject, theme=self.theme,
+                etapes=[], statut=StatutSeance.TERMINEE,
+            )
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.autre_subject, theme=self.autre_theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        # Deux révisions dues, dont une en maths : c'est l'AUTRE matière qui sort,
+        # sinon trois jours de maths d'affilée.
+        self.assertEqual(seance.subject_id, self.autre_subject.id)
+
+    def test_la_rotation_cede_plutot_que_de_ne_rien_proposer(self):
+        self._historique_de_quiz()
+        for jour in (2, 1):
+            SeanceJournaliere.objects.create(
+                user=self.user, cursus=self.cursus, date=timezone.localdate() - timedelta(days=jour),
+                origine=OrigineSeance.REVISION_DUE, subject=self.subject, theme=self.theme,
+                etapes=[], statut=StatutSeance.TERMINEE,
+            )
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        # Mieux vaut une troisième séance de maths que pas de séance du tout.
+        self.assertIsNotNone(seance)
+        self.assertEqual(seance.subject_id, self.subject.id)
+
+    def test_les_etapes_tiennent_dans_le_budget(self):
+        self._item(self.subject, self.theme)
+        self._epreuve_sur_le_theme(self.subject, self.theme)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        self.assertLessEqual(seance.duree_estimee_min, BUDGET_SEANCE_MINUTES)
+        self.assertEqual([e["type"] for e in seance.etapes], ["exercice", "quiz"])
+
+    def test_lendpoint_sans_cursus_declare(self):
+        self.user.cursus_prepare = None
+        self.user.save(update_fields=["cursus_prepare"])
+
+        reponse = self.client.get("/quiz/plan-du-jour/")
+
+        self.assertEqual(reponse.data["etat"], "cursus_inconnu")
+        self.assertIsNone(reponse.data["seance"])
+
+    def test_une_seance_verrouillee_montre_tout_sauf_le_contenu(self):
+        self._item(self.subject, self.theme)
+        self._epreuve_sur_le_theme(self.subject, self.theme)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+        seance = self.client.get("/quiz/plan-du-jour/").data["seance"]
+
+        self.assertTrue(seance["verrouillee"])
+        # Le paywall tombe sur le bouton, jamais sur l'information : le thème, la
+        # durée et le nombre d'étapes restent visibles, seuls les slugs disparaissent.
+        self.assertEqual(seance["theme"]["name"], self.theme.name)
+        self.assertGreater(seance["duree_estimee_min"], 0)
+        self.assertGreater(seance["nb_etapes"], 0)
+        self.assertEqual(seance["etapes"], [])
+
+    def test_un_abonne_recoit_les_etapes(self):
+        self._abonner()
+        self._item(self.subject, self.theme)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+        seance = self.client.get("/quiz/plan-du-jour/").data["seance"]
+
+        self.assertFalse(seance["verrouillee"])
+        self.assertTrue(seance["etapes"])
+
+    def test_la_frequence_du_theme_est_exposee(self):
+        self._abonner()
+        self._item(self.subject, self.theme)
+        self._epreuve_sur_le_theme(self.subject, self.theme, annee=2023)
+        self._epreuve_sur_le_theme(self.subject, self.theme, annee=2024)
+        sans_le_theme = Lesson.objects.create(
+            title="Épreuve sans le thème", subject=self.subject, year=2022,
+            lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+        )
+        sans_le_theme.cursus.add(self.cursus)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+        frequence = self.client.get("/quiz/plan-du-jour/").data["seance"]["frequence"]
+
+        self.assertEqual(frequence, {"occurrences": 2, "epreuves_total": 3})
+
+    def test_terminer_la_seance_bascule_letat(self):
+        self._abonner()
+        self._item(self.subject, self.theme)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+        self.client.get("/quiz/plan-du-jour/")
+
+        reponse = self.client.post("/quiz/plan-du-jour/terminer/")
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(reponse.data["seances_cette_semaine"], 1)
+        self.assertEqual(self.client.get("/quiz/plan-du-jour/").data["etat"], "deja_fait_aujourdhui")
+
+    def test_terminer_est_idempotent(self):
+        self._abonner()
+        self._item(self.subject, self.theme)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+        self.client.get("/quiz/plan-du-jour/")
+        self.client.post("/quiz/plan-du-jour/terminer/")
+
+        self.client.post("/quiz/plan-du-jour/terminer/")
+
+        # Une séance comptée deux fois fausserait le seul chiffre qui dira si le plan
+        # marche.
+        self.assertEqual(seances_terminees_cette_semaine(self.user, self.cursus), 1)
+
+    def test_terminer_refuse_sans_abonnement(self):
+        self._item(self.subject, self.theme)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+        self.client.get("/quiz/plan-du-jour/")
+
+        reponse = self.client.post("/quiz/plan-du-jour/terminer/")
+
+        self.assertEqual(reponse.status_code, 403)
+
+    def test_le_compteur_hebdo_ne_compte_que_7_jours_glissants(self):
+        for jour, statut in ((8, StatutSeance.TERMINEE), (3, StatutSeance.TERMINEE), (1, StatutSeance.PROPOSEE)):
+            SeanceJournaliere.objects.create(
+                user=self.user, cursus=self.cursus, date=timezone.localdate() - timedelta(days=jour),
+                origine=OrigineSeance.PARCOURS, subject=self.subject, etapes=[], statut=statut,
+            )
+
+        # Jamais une série de jours consécutifs : une journée manquée ne remet rien à
+        # zéro, elle sort juste de la fenêtre.
+        self.assertEqual(seances_terminees_cette_semaine(self.user, self.cursus), 1)
+
+
+class FinDeSeanceTests(TestCase):
+    """
+    La boucle se ferme toute seule : boucler le quiz d'une séance, c'est l'avoir
+    faite. Ces tests couvrent le rattachement, la clôture automatique, le score et
+    l'évènement - c'est-à-dire tout ce qui, en cassant, laisserait le seul chiffre qui
+    compte (combien d'élèves font vraiment leur séance) mentir sans qu'on le voie.
+    """
+
+    def setUp(self):
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        self.user = User.objects.create_user(phone_number="677900404", password="x")
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+        self.subject = Subject.objects.create(
+            code="MATHS_TEST_FIN", label="Maths (test fin)", country=self.cursus.country,
+        )
+        self.theme = Tag.objects.create(name="intégrales (test fin)")
+        item = CompetenceItem.objects.create(
+            external_id="test-fin-1", theme=self.theme, subject=self.subject,
+            enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
+        )
+        item.cursus.add(self.cursus)
+        Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def _lancer_le_quiz_de_la_seance(self):
+        plan_du_jour(self.user, self.cursus)
+        reponse = self.client.post(
+            "/quiz/sessions/",
+            {"cursus": self.cursus.id, "theme": self.theme.id, "seance": 1, "n": 1},
+            format="json",
+        )
+        self.assertEqual(reponse.status_code, 201)
+        return reponse.data["id"]
+
+    def _repondre(self, session_id, resultat):
+        session = QuizSession.objects.get(pk=session_id)
+        for quiz_question in session.quiz_questions.all():
+            self.client.post(
+                f"/quiz/sessions/{session_id}/questions/{quiz_question.id}/answer/",
+                {"resultat_declare": resultat}, format="json",
+            )
+
+    def test_le_quiz_lance_depuis_la_seance_lui_est_rattache(self):
+        session_id = self._lancer_le_quiz_de_la_seance()
+
+        seance = seance_du_jour(self.user, self.cursus)
+        self.assertEqual(seance.quiz_session_id, session_id)
+
+    def test_un_quiz_lance_hors_du_plan_nest_jamais_rattache(self):
+        plan_du_jour(self.user, self.cursus)
+
+        self.client.post(
+            "/quiz/sessions/", {"cursus": self.cursus.id, "theme": self.theme.id, "n": 1}, format="json",
+        )
+
+        # Sans le drapeau, un quiz sur le même thème lancé de son propre chef ne doit
+        # surtout pas clôturer la séance du jour.
+        self.assertIsNone(seance_du_jour(self.user, self.cursus).quiz_session_id)
+
+    def test_boucler_le_quiz_cloture_la_seance(self):
+        session_id = self._lancer_le_quiz_de_la_seance()
+        self._repondre(session_id, ResultatDeclare.REUSSI)
+
+        self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        seance = seance_du_jour(self.user, self.cursus)
+        self.assertEqual(seance.statut, StatutSeance.TERMINEE)
+        self.assertIsNotNone(seance.termine_at)
+
+    def test_le_score_saffiche_une_fois_le_quiz_termine(self):
+        session_id = self._lancer_le_quiz_de_la_seance()
+        self._repondre(session_id, ResultatDeclare.REUSSI)
+        self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        seance = self.client.get("/quiz/plan-du-jour/").data["seance"]
+
+        self.assertEqual(seance["score"], {"reussies": 1, "total": 1})
+
+    def test_pas_de_score_tant_que_le_quiz_nest_pas_termine(self):
+        self._lancer_le_quiz_de_la_seance()
+
+        seance = self.client.get("/quiz/plan-du-jour/").data["seance"]
+
+        # Un 0/0 en cours de route se lirait comme un échec, alors qu'il n'y a
+        # simplement rien à noter encore.
+        self.assertIsNone(seance["score"])
+
+    def test_la_cloture_automatique_enregistre_levenement(self):
+        session_id = self._lancer_le_quiz_de_la_seance()
+        self._repondre(session_id, ResultatDeclare.REUSSI)
+
+        self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        # Tracé côté serveur, parce que c'est la voie PRINCIPALE et qu'elle ne passe
+        # par aucun clic observable depuis le navigateur.
+        self.assertEqual(
+            AnalyticsEvent.objects.filter(name=EventName.PLAN_SEANCE_TERMINEE, user=self.user).count(), 1,
+        )
+
+    def test_la_cloture_manuelle_enregistre_le_meme_evenement_une_seule_fois(self):
+        plan_du_jour(self.user, self.cursus)
+
+        self.client.post("/quiz/plan-du-jour/terminer/")
+        self.client.post("/quiz/plan-du-jour/terminer/")
+
+        # Deux clics, un seul évènement : un double comptage fausserait directement le
+        # taux de séances faites.
+        self.assertEqual(
+            AnalyticsEvent.objects.filter(name=EventName.PLAN_SEANCE_TERMINEE, user=self.user).count(), 1,
+        )
+
+    def test_rouvrir_une_session_deja_terminee_ne_recloture_rien(self):
+        session_id = self._lancer_le_quiz_de_la_seance()
+        self._repondre(session_id, ResultatDeclare.REUSSI)
+        self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        self.assertEqual(
+            AnalyticsEvent.objects.filter(name=EventName.PLAN_SEANCE_TERMINEE, user=self.user).count(), 1,
+        )
+
+
+class PrioriteMatiereTests(TestCase):
+    """
+    Quelle matière proposer quand rien d'autre ne l'impose (ni révision due, ni
+    lecture en cours). C'était le vrai point faible du plan : l'ordre ALPHABÉTIQUE des
+    libellés, qui faisait tourner un élève de BAC D sur les trois premières matières de
+    l'alphabet quel que soit leur poids au baccalauréat.
+    """
+
+    def setUp(self):
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        self.user = User.objects.create_user(phone_number="677900505", password="x")
+        # Libellés choisis pour que l'ordre alphabétique soit l'INVERSE de l'ordre
+        # attendu : sans la règle, "Anglais" sortirait toujours en premier.
+        self.faible_coef = self._subject("ANGLAIS_TEST_PRIO", "Anglais (test prio)")
+        self.fort_coef = self._subject("MATHS_TEST_PRIO", "Zythologie (test prio)")
+
+    def _subject(self, code, label):
+        return Subject.objects.create(code=code, label=label, country=self.cursus.country)
+
+    def _epreuve(self, subject, coefficient, annee=2024):
+        lesson = Lesson.objects.create(
+            title=f"Épreuve {subject.code} {annee}", subject=subject, year=annee,
+            lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+            coefficient=coefficient,
+        )
+        lesson.cursus.add(self.cursus)
+        return lesson
+
+    def _repondre(self, subject, nb_reponses, nb_reussies):
+        theme = Tag.objects.create(name=f"thème {subject.code} {nb_reponses}")
+        item = CompetenceItem.objects.create(
+            external_id=f"prio-{subject.code}-{nb_reponses}", theme=theme, subject=subject,
+            enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
+        )
+        item.cursus.add(self.cursus)
+        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        for index in range(nb_reponses):
+            quiz_question = QuizQuestion.objects.create(
+                session=session, competence_item=item, ordre=index + 1,
+            )
+            QuizAnswer.objects.create(
+                quiz_question=quiz_question,
+                resultat_declare=ResultatDeclare.REUSSI if index < nb_reussies else ResultatDeclare.ECHEC,
+            )
+
+    def test_le_coefficient_prime_sur_lordre_alphabetique(self):
+        self._epreuve(self.faible_coef, "1")
+        self._epreuve(self.fort_coef, "4")
+
+        classement = _subjects_par_priorite(self.user, self.cursus)
+
+        self.assertEqual(classement[0], self.fort_coef)
+
+    def test_une_matiere_deja_maitrisee_descend(self):
+        self._epreuve(self.faible_coef, "4")
+        self._epreuve(self.fort_coef, "4")
+        # Même coefficient : c'est la maîtrise qui départage, sur un échantillon
+        # suffisant pour valoir quelque chose.
+        self._repondre(self.fort_coef, nb_reponses=20, nb_reussies=19)
+
+        classement = _subjects_par_priorite(self.user, self.cursus)
+
+        self.assertEqual(classement[0], self.faible_coef)
+
+    def test_un_echantillon_trop_mince_ne_fait_pas_descendre_une_matiere(self):
+        self._epreuve(self.faible_coef, "1")
+        self._epreuve(self.fort_coef, "4")
+        # Six bonnes réponses sur un seul thème ne font pas de l'élève quelqu'un qui
+        # maîtrise la matière - cas réel constaté en vérifiant sur la base.
+        self._repondre(self.fort_coef, nb_reponses=6, nb_reussies=6)
+
+        classement = _subjects_par_priorite(self.user, self.cursus)
+
+        self.assertEqual(classement[0], self.fort_coef)
+
+    def test_un_coefficient_composite_est_ignore_sans_casser_le_classement(self):
+        self._epreuve(self.fort_coef, "D:4")
+        self._epreuve(self.fort_coef, "4")
+        self._epreuve(self.faible_coef, "C,D : 1,5 ; E : 2")
+
+        coefficients = _coefficient_par_subject(self.cursus)
+
+        # La valeur composite est écartée, la valeur simple de la même matière suffit ;
+        # une matière qui n'a que du composite retombe sur le défaut.
+        self.assertEqual(coefficients[self.fort_coef.id], 4.0)
+        self.assertNotIn(self.faible_coef.id, coefficients)
+
+    def test_une_virgule_decimale_est_comprise(self):
+        self._epreuve(self.fort_coef, "1,5")
+
+        self.assertEqual(_coefficient_par_subject(self.cursus)[self.fort_coef.id], 1.5)
+
+    def test_la_valeur_dominante_absorbe_une_transcription_isolee(self):
+        for annee in (2021, 2022, 2023):
+            self._epreuve(self.fort_coef, "4", annee=annee)
+        self._epreuve(self.fort_coef, "40", annee=2024)
+
+        # Une erreur de saisie isolée ne doit pas décaler le coefficient de toute la
+        # matière - d'où la valeur dominante plutôt qu'une moyenne.
+        self.assertEqual(_coefficient_par_subject(self.cursus)[self.fort_coef.id], 4.0)
+
+    def _matiere_avec_parcours(self, code, coefficient):
+        """
+        Une matière réellement exploitable par le parcours par fréquence : assez
+        d'épreuves officielles pour dépasser SEUIL_MINIMUM_THEMES_PARCOURS, un thème
+        qui revient sur plusieurs d'entre elles, et un quiz disponible dessus.
+        Matières du référentiel semé (voir catalog.migrations.0003_seed_referentiel) :
+        le classement par fréquence n'est actif que pour certains codes (voir
+        SUBJECTS_PARCOURS_PAR_FREQUENCE), un code inventé retomberait sur le
+        Module→Savoir officiel, qu'aucune de ces matières n'a en base de test.
+        """
+        subject = Subject.objects.get(code=code, country=self.cursus.country)
+        theme = Tag.objects.create(name=f"thème parcours {code}")
+        for index in range(SEUIL_MINIMUM_THEMES_PARCOURS):
+            lesson = self._epreuve(subject, coefficient, annee=2010 + index)
+            if index < PARCOURS_FREQUENCE_OCCURRENCES_MIN:
+                question = _make_question(lesson, "1")
+                question.themes.add(theme)
+        item = CompetenceItem.objects.create(
+            external_id=f"prio-seance-{code}", theme=theme, subject=subject,
+            enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
+        )
+        item.cursus.add(self.cursus)
+        return subject
+
+    def test_la_seance_du_jour_part_de_la_matiere_prioritaire(self):
+        # "Mathématiques" passe avant "Sciences de la Vie et de la Terre" dans
+        # l'alphabet : c'est donc SVT que l'ancien tri sortait en dernier, et c'est
+        # elle qui doit gagner ici grâce à son coefficient.
+        maths = self._matiere_avec_parcours("MATHS", coefficient="1")
+        svt = self._matiere_avec_parcours("SVT", coefficient="4")
+        # Un historique quelconque, pour sortir du calibrage et atteindre le parcours.
+        self._repondre(maths, nb_reponses=1, nb_reussies=1)
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        self.assertEqual(seance.origine, OrigineSeance.PARCOURS)
+        self.assertEqual(seance.subject_id, svt.id)

@@ -7,17 +7,23 @@ from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from catalog.models import Cours, Cursus, StatutContenu, Subject, Tag, TypeReponse
+from analytics.models import AnalyticsEvent, EventName
+from catalog.models import (
+    Cours, Cursus, ExamSession, Lesson, Origine, StatutContenu, Subject, Tag, TypeReponse,
+)
 from catalog.rendering import annotate_single_cours_link
-from catalog.serializers import CoursSummarySerializer, SubjectSerializer
+from catalog.serializers import CoursSummarySerializer, CursusSerializer, SubjectSerializer
 from programme.models import Savoir
 from subscriptions.models import Subscription
 
-from .models import ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, StatutFichePdf
+from .models import (
+    ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere, StatutFichePdf, StatutSeance,
+)
 from .pdf import queue_quiz_fiche_pdf_generation
 from .services import (
-    construire_parcours, enregistrer_resultat_pour_revision, generer_session, maitrise_par_theme, resume_parcours,
-    revisions_dues,
+    cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision, generer_session,
+    maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
+    score_de_la_seance, seance_du_jour, seances_terminees_cette_semaine, terminer_seance,
 )
 
 
@@ -26,6 +32,28 @@ def _has_active_subscription(user, cursus):
     téléchargement de fiche PDF puisqu'un abonnement peut avoir expiré depuis la fin
     du quiz, même principe que inedit.views.download_sujet_pdf."""
     return Subscription.objects.filter(user=user, cursus=cursus, expires_at__gt=timezone.now()).exists()
+
+
+def _tracer_seance_terminee(seance):
+    """
+    "Séance terminée" est enregistré côté SERVEUR, contrairement aux autres évènements
+    du plan qui partent du navigateur - parce que la voie principale n'est pas un clic :
+    une séance se clôt toute seule quand son quiz est bouclé (voir
+    cloturer_seance_si_quiz_termine). La tracer depuis le frontend raterait justement
+    le cas le plus fréquent, et compterait deux fois celles qui passent par les deux
+    chemins. Fire-and-forget comme son équivalent frontend : un évènement perdu ne doit
+    jamais faire échouer la requête qu'il observe.
+    """
+    if seance is None:
+        return
+    try:
+        AnalyticsEvent.objects.create(
+            name=EventName.PLAN_SEANCE_TERMINEE,
+            user=seance.user,
+            properties={"origine": seance.origine, "cursus_id": seance.cursus_id},
+        )
+    except Exception:  # noqa: BLE001 - jamais au prix de la requête en cours
+        pass
 
 
 def _get_answer(quiz_question):
@@ -308,6 +336,13 @@ def start_session(request):
     except ValueError as exc:
         return Response({"error": str(exc)}, status=404)
 
+    # `seance` n'est qu'un drapeau "je viens du plan du jour" posé par le lien de
+    # l'étape quiz : sa valeur n'est pas de confiance (une URL se bricole), donc on ne
+    # s'en sert jamais pour DÉSIGNER une séance - rattacher_quiz_a_la_seance ne touche
+    # que la séance du jour de cet utilisateur, sur ce cursus.
+    if request.data.get("seance"):
+        rattacher_quiz_a_la_seance(request.user, session)
+
     return Response(_session_payload(session), status=201)
 
 
@@ -383,6 +418,10 @@ def complete_session(request, session_id):
     if not session.completed_at:
         session.completed_at = timezone.now()
         session.save(update_fields=["completed_at"])
+        # Le quiz est toujours la dernière étape d'une séance : le boucler, c'est
+        # avoir fait la séance. Sous le `if` : une session rouverte plus tard ne doit
+        # pas reclôturer quoi que ce soit.
+        _tracer_seance_terminee(cloturer_seance_si_quiz_termine(session))
     return Response(_resultat_payload(session))
 
 
@@ -534,3 +573,129 @@ def parcours_resume(request):
     """
     cursus = get_object_or_404(Cursus, pk=request.GET["cursus"])
     return Response(resume_parcours(request.user, cursus))
+
+
+def _serialiser_seance(seance, verrouillee):
+    """
+    Une séance verrouillée expose TOUT sauf de quoi ouvrir le contenu : la matière, le
+    thème, sa fréquence à l'examen, la durée, le nombre d'étapes. Le paywall tombe sur
+    le bouton, jamais sur l'information - c'est le seul endroit de l'app où la valeur
+    se démontre au lieu de s'affirmer, et cacher le thème reviendrait à demander à un
+    visiteur de payer pour savoir ce qu'il achète.
+    """
+    return {
+        "id": seance.id,
+        "origine": seance.origine,
+        "origine_display": seance.get_origine_display(),
+        "subject": SubjectSerializer(seance.subject).data if seance.subject else None,
+        "theme": {"id": seance.theme_id, "name": seance.theme.name} if seance.theme else None,
+        "savoir": {"id": seance.savoir_id, "intitule": seance.savoir.intitule} if seance.savoir else None,
+        "duree_estimee_min": seance.duree_estimee_min,
+        "nb_etapes": len(seance.etapes),
+        # Les étapes portent les slugs qui ouvrent le contenu : retirées tant que
+        # l'abonnement n'est pas actif, alors que tout le reste est servi tel quel.
+        "etapes": [] if verrouillee else seance.etapes,
+        "frequence": _frequence_du_theme(seance),
+        "statut": seance.statut,
+        # "4/5" en fin de séance - None quand il n'y a rien à noter (pas d'étape quiz,
+        # ou quiz pas terminé), jamais un 0/0 qui se lirait comme un échec.
+        "score": score_de_la_seance(seance),
+        "verrouillee": verrouillee,
+    }
+
+
+def _frequence_du_theme(seance):
+    """
+    "Tombé dans 8 des 10 dernières épreuves" - le seul chiffre que personne d'autre ne
+    peut afficher, et la meilleure raison de faire CETTE séance plutôt qu'une autre.
+
+    Compté sur les épreuves OFFICIELLES du (cursus, matière) uniquement : un examen
+    blanc reste utile à pratiquer mais ne dit rien de ce qui tombe vraiment, et c'est
+    bien une promesse sur le vrai examen qu'on fait ici. Renvoie None dès qu'un des
+    éléments manque plutôt qu'un 0 sur 0, qui se lirait comme "ne tombe jamais".
+    """
+    if seance.theme_id is None or seance.subject_id is None:
+        return None
+    lessons = Lesson.objects.filter(
+        statut=StatutContenu.VALIDE, subject_id=seance.subject_id,
+        cursus=seance.cursus_id, origine=Origine.OFFICIEL,
+    ).distinct()
+    total = lessons.count()
+    if not total:
+        return None
+    occurrences = lessons.filter(exercises__questions__themes__id=seance.theme_id).distinct().count()
+    if not occurrences:
+        return None
+    return {"occurrences": occurrences, "epreuves_total": total}
+
+
+@api_view(["GET"])
+def plan_du_jour_view(request):
+    """
+    Une seule requête pour tout l'écran d'accueil d'un élève : son compte à rebours et
+    sa séance du jour, avec un `etat` que le frontend affiche tel quel sans
+    réimplémenter la moindre règle métier.
+
+    `etat` :
+      - `cursus_inconnu` : rien n'est déclaré, il n'y a pas de plan à faire ;
+      - `examen_passe` : la date est dépassée et la session suivante pas encore saisie ;
+      - `rien_a_proposer` : cursus sans contenu exploitable (filet, jamais nominal) ;
+      - `deja_fait_aujourdhui` : la séance du jour est terminée ;
+      - `plan_pret` : il y a quelque chose à faire maintenant.
+    """
+    user = request.user
+    cursus = user.cursus_prepare
+    if cursus is None or not cursus.country.actif:
+        return Response({"etat": "cursus_inconnu", "cursus": None, "compte_a_rebours": None, "seance": None})
+
+    compte = ExamSession.compte_a_rebours_pour(cursus)
+    if compte is not None and compte["jours_restants"] < 0:
+        # La session est passée et la suivante n'est pas saisie : proposer une séance
+        # "jusqu'à l'examen" vers une date révolue n'aurait aucun sens.
+        return Response({
+            "etat": "examen_passe",
+            "cursus": CursusSerializer(cursus).data,
+            "compte_a_rebours": compte,
+            "seance": None,
+        })
+
+    seance = plan_du_jour(user, cursus)
+    base = {
+        "cursus": CursusSerializer(cursus).data,
+        "compte_a_rebours": compte,
+        "seances_cette_semaine": seances_terminees_cette_semaine(user, cursus),
+    }
+    if seance is None:
+        return Response({**base, "etat": "rien_a_proposer", "seance": None})
+
+    verrouillee = not _has_active_subscription(user, cursus)
+    etat = "deja_fait_aujourdhui" if seance.statut == StatutSeance.TERMINEE else "plan_pret"
+    return Response({**base, "etat": etat, "seance": _serialiser_seance(seance, verrouillee)})
+
+
+@api_view(["POST"])
+def terminer_seance_view(request):
+    """
+    Marque la séance du jour comme faite. Réservé à l'abonné actif, comme le contenu
+    qu'elle enchaîne : sans cela un visiteur verrouillé pourrait "terminer" une séance
+    qu'il n'a pas pu ouvrir, et fausser le seul chiffre qui dira si ce plan marche.
+    """
+    cursus = request.user.cursus_prepare
+    if cursus is None:
+        return Response({"error": "Aucun cursus déclaré."}, status=400)
+    if not _has_active_subscription(request.user, cursus):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+
+    seance = seance_du_jour(request.user, cursus)
+    if seance is None:
+        return Response({"error": "Aucune séance aujourd'hui."}, status=404)
+
+    # Uniquement si elle ne l'était pas déjà : reconfirmer une séance close (double
+    # clic, onglet resté ouvert) ne doit pas la compter une seconde fois.
+    if seance.statut != StatutSeance.TERMINEE:
+        terminer_seance(seance)
+        _tracer_seance_terminee(seance)
+    return Response({
+        "statut": seance.statut,
+        "seances_cette_semaine": seances_terminees_cette_semaine(request.user, cursus),
+    })

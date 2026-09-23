@@ -29,6 +29,8 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
 import { SocialProofSection } from "@/components/SocialProofSection"
+import { SeanceDuJour } from "@/components/SeanceDuJour"
+import { AccueilEleve } from "@/components/AccueilEleve"
 
 // Épreuve gratuite dont le premier exercice sert d'exemple de "corrigé pas à pas"
 // dans le hero (voir plus bas) - un vrai extrait de la base, pas un mock. Un seul
@@ -105,7 +107,16 @@ function CarteUnivers({ icon, titre, chiffre, description, to, dore = false }: U
   )
 }
 
-export function CataloguePage() {
+/**
+ * La page vitrine : le hero, les chiffres, l'exemple de corrigé, les inédites, la
+ * preuve sociale. Ce que voient un visiteur anonyme, un robot d'indexation, et un
+ * élève qui n'a pas encore d'abonnement - c'est pour ce dernier sa page de
+ * conversion, la lui retirer coûterait des abonnements.
+ *
+ * Un élève ABONNÉ voit AccueilEleve à la place (voir CataloguePage en bas de
+ * fichier) : plus aucun argumentaire, seulement ses affaires.
+ */
+function CatalogueVitrine() {
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
   const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
@@ -245,6 +256,11 @@ export function CataloguePage() {
 
   return (
     <div>
+      {/* La séance du jour passe AVANT le hero, et seulement pour un élève connecté
+          qui a déclaré son cursus (le composant décide seul de s'afficher). Le hero
+          reste dessous, intact : /cm est la page la plus indexée du site, elle doit
+          rester complète pour un visiteur anonyme comme pour un robot. */}
+      <SeanceDuJour country={country ?? ""} />
       <section className="relative overflow-hidden border-b border-border">
         <div
           className="absolute inset-0 opacity-[0.05]"
@@ -713,4 +729,36 @@ export function CataloguePage() {
       </section>
     </div>
   )
+}
+
+
+/**
+ * Trois publics, trois pages - c'est le même /cm pour tous les trois.
+ *
+ *   - visiteur anonyme       -> la vitrine, inchangée (et c'est ce que voient les
+ *                               robots, qui n'ont jamais de session : le contenu
+ *                               indexé de la page la plus référencée du site ne
+ *                               bouge pas) ;
+ *   - élève SANS abonnement  -> la vitrine aussi, avec sa séance verrouillée en
+ *                               tête : c'est sa page de conversion ;
+ *   - élève ABONNÉ           -> ses affaires, et rien d'autre.
+ *
+ * Le branchement vit ici, dans un composant qui n'appelle qu'un seul hook, et pas
+ * dans un `return` anticipé au milieu de la vitrine : les quinze requêtes du
+ * catalogue ne partent ainsi jamais pour un élève qui ne verra pas cette page.
+ *
+ * Pendant que l'authentification se résout (un aller-retour de rafraîchissement au
+ * démarrage), c'est la vitrine qui s'affiche. C'est volontaire : c'est le seul défaut
+ * sûr pour un robot ou un visiteur, qui sont la majorité des arrivées sur cette URL.
+ * Un élève abonné voit donc brièvement la vitrine avant sa page - à corriger avec un
+ * indice mémorisé côté navigateur si la bascule se voit trop.
+ */
+export function CataloguePage() {
+  const { isAuthenticated, user } = useAuth()
+  const { country } = useParams<{ country: string }>()
+
+  if (isAuthenticated && user?.cursus_prepare && user.a_un_abonnement_actif) {
+    return <AccueilEleve country={country ?? ""} />
+  }
+  return <CatalogueVitrine />
 }

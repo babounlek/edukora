@@ -9,9 +9,10 @@ import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeToggle } from "@/components/ThemeToggle"
+import { CompteAReboursBadge } from "@/components/CompteAReboursBadge"
 import { cn } from "@/lib/utils"
 import { SITE_NAME } from "@/lib/site"
-import { catalogueHomePath, coursListPath, epreuvesListPath } from "@/lib/countryPath"
+import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import {
   Select,
   SelectContent,
@@ -96,13 +97,15 @@ function CountrySwitcher({ onNavigate, dansLeMenu = false }: { onNavigate?: () =
 
 export function Header() {
   const { isAuthenticated, isLoading: authLoading, user } = useAuth()
+  // Même condition que CompteAReboursBadge, qui décide seul de s'afficher ou non - ici
+  // uniquement pour savoir si la baseline doit lui laisser la place (voir plus bas).
+  const aUnCompteARebours = Boolean(user?.compte_a_rebours && user.cursus_prepare)
   const { country } = useCountry()
   const { pathname } = useLocation()
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   const isTarifsSection = pathname.startsWith("/tarifs")
   const isParcoursSection = !isTarifsSection && pathname.startsWith("/parcours")
-  const isQuizSection = !isTarifsSection && pathname.startsWith("/quiz")
   const isCoursSection =
     !isTarifsSection && !isParcoursSection && (pathname === coursListPath(country) || pathname.startsWith("/cours"))
   const isEpreuvesSection =
@@ -110,6 +113,10 @@ export function Header() {
     !isTarifsSection &&
     !isParcoursSection &&
     (pathname === epreuvesListPath(country) || pathname.startsWith("/epreuves"))
+  const isAccueil = pathname === catalogueHomePath(country) || pathname === `${catalogueHomePath(country)}/`
+  // "Réviser" couvre les trois surfaces de la bibliothèque (épreuves, cours, thèmes),
+  // qui gardent chacune leur URL - seul le regroupement change, voir ReviserTabs.
+  const isReviserSection = isEpreuvesSection || isCoursSection || pathname.startsWith(themesFrequentsPath(country))
 
   // Même clé de cache que CataloguePage ("epreuves-inedites-recente") : un visiteur
   // qui atterrit sur le catalogue puis navigue ailleurs ne repaie pas cette requête
@@ -122,33 +129,64 @@ export function Header() {
   })
   const hasInedites = Boolean(inediteRecenteData && inediteRecenteData.count > 0)
 
-  // Même triplet actif/libellé/lien que les boutons desktop juste en dessous - une
-  // seule liste pour ne jamais les faire diverger (ex. un lien ajouté ici sans son
-  // équivalent desktop, ou l'inverse). "Épreuves" couvre aussi les épreuves inédites
-  // (mêmes filtres sur /epreuves, voir EpreuvesListPage.tsx) - pas d'entrée de nav
-  // dédiée, juste le point or de `hasInedites` ci-dessous. Pointe vers /epreuves (le
-  // moteur de recherche) et non plus vers l'accueil depuis la scission
-  // accueil/catalogue - le logo, lui, reste le retour à l'accueil.
-  const navLinks = [
-    { to: epreuvesListPath(country), label: "Épreuves", active: isEpreuvesSection, badge: hasInedites },
-    { to: coursListPath(country), label: "Cours", active: isCoursSection, badge: false },
-    { to: "/parcours", label: "Parcours", active: isParcoursSection, badge: false },
-    { to: "/quiz", label: "Quiz", active: isQuizSection, badge: false },
-    { to: "/tarifs", label: "Tarifs", active: isTarifsSection, badge: false },
-  ]
+  /**
+   * Deux navigations, pas une.
+   *
+   * Un VISITEUR arrive par une recherche et vient voir ce qu'il y a : Épreuves,
+   * Cours, Tarifs - c'est aussi la version que les robots indexent, elle ne bouge pas.
+   *
+   * Un ÉLÈVE qui a déclaré son examen n'est plus là pour explorer un catalogue mais
+   * pour avancer : Aujourd'hui (sa séance), Réviser (toute la bibliothèque), Ma
+   * progression. Trois entrées, parce que les cinq précédentes décrivaient notre
+   * modèle de données (deux types de documents, deux outils, une page commerciale) et
+   * pas sa façon de réviser - personne ne se dit "je vais faire un quiz", on se dit
+   * "je révise les limites".
+   *
+   * "Quiz" disparaît du menu : un quiz n'est pas une destination, c'est la fin d'une
+   * séance (voir SeanceDuJour) et un bouton sur une page de thème. "Parcours" devient
+   * "Ma progression" - on y va pour se rassurer, plus pour démarrer, le plan s'en
+   * charge. Leurs deux routes restent servies telles quelles.
+   *
+   * "Tarifs" ne s'affiche que pour qui n'a pas encore payé : reproposer en permanence
+   * d'acheter ce qu'on possède déjà n'est plus de la navigation.
+   */
+  const suitUnPlan = isAuthenticated && Boolean(user?.cursus_prepare)
+  const navLinks = suitUnPlan
+    ? [
+        { to: catalogueHomePath(country), label: "Aujourd'hui", active: isAccueil, badge: false },
+        { to: epreuvesListPath(country), label: "Réviser", active: isReviserSection, badge: hasInedites },
+        { to: "/parcours", label: "Ma progression", active: isParcoursSection, badge: false },
+        ...(user?.a_un_abonnement_actif
+          ? []
+          : [{ to: "/tarifs", label: "Tarifs", active: isTarifsSection, badge: false }]),
+      ]
+    : [
+        { to: epreuvesListPath(country), label: "Épreuves", active: isEpreuvesSection, badge: hasInedites },
+        { to: coursListPath(country), label: "Cours", active: isCoursSection, badge: false },
+        { to: "/tarifs", label: "Tarifs", active: isTarifsSection, badge: false },
+      ]
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur-sm">
       <div className="h-[3px] w-full bg-gradient-to-r from-primary via-gold to-primary" />
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5 sm:px-6">
-        <Link to={catalogueHomePath(country)} className="group flex items-baseline gap-2">
-          <span className="font-display text-xl font-semibold tracking-tight text-primary">
-            {SITE_NAME}
-          </span>
-          <span className="hidden whitespace-nowrap font-display text-xs italic text-muted-foreground sm:inline">
-            réussis ton examen
-          </span>
-        </Link>
+        <div className="flex items-baseline gap-2">
+          <Link to={catalogueHomePath(country)} className="group flex items-baseline gap-2">
+            <span className="font-display text-xl font-semibold tracking-tight text-primary">
+              {SITE_NAME}
+            </span>
+            {/* La baseline cède la place au compte à rebours dès qu'il y en a un :
+                pour un élève qui a déclaré son cursus, "BAC D · J-244" dit la même
+                chose que "réussis ton examen", mais avec sa date à lui. Deux textes
+                gris côte à côte ne feraient que se diluer. */}
+            {!aUnCompteARebours && (
+              <span className="hidden whitespace-nowrap font-display text-xs italic text-muted-foreground sm:inline">
+                réussis ton examen
+              </span>
+            )}
+          </Link>
+          <CompteAReboursBadge className="hidden whitespace-nowrap sm:inline" />
+        </div>
         <nav className="flex items-center gap-2">
           {/* Toujours visible (pas de hidden sm:), contrairement aux liens de nav
               desktop plus bas - ce bouton rend la recherche accessible depuis
@@ -169,6 +207,9 @@ export function Header() {
             <SheetContent>
               <SheetTitle>Menu</SheetTitle>
               <SheetDescription>Navigation principale d'{SITE_NAME}</SheetDescription>
+              {/* Même raison que le pays et le thème plus bas : retiré de la barre
+                  sous `sm` faute de place, jamais retiré du mobile. */}
+              <CompteAReboursBadge className="mt-3 block sm:hidden" />
               <nav className="mt-3 flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <Link
@@ -199,36 +240,26 @@ export function Header() {
               </div>
             </SheetContent>
           </Sheet>
-          <span className="relative hidden lg:inline-flex">
-            <Button asChild variant={isEpreuvesSection ? "secondary" : "ghost"} size="sm">
-              <Link to={epreuvesListPath(country)}>
-                Épreuves
-                {hasInedites && <span className="sr-only"> - épreuves inédites disponibles</span>}
-              </Link>
-            </Button>
-            {/* Pas de 6e lien pour signaler les inédites - la barre desktop est déjà
-                pleine et le menu mobile perd tout à fait ce jeu de largeur (voir
-                CountrySwitcher plus haut). Un point or discret sur "Épreuves" suffit :
-                il ne consomme aucune largeur supplémentaire. */}
-            {hasInedites && (
-              <span className="pointer-events-none absolute -top-0.5 -right-0.5 flex size-2.5">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-gold opacity-75" />
-                <span className="relative inline-flex size-2.5 rounded-full bg-gold ring-2 ring-background" />
-              </span>
-            )}
-          </span>
-          <Button asChild variant={isCoursSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
-            <Link to={coursListPath(country)}>Cours</Link>
-          </Button>
-          <Button asChild variant={isParcoursSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
-            <Link to="/parcours">Parcours</Link>
-          </Button>
-          <Button asChild variant={isQuizSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
-            <Link to="/quiz">Quiz</Link>
-          </Button>
-          <Button asChild variant={isTarifsSection ? "secondary" : "ghost"} size="sm" className="hidden lg:inline-flex">
-            <Link to="/tarifs">Tarifs</Link>
-          </Button>
+          {/* Rendus depuis `navLinks`, comme le menu mobile : les deux listes étaient
+              écrites deux fois côte à côte, et un lien ajouté d'un seul côté suffisait
+              à les faire diverger silencieusement. Le point or des inédites reste
+              porté par l'entrée qui les contient, sans consommer de largeur. */}
+          {navLinks.map((link) => (
+            <span key={link.to} className="relative hidden lg:inline-flex">
+              <Button asChild variant={link.active ? "secondary" : "ghost"} size="sm">
+                <Link to={link.to}>
+                  {link.label}
+                  {link.badge && <span className="sr-only"> - épreuves inédites disponibles</span>}
+                </Link>
+              </Button>
+              {link.badge && (
+                <span className="pointer-events-none absolute -top-0.5 -right-0.5 flex size-2.5">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-gold opacity-75" />
+                  <span className="relative inline-flex size-2.5 rounded-full bg-gold ring-2 ring-background" />
+                </span>
+              )}
+            </span>
+          ))}
           {/* Sous `sm`, ces deux contrôles secondaires descendent dans le menu (voir
               SheetContent plus haut) : à 375 px la barre réclamait ~419 px pour
               375 disponibles (logo + recherche + menu + pays + thème + connexion),

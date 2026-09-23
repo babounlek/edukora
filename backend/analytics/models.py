@@ -24,6 +24,17 @@ class EventName(models.TextChoices):
     PDF_SUJET_INEDIT_LANDING = "pdf_sujet_inedit_landing", "Arrivée depuis le PDF sujet d'une épreuve inédite"
     PDF_FICHE_SUJET_LANDING = "pdf_fiche_sujet_landing", "Arrivée depuis le PDF énoncé d'une fiche répétiteur"
     PDF_FICHE_CORRIGE_LANDING = "pdf_fiche_corrige_landing", "Arrivée depuis le PDF corrigé d'une fiche répétiteur"
+    # Plan du jour (voir quiz.services.plan_du_jour). Le seul chiffre qui tranchera :
+    # la part d'élèves qui reviennent faire une séance 7 jours après leur première,
+    # soit plan_seance_terminee rapporté à plan_affiche dans le temps. PLAN_THEME_IGNORE
+    # est son contre-indicateur - au-delà d'environ 30 % des séances affichées, c'est
+    # que la sélection n'est pas crédible, et il faut regarder ce que les élèves
+    # choisissent à la place plutôt qu'ajouter des fonctionnalités par-dessus.
+    PLAN_AFFICHE = "plan_affiche", "Séance du jour affichée"
+    PLAN_SEANCE_DEMARREE = "plan_seance_demarree", "Séance du jour démarrée"
+    PLAN_SEANCE_TERMINEE = "plan_seance_terminee", "Séance du jour terminée"
+    PLAN_VERROUILLE_CLIC = "plan_verrouille_clic", "Clic sur une séance verrouillée"
+    PLAN_THEME_IGNORE = "plan_theme_ignore", "Thème proposé ignoré"
 
 
 class AnalyticsEvent(models.Model):

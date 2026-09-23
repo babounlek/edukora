@@ -1,4 +1,8 @@
+from django.utils import timezone
 from rest_framework import serializers
+
+from catalog.models import Cursus, ExamSession
+from catalog.serializers import CursusSerializer
 
 from .email_service import normalize_email
 from .models import User
@@ -76,13 +80,17 @@ class UserSerializer(serializers.ModelSerializer):
     phone_number = serializers.SerializerMethodField()
     auth_methods = serializers.SerializerMethodField()
     credit_parrainage_disponible = serializers.SerializerMethodField()
+    cursus_prepare = CursusSerializer(read_only=True)
+    compte_a_rebours = serializers.SerializerMethodField()
+    a_un_abonnement_actif = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = [
             "id", "phone_number", "email", "email_verified", "full_name", "pseudo",
             "date_joined", "referral_code", "filleuls_count", "auth_methods",
-            "credit_parrainage_disponible",
+            "credit_parrainage_disponible", "cursus_prepare", "compte_a_rebours",
+            "a_un_abonnement_actif",
         ]
 
     def get_phone_number(self, obj):
@@ -111,11 +119,50 @@ class UserSerializer(serializers.ModelSerializer):
 
         return solde_credit_parrainage(obj)
 
+    def get_compte_a_rebours(self, obj):
+        """
+        Jours restants avant l'examen préparé, ou None tant que l'utilisateur n'a rien
+        déclaré (voir User.cursus_prepare) - le frontend n'a alors simplement rien à
+        afficher, jamais un compte à rebours vers une date par défaut.
+        """
+        if obj.cursus_prepare is None:
+            return None
+        return ExamSession.compte_a_rebours_pour(obj.cursus_prepare)
+
+    def get_a_un_abonnement_actif(self, obj):
+        """
+        Vrai dès qu'un abonnement est actif, sur n'importe quel cursus - sert au
+        Header à masquer l'entrée "Tarifs" : un menu qui propose en permanence
+        d'acheter ce qu'on a déjà acheté n'est plus une navigation, c'est du bruit.
+
+        Volontairement pas scopé à `cursus_prepare` : l'entrée de menu est globale,
+        et un élève abonné sur un cursus voisin n'a pas plus besoin qu'un autre qu'on
+        lui repropose la page Tarifs à chaque écran.
+        """
+        from subscriptions.models import Subscription
+
+        return Subscription.objects.filter(user=obj, expires_at__gt=timezone.now()).exists()
+
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    # Explicite plutôt que déduit du modèle : `allow_null` (on doit pouvoir effacer sa
+    # déclaration) et la vérification du pays actif ci-dessous ne sont pas ce que
+    # ModelSerializer génèrerait tout seul.
+    cursus_prepare = serializers.PrimaryKeyRelatedField(
+        queryset=Cursus.objects.select_related("country"), required=False, allow_null=True,
+    )
+
     class Meta:
         model = User
-        fields = ["full_name", "pseudo"]
+        fields = ["full_name", "pseudo", "cursus_prepare"]
+
+    def validate_cursus_prepare(self, value):
+        # Même règle que les vues publiques (voir VisibleQuerySet.visibles et
+        # quiz.views.start_session) : un pays désactivé n'a pas de contenu visible,
+        # déclarer préparer un de ses examens n'amènerait l'utilisateur nulle part.
+        if value is not None and not value.country.actif:
+            raise serializers.ValidationError("Ce cursus n'est pas disponible.")
+        return value
 
     def validate_pseudo(self, value):
         # Chaîne vide normalisée en None : le champ est unique en base, deux comptes

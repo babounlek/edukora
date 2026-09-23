@@ -21,6 +21,72 @@ export interface User {
   // l'unicité de cette liste qui rend un compte irrécupérable en cas de perte du
   // moyen d'accès (voir ConnexionMethodsCard).
   auth_methods: AuthProvider[]
+  // Ce que l'utilisateur déclare préparer (voir users.models.User.cursus_prepare) -
+  // indépendant de ses abonnements : un visiteur non abonné en a un dès qu'il l'a dit.
+  cursus_prepare: Cursus | null
+  // null tant qu'aucun cursus n'est déclaré, ou qu'aucune session d'examen n'est
+  // saisie pour ce (pays, examen) - voir ExamSession.compte_a_rebours_pour.
+  compte_a_rebours: CompteARebours | null
+  // Tous cursus confondus - sert au Header à masquer "Tarifs" pour qui a déjà payé.
+  a_un_abonnement_actif: boolean
+}
+
+/** Une étape de la séance du jour - voir quiz.services._construire_etapes. */
+export type EtapeSeance =
+  | { type: "cours"; libelle: string; slug: string; titre: string; duree_min: number }
+  | {
+      type: "exercice"
+      libelle: string
+      lesson_slug: string
+      lesson_title: string
+      lesson_year: number | null
+      numero_exercice: string | null
+      duree_min: number
+    }
+  | { type: "quiz"; libelle: string; mode: ModeQuiz; n: number; duree_min: number }
+
+export interface Seance {
+  id: number
+  origine: "REVISION_DUE" | "LECTURE_EN_COURS" | "DIAGNOSTIC" | "PARCOURS"
+  origine_display: string
+  subject: Subject | null
+  theme: { id: number; name: string } | null
+  savoir: { id: number; intitule: string } | null
+  duree_estimee_min: number
+  nb_etapes: number
+  // Vide quand `verrouillee` : seuls les slugs, qui ouvrent le contenu, sont retirés -
+  // le thème, la durée et la fréquence restent visibles (voir _serialiser_seance).
+  etapes: EtapeSeance[]
+  // "tombé dans 8 des 10 dernières épreuves" - null si le thème n'est jamais tombé,
+  // ou si la séance n'en cible pas (calibrage).
+  frequence: { occurrences: number; epreuves_total: number } | null
+  statut: "PROPOSEE" | "TERMINEE"
+  // Résultat du quiz de la séance, une fois la session terminée - null quand il n'y a
+  // rien à noter (voir quiz.services.score_de_la_seance).
+  score: { reussies: number; total: number } | null
+  verrouillee: boolean
+}
+
+/** Réponse de GET /quiz/plan-du-jour/ - voir quiz.views.plan_du_jour_view. */
+export interface PlanDuJour {
+  etat: "cursus_inconnu" | "examen_passe" | "rien_a_proposer" | "deja_fait_aujourdhui" | "plan_pret"
+  cursus: Cursus | null
+  compte_a_rebours: CompteARebours | null
+  seance: Seance | null
+  // Absent quand aucun cursus n'est déclaré : il n'y a alors pas de semaine à compter.
+  seances_cette_semaine?: number
+}
+
+/** Voir catalog.models.ExamSession.compte_a_rebours_pour. */
+export interface CompteARebours {
+  // AAAA-MM-JJ.
+  date_examen: string
+  jours_restants: number
+  // Ex. "BAC 2027" - porte l'année réellement décomptée, estimée ou non.
+  session_label: string
+  // Vrai quand la date officielle n'est pas encore saisie et qu'on a décalé la
+  // dernière session connue : à n'afficher qu'au mois, jamais au jour.
+  estimee: boolean
 }
 
 export interface Series {
@@ -624,6 +690,25 @@ export interface ParcoursModule {
   numero: string
   titre: string
   savoirs: ParcoursSavoir[]
+}
+
+/**
+ * Une ligne de la file "à réviser" (voir quiz.views.list_revisions_dues). L'endpoint
+ * existait déjà, testé, mais AUCUN écran ne l'appelait : la page /revision qui le
+ * consommait a été redirigée vers /parcours, et la donnée est restée invisible
+ * depuis. C'est AccueilEleve qui la fait enfin remonter.
+ */
+export interface RevisionDue {
+  id: number
+  theme: string
+  theme_id: number
+  subject_id: number
+  subject_label: string
+  cursus: number
+  cursus_display: string
+  // 0 = due aujourd'hui ; au-delà, le thème est en retard.
+  jours_retard: number
+  cours: Cours[]
 }
 
 export interface ResumeMatiere {

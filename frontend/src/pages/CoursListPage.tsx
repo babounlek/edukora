@@ -38,6 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ReviserTabs } from "@/components/ReviserTabs"
 
 type ViewMode = "cards" | "list"
 
@@ -375,6 +376,7 @@ export function CoursListPage() {
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
+      <ReviserTabs />
       {/* Même gabarit de hero que /quiz et /fiches : carte arrondie contenue plutôt
           qu'une bande pleine largeur, pastille d'icône, accroche puis puces de
           volumétrie - les trois outils de la plateforme doivent se reconnaître. */}

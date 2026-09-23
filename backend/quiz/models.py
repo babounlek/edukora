@@ -288,3 +288,97 @@ class RevisionSchedule(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.theme} ({self.due_at})"
+
+
+class OrigineSeance(models.TextChoices):
+    """D'où vient la séance proposée - voir quiz.services.plan_du_jour, qui les essaie
+    dans cet ordre de priorité."""
+
+    REVISION_DUE = "REVISION_DUE", "Révision due"
+    LECTURE_EN_COURS = "LECTURE_EN_COURS", "Lecture en cours"
+    DIAGNOSTIC = "DIAGNOSTIC", "Calibrage"
+    PARCOURS = "PARCOURS", "Parcours"
+
+
+class StatutSeance(models.TextChoices):
+    PROPOSEE = "PROPOSEE", "Proposée"
+    TERMINEE = "TERMINEE", "Terminée"
+
+
+class SeanceJournaliere(models.Model):
+    """
+    La séance du jour d'un élève : une matière, un thème, quelques étapes, ~25 minutes.
+
+    Cette table EST le cache de la journée, et c'est son intérêt principal. La
+    promesse du plan quotidien ("une seule prochaine action") ne tient que si ouvrir
+    l'appli trois fois dans la journée montre la MÊME séance : une proposition
+    recalculée à chaque affichage redeviendrait un catalogue qui change tout seul,
+    exactement ce à quoi elle doit se substituer. La ligne est donc écrite une fois
+    par (user, cursus, jour), puis relue telle quelle.
+
+    Sert aussi de mémoire à deux règles qui ont besoin du passé : la rotation des
+    matières (voir plan_du_jour) et le compteur "n séances cette semaine".
+
+    `date` est la date LOCALE (settings.TIME_ZONE = Africa/Douala), jamais UTC - en
+    UTC la journée d'un élève camerounais basculerait à 1 h du matin. Le jour où un
+    second pays s'ouvre sur un autre fuseau, c'est ici qu'il faudra un
+    Country.timezone : aujourd'hui le réglage global EST le fuseau du seul pays servi.
+    """
+
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="seances_journalieres")
+    cursus = models.ForeignKey("catalog.Cursus", on_delete=models.CASCADE, related_name="seances_journalieres")
+    date = models.DateField(help_text="Jour local de la séance - voir la docstring de la classe.")
+
+    origine = models.CharField(max_length=20, choices=OrigineSeance.choices)
+    subject = models.ForeignKey(
+        "catalog.Subject", null=True, blank=True, on_delete=models.CASCADE, related_name="seances_journalieres",
+        help_text="Nul pour un calibrage, qui porte sur tout le cursus et non sur une matière.",
+    )
+    theme = models.ForeignKey(
+        "catalog.Tag", null=True, blank=True, on_delete=models.SET_NULL, related_name="seances_journalieres",
+        help_text="Thème travaillé, quand la séance en cible un - voir aussi `savoir`.",
+    )
+    savoir = models.ForeignKey(
+        "programme.Savoir", null=True, blank=True, on_delete=models.SET_NULL, related_name="seances_journalieres",
+        help_text=(
+            "Alternative à `theme` pour les matières dont le parcours suit le programme "
+            "officiel plutôt que la fréquence des thèmes (français, philo, histoire-géo, "
+            "anglais - voir SUBJECTS_PARCOURS_PAR_FREQUENCE)."
+        ),
+    )
+    """
+    `theme` et `savoir` sont tous deux SET_NULL et tous deux facultatifs : une séance
+    déjà faite reste un fait historique (elle alimente la rotation des matières et le
+    compteur hebdomadaire) même si le Tag qui la portait a été fusionné depuis - or
+    les fusions de tags sont fréquentes sur ce corpus. La perdre en cascade
+    réécrirait l'historique de l'élève pour une raison qui ne le concerne pas.
+    """
+
+    etapes = models.JSONField(
+        default=list,
+        help_text="Étapes de la séance, dans l'ordre - voir quiz.services._construire_etapes.",
+    )
+    quiz_session = models.ForeignKey(
+        "quiz.QuizSession", null=True, blank=True, on_delete=models.SET_NULL, related_name="seances",
+        help_text=(
+            "Session lancée depuis l'étape quiz de cette séance - renseignée seulement "
+            "si l'élève l'ouvre réellement. Donne le score affiché en fin de séance, et "
+            "déclenche sa clôture automatique (voir quiz.views.complete_session)."
+        ),
+    )
+    statut = models.CharField(max_length=10, choices=StatutSeance.choices, default=StatutSeance.PROPOSEE)
+    termine_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-date"]
+        constraints = [
+            models.UniqueConstraint(fields=["user", "cursus", "date"], name="unique_seance_par_jour"),
+        ]
+
+    def __str__(self):
+        return f"{self.user} - {self.date} ({self.get_origine_display()})"
+
+    @property
+    def duree_estimee_min(self):
+        return sum(etape.get("duree_min", 0) for etape in self.etapes)

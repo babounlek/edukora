@@ -176,6 +176,17 @@ class SubscriptionManager(models.Manager):
                 locked_qs = self.select_for_update() if connection.features.has_select_for_update else self
                 subscription = locked_qs.get(pk=subscription.pk)
                 subscription.extend(duration_days, duration_mode=duration_mode)
+
+            # Payer pour un cursus est la déclaration la plus forte qui soit de ce
+            # qu'on prépare : on la reprend telle quelle si l'utilisateur n'a encore
+            # rien déclaré (voir users.models.User.cursus_prepare), pour qu'il voie
+            # son compte à rebours sans avoir à le redire. Jamais par-dessus une
+            # déclaration existante : un parent qui achète un second cursus, ou un
+            # achat de rattrapage sur une ancienne série, ne doit pas réécrire ce que
+            # l'élève a lui-même choisi.
+            if user.cursus_prepare_id is None:
+                user.cursus_prepare = cursus
+                user.save(update_fields=["cursus_prepare"])
         return subscription
 
 

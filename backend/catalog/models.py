@@ -455,6 +455,68 @@ class ExamSession(models.Model):
             .first()
         )
 
+    @classmethod
+    def compte_a_rebours_pour(cls, cursus):
+        """
+        Jours restants avant l'examen de ce cursus, pour l'élève - là où
+        prochaine_pour ne sert qu'à facturer (voir
+        subscriptions.models.Plan.effective_duration_days), ce compte à rebours est
+        ce qu'on AFFICHE : il doit donc répondre quelque chose d'honnête même quand
+        la prochaine session n'est pas encore saisie.
+
+        Trois sorties possibles, jamais une date inventée sans le dire :
+        - une session à venir existe -> sa date, `estimee` faux ;
+        - seules des sessions passées existent -> la dernière, décalée d'autant
+          d'années qu'il faut pour retomber dans le futur, `estimee` vrai (le
+          frontend l'affiche alors au mois, jamais au jour) ;
+        - aucune session pour ce (pays, examen) -> None, et l'appelant n'affiche
+          simplement pas de compte à rebours.
+
+        La série du cursus n'intervient pas : une session d'examen vaut pour toutes
+        les séries d'un même diplôme, et un élève qui n'a pas encore choisi la sienne
+        a droit à son compte à rebours comme les autres.
+        """
+        aujourdhui = timezone.now().date()
+        session = cls.prochaine_pour(cursus.country, cursus.examen)
+        if session is not None:
+            return {
+                "date_examen": session.date_debut,
+                "jours_restants": (session.date_debut - aujourdhui).days,
+                "session_label": f"{session.display_examen()} {session.annee}",
+                "estimee": False,
+            }
+
+        derniere = (
+            cls.objects.filter(country=cursus.country, examen=cursus.examen)
+            .order_by("-date_debut")
+            .first()
+        )
+        if derniere is None:
+            return None
+
+        date_estimee = derniere.date_debut
+        while date_estimee <= aujourdhui:
+            date_estimee = _meme_jour_annee_suivante(date_estimee)
+        return {
+            "date_examen": date_estimee,
+            "jours_restants": (date_estimee - aujourdhui).days,
+            "session_label": f"{derniere.display_examen()} {date_estimee.year}",
+            "estimee": True,
+        }
+
+
+def _meme_jour_annee_suivante(date):
+    """
+    Même jour l'année suivante - avec le seul cas que `replace(year=...)` refuse, un
+    29 février vers une année non bissextile, ramené au 28. Aucune session d'examen
+    ne tombe un 29 février en pratique ; c'est un garde-fou pour ne pas lever sur une
+    donnée saisie à la main.
+    """
+    try:
+        return date.replace(year=date.year + 1)
+    except ValueError:
+        return date.replace(year=date.year + 1, day=28)
+
 
 class Tag(models.Model):
     """Vocabulaire partagé pour les thèmes pédagogiques et les mots-clés de recherche."""

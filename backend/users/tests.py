@@ -23,6 +23,8 @@ from django.utils import timezone
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from catalog.models import Cursus, Examen, ExamSession
+
 from .management.commands.purge_otp_codes import MIN_RETENTION_DAYS
 from .models import AuthIdentity, AuthProvider, CodeCanal, OTPCode, User
 from .email_service import (
@@ -1508,3 +1510,115 @@ class EmailLinkTests(TestCase):
         # identité ne la prouve - et son titulaire réel ne pourrait plus s'en servir.
         self.assertIsNone(self.user.email)
         self.assertFalse(self.user.email_verified)
+
+
+class CursusPrepareEtCompteAReboursTests(TestCase):
+    """
+    Le compte à rebours est la première chose qu'un visiteur NON abonné doit voir :
+    ces tests vérifient qu'il ne dépend d'aucun abonnement, et qu'il n'invente jamais
+    une date sans dire qu'elle est estimée (voir ExamSession.compte_a_rebours_pour).
+    """
+
+    def setUp(self):
+        # Référentiel déjà seedé par les migrations catalog - récupéré, jamais recréé
+        # (même raison que subscriptions.tests._cursus).
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        self.user = User.objects.create_user(phone_number="677900101", password="x")
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def test_pas_de_compte_a_rebours_tant_que_rien_nest_declare(self):
+        reponse = self.client.get("/auth/me/")
+
+        self.assertIsNone(reponse.data["cursus_prepare"])
+        self.assertIsNone(reponse.data["compte_a_rebours"])
+
+    def test_compte_a_rebours_depuis_la_prochaine_session(self):
+        ExamSession.objects.create(
+            country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year,
+            date_debut=(timezone.now() + timedelta(days=60)).date(),
+        )
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+
+        compte = self.client.get("/auth/me/").data["compte_a_rebours"]
+
+        # Tolérance d'un jour : même raison que PlanEffectiveDurationDaysTests, le
+        # calcul peut chevaucher minuit.
+        self.assertIn(compte["jours_restants"], (59, 60))
+        self.assertFalse(compte["estimee"])
+
+    def test_session_passee_donne_une_date_estimee_lannee_suivante(self):
+        derniere = (timezone.now() - timedelta(days=30)).date()
+        ExamSession.objects.create(
+            country=self.cursus.country, examen=self.cursus.examen, annee=derniere.year,
+            date_debut=derniere,
+        )
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+
+        compte = self.client.get("/auth/me/").data["compte_a_rebours"]
+
+        self.assertTrue(compte["estimee"])
+        self.assertEqual(compte["date_examen"].year, derniere.year + 1)
+        self.assertGreater(compte["jours_restants"], 0)
+        # Le libellé porte l'année estimée, pas celle de la session écoulée : afficher
+        # "BAC 2027" alors qu'on décompte vers 2028 serait un contresens.
+        self.assertIn(str(derniere.year + 1), compte["session_label"])
+
+    def test_aucune_session_saisie_ne_donne_aucun_compte_a_rebours(self):
+        ExamSession.objects.filter(country=self.cursus.country, examen=self.cursus.examen).delete()
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+
+        reponse = self.client.get("/auth/me/")
+
+        # Le cursus déclaré reste exposé : c'est la date qui manque, pas la déclaration.
+        self.assertEqual(reponse.data["cursus_prepare"]["id"], self.cursus.id)
+        self.assertIsNone(reponse.data["compte_a_rebours"])
+
+    def test_patch_declare_le_cursus_prepare(self):
+        reponse = self.client.patch("/auth/me/", {"cursus_prepare": self.cursus.id}, format="json")
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(reponse.data["cursus_prepare"]["id"], self.cursus.id)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.cursus_prepare_id, self.cursus.id)
+
+    def test_patch_a_null_efface_la_declaration(self):
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+
+        reponse = self.client.patch("/auth/me/", {"cursus_prepare": None}, format="json")
+
+        self.assertEqual(reponse.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertIsNone(self.user.cursus_prepare_id)
+
+    def test_patch_refuse_un_cursus_de_pays_desactive(self):
+        pays = self.cursus.country
+        pays.actif = False
+        pays.save(update_fields=["actif"])
+
+        reponse = self.client.patch("/auth/me/", {"cursus_prepare": self.cursus.id}, format="json")
+
+        self.assertEqual(reponse.status_code, 400)
+        self.user.refresh_from_db()
+        self.assertIsNone(self.user.cursus_prepare_id)
+
+    def test_un_cursus_sans_serie_a_aussi_son_compte_a_rebours(self):
+        # La série n'entre pas dans le calcul (une session vaut pour tout le diplôme) :
+        # un élève qui n'a pas encore choisi la sienne ne doit pas en être privé.
+        bepc = Cursus.objects.filter(examen=Examen.BEPC, series__isnull=True).first()
+        self.assertIsNotNone(bepc, "Le référentiel seedé doit contenir un BEPC sans série.")
+        ExamSession.objects.create(
+            country=bepc.country, examen=bepc.examen, annee=timezone.now().year,
+            date_debut=(timezone.now() + timedelta(days=90)).date(),
+        )
+        self.user.cursus_prepare = bepc
+        self.user.save(update_fields=["cursus_prepare"])
+
+        compte = self.client.get("/auth/me/").data["compte_a_rebours"]
+
+        self.assertIn(compte["jours_restants"], (89, 90))
+        self.assertFalse(compte["estimee"])

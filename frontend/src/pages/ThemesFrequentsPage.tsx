@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ReviserTabs } from "@/components/ReviserTabs"
 
 interface ThemeIllustratif {
   id: number
@@ -126,6 +127,7 @@ export function ThemesFrequentsPage() {
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
+      <ReviserTabs />
       <div className="relative mb-8 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8 lg:p-12">
         <div
           className="absolute inset-0 opacity-[0.04]"
