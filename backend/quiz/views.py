@@ -23,7 +23,9 @@ from .pdf import queue_quiz_fiche_pdf_generation
 from .services import (
     cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision, generer_session,
     maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
-    prochaine_revision, raisons_de_la_seance, remplacer_seance, score_de_la_seance, seance_du_jour,
+    BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, prochaine_revision, raisons_de_la_seance, remplacer_seance,
+    score_de_la_seance,
+    seance_du_jour,
     seance_supplementaire,
     seances_terminees_cette_semaine, terminer_seance,
 )
@@ -599,6 +601,10 @@ def _serialiser_seance(seance, verrouillee):
         "theme": {"id": seance.theme_id, "name": seance.theme.name} if seance.theme else None,
         "savoir": {"id": seance.savoir_id, "intitule": seance.savoir.intitule} if seance.savoir else None,
         "duree_estimee_min": seance.duree_estimee_min,
+        # Le temps que l'élève s'est donné, et les choix possibles - c'est un plafond,
+        # la durée réelle ci-dessus peut être inférieure.
+        "budget_minutes": seance.budget_minutes,
+        "budgets_possibles": list(BUDGETS_SEANCE_MINUTES),
         "nb_etapes": len(seance.etapes),
         # Les étapes portent les slugs qui ouvrent le contenu : retirées tant que
         # l'abonnement n'est pas actif, alors que tout le reste est servi tel quel.
@@ -773,5 +779,30 @@ def autre_chose_view(request):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     seance = remplacer_seance(request.user, cursus)
+    compte = ExamSession.compte_a_rebours_pour(cursus)
+    return Response(_charge_utile_plan(request.user, cursus, seance, compte))
+
+
+@api_view(["POST"])
+def duree_seance_view(request):
+    """
+    "Combien de temps as-tu ?" - recompose la séance du jour pour la durée demandée
+    (voir quiz.services.ajuster_duree_seance), sans changer de thème.
+
+    POST : l'appel réécrit la séance. Réservé à l'abonné actif, comme le contenu
+    qu'elle enchaîne.
+    """
+    cursus = request.user.cursus_prepare
+    if cursus is None:
+        return Response({"error": "Aucun cursus déclaré."}, status=400)
+    if not _has_active_subscription(request.user, cursus):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+
+    try:
+        minutes = int(request.data.get("minutes"))
+    except (TypeError, ValueError):
+        return Response({"error": "minutes doit être un entier."}, status=400)
+
+    seance = ajuster_duree_seance(request.user, cursus, minutes)
     compte = ExamSession.compte_a_rebours_pour(cursus)
     return Response(_charge_utile_plan(request.user, cursus, seance, compte))

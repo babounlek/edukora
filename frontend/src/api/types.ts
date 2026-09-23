@@ -53,6 +53,10 @@ export interface Seance {
   theme: { id: number; name: string } | null
   savoir: { id: number; intitule: string } | null
   duree_estimee_min: number
+  // Temps que l'élève s'est donné, et les choix possibles. Un plafond : la durée
+  // réelle ci-dessus peut être inférieure quand le contenu manque.
+  budget_minutes: number
+  budgets_possibles: number[]
   nb_etapes: number
   // Vide quand `verrouillee` : seuls les slugs, qui ouvrent le contenu, sont retirés -
   // le thème, la durée et la fréquence restent visibles (voir _serialiser_seance).

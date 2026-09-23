@@ -25,4 +25,5 @@ urlpatterns = [
     path("plan-du-jour/terminer/", views.terminer_seance_view, name="terminer-seance"),
     path("plan-du-jour/continuer/", views.continuer_view, name="continuer-seance"),
     path("plan-du-jour/autre-chose/", views.autre_chose_view, name="autre-chose"),
+    path("plan-du-jour/duree/", views.duree_seance_view, name="duree-seance"),
 ]

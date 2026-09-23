@@ -826,6 +826,21 @@ ROTATION_MATIERES_RECENTES = 2
 # session complète (10 items) qui doublerait à elle seule le budget de la séance.
 QUIZ_FIN_DE_SEANCE_N = 5
 
+# Plafond du quiz de fin de séance sur un gros budget : au-delà, l'exercice de vérif'
+# redevient une session de quiz complète et mange la séance au lieu de la conclure.
+QUIZ_QUESTIONS_MAX = 10
+
+# Exercices d'examen maximum dans une séance - ce qui distingue une séance intensive
+# d'une séance normale rallongée : s'entraîner veut dire refaire, pas lire plus
+# longtemps.
+EXERCICES_PAR_SEANCE_MAX = 2
+
+# Budgets proposés à l'élève ("combien de temps as-tu ?"). 25 reste le défaut et la
+# recommandation ; 10 sert les jours où il n'a qu'un trajet, 45 les révisions de
+# week-end. Ce sont des PLAFONDS : la séance affiche toujours sa durée réelle, qui
+# peut être inférieure quand le contenu manque (voir _construire_etapes).
+BUDGETS_SEANCE_MINUTES = (10, 25, 45)
+
 
 def plan_du_jour(user, cursus, date=None):
     """
@@ -978,6 +993,7 @@ def _seance_depuis_lecture_en_cours(user, cursus, matieres_exclues, themes_inter
             continue
         return {
             "origine": OrigineSeance.LECTURE_EN_COURS,
+            "cours": cours,
             "subject": cours.subject,
             "theme": theme,
             "etapes": etapes,
@@ -1094,6 +1110,10 @@ def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=fro
         entree, subject = choisi["entree"], choisi["subject"]
         theme = Tag.objects.filter(pk=entree[choisi["cle_theme"]]).first() if choisi["cle_theme"] else None
         savoir = Savoir.objects.filter(pk=entree[choisi["cle_savoir"]]).first() if choisi["cle_savoir"] else None
+        # Le cours retenu est mémorisé sur la séance (voir SeanceJournaliere.cours) :
+        # le classement qui l'a choisi n'est pas rejoué à chaque ajustement de durée,
+        # et sans cette trace un aller-retour 25 -> 10 -> 25 minutes le perdrait.
+        cours_retenu = Cours.objects.filter(slug=entree["cours"][0]["slug"]).first() if entree["cours"] else None
         etapes = _construire_etapes(cursus, subject, theme=theme, savoir=savoir, cours_proposes=entree["cours"])
         # `has_quiz` dit qu'il existe un quiz sur ce thème pour ce cursus ; seul
         # _construire_etapes sait s'il en reste dans le budget de la séance. On
@@ -1102,6 +1122,7 @@ def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=fro
             continue
         return {
             "origine": OrigineSeance.PARCOURS,
+            "cours": cours_retenu,
             "subject": subject,
             "theme": theme,
             "savoir": savoir,
@@ -1112,18 +1133,36 @@ def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=fro
 
 
 
-def _construire_etapes(cursus, subject, theme=None, savoir=None, cours_impose=None, cours_proposes=None):
+def _construire_etapes(
+    cursus, subject, theme=None, savoir=None, cours_impose=None, cours_proposes=None,
+    budget_minutes=BUDGET_SEANCE_MINUTES,
+):
     """
     Relire la méthode, la mettre en pratique sur un vrai sujet d'examen, se vérifier -
     dans cet ordre, et seulement tant que le budget de la séance le permet.
+
+    Le quiz est RÉSERVÉ d'abord, avant de remplir le reste : c'est la seule étape
+    obligatoire (voir _contient_quiz), et un remplissage glouton naïf la faisait sauter
+    dès que le budget descendait - un budget de 10 minutes partait entièrement dans le
+    cours (8 min) et ne laissait rien pour vérifier quoi que ce soit, donc aucune
+    séance du tout. Une fois le reste rempli, le quiz récupère ce qui n'a pas servi,
+    jusqu'à QUIZ_QUESTIONS_MAX : c'est ce qui fait qu'une séance longue interroge
+    davantage plutôt que de finir en avance.
+
+    À 25 minutes - le défaut - la composition est exactement celle d'avant : méthode
+    (8) + exercice (12) + 5 questions (5).
 
     Une étape absente (pas de cours rattaché au thème, aucun exercice tombé dessus,
     banque de quiz pas encore générée) est simplement omise : une séance plus courte
     reste une séance, une séance qui renvoie vers du vide n'en est pas une.
     """
-    etapes = []
-    restant = BUDGET_SEANCE_MINUTES
+    a_du_quiz = bool(_items_eligibles(cursus, subject=subject, theme=theme, savoir=savoir))
+    # Réservation : sans elle, le quiz passerait après le cours et l'exercice et
+    # sauterait sur les petits budgets.
+    reserve = DUREE_ETAPE_MINUTES["quiz"] if a_du_quiz else 0
+    restant = budget_minutes - reserve
 
+    etapes = []
     cours = cours_impose or (cours_proposes[0] if cours_proposes else None)
     if cours is not None and restant >= DUREE_ETAPE_MINUTES["cours"]:
         # construire_parcours* renvoie des dicts {slug, titre, sous_theme}, la lecture
@@ -1137,56 +1176,72 @@ def _construire_etapes(cursus, subject, theme=None, savoir=None, cours_impose=No
         })
         restant -= DUREE_ETAPE_MINUTES["cours"]
 
-    exercice = _exercice_pour_theme(cursus, subject, theme) if theme is not None else None
-    if exercice is not None and restant >= DUREE_ETAPE_MINUTES["exercice"]:
-        etapes.append(dict(exercice, duree_min=DUREE_ETAPE_MINUTES["exercice"]))
-        restant -= DUREE_ETAPE_MINUTES["exercice"]
+    if theme is not None:
+        # Plusieurs exercices sur les gros budgets : c'est ce qui distingue une séance
+        # intensive d'une séance normale rallongée artificiellement - s'entraîner, ça
+        # veut dire refaire, pas lire plus longtemps.
+        for exercice in _exercices_pour_theme(cursus, subject, theme, EXERCICES_PAR_SEANCE_MAX):
+            if restant < DUREE_ETAPE_MINUTES["exercice"]:
+                break
+            etapes.append(dict(exercice, duree_min=DUREE_ETAPE_MINUTES["exercice"]))
+            restant -= DUREE_ETAPE_MINUTES["exercice"]
 
-    if restant >= DUREE_ETAPE_MINUTES["quiz"] and _items_eligibles(
-        cursus, subject=subject, theme=theme, savoir=savoir,
-    ):
+    if a_du_quiz:
+        # Une question par minute (voir DUREE_ETAPE_MINUTES) : le quiz reprend sa
+        # réserve plus tout ce que le cours et les exercices n'ont pas consommé.
+        questions = min(QUIZ_QUESTIONS_MAX, max(QUIZ_FIN_DE_SEANCE_N, reserve + restant))
         etapes.append({
             "type": "quiz",
-            "libelle": str(QUIZ_FIN_DE_SEANCE_N) + " questions",
+            "libelle": str(questions) + " questions",
             "mode": ModeQuiz.PRATIQUE,
-            "n": QUIZ_FIN_DE_SEANCE_N,
-            "duree_min": DUREE_ETAPE_MINUTES["quiz"],
+            "n": questions,
+            "duree_min": questions,
         })
 
     return etapes
 
 
-def _exercice_pour_theme(cursus, subject, theme):
+def _exercices_pour_theme(cursus, subject, theme, maximum):
     """
-    Un exercice réellement tombé sur ce thème, le plus récent d'abord - c'est ce qui
-    distingue une révision edukora d'une fiche de cours : l'élève travaille le sujet
-    qui est vraiment tombé, pas un exercice inventé pour l'occasion.
+    Des exercices réellement tombés sur ce thème, le plus récent d'abord - c'est ce qui
+    distingue une révision edukora d'une fiche de cours : l'élève travaille les sujets
+    qui sont vraiment tombés, pas des exercices inventés pour l'occasion.
 
-    Même source que ThemeExercicesView (catalog.views), sans sa restriction d'accès :
-    le gating est décidé plus haut, sur la séance entière (voir la vue).
+    Un exercice bavard peut porter le thème sur plusieurs de ses Question : une seule
+    entrée par exercice, jamais par sous-question (même dédoublonnage que
+    catalog.views.ThemeExercicesView).
+
+    Même source que ThemeExercicesView, sans sa restriction d'accès : le gating est
+    décidé plus haut, sur la séance entière (voir la vue).
     """
-    question = (
+    questions = (
         Question.objects.filter(
             themes=theme, exercise__lesson__statut=StatutContenu.VALIDE,
             exercise__lesson__subject=subject, exercise__lesson__cursus=cursus,
         )
         .select_related("exercise__lesson")
         .order_by("-exercise__lesson__year", "exercise__numero_exercice")
-        .first()
     )
-    if question is None:
-        return None
-    lesson = question.exercise.lesson
-    numero = question.exercise.numero_exercice
-    libelle = "Exercice " + str(numero) + " - " + lesson.title if numero else lesson.title
-    return {
-        "type": "exercice",
-        "libelle": libelle,
-        "lesson_slug": lesson.slug,
-        "lesson_title": lesson.title,
-        "lesson_year": lesson.year,
-        "numero_exercice": numero,
-    }
+    vus, trouves = set(), []
+    for question in questions:
+        lesson = question.exercise.lesson
+        numero = question.exercise.numero_exercice
+        cle = (lesson.id, numero)
+        if cle in vus:
+            continue
+        vus.add(cle)
+        trouves.append({
+            "type": "exercice",
+            "libelle": "Exercice " + str(numero) + " - " + lesson.title if numero else lesson.title,
+            "lesson_slug": lesson.slug,
+            "lesson_title": lesson.title,
+            "lesson_year": lesson.year,
+            "numero_exercice": numero,
+        })
+        if len(trouves) >= maximum:
+            break
+    return trouves
+
 
 
 def terminer_seance(seance):
@@ -1614,3 +1669,37 @@ def prochaine_revision(seance):
         user=seance.user, cursus=seance.cursus, theme_id=seance.theme_id,
     ).first()
     return schedule.due_at if schedule else None
+
+
+def ajuster_duree_seance(user, cursus, minutes, date=None):
+    """
+    "Combien de temps as-tu ?" - recompose la séance du jour pour le temps que l'élève
+    se donne, sans changer de thème.
+
+    Un plan quotidien qui impose 25 minutes ne sert à rien les jours où l'élève en a
+    dix : il ne fait rien du tout plutôt que moins. Le thème, lui, ne bouge pas - c'est
+    la promesse de la journée, seule sa mise en œuvre se resserre ou s'étire (voir
+    _construire_etapes pour la composition de chaque budget).
+
+    Renvoie la séance, inchangée si la durée demandée n'est pas proposée, si la séance
+    est déjà terminée, ou si le nouveau budget ne permet plus de vérifier quoi que ce
+    soit (voir _contient_quiz) - mieux vaut garder la séance qui marche que la casser
+    pour respecter un chiffre.
+    """
+    seance = seance_du_jour(user, cursus, date)
+    if seance is None or minutes not in BUDGETS_SEANCE_MINUTES:
+        return seance
+    if seance.statut != StatutSeance.PROPOSEE or seance.budget_minutes == minutes:
+        return seance
+
+    etapes = _construire_etapes(
+        cursus, seance.subject, theme=seance.theme, savoir=seance.savoir,
+        cours_impose=seance.cours, budget_minutes=minutes,
+    )
+    if not _contient_quiz(etapes):
+        return seance
+
+    seance.etapes = etapes
+    seance.budget_minutes = minutes
+    seance.save(update_fields=["etapes", "budget_minutes"])
+    return seance

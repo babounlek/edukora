@@ -51,7 +51,8 @@ from .services import (
     TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
     construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir,
     _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
-    REFUS_MAX_PAR_JOUR, _contient_quiz, remplacer_seance, revisions_dues, seance_du_jour, seance_supplementaire,
+    REFUS_MAX_PAR_JOUR, _contient_quiz, ajuster_duree_seance, remplacer_seance, revisions_dues, seance_du_jour,
+    seance_supplementaire,
     terminer_seance,
     seances_terminees_cette_semaine,
 )
@@ -3046,6 +3047,10 @@ class PrioriteFrequenceTests(TestCase):
         """
         subject = Subject.objects.get(code=code, country=self.cursus.country)
         theme = Tag.objects.create(name=f"thème {code}")
+        cours = _make_cours(
+            subject, cursus=self.cursus, tags=[theme],
+            titre=f"Méthode {code}", external_id=f"cours-freq-{code}",
+        )
         for index in range(nb_epreuves):
             lesson = Lesson.objects.create(
                 title=f"Épreuve {code} {annee_depart + index}", subject=subject,
@@ -3054,7 +3059,15 @@ class PrioriteFrequenceTests(TestCase):
             )
             lesson.cursus.add(self.cursus)
             if index < nb_avec_le_theme:
-                _make_question(lesson, "1").themes.add(theme)
+                question = _make_question(lesson, "1")
+                question.themes.add(theme)
+                # Le lien Thème -> Cours ne passe PAS par Cours.cursus (vide en
+                # pratique) mais par la lignée Cours <- RappelDeMethode <- Exercise <-
+                # Lesson.cursus - voir construire_parcours_par_frequence.
+                RappelDeMethode.objects.create(
+                    exercise=question.exercise, external_id=f"rappel-{code}-{index}",
+                    competence=f"thème {code}", contenu_markdown="Méthode.", cours=cours,
+                )
         if avec_quiz:
             item = CompetenceItem.objects.create(
                 external_id=f"freq-{code}", theme=theme, subject=subject,
@@ -3141,3 +3154,61 @@ class PrioriteFrequenceTests(TestCase):
         self.assertEqual(seance.origine, OrigineSeance.PARCOURS)
         self.assertEqual(seance.theme_id, theme.id)
         self.assertEqual(seance.subject_id, maths.id)
+
+    def test_une_seance_express_passe_directement_aux_questions(self):
+        self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
+        plan_du_jour(self.user, self.cursus)
+
+        seance = ajuster_duree_seance(self.user, self.cursus, 10)
+
+        # Dix minutes ne permettent ni de relire la méthode (8 min) ni de faire un
+        # exercice (12) : le quiz est réservé d'abord, sinon la séance n'aurait rien
+        # pour vérifier et serait rejetée tout entière.
+        self.assertEqual([e["type"] for e in seance.etapes], ["quiz"])
+        self.assertEqual(seance.duree_estimee_min, 10)
+        self.assertEqual(seance.budget_minutes, 10)
+
+    def test_une_seance_intensive_ajoute_un_second_exercice(self):
+        self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
+        plan_du_jour(self.user, self.cursus)
+
+        seance = ajuster_duree_seance(self.user, self.cursus, 45)
+
+        # S'entraîner veut dire refaire, pas lire plus longtemps : le temps
+        # supplémentaire va à un second exercice d'examen et à un quiz plus long.
+        types = [e["type"] for e in seance.etapes]
+        self.assertEqual(types.count("exercice"), 2)
+        self.assertEqual(seance.etapes[-1]["n"], 10)
+
+    def test_le_defaut_a_25_minutes_est_inchange(self):
+        self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        self.assertEqual([e["type"] for e in seance.etapes], ["cours", "exercice", "quiz"])
+        self.assertEqual(seance.duree_estimee_min, 25)
+
+    def test_revenir_a_25_minutes_retrouve_la_methode(self):
+        self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
+        plan_du_jour(self.user, self.cursus)
+        ajuster_duree_seance(self.user, self.cursus, 10)
+
+        seance = ajuster_duree_seance(self.user, self.cursus, 25)
+
+        # Le cours est mémorisé sur la séance : sans cela, l'aller-retour le perdrait,
+        # le classement qui l'avait choisi n'étant pas rejoué ici.
+        self.assertEqual([e["type"] for e in seance.etapes], ["cours", "exercice", "quiz"])
+
+    def test_une_duree_non_proposee_ne_change_rien(self):
+        self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
+        avant = plan_du_jour(self.user, self.cursus).etapes
+
+        seance = ajuster_duree_seance(self.user, self.cursus, 7)
+
+        self.assertEqual(seance.etapes, avant)
+        self.assertEqual(seance.budget_minutes, 25)

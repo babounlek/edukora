@@ -4,13 +4,15 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, Check, Lock, PenLine, RotateCcw, Sparkles, Target } from "lucide-react"
 
 import {
-  continuerSeanceDuJour, getPlanDuJour, listCursus, proposerAutreChose, terminerSeanceDuJour, updateMe,
+  ajusterDureeSeance, continuerSeanceDuJour, getPlanDuJour, listCursus, proposerAutreChose,
+  terminerSeanceDuJour, updateMe,
 } from "@/api/endpoints"
 import type { EtapeSeance, PlanDuJour, Seance } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { coursReaderPath, epreuveReaderPath, themesFrequentsPath } from "@/lib/countryPath"
 import { trackEvent } from "@/lib/analytics"
+import { cn } from "@/lib/utils"
 import { formatCompteARebours } from "@/components/CompteAReboursBadge"
 
 /**
@@ -56,6 +58,13 @@ export function SeanceDuJour({ country }: { country: string }) {
     onSuccess: (plan) => {
       if (plan.seance) queryClient.setQueryData(["plan-du-jour"], plan)
     },
+  })
+
+  // Recomposition de la séance pour le temps disponible - le thème ne change pas,
+  // seule sa mise en œuvre se resserre ou s'étire (voir ajuster_duree_seance).
+  const duree = useMutation({
+    mutationFn: ajusterDureeSeance,
+    onSuccess: (plan) => queryClient.setQueryData(["plan-du-jour"], plan),
   })
 
   // "Séance affichée" une seule fois par séance, jamais à chaque rendu : le
@@ -110,6 +119,8 @@ export function SeanceDuJour({ country }: { country: string }) {
             }}
             remplacementEnCours={autreChose.isPending}
             plusRienAProposer={autreChose.isSuccess && autreChose.data?.etat === "rien_a_proposer"}
+            onChoisirDuree={(minutes) => duree.mutate(minutes)}
+            ajustementEnCours={duree.isPending}
           />
         )}
       </div>
@@ -143,6 +154,7 @@ function EnTete({ plan }: { plan: PlanDuJour }) {
 
 function SeanceAFaire({
   plan, country, onTerminer, terminaisonEnCours, onAutreChose, remplacementEnCours, plusRienAProposer,
+  onChoisirDuree, ajustementEnCours,
 }: {
   plan: PlanDuJour
   country: string
@@ -151,6 +163,8 @@ function SeanceAFaire({
   onAutreChose: () => void
   remplacementEnCours: boolean
   plusRienAProposer: boolean
+  onChoisirDuree: (minutes: number) => void
+  ajustementEnCours: boolean
 }) {
   const seance = plan.seance as Seance
   const premiere = seance.etapes[0]
@@ -167,6 +181,10 @@ function SeanceAFaire({
       </p>
 
       <Frequence seance={seance} />
+
+      {!seance.verrouillee && (
+        <ChoixDuree seance={seance} onChoisir={onChoisirDuree} enCours={ajustementEnCours} />
+      )}
 
       {seance.verrouillee ? (
         <Verrou />
@@ -498,4 +516,48 @@ function formatEcheance(dueAt: string): string {
   if (jours <= 0) return "dès aujourd'hui"
   if (jours === 1) return "demain"
   return `dans ${jours} jours`
+}
+
+/**
+ * "Combien de temps as-tu ?" - trois budgets, un clic.
+ *
+ * Un plan qui impose 25 minutes ne sert à rien les jours où l'élève en a dix : il ne
+ * fait alors rien du tout plutôt que moins. Le thème ne change pas, seule sa mise en
+ * œuvre se resserre (10 min : on passe directement aux questions) ou s'étire (45 min :
+ * un second exercice d'examen, et un quiz plus long).
+ *
+ * Les libellés sont des PLAFONDS, jamais des promesses : la durée réelle affichée
+ * au-dessus peut être inférieure quand le contenu manque - un "45 min" qui donne 42
+ * minutes reste honnête, un "45 min" qui en donne 45 par construction ne le serait pas.
+ */
+function ChoixDuree({
+  seance, onChoisir, enCours,
+}: {
+  seance: Seance
+  onChoisir: (minutes: number) => void
+  enCours: boolean
+}) {
+  if (seance.budgets_possibles.length < 2) return null
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-2">
+      <span className="text-xs text-muted-foreground">Combien de temps as-tu ?</span>
+      {seance.budgets_possibles.map((minutes) => (
+        <button
+          key={minutes}
+          type="button"
+          disabled={enCours}
+          aria-pressed={minutes === seance.budget_minutes}
+          onClick={() => onChoisir(minutes)}
+          className={cn(
+            "rounded-full border px-3 py-1 text-xs font-medium transition-colors disabled:opacity-60",
+            minutes === seance.budget_minutes
+              ? "border-primary bg-primary/10 text-primary"
+              : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground",
+          )}
+        >
+          {minutes} min
+        </button>
+      ))}
+    </div>
+  )
 }

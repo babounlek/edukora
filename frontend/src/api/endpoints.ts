@@ -621,3 +621,12 @@ export function continuerSeanceDuJour() {
 export function proposerAutreChose() {
   return apiRequest<PlanDuJour>("/quiz/plan-du-jour/autre-chose/", { method: "POST" })
 }
+
+/**
+ * "Combien de temps as-tu ?" : recompose la séance du jour pour cette durée, sans
+ * changer de thème (voir quiz.views.duree_seance_view). Même charge utile que
+ * getPlanDuJour.
+ */
+export function ajusterDureeSeance(minutes: number) {
+  return apiRequest<PlanDuJour>("/quiz/plan-du-jour/duree/", { method: "POST", body: { minutes } })
+}

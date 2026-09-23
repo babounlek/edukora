@@ -363,6 +363,22 @@ class SeanceJournaliere(models.Model):
         default=list,
         help_text="Étapes de la séance, dans l'ordre - voir quiz.services._construire_etapes.",
     )
+    budget_minutes = models.PositiveSmallIntegerField(
+        default=25,
+        help_text=(
+            "Temps que l'élève s'est donné aujourd'hui (voir BUDGETS_SEANCE_MINUTES). "
+            "Un PLAFOND, pas une promesse : la séance affiche sa durée réelle, souvent "
+            "inférieure quand le contenu manque."
+        ),
+    )
+    cours = models.ForeignKey(
+        "catalog.Cours", null=True, blank=True, on_delete=models.SET_NULL, related_name="seances",
+        help_text=(
+            "Cours retenu pour l'étape méthode. Mémorisé plutôt que recalculé : sans "
+            "lui, passer la séance à 10 minutes puis revenir à 25 la perdrait, le "
+            "classement qui l'avait choisi n'étant pas rejoué à chaque ajustement."
+        ),
+    )
     quiz_session = models.ForeignKey(
         "quiz.QuizSession", null=True, blank=True, on_delete=models.SET_NULL, related_name="seances",
         help_text=(
