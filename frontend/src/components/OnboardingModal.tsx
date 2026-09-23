@@ -61,9 +61,13 @@ export function OnboardingModal() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const { country, countries, setCountry } = useCountry()
-  const { isAuthenticated, updateUser } = useAuth()
+  const { isAuthenticated, updateUser, user } = useAuth()
 
-  const [dismissed, setDismissed] = useState(hasCompletedOnboarding)
+  // Écarté PENDANT cette visite seulement. La décision durable est portée par
+  // `questionReglee` ci-dessous : le compte pour un connecté, le drapeau local pour un
+  // visiteur anonyme. Initialiser cet état depuis le drapeau local rendait l'écran
+  // définitivement invisible à un élève connecté qui n'avait pourtant rien déclaré.
+  const [dismissed, setDismissed] = useState(false)
   const [step, setStep] = useState<Step>("pays")
   const [selectedCountry, setSelectedCountry] = useState(country)
   const [cursusList, setCursusList] = useState<Cursus[]>([])
@@ -72,8 +76,29 @@ export function OnboardingModal() {
   // Comme le sélecteur de pays de l'en-tête (voir Header.tsx) : un Country peut
   // exister en base avant tout contenu réel ingéré, jamais proposé ici.
   const browsableCountries = countries.filter((c) => c.has_lessons)
+
+  /**
+   * Pour un utilisateur CONNECTÉ, c'est le serveur qui dit si la question est réglée,
+   * pas un drapeau de navigateur : `User.cursus_prepare` renseigné = il a répondu, et
+   * l'écran ne réapparaît plus, y compris sur un appareil neuf. Vide = on redemande,
+   * même si ce navigateur porte encore le drapeau d'un ancien passage.
+   *
+   * Sans cette règle, un élève connecté sans cursus déclaré n'avait plus AUCUN chemin
+   * pour le dire : l'écran ne revenait jamais (drapeau local posé une fois pour
+   * toutes), la page Compte ne propose pas ce réglage, et la séance du jour se tait
+   * faute de savoir quel examen il prépare - le coach devenait inatteignable, en
+   * silence. Constaté en remettant un compte à zéro pour des tests.
+   *
+   * Un visiteur anonyme garde le drapeau local : on n'a nulle part d'autre où écrire
+   * qu'il a déjà vu cet écran.
+   */
+  const questionReglee = isAuthenticated ? Boolean(user?.cursus_prepare) : hasCompletedOnboarding()
   const shouldShow =
-    ONBOARDING_ENABLED && !dismissed && CATALOGUE_HOME_RE.test(pathname) && browsableCountries.length > 0
+    ONBOARDING_ENABLED
+    && !dismissed
+    && !questionReglee
+    && CATALOGUE_HOME_RE.test(pathname)
+    && browsableCountries.length > 0
 
   useEffect(() => {
     if (!shouldShow) return

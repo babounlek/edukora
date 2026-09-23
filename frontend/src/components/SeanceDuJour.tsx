@@ -3,7 +3,9 @@ import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, Check, Lock, PenLine, Sparkles, Target } from "lucide-react"
 
-import { continuerSeanceDuJour, getPlanDuJour, proposerAutreChose, terminerSeanceDuJour } from "@/api/endpoints"
+import {
+  continuerSeanceDuJour, getPlanDuJour, listCursus, proposerAutreChose, terminerSeanceDuJour, updateMe,
+} from "@/api/endpoints"
 import type { EtapeSeance, PlanDuJour, Seance } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
@@ -68,7 +70,15 @@ export function SeanceDuJour({ country }: { country: string }) {
     trackEvent("plan_affiche", { verrouillee: Boolean(verrouillee) })
   }, [seanceId, verrouillee])
 
-  if (!isAuthenticated || !data || !data.seance) return null
+  if (!isAuthenticated || !data) return null
+
+  // Connecté mais sans examen déclaré : on ne peut rien proposer, mais se taire
+  // laissait l'élève sans aucun chemin - l'écran d'onboarding ne revenait pas et la
+  // page Compte ne propose pas ce réglage. Un coach qui ne sait pas ce qu'on prépare
+  // doit le demander, pas disparaître.
+  if (data.etat === "cursus_inconnu") return <DeclarerSonExamen country={country} />
+
+  if (!data.seance) return null
   if (data.etat !== "plan_pret" && data.etat !== "deja_fait_aujourdhui") return null
 
   return (
@@ -345,4 +355,63 @@ function lienEtape(etape: EtapeSeance, country: string, plan: PlanDuJour): strin
   params.set("n", String(etape.n))
   const query = params.toString()
   return query ? `/quiz?${query}` : "/quiz"
+}
+
+
+/**
+ * "Dis-moi ce que tu prépares" : le seul écran possible tant qu'on ne sait pas quel
+ * examen l'élève passe.
+ *
+ * Il existe parce que le silence était pire : un élève connecté sans `cursus_prepare`
+ * ne voyait plus rien du coach, et n'avait aucun moyen de le réparer - l'onboarding ne
+ * revenait pas (drapeau de navigateur posé une fois pour toutes) et la page Compte
+ * n'offre pas ce réglage. Choisir ici écrit la déclaration sur le compte, donc elle
+ * suit l'élève d'un appareil à l'autre.
+ */
+function DeclarerSonExamen({ country }: { country: string }) {
+  const { updateUser } = useAuth()
+  const queryClient = useQueryClient()
+
+  const { data: cursusList = [] } = useQuery({
+    queryKey: ["cursus", country],
+    queryFn: ({ signal }) => listCursus(country, signal),
+    enabled: Boolean(country),
+  })
+
+  const declarer = useMutation({
+    mutationFn: (cursusId: number) => updateMe({ cursus_prepare: cursusId }),
+    onSuccess: (utilisateur) => {
+      updateUser(utilisateur)
+      // La séance ne peut pas se construire tant que le cursus n'est pas connu :
+      // c'est ce rechargement qui la fait apparaître dans la foulée.
+      queryClient.invalidateQueries({ queryKey: ["plan-du-jour"] })
+    },
+  })
+
+  if (cursusList.length === 0) return null
+
+  return (
+    <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
+      <div className="animate-fade-up rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-5 sm:p-6">
+        <h2 className="font-display text-xl font-semibold">Qu'est-ce que tu prépares ?</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Dis-le une fois et tu auras chaque jour une séance faite pour ton examen, avec le compte à rebours.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {cursusList.map((cursus) => (
+            <Button
+              key={cursus.id}
+              variant="outline"
+              size="sm"
+              disabled={declarer.isPending}
+              onClick={() => declarer.mutate(cursus.id)}
+            >
+              {cursus.examen_display}
+              {cursus.series ? ` ${cursus.series.code}` : ""}
+            </Button>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
 }
