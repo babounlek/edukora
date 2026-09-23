@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
+import { useQueryClient } from "@tanstack/react-query"
 import { Trophy } from "lucide-react"
 
 import { completeQuizSession } from "@/api/endpoints"
@@ -13,6 +14,7 @@ import { useSeo } from "@/lib/seo"
 import { capitaliserTheme } from "@/lib/utils"
 
 export function QuizResultPage() {
+  const queryClient = useQueryClient()
   useSeo({ title: "Résultat du quiz" })
 
   const { id } = useParams<{ id: string }>()
@@ -25,11 +27,27 @@ export function QuizResultPage() {
     // Endpoint idempotent : si la session est déjà terminée, il se contente de
     // retourner le résultat déjà calculé (voir quiz.views.complete_session).
     completeQuizSession(Number(id))
-      .then(setResult)
+      .then((resultat) => {
+        setResult(resultat)
+        // Terminer un quiz change TOUT ce qui se calcule à partir des réponses :
+        // le taux de maîtrise d'un thème dans le parcours, l'histogramme par matière,
+        // la file de révision espacée, et la séance du jour - que ce quiz vient
+        // peut-être de clôturer (voir quiz.views.complete_session).
+        //
+        // Sans cette invalidation, l'élève revenait sur son parcours et retrouvait
+        // ses chiffres d'avant : `staleTime` est à 60 s et `refetchOnWindowFocus` est
+        // désactivé (voir main.tsx, choix assumé pour un catalogue qui ne bouge pas),
+        // donc rien ne déclenchait de rafraîchissement. Le travail était bien
+        // enregistré côté serveur - il ne se voyait simplement pas, ce qui est pire
+        // qu'une erreur : l'élève croit que son quiz n'a servi à rien.
+        for (const cle of ["parcours", "parcours-resume", "maitrise", "revisions-dues", "plan-du-jour"]) {
+          queryClient.invalidateQueries({ queryKey: [cle] })
+        }
+      })
       .catch((err) => {
         setError(err instanceof ApiError ? err.message : "Impossible de charger ce résultat.")
       })
-  }, [id])
+  }, [id, queryClient])
 
   if (error) {
     return (
