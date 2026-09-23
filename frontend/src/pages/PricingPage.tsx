@@ -410,7 +410,12 @@ export function PricingPage() {
             le prix juste à côté, sans scroll ni "étape 2" à débloquer : plus besoin de
             l'effet qui défilait vers un second bloc pour le révéler (formuleRef/
             formuleMiseEnAvant, retirés) - les deux tiennent déjà dans le même regard. */}
-        <div className="relative mx-auto max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        {/* Pleine largeur du conteneur, comme le hero juste au-dessus : le `max-w-3xl`
+            précédent laissait la carte visiblement plus étroite que le bandeau qu'elle
+            suit, ce qui se lisait comme un décalage plutôt que comme une hiérarchie -
+            et sa colonne de droite, la plus dense (prix, encart exclusif, histogramme
+            de dégressivité), s'en trouvait comprimée. */}
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
             <div className="grid grid-cols-1 sm:grid-cols-2">
               <div

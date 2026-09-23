@@ -38,6 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ReviserTabs } from "@/components/ReviserTabs"
+import { BandeauFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
 
 type ViewMode = "cards" | "list"
 
@@ -49,7 +50,10 @@ const VIEW_MODE_STORAGE_KEY = "edukamer_epreuves_catalogue_view"
 // d'affichage.
 const FILTERS_SESSION_KEY = "edukamer_epreuves_derniers_filtres"
 
-const FILTER_KEYS = ["subject", "cursus", "origine", "nature", "gratuit", "search", "ordering"]
+// "tout" inclus : le choix d'élargir au-delà de son cursus (voir filtreCursus) doit
+// se restaurer comme les autres filtres, sinon le pré-filtrage revient à la
+// navigation suivante et le bouton "Voir tout le catalogue" semble sans effet.
+const FILTER_KEYS = ["subject", "cursus", "origine", "nature", "gratuit", "search", "ordering", "tout"]
 
 const ORIGINE_LABELS: Record<Origine, string> = {
   OFFICIEL: "Épreuve officielle",
@@ -155,6 +159,11 @@ export function EpreuvesListPage() {
       // stockage indisponible (navigation privée) - on repart d'une liste vierge
     }
   }, [searchParams, setSearchParams])
+
+  // Pré-filtrage sur l'examen déclaré, déclaré APRÈS la restauration de session
+  // ci-dessus : l'ordre des deux effets compte, sans quoi une recherche sauvegardée
+  // serait ignorée (voir useFiltreCursusParDefaut).
+  useFiltreCursusParDefaut()
 
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
@@ -367,6 +376,7 @@ export function EpreuvesListPage() {
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
       <ReviserTabs />
+      <BandeauFiltreCursus />
       {/* Même gabarit de hero que /quiz, /fiches et /cours. */}
       <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8">
         <div

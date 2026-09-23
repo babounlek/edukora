@@ -383,7 +383,22 @@ class CoursListView(generics.ListAPIView):
         if subject := params.get("subject"):
             qs = qs.filter(subject__code=subject)
         if cursus_id := params.get("cursus"):
-            qs = qs.filter(cursus__id=cursus_id)
+            # cursus vide = notion commune à toutes les séries (voir Cours.cursus) :
+            # un filtre strict `cursus__id=` les écartait TOUTES, soit 5 597 cours sur
+            # 8 314 mesurés sur le corpus camerounais - filtrer sur BAC D ne laissait
+            # que 384 cours au lieu de 5 981. Exactement le piège que le filtre
+            # `country` juste en dessous documente et évite depuis toujours ; celui-ci
+            # l'avait manqué, et amputait donc silencieusement les deux tiers de la
+            # bibliothèque dès qu'un cursus était choisi.
+            #
+            # Exists() plutôt qu'un JOIN M2M, pour la raison de performance détaillée
+            # sur le filtre `country`.
+            cursus_demande = Cursus.objects.filter(cours=OuterRef("pk"), id=cursus_id)
+            cursus_quelconque = Cursus.objects.filter(cours=OuterRef("pk"))
+            qs = qs.annotate(
+                _a_le_cursus_demande=Exists(cursus_demande),
+                _a_un_cursus=Exists(cursus_quelconque),
+            ).filter(Q(_a_le_cursus_demande=True) | Q(_a_un_cursus=False))
         if savoir_id := params.get("savoir"):
             # Même relation que quiz.services.construire_parcours (Cours.tags ->
             # Tag.savoir_officiel) - permet à /parcours de proposer "voir tous les

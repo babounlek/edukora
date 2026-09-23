@@ -39,6 +39,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ReviserTabs } from "@/components/ReviserTabs"
+import { BandeauFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
 
 type ViewMode = "cards" | "list"
 
@@ -132,6 +133,9 @@ export function CoursListPage() {
   // une recherche filtrée doit rester bookmarkable/partageable et survivre à un
   // rechargement, et le bouton précédent/suivant du navigateur doit la restaurer.
   const [searchParams, setSearchParams] = useSearchParams()
+  // Pré-filtrage sur l'examen déclaré - voir useFiltreCursusParDefaut : un défaut
+  // annoncé et réversible, jamais un masquage.
+  useFiltreCursusParDefaut()
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
   const nonLusFilter = searchParams.get("nonlus") === "true"
@@ -377,6 +381,7 @@ export function CoursListPage() {
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
       <ReviserTabs />
+      <BandeauFiltreCursus />
       {/* Même gabarit de hero que /quiz et /fiches : carte arrondie contenue plutôt
           qu'une bande pleine largeur, pastille d'icône, accroche puis puces de
           volumétrie - les trois outils de la plateforme doivent se reconnaître. */}
