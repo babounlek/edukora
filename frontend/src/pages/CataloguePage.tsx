@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from "react"
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, Clock, Compass, Crown, GraduationCap, Layers, Target, TrendingUp } from "lucide-react"
+import { ArrowRight, BookOpen, Clock, Crown, GraduationCap, Layers, Target, TrendingUp } from "lucide-react"
 
 import heroStudent from "@/assets/hero-student.jpg"
 import {
@@ -17,7 +17,6 @@ import { trackEvent } from "@/lib/analytics"
 import { examCodesFor, examLevelsFor, joinExamLevelsFr } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
 import {
-  coursListPath,
   epreuveInediteDetailPath,
   epreuveReaderPath,
   epreuvesListPath,
@@ -55,55 +54,18 @@ function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; 
   )
 }
 
-interface UniversProps {
-  icon: ReactNode
-  titre: string
-  chiffre: string | null
-  description: string
-  to: string
-  /** Seule "Épreuves Inédites" l'utilise : le produit le plus cher de la maison
-   * mérite de se distinguer visuellement des trois portes d'entrée gratuites,
-   * plutôt que de se fondre dans la même grille. */
-  dore?: boolean
-}
 
-/** Une des portes d'entrée du produit. La page d'accueil n'expliquait nulle part
- * qu'elles existent : elle listait des épreuves et laissait deviner le reste depuis
- * le menu du header. */
-function CarteUnivers({ icon, titre, chiffre, description, to, dore = false }: UniversProps) {
+/** Une étape du récit "Comment ça marche" - raconte ce que la plateforme fait POUR
+ * l'élève, là où la grille précédente listait les rayons qu'il devait parcourir lui-même. */
+function EtapeExplication({ numero, titre, description }: { numero: string; titre: string; description: string }) {
   return (
-    <Link
-      to={to}
-      className={cn(
-        "group relative flex flex-col gap-2 rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg",
-        dore
-          ? "border-gold/40 bg-gradient-to-b from-gold/5 to-card hover:border-gold/60 hover:shadow-gold/10"
-          : "border-border bg-card hover:border-primary/50 hover:shadow-primary/5",
-      )}
-    >
-      {dore && (
-        <span className="absolute top-5 right-5 rounded-full bg-gold/15 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-gold uppercase">
-          Exclusif
-        </span>
-      )}
-      <span
-        className={cn(
-          "flex size-10 items-center justify-center rounded-xl",
-          dore ? "bg-gold/15 text-gold" : "bg-primary/10 text-primary",
-        )}
-      >
-        {icon}
+    <div className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-5">
+      <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 font-display font-semibold text-primary">
+        {numero}
       </span>
-      <h3 className="font-display text-lg font-semibold">
-        {titre}
-        {chiffre && <span className="ml-2 text-sm font-normal tabular-nums text-muted-foreground">{chiffre}</span>}
-      </h3>
-      <p className="flex-1 text-sm text-muted-foreground">{description}</p>
-      <span className={cn("flex items-center gap-1.5 text-sm font-medium", dore ? "text-gold" : "text-primary")}>
-        Explorer
-        <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-      </span>
-    </Link>
+      <h3 className="font-display text-lg font-semibold">{titre}</h3>
+      <p className="text-sm text-muted-foreground">{description}</p>
+    </div>
   )
 }
 
@@ -120,8 +82,14 @@ function CatalogueVitrine() {
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
   const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const [searchParams] = useSearchParams()
+
+  // Un élève qui a dit ce qu'il prépare n'a pas à se le voir redemander sur la même
+  // page que son compte à rebours - voir la section "Qu'est-ce que tu prépares ?" et
+  // les boutons du hero, qui s'adressent tous deux à quelqu'un qui n'a pas encore
+  // répondu.
+  const aDeclareSonExamen = isAuthenticated && Boolean(user?.cursus_prepare)
 
   // Un lien encore en circulation vers l'ancien catalogue-sur-l'accueil (ex.
   // "/cm?cursus=12", posé par l'onboarding ou une recherche sauvegardée avant la
@@ -261,6 +229,35 @@ function CatalogueVitrine() {
           reste dessous, intact : /cm est la page la plus indexée du site, elle doit
           rester complète pour un visiteur anonyme comme pour un robot. */}
       <SeanceDuJour country={country ?? ""} />
+      {/* Reprise de lecture juste sous la séance du jour : pour qui revient, c'est l'action la
+          plus probable de la page - groupée avec sa séance, AVANT la vitrine : tout
+          ce qui lui est personnel en haut, l'argumentaire ensuite. Elle vivait tout en
+          bas, entre deux rails, après
+          cinq écrans de défilement. */}
+      {progression && progression.lessons.length > 0 && (
+        <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
+          <Link
+            // getMyProgression() (endpoint access, non modifié par la fusion) ne
+            // renvoie jamais que des Lesson classiques - slug toujours renseigné.
+            to={epreuveReaderPath(
+              progression.lessons[0].subject.country.code.toLowerCase(),
+              progression.lessons[0].slug as string,
+            )}
+            className="group flex animate-fade-up items-center gap-3 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent px-5 py-4 transition-colors hover:border-primary/50"
+          >
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <BookOpen className="size-5" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Reprendre ma lecture
+              </span>
+              <span className="block truncate font-display font-medium">{progression.lessons[0].title}</span>
+            </span>
+            <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </div>
+      )}
       <section className="relative overflow-hidden border-b border-border">
         <div
           className="absolute inset-0 opacity-[0.05]"
@@ -277,30 +274,64 @@ function CatalogueVitrine() {
             <p className="mb-2 font-display text-sm italic text-primary">
               {examLevelsHero}{countryLabel ? ` - ${countryLabel}` : ""}
             </p>
+            {/* La promesse vendait une bibliothèque ("cours structurés et corrigés
+                d'annales, classés par matière et par série") alors que le produit est
+                devenu un coach : une séance par jour, choisie pour l'élève. Le
+                meilleur argument - "tu ne sais pas quoi réviser, on te le dit, et ce
+                thème est tombé dans 35 des 41 dernières épreuves" - n'apparaissait
+                qu'APRÈS s'être connecté et avoir déclaré son examen, c'est-à-dire
+                après la conversion au lieu de la provoquer.
+
+                Le volume reste, mais comme PREUVE et non comme argument : il rassure
+                sur le sérieux du corpus, il ne dit pas quoi en faire. */}
             <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
-              La méthode qui t'apprend{" "}
-              <span className="text-primary">à réussir</span>, pas juste la réponse.
+              Chaque jour, on te dit{" "}
+              <span className="text-primary">quoi réviser</span>.
             </h1>
             <p className="mt-4 max-w-lg text-muted-foreground">
-              Cours structurés et corrigés d'annales, classés par matière et par série - avec
-              un quiz qui repère tes lacunes et te fait réviser exactement ce qu'il faut, au
-              bon moment.
+              Une séance de 25 minutes sur un thème qui tombe vraiment à ton examen : le cours
+              pour la méthode, un exercice réellement posé, un quiz pour vérifier. Tu dis ce que
+              tu prépares, on s'occupe du reste - et on retient ce que tu rates.
             </p>
-            {/* Le CTA menait à origine=INEDITE, c'est-à-dire au produit le plus cher
-                de la maison, pour un visiteur qui n'a encore rien lu. Il mène
-                maintenant à ce qu'il y a de gratuit : goûter d'abord, payer ensuite.
-                Le second lien mène au moteur de recherche du catalogue, pour qui sait
-                déjà ce qu'il cherche. */}
+            {/* Le premier bouton sert la promesse : sans savoir quel examen l'élève
+                prépare, il n'y a pas de séance possible, donc c'est la première chose
+                à lui demander - il descend vers la grille des cursus plus bas, qui
+                écrit la déclaration. Le second reste ce qu'il y a de gratuit : goûter
+                d'abord, payer ensuite (avant, le CTA menait à origine=INEDITE,
+                c'est-à-dire au produit le plus cher, pour un visiteur qui n'a encore
+                rien lu).
+
+                Pour qui a déjà déclaré son examen, cette question n'a plus lieu
+                d'être : sa séance l'attend en haut de page, et ces boutons redeviennent
+                ce qu'ils étaient - des portes vers le catalogue. */}
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Button size="lg" asChild>
-                <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`}>
-                  Lire un corrigé gratuitement
-                  <ArrowRight />
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link to={epreuvesListPath(country ?? "")}>Chercher une épreuve</Link>
-              </Button>
+              {aDeclareSonExamen ? (
+                <>
+                  <Button size="lg" asChild>
+                    <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`}>
+                      Lire un corrigé gratuitement
+                      <ArrowRight />
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="lg" asChild>
+                    <Link to={epreuvesListPath(country ?? "")}>Chercher une épreuve</Link>
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button size="lg" asChild>
+                    <a href="#je-prepare">
+                      Dis-nous ce que tu prépares
+                      <ArrowRight />
+                    </a>
+                  </Button>
+                  <Button variant="outline" size="lg" asChild>
+                    <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`}>
+                      Lire un corrigé gratuitement
+                    </Link>
+                  </Button>
+                </>
+              )}
             </div>
 
             {/* Mention légère plutôt qu'une carte à part entière (voir la discussion
@@ -404,39 +435,19 @@ function CatalogueVitrine() {
         </section>
       )}
 
-      {/* Reprise de lecture juste sous le hero : pour qui revient, c'est l'action la
-          plus probable de la page. Elle vivait tout en bas, entre deux rails, après
-          cinq écrans de défilement. */}
-      {progression && progression.lessons.length > 0 && (
-        <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-          <Link
-            // getMyProgression() (endpoint access, non modifié par la fusion) ne
-            // renvoie jamais que des Lesson classiques - slug toujours renseigné.
-            to={epreuveReaderPath(
-              progression.lessons[0].subject.country.code.toLowerCase(),
-              progression.lessons[0].slug as string,
-            )}
-            className="group flex animate-fade-up items-center gap-3 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent px-5 py-4 transition-colors hover:border-primary/50"
-          >
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <BookOpen className="size-5" />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Reprendre ma lecture
-              </span>
-              <span className="block truncate font-display font-medium">{progression.lessons[0].title}</span>
-            </span>
-            <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </div>
-      )}
 
       {/* La question qui qualifie tout le reste, posée en premier. Elle était repliée
           dans "Filtres avancés" : un élève de Terminale D devait ouvrir un panneau et
-          lire une liste de 11 cursus pour dire ce qu'il prépare. */}
-      {cursusList.length > 0 && (
-        <section className="mx-auto max-w-5xl px-4 pt-10 sm:px-6">
+          lire une liste de 11 cursus pour dire ce qu'il prépare.
+
+          Masquée pour qui a DÉJÀ déclaré son examen : sa séance du jour affiche son
+          cursus et son compte à rebours en haut de cette même page, et on lui
+          redemandait "Qu'est-ce que tu prépares ?" quelques centaines de pixels plus
+          bas. La même phrase pour deux choses différentes - déclarer d'un côté,
+          filtrer le catalogue de l'autre. Pour lui, l'entrée "Réviser" du menu mène au
+          même catalogue avec ses filtres. */}
+      {cursusList.length > 0 && !aDeclareSonExamen && (
+        <section id="je-prepare" className="mx-auto max-w-5xl scroll-mt-24 px-4 pt-10 sm:px-6">
           <h2 className="font-display text-xl font-semibold">Qu'est-ce que tu prépares ?</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Choisis ton examen et ta série : le catalogue se filtre pour toi.
@@ -486,35 +497,29 @@ function CatalogueVitrine() {
           Ce bandeau ne dépend que de inediteRecenteData.count : il reste visible même
           quand l'encart vedette ne l'est pas. */}
       <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-        <h2 className="font-display text-xl font-semibold">Comment travailler sur Edukora</h2>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <CarteUnivers
-            icon={<BookOpen className="size-5" />}
-            titre="Épreuves"
-            chiffre={epreuvesTotal !== undefined ? formatAmount(epreuvesTotal) : null}
-            description="Annales, examens blancs et épreuves d'établissement, corrigés pas à pas plutôt que résolus en trois lignes."
-            to={epreuvesListPath(country ?? "")}
+        {/* Le récit du plan, à la place d'une grille de quatre portes (Épreuves,
+            Cours, Parcours, Quiz). Cette grille décrivait notre modèle de données -
+            deux types de documents et deux outils - et laissait l'élève composer son
+            itinéraire lui-même, exactement ce dont la séance du jour le décharge. Elle
+            contredisait aussi la navigation, réduite depuis à trois entrées.
+            Les quatre destinations restent atteignables : "Réviser" dans le menu, et
+            le bandeau Épreuves Inédites juste en dessous pour le produit payant. */}
+        <h2 className="font-display text-xl font-semibold">Comment ça marche</h2>
+        <div className="mt-4 grid gap-5 sm:grid-cols-3">
+          <EtapeExplication
+            numero="1"
+            titre="Tu dis ce que tu prépares"
+            description="Ton examen et ta série, une fois. Le compte à rebours jusqu'au jour J démarre, et tout ce que tu vois ensuite ne concerne plus que toi."
           />
-          <CarteUnivers
-            icon={<GraduationCap className="size-5" />}
-            titre="Cours"
-            chiffre={coursData ? formatAmount(coursData.count) : null}
-            description="Chaque notion du programme : la règle, un exemple résolu, les erreurs classiques et des exercices gradués."
-            to={coursListPath(country ?? "")}
+          <EtapeExplication
+            numero="2"
+            titre="On te donne une séance par jour"
+            description="Un thème qui tombe vraiment - on te dit dans combien des dernières épreuves. Le cours pour la méthode, un exercice réellement posé, un quiz pour vérifier. 25 minutes."
           />
-          <CarteUnivers
-            icon={<Compass className="size-5" />}
-            titre="Parcours"
-            chiffre={null}
-            description="Ton itinéraire personnalisé : les savoirs pas encore maîtrisés, classés par fréquence à l'examen, savoir par savoir jusqu'au programme complet."
-            to="/parcours"
-          />
-          <CarteUnivers
-            icon={<Target className="size-5" />}
-            titre="Quiz"
-            chiffre={null}
-            description="Il repère les thèmes où tu échoues et te les repropose au bon moment, jusqu'à ce qu'ils soient acquis."
-            to="/quiz"
+          <EtapeExplication
+            numero="3"
+            titre="On retient ce que tu rates"
+            description="Un thème raté revient demain, puis dans trois jours, puis dans une semaine - jusqu'à ce qu'il soit acquis. Tu n'as rien à noter, rien à planifier."
           />
         </div>
         {inediteRecenteData && inediteRecenteData.count > 0 && (
