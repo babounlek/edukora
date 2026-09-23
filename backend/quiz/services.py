@@ -894,6 +894,20 @@ def _construire_seance(user, cursus, themes_interdits=frozenset(), avec_calibrag
     return None
 
 
+def _contient_quiz(etapes):
+    """
+    Une séance sans quiz n'en est pas une : elle ne vérifie rien, ne nourrit pas la
+    révision espacée (voir enregistrer_resultat_pour_revision, qui ne se déclenche que
+    sur une réponse) et ne peut même pas se clore toute seule - l'élève doit déclarer
+    à la main qu'il a fini. Constaté sur trois séances d'anglais d'affilée : "relire
+    la méthode" puis "faire l'exercice", et rien pour savoir si c'était compris.
+
+    Un thème sans banque de quiz n'est donc pas proposé du tout. Mieux vaut ne rien
+    proposer aujourd'hui que proposer quelque chose qu'on ne sait pas évaluer.
+    """
+    return any(etape.get("type") == "quiz" for etape in etapes)
+
+
 def _matieres_recentes(user, cursus):
     """Matières des dernières séances TERMINÉES - une séance proposée puis ignorée ne
     bloque rien, l'élève n'a pas travaillé cette matière."""
@@ -915,7 +929,7 @@ def _seance_depuis_revision_due(user, cursus, matieres_exclues, themes_interdits
         if schedule.subject_id in matieres_exclues or schedule.theme_id in themes_interdits:
             continue
         etapes = _construire_etapes(cursus, schedule.subject, theme=schedule.theme)
-        if not etapes:
+        if not _contient_quiz(etapes):
             continue
         return {
             "origine": OrigineSeance.REVISION_DUE,
@@ -947,7 +961,7 @@ def _seance_depuis_lecture_en_cours(user, cursus, matieres_exclues, themes_inter
         if theme is not None and theme.id in themes_interdits:
             continue
         etapes = _construire_etapes(cursus, cours.subject, theme=theme, cours_impose=cours)
-        if not etapes:
+        if not _contient_quiz(etapes):
             continue
         return {
             "origine": OrigineSeance.LECTURE_EN_COURS,
@@ -987,37 +1001,91 @@ def _seance_de_calibrage(user, cursus):
 
 def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=frozenset()):
     """
-    Le thème suivant du parcours : le plus fréquent à l'examen parmi ceux que l'élève
-    n'a pas encore travaillés. À défaut (tout entamé), le moins bien maîtrisé - il
-    reste toujours quelque chose à réviser jusqu'au jour J.
+    Le thème qui revient le plus souvent à l'examen, parmi ceux que l'élève n'a pas
+    encore travaillés - toutes matières confondues, et jamais un thème sans quiz.
+
+    Le classement se fait sur le POURCENTAGE d'épreuves touchées, pas sur le nombre
+    brut : un thème tombé 9 fois sur 10 en SVT pèse plus qu'un thème tombé 11 fois sur
+    41 en anglais, alors que le compte brut dirait l'inverse. Les matières dont le
+    parcours suit le programme officiel plutôt que la fréquence (français, philo,
+    histoire-géo - voir SUBJECTS_PARCOURS_PAR_FREQUENCE) n'ont aucune fréquence à
+    annoncer : elles passent après, jamais devant, plutôt que de se voir attribuer un
+    chiffre inventé.
+
+    Cette recherche balaie toutes les matières au lieu de s'arrêter à la première, et
+    c'est délibérément plus coûteux : jusqu'à une douzaine d'appels à
+    construire_parcours_par_frequence. Acceptable parce que la séance n'est construite
+    qu'UNE fois par jour et par élève (voir SeanceJournaliere, la table est le cache) -
+    ce serait à revoir si elle devait se recalculer à chaque affichage.
+
+    Le rang de la matière (voir _subjects_par_priorite : coefficient x (1 - maîtrise))
+    ne décide plus, il départage : à fréquence égale, on préfère la matière qui pèse le
+    plus au diplôme et où l'élève est le plus faible.
     """
-    for subject in _subjects_par_priorite(user, cursus):
-        if subject.id in matieres_exclues:
+    # Seules les matières qui ont une banque de quiz sur ce cursus : ailleurs, aucun
+    # thème ne passerait le filtre "sans quiz" de toute façon, autant ne pas payer le
+    # classement par fréquence pour rien.
+    avec_quiz = set(
+        Subject.objects.filter(competence_items__statut=StatutContenu.VALIDE, competence_items__cursus=cursus)
+        .values_list("id", flat=True),
+    )
+
+    candidats = []
+    for rang, subject in enumerate(_subjects_par_priorite(user, cursus)):
+        if subject.id in matieres_exclues or subject.id not in avec_quiz:
             continue
 
         par_frequence = construire_parcours_par_frequence(user, cursus, subject)
         if par_frequence is not None:
-            candidats, cle_theme, cle_savoir = par_frequence, "theme_id", None
+            etapes_parcours, cle_theme, cle_savoir = par_frequence, "theme_id", None
         else:
-            candidats = [s for module in construire_parcours(user, cursus, subject) for s in module["savoirs"]]
+            etapes_parcours = [s for module in construire_parcours(user, cursus, subject) for s in module["savoirs"]]
             cle_theme, cle_savoir = None, "id"
 
-        exploitables = [
-            c for c in candidats
-            if (c["has_quiz"] or c["cours"]) and (cle_theme is None or c[cle_theme] not in themes_interdits)
-        ]
-        if not exploitables:
-            continue
-        jamais_travailles = [c for c in exploitables if c["taux"] is None and not c["a_lu_le_cours"]]
-        # `taux` à None trié en dernier dans le repli : un thème jamais vu passerait
-        # sinon devant un thème réellement raté, au moment précis où on cherche le
-        # plus faible.
-        choisi = (jamais_travailles or sorted(exploitables, key=lambda c: (c["taux"] is None, c["taux"] or 0)))[0]
+        for entree in etapes_parcours:
+            if not entree["has_quiz"]:
+                continue
+            if cle_theme is not None and entree[cle_theme] in themes_interdits:
+                continue
+            candidats.append({
+                "subject": subject,
+                "rang_matiere": rang,
+                "entree": entree,
+                "cle_theme": cle_theme,
+                "cle_savoir": cle_savoir,
+                "frequence_pct": entree.get("frequence_pct"),
+            })
 
-        theme = Tag.objects.filter(pk=choisi[cle_theme]).first() if cle_theme else None
-        savoir = Savoir.objects.filter(pk=choisi[cle_savoir]).first() if cle_savoir else None
-        etapes = _construire_etapes(cursus, subject, theme=theme, savoir=savoir, cours_proposes=choisi["cours"])
-        if not etapes:
+    if not candidats:
+        return None
+
+    # Jamais travaillé d'abord : c'est là qu'il y a le plus à gagner. À défaut (tout
+    # entamé), le moins bien maîtrisé - il reste toujours quelque chose à réviser.
+    jamais_travailles = [
+        c for c in candidats if c["entree"]["taux"] is None and not c["entree"]["a_lu_le_cours"]
+    ]
+    pool = jamais_travailles or candidats
+
+    def cle_de_tri(c):
+        # Fréquence décroissante d'abord ; une matière sans classement par fréquence
+        # (frequence_pct absent) passe après toutes celles qui en ont un.
+        return (
+            c["frequence_pct"] is None,
+            -(c["frequence_pct"] or 0),
+            0 if jamais_travailles else (c["entree"]["taux"] or 0),
+            c["rang_matiere"],
+            c["entree"]["intitule"],
+        )
+
+    for choisi in sorted(pool, key=cle_de_tri):
+        entree, subject = choisi["entree"], choisi["subject"]
+        theme = Tag.objects.filter(pk=entree[choisi["cle_theme"]]).first() if choisi["cle_theme"] else None
+        savoir = Savoir.objects.filter(pk=entree[choisi["cle_savoir"]]).first() if choisi["cle_savoir"] else None
+        etapes = _construire_etapes(cursus, subject, theme=theme, savoir=savoir, cours_proposes=entree["cours"])
+        # `has_quiz` dit qu'il existe un quiz sur ce thème pour ce cursus ; seul
+        # _construire_etapes sait s'il en reste dans le budget de la séance. On
+        # redescend donc au candidat suivant plutôt que d'abandonner le parcours.
+        if not _contient_quiz(etapes):
             continue
         return {
             "origine": OrigineSeance.PARCOURS,

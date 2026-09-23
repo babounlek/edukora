@@ -275,12 +275,23 @@ function SeanceFaite({
 
 function Frequence({ seance }: { seance: Seance }) {
   if (!seance.frequence) return null
-  const { occurrences, epreuves_total } = seance.frequence
+  const { occurrences, epreuves_total, annees } = seance.frequence
   return (
-    <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium">
-      <Target className="size-3.5 shrink-0" />
-      Tombé dans {occurrences} des {epreuves_total} dernières épreuves
-    </p>
+    <div className="mt-3">
+      <p className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium">
+        <Target className="size-3.5 shrink-0" />
+        Tombé dans {occurrences} des {epreuves_total} dernières épreuves
+      </p>
+      {/* Les années concernées : sans elles, le chiffre est à croire sur parole. Le
+          "…" dit qu'il y en a d'autres plutôt que de laisser croire à une liste
+          complète (voir ANNEES_FREQUENCE_MAX côté serveur). */}
+      {annees.length > 0 && (
+        <p className="mt-1.5 text-xs text-muted-foreground">
+          {annees.join(", ")}
+          {occurrences > annees.length ? "…" : ""}
+        </p>
+      )}
+    </div>
   )
 }
 

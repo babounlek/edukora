@@ -35,6 +35,12 @@ def _has_active_subscription(user, cursus):
     return Subscription.objects.filter(user=user, cursus=cursus, expires_at__gt=timezone.now()).exists()
 
 
+# Années d'épreuves listées derrière "tombé dans N des M dernières épreuves" - assez
+# pour que le chiffre devienne vérifiable, pas assez pour transformer la carte en
+# tableau de bord.
+ANNEES_FREQUENCE_MAX = 6
+
+
 def _tracer_seance_terminee(seance):
     """
     "Séance terminée" est enregistré côté SERVEUR, contrairement aux autres évènements
@@ -624,10 +630,19 @@ def _frequence_du_theme(seance):
     total = lessons.count()
     if not total:
         return None
-    occurrences = lessons.filter(exercises__questions__themes__id=seance.theme_id).distinct().count()
+    concernees = lessons.filter(exercises__questions__themes__id=seance.theme_id).distinct().order_by("-year")
+    occurrences = concernees.count()
     if not occurrences:
         return None
-    return {"occurrences": occurrences, "epreuves_total": total}
+    return {
+        "occurrences": occurrences,
+        "epreuves_total": total,
+        # Les années réellement concernées, les plus récentes d'abord. "Tombé dans 11
+        # des 21 dernières épreuves" est une affirmation que l'élève doit pouvoir
+        # vérifier : sans la liste, c'est un chiffre à croire sur parole. Plafonnée -
+        # la promesse est de rendre le chiffre concret, pas de dérouler un historique.
+        "annees": [annee for annee in concernees.values_list("year", flat=True)[:ANNEES_FREQUENCE_MAX] if annee],
+    }
 
 
 @api_view(["GET"])

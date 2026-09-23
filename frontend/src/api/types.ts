@@ -59,7 +59,9 @@ export interface Seance {
   etapes: EtapeSeance[]
   // "tombé dans 8 des 10 dernières épreuves" - null si le thème n'est jamais tombé,
   // ou si la séance n'en cible pas (calibrage).
-  frequence: { occurrences: number; epreuves_total: number } | null
+  // `annees` : les années réellement concernées, pour que "tombé dans 11 des 21
+  // dernières épreuves" soit vérifiable plutôt qu'à croire sur parole.
+  frequence: { occurrences: number; epreuves_total: number; annees: number[] } | null
   statut: "PROPOSEE" | "TERMINEE"
   // Résultat du quiz de la séance, une fois la session terminée - null quand il n'y a
   // rien à noter (voir quiz.services.score_de_la_seance).

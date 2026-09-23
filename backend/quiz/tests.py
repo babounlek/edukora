@@ -51,7 +51,7 @@ from .services import (
     TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
     construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir,
     _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
-    REFUS_MAX_PAR_JOUR, remplacer_seance, revisions_dues, seance_du_jour, seance_supplementaire,
+    REFUS_MAX_PAR_JOUR, _contient_quiz, remplacer_seance, revisions_dues, seance_du_jour, seance_supplementaire,
     terminer_seance,
     seances_terminees_cette_semaine,
 )
@@ -2446,7 +2446,9 @@ class PlanDuJourTests(TestCase):
 
         frequence = self.client.get("/quiz/plan-du-jour/").data["seance"]["frequence"]
 
-        self.assertEqual(frequence, {"occurrences": 2, "epreuves_total": 3})
+        # `annees` : les années réellement concernées, les plus récentes d'abord -
+        # sans elles, "tombé dans 2 des 3 dernières épreuves" est à croire sur parole.
+        self.assertEqual(frequence, {"occurrences": 2, "epreuves_total": 3, "annees": [2024, 2023]})
 
     def test_terminer_la_seance_bascule_letat(self):
         self._abonner()
@@ -2984,3 +2986,112 @@ class RemplacerSeanceTests(TestCase):
         Subscription.objects.filter(user=self.user).update(expires_at=timezone.now() - timedelta(days=1))
 
         self.assertEqual(self.client.post("/quiz/plan-du-jour/autre-chose/").status_code, 403)
+
+
+class PrioriteFrequenceTests(TestCase):
+    """
+    Ce que la séance du jour doit choisir : le thème qui revient le plus à l'examen,
+    toutes matières confondues, et JAMAIS un thème sans quiz.
+
+    Signalé à l'usage : trois séances d'anglais d'affilée sur des thèmes marginaux
+    (9 à 11 épreuves sur 41) et sans la moindre question - « relire la méthode » puis
+    « faire l'exercice », rien pour vérifier que c'était compris.
+    """
+
+    def setUp(self):
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        self.user = User.objects.create_user(phone_number="677900808", password="x")
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+        Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def _matiere(self, code, coefficient, nb_epreuves, nb_avec_le_theme, avec_quiz=True, annee_depart=2010):
+        """
+        Une matière du référentiel semé, avec assez d'épreuves officielles pour que le
+        classement par fréquence s'active (voir SEUIL_MINIMUM_THEMES_PARCOURS) et un
+        thème présent sur `nb_avec_le_theme` d'entre elles.
+        """
+        subject = Subject.objects.get(code=code, country=self.cursus.country)
+        theme = Tag.objects.create(name=f"thème {code}")
+        for index in range(nb_epreuves):
+            lesson = Lesson.objects.create(
+                title=f"Épreuve {code} {annee_depart + index}", subject=subject,
+                year=annee_depart + index, lesson_type=LessonType.CORR,
+                statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL, coefficient=coefficient,
+            )
+            lesson.cursus.add(self.cursus)
+            if index < nb_avec_le_theme:
+                _make_question(lesson, "1").themes.add(theme)
+        if avec_quiz:
+            item = CompetenceItem.objects.create(
+                external_id=f"freq-{code}", theme=theme, subject=subject,
+                enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
+            )
+            item.cursus.add(self.cursus)
+        return subject, theme
+
+    def _historique(self, subject):
+        """Une réponse quelconque, pour sortir du calibrage et atteindre le parcours."""
+        theme = Tag.objects.create(name=f"thème historique {subject.code}")
+        item = CompetenceItem.objects.create(
+            external_id=f"freq-hist-{subject.code}", theme=theme, subject=subject,
+            enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
+        )
+        item.cursus.add(self.cursus)
+        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
+
+    def test_un_theme_sans_quiz_nest_jamais_propose(self):
+        maths, _ = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8, avec_quiz=False)
+
+        # Le thème a un cours et des exercices, mais rien pour se vérifier : une telle
+        # séance ne mesure rien et ne peut même pas se clore toute seule.
+        self.assertIsNone(plan_du_jour(self.user, self.cursus))
+
+    def test_le_theme_le_plus_frequent_gagne_meme_dans_une_matiere_moins_prioritaire(self):
+        maths, theme_maths = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=2)
+        svt, theme_svt = self._matiere("SVT", coefficient="1", nb_epreuves=8, nb_avec_le_theme=8)
+        self._historique(maths)
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        # Maths pèse plus au diplôme (coef 4 contre 1) et sortirait en premier du
+        # classement des matières : c'est la fréquence qui décide désormais.
+        self.assertEqual(seance.theme_id, theme_svt.id)
+        self.assertEqual(seance.subject_id, svt.id)
+
+    def test_la_frequence_se_compare_en_pourcentage_pas_en_nombre_brut(self):
+        maths, theme_maths = self._matiere("MATHS", coefficient="2", nb_epreuves=20, nb_avec_le_theme=7)
+        svt, theme_svt = self._matiere("SVT", coefficient="2", nb_epreuves=8, nb_avec_le_theme=6)
+        self._historique(maths)
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        # 7 épreuves sur 20 (35 %) contre 6 sur 8 (75 %) : le compte brut dirait maths,
+        # la part réelle dit SVT - et c'est la part qui compte pour l'élève.
+        self.assertEqual(seance.theme_id, theme_svt.id)
+
+    def test_les_annees_concernees_sont_exposees(self):
+        maths, theme = self._matiere(
+            "MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=3, annee_depart=2018,
+        )
+        self._historique(maths)
+
+        frequence = self.client.get("/quiz/plan-du-jour/").data["seance"]["frequence"]
+
+        # "Tombé dans 3 des 8 dernières épreuves" doit pouvoir se vérifier : les années
+        # les plus récentes d'abord.
+        self.assertEqual(frequence["occurrences"], 3)
+        self.assertEqual(frequence["epreuves_total"], 8)
+        self.assertEqual(frequence["annees"], [2020, 2019, 2018])
+
+    def test_la_seance_proposee_contient_toujours_un_quiz(self):
+        maths, _ = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
+        self._historique(maths)
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        self.assertTrue(_contient_quiz(seance.etapes))
