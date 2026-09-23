@@ -1,8 +1,9 @@
 import { Link, useParams, useSearchParams } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
-import { ArrowLeft, FileText, Lock, TrendingUp } from "lucide-react"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { ArrowLeft, ArrowRight, Check, FileText, Lock, TrendingUp } from "lucide-react"
 
-import { getThemeExercices } from "@/api/endpoints"
+import { getThemeExercices, marquerExerciceFait } from "@/api/endpoints"
+import type { ThemeExercice, ThemeExercicesResponse } from "@/api/types"
 import { useSeo } from "@/lib/seo"
 import { epreuveDetailPath, epreuveReaderPath, themesFrequentsPath } from "@/lib/countryPath"
 import { exerciceAnchorId } from "@/components/EpreuveSommaire"
@@ -10,7 +11,7 @@ import { Eyebrow, StatChip } from "@/components/Configurateur"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
-import { capitaliserTheme } from "@/lib/utils"
+import { capitaliserTheme, cn } from "@/lib/utils"
 
 /**
  * Contrepartie du bouton "Exercices" sur ThemesFrequents/ThemesFrequentsPage : liste
@@ -31,10 +32,41 @@ export function ThemeExercicesPage() {
   const nb = searchParams.get("nb")
   const total = searchParams.get("total")
 
+  const queryClient = useQueryClient()
+  const cleListe = ["theme-exercices", cursusId, tagId, subjectCode]
   const { data, isLoading } = useQuery({
-    queryKey: ["theme-exercices", cursusId, tagId, subjectCode],
+    queryKey: cleListe,
     queryFn: ({ signal }) => getThemeExercices(Number(cursusId), Number(tagId), subjectCode, signal),
     enabled: Boolean(cursusId && tagId && subjectCode),
+  })
+
+  /**
+   * Bascule "fait", en optimiste : la coche répond au clic et non au réseau. Sur une
+   * connexion lente, attendre l'aller-retour donne l'impression d'un bouton mort et
+   * l'élève clique deux fois - donc coche puis décoche sans le vouloir. En cas
+   * d'échec, on resynchronise et l'état revient de lui-même.
+   */
+  const basculer = useMutation({
+    mutationFn: ({ exercise_id, fait }: ThemeExercice) => marquerExerciceFait(exercise_id, !fait),
+    onMutate: async (exercice) => {
+      await queryClient.cancelQueries({ queryKey: cleListe })
+      const precedent = queryClient.getQueryData<ThemeExercicesResponse>(cleListe)
+      if (precedent) {
+        const exercices = precedent.exercices.map((e) =>
+          e.exercise_id === exercice.exercise_id ? { ...e, fait: !e.fait } : e,
+        )
+        queryClient.setQueryData<ThemeExercicesResponse>(cleListe, {
+          ...precedent,
+          exercices,
+          faits: exercices.filter((e) => e.fait).length,
+        })
+      }
+      return { precedent }
+    },
+    onError: (_erreur, _exercice, contexte) => {
+      if (contexte?.precedent) queryClient.setQueryData(cleListe, contexte.precedent)
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: cleListe }),
   })
 
   useSeo({
@@ -115,15 +147,36 @@ export function ThemeExercicesPage() {
           </CardContent>
         </Card>
       ) : (
+        <>
+          <AvancementFile
+            exercices={data.exercices}
+            faits={data.faits}
+            total={data.total}
+            country={country ?? ""}
+          />
         <div className="grid gap-2.5 sm:grid-cols-2">
           {data.exercices.map((exercice) => (
             <div
-              key={`${exercice.lesson_slug}-${exercice.numero_exercice}`}
-              className="flex items-center gap-3 rounded-xl border border-border px-4 py-3 transition-colors hover:border-primary/40 hover:bg-accent/40"
+              key={exercice.exercise_id}
+              className={cn(
+                "flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors",
+                // Un exercice fait s'efface sans disparaître : il reste consultable,
+                // mais ne dispute plus l'attention à ceux qui restent.
+                exercice.fait
+                  ? "border-border/60 bg-muted/30"
+                  : "border-border hover:border-primary/40 hover:bg-accent/40",
+              )}
             >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <FileText className="size-4" />
-              </span>
+              <BasculeFait
+                exercice={exercice}
+                enAttente={basculer.isPending && basculer.variables?.exercise_id === exercice.exercise_id}
+                onBasculer={basculer.mutate}
+              />
+              {!exercice.has_access && (
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <FileText className="size-4" />
+                </span>
+              )}
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium">{exercice.lesson_title}</p>
                 <p className="text-xs text-muted-foreground">
@@ -152,7 +205,104 @@ export function ThemeExercicesPage() {
             </div>
           ))}
         </div>
+        </>
       )}
     </div>
+  )
+}
+
+/**
+ * Barre d'avancement et action principale de la file d'entraînement.
+ *
+ * La page listait 33 exercices sans dire où l'élève en était : sur un thème fréquent,
+ * il recommençait au hasard et refaisait les mêmes. Deux ajouts suffisent à en faire
+ * une file : savoir combien sont faits, et avoir UN bouton qui ouvre le suivant.
+ *
+ * "Continuer" vise le premier exercice non fait auquel l'élève a accès - jamais un
+ * exercice verrouillé, qui transformerait l'action principale en mur de paiement.
+ */
+function AvancementFile({
+  exercices, faits, total, country,
+}: {
+  exercices: ThemeExercice[]
+  faits: number
+  total: number
+  country: string
+}) {
+  const suivant = exercices.find((e) => !e.fait && e.has_access)
+  const termine = total > 0 && faits >= total
+
+  return (
+    <div className="mb-6 rounded-2xl border border-border bg-card p-4 sm:p-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="min-w-0">
+          <p className="font-display text-lg font-semibold">
+            {termine ? "Thème bouclé" : `${faits} exercice${faits > 1 ? "s" : ""} sur ${total}`}
+          </p>
+          <p className="mt-0.5 text-sm text-muted-foreground">
+            {termine
+              ? "Tu as traité tous les exercices de ce thème. Il reviendra en révision au bon moment."
+              : "Tu décides de ce qui est fait - rien n'est coché à ta place."}
+          </p>
+        </div>
+        {suivant && (
+          <Button asChild size="lg" className="shrink-0">
+            <Link
+              to={`${epreuveReaderPath(country, suivant.lesson_slug)}#${exerciceAnchorId(suivant.numero_exercice)}`}
+            >
+              {faits > 0 ? "Continuer" : "Commencer"}
+              <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+        )}
+      </div>
+      {/* Barre pleine largeur plutôt qu'un pourcentage : sur 33 exercices, "12 %" ne
+          dit rien, une barre qui avance se lit d'un coup d'œil. */}
+      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted">
+        <div
+          className="h-full rounded-full bg-primary transition-all duration-500"
+          style={{ width: `${total > 0 ? Math.round((faits / total) * 100) : 0}%` }}
+          role="progressbar"
+          aria-valuenow={faits}
+          aria-valuemin={0}
+          aria-valuemax={total}
+          aria-label="Exercices traités"
+        />
+      </div>
+    </div>
+  )
+}
+
+/**
+ * La bascule "fait" d'une ligne. Optimiste : la coche répond au clic, pas au réseau -
+ * sur une connexion camerounaise moyenne, attendre l'aller-retour donnerait
+ * l'impression d'un bouton mort, et l'élève cliquerait deux fois. En cas d'échec, la
+ * liste est resynchronisée et l'état revient de lui-même.
+ */
+function BasculeFait({
+  exercice, enAttente, onBasculer,
+}: {
+  exercice: ThemeExercice
+  enAttente: boolean
+  onBasculer: (exercice: ThemeExercice) => void
+}) {
+  if (!exercice.has_access) return null
+  return (
+    <button
+      type="button"
+      disabled={enAttente}
+      aria-pressed={exercice.fait}
+      aria-label={exercice.fait ? "Marquer comme non fait" : "Marquer comme fait"}
+      title={exercice.fait ? "Marquer comme non fait" : "Marquer comme fait"}
+      onClick={() => onBasculer(exercice)}
+      className={cn(
+        "flex size-8 shrink-0 items-center justify-center rounded-full border transition-colors disabled:opacity-60",
+        exercice.fait
+          ? "border-primary bg-primary text-primary-foreground"
+          : "border-border text-muted-foreground hover:border-primary/50 hover:text-primary",
+      )}
+    >
+      <Check className="size-4" />
+    </button>
   )
 }

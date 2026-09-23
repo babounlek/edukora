@@ -4,9 +4,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from catalog.models import Cours, Lesson
+from catalog.models import Cours, Exercise, Lesson
 
-from .models import LectureProgress
+from .models import ExerciceFait, LectureProgress
 from .services import has_access
 
 
@@ -162,3 +162,28 @@ def my_progression(request):
         "lessons": _LessonProgressionSerializer(lessons, many=True).data,
         "cours": _CoursProgressionSerializer(cours, many=True).data,
     })
+
+
+@api_view(["POST"])
+def marquer_exercice_fait(request, exercise_id):
+    """
+    L'élève déclare avoir traité cet exercice - ou revient sur sa déclaration.
+
+    Toujours explicite : rien ici n'est déduit d'une ouverture de page (voir
+    ExerciceFait). `fait` absent vaut true, pour que le cas courant tienne en un POST
+    sans corps.
+
+    Réservé à qui a accès à l'épreuve : marquer comme fait un exercice qu'on ne peut
+    pas lire n'a aucun sens, et gonflerait un compteur de progression sans travail
+    derrière.
+    """
+    exercise = get_object_or_404(Exercise.objects.select_related("lesson"), pk=exercise_id)
+    if not has_access(request.user, exercise.lesson):
+        return Response({"error": "Abonnement requis pour cette épreuve."}, status=403)
+
+    fait = request.data.get("fait", True)
+    if fait:
+        ExerciceFait.objects.get_or_create(user=request.user, exercise=exercise)
+    else:
+        ExerciceFait.objects.filter(user=request.user, exercise=exercise).delete()
+    return Response({"exercise_id": exercise.pk, "fait": bool(fait)})

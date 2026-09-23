@@ -5,6 +5,7 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from access.models import ExerciceFait
 from access.services import (
     bulk_active_inedite_cursus_ids,
     bulk_active_subscription_cursus_ids,
@@ -765,6 +766,17 @@ class ThemeExercicesView(APIView):
         # seule entrée par exercice, jamais par question (même principe que
         # ThemesFrequentsView : l'unité pertinente pour l'élève est "un exercice à
         # pratiquer", pas chacune de ses sous-questions).
+        # Exercices que cet élève a déclaré avoir traités (voir access.ExerciceFait) -
+        # une seule requête pour toute la liste, jamais un test par ligne. C'est ce qui
+        # transforme cette page d'un catalogue en file d'entraînement : sans lui,
+        # l'élève ne sait pas où il en est sur 33 exercices et recommence au hasard.
+        faits = set()
+        if request.user.is_authenticated:
+            faits = set(
+                ExerciceFait.objects.filter(user=request.user, exercise__lesson__in=[q.exercise.lesson_id for q in questions])
+                .values_list("exercise_id", flat=True),
+            )
+
         vus = set()
         exercices = []
         for question in questions:
@@ -781,11 +793,20 @@ class ThemeExercicesView(APIView):
                     cid in active_cursus_ids for cid in lesson_cursus_ids
                 )
             exercices.append({
+                # L'id est ce qui permet de marquer l'exercice comme fait - le couple
+                # (slug, numéro) ne suffit pas, c'est un libellé d'affichage.
+                "exercise_id": question.exercise.pk,
                 "lesson_slug": lesson.slug,
                 "lesson_title": lesson.title,
                 "lesson_year": lesson.year,
                 "numero_exercice": question.exercise.numero_exercice,
                 "has_access": lesson_has_access,
+                "fait": question.exercise.pk in faits,
             })
 
-        return Response({"tag": tag.name, "exercices": exercices})
+        return Response({
+            "tag": tag.name,
+            "exercices": exercices,
+            "total": len(exercices),
+            "faits": sum(1 for e in exercices if e["fait"]),
+        })

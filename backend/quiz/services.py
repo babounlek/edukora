@@ -6,7 +6,7 @@ from datetime import timedelta
 from django.db.models import Count, Q
 from django.utils import timezone
 
-from access.models import LectureProgress
+from access.models import ExerciceFait, LectureProgress
 from catalog.models import Cours, Difficulte, Lesson, Origine, Question, StatutContenu, Subject, Tag
 from programme.models import Module, Savoir
 
@@ -1267,6 +1267,10 @@ def _exercices_pour_theme(cursus, subject, theme, maximum):
         vus.add(cle)
         trouves.append({
             "type": "exercice",
+            # Permet de marquer l'exercice comme fait quand la séance est clôturée
+            # (voir terminer_seance) - sans quoi la file d'entraînement du thème le
+            # reproposerait alors qu'il vient d'être travaillé.
+            "exercise_id": question.exercise.pk,
             "libelle": "Exercice " + str(numero) + " - " + lesson.title if numero else lesson.title,
             "lesson_slug": lesson.slug,
             "lesson_title": lesson.title,
@@ -1287,6 +1291,14 @@ def terminer_seance(seance):
     seance.statut = StatutSeance.TERMINEE
     seance.termine_at = timezone.now()
     seance.save(update_fields=["statut", "termine_at"])
+
+    # Les exercices de la séance comptent comme faits. C'est une inférence, la seule
+    # qu'on se permette : déclarer sa séance terminée, c'est déclarer en avoir fait les
+    # étapes. Sans elle, la file d'entraînement du thème reproposerait dès le lendemain
+    # l'exercice travaillé la veille, et les deux surfaces se contrediraient.
+    for etape in seance.etapes:
+        if etape.get("type") == "exercice" and etape.get("exercise_id"):
+            ExerciceFait.objects.get_or_create(user=seance.user, exercise_id=etape["exercise_id"])
     return seance
 
 
@@ -1753,3 +1765,23 @@ def ajuster_duree_seance(user, cursus, minutes, date=None):
     seance.budget_minutes = minutes
     seance.save(update_fields=["etapes", "budget_minutes"])
     return seance
+
+
+def exercices_du_theme(cursus, subject, theme):
+    """
+    Combien d'exercices d'examen traitent ce thème, en tout - le chiffre qui justifie
+    le lien "les 33 exercices sur ce thème" sous l'étape d'entraînement.
+
+    La séance n'en propose qu'un ou deux (voir EXERCICES_PAR_SEANCE_MAX) : c'est un
+    plafond de temps, pas une limite de contenu. Sans ce chiffre, l'élève n'a aucune
+    idée de la profondeur disponible et croit que c'est tout ce qu'on a.
+    """
+    if theme is None or subject is None:
+        return 0
+    return len({
+        (lesson_id, numero)
+        for lesson_id, numero in Question.objects.filter(
+            themes=theme, exercise__lesson__statut=StatutContenu.VALIDE,
+            exercise__lesson__subject=subject, exercise__lesson__cursus=cursus,
+        ).values_list("exercise__lesson_id", "exercise__numero_exercice")
+    })

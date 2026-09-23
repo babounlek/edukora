@@ -37,6 +37,9 @@ export type EtapeSeance =
   | {
       type: "exercice"
       libelle: string
+      // Permet de marquer l'exercice comme fait a la cloture de la seance (voir
+      // terminer_seance) - sans quoi la file d'entrainement le reproposerait.
+      exercise_id: number
       lesson_slug: string
       lesson_title: string
       lesson_year: number | null
@@ -73,6 +76,9 @@ export interface Seance {
   // Échéance de révision de ce thème (paliers Leitner), quand il y en a une. Null
   // quand le thème n'est pas dans la file : annoncer une révision serait faux.
   prochaine_revision: string | null
+  // Profondeur disponible derriere l'etape d'entrainement : la seance n'en propose
+  // qu'un ou deux par budget de temps, pas par manque de contenu.
+  exercices_total: number
   statut: "PROPOSEE" | "TERMINEE"
   // Résultat du quiz de la séance, une fois la session terminée - null quand il n'y a
   // rien à noter (voir quiz.services.score_de_la_seance).
@@ -523,16 +529,23 @@ export interface ThemesFrequentsResponse {
 }
 
 export interface ThemeExercice {
+  // Identifiant de l'Exercise - ce qui permet de le marquer comme fait. Le couple
+  // (slug, numero) ne suffit pas : c'est un libelle d'affichage.
+  exercise_id: number
   lesson_slug: string
   lesson_title: string
   lesson_year: number | null
   numero_exercice: string
   has_access: boolean
+  // Declare par l'eleve (voir access.ExerciceFait), jamais deduit d'une ouverture.
+  fait: boolean
 }
 
 export interface ThemeExercicesResponse {
   tag: string
   exercices: ThemeExercice[]
+  total: number
+  faits: number
 }
 
 export interface Paginated<T> {

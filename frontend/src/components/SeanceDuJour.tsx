@@ -10,7 +10,7 @@ import {
 import type { EtapeSeance, PlanDuJour, Seance } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
-import { coursReaderPath, epreuveReaderPath, themesFrequentsPath } from "@/lib/countryPath"
+import { coursReaderPath, epreuveReaderPath, themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
 import { trackEvent } from "@/lib/analytics"
 import { cn } from "@/lib/utils"
 import { formatCompteARebours } from "@/components/CompteAReboursBadge"
@@ -573,6 +573,13 @@ const PHASES = [
 ] as const
 
 function EtapesParPhase({ seance, country, plan }: { seance: Seance; country: string; plan: PlanDuJour }) {
+  // La page des exercices d'un thème exige la matière ET le cursus (voir
+  // ThemeExercicesView) : sans eux le lien mène à une erreur 400, donc on ne l'affiche
+  // pas plutôt que de proposer une impasse.
+  const lienExercices =
+    seance.theme && seance.subject && plan.cursus
+      ? `${themeExercicesPath(country, seance.theme.id)}?subject=${seance.subject.code}&cursus=${plan.cursus.id}`
+      : null
   const groupes = PHASES
     .map((phase) => ({ ...phase, etapes: seance.etapes.filter((e) => e.type === phase.cle) }))
     .filter((phase) => phase.etapes.length > 0)
@@ -591,6 +598,19 @@ function EtapesParPhase({ seance, country, plan }: { seance: Seance; country: st
             </p>
           )}
           <div className="flex flex-col gap-1">
+            {/* La profondeur, à un clic, sans jamais déverser 33 liens dans la carte :
+                la promesse de la séance est "une seule chose à faire", et un élève qui
+                voit 33 items n'en fait généralement aucun. Même patron que
+                "Propose-moi autre chose" - accessible, jamais promu. */}
+            {phase.cle === "exercice" && seance.exercices_total > phase.etapes.length && lienExercices && (
+              <Link
+                to={lienExercices}
+                className="order-last flex items-center gap-1.5 px-2 pt-1 text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
+              >
+                Les {seance.exercices_total} exercices sur ce thème
+                <ArrowRight className="size-3" />
+              </Link>
+            )}
             {phase.etapes.map((etape) => (
               <Link
                 key={etape.libelle}

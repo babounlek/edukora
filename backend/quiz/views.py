@@ -23,7 +23,8 @@ from .pdf import queue_quiz_fiche_pdf_generation
 from .services import (
     cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision, generer_session,
     maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
-    BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, prochaine_revision, raisons_de_la_seance, remplacer_seance,
+    BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
+    remplacer_seance,
     score_de_la_seance,
     seance_du_jour,
     seance_supplementaire,
@@ -617,6 +618,9 @@ def _serialiser_seance(seance, verrouillee):
         # Échéance de révision de ce thème, quand il y en a une - le chiffre existait
         # déjà (paliers Leitner) et n'était jamais montré.
         "prochaine_revision": prochaine_revision(seance),
+        # Profondeur disponible derrière l'étape d'entraînement : la séance n'en propose
+        # qu'un ou deux par budget de temps, pas par manque de contenu.
+        "exercices_total": exercices_du_theme(seance.cursus, seance.subject, seance.theme),
         "statut": seance.statut,
         # "4/5" en fin de séance - None quand il n'y a rien à noter (pas d'étape quiz,
         # ou quiz pas terminé), jamais un 0/0 qui se lirait comme un échec.

@@ -630,3 +630,15 @@ export function proposerAutreChose() {
 export function ajusterDureeSeance(minutes: number) {
   return apiRequest<PlanDuJour>("/quiz/plan-du-jour/duree/", { method: "POST", body: { minutes } })
 }
+
+/**
+ * L'élève déclare avoir traité cet exercice, ou revient sur sa déclaration (voir
+ * access.views.marquer_exercice_fait). Rien n'est jamais déduit d'une ouverture de
+ * page : un suivi deviné serait pire que pas de suivi.
+ */
+export function marquerExerciceFait(exerciseId: number, fait: boolean) {
+  return apiRequest<{ exercise_id: number; fait: boolean }>(
+    `/access/exercices/${exerciseId}/fait/`,
+    { method: "POST", body: { fait } },
+  )
+}
