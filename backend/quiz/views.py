@@ -23,7 +23,8 @@ from .pdf import queue_quiz_fiche_pdf_generation
 from .services import (
     cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision, generer_session,
     maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
-    remplacer_seance, score_de_la_seance, seance_du_jour, seance_supplementaire,
+    prochaine_revision, raisons_de_la_seance, remplacer_seance, score_de_la_seance, seance_du_jour,
+    seance_supplementaire,
     seances_terminees_cette_semaine, terminer_seance,
 )
 
@@ -603,6 +604,13 @@ def _serialiser_seance(seance, verrouillee):
         # l'abonnement n'est pas actif, alors que tout le reste est servi tel quel.
         "etapes": [] if verrouillee else seance.etapes,
         "frequence": _frequence_du_theme(seance),
+        # Pourquoi cette séance-là : des faits déjà en base, jamais une reformulation
+        # de l'intention (voir raisons_de_la_seance). C'est ce qui distingue une
+        # recommandation crédible d'une recommandation à croire sur parole.
+        "raisons": raisons_de_la_seance(seance),
+        # Échéance de révision de ce thème, quand il y en a une - le chiffre existait
+        # déjà (paliers Leitner) et n'était jamais montré.
+        "prochaine_revision": prochaine_revision(seance),
         "statut": seance.statut,
         # "4/5" en fin de séance - None quand il n'y a rien à noter (pas d'étape quiz,
         # ou quiz pas terminé), jamais un 0/0 qui se lirait comme un échec.

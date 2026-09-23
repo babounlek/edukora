@@ -62,6 +62,13 @@ export interface Seance {
   // `annees` : les années réellement concernées, pour que "tombé dans 11 des 21
   // dernières épreuves" soit vérifiable plutôt qu'à croire sur parole.
   frequence: { occurrences: number; epreuves_total: number; annees: number[] } | null
+  // Pourquoi cette séance-là : des faits déjà en base (coefficient transcrit, date du
+  // ratage, thème jamais travaillé), jamais une reformulation de l'intention. Le
+  // `code` pilote l'icône, le texte vient du serveur qui seul a les chiffres.
+  raisons: { code: string; texte: string }[]
+  // Échéance de révision de ce thème (paliers Leitner), quand il y en a une. Null
+  // quand le thème n'est pas dans la file : annoncer une révision serait faux.
+  prochaine_revision: string | null
   statut: "PROPOSEE" | "TERMINEE"
   // Résultat du quiz de la séance, une fois la session terminée - null quand il n'y a
   // rien à noter (voir quiz.services.score_de_la_seance).

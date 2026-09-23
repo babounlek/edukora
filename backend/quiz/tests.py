@@ -2635,6 +2635,36 @@ class FinDeSeanceTests(TestCase):
         )
 
 
+
+    def test_un_quiz_abandonne_ne_condamne_pas_la_seance(self):
+        """
+        Ouvrir le quiz de sa séance puis quitter sans répondre liait définitivement la
+        séance à une session sans fin : aucune tentative suivante ne pouvait plus la
+        clôturer, et l'élève refaisait le quiz en entier pour voir sa séance rester
+        "à faire". Constaté en conditions réelles.
+        """
+        premiere = self._lancer_le_quiz_de_la_seance()  # ouverte, jamais terminée
+        seconde_id = self._lancer_le_quiz_de_la_seance()
+        self.assertNotEqual(premiere, seconde_id)
+
+        self._repondre(seconde_id, ResultatDeclare.REUSSI)
+        self.client.post(f"/quiz/sessions/{seconde_id}/completer/")
+
+        seance = seance_du_jour(self.user, self.cursus)
+        self.assertEqual(seance.quiz_session_id, seconde_id)
+        self.assertEqual(seance.statut, StatutSeance.TERMINEE)
+
+    def test_une_session_terminee_reste_la_trace_de_la_seance(self):
+        session_id = self._lancer_le_quiz_de_la_seance()
+        self._repondre(session_id, ResultatDeclare.REUSSI)
+        self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        # Un quiz relancé ensuite sur le même thème ne doit pas réécrire l'histoire :
+        # c'est bien la session qui a clôturé la séance qui en reste la trace.
+        autre = self._lancer_le_quiz_de_la_seance()
+
+        self.assertEqual(seance_du_jour(self.user, self.cursus).quiz_session_id, session_id)
+        self.assertNotEqual(autre, session_id)
 class PrioriteMatiereTests(TestCase):
     """
     Quelle matière proposer quand rien d'autre ne l'impose (ni révision due, ni

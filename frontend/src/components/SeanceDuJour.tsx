@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, Check, Lock, PenLine, Sparkles, Target } from "lucide-react"
+import { ArrowRight, BookOpen, Check, Lock, PenLine, RotateCcw, Sparkles, Target } from "lucide-react"
 
 import {
   continuerSeanceDuJour, getPlanDuJour, listCursus, proposerAutreChose, terminerSeanceDuJour, updateMe,
@@ -268,6 +268,18 @@ function SeanceFaite({
           <> · {plan.seances_cette_semaine} séance{plan.seances_cette_semaine > 1 ? "s" : ""} cette semaine</>
         )}
       </p>
+      {/* Ce qui ferme la boucle : l'élève sait que ce qu'il vient de rater lui
+          reviendra, et n'a donc rien à noter de son côté. Le chiffre existait déjà
+          (paliers de révision espacée) et n'était simplement jamais montré. Absent
+          quand le thème n'est pas dans la file - annoncer une révision qui n'aura pas
+          lieu serait pire que se taire. */}
+      {seance.prochaine_revision && (
+        <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+          <RotateCcw className="size-3.5 shrink-0 text-primary" />
+          On te le repropose {formatEcheance(seance.prochaine_revision)}.
+        </p>
+      )}
+
       {/* "Continuer" enchaîne sur une VRAIE séance suivante, jamais sur la liste des
           thèmes : renvoyer au catalogue quelqu'un qui vient de faire ce qu'on lui a
           demandé, c'est lui rendre la charge de choisir au moment précis où il
@@ -293,11 +305,35 @@ function SeanceFaite({
   )
 }
 
+/**
+ * "Pourquoi cette séance ?" - la fréquence à l'examen en tête, puis les autres
+ * raisons.
+ *
+ * Tout le produit repose sur la crédibilité de sa recommandation : un élève qui ne
+ * comprend pas pourquoi on lui propose ce thème n'a aucune raison de nous croire
+ * plutôt que de retourner choisir lui-même. Ces lignes sont donc affichées, pas
+ * repliées derrière un "voir pourquoi" - cacher l'argument, c'est le perdre.
+ */
 function Frequence({ seance }: { seance: Seance }) {
-  if (!seance.frequence) return null
+  if (!seance.frequence && seance.raisons.length === 0) return null
+  const titre = (
+    <p className="mt-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+      Pourquoi cette séance ?
+    </p>
+  )
+  if (!seance.frequence) {
+    return (
+      <>
+        {titre}
+        <AutresRaisons seance={seance} />
+      </>
+    )
+  }
   const { occurrences, epreuves_total, annees } = seance.frequence
   return (
-    <div className="mt-3">
+    <>
+      {titre}
+      <div className="mt-2">
       <p className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium">
         <Target className="size-3.5 shrink-0" />
         Tombé dans {occurrences} des {epreuves_total} dernières épreuves
@@ -311,7 +347,25 @@ function Frequence({ seance }: { seance: Seance }) {
           {occurrences > annees.length ? "…" : ""}
         </p>
       )}
-    </div>
+      </div>
+      <AutresRaisons seance={seance} />
+    </>
+  )
+}
+
+/** Les raisons autres que la fréquence - coefficient, ratage précédent, thème jamais
+ * travaillé. Chacune est un fait déjà en base (voir raisons_de_la_seance). */
+function AutresRaisons({ seance }: { seance: Seance }) {
+  if (seance.raisons.length === 0) return null
+  return (
+    <ul className="mt-2 flex flex-col gap-1">
+      {seance.raisons.map((raison) => (
+        <li key={raison.code} className="flex items-start gap-1.5 text-xs text-muted-foreground">
+          <Check className="mt-0.5 size-3 shrink-0 text-primary" />
+          {raison.texte}
+        </li>
+      ))}
+    </ul>
   )
 }
 
@@ -424,4 +478,24 @@ function DeclarerSonExamen({ country }: { country: string }) {
       </div>
     </section>
   )
+}
+
+/**
+ * "demain", "dans 3 jours" - en jours et jamais en date brute : l'échéance ne vaut
+ * que par la distance qui la sépare d'aujourd'hui, et "le 26/09" oblige l'élève à
+ * faire le calcul lui-même.
+ *
+ * Comparaison en dates locales (l'échéance est une date sans heure, voir
+ * RevisionSchedule.due_at) : passer par des horodatages ferait basculer le résultat
+ * d'un jour selon l'heure à laquelle l'élève ouvre la page.
+ */
+function formatEcheance(dueAt: string): string {
+  const [annee, mois, jour] = dueAt.split("-").map(Number)
+  const echeance = new Date(annee, mois - 1, jour)
+  const maintenant = new Date()
+  const aujourdhui = new Date(maintenant.getFullYear(), maintenant.getMonth(), maintenant.getDate())
+  const jours = Math.round((echeance.getTime() - aujourdhui.getTime()) / 86400000)
+  if (jours <= 0) return "dès aujourd'hui"
+  if (jours === 1) return "demain"
+  return `dans ${jours} jours`
 }

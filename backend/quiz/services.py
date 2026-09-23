@@ -106,7 +106,8 @@ PARCOURS_FREQUENCE_OCCURRENCES_MIN = 2
 PARCOURS_FREQUENCE_THEMES_MAX = 130
 
 from .models import (
-    CompetenceItem, ModeQuiz, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule,
+    CompetenceItem, ModeQuiz, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare,
+    RevisionSchedule,
     SeanceJournaliere, StatutSeance,
 )
 
@@ -1235,12 +1236,21 @@ def rattacher_quiz_a_la_seance(user, session):
     un élève peut très bien lancer un quiz sur le même thème de son propre chef, et
     ce serait alors sa séance qui se clôturerait toute seule.
 
-    Ne remplace jamais un rattachement existant : si l'élève relance un quiz après
-    avoir déjà terminé celui de sa séance, c'est le premier - celui qui a réellement
-    clôturé la séance - qui reste la trace.
+    Ne remplace jamais un rattachement vers une session TERMINÉE : si l'élève relance
+    un quiz après avoir déjà bouclé celui de sa séance, c'est le premier - celui qui a
+    réellement clôturé la séance - qui reste la trace.
+
+    Une session ABANDONNÉE, elle, se remplace. La règle ne distinguait pas les deux,
+    et la conséquence se voyait à l'usage : ouvrir le quiz de sa séance puis quitter
+    sans répondre liait définitivement la séance à une session sans fin, et AUCUNE
+    tentative suivante ne pouvait plus la clôturer - l'élève refaisait le quiz en
+    entier et voyait sa séance rester "à faire". Un abandon ne doit pas condamner la
+    journée.
     """
     seance = seance_du_jour(user, session.cursus)
-    if seance is None or seance.quiz_session_id is not None:
+    if seance is None:
+        return None
+    if seance.quiz_session_id is not None and seance.quiz_session.completed_at is not None:
         return None
     seance.quiz_session = session
     seance.save(update_fields=["quiz_session"])
@@ -1509,3 +1519,98 @@ def remplacer_seance(user, cursus, date=None):
         courante.statut = StatutSeance.REMPLACEE
         courante.save(update_fields=["statut"])
     return remplacante
+
+
+# Coefficient à partir duquel on le cite comme raison : au-dessus du coefficient par
+# défaut, sinon la phrase "coefficient 2" ne distingue rien - c'est la valeur la plus
+# répandue du corpus (voir COEFFICIENT_PAR_DEFAUT).
+COEFFICIENT_REMARQUABLE_MIN = COEFFICIENT_PAR_DEFAUT + 0.5
+
+
+def raisons_de_la_seance(seance):
+    """
+    Pourquoi CETTE séance et pas une autre, en phrases vérifiables.
+
+    Le produit repose entièrement sur la crédibilité de sa recommandation : un élève
+    qui ne comprend pas pourquoi on lui propose ce thème n'a aucune raison de nous
+    croire plutôt que de retourner choisir lui-même. Chaque ligne renvoyée ici est un
+    fait déjà en base - une fréquence comptée, un coefficient transcrit d'une épreuve,
+    une réponse qu'il a lui-même ratée - jamais une reformulation de l'intention.
+
+    Volontairement AUCUNE raison inventée quand on ne sait pas : mieux vaut une seule
+    ligne vraie que trois lignes dont une est devinée. La fréquence à l'examen n'est
+    pas reprise ici - elle a déjà son badge (voir _frequence_du_theme), et la répéter
+    ferait du remplissage.
+
+    Renvoie une liste de dicts {code, texte} : le code pilote l'icône côté frontend,
+    le texte est écrit ici parce qu'il dépend de chiffres que seul le serveur a.
+    """
+    raisons = []
+
+    if seance.origine == OrigineSeance.DIAGNOSTIC:
+        return [{
+            "code": "calibrage",
+            "texte": "On ne sait pas encore où tu en es - ces questions servent à le situer.",
+        }]
+
+    if seance.subject_id and seance.cursus_id:
+        coefficient = _coefficient_par_subject(seance.cursus).get(seance.subject_id)
+        if coefficient and coefficient >= COEFFICIENT_REMARQUABLE_MIN:
+            # Coefficient tel que transcrit sur les épreuves de ce cursus (voir
+            # _coefficient_par_subject) - jamais un barème que nous aurions décidé.
+            valeur = int(coefficient) if coefficient == int(coefficient) else coefficient
+            raisons.append({
+                "code": "coefficient",
+                "texte": f"{seance.subject.label} est coefficient {valeur} à ton examen.",
+            })
+
+    if seance.origine == OrigineSeance.REVISION_DUE and seance.theme_id:
+        dernier_echec = (
+            QuizAnswer.objects.filter(
+                quiz_question__session__user=seance.user,
+                quiz_question__competence_item__theme_id=seance.theme_id,
+            )
+            .exclude(resultat_declare=ResultatDeclare.REUSSI)
+            .order_by("-answered_at")
+            .first()
+        )
+        if dernier_echec is not None:
+            jours = (timezone.localdate() - timezone.localtime(dernier_echec.answered_at).date()).days
+            quand = "aujourd'hui" if jours == 0 else ("hier" if jours == 1 else f"il y a {jours} jours")
+            raisons.append({"code": "echec", "texte": f"Tu as raté ce thème {quand}."})
+        else:
+            raisons.append({"code": "echec", "texte": "Ce thème t'a déjà posé problème."})
+
+    elif seance.origine == OrigineSeance.LECTURE_EN_COURS:
+        raisons.append({"code": "lecture", "texte": "Tu as ouvert ce cours il y a moins de deux jours."})
+
+    elif seance.theme_id:
+        # Jamais répondu sur ce thème : c'est là qu'il y a le plus à gagner, et c'est
+        # exactement ce que le parcours cherche en premier (voir _seance_depuis_parcours).
+        deja_repondu = QuizAnswer.objects.filter(
+            quiz_question__session__user=seance.user,
+            quiz_question__competence_item__theme_id=seance.theme_id,
+        ).exists()
+        if not deja_repondu:
+            raisons.append({"code": "jamais", "texte": "Tu ne l'as encore jamais travaillé."})
+
+    return raisons
+
+
+def prochaine_revision(seance):
+    """
+    Date à laquelle ce thème doit revenir (voir RevisionSchedule et les paliers de
+    LEITNER_INTERVALS_JOURS) - le chiffre existait déjà, il n'était simplement jamais
+    montré. Le dire en fin de séance ferme la boucle : l'élève sait que ce qu'il vient
+    de rater lui reviendra, et n'a donc rien à noter de son côté.
+
+    None quand il n'y a pas d'échéance : un thème jamais raté n'entre pas dans la file,
+    et un thème gradué en sort (voir enregistrer_resultat_pour_revision). Dans les deux
+    cas, annoncer une révision serait faux.
+    """
+    if not seance.theme_id:
+        return None
+    schedule = RevisionSchedule.objects.filter(
+        user=seance.user, cursus=seance.cursus, theme_id=seance.theme_id,
+    ).first()
+    return schedule.due_at if schedule else None
