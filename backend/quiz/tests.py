@@ -2148,8 +2148,48 @@ class ResumeParcoursTests(TestCase):
         self.assertEqual(entry["total"], 4)
         self.assertEqual(entry["maitrises"], 1)
         self.assertEqual(entry["en_revision"], 1)
+        self.assertEqual(entry["en_cours"], 0)
         self.assertEqual(entry["a_decouvrir"], 1)
         self.assertEqual(entry["sans_contenu"], 1)
+
+    def test_graduated_theme_below_seuil_counts_as_en_cours_not_a_decouvrir(self):
+        """
+        Un thème peut GRADUER hors de la file de révision (3 réussites consécutives
+        font avancer puis supprimer sa RevisionSchedule) tout en gardant une moyenne
+        historique sous SEUIL_MAITRISE - le taux ne s'efface jamais, contrairement au
+        palier Leitner qui ne regarde que le présent. Avant ce test, un tel thème
+        disparaissait de l'agrégat : ni "maîtrisé" (taux < seuil), ni "en révision"
+        (gradué), il retombait dans "a_decouvrir" - INDISTINGUABLE d'un thème jamais
+        ouvert, alors que l'élève vient justement de le travailler intensément.
+        Constaté sur un compte réel : 19/35 réponses, 54 %, gradué, invisible.
+        """
+        savoir = self._module_savoir(self.maths, numero="1", intitule="Travaille")
+        theme = Tag.objects.create(name="theme-travaille", savoir_officiel=savoir)
+        item = _make_competence_item(self.maths, self.cursus, theme=theme, numero="1")
+        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+
+        # 3 échecs (le dernier fixe le palier à 0), puis 3 réussites consécutives qui
+        # font avancer les 3 paliers (LEITNER_INTERVALS_JOURS) et graduent le thème
+        # hors de la file au dernier succès - moyenne finale : 3 réussies / 6 = 50 %,
+        # nettement sous SEUIL_MAITRISE (70).
+        for ordre, resultat in enumerate((False, False, False, True, True, True), start=1):
+            quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=ordre)
+            QuizAnswer.objects.create(
+                quiz_question=quiz_question,
+                resultat_declare=ResultatDeclare.REUSSI if resultat else ResultatDeclare.ECHEC,
+            )
+            enregistrer_resultat_pour_revision(self.user, self.cursus, self.maths, theme, resultat)
+
+        self.assertFalse(RevisionSchedule.objects.filter(user=self.user, theme=theme).exists())
+
+        resume = resume_parcours(self.user, self.cursus)
+
+        entry = resume[0]
+        self.assertEqual(entry["total"], 1)
+        self.assertEqual(entry["maitrises"], 0)
+        self.assertEqual(entry["en_revision"], 0)
+        self.assertEqual(entry["en_cours"], 1)
+        self.assertEqual(entry["a_decouvrir"], 0)
 
 
 class ResumeParcoursApiTests(TestCase):

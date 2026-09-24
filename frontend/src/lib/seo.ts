@@ -7,7 +7,7 @@ import { SITE_NAME } from "@/lib/site"
 // erreur un visiteur d'un autre pays (voir CataloguePage/CoursListPage pour la
 // description propre à chaque pays affichée sur les pages qui, elles, en dépendent).
 const DEFAULT_DESCRIPTION =
-  "Corrigés d'annales, sujets et cours pour le BEPC, le Probatoire et le BAC, rédigés par des enseignants."
+  "Chaque jour, on te dit quoi réviser pour le BEPC, le Probatoire et le BAC, avec des corrigés d'annales et des quiz rédigés par des enseignants."
 
 function upsertMeta(attr: "name" | "property", key: string, content: string) {
   let tag = document.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`)

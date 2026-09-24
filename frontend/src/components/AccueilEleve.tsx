@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, Clock, Crown, RotateCcw } from "lucide-react"
+import { ArrowRight, BookOpen, ChevronRight, Clock, Crown, RotateCcw, TrendingUp } from "lucide-react"
 
-import { getMyProgression, getResumeParcours, listEpreuves, listRevisionsDues } from "@/api/endpoints"
+import { getMyProgression, getResumeParcours, listRevisionsDues } from "@/api/endpoints"
 import type { ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { SeanceDuJour } from "@/components/SeanceDuJour"
+import { AnneauProgression, BarreSegmentee, Ecrin, LegendeProgression } from "@/components/Progression"
+import { pourcent } from "@/lib/maitrise"
 import { epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
-import { cn } from "@/lib/utils"
+import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 
 /**
  * L'accueil d'un élève ABONNÉ : sa séance, ses lectures, ses révisions, sa
@@ -47,13 +49,10 @@ export function AccueilEleve({ country }: { country: string }) {
     enabled: Boolean(cursusId),
   })
 
-  // Même clé de cache que le Header et la page vitrine : un élève qui navigue entre
-  // les deux ne repaie pas cette requête.
-  const { data: inedites } = useQuery({
-    queryKey: ["epreuves-inedites-recente", country],
-    queryFn: ({ signal }) => listEpreuves({ country, origine: "INEDITE", ordering: "recent" }, signal),
-    enabled: Boolean(country),
-  })
+  // Les inédites de SON cursus uniquement (voir useInedites) - même clé de cache que
+  // la page vitrine pour le même cursus, donc aucune requête en plus entre les deux.
+  const cursusAccueil = useCursusAccueil(country)
+  const { data: inedites } = useInedites(country, cursusAccueil)
 
   // Les révisions de SON cursus uniquement : l'endpoint les renvoie tous cursus
   // confondus (il servait une page dédiée), or cet écran parle d'un seul examen.
@@ -126,38 +125,45 @@ export function AccueilEleve({ country }: { country: string }) {
         </section>
       )}
 
-      {resume && resume.length > 0 && (
+      {resume && resume.some((m) => m.total > m.sans_contenu) && (
         <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-          <h2 className="font-display text-lg font-semibold">Où j'en suis</h2>
-          <div className="mt-3 flex flex-col gap-2">
-            {/* Les matières les moins avancées d'abord - c'est là qu'il y a quelque
-                chose à faire. Voir la page Ma progression pour la liste entière. */}
-            {[...resume]
-              .filter((m) => m.total > m.sans_contenu)
-              .sort(
-                (a, b) =>
-                  partMaitrisee(a) - partMaitrisee(b) ||
-                  // Au démarrage, TOUTES les matières sont à 0 et le premier critère
-                  // ne départage rien : sans ce second tri, les quatre affichées
-                  // étaient celles que la base renvoyait en premier. À défaut de
-                  // connaître les coefficients ici (ils vivent côté serveur, voir
-                  // _coefficient_par_subject), on montre les matières où il reste le
-                  // plus à faire, puis l'ordre alphabétique pour rester stable d'une
-                  // visite à l'autre.
-                  restant(b) - restant(a) ||
-                  a.subject_label.localeCompare(b.subject_label, "fr"),
-              )
-              .slice(0, 4)
-              .map((matiere) => (
-                <BarreMatiere key={matiere.subject_id} matiere={matiere} cursusId={Number(cursusId)} />
-              ))}
-          </div>
-          <Button asChild variant="ghost" size="sm" className="mt-3">
-            <Link to="/parcours">
-              Voir toute ma progression
-              <ArrowRight className="size-4" />
-            </Link>
-          </Button>
+          <Ecrin variante="sobre">
+            <div>
+              <EnTeteProgression resume={resume} />
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {/* Les matières les moins avancées d'abord - c'est là qu'il y a quelque
+                    chose à faire. Voir la page Ma progression pour la liste entière. */}
+                {[...resume]
+                  .filter((m) => m.total > m.sans_contenu)
+                  .sort(
+                    (a, b) =>
+                      partMaitrisee(a) - partMaitrisee(b) ||
+                      // Au démarrage, TOUTES les matières sont à 0 et le premier critère
+                      // ne départage rien : sans ce second tri, les quatre affichées
+                      // étaient celles que la base renvoyait en premier. À défaut de
+                      // connaître les coefficients ici (ils vivent côté serveur, voir
+                      // _coefficient_par_subject), on montre les matières où il reste le
+                      // plus à faire, puis l'ordre alphabétique pour rester stable d'une
+                      // visite à l'autre.
+                      restant(b) - restant(a) ||
+                      a.subject_label.localeCompare(b.subject_label, "fr"),
+                  )
+                  .slice(0, 4)
+                  .map((matiere) => (
+                    <BarreMatiere key={matiere.subject_id} matiere={matiere} cursusId={Number(cursusId)} />
+                  ))}
+              </div>
+              <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+                <LegendeProgression />
+                <Button asChild variant="outline" size="sm" className="group rounded-full">
+                  <Link to="/parcours">
+                    Voir toute ma progression
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </Ecrin>
         </section>
       )}
 
@@ -168,7 +174,7 @@ export function AccueilEleve({ country }: { country: string }) {
       {inedites && inedites.count > 0 && (
         <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
           <Link
-            to={`${epreuvesListPath(country)}?origine=INEDITE`}
+            to={`${epreuvesListPath(country)}?${requeteInedites(cursusAccueil)}`}
             className="group flex items-center gap-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-4 transition-colors hover:border-gold/60"
           >
             <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
@@ -191,39 +197,87 @@ export function AccueilEleve({ country }: { country: string }) {
   )
 }
 
-/** Part de savoirs maîtrisés, sur les seuls savoirs qui ont du contenu - un savoir
- * sans contenu n'est pas un échec de l'élève, l'inclure ferait mentir la barre. */
 /** Savoirs qui ont du contenu et qui ne sont pas encore maîtrisés - ce qu'il reste
  * réellement à faire dans cette matière. */
 function restant(matiere: ResumeMatiere): number {
   return matiere.total - matiere.sans_contenu - matiere.maitrises
 }
 
+/** Part de savoirs maîtrisés, sur les seuls savoirs qui ont du contenu - un savoir
+ * sans contenu n'est pas un échec de l'élève, l'inclure ferait mentir la barre. */
 function partMaitrisee(matiere: ResumeMatiere): number {
   const exploitables = matiere.total - matiere.sans_contenu
   return exploitables > 0 ? matiere.maitrises / exploitables : 0
 }
 
+/**
+ * Le titre et un seul chiffre d'ensemble, sur TOUTES les matières (pas seulement les
+ * quatre affichées) : les barres disent où agir, l'anneau dit où l'on en est. Même
+ * règle que les barres - seuls les savoirs qui ont du contenu comptent.
+ */
+function EnTeteProgression({ resume }: { resume: ResumeMatiere[] }) {
+  const maitrises = resume.reduce((somme, m) => somme + m.maitrises, 0)
+  const exploitables = resume.reduce((somme, m) => somme + m.total - m.sans_contenu, 0)
+  const part = exploitables > 0 ? maitrises / exploitables : 0
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <div className="min-w-0">
+        <h2 className="font-display">
+          <span className="flex items-center gap-2 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+            <TrendingUp className="size-3.5" />
+            Ta progression
+          </span>
+          <span className="mt-2 block text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
+            Où j'en suis
+          </span>
+        </h2>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          <span className="font-semibold tabular-nums text-foreground">{maitrises}</span> savoir
+          {maitrises > 1 ? "s" : ""} maîtrisé{maitrises > 1 ? "s" : ""} sur{" "}
+          <span className="tabular-nums">{exploitables}</span> au programme
+        </p>
+      </div>
+      <AnneauProgression part={part} />
+    </div>
+  )
+}
+
+/**
+ * Une matière : son pourcentage en grand, puis une barre en trois segments -
+ * maîtrisé, en révision, à découvrir. La barre à un seul segment restait vide pour
+ * presque tout le monde au démarrage ; les segments montrent que le travail en cours
+ * compte déjà, même avant la première maîtrise.
+ */
 function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId: number }) {
-  const part = partMaitrisee(matiere)
   const exploitables = matiere.total - matiere.sans_contenu
   return (
     <Link
       // `?cursus=` est requis par ParcoursSubjectPage - même lien que depuis la page
       // Ma progression, sans quoi la page s'ouvre sans savoir quel programme afficher.
       to={`/parcours/${matiere.subject_id}?cursus=${cursusId}`}
-      className="group flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-accent/50"
+      className="group rounded-2xl border border-border/70 bg-background/70 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md hover:shadow-primary/[0.06]"
     >
-      <span className="w-32 shrink-0 truncate text-sm font-medium sm:w-44">{matiere.subject_label}</span>
-      <span className="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-muted">
-        <span
-          className={cn("block h-full rounded-full bg-primary transition-all")}
-          style={{ width: `${Math.round(part * 100)}%` }}
-        />
-      </span>
-      <span className="w-16 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
-        {matiere.maitrises}/{exploitables}
-      </span>
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="min-w-0 truncate text-sm font-semibold">{matiere.subject_label}</span>
+        <span className="shrink-0 font-display text-xl font-semibold tabular-nums">
+          {pourcent(partMaitrisee(matiere))}
+          <span className="ml-px text-xs font-medium text-muted-foreground">%</span>
+        </span>
+      </div>
+      <BarreSegmentee
+        className="mt-3"
+        maitrises={matiere.maitrises}
+        enRevision={matiere.en_revision}
+        enCours={matiere.en_cours}
+        exploitables={exploitables}
+      />
+      <div className="mt-2.5 flex items-center justify-between gap-2 text-xs text-muted-foreground">
+        <span className="tabular-nums">
+          {matiere.maitrises}/{exploitables} maîtrisés
+          {matiere.en_revision > 0 && <> · {matiere.en_revision} en révision</>}
+        </span>
+        <ChevronRight className="size-4 shrink-0 text-muted-foreground/50 transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
+      </div>
     </Link>
   )
 }

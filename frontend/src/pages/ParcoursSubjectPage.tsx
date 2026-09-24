@@ -1,27 +1,22 @@
 import { useEffect, useMemo, useState } from "react"
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { ArrowLeft, ArrowRight, BookOpenText, CheckCircle2, Compass, RotateCcw, Search, Sparkles } from "lucide-react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import {
+  ArrowLeft, ArrowRight, BookOpenText, Check, CheckCircle2, Compass, Eye, EyeOff, GraduationCap, RotateCcw, Search,
+  Sparkles, Target,
+} from "lucide-react"
 
 import { getParcours, listMySubscriptions, listSubjects, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { ParcoursModule, ParcoursSavoir, Subscription } from "@/api/types"
+import type { ParcoursModule, ParcoursSavoir, ResumeMatiere, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { Etape, Eyebrow, StatChip } from "@/components/Configurateur"
+import { AnneauProgression, BarreSegmentee, Ecrin, LegendeProgression } from "@/components/Progression"
 import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { coursDetailPath } from "@/lib/countryPath"
-import { SEUIL_MAITRISE, tauxBarClassName } from "@/lib/maitrise"
+import { SEUIL_MAITRISE } from "@/lib/maitrise"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
@@ -72,28 +67,37 @@ function prochainesEtapes(savoirs: SavoirEnrichi[]): SavoirEnrichi[] | "diagnost
   return [...enRevision, ...nonMaitrises].slice(0, PROCHAINES_ETAPES_MAX)
 }
 
-type BucketSavoir = "maitrise" | "en_revision" | "a_decouvrir" | "sans_contenu"
+type BucketSavoir = "maitrise" | "en_revision" | "en_cours" | "a_decouvrir" | "sans_contenu"
 
 /** Classement d'un savoir en un seul bucket, priorité identique à
  * quiz.services.resume_parcours côté backend - source unique de vérité pour
  * compterBuckets (l'histogramme du bandeau) ET pour le filtre "Masquer maîtrisés/sans
  * contenu" de la liste ci-dessous, pour que les deux racontent toujours la même
  * histoire (un savoir compté "maîtrisé" en haut de page ne doit jamais apparaître
- * "à réviser" dans la liste filtrée, ou inversement). */
+ * "à réviser" dans la liste filtrée, ou inversement).
+ *
+ * "en_cours" (taux connu, pas encore maîtrisé, pas dans la file de révision) est
+ * distinct de "a_decouvrir" (jamais pratiqué) - un savoir peut GRADUER hors de la
+ * file de révision (Leitner, 3 réussites consécutives) tout en gardant une moyenne
+ * historique sous SEUIL_MAITRISE, puisque le taux ne s'efface jamais. Sans cette
+ * distinction, ce travail redevenait invisible dans l'agrégat dès qu'il quittait la
+ * file de révision. */
 function bucketDeSavoir(s: ParcoursSavoir): BucketSavoir {
   if (!s.has_quiz && s.cours.length === 0) return "sans_contenu"
   if (s.taux !== null && s.taux >= SEUIL_MAITRISE) return "maitrise"
   if (s.en_revision) return "en_revision"
+  if (s.taux !== null) return "en_cours"
   return "a_decouvrir"
 }
 
 function compterBuckets(savoirs: SavoirEnrichi[]) {
-  const buckets = { maitrises: 0, en_revision: 0, a_decouvrir: 0, sans_contenu: 0 }
+  const buckets = { maitrises: 0, en_revision: 0, en_cours: 0, a_decouvrir: 0, sans_contenu: 0 }
   for (const s of savoirs) {
     const bucket = bucketDeSavoir(s)
     if (bucket === "maitrise") buckets.maitrises++
     else if (bucket === "sans_contenu") buckets.sans_contenu++
     else if (bucket === "en_revision") buckets.en_revision++
+    else if (bucket === "en_cours") buckets.en_cours++
     else buckets.a_decouvrir++
   }
   return buckets
@@ -101,43 +105,64 @@ function compterBuckets(savoirs: SavoirEnrichi[]) {
 
 /** Savoirs d'un module à afficher compte tenu du filtre "Afficher tout" - même
  * critère que le bouton de bascule sous la carte "prochaines étapes", factorisé ici
- * pour servir à la fois au rendu de chaque Card module et au sommaire de navigation
+ * pour servir à la fois au rendu de chaque carte module et au sommaire de navigation
  * (un module sans savoir affiché ne doit pas non plus apparaître dans le sommaire). */
 function savoirsVisibles(module: ParcoursModule, afficherTout: boolean): ParcoursSavoir[] {
   if (afficherTout) return module.savoirs
   return module.savoirs.filter((s) => {
     const bucket = bucketDeSavoir(s)
-    return bucket === "en_revision" || bucket === "a_decouvrir"
+    return bucket === "en_revision" || bucket === "en_cours" || bucket === "a_decouvrir"
   })
 }
 
+function libelleCursus(sub: Subscription): string {
+  return `${sub.cursus.examen_display}${sub.cursus.series ? ` ${sub.cursus.series.code}` : ""}`
+}
+
+/** Pastille de statut d'un savoir. Or = "à réviser", la même convention que les
+ * barres et les compteurs du haut : c'est le statut le plus urgent à repérer en
+ * balayant la liste, il ne doit jamais être aussi discret que "Contenu à venir". */
 function BadgeSavoir({ savoir }: { savoir: ParcoursSavoir }) {
-  // "gold" reprend la même convention que tauxBarClassName/RotateCcw ailleurs sur la
-  // page (or = zone "à réviser") - un simple "outline" rendait ce statut aussi discret
-  // que "Contenu à venir", alors que c'est le plus urgent à repérer en balayant la liste.
-  if (savoir.en_revision) return <Badge variant="gold">À réviser</Badge>
-  if (savoir.taux !== null && savoir.taux >= SEUIL_MAITRISE) return <Badge variant="success">Maîtrisé</Badge>
-  if (savoir.taux !== null) return <Badge variant="outline">{savoir.taux}% de réussite</Badge>
+  const base = "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-medium"
+  if (savoir.en_revision) {
+    return (
+      <span className={cn(base, "bg-gold/15 text-gold-foreground dark:text-gold")}>
+        <RotateCcw className="size-3" />À réviser
+      </span>
+    )
+  }
+  if (savoir.taux !== null && savoir.taux >= SEUIL_MAITRISE) {
+    return (
+      <span className={cn(base, "bg-primary/10 text-primary")}>
+        <Check className="size-3" strokeWidth={3} />Maîtrisé
+      </span>
+    )
+  }
+  const neutre = cn(base, "border border-border/80 text-muted-foreground")
+  if (savoir.taux !== null) return <span className={neutre}>{savoir.taux}% de réussite</span>
   // Cours lu mais jamais encore quizzé - distinct de "à découvrir" (jamais ouvert du
   // tout), sinon ces deux situations rendent le même badge alors que l'élève sait déjà
-  // laquelle des deux le concerne (voir ParcoursSavoir.a_lu_le_cours, calculé côté
-  // backend mais jusqu'ici jamais affiché).
-  if (savoir.a_lu_le_cours) return <Badge variant="outline">Cours lu</Badge>
-  if (savoir.has_quiz || savoir.cours.length > 0) return <Badge variant="outline">À découvrir</Badge>
-  return <Badge variant="outline">Contenu à venir</Badge>
+  // laquelle des deux le concerne (voir ParcoursSavoir.a_lu_le_cours).
+  if (savoir.a_lu_le_cours) return <span className={neutre}>Cours lu</span>
+  if (savoir.has_quiz || savoir.cours.length > 0) return <span className={neutre}>À découvrir</span>
+  return <span className={cn(neutre, "border-dashed")}>Contenu à venir</span>
 }
 
 /** Fréquence d'examen d'un thème (mode Parcours par fréquence uniquement - voir
  * quiz.services.construire_parcours_par_frequence, `nb_epreuves`/`frequence_pct`
  * absents en Module→Savoir classique). Rend explicite ce que le numéro d'ordre
  * seul ne dit pas : sans lui, "3. Dérivation" ne renseigne pas sur l'écart avec le
- * thème suivant. */
-function OccurrenceBadge({ savoir }: { savoir: ParcoursSavoir }) {
+ * thème suivant. Une mini-jauge en plus du chiffre : l'écart entre deux thèmes se
+ * voit alors d'un simple balayage de la liste. */
+function Frequence({ savoir }: { savoir: ParcoursSavoir }) {
   if (savoir.nb_epreuves == null) return null
   return (
-    <Badge variant="outline" className="text-muted-foreground">
+    <span className="inline-flex items-center gap-2 text-[11px] text-muted-foreground">
+      <span className="h-1 w-12 overflow-hidden rounded-full bg-gold/15" aria-hidden>
+        <span className="block h-full rounded-full bg-gold" style={{ width: `${Math.min(100, savoir.frequence_pct ?? 0)}%` }} />
+      </span>
       Vu dans {savoir.nb_epreuves} épreuve{savoir.nb_epreuves > 1 ? "s" : ""} ({savoir.frequence_pct}%)
-    </Badge>
+    </span>
   )
 }
 
@@ -163,33 +188,127 @@ function SansCoursIndice({ savoir }: { savoir: ParcoursSavoir }) {
  * vers les cours de ce savoir. `arrow` accentue le CTA quiz dans la carte "prochaines
  * étapes" (mise en avant), pas dans la liste. */
 function ActionsSavoir({
-  savoir, starting, onQuiz, size, arrow,
+  savoir, starting, onQuiz, size, arrow, className,
 }: {
   savoir: ParcoursSavoir
   starting: boolean
   onQuiz: () => void
   size?: "sm"
   arrow?: boolean
+  className?: string
 }) {
   const premierCours = savoir.cours[0]
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className={cn("flex flex-wrap items-center gap-2", className)}>
       {savoir.has_quiz && (
         // Toujours ouvert dans un nouvel onglet : ce Parcours reste affiché pendant
         // le quiz plutôt que de disparaître derrière une navigation en place.
-        <Button size={size} disabled={starting} onClick={() => onQuiz()}>
+        <Button
+          size={size}
+          disabled={starting}
+          onClick={() => onQuiz()}
+          className={cn("group rounded-full", arrow && "shadow-md shadow-primary/20")}
+        >
           {starting ? "Préparation..." : "Tester mes connaissances"}
-          {arrow && <ArrowRight />}
+          {arrow && <ArrowRight className="transition-transform group-hover:translate-x-0.5" />}
         </Button>
       )}
       {premierCours && (
-        <Button asChild size={size} variant={savoir.has_quiz ? "outline" : "default"}>
+        <Button asChild size={size} variant={savoir.has_quiz ? "outline" : "default"} className="max-w-full rounded-full">
           <Link to={coursDetailPath(premierCours.slug)}>
             <BookOpenText />
-            {premierCours.sous_theme ? capitaliserTheme(premierCours.sous_theme) : "Lire le cours"}
+            <span className="truncate">
+              {premierCours.sous_theme ? capitaliserTheme(premierCours.sous_theme) : "Lire le cours"}
+            </span>
           </Link>
         </Button>
       )}
+    </div>
+  )
+}
+
+/**
+ * Un savoir de la liste : un jalon sur un fil vertical. Le jalon dit l'état d'un
+ * coup d'œil (coche verte = maîtrisé, or = à réviser, gris = sans contenu), la ligne
+ * garde le rang dans l'ordre du programme ou de la fréquence.
+ */
+function LigneSavoir({
+  savoir, rang, dernier, isModeFrequence, starting, onQuiz,
+}: {
+  savoir: ParcoursSavoir
+  rang: number
+  dernier: boolean
+  isModeFrequence: boolean
+  starting: boolean
+  onQuiz: () => void
+}) {
+  const bucket = bucketDeSavoir(savoir)
+  const inactif = bucket === "sans_contenu"
+  return (
+    <div className="relative flex gap-4 pb-2">
+      {!dernier && (
+        <span
+          aria-hidden
+          className={cn("absolute bottom-0 left-[17px] top-10 w-px", bucket === "maitrise" ? "bg-primary/40" : "bg-border")}
+        />
+      )}
+      <span
+        className={cn(
+          "relative mt-3 flex size-9 shrink-0 items-center justify-center rounded-full font-display text-sm font-semibold tabular-nums",
+          bucket === "maitrise" && "bg-primary text-primary-foreground shadow-sm shadow-primary/30 ring-4 ring-primary/10",
+          bucket === "en_revision" && "bg-gold/20 text-gold-foreground ring-4 ring-gold/10 dark:text-gold",
+          bucket === "en_cours" && "bg-info/15 text-info ring-4 ring-info/10",
+          bucket === "a_decouvrir" && "bg-primary/10 text-primary",
+          inactif && "bg-muted text-muted-foreground",
+        )}
+      >
+        {bucket === "maitrise" ? <Check className="size-4" strokeWidth={3} /> : rang}
+      </span>
+      <div
+        className={cn(
+          "min-w-0 flex-1 rounded-2xl px-3 py-3 transition-colors sm:px-4",
+          inactif ? "opacity-60" : "hover:bg-primary/[0.035]",
+        )}
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0">
+            <p className="font-display text-base font-semibold leading-snug">{capitaliserTheme(savoir.intitule)}</p>
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+              <BadgeSavoir savoir={savoir} />
+              {isModeFrequence && <Frequence savoir={savoir} />}
+            </div>
+            <SansCoursIndice savoir={savoir} />
+          </div>
+          {!inactif && (
+            <div className="shrink-0 sm:max-w-[55%]">
+              <ActionsSavoir savoir={savoir} starting={starting} onQuiz={onQuiz} size="sm" className="sm:justify-end" />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Compteur({ valeur, libelle, pastille }: { valeur: number; libelle: string; pastille: string }) {
+  return (
+    <div className="rounded-2xl border border-border/70 bg-background/70 px-3 py-3 backdrop-blur-sm sm:px-4">
+      <p className="flex items-center gap-1.5 whitespace-nowrap text-[11px] text-muted-foreground sm:text-xs">
+        <span className={cn("inline-block size-2 shrink-0 rounded-full", pastille)} />
+        {libelle}
+      </p>
+      <p className="mt-1 font-display text-2xl font-semibold tabular-nums sm:text-3xl">{valeur}</p>
+    </div>
+  )
+}
+
+function Squelette() {
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      <Skeleton className="mb-6 h-6 w-40 rounded-full" />
+      <Skeleton className="mb-8 h-80 w-full rounded-3xl" />
+      <Skeleton className="mb-6 h-48 w-full rounded-3xl" />
+      <Skeleton className="h-96 w-full rounded-3xl" />
     </div>
   )
 }
@@ -198,20 +317,16 @@ export function ParcoursSubjectPage() {
   const { subjectId } = useParams<{ subjectId: string }>()
   const { isAuthenticated, isLoading: authLoading } = useAuth()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [searchParams, setSearchParams] = useSearchParams()
   const cursusFromUrl = searchParams.get("cursus") ?? ""
 
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
-  const [selectedCursus, setSelectedCursus] = useState("")
-  const [subjectLabel, setSubjectLabel] = useState("")
-  const [subjectCode, setSubjectCode] = useState("")
-  const [modules, setModules] = useState<ParcoursModule[] | null>(null)
-  const [subscriptionsLoaded, setSubscriptionsLoaded] = useState(false)
+  const [cursusChoisi, setCursusChoisi] = useState("")
   const [error, setError] = useState("")
   const [starting, setStarting] = useState(false)
   // Replié par défaut : la promesse de la page est "ce qu'il te reste à travailler",
   // pas un inventaire complet - masquer maîtrisés/sans contenu recentre la liste sans
-  // les faire disparaître pour de bon (voir bucketDeSavoir, le bouton juste en dessous).
+  // les faire disparaître pour de bon (voir bucketDeSavoir, le bouton de bascule).
   const [afficherTout, setAfficherTout] = useState(false)
   // Nombre de savoirs révélés par module ("module-<numero>", voir sommaireEntries) -
   // absent de la map = encore au premier palier (SAVOIRS_PAGE_SIZE). Un compteur par
@@ -226,59 +341,58 @@ export function ParcoursSubjectPage() {
   const [recherche, setRecherche] = useState("")
 
   useEffect(() => {
+    if (!authLoading && !isAuthenticated) navigate("/connexion", { state: { from: `/parcours/${subjectId}` } })
+  }, [authLoading, isAuthenticated, navigate, subjectId])
+
+  const { data: subscriptions, isError: erreurAbonnements } = useQuery({
+    queryKey: ["mes-abonnements"],
+    queryFn: listMySubscriptions,
+    enabled: isAuthenticated,
+  })
+  const actifs = useMemo(() => subscriptions?.filter((sub) => sub.is_active) ?? [], [subscriptions])
+
+  // Le cursus de l'URL est pris au mot tant que la liste des abonnements n'est pas
+  // arrivée : le parcours part ainsi en même temps qu'elle au lieu d'attendre derrière
+  // (la page enchaînait session → abonnements → matières → parcours, quatre allers-
+  // retours en file). Une fois la liste là, un cursus de l'URL sans abonnement actif
+  // retombe sur le premier abonnement, comme avant.
+  const parDefaut = subscriptions
+    ? (actifs.find((sub) => String(sub.cursus.id) === cursusFromUrl) ?? actifs[0])?.cursus.id.toString() ?? ""
+    : cursusFromUrl
+  const selectedCursus = cursusChoisi || parDefaut
+
+  useEffect(() => {
     setVisibleParModule({})
     setRecherche("")
   }, [selectedCursus, subjectId])
+
+  const { data: modules, error: erreurParcours } = useQuery({
+    queryKey: ["parcours", selectedCursus, subjectId],
+    queryFn: () => getParcours(Number(selectedCursus), Number(subjectId)),
+    enabled: isAuthenticated && Boolean(selectedCursus) && Boolean(subjectId),
+  })
+
+  // Le nom de la matière : déjà en cache quand on arrive depuis Ma progression (le
+  // résumé le porte), sinon depuis le référentiel complet des matières - pas
+  // listQuizSubjects, qui n'expose que celles ayant déjà une banque de quiz (une
+  // matière encore sans contenu doit quand même afficher son libellé ici).
+  const depuisResume = queryClient
+    .getQueryData<ResumeMatiere[]>(["parcours-resume", Number(selectedCursus)])
+    ?.find((m) => String(m.subject_id) === subjectId)
+  const pays = actifs.find((s) => String(s.cursus.id) === selectedCursus)?.cursus.country.code.toLowerCase() ?? ""
+  const { data: matieresDuPays } = useQuery({
+    queryKey: ["subjects", pays],
+    queryFn: ({ signal }) => listSubjects(pays, signal),
+    enabled: Boolean(pays) && !depuisResume,
+  })
+  const depuisReferentiel = matieresDuPays?.find((s) => String(s.id) === subjectId)
+  const subjectLabel = depuisResume?.subject_label ?? depuisReferentiel?.label ?? ""
+  const subjectCode = depuisResume?.subject_code ?? depuisReferentiel?.code ?? ""
 
   useSeo({
     title: subjectLabel ? `Parcours ${subjectLabel}` : "Ton parcours",
     description: "Ce qu'il te reste à travailler pour ta matière, dans l'ordre le plus utile pour progresser.",
   })
-
-  useEffect(() => {
-    if (authLoading) return
-    if (!isAuthenticated) {
-      navigate("/connexion", { state: { from: `/parcours/${subjectId}` } })
-      return
-    }
-    listMySubscriptions()
-      .then((subs) => {
-        const active = subs.filter((sub) => sub.is_active)
-        setSubscriptions(active)
-        const depuisUrl = active.find((sub) => String(sub.cursus.id) === cursusFromUrl)
-        if (depuisUrl) setSelectedCursus(cursusFromUrl)
-        else if (active.length > 0) setSelectedCursus(String(active[0].cursus.id))
-      })
-      .catch(() => setError("Impossible de charger tes abonnements."))
-      .finally(() => setSubscriptionsLoaded(true))
-    // cursusFromUrl volontairement omis : ne sert qu'à l'initialisation, pas de
-    // resynchronisation si l'utilisateur change ensuite le select ci-dessous.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authLoading, isAuthenticated, navigate, subjectId])
-
-  // Résolu depuis le référentiel complet des matières (pas listQuizSubjects, qui
-  // n'expose que celles ayant déjà une banque de quiz - une matière encore sans
-  // aucun contenu doit quand même pouvoir afficher son libellé ici, on y arrive
-  // justement depuis une carte du tableau de bord qui l'affiche grisée).
-  useEffect(() => {
-    const sub = subscriptions.find((s) => String(s.cursus.id) === selectedCursus)
-    if (!sub) return
-    listSubjects(sub.cursus.country.code.toLowerCase()).then((data) => {
-      const subject = data.find((s) => String(s.id) === subjectId)
-      if (subject) {
-        setSubjectLabel(subject.label)
-        setSubjectCode(subject.code)
-      }
-    })
-  }, [selectedCursus, subscriptions, subjectId])
-
-  useEffect(() => {
-    if (!selectedCursus || !subjectId) return
-    setModules(null)
-    getParcours(Number(selectedCursus), Number(subjectId))
-      .then(setModules)
-      .catch((err) => setError(err instanceof ApiError ? err.message : "Impossible de charger ton parcours."))
-  }, [selectedCursus, subjectId])
 
   // numero vide = pseudo-module du mode Parcours par fréquence (voir
   // construire_parcours_par_frequence côté backend) - un seul module, sans numérotation.
@@ -287,13 +401,12 @@ export function ParcoursSubjectPage() {
   const etapes = useMemo(() => prochainesEtapes(savoirs), [savoirs])
   const buckets = useMemo(() => compterBuckets(savoirs), [savoirs])
   const totalAvecContenu = savoirs.length - buckets.sans_contenu
-  const pourcentageMaitrise = totalAvecContenu > 0 ? Math.round((100 * buckets.maitrises) / totalAvecContenu) : 0
 
   // Sommaire de navigation entre modules - seulement utile à partir de 2 modules
   // effectivement affichés (voir SommaireNav, qui se masque déjà si `entries` est
   // vide) ; le mode Parcours par fréquence n'a qu'un seul pseudo-module donc ne
   // l'affiche jamais. `long` reste court ("Module N") pour la sidebar desktop, le
-  // titre complet du module n'apparaissant qu'en infobulle et dans la Card elle-même.
+  // titre complet du module n'apparaissant qu'en infobulle et dans la carte elle-même.
   const sommaireEntries: SommaireEntry[] = useMemo(() => {
     if (!modules || modules.length < 2) return []
     const rechercheNormalisee = recherche.trim().toLowerCase()
@@ -359,347 +472,400 @@ export function ParcoursSubjectPage() {
     }
   }
 
-  if (authLoading || !subscriptionsLoaded) {
-    return (
-      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-        <Skeleton className="mb-8 h-56 w-full rounded-2xl" />
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
-          <Skeleton className="h-96 w-full rounded-2xl" />
-          <Skeleton className="h-64 w-full rounded-2xl" />
-        </div>
-      </div>
-    )
+  if (erreurAbonnements) {
+    return <p className="mx-auto max-w-5xl px-4 py-10 text-sm text-destructive sm:px-6">Impossible de charger tes abonnements.</p>
   }
+  // La page s'affiche dès que le parcours est là, même si la liste des abonnements
+  // n'est pas encore arrivée (voir parDefaut).
+  if (authLoading || (!subscriptions && !modules)) return <Squelette />
 
-  if (subscriptions.length === 0) {
+  if (subscriptions && actifs.length === 0) {
     return (
-      <div className="mx-auto flex max-w-2xl flex-col items-center px-4 py-20 text-center">
-        <span className="mb-4 flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
-          <Compass className="size-5" />
-        </span>
-        <p className="font-display text-lg font-semibold">Aucun abonnement actif</p>
-        <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-          Le parcours te montre exactement ce qu'il te reste à travailler pour cette matière - il te faut un
-          abonnement actif pour y accéder.
-        </p>
-        <Button asChild className="mt-5">
-          <Link to="/tarifs">Voir les tarifs</Link>
-        </Button>
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
+        <Ecrin className="text-center">
+          <span className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
+            <Compass className="size-5" />
+          </span>
+          <p className="font-display text-xl font-semibold">Aucun abonnement actif</p>
+          <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
+            Le parcours te montre exactement ce qu'il te reste à travailler pour cette matière - il te faut un
+            abonnement actif pour y accéder.
+          </p>
+          <Button asChild className="mt-5 rounded-full px-6">
+            <Link to="/tarifs">Voir les tarifs</Link>
+          </Button>
+        </Ecrin>
       </div>
     )
   }
 
   const SubjectIcon = subjectIcon(subjectCode)
+  const abonnementAffiche = actifs.find((sub) => String(sub.cursus.id) === selectedCursus)
+  const erreurChargement = error || (erreurParcours
+    ? erreurParcours instanceof ApiError ? erreurParcours.message : "Impossible de charger ton parcours."
+    : "")
 
   return (
-    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <Link
         to="/parcours"
-        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+        className="group mb-5 inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card px-3 py-1 text-sm text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
       >
-        <ArrowLeft className="size-4" />
-        Retour à tes matières
+        <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-0.5" />
+        Toutes mes matières
       </Link>
 
-      <div className="relative mb-8 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8 lg:p-12">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        <div className="relative max-w-2xl">
-          <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <SubjectIcon className="size-5" />
+      <Ecrin>
+        <div className="flex items-start justify-between gap-6">
+          <div className="min-w-0">
+            <div className="flex items-center gap-3">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md shadow-primary/25">
+                <SubjectIcon className="size-5" />
+              </span>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Ton parcours</p>
+            </div>
+            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+              {subjectLabel || <span className="inline-block h-11 w-64 max-w-full animate-pulse rounded-xl bg-muted align-middle" />}
+            </h1>
+            <p className="mt-3 max-w-lg text-base leading-snug text-muted-foreground sm:text-lg">
+              {isModeFrequence
+                ? "Les thèmes qui reviennent le plus à l'examen, du plus fréquent au moins fréquent."
+                : "Le programme officiel, dans l'ordre - avec ce qu'il te reste à découvrir, réviser ou maîtriser."}
+            </p>
           </div>
-          <Eyebrow>Ton parcours</Eyebrow>
-          <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-            {subjectLabel || "Chargement..."}
-          </h1>
-          <p className="mt-3 max-w-md text-lg font-medium leading-snug text-foreground/90">
-            {isModeFrequence
-              ? "Les thèmes qui reviennent le plus à l'examen, du plus fréquent au moins fréquent."
-              : "Le programme officiel, dans l'ordre - avec ce qu'il te reste à découvrir, réviser ou maîtriser."}
-          </p>
-
-          {/* Barre + puces de progression - seul endroit de la page qui les affiche
-              désormais (voir l'ancienne Card "Ta progression" juste en dessous du hero,
-              supprimée : elle répétait presque les mêmes chiffres immédiatement après). */}
           {totalAvecContenu > 0 && (
-            <div className="mt-5 max-w-md">
-              <div className="mb-2 flex items-center justify-between text-sm">
-                <span className="font-medium text-foreground/90">Ta progression</span>
-                <span className="font-display font-semibold text-primary">{pourcentageMaitrise}%</span>
-              </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                <div
-                  className={cn("h-full rounded-full transition-all", tauxBarClassName(pourcentageMaitrise))}
-                  style={{ width: `${pourcentageMaitrise}%` }}
-                />
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <StatChip icon={<CheckCircle2 className="size-3.5 text-success" />}>
-                  <span className="font-medium">
-                    {buckets.maitrises}/{totalAvecContenu}
-                  </span>
-                  <span className="text-muted-foreground">maîtrisés</span>
-                </StatChip>
-                {buckets.en_revision > 0 && (
-                  <StatChip icon={<RotateCcw className="size-3.5 text-gold" />}>
-                    <span className="font-medium">{buckets.en_revision}</span>
-                    <span className="text-muted-foreground">à réviser</span>
-                  </StatChip>
-                )}
-                {buckets.a_decouvrir > 0 && (
-                  <StatChip icon={<Compass className="size-3.5 text-muted-foreground" />}>
-                    <span className="font-medium">{buckets.a_decouvrir}</span>
-                    <span className="text-muted-foreground">à découvrir</span>
-                  </StatChip>
-                )}
-                {buckets.sans_contenu > 0 && (
-                  <StatChip icon={<BookOpenText className="size-3.5 text-muted-foreground" />}>
-                    <span className="font-medium">{buckets.sans_contenu}</span>
-                    <span className="text-muted-foreground">à venir</span>
-                  </StatChip>
-                )}
-              </div>
-            </div>
-          )}
-
-          {subscriptions.length > 1 && (
-            <div className="mt-5">
-              <Select
-                value={selectedCursus}
-                onValueChange={(value) => {
-                  setSelectedCursus(value)
-                  setSearchParams({ cursus: value })
-                }}
-              >
-                <SelectTrigger className="w-full sm:w-72">
-                  <SelectValue placeholder="Choisir un cursus" />
-                </SelectTrigger>
-                <SelectContent>
-                  {subscriptions.map((sub) => (
-                    <SelectItem key={sub.cursus.id} value={String(sub.cursus.id)}>
-                      {sub.cursus.examen_display}
-                      {sub.cursus.series ? ` - Série ${sub.cursus.series.code}` : ""}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <AnneauProgression
+              part={buckets.maitrises / totalAvecContenu}
+              className="hidden sm:block sm:size-32 [&>span]:text-3xl"
+            />
           )}
         </div>
-      </div>
+
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          {/* Plusieurs abonnements : un sélecteur segmenté, les autres choix restent
+              visibles ; un seul : le cursus en pastille, pour savoir de quel
+              programme on parle. */}
+          {actifs.length > 1 ? (
+            <div role="group" aria-label="Cursus" className="inline-flex flex-wrap rounded-full border border-border/80 bg-muted/60 p-1">
+              {actifs.map((sub) => (
+                <button
+                  key={sub.cursus.id}
+                  type="button"
+                  aria-pressed={String(sub.cursus.id) === selectedCursus}
+                  onClick={() => {
+                    setCursusChoisi(String(sub.cursus.id))
+                    setSearchParams({ cursus: String(sub.cursus.id) })
+                  }}
+                  className={cn(
+                    "rounded-full px-3.5 py-1 text-xs font-medium transition-all",
+                    String(sub.cursus.id) === selectedCursus
+                      ? "bg-background text-primary shadow-sm ring-1 ring-primary/25"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {libelleCursus(sub)}
+                </button>
+              ))}
+            </div>
+          ) : (
+            abonnementAffiche && (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-background/70 px-3 py-1 text-xs font-medium text-muted-foreground">
+                <GraduationCap className="size-3.5 text-primary" />
+                {libelleCursus(abonnementAffiche)}
+              </span>
+            )
+          )}
+          {isModeFrequence && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium">
+              <Target className="size-3.5" />
+              Classé par fréquence à l'examen
+            </span>
+          )}
+        </div>
+
+        {/* Seul endroit de la page qui affiche ces chiffres - une ancienne carte "Ta
+            progression" juste en dessous les répétait presque à l'identique. */}
+        {totalAvecContenu > 0 && (
+          <>
+            <div className="mt-6 flex items-center gap-4 sm:hidden">
+              <AnneauProgression part={buckets.maitrises / totalAvecContenu} />
+              <p className="text-sm text-muted-foreground">
+                <span className="font-semibold tabular-nums text-foreground">{buckets.maitrises}</span> sur{" "}
+                <span className="tabular-nums">{totalAvecContenu}</span> maîtrisé{buckets.maitrises > 1 ? "s" : ""}
+              </p>
+            </div>
+            <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+              <Compteur valeur={buckets.maitrises} libelle="Maîtrisés" pastille="bg-primary" />
+              <Compteur valeur={buckets.en_revision} libelle="À réviser" pastille="bg-gold" />
+              <Compteur valeur={buckets.en_cours} libelle="En cours" pastille="bg-info" />
+              <Compteur valeur={buckets.a_decouvrir} libelle="À découvrir" pastille="bg-muted ring-1 ring-border" />
+            </div>
+            <BarreSegmentee
+              className="mt-4 h-2.5"
+              maitrises={buckets.maitrises}
+              enRevision={buckets.en_revision}
+              enCours={buckets.en_cours}
+              exploitables={totalAvecContenu}
+            />
+            {buckets.sans_contenu > 0 && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                + {buckets.sans_contenu} savoir{buckets.sans_contenu > 1 ? "s" : ""} dont le contenu arrive bientôt.
+              </p>
+            )}
+          </>
+        )}
+      </Ecrin>
 
       {!modules ? (
-        <div className="flex flex-col gap-6">
-          <Skeleton className="h-20 w-full rounded-2xl" />
-          <Skeleton className="h-96 w-full rounded-2xl" />
-        </div>
+        erreurParcours ? null : (
+          <div className="mt-8 flex flex-col gap-6">
+            <Skeleton className="h-48 w-full rounded-3xl" />
+            <Skeleton className="h-96 w-full rounded-3xl" />
+          </div>
+        )
       ) : (
-        <div className="flex min-w-0 flex-col gap-6">
+        <div className="mt-8 flex min-w-0 flex-col gap-6">
           {(etapes === "diagnostic" || etapes.length > 0) && (
-              <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/[0.06] via-transparent to-transparent">
-                <CardContent className="pt-6">
-                  <p className="flex items-center gap-2 font-display text-sm font-semibold text-primary">
-                    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Sparkles className="size-3.5" />
-                    </span>
-                    {etapes === "diagnostic" || etapes.length === 1
-                      ? "Prochaine étape recommandée"
-                      : "Prochaines étapes recommandées"}
-                  </p>
-                  {etapes === "diagnostic" ? (
-                    <>
-                      <p className="mt-2 text-sm text-muted-foreground">
-                        Tu n'as encore rien tenté sur ce cursus - commence par un test de positionnement pour savoir
-                        d'où partir.
+            <section className="animate-fade-up rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/[0.07] via-card to-card p-5 sm:p-7">
+              <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                <Sparkles className="size-3.5" />
+                {etapes === "diagnostic" || etapes.length === 1 ? "Prochaine étape recommandée" : "À faire maintenant"}
+              </p>
+              {etapes === "diagnostic" ? (
+                <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="max-w-lg">
+                    <p className="font-display text-2xl font-semibold tracking-tight">Commence par te situer</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Tu n'as encore rien tenté sur ce cursus - un test de positionnement de 20 questions dit d'où
+                      partir, sur tout le programme d'un coup.
+                    </p>
+                  </div>
+                  <Button
+                    size="lg"
+                    className="group h-12 shrink-0 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5"
+                    disabled={starting}
+                    onClick={() => lancerQuiz({ mode: "DIAGNOSTIC" })}
+                  >
+                    <Target className="size-4" />
+                    {starting ? "Préparation..." : "Faire le test de positionnement"}
+                  </Button>
+                </div>
+              ) : (
+                <div className={cn("mt-4 grid gap-3", etapes.length > 1 && "md:grid-cols-2", etapes.length > 2 && "lg:grid-cols-3")}>
+                  {etapes.map((etape, index) => (
+                    <div
+                      key={etape.id}
+                      className="flex flex-col rounded-2xl border border-border/70 bg-card/90 p-4 shadow-sm backdrop-blur-sm"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        {etapes.length > 1 && (
+                          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                            {index + 1}
+                          </span>
+                        )}
+                        <BadgeSavoir savoir={etape} />
+                      </div>
+                      <p className="mt-3 font-display text-lg font-semibold leading-snug">
+                        {capitaliserTheme(etape.intitule)}
                       </p>
-                      <Button className="mt-3" disabled={starting} onClick={() => lancerQuiz({ mode: "DIAGNOSTIC" })}>
-                        {starting ? "Préparation..." : "Faire le test de positionnement"}
-                      </Button>
-                    </>
-                  ) : (
-                    <div className="mt-3 flex flex-col divide-y divide-border/60">
-                      {etapes.map((etape, index) => (
-                        <div key={etape.id} className={cn("flex flex-col gap-2", index > 0 && "pt-4")}>
-                          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                            <span className="text-xs text-muted-foreground">{etape.moduleTitre}</span>
-                            <BadgeSavoir savoir={etape} />
-                            {isModeFrequence && <OccurrenceBadge savoir={etape} />}
-                          </div>
-                          <p className="font-display font-medium">
-                            {etapes.length > 1 && <span className="text-muted-foreground">{index + 1}. </span>}
-                            {capitaliserTheme(etape.intitule)}
-                          </p>
-                          <ActionsSavoir
-                            savoir={etape}
-                            starting={starting}
-                            onQuiz={() => lancerQuiz(paramsQuizPourSavoir(etape), true)}
-                            size={etapes.length > 1 ? "sm" : undefined}
-                            arrow
-                          />
-                          <SansCoursIndice savoir={etape} />
-                        </div>
-                      ))}
+                      {!isModeFrequence && (
+                        <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{etape.moduleTitre}</p>
+                      )}
+                      {isModeFrequence && <div className="mt-1.5"><Frequence savoir={etape} /></div>}
+                      <SansCoursIndice savoir={etape} />
+                      <div className="mt-auto pt-4">
+                        <ActionsSavoir
+                          savoir={etape}
+                          starting={starting}
+                          onQuiz={() => lancerQuiz(paramsQuizPourSavoir(etape), true)}
+                          size="sm"
+                          arrow
+                        />
+                      </div>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
 
-            {buckets.maitrises + buckets.sans_contenu > 0 && (
-              <button
-                type="button"
-                onClick={() => setAfficherTout((v) => !v)}
-                className="self-start text-sm font-medium text-primary hover:underline"
-              >
-                {afficherTout
-                  ? "Masquer les savoirs maîtrisés et sans contenu"
-                  : `Afficher aussi les savoirs maîtrisés et sans contenu (${buckets.maitrises + buckets.sans_contenu})`}
-              </button>
-            )}
-
+          {/* Barre d'outils de la liste : bascule "tout afficher", légende et, sur un
+              programme long, la recherche - regroupées sur une ligne plutôt qu'empilées. */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <h2 className="font-display text-2xl font-semibold tracking-tight">
+                {isModeFrequence ? "Tous les thèmes" : "Le programme"}
+              </h2>
+              {buckets.maitrises + buckets.sans_contenu > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setAfficherTout((v) => !v)}
+                  aria-pressed={afficherTout}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                >
+                  {afficherTout ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
+                  {afficherTout
+                    ? "Masquer maîtrisés et sans contenu"
+                    : `Afficher aussi maîtrisés et sans contenu (${buckets.maitrises + buckets.sans_contenu})`}
+                </button>
+              )}
+            </div>
             {totalSavoirsAffiches > SAVOIRS_PAGE_SIZE && (
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <div className="relative sm:w-64">
+                <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={recherche}
                   onChange={(e) => setRecherche(e.target.value)}
                   placeholder="Filtrer les thèmes..."
-                  className="pl-9"
+                  className="rounded-full pl-10"
                   aria-label="Filtrer les thèmes"
                 />
               </div>
             )}
+          </div>
 
-            {!afficherTout && buckets.en_revision + buckets.a_decouvrir === 0 && savoirs.length > 0 && (
-              <Card>
-                <CardContent className="flex flex-col items-center gap-1 py-10 text-center">
-                  <CheckCircle2 className="size-6 text-success" />
-                  <p className="font-display font-medium">Tout est maîtrisé ou sans contenu pour l'instant</p>
-                  <p className="text-sm text-muted-foreground">
-                    Reviens plus tard, ou affiche le détail avec le bouton ci-dessus.
-                  </p>
-                </CardContent>
-              </Card>
-            )}
+          {!afficherTout && buckets.en_revision + buckets.en_cours + buckets.a_decouvrir === 0 && savoirs.length > 0 && (
+            <Ecrin variante="sobre" className="text-center">
+              <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 ring-4 ring-primary/10">
+                <CheckCircle2 className="size-6" />
+              </span>
+              <p className="mt-3 font-display text-lg font-semibold">Tout est maîtrisé ou sans contenu pour l'instant</p>
+              <p className="text-sm text-muted-foreground">Reviens plus tard, ou affiche le détail avec le bouton ci-dessus.</p>
+            </Ecrin>
+          )}
 
-            {(() => {
-              const rechercheNormalisee = recherche.trim().toLowerCase()
+          {(() => {
+            const rechercheNormalisee = recherche.trim().toLowerCase()
 
-              // Masqués par défaut, jamais retirés pour de bon (voir bucketDeSavoir et
-              // le bouton juste au-dessus) : la promesse de la page est "ce qu'il te
-              // reste à travailler", pas un inventaire complet du programme.
-              const cartes = modules.map((module) => {
-                const savoirsAffiches = savoirsVisibles(module, afficherTout)
-                // Rang conservé depuis la liste complète du module (pas l'index dans les
-                // résultats de recherche) : un thème trouvé en 3ᵉ position de la
-                // recherche garde le numéro qui reflète sa vraie place dans l'ordre de
-                // fréquence, pas son rang parmi les seuls résultats.
-                const indexes = savoirsAffiches.map((savoir, i) => ({ savoir, rang: i + 1 }))
-                const resultats = rechercheNormalisee
-                  ? indexes.filter(({ savoir }) => savoir.intitule.toLowerCase().includes(rechercheNormalisee))
-                  : indexes
-                if (resultats.length === 0) return null
+            // Masqués par défaut, jamais retirés pour de bon (voir bucketDeSavoir et
+            // la bascule juste au-dessus) : la promesse de la page est "ce qu'il te
+            // reste à travailler", pas un inventaire complet du programme.
+            const cartes = modules.map((module) => {
+              const savoirsAffiches = savoirsVisibles(module, afficherTout)
+              // Rang conservé depuis la liste complète du module (pas l'index dans les
+              // résultats de recherche) : un thème trouvé en 3ᵉ position de la
+              // recherche garde le numéro qui reflète sa vraie place dans l'ordre de
+              // fréquence, pas son rang parmi les seuls résultats.
+              const indexes = savoirsAffiches.map((savoir, i) => ({ savoir, rang: i + 1 }))
+              const resultats = rechercheNormalisee
+                ? indexes.filter(({ savoir }) => savoir.intitule.toLowerCase().includes(rechercheNormalisee))
+                : indexes
+              if (resultats.length === 0) return null
 
-                const moduleKey = module.numero || "unique"
-                const visibleCount = visibleParModule[moduleKey] ?? SAVOIRS_PAGE_SIZE
-                // Pagination désactivée pendant une recherche : un thème trouvé doit
-                // apparaître tout de suite, jamais caché derrière un "Afficher plus".
-                const resultatsMontres = rechercheNormalisee ? resultats : resultats.slice(0, visibleCount)
-                const resteAAfficher = rechercheNormalisee ? 0 : resultats.length - resultatsMontres.length
+              const moduleKey = module.numero || "unique"
+              const visibleCount = visibleParModule[moduleKey] ?? SAVOIRS_PAGE_SIZE
+              // Pagination désactivée pendant une recherche : un thème trouvé doit
+              // apparaître tout de suite, jamais caché derrière un "Afficher plus".
+              const resultatsMontres = rechercheNormalisee ? resultats : resultats.slice(0, visibleCount)
+              const resteAAfficher = rechercheNormalisee ? 0 : resultats.length - resultatsMontres.length
+              // Avancement du module sur TOUS ses savoirs avec contenu, pas seulement
+              // ceux affichés : masquer les maîtrisés ne doit pas faire chuter la barre.
+              const avecContenu = module.savoirs.filter((s) => bucketDeSavoir(s) !== "sans_contenu")
+              const maitrisesModule = avecContenu.filter((s) => bucketDeSavoir(s) === "maitrise").length
+              const revisionModule = avecContenu.filter((s) => bucketDeSavoir(s) === "en_revision").length
+              const enCoursModule = avecContenu.filter((s) => bucketDeSavoir(s) === "en_cours").length
 
-                return (
-                  <Card key={module.numero} id={`module-${moduleKey}`} className="scroll-mt-24 overflow-hidden">
-                    <CardContent className="pt-6">
-                      <p className="mb-5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                        {/* numero vide = pseudo-module du mode Parcours par fréquence (voir
-                            quiz.services.construire_parcours_par_frequence) - un seul thème
-                            de "module" pour toute la matière, "Module ·" n'aurait aucun sens. */}
-                        {module.numero ? `Module ${module.numero} · ${module.titre}` : module.titre}
-                      </p>
-                      <div>
-                        {resultatsMontres.map(({ savoir, rang }, index) => (
-                          <Etape
-                            key={savoir.id}
-                            numero={rang}
-                            titre={capitaliserTheme(savoir.intitule)}
-                            fait={savoir.taux !== null && savoir.taux >= SEUIL_MAITRISE}
-                            inactif={!savoir.has_quiz && savoir.cours.length === 0}
-                            // Repère or sur les étapes déjà en révision - distinct du bleu
-                            // neutre des autres, pour repérer l'urgent d'un simple balayage
-                            // de la liste (voir Etape.accent et BadgeSavoir, même code couleur).
-                            accent={savoir.en_revision ? "gold" : undefined}
-                            dernier={resteAAfficher === 0 && index === resultatsMontres.length - 1}
-                          >
-                            <div className="flex flex-wrap items-center gap-2">
-                              <BadgeSavoir savoir={savoir} />
-                              {isModeFrequence && <OccurrenceBadge savoir={savoir} />}
-                            </div>
-                            <div className="mt-2">
-                              <ActionsSavoir
-                                savoir={savoir}
-                                starting={starting}
-                                onQuiz={() => lancerQuiz(paramsQuizPourSavoir(savoir), true)}
-                                size="sm"
-                              />
-                            </div>
-                            <SansCoursIndice savoir={savoir} />
-                          </Etape>
-                        ))}
-                      </div>
-                      {resteAAfficher > 0 && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="mt-4 w-full"
-                          onClick={() =>
-                            setVisibleParModule((prev) => ({
-                              ...prev,
-                              [moduleKey]: visibleCount + SAVOIRS_PAGE_SIZE,
-                            }))
-                          }
-                        >
-                          Afficher plus
-                        </Button>
+              return (
+                <section
+                  key={module.numero}
+                  id={`module-${moduleKey}`}
+                  className="scroll-mt-24 overflow-hidden rounded-3xl border border-border/70 bg-card shadow-sm"
+                >
+                  <header className="flex flex-col gap-3 border-b border-border/60 bg-gradient-to-r from-primary/[0.05] to-transparent px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                    <div className="flex min-w-0 items-center gap-3">
+                      {/* numero vide = pseudo-module du mode Parcours par fréquence (voir
+                          quiz.services.construire_parcours_par_frequence) - un seul
+                          "module" pour toute la matière, "Module ·" n'aurait aucun sens. */}
+                      {module.numero && (
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 font-display text-base font-semibold text-primary">
+                          {module.numero}
+                        </span>
                       )}
-                    </CardContent>
-                  </Card>
-                )
-              })
-
-              if (rechercheNormalisee && cartes.every((carte) => carte === null)) {
-                return (
-                  <Card>
-                    <CardContent className="flex flex-col items-center gap-1 py-10 text-center">
-                      <Search className="size-6 text-muted-foreground" />
-                      <p className="font-display font-medium">Aucun thème ne correspond à « {recherche.trim()} »</p>
-                      <p className="text-sm text-muted-foreground">Essaie un autre mot, ou efface la recherche.</p>
-                    </CardContent>
-                  </Card>
-                )
-              }
-
-              // À partir de 2 modules affichés, un sommaire cliquable donne un repère
-              // spatial sur un programme long (voir sommaireEntries) - en dessous, la
-              // colonne latérale ne ferait que gaspiller de la place pour rien à sauter.
-              if (sommaireEntries.length > 1) {
-                return (
-                  <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:items-start lg:gap-10">
-                    <SommaireNav entries={sommaireEntries} ariaLabel="Sommaire des modules" />
-                    <div className="flex min-w-0 flex-col gap-6">{cartes}</div>
+                      <div className="min-w-0">
+                        {module.numero && (
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                            Module {module.numero}
+                          </p>
+                        )}
+                        <p className="font-display text-lg font-semibold leading-snug">{module.titre}</p>
+                      </div>
+                    </div>
+                    {avecContenu.length > 0 && (
+                      <div className="flex shrink-0 items-center gap-3 sm:w-48">
+                        <BarreSegmentee
+                          className="flex-1"
+                          maitrises={maitrisesModule}
+                          enRevision={revisionModule}
+                          enCours={enCoursModule}
+                          exploitables={avecContenu.length}
+                        />
+                        <span className="text-xs tabular-nums text-muted-foreground">
+                          {maitrisesModule}/{avecContenu.length}
+                        </span>
+                      </div>
+                    )}
+                  </header>
+                  <div className="px-3 py-4 sm:px-5">
+                    {resultatsMontres.map(({ savoir, rang }, index) => (
+                      <LigneSavoir
+                        key={savoir.id}
+                        savoir={savoir}
+                        rang={rang}
+                        dernier={resteAAfficher === 0 && index === resultatsMontres.length - 1}
+                        isModeFrequence={isModeFrequence}
+                        starting={starting}
+                        onQuiz={() => lancerQuiz(paramsQuizPourSavoir(savoir), true)}
+                      />
+                    ))}
+                    {resteAAfficher > 0 && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mt-3 w-full rounded-full"
+                        onClick={() =>
+                          setVisibleParModule((prev) => ({
+                            ...prev,
+                            [moduleKey]: visibleCount + SAVOIRS_PAGE_SIZE,
+                          }))
+                        }
+                      >
+                        Afficher plus ({resteAAfficher} restant{resteAAfficher > 1 ? "s" : ""})
+                      </Button>
+                    )}
                   </div>
-                )
-              }
-              return cartes
-            })()}
+                </section>
+              )
+            })
+
+            if (rechercheNormalisee && cartes.every((carte) => carte === null)) {
+              return (
+                <Ecrin variante="sobre" className="text-center">
+                  <Search className="mx-auto size-6 text-muted-foreground" />
+                  <p className="mt-2 font-display text-lg font-semibold">Aucun thème ne correspond à « {recherche.trim()} »</p>
+                  <p className="text-sm text-muted-foreground">Essaie un autre mot, ou efface la recherche.</p>
+                </Ecrin>
+              )
+            }
+
+            // À partir de 2 modules affichés, un sommaire cliquable donne un repère
+            // spatial sur un programme long (voir sommaireEntries) - en dessous, la
+            // colonne latérale ne ferait que gaspiller de la place pour rien à sauter.
+            if (sommaireEntries.length > 1) {
+              return (
+                <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:items-start lg:gap-10">
+                  <SommaireNav entries={sommaireEntries} ariaLabel="Sommaire des modules" />
+                  <div className="flex min-w-0 flex-col gap-6">{cartes}</div>
+                </div>
+              )
+            }
+            return cartes
+          })()}
+
+          <LegendeProgression />
         </div>
       )}
 
-      {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+      {erreurChargement && <p className="mt-4 text-sm text-destructive">{erreurChargement}</p>}
     </div>
   )
 }

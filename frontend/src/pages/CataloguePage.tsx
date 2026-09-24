@@ -30,6 +30,7 @@ import { Button } from "@/components/ui/button"
 import { SocialProofSection } from "@/components/SocialProofSection"
 import { SeanceDuJour } from "@/components/SeanceDuJour"
 import { AccueilEleve } from "@/components/AccueilEleve"
+import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 
 // Épreuve gratuite dont le premier exercice sert d'exemple de "corrigé pas à pas"
 // dans le hero (voir plus bas) - un vrai extrait de la base, pas un mock. Un seul
@@ -181,11 +182,10 @@ function CatalogueVitrine() {
   // Épreuve inédite mise en avant, pour la section "preuve" dédiée plus bas - jamais un
   // slug codé en dur (contrairement à EXEMPLE_CORRIGE_SLUG) : la plus récente pour ce
   // pays, redécouverte à chaque chargement, donc jamais périmée si le contenu change.
-  const { data: inediteRecenteData } = useQuery({
-    queryKey: ["epreuves-inedites-recente", country],
-    queryFn: ({ signal }) => listEpreuves({ country, origine: "INEDITE", ordering: "recent" }, signal),
-    enabled: Boolean(country) && !hasLegacyFilters,
-  })
+  // Restreinte au cursus déclaré (compte ou onboarding) quand il y en a un : voir
+  // useInedites.
+  const cursusAccueil = useCursusAccueil(country ?? "")
+  const { data: inediteRecenteData } = useInedites(country ?? "", cursusAccueil, !hasLegacyFilters)
   const inediteVedetteId = inediteRecenteData?.results[0]?.slug ?? inediteRecenteData?.results[0]?.id
 
   // Fiche complète de cette même épreuve : apercu_enonce_markdown (l'unique question
@@ -210,11 +210,15 @@ function CatalogueVitrine() {
   const examLevelsProse = examLevels.length > 0 ? joinExamLevelsFr(examLevels) : "le BEPC, le Probatoire et le BAC"
 
   useSeo({
-    title: "Cours, corrigés et quiz - BEPC, Probatoire, BAC",
+    // Le titre porte ce que les élèves tapent dans Google ("corrigés BAC Cameroun"),
+    // jamais la promesse du produit - personne ne cherche "quoi réviser". C'est la
+    // description, affichée sous le titre dans les résultats, qui porte la promesse.
+    // "{examens} - {pays}" plutôt que "... au {pays}" : même raison que ci-dessous.
+    title: `Corrigés ${examLevels.length > 0 ? examLevels.join(", ") : "BEPC, Probatoire, BAC"}${countryLabel ? ` - ${countryLabel}` : ""}`,
     // "{pays} : ..." plutôt que "... au {pays}" - évite l'accord de genre de la
     // préposition ("au Cameroun" vs "en Côte d'Ivoire") qui varie par pays.
     description: countryLabel
-      ? `${countryLabel} : cours structurés, corrigés d'annales et quiz d'entraînement pour ${examLevelsProse}, classés par matière et par série.`
+      ? `${countryLabel} : chaque jour, on te dit quoi réviser pour ${examLevelsProse}. Les thèmes qui tombent vraiment, avec corrigés d'annales, cours et quiz.`
       : undefined,
   })
 
@@ -524,7 +528,7 @@ function CatalogueVitrine() {
         </div>
         {inediteRecenteData && inediteRecenteData.count > 0 && (
           <Link
-            to={`${epreuvesListPath(country ?? "")}?origine=INEDITE`}
+            to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`}
             className="group mt-5 flex flex-col items-start gap-4 rounded-2xl border border-gold/40 bg-gradient-to-b from-gold/5 to-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-lg hover:shadow-gold/10 sm:flex-row sm:items-center sm:gap-5 sm:p-6"
           >
             <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
@@ -648,7 +652,7 @@ function CatalogueVitrine() {
                   sans ce second lien, un visiteur convaincu par l'aperçu n'avait aucun
                   moyen de savoir que d'autres inédites existent pour d'autres matières. */}
               <Button asChild variant="outline">
-                <Link to={`${epreuvesListPath(country ?? "")}?origine=INEDITE`}>
+                <Link to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`}>
                   {inediteRecenteData && inediteRecenteData.count > 1
                     ? `Voir les ${inediteRecenteData.count} épreuves inédites`
                     : "Voir toutes les épreuves inédites"}
@@ -681,7 +685,7 @@ function CatalogueVitrine() {
                 </p>
               </div>
               <Button asChild>
-                <Link to={`${epreuvesListPath(country ?? "")}?origine=INEDITE`}>
+                <Link to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`}>
                   Voir les épreuves inédites
                   <ArrowRight />
                 </Link>

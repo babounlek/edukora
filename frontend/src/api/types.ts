@@ -749,6 +749,13 @@ export interface ResumeMatiere {
   total: number
   maitrises: number
   en_revision: number
+  // Taux connu (déjà pratiqué au moins une fois) mais ni maîtrisé ni actuellement dû
+  // en révision - distinct de a_decouvrir, qui n'a jamais été pratiqué du tout. Sans
+  // cette distinction, un thème longuement travaillé (mais dont la moyenne
+  // historique reste sous le seuil) redevenait indiscernable d'un thème jamais
+  // ouvert dès qu'il quittait la file de révision - voir
+  // quiz.services.resume_parcours côté backend.
+  en_cours: number
   a_decouvrir: number
   sans_contenu: number
 }

@@ -11,3 +11,9 @@ export function tauxBarClassName(taux: number): string {
   if (taux < SEUIL_MAITRISE) return "bg-gold"
   return "bg-success"
 }
+
+/** Une part (0-1) en pourcentage entier, bornée : un arrondi qui dépasserait 100 %
+ * ou passerait sous 0 casserait les barres et l'anneau (voir components/Progression). */
+export function pourcent(part: number): number {
+  return Math.round(Math.min(1, Math.max(0, part)) * 100)
+}

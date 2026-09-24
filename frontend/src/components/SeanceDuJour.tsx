@@ -1,7 +1,10 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, Check, Lock, PenLine, RotateCcw, Sparkles, Target } from "lucide-react"
+import {
+  ArrowRight, BookOpen, Check, ChevronRight, Clock, GraduationCap, ListChecks, Lock, PenLine, RotateCcw,
+  Shuffle, Sparkles, Target, type LucideIcon,
+} from "lucide-react"
 
 import {
   ajusterDureeSeance, continuerSeanceDuJour, getPlanDuJour, listCursus, proposerAutreChose,
@@ -14,6 +17,7 @@ import { coursReaderPath, epreuveReaderPath, themeExercicesPath, themesFrequents
 import { trackEvent } from "@/lib/analytics"
 import { cn } from "@/lib/utils"
 import { formatCompteARebours } from "@/components/CompteAReboursBadge"
+import { Ecrin } from "@/components/Progression"
 
 /**
  * "Aujourd'hui : Limites de fonctions - 25 min" : une seule chose à faire, et un seul
@@ -92,7 +96,7 @@ export function SeanceDuJour({ country }: { country: string }) {
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-      <div className="animate-fade-up rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-5 sm:p-6">
+      <Ecrin>
         <EnTete plan={data} />
         {data.etat === "deja_fait_aujourdhui" ? (
           <SeanceFaite
@@ -123,7 +127,7 @@ export function SeanceDuJour({ country }: { country: string }) {
             ajustementEnCours={duree.isPending}
           />
         )}
-      </div>
+      </Ecrin>
     </section>
   )
 }
@@ -142,7 +146,7 @@ export function SeanceDuJour({ country }: { country: string }) {
 function EnTete({ plan }: { plan: PlanDuJour }) {
   const compte = plan.compte_a_rebours ? formatCompteARebours(plan.compte_a_rebours) : ""
   return (
-    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground sm:hidden">
+    <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground sm:hidden">
       {plan.cursus?.examen_display}
       {plan.cursus?.series ? ` ${plan.cursus.series.code}` : ""}
       {/* Ce qui transforme "réviser les limites" en "réviser les limites parce qu'il
@@ -168,53 +172,83 @@ function SeanceAFaire({
 }) {
   const seance = plan.seance as Seance
   const premiere = seance.etapes[0]
+  const avecParcours = !seance.verrouillee && seance.etapes.length > 0
 
   return (
-    <>
-      <h2 className="mt-1 font-display text-2xl font-semibold">
-        Aujourd'hui : {titreDeLaSeance(seance)}
-      </h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        {seance.subject ? `${seance.subject.label} · ` : ""}
-        {seance.duree_estimee_min} min
-        {seance.nb_etapes > 1 ? ` · ${seance.nb_etapes} étapes` : ""}
-      </p>
+    <div className={cn("grid gap-x-10 gap-y-6", avecParcours && "lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:grid-rows-[auto_1fr]")}>
+      <div className="min-w-0">
+        {/* "Aujourd'hui" en surtitre et le thème en grand : le thème est ce que l'élève
+            doit retenir d'un coup d'œil, le jour n'est que le cadre. Un seul <h2> pour
+            que les lecteurs d'écran lisent toujours "Aujourd'hui, concentration
+            molaire" d'une traite. */}
+        <h2 className="font-display">
+          <span className="flex items-center gap-2 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+            <Sparkles className="size-3.5" />
+            Aujourd'hui
+          </span>
+          <span className="mt-2 block text-3xl font-semibold leading-[1.1] tracking-tight text-balance sm:text-4xl">
+            {majuscule(titreDeLaSeance(seance))}
+          </span>
+        </h2>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {seance.subject && <Pastille icone={GraduationCap}>{seance.subject.label}</Pastille>}
+          <Pastille icone={Clock}>{seance.duree_estimee_min} min</Pastille>
+          {seance.nb_etapes > 1 && <Pastille icone={ListChecks}>{seance.nb_etapes} étapes</Pastille>}
+        </div>
 
-      <Frequence seance={seance} />
+        <Frequence seance={seance} />
 
-      {!seance.verrouillee && (
-        <ChoixDuree seance={seance} onChoisir={onChoisirDuree} enCours={ajustementEnCours} />
-      )}
+        {!seance.verrouillee && (
+          <ChoixDuree seance={seance} onChoisir={onChoisirDuree} enCours={ajustementEnCours} />
+        )}
 
-      {seance.verrouillee ? (
-        <Verrou />
-      ) : (
-        <>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
+        {seance.verrouillee ? (
+          <Verrou />
+        ) : (
+          <div className="mt-6 flex flex-wrap items-center gap-3">
             {premiere && (
-              <Button asChild size="lg">
+              <Button
+                asChild
+                size="lg"
+                className="group h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
+              >
                 <Link
                   to={lienEtape(premiere, country, plan)}
                   onClick={() => trackEvent("plan_seance_demarree", { origine: seance.origine })}
                 >
-                  Commencer
-                  <ArrowRight className="size-4" />
+                  Commencer la séance
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
             )}
             {/* Marquer la séance faite reste une action de l'élève : on ne sait pas
                 détecter qu'il a vraiment lu et compris, et un "terminé" décidé à sa
                 place fausserait le seul chiffre qui dira si ce plan marche. */}
-            <Button variant="ghost" size="sm" onClick={onTerminer} disabled={terminaisonEnCours}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rounded-full text-muted-foreground"
+              onClick={onTerminer}
+              disabled={terminaisonEnCours}
+            >
               <Check className="size-4" />
               J'ai fini
             </Button>
           </div>
+        )}
+      </div>
+
+      {/* Sur desktop, le parcours occupe toute la hauteur de la colonne de droite ; sur
+          téléphone il vient juste sous "Commencer", avant la sortie de secours - qui
+          sinon s'intercalait entre le bouton et ce qu'il lance. */}
+      {avecParcours && (
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
           <EtapesParPhase seance={seance} country={country} plan={plan} />
-        </>
+        </div>
       )}
 
-      {/* Sortie de secours, volontairement discrète : un plan qu'on ne peut pas
+      <div className="min-w-0 lg:col-start-1">
+        {/* Sortie de secours, volontairement discrète : un plan qu'on ne peut pas
           contourner est vécu comme une contrainte, mais la remonter au même niveau
           que "Commencer" rendrait à l'élève la charge de choisir - exactement ce
           dont ce bloc le décharge.
@@ -222,27 +256,44 @@ function SeanceAFaire({
           Elle propose une AUTRE séance, jamais le catalogue : quand l'élève dit "pas
           ça", un coach propose autre chose, il ne tend pas le sommaire. Le catalogue
           ne réapparaît que lorsqu'on a réellement épuisé ce qu'on sait proposer. */}
-      <p className="mt-4 text-xs text-muted-foreground">
-        Ce n'est pas ce que tu veux réviser ?{" "}
-        <button
-          type="button"
-          onClick={onAutreChose}
-          disabled={remplacementEnCours}
-          className="underline underline-offset-4 hover:text-primary disabled:opacity-60"
-        >
-          {remplacementEnCours ? "Je cherche…" : "Propose-moi autre chose"}
-        </button>
-      </p>
-      {plusRienAProposer && (
-        <p className="mt-1 text-xs text-muted-foreground">
-          On ne trouve pas mieux pour aujourd'hui.{" "}
-          <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
-            Choisir un thème toi-même
-          </Link>
+        <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
+          <Shuffle className="size-3 shrink-0" />
+          Ce n'est pas ce que tu veux réviser ?
+          <button
+            type="button"
+            onClick={onAutreChose}
+            disabled={remplacementEnCours}
+            className="underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
+          >
+            {remplacementEnCours ? "Je cherche…" : "Propose-moi autre chose"}
+          </button>
         </p>
-      )}
-    </>
+        {plusRienAProposer && (
+          <p className="mt-1 text-xs text-muted-foreground">
+            On ne trouve pas mieux pour aujourd'hui.{" "}
+            <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
+              Choisir un thème toi-même
+            </Link>
+          </p>
+        )}
+      </div>
+    </div>
   )
+}
+
+function Pastille({ icone: Icone, children }: { icone: LucideIcon; children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-background/70 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm">
+      <Icone className="size-3.5 shrink-0 text-primary" />
+      {children}
+    </span>
+  )
+}
+
+/** "concentration molaire" → "Concentration molaire" : les thèmes sont stockés en
+ * minuscules, ce qui passait inaperçu après "Aujourd'hui :" mais pas en titre seul. */
+function majuscule(texte: string): string {
+  return texte.charAt(0).toLocaleUpperCase("fr") + texte.slice(1)
 }
 
 function SeanceFaite({
@@ -257,12 +308,14 @@ function SeanceFaite({
   const seance = plan.seance as Seance
   return (
     <>
-      <h2 className="mt-1 flex items-center gap-2 font-display text-2xl font-semibold">
-        <Check className="size-6 shrink-0 text-primary" />
+      <h2 className="flex items-center gap-3 font-display text-2xl font-semibold sm:text-3xl">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 ring-4 ring-primary/10">
+          <Check className="size-5" strokeWidth={3} />
+        </span>
         Séance faite
       </h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        {titreDeLaSeance(seance)}
+      <p className="mt-3 text-sm text-muted-foreground">
+        {majuscule(titreDeLaSeance(seance))}
         {/* Le score du quiz quand il y en avait un - jamais un "0/0", qui se lirait
             comme un échec là où il n'y avait simplement rien à noter. */}
         {seance.score && <> · {seance.score.reussies}/{seance.score.total}</>}
@@ -289,9 +342,9 @@ function SeanceFaite({
           thèmes : renvoyer au catalogue quelqu'un qui vient de faire ce qu'on lui a
           demandé, c'est lui rendre la charge de choisir au moment précis où il
           méritait qu'on continue à le guider. */}
-      <div className="mt-3 flex flex-wrap items-center gap-3">
+      <div className="mt-5 flex flex-wrap items-center gap-3">
         <span className="text-sm text-muted-foreground">Prochaine séance demain.</span>
-        <Button variant="outline" size="sm" onClick={onContinuer} disabled={continuationEnCours}>
+        <Button variant="outline" size="sm" className="rounded-full" onClick={onContinuer} disabled={continuationEnCours}>
           {continuationEnCours ? "Je cherche…" : "Continuer maintenant"}
           <ArrowRight className="size-4" />
         </Button>
@@ -321,40 +374,51 @@ function SeanceFaite({
  */
 function Frequence({ seance }: { seance: Seance }) {
   if (!seance.frequence && seance.raisons.length === 0) return null
-  const titre = (
-    <p className="mt-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-      Pourquoi cette séance ?
-    </p>
-  )
-  if (!seance.frequence) {
-    return (
-      <>
-        {titre}
-        <AutresRaisons seance={seance} />
-      </>
-    )
-  }
-  const { occurrences, epreuves_total, annees } = seance.frequence
   return (
-    <>
-      {titre}
-      <div className="mt-2">
-      <p className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium">
-        <Target className="size-3.5 shrink-0" />
-        Tombé dans {occurrences} des {epreuves_total} dernières épreuves
+    <div className="mt-6 max-w-2xl rounded-2xl border border-gold/30 bg-gold/[0.06] p-4">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+        Pourquoi cette séance ?
       </p>
+      {seance.frequence && <StatFrequence frequence={seance.frequence} />}
+      <AutresRaisons seance={seance} />
+    </div>
+  )
+}
+
+/** Le chiffre en grand, et une jauge qui le rend lisible sans lire : "8 sur 10" se
+ * voit avant de se comprendre. */
+function StatFrequence({ frequence }: { frequence: NonNullable<Seance["frequence"]> }) {
+  const { occurrences, epreuves_total, annees } = frequence
+  const part = epreuves_total > 0 ? Math.min(100, Math.round((occurrences / epreuves_total) * 100)) : 0
+  return (
+    <div className="mt-3">
+      <div className="flex items-center gap-3">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/20 text-gold-foreground dark:text-gold">
+          <Target className="size-5" />
+        </span>
+        <p className="text-sm leading-snug">
+          Tombé dans{" "}
+          <span className="font-display text-2xl font-semibold tabular-nums">{occurrences}</span>
+          <span className="text-muted-foreground"> des {epreuves_total} dernières épreuves</span>
+        </p>
+      </div>
+      <div
+        className="mt-3 h-1.5 overflow-hidden rounded-full bg-gold/15"
+        role="img"
+        aria-label={`${occurrences} épreuves sur ${epreuves_total}`}
+      >
+        <div className="h-full rounded-full bg-gradient-to-r from-gold/70 to-gold" style={{ width: `${part}%` }} />
+      </div>
       {/* Les années concernées : sans elles, le chiffre est à croire sur parole. Le
           "…" dit qu'il y en a d'autres plutôt que de laisser croire à une liste
           complète (voir ANNEES_FREQUENCE_MAX côté serveur). */}
       {annees.length > 0 && (
-        <p className="mt-1.5 text-xs text-muted-foreground">
-          {annees.join(", ")}
-          {occurrences > annees.length ? "…" : ""}
+        <p className="mt-2 text-xs tabular-nums text-muted-foreground">
+          {annees.join(" · ")}
+          {occurrences > annees.length ? " …" : ""}
         </p>
       )}
-      </div>
-      <AutresRaisons seance={seance} />
-    </>
+    </div>
   )
 }
 
@@ -363,10 +427,12 @@ function Frequence({ seance }: { seance: Seance }) {
 function AutresRaisons({ seance }: { seance: Seance }) {
   if (seance.raisons.length === 0) return null
   return (
-    <ul className="mt-2 flex flex-col gap-1">
+    <ul className="mt-3 flex flex-col gap-1.5">
       {seance.raisons.map((raison) => (
-        <li key={raison.code} className="flex items-start gap-1.5 text-xs text-muted-foreground">
-          <Check className="mt-0.5 size-3 shrink-0 text-primary" />
+        <li key={raison.code} className="flex items-start gap-2 text-xs text-muted-foreground">
+          <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/15">
+            <Check className="size-2.5 text-primary" strokeWidth={3} />
+          </span>
           {raison.texte}
         </li>
       ))}
@@ -376,8 +442,12 @@ function AutresRaisons({ seance }: { seance: Seance }) {
 
 function Verrou() {
   return (
-    <div className="mt-4 flex flex-wrap items-center gap-3">
-      <Button asChild size="lg">
+    <div className="mt-6 flex flex-wrap items-center gap-3">
+      <Button
+        asChild
+        size="lg"
+        className="h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
+      >
         <Link to="/tarifs" onClick={() => trackEvent("plan_verrouille_clic")}>
           <Lock className="size-4" />
           Débloquer ma séance
@@ -389,10 +459,12 @@ function Verrou() {
 }
 
 function IconeEtape({ type }: { type: EtapeSeance["type"] }) {
-  const commun = "size-4 shrink-0 text-primary"
-  if (type === "cours") return <BookOpen className={commun} />
-  if (type === "exercice") return <PenLine className={commun} />
-  return <Sparkles className={commun} />
+  const Icone = type === "cours" ? BookOpen : type === "exercice" ? PenLine : Sparkles
+  return (
+    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+      <Icone className="size-4" />
+    </span>
+  )
 }
 
 /** Le thème travaillé, ou à défaut ce que la séance propose de faire. */
@@ -461,7 +533,7 @@ function DeclarerSonExamen({ country }: { country: string }) {
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-      <div className="animate-fade-up rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-5 sm:p-6">
+      <Ecrin>
         <h2 className="font-display text-xl font-semibold">Qu'est-ce que tu prépares ?</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Dis-le une fois et tu auras chaque jour une séance faite pour ton examen, avec le compte à rebours.
@@ -480,7 +552,7 @@ function DeclarerSonExamen({ country }: { country: string }) {
             </Button>
           ))}
         </div>
-      </div>
+      </Ecrin>
     </section>
   )
 }
@@ -526,25 +598,27 @@ function ChoixDuree({
 }) {
   if (seance.budgets_possibles.length < 2) return null
   return (
-    <div className="mt-4 flex flex-wrap items-center gap-2">
+    <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
       <span className="text-xs text-muted-foreground">Combien de temps as-tu ?</span>
-      {seance.budgets_possibles.map((minutes) => (
-        <button
-          key={minutes}
-          type="button"
-          disabled={enCours}
-          aria-pressed={minutes === seance.budget_minutes}
-          onClick={() => onChoisir(minutes)}
-          className={cn(
-            "rounded-full border px-3 py-1 text-xs font-medium transition-colors disabled:opacity-60",
-            minutes === seance.budget_minutes
-              ? "border-primary bg-primary/10 text-primary"
-              : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground",
-          )}
-        >
-          {minutes} min
-        </button>
-      ))}
+      <div role="group" className="inline-flex rounded-full border border-border/80 bg-muted/60 p-1">
+        {seance.budgets_possibles.map((minutes) => (
+          <button
+            key={minutes}
+            type="button"
+            disabled={enCours}
+            aria-pressed={minutes === seance.budget_minutes}
+            onClick={() => onChoisir(minutes)}
+            className={cn(
+              "rounded-full px-3.5 py-1 text-xs font-medium tabular-nums transition-all disabled:opacity-60",
+              minutes === seance.budget_minutes
+                ? "bg-background text-primary shadow-sm ring-1 ring-primary/25"
+                : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {minutes} min
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -586,45 +660,59 @@ function EtapesParPhase({ seance, country, plan }: { seance: Seance; country: st
   const avecTitres = groupes.length > 1
 
   return (
-    <ol className="mt-4 flex flex-col gap-3">
-      {groupes.map((phase, index) => (
-        <li key={phase.cle}>
-          {avecTitres && (
-            <p className="mb-1 flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              <span className="flex size-5 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
-                {index + 1}
-              </span>
-              {phase.titre}
-            </p>
-          )}
-          <div className="flex flex-col gap-1">
-            {/* La profondeur, à un clic, sans jamais déverser 33 liens dans la carte :
-                la promesse de la séance est "une seule chose à faire", et un élève qui
-                voit 33 items n'en fait généralement aucun. Même patron que
-                "Propose-moi autre chose" - accessible, jamais promu. */}
-            {phase.cle === "exercice" && seance.exercices_total > phase.etapes.length && lienExercices && (
-              <Link
-                to={lienExercices}
-                className="order-last flex items-center gap-1.5 px-2 pt-1 text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
-              >
-                Les {seance.exercices_total} exercices sur ce thème
-                <ArrowRight className="size-3" />
-              </Link>
+    <div className="self-start rounded-2xl border border-border/70 bg-background/70 p-4 backdrop-blur-sm sm:p-5">
+      <p className="flex items-baseline justify-between gap-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+        Ton parcours
+        <span className="font-sans normal-case tracking-normal tabular-nums">{seance.duree_estimee_min} min</span>
+      </p>
+      <ol className="mt-4 flex flex-col">
+        {groupes.map((phase, index) => (
+          // La frise : un fil vertical relie les phases, coupé après la dernière pour
+          // que le trajet se lise comme un chemin qui aboutit, pas comme une liste.
+          <li key={phase.cle} className={cn("relative", avecTitres && "pl-9 pb-4 last:pb-0")}>
+            {avecTitres && (
+              <>
+                {index < groupes.length - 1 && (
+                  <span aria-hidden className="absolute bottom-0 left-[11px] top-7 w-px bg-gradient-to-b from-primary/40 to-border" />
+                )}
+                <span className="absolute left-0 top-0 flex size-6 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground shadow-sm shadow-primary/30 ring-4 ring-primary/10">
+                  {index + 1}
+                </span>
+                <p className="flex h-6 items-center text-xs font-semibold uppercase tracking-wide text-foreground/80">
+                  {phase.titre}
+                </p>
+              </>
             )}
-            {phase.etapes.map((etape) => (
-              <Link
-                key={etape.libelle}
-                to={lienEtape(etape, country, plan)}
-                className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-accent/50"
-              >
-                <IconeEtape type={etape.type} />
-                <span className="min-w-0 flex-1 truncate">{etape.libelle}</span>
-                <span className="shrink-0 text-xs text-muted-foreground">{etape.duree_min} min</span>
-              </Link>
-            ))}
-          </div>
-        </li>
-      ))}
-    </ol>
+            <div className={cn("flex flex-col gap-1", avecTitres && "mt-1.5 -ml-2")}>
+              {/* La profondeur, à un clic, sans jamais déverser 33 liens dans la carte :
+                  la promesse de la séance est "une seule chose à faire", et un élève qui
+                  voit 33 items n'en fait généralement aucun. Même patron que
+                  "Propose-moi autre chose" - accessible, jamais promu. */}
+              {phase.cle === "exercice" && seance.exercices_total > phase.etapes.length && lienExercices && (
+                <Link
+                  to={lienExercices}
+                  className="order-last flex items-center gap-1.5 px-2 pt-1 text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
+                >
+                  Les {seance.exercices_total} exercices sur ce thème
+                  <ArrowRight className="size-3" />
+                </Link>
+              )}
+              {phase.etapes.map((etape) => (
+                <Link
+                  key={etape.libelle}
+                  to={lienEtape(etape, country, plan)}
+                  className="group flex items-center gap-3 rounded-xl border border-transparent px-2 py-1.5 text-sm transition-all hover:border-primary/20 hover:bg-primary/[0.04]"
+                >
+                  <IconeEtape type={etape.type} />
+                  <span className="line-clamp-2 min-w-0 flex-1 font-medium leading-snug">{etape.libelle}</span>
+                  <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{etape.duree_min} min</span>
+                  <ChevronRight className="hidden size-4 shrink-0 text-muted-foreground/50 sm:block transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
+                </Link>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
   )
 }

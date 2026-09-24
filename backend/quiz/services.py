@@ -537,6 +537,10 @@ def construire_parcours_par_frequence(user, cursus, subject):
         .filter(subject=subject, tags__id__in=tous_tag_ids, rappels_source__exercise__lesson__cursus=cursus)
         .annotate(nb_rappels=Count("rappels_source", distinct=True))
         .prefetch_related("tags")
+        # Les seuls champs lus plus bas. Sans only(), le DISTINCT comparait aussi
+        # sections_raw (le cours entier) ligne à ligne : ~185 ms sur les Maths de
+        # Terminale, soit la moitié du temps de toute la page Ma progression.
+        .only("id", "slug", "titre", "sous_theme")
         .distinct()
     ):
         for tag in cours.tags.all():
@@ -711,6 +715,9 @@ def construire_parcours(user, cursus, subject):
                 Cours.objects.visibles()
                 .filter(subject=subject, tags__savoir_officiel=savoir)
                 .filter(Q(cursus=cursus) | Q(cursus__isnull=True))
+                # Voir construire_parcours_par_frequence : sans only(), le DISTINCT
+                # compare aussi le contenu entier de chaque cours.
+                .only("id", "slug", "titre", "sous_theme")
                 .distinct()
                 .order_by("id")[: PARCOURS_COURS_PAR_SAVOIR_MAX * 3]
             )
@@ -774,7 +781,19 @@ def resume_parcours(user, cursus):
         # chaque condition est testée dans cet ordre de priorité précis (ex. un savoir
         # sans contenu ne compte jamais pour "à réviser" même si une donnée historique
         # incohérente le laissait croire).
-        compteurs = {"maitrises": 0, "en_revision": 0, "a_decouvrir": 0, "sans_contenu": 0}
+        #
+        # "en_cours" (taux connu, pas encore maîtrisé, pas dans la file de révision)
+        # est distinct de "a_decouvrir" (jamais pratiqué du tout) - sans cette
+        # distinction, un thème pourtant travaillé disparaissait de l'agrégat : le
+        # taux `s["taux"]` est une moyenne historique qui ne s'efface jamais, alors
+        # que RevisionSchedule suit la Leitner récente et GRADUE (supprime la ligne)
+        # dès qu'une série de réussites récentes l'a fait remonter les paliers -
+        # même si la moyenne à vie reste sous SEUIL_MAITRISE. Un thème raté plusieurs
+        # fois puis enfin maîtrisé récemment se retrouvait donc compté comme
+        # "à découvrir", exactement comme un thème jamais ouvert - constaté sur un
+        # compte réel (35 réponses, 54 % de moyenne, gradué hors révision : ni
+        # maîtrisé, ni en révision, ni même visible).
+        compteurs = {"maitrises": 0, "en_revision": 0, "en_cours": 0, "a_decouvrir": 0, "sans_contenu": 0}
         for s in savoirs:
             if not s["has_quiz"] and not s["cours"]:
                 compteurs["sans_contenu"] += 1
@@ -782,6 +801,8 @@ def resume_parcours(user, cursus):
                 compteurs["maitrises"] += 1
             elif s["en_revision"]:
                 compteurs["en_revision"] += 1
+            elif s["taux"] is not None:
+                compteurs["en_cours"] += 1
             else:
                 compteurs["a_decouvrir"] += 1
         resume.append({

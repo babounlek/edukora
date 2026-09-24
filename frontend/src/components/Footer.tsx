@@ -46,8 +46,8 @@ export function Footer() {
             </span>
           </Link>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            Cours, corrigés d'annales et quiz conçus pour préparer sereinement le BEPC, le
-            Probatoire et le BAC.
+            Chaque jour, on te dit quoi réviser pour le BEPC, le Probatoire ou le BAC : les
+            thèmes qui tombent vraiment, et on retient ce que tu rates.
           </p>
 
           <div className="mt-6 flex flex-col gap-3">
