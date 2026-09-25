@@ -123,7 +123,7 @@ function App() {
               {/* Réserve la hauteur de la barre d'onglets, qui est en position fixe :
                   sans elle, les derniers liens du pied de page sont recouverts et donc
                   inatteignables sur mobile. */}
-              <div className="h-14 lg:hidden" aria-hidden="true" />
+              <div className="h-20 lg:hidden" aria-hidden="true" />
             </div>
             <BottomTabBar />
             <OnboardingModal />

@@ -185,7 +185,7 @@ export function Header() {
               </span>
             )}
           </Link>
-          <CompteAReboursBadge className="hidden whitespace-nowrap sm:inline" />
+          <CompteAReboursBadge variant="pilule" className="hidden whitespace-nowrap sm:inline" />
         </div>
         <nav className="flex items-center gap-2">
           {/* Toujours visible (pas de hidden sm:), contrairement aux liens de nav

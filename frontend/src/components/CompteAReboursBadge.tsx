@@ -14,7 +14,13 @@ import { cn } from "@/lib/utils"
  * n'est déclaré ou qu'aucune session d'examen n'est saisie pour ce diplôme : c'est un
  * repère offert, jamais une information qu'on réclame.
  */
-export function CompteAReboursBadge({ className }: { className?: string }) {
+export function CompteAReboursBadge({
+  className,
+  variant = "texte",
+}: {
+  className?: string
+  variant?: "texte" | "pilule"
+}) {
   const { user } = useAuth()
   if (!user?.compte_a_rebours || !user.cursus_prepare) return null
 
@@ -23,7 +29,15 @@ export function CompteAReboursBadge({ className }: { className?: string }) {
 
   return (
     <span
-      className={cn("text-xs font-medium tabular-nums text-muted-foreground", className)}
+      className={cn(
+        "font-medium tabular-nums",
+        // La pastille sert au bandeau du haut et à la barre du bas : lisible d'un coup
+        // d'œil, mais toujours neutre (jamais de rouge, voir plus haut).
+        variant === "pilule"
+          ? "rounded-full border border-border bg-muted/60 px-2.5 py-1 text-xs font-semibold text-foreground"
+          : "text-xs text-muted-foreground",
+        className,
+      )}
       title={titreDetaille(user.cursus_prepare, user.compte_a_rebours)}
     >
       {formatCursus(user.cursus_prepare)} · {texte}

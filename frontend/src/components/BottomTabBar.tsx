@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom"
 import { BookOpen, CalendarCheck, TrendingUp } from "lucide-react"
 
+import { CompteAReboursBadge } from "@/components/CompteAReboursBadge"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { catalogueHomePath, epreuvesListPath, themesFrequentsPath, coursListPath } from "@/lib/countryPath"
@@ -49,6 +50,12 @@ export function BottomTabBar() {
       // est lisible mais la cible ne réagit pas, ce qui se lit comme un bug.
       className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-sm lg:hidden"
     >
+      {/* Sur mobile, le décompte n'existait que derrière le hamburger : autant dire
+          qu'il n'existait pas. Ici il reste sous le pouce sur chaque écran, en gris
+          comme partout ailleurs. Silencieusement absent sans date d'examen connue. */}
+      <div className="flex justify-center pt-1.5 empty:hidden">
+        <CompteAReboursBadge variant="pilule" className="whitespace-nowrap" />
+      </div>
       <div className="flex items-stretch">
         {onglets.map((onglet) => (
           <Link
