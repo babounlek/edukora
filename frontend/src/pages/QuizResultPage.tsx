@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
-import { Trophy } from "lucide-react"
+import { ArrowRight, BookOpen, Trophy } from "lucide-react"
 
 import { completeQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -89,11 +89,23 @@ export function QuizResultPage() {
           <CardContent>
             <ul className="flex flex-col gap-3">
               {result.par_theme.map((theme) => (
-                <li key={theme.theme} className="flex items-center justify-between text-sm">
-                  <span>{capitaliserTheme(theme.theme)}</span>
-                  <span className="text-muted-foreground">
-                    {theme.reussies} / {theme.total}
-                  </span>
+                <li key={theme.theme} className="text-sm">
+                  <div className="flex items-center justify-between">
+                    <span>{capitaliserTheme(theme.theme)}</span>
+                    <span className="text-muted-foreground">
+                      {theme.reussies} / {theme.total}
+                    </span>
+                  </div>
+                  {theme.cours && (
+                    <Link
+                      to={`/cours/${theme.cours.slug}`}
+                      className="mt-1.5 flex items-center gap-2 rounded-md bg-muted/60 px-3 py-2 text-muted-foreground hover:text-foreground"
+                    >
+                      <BookOpen className="size-4 shrink-0 text-primary" />
+                      <span className="min-w-0 flex-1 truncate">À revoir : {theme.cours.titre}</span>
+                      <ArrowRight className="size-4 shrink-0" />
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

@@ -660,10 +660,20 @@ export interface QuizCorrige {
   reponse_correcte: string
 }
 
+export interface QuizCoursSuggere {
+  id: number
+  slug: string
+  titre: string
+  has_access: boolean
+}
+
 export interface QuizThemeScore {
   theme: string
   total: number
   reussies: number
+  // Renseigné seulement pour un thème sous le seuil de maîtrise ET couvert par un cours
+  // publié (voir quiz.views._resultat_payload). Absent des résultats d'épreuves inédites.
+  cours?: QuizCoursSuggere | null
 }
 
 export interface QuizResult {

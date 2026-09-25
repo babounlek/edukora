@@ -1163,7 +1163,7 @@ class QuizApiTests(TestCase):
         self.assertEqual(response.data["corrige_markdown"], self.item.corrige_markdown)
         self.assertNotIn("COURS_LINK", response.data["corrige_markdown"])
 
-    # --- Cascade de rapprochement quiz -> cours (voir quiz.views._cours_pour_competence) ---
+    # --- Cascade de rapprochement quiz -> cours (voir quiz.views._cours_pour_theme) ---
     #
     # Deux vocabulaires de tags coexistent à deux granularités : correction-experte pose
     # des tags de technique sur les cours, le quiz porte des tags de chapitre alignés sur
@@ -1261,8 +1261,53 @@ class QuizApiTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["score"], 1)
         self.assertEqual(response.data["questions_repondues"], 1)
-        self.assertEqual(response.data["par_theme"], [{"theme": "dérivation", "total": 1, "reussies": 1}])
+        self.assertEqual(
+            response.data["par_theme"], [{"theme": "dérivation", "total": 1, "reussies": 1, "cours": None}],
+        )
         self.assertIsNotNone(QuizSession.objects.get(pk=session_id).completed_at)
+
+    def test_complete_session_suggests_a_cours_for_a_theme_below_seuil_maitrise(self):
+        """
+        Rater un thème doit mener droit au cours qui corrige la lacune - jamais sous
+        un thème réussi (rien à corriger), et jamais un lien mort si aucun cours ne
+        correspond (voir quiz.views._cours_pour_theme, même cascade que le lien
+        "Voir le cours complet" déjà injecté dans un corrigé de quiz).
+        """
+        cours = _make_cours(
+            self.subject, cursus=self.cursus, tags=[self.theme], titre="Dérivation - la méthode",
+        )
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+        session_id = start.data["id"]
+        quiz_question_id = start.data["questions"][0]["id"]
+        self.client.post(
+            f"/quiz/sessions/{session_id}/questions/{quiz_question_id}/answer/",
+            {"resultat_declare": ResultatDeclare.ECHEC}, format="json",
+        )
+
+        response = self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        theme_entry = response.data["par_theme"][0]
+        self.assertEqual(theme_entry["reussies"], 0)
+        self.assertIsNotNone(theme_entry["cours"])
+        self.assertEqual(theme_entry["cours"]["slug"], cours.slug)
+
+    def test_complete_session_cours_stays_null_without_a_matching_cours(self):
+        # Thème raté, mais aucun Cours publié ne le couvre - jamais de lien mort.
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+        start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
+        session_id = start.data["id"]
+        quiz_question_id = start.data["questions"][0]["id"]
+        self.client.post(
+            f"/quiz/sessions/{session_id}/questions/{quiz_question_id}/answer/",
+            {"resultat_declare": ResultatDeclare.ECHEC}, format="json",
+        )
+
+        response = self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        self.assertIsNone(response.data["par_theme"][0]["cours"])
 
     def _completed_session_id(self):
         start = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
@@ -1798,7 +1843,7 @@ class ConstruireParcoursTests(TestCase):
         )
 
     def test_cours_found_through_a_different_tag_sharing_the_savoir(self):
-        # Même situation réelle que quiz.views._cours_pour_competence (niveau 2) :
+        # Même situation réelle que quiz.views._cours_pour_theme (niveau 2) :
         # le cours est tagué différemment du quiz, les deux partagent le savoir.
         theme_quiz = Tag.objects.create(name="theme-quiz", savoir_officiel=self.savoir_1a)
         theme_cours = Tag.objects.create(name="theme-cours-distinct", savoir_officiel=self.savoir_1a)

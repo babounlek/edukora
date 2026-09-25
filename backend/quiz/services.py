@@ -387,7 +387,7 @@ def maitrise_par_savoir(user, cursus=None):
     Comme maitrise_par_theme, mais agrégée par programme.Savoir plutôt que par Tag -
     seule alimentation interne de construire_parcours (jamais exposée telle quelle en
     API, contrairement à maitrise_par_theme). Un Savoir peut porter plusieurs Tags
-    (voir Savoir.tags, et le cas réel documenté dans _cours_pour_competence côté vues) :
+    (voir Savoir.tags, et le cas réel documenté dans _cours_pour_theme côté vues) :
     ce regroupement les fusionne, plutôt que de forcer l'appelant à recomposer un score
     par savoir à partir de plusieurs entrées de maitrise_par_theme. Seules les réponses
     dont le thème est déjà rattaché à un Savoir officiel comptent ici - un thème sans
@@ -698,7 +698,7 @@ def construire_parcours(user, cursus, subject):
         for savoir in module.savoirs.all():
             # Tous les Cours publiés qui couvrent ce savoir (voir Cours.tags ->
             # Tag.savoir_officiel) - même relation que le niveau 2 de
-            # quiz.views._cours_pour_competence, ici interrogée directement par
+            # quiz.views._cours_pour_theme, ici interrogée directement par
             # Savoir plutôt que déduite d'un CompetenceItem particulier. Plusieurs
             # cours distincts sont légitimes (voir PARCOURS_COURS_PAR_SAVOIR_MAX) :
             # l'assimilation d'un savoir peut demander plus d'une leçon.

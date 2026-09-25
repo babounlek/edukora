@@ -21,8 +21,8 @@ from .models import (
 )
 from .pdf import queue_quiz_fiche_pdf_generation
 from .services import (
-    cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision, generer_session,
-    maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
+    SEUIL_MAITRISE, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
+    generer_session, maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
     BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
     remplacer_seance,
     score_de_la_seance,
@@ -111,10 +111,10 @@ def _clean_quiz_markdown(text):
 _LIBELLE_MIN = 8
 
 
-def _cours_pour_competence(item):
+def _cours_pour_theme(theme, subject, cursus_ids):
     """
-    Le Cours publié qui correspond le mieux à la compétence d'un CompetenceItem, cherché
-    en trois passes de précision décroissante. La première qui rend un résultat gagne.
+    Le Cours publié qui correspond le mieux à un (thème, matière), cherché en trois
+    passes de précision décroissante. La première qui rend un résultat gagne.
 
     Pourquoi une cascade plutôt qu'un seul appariement par tag : deux vocabulaires de
     tags coexistent dans le catalogue, à deux granularités différentes. correction-experte
@@ -134,26 +134,30 @@ def _cours_pour_competence(item):
     Tri explicite par identifiant à chaque niveau : sans lui, `.first()` rend un cours
     arbitraire que le SGBD peut changer d'une requête à l'autre, et l'élève verrait le
     lien pointer ailleurs d'une session à la suivante.
+
+    `cursus_ids` : un itérable d'id de Cursus (pas un seul) - un CompetenceItem peut
+    couvrir plusieurs cursus (voir CompetenceItem.cursus, M2M), et un Cours sans cursus
+    du tout reste éligible (notion commune à toutes les séries, voir Cours.cursus).
     """
     publies = (
         Cours.objects.visibles()
-        .filter(subject=item.subject)
-        .filter(Q(cursus__in=item.cursus.all()) | Q(cursus__isnull=True))
+        .filter(subject=subject)
+        .filter(Q(cursus__in=cursus_ids) | Q(cursus__isnull=True))
         .distinct()
         .order_by("id")
     )
 
-    exact = publies.filter(tags=item.theme).first()
+    exact = publies.filter(tags=theme).first()
     if exact:
         return exact
 
-    savoir_id = item.theme.savoir_officiel_id
+    savoir_id = theme.savoir_officiel_id
     if savoir_id:
         par_savoir = publies.filter(tags__savoir_officiel_id=savoir_id).first()
         if par_savoir:
             return par_savoir
 
-    libelle = item.theme.name.split("(")[0].strip()
+    libelle = theme.name.split("(")[0].strip()
     if len(libelle) >= _LIBELLE_MIN:
         return publies.filter(
             Q(sous_theme__icontains=libelle) | Q(titre__icontains=libelle),
@@ -164,14 +168,14 @@ def _cours_pour_competence(item):
 def _competence_item_corrige(item):
     """
     corrige_markdown d'un CompetenceItem, avec un lien "Voir le cours complet" injecté
-    quand un Cours publié couvre déjà sa compétence (voir _cours_pour_competence) - jamais
+    quand un Cours publié couvre déjà sa compétence (voir _cours_pour_theme) - jamais
     généré ou deviné par le skill de génération (concepteur-quiz-competence n'a aucun moyen
     fiable de connaître un slug de Cours au moment de la génération), toujours recalculé à la
     lecture pour rester exact même si le Cours correspondant est publié après coup.
     Même principe que catalog.rendering._clean_exercise_corrige pour Exercise, jamais
     persisté sur item.corrige_markdown lui-même.
     """
-    cours = _cours_pour_competence(item)
+    cours = _cours_pour_theme(item.theme, item.subject, item.cursus.values_list("id", flat=True))
     if not cours:
         return item.corrige_markdown
     return annotate_single_cours_link(item.corrige_markdown, cours.slug)
@@ -268,11 +272,11 @@ def _session_payload(session):
     }
 
 
-def _resultat_payload(session):
+def _resultat_payload(session, request):
     quiz_questions = (
         session.quiz_questions
-        .select_related("answer", "question", "competence_item__theme")
-        .prefetch_related("question__themes")
+        .select_related("answer", "question", "competence_item__theme", "competence_item__subject")
+        .prefetch_related("question__themes", "competence_item__cursus")
     )
 
     repondues = 0
@@ -295,10 +299,33 @@ def _resultat_payload(session):
             else list(quiz_question.question.themes.all())
         )
         for theme in themes:
-            stats = par_theme.setdefault(theme.name, {"total": 0, "reussies": 0})
+            stats = par_theme.setdefault(theme.name, {"total": 0, "reussies": 0, "theme": None, "competence_item": None})
             stats["total"] += 1
             if correcte:
                 stats["reussies"] += 1
+            # Retenus pour la suggestion de cours ci-dessous - uniquement depuis un
+            # CompetenceItem (thème et matière non ambigus, même restriction que
+            # _poids_par_theme/enregistrer_resultat_pour_revision : un catalog.Question
+            # historique porte plusieurs thèmes sans qu'on sache lequel a fait échouer,
+            # et generer_session n'en tire de toute façon plus depuis la bascule).
+            if quiz_question.competence_item_id:
+                stats["theme"] = theme
+                stats["competence_item"] = quiz_question.competence_item
+
+    par_theme_payload = []
+    for nom, s in sorted(par_theme.items()):
+        entree = {"theme": nom, "total": s["total"], "reussies": s["reussies"], "cours": None}
+        # Cours suggéré seulement sous le seuil de maîtrise habituel (même barre que
+        # partout ailleurs dans l'app, voir quiz.services.SEUIL_MAITRISE) - jamais sous
+        # un thème déjà réussi, qui n'a besoin de rien. La séance de calibrage day-one
+        # (5 questions, un seul thème parfois raté une fois) profite ainsi de la même
+        # suggestion qu'une séance normale, sans règle spéciale.
+        if s["theme"] is not None and 100 * s["reussies"] / s["total"] < SEUIL_MAITRISE:
+            item = s["competence_item"]
+            cours = _cours_pour_theme(s["theme"], item.subject, item.cursus.values_list("id", flat=True))
+            if cours:
+                entree["cours"] = CoursSummarySerializer(cours, context={"request": request}).data
+        par_theme_payload.append(entree)
 
     return {
         "id": session.id,
@@ -307,10 +334,7 @@ def _resultat_payload(session):
         "total_questions": quiz_questions.count(),
         "questions_repondues": repondues,
         "score": reussies,
-        "par_theme": [
-            {"theme": nom, "total": s["total"], "reussies": s["reussies"]}
-            for nom, s in sorted(par_theme.items())
-        ],
+        "par_theme": par_theme_payload,
     }
 
 
@@ -433,7 +457,7 @@ def complete_session(request, session_id):
         # avoir fait la séance. Sous le `if` : une session rouverte plus tard ne doit
         # pas reclôturer quoi que ce soit.
         _tracer_seance_terminee(cloturer_seance_si_quiz_termine(session))
-    return Response(_resultat_payload(session))
+    return Response(_resultat_payload(session, request))
 
 
 def _fiche_pdf_payload(session):
