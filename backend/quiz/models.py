@@ -416,3 +416,35 @@ class SeanceJournaliere(models.Model):
     @property
     def duree_estimee_min(self):
         return sum(etape.get("duree_min", 0) for etape in self.etapes)
+
+
+class ObjectifMatiere(models.Model):
+    """
+    "Cette semaine, je me concentre sur cette matière" - un choix de l'élève, limité
+    dans le temps.
+
+    Le plan du jour choisit la matière tout seul (coefficient x lacune, avec rotation
+    anti-lassitude - voir _subjects_par_priorite). C'est la bonne réponse par défaut, mais
+    un élève sait aussi ce que son prochain devoir surveillé lui réserve : lui interdire
+    de le dire ferait de la recommandation une contrainte.
+
+    Le choix EXPIRE (`jusqu_au`) et c'est voulu : épinglé sans limite, il court-circuiterait
+    la rotation des matières et l'élève finirait par ne travailler que ce qu'il aime déjà.
+    Passé la date, le plan reprend seul sa sélection automatique - sans rien à défaire.
+
+    Une seule ligne par (élève, cursus) : choisir une autre matière remplace la précédente.
+    """
+
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="objectifs_matiere")
+    cursus = models.ForeignKey("catalog.Cursus", on_delete=models.CASCADE, related_name="objectifs_matiere")
+    subject = models.ForeignKey("catalog.Subject", on_delete=models.CASCADE, related_name="objectifs_matiere")
+    jusqu_au = models.DateField(help_text="Dernier jour (inclus) où le plan se concentre sur cette matière.")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "cursus"], name="uniq_objectif_matiere_user_cursus"),
+        ]
+
+    def __str__(self):
+        return f"{self.user_id} - {self.subject_id} jusqu'au {self.jusqu_au}"

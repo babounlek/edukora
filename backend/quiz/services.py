@@ -106,7 +106,7 @@ PARCOURS_FREQUENCE_OCCURRENCES_MIN = 2
 PARCOURS_FREQUENCE_THEMES_MAX = 130
 
 from .models import (
-    CompetenceItem, ModeQuiz, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare,
+    CompetenceItem, ModeQuiz, ObjectifMatiere, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare,
     RevisionSchedule,
     SeanceJournaliere, StatutSeance,
 )
@@ -923,6 +923,21 @@ def _construire_seance(user, cursus, themes_interdits=frozenset(), avec_calibrag
     qu'on vient de travailler. `avec_calibrage` : on ne se calibre pas deux fois dans
     la même journée.
     """
+    # Un objectif de matière choisi par l'élève passe AVANT la sélection automatique, et
+    # avant la rotation : c'est son choix explicite, et sa durée limitée (voir
+    # ObjectifMatiere) est ce qui protège contre la lassitude. S'il n'y a rien à
+    # proposer sur cette matière, on retombe sur le plan normal plutôt que sur un écran vide.
+    objectif = objectif_matiere_actif(user, cursus)
+    if objectif is not None:
+        autres = set(Subject.objects.exclude(pk=objectif.subject_id).values_list("id", flat=True))
+        for candidat in (
+            _seance_depuis_revision_due(user, cursus, autres, themes_interdits),
+            _seance_depuis_lecture_en_cours(user, cursus, autres, themes_interdits),
+            _seance_depuis_parcours(user, cursus, autres, themes_interdits),
+        ):
+            if candidat is not None:
+                return candidat
+
     matieres_recentes = _matieres_recentes(user, cursus)
     for exclues in (matieres_recentes, set()):
         for candidat in (
@@ -941,6 +956,78 @@ def _construire_seance(user, cursus, themes_interdits=frozenset(), avec_calibrag
             # Deuxième passe identique à la première - rien à regagner à la refaire.
             break
     return None
+
+
+# Durée d'un objectif de matière. Une semaine : assez pour préparer un devoir ou un
+# chapitre, assez court pour que la rotation reprenne d'elle-même.
+DUREE_OBJECTIF_MATIERE_JOURS = 7
+
+
+def objectif_matiere_actif(user, cursus, date=None):
+    """L'objectif de matière en cours, ou None - un objectif échu vaut absence."""
+    return (
+        ObjectifMatiere.objects.filter(user=user, cursus=cursus, jusqu_au__gte=date or timezone.localdate())
+        .select_related("subject")
+        .first()
+    )
+
+
+def matieres_pour_objectif(cursus):
+    """Matières qu'on peut choisir : celles qui ont de quoi faire une séance, c'est-à-dire
+    une banque de quiz (voir _contient_quiz) sur ce cursus."""
+    return list(
+        Subject.objects.filter(competence_items__statut=StatutContenu.VALIDE, competence_items__cursus=cursus)
+        .distinct()
+        .order_by("label"),
+    )
+
+
+def definir_objectif_matiere(user, cursus, subject, date=None):
+    """
+    Se concentre sur `subject` pendant DUREE_OBJECTIF_MATIERE_JOURS jours. Renvoie
+    l'objectif, ou None si la matière n'est pas proposable sur ce cursus.
+
+    Si la séance du jour n'est pas commencée et porte sur une autre matière, elle est
+    remplacée : un choix qui ne prendrait effet que demain donnerait l'impression que le
+    bouton n'a rien fait.
+    """
+    date = date or timezone.localdate()
+    if subject.id not in {s.id for s in matieres_pour_objectif(cursus)}:
+        return None
+    objectif, _ = ObjectifMatiere.objects.update_or_create(
+        user=user, cursus=cursus,
+        defaults={"subject": subject, "jusqu_au": date + timedelta(days=DUREE_OBJECTIF_MATIERE_JOURS - 1)},
+    )
+
+    seances_du_jour = list(SeanceJournaliere.objects.filter(user=user, cursus=cursus, date=date))
+    if seances_du_jour:
+        courante = max(seances_du_jour, key=lambda s: s.ordre)
+        # Une séance dont le quiz est déjà lancé est en cours de travail : on ne la retire
+        # pas sous les doigts de l'élève.
+        if (
+            courante.statut == StatutSeance.PROPOSEE
+            and courante.subject_id != subject.id
+            and courante.quiz_session_id is None
+        ):
+            proposition = _construire_seance(
+                user, cursus,
+                themes_interdits={s.theme_id for s in seances_du_jour if s.theme_id},
+                avec_calibrage=False,
+            )
+            if proposition is not None and proposition["subject"].id == subject.id:
+                _, creee = SeanceJournaliere.objects.get_or_create(
+                    user=user, cursus=cursus, date=date, ordre=courante.ordre + 1, defaults=proposition,
+                )
+                if creee:
+                    courante.statut = StatutSeance.REMPLACEE
+                    courante.save(update_fields=["statut"])
+    return objectif
+
+
+def retirer_objectif_matiere(user, cursus):
+    """Revient à la sélection automatique dès la prochaine séance. La séance du jour,
+    déjà construite, n'est pas touchée."""
+    ObjectifMatiere.objects.filter(user=user, cursus=cursus).delete()
 
 
 def _contient_quiz(etapes):
@@ -1690,6 +1777,14 @@ def raisons_de_la_seance(seance):
             raisons.append({
                 "code": "coefficient",
                 "texte": f"{seance.subject.label} est coefficient {valeur} à ton examen.",
+            })
+
+    if seance.subject_id and seance.cursus_id:
+        objectif = objectif_matiere_actif(seance.user, seance.cursus)
+        if objectif is not None and objectif.subject_id == seance.subject_id:
+            raisons.append({
+                "code": "objectif",
+                "texte": f"Tu as choisi de te concentrer sur {seance.subject.label} jusqu'au {objectif.jusqu_au:%d/%m}.",
             })
 
     if seance.origine == OrigineSeance.REVISION_DUE and seance.theme_id:

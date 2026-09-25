@@ -23,7 +23,7 @@ from .pdf import queue_quiz_fiche_pdf_generation
 from .services import (
     SEUIL_MAITRISE, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
     generer_session, maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
-    BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
+    BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, definir_objectif_matiere, matieres_pour_objectif, objectif_matiere_actif, retirer_objectif_matiere, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
     remplacer_seance,
     score_de_la_seance,
     seance_du_jour,
@@ -720,6 +720,16 @@ def plan_du_jour_view(request):
     return Response(_charge_utile_plan(user, cursus, plan_du_jour(user, cursus), compte))
 
 
+def _serialiser_objectif(objectif):
+    if objectif is None:
+        return None
+    return {
+        "subject": objectif.subject_id,
+        "label": objectif.subject.label,
+        "jusqu_au": objectif.jusqu_au.isoformat(),
+    }
+
+
 def _charge_utile_plan(user, cursus, seance, compte):
     """
     Réponse commune à plan_du_jour_view et continuer_view : les deux rendent le même
@@ -730,6 +740,8 @@ def _charge_utile_plan(user, cursus, seance, compte):
         "cursus": CursusSerializer(cursus).data,
         "compte_a_rebours": compte,
         "seances_cette_semaine": seances_terminees_cette_semaine(user, cursus),
+        "objectif_matiere": _serialiser_objectif(objectif_matiere_actif(user, cursus)),
+        "matieres_objectif": [{"id": m.id, "label": m.label} for m in matieres_pour_objectif(cursus)],
     }
     if seance is None:
         return {**base, "etat": "rien_a_proposer", "seance": None}
@@ -788,6 +800,33 @@ def continuer_view(request):
     seance = seance_supplementaire(request.user, cursus)
     compte = ExamSession.compte_a_rebours_pour(cursus)
     return Response(_charge_utile_plan(request.user, cursus, seance, compte))
+
+
+@api_view(["POST", "DELETE"])
+def objectif_matiere_view(request):
+    """
+    "Cette semaine, je me concentre sur <matière>" (POST {subject}) ou retour à la
+    sélection automatique (DELETE) - voir quiz.models.ObjectifMatiere pour pourquoi le
+    choix est limité dans le temps.
+
+    Renvoie la charge utile habituelle du plan, que le frontend substitue à la sienne.
+    Réservé à l'abonné actif, comme le plan lui-même.
+    """
+    cursus = request.user.cursus_prepare
+    if cursus is None:
+        return Response({"error": "Aucun cursus déclaré."}, status=400)
+    if not _has_active_subscription(request.user, cursus):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+
+    if request.method == "DELETE":
+        retirer_objectif_matiere(request.user, cursus)
+    else:
+        subject = get_object_or_404(Subject, pk=request.data.get("subject"))
+        if definir_objectif_matiere(request.user, cursus, subject) is None:
+            return Response({"error": "Cette matière n'a pas encore de quiz pour ton examen."}, status=400)
+
+    compte = ExamSession.compte_a_rebours_pour(cursus)
+    return Response(_charge_utile_plan(request.user, cursus, plan_du_jour(request.user, cursus), compte))
 
 
 @api_view(["POST"])

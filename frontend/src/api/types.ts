@@ -94,6 +94,17 @@ export interface PlanDuJour {
   seance: Seance | null
   // Absent quand aucun cursus n'est déclaré : il n'y a alors pas de semaine à compter.
   seances_cette_semaine?: number
+  // Voir quiz.models.ObjectifMatiere : la matière que l'élève a choisie pour la semaine.
+  objectif_matiere?: ObjectifMatiereChoisi | null
+  // Matières qu'on peut choisir (celles qui ont un quiz sur ce cursus).
+  matieres_objectif?: { id: number; label: string }[]
+}
+
+export interface ObjectifMatiereChoisi {
+  subject: number
+  label: string
+  // AAAA-MM-JJ, dernier jour inclus.
+  jusqu_au: string
 }
 
 /** Voir catalog.models.ExamSession.compte_a_rebours_pour. */

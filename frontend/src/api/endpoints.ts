@@ -623,6 +623,19 @@ export function proposerAutreChose() {
 }
 
 /**
+ * "Cette semaine, je me concentre sur cette matière" (voir
+ * quiz.views.objectif_matiere_view). Même charge utile que getPlanDuJour.
+ */
+export function definirObjectifMatiere(subject: number) {
+  return apiRequest<PlanDuJour>("/quiz/plan-du-jour/objectif/", { method: "POST", body: { subject } })
+}
+
+/** Retour à la sélection automatique de la matière. */
+export function retirerObjectifMatiere() {
+  return apiRequest<PlanDuJour>("/quiz/plan-du-jour/objectif/", { method: "DELETE" })
+}
+
+/**
  * "Combien de temps as-tu ?" : recompose la séance du jour pour cette durée, sans
  * changer de thème (voir quiz.views.duree_seance_view). Même charge utile que
  * getPlanDuJour.

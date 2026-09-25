@@ -42,7 +42,7 @@ from users.models import User
 
 from .ingestion import ingest_competence_item, run_ingestion, select_quiz_batch
 from .models import (
-    CompetenceItem, ModeQuiz, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, RevisionSchedule,
+    CompetenceItem, ModeQuiz, ObjectifMatiere, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, RevisionSchedule,
     SeanceJournaliere, StatutFichePdf, StatutSeance,
 )
 from .services import (
@@ -52,7 +52,7 @@ from .services import (
     construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir,
     _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
     REFUS_MAX_PAR_JOUR, _contient_quiz, ajuster_duree_seance, remplacer_seance, revisions_dues, seance_du_jour,
-    seance_supplementaire,
+    seance_supplementaire, DUREE_OBJECTIF_MATIERE_JOURS, objectif_matiere_actif, raisons_de_la_seance,
     terminer_seance,
     seances_terminees_cette_semaine,
 )
@@ -3103,6 +3103,169 @@ class RemplacerSeanceTests(TestCase):
         Subscription.objects.filter(user=self.user).update(expires_at=timezone.now() - timedelta(days=1))
 
         self.assertEqual(self.client.post("/quiz/plan-du-jour/autre-chose/").status_code, 403)
+
+
+class ObjectifMatiereTests(TestCase):
+    """
+    "Cette semaine, je me concentre sur <matière>" : un choix de l'élève, qui prime sur
+    la sélection automatique - mais limité dans le temps, sans quoi il court-circuiterait
+    la rotation anti-lassitude pour toujours.
+    """
+
+    def setUp(self):
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        self.user = User.objects.create_user(phone_number="677900808", password="x")
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+        self.maths = Subject.objects.create(code="MATHS_TEST_OBJ", label="Maths (test obj)", country=self.cursus.country)
+        self.svt = Subject.objects.create(code="SVT_TEST_OBJ", label="SVT (test obj)", country=self.cursus.country)
+        Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def _revision_due(self, subject, nom):
+        theme = Tag.objects.create(name=nom)
+        item = CompetenceItem.objects.create(
+            external_id=f"obj-{nom}", theme=theme, subject=subject,
+            enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
+        )
+        item.cursus.add(self.cursus)
+        RevisionSchedule.objects.create(
+            user=self.user, cursus=self.cursus, subject=subject, theme=theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+        return theme
+
+    def _epingler(self, subject):
+        return self.client.post("/quiz/plan-du-jour/objectif/", {"subject": subject.id}, format="json")
+
+    def test_la_seance_suit_la_matiere_choisie(self):
+        self._revision_due(self.maths, "thème maths (obj)")
+        self._revision_due(self.svt, "thème svt (obj)")
+
+        reponse = self._epingler(self.svt)
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(reponse.data["seance"]["subject"]["id"], self.svt.id)
+        self.assertEqual(reponse.data["objectif_matiere"]["subject"], self.svt.id)
+
+    def test_le_choix_prime_sur_la_rotation(self):
+        # Deux séances SVT terminées : la rotation bloquerait SVT, mais l'élève l'a voulu.
+        self._revision_due(self.svt, "thème svt 1 (obj)")
+        self._revision_due(self.maths, "thème maths (obj)")
+        for ordre in (1, 2):
+            SeanceJournaliere.objects.create(
+                user=self.user, cursus=self.cursus, subject=self.svt, origine=OrigineSeance.REVISION_DUE,
+                date=timezone.localdate() - timedelta(days=ordre), statut=StatutSeance.TERMINEE, etapes=[],
+            )
+
+        reponse = self._epingler(self.svt)
+
+        self.assertEqual(reponse.data["seance"]["subject"]["id"], self.svt.id)
+
+    def test_la_seance_du_jour_non_commencee_est_remplacee(self):
+        self._revision_due(self.maths, "thème maths (obj)")
+        self._revision_due(self.svt, "thème svt (obj)")
+        premiere = plan_du_jour(self.user, self.cursus)
+        autre = self.svt if premiere.subject_id == self.maths.id else self.maths
+
+        self._epingler(autre)
+
+        premiere.refresh_from_db()
+        self.assertEqual(premiere.statut, StatutSeance.REMPLACEE)
+        self.assertEqual(plan_du_jour(self.user, self.cursus).subject_id, autre.id)
+
+    def test_une_seance_dont_le_quiz_est_lance_nest_pas_remplacee(self):
+        self._revision_due(self.maths, "thème maths (obj)")
+        self._revision_due(self.svt, "thème svt (obj)")
+        premiere = plan_du_jour(self.user, self.cursus)
+        autre = self.svt if premiere.subject_id == self.maths.id else self.maths
+        premiere.quiz_session = QuizSession.objects.create(user=self.user, cursus=self.cursus)
+        premiere.save(update_fields=["quiz_session"])
+
+        self._epingler(autre)
+
+        premiere.refresh_from_db()
+        self.assertEqual(premiere.statut, StatutSeance.PROPOSEE)
+
+    def test_un_objectif_echu_est_ignore(self):
+        ObjectifMatiere.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.svt,
+            jusqu_au=timezone.localdate() - timedelta(days=1),
+        )
+
+        self.assertIsNone(objectif_matiere_actif(self.user, self.cursus))
+        self.assertIsNone(self.client.get("/quiz/plan-du-jour/").data["objectif_matiere"])
+
+    def test_la_duree_est_de_sept_jours_inclus(self):
+        self._revision_due(self.svt, "thème svt (obj)")
+
+        reponse = self._epingler(self.svt)
+
+        attendu = timezone.localdate() + timedelta(days=DUREE_OBJECTIF_MATIERE_JOURS - 1)
+        self.assertEqual(reponse.data["objectif_matiere"]["jusqu_au"], attendu.isoformat())
+
+    def test_matiere_sans_quiz_refusee(self):
+        self._revision_due(self.maths, "thème maths (obj)")
+
+        reponse = self._epingler(self.svt)
+
+        self.assertEqual(reponse.status_code, 400)
+        self.assertFalse(ObjectifMatiere.objects.exists())
+
+    def test_sans_contenu_sur_la_matiere_on_retombe_sur_le_plan_normal(self):
+        # Objectif posé, puis le seul contenu de la matière disparaît : pas d'écran vide.
+        self._revision_due(self.maths, "thème maths (obj)")
+        ObjectifMatiere.objects.create(
+            user=self.user, cursus=self.cursus, subject=self.svt,
+            jusqu_au=timezone.localdate() + timedelta(days=3),
+        )
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        self.assertEqual(seance.subject_id, self.maths.id)
+
+    def test_retirer_lobjectif_revient_a_lautomatique(self):
+        self._revision_due(self.svt, "thème svt (obj)")
+        self._epingler(self.svt)
+
+        reponse = self.client.delete("/quiz/plan-du-jour/objectif/")
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertIsNone(reponse.data["objectif_matiere"])
+        self.assertFalse(ObjectifMatiere.objects.exists())
+
+    def test_le_choix_est_expose_avec_les_matieres_proposables(self):
+        self._revision_due(self.maths, "thème maths (obj)")
+        self._revision_due(self.svt, "thème svt (obj)")
+
+        reponse = self.client.get("/quiz/plan-du-jour/")
+
+        self.assertCountEqual(
+            [m["id"] for m in reponse.data["matieres_objectif"]], [self.maths.id, self.svt.id],
+        )
+
+    def test_la_raison_de_la_seance_cite_le_choix(self):
+        self._revision_due(self.svt, "thème svt (obj)")
+        self._epingler(self.svt)
+
+        seance = plan_du_jour(self.user, self.cursus)
+
+        self.assertIn("objectif", [r["code"] for r in raisons_de_la_seance(seance)])
+
+    def test_choisir_une_autre_matiere_remplace_la_precedente(self):
+        self._revision_due(self.maths, "thème maths (obj)")
+        self._revision_due(self.svt, "thème svt (obj)")
+        self._epingler(self.maths)
+        self._epingler(self.svt)
+
+        self.assertEqual(ObjectifMatiere.objects.filter(user=self.user).count(), 1)
+        self.assertEqual(ObjectifMatiere.objects.get(user=self.user).subject_id, self.svt.id)
+
+    def test_refuse_sans_abonnement(self):
+        Subscription.objects.filter(user=self.user).update(expires_at=timezone.now() - timedelta(days=1))
+
+        self.assertEqual(self._epingler(self.svt).status_code, 403)
 
 
 class PrioriteFrequenceTests(TestCase):

@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
@@ -7,8 +7,8 @@ import {
 } from "lucide-react"
 
 import {
-  ajusterDureeSeance, continuerSeanceDuJour, getPlanDuJour, listCursus, proposerAutreChose,
-  terminerSeanceDuJour, updateMe,
+  ajusterDureeSeance, continuerSeanceDuJour, definirObjectifMatiere, getPlanDuJour, listCursus,
+  proposerAutreChose, retirerObjectifMatiere, terminerSeanceDuJour, updateMe,
 } from "@/api/endpoints"
 import type { EtapeSeance, PlanDuJour, Seance } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
@@ -71,6 +71,13 @@ export function SeanceDuJour({ country }: { country: string }) {
     onSuccess: (plan) => queryClient.setQueryData(["plan-du-jour"], plan),
   })
 
+  // Choisir (ou lâcher) une matière pour la semaine : la réponse est le plan recalculé.
+  const objectif = useMutation({
+    mutationFn: (subject: number | null) =>
+      subject === null ? retirerObjectifMatiere() : definirObjectifMatiere(subject),
+    onSuccess: (plan) => queryClient.setQueryData(["plan-du-jour"], plan),
+  })
+
   // "Séance affichée" une seule fois par séance, jamais à chaque rendu : le
   // dénominateur du seul chiffre qui compte (combien reviennent faire une séance) ne
   // vaut rien s'il enfle à chaque re-rendu de React.
@@ -127,6 +134,14 @@ export function SeanceDuJour({ country }: { country: string }) {
             ajustementEnCours={duree.isPending}
           />
         )}
+        <ObjectifMatiereControle
+          plan={data}
+          enCours={objectif.isPending}
+          onChoisir={(subject) => {
+            trackEvent("objectif_matiere", { action: subject === null ? "retire" : "definit" })
+            objectif.mutate(subject)
+          }}
+        />
       </Ecrin>
     </section>
   )
@@ -279,6 +294,111 @@ function SeanceAFaire({
       </div>
     </div>
   )
+}
+
+/**
+ * "Un devoir bientôt ? Me concentrer sur une matière" - le choix de l'élève, qui prime
+ * sur la sélection automatique pendant une semaine (voir quiz.models.ObjectifMatiere).
+ *
+ * Volontairement une ligne discrète et non un sélecteur permanent : le plan reste "une
+ * seule chose à faire", et cette ligne n'est qu'un réglage pour qui sait déjà ce qu'il
+ * veut. Le choix expire de lui-même - le libellé le dit, pour qu'il ne soit jamais
+ * perçu comme un enfermement.
+ */
+function ObjectifMatiereControle({
+  plan, enCours, onChoisir,
+}: {
+  plan: PlanDuJour
+  enCours: boolean
+  onChoisir: (subject: number | null) => void
+}) {
+  const [ouvert, setOuvert] = useState(false)
+  const matieres = plan.matieres_objectif ?? []
+  const choisi = plan.objectif_matiere ?? null
+  if (matieres.length < 2 && !choisi) return null
+
+  if (choisi && !ouvert) {
+    return (
+      <p className="mt-4 flex flex-wrap items-center gap-x-1.5 border-t border-border/60 pt-3 text-xs text-muted-foreground">
+        <Target className="size-3 shrink-0 text-primary" />
+        <span>
+          Tu te concentres sur <strong className="font-semibold text-foreground">{choisi.label}</strong> jusqu'au{" "}
+          {formaterJourMois(choisi.jusqu_au)}.
+        </span>
+        <button
+          type="button"
+          onClick={() => onChoisir(null)}
+          disabled={enCours}
+          className="underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
+        >
+          Revenir au choix automatique
+        </button>
+        <button
+          type="button"
+          onClick={() => setOuvert(true)}
+          className="underline underline-offset-4 transition-colors hover:text-primary"
+        >
+          Changer
+        </button>
+      </p>
+    )
+  }
+
+  if (!ouvert) {
+    return (
+      <p className="mt-4 flex flex-wrap items-center gap-x-1.5 border-t border-border/60 pt-3 text-xs text-muted-foreground">
+        <Target className="size-3 shrink-0" />
+        Un devoir bientôt ?
+        <button
+          type="button"
+          onClick={() => setOuvert(true)}
+          className="underline underline-offset-4 transition-colors hover:text-primary"
+        >
+          Me concentrer sur une matière cette semaine
+        </button>
+      </p>
+    )
+  }
+
+  return (
+    <div className="mt-4 border-t border-border/60 pt-3">
+      <p className="text-xs text-muted-foreground">Je me concentre sur… (pendant 7 jours, puis on reprend le choix automatique)</p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {matieres.map((matiere) => (
+          <button
+            key={matiere.id}
+            type="button"
+            disabled={enCours}
+            onClick={() => {
+              onChoisir(matiere.id)
+              setOuvert(false)
+            }}
+            className={cn(
+              "rounded-full border px-3 py-1 text-xs font-medium transition-colors disabled:opacity-60",
+              choisi?.subject === matiere.id
+                ? "border-primary bg-primary/10 text-primary"
+                : "border-border text-muted-foreground hover:border-primary hover:text-foreground",
+            )}
+          >
+            {matiere.label}
+          </button>
+        ))}
+        <button
+          type="button"
+          onClick={() => setOuvert(false)}
+          className="px-2 py-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-primary"
+        >
+          Annuler
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/** "02/10" à partir de la date AAAA-MM-JJ de l'API, sans passer par un fuseau. */
+function formaterJourMois(dateIso: string): string {
+  const [, mois, jour] = dateIso.split("-")
+  return `${jour}/${mois}`
 }
 
 function Pastille({ icone: Icone, children }: { icone: LucideIcon; children: ReactNode }) {
