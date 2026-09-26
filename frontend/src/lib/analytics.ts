@@ -24,6 +24,7 @@ export type AnalyticsEventName =
   | "plan_seance_demarree"
   | "plan_verrouille_clic"
   | "plan_theme_ignore"
+  | "objectif_matiere"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

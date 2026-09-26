@@ -35,6 +35,7 @@ class EventName(models.TextChoices):
     PLAN_SEANCE_TERMINEE = "plan_seance_terminee", "Séance du jour terminée"
     PLAN_VERROUILLE_CLIC = "plan_verrouille_clic", "Clic sur une séance verrouillée"
     PLAN_THEME_IGNORE = "plan_theme_ignore", "Thème proposé ignoré"
+    OBJECTIF_MATIERE = "objectif_matiere", "Matière de concentration définie ou retirée"
 
 
 class AnalyticsEvent(models.Model):
