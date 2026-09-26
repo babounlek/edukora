@@ -16,6 +16,7 @@ import { exerciceAnchorId } from "@/components/EpreuveSommaire"
 import { ExerciceNav } from "@/components/ExerciceNav"
 import { FicheReader } from "@/components/FicheReader"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
+import { EtapeSuivante } from "@/components/BarreSeance"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { CountryBadge } from "@/components/CountryBadge"
 import { useSeo } from "@/lib/seo"
@@ -214,6 +215,8 @@ export function EpreuveReaderPage() {
           {article}
         </>
       )}
+
+      <EtapeSuivante />
 
       {epreuve && (
         <RelatedEpreuves

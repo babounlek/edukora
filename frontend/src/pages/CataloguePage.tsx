@@ -14,7 +14,7 @@ import {
   readEpreuve,
 } from "@/api/endpoints"
 import { trackEvent } from "@/lib/analytics"
-import { examCodesFor, examLevelsFor, joinExamLevelsFr } from "@/lib/cursus"
+import { examLevelsFor, joinExamLevelsFr } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
 import {
   epreuveInediteDetailPath,
@@ -22,7 +22,7 @@ import {
   epreuvesListPath,
   themesFrequentsPath,
 } from "@/lib/countryPath"
-import { cn, formatAmount } from "@/lib/utils"
+import { formatAmount } from "@/lib/utils"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -83,14 +83,8 @@ function CatalogueVitrine() {
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
   const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
-  const { isAuthenticated, user } = useAuth()
+  const { isAuthenticated } = useAuth()
   const [searchParams] = useSearchParams()
-
-  // Un élève qui a dit ce qu'il prépare n'a pas à se le voir redemander sur la même
-  // page que son compte à rebours - voir la section "Qu'est-ce que tu prépares ?" et
-  // les boutons du hero, qui s'adressent tous deux à quelqu'un qui n'a pas encore
-  // répondu.
-  const aDeclareSonExamen = isAuthenticated && Boolean(user?.cursus_prepare)
 
   // Un lien encore en circulation vers l'ancien catalogue-sur-l'accueil (ex.
   // "/cm?cursus=12", posé par l'onboarding ou une recherche sauvegardée avant la
@@ -309,33 +303,15 @@ function CatalogueVitrine() {
                 d'être : sa séance l'attend en haut de page, et ces boutons redeviennent
                 ce qu'ils étaient - des portes vers le catalogue. */}
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              {aDeclareSonExamen ? (
-                <>
-                  <Button size="lg" asChild>
-                    <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`}>
-                      Lire un corrigé gratuitement
-                      <ArrowRight />
-                    </Link>
-                  </Button>
-                  <Button variant="outline" size="lg" asChild>
-                    <Link to={epreuvesListPath(country ?? "")}>Chercher une épreuve</Link>
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button size="lg" asChild>
-                    <a href="#je-prepare">
-                      Dis-nous ce que tu prépares
-                      <ArrowRight />
-                    </a>
-                  </Button>
-                  <Button variant="outline" size="lg" asChild>
-                    <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`}>
-                      Lire un corrigé gratuitement
-                    </Link>
-                  </Button>
-                </>
-              )}
+              <Button size="lg" asChild>
+                <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`}>
+                  Lire un corrigé gratuitement
+                  <ArrowRight />
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <Link to={epreuvesListPath(country ?? "")}>Chercher une épreuve</Link>
+              </Button>
             </div>
 
             {/* Mention légère plutôt qu'une carte à part entière (voir la discussion
@@ -439,55 +415,6 @@ function CatalogueVitrine() {
         </section>
       )}
 
-
-      {/* La question qui qualifie tout le reste, posée en premier. Elle était repliée
-          dans "Filtres avancés" : un élève de Terminale D devait ouvrir un panneau et
-          lire une liste de 11 cursus pour dire ce qu'il prépare.
-
-          Masquée pour qui a DÉJÀ déclaré son examen : sa séance du jour affiche son
-          cursus et son compte à rebours en haut de cette même page, et on lui
-          redemandait "Qu'est-ce que tu prépares ?" quelques centaines de pixels plus
-          bas. La même phrase pour deux choses différentes - déclarer d'un côté,
-          filtrer le catalogue de l'autre. Pour lui, l'entrée "Réviser" du menu mène au
-          même catalogue avec ses filtres. */}
-      {cursusList.length > 0 && !aDeclareSonExamen && (
-        <section id="je-prepare" className="mx-auto max-w-5xl scroll-mt-24 px-4 pt-10 sm:px-6">
-          <h2 className="font-display text-xl font-semibold">Qu'est-ce que tu prépares ?</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Choisis ton examen et ta série : le catalogue se filtre pour toi.
-          </p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            {examCodesFor(cursusList).map((examen) => {
-              const duNiveau = cursusList.filter((c) => c.examen === examen.code)
-              return (
-                <div key={examen.code} className="rounded-xl border border-border bg-card p-4">
-                  <p className="font-display font-semibold">{examen.label}</p>
-                  <div className="mt-2.5 flex flex-wrap gap-1.5">
-                    {duNiveau.map((c) => (
-                      <Link
-                        key={c.id}
-                        to={`${epreuvesListPath(country ?? "")}?cursus=${c.id}`}
-                        className={cn(
-                          "rounded-full border border-border px-3 py-1.5 text-center text-xs font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary",
-                          // Un examen sans série (le BEPC) n'a qu'une seule pastille :
-                          // à côté des six du Probatoire, sa carte se lisait à moitié
-                          // vide. En pleine largeur elle occupe sa carte comme les
-                          // autres. Constaté à l'écran.
-                          !c.series && "w-full",
-                        )}
-                      >
-                        {/* Réafficher le nom de l'examen ne dirait rien de plus que le
-                            titre juste au-dessus. */}
-                        {c.series ? `Série ${c.series.code}` : "Voir les épreuves"}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </section>
-      )}
 
       {/* Les portes d'entrée du produit. Rien sur cette page ne disait qu'elles
           existent : il fallait les déduire du menu du header. Grille à exactement

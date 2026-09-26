@@ -32,7 +32,11 @@ export interface User {
 }
 
 /** Une étape de la séance du jour - voir quiz.services._construire_etapes. */
-export type EtapeSeance =
+// `cle` : identifiant stable renvoyé au serveur à l'ouverture ; `ouverte` : l'élève a déjà
+// ouvert cette étape (le quiz : sa session est lancée). Voir quiz.services.cle_etape.
+export type EtapeSeance = EtapeSeanceContenu & { cle: string; ouverte: boolean }
+
+type EtapeSeanceContenu =
   | { type: "cours"; libelle: string; slug: string; titre: string; duree_min: number }
   | {
       type: "exercice"
@@ -695,6 +699,8 @@ export interface QuizResult {
   questions_repondues: number
   score: number
   par_theme: QuizThemeScore[]
+  // Ce quiz était l'étape finale d'une séance du jour et l'a validée.
+  seance_validee: boolean
 }
 
 export interface QuizFichePdfStatus {

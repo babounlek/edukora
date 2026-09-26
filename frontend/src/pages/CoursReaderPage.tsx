@@ -13,6 +13,7 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { CoursSection } from "@/components/CoursSection"
 import { CoursSommaire } from "@/components/CoursSommaire"
 import { CountryBadge } from "@/components/CountryBadge"
+import { EtapeSuivante } from "@/components/BarreSeance"
 import { RelatedCours } from "@/components/RelatedCours"
 import { useSeo } from "@/lib/seo"
 import { coursListPath, coursReaderPath } from "@/lib/countryPath"
@@ -146,6 +147,8 @@ export function CoursReaderPage() {
           </article>
         </div>
       )}
+
+      <EtapeSuivante />
 
       {cours && (
         <RelatedCours

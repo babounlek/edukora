@@ -363,6 +363,15 @@ class SeanceJournaliere(models.Model):
         default=list,
         help_text="Étapes de la séance, dans l'ordre - voir quiz.services._construire_etapes.",
     )
+    etapes_ouvertes = models.JSONField(
+        default=list, blank=True,
+        help_text=(
+            "Clés (voir quiz.services.cle_etape) des étapes cours/exercice que l'élève a "
+            "ouvertes depuis la séance. Le quiz n'y figure pas : il se lit sur quiz_session. "
+            "Sert à cocher les étapes et à proposer « Reprendre la séance » - jamais à "
+            "valider la séance, qu'une ouverture ne prouve pas."
+        ),
+    )
     budget_minutes = models.PositiveSmallIntegerField(
         default=25,
         help_text=(

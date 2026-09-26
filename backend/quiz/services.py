@@ -1438,6 +1438,43 @@ def seance_du_jour(user, cursus, date=None):
     ).first()
 
 
+def cle_etape(etape):
+    """Identifiant stable d'une étape, celui que le frontend renvoie quand l'élève
+    l'ouvre. Pas l'indice : ajuster_duree_seance recompose la liste, et une étape
+    conservée doit rester cochée."""
+    if etape.get("type") == "cours":
+        return f"cours:{etape.get('slug')}"
+    if etape.get("type") == "exercice":
+        return f"exercice:{etape.get('lesson_slug')}:{etape.get('exercise_id')}"
+    return "quiz"
+
+
+def etape_ouverte(seance, etape):
+    """Le quiz se lit sur la session rattachée, les autres étapes sur la liste
+    enregistrée à l'ouverture."""
+    if etape.get("type") == "quiz":
+        return seance.quiz_session_id is not None
+    return cle_etape(etape) in seance.etapes_ouvertes
+
+
+def marquer_etape_ouverte(user, cursus, cle):
+    """Note qu'une étape cours/exercice de la séance en cours a été ouverte.
+
+    Renvoie la séance, ou None si la clé ne désigne aucune étape de la séance (clé
+    inventée, séance recomposée depuis) - jamais d'écriture d'une clé qu'on ne connaît
+    pas. Idempotent : rouvrir la même étape n'écrit rien."""
+    seance = seance_du_jour(user, cursus)
+    if seance is None:
+        return None
+    valides = {cle_etape(e) for e in seance.etapes if e.get("type") != "quiz"}
+    if cle not in valides:
+        return None
+    if cle not in seance.etapes_ouvertes:
+        seance.etapes_ouvertes = [*seance.etapes_ouvertes, cle]
+        seance.save(update_fields=["etapes_ouvertes"])
+    return seance
+
+
 def rattacher_quiz_a_la_seance(user, session):
     """
     Note que CETTE session de quiz a été lancée depuis la séance du jour - à

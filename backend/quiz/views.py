@@ -23,7 +23,7 @@ from .pdf import queue_quiz_fiche_pdf_generation
 from .services import (
     SEUIL_MAITRISE, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
     generer_session, maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
-    BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, definir_objectif_matiere, matieres_pour_objectif, objectif_matiere_actif, retirer_objectif_matiere, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
+    BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, cle_etape, etape_ouverte, marquer_etape_ouverte, definir_objectif_matiere, matieres_pour_objectif, objectif_matiere_actif, retirer_objectif_matiere, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
     remplacer_seance,
     score_de_la_seance,
     seance_du_jour,
@@ -335,6 +335,9 @@ def _resultat_payload(session, request):
         "questions_repondues": repondues,
         "score": reussies,
         "par_theme": par_theme_payload,
+        # Ce quiz était l'étape finale d'une séance du jour, et l'a clôturée : la page
+        # de résultat le dit et ramène à « Aujourd'hui ». Faux pour un quiz lancé seul.
+        "seance_validee": session.seances.filter(statut=StatutSeance.TERMINEE).exists(),
     }
 
 
@@ -633,7 +636,10 @@ def _serialiser_seance(seance, verrouillee):
         "nb_etapes": len(seance.etapes),
         # Les étapes portent les slugs qui ouvrent le contenu : retirées tant que
         # l'abonnement n'est pas actif, alors que tout le reste est servi tel quel.
-        "etapes": [] if verrouillee else seance.etapes,
+        "etapes": [] if verrouillee else [
+            {**etape, "cle": cle_etape(etape), "ouverte": etape_ouverte(seance, etape)}
+            for etape in seance.etapes
+        ],
         "frequence": _frequence_du_theme(seance),
         # Pourquoi cette séance-là : des faits déjà en base, jamais une reformulation
         # de l'intention (voir raisons_de_la_seance). C'est ce qui distingue une
@@ -848,6 +854,27 @@ def autre_chose_view(request):
     seance = remplacer_seance(request.user, cursus)
     compte = ExamSession.compte_a_rebours_pour(cursus)
     return Response(_charge_utile_plan(request.user, cursus, seance, compte))
+
+
+@api_view(["POST"])
+def etape_ouverte_view(request):
+    """
+    L'élève vient d'ouvrir une étape (cours, exercice) de sa séance : on le retient
+    pour cocher l'étape et proposer « Reprendre la séance » à son retour.
+
+    Sans effet sur le statut de la séance - une ouverture ne prouve pas qu'on a lu.
+    Même garde que le reste du plan : cursus déclaré, abonnement actif.
+    """
+    cursus = request.user.cursus_prepare
+    if cursus is None:
+        return Response({"error": "Aucun cursus déclaré."}, status=400)
+    if not _has_active_subscription(request.user, cursus):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+
+    seance = marquer_etape_ouverte(request.user, cursus, str(request.data.get("cle") or ""))
+    if seance is None:
+        return Response({"error": "Étape inconnue pour la séance du jour."}, status=404)
+    return Response({"etapes_ouvertes": seance.etapes_ouvertes})
 
 
 @api_view(["POST"])

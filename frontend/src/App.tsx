@@ -8,6 +8,8 @@ import { ThemeProvider, useTheme } from "@/components/theme-provider"
 import { Header } from "@/components/Header"
 import { Footer } from "@/components/Footer"
 import { OnboardingModal } from "@/components/OnboardingModal"
+import { BandeauCursus } from "@/components/BandeauCursus"
+import { BarreSeance } from "@/components/BarreSeance"
 import { BottomTabBar } from "@/components/BottomTabBar"
 import { ErrorBoundary } from "@/components/ErrorBoundary"
 import { RouteFallback } from "@/components/RouteFallback"
@@ -74,6 +76,8 @@ function App() {
           <CountryProvider>
             <div className="flex min-h-screen flex-col">
               <Header />
+              <BandeauCursus />
+              <BarreSeance />
               <main className="flex-1">
                 <ErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>

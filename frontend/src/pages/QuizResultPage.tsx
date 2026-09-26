@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, Trophy } from "lucide-react"
+import { ArrowRight, BookOpen, CheckCircle2, Trophy } from "lucide-react"
 
 import { completeQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useCountry } from "@/context/CountryContext"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme } from "@/lib/utils"
 
@@ -19,6 +20,7 @@ export function QuizResultPage() {
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { country } = useCountry()
   const [result, setResult] = useState<QuizResult | null>(null)
   const [error, setError] = useState("")
 
@@ -80,6 +82,24 @@ export function QuizResultPage() {
           {result.score} / {result.questions_repondues} bonnes réponses ({pourcentage}%)
         </p>
       </div>
+
+      {/* Le moment qui donne envie de revenir demain : on dit que la séance est faite
+          et on ramène à "Aujourd'hui", d'où l'élève pourra en demander une autre. */}
+      {result.seance_validee && (
+        <div className="mb-6 flex flex-col gap-3 rounded-xl border border-primary/30 bg-primary/5 p-4 sm:flex-row sm:items-center">
+          <CheckCircle2 className="size-6 shrink-0 text-primary" />
+          <div className="min-w-0 flex-1">
+            <p className="font-display font-semibold">Séance du jour validée</p>
+            <p className="text-sm text-muted-foreground">Bien joué : tu as fait ce qu'il fallait pour aujourd'hui.</p>
+          </div>
+          <Button asChild>
+            <Link to={`/${country}`}>
+              Revenir à Aujourd'hui
+              <ArrowRight />
+            </Link>
+          </Button>
+        </div>
+      )}
 
       {result.par_theme.length > 0 && (
         <Card className="mb-6">

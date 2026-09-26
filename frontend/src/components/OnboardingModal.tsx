@@ -215,7 +215,9 @@ export function OnboardingModal() {
             {stepEffectif === "examen" && "Quel examen prépares-tu ?"}
             {stepEffectif === "serie" && "Quelle est ta série ?"}
           </CardTitle>
-          <CardDescription>Pour n'afficher que ce qui te concerne, dès maintenant.</CardDescription>
+          <CardDescription>
+            La méthode la plus efficace et motivante pour réussir tes examens. Une séance par jour, faite pour le tien.
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           {stepEffectif === "pays" &&

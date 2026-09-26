@@ -7,13 +7,14 @@ import {
 } from "lucide-react"
 
 import {
-  ajusterDureeSeance, continuerSeanceDuJour, definirObjectifMatiere, getPlanDuJour, listCursus,
-  proposerAutreChose, retirerObjectifMatiere, terminerSeanceDuJour, updateMe,
+  ajusterDureeSeance, continuerSeanceDuJour, definirObjectifMatiere, getPlanDuJour,
+  proposerAutreChose, retirerObjectifMatiere, terminerSeanceDuJour,
 } from "@/api/endpoints"
 import type { EtapeSeance, PlanDuJour, Seance } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
-import { coursReaderPath, epreuveReaderPath, themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
+import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
+import { lienEtape, ouvrirEtapeDeSeance } from "@/lib/seance"
 import { trackEvent } from "@/lib/analytics"
 import { cn } from "@/lib/utils"
 import { formatCompteARebours } from "@/components/CompteAReboursBadge"
@@ -92,11 +93,9 @@ export function SeanceDuJour({ country }: { country: string }) {
 
   if (!isAuthenticated || !data) return null
 
-  // Connecté mais sans examen déclaré : on ne peut rien proposer, mais se taire
-  // laissait l'élève sans aucun chemin - l'écran d'onboarding ne revenait pas et la
-  // page Compte ne propose pas ce réglage. Un coach qui ne sait pas ce qu'on prépare
-  // doit le demander, pas disparaître.
-  if (data.etat === "cursus_inconnu") return <DeclarerSonExamen country={country} />
+  // Connecté mais sans examen déclaré : rien à proposer ici. C'est le bandeau global
+  // (BandeauCursus) qui le demande, sur toutes les pages - pas une invite de plus ici.
+  if (data.etat === "cursus_inconnu") return null
 
   if (!data.seance) return null
   if (data.etat !== "plan_pret" && data.etat !== "deja_fait_aujourdhui") return null
@@ -119,6 +118,7 @@ export function SeanceDuJour({ country }: { country: string }) {
           <SeanceAFaire
             plan={data}
             country={country}
+            onOuvrirEtape={(etape) => ouvrirEtapeDeSeance(queryClient, etape)}
             onTerminer={() => terminer.mutate()}
             terminaisonEnCours={terminer.isPending}
             onAutreChose={() => {
@@ -172,11 +172,12 @@ function EnTete({ plan }: { plan: PlanDuJour }) {
 }
 
 function SeanceAFaire({
-  plan, country, onTerminer, terminaisonEnCours, onAutreChose, remplacementEnCours, plusRienAProposer,
+  plan, country, onOuvrirEtape, onTerminer, terminaisonEnCours, onAutreChose, remplacementEnCours, plusRienAProposer,
   onChoisirDuree, ajustementEnCours,
 }: {
   plan: PlanDuJour
   country: string
+  onOuvrirEtape: (etape: EtapeSeance) => void
   onTerminer: () => void
   terminaisonEnCours: boolean
   onAutreChose: () => void
@@ -186,8 +187,12 @@ function SeanceAFaire({
   ajustementEnCours: boolean
 }) {
   const seance = plan.seance as Seance
-  const premiere = seance.etapes[0]
+  // "Reprendre" plutôt que "Commencer" dès qu'une étape a été ouverte, et on repart de
+  // la première qui ne l'est pas - à défaut, de la dernière (le quiz, qui valide).
+  const dejaCommencee = seance.etapes.some((e) => e.ouverte)
+  const prochaine = seance.etapes.find((e) => !e.ouverte) ?? seance.etapes[seance.etapes.length - 1]
   const avecParcours = !seance.verrouillee && seance.etapes.length > 0
+  const avecQuiz = seance.etapes.some((e) => e.type === "quiz")
 
   return (
     <div className={cn("grid gap-x-10 gap-y-6", avecParcours && "lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:grid-rows-[auto_1fr]")}>
@@ -221,17 +226,21 @@ function SeanceAFaire({
           <Verrou />
         ) : (
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            {premiere && (
+            {prochaine && (
               <Button
                 asChild
                 size="lg"
                 className="group h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
               >
                 <Link
-                  to={lienEtape(premiere, country, plan)}
-                  onClick={() => trackEvent("plan_seance_demarree", { origine: seance.origine })}
+                  to={lienEtape(prochaine, country, plan)}
+                  onClick={() => {
+                    // Le démarrage ne se compte qu'une fois : reprendre n'est pas démarrer.
+                    if (!dejaCommencee) trackEvent("plan_seance_demarree", { origine: seance.origine })
+                    onOuvrirEtape(prochaine)
+                  }}
                 >
-                  Commencer la séance
+                  {dejaCommencee ? "Reprendre la séance" : "Commencer la séance"}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
@@ -249,6 +258,13 @@ function SeanceAFaire({
               <Check className="size-4" />
               J'ai fini
             </Button>
+            {/* Ce qui valide la séance, dit une fois près de l'action : sans ça, un
+                élève qui lit le cours se croit quitte et la séance reste "à faire". */}
+            {avecQuiz && (
+              <p className="basis-full text-xs text-muted-foreground">
+                La séance est validée quand tu termines le quiz.
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -258,7 +274,7 @@ function SeanceAFaire({
           sinon s'intercalait entre le bouton et ce qu'il lance. */}
       {avecParcours && (
         <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
-          <EtapesParPhase seance={seance} country={country} plan={plan} />
+          <EtapesParPhase seance={seance} country={country} plan={plan} onOuvrirEtape={onOuvrirEtape} />
         </div>
       )}
 
@@ -578,8 +594,10 @@ function Verrou() {
   )
 }
 
-function IconeEtape({ type }: { type: EtapeSeance["type"] }) {
-  const Icone = type === "cours" ? BookOpen : type === "exercice" ? PenLine : Sparkles
+function IconeEtape({ type, ouverte }: { type: EtapeSeance["type"]; ouverte: boolean }) {
+  // Cochée dès qu'ouverte : elle dit "déjà passé par là", pas "compris" - la séance,
+  // elle, ne se valide qu'avec le quiz.
+  const Icone = ouverte ? Check : type === "cours" ? BookOpen : type === "exercice" ? PenLine : Sparkles
   return (
     <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
       <Icone className="size-4" />
@@ -593,88 +611,6 @@ function titreDeLaSeance(seance: Seance): string {
   if (seance.savoir) return seance.savoir.intitule
   if (seance.origine === "DIAGNOSTIC") return "on situe ton niveau"
   return seance.origine_display
-}
-
-/**
- * Où mène une étape. Le quiz part vers QuizStartPage avec son thème prérempli
- * (paramètres déjà supportés, voir QuizStartPage) plutôt que de créer la session ici :
- * une session créée par un clic qui n'aboutit pas laisserait une session vide en base.
- */
-function lienEtape(etape: EtapeSeance, country: string, plan: PlanDuJour): string {
-  if (etape.type === "cours") return coursReaderPath(etape.slug)
-  if (etape.type === "exercice") return epreuveReaderPath(country, etape.lesson_slug)
-  const params = new URLSearchParams()
-  if (plan.cursus) params.set("cursus", String(plan.cursus.id))
-  if (plan.seance?.theme) params.set("theme", String(plan.seance.theme.id))
-  // Fait remonter au serveur que ce quiz est l'étape finale de la séance : c'est lui
-  // qui la clôt et en garde le score, l'élève n'a plus à déclarer ce qu'il vient de
-  // faire sous les yeux de l'application.
-  if (plan.seance) params.set("seance", String(plan.seance.id))
-  // Le nombre de questions annoncé par l'étape, sinon la séance promet "5 questions"
-  // et en sert 10 (le défaut de QuizStartPage) : un budget de 25 minutes qui déborde
-  // dès la première séance, c'est la promesse du plan qui tombe.
-  params.set("n", String(etape.n))
-  const query = params.toString()
-  return query ? `/quiz?${query}` : "/quiz"
-}
-
-
-/**
- * "Dis-moi ce que tu prépares" : le seul écran possible tant qu'on ne sait pas quel
- * examen l'élève passe.
- *
- * Il existe parce que le silence était pire : un élève connecté sans `cursus_prepare`
- * ne voyait plus rien du coach, et n'avait aucun moyen de le réparer - l'onboarding ne
- * revenait pas (drapeau de navigateur posé une fois pour toutes) et la page Compte
- * n'offre pas ce réglage. Choisir ici écrit la déclaration sur le compte, donc elle
- * suit l'élève d'un appareil à l'autre.
- */
-function DeclarerSonExamen({ country }: { country: string }) {
-  const { updateUser } = useAuth()
-  const queryClient = useQueryClient()
-
-  const { data: cursusList = [] } = useQuery({
-    queryKey: ["cursus", country],
-    queryFn: ({ signal }) => listCursus(country, signal),
-    enabled: Boolean(country),
-  })
-
-  const declarer = useMutation({
-    mutationFn: (cursusId: number) => updateMe({ cursus_prepare: cursusId }),
-    onSuccess: (utilisateur) => {
-      updateUser(utilisateur)
-      // La séance ne peut pas se construire tant que le cursus n'est pas connu :
-      // c'est ce rechargement qui la fait apparaître dans la foulée.
-      queryClient.invalidateQueries({ queryKey: ["plan-du-jour"] })
-    },
-  })
-
-  if (cursusList.length === 0) return null
-
-  return (
-    <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-      <Ecrin>
-        <h2 className="font-display text-xl font-semibold">Qu'est-ce que tu prépares ?</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Dis-le une fois et tu auras chaque jour une séance faite pour ton examen, avec le compte à rebours.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {cursusList.map((cursus) => (
-            <Button
-              key={cursus.id}
-              variant="outline"
-              size="sm"
-              disabled={declarer.isPending}
-              onClick={() => declarer.mutate(cursus.id)}
-            >
-              {cursus.examen_display}
-              {cursus.series ? ` ${cursus.series.code}` : ""}
-            </Button>
-          ))}
-        </div>
-      </Ecrin>
-    </section>
-  )
 }
 
 /**
@@ -766,7 +702,9 @@ const PHASES = [
   { cle: "quiz", titre: "Vérifier" },
 ] as const
 
-function EtapesParPhase({ seance, country, plan }: { seance: Seance; country: string; plan: PlanDuJour }) {
+function EtapesParPhase({
+  seance, country, plan, onOuvrirEtape,
+}: { seance: Seance; country: string; plan: PlanDuJour; onOuvrirEtape: (etape: EtapeSeance) => void }) {
   // La page des exercices d'un thème exige la matière ET le cursus (voir
   // ThemeExercicesView) : sans eux le lien mène à une erreur 400, donc on ne l'affiche
   // pas plutôt que de proposer une impasse.
@@ -800,6 +738,11 @@ function EtapesParPhase({ seance, country, plan }: { seance: Seance; country: st
                 </span>
                 <p className="flex h-6 items-center text-xs font-semibold uppercase tracking-wide text-foreground/80">
                   {phase.titre}
+                  {phase.cle === "quiz" && (
+                    <span className="ml-2 font-medium normal-case tracking-normal text-primary">
+                      · valide la séance
+                    </span>
+                  )}
                 </p>
               </>
             )}
@@ -821,9 +764,10 @@ function EtapesParPhase({ seance, country, plan }: { seance: Seance; country: st
                 <Link
                   key={etape.libelle}
                   to={lienEtape(etape, country, plan)}
+                  onClick={() => onOuvrirEtape(etape)}
                   className="group flex items-center gap-3 rounded-xl border border-transparent px-2 py-1.5 text-sm transition-all hover:border-primary/20 hover:bg-primary/[0.04]"
                 >
-                  <IconeEtape type={etape.type} />
+                  <IconeEtape type={etape.type} ouverte={etape.ouverte} />
                   <span className="line-clamp-2 min-w-0 flex-1 font-medium leading-snug">{etape.libelle}</span>
                   <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{etape.duree_min} min</span>
                   <ChevronRight className="hidden size-4 shrink-0 text-muted-foreground/50 sm:block transition-all group-hover:translate-x-0.5 group-hover:text-primary" />

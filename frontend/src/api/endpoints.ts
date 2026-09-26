@@ -644,6 +644,14 @@ export function ajusterDureeSeance(minutes: number) {
   return apiRequest<PlanDuJour>("/quiz/plan-du-jour/duree/", { method: "POST", body: { minutes } })
 }
 
+/** L'élève vient d'ouvrir une étape cours/exercice de sa séance (voir
+ * quiz.views.etape_ouverte_view). Sans effet sur le statut de la séance. */
+export function marquerEtapeOuverte(cle: string) {
+  return apiRequest<{ etapes_ouvertes: string[] }>("/quiz/plan-du-jour/etape-ouverte/", {
+    method: "POST", body: { cle },
+  })
+}
+
 /**
  * L'élève déclare avoir traité cet exercice, ou revient sur sa déclaration (voir
  * access.views.marquer_exercice_fait). Rien n'est jamais déduit d'une ouverture de

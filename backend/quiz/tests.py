@@ -2685,6 +2685,80 @@ class FinDeSeanceTests(TestCase):
         # simplement rien à noter encore.
         self.assertIsNone(seance["score"])
 
+    def _seance_avec_un_cours(self):
+        plan_du_jour(self.user, self.cursus)
+        seance = seance_du_jour(self.user, self.cursus)
+        seance.etapes = [
+            {"type": "cours", "libelle": "Relire la méthode", "slug": "cours-test", "titre": "T", "duree_min": 8},
+            *seance.etapes,
+        ]
+        seance.save(update_fields=["etapes"])
+        return seance
+
+    def test_le_resultat_dit_que_la_seance_est_validee(self):
+        session_id = self._lancer_le_quiz_de_la_seance()
+        self._repondre(session_id, ResultatDeclare.REUSSI)
+
+        reponse = self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        self.assertTrue(reponse.data["seance_validee"])
+
+    def test_un_quiz_hors_seance_ne_valide_aucune_seance(self):
+        plan_du_jour(self.user, self.cursus)
+        reponse = self.client.post(
+            "/quiz/sessions/", {"cursus": self.cursus.id, "theme": self.theme.id, "n": 1}, format="json",
+        )
+        session_id = reponse.data["id"]
+        self._repondre(session_id, ResultatDeclare.REUSSI)
+
+        reponse = self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        self.assertFalse(reponse.data["seance_validee"])
+
+    def test_ouvrir_une_etape_la_coche_dans_le_plan(self):
+        self._seance_avec_un_cours()
+
+        avant = self.client.get("/quiz/plan-du-jour/").data["seance"]["etapes"]
+        self.assertFalse(any(e["ouverte"] for e in avant))
+
+        reponse = self.client.post("/quiz/plan-du-jour/etape-ouverte/", {"cle": "cours:cours-test"}, format="json")
+        self.assertEqual(reponse.status_code, 200)
+
+        apres = self.client.get("/quiz/plan-du-jour/").data["seance"]["etapes"]
+        cours = next(e for e in apres if e["type"] == "cours")
+        self.assertTrue(cours["ouverte"])
+        self.assertEqual(cours["cle"], "cours:cours-test")
+
+    def test_ouvrir_deux_fois_la_meme_etape_nenregistre_quune_cle(self):
+        self._seance_avec_un_cours()
+
+        for _ in range(2):
+            self.client.post("/quiz/plan-du-jour/etape-ouverte/", {"cle": "cours:cours-test"}, format="json")
+
+        self.assertEqual(seance_du_jour(self.user, self.cursus).etapes_ouvertes, ["cours:cours-test"])
+
+    def test_une_cle_inconnue_est_refusee_sans_rien_ecrire(self):
+        self._seance_avec_un_cours()
+
+        reponse = self.client.post("/quiz/plan-du-jour/etape-ouverte/", {"cle": "cours:inventé"}, format="json")
+
+        self.assertEqual(reponse.status_code, 404)
+        self.assertEqual(seance_du_jour(self.user, self.cursus).etapes_ouvertes, [])
+
+    def test_ouvrir_une_etape_ne_termine_pas_la_seance(self):
+        self._seance_avec_un_cours()
+
+        self.client.post("/quiz/plan-du-jour/etape-ouverte/", {"cle": "cours:cours-test"}, format="json")
+
+        self.assertEqual(seance_du_jour(self.user, self.cursus).statut, StatutSeance.PROPOSEE)
+
+    def test_letape_quiz_est_ouverte_une_fois_la_session_lancee(self):
+        self._lancer_le_quiz_de_la_seance()
+
+        etapes = self.client.get("/quiz/plan-du-jour/").data["seance"]["etapes"]
+
+        self.assertTrue(next(e for e in etapes if e["type"] == "quiz")["ouverte"])
+
     def test_la_cloture_automatique_enregistre_levenement(self):
         session_id = self._lancer_le_quiz_de_la_seance()
         self._repondre(session_id, ResultatDeclare.REUSSI)
