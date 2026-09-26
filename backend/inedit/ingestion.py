@@ -59,6 +59,7 @@ from catalog.ingestion_repairs import _repair_dict_shaped_cours_sections
 from catalog.models import Cours, Cursus, Exercise, Lesson, Question, StatutContenu, Subject, Tag, TypeReponse
 from programme.models import Savoir
 
+from . import bareme
 from .models import Blueprint, EpreuveInedite, ExerciceInedite, QuestionInedite, RappelDeMethodeInedite
 from .quality import calculer_scores
 
@@ -347,6 +348,18 @@ def _ingest_question_inedite(exercice, data, subject):
     difficulte = DIFFICULTE_MAP.get(_normalize(data.get("difficulte_estimee")), "")
     themes = _resolve_tags(data.get("themes"))
 
+    # Barème exact de la question (optionnel : absent = la plateforme répartit les points de
+    # l'exercice et l'annonce « barème estimé »), voir inedit.bareme pour les invariants.
+    contexte_bareme = f"exercice {exercice.numero_exercice!r}, question {numero!r}"
+    points = None
+    try:
+        if data.get("points") not in (None, ""):
+            points = bareme.lire_points(data["points"], contexte_bareme)
+        criteres_notation = bareme.normaliser_criteres(data.get("criteres_notation"), contexte_bareme)
+        bareme.verifier_question(points, criteres_notation, type_reponse, contexte_bareme)
+    except ValueError as exc:
+        raise IngestionError(str(exc)) from exc
+
     question = QuestionInedite.objects.create(
         exercice=exercice,
         numero=numero,
@@ -361,6 +374,8 @@ def _ingest_question_inedite(exercice, data, subject):
         type_reponse=type_reponse,
         choix=choix,
         reponse_correcte=reponse_correcte,
+        points=points,
+        criteres_notation=criteres_notation,
     )
     if themes:
         question.themes.set(themes)
@@ -409,6 +424,14 @@ def _ingest_exercice_inedite(epreuve, data, subject):
         raise IngestionError(f"Aucune question pour l'exercice {numero_exercice!r} de {epreuve.external_id!r}.")
     for question_data in questions_data:
         _ingest_question_inedite(exercice, question_data, subject)
+
+    try:
+        bareme.verifier_exercice(
+            exercice.points, {q.numero: q.points for q in exercice.questions.all()},
+            f"exercice {numero_exercice!r} de {epreuve.external_id!r}",
+        )
+    except ValueError as exc:
+        raise IngestionError(str(exc)) from exc
 
 
 def ingest_epreuve_inedite(data, country):

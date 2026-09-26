@@ -83,12 +83,13 @@ def score_qualite(epreuve):
     """
     Score 0-100 - part des compétences visées par le Blueprint source (voir
     Blueprint.competences) réellement couvertes par au moins une QuestionInedite
-    générée (voir QuestionInedite.themes). Autres vérifications structurelles (nombre
-    d'exercices, barème total) volontairement différées : ExerciceInedite.points reste
-    un texte libre (même choix que catalog.Exercise.points, pas fiablement sommable) et
-    Blueprint.sections_plan n'a pas encore de schéma assez stable pour un contrôle
-    automatique robuste sans risquer des faux négatifs sur un format par ailleurs
-    légitime - à construire une fois ce schéma éprouvé en usage réel.
+    générée (voir QuestionInedite.themes). Le barème n'entre pas dans ce score : il se
+    contrôle à part, exercice par exercice, par inedit.bareme (points des questions =
+    points de l'exercice, grilles de critères = points de la question) - à l'ingestion
+    pour tout contenu neuf, et par `appliquer_bareme_inedites --verifier` pour les
+    épreuves publiées. Le nombre d'exercices et Blueprint.sections_plan restent sans
+    contrôle automatique : ce schéma n'est pas encore assez stable pour éviter des faux
+    négatifs sur un format par ailleurs légitime.
 
     Retourne 100 si le Blueprint source ne vise explicitement aucune compétence (cas
     défensif seulement - inedit.ingestion.ingest_blueprint l'interdit déjà en pratique).
