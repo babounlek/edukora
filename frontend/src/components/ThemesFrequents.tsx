@@ -76,7 +76,7 @@ export function ThemesFrequents({ country, cursusId, subjectCode, variant = "ful
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <span className="min-w-0 flex-1 truncate font-medium">{capitaliserTheme(theme.tag)}</span>
-                    <span className={cn("shrink-0 text-xs font-semibold tabular-nums", enTete ? "text-gold" : "text-primary")}>
+                    <span className={cn("shrink-0 text-xs font-semibold tabular-nums", enTete ? "text-gold-text" : "text-primary")}>
                       {theme.frequence_pct}%
                     </span>
                   </div>
@@ -143,7 +143,7 @@ export function ThemesFrequents({ country, cursusId, subjectCode, variant = "ful
         {variant === "full" && !data.has_access && data.nb_themes_verrouilles > 0 && (
           <div className="flex flex-col gap-3 rounded-lg border border-dashed border-gold/40 bg-gold/[0.04] p-3.5">
             <p className="flex items-center gap-1.5 text-sm font-medium">
-              <Crown className="size-4 shrink-0 text-gold" />
+              <Crown className="size-4 shrink-0 text-gold-text" />
               {data.nb_themes_verrouilles} thème{data.nb_themes_verrouilles > 1 ? "s" : ""} de plus, réservé
               {data.nb_themes_verrouilles > 1 ? "s" : ""} à l'abonnement Jusqu'à l'Examen.
             </p>

@@ -9,7 +9,7 @@ import { GoogleSignInButton } from "@/components/GoogleSignInButton"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import {
   Select,
   SelectContent,
@@ -184,7 +184,7 @@ export function LoginPage() {
     <div className="flex min-h-[80vh] items-center justify-center px-4">
       <Card className="w-full max-w-sm animate-fade-up shadow-lg shadow-primary/5">
         <CardHeader>
-          <CardTitle className="font-display text-2xl">Connexion</CardTitle>
+          <h1 className="font-display text-2xl font-semibold leading-none tracking-tight">Connexion</h1>
           {/* Ne nomme plus la méthode : cette page ne peut pas savoir si le bouton
               Google s'est affiché (il disparaît de lui-même quand VITE_GOOGLE_CLIENT_ID
               n'est pas configuré), donc toute phrase citant une méthode serait fausse

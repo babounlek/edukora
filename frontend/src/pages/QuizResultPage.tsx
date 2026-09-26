@@ -48,7 +48,7 @@ function AnneauScore({ pourcentage, score, total }: { pourcentage: number; score
   }, [])
   const rayon = 52
   const circonference = 2 * Math.PI * rayon
-  const couleur = pourcentage >= 70 ? "text-success" : pourcentage >= 40 ? "text-gold" : "text-primary"
+  const couleur = pourcentage >= 70 ? "text-success" : pourcentage >= 40 ? "text-gold-text" : "text-primary"
   return (
     <div className="relative mx-auto size-40">
       <svg viewBox="0 0 120 120" className="size-full -rotate-90">

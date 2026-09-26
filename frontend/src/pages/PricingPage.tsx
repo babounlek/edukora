@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 
 import { listPlans } from "@/api/endpoints"
+import { trackEvent } from "@/lib/analytics"
 import type { Cursus, Plan } from "@/api/types"
 import { cn, formatAmount } from "@/lib/utils"
 import { coursListPath } from "@/lib/countryPath"
@@ -233,7 +234,7 @@ function Echeancier({ plan }: { plan: Plan }) {
         <span>Jour de l'examen</span>
       </div>
       <p className="mt-2 text-center text-xs text-muted-foreground">
-        <span className="font-medium text-gold">Dernière ligne droite</span> : {formatAmount(PLANCHER_AFFICHE)} FCFA
+        <span className="font-medium text-gold-text">Dernière ligne droite</span> : {formatAmount(PLANCHER_AFFICHE)} FCFA
         garantis, même à la veille de l'examen.
       </p>
     </div>
@@ -248,9 +249,9 @@ function Echeancier({ plan }: { plan: Plan }) {
 function CalloutExclusifsJusquaExamen() {
   return (
     <div className="flex items-start gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3 py-2.5">
-      <Crown className="mt-0.5 size-4 shrink-0 text-gold" />
+      <Crown className="mt-0.5 size-4 shrink-0 text-gold-text" />
       <div>
-        <p className="flex items-center gap-1 font-display text-xs font-semibold uppercase tracking-wide text-gold">
+        <p className="flex items-center gap-1 font-display text-xs font-semibold uppercase tracking-wide text-gold-text">
           <Sparkles className="size-3" />
           Exclusif Edukora
         </p>
@@ -275,6 +276,10 @@ export function PricingPage() {
   const { country } = useCountry()
   const { user } = useAuth()
   const [allPlans, setAllPlans] = useState<Plan[]>([])
+
+  useEffect(() => {
+    trackEvent("tarifs_vus")
+  }, [])
   const [chargement, setChargement] = useState(true)
   const [selectedCursus, setSelectedCursus] = useState("")
   // Passe à true quand on tente de continuer sans avoir choisi de cursus : le
@@ -390,7 +395,7 @@ export function PricingPage() {
             <ChipReassurance icon={<ShieldCheck className="size-3.5 text-success" />}>
               Aucun prélèvement automatique
             </ChipReassurance>
-            <ChipReassurance icon={<Zap className="size-3.5 text-gold" />}>
+            <ChipReassurance icon={<Zap className="size-3.5 text-gold-text" />}>
               Accès activé dès le paiement
             </ChipReassurance>
           </div>
@@ -627,57 +632,57 @@ export function PricingPage() {
           n'est lu qu'une fois, à l'activation - voir subscriptions/models.py). */}
       <section className="mt-12 border-t border-border pt-10">
         <h2 className="font-display text-xl font-semibold">Avant de payer</h2>
-        <dl className="mt-5 grid gap-5 sm:grid-cols-2">
-          <div className="flex items-start gap-3">
+        <ul role="list" className="mt-5 grid gap-5 sm:grid-cols-2">
+          <li className="flex items-start gap-3">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Smartphone className="size-4" />
             </span>
             <div>
-              <dt className="font-medium">Comment je paie ?</dt>
-              <dd className="mt-0.5 text-sm text-muted-foreground">
+              <p className="font-medium">Comment je paie ?</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">
                 Par Mobile Money, MTN ou Orange. Avec Campay, la demande de paiement arrive directement sur ton
                 téléphone pour une activation instantanée ; tu peux aussi transférer toi-même et déclarer ta
                 transaction.
-              </dd>
+              </p>
             </div>
-          </div>
-          <div className="flex items-start gap-3">
+          </li>
+          <li className="flex items-start gap-3">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success">
               <ShieldCheck className="size-4" />
             </span>
             <div>
-              <dt className="font-medium">Est-ce que je serai prélevé une deuxième fois ?</dt>
-              <dd className="mt-0.5 text-sm text-muted-foreground">
+              <p className="font-medium">Est-ce que je serai prélevé une deuxième fois ?</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">
                 Non. Chaque paiement est unique et volontaire - aucune carte enregistrée, aucun renouvellement
                 automatique. Rien ne se redéclenche sans que tu repasses toi-même par Mobile Money.
-              </dd>
+              </p>
             </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-gold/10 text-gold">
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-gold/10 text-gold-text">
               <Lock className="size-4" />
             </span>
             <div>
-              <dt className="font-medium">Le prix payé aujourd'hui reste-t-il garanti jusqu'à mon examen ?</dt>
-              <dd className="mt-0.5 text-sm text-muted-foreground">
+              <p className="font-medium">Le prix payé aujourd'hui reste-t-il garanti jusqu'à mon examen ?</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">
                 Oui. Le tarif est figé le jour de l'achat et couvre l'accès jusqu'à ton examen, même si le prix
                 affiché baisse ensuite pour ceux qui achètent plus tard.
-              </dd>
+              </p>
             </div>
-          </div>
-          <div className="flex items-start gap-3">
+          </li>
+          <li className="flex items-start gap-3">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <ArrowRightLeft className="size-4" />
             </span>
             <div>
-              <dt className="font-medium">Et si le paiement Mobile Money échoue ?</dt>
-              <dd className="mt-0.5 text-sm text-muted-foreground">
+              <p className="font-medium">Et si le paiement Mobile Money échoue ?</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">
                 Tu peux basculer sur le paiement manuel (Orange Money ou MTN MoMo) sans rien perdre de ta sélection -
                 un transfert direct, vérifié avant activation.
-              </dd>
+              </p>
             </div>
-          </div>
-        </dl>
+          </li>
+        </ul>
 
         {/* Jamais "/cm/cours" en dur : /tarifs n'est pas une route préfixée par pays,
             le pays courant vient donc du contexte (URL précédente, sinon dernier choix

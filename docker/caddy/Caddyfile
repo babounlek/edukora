@@ -5,6 +5,19 @@
         X-Robots-Tag "noindex, nofollow, noarchive"
     }
 
+    # Fichiers de /assets : le nom contient le hash du contenu (Vite), un fichier ne change
+    # jamais sous un même nom - cache navigateur d'un an, aucune revalidation aux visites
+    # suivantes (sur une connexion mobile lente, c'est ce qui fait la différence entre
+    # « chargement instantané » et « tout re-télécharger »).
+    @assets_hashes path /assets/*
+    header @assets_hashes Cache-Control "public, max-age=31536000, immutable"
+
+    # Point d'entrée de l'app et service worker : jamais servis depuis un cache sans
+    # revalidation, sinon une nouvelle version ne parviendrait plus aux visiteurs qui ont
+    # déjà l'ancienne (incident qui avait fait désactiver la PWA, voir frontend/src/main.tsx).
+    @points_d_entree path / /index.html /sw.js /registerSW.js /manifest.webmanifest
+    header @points_d_entree Cache-Control "no-cache"
+
     handle_path /static/* {
         root * /srv/staticfiles
         file_server
@@ -33,7 +46,7 @@
     # /whatsapp* sans cette subtilité : contrairement à /quiz, /inedit, /fiches, le
     # frontend n'a AUCUNE page sous ce mot (l'opt-in vit dans /compte) - rien à
     # distinguer, tout /whatsapp* va à Django.
-    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /sitemap.xml /sitemap-*.xml
+    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /sitemap.xml /sitemap-*.xml
     handle @backend {
         reverse_proxy backend:8000
     }

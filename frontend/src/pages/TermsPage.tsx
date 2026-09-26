@@ -144,7 +144,7 @@ export function TermsPage() {
             <ChipReassurance icon={<ShieldCheck className="size-3.5 text-success" />}>
               Pas de reconduction automatique
             </ChipReassurance>
-            <ChipReassurance icon={<Wallet className="size-3.5 text-gold" />}>
+            <ChipReassurance icon={<Wallet className="size-3.5 text-gold-text" />}>
               Résiliable à tout moment
             </ChipReassurance>
           </div>

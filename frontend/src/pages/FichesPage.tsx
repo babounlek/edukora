@@ -401,7 +401,7 @@ export function FichesPage() {
                 <span className="text-muted-foreground">énoncé + corrigé</span>
               </StatChip>
               {mesFiches.length > 0 && (
-                <StatChip icon={<FileText className="size-3.5 text-gold" />}>
+                <StatChip icon={<FileText className="size-3.5 text-gold-text" />}>
                   <span className="font-medium">{mesFiches.length}</span>
                   <span className="text-muted-foreground">
                     fiche{mesFiches.length > 1 ? "s" : ""} générée{mesFiches.length > 1 ? "s" : ""}

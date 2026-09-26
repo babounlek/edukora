@@ -209,7 +209,7 @@ export function PrivacyPage() {
             <ChipReassurance icon={<EyeOff className="size-3.5 text-success" />}>
               Aucun tracking publicitaire tiers
             </ChipReassurance>
-            <ChipReassurance icon={<KeyRound className="size-3.5 text-gold" />}>
+            <ChipReassurance icon={<KeyRound className="size-3.5 text-gold-text" />}>
               Tu gères tes méthodes de connexion
             </ChipReassurance>
           </div>

@@ -524,7 +524,7 @@ export function EpreuvesListPage() {
               "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
               origineFilter === "INEDITE"
                 ? "border-gold bg-gold text-gold-foreground"
-                : "border-border text-muted-foreground hover:border-gold/40 hover:text-gold",
+                : "border-border text-muted-foreground hover:border-gold/40 hover:text-gold-text",
             )}
           >
             <Crown className="size-4" />
@@ -711,6 +711,7 @@ export function EpreuvesListPage() {
               {epreuvesList.map((epreuve, index) => (
                 <EpreuveCard
                   key={epreuve.id}
+                  niveauTitre={2}
                   epreuve={epreuve}
                   className="animate-fade-up"
                   style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}

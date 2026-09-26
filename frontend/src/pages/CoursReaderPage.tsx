@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { BarreLecture } from "@/components/BarreLecture"
+import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
 import { CoursSection } from "@/components/CoursSection"
 import { MarquesSection } from "@/components/MarquesSection"
 import { CoursSommaire } from "@/components/CoursSommaire"
@@ -150,6 +151,11 @@ export function CoursReaderPage() {
             <NotebookPen className="size-4" />
             Mon carnet
           </Link>
+        )}
+        {slug && (
+          <span className="sm:ml-auto">
+            <BoutonHorsLigne type="cours" slug={slug} />
+          </span>
         )}
       </div>
 

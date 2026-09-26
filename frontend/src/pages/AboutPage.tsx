@@ -176,7 +176,7 @@ export function AboutPage() {
                 <ChipReassurance icon={<ShieldCheck className="size-3.5 text-success" />}>
                   Sujets toujours gratuits
                 </ChipReassurance>
-                <ChipReassurance icon={<Smartphone className="size-3.5 text-gold" />}>
+                <ChipReassurance icon={<Smartphone className="size-3.5 text-gold-text" />}>
                   Mobile Money, sans carte
                 </ChipReassurance>
               </div>

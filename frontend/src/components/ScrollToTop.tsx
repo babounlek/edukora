@@ -33,9 +33,17 @@ export function ScrollToTop() {
 
   useEffect(() => {
     if (previousPathname.current === pathname) return
+    const premierRendu = previousPathname.current === null
     previousPathname.current = pathname
     if (navigationType !== "POP") {
       window.scrollTo(0, 0)
+    }
+    // Un changement de page ne déplace pas le focus tout seul : au clavier ou au lecteur
+    // d'écran on resterait sur le lien cliqué, dans un contenu qui n'existe plus. On le
+    // pose sur le contenu (sans scroller - le scroll est réglé ci-dessus). Pas au tout
+    // premier rendu : rien n'a changé, le navigateur démarre déjà en haut de la page.
+    if (!premierRendu) {
+      document.getElementById("contenu")?.focus({ preventScroll: true })
     }
   }, [pathname, navigationType])
 

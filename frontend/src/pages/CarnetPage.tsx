@@ -121,7 +121,7 @@ export function CarnetPage() {
                     {entree.titre}
                   </Link>
                   <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted-foreground">
-                    {entree.signet && <Bookmark className="size-3.5 shrink-0 fill-current text-gold" aria-label="Gardé" />}
+                    {entree.signet && <Bookmark className="size-3.5 shrink-0 fill-current text-gold-text" aria-label="Gardé" />}
                     {libelleSection(entree)}
                   </p>
                 </div>

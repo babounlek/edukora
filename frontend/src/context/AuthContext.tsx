@@ -5,6 +5,7 @@ import { getMe, updateMe } from "@/api/endpoints"
 import { clearAccessToken, logoutRequest, setAccessToken, SESSION_EXPIRED_EVENT } from "@/api/client"
 import type { User } from "@/api/types"
 import { lireCursusPrepareEnAttente, oublierCursusPrepareEnAttente } from "@/lib/cursusPrepare"
+import { viderCacheHorsLigne } from "@/lib/pwa"
 
 interface AuthContextValue {
   user: User | null
@@ -80,6 +81,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   function logout() {
     clearAccessToken()
     setUser(null)
+    // Un corrigé lu hors connexion ne doit pas rester lisible pour le compte suivant.
+    void viderCacheHorsLigne()
     // Résultat jamais attendu (voir logoutRequest, best-effort) : l'utilisateur doit
     // se sentir déconnecté immédiatement, pas après un aller-retour réseau pour
     // effacer un cookie qu'il ne voit de toute façon jamais.

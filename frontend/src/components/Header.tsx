@@ -187,7 +187,7 @@ export function Header() {
           </Link>
           <CompteAReboursBadge variant="pilule" className="hidden whitespace-nowrap sm:inline" />
         </div>
-        <nav className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           {/* Toujours visible (pas de hidden sm:), contrairement aux liens de nav
               desktop plus bas - ce bouton rend la recherche accessible depuis
               n'importe quelle page, y compris sur mobile où la place au clavier
@@ -210,7 +210,7 @@ export function Header() {
               {/* Même raison que le pays et le thème plus bas : retiré de la barre
                   sous `sm` faute de place, jamais retiré du mobile. */}
               <CompteAReboursBadge className="mt-3 block sm:hidden" />
-              <nav className="mt-3 flex flex-col gap-1">
+              <nav aria-label="Menu" className="mt-3 flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <Link
                     key={link.to}
@@ -295,7 +295,7 @@ export function Header() {
               <Link to="/connexion">Connexion</Link>
             </Button>
           )}
-        </nav>
+        </div>
       </div>
     </header>
   )

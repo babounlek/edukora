@@ -37,7 +37,7 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
             omis : deux cours d'une même matière portent souvent des titres proches,
             c'est lui qui les distingue au survol de la liste. */}
         <div className="min-w-0 flex-1">
-          <h3 className="truncate font-display text-sm font-medium">{cours.titre}</h3>
+          <h2 className="truncate font-display text-sm font-medium">{cours.titre}</h2>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             {cours.sous_theme && <span className="truncate">{capitaliserTheme(cours.sous_theme)}</span>}
             {cours.duree_estimee_min && (

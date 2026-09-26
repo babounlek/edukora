@@ -23,6 +23,10 @@ interface EpreuveCardProps {
    * inédite parmi trois cent quarante-deux épreuves.
    */
   masquerTypeBadge?: boolean
+  // Niveau du titre de la carte : 2 quand la page enchaîne les cartes directement sous son h1
+  // (listes filtrables), 3 (défaut) quand elles sont rangées sous un titre de section.
+  // Un h3 sans h2 au-dessus saute un niveau, ce que les lecteurs d'écran annoncent comme une rupture.
+  niveauTitre?: 2 | 3
 }
 
 /** "3 h" pour un classique (texte saisi à la transcription), "90 min" pour une inédite
@@ -33,7 +37,8 @@ function dureeAffichee(epreuve: Epreuve): string | null {
   return null
 }
 
-export function EpreuveCard({ epreuve, className, style, masquerTypeBadge }: EpreuveCardProps) {
+export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, niveauTitre = 3 }: EpreuveCardProps) {
+  const Titre = niveauTitre === 2 ? "h2" : "h3"
   const [titleRef, isTitleTruncated] = useIsTruncated<HTMLHeadingElement>()
   const country = epreuve.subject.country.code.toLowerCase()
   const inedite = epreuve.kind === "inedite"
@@ -108,9 +113,9 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge }: Epr
                   document inexploitable pour un lecteur d'écran comme pour un moteur de
                   recherche). Seul sur sa ligne : partager avec un badge le ferait tronquer
                   plus tôt et pourrait couper l'année avant qu'elle soit lisible. */}
-              <h3 ref={titleRef} className="mt-0.5 line-clamp-2 font-display text-base font-medium leading-snug">
+              <Titre ref={titleRef} className="mt-0.5 line-clamp-2 font-display text-base font-medium leading-snug">
                 {epreuve.title}
-              </h3>
+              </Titre>
             </div>
           </div>
 

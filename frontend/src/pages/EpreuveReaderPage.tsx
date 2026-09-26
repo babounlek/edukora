@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { BarreExercices } from "@/components/BarreExercices"
 import { BarreLecture } from "@/components/BarreLecture"
+import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
 import { EnTeteEpreuve, faitsEpreuve } from "@/components/EnTeteEpreuve"
 import { EnonceToggle } from "@/components/EnonceToggle"
 import { MarquesSection } from "@/components/MarquesSection"
@@ -214,6 +215,11 @@ export function EpreuveReaderPage() {
               Mon carnet
             </Link>
           </>
+        )}
+        {slug && (
+          <span className="sm:ml-auto">
+            <BoutonHorsLigne type="epreuve" slug={slug} />
+          </span>
         )}
       </div>
 

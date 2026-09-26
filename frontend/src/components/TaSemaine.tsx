@@ -55,7 +55,7 @@ export function TaSemaine({ cursusId, className }: { cursusId: number; className
                 key={`${jalon.genre}-${jalon.palier}`}
                 className="flex items-center gap-3 rounded-xl border border-gold/35 bg-gold/[0.08] px-3.5 py-2.5 text-sm"
               >
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gold/25 text-gold-foreground dark:text-gold">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gold/25 text-gold-foreground dark:text-gold-text">
                   <Trophy className="size-4" />
                 </span>
                 <span className="min-w-0">

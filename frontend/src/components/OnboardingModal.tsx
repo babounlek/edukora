@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 import { listCursus, updateMe } from "@/api/endpoints"
+import { trackEvent } from "@/lib/analytics"
 import type { Cursus } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -122,6 +123,7 @@ export function OnboardingModal() {
   }
 
   function finish(cursus: Cursus) {
+    trackEvent("onboarding_termine", { cursus_id: cursus.id })
     markOnboardingDone()
     setDismissed(true)
     setCountry(selectedCountry)

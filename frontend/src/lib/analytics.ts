@@ -25,6 +25,10 @@ export type AnalyticsEventName =
   | "plan_verrouille_clic"
   | "plan_theme_ignore"
   | "objectif_matiere"
+  // Volumes de visiteurs, anonymes compris (voir analytics.funnel côté backend).
+  | "tarifs_vus"
+  | "abonnement_ouvert"
+  | "onboarding_termine"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

@@ -388,7 +388,7 @@ export function EpreuveDetailPage() {
           className="group flex items-center justify-between gap-3 rounded-2xl border border-dashed border-gold/40 bg-gold/5 px-5 py-4 text-sm transition-colors hover:border-gold/60 hover:bg-gold/10"
         >
           <span className="flex items-center gap-3">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
               <Crown className="size-5" />
             </span>
             <span>

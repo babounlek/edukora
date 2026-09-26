@@ -92,7 +92,7 @@ export function ThemeExercicesPage() {
                 </StatChip>
               )}
               {pct && (
-                <StatChip icon={<TrendingUp className="size-3.5 text-gold" />}>
+                <StatChip icon={<TrendingUp className="size-3.5 text-gold-text" />}>
                   <span className="font-medium tabular-nums">{pct}%</span>
                   <span className="text-muted-foreground">des sessions officielles{nb && total ? ` (${nb}/${total})` : ""}</span>
                 </StatChip>

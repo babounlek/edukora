@@ -537,7 +537,7 @@ function StatFrequence({
   return (
     <div className="mt-3">
       <div className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/20 text-gold-foreground dark:text-gold">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/20 text-gold-foreground dark:text-gold-text">
           <Target className="size-5" />
         </span>
         <p className="text-sm leading-snug">

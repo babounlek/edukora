@@ -166,7 +166,7 @@ export function ThemesFrequentsPage() {
                     <span className="text-muted-foreground">sessions officielles analysées</span>
                   </StatChip>
                   {topTheme && (
-                    <StatChip icon={<Crown className="size-3.5 text-gold" />}>
+                    <StatChip icon={<Crown className="size-3.5 text-gold-text" />}>
                       <span className="text-muted-foreground">Thème n°1 :</span>
                       <span className="max-w-[9rem] truncate font-medium">{capitaliserTheme(topTheme.tag)}</span>
                     </StatChip>

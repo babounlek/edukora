@@ -61,7 +61,7 @@ export function MarquesSection({
           variant="ghost"
           aria-pressed={Boolean(marque?.signet)}
           onClick={() => etude.maj(cle, { signet: !marque?.signet })}
-          className={cn("rounded-full", marque?.signet ? "text-gold-foreground dark:text-gold" : "text-muted-foreground")}
+          className={cn("rounded-full", marque?.signet ? "text-gold-foreground dark:text-gold-text" : "text-muted-foreground")}
         >
           <Bookmark className={cn("size-4", marque?.signet && "fill-current")} />
           {marque?.signet ? "Gardé pour plus tard" : "Garder pour plus tard"}

@@ -354,7 +354,7 @@ function CatalogueVitrine() {
             )}
             {coursData && (
               <StatChip
-                icon={<GraduationCap className="size-3.5 text-gold" />}
+                icon={<GraduationCap className="size-3.5 text-gold-text" />}
                 valeur={formatAmount(coursData.count)}
                 libelle="cours structurés"
               />
@@ -458,13 +458,13 @@ function CatalogueVitrine() {
             to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`}
             className="group mt-5 flex flex-col items-start gap-4 rounded-2xl border border-gold/40 bg-gradient-to-b from-gold/5 to-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-lg hover:shadow-gold/10 sm:flex-row sm:items-center sm:gap-5 sm:p-6"
           >
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
               <Crown className="size-5" />
             </span>
             <div className="flex-1">
               <h3 className="flex flex-wrap items-center gap-2 font-display text-lg font-semibold">
                 Épreuves Inédites
-                <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-bold tracking-wide text-gold uppercase">
+                <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-bold tracking-wide text-gold-text uppercase">
                   Exclusif
                 </span>
               </h3>
@@ -472,7 +472,7 @@ function CatalogueVitrine() {
                 Un sujet original conçu par Edukora, jamais tiré des annales - même niveau, même barème que l'épreuve réelle, dans les conditions du jour J.
               </p>
             </div>
-            <span className="flex shrink-0 items-center gap-1.5 text-sm font-medium text-gold">
+            <span className="flex shrink-0 items-center gap-1.5 text-sm font-medium text-gold-text">
               Explorer
               <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
             </span>
@@ -520,7 +520,7 @@ function CatalogueVitrine() {
             </p>
           </div>
           <div className="rounded-2xl border border-gold/30 bg-gold/5 p-5">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-gold/15 text-gold">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
               <Crown className="size-5" />
             </span>
             <h3 className="mt-3 font-display text-base font-semibold">Tu te testes sur l'inconnu</h3>
@@ -546,7 +546,7 @@ function CatalogueVitrine() {
         <section className="mx-auto max-w-5xl px-4 pt-4 sm:px-6 mb-8">
           <div className="rounded-2xl border border-gold/30 bg-gold/5 p-5 sm:p-8">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-semibold text-gold">
+              <span className="flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-semibold text-gold-text">
                 <Crown className="size-3.5" />
                 Épreuve inédite
               </span>
@@ -563,7 +563,7 @@ function CatalogueVitrine() {
               l'examen réel. Voici la première question, en accès libre.
             </p>
             <div className="mt-5 rounded-xl border border-border bg-card p-5 sm:p-6">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gold">Aperçu</p>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gold-text">Aperçu</p>
               <div className="prose prose-neutral max-w-none text-sm dark:prose-invert prose-headings:font-display">
                 <EpreuveMarkdown markdown={inediteVedette.apercu_enonce_markdown} />
               </div>
@@ -602,7 +602,7 @@ function CatalogueVitrine() {
         inediteRecenteData.count > 0 && (
           <section className="mx-auto max-w-5xl px-4 pt-4 sm:px-6 mb-8">
             <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-gold/30 bg-gold/5 p-5 sm:p-6">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
                 <Crown className="size-5" />
               </span>
               <div className="flex-1">

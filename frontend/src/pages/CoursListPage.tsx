@@ -634,6 +634,7 @@ export function CoursListPage() {
               {coursList.map((cours, index) => (
                 <CoursCard
                   key={cours.id}
+                  niveauTitre={2}
                   cours={cours}
                   className="animate-fade-up"
                   style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}

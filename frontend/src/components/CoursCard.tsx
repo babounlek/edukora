@@ -15,9 +15,14 @@ interface CoursCardProps {
   cours: Cours
   className?: string
   style?: CSSProperties
+  // Niveau du titre de la carte : 2 quand la page enchaîne les cartes directement sous son h1
+  // (listes filtrables), 3 (défaut) quand elles sont rangées sous un titre de section.
+  // Un h3 sans h2 au-dessus saute un niveau, ce que les lecteurs d'écran annoncent comme une rupture.
+  niveauTitre?: 2 | 3
 }
 
-export function CoursCard({ cours, className, style }: CoursCardProps) {
+export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCardProps) {
+  const Titre = niveauTitre === 2 ? "h2" : "h3"
   const SubjectIcon = subjectIcon(cours.subject.code)
   const couleur = couleurMatiere(cours.subject.code)
   const accessible = cours.has_access || cours.est_vitrine
@@ -42,7 +47,7 @@ export function CoursCard({ cours, className, style }: CoursCardProps) {
                 {cours.subject.label}
                 {cours.sous_theme && ` · ${capitaliserTheme(cours.sous_theme)}`}
               </p>
-              <h3 className="mt-0.5 line-clamp-2 font-display text-base font-medium leading-snug">{cours.titre}</h3>
+              <Titre className="mt-0.5 line-clamp-2 font-display text-base font-medium leading-snug">{cours.titre}</Titre>
             </div>
             {/* L'état "lu" remonte en tête de carte : dans une grille où l'on repasse
                 plusieurs fois, c'est le repère qu'on cherche en premier. */}

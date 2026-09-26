@@ -7,6 +7,7 @@ import { ApiError } from "@/api/client"
 import type { Cursus, ManualPayment, MobileMoneyOperator, Plan } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
+import { useQueryClient } from "@tanstack/react-query"
 import { trackEvent } from "@/lib/analytics"
 import { Sentry } from "@/lib/sentry"
 import { cn, formatAmount } from "@/lib/utils"
@@ -116,6 +117,11 @@ export function SubscribePage() {
   const [phase, setPhase] = useState<PaymentPhase>("form")
   const [error, setError] = useState<string | null>(null)
   const pollRef = useRef<number | null>(null)
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    trackEvent("abonnement_ouvert")
+  }, [])
 
   useEffect(() => {
     if (isLoading) return
@@ -186,6 +192,8 @@ export function SubscribePage() {
         if (result.status !== "PENDING") {
           if (pollRef.current) window.clearInterval(pollRef.current)
           setPhase(result.status === "SUCCESSFUL" ? "success" : "failed")
+          // Le bandeau « reprendre mon paiement » doit refléter ce résultat tout de suite.
+          queryClient.invalidateQueries({ queryKey: ["paiement-a-reprendre"] })
           trackEvent(result.status === "SUCCESSFUL" ? "payment_succeeded" : "payment_failed", {
             cursus_id: cursusId ? Number(cursusId) : undefined,
           })
@@ -349,7 +357,7 @@ export function SubscribePage() {
             <div className="flex flex-col gap-6">
               {creditDisponible > 0 && (
                 <div className="flex items-center gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3.5 py-2.5 text-sm">
-                  <Gift className="size-4 shrink-0 text-gold" />
+                  <Gift className="size-4 shrink-0 text-gold-text" />
                   <span>
                     Vous avez <strong className="text-foreground">{formatAmount(creditDisponible)} FCFA</strong> de
                     crédit parrainage - appliqué automatiquement pour un paiement Campay.

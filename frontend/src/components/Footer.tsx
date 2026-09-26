@@ -74,7 +74,7 @@ export function Footer() {
           </div>
         </div>
 
-        <nav className="flex flex-col gap-2.5">
+        <nav aria-label="Pied de page : plateforme" className="flex flex-col gap-2.5">
           <span className="text-xs font-semibold uppercase tracking-wider text-foreground/70">
             Plateforme
           </span>
@@ -89,7 +89,7 @@ export function Footer() {
           ))}
         </nav>
 
-        <nav className="flex flex-col gap-2.5">
+        <nav aria-label="Pied de page : mon espace" className="flex flex-col gap-2.5">
           <span className="text-xs font-semibold uppercase tracking-wider text-foreground/70">
             Mon espace
           </span>
@@ -104,7 +104,7 @@ export function Footer() {
           ))}
         </nav>
 
-        <nav className="flex flex-col gap-2.5">
+        <nav aria-label="Pied de page : mentions légales" className="flex flex-col gap-2.5">
           <span className="text-xs font-semibold uppercase tracking-wider text-foreground/70">
             Légal
           </span>

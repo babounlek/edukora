@@ -14,6 +14,7 @@ import '@fontsource/fraunces/700.css'
 import './index.css'
 import App from './App.tsx'
 import { captureReferralCode } from '@/lib/referral'
+import { initialiserPwa } from '@/lib/pwa'
 import { initSentry } from '@/lib/sentry'
 
 // Avant tout le reste : capte les erreurs de rendu les plus précoces possible (voir
@@ -49,13 +50,6 @@ createRoot(document.getElementById('root')!).render(
   </StrictMode>,
 )
 
-// PWA désactivée pour l'instant (voir vite.config.ts, plus de plugin VitePWA) : aucun
-// nouveau service worker n'est généré, donc sans ce nettoyage les visiteurs qui en ont
-// déjà un installé resteraient bloqués indéfiniment sur son cache - plus aucune
-// nouvelle version ne sera jamais poussée pour le remplacer.
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
-    registrations.forEach((registration) => registration.unregister())
-  })
-  caches?.keys().then((keys) => keys.forEach((key) => caches.delete(key)))
-}
+// Service worker (lecture hors connexion) : voir lib/pwa.ts, qui gère aussi le nettoyage
+// des anciens workers quand la PWA est coupée (VITE_DISABLE_PWA=1, mode économie de données).
+initialiserPwa()

@@ -89,7 +89,7 @@ export function Etape({ numero, titre, aide, fait, inactif, accent, dernier, chi
             : inactif
               ? "bg-muted text-muted-foreground"
               : accent === "gold"
-                ? "bg-gold/15 text-gold"
+                ? "bg-gold/15 text-gold-text"
                 : "bg-primary/10 text-primary",
         )}
       >
