@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-maximum-fonction-t-exp-moins-kt-terminale-c-e",
+  "meta": {
+    "titre": "Trouver le maximum d'une fonction du type t·e^{-kt} par l'étude du signe de sa dérivée",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "C/E",
+    "sous_theme": "Étude de fonctions",
+    "duree_estimee_min": 25,
+    "tags": [
+      "dérivée",
+      "fonction exponentielle",
+      "maximum",
+      "optimisation",
+      "étude de fonctions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-2026-cameroun",
+    "epreuve_titre": "Baccalauréat C/E - Mathématiques - 2026 - Cameroun",
+    "exercice_numero": "B",
+    "rappel_id": "rdm-bac-c-e-2026-cameroun-exB-qTâche2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Après une hémorragie, le taux d'une hormone dans le sang monte vite, atteint un pic, puis redescend lentement. Le médecin veut connaître ce pic : quand survient-il et quelle valeur atteint-il ? Le même schéma apparaît pour la concentration d'un médicament dans le sang, la production d'une usine ou un signal électrique. Toutes ces situations sont modélisées par des fonctions du type $t\\,e^{-kt}$, et la réponse s'obtient toujours de la même façon : on dérive, on étudie le signe de la dérivée, et on lit le maximum sur le tableau de variations."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dériver un produit : $(uv)'=u'v+uv'$.",
+        "Dériver $e^{u(t)}$ : $(e^{u})'=u'\\,e^{u}$, par exemple $(e^{-kt})'=-k\\,e^{-kt}$.",
+        "Savoir que $e^{X}>0$ pour tout réel $X$.",
+        "Résoudre une inéquation du premier degré et dresser un tableau de signes et de variations."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Maximum d'une fonction $t\\,e^{-kt}$ par le signe de la dérivée",
+      "contenu_markdown": "Pour trouver le maximum d'une fonction dérivable sur un intervalle, on calcule sa dérivée, on détermine son signe, et on repère la valeur où la dérivée s'annule en changeant de signe (de positif à négatif) : c'est en ce point que la fonction atteint son maximum local, qui est global si c'est le seul point critique et que le comportement aux bords de l'intervalle ne dépasse pas cette valeur.\n\nPour $f(t)=a\\,t\\,e^{-kt}+b$ avec $a>0$, $k>0$ et $t\\geq0$ : la dérivée se factorise par l'exponentielle, qui est toujours strictement positive. Le signe de $f'$ est donc celui du facteur affine restant, ce qui rend l'étude très rapide.",
+      "formule_principale": "f(t)=a\\,t\\,e^{-kt}+b \\;\\Rightarrow\\; f'(t)=a\\,e^{-kt}(1-kt), \\qquad t_{\\max}=\\frac1k, \\qquad f(t_{\\max})=\\frac{a}{k\\,e}+b",
+      "variantes": [
+        {
+          "nom": "Contrôle aux bords de l'intervalle",
+          "quand_utiliser": "Quand on veut affirmer que le maximum local est global sur $[0;+\\infty[$.",
+          "contenu_markdown": "On calcule la valeur en $0$ et la limite en $+\\infty$. Pour $t\\,e^{-kt}$ avec $k>0$, on a $t\\,e^{-kt}\\to0$ quand $t\\to+\\infty$ (croissances comparées) : les bords donnent $b$, qui est inférieur à $f(t_{\\max})$. Ici il suffit aussi de constater que $f'$ ne change de signe qu'une seule fois, de $+$ à $-$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le taux d'une hormone sécrétée lors d'une hémorragie, en $\\mu g/mL$, est modélisé en fonction du temps $t\\geq0$ (en minutes) par $\\varphi(t)=5t\\,e^{-\\frac35t}+1$. Déterminer le taux maximal de cette hormone et l'instant où il est atteint.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver $\\varphi$ (produit de $5t$ par $e^{-\\frac35t}$)",
+          "justification": "Le maximum se cherche par le signe de la dérivée.",
+          "resultat_markdown": "$\\varphi'(t)=5e^{-\\frac35t}+5t\\times\\left(-\\frac35\\right)e^{-\\frac35t}=e^{-\\frac35t}(5-3t)$"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe de $\\varphi'(t)$",
+          "justification": "$e^{-\\frac35t}>0$ pour tout $t$ : le signe est celui de $5-3t$.",
+          "resultat_markdown": "$\\varphi'(t)=0\\iff t=\\dfrac53$ ; $\\varphi'(t)>0$ si $t<\\dfrac53$ et $\\varphi'(t)<0$ si $t>\\dfrac53$."
+        },
+        {
+          "numero": 3,
+          "action": "Dresser le tableau de variations",
+          "justification": "La dérivée passe de $+$ à $-$ en $\\frac53$ : c'est un maximum.",
+          "resultat_markdown": "$\\varphi$ est croissante sur $\\left[0;\\frac53\\right]$ puis décroissante sur $\\left[\\frac53;+\\infty\\right[$ : le maximum est atteint en $t=\\dfrac53$ minute, soit $1$ min $40$ s."
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la valeur du maximum",
+          "justification": "On remplace $t$ par $\\frac53$ ; l'exposant se simplifie car $\\frac35\\times\\frac53=1$.",
+          "resultat_markdown": "$\\varphi\\left(\\dfrac53\\right)=5\\times\\dfrac53\\,e^{-1}+1=\\dfrac{25}{3e}+1\\approx4{,}07$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier que ce maximum est global",
+          "justification": "$\\varphi'$ ne change de signe qu'une fois ; de plus $t\\,e^{-\\frac35t}\\to0$ en $+\\infty$, donc $\\varphi(t)\\to1$, valeur inférieure à $4{,}07$.",
+          "resultat_markdown": "Le maximum local est bien le maximum global sur $[0;+\\infty[$."
+        }
+      ],
+      "conclusion_markdown": "Le taux maximal est $\\dfrac{25}{3e}+1\\approx4{,}07\\ \\mu g/mL$, atteint $\\dfrac53$ minute (environ $1$ min $40$ s) après le début de l'hémorragie."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dériver $t\\,e^{-kt}$ en oubliant le terme $t\\times(-k)e^{-kt}$, c'est-à-dire ne dériver que le facteur $t$.",
+          "pourquoi_faux": "C'est un produit : $(uv)'=u'v+uv'$. Les deux termes sont nécessaires, et c'est leur somme qui donne le facteur $(1-kt)$.",
+          "correction_markdown": "Écrire $u=t$, $v=e^{-kt}$, puis $f'=e^{-kt}+t(-k)e^{-kt}=e^{-kt}(1-kt)$."
+        },
+        {
+          "erreur_markdown": "Chercher à résoudre $e^{-kt}(1-kt)=0$ en annulant aussi l'exponentielle.",
+          "pourquoi_faux": "L'exponentielle est strictement positive : elle ne s'annule jamais et ne change jamais le signe de la dérivée.",
+          "correction_markdown": "Justifier « $e^{-kt}>0$ » puis étudier seulement le signe du facteur affine $1-kt$."
+        },
+        {
+          "erreur_markdown": "Donner $t_{\\max}$ comme réponse sans calculer la valeur maximale de la fonction, ou oublier la constante $+b$ dans cette valeur.",
+          "pourquoi_faux": "La question porte sur le taux maximal, c'est-à-dire l'image $f(t_{\\max})$, et non sur l'instant où il est atteint. La constante $b$ fait partie de la valeur.",
+          "correction_markdown": "Toujours calculer $f(t_{\\max})$ en incluant la constante, puis donner l'instant et la valeur avec leurs unités."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $f(t)=t\\,e^{-2t}$ pour $t\\geq0$. Déterminer le maximum de $f$ et l'instant où il est atteint.",
+          "solution_markdown": "$f'(t)=e^{-2t}-2t\\,e^{-2t}=e^{-2t}(1-2t)$.\n\nComme $e^{-2t}>0$, le signe de $f'$ est celui de $1-2t$ : positif pour $t<\\frac12$, négatif pour $t>\\frac12$.\n\n$f$ est croissante sur $\\left[0;\\frac12\\right]$ puis décroissante : le maximum est atteint en $t=\\dfrac12$ et vaut $f\\left(\\dfrac12\\right)=\\dfrac12\\,e^{-1}=\\dfrac1{2e}\\approx0{,}18$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La concentration d'un médicament dans le sang, en $mg/L$, est $g(t)=4t\\,e^{-\\frac12t}+3$ pour $t\\geq0$ (en heures). Déterminer à quel instant la concentration est maximale et quelle est sa valeur.",
+          "solution_markdown": "$g'(t)=4e^{-\\frac12t}+4t\\times\\left(-\\frac12\\right)e^{-\\frac12t}=e^{-\\frac12t}(4-2t)$.\n\nSigne de $4-2t$ : positif pour $t<2$, négatif pour $t>2$. $g$ est croissante sur $[0;2]$, puis décroissante.\n\nLe maximum est atteint en $t=2$ heures : $g(2)=4\\times2\\,e^{-1}+3=\\dfrac8e+3\\approx5{,}94\\ mg/L$.\n\nContrôle : $g(0)=3$ et $g(t)\\to3$ quand $t\\to+\\infty$, inférieurs à $5{,}94$ : le maximum est global."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une population de bactéries traitée par un antibiotique est modélisée par $h(t)=a\\,t\\,e^{-\\frac14t}$ pour $t\\geq0$ (en heures, $h$ en milliers), où $a>0$ est un paramètre. On observe un maximum de $8$ milliers. Déterminer $a$, puis l'instant du maximum.",
+          "solution_markdown": "$h'(t)=a\\,e^{-\\frac14t}-\\dfrac a4\\,t\\,e^{-\\frac14t}=a\\,e^{-\\frac14t}\\left(1-\\dfrac t4\\right)$.\n\nComme $a>0$ et $e^{-\\frac14t}>0$, le signe de $h'$ est celui de $1-\\frac t4$ : $h$ est croissante sur $[0;4]$ puis décroissante. Le maximum est atteint en $t=4$.\n\n$h(4)=a\\times4\\,e^{-1}=\\dfrac{4a}{e}$. La condition $h(4)=8$ donne $4a=8e$, donc $a=2e\\approx5{,}44$.\n\nVérification : $h(4)=2e\\times4\\,e^{-1}=8$ ✓. Le maximum de $8$ milliers est atteint après $4$ heures."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour maximiser une fonction dérivable, on dérive, on étudie le signe de la dérivée et on repère où elle passe de $+$ à $-$.",
+        "Pour $f(t)=a\\,t\\,e^{-kt}+b$, la dérivée est $a\\,e^{-kt}(1-kt)$ : son signe est celui de $1-kt$, l'exponentielle étant toujours positive.",
+        "Le maximum est atteint en $t=\\frac1k$ et vaut $\\frac{a}{ke}+b$.",
+        "On vérifie que le maximum est global : un seul changement de signe de $f'$ et des valeurs aux bords plus petites.",
+        "Donne toujours la réponse complète : l'instant, la valeur maximale et l'unité."
+      ]
+    }
+  ]
+}

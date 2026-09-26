@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-suite-affine-point-fixe-suite-geometrique-terminale-c-e",
+  "meta": {
+    "titre": "Ramener une suite $u_{n+1}=au_n+b$ à une suite géométrique grâce à son point fixe",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "C/E",
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "suites numériques",
+      "suite géométrique",
+      "point fixe",
+      "relation de récurrence affine",
+      "expression explicite d'une suite"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-2026-cameroun",
+    "epreuve_titre": "Baccalauréat C/E - Mathématiques - 2026 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-e-2026-cameroun-ex2-qI.3.b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une ville où il pleut un jour sur deux, un placement où l'on ajoute chaque mois une somme fixe à un capital qui fructifie, une population qui croît tout en subissant un prélèvement constant : dans tous ces cas, le terme suivant se calcule à partir du terme précédent par une relation de la forme $u_{n+1}=au_n+b$. Une telle suite n'est ni arithmétique ni géométrique, et pourtant il existe une astuce qui la ramène à une suite géométrique, dont on sait tout écrire. Au BAC C/E, cette astuce est un classique : l'énoncé te donne parfois directement la suite auxiliaire (comme en 2026 avec $Q_n=P_n-\\frac{5}{11}$), mais il faut alors savoir POURQUOI ce nombre apparaît, et savoir le retrouver quand l'énoncé ne le donne pas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Reconnaître une suite géométrique : $v_{n+1}=q\\,v_n$ pour tout $n$, et connaître sa forme explicite $v_n=v_0\\,q^{\\,n}$ (ou $v_n=v_1\\,q^{\\,n-1}$ si la suite commence à $n=1$).",
+        "Résoudre une équation du premier degré à coefficients fractionnaires.",
+        "Calculer avec des fractions (réduction au même dénominateur, simplification).",
+        "Connaître la limite de $q^n$ : elle vaut $0$ si $|q|<1$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Point fixe d'une relation affine et suite géométrique associée",
+      "contenu_markdown": "Soit $(u_n)$ une suite vérifiant $u_{n+1}=au_n+b$ avec $a\\neq1$ (si $a=1$, la suite est arithmétique). On appelle **point fixe** de la relation le réel $\\ell$ solution de $\\ell=a\\ell+b$, c'est-à-dire $\\ell=\\dfrac{b}{1-a}$. On pose alors $v_n=u_n-\\ell$. En remplaçant $u_n$ par $v_n+\\ell$ dans la relation, on obtient $v_{n+1}+\\ell=a(v_n+\\ell)+b$, donc $v_{n+1}=av_n+(a\\ell+b-\\ell)$. Le terme entre parenthèses est nul, exactement parce que $\\ell=a\\ell+b$. Il reste $v_{n+1}=a\\,v_n$ : $(v_n)$ est géométrique de raison $a$, et l'on en déduit $u_n=\\ell+v_0\\,a^{\\,n}$ avec $v_0=u_0-\\ell$.",
+      "formule_principale": "\\ell=a\\ell+b\\iff\\ell=\\frac{b}{1-a},\\qquad v_n=u_n-\\ell\\ \\Rightarrow\\ v_{n+1}=a\\,v_n,\\qquad u_n=\\ell+(u_0-\\ell)\\,a^{\\,n}",
+      "variantes": [
+        {
+          "nom": "L'énoncé donne déjà la suite auxiliaire",
+          "quand_utiliser": "Quand la question est du type « Montrer que $(v_n)$ définie par $v_n=u_n-c$ est géométrique ».",
+          "contenu_markdown": "On ne cherche pas le point fixe pour le principe : on calcule directement $v_{n+1}=u_{n+1}-c=au_n+b-c$, puis on remplace $u_n$ par $v_n+c$ et l'on développe. Les termes constants doivent s'annuler, ce qui est garanti si $c$ est le point fixe. Résoudre $c=ac+b$ au brouillon est un bon test de cohérence : si $c$ n'est pas solution, le terme constant ne s'annule pas et il y a une erreur d'énoncé ou de calcul."
+        },
+        {
+          "nom": "Suite qui ne commence pas à $n=0$",
+          "quand_utiliser": "Quand le premier terme est $u_1$ (comme dans les problèmes de probabilité du jour 1).",
+          "contenu_markdown": "La raison reste $a$, mais la formule explicite devient $v_n=v_1\\,a^{\\,n-1}$, donc $u_n=\\ell+(u_1-\\ell)\\,a^{\\,n-1}$. Attention à l'exposant $n-1$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une ville, la probabilité qu'il pleuve le premier jour est $\\frac13$. S'il fait beau un jour, il fait beau le lendemain avec la probabilité $\\frac35$ ; s'il pleut un jour, il pleut le lendemain avec la probabilité $\\frac23$. On note $P_n$ la probabilité qu'il fasse beau le $n$-ième jour. On a établi que, pour tout entier $n\\geq1$, $P_{n+1}=\\dfrac{4}{15}P_n+\\dfrac13$. Montrer que la suite $(Q_n)$ définie par $Q_n=P_n-\\dfrac{5}{11}$ est une suite géométrique, puis exprimer $P_n$ en fonction de $n$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier $a$ et $b$ et calculer le point fixe $\\ell$",
+          "justification": "Le nombre $\\frac{5}{11}$ de l'énoncé n'est pas tombé du ciel : c'est le point fixe de la relation, et le retrouver explique pourquoi la suite auxiliaire va marcher.",
+          "resultat_markdown": "$a=\\dfrac{4}{15}$, $b=\\dfrac13$. On résout $\\ell=\\dfrac{4}{15}\\ell+\\dfrac13$, soit $\\dfrac{11}{15}\\ell=\\dfrac13$, d'où $\\ell=\\dfrac13\\times\\dfrac{15}{11}=\\dfrac{5}{11}$."
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer $Q_{n+1}$ en remplaçant $P_n$ par $Q_n+\\dfrac{5}{11}$",
+          "justification": "On veut faire apparaître $Q_n$ seul : c'est la substitution $u_n=v_n+\\ell$ de la méthode.",
+          "resultat_markdown": "$Q_{n+1}=P_{n+1}-\\dfrac{5}{11}=\\dfrac{4}{15}\\left(Q_n+\\dfrac{5}{11}\\right)+\\dfrac13-\\dfrac{5}{11}=\\dfrac{4}{15}Q_n+\\dfrac{4}{15}\\times\\dfrac{5}{11}+\\dfrac13-\\dfrac{5}{11}$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier que les termes constants s'annulent",
+          "justification": "C'est le cœur de la méthode : la constante disparaît exactement parce que $\\frac{5}{11}$ est le point fixe.",
+          "resultat_markdown": "$\\dfrac{4}{15}\\times\\dfrac{5}{11}=\\dfrac{20}{165}=\\dfrac{4}{33}$ et $\\dfrac13-\\dfrac{5}{11}=\\dfrac{11-15}{33}=-\\dfrac{4}{33}$. La somme vaut $0$, donc $Q_{n+1}=\\dfrac{4}{15}Q_n$."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur la nature de $(Q_n)$",
+          "justification": "La relation $Q_{n+1}=q\\,Q_n$ pour tout $n$ est la définition d'une suite géométrique.",
+          "resultat_markdown": "$(Q_n)$ est géométrique de raison $\\dfrac{4}{15}$."
+        },
+        {
+          "numero": 5,
+          "action": "Calculer le premier terme $Q_1$ puis écrire $Q_n$",
+          "justification": "La suite commence à $n=1$ : on utilise $Q_n=Q_1\\,q^{\\,n-1}$, avec $P_1=1-\\dfrac13=\\dfrac23$.",
+          "resultat_markdown": "$Q_1=\\dfrac23-\\dfrac{5}{11}=\\dfrac{22-15}{33}=\\dfrac{7}{33}$, donc $Q_n=\\dfrac{7}{33}\\left(\\dfrac{4}{15}\\right)^{n-1}$."
+        },
+        {
+          "numero": 6,
+          "action": "Revenir à $P_n$ et contrôler sur $n=2$",
+          "justification": "On a $P_n=Q_n+\\dfrac{5}{11}$. Retrouver une valeur déjà connue ($P_2=\\frac{23}{45}$, calculée directement par les probabilités totales) confirme la formule.",
+          "resultat_markdown": "$P_n=\\dfrac{5}{11}+\\dfrac{7}{33}\\left(\\dfrac{4}{15}\\right)^{n-1}$. Pour $n=2$ : $\\dfrac{5}{11}+\\dfrac{28}{495}=\\dfrac{225+28}{495}=\\dfrac{253}{495}=\\dfrac{23}{45}$ ✓."
+        }
+      ],
+      "conclusion_markdown": "La suite $(Q_n)$ est géométrique de raison $\\dfrac{4}{15}$ et $P_n=\\dfrac{5}{11}+\\dfrac{7}{33}\\left(\\dfrac{4}{15}\\right)^{n-1}$ pour tout $n\\geq1$. Comme $\\left|\\dfrac{4}{15}\\right|<1$, $P_n$ tend vers le point fixe $\\dfrac{5}{11}$ : à long terme, il fait beau environ $45{,}5\\,\\%$ des jours."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Poser $v_n=u_n-b$ (ou $v_n=u_n+b$) au lieu de $v_n=u_n-\\ell$.",
+          "pourquoi_faux": "Le nombre qui fait disparaître la constante n'est pas $b$ mais la solution de $\\ell=a\\ell+b$, soit $\\dfrac{b}{1-a}$. Avec $v_n=u_n-b$, il reste un terme constant non nul dans $v_{n+1}$ et la suite n'est pas géométrique (sauf cas particulier).",
+          "correction_markdown": "Toujours résoudre d'abord $\\ell=a\\ell+b$. Par exemple pour $u_{n+1}=2u_n-3$, $\\ell=3$ (et non $-3$)."
+        },
+        {
+          "erreur_markdown": "Oublier de remplacer $u_n$ par $v_n+\\ell$ et écrire directement $v_{n+1}=a\\,v_n$ en concluant « donc c'est géométrique ».",
+          "pourquoi_faux": "Affirmer $v_{n+1}=av_n$ sans le démontrer est exactement ce que la question demande de justifier. Il faut développer $v_{n+1}=u_{n+1}-\\ell=au_n+b-\\ell$ puis substituer, et montrer que les constantes s'annulent.",
+          "correction_markdown": "Rédiger le calcul complet : $v_{n+1}=a(v_n+\\ell)+b-\\ell=av_n+(a\\ell+b-\\ell)=av_n$, en signalant que $a\\ell+b-\\ell=0$ par définition de $\\ell$."
+        },
+        {
+          "erreur_markdown": "Écrire $u_n=\\ell+v_0\\,a^{\\,n}$ quand la suite commence à $n=1$, ou oublier de revenir de $v_n$ à $u_n$ à la fin.",
+          "pourquoi_faux": "Si le premier terme est $u_1$, la formule est $v_n=v_1\\,a^{\\,n-1}$ : l'exposant $n$ décalerait tous les termes d'un rang. Et la question porte sur $u_n$ (ou $P_n$), pas sur la suite auxiliaire : s'arrêter à $v_n$ laisse la question sans réponse.",
+          "correction_markdown": "Repérer l'indice du premier terme, utiliser l'exposant correspondant, puis écrire $u_n=\\ell+v_n$. Contrôler en recalculant $u_2$ (ou $u_1$) avec la formule et par la relation de récurrence."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "On considère la suite $(u_n)_{n\\geq0}$ définie par $u_0=5$ et $u_{n+1}=2u_n-3$. On pose $v_n=u_n-3$. Montrer que $(v_n)$ est géométrique, puis exprimer $u_n$ en fonction de $n$.",
+          "solution_markdown": "Point fixe : $\\ell=2\\ell-3\\iff\\ell=3$, ce qui justifie le choix de $v_n=u_n-3$.\n\n$v_{n+1}=u_{n+1}-3=2u_n-3-3=2u_n-6=2(u_n-3)=2v_n$. Donc $(v_n)$ est géométrique de raison $2$, de premier terme $v_0=5-3=2$.\n\nAinsi $v_n=2\\times2^n=2^{n+1}$ et $u_n=3+2^{n+1}$.\n\nVérification : $u_1=2\\times5-3=7$ et la formule donne $3+2^2=7$ ✓ ; $u_2=2\\times7-3=11$ et la formule donne $3+2^3=11$ ✓."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On considère la suite $(u_n)_{n\\geq0}$ définie par $u_0=1$ et $u_{n+1}=\\dfrac12u_n+3$. Déterminer le point fixe de la relation, montrer que $v_n=u_n-\\ell$ est géométrique, exprimer $u_n$ en fonction de $n$ et déterminer la limite de $(u_n)$.",
+          "solution_markdown": "Point fixe : $\\ell=\\dfrac12\\ell+3\\iff\\dfrac12\\ell=3\\iff\\ell=6$.\n\nOn pose $v_n=u_n-6$ : $v_{n+1}=u_{n+1}-6=\\dfrac12u_n+3-6=\\dfrac12u_n-3=\\dfrac12(u_n-6)=\\dfrac12v_n$. La suite $(v_n)$ est géométrique de raison $\\dfrac12$, de premier terme $v_0=1-6=-5$.\n\nDonc $v_n=-5\\left(\\dfrac12\\right)^n$ et $u_n=6-5\\left(\\dfrac12\\right)^n$.\n\nVérification : $u_1=\\dfrac12+3=\\dfrac72$ et la formule donne $6-\\dfrac52=\\dfrac72$ ✓ ; $u_2=\\dfrac74+3=\\dfrac{19}{4}$ et la formule donne $6-\\dfrac54=\\dfrac{19}{4}$ ✓.\n\nComme $\\left|\\dfrac12\\right|<1$, $\\left(\\dfrac12\\right)^n\\to0$ donc $u_n\\to6$, le point fixe."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On considère la suite $(u_n)_{n\\geq0}$ définie par $u_0=4$ et $u_{n+1}=-\\dfrac23u_n+\\dfrac53$. 1) Déterminer le point fixe $\\ell$ de la relation. 2) Montrer que $(v_n)$, définie par $v_n=u_n-\\ell$, est géométrique et exprimer $u_n$ en fonction de $n$. 3) Justifier que $(u_n)$ converge et donner sa limite, alors que la suite n'est pas monotone.",
+          "solution_markdown": "1) $\\ell=-\\dfrac23\\ell+\\dfrac53\\iff\\dfrac53\\ell=\\dfrac53\\iff\\ell=1$.\n\n2) $v_n=u_n-1$ : $v_{n+1}=u_{n+1}-1=-\\dfrac23u_n+\\dfrac53-1=-\\dfrac23u_n+\\dfrac23=-\\dfrac23(u_n-1)=-\\dfrac23v_n$. La suite $(v_n)$ est géométrique de raison $-\\dfrac23$, avec $v_0=4-1=3$.\n\nDonc $v_n=3\\left(-\\dfrac23\\right)^n$ et $u_n=1+3\\left(-\\dfrac23\\right)^n$.\n\nVérification : $u_1=-\\dfrac83+\\dfrac53=-1$ et la formule donne $1+3\\times\\left(-\\dfrac23\\right)=-1$ ✓ ; $u_2=\\dfrac23+\\dfrac53=\\dfrac73$ et la formule donne $1+3\\times\\dfrac49=1+\\dfrac43=\\dfrac73$ ✓.\n\n3) Comme $\\left|-\\dfrac23\\right|<1$, $\\left(-\\dfrac23\\right)^n\\to0$, donc $u_n\\to1=\\ell$. La raison est négative : $v_n$ change de signe à chaque rang ($v_0=3>0$, $v_1=-2<0$, $v_2=\\dfrac43>0$), donc $u_n$ oscille de part et d'autre de $1$ ($u_0=4$, $u_1=-1$, $u_2=\\dfrac73$) sans être monotone, tout en convergeant vers $1$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une suite $u_{n+1}=au_n+b$ avec $a\\neq1$ n'est pas géométrique, mais elle le devient après translation par son point fixe.",
+        "Le point fixe $\\ell$ se calcule en résolvant $\\ell=a\\ell+b$, soit $\\ell=\\dfrac{b}{1-a}$ : c'est la valeur qui rend la constante nulle.",
+        "On pose $v_n=u_n-\\ell$ et l'on montre $v_{n+1}=a\\,v_n$ en substituant $u_n=v_n+\\ell$ : la suite $(v_n)$ est géométrique de même raison $a$.",
+        "On obtient $u_n=\\ell+(u_0-\\ell)a^{\\,n}$ ; attention à l'exposant $n-1$ si la suite commence à $u_1$.",
+        "Si $|a|<1$, la suite $(u_n)$ converge vers le point fixe $\\ell$ ; vérifie toujours ta formule en recalculant $u_1$ ou $u_2$ par la récurrence."
+      ]
+    }
+  ]
+}

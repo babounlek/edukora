@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-signe-fonction-par-variations-minimum-terminale-c-e",
+  "meta": {
+    "titre": "Établir le signe d'une fonction en étudiant ses variations et son minimum",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "C/E",
+    "sous_theme": "Étude de fonctions",
+    "duree_estimee_min": 25,
+    "tags": [
+      "signe d'une fonction",
+      "sens de variation",
+      "minimum",
+      "dérivée",
+      "fonction exponentielle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-2026-cameroun",
+    "epreuve_titre": "Baccalauréat C/E - Mathématiques - 2026 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-e-2026-cameroun-ex3-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un exercice d'étude de fonction, la première question demande souvent de montrer qu'une fonction auxiliaire est strictement positive sur $\\mathbb R$, et la suite de l'exercice (signe de la dérivée, tableau de variations, aire) repose entièrement sur ce résultat. Résoudre l'inéquation $g(x)>0$ directement est en général impossible : la fonction mélange un terme affine et une exponentielle. Le bon réflexe est de changer de stratégie : au lieu de chercher où $g$ est positive, on cherche la valeur la plus basse qu'elle atteint. Si même cette valeur la plus basse est strictement positive, alors la fonction l'est partout."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dériver une somme, un produit et une composée avec l'exponentielle : $(e^{u})'=u'e^{u}$.",
+        "Résoudre une équation ou une inéquation du type $e^{x-1}=1$ ou $e^{x-1}>1$ en utilisant la stricte croissance de l'exponentielle.",
+        "Déduire le sens de variation d'une fonction du signe de sa dérivée.",
+        "Savoir lire un tableau de variations et repérer un extremum."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le signe d'une fonction se lit sur son minimum",
+      "contenu_markdown": "Pour montrer qu'une fonction $g$ est strictement positive sur un intervalle $I$, on n'étudie pas le signe de $g(x)$ intervalle par intervalle : on étudie ses variations et on localise son **minimum**. Si $g$ admet sur $I$ un minimum $m=g(x_0)$ et si $m>0$, alors pour tout $x\\in I$, $g(x)\\geq m>0$.\n\nMéthode en quatre étapes :\n\n1. Dériver $g$ et étudier le signe de $g'$.\n2. Dresser le tableau de variations et repérer le point $x_0$ où $g$ passe de décroissante à croissante : c'est là que se trouve le minimum global.\n3. Calculer exactement la valeur du minimum $g(x_0)$.\n4. Conclure : si $g(x_0)>0$, alors $g(x)\\geq g(x_0)>0$ pour tout $x$.",
+      "formule_principale": "g(x)\\geq g(x_0)=m>0 \\quad\\text{pour tout } x\\in I \\;\\Longrightarrow\\; g(x)>0 \\text{ sur } I",
+      "variantes": [
+        {
+          "nom": "Cas où le minimum est négatif ou nul",
+          "quand_utiliser": "Quand la valeur du minimum $g(x_0)$ n'est pas strictement positive.",
+          "contenu_markdown": "Si $g(x_0)<0$, la fonction prend des valeurs négatives : la conclusion \"$g>0$ partout\" est fausse et il faut alors étudier les zéros de $g$ (théorème des valeurs intermédiaires sur chaque intervalle de stricte monotonie). Si $g(x_0)=0$, alors $g\\geq0$ avec annulation uniquement en $x_0$. Dans l'énoncé de BAC, la question est presque toujours posée de façon à ce que le minimum soit strictement positif."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère la fonction $g$ définie sur $\\mathbb R$ par $g(x)=2-x+e^{x-1}$. Étudier le sens des variations de $g$ et en déduire que pour tout réel $x$, $g(x)>0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver $g$",
+          "justification": "Le sens de variation se lit sur le signe de la dérivée.",
+          "resultat_markdown": "$g'(x)=-1+e^{x-1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Étudier le signe de $g'$",
+          "justification": "On résout $g'(x)=0$ puis on compare $e^{x-1}$ à $1$ grâce à la stricte croissance de l'exponentielle.",
+          "resultat_markdown": "$g'(x)=0\\iff e^{x-1}=1\\iff x=1$. Pour $x<1$, $e^{x-1}<1$ donc $g'(x)<0$ ; pour $x>1$, $e^{x-1}>1$ donc $g'(x)>0$."
+        },
+        {
+          "numero": 3,
+          "action": "Déduire le tableau de variations",
+          "justification": "$g'$ change de signe en $1$ (moins puis plus) : $g$ décroît puis croît, donc le minimum global est atteint en $x=1$.",
+          "resultat_markdown": "$g$ est strictement décroissante sur $]-\\infty\\,;\\,1]$ et strictement croissante sur $[1\\,;\\,+\\infty[$."
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la valeur du minimum",
+          "justification": "C'est cette valeur, et elle seule, qui décide du signe de $g$ sur $\\mathbb R$.",
+          "resultat_markdown": "$g(1)=2-1+e^{0}=1+1=2$"
+        },
+        {
+          "numero": 5,
+          "action": "Conclure sur le signe de $g$",
+          "justification": "Tout réel $x$ vérifie $g(x)\\geq g(1)$ puisque $g(1)$ est le minimum global.",
+          "resultat_markdown": "Pour tout réel $x$, $g(x)\\geq g(1)=2>0$."
+        }
+      ],
+      "conclusion_markdown": "Le minimum de $g$ sur $\\mathbb R$ vaut $2$, strictement positif : pour tout réel $x$, $g(x)>0$. Ce résultat servira ensuite à établir le signe de $f'(x)=g(x)e^{1-x}$ et donc les variations de $f$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Repérer $x_0$ où $g'(x_0)=0$ et conclure que $g$ est positive parce que $g'(x_0)=0$ ou parce que $x_0>0$.",
+          "pourquoi_faux": "Le signe de $g$ dépend de la valeur $g(x_0)$ du minimum, pas de celle de la dérivée ni de la position de $x_0$. Le fait que $g'$ s'annule est un renseignement sur les variations, pas sur le signe de $g$.",
+          "correction_markdown": "Après avoir localisé $x_0$, calculer toujours $g(x_0)$ en remplaçant $x$ dans l'expression de $g$ (et non de $g'$), puis comparer cette valeur à $0$."
+        },
+        {
+          "erreur_markdown": "Calculer le minimum sans vérifier qu'il s'agit bien d'un minimum global, par exemple en oubliant de contrôler le sens de variation de part et d'autre de $x_0$.",
+          "pourquoi_faux": "Si $g$ était croissante puis décroissante, la valeur $g(x_0)$ serait un maximum et n'aurait aucune valeur pour minorer $g$. Un point où la dérivée s'annule n'est pas automatiquement un minimum.",
+          "correction_markdown": "Dresser le tableau de variations complet et vérifier que $g'$ passe du signe moins au signe plus en $x_0$ (fonction décroissante puis croissante)."
+        },
+        {
+          "erreur_markdown": "Se tromper dans le calcul de la valeur du minimum, par exemple écrire $e^{0}=0$ au lieu de $e^{0}=1$.",
+          "pourquoi_faux": "Une erreur sur $e^0$ change la valeur du minimum : dans l'exemple, on trouverait $2-1+0=1$ au lieu de $2$. La conclusion sur le signe peut alors devenir fausse dans d'autres exercices, où le minimum est plus proche de $0$.",
+          "correction_markdown": "Rappeler les valeurs usuelles ($e^0=1$, $\\ln1=0$) et vérifier le calcul du minimum en le refaisant une seconde fois."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $p$ la fonction définie sur $\\mathbb R$ par $p(x)=x^2-4x+5$. Étudier les variations de $p$ et en déduire que $p(x)>0$ pour tout réel $x$.",
+          "solution_markdown": "$p'(x)=2x-4$. $p'(x)=0\\iff x=2$ ; $p'(x)<0$ pour $x<2$ et $p'(x)>0$ pour $x>2$. Donc $p$ est décroissante sur $]-\\infty\\,;\\,2]$ et croissante sur $[2\\,;\\,+\\infty[$ : son minimum global est $p(2)$.\n\n$p(2)=2^2-4\\times2+5=4-8+5=1$.\n\nPour tout réel $x$, $p(x)\\geq p(2)=1>0$. Donc $p(x)>0$ sur $\\mathbb R$.\n\n(Contrôle : $p(x)=(x-2)^2+1\\geq1$.)"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $q$ la fonction définie sur $]0\\,;\\,+\\infty[$ par $q(x)=x-\\ln x$. Montrer que $q(x)>0$ pour tout $x>0$.",
+          "solution_markdown": "$q'(x)=1-\\dfrac1x=\\dfrac{x-1}{x}$. Sur $]0\\,;\\,+\\infty[$, $x>0$, donc $q'(x)$ a le signe de $x-1$ : $q'(x)<0$ pour $0<x<1$, $q'(x)=0$ pour $x=1$, $q'(x)>0$ pour $x>1$.\n\nDonc $q$ est strictement décroissante sur $]0\\,;\\,1]$ et strictement croissante sur $[1\\,;\\,+\\infty[$ : son minimum global est $q(1)$.\n\n$q(1)=1-\\ln1=1-0=1$.\n\nPour tout $x>0$, $q(x)\\geq q(1)=1>0$. Donc $q(x)>0$ sur $]0\\,;\\,+\\infty[$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $k$ la fonction définie sur $\\mathbb R$ par $k(x)=e^{x}-2x$. Montrer que $k(x)>0$ pour tout réel $x$. On donne $\\ln2\\approx0{,}693$.",
+          "solution_markdown": "$k'(x)=e^{x}-2$. $k'(x)=0\\iff e^{x}=2\\iff x=\\ln2$. Comme l'exponentielle est strictement croissante, $k'(x)<0$ pour $x<\\ln2$ et $k'(x)>0$ pour $x>\\ln2$. Donc $k$ est strictement décroissante sur $]-\\infty\\,;\\,\\ln2]$ et strictement croissante sur $[\\ln2\\,;\\,+\\infty[$ : son minimum global est $k(\\ln2)$.\n\n$$k(\\ln2)=e^{\\ln2}-2\\ln2=2-2\\ln2=2\\,(1-\\ln2)$$\n\nOr $\\ln2<1$ (car $2<e$, ou numériquement $\\ln2\\approx0{,}693$), donc $1-\\ln2>0$ et $k(\\ln2)=2(1-\\ln2)\\approx0{,}614>0$.\n\nPour tout réel $x$, $k(x)\\geq k(\\ln2)>0$. Donc $k(x)>0$ sur $\\mathbb R$.\n\nRemarque : ici le minimum n'est pas un entier ; il faut justifier son signe (par $\\ln2<1$), on ne peut pas le lire directement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour prouver qu'une fonction est strictement positive partout, ne cherche pas où elle est positive : étudie ses variations et repère son minimum.",
+        "Si le minimum global est strictement positif, alors $g(x)\\geq g(x_0)>0$ pour tout $x$ : il n'y a aucun intervalle à étudier séparément.",
+        "Le minimum se trouve là où la dérivée s'annule en passant du signe moins au signe plus ; vérifie-le dans le tableau de variations.",
+        "Calcule la valeur du minimum dans l'expression de $g$ (jamais dans celle de $g'$) et justifie son signe, surtout quand elle contient des logarithmes.",
+        "Ce résultat sert ensuite de tremplin : ici, $g>0$ donne le signe de $f'(x)=g(x)e^{1-x}$ et donc les variations complètes de $f$."
+      ]
+    }
+  ]
+}

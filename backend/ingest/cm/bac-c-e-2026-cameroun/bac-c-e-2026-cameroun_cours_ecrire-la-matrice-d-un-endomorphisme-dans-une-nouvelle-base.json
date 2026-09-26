@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-matrice-endomorphisme-nouvelle-base-terminale-c-e",
+  "meta": {
+    "titre": "Écrire la matrice d'un endomorphisme dans une nouvelle base",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "C/E",
+    "sous_theme": "Algèbre linéaire",
+    "duree_estimee_min": 30,
+    "tags": [
+      "endomorphisme",
+      "matrice d'un endomorphisme",
+      "changement de base",
+      "algèbre linéaire",
+      "combinaison linéaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-2026-cameroun",
+    "epreuve_titre": "Baccalauréat C/E - Mathématiques - 2026 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-e-2026-cameroun-ex1-qII.5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un même endomorphisme peut avoir une matrice très compliquée dans une base et une matrice presque vide dans une autre. Choisir la bonne base, c'est comme choisir le bon angle de caméra : la transformation ne change pas, mais on la lit beaucoup plus facilement. Au BAC C/E, on te donne souvent une matrice ou des images de $\\vec\\imath,\\vec\\jmath,\\vec k$, puis on t'impose une nouvelle base $(\\vec e_1,\\vec e_2,\\vec e_3)$ et on te demande la matrice de $\\varphi$ dans cette base. Le piège est de mélanger les deux bases : ce cours t'apprend à ne jamais le faire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un endomorphisme $\\varphi$ est linéaire : $\\varphi(a\\vec u+b\\vec v)=a\\varphi(\\vec u)+b\\varphi(\\vec v)$.",
+        "Savoir écrire la matrice d'un endomorphisme dans une base donnée (images des vecteurs de la base placées en colonnes).",
+        "Savoir qu'une famille de 3 vecteurs indépendants est une base d'un espace de dimension 3.",
+        "Savoir résoudre un petit système linéaire de 3 équations à 3 inconnues, par identification des coordonnées."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Matrice de $\\varphi$ dans une nouvelle base",
+      "contenu_markdown": "Soit $\\varphi$ un endomorphisme de $E$ (dimension 3) et $(\\vec e_1,\\vec e_2,\\vec e_3)$ une base de $E$. La matrice de $\\varphi$ dans cette base se construit colonne par colonne :\n\n1. On calcule l'image $\\varphi(\\vec e_j)$ de chaque nouveau vecteur de base, en passant par la base de départ (par linéarité).\n2. On exprime chaque image comme combinaison linéaire de $\\vec e_1,\\vec e_2,\\vec e_3$ eux-mêmes : $\\varphi(\\vec e_j)=a_j\\vec e_1+b_j\\vec e_2+c_j\\vec e_3$. Pour cela, on écrit l'égalité avec des inconnues $a_j,b_j,c_j$ puis on identifie les coordonnées dans l'ancienne base.\n3. Les coefficients $(a_j,b_j,c_j)$ forment la $j$-ème colonne de la matrice.\n\nAttention : on ne place jamais dans la matrice des coordonnées exprimées avec $\\vec\\imath,\\vec\\jmath,\\vec k$.",
+      "formule_principale": "\\varphi(\\vec e_j)=a_j\\vec e_1+b_j\\vec e_2+c_j\\vec e_3 \\;\\Longrightarrow\\; M'=\\begin{pmatrix}a_1&a_2&a_3\\\\b_1&b_2&b_3\\\\c_1&c_2&c_3\\end{pmatrix}",
+      "variantes": [
+        {
+          "nom": "Raccourci : un vecteur du noyau ou un vecteur propre",
+          "quand_utiliser": "Quand un des vecteurs de la nouvelle base est dans le noyau de $\\varphi$, ou est envoyé sur un multiple de lui-même.",
+          "contenu_markdown": "Si $\\varphi(\\vec e_j)=\\vec 0$, la colonne $j$ est nulle. Si $\\varphi(\\vec e_j)=\\lambda\\vec e_j$, la colonne $j$ vaut $\\lambda$ sur la diagonale et $0$ ailleurs. Repérer cela avant de calculer fait gagner un temps précieux."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "L'espace vectoriel $E$ est de dimension 3, de base $(\\vec\\imath,\\vec\\jmath,\\vec k)$. Soit $\\varphi$ l'endomorphisme de $E$ tel que $\\varphi(\\vec\\imath)=\\vec\\imath-2\\vec k$, $\\varphi(\\vec\\jmath)=\\vec\\jmath+2\\vec k$ et $\\varphi(\\vec k)=-\\vec\\imath+2\\vec k$. On pose $\\vec e_1=\\vec\\imath+\\vec k$, $\\vec e_2=\\vec\\imath-2\\vec k$ et $\\vec e_3=\\vec\\jmath+2\\vec k$, et on admet que $(\\vec e_1,\\vec e_2,\\vec e_3)$ est une base de $E$ et que $\\vec e_1$ appartient au noyau de $\\varphi$. Donner la matrice de $\\varphi$ dans la base $(\\vec e_1,\\vec e_2,\\vec e_3)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $\\varphi(\\vec e_1)$",
+          "justification": "$\\vec e_1=\\vec\\imath+\\vec k$ engendre le noyau de $\\varphi$ : son image est le vecteur nul, inutile de calculer davantage.",
+          "resultat_markdown": "$\\varphi(\\vec e_1)=\\vec 0=0\\,\\vec e_1+0\\,\\vec e_2+0\\,\\vec e_3$ : première colonne $(0;0;0)$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $\\varphi(\\vec e_2)$ par linéarité, puis l'exprimer dans la nouvelle base",
+          "justification": "On développe $\\varphi(\\vec e_2)$ à l'aide des images de $\\vec\\imath$ et $\\vec k$, puis on reconnaît un multiple de $\\vec e_2$.",
+          "resultat_markdown": "$\\varphi(\\vec e_2)=\\varphi(\\vec\\imath)-2\\varphi(\\vec k)=(\\vec\\imath-2\\vec k)-2(-\\vec\\imath+2\\vec k)=3\\vec\\imath-6\\vec k=3\\,\\vec e_2$. Deuxième colonne $(0;3;0)$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $\\varphi(\\vec e_3)$ dans l'ancienne base",
+          "justification": "On utilise à nouveau la linéarité, mais le résultat est encore exprimé avec $\\vec\\imath,\\vec\\jmath,\\vec k$ : il faudra le convertir.",
+          "resultat_markdown": "$\\varphi(\\vec e_3)=\\varphi(\\vec\\jmath)+2\\varphi(\\vec k)=(\\vec\\jmath+2\\vec k)+2(-\\vec\\imath+2\\vec k)=-2\\vec\\imath+\\vec\\jmath+6\\vec k$."
+        },
+        {
+          "numero": 4,
+          "action": "Exprimer $\\varphi(\\vec e_3)$ dans la base $(\\vec e_1,\\vec e_2,\\vec e_3)$ par identification",
+          "justification": "On cherche $a,b,c$ tels que $-2\\vec\\imath+\\vec\\jmath+6\\vec k=a\\vec e_1+b\\vec e_2+c\\vec e_3=(a+b)\\vec\\imath+c\\,\\vec\\jmath+(a-2b+2c)\\vec k$, et on identifie les coordonnées.",
+          "resultat_markdown": "$a+b=-2$, $c=1$, $a-2b+2c=6$. Avec $c=1$ : $a-2b=4$. Avec $a=-2-b$ : $-2-3b=4$, donc $b=-2$ puis $a=0$. Ainsi $\\varphi(\\vec e_3)=0\\,\\vec e_1-2\\,\\vec e_2+1\\,\\vec e_3$ : troisième colonne $(0;-2;1)$."
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier la combinaison obtenue",
+          "justification": "On redéveloppe $-2\\vec e_2+\\vec e_3$ dans l'ancienne base pour s'assurer de ne pas avoir mélangé les bases.",
+          "resultat_markdown": "$-2(\\vec\\imath-2\\vec k)+(\\vec\\jmath+2\\vec k)=-2\\vec\\imath+\\vec\\jmath+6\\vec k$ ✓."
+        }
+      ],
+      "conclusion_markdown": "La matrice de $\\varphi$ dans la base $(\\vec e_1,\\vec e_2,\\vec e_3)$ est $$M'=\\begin{pmatrix}0&0&0\\\\0&3&-2\\\\0&0&1\\end{pmatrix}.$$"
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire en colonne les coordonnées de $\\varphi(\\vec e_3)$ dans l'ancienne base, par exemple $(-2;1;6)$, sans les convertir dans la nouvelle base.",
+          "pourquoi_faux": "La matrice dans la base $(\\vec e_1,\\vec e_2,\\vec e_3)$ doit contenir des coordonnées relatives à $\\vec e_1,\\vec e_2,\\vec e_3$. Mélanger $\\vec\\imath,\\vec\\jmath,\\vec k$ avec les $\\vec e_j$ donne une matrice qui ne représente plus $\\varphi$ dans aucune base.",
+          "correction_markdown": "Après avoir calculé $\\varphi(\\vec e_j)$, pose toujours $\\varphi(\\vec e_j)=a\\vec e_1+b\\vec e_2+c\\vec e_3$ et identifie pour trouver $a,b,c$."
+        },
+        {
+          "erreur_markdown": "Placer les coefficients en lignes au lieu de les placer en colonnes.",
+          "pourquoi_faux": "Par convention, la $j$-ème colonne de la matrice contient les coordonnées de $\\varphi(\\vec e_j)$. Écrire en lignes revient à transposer la matrice, ce qui change l'endomorphisme représenté.",
+          "correction_markdown": "Rappelle-toi : colonne $j$ = image du $j$-ème vecteur de base. Dans l'exemple, $\\varphi(\\vec e_3)=-2\\vec e_2+\\vec e_3$ donne la troisième colonne $(0;-2;1)$."
+        },
+        {
+          "erreur_markdown": "Confondre $\\varphi(\\vec e_2)$ et une combinaison de $\\vec e_2$ dans la base de départ : calculer $\\varphi(\\vec e_2)$ en remplaçant $\\vec e_2$ par ses coordonnées comme si $\\varphi$ agissait sur les coordonnées sans utiliser les images $\\varphi(\\vec\\imath),\\varphi(\\vec\\jmath),\\varphi(\\vec k)$.",
+          "pourquoi_faux": "On ne connaît $\\varphi$ que par ses images de $\\vec\\imath,\\vec\\jmath,\\vec k$. Pour un vecteur comme $\\vec e_2=\\vec\\imath-2\\vec k$, il faut passer par la linéarité : $\\varphi(\\vec e_2)=\\varphi(\\vec\\imath)-2\\varphi(\\vec k)$.",
+          "correction_markdown": "Écris d'abord chaque $\\vec e_j$ comme combinaison de $\\vec\\imath,\\vec\\jmath,\\vec k$, applique la linéarité, puis convertis le résultat dans la nouvelle base."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Soit $\\varphi$ l'endomorphisme de $E$ tel que $\\varphi(\\vec\\imath)=\\vec\\imath+\\vec\\jmath$, $\\varphi(\\vec\\jmath)=\\vec\\imath+\\vec\\jmath$ et $\\varphi(\\vec k)=3\\vec k$. On pose $\\vec e_1=\\vec\\imath+\\vec\\jmath$, $\\vec e_2=\\vec\\imath-\\vec\\jmath$ et $\\vec e_3=\\vec k$ (base de $E$). Donner la matrice de $\\varphi$ dans la base $(\\vec e_1,\\vec e_2,\\vec e_3)$.",
+          "solution_markdown": "$\\varphi(\\vec e_1)=\\varphi(\\vec\\imath)+\\varphi(\\vec\\jmath)=2\\vec\\imath+2\\vec\\jmath=2\\,\\vec e_1$.\n\n$\\varphi(\\vec e_2)=\\varphi(\\vec\\imath)-\\varphi(\\vec\\jmath)=\\vec 0$.\n\n$\\varphi(\\vec e_3)=\\varphi(\\vec k)=3\\vec k=3\\,\\vec e_3$.\n\nLa matrice dans la base $(\\vec e_1,\\vec e_2,\\vec e_3)$ est donc diagonale : $$M'=\\begin{pmatrix}2&0&0\\\\0&0&0\\\\0&0&3\\end{pmatrix}.$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Soit $\\varphi$ l'endomorphisme de $E$ tel que $\\varphi(\\vec\\imath)=\\vec\\imath+\\vec\\jmath$, $\\varphi(\\vec\\jmath)=2\\vec\\jmath+\\vec k$ et $\\varphi(\\vec k)=3\\vec k$. On pose $\\vec e_1=\\vec\\imath+\\vec\\jmath$, $\\vec e_2=\\vec\\jmath+\\vec k$ et $\\vec e_3=\\vec k$ (base de $E$). Donner la matrice de $\\varphi$ dans la base $(\\vec e_1,\\vec e_2,\\vec e_3)$.",
+          "solution_markdown": "$\\varphi(\\vec e_1)=\\varphi(\\vec\\imath)+\\varphi(\\vec\\jmath)=(\\vec\\imath+\\vec\\jmath)+(2\\vec\\jmath+\\vec k)=\\vec\\imath+3\\vec\\jmath+\\vec k$.\n\nOn cherche $a,b,c$ avec $\\vec\\imath+3\\vec\\jmath+\\vec k=a(\\vec\\imath+\\vec\\jmath)+b(\\vec\\jmath+\\vec k)+c\\vec k=a\\vec\\imath+(a+b)\\vec\\jmath+(b+c)\\vec k$. Donc $a=1$, $a+b=3$ donc $b=2$, $b+c=1$ donc $c=-1$ : $\\varphi(\\vec e_1)=\\vec e_1+2\\vec e_2-\\vec e_3$.\n\n$\\varphi(\\vec e_2)=\\varphi(\\vec\\jmath)+\\varphi(\\vec k)=2\\vec\\jmath+\\vec k+3\\vec k=2\\vec\\jmath+4\\vec k$. Identification : $a=0$, $a+b=2$ donc $b=2$, $b+c=4$ donc $c=2$ : $\\varphi(\\vec e_2)=2\\vec e_2+2\\vec e_3$.\n\n$\\varphi(\\vec e_3)=3\\vec k=3\\vec e_3$.\n\nLa matrice est $$M'=\\begin{pmatrix}1&0&0\\\\2&2&0\\\\-1&2&3\\end{pmatrix}.$$\n\nVérification : $\\vec e_1+2\\vec e_2-\\vec e_3=(\\vec\\imath+\\vec\\jmath)+2(\\vec\\jmath+\\vec k)-\\vec k=\\vec\\imath+3\\vec\\jmath+\\vec k$ ✓."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $\\varphi$ l'endomorphisme de $E$ tel que $\\varphi(\\vec\\imath)=2\\vec\\imath+\\vec k$, $\\varphi(\\vec\\jmath)=\\vec\\imath+2\\vec\\jmath$ et $\\varphi(\\vec k)=3\\vec k$. On pose $\\vec e_1=\\vec\\imath+\\vec k$, $\\vec e_2=\\vec\\jmath+\\vec k$ et $\\vec e_3=\\vec\\imath$ (on admet que c'est une base de $E$).\n\n1. Donner la matrice $A$ de $\\varphi$ dans la base $(\\vec\\imath,\\vec\\jmath,\\vec k)$.\n2. Donner la matrice $M'$ de $\\varphi$ dans la base $(\\vec e_1,\\vec e_2,\\vec e_3)$.\n3. Vérifier que $A$ et $M'$ ont la même trace.",
+          "solution_markdown": "1. Colonnes $\\varphi(\\vec\\imath)=(2;0;1)$, $\\varphi(\\vec\\jmath)=(1;2;0)$, $\\varphi(\\vec k)=(0;0;3)$ : $$A=\\begin{pmatrix}2&1&0\\\\0&2&0\\\\1&0&3\\end{pmatrix}.$$\n\n2. $\\varphi(\\vec e_1)=\\varphi(\\vec\\imath)+\\varphi(\\vec k)=2\\vec\\imath+4\\vec k$. On cherche $a\\vec e_1+b\\vec e_2+c\\vec e_3=(a+c)\\vec\\imath+b\\vec\\jmath+(a+b)\\vec k$ : $b=0$, $a=4$, $a+c=2$ donc $c=-2$. Donc $\\varphi(\\vec e_1)=4\\vec e_1+0\\,\\vec e_2-2\\vec e_3$.\n\n$\\varphi(\\vec e_2)=\\varphi(\\vec\\jmath)+\\varphi(\\vec k)=\\vec\\imath+2\\vec\\jmath+3\\vec k$. Identification : $b=2$, $a+b=3$ donc $a=1$, $a+c=1$ donc $c=0$. Donc $\\varphi(\\vec e_2)=\\vec e_1+2\\vec e_2$.\n\n$\\varphi(\\vec e_3)=\\varphi(\\vec\\imath)=2\\vec\\imath+\\vec k$. Identification : $b=0$, $a+b=1$ donc $a=1$, $a+c=2$ donc $c=1$. Donc $\\varphi(\\vec e_3)=\\vec e_1+\\vec e_3$.\n\nLes colonnes sont $(4;0;-2)$, $(1;2;0)$, $(1;0;1)$ : $$M'=\\begin{pmatrix}4&1&1\\\\0&2&0\\\\-2&0&1\\end{pmatrix}.$$\n\n3. $\\operatorname{tr}A=2+2+3=7$ et $\\operatorname{tr}M'=4+2+1=7$ : les traces sont égales, ce qui est cohérent (la trace ne dépend pas de la base choisie)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La matrice de $\\varphi$ dans une base $(\\vec e_1,\\vec e_2,\\vec e_3)$ a pour $j$-ème colonne les coordonnées de $\\varphi(\\vec e_j)$ dans cette même base.",
+        "On calcule $\\varphi(\\vec e_j)$ par linéarité à partir des images connues, puis on convertit le résultat en combinaison de $\\vec e_1,\\vec e_2,\\vec e_3$ par identification des coordonnées.",
+        "Ne jamais laisser de $\\vec\\imath,\\vec\\jmath,\\vec k$ dans les colonnes de la nouvelle matrice : c'est l'erreur la plus fréquente.",
+        "Repère les raccourcis : un vecteur du noyau donne une colonne nulle, un vecteur propre donne une colonne avec un seul coefficient non nul sur la diagonale.",
+        "Contrôle final : redéveloppe chaque combinaison obtenue dans l'ancienne base, ou compare la trace des deux matrices."
+      ]
+    }
+  ]
+}

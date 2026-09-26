@@ -395,7 +395,12 @@ def annotate_cours_links(corrige, rappels, *, append_unmatched=True):
         body = _RAPPEL_HEADING_PREFIX_RE.sub("", block, count=1).strip()
         if not body:
             return block
-        matching = [r for r in rappels if _rappel_matches_block(r.contenu_markdown.strip(), body)]
+        # contenu_markdown peut porter l'en-tête "### Rappel de méthode" (bac-c-e-2026) :
+        # on le retire comme pour le bloc, sinon aucun préfixe ne concorde.
+        matching = [
+            r for r in rappels
+            if _rappel_matches_block(_RAPPEL_HEADING_PREFIX_RE.sub("", r.contenu_markdown.strip(), count=1).strip(), body)
+        ]
         rang = deja_vus.get(body, 0)
         deja_vus[body] = rang + 1
         if occurrences.get(body, 0) > 1 and len(matching) == occurrences[body]:

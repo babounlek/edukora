@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-determiner-coefficients-primitive-par-identification-terminale-c-e",
+  "meta": {
+    "titre": "Déterminer les coefficients d'une primitive de la forme (ax+b)e^{αx+β} par identification",
+    "matiere": "Mathematiques",
+    "pays": "cm",
+    "serie": "C/E",
+    "sous_theme": "Calcul intégral",
+    "duree_estimee_min": 25,
+    "tags": [
+      "primitive",
+      "fonction exponentielle",
+      "identification de coefficients",
+      "dérivée d'un produit",
+      "calcul intégral"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-c-e-2026-cameroun",
+    "epreuve_titre": "Baccalauréat C/E - Mathématiques - 2026 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-e-2026-cameroun-ex3-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu dois calculer une aire ou une intégrale du type $\\int_1^3 (x-1)e^{1-x}\\,dx$, mais aucune formule du cours ne donne directement une primitive de $(x-1)e^{1-x}$. Bonne nouvelle : l'énoncé du BAC te souffle souvent la forme de la primitive, par exemple $(ax+b)e^{1-x}$, et il ne reste qu'à trouver $a$ et $b$. La méthode est mécanique : on dérive, on factorise par l'exponentielle, on identifie. Une fois maîtrisée, elle te fait gagner des points sûrs dans toute question qui enchaîne « trouver une primitive » puis « calculer une aire ou une intégrale »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Dériver un produit : $(uv)'=u'v+uv'$.",
+        "Dériver une exponentielle composée : $\\big(e^{u}\\big)'=u'e^{u}$, par exemple $\\big(e^{1-x}\\big)'=-e^{1-x}$.",
+        "Savoir qu'une primitive de $h$ est une fonction $F$ dérivable telle que $F'=h$.",
+        "Savoir factoriser une expression par un facteur commun."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Identification des coefficients d'une primitive $(ax+b)e^{\\alpha x+\\beta}$",
+      "contenu_markdown": "Pour que $F(x)=(ax+b)e^{\\alpha x+\\beta}$ soit une primitive de $h$, il faut et il suffit que $F'(x)=h(x)$ pour tout réel $x$. On procède en trois temps : (1) on dérive $F$ avec la formule du produit ; (2) on factorise $F'(x)$ par $e^{\\alpha x+\\beta}$ pour obtenir $e^{\\alpha x+\\beta}\\times(\\text{polynôme de degré 1})$ ; (3) on écrit $h(x)=e^{\\alpha x+\\beta}\\times(\\text{polynôme})$ et on identifie. Comme $e^{\\alpha x+\\beta}$ ne s'annule jamais, on peut la simplifier, et deux polynômes du premier degré égaux pour tout $x$ ont leurs coefficients deux à deux égaux. Cela donne un petit système de deux équations à deux inconnues $a$ et $b$.",
+      "formule_principale": "\\big[(ax+b)e^{\\alpha x+\\beta}\\big]' = e^{\\alpha x+\\beta}\\big[\\alpha a x+(a+\\alpha b)\\big]",
+      "variantes": [
+        {
+          "nom": "Cas de l'exposant $-x$ (ou $1-x$)",
+          "quand_utiliser": "Quand l'exponentielle est de la forme $e^{-x+\\beta}$, comme dans $e^{1-x}$ (cas $\\alpha=-1$).",
+          "contenu_markdown": "La formule devient $\\big[(ax+b)e^{-x+\\beta}\\big]'=e^{-x+\\beta}\\big[-ax+(a-b)\\big]$. Le signe moins sur $\\alpha$ est la source d'erreur la plus fréquente : dérive toujours l'exposant en entier, jamais à moitié."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Déterminer les réels $a$ et $b$ pour que la fonction $F$ définie sur $\\mathbb R$ par $F(x)=(ax+b)e^{1-x}$ soit une primitive sur $\\mathbb R$ de la fonction $h$ définie par $h(x)=(x-1)e^{1-x}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dériver $F$ avec la formule du produit",
+          "justification": "$F$ est un produit de $(ax+b)$ et de $e^{1-x}$, dont la dérivée est $-e^{1-x}$ car la dérivée de $1-x$ est $-1$.",
+          "resultat_markdown": "$F'(x)=a\\,e^{1-x}+(ax+b)\\times\\big(-e^{1-x}\\big)$"
+        },
+        {
+          "numero": 2,
+          "action": "Factoriser $F'(x)$ par $e^{1-x}$",
+          "justification": "Cela met $F'$ sous la même forme « exponentielle fois polynôme » que $h$, ce qui rend l'identification possible.",
+          "resultat_markdown": "$F'(x)=e^{1-x}\\big[a-(ax+b)\\big]=e^{1-x}\\big[-ax+(a-b)\\big]$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire $F'(x)=h(x)$ et identifier les coefficients",
+          "justification": "On veut $F'(x)=h(x)$ pour tout $x$. Après simplification par $e^{1-x}>0$, on obtient l'égalité de deux polynômes du premier degré, donc l'égalité de leurs coefficients.",
+          "resultat_markdown": "$-ax+(a-b)=x-1$ pour tout $x$, d'où $\\begin{cases}-a=1\\\\ a-b=-1\\end{cases}$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre le système",
+          "justification": "La première équation donne $a$ directement, puis on reporte dans la seconde.",
+          "resultat_markdown": "$a=-1$, puis $-1-b=-1$ donc $b=0$."
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier par une dérivation indépendante",
+          "justification": "On redérive la fonction trouvée pour s'assurer qu'aucune erreur de signe ne s'est glissée.",
+          "resultat_markdown": "$F(x)=-xe^{1-x}$, $F'(x)=-e^{1-x}+(-x)\\times\\big(-e^{1-x}\\big)=(x-1)e^{1-x}=h(x)$ ✓"
+        }
+      ],
+      "conclusion_markdown": "On obtient $a=-1$ et $b=0$ : $F(x)=-x\\,e^{1-x}$ est une primitive de $h$ sur $\\mathbb R$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le facteur $-1$ en dérivant $e^{1-x}$ et écrire $\\big(e^{1-x}\\big)'=e^{1-x}$.",
+          "pourquoi_faux": "La dérivée de $e^{u}$ est $u'e^{u}$ ; ici $u=1-x$ et $u'=-1$. Oublier ce signe donne $F'(x)=e^{1-x}(ax+a+b)$ au lieu de $e^{1-x}\\big[-ax+(a-b)\\big]$, et le système obtenu est faux.",
+          "correction_markdown": "Avant de dériver, note explicitement $u(x)$ et $u'(x)$ pour l'exposant. Termine toujours par la vérification : redériver $F$ et retrouver $h$."
+        },
+        {
+          "erreur_markdown": "Identifier les coefficients sans avoir factorisé $F'(x)$ par l'exponentielle, ou sans simplifier l'exponentielle des deux côtés.",
+          "pourquoi_faux": "L'identification n'est légitime qu'entre deux polynômes du premier degré en $x$. Si l'exponentielle reste mélangée aux termes, on ne compare pas des polynômes et l'égalité des coefficients n'est plus justifiée.",
+          "correction_markdown": "Écris $F'(x)=e^{\\alpha x+\\beta}\\times P(x)$ et $h(x)=e^{\\alpha x+\\beta}\\times Q(x)$, simplifie par l'exponentielle (jamais nulle), puis identifie $P$ et $Q$."
+        },
+        {
+          "erreur_markdown": "Ne retenir qu'une seule équation (par exemple $-a=1$) et laisser $b$ non déterminé, ou se tromper de signe dans $a-b=-1$.",
+          "pourquoi_faux": "Deux inconnues $a$ et $b$ exigent deux équations : celle du coefficient de $x$ et celle du terme constant. Une erreur sur le terme constant conduit à une fonction $F$ qui n'est pas une primitive de $h$.",
+          "correction_markdown": "Compare le coefficient de $x$ puis le terme constant, résous le système, puis vérifie en dérivant la fonction trouvée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer les réels $a$ et $b$ pour que $F(x)=(ax+b)e^{x}$ soit une primitive sur $\\mathbb R$ de $h(x)=(x+2)e^{x}$.",
+          "solution_markdown": "$F'(x)=a\\,e^{x}+(ax+b)e^{x}=e^{x}\\big[ax+(a+b)\\big]$.\n\nOn veut $F'(x)=h(x)$, soit $ax+(a+b)=x+2$ pour tout $x$, d'où $\\begin{cases}a=1\\\\ a+b=2\\end{cases}$, donc $a=1$ et $b=1$.\n\nVérification : $F(x)=(x+1)e^{x}$, $F'(x)=e^{x}+(x+1)e^{x}=(x+2)e^{x}=h(x)$ ✓."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer les réels $a$ et $b$ pour que $F(x)=(ax+b)e^{2x}$ soit une primitive sur $\\mathbb R$ de $h(x)=(4x+1)e^{2x}$.",
+          "solution_markdown": "$F'(x)=a\\,e^{2x}+(ax+b)\\times2e^{2x}=e^{2x}\\big[2ax+(a+2b)\\big]$.\n\nOn veut $2ax+(a+2b)=4x+1$ pour tout $x$, d'où $\\begin{cases}2a=4\\\\ a+2b=1\\end{cases}$. Donc $a=2$, puis $2+2b=1$, soit $b=-\\dfrac12$.\n\nVérification : $F(x)=\\left(2x-\\dfrac12\\right)e^{2x}$, $F'(x)=2e^{2x}+2\\left(2x-\\dfrac12\\right)e^{2x}=e^{2x}(2+4x-1)=(4x+1)e^{2x}=h(x)$ ✓."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $h(x)=6x\\,e^{1-2x}$ définie sur $\\mathbb R$. 1) Déterminer les réels $a$ et $b$ tels que $F(x)=(ax+b)e^{1-2x}$ soit une primitive de $h$ sur $\\mathbb R$. 2) En déduire la valeur exacte de $\\displaystyle\\int_0^1 h(x)\\,dx$.",
+          "solution_markdown": "1) $F'(x)=a\\,e^{1-2x}+(ax+b)\\times\\big(-2e^{1-2x}\\big)=e^{1-2x}\\big[-2ax+(a-2b)\\big]$.\n\nOn veut $-2ax+(a-2b)=6x$ pour tout $x$, d'où $\\begin{cases}-2a=6\\\\ a-2b=0\\end{cases}$. Donc $a=-3$, puis $-3-2b=0$, soit $b=-\\dfrac32$.\n\nVérification : $F(x)=\\left(-3x-\\dfrac32\\right)e^{1-2x}$, $F'(x)=-3e^{1-2x}-2\\left(-3x-\\dfrac32\\right)e^{1-2x}=e^{1-2x}(-3+6x+3)=6x\\,e^{1-2x}$ ✓.\n\n2) $\\displaystyle\\int_0^1 h(x)\\,dx=F(1)-F(0)$.\n\n$F(1)=\\left(-3-\\dfrac32\\right)e^{-1}=-\\dfrac{9}{2e}$ et $F(0)=-\\dfrac32\\,e^{1}=-\\dfrac{3e}{2}$.\n\nDonc $\\displaystyle\\int_0^1 h(x)\\,dx=-\\dfrac{9}{2e}+\\dfrac{3e}{2}=\\dfrac{3e}{2}-\\dfrac{9}{2e}\\approx 2{,}42$. Ce résultat est positif, cohérent avec $h\\geq0$ sur $[0,1]$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour une primitive proposée sous la forme $(ax+b)e^{\\alpha x+\\beta}$, on dérive avec $(uv)'=u'v+uv'$ puis on factorise par l'exponentielle.",
+        "Le résultat est $F'(x)=e^{\\alpha x+\\beta}\\big[\\alpha a x+(a+\\alpha b)\\big]$ : garde l'exposant en entier et n'oublie pas le facteur $\\alpha$ venant de la dérivée de l'exponentielle.",
+        "L'exponentielle ne s'annule jamais : on la simplifie, puis on identifie les coefficients de $x$ et les termes constants, ce qui donne un système de deux équations.",
+        "Termine toujours par une vérification : redérive la fonction trouvée et retrouve $h$.",
+        "Cette primitive sert ensuite directement au calcul d'une intégrale ou d'une aire, comme aux questions 5 et 6 de l'exercice 3 du BAC C/E 2026."
+      ]
+    }
+  ]
+}
