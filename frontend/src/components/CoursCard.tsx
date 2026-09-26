@@ -1,12 +1,13 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { CheckCircle2, Clock, ListChecks, Lock, Sparkles, Unlock } from "lucide-react"
+import { ArrowRight, BookOpenCheck, CheckCircle2, Clock, Eye, ListChecks, Sparkles, Unlock } from "lucide-react"
 
 import type { Cours } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
 import { coursDetailPath, coursReaderPath } from "@/lib/countryPath"
+import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
-import { capitaliserTheme } from "@/lib/utils"
+import { capitaliserTheme, cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 
@@ -18,95 +19,106 @@ interface CoursCardProps {
 
 export function CoursCard({ cours, className, style }: CoursCardProps) {
   const SubjectIcon = subjectIcon(cours.subject.code)
+  const couleur = couleurMatiere(cours.subject.code)
+  const accessible = cours.has_access || cours.est_vitrine
 
   return (
     <Link
       to={cours.has_access ? coursReaderPath(cours.slug) : coursDetailPath(cours.slug)}
-      className={className}
+      className={cn("group block h-full rounded-xl focus-visible:outline-none", className)}
       style={style}
     >
-      <Card className="group h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5">
-        <CardContent className="flex h-full flex-col gap-2.5 p-4">
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <SubjectIcon className="size-4.5" aria-hidden="true" />
+      <Card className="relative h-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1 group-hover:border-primary/50 group-hover:shadow-lg group-hover:shadow-primary/[0.07] group-focus-visible:ring-2 group-focus-visible:ring-ring">
+        {/* Filet de matière : même repère que sur les cartes d'épreuves, pour reconnaître
+            "les maths" d'un coup d'œil dans une grille avant même de lire un titre. */}
+        <div aria-hidden className={cn("h-1 w-full", couleur.barre)} />
+        <CardContent className="flex h-[calc(100%-0.25rem)] flex-col gap-3 p-4">
+          <div className="flex items-start gap-3">
+            <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl", couleur.puce)}>
+              <SubjectIcon className="size-5" aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {cours.subject.label}
+                {cours.sous_theme && ` · ${capitaliserTheme(cours.sous_theme)}`}
+              </p>
+              <h3 className="mt-0.5 line-clamp-2 font-display text-base font-medium leading-snug">{cours.titre}</h3>
             </div>
             {/* L'état "lu" remonte en tête de carte : dans une grille où l'on repasse
-                plusieurs fois, c'est le repère qu'on cherche en premier - il se
-                perdait en bas au milieu de la mention d'accès. */}
+                plusieurs fois, c'est le repère qu'on cherche en premier. */}
             {cours.is_read && (
-              <span className="flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success">
+              <span className="flex shrink-0 items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success">
                 <CheckCircle2 className="size-3" />
                 Lu
               </span>
             )}
           </div>
 
-          <div>
-            <h3 className="line-clamp-2 font-display font-medium leading-snug">{cours.titre}</h3>
-            {cours.sous_theme && (
-              <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{capitaliserTheme(cours.sous_theme)}</p>
-            )}
-          </div>
-
-          {/* Deux badges au maximum - la matière et le public visé. Durée, exemple
-              résolu et exercices descendent en pied de carte : ce sont des détails de
-              contenu, les mettre au même poids visuel que la matière donnait six
-              pastilles identiques par carte et plus aucune hiérarchie de lecture. */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <Badge variant="secondary">{cours.subject.label}</Badge>
+            {cours.est_vitrine && (
+              <Badge variant="success" className="gap-1">
+                <Sparkles className="size-3" />
+                Gratuit
+              </Badge>
+            )}
             {cours.cursus.length > 0 ? (
               formatCursusGroups(cours.cursus).map((group) => (
-                <Badge key={group.key} variant="outline">
+                <Badge key={group.key} variant="secondary">
                   {group.label}
                 </Badge>
               ))
             ) : (
-              <Badge variant="outline">Toutes séries</Badge>
+              <Badge variant="secondary">Toutes séries</Badge>
             )}
           </div>
 
-          {/* mt-auto : cale ce pied en bas quelle que soit la longueur du titre, pour
-              que les mentions d'accès s'alignent d'une carte à l'autre sur une ligne
-              de la grille. */}
-          <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-border/70 pt-2.5 text-xs text-muted-foreground">
-            {cours.duree_estimee_min && (
-              <span className="flex items-center gap-1">
-                <Clock className="size-3.5" />
-                {cours.duree_estimee_min} min
-              </span>
-            )}
-            {cours.apercu_contenu.has_exemple_resolu && (
-              <span className="flex items-center gap-1">
-                <Sparkles className="size-3.5" />
-                Exemple résolu
-              </span>
-            )}
-            {cours.apercu_contenu.exercices_count > 0 && (
-              <span className="flex items-center gap-1">
-                <ListChecks className="size-3.5" />
-                {cours.apercu_contenu.exercices_count} exercice
-                {cours.apercu_contenu.exercices_count > 1 ? "s" : ""}
-              </span>
-            )}
-            {/* Libellé court plutôt que la phrase entière : répétée à l'identique sur
-                les trois mille cartes du catalogue, "Accès inclus dans ton abonnement"
-                ne se lisait plus. Le titre complet reste au survol et pour les
-                lecteurs d'écran. */}
-            {cours.has_access ? (
-              <span
-                className="ml-auto flex items-center gap-1 text-success"
-                title="Accès inclus dans ton abonnement"
-              >
-                <Unlock className="size-3.5" />
-                Inclus
-              </span>
-            ) : (
-              <span className="ml-auto flex items-center gap-1" title="Abonnement requis pour lire ce cours">
-                <Lock className="size-3.5" />
-                Abonnement
-              </span>
-            )}
+          {/* Ce que contient le cours : c'est ce qui fait choisir celui-ci plutôt qu'un
+              autre. Détail de contenu, donc en texte sous les badges plutôt qu'en
+              pastilles de même poids que la matière. */}
+          {(cours.duree_estimee_min || cours.apercu_contenu.has_exemple_resolu || cours.apercu_contenu.exercices_count > 0) && (
+            <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+              {cours.duree_estimee_min && (
+                <span className="inline-flex items-center gap-1">
+                  <Clock className="size-3.5" aria-hidden="true" />
+                  {cours.duree_estimee_min} min
+                </span>
+              )}
+              {cours.apercu_contenu.has_exemple_resolu && (
+                <span className="inline-flex items-center gap-1">
+                  <BookOpenCheck className="size-3.5" aria-hidden="true" />
+                  Exemple résolu
+                </span>
+              )}
+              {cours.apercu_contenu.exercices_count > 0 && (
+                <span className="inline-flex items-center gap-1">
+                  <ListChecks className="size-3.5" aria-hidden="true" />
+                  {cours.apercu_contenu.exercices_count} exercice{cours.apercu_contenu.exercices_count > 1 ? "s" : ""}
+                </span>
+              )}
+            </p>
+          )}
+
+          {/* Le pied dit CE QUE LE CLIC FAIT : "Abonnement" écartait avant d'avoir vu, alors
+              qu'un aperçu du cours existe. mt-auto : l'action s'aligne d'une carte à
+              l'autre quelle que soit la hauteur du contenu. */}
+          <div className="mt-auto flex items-center justify-between gap-2 border-t border-border/70 pt-3 text-sm">
+            <span className="flex min-w-0 items-center gap-1.5 font-medium text-foreground">
+              {accessible ? (
+                <>
+                  <Unlock className="size-4 shrink-0 text-success" aria-hidden="true" />
+                  <span className="truncate">{cours.est_vitrine && !cours.has_access ? "Lire - accès libre" : "Lire le cours"}</span>
+                </>
+              ) : (
+                <>
+                  <Eye className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                  <span className="truncate">Voir l'aperçu</span>
+                </>
+              )}
+            </span>
+            <ArrowRight
+              className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-1"
+              aria-hidden="true"
+            />
           </div>
         </CardContent>
       </Card>

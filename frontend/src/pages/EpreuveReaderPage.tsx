@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { ArrowLeft, Check, FileDown, Unlock } from "lucide-react"
+import { ArrowLeft, Check, CheckCheck, FileDown, NotebookPen, Sparkles } from "lucide-react"
 
 import { getEpreuve, marquerExerciceFait, readEpreuve } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -11,14 +11,19 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { BarreExercices } from "@/components/BarreExercices"
+import { BarreLecture } from "@/components/BarreLecture"
+import { EnTeteEpreuve, faitsEpreuve } from "@/components/EnTeteEpreuve"
 import { EnonceToggle } from "@/components/EnonceToggle"
-import { exerciceAnchorId } from "@/components/EpreuveSommaire"
+import { MarquesSection } from "@/components/MarquesSection"
+import { exerciceAnchorId, libelleLong } from "@/components/EpreuveSommaire"
 import { ExerciceNav } from "@/components/ExerciceNav"
 import { FicheReader } from "@/components/FicheReader"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { CountryBadge } from "@/components/CountryBadge"
+import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
 import { epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
@@ -34,6 +39,11 @@ export function EpreuveReaderPage() {
   const [error, setError] = useState<string | null>(null)
 
   useSeo({ title: content?.title ?? "Corrigé" })
+
+  const articleRef = useRef<HTMLElement>(null)
+  // Signets et notes par exercice - pas de "compris" ici : l'exercice a déjà sa validation
+  // (ValiderResolution), deux cases pour la même chose se contrediraient.
+  const etude = useEtude(slug ? { type: "lesson", slug } : null, isAuthenticated && Boolean(content))
 
   useEffect(() => {
     // Requête publique séparée de readEpreuve (réservée aux abonnés) : sert à
@@ -124,32 +134,66 @@ export function EpreuveReaderPage() {
   const exercises = content?.exercises ?? []
 
   const article = (
-    <article className="prose prose-neutral min-w-0 max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+    <article ref={articleRef} className="flex min-w-0 flex-col gap-6">
       {exercises.length > 0 ? (
         exercises.map((exercise, index) => (
-          <div key={exercise.numero_exercice} id={exerciceAnchorId(exercise.numero_exercice)} className="scroll-mt-24">
-            {index > 0 && <hr />}
-            {exercise.enonce_intro_markdown && <EpreuveMarkdown markdown={exercise.enonce_intro_markdown} />}
+          <section
+            key={exercise.numero_exercice}
+            id={exerciceAnchorId(exercise.numero_exercice)}
+            className="scroll-mt-36 rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-7"
+          >
+            <div className="mb-4 flex items-center gap-3">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary font-display text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/30">
+                {index + 1}
+              </span>
+              <h2 className="min-w-0 flex-1 truncate font-display text-lg font-semibold" title={exercise.titre || undefined}>
+                {libelleLong(exercise)}
+              </h2>
+              {exercise.points && (
+                <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+                  {exercise.points} pts
+                </span>
+              )}
+            </div>
+            {exercise.enonce_intro_markdown && (
+              <div className="prose prose-neutral max-w-none text-justify dark:prose-invert">
+                <EpreuveMarkdown markdown={exercise.enonce_intro_markdown} />
+              </div>
+            )}
             <EnonceToggle>
               <EpreuveMarkdown markdown={exercise.enonce_markdown} />
             </EnonceToggle>
-            <EpreuveMarkdown markdown={exercise.corrige_markdown} directCoursLinks />
-            {/* La validation vit ICI, après le corrigé, et nulle part ailleurs : c'est
-                le seul endroit où l'élève a de quoi juger s'il a vraiment résolu
-                l'exercice. Une case à cocher sur une liste se coche sans rien avoir lu,
-                et un suivi qu'on peut remplir sans travailler ne mesure plus rien. */}
+            {/* Le corrigé, nommé : dans une carte qui contient aussi l'énoncé et les outils, la
+                correction doit se reconnaître d'un coup d'œil. */}
+            <div className="mt-5">
+              <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+                <CheckCheck className="size-3.5" aria-hidden="true" />
+                Corrigé
+              </p>
+              <div className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+                <EpreuveMarkdown markdown={exercise.corrige_markdown} directCoursLinks />
+              </div>
+            </div>
+            {/* La validation vit ICI, après le corrigé, et nulle part ailleurs : c'est le seul
+                endroit où l'élève a de quoi juger s'il a vraiment résolu l'exercice. Une case à
+                cocher sur une liste se coche sans rien avoir lu, et un suivi qu'on peut remplir
+                sans travailler ne mesure plus rien. */}
             <ValiderResolution exercise={exercise} />
+            <MarquesSection etude={etude} cle={exerciceAnchorId(exercise.numero_exercice)} avecCompris={false} />
             {exercises.length > 1 && <ExerciceNav exercises={exercises} index={index} />}
-          </div>
+          </section>
         ))
       ) : (
-        <EpreuveMarkdown markdown={content?.content_markdown ?? ""} directCoursLinks />
+        <div className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+          <EpreuveMarkdown markdown={content?.content_markdown ?? ""} directCoursLinks />
+        </div>
       )}
     </article>
   )
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+      {content?.lesson_type !== "FICHE" && <BarreLecture cibleRef={articleRef} contenuKey={content?.title} />}
       <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
         <Link
           to={epreuvesListPath(displayCountry)}
@@ -162,56 +206,69 @@ export function EpreuveReaderPage() {
         <Link to={epreuveDetailPath(displayCountry, slug ?? "")} className="transition-colors hover:text-primary">
           Retour à la fiche de l'épreuve
         </Link>
+        {etude.disponible && (
+          <>
+            <span aria-hidden="true">·</span>
+            <Link to="/carnet" className="inline-flex items-center gap-1.5 transition-colors hover:text-primary">
+              <NotebookPen className="size-4" />
+              Mon carnet
+            </Link>
+          </>
+        )}
       </div>
 
       {content?.lesson_type === "FICHE" ? (
         <FicheReader title={content.title} header={content.header} markdown={content.content_markdown} />
       ) : (
         <>
-          <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">{content?.title}</h1>
           {content?.header && (
-            <div className="mb-6 mt-3 flex flex-wrap gap-1.5">
-              <CountryBadge code={content.header.pays.code} label={content.header.pays.label} />
-              {epreuve?.est_vitrine && (
-                <Badge variant="success">
-                  <Unlock className="mr-1 size-3" />
-                  Corrigé en accès libre
-                </Badge>
+            <EnTeteEpreuve
+              variante="lecture"
+              titre={content.title}
+              matiereCode={epreuve?.subject.code}
+              matiere={content.header.matiere}
+              cursus={[content.header.examen, content.header.serie ? `Série ${content.header.serie}` : ""].filter(Boolean).join(" ")}
+              session={content.header.annee}
+              faits={faitsEpreuve({
+                exercices: exercises.length,
+                duree: content.header.duree,
+                coefficient: content.header.coefficient,
+              })}
+              badges={
+                <>
+                  <CountryBadge code={content.header.pays.code} label={content.header.pays.label} />
+                  {epreuve?.est_vitrine && (
+                    <Badge variant="success" className="gap-1">
+                      <Sparkles className="size-3" />
+                      Corrigé en accès libre
+                    </Badge>
+                  )}
+                  {content.header.nature && <Badge variant="outline">{content.header.nature}</Badge>}
+                  {content.header.institution && content.header.institution !== content.header.etablissement && (
+                    <Badge variant="outline">{content.header.institution}</Badge>
+                  )}
+                </>
+              }
+            >
+              {content.sujet_pdf_url && (
+                <Button asChild variant="outline" size="sm" className="rounded-full">
+                  <a href={content.sujet_pdf_url} target="_blank" rel="noopener noreferrer">
+                    <FileDown />
+                    Télécharger l'épreuve
+                  </a>
+                </Button>
               )}
-              <Badge variant="secondary">{content.header.matiere}</Badge>
-              {content.header.nature && <Badge variant="outline">{content.header.nature}</Badge>}
-              {content.header.serie && <Badge variant="outline">Série {content.header.serie}</Badge>}
-              {content.header.examen && <Badge variant="outline">{content.header.examen}</Badge>}
-              {content.header.annee && <Badge variant="outline">Session {content.header.annee}</Badge>}
-              {content.header.duree && <Badge variant="outline">Durée : {content.header.duree}</Badge>}
-              {content.header.coefficient && <Badge variant="outline">Coefficient : {content.header.coefficient}</Badge>}
-              {content.header.institution && content.header.institution !== content.header.etablissement && (
-                <Badge variant="outline">{content.header.institution}</Badge>
-              )}
-            </div>
-          )}
-          {content?.sujet_pdf_url && (
-            <div className="mb-6">
-              <Button asChild variant="outline" size="sm">
-                <a href={content.sujet_pdf_url} target="_blank" rel="noopener noreferrer">
-                  <FileDown />
-                  Télécharger l'épreuve
-                </a>
-              </Button>
-            </div>
+            </EnTeteEpreuve>
           )}
           {content?.introduction_markdown && (
-            // Consigne d'épreuve entière (ex. "le candidat traitera un seul sujet au
-            // choix") - avant le sommaire/premier exercice, jamais répétée par exercice
-            // (contrairement à exercise.enonce_intro_markdown, propre à CHAQUE exercice).
-            <div className="prose prose-neutral mb-6 max-w-none text-justify dark:prose-invert">
+            // Consigne d'épreuve entière (ex. "le candidat traitera un seul sujet au choix") -
+            // avant le premier exercice, jamais répétée par exercice (contrairement à
+            // exercise.enonce_intro_markdown, propre à CHAQUE exercice).
+            <div className="prose prose-neutral mt-5 max-w-none rounded-2xl border border-border bg-muted/40 p-4 text-justify dark:prose-invert">
               <EpreuveMarkdown markdown={content.introduction_markdown} />
             </div>
           )}
-          {/* Sommaire (EpreuveSommaire) volontairement masqué pour l'instant : sa colonne
-              latérale de 220px rétrécissait la colonne de lecture en dessous de la
-              largeur pleine (voir InediteTentativePage, passé à max-w-5xl sans sidebar) -
-              à réintroduire une fois sa place repensée dans une mise en page large. */}
+          <BarreExercices exercises={exercises} />
           {article}
         </>
       )}

@@ -4,6 +4,8 @@ import { CheckCircle2, Crown, Lock, Unlock } from "lucide-react"
 
 import type { Epreuve } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
+import { couleurMatiere } from "@/lib/matiereCouleur"
+import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { epreuveDetailPath, epreuveInediteDetailPath, epreuveReaderPath } from "@/lib/countryPath"
 
@@ -23,6 +25,7 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
       : epreuve.has_access
         ? epreuveReaderPath(country, epreuve.slug as string)
         : epreuveDetailPath(country, epreuve.slug as string)
+  const Icone = subjectIcon(epreuve.subject.code)
   return (
     <Link
       to={to}
@@ -35,6 +38,9 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
       )}
       style={style}
     >
+      <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", couleurMatiere(epreuve.subject.code).puce)}>
+        <Icone className="size-4" aria-hidden="true" />
+      </span>
       <div className="flex min-w-0 flex-1 items-baseline gap-2">
         <h3 className="truncate font-display text-sm font-medium">{epreuve.title}</h3>
         {epreuve.year && <span className="shrink-0 text-xs text-muted-foreground">{epreuve.year}</span>}

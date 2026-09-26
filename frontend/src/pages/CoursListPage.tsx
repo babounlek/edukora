@@ -5,13 +5,14 @@ import {
   ArrowRight,
   BookOpen,
   CheckCircle2,
-  ChevronDown,
   GraduationCap,
   LayoutGrid,
   Layers,
   List,
   Loader2,
+  RefreshCw,
   Search,
+  SearchX,
   X,
 } from "lucide-react"
 
@@ -19,6 +20,7 @@ import { getMyProgression, listCours, listCursus, listSubjects } from "@/api/end
 import { examLevelsFor } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
+import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { subjectShortLabel } from "@/lib/subjectLabel"
 import { coursReaderPath } from "@/lib/countryPath"
@@ -31,13 +33,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CoursCard } from "@/components/CoursCard"
 import { CoursListRow } from "@/components/CoursListRow"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { BandeauFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
 
@@ -45,53 +41,24 @@ type ViewMode = "cards" | "list"
 
 const VIEW_MODE_STORAGE_KEY = "edukamer_cours_catalogue_view"
 
-/**
- * Nombre de matières montrées avant dépliage, par palier de largeur. Objectif : deux
- * rangées de pastilles au maximum dans TOUS les formats - au-delà, le bloc de filtres
- * repousse les résultats sous la ligne de flottaison, ce qu'aucun catalogue ne doit
- * faire.
- *
- * Ces quatre valeurs sont mesurées, pas estimées : rendu des pastilles réelles à
- * 375 / 660 / 768 / 1024 px, dans le pire cas (les libellés les plus longs du
- * référentiel camerounais, "Physique-Chimie-Tech." en tête). Un palier unique ne
- * marche pas : `sm` couvre de 640 à 1024 px, où la largeur utile double presque, et
- * une valeur sûre à 660 px gaspille la moitié de la ligne à 1024 px.
- *
- * À revoir si la taille des pastilles change (police, padding, compteur).
- */
-const PALIERS_MATIERES = [
-  { limite: 4, revele: "" },
-  { limite: 5, revele: "sm:flex" },
-  { limite: 7, revele: "md:flex" },
-  { limite: 10, revele: "lg:flex" },
-] as const
-
-const MATIERES_VISIBLES_MIN = PALIERS_MATIERES[0].limite
-const MATIERES_VISIBLES_MAX = PALIERS_MATIERES[PALIERS_MATIERES.length - 1].limite
-
-/**
- * Classes de repli d'une pastille selon son rang : masquée jusqu'au palier de largeur
- * qui la fait rentrer dans les deux rangées, puis révélée. `undefined` pour les
- * premières, visibles partout.
- */
-function classeRepliMatiere(index: number): string | undefined {
-  if (index < MATIERES_VISIBLES_MIN) return undefined
-  const palier = PALIERS_MATIERES.find((p) => index < p.limite)
-  return palier ? `hidden ${palier.revele}` : "hidden"
-}
-
 function CoursCardSkeleton() {
   return (
     <Card className="overflow-hidden">
-      <CardContent className="flex flex-col gap-2.5 p-4">
-        <Skeleton className="size-9 rounded-lg" />
-        <Skeleton className="h-4 w-3/4" />
-        <Skeleton className="h-3 w-1/2" />
+      <Skeleton className="h-1 w-full rounded-none" />
+      <CardContent className="flex flex-col gap-3 p-4">
+        <div className="flex items-start gap-3">
+          <Skeleton className="size-10 shrink-0 rounded-xl" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-3 w-1/3" />
+            <Skeleton className="h-4 w-4/5" />
+          </div>
+        </div>
         <div className="flex gap-1.5">
-          <Skeleton className="h-5 w-16 rounded-md" />
+          <Skeleton className="h-5 w-20 rounded-md" />
           <Skeleton className="h-5 w-14 rounded-md" />
         </div>
-        <Skeleton className="mt-1 h-3 w-2/3" />
+        <Skeleton className="h-3 w-2/3" />
+        <Skeleton className="mt-1 h-8 w-full" />
       </CardContent>
     </Card>
   )
@@ -187,15 +154,6 @@ export function CoursListPage() {
     [subjects],
   )
 
-  // Déplié d'entrée quand une matière est déjà filtrée (lien partagé, retour
-  // arrière) : la pastille active doit être visible, sinon le filtre s'applique sans
-  // que rien à l'écran ne le montre. Initialiseur paresseux : il ne lit `subjectFilter`
-  // qu'au premier rendu, le dépliage reste ensuite entre les mains de l'utilisateur et
-  // ne se réinitialise pas à chaque changement de filtre. Depuis le routeur et non
-  // window.location (comme le fait EpreuvesListPage) : les deux divergent dès qu'on
-  // n'est pas sous un BrowserRouter, ce qu'un test a immédiatement montré.
-  const [matieresDepliees, setMatieresDepliees] = useState(() => Boolean(subjectFilter))
-
   const { data: cursusList = [] } = useQuery({
     queryKey: ["cursus", country],
     queryFn: ({ signal }) => listCursus(country, signal),
@@ -250,6 +208,24 @@ export function CoursListPage() {
   const hasMore = coursQuery.hasNextPage ?? false
   const isLoading = coursQuery.isLoading
   const isLoadingMore = coursQuery.isFetchingNextPage
+
+  // Chargement automatique au défilement, comme /epreuves : la lecture d'un catalogue de plusieurs
+  // milliers de cours ne doit pas s'interrompre sur un bouton. Le bouton "Charger plus" reste
+  // dessous - accessible au clavier, et repli si l'observateur ne se déclenche pas.
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = sentinelRef.current
+    if (!el || !hasMore) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isLoadingMore) coursQuery.fetchNextPage()
+      },
+      { rootMargin: "400px" },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasMore, isLoadingMore])
 
   // Préférence d'affichage personnelle (pas un filtre de recherche) : persistée en
   // localStorage plutôt que dans l'URL, comme le thème - pas besoin d'être partagée
@@ -373,42 +349,47 @@ export function CoursListPage() {
   // Niveaux d'examen réellement présents pour ce pays - jamais un texte fixe : la
   // plupart des pays n'ont pas de Probatoire (voir examLevelsFor).
   const examLevels = examLevelsFor(cursusList)
+  // Le cursus est LE filtre d'un élève ("mon BAC D") : en pastilles d'un clic plutôt que caché
+  // dans une liste déroulante, triées pour que les séries d'un même examen se suivent.
+  const cursusTries = [...cursusList].sort(
+    (x, y) =>
+      x.examen_display.localeCompare(y.examen_display, "fr") ||
+      (x.series?.code ?? "").localeCompare(y.series?.code ?? "", "fr"),
+  )
   const coursEnCours = progression?.cours?.[0]
   // `undefined` tant que rien n'est chargé - la puce du hero ne s'affiche pas plutôt
   // que d'annoncer un "0 cours publiés" démenti une seconde plus tard.
   const totalCours = filtresActifs ? totalData?.count : coursQuery.data ? count : undefined
 
   return (
-    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
       <BandeauFiltreCursus />
-      {/* Même gabarit de hero que /quiz et /fiches : carte arrondie contenue plutôt
-          qu'une bande pleine largeur, pastille d'icône, accroche puis puces de
-          volumétrie - les trois outils de la plateforme doivent se reconnaître. */}
-      <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8">
+      {/* Même hero compact que /epreuves : les résultats doivent apparaître sans défiler, et le
+          volume du catalogue est la preuve qu'il y a de quoi chercher. */}
+      <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
         <div
+          aria-hidden
           className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
             backgroundSize: "24px 24px",
           }}
         />
+        <GraduationCap aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
-          <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <GraduationCap className="size-5" />
-          </div>
-          <p className="mb-1 font-display text-sm italic text-primary">
+          <p className="mb-2 font-display text-sm italic text-primary">
             Cours structurés{countryLabel ? ` - ${countryLabel}` : ""}
           </p>
-          <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
+          <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
             Maîtrise la <span className="text-primary">méthode</span>, pas juste l'exercice du jour.
           </h1>
-          <p className="mt-2 text-muted-foreground">
+          <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
             Chaque notion clé du programme en un cours complet : la règle, un exemple résolu pas à pas, les erreurs
             classiques à éviter et des exercices gradués.
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
             {totalCours !== undefined && (
               <StatChip
                 icon={<BookOpen className="size-3.5 text-primary" />}
@@ -418,13 +399,13 @@ export function CoursListPage() {
             )}
             {subjects.length > 0 && (
               <StatChip
-                icon={<Layers className="size-3.5 text-gold" />}
+                icon={<Layers className="size-3.5 text-primary" />}
                 valeur={String(subjects.length)}
                 libelle={subjects.length > 1 ? "matières couvertes" : "matière couverte"}
               />
             )}
             {examLevels.length > 0 && (
-              <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
+              <span className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm sm:flex">
                 <CheckCircle2 className="size-3.5 text-success" />
                 <span className="text-muted-foreground">{examLevels.join(" · ")}</span>
               </span>
@@ -454,152 +435,107 @@ export function CoursListPage() {
         </Link>
       )}
 
-      {/* Panneau de recherche : la carte surélevée fait de la recherche le point focal
-          de la page, comme sur /epreuves. Les matières sont des pastilles cliquables
-          plutôt qu'un menu déroulant - sur un catalogue de plusieurs milliers de
-          cours, choisir sa matière est le premier geste, il ne doit pas coûter deux
-          clics et une lecture de liste. */}
-      <div className="mb-6 rounded-2xl border border-border bg-card p-5 shadow-lg shadow-primary/5 sm:p-6">
+      {/* Panneau de recherche : la carte surélevée fait de la recherche le point focal de la page,
+          comme sur /epreuves. Examen et matière sont des pastilles d'un clic - choisir sa matière est
+          le premier geste sur un catalogue de plusieurs milliers de cours, il ne doit pas coûter deux
+          clics et la lecture d'une liste. */}
+      <div className="mb-6 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
         <div className="group relative">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
           <Input
-            placeholder="Rechercher un cours (notion, chapitre, mot-clé)..."
+            type="search"
+            inputMode="search"
+            enterKeyHint="search"
+            aria-label="Rechercher un cours"
+            placeholder="Rechercher un cours…"
             value={search}
             onChange={(e) => updateFilter("search", e.target.value)}
-            className="h-12 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25"
+            className="h-12 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25 [&::-webkit-search-cancel-button]:hidden"
           />
           {search && (
             <button
               type="button"
               onClick={() => updateFilter("search", "")}
               aria-label="Effacer la recherche"
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               <X className="size-4" />
             </button>
           )}
         </div>
 
-        {/* Bloc de facettes qui s'enveloppe, jamais une rangée à défilement horizontal :
-            une pastille coupée au bord d'un carrousel se rattrape (le parcours y est
-            facultatif), une matière coupée dans un FILTRE cache une décision que le
-            visiteur doit prendre - et la molette ne défile de toute façon pas
-            horizontalement à la souris. Le repli passe par des classes conditionnelles
-            plutôt que par un `overflow-hidden` sur une hauteur mesurée : `display:none`
-            sort réellement les pastilles masquées du parcours clavier et de l'arbre
-            d'accessibilité, là où un simple rognage les y laisserait, focalisables et
-            invisibles. */}
-        {subjectsTries.length > 0 && (
-          <div className="mt-4">
-            {/* role="group" nommé : sans lui, quinze boutons se suivent sans dire à un
-                lecteur d'écran ce qu'ils ont en commun ni ce qu'ils pilotent. */}
-            <div role="group" aria-label="Filtrer par matière" className="flex flex-wrap gap-1.5">
-              <button
-                type="button"
-                onClick={() => updateFilter("subject", "")}
-                aria-pressed={!subjectFilter}
-                className={cn(
-                  "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
-                  subjectFilter
-                    ? "border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
-                    : "border-primary bg-primary/10 text-primary",
-                )}
+        {cursusTries.length > 0 && (
+          <FiltreLigne titre="Examen">
+            <PastilleFiltre actif={!cursusFilter} onClick={() => updateFilter("cursus", "")}>
+              Tous
+            </PastilleFiltre>
+            {cursusTries.map((c) => (
+              <PastilleFiltre
+                key={c.id}
+                actif={cursusFilter === String(c.id)}
+                onClick={() => updateFilter("cursus", cursusFilter === String(c.id) ? "" : String(c.id))}
               >
-                Toutes
-              </button>
-              {subjectsTries.map((subject, index) => {
-                const SubjectIcon = subjectIcon(subject.code)
-                const actif = subjectFilter === subject.code
-                return (
-                  <button
-                    key={subject.id}
-                    type="button"
-                    onClick={() => updateFilter("subject", actif ? "" : subject.code)}
-                    aria-pressed={actif}
-                    className={cn(
-                      "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
-                      actif
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary",
-                      !matieresDepliees && classeRepliMatiere(index),
-                    )}
-                  >
-                    <SubjectIcon className="size-3.5" aria-hidden="true" />
-                    {subjectShortLabel(subject.code, subject.label)}
-                    {/* Compteur masqué sur téléphone : mesuré, il fait passer les
-                        quatre premières pastilles de deux à trois rangées à 375 px.
-                        C'est un repère de tri, pas une information dont dépend le
-                        choix - il cède la place plutôt que la ligne. */}
-                    {subject.cours_count !== undefined && (
-                      <span className="hidden tabular-nums opacity-60 sm:inline">{subject.cours_count}</span>
-                    )}
-                  </button>
-                )
-              })}
-            </div>
-
-            {/* Libellé sans compteur : le nombre de matières masquées dépend de la
-                largeur de l'écran (voir les deux seuils ci-dessus), un "+7" affiché
-                mentirait sur l'un des deux formats. */}
-            {subjectsTries.length > MATIERES_VISIBLES_MIN && (
-              <button
-                type="button"
-                onClick={() => setMatieresDepliees((v) => !v)}
-                aria-expanded={matieresDepliees}
-                className={cn(
-                  "mt-2 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary",
-                  // Sur grand écran tout tient déjà quand il y a peu de matières :
-                  // proposer de "tout afficher" alors que tout est affiché n'aurait
-                  // aucun sens.
-                  subjectsTries.length <= MATIERES_VISIBLES_MAX && !matieresDepliees && "lg:hidden",
-                )}
-              >
-                <ChevronDown className={cn("size-3.5 transition-transform", matieresDepliees && "rotate-180")} />
-                {matieresDepliees ? "Réduire" : `Toutes les matières (${subjectsTries.length})`}
-              </button>
-            )}
-          </div>
+                {c.examen_display}
+                {c.series ? ` ${c.series.code}` : ""}
+              </PastilleFiltre>
+            ))}
+          </FiltreLigne>
         )}
 
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <Select value={cursusFilter || "all"} onValueChange={(v) => updateFilter("cursus", v === "all" ? "" : v)}>
-            <SelectTrigger className="w-full sm:w-64">
-              <SelectValue placeholder="Tous les cursus" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Tous les cursus</SelectItem>
-              {cursusList.map((c) => (
-                <SelectItem key={c.id} value={String(c.id)}>
-                  {c.examen_display}
-                  {c.series ? ` - Série ${c.series.code}` : ""}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        {subjectsTries.length > 0 && (
+          <FiltreLigne titre="Matière">
+            <PastilleFiltre actif={!subjectFilter} onClick={() => updateFilter("subject", "")}>
+              Toutes
+            </PastilleFiltre>
+            {subjectsTries.map((subject) => {
+              const SubjectIcon = subjectIcon(subject.code)
+              const actif = subjectFilter === subject.code
+              return (
+                <PastilleFiltre
+                  key={subject.id}
+                  actif={actif}
+                  onClick={() => updateFilter("subject", actif ? "" : subject.code)}
+                >
+                  <span className={cn("flex size-5 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
+                    <SubjectIcon className="size-3" aria-hidden="true" />
+                  </span>
+                  {subjectShortLabel(subject.code, subject.label)}
+                  {/* Le compteur est un repère de tri (les matières sont classées par nombre de
+                      cours), pas une information dont dépend le choix : il cède la place sur
+                      téléphone, où une pastille plus étroite laisse voir la suivante. */}
+                  {subject.cours_count !== undefined && (
+                    <span className="hidden tabular-nums opacity-60 sm:inline">{subject.cours_count}</span>
+                  )}
+                </PastilleFiltre>
+              )
+            })}
+          </FiltreLigne>
+        )}
 
-          {/* Réservé aux connectés : le backend n'a aucun historique de lecture à
-              exclure pour un visiteur anonyme (voir CoursListView.exclude_read), le
-              bouton n'y filtrerait donc rien du tout. */}
-          {isAuthenticated && (
+        {/* Réservé aux connectés : le backend n'a aucun historique de lecture à exclure pour un
+            visiteur anonyme (voir CoursListView.exclude_read), le bouton n'y filtrerait rien. */}
+        {isAuthenticated && (
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={() => updateFilter("nonlus", nonLusFilter ? "" : "true")}
               aria-pressed={nonLusFilter}
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
                 nonLusFilter
                   ? "border-success/40 bg-success/15 text-success"
                   : "border-border text-muted-foreground hover:border-success/40 hover:text-success",
               )}
             >
-              <CheckCircle2 className="size-3.5" />
+              <CheckCircle2 className="size-4" />
               Masquer les cours déjà lus
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
         {activeFilterChips.length > 0 && (
           <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3.5">
+            <span className="text-sm text-muted-foreground">Filtres :</span>
             {activeFilterChips.map((chip) => (
               <FilterChip key={chip.key} label={chip.label} onRemove={chip.clear} />
             ))}
@@ -607,7 +543,7 @@ export function CoursListPage() {
               <button
                 type="button"
                 onClick={resetFilters}
-                className="text-xs font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+                className="text-sm font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
               >
                 Tout effacer
               </button>
@@ -617,18 +553,41 @@ export function CoursListPage() {
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Chargement des cours">
           {Array.from({ length: 6 }).map((_, i) => (
             <CoursCardSkeleton key={i} />
           ))}
         </div>
+      ) : coursQuery.isError && coursList.length === 0 ? (
+        // Une panne n'est pas "aucun résultat" : sans ce cas, une coupure réseau se lisait comme
+        // un catalogue vide et l'élève cherchait l'erreur dans ses filtres.
+        <div role="alert" className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border bg-card/60 px-6 py-14 text-center">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
+            <RefreshCw className="size-6" />
+          </span>
+          <p className="font-display text-lg font-semibold">Impossible de charger les cours</p>
+          <p className="max-w-sm text-sm text-muted-foreground">
+            Vérifie ta connexion : tes filtres sont conservés, il suffit de réessayer.
+          </p>
+          <Button onClick={() => coursQuery.refetch()} className="rounded-full">
+            <RefreshCw />
+            Réessayer
+          </Button>
+        </div>
       ) : coursList.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 py-20 text-center text-muted-foreground">
-          <GraduationCap className="size-8" />
-          <p>Aucun cours ne correspond à ces critères.</p>
+        <div className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border bg-card/60 px-6 py-14 text-center">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <SearchX className="size-6" />
+          </span>
+          <p className="font-display text-lg font-semibold">Aucun cours ne correspond</p>
+          <p className="max-w-sm text-sm text-muted-foreground">
+            {search
+              ? `Rien pour « ${search} » avec ces filtres. Essaie un mot plus court, ou élargis la recherche.`
+              : "Élargis un filtre pour voir plus de cours."}
+          </p>
           {(activeFilterChips.length > 0 || search) && (
-            <Button variant="outline" size="sm" onClick={resetFilters}>
-              Réinitialiser la recherche
+            <Button variant="outline" onClick={resetFilters} className="mt-1 rounded-full">
+              Tout réinitialiser
             </Button>
           )}
         </div>
@@ -642,7 +601,7 @@ export function CoursListPage() {
               laisserait une bande de 8px où le contenu défilerait à découvert entre
               les deux barres, top-16 ferait passer celle-ci sous le header. */}
           <div className="sticky top-[72px] z-10 -mx-4 mb-4 flex items-center justify-between gap-3 border-b border-border bg-background/85 px-4 py-2.5 backdrop-blur sm:-mx-6 sm:px-6">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground" aria-live="polite">
               <span className="font-medium tabular-nums text-foreground">{formatAmount(count)}</span> cours
               trouvé{count > 1 ? "s" : ""}
             </p>
@@ -695,7 +654,7 @@ export function CoursListPage() {
           )}
 
           {hasMore && (
-            <div className="mt-8 flex flex-col items-center gap-2">
+            <div ref={sentinelRef} className="mt-8 flex flex-col items-center gap-2">
               <Button variant="outline" onClick={() => coursQuery.fetchNextPage()} disabled={isLoadingMore}>
                 {isLoadingMore && <Loader2 className="size-4 animate-spin" />}
                 Charger plus
