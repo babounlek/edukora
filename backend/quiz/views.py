@@ -272,6 +272,12 @@ def _session_payload(session):
     }
 
 
+def _items_rates(session):
+    from .services import items_rates
+
+    return items_rates(session)
+
+
 def _resultat_payload(session, request):
     quiz_questions = (
         session.quiz_questions
@@ -282,6 +288,9 @@ def _resultat_payload(session, request):
     repondues = 0
     reussies = 0
     par_theme = {}
+    # Meilleure série de bonnes réponses d'affilée DANS ce quiz (jamais une série de
+    # jours, voir seances_terminees_cette_semaine).
+    serie = meilleure_serie = 0
 
     for quiz_question in quiz_questions:
         answer = _get_answer(quiz_question)
@@ -291,6 +300,10 @@ def _resultat_payload(session, request):
         correcte = answer.est_correcte
         if correcte:
             reussies += 1
+            serie += 1
+            meilleure_serie = max(meilleure_serie, serie)
+        else:
+            serie = 0
         # CompetenceItem : un seul theme (FK) ; catalog.Question historique : plusieurs
         # (M2M) - voir QuizQuestion.contenu et CompetenceItem.theme.
         themes = (
@@ -333,7 +346,11 @@ def _resultat_payload(session, request):
         "subject": session.subject_id,
         "total_questions": quiz_questions.count(),
         "questions_repondues": repondues,
+        "mode": session.mode,
+        "nb_ratees": len(_items_rates(session)),
         "score": reussies,
+        "meilleure_serie": meilleure_serie,
+        "seances_cette_semaine": seances_terminees_cette_semaine(session.user, session.cursus),
         "par_theme": par_theme_payload,
         # Ce quiz était l'étape finale d'une séance du jour, et l'a clôturée : la page
         # de résultat le dit et ramène à « Aujourd'hui ». Faux pour un quiz lancé seul.
@@ -900,3 +917,69 @@ def duree_seance_view(request):
     seance = ajuster_duree_seance(request.user, cursus, minutes)
     compte = ExamSession.compte_a_rebours_pour(cursus)
     return Response(_charge_utile_plan(request.user, cursus, seance, compte))
+
+
+@api_view(["GET"])
+def bilan_periode_view(request):
+    """
+    Bilan des 30 derniers jours de l'abonnement (voir quiz.bilan.bilan_de_periode).
+
+    `?cursus=` optionnel : par défaut le cursus préparé. Lecture de SA propre activité,
+    donc aussi disponible après expiration - c'est justement là qu'il sert à décider de
+    se réabonner. 404 quand l'élève n'a jamais été abonné à ce cursus.
+    """
+    from .bilan import bilan_de_periode
+
+    if request.GET.get("cursus"):
+        cursus = get_object_or_404(Cursus, pk=request.GET["cursus"])
+    else:
+        cursus = request.user.cursus_prepare
+        if cursus is None:
+            return Response({"error": "Aucun cursus déclaré."}, status=400)
+    # Deux fenêtres seulement : la semaine (accueil) et le mois (renouvellement). Toute
+    # autre valeur retombe sur le mois plutôt que d'ouvrir un calcul arbitrairement long.
+    jours = 7 if request.GET.get("jours") == "7" else 30
+    bilan = bilan_de_periode(request.user, cursus, jours=jours)
+    if bilan is None:
+        return Response({"error": "Aucun abonnement pour ce cursus."}, status=404)
+    return Response(bilan)
+
+
+@api_view(["GET"])
+def priorites_view(request):
+    """
+    Où concentrer son temps pour cet examen (voir quiz.priorites.priorites_examen) :
+    restitution du diagnostic d'accueil, mais valable à tout moment. `?cursus=` optionnel,
+    par défaut le cursus préparé. Réservé à qui a (ou a eu) un abonnement à ce cursus.
+    """
+    from .priorites import priorites_examen
+
+    if request.GET.get("cursus"):
+        cursus = get_object_or_404(Cursus, pk=request.GET["cursus"])
+    else:
+        cursus = request.user.cursus_prepare
+        if cursus is None:
+            return Response({"error": "Aucun cursus déclaré."}, status=400)
+    if not Subscription.objects.filter(user=request.user, cursus=cursus).exists():
+        return Response({"error": "Aucun abonnement pour ce cursus."}, status=404)
+    return Response(priorites_examen(request.user, cursus))
+
+
+@api_view(["POST"])
+def refaire_ratees_view(request, session_id):
+    """
+    Nouvelle session limitée aux questions ratées de celle-ci (voir
+    quiz.services.session_des_ratees) - le bouton "Refaire celles que j'ai ratées" de la
+    page de résultat. Même règle d'accès que start_session : abonnement actif sur le
+    cursus, revérifié à chaque appel.
+    """
+    from .services import session_des_ratees
+
+    session = get_object_or_404(QuizSession.objects.select_related("cursus"), pk=session_id, user=request.user)
+    if not _has_active_subscription(request.user, session.cursus):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+    try:
+        refaite = session_des_ratees(request.user, session)
+    except ValueError as exc:
+        return Response({"error": str(exc)}, status=400)
+    return Response(_session_payload(refaite), status=201)

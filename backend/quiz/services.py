@@ -186,6 +186,61 @@ def _selection_stratifiee_par_difficulte(items, n):
     return selection[:n]
 
 
+# Questions par matière dans un diagnostic d'accueil : trois, c'est le minimum qui
+# donne un repère ("2 sur 3") sans prétendre à un niveau chiffré - voir
+# quiz.priorites, qui n'affiche jamais un pourcentage sur si peu de réponses.
+DIAGNOSTIC_QUESTIONS_PAR_MATIERE = 3
+
+
+def _selection_diagnostic_par_matiere(items, n, cursus):
+    """
+    Diagnostic d'accueil : les matières qui pèsent le plus au diplôme, chacune sondée
+    par DIAGNOSTIC_QUESTIONS_PAR_MATIERE questions, plutôt que n questions tirées dans
+    tout le cursus au hasard.
+
+    Le tirage global laissait une à deux réponses par matière : rien à en dire, et une
+    matière à fort coefficient pouvait n'être interrogée qu'une fois - ou jamais. Ici
+    chaque matière retenue donne un repère, et la restitution (voir quiz.priorites)
+    peut dire quelque chose de vrai. Dans une matière, la difficulté reste stratifiée
+    (voir _selection_stratifiee_par_difficulte). Les matières sont retenues par
+    coefficient décroissant ; le départage par libellé garde le choix indépendant de
+    l'ordre des lignes.
+
+    Une matière qui a moins de questions que prévu donne ce qu'elle a, et le manque est
+    comblé par les matières suivantes plutôt que de renvoyer un test raccourci. Les
+    questions sont servies en alternant les matières, pour qu'un élève ne fasse pas
+    trois maths de suite puis trois physiques.
+
+    Retombe sur la stratification globale quand moins de deux matières ont des items :
+    il n'y a alors rien à équilibrer.
+    """
+    par_matiere = defaultdict(list)
+    for item in items:
+        par_matiere[item.subject_id].append(item)
+    if len(par_matiere) < 2:
+        return _selection_stratifiee_par_difficulte(items, n)
+
+    coefficients = _coefficient_par_subject(cursus)
+    ordre = sorted(par_matiere, key=lambda sid: (-coefficients.get(sid, COEFFICIENT_PAR_DEFAUT), sid))
+
+    retenues, choix, manque = [], {}, n
+    for sid in ordre:
+        if manque <= 0:
+            break
+        pris = _selection_stratifiee_par_difficulte(par_matiere[sid], min(DIAGNOSTIC_QUESTIONS_PAR_MATIERE, manque))
+        choix[sid] = pris
+        retenues.append(sid)
+        manque -= len(pris)
+
+    # Alternance : première question de chaque matière, puis la deuxième, etc.
+    selection = []
+    for rang in range(DIAGNOSTIC_QUESTIONS_PAR_MATIERE):
+        for sid in retenues:
+            if rang < len(choix[sid]):
+                selection.append(choix[sid][rang])
+    return selection[:n]
+
+
 def _poids_par_theme(user, cursus):
     """
     Poids par thème (id -> poids) favorisant, en mode PRATIQUE, les thèmes où
@@ -265,7 +320,12 @@ def generer_session(user, cursus, mode, subject=None, theme=None, savoir=None, n
         raise ValueError("Aucune question disponible pour ces critères.")
 
     if mode == ModeQuiz.DIAGNOSTIC:
-        selection = _selection_stratifiee_par_difficulte(items, n)
+        # Sans matière, thème ni savoir imposé : le diagnostic d'accueil, équilibré par
+        # matière. Avec l'un des trois, on sonde déjà un périmètre précis.
+        if subject or theme or savoir:
+            selection = _selection_stratifiee_par_difficulte(items, n)
+        else:
+            selection = _selection_diagnostic_par_matiere(items, n, cursus)
     else:
         poids_par_theme = _poids_par_theme(user, cursus)
         selection = _selection_ponderee_par_theme(items, poids_par_theme, n)
@@ -1128,10 +1188,10 @@ def _seance_de_calibrage(user, cursus):
         "theme": None,
         "etapes": [{
             "type": "quiz",
-            "libelle": "10 questions pour situer ton niveau",
+            "libelle": "15 questions pour situer ton niveau",
             "mode": ModeQuiz.DIAGNOSTIC,
-            "n": 10,
-            "duree_min": 10,
+            "n": 15,
+            "duree_min": 12,
         }],
     }
 
@@ -1938,3 +1998,35 @@ def exercices_du_theme(cursus, subject, theme):
             exercise__lesson__subject=subject, exercise__lesson__cursus=cursus,
         ).values_list("exercise__lesson_id", "exercise__numero_exercice")
     })
+
+
+def items_rates(session):
+    """Les CompetenceItem que l'élève a ratés dans cette session, dans l'ordre où il les a
+    vus. Une question ouverte sans déclaration ne compte pas : elle n'a pas été jugée. Les
+    questions d'avant la bascule (sans competence_item) sont exclues - on ne sait pas les
+    re-proposer telles quelles."""
+    rates = []
+    for quiz_question in session.quiz_questions.select_related("competence_item", "answer").order_by("ordre"):
+        answer = getattr(quiz_question, "answer", None)
+        if quiz_question.competence_item_id is None or answer is None or answer.est_correcte:
+            continue
+        rates.append(quiz_question.competence_item)
+    return rates
+
+
+def session_des_ratees(user, session):
+    """
+    Une nouvelle session qui ne reprend QUE les questions ratées de `session` : la suite
+    naturelle d'un résultat, plutôt qu'un nouveau tirage au hasard qui laisserait les
+    lacunes du moment. Lève ValueError quand il n'y a rien à refaire.
+    """
+    items = items_rates(session)
+    if not items:
+        raise ValueError("Aucune question ratée à refaire.")
+    refaite = QuizSession.objects.create(
+        user=user, cursus=session.cursus, subject=session.subject, mode=ModeQuiz.PRATIQUE,
+    )
+    QuizQuestion.objects.bulk_create([
+        QuizQuestion(session=refaite, competence_item=item, ordre=ordre) for ordre, item in enumerate(items, start=1)
+    ])
+    return refaite

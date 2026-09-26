@@ -2418,7 +2418,7 @@ class PlanDuJourTests(TestCase):
 
         self.assertEqual(seance.origine, OrigineSeance.DIAGNOSTIC)
         self.assertIsNone(seance.subject)
-        self.assertEqual(seance.etapes[0]["n"], 10)
+        self.assertEqual(seance.etapes[0]["n"], 15)
 
     def test_la_rotation_evite_la_matiere_des_deux_dernieres_seances(self):
         self._item(self.subject, self.theme)
@@ -2702,6 +2702,15 @@ class FinDeSeanceTests(TestCase):
         reponse = self.client.post(f"/quiz/sessions/{session_id}/completer/")
 
         self.assertTrue(reponse.data["seance_validee"])
+
+    def test_le_resultat_donne_la_serie_et_les_seances_de_la_semaine(self):
+        session_id = self._lancer_le_quiz_de_la_seance()
+        self._repondre(session_id, ResultatDeclare.REUSSI)
+
+        reponse = self.client.post(f"/quiz/sessions/{session_id}/completer/")
+
+        self.assertEqual(reponse.data["meilleure_serie"], 1)
+        self.assertEqual(reponse.data["seances_cette_semaine"], 1)
 
     def test_un_quiz_hors_seance_ne_valide_aucune_seance(self):
         plan_du_jour(self.user, self.cursus)
