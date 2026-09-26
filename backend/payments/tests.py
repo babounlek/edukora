@@ -80,10 +80,10 @@ class TransactionSyncStatusTests(TestCase):
         self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=90)
         self.transaction = Transaction.objects.create(
             user=self.user, plan=self.plan, amount=self.plan.price,
-            phone_number=self.user.phone_number, campay_reference="ref-1",
+            phone_number=self.user.phone_number, provider_reference="ref-1",
         )
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_successful_status_activates_subscription(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-1"}
 
@@ -95,7 +95,7 @@ class TransactionSyncStatusTests(TestCase):
         subscription = Subscription.objects.get(user=self.user, cursus=self.cursus)
         self.assertTrue(subscription.is_active)
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_sync_status_is_idempotent_on_repeated_call(self, mock_status):
         """Rejouer sync_status() sur la même instance (ex. polling qui chevauche un
         webhook) ne doit ni re-prolonger l'abonnement ni rappeler CamPay une deuxième fois."""
@@ -112,7 +112,7 @@ class TransactionSyncStatusTests(TestCase):
         self.assertEqual(Subscription.objects.filter(user=self.user, cursus=self.cursus).count(), 1)
         mock_status.assert_called_once()
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_sync_status_idempotent_across_separate_instances(self, mock_status):
         """Même garantie en relisant la transaction depuis la base plutôt qu'en
         réutilisant l'objet Python déjà en mémoire - un webhook et un polling client
@@ -126,7 +126,7 @@ class TransactionSyncStatusTests(TestCase):
         self.assertEqual(Subscription.objects.filter(user=self.user, cursus=self.cursus).count(), 1)
         self.assertEqual(mock_status.call_count, 1)
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_failed_status_does_not_activate_subscription(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.FAILED, "reference": "ref-1"}
 
@@ -137,7 +137,7 @@ class TransactionSyncStatusTests(TestCase):
         self.assertIsNone(self.transaction.subscription_id)
         self.assertFalse(Subscription.objects.filter(user=self.user, cursus=self.cursus).exists())
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_renewal_extends_existing_subscription_instead_of_duplicating(self, mock_status):
         """Un renouvellement (transaction distincte, même user/cursus) doit prolonger
         l'abonnement existant, jamais en créer un second - la contrainte unique le
@@ -169,10 +169,10 @@ class TransactionSyncStatusAddonInediteTests(TestCase):
         )
         self.transaction = Transaction.objects.create(
             user=self.user, plan=self.plan, amount=self.plan.price,
-            phone_number=self.user.phone_number, campay_reference="ref-addon-1",
+            phone_number=self.user.phone_number, provider_reference="ref-addon-1",
         )
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_successful_status_activates_inscription_inedite_not_subscription(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-addon-1"}
 
@@ -186,7 +186,7 @@ class TransactionSyncStatusAddonInediteTests(TestCase):
         self.assertTrue(inscription.is_active)
         self.assertFalse(Subscription.objects.filter(user=self.user, cursus=self.cursus).exists())
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_sync_status_is_idempotent_on_repeated_call(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-addon-1"}
 
@@ -216,10 +216,10 @@ class TransactionSyncStatusPlanInclutInediteTests(TestCase):
         )
         self.transaction = Transaction.objects.create(
             user=self.user, plan=self.plan, amount=self.plan.price,
-            phone_number=self.user.phone_number, campay_reference="ref-max-1",
+            phone_number=self.user.phone_number, provider_reference="ref-max-1",
         )
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_successful_status_activates_both_subscription_and_inscription_inedite(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-max-1"}
 
@@ -233,7 +233,7 @@ class TransactionSyncStatusPlanInclutInediteTests(TestCase):
         self.assertTrue(subscription.is_active)
         self.assertTrue(inscription.is_active)
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_sync_status_is_idempotent_on_repeated_call(self, mock_status):
         """Même garantie que les deux autres branches : un deuxième appel ne doit ni
         re-prolonger les deux accès, ni rappeler CamPay."""
@@ -265,10 +265,10 @@ class TransactionSyncStatusPlanWithoutInclutInediteTests(TestCase):
         self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=90)
         self.transaction = Transaction.objects.create(
             user=self.user, plan=self.plan, amount=self.plan.price,
-            phone_number=self.user.phone_number, campay_reference="ref-no-inedit-1",
+            phone_number=self.user.phone_number, provider_reference="ref-no-inedit-1",
         )
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_successful_status_does_not_activate_inscription_inedite(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-no-inedit-1"}
 
@@ -290,12 +290,12 @@ class ParrainageIdempotenceTests(TestCase):
         self.filleul = User.objects.create_user(phone_number="677000003", password="x", referred_by=self.parrain)
         self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=90)
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_first_conversion_rewards_parrain(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL}
         transaction = Transaction.objects.create(
             user=self.filleul, plan=self.plan, amount=self.plan.price,
-            phone_number=self.filleul.phone_number, campay_reference="ref-1",
+            phone_number=self.filleul.phone_number, provider_reference="ref-1",
         )
 
         transaction.sync_status()
@@ -307,31 +307,31 @@ class ParrainageIdempotenceTests(TestCase):
         self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
         self.assertFalse(Subscription.objects.filter(user=self.parrain, cursus=self.cursus).exists())
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_renewal_does_not_reward_parrain_again(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL}
 
         first = Transaction.objects.create(
             user=self.filleul, plan=self.plan, amount=self.plan.price,
-            phone_number=self.filleul.phone_number, campay_reference="ref-1",
+            phone_number=self.filleul.phone_number, provider_reference="ref-1",
         )
         first.sync_status()
 
         second = Transaction.objects.create(
             user=self.filleul, plan=self.plan, amount=self.plan.price,
-            phone_number=self.filleul.phone_number, campay_reference="ref-2",
+            phone_number=self.filleul.phone_number, provider_reference="ref-2",
         )
         second.sync_status()
 
         self.assertEqual(ParrainageRecompense.objects.filter(parrain=self.parrain).count(), 1)
         self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_replaying_sync_status_does_not_reward_parrain_twice(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL}
         transaction = Transaction.objects.create(
             user=self.filleul, plan=self.plan, amount=self.plan.price,
-            phone_number=self.filleul.phone_number, campay_reference="ref-1",
+            phone_number=self.filleul.phone_number, provider_reference="ref-1",
         )
 
         transaction.sync_status()
@@ -339,13 +339,13 @@ class ParrainageIdempotenceTests(TestCase):
 
         self.assertEqual(ParrainageRecompense.objects.filter(transaction=transaction).count(), 1)
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_no_referrer_no_reward_attempt(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL}
         solo_user = User.objects.create_user(phone_number="677000004", password="x")
         transaction = Transaction.objects.create(
             user=solo_user, plan=self.plan, amount=self.plan.price,
-            phone_number=solo_user.phone_number, campay_reference="ref-solo",
+            phone_number=solo_user.phone_number, provider_reference="ref-solo",
         )
 
         transaction.sync_status()
@@ -363,7 +363,7 @@ class PaymentFlowAPITests(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-    @patch("payments.models.campay_client.init_collect")
+    @patch("payments.campay_client.init_collect")
     def test_initiate_payment_creates_pending_transaction(self, mock_init):
         mock_init.return_value = {"reference": "campay-ref-123", "status": "PENDING"}
 
@@ -374,10 +374,10 @@ class PaymentFlowAPITests(TestCase):
         self.assertEqual(response.status_code, 200)
         transaction = Transaction.objects.get(pk=response.data["transaction_id"])
         self.assertEqual(transaction.status, StatutTransaction.PENDING)
-        self.assertEqual(transaction.campay_reference, "campay-ref-123")
+        self.assertEqual(transaction.provider_reference, "campay-ref-123")
         self.assertEqual(transaction.user, self.user)
 
-    @patch("payments.models.campay_client.init_collect")
+    @patch("payments.campay_client.init_collect")
     def test_initiate_payment_charges_the_effective_price_for_a_jusqua_examen_plan(self, mock_init):
         # Le montant encaissé doit suivre Plan.effective_price(), jamais le plafond
         # `price` brut - sinon un candidat proche de son examen se voit facturer le
@@ -401,7 +401,7 @@ class PaymentFlowAPITests(TestCase):
         transaction = Transaction.objects.get(pk=response.data["transaction_id"])
         self.assertEqual(transaction.amount, 4000)
 
-    @patch("payments.models.campay_client.init_collect")
+    @patch("payments.campay_client.init_collect")
     def test_initiate_payment_applies_available_credit_as_a_discount(self, mock_init):
         mock_init.return_value = {"reference": "campay-ref-credit", "status": "PENDING"}
         _octroyer_credit(self.user, 500, self.cursus)
@@ -418,7 +418,7 @@ class PaymentFlowAPITests(TestCase):
         # part en collecte, pas seulement celui stocké côté Transaction.
         self.assertEqual(mock_init.call_args.kwargs["amount"], self.plan.price - 500)
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_credit_is_consumed_only_on_confirmation_not_on_initiation(self, mock_status):
         # Le solde affiché à l'initiation n'est qu'une cotation - voir
         # consommer_credit_parrainage. Le solde réel ne doit bouger qu'à la
@@ -427,7 +427,7 @@ class PaymentFlowAPITests(TestCase):
         _octroyer_credit(self.user, 500, self.cursus)
         transaction = Transaction.objects.create(
             user=self.user, plan=self.plan, amount=self.plan.price - 500,
-            credit_applique=500, phone_number=self.user.phone_number, campay_reference="ref-credit-confirm",
+            credit_applique=500, phone_number=self.user.phone_number, provider_reference="ref-credit-confirm",
         )
         self.assertEqual(solde_credit_parrainage(self.user), 500)
 
@@ -436,7 +436,7 @@ class PaymentFlowAPITests(TestCase):
 
         self.assertEqual(solde_credit_parrainage(self.user), 0)
 
-    @patch("payments.models.campay_client.init_collect")
+    @patch("payments.campay_client.init_collect")
     def test_initiate_payment_skips_campay_when_credit_fully_covers_the_price(self, mock_init):
         _octroyer_credit(self.user, self.plan.price, self.cursus)
 
@@ -467,7 +467,7 @@ class PaymentFlowAPITests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    @patch("payments.models.campay_client.init_collect")
+    @patch("payments.campay_client.init_collect")
     def test_initiate_payment_marks_transaction_failed_on_campay_error(self, mock_init):
         mock_init.side_effect = CampayError("CamPay injoignable")
 
@@ -480,7 +480,7 @@ class PaymentFlowAPITests(TestCase):
         self.assertEqual(transaction.status, StatutTransaction.FAILED)
 
     @patch("payments.views.sentry_sdk.capture_exception")
-    @patch("payments.models.campay_client.init_collect")
+    @patch("payments.campay_client.init_collect")
     def test_initiate_payment_reports_campay_error_to_sentry_tagged_as_critical_path(self, mock_init, mock_capture):
         # Voir l'audit UX, reco 5.1 : une CampayError est déjà gérée gracieusement
         # (réponse 502 propre) donc jamais remontée automatiquement par l'intégration
@@ -494,12 +494,12 @@ class PaymentFlowAPITests(TestCase):
         mock_capture.assert_called_once()
         self.assertIsInstance(mock_capture.call_args[0][0], CampayError)
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_check_status_full_happy_path(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-1"}
         transaction = Transaction.objects.create(
             user=self.user, plan=self.plan, amount=self.plan.price,
-            phone_number=self.user.phone_number, campay_reference="ref-1",
+            phone_number=self.user.phone_number, provider_reference="ref-1",
         )
 
         response = self.client.get(f"/payments/status/{transaction.id}/")
@@ -508,11 +508,11 @@ class PaymentFlowAPITests(TestCase):
         self.assertEqual(response.data["status"], StatutTransaction.SUCCESSFUL)
         self.assertTrue(response.data["subscription_active"])
 
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_check_status_does_not_repoll_already_successful_transaction(self, mock_status):
         transaction = Transaction.objects.create(
             user=self.user, plan=self.plan, amount=self.plan.price,
-            phone_number=self.user.phone_number, campay_reference="ref-1",
+            phone_number=self.user.phone_number, provider_reference="ref-1",
             status=StatutTransaction.SUCCESSFUL,
         )
 
@@ -522,12 +522,12 @@ class PaymentFlowAPITests(TestCase):
         mock_status.assert_not_called()
 
     @patch("payments.views.sentry_sdk.capture_exception")
-    @patch("payments.models.campay_client.get_transaction_status")
+    @patch("payments.campay_client.get_transaction_status")
     def test_check_status_reports_campay_error_to_sentry(self, mock_status, mock_capture):
         mock_status.side_effect = CampayError("CamPay injoignable")
         transaction = Transaction.objects.create(
             user=self.user, plan=self.plan, amount=self.plan.price,
-            phone_number=self.user.phone_number, campay_reference="ref-1",
+            phone_number=self.user.phone_number, provider_reference="ref-1",
         )
 
         response = self.client.get(f"/payments/status/{transaction.id}/")
@@ -570,7 +570,7 @@ class TransactionConcurrencyTests(TransactionTestCase):
         self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=30)
         self.transaction = Transaction.objects.create(
             user=self.filleul, plan=self.plan, amount=self.plan.price,
-            phone_number=self.filleul.phone_number, campay_reference="ref-race",
+            phone_number=self.filleul.phone_number, provider_reference="ref-race",
         )
 
     def tearDown(self):
@@ -582,7 +582,7 @@ class TransactionConcurrencyTests(TransactionTestCase):
 
         def worker():
             try:
-                with patch("payments.models.campay_client.get_transaction_status") as mock_status:
+                with patch("payments.campay_client.get_transaction_status") as mock_status:
                     mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-race"}
                     # Instance rechargée séparément par thread : un webhook et un
                     # polling client ne partagent jamais le même objet Python.
@@ -919,3 +919,39 @@ class ManualPaymentConcurrencyTests(TransactionTestCase):
         subscription = Subscription.objects.get(user=self.user, cursus=self.cursus)
         days_left = (subscription.expires_at - timezone.now()).days
         self.assertTrue(25 <= days_left <= 30, f"abonnement prolongé en double : {days_left}j")
+
+
+class PaymentProviderAbstractionTests(TestCase):
+    """Le domaine ne dépend que du port PaymentProvider : statuts normalisés, fournisseur choisi par transaction."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677000091", password="x")
+        cursus = _make_cursus()
+        self.plan = Plan.objects.create(name="Essentiel", cursus=cursus, price=3000, duration_days=30)
+
+    def _transaction(self, **kwargs):
+        return Transaction.objects.create(
+            user=self.user, plan=self.plan, amount=3000, phone_number="677000091",
+            provider_reference="ref-prov", **kwargs,
+        )
+
+    @patch("payments.campay_client.get_transaction_status")
+    def test_unknown_provider_status_is_treated_as_pending_and_never_activates(self, mock_status):
+        mock_status.return_value = {"status": "SOMETHING_NEW"}
+        transaction = self._transaction()
+        transaction.sync_status()
+        transaction.refresh_from_db()
+        self.assertEqual(transaction.status, StatutTransaction.PENDING)
+        self.assertIsNone(transaction.subscription)
+
+    def test_transaction_defaults_to_configured_provider(self):
+        self.assertEqual(self._transaction().provider, "campay")
+
+    def test_unknown_provider_name_raises_provider_error(self):
+        from .providers import PaiementFournisseurError, get_provider
+        with self.assertRaises(PaiementFournisseurError):
+            get_provider("inconnu")
+
+    def test_campay_error_is_a_provider_error(self):
+        from .providers import PaiementFournisseurError
+        self.assertTrue(issubclass(CampayError, PaiementFournisseurError))

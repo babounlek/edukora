@@ -16,7 +16,7 @@ from subscriptions.models import (
 )
 from users.models import phone_validator
 
-from . import campay_client
+from .providers import fournisseur_par_defaut, get_provider
 
 
 class StatutTransaction(models.TextChoices):
@@ -66,7 +66,7 @@ class TransactionManager(models.Manager):
     def creer_couverte_par_credit(self, *, user, plan, phone_number, credit_applique):
         """
         Achat intégralement couvert par le crédit parrainage disponible de `user`
-        (credit_applique == plan.effective_price()) - jamais envoyé à CamPay, activé
+        (credit_applique == plan.effective_price()) - jamais envoyé à un agrégateur, activé
         immédiatement. Seul appelant : payments.views.initiate_payment, quand le
         montant restant à payer après remise tombe à 0.
         """
@@ -95,7 +95,7 @@ class Transaction(models.Model):
         help_text="Renseigné une fois le paiement d'un Plan ADDON_REPETITEUR confirmé - exclusif avec `subscription` (voir _activer_acces).",
     )
 
-    amount = models.PositiveIntegerField(help_text="Montant en FCFA réellement envoyé à CamPay (déjà net du crédit parrainage - voir credit_applique), capturé au moment du paiement (indépendant d'un changement de prix ultérieur).")
+    amount = models.PositiveIntegerField(help_text="Montant en FCFA réellement envoyé à l'agrégateur (déjà net du crédit parrainage - voir credit_applique), capturé au moment du paiement (indépendant d'un changement de prix ultérieur).")
     credit_applique = models.PositiveIntegerField(
         default=0,
         help_text=(
@@ -109,7 +109,14 @@ class Transaction(models.Model):
     phone_number = models.CharField(max_length=9)
 
     external_reference = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    campay_reference = models.CharField(max_length=100, blank=True)
+    provider = models.CharField(
+        max_length=20, default=fournisseur_par_defaut,
+        help_text="Agrégateur qui traite cette transaction (voir payments.providers), figé à la création.",
+    )
+    provider_reference = models.CharField(
+        max_length=100, blank=True,
+        help_text="Référence de la transaction chez l'agrégateur (`provider`).",
+    )
     status = models.CharField(max_length=10, choices=StatutTransaction.choices, default=StatutTransaction.PENDING)
     raw_response = models.JSONField(default=dict, blank=True)
 
@@ -128,20 +135,20 @@ class Transaction(models.Model):
         return f"{self.user} - {self.plan} - {self.amount} FCFA ({self.status})"
 
     def initiate(self):
-        """Envoie la demande de collecte CamPay et enregistre la référence retournée."""
-        response = campay_client.init_collect(
-            amount=self.amount,
-            phone_number=self.phone_number,
+        """Envoie la demande de collecte à l'agrégateur de la transaction et enregistre la référence retournée."""
+        resultat = get_provider(self.provider).initier(
+            montant=self.amount,
+            telephone=self.phone_number,
             description=f"Abonnement {self.plan.name}",
-            external_reference=str(self.external_reference),
+            reference_interne=self.external_reference,
         )
-        self.campay_reference = response.get("reference", "")
-        self.raw_response = response
-        self.save(update_fields=["campay_reference", "raw_response", "updated_at"])
+        self.provider_reference = resultat.reference_externe
+        self.raw_response = resultat.brut
+        self.save(update_fields=["provider_reference", "raw_response", "updated_at"])
 
     def sync_status(self):
         """
-        Interroge CamPay pour l'état réel (jamais un webhook non vérifié) et, à la
+        Interroge l'agrégateur pour l'état réel (jamais un webhook non vérifié) et, à la
         première transition vers SUCCESSFUL, active/prolonge l'abonnement. Idempotent -
         y compris sous concurrence : un webhook et un polling client peuvent interroger
         et traiter la même transaction en même temps, sans jamais partager la même
@@ -152,9 +159,9 @@ class Transaction(models.Model):
         if self.status == StatutTransaction.SUCCESSFUL:
             return self
 
-        response = campay_client.get_transaction_status(self.campay_reference)
-        self.raw_response = response
-        self.status = response.get("status", self.status)
+        resultat = get_provider(self.provider).verifier_statut(self.provider_reference)
+        self.raw_response = resultat.brut
+        self.status = resultat.statut
         self.save(update_fields=["status", "raw_response", "updated_at"])
 
         if self.status != StatutTransaction.SUCCESSFUL:
@@ -164,9 +171,9 @@ class Transaction(models.Model):
 
     def _confirmer_succes(self):
         """
-        Point d'activation partagé entre une confirmation CamPay (sync_status, ci-
-        dessus) et un achat intégralement couvert par du crédit parrainage, jamais
-        envoyé à CamPay (voir TransactionManager.creer_couverte_par_credit) - toujours
+        Point d'activation partagé entre une confirmation de l'agrégateur (sync_status,
+        ci-dessus) et un achat intégralement couvert par du crédit parrainage, jamais
+        envoyé à un agrégateur (voir TransactionManager.creer_couverte_par_credit) - toujours
         appelé avec self.status déjà SUCCESSFUL.
         """
         with db_transaction.atomic():

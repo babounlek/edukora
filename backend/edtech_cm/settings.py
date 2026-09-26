@@ -42,6 +42,10 @@ INTERNAL_IPS = ["127.0.0.1"]
 # priorité citée dans le rapport) devient un no-op silencieux plutôt que de lever une
 # erreur - sûr à laisser dans le code même avant qu'un DSN existe.
 SENTRY_DSN = config("SENTRY_DSN", default="")
+
+# Agrégateur de paiement Mobile Money par défaut pour les NOUVELLES transactions (voir
+# payments.providers). Une transaction existante garde le sien (Transaction.provider).
+PAYMENT_PROVIDER = config("PAYMENT_PROVIDER", default="campay")
 if SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,

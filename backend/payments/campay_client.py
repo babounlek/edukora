@@ -9,10 +9,12 @@ from decouple import config
 
 from users.phone import to_msisdn
 
+from .providers.base import PaiementFournisseurError
+
 CAMPAY_HOST = "https://demo.campay.net" if config("CAMPAY_ENVIRONMENT", default="DEV") == "DEV" else "https://www.campay.net"
 
 
-class CampayError(Exception):
+class CampayError(PaiementFournisseurError):
     pass
 
 
