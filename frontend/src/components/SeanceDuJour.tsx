@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
-  ArrowRight, BookOpen, Check, ChevronRight, Clock, GraduationCap, ListChecks, Lock, PenLine, RotateCcw,
+  ArrowRight, BookOpen, Check, ChevronDown, ChevronRight, Clock, ListChecks, Lock, PenLine, RotateCcw,
   Shuffle, Sparkles, Target, type LucideIcon,
 } from "lucide-react"
 
@@ -16,8 +16,10 @@ import { Button } from "@/components/ui/button"
 import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
 import { lienEtape, ouvrirEtapeDeSeance } from "@/lib/seance"
 import { trackEvent } from "@/lib/analytics"
+import { couleurMatiere } from "@/lib/matiereCouleur"
+import { subjectIcon } from "@/lib/subjectIcon"
+import { useMediaQuery } from "@/lib/useMediaQuery"
 import { cn } from "@/lib/utils"
-import { formatCompteARebours } from "@/components/CompteAReboursBadge"
 import { Ecrin } from "@/components/Progression"
 
 /**
@@ -103,7 +105,6 @@ export function SeanceDuJour({ country }: { country: string }) {
   return (
     <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
       <Ecrin>
-        <EnTete plan={data} />
         {data.etat === "deja_fait_aujourdhui" ? (
           <SeanceFaite
             plan={data}
@@ -147,30 +148,6 @@ export function SeanceDuJour({ country }: { country: string }) {
   )
 }
 
-/**
- * "BAC C · J-243" au-dessus de la séance - mais UNIQUEMENT là où la barre du haut ne
- * l'affiche pas déjà.
- *
- * Le badge du Header est en `hidden sm:inline` : visible à partir de 640 px, et
- * relégué dans le menu hamburger en dessous. Sans ce `sm:hidden` complémentaire, la
- * même ligne apparaissait donc deux fois sur desktop, à quelques dizaines de pixels
- * d'écart ; en la retirant purement et simplement, on l'aurait perdue sur téléphone,
- * où elle est justement le plus utile. Résultat : affichée exactement une fois, à
- * toutes les largeurs.
- */
-function EnTete({ plan }: { plan: PlanDuJour }) {
-  const compte = plan.compte_a_rebours ? formatCompteARebours(plan.compte_a_rebours) : ""
-  return (
-    <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground sm:hidden">
-      {plan.cursus?.examen_display}
-      {plan.cursus?.series ? ` ${plan.cursus.series.code}` : ""}
-      {/* Ce qui transforme "réviser les limites" en "réviser les limites parce qu'il
-          reste 243 jours". Toujours en gris, jamais en rouge. */}
-      {compte && <span className="normal-case"> · {compte}</span>}
-    </p>
-  )
-}
-
 function SeanceAFaire({
   plan, country, onOuvrirEtape, onTerminer, terminaisonEnCours, onAutreChose, remplacementEnCours, plusRienAProposer,
   onChoisirDuree, ajustementEnCours,
@@ -211,7 +188,7 @@ function SeanceAFaire({
           </span>
         </h2>
         <div className="mt-4 flex flex-wrap gap-2">
-          {seance.subject && <Pastille icone={GraduationCap}>{seance.subject.label}</Pastille>}
+          {seance.subject && <PastilleMatiere code={seance.subject.code} label={seance.subject.label} />}
           <Pastille icone={Clock}>{seance.duree_estimee_min} min</Pastille>
           {seance.nb_etapes > 1 && <Pastille icone={ListChecks}>{seance.nb_etapes} étapes</Pastille>}
         </div>
@@ -417,6 +394,18 @@ function formaterJourMois(dateIso: string): string {
   return `${jour}/${mois}`
 }
 
+/** La matière, à sa couleur et son icône : la même identité que sur la progression. */
+function PastilleMatiere({ code, label }: { code: string; label: string }) {
+  const Icone = subjectIcon(code)
+  const couleur = couleurMatiere(code)
+  return (
+    <span className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold", couleur.puce)}>
+      <Icone className="size-3.5 shrink-0" />
+      {label}
+    </span>
+  )
+}
+
 function Pastille({ icone: Icone, children }: { icone: LucideIcon; children: ReactNode }) {
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-background/70 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm">
@@ -509,21 +498,40 @@ function SeanceFaite({
  * repliées derrière un "voir pourquoi" - cacher l'argument, c'est le perdre.
  */
 function Frequence({ seance }: { seance: Seance }) {
+  // Sur téléphone, la carte "Pourquoi cette séance ?" pesait presque un écran avant même
+  // le bouton "Commencer". On garde l'ARGUMENT (le chiffre de fréquence, ce qui fait
+  // croire la recommandation) et on replie le détail - jauge, années, autres raisons - à
+  // un toucher. Ailleurs, tout reste déplié : cacher l'argument, c'est le perdre.
+  const large = useMediaQuery("(min-width: 640px)")
+  const [ouvertMobile, setOuvertMobile] = useState(false)
+  const ouvert = large || ouvertMobile
   if (!seance.frequence && seance.raisons.length === 0) return null
+  const aDuDetail = seance.raisons.length > 0 || (seance.frequence?.annees.length ?? 0) > 0
   return (
     <div className="mt-6 max-w-2xl rounded-2xl border border-gold/30 bg-gold/[0.06] p-4">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-        Pourquoi cette séance ?
-      </p>
-      {seance.frequence && <StatFrequence frequence={seance.frequence} />}
-      <AutresRaisons seance={seance} />
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Pourquoi cette séance ?</p>
+      {seance.frequence && <StatFrequence frequence={seance.frequence} detail={ouvert} />}
+      {ouvert && <AutresRaisons seance={seance} />}
+      {!large && aDuDetail && (
+        <button
+          type="button"
+          onClick={() => setOuvertMobile((v) => !v)}
+          aria-expanded={ouvertMobile}
+          className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary"
+        >
+          {ouvertMobile ? "Masquer le détail" : "Voir le détail"}
+          <ChevronDown className={cn("size-4 transition-transform", ouvertMobile && "rotate-180")} />
+        </button>
+      )}
     </div>
   )
 }
 
 /** Le chiffre en grand, et une jauge qui le rend lisible sans lire : "8 sur 10" se
  * voit avant de se comprendre. */
-function StatFrequence({ frequence }: { frequence: NonNullable<Seance["frequence"]> }) {
+function StatFrequence({
+  frequence, detail = true,
+}: { frequence: NonNullable<Seance["frequence"]>; detail?: boolean }) {
   const { occurrences, epreuves_total, annees } = frequence
   const part = epreuves_total > 0 ? Math.min(100, Math.round((occurrences / epreuves_total) * 100)) : 0
   return (
@@ -538,6 +546,7 @@ function StatFrequence({ frequence }: { frequence: NonNullable<Seance["frequence
           <span className="text-muted-foreground"> des {epreuves_total} dernières épreuves</span>
         </p>
       </div>
+      {detail && (
       <div
         className="mt-3 h-1.5 overflow-hidden rounded-full bg-gold/15"
         role="img"
@@ -545,10 +554,11 @@ function StatFrequence({ frequence }: { frequence: NonNullable<Seance["frequence
       >
         <div className="h-full rounded-full bg-gradient-to-r from-gold/70 to-gold" style={{ width: `${part}%` }} />
       </div>
+      )}
       {/* Les années concernées : sans elles, le chiffre est à croire sur parole. Le
           "…" dit qu'il y en a d'autres plutôt que de laisser croire à une liste
           complète (voir ANNEES_FREQUENCE_MAX côté serveur). */}
-      {annees.length > 0 && (
+      {detail && annees.length > 0 && (
         <p className="mt-2 text-xs tabular-nums text-muted-foreground">
           {annees.join(" · ")}
           {occurrences > annees.length ? " …" : ""}
@@ -719,7 +729,7 @@ function EtapesParPhase({
 
   return (
     <div className="self-start rounded-2xl border border-border/70 bg-background/70 p-4 backdrop-blur-sm sm:p-5">
-      <p className="flex items-baseline justify-between gap-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+      <p className="flex items-baseline justify-between gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         Ton parcours
         <span className="font-sans normal-case tracking-normal tabular-nums">{seance.duree_estimee_min} min</span>
       </p>
@@ -733,7 +743,7 @@ function EtapesParPhase({
                 {index < groupes.length - 1 && (
                   <span aria-hidden className="absolute bottom-0 left-[11px] top-7 w-px bg-gradient-to-b from-primary/40 to-border" />
                 )}
-                <span className="absolute left-0 top-0 flex size-6 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground shadow-sm shadow-primary/30 ring-4 ring-primary/10">
+                <span className="absolute left-0 top-0 flex size-6 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground shadow-sm shadow-primary/30 ring-4 ring-primary/10">
                   {index + 1}
                 </span>
                 <p className="flex h-6 items-center text-xs font-semibold uppercase tracking-wide text-foreground/80">

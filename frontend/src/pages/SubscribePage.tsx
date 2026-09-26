@@ -16,6 +16,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
+import { BienvenueAbonne } from "@/components/BienvenueAbonne"
+import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { ManualPaymentPanel } from "@/components/ManualPaymentPanel"
 
 type PaymentPhase = "form" | "pending" | "success" | "failed" | "timeout" | "manual_submitted"
@@ -70,7 +72,7 @@ const MANUAL_METHODS: PaymentMethodOption[] = [
 function StepLabel({ n, children }: { n: number; children: ReactNode }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
+      <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
         {n}
       </span>
       <Label className="text-sm">{children}</Label>
@@ -337,6 +339,10 @@ export function SubscribePage() {
         </p>
       </div>
 
+      {/* Renouvellement : ce que l'abonnement a déjà apporté, juste avant de repayer. Silencieux
+          pour un premier achat (404) ou sans activité. */}
+      {phase === "form" && cursus && <BilanDePeriode cursusId={cursus.id} className="mb-6" />}
+
       <Card className="animate-fade-up shadow-lg shadow-primary/5">
         <CardContent className="p-6 sm:p-7">
           {phase === "form" && (
@@ -395,7 +401,7 @@ export function SubscribePage() {
                   />
                   <span
                     className={cn(
-                      "mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full text-[11px] font-bold",
+                      "mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full text-xs font-bold",
                       CAMPAY_METHOD.badgeClass,
                     )}
                   >
@@ -404,7 +410,7 @@ export function SubscribePage() {
                   <span className="flex flex-col gap-0.5">
                     <span className="flex items-center gap-1.5">
                       <span className="text-sm font-semibold">{CAMPAY_METHOD.label}</span>
-                      <span className="rounded-full bg-success/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-success">
+                      <span className="rounded-full bg-success/15 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-success">
                         Recommandé
                       </span>
                     </span>
@@ -444,7 +450,7 @@ export function SubscribePage() {
                           />
                           <span
                             className={cn(
-                              "flex size-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold",
+                              "flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-bold",
                               method.badgeClass,
                             )}
                           >
@@ -556,7 +562,16 @@ export function SubscribePage() {
             </div>
           )}
 
-          {phase === "success" && (
+          {/* Un abonnement de base, pas un add-on : l'accueil guide vers le diagnostic. */}
+          {phase === "success" && cursus && plans.find((p) => p.id === selectedPlanId)?.product_type === "ABONNEMENT" && (
+            <BienvenueAbonne
+              cursusId={cursus.id}
+              country={country}
+              inclutInedit={Boolean(plans.find((p) => p.id === selectedPlanId)?.inclut_inedit)}
+            />
+          )}
+
+          {phase === "success" && !(cursus && plans.find((p) => p.id === selectedPlanId)?.product_type === "ABONNEMENT") && (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <CheckCircle2 className="size-10 text-success" />
               <p className="font-display font-medium">
