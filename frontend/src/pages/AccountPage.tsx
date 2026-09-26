@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { ArrowRight, CheckCircle2, Copy, Crown, FileText, Gift, MessageCircle, Pencil, Target } from "lucide-react"
+import { ArrowRight, CheckCircle2, Copy, Crown, FileText, Gift, MessageCircle, NotebookPen, Pencil, Target } from "lucide-react"
 
 import {
   downloadFicheCorrigePdf,
@@ -22,6 +22,7 @@ import type {
 } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
+import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { ConnexionMethodsCard } from "@/components/ConnexionMethodsCard"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -158,7 +159,15 @@ export function AccountPage() {
 
   return (
     <div className="mx-auto max-w-2xl animate-fade-up px-4 py-10">
-      <h1 className="mb-6 font-display text-3xl font-semibold">Mon compte</h1>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="font-display text-3xl font-semibold">Mon compte</h1>
+        <Button asChild variant="outline" size="sm" className="rounded-full">
+          <Link to="/carnet">
+            <NotebookPen className="size-4" />
+            Mon carnet
+          </Link>
+        </Button>
+      </div>
 
       {/* Épinglé au-dessus des onglets - identité et déconnexion doivent rester
           atteignables en un coup d'œil, jamais cachées derrière un clic. */}
@@ -245,6 +254,7 @@ export function AccountPage() {
         </TabsList>
 
         <TabsContent value="abonnements" className="mt-4 flex flex-col gap-6">
+          {user.cursus_prepare && <BilanDePeriode cursusId={user.cursus_prepare.id} />}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 font-display text-lg">

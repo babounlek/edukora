@@ -63,7 +63,7 @@ export function BottomTabBar() {
             to={onglet.to}
             aria-current={onglet.actif ? "page" : undefined}
             className={cn(
-              "flex flex-1 flex-col items-center gap-0.5 px-2 py-2 text-[11px] font-medium transition-colors",
+              "flex flex-1 flex-col items-center gap-0.5 px-2 py-2 text-xs font-medium transition-colors",
               onglet.actif ? "text-primary" : "text-muted-foreground hover:text-foreground",
             )}
           >

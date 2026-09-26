@@ -8,9 +8,13 @@ import {
   Gift,
   GraduationCap,
   LayoutGrid,
+  Layers,
   List,
   Loader2,
+  RefreshCw,
   Search,
+  SearchX,
+  SlidersHorizontal,
   X,
 } from "lucide-react"
 
@@ -19,6 +23,7 @@ import type { NatureEpreuve, Origine } from "@/api/types"
 import { examLevelsFor } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
+import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { subjectShortLabel } from "@/lib/subjectLabel"
 import { cn, formatAmount } from "@/lib/utils"
@@ -29,6 +34,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveCard } from "@/components/EpreuveCard"
 import { EpreuveListRow } from "@/components/EpreuveListRow"
+import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { ThemesFrequents } from "@/components/ThemesFrequents"
 import {
   Select,
@@ -74,35 +80,24 @@ const ORDERING_LABELS = {
   popular: "Les plus consultées",
 } as const
 
-// Même paliers de repli que /cours (voir CoursListPage) - les deux catalogues
-// partagent le même gabarit de pastilles de matière, donc la même mesure.
-const PALIERS_MATIERES = [
-  { limite: 4, revele: "" },
-  { limite: 5, revele: "sm:flex" },
-  { limite: 7, revele: "md:flex" },
-  { limite: 10, revele: "lg:flex" },
-] as const
-
-const MATIERES_VISIBLES_MIN = PALIERS_MATIERES[0].limite
-const MATIERES_VISIBLES_MAX = PALIERS_MATIERES[PALIERS_MATIERES.length - 1].limite
-
-function classeRepliMatiere(index: number): string | undefined {
-  if (index < MATIERES_VISIBLES_MIN) return undefined
-  const palier = PALIERS_MATIERES.find((p) => index < p.limite)
-  return palier ? `hidden ${palier.revele}` : "hidden"
-}
-
 function EpreuveCardSkeleton() {
   return (
     <Card className="overflow-hidden">
-      <CardContent className="flex flex-col gap-2.5 p-4">
-        <Skeleton className="h-4 w-3/4" />
-        <Skeleton className="h-3 w-1/2" />
-        <div className="flex gap-1.5">
-          <Skeleton className="h-5 w-16 rounded-md" />
-          <Skeleton className="h-5 w-14 rounded-md" />
+      <Skeleton className="h-1 w-full rounded-none" />
+      <CardContent className="flex flex-col gap-3 p-4">
+        <div className="flex items-start gap-3">
+          <Skeleton className="size-10 shrink-0 rounded-xl" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-3 w-1/3" />
+            <Skeleton className="h-4 w-4/5" />
+          </div>
         </div>
-        <Skeleton className="mt-1 h-3 w-2/3" />
+        <div className="flex gap-1.5">
+          <Skeleton className="h-5 w-24 rounded-md" />
+          <Skeleton className="h-5 w-16 rounded-md" />
+        </div>
+        <Skeleton className="h-3 w-2/3" />
+        <Skeleton className="mt-1 h-8 w-full" />
       </CardContent>
     </Card>
   )
@@ -190,16 +185,14 @@ export function EpreuvesListPage() {
     [subjects],
   )
 
-  // Déplié par défaut : toutes les matières visibles d'un coup plutôt que tronquées
-  // derrière "Toutes les matières (N)" - décision utilisateur du 2026-08-19, le
-  // repliement restait un frein à la découverte pour un catalogue qui n'a de toute
-  // façon jamais plus d'une dizaine de matières par pays.
-  const [matieresDepliees, setMatieresDepliees] = useState(true)
-
   const { data: cursusList = [] } = useQuery({
     queryKey: ["cursus", country],
     queryFn: ({ signal }) => listCursus(country, signal),
   })
+
+  // Origine et nature sont des filtres de second rang : repliés tant qu'ils ne servent pas, mais
+  // jamais cachés quand l'un d'eux est actif (on doit voir ce qui restreint la liste).
+  const [plusOuvert, setPlusOuvert] = useState(false)
 
   const filtresActifs = Boolean(
     subjectFilter || cursusFilter || origineFilter || natureFilter || gratuitFilter || search,
@@ -371,37 +364,47 @@ export function EpreuvesListPage() {
   ].filter((chip): chip is { key: string; label: string; clear: () => void } => Boolean(chip))
 
   const examLevels = examLevelsFor(cursusList)
+  const plusVisible = plusOuvert || Boolean(origineFilter || natureFilter)
+  const nbFiltresSecondaires = (origineFilter ? 1 : 0) + (natureFilter ? 1 : 0)
+  // Le cursus est LE filtre d'un élève ("mon BAC D") : en pastilles d'un clic plutôt que caché
+  // dans une liste déroulante, triées pour que les séries d'un même examen se suivent.
+  const cursusTries = [...cursusList].sort(
+    (x, y) =>
+      x.examen_display.localeCompare(y.examen_display, "fr") ||
+      (x.series?.code ?? "").localeCompare(y.series?.code ?? "", "fr"),
+  )
   const totalEpreuves = filtresActifs ? totalData?.count : epreuvesQuery.data ? count : undefined
 
   return (
-    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
       <BandeauFiltreCursus />
-      {/* Même gabarit de hero que /quiz, /fiches et /cours. */}
-      <div className="relative mb-6 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8">
+      {/* Hero : plus court qu'avant (les résultats doivent apparaître sans défiler sur un
+          ordinateur), avec un filigrane et le volume du catalogue - la preuve qu'il y a de quoi
+          chercher avant même d'avoir cherché. */}
+      <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
         <div
+          aria-hidden
           className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
             backgroundSize: "24px 24px",
           }}
         />
+        <BookOpen aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
-          <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <BookOpen className="size-5" />
-          </div>
-          <p className="mb-1 font-display text-sm italic text-primary">
+          <p className="mb-2 font-display text-sm italic text-primary">
             Épreuves et corrigés{countryLabel ? ` - ${countryLabel}` : ""}
           </p>
-          <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
+          <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
             Toutes les <span className="text-primary">annales corrigées</span>, cursus par cursus.
           </h1>
-          <p className="mt-2 text-muted-foreground">
-            Sujets officiels, examens blancs et épreuves inédites - filtre par matière, série et type pour trouver
-            exactement ce qu'il te faut réviser.
+          <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
+            Sujets officiels, examens blancs et épreuves inédites : choisis ton examen, ta matière, et lis le corrigé
+            détaillé.
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
             {totalEpreuves !== undefined && (
               <StatChip
                 icon={<BookOpen className="size-3.5 text-primary" />}
@@ -409,8 +412,15 @@ export function EpreuvesListPage() {
                 libelle={totalEpreuves > 1 ? "épreuves publiées" : "épreuve publiée"}
               />
             )}
+            {subjectsTries.length > 0 && (
+              <StatChip
+                icon={<Layers className="size-3.5 text-primary" />}
+                valeur={String(subjectsTries.length)}
+                libelle={subjectsTries.length > 1 ? "matières" : "matière"}
+              />
+            )}
             {examLevels.length > 0 && (
-              <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
+              <span className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm sm:flex">
                 <GraduationCap className="size-3.5 text-success" />
                 <span className="text-muted-foreground">{examLevels.join(" · ")}</span>
               </span>
@@ -421,44 +431,89 @@ export function EpreuvesListPage() {
 
       {/* Panneau de recherche : la carte surélevée fait de la recherche le point focal
           de la page, comme sur /cours. */}
-      <div className="mb-6 rounded-2xl border border-border bg-card p-5 shadow-lg shadow-primary/5 sm:p-6">
+      <div className="mb-6 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
         <div className="group relative">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
           <Input
-            placeholder="Rechercher une épreuve (matière, année, mot-clé)..."
+            type="search"
+            inputMode="search"
+            enterKeyHint="search"
+            aria-label="Rechercher une épreuve"
+            placeholder="Rechercher une épreuve…"
             value={search}
             onChange={(e) => updateFilter("search", e.target.value)}
-            className="h-12 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25"
+            className="h-12 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25 [&::-webkit-search-cancel-button]:hidden"
           />
           {search && (
             <button
               type="button"
               onClick={() => updateFilter("search", "")}
               aria-label="Effacer la recherche"
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
             >
               <X className="size-4" />
             </button>
           )}
         </div>
 
-        {/* Raccourcis vers les deux facettes les plus demandées - un clic, là où passer
-            par le sélecteur "Origine" en coûte deux (ouvrir le menu, choisir "Épreuve
-            inédite"). Les deux restent aussi accessibles depuis leurs sélecteurs
-            respectifs, ce ne sont que des raccourcis, pas un mécanisme séparé. */}
-        <div className="mt-4 flex flex-wrap gap-2">
+        {cursusTries.length > 0 && (
+          <FiltreLigne titre="Examen">
+            <PastilleFiltre actif={!cursusFilter} onClick={() => updateFilter("cursus", "")}>
+              Tous
+            </PastilleFiltre>
+            {cursusTries.map((c) => (
+              <PastilleFiltre
+                key={c.id}
+                actif={cursusFilter === String(c.id)}
+                onClick={() => updateFilter("cursus", cursusFilter === String(c.id) ? "" : String(c.id))}
+              >
+                {c.examen_display}
+                {c.series ? ` ${c.series.code}` : ""}
+              </PastilleFiltre>
+            ))}
+          </FiltreLigne>
+        )}
+
+        {subjectsTries.length > 0 && (
+          <FiltreLigne titre="Matière">
+            <PastilleFiltre actif={!subjectFilter} onClick={() => updateFilter("subject", "")}>
+              Toutes
+            </PastilleFiltre>
+            {subjectsTries.map((subject) => {
+              const SubjectIcon = subjectIcon(subject.code)
+              const actif = subjectFilter === subject.code
+              return (
+                <PastilleFiltre
+                  key={subject.id}
+                  actif={actif}
+                  onClick={() => updateFilter("subject", actif ? "" : subject.code)}
+                >
+                  <span className={cn("flex size-5 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
+                    <SubjectIcon className="size-3" aria-hidden="true" />
+                  </span>
+                  {subjectShortLabel(subject.code, subject.label)}
+                </PastilleFiltre>
+              )
+            })}
+          </FiltreLigne>
+        )}
+
+        {/* Raccourcis vers les facettes les plus demandées - un clic, là où passer par le
+            sélecteur "Origine" en coûte deux. Restent aussi accessibles depuis leurs
+            sélecteurs, ce ne sont que des raccourcis. */}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={() => updateFilter("gratuit", gratuitFilter ? "" : "true")}
             aria-pressed={gratuitFilter}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+              "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
               gratuitFilter
                 ? "border-success/40 bg-success/15 text-success"
                 : "border-border text-muted-foreground hover:border-success/40 hover:text-success",
             )}
           >
-            <Gift className="size-3.5" />
+            <Gift className="size-4" />
             Gratuites
           </button>
           <button
@@ -466,138 +521,71 @@ export function EpreuvesListPage() {
             onClick={() => updateFilter("origine", origineFilter === "INEDITE" ? "" : "INEDITE")}
             aria-pressed={origineFilter === "INEDITE"}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+              "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
               origineFilter === "INEDITE"
                 ? "border-gold bg-gold text-gold-foreground"
                 : "border-border text-muted-foreground hover:border-gold/40 hover:text-gold",
             )}
           >
-            <Crown className="size-3.5" />
+            <Crown className="size-4" />
             Inédites
+          </button>
+          <button
+            type="button"
+            onClick={() => setPlusOuvert((v) => !v)}
+            aria-expanded={plusVisible}
+            className="ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          >
+            <SlidersHorizontal className="size-4" />
+            <span className="sm:hidden">Filtres</span>
+            <span className="hidden sm:inline">Plus de filtres</span>
+            {nbFiltresSecondaires > 0 && (
+              <span className="flex size-5 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                {nbFiltresSecondaires}
+              </span>
+            )}
+            <ChevronDown className={cn("size-4 transition-transform", plusVisible && "rotate-180")} />
           </button>
         </div>
 
-        {subjectsTries.length > 0 && (
-          <div className="mt-4">
-            <div role="group" aria-label="Filtrer par matière" className="flex flex-wrap gap-1.5">
-              <button
-                type="button"
-                onClick={() => updateFilter("subject", "")}
-                aria-pressed={!subjectFilter}
-                className={cn(
-                  "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
-                  subjectFilter
-                    ? "border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
-                    : "border-primary bg-primary/10 text-primary",
-                )}
-              >
-                Toutes
-              </button>
-              {subjectsTries.map((subject, index) => {
-                const SubjectIcon = subjectIcon(subject.code)
-                const actif = subjectFilter === subject.code
-                return (
-                  <button
-                    key={subject.id}
-                    type="button"
-                    onClick={() => updateFilter("subject", actif ? "" : subject.code)}
-                    aria-pressed={actif}
-                    className={cn(
-                      "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
-                      actif
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary",
-                      !matieresDepliees && classeRepliMatiere(index),
-                    )}
-                  >
-                    <SubjectIcon className="size-3.5" aria-hidden="true" />
-                    {subjectShortLabel(subject.code, subject.label)}
-                  </button>
-                )
-              })}
-            </div>
+        {plusVisible && (
+          <div className="mt-3 flex flex-wrap items-center gap-2 rounded-xl bg-muted/50 p-3">
+            <Select
+              value={origineFilter || "all"}
+              onValueChange={(v) => updateFilter("origine", v === "all" ? "" : v)}
+            >
+              <SelectTrigger className="w-full bg-background sm:w-52" aria-label="Origine">
+                <SelectValue placeholder="Toute origine" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Toute origine</SelectItem>
+                {(Object.keys(ORIGINE_LABELS) as Origine[]).map((code) => (
+                  <SelectItem key={code} value={code}>
+                    {ORIGINE_LABELS[code]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-            {subjectsTries.length > MATIERES_VISIBLES_MIN && (
-              <button
-                type="button"
-                onClick={() => setMatieresDepliees((v) => !v)}
-                aria-expanded={matieresDepliees}
-                className={cn(
-                  "mt-2 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-primary",
-                  subjectsTries.length <= MATIERES_VISIBLES_MAX && !matieresDepliees && "lg:hidden",
-                )}
-              >
-                <ChevronDown className={cn("size-3.5 transition-transform", matieresDepliees && "rotate-180")} />
-                {matieresDepliees ? "Réduire" : `Toutes les matières (${subjectsTries.length})`}
-              </button>
-            )}
+            <Select value={natureFilter || "all"} onValueChange={(v) => updateFilter("nature", v === "all" ? "" : v)}>
+              <SelectTrigger className="w-full bg-background sm:w-48" aria-label="Théorique ou pratique">
+                <SelectValue placeholder="Théorique/Pratique" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Théorique/Pratique</SelectItem>
+                {(Object.keys(NATURE_LABELS) as NatureEpreuve[]).map((code) => (
+                  <SelectItem key={code} value={code}>
+                    {NATURE_LABELS[code]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         )}
 
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <Select value={cursusFilter || "all"} onValueChange={(v) => updateFilter("cursus", v === "all" ? "" : v)}>
-            <SelectTrigger className="w-full sm:w-56">
-              <SelectValue placeholder="Tous les cursus" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Tous les cursus</SelectItem>
-              {cursusList.map((c) => (
-                <SelectItem key={c.id} value={String(c.id)}>
-                  {c.examen_display}
-                  {c.series ? ` - Série ${c.series.code}` : ""}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select
-            value={origineFilter || "all"}
-            onValueChange={(v) => updateFilter("origine", v === "all" ? "" : v)}
-          >
-            <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder="Toute origine" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Toute origine</SelectItem>
-              {(Object.keys(ORIGINE_LABELS) as Origine[]).map((code) => (
-                <SelectItem key={code} value={code}>
-                  {ORIGINE_LABELS[code]}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={natureFilter || "all"} onValueChange={(v) => updateFilter("nature", v === "all" ? "" : v)}>
-            <SelectTrigger className="w-full sm:w-40">
-              <SelectValue placeholder="Théorique/Pratique" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Théorique/Pratique</SelectItem>
-              {(Object.keys(NATURE_LABELS) as NatureEpreuve[]).map((code) => (
-                <SelectItem key={code} value={code}>
-                  {NATURE_LABELS[code]}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={ordering || "default"} onValueChange={(v) => updateFilter("ordering", v === "default" ? "" : v)}>
-            <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder="Tri par défaut" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="default">Tri par défaut</SelectItem>
-              {(Object.keys(ORDERING_LABELS) as (keyof typeof ORDERING_LABELS)[]).map((key) => (
-                <SelectItem key={key} value={key}>
-                  {ORDERING_LABELS[key]}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
         {activeFilterChips.length > 0 && (
           <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3.5">
+            <span className="text-sm text-muted-foreground">Filtres :</span>
             {activeFilterChips.map((chip) => (
               <FilterChip key={chip.key} label={chip.label} onRemove={chip.clear} />
             ))}
@@ -605,7 +593,7 @@ export function EpreuvesListPage() {
               <button
                 type="button"
                 onClick={resetFilters}
-                className="text-xs font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+                className="text-sm font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
               >
                 Tout effacer
               </button>
@@ -624,30 +612,75 @@ export function EpreuvesListPage() {
       )}
 
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label="Chargement des épreuves">
           {Array.from({ length: 6 }).map((_, i) => (
             <EpreuveCardSkeleton key={i} />
           ))}
         </div>
+      ) : epreuvesQuery.isError && epreuvesList.length === 0 ? (
+        // Une panne n'est pas "aucun résultat" : sans ce cas, une coupure réseau se lisait
+        // comme un catalogue vide et l'élève cherchait l'erreur dans ses filtres.
+        <div role="alert" className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border bg-card/60 px-6 py-14 text-center">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-destructive/10 text-destructive">
+            <RefreshCw className="size-6" />
+          </span>
+          <p className="font-display text-lg font-semibold">Impossible de charger les épreuves</p>
+          <p className="max-w-sm text-sm text-muted-foreground">
+            Vérifie ta connexion : tes filtres sont conservés, il suffit de réessayer.
+          </p>
+          <Button onClick={() => epreuvesQuery.refetch()} className="rounded-full">
+            <RefreshCw />
+            Réessayer
+          </Button>
+        </div>
       ) : epreuvesList.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 py-20 text-center text-muted-foreground">
-          <BookOpen className="size-8" />
-          <p>Aucune épreuve ne correspond à ces critères.</p>
-          {(activeFilterChips.length > 0 || search) && (
-            <Button variant="outline" size="sm" onClick={resetFilters}>
-              Réinitialiser la recherche
-            </Button>
-          )}
+        <div className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border bg-card/60 px-6 py-14 text-center">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <SearchX className="size-6" />
+          </span>
+          <p className="font-display text-lg font-semibold">Aucune épreuve ne correspond</p>
+          <p className="max-w-sm text-sm text-muted-foreground">
+            {search
+              ? `Rien pour « ${search} » avec ces filtres. Essaie un mot plus court, ou élargis la recherche.`
+              : "Élargis un filtre pour voir plus d'épreuves."}
+          </p>
+          <div className="mt-1 flex flex-wrap justify-center gap-2">
+            {(activeFilterChips.length > 0 || search) && (
+              <Button variant="outline" onClick={resetFilters} className="rounded-full">
+                Tout réinitialiser
+              </Button>
+            )}
+            {!gratuitFilter && (
+              <Button variant="ghost" onClick={() => updateFilter("gratuit", "true")} className="rounded-full">
+                <Gift />
+                Voir les épreuves gratuites
+              </Button>
+            )}
+          </div>
         </div>
       ) : (
         <>
           {/* Barre de résultats collante : même hauteur (top-[72px]) et même motif que
               /cours - voir CoursListPage pour l'explication de cette valeur exacte. */}
           <div className="sticky top-[72px] z-10 -mx-4 mb-4 flex items-center justify-between gap-3 border-b border-border bg-background/85 px-4 py-2.5 backdrop-blur sm:-mx-6 sm:px-6">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground" aria-live="polite">
               <span className="font-medium tabular-nums text-foreground">{formatAmount(count)}</span> épreuve
               {count > 1 ? "s" : ""} trouvée{count > 1 ? "s" : ""}
             </p>
+            <div className="flex shrink-0 items-center gap-2">
+            <Select value={ordering || "default"} onValueChange={(v) => updateFilter("ordering", v === "default" ? "" : v)}>
+              <SelectTrigger className="h-8 w-36 text-sm sm:w-48" aria-label="Trier les épreuves">
+                <SelectValue placeholder="Tri par défaut" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="default">Tri par défaut</SelectItem>
+                {(Object.keys(ORDERING_LABELS) as (keyof typeof ORDERING_LABELS)[]).map((key) => (
+                  <SelectItem key={key} value={key}>
+                    {ORDERING_LABELS[key]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <div className="flex shrink-0 gap-1 rounded-md border border-border p-0.5">
               <Button
                 variant={viewMode === "cards" ? "secondary" : "ghost"}
@@ -669,6 +702,7 @@ export function EpreuvesListPage() {
               >
                 <List className="size-4" />
               </Button>
+            </div>
             </div>
           </div>
 

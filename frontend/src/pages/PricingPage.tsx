@@ -213,7 +213,7 @@ function Echeancier({ plan }: { plan: Plan }) {
           return (
             <div key={etape.tranche} className="relative flex flex-1 flex-col items-center">
               {actif && (
-                <span className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-2 py-0.5 font-display text-[10px] font-semibold tracking-wide text-gold-foreground shadow-sm">
+                <span className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-2 py-0.5 font-display text-xs font-semibold tracking-wide text-gold-foreground shadow-sm">
                   Toi
                 </span>
               )}
@@ -221,18 +221,18 @@ function Echeancier({ plan }: { plan: Plan }) {
                 className={cn("w-full rounded-t-[3px] transition-colors", actif ? "bg-gold" : "bg-primary/20")}
                 style={{ height: `${hauteurPx}px` }}
               />
-              <span className={cn("mt-1.5 text-[10px] tabular-nums text-muted-foreground", !extremite && "opacity-0")}>
+              <span className={cn("mt-1.5 text-xs tabular-nums text-muted-foreground", !extremite && "opacity-0")}>
                 {formatAmount(etape.prix)}
               </span>
             </div>
           )
         })}
       </div>
-      <div className="mt-0.5 flex justify-between text-[10px] text-muted-foreground">
+      <div className="mt-0.5 flex justify-between text-xs text-muted-foreground">
         <span>Rentrée</span>
         <span>Jour de l'examen</span>
       </div>
-      <p className="mt-2 text-center text-[11px] text-muted-foreground">
+      <p className="mt-2 text-center text-xs text-muted-foreground">
         <span className="font-medium text-gold">Dernière ligne droite</span> : {formatAmount(PLANCHER_AFFICHE)} FCFA
         garantis, même à la veille de l'examen.
       </p>
@@ -250,7 +250,7 @@ function CalloutExclusifsJusquaExamen() {
     <div className="flex items-start gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3 py-2.5">
       <Crown className="mt-0.5 size-4 shrink-0 text-gold" />
       <div>
-        <p className="flex items-center gap-1 font-display text-[11px] font-semibold uppercase tracking-wide text-gold">
+        <p className="flex items-center gap-1 font-display text-xs font-semibold uppercase tracking-wide text-gold">
           <Sparkles className="size-3" />
           Exclusif Edukora
         </p>

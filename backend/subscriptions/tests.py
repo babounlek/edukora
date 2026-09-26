@@ -532,7 +532,7 @@ class ParrainageAcrossPaymentChannelsTests(TestCase):
 
         transaction = Transaction.objects.create(
             user=self.filleul, plan=self.plan, amount=self.plan.price,
-            phone_number=self.filleul.phone_number, campay_reference="ref-campay-1",
+            phone_number=self.filleul.phone_number, provider_reference="ref-campay-1",
             status=StatutTransaction.SUCCESSFUL,
         )
         # Simule l'activation déjà effectuée par Transaction.sync_status() (sans

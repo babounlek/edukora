@@ -698,9 +698,14 @@ export interface QuizResult {
   total_questions: number
   questions_repondues: number
   score: number
+  meilleure_serie: number
+  seances_cette_semaine: number
   par_theme: QuizThemeScore[]
   // Ce quiz était l'étape finale d'une séance du jour et l'a validée.
   seance_validee: boolean
+  mode: ModeQuiz
+  // Questions ratées qu'on peut re-proposer telles quelles (voir refaireLesRatees).
+  nb_ratees: number
 }
 
 export interface QuizFichePdfStatus {
@@ -934,3 +939,87 @@ export interface TentativeInediteResult {
   temps_total_secondes: number | null
   par_theme: QuizThemeScore[]
 }
+
+/** Bilan des 30 derniers jours d'un abonnement (voir quiz.bilan.bilan_de_periode). */
+export interface BilanMatiere {
+  subject_id: number
+  subject_label: string
+  questions: number
+  taux_avant: number | null
+  taux_periode: number | null
+}
+
+export interface BilanPeriode {
+  debut: string
+  fin: string
+  expire_le: string
+  abonnement_actif: boolean
+  seances: number
+  jours_actifs: number
+  questions: number
+  taux_reussite: number | null
+  taux_avant: number | null
+  meilleure_serie: number
+  themes_travailles: number
+  // Compteurs cumulés avant la période et à sa fin : de quoi calculer les jalons.
+  jalons: {
+    seances_total: number
+    seances_avant: number
+    questions_total: number
+    questions_avant: number
+    solides_total: number
+    solides_avant: number
+  }
+  themes_consolides_total: number
+  themes_consolides: { theme: string; subject_label: string }[]
+  matieres: BilanMatiere[]
+  // Faux quand il n'y a rien à raconter : le front n'affiche alors aucun bilan.
+  a_de_l_activite: boolean
+}
+
+/** Une matière dans la restitution des priorités (voir quiz.priorites). */
+export interface PrioriteMatiere {
+  subject_id: number
+  subject_label: string
+  subject_code: string
+  // null : aucun coefficient lisible dans les épreuves - on n'en affiche pas.
+  coefficient: number | null
+  reussies: number
+  total: number
+  // Repère qualitatif : jamais un pourcentage sur si peu de réponses.
+  niveau: "a_situer" | "fragile" | "moyen" | "solide"
+  // Longueur de barre relative à la première matière (0-100).
+  urgence: number
+  rang: number
+  prioritaire: boolean
+}
+
+/** Réponse de GET /quiz/priorites/. */
+export interface Priorites {
+  a_deja_repondu: boolean
+  diagnostic_fait: boolean
+  compte_a_rebours: CompteARebours | null
+  matieres: PrioriteMatiere[]
+  themes_a_travailler: { theme: string; subject_label: string }[]
+}
+
+/** Ce que l'élève garde d'une section : compris, signet, note (voir access.MarqueEtude). */
+export interface MarqueEtude {
+  cle: string
+  compris: boolean
+  signet: boolean
+  note: string
+  updated_at: string | null
+}
+
+/** Une entrée du carnet : une marque + de quoi rouvrir la section exacte. */
+export interface CarnetEntree extends MarqueEtude {
+  type: "cours" | "epreuve"
+  titre: string
+  slug: string
+  country: string
+  matiere: string
+}
+
+/** Le document sur lequel portent les marques : un cours ou une épreuve, par slug. */
+export type CibleEtude = { type: "cours" | "lesson"; slug: string }

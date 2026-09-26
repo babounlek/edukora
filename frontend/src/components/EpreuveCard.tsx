@@ -1,9 +1,11 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { CheckCircle2, Crown, Lock, Sparkles, Unlock } from "lucide-react"
+import { ArrowRight, CheckCircle2, Clock, Crown, Eye, FileText, Sparkles, Unlock } from "lucide-react"
 
 import type { Epreuve } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
+import { couleurMatiere } from "@/lib/matiereCouleur"
+import { subjectIcon } from "@/lib/subjectIcon"
 import { epreuveDetailPath, epreuveInediteDetailPath, epreuveReaderPath } from "@/lib/countryPath"
 import { useIsTruncated } from "@/lib/useIsTruncated"
 import { cn } from "@/lib/utils"
@@ -23,80 +25,98 @@ interface EpreuveCardProps {
   masquerTypeBadge?: boolean
 }
 
+/** "3 h" pour un classique (texte saisi à la transcription), "90 min" pour une inédite
+ * (Blueprint.duree_minutes) - jamais les deux, jamais une durée inventée. */
+function dureeAffichee(epreuve: Epreuve): string | null {
+  if (epreuve.duree_epreuve) return epreuve.duree_epreuve
+  if (epreuve.duree_minutes) return `${epreuve.duree_minutes} min`
+  return null
+}
+
 export function EpreuveCard({ epreuve, className, style, masquerTypeBadge }: EpreuveCardProps) {
   const [titleRef, isTitleTruncated] = useIsTruncated<HTMLHeadingElement>()
   const country = epreuve.subject.country.code.toLowerCase()
+  const inedite = epreuve.kind === "inedite"
   // Une inédite n'a jamais de slug ni de lecteur direct - toujours la fiche détail,
   // qu'il y ait accès ou non (composer crée une tentative, jamais un simple GET).
-  const to =
-    epreuve.kind === "inedite"
-      ? epreuveInediteDetailPath(country, epreuve.slug ?? epreuve.id)
-      : epreuve.has_access
-        ? epreuveReaderPath(country, epreuve.slug as string)
-        : epreuveDetailPath(country, epreuve.slug as string)
+  const to = inedite
+    ? epreuveInediteDetailPath(country, epreuve.slug ?? epreuve.id)
+    : epreuve.has_access
+      ? epreuveReaderPath(country, epreuve.slug as string)
+      : epreuveDetailPath(country, epreuve.slug as string)
+
+  const Icone = subjectIcon(epreuve.subject.code)
+  const couleur = couleurMatiere(epreuve.subject.code)
+  const duree = dureeAffichee(epreuve)
 
   /**
-   * Métadonnées secondaires, en une ligne de texte plutôt qu'en pastilles. Composée
-   * comme une liste puis jointe : une suite de `<span>·</span>` conditionnels finissait
-   * par produire des séparateurs orphelins dès qu'un élément manquait.
-   *
-   * L'année n'y figure que si le titre ne la porte pas déjà, ou s'il la porte mais que
-   * le `line-clamp-2` du titre l'a coupée avant qu'elle soit lisible. Les titres sont
-   * composés côté serveur et finissent presque toujours par l'année ("Chimie BAC C et D
-   * 2026") : la réafficher juste dessous quand elle est déjà visible se voyait comme un
-   * bégaiement - défaut constaté à l'écran, invisible à la lecture du code. D'où la
-   * mesure de troncature réelle (isTitleTruncated) plutôt qu'un simple test sur le texte
-   * du titre : sur un titre long, l'année est bien dans `epreuve.title` mais coupée par
-   * le clamp, donc absente à l'écran - un test textuel seul la masquait à tort.
+   * Métadonnées secondaires. L'année n'y figure que si le titre ne la porte pas déjà, ou
+   * s'il la porte mais que le `line-clamp-2` l'a coupée avant qu'elle soit lisible : les
+   * titres sont composés côté serveur et finissent presque toujours par l'année, la
+   * réafficher quand elle est déjà visible se voyait comme un bégaiement (d'où la mesure
+   * de troncature réelle, isTitleTruncated, plutôt qu'un test textuel seul).
    */
-  const meta: string[] = []
+  const faits: { icone: typeof Clock; texte: string }[] = []
   if (epreuve.year && (isTitleTruncated || !epreuve.title.includes(String(epreuve.year)))) {
-    meta.push(String(epreuve.year))
+    faits.push({ icone: Clock, texte: `Session ${epreuve.year}` })
   }
-  if (epreuve.nature_epreuve_display) meta.push(epreuve.nature_epreuve_display)
-  // origine_display vaut aussi "Épreuve inédite" pour une inédite - déjà porté par le
-  // badge couronne, jamais les deux à la fois.
-  if (epreuve.kind !== "inedite" && epreuve.origine !== "OFFICIEL") {
-    meta.push(
-      epreuve.etablissement
-        ? `${epreuve.origine_display} - ${epreuve.etablissement}`
-        : epreuve.origine_display,
-    )
+  if (epreuve.exercises_count > 0) {
+    faits.push({
+      icone: FileText,
+      texte: `${epreuve.exercises_count} exercice${epreuve.exercises_count > 1 ? "s" : ""}`,
+    })
+  }
+  if (duree) faits.push({ icone: Clock, texte: duree })
+  if (/^\d+([.,]\d+)?$/.test(epreuve.coefficient.trim())) {
+    faits.push({ icone: Sparkles, texte: `Coef. ${epreuve.coefficient.trim()}` })
   }
 
+  // origine_display vaut aussi "Épreuve inédite" pour une inédite - déjà porté par le
+  // badge couronne, jamais les deux à la fois.
+  const provenance =
+    !inedite && epreuve.origine !== "OFFICIEL"
+      ? epreuve.etablissement
+        ? `${epreuve.origine_display} - ${epreuve.etablissement}`
+        : epreuve.origine_display
+      : null
+
   return (
-    <Link to={to} className={className} style={style}>
+    <Link to={to} className={cn("group block h-full rounded-xl focus-visible:outline-none", className)} style={style}>
       <Card
         className={cn(
-          "group h-full overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5",
+          "relative h-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1 group-hover:border-primary/50 group-hover:shadow-lg group-hover:shadow-primary/[0.07] group-focus-visible:ring-2 group-focus-visible:ring-ring",
           // Porte le signal "premium" de la bannière promo jusque dans le catalogue
           // fusionné - sans ça, seul le petit badge Couronne distingue une inédite
           // d'un corrigé classique dans une grille dense.
-          epreuve.kind === "inedite" && "border-gold/40 hover:border-gold/70 hover:shadow-gold/10",
+          inedite && "border-gold/40 group-hover:border-gold/70 group-hover:shadow-gold/10",
         )}
       >
-        {/* h-full + mt-auto sur le pied : les mentions d'accès s'alignent d'une carte à
-            l'autre sur une même ligne de la grille, quelle que soit la longueur du
-            titre. */}
-        <CardContent className="flex h-full flex-col gap-2 p-4">
-          {/* h3 et non h2 : une carte est un élément DANS une section, pas une section.
-              En h2, les 24 cartes de la grille d'accueil plus celles des rails
-              produisaient 45 titres de même niveau que les 2 vraies sections de la
-              page - plan de document inexploitable pour un lecteur d'écran comme
-              pour un moteur de recherche. Seul sur sa ligne (le badge de type est
-              descendu ci-dessous) : partager la ligne avec un badge lui laissait
-              moins de largeur et le faisait tronquer plus tôt, ce qui pouvait couper
-              l'année en fin de titre avant qu'elle soit lisible. */}
-          <h3 ref={titleRef} className="line-clamp-2 font-display font-medium leading-snug">
-            {epreuve.title}
-          </h3>
-          {/* Le badge de type ouvre la ligne : c'était le plus visible avant (en
-              haut à droite), il reste le premier repéré ici. Les autres pastilles -
-              gratuit, matière, séries - restent secondaires. L'année, la nature et
-              l'origine descendent en pied de carte, en texte. */}
+        {/* Filet de matière : repère de couleur d'un coup d'œil dans une grille de 24
+            cartes, avant même de lire un titre. Or pour une inédite (signal premium). */}
+        <div aria-hidden className={cn("h-1 w-full", inedite ? "bg-gradient-to-r from-gold to-gold/40" : couleur.barre)} />
+        <CardContent className="flex h-[calc(100%-0.25rem)] flex-col gap-3 p-4">
+          <div className="flex items-start gap-3">
+            <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl", couleur.puce)}>
+              <Icone className="size-5" aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {epreuve.subject.label}
+              </p>
+              {/* h3 et non h2 : une carte est un élément DANS une section, pas une section
+                  (45 titres de même niveau que les vraies sections rendraient le plan du
+                  document inexploitable pour un lecteur d'écran comme pour un moteur de
+                  recherche). Seul sur sa ligne : partager avec un badge le ferait tronquer
+                  plus tôt et pourrait couper l'année avant qu'elle soit lisible. */}
+              <h3 ref={titleRef} className="mt-0.5 line-clamp-2 font-display text-base font-medium leading-snug">
+                {epreuve.title}
+              </h3>
+            </div>
+          </div>
+
           <div className="flex flex-wrap items-center gap-1.5">
             {!masquerTypeBadge &&
-              (epreuve.kind === "inedite" ? (
+              (inedite ? (
                 <Badge variant="gold" className="gap-1">
                   <Crown className="size-3" />
                   Épreuve inédite
@@ -112,43 +132,56 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge }: Epr
                 Gratuit
               </Badge>
             )}
-            <Badge variant="secondary">{epreuve.subject.label}</Badge>
             {formatCursusGroups(epreuve.cursus).map((group) => (
-              <Badge key={group.key} variant="outline">{group.label}</Badge>
+              <Badge key={group.key} variant="secondary">{group.label}</Badge>
             ))}
           </div>
-          {meta.length > 0 && (
-            <p className="truncate text-xs text-muted-foreground" title={meta.join(" · ")}>
-              {meta.join(" · ")}
-            </p>
+
+          {(faits.length > 0 || provenance) && (
+            <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+              {faits.length > 0 && (
+                <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  {faits.map(({ icone: IconeFait, texte }) => (
+                    <span key={texte} className="inline-flex items-center gap-1">
+                      <IconeFait className="size-3.5 shrink-0" aria-hidden="true" />
+                      {texte}
+                    </span>
+                  ))}
+                </p>
+              )}
+              {provenance && <p className="truncate" title={provenance}>{provenance}</p>}
+            </div>
           )}
-          {/* mt-auto : cale la mention d'accès en bas de carte, pour qu'elle s'aligne
-              d'une carte à l'autre sur une même ligne quelle que soit la longueur du
-              titre ou la présence de la ligne de métadonnées. */}
-          <div className="mt-auto flex items-center gap-1.5 text-xs text-muted-foreground">
-            {epreuve.est_vitrine ? (
-              <>
-                <Unlock className="size-3.5 text-success" />
-                Corrigé en accès libre
-              </>
-            ) : epreuve.has_access ? (
-              <>
-                <Unlock className="size-3.5 text-success" />
-                Accès inclus dans ton abonnement
-              </>
-            ) : (
-              <>
-                <Lock className="size-3.5" />
-                Abonnement requis
-              </>
-            )}
-            {epreuve.is_read && (
-              <>
-                <span aria-hidden="true">·</span>
-                <CheckCircle2 className="size-3.5 text-success" />
-                Lu
-              </>
-            )}
+
+          {/* Le pied dit CE QUE LE CLIC FAIT, pas ce qu'on n'a pas : "Abonnement requis"
+              écartait avant même d'avoir vu, alors qu'un aperçu gratuit existe. mt-auto :
+              l'action s'aligne d'une carte à l'autre quelle que soit la hauteur du contenu. */}
+          <div className="mt-auto flex items-center justify-between gap-2 border-t border-border/70 pt-3 text-sm">
+            <span className="flex min-w-0 items-center gap-1.5">
+              {epreuve.est_vitrine || epreuve.has_access ? (
+                <>
+                  <Unlock className="size-4 shrink-0 text-success" aria-hidden="true" />
+                  <span className="truncate font-medium text-foreground">
+                    {inedite ? "Composer l'épreuve" : epreuve.est_vitrine ? "Lire - accès libre" : "Lire le corrigé"}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Eye className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                  <span className="truncate font-medium text-foreground">Voir l'aperçu</span>
+                </>
+              )}
+              {epreuve.is_read && (
+                <span className="inline-flex shrink-0 items-center gap-1 text-success">
+                  <CheckCircle2 className="size-3.5" aria-hidden="true" />
+                  Lu
+                </span>
+              )}
+            </span>
+            <ArrowRight
+              className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-1"
+              aria-hidden="true"
+            />
           </div>
         </CardContent>
       </Card>

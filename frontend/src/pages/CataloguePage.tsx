@@ -464,7 +464,7 @@ function CatalogueVitrine() {
             <div className="flex-1">
               <h3 className="flex flex-wrap items-center gap-2 font-display text-lg font-semibold">
                 Épreuves Inédites
-                <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-[10px] font-bold tracking-wide text-gold uppercase">
+                <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-bold tracking-wide text-gold uppercase">
                   Exclusif
                 </span>
               </h3>

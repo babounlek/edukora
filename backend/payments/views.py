@@ -6,14 +6,14 @@ from rest_framework.generics import get_object_or_404
 
 from subscriptions.models import Plan, solde_credit_parrainage
 
-from .campay_client import CampayError
+from .providers import PaiementFournisseurError
 from .models import ManualPayment, MobileMoneyAccount, StatutTransaction, Transaction
 from .serializers import ManualPaymentDeclareSerializer, ManualPaymentSerializer, MobileMoneyAccountSerializer
 
 
-def _report_campay_error(exc, transaction):
+def _report_provider_error(exc, transaction):
     """
-    CampayError est déjà gérée gracieusement ici (réponse 502 propre, jamais un
+    PaiementFournisseurError (CampayError, etc.) est déjà gérée gracieusement ici (réponse 502 propre, jamais un
     crash) - donc jamais remontée automatiquement par l'intégration Django de Sentry,
     qui ne capture que les exceptions non gérées. Un échec de la chaîne de paiement
     reste pourtant le signal le plus critique du produit (voir l'audit UX, reco 5.1)
@@ -22,7 +22,9 @@ def _report_campay_error(exc, transaction):
     """
     with sentry_sdk.new_scope() as scope:
         scope.set_tag("critical_path", "payment")
-        scope.set_context("transaction", {"id": transaction.id, "status": transaction.status})
+        scope.set_context("transaction", {
+            "id": transaction.id, "status": transaction.status, "provider": transaction.provider,
+        })
         sentry_sdk.capture_exception(exc)
 
 
@@ -59,10 +61,10 @@ def initiate_payment(request):
 
     try:
         transaction.initiate()
-    except CampayError as exc:
+    except PaiementFournisseurError as exc:
         transaction.status = StatutTransaction.FAILED
         transaction.save(update_fields=["status", "updated_at"])
-        _report_campay_error(exc, transaction)
+        _report_provider_error(exc, transaction)
         return Response({"error": str(exc)}, status=502)
 
     return Response({
@@ -75,11 +77,11 @@ def initiate_payment(request):
 def check_payment_status(request, transaction_id):
     transaction = get_object_or_404(Transaction, pk=transaction_id, user=request.user)
 
-    if transaction.status == StatutTransaction.PENDING and transaction.campay_reference:
+    if transaction.status == StatutTransaction.PENDING and transaction.provider_reference:
         try:
             transaction.sync_status()
-        except CampayError as exc:
-            _report_campay_error(exc, transaction)
+        except PaiementFournisseurError as exc:
+            _report_provider_error(exc, transaction)
             return Response({"error": str(exc)}, status=502)
 
     return Response({

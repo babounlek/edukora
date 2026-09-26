@@ -86,13 +86,13 @@ export function BandeauCursus() {
       <div className="mx-auto flex max-w-5xl items-start gap-3 px-4 py-2.5 sm:px-6">
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium">Choisis ton examen pour recevoir ta séance du jour</p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
+          <div className="-mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden">
             {cursusList.map((cursus) => (
               <Button
                 key={cursus.id}
                 variant="outline"
                 size="sm"
-                className="h-7 rounded-full px-3 text-xs"
+                className="h-8 shrink-0 rounded-full px-3.5 text-sm"
                 disabled={declarer.isPending}
                 onClick={() => choisir(cursus.id)}
               >

@@ -6,6 +6,7 @@ import type { Cours } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { coursDetailPath, coursReaderPath } from "@/lib/countryPath"
+import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 
 interface CoursListRowProps {
@@ -29,7 +30,7 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
       style={style}
     >
       <div className="flex min-w-0 flex-1 items-center gap-3">
-        <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+        <div className={cn("flex size-9 shrink-0 items-center justify-center rounded-lg", couleurMatiere(cours.subject.code).puce)}>
           <SubjectIcon className="size-4" aria-hidden="true" />
         </div>
         {/* Le chapitre (sous_theme) passe sur une seconde ligne plutôt que d'être
@@ -50,7 +51,7 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
       </div>
       <div className="flex shrink-0 items-center gap-1.5">
         {cours.is_read && (
-          <span className="hidden items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-[11px] font-medium text-success sm:inline-flex">
+          <span className="hidden items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success sm:inline-flex">
             <CheckCircle2 className="size-3" />
             Lu
           </span>

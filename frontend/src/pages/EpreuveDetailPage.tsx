@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { ArrowLeft, ArrowRight, BookOpenText, Crown, FileDown, GraduationCap, Lock, Sparkles, Unlock, Zap } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpenText, Check, Crown, FileDown, Lock, Sparkles, Unlock, Zap } from "lucide-react"
 
 import { getEpreuve, previewEpreuve } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -10,12 +10,16 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
-import { exerciceAnchorId } from "@/components/EpreuveSommaire"
+import { exerciceAnchorId, libelleLong } from "@/components/EpreuveSommaire"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { CountryBadge } from "@/components/CountryBadge"
+import { EnTeteEpreuve, faitsEpreuve } from "@/components/EnTeteEpreuve"
 import { formatCursusGroups } from "@/lib/cursus"
+import { couleurMatiere } from "@/lib/matiereCouleur"
+import { subjectIcon } from "@/lib/subjectIcon"
+import { cn } from "@/lib/utils"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
@@ -128,67 +132,61 @@ export function EpreuveDetailPage() {
     )
   }
 
+  const countryCode = epreuve.subject.country.code.toLowerCase()
+  const cursusGroupes = formatCursusGroups(epreuve.cursus).map((g) => g.label).join(" · ")
+  const lecteur = epreuveReaderPath(countryCode, epreuve.slug as string)
+  const exercices = preview?.exercises ?? []
+
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
       <Link
-        to={epreuvesListPath(epreuve.subject.country.code.toLowerCase())}
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+        to={epreuvesListPath(countryCode)}
+        className="mb-5 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />
         Retour au catalogue
       </Link>
 
-      <div className="flex animate-fade-up flex-col gap-4">
-        <div>
-          <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">{epreuve.title}</h1>
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            <CountryBadge code={epreuve.subject.country.code} label={epreuve.subject.country.label} />
-            {epreuve.est_vitrine && (
-              <Badge variant="success">
-                <Sparkles className="mr-1 size-3" />
-                Corrigé en accès libre
-              </Badge>
-            )}
-            <Badge variant="secondary">{epreuve.subject.label}</Badge>
-            {epreuve.nature_epreuve_display && (
-              <Badge variant="outline">{epreuve.nature_epreuve_display}</Badge>
-            )}
-            {formatCursusGroups(epreuve.cursus).map((group) => (
-              <Badge key={group.key} variant="outline">{group.label}</Badge>
-            ))}
-            <Badge variant="outline">{epreuve.lesson_type_display}</Badge>
-            {epreuve.year && <Badge variant="outline">Session {epreuve.year}</Badge>}
-            {epreuve.origine !== "OFFICIEL" && (
-              <Badge variant="outline">
-                {epreuve.origine_display}
-                {epreuve.etablissement ? ` - ${epreuve.etablissement}` : ""}
-              </Badge>
-            )}
-            {/* Jamais en doublon de l'établissement, déjà affiché juste au-dessus quand
-                c'est lui l'organisateur (épreuve d'établissement). */}
-            {epreuve.institution && epreuve.institution !== epreuve.etablissement && (
-              <Badge variant="outline">{epreuve.institution}</Badge>
-            )}
-            {epreuve.exercises_count > 0 && (
-              <Badge variant="outline">
-                {epreuve.exercises_count} exercice{epreuve.exercises_count > 1 ? "s" : ""}
-              </Badge>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-2 flex flex-wrap gap-2 border-t border-border pt-5">
-          {epreuve.sujet_pdf_url && (
-            <Button asChild variant="outline" size="lg">
-              <a href={epreuve.sujet_pdf_url} target="_blank" rel="noopener noreferrer">
-                <FileDown />
-                Télécharger l'épreuve
-              </a>
-            </Button>
-          )}
+      <div className="flex animate-fade-up flex-col gap-6">
+        <EnTeteEpreuve
+          titre={epreuve.title}
+          matiereCode={epreuve.subject.code}
+          matiere={epreuve.subject.label}
+          cursus={cursusGroupes}
+          session={epreuve.year}
+          faits={faitsEpreuve({
+            exercices: epreuve.exercises_count,
+            duree: epreuve.duree_epreuve,
+            coefficient: epreuve.coefficient,
+          })}
+          badges={
+            <>
+              <CountryBadge code={epreuve.subject.country.code} label={epreuve.subject.country.label} />
+              {epreuve.est_vitrine && (
+                <Badge variant="success" className="gap-1">
+                  <Sparkles className="size-3" />
+                  Corrigé en accès libre
+                </Badge>
+              )}
+              <Badge variant="outline">{epreuve.lesson_type_display}</Badge>
+              {epreuve.nature_epreuve_display && <Badge variant="outline">{epreuve.nature_epreuve_display}</Badge>}
+              {epreuve.origine !== "OFFICIEL" && (
+                <Badge variant="outline">
+                  {epreuve.origine_display}
+                  {epreuve.etablissement ? ` - ${epreuve.etablissement}` : ""}
+                </Badge>
+              )}
+              {/* Jamais en doublon de l'établissement, déjà affiché juste avant quand c'est lui
+                  l'organisateur (épreuve d'établissement). */}
+              {epreuve.institution && epreuve.institution !== epreuve.etablissement && (
+                <Badge variant="outline">{epreuve.institution}</Badge>
+              )}
+            </>
+          }
+        >
           {epreuve.has_access && (
-            <Button asChild size="lg">
-              <Link to={epreuveReaderPath(epreuve.subject.country.code.toLowerCase(), epreuve.slug as string)}>
+            <Button asChild size="lg" className="group h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5">
+              <Link to={lecteur}>
                 {epreuve.lesson_type === "FICHE" ? (
                   <>
                     <Zap />
@@ -200,137 +198,216 @@ export function EpreuveDetailPage() {
                     Lire le corrigé
                   </>
                 )}
+                <ArrowRight className="transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
           )}
-        </div>
+          {epreuve.sujet_pdf_url && (
+            <Button asChild variant="outline" size="lg" className="h-12 rounded-full">
+              <a href={epreuve.sujet_pdf_url} target="_blank" rel="noopener noreferrer">
+                <FileDown />
+                Télécharger l'épreuve
+              </a>
+            </Button>
+          )}
+        </EnTeteEpreuve>
+
+        {/* Pas d'accès : la proposition vient tout de suite après l'en-tête, avec ce qu'elle
+            débloque - et non en bas de page, après un sujet entier, quand l'envie est retombée. Le
+            sujet reste en libre accès, dit franchement. */}
+        {!epreuve.has_access && (
+          <section className="relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-to-br from-primary/[0.08] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-7">
+            <div className="flex items-start gap-4">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <Lock className="size-6" aria-hidden="true" />
+              </span>
+              <div className="min-w-0">
+                <h2 className="font-display text-xl font-semibold sm:text-2xl">Débloque le corrigé complet</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Le sujet ci-dessous est en libre accès. La correction détaillée est réservée aux abonnés
+                  {epreuve.cursus.length > 1 ? " (l'un des cursus suivants suffit)" : ""}.
+                </p>
+              </div>
+            </div>
+            <ul className="mt-5 grid gap-2 sm:grid-cols-3">
+              {[
+                "Correction pas à pas, exercice par exercice",
+                "Cours et rappels de méthode liés",
+                "Quiz et suivi de ta progression",
+              ].map((avantage) => (
+                <li key={avantage} className="flex items-start gap-2 rounded-xl bg-background/70 px-3 py-2.5 text-sm">
+                  <Check className="mt-0.5 size-4 shrink-0 text-primary" strokeWidth={3} aria-hidden="true" />
+                  {avantage}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {epreuve.cursus.map((c) => (
+                <Button key={c.id} asChild size="lg" className="h-12 rounded-full px-6 shadow-lg shadow-primary/25">
+                  <Link to={`/abonnement?cursus=${c.id}`}>
+                    S'abonner{epreuve.cursus.length > 1 ? ` (${c.series ? c.series.code : c.examen_display})` : ""}
+                    <ArrowRight />
+                  </Link>
+                </Button>
+              ))}
+            </div>
+            <div className="mt-4">
+              <ParrainageHint />
+            </div>
+          </section>
+        )}
+
+        {/* Au programme : les exercices d'un coup d'œil, chacun un lien vers son énoncé (et vers son
+            corrigé pour un abonné). C'est ce qui donne envie d'ouvrir : on voit ce qu'on va travailler. */}
+        {exercices.length > 1 && (
+          <section aria-labelledby="au-programme">
+            <h2 id="au-programme" className="mb-3 font-display text-xl font-semibold">
+              Au programme
+            </h2>
+            <ol className="grid gap-2.5 sm:grid-cols-2">
+              {exercices.map((exercise, index) => (
+                <li key={exercise.numero_exercice}>
+                  <a
+                    href={`#${exerciceAnchorId(exercise.numero_exercice)}`}
+                    className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 transition-colors hover:border-primary/40"
+                  >
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 font-display text-sm font-semibold text-primary">
+                      {index + 1}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-medium" title={exercise.titre || undefined}>
+                        {libelleLong(exercise)}
+                      </span>
+                    </span>
+                    {exercise.points && (
+                      <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+                        {exercise.points} pts
+                      </span>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
 
         {/* Consulter l'épreuve : le sujet (énoncés seuls) est public, voir
             access.views.preview_lesson côté backend - toujours affiché ici, abonné ou non. */}
         {preview && (
-          <div className="mt-2 border-t border-border pt-5">
-            <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">Sujet</h2>
+          <section aria-labelledby="le-sujet">
+            <h2 id="le-sujet" className="mb-3 font-display text-xl font-semibold">
+              Le sujet
+            </h2>
             {preview.introduction_markdown && (
-              // Consigne d'épreuve entière - voir EpreuveReaderPage, même contenu que
-              // côté lecture abonnée, ici avant même le sommaire.
-              <div className="prose prose-neutral mb-6 max-w-none text-justify dark:prose-invert">
+              // Consigne d'épreuve entière - voir EpreuveReaderPage, même contenu que côté lecture
+              // abonnée, ici avant même le premier exercice.
+              <div className="prose prose-neutral mb-5 max-w-none rounded-2xl border border-border bg-muted/40 p-4 text-justify dark:prose-invert">
                 <EpreuveMarkdown markdown={preview.introduction_markdown} />
               </div>
             )}
-            {preview.exercises.length > 0 ? (
-              <div>
-                {/* Sommaire (EpreuveSommaire) volontairement masqué pour l'instant : la
-                    grille à colonne latérale de 220px rétrécissait la colonne de lecture
-                    en dessous de la largeur pleine (voir InediteTentativePage/
-                    EpreuveInediteDetailPage, passés à max-w-5xl sans sidebar) - à
-                    réintroduire une fois sa place repensée dans une mise en page large. */}
-                <div className="flex min-w-0 flex-col gap-8">
-                  {preview.exercises.map((exercise) => (
-                    <div
-                      key={exercise.numero_exercice}
-                      id={exerciceAnchorId(exercise.numero_exercice)}
-                      className="scroll-mt-24"
-                    >
-                      <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
-                        <EpreuveMarkdown markdown={exercise.enonce_markdown} />
-                      </article>
-                      {/* Bloqué sur cet exercice précisément : on renvoie vers SON corrigé,
-                          pas vers le haut d'un corrigé qu'il faudrait re-défiler. Réservé aux
-                          abonnés - sinon c'est le bloc "S'abonner" ci-dessous qui prend le relais. */}
-                      {epreuve.has_access && (
-                        <Link
-                          to={`${epreuveReaderPath(epreuve.subject.country.code.toLowerCase(), epreuve.slug as string)}#${exerciceAnchorId(exercise.numero_exercice)}`}
-                          className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
-                        >
-                          <BookOpenText className="size-4" />
-                          Lire le corrigé de cet exercice
-                          <ArrowRight className="size-3.5" />
-                        </Link>
+            {exercices.length > 0 ? (
+              <div className="flex min-w-0 flex-col gap-5">
+                {exercices.map((exercise, index) => (
+                  <div
+                    key={exercise.numero_exercice}
+                    id={exerciceAnchorId(exercise.numero_exercice)}
+                    className="scroll-mt-24 rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-6"
+                  >
+                    <div className="mb-3 flex items-center gap-3">
+                      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary font-display text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/30">
+                        {index + 1}
+                      </span>
+                      <p className="min-w-0 flex-1 truncate font-display text-base font-semibold" title={exercise.titre || undefined}>
+                        {libelleLong(exercise)}
+                      </p>
+                      {exercise.points && (
+                        <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+                          {exercise.points} pts
+                        </span>
                       )}
                     </div>
-                  ))}
-                </div>
+                    <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+                      <EpreuveMarkdown markdown={exercise.enonce_markdown} />
+                    </article>
+                    {/* Bloqué sur cet exercice précisément : on renvoie vers SON corrigé, pas vers le
+                        haut d'un corrigé qu'il faudrait re-défiler. Réservé aux abonnés - sinon c'est le
+                        bloc "Débloque le corrigé" plus haut qui prend le relais. */}
+                    {epreuve.has_access && (
+                      <Link
+                        to={`${lecteur}#${exerciceAnchorId(exercise.numero_exercice)}`}
+                        className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3.5 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/15"
+                      >
+                        <BookOpenText className="size-4" />
+                        Lire le corrigé de cet exercice
+                        <ArrowRight className="size-3.5" />
+                      </Link>
+                    )}
+                  </div>
+                ))}
               </div>
             ) : (
               <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
                 <EpreuveMarkdown markdown={preview.preview_markdown} />
               </article>
             )}
-          </div>
-        )}
-
-        {!epreuve.has_access && (
-          <div className="mt-2 border-t border-border pt-5">
-            <div className="flex flex-col gap-3 rounded-lg border border-dashed border-border bg-muted/40 p-4">
-              <p className="flex items-center gap-1.5 text-sm font-medium">
-                <Lock className="size-4 shrink-0" />
-                Le sujet est en libre accès. Abonne-toi pour lire la correction complète
-                {epreuve.cursus.length > 1 ? " (l'un des cursus suivants suffit)" : ""}.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {epreuve.cursus.map((c) => (
-                  <Button key={c.id} asChild size="lg">
-                    <Link to={`/abonnement?cursus=${c.id}`}>
-                      S'abonner{epreuve.cursus.length > 1 ? ` (${c.series ? c.series.code : c.examen_display})` : ""}
-                    </Link>
-                  </Button>
-                ))}
-              </div>
-              <ParrainageHint />
-            </div>
-          </div>
+          </section>
         )}
 
         {epreuve.related_cours.length > 0 && (
-          <div className="mt-2 border-t border-border pt-5">
-            <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">Cours associés</h2>
-            <div className="flex flex-col gap-2">
-              {epreuve.related_cours.map((cours) => (
-                <Link
-                  key={cours.id}
-                  to={cours.has_access ? coursReaderPath(cours.slug) : coursDetailPath(cours.slug)}
-                  className="flex items-center justify-between gap-2 rounded-lg border border-border px-3.5 py-2.5 text-sm transition-colors hover:border-primary/50 hover:bg-accent"
-                >
-                  <span className="flex items-center gap-2">
-                    <GraduationCap className="size-4 text-primary" />
-                    {cours.titre}
-                  </span>
-                  {cours.has_access ? (
-                    <Unlock className="size-3.5 shrink-0 text-success" />
-                  ) : (
-                    <Lock className="size-3.5 shrink-0 text-muted-foreground" />
-                  )}
-                </Link>
-              ))}
+          <section aria-labelledby="cours-associes">
+            <h2 id="cours-associes" className="mb-3 font-display text-xl font-semibold">
+              Cours associés
+            </h2>
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              {epreuve.related_cours.map((cours) => {
+                const CoursIcone = subjectIcon(epreuve.subject.code)
+                return (
+                  <Link
+                    key={cours.id}
+                    to={cours.has_access ? coursReaderPath(cours.slug) : coursDetailPath(cours.slug)}
+                    className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm transition-colors hover:border-primary/40"
+                  >
+                    <span className={cn("flex size-9 shrink-0 items-center justify-center rounded-xl", couleurMatiere(epreuve.subject.code).puce)}>
+                      <CoursIcone className="size-4" aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0 flex-1 font-medium leading-snug">{cours.titre}</span>
+                    {cours.has_access ? (
+                      <Unlock className="size-4 shrink-0 text-success" aria-label="Inclus" />
+                    ) : (
+                      <Lock className="size-4 shrink-0 text-muted-foreground" aria-label="Abonnement requis" />
+                    )}
+                  </Link>
+                )
+              })}
             </div>
-          </div>
+          </section>
         )}
 
-        <div className="mt-2 border-t border-border pt-5">
-          <Link
-            to={`${epreuvesListPath(epreuve.subject.country.code.toLowerCase())}?origine=INEDITE`}
-            className="group flex items-center justify-between gap-3 rounded-lg border border-dashed border-gold/40 bg-gold/5 px-4 py-3 text-sm transition-colors hover:border-gold/60 hover:bg-gold/10"
-          >
-            <span className="flex items-center gap-2">
-              <Crown className="size-4 shrink-0 text-gold" />
-              <span>
-                <span className="font-medium">Envie d'aller plus loin ?</span>{" "}
-                <span className="text-muted-foreground">Teste-toi sur une épreuve jamais vue, en conditions réelles.</span>
-              </span>
+        <Link
+          to={`${epreuvesListPath(countryCode)}?origine=INEDITE`}
+          className="group flex items-center justify-between gap-3 rounded-2xl border border-dashed border-gold/40 bg-gold/5 px-5 py-4 text-sm transition-colors hover:border-gold/60 hover:bg-gold/10"
+        >
+          <span className="flex items-center gap-3">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
+              <Crown className="size-5" />
             </span>
-            <ArrowRight className="size-3.5 shrink-0 text-primary opacity-0 transition-opacity group-hover:opacity-100" />
-          </Link>
-        </div>
+            <span>
+              <span className="block font-medium">Envie d'aller plus loin ?</span>
+              <span className="text-muted-foreground">Teste-toi sur une épreuve jamais vue, en conditions réelles.</span>
+            </span>
+          </span>
+          <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-1" />
+        </Link>
 
         <RelatedEpreuves
           subjectCode={epreuve.subject.code}
           subjectLabel={epreuve.subject.label}
-          countryCode={epreuve.subject.country.code.toLowerCase()}
+          countryCode={countryCode}
           cursusId={epreuve.cursus[0]?.id}
           excludeId={epreuve.id}
         />
 
-        <BackToTopBar links={[{ to: epreuvesListPath(epreuve.subject.country.code.toLowerCase()), label: "Retour au catalogue" }]} />
+        <BackToTopBar links={[{ to: epreuvesListPath(countryCode), label: "Retour au catalogue" }]} />
       </div>
     </div>
   )

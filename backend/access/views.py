@@ -1,3 +1,4 @@
+from django.db import models
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
@@ -6,7 +7,8 @@ from rest_framework.response import Response
 
 from catalog.models import Cours, Exercise, Lesson
 
-from .models import ExerciceFait, LectureProgress
+from .etude import MarqueInvalide, enregistrer_marque, marques_du_document
+from .models import ExerciceFait, LectureProgress, MarqueEtude
 from .services import has_access
 
 
@@ -199,3 +201,84 @@ def marquer_exercice_fait(request, exercise_id):
     else:
         ExerciceFait.objects.filter(user=request.user, exercise=exercise).delete()
     return Response({"exercise_id": exercise.pk, "fait": bool(fait)})
+
+
+def _marque_payload(marque):
+    return {
+        "cle": marque.cle,
+        "compris": marque.compris,
+        "signet": marque.signet,
+        "note": marque.note,
+        "updated_at": marque.updated_at,
+    }
+
+
+def _cible_etude(params):
+    """Le document visé par cours=<id|slug> ou lesson=<id|slug>, ou None."""
+    if params.get("cours"):
+        return get_object_or_404(Cours.objects.visibles().par_slug_ou_id(params["cours"]))
+    if params.get("lesson"):
+        return get_object_or_404(Lesson.objects.visibles().par_slug_ou_id(params["lesson"]))
+    return None
+
+
+@api_view(["GET", "PUT"])
+def etude_marques(request):
+    """
+    GET  ?cours=|?lesson= : les marques de l'élève sur ce document.
+    PUT  {cours|lesson, cle, compris?, signet?, note?} : met à jour une section - seuls
+    les champs présents changent, et la marque disparaît quand plus rien n'y reste.
+
+    Réservé à qui a accès au document : une note posée sur une section qu'on ne peut pas
+    lire n'a aucun sens (et ouvrirait un stockage libre à qui n'a rien payé).
+    """
+    source = request.query_params if request.method == "GET" else request.data
+    cible = _cible_etude(source)
+    if cible is None:
+        return Response({"error": "Préciser cours ou lesson."}, status=400)
+    if not has_access(request.user, cible):
+        return Response({"error": "Abonnement requis pour ce contenu."}, status=403)
+
+    if request.method == "GET":
+        return Response([_marque_payload(m) for m in marques_du_document(request.user, cible)])
+
+    try:
+        marque = enregistrer_marque(
+            request.user, cible, request.data.get("cle", ""),
+            compris=request.data.get("compris"), signet=request.data.get("signet"), note=request.data.get("note"),
+        )
+    except MarqueInvalide as exc:
+        return Response({"error": str(exc)}, status=400)
+    if marque is None:
+        return Response({"cle": request.data.get("cle"), "compris": False, "signet": False, "note": "", "updated_at": None})
+    return Response(_marque_payload(marque))
+
+
+@api_view(["GET"])
+def etude_carnet(request):
+    """
+    Le carnet de l'élève : tout ce qu'il a mis de côté ou annoté, du plus récent au plus
+    ancien, avec de quoi rouvrir la section exacte. Les "compris" seuls n'y figurent pas :
+    c'est un suivi de progression, pas quelque chose qu'on relit.
+
+    Une marque sur un document que l'élève ne peut plus lire (abonnement expiré) reste
+    affichée : c'est SA note, la lui retirer serait la lui confisquer - la lecture, elle,
+    reste gatée par le lecteur.
+    """
+    marques = (
+        MarqueEtude.objects.filter(user=request.user)
+        .filter(models.Q(signet=True) | ~models.Q(note=""))
+        .select_related("lesson__subject__country", "cours__subject__country")[:200]
+    )
+    carnet = []
+    for marque in marques:
+        doc = marque.cours or marque.lesson
+        carnet.append({
+            **_marque_payload(marque),
+            "type": "cours" if marque.cours_id else "epreuve",
+            "titre": doc.titre if marque.cours_id else doc.title,
+            "slug": doc.slug,
+            "country": doc.subject.country.code.lower(),
+            "matiere": doc.subject.label,
+        })
+    return Response(carnet)

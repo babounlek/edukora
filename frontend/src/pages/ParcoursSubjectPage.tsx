@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
-  ArrowLeft, ArrowRight, BookOpenText, Check, CheckCircle2, Compass, Eye, EyeOff, GraduationCap, RotateCcw, Search,
+  ArrowLeft, ArrowRight, BookOpenText, Check, CheckCircle2, Compass, Eye, EyeOff, GraduationCap, Search,
   Sparkles, Target,
 } from "lucide-react"
 
@@ -10,13 +10,15 @@ import { getParcours, listMySubscriptions, listSubjects, startQuizSession } from
 import { ApiError } from "@/api/client"
 import type { ParcoursModule, ParcoursSavoir, ResumeMatiere, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { AnneauProgression, BarreSegmentee, Ecrin, LegendeProgression } from "@/components/Progression"
+import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { coursDetailPath } from "@/lib/countryPath"
 import { SEUIL_MAITRISE } from "@/lib/maitrise"
+import { couleurMatiere } from "@/lib/matiereCouleur"
+import { STATUTS } from "@/lib/statutsProgression"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
@@ -119,33 +121,33 @@ function libelleCursus(sub: Subscription): string {
   return `${sub.cursus.examen_display}${sub.cursus.series ? ` ${sub.cursus.series.code}` : ""}`
 }
 
-/** Pastille de statut d'un savoir. Or = "à réviser", la même convention que les
- * barres et les compteurs du haut : c'est le statut le plus urgent à repérer en
- * balayant la liste, il ne doit jamais être aussi discret que "Contenu à venir". */
+/** Pastille de statut d'un savoir : la couleur ET l'icône de son statut (voir
+ * lib/statutsProgression), les mêmes que dans la barre, les compteurs et la légende. "En
+ * révision" est le statut le plus urgent à repérer en balayant la liste - il ne doit jamais
+ * être aussi discret que "Contenu à venir". */
 function BadgeSavoir({ savoir }: { savoir: ParcoursSavoir }) {
-  const base = "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-medium"
-  if (savoir.en_revision) {
-    return (
-      <span className={cn(base, "bg-gold/15 text-gold-foreground dark:text-gold")}>
-        <RotateCcw className="size-3" />À réviser
-      </span>
-    )
+  const base = "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
+  const bucket = bucketDeSavoir(savoir)
+  if (bucket === "sans_contenu") {
+    return <span className={cn(base, "border border-dashed border-border/80 text-muted-foreground")}>Contenu à venir</span>
   }
-  if (savoir.taux !== null && savoir.taux >= SEUIL_MAITRISE) {
-    return (
-      <span className={cn(base, "bg-primary/10 text-primary")}>
-        <Check className="size-3" strokeWidth={3} />Maîtrisé
-      </span>
-    )
-  }
-  const neutre = cn(base, "border border-border/80 text-muted-foreground")
-  if (savoir.taux !== null) return <span className={neutre}>{savoir.taux}% de réussite</span>
-  // Cours lu mais jamais encore quizzé - distinct de "à découvrir" (jamais ouvert du
-  // tout), sinon ces deux situations rendent le même badge alors que l'élève sait déjà
-  // laquelle des deux le concerne (voir ParcoursSavoir.a_lu_le_cours).
-  if (savoir.a_lu_le_cours) return <span className={neutre}>Cours lu</span>
-  if (savoir.has_quiz || savoir.cours.length > 0) return <span className={neutre}>À découvrir</span>
-  return <span className={cn(neutre, "border-dashed")}>Contenu à venir</span>
+  const { Icone, puce, libelle } = STATUTS[bucket]
+  // Le libellé précise le statut par ce que l'élève sait déjà : un taux pour "en cours", "Cours lu"
+  // quand il a lu sans être encore quizzé - distinct de "à découvrir" (jamais ouvert du tout).
+  const texte =
+    bucket === "en_cours" && savoir.taux !== null
+      ? `${savoir.taux}% de réussite`
+      : bucket === "a_decouvrir" && savoir.a_lu_le_cours
+        ? "Cours lu"
+        : bucket === "en_revision"
+          ? "À réviser"
+          : libelle
+  return (
+    <span className={cn(base, puce)}>
+      <Icone className="size-3" strokeWidth={bucket === "maitrise" ? 3 : 2} />
+      {texte}
+    </span>
+  )
 }
 
 /** Fréquence d'examen d'un thème (mode Parcours par fréquence uniquement - voir
@@ -157,7 +159,7 @@ function BadgeSavoir({ savoir }: { savoir: ParcoursSavoir }) {
 function Frequence({ savoir }: { savoir: ParcoursSavoir }) {
   if (savoir.nb_epreuves == null) return null
   return (
-    <span className="inline-flex items-center gap-2 text-[11px] text-muted-foreground">
+    <span className="inline-flex items-center gap-2 text-xs text-muted-foreground">
       <span className="h-1 w-12 overflow-hidden rounded-full bg-gold/15" aria-hidden>
         <span className="block h-full rounded-full bg-gold" style={{ width: `${Math.min(100, savoir.frequence_pct ?? 0)}%` }} />
       </span>
@@ -256,9 +258,9 @@ function LigneSavoir({
         className={cn(
           "relative mt-3 flex size-9 shrink-0 items-center justify-center rounded-full font-display text-sm font-semibold tabular-nums",
           bucket === "maitrise" && "bg-primary text-primary-foreground shadow-sm shadow-primary/30 ring-4 ring-primary/10",
-          bucket === "en_revision" && "bg-gold/20 text-gold-foreground ring-4 ring-gold/10 dark:text-gold",
+          bucket === "en_revision" && "bg-warning/20 text-warning-foreground ring-4 ring-warning/10 dark:text-warning",
           bucket === "en_cours" && "bg-info/15 text-info ring-4 ring-info/10",
-          bucket === "a_decouvrir" && "bg-primary/10 text-primary",
+          bucket === "a_decouvrir" && "bg-muted text-muted-foreground ring-4 ring-muted/60",
           inactif && "bg-muted text-muted-foreground",
         )}
       >
@@ -286,18 +288,6 @@ function LigneSavoir({
           )}
         </div>
       </div>
-    </div>
-  )
-}
-
-function Compteur({ valeur, libelle, pastille }: { valeur: number; libelle: string; pastille: string }) {
-  return (
-    <div className="rounded-2xl border border-border/70 bg-background/70 px-3 py-3 backdrop-blur-sm sm:px-4">
-      <p className="flex items-center gap-1.5 whitespace-nowrap text-[11px] text-muted-foreground sm:text-xs">
-        <span className={cn("inline-block size-2 shrink-0 rounded-full", pastille)} />
-        {libelle}
-      </p>
-      <p className="mt-1 font-display text-2xl font-semibold tabular-nums sm:text-3xl">{valeur}</p>
     </div>
   )
 }
@@ -519,7 +509,7 @@ export function ParcoursSubjectPage() {
         <div className="flex items-start justify-between gap-6">
           <div className="min-w-0">
             <div className="flex items-center gap-3">
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md shadow-primary/25">
+              <span className={cn("flex size-11 shrink-0 items-center justify-center rounded-2xl text-white shadow-md", couleurMatiere(subjectCode).barre)}>
                 <SubjectIcon className="size-5" />
               </span>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Ton parcours</p>
@@ -595,10 +585,10 @@ export function ParcoursSubjectPage() {
               </p>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
-              <Compteur valeur={buckets.maitrises} libelle="Maîtrisés" pastille="bg-primary" />
-              <Compteur valeur={buckets.en_revision} libelle="À réviser" pastille="bg-gold" />
-              <Compteur valeur={buckets.en_cours} libelle="En cours" pastille="bg-info" />
-              <Compteur valeur={buckets.a_decouvrir} libelle="À découvrir" pastille="bg-muted ring-1 ring-border" />
+              <CompteurStatut statut="maitrise" valeur={buckets.maitrises} libelle="Maîtrisés" />
+              <CompteurStatut statut="en_revision" valeur={buckets.en_revision} libelle="À réviser" />
+              <CompteurStatut statut="en_cours" valeur={buckets.en_cours} />
+              <CompteurStatut statut="a_decouvrir" valeur={buckets.a_decouvrir} />
             </div>
             <BarreSegmentee
               className="mt-4 h-2.5"
@@ -783,7 +773,7 @@ export function ParcoursSubjectPage() {
                       )}
                       <div className="min-w-0">
                         {module.numero && (
-                          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                             Module {module.numero}
                           </p>
                         )}

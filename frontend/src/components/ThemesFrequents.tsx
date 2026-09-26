@@ -67,7 +67,7 @@ export function ThemesFrequents({ country, cursusId, subjectCode, variant = "ful
               <div className="flex min-w-0 flex-1 items-center gap-3 text-sm">
                 <span
                   className={cn(
-                    "flex size-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold tabular-nums",
+                    "flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold tabular-nums",
                     enTete ? "bg-gold text-gold-foreground" : "bg-muted text-muted-foreground",
                   )}
                 >

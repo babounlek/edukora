@@ -1,20 +1,23 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { ArrowLeft, Unlock } from "lucide-react"
+import { ArrowLeft, Check, NotebookPen, Unlock } from "lucide-react"
 
 import { getCours, readCours } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { Cours, CoursContent } from "@/api/types"
+import type { Cours, CoursContent, CoursSectionData } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { BarreLecture } from "@/components/BarreLecture"
 import { CoursSection } from "@/components/CoursSection"
+import { MarquesSection } from "@/components/MarquesSection"
 import { CoursSommaire } from "@/components/CoursSommaire"
 import { CountryBadge } from "@/components/CountryBadge"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { RelatedCours } from "@/components/RelatedCours"
+import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
 import { coursListPath, coursReaderPath } from "@/lib/countryPath"
 import { capitaliserTheme } from "@/lib/utils"
@@ -36,6 +39,11 @@ export function CoursReaderPage() {
   const [coursFailed, setCoursFailed] = useState(false)
 
   useSeo({ title: content?.title ?? "Cours" })
+
+  const articleRef = useRef<HTMLElement>(null)
+  // Outils d'étude : réservés à un élève connecté (un visiteur sur un cours vitrine n'a nulle
+  // part où ranger une note). Voir MarquesSection.
+  const etude = useEtude(slug ? { type: "cours", slug } : null, isAuthenticated && Boolean(content))
 
   useEffect(() => {
     if (!slug) return
@@ -69,6 +77,22 @@ export function CoursReaderPage() {
       })
   }, [slug, isLoading, isAuthenticated, navigate, cours, coursFailed])
 
+  useEffect(() => {
+    // Même raison que dans EpreuveReaderPage : le contenu arrive en asynchrone, le #hash
+    // (posé par le carnet) doit être rejoué une fois les sections rendues.
+    if (!content) return
+    const id = window.location.hash.slice(1)
+    if (id) document.getElementById(id)?.scrollIntoView()
+  }, [content])
+
+  useEffect(() => {
+    // Même raison que dans EpreuveReaderPage : le contenu arrive en asynchrone, le #hash
+    // (posé par le carnet) doit être rejoué une fois les sections rendues.
+    if (!content) return
+    const id = window.location.hash.slice(1)
+    if (id) document.getElementById(id)?.scrollIntoView()
+  }, [content])
+
   if (isLoading || (!content && !error)) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
@@ -94,17 +118,40 @@ export function CoursReaderPage() {
 
   const displayCountry = content?.header.pays.code.toLowerCase() ?? country
   const hasSections = (content?.sections.length ?? 0) > 0
+  // Les sections dont on peut déclarer la compréhension : ni l'accroche (un texte d'ouverture)
+  // ni les prérequis (une liste de renvois).
+  const sectionsAComprendre = (content?.sections ?? []).filter(
+    (section) => section.type !== "accroche" && section.type !== "prerequis",
+  )
+  const toutComprisCours =
+    sectionsAComprendre.length > 0 && sectionsAComprendre.every((section) => etude.marques[section.type]?.compris)
+  const pied = (section: CoursSectionData) =>
+    section.type === "accroche" ? undefined : (
+      <MarquesSection etude={etude} cle={section.type} avecCompris={section.type !== "prerequis"} />
+    )
   const hasSommaire = content?.sections.some((section) => section.type !== "accroche") ?? false
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-      <Link
-        to={coursListPath(displayCountry)}
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
-      >
-        <ArrowLeft className="size-4" />
-        Retour aux cours
-      </Link>
+      <BarreLecture cibleRef={articleRef} contenuKey={content?.id} />
+      <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+        <Link
+          to={coursListPath(displayCountry)}
+          className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary"
+        >
+          <ArrowLeft className="size-4" />
+          Retour aux cours
+        </Link>
+        {etude.disponible && (
+          <Link
+            to="/carnet"
+            className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary"
+          >
+            <NotebookPen className="size-4" />
+            Mon carnet
+          </Link>
+        )}
+      </div>
 
       <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">{content?.title}</h1>
       {content?.header && (
@@ -123,26 +170,47 @@ export function CoursReaderPage() {
         </div>
       )}
 
+      {etude.disponible && sectionsAComprendre.length > 0 && (
+        <div className="mb-6 flex flex-col gap-1.5" aria-live="polite">
+          <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              {toutComprisCours && <Check className="size-3.5 text-success" />}
+              {toutComprisCours
+                ? "Tu as tout compris de ce cours - vérifie-le avec un quiz."
+                : `${etude.nbComprises} section${etude.nbComprises > 1 ? "s" : ""} comprise${etude.nbComprises > 1 ? "s" : ""} sur ${sectionsAComprendre.length}`}
+            </span>
+          </div>
+          <div className="flex h-1.5 gap-1">
+            {sectionsAComprendre.map((section) => (
+              <span
+                key={section.type}
+                className={"h-full flex-1 rounded-full transition-colors duration-500 " + (etude.marques[section.type]?.compris ? "bg-primary" : "bg-muted")}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       {hasSections && content ? (
         hasSommaire ? (
           <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:items-start lg:gap-10">
             <CoursSommaire sections={content.sections} />
-            <article className="flex min-w-0 flex-col gap-8">
+            <article ref={articleRef} className="flex min-w-0 flex-col gap-8">
               {content.sections.map((section) => (
-                <CoursSection key={section.type} section={section} />
+                <CoursSection key={section.type} section={section} pied={pied(section)} />
               ))}
             </article>
           </div>
         ) : (
-          <article className="mx-auto flex max-w-3xl flex-col gap-8">
+          <article ref={articleRef} className="mx-auto flex max-w-3xl flex-col gap-8">
             {content.sections.map((section) => (
-              <CoursSection key={section.type} section={section} />
+              <CoursSection key={section.type} section={section} pied={pied(section)} />
             ))}
           </article>
         )
       ) : (
         <div className="mx-auto max-w-3xl">
-          <article className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+          <article ref={articleRef} className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
             <EpreuveMarkdown markdown={content?.content_markdown ?? ""} directCoursLinks />
           </article>
         </div>

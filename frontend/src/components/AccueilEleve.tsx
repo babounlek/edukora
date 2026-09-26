@@ -2,13 +2,18 @@ import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, ChevronRight, Clock, Crown, RotateCcw, TrendingUp } from "lucide-react"
 
-import { getMyProgression, getResumeParcours, listRevisionsDues } from "@/api/endpoints"
+import { getBilanPeriode, getMyProgression, getResumeParcours, listRevisionsDues } from "@/api/endpoints"
 import type { ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
+import { HeroAujourdhui } from "@/components/HeroAujourdhui"
 import { SeanceDuJour } from "@/components/SeanceDuJour"
+import { TaSemaine } from "@/components/TaSemaine"
 import { AnneauProgression, BarreSegmentee, Ecrin, LegendeProgression } from "@/components/Progression"
+import { couleurMatiere } from "@/lib/matiereCouleur"
 import { pourcent } from "@/lib/maitrise"
+import { subjectIcon } from "@/lib/subjectIcon"
+import { cn } from "@/lib/utils"
 import { epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 
@@ -49,6 +54,14 @@ export function AccueilEleve({ country }: { country: string }) {
     enabled: Boolean(cursusId),
   })
 
+  // Même clé que TaSemaine : une seule requête pour les deux.
+  const { data: semaine } = useQuery({
+    queryKey: ["bilan-periode", cursusId, 7],
+    queryFn: ({ signal }) => getBilanPeriode(Number(cursusId), signal, 7),
+    enabled: Boolean(cursusId),
+    retry: false,
+  })
+
   // Les inédites de SON cursus uniquement (voir useInedites) - même clé de cache que
   // la page vitrine pour le même cursus, donc aucune requête en plus entre les deux.
   const cursusAccueil = useCursusAccueil(country)
@@ -58,9 +71,16 @@ export function AccueilEleve({ country }: { country: string }) {
   // confondus (il servait une page dédiée), or cet écran parle d'un seul examen.
   const revisionsDuCursus = (revisions ?? []).filter((r) => r.cursus === cursusId)
   const lecture = progression?.lessons?.[0]
+  // La préparation d'ensemble, sur les seuls savoirs qui ont du contenu (même règle que
+  // EnTeteProgression) : un savoir sans contenu n'est pas un échec de l'élève.
+  const exploitables = (resume ?? []).reduce((somme, m) => somme + m.total - m.sans_contenu, 0)
+  const preparation = resume && exploitables > 0
+    ? resume.reduce((somme, m) => somme + m.maitrises, 0) / exploitables
+    : null
 
   return (
     <div className="pb-4">
+      <HeroAujourdhui preparation={preparation} seancesSemaine={semaine?.seances} />
       <SeanceDuJour country={country} />
 
       {lecture && (
@@ -124,6 +144,8 @@ export function AccueilEleve({ country }: { country: string }) {
           )}
         </section>
       )}
+
+      {cursusId && <TaSemaine cursusId={Number(cursusId)} className="mx-auto max-w-5xl px-4 pt-8 sm:px-6" />}
 
       {resume && resume.some((m) => m.total > m.sans_contenu) && (
         <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
@@ -250,6 +272,7 @@ function EnTeteProgression({ resume }: { resume: ResumeMatiere[] }) {
  */
 function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId: number }) {
   const exploitables = matiere.total - matiere.sans_contenu
+  const Icone = subjectIcon(matiere.subject_code)
   return (
     <Link
       // `?cursus=` est requis par ParcoursSubjectPage - même lien que depuis la page
@@ -257,8 +280,13 @@ function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId:
       to={`/parcours/${matiere.subject_id}?cursus=${cursusId}`}
       className="group rounded-2xl border border-border/70 bg-background/70 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md hover:shadow-primary/[0.06]"
     >
-      <div className="flex items-baseline justify-between gap-3">
-        <span className="min-w-0 truncate text-sm font-semibold">{matiere.subject_label}</span>
+      <div className="flex items-center justify-between gap-3">
+        <span className="flex min-w-0 items-center gap-2.5">
+          <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", couleurMatiere(matiere.subject_code).puce)}>
+            <Icone className="size-4" />
+          </span>
+          <span className="min-w-0 truncate text-sm font-semibold">{matiere.subject_label}</span>
+        </span>
         <span className="shrink-0 font-display text-xl font-semibold tabular-nums">
           {pourcent(partMaitrisee(matiere))}
           <span className="ml-px text-xs font-medium text-muted-foreground">%</span>

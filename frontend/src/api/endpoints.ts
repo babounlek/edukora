@@ -3,6 +3,10 @@ import type {
   Cours,
   CoursContent,
   CoursPreview,
+  BilanPeriode,
+  CarnetEntree,
+  CibleEtude,
+  MarqueEtude,
   Country,
   Cursus,
   Difficulte,
@@ -23,6 +27,7 @@ import type {
   PaymentStatusResponse,
   Plan,
   PlanDuJour,
+  Priorites,
   Progression,
   QuizCorrige,
   QuizFichePdfStatus,
@@ -662,4 +667,41 @@ export function marquerExerciceFait(exerciseId: number, fait: boolean) {
     `/access/exercices/${exerciseId}/fait/`,
     { method: "POST", body: { fait } },
   )
+}
+
+/** Bilan des 30 derniers jours de l'abonnement à ce cursus (404 si jamais abonné). */
+export function getBilanPeriode(cursus: number, signal?: AbortSignal, jours: 7 | 30 = 30) {
+  return apiRequest<BilanPeriode>(`/quiz/bilan-periode/?cursus=${cursus}&jours=${jours}`, { signal })
+}
+
+/** Où concentrer son temps pour l'examen (voir quiz.priorites) - 404 si jamais abonné. */
+export function getPriorites(cursus: number, signal?: AbortSignal) {
+  return apiRequest<Priorites>(`/quiz/priorites/?cursus=${cursus}`, { signal })
+}
+
+/** Marques d'étude (compris / signet / note) de l'élève sur un document. */
+export function getMarquesEtude(cible: CibleEtude, signal?: AbortSignal) {
+  return apiRequest<MarqueEtude[]>(`/access/etude/?${cible.type}=${encodeURIComponent(cible.slug)}`, { signal })
+}
+
+/** Met à jour une section : seuls les champs présents changent (voir access.etude). */
+export function saveMarqueEtude(
+  cible: CibleEtude,
+  cle: string,
+  patch: Partial<Pick<MarqueEtude, "compris" | "signet" | "note">>,
+) {
+  return apiRequest<MarqueEtude>("/access/etude/", {
+    method: "PUT",
+    body: { [cible.type]: cible.slug, cle, ...patch },
+  })
+}
+
+/** Tout ce que l'élève a mis de côté ou annoté, du plus récent au plus ancien. */
+export function getCarnet(signal?: AbortSignal) {
+  return apiRequest<CarnetEntree[]>("/access/etude/carnet/", { signal })
+}
+
+/** Nouvelle session limitée aux questions ratées d'une session terminée. */
+export function refaireLesRatees(sessionId: number) {
+  return apiRequest<QuizSession>(`/quiz/sessions/${sessionId}/refaire-ratees/`, { method: "POST" })
 }

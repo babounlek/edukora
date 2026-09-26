@@ -38,7 +38,7 @@ export function EtapesPresentation({ etapes }: { etapes: string[] }) {
     <ol className="grid gap-3 sm:grid-cols-3">
       {etapes.map((etape, index) => (
         <li key={index} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-          <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
+          <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
             {index + 1}
           </span>
           {etape}

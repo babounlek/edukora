@@ -51,7 +51,7 @@ export function libelleCourtExercice(exercise: ExerciceLabelSource) {
  * qui distingue un exercice de son voisin - les précédents sont communs à toute une
  * partie de l'épreuve. Le titre entier reste accessible en infobulle (voir SommaireNav).
  */
-function libelleLong(exercise: ExerciceLabelSource) {
+export function libelleLong(exercise: ExerciceLabelSource) {
   const titre = exercise.titre.trim() || `Exercice ${exercise.numero_exercice.trim()}`
   if (titre.length <= LONGUEUR_MAX_SIDEBAR) return titre
   const segments = titre.split(" - ")

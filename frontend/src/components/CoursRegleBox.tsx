@@ -24,7 +24,9 @@ export function CoursRegleBox({ titre, body_markdown, formule_markdown, variante
     <div className="overflow-hidden rounded-xl border border-primary/30">
       <div className="flex items-center gap-2 bg-primary px-4 py-2.5 text-primary-foreground">
         <BookMarked className="size-4 shrink-0" aria-hidden="true" />
-        <h2 className="font-display text-base font-semibold">{titre}</h2>
+        <h2 className="font-display text-base font-semibold [&_p]:m-0">
+          <EpreuveMarkdown markdown={titre} />
+        </h2>
       </div>
       <div className="flex flex-col gap-4 bg-primary/5 px-4 py-4">
         {body_markdown && (
@@ -41,9 +43,13 @@ export function CoursRegleBox({ titre, body_markdown, formule_markdown, variante
           <div className="flex flex-col gap-3">
             {variantes.map((variante, index) => (
               <div key={index} className="border-l-2 border-primary/30 pl-3">
-                {variante.nom && <p className="text-sm font-semibold">{variante.nom}</p>}
+                {variante.nom && <div className="text-sm font-semibold [&_p]:m-0">
+                    <EpreuveMarkdown markdown={variante.nom} />
+                  </div>}
                 {variante.quand_utiliser && (
-                  <p className="text-sm italic text-muted-foreground">Quand l'utiliser : {variante.quand_utiliser}</p>
+                  <div className="text-sm italic text-muted-foreground [&_p]:m-0">
+                    <EpreuveMarkdown markdown={`Quand l'utiliser : ${variante.quand_utiliser}`} />
+                  </div>
                 )}
                 {/* prose-sm : une variante est un aparté, son corps doit rester à la même taille
                     que le nom et le "Quand l'utiliser" ci-dessus (text-sm), pas repasser au corps

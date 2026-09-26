@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { Link } from "react-router-dom"
 
 import type { CoursSectionData, CoursSectionExerciceItem } from "@/api/types"
@@ -43,8 +44,11 @@ function CoursExerciceApplicationItem({ item, index }: { item: CoursSectionExerc
  * EpreuveMarkdown), où règle/exemple résolu/erreurs classiques n'avaient pas plus de
  * poids visuel qu'un paragraphe. `id={section.type}` sert d'ancre au sommaire
  * (CoursSommaire) - un Cours ne porte jamais deux sections du même type.
+ *
+ * `pied` : ce que le lecteur ajoute en bas de section (outils d'étude : compris, signet,
+ * note) - jamais rendu pour l'accroche, qui n'est pas une section navigable.
  */
-export function CoursSection({ section }: { section: CoursSectionData }) {
+export function CoursSection({ section, pied }: { section: CoursSectionData; pied?: ReactNode }) {
   if (section.type === "accroche") {
     return (
       <div className="font-display text-xl italic leading-relaxed text-justify text-foreground">
@@ -108,6 +112,8 @@ export function CoursSection({ section }: { section: CoursSectionData }) {
           </div>
         </div>
       )}
+
+      {pied}
     </section>
   )
 }
