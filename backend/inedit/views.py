@@ -8,6 +8,8 @@ seulement, jamais une re-vérification d'abonnement à chaque question (même co
 que quiz, voir quiz.views - accepté une fois, pas la peine de le retrancher ici).
 """
 
+from decimal import Decimal, InvalidOperation
+
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -25,6 +27,7 @@ from quiz.models import ResultatDeclare
 from quiz.services import enregistrer_resultat_pour_revision
 from subscriptions.models import InscriptionInedite
 
+from . import notation
 from .models import EpreuveInedite, QuestionInedite, TentativeInedite, TentativeReponse
 
 
@@ -42,11 +45,14 @@ def _corrige_markdown_with_cours_links(question, exercice):
     return annotate_cours_links(question.corrige_markdown, exercice.rappels_de_methode.all(), append_unmatched=False)
 
 
-def _question_payload(question, reponse, *, correction_disponible, exercice=None):
+def _question_payload(question, reponse, *, correction_disponible, exercice=None, points_info=None):
     """corrige_markdown/reponse_correcte/est_correcte gatés au niveau de la tentative
     (voir _correction_disponible), pas au niveau de la question - une réponse déjà
     enregistrée reste visible pour l'élève (ce qu'il a coché), mais sans trahir si
-    c'est juste tant que la correction n'est pas disponible pour cette tentative."""
+    c'est juste tant que la correction n'est pas disponible pour cette tentative.
+
+    Même règle pour la grille de notation (criteres_notation) et les points obtenus : la
+    grille décrit la solution attendue, elle ne sort jamais avant le corrigé."""
     payload = {
         "id": question.id,
         "numero": question.numero,
@@ -58,7 +64,15 @@ def _question_payload(question, reponse, *, correction_disponible, exercice=None
         "enonce_markdown": question.enonce_markdown,
         "type_reponse": question.type_reponse,
         "choix": question.choix,
+        # « Traitée » : l'élève a répondu (QCM) ou déclaré avoir traité la question
+        # (ouverte) - ce que compte la barre d'avancement pendant l'épreuve.
+        "traitee": notation.est_traitee(question, reponse),
     }
+    points = None
+    if points_info is not None:
+        points, estime = points_info
+        payload["points"] = notation.en_nombre(points)
+        payload["bareme_estime"] = estime
     if reponse:
         payload["reponse"] = {
             "reponse_choisie": reponse.reponse_choisie,
@@ -66,10 +80,54 @@ def _question_payload(question, reponse, *, correction_disponible, exercice=None
         }
         if correction_disponible:
             payload["reponse"]["est_correcte"] = reponse.est_correcte
+            notee = notation.est_notee(question, reponse)
+            payload["reponse"]["notee"] = notee
+            payload["reponse"]["criteres_valides"] = reponse.criteres_valides
+            if points is not None:
+                payload["reponse"]["points_obtenus"] = (
+                    notation.en_nombre(notation.points_obtenus(question, reponse, points)) if notee else None
+                )
     if correction_disponible:
         payload["corrige_markdown"] = _corrige_markdown_with_cours_links(question, exercice or question.exercice)
         payload["reponse_correcte"] = question.reponse_correcte
+        payload["criteres_notation"] = question.criteres_notation
     return payload
+
+
+def _exercices_pour_notation(epreuve):
+    return list(epreuve.exercices.prefetch_related("questions__themes").order_by("numero_exercice"))
+
+
+def _question_payload_avec_notation(tentative, question, reponse):
+    """Payload de question + bloc `notation` (note provisoire mise à jour) renvoyé après
+    toute écriture, pour que le frontend n'ait jamais à recalculer une note lui-même. Si la
+    tentative est déjà rendue, la note stockée suit chaque notation (voir
+    notation.enregistrer_note) : `note_obtenue` n'est jamais périmée."""
+    exercices = _exercices_pour_notation(tentative.epreuve)
+    correction_disponible = _correction_disponible(tentative)
+    bilan = notation.calculer(tentative, exercices)
+    if tentative.submitted_at is not None:
+        notation.enregistrer_note(tentative, bilan)
+    payload = _question_payload(
+        question, reponse, correction_disponible=correction_disponible, exercice=question.exercice,
+        points_info=notation.points_par_question(exercices)[question.pk],
+    )
+    payload["notation"] = notation.resume(tentative, bilan) if correction_disponible else None
+    return payload
+
+
+def _alimenter_revision(tentative, question, correcte):
+    """Alimente quiz.RevisionSchedule - réutilisé tel quel plutôt qu'un second mécanisme
+    de suivi de faiblesse (voir l'audit "Épreuves Inédites") : (user, cursus, theme)
+    est la même clé quelle que soit la source (Quiz ou Épreuves Inédites). Une épreuve
+    commune à plusieurs séries (voir EpreuveInedite.cursus, M2M) crédite la révision sur
+    CHAQUE série couverte, pas seulement la première - la faiblesse détectée concerne
+    l'élève sur ce thème, indépendamment de la série qu'il vise."""
+    for theme in question.themes.all():
+        for cursus in tentative.epreuve.cursus.all():
+            enregistrer_resultat_pour_revision(
+                tentative.user, cursus, tentative.epreuve.subject, theme, correcte,
+            )
 
 
 def _cursus_display(cursus_iterable):
@@ -103,14 +161,51 @@ def _complete(tentative):
     calcul de score, idempotente (submitted_at n'est jamais réécrit une fois posé).
     submitted_at DOIT être affecté avant de construire le payload de résultat : sinon
     temps_total_secondes (qui lit tentative.submitted_at) resterait null dans la toute
-    première réponse qui vient de compléter la tentative."""
+    première réponse qui vient de compléter la tentative, et `definitive` (note terminée
+    ET épreuve rendue) serait faux."""
     if not tentative.submitted_at:
         tentative.submitted_at = timezone.now()
-        payload = _tentative_resultat_payload(tentative)
-        tentative.score_obtenu = payload["score"]
-        tentative.save(update_fields=["submitted_at", "score_obtenu"])
-        return payload
+        tentative.save(update_fields=["submitted_at"])
+        exercices = _exercices_pour_notation(tentative.epreuve)
+        bilan = notation.calculer(tentative, exercices)
+        notation.enregistrer_note(tentative, bilan)
+        _planifier_revisions_des_questions_non_traitees(tentative, exercices)
+        return _tentative_resultat_payload(tentative, bilan)
     return _tentative_resultat_payload(tentative)
+
+
+def _planifier_revisions_des_questions_non_traitees(tentative, exercices):
+    """Une question laissée de côté à l'examen est une faiblesse comme une question ratée :
+    son thème revient dans la séance du jour, exactement comme un thème raté (voir
+    quiz.services.enregistrer_resultat_pour_revision). Appelé UNE seule fois, à la
+    première soumission - les questions traitées, elles, alimentent la révision au moment
+    où l'élève les note (voir noter_question)."""
+    reponses = {r.question_id: r for r in tentative.reponses.all()}
+    for exercice in exercices:
+        for question in exercice.questions.all():
+            if not notation.est_traitee(question, reponses.get(question.pk)):
+                _alimenter_revision(tentative, question, False)
+
+
+def _themes_a_reviser(tentative, bilan):
+    """Thèmes de cette épreuve qui reviennent dans la séance du jour de l'élève : ceux où il
+    a perdu des points ET pour lesquels une révision est planifiée, avec leur échéance."""
+    from quiz.models import RevisionSchedule
+
+    perdus = {
+        nom for nom, stats in bilan["par_theme"].items() if stats["points_obtenus"] < stats["points_possibles"]
+    }
+    if not perdus:
+        return []
+    echeances = {}
+    for planification in RevisionSchedule.objects.filter(user=tentative.user, theme__name__in=perdus):
+        actuelle = echeances.get(planification.theme.name)
+        if actuelle is None or planification.due_at < actuelle:
+            echeances[planification.theme.name] = planification.due_at
+    return [
+        {"theme": nom, "echeance": echeance.isoformat()}
+        for nom, echeance in sorted(echeances.items(), key=lambda item: (item[1], item[0]))
+    ]
 
 
 def _auto_complete_if_expired(tentative):
@@ -126,12 +221,14 @@ def _auto_complete_if_expired(tentative):
 
 def _tentative_payload(tentative):
     correction_disponible = _correction_disponible(tentative)
-    exercices = (
+    exercices = list(
         tentative.epreuve.exercices
         .prefetch_related("questions__themes", "rappels_de_methode__cours")
         .order_by("numero_exercice")
     )
     reponses_by_question = {r.question_id: r for r in tentative.reponses.all()}
+    points_by_question = notation.points_par_question(exercices)
+    bilan = notation.calculer(tentative, exercices)
     return {
         "id": tentative.id,
         "epreuve": tentative.epreuve_id,
@@ -152,6 +249,15 @@ def _tentative_payload(tentative):
         "exam_mode_started_at": tentative.exam_mode_started_at,
         "submitted_at": tentative.submitted_at,
         "score_obtenu": tentative.score_obtenu,
+        "note_obtenue": notation.en_nombre(tentative.note_obtenue),
+        "bareme_snapshot": notation.en_nombre(tentative.bareme_snapshot),
+        # Barème total (somme des points de toutes les questions) - connu dès le départ,
+        # affiché « 0 / 20 » avant toute réponse ; jamais gaté : ce n'est pas la solution.
+        "bareme": notation.en_nombre(bilan["bareme"]),
+        "bareme_estime": bilan["bareme_estime"],
+        # La note inclut les QCM : servie seulement quand le corrigé l'est aussi, sinon
+        # elle révélerait en plein examen si chaque QCM déjà coché est juste.
+        "notation": notation.resume(tentative, bilan) if correction_disponible else None,
         "correction_disponible": correction_disponible,
         "questions_marquees": list(tentative.questions_marquees.values_list("pk", flat=True)),
         "exercices": [
@@ -173,7 +279,7 @@ def _tentative_payload(tentative):
                 "questions": [
                     _question_payload(
                         question, reponses_by_question.get(question.pk), correction_disponible=correction_disponible,
-                        exercice=exercice,
+                        exercice=exercice, points_info=points_by_question[question.pk],
                     )
                     for question in exercice.questions.all()
                 ],
@@ -183,41 +289,53 @@ def _tentative_payload(tentative):
     }
 
 
-def _tentative_resultat_payload(tentative):
-    reponses = tentative.reponses.select_related("question").prefetch_related("question__themes")
-
-    repondues = 0
-    reussies = 0
-    par_theme = {}
-    for reponse in reponses:
-        repondues += 1
-        correcte = reponse.est_correcte
-        if correcte:
-            reussies += 1
-        for theme in reponse.question.themes.all():
-            stats = par_theme.setdefault(theme.name, {"total": 0, "reussies": 0})
-            stats["total"] += 1
-            if correcte:
-                stats["reussies"] += 1
-
-    total_questions = QuestionInedite.objects.filter(exercice__epreuve=tentative.epreuve).count()
-    score = round(100 * reussies / repondues) if repondues else None
+def _tentative_resultat_payload(tentative, bilan=None):
+    if bilan is None:
+        bilan = notation.calculer(tentative, _exercices_pour_notation(tentative.epreuve))
+    resume = notation.resume(tentative, bilan)
 
     return {
         "id": tentative.id,
         "epreuve": tentative.epreuve_id,
         # Voir la note équivalente dans _tentative_payload.
         "country": tentative.epreuve.cursus.first().country.code,
-        "total_questions": total_questions,
-        "questions_repondues": repondues,
-        "score": score,
+        "total_questions": bilan["questions_total"],
+        # Questions traitées (et non plus « répondues ») : seules les QCM se répondent
+        # dans l'application, une question ouverte est traitée sur brouillon ou papier.
+        "questions_repondues": bilan["questions_traitees"],
+        "questions_non_traitees": bilan["questions_non_traitees"],
+        "questions_a_noter": bilan["questions_a_noter"],
+        # Pourcentage du barème COMPLET : une question non traitée pèse comme un échec.
+        "score": notation.score_pourcentage(bilan["note"], bilan["bareme"]),
+        "note": resume["note"],
+        "bareme": resume["bareme"],
+        "note_sur_20": resume["note_sur_20"],
+        "bareme_estime": resume["bareme_estime"],
+        "definitive": resume["definitive"],
         "temps_total_secondes": (
             int((tentative.submitted_at - tentative.started_at).total_seconds())
             if tentative.submitted_at else None
         ),
+        "par_exercice": [
+            {
+                "numero_exercice": e["numero_exercice"],
+                "points_possibles": notation.en_nombre(e["points_possibles"]),
+                "points_obtenus": notation.en_nombre(e["points_obtenus"]),
+            }
+            for e in bilan["par_exercice"]
+        ],
+        # Ce que devient cette épreuve dans la suite du travail : les thèmes ratés ou
+        # laissés de côté reviennent dans la séance du jour (voir _themes_a_reviser).
+        "themes_a_reviser": _themes_a_reviser(tentative, bilan),
         "par_theme": [
-            {"theme": nom, "total": s["total"], "reussies": s["reussies"]}
-            for nom, s in sorted(par_theme.items())
+            {
+                "theme": nom,
+                "total": s["total"],
+                "reussies": s["reussies"],
+                "points_possibles": notation.en_nombre(s["points_possibles"]),
+                "points_obtenus": notation.en_nombre(s["points_obtenus"]),
+            }
+            for nom, s in sorted(bilan["par_theme"].items())
         ],
     }
 
@@ -319,6 +437,8 @@ def list_my_tentatives_inedites(request):
             "started_at": tentative.started_at,
             "submitted_at": tentative.submitted_at,
             "score_obtenu": tentative.score_obtenu,
+            "note_obtenue": notation.en_nombre(tentative.note_obtenue),
+            "bareme_snapshot": notation.en_nombre(tentative.bareme_snapshot),
         }
         for tentative in tentatives
     ])
@@ -414,19 +534,9 @@ def answer_question(request, tentative_id, question_id):
         tentative=tentative, question=question, defaults=defaults,
     )
 
-    # Alimente quiz.RevisionSchedule - réutilisé tel quel plutôt qu'un second mécanisme
-    # de suivi de faiblesse (voir l'audit "Épreuves Inédites") : (user, cursus, theme)
-    # est la même clé quelle que soit la source (Quiz ou Épreuves Inédites). Une épreuve
-    # commune à plusieurs séries (voir EpreuveInedite.cursus, M2M) crédite la révision sur
-    # CHAQUE série couverte, pas seulement la première - la faiblesse détectée concerne
-    # l'élève sur ce thème, indépendamment de la série qu'il vise.
-    for theme in question.themes.all():
-        for cursus in tentative.epreuve.cursus.all():
-            enregistrer_resultat_pour_revision(
-                tentative.user, cursus, tentative.epreuve.subject, theme, reponse.est_correcte,
-            )
+    _alimenter_revision(tentative, question, reponse.est_correcte)
 
-    return Response(_question_payload(question, reponse, correction_disponible=_correction_disponible(tentative)))
+    return Response(_question_payload_avec_notation(tentative, question, reponse))
 
 
 @api_view(["POST"])
@@ -454,6 +564,102 @@ def start_exam_mode(request, tentative_id):
     tentative.exam_mode_started_at = timezone.now()
     tentative.save(update_fields=["exam_mode_started_at"])
     return Response(_tentative_payload(tentative))
+
+
+def _as_bool(valeur):
+    return valeur is True or str(valeur).lower() in ("true", "1")
+
+
+@api_view(["POST"])
+def noter_question(request, tentative_id, question_id):
+    """Traitement et notation d'une question OUVERTE - distinct de answer_question, qui
+    reste réservé aux QCM (et à l'ancien resultat_declare) et refuse toute écriture une
+    fois la tentative rendue. Ici, deux gestes de nature différente :
+
+    - `traitee` : « j'ai traité cette question ». Possible en plein mode examen (le
+      corrigé est masqué, on ne note pas encore) ; APRÈS la soumission, seul
+      `traitee: true` reste permis (question faite sur papier), jamais le retrait - un
+      élève ne peut pas effacer après coup une question qu'il a rendue.
+    - `criteres_valides` (indices cochés de la grille) ou `points_obtenus` (saisie
+      directe, question sans grille) : la notation elle-même, qui exige le corrigé
+      (_correction_disponible) - sans ça un élève pourrait se noter à l'aveugle pendant
+      l'examen. Autorisée avant comme après la soumission : c'est justement après la
+      soumission, corrigé ouvert, que l'élève se note.
+
+    Une question notée devient automatiquement traitée : noter, c'est avoir traité."""
+    tentative = get_object_or_404(
+        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, user=request.user,
+    )
+    _auto_complete_if_expired(tentative)
+    question = get_object_or_404(
+        QuestionInedite.objects.select_related("exercice").prefetch_related("themes"),
+        pk=question_id, exercice__epreuve_id=tentative.epreuve_id,
+    )
+    if question.type_reponse == TypeReponse.QCM:
+        return Response({"error": "Une question à choix multiple se répond en choisissant une proposition."}, status=400)
+
+    data = request.data
+    reponse = TentativeReponse.objects.filter(tentative=tentative, question=question).first()
+    a_noter = "criteres_valides" in data or "points_obtenus" in data
+
+    if "traitee" in data and not a_noter:
+        if _as_bool(data["traitee"]):
+            if reponse is None:
+                reponse = TentativeReponse.objects.create(tentative=tentative, question=question, traitee_at=timezone.now())
+            elif reponse.traitee_at is None:
+                reponse.traitee_at = timezone.now()
+                reponse.save(update_fields=["traitee_at"])
+        else:
+            if tentative.submitted_at is not None:
+                return Response({"error": "Cette tentative est terminée, impossible de retirer cette question."}, status=409)
+            if reponse is not None:
+                reponse.delete()
+                reponse = None
+        return Response(_question_payload_avec_notation(tentative, question, reponse))
+
+    if not a_noter:
+        return Response({"error": "Rien à enregistrer : traitee, criteres_valides ou points_obtenus attendu."}, status=400)
+    if not _correction_disponible(tentative):
+        return Response({"error": "Le corrigé n'est pas encore disponible : impossible de noter cette question."}, status=403)
+
+    exercices = _exercices_pour_notation(tentative.epreuve)
+    points, _estime = notation.points_par_question(exercices)[question.pk]
+
+    if "criteres_valides" in data:
+        if not question.criteres_notation:
+            return Response({"error": "Cette question n'a pas de grille de notation."}, status=400)
+        try:
+            obtenus = notation.points_depuis_criteres(question, data["criteres_valides"])
+        except ValueError as exc:
+            return Response({"error": str(exc)}, status=400)
+        criteres_valides = sorted(data["criteres_valides"])
+    else:
+        if question.criteres_notation:
+            return Response({"error": "Cette question se note en cochant les critères de sa grille."}, status=400)
+        try:
+            obtenus = Decimal(str(data["points_obtenus"]).replace(",", "."))
+        except InvalidOperation:
+            return Response({"error": "points_obtenus doit être un nombre."}, status=400)
+        if not obtenus.is_finite() or obtenus < 0 or obtenus > points:
+            return Response({"error": f"points_obtenus doit être compris entre 0 et {notation.en_nombre(points)}."}, status=400)
+        criteres_valides = []
+    obtenus = min(notation.arrondi(obtenus), points)
+
+    premiere_notation = reponse is None or (reponse.points_obtenus is None and not reponse.resultat_declare)
+    if reponse is None:
+        reponse = TentativeReponse(tentative=tentative, question=question)
+    reponse.traitee_at = reponse.traitee_at or timezone.now()
+    reponse.points_obtenus = obtenus
+    reponse.criteres_valides = criteres_valides
+    reponse.resultat_declare = notation.resultat_declare_depuis_points(obtenus, points)
+    reponse.save()
+
+    # Une seule fois par question : cocher/décocher un critère ne doit pas faire avancer
+    # (ou reculer) plusieurs fois le palier de révision du thème (voir _alimenter_revision).
+    if premiere_notation:
+        _alimenter_revision(tentative, question, reponse.est_correcte)
+
+    return Response(_question_payload_avec_notation(tentative, question, reponse))
 
 
 @api_view(["POST"])

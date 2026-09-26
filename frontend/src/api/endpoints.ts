@@ -42,6 +42,7 @@ import type {
   Temoignage,
   ThemeExercicesResponse,
   ThemesFrequentsResponse,
+  PaiementAReprendre,
   TentativeInedite,
   TentativeInediteCorrige,
   TentativeInediteListItem,
@@ -139,10 +140,18 @@ export interface UpdateProfileParams {
   // Id du Cursus préparé, ou null pour effacer la déclaration - voir
   // users.serializers.UserProfileUpdateSerializer.
   cursus_prepare?: number | null
+  // Voir users.serializers.UserProfileUpdateSerializer : exige un e-mail confirmé pour true.
+  rappels_actifs?: boolean
+  // true = l'élève écarte l'invitation à activer les rappels, false = il la rouvre.
+  rappels_invite_refusee?: boolean
 }
 
 export function updateMe(params: UpdateProfileParams) {
   return apiRequest<User>("/auth/me/", { method: "PATCH", body: params })
+}
+
+export function getPaiementAReprendre(signal?: AbortSignal) {
+  return apiRequest<PaiementAReprendre>("/relances/paiement-a-reprendre/", { signal })
 }
 
 export function getMe() {
@@ -504,6 +513,21 @@ export interface AnswerTentativeQuestionParams {
 
 export function answerTentativeQuestion(tentativeId: number, questionId: number, params: AnswerTentativeQuestionParams) {
   return apiRequest<TentativeInediteQuestion>(`/inedit/tentatives/${tentativeId}/questions/${questionId}/answer/`, {
+    method: "POST",
+    body: params,
+  })
+}
+
+export interface NoterTentativeQuestionParams {
+  traitee?: boolean
+  criteres_valides?: number[]
+  points_obtenus?: number
+}
+
+/** Traite / note une question ouverte - voir inedit.views.noter_question. Renvoie la
+ * question à jour ET la note provisoire recalculée (champ `notation`). */
+export function noterTentativeQuestion(tentativeId: number, questionId: number, params: NoterTentativeQuestionParams) {
+  return apiRequest<TentativeInediteQuestion>(`/inedit/tentatives/${tentativeId}/questions/${questionId}/noter/`, {
     method: "POST",
     body: params,
   })

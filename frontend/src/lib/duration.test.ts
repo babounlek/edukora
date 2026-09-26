@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { formatDuration } from "./duration"
+import { formatDuration, formatDureeMinutes } from "./duration"
 
 describe("formatDuration", () => {
   it("formate en mm:ss sous une heure", () => {
@@ -14,5 +14,14 @@ describe("formatDuration", () => {
     expect(formatDuration(3600)).toBe("1:00:00")
     expect(formatDuration(3661)).toBe("1:01:01")
     expect(formatDuration(7325)).toBe("2:02:05")
+  })
+})
+
+describe("formatDureeMinutes", () => {
+  it("dit la durée d'une épreuve en langage courant", () => {
+    expect(formatDureeMinutes(45)).toBe("45 min")
+    expect(formatDureeMinutes(120)).toBe("2 h")
+    expect(formatDureeMinutes(90)).toBe("1 h 30")
+    expect(formatDureeMinutes(185)).toBe("3 h 05")
   })
 })

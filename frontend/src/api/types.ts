@@ -29,6 +29,11 @@ export interface User {
   compte_a_rebours: CompteARebours | null
   // Tous cursus confondus - sert au Header à masquer "Tarifs" pour qui a déjà payé.
   a_un_abonnement_actif: boolean
+  // Rappel quotidien de la séance par e-mail (voir relances.services) : jamais actif sans
+  // e-mail confirmé, et jamais activé d'office.
+  rappels_actifs: boolean
+  // L'élève a écarté l'invitation à les activer : on ne la lui représente plus.
+  rappels_invite_refusee: boolean
 }
 
 /** Une étape de la séance du jour - voir quiz.services._construire_etapes. */
@@ -102,6 +107,26 @@ export interface PlanDuJour {
   objectif_matiere?: ObjectifMatiereChoisi | null
   // Matières qu'on peut choisir (celles qui ont un quiz sur ce cursus).
   matieres_objectif?: { id: number; label: string }[]
+  serie?: SerieDeJours
+}
+
+/** Voir quiz.serie : jours de suite avec une séance terminée, un jour de repos pardonné par
+ * semaine. */
+export interface SerieDeJours {
+  jours: number
+  record: number
+  actif_aujourdhui: boolean
+  // Un jour de repos a été pardonné dans les 7 derniers jours.
+  repos_pris: boolean
+}
+
+/** Voir relances.views.paiement_a_reprendre_view. */
+export interface PaiementAReprendre {
+  a_reprendre: boolean
+  montant?: number
+  cursus_id?: number
+  statut?: "PENDING" | "FAILED"
+  depuis?: string
 }
 
 export interface ObjectifMatiereChoisi {
@@ -816,15 +841,47 @@ export interface TentativeInediteListItem {
   started_at: string
   submitted_at: string | null
   score_obtenu: number | null
+  // Note en points sur bareme_snapshot (voir inedit.notation) - null tant que la
+  // tentative n'est pas rendue.
+  note_obtenue: number | null
+  bareme_snapshot: number | null
 }
 
 export interface TentativeInediteAnswerInfo {
   reponse_choisie: string
   resultat_declare: string
-  // Absent tant que la correction n'est pas disponible pour la tentative (mode
+  // Absents tant que la correction n'est pas disponible pour la tentative (mode
   // examen actif, voir inedit.views._correction_disponible côté backend) - sinon
   // trahirait la bonne réponse pendant une fenêtre chronométrée active.
   est_correcte?: boolean
+  // Question ouverte : les points ont été attribués (sinon elle reste « à noter »).
+  notee?: boolean
+  // null tant que la question n'est pas notée.
+  points_obtenus?: number | null
+  criteres_valides?: number[]
+}
+
+/** Un critère de la grille de notation d'une question ouverte (voir
+ * QuestionInedite.criteres_notation) - servi seulement avec le corrigé. */
+export interface CritereNotation {
+  libelle: string
+  points: number
+}
+
+/** Bloc `notation` : note provisoire ou définitive d'une tentative. Absent (null) tant que
+ * le corrigé est masqué - la note inclut les QCM, elle trahirait leur correction. */
+export interface NotationResume {
+  note: number | null
+  bareme: number | null
+  note_sur_20: number | null
+  // Les points de l'exercice sont répartis à parts égales : à annoncer comme estimés.
+  bareme_estime: boolean
+  questions_total: number
+  questions_traitees: number
+  questions_non_traitees: number
+  questions_a_noter: number
+  // Vrai seulement une fois l'épreuve rendue ET toutes les questions traitées notées.
+  definitive: boolean
 }
 
 export interface TentativeInediteQuestion {
@@ -844,6 +901,15 @@ export interface TentativeInediteQuestion {
   corrige_markdown?: string
   reponse_correcte?: string
   reponse?: TentativeInediteAnswerInfo
+  criteres_notation?: CritereNotation[]
+  // Traitée : QCM répondu, ou question ouverte que l'élève a déclaré avoir traitée.
+  traitee: boolean
+  // Barème de la question ; bareme_estime = réparti à parts égales, pas un barème exact.
+  points: number
+  bareme_estime: boolean
+  // Renvoyé avec la question après chaque écriture (answer/noter), jamais dans le
+  // payload de la tentative où `notation` se trouve à la racine.
+  notation?: NotationResume | null
 }
 
 export interface TentativeInediteExercice {
@@ -881,6 +947,11 @@ export interface TentativeInedite {
   exam_mode_started_at: string | null
   submitted_at: string | null
   score_obtenu: number | null
+  note_obtenue: number | null
+  bareme_snapshot: number | null
+  bareme: number | null
+  bareme_estime: boolean
+  notation: NotationResume | null
   correction_disponible: boolean
   questions_marquees: number[]
   exercices: TentativeInediteExercice[]
@@ -934,10 +1005,42 @@ export interface TentativeInediteResult {
   // Voir la note équivalente dans TentativeInedite.
   country: string
   total_questions: number
+  // Questions traitées (QCM répondues ou questions ouvertes déclarées traitées).
   questions_repondues: number
+  questions_non_traitees: number
+  questions_a_noter: number
+  // Pourcentage du barème COMPLET : une question non traitée compte zéro.
   score: number | null
+  note: number | null
+  bareme: number | null
+  note_sur_20: number | null
+  bareme_estime: boolean
+  definitive: boolean
   temps_total_secondes: number | null
-  par_theme: QuizThemeScore[]
+  par_exercice: TentativeInediteResultExercice[]
+  par_theme: TentativeInediteResultTheme[]
+  themes_a_reviser: ThemeARevoir[]
+}
+
+/** Un thème de l'épreuve qui revient dans la séance du jour (ou revient déjà). */
+export interface ThemeARevoir {
+  theme: string
+  // AAAA-MM-JJ.
+  echeance: string
+}
+
+export interface TentativeInediteResultExercice {
+  numero_exercice: string
+  points_possibles: number | null
+  points_obtenus: number | null
+}
+
+export interface TentativeInediteResultTheme {
+  theme: string
+  total: number
+  reussies: number
+  points_possibles: number | null
+  points_obtenus: number | null
 }
 
 /** Bilan des 30 derniers jours d'un abonnement (voir quiz.bilan.bilan_de_periode). */

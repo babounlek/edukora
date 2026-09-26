@@ -25,6 +25,10 @@ urlpatterns = [
         views.answer_question, name="answer-question",
     ),
     path(
+        "tentatives/<int:tentative_id>/questions/<int:question_id>/noter/",
+        views.noter_question, name="noter-question",
+    ),
+    path(
         "tentatives/<int:tentative_id>/questions/<int:question_id>/marquer/",
         views.toggle_question_marquee, name="toggle-question-marquee",
     ),

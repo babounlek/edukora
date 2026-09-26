@@ -337,6 +337,23 @@ class QuestionInedite(models.Model):
         max_length=10, blank=True,
         help_text="Lettre correcte si type_reponse=QCM (ex : 'b'), sinon vide.",
     )
+    points = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True, blank=True,
+        help_text=(
+            "Barème exact de la question. Null tant qu'il n'est pas renseigné : la note "
+            "répartit alors les points de l'exercice à parts égales entre ses questions "
+            "(voir inedit.notation.points_par_question), présenté à l'élève comme un barème "
+            "estimé."
+        ),
+    )
+    criteres_notation = models.JSONField(
+        default=list, blank=True,
+        help_text=(
+            "[{\"libelle\": \"Formule correcte\", \"points\": 1}] - critères de la grille "
+            "de notation, à cocher par l'élève après le corrigé. Leur somme doit égaler "
+            "`points`. Vide : repli sur l'auto-évaluation en trois niveaux."
+        ),
+    )
 
     class Meta:
         ordering = ["exercice", "ordre"]
@@ -432,10 +449,26 @@ class TentativeInedite(models.Model):
     score_obtenu = models.PositiveSmallIntegerField(
         null=True, blank=True,
         help_text=(
-            "Pourcentage de bonnes réponses parmi les questions répondues (0-100, même "
-            "échelle que EpreuveInedite.score_originalite/score_qualite - pas une note sur "
-            "Blueprint.bareme_total, non fiable à sommer depuis ExerciceInedite.points qui "
-            "reste un texte libre). Null tant que la tentative n'est pas soumise."
+            "Note en pourcentage du barème COMPLET (0-100, même échelle que "
+            "EpreuveInedite.score_originalite/score_qualite) : une question non traitée "
+            "compte zéro, voir inedit.notation. La note en points est `note_obtenue`. Null "
+            "tant que la tentative n'est pas soumise."
+        ),
+    )
+
+    note_obtenue = models.DecimalField(
+        max_digits=6, decimal_places=2, null=True, blank=True,
+        help_text=(
+            "Note en points sur `bareme_snapshot`, recalculée à chaque notation d'une "
+            "question tant que la tentative est soumise (voir inedit.notation). Les "
+            "questions non traitées comptent zéro. Null avant la soumission."
+        ),
+    )
+    bareme_snapshot = models.DecimalField(
+        max_digits=6, decimal_places=2, null=True, blank=True,
+        help_text=(
+            "Total des points de l'épreuve au moment de la soumission, copié ici pour "
+            "qu'une correction ultérieure du barème ne réécrive pas d'anciennes notes."
         ),
     )
 
@@ -477,6 +510,26 @@ class TentativeReponse(models.Model):
     )
     temps_secondes = models.PositiveIntegerField(null=True, blank=True)
     answered_at = models.DateTimeField(auto_now_add=True)
+    traitee_at = models.DateTimeField(
+        null=True, blank=True,
+        help_text=(
+            "Posé quand l'élève déclare avoir traité une question ouverte - possible "
+            "pendant le mode examen, où le corrigé (donc la notation) est encore masqué. "
+            "Une question ouverte jamais traitée vaut zéro sans que l'élève ait à agir."
+        ),
+    )
+    points_obtenus = models.DecimalField(
+        max_digits=5, decimal_places=2, null=True, blank=True,
+        help_text=(
+            "Points obtenus sur une question ouverte, une fois notée par l'élève. Null "
+            "tant que la question n'est pas notée : une réponse ancienne qui porte "
+            "seulement resultat_declare est convertie à la volée (voir inedit.notation)."
+        ),
+    )
+    criteres_valides = models.JSONField(
+        default=list, blank=True,
+        help_text="Indices des critères de QuestionInedite.criteres_notation cochés par l'élève.",
+    )
 
     class Meta:
         ordering = ["tentative", "question__ordre"]

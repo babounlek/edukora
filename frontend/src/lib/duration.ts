@@ -9,3 +9,11 @@ export function formatDuration(totalSeconds: number): string {
   const ss = String(seconds).padStart(2, "0")
   return hours > 0 ? `${hours}:${mm}:${ss}` : `${mm}:${ss}`
 }
+
+/** « 2 h », « 1 h 30 », « 45 min » - la durée d'une épreuve en langage courant. */
+export function formatDureeMinutes(minutes: number): string {
+  const heures = Math.floor(minutes / 60)
+  const reste = minutes % 60
+  if (heures === 0) return `${reste} min`
+  return reste === 0 ? `${heures} h` : `${heures} h ${String(reste).padStart(2, "0")}`
+}
