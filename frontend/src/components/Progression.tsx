@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
 
 import { pourcent } from "@/lib/maitrise"
+import { STATUTS, type StatutProgression } from "@/lib/statutsProgression"
 import { cn } from "@/lib/utils"
 
 /**
@@ -98,21 +99,49 @@ export function BarreSegmentee({
         + `${Math.max(0, exploitables - maitrises - enRevision - enCours)} à découvrir`
       }
     >
-      <span className="h-full rounded-full bg-primary transition-all duration-700" style={{ width: largeur(maitrises) }} />
-      <span className="h-full rounded-full bg-gold transition-all duration-700" style={{ width: largeur(enRevision) }} />
-      <span className="h-full rounded-full bg-info transition-all duration-700" style={{ width: largeur(enCours) }} />
+      <span className={cn("h-full rounded-full transition-all duration-700", STATUTS.maitrise.barre)} style={{ width: largeur(maitrises) }} />
+      <span className={cn("h-full rounded-full transition-all duration-700", STATUTS.en_revision.barre)} style={{ width: largeur(enRevision) }} />
+      <span className={cn("h-full rounded-full transition-all duration-700", STATUTS.en_cours.barre)} style={{ width: largeur(enCours) }} />
     </div>
   )
 }
 
+/** Légende : chaque statut avec son icône ET sa couleur - jamais la couleur seule. */
 export function LegendeProgression() {
-  const pastille = "inline-block size-2 rounded-full"
+  const ordre: StatutProgression[] = ["maitrise", "en_revision", "en_cours", "a_decouvrir"]
   return (
-    <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-      <span className="flex items-center gap-1.5"><span className={cn(pastille, "bg-primary")} />Maîtrisé</span>
-      <span className="flex items-center gap-1.5"><span className={cn(pastille, "bg-gold")} />En révision</span>
-      <span className="flex items-center gap-1.5"><span className={cn(pastille, "bg-info")} />En cours</span>
-      <span className="flex items-center gap-1.5"><span className={cn(pastille, "bg-muted ring-1 ring-border")} />À découvrir</span>
+    <p className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
+      {ordre.map((statut) => {
+        const { libelle, Icone, puce } = STATUTS[statut]
+        return (
+          <span key={statut} className="flex items-center gap-1.5">
+            <span className={cn("flex size-4 items-center justify-center rounded-full", puce)}>
+              <Icone className="size-2.5" strokeWidth={3} aria-hidden="true" />
+            </span>
+            {libelle}
+          </span>
+        )
+      })}
     </p>
+  )
+}
+
+/** Un compteur de statut : le chiffre en grand, et l'icône de son statut (la même que dans la
+ * légende, les badges et la frise). `libelle` remplace celui du statut quand la page a son mot
+ * ("À réviser" plutôt que "En révision"). */
+export function CompteurStatut({
+  statut, valeur, libelle,
+}: { statut: StatutProgression; valeur: number; libelle?: string }) {
+  const { libelle: libelleStatut, Icone, puce } = STATUTS[statut]
+  return (
+    <div className="rounded-2xl border border-border/70 bg-background/70 px-3 py-3 backdrop-blur-sm sm:px-4">
+      <p className="flex items-center gap-2 whitespace-nowrap text-xs text-muted-foreground">
+        <span className={cn("flex size-5 shrink-0 items-center justify-center rounded-full", puce)}>
+          <Icone className="size-3" strokeWidth={3} aria-hidden="true" />
+        </span>
+        {libelle ?? libelleStatut}
+      </p>
+      <p className="mt-1.5 font-display text-2xl font-semibold tabular-nums sm:text-3xl">{valeur}</p>
+    </div>
   )
 }

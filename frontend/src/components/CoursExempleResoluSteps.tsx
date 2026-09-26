@@ -30,9 +30,15 @@ export function CoursExempleResoluSteps({ enonce_markdown, etapes, conclusion_ma
                 {index + 1}
               </span>
               <div className="flex flex-1 flex-col gap-1.5 pb-2 pt-0.5">
-                {etape.action && <p className="font-medium">{etape.action}</p>}
+                {etape.action && (
+                  <div className="font-medium [&_p]:m-0">
+                    <EpreuveMarkdown markdown={etape.action} />
+                  </div>
+                )}
                 {etape.justification && (
-                  <p className="text-sm italic text-muted-foreground">{etape.justification}</p>
+                  <div className="text-sm italic text-muted-foreground [&_p]:m-0">
+                    <EpreuveMarkdown markdown={etape.justification} />
+                  </div>
                 )}
                 {/* Taille de corps pleine (pas prose-sm) : c'est le résultat de l'étape, souvent
                     une formule, qu'on ne veut pas rapetisser. Pas de `prose-p:my-*` non plus

@@ -46,7 +46,7 @@ function MiniClassement({ themes }: { themes: ThemeIllustratif[] }) {
         <div key={theme.id} className="flex items-center gap-2.5">
           <span
             className={cn(
-              "flex size-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold tabular-nums",
+              "flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold tabular-nums",
               index === 0 ? "bg-gold text-gold-foreground" : "bg-muted text-muted-foreground",
             )}
           >

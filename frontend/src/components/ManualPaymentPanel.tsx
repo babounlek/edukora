@@ -138,7 +138,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPayment
     <div className="flex flex-col gap-4">
       <div className={cn("rounded-xl border px-4 py-4", style.cardClass)}>
         <div className="flex items-center gap-2.5">
-          <span className={cn("flex size-7 items-center justify-center rounded-full text-[10px] font-bold", style.badgeClass)}>
+          <span className={cn("flex size-7 items-center justify-center rounded-full text-xs font-bold", style.badgeClass)}>
             {style.initials}
           </span>
           <p className="font-display font-medium">{account.operator_display}</p>
