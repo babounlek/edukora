@@ -7,9 +7,11 @@ import { getResumeParcours, listMySubscriptions } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { ResumeMatiere, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { AnneauProgression, BarreSegmentee, Ecrin, LegendeProgression } from "@/components/Progression"
+import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
+import { couleurMatiere } from "@/lib/matiereCouleur"
+import { STATUTS } from "@/lib/statutsProgression"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { pourcent } from "@/lib/maitrise"
 import { useSeo } from "@/lib/seo"
@@ -56,13 +58,13 @@ function CarteMatiere({
             "flex size-10 shrink-0 items-center justify-center rounded-xl transition-colors",
             sansContenu
               ? "bg-muted text-muted-foreground"
-              : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground",
+              : cn(couleurMatiere(matiere.subject_code).puce, "group-hover:scale-105"),
           )}
         >
           <SubjectIcon className="size-5" aria-hidden="true" />
         </span>
         {sansContenu ? (
-          <span className="rounded-full border border-border px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+          <span className="rounded-full border border-border px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
             Contenu à venir
           </span>
         ) : (
@@ -91,7 +93,7 @@ function CarteMatiere({
             </span>
             <span className="flex items-center gap-1.5">
               {matiere.en_revision > 0 && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-gold/15 px-2 py-0.5 font-medium text-gold-foreground dark:text-gold">
+                <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium", STATUTS.en_revision.puce)}>
                   <RotateCcw className="size-3" />
                   {matiere.en_revision} à réviser
                 </span>
@@ -102,20 +104,6 @@ function CarteMatiere({
         </div>
       )}
     </Link>
-  )
-}
-
-/** Un compteur du haut de page : le chiffre en grand, sa couleur rappelle celle du
- * segment correspondant dans les barres. */
-function Compteur({ valeur, libelle, pastille }: { valeur: number; libelle: string; pastille: string }) {
-  return (
-    <div className="rounded-2xl border border-border/70 bg-background/70 px-3 py-3 backdrop-blur-sm sm:px-4">
-      <p className="flex items-center gap-1.5 whitespace-nowrap text-[11px] text-muted-foreground sm:text-xs">
-        <span className={cn("inline-block size-2 shrink-0 rounded-full", pastille)} />
-        {libelle}
-      </p>
-      <p className="mt-1 font-display text-2xl font-semibold tabular-nums sm:text-3xl">{valeur}</p>
-    </div>
   )
 }
 
@@ -279,10 +267,10 @@ export function ParcoursPage() {
               </p>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
-              <Compteur valeur={totalMaitrises} libelle="Maîtrisés" pastille="bg-primary" />
-              <Compteur valeur={totalARevoir} libelle="En révision" pastille="bg-gold" />
-              <Compteur valeur={totalEnCours} libelle="En cours" pastille="bg-info" />
-              <Compteur valeur={totalADecouvrir} libelle="À découvrir" pastille="bg-muted ring-1 ring-border" />
+              <CompteurStatut statut="maitrise" valeur={totalMaitrises} libelle="Maîtrisés" />
+              <CompteurStatut statut="en_revision" valeur={totalARevoir} />
+              <CompteurStatut statut="en_cours" valeur={totalEnCours} />
+              <CompteurStatut statut="a_decouvrir" valeur={totalADecouvrir} />
             </div>
             <BarreSegmentee
               className="mt-4 h-2.5"
