@@ -35,7 +35,9 @@
      franchi. N'affecte que la lisibilité, jamais la teinte perçue (même 142°/76%). */
   --success: hsl(142.1 76.2% 28%);
   --success-foreground: hsl(40 30% 98%);
-  --warning: hsl(38 92% 50%);
+  /* Orange, plus rouge que le doré (--gold, 40°) : "en révision" et "attention" ne doivent pas se
+     confondre avec "ce qui tombe à l'examen" et les paliers. */
+  --warning: hsl(25 92% 50%);
   --warning-foreground: hsl(150 15% 10%);
   --info: hsl(210 70% 46%);
   --info-foreground: hsl(40 30% 98%);
@@ -75,7 +77,7 @@
   --destructive-foreground: hsl(45 25% 94%);
   --success: hsl(142.1 60% 42%);
   --success-foreground: hsl(150 30% 8%);
-  --warning: hsl(38 85% 55%);
+  --warning: hsl(25 88% 57%);
   --warning-foreground: hsl(150 30% 8%);
   --info: hsl(210 80% 62%);
   --info-foreground: hsl(150 30% 8%);
@@ -90,6 +92,16 @@
   --chart-3: hsl(173 50% 45%);
   --chart-4: hsl(210 80% 62%);
   --chart-5: hsl(3 62% 50%);
+}
+
+/*
+ * Le plus petit texte courant est de 13 px, pas 12 : sur un téléphone d'entrée de gamme, en
+ * plein soleil, le gris clair à 12 px est illisible - et c'est là que vit tout le texte
+ * secondaire des écrans de révision (durées, légendes, raisons d'une recommandation).
+ */
+@theme {
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.125rem;
 }
 
 @theme inline {
@@ -228,4 +240,46 @@
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Quiz : retours visuels courts qui rendent une réponse "vivante". Bonne réponse =
+   petit rebond, mauvaise = léger tremblement (jamais agressif), confettis en fin de
+   quiz réussi. Tout est coupé pour qui a demandé moins de mouvement : la couleur, l'icône
+   et le texte du bandeau portent déjà l'information. */
+@keyframes quiz-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+@keyframes quiz-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+@keyframes quiz-confetti {
+  0% { transform: translate3d(0, -20px, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(var(--dx, 0px), 340px, 0) rotate(var(--rot, 540deg)); opacity: 0; }
+}
+@keyframes quiz-flame {
+  0%, 100% { transform: scale(1) rotate(-3deg); }
+  50% { transform: scale(1.18) rotate(3deg); }
+}
+
+.animate-quiz-pop { animation: quiz-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.animate-quiz-shake { animation: quiz-shake 0.35s ease-in-out both; }
+.animate-quiz-flame { animation: quiz-flame 1s ease-in-out infinite; }
+.quiz-confetti-piece {
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  animation: quiz-confetti 2.6s cubic-bezier(0.25, 0.6, 0.35, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-quiz-pop,
+  .animate-quiz-shake,
+  .animate-quiz-flame { animation: none; }
+  .quiz-confetti-piece { display: none; }
 }
