@@ -1,7 +1,8 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
+from .funnel import entonnoir
 from .models import AnalyticsEvent, EventName
 
 # Plafond de clés dans `properties` - un contexte minimal (ex. {"cursus_id": 3}) tient
@@ -39,3 +40,17 @@ def track_event(request):
     # y lève une SyntaxError plutôt que de résoudre proprement (déjà rencontré ailleurs
     # dans ce projet), même si trackEvent() l'avale de toute façon (fire-and-forget).
     return Response({}, status=201)
+
+
+@api_view(["GET"])
+@permission_classes([IsAdminUser])
+def entonnoir_view(request):
+    """Entonnoir inscription -> paiement (voir analytics.funnel) - réservé à l'équipe :
+    ce sont des chiffres internes, jamais servis à un élève."""
+    try:
+        jours = int(request.GET.get("jours", 30))
+    except ValueError:
+        return Response({"error": "jours doit être un entier."}, status=400)
+    if not 1 <= jours <= 365:
+        return Response({"error": "jours doit être compris entre 1 et 365."}, status=400)
+    return Response(entonnoir(jours))

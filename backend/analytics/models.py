@@ -36,6 +36,12 @@ class EventName(models.TextChoices):
     PLAN_VERROUILLE_CLIC = "plan_verrouille_clic", "Clic sur une séance verrouillée"
     PLAN_THEME_IGNORE = "plan_theme_ignore", "Thème proposé ignoré"
     OBJECTIF_MATIERE = "objectif_matiere", "Matière de concentration définie ou retirée"
+    # Volumes de visiteurs, anonymes compris : seule façon de voir combien de personnes
+    # regardent le prix ou ouvrent la page de paiement sans jamais se créer de compte
+    # (voir analytics.funnel, qui ne peut compter que les comptes).
+    TARIFS_VUS = "tarifs_vus", "Page des tarifs consultée"
+    ABONNEMENT_OUVERT = "abonnement_ouvert", "Page d'abonnement ouverte"
+    ONBOARDING_TERMINE = "onboarding_termine", "Questions de bienvenue terminées"
 
 
 class AnalyticsEvent(models.Model):

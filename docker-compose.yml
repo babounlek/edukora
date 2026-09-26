@@ -39,6 +39,25 @@ services:
       # en production, qui utilise S3 (voir STORAGES["inedit_protected"] en prod).
       - ./protected_media:/app/protected_media
 
+  # Relances e-mail (rappel quotidien de la séance, paiements non aboutis) : un tour par heure,
+  # voir backend/relances. Même image que `backend` mais aucune migration ni serveur web - c'est
+  # `backend` qui migre. Sans e-mail configuré (EMAIL_HOST vide), les messages sortent en console.
+  relances:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    entrypoint: ["python", "manage.py", "planifier_relances"]
+
+    depends_on:
+      - db
+      - backend
+
   backup:
     build:
       context: .

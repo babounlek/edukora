@@ -1,4 +1,6 @@
-import type { CompteARebours } from "@/api/types"
+import { Flame } from "lucide-react"
+
+import type { CompteARebours, SerieDeJours } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { pourcent } from "@/lib/maitrise"
 import { formatCursus } from "@/components/CompteAReboursBadge"
@@ -14,8 +16,8 @@ import { formatCursus } from "@/components/CompteAReboursBadge"
  * Silencieusement absent sans cursus déclaré : un bandeau sans examen n'aurait rien à dire.
  */
 export function HeroAujourdhui({
-  preparation, seancesSemaine,
-}: { preparation: number | null; seancesSemaine?: number }) {
+  preparation, seancesSemaine, serie,
+}: { preparation: number | null; seancesSemaine?: number; serie?: SerieDeJours }) {
   const { user } = useAuth()
   const cursus = user?.cursus_prepare
   if (!cursus) return null
@@ -39,6 +41,19 @@ export function HeroAujourdhui({
             {typeof seancesSemaine === "number" && seancesSemaine > 0 && (
               <p className="mt-2 text-sm text-primary-foreground/80">
                 {seancesSemaine} séance{seancesSemaine > 1 ? "s" : ""} cette semaine
+              </p>
+            )}
+            {/* La série ne s'affiche qu'à partir de deux jours (un seul n'est pas encore une
+                habitude) et ne culpabilise jamais : tant que la journée n'est pas finie, elle
+                dit seulement que la séance du jour la prolonge. */}
+            {serie && serie.jours >= 2 && (
+              <p
+                className="mt-1 flex items-center gap-1.5 text-sm text-primary-foreground/80"
+                title={serie.repos_pris ? "Un jour de repos a été pardonné cette semaine" : undefined}
+              >
+                <Flame className="size-3.5 shrink-0" aria-hidden="true" />
+                {serie.jours} jours de suite
+                {!serie.actif_aujourdhui && " · ta séance du jour la prolonge"}
               </p>
             )}
           </div>

@@ -175,6 +175,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     être bloqué par des déclarations d'élèves, qui se redemandent en une question.
     """
 
+    rappels_actifs = models.BooleanField(
+        default=False,
+        help_text=(
+            "Accepte un rappel quotidien de sa séance du jour par e-mail (voir "
+            "relances.services). Jamais activé d'office : seul l'élève le décide, et il ne "
+            "peut l'être que sur une adresse e-mail confirmée - voir "
+            "UserProfileUpdateSerializer.validate_rappels_actifs."
+        ),
+    )
+    rappels_invite_refusee_at = models.DateTimeField(
+        null=True, blank=True,
+        help_text=(
+            "Moment où l'élève a écarté l'invitation à activer les rappels : on ne la lui "
+            "représente plus. Distinct de rappels_actifs=False, qui est l'état par défaut de "
+            "quelqu'un à qui on n'a encore rien demandé."
+        ),
+    )
+
     objects = UserManager()
 
     USERNAME_FIELD = "phone_number"

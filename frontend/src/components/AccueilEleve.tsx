@@ -2,11 +2,12 @@ import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, ChevronRight, Clock, Crown, RotateCcw, TrendingUp } from "lucide-react"
 
-import { getBilanPeriode, getMyProgression, getResumeParcours, listRevisionsDues } from "@/api/endpoints"
+import { getBilanPeriode, getMyProgression, getPlanDuJour, getResumeParcours, listRevisionsDues } from "@/api/endpoints"
 import type { ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { HeroAujourdhui } from "@/components/HeroAujourdhui"
+import { InviteRappels } from "@/components/RappelsEmail"
 import { SeanceDuJour } from "@/components/SeanceDuJour"
 import { TaSemaine } from "@/components/TaSemaine"
 import { AnneauProgression, BarreSegmentee, Ecrin, LegendeProgression } from "@/components/Progression"
@@ -54,6 +55,13 @@ export function AccueilEleve({ country }: { country: string }) {
     enabled: Boolean(cursusId),
   })
 
+  // Même clé que BarreSeance et SeanceDuJour : une seule requête pour les trois.
+  const { data: plan } = useQuery({
+    queryKey: ["plan-du-jour"],
+    queryFn: ({ signal }) => getPlanDuJour(signal),
+    retry: false,
+  })
+
   // Même clé que TaSemaine : une seule requête pour les deux.
   const { data: semaine } = useQuery({
     queryKey: ["bilan-periode", cursusId, 7],
@@ -80,8 +88,10 @@ export function AccueilEleve({ country }: { country: string }) {
 
   return (
     <div className="pb-4">
-      <HeroAujourdhui preparation={preparation} seancesSemaine={semaine?.seances} />
+      <HeroAujourdhui preparation={preparation} seancesSemaine={semaine?.seances} serie={plan?.serie} />
       <SeanceDuJour country={country} />
+      {/* Proposé une fois, quand l'élève sait ce qu'on lui rappellerait : après sa première séance. */}
+      {((plan?.serie?.record ?? 0) > 0 || (plan?.seances_cette_semaine ?? 0) > 0) && <InviteRappels />}
 
       {lecture && (
         <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
@@ -199,7 +209,7 @@ export function AccueilEleve({ country }: { country: string }) {
             to={`${epreuvesListPath(country)}?${requeteInedites(cursusAccueil)}`}
             className="group flex items-center gap-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-4 transition-colors hover:border-gold/60"
           >
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
               <Crown className="size-5" />
             </span>
             <span className="min-w-0 flex-1">
@@ -211,7 +221,7 @@ export function AccueilEleve({ country }: { country: string }) {
               </span>
             </span>
             <Clock className="size-4 shrink-0 text-muted-foreground" />
-            <ArrowRight className="size-4 shrink-0 text-gold transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" />
           </Link>
         </section>
       )}

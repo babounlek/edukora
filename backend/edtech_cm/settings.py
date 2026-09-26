@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     "inedit",
     "fiches",
     "whatsapp",
+    "relances",
 ]
 
 AUTH_USER_MODEL = "users.User"

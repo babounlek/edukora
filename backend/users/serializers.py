@@ -83,6 +83,7 @@ class UserSerializer(serializers.ModelSerializer):
     cursus_prepare = CursusSerializer(read_only=True)
     compte_a_rebours = serializers.SerializerMethodField()
     a_un_abonnement_actif = serializers.SerializerMethodField()
+    rappels_invite_refusee = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -90,8 +91,11 @@ class UserSerializer(serializers.ModelSerializer):
             "id", "phone_number", "email", "email_verified", "full_name", "pseudo",
             "date_joined", "referral_code", "filleuls_count", "auth_methods",
             "credit_parrainage_disponible", "cursus_prepare", "compte_a_rebours",
-            "a_un_abonnement_actif",
+            "a_un_abonnement_actif", "rappels_actifs", "rappels_invite_refusee",
         ]
+
+    def get_rappels_invite_refusee(self, obj):
+        return obj.rappels_invite_refusee_at is not None
 
     def get_phone_number(self, obj):
         """
@@ -152,9 +156,28 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         queryset=Cursus.objects.select_related("country"), required=False, allow_null=True,
     )
 
+    # Écrit par le frontend quand l'élève écarte l'invitation (True) ou la rouvre (False) :
+    # on stocke le moment, pas le booléen - voir User.rappels_invite_refusee_at.
+    rappels_invite_refusee = serializers.BooleanField(write_only=True, required=False)
+
     class Meta:
         model = User
-        fields = ["full_name", "pseudo", "cursus_prepare"]
+        fields = ["full_name", "pseudo", "cursus_prepare", "rappels_actifs", "rappels_invite_refusee"]
+
+    def validate_rappels_actifs(self, value):
+        # Des rappels envoyés à une adresse non confirmée arriveraient chez quelqu'un qui n'a
+        # rien demandé - la confirmation par code (voir users.account) est la seule preuve
+        # que l'adresse est bien celle de l'élève.
+        if value and not (self.instance and self.instance.email_verified):
+            raise serializers.ValidationError("Ajoute et confirme d'abord une adresse e-mail.")
+        return value
+
+    def update(self, instance, validated_data):
+        refusee = validated_data.pop("rappels_invite_refusee", None)
+        if refusee is not None:
+            instance.rappels_invite_refusee_at = timezone.now() if refusee else None
+            instance.save(update_fields=["rappels_invite_refusee_at"])
+        return super().update(instance, validated_data)
 
     def validate_cursus_prepare(self, value):
         # Même règle que les vues publiques (voir VisibleQuerySet.visibles et

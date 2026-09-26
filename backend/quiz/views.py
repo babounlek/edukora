@@ -20,6 +20,7 @@ from .models import (
     ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere, StatutFichePdf, StatutSeance,
 )
 from .pdf import queue_quiz_fiche_pdf_generation
+from .serie import serie_de_jours
 from .services import (
     SEUIL_MAITRISE, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
     generer_session, maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
@@ -763,6 +764,7 @@ def _charge_utile_plan(user, cursus, seance, compte):
         "cursus": CursusSerializer(cursus).data,
         "compte_a_rebours": compte,
         "seances_cette_semaine": seances_terminees_cette_semaine(user, cursus),
+        "serie": serie_de_jours(user),
         "objectif_matiere": _serialiser_objectif(objectif_matiere_actif(user, cursus)),
         "matieres_objectif": [{"id": m.id, "label": m.label} for m in matieres_pour_objectif(cursus)],
     }
@@ -799,6 +801,7 @@ def terminer_seance_view(request):
     return Response({
         "statut": seance.statut,
         "seances_cette_semaine": seances_terminees_cette_semaine(request.user, cursus),
+        "serie": serie_de_jours(request.user),
     })
 
 
