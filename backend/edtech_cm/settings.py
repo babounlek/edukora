@@ -88,9 +88,7 @@ INSTALLED_APPS = [
     "fiches",
     "whatsapp",
     "relances",
-    # "simulations",  # désactivé temporairement : simulations/models.py importe
-    # CausePerte depuis inedit.models, classe absente (travail inachevé d'une autre
-    # session, migration 0016_cause_perte non suivie) — cassait tout manage.py.
+    "simulations",
 ]
 
 AUTH_USER_MODEL = "users.User"
