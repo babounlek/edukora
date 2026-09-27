@@ -667,13 +667,30 @@ def parcours_resume(request):
     return Response(resume_parcours(request.user, cursus))
 
 
+def _etape_verrouillee(etape):
+    """
+    Ce qui reste d'une étape quand l'abonnement n'est pas actif : son type et sa durée,
+    jamais ce qui identifie le contenu précis (slug, exercice, année de l'épreuve
+    source) - le frontend affiche donc "Ton parcours" au complet, chaque étape à sa
+    place, mais aucune n'ouvre quoi que ce soit. Le libellé d'un exercice porte
+    d'ordinaire l'épreuve source ("Exercice 2 - BAC C Maths 2022") ; verrouillé, il ne
+    doit pas en dire plus que "Un exercice tombé à l'examen" ne le fait déjà pour le
+    thème entier.
+    """
+    type_ = etape.get("type")
+    libelle = "Un exercice tombé à l'examen" if type_ == "exercice" else etape.get("libelle")
+    return {"type": type_, "libelle": libelle, "duree_min": etape.get("duree_min")}
+
+
 def _serialiser_seance(seance, verrouillee):
     """
     Une séance verrouillée expose TOUT sauf de quoi ouvrir le contenu : la matière, le
-    thème, sa fréquence à l'examen, la durée, le nombre d'étapes. Le paywall tombe sur
-    le bouton, jamais sur l'information - c'est le seul endroit de l'app où la valeur
-    se démontre au lieu de s'affirmer, et cacher le thème reviendrait à demander à un
-    visiteur de payer pour savoir ce qu'il achète.
+    thème, sa fréquence à l'examen, la durée, le nombre d'étapes, et jusqu'à la
+    structure même du parcours (voir _etape_verrouillee) - un exercice y garde son
+    type et sa durée, jamais l'épreuve source qui le identifierait. Le paywall tombe
+    sur le bouton, jamais sur l'information - c'est le seul endroit de l'app où la
+    valeur se démontre au lieu de s'affirmer, et cacher le thème reviendrait à
+    demander à un visiteur de payer pour savoir ce qu'il achète.
     """
     return {
         "id": seance.id,
@@ -688,9 +705,7 @@ def _serialiser_seance(seance, verrouillee):
         "budget_minutes": seance.budget_minutes,
         "budgets_possibles": list(BUDGETS_SEANCE_MINUTES),
         "nb_etapes": len(seance.etapes),
-        # Les étapes portent les slugs qui ouvrent le contenu : retirées tant que
-        # l'abonnement n'est pas actif, alors que tout le reste est servi tel quel.
-        "etapes": [] if verrouillee else [
+        "etapes": [_etape_verrouillee(etape) for etape in seance.etapes] if verrouillee else [
             {**etape, "cle": cle_etape(etape), "ouverte": etape_ouverte(seance, etape)}
             for etape in seance.etapes
         ],

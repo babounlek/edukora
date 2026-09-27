@@ -2565,11 +2565,19 @@ class PlanDuJourTests(TestCase):
 
         self.assertTrue(seance["verrouillee"])
         # Le paywall tombe sur le bouton, jamais sur l'information : le thème, la
-        # durée et le nombre d'étapes restent visibles, seuls les slugs disparaissent.
+        # durée, le nombre d'étapes ET la structure du parcours (type, durée de
+        # chaque étape) restent visibles - seul ce qui ouvrirait le contenu disparaît.
         self.assertEqual(seance["theme"]["name"], self.theme.name)
         self.assertGreater(seance["duree_estimee_min"], 0)
         self.assertGreater(seance["nb_etapes"], 0)
-        self.assertEqual(seance["etapes"], [])
+        self.assertEqual(len(seance["etapes"]), seance["nb_etapes"])
+        for etape in seance["etapes"]:
+            self.assertEqual(set(etape), {"type", "libelle", "duree_min"})
+            self.assertGreater(etape["duree_min"], 0)
+            if etape["type"] == "exercice":
+                # Jamais l'épreuve source ("Exercice 2 - BAC C Maths 2022") qui
+                # identifierait le contenu précis derrière le paywall.
+                self.assertEqual(etape["libelle"], "Un exercice tombé à l'examen")
 
     def test_un_abonne_recoit_les_etapes(self):
         self._abonner()

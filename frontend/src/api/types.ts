@@ -57,6 +57,15 @@ type EtapeSeanceContenu =
     }
   | { type: "quiz"; libelle: string; mode: ModeQuiz; n: number; duree_min: number }
 
+/** Ce que renvoie une séance verrouillée (voir quiz.views._etape_verrouillee côté
+ * backend) : la structure du parcours - quel type d'étape, combien de temps - sans
+ * rien qui identifie ou ouvre le contenu précis derrière le paywall. */
+export interface EtapeSeanceVerrouillee {
+  type: "cours" | "exercice" | "quiz"
+  libelle: string
+  duree_min: number
+}
+
 export interface Seance {
   id: number
   origine: "REVISION_DUE" | "LECTURE_EN_COURS" | "DIAGNOSTIC" | "PARCOURS"
@@ -70,9 +79,10 @@ export interface Seance {
   budget_minutes: number
   budgets_possibles: number[]
   nb_etapes: number
-  // Vide quand `verrouillee` : seuls les slugs, qui ouvrent le contenu, sont retirés -
-  // le thème, la durée et la fréquence restent visibles (voir _serialiser_seance).
-  etapes: EtapeSeance[]
+  // Quand `verrouillee`, chaque étape est réduite à EtapeSeanceVerrouillee (type +
+  // durée, sans `cle`/`ouverte` ni rien qui ouvre le contenu) - voir _serialiser_seance.
+  // `seance.verrouillee` dit sans ambiguïté laquelle des deux formes s'applique.
+  etapes: EtapeSeance[] | EtapeSeanceVerrouillee[]
   // "tombé dans 8 des 10 dernières épreuves" - null si le thème n'est jamais tombé,
   // ou si la séance n'en cible pas (calibrage).
   // `annees` : les années réellement concernées, pour que "tombé dans 11 des 21

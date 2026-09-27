@@ -40,7 +40,10 @@ export function usePositionDansLaSeance(): PositionDansLaSeance | null {
   })
 
   if (!lecteur || !plan || plan.etat !== "plan_pret" || !plan.seance || plan.seance.verrouillee) return null
-  const etapes = plan.seance.etapes
+  // Le garde ci-dessus élimine déjà `verrouillee` : seule la forme EtapeSeance (avec
+  // `cle`/`ouverte`/slugs) peut se trouver ici, TypeScript ne peut juste pas le déduire
+  // d'un simple booléen sur une propriété voisine.
+  const etapes = plan.seance.etapes as EtapeSeance[]
   const index = etapes.findIndex((e) =>
     e.type === "cours"
       ? pathname === `/cours/${e.slug}/lire`

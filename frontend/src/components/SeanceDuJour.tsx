@@ -10,7 +10,7 @@ import {
   ajusterDureeSeance, continuerSeanceDuJour, definirObjectifMatiere, getPlanDuJour,
   proposerAutreChose, retirerObjectifMatiere, terminerSeanceDuJour,
 } from "@/api/endpoints"
-import type { EtapeSeance, PlanDuJour, Seance } from "@/api/types"
+import type { EtapeSeance, EtapeSeanceVerrouillee, PlanDuJour, Seance } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
@@ -164,11 +164,17 @@ function SeanceAFaire({
   ajustementEnCours: boolean
 }) {
   const seance = plan.seance as Seance
+  // Verrouillée, chaque étape est une EtapeSeanceVerrouillee (voir types.ts) : ni
+  // `cle` ni `ouverte`, rien à reprendre - seance.verrouillee dit sans ambiguïté
+  // laquelle des deux formes est là, TypeScript ne peut pas le déduire seul.
+  const etapes = seance.verrouillee ? [] : (seance.etapes as EtapeSeance[])
   // "Reprendre" plutôt que "Commencer" dès qu'une étape a été ouverte, et on repart de
   // la première qui ne l'est pas - à défaut, de la dernière (le quiz, qui valide).
-  const dejaCommencee = seance.etapes.some((e) => e.ouverte)
-  const prochaine = seance.etapes.find((e) => !e.ouverte) ?? seance.etapes[seance.etapes.length - 1]
-  const avecParcours = !seance.verrouillee && seance.etapes.length > 0
+  const dejaCommencee = etapes.some((e) => e.ouverte)
+  const prochaine = etapes.find((e) => !e.ouverte) ?? etapes[etapes.length - 1]
+  // Affiché même verrouillé (voir EtapesParPhase) : la structure du parcours fait
+  // partie de ce que le paywall doit démontrer, pas cacher.
+  const avecParcours = seance.etapes.length > 0
   const avecQuiz = seance.etapes.some((e) => e.type === "quiz")
 
   return (
@@ -195,12 +201,48 @@ function SeanceAFaire({
 
         <Frequence seance={seance} />
 
-        {!seance.verrouillee && (
-          <ChoixDuree seance={seance} onChoisir={onChoisirDuree} enCours={ajustementEnCours} />
-        )}
+        <ChoixDuree
+          seance={seance}
+          onChoisir={onChoisirDuree}
+          enCours={ajustementEnCours}
+          desactive={seance.verrouillee}
+        />
 
         {seance.verrouillee ? (
-          <Verrou />
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            {/* La forme exacte du vrai bouton, inerte : ce que ça deviendrait une fois
+                abonné, pas un message de remplacement. */}
+            <Button
+              size="lg"
+              variant="outline"
+              disabled
+              className="h-12 rounded-full px-7 text-base opacity-50"
+            >
+              Commencer la séance
+              <ArrowRight className="size-4" />
+            </Button>
+            {/* Le seul bouton qui fonctionne reste le plus visible des deux - un
+                visiteur qui compare les deux ne doit jamais hésiter sur lequel agit. */}
+            <Button
+              asChild
+              size="lg"
+              className="group h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
+            >
+              <Link to="/tarifs" onClick={() => trackEvent("plan_verrouille_clic")}>
+                <Lock className="size-4" />
+                Débloquer ma séance
+              </Link>
+            </Button>
+            <Button variant="ghost" size="sm" disabled className="rounded-full text-muted-foreground opacity-50">
+              <Check className="size-4" />
+              J'ai fini
+            </Button>
+            {avecQuiz && (
+              <p className="basis-full text-xs text-muted-foreground">
+                La séance est validée quand tu termines le quiz.
+              </p>
+            )}
+          </div>
         ) : (
           <div className="mt-6 flex flex-wrap items-center gap-3">
             {prochaine && (
@@ -251,7 +293,13 @@ function SeanceAFaire({
           sinon s'intercalait entre le bouton et ce qu'il lance. */}
       {avecParcours && (
         <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
-          <EtapesParPhase seance={seance} country={country} plan={plan} onOuvrirEtape={onOuvrirEtape} />
+          <EtapesParPhase
+            seance={seance}
+            country={country}
+            plan={plan}
+            onOuvrirEtape={onOuvrirEtape}
+            verrouillee={seance.verrouillee}
+          />
         </div>
       )}
 
@@ -270,7 +318,7 @@ function SeanceAFaire({
           <button
             type="button"
             onClick={onAutreChose}
-            disabled={remplacementEnCours}
+            disabled={remplacementEnCours || seance.verrouillee}
             className="underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
           >
             {remplacementEnCours ? "Je cherche…" : "Propose-moi autre chose"}
@@ -586,25 +634,7 @@ function AutresRaisons({ seance }: { seance: Seance }) {
   )
 }
 
-function Verrou() {
-  return (
-    <div className="mt-6 flex flex-wrap items-center gap-3">
-      <Button
-        asChild
-        size="lg"
-        className="h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
-      >
-        <Link to="/tarifs" onClick={() => trackEvent("plan_verrouille_clic")}>
-          <Lock className="size-4" />
-          Débloquer ma séance
-        </Link>
-      </Button>
-      <span className="text-xs text-muted-foreground">Abonnement requis pour ouvrir le contenu.</span>
-    </div>
-  )
-}
-
-function IconeEtape({ type, ouverte }: { type: EtapeSeance["type"]; ouverte: boolean }) {
+function IconeEtape({ type, ouverte }: { type: EtapeSeance["type"] | EtapeSeanceVerrouillee["type"]; ouverte: boolean }) {
   // Cochée dès qu'ouverte : elle dit "déjà passé par là", pas "compris" - la séance,
   // elle, ne se valide qu'avec le quiz.
   const Icone = ouverte ? Check : type === "cours" ? BookOpen : type === "exercice" ? PenLine : Sparkles
@@ -656,11 +686,14 @@ function formatEcheance(dueAt: string): string {
  * minutes reste honnête, un "45 min" qui en donne 45 par construction ne le serait pas.
  */
 function ChoixDuree({
-  seance, onChoisir, enCours,
+  seance, onChoisir, enCours, desactive = false,
 }: {
   seance: Seance
   onChoisir: (minutes: number) => void
   enCours: boolean
+  // Verrouillée, la séance montre ce sélecteur mais ne le laisse pas agir - changer de
+  // budget de temps ne sert à rien tant qu'on ne peut rien ouvrir.
+  desactive?: boolean
 }) {
   if (seance.budgets_possibles.length < 2) return null
   return (
@@ -671,7 +704,7 @@ function ChoixDuree({
           <button
             key={minutes}
             type="button"
-            disabled={enCours}
+            disabled={enCours || desactive}
             aria-pressed={minutes === seance.budget_minutes}
             onClick={() => onChoisir(minutes)}
             className={cn(
@@ -713,13 +746,22 @@ const PHASES = [
 ] as const
 
 function EtapesParPhase({
-  seance, country, plan, onOuvrirEtape,
-}: { seance: Seance; country: string; plan: PlanDuJour; onOuvrirEtape: (etape: EtapeSeance) => void }) {
+  seance, country, plan, onOuvrirEtape, verrouillee,
+}: {
+  seance: Seance
+  country: string
+  plan: PlanDuJour
+  onOuvrirEtape: (etape: EtapeSeance) => void
+  // Le parcours entier s'affiche verrouillé ou non (voir SeanceAFaire) - lui seul
+  // décide si ses lignes ouvrent vraiment quelque chose ou n'en montrent que la forme.
+  verrouillee: boolean
+}) {
   // La page des exercices d'un thème exige la matière ET le cursus (voir
   // ThemeExercicesView) : sans eux le lien mène à une erreur 400, donc on ne l'affiche
-  // pas plutôt que de proposer une impasse.
+  // pas plutôt que de proposer une impasse. Absente aussi verrouillée : c'est déjà du
+  // contenu gated, pas seulement une profondeur supplémentaire de la séance du jour.
   const lienExercices =
-    seance.theme && seance.subject && plan.cursus
+    !verrouillee && seance.theme && seance.subject && plan.cursus
       ? `${themeExercicesPath(country, seance.theme.id)}?subject=${seance.subject.code}&cursus=${plan.cursus.id}`
       : null
   const groupes = PHASES
@@ -770,19 +812,31 @@ function EtapesParPhase({
                   <ArrowRight className="size-3" />
                 </Link>
               )}
-              {phase.etapes.map((etape) => (
-                <Link
-                  key={etape.libelle}
-                  to={lienEtape(etape, country, plan)}
-                  onClick={() => onOuvrirEtape(etape)}
-                  className="group flex items-center gap-3 rounded-xl border border-transparent px-2 py-1.5 text-sm transition-all hover:border-primary/20 hover:bg-primary/[0.04]"
-                >
-                  <IconeEtape type={etape.type} ouverte={etape.ouverte} />
-                  <span className="line-clamp-2 min-w-0 flex-1 font-medium leading-snug">{etape.libelle}</span>
-                  <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{etape.duree_min} min</span>
-                  <ChevronRight className="hidden size-4 shrink-0 text-muted-foreground/50 sm:block transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
-                </Link>
-              ))}
+              {verrouillee
+                ? (phase.etapes as EtapeSeanceVerrouillee[]).map((etape, index) => (
+                    <div
+                      key={`${etape.type}-${index}`}
+                      className="flex items-center gap-3 rounded-xl px-2 py-1.5 text-sm opacity-60"
+                    >
+                      <IconeEtape type={etape.type} ouverte={false} />
+                      <span className="line-clamp-2 min-w-0 flex-1 font-medium leading-snug">{etape.libelle}</span>
+                      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{etape.duree_min} min</span>
+                      <Lock className="hidden size-3.5 shrink-0 text-muted-foreground sm:block" aria-hidden="true" />
+                    </div>
+                  ))
+                : (phase.etapes as EtapeSeance[]).map((etape) => (
+                    <Link
+                      key={etape.cle}
+                      to={lienEtape(etape, country, plan)}
+                      onClick={() => onOuvrirEtape(etape)}
+                      className="group flex items-center gap-3 rounded-xl border border-transparent px-2 py-1.5 text-sm transition-all hover:border-primary/20 hover:bg-primary/[0.04]"
+                    >
+                      <IconeEtape type={etape.type} ouverte={etape.ouverte} />
+                      <span className="line-clamp-2 min-w-0 flex-1 font-medium leading-snug">{etape.libelle}</span>
+                      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{etape.duree_min} min</span>
+                      <ChevronRight className="hidden size-4 shrink-0 text-muted-foreground/50 sm:block transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
+                    </Link>
+                  ))}
             </div>
           </li>
         ))}

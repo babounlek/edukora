@@ -41,7 +41,10 @@ export function ouvrirEtapeDeSeance(queryClient: QueryClient, etape: EtapeSeance
           ...plan,
           seance: {
             ...plan.seance,
-            etapes: plan.seance.etapes.map((e) => (e.cle === etape.cle ? { ...e, ouverte: true } : e)),
+            // Un EtapeSeance (avec `cle`) n'existe jamais que côté séance déverrouillée -
+            // rien n'appelle cette fonction depuis une ligne verrouillée, où `.cle`
+            // n'existe pas (voir EtapeSeanceVerrouillee).
+            etapes: (plan.seance.etapes as EtapeSeance[]).map((e) => (e.cle === etape.cle ? { ...e, ouverte: true } : e)),
           },
         }
       : plan,
