@@ -441,6 +441,14 @@ class TentativeInedite(models.Model):
             "temporelle à protéger."
         ),
     )
+    mode_papier = models.BooleanField(
+        default=False,
+        help_text=(
+            "Épreuve composée sur papier (sujet PDF imprimé), chronométrée comme un examen : "
+            "l'écran ne montre que le chrono et la liste des questions à déclarer traitées, "
+            "jamais les énoncés. Décidé au lancement du mode examen, jamais après."
+        ),
+    )
     submitted_at = models.DateTimeField(null=True, blank=True)
     questions_marquees = models.ManyToManyField(
         QuestionInedite, blank=True, related_name="+",

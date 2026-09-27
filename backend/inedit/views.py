@@ -247,6 +247,7 @@ def _tentative_payload(tentative):
         "sujet_pdf_disponible": bool(tentative.epreuve.sujet_pdf),
         "started_at": tentative.started_at,
         "exam_mode_started_at": tentative.exam_mode_started_at,
+        "mode_papier": tentative.mode_papier,
         "submitted_at": tentative.submitted_at,
         "score_obtenu": tentative.score_obtenu,
         "note_obtenue": notation.en_nombre(tentative.note_obtenue),
@@ -312,6 +313,11 @@ def _tentative_resultat_payload(tentative, bilan=None):
         "note_sur_20": resume["note_sur_20"],
         "bareme_estime": resume["bareme_estime"],
         "definitive": resume["definitive"],
+        # Comment l'épreuve a été passée : une note d'entraînement ne se lit pas comme une note
+        # obtenue en conditions réelles.
+        "mode": (
+            "libre" if tentative.exam_mode_started_at is None else "papier" if tentative.mode_papier else "examen"
+        ),
         "temps_total_secondes": (
             int((tentative.submitted_at - tentative.started_at).total_seconds())
             if tentative.submitted_at else None
@@ -561,8 +567,13 @@ def start_exam_mode(request, tentative_id):
             {"error": "Le mode examen doit être activé avant de répondre à la première question."}, status=409,
         )
 
+    papier = _as_bool(request.data.get("papier"))
+    if papier and not tentative.epreuve.sujet_pdf:
+        return Response({"error": "Cette épreuve n'a pas de sujet PDF à imprimer."}, status=400)
+
     tentative.exam_mode_started_at = timezone.now()
-    tentative.save(update_fields=["exam_mode_started_at"])
+    tentative.mode_papier = papier
+    tentative.save(update_fields=["exam_mode_started_at", "mode_papier"])
     return Response(_tentative_payload(tentative))
 
 
