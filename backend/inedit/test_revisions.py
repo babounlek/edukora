@@ -24,7 +24,7 @@ class RevisionsApresEpreuveTests(NotationAPITestCase):
         self.assertEqual(planification.due_at, timezone.localdate() + timedelta(days=1))
         self.assertEqual(
             reponse.data["themes_a_reviser"],
-            [{"theme": "Suites numériques", "echeance": planification.due_at.isoformat()}],
+            [{"theme": "Suites numériques", "theme_id": planification.theme_id, "echeance": planification.due_at.isoformat()}],
         )
 
     def test_rendre_deux_fois_ne_replanifie_pas(self):

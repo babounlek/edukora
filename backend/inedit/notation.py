@@ -180,6 +180,7 @@ def calculer(tentative, exercices):
     traitees = a_noter = reussies = total = 0
     par_exercice = []
     par_theme = {}
+    lignes = []
 
     for exercice in exercices:
         exo_bareme = exo_note = ZERO
@@ -199,10 +200,20 @@ def calculer(tentative, exercices):
             a_noter += traitee and not est_notee(question, reponse)
             entier = points > 0 and obtenus >= points
             reussies += entier
+            lignes.append({
+                "exercice": exercice.numero_exercice,
+                "points": points,
+                "obtenus": obtenus,
+                "traitee": traitee,
+                "cause": getattr(reponse, "cause_perte", "") if reponse else "",
+                # Instant où l'élève a déclaré traiter la question (case cochée, ou réponse QCM).
+                "quand": (reponse.traitee_at or reponse.answered_at) if traitee and reponse else None,
+            })
 
             for theme in question.themes.all():
                 stats = par_theme.setdefault(
-                    theme.name, {"points_possibles": ZERO, "points_obtenus": ZERO, "total": 0, "reussies": 0},
+                    theme.name,
+                    {"id": theme.pk, "points_possibles": ZERO, "points_obtenus": ZERO, "total": 0, "reussies": 0},
                 )
                 stats["points_possibles"] += points
                 stats["points_obtenus"] += obtenus
@@ -226,6 +237,7 @@ def calculer(tentative, exercices):
         "questions_reussies": reussies,
         "par_exercice": par_exercice,
         "par_theme": par_theme,
+        "lignes": lignes,
     }
 
 

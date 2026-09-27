@@ -32,6 +32,18 @@ class ResultatDeclare(models.TextChoices):
     ECHEC = "ECHEC", "Échec"
 
 
+class CausePerte(models.TextChoices):
+    """Pourquoi l'élève a perdu des points sur une question - déclaré par lui, après le corrigé.
+    Ce que la note seule ne dit pas : un élève qui perd 5 points par manque de temps et un qui
+    les perd par erreur de calcul n'ont pas le même travail à faire."""
+
+    TEMPS = "TEMPS", "Manque de temps"
+    CONNAISSANCE = "CONNAISSANCE", "Notion à revoir"
+    METHODE = "METHODE", "Erreur de méthode"
+    CALCUL = "CALCUL", "Erreur de calcul"
+    INATTENTION = "INATTENTION", "Inattention à l'énoncé"
+
+
 class Blueprint(models.Model):
     """
     Plan validé d'une épreuve inédite, avant toute génération de contenu - voir
@@ -537,6 +549,13 @@ class TentativeReponse(models.Model):
     criteres_valides = models.JSONField(
         default=list, blank=True,
         help_text="Indices des critères de QuestionInedite.criteres_notation cochés par l'élève.",
+    )
+    cause_perte = models.CharField(
+        max_length=15, choices=CausePerte.choices, blank=True,
+        help_text=(
+            "Pourquoi des points ont été perdus sur cette question, déclaré par l'élève après le "
+            "corrigé (voir CausePerte). Vide : non précisé - jamais deviné."
+        ),
     )
 
     class Meta:

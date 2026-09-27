@@ -10,6 +10,7 @@ que quiz, voir quiz.views - accepté une fois, pas la peine de le retrancher ici
 
 from decimal import Decimal, InvalidOperation
 
+from django.db.models import Max
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -27,8 +28,8 @@ from quiz.models import ResultatDeclare
 from quiz.services import enregistrer_resultat_pour_revision
 from subscriptions.models import InscriptionInedite
 
-from . import notation
-from .models import EpreuveInedite, QuestionInedite, TentativeInedite, TentativeReponse
+from . import notation, rapport
+from .models import CausePerte, EpreuveInedite, QuestionInedite, TentativeInedite, TentativeReponse
 
 
 def _corrige_markdown_with_cours_links(question, exercice):
@@ -83,6 +84,7 @@ def _question_payload(question, reponse, *, correction_disponible, exercice=None
             notee = notation.est_notee(question, reponse)
             payload["reponse"]["notee"] = notee
             payload["reponse"]["criteres_valides"] = reponse.criteres_valides
+            payload["reponse"]["cause_perte"] = reponse.cause_perte
             if points is not None:
                 payload["reponse"]["points_obtenus"] = (
                     notation.en_nombre(notation.points_obtenus(question, reponse, points)) if notee else None
@@ -187,6 +189,25 @@ def _planifier_revisions_des_questions_non_traitees(tentative, exercices):
                 _alimenter_revision(tentative, question, False)
 
 
+def _comparaison(tentative, resume):
+    """Où l'élève se situe parmi les autres candidats de la MÊME épreuve passée en conditions
+    réelles - jamais pour un entraînement libre, et seulement quand l'effectif le permet
+    (voir rapport.situer). On compare la meilleure note de chaque autre élève : quelqu'un qui
+    a refait dix fois l'épreuve n'y pèse pas dix fois."""
+    if tentative.exam_mode_started_at is None or not resume["definitive"] or resume["note"] is None:
+        return None
+    autres = (
+        TentativeInedite.objects.filter(
+            epreuve_id=tentative.epreuve_id, exam_mode_started_at__isnull=False,
+            submitted_at__isnull=False, note_obtenue__isnull=False,
+        )
+        .exclude(user_id=tentative.user_id)
+        .values("user_id")
+        .annotate(meilleure=Max("note_obtenue"))
+    )
+    return rapport.situer(Decimal(str(resume["note"])), [ligne["meilleure"] for ligne in autres])
+
+
 def _themes_a_reviser(tentative, bilan):
     """Thèmes de cette épreuve qui reviennent dans la séance du jour de l'élève : ceux où il
     a perdu des points ET pour lesquels une révision est planifiée, avec leur échéance."""
@@ -195,6 +216,7 @@ def _themes_a_reviser(tentative, bilan):
     perdus = {
         nom for nom, stats in bilan["par_theme"].items() if stats["points_obtenus"] < stats["points_possibles"]
     }
+    ids = {nom: stats["id"] for nom, stats in bilan["par_theme"].items()}
     if not perdus:
         return []
     echeances = {}
@@ -203,7 +225,7 @@ def _themes_a_reviser(tentative, bilan):
         if actuelle is None or planification.due_at < actuelle:
             echeances[planification.theme.name] = planification.due_at
     return [
-        {"theme": nom, "echeance": echeance.isoformat()}
+        {"theme": nom, "theme_id": ids[nom], "echeance": echeance.isoformat()}
         for nom, echeance in sorted(echeances.items(), key=lambda item: (item[1], item[0]))
     ]
 
@@ -294,6 +316,7 @@ def _tentative_resultat_payload(tentative, bilan=None):
     if bilan is None:
         bilan = notation.calculer(tentative, _exercices_pour_notation(tentative.epreuve))
     resume = notation.resume(tentative, bilan)
+    temps = rapport.temps_par_exercice(bilan["lignes"], tentative.exam_mode_started_at)
 
     return {
         "id": tentative.id,
@@ -322,6 +345,13 @@ def _tentative_resultat_payload(tentative, bilan=None):
             int((tentative.submitted_at - tentative.started_at).total_seconds())
             if tentative.submitted_at else None
         ),
+        # Où sont partis les points, où est passé le temps, où l'élève se situe.
+        "pertes": rapport.pertes_par_cause(bilan["lignes"]),
+        "granularite": "question",
+        "temps_par_exercice": temps,
+        "exercice_chronophage": rapport.exercice_chronophage(temps),
+        "comparaison": _comparaison(tentative, resume),
+        "cursus_id": tentative.epreuve.cursus.first().pk,
         "par_exercice": [
             {
                 "numero_exercice": e["numero_exercice"],
@@ -336,6 +366,7 @@ def _tentative_resultat_payload(tentative, bilan=None):
         "par_theme": [
             {
                 "theme": nom,
+                "theme_id": s["id"],
                 "total": s["total"],
                 "reussies": s["reussies"],
                 "points_possibles": notation.en_nombre(s["points_possibles"]),
@@ -628,8 +659,22 @@ def noter_question(request, tentative_id, question_id):
                 reponse = None
         return Response(_question_payload_avec_notation(tentative, question, reponse))
 
+    if "cause_perte" in data and not a_noter:
+        if not _correction_disponible(tentative):
+            return Response({"error": "Le corrigé n'est pas encore disponible : impossible d'en donner la cause."}, status=403)
+        cause = data["cause_perte"] or ""
+        if cause not in CausePerte.values and cause != "":
+            return Response({"error": f"cause_perte invalide : {cause!r}. Attendu {CausePerte.values} ou vide."}, status=400)
+        if reponse is None:
+            if not cause:
+                return Response(_question_payload_avec_notation(tentative, question, None))
+            reponse = TentativeReponse(tentative=tentative, question=question)
+        reponse.cause_perte = cause
+        reponse.save()
+        return Response(_question_payload_avec_notation(tentative, question, reponse))
+
     if not a_noter:
-        return Response({"error": "Rien à enregistrer : traitee, criteres_valides ou points_obtenus attendu."}, status=400)
+        return Response({"error": "Rien à enregistrer : traitee, criteres_valides, points_obtenus ou cause_perte attendu."}, status=400)
     if not _correction_disponible(tentative):
         return Response({"error": "Le corrigé n'est pas encore disponible : impossible de noter cette question."}, status=403)
 
