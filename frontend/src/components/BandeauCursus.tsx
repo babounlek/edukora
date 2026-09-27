@@ -5,7 +5,7 @@ import { X } from "lucide-react"
 import { listCursus, updateMe } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
-import { lireCursusPrepareEnAttente, memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
+import { memoriserCursusPrepareEnAttente, useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { Button } from "@/components/ui/button"
 
 const FERME_KEY = "edukamer_bandeau_cursus_ferme"
@@ -41,9 +41,9 @@ export function BandeauCursus() {
   const { country } = useCountry()
   const queryClient = useQueryClient()
   const [ferme, setFerme] = useState(lireFerme)
-  const [declareEnAttente, setDeclareEnAttente] = useState(() => lireCursusPrepareEnAttente() !== null)
+  const enAttente = useCursusPrepareEnAttente()
 
-  const aDeclare = isAuthenticated ? Boolean(user?.cursus_prepare) : declareEnAttente
+  const aDeclare = isAuthenticated ? Boolean(user?.cursus_prepare) : enAttente !== null
   const visible = !ferme && !aDeclare && !PAGES_SANS_BANDEAU.test(pathname) && Boolean(country)
 
   const { data: cursusList = [] } = useQuery({
@@ -67,7 +67,6 @@ export function BandeauCursus() {
       return
     }
     memoriserCursusPrepareEnAttente(cursusId)
-    setDeclareEnAttente(true)
   }
 
   function fermer() {

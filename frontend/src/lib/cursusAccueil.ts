@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 
 import { listCursus, listEpreuves } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
-import { lireCursusPrepareEnAttente } from "@/lib/cursusPrepare"
+import { useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 
 /**
  * L'examen que prépare la personne qui regarde l'accueil, qu'elle soit connectée
@@ -24,7 +24,10 @@ export function useCursusAccueil(country: string): number | null | undefined {
     queryFn: ({ signal }) => listCursus(country, signal),
     enabled: Boolean(country),
   })
-  const declare = isAuthenticated ? user?.cursus_prepare?.id ?? null : lireCursusPrepareEnAttente()
+  // Toujours appelé, jamais seulement dans la branche "non connecté" : un Hook ne peut
+  // pas s'appeler selon une condition qui change d'un rendu à l'autre.
+  const enAttente = useCursusPrepareEnAttente()
+  const declare = isAuthenticated ? user?.cursus_prepare?.id ?? null : enAttente
   if (declare === null) return null
   // Liste indisponible : on retombe sur tout le pays plutôt que de ne rien montrer.
   if (isError) return null
