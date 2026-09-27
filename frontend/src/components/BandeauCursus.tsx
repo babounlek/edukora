@@ -13,7 +13,7 @@ const FERME_KEY = "edukamer_bandeau_cursus_ferme"
 // Pages où un bandeau gênerait ce que l'élève est en train de faire : lecture,
 // quiz en cours, paiement, connexion. Ailleurs il reste visible, y compris quand
 // l'élève arrive directement sur un cours ou une épreuve depuis un PDF ou une recherche.
-const PAGES_SANS_BANDEAU = /\/lire$|^\/quiz\/session|^\/inedit\/tentative|^\/abonnement|^\/login|^\/tarifs/
+const PAGES_SANS_BANDEAU = /\/lire$|^\/quiz\/session|^\/inedit\/tentative|^\/simulation|^\/abonnement|^\/login|^\/tarifs/
 
 function lireFerme(): boolean {
   try {

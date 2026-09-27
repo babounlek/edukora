@@ -29,6 +29,7 @@ export type AnalyticsEventName =
   | "tarifs_vus"
   | "abonnement_ouvert"
   | "onboarding_termine"
+  | "simulation_demarree"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

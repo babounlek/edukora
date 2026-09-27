@@ -34,6 +34,7 @@ urlpatterns = [
     path("fiches/", include("fiches.urls")),
     path("whatsapp/", include("whatsapp.urls")),
     path("relances/", include("relances.urls")),
+    path("simulations/", include("simulations.urls")),
     path("sitemap.xml", sitemap_index, name="sitemap-index"),
     path("sitemap-<int:page>.xml", sitemap_chunk, name="sitemap-chunk"),
 ]

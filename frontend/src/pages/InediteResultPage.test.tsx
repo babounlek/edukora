@@ -5,7 +5,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import type { TentativeInediteResult } from "@/api/types"
 
 const completeTentative = vi.hoisted(() => vi.fn())
-vi.mock("@/api/endpoints", () => ({ completeTentative }))
+const completeSimulation = vi.hoisted(() => vi.fn())
+vi.mock("@/api/endpoints", () => ({ completeTentative, completeSimulation }))
 
 import { InediteResultPage } from "./InediteResultPage"
 
@@ -13,31 +14,40 @@ function resultat(extra: Partial<TentativeInediteResult> = {}): TentativeInedite
   return {
     id: 7, epreuve: 1, country: "CM", total_questions: 4, questions_repondues: 3, questions_non_traitees: 1,
     questions_a_noter: 0, score: 63, note: 12.5, bareme: 20, note_sur_20: 12.5, bareme_estime: false,
-    definitive: true, temps_total_secondes: 3725,
+    definitive: true, mode: "examen", granularite: "question", temps_total_secondes: 3725,
     par_exercice: [
       { numero_exercice: "1", points_possibles: 8, points_obtenus: 7 },
       { numero_exercice: "2", points_possibles: 12, points_obtenus: 5.5 },
     ],
     par_theme: [
-      { theme: "suites", total: 2, reussies: 2, points_possibles: 8, points_obtenus: 8 },
-      { theme: "probabilités", total: 2, reussies: 0, points_possibles: 12, points_obtenus: 4.5 },
+      { theme: "suites", theme_id: 11, total: 2, reussies: 2, points_possibles: 8, points_obtenus: 8 },
+      { theme: "probabilités", theme_id: 12, total: 2, reussies: 0, points_possibles: 12, points_obtenus: 4.5 },
     ],
     themes_a_reviser: [],
+    pertes: { total_perdu: 0, causes: [] },
+    temps_par_exercice: null,
+    exercice_chronophage: null,
+    comparaison: null,
+    cursus_id: 4,
     ...extra,
   }
 }
 
-function afficher() {
+function afficher(source: "inedit" | "officielle" = "inedit") {
+  const base = source === "officielle" ? "/simulation" : "/inedit/tentative"
   return render(
-    <MemoryRouter initialEntries={["/inedit/tentative/7/resultat"]}>
+    <MemoryRouter initialEntries={[`${base}/7/resultat`]}>
       <Routes>
-        <Route path="/inedit/tentative/:id/resultat" element={<InediteResultPage />} />
+        <Route path={`${base}/:id/resultat`} element={<InediteResultPage source={source} />} />
       </Routes>
     </MemoryRouter>,
   )
 }
 
-beforeEach(() => completeTentative.mockReset())
+beforeEach(() => {
+  completeTentative.mockReset()
+  completeSimulation.mockReset()
+})
 
 describe("InediteResultPage", () => {
   it("affiche la note sur le barème, définitive, avec le détail par exercice", async () => {
@@ -74,11 +84,81 @@ describe("InediteResultPage", () => {
     const demain = new Date()
     demain.setDate(demain.getDate() + 1)
     const iso = `${demain.getFullYear()}-${String(demain.getMonth() + 1).padStart(2, "0")}-${String(demain.getDate()).padStart(2, "0")}`
-    completeTentative.mockResolvedValue(resultat({ themes_a_reviser: [{ theme: "probabilités", echeance: iso }] }))
+    completeTentative.mockResolvedValue(resultat({ themes_a_reviser: [{ theme: "probabilités", theme_id: 12, echeance: iso }] }))
     afficher()
 
     expect(await screen.findByText("Ce que tu reverras")).toBeInTheDocument()
     expect(screen.getByText("demain")).toBeInTheDocument()
+    // De quoi s'y mettre tout de suite : un quiz et les cours de ce thème.
+    expect(screen.getByRole("link", { name: "Quiz" })).toHaveAttribute("href", "/quiz?cursus=4&theme=12")
+    expect(screen.getByRole("link", { name: "Cours" })).toHaveAttribute("href", "/cm/cours?theme=12")
+  })
+
+  it("répartit les points perdus par cause", async () => {
+    completeTentative.mockResolvedValue(
+      resultat({
+        pertes: {
+          total_perdu: 7.5,
+          causes: [
+            { cause: "CALCUL", libelle: "Erreur de calcul", points: 4.5, part: 60 },
+            { cause: "NON_TRAITEE", libelle: "Questions non traitées", points: 3, part: 40 },
+          ],
+        },
+      }),
+    )
+    afficher()
+
+    expect(await screen.findByText("Où sont passés tes points")).toBeInTheDocument()
+    expect(screen.getByText(/Tu as perdu 7,5 points/)).toBeInTheDocument()
+    expect(screen.getByText("Erreur de calcul")).toBeInTheDocument()
+    expect(screen.getByText("4,5 pts · 60 %")).toBeInTheDocument()
+  })
+
+  it("félicite quand aucun point n'est perdu", async () => {
+    completeTentative.mockResolvedValue(resultat())
+    afficher()
+    expect(await screen.findByText(/Tu n'as perdu aucun point/)).toBeInTheDocument()
+  })
+
+  it("montre le temps par exercice et signale l'exercice chronophage", async () => {
+    completeTentative.mockResolvedValue(
+      resultat({
+        temps_par_exercice: [
+          { numero_exercice: "1", secondes: 900, part_du_temps: 15, part_des_points: 40 },
+          { numero_exercice: "2", secondes: 5100, part_du_temps: 85, part_des_points: 60 },
+        ],
+        exercice_chronophage: "2",
+      }),
+    )
+    afficher()
+
+    expect(await screen.findByText("Ton temps")).toBeInTheDocument()
+    expect(screen.getByText("15 min · 15 % du temps")).toBeInTheDocument()
+    expect(screen.getByText(/L'exercice 2 a pris 85 % de ton temps pour 60 % des points/)).toBeInTheDocument()
+  })
+
+  it("n'affiche pas le temps sans estimation (entraînement libre)", async () => {
+    completeTentative.mockResolvedValue(resultat())
+    afficher()
+    await screen.findByLabelText("Note : 12,5 sur 20")
+    expect(screen.queryByText("Ton temps")).not.toBeInTheDocument()
+    expect(screen.queryByText("Ta position")).not.toBeInTheDocument()
+  })
+
+  it("situe l'élève parmi les autres candidats quand l'effectif le permet", async () => {
+    completeTentative.mockResolvedValue(resultat({ comparaison: { effectif: 42, percentile: 73, moyenne: 9.5 } }))
+    afficher()
+
+    expect(await screen.findByText("Ta position")).toBeInTheDocument()
+    expect(screen.getByText("73 %")).toBeInTheDocument()
+    expect(screen.getByText(/42 candidats/)).toBeInTheDocument()
+  })
+
+  it("dit comment l'épreuve a été passée", async () => {
+    completeTentative.mockResolvedValue(resultat({ mode: "libre" }))
+    afficher()
+
+    expect(await screen.findByText("Entraînement libre")).toBeInTheDocument()
   })
 
   it("n'affiche pas la section quand rien ne revient", async () => {
@@ -94,5 +174,39 @@ describe("InediteResultPage", () => {
     afficher()
 
     expect(await screen.findByText("12 / 20")).toBeInTheDocument()
+  })
+
+  describe("annale officielle", () => {
+    it("charge le résultat de la simulation et parle d'exercices", async () => {
+      completeSimulation.mockResolvedValue(
+        resultat({ granularite: "exercice", questions_repondues: 2, total_questions: 3, questions_non_traitees: 1 }),
+      )
+      afficher("officielle")
+
+      expect(await screen.findByLabelText("Note : 12,5 sur 20")).toBeInTheDocument()
+      expect(completeTentative).not.toHaveBeenCalled()
+      expect(screen.getByText(/2 exercices traités sur 3/)).toBeInTheDocument()
+      expect(screen.getByText(/1 exercice non traité a compté 0 point/)).toBeInTheDocument()
+    })
+
+    it("renvoie vers la simulation et le catalogue des annales", async () => {
+      completeSimulation.mockResolvedValue(resultat({ granularite: "exercice", definitive: false, questions_a_noter: 1 }))
+      afficher("officielle")
+
+      expect(await screen.findByRole("link", { name: "Revoir ma copie corrigée" })).toHaveAttribute("href", "/simulation/7")
+      expect(screen.getByRole("link", { name: "Terminer ma notation" })).toHaveAttribute("href", "/simulation/7?noter=1")
+      expect(screen.getByRole("link", { name: "Voir les épreuves" })).toHaveAttribute("href", "/cm/epreuves")
+    })
+
+    it("n'offre pas de quiz quand aucun cursus n'est connu", async () => {
+      completeSimulation.mockResolvedValue(
+        resultat({ granularite: "exercice", cursus_id: null, themes_a_reviser: [{ theme: "suites", theme_id: 5, echeance: "2099-01-01" }] }),
+      )
+      afficher("officielle")
+
+      await screen.findByText("Ce que tu reverras")
+      expect(screen.queryByRole("link", { name: "Quiz" })).not.toBeInTheDocument()
+      expect(screen.getByRole("link", { name: "Cours" })).toBeInTheDocument()
+    })
   })
 })

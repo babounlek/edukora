@@ -2,16 +2,19 @@ import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { ClipboardCheck, Info, Trophy } from "lucide-react"
 
-import { completeTentative } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { TentativeInediteResult } from "@/api/types"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import { CartePertes, CartePosition, CarteTemps } from "@/components/inedit/RapportFin"
 import { formatDuration } from "@/lib/duration"
 import { formatPoints } from "@/lib/notation"
 import { useSeo } from "@/lib/seo"
-import { epreuvesListPath } from "@/lib/countryPath"
+import { apiPour, cheminEpreuve, cheminRetour, type SourceEpreuve } from "@/lib/apiEpreuve"
+import { coursListPath } from "@/lib/countryPath"
+import { mots, uniteDe } from "@/lib/vocabulaire"
 import { capitaliserTheme, cn } from "@/lib/utils"
 
 /** Barre « points obtenus / points possibles » : la couleur suit le taux, pas le libellé -
@@ -35,6 +38,12 @@ function BarrePoints({ obtenus, possibles, label }: { obtenus: number; possibles
   )
 }
 
+const LIBELLE_MODE: Record<TentativeInediteResult["mode"], string> = {
+  examen: "Conditions réelles",
+  papier: "Composée sur papier",
+  libre: "Entraînement libre",
+}
+
 /** « aujourd'hui », « demain », « dans 3 jours » - jamais une date brute. */
 function echeanceRelative(iso: string): string {
   const [annee, mois, jour] = iso.split("-").map(Number)
@@ -46,10 +55,10 @@ function echeanceRelative(iso: string): string {
   return `dans ${jours} jours`
 }
 
-export function InediteResultPage() {
-  useSeo({ title: "Résultat de l'épreuve inédite" })
+export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuve }) {
 
   const { id } = useParams<{ id: string }>()
+  useSeo({ title: source === "officielle" ? "Résultat de la simulation" : "Résultat de l'épreuve inédite" })
   const [result, setResult] = useState<TentativeInediteResult | null>(null)
   const [error, setError] = useState("")
 
@@ -57,19 +66,19 @@ export function InediteResultPage() {
     if (!id) return
     // Endpoint idempotent : si la tentative est déjà soumise, il se contente de
     // retourner le résultat déjà calculé (voir inedit.views.complete_tentative).
-    completeTentative(Number(id))
+    apiPour(source).terminer(Number(id))
       .then(setResult)
       .catch((err) => {
         setError(err instanceof ApiError ? err.message : "Impossible de charger ce résultat.")
       })
-  }, [id])
+  }, [id, source])
 
   if (error) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10 text-center">
         <p className="text-destructive">{error}</p>
         <Link
-          to={result ? `${epreuvesListPath(result.country.toLowerCase())}?origine=INEDITE` : "/"}
+          to={result ? cheminRetour(source, result.country) : "/"}
           className="mt-3 inline-block text-sm text-primary hover:underline"
         >
           Retour au catalogue
@@ -88,6 +97,8 @@ export function InediteResultPage() {
   }
 
   const surVingt = result.bareme === 20
+  const m = mots(uniteDe(result.granularite))
+  const exercice = result.granularite === "exercice"
   // Du plus fragile au plus solide : c'est ce qu'on veut retravailler qui doit sauter aux yeux.
   const themes = [...result.par_theme].sort((a, b) => {
     const tauxA = a.points_possibles ? (a.points_obtenus ?? 0) / a.points_possibles : 1
@@ -100,6 +111,11 @@ export function InediteResultPage() {
       <div className="mb-8 text-center">
         <Trophy className="mx-auto mb-3 size-8 text-gold-text" />
         <h1 className="font-display text-3xl font-semibold">Épreuve terminée !</h1>
+        {/* Comment l'épreuve a été passée : une note d'entraînement ne se lit pas comme une note
+            obtenue chronomètre en main. */}
+        <Badge variant="outline" className="mt-3">
+          {LIBELLE_MODE[result.mode]}
+        </Badge>
 
         {result.note !== null && result.bareme !== null && (
           <>
@@ -120,8 +136,8 @@ export function InediteResultPage() {
         )}
 
         <p className="mt-3 text-sm text-muted-foreground">
-          {result.questions_repondues} question{result.questions_repondues > 1 ? "s" : ""} traitée{result.questions_repondues > 1 ? "s" : ""} sur{" "}
-          {result.total_questions}
+          {result.questions_repondues} {result.questions_repondues > 1 ? m.pluriel : m.singulier}{" "}
+          {result.questions_repondues > 1 ? m.traites : m.traite} sur {result.total_questions}
           {result.temps_total_secondes !== null && <> · Temps utilisé : {formatDuration(result.temps_total_secondes)}</>}
         </p>
       </div>
@@ -131,12 +147,12 @@ export function InediteResultPage() {
           <p className="flex items-start gap-2 text-sm">
             <ClipboardCheck className="mt-0.5 size-5 shrink-0 text-primary" />
             <span>
-              <strong>Ta note est provisoire.</strong> Il te reste {result.questions_a_noter} question
-              {result.questions_a_noter > 1 ? "s" : ""} traitée{result.questions_a_noter > 1 ? "s" : ""} à noter avec le corrigé.
+              <strong>Ta note est provisoire.</strong> Il te reste {result.questions_a_noter} {result.questions_a_noter > 1 ? m.pluriel : m.singulier}{" "}
+              {result.questions_a_noter > 1 ? m.traites : m.traite} à noter avec le corrigé.
             </span>
           </p>
           <Button asChild className="mt-3 w-full" size="lg">
-            <Link to={`/inedit/tentative/${result.id}?noter=1`}>Terminer ma notation</Link>
+            <Link to={`${cheminEpreuve(source, result.id)}?noter=1`}>Terminer ma notation</Link>
           </Button>
         </div>
       )}
@@ -145,12 +161,19 @@ export function InediteResultPage() {
         <p className="mb-6 flex items-start gap-2 text-sm text-muted-foreground">
           <Info className="mt-0.5 size-4 shrink-0" />
           <span>
-            {result.questions_non_traitees} question{result.questions_non_traitees > 1 ? "s" : ""} non traitée
-            {result.questions_non_traitees > 1 ? "s ont" : " a"} compté 0 point : la note porte sur l'ensemble du barème,
+            {result.questions_non_traitees} {result.questions_non_traitees > 1 ? m.pluriel : m.singulier}{" "}
+            {result.questions_non_traitees > 1 ? m.nonTraites : m.nonTraite}
+            {result.questions_non_traitees > 1 ? " ont" : " a"} compté 0 point : la note porte sur l'ensemble du barème,
             comme à l'examen.
           </span>
         </p>
       )}
+
+      <CartePertes pertes={result.pertes} />
+      {result.temps_par_exercice && (
+        <CarteTemps temps={result.temps_par_exercice} chronophage={result.exercice_chronophage} />
+      )}
+      {result.comparaison && <CartePosition comparaison={result.comparaison} />}
 
       {result.par_exercice.length > 1 && (
         <Card className="mb-6">
@@ -218,9 +241,26 @@ export function InediteResultPage() {
           <CardContent>
             <ul className="flex flex-col gap-2">
               {result.themes_a_reviser.map((theme) => (
-                <li key={theme.theme} className="flex items-center justify-between gap-3 text-sm">
+                <li key={theme.theme} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm">
                   <span>{capitaliserTheme(theme.theme)}</span>
-                  <span className="shrink-0 text-muted-foreground">{echeanceRelative(theme.echeance)}</span>
+                  <span className="flex shrink-0 items-center gap-3 text-muted-foreground">
+                    {echeanceRelative(theme.echeance)}
+                    {/* Deux façons de s'y mettre tout de suite, sans attendre la séance de demain. */}
+                    {result.cursus_id !== null && (
+                      <Link
+                        to={`/quiz?cursus=${result.cursus_id}&theme=${theme.theme_id}`}
+                        className="font-medium text-primary underline-offset-2 hover:underline"
+                      >
+                        Quiz
+                      </Link>
+                    )}
+                    <Link
+                      to={`${coursListPath(result.country.toLowerCase())}?theme=${theme.theme_id}`}
+                      className="font-medium text-primary underline-offset-2 hover:underline"
+                    >
+                      Cours
+                    </Link>
+                  </span>
                 </li>
               ))}
             </ul>
@@ -231,17 +271,21 @@ export function InediteResultPage() {
       {result.bareme_estime && (
         <p className="mb-6 flex items-start gap-2 text-xs text-muted-foreground">
           <Info className="mt-0.5 size-3.5 shrink-0" />
-          Barème estimé : les points de chaque exercice sont répartis à parts égales entre ses questions.
+          {exercice
+            ? "Barème estimé : les points de cette épreuve n'étant pas tous indiqués, chaque exercice pèse autant."
+            : "Barème estimé : les points de chaque exercice sont répartis à parts égales entre ses questions."}
         </p>
       )}
 
       <div className="flex flex-col gap-2">
         <Button asChild size="lg">
-          <Link to={`/inedit/tentative/${result.id}`}>Revoir ma copie corrigée</Link>
+          <Link to={cheminEpreuve(source, result.id)}>Revoir ma copie corrigée</Link>
         </Button>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button asChild variant="outline" className="flex-1" size="lg">
-            <Link to={`${epreuvesListPath(result.country.toLowerCase())}?origine=INEDITE`}>Voir les épreuves inédites</Link>
+            <Link to={cheminRetour(source, result.country)}>
+              {source === "officielle" ? "Voir les épreuves" : "Voir les épreuves inédites"}
+            </Link>
           </Button>
           <Button asChild variant="outline" className="flex-1" size="lg">
             <Link to="/parcours">Voir mon parcours</Link>

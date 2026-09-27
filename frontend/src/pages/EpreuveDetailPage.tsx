@@ -14,6 +14,7 @@ import { exerciceAnchorId, libelleLong } from "@/components/EpreuveSommaire"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { BackToTopBar } from "@/components/BackToTopBar"
+import { BoutonSimulation } from "@/components/BoutonSimulation"
 import { CountryBadge } from "@/components/CountryBadge"
 import { EnTeteEpreuve, faitsEpreuve } from "@/components/EnTeteEpreuve"
 import { formatCursusGroups } from "@/lib/cursus"
@@ -201,6 +202,10 @@ export function EpreuveDetailPage() {
                 <ArrowRight className="transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
+          )}
+          {/* Une annale se passe aussi en conditions d'examen : chrono, corrigé masqué, note sur le barème. */}
+          {epreuve.has_access && isAuthenticated && epreuve.lesson_type === "CORR" && (
+            <BoutonSimulation epreuveId={epreuve.id} />
           )}
           {epreuve.sujet_pdf_url && (
             <Button asChild variant="outline" size="lg" className="h-12 rounded-full">

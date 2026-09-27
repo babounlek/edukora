@@ -7,6 +7,7 @@ import { CountryProvider } from "@/context/CountryContext"
 import { ThemeProvider, useTheme } from "@/components/theme-provider"
 import { Header } from "@/components/Header"
 import { BandeauHorsLigne } from "@/components/BandeauHorsLigne"
+import { useModeExamen } from "@/lib/modeExamen"
 import { BandeauReprisePaiement } from "@/components/BandeauReprisePaiement"
 import { Footer } from "@/components/Footer"
 import { OnboardingModal } from "@/components/OnboardingModal"
@@ -70,6 +71,7 @@ function AppToaster() {
 }
 
 function App() {
+  const enExamen = useModeExamen()
   return (
     <ThemeProvider defaultTheme="light" storageKey="edukamer-theme">
       <AppToaster />
@@ -86,11 +88,13 @@ function App() {
               >
                 Aller au contenu
               </a>
-              <Header />
+              {/* Salle d'examen : tant qu'une épreuve chronométrée tourne, seul le bandeau hors connexion
+                  reste (il sert l'élève) - voir lib/modeExamen.ts. */}
+              {!enExamen && <Header />}
               <BandeauHorsLigne />
-              <BandeauCursus />
-              <BandeauReprisePaiement />
-              <BarreSeance />
+              {!enExamen && <BandeauCursus />}
+              {!enExamen && <BandeauReprisePaiement />}
+              {!enExamen && <BarreSeance />}
               <main id="contenu" tabIndex={-1} className="flex-1 outline-none">
                 <ErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>
@@ -129,6 +133,10 @@ function App() {
                       <Route path="/parcours/:subjectId" element={<ParcoursSubjectPage />} />
                       <Route path="/inedit/tentative/:id" element={<InediteTentativePage />} />
                       <Route path="/inedit/tentative/:id/resultat" element={<InediteResultPage />} />
+                      {/* Simulation d'une annale officielle en conditions d'examen - même page que les
+                          épreuves inédites, notée exercice par exercice. */}
+                      <Route path="/simulation/:id" element={<InediteTentativePage source="officielle" />} />
+                      <Route path="/simulation/:id/resultat" element={<InediteResultPage source="officielle" />} />
                       <Route path="/fiches" element={<FichesPage />} />
                       <Route path="/confidentialite" element={<PrivacyPage />} />
                       <Route path="/cgu" element={<TermsPage />} />
@@ -137,13 +145,13 @@ function App() {
                   </Suspense>
                 </ErrorBoundary>
               </main>
-              <Footer />
+              {!enExamen && <Footer />}
               {/* Réserve la hauteur de la barre d'onglets, qui est en position fixe :
                   sans elle, les derniers liens du pied de page sont recouverts et donc
                   inatteignables sur mobile. */}
-              <div className="h-20 lg:hidden" aria-hidden="true" />
+              {!enExamen && <div className="h-20 lg:hidden" aria-hidden="true" />}
             </div>
-            <BottomTabBar />
+            {!enExamen && <BottomTabBar />}
             <OnboardingModal />
           </CountryProvider>
         </BrowserRouter>

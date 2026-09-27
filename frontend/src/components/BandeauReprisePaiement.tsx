@@ -12,7 +12,7 @@ const FERME_KEY = "edukamer_bandeau_paiement_ferme"
 
 // Pages où le bandeau gênerait ou ferait doublon : le paiement lui-même, la lecture, le
 // quiz et l'épreuve en cours.
-const PAGES_SANS_BANDEAU = /\/lire$|^\/quiz\/session|^\/inedit\/tentative|^\/abonnement|^\/tarifs|^\/mes-paiements|^\/connexion/
+const PAGES_SANS_BANDEAU = /\/lire$|^\/quiz\/session|^\/inedit\/tentative|^\/simulation|^\/abonnement|^\/tarifs|^\/mes-paiements|^\/connexion/
 
 function lireFerme(): boolean {
   try {

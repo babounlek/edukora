@@ -4,6 +4,7 @@ import { CheckCircle2, ClipboardCheck } from "lucide-react"
 import type { NotationResume } from "@/api/types"
 import { Button } from "@/components/ui/button"
 import { formatNote } from "@/lib/notation"
+import { mots, type Unite } from "@/lib/vocabulaire"
 
 interface BandeauNotationProps {
   notation: NotationResume
@@ -11,12 +12,16 @@ interface BandeauNotationProps {
   // Le chrono a rendu l'épreuve à la place de l'élève : on le lui dit, il n'a pas cliqué.
   rendueAutomatiquement: boolean
   onProchaine: () => void
+  unite?: Unite
 }
 
 /** Sous la barre d'actions, une fois l'épreuve rendue : guide l'élève de « corrigé ouvert »
  * jusqu'à « note définitive ». La notation est la dernière étape, pas un bonus - sans ce
  * bandeau, un élève qui rend sa copie ne saurait pas qu'une note l'attend. */
-export function BandeauNotation({ notation, tentativeId, rendueAutomatiquement, onProchaine }: BandeauNotationProps) {
+export function BandeauNotation({
+  notation, tentativeId, rendueAutomatiquement, onProchaine, unite = "question", resultatPath,
+}: BandeauNotationProps & { resultatPath?: string }) {
+  const m = mots(unite)
   const traitees = notation.questions_traitees
   const notees = traitees - notation.questions_a_noter
   const introduction = rendueAutomatiquement ? "Le temps est écoulé, ton épreuve a été rendue. " : ""
@@ -29,13 +34,13 @@ export function BandeauNotation({ notation, tentativeId, rendueAutomatiquement, 
           <span>
             {introduction}
             {traitees === 0
-              ? "Aucune question traitée · ta note :"
+              ? `${unite === "exercice" ? "Aucun exercice traité" : "Aucune question traitée"} · ta note :`
               : "Notation terminée · ta note :"}{" "}
             <strong className="tabular-nums">{formatNote(notation.note, notation.bareme)}</strong>
           </span>
         </p>
         <Button asChild size="sm">
-          <Link to={`/inedit/tentative/${tentativeId}/resultat`}>Voir mon résultat</Link>
+          <Link to={resultatPath ?? `/inedit/tentative/${tentativeId}/resultat`}>Voir mon résultat</Link>
         </Button>
       </div>
     )
@@ -50,18 +55,18 @@ export function BandeauNotation({ notation, tentativeId, rendueAutomatiquement, 
             {introduction}
             <strong>Le corrigé est ouvert.</strong>{" "}
             {traitees === 1
-              ? "Note ta question traitée pour obtenir ta note définitive."
-              : `Note chacune de tes ${traitees} questions traitées pour obtenir ta note définitive.`}
+              ? `Note ton ${m.singulier} ${m.traite} pour obtenir ta note définitive.`
+              : `Note ${unite === "exercice" ? "chacun" : "chacune"} de tes ${traitees} ${m.pluriel} ${m.traites} pour obtenir ta note définitive.`}
           </span>
         </p>
         <Button size="sm" onClick={onProchaine}>
-          Question suivante à noter
+          {unite === "exercice" ? "Exercice suivant" : "Question suivante"} à noter
         </Button>
       </div>
       <div className="mt-3 flex items-center gap-2.5">
         <div
           role="progressbar"
-          aria-label="Questions notées"
+          aria-label={`${m.pluriel[0].toUpperCase()}${m.pluriel.slice(1)} ${unite === "exercice" ? "notés" : "notées"}`}
           aria-valuemin={0}
           aria-valuemax={traitees}
           aria-valuenow={notees}

@@ -43,6 +43,7 @@ import type {
   ThemeExercicesResponse,
   ThemesFrequentsResponse,
   PaiementAReprendre,
+  SimulationListItem,
   TentativeInedite,
   TentativeInediteCorrige,
   TentativeInediteListItem,
@@ -492,8 +493,11 @@ export function getTentativeInedite(id: number) {
   return apiRequest<TentativeInedite>(`/inedit/tentatives/${id}/`)
 }
 
-export function startExamMode(tentativeId: number) {
-  return apiRequest<TentativeInedite>(`/inedit/tentatives/${tentativeId}/mode-examen/`, { method: "POST" })
+export function startExamMode(tentativeId: number, options: { papier?: boolean } = {}) {
+  return apiRequest<TentativeInedite>(`/inedit/tentatives/${tentativeId}/mode-examen/`, {
+    method: "POST",
+    body: options.papier ? { papier: true } : {},
+  })
 }
 
 export function toggleQuestionMarquee(tentativeId: number, questionId: number) {
@@ -522,6 +526,8 @@ export interface NoterTentativeQuestionParams {
   traitee?: boolean
   criteres_valides?: number[]
   points_obtenus?: number
+  // "" efface la cause déjà donnée.
+  cause_perte?: string
 }
 
 /** Traite / note une question ouverte - voir inedit.views.noter_question. Renvoie la
@@ -531,6 +537,43 @@ export function noterTentativeQuestion(tentativeId: number, questionId: number, 
     method: "POST",
     body: params,
   })
+}
+
+/** Simulation d'une épreuve OFFICIELLE en conditions d'examen - voir simulations côté backend. */
+export function startSimulation(epreuveId: number) {
+  return apiRequest<TentativeInedite>("/simulations/", { method: "POST", body: { epreuve: epreuveId } })
+}
+
+export function getSimulation(id: number) {
+  return apiRequest<TentativeInedite>(`/simulations/${id}/`)
+}
+
+export function startSimulationExam(id: number, options: { papier?: boolean } = {}) {
+  return apiRequest<TentativeInedite>(`/simulations/${id}/mode-examen/`, {
+    method: "POST",
+    body: options.papier ? { papier: true } : {},
+  })
+}
+
+export function noterSimulationExercice(id: number, exerciceId: number, params: NoterTentativeQuestionParams) {
+  return apiRequest<TentativeInediteQuestion>(`/simulations/${id}/exercices/${exerciceId}/noter/`, {
+    method: "POST",
+    body: params,
+  })
+}
+
+export function marquerSimulationExercice(id: number, exerciceId: number) {
+  return apiRequest<{ questions_marquees: number[] }>(`/simulations/${id}/exercices/${exerciceId}/marquer/`, {
+    method: "POST",
+  })
+}
+
+export function completeSimulation(id: number) {
+  return apiRequest<TentativeInediteResult>(`/simulations/${id}/completer/`, { method: "POST" })
+}
+
+export function listMySimulations() {
+  return apiRequest<SimulationListItem[]>("/simulations/mes-simulations/")
 }
 
 export function completeTentative(tentativeId: number) {

@@ -42,6 +42,7 @@ class EventName(models.TextChoices):
     TARIFS_VUS = "tarifs_vus", "Page des tarifs consultée"
     ABONNEMENT_OUVERT = "abonnement_ouvert", "Page d'abonnement ouverte"
     ONBOARDING_TERMINE = "onboarding_termine", "Questions de bienvenue terminées"
+    SIMULATION_DEMARREE = "simulation_demarree", "Simulation d'une annale démarrée"
 
 
 class AnalyticsEvent(models.Model):

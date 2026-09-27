@@ -859,6 +859,8 @@ export interface TentativeInediteAnswerInfo {
   // null tant que la question n'est pas notée.
   points_obtenus?: number | null
   criteres_valides?: number[]
+  // Pourquoi des points ont été perdus, déclaré par l'élève ("" = non précisé).
+  cause_perte?: string
 }
 
 /** Un critère de la grille de notation d'une question ouverte (voir
@@ -938,6 +940,10 @@ export interface TentativeInedite {
   country: string
   cursus_display: string
   duree_minutes: number | null
+  // Cette annale n'annonce pas sa propre durée : déduite des autres sessions de la même
+  // (matière, examen, série, nature d'épreuve) - voir simulations.cadre.duree_minutes_pour_lesson.
+  // Toujours false pour une épreuve inédite (elle porte sa propre durée depuis son Blueprint).
+  duree_estimee?: boolean
   // Permet d'ouvrir le sujet en PDF depuis la page de tentative elle-même (voir
   // downloadSujetPdf) - même signal que Epreuve.sujet_pdf_disponible sur la fiche.
   sujet_pdf_disponible: boolean
@@ -945,6 +951,13 @@ export interface TentativeInedite {
   // Renseigné uniquement si l'élève a activé le mode examen (chronométré) - voir
   // inedit.models.TentativeInedite.exam_mode_started_at.
   exam_mode_started_at: string | null
+  // Composée sur papier : l'écran ne montre que le chrono et la liste de questions.
+  mode_papier: boolean
+  // "officielle" : annale simulée en conditions d'examen (voir simulations côté backend).
+  source?: "officielle"
+  // Ce que la page note d'un bloc : une question (défaut) ou un exercice entier (annales).
+  granularite?: "question" | "exercice"
+  sujet_pdf_url?: string | null
   submitted_at: string | null
   score_obtenu: number | null
   note_obtenue: number | null
@@ -1016,7 +1029,19 @@ export interface TentativeInediteResult {
   note_sur_20: number | null
   bareme_estime: boolean
   definitive: boolean
+  // Comment l'épreuve a été passée : une note d'entraînement ne se lit pas comme une note en conditions réelles.
+  mode: "examen" | "papier" | "libre"
+  // Ce que compte la page : des questions (épreuve inédite) ou des exercices (annale officielle).
+  granularite: "question" | "exercice"
   temps_total_secondes: number | null
+  // Rapport de fin d'épreuve : où sont partis les points, où est passé le temps, où l'on se situe.
+  pertes: PertesParCause
+  // null en entraînement libre, ou quand trop peu de questions ont été cochées pour estimer.
+  temps_par_exercice: TempsExercice[] | null
+  exercice_chronophage: string | null
+  // null sous 20 candidats, ou en entraînement libre.
+  comparaison: ComparaisonCandidats | null
+  cursus_id: number | null
   par_exercice: TentativeInediteResultExercice[]
   par_theme: TentativeInediteResultTheme[]
   themes_a_reviser: ThemeARevoir[]
@@ -1025,8 +1050,38 @@ export interface TentativeInediteResult {
 /** Un thème de l'épreuve qui revient dans la séance du jour (ou revient déjà). */
 export interface ThemeARevoir {
   theme: string
+  theme_id: number
   // AAAA-MM-JJ.
   echeance: string
+}
+
+export interface PertesParCause {
+  total_perdu: number
+  causes: { cause: string; libelle: string; points: number; part: number }[]
+}
+
+export interface TempsExercice {
+  numero_exercice: string
+  secondes: number
+  part_du_temps: number
+  part_des_points: number
+}
+
+export interface ComparaisonCandidats {
+  effectif: number
+  percentile: number
+  moyenne: number
+}
+
+export interface SimulationListItem {
+  id: number
+  epreuve: number
+  epreuve_titre: string
+  started_at: string
+  submitted_at: string | null
+  note_obtenue: number | null
+  bareme_snapshot: number | null
+  score_obtenu: number | null
 }
 
 export interface TentativeInediteResultExercice {
@@ -1037,6 +1092,7 @@ export interface TentativeInediteResultExercice {
 
 export interface TentativeInediteResultTheme {
   theme: string
+  theme_id: number
   total: number
   reussies: number
   points_possibles: number | null
