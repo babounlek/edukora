@@ -4,6 +4,12 @@ import glob, json, re, sys, os
 
 EXAMENS = {"bepc", "bfem", "probatoire", "bac", "autre"}
 MATIERES_TI = {"Programmation", "Systèmes d'Information", "Réseaux, Internet et Sécurité Informatique"}
+# Seule règle réelle côté plateforme (voir _refuser_informatique_generique_en_serie_ti dans
+# catalog/ingestion.py) : en série TI, l'Informatique générique doit se décomposer en une des
+# trois matières ci-dessus. Un faux positif est apparu le 2026-09-27 (lot probatoire TI-litterature
+# 2013/2014) : la règle déclenchait sur toute matière dès que « TI » figurait dans une liste de
+# séries multi-cursus (« A, C, D, E, TI »), alors que Littérature est enseignée dans toutes les
+# séries y compris TI - seule la matière « Informatique » (générique) est réellement interdite.
 # mots courants qui, écrits sans accent, trahissent un texte « désaccentué » (hors code)
 SANS_ACCENT = re.compile(
     r"\b(systeme|systemes|reseau|reseaux|methode|methodes|donnees|definir|definition|resultat|resultats|"
@@ -38,8 +44,8 @@ def main(d):
         if j.get("examen") not in EXAMENS:
             bloq.append("%s : examen=%r hors liste (contrôle/devoir/composition → niveau visé + origine « etablissement »)" % (n, j.get("examen")))
         serie = str(j.get("serie") or "")
-        if re.search(r"\bTI\b", serie) and j.get("matiere") not in MATIERES_TI:
-            bloq.append("%s : série TI mais matiere=%r (Programmation | Systèmes d'Information | Réseaux, Internet et Sécurité Informatique)" % (n, j.get("matiere")))
+        if re.search(r"\bTI\b", serie) and j.get("matiere") == "Informatique":
+            bloq.append("%s : série TI mais matiere=%r générique (Programmation | Systèmes d'Information | Réseaux, Internet et Sécurité Informatique)" % (n, j.get("matiere")))
         if re.search(r"\bA[1-5]\b", serie) and j.get("pays") == "cm":
             bloq.append("%s : Cameroun, série %r → le code est « A » (jamais A1..A5)" % (n, serie))
         for q in j.get("questions", []):
