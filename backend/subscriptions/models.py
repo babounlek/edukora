@@ -369,6 +369,14 @@ class InscriptionRepetiteur(models.Model):
 # l'examen (valeur perçue nulle, voir project_parrainage_eleve_recalibrage). Un
 # crédit FCFA dépensable sur n'importe quel achat futur, sur n'importe quel cursus,
 # ne dépend d'aucune date d'examen et garde donc toujours sa valeur.
+#
+# Décision du 2026-09-28 : le parrainage devient un simple partage de lien, sans
+# récompense d'aucun côté - ni pour le parrain, ni pour le filleul (voir
+# project_parrainage_eleve_recalibrage). recompenser_parrainage n'est donc plus
+# appelée (voir ses call sites gelés dans payments/models.py) ; ParrainageRecompense,
+# solde_credit_parrainage et consommer_credit_parrainage restent en place tels quels
+# pour que les crédits déjà accordés avant cette date restent honorés (un parrain qui
+# avait déjà gagné du crédit avant cette date peut toujours le dépenser).
 PARRAINAGE_CREDIT_MONTANT = 500
 PARRAINAGE_CREDIT_VALIDITE_JOURS = 365
 
@@ -457,20 +465,22 @@ def consommer_credit_parrainage(user, montant):
 
 def recompenser_parrainage(paiement):
     """
-    Si l'utilisateur de `paiement` a été parrainé ET que ce paiement est sa toute
-    première conversion réussie - tous moyens de paiement confondus (Campay
-    SUCCESSFUL ou paiement manuel APPROVED) - crédite le parrain de
-    PARRAINAGE_CREDIT_MONTANT FCFA (voir ParrainageRecompense/solde_credit_parrainage),
-    dépensable sur n'importe lequel de ses futurs achats. Ne récompense jamais un
-    réabonnement du filleul - seulement sa toute première conversion, peu importe le
-    canal - pour éviter qu'un parrain accumule du crédit à chaque renouvellement de
-    son filleul.
+    GELÉE depuis le 2026-09-28 (voir project_parrainage_eleve_recalibrage) : plus aucun
+    call site n'invoque cette fonction (retirés de Transaction._confirmer_succes et
+    ManualPayment.approve, voir payments/models.py) - le parrainage est redevenu un
+    simple partage de lien, sans récompense d'aucun côté. Conservée intacte (jamais
+    supprimée) uniquement pour documenter le mécanisme qui a produit les
+    ParrainageRecompense déjà accordées avant cette date, encore honorées par
+    solde_credit_parrainage.
+
+    Ancien comportement (historique) : si l'utilisateur de `paiement` avait été
+    parrainé ET que ce paiement était sa toute première conversion réussie - tous
+    moyens de paiement confondus (Campay SUCCESSFUL ou paiement manuel APPROVED) -
+    créditait le parrain de PARRAINAGE_CREDIT_MONTANT FCFA, dépensable sur n'importe
+    lequel de ses futurs achats.
 
     `paiement` : une instance payments.Transaction (déjà SUCCESSFUL) ou
-    payments.ManualPayment (déjà APPROVED). Appelée depuis Transaction.sync_status()
-    et ManualPayment.approve() une fois l'abonnement du filleul déjà activé -
-    les imports sont locaux pour éviter un import circulaire (payments.models
-    importe déjà subscriptions.models au niveau module).
+    payments.ManualPayment (déjà APPROVED).
     """
     from payments.models import ManualPayment, ManualPaymentStatus, StatutTransaction, Transaction
 

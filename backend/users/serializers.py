@@ -116,9 +116,13 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.filleuls.count()
 
     def get_credit_parrainage_disponible(self, obj):
-        """Solde de crédit parrainage encore dépensable (voir
-        subscriptions.models.solde_credit_parrainage) - affiché au checkout pour que
-        la remise appliquée par payments.initiate_payment ne surprenne jamais."""
+        """
+        Solde de crédit parrainage encore dépensable (voir
+        subscriptions.models.solde_credit_parrainage) - mécanisme gelé depuis le
+        2026-09-28 (parrainage redevenu un simple partage de lien, sans récompense
+        d'aucun côté), conservé uniquement pour que les crédits déjà accordés avant
+        cette date restent affichés et dépensables au checkout.
+        """
         from subscriptions.models import solde_credit_parrainage
 
         return solde_credit_parrainage(obj)

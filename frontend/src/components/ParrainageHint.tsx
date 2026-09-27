@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom"
-import { Gift } from "lucide-react"
+import { Share2 } from "lucide-react"
 
 import { useAuth } from "@/context/AuthContext"
 
 /**
  * Rappel compact du parrainage, à poser sur un mur payant (corrigé/épreuve inédite
- * verrouillés) - alternative moins chère qu'un abonnement pour qui a un ami motivé.
+ * verrouillés). Décision du 2026-09-28 : le parrainage est un simple partage de lien,
+ * sans remise ni récompense d'aucun côté - voir project_parrainage_eleve_recalibrage.
  * Rien à afficher côté anonyme (pas encore de referral_code, voir AccountPage.tsx) :
  * le lien mène vers la page compte, qui porte le mécanisme complet (copier/WhatsApp).
  */
@@ -18,8 +19,8 @@ export function ParrainageHint() {
       to="/compte"
       className="flex w-fit items-center gap-1.5 text-xs text-muted-foreground hover:text-primary hover:underline"
     >
-      <Gift className="size-3.5 shrink-0" />
-      Ou invite un ami pour gagner 500 FCFA de crédit
+      <Share2 className="size-3.5 shrink-0" />
+      Ou partage cette épreuve avec un ami
     </Link>
   )
 }

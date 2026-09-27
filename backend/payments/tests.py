@@ -280,9 +280,13 @@ class TransactionSyncStatusPlanWithoutInclutInediteTests(TestCase):
         self.assertFalse(InscriptionInedite.objects.filter(user=self.user, cursus=self.cursus).exists())
 
 
-class ParrainageIdempotenceTests(TestCase):
-    """recompenser_parrainage() : seule la toute première conversion du filleul
-    récompense le parrain, jamais un réabonnement - et jamais deux fois pour la même transaction."""
+class ParrainageFrozenTests(TestCase):
+    """
+    Décision du 2026-09-28 (voir project_parrainage_eleve_recalibrage) : le parrain ne
+    reçoit plus rien - recompenser_parrainage n'est plus appelée depuis
+    Transaction._confirmer_succes, quel que soit le nombre de conversions du filleul.
+    Le filleul, lui, est récompensé en amont - voir RemiseBienvenueFilleulTests.
+    """
 
     def setUp(self):
         self.cursus = _make_cursus()
@@ -291,7 +295,7 @@ class ParrainageIdempotenceTests(TestCase):
         self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=90)
 
     @patch("payments.campay_client.get_transaction_status")
-    def test_first_conversion_rewards_parrain(self, mock_status):
+    def test_first_conversion_no_longer_rewards_parrain(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL}
         transaction = Transaction.objects.create(
             user=self.filleul, plan=self.plan, amount=self.plan.price,
@@ -300,34 +304,12 @@ class ParrainageIdempotenceTests(TestCase):
 
         transaction.sync_status()
 
-        self.assertTrue(ParrainageRecompense.objects.filter(transaction=transaction).exists())
-        # Crédit FCFA dépensable sur n'importe quel achat futur - plus une extension
-        # d'abonnement sur le cursus du filleul (voir subscriptions.models, décision
-        # du 2026-08-22).
-        self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
+        self.assertFalse(ParrainageRecompense.objects.filter(transaction=transaction).exists())
+        self.assertEqual(solde_credit_parrainage(self.parrain), 0)
         self.assertFalse(Subscription.objects.filter(user=self.parrain, cursus=self.cursus).exists())
 
     @patch("payments.campay_client.get_transaction_status")
-    def test_renewal_does_not_reward_parrain_again(self, mock_status):
-        mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL}
-
-        first = Transaction.objects.create(
-            user=self.filleul, plan=self.plan, amount=self.plan.price,
-            phone_number=self.filleul.phone_number, provider_reference="ref-1",
-        )
-        first.sync_status()
-
-        second = Transaction.objects.create(
-            user=self.filleul, plan=self.plan, amount=self.plan.price,
-            phone_number=self.filleul.phone_number, provider_reference="ref-2",
-        )
-        second.sync_status()
-
-        self.assertEqual(ParrainageRecompense.objects.filter(parrain=self.parrain).count(), 1)
-        self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
-
-    @patch("payments.campay_client.get_transaction_status")
-    def test_replaying_sync_status_does_not_reward_parrain_twice(self, mock_status):
+    def test_replaying_sync_status_still_never_rewards_parrain(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL}
         transaction = Transaction.objects.create(
             user=self.filleul, plan=self.plan, amount=self.plan.price,
@@ -337,20 +319,7 @@ class ParrainageIdempotenceTests(TestCase):
         transaction.sync_status()
         Transaction.objects.get(pk=transaction.pk).sync_status()
 
-        self.assertEqual(ParrainageRecompense.objects.filter(transaction=transaction).count(), 1)
-
-    @patch("payments.campay_client.get_transaction_status")
-    def test_no_referrer_no_reward_attempt(self, mock_status):
-        mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL}
-        solo_user = User.objects.create_user(phone_number="677000004", password="x")
-        transaction = Transaction.objects.create(
-            user=solo_user, plan=self.plan, amount=self.plan.price,
-            phone_number=solo_user.phone_number, provider_reference="ref-solo",
-        )
-
-        transaction.sync_status()
-
-        self.assertFalse(ParrainageRecompense.objects.filter(transaction=transaction).exists())
+        self.assertEqual(ParrainageRecompense.objects.filter(transaction=transaction).count(), 0)
 
 
 class PaymentFlowAPITests(TestCase):
@@ -546,6 +515,40 @@ class PaymentFlowAPITests(TestCase):
         self.assertEqual(response.status_code, 404)
 
 
+class ParrainageIsASimpleShareTests(TestCase):
+    """
+    Décision du 2026-09-28 (voir project_parrainage_eleve_recalibrage) : le parrainage
+    est un simple partage de lien - ni le parrain ni le filleul ne reçoivent de
+    récompense sur POST /payments/initiate/, même pour le tout premier achat d'un
+    utilisateur parrainé.
+    """
+
+    def setUp(self):
+        self.cursus = _make_cursus()
+        self.parrain = User.objects.create_user(phone_number="677000070", password="x")
+        self.filleul = User.objects.create_user(
+            phone_number="677000071", password="x", referred_by=self.parrain,
+        )
+        self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=90)
+        self.client = APIClient()
+
+    @patch("payments.campay_client.init_collect")
+    def test_first_purchase_of_a_referred_user_gets_no_discount(self, mock_init):
+        mock_init.return_value = {"reference": "campay-ref-filleul-1", "status": "PENDING"}
+        self.client.force_authenticate(user=self.filleul)
+
+        response = self.client.post(
+            "/payments/initiate/", {"plan_id": self.plan.id, "phone_number": self.filleul.phone_number},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        transaction = Transaction.objects.get(pk=response.data["transaction_id"])
+        self.assertEqual(transaction.credit_applique, 0)
+        self.assertEqual(transaction.amount, self.plan.price)
+        # Le parrain non plus ne reçoit rien - même après la conversion du filleul.
+        self.assertEqual(solde_credit_parrainage(self.parrain), 0)
+
+
 @skipUnless(
     connection.vendor == "postgresql",
     "Verrou de ligne réel (select_for_update) nécessaire - sans effet sur SQLite, "
@@ -609,10 +612,10 @@ class TransactionConcurrencyTests(TransactionTestCase):
         # doublerait carrément cette valeur).
         filleul_days_left = (filleul_sub.expires_at - timezone.now()).days
         self.assertTrue(25 <= filleul_days_left <= 30, f"abonnement filleul prolongé en double : {filleul_days_left}j")
-        self.assertEqual(ParrainageRecompense.objects.filter(transaction=self.transaction).count(), 1)
-        # Même garde-fou côté crédit parrainage : un double appel concurrent ne doit
-        # jamais créditer le parrain deux fois (500 FCFA, pas 1000).
-        self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
+        # Décision du 2026-09-28 : le parrain ne reçoit plus rien (recompenser_parrainage
+        # gelée) - même sous concurrence, aucune ParrainageRecompense n'est créée.
+        self.assertEqual(ParrainageRecompense.objects.filter(transaction=self.transaction).count(), 0)
+        self.assertEqual(solde_credit_parrainage(self.parrain), 0)
 
 
 class ManualPaymentDeclareAPITests(TestCase):

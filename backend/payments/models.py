@@ -11,7 +11,6 @@ from subscriptions.models import (
     ProductType,
     Subscription,
     consommer_credit_parrainage,
-    recompenser_parrainage,
     solde_credit_parrainage,
 )
 from users.models import phone_validator
@@ -210,7 +209,9 @@ class Transaction(models.Model):
             self.subscription = subscription
             self.inscription_inedite = inscription_inedite
             self.inscription_repetiteur = inscription_repetiteur
-            recompenser_parrainage(self)
+            # Décision du 2026-09-28 : le parrainage est un simple partage de lien, sans
+            # récompense d'aucun côté (recompenser_parrainage gelée, voir
+            # subscriptions.models) - rien à brancher ici.
 
         return self
 
@@ -422,7 +423,10 @@ class ManualPayment(models.Model):
                 "status", "subscription", "inscription_inedite", "inscription_repetiteur",
                 "reviewed_by", "reviewed_at", "updated_at",
             ])
-            recompenser_parrainage(locked)
+            # Décision du 2026-09-28 : le parrain ne reçoit plus rien (recompenser_parrainage
+            # gelée, voir subscriptions.models) - le paiement manuel n'applique de toute façon
+            # jamais la remise filleul (voir payments.views.initiate_payment), donc rien à
+            # brancher ici.
 
         _notifier_utilisateur(
             locked.user.phone_number,

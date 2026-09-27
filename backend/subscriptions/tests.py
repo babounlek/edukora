@@ -19,7 +19,6 @@ from catalog.models import Cursus, Examen, ExamSession
 from users.models import User
 
 from .models import (
-    PARRAINAGE_CREDIT_MONTANT,
     DureeMode,
     InscriptionInedite,
     ParrainageRecompense,
@@ -484,10 +483,14 @@ class MySubscriptionsViewPlanNameTests(TestCase):
 
 class ParrainageAcrossPaymentChannelsTests(TestCase):
     """
-    recompenser_parrainage() généralisé pour accepter Campay ET le paiement manuel
-    (voir payments.tests.ParrainageIdempotenceTests pour le cas Campay seul, déjà
-    couvert) - ici on vérifie que la "première conversion" est évaluée sur les deux
-    canaux à la fois, jamais un seul en isolation.
+    Décision du 2026-09-28 (voir project_parrainage_eleve_recalibrage) : le parrain ne
+    reçoit plus rien, quel que soit le canal de paiement du filleul (Campay ou manuel) -
+    recompenser_parrainage n'est plus appelée par ManualPayment.approve() ni par
+    Transaction._confirmer_succes. La fonction elle-même reste intacte (voir sa
+    docstring) : test_recompenser_parrainage_frozen_function_still_works_if_called_directly
+    documente qu'un appel direct détecterait toujours correctement la première
+    conversion sur les deux canaux à la fois - utile si les crédits déjà accordés avant
+    cette date doivent un jour être audités.
     """
 
     def setUp(self):
@@ -508,26 +511,16 @@ class ParrainageAcrossPaymentChannelsTests(TestCase):
             payer_phone_number=self.filleul.phone_number, transaction_reference=reference,
         )
 
-    def test_first_manual_payment_approval_rewards_parrain(self):
+    def test_manual_payment_approval_no_longer_rewards_parrain(self):
         payment = self._manual_payment("ref-manual-1")
 
         payment.approve(admin_user=self.admin)
 
-        self.assertTrue(ParrainageRecompense.objects.filter(manual_payment=payment).exists())
-        self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
+        self.assertFalse(ParrainageRecompense.objects.filter(manual_payment=payment).exists())
+        self.assertEqual(solde_credit_parrainage(self.parrain), 0)
         self.assertFalse(Subscription.objects.filter(user=self.parrain, cursus=self.cursus).exists())
 
-    def test_second_manual_payment_does_not_reward_parrain_again(self):
-        first = self._manual_payment("ref-manual-1")
-        first.approve(admin_user=self.admin)
-
-        second = self._manual_payment("ref-manual-2")
-        second.approve(admin_user=self.admin)
-
-        self.assertEqual(ParrainageRecompense.objects.filter(parrain=self.parrain).count(), 1)
-        self.assertEqual(solde_credit_parrainage(self.parrain), PARRAINAGE_CREDIT_MONTANT)
-
-    def test_campay_then_manual_only_rewards_once_on_true_first_conversion(self):
+    def test_recompenser_parrainage_frozen_function_still_works_if_called_directly(self):
         from payments.models import StatutTransaction, Transaction
 
         transaction = Transaction.objects.create(
@@ -537,7 +530,9 @@ class ParrainageAcrossPaymentChannelsTests(TestCase):
         )
         # Simule l'activation déjà effectuée par Transaction.sync_status() (sans
         # repasser par lui, qui appellerait campay_client) : même point de
-        # convergence + même récompense qu'un vrai paiement Campay réussi.
+        # convergence qu'un vrai paiement Campay réussi. Appel direct de la fonction
+        # gelée (plus aucun call site en production, voir subscriptions.models) pour
+        # documenter qu'elle détecte toujours correctement la première conversion.
         Subscription.objects.activate_or_extend(
             user=self.filleul, cursus=self.cursus, duration_days=self.plan.effective_duration_days(),
         )
@@ -546,8 +541,12 @@ class ParrainageAcrossPaymentChannelsTests(TestCase):
         manual = self._manual_payment("ref-manual-1")
         manual.approve(admin_user=self.admin)
 
+        # L'appel direct a bien créé la récompense sur la Transaction Campay...
         self.assertEqual(ParrainageRecompense.objects.filter(parrain=self.parrain).count(), 1)
         self.assertTrue(ParrainageRecompense.objects.filter(transaction=transaction).exists())
+        # ...mais l'approbation du paiement manuel, elle, n'appelle plus la fonction du
+        # tout : aucune seconde récompense, même si on avait pu croire (avant le
+        # 2026-09-28) que le manuel serait la "première conversion" sur son propre canal.
         self.assertFalse(ParrainageRecompense.objects.filter(manual_payment=manual).exists())
 
 

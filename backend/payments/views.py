@@ -40,8 +40,12 @@ def initiate_payment(request):
 
     prix = plan.effective_price()
     # Remise automatique par crédit parrainage disponible (voir
-    # subscriptions.models.solde_credit_parrainage) - jamais sur le paiement manuel
-    # pour l'instant, qui suppose un vrai transfert Mobile Money à déclarer/prouver.
+    # subscriptions.models.solde_credit_parrainage) - mécanisme gelé depuis le
+    # 2026-09-28 (le parrainage est redevenu un simple partage de lien, sans
+    # récompense d'aucun côté, voir project_parrainage_eleve_recalibrage), conservé
+    # ici uniquement pour que les crédits déjà accordés avant cette date restent
+    # dépensables. Jamais sur le paiement manuel pour l'instant, qui suppose un vrai
+    # transfert Mobile Money à déclarer/prouver.
     credit_applique = min(prix, solde_credit_parrainage(request.user))
     montant_a_payer = prix - credit_applique
 
