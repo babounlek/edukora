@@ -6,7 +6,7 @@ import type { Epreuve } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
-import { epreuveDetailPath, epreuveInediteDetailPath, epreuveReaderPath } from "@/lib/countryPath"
+import { epreuveDetailPath, epreuveInediteDetailPath } from "@/lib/countryPath"
 import { useIsTruncated } from "@/lib/useIsTruncated"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -42,13 +42,14 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
   const [titleRef, isTitleTruncated] = useIsTruncated<HTMLHeadingElement>()
   const country = epreuve.subject.country.code.toLowerCase()
   const inedite = epreuve.kind === "inedite"
-  // Une inédite n'a jamais de slug ni de lecteur direct - toujours la fiche détail,
-  // qu'il y ait accès ou non (composer crée une tentative, jamais un simple GET).
+  // Toujours la fiche détail, jamais le lecteur en direct - qu'il y ait accès ou non. Un clic
+  // qui saute la fiche pour un abonné le privait de "Passer en conditions d'examen", proposé
+  // UNIQUEMENT là, à côté de "Lire le corrigé" : il ne découvrait jamais ce mode (voir l'audit
+  // UX du 2026-09-27). Une inédite n'a de toute façon jamais de lecteur direct (composer crée
+  // une tentative, jamais un simple GET) - même destination dans les deux cas désormais.
   const to = inedite
     ? epreuveInediteDetailPath(country, epreuve.slug ?? epreuve.id)
-    : epreuve.has_access
-      ? epreuveReaderPath(country, epreuve.slug as string)
-      : epreuveDetailPath(country, epreuve.slug as string)
+    : epreuveDetailPath(country, epreuve.slug as string)
 
   const Icone = subjectIcon(epreuve.subject.code)
   const couleur = couleurMatiere(epreuve.subject.code)

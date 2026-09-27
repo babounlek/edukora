@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
-import { epreuveDetailPath, epreuveInediteDetailPath, epreuveReaderPath } from "@/lib/countryPath"
+import { epreuveDetailPath, epreuveInediteDetailPath } from "@/lib/countryPath"
 
 interface EpreuveListRowProps {
   epreuve: Epreuve
@@ -19,12 +19,13 @@ interface EpreuveListRowProps {
  * résultats à l'écran sans dérouler autant que la grille de cartes. */
 export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProps) {
   const country = epreuve.subject.country.code.toLowerCase()
+  // Toujours la fiche détail, jamais le lecteur en direct - voir le même commentaire sur
+  // EpreuveCard.tsx : c'est là, et seulement là, qu'un abonné découvre "Passer en conditions
+  // d'examen", à côté de "Lire le corrigé".
   const to =
     epreuve.kind === "inedite"
       ? epreuveInediteDetailPath(country, epreuve.slug ?? epreuve.id)
-      : epreuve.has_access
-        ? epreuveReaderPath(country, epreuve.slug as string)
-        : epreuveDetailPath(country, epreuve.slug as string)
+      : epreuveDetailPath(country, epreuve.slug as string)
   const Icone = subjectIcon(epreuve.subject.code)
   return (
     <Link
