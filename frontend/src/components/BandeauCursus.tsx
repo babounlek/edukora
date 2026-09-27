@@ -2,7 +2,9 @@ import { useState } from "react"
 import { useLocation } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { X } from "lucide-react"
+import { toast } from "sonner"
 import { listCursus, updateMe } from "@/api/endpoints"
+import type { Cursus } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { memoriserCursusPrepareEnAttente, useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
@@ -61,12 +63,19 @@ export function BandeauCursus() {
     },
   })
 
-  function choisir(cursusId: number) {
+  function choisir(cursus: Cursus) {
     if (isAuthenticated) {
-      declarer.mutate(cursusId)
+      declarer.mutate(cursus.id)
       return
     }
-    memoriserCursusPrepareEnAttente(cursusId)
+    memoriserCursusPrepareEnAttente(cursus.id)
+    // Sans compte, le seul changement visible ailleurs sur la page est discret (la
+    // vedette "épreuve inédite" du catalogue, hors champ de vision) - un visiteur qui
+    // ne la remarque pas a l'impression que son choix n'a rien fait. Une confirmation
+    // immédiate, à l'endroit même du clic, ne dépend d'aucun autre composant.
+    toast.success(`Noté : ${cursus.examen_display}${cursus.series ? ` ${cursus.series.code}` : ""}`, {
+      description: "Connecte-toi pour recevoir ta séance du jour.",
+    })
   }
 
   function fermer() {
@@ -93,7 +102,7 @@ export function BandeauCursus() {
                 size="sm"
                 className="h-8 shrink-0 rounded-full px-3.5 text-sm"
                 disabled={declarer.isPending}
-                onClick={() => choisir(cursus.id)}
+                onClick={() => choisir(cursus)}
               >
                 {cursus.examen_display}
                 {cursus.series ? ` ${cursus.series.code}` : ""}
