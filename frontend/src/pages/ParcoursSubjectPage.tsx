@@ -2,13 +2,13 @@ import { useEffect, useMemo, useState } from "react"
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
-  ArrowLeft, ArrowRight, BookOpenText, Check, CheckCircle2, Compass, Eye, EyeOff, GraduationCap, Search,
+  ArrowLeft, ArrowRight, BookOpenText, Check, CheckCircle2, Compass, Eye, EyeOff, GraduationCap, Lock, Search,
   Sparkles, Target,
 } from "lucide-react"
 
 import { getParcours, listMySubscriptions, listSubjects, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { ParcoursModule, ParcoursSavoir, ResumeMatiere, Subscription } from "@/api/types"
+import type { Cursus, ParcoursModule, ParcoursSavoir, ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
@@ -117,8 +117,8 @@ function savoirsVisibles(module: ParcoursModule, afficherTout: boolean): Parcour
   })
 }
 
-function libelleCursus(sub: Subscription): string {
-  return `${sub.cursus.examen_display}${sub.cursus.series ? ` ${sub.cursus.series.code}` : ""}`
+function libelleCursus(cursus: Cursus): string {
+  return `${cursus.examen_display}${cursus.series ? ` ${cursus.series.code}` : ""}`
 }
 
 /** Pastille de statut d'un savoir : la couleur ET l'icône de son statut (voir
@@ -190,11 +190,17 @@ function SansCoursIndice({ savoir }: { savoir: ParcoursSavoir }) {
  * vers les cours de ce savoir. `arrow` accentue le CTA quiz dans la carte "prochaines
  * étapes" (mise en avant), pas dans la liste. */
 function ActionsSavoir({
-  savoir, starting, onQuiz, size, arrow, className,
+  savoir, starting, onQuiz, verrouille, size, arrow, className,
 }: {
   savoir: ParcoursSavoir
   starting: boolean
   onQuiz: () => void
+  // Pas d'abonnement actif sur ce cursus : lancer un quiz échouerait de toute façon
+  // côté serveur (403, voir quiz._has_active_subscription) - montrer directement un
+  // CTA d'abonnement plutôt qu'un bouton qui échouerait au clic (voir
+  // project_gating_non_abonne_quiz_parcours). Le lien vers le cours, lui, reste actif :
+  // sa page d'aperçu est déjà publique.
+  verrouille: boolean
   size?: "sm"
   arrow?: boolean
   className?: string
@@ -203,17 +209,26 @@ function ActionsSavoir({
   return (
     <div className={cn("flex flex-wrap items-center gap-2", className)}>
       {savoir.has_quiz && (
-        // Toujours ouvert dans un nouvel onglet : ce Parcours reste affiché pendant
-        // le quiz plutôt que de disparaître derrière une navigation en place.
-        <Button
-          size={size}
-          disabled={starting}
-          onClick={() => onQuiz()}
-          className={cn("group rounded-full", arrow && "shadow-md shadow-primary/20")}
-        >
-          {starting ? "Préparation..." : "Tester mes connaissances"}
-          {arrow && <ArrowRight className="transition-transform group-hover:translate-x-0.5" />}
-        </Button>
+        verrouille ? (
+          <Button asChild size={size} variant="outline" className="rounded-full">
+            <Link to="/tarifs">
+              <Lock className="size-3.5" />
+              Réservé aux abonnés
+            </Link>
+          </Button>
+        ) : (
+          // Toujours ouvert dans un nouvel onglet : ce Parcours reste affiché pendant
+          // le quiz plutôt que de disparaître derrière une navigation en place.
+          <Button
+            size={size}
+            disabled={starting}
+            onClick={() => onQuiz()}
+            className={cn("group rounded-full", arrow && "shadow-md shadow-primary/20")}
+          >
+            {starting ? "Préparation..." : "Tester mes connaissances"}
+            {arrow && <ArrowRight className="transition-transform group-hover:translate-x-0.5" />}
+          </Button>
+        )
       )}
       {premierCours && (
         <Button asChild size={size} variant={savoir.has_quiz ? "outline" : "default"} className="max-w-full rounded-full">
@@ -235,7 +250,7 @@ function ActionsSavoir({
  * garde le rang dans l'ordre du programme ou de la fréquence.
  */
 function LigneSavoir({
-  savoir, rang, dernier, isModeFrequence, starting, onQuiz,
+  savoir, rang, dernier, isModeFrequence, starting, onQuiz, verrouille,
 }: {
   savoir: ParcoursSavoir
   rang: number
@@ -243,6 +258,7 @@ function LigneSavoir({
   isModeFrequence: boolean
   starting: boolean
   onQuiz: () => void
+  verrouille: boolean
 }) {
   const bucket = bucketDeSavoir(savoir)
   const inactif = bucket === "sans_contenu"
@@ -283,7 +299,10 @@ function LigneSavoir({
           </div>
           {!inactif && (
             <div className="shrink-0 sm:max-w-[55%]">
-              <ActionsSavoir savoir={savoir} starting={starting} onQuiz={onQuiz} size="sm" className="sm:justify-end" />
+              <ActionsSavoir
+                savoir={savoir} starting={starting} onQuiz={onQuiz} verrouille={verrouille}
+                size="sm" className="sm:justify-end"
+              />
             </div>
           )}
         </div>
@@ -305,7 +324,7 @@ function Squelette() {
 
 export function ParcoursSubjectPage() {
   const { subjectId } = useParams<{ subjectId: string }>()
-  const { isAuthenticated, isLoading: authLoading } = useAuth()
+  const { isAuthenticated, isLoading: authLoading, user } = useAuth()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -340,15 +359,20 @@ export function ParcoursSubjectPage() {
     enabled: isAuthenticated,
   })
   const actifs = useMemo(() => subscriptions?.filter((sub) => sub.is_active) ?? [], [subscriptions])
+  // Cursus déclaré (gratuit, voir user.cursus_prepare) : dernier repli quand aucun
+  // abonnement actif ne matche l'URL - la structure du programme se montre à qui sait
+  // ce qu'il prépare, abonné ou non (voir project_gating_non_abonne_quiz_parcours).
+  const prepare = user?.cursus_prepare?.id ?? null
 
   // Le cursus de l'URL est pris au mot tant que la liste des abonnements n'est pas
   // arrivée : le parcours part ainsi en même temps qu'elle au lieu d'attendre derrière
   // (la page enchaînait session → abonnements → matières → parcours, quatre allers-
   // retours en file). Une fois la liste là, un cursus de l'URL sans abonnement actif
-  // retombe sur le premier abonnement, comme avant.
+  // retombe sur le premier abonnement, sinon sur le cursus déclaré.
   const parDefaut = subscriptions
-    ? (actifs.find((sub) => String(sub.cursus.id) === cursusFromUrl) ?? actifs[0])?.cursus.id.toString() ?? ""
-    : cursusFromUrl
+    ? (actifs.find((sub) => String(sub.cursus.id) === cursusFromUrl) ?? actifs[0])?.cursus.id.toString()
+      ?? (prepare !== null ? String(prepare) : "")
+    : cursusFromUrl || (prepare !== null ? String(prepare) : "")
   const selectedCursus = cursusChoisi || parDefaut
 
   useEffect(() => {
@@ -469,20 +493,23 @@ export function ParcoursSubjectPage() {
   // n'est pas encore arrivée (voir parDefaut).
   if (authLoading || (!subscriptions && !modules)) return <Squelette />
 
-  if (subscriptions && actifs.length === 0) {
+  // Aucun cursus connu du tout (ni abonné, ni déclaré) : impossible de montrer un
+  // programme sans savoir lequel - seul cas qui reste un mur, et qui pointe vers la
+  // déclaration du cursus (gratuite) plutôt que vers un abonnement (voir ParcoursPage).
+  if (subscriptions && !selectedCursus) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
         <Ecrin className="text-center">
           <span className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
             <Compass className="size-5" />
           </span>
-          <p className="font-display text-xl font-semibold">Aucun abonnement actif</p>
+          <p className="font-display text-xl font-semibold">Quel examen prépares-tu ?</p>
           <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
-            Le parcours te montre exactement ce qu'il te reste à travailler pour cette matière - il te faut un
-            abonnement actif pour y accéder.
+            Dis-nous ce que tu prépares pour voir ce programme, matière par matière - c'est gratuit, aucun
+            abonnement requis pour ça.
           </p>
           <Button asChild className="mt-5 rounded-full px-6">
-            <Link to="/tarifs">Voir les tarifs</Link>
+            <Link to="/compte">Choisir mon cursus</Link>
           </Button>
         </Ecrin>
       </div>
@@ -491,6 +518,9 @@ export function ParcoursSubjectPage() {
 
   const SubjectIcon = subjectIcon(subjectCode)
   const abonnementAffiche = actifs.find((sub) => String(sub.cursus.id) === selectedCursus)
+  const cursusDeclare = abonnementAffiche?.cursus
+    ?? (user?.cursus_prepare && String(user.cursus_prepare.id) === selectedCursus ? user.cursus_prepare : undefined)
+  const abonneAuCursus = actifs.some((sub) => String(sub.cursus.id) === selectedCursus)
   const erreurChargement = error || (erreurParcours
     ? erreurParcours instanceof ApiError ? erreurParcours.message : "Impossible de charger ton parcours."
     : "")
@@ -553,17 +583,23 @@ export function ParcoursSubjectPage() {
                       : "text-muted-foreground hover:text-foreground",
                   )}
                 >
-                  {libelleCursus(sub)}
+                  {libelleCursus(sub.cursus)}
                 </button>
               ))}
             </div>
           ) : (
-            abonnementAffiche && (
+            cursusDeclare && (
               <span className="inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-background/70 px-3 py-1 text-xs font-medium text-muted-foreground">
                 <GraduationCap className="size-3.5 text-primary" />
-                {libelleCursus(abonnementAffiche)}
+                {libelleCursus(cursusDeclare)}
               </span>
             )
+          )}
+          {!abonneAuCursus && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-muted-foreground">
+              <Lock className="size-3.5" />
+              Programme complet - abonne-toi pour suivre ta progression
+            </span>
           )}
           {isModeFrequence && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-xs font-medium">
@@ -626,19 +662,29 @@ export function ParcoursSubjectPage() {
                   <div className="max-w-lg">
                     <p className="font-display text-2xl font-semibold tracking-tight">Commence par te situer</p>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      Tu n'as encore rien tenté sur ce cursus - un test de positionnement de 20 questions dit d'où
-                      partir, sur tout le programme d'un coup.
+                      {abonneAuCursus
+                        ? "Tu n'as encore rien tenté sur ce cursus - un test de positionnement de 20 questions dit d'où partir, sur tout le programme d'un coup."
+                        : "Abonne-toi pour faire un test de positionnement de 20 questions sur tout le programme d'un coup."}
                     </p>
                   </div>
-                  <Button
-                    size="lg"
-                    className="group h-12 shrink-0 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5"
-                    disabled={starting}
-                    onClick={() => lancerQuiz({ mode: "DIAGNOSTIC" })}
-                  >
-                    <Target className="size-4" />
-                    {starting ? "Préparation..." : "Faire le test de positionnement"}
-                  </Button>
+                  {abonneAuCursus ? (
+                    <Button
+                      size="lg"
+                      className="group h-12 shrink-0 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5"
+                      disabled={starting}
+                      onClick={() => lancerQuiz({ mode: "DIAGNOSTIC" })}
+                    >
+                      <Target className="size-4" />
+                      {starting ? "Préparation..." : "Faire le test de positionnement"}
+                    </Button>
+                  ) : (
+                    <Button asChild size="lg" variant="outline" className="h-12 shrink-0 rounded-full px-7 text-base">
+                      <Link to="/tarifs">
+                        <Lock className="size-4" />
+                        Voir les tarifs
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <div className={cn("mt-4 grid gap-3", etapes.length > 1 && "md:grid-cols-2", etapes.length > 2 && "lg:grid-cols-3")}>
@@ -668,6 +714,7 @@ export function ParcoursSubjectPage() {
                           savoir={etape}
                           starting={starting}
                           onQuiz={() => lancerQuiz(paramsQuizPourSavoir(etape), true)}
+                          verrouille={!abonneAuCursus}
                           size="sm"
                           arrow
                         />
@@ -805,6 +852,7 @@ export function ParcoursSubjectPage() {
                         isModeFrequence={isModeFrequence}
                         starting={starting}
                         onQuiz={() => lancerQuiz(paramsQuizPourSavoir(savoir), true)}
+                        verrouille={!abonneAuCursus}
                       />
                     ))}
                     {resteAAfficher > 0 && (

@@ -1005,6 +1005,53 @@ class QuizApiTests(TestCase):
         response = self.client.post("/quiz/sessions/", {"cursus": self.cursus.id}, format="json")
         self.assertEqual(response.status_code, 403)
 
+    def test_start_session_allows_a_fully_vitrine_theme_without_subscription(self):
+        # CompetenceItem.est_vitrine : un thème jouable en entier sans abonnement (voir
+        # project_gating_non_abonne_quiz_parcours) - self.item n'est pas vitrine, il
+        # faut donc un thème dédié entièrement vitrine pour ce test.
+        theme_vitrine = Tag.objects.create(name="theme-vitrine")
+        _make_competence_item(self.subject, self.cursus, theme=theme_vitrine, numero="v1", est_vitrine=True)
+        _make_competence_item(self.subject, self.cursus, theme=theme_vitrine, numero="v2", est_vitrine=True)
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.post(
+            "/quiz/sessions/", {"cursus": self.cursus.id, "theme": theme_vitrine.id}, format="json",
+        )
+
+        self.assertEqual(response.status_code, 201)
+        session = QuizSession.objects.get(pk=response.data["id"])
+        self.assertEqual(session.quiz_questions.count(), 2)
+
+    def test_start_session_still_denied_when_theme_is_not_entirely_vitrine(self):
+        # Un seul item vitrine sur les deux du thème : le périmètre demandé n'est pas
+        # ENTIÈREMENT vitrine, jamais de session partiellement gratuite (voir
+        # perimetre_est_vitrine, qui refuse tout mélange payant/gratuit).
+        theme_mixte = Tag.objects.create(name="theme-mixte")
+        _make_competence_item(self.subject, self.cursus, theme=theme_mixte, numero="m1", est_vitrine=True)
+        _make_competence_item(self.subject, self.cursus, theme=theme_mixte, numero="m2", est_vitrine=False)
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.post(
+            "/quiz/sessions/", {"cursus": self.cursus.id, "theme": theme_mixte.id}, format="json",
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_start_session_still_denied_for_a_subject_scope_that_mixes_vitrine_and_non_vitrine(self):
+        # Demander toute la matière (sans filtre theme) alors qu'un seul de ses thèmes
+        # est vitrine ne doit jamais laisser passer - la vitrine ne s'obtient qu'en
+        # ciblant explicitement le thème entièrement gratuit.
+        theme_vitrine = Tag.objects.create(name="theme-vitrine-2")
+        _make_competence_item(self.subject, self.cursus, theme=theme_vitrine, numero="v1", est_vitrine=True)
+        # self.item (théme=self.theme, non vitrine) partage déjà le même subject/cursus.
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.post(
+            "/quiz/sessions/", {"cursus": self.cursus.id, "subject": self.subject.id}, format="json",
+        )
+
+        self.assertEqual(response.status_code, 403)
+
     def test_start_session_rejects_cursus_from_an_inactive_country(self):
         # Un pays désactivé doit rester invisible même pour un cursus auquel
         # l'utilisateur serait déjà abonné - voir catalog.models.VisibleQuerySet et
@@ -2307,6 +2354,27 @@ class QuizSubjectsApiTests(TestCase):
         response = self.client.get(f"/quiz/subjects/?cursus={self.cursus.id}")
 
         self.assertEqual([s["id"] for s in response.data], [self.subject_avec_quiz.id])
+
+    def test_exposes_nb_questions_and_null_vitrine_theme_by_default(self):
+        # self.subject_avec_quiz a déjà 1 item (voir setUp) - un deuxième distinct pour
+        # vérifier que nb_questions compte bien tous les items, pas seulement le
+        # premier trouvé (risque de double-jointure Django avec l'annotate).
+        _make_competence_item(self.subject_avec_quiz, self.cursus, numero="2")
+
+        response = self.client.get(f"/quiz/subjects/?cursus={self.cursus.id}")
+
+        self.assertEqual(response.data[0]["nb_questions"], 2)
+        self.assertIsNone(response.data[0]["vitrine_theme_id"])
+
+    def test_exposes_vitrine_theme_id_when_curated(self):
+        theme_vitrine = Tag.objects.create(name="theme-vitrine-subjects")
+        _make_competence_item(
+            self.subject_avec_quiz, self.cursus, theme=theme_vitrine, numero="v1", est_vitrine=True,
+        )
+
+        response = self.client.get(f"/quiz/subjects/?cursus={self.cursus.id}")
+
+        self.assertEqual(response.data[0]["vitrine_theme_id"], theme_vitrine.id)
 
 
 class PlanDuJourTests(TestCase):

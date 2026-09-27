@@ -64,12 +64,15 @@ class RevisionScheduleAdmin(admin.ModelAdmin):
 
 @admin.register(CompetenceItem)
 class CompetenceItemAdmin(admin.ModelAdmin):
-    list_display = ["theme", "subject", "difficulte_estimee", "type_reponse", "statut", "external_id", "updated_at"]
-    list_filter = ["statut", "type_reponse", "difficulte_estimee", "subject"]
+    list_display = [
+        "theme", "subject", "difficulte_estimee", "type_reponse", "statut", "est_vitrine", "external_id",
+        "updated_at",
+    ]
+    list_filter = ["statut", "type_reponse", "difficulte_estimee", "subject", "est_vitrine"]
     search_fields = ["theme__name", "enonce_markdown", "external_id"]
     autocomplete_fields = ["theme", "subject"]
     filter_horizontal = ["cursus", "source_exercises"]
-    actions = ["marquer_valide", "marquer_brouillon"]
+    actions = ["marquer_valide", "marquer_brouillon", "marquer_vitrine", "retirer_vitrine"]
 
     @admin.action(description="Marquer comme Validé (entre dans le pool de quiz)")
     def marquer_valide(self, request, queryset):
@@ -80,6 +83,19 @@ class CompetenceItemAdmin(admin.ModelAdmin):
     def marquer_brouillon(self, request, queryset):
         updated = queryset.update(statut=StatutContenu.BROUILLON)
         self.message_user(request, f"{updated} item(s) repassé(s) en brouillon.")
+
+    @admin.action(description="Marquer comme vitrine (essai gratuit sans abonnement)")
+    def marquer_vitrine(self, request, queryset):
+        # Volontairement pas de garde-fou "un seul thème par cursus" ici : c'est une
+        # action manuelle de curation (voir project_gating_non_abonne_quiz_parcours),
+        # à l'utilisateur de sélectionner un thème cohérent avant de lancer l'action.
+        updated = queryset.update(est_vitrine=True)
+        self.message_user(request, f"{updated} item(s) marqué(s) vitrine.")
+
+    @admin.action(description="Retirer de la vitrine")
+    def retirer_vitrine(self, request, queryset):
+        updated = queryset.update(est_vitrine=False)
+        self.message_user(request, f"{updated} item(s) retiré(s) de la vitrine.")
 
     def get_urls(self):
         custom_urls = [

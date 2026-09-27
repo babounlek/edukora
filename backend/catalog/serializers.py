@@ -85,6 +85,26 @@ class SubjectListSerializer(SubjectSerializer):
         fields = [*SubjectSerializer.Meta.fields, "cours_count"]
 
 
+class SubjectWithQuizCountSerializer(SubjectSerializer):
+    """
+    SubjectSerializer + le nombre de questions de quiz VALIDE disponibles, pour
+    quiz.views.list_quiz_subjects seulement - affiché à un utilisateur non abonné pour
+    montrer la vraie taille de la banque avant le mur payant (voir
+    project_gating_non_abonne_quiz_parcours), même principe que cours_count ci-dessus :
+    jamais un SerializerMethodField qui recompterait lui-même, la valeur vient toujours
+    de l'annotation posée par la vue.
+    """
+
+    nb_questions = serializers.IntegerField(read_only=True)
+    # Posé par la vue (pas une annotation SQL, voir list_quiz_subjects) - None si cette
+    # matière n'a pas de thème vitrine curé. DRF sérialise déjà None en null pour un
+    # champ read_only sans qu'allow_null soit nécessaire (voir Serializer.to_representation).
+    vitrine_theme_id = serializers.IntegerField(read_only=True)
+
+    class Meta(SubjectSerializer.Meta):
+        fields = [*SubjectSerializer.Meta.fields, "nb_questions", "vitrine_theme_id"]
+
+
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag

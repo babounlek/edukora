@@ -1,6 +1,6 @@
 import re
 
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -12,12 +12,13 @@ from catalog.models import (
     Cours, Cursus, ExamSession, Lesson, Origine, StatutContenu, Subject, Tag, TypeReponse,
 )
 from catalog.rendering import annotate_single_cours_link
-from catalog.serializers import CoursSummarySerializer, CursusSerializer, SubjectSerializer
+from catalog.serializers import CoursSummarySerializer, CursusSerializer, SubjectSerializer, SubjectWithQuizCountSerializer
 from programme.models import Savoir
 from subscriptions.models import Subscription
 
 from .models import (
-    ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere, StatutFichePdf, StatutSeance,
+    CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
+    StatutFichePdf, StatutSeance,
 )
 from .pdf import queue_quiz_fiche_pdf_generation
 from .serie import serie_de_jours
@@ -25,6 +26,7 @@ from .services import (
     SEUIL_MAITRISE, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
     generer_session, maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
     BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, cle_etape, etape_ouverte, marquer_etape_ouverte, definir_objectif_matiere, matieres_pour_objectif, objectif_matiere_actif, retirer_objectif_matiere, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
+    perimetre_est_vitrine,
     remplacer_seance,
     score_de_la_seance,
     seance_du_jour,
@@ -362,7 +364,11 @@ def _resultat_payload(session, request):
 @api_view(["POST"])
 def start_session(request):
     """Crée une QuizSession pour l'utilisateur connecté - gating : réservé aux cursus
-    pour lesquels un abonnement actif existe, même logique que access.services.has_access."""
+    pour lesquels un abonnement actif existe, SAUF si le périmètre demandé (theme/
+    savoir/subject) est entièrement composé d'items est_vitrine=True (voir
+    CompetenceItem.est_vitrine) - même principe que access.services.has_access pour
+    Lesson.est_vitrine, mais vérifié ici sur le périmètre exact demandé plutôt que sur
+    un objet unique."""
     cursus = get_object_or_404(Cursus.objects.select_related("country"), pk=request.data.get("cursus"))
 
     if not cursus.country.actif:
@@ -371,9 +377,6 @@ def start_session(request):
         # refuse pas juste l'accès (voir catalog.models.VisibleQuerySet).
         return Response({"error": "Ce cursus n'est pas disponible."}, status=404)
 
-    if not _has_active_subscription(request.user, cursus):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
-
     mode = request.data.get("mode") or ModeQuiz.PRATIQUE
     if mode not in ModeQuiz.values:
         return Response({"error": f"mode invalide : {mode!r}. Attendu {ModeQuiz.values}."}, status=400)
@@ -381,6 +384,9 @@ def start_session(request):
     subject = get_object_or_404(Subject, pk=request.data["subject"]) if request.data.get("subject") else None
     theme = get_object_or_404(Tag, pk=request.data["theme"]) if request.data.get("theme") else None
     savoir = get_object_or_404(Savoir, pk=request.data["savoir"]) if request.data.get("savoir") else None
+
+    if not _has_active_subscription(request.user, cursus) and not perimetre_est_vitrine(cursus, subject=subject, theme=theme, savoir=savoir):
+        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
     try:
         n = int(request.data.get("n") or 10)
@@ -583,15 +589,45 @@ def list_quiz_subjects(request):
     catalog.SubjectListView) laisserait choisir une matière sans aucune banque de quiz
     générée pour ce cursus, et generer_session échouerait (ValueError "Aucune question
     disponible") une fois le quiz lancé plutôt que de le signaler avant.
+
+    Aucune vérification d'abonnement ici (comme le reste de cette vue avant elle) :
+    affichée à un utilisateur connecté sans abonnement actif sur ce cursus pour montrer
+    la structure réelle avant le mur payant (voir SubjectWithQuizCountSerializer et
+    project_gating_non_abonne_quiz_parcours) - seul le lancement d'une session
+    (start_session) reste gated par _has_active_subscription (sauf périmètre vitrine,
+    voir perimetre_est_vitrine).
     """
     cursus = get_object_or_404(Cursus, pk=request.GET["cursus"])
-    qs = (
+    subjects = list(
         Subject.objects.filter(competence_items__statut=StatutContenu.VALIDE, competence_items__cursus=cursus)
+        .annotate(
+            nb_questions=Count(
+                "competence_items",
+                filter=Q(competence_items__statut=StatutContenu.VALIDE, competence_items__cursus=cursus),
+                distinct=True,
+            ),
+        )
         .select_related("country")
         .distinct()
-        .order_by("label")
+        .order_by("label"),
     )
-    return Response(SubjectSerializer(qs, many=True, context={"request": request}).data)
+
+    # Thème vitrine de chaque matière (voir CompetenceItem.est_vitrine), pour que le
+    # frontend puisse proposer un essai gratuit en entier plutôt qu'un simple "abonne-
+    # toi" - un attribut Python posé après coup (pas une annotation SQL, la relation
+    # theme_id n'a pas d'agrégat naturel), premier thème trouvé si plusieurs par
+    # matière (la curation vise un thème par cursus, jamais davantage en pratique).
+    vitrine_par_matiere = {}
+    for subject_id, theme_id in (
+        CompetenceItem.objects.filter(
+            cursus=cursus, est_vitrine=True, subject_id__in=[s.id for s in subjects],
+        ).values_list("subject_id", "theme_id").distinct()
+    ):
+        vitrine_par_matiere.setdefault(subject_id, theme_id)
+    for s in subjects:
+        s.vitrine_theme_id = vitrine_par_matiere.get(s.id)
+
+    return Response(SubjectWithQuizCountSerializer(subjects, many=True, context={"request": request}).data)
 
 
 @api_view(["GET"])

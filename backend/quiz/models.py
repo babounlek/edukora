@@ -101,6 +101,17 @@ class CompetenceItem(models.Model):
         max_length=10, choices=StatutContenu.choices, default=StatutContenu.BROUILLON,
         help_text="VALIDE requis avant d'entrer dans le pool de quiz - voir quiz.services._questions_eligibles.",
     )
+    est_vitrine = models.BooleanField(
+        default=False,
+        help_text=(
+            "Jouable en entier sans abonnement (voir catalog.Lesson.est_vitrine, même "
+            "principe) - quiz.views.start_session laisse passer une session sans "
+            "abonnement actif seulement si TOUS les items du périmètre demandé (theme/"
+            "savoir/subject) sont est_vitrine=True. Choisi à la main, un thème par "
+            "cursus au maximum pour donner un vrai essai plutôt qu'une démo factice "
+            "(voir project_gating_non_abonne_quiz_parcours) : jamais coché en masse."
+        ),
+    )
     source_exercises = models.ManyToManyField(
         "catalog.Exercise", blank=True, related_name="competence_items_generes",
         help_text="Traçabilité de la technique source uniquement - jamais affiché à l'élève.",

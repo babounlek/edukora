@@ -28,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
@@ -40,13 +41,97 @@ const N_MIN = 1
 const N_MAX = 30
 const N_PRESETS = [5, 10, 15, 20]
 
+/** Aperçu des matières/questions d'un cursus DÉCLARÉ (gratuit) mais pas encore abonné -
+ * remplace la question de démo générique par la vraie structure de la banque de quiz,
+ * verrou sur le lancement d'une séance, SAUF sur le thème vitrine d'une matière s'il y
+ * en a un (voir CompetenceItem.est_vitrine, project_gating_non_abonne_quiz_parcours) :
+ * ce thème-là se lance en entier, sans abonnement - un vrai essai plutôt qu'une démo. */
+function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects: Subject[] }) {
+  const navigate = useNavigate()
+  const [starting, setStarting] = useState<number | null>(null)
+  const [error, setError] = useState("")
+  const total = subjects.reduce((somme, s) => somme + (s.nb_questions ?? 0), 0)
+
+  async function essayerGratuitement(subject: Subject) {
+    if (subject.vitrine_theme_id == null || starting !== null) return
+    setStarting(subject.id)
+    setError("")
+    try {
+      const session = await startQuizSession({
+        cursus: cursusId, subject: subject.id, theme: subject.vitrine_theme_id, mode: "PRATIQUE", n: N_MAX,
+      })
+      trackEvent("quiz_started", { cursus_id: cursusId, mode: "PRATIQUE", source: "vitrine" })
+      navigate(`/quiz/session/${session.id}`)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Impossible de démarrer cet essai. Réessaie plus tard.")
+      setStarting(null)
+    }
+  }
+
+  return (
+    <Card className="overflow-hidden border-primary/25 bg-gradient-to-br from-primary/5 via-transparent to-transparent">
+      <CardContent className="flex flex-col gap-4 pt-6">
+        <div className="flex items-start gap-3">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
+            <Lock className="size-5" />
+          </span>
+          <div>
+            <p className="font-display text-base font-semibold">
+              <span className="tabular-nums">{total}</span> question{total > 1 ? "s" : ""} sur ton programme
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Abonne-toi pour lancer une séance - voici déjà tout ce qu'il y a à réviser.
+            </p>
+          </div>
+        </div>
+        <ul className="flex flex-col divide-y divide-border/60 overflow-hidden rounded-xl border border-border/70">
+          {subjects.map((subject) => {
+            const SubjectIcon = subjectIcon(subject.code)
+            return (
+              <li key={subject.id} className="flex items-center justify-between gap-3 bg-card px-3.5 py-2.5">
+                <span className="flex min-w-0 items-center gap-2.5">
+                  <SubjectIcon className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                  <span className="truncate text-sm font-medium">{subject.label}</span>
+                </span>
+                <span className="flex shrink-0 items-center gap-2">
+                  <span className="text-xs tabular-nums text-muted-foreground">
+                    {subject.nb_questions ?? 0} question{(subject.nb_questions ?? 0) > 1 ? "s" : ""}
+                  </span>
+                  {subject.vitrine_theme_id != null && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={starting !== null}
+                      onClick={() => essayerGratuitement(subject)}
+                      className="h-7 rounded-full px-2.5 text-xs"
+                    >
+                      {starting === subject.id ? "Préparation..." : "Essayer gratuitement"}
+                    </Button>
+                  )}
+                </span>
+              </li>
+            )
+          })}
+        </ul>
+        {error && <p className="text-sm text-destructive">{error}</p>}
+        <Button asChild size="lg" className="w-full sm:w-auto">
+          <a href="/tarifs">
+            Voir les tarifs
+            <ArrowRight className="size-4" />
+          </a>
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
+
 export function QuizStartPage() {
   useSeo({
     title: "Quiz",
     description: "Entraîne-toi ou évalue ton niveau avec des questions tirées des corrigés de ton cursus.",
   })
 
-  const { isAuthenticated, isLoading: authLoading } = useAuth()
+  const { isAuthenticated, isLoading: authLoading, user } = useAuth()
   const navigate = useNavigate()
 
   // Lancement direct depuis un bouton "Quiz" externe (voir ThemesFrequents.tsx) -
@@ -67,6 +152,11 @@ export function QuizStartPage() {
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
+  // Structure réelle du cursus déclaré (gratuit, voir user.cursus_prepare) quand
+  // l'utilisateur n'a aucun abonnement actif - remplace la question de démo générique
+  // (voir project_gating_non_abonne_quiz_parcours). null tant que non chargé/non
+  // pertinent, [] si le cursus déclaré n'a encore aucune banque de quiz.
+  const [previewSubjects, setPreviewSubjects] = useState<Subject[] | null>(null)
   const [selectedCursus, setSelectedCursus] = useState("")
   const [selectedSubject, setSelectedSubject] = useState("")
   const [mode, setMode] = useState<ModeQuiz>("PRATIQUE")
@@ -99,6 +189,24 @@ export function QuizStartPage() {
     // moment où l'authentification se résout compte.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authLoading, isAuthenticated])
+
+  // Sans abonnement actif mais un cursus déclaré (gratuit) : list_quiz_subjects
+  // n'exige pas d'abonnement (voir sa docstring côté backend) - on peut donc montrer la
+  // vraie structure de la banque avant le mur payant plutôt qu'une question de démo.
+  const cursusPrepareId = user?.cursus_prepare?.id ?? null
+  useEffect(() => {
+    if (!subscriptionsLoaded || subscriptions.length > 0 || cursusPrepareId === null) {
+      setPreviewSubjects(null)
+      return
+    }
+    let annule = false
+    listQuizSubjects(cursusPrepareId).then((data) => {
+      if (!annule) setPreviewSubjects(data)
+    })
+    return () => {
+      annule = true
+    }
+  }, [subscriptionsLoaded, subscriptions.length, cursusPrepareId])
 
   // Uniquement les matières ayant déjà une banque de quiz pour CE cursus (voir
   // quiz.views.list_quiz_subjects) - lister toutes les matières du pays (comme sur
@@ -218,7 +326,9 @@ export function QuizStartPage() {
           prendre en main de la même façon. */}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
         <div className="flex min-w-0 flex-col gap-6">
-          {subscriptions.length === 0 ? (
+          {subscriptions.length === 0 && previewSubjects && previewSubjects.length > 0 && cursusPrepareId != null ? (
+            <ApercuMatieresQuiz cursusId={cursusPrepareId} subjects={previewSubjects} />
+          ) : subscriptions.length === 0 ? (
             <Card className="overflow-hidden border-primary/25 bg-gradient-to-br from-primary/5 via-transparent to-transparent">
               <CardContent className="flex flex-col items-start gap-4 pt-6">
                 {/* Le cadenas ne s'affiche que s'il dit vrai : à un abonné sans cursus
@@ -480,8 +590,11 @@ export function QuizStartPage() {
           <div className="flex flex-col gap-6 lg:sticky lg:top-20">
             {/* Sans abonnement, cette colonne ne rendait rien : la présentation occupait
                 60 % de la largeur et les 40 % restants étaient blancs, ce qui se lisait
-                comme une page inachevée plutôt que comme une page de présentation. */}
-            {subscriptions.length === 0 && (
+                comme une page inachevée plutôt que comme une page de présentation.
+                Une question de démo factice n'a plus de sens une fois la vraie liste
+                affichée à gauche (voir ApercuMatieresQuiz) - seul le cas "aucun cursus
+                connu" (previewSubjects vide) la garde. */}
+            {subscriptions.length === 0 && !(previewSubjects && previewSubjects.length > 0) && (
               <DemoQuizQuestion
                 lienConnexion={
                   !isAuthenticated ? (

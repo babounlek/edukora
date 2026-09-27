@@ -158,6 +158,19 @@ def _items_eligibles(cursus, subject=None, theme=None, savoir=None):
     return list(qs)
 
 
+def perimetre_est_vitrine(cursus, subject=None, theme=None, savoir=None):
+    """
+    True si le périmètre demandé (mêmes critères que _items_eligibles) est non vide et
+    entièrement composé d'items CompetenceItem.est_vitrine=True - seul cas où
+    quiz.views.start_session accepte une session sans abonnement actif. Un périmètre
+    trop large (ex. un subject entier dont un seul thème est vitrine) échoue
+    intentionnellement : la vitrine ne doit jamais laisser filtrer du contenu payant
+    mélangé à du contenu gratuit dans la même session.
+    """
+    items = _items_eligibles(cursus, subject=subject, theme=theme, savoir=savoir)
+    return bool(items) and all(item.est_vitrine for item in items)
+
+
 def _selection_stratifiee_par_difficulte(items, n):
     """
     Pioche selon _REPARTITION_DIAGNOSTIC. Si une tranche de difficulté n'a pas assez

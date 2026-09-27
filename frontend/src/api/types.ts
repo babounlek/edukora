@@ -172,6 +172,14 @@ export interface Subject {
    * (voir SubjectListSerializer côté backend) - absent des Subject imbriqués dans un
    * Cours ou une Épreuve, d'où l'optionnalité. */
   cours_count?: number
+  /** Nombre de questions de quiz VALIDE disponibles. Servi par /quiz/subjects/ seul
+   * (voir SubjectWithQuizCountSerializer côté backend), affiché même sans abonnement
+   * actif - voir project_gating_non_abonne_quiz_parcours. */
+  nb_questions?: number
+  /** Thème jouable en entier sans abonnement (voir CompetenceItem.est_vitrine côté
+   * backend), null si cette matière n'a pas de thème vitrine curé. Servi par
+   * /quiz/subjects/ seul, comme nb_questions. */
+  vitrine_theme_id?: number | null
 }
 
 export interface Pays {
