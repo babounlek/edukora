@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { Globe, Menu, Search, UserCircle } from "lucide-react"
+import { ChevronDown, Globe, History, LogOut, Menu, Receipt, Search, UserCircle } from "lucide-react"
 
 import { listEpreuves } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
@@ -20,7 +20,80 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+
+/**
+ * Le menu du compte : "Mon compte" restait le seul point d'entrée vers l'historique et les
+ * paiements, obligeant à charger toute la page /compte pour y accéder - ce menu déroulant les
+ * rend atteignables en un clic depuis n'importe quelle page, et allège /compte d'autant (voir
+ * AccountPage, dont les sections "Dernières tentatives" et "Ce que j'ai lu" ont déménagé vers
+ * /historique).
+ */
+function AccountMenu() {
+  const { user, logout } = useAuth()
+  const { country } = useCountry()
+  const navigate = useNavigate()
+
+  function handleLogout() {
+    logout()
+    // Différé plutôt qu'appelé juste après logout() : ce menu est désormais accessible
+    // depuis n'importe quelle page protégée (Mes paiements, Mon compte...), qui a
+    // chacune son propre useEffect de garde redirigeant vers /connexion dès que
+    // isAuthenticated passe à false. Cet effet se déclenche APRES ce gestionnaire
+    // (React ne les exécute qu'une fois le rendu commité), donc un navigate() appelé
+    // ici - avant ou après logout() - se fait systématiquement écraser par le sien.
+    // Le seul ordre qui gagne est un navigate() planifié après lui, d'où ce setTimeout.
+    setTimeout(() => navigate(catalogueHomePath(country), { replace: true }), 0)
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="sm" className="flex items-center gap-1.5">
+          <UserCircle className="size-4 shrink-0" />
+          {/* Tronqué sur petit écran : un nom complet un peu long (le champ est libre)
+              repoussait sinon la barre au-delà de la largeur de l'écran. */}
+          <span className="max-w-[7.5rem] truncate sm:max-w-none">
+            {user?.full_name || user?.pseudo || user?.phone_number}
+          </span>
+          <ChevronDown className="size-3.5 shrink-0 opacity-60" aria-hidden="true" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem asChild>
+          <Link to="/compte">
+            <UserCircle />
+            Mon compte
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/historique">
+            <History />
+            Mon historique
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/mes-paiements">
+            <Receipt />
+            Mes paiements
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onSelect={handleLogout} className="text-destructive focus:text-destructive [&_svg]:text-destructive">
+          <LogOut />
+          Déconnexion
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
 /**
  * `onNavigate` : appelé après un changement de pays, pour que l'exemplaire rendu
@@ -279,17 +352,7 @@ export function Header() {
             // déconnecté.
             <Skeleton className="h-8 w-20 rounded-md" />
           ) : isAuthenticated ? (
-            <Button asChild variant="ghost" size="sm">
-              <Link to="/compte" className="flex items-center gap-1.5">
-                <UserCircle className="size-4 shrink-0" />
-                {/* Tronqué sur petit écran : un nom complet un peu long (le champ est
-                    libre) repoussait sinon la barre au-delà de la largeur de l'écran,
-                    le même défaut que ci-dessus mais pour les visiteurs connectés. */}
-                <span className="max-w-[7.5rem] truncate sm:max-w-none">
-                  {user?.full_name || user?.pseudo || user?.phone_number}
-                </span>
-              </Link>
-            </Button>
+            <AccountMenu />
           ) : (
             <Button asChild size="sm">
               <Link to="/connexion">Connexion</Link>

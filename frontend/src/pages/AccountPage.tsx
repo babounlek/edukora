@@ -1,25 +1,21 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {
-  ArrowRight, BookOpen, CalendarClock, Check, CheckCircle2, Copy, Crown, FileText, GraduationCap, LogOut,
-  MessageCircle, NotebookPen, Pencil, Receipt, Settings2, Share2, Sparkles, TrendingUp, type LucideIcon,
+  ArrowRight, CalendarClock, Check, Copy, Crown, FileText, GraduationCap,
+  MessageCircle, NotebookPen, Pencil, Settings2, Share2, Sparkles, TrendingUp, type LucideIcon,
 } from "lucide-react"
 
 import {
-  getMyProgression,
   getWhatsAppStatus,
   listMyInscriptionsInedites,
   listMyInscriptionsRepetiteur,
   listMySubscriptions,
-  listMyTentativesInedites,
   optInWhatsApp,
   optOutWhatsApp,
   updateMe,
 } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type {
-  InscriptionInedite, InscriptionRepetiteur, Progression, Subscription, TentativeInediteListItem,
-} from "@/api/types"
+import type { InscriptionInedite, InscriptionRepetiteur, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
@@ -30,50 +26,15 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { formatNote } from "@/lib/notation"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
-import { catalogueHomePath, coursReaderPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
+import { epreuvesListPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
-
-// Au-delà de ce nombre, une liste (tentatives, lectures) passe derrière un "voir plus" - un
-// compte actif de longue date peut accumuler des dizaines d'entrées ; les afficher toutes
-// d'un bloc est la source concrète du "très touffu" signalé sur cette page.
-const PREVIEW_COUNT = 3
 
 // En dessous, la fin de l'abonnement se voit : la jauge passe à l'orange et "Prolonger" devient
 // l'action principale de la ligne. Assez tôt pour renouveler sans coupure, assez tard pour ne pas
 // harceler quelqu'un qui vient de payer.
 const JOURS_AVANT_RENOUVELLEMENT = 14
-
-/**
- * Tronque une liste à PREVIEW_COUNT éléments avec un bouton "voir plus" - un composant dédié
- * plutôt qu'un hook appelé inline dans un .map() du parent : les Hooks React ne peuvent pas être
- * appelés dans une boucle, alors qu'une instance de composant créée par .map() porte sans
- * problème son propre état - chaque liste garde son expansion indépendante des autres.
- */
-function ExpandableList<T>({
-  items, renderItem, previewCount = PREVIEW_COUNT,
-}: { items: T[]; renderItem: (item: T) => ReactNode; previewCount?: number }) {
-  const [expanded, setExpanded] = useState(false)
-  const visible = expanded ? items : items.slice(0, previewCount)
-  return (
-    <ul className="flex flex-col gap-2">
-      {visible.map(renderItem)}
-      {items.length > previewCount && (
-        <li>
-          <button
-            type="button"
-            onClick={() => setExpanded((e) => !e)}
-            className="text-sm font-medium text-primary hover:underline"
-          >
-            {expanded ? "Voir moins" : `Voir les ${items.length - previewCount} autres`}
-          </button>
-        </li>
-      )}
-    </ul>
-  )
-}
 
 /** Une section : titre avec pastille d'icône, action à droite, contenu dans une carte discrète. */
 function Section({
@@ -183,12 +144,10 @@ function LigneAcces({
 export function AccountPage() {
   useSeo({ title: "Mon compte" })
 
-  const { user, logout, isAuthenticated, isLoading, updateUser } = useAuth()
+  const { user, isAuthenticated, isLoading, updateUser } = useAuth()
   const { country } = useCountry()
   const navigate = useNavigate()
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
-  const [progression, setProgression] = useState<Progression | null>(null)
-  const [tentativesInedites, setTentativesInedites] = useState<TentativeInediteListItem[] | null>(null)
   const [inscriptionsInedites, setInscriptionsInedites] = useState<InscriptionInedite[] | null>(null)
   const [inscriptionsRepetiteur, setInscriptionsRepetiteur] = useState<InscriptionRepetiteur[] | null>(null)
   const [copied, setCopied] = useState(false)
@@ -208,8 +167,6 @@ export function AccountPage() {
       return
     }
     listMySubscriptions().then(setSubscriptions)
-    getMyProgression().then(setProgression)
-    listMyTentativesInedites().then(setTentativesInedites)
     listMyInscriptionsInedites().then(setInscriptionsInedites)
     listMyInscriptionsRepetiteur().then(setInscriptionsRepetiteur)
     getWhatsAppStatus().then((status) => setWhatsappOptedIn(status.opted_in))
@@ -223,11 +180,6 @@ export function AccountPage() {
     } finally {
       setWhatsappLoading(false)
     }
-  }
-
-  function handleLogout() {
-    logout()
-    navigate(catalogueHomePath(country))
   }
 
   function startEditingProfile() {
@@ -254,7 +206,6 @@ export function AccountPage() {
 
   if (isLoading || !user) return null
 
-  const totalRead = (progression?.lessons.length ?? 0) + (progression?.cours.length ?? 0)
   const referralLink = `${window.location.origin}/?ref=${user.referral_code}`
   const whatsappMessage = `Salut ! Je révise sur ${SITE_NAME} (corrigés BEPC/Probatoire/BAC) - viens jeter un œil : ${referralLink}`
 
@@ -409,97 +360,12 @@ export function AccountPage() {
         {/* Les raccourcis remplacent les anciens onglets Activité/Lectures/Fiches - chaque
             destination gère déjà elle-même son propre état (vide, verrouillé...), inutile de le
             dupliquer ici. */}
-        <nav aria-label="Raccourcis" className="grid grid-cols-3 gap-2 sm:gap-3">
+        <nav aria-label="Raccourcis" className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
           <Raccourci to="/carnet" icone={NotebookPen} libelle="Mon carnet" />
           <Raccourci to="/parcours" icone={TrendingUp} libelle="Ma progression" />
-          <Raccourci to="/mes-paiements" icone={Receipt} libelle="Mes paiements" />
           <Raccourci to="/fiches" icone={FileText} libelle="Fiches" />
           <Raccourci to={`${epreuvesListPath(country)}?origine=INEDITE`} icone={Crown} libelle="Inédites" />
         </nav>
-
-        {tentativesInedites && tentativesInedites.length > 0 && (
-          <Section icone={Crown} titre="Dernières tentatives inédites">
-            <ExpandableList
-              items={tentativesInedites}
-              renderItem={(tentative) => (
-                <li key={tentative.id}>
-                  <Link
-                    to={
-                      tentative.submitted_at
-                        ? `/inedit/tentative/${tentative.id}/resultat`
-                        : `/inedit/tentative/${tentative.id}`
-                    }
-                    className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/60 px-3.5 py-2.5 text-sm transition-colors hover:border-primary/40"
-                  >
-                    <span className="flex min-w-0 flex-col">
-                      <span className="truncate font-medium">{tentative.epreuve_titre}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {tentative.cursus_display} · {new Date(tentative.started_at).toLocaleDateString("fr-FR")}
-                      </span>
-                    </span>
-                    {tentative.submitted_at ? (
-                      <Badge variant={tentative.score_obtenu !== null && tentative.score_obtenu >= 50 ? "success" : "outline"}>
-                        {tentative.note_obtenue !== null && tentative.bareme_snapshot !== null
-                          ? formatNote(tentative.note_obtenue, tentative.bareme_snapshot)
-                          : `${tentative.score_obtenu}%`}
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline">En cours</Badge>
-                    )}
-                  </Link>
-                </li>
-              )}
-            />
-          </Section>
-        )}
-
-        {progression && totalRead > 0 && (
-          <Section icone={BookOpen} titre="Ce que j'ai lu">
-            <div className="flex flex-col gap-4">
-              {progression.lessons.length > 0 && (
-                <div>
-                  <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Épreuves</p>
-                  <ExpandableList
-                    items={progression.lessons}
-                    renderItem={(epreuve) => (
-                      <li key={epreuve.id}>
-                        <Link
-                          // progression.lessons vient de getMyProgression() (endpoint access, non
-                          // modifié) - toujours une Lesson classique.
-                          to={epreuveReaderPath(epreuve.subject.country.code.toLowerCase(), epreuve.slug as string)}
-                          className="flex items-center gap-2 rounded-xl border border-border bg-background/60 px-3.5 py-2 text-sm transition-colors hover:border-primary/40"
-                        >
-                          <CheckCircle2 className="size-3.5 shrink-0 text-success" />
-                          <span className="truncate">{epreuve.title}</span>
-                        </Link>
-                      </li>
-                    )}
-                  />
-                </div>
-              )}
-
-              {progression.cours.length > 0 && (
-                <div>
-                  <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Cours</p>
-                  <ExpandableList
-                    items={progression.cours}
-                    renderItem={(cours) => (
-                      <li key={cours.id}>
-                        <Link
-                          to={coursReaderPath(cours.slug)}
-                          className="flex items-center gap-2 rounded-xl border border-border bg-background/60 px-3.5 py-2 text-sm transition-colors hover:border-primary/40"
-                        >
-                          <CheckCircle2 className="size-3.5 shrink-0 text-success" />
-                          <span className="truncate">{cours.titre}</span>
-                        </Link>
-                      </li>
-                    )}
-                  />
-                </div>
-              )}
-            </div>
-          </Section>
-        )}
 
         {/* Parrainage : simple partage de lien avec des amis (décision du 2026-09-28, voir
             project_parrainage_eleve_recalibrage) - une carte discrète, l'action (copier/partager)
@@ -575,13 +441,6 @@ export function AccountPage() {
         </Section>
 
         <ConnexionMethodsCard />
-
-        <div className="flex justify-center pt-1">
-          <Button variant="ghost" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive">
-            <LogOut className="size-4" />
-            Se déconnecter
-          </Button>
-        </div>
       </div>
     </div>
   )
