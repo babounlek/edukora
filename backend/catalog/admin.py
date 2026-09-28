@@ -63,7 +63,7 @@ class ExamenLabelAdmin(admin.ModelAdmin):
 
 @admin.register(ExamSession)
 class ExamSessionAdmin(admin.ModelAdmin):
-    list_display = ["examen", "annee", "country", "date_debut"]
+    list_display = ["examen", "annee", "country", "date_debut", "date_fin"]
     list_filter = ["country", "examen"]
     ordering = ["-annee", "examen"]
 

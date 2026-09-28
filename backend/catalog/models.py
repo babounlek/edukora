@@ -35,6 +35,10 @@ class Examen(models.TextChoices):
     # les mêmes spécialités (Series) que le Bac technique - voir Filiere. Organisme
     # administrateur non confirmé (pas l'Office du Baccalauréat a priori).
     CAP = "CAP", "CAP"
+    # Système anglophone (General Certificate of Education), Cameroun - décision
+    # utilisateur du 2026-09-28. Organisme distinct du BEPC/Probatoire/BAC
+    # francophones, voir INSTITUTIONS_OFFICIELLES.
+    GCE = "GCE", "GCE"
     AUTRE = "AUTRE", "Devoir surveillé / Autre"
 
 
@@ -70,6 +74,7 @@ INSTITUTIONS_OFFICIELLES = {
     ("CM", "BAC"): "Office du Baccalauréat du Cameroun",
     ("CM", "PROBATOIRE"): "Office du Baccalauréat du Cameroun",
     ("CM", "BEPC"): "MINESEC",
+    ("CM", "GCE"): "Cameroon GCE Board",
 }
 
 
@@ -422,17 +427,29 @@ class Cursus(models.Model):
 
 class ExamSession(models.Model):
     """
-    Date de démarrage d'une session d'examen (BEPC/Probatoire/BAC) pour un pays et une
-    année donnés - saisie manuellement par un administrateur à partir du calendrier
-    officiel (ex. MINESEC au Cameroun), jamais déduite ni devinée : ces dates changent
-    chaque année et ne sont publiées qu'à l'approche de la session. Sert de base au
-    Plan "jusqu'à l'examen" (voir subscriptions.models.Plan.effective_duration_days).
+    Dates d'une session d'examen (BEPC/Probatoire/BAC) pour un pays et une année
+    donnés - saisies manuellement par un administrateur à partir du calendrier
+    officiel (ex. MINESEC au Cameroun), jamais déduites ni devinées : ces dates
+    changent chaque année et ne sont publiées qu'à l'approche de la session.
+    date_debut sert de base au compte à rebours affiché à l'élève (le suspense porte
+    sur le premier jour) ; date_fin sert de base à la durée d'accès facturée par le
+    Plan "jusqu'à l'examen" (voir subscriptions.models.Plan.effective_duration_days) -
+    décision utilisateur du 2026-09-28 : un examen dure plusieurs jours (BAC : 6,
+    GCE écrit : jusqu'à 17), l'accès ne doit pas s'arrêter au premier papier alors
+    que l'élève en a encore à préparer. Nullable/optionnelle pour ne pas bloquer la
+    saisie de date_debut seule quand la fin n'est pas encore connue - retombe alors
+    sur date_debut (voir compte_a_rebours_pour).
     """
 
     country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="exam_sessions")
     examen = models.CharField(max_length=20, choices=Examen.choices)
     annee = models.PositiveSmallIntegerField()
     date_debut = models.DateField(help_text="Premier jour de la session d'examen (calendrier officiel).")
+    date_fin = models.DateField(
+        null=True,
+        blank=True,
+        help_text="Dernier jour de la session d'examen (calendrier officiel). Vide si pas encore connu.",
+    )
 
     class Meta:
         constraints = [
@@ -458,11 +475,11 @@ class ExamSession(models.Model):
     @classmethod
     def compte_a_rebours_pour(cls, cursus):
         """
-        Jours restants avant l'examen de ce cursus, pour l'élève - là où
-        prochaine_pour ne sert qu'à facturer (voir
-        subscriptions.models.Plan.effective_duration_days), ce compte à rebours est
-        ce qu'on AFFICHE : il doit donc répondre quelque chose d'honnête même quand
-        la prochaine session n'est pas encore saisie.
+        Jours restants avant l'examen de ce cursus, pour l'élève - c'est ce qu'on
+        AFFICHE, mais aussi la source unique que réutilise
+        subscriptions.models.Plan.effective_duration_days pour facturer (via
+        `date_fin`, voir plus bas) : il doit donc répondre quelque chose d'honnête
+        même quand la prochaine session n'est pas encore saisie.
 
         Trois sorties possibles, jamais une date inventée sans le dire :
         - une session à venir existe -> sa date, `estimee` faux ;
@@ -471,6 +488,12 @@ class ExamSession(models.Model):
           frontend l'affiche alors au mois, jamais au jour) ;
         - aucune session pour ce (pays, examen) -> None, et l'appelant n'affiche
           simplement pas de compte à rebours.
+
+        `date_fin` (dernier jour de la session, potentiellement absent) est décalée
+        du même nombre d'années que `date_examen` quand elle est estimée - jamais
+        recalculée indépendamment, pour rester cohérente avec la session dont elle
+        provient. C'est elle, pas `date_examen`, que la facturation doit utiliser :
+        un examen dure plusieurs jours, l'accès ne doit pas s'arrêter au premier.
 
         La série du cursus n'intervient pas : une session d'examen vaut pour toutes
         les séries d'un même diplôme, et un élève qui n'a pas encore choisi la sienne
@@ -481,6 +504,7 @@ class ExamSession(models.Model):
         if session is not None:
             return {
                 "date_examen": session.date_debut,
+                "date_fin": session.date_fin,
                 "jours_restants": (session.date_debut - aujourdhui).days,
                 "session_label": f"{session.display_examen()} {session.annee}",
                 "estimee": False,
@@ -495,10 +519,14 @@ class ExamSession(models.Model):
             return None
 
         date_estimee = derniere.date_debut
+        date_fin_estimee = derniere.date_fin
         while date_estimee <= aujourdhui:
             date_estimee = _meme_jour_annee_suivante(date_estimee)
+            if date_fin_estimee is not None:
+                date_fin_estimee = _meme_jour_annee_suivante(date_fin_estimee)
         return {
             "date_examen": date_estimee,
+            "date_fin": date_fin_estimee,
             "jours_restants": (date_estimee - aujourdhui).days,
             "session_label": f"{derniere.display_examen()} {date_estimee.year}",
             "estimee": True,

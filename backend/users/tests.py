@@ -1244,7 +1244,7 @@ class EmailCodeSendingTests(TestCase):
             request_email_code("deux@example.com")
 
     def test_echec_smtp_remonte_en_exception_dediee(self):
-        with patch("users.email_service.send_mail", side_effect=OSError("smtp down")):
+        with patch("users.email_service.EmailMultiAlternatives.send", side_effect=OSError("smtp down")):
             with self.assertRaises(EmailSendFailed):
                 request_email_code("eleve@example.com")
         # La ligne est conservée volontairement : elle fait courir le délai anti-renvoi.
@@ -1447,7 +1447,7 @@ class EmailAuthAPITests(TestCase):
         self.assertEqual(reponse.status_code, 503)
 
     def test_panne_smtp_renvoie_503_et_pas_500(self):
-        with patch("users.email_service.send_mail", side_effect=OSError("smtp down")):
+        with patch("users.email_service.EmailMultiAlternatives.send", side_effect=OSError("smtp down")):
             reponse = self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
         self.assertEqual(reponse.status_code, 503)
 
@@ -1534,6 +1534,10 @@ class CursusPrepareEtCompteAReboursTests(TestCase):
         self.assertIsNone(reponse.data["compte_a_rebours"])
 
     def test_compte_a_rebours_depuis_la_prochaine_session(self):
+        # Le référentiel seedé (migration catalog 0056) porte désormais une vraie
+        # ExamSession pour ce cursus - à effacer pour tester un état propre, sinon la
+        # création ci-dessous violerait unique_exam_session.
+        ExamSession.objects.filter(country=self.cursus.country, examen=self.cursus.examen).delete()
         ExamSession.objects.create(
             country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year,
             date_debut=(timezone.now() + timedelta(days=60)).date(),
@@ -1550,6 +1554,8 @@ class CursusPrepareEtCompteAReboursTests(TestCase):
 
     def test_session_passee_donne_une_date_estimee_lannee_suivante(self):
         derniere = (timezone.now() - timedelta(days=30)).date()
+        # Voir le commentaire du test précédent - même effacement nécessaire.
+        ExamSession.objects.filter(country=self.cursus.country, examen=self.cursus.examen).delete()
         ExamSession.objects.create(
             country=self.cursus.country, examen=self.cursus.examen, annee=derniere.year,
             date_debut=derniere,
@@ -1611,6 +1617,8 @@ class CursusPrepareEtCompteAReboursTests(TestCase):
         # un élève qui n'a pas encore choisi la sienne ne doit pas en être privé.
         bepc = Cursus.objects.filter(examen=Examen.BEPC, series__isnull=True).first()
         self.assertIsNotNone(bepc, "Le référentiel seedé doit contenir un BEPC sans série.")
+        # Voir test_compte_a_rebours_depuis_la_prochaine_session - même effacement.
+        ExamSession.objects.filter(country=bepc.country, examen=bepc.examen).delete()
         ExamSession.objects.create(
             country=bepc.country, examen=bepc.examen, annee=timezone.now().year,
             date_debut=(timezone.now() + timedelta(days=90)).date(),

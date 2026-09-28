@@ -353,6 +353,9 @@ class PaymentFlowAPITests(TestCase):
         # tarif plein plutôt que le prix réellement affiché (voir mission tarification
         # 2026-08-19).
         mock_init.return_value = {"reference": "campay-ref-jusqua", "status": "PENDING"}
+        # Le référentiel seedé (migration catalog 0056) porte désormais une vraie
+        # ExamSession pour ce cursus - à effacer pour tester un état propre.
+        ExamSession.objects.filter(country=self.cursus.country, examen=self.cursus.examen).delete()
         ExamSession.objects.create(
             country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year,
             date_debut=(timezone.now() + timedelta(days=5)).date(),
@@ -670,6 +673,9 @@ class ManualPaymentDeclareAPITests(TestCase):
         # amount_expected et la validation de amount_declared doivent suivre
         # Plan.effective_price(), jamais le plafond `price` brut, sinon une déclaration
         # légitime au prix réellement affiché serait rejetée à tort.
+        # Le référentiel seedé (migration catalog 0056) porte désormais une vraie
+        # ExamSession pour ce cursus - à effacer pour tester un état propre.
+        ExamSession.objects.filter(country=self.cursus.country, examen=self.cursus.examen).delete()
         ExamSession.objects.create(
             country=self.cursus.country, examen=self.cursus.examen, annee=timezone.now().year,
             date_debut=(timezone.now() + timedelta(days=5)).date(),

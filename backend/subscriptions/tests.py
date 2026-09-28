@@ -47,6 +47,10 @@ class PlanEffectiveDurationDaysTests(TestCase):
 
     def test_jusqua_examen_computes_days_until_next_exam_session(self):
         cursus = _cursus()
+        # Le référentiel seedé (migration catalog 0056) porte désormais une vraie
+        # ExamSession BAC 2026 pour ce cursus - à effacer pour tester un état propre,
+        # sinon la création ci-dessous violerait unique_exam_session.
+        ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).delete()
         ExamSession.objects.create(
             country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
             date_debut=(timezone.now() + timedelta(days=45)).date(),
@@ -62,6 +66,8 @@ class PlanEffectiveDurationDaysTests(TestCase):
 
     def test_jusqua_examen_never_returns_less_than_one_day_even_if_exam_is_today(self):
         cursus = _cursus()
+        # Voir le commentaire du test précédent - même effacement nécessaire.
+        ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).delete()
         ExamSession.objects.create(
             country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
             date_debut=timezone.now().date(),
@@ -75,7 +81,9 @@ class PlanEffectiveDurationDaysTests(TestCase):
 
     def test_jusqua_examen_falls_back_to_duration_days_without_an_exam_session(self):
         cursus = _cursus()
-        self.assertFalse(ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).exists())
+        # Le référentiel seedé (migration catalog 0056) porte une vraie ExamSession
+        # BAC 2026 pour ce cursus - à effacer pour tester le cas "aucune session".
+        ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).delete()
         plan = Plan.objects.create(
             name="Jusqu'à l'examen", cursus=cursus, price=5000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
@@ -119,6 +127,8 @@ class PlanEffectivePriceTests(TestCase):
 
     def test_jusqua_examen_applies_the_staircase_in_the_middle_zone(self):
         cursus = _cursus()
+        # Voir le commentaire de PlanEffectiveDurationDaysTests - même effacement.
+        ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).delete()
         ExamSession.objects.create(
             country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
             date_debut=(timezone.now() + timedelta(days=100)).date(),
@@ -133,6 +143,7 @@ class PlanEffectivePriceTests(TestCase):
 
     def test_jusqua_examen_never_drops_below_the_floor_close_to_the_exam(self):
         cursus = _cursus()
+        ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).delete()
         ExamSession.objects.create(
             country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
             date_debut=(timezone.now() + timedelta(days=5)).date(),
@@ -145,7 +156,7 @@ class PlanEffectivePriceTests(TestCase):
 
     def test_jusqua_examen_without_a_session_applies_the_same_rule_to_the_fallback_duration(self):
         cursus = _cursus()
-        self.assertFalse(ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).exists())
+        ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).delete()
         plan = Plan.objects.create(
             name="Jusqu'à l'Examen", cursus=cursus, price=20000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,

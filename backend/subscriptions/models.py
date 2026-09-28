@@ -115,14 +115,30 @@ class Plan(models.Model):
         return self._effective_days_cache
 
     def _calculer_duree_jusqua_examen(self):
-        session = ExamSession.prochaine_pour(self.cursus.country, self.cursus.examen)
-        if session is None:
-            # Aucune date d'examen configurée pour ce (pays, examen) : filet de
+        """
+        Réutilise ExamSession.compte_a_rebours_pour - même source que le compte à
+        rebours affiché à l'élève (voir sa docstring) - plutôt qu'une simple lecture
+        de prochaine_pour : tant que la session de l'année en cours n'est pas encore
+        publiée, la durée facturée doit suivre la même estimation (dernière session
+        connue + 1 an) que ce qui est montré à l'écran, au lieu de retomber sur le
+        plafond du Plan comme si l'examen était loin. Décision utilisateur du
+        2026-09-28 - avant, ce filet de sécurité divergeait silencieusement de
+        l'affichage.
+
+        Compte jusqu'à `date_fin`, pas `date_examen` (premier jour) : un examen dure
+        plusieurs jours (BAC : 6, GCE écrit : jusqu'à 17) et l'accès ne doit pas
+        s'arrêter au premier papier alors que l'élève en prépare encore d'autres -
+        décision utilisateur du 2026-09-28. Repli sur `date_examen` si `date_fin`
+        n'est pas encore saisie (voir ExamSession.date_fin), jamais bloquant.
+        """
+        compte_a_rebours = ExamSession.compte_a_rebours_pour(self.cursus)
+        if compte_a_rebours is None:
+            # Aucune session, même passée, pour ce (pays, examen) : filet de
             # sécurité, on retombe sur duration_days plutôt que de bloquer un
             # paiement déjà encaissé ou d'afficher une durée absurde.
             return self.duration_days
-        jours = (session.date_debut - timezone.now().date()).days
-        return max(jours, 1)
+        fin = compte_a_rebours["date_fin"] or compte_a_rebours["date_examen"]
+        return max((fin - timezone.now().date()).days, 1)
 
     def effective_price(self):
         """
