@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ChevronDown, Globe, History, LogOut, Menu, Receipt, Search, UserCircle } from "lucide-react"
+import { ChevronDown, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, UserCircle } from "lucide-react"
 
 import { listEpreuves } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
@@ -30,11 +30,11 @@ import {
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 /**
- * Le menu du compte : "Mon compte" restait le seul point d'entrée vers l'historique et les
- * paiements, obligeant à charger toute la page /compte pour y accéder - ce menu déroulant les
+ * Le menu du compte : "Mon compte" restait le seul point d'entrée vers les accès, l'historique et
+ * les paiements, obligeant à charger toute la page /compte pour y accéder - ce menu déroulant les
  * rend atteignables en un clic depuis n'importe quelle page, et allège /compte d'autant (voir
- * AccountPage, dont les sections "Dernières tentatives" et "Ce que j'ai lu" ont déménagé vers
- * /historique).
+ * AccountPage, dont les sections "Mes accès", "Dernières tentatives" et "Ce que j'ai lu" ont
+ * déménagé vers /mes-acces et /historique).
  */
 function AccountMenu() {
   const { user, logout } = useAuth()
@@ -71,6 +71,12 @@ function AccountMenu() {
           <Link to="/compte">
             <UserCircle />
             Mon compte
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/mes-acces">
+            <Sparkles />
+            Mes accès
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

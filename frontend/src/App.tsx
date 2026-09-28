@@ -37,6 +37,7 @@ const LoginPage = lazy(() => import("@/pages/LoginPage").then((m) => ({ default:
 const SubscribePage = lazy(() => import("@/pages/SubscribePage").then((m) => ({ default: m.SubscribePage })))
 const PricingPage = lazy(() => import("@/pages/PricingPage").then((m) => ({ default: m.PricingPage })))
 const AccountPage = lazy(() => import("@/pages/AccountPage").then((m) => ({ default: m.AccountPage })))
+const AccesPage = lazy(() => import("@/pages/AccesPage").then((m) => ({ default: m.AccesPage })))
 const HistoriquePage = lazy(() => import("@/pages/HistoriquePage").then((m) => ({ default: m.HistoriquePage })))
 const CarnetPage = lazy(() => import("@/pages/CarnetPage").then((m) => ({ default: m.CarnetPage })))
 const MesPaiementsPage = lazy(() => import("@/pages/MesPaiementsPage").then((m) => ({ default: m.MesPaiementsPage })))
@@ -121,6 +122,7 @@ function App() {
                       <Route path="/tarifs" element={<PricingPage />} />
                       <Route path="/abonnement" element={<SubscribePage />} />
                       <Route path="/compte" element={<AccountPage />} />
+                      <Route path="/mes-acces" element={<AccesPage />} />
                       <Route path="/historique" element={<HistoriquePage />} />
                       <Route path="/carnet" element={<CarnetPage />} />
                       <Route path="/mes-paiements" element={<MesPaiementsPage />} />

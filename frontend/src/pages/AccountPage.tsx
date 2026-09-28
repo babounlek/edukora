@@ -1,21 +1,12 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {
-  ArrowRight, CalendarClock, Check, Copy, Crown, FileText, GraduationCap,
+  Check, Copy, Crown, FileText, GraduationCap,
   MessageCircle, NotebookPen, Pencil, Settings2, Share2, Sparkles, TrendingUp, type LucideIcon,
 } from "lucide-react"
 
-import {
-  getWhatsAppStatus,
-  listMyInscriptionsInedites,
-  listMyInscriptionsRepetiteur,
-  listMySubscriptions,
-  optInWhatsApp,
-  optOutWhatsApp,
-  updateMe,
-} from "@/api/endpoints"
+import { getWhatsAppStatus, optInWhatsApp, optOutWhatsApp, updateMe } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { InscriptionInedite, InscriptionRepetiteur, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
@@ -23,18 +14,12 @@ import { formatCompteARebours, formatCursus } from "@/components/CompteAReboursB
 import { ConnexionMethodsCard } from "@/components/ConnexionMethodsCard"
 import { InterrupteurRappelsEmail } from "@/components/RappelsEmail"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import { epreuvesListPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
-
-// En dessous, la fin de l'abonnement se voit : la jauge passe à l'orange et "Prolonger" devient
-// l'action principale de la ligne. Assez tôt pour renouveler sans coupure, assez tard pour ne pas
-// harceler quelqu'un qui vient de payer.
-const JOURS_AVANT_RENOUVELLEMENT = 14
 
 /** Une section : titre avec pastille d'icône, action à droite, contenu dans une carte discrète. */
 function Section({
@@ -54,102 +39,12 @@ function Section({
   )
 }
 
-/** Un état vide qui propose la suite plutôt que de constater le vide. */
-function EtatVide({
-  texte, lien, libelleLien,
-}: { texte: string; lien: string; libelleLien: string }) {
-  return (
-    <div className="rounded-xl border border-dashed border-border bg-muted/30 px-4 py-4 text-center">
-      <p className="text-sm text-muted-foreground">{texte}</p>
-      <Link to={lien} className="mt-1.5 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-        {libelleLien}
-        <ArrowRight className="size-3.5" />
-      </Link>
-    </div>
-  )
-}
-
-function joursRestants(expiresAt: string): number {
-  return Math.ceil((new Date(expiresAt).getTime() - Date.now()) / 86_400_000)
-}
-
-function dateFr(iso: string): string {
-  return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
-}
-
-function libelleCursus(cursus: Subscription["cursus"]): string {
-  return `${cursus.examen_display}${cursus.series ? ` - Série ${cursus.series.code}` : ""}`
-}
-
-/**
- * Un accès (abonnement ou add-on) : ce qu'il donne, jusqu'à quand, et - surtout - ce qu'il faut faire.
- * Les jours restants se lisent d'un coup d'œil (jauge sur 30 jours, orange à l'approche de la fin) et
- * "Prolonger" apparaît AVANT l'expiration : renouveler quand on est encore en pleine révision, pas
- * après avoir perdu l'accès. Une prolongation repart de l'échéance existante (voir
- * Subscription.extend) : rien n'est perdu à le faire tôt.
- */
-function LigneAcces({
-  titre, sous_titre, expiresAt, actif, cursusId, renouvelable = true,
-}: {
-  titre: string
-  sous_titre?: string
-  expiresAt: string
-  actif: boolean
-  cursusId: number
-  renouvelable?: boolean
-}) {
-  const jours = joursRestants(expiresAt)
-  const bientot = actif && jours <= JOURS_AVANT_RENOUVELLEMENT
-  return (
-    <li className="rounded-xl border border-border bg-background/60 p-3.5">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-sm font-semibold leading-snug">{titre}</p>
-          {sous_titre && <p className="text-xs text-muted-foreground">{sous_titre}</p>}
-        </div>
-        {actif ? (
-          <Badge variant="success" className="shrink-0 gap-1">
-            <Check className="size-3" strokeWidth={3} />
-            Actif
-          </Badge>
-        ) : (
-          <Badge variant="outline" className="shrink-0">Expiré</Badge>
-        )}
-      </div>
-
-      {actif ? (
-        <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5 text-xs">
-          <span className={cn("inline-flex items-center gap-1.5 whitespace-nowrap", bientot ? "font-medium text-warning-foreground dark:text-warning" : "text-muted-foreground")}>
-            <CalendarClock className="size-3.5" aria-hidden="true" />
-            {jours > 1 ? `${jours} jours restants` : jours === 1 ? "Dernier jour" : "Expire aujourd'hui"}
-          </span>
-          <span className="text-muted-foreground">jusqu'au {dateFr(expiresAt)}</span>
-        </div>
-      ) : (
-        <p className="mt-2 text-xs text-muted-foreground">Expiré le {dateFr(expiresAt)}.</p>
-      )}
-
-      {renouvelable && (!actif || bientot) && (
-        <Button asChild size="sm" variant={actif ? "default" : "outline"} className="mt-3 h-8 rounded-full text-xs">
-          <Link to={`/abonnement?cursus=${cursusId}`}>
-            {actif ? "Prolonger" : "Se réabonner"}
-            <ArrowRight className="size-3.5" />
-          </Link>
-        </Button>
-      )}
-    </li>
-  )
-}
-
 export function AccountPage() {
   useSeo({ title: "Mon compte" })
 
   const { user, isAuthenticated, isLoading, updateUser } = useAuth()
   const { country } = useCountry()
   const navigate = useNavigate()
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
-  const [inscriptionsInedites, setInscriptionsInedites] = useState<InscriptionInedite[] | null>(null)
-  const [inscriptionsRepetiteur, setInscriptionsRepetiteur] = useState<InscriptionRepetiteur[] | null>(null)
   const [copied, setCopied] = useState(false)
   const [whatsappOptedIn, setWhatsappOptedIn] = useState<boolean | null>(null)
   const [whatsappLoading, setWhatsappLoading] = useState(false)
@@ -166,9 +61,6 @@ export function AccountPage() {
       navigate("/connexion", { state: { from: "/compte" } })
       return
     }
-    listMySubscriptions().then(setSubscriptions)
-    listMyInscriptionsInedites().then(setInscriptionsInedites)
-    listMyInscriptionsRepetiteur().then(setInscriptionsRepetiteur)
     getWhatsAppStatus().then((status) => setWhatsappOptedIn(status.opted_in))
   }, [isLoading, isAuthenticated, navigate])
 
@@ -223,43 +115,6 @@ export function AccountPage() {
     .map((mot) => mot.charAt(0).toLocaleUpperCase("fr"))
     .join("")
   const compte = user.compte_a_rebours ? formatCompteARebours(user.compte_a_rebours) : ""
-
-  // Les trois sources d'accès (abonnement, add-on inédites, add-on répétiteur) partagent la même
-  // forme (cursus/expires_at/is_active) : une seule liste "Mes accès" plutôt que trois blocs
-  // distincts qui répètent chacun leur propre état vide - la duplication constatée sur l'ancienne
-  // version de cette page. null = pas encore chargé, on n'affiche rien avant de savoir.
-  const accesCharges = inscriptionsInedites !== null && inscriptionsRepetiteur !== null
-  const acces = [
-    ...subscriptions.map((sub) => ({
-      key: `sub-${sub.id}`,
-      titre: libelleCursus(sub.cursus),
-      sous_titre: sub.plan_name ?? (sub.duration_mode === "JUSQUA_EXAMEN" ? "Jusqu'à l'Examen" : "Mensuel"),
-      expiresAt: sub.expires_at,
-      actif: sub.is_active,
-      cursusId: sub.cursus.id,
-      // Un accès "Jusqu'à l'Examen" couvre déjà l'échéance : lui proposer de prolonger n'aurait
-      // aucun sens tant qu'il est actif.
-      renouvelable: sub.duration_mode !== "JUSQUA_EXAMEN" || !sub.is_active,
-    })),
-    ...(inscriptionsInedites ?? []).map((i) => ({
-      key: `inedit-${i.id}`,
-      titre: libelleCursus(i.cursus),
-      sous_titre: "Épreuves inédites",
-      expiresAt: i.expires_at,
-      actif: i.is_active,
-      cursusId: i.cursus.id,
-      renouvelable: true,
-    })),
-    ...(inscriptionsRepetiteur ?? []).map((i) => ({
-      key: `repet-${i.id}`,
-      titre: libelleCursus(i.cursus),
-      sous_titre: "Add-on Fiches",
-      expiresAt: i.expires_at,
-      actif: i.is_active,
-      cursusId: i.cursus.id,
-      renouvelable: true,
-    })),
-  ]
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:py-10 sm:px-6">
@@ -341,26 +196,15 @@ export function AccountPage() {
       )}
 
       <div className="flex flex-col gap-4">
-        <Section icone={Sparkles} titre="Mes accès">
-          {acces.length > 0 ? (
-            <ul className="flex flex-col gap-2.5">
-              {acces.map(({ key, ...props }) => <LigneAcces key={key} {...props} />)}
-            </ul>
-          ) : accesCharges ? (
-            <EtatVide
-              texte="Aucun accès actif pour le moment. Choisis ton examen pour débloquer les corrigés, les cours et ta séance du jour."
-              lien="/tarifs"
-              libelleLien="Voir les formules"
-            />
-          ) : null}
-        </Section>
-
         {user.cursus_prepare && <BilanDePeriode cursusId={user.cursus_prepare.id} />}
 
         {/* Les raccourcis remplacent les anciens onglets Activité/Lectures/Fiches - chaque
             destination gère déjà elle-même son propre état (vide, verrouillé...), inutile de le
-            dupliquer ici. */}
-        <nav aria-label="Raccourcis" className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+            dupliquer ici. "Mes accès" vit aussi dans le menu du header (voir Header.tsx), comme
+            "Mon historique" et "Mes paiements" - présent ici en plus parce que c'est l'information
+            la plus naturellement attendue en arrivant sur /compte. */}
+        <nav aria-label="Raccourcis" className="grid grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-3">
+          <Raccourci to="/mes-acces" icone={Sparkles} libelle="Mes accès" />
           <Raccourci to="/carnet" icone={NotebookPen} libelle="Mon carnet" />
           <Raccourci to="/parcours" icone={TrendingUp} libelle="Ma progression" />
           <Raccourci to="/fiches" icone={FileText} libelle="Fiches" />
