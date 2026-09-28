@@ -9,9 +9,9 @@ import {
 } from "@/api/endpoints"
 import type { InscriptionInedite, InscriptionRepetiteur, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { EnteteCompte, EtatVide, Section } from "@/components/CompteSection"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
@@ -39,7 +39,7 @@ function libelleCursus(cursus: Subscription["cursus"]): string {
  * l'échéance existante (voir Subscription.extend) : rien n'est perdu à le faire tôt.
  */
 function LigneAcces({
-  titre, sous_titre, expiresAt, actif, cursusId, renouvelable = true, style,
+  titre, sous_titre, expiresAt, actif, cursusId, renouvelable = true,
 }: {
   titre: string
   sous_titre?: string
@@ -47,15 +47,14 @@ function LigneAcces({
   actif: boolean
   cursusId: number
   renouvelable?: boolean
-  style?: React.CSSProperties
 }) {
   const jours = joursRestants(expiresAt)
   const bientot = actif && jours <= JOURS_AVANT_RENOUVELLEMENT
   return (
-    <li style={style} className="animate-fade-up rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-5">
+    <li className="rounded-xl border border-border bg-background/60 p-3.5">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="font-display text-base font-semibold leading-snug">{titre}</p>
+          <p className="text-sm font-semibold leading-snug">{titre}</p>
           {sous_titre && <p className="text-xs text-muted-foreground">{sous_titre}</p>}
         </div>
         {actif ? (
@@ -69,7 +68,7 @@ function LigneAcces({
       </div>
 
       {actif ? (
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-border/70 pt-3 text-xs">
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5 text-xs">
           <span className={cn("inline-flex items-center gap-1.5 whitespace-nowrap", bientot ? "font-medium text-warning-foreground dark:text-warning" : "text-muted-foreground")}>
             <CalendarClock className="size-3.5" aria-hidden="true" />
             {jours > 1 ? `${jours} jours restants` : jours === 1 ? "Dernier jour" : "Expire aujourd'hui"}
@@ -77,11 +76,11 @@ function LigneAcces({
           <span className="text-muted-foreground">jusqu'au {dateFr(expiresAt)}</span>
         </div>
       ) : (
-        <p className="mt-3 border-t border-border/70 pt-3 text-xs text-muted-foreground">Expiré le {dateFr(expiresAt)}.</p>
+        <p className="mt-2 text-xs text-muted-foreground">Expiré le {dateFr(expiresAt)}.</p>
       )}
 
       {renouvelable && (!actif || bientot) && (
-        <Button asChild size="sm" variant={actif ? "default" : "outline"} className="mt-3 rounded-full">
+        <Button asChild size="sm" variant={actif ? "default" : "outline"} className="mt-3 h-8 rounded-full text-xs">
           <Link to={`/abonnement?cursus=${cursusId}`}>
             {actif ? "Prolonger" : "Se réabonner"}
             <ArrowRight className="size-3.5" />
@@ -151,66 +150,29 @@ export function AccesPage() {
     })),
   ]
 
-  const actifs = acces.filter((a) => a.actif)
-  const prochaineEcheance = actifs.length > 0 ? Math.min(...actifs.map((a) => joursRestants(a.expiresAt))) : null
-
   return (
-    <div className="mx-auto max-w-3xl animate-fade-up px-4 py-6 sm:py-10">
-      <section className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
-        <Sparkles aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
-        <div className="relative">
-          <p className="mb-2 font-display text-sm italic text-primary">Abonnement</p>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-balance sm:text-4xl">Mes accès</h1>
-          <p className="mt-2 max-w-xl text-muted-foreground">
-            Ce que ton compte débloque aujourd'hui, examen par examen, et jusqu'à quand.
-          </p>
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:py-10 sm:px-6">
+      <EnteteCompte
+        icone={Sparkles}
+        titre="Mes accès"
+        sousTitre="Ce que ton compte débloque aujourd'hui, examen par examen."
+      />
 
-          {charge && actifs.length > 0 && (
-            <dl className="mt-5 grid grid-cols-2 gap-2 sm:gap-3">
-              <Resume valeur={String(actifs.length)} libelle={actifs.length > 1 ? "accès actifs" : "accès actif"} />
-              <Resume valeur={prochaineEcheance !== null ? `${prochaineEcheance} j` : "-"} libelle="avant la prochaine échéance" />
-            </dl>
-          )}
-        </div>
-      </section>
-
-      {!charge ? (
-        <div className="flex flex-col gap-4" aria-busy="true" aria-label="Chargement des accès">
-          <Skeleton className="h-32 w-full rounded-3xl" />
-          <Skeleton className="h-32 w-full rounded-3xl" />
-        </div>
-      ) : acces.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border bg-card/60 px-6 py-12 text-center">
-          <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-            <Sparkles className="size-6" />
-          </span>
-          <p className="font-display text-lg font-semibold">Aucun accès actif pour le moment</p>
-          <p className="max-w-sm text-sm text-muted-foreground">
-            Choisis ton examen pour débloquer les corrigés, les cours et ta séance du jour.
-          </p>
-          <Button asChild className="mt-1 rounded-full">
-            <Link to="/tarifs">
-              Voir les formules
-              <ArrowRight className="size-3.5" />
-            </Link>
-          </Button>
-        </div>
-      ) : (
-        <ul className="flex flex-col gap-3">
-          {acces.map(({ key, ...props }, index) => (
-            <LigneAcces key={key} {...props} style={{ animationDelay: `${Math.min(index, 6) * 60}ms` }} />
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
-
-function Resume({ valeur, libelle }: { valeur: string; libelle: string }) {
-  return (
-    <div className="rounded-2xl border border-border/70 bg-background/70 px-3 py-3 text-center backdrop-blur-sm">
-      <dd className="font-display text-2xl font-semibold tabular-nums leading-none sm:text-3xl">{valeur}</dd>
-      <dt className="mt-1.5 text-xs leading-tight text-muted-foreground">{libelle}</dt>
+      <Section icone={Sparkles} titre="Abonnements et accès">
+        {acces.length > 0 ? (
+          <ul className="flex flex-col gap-2.5">
+            {acces.map(({ key, ...props }) => <LigneAcces key={key} {...props} />)}
+          </ul>
+        ) : charge ? (
+          <EtatVide
+            texte="Aucun accès actif pour le moment. Choisis ton examen pour débloquer les corrigés, les cours et ta séance du jour."
+            lien="/tarifs"
+            libelleLien="Voir les formules"
+          />
+        ) : (
+          <p className="text-sm text-muted-foreground">Chargement…</p>
+        )}
+      </Section>
     </div>
   )
 }

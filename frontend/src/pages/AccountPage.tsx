@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from "react"
+import { useEffect, useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {
   Check, Copy, Crown, FileText, GraduationCap,
@@ -13,6 +13,7 @@ import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { formatCompteARebours, formatCursus } from "@/components/CompteAReboursBadge"
 import { ConnexionMethodsCard } from "@/components/ConnexionMethodsCard"
 import { InterrupteurRappelsEmail } from "@/components/RappelsEmail"
+import { Section } from "@/components/CompteSection"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,24 +21,6 @@ import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import { epreuvesListPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
-
-/** Une section : titre avec pastille d'icône, action à droite, contenu dans une carte discrète. */
-function Section({
-  icone: Icone, titre, action, children, className,
-}: { icone: LucideIcon; titre: string; action?: ReactNode; children: ReactNode; className?: string }) {
-  return (
-    <section className={cn("rounded-2xl border border-border bg-card p-4 sm:p-5", className)}>
-      <div className="mb-3 flex items-center justify-between gap-3">
-        <h2 className="flex items-center gap-2 font-display text-base font-semibold">
-          <Icone className="size-4 text-primary" aria-hidden="true" />
-          {titre}
-        </h2>
-        {action}
-      </div>
-      {children}
-    </section>
-  )
-}
 
 export function AccountPage() {
   useSeo({ title: "Mon compte" })
