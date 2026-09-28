@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-loi-decroissance-radioactive-demi-vie-tle",
+  "meta": {
+    "titre": "Loi de décroissance radioactive et demi-vie",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Radioactivité",
+    "duree_estimee_min": 25,
+    "tags": [
+      "décroissance radioactive",
+      "demi-vie",
+      "nombre d'Avogadro"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-1999-PHYSIQUE-CAMEROUN",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, session 1999 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-physique-1999-officiel-cameroun-ex4-q2.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le carbone 14 permet de dater des ossements vieux de milliers d'années, alors que personne n'a jamais observé sa désintégration en temps réel. Ce tour de force repose sur une seule loi mathématique, la loi de décroissance radioactive, qui permet de prédire avec précision combien de noyaux radioactifs subsistent après n'importe quelle durée, à condition de connaître la demi-vie de l'élément."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition de la demi-vie d'un échantillon radioactif",
+        "Savoir calculer un nombre de moles et utiliser le nombre d'Avogadro",
+        "Manipuler la fonction exponentielle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de décroissance radioactive",
+      "contenu_markdown": "Le nombre de noyaux radioactifs restants dans un échantillon décroît selon la loi $N(t)=N_0\\,e^{-\\lambda t}$, où $N_0$ est le nombre initial de noyaux et $\\lambda$ la constante radioactive de l'élément, liée à sa demi-vie T par $\\lambda=\\ln2/T$. Cette loi se réécrit de façon équivalente $N(t)=N_0\\left(\\tfrac12\\right)^{t/T}$, forme souvent plus pratique lorsqu'on raisonne directement en nombre de demi-vies écoulées $t/T$. Le nombre initial de noyaux se calcule, à partir d'une masse $m$ d'échantillon de masse molaire $M$, par $N_0=\\dfrac{m}{M}\\,\\mathcal{N}_A$, avec $\\mathcal{N}_A$ le nombre d'Avogadro.",
+      "formule_principale": "N(t) = N_0\\left(\\dfrac12\\right)^{t/T}, \\qquad N_0 = \\dfrac{m}{M}\\,\\mathcal{N}_A"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un échantillon de $1\\ \\text{g}$ de Bismuth 212 ($M=211{,}9\\ \\text{g/mol}$, demi-vie $T=60\\ \\text{min}$) est préparé à $t=0$. Calculer le nombre de noyaux radioactifs restants après $12\\ \\text{minutes}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le nombre initial de noyaux",
+          "justification": "$N_0=\\dfrac{m}{M}\\,\\mathcal{N}_A$.",
+          "resultat_markdown": "$N_0 = \\dfrac{1}{211{,}9}\\times6{,}02\\times10^{23} \\approx 2{,}841\\times10^{21}\\ \\text{noyaux}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le nombre de demi-vies écoulées",
+          "justification": "$t/T$ avec $t=12\\ \\text{min}$ et $T=60\\ \\text{min}$.",
+          "resultat_markdown": "$t/T = 12/60 = 0{,}2$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la loi de décroissance",
+          "justification": "$N(t)=N_0\\,(1/2)^{t/T}$.",
+          "resultat_markdown": "$N(12\\ \\text{min}) = 2{,}841\\times10^{21}\\times2^{-0{,}2} \\approx 2{,}841\\times10^{21}\\times0{,}8706 \\approx 2{,}47\\times10^{21}\\ \\text{noyaux}$"
+        }
+      ],
+      "conclusion_markdown": "Il reste environ $2{,}47\\times10^{21}$ noyaux radioactifs après $12$ minutes, sur les $2{,}84\\times10^{21}$ noyaux initiaux."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement $t=12$ et $T=60$ dans $e^{-\\lambda t}$ sans calculer $\\lambda$, en écrivant par erreur $N(t)=N_0e^{-t/T}$.",
+          "pourquoi_faux": "La constante radioactive est $\\lambda=\\ln2/T$, pas $1/T$ : oublier le facteur $\\ln2$ fausse complètement le résultat. Il est plus sûr d'utiliser directement la forme équivalente $N(t)=N_0(1/2)^{t/T}$, qui évite ce piège.",
+          "correction_markdown": "Privilégie la forme $N(t)=N_0(1/2)^{t/T}$ quand l'énoncé donne la demi-vie plutôt que $\\lambda$ directement : elle élimine le risque d'oublier le facteur $\\ln2$."
+        },
+        {
+          "erreur_markdown": "Confondre le nombre de moles $m/M$ avec le nombre de noyaux $N_0$, en oubliant de multiplier par $\\mathcal{N}_A$.",
+          "pourquoi_faux": "$m/M$ donne une quantité de matière en MOLES, pas un nombre de noyaux : il faut toujours multiplier par le nombre d'Avogadro pour obtenir un nombre de noyaux (ou d'atomes/molécules).",
+          "correction_markdown": "Vérifie systématiquement l'unité de chaque grandeur intermédiaire : $m/M$ est en mol, $(m/M)\\times\\mathcal{N}_A$ est un nombre pur (nombre de noyaux)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un échantillon contient $N_0=4\\times10^{20}$ noyaux radioactifs de demi-vie $T=10\\ \\text{min}$. Combien en reste-t-il après $10\\ \\text{minutes}$ ? Après $20\\ \\text{minutes}$ ?",
+          "solution_markdown": "Après une demi-vie ($t=T$) : $N=N_0/2=2\\times10^{20}$. Après deux demi-vies ($t=2T$) : $N=N_0/4=1\\times10^{20}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer le nombre initial de noyaux dans un échantillon de $2\\ \\text{g}$ d'un élément de masse molaire $M=60\\ \\text{g/mol}$.",
+          "solution_markdown": "$N_0=\\dfrac{2}{60}\\times6{,}02\\times10^{23}\\approx2{,}01\\times10^{22}\\ \\text{noyaux}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un échantillon radioactif de demi-vie $T=8\\ \\text{jours}$ voit son nombre de noyaux divisé par 8. Calculer la durée écoulée.",
+          "solution_markdown": "$N(t)/N_0=1/8=(1/2)^3$, donc $t/T=3$, soit $t=3\\times8=24\\ \\text{jours}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de décroissance radioactive $N(t)=N_0(1/2)^{t/T}$ permet de calculer le nombre de noyaux restants à partir du nombre de demi-vies écoulées $t/T$.",
+        "Le nombre initial de noyaux se calcule par $N_0=(m/M)\\,\\mathcal{N}_A$, jamais en oubliant le facteur $\\mathcal{N}_A$.",
+        "Une durée bien plus courte qu'une demi-vie ne fait diminuer $N$ que très légèrement : vérifie toujours la cohérence de ton résultat avec $t/T$.",
+        "Cette loi est universelle : elle s'applique à tout élément radioactif, quelle que soit sa demi-vie, de la microseconde au milliard d'années."
+      ]
+    }
+  ]
+}

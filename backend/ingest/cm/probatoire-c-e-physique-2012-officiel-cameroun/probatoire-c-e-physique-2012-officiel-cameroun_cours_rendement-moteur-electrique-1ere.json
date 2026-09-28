@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-rendement-moteur-electrique-1ere",
+  "meta": {
+    "titre": "Le rendement d'un moteur électrique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Circuits électriques en courant continu",
+    "duree_estimee_min": 20,
+    "tags": [
+      "moteur électrique",
+      "rendement",
+      "f.c.é.m.",
+      "puissance utile",
+      "effet Joule"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2012-officiel-cameroun",
+    "epreuve_titre": "Probatoire scientifique - Physique - Session de 2011 - Série C-E",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2012-officiel-cameroun-ex3-qA2-2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un moteur électrique ne transforme jamais la totalité de l'énergie électrique reçue en énergie mécanique utile : une partie est systématiquement dissipée par effet Joule dans sa résistance interne. Le rendement chiffre exactement cette perte, et se calcule directement à partir de deux grandeurs faciles à mesurer : la tension à ses bornes et sa f.c.é.m."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi d'Ohm généralisée du récepteur actif : $U = E' + r'I$",
+        "Savoir que la puissance électrique reçue par un dipôle est $P = UI$",
+        "Savoir que la puissance dissipée par effet Joule dans une résistance est $P_J = rI^2$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rendement d'un moteur : rapport puissance utile / puissance reçue",
+      "contenu_markdown": "Un moteur électrique alimenté sous une tension U et traversé par un courant I reçoit une puissance électrique totale $P_{abs} = UI$. Une partie de cette puissance est dissipée par effet Joule dans sa résistance interne r' : $P_J = r'I^2$. Le reste est converti en puissance mécanique utile : $P_{util} = P_{abs} - P_J = UI - r'I^2 = (U - r'I)\\,I = E'\\,I$, car $U - r'I = E'$ d'après la loi d'Ohm généralisée. Le rendement du moteur est le rapport de la puissance utile à la puissance absorbée : $\\eta = \\dfrac{P_{util}}{P_{abs}} = \\dfrac{E'I}{UI} = \\dfrac{E'}{U}$, toujours compris strictement entre 0 et 1 (ou exprimé en pourcentage).",
+      "formule_principale": "\\eta = \\dfrac{E'}{U}",
+      "variantes": [
+        "\\eta = \\dfrac{P_{util}}{P_{abs}} = \\dfrac{UI - r'I^2}{UI}"
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un moteur de f.c.é.m. $E'=12\\,\\text{V}$ et de résistance interne $r'=2\\,\\Omega$ est traversé par un courant $I_2=2{,}36\\,\\text{A}$ sous une tension $U=16{,}8\\,\\text{V}$ à ses bornes. Calculer son rendement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance électrique absorbée par le moteur",
+          "justification": "Définition de la puissance reçue par un dipôle sous tension U traversé par un courant I.",
+          "resultat_markdown": "$P_{abs} = U\\,I_2 = 16{,}8 \\times 2{,}36 \\approx 39{,}65\\,\\text{W}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance dissipée par effet Joule dans le moteur",
+          "justification": "Formule de la puissance dissipée dans une résistance parcourue par un courant.",
+          "resultat_markdown": "$P_J = r'\\,I_2^2 = 2 \\times 2{,}36^2 \\approx 11{,}14\\,\\text{W}$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire la puissance utile (mécanique) du moteur",
+          "justification": "La puissance utile est ce qui reste de la puissance absorbée une fois retranchée la perte Joule.",
+          "resultat_markdown": "$P_{util} = P_{abs} - P_J \\approx 39{,}65 - 11{,}14 = 28{,}51\\,\\text{W}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le rendement par le rapport des puissances, puis vérifier par E'/U",
+          "justification": "Les deux expressions du rendement doivent coïncider, ce qui valide le calcul.",
+          "resultat_markdown": "$\\eta = P_{util}/P_{abs} \\approx 28{,}51/39{,}65 \\approx 0{,}719$ ; et $E'/U = 12/16{,}8 \\approx 0{,}714$"
+        }
+      ],
+      "conclusion_markdown": "Le rendement du moteur vaut environ 71 % (les deux méthodes de calcul donnent des valeurs très proches, aux arrondis intermédiaires près) : environ 29 % de l'énergie électrique reçue est perdue par effet Joule dans la résistance interne du moteur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer le rendement comme $r'I/U$ au lieu de $E'/U$",
+          "pourquoi_faux": "$r'I/U$ représente la fraction de tension perdue par effet Joule, pas le rendement : le rendement est le rapport des puissances utile et absorbée, qui se simplifie en $E'/U$, pas en la fraction complémentaire.",
+          "correction_markdown": "Retiens directement $\\eta = E'/U$ pour un moteur, jamais une expression construite à partir de r' seul."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier la cohérence entre le calcul par les puissances et le calcul par E'/U",
+          "pourquoi_faux": "Ces deux méthodes sont rigoureusement équivalentes ; un écart important entre les deux résultats signale une erreur de calcul quelque part.",
+          "correction_markdown": "Calcule systématiquement le rendement par les deux méthodes quand les données le permettent : elles doivent se recouper."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur a une f.c.é.m. E'=9V et fonctionne sous une tension U=10V à ses bornes. Calculer son rendement.",
+          "solution_markdown": "$\\eta = E'/U = 9/10 = 0{,}9$, soit un rendement de 90 %."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur de résistance interne r'=0,5Ω, traversé par I=4A sous une tension U=15V, a quel rendement ?",
+          "solution_markdown": "La f.c.é.m. se déduit de la loi d'Ohm généralisée : $E' = U - r'I = 15 - 0{,}5\\times4 = 13\\,\\text{V}$. Le rendement est alors $\\eta = E'/U = 13/15 \\approx 0{,}867$, soit environ 86,7 %."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Expliquer pourquoi le rendement d'un moteur électrique diminue si sa résistance interne augmente (par échauffement prolongé, par exemple), à f.c.é.m. et courant inchangés.",
+          "solution_markdown": "À courant I inchangé, une résistance interne r' plus grande augmente directement la puissance dissipée par effet Joule ($P_J = r'I^2$), donc réduit la puissance utile disponible pour une même puissance absorbée. En termes de tension, $U = E' + r'I$ augmente avec r' (à E' et I fixés), ce qui fait diminuer le rapport $\\eta = E'/U$ puisque le numérateur reste constant alors que le dénominateur augmente. Un moteur qui chauffe voit donc son rendement se dégrader, ce qui accélère encore l'échauffement : c'est un phénomène à surveiller en pratique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le rendement d'un moteur se calcule par $\\eta = E'/U$, ou de façon équivalente par $P_{util}/P_{abs}$.",
+        "La puissance absorbée est $P_{abs}=UI$, la puissance dissipée par effet Joule est $P_J=r'I^2$, et $P_{util}=P_{abs}-P_J=E'I$.",
+        "Toujours vérifier la cohérence entre les deux méthodes de calcul du rendement quand c'est possible.",
+        "Un rendement se donne toujours entre 0 et 1 (ou en pourcentage) : un résultat hors de cet intervalle signale une erreur.",
+        "Une résistance interne plus grande dégrade toujours le rendement, à f.c.é.m. et courant fixés."
+      ]
+    }
+  ]
+}

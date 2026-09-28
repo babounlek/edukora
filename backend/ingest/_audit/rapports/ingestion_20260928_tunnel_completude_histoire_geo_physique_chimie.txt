@@ -1,0 +1,85 @@
+Tunnel de complétude - lot du 2026-09-28 (dossiers backend/ingest/cm/ modifiés le jour même)
+Créé a posteriori (le lot était déjà ingéré en base entre 08:56 et 14:06 UTC ce jour-là,
+sans passer par ce tunnel) - vérification demandée explicitement par l'utilisateur.
+
+Périmètre (23 dossiers, tous déjà en base, aucun nouvel objet créé lors de la vérification) :
+- 20x Histoire-Géographie Bac A / Bac A ABI / Bac C-D-E / Bac C-D-E-TI (1999-2019)
+- bac-c-physique-1999-officiel-cameroun (5 exercices)
+- probatoire-c-e-physique-2012-officiel-cameroun (4 exercices)
+- probatoire-c-d-chimie-1999-officiel-cameroun (4 exercices, renommage de série C-E -> C-D en cours)
+
+Méthode : ingerer_et_valider.sh sur chacun des 23 dossiers (tous "0 créé, déjà existant" -
+confirmé non ingérable une 2e fois), puis scripts/tunnel_validation.sh depuis
+2026-09-28T08:00:00+00:00 pour couvrir tout le round (portes base + rendu KaTeX réel).
+
+--- Erreurs trouvées et corrigées ---
+
+1. [Donnée] $ littéral nu (Mds $) dans un tableau, lu comme délimiteur KaTeX non refermé
+   -> BLOQUANT rendu (Lesson#1833 et Exercise#11738, histoire-geographie-bac-a-2017-a4-bilingue).
+   Corrigé : bac-a-abi-geographie-2017-officiel-cameroun_exercice_2.json (Mds \$), réingéré
+   (force=True). Rendu KaTeX : 715/715 tests OK après correction.
+
+2. [Donnée] Réponse déguisée en Rappel de méthode (paragraphe déclaratif au lieu d'une
+   formule de méthode générale) :
+   - bac-a-geographie-1999-officiel-cameroun_exercice_2.json, Q2 (balance commerciale)
+   Corrigé selon la convention du skill (Rappel réécrit en "Pour définir...", réponse
+   déplacée en clair dans le corps du corrigé), réingéré (force=True). Confirmé disparu
+   du tunnel.
+
+3. [Donnée / Plateforme] annee=2011 au lieu de 2012 dans les 4 fichiers exercice de
+   probatoire-c-e-physique-2012-officiel-cameroun/ (epreuve_source et nom de dossier disent
+   2012). Effet de bord : la clé de rapprochement Lesson (epreuve_source, matière, ANNEE,
+   pays) ne correspondait plus au Lesson "physique-probatoire-c-et-e-2012" existant
+   (créé le 2026-09-23) et une ingestion antérieure du 2026-09-28 09:42 a donc créé un
+   second Lesson dupliqué "physique-probatoire-c-et-e-2011" (même contenu, même
+   epreuve_source, 4 exercices, statut VALIDE) au lieu de mettre à jour l'original.
+   Corrigé à la source : annee remis à 2012 dans les 4 fichiers. Les 2 exercices dont le
+   corrigé avait aussi été retouché (voir point 2bis ci-dessous) ont été réingérés en
+   force=True et rejoignent bien le Lesson original "physique-probatoire-c-et-e-2012".
+
+   2bis. Même famille "réponse déguisée en Rappel" trouvée sur ces fichiers avant correction
+   de l'annee :
+   - exercice_2.json, QB.2 (intervalle optique d'un microscope)
+   - exercice_3.json, QB.1 (énoncé de la loi de Lenz)
+   Corrigées et réingérées dans le Lesson "physique-probatoire-c-et-e-2012" (année 2012).
+
+--- Restes pour un humain (non corrigés) ---
+
+A. Lesson dupliqué "physique-probatoire-c-et-e-2011" (id via slug, 4 Exercise, statut VALIDE,
+   créé 2026-09-28 09:42, publié) : c'est l'ancien contenu buggé (annee=2011) déjà ingéré
+   AVANT la correction du point 3. Son dossier source n'existe pas sur disque sous ce nom
+   (aucun fichier ne référence explicitement "2011" pour cette épreuve) : impossible de le
+   réingérer/corriger depuis un JSON source. C'est un doublon pur du Lesson
+   "physique-probatoire-c-et-e-2012" (même énoncés, mêmes 4 exercices). Le tunnel continue
+   de signaler ses 2 ALERTE "réponse déguisée en Rappel" (B.1/B.2) tant qu'il existe.
+   Recommandation : supprimer ce Lesson dupliqué (contenu identique déjà présent et propre
+   sous "physique-probatoire-c-et-e-2012"). Suppression non effectuée : action destructive
+   sur du contenu publié en production, laissée à une décision humaine explicite.
+
+B. Tag quasi-doublon : id=22214 'Cartographie' / id=8705 'cartographie'. Correctif standard
+   disponible (`python manage.py fusionner_tags_doublons --apply`, idempotent, corpus-wide,
+   ne fusionne jamais les groupes en conflit de savoir_officiel). Non exécuté : la
+   permission d'exécuter cette commande (mutation base) a été refusée par le classifieur
+   auto-mode de la session ("Modify Shared Resources"). A relancer manuellement.
+
+C. 223 thèmes partagés entre plusieurs matières (ex. 'Cameroun', 'Adamaoua', 'Afrique',
+   'Ahmadou Ahidjo'...). Attendu et non bloquant à ce stade : Histoire et Géographie
+   couvrent les mêmes réalités (pays, personnages, périodes) à travers différentes séries
+   (Bac A, Bac C/D/E, Bac C/D/E/TI) - ce ne sont pas des collisions de sens comme celles
+   vues en Maths/Physique (mêmes causes que la note mémoire
+   reference_quiz_savoir_theme_collision_bug), mais des thèmes légitimement partagés. Pas
+   de fusion en masse tentée, conformément à la règle du skill.
+
+D. Couverture (INFO, non bloquant) : 615 thèmes sans quiz VALIDE, 269 thèmes sans cours
+   VALIDE sur les 680 thèmes touchés par ce round - attendu pour un premier passage sur un
+   nouveau bloc Histoire-Géo/Physique. Éligible à couverture-quiz-lot-edukora si demandé.
+
+--- Sortie finale du tunnel ---
+
+scripts/tunnel_validation.sh 2026-09-28T08:00:00+00:00
+  Portes base : OK (0 BLOQUANT restant - seulement les 2 ALERTE ci-dessus, cf. A et B).
+  Porte rendu (remark/rehype-katex réel) : 715/715 tests OK.
+  TUNNEL VALIDÉ.
+
+Vérification structurelle indépendante (nombre d'Exercise en base == nombre de JSON
+exercice par dossier, aucune Question sans thème) : 23/23 dossiers OK.

@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-tension-barres-attelage-progression-arithmetique-tle",
+  "meta": {
+    "titre": "Tension des barres d'attelage dans un train de wagons identiques",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Dynamique newtonienne",
+    "duree_estimee_min": 25,
+    "tags": [
+      "progression arithmétique",
+      "train de wagons",
+      "dynamique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-1999-PHYSIQUE-CAMEROUN",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, session 1999 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-1999-officiel-cameroun-ex1-q2.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un train de plusieurs wagons identiques, la barre d'attelage la plus proche de la locomotive supporte une tension bien plus grande que celle qui relie les deux derniers wagons. Ce cours montre que ces tensions suivent en réalité une loi remarquablement simple : une progression arithmétique, directement liée au nombre de wagons que chaque barre doit encore tracter."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir isoler un sous-système et lui appliquer la deuxième loi de Newton",
+        "Connaître la définition d'une progression arithmétique (terme constant ajouté d'un terme au suivant)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Tension d'une barre d'attelage dans un train de wagons identiques",
+      "contenu_markdown": "Dans un train de wagons identiques (même masse $m$, même résistance $f$ par wagon) accrochés en série et animés d'une accélération commune $a$, la barre d'attelage située devant le $n$-ième wagon en partant de la queue du train doit à elle seule accélérer et vaincre la résistance de tous les $n$ wagons situés derrière elle. Sa tension vaut donc $T_n=n\\,(ma+f)$, soit $n$ fois la tension $F_D=ma+f$ de la barre qui ne tracte qu'un seul wagon. La suite des tensions $T_1,T_2,T_3,\\dots$ est donc une progression arithmétique de premier terme $F_D$ et de raison $F_D$ : chaque wagon supplémentaire à tracter ajoute exactement $F_D$ à la tension.",
+      "formule_principale": "T_n = n\\,F_D \\quad\\text{avec}\\quad F_D = ma+f"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un train comporte 4 wagons identiques de masse $m=50\\ \\text{t}$ chacun, d'accélération commune $a\\approx7{,}72\\times10^{-2}\\ \\text{m/s}^2$, avec une résistance propre $f=5000\\ \\text{N}$ par wagon. Montrer que les tensions des barres d'attelage forment une progression arithmétique et déterminer sa raison.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la tension F_D de la barre la plus reculée",
+          "justification": "Cette barre ne tracte que le dernier wagon (deuxième loi de Newton appliquée à ce seul wagon).",
+          "resultat_markdown": "$F_D = ma+f = 50\\,000\\times7{,}72\\times10^{-2}+5000 \\approx 8858\\ \\text{N}$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer la tension de chaque barre suivante",
+          "justification": "La barre devant le $n$-ième wagon (en partant de la queue) tracte $n$ wagons identiques : sa tension vaut $n\\,F_D$.",
+          "resultat_markdown": "$T_1=F_D,\\ T_2=2F_D,\\ T_3=3F_D,\\ T_4=4F_D$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la différence entre deux termes consécutifs",
+          "justification": "Une suite est arithmétique si cette différence est constante.",
+          "resultat_markdown": "$T_2-T_1=T_3-T_2=T_4-T_3=F_D\\approx8858\\ \\text{N}$"
+        }
+      ],
+      "conclusion_markdown": "La suite des tensions est bien une progression arithmétique de premier terme $F_D\\approx8858\\ \\text{N}$ et de raison $F_D\\approx8858\\ \\text{N}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser que la raison de la progression dépend du rang du wagon, par exemple croire que la tension augmente de plus en plus vite à mesure qu'on se rapproche de la locomotive.",
+          "pourquoi_faux": "Puisque tous les wagons sont identiques, chaque wagon supplémentaire ajoute exactement la même contribution $F_D=ma+f$ à la tension de la barre qui le précède : l'augmentation est donc constante, pas croissante.",
+          "correction_markdown": "Vérifie que tous les wagons ont bien la même masse avant d'affirmer que la progression est arithmétique : des wagons de masses différentes donneraient une suite quelconque, pas une progression arithmétique."
+        },
+        {
+          "erreur_markdown": "Confondre la raison de la progression avec l'accélération $a$ du train.",
+          "pourquoi_faux": "La raison est $F_D=ma+f$, qui combine à la fois le terme d'inertie $ma$ ET la résistance propre $f$ d'un wagon, pas l'accélération seule.",
+          "correction_markdown": "Recalcule toujours $F_D$ complètement (inertie plus résistance) avant de l'identifier à la raison de la progression."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un train de 3 wagons identiques a une tension $F_D=2000\\ \\text{N}$ pour la barre la plus reculée. Donner les tensions des trois barres d'attelage.",
+          "solution_markdown": "Les tensions sont $T_1=F_D=2000\\ \\text{N}$, $T_2=2F_D=4000\\ \\text{N}$, $T_3=3F_D=6000\\ \\text{N}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un train de 5 wagons identiques, la barre la plus proche de la locomotive supporte une tension de $15\\,000\\ \\text{N}$. En déduire $F_D$ puis la tension de la barre entre le 3ᵉ et le 4ᵉ wagon (en partant de la queue).",
+          "solution_markdown": "La barre la plus proche de la locomotive tracte les 5 wagons : $T_5=5F_D=15\\,000\\ \\text{N}$, donc $F_D=3000\\ \\text{N}$. La barre entre le 3ᵉ et le 4ᵉ wagon (en partant de la queue) tracte 3 wagons : $T_3=3F_D=9000\\ \\text{N}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un train de $n$ wagons identiques a pour tension totale, additionnée sur toutes les barres, $S=110\\,000\\ \\text{N}$, avec $F_D=2000\\ \\text{N}$. Déterminer $n$ (utiliser la somme des $n$ premiers termes d'une progression arithmétique).",
+          "solution_markdown": "La somme des tensions est $S=F_D+2F_D+\\dots+nF_D=F_D\\times\\dfrac{n(n+1)}{2}$. On résout $2000\\times\\dfrac{n(n+1)}{2}=110\\,000$, soit $n(n+1)=110$. On teste $n=10$ : $10\\times11=110$, ce qui convient. Le train comporte donc 10 wagons."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un train de wagons identiques, la tension de chaque barre d'attelage est proportionnelle au nombre de wagons qu'elle tracte encore : $T_n=n\\,F_D$.",
+        "La suite des tensions, de la queue vers la tête du train, est une progression arithmétique de premier terme et de raison $F_D=ma+f$.",
+        "Cette propriété ne vaut que pour des wagons de masse identique : elle disparaît dès que les wagons ont des masses différentes.",
+        "Au Baccalauréat, reconnaître une progression arithmétique dans un problème de dynamique permet de répondre rapidement sans recalculer chaque tension une par une."
+      ]
+    }
+  ]
+}

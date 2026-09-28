@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-retard-propagation-onde-progressive-tle",
+  "meta": {
+    "titre": "Retard de propagation d'une onde progressive",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Ondes mécaniques progressives",
+    "duree_estimee_min": 20,
+    "tags": [
+      "onde progressive",
+      "retard de propagation",
+      "célérité"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-1999-PHYSIQUE-CAMEROUN",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, session 1999 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-1999-officiel-cameroun-ex2-q1c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le tonnerre gronde toujours après l'éclair : le son met du temps à parcourir la distance qui nous sépare de l'orage. Ce même principe de retard s'applique à toute onde progressive, qu'elle se déplace le long d'une corde, dans l'air ou dans l'eau. Ce cours donne la méthode pour écrire l'équation horaire de n'importe quel point atteint par une onde, à partir de celle de sa source."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître l'équation horaire d'un mouvement sinusoïdal",
+        "Savoir que la célérité $C$ d'une onde est la vitesse à laquelle la perturbation se propage dans le milieu"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Retard temporel dans une onde progressive",
+      "contenu_markdown": "Une onde progressive reproduit, en tout point du milieu, le mouvement de la source, mais avec un retard temporel $\\tau$ égal au temps mis par l'onde pour atteindre ce point. Pour un point situé à la distance $x$ de la source, avec une onde se propageant à la célérité $C$, ce retard vaut $\\tau=x/C$. L'élongation de ce point à l'instant $t$ est donc celle de la source à l'instant antérieur $t-\\tau$ : $u_M(t)=u_S(t-\\tau)$. Avant que l'onde ne l'ait atteint (c'est-à-dire tant que $t<\\tau$), le point reste immobile.",
+      "formule_principale": "u_M(t) = u_S(t-\\tau), \\quad \\tau = \\dfrac{x}{C}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La source S d'une onde sur une corde a pour équation horaire $u_S(t)=4\\sin(20\\pi t)$ mm. La célérité de l'onde vaut $C=2\\ \\text{m/s}$. Écrire l'équation horaire du point M situé à $x=0{,}15\\ \\text{m}$ de S.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le retard de propagation",
+          "justification": "Le retard vaut la distance divisée par la célérité de l'onde.",
+          "resultat_markdown": "$\\tau = \\dfrac{x}{C} = \\dfrac{0{,}15}{2} = 0{,}075\\ \\text{s}$"
+        },
+        {
+          "numero": 2,
+          "action": "Reporter le retard dans l'équation de S",
+          "justification": "M reproduit le mouvement de S avec ce retard : $u_M(t)=u_S(t-\\tau)$.",
+          "resultat_markdown": "$u_M(t) = 4\\sin\\big(20\\pi(t-0{,}075)\\big)\\ \\text{mm}$"
+        },
+        {
+          "numero": 3,
+          "action": "Préciser le domaine de validité",
+          "justification": "M reste immobile tant que l'onde ne l'a pas atteint, c'est-à-dire tant que $t<\\tau$.",
+          "resultat_markdown": "$u_M(t)=0$ pour $t<0{,}075\\ \\text{s}$"
+        }
+      ],
+      "conclusion_markdown": "L'équation horaire de M est $u_M(t)=4\\sin(20\\pi(t-0{,}075))$ mm pour $t\\geq0{,}075\\ \\text{s}$, et $u_M(t)=0$ avant."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $u_M(t)=u_S(t+\\tau)$ au lieu de $u_S(t-\\tau)$.",
+          "pourquoi_faux": "Le point M reçoit la perturbation APRÈS la source, donc son mouvement est en retard sur celui de S : il faut soustraire le retard à $t$, pas l'ajouter, pour retrouver l'instant auquel S se trouvait dans l'état que M reproduit maintenant.",
+          "correction_markdown": "Retiens la règle simple : plus un point est loin de la source, plus il est en retard, donc on soustrait toujours le retard dans l'argument de la fonction."
+        },
+        {
+          "erreur_markdown": "Utiliser $\\tau=x\\times C$ au lieu de $\\tau=x/C$.",
+          "pourquoi_faux": "Le retard est un temps ; une distance multipliée par une vitesse donnerait une grandeur homogène à une surface par unité de temps, pas à un temps.",
+          "correction_markdown": "Vérifie toujours l'homogénéité de ta formule : $[\\text{temps}]=[\\text{distance}]/[\\text{vitesse}]$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une onde de célérité $C=5\\ \\text{m/s}$ part d'une source S. Calculer le retard subi par un point situé à $x=1{,}5\\ \\text{m}$ de S.",
+          "solution_markdown": "$\\tau=x/C=1{,}5/5=0{,}3\\ \\text{s}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La source d'une onde a pour équation $u_S(t)=2\\sin(10\\pi t)$ mm. La célérité vaut $C=4\\ \\text{m/s}$. Écrire l'équation horaire du point situé à $x=0{,}4\\ \\text{m}$.",
+          "solution_markdown": "$\\tau=0{,}4/4=0{,}1\\ \\text{s}$, donc $u(t)=2\\sin\\big(10\\pi(t-0{,}1)\\big)\\ \\text{mm}$ pour $t\\geq0{,}1\\ \\text{s}$, et $0$ avant."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux points M et N sont situés respectivement à $x_M=0{,}2\\ \\text{m}$ et $x_N=0{,}5\\ \\text{m}$ d'une source d'onde de célérité $C=1\\ \\text{m/s}$ et de fréquence $N=5\\ \\text{Hz}$. Calculer le déphasage entre M et N (écart de retard exprimé en fraction de période, puis en radians).",
+          "solution_markdown": "Les retards sont $\\tau_M=0{,}2\\ \\text{s}$ et $\\tau_N=0{,}5\\ \\text{s}$, soit un écart $\\Delta\\tau=0{,}3\\ \\text{s}$. La période vaut $T=1/N=0{,}2\\ \\text{s}$, donc $\\Delta\\tau/T=1{,}5$ période, soit un déphasage $\\Delta\\varphi=2\\pi\\times1{,}5=3\\pi\\ \\text{rad}$ (équivalent à $\\pi\\ \\text{rad}$ modulo $2\\pi$, donc M et N vibrent en opposition de phase)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une onde progressive reproduit le mouvement de sa source avec un retard $\\tau=x/C$, jamais une avance.",
+        "Un point n'est concerné par le mouvement ondulatoire qu'à partir de l'instant $t=\\tau$ : avant, il est immobile.",
+        "Vérifie toujours l'homogénéité de tes formules de retard : un temps est une distance divisée par une vitesse, jamais multipliée.",
+        "Cette notion de retard est la clé pour représenter l'aspect d'une corde à un instant donné, ou pour comparer les mouvements de deux points différents."
+      ]
+    }
+  ]
+}

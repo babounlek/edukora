@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-resonance-intensite-dipole-rlc-serie-tle",
+  "meta": {
+    "titre": "Résonance d'intensité dans un dipôle RLC série",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Circuits RLC en régime sinusoïdal",
+    "duree_estimee_min": 25,
+    "tags": [
+      "résonance d'intensité",
+      "circuit RLC série",
+      "impédance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-1999-PHYSIQUE-CAMEROUN",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, session 1999 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-1999-officiel-cameroun-ex3-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi une radio capte-t-elle une seule station à la fois, même si l'antenne reçoit simultanément des dizaines de fréquences ? La réponse tient au phénomène de résonance d'un circuit RLC : à une fréquence bien précise, le courant devient maximal, alors qu'il reste faible à toutes les autres fréquences. Ce cours explique ce phénomène central de l'électricité en régime sinusoïdal."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître l'impédance d'un dipôle RLC série $Z=\\sqrt{R^2+(L\\omega-1/(C\\omega))^2}$",
+        "Savoir que $I=U_{eff}/Z$ relie intensité efficace, tension efficace et impédance"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La résonance d'intensité",
+      "contenu_markdown": "Dans un dipôle RLC série, l'impédance $Z=\\sqrt{R^2+X^2}$ dépend de la réactance $X=L\\omega-\\dfrac{1}{C\\omega}$, qui varie avec la pulsation $\\omega=2\\pi N$. Cette impédance est minimale, et égale à $R$ seul, lorsque la réactance s'annule, c'est-à-dire lorsque $L\\omega_0=\\dfrac{1}{C\\omega_0}$ : cette condition définit la pulsation de résonance $\\omega_0=1/\\sqrt{LC}$, soit la fréquence de résonance $N_0=\\dfrac{1}{2\\pi\\sqrt{LC}}$. À tension efficace d'alimentation constante, l'intensité efficace $I=U_{eff}/Z$ est donc MAXIMALE à cette fréquence $N_0$ : $I_0=U_{eff}/R$. La courbe $I=f(N)$ a l'allure d'une cloche centrée sur $N_0$, d'autant plus étroite et pointue que $R$ est petite.",
+      "formule_principale": "N_0 = \\dfrac{1}{2\\pi\\sqrt{LC}}, \\qquad I_0 = \\dfrac{U_{eff}}{R}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un dipôle RLC série, alimenté sous une tension efficace $U_{eff}=\\sqrt2\\ \\text{V}$, a une résistance $R=20\\ \\Omega$. Déterminer l'intensité efficace maximale $I_0$ et décrire l'allure de la courbe $I=f(N)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la condition de résonance",
+          "justification": "L'intensité est maximale lorsque l'impédance est minimale, c'est-à-dire lorsque la réactance s'annule.",
+          "resultat_markdown": "$Z(N_0)=R$ (impédance purement résistive à la résonance)"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'intensité maximale",
+          "justification": "À la résonance, $I_0=U_{eff}/Z(N_0)=U_{eff}/R$.",
+          "resultat_markdown": "$I_0 = \\dfrac{\\sqrt2}{20} \\approx 70{,}7\\ \\text{mA}$"
+        },
+        {
+          "numero": 3,
+          "action": "Décrire l'allure générale de la courbe",
+          "justification": "L'intensité croît depuis les basses fréquences jusqu'à $N_0$, puis décroît vers les fréquences élevées.",
+          "resultat_markdown": "Courbe en cloche, maximum $I_0$ atteint exactement à $N=N_0$"
+        }
+      ],
+      "conclusion_markdown": "L'intensité efficace maximale vaut $I_0\\approx70{,}7\\ \\text{mA}$, atteinte à la fréquence de résonance $N_0$ ; de part et d'autre de $N_0$, l'intensité diminue."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que l'intensité maximale $I_0$ dépend de $L$ et de $C$, et chercher à les faire intervenir dans son calcul.",
+          "pourquoi_faux": "À la résonance, la réactance s'annule EXACTEMENT : l'impédance se réduit à $R$ seul, donc $I_0=U_{eff}/R$ ne dépend que de $R$, pas de $L$ ni de $C$ (qui déterminent en revanche la fréquence $N_0$ à laquelle cette résonance a lieu).",
+          "correction_markdown": "Sépare bien les deux rôles : $L$ et $C$ fixent la fréquence de résonance $N_0$, tandis que $R$ seule fixe la valeur maximale $I_0$ de l'intensité à cette fréquence."
+        },
+        {
+          "erreur_markdown": "Tracer une courbe $I=f(N)$ symétrique par rapport à $N_0$ sur toute l'étendue des fréquences.",
+          "pourquoi_faux": "La courbe de résonance n'est symétrique qu'approximativement au voisinage immédiat de $N_0$ ; sur une large plage de fréquences, elle est dissymétrique car l'impédance croît différemment en dessous et au-dessus de $N_0$.",
+          "correction_markdown": "Pour une simple « allure », représente une cloche nette centrée sur $N_0$ sans te soucier d'une symétrie parfaite sur toute la plage de fréquences."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit RLC série a $R=10\\ \\Omega$ et est alimenté sous $U_{eff}=5\\ \\text{V}$. Calculer l'intensité efficace maximale $I_0$.",
+          "solution_markdown": "À la résonance, $I_0=U_{eff}/R=5/10=0{,}5\\ \\text{A}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit RLC série a $L=0{,}5\\ \\text{H}$ et $C=2\\times10^{-6}\\ \\text{F}$. Calculer sa fréquence de résonance $N_0$.",
+          "solution_markdown": "$N_0=\\dfrac{1}{2\\pi\\sqrt{LC}}=\\dfrac{1}{2\\pi\\sqrt{0{,}5\\times2\\times10^{-6}}}=\\dfrac{1}{2\\pi\\times10^{-3}}\\approx159\\ \\text{Hz}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux circuits RLC série, alimentés sous la même tension efficace, ont la même fréquence de résonance $N_0$ mais des résistances différentes $R_1<R_2$. Comparer leurs courbes $I=f(N)$ (position du maximum, hauteur du maximum, largeur de la cloche).",
+          "solution_markdown": "Les deux courbes ont leur maximum à la même abscisse $N_0$ (fixée par $L$ et $C$, identiques). Le circuit de résistance $R_1$ (plus petite) a un maximum $I_0=U_{eff}/R_1$ plus élevé, et sa courbe est plus étroite et plus pointue (résonance plus aiguë) que celle du circuit de résistance $R_2$, dont le maximum est plus bas et la courbe plus étalée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un dipôle RLC série, l'impédance est minimale (égale à $R$) à la fréquence de résonance $N_0=1/(2\\pi\\sqrt{LC})$.",
+        "L'intensité efficace $I=U_{eff}/Z$ est donc maximale à cette même fréquence : $I_0=U_{eff}/R$.",
+        "$L$ et $C$ déterminent où se situe la résonance ; $R$ seule détermine sa hauteur et sa largeur.",
+        "Cette courbe en cloche explique le principe de sélectivité utilisé dans l'accord des récepteurs radio."
+      ]
+    }
+  ]
+}

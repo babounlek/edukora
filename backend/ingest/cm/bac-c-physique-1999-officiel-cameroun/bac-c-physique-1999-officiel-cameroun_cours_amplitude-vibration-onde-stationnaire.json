@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-amplitude-vibration-onde-stationnaire-tle",
+  "meta": {
+    "titre": "Amplitude de vibration d'un point d'une onde stationnaire",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Ondes mécaniques stationnaires",
+    "duree_estimee_min": 25,
+    "tags": [
+      "onde stationnaire",
+      "amplitude de vibration",
+      "ventre et nœud"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-1999-PHYSIQUE-CAMEROUN",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, session 1999 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-1999-officiel-cameroun-ex2-q2c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur une corde en onde stationnaire, deux points voisins peuvent vibrer avec des amplitudes complètement différentes, allant de zéro (nœud) au double de l'amplitude de la source (ventre). Ce cours donne la formule qui permet de calculer précisément l'amplitude de vibration de n'importe quel point, simplement à partir de sa distance au point fixe qui a créé l'onde stationnaire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le principe de formation d'une onde stationnaire par réflexion",
+        "Savoir manipuler les formules de trigonométrie (transformation de sommes de fonctions sinus)",
+        "Connaître la relation $\\lambda=CT=C/N$ entre longueur d'onde, célérité et fréquence"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Amplitude de vibration en fonction de la distance au point fixe",
+      "contenu_markdown": "Pour un point M situé entre la source et un point fixe A (nœud imposé), l'élongation résultante de la superposition de l'onde incidente $u_i(x,t)=a\\sin(\\omega t-kx)$ et de l'onde qu'elle réfléchit en A (avec inversion de signe, puisque A doit rester un nœud) s'écrit $u(x,t)=A(x)\\cos(\\omega t-kx_A)$, où $A(x)=2a\\left|\\sin\\big(k(x_A-x)\\big)\\right|$ est l'AMPLITUDE de vibration au point M, avec $k=2\\pi/\\lambda$ et $x_A-x$ la distance de M au point fixe A. Cette amplitude vaut $0$ (nœud) lorsque $x_A-x$ est un multiple entier de $\\lambda/2$, et $2a$ (ventre, amplitude maximale) lorsque $x_A-x$ est un multiple impair de $\\lambda/4$.",
+      "formule_principale": "A(x) = 2a\\left|\\sin\\!\\Big(2\\pi\\dfrac{x_A-x}{\\lambda}\\Big)\\right|"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une onde stationnaire s'établit entre une source S et un point fixe A d'abscisse $x_A=0{,}5\\ \\text{m}$, avec une amplitude de source $a=4\\ \\text{mm}$ et une longueur d'onde $\\lambda=0{,}2\\ \\text{m}$. Calculer l'amplitude de vibration du point M d'abscisse $x=0{,}25\\ \\text{m}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la distance de M au point fixe A",
+          "justification": "C'est cette distance qui détermine l'amplitude de vibration, pas l'abscisse de M mesurée depuis la source.",
+          "resultat_markdown": "$x_A-x = 0{,}5-0{,}25 = 0{,}25\\ \\text{m}$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer cette distance en fraction de longueur d'onde",
+          "justification": "La formule de l'amplitude s'exprime naturellement en fraction de $\\lambda$.",
+          "resultat_markdown": "$\\dfrac{x_A-x}{\\lambda} = \\dfrac{0{,}25}{0{,}2} = 1{,}25$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'amplitude",
+          "justification": "On applique la formule $A(x)=2a|\\sin(2\\pi(x_A-x)/\\lambda)|$, en réduisant l'angle modulo $2\\pi$.",
+          "resultat_markdown": "$2\\pi\\times1{,}25 = 2{,}5\\pi = 2\\pi+0{,}5\\pi$, donc $|\\sin(2{,}5\\pi)|=|\\sin(0{,}5\\pi)|=1$ ; $A(M)=2\\times4\\times1=8\\ \\text{mm}$"
+        }
+      ],
+      "conclusion_markdown": "Le point M vibre avec une amplitude de $8\\ \\text{mm}$, soit le double de l'amplitude de la source : M est un ventre de vibration."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser l'abscisse $x$ du point M (mesurée depuis la source) directement dans la formule, au lieu de la distance $x_A-x$ au point fixe.",
+          "pourquoi_faux": "C'est la distance au point de réflexion qui détermine le déphasage entre onde incidente et onde réfléchie en ce point, pas la distance à la source qui a créé l'onde incidente seule.",
+          "correction_markdown": "Calcule toujours $x_A-x$ (distance au point fixe) avant d'appliquer la formule de l'amplitude."
+        },
+        {
+          "erreur_markdown": "Oublier de réduire l'angle modulo $2\\pi$ avant de calculer le sinus, ou se tromper dans cette réduction.",
+          "pourquoi_faux": "Un angle comme $2{,}5\\pi$ n'est pas une valeur usuelle du sinus : il faut d'abord le ramener dans l'intervalle $[0,2\\pi[$ en lui retranchant les multiples entiers de $2\\pi$ avant d'identifier sa valeur.",
+          "correction_markdown": "Décompose systématiquement l'angle en un multiple entier de $2\\pi$ plus un reste, et ne calcule le sinus que sur ce reste."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Avec $a=5\\ \\text{mm}$ et $\\lambda=0{,}4\\ \\text{m}$, calculer l'amplitude d'un point situé exactement à $\\lambda/4$ du point fixe A.",
+          "solution_markdown": "$\\dfrac{x_A-x}{\\lambda}=\\dfrac14$, donc $2\\pi\\times\\dfrac14=\\dfrac{\\pi}{2}$, et $\\sin(\\pi/2)=1$ : $A=2\\times5\\times1=10\\ \\text{mm}$, un ventre d'amplitude maximale."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec $a=3\\ \\text{mm}$ et $\\lambda=0{,}3\\ \\text{m}$, calculer l'amplitude d'un point situé à $x_A-x=0{,}3\\ \\text{m}$ du point fixe.",
+          "solution_markdown": "$\\dfrac{x_A-x}{\\lambda}=1$ (un multiple entier), donc $2\\pi\\times1=2\\pi$, et $\\sin(2\\pi)=0$ : $A=0$, le point est un nœud."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec $a=6\\ \\text{mm}$ et $\\lambda=0{,}24\\ \\text{m}$, trouver les deux distances $x_A-x$ les plus petites (non nulles) pour lesquelles le point considéré est un ventre d'amplitude maximale.",
+          "solution_markdown": "Un ventre apparaît lorsque $\\dfrac{x_A-x}{\\lambda}$ est un multiple impair de $\\dfrac14$ : $\\dfrac14,\\dfrac34,\\dfrac54,\\dots$ Les deux plus petites distances non nulles sont donc $x_A-x=\\dfrac{\\lambda}{4}=0{,}06\\ \\text{m}$ et $x_A-x=\\dfrac{3\\lambda}{4}=0{,}18\\ \\text{m}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'amplitude de vibration d'un point d'une onde stationnaire dépend uniquement de sa distance au point fixe qui a créé l'onde réfléchie, jamais de sa distance à la source seule.",
+        "Un nœud apparaît quand cette distance est un multiple entier de $\\lambda/2$ ; un ventre apparaît quand elle est un multiple impair de $\\lambda/4$.",
+        "L'amplitude maximale possible sur une onde stationnaire est $2a$, le double de l'amplitude de la source, jamais davantage.",
+        "Au Baccalauréat, cette formule permet de localiser tous les nœuds et ventres d'une corde en onde stationnaire à partir d'une seule mesure de longueur d'onde."
+      ]
+    }
+  ]
+}

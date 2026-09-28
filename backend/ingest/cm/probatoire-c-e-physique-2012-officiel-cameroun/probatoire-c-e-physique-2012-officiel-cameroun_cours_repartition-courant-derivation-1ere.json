@@ -1,0 +1,141 @@
+{
+  "cours_id": "cours-repartition-courant-derivation-1ere",
+  "meta": {
+    "titre": "Répartition du courant dans un montage en dérivation",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Circuits électriques en courant continu",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi des nœuds",
+      "loi des mailles",
+      "dérivation",
+      "loi d'Ohm généralisée",
+      "moteur électrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2012-officiel-cameroun",
+    "epreuve_titre": "Probatoire scientifique - Physique - Session de 2011 - Série C-E",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2012-officiel-cameroun-ex3-qA2-1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un générateur alimente à la fois un simple résistor et un moteur électrique branchés en parallèle, comment le courant total se partage-t-il entre les deux branches ? La réponse ne se devine pas : elle se calcule en associant loi des nœuds, loi des mailles et loi d'Ohm généralisée au récepteur actif qu'est le moteur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi des nœuds ($I = \\sum I_k$ à l'entrée d'un nœud)",
+        "Connaître la loi des mailles (somme algébrique des tensions nulle sur une maille fermée)",
+        "Connaître la loi d'Ohm généralisée pour un récepteur actif : $U = E' + r'I$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois lois combinées pour trouver les courants de branche",
+      "contenu_markdown": "Pour déterminer les intensités $I_1$ (résistor) et $I_2$ (moteur) dans un circuit où un générateur (E, r) débite un courant total I qui se partage entre un résistor R et un moteur (E', r'), il faut poser trois relations indépendantes : la loi des nœuds ($I = I_1 + I_2$), la tension commune aux deux branches en dérivation ($U = R\\,I_1$ côté résistor, et $U = E' + r'\\,I_2$ côté moteur, car les deux branches partagent la même tension U à leurs bornes), et éventuellement la loi des mailles côté générateur ($E = U + rI$) pour relier U au reste du circuit. Ce système de 3 équations à 3 inconnues ($U$, $I_1$, $I_2$, avec I souvent connu ou lui-même inconnu) se résout par substitution.",
+      "formule_principale": "I = I_1 + I_2 \\quad ; \\quad U = R\\,I_1 \\quad ; \\quad U = E' + r'\\,I_2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur (E, r) débite un courant total $I=3{,}2\\,\\text{A}$ dans un circuit où un résistor $R=20\\,\\Omega$ et un moteur de f.c.é.m. $E'=12\\,\\text{V}$ et de résistance interne $r'=2\\,\\Omega$ sont branchés en dérivation. Déterminer les intensités $I_1$ et $I_2$ dans chaque branche.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser la loi des nœuds",
+          "justification": "Le courant total se répartit entre les deux branches en dérivation.",
+          "resultat_markdown": "$I_1 + I_2 = 3{,}2$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer la tension commune U côté résistor",
+          "justification": "Le résistor obéit à la loi d'Ohm simple.",
+          "resultat_markdown": "$U = R\\,I_1 = 20\\,I_1$"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer la tension commune U côté moteur",
+          "justification": "Le moteur, récepteur actif, obéit à la loi d'Ohm généralisée.",
+          "resultat_markdown": "$U = E' + r'\\,I_2 = 12 + 2\\,I_2$"
+        },
+        {
+          "numero": 4,
+          "action": "Égaler les deux expressions de U (même tension aux bornes des deux branches)",
+          "justification": "Les deux branches partagent les deux mêmes nœuds, donc la même différence de potentiel.",
+          "resultat_markdown": "$20\\,I_1 = 12 + 2\\,I_2$"
+        },
+        {
+          "numero": 5,
+          "action": "Remplacer $I_2 = 3{,}2 - I_1$ et résoudre",
+          "justification": "Substitution de la loi des nœuds dans l'égalité des tensions.",
+          "resultat_markdown": "$20\\,I_1 = 12 + 2(3{,}2 - I_1) \\Rightarrow 22\\,I_1 = 18{,}4 \\Rightarrow I_1 \\approx 0{,}84\\,\\text{A}$"
+        },
+        {
+          "numero": 6,
+          "action": "En déduire $I_2$",
+          "justification": "Loi des nœuds.",
+          "resultat_markdown": "$I_2 = 3{,}2 - 0{,}84 = 2{,}36\\,\\text{A}$"
+        }
+      ],
+      "conclusion_markdown": "Le moteur, plus consommateur que le simple résistor dans ce montage, est traversé par le courant le plus important (2,36 A contre 0,84 A) ; la vérification $U=20\\times0{,}84=16{,}8\\,\\text{V}$ et $U=12+2\\times2{,}36=16{,}72\\,\\text{V}$ confirme la cohérence du calcul, aux arrondis près."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appliquer la loi d'Ohm simple ($U=r'I_2$) au moteur en oubliant sa f.c.é.m.",
+          "pourquoi_faux": "Un moteur est un récepteur ACTIF : il convertit une partie de l'énergie électrique reçue en énergie mécanique, ce qui se traduit par le terme $E'$ dans la loi d'Ohm généralisée, en plus de la chute ohmique $r'I_2$.",
+          "correction_markdown": "Retiens systématiquement $U = E' + r'I$ pour tout récepteur actif (moteur, accumulateur en charge), jamais la loi d'Ohm simple d'un résistor."
+        },
+        {
+          "erreur_markdown": "Croire que $I_1$ et $I_2$ sont nécessairement égaux car les deux branches sont en parallèle",
+          "pourquoi_faux": "Le montage parallèle impose une tension commune, pas une intensité commune : deux récepteurs différents laissent passer des intensités différentes pour une même tension à leurs bornes.",
+          "correction_markdown": "Associe toujours « dérivation » à « même tension », jamais à « même intensité »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux résistors R1=10Ω et R2=40Ω sont en dérivation sous une tension commune U=8V. Calculer les intensités dans chaque branche.",
+          "solution_markdown": "$I_1 = U/R_1 = 8/10 = 0{,}8\\,\\text{A}$ et $I_2 = U/R_2 = 8/40 = 0{,}2\\,\\text{A}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur de f.c.é.m. E'=8V et de résistance interne r'=1Ω est traversé par un courant I2=1,5A. Calculer la tension U à ses bornes.",
+          "solution_markdown": "D'après la loi d'Ohm généralisée du récepteur actif, $U = E' + r'I_2 = 8 + 1\\times1{,}5 = 9{,}5\\,\\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un circuit à dérivation résistor/moteur, on double la résistance R du résistor sans rien changer d'autre. Expliquer qualitativement comment évoluent $I_1$ et $I_2$, sans recalculer numériquement.",
+          "solution_markdown": "Doubler R rend la branche du résistor plus résistive : à tension U inchangée dans un premier temps, $I_1=U/R$ diminuerait. Mais U elle-même dépend de tout le circuit (loi des mailles côté générateur) : le courant total I diminue légèrement car la branche résistor consomme moins de courant, ce qui réduit la chute de tension interne $rI$ et tend à faire remonter U. Globalement, $I_1$ diminue (la branche est plus résistive) alors que $I_2$ (moteur, caractéristiques inchangées) varie modérément dans le sens opposé, gouverné par la légère hausse de U. Le système doit être entièrement résolu à nouveau pour un résultat chiffré exact, mais le sens qualitatif de la variation de $I_1$ (à la baisse) est immédiat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un montage en dérivation, toutes les branches partagent la même tension U, jamais la même intensité.",
+        "Un résistor obéit à $U=RI$ ; un récepteur actif (moteur) obéit à $U=E'+r'I$.",
+        "La loi des nœuds ($I=\\sum I_k$) et l'égalité des tensions entre branches donnent un système résoluble par substitution.",
+        "Toujours vérifier la cohérence du résultat en recalculant U par les deux branches séparément : les deux valeurs doivent coïncider (aux arrondis près).",
+        "Ce schéma de résolution (nœuds + tension commune + loi d'Ohm généralisée) s'applique à tout montage en dérivation comportant un récepteur actif."
+      ]
+    }
+  ]
+}

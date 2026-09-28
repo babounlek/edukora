@@ -1,0 +1,135 @@
+{
+  "cours_id": "cours-bilan-puissance-generateur-reel-1ere",
+  "meta": {
+    "titre": "Bilan de puissance d'un générateur réel",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Circuits électriques en courant continu",
+    "duree_estimee_min": 25,
+    "tags": [
+      "générateur",
+      "bilan de puissance",
+      "effet Joule",
+      "puissance électromotrice",
+      "diagramme de Sankey"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2012-officiel-cameroun",
+    "epreuve_titre": "Probatoire scientifique - Physique - Session de 2011 - Série C-E",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2012-officiel-cameroun-ex3-qA3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toute l'énergie électrique fournie par un générateur ne parvient pas intégralement aux récepteurs extérieurs : une partie est systématiquement perdue à l'intérieur même du générateur, par effet Joule dans sa résistance interne. Le bilan de puissance permet de suivre précisément où part chaque watt produit, du générateur jusqu'aux récepteurs, souvent représenté par un diagramme de Sankey."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi des mailles appliquée à un générateur réel : $E = U + rI$",
+        "Savoir que la puissance électrique totale produite par un générateur est $P_{tot}=EI$",
+        "Savoir que la puissance dissipée par effet Joule dans une résistance est $P_J=rI^2$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Décomposer la puissance totale d'un générateur réel",
+      "contenu_markdown": "Un générateur réel de f.é.m. E et de résistance interne r, traversé par un courant total I, produit une puissance électrique totale $P_{tot} = E\\,I$. Une partie de cette puissance est dissipée par effet Joule à l'intérieur même du générateur : $P_{J,gen} = r\\,I^2$. Le reste, $P_{ext} = P_{tot} - P_{J,gen} = U\\,I$ (avec $U=E-rI$ la tension aux bornes du générateur), est effectivement disponible pour les récepteurs extérieurs. Cette puissance externe se répartit ensuite entre les différentes branches du circuit selon leurs intensités respectives, chacune recevant $U\\,I_k$.",
+      "formule_principale": "P_{tot} = E\\,I = r\\,I^2 + U\\,I",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur de f.é.m. $E=20\\,\\text{V}$ et de résistance interne $r=1\\,\\Omega$ débite un courant total $I=3{,}2\\,\\text{A}$, réparti entre un résistor ($I_1=0{,}84\\,\\text{A}$, $R=20\\,\\Omega$) et un moteur ($I_2=2{,}36\\,\\text{A}$). Dresser le bilan de puissance complet.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance totale produite par le générateur",
+          "justification": "Définition de la puissance électromotrice totale.",
+          "resultat_markdown": "$P_{tot} = E\\,I = 20 \\times 3{,}2 = 64{,}0\\,\\text{W}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance dissipée par effet Joule dans le générateur",
+          "justification": "Perte interne due à la résistance r du générateur.",
+          "resultat_markdown": "$P_{J,gen} = r\\,I^2 = 1 \\times 3{,}2^2 = 10{,}24\\,\\text{W}$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire la puissance disponible pour le circuit extérieur",
+          "justification": "Ce qui reste de la puissance totale après la perte interne.",
+          "resultat_markdown": "$P_{ext} = P_{tot} - P_{J,gen} = 64{,}0 - 10{,}24 = 53{,}76\\,\\text{W}$"
+        },
+        {
+          "numero": 4,
+          "action": "Répartir cette puissance externe entre le résistor et le moteur",
+          "justification": "Chaque branche reçoit une puissance $U\\,I_k$, avec $U=E-rI=20-3{,}2=16{,}8\\,\\text{V}$.",
+          "resultat_markdown": "$P_R = U\\,I_1 = 16{,}8 \\times 0{,}84 \\approx 14{,}11\\,\\text{W}$ ; $P_{mot,abs} = U\\,I_2 = 16{,}8 \\times 2{,}36 \\approx 39{,}65\\,\\text{W}$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier la somme des deux puissances externes",
+          "justification": "La somme doit redonner exactement $P_{ext}$.",
+          "resultat_markdown": "$14{,}11 + 39{,}65 \\approx 53{,}76\\,\\text{W} = P_{ext}$ ✓"
+        }
+      ],
+      "conclusion_markdown": "Le bilan se referme exactement : sur les 64,0 W produits par le générateur, 10,24 W sont perdus par effet Joule interne, et les 53,76 W restants se répartissent entre le résistor (14,11 W) et le moteur (39,65 W absorbés, dont une partie encore perdue par effet Joule dans le moteur lui-même)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la perte Joule interne du générateur et confondre $P_{tot}$ avec $P_{ext}$",
+          "pourquoi_faux": "$P_{tot}=EI$ est la puissance TOTALE produite, alors que $P_{ext}=UI$ est déjà la puissance après déduction de la perte interne : les deux ne sont égales que si r=0, ce qui n'est jamais vrai pour un générateur réel.",
+          "correction_markdown": "Distingue toujours explicitement $P_{tot}$ (avec E) de $P_{ext}$ (avec U) dans un bilan de puissance."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier que la somme des puissances des branches redonne bien $P_{ext}$",
+          "pourquoi_faux": "Un bilan de puissance incomplet ou faux ne se referme pas exactement : c'est le test de cohérence le plus simple et le plus systématique à appliquer.",
+          "correction_markdown": "Termine toujours un bilan de puissance par la vérification que la somme des puissances reçues par les branches est égale à $P_{ext}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.é.m. E=12V et de résistance interne r=0,5Ω débite un courant I=2A. Calculer la puissance totale produite et la puissance dissipée en interne.",
+          "solution_markdown": "$P_{tot}=EI=12\\times2=24\\,\\text{W}$ ; $P_{J,gen}=rI^2=0{,}5\\times4=2\\,\\text{W}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec les données de l'exercice précédent, calculer la puissance disponible pour le circuit extérieur et la tension U aux bornes du générateur.",
+          "solution_markdown": "$P_{ext}=P_{tot}-P_{J,gen}=24-2=22\\,\\text{W}$. La tension aux bornes est $U=E-rI=12-0{,}5\\times2=11\\,\\text{V}$, et l'on vérifie $UI=11\\times2=22\\,\\text{W}=P_{ext}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Définir le rendement d'un générateur (rapport de la puissance externe à la puissance totale) et exprimer ce rendement en fonction de E, r et I.",
+          "solution_markdown": "Le rendement du générateur est $\\eta_{gen} = P_{ext}/P_{tot} = UI/(EI) = U/E$. Comme $U=E-rI$, on obtient $\\eta_{gen} = (E-rI)/E = 1 - rI/E$. Ce rendement se rapproche de 1 quand la résistance interne r ou le courant débité I sont faibles devant E, et se dégrade fortement si le générateur débite un courant important à travers une résistance interne non négligeable."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$P_{tot}=EI$ est la puissance totale produite par le générateur, avant toute perte.",
+        "$P_{J,gen}=rI^2$ est la puissance perdue par effet Joule interne au générateur.",
+        "$P_{ext}=P_{tot}-P_{J,gen}=UI$ est la puissance effectivement disponible pour le circuit extérieur.",
+        "Dans un montage à plusieurs branches, $P_{ext}$ se répartit entre elles en $U\\,I_k$ pour chaque branche k.",
+        "Toujours vérifier que le bilan se referme : $P_{tot}=P_{J,gen}+\\sum_k U I_k$."
+      ]
+    }
+  ]
+}

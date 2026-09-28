@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-impedance-rlc-serie-condition-resonance-tle",
+  "meta": {
+    "titre": "Impédance d'un dipôle RLC série et condition de résonance",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Circuits RLC en régime sinusoïdal",
+    "duree_estimee_min": 30,
+    "tags": [
+      "impédance",
+      "circuit RLC série",
+      "réactance",
+      "résonance"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-1999-PHYSIQUE-CAMEROUN",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, session 1999 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-1999-officiel-cameroun-ex3-q3b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Connaître la résistance R d'un circuit RLC ne suffit pas à prédire son comportement à toutes les fréquences : il faut aussi déterminer l'inductance L de la bobine et la capacité C du condensateur. Ce cours montre comment retrouver ces deux grandeurs à partir de deux mesures d'intensité à deux fréquences différentes, l'une à la résonance, l'autre non."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître l'expression de l'impédance d'un dipôle RLC série",
+        "Savoir que la résonance d'intensité correspond à l'annulation de la réactance",
+        "Manipuler des systèmes de deux équations à deux inconnues"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Relations entre L, C, la fréquence et la résonance",
+      "contenu_markdown": "L'impédance d'un dipôle RLC série à une fréquence quelconque N s'écrit $Z(N)=\\sqrt{R^2+X(N)^2}$, avec la réactance $X(N)=L\\omega-\\dfrac{1}{C\\omega}$ et $\\omega=2\\pi N$ : cette relation implique L et C séparément. À la résonance ($N=N_0$), la réactance s'annule, ce qui donne une seconde relation, plus simple, ne faisant intervenir que le PRODUIT $LC$ : $L\\omega_0=\\dfrac{1}{C\\omega_0}$, soit $LC=\\dfrac{1}{\\omega_0^2}$. Pour déterminer L et C séparément, il faut donc combiner cette relation de résonance avec une mesure d'impédance (ou d'intensité) à une fréquence différente de $N_0$, où la réactance n'est plus nulle.",
+      "formule_principale": "LC = \\dfrac{1}{\\omega_0^2}, \\qquad X(N) = L\\omega-\\dfrac{1}{C\\omega}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un dipôle RLC série a $R=20\\ \\Omega$ et une résonance à $N_0=200\\ \\text{Hz}$. À $N_1=203\\ \\text{Hz}$, l'impédance vaut $Z_1\\approx124{,}05\\ \\Omega$. Déterminer L et C.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la réactance à N1",
+          "justification": "$X_1^2=Z_1^2-R^2$, et $X_1>0$ car $N_1>N_0$ (comportement inductif au-delà de la résonance).",
+          "resultat_markdown": "$X_1 = \\sqrt{124{,}05^2-20^2} \\approx 122{,}4\\ \\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Relier X1 à L et C via le rapport des pulsations",
+          "justification": "En posant $x=L\\omega_1$ et $y=1/(C\\omega_1)$, la relation de résonance donne $x/y=(\\omega_1/\\omega_0)^2$, d'où $X_1=x-y=y\\big[(N_1/N_0)^2-1\\big]$.",
+          "resultat_markdown": "$(203/200)^2-1 \\approx 0{,}0302 \\Rightarrow y=\\dfrac{122{,}4}{0{,}0302}\\approx4050\\ \\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire C puis L",
+          "justification": "$y=1/(C\\omega_1)$ donne C, puis $x=y\\times(N_1/N_0)^2$ donne $L\\omega_1$, donc L.",
+          "resultat_markdown": "$C=\\dfrac{1}{4050\\times2\\pi\\times203}\\approx1{,}94\\times10^{-7}\\ \\text{F}$ ; $L=\\dfrac{4050\\times1{,}0302}{2\\pi\\times203}\\approx3{,}27\\ \\text{H}$"
+        }
+      ],
+      "conclusion_markdown": "On trouve $C\\approx0{,}194\\ \\mu\\text{F}$ et $L\\approx3{,}27\\ \\text{H}$, valeurs que l'on peut vérifier en recalculant $LC$ et en le comparant à $1/\\omega_0^2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Essayer de calculer L et C séparément à partir de la seule relation de résonance $LC=1/\\omega_0^2$.",
+          "pourquoi_faux": "Cette relation ne fixe que le PRODUIT $LC$, pas chaque grandeur individuellement : une infinité de couples $(L,C)$ vérifient cette seule équation. Il faut une seconde équation, obtenue à une fréquence différente de la résonance.",
+          "correction_markdown": "Repère toujours qu'il te faut DEUX équations indépendantes pour déterminer L et C séparément : la résonance seule n'en fournit qu'une."
+        },
+        {
+          "erreur_markdown": "Choisir arbitrairement le signe de la réactance $X_1$ sans justifier si le circuit est inductif ou capacitif à cette fréquence.",
+          "pourquoi_faux": "Le signe de $X_1$ dépend de la position de $N_1$ par rapport à $N_0$ : au-dessus de la résonance, le circuit est inductif ($X>0$) ; en dessous, il est capacitif ($X<0$). Se tromper de signe inverse le rôle de L et C dans le calcul final.",
+          "correction_markdown": "Compare toujours $N_1$ à $N_0$ avant de fixer le signe de la réactance : $N_1>N_0 \\Rightarrow X_1>0$, $N_1<N_0 \\Rightarrow X_1<0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit RLC série résonne à $N_0=500\\ \\text{Hz}$. Calculer le produit $LC$.",
+          "solution_markdown": "$LC=\\dfrac{1}{\\omega_0^2}=\\dfrac{1}{(2\\pi\\times500)^2}\\approx1{,}01\\times10^{-7}\\ \\text{s}^2$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sachant $LC=1{,}01\\times10^{-7}\\ \\text{s}^2$ et $L=0{,}5\\ \\text{H}$, calculer $C$.",
+          "solution_markdown": "$C=\\dfrac{1{,}01\\times10^{-7}}{0{,}5}\\approx2{,}02\\times10^{-7}\\ \\text{F}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit RLC série a $R=15\\ \\Omega$, résonne à $N_0=100\\ \\text{Hz}$, et présente une impédance $Z_1=39\\ \\Omega$ à $N_1=90\\ \\text{Hz}$ (en dessous de la résonance). Déterminer L et C.",
+          "solution_markdown": "$X_1^2=39^2-15^2=1521-225=1296$, donc $|X_1|=36\\ \\Omega$. Comme $N_1<N_0$, le circuit est capacitif : $X_1=-36\\ \\Omega$. En posant $x=L\\omega_1$, $y=1/(C\\omega_1)$ : $x/y=(N_1/N_0)^2=0{,}81$, et $x-y=-36$, donc $y(0{,}81-1)=-36$, soit $y=189{,}5\\ \\Omega$ et $x=153{,}5\\ \\Omega$. On en tire $C=\\dfrac{1}{189{,}5\\times2\\pi\\times90}\\approx9{,}33\\times10^{-6}\\ \\text{F}$ et $L=\\dfrac{153{,}5}{2\\pi\\times90}\\approx0{,}271\\ \\text{H}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'impédance d'un RLC série combine $R$, $L$ et $C$ via la réactance $X=L\\omega-1/(C\\omega)$.",
+        "La condition de résonance ($X=0$) donne seulement le produit $LC=1/\\omega_0^2$, jamais $L$ et $C$ séparément.",
+        "Pour séparer $L$ et $C$, il faut une seconde mesure à une fréquence différente de la résonance, en identifiant si le circuit y est inductif ($N>N_0$) ou capacitif ($N<N_0$).",
+        "Vérifie toujours ton résultat en recalculant $LC$ et en le comparant à $1/\\omega_0^2$ : les deux valeurs doivent coïncider."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "cours_id": "cours-schema-circuit-generateur-derivation-1ere",
+  "meta": {
+    "titre": "Schématiser un circuit avec récepteurs en dérivation",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Circuits électriques en courant continu",
+    "duree_estimee_min": 20,
+    "tags": [
+      "circuit électrique",
+      "générateur",
+      "dérivation",
+      "schéma normalisé",
+      "récepteur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2012-officiel-cameroun",
+    "epreuve_titre": "Probatoire scientifique - Physique - Session de 2011 - Série C-E",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2012-officiel-cameroun-ex3-qA1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de calculer quoi que ce soit dans un circuit électrique, il faut pouvoir le dessiner correctement à partir d'un texte qui décrit son montage : un générateur qui alimente plusieurs récepteurs branchés en parallèle sur ses bornes. Un schéma mal posé, avec un sens de courant erroné ou un récepteur mal placé, condamne tout le calcul qui suit, même si les formules utilisées ensuite sont correctes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les symboles normalisés d'un générateur, d'un résistor et d'un moteur électrique",
+        "Savoir orienter un circuit dans le sens conventionnel du courant (du + vers le - à l'extérieur du générateur)",
+        "Distinguer un montage en série d'un montage en dérivation (parallèle)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire un schéma de circuit à dérivation à partir d'un énoncé",
+      "contenu_markdown": "Un circuit à dérivation se reconnaît au fait que plusieurs éléments sont branchés directement entre les deux mêmes bornes (les deux mêmes nœuds), et reçoivent donc la même tension à leurs bornes, tout en pouvant être traversés par des intensités différentes. Pour le schématiser : placer le générateur (force électromotrice E, résistance interne r) sur une branche principale ; identifier les deux nœuds où le circuit se divise ; placer chaque récepteur (résistor, moteur) sur sa propre branche entre ces deux mêmes nœuds ; orienter le courant total I en sortie du générateur par sa borne +, et chaque courant de branche ($I_1$, $I_2$, ...) dans le sens où il traverse effectivement son récepteur.",
+      "formule_principale": "",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur de f.é.m. E et de résistance interne r alimente, en dérivation entre ses deux bornes, un résistor de résistance R et un moteur électrique caractérisé par sa f.c.é.m. E' et sa résistance interne r'. Réaliser le schéma normalisé de ce circuit.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer le générateur sur la branche principale",
+          "justification": "Le générateur est la source d'énergie électrique unique du circuit ; toute l'analyse part de ses bornes.",
+          "resultat_markdown": "Symbole du générateur (E, r), borne + repérée"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier les deux nœuds de dérivation",
+          "justification": "Le résistor et le moteur sont tous deux directement connectés aux bornes du générateur : ils partagent donc les deux mêmes nœuds.",
+          "resultat_markdown": "Nœud A (borne +) et nœud B (borne -) du générateur"
+        },
+        {
+          "numero": 3,
+          "action": "Placer le résistor R sur une branche entre A et B",
+          "justification": "Chaque récepteur en dérivation occupe sa propre branche entre les mêmes deux nœuds.",
+          "resultat_markdown": "Résistor R, parcouru par un courant $I_1$ de A vers B"
+        },
+        {
+          "numero": 4,
+          "action": "Placer le moteur (E', r') sur une autre branche entre A et B",
+          "justification": "Le moteur, second récepteur, est branché en parallèle du résistor, entre les mêmes nœuds.",
+          "resultat_markdown": "Moteur (E', r'), parcouru par un courant $I_2$ de A vers B"
+        },
+        {
+          "numero": 5,
+          "action": "Orienter le courant total et vérifier la loi des nœuds",
+          "justification": "Le courant total débité par le générateur se répartit entre les deux branches en dérivation.",
+          "resultat_markdown": "$I = I_1 + I_2$ au nœud A"
+        }
+      ],
+      "conclusion_markdown": "Le schéma normalisé fait apparaître clairement les deux nœuds communs, les deux branches en parallèle (résistor et moteur) et le sens conventionnel de chaque courant, prêt pour l'application des lois de Kirchhoff."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dessiner le résistor et le moteur en série au lieu de les mettre en dérivation",
+          "pourquoi_faux": "Un énoncé qui précise que les récepteurs sont alimentés « en dérivation » ou « en parallèle » impose qu'ils partagent les deux mêmes nœuds, jamais qu'ils soient traversés l'un après l'autre par le même courant.",
+          "correction_markdown": "Relis systématiquement l'énoncé pour repérer les mots « dérivation », « parallèle » ou « aux bornes de » : ils signalent toujours un montage parallèle, jamais série."
+        },
+        {
+          "erreur_markdown": "Oublier de repérer le sens du courant dans le moteur",
+          "pourquoi_faux": "Un moteur reçoit de l'énergie électrique : le courant conventionnel y entre par sa borne + comme dans un résistor, sens qu'il faut représenter explicitement pour appliquer ensuite correctement la loi des mailles.",
+          "correction_markdown": "Trace toujours une flèche de sens de courant sur chaque branche, y compris sur celle du moteur, avant d'écrire la moindre équation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur alimente en dérivation deux résistors R1 et R2. Combien de nœuds et de branches comporte ce circuit ?",
+          "solution_markdown": "Le circuit comporte 2 nœuds (les deux bornes communes) et 3 branches : celle du générateur, celle de R1 et celle de R2."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sur le schéma d'un circuit à dérivation générateur/résistor/moteur, écrire la relation entre le courant total I et les courants de branche I1 (résistor) et I2 (moteur).",
+          "solution_markdown": "D'après la loi des nœuds, le courant total débité par le générateur se répartit entre les deux branches : $I = I_1 + I_2$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un troisième récepteur est ajouté en dérivation sur le même circuit. Comment évoluent le schéma et la loi des nœuds ?",
+          "solution_markdown": "Le troisième récepteur occupe une branche supplémentaire entre les deux mêmes nœuds A et B, avec son propre courant $I_3$. La loi des nœuds s'étend naturellement : $I = I_1 + I_2 + I_3$, le courant total du générateur se répartissant désormais entre trois branches plutôt que deux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un montage en dérivation place plusieurs récepteurs entre les deux mêmes nœuds : même tension, intensités potentiellement différentes.",
+        "Le schéma se construit dans l'ordre : générateur, repérage des nœuds, une branche par récepteur, puis orientation de tous les courants.",
+        "Le courant total du générateur se répartit entre les branches selon la loi des nœuds : $I = \\sum I_k$.",
+        "Un moteur se représente avec sa f.c.é.m. E' et sa résistance interne r', au même titre qu'un générateur mais consommateur d'énergie.",
+        "Un schéma correctement posé, avec des sens de courant cohérents, conditionne la validité de tout calcul ultérieur du circuit."
+      ]
+    }
+  ]
+}

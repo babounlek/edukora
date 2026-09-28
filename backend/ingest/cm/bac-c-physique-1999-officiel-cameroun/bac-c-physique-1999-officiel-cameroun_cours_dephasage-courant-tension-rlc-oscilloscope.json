@@ -1,0 +1,118 @@
+{
+  "cours_id": "cours-dephasage-courant-tension-rlc-oscilloscope-tle",
+  "meta": {
+    "titre": "Déphasage courant-tension dans un circuit RLC série et branchement à l'oscilloscope",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Circuits RLC en régime sinusoïdal",
+    "duree_estimee_min": 25,
+    "tags": [
+      "déphasage",
+      "circuit RLC série",
+      "oscilloscope"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-1999-PHYSIQUE-CAMEROUN",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, session 1999 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-1999-officiel-cameroun-ex3-q3c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur l'écran d'un oscilloscope, tension et courant d'un circuit RLC n'atteignent presque jamais leur maximum au même instant : l'un est systématiquement en avance sur l'autre. Ce déphasage, invisible sur un simple ampèremètre, devient visible dès qu'on sait où brancher les deux voies de l'oscilloscope. Ce cours explique comment prévoir ce déphasage et comment câbler le montage pour l'observer correctement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître l'expression de l'impédance et de la réactance d'un dipôle RLC série",
+        "Savoir qu'une résistance pure n'introduit aucun déphasage entre tension et courant"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Déphasage et branchement de l'oscilloscope",
+      "contenu_markdown": "Dans un dipôle RLC série de réactance $X=L\\omega-1/(C\\omega)$, la tension $u(t)$ est déphasée par rapport au courant $i(t)$ d'un angle $\\varphi$ tel que $\\tan\\varphi=X/R$ : si $X>0$ (comportement inductif), $u(t)$ est en AVANCE de phase sur $i(t)$ ; si $X<0$ (comportement capacitif), $u(t)$ est en RETARD sur $i(t)$. Pour visualiser ce déphasage à l'oscilloscope, il faut afficher $u(t)$ d'une part, et une grandeur proportionnelle à $i(t)$ d'autre part : comme la tension aux bornes d'une résistance pure est $R\\,i(t)$, EN PHASE avec $i(t)$, on branche une voie de l'oscilloscope aux bornes du générateur (mesure $u(t)$) et l'autre aux bornes de R (mesure $R\\,i(t)$), à condition que R soit l'élément directement relié à la masse commune de l'oscilloscope et du générateur.",
+      "formule_principale": "\\tan\\varphi = \\dfrac{X}{R}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un dipôle RLC série a $R=20\\ \\Omega$ et une réactance $X_1\\approx122{,}4\\ \\Omega$ à la fréquence $N_1=203\\ \\text{Hz}$. Déterminer le déphasage entre $u(t)$ et $i(t)$, et le décalage temporel correspondant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'angle de déphasage",
+          "justification": "$\\tan\\varphi=X_1/R$, avec $X_1>0$ donc $\\varphi>0$ (u en avance sur i).",
+          "resultat_markdown": "$\\tan\\varphi = \\dfrac{122{,}4}{20} \\approx 6{,}12 \\Rightarrow \\varphi \\approx 80{,}6°$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la période du signal",
+          "justification": "$T_1=1/N_1$.",
+          "resultat_markdown": "$T_1 = \\dfrac{1}{203} \\approx 4{,}93\\ \\text{ms}$"
+        },
+        {
+          "numero": 3,
+          "action": "Convertir le déphasage angulaire en décalage temporel",
+          "justification": "Un déphasage de $360°$ correspond à un décalage d'une période entière.",
+          "resultat_markdown": "$\\Delta t = \\dfrac{\\varphi}{360°}\\,T_1 \\approx \\dfrac{80{,}6}{360}\\times4{,}93 \\approx 1{,}10\\ \\text{ms}$"
+        }
+      ],
+      "conclusion_markdown": "La tension $u(t)$ est en avance de $1{,}10\\ \\text{ms}$ sur le courant (représenté par $R\\,i(t)$) : sur l'oscillogramme, le sommet de $u(t)$ apparaît $1{,}10\\ \\text{ms}$ avant celui de $R\\,i(t)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Brancher la voie destinée à mesurer le courant directement aux bornes de la bobine ou du condensateur plutôt qu'aux bornes de R.",
+          "pourquoi_faux": "La tension aux bornes de la bobine ou du condensateur n'est pas en phase avec le courant qui les traverse (elle est elle-même déphasée de $\\pm90°$) : seule la tension aux bornes d'une résistance pure reproduit fidèlement la forme et la phase du courant.",
+          "correction_markdown": "Retiens que seule une résistance donne une tension $R\\,i(t)$ rigoureusement en phase avec $i(t)$ : c'est toujours elle qu'on utilise pour visualiser le courant à l'oscilloscope."
+        },
+        {
+          "erreur_markdown": "Brancher R au milieu du montage (entre deux autres composants) plutôt qu'au niveau de la masse commune.",
+          "pourquoi_faux": "L'oscilloscope mesure toujours des tensions PAR RAPPORT À LA MASSE ; si R n'est pas directement reliée à la masse commune du générateur et de l'oscilloscope, la tension mesurée sur cette voie n'est plus simplement $R\\,i(t)$.",
+          "correction_markdown": "Place systématiquement R comme le dernier élément du montage avant le retour à la masse commune, jamais au milieu du circuit."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit RLC série a $R=10\\ \\Omega$ et une réactance $X=10\\ \\Omega$ à une fréquence donnée. Calculer le déphasage $\\varphi$ entre $u(t)$ et $i(t)$.",
+          "solution_markdown": "$\\tan\\varphi=X/R=10/10=1$, donc $\\varphi=45°$, avec $u(t)$ en avance sur $i(t)$ puisque $X>0$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exercice précédent avec une fréquence $N=250\\ \\text{Hz}$ et calculer le décalage temporel correspondant à ce déphasage.",
+          "solution_markdown": "$T=1/N=4\\ \\text{ms}$. Le décalage vaut $\\Delta t=\\dfrac{45}{360}\\times4=0{,}5\\ \\text{ms}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit RLC série a $R=25\\ \\Omega$ et une réactance $X=-25\\sqrt3\\ \\Omega$ (comportement capacitif). Calculer le déphasage $\\varphi$ et préciser lequel de $u(t)$ ou de $i(t)$ est en avance.",
+          "solution_markdown": "$\\tan\\varphi=X/R=-\\sqrt3$, donc $\\varphi=-60°$. Le signe négatif signifie que $u(t)$ est en RETARD de $60°$ sur $i(t)$ (ou, de façon équivalente, que $i(t)$ est en avance de $60°$ sur $u(t)$), ce qui est cohérent avec un comportement capacitif."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le signe de la réactance $X$ fixe le sens du déphasage : $X>0$ (inductif) donne $u(t)$ en avance sur $i(t)$ ; $X<0$ (capacitif) donne $u(t)$ en retard.",
+        "$\\tan\\varphi=X/R$ permet de calculer l'angle de déphasage, puis $\\Delta t=(\\varphi/360°)\\,T$ le décalage temporel visible à l'oscilloscope.",
+        "Pour visualiser le courant à l'oscilloscope, on mesure toujours la tension aux bornes d'une résistance pure, jamais aux bornes de L ou de C.",
+        "Cette résistance de mesure doit être directement reliée à la masse commune de l'oscilloscope et du générateur, sinon la mesure n'est plus interprétable."
+      ]
+    }
+  ]
+}
