@@ -20,9 +20,9 @@ def _champ(cible):
     return "lesson" if isinstance(cible, Lesson) else "cours"
 
 
-def enregistrer_marque(user, cible, cle, compris=None, signet=None, note=None):
+def enregistrer_marque(profil, cible, cle, compris=None, signet=None, note=None):
     """
-    Met à jour les champs FOURNIS (None = inchangé) de la marque de `user` sur la
+    Met à jour les champs FOURNIS (None = inchangé) de la marque de `profil` sur la
     section `cle` de `cible` (Lesson ou Cours), puis supprime la ligne si plus rien n'y
     reste - un signet retiré sans note ni "compris" ne doit pas laisser une ligne vide
     qui gonflerait le carnet. Renvoie la marque, ou None si elle a disparu.
@@ -34,7 +34,7 @@ def enregistrer_marque(user, cible, cle, compris=None, signet=None, note=None):
         if len(note) > NOTE_MAX:
             raise MarqueInvalide(f"Note trop longue ({NOTE_MAX} caractères maximum).")
 
-    marque, _ = MarqueEtude.objects.get_or_create(user=user, cle=cle, **{_champ(cible): cible})
+    marque, _ = MarqueEtude.objects.get_or_create(profil=profil, cle=cle, **{_champ(cible): cible})
     if compris is not None:
         marque.compris = bool(compris)
     if signet is not None:
@@ -49,5 +49,5 @@ def enregistrer_marque(user, cible, cle, compris=None, signet=None, note=None):
     return marque
 
 
-def marques_du_document(user, cible):
-    return MarqueEtude.objects.filter(user=user, **{_champ(cible): cible})
+def marques_du_document(profil, cible):
+    return MarqueEtude.objects.filter(profil=profil, **{_champ(cible): cible})

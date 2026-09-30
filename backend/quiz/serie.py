@@ -23,9 +23,9 @@ from .models import SeanceJournaliere, StatutSeance
 JOURS_ENTRE_DEUX_REPOS = 7
 
 
-def jours_travailles(user):
+def jours_travailles(profil):
     return set(
-        SeanceJournaliere.objects.filter(user=user, statut=StatutSeance.TERMINEE)
+        SeanceJournaliere.objects.filter(profil=profil, statut=StatutSeance.TERMINEE)
         .values_list("date", flat=True),
     )
 
@@ -70,5 +70,5 @@ def calculer_serie(jours, aujourdhui):
     }
 
 
-def serie_de_jours(user, aujourdhui: date | None = None):
-    return calculer_serie(jours_travailles(user), aujourdhui or timezone.localdate())
+def serie_de_jours(profil, aujourdhui: date | None = None):
+    return calculer_serie(jours_travailles(profil), aujourdhui or timezone.localdate())

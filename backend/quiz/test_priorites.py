@@ -18,6 +18,7 @@ class _Base(TestCase):
     def setUp(self):
         self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
         self.user = User.objects.create_user(phone_number="677400001", password="x")
+        self.profil = self.user.profils.first()
         self.compteur = 0
 
     def _matiere(self, code, coefficient, nb_items=4):
@@ -37,7 +38,7 @@ class _Base(TestCase):
         return subject, items
 
     def _repondre(self, item, correcte, session=None):
-        session = session or QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = session or QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         ordre = session.quiz_questions.count() + 1
         quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=ordre)
         QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare="REUSSI" if correcte else "ECHEC")
@@ -50,7 +51,7 @@ class DiagnosticParMatiereTests(_Base):
         moyen, _ = self._matiere("moyen", 3)
         faible, _ = self._matiere("faible", 1)
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.DIAGNOSTIC, n=6)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.DIAGNOSTIC, n=6)
 
         matieres = [qq.competence_item.subject_id for qq in session.quiz_questions.order_by("ordre")]
         self.assertEqual(len(matieres), 6)
@@ -62,7 +63,7 @@ class DiagnosticParMatiereTests(_Base):
         self._matiere("fort", 5)
         self._matiere("moyen", 3)
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.DIAGNOSTIC, n=6)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.DIAGNOSTIC, n=6)
 
         matieres = [qq.competence_item.subject_id for qq in session.quiz_questions.order_by("ordre")]
         self.assertTrue(all(a != b for a, b in zip(matieres, matieres[1:])))
@@ -72,7 +73,7 @@ class DiagnosticParMatiereTests(_Base):
         self._matiere("moyen", 3, nb_items=4)
         self._matiere("faible", 1, nb_items=4)
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.DIAGNOSTIC, n=6)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.DIAGNOSTIC, n=6)
 
         matieres = [qq.competence_item.subject_id for qq in session.quiz_questions.all()]
         self.assertEqual(len(matieres), 6)
@@ -81,7 +82,7 @@ class DiagnosticParMatiereTests(_Base):
     def test_a_single_subject_falls_back_to_the_global_draw(self):
         self._matiere("seul", 4, nb_items=5)
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.DIAGNOSTIC, n=4)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.DIAGNOSTIC, n=4)
 
         self.assertEqual(session.quiz_questions.count(), 4)
 
@@ -89,7 +90,7 @@ class DiagnosticParMatiereTests(_Base):
         fort, _ = self._matiere("fort", 5, nb_items=6)
         self._matiere("moyen", 3)
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.DIAGNOSTIC, subject=fort, n=6)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.DIAGNOSTIC, subject=fort, n=6)
 
         self.assertEqual({qq.competence_item.subject_id for qq in session.quiz_questions.all()}, {fort.id})
 
@@ -99,7 +100,7 @@ class PrioritesExamenTests(_Base):
         self._matiere("faible", 1)
         self._matiere("fort", 5)
 
-        resultat = priorites_examen(self.user, self.cursus)
+        resultat = priorites_examen(self.profil, self.cursus)
 
         self.assertEqual([m["subject_label"] for m in resultat["matieres"]], ["Fort", "Faible"])
         self.assertEqual(resultat["matieres"][0]["urgence"], 100)
@@ -114,7 +115,7 @@ class PrioritesExamenTests(_Base):
         for item in items_b[:3]:
             self._repondre(item, False)
 
-        resultat = priorites_examen(self.user, self.cursus)
+        resultat = priorites_examen(self.profil, self.cursus)
 
         self.assertEqual(resultat["matieres"][0]["subject_id"], b.id)
         self.assertEqual(resultat["matieres"][0]["niveau"], "fragile")
@@ -127,7 +128,7 @@ class PrioritesExamenTests(_Base):
         for item in items_fort[:3]:
             self._repondre(item, True)  # 3/3 dans la matière lourde
 
-        resultat = priorites_examen(self.user, self.cursus)
+        resultat = priorites_examen(self.profil, self.cursus)
 
         self.assertEqual(resultat["matieres"][0]["subject_id"], fort.id)
 
@@ -135,20 +136,20 @@ class PrioritesExamenTests(_Base):
         for i, coef in enumerate((5, 4, 3, 2, 1)):
             self._matiere(f"m{i}", coef)
 
-        resultat = priorites_examen(self.user, self.cursus)
+        resultat = priorites_examen(self.profil, self.cursus)
 
         self.assertEqual([m["prioritaire"] for m in resultat["matieres"]], [True, True, True, False, False])
 
     def test_topics_to_work_on_are_the_ones_missed_in_the_diagnostic(self):
         _, items = self._matiere("fort", 5)
         session = QuizSession.objects.create(
-            user=self.user, cursus=self.cursus, mode=ModeQuiz.DIAGNOSTIC, completed_at=timezone.now(),
+            profil=self.profil, cursus=self.cursus, mode=ModeQuiz.DIAGNOSTIC, completed_at=timezone.now(),
         )
         self._repondre(items[0], True, session)
         self._repondre(items[1], False, session)
         self._repondre(items[2], False, session)
 
-        resultat = priorites_examen(self.user, self.cursus)
+        resultat = priorites_examen(self.profil, self.cursus)
 
         self.assertTrue(resultat["diagnostic_fait"])
         self.assertEqual(
@@ -159,7 +160,7 @@ class PrioritesExamenTests(_Base):
         _, items = self._matiere("fort", 5)
         self._repondre(items[0], False)
 
-        resultat = priorites_examen(self.user, self.cursus)
+        resultat = priorites_examen(self.profil, self.cursus)
 
         self.assertFalse(resultat["diagnostic_fait"])
         self.assertEqual(resultat["themes_a_travailler"], [])
@@ -177,7 +178,9 @@ class PrioritesApiTests(_Base):
 
     def test_returns_the_ranking_for_a_subscriber(self):
         self._matiere("fort", 5)
-        Subscription.objects.create(user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=5))
+        Subscription.objects.create(
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=5),
+        )
         client = APIClient()
         client.force_authenticate(user=self.user)
 

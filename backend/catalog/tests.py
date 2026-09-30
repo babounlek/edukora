@@ -591,7 +591,7 @@ class ExcludeReadFilterApiTests(TestCase):
             title="Non lu", subject=subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
         )
         self.user = User.objects.create_user(phone_number="677100002", password="x")
-        LectureProgress.objects.create(user=self.user, lesson=self.lesson_read)
+        LectureProgress.objects.create(profil=self.user.profils.first(), lesson=self.lesson_read)
 
     def test_excludes_already_read_lesson_for_authenticated_user(self):
         client = APIClient()
@@ -701,9 +701,9 @@ class PopularOrderingApiTests(TestCase):
         )
         for i in range(3):
             reader = User.objects.create_user(phone_number=f"67710010{i}", password="x")
-            LectureProgress.objects.create(user=reader, lesson=self.popular)
+            LectureProgress.objects.create(profil=reader.profils.first(), lesson=self.popular)
         below_reader = User.objects.create_user(phone_number="677100109", password="x")
-        LectureProgress.objects.create(user=below_reader, lesson=self.below_threshold)
+        LectureProgress.objects.create(profil=below_reader.profils.first(), lesson=self.below_threshold)
 
     def test_excludes_lessons_below_minimum_reader_threshold(self):
         response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "ordering": "popular"})
@@ -808,7 +808,7 @@ class InediteCatalogueMergeApiTests(TestCase):
     def test_popular_ordering_respects_threshold_for_inedites(self):
         for i in range(3):
             reader = User.objects.create_user(phone_number=f"67710020{i}", password="x")
-            TentativeInedite.objects.create(user=reader, epreuve=self.epreuve)
+            TentativeInedite.objects.create(profil=reader.profils.first(), epreuve=self.epreuve)
 
         response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "ordering": "popular"})
         titles = [item["title"] for item in response.json()["results"]]
@@ -4922,8 +4922,8 @@ class ThemesFrequentsApiTests(TestCase):
         de la fonctionnalité (argument de vente propre à Jusqu'à l'Examen)."""
         self._seed_above_threshold()
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=30),
-            duration_mode=DureeMode.FIXE,
+            user=self.user, profil=self.user.profils.first(), cursus=self.cursus,
+            expires_at=timezone.now() + timedelta(days=30), duration_mode=DureeMode.FIXE,
         )
         self.client.force_authenticate(user=self.user)
 
@@ -4935,8 +4935,8 @@ class ThemesFrequentsApiTests(TestCase):
     def test_jusqua_examen_subscriber_sees_the_full_ranking(self):
         self._seed_above_threshold()
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=30),
-            duration_mode=DureeMode.JUSQUA_EXAMEN,
+            user=self.user, profil=self.user.profils.first(), cursus=self.cursus,
+            expires_at=timezone.now() + timedelta(days=30), duration_mode=DureeMode.JUSQUA_EXAMEN,
         )
         self.client.force_authenticate(user=self.user)
 
@@ -5009,6 +5009,50 @@ class ThemesFrequentsApiTests(TestCase):
         self.assertFalse(data["themes"][0]["quiz_disponible"])
 
 
+class ThemesFrequentsMatieresApiTests(TestCase):
+    """GET /catalog/cursus/<id>/themes-frequents/matieres/ - matières proposées au choix
+    sur /themes-frequents : seulement celles qui ont des épreuves officielles publiées
+    sur ce cursus, avec le même filtre que ThemesFrequentsView."""
+
+    def setUp(self):
+        self.maths = Subject.objects.get(country__code="CM", code="MATHS")
+        self.svt = Subject.objects.get(country__code="CM", code="SVT")
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        self.autre_cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        self.client = APIClient()
+
+    def _make_lesson(self, subject, year, cursus=None, origine=Origine.OFFICIEL, statut=StatutContenu.VALIDE):
+        lesson = Lesson.objects.create(
+            title=f"{subject.label} {year}", subject=subject, lesson_type=LessonType.CORR,
+            statut=statut, origine=origine, year=year,
+        )
+        lesson.cursus.add(cursus or self.cursus)
+        return lesson
+
+    def _get(self):
+        return self.client.get(reverse("catalog:themes-frequents-matieres", args=[self.cursus.pk])).json()
+
+    def test_counts_only_published_official_lessons_of_this_cursus(self):
+        for year in range(2015, 2024):  # 9 officielles, au-dessus du seuil
+            self._make_lesson(self.maths, year)
+        self._make_lesson(self.maths, 2024, origine=Origine.BLANC)
+        self._make_lesson(self.maths, 2025, statut=StatutContenu.BROUILLON)
+        self._make_lesson(self.svt, 2020)
+        self._make_lesson(self.svt, 2021, cursus=self.autre_cursus)
+
+        data = {m["code"]: m for m in self._get()}
+
+        self.assertEqual(data["MATHS"]["nb_sessions"], 9)
+        self.assertTrue(data["MATHS"]["disponible"])
+        self.assertEqual(data["SVT"]["nb_sessions"], 1)
+        self.assertFalse(data["SVT"]["disponible"])
+
+    def test_subject_without_official_lesson_is_absent(self):
+        self._make_lesson(self.maths, 2020, origine=Origine.BLANC)
+
+        self.assertEqual(self._get(), [])
+
+
 class ThemeExercicesApiTests(TestCase):
     """GET /catalog/cursus/<id>/themes-frequents/<tag_id>/exercices/ - alimente le
     bouton "Exercices" à côté d'un thème du classement (voir ThemesFrequentsApiTests,
@@ -5056,6 +5100,27 @@ class ThemeExercicesApiTests(TestCase):
         self.assertEqual(data["exercices"][0]["numero_exercice"], "1")
         self.assertFalse(data["exercices"][0]["has_access"])
 
+    def test_contextes_list_other_cursus_where_theme_is_treated(self):
+        """`contextes` alimente le choix de l'examen et de la matière : chaque (cursus,
+        matière) où le thème est traité, avec son nombre d'exercices distincts."""
+        autre_cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        lesson = self._make_lesson("Maths BAC C/D 2022")
+        lesson.cursus.add(autre_cursus)
+        for numero in ("1", "2"):
+            exercise = Exercise.objects.create(lesson=lesson, numero_exercice=numero, statut=StatutContenu.VALIDE)
+            for i in (1, 2):  # deux questions sur le même thème : l'exercice ne compte qu'une fois
+                Question.objects.create(
+                    exercise=exercise, numero=str(i), ordre=i, enonce_markdown="a", corrige_markdown="b",
+                ).themes.add(self.tag)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertEqual(data["exercices"][0]["origine"], Origine.OFFICIEL)
+        contextes = {c["cursus_id"]: c for c in data["contextes"]}
+        self.assertEqual(set(contextes), {self.cursus.pk, autre_cursus.pk})
+        self.assertEqual(contextes[autre_cursus.pk]["nb_exercices"], 2)
+        self.assertEqual(contextes[autre_cursus.pk]["subject_code"], "MATHS")
+
     def test_examen_blanc_is_included_unlike_the_ranking(self):
         lesson = self._make_lesson("Maths blanc", origine=Origine.BLANC)
         exercise = Exercise.objects.create(lesson=lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
@@ -5092,6 +5157,64 @@ class ThemeExercicesApiTests(TestCase):
         data = self.client.get(self._url(), {"subject": self.subject.code}).json()
 
         self.assertTrue(data["exercices"][0]["has_access"])
+
+
+class ThemeExerciceLectureApiTests(TestCase):
+    """GET /catalog/themes/<tag_id>/exercices/<exercise_id>/lecture/ - un exercice lu
+    seul depuis un thème : découpé par question, questions du thème marquées, corrigés
+    jamais servis sans accès."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        self.tag = Tag.objects.create(name="tableau de variation")
+        self.autre_tag = Tag.objects.create(name="limites")
+        self.client = APIClient()
+
+    def _make_exercise(self, est_vitrine=False):
+        lesson = Lesson.objects.create(
+            title="Maths BAC C 2022", subject=self.subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL, year=2022, est_vitrine=est_vitrine,
+        )
+        lesson.cursus.add(self.cursus)
+        exercise = Exercise.objects.create(lesson=lesson, numero_exercice="1", statut=StatutContenu.VALIDE)
+        for i, tag in enumerate([self.tag, self.autre_tag], start=1):
+            Question.objects.create(
+                exercise=exercise, numero=str(i), ordre=i,
+                enonce_markdown=f"Énoncé {i}", corrige_markdown=f"### Corrigé\n\nCorrigé {i}",
+            ).themes.add(tag)
+        exercise.compile_from_questions()
+        return exercise
+
+    def _get(self, exercise):
+        return self.client.get(reverse("catalog:theme-exercice-lecture", args=[self.tag.pk, exercise.pk]))
+
+    def test_questions_are_split_and_theme_ones_flagged(self):
+        data = self._get(self._make_exercise(est_vitrine=True)).json()
+
+        self.assertTrue(data["has_access"])
+        self.assertEqual([q["sur_le_theme"] for q in data["questions"]], [True, False])
+        self.assertIn("Corrigé 2", data["questions"][1]["corrige_markdown"])
+        self.assertNotIn("Corrigé 1", data["questions"][1]["corrige_markdown"])
+
+    def test_without_access_statements_are_served_but_never_corrections(self):
+        data = self._get(self._make_exercise()).json()
+
+        self.assertFalse(data["has_access"])
+        self.assertIn("Énoncé 1", data["questions"][0]["enonce_markdown"])
+        self.assertTrue(all(q["corrige_markdown"] is None for q in data["questions"]))
+        self.assertIsNone(data["corrige_markdown"])
+
+    def test_falls_back_to_single_block_when_questions_no_longer_match(self):
+        """Un corrigé retouché après compilation ne doit jamais être remplacé par la
+        version périmée de ses Question."""
+        exercise = self._make_exercise(est_vitrine=True)
+        Exercise.objects.filter(pk=exercise.pk).update(corrige_markdown=exercise.corrige_markdown + "\n\nAjout")
+
+        data = self._get(exercise).json()
+
+        self.assertIsNone(data["questions"])
+        self.assertIn("Ajout", data["corrige_markdown"])
 
 
 class DoubleJsonEscapingRepairTests(TestCase):

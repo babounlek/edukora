@@ -41,10 +41,10 @@ def _taux(reussies, total):
     return round(100 * reussies / total) if total else None
 
 
-def bilan_de_periode(user, cursus, aujourdhui=None, jours=PERIODE_JOURS):
+def bilan_de_periode(profil, cursus, aujourdhui=None, jours=PERIODE_JOURS):
     """
     Renvoie le bilan des `jours` derniers jours (PERIODE_JOURS par défaut, 7 pour le bilan
-    hebdomadaire) de l'abonnement de `user` à
+    hebdomadaire) de l'abonnement de `profil` à
     `cursus`, ou None si l'élève n'a jamais eu d'abonnement à ce cursus.
 
     La période se termine à la date du jour, ou à la date d'expiration si elle est déjà
@@ -61,7 +61,7 @@ def bilan_de_periode(user, cursus, aujourdhui=None, jours=PERIODE_JOURS):
     thème (Tag), là où le parcours regroupe par savoir - c'est pourquoi le libellé
     affiché est "thèmes consolidés" et non "savoirs maîtrisés".
     """
-    subscription = Subscription.objects.filter(user=user, cursus=cursus).first()
+    subscription = Subscription.objects.filter(profil=profil, cursus=cursus).first()
     if subscription is None:
         return None
 
@@ -72,7 +72,7 @@ def bilan_de_periode(user, cursus, aujourdhui=None, jours=PERIODE_JOURS):
     debut_dt, fin_dt = _borne_basse(debut), _borne_haute(fin)
 
     seances_qs = SeanceJournaliere.objects.filter(
-        user=user, cursus=cursus, statut=StatutSeance.TERMINEE, date__gte=debut, date__lte=fin,
+        profil=profil, cursus=cursus, statut=StatutSeance.TERMINEE, date__gte=debut, date__lte=fin,
     )
     jours_actifs = set(seances_qs.values_list("date", flat=True))
 
@@ -80,7 +80,7 @@ def bilan_de_periode(user, cursus, aujourdhui=None, jours=PERIODE_JOURS):
     # ambiguïté, comme pour la maîtrise (voir quiz.services.maitrise_par_theme).
     reponses = (
         QuizAnswer.objects.filter(
-            quiz_question__session__user=user,
+            quiz_question__session__profil=profil,
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
             answered_at__lte=fin_dt,
@@ -169,7 +169,7 @@ def bilan_de_periode(user, cursus, aujourdhui=None, jours=PERIODE_JOURS):
 
     seances = seances_qs.count()
     seances_total = SeanceJournaliere.objects.filter(
-        user=user, cursus=cursus, statut=StatutSeance.TERMINEE, date__lte=fin,
+        profil=profil, cursus=cursus, statut=StatutSeance.TERMINEE, date__lte=fin,
     ).count()
     return {
         "debut": debut,

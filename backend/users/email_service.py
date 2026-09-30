@@ -11,7 +11,8 @@ import random
 from datetime import timedelta
 
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 from django.utils import timezone
 
 from .models import AuthIdentity, AuthProvider, CodeCanal, OTPCode, User
@@ -118,17 +119,33 @@ def request_email_code(email, ip_address=None):
     # Le code figure dans l'OBJET du message, pas seulement le corps : c'est ce qui le
     # rend lisible depuis une notification système sans ouvrir le message, comme le SMS
     # l'est depuis l'écran de verrouillage.
+    #
+    # Texte brut TOUJOURS fourni en alternative (pas seulement le HTML) : certains
+    # clients (vieux Outlook, lecteurs d'écran, aperçus de notification) l'affichent en
+    # priorité, ou seul - un message purement HTML y apparaîtrait vide.
+    texte_brut = (
+        f"Ton code de connexion {settings.SITE_NAME} est {code}.\n\n"
+        f"Il est valable {EMAIL_CODE_VALIDITY_MINUTES} minutes. Si tu n'es pas à "
+        f"l'origine de cette demande, ignore ce message."
+    )
     try:
-        send_mail(
+        message = EmailMultiAlternatives(
             subject=f"Ton code {settings.SITE_NAME} : {code}",
-            message=(
-                f"Ton code de connexion {settings.SITE_NAME} est {code}.\n\n"
-                f"Il est valable {EMAIL_CODE_VALIDITY_MINUTES} minutes. Si tu n'es pas à "
-                f"l'origine de cette demande, ignore ce message."
-            ),
+            body=texte_brut,
             from_email=None,  # repli sur settings.DEFAULT_FROM_EMAIL
-            recipient_list=[email],
+            to=[email],
+            # no-reply@ n'est jamais relevée : une réponse doit atterrir sur une boîte
+            # surveillée plutôt que dans le vide.
+            reply_to=[settings.SUPPORT_EMAIL],
         )
+        message.attach_alternative(
+            render_to_string(
+                "users/emails/code_connexion.html",
+                {"code": code, "site_name": settings.SITE_NAME, "validity_minutes": EMAIL_CODE_VALIDITY_MINUTES},
+            ),
+            "text/html",
+        )
+        message.send()
     except Exception as exc:
         logger.exception("Envoi du code e-mail échoué pour %s", email)
         raise EmailSendFailed(

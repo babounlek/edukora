@@ -113,6 +113,10 @@ def composer_rappel_seance(user):
     """(sujet, corps) du rappel quotidien - sans jamais créer la séance elle-même :
     ouvrir l'application la crée, l'envoi d'un e-mail ne doit rien inscrire au nom de
     l'élève (ni fausser ce que mesure l'entonnoir d'acquisition)."""
+    # Même repli que users.profils.profil_actif : chaque compte n'a aujourd'hui qu'un
+    # seul profil, la vraie bascule (JWT claim) n'étant pas branchée sur ce canal
+    # hors requête HTTP.
+    profil = user.profils.first()
     cursus = user.cursus_prepare
     lignes = [_salutation(user), "", "Ta séance du jour t'attend : environ 25 minutes, choisie pour toi."]
 
@@ -120,11 +124,11 @@ def composer_rappel_seance(user):
     if formule:
         lignes.append(formule)
 
-    serie = serie_de_jours(user)
+    serie = serie_de_jours(profil)
     if serie["jours"] >= 2:
         lignes.append(f"Ta série est à {serie['jours']} jours de suite.")
 
-    dues = revisions_dues(user, cursus).count()
+    dues = revisions_dues(profil, cursus).count()
     if dues:
         lignes.append(f"{dues} thème{'s' if dues > 1 else ''} à revoir aujourd'hui pour qu'il{'s' if dues > 1 else ''} restent en mémoire.")
 
@@ -144,7 +148,9 @@ def destinataires_rappel_seance(maintenant=None):
     abonnement actif (la séance est verrouillée sans), examen déclaré, séance pas encore
     terminée aujourd'hui et rappel pas déjà envoyé."""
     aujourdhui = timezone.localtime(maintenant).date() if maintenant else timezone.localdate()
-    deja_fait = SeanceJournaliere.objects.filter(date=aujourdhui, statut=StatutSeance.TERMINEE).values("user_id")
+    deja_fait = SeanceJournaliere.objects.filter(
+        date=aujourdhui, statut=StatutSeance.TERMINEE,
+    ).values("profil__compte_id")
     deja_relance = RelanceEnvoyee.objects.filter(
         type=TypeRelance.RAPPEL_SEANCE, reference=aujourdhui.isoformat(),
     ).values("user_id")

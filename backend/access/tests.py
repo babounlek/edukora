@@ -26,6 +26,7 @@ class HasAccessTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677100001", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(code="MATHS")
         self.cursus_c = Cursus.objects.get(examen=Examen.BAC, series__code="C")
         self.cursus_d = Cursus.objects.get(examen=Examen.BAC, series__code="D")
@@ -39,20 +40,20 @@ class HasAccessTests(TestCase):
 
     def test_active_subscription_matching_cursus_grants_access(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertTrue(has_access(self.user, self.lesson))
 
     def test_expired_subscription_denies_access(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() - timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_c, expires_at=timezone.now() - timedelta(days=1),
         )
         self.assertFalse(has_access(self.user, self.lesson))
 
     def test_subscription_to_different_cursus_denies_access(self):
         """Un abonnement Série D ne doit jamais donner accès à du contenu Série C."""
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertFalse(has_access(self.user, self.lesson))
 
@@ -60,14 +61,14 @@ class HasAccessTests(TestCase):
         """Épreuve commune C/E (ou ici C/D) : un abonnement sur l'une des deux séries suffit."""
         self.lesson.cursus.add(self.cursus_d)
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertTrue(has_access(self.user, self.lesson))
 
     def test_cours_toutes_series_grants_access_with_any_active_subscription(self):
         cours = Cours.objects.create(titre="Notion commune", subject=self.subject, statut=StatutContenu.VALIDE)
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertTrue(has_access(self.user, cours))
 
@@ -134,6 +135,7 @@ class HasAccessInediteTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677100010", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(code="MATHS")
         self.cursus_c = Cursus.objects.get(examen=Examen.BAC, series__code="C")
         self.cursus_d = Cursus.objects.get(examen=Examen.BAC, series__code="D")
@@ -150,19 +152,19 @@ class HasAccessInediteTests(TestCase):
 
     def test_active_inscription_matching_cursus_grants_access(self):
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertTrue(has_access_inedite(self.user, self.epreuve))
 
     def test_expired_inscription_denies_access(self):
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() - timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_c, expires_at=timezone.now() - timedelta(days=1),
         )
         self.assertFalse(has_access_inedite(self.user, self.epreuve))
 
     def test_inscription_to_a_different_cursus_denies_access(self):
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertFalse(has_access_inedite(self.user, self.epreuve))
 
@@ -170,7 +172,7 @@ class HasAccessInediteTests(TestCase):
         """Indépendance des deux accès (décision "C2") - un abonnement de base ne doit
         jamais suffire pour l'add-on, et réciproquement (voir HasAccessTests)."""
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertFalse(has_access_inedite(self.user, self.epreuve))
 
@@ -180,7 +182,7 @@ class HasAccessInediteTests(TestCase):
         Maths BAC C/E doit débloquer pour un abonné de C seul comme de E seul)."""
         self.epreuve.cursus.add(self.cursus_d)
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertTrue(has_access_inedite(self.user, self.epreuve))
 
@@ -196,6 +198,7 @@ class HasAccessJusquaExamenTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677100020", password="x")
+        self.profil = self.user.profils.first()
         self.cursus_c = Cursus.objects.get(examen=Examen.BAC, series__code="C")
         self.cursus_d = Cursus.objects.get(examen=Examen.BAC, series__code="D")
 
@@ -209,28 +212,28 @@ class HasAccessJusquaExamenTests(TestCase):
         """Un abonnement Mensuel actif ne donne PAS accès - c'est tout l'objet de ce
         garde, par opposition à has_access qui l'aurait accordé."""
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
             duration_mode=DureeMode.FIXE,
         )
         self.assertFalse(has_access_jusqua_examen(self.user, self.cursus_c))
 
     def test_jusqua_examen_subscription_grants_access(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_c, expires_at=timezone.now() + timedelta(days=1),
             duration_mode=DureeMode.JUSQUA_EXAMEN,
         )
         self.assertTrue(has_access_jusqua_examen(self.user, self.cursus_c))
 
     def test_expired_jusqua_examen_subscription_denies_access(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus_c, expires_at=timezone.now() - timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_c, expires_at=timezone.now() - timedelta(days=1),
             duration_mode=DureeMode.JUSQUA_EXAMEN,
         )
         self.assertFalse(has_access_jusqua_examen(self.user, self.cursus_c))
 
     def test_jusqua_examen_subscription_on_a_different_cursus_denies_access(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus_d, expires_at=timezone.now() + timedelta(days=1),
             duration_mode=DureeMode.JUSQUA_EXAMEN,
         )
         self.assertFalse(has_access_jusqua_examen(self.user, self.cursus_c))
@@ -247,6 +250,7 @@ class ReadLessonAPITests(TestCase):
         )
         self.lesson.cursus.add(self.cursus)
         self.user = User.objects.create_user(phone_number="677100002", password="x")
+        self.profil = self.user.profils.first()
         self.client = APIClient()
 
     def test_read_requires_authentication(self):
@@ -261,7 +265,7 @@ class ReadLessonAPITests(TestCase):
 
     def test_read_denied_with_wrong_cursus_subscription(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.other_cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.other_cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
         response = self.client.get(f"/access/read/{self.lesson.id}/")
@@ -269,7 +273,7 @@ class ReadLessonAPITests(TestCase):
 
     def test_read_allowed_with_matching_subscription_and_tracks_progress(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -281,25 +285,25 @@ class ReadLessonAPITests(TestCase):
         # courte recto/verso, voir EpreuveReaderPage.tsx) - absent de header_info(),
         # qui ne porte que des métadonnées d'affichage.
         self.assertEqual(response.data["lesson_type"], LessonType.CORR)
-        self.assertTrue(LectureProgress.objects.filter(user=self.user, lesson=self.lesson).exists())
+        self.assertTrue(LectureProgress.objects.filter(profil=self.profil, lesson=self.lesson).exists())
 
     def test_reading_twice_does_not_duplicate_progress(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
         self.client.get(f"/access/read/{self.lesson.id}/")
         self.client.get(f"/access/read/{self.lesson.id}/")
 
-        self.assertEqual(LectureProgress.objects.filter(user=self.user, lesson=self.lesson).count(), 1)
+        self.assertEqual(LectureProgress.objects.filter(profil=self.profil, lesson=self.lesson).count(), 1)
 
     def test_read_exposes_an_empty_exercises_breakdown_for_a_lesson_without_exercise_rows(self):
         # Ce Lesson n'a que content_markdown, aucun Exercise (voir setUp) - le
         # frontend doit alors retomber dessus plutôt que sur une liste vide qu'il
         # afficherait à tort comme "pas de contenu" (voir EpreuveReaderPage.tsx).
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -316,7 +320,7 @@ class ReadLessonAPITests(TestCase):
             statut=StatutContenu.VALIDE,
         )
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -344,7 +348,7 @@ class ReadLessonAPITests(TestCase):
             statut=StatutContenu.VALIDE,
         )
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -362,7 +366,7 @@ class ReadLessonAPITests(TestCase):
         self.lesson.introduction_markdown = "Le candidat traitera au choix l'un des trois sujets proposés."
         self.lesson.save(update_fields=["introduction_markdown"])
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -436,6 +440,7 @@ class ReadCoursAPITests(TestCase):
         self.cours.compile_from_sections()
         self.cours.cursus.add(self.cursus)
         self.user = User.objects.create_user(phone_number="677100003", password="x")
+        self.profil = self.user.profils.first()
         self.client = APIClient()
 
     def test_read_cours_denied_without_subscription(self):
@@ -445,7 +450,7 @@ class ReadCoursAPITests(TestCase):
 
     def test_read_cours_allowed_with_subscription_and_tracks_progress(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -453,7 +458,7 @@ class ReadCoursAPITests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn("Exemple payant", response.data["content_markdown"])
-        self.assertTrue(LectureProgress.objects.filter(user=self.user, cours=self.cours).exists())
+        self.assertTrue(LectureProgress.objects.filter(profil=self.profil, cours=self.cours).exists())
 
     def test_preview_cours_never_exposes_paid_sections(self):
         response = self.client.get(f"/access/cours/preview/{self.cours.id}/")
@@ -465,7 +470,7 @@ class ReadCoursAPITests(TestCase):
         # URL publique désormais /cours/<slug>/lire (voir l'audit UX) - l'id numérique
         # reste accepté en compat historique (voir Cours.save/par_slug_ou_id).
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -515,8 +520,9 @@ class MyProgressionAPITests(TestCase):
         )
         self.lesson.cursus.add(self.cursus)
         self.user = User.objects.create_user(phone_number="677100004", password="x")
+        self.profil = self.user.profils.first()
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)

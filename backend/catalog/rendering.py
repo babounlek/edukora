@@ -1083,6 +1083,63 @@ def lesson_exercises_breakdown(lesson):
     return result
 
 
+# Séparateur posé entre les corrigés de deux Question le temps d'un seul passage de
+# nettoyage/liens de cours (voir exercise_questions_breakdown) - jamais visible : il
+# est retiré par le découpage qui suit.
+_QUESTION_SPLIT = "<!--EDUKORA-QUESTION-SPLIT-->"
+
+
+def exercise_questions_breakdown(exercise):
+    """
+    Énoncé/corrigé d'un Exercise découpés PAR QUESTION, avec les thèmes de chacune -
+    alimente la lecture d'un exercice isolé depuis un thème (ThemeExerciceLectureView),
+    qui surligne les questions portant sur ce thème et replie chaque corrigé
+    séparément ("Essaie d'abord").
+
+    Renvoie None quand les Question ne recomposent plus exactement le texte de
+    l'exercice (exercise.enonce_markdown/corrige_markdown retouchés directement par une
+    campagne de nettoyage après compilation - 5 cas sur 3 394 au 2026-09-29) :
+    l'appelant affiche alors l'exercice en un seul bloc, comme le lecteur, plutôt
+    qu'une version par question qui serait périmée.
+
+    Les corrigés des questions sont nettoyés et annotés de leurs liens de cours EN UN
+    SEUL PASSAGE, séparés par _QUESTION_SPLIT, puis redécoupés : annoter question par
+    question fausserait la déduplication des rappels répétés d'une sous-question à
+    l'autre (voir annotate_cours_links, histoire-geographie-bepc-2013 : 36 liens pour 6
+    cours) et perdrait les rappels non appariés, qui atterrissent comme dans le
+    lecteur en fin d'exercice, donc sur la dernière question.
+    """
+    questions = list(exercise.questions.prefetch_related("themes").order_by("ordre"))
+    if not questions:
+        return None
+    numbered = len(questions) > 1
+    intro = f"{exercise.enonce_intro_markdown}\n\n" if exercise.enonce_intro_markdown else ""
+    enonce_compile = intro + "\n\n".join(_render_question_enonce(q, numbered) for q in questions)
+    corrige_compile = "\n\n".join(_render_question_corrige(q, numbered) for q in questions)
+    if enonce_compile != exercise.enonce_markdown or corrige_compile != exercise.corrige_markdown:
+        return None
+
+    corrige = f"\n\n{_QUESTION_SPLIT}\n\n".join(q.corrige_markdown for q in questions)
+    corrige = _FICHE_IDENTITE_RE.sub("", corrige, count=1).lstrip()
+    corrige = _FICHE_IDENTITE_TABLE_RE.sub("", corrige, count=1).lstrip()
+    corrige = _EXERCICE_HEADING_RE.sub("", corrige, count=1)
+    corrige = _RAPPEL_ORPHELIN_RE.sub("", corrige)
+    corrige = annotate_cours_links(corrige, exercise.rappels_de_methode.select_related("cours").all())
+    corriges = [c.strip() for c in corrige.split(_QUESTION_SPLIT)]
+    if len(corriges) != len(questions):
+        return None
+
+    return [
+        {
+            "numero": q.numero,
+            "enonce_markdown": _render_question_enonce(q, numbered),
+            "corrige_markdown": corrige_q,
+            "theme_ids": [t.pk for t in q.themes.all()],
+        }
+        for q, corrige_q in zip(questions, corriges)
+    ]
+
+
 def lesson_preview_exercises(lesson):
     """
     Sujet public découpé par exercice - {numero_exercice, titre, points,

@@ -669,6 +669,7 @@ class CompetenceItemAdminViewsTests(TestCase):
 class GenererSessionTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200001", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(country__code="CM", code="MATHS")
         self.other_subject = Subject.objects.get(country__code="CM", code="FRANCAIS")
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
@@ -678,7 +679,7 @@ class GenererSessionTests(TestCase):
         _make_competence_item(self.subject, self.cursus, numero="1")
         _make_competence_item(self.subject, self.other_cursus, numero="2")
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, n=10)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.PRATIQUE, n=10)
 
         self.assertEqual(session.quiz_questions.count(), 1)
 
@@ -686,7 +687,7 @@ class GenererSessionTests(TestCase):
         _make_competence_item(self.subject, self.cursus, numero="1")
         _make_competence_item(self.other_subject, self.cursus, numero="2")
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, subject=self.subject, n=10)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.PRATIQUE, subject=self.subject, n=10)
 
         self.assertEqual(session.quiz_questions.count(), 1)
         self.assertEqual(session.quiz_questions.first().competence_item.subject, self.subject)
@@ -696,7 +697,7 @@ class GenererSessionTests(TestCase):
         matching = _make_competence_item(self.subject, self.cursus, theme=theme, numero="1")
         _make_competence_item(self.subject, self.cursus, numero="2")  # thème différent
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, theme=theme, n=10)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.PRATIQUE, theme=theme, n=10)
 
         self.assertEqual(session.quiz_questions.count(), 1)
         self.assertEqual(session.quiz_questions.first().competence_item, matching)
@@ -713,7 +714,7 @@ class GenererSessionTests(TestCase):
         item_b = _make_competence_item(self.subject, self.cursus, theme=theme_b, numero="2")
         _make_competence_item(self.subject, self.cursus, numero="3")  # savoir différent
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, savoir=savoir, n=10)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.PRATIQUE, savoir=savoir, n=10)
 
         self.assertEqual(
             {qq.competence_item_id for qq in session.quiz_questions.all()}, {item_a.id, item_b.id},
@@ -725,11 +726,11 @@ class GenererSessionTests(TestCase):
         _make_competence_item(self.subject, self.cursus, numero="1", statut=StatutContenu.BROUILLON)
 
         with self.assertRaises(ValueError):
-            generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, n=10)
+            generer_session(self.profil, self.cursus, ModeQuiz.PRATIQUE, n=10)
 
     def test_raises_when_no_item_eligible(self):
         with self.assertRaises(ValueError):
-            generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, n=10)
+            generer_session(self.profil, self.cursus, ModeQuiz.PRATIQUE, n=10)
 
     def test_diagnostic_mode_covers_a_range_of_difficulties(self):
         for i in range(5):
@@ -739,7 +740,7 @@ class GenererSessionTests(TestCase):
         for i in range(5):
             _make_competence_item(self.subject, self.cursus, difficulte=Difficulte.ELEVEE, numero=f"elevee-{i}")
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.DIAGNOSTIC, n=10)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.DIAGNOSTIC, n=10)
 
         difficultes = {qq.competence_item.difficulte_estimee for qq in session.quiz_questions.all()}
         self.assertEqual(session.quiz_questions.count(), 10)
@@ -753,6 +754,7 @@ class PoidsParThemeTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200010", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(country__code="CM", code="MATHS")
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.other_cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="D")
@@ -760,38 +762,38 @@ class PoidsParThemeTests(TestCase):
 
     def _repondre(self, cursus, theme, correcte):
         item = _make_competence_item(self.subject, cursus, theme=theme, numero="x")
-        session = QuizSession.objects.create(user=self.user, cursus=cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
         resultat = ResultatDeclare.REUSSI if correcte else ResultatDeclare.ECHEC
         QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=resultat)
 
     def test_no_history_returns_empty_dict(self):
-        self.assertEqual(_poids_par_theme(self.user, self.cursus), {})
+        self.assertEqual(_poids_par_theme(self.profil, self.cursus), {})
 
     def test_all_failures_give_maximum_weight(self):
         self._repondre(self.cursus, self.theme, correcte=False)
         self._repondre(self.cursus, self.theme, correcte=False)
 
-        self.assertAlmostEqual(_poids_par_theme(self.user, self.cursus)[self.theme.id], 1.7)
+        self.assertAlmostEqual(_poids_par_theme(self.profil, self.cursus)[self.theme.id], 1.7)
 
     def test_all_successes_give_minimum_weight(self):
         self._repondre(self.cursus, self.theme, correcte=True)
         self._repondre(self.cursus, self.theme, correcte=True)
 
-        self.assertAlmostEqual(_poids_par_theme(self.user, self.cursus)[self.theme.id], 0.3)
+        self.assertAlmostEqual(_poids_par_theme(self.profil, self.cursus)[self.theme.id], 0.3)
 
     def test_mixed_results_give_intermediate_weight(self):
         self._repondre(self.cursus, self.theme, correcte=True)
         self._repondre(self.cursus, self.theme, correcte=False)
 
-        self.assertAlmostEqual(_poids_par_theme(self.user, self.cursus)[self.theme.id], 1.0)
+        self.assertAlmostEqual(_poids_par_theme(self.profil, self.cursus)[self.theme.id], 1.0)
 
     def test_history_on_a_different_cursus_is_ignored(self):
         # Même thème (partagé entre cursus), mais l'échec a eu lieu en Série D - ne
         # doit jamais repondérer une pratique libre en Série C.
         self._repondre(self.other_cursus, self.theme, correcte=False)
 
-        self.assertEqual(_poids_par_theme(self.user, self.cursus), {})
+        self.assertEqual(_poids_par_theme(self.profil, self.cursus), {})
 
 
 class GenererSessionPratiqueWeightingTests(TestCase):
@@ -802,13 +804,14 @@ class GenererSessionPratiqueWeightingTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200012", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(country__code="CM", code="MATHS")
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.theme_faible = Tag.objects.create(name="theme-faible")
         self.theme_fort = Tag.objects.create(name="theme-fort")
 
     def _repondre(self, item, correcte):
-        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
         resultat = ResultatDeclare.REUSSI if correcte else ResultatDeclare.ECHEC
         QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=resultat)
@@ -816,7 +819,7 @@ class GenererSessionPratiqueWeightingTests(TestCase):
     def test_no_history_behaves_like_the_former_uniform_draw(self):
         item = _make_competence_item(self.subject, self.cursus, theme=self.theme_faible, numero="1")
 
-        session = generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, n=10)
+        session = generer_session(self.profil, self.cursus, ModeQuiz.PRATIQUE, n=10)
 
         self.assertEqual(list(session.quiz_questions.values_list("competence_item_id", flat=True)), [item.id])
 
@@ -832,7 +835,7 @@ class GenererSessionPratiqueWeightingTests(TestCase):
         tirages_faible = 0
         tirages_fort = 0
         for _ in range(100):
-            session = generer_session(self.user, self.cursus, ModeQuiz.PRATIQUE, n=10)
+            session = generer_session(self.profil, self.cursus, ModeQuiz.PRATIQUE, n=10)
             theme_ids = list(session.quiz_questions.values_list("competence_item__theme_id", flat=True))
             tirages_faible += theme_ids.count(self.theme_faible.id)
             tirages_fort += theme_ids.count(self.theme_fort.id)
@@ -862,7 +865,7 @@ class QuizQuestionDeletionTests(TestCase):
         lesson.cursus.add(cursus)
         question = _make_question(lesson, "1")
         exercise = question.exercise
-        session = QuizSession.objects.create(user=user, cursus=cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=user.profils.first(), cursus=cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, question=question, ordre=1)
 
         exercise.delete()
@@ -874,7 +877,7 @@ class QuizQuestionDeletionTests(TestCase):
         subject = Subject.objects.get(country__code="CM", code="MATHS")
         cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         item = _make_competence_item(subject, cursus, numero="1")
-        session = QuizSession.objects.create(user=user, cursus=cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=user.profils.first(), cursus=cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
 
         item.delete()
@@ -885,6 +888,7 @@ class QuizQuestionDeletionTests(TestCase):
 class QuizAnswerModelTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200002", password="x")
+        self.profil = self.user.profils.first()
         subject = Subject.objects.get(country__code="CM", code="MATHS")
         cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.qcm = _make_competence_item(
@@ -892,7 +896,7 @@ class QuizAnswerModelTests(TestCase):
             choix=[{"lettre": "a", "texte": "2x"}, {"lettre": "b", "texte": "x"}], reponse_correcte="a",
         )
         self.ouverte = _make_competence_item(subject, cursus, numero="2", type_reponse=TypeReponse.OUVERTE)
-        session = QuizSession.objects.create(user=self.user, cursus=cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=cursus, mode=ModeQuiz.PRATIQUE)
         self.qcm_qq = QuizQuestion.objects.create(session=session, competence_item=self.qcm, ordre=1)
         self.ouverte_qq = QuizQuestion.objects.create(session=session, competence_item=self.ouverte, ordre=2)
 
@@ -971,7 +975,7 @@ class LegacyQuestionPayloadTests(TestCase):
         lesson.cursus.add(cursus)
         question = _make_question(lesson, "1")
         user = User.objects.create_user(phone_number="677200006", password="x")
-        session = QuizSession.objects.create(user=user, cursus=cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=user.profils.first(), cursus=cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, question=question, ordre=1)
 
         payload = _question_payload(quiz_question)
@@ -989,11 +993,12 @@ class QuizApiTests(TestCase):
         self.item = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
 
         self.user = User.objects.create_user(phone_number="677200003", password="x")
+        self.profil = self.user.profils.first()
         self.client = APIClient()
 
     def _subscribe(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
 
     def test_start_session_requires_authentication(self):
@@ -1060,7 +1065,7 @@ class QuizApiTests(TestCase):
         series = Series.objects.create(country=inactive, code="C", label="Maths")
         inactive_cursus = Cursus.objects.create(country=inactive, examen=Examen.BAC, series=series)
         Subscription.objects.create(
-            user=self.user, cursus=inactive_cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=inactive_cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -1078,7 +1083,7 @@ class QuizApiTests(TestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data["total_questions"], 1)
-        self.assertTrue(QuizSession.objects.filter(user=self.user, cursus=self.cursus).exists())
+        self.assertTrue(QuizSession.objects.filter(profil=self.profil, cursus=self.cursus).exists())
 
     def test_question_payload_exposes_theme_and_subject_without_exam_metadata(self):
         # Contrairement à l'ancien payload (source catalog.Question), un CompetenceItem
@@ -1308,8 +1313,13 @@ class QuizApiTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["score"], 1)
         self.assertEqual(response.data["questions_repondues"], 1)
+        theme = Tag.objects.get(name="dérivation")
         self.assertEqual(
-            response.data["par_theme"], [{"theme": "dérivation", "total": 1, "reussies": 1, "cours": None}],
+            response.data["par_theme"],
+            [{
+                "theme": "dérivation", "theme_id": theme.pk, "subject_code": "MATHS",
+                "total": 1, "reussies": 1, "cours": None,
+            }],
         )
         self.assertIsNotNone(QuizSession.objects.get(pk=session_id).completed_at)
 
@@ -1451,47 +1461,48 @@ class EnregistrerResultatPourRevisionTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200013", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(country__code="CM", code="MATHS")
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.theme = Tag.objects.create(name="dérivation")
 
     def test_failure_opens_a_schedule_at_the_first_palier(self):
-        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=False)
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
 
-        schedule = RevisionSchedule.objects.get(user=self.user, cursus=self.cursus, theme=self.theme)
+        schedule = RevisionSchedule.objects.get(profil=self.profil, cursus=self.cursus, theme=self.theme)
         self.assertEqual(schedule.palier, 0)
         self.assertEqual(schedule.due_at, timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[0]))
 
     def test_success_without_an_existing_schedule_creates_nothing(self):
-        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=True)
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
 
-        self.assertFalse(RevisionSchedule.objects.filter(user=self.user, theme=self.theme).exists())
+        self.assertFalse(RevisionSchedule.objects.filter(profil=self.profil, theme=self.theme).exists())
 
     def test_success_advances_an_existing_schedule_to_the_next_palier(self):
-        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=False)
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
 
-        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=True)
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
 
-        schedule = RevisionSchedule.objects.get(user=self.user, cursus=self.cursus, theme=self.theme)
+        schedule = RevisionSchedule.objects.get(profil=self.profil, cursus=self.cursus, theme=self.theme)
         self.assertEqual(schedule.palier, 1)
         self.assertEqual(schedule.due_at, timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[1]))
 
     def test_success_at_the_last_palier_graduates_the_theme_out_of_the_queue(self):
-        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=False)
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
         for _ in range(len(LEITNER_INTERVALS_JOURS) - 1):
-            enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=True)
+            enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
 
-        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=True)
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
 
-        self.assertFalse(RevisionSchedule.objects.filter(user=self.user, theme=self.theme).exists())
+        self.assertFalse(RevisionSchedule.objects.filter(profil=self.profil, theme=self.theme).exists())
 
     def test_a_relapse_resets_an_advanced_schedule_back_to_the_first_palier(self):
-        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=False)
-        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=True)
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
 
-        enregistrer_resultat_pour_revision(self.user, self.cursus, self.subject, self.theme, correcte=False)
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
 
-        schedule = RevisionSchedule.objects.get(user=self.user, cursus=self.cursus, theme=self.theme)
+        schedule = RevisionSchedule.objects.get(profil=self.profil, cursus=self.cursus, theme=self.theme)
         self.assertEqual(schedule.palier, 0)
         self.assertEqual(schedule.due_at, timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[0]))
 
@@ -1502,34 +1513,35 @@ class RevisionsDuesServiceTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200014", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(country__code="CM", code="MATHS")
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
 
     def _make_schedule(self, theme_name, due_at, cursus=None):
         theme = Tag.objects.create(name=theme_name)
         return RevisionSchedule.objects.create(
-            user=self.user, cursus=cursus or self.cursus, subject=self.subject, theme=theme, due_at=due_at,
+            profil=self.profil, cursus=cursus or self.cursus, subject=self.subject, theme=theme, due_at=due_at,
         )
 
     def test_future_schedules_are_excluded(self):
         self._make_schedule("pas-encore-du", timezone.localdate() + timedelta(days=3))
 
-        self.assertEqual(list(revisions_dues(self.user)), [])
+        self.assertEqual(list(revisions_dues(self.profil)), [])
 
     def test_due_today_and_overdue_are_included_most_overdue_first(self):
         du_aujourdhui = self._make_schedule("aujourdhui", timezone.localdate())
         tres_en_retard = self._make_schedule("tres-en-retard", timezone.localdate() - timedelta(days=5))
 
-        self.assertEqual(list(revisions_dues(self.user)), [tres_en_retard, du_aujourdhui])
+        self.assertEqual(list(revisions_dues(self.profil)), [tres_en_retard, du_aujourdhui])
 
     def test_scoped_to_the_requested_user(self):
         other_user = User.objects.create_user(phone_number="677200015", password="x")
         RevisionSchedule.objects.create(
-            user=other_user, cursus=self.cursus, subject=self.subject,
+            profil=other_user.profils.first(), cursus=self.cursus, subject=self.subject,
             theme=Tag.objects.create(name="pas-le-mien"), due_at=timezone.localdate(),
         )
 
-        self.assertEqual(list(revisions_dues(self.user)), [])
+        self.assertEqual(list(revisions_dues(self.profil)), [])
 
 
 class RevisionsDuesApiTests(TestCase):
@@ -1542,9 +1554,10 @@ class RevisionsDuesApiTests(TestCase):
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.theme = Tag.objects.create(name="dérivation")
         self.user = User.objects.create_user(phone_number="677200016", password="x")
+        self.profil = self.user.profils.first()
         self.client = APIClient()
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -1564,7 +1577,7 @@ class RevisionsDuesApiTests(TestCase):
             {"reponse_choisie": "a"}, format="json",  # "a" != reponse_correcte ("b") : réponse fausse
         )
 
-        schedule = RevisionSchedule.objects.get(user=self.user, theme=self.theme)
+        schedule = RevisionSchedule.objects.get(profil=self.profil, theme=self.theme)
         self.assertEqual(schedule.palier, 0)
         self.assertEqual(schedule.due_at, timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[0]))
         self.assertEqual(self.client.get("/quiz/revisions/").data, [])
@@ -1582,7 +1595,7 @@ class RevisionsDuesApiTests(TestCase):
         )
         # Simule le passage du temps : la fenêtre J+1 posée par la réponse ci-dessus
         # est désormais atteinte.
-        RevisionSchedule.objects.filter(user=self.user, theme=self.theme).update(
+        RevisionSchedule.objects.filter(profil=self.profil, theme=self.theme).update(
             due_at=timezone.localdate() - timedelta(days=1),
         )
 
@@ -1610,11 +1623,11 @@ class RevisionsDuesApiTests(TestCase):
             {"reponse_choisie": "a"}, format="json",
         )
 
-        self.assertFalse(RevisionSchedule.objects.filter(user=self.user, theme=self.theme).exists())
+        self.assertFalse(RevisionSchedule.objects.filter(profil=self.profil, theme=self.theme).exists())
 
     def test_includes_published_cours_covering_the_same_theme(self):
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             due_at=timezone.localdate(),
         )
         cours = _make_cours(self.subject, cursus=self.cursus, tags=[self.theme], titre="Dérivées : la méthode")
@@ -1631,7 +1644,7 @@ class RevisionsDuesApiTests(TestCase):
 
     def test_excludes_cours_for_a_different_theme(self):
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             due_at=timezone.localdate(),
         )
         autre_theme = Tag.objects.create(name="autre-notion")
@@ -1645,7 +1658,7 @@ class RevisionsDuesApiTests(TestCase):
         # cursus vide sur le Cours = "toutes séries" (voir Cours.cursus, blank=True) -
         # doit rester rattaché à la file de révision d'une série précise malgré tout.
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             due_at=timezone.localdate(),
         )
         cours = _make_cours(self.subject, cursus=None, tags=[self.theme], titre="Notion commune")
@@ -1676,13 +1689,14 @@ class MaitriseParThemeTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200017", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(country__code="CM", code="MATHS")
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.other_cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="D")
         self.theme = Tag.objects.create(name="dérivation")
 
     def _repondre(self, item, correcte, cursus=None):
-        session = QuizSession.objects.create(user=self.user, cursus=cursus or self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=cursus or self.cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
         resultat = ResultatDeclare.REUSSI if correcte else ResultatDeclare.ECHEC
         QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=resultat)
@@ -1693,7 +1707,7 @@ class MaitriseParThemeTests(TestCase):
         self._repondre(item, correcte=True)
         self._repondre(item, correcte=False)  # 2/3 -> 67% (arrondi, pas tronqué à 66%)
 
-        maitrise = maitrise_par_theme(self.user)
+        maitrise = maitrise_par_theme(self.profil)
 
         self.assertEqual(len(maitrise), 1)
         entry = maitrise[0]
@@ -1707,11 +1721,11 @@ class MaitriseParThemeTests(TestCase):
         item = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
         self._repondre(item, correcte=False)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             due_at=timezone.localdate() + timedelta(days=1),
         )
 
-        entry = maitrise_par_theme(self.user)[0]
+        entry = maitrise_par_theme(self.profil)[0]
 
         self.assertTrue(entry["en_revision"])
 
@@ -1719,7 +1733,7 @@ class MaitriseParThemeTests(TestCase):
         item = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
         self._repondre(item, correcte=True)
 
-        entry = maitrise_par_theme(self.user)[0]
+        entry = maitrise_par_theme(self.profil)[0]
 
         self.assertFalse(entry["en_revision"])
 
@@ -1730,7 +1744,7 @@ class MaitriseParThemeTests(TestCase):
         self._repondre(item_faible, correcte=False)
         self._repondre(item_fort, correcte=True)
 
-        maitrise = maitrise_par_theme(self.user)
+        maitrise = maitrise_par_theme(self.profil)
 
         self.assertEqual([entry["theme"] for entry in maitrise], ["dérivation", "fort"])
 
@@ -1740,7 +1754,7 @@ class MaitriseParThemeTests(TestCase):
         self._repondre(item_ici, correcte=True, cursus=self.cursus)
         self._repondre(item_ailleurs, correcte=False, cursus=self.other_cursus)
 
-        maitrise = maitrise_par_theme(self.user, cursus=self.cursus)
+        maitrise = maitrise_par_theme(self.profil, cursus=self.cursus)
 
         self.assertEqual(len(maitrise), 1)
         self.assertEqual(maitrise[0]["total"], 1)
@@ -1749,11 +1763,13 @@ class MaitriseParThemeTests(TestCase):
     def test_scoped_to_the_requesting_user(self):
         other_user = User.objects.create_user(phone_number="677200018", password="x")
         item = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
-        session = QuizSession.objects.create(user=other_user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(
+            profil=other_user.profils.first(), cursus=self.cursus, mode=ModeQuiz.PRATIQUE,
+        )
         quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
         QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
 
-        self.assertEqual(maitrise_par_theme(self.user), [])
+        self.assertEqual(maitrise_par_theme(self.profil), [])
 
     def test_legacy_catalog_question_answers_are_excluded(self):
         # Historique pré-bascule : plusieurs thèmes possibles par question (M2M), donc
@@ -1765,11 +1781,11 @@ class MaitriseParThemeTests(TestCase):
         lesson.cursus.add(self.cursus)
         question = _make_question(lesson, "1")
         question.themes.add(self.theme)
-        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, question=question, ordre=1)
         QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
 
-        self.assertEqual(maitrise_par_theme(self.user), [])
+        self.assertEqual(maitrise_par_theme(self.profil), [])
 
 
 class MaitriseApiTests(TestCase):
@@ -1780,11 +1796,12 @@ class MaitriseApiTests(TestCase):
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.theme = Tag.objects.create(name="dérivation")
         self.user = User.objects.create_user(phone_number="677200019", password="x")
+        self.profil = self.user.profils.first()
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
         item = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="1")
-        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
         QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
 
@@ -1817,6 +1834,7 @@ class ConstruireParcoursTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200021", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(country__code="CM", code="MATHS")
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
 
@@ -1832,13 +1850,13 @@ class ConstruireParcoursTests(TestCase):
         self.savoir_1a = Savoir.objects.create(module=self.module_1, numero="I", intitule="Premier savoir", ordre=1)
 
     def _repondre(self, item, correcte):
-        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
         resultat = ResultatDeclare.REUSSI if correcte else ResultatDeclare.ECHEC
         QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=resultat)
 
     def test_orders_modules_and_savoirs_by_ordre_not_creation(self):
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         self.assertEqual([m["titre"] for m in parcours], ["Premier module", "Second module"])
         self.assertEqual(
@@ -1846,7 +1864,7 @@ class ConstruireParcoursTests(TestCase):
         )
 
     def test_savoir_without_any_content_still_appears(self):
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         savoir_payload = parcours[0]["savoirs"][0]
         self.assertEqual(savoir_payload["taux"], None)
@@ -1859,7 +1877,7 @@ class ConstruireParcoursTests(TestCase):
         self._repondre(item, correcte=True)
         self._repondre(item, correcte=False)
 
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         savoir_payload = parcours[0]["savoirs"][0]
         self.assertEqual(savoir_payload["taux"], 50)
@@ -1868,20 +1886,20 @@ class ConstruireParcoursTests(TestCase):
     def test_en_revision_flag_from_revision_schedule(self):
         theme = Tag.objects.create(name="theme-en-echec", savoir_officiel=self.savoir_1a)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=theme,
             due_at=timezone.localdate() + timedelta(days=1),
         )
 
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         self.assertTrue(parcours[0]["savoirs"][0]["en_revision"])
 
     def test_a_lu_le_cours_flag_from_lecture_progress(self):
         theme = Tag.objects.create(name="theme-cours", savoir_officiel=self.savoir_1a)
         cours = _make_cours(self.subject, cursus=self.cursus, tags=[theme], titre="Le cours")
-        LectureProgress.objects.create(user=self.user, cours=cours)
+        LectureProgress.objects.create(profil=self.profil, cours=cours)
 
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         savoir_payload = parcours[0]["savoirs"][0]
         self.assertTrue(savoir_payload["a_lu_le_cours"])
@@ -1897,7 +1915,7 @@ class ConstruireParcoursTests(TestCase):
         _make_competence_item(self.subject, self.cursus, theme=theme_quiz, numero="1")
         cours = _make_cours(self.subject, cursus=self.cursus, tags=[theme_cours], titre="Cours indirect")
 
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         savoir_payload = parcours[0]["savoirs"][0]
         self.assertEqual(
@@ -1917,7 +1935,7 @@ class ConstruireParcoursTests(TestCase):
             self.subject, cursus=self.cursus, tags=[theme], titre="Cours B", external_id="cours-b",
         )
 
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         savoir_payload = parcours[0]["savoirs"][0]
         self.assertEqual([c["slug"] for c in savoir_payload["cours"]], [cours_a.slug, cours_b.slug])
@@ -1929,7 +1947,7 @@ class ConstruireParcoursTests(TestCase):
                 self.subject, cursus=self.cursus, tags=[theme], titre=f"Cours {i}", external_id=f"cours-cap-{i}",
             )
 
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         savoir_payload = parcours[0]["savoirs"][0]
         self.assertEqual(len(savoir_payload["cours"]), PARCOURS_COURS_PAR_SAVOIR_MAX)
@@ -1953,7 +1971,7 @@ class ConstruireParcoursTests(TestCase):
             sous_theme="Sous-thème distinct",
         )
 
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         savoir_payload = parcours[0]["savoirs"][0]
         # Le premier des deux doublons (ordre par id) est gardé, le second exclu -
@@ -1969,6 +1987,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200023", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(country__code="CM", code="MATHS")
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
 
@@ -1977,7 +1996,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
             tag = Tag.objects.create(name=f"theme-{i}")
             _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
 
-        self.assertIsNone(construire_parcours_par_frequence(self.user, self.cursus, self.subject))
+        self.assertIsNone(construire_parcours_par_frequence(self.profil, self.cursus, self.subject))
 
     def test_ranks_themes_by_number_of_distinct_lessons(self):
         frequent = Tag.objects.create(name="frequent")
@@ -1986,7 +2005,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
             themes = [frequent, rare] if i < 2 else [frequent]
             _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [themes])
 
-        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+        themes = construire_parcours_par_frequence(self.profil, self.cursus, self.subject)
 
         self.assertEqual(themes[0]["intitule"], "frequent")
         self.assertEqual(themes[0]["nb_epreuves"], SEUIL_MINIMUM_THEMES_PARCOURS)
@@ -2002,7 +2021,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
             tag = tag_canonique if i % 2 == 0 else tag_variante
             _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
 
-        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+        themes = construire_parcours_par_frequence(self.profil, self.cursus, self.subject)
 
         noms = [t["intitule"] for t in themes]
         self.assertEqual(noms.count(canonique), 1)
@@ -2016,7 +2035,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
             _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag_canonique, tag_variante]])
 
-        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+        themes = construire_parcours_par_frequence(self.profil, self.cursus, self.subject)
 
         # Union, jamais la somme (voir la docstring) : sinon la fréquence dépasserait
         # nb_sessions_disponibles, un non-sens pour un frequence_pct.
@@ -2030,7 +2049,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
             _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[junk, real]])
 
-        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+        themes = construire_parcours_par_frequence(self.profil, self.cursus, self.subject)
 
         self.assertNotIn(junk_name, [t["intitule"] for t in themes])
 
@@ -2042,7 +2061,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
             _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[recurrent]])
         self.assertEqual(PARCOURS_FREQUENCE_OCCURRENCES_MIN, 2)
 
-        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+        themes = construire_parcours_par_frequence(self.profil, self.cursus, self.subject)
 
         self.assertNotIn("une-seule-fois", [t["intitule"] for t in themes])
         self.assertIn("recurrent", [t["intitule"] for t in themes])
@@ -2058,7 +2077,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
             question.savoir_officiel = savoir_majoritaire if i < 6 else savoir_minoritaire
             question.save()
 
-        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+        themes = construire_parcours_par_frequence(self.profil, self.cursus, self.subject)
 
         self.assertEqual(themes[0]["savoir_label"], "Savoir majoritaire")
 
@@ -2070,7 +2089,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
             _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
 
-        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+        themes = construire_parcours_par_frequence(self.profil, self.cursus, self.subject)
 
         self.assertEqual(themes[0]["intitule"], "theme-hors-referentiel")
         self.assertIsNone(themes[0]["savoir_label"])
@@ -2081,7 +2100,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
             _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
         _make_competence_item(self.subject, self.cursus, theme=tag, numero="1")
 
-        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+        themes = construire_parcours_par_frequence(self.profil, self.cursus, self.subject)
 
         self.assertTrue(themes[0]["has_quiz"])
 
@@ -2098,7 +2117,7 @@ class ConstruireParcoursParFrequenceTests(TestCase):
             exercise=exercise, external_id="rdm-theme-avec-cours", competence="x", contenu_markdown="x", cours=cours,
         )
 
-        themes = construire_parcours_par_frequence(self.user, self.cursus, self.subject)
+        themes = construire_parcours_par_frequence(self.profil, self.cursus, self.subject)
 
         self.assertEqual(
             themes[0]["cours"], [{"slug": cours.slug, "titre": cours.titre, "sous_theme": cours.sous_theme}],
@@ -2115,6 +2134,7 @@ class ConstruireParcoursBranchesToFrequenceForStemSubjectsTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200024", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(country__code="CM", code="MATHS")
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         module = Module.objects.create(subject=self.subject, classe="Tle", serie_label="C", numero="1", titre="M")
@@ -2122,7 +2142,7 @@ class ConstruireParcoursBranchesToFrequenceForStemSubjectsTests(TestCase):
         Savoir.objects.create(module=module, numero="I", intitule="Un savoir du programme")
 
     def test_falls_back_to_module_savoir_below_the_reliability_floor(self):
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         self.assertEqual(parcours[0]["titre"], "M")
 
@@ -2131,7 +2151,7 @@ class ConstruireParcoursBranchesToFrequenceForStemSubjectsTests(TestCase):
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
             _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
 
-        parcours = construire_parcours(self.user, self.cursus, self.subject)
+        parcours = construire_parcours(self.profil, self.cursus, self.subject)
 
         self.assertEqual(len(parcours), 1)
         self.assertEqual(parcours[0]["savoirs"][0]["intitule"], "theme-frequent")
@@ -2141,7 +2161,7 @@ class ConstruireParcoursBranchesToFrequenceForStemSubjectsTests(TestCase):
         for i in range(SEUIL_MINIMUM_THEMES_PARCOURS):
             _make_lesson_avec_themes(self.subject, self.cursus, f"Lesson {i}", [[tag]])
 
-        resume = resume_parcours(self.user, self.cursus)
+        resume = resume_parcours(self.profil, self.cursus)
 
         matiere = next(r for r in resume if r["subject_id"] == self.subject.id)
         self.assertEqual(matiere["total"], 1)
@@ -2182,6 +2202,7 @@ class ResumeParcoursTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677200023", password="x")
+        self.profil = self.user.profils.first()
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.maths = Subject.objects.get(country__code="CM", code="MATHS")
         self.francais = Subject.objects.get(country__code="CM", code="FRANCAIS")
@@ -2195,14 +2216,14 @@ class ResumeParcoursTests(TestCase):
         self._module_savoir(self.maths)
         # self.francais n'a aucun Module pour ce cursus - ne doit pas apparaître.
 
-        resume = resume_parcours(self.user, self.cursus)
+        resume = resume_parcours(self.profil, self.cursus)
 
         self.assertEqual([r["subject_label"] for r in resume], [self.maths.label])
 
     def test_subject_without_any_content_is_entirely_sans_contenu(self):
         self._module_savoir(self.maths)
 
-        resume = resume_parcours(self.user, self.cursus)
+        resume = resume_parcours(self.profil, self.cursus)
 
         entry = resume[0]
         self.assertEqual(entry["total"], 1)
@@ -2220,21 +2241,21 @@ class ResumeParcoursTests(TestCase):
 
         theme_maitrise = Tag.objects.create(name="theme-maitrise", savoir_officiel=savoir_maitrise)
         item_maitrise = _make_competence_item(self.maths, self.cursus, theme=theme_maitrise, numero="1")
-        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, competence_item=item_maitrise, ordre=1)
         QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
 
         theme_en_revision = Tag.objects.create(name="theme-en-revision", savoir_officiel=savoir_en_revision)
         _make_competence_item(self.maths, self.cursus, theme=theme_en_revision, numero="2")
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.maths, theme=theme_en_revision,
+            profil=self.profil, cursus=self.cursus, subject=self.maths, theme=theme_en_revision,
             due_at=timezone.localdate() + timedelta(days=1),
         )
 
         theme_a_decouvrir = Tag.objects.create(name="theme-a-decouvrir", savoir_officiel=savoir_a_decouvrir)
         _make_competence_item(self.maths, self.cursus, theme=theme_a_decouvrir, numero="3")
 
-        resume = resume_parcours(self.user, self.cursus)
+        resume = resume_parcours(self.profil, self.cursus)
 
         entry = resume[0]
         self.assertEqual(entry["total"], 4)
@@ -2258,7 +2279,7 @@ class ResumeParcoursTests(TestCase):
         savoir = self._module_savoir(self.maths, numero="1", intitule="Travaille")
         theme = Tag.objects.create(name="theme-travaille", savoir_officiel=savoir)
         item = _make_competence_item(self.maths, self.cursus, theme=theme, numero="1")
-        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
 
         # 3 échecs (le dernier fixe le palier à 0), puis 3 réussites consécutives qui
         # font avancer les 3 paliers (LEITNER_INTERVALS_JOURS) et graduent le thème
@@ -2270,11 +2291,11 @@ class ResumeParcoursTests(TestCase):
                 quiz_question=quiz_question,
                 resultat_declare=ResultatDeclare.REUSSI if resultat else ResultatDeclare.ECHEC,
             )
-            enregistrer_resultat_pour_revision(self.user, self.cursus, self.maths, theme, resultat)
+            enregistrer_resultat_pour_revision(self.profil, self.cursus, self.maths, theme, resultat)
 
-        self.assertFalse(RevisionSchedule.objects.filter(user=self.user, theme=theme).exists())
+        self.assertFalse(RevisionSchedule.objects.filter(profil=self.profil, theme=theme).exists())
 
-        resume = resume_parcours(self.user, self.cursus)
+        resume = resume_parcours(self.profil, self.cursus)
 
         entry = resume[0]
         self.assertEqual(entry["total"], 1)
@@ -2388,6 +2409,7 @@ class PlanDuJourTests(TestCase):
     def setUp(self):
         self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
         self.user = User.objects.create_user(phone_number="677900303", password="x")
+        self.profil = self.user.profils.first()
         self.user.cursus_prepare = self.cursus
         self.user.save(update_fields=["cursus_prepare"])
         self.subject = Subject.objects.create(
@@ -2431,7 +2453,7 @@ class PlanDuJourTests(TestCase):
         (voir enregistrer_resultat_pour_revision, appelé par answer_question) - un
         élève sans historique n'en a jamais.
         """
-        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(
             session=session, competence_item=self._item(self.subject, self.theme), ordre=1,
         )
@@ -2441,11 +2463,11 @@ class PlanDuJourTests(TestCase):
         self._item(self.subject, self.theme)
         self._epreuve_sur_le_theme(self.subject, self.theme)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         self.assertEqual(seance.origine, OrigineSeance.REVISION_DUE)
         self.assertEqual(seance.theme_id, self.theme.id)
@@ -2453,26 +2475,26 @@ class PlanDuJourTests(TestCase):
     def test_la_meme_seance_toute_la_journee(self):
         self._item(self.subject, self.theme)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
 
-        premiere = plan_du_jour(self.user, self.cursus)
-        deuxieme = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
+        deuxieme = plan_du_jour(self.profil, self.cursus)
 
         # Le point non négociable : trois ouvertures dans la journée, une seule séance.
         self.assertEqual(premiere.id, deuxieme.id)
-        self.assertEqual(SeanceJournaliere.objects.filter(user=self.user).count(), 1)
+        self.assertEqual(SeanceJournaliere.objects.filter(profil=self.profil).count(), 1)
 
     def test_le_lendemain_donne_une_nouvelle_seance(self):
         self._item(self.subject, self.theme)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
 
-        aujourdhui = plan_du_jour(self.user, self.cursus)
-        demain = plan_du_jour(self.user, self.cursus, date=timezone.localdate() + timedelta(days=1))
+        aujourdhui = plan_du_jour(self.profil, self.cursus)
+        demain = plan_du_jour(self.profil, self.cursus, date=timezone.localdate() + timedelta(days=1))
 
         self.assertNotEqual(aujourdhui.id, demain.id)
 
@@ -2482,7 +2504,7 @@ class PlanDuJourTests(TestCase):
         # jamais la première séance d'un cursus fourni, voir plan_du_jour.
         self._item(self.subject, self.theme)
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         self.assertEqual(seance.origine, OrigineSeance.DIAGNOSTIC)
         self.assertIsNone(seance.subject)
@@ -2493,20 +2515,20 @@ class PlanDuJourTests(TestCase):
         self._item(self.autre_subject, self.autre_theme)
         for jour in (2, 1):
             SeanceJournaliere.objects.create(
-                user=self.user, cursus=self.cursus, date=timezone.localdate() - timedelta(days=jour),
+                profil=self.profil, cursus=self.cursus, date=timezone.localdate() - timedelta(days=jour),
                 origine=OrigineSeance.REVISION_DUE, subject=self.subject, theme=self.theme,
                 etapes=[], statut=StatutSeance.TERMINEE,
             )
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.autre_subject, theme=self.autre_theme,
+            profil=self.profil, cursus=self.cursus, subject=self.autre_subject, theme=self.autre_theme,
             palier=0, due_at=timezone.localdate(),
         )
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         # Deux révisions dues, dont une en maths : c'est l'AUTRE matière qui sort,
         # sinon trois jours de maths d'affilée.
@@ -2516,16 +2538,16 @@ class PlanDuJourTests(TestCase):
         self._historique_de_quiz()
         for jour in (2, 1):
             SeanceJournaliere.objects.create(
-                user=self.user, cursus=self.cursus, date=timezone.localdate() - timedelta(days=jour),
+                profil=self.profil, cursus=self.cursus, date=timezone.localdate() - timedelta(days=jour),
                 origine=OrigineSeance.REVISION_DUE, subject=self.subject, theme=self.theme,
                 etapes=[], statut=StatutSeance.TERMINEE,
             )
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         # Mieux vaut une troisième séance de maths que pas de séance du tout.
         self.assertIsNotNone(seance)
@@ -2535,11 +2557,11 @@ class PlanDuJourTests(TestCase):
         self._item(self.subject, self.theme)
         self._epreuve_sur_le_theme(self.subject, self.theme)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         self.assertLessEqual(seance.duree_estimee_min, BUDGET_SEANCE_MINUTES)
         self.assertEqual([e["type"] for e in seance.etapes], ["exercice", "quiz"])
@@ -2557,7 +2579,7 @@ class PlanDuJourTests(TestCase):
         self._item(self.subject, self.theme)
         self._epreuve_sur_le_theme(self.subject, self.theme)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
 
@@ -2583,7 +2605,7 @@ class PlanDuJourTests(TestCase):
         self._abonner()
         self._item(self.subject, self.theme)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
 
@@ -2603,7 +2625,7 @@ class PlanDuJourTests(TestCase):
         )
         sans_le_theme.cursus.add(self.cursus)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
 
@@ -2617,7 +2639,7 @@ class PlanDuJourTests(TestCase):
         self._abonner()
         self._item(self.subject, self.theme)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
         self.client.get("/quiz/plan-du-jour/")
@@ -2632,7 +2654,7 @@ class PlanDuJourTests(TestCase):
         self._abonner()
         self._item(self.subject, self.theme)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
         self.client.get("/quiz/plan-du-jour/")
@@ -2642,12 +2664,12 @@ class PlanDuJourTests(TestCase):
 
         # Une séance comptée deux fois fausserait le seul chiffre qui dira si le plan
         # marche.
-        self.assertEqual(seances_terminees_cette_semaine(self.user, self.cursus), 1)
+        self.assertEqual(seances_terminees_cette_semaine(self.profil, self.cursus), 1)
 
     def test_terminer_refuse_sans_abonnement(self):
         self._item(self.subject, self.theme)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
         self.client.get("/quiz/plan-du-jour/")
@@ -2659,13 +2681,13 @@ class PlanDuJourTests(TestCase):
     def test_le_compteur_hebdo_ne_compte_que_7_jours_glissants(self):
         for jour, statut in ((8, StatutSeance.TERMINEE), (3, StatutSeance.TERMINEE), (1, StatutSeance.PROPOSEE)):
             SeanceJournaliere.objects.create(
-                user=self.user, cursus=self.cursus, date=timezone.localdate() - timedelta(days=jour),
+                profil=self.profil, cursus=self.cursus, date=timezone.localdate() - timedelta(days=jour),
                 origine=OrigineSeance.PARCOURS, subject=self.subject, etapes=[], statut=statut,
             )
 
         # Jamais une série de jours consécutifs : une journée manquée ne remet rien à
         # zéro, elle sort juste de la fenêtre.
-        self.assertEqual(seances_terminees_cette_semaine(self.user, self.cursus), 1)
+        self.assertEqual(seances_terminees_cette_semaine(self.profil, self.cursus), 1)
 
 
 class FinDeSeanceTests(TestCase):
@@ -2679,6 +2701,7 @@ class FinDeSeanceTests(TestCase):
     def setUp(self):
         self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
         self.user = User.objects.create_user(phone_number="677900404", password="x")
+        self.profil = self.user.profils.first()
         self.user.cursus_prepare = self.cursus
         self.user.save(update_fields=["cursus_prepare"])
         self.subject = Subject.objects.create(
@@ -2692,14 +2715,14 @@ class FinDeSeanceTests(TestCase):
         item.cursus.add(self.cursus)
         Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             palier=0, due_at=timezone.localdate(),
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
     def _lancer_le_quiz_de_la_seance(self):
-        plan_du_jour(self.user, self.cursus)
+        plan_du_jour(self.profil, self.cursus)
         reponse = self.client.post(
             "/quiz/sessions/",
             {"cursus": self.cursus.id, "theme": self.theme.id, "seance": 1, "n": 1},
@@ -2719,11 +2742,11 @@ class FinDeSeanceTests(TestCase):
     def test_le_quiz_lance_depuis_la_seance_lui_est_rattache(self):
         session_id = self._lancer_le_quiz_de_la_seance()
 
-        seance = seance_du_jour(self.user, self.cursus)
+        seance = seance_du_jour(self.profil, self.cursus)
         self.assertEqual(seance.quiz_session_id, session_id)
 
     def test_un_quiz_lance_hors_du_plan_nest_jamais_rattache(self):
-        plan_du_jour(self.user, self.cursus)
+        plan_du_jour(self.profil, self.cursus)
 
         self.client.post(
             "/quiz/sessions/", {"cursus": self.cursus.id, "theme": self.theme.id, "n": 1}, format="json",
@@ -2731,7 +2754,7 @@ class FinDeSeanceTests(TestCase):
 
         # Sans le drapeau, un quiz sur le même thème lancé de son propre chef ne doit
         # surtout pas clôturer la séance du jour.
-        self.assertIsNone(seance_du_jour(self.user, self.cursus).quiz_session_id)
+        self.assertIsNone(seance_du_jour(self.profil, self.cursus).quiz_session_id)
 
     def test_boucler_le_quiz_cloture_la_seance(self):
         session_id = self._lancer_le_quiz_de_la_seance()
@@ -2739,7 +2762,7 @@ class FinDeSeanceTests(TestCase):
 
         self.client.post(f"/quiz/sessions/{session_id}/completer/")
 
-        seance = seance_du_jour(self.user, self.cursus)
+        seance = seance_du_jour(self.profil, self.cursus)
         self.assertEqual(seance.statut, StatutSeance.TERMINEE)
         self.assertIsNotNone(seance.termine_at)
 
@@ -2762,8 +2785,8 @@ class FinDeSeanceTests(TestCase):
         self.assertIsNone(seance["score"])
 
     def _seance_avec_un_cours(self):
-        plan_du_jour(self.user, self.cursus)
-        seance = seance_du_jour(self.user, self.cursus)
+        plan_du_jour(self.profil, self.cursus)
+        seance = seance_du_jour(self.profil, self.cursus)
         seance.etapes = [
             {"type": "cours", "libelle": "Relire la méthode", "slug": "cours-test", "titre": "T", "duree_min": 8},
             *seance.etapes,
@@ -2789,7 +2812,7 @@ class FinDeSeanceTests(TestCase):
         self.assertEqual(reponse.data["seances_cette_semaine"], 1)
 
     def test_un_quiz_hors_seance_ne_valide_aucune_seance(self):
-        plan_du_jour(self.user, self.cursus)
+        plan_du_jour(self.profil, self.cursus)
         reponse = self.client.post(
             "/quiz/sessions/", {"cursus": self.cursus.id, "theme": self.theme.id, "n": 1}, format="json",
         )
@@ -2820,7 +2843,7 @@ class FinDeSeanceTests(TestCase):
         for _ in range(2):
             self.client.post("/quiz/plan-du-jour/etape-ouverte/", {"cle": "cours:cours-test"}, format="json")
 
-        self.assertEqual(seance_du_jour(self.user, self.cursus).etapes_ouvertes, ["cours:cours-test"])
+        self.assertEqual(seance_du_jour(self.profil, self.cursus).etapes_ouvertes, ["cours:cours-test"])
 
     def test_une_cle_inconnue_est_refusee_sans_rien_ecrire(self):
         self._seance_avec_un_cours()
@@ -2828,14 +2851,14 @@ class FinDeSeanceTests(TestCase):
         reponse = self.client.post("/quiz/plan-du-jour/etape-ouverte/", {"cle": "cours:inventé"}, format="json")
 
         self.assertEqual(reponse.status_code, 404)
-        self.assertEqual(seance_du_jour(self.user, self.cursus).etapes_ouvertes, [])
+        self.assertEqual(seance_du_jour(self.profil, self.cursus).etapes_ouvertes, [])
 
     def test_ouvrir_une_etape_ne_termine_pas_la_seance(self):
         self._seance_avec_un_cours()
 
         self.client.post("/quiz/plan-du-jour/etape-ouverte/", {"cle": "cours:cours-test"}, format="json")
 
-        self.assertEqual(seance_du_jour(self.user, self.cursus).statut, StatutSeance.PROPOSEE)
+        self.assertEqual(seance_du_jour(self.profil, self.cursus).statut, StatutSeance.PROPOSEE)
 
     def test_letape_quiz_est_ouverte_une_fois_la_session_lancee(self):
         self._lancer_le_quiz_de_la_seance()
@@ -2857,7 +2880,7 @@ class FinDeSeanceTests(TestCase):
         )
 
     def test_la_cloture_manuelle_enregistre_le_meme_evenement_une_seule_fois(self):
-        plan_du_jour(self.user, self.cursus)
+        plan_du_jour(self.profil, self.cursus)
 
         self.client.post("/quiz/plan-du-jour/terminer/")
         self.client.post("/quiz/plan-du-jour/terminer/")
@@ -2895,7 +2918,7 @@ class FinDeSeanceTests(TestCase):
         self._repondre(seconde_id, ResultatDeclare.REUSSI)
         self.client.post(f"/quiz/sessions/{seconde_id}/completer/")
 
-        seance = seance_du_jour(self.user, self.cursus)
+        seance = seance_du_jour(self.profil, self.cursus)
         self.assertEqual(seance.quiz_session_id, seconde_id)
         self.assertEqual(seance.statut, StatutSeance.TERMINEE)
 
@@ -2908,7 +2931,7 @@ class FinDeSeanceTests(TestCase):
         # c'est bien la session qui a clôturé la séance qui en reste la trace.
         autre = self._lancer_le_quiz_de_la_seance()
 
-        self.assertEqual(seance_du_jour(self.user, self.cursus).quiz_session_id, session_id)
+        self.assertEqual(seance_du_jour(self.profil, self.cursus).quiz_session_id, session_id)
         self.assertNotEqual(autre, session_id)
 class PrioriteMatiereTests(TestCase):
     """
@@ -2921,6 +2944,7 @@ class PrioriteMatiereTests(TestCase):
     def setUp(self):
         self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
         self.user = User.objects.create_user(phone_number="677900505", password="x")
+        self.profil = self.user.profils.first()
         # Libellés choisis pour que l'ordre alphabétique soit l'INVERSE de l'ordre
         # attendu : sans la règle, "Anglais" sortirait toujours en premier.
         self.faible_coef = self._subject("ANGLAIS_TEST_PRIO", "Anglais (test prio)")
@@ -2945,7 +2969,7 @@ class PrioriteMatiereTests(TestCase):
             enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
         )
         item.cursus.add(self.cursus)
-        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         for index in range(nb_reponses):
             quiz_question = QuizQuestion.objects.create(
                 session=session, competence_item=item, ordre=index + 1,
@@ -2959,7 +2983,7 @@ class PrioriteMatiereTests(TestCase):
         self._epreuve(self.faible_coef, "1")
         self._epreuve(self.fort_coef, "4")
 
-        classement = _subjects_par_priorite(self.user, self.cursus)
+        classement = _subjects_par_priorite(self.profil, self.cursus)
 
         self.assertEqual(classement[0], self.fort_coef)
 
@@ -2970,7 +2994,7 @@ class PrioriteMatiereTests(TestCase):
         # suffisant pour valoir quelque chose.
         self._repondre(self.fort_coef, nb_reponses=20, nb_reussies=19)
 
-        classement = _subjects_par_priorite(self.user, self.cursus)
+        classement = _subjects_par_priorite(self.profil, self.cursus)
 
         self.assertEqual(classement[0], self.faible_coef)
 
@@ -2981,7 +3005,7 @@ class PrioriteMatiereTests(TestCase):
         # maîtrise la matière - cas réel constaté en vérifiant sur la base.
         self._repondre(self.fort_coef, nb_reponses=6, nb_reussies=6)
 
-        classement = _subjects_par_priorite(self.user, self.cursus)
+        classement = _subjects_par_priorite(self.profil, self.cursus)
 
         self.assertEqual(classement[0], self.fort_coef)
 
@@ -3044,7 +3068,7 @@ class PrioriteMatiereTests(TestCase):
         # Un historique quelconque, pour sortir du calibrage et atteindre le parcours.
         self._repondre(maths, nb_reponses=1, nb_reussies=1)
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         self.assertEqual(seance.origine, OrigineSeance.PARCOURS)
         self.assertEqual(seance.subject_id, svt.id)
@@ -3060,6 +3084,7 @@ class SeanceSupplementaireTests(TestCase):
     def setUp(self):
         self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
         self.user = User.objects.create_user(phone_number="677900606", password="x")
+        self.profil = self.user.profils.first()
         self.user.cursus_prepare = self.cursus
         self.user.save(update_fields=["cursus_prepare"])
         self.subject = Subject.objects.create(
@@ -3074,7 +3099,7 @@ class SeanceSupplementaireTests(TestCase):
     def _revision_due(self, theme):
         self._item(theme)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=theme,
             palier=0, due_at=timezone.localdate(),
         )
 
@@ -3089,22 +3114,22 @@ class SeanceSupplementaireTests(TestCase):
     def test_continuer_propose_une_seconde_seance(self):
         self._revision_due(self.premier_theme)
         self._revision_due(self.second_theme)
-        premiere = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
         terminer_seance(premiere)
 
         reponse = self.client.post("/quiz/plan-du-jour/continuer/")
 
         self.assertEqual(reponse.status_code, 200)
         self.assertEqual(reponse.data["etat"], "plan_pret")
-        self.assertEqual(SeanceJournaliere.objects.filter(user=self.user).count(), 2)
+        self.assertEqual(SeanceJournaliere.objects.filter(profil=self.profil).count(), 2)
 
     def test_la_seconde_seance_ne_repropose_pas_le_meme_theme(self):
         self._revision_due(self.premier_theme)
         self._revision_due(self.second_theme)
-        premiere = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
         terminer_seance(premiere)
 
-        seconde = seance_supplementaire(self.user, self.cursus)
+        seconde = seance_supplementaire(self.profil, self.cursus)
 
         self.assertNotEqual(seconde.theme_id, premiere.theme_id)
         self.assertEqual(seconde.ordre, 2)
@@ -3112,16 +3137,16 @@ class SeanceSupplementaireTests(TestCase):
     def test_continuer_ne_double_pas_une_seance_en_cours(self):
         self._revision_due(self.premier_theme)
         self._revision_due(self.second_theme)
-        premiere = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
 
         # Séance pas terminée : "continuer" doit rendre celle qu'il a déjà à faire,
         # jamais en empiler une seconde par-dessus.
-        self.assertEqual(seance_supplementaire(self.user, self.cursus).id, premiere.id)
-        self.assertEqual(SeanceJournaliere.objects.filter(user=self.user).count(), 1)
+        self.assertEqual(seance_supplementaire(self.profil, self.cursus).id, premiere.id)
+        self.assertEqual(SeanceJournaliere.objects.filter(profil=self.profil).count(), 1)
 
     def test_plus_rien_a_proposer_est_dit_franchement(self):
         self._revision_due(self.premier_theme)
-        premiere = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
         terminer_seance(premiere)
 
         reponse = self.client.post("/quiz/plan-du-jour/continuer/")
@@ -3134,26 +3159,26 @@ class SeanceSupplementaireTests(TestCase):
     def test_le_plan_du_jour_rend_la_seance_la_plus_avancee(self):
         self._revision_due(self.premier_theme)
         self._revision_due(self.second_theme)
-        terminer_seance(plan_du_jour(self.user, self.cursus))
-        seconde = seance_supplementaire(self.user, self.cursus)
+        terminer_seance(plan_du_jour(self.profil, self.cursus))
+        seconde = seance_supplementaire(self.profil, self.cursus)
 
         # Rouvrir la page après avoir demandé une séance de plus doit montrer CETTE
         # séance, pas celle qu'il a terminée ce matin.
-        self.assertEqual(plan_du_jour(self.user, self.cursus).id, seconde.id)
+        self.assertEqual(plan_du_jour(self.profil, self.cursus).id, seconde.id)
 
     def test_les_deux_seances_comptent_dans_la_semaine(self):
         self._revision_due(self.premier_theme)
         self._revision_due(self.second_theme)
-        terminer_seance(plan_du_jour(self.user, self.cursus))
-        terminer_seance(seance_supplementaire(self.user, self.cursus))
+        terminer_seance(plan_du_jour(self.profil, self.cursus))
+        terminer_seance(seance_supplementaire(self.profil, self.cursus))
 
         # Le compteur annonce des SÉANCES, pas des jours : deux séances faites le même
         # jour en valent bien deux.
-        self.assertEqual(seances_terminees_cette_semaine(self.user, self.cursus), 2)
+        self.assertEqual(seances_terminees_cette_semaine(self.profil, self.cursus), 2)
 
     def test_continuer_refuse_sans_abonnement(self):
         self._revision_due(self.premier_theme)
-        terminer_seance(plan_du_jour(self.user, self.cursus))
+        terminer_seance(plan_du_jour(self.profil, self.cursus))
         Subscription.objects.filter(user=self.user).update(expires_at=timezone.now() - timedelta(days=1))
 
         self.assertEqual(self.client.post("/quiz/plan-du-jour/continuer/").status_code, 403)
@@ -3169,6 +3194,7 @@ class RemplacerSeanceTests(TestCase):
     def setUp(self):
         self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
         self.user = User.objects.create_user(phone_number="677900707", password="x")
+        self.profil = self.user.profils.first()
         self.user.cursus_prepare = self.cursus
         self.user.save(update_fields=["cursus_prepare"])
         self.subject = Subject.objects.create(
@@ -3186,7 +3212,7 @@ class RemplacerSeanceTests(TestCase):
         )
         item.cursus.add(self.cursus)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=theme,
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=theme,
             palier=0, due_at=timezone.localdate(),
         )
         return theme
@@ -3194,7 +3220,7 @@ class RemplacerSeanceTests(TestCase):
     def test_refuser_propose_un_autre_theme(self):
         self._revision_due("thème A (remp)")
         self._revision_due("thème B (remp)")
-        premiere = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
 
         reponse = self.client.post("/quiz/plan-du-jour/autre-chose/")
 
@@ -3204,28 +3230,28 @@ class RemplacerSeanceTests(TestCase):
     def test_la_seance_refusee_est_conservee_mais_ne_compte_pas(self):
         self._revision_due("thème A (remp)")
         self._revision_due("thème B (remp)")
-        premiere = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
 
-        remplacer_seance(self.user, self.cursus)
+        remplacer_seance(self.profil, self.cursus)
 
         premiere.refresh_from_db()
         # Conservée : c'est la trace que notre sélection s'est trompée. Jamais comptée
         # comme faite.
         self.assertEqual(premiere.statut, StatutSeance.REMPLACEE)
-        self.assertEqual(seances_terminees_cette_semaine(self.user, self.cursus), 0)
+        self.assertEqual(seances_terminees_cette_semaine(self.profil, self.cursus), 0)
 
     def test_le_plan_du_jour_rend_la_remplacante(self):
         self._revision_due("thème A (remp)")
         self._revision_due("thème B (remp)")
-        plan_du_jour(self.user, self.cursus)
-        remplacante = remplacer_seance(self.user, self.cursus)
+        plan_du_jour(self.profil, self.cursus)
+        remplacante = remplacer_seance(self.profil, self.cursus)
 
         # Rouvrir la page doit montrer la nouvelle séance, jamais celle qu'il a refusée.
-        self.assertEqual(plan_du_jour(self.user, self.cursus).id, remplacante.id)
+        self.assertEqual(plan_du_jour(self.profil, self.cursus).id, remplacante.id)
 
     def test_sans_alternative_la_seance_en_cours_est_conservee(self):
         self._revision_due("thème unique (remp)")
-        premiere = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
 
         reponse = self.client.post("/quiz/plan-du-jour/autre-chose/")
 
@@ -3234,31 +3260,31 @@ class RemplacerSeanceTests(TestCase):
         self.assertEqual(reponse.data["etat"], "rien_a_proposer")
         premiere.refresh_from_db()
         self.assertEqual(premiere.statut, StatutSeance.PROPOSEE)
-        self.assertEqual(plan_du_jour(self.user, self.cursus).id, premiere.id)
+        self.assertEqual(plan_du_jour(self.profil, self.cursus).id, premiere.id)
 
     def test_au_dela_de_trois_refus_on_rend_la_main(self):
         for index in range(REFUS_MAX_PAR_JOUR + 3):
             self._revision_due(f"thème {index} (remp)")
-        plan_du_jour(self.user, self.cursus)
+        plan_du_jour(self.profil, self.cursus)
         for _ in range(REFUS_MAX_PAR_JOUR):
-            self.assertIsNotNone(remplacer_seance(self.user, self.cursus))
+            self.assertIsNotNone(remplacer_seance(self.profil, self.cursus))
 
         # Au-delà, ce n'est plus un mauvais tirage : l'élève sait ce qu'il veut, et
         # s'obstiner à proposer ne l'aide pas.
-        self.assertIsNone(remplacer_seance(self.user, self.cursus))
+        self.assertIsNone(remplacer_seance(self.profil, self.cursus))
 
     def test_refuser_une_seance_deja_terminee_ne_fait_rien(self):
         self._revision_due("thème A (remp)")
         self._revision_due("thème B (remp)")
-        premiere = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
         terminer_seance(premiere)
 
-        self.assertEqual(remplacer_seance(self.user, self.cursus).id, premiere.id)
-        self.assertEqual(SeanceJournaliere.objects.filter(user=self.user).count(), 1)
+        self.assertEqual(remplacer_seance(self.profil, self.cursus).id, premiere.id)
+        self.assertEqual(SeanceJournaliere.objects.filter(profil=self.profil).count(), 1)
 
     def test_refuser_refuse_sans_abonnement(self):
         self._revision_due("thème A (remp)")
-        plan_du_jour(self.user, self.cursus)
+        plan_du_jour(self.profil, self.cursus)
         Subscription.objects.filter(user=self.user).update(expires_at=timezone.now() - timedelta(days=1))
 
         self.assertEqual(self.client.post("/quiz/plan-du-jour/autre-chose/").status_code, 403)
@@ -3274,6 +3300,7 @@ class ObjectifMatiereTests(TestCase):
     def setUp(self):
         self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
         self.user = User.objects.create_user(phone_number="677900808", password="x")
+        self.profil = self.user.profils.first()
         self.user.cursus_prepare = self.cursus
         self.user.save(update_fields=["cursus_prepare"])
         self.maths = Subject.objects.create(code="MATHS_TEST_OBJ", label="Maths (test obj)", country=self.cursus.country)
@@ -3290,7 +3317,7 @@ class ObjectifMatiereTests(TestCase):
         )
         item.cursus.add(self.cursus)
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=subject, theme=theme,
+            profil=self.profil, cursus=self.cursus, subject=subject, theme=theme,
             palier=0, due_at=timezone.localdate(),
         )
         return theme
@@ -3314,7 +3341,7 @@ class ObjectifMatiereTests(TestCase):
         self._revision_due(self.maths, "thème maths (obj)")
         for ordre in (1, 2):
             SeanceJournaliere.objects.create(
-                user=self.user, cursus=self.cursus, subject=self.svt, origine=OrigineSeance.REVISION_DUE,
+                profil=self.profil, cursus=self.cursus, subject=self.svt, origine=OrigineSeance.REVISION_DUE,
                 date=timezone.localdate() - timedelta(days=ordre), statut=StatutSeance.TERMINEE, etapes=[],
             )
 
@@ -3325,21 +3352,21 @@ class ObjectifMatiereTests(TestCase):
     def test_la_seance_du_jour_non_commencee_est_remplacee(self):
         self._revision_due(self.maths, "thème maths (obj)")
         self._revision_due(self.svt, "thème svt (obj)")
-        premiere = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
         autre = self.svt if premiere.subject_id == self.maths.id else self.maths
 
         self._epingler(autre)
 
         premiere.refresh_from_db()
         self.assertEqual(premiere.statut, StatutSeance.REMPLACEE)
-        self.assertEqual(plan_du_jour(self.user, self.cursus).subject_id, autre.id)
+        self.assertEqual(plan_du_jour(self.profil, self.cursus).subject_id, autre.id)
 
     def test_une_seance_dont_le_quiz_est_lance_nest_pas_remplacee(self):
         self._revision_due(self.maths, "thème maths (obj)")
         self._revision_due(self.svt, "thème svt (obj)")
-        premiere = plan_du_jour(self.user, self.cursus)
+        premiere = plan_du_jour(self.profil, self.cursus)
         autre = self.svt if premiere.subject_id == self.maths.id else self.maths
-        premiere.quiz_session = QuizSession.objects.create(user=self.user, cursus=self.cursus)
+        premiere.quiz_session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus)
         premiere.save(update_fields=["quiz_session"])
 
         self._epingler(autre)
@@ -3349,11 +3376,11 @@ class ObjectifMatiereTests(TestCase):
 
     def test_un_objectif_echu_est_ignore(self):
         ObjectifMatiere.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.svt,
+            profil=self.profil, cursus=self.cursus, subject=self.svt,
             jusqu_au=timezone.localdate() - timedelta(days=1),
         )
 
-        self.assertIsNone(objectif_matiere_actif(self.user, self.cursus))
+        self.assertIsNone(objectif_matiere_actif(self.profil, self.cursus))
         self.assertIsNone(self.client.get("/quiz/plan-du-jour/").data["objectif_matiere"])
 
     def test_la_duree_est_de_sept_jours_inclus(self):
@@ -3376,11 +3403,11 @@ class ObjectifMatiereTests(TestCase):
         # Objectif posé, puis le seul contenu de la matière disparaît : pas d'écran vide.
         self._revision_due(self.maths, "thème maths (obj)")
         ObjectifMatiere.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.svt,
+            profil=self.profil, cursus=self.cursus, subject=self.svt,
             jusqu_au=timezone.localdate() + timedelta(days=3),
         )
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         self.assertEqual(seance.subject_id, self.maths.id)
 
@@ -3408,7 +3435,7 @@ class ObjectifMatiereTests(TestCase):
         self._revision_due(self.svt, "thème svt (obj)")
         self._epingler(self.svt)
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         self.assertIn("objectif", [r["code"] for r in raisons_de_la_seance(seance)])
 
@@ -3418,8 +3445,8 @@ class ObjectifMatiereTests(TestCase):
         self._epingler(self.maths)
         self._epingler(self.svt)
 
-        self.assertEqual(ObjectifMatiere.objects.filter(user=self.user).count(), 1)
-        self.assertEqual(ObjectifMatiere.objects.get(user=self.user).subject_id, self.svt.id)
+        self.assertEqual(ObjectifMatiere.objects.filter(profil=self.profil).count(), 1)
+        self.assertEqual(ObjectifMatiere.objects.get(profil=self.profil).subject_id, self.svt.id)
 
     def test_refuse_sans_abonnement(self):
         Subscription.objects.filter(user=self.user).update(expires_at=timezone.now() - timedelta(days=1))
@@ -3440,6 +3467,7 @@ class PrioriteFrequenceTests(TestCase):
     def setUp(self):
         self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
         self.user = User.objects.create_user(phone_number="677900808", password="x")
+        self.profil = self.user.profils.first()
         self.user.cursus_prepare = self.cursus
         self.user.save(update_fields=["cursus_prepare"])
         Subscription.objects.activate_or_extend(self.user, self.cursus, duration_days=30)
@@ -3491,7 +3519,7 @@ class PrioriteFrequenceTests(TestCase):
             enonce_markdown="00c9nonc00e9", corrige_markdown="Corrig00e9", statut=StatutContenu.VALIDE,
         )
         item.cursus.add(self.cursus)
-        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         for index in range(nb_reponses):
             quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=index + 1)
             QuizAnswer.objects.create(
@@ -3507,7 +3535,7 @@ class PrioriteFrequenceTests(TestCase):
             enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
         )
         item.cursus.add(self.cursus)
-        session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
         QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
 
@@ -3516,14 +3544,14 @@ class PrioriteFrequenceTests(TestCase):
 
         # Le thème a un cours et des exercices, mais rien pour se vérifier : une telle
         # séance ne mesure rien et ne peut même pas se clore toute seule.
-        self.assertIsNone(plan_du_jour(self.user, self.cursus))
+        self.assertIsNone(plan_du_jour(self.profil, self.cursus))
 
     def test_le_theme_le_plus_frequent_gagne_meme_dans_une_matiere_moins_prioritaire(self):
         maths, theme_maths = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=2)
         svt, theme_svt = self._matiere("SVT", coefficient="1", nb_epreuves=8, nb_avec_le_theme=8)
         self._historique(maths)
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         # Maths pèse plus au diplôme (coef 4 contre 1) et sortirait en premier du
         # classement des matières : c'est la fréquence qui décide désormais.
@@ -3535,7 +3563,7 @@ class PrioriteFrequenceTests(TestCase):
         svt, theme_svt = self._matiere("SVT", coefficient="2", nb_epreuves=8, nb_avec_le_theme=6)
         self._historique(maths)
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         # 7 épreuves sur 20 (35 %) contre 6 sur 8 (75 %) : le compte brut dirait maths,
         # la part réelle dit SVT - et c'est la part qui compte pour l'élève.
@@ -3559,7 +3587,7 @@ class PrioriteFrequenceTests(TestCase):
         maths, _ = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
         self._historique(maths)
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         self.assertTrue(_contient_quiz(seance.etapes))
 
@@ -3572,7 +3600,7 @@ class PrioriteFrequenceTests(TestCase):
         """
         maths, theme = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         self.assertEqual(seance.origine, OrigineSeance.PARCOURS)
         self.assertEqual(seance.theme_id, theme.id)
@@ -3581,9 +3609,9 @@ class PrioriteFrequenceTests(TestCase):
     def test_une_seance_express_passe_directement_aux_questions(self):
         self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
         self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
-        plan_du_jour(self.user, self.cursus)
+        plan_du_jour(self.profil, self.cursus)
 
-        seance = ajuster_duree_seance(self.user, self.cursus, 10)
+        seance = ajuster_duree_seance(self.profil, self.cursus, 10)
 
         # Dix minutes ne permettent ni de relire la méthode (8 min) ni de faire un
         # exercice (12) : le quiz est réservé d'abord, sinon la séance n'aurait rien
@@ -3595,9 +3623,9 @@ class PrioriteFrequenceTests(TestCase):
     def test_une_seance_intensive_ajoute_un_second_exercice(self):
         self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
         self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
-        plan_du_jour(self.user, self.cursus)
+        plan_du_jour(self.profil, self.cursus)
 
-        seance = ajuster_duree_seance(self.user, self.cursus, 45)
+        seance = ajuster_duree_seance(self.profil, self.cursus, 45)
 
         # S'entraîner veut dire refaire, pas lire plus longtemps : le temps
         # supplémentaire va à un second exercice d'examen et à un quiz plus long.
@@ -3609,7 +3637,7 @@ class PrioriteFrequenceTests(TestCase):
         self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
         self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         self.assertEqual([e["type"] for e in seance.etapes], ["cours", "exercice", "quiz"])
         self.assertEqual(seance.duree_estimee_min, 25)
@@ -3617,10 +3645,10 @@ class PrioriteFrequenceTests(TestCase):
     def test_revenir_a_25_minutes_retrouve_la_methode(self):
         self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
         self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
-        plan_du_jour(self.user, self.cursus)
-        ajuster_duree_seance(self.user, self.cursus, 10)
+        plan_du_jour(self.profil, self.cursus)
+        ajuster_duree_seance(self.profil, self.cursus, 10)
 
-        seance = ajuster_duree_seance(self.user, self.cursus, 25)
+        seance = ajuster_duree_seance(self.profil, self.cursus, 25)
 
         # Le cours est mémorisé sur la séance : sans cela, l'aller-retour le perdrait,
         # le classement qui l'avait choisi n'étant pas rejoué ici.
@@ -3629,9 +3657,9 @@ class PrioriteFrequenceTests(TestCase):
     def test_une_duree_non_proposee_ne_change_rien(self):
         self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
         self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
-        avant = plan_du_jour(self.user, self.cursus).etapes
+        avant = plan_du_jour(self.profil, self.cursus).etapes
 
-        seance = ajuster_duree_seance(self.user, self.cursus, 7)
+        seance = ajuster_duree_seance(self.profil, self.cursus, 7)
 
         self.assertEqual(seance.etapes, avant)
         self.assertEqual(seance.budget_minutes, 25)
@@ -3642,7 +3670,7 @@ class PrioriteFrequenceTests(TestCase):
         # (voir REPONSES_MINIMUM_MAITRISE_THEME).
         self._repondre_sur_le_theme(maths, theme, nb_reponses=5, nb_reussies=5)
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         # Lui réimposer huit minutes de cours sur ce qu'il réussit, c'est lui apprendre
         # à sauter les séances. Le temps gagné part en pratique.
@@ -3653,7 +3681,7 @@ class PrioriteFrequenceTests(TestCase):
         maths, theme = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
         self._repondre_sur_le_theme(maths, theme, nb_reponses=2, nb_reussies=2)
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         # Deux bonnes réponses ne font pas une maîtrise - même piège que le classement
         # des matières, où six réponses reléguaient un coefficient 4 en dernier.
@@ -3663,6 +3691,6 @@ class PrioriteFrequenceTests(TestCase):
         maths, theme = self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)
         self._repondre_sur_le_theme(maths, theme, nb_reponses=5, nb_reussies=1)
 
-        seance = plan_du_jour(self.user, self.cursus)
+        seance = plan_du_jour(self.profil, self.cursus)
 
         self.assertIn("cours", [e["type"] for e in seance.etapes])

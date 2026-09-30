@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, Crown, FileText, ListChecks, TrendingUp } from "lucide-react"
 
 import { getThemesFrequents } from "@/api/endpoints"
+import type { ThemeFrequent } from "@/api/types"
 import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -12,24 +13,31 @@ interface ThemesFrequentsProps {
   country: string
   cursusId: number
   subjectCode: string
-  // "preview" : aperçu tronqué embarqué sur /epreuves (voir EpreuvesListPage) - le
-  // classement complet reste à une page de là (ThemesFrequentsPage), qui rend ce
-  // même composant en variant "full" (défaut). Le calcul complet (max 20, voir
-  // MAX_THEMES_FREQUENTS côté backend) est toujours renvoyé par l'API ; seul
-  // l'affichage se tronque ici, jamais un second appel réseau allégé.
-  variant?: "preview" | "full"
+}
+
+/** Lien "Exercices" d'un thème du classement, partagé avec ThemesFrequentsPage : le
+ * contexte (fréquence, nombre de sessions) voyage en query params pour l'en-tête de
+ * ThemeExercicesPage. */
+export function lienExercicesTheme(
+  country: string, theme: ThemeFrequent, subjectCode: string, cursusId: number, total: number,
+) {
+  return `${themeExercicesPath(country, theme.id)}?subject=${subjectCode}&cursus=${cursusId}&pct=${theme.frequence_pct}&nb=${theme.nb_epreuves}&total=${total}`
 }
 
 const PREVIEW_LIMIT = 4
 
 /**
+ * Aperçu tronqué (PREVIEW_LIMIT premiers) du classement des thèmes les plus fréquents,
+ * embarqué sur /epreuves - le classement complet vit sur ThemesFrequentsPage. Le calcul
+ * complet est toujours renvoyé par l'API ; seul l'affichage se tronque ici.
+ *
  * Classement des thèmes les plus fréquents aux épreuves officielles d'une matière/série
  * - argument de vente propre au palier Jusqu'à l'Examen (voir
  * access.services.has_access_jusqua_examen côté backend). Disparaît silencieusement si
  * le corpus est trop mince pour un classement fiable (`disponible=false`) - même patron
  * que le rail "Corrigés populaires" sous son propre seuil (voir EpreuvesListPage).
  */
-export function ThemesFrequents({ country, cursusId, subjectCode, variant = "full" }: ThemesFrequentsProps) {
+export function ThemesFrequents({ country, cursusId, subjectCode }: ThemesFrequentsProps) {
   const { data } = useQuery({
     queryKey: ["themes-frequents", cursusId, subjectCode],
     queryFn: ({ signal }) => getThemesFrequents(cursusId, subjectCode, signal),
@@ -37,7 +45,7 @@ export function ThemesFrequents({ country, cursusId, subjectCode, variant = "ful
 
   if (!data || !data.disponible || data.themes.length === 0) return null
 
-  const themesAffiches = variant === "preview" ? data.themes.slice(0, PREVIEW_LIMIT) : data.themes
+  const themesAffiches = data.themes.slice(0, PREVIEW_LIMIT)
 
   return (
     <Card className="mb-5 overflow-hidden border-primary/15 bg-primary/[0.02]">
@@ -98,9 +106,7 @@ export function ThemesFrequents({ country, cursusId, subjectCode, variant = "ful
                   nous. */}
               <div className="flex shrink-0 gap-1.5 pl-9 sm:pl-0">
                 <Button asChild size="sm" variant="outline" className="h-7 px-2.5 text-xs">
-                  <Link
-                    to={`${themeExercicesPath(country, theme.id)}?subject=${subjectCode}&cursus=${cursusId}&pct=${theme.frequence_pct}&nb=${theme.nb_epreuves}&total=${data.nb_sessions_disponibles}`}
-                  >
+                  <Link to={lienExercicesTheme(country, theme, subjectCode, cursusId, data.nb_sessions_disponibles)}>
                     <FileText className="size-3.5" />
                     Exercices
                   </Link>
@@ -130,28 +136,13 @@ export function ThemesFrequents({ country, cursusId, subjectCode, variant = "ful
           })}
         </div>
 
-        {variant === "preview" && (
-          <Link
-            to={`${themesFrequentsPath(country)}?subject=${subjectCode}&cursus=${cursusId}`}
-            className="flex items-center gap-1 self-start text-xs font-medium text-primary hover:underline"
-          >
-            Voir le classement complet
-            <ArrowRight className="size-3.5" />
-          </Link>
-        )}
-
-        {variant === "full" && !data.has_access && data.nb_themes_verrouilles > 0 && (
-          <div className="flex flex-col gap-3 rounded-lg border border-dashed border-gold/40 bg-gold/[0.04] p-3.5">
-            <p className="flex items-center gap-1.5 text-sm font-medium">
-              <Crown className="size-4 shrink-0 text-gold-text" />
-              {data.nb_themes_verrouilles} thème{data.nb_themes_verrouilles > 1 ? "s" : ""} de plus, réservé
-              {data.nb_themes_verrouilles > 1 ? "s" : ""} à l'abonnement Jusqu'à l'Examen.
-            </p>
-            <Button asChild size="sm" className="w-fit">
-              <Link to={`/abonnement?cursus=${cursusId}`}>Débloquer avec Jusqu'à l'Examen</Link>
-            </Button>
-          </div>
-        )}
+        <Link
+          to={`${themesFrequentsPath(country)}?subject=${subjectCode}&cursus=${cursusId}`}
+          className="flex items-center gap-1 self-start text-xs font-medium text-primary hover:underline"
+        >
+          Voir le classement complet
+          <ArrowRight className="size-3.5" />
+        </Link>
       </CardContent>
     </Card>
   )

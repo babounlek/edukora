@@ -74,15 +74,16 @@ class CalculerSerieTests(SimpleTestCase):
 class SerieDeJoursTests(TestCase):
     def test_lue_depuis_les_seances_terminees_seulement(self):
         user = User.objects.create_user(phone_number="677300001", password="x")
+        profil = user.profils.first()
         cursus = Cursus.objects.first()
         aujourdhui = timezone.localdate()
         for decalage, statut in ((0, StatutSeance.TERMINEE), (1, StatutSeance.TERMINEE), (2, StatutSeance.PROPOSEE)):
             SeanceJournaliere.objects.create(
-                user=user, cursus=cursus, date=aujourdhui - timedelta(days=decalage),
+                profil=profil, cursus=cursus, date=aujourdhui - timedelta(days=decalage),
                 origine=OrigineSeance.DIAGNOSTIC, statut=statut,
             )
 
-        serie = serie_de_jours(user)
+        serie = serie_de_jours(profil)
 
         self.assertEqual(serie["jours"], 2)
         self.assertTrue(serie["actif_aujourdhui"])

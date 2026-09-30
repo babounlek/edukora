@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
-import { ArrowLeft, ArrowRight, BookOpenText, Check, Flame, Sparkles, X } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Sparkles, Target, X } from "lucide-react"
 
 import { answerQuizQuestion, completeQuizSession, getQuizSession, revealQuizCorrige } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -14,6 +14,10 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
+import { useCountry } from "@/context/CountryContext"
+import { themeExercicesPath } from "@/lib/countryPath"
+import { couleurMatiere } from "@/lib/matiereCouleur"
+import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
@@ -63,6 +67,7 @@ export function QuizSessionPage() {
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { country } = useCountry()
 
   const [session, setSession] = useState<QuizSession | null>(null)
   const [error, setError] = useState("")
@@ -195,6 +200,17 @@ export function QuizSessionPage() {
   for (const q of session.questions.slice(0, currentIndex + 1)) {
     streak = q.reponse?.est_correcte ? streak + 1 : 0
   }
+  // Relecture : on peut revenir sur toute question déjà répondue, et sur la première
+  // restée sans réponse - jamais sauter en avant, l'ordre de la séance reste celui du quiz.
+  const premiereSansReponse = session.questions.findIndex((q) => !q.reponse)
+  const accessible = (i: number) => Boolean(session.questions[i].reponse) || i === premiereSansReponse
+  const SubjectIcon = subjectIcon(question.subject_code ?? "")
+  // Exercices corrigés du thème (/themes-frequents/<id>/exercices) : le pont entre une
+  // question et un vrai sujet d'examen sur la même notion.
+  const lienExercicesTheme =
+    question.theme_id && question.subject_code
+      ? `${themeExercicesPath(country, question.theme_id)}?subject=${question.subject_code}&cursus=${session.cursus}`
+      : null
   const isQcm = question.type_reponse === "QCM"
   const answered = Boolean(question.reponse)
   const correct = question.reponse?.est_correcte
@@ -215,7 +231,7 @@ export function QuizSessionPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 sm:py-8">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-10">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <Link
           to={session.subject ? `/parcours/${session.subject}?cursus=${session.cursus}` : "/quiz"}
@@ -228,12 +244,22 @@ export function QuizSessionPage() {
       </div>
 
       {/* Progression : un segment par question, coloré selon le résultat - on voit d'un
-          coup d'œil où l'on en est et comment ça se passe. */}
+          coup d'œil où l'on en est et comment ça se passe. Un segment déjà répondu se
+          clique pour relire sa correction. */}
       <div className="mb-2 flex gap-1" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={answeredCount}>
         {session.questions.map((q, i) => (
-          <div
+          <button
             key={q.id}
-            className={cn("h-2 flex-1 rounded-full transition-colors duration-500", segmentClass(q, i === currentIndex))}
+            type="button"
+            disabled={!accessible(i)}
+            onClick={() => setCurrentIndex(i)}
+            aria-label={`Question ${i + 1}`}
+            title={accessible(i) ? `Question ${i + 1}` : undefined}
+            className={cn(
+              "h-2.5 flex-1 rounded-full transition-all duration-500 enabled:cursor-pointer enabled:hover:scale-y-150 disabled:cursor-default",
+              segmentClass(q, i === currentIndex),
+              i === currentIndex && "ring-2 ring-primary/30 ring-offset-1 ring-offset-background",
+            )}
           />
         ))}
       </div>
@@ -255,11 +281,21 @@ export function QuizSessionPage() {
       </div>
 
       {/* key = id de la question : la carte se rejoue à chaque question, ça donne le rythme. */}
-      <div key={question.id} className="animate-fade-up rounded-2xl border bg-card p-5 shadow-sm sm:p-7">
-        <div className="mb-4 flex flex-wrap items-center gap-1.5">
+      <div key={question.id} className="animate-fade-up rounded-3xl border border-border bg-card p-5 shadow-lg shadow-primary/5 sm:p-8">
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/40 py-0.5 pl-0.5 pr-2.5 text-xs font-medium">
+            <span className={cn("flex size-5 items-center justify-center rounded-full", couleurMatiere(question.subject_code).puce)}>
+              <SubjectIcon className="size-3" aria-hidden="true" />
+            </span>
+            {question.subject_label}
+          </span>
           <Badge variant="secondary">{session.cursus_display}</Badge>
-          <Badge variant="outline">{question.subject_label}</Badge>
-          {question.theme && <Badge variant="outline">{capitaliserTheme(question.theme)}</Badge>}
+          {question.theme && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-0.5 text-xs font-semibold text-gold-text">
+              <Target className="size-3" />
+              {capitaliserTheme(question.theme)}
+            </span>
+          )}
         </div>
 
         {/* Uniquement pour l'historique pré-bascule : un CompetenceItem n'appartient à
@@ -331,10 +367,16 @@ export function QuizSessionPage() {
         ) : (
           <div className="mt-6 flex flex-col gap-4">
             {!answered && !questionCorrige && (
-              <Button variant="outline" size="lg" onClick={handleReveal} disabled={submitting}>
-                <Sparkles />
-                Voir la correction
-              </Button>
+              <div className="flex flex-col gap-3 rounded-2xl border border-dashed border-primary/30 bg-primary/[0.03] p-4 sm:flex-row sm:items-center sm:justify-between">
+                <p className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <Lightbulb className="mt-0.5 size-4 shrink-0 text-gold-text" />
+                  Essaie d'abord sur ton brouillon, puis compare avec la correction.
+                </p>
+                <Button size="lg" onClick={handleReveal} disabled={submitting} className="shrink-0">
+                  <Sparkles />
+                  Voir la correction
+                </Button>
+              </div>
             )}
 
             {(questionCorrige || answered) && (
@@ -411,14 +453,39 @@ export function QuizSessionPage() {
           </details>
         )}
 
+        {/* Pour aller plus loin : un vrai sujet d'examen sur la même notion, dans un
+            nouvel onglet pour ne pas perdre le fil de la séance. */}
+        {answered && lienExercicesTheme && (
+          <a
+            href={lienExercicesTheme}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 flex items-center gap-3 rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-primary/40 hover:bg-accent/40"
+          >
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <FileText className="size-4" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-medium">Exercices corrigés sur ce thème</span>
+              <span className="block text-muted-foreground">
+                Des sujets d'examen réels sur « {capitaliserTheme(question.theme ?? "")} ».
+              </span>
+            </span>
+            <ArrowRight className="size-4 shrink-0 text-primary" />
+          </a>
+        )}
+
         {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
       </div>
 
+      {/* Sur téléphone, "Question suivante" reste sous le pouce, sans remonter. */}
       {answered && (
-        <Button onClick={handleNext} disabled={submitting} className="animate-fade-up mt-5 w-full sm:w-auto" size="lg">
-          {isLast ? "Voir mon résultat" : "Question suivante"}
-          <ArrowRight />
-        </Button>
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 px-4 py-3 backdrop-blur sm:static sm:mt-5 sm:flex sm:justify-end sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none">
+          <Button onClick={handleNext} disabled={submitting} className="animate-fade-up w-full sm:w-auto" size="lg">
+            {isLast ? "Voir mon résultat" : "Question suivante"}
+            <ArrowRight />
+          </Button>
+        </div>
       )}
     </div>
   )

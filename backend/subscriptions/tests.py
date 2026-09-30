@@ -172,7 +172,8 @@ class SubscriptionExtendTests(TestCase):
 
     def test_extend_stacks_on_top_of_a_still_active_expiry(self):
         subscription = Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=10),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timedelta(days=10),
         )
 
         subscription.extend(30)
@@ -183,7 +184,8 @@ class SubscriptionExtendTests(TestCase):
 
     def test_extend_restarts_from_now_when_already_expired(self):
         subscription = Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() - timedelta(days=10),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() - timedelta(days=10),
         )
 
         subscription.extend(30)
@@ -194,7 +196,8 @@ class SubscriptionExtendTests(TestCase):
 
     def test_is_active_reflects_expiry(self):
         subscription = Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertTrue(subscription.is_active)
 
@@ -262,7 +265,8 @@ class InscriptionInediteExtendTests(TestCase):
 
     def test_extend_stacks_on_top_of_a_still_active_expiry(self):
         inscription = InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=10),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timedelta(days=10),
         )
         inscription.extend(30)
         self.assertAlmostEqual(
@@ -271,7 +275,8 @@ class InscriptionInediteExtendTests(TestCase):
 
     def test_is_active_reflects_expiry(self):
         inscription = InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
         self.assertTrue(inscription.is_active)
         inscription.expires_at = timezone.now() - timedelta(days=1)
@@ -281,13 +286,16 @@ class InscriptionInediteExtendTests(TestCase):
 class InscriptionInediteConstraintTests(TestCase):
     def test_duplicate_user_cursus_pair_is_rejected(self):
         user = User.objects.create_user(phone_number="677000031", password="x")
+        profil = user.profils.first()
         cursus = _cursus()
-        InscriptionInedite.objects.create(user=user, cursus=cursus, expires_at=timezone.now() + timedelta(days=1))
+        InscriptionInedite.objects.create(
+            user=user, profil=profil, cursus=cursus, expires_at=timezone.now() + timedelta(days=1),
+        )
 
         with self.assertRaises(IntegrityError):
             with db_transaction.atomic():
                 InscriptionInedite.objects.create(
-                    user=user, cursus=cursus, expires_at=timezone.now() + timedelta(days=1),
+                    user=user, profil=profil, cursus=cursus, expires_at=timezone.now() + timedelta(days=1),
                 )
 
 
@@ -425,10 +433,12 @@ class MySubscriptionsViewTests(TestCase):
 
     def test_returns_only_the_authenticated_user_subscriptions(self):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=10),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timedelta(days=10),
         )
         Subscription.objects.create(
-            user=self.other_user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=10),
+            user=self.other_user, profil=self.other_user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timedelta(days=10),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -449,7 +459,8 @@ class MySubscriptionsViewPlanNameTests(TestCase):
         self.user = User.objects.create_user(phone_number="677000014", password="x")
         self.plan = Plan.objects.create(name="BAC Série C - Max (1 an)", cursus=self.cursus, price=15000, duration_days=365)
         self.subscription = Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=365),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timedelta(days=365),
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)

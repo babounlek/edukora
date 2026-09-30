@@ -41,6 +41,16 @@ class OTPInvalid(Exception):
     pass
 
 
+class OTPSendFailed(Exception):
+    """
+    Échec de la remise par le fournisseur SMS (LMT injoignable, identifiants
+    invalides...) - jamais laissé remonter tel quel : ni l'appelant HTTP ni le
+    frontend ne savent quoi faire d'une LMTSMSError, alors qu'une indisponibilité
+    de service (503) est actionnable. Même raisonnement qu'EmailSendFailed
+    (users.email_service).
+    """
+
+
 def request_otp(phone_number, ip_address=None):
     """
     Trois garde-fous, du plus spécifique au plus général, pour que le demandeur reçoive
@@ -115,9 +125,15 @@ def request_otp(phone_number, ip_address=None):
         expires_at=now + timedelta(minutes=OTP_VALIDITY_MINUTES),
         ip_address=ip_address,
     )
-    get_sms_backend().send(
-        phone_number, f"Votre code {settings.SITE_NAME} : {code} (valable {OTP_VALIDITY_MINUTES} minutes).",
-    )
+    try:
+        get_sms_backend().send(
+            phone_number, f"Votre code {settings.SITE_NAME} : {code} (valable {OTP_VALIDITY_MINUTES} minutes).",
+        )
+    except Exception as exc:
+        logger.exception("Envoi du code SMS échoué pour %s", phone_number)
+        raise OTPSendFailed(
+            "Envoi du code impossible pour le moment. Merci de réessayer plus tard.",
+        ) from exc
 
 
 def consume_otp(phone_number, code):

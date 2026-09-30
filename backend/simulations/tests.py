@@ -46,7 +46,10 @@ class SimulationTestCase(TestCase):
         self.ex2 = self.exercice("2", "14", "Énoncé 2", "Corrigé 2", [self.theme_b])
 
         self.user = User.objects.create_user(phone_number="677800001", password="x")
-        Subscription.objects.create(user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=30))
+        self.profil = self.user.profils.first()
+        Subscription.objects.create(
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=30),
+        )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
@@ -352,7 +355,7 @@ class RapportEtRevisionsTests(SimulationTestCase):
         self.client.post(self.url("noter", self.ex1), {"points_obtenus": 6}, format="json")
         self.client.post(self.url("completer"))
 
-        planifies = set(RevisionSchedule.objects.filter(user=self.user).values_list("theme__name", flat=True))
+        planifies = set(RevisionSchedule.objects.filter(profil=self.profil).values_list("theme__name", flat=True))
         self.assertEqual(planifies, {"Probabilités"})
 
     def test_rendre_deux_fois_ne_replanifie_pas(self):
@@ -383,7 +386,7 @@ class RapportEtRevisionsTests(SimulationTestCase):
         for i in range(20):
             autre = User.objects.create_user(phone_number=f"6778100{i:02d}", password="x")
             SimulationEpreuve.objects.create(
-                user=autre, lesson=self.lesson, exam_mode_started_at=timezone.now(),
+                profil=autre.profils.first(), lesson=self.lesson, exam_mode_started_at=timezone.now(),
                 submitted_at=timezone.now(), note_obtenue=Decimal(str(i % 15)), bareme_snapshot=Decimal("20"),
             )
         self.demarrer()
@@ -401,7 +404,7 @@ class MesSimulationsTests(SimulationTestCase):
     def test_liste_les_simulations_de_l_eleve_seulement(self):
         self.demarrer()
         autre = User.objects.create_user(phone_number="677800003", password="x")
-        SimulationEpreuve.objects.create(user=autre, lesson=self.lesson)
+        SimulationEpreuve.objects.create(profil=autre.profils.first(), lesson=self.lesson)
 
         data = self.client.get("/simulations/mes-simulations/").data
 

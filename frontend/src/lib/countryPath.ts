@@ -43,6 +43,11 @@ export function themeExercicesPath(country: string, tagId: number): string {
   return `/${country}/themes-frequents/${tagId}/exercices`
 }
 
+/** Un exercice lu seul depuis la liste d'un thème (voir ThemeExerciceLecturePage). */
+export function themeExerciceLecturePath(country: string, tagId: number | string, exerciseId: number): string {
+  return `/${country}/themes-frequents/${tagId}/exercices/${exerciseId}`
+}
+
 export function epreuveDetailPath(country: string, slug: string): string {
   return `/${country}/epreuves/${slug}`
 }

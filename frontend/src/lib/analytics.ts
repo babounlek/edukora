@@ -25,6 +25,8 @@ export type AnalyticsEventName =
   | "plan_verrouille_clic"
   | "plan_theme_ignore"
   | "objectif_matiere"
+  // Le lendemain de l'examen, l'accueil demande comment ça s'est passé.
+  | "examen_ressenti"
   // Volumes de visiteurs, anonymes compris (voir analytics.funnel côté backend).
   | "tarifs_vus"
   | "abonnement_ouvert"

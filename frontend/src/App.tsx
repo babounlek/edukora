@@ -27,6 +27,7 @@ const CataloguePage = lazy(() => import("@/pages/CataloguePage").then((m) => ({ 
 const EpreuvesListPage = lazy(() => import("@/pages/EpreuvesListPage").then((m) => ({ default: m.EpreuvesListPage })))
 const ThemesFrequentsPage = lazy(() => import("@/pages/ThemesFrequentsPage").then((m) => ({ default: m.ThemesFrequentsPage })))
 const ThemeExercicesPage = lazy(() => import("@/pages/ThemeExercicesPage").then((m) => ({ default: m.ThemeExercicesPage })))
+const ThemeExerciceLecturePage = lazy(() => import("@/pages/ThemeExerciceLecturePage").then((m) => ({ default: m.ThemeExerciceLecturePage })))
 const EpreuveDetailPage = lazy(() => import("@/pages/EpreuveDetailPage").then((m) => ({ default: m.EpreuveDetailPage })))
 const EpreuveInediteDetailPage = lazy(() => import("@/pages/EpreuveInediteDetailPage").then((m) => ({ default: m.EpreuveInediteDetailPage })))
 const EpreuveReaderPage = lazy(() => import("@/pages/EpreuveReaderPage").then((m) => ({ default: m.EpreuveReaderPage })))
@@ -106,6 +107,7 @@ function App() {
                       <Route path="/:country/epreuves" element={<EpreuvesListPage />} />
                       <Route path="/:country/themes-frequents" element={<ThemesFrequentsPage />} />
                       <Route path="/:country/themes-frequents/:tagId/exercices" element={<ThemeExercicesPage />} />
+                      <Route path="/:country/themes-frequents/:tagId/exercices/:exerciseId" element={<ThemeExerciceLecturePage />} />
                       <Route path="/:country/cours" element={<CoursListPage />} />
                       <Route path="/:country/epreuves/:slug" element={<EpreuveDetailPage />} />
                       <Route path="/:country/epreuves/:slug/lire" element={<EpreuveReaderPage />} />

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, Flame, RotateCcw } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, ListChecks, RotateCcw } from "lucide-react"
 
-import { completeQuizSession, refaireLesRatees } from "@/api/endpoints"
+import { completeQuizSession, refaireLesRatees, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { QuizResult } from "@/api/types"
+import type { QuizResult, QuizThemeScore } from "@/api/types"
+import { themeExercicesPath } from "@/lib/countryPath"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { PrioritesExamen } from "@/components/PrioritesExamen"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -75,6 +75,64 @@ function AnneauScore({ pourcentage, score, total }: { pourcentage: number; score
   )
 }
 
+/**
+ * Un thème du quiz, avec ses suites possibles : exercices corrigés du thème (vrais
+ * sujets d'examen), cours à relire s'il y en a un, et un quiz ciblé pour le retravailler
+ * tout de suite - le même trio que sur /themes-frequents.
+ */
+function LigneTheme({
+  theme, cursusId, country, onQuiz, lancement,
+}: {
+  theme: QuizThemeScore
+  cursusId: number
+  country: string
+  onQuiz: () => void
+  lancement: boolean
+}) {
+  const taux = theme.total > 0 ? Math.round((100 * theme.reussies) / theme.total) : 0
+  const tonalite = taux >= 70 ? "bg-success" : taux >= 40 ? "bg-gold" : "bg-destructive/70"
+  return (
+    <li className="flex flex-col gap-3 px-4 py-3.5 sm:flex-row sm:items-center sm:gap-4 sm:px-5">
+      <div className="min-w-0 flex-1">
+        <div className="flex items-baseline gap-3">
+          <span className="min-w-0 flex-1 truncate font-medium">{capitaliserTheme(theme.theme)}</span>
+          <span className="shrink-0 text-sm font-semibold tabular-nums">
+            {theme.reussies}
+            <span className="font-normal text-muted-foreground"> / {theme.total}</span>
+          </span>
+        </div>
+        <span className="mt-2 block h-1.5 w-full overflow-hidden rounded-full bg-muted">
+          <span className={cn("block h-full rounded-full transition-[width] duration-700", tonalite)} style={{ width: `${Math.max(taux, 4)}%` }} />
+        </span>
+      </div>
+      <div className="flex shrink-0 flex-wrap gap-1.5">
+        {theme.subject_code && (
+          <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs">
+            <Link to={`${themeExercicesPath(country, theme.theme_id)}?subject=${theme.subject_code}&cursus=${cursusId}`}>
+              <FileText className="size-3.5" />
+              Exercices
+            </Link>
+          </Button>
+        )}
+        {theme.cours && (
+          <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs">
+            <Link to={`/cours/${theme.cours.slug}`}>
+              <BookOpen className="size-3.5" />
+              Cours
+            </Link>
+          </Button>
+        )}
+        {theme.subject_code && (
+          <Button size="sm" variant={taux < 70 ? "default" : "outline"} className="h-8 px-2.5 text-xs" onClick={onQuiz} disabled={lancement}>
+            <ListChecks className="size-3.5" />
+            {lancement ? "Préparation..." : "Quiz ciblé"}
+          </Button>
+        )}
+      </div>
+    </li>
+  )
+}
+
 function messageDeFin(pourcentage: number, diagnostic: boolean) {
   // Un diagnostic n'est pas une note : un 30 % n'y est pas un échec, c'est un point
   // de départ. Le message ne doit ni féliciter ni consoler.
@@ -96,6 +154,21 @@ export function QuizResultPage() {
   const [error, setError] = useState("")
   const [refaisant, setRefaisant] = useState(false)
   const [erreurRefaire, setErreurRefaire] = useState("")
+  const [themeEnLancement, setThemeEnLancement] = useState<number | null>(null)
+  const [erreurQuizCible, setErreurQuizCible] = useState("")
+
+  async function quizCible(themeId: number) {
+    if (!result || themeEnLancement !== null) return
+    setThemeEnLancement(themeId)
+    setErreurQuizCible("")
+    try {
+      const session = await startQuizSession({ cursus: result.cursus, theme: themeId, mode: "PRATIQUE", n: 10 })
+      navigate(`/quiz/session/${session.id}`)
+    } catch (err) {
+      setErreurQuizCible(err instanceof ApiError ? err.message : "Impossible de lancer ce quiz.")
+      setThemeEnLancement(null)
+    }
+  }
 
   async function refaireLesRatees_() {
     if (refaisant) return
@@ -166,39 +239,53 @@ export function QuizResultPage() {
   const message = messageDeFin(pourcentage, diagnostic)
 
   return (
-    <div className={cn("mx-auto animate-fade-up px-4 py-10", diagnostic ? "max-w-3xl" : "max-w-xl")}>
-      <div className="relative mb-8 text-center">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
+      {/* En-tête : même gabarit que les autres pages - l'anneau de score à gauche, le
+          message et les chiffres de la séance à droite. */}
+      <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
         {pourcentage >= 70 && !diagnostic && <Confettis />}
-        <AnneauScore pourcentage={pourcentage} score={result.score} total={result.questions_repondues} />
-        <h1 className="mt-5 font-display text-3xl font-semibold">{message.titre}</h1>
-        <p className="mx-auto mt-2 max-w-sm text-muted-foreground">{message.texte}</p>
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <div className="relative flex flex-col items-center gap-6 text-center sm:flex-row sm:gap-10 sm:text-left">
+          <div className="shrink-0">
+            <AnneauScore pourcentage={pourcentage} score={result.score} total={result.questions_repondues} />
+          </div>
+          <div className="min-w-0">
+            <p className="mb-2 font-display text-sm italic text-primary">
+              {diagnostic ? "Test de niveau terminé" : "Quiz terminé"}
+            </p>
+            <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight sm:text-4xl">{message.titre}</h1>
+            <p className="mt-2 max-w-md text-muted-foreground">{message.texte}</p>
+            {!diagnostic && (
+              <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
+                <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm shadow-xs">
+                  <Flame className="size-4 text-warning" />
+                  <span className="font-medium tabular-nums">{result.meilleure_serie}</span>
+                  <span className="text-muted-foreground">
+                    {result.meilleure_serie > 1 ? "bonnes réponses d'affilée" : "meilleure série"}
+                  </span>
+                </span>
+                <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm shadow-xs">
+                  <CalendarCheck className="size-4 text-primary" />
+                  <span className="font-medium tabular-nums">{result.seances_cette_semaine}</span>
+                  <span className="text-muted-foreground">
+                    séance{result.seances_cette_semaine > 1 ? "s" : ""} cette semaine
+                  </span>
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Le diagnostic ouvre sur ses priorités : c'est ce que l'élève venait chercher. */}
       {diagnostic && <PrioritesExamen cursusId={result.cursus} className="mb-6" />}
-
-      {!diagnostic && (
-      <div className="mb-6 grid grid-cols-2 gap-3">
-        <div className="flex items-center gap-3 rounded-xl border bg-card p-3.5">
-          <Flame className="size-6 shrink-0 text-warning" />
-          <div>
-            <p className="font-display text-xl font-semibold tabular-nums">{result.meilleure_serie}</p>
-            <p className="text-xs text-muted-foreground">
-              {result.meilleure_serie > 1 ? "bonnes réponses d'affilée" : "meilleure série"}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3 rounded-xl border bg-card p-3.5">
-          <CalendarCheck className="size-6 shrink-0 text-primary" />
-          <div>
-            <p className="font-display text-xl font-semibold tabular-nums">{result.seances_cette_semaine}</p>
-            <p className="text-xs text-muted-foreground">
-              séance{result.seances_cette_semaine > 1 ? "s" : ""} cette semaine
-            </p>
-          </div>
-        </div>
-      </div>
-      )}
 
       {/* Le moment qui donne envie de revenir demain : on dit que la séance est faite
           et on ramène à "Aujourd'hui", d'où l'élève pourra en demander une autre. */}
@@ -218,36 +305,29 @@ export function QuizResultPage() {
         </div>
       )}
 
+      {/* Par thème, du plus fragile au plus solide : c'est là que se décide la suite. */}
       {result.par_theme.length > 0 && (
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="font-display text-lg">Résultat par thème</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="flex flex-col gap-3">
-              {result.par_theme.map((theme) => (
-                <li key={theme.theme} className="text-sm">
-                  <div className="flex items-center justify-between">
-                    <span>{capitaliserTheme(theme.theme)}</span>
-                    <span className="text-muted-foreground">
-                      {theme.reussies} / {theme.total}
-                    </span>
-                  </div>
-                  {theme.cours && (
-                    <Link
-                      to={`/cours/${theme.cours.slug}`}
-                      className="mt-1.5 flex items-center gap-2 rounded-md bg-muted/60 px-3 py-2 text-muted-foreground hover:text-foreground"
-                    >
-                      <BookOpen className="size-4 shrink-0 text-primary" />
-                      <span className="min-w-0 flex-1 truncate">À revoir : {theme.cours.titre}</span>
-                      <ArrowRight className="size-4 shrink-0" />
-                    </Link>
-                  )}
-                </li>
+        <section aria-labelledby="par-theme-titre" className="mb-6">
+          <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+            <h2 id="par-theme-titre" className="font-display text-xl font-semibold">Résultat par thème</h2>
+            <p className="text-sm text-muted-foreground">Du plus fragile au plus solide</p>
+          </div>
+          <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+            {[...result.par_theme]
+              .sort((a, b) => a.reussies / a.total - b.reussies / b.total)
+              .map((theme) => (
+                <LigneTheme
+                  key={theme.theme}
+                  theme={theme}
+                  cursusId={result.cursus}
+                  country={country}
+                  onQuiz={() => quizCible(theme.theme_id)}
+                  lancement={themeEnLancement === theme.theme_id}
+                />
               ))}
-            </ul>
-          </CardContent>
-        </Card>
+          </ul>
+          {erreurQuizCible && <p role="alert" className="mt-2 text-sm text-destructive">{erreurQuizCible}</p>}
+        </section>
       )}
 
       <div className="mb-6">

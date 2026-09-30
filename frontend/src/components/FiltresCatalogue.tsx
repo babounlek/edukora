@@ -29,18 +29,21 @@ export function FiltreLigne({ titre, children }: { titre: string; children: Reac
 }
 
 export function PastilleFiltre({
-  actif, onClick, children,
-}: { actif: boolean; onClick: () => void; children: ReactNode }) {
+  actif, onClick, disabled, title, children,
+}: { actif: boolean; onClick: () => void; disabled?: boolean; title?: string; children: ReactNode }) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-pressed={actif}
+      disabled={disabled}
+      title={title}
       className={cn(
         "inline-flex min-h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
         actif
           ? "border-primary bg-primary text-primary-foreground shadow-sm"
           : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary",
+        disabled && "cursor-not-allowed border-dashed opacity-60 hover:border-border hover:text-muted-foreground",
       )}
     >
       {children}

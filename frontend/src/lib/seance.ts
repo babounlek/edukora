@@ -51,3 +51,14 @@ export function ouvrirEtapeDeSeance(queryClient: QueryClient, etape: EtapeSeance
   )
   marquerEtapeOuverte(etape.cle).catch(() => {})
 }
+
+/**
+ * Y a-t-il une séance à montrer ? Connecté mais sans examen déclaré : rien à proposer
+ * ici, c'est le bandeau global (BandeauCursus) qui le demande, sur toutes les pages -
+ * pas une invite de plus. Sans séance, ou hors des deux états qui en ont une : rien.
+ */
+export function seanceAffichable(plan: PlanDuJour): boolean {
+  if (plan.etat === "cursus_inconnu" || !plan.seance) return false
+  return plan.etat === "plan_pret" || plan.etat === "deja_fait_aujourdhui"
+}
+

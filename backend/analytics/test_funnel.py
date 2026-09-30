@@ -34,7 +34,8 @@ class EntonnoirTests(TestCase):
     def seance(self, user, *, termine, jours_apres_inscription=0, ordre=1):
         quand = user.date_joined + timedelta(days=jours_apres_inscription)
         return SeanceJournaliere.objects.create(
-            user=user, cursus=self.cursus, date=quand.date(), origine=OrigineSeance.DIAGNOSTIC, ordre=ordre,
+            profil=user.profils.first(), cursus=self.cursus, date=quand.date(),
+            origine=OrigineSeance.DIAGNOSTIC, ordre=ordre,
             statut=StatutSeance.TERMINEE if termine else StatutSeance.PROPOSEE,
             termine_at=quand if termine else None,
         )

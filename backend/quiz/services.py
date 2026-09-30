@@ -7,7 +7,7 @@ from django.db.models import Count, Q
 from django.utils import timezone
 
 from access.models import ExerciceFait, LectureProgress
-from catalog.models import Cours, Difficulte, Lesson, Origine, Question, StatutContenu, Subject, Tag
+from catalog.models import Cours, Difficulte, ExamSession, Lesson, Origine, Question, StatutContenu, Subject, Tag
 from programme.models import Module, Savoir
 
 # Miroir volontaire de lib/maitrise.ts SEUIL_MAITRISE (frontend) - resume_parcours a
@@ -254,7 +254,7 @@ def _selection_diagnostic_par_matiere(items, n, cursus):
     return selection[:n]
 
 
-def _poids_par_theme(user, cursus):
+def _poids_par_theme(profil, cursus):
     """
     Poids par thème (id -> poids) favorisant, en mode PRATIQUE, les thèmes où
     l'utilisateur échoue le plus - à partir de son historique de réponses sur CE cursus
@@ -269,7 +269,7 @@ def _poids_par_theme(user, cursus):
     """
     reponses = (
         QuizAnswer.objects.filter(
-            quiz_question__session__user=user,
+            quiz_question__session__profil=profil,
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
         )
@@ -311,7 +311,7 @@ def _selection_ponderee_par_theme(items, poids_par_theme, n):
     return [item for _, item in cles[:n]]
 
 
-def generer_session(user, cursus, mode, subject=None, theme=None, savoir=None, n=10):
+def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None, n=10):
     """
     Sélectionne jusqu'à n CompetenceItem et crée une QuizSession. Lève ValueError si
     aucun item n'est éligible pour ces critères (pas encore de banque générée pour
@@ -340,10 +340,10 @@ def generer_session(user, cursus, mode, subject=None, theme=None, savoir=None, n
         else:
             selection = _selection_diagnostic_par_matiere(items, n, cursus)
     else:
-        poids_par_theme = _poids_par_theme(user, cursus)
+        poids_par_theme = _poids_par_theme(profil, cursus)
         selection = _selection_ponderee_par_theme(items, poids_par_theme, n)
 
-    session = QuizSession.objects.create(user=user, cursus=cursus, subject=subject, theme=theme, mode=mode)
+    session = QuizSession.objects.create(profil=profil, cursus=cursus, subject=subject, theme=theme, mode=mode)
     QuizQuestion.objects.bulk_create([
         QuizQuestion(session=session, competence_item=item, ordre=ordre)
         for ordre, item in enumerate(selection, start=1)
@@ -351,7 +351,7 @@ def generer_session(user, cursus, mode, subject=None, theme=None, savoir=None, n
     return session
 
 
-def enregistrer_resultat_pour_revision(user, cursus, subject, theme, correcte):
+def enregistrer_resultat_pour_revision(profil, cursus, subject, theme, correcte):
     """
     Fait avancer/reculer l'échéance de révision d'un thème (voir RevisionSchedule)
     selon le résultat d'une réponse de Quiz - seul appelant : quiz.views.answer_question,
@@ -369,7 +369,7 @@ def enregistrer_resultat_pour_revision(user, cursus, subject, theme, correcte):
     """
     if not correcte:
         RevisionSchedule.objects.update_or_create(
-            user=user, cursus=cursus, theme=theme,
+            profil=profil, cursus=cursus, theme=theme,
             defaults={
                 "subject": subject,
                 "palier": 0,
@@ -378,7 +378,7 @@ def enregistrer_resultat_pour_revision(user, cursus, subject, theme, correcte):
         )
         return
 
-    schedule = RevisionSchedule.objects.filter(user=user, cursus=cursus, theme=theme).first()
+    schedule = RevisionSchedule.objects.filter(profil=profil, cursus=cursus, theme=theme).first()
     if not schedule:
         return
 
@@ -391,14 +391,14 @@ def enregistrer_resultat_pour_revision(user, cursus, subject, theme, correcte):
     schedule.save(update_fields=["palier", "due_at", "updated_at"])
 
 
-def revisions_dues(user, cursus=None):
+def revisions_dues(profil, cursus=None):
     """
     Thèmes dont l'échéance de révision (voir RevisionSchedule) est aujourd'hui ou
     dépassée, du plus en retard au moins en retard (voir RevisionSchedule.Meta.ordering)
     - le plus urgent d'abord.
     """
     qs = (
-        RevisionSchedule.objects.filter(user=user, due_at__lte=timezone.localdate())
+        RevisionSchedule.objects.filter(profil=profil, due_at__lte=timezone.localdate())
         .select_related("cursus__series", "subject", "theme")
     )
     if cursus:
@@ -406,7 +406,7 @@ def revisions_dues(user, cursus=None):
     return qs
 
 
-def maitrise_par_theme(user, cursus=None):
+def maitrise_par_theme(profil, cursus=None):
     """
     Vue d'ensemble de la maîtrise de l'utilisateur, thème par thème, à partir de la
     TOTALITÉ de son historique de réponses - contrairement à RevisionSchedule, qui ne
@@ -421,7 +421,7 @@ def maitrise_par_theme(user, cursus=None):
     le plus d'attention en premier, cohérent avec la file de révision.
     """
     reponses = (
-        QuizAnswer.objects.filter(quiz_question__session__user=user, quiz_question__competence_item__isnull=False)
+        QuizAnswer.objects.filter(quiz_question__session__profil=profil, quiz_question__competence_item__isnull=False)
         .select_related("quiz_question__competence_item__theme", "quiz_question__competence_item__subject")
     )
     if cursus:
@@ -443,7 +443,7 @@ def maitrise_par_theme(user, cursus=None):
         if reponse.est_correcte:
             s["reussies"] += 1
 
-    en_revision_qs = RevisionSchedule.objects.filter(user=user)
+    en_revision_qs = RevisionSchedule.objects.filter(profil=profil)
     if cursus:
         en_revision_qs = en_revision_qs.filter(cursus=cursus)
     themes_en_revision = set(en_revision_qs.values_list("theme_id", flat=True))
@@ -455,7 +455,7 @@ def maitrise_par_theme(user, cursus=None):
     return sorted(stats.values(), key=lambda s: s["taux"])
 
 
-def maitrise_par_savoir(user, cursus=None):
+def maitrise_par_savoir(profil, cursus=None):
     """
     Comme maitrise_par_theme, mais agrégée par programme.Savoir plutôt que par Tag -
     seule alimentation interne de construire_parcours (jamais exposée telle quelle en
@@ -475,7 +475,7 @@ def maitrise_par_savoir(user, cursus=None):
     """
     reponses = (
         QuizAnswer.objects.filter(
-            quiz_question__session__user=user,
+            quiz_question__session__profil=profil,
             quiz_question__competence_item__isnull=False,
             quiz_question__competence_item__theme__savoir_officiel__isnull=False,
         )
@@ -501,7 +501,7 @@ def _normaliser_pour_recherche(texte):
     return "".join(ch for ch in decompose if unicodedata.category(ch) != "Mn")
 
 
-def construire_parcours_par_frequence(user, cursus, subject):
+def construire_parcours_par_frequence(profil, cursus, subject):
     """
     Variante de construire_parcours pour SUBJECTS_PARCOURS_PAR_FREQUENCE : au lieu du
     programme officiel (Module→Savoir), classe les thèmes réels (catalog.Tag) par
@@ -626,7 +626,7 @@ def construire_parcours_par_frequence(user, cursus, subject):
     stats_par_tag = defaultdict(lambda: {"total": 0, "reussies": 0})
     for reponse in (
         QuizAnswer.objects.filter(
-            quiz_question__session__user=user,
+            quiz_question__session__profil=profil,
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__theme_id__in=tous_tag_ids,
         )
@@ -638,11 +638,11 @@ def construire_parcours_par_frequence(user, cursus, subject):
             s["reussies"] += 1
 
     tags_en_revision = set(
-        RevisionSchedule.objects.filter(user=user, cursus=cursus, theme_id__in=tous_tag_ids)
+        RevisionSchedule.objects.filter(profil=profil, cursus=cursus, theme_id__in=tous_tag_ids)
         .values_list("theme_id", flat=True),
     )
     tags_lus = set(
-        LectureProgress.objects.filter(user=user, cours__tags__id__in=tous_tag_ids)
+        LectureProgress.objects.filter(profil=profil, cours__tags__id__in=tous_tag_ids)
         .values_list("cours__tags__id", flat=True),
     )
 
@@ -715,7 +715,7 @@ def construire_parcours_par_frequence(user, cursus, subject):
     return resultat
 
 
-def construire_parcours(user, cursus, subject):
+def construire_parcours(profil, cursus, subject):
     """
     Vue séquencée du programme officiel (voir programme.Module/Savoir) pour un
     cursus/matière donnés, enrichie savoir par savoir avec la progression réelle de
@@ -739,7 +739,7 @@ def construire_parcours(user, cursus, subject):
     trop mince pour un classement fiable.
     """
     if subject.code in SUBJECTS_PARCOURS_PAR_FREQUENCE:
-        themes = construire_parcours_par_frequence(user, cursus, subject)
+        themes = construire_parcours_par_frequence(profil, cursus, subject)
         if themes is not None:
             return [{
                 "numero": "",
@@ -747,13 +747,13 @@ def construire_parcours(user, cursus, subject):
                 "savoirs": themes,
             }]
 
-    taux_par_savoir = maitrise_par_savoir(user, cursus=cursus)
+    taux_par_savoir = maitrise_par_savoir(profil, cursus=cursus)
     savoir_ids_en_revision = set(
-        RevisionSchedule.objects.filter(user=user, cursus=cursus, theme__savoir_officiel__isnull=False)
+        RevisionSchedule.objects.filter(profil=profil, cursus=cursus, theme__savoir_officiel__isnull=False)
         .values_list("theme__savoir_officiel_id", flat=True)
     )
     savoir_ids_lus = set(
-        LectureProgress.objects.filter(user=user, cours__tags__savoir_officiel__isnull=False)
+        LectureProgress.objects.filter(profil=profil, cours__tags__savoir_officiel__isnull=False)
         .values_list("cours__tags__savoir_officiel_id", flat=True)
     )
     savoir_ids_avec_quiz = set(
@@ -826,7 +826,7 @@ def construire_parcours(user, cursus, subject):
     return parcours
 
 
-def resume_parcours(user, cursus):
+def resume_parcours(profil, cursus):
     """
     Une ligne par matière ayant un programme officiel pour ce cursus (voir
     programme.Module.cursus), réduite à un histogramme de statuts par savoir -
@@ -847,9 +847,10 @@ def resume_parcours(user, cursus):
         Subject.objects.filter(modules_officiels__cursus=cursus).distinct().order_by("label")
     )
 
+    coefficients = _coefficient_par_subject(cursus)
     resume = []
     for subject in subjects:
-        savoirs = [s for module in construire_parcours(user, cursus, subject) for s in module["savoirs"]]
+        savoirs = [s for module in construire_parcours(profil, cursus, subject) for s in module["savoirs"]]
         # Un seul bucket par savoir, jamais un chevauchement à retrancher après coup -
         # chaque condition est testée dans cet ordre de priorité précis (ex. un savoir
         # sans contenu ne compte jamais pour "à réviser" même si une donnée historique
@@ -867,11 +868,23 @@ def resume_parcours(user, cursus):
         # compte réel (35 réponses, 54 % de moyenne, gradué hors révision : ni
         # maîtrisé, ni en révision, ni même visible).
         compteurs = {"maitrises": 0, "en_revision": 0, "en_cours": 0, "a_decouvrir": 0, "sans_contenu": 0}
+        # Poids "ce qui tombe vraiment" (voir poids_savoir) : la somme sur les savoirs
+        # exploitables, et la part de cette somme déjà maîtrisée. C'est l'anneau de
+        # l'accueil (quiz.accueil.preparation) - l'histogramme brut ci-dessus compte
+        # chaque savoir à égalité, ce qui met une technique tombée 28 fois sur 44 au
+        # même rang qu'un point de programme jamais tombé.
+        coefficient = coefficients.get(subject.id, COEFFICIENT_PAR_DEFAUT)
+        poids_total = 0.0
+        poids_maitrise = 0.0
         for s in savoirs:
             if not s["has_quiz"] and not s["cours"]:
                 compteurs["sans_contenu"] += 1
-            elif s["taux"] is not None and s["taux"] >= SEUIL_MAITRISE:
+                continue
+            poids = poids_savoir(s, coefficient)
+            poids_total += poids
+            if s["taux"] is not None and s["taux"] >= SEUIL_MAITRISE:
                 compteurs["maitrises"] += 1
+                poids_maitrise += poids
             elif s["en_revision"]:
                 compteurs["en_revision"] += 1
             elif s["taux"] is not None:
@@ -884,8 +897,30 @@ def resume_parcours(user, cursus):
             "subject_label": subject.label,
             "total": len(savoirs),
             **compteurs,
+            "poids_total": round(poids_total, 3),
+            "poids_maitrise": round(poids_maitrise, 3),
         })
     return resume
+
+
+# Plancher du poids d'un thème classé par fréquence : un thème tombé rarement compte
+# quand même (il peut tomber cette année), un quart d'un thème qui tombe à chaque
+# fois. Sans plancher, un thème à 0 % ne pèserait rien et sortirait de l'anneau.
+POIDS_FREQUENCE_PLANCHER = 0.25
+
+
+def poids_savoir(entree, coefficient):
+    """
+    Ce que pèse un savoir dans "ce qui tombe vraiment à l'examen" : le coefficient de
+    sa matière (tel que transcrit sur les épreuves, voir _coefficient_par_subject)
+    multiplié par sa fréquence d'apparition quand le parcours est classé par fréquence
+    (voir construire_parcours_par_frequence), et par 1 quand il suit le programme
+    officiel - une matière sans fréquence mesurée n'est ni favorisée ni pénalisée.
+    """
+    frequence = entree.get("frequence_pct")
+    if frequence is None:
+        return float(coefficient)
+    return float(coefficient) * max(POIDS_FREQUENCE_PLANCHER, frequence / 100)
 
 
 # --- Séance du jour -----------------------------------------------------------------
@@ -936,7 +971,7 @@ EXERCICES_PAR_SEANCE_MAX = 2
 BUDGETS_SEANCE_MINUTES = (10, 25, 45)
 
 
-def plan_du_jour(user, cursus, date=None):
+def plan_du_jour(profil, cursus, date=None):
     """
     La séance du jour, créée une fois puis relue telle quelle (voir
     SeanceJournaliere) - renvoie None quand il n'y a rien à proposer (cursus sans
@@ -963,11 +998,11 @@ def plan_du_jour(user, cursus, date=None):
     (banque de quiz trop mince, voir _contient_quiz) vaut mieux qu'un écran vide.
     """
     date = date or timezone.localdate()
-    existante = SeanceJournaliere.objects.filter(user=user, cursus=cursus, date=date).first()
+    existante = SeanceJournaliere.objects.filter(profil=profil, cursus=cursus, date=date).first()
     if existante is not None:
         return existante
 
-    proposition = _construire_seance(user, cursus)
+    proposition = _construire_seance(profil, cursus)
     if proposition is None:
         return None
 
@@ -976,12 +1011,12 @@ def plan_du_jour(user, cursus, date=None):
     # lever la seconde. Celle qui arrive après lit simplement la séance de l'autre -
     # elles proposent de toute façon la même chose.
     seance, _ = SeanceJournaliere.objects.get_or_create(
-        user=user, cursus=cursus, date=date, defaults=proposition,
+        profil=profil, cursus=cursus, date=date, defaults=proposition,
     )
     return seance
 
 
-def _construire_seance(user, cursus, themes_interdits=frozenset(), avec_calibrage=True):
+def _construire_seance(profil, cursus, themes_interdits=frozenset(), avec_calibrage=True):
     """
     Choisit quoi proposer, sans rien écrire en base. Renvoie les `defaults` d'une
     SeanceJournaliere, ou None.
@@ -1000,28 +1035,28 @@ def _construire_seance(user, cursus, themes_interdits=frozenset(), avec_calibrag
     # avant la rotation : c'est son choix explicite, et sa durée limitée (voir
     # ObjectifMatiere) est ce qui protège contre la lassitude. S'il n'y a rien à
     # proposer sur cette matière, on retombe sur le plan normal plutôt que sur un écran vide.
-    objectif = objectif_matiere_actif(user, cursus)
+    objectif = objectif_matiere_actif(profil, cursus)
     if objectif is not None:
         autres = set(Subject.objects.exclude(pk=objectif.subject_id).values_list("id", flat=True))
         for candidat in (
-            _seance_depuis_revision_due(user, cursus, autres, themes_interdits),
-            _seance_depuis_lecture_en_cours(user, cursus, autres, themes_interdits),
-            _seance_depuis_parcours(user, cursus, autres, themes_interdits),
+            _seance_depuis_revision_due(profil, cursus, autres, themes_interdits),
+            _seance_depuis_lecture_en_cours(profil, cursus, autres, themes_interdits),
+            _seance_depuis_parcours(profil, cursus, autres, themes_interdits),
         ):
             if candidat is not None:
                 return candidat
 
-    matieres_recentes = _matieres_recentes(user, cursus)
+    matieres_recentes = _matieres_recentes(profil, cursus)
     for exclues in (matieres_recentes, set()):
         for candidat in (
-            _seance_depuis_revision_due(user, cursus, exclues, themes_interdits),
-            _seance_depuis_lecture_en_cours(user, cursus, exclues, themes_interdits),
-            _seance_depuis_parcours(user, cursus, exclues, themes_interdits),
+            _seance_depuis_revision_due(profil, cursus, exclues, themes_interdits),
+            _seance_depuis_lecture_en_cours(profil, cursus, exclues, themes_interdits),
+            _seance_depuis_parcours(profil, cursus, exclues, themes_interdits),
             # Le calibrage passe APRÈS le parcours, et non avant : c'est un vrai repli,
             # pour un cursus dont aucun thème n'est exploitable. Voir la docstring de
             # plan_du_jour pour pourquoi il était devant, et pourquoi c'était une
             # erreur.
-            _seance_de_calibrage(user, cursus) if avec_calibrage else None,
+            _seance_de_calibrage(profil, cursus) if avec_calibrage else None,
         ):
             if candidat is not None:
                 return candidat
@@ -1036,10 +1071,10 @@ def _construire_seance(user, cursus, themes_interdits=frozenset(), avec_calibrag
 DUREE_OBJECTIF_MATIERE_JOURS = 7
 
 
-def objectif_matiere_actif(user, cursus, date=None):
+def objectif_matiere_actif(profil, cursus, date=None):
     """L'objectif de matière en cours, ou None - un objectif échu vaut absence."""
     return (
-        ObjectifMatiere.objects.filter(user=user, cursus=cursus, jusqu_au__gte=date or timezone.localdate())
+        ObjectifMatiere.objects.filter(profil=profil, cursus=cursus, jusqu_au__gte=date or timezone.localdate())
         .select_related("subject")
         .first()
     )
@@ -1055,7 +1090,7 @@ def matieres_pour_objectif(cursus):
     )
 
 
-def definir_objectif_matiere(user, cursus, subject, date=None):
+def definir_objectif_matiere(profil, cursus, subject, date=None):
     """
     Se concentre sur `subject` pendant DUREE_OBJECTIF_MATIERE_JOURS jours. Renvoie
     l'objectif, ou None si la matière n'est pas proposable sur ce cursus.
@@ -1068,11 +1103,11 @@ def definir_objectif_matiere(user, cursus, subject, date=None):
     if subject.id not in {s.id for s in matieres_pour_objectif(cursus)}:
         return None
     objectif, _ = ObjectifMatiere.objects.update_or_create(
-        user=user, cursus=cursus,
+        profil=profil, cursus=cursus,
         defaults={"subject": subject, "jusqu_au": date + timedelta(days=DUREE_OBJECTIF_MATIERE_JOURS - 1)},
     )
 
-    seances_du_jour = list(SeanceJournaliere.objects.filter(user=user, cursus=cursus, date=date))
+    seances_du_jour = list(SeanceJournaliere.objects.filter(profil=profil, cursus=cursus, date=date))
     if seances_du_jour:
         courante = max(seances_du_jour, key=lambda s: s.ordre)
         # Une séance dont le quiz est déjà lancé est en cours de travail : on ne la retire
@@ -1083,13 +1118,13 @@ def definir_objectif_matiere(user, cursus, subject, date=None):
             and courante.quiz_session_id is None
         ):
             proposition = _construire_seance(
-                user, cursus,
+                profil, cursus,
                 themes_interdits={s.theme_id for s in seances_du_jour if s.theme_id},
                 avec_calibrage=False,
             )
             if proposition is not None and proposition["subject"].id == subject.id:
                 _, creee = SeanceJournaliere.objects.get_or_create(
-                    user=user, cursus=cursus, date=date, ordre=courante.ordre + 1, defaults=proposition,
+                    profil=profil, cursus=cursus, date=date, ordre=courante.ordre + 1, defaults=proposition,
                 )
                 if creee:
                     courante.statut = StatutSeance.REMPLACEE
@@ -1097,10 +1132,10 @@ def definir_objectif_matiere(user, cursus, subject, date=None):
     return objectif
 
 
-def retirer_objectif_matiere(user, cursus):
+def retirer_objectif_matiere(profil, cursus):
     """Revient à la sélection automatique dès la prochaine séance. La séance du jour,
     déjà construite, n'est pas touchée."""
-    ObjectifMatiere.objects.filter(user=user, cursus=cursus).delete()
+    ObjectifMatiere.objects.filter(profil=profil, cursus=cursus).delete()
 
 
 def _contient_quiz(etapes):
@@ -1117,13 +1152,13 @@ def _contient_quiz(etapes):
     return any(etape.get("type") == "quiz" for etape in etapes)
 
 
-def _matieres_recentes(user, cursus):
+def _matieres_recentes(profil, cursus):
     """Matières des dernières séances TERMINÉES - une séance proposée puis ignorée ne
     bloque rien, l'élève n'a pas travaillé cette matière."""
     return {
         subject_id
         for subject_id in SeanceJournaliere.objects.filter(
-            user=user, cursus=cursus, statut=StatutSeance.TERMINEE, subject__isnull=False,
+            profil=profil, cursus=cursus, statut=StatutSeance.TERMINEE, subject__isnull=False,
         )
         # `-ordre` en second : depuis les séances supplémentaires, une même journée
         # peut en porter plusieurs, et c'est la DERNIÈRE travaillée qui doit compter
@@ -1133,11 +1168,11 @@ def _matieres_recentes(user, cursus):
     }
 
 
-def _seance_depuis_revision_due(user, cursus, matieres_exclues, themes_interdits=frozenset()):
-    for schedule in revisions_dues(user, cursus):
+def _seance_depuis_revision_due(profil, cursus, matieres_exclues, themes_interdits=frozenset()):
+    for schedule in revisions_dues(profil, cursus):
         if schedule.subject_id in matieres_exclues or schedule.theme_id in themes_interdits:
             continue
-        etapes = _construire_etapes(cursus, schedule.subject, theme=schedule.theme, user=user)
+        etapes = _construire_etapes(cursus, schedule.subject, theme=schedule.theme, profil=profil)
         if not _contient_quiz(etapes):
             continue
         return {
@@ -1149,7 +1184,7 @@ def _seance_depuis_revision_due(user, cursus, matieres_exclues, themes_interdits
     return None
 
 
-def _seance_depuis_lecture_en_cours(user, cursus, matieres_exclues, themes_interdits=frozenset()):
+def _seance_depuis_lecture_en_cours(profil, cursus, matieres_exclues, themes_interdits=frozenset()):
     """
     Reprend un cours ouvert récemment. Au niveau du DOCUMENT, jamais "à l'exercice 3" :
     LectureProgress ne stocke aucune position de lecture (voir access.models), et
@@ -1157,7 +1192,7 @@ def _seance_depuis_lecture_en_cours(user, cursus, matieres_exclues, themes_inter
     """
     depuis = timezone.now() - timedelta(hours=FENETRE_LECTURE_EN_COURS_HEURES)
     lectures = (
-        LectureProgress.objects.filter(user=user, cours__isnull=False, last_read_at__gte=depuis)
+        LectureProgress.objects.filter(profil=profil, cours__isnull=False, last_read_at__gte=depuis)
         .select_related("cours__subject")
         .prefetch_related("cours__tags")
         .order_by("-last_read_at")
@@ -1182,14 +1217,14 @@ def _seance_depuis_lecture_en_cours(user, cursus, matieres_exclues, themes_inter
     return None
 
 
-def _seance_de_calibrage(user, cursus):
+def _seance_de_calibrage(profil, cursus):
     """
     Dix questions pour situer son niveau, uniquement pour qui n'a jamais répondu sur ce
     cursus. Présenté comme un calibrage et jamais comme un test : un élève qui croit
     passer un examen dès l'ouverture de l'appli la referme.
     """
     a_un_historique = QuizAnswer.objects.filter(
-        quiz_question__session__user=user, quiz_question__session__cursus=cursus,
+        quiz_question__session__profil=profil, quiz_question__session__cursus=cursus,
     ).exists()
     if a_un_historique:
         return None
@@ -1209,7 +1244,7 @@ def _seance_de_calibrage(user, cursus):
     }
 
 
-def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=frozenset()):
+def _seance_depuis_parcours(profil, cursus, matieres_exclues, themes_interdits=frozenset()):
     """
     Le thème qui revient le plus souvent à l'examen, parmi ceux que l'élève n'a pas
     encore travaillés - toutes matières confondues, et jamais un thème sans quiz.
@@ -1241,15 +1276,15 @@ def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=fro
     )
 
     candidats = []
-    for rang, subject in enumerate(_subjects_par_priorite(user, cursus)):
+    for rang, subject in enumerate(_subjects_par_priorite(profil, cursus)):
         if subject.id in matieres_exclues or subject.id not in avec_quiz:
             continue
 
-        par_frequence = construire_parcours_par_frequence(user, cursus, subject)
+        par_frequence = construire_parcours_par_frequence(profil, cursus, subject)
         if par_frequence is not None:
             etapes_parcours, cle_theme, cle_savoir = par_frequence, "theme_id", None
         else:
-            etapes_parcours = [s for module in construire_parcours(user, cursus, subject) for s in module["savoirs"]]
+            etapes_parcours = [s for module in construire_parcours(profil, cursus, subject) for s in module["savoirs"]]
             cle_theme, cle_savoir = None, "id"
 
         for entree in etapes_parcours:
@@ -1271,10 +1306,20 @@ def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=fro
 
     # Jamais travaillé d'abord : c'est là qu'il y a le plus à gagner. À défaut (tout
     # entamé), le moins bien maîtrisé - il reste toujours quelque chose à réviser.
-    jamais_travailles = [
-        c for c in candidats if c["entree"]["taux"] is None and not c["entree"]["a_lu_le_cours"]
-    ]
-    pool = jamais_travailles or candidats
+    #
+    # Sauf dans la dernière ligne droite (voir en_derniere_ligne_droite) : à une
+    # semaine de l'examen, ouvrir un chapitre neuf ne fait que révéler une lacune
+    # qu'on n'a plus le temps de combler. On consolide ce qui est entamé ; un thème
+    # jamais vu ne revient que s'il n'y a rien d'autre.
+    if en_derniere_ligne_droite(cursus):
+        entames = [c for c in candidats if c["entree"]["taux"] is not None]
+        jamais_travailles = []
+        pool = entames or candidats
+    else:
+        jamais_travailles = [
+            c for c in candidats if c["entree"]["taux"] is None and not c["entree"]["a_lu_le_cours"]
+        ]
+        pool = jamais_travailles or candidats
 
     def cle_de_tri(c):
         # Fréquence décroissante d'abord ; une matière sans classement par fréquence
@@ -1296,7 +1341,7 @@ def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=fro
         # et sans cette trace un aller-retour 25 -> 10 -> 25 minutes le perdrait.
         cours_retenu = Cours.objects.filter(slug=entree["cours"][0]["slug"]).first() if entree["cours"] else None
         etapes = _construire_etapes(
-            cursus, subject, theme=theme, savoir=savoir, cours_proposes=entree["cours"], user=user,
+            cursus, subject, theme=theme, savoir=savoir, cours_proposes=entree["cours"], profil=profil,
         )
         # `has_quiz` dit qu'il existe un quiz sur ce thème pour ce cursus ; seul
         # _construire_etapes sait s'il en reste dans le budget de la séance. On
@@ -1316,7 +1361,20 @@ def _seance_depuis_parcours(user, cursus, matieres_exclues, themes_interdits=fro
 
 
 
-def _theme_deja_maitrise(user, cursus, theme):
+# À J-7 et en deçà, la séance ne découvre plus rien : elle consolide (voir
+# _seance_depuis_parcours). Une semaine, c'est le délai en dessous duquel un chapitre
+# neuf n'a plus le temps d'être revu une seconde fois - et la révision espacée repose
+# précisément sur ce second passage.
+DERNIERE_LIGNE_DROITE_JOURS = 7
+
+
+def en_derniere_ligne_droite(cursus):
+    """Vrai à moins de DERNIERE_LIGNE_DROITE_JOURS de l'examen (date connue ou estimée)."""
+    compte = ExamSession.compte_a_rebours_pour(cursus)
+    return compte is not None and 0 <= compte["jours_restants"] <= DERNIERE_LIGNE_DROITE_JOURS
+
+
+def _theme_deja_maitrise(profil, cursus, theme):
     """
     L'élève a-t-il déjà prouvé qu'il sait faire ? Sert à ne pas lui réimposer la
     méthode d'un thème qu'il réussit - lui faire relire huit minutes de cours pour
@@ -1331,7 +1389,7 @@ def _theme_deja_maitrise(user, cursus, theme):
         return False
     stats = {"total": 0, "reussies": 0}
     for reponse in QuizAnswer.objects.filter(
-        quiz_question__session__user=user,
+        quiz_question__session__profil=profil,
         quiz_question__session__cursus=cursus,
         quiz_question__competence_item__theme=theme,
     ):
@@ -1345,7 +1403,7 @@ def _theme_deja_maitrise(user, cursus, theme):
 
 def _construire_etapes(
     cursus, subject, theme=None, savoir=None, cours_impose=None, cours_proposes=None,
-    budget_minutes=BUDGET_SEANCE_MINUTES, user=None,
+    budget_minutes=BUDGET_SEANCE_MINUTES, profil=None,
 ):
     """
     Relire la méthode, la mettre en pratique sur un vrai sujet d'examen, se vérifier -
@@ -1378,7 +1436,7 @@ def _construire_etapes(
     # gagné part en entraînement et en vérification (voir plus bas, le quiz récupère
     # ce qui n'a pas servi). `cours_impose` échappe à la règle - il vient d'une lecture
     # que l'élève avait lui-même ouverte, la lui retirer serait absurde.
-    if cours_impose is None and user is not None and _theme_deja_maitrise(user, cursus, theme):
+    if cours_impose is None and profil is not None and _theme_deja_maitrise(profil, cursus, theme):
         cours = None
     if cours is not None and restant >= DUREE_ETAPE_MINUTES["cours"]:
         # construire_parcours* renvoie des dicts {slug, titre, sous_theme}, la lecture
@@ -1479,11 +1537,11 @@ def terminer_seance(seance):
     # l'exercice travaillé la veille, et les deux surfaces se contrediraient.
     for etape in seance.etapes:
         if etape.get("type") == "exercice" and etape.get("exercise_id"):
-            ExerciceFait.objects.get_or_create(user=seance.user, exercise_id=etape["exercise_id"])
+            ExerciceFait.objects.get_or_create(profil=seance.profil, exercise_id=etape["exercise_id"])
     return seance
 
 
-def seances_terminees_cette_semaine(user, cursus, date=None):
+def seances_terminees_cette_semaine(profil, cursus, date=None):
     """
     Séances faites sur les 7 derniers jours glissants - jamais une série (streak) de
     jours consécutifs. Téléphone partagé, coupure de courant, connexion absente : "tu
@@ -1492,12 +1550,12 @@ def seances_terminees_cette_semaine(user, cursus, date=None):
     """
     date = date or timezone.localdate()
     return SeanceJournaliere.objects.filter(
-        user=user, cursus=cursus, statut=StatutSeance.TERMINEE,
+        profil=profil, cursus=cursus, statut=StatutSeance.TERMINEE,
         date__gt=date - timedelta(days=7), date__lte=date,
     ).count()
 
 
-def seance_du_jour(user, cursus, date=None):
+def seance_du_jour(profil, cursus, date=None):
     """La séance du jour déjà construite, sans jamais en créer une - contrairement à
     plan_du_jour, dont c'est le rôle. Sert aux appels qui réagissent à une action de
     l'élève (fin de quiz, clôture) et qui n'ont aucune raison de faire naître une
@@ -1507,7 +1565,7 @@ def seance_du_jour(user, cursus, date=None):
     SeanceJournaliere.ordre et son Meta.ordering) : celle qui est en cours, jamais
     celle qu'il a déjà terminée ce matin."""
     return SeanceJournaliere.objects.filter(
-        user=user, cursus=cursus, date=date or timezone.localdate(),
+        profil=profil, cursus=cursus, date=date or timezone.localdate(),
     ).first()
 
 
@@ -1530,13 +1588,13 @@ def etape_ouverte(seance, etape):
     return cle_etape(etape) in seance.etapes_ouvertes
 
 
-def marquer_etape_ouverte(user, cursus, cle):
+def marquer_etape_ouverte(profil, cursus, cle):
     """Note qu'une étape cours/exercice de la séance en cours a été ouverte.
 
     Renvoie la séance, ou None si la clé ne désigne aucune étape de la séance (clé
     inventée, séance recomposée depuis) - jamais d'écriture d'une clé qu'on ne connaît
     pas. Idempotent : rouvrir la même étape n'écrit rien."""
-    seance = seance_du_jour(user, cursus)
+    seance = seance_du_jour(profil, cursus)
     if seance is None:
         return None
     valides = {cle_etape(e) for e in seance.etapes if e.get("type") != "quiz"}
@@ -1548,7 +1606,7 @@ def marquer_etape_ouverte(user, cursus, cle):
     return seance
 
 
-def rattacher_quiz_a_la_seance(user, session):
+def rattacher_quiz_a_la_seance(profil, session):
     """
     Note que CETTE session de quiz a été lancée depuis la séance du jour - à
     n'appeler que sur une session réellement créée par ce chemin (voir le paramètre
@@ -1567,7 +1625,7 @@ def rattacher_quiz_a_la_seance(user, session):
     entier et voyait sa séance rester "à faire". Un abandon ne doit pas condamner la
     journée.
     """
-    seance = seance_du_jour(user, session.cursus)
+    seance = seance_du_jour(profil, session.cursus)
     if seance is None:
         return None
     if seance.quiz_session_id is not None and seance.quiz_session.completed_at is not None:
@@ -1679,7 +1737,7 @@ def _coefficient_par_subject(cursus):
     }
 
 
-def _maitrise_par_subject(user, cursus):
+def _maitrise_par_subject(profil, cursus):
     """
     Taux de réussite par matière (0 à 1) sur ce cursus, pour les seules matières
     réellement pratiquées (voir REPONSES_MINIMUM_MAITRISE_MATIERE). Une matière
@@ -1693,7 +1751,7 @@ def _maitrise_par_subject(user, cursus):
     stats = defaultdict(lambda: {"total": 0, "reussies": 0})
     for reponse in (
         QuizAnswer.objects.filter(
-            quiz_question__session__user=user,
+            quiz_question__session__profil=profil,
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
         )
@@ -1710,7 +1768,7 @@ def _maitrise_par_subject(user, cursus):
     }
 
 
-def _subjects_par_priorite(user, cursus):
+def _subjects_par_priorite(profil, cursus):
     """
     Matières du cursus, de la plus utile à travailler aujourd'hui à la moins utile.
 
@@ -1732,7 +1790,7 @@ def _subjects_par_priorite(user, cursus):
         Subject.objects.filter(lessons__statut=StatutContenu.VALIDE, lessons__cursus=cursus).distinct(),
     )
     coefficients = _coefficient_par_subject(cursus)
-    maitrise = _maitrise_par_subject(user, cursus)
+    maitrise = _maitrise_par_subject(profil, cursus)
 
     def score(subject):
         poids = coefficients.get(subject.id, COEFFICIENT_PAR_DEFAUT)
@@ -1741,7 +1799,7 @@ def _subjects_par_priorite(user, cursus):
     return sorted(subjects, key=lambda s: (-score(s), s.label))
 
 
-def seance_supplementaire(user, cursus, date=None):
+def seance_supplementaire(profil, cursus, date=None):
     """
     Une séance de PLUS, pour l'élève qui a fini la sienne et veut continuer.
 
@@ -1763,7 +1821,7 @@ def seance_supplementaire(user, cursus, date=None):
     Renvoie None quand il n'y a plus rien à proposer.
     """
     date = date or timezone.localdate()
-    seances_du_jour = list(SeanceJournaliere.objects.filter(user=user, cursus=cursus, date=date))
+    seances_du_jour = list(SeanceJournaliere.objects.filter(profil=profil, cursus=cursus, date=date))
     if not seances_du_jour:
         return None
 
@@ -1772,7 +1830,7 @@ def seance_supplementaire(user, cursus, date=None):
         return courante
 
     proposition = _construire_seance(
-        user, cursus,
+        profil, cursus,
         themes_interdits={s.theme_id for s in seances_du_jour if s.theme_id},
         # On ne se calibre pas deux fois dans la même journée.
         avec_calibrage=False,
@@ -1781,7 +1839,7 @@ def seance_supplementaire(user, cursus, date=None):
         return None
 
     seance, _ = SeanceJournaliere.objects.get_or_create(
-        user=user, cursus=cursus, date=date, ordre=courante.ordre + 1, defaults=proposition,
+        profil=profil, cursus=cursus, date=date, ordre=courante.ordre + 1, defaults=proposition,
     )
     return seance
 
@@ -1793,7 +1851,7 @@ def seance_supplementaire(user, cursus, date=None):
 REFUS_MAX_PAR_JOUR = 3
 
 
-def remplacer_seance(user, cursus, date=None):
+def remplacer_seance(profil, cursus, date=None):
     """
     "Ce n'est pas ce que je veux réviser" : remplace la séance du jour par une autre,
     sur un thème différent.
@@ -1812,7 +1870,7 @@ def remplacer_seance(user, cursus, date=None):
     à l'appelant d'afficher alors le catalogue, qui redevient la bonne réponse.
     """
     date = date or timezone.localdate()
-    seances_du_jour = list(SeanceJournaliere.objects.filter(user=user, cursus=cursus, date=date))
+    seances_du_jour = list(SeanceJournaliere.objects.filter(profil=profil, cursus=cursus, date=date))
     if not seances_du_jour:
         return None
 
@@ -1826,7 +1884,7 @@ def remplacer_seance(user, cursus, date=None):
         return None
 
     proposition = _construire_seance(
-        user, cursus,
+        profil, cursus,
         themes_interdits={s.theme_id for s in seances_du_jour if s.theme_id},
         # On ne se calibre pas deux fois dans la même journée.
         avec_calibrage=False,
@@ -1838,7 +1896,7 @@ def remplacer_seance(user, cursus, date=None):
         return None
 
     remplacante, creee = SeanceJournaliere.objects.get_or_create(
-        user=user, cursus=cursus, date=date, ordre=courante.ordre + 1, defaults=proposition,
+        profil=profil, cursus=cursus, date=date, ordre=courante.ordre + 1, defaults=proposition,
     )
     if creee:
         courante.statut = StatutSeance.REMPLACEE
@@ -1890,7 +1948,7 @@ def raisons_de_la_seance(seance):
             })
 
     if seance.subject_id and seance.cursus_id:
-        objectif = objectif_matiere_actif(seance.user, seance.cursus)
+        objectif = objectif_matiere_actif(seance.profil, seance.cursus)
         if objectif is not None and objectif.subject_id == seance.subject_id:
             raisons.append({
                 "code": "objectif",
@@ -1900,7 +1958,7 @@ def raisons_de_la_seance(seance):
     if seance.origine == OrigineSeance.REVISION_DUE and seance.theme_id:
         dernier_echec = (
             QuizAnswer.objects.filter(
-                quiz_question__session__user=seance.user,
+                quiz_question__session__profil=seance.profil,
                 quiz_question__competence_item__theme_id=seance.theme_id,
             )
             .exclude(resultat_declare=ResultatDeclare.REUSSI)
@@ -1918,7 +1976,7 @@ def raisons_de_la_seance(seance):
         raisons.append({"code": "lecture", "texte": "Tu as ouvert ce cours il y a moins de deux jours."})
 
     if seance.origine != OrigineSeance.LECTURE_EN_COURS and _theme_deja_maitrise(
-        seance.user, seance.cursus, seance.theme,
+        seance.profil, seance.cursus, seance.theme,
     ):
         # Dit pourquoi l'étape "méthode" manque : sans cette ligne, une séance sans
         # cours ressemble à un contenu qui manque plutôt qu'à une reconnaissance.
@@ -1931,7 +1989,7 @@ def raisons_de_la_seance(seance):
         # Jamais répondu sur ce thème : c'est là qu'il y a le plus à gagner, et c'est
         # exactement ce que le parcours cherche en premier (voir _seance_depuis_parcours).
         deja_repondu = QuizAnswer.objects.filter(
-            quiz_question__session__user=seance.user,
+            quiz_question__session__profil=seance.profil,
             quiz_question__competence_item__theme_id=seance.theme_id,
         ).exists()
         if not deja_repondu:
@@ -1954,12 +2012,12 @@ def prochaine_revision(seance):
     if not seance.theme_id:
         return None
     schedule = RevisionSchedule.objects.filter(
-        user=seance.user, cursus=seance.cursus, theme_id=seance.theme_id,
+        profil=seance.profil, cursus=seance.cursus, theme_id=seance.theme_id,
     ).first()
     return schedule.due_at if schedule else None
 
 
-def ajuster_duree_seance(user, cursus, minutes, date=None):
+def ajuster_duree_seance(profil, cursus, minutes, date=None):
     """
     "Combien de temps as-tu ?" - recompose la séance du jour pour le temps que l'élève
     se donne, sans changer de thème.
@@ -1974,7 +2032,7 @@ def ajuster_duree_seance(user, cursus, minutes, date=None):
     soit (voir _contient_quiz) - mieux vaut garder la séance qui marche que la casser
     pour respecter un chiffre.
     """
-    seance = seance_du_jour(user, cursus, date)
+    seance = seance_du_jour(profil, cursus, date)
     if seance is None or minutes not in BUDGETS_SEANCE_MINUTES:
         return seance
     if seance.statut != StatutSeance.PROPOSEE or seance.budget_minutes == minutes:
@@ -1982,7 +2040,7 @@ def ajuster_duree_seance(user, cursus, minutes, date=None):
 
     etapes = _construire_etapes(
         cursus, seance.subject, theme=seance.theme, savoir=seance.savoir,
-        cours_impose=seance.cours, budget_minutes=minutes, user=user,
+        cours_impose=seance.cours, budget_minutes=minutes, profil=profil,
     )
     if not _contient_quiz(etapes):
         return seance
@@ -2027,7 +2085,7 @@ def items_rates(session):
     return rates
 
 
-def session_des_ratees(user, session):
+def session_des_ratees(profil, session):
     """
     Une nouvelle session qui ne reprend QUE les questions ratées de `session` : la suite
     naturelle d'un résultat, plutôt qu'un nouveau tirage au hasard qui laisserait les
@@ -2037,7 +2095,7 @@ def session_des_ratees(user, session):
     if not items:
         raise ValueError("Aucune question ratée à refaire.")
     refaite = QuizSession.objects.create(
-        user=user, cursus=session.cursus, subject=session.subject, mode=ModeQuiz.PRATIQUE,
+        profil=profil, cursus=session.cursus, subject=session.subject, mode=ModeQuiz.PRATIQUE,
     )
     QuizQuestion.objects.bulk_create([
         QuizQuestion(session=refaite, competence_item=item, ordre=ordre) for ordre, item in enumerate(items, start=1)

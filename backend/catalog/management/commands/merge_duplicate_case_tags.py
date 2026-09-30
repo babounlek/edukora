@@ -52,7 +52,7 @@ class Command(BaseCommand):
         "simples quiz.CompetenceItem.theme (PROTECT - bloquerait la suppression du "
         "doublon sinon) et quiz.QuizSession.theme (SET_NULL - se contenterait "
         "d'effacer silencieusement le thème d'une session passée). "
-        "quiz.RevisionSchedule.theme (FK CASCADE, unique par user+cursus+theme) est "
+        "quiz.RevisionSchedule.theme (FK CASCADE, unique par profil+cursus+theme) est "
         "traité à part : en cas de conflit (l'élève a déjà une échéance sur le "
         "canonique), la ligne la plus urgente (due_at le plus proche) est gardée, "
         "l'autre supprimée plutôt que de violer la contrainte d'unicité. "
@@ -124,7 +124,7 @@ class Command(BaseCommand):
 
                     for schedule in RevisionSchedule.objects.filter(theme=doublon):
                         conflit = RevisionSchedule.objects.filter(
-                            user=schedule.user, cursus=schedule.cursus, theme=canonical,
+                            profil=schedule.profil, cursus=schedule.cursus, theme=canonical,
                         ).first()
                         if conflit is None:
                             schedule.theme = canonical

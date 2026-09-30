@@ -46,7 +46,11 @@
     # /whatsapp* sans cette subtilité : contrairement à /quiz, /inedit, /fiches, le
     # frontend n'a AUCUNE page sous ce mot (l'opt-in vit dans /compte) - rien à
     # distinguer, tout /whatsapp* va à Django.
-    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /simulations* /sitemap.xml /sitemap-*.xml
+    # /quiz/accueil*, /quiz/priorites*, /quiz/bilan-periode* : trois routes d'API de
+    # quiz/urls.py qui manquaient à cette liste - Caddy répondait 405 (fichier
+    # statique, GET/HEAD seulement) à leur preflight CORS depuis le serveur de dev, et
+    # servait index.html en prod. Toute nouvelle route sous /quiz/ doit être ajoutée ici.
+    @backend path /admin* /auth* /catalog* /subscriptions* /payments* /access* /quiz/sessions* /quiz/revisions* /quiz/maitrise* /quiz/subjects* /quiz/parcours* /quiz/plan-du-jour* /quiz/accueil* /quiz/priorites* /quiz/bilan-periode* /analytics* /inedit/mes-inscriptions* /inedit/mes-tentatives* /inedit/epreuves* /inedit/tentatives* /fiches/* /whatsapp* /relances* /simulations* /sitemap.xml /sitemap-*.xml
     handle @backend {
         reverse_proxy backend:8000
     }

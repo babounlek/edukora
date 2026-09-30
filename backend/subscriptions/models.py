@@ -182,6 +182,13 @@ class SubscriptionManager(models.Manager):
                 defaults={
                     "expires_at": timezone.now() + timezone.timedelta(days=duration_days),
                     "duration_mode": duration_mode,
+                    # `.first()` fait l'affaire tant qu'aucun élève n'a encore choisi
+                    # POUR QUEL enfant précis cet abonnement est acheté (pas d'endpoint
+                    # ni de sélecteur de profil actif encore branché sur le paiement) -
+                    # chaque compte n'a par construction qu'un seul profil à ce stade.
+                    # À corriger le jour où l'achat sait pour quel profil il paie :
+                    # passer ce profil ici plutôt que de le redéduire.
+                    "profil": user.profils.first(),
                 },
             )
             if not created:
@@ -208,11 +215,21 @@ class SubscriptionManager(models.Manager):
 
 class Subscription(models.Model):
     """
-    Accès actif d'un utilisateur à un Cursus. Une seule ligne par (user, cursus) :
-    chaque paiement réussi prolonge expires_at plutôt que de créer une nouvelle ligne.
+    Accès actif d'un utilisateur (le compte payeur, `user`) à un Cursus, POUR UN
+    PROFIL PRÉCIS (`profil`, l'enfant qui étudie) - voir users.models.Profil : deux
+    enfants du même compte préparant le même cursus ont chacun leur propre ligne, leur
+    propre paiement. Une seule ligne par (user, cursus) pour l'instant : voir le
+    commentaire sur `profil` dans SubscriptionManager.activate_or_extend, le grain
+    exact (par compte ou par profil) sera resserré une fois l'achat pour un profil
+    précis branché de bout en bout. Chaque paiement réussi prolonge expires_at plutôt
+    que de créer une nouvelle ligne.
     """
 
     user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="subscriptions")
+    profil = models.ForeignKey(
+        "users.Profil", on_delete=models.CASCADE, related_name="subscriptions",
+        help_text="L'enfant pour qui cet accès a été payé - voir la docstring de la classe.",
+    )
     cursus = models.ForeignKey(Cursus, on_delete=models.PROTECT, related_name="subscriptions")
     expires_at = models.DateTimeField()
     duration_mode = models.CharField(
@@ -270,7 +287,12 @@ class InscriptionInediteManager(models.Manager):
         with db_transaction.atomic():
             inscription, created = self.get_or_create(
                 user=user, cursus=cursus,
-                defaults={"expires_at": timezone.now() + timezone.timedelta(days=duration_days)},
+                # Même pont temporaire que SubscriptionManager.activate_or_extend - voir
+                # son commentaire.
+                defaults={
+                    "expires_at": timezone.now() + timezone.timedelta(days=duration_days),
+                    "profil": user.profils.first(),
+                },
             )
             if not created:
                 locked_qs = self.select_for_update() if connection.features.has_select_for_update else self
@@ -295,6 +317,7 @@ class InscriptionInedite(models.Model):
     """
 
     user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="inscriptions_inedites")
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="inscriptions_inedites")
     cursus = models.ForeignKey(Cursus, on_delete=models.PROTECT, related_name="inscriptions_inedites")
     expires_at = models.DateTimeField()
 
@@ -329,7 +352,12 @@ class InscriptionRepetiteurManager(models.Manager):
         with db_transaction.atomic():
             inscription, created = self.get_or_create(
                 user=user, cursus=cursus,
-                defaults={"expires_at": timezone.now() + timezone.timedelta(days=duration_days)},
+                # Même pont temporaire que SubscriptionManager.activate_or_extend - voir
+                # son commentaire.
+                defaults={
+                    "expires_at": timezone.now() + timezone.timedelta(days=duration_days),
+                    "profil": user.profils.first(),
+                },
             )
             if not created:
                 locked_qs = self.select_for_update() if connection.features.has_select_for_update else self
@@ -352,6 +380,7 @@ class InscriptionRepetiteur(models.Model):
     """
 
     user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="inscriptions_repetiteur")
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="inscriptions_repetiteur")
     cursus = models.ForeignKey(Cursus, on_delete=models.PROTECT, related_name="inscriptions_repetiteur")
     expires_at = models.DateTimeField()
 

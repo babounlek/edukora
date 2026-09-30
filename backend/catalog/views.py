@@ -5,14 +5,16 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from access.models import ExerciceFait
+from access.models import ExerciceFait, LectureProgress
 from access.services import (
     bulk_active_inedite_cursus_ids,
     bulk_active_subscription_cursus_ids,
     bulk_read_ids,
+    has_access,
     has_access_jusqua_examen,
 )
 from quiz.models import CompetenceItem
+from users.profils import profil_actif
 
 from .inedit_bridge import (
     bulk_exercises_counts,
@@ -25,6 +27,7 @@ from .models import (
     Country,
     Cursus,
     Examen,
+    Exercise,
     Lesson,
     LessonType,
     Origine,
@@ -35,6 +38,7 @@ from .models import (
     Tag,
     Temoignage,
 )
+from .rendering import exercise_questions_breakdown
 from .serializers import (
     bulk_cours_est_vitrine,
     bulk_lesson_exercises_counts,
@@ -176,8 +180,8 @@ class LessonListView(generics.ListAPIView):
         if params.get("exclude_read") == "true" and self.request.user.is_authenticated:
             # Anonyme : pas de LectureProgress à exclure, donc no-op naturel - on ne
             # teste explicitement is_authenticated que pour éviter un filtre sur
-            # lectures__user=AnonymousUser (ne correspond à aucune ligne, mais ambigu).
-            qs = qs.exclude(lectures__user=self.request.user)
+            # lectures__profil=None (ne correspond à aucune ligne, mais ambigu).
+            qs = qs.exclude(lectures__profil=profil_actif(self.request))
         if params.get("ordering") == "year":
             # Whitelist explicite plutôt qu'un order_by(params["ordering"]) direct :
             # n'expose que ce que le catalogue propose réellement (années croissantes),
@@ -260,8 +264,8 @@ class LessonListView(generics.ListAPIView):
             # catalog.serializers. set() immédiat pour un visiteur anonyme (voir
             # access.services.bulk_*), donc aucun coût ajouté hors connexion.
             "active_subscription_cursus_ids": bulk_active_subscription_cursus_ids(request.user),
-            "read_lesson_ids": bulk_read_ids(request.user, field="lesson"),
-            "read_cours_ids": bulk_read_ids(request.user, field="cours"),
+            "read_lesson_ids": bulk_read_ids(profil_actif(request), field="lesson"),
+            "read_cours_ids": bulk_read_ids(profil_actif(request), field="cours"),
         }
 
         lesson_qs = self.get_queryset()
@@ -434,7 +438,7 @@ class CoursListView(generics.ListAPIView):
         if params.get("exclude_read") == "true" and self.request.user.is_authenticated:
             # Même repli anonyme naturel que LessonListView ci-dessus - pas de
             # LectureProgress à exclure pour un visiteur non connecté.
-            qs = qs.exclude(lectures__user=self.request.user)
+            qs = qs.exclude(lectures__profil=profil_actif(self.request))
         if search := params.get("search"):
             # EXISTS() plutôt qu'un JOIN sur tags - même raison que LessonListView
             # ci-dessus (évite de réévaluer content_markdown une fois par tag au lieu
@@ -482,7 +486,7 @@ class CoursListView(generics.ListAPIView):
         context = self.get_serializer_context()
         context["est_vitrine_ids"] = bulk_cours_est_vitrine([obj.pk for obj in objs])
         context["active_subscription_cursus_ids"] = bulk_active_subscription_cursus_ids(request.user)
-        context["read_cours_ids"] = bulk_read_ids(request.user, field="cours")
+        context["read_cours_ids"] = bulk_read_ids(profil_actif(request), field="cours")
 
         serializer = self.get_serializer(objs, many=True, context=context)
         if page is not None:
@@ -719,6 +723,131 @@ class ThemesFrequentsView(APIView):
         })
 
 
+class ThemesFrequentsMatieresView(APIView):
+    """
+    Matières d'un cursus ayant au moins une épreuve officielle publiée, avec leur nombre
+    de sessions - alimente le choix de matière de /themes-frequents, qui ne doit proposer
+    que des matières pour lesquelles ThemesFrequentsView a quelque chose à dire (le
+    référentiel Subject est bien plus large que le corpus officiel d'un cursus donné).
+    Même filtre que ThemesFrequentsView (VALIDE, OFFICIEL, ce cursus) : `disponible`
+    y dit d'avance si le classement franchira SEUIL_MINIMUM_THEMES_FREQUENTS.
+    """
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, cursus_id):
+        cursus = get_object_or_404(Cursus.objects.select_related("country"), pk=cursus_id)
+        if not cursus.country.actif:
+            return Response({"error": "Ce cursus n'est pas disponible."}, status=404)
+
+        officielles = Lesson.objects.filter(
+            subject=OuterRef("pk"), statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL, cursus=cursus,
+        )
+        matieres = (
+            Subject.objects.filter(country=cursus.country)
+            .annotate(
+                nb_sessions=Coalesce(
+                    Subquery(
+                        officielles.values("subject").annotate(n=Count("pk", distinct=True)).values("n"),
+                        output_field=IntegerField(),
+                    ),
+                    0,
+                ),
+            )
+            .filter(nb_sessions__gt=0)
+            .order_by("-nb_sessions", "label")
+        )
+        return Response([
+            {
+                "code": s.code,
+                "label": s.label,
+                "nb_sessions": s.nb_sessions,
+                "disponible": s.nb_sessions >= SEUIL_MINIMUM_THEMES_FREQUENTS,
+            }
+            for s in matieres
+        ])
+
+
+class ThemeExerciceLectureView(APIView):
+    """
+    Un exercice lu seul, depuis la liste d'un thème (ThemeExercicesView) : énoncé et
+    corrigé découpés par question, chacune marquée si elle porte sur le thème
+    (`sur_le_theme`) - le frontend la surligne et replie chaque corrigé séparément
+    ("Essaie d'abord"). Sans ce mode, "Lire" ouvrait l'épreuve entière : l'élève
+    atterrissait au milieu d'exercices sans rapport, et "Exercice suivant" le sortait
+    du thème.
+
+    Même contrôle d'accès que access.views.read_lesson (has_access sur la Lesson,
+    vitrine comprise) ; sans accès, les énoncés restent servis - ils sont publics, voir
+    preview_lesson - mais jamais le moindre corrigé.
+    """
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, tag_id, exercise_id):
+        exercise = get_object_or_404(
+            Exercise.objects.select_related("lesson__subject__country").filter(
+                statut=StatutContenu.VALIDE,
+                lesson__in=Lesson.objects.visibles(),
+            ),
+            pk=exercise_id,
+        )
+        tag = get_object_or_404(Tag, pk=tag_id)
+        lesson = exercise.lesson
+        acces = has_access(request.user, lesson)
+        profil = profil_actif(request) if request.user.is_authenticated else None
+
+        if acces and profil is not None:
+            LectureProgress.objects.update_or_create(profil=profil, lesson=lesson)
+        fait = profil is not None and ExerciceFait.objects.filter(
+            profil=profil, exercise=exercise,
+        ).exists()
+
+        # Intro/titre/points/texte complet exactement comme le lecteur les affiche
+        # (repères de partie retirés, titre d'exercice unique allégé...) : on reprend
+        # l'entrée de CET exercice plutôt que de refaire ces retouches ici.
+        bloc = next((e for e in lesson.exercises_breakdown() if e["id"] == exercise.pk), None)
+        if bloc is None:
+            return Response({"error": "Exercice introuvable."}, status=404)
+
+        questions = exercise_questions_breakdown(exercise)
+        return Response({
+            "exercise": {
+                "id": exercise.pk,
+                "numero_exercice": exercise.numero_exercice,
+                "titre": bloc["titre"],
+                "points": bloc["points"],
+                "fait": fait,
+            },
+            "lesson": {
+                "slug": lesson.slug,
+                "title": lesson.title,
+                "year": lesson.year,
+                "origine": lesson.origine,
+                "subject_code": lesson.subject.code,
+                "subject_label": lesson.subject.label,
+                "introduction_markdown": lesson.introduction_markdown,
+            },
+            "theme": {"id": tag.pk, "name": tag.name},
+            "has_access": acces,
+            "enonce_intro_markdown": bloc["enonce_intro_markdown"],
+            # null quand les Question ne recomposent plus le texte de l'exercice (voir
+            # exercise_questions_breakdown) : le frontend affiche alors le bloc entier
+            # ci-dessous, sans surlignage.
+            "questions": None if questions is None else [
+                {
+                    "numero": q["numero"],
+                    "enonce_markdown": q["enonce_markdown"],
+                    "corrige_markdown": q["corrige_markdown"] if acces else None,
+                    "sur_le_theme": tag.pk in q["theme_ids"],
+                }
+                for q in questions
+            ],
+            "enonce_markdown": bloc["enonce_markdown"],
+            "corrige_markdown": bloc["corrige_markdown"] if acces else None,
+        })
+
+
 class ThemeExercicesView(APIView):
     """
     Exercices concernés par un thème donné, pour un (cursus, matière) - alimente le
@@ -771,9 +900,10 @@ class ThemeExercicesView(APIView):
         # transforme cette page d'un catalogue en file d'entraînement : sans lui,
         # l'élève ne sait pas où il en est sur 33 exercices et recommence au hasard.
         faits = set()
-        if request.user.is_authenticated:
+        profil = profil_actif(request) if request.user.is_authenticated else None
+        if profil is not None:
             faits = set(
-                ExerciceFait.objects.filter(user=request.user, exercise__lesson__in=[q.exercise.lesson_id for q in questions])
+                ExerciceFait.objects.filter(profil=profil, exercise__lesson__in=[q.exercise.lesson_id for q in questions])
                 .values_list("exercise_id", flat=True),
             )
 
@@ -799,14 +929,37 @@ class ThemeExercicesView(APIView):
                 "lesson_slug": lesson.slug,
                 "lesson_title": lesson.title,
                 "lesson_year": lesson.year,
+                "origine": lesson.origine,
                 "numero_exercice": question.exercise.numero_exercice,
                 "has_access": lesson_has_access,
                 "fait": question.exercise.pk in faits,
             })
+
+        # Les autres (examen, matière) où ce thème est traité : alimente le choix de
+        # l'examen et de la matière sur la page, sans jamais proposer une combinaison
+        # vide. Même filtre que la liste (VALIDE, toute origine), même pays.
+        contextes = (
+            Exercise.objects.filter(
+                questions__themes=tag, lesson__statut=StatutContenu.VALIDE,
+                lesson__subject__country=cursus.country, lesson__cursus__isnull=False,
+            )
+            .values("lesson__cursus", "lesson__subject__code", "lesson__subject__label")
+            .annotate(nb=Count("pk", distinct=True))
+            .order_by("-nb")
+        )
 
         return Response({
             "tag": tag.name,
             "exercices": exercices,
             "total": len(exercices),
             "faits": sum(1 for e in exercices if e["fait"]),
+            "contextes": [
+                {
+                    "cursus_id": c["lesson__cursus"],
+                    "subject_code": c["lesson__subject__code"],
+                    "subject_label": c["lesson__subject__label"],
+                    "nb_exercices": c["nb"],
+                }
+                for c in contextes
+            ],
         })

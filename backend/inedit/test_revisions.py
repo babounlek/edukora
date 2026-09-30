@@ -19,7 +19,7 @@ class RevisionsApresEpreuveTests(NotationAPITestCase):
         # Ni la QCM ni l'ouverte ne sont traitées : le thème commun revient demain.
         reponse = self.rendre()
 
-        planification = RevisionSchedule.objects.get(user=self.user, cursus=self.cursus)
+        planification = RevisionSchedule.objects.get(profil=self.profil, cursus=self.cursus)
         self.assertEqual(planification.theme.name, "Suites numériques")
         self.assertEqual(planification.due_at, timezone.localdate() + timedelta(days=1))
         self.assertEqual(
@@ -42,7 +42,7 @@ class RevisionsApresEpreuveTests(NotationAPITestCase):
         reponse = self.rendre()
 
         self.assertEqual(reponse.data["themes_a_reviser"], [])
-        self.assertFalse(RevisionSchedule.objects.filter(user=self.user).exists())
+        self.assertFalse(RevisionSchedule.objects.filter(profil=self.profil).exists())
 
     def test_un_theme_partiellement_reussi_est_a_reviser(self):
         self.client.post(self.url("answer", self.qcm), {"reponse_choisie": "b"})
@@ -53,7 +53,7 @@ class RevisionsApresEpreuveTests(NotationAPITestCase):
         self.assertEqual([t["theme"] for t in reponse.data["themes_a_reviser"]], ["Suites numériques"])
 
     def test_la_planification_n_est_faite_que_pour_l_eleve_qui_rend(self):
-        autre = TentativeInedite.objects.create(user=self.user, epreuve=self.epreuve)
+        autre = TentativeInedite.objects.create(profil=self.profil, epreuve=self.epreuve)
         self.rendre()
-        self.assertEqual(RevisionSchedule.objects.filter(user=self.user).count(), 1)
+        self.assertEqual(RevisionSchedule.objects.filter(profil=self.profil).count(), 1)
         self.assertIsNone(autre.submitted_at)

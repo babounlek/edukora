@@ -185,7 +185,8 @@ class FichesApiTests(TestCase):
 
     def _grant_access(self):
         InscriptionRepetiteur.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timedelta(days=1),
         )
 
     def test_create_fiche_requires_authentication(self):

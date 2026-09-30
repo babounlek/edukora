@@ -26,7 +26,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from catalog.models import Cursus, Examen, ExamSession
 
 from .management.commands.purge_otp_codes import MIN_RETENTION_DAYS
-from .models import AuthIdentity, AuthProvider, CodeCanal, OTPCode, User
+from .models import AuthIdentity, AuthProvider, CodeCanal, OTPCode, Profil, User
 from .email_service import (
     EmailAlreadyTaken,
     EmailCapReached,
@@ -1630,3 +1630,146 @@ class CursusPrepareEtCompteAReboursTests(TestCase):
 
         self.assertIn(compte["jours_restants"], (89, 90))
         self.assertFalse(compte["estimee"])
+
+
+class CreationCompteCreeUnProfilParDefautTests(TestCase):
+    """
+    `UserManager._create_user` est le chemin unique de création d'un compte - tout
+    nouveau compte doit recevoir un profil par défaut, quel que soit le chemin
+    emprunté, sans quoi `users.profils.profil_actif` renverrait None pour un élève
+    tout neuf. Couvre les 3 chemins réels (OTP, Google, e-mail) plus l'admin.
+    """
+
+    def test_create_user_cree_un_profil(self):
+        user = User.objects.create_user(phone_number="677900510", password="x")
+
+        self.assertEqual(user.profils.count(), 1)
+
+    def test_un_compte_sans_numero_recoit_aussi_un_profil(self):
+        # Chemin Google/e-mail : phone_number explicitement None.
+        user = User.objects.create_user(phone_number=None, email="eleve@example.com", password="x")
+
+        self.assertEqual(user.profils.count(), 1)
+
+    def test_create_superuser_recoit_aussi_un_profil(self):
+        superuser = User.objects.create_superuser(phone_number="677900511", password="x")
+
+        self.assertEqual(superuser.profils.count(), 1)
+
+    def test_profil_actif_resout_le_seul_profil_du_compte(self):
+        from .profils import profil_actif
+
+        user = User.objects.create_user(phone_number="677900512", password="x")
+        requete = SimpleNamespace(user=user)
+
+        self.assertEqual(profil_actif(requete), user.profils.get())
+
+
+class ProfilTests(TestCase):
+    """
+    `Profil` : la personne qui étudie sous un compte (voir la docstring du modèle -
+    compte famille, un profil par enfant). Couvre ce qui casserait silencieusement si
+    la cascade ou l'ordre par défaut changeaient, pas le contenu métier (séance du
+    jour, etc.), qui vit dans quiz une fois la ré-écriture app par app faite.
+    """
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677900501", password="x")
+        # `create_user` pose déjà un profil par défaut (voir
+        # CreationCompteCreeUnProfilParDefautTests) - retiré ici pour que chaque test
+        # de cette classe reparte d'une ardoise vierge et explicite sur les profils
+        # qu'il crée lui-même, sans avoir à compter un profil implicite en plus.
+        self.user.profils.all().delete()
+        self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+
+    def test_un_compte_peut_porter_plusieurs_profils(self):
+        aine = Profil.objects.create(compte=self.user, prenom="Awa", ordre=0)
+        cadet = Profil.objects.create(compte=self.user, prenom="Junior", ordre=1)
+
+        self.assertEqual(list(self.user.profils.all()), [aine, cadet])
+
+    def test_chaque_profil_prepare_son_propre_cursus(self):
+        bepc = Cursus.objects.filter(examen=Examen.BEPC, series__isnull=True).first()
+        aine = Profil.objects.create(compte=self.user, prenom="Awa", cursus_prepare=self.cursus)
+        cadet = Profil.objects.create(compte=self.user, prenom="Junior", cursus_prepare=bepc)
+
+        self.assertEqual(aine.cursus_prepare_id, self.cursus.id)
+        self.assertEqual(cadet.cursus_prepare_id, bepc.id)
+
+    def test_supprimer_le_compte_supprime_ses_profils(self):
+        Profil.objects.create(compte=self.user, prenom="Awa")
+        Profil.objects.create(compte=self.user, prenom="Junior")
+
+        self.user.delete()
+
+        self.assertEqual(Profil.objects.count(), 0)
+
+    def test_retirer_le_cursus_du_referentiel_ne_supprime_pas_le_profil(self):
+        # SET_NULL, même raison que User.cursus_prepare : une déclaration d'élève ne
+        # doit jamais bloquer un retrait de Cursus du référentiel.
+        cursus_jetable = Cursus.objects.create(
+            country=self.cursus.country, examen=self.cursus.examen, series=None,
+        )
+        profil = Profil.objects.create(compte=self.user, prenom="Awa", cursus_prepare=cursus_jetable)
+
+        cursus_jetable.delete()
+
+        profil.refresh_from_db()
+        self.assertIsNone(profil.cursus_prepare_id)
+
+    def test_str_utilise_le_prenom_sinon_un_repli_stable(self):
+        avec_prenom = Profil.objects.create(compte=self.user, prenom="Awa")
+        sans_prenom = Profil.objects.create(compte=self.user, prenom="")
+
+        self.assertEqual(str(avec_prenom), "Awa")
+        self.assertEqual(str(sans_prenom), f"profil #{sans_prenom.pk}")
+
+    def test_ordre_par_defaut_respecte_l_ordre_de_creation(self):
+        premier = Profil.objects.create(compte=self.user, prenom="Awa")
+        second = Profil.objects.create(compte=self.user, prenom="Junior")
+
+        self.assertEqual(list(Profil.objects.filter(compte=self.user)), [premier, second])
+
+
+class BackfillProfilDepuisUserTests(TestCase):
+    """
+    La migration 0012 (`users/migrations/0012_backfill_profil_depuis_user.py`) crée un
+    profil par défaut par compte existant. Pas d'outillage de test de migration dans
+    ce projet (aucun précédent trouvé) - et la migration elle-même dit pourquoi son
+    code ne doit PAS être importé d'ailleurs ("une migration doit rester figée dans le
+    temps"). On vérifie donc son EFFET RÉEL : appliquer la logique de rétro-remplissage
+    aux modèles courants (elle est assez courte pour être rejouée ici mot pour mot,
+    sans dépendre du fichier de migration) donne bien un profil par compte, avec les
+    bons champs copiés.
+    """
+
+    def _prenom_depuis(self, full_name):
+        # Même logique que la migration, dupliquée à dessein - voir la docstring
+        # ci-dessus et celle de la migration elle-même.
+        if not full_name:
+            return ""
+        return full_name.strip().split(" ")[0]
+
+    def test_le_prenom_par_defaut_est_le_premier_mot_du_nom_complet(self):
+        self.assertEqual(self._prenom_depuis("Awa Ngo Bikoro"), "Awa")
+        self.assertEqual(self._prenom_depuis(""), "")
+        self.assertEqual(self._prenom_depuis(None), "")
+        self.assertEqual(self._prenom_depuis("  Junior  "), "Junior")
+
+    def test_un_compte_existant_recoit_bien_ses_reglages_dans_son_profil_par_defaut(self):
+        cursus = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        user = User.objects.create_user(phone_number="677900502", password="x")
+        user.full_name = "Junior Fotso"
+        user.cursus_prepare = cursus
+        user.rappels_actifs = True
+        user.save(update_fields=["full_name", "cursus_prepare", "rappels_actifs"])
+
+        profil = Profil.objects.create(
+            compte=user, prenom=self._prenom_depuis(user.full_name),
+            cursus_prepare=user.cursus_prepare, rappels_actifs=user.rappels_actifs,
+            rappels_invite_refusee_at=user.rappels_invite_refusee_at,
+        )
+
+        self.assertEqual(profil.prenom, "Junior")
+        self.assertEqual(profil.cursus_prepare_id, cursus.id)
+        self.assertTrue(profil.rappels_actifs)

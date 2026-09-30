@@ -201,6 +201,10 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 # aucun moyen de comprendre pourquoi, le pire mode de panne pour une authentification.
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=f"{SITE_NAME} <no-reply@edukora.africa>")
 
+# Boîte surveillée où atterrit une réponse à un e-mail transactionnel (no-reply@ ne
+# l'est jamais) - voir users.email_service.request_email_code.
+SUPPORT_EMAIL = config("SUPPORT_EMAIL", default="support@edukora.africa")
+
 # Plafonds d'envoi des codes e-mail. Séparés des plafonds OTP, et nettement plus larges :
 # un e-mail ne se facture pas, ces valeurs bornent l'usage abusif (relais de spam) et non
 # une dépense. Voir users.email_service.request_email_code.

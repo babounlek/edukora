@@ -37,7 +37,7 @@ from .email_service import (
     request_email_code,
     verify_email_code,
 )
-from .otp_service import OTPCapReached, OTPInvalid, OTPThrottled, request_otp, verify_otp
+from .otp_service import OTPCapReached, OTPInvalid, OTPSendFailed, OTPThrottled, request_otp, verify_otp
 from .serializers import (
     EmailCodeRequestSerializer,
     EmailCodeVerifySerializer,
@@ -134,7 +134,7 @@ def otp_request_view(request):
         request_otp(serializer.validated_data["phone_number"], ip_address=_client_ip(request))
     except OTPThrottled as exc:
         return Response({"error": str(exc)}, status=429)
-    except OTPCapReached as exc:
+    except (OTPCapReached, OTPSendFailed) as exc:
         # 503 et pas 429 : le demandeur n'a rien à corriger ni à ralentir, c'est le
         # service qui est indisponible - un 429 inviterait le frontend à afficher
         # "vous allez trop vite" à quelqu'un qui n'a fait qu'une seule tentative.
@@ -342,7 +342,7 @@ def phone_change_request_view(request):
         return Response({"error": str(exc)}, status=409)
     except OTPThrottled as exc:
         return Response({"error": str(exc)}, status=429)
-    except OTPCapReached as exc:
+    except (OTPCapReached, OTPSendFailed) as exc:
         return Response({"error": str(exc)}, status=503)
 
     return Response({"message": "Code envoyé au nouveau numéro."})

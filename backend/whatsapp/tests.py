@@ -69,7 +69,7 @@ class UtilisateursARelancerTests(TestCase):
     def _make_schedule(self, user, due_at):
         theme = Tag.objects.create(name=f"theme-{user.id}-{due_at}")
         return RevisionSchedule.objects.create(
-            user=user, cursus=self.cursus, subject=self.subject, theme=theme, due_at=due_at,
+            profil=user.profils.first(), cursus=self.cursus, subject=self.subject, theme=theme, due_at=due_at,
         )
 
     def test_excludes_users_not_opted_in(self):
@@ -114,7 +114,8 @@ class EnvoyerRappelsDuJourTests(TestCase):
         opt_in(self.user)
         theme = Tag.objects.create(name="dérivation")
         RevisionSchedule.objects.create(
-            user=self.user, cursus=self.cursus, subject=self.subject, theme=theme, due_at=timezone.localdate(),
+            profil=self.user.profils.first(), cursus=self.cursus, subject=self.subject, theme=theme,
+            due_at=timezone.localdate(),
         )
 
     @patch("whatsapp.services.get_whatsapp_backend")

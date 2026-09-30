@@ -31,10 +31,10 @@ class QuizQuestionInline(admin.TabularInline):
 
 @admin.register(QuizSession)
 class QuizSessionAdmin(admin.ModelAdmin):
-    list_display = ["user", "mode", "cursus", "subject", "theme", "started_at", "completed_at"]
+    list_display = ["profil", "mode", "cursus", "subject", "theme", "started_at", "completed_at"]
     list_filter = ["mode", "cursus", "completed_at"]
-    search_fields = ["user__phone_number"]
-    readonly_fields = ["user", "cursus", "subject", "theme", "mode", "started_at", "completed_at"]
+    search_fields = ["profil__compte__phone_number"]
+    readonly_fields = ["profil", "cursus", "subject", "theme", "mode", "started_at", "completed_at"]
     inlines = [QuizQuestionInline]
 
     def has_add_permission(self, request):
@@ -53,10 +53,10 @@ class QuizAnswerAdmin(admin.ModelAdmin):
 
 @admin.register(RevisionSchedule)
 class RevisionScheduleAdmin(admin.ModelAdmin):
-    list_display = ["user", "theme", "cursus", "palier", "due_at", "updated_at"]
+    list_display = ["profil", "theme", "cursus", "palier", "due_at", "updated_at"]
     list_filter = ["cursus", "due_at"]
-    search_fields = ["user__phone_number", "theme__name"]
-    readonly_fields = ["user", "cursus", "subject", "theme", "palier", "due_at", "updated_at"]
+    search_fields = ["profil__compte__phone_number", "theme__name"]
+    readonly_fields = ["profil", "cursus", "subject", "theme", "palier", "due_at", "updated_at"]
 
     def has_add_permission(self, request):
         return False

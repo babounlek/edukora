@@ -15,6 +15,15 @@ HISTOIRE_GEO) et sont reclassées ici. Les 3 restantes (bepc-histoire-2008/2017/
 officiel-cameroun) ont bien "matiere": "Histoire-Géographie" dans leur JSON source -
 laissées sous HISTOIRE_GEO, volontairement absentes des listes ci-dessous.
 
+MàJ 2026-09-29 : le corpus a continué de grossir sous l'ancien mapping ("matiere":
+"Histoire-Géographie" écrit par correction-experte même pour une épreuve mono-
+discipline) - 41 Lesson de nouveau sous HISTOIRE_GEO à cette date, dont les 3
+exceptions BEPC ci-dessus. Les 38 autres, vérifiées de la même façon (contenu de
+chaque exercice, aucune trace de la discipline absente), ont été ajoutées aux mêmes
+listes ci-dessous - toujours pas de fix côté ingestion : un nouveau lot avec ce
+"matiere" continuera d'atterrir sous HISTOIRE_GEO et devra repasser par cette
+commande.
+
 Non destructive - modifie Lesson.subject/Lesson.title/Module.subject en place (id,
 slug, Exercise/Question/Savoir/Tag.savoir_officiel inchangés - voir la docstring de
 build_lesson_title : jamais le slug, figé à la création), jamais un ré-import.
@@ -57,6 +66,46 @@ HISTOIRE_SEULE = {
     # source, conservée telle quelle) - traité de Versailles, révolution industrielle,
     # colonisation de l'Afrique, aucun contenu de géographie.
     "probatoire-c-d-e-ti-histoire-2022-officiel-cameroun",
+    # Repérées le 2026-09-29 : le corpus a beaucoup grossi depuis le 2026-09-07 (nouvelles
+    # ingestions BAC/Probatoire/BEPC 1999-2025), avec 41 Lesson à nouveau sous HISTOIRE_GEO
+    # au lieu des 15 d'origine. Signalé par l'utilisateur sur bac-c-d-e-histoire-1999
+    # ("est une épreuve d'histoire"), généralisé au reste du lot après vérification une par
+    # une du contenu de chaque exercice (aucune trace de géographie) : toujours le même
+    # bug de tagging - correction-experte déclare "matiere": "Histoire-Géographie" pour
+    # toute épreuve de la discipline scolaire "Histoire-Géographie", y compris quand le
+    # sujet transcrit ne couvre qu'une seule des deux disciplines. Les 3 BEPC 2008/2017/
+    # 2020 ci-dessus restent volontairement sous HISTOIRE_GEO (contenu réellement mixte,
+    # vérifié à l'origine).
+    "bac-c-d-e-histoire-1999-officiel-cameroun.pdf",
+    "probatoire-a-histoire-2000-officiel-cameroun.pdf",
+    "bac-a-histoire-2001-officiel-cameroun.pdf",
+    "probatoire-c-d-e-histoire-2001-officiel-cameroun.pdf",
+    "bac-c-d-e-histoire-2002-officiel-cameroun.pdf",
+    "bac-c-d-e-histoire-2003-officiel-cameroun.pdf",
+    "probatoire-c-d-e-histoire-2006-officiel-cameroun.pdf",
+    "probatoire-c-d-e-histoire-2009-officiel-cameroun.pdf",
+    "bepc-histoire-2010-officiel-cameroun",
+    "probatoire-c-d-e-histoire-2010-officiel-cameroun.pdf",
+    "bac-c-d-e-histoire-2011-officiel-cameroun.pdf",
+    "probatoire-c-d-e-histoire-2011-officiel-cameroun.pdf",
+    "bepc-histoire-2012-officiel-cameroun",
+    "bac-a-histoire-2013-officiel-cameroun.pdf",
+    "bepc-histoire-2013-officiel-cameroun.pdf",
+    "probatoire-c-d-e-ti-histoire-2013-officiel-cameroun.pdf",
+    "bac-a-histoire-2014-officiel-cameroun.pdf",
+    "bac-c-d-e-ti-histoire-2015-officiel-cameroun.pdf",
+    "bepc-histoire-2015-officiel-cameroun.pdf",
+    "probatoire-c-d-e-ti-histoire-2015-officiel-cameroun.pdf",
+    "bac-a-abi-histoire-2016-officiel-cameroun",
+    "bac-c-d-e-ti-histoire-2016-officiel-cameroun.pdf",
+    "bac-c-d-e-ti-histoire-2018-officiel-cameroun.pdf",
+    "bac-c-d-e-ti-histoire-2019-officiel-cameroun.pdf",
+    "probatoire-c-d-e-ti-histoire-2019-officiel-cameroun.pdf",
+    # Coquille "probaboire" conservée telle quelle dans le JSON source (voir la même
+    # remarque plus haut pour les entrées "probatore").
+    "probaboire-a-abi-histoire-2021-officiel-cameroun",
+    "bac-a-abi-histoire-2024-officiel-cameroun",
+    "probatoire-c-d-ti-histoire-2025-officiel-cameroun.pdf",
 }
 GEOGRAPHIE_SEULE = {
     "bac-c-d-ti-geographie-2025-cameroun.pdf",
@@ -77,6 +126,18 @@ GEOGRAPHIE_SEULE = {
     # conservée telle quelle) - démographie africaine, exode rural, immigration, aucun
     # contenu d'histoire.
     "probatoire-a-abi-geographie-2025-officiel-cameroun.pdf",
+    # Repérées le 2026-09-29, même campagne que HISTOIRE_SEULE ci-dessus.
+    "bac-a-geographie-1999-officiel-cameroun.pdf",
+    "bac-a-geographie-2002-officiel-cameroun.pdf",
+    "bac-a-geographie-2003-officiel-cameroun.pdf",
+    "bac-a-geographie-2004-officiel-cameroun.pdf",
+    "bac-a-geographie-2011-officiel-cameroun",
+    "bac-a-geographie-2012-officiel-cameroun.pdf",
+    "bac-a-abi-geographie-2017-officiel-cameroun",
+    # Coquille "georgraphie" conservée telle quelle dans le JSON source.
+    "bac-a-georgraphie-2019-officiel-cameroun.pdf",
+    "bac-a-abi-geographie-2022-officiel-cameroun",
+    "bac-a-abi-geographie-2023-officiel-cameroun",
 }
 
 

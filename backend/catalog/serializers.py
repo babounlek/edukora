@@ -2,6 +2,7 @@ from django.db.models import Count
 from rest_framework import serializers
 
 from access.services import has_access
+from users.profils import profil_actif
 
 from .models import (
     Cours,
@@ -199,7 +200,9 @@ class _HasAccessMixin:
         read_ids = self.context.get(key)
         if read_ids is not None:
             return obj.pk in read_ids
-        return bool(obj.lectures.filter(user=user).exists())
+        request = self.context.get("request")
+        profil = profil_actif(request) if request is not None else None
+        return bool(profil is not None and obj.lectures.filter(profil=profil).exists())
 
 
 def _cours_content_summary(sections_raw):

@@ -15,11 +15,13 @@ from catalog.rendering import annotate_single_cours_link
 from catalog.serializers import CoursSummarySerializer, CursusSerializer, SubjectSerializer, SubjectWithQuizCountSerializer
 from programme.models import Savoir
 from subscriptions.models import Subscription
+from users.profils import profil_actif
 
 from .models import (
     CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
     StatutFichePdf, StatutSeance,
 )
+from . import accueil
 from .pdf import queue_quiz_fiche_pdf_generation
 from .serie import serie_de_jours
 from .services import (
@@ -63,7 +65,7 @@ def _tracer_seance_terminee(seance):
     try:
         AnalyticsEvent.objects.create(
             name=EventName.PLAN_SEANCE_TERMINEE,
-            user=seance.user,
+            user=seance.profil.compte,
             properties={"origine": seance.origine, "cursus_id": seance.cursus_id},
         )
     except Exception:  # noqa: BLE001 - jamais au prix de la requête en cours
@@ -208,6 +210,10 @@ def _question_payload(quiz_question):
             "type_reponse": item.type_reponse,
             "choix": item.choix,
             "theme": item.theme.name,
+            # Id du thème et code matière : liens "Exercices corrigés sur ce thème" (page
+            # /themes-frequents/<id>/exercices, qui attend le code matière) depuis le quiz.
+            "theme_id": item.theme_id,
+            "subject_code": item.subject.code,
             "subject_label": item.subject.label,
         }
         if answer:
@@ -315,7 +321,9 @@ def _resultat_payload(session, request):
             else list(quiz_question.question.themes.all())
         )
         for theme in themes:
-            stats = par_theme.setdefault(theme.name, {"total": 0, "reussies": 0, "theme": None, "competence_item": None})
+            stats = par_theme.setdefault(
+                theme.name, {"total": 0, "reussies": 0, "theme": None, "competence_item": None, "theme_id": theme.pk},
+            )
             stats["total"] += 1
             if correcte:
                 stats["reussies"] += 1
@@ -330,7 +338,16 @@ def _resultat_payload(session, request):
 
     par_theme_payload = []
     for nom, s in sorted(par_theme.items()):
-        entree = {"theme": nom, "total": s["total"], "reussies": s["reussies"], "cours": None}
+        entree = {
+            "theme": nom,
+            "theme_id": s["theme_id"],
+            # Code matière connu seulement via un CompetenceItem (voir plus haut) : sert
+            # au lien vers les exercices corrigés du thème, absent sinon.
+            "subject_code": s["competence_item"].subject.code if s["competence_item"] else None,
+            "total": s["total"],
+            "reussies": s["reussies"],
+            "cours": None,
+        }
         # Cours suggéré seulement sous le seuil de maîtrise habituel (même barre que
         # partout ailleurs dans l'app, voir quiz.services.SEUIL_MAITRISE) - jamais sous
         # un thème déjà réussi, qui n'a besoin de rien. La séance de calibrage day-one
@@ -353,7 +370,7 @@ def _resultat_payload(session, request):
         "nb_ratees": len(_items_rates(session)),
         "score": reussies,
         "meilleure_serie": meilleure_serie,
-        "seances_cette_semaine": seances_terminees_cette_semaine(session.user, session.cursus),
+        "seances_cette_semaine": seances_terminees_cette_semaine(session.profil, session.cursus),
         "par_theme": par_theme_payload,
         # Ce quiz était l'étape finale d'une séance du jour, et l'a clôturée : la page
         # de résultat le dit et ramène à « Aujourd'hui ». Faux pour un quiz lancé seul.
@@ -393,24 +410,25 @@ def start_session(request):
     except (TypeError, ValueError):
         n = 10
 
+    profil = profil_actif(request)
     try:
-        session = generer_session(request.user, cursus, mode, subject=subject, theme=theme, savoir=savoir, n=n)
+        session = generer_session(profil, cursus, mode, subject=subject, theme=theme, savoir=savoir, n=n)
     except ValueError as exc:
         return Response({"error": str(exc)}, status=404)
 
     # `seance` n'est qu'un drapeau "je viens du plan du jour" posé par le lien de
     # l'étape quiz : sa valeur n'est pas de confiance (une URL se bricole), donc on ne
     # s'en sert jamais pour DÉSIGNER une séance - rattacher_quiz_a_la_seance ne touche
-    # que la séance du jour de cet utilisateur, sur ce cursus.
+    # que la séance du jour de ce profil, sur ce cursus.
     if request.data.get("seance"):
-        rattacher_quiz_a_la_seance(request.user, session)
+        rattacher_quiz_a_la_seance(profil, session)
 
     return Response(_session_payload(session), status=201)
 
 
 @api_view(["GET"])
 def session_detail(request, session_id):
-    session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
+    session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     return Response(_session_payload(session))
 
 
@@ -423,7 +441,7 @@ def reveal_corrige(request, session_id, quiz_question_id):
     dès la réponse."""
     quiz_question = get_object_or_404(
         QuizQuestion.objects.select_related("question", "competence_item"),
-        pk=quiz_question_id, session_id=session_id, session__user=request.user,
+        pk=quiz_question_id, session_id=session_id, session__profil=profil_actif(request),
     )
     contenu = quiz_question.contenu
     corrige_markdown = (
@@ -434,11 +452,12 @@ def reveal_corrige(request, session_id, quiz_question_id):
 
 @api_view(["POST"])
 def answer_question(request, session_id, quiz_question_id):
+    profil = profil_actif(request)
     quiz_question = get_object_or_404(
         QuizQuestion.objects.select_related(
             "session", "question__exercise__lesson__subject", "competence_item",
         ),
-        pk=quiz_question_id, session_id=session_id, session__user=request.user,
+        pk=quiz_question_id, session_id=session_id, session__profil=profil,
     )
     contenu = quiz_question.contenu
 
@@ -468,7 +487,7 @@ def answer_question(request, session_id, quiz_question_id):
     if quiz_question.competence_item_id:
         item = quiz_question.competence_item
         enregistrer_resultat_pour_revision(
-            request.user, quiz_question.session.cursus, item.subject, item.theme, answer.est_correcte,
+            profil, quiz_question.session.cursus, item.subject, item.theme, answer.est_correcte,
         )
 
     return Response(_question_payload(quiz_question))
@@ -476,7 +495,7 @@ def answer_question(request, session_id, quiz_question_id):
 
 @api_view(["POST"])
 def complete_session(request, session_id):
-    session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
+    session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     if not session.completed_at:
         session.completed_at = timezone.now()
         session.save(update_fields=["completed_at"])
@@ -512,7 +531,7 @@ def quiz_fiche_pdf(request, session_id):
     fiches.views.create_fiche + fiche_detail, fusionné ici en une seule vue car les deux
     portent sur la même ressource (LA paire de PDF de CETTE session, pas une collection).
     """
-    session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
+    session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     if not _has_active_subscription(request.user, session.cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
@@ -526,7 +545,7 @@ def quiz_fiche_pdf(request, session_id):
 
 @api_view(["GET"])
 def download_quiz_sujet_pdf(request, session_id):
-    session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
+    session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     if not _has_active_subscription(request.user, session.cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
     if not session.sujet_pdf:
@@ -539,7 +558,7 @@ def download_quiz_sujet_pdf(request, session_id):
 
 @api_view(["GET"])
 def download_quiz_corrige_pdf(request, session_id):
-    session = get_object_or_404(QuizSession, pk=session_id, user=request.user)
+    session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     if not _has_active_subscription(request.user, session.cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
     if not session.corrige_pdf:
@@ -560,7 +579,7 @@ def list_revisions_dues(request):
     """
     today = timezone.localdate()
     payload = []
-    for schedule in revisions_dues(request.user):
+    for schedule in revisions_dues(profil_actif(request)):
         cours_qs = (
             Cours.objects.visibles()
             .filter(subject=schedule.subject, tags=schedule.theme)
@@ -638,7 +657,7 @@ def maitrise(request):
     l'historique complet de l'utilisateur tous cursus confondus.
     """
     cursus = get_object_or_404(Cursus, pk=request.GET["cursus"]) if request.GET.get("cursus") else None
-    return Response(maitrise_par_theme(request.user, cursus=cursus))
+    return Response(maitrise_par_theme(profil_actif(request), cursus=cursus))
 
 
 @api_view(["GET"])
@@ -652,7 +671,7 @@ def parcours(request):
     """
     cursus = get_object_or_404(Cursus, pk=request.GET["cursus"])
     subject = get_object_or_404(Subject, pk=request.GET["subject"])
-    return Response(construire_parcours(request.user, cursus, subject))
+    return Response(construire_parcours(profil_actif(request), cursus, subject))
 
 
 @api_view(["GET"])
@@ -664,7 +683,7 @@ def parcours_resume(request):
     (détail séquencé d'une seule matière).
     """
     cursus = get_object_or_404(Cursus, pk=request.GET["cursus"])
-    return Response(resume_parcours(request.user, cursus))
+    return Response(resume_parcours(profil_actif(request), cursus))
 
 
 def _etape_verrouillee(etape):
@@ -792,7 +811,8 @@ def plan_du_jour_view(request):
             "seance": None,
         })
 
-    return Response(_charge_utile_plan(user, cursus, plan_du_jour(user, cursus), compte))
+    profil = profil_actif(request)
+    return Response(_charge_utile_plan(profil, cursus, plan_du_jour(profil, cursus), compte))
 
 
 def _serialiser_objectif(objectif):
@@ -805,7 +825,7 @@ def _serialiser_objectif(objectif):
     }
 
 
-def _charge_utile_plan(user, cursus, seance, compte):
+def _charge_utile_plan(profil, cursus, seance, compte):
     """
     Réponse commune à plan_du_jour_view et continuer_view : les deux rendent le même
     écran, et le frontend remplace simplement sa donnée par celle qu'on lui renvoie -
@@ -814,17 +834,95 @@ def _charge_utile_plan(user, cursus, seance, compte):
     base = {
         "cursus": CursusSerializer(cursus).data,
         "compte_a_rebours": compte,
-        "seances_cette_semaine": seances_terminees_cette_semaine(user, cursus),
-        "serie": serie_de_jours(user),
-        "objectif_matiere": _serialiser_objectif(objectif_matiere_actif(user, cursus)),
+        "seances_cette_semaine": seances_terminees_cette_semaine(profil, cursus),
+        "serie": serie_de_jours(profil),
+        "objectif_matiere": _serialiser_objectif(objectif_matiere_actif(profil, cursus)),
         "matieres_objectif": [{"id": m.id, "label": m.label} for m in matieres_pour_objectif(cursus)],
     }
     if seance is None:
         return {**base, "etat": "rien_a_proposer", "seance": None}
 
-    verrouillee = not _has_active_subscription(user, cursus)
+    verrouillee = not _has_active_subscription(profil.compte, cursus)
     etat = "deja_fait_aujourdhui" if seance.statut == StatutSeance.TERMINEE else "plan_pret"
     return {**base, "etat": etat, "seance": _serialiser_seance(seance, verrouillee)}
+
+
+@api_view(["GET"])
+def accueil_view(request):
+    """
+    L'accueil d'un abonné en une seule requête - voir quiz.accueil pour le pourquoi.
+
+    Enregistre le passage (VisiteAccueil) : un GET avec un effet de bord, assumé - la
+    visite EST l'évènement qu'on mesure, et "depuis la dernière fois" n'a de sens que
+    si quelqu'un note la dernière fois. Au retour après une longue absence (voir
+    ABSENCE_RETOUR_JOURS), la séance du jour est raccourcie une fois, au début de la
+    visite seulement : jamais par-dessus une durée que l'élève aurait choisie ensuite.
+    """
+    user = request.user
+    cursus = user.cursus_prepare
+    if cursus is None or not cursus.country.actif:
+        return Response({
+            "plan": {"etat": "cursus_inconnu", "cursus": None, "compte_a_rebours": None, "seance": None},
+            "phase": "normal", "absence_jours": 0, "premiers_pas": True, "nouvelle_visite": False,
+            "phrase_coach": "", "depuis": None, "trajectoire": None, "resume": [], "preparation": None,
+            "revisions": [], "lecture": None, "simulation_suggeree": None, "bilan_semaine": None,
+        })
+
+    profil = profil_actif(request)
+    compte = ExamSession.compte_a_rebours_pour(cursus)
+    visite, nouvelle = accueil.enregistrer_visite(profil)
+    absence = accueil.absence_jours(visite)
+    phase = accueil.phase_examen(compte)
+
+    if phase == "apres":
+        plan = {
+            "etat": "examen_passe",
+            "cursus": CursusSerializer(cursus).data,
+            "compte_a_rebours": compte,
+            "seance": None,
+        }
+    else:
+        seance = plan_du_jour(profil, cursus)
+        if (
+            nouvelle and absence >= accueil.ABSENCE_RETOUR_JOURS and seance is not None
+            and seance.statut == StatutSeance.PROPOSEE and not seance.etapes_ouvertes
+        ):
+            seance = ajuster_duree_seance(profil, cursus, accueil.BUDGET_RETOUR_MINUTES) or seance
+        plan = _charge_utile_plan(profil, cursus, seance, compte)
+
+    resume = resume_parcours(profil, cursus)
+    debutant = accueil.premiers_pas(profil, cursus)
+    today = timezone.localdate()
+    revisions = [
+        {
+            "id": schedule.id,
+            "theme": schedule.theme.name,
+            "theme_id": schedule.theme_id,
+            "subject_id": schedule.subject_id,
+            "subject_label": schedule.subject.label,
+            "cursus": schedule.cursus_id,
+            "jours_retard": (today - schedule.due_at).days,
+        }
+        for schedule in revisions_dues(profil, cursus)[: accueil.REVISIONS_ACCUEIL_MAX]
+    ]
+    from .bilan import bilan_de_periode
+
+    return Response({
+        "plan": plan,
+        "phase": phase,
+        "absence_jours": absence,
+        "premiers_pas": debutant,
+        "nouvelle_visite": nouvelle,
+        "phrase_coach": accueil.phrase_coach(plan, phase, absence, premiers_pas_eleve=debutant),
+        "depuis": None if debutant else accueil.delta_depuis(profil, cursus, visite),
+        "trajectoire": None if debutant else accueil.trajectoire(profil, cursus, resume, compte),
+        "resume": resume,
+        "preparation": accueil.preparation(resume),
+        "revisions": revisions,
+        "lecture": accueil.lecture_a_reprendre(profil, cursus),
+        "simulation_suggeree": accueil.simulation_suggeree(profil, cursus, phase),
+        "bilan_semaine": bilan_de_periode(profil, cursus, jours=7),
+    })
 
 
 @api_view(["POST"])
@@ -840,7 +938,8 @@ def terminer_seance_view(request):
     if not _has_active_subscription(request.user, cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
-    seance = seance_du_jour(request.user, cursus)
+    profil = profil_actif(request)
+    seance = seance_du_jour(profil, cursus)
     if seance is None:
         return Response({"error": "Aucune séance aujourd'hui."}, status=404)
 
@@ -851,8 +950,8 @@ def terminer_seance_view(request):
         _tracer_seance_terminee(seance)
     return Response({
         "statut": seance.statut,
-        "seances_cette_semaine": seances_terminees_cette_semaine(request.user, cursus),
-        "serie": serie_de_jours(request.user),
+        "seances_cette_semaine": seances_terminees_cette_semaine(profil, cursus),
+        "serie": serie_de_jours(profil),
     })
 
 
@@ -874,9 +973,10 @@ def continuer_view(request):
     if not _has_active_subscription(request.user, cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
-    seance = seance_supplementaire(request.user, cursus)
+    profil = profil_actif(request)
+    seance = seance_supplementaire(profil, cursus)
     compte = ExamSession.compte_a_rebours_pour(cursus)
-    return Response(_charge_utile_plan(request.user, cursus, seance, compte))
+    return Response(_charge_utile_plan(profil, cursus, seance, compte))
 
 
 @api_view(["POST", "DELETE"])
@@ -895,15 +995,16 @@ def objectif_matiere_view(request):
     if not _has_active_subscription(request.user, cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
+    profil = profil_actif(request)
     if request.method == "DELETE":
-        retirer_objectif_matiere(request.user, cursus)
+        retirer_objectif_matiere(profil, cursus)
     else:
         subject = get_object_or_404(Subject, pk=request.data.get("subject"))
-        if definir_objectif_matiere(request.user, cursus, subject) is None:
+        if definir_objectif_matiere(profil, cursus, subject) is None:
             return Response({"error": "Cette matière n'a pas encore de quiz pour ton examen."}, status=400)
 
     compte = ExamSession.compte_a_rebours_pour(cursus)
-    return Response(_charge_utile_plan(request.user, cursus, plan_du_jour(request.user, cursus), compte))
+    return Response(_charge_utile_plan(profil, cursus, plan_du_jour(profil, cursus), compte))
 
 
 @api_view(["POST"])
@@ -922,9 +1023,10 @@ def autre_chose_view(request):
     if not _has_active_subscription(request.user, cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
-    seance = remplacer_seance(request.user, cursus)
+    profil = profil_actif(request)
+    seance = remplacer_seance(profil, cursus)
     compte = ExamSession.compte_a_rebours_pour(cursus)
-    return Response(_charge_utile_plan(request.user, cursus, seance, compte))
+    return Response(_charge_utile_plan(profil, cursus, seance, compte))
 
 
 @api_view(["POST"])
@@ -942,7 +1044,7 @@ def etape_ouverte_view(request):
     if not _has_active_subscription(request.user, cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
-    seance = marquer_etape_ouverte(request.user, cursus, str(request.data.get("cle") or ""))
+    seance = marquer_etape_ouverte(profil_actif(request), cursus, str(request.data.get("cle") or ""))
     if seance is None:
         return Response({"error": "Étape inconnue pour la séance du jour."}, status=404)
     return Response({"etapes_ouvertes": seance.etapes_ouvertes})
@@ -968,9 +1070,10 @@ def duree_seance_view(request):
     except (TypeError, ValueError):
         return Response({"error": "minutes doit être un entier."}, status=400)
 
-    seance = ajuster_duree_seance(request.user, cursus, minutes)
+    profil = profil_actif(request)
+    seance = ajuster_duree_seance(profil, cursus, minutes)
     compte = ExamSession.compte_a_rebours_pour(cursus)
-    return Response(_charge_utile_plan(request.user, cursus, seance, compte))
+    return Response(_charge_utile_plan(profil, cursus, seance, compte))
 
 
 @api_view(["GET"])
@@ -993,7 +1096,7 @@ def bilan_periode_view(request):
     # Deux fenêtres seulement : la semaine (accueil) et le mois (renouvellement). Toute
     # autre valeur retombe sur le mois plutôt que d'ouvrir un calcul arbitrairement long.
     jours = 7 if request.GET.get("jours") == "7" else 30
-    bilan = bilan_de_periode(request.user, cursus, jours=jours)
+    bilan = bilan_de_periode(profil_actif(request), cursus, jours=jours)
     if bilan is None:
         return Response({"error": "Aucun abonnement pour ce cursus."}, status=404)
     return Response(bilan)
@@ -1014,9 +1117,10 @@ def priorites_view(request):
         cursus = request.user.cursus_prepare
         if cursus is None:
             return Response({"error": "Aucun cursus déclaré."}, status=400)
-    if not Subscription.objects.filter(user=request.user, cursus=cursus).exists():
+    profil = profil_actif(request)
+    if not Subscription.objects.filter(profil=profil, cursus=cursus).exists():
         return Response({"error": "Aucun abonnement pour ce cursus."}, status=404)
-    return Response(priorites_examen(request.user, cursus))
+    return Response(priorites_examen(profil, cursus))
 
 
 @api_view(["POST"])
@@ -1029,11 +1133,12 @@ def refaire_ratees_view(request, session_id):
     """
     from .services import session_des_ratees
 
-    session = get_object_or_404(QuizSession.objects.select_related("cursus"), pk=session_id, user=request.user)
+    profil = profil_actif(request)
+    session = get_object_or_404(QuizSession.objects.select_related("cursus"), pk=session_id, profil=profil)
     if not _has_active_subscription(request.user, session.cursus):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
     try:
-        refaite = session_des_ratees(request.user, session)
+        refaite = session_des_ratees(profil, session)
     except ValueError as exc:
         return Response({"error": str(exc)}, status=400)
     return Response(_session_payload(refaite), status=201)

@@ -1,45 +1,49 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query"
 import {
   ArrowRight,
   CheckCircle2,
+  Crown,
+  FileText,
+  Layers,
   ListChecks,
   Lock,
-  Minus,
-  Plus,
   Sparkles,
   Target,
+  TrendingUp,
 } from "lucide-react"
 
-import { listMySubscriptions, listQuizSubjects, startQuizSession } from "@/api/endpoints"
+import { getThemesFrequents, listMySubscriptions, listQuizSubjects, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
-import type { ModeQuiz, Subject, Subscription } from "@/api/types"
+import type { ModeQuiz, Subject, Subscription, ThemeFrequent } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { Etape, EtapesPresentation, Eyebrow, LigneRecap, RecapVide } from "@/components/Configurateur"
+import { useCountry } from "@/context/CountryContext"
+import { EtapesPresentation, StatChip } from "@/components/Configurateur"
 import { DemoQuizQuestion } from "@/components/DemoQuizQuestion"
+import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
+import { AnneauFrequence } from "@/components/AnneauFrequence"
+import { lienExercicesTheme } from "@/components/ThemesFrequents"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { themesFrequentsPath } from "@/lib/countryPath"
+import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
+import { subjectShortLabel } from "@/lib/subjectLabel"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
-import { cn } from "@/lib/utils"
+import { capitaliserTheme, cn, formatAmount } from "@/lib/utils"
 
-// Bornes du nombre de questions. Le maximum n'est pas connu du client (contrairement à
+// Nombres de questions proposés. Le maximum n'est pas connu du client (contrairement à
 // /fiches, aucun endpoint d'éligibilité ici) : le backend sert simplement moins de
 // questions si la banque est plus courte (voir quiz.services.generer_session, qui
 // tronque au lieu d'échouer). 30 reste un plafond raisonnable pour une seule séance.
-const N_MIN = 1
 const N_MAX = 30
-const N_PRESETS = [5, 10, 15, 20]
+const N_PRESETS = [5, 10, 15, 20, 30]
+// Thèmes fréquents proposés en lancement direct - le classement complet reste sur
+// /themes-frequents.
+const NB_THEMES_CIBLES = 6
 
 /** Aperçu des matières/questions d'un cursus DÉCLARÉ (gratuit) mais pas encore abonné -
  * remplace la question de démo générique par la vraie structure de la banque de quiz,
@@ -69,15 +73,15 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
   }
 
   return (
-    <Card className="overflow-hidden border-primary/25 bg-gradient-to-br from-primary/5 via-transparent to-transparent">
+    <Card className="overflow-hidden rounded-2xl border-primary/25 bg-gradient-to-br from-primary/5 via-transparent to-transparent shadow-lg shadow-primary/5">
       <CardContent className="flex flex-col gap-4 pt-6">
         <div className="flex items-start gap-3">
           <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
             <Lock className="size-5" />
           </span>
           <div>
-            <p className="font-display text-base font-semibold">
-              <span className="tabular-nums">{total}</span> question{total > 1 ? "s" : ""} sur ton programme
+            <p className="font-display text-lg font-semibold">
+              <span className="tabular-nums">{formatAmount(total)}</span> question{total > 1 ? "s" : ""} sur ton programme
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
               Abonne-toi pour lancer une séance - voici déjà tout ce qu'il y a à réviser.
@@ -90,7 +94,9 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
             return (
               <li key={subject.id} className="flex items-center justify-between gap-3 bg-card px-3.5 py-2.5">
                 <span className="flex min-w-0 items-center gap-2.5">
-                  <SubjectIcon className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                  <span className={cn("flex size-7 shrink-0 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
+                    <SubjectIcon className="size-3.5" aria-hidden="true" />
+                  </span>
                   <span className="truncate text-sm font-medium">{subject.label}</span>
                 </span>
                 <span className="flex shrink-0 items-center gap-2">
@@ -125,6 +131,103 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
   )
 }
 
+function CompteurPastille({ actif, children }: { actif: boolean; children: ReactNode }) {
+  return (
+    <span
+      className={cn(
+        "rounded-full px-1.5 text-[0.7rem] font-semibold tabular-nums",
+        actif ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground",
+      )}
+    >
+      {children}
+    </span>
+  )
+}
+
+/** Une carte de mode : deux façons de travailler, décrites plutôt que nommées seules. */
+function CarteMode({
+  actif, onClick, icon, titre, texte,
+}: { actif: boolean; onClick: () => void; icon: ReactNode; titre: string; texte: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={actif}
+      className={cn(
+        "relative flex items-start gap-3 rounded-xl border px-4 py-3 text-left transition-all",
+        actif ? "border-primary bg-primary/5 shadow-sm" : "border-border hover:border-primary/40 hover:bg-accent/40",
+      )}
+    >
+      {actif && <CheckCircle2 className="absolute right-3 top-3 size-4 text-primary" />}
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">{icon}</span>
+      <span className="pr-5">
+        <span className="block text-sm font-semibold">{titre}</span>
+        <span className="block text-xs text-muted-foreground">{texte}</span>
+      </span>
+    </button>
+  )
+}
+
+/** Un thème fréquent en lancement direct : la fréquence dit pourquoi, le bouton lance. */
+function CarteThemeCible({
+  rang, theme, total, lienExercices, onLancer, lancement, desactive,
+}: {
+  rang: number
+  theme: ThemeFrequent
+  total: number
+  lienExercices: string
+  onLancer: () => void
+  lancement: boolean
+  desactive: boolean
+}) {
+  const premier = rang === 1
+  return (
+    <div
+      className={cn(
+        "flex flex-col gap-3 rounded-2xl border p-4 transition-shadow hover:shadow-md",
+        premier ? "border-gold/50 bg-gradient-to-br from-gold/[0.12] via-card to-card" : "border-border bg-card",
+      )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <span
+            className={cn(
+              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[0.7rem] font-bold uppercase tracking-wider",
+              premier ? "bg-gold text-gold-foreground" : "bg-primary/10 text-primary",
+            )}
+          >
+            {premier && <Crown className="size-3" />}
+            N°{rang}
+          </span>
+          <p className="mt-2 font-display text-base font-semibold leading-snug">{capitaliserTheme(theme.tag)}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {theme.nb_epreuves} sessions sur {total}
+          </p>
+        </div>
+        <AnneauFrequence pct={theme.frequence_pct} dore={premier} />
+      </div>
+      <div className="mt-auto flex gap-1.5">
+        <Button
+          size="sm"
+          className="h-8 flex-1 text-xs"
+          onClick={onLancer}
+          disabled={!theme.quiz_disponible || desactive}
+          title={theme.quiz_disponible ? undefined : "Pas encore de question de quiz sur ce thème précis"}
+        >
+          <ListChecks className="size-3.5" />
+          {lancement ? "Préparation..." : "Quiz sur ce thème"}
+        </Button>
+        <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs">
+          <Link to={lienExercices}>
+            <FileText className="size-3.5" />
+            Exercices
+          </Link>
+        </Button>
+      </div>
+    </div>
+  )
+}
+
 export function QuizStartPage() {
   useSeo({
     title: "Quiz",
@@ -132,6 +235,7 @@ export function QuizStartPage() {
   })
 
   const { isAuthenticated, isLoading: authLoading, user } = useAuth()
+  const { country } = useCountry()
   const navigate = useNavigate()
 
   // Lancement direct depuis un bouton "Quiz" externe (voir ThemesFrequents.tsx) -
@@ -152,6 +256,7 @@ export function QuizStartPage() {
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
+  const [subjectsLoaded, setSubjectsLoaded] = useState(false)
   // Structure réelle du cursus déclaré (gratuit, voir user.cursus_prepare) quand
   // l'utilisateur n'a aucun abonnement actif - remplace la question de démo générique
   // (voir project_gating_non_abonne_quiz_parcours). null tant que non chargé/non
@@ -218,25 +323,42 @@ export function QuizStartPage() {
       setSubjects([])
       return
     }
-    setSelectedSubject("")
-    // Une seule matière servie sur ce cursus : la présélectionner supprime un choix qui
-    // n'en est pas un, maintenant que "Toutes les matières" ne fournit plus de valeur
-    // par défaut au sélecteur.
+    setSubjectsLoaded(false)
     listQuizSubjects(sub.cursus.id).then((data) => {
       setSubjects(data)
-      if (data.length === 1) setSelectedSubject(String(data[0].id))
+      setSubjectsLoaded(true)
+      // La matière en cours est gardée d'un examen à l'autre quand elle y existe ; sinon
+      // la plus fournie est présélectionnée - comme sur /themes-frequents, on arrive sur
+      // une séance prête à lancer, jamais sur un formulaire à compléter.
+      setSelectedSubject((courante) => {
+        const precedente = data.find((s) => String(s.id) === courante)
+        if (precedente) return courante
+        const plusFournie = [...data].sort((a, b) => (b.nb_questions ?? 0) - (a.nb_questions ?? 0))[0]
+        return plusFournie ? String(plusFournie.id) : ""
+      })
     })
   }, [selectedCursus, subscriptions])
+
+  const subjectChoisi = subjects.find((s) => String(s.id) === selectedSubject)
+
+  // Thèmes les plus fréquents de la matière choisie, à lancer en un clic - le quiz et le
+  // classement des thèmes parlent enfin la même langue. Même clé de cache que
+  // /themes-frequents.
+  const { data: classement } = useQuery({
+    queryKey: ["themes-frequents", Number(selectedCursus), subjectChoisi?.code ?? ""],
+    queryFn: ({ signal }) => getThemesFrequents(Number(selectedCursus), subjectChoisi!.code, signal),
+    enabled: Boolean(selectedCursus && subjectChoisi),
+  })
+  const themesCibles = classement?.disponible ? classement.themes.slice(0, NB_THEMES_CIBLES) : []
 
   /**
    * Démarre une séance. Sans `theme` : la configuration du formulaire. Avec `theme` :
    * un entraînement ciblé lancé depuis un lien externe (voir l'auto-lancement plus
-   * bas) - toujours en pratique libre (un test de niveau sur un thème unique n'a pas
-   * de sens) et sans filtre matière, déjà impliqué par le thème lui-même.
+   * bas) ou depuis un thème fréquent - toujours en pratique libre (un test de niveau
+   * sur un thème unique n'a pas de sens) et sans filtre matière, déjà impliqué par le
+   * thème lui-même.
    */
   async function lancer(theme?: number) {
-    // Un thème ciblé porte déjà sa matière ; sans lui, le formulaire exige désormais
-    // un choix explicite (plus d'option "Toutes les matières").
     if (!selectedCursus || (!theme && !selectedSubject)) return
     if (theme) setStartingThemeId(theme)
     else setStarting(true)
@@ -281,70 +403,76 @@ export function QuizStartPage() {
 
   if (authLoading || !subscriptionsLoaded) {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-        <Skeleton className="mb-6 h-40 w-full rounded-2xl" />
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
-          <Skeleton className="h-96 w-full" />
-          <Skeleton className="h-64 w-full" />
-        </div>
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+        <Skeleton className="mb-6 h-44 w-full rounded-3xl" />
+        <Skeleton className="h-80 w-full rounded-2xl" />
       </div>
     )
   }
 
-  const cursusChoisi = subscriptions.find((s) => String(s.cursus.id) === selectedCursus)?.cursus
-  const subjectChoisi = subjects.find((s) => String(s.id) === selectedSubject)
   const enCours = starting || startingThemeId !== null
+  const abonne = subscriptions.length > 0
+  const nbQuestionsBanque = abonne
+    ? subjects.reduce((somme, s) => somme + (s.nb_questions ?? 0), 0)
+    : (previewSubjects ?? []).reduce((somme, s) => somme + (s.nb_questions ?? 0), 0)
+  const nbMatieres = abonne ? subjects.length : (previewSubjects ?? []).length
+  const nEffectif = Number.isInteger(nParam) && nParam > 0 ? nParam : n
+  const SubjectIcon = subjectIcon(subjectChoisi?.code ?? "")
 
   return (
-    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
-      <div className="relative mb-8 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8 lg:p-12">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
+      {/* Hero : même gabarit que /epreuves et /themes-frequents. */}
+      <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
         <div
+          aria-hidden
           className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
             backgroundSize: "24px 24px",
           }}
         />
+        <Target aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
-          <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <Target className="size-5" />
-          </div>
-          <Eyebrow>Entraînement personnalisé</Eyebrow>
-          <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Quiz</h1>
-          <p className="mt-3 max-w-md text-lg font-medium leading-snug text-foreground/90">
-            Entraîne-toi librement, ou fais le point avec un test de niveau.
+          <p className="mb-2 font-display text-sm italic text-primary">Entraînement personnalisé</p>
+          <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
+            Un quiz qui <span className="text-primary">cible tes lacunes</span>, thème par thème.
+          </h1>
+          <p className="mt-2 max-w-xl text-muted-foreground">
+            Entraîne-toi librement, vise un thème qui tombe souvent, ou fais le point avec un test de niveau. Les
+            thèmes fragiles reviennent d'eux-mêmes, jusqu'à être acquis.
           </p>
-          <p className="mt-2 max-w-md text-muted-foreground">
-            Chaque réponse est rattachée à un thème précis de ton programme - le quiz repère ce que tu dois
-            retravailler et te le repropose au bon moment.
-          </p>
+          {nbQuestionsBanque > 0 && (
+            <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
+              <StatChip icon={<ListChecks className="size-3.5 text-primary" />}>
+                <span className="font-medium tabular-nums">{formatAmount(nbQuestionsBanque)}</span>
+                <span className="text-muted-foreground">questions corrigées</span>
+              </StatChip>
+              <StatChip icon={<Layers className="size-3.5 text-primary" />}>
+                <span className="font-medium tabular-nums">{nbMatieres}</span>
+                <span className="text-muted-foreground">matière{nbMatieres > 1 ? "s" : ""}</span>
+              </StatChip>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Même structure que /fiches : configurateur à gauche, récapitulatif collant et
-          panneau personnel à droite - les deux outils de la plateforme doivent se
-          prendre en main de la même façon. */}
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
-        <div className="flex min-w-0 flex-col gap-6">
-          {subscriptions.length === 0 && previewSubjects && previewSubjects.length > 0 && cursusPrepareId != null ? (
+      {!abonne ? (
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
+          {previewSubjects && previewSubjects.length > 0 && cursusPrepareId != null ? (
             <ApercuMatieresQuiz cursusId={cursusPrepareId} subjects={previewSubjects} />
-          ) : subscriptions.length === 0 ? (
-            <Card className="overflow-hidden border-primary/25 bg-gradient-to-br from-primary/5 via-transparent to-transparent">
+          ) : (
+            <Card className="overflow-hidden rounded-2xl border-primary/25 bg-gradient-to-br from-primary/5 via-transparent to-transparent shadow-lg shadow-primary/5">
               <CardContent className="flex flex-col items-start gap-4 pt-6">
                 {/* Le cadenas ne s'affiche que s'il dit vrai : à un abonné sans cursus
                     actif, il nomme un accès à débloquer. Au visiteur déconnecté, il
-                    annonçait une interdiction avant même d'avoir dit ce qu'est le Quiz -
-                    mauvaise première impression pour la seule page qui doit l'expliquer. */}
+                    annonçait une interdiction avant même d'avoir dit ce qu'est le Quiz. */}
                 <span className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-primary/5">
                   {isAuthenticated ? <Lock className="size-5" /> : <Target className="size-5" />}
                 </span>
                 <div>
-                  <p className="font-display text-base font-semibold">
+                  <p className="font-display text-lg font-semibold">
                     {isAuthenticated ? "Débloque le Quiz" : "Comment marche le Quiz"}
                   </p>
-                  {/* Rien de plus quand la page est publique : le hero au-dessus porte déjà
-                      la promesse, la répéter ici la faisait lire deux fois en quinze
-                      centimètres. Les étapes ci-dessous disent le "comment", pas le "quoi". */}
                   {isAuthenticated && (
                     <p className="mt-1 text-sm text-muted-foreground">
                       Réservé aux cursus avec un abonnement actif - repère tes lacunes et révise exactement ce qu'il
@@ -354,19 +482,15 @@ export function QuizStartPage() {
                 </div>
                 <EtapesPresentation
                   etapes={[
-                    "Tu choisis ta matière, ton mode et le nombre de questions.",
+                    "Tu choisis ta matière, ou un thème qui tombe souvent.",
                     "Tu réponds ; chaque réponse est rattachée à un thème précis de ton programme.",
                     "Les thèmes fragiles reviennent d'eux-mêmes les jours suivants, jusqu'à être acquis.",
                   ]}
                 />
                 {/* Déconnecté, la connexion passe devant les tarifs : un abonnement déjà
-                    actif sur un autre appareil est le cas le plus fréquent ici, et payer
-                    une deuxième fois faute de s'être connecté serait le pire aboutissement
-                    possible de cette page. Le w-full va sur le conteneur des deux liens,
-                    pas seulement sur le bouton : sous un parent items-start il se
-                    rétracterait à la largeur de son contenu, et le w-full du bouton
-                    n'aurait plus que ça à remplir (269px au lieu de la pleine largeur,
-                    constaté à 375px). */}
+                    actif sur un autre appareil est le cas le plus fréquent ici. Le w-full
+                    va sur le conteneur des deux liens (voir l'historique : sous un parent
+                    items-start, le bouton se rétractait à 269px à 375px de large). */}
                 {isAuthenticated ? (
                   <Button asChild size="lg" className="w-full sm:w-auto">
                     <a href="/tarifs">
@@ -389,295 +513,196 @@ export function QuizStartPage() {
                 )}
               </CardContent>
             </Card>
-          ) : (
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-display text-lg">Configurer ma séance</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ol className="flex flex-col">
-                  <Etape numero={1} titre="Cursus et matière" fait={Boolean(selectedCursus && selectedSubject)}>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div className="flex flex-col gap-1.5">
-                        <label
-                          htmlFor="quiz-cursus"
-                          className="text-xs font-medium uppercase tracking-wide text-muted-foreground"
-                        >
-                          Cursus
-                        </label>
-                        <Select value={selectedCursus} onValueChange={setSelectedCursus}>
-                          <SelectTrigger id="quiz-cursus">
-                            <SelectValue placeholder="Choisis ton cursus" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {subscriptions.map((sub) => (
-                              <SelectItem key={sub.cursus.id} value={String(sub.cursus.id)}>
-                                {sub.cursus.examen_display}
-                                {sub.cursus.series ? ` - Série ${sub.cursus.series.code}` : ""}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="flex flex-col gap-1.5">
-                        <label
-                          htmlFor="quiz-matiere"
-                          className="text-xs font-medium uppercase tracking-wide text-muted-foreground"
-                        >
-                          Matière
-                        </label>
-                        <Select
-                          value={selectedSubject}
-                          onValueChange={setSelectedSubject}
-                          disabled={!selectedCursus || subjects.length === 0}
-                        >
-                          <SelectTrigger id="quiz-matiere">
-                            <SelectValue placeholder="Choisis la matière" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {subjects.map((subject) => (
-                              <SelectItem key={subject.id} value={String(subject.id)}>
-                                {subject.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {/* La liste ne contient que les matières déjà servies : quand
-                            elle est vide, le sélecteur désactivé ne dit pas pourquoi. */}
-                        {selectedCursus && subjects.length === 0 && (
-                          <p className="text-xs text-muted-foreground">
-                            Aucune matière n'a encore de questions sur ce cursus.
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </Etape>
-
-                  <Etape
-                    numero={2}
-                    titre="Mode"
-                    aide="Deux façons de travailler : creuser tes lacunes, ou faire le point."
-                    fait
-                    inactif={!selectedCursus}
-                  >
-                    <div className="grid gap-2 sm:grid-cols-2">
-                      <button
-                        type="button"
-                        onClick={() => setMode("PRATIQUE")}
-                        aria-pressed={mode === "PRATIQUE"}
-                        className={cn(
-                          "relative flex flex-col items-start gap-2 rounded-xl border px-3.5 py-3 text-left transition-all",
-                          mode === "PRATIQUE"
-                            ? "border-primary bg-primary/5 shadow-sm"
-                            : "border-border hover:border-primary/40 hover:bg-accent/40",
-                        )}
-                      >
-                        {mode === "PRATIQUE" && (
-                          <CheckCircle2 className="absolute right-2.5 top-2.5 size-4 text-primary" />
-                        )}
-                        <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                          <Sparkles className="size-3.5" />
-                        </span>
-                        <span className="text-sm font-medium">Pratique libre</span>
-                        <span className="text-xs text-muted-foreground">
-                          Cible davantage les thèmes où tu échoues, au fil de tes sessions.
-                        </span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setMode("DIAGNOSTIC")}
-                        aria-pressed={mode === "DIAGNOSTIC"}
-                        className={cn(
-                          "relative flex flex-col items-start gap-2 rounded-xl border px-3.5 py-3 text-left transition-all",
-                          mode === "DIAGNOSTIC"
-                            ? "border-primary bg-primary/5 shadow-sm"
-                            : "border-border hover:border-primary/40 hover:bg-accent/40",
-                        )}
-                      >
-                        {mode === "DIAGNOSTIC" && (
-                          <CheckCircle2 className="absolute right-2.5 top-2.5 size-4 text-primary" />
-                        )}
-                        <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                          <ListChecks className="size-3.5" />
-                        </span>
-                        <span className="text-sm font-medium">Test de niveau</span>
-                        <span className="text-xs text-muted-foreground">
-                          Difficultés variées, pour situer ton niveau.
-                        </span>
-                      </button>
-                    </div>
-                  </Etape>
-
-                  <Etape numero={3} titre="Longueur" fait inactif={!selectedCursus} dernier>
-                    <div className="flex flex-col gap-1.5">
-                      <label
-                        htmlFor="quiz-n"
-                        className="text-xs font-medium uppercase tracking-wide text-muted-foreground"
-                      >
-                        Nombre de questions
-                      </label>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <div className="flex items-center gap-1">
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            className="size-10 shrink-0"
-                            onClick={() => setN((v) => Math.max(N_MIN, v - 1))}
-                            disabled={n <= N_MIN}
-                            aria-label="Une question de moins"
-                          >
-                            <Minus className="size-4" />
-                          </Button>
-                          <Input
-                            id="quiz-n"
-                            type="number"
-                            min={N_MIN}
-                            max={N_MAX}
-                            value={n}
-                            onChange={(e) =>
-                              setN(Math.max(N_MIN, Math.min(N_MAX, Number(e.target.value) || N_MIN)))
-                            }
-                            className="w-16 text-center tabular-nums"
-                          />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            className="size-10 shrink-0"
-                            onClick={() => setN((v) => Math.min(N_MAX, v + 1))}
-                            disabled={n >= N_MAX}
-                            aria-label="Une question de plus"
-                          >
-                            <Plus className="size-4" />
-                          </Button>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {N_PRESETS.map((valeur) => (
-                            <button
-                              key={valeur}
-                              type="button"
-                              onClick={() => setN(valeur)}
-                              className={cn(
-                                "rounded-full border px-3 py-1.5 text-xs font-medium tabular-nums transition-colors",
-                                n === valeur
-                                  ? "border-primary bg-primary/10 text-primary"
-                                  : "border-border text-muted-foreground hover:border-primary/40 hover:bg-accent/40",
-                              )}
-                            >
-                              {valeur}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        Tu peux quitter une séance en cours de route : tes réponses déjà validées sont conservées.
-                      </p>
-                    </div>
-                  </Etape>
-                </ol>
-              </CardContent>
-            </Card>
           )}
-        </div>
-
-        {/* Récapitulatif ET points faibles collent ensemble, dans un même conteneur :
-            rendre la seule carte du haut collante la ferait glisser par-dessus la
-            suivante au défilement (un élément collant reste dans le flux, ses frères
-            ne se décalent pas). Même correctif que sur /fiches. */}
-        <aside className="min-w-0">
-          <div className="flex flex-col gap-6 lg:sticky lg:top-20">
-            {/* Sans abonnement, cette colonne ne rendait rien : la présentation occupait
-                60 % de la largeur et les 40 % restants étaient blancs, ce qui se lisait
-                comme une page inachevée plutôt que comme une page de présentation.
-                Une question de démo factice n'a plus de sens une fois la vraie liste
-                affichée à gauche (voir ApercuMatieresQuiz) - seul le cas "aucun cursus
-                connu" (previewSubjects vide) la garde. */}
-            {subscriptions.length === 0 && !(previewSubjects && previewSubjects.length > 0) && (
+          {/* Une question de démo factice n'a plus de sens une fois la vraie liste
+              affichée (voir ApercuMatieresQuiz) - seul le cas "aucun cursus connu" la garde. */}
+          {!(previewSubjects && previewSubjects.length > 0) && (
+            <aside className="min-w-0">
               <DemoQuizQuestion
                 lienConnexion={
-                  !isAuthenticated ? (
-                    <Link
-                      to="/connexion"
-                      state={{ from: "/quiz", intent: "Connecte-toi pour lancer ton quiz." }}
-                      className="text-sm font-medium text-primary underline-offset-4 hover:underline"
-                    >
-                      Lancer une vraie séance
-                    </Link>
-                  ) : (
-                    <Link
-                      to="/tarifs"
-                      className="text-sm font-medium text-primary underline-offset-4 hover:underline"
-                    >
-                      Lancer une vraie séance
-                    </Link>
-                  )
+                  <Link
+                    to={isAuthenticated ? "/tarifs" : "/connexion"}
+                    state={isAuthenticated ? undefined : { from: "/quiz", intent: "Connecte-toi pour lancer ton quiz." }}
+                    className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+                  >
+                    Lancer une vraie séance
+                  </Link>
                 }
               />
+            </aside>
+          )}
+        </div>
+      ) : (
+        <>
+          {/* Configuration : la même carte surélevée et les mêmes pastilles que
+              /epreuves et /themes-frequents, lancement au pied de la carte. */}
+          <div className="mb-8 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
+            <p className="font-display text-lg font-semibold">Ta séance</p>
+            <p className="text-sm text-muted-foreground">Tout est prêt : ajuste si tu veux, puis lance.</p>
+
+            <FiltreLigne titre="Examen">
+              {subscriptions.map((sub) => (
+                <PastilleFiltre
+                  key={sub.cursus.id}
+                  actif={selectedCursus === String(sub.cursus.id)}
+                  onClick={() => setSelectedCursus(String(sub.cursus.id))}
+                >
+                  {sub.cursus.examen_display}
+                  {sub.cursus.series ? ` ${sub.cursus.series.code}` : ""}
+                </PastilleFiltre>
+              ))}
+            </FiltreLigne>
+
+            <FiltreLigne titre="Matière">
+              {!subjectsLoaded ? (
+                [0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-9 w-24 shrink-0 rounded-full" />)
+              ) : subjects.length === 0 ? (
+                <p className="py-1.5 text-sm text-muted-foreground">Aucune matière n'a encore de questions sur ce cursus.</p>
+              ) : (
+                subjects.map((subject) => {
+                  const Icon = subjectIcon(subject.code)
+                  const actif = selectedSubject === String(subject.id)
+                  return (
+                    <PastilleFiltre key={subject.id} actif={actif} onClick={() => setSelectedSubject(String(subject.id))}>
+                      <span className={cn("flex size-5 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
+                        <Icon className="size-3" aria-hidden="true" />
+                      </span>
+                      {subjectShortLabel(subject.code, subject.label)}
+                      <CompteurPastille actif={actif}>{subject.nb_questions ?? 0}</CompteurPastille>
+                    </PastilleFiltre>
+                  )
+                })
+              )}
+            </FiltreLigne>
+
+            <div className="mt-4">
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Mode</p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <CarteMode
+                  actif={mode === "PRATIQUE"}
+                  onClick={() => setMode("PRATIQUE")}
+                  icon={<Sparkles className="size-4" />}
+                  titre="Pratique libre"
+                  texte="Cible davantage les thèmes où tu échoues, au fil de tes séances."
+                />
+                <CarteMode
+                  actif={mode === "DIAGNOSTIC"}
+                  onClick={() => setMode("DIAGNOSTIC")}
+                  icon={<ListChecks className="size-4" />}
+                  titre="Test de niveau"
+                  texte="Difficultés variées, pour situer ton niveau."
+                />
+              </div>
+            </div>
+
+            {!(Number.isInteger(nParam) && nParam > 0) && (
+              <FiltreLigne titre="Nombre de questions">
+                {N_PRESETS.map((valeur) => (
+                  <PastilleFiltre key={valeur} actif={n === valeur} onClick={() => setN(valeur)}>
+                    <span className="tabular-nums">{valeur}</span>
+                  </PastilleFiltre>
+                ))}
+              </FiltreLigne>
             )}
 
-            {subscriptions.length > 0 && (
-              <Card>
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 font-display text-base">
-                    <Sparkles className="size-4 text-primary" />
-                    Récapitulatif
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-3">
-                  <div className="flex flex-col gap-2.5">
-                    <LigneRecap label="Cursus">
-                      {cursusChoisi ? (
-                        <>
-                          {cursusChoisi.examen_display}
-                          {cursusChoisi.series ? ` - ${cursusChoisi.series.code}` : ""}
-                        </>
-                      ) : (
-                        <RecapVide />
-                      )}
-                    </LigneRecap>
-                    <LigneRecap label="Matière">
-                      {subjectChoisi?.label ?? <RecapVide />}
-                    </LigneRecap>
-                    <LigneRecap label="Mode">
-                      {mode === "PRATIQUE" ? "Pratique libre" : "Test de niveau"}
-                    </LigneRecap>
-                    <LigneRecap label="Questions">
-                      <span className="tabular-nums">{n}</span>
-                    </LigneRecap>
-                  </div>
-
-                  {error && <p className="text-sm text-destructive">{error}</p>}
-
-                  <div className="h-px bg-gradient-to-r from-gold/0 via-gold/60 to-gold/0" />
-
-                  <Button
-                    onClick={() => lancer()}
-                    disabled={!selectedCursus || !selectedSubject || enCours}
-                    size="lg"
-                    className="w-full"
-                  >
-                    {starting ? (
-                      "Préparation..."
-                    ) : (
-                      <>
-                        Lancer mon quiz
-                        <ArrowRight className="size-4" />
-                      </>
-                    )}
-                  </Button>
-                  {(!selectedCursus || !selectedSubject) && (
-                    <p className="text-center text-xs text-muted-foreground">
-                      {!selectedCursus ? "Choisis un cursus pour commencer." : "Choisis une matière."}
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            )}
+            {/* Pied de carte : le récapitulatif en une ligne, et l'unique action. */}
+            <div className="mt-6 flex flex-col gap-3 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl", couleurMatiere(subjectChoisi?.code).puce)}>
+                  <SubjectIcon className="size-5" aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate font-medium">
+                    {subjectChoisi ? subjectChoisi.label : "Choisis une matière"}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    <span className="tabular-nums">{nEffectif}</span> questions ·{" "}
+                    {mode === "PRATIQUE" ? "Pratique libre" : "Test de niveau"} · environ{" "}
+                    <span className="tabular-nums">{Math.max(1, Math.round(nEffectif * 0.75))}</span> min
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={() => lancer()}
+                disabled={!selectedCursus || !selectedSubject || enCours}
+                size="lg"
+                className="shrink-0"
+              >
+                {starting ? (
+                  "Préparation..."
+                ) : (
+                  <>
+                    Lancer mon quiz
+                    <ArrowRight className="size-4" />
+                  </>
+                )}
+              </Button>
+            </div>
+            {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
           </div>
-        </aside>
-      </div>
+
+          {/* Le pont avec /themes-frequents : viser directement ce qui tombe le plus. */}
+          {themesCibles.length > 0 && subjectChoisi && classement && (
+            <section aria-labelledby="themes-cibles-titre">
+              <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <h2 id="themes-cibles-titre" className="flex items-center gap-2 font-display text-xl font-semibold">
+                    <TrendingUp className="size-5 text-primary" />
+                    Vise ce qui tombe le plus
+                  </h2>
+                  <p className="text-sm text-muted-foreground">
+                    Les thèmes les plus fréquents en {subjectChoisi.label}, sur{" "}
+                    <span className="tabular-nums">{classement.nb_sessions_disponibles}</span> sessions officielles.
+                  </p>
+                </div>
+                <Link
+                  to={`${themesFrequentsPath(country)}?subject=${subjectChoisi.code}&cursus=${selectedCursus}`}
+                  className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                >
+                  Tout le classement
+                  <ArrowRight className="size-3.5" />
+                </Link>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {themesCibles.map((theme, index) => (
+                  <CarteThemeCible
+                    key={theme.id}
+                    rang={index + 1}
+                    theme={theme}
+                    total={classement.nb_sessions_disponibles}
+                    lienExercices={lienExercicesTheme(
+                      country, theme, subjectChoisi.code, Number(selectedCursus), classement.nb_sessions_disponibles,
+                    )}
+                    onLancer={() => lancer(theme.id)}
+                    lancement={startingThemeId === theme.id}
+                    desactive={enCours}
+                  />
+                ))}
+                {/* Classement tronqué (abonnement sans Jusqu'à l'Examen) : la suite se voit,
+                    verrouillée, comme sur /themes-frequents. */}
+                {!classement.has_access && classement.nb_themes_verrouilles > 0 && (
+                  <Link
+                    to={`/abonnement?cursus=${selectedCursus}`}
+                    className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-gold/50 bg-gold/[0.04] p-4 text-center transition-colors hover:bg-gold/[0.08]"
+                  >
+                    <span className="flex size-10 items-center justify-center rounded-full bg-gold/15 text-gold-text">
+                      <Lock className="size-4" />
+                    </span>
+                    <p className="font-display text-base font-semibold">
+                      +{classement.nb_themes_verrouilles} thèmes classés
+                    </p>
+                    <p className="text-xs text-muted-foreground">Avec l'abonnement Jusqu'à l'Examen</p>
+                    <span className="inline-flex items-center gap-1 text-sm font-medium text-gold-text group-hover:underline">
+                      Débloquer
+                      <ArrowRight className="size-3.5" />
+                    </span>
+                  </Link>
+                )}
+              </div>
+            </section>
+          )}
+        </>
+      )}
     </div>
   )
 }

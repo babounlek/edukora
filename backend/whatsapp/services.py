@@ -76,7 +76,11 @@ def utilisateurs_a_relancer():
     moins une révision due aujourd'hui (voir quiz.services.revisions_dues) - jamais
     un utilisateur opt-in sans rien à réviser, un rappel vide n'aurait aucun sens."""
     for optin in OptIn.objects.filter(opted_out_at__isnull=True).select_related("user"):
-        schedules = list(revisions_dues(optin.user))
+        # Même repli que users.profils.profil_actif : chaque compte n'a aujourd'hui
+        # qu'un seul profil, la vraie bascule (JWT claim) n'étant pas encore branchée
+        # sur ce canal hors requête HTTP.
+        profil = optin.user.profils.first()
+        schedules = list(revisions_dues(profil)) if profil is not None else []
         if schedules:
             yield optin.user, schedules
 

@@ -427,7 +427,7 @@ class RappelDeMethodeInedite(models.Model):
 
 class TentativeInedite(models.Model):
     """
-    Passage d'un utilisateur sur une EpreuveInedite - miroir quiz.QuizSession
+    Passage d'un profil sur une EpreuveInedite - miroir quiz.QuizSession
     (started_at/submitted_at plutôt qu'un champ statut séparé, même choix que
     QuizSession.started_at/completed_at : "en cours" se déduit de submitted_at nul,
     jamais un état à synchroniser en plus).
@@ -439,7 +439,7 @@ class TentativeInedite(models.Model):
     conserver, PROTECT bloquerait la purge entière pour cette seule raison.
     """
 
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="tentatives_inedites")
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="tentatives_inedites")
     epreuve = models.ForeignKey(EpreuveInedite, on_delete=models.CASCADE, related_name="tentatives")
 
     started_at = models.DateTimeField(auto_now_add=True)
@@ -496,7 +496,7 @@ class TentativeInedite(models.Model):
         ordering = ["-started_at"]
 
     def __str__(self):
-        return f"{self.user} - {self.epreuve}"
+        return f"{self.profil} - {self.epreuve}"
 
     @property
     def en_cours(self):

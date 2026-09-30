@@ -269,7 +269,7 @@ export function ParcoursPage() {
                       : "text-muted-foreground hover:text-foreground",
                   )}
                 >
-                  {libelleCursus(sub)}
+                  {libelleCursus(sub.cursus)}
                 </button>
               ))}
             </div>

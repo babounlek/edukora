@@ -6,17 +6,17 @@ from .storage import protected_storage
 
 
 def _sujet_pdf_upload_to(session, filename):
-    # Préfixé par le code pays puis l'utilisateur - même convention que les autres
+    # Préfixé par le code pays puis le profil - même convention que les autres
     # storages de PDF privés du projet (voir fiches.models._sujet_pdf_upload_to,
     # inedit.models._sujet_pdf_upload_to) : sans lui, deux élèves de pays différents
     # dont les sessions partageraient un même id (impossible ici, id auto-incrémenté
     # global, mais la convention reste appliquée pour rester cohérent avec ces deux
     # autres apps) pourraient collider.
-    return f"{session.cursus.country.code.lower()}/{session.user_id}/session-{session.pk}-fiche.pdf"
+    return f"{session.cursus.country.code.lower()}/{session.profil_id}/session-{session.pk}-fiche.pdf"
 
 
 def _corrige_pdf_upload_to(session, filename):
-    return f"{session.cursus.country.code.lower()}/{session.user_id}/session-{session.pk}-correction.pdf"
+    return f"{session.cursus.country.code.lower()}/{session.profil_id}/session-{session.pk}-correction.pdf"
 
 
 class ModeQuiz(models.TextChoices):
@@ -137,9 +137,9 @@ class CompetenceItem(models.Model):
 
 
 class QuizSession(models.Model):
-    """Une série de Question générée pour un utilisateur - voir quiz.services.generer_session."""
+    """Une série de Question générée pour un profil - voir quiz.services.generer_session."""
 
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="quiz_sessions")
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="quiz_sessions")
     cursus = models.ForeignKey("catalog.Cursus", on_delete=models.PROTECT, related_name="quiz_sessions")
     subject = models.ForeignKey(
         "catalog.Subject", null=True, blank=True, on_delete=models.SET_NULL, related_name="quiz_sessions",
@@ -172,7 +172,7 @@ class QuizSession(models.Model):
         ordering = ["-started_at"]
 
     def __str__(self):
-        return f"{self.get_mode_display()} - {self.user} ({self.cursus})"
+        return f"{self.get_mode_display()} - {self.profil} ({self.cursus})"
 
 
 class QuizQuestion(models.Model):
@@ -268,7 +268,7 @@ class QuizAnswer(models.Model):
 
 class RevisionSchedule(models.Model):
     """
-    Prochaine échéance de révision d'un thème pour un utilisateur, sur un cursus donné -
+    Prochaine échéance de révision d'un thème pour un profil, sur un cursus donné -
     algorithme Leitner à 3 paliers (J+1, J+3, J+7, voir LEITNER_INTERVALS_JOURS dans
     quiz.services) déclenché par les réponses en Quiz (voir
     quiz.services.enregistrer_resultat_pour_revision, appelé depuis
@@ -280,7 +280,7 @@ class RevisionSchedule(models.Model):
     révision programmée (voir enregistrer_resultat_pour_revision).
     """
 
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="revision_schedules")
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="revision_schedules")
     cursus = models.ForeignKey("catalog.Cursus", on_delete=models.CASCADE, related_name="revision_schedules")
     subject = models.ForeignKey("catalog.Subject", on_delete=models.CASCADE, related_name="revision_schedules")
     theme = models.ForeignKey("catalog.Tag", on_delete=models.CASCADE, related_name="revision_schedules")
@@ -294,11 +294,11 @@ class RevisionSchedule(models.Model):
     class Meta:
         ordering = ["due_at"]
         constraints = [
-            models.UniqueConstraint(fields=["user", "cursus", "theme"], name="unique_revision_schedule"),
+            models.UniqueConstraint(fields=["profil", "cursus", "theme"], name="unique_revision_schedule"),
         ]
 
     def __str__(self):
-        return f"{self.user} - {self.theme} ({self.due_at})"
+        return f"{self.profil} - {self.theme} ({self.due_at})"
 
 
 class OrigineSeance(models.TextChoices):
@@ -323,14 +323,14 @@ class StatutSeance(models.TextChoices):
 
 class SeanceJournaliere(models.Model):
     """
-    La séance du jour d'un élève : une matière, un thème, quelques étapes, ~25 minutes.
+    La séance du jour d'un profil : une matière, un thème, quelques étapes, ~25 minutes.
 
     Cette table EST le cache de la journée, et c'est son intérêt principal. La
     promesse du plan quotidien ("une seule prochaine action") ne tient que si ouvrir
     l'appli trois fois dans la journée montre la MÊME séance : une proposition
     recalculée à chaque affichage redeviendrait un catalogue qui change tout seul,
     exactement ce à quoi elle doit se substituer. La ligne est donc écrite une fois
-    par (user, cursus, jour), puis relue telle quelle.
+    par (profil, cursus, jour), puis relue telle quelle.
 
     Sert aussi de mémoire à deux règles qui ont besoin du passé : la rotation des
     matières (voir plan_du_jour) et le compteur "n séances cette semaine".
@@ -341,7 +341,7 @@ class SeanceJournaliere(models.Model):
     Country.timezone : aujourd'hui le réglage global EST le fuseau du seul pays servi.
     """
 
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="seances_journalieres")
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="seances_journalieres")
     cursus = models.ForeignKey("catalog.Cursus", on_delete=models.CASCADE, related_name="seances_journalieres")
     date = models.DateField(help_text="Jour local de la séance - voir la docstring de la classe.")
 
@@ -426,12 +426,12 @@ class SeanceJournaliere(models.Model):
         ordering = ["-date", "-ordre"]
         constraints = [
             models.UniqueConstraint(
-                fields=["user", "cursus", "date", "ordre"], name="unique_seance_par_rang_du_jour",
+                fields=["profil", "cursus", "date", "ordre"], name="unique_seance_par_rang_du_jour",
             ),
         ]
 
     def __str__(self):
-        return f"{self.user} - {self.date} ({self.get_origine_display()})"
+        return f"{self.profil} - {self.date} ({self.get_origine_display()})"
 
     @property
     def duree_estimee_min(self):
@@ -455,7 +455,7 @@ class ObjectifMatiere(models.Model):
     Une seule ligne par (élève, cursus) : choisir une autre matière remplace la précédente.
     """
 
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="objectifs_matiere")
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="objectifs_matiere")
     cursus = models.ForeignKey("catalog.Cursus", on_delete=models.CASCADE, related_name="objectifs_matiere")
     subject = models.ForeignKey("catalog.Subject", on_delete=models.CASCADE, related_name="objectifs_matiere")
     jusqu_au = models.DateField(help_text="Dernier jour (inclus) où le plan se concentre sur cette matière.")
@@ -463,8 +463,34 @@ class ObjectifMatiere(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["user", "cursus"], name="uniq_objectif_matiere_user_cursus"),
+            models.UniqueConstraint(fields=["profil", "cursus"], name="uniq_objectif_matiere_user_cursus"),
         ]
 
     def __str__(self):
-        return f"{self.user_id} - {self.subject_id} jusqu'au {self.jusqu_au}"
+        return f"{self.profil_id} - {self.subject_id} jusqu'au {self.jusqu_au}"
+
+
+class VisiteAccueil(models.Model):
+    """
+    Quand l'élève a ouvert son accueil pour la dernière fois - de quoi lui dire ce
+    qui a changé "depuis la dernière fois" (voir quiz.accueil.delta_depuis).
+
+    Rien d'autre ne trace une visite : `last_login` n'est jamais mis à jour (jetons
+    JWT émis sans passer par login()), et les évènements analytics sont fire-and-
+    forget, envoyés une fois par séance et non par visite. Une seule ligne par profil.
+
+    Une "visite" est une suite d'appels séparés de moins de
+    SEUIL_NOUVELLE_VISITE (voir quiz.accueil) : ouvrir trois fois l'appli dans la
+    soirée est une visite, pas trois. `precedente_at` est la fin de la visite d'avant,
+    `debut_at` le début de celle-ci : c'est entre les deux qu'on mesure ce qui a
+    changé, et ce delta reste STABLE pendant toute la visite (il ne se recalcule pas
+    à chaque rechargement de page, sinon il se viderait sous les yeux de l'élève).
+    """
+
+    profil = models.OneToOneField("users.Profil", on_delete=models.CASCADE, related_name="visite_accueil")
+    debut_at = models.DateTimeField(help_text="Début de la visite en cours.")
+    derniere_at = models.DateTimeField(help_text="Dernier appel de la visite en cours.")
+    precedente_at = models.DateTimeField(null=True, blank=True, help_text="Fin de la visite précédente.")
+
+    def __str__(self):
+        return f"{self.profil_id} - visite depuis {self.debut_at:%d/%m %H:%M}"

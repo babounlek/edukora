@@ -607,7 +607,6 @@ export function EpreuvesListPage() {
           country={country}
           cursusId={Number(cursusFilter)}
           subjectCode={subjectFilter}
-          variant="preview"
         />
       )}
 

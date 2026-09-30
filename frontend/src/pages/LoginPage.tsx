@@ -48,6 +48,13 @@ const SUPPORTED_REGISTRATION_COUNTRIES = ["cm"]
 // affichage), juste avec un bouton réactivé un peu trop tôt ou trop tard.
 const OTP_RESEND_COOLDOWN_SECONDS = 60
 
+// Miroir de OTP_VALIDITY_MINUTES / EMAIL_CODE_VALIDITY_MINUTES (backend/users/
+// otp_service.py et email_service.py, les deux valent 5) - affiché sous le champ code
+// pour ne pas laisser le décompte du cooldown ci-dessus (60s) passer pour la durée de
+// vie du code : ce sont deux minuteurs différents, et seul celui-ci correspond à ce
+// que dit réellement le mail/SMS reçu.
+const OTP_CODE_VALIDITY_MINUTES = 5
+
 export function LoginPage() {
   useSeo({ title: "Connexion" })
 
@@ -332,6 +339,9 @@ export function LoginPage() {
                   maxLength={6}
                   autoFocus
                 />
+                <p className="text-xs text-muted-foreground">
+                  Ce code est valable {OTP_CODE_VALIDITY_MINUTES} minutes.
+                </p>
               </div>
               {error && <p className="text-sm text-destructive">{error}</p>}
               <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">

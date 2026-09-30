@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
-  ArrowRight, BookOpen, Check, ChevronDown, ChevronRight, Clock, ListChecks, Lock, PenLine, RotateCcw,
+  ArrowRight, BookOpen, Check, Clock, ListChecks, Lock, PenLine, RotateCcw,
   Shuffle, Sparkles, Target, type LucideIcon,
 } from "lucide-react"
 
@@ -14,11 +14,11 @@ import type { EtapeSeance, EtapeSeanceVerrouillee, PlanDuJour, Seance } from "@/
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
-import { lienEtape, ouvrirEtapeDeSeance } from "@/lib/seance"
+import { lienEtape, ouvrirEtapeDeSeance, seanceAffichable } from "@/lib/seance"
+import { delaiDepuisAffichageAccueil } from "@/lib/accueilChrono"
 import { trackEvent } from "@/lib/analytics"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
-import { useMediaQuery } from "@/lib/useMediaQuery"
 import { cn } from "@/lib/utils"
 import { Ecrin } from "@/components/Progression"
 
@@ -36,7 +36,6 @@ import { Ecrin } from "@/components/Progression"
  */
 export function SeanceDuJour({ country }: { country: string }) {
   const { isAuthenticated } = useAuth()
-  const queryClient = useQueryClient()
 
   const { data } = useQuery({
     queryKey: ["plan-du-jour"],
@@ -44,9 +43,44 @@ export function SeanceDuJour({ country }: { country: string }) {
     enabled: isAuthenticated,
   })
 
+  if (!isAuthenticated || !data || !seanceAffichable(data)) return null
+
+  return (
+    <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
+      <Ecrin>
+        <SeanceCorps plan={data} country={country} />
+      </Ecrin>
+    </section>
+  )
+}
+
+/**
+ * Le corps de la séance - à faire ou faite, avec ses actions - sans la carte qui
+ * l'entoure. Partagé entre la vitrine (SeanceDuJour, ci-dessus, dans son Ecrin) et
+ * l'accueil d'un abonné (TeteAccueil, où il vit sous le bandeau du coach) : une seule
+ * implémentation des mutations, pour que "Commencer", "Propose-moi autre chose" et
+ * "J'ai fini" se comportent pareil des deux côtés.
+ *
+ * `secondaire` : une action de second rang à côté de "Commencer" (l'annale en
+ * conditions d'examen, à un mois du jour J - voir TeteAccueil).
+ */
+export function SeanceCorps({
+  plan, country, secondaire,
+}: { plan: PlanDuJour; country: string; secondaire?: ReactNode }) {
+  const queryClient = useQueryClient()
+  const data = plan
+
+  // L'accueil agrégé (voir getAccueil) porte la phrase du coach et le delta, qui
+  // dépendent de la séance : toute action qui la change le remet en question. Sans
+  // accueil monté (vitrine), il n'y a rien d'actif à rafraîchir et l'appel est neutre.
+  const rafraichirAccueil = () => queryClient.invalidateQueries({ queryKey: ["accueil"] })
+
   const terminer = useMutation({
     mutationFn: terminerSeanceDuJour,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["plan-du-jour"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["plan-du-jour"] })
+      rafraichirAccueil()
+    },
   })
 
   // La réponse de "continuer" a exactement la forme du plan (voir
@@ -54,7 +88,10 @@ export function SeanceDuJour({ country }: { country: string }) {
   // de réinvalider, pour que la séance suivante s'affiche sans un aller-retour de plus.
   const continuer = useMutation({
     mutationFn: continuerSeanceDuJour,
-    onSuccess: (plan) => queryClient.setQueryData(["plan-du-jour"], plan),
+    onSuccess: (plan) => {
+      queryClient.setQueryData(["plan-du-jour"], plan)
+      rafraichirAccueil()
+    },
   })
 
   // Même principe : la réponse EST le plan, on l'écrit dans le cache. Un
@@ -63,7 +100,10 @@ export function SeanceDuJour({ country }: { country: string }) {
   const autreChose = useMutation({
     mutationFn: proposerAutreChose,
     onSuccess: (plan) => {
-      if (plan.seance) queryClient.setQueryData(["plan-du-jour"], plan)
+      if (plan.seance) {
+        queryClient.setQueryData(["plan-du-jour"], plan)
+        rafraichirAccueil()
+      }
     },
   })
 
@@ -71,97 +111,116 @@ export function SeanceDuJour({ country }: { country: string }) {
   // seule sa mise en œuvre se resserre ou s'étire (voir ajuster_duree_seance).
   const duree = useMutation({
     mutationFn: ajusterDureeSeance,
-    onSuccess: (plan) => queryClient.setQueryData(["plan-du-jour"], plan),
+    onSuccess: (plan) => {
+      queryClient.setQueryData(["plan-du-jour"], plan)
+      rafraichirAccueil()
+    },
   })
 
   // Choisir (ou lâcher) une matière pour la semaine : la réponse est le plan recalculé.
   const objectif = useMutation({
     mutationFn: (subject: number | null) =>
       subject === null ? retirerObjectifMatiere() : definirObjectifMatiere(subject),
-    onSuccess: (plan) => queryClient.setQueryData(["plan-du-jour"], plan),
+    onSuccess: (plan) => {
+      queryClient.setQueryData(["plan-du-jour"], plan)
+      rafraichirAccueil()
+    },
   })
 
   // "Séance affichée" une seule fois par séance, jamais à chaque rendu : le
   // dénominateur du seul chiffre qui compte (combien reviennent faire une séance) ne
   // vaut rien s'il enfle à chaque re-rendu de React.
   const seanceTracee = useRef<number | null>(null)
-  const seanceId = data?.seance?.id ?? null
-  const verrouillee = data?.seance?.verrouillee
+  const seanceId = data.seance?.id ?? null
+  const verrouillee = data.seance?.verrouillee
   useEffect(() => {
     if (seanceId === null || seanceTracee.current === seanceId) return
     seanceTracee.current = seanceId
     trackEvent("plan_affiche", { verrouillee: Boolean(verrouillee) })
   }, [seanceId, verrouillee])
 
-  if (!isAuthenticated || !data) return null
+  if (!seanceAffichable(data)) return null
 
-  // Connecté mais sans examen déclaré : rien à proposer ici. C'est le bandeau global
-  // (BandeauCursus) qui le demande, sur toutes les pages - pas une invite de plus ici.
-  if (data.etat === "cursus_inconnu") return null
-
-  if (!data.seance) return null
-  if (data.etat !== "plan_pret" && data.etat !== "deja_fait_aujourdhui") return null
+  // Les deux réglages discrets de la carte - changer de thème, choisir une matière
+  // de la semaine - vivaient auparavant à deux endroits différents (l'un juste après
+  // la durée, l'autre tout en bas après le parcours). Regroupés dans un seul bloc en
+  // fin de carte, ils se lisent comme ce qu'ils sont : des réglages, pas une suite du
+  // récit. "Propose-moi autre chose" n'a de sens que devant une séance à faire ; "Me
+  // concentrer sur une matière" reste pertinent même la séance du jour terminée,
+  // c'est un choix pour la semaine entière.
+  const matieresObjectif = data.matieres_objectif ?? []
+  const afficherObjectif = matieresObjectif.length >= 2 || Boolean(data.objectif_matiere)
+  const afficherSecours = data.etat === "plan_pret"
 
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-      <Ecrin>
-        {data.etat === "deja_fait_aujourdhui" ? (
-          <SeanceFaite
-            plan={data}
-            country={country}
-            onContinuer={() => continuer.mutate()}
-            continuationEnCours={continuer.isPending}
-            // Le serveur a répondu "rien à proposer" : la demande a abouti, il n'y
-            // avait simplement plus rien (voir seance_supplementaire).
-            plusRienAProposer={continuer.isSuccess && continuer.data?.etat === "rien_a_proposer"}
-          />
-        ) : (
-          <SeanceAFaire
-            plan={data}
-            country={country}
-            onOuvrirEtape={(etape) => ouvrirEtapeDeSeance(queryClient, etape)}
-            onTerminer={() => terminer.mutate()}
-            terminaisonEnCours={terminer.isPending}
-            onAutreChose={() => {
-              // L'évènement part du refus lui-même, jamais du succès du remplacement :
-              // c'est le refus qui est le contre-indicateur à surveiller (au-delà
-              // d'environ 30 % des séances, la sélection n'est pas crédible).
-              trackEvent("plan_theme_ignore", { origine: data.seance?.origine })
-              autreChose.mutate()
-            }}
-            remplacementEnCours={autreChose.isPending}
-            plusRienAProposer={autreChose.isSuccess && autreChose.data?.etat === "rien_a_proposer"}
-            onChoisirDuree={(minutes) => duree.mutate(minutes)}
-            ajustementEnCours={duree.isPending}
-          />
-        )}
-        <ObjectifMatiereControle
+    <>
+      {data.etat === "deja_fait_aujourdhui" ? (
+        <SeanceFaite
           plan={data}
-          enCours={objectif.isPending}
-          onChoisir={(subject) => {
-            trackEvent("objectif_matiere", { action: subject === null ? "retire" : "definit" })
-            objectif.mutate(subject)
-          }}
+          country={country}
+          onContinuer={() => continuer.mutate()}
+          continuationEnCours={continuer.isPending}
+          // Le serveur a répondu "rien à proposer" : la demande a abouti, il n'y
+          // avait simplement plus rien (voir seance_supplementaire).
+          plusRienAProposer={continuer.isSuccess && continuer.data?.etat === "rien_a_proposer"}
         />
-      </Ecrin>
-    </section>
+      ) : (
+        <SeanceAFaire
+          plan={data}
+          country={country}
+          onOuvrirEtape={(etape) => ouvrirEtapeDeSeance(queryClient, etape)}
+          onTerminer={() => terminer.mutate()}
+          terminaisonEnCours={terminer.isPending}
+          onChoisirDuree={(minutes) => duree.mutate(minutes)}
+          ajustementEnCours={duree.isPending}
+          secondaire={secondaire}
+        />
+      )}
+      {(afficherSecours || afficherObjectif) && (
+        <div className="mt-4 flex flex-col gap-3 border-t border-border/60 pt-3">
+          {afficherSecours && (
+            <SortieDeSecours
+              country={country}
+              onAutreChose={() => {
+                // L'évènement part du refus lui-même, jamais du succès du
+                // remplacement : c'est le refus qui est le contre-indicateur à
+                // surveiller (au-delà d'environ 30 % des séances affichées, la
+                // sélection n'est pas crédible).
+                trackEvent("plan_theme_ignore", { origine: data.seance?.origine })
+                autreChose.mutate()
+              }}
+              remplacementEnCours={autreChose.isPending}
+              plusRienAProposer={autreChose.isSuccess && autreChose.data?.etat === "rien_a_proposer"}
+              verrouillee={Boolean(data.seance?.verrouillee)}
+            />
+          )}
+          {afficherObjectif && (
+            <ObjectifMatiereControle
+              plan={data}
+              enCours={objectif.isPending}
+              onChoisir={(subject) => {
+                trackEvent("objectif_matiere", { action: subject === null ? "retire" : "definit" })
+                objectif.mutate(subject)
+              }}
+            />
+          )}
+        </div>
+      )}
+    </>
   )
 }
 
 function SeanceAFaire({
-  plan, country, onOuvrirEtape, onTerminer, terminaisonEnCours, onAutreChose, remplacementEnCours, plusRienAProposer,
-  onChoisirDuree, ajustementEnCours,
+  plan, country, onOuvrirEtape, onTerminer, terminaisonEnCours, onChoisirDuree, ajustementEnCours, secondaire,
 }: {
   plan: PlanDuJour
   country: string
   onOuvrirEtape: (etape: EtapeSeance) => void
   onTerminer: () => void
   terminaisonEnCours: boolean
-  onAutreChose: () => void
-  remplacementEnCours: boolean
-  plusRienAProposer: boolean
   onChoisirDuree: (minutes: number) => void
   ajustementEnCours: boolean
+  secondaire?: ReactNode
 }) {
   const seance = plan.seance as Seance
   // Verrouillée, chaque étape est une EtapeSeanceVerrouillee (voir types.ts) : ni
@@ -177,9 +236,29 @@ function SeanceAFaire({
   const avecParcours = seance.etapes.length > 0
   const avecQuiz = seance.etapes.some((e) => e.type === "quiz")
 
+  const frequence = seance.frequence
+  const aDesAnnees = (frequence?.annees.length ?? 0) > 0
+
   return (
-    <div className={cn("grid gap-x-10 gap-y-6", avecParcours && "lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:grid-rows-[auto_1fr]")}>
-      <div className="min-w-0">
+    // Un seul flux vertical, plus jamais deux colonnes qui se comparent : c'est ce
+    // qui rendait la carte tantôt penchée à gauche, tantôt à droite, quelle que soit
+    // la façon dont on répartissait le contenu entre les deux (voir l'historique de ce
+    // fichier). Le parcours, plus bas, utilise la largeur libérée en s'étalant en
+    // largeur plutôt qu'en hauteur (voir EtapesParPhase) - la seule vraie sortie du
+    // problème étant de ne plus avoir deux voisins de hauteur imprévisible.
+    <div>
+      {/* Le titre, les pastilles, les raisons, le bouton et la durée d'un côté ; sur
+          grand écran, une illustration de l'autre. La disparition de la grille à deux
+          colonnes a réglé le déséquilibre de hauteur (voir plus haut), mais a laissé
+          ce bloc - naturellement étroit, du texte et un bouton - flotter seul dans une
+          carte large. L'illustration ne porte AUCUNE information (voir
+          IllustrationSeance : `aria-hidden`) et ne force donc jamais sa hauteur
+          contre celle du texte, qui varie d'une séance à l'autre (0 à 4 raisons) -
+          seule une décoration peut voisiner un bloc de hauteur imprévisible sans
+          recréer le problème qu'on vient de résoudre. Masquée sur téléphone/tablette,
+          où l'espace manque déjà pour garder "Commencer" au-dessus du pli. */}
+      <div className="lg:flex lg:items-start lg:gap-8">
+      <div className="min-w-0 lg:flex-1">
         {/* "Aujourd'hui" en surtitre et le thème en grand : le thème est ce que l'élève
             doit retenir d'un coup d'œil, le jour n'est que le cadre. Un seul <h2> pour
             que les lecteurs d'écran lisent toujours "Aujourd'hui, concentration
@@ -193,20 +272,30 @@ function SeanceAFaire({
             {majuscule(titreDeLaSeance(seance))}
           </span>
         </h2>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           {seance.subject && <PastilleMatiere code={seance.subject.code} label={seance.subject.label} />}
           <Pastille icone={Clock}>{seance.duree_estimee_min} min</Pastille>
           {seance.nb_etapes > 1 && <Pastille icone={ListChecks}>{seance.nb_etapes} étapes</Pastille>}
+          {/* La fréquence à l'examen, l'argument le plus fort, au même rang que les
+              pastilles matière/durée plutôt que dans sa propre carte : la preuve reste
+              visible en permanence (jamais repliée), mais ne pèse plus qu'une pastille
+              de plus au lieu d'un second bloc dont la hauteur varie d'une séance à
+              l'autre (voir PastilleFrequence). */}
+          {frequence && <PastilleFrequence frequence={frequence} />}
         </div>
-
-        <Frequence seance={seance} />
-
-        <ChoixDuree
-          seance={seance}
-          onChoisir={onChoisirDuree}
-          enCours={ajustementEnCours}
-          desactive={seance.verrouillee}
-        />
+        {/* Les années concernées, juste sous les pastilles : sans elles, le chiffre de la
+            pastille est à croire sur parole. Le "…" dit qu'il y en a d'autres plutôt que
+            de laisser croire à une liste complète (voir ANNEES_FREQUENCE_MAX serveur). */}
+        {aDesAnnees && frequence && (
+          <p className="mt-1.5 text-xs tabular-nums text-muted-foreground">
+            {frequence.annees.join(" · ")}
+            {frequence.occurrences > frequence.annees.length ? " …" : ""}
+          </p>
+        )}
+        {/* Les autres raisons (coefficient, jamais travaillé, thème déjà raté) - le fait
+            qui justifie l'action précède l'action, dans l'ordre où on convaincrait
+            quelqu'un à voix haute. */}
+        <RaisonsSeance seance={seance} />
 
         {seance.verrouillee ? (
           <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -255,7 +344,13 @@ function SeanceAFaire({
                   to={lienEtape(prochaine, country, plan)}
                   onClick={() => {
                     // Le démarrage ne se compte qu'une fois : reprendre n'est pas démarrer.
-                    if (!dejaCommencee) trackEvent("plan_seance_demarree", { origine: seance.origine })
+                    // `delai_s` : secondes entre l'affichage de l'accueil et ce clic - LE
+                    // chiffre qui juge la page (voir lib/accueilChrono).
+                    if (!dejaCommencee) {
+                      trackEvent("plan_seance_demarree", {
+                        origine: seance.origine, delai_s: delaiDepuisAffichageAccueil(),
+                      })
+                    }
                     onOuvrirEtape(prochaine)
                   }}
                 >
@@ -264,6 +359,7 @@ function SeanceAFaire({
                 </Link>
               </Button>
             )}
+            {secondaire}
             {/* Marquer la séance faite reste une action de l'élève : on ne sait pas
                 détecter qu'il a vraiment lu et compris, et un "terminé" décidé à sa
                 place fausserait le seul chiffre qui dira si ce plan marche. */}
@@ -286,53 +382,83 @@ function SeanceAFaire({
             )}
           </div>
         )}
-      </div>
 
-      {/* Sur desktop, le parcours occupe toute la hauteur de la colonne de droite ; sur
-          téléphone il vient juste sous "Commencer", avant la sortie de secours - qui
-          sinon s'intercalait entre le bouton et ce qu'il lance. */}
-      {avecParcours && (
-        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
-          <EtapesParPhase
-            seance={seance}
-            country={country}
-            plan={plan}
-            onOuvrirEtape={onOuvrirEtape}
-            verrouillee={seance.verrouillee}
-          />
+        {/* Le réglage de durée vient APRÈS le bouton : sur téléphone, il repoussait
+            "Commencer" sous le pli, et une page dont l'action principale n'est pas
+            visible n'a pas d'action principale. */}
+        <ChoixDuree
+          seance={seance}
+          onChoisir={onChoisirDuree}
+          enCours={ajustementEnCours}
+          desactive={seance.verrouillee}
+        />
         </div>
-      )}
-
-      <div className="min-w-0 lg:col-start-1">
-        {/* Sortie de secours, volontairement discrète : un plan qu'on ne peut pas
-          contourner est vécu comme une contrainte, mais la remonter au même niveau
-          que "Commencer" rendrait à l'élève la charge de choisir - exactement ce
-          dont ce bloc le décharge.
-
-          Elle propose une AUTRE séance, jamais le catalogue : quand l'élève dit "pas
-          ça", un coach propose autre chose, il ne tend pas le sommaire. Le catalogue
-          ne réapparaît que lorsqu'on a réellement épuisé ce qu'on sait proposer. */}
-        <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
-          <Shuffle className="size-3 shrink-0" />
-          Ce n'est pas ce que tu veux réviser ?
-          <button
-            type="button"
-            onClick={onAutreChose}
-            disabled={remplacementEnCours || seance.verrouillee}
-            className="underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
-          >
-            {remplacementEnCours ? "Je cherche…" : "Propose-moi autre chose"}
-          </button>
-        </p>
-        {plusRienAProposer && (
-          <p className="mt-1 text-xs text-muted-foreground">
-            On ne trouve pas mieux pour aujourd'hui.{" "}
-            <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
-              Choisir un thème toi-même
-            </Link>
-          </p>
-        )}
+        <IllustrationSeance />
       </div>
+
+      {/* Le parcours en pleine largeur, sous tout le reste : plus une colonne étroite
+          à comparer à sa voisine, mais un bandeau qui s'étale sur la largeur libérée
+          par la disparition de la grille (voir EtapesParPhase). */}
+      {avecParcours && (
+        <EtapesParPhase
+          seance={seance}
+          country={country}
+          plan={plan}
+          onOuvrirEtape={onOuvrirEtape}
+          verrouillee={seance.verrouillee}
+        />
+      )}
+    </div>
+  )
+}
+
+/**
+ * "Ce n'est pas ce que tu veux réviser ?" - remontée par SeanceCorps et affichée aux
+ * côtés d'ObjectifMatiereControle dans un seul bloc de réglages en bas de carte (voir
+ * SeanceCorps) : les deux étaient auparavant à deux endroits différents de la carte,
+ * l'un juste après le sélecteur de durée, l'autre tout en bas après "Ton parcours" -
+ * regroupés, ils se lisent comme ce qu'ils sont, deux réglages discrets de la même
+ * séance, plutôt que comme deux préoccupations séparées.
+ *
+ * Volontairement discrète : un plan qu'on ne peut pas contourner est vécu comme une
+ * contrainte, mais la remonter au même niveau que "Commencer" rendrait à l'élève la
+ * charge de choisir - exactement ce dont ce bloc le décharge.
+ *
+ * Propose une AUTRE séance, jamais le catalogue : quand l'élève dit "pas ça", un coach
+ * propose autre chose, il ne tend pas le sommaire. Le catalogue ne réapparaît que
+ * lorsqu'on a réellement épuisé ce qu'on sait proposer.
+ */
+function SortieDeSecours({
+  country, onAutreChose, remplacementEnCours, plusRienAProposer, verrouillee,
+}: {
+  country: string
+  onAutreChose: () => void
+  remplacementEnCours: boolean
+  plusRienAProposer: boolean
+  verrouillee: boolean
+}) {
+  return (
+    <div>
+      <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
+        <Shuffle className="size-3 shrink-0" />
+        Ce n'est pas ce que tu veux réviser ?
+        <button
+          type="button"
+          onClick={onAutreChose}
+          disabled={remplacementEnCours || verrouillee}
+          className="underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
+        >
+          {remplacementEnCours ? "Je cherche…" : "Propose-moi autre chose"}
+        </button>
+      </p>
+      {plusRienAProposer && (
+        <p className="mt-1 text-xs text-muted-foreground">
+          On ne trouve pas mieux pour aujourd'hui.{" "}
+          <Link to={themesFrequentsPath(country)} className="underline underline-offset-4 hover:text-primary">
+            Choisir un thème toi-même
+          </Link>
+        </p>
+      )}
     </div>
   )
 }
@@ -345,6 +471,9 @@ function SeanceAFaire({
  * seule chose à faire", et cette ligne n'est qu'un réglage pour qui sait déjà ce qu'il
  * veut. Le choix expire de lui-même - le libellé le dit, pour qu'il ne soit jamais
  * perçu comme un enfermement.
+ *
+ * Sans marge ni bordure propres : rendu par SeanceCorps dans le même bloc de réglages
+ * que SortieDeSecours, qui porte la bordure haute partagée par les deux.
  */
 function ObjectifMatiereControle({
   plan, enCours, onChoisir,
@@ -360,7 +489,7 @@ function ObjectifMatiereControle({
 
   if (choisi && !ouvert) {
     return (
-      <p className="mt-4 flex flex-wrap items-center gap-x-1.5 border-t border-border/60 pt-3 text-xs text-muted-foreground">
+      <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
         <Target className="size-3 shrink-0 text-primary" />
         <span>
           Tu te concentres sur <strong className="font-semibold text-foreground">{choisi.label}</strong> jusqu'au{" "}
@@ -387,7 +516,7 @@ function ObjectifMatiereControle({
 
   if (!ouvert) {
     return (
-      <p className="mt-4 flex flex-wrap items-center gap-x-1.5 border-t border-border/60 pt-3 text-xs text-muted-foreground">
+      <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-muted-foreground">
         <Target className="size-3 shrink-0" />
         Un devoir bientôt ?
         <button
@@ -402,7 +531,7 @@ function ObjectifMatiereControle({
   }
 
   return (
-    <div className="mt-4 border-t border-border/60 pt-3">
+    <div>
       <p className="text-xs text-muted-foreground">Je me concentre sur… (pendant 7 jours, puis on reprend le choix automatique)</p>
       <div className="mt-2 flex flex-wrap gap-2">
         {matieres.map((matiere) => (
@@ -537,91 +666,109 @@ function SeanceFaite({
 }
 
 /**
- * "Pourquoi cette séance ?" - la fréquence à l'examen en tête, puis les autres
- * raisons.
+ * Meuble l'espace à droite du titre et du bouton, sur grand écran, laissé vide par la
+ * disparition de la grille à deux colonnes (voir SeanceAFaire) : contrairement au
+ * bandeau du coach (voir TeteAccueil.IllustrationAujourdhui, qui ne comble qu'un
+ * manque de donnée au tout premier passage), rien ici ne dépend de l'historique de
+ * l'élève - ce bloc reste étroit tous les jours, pour tout le monde, dès que l'écran
+ * est large.
  *
- * Tout le produit repose sur la crédibilité de sa recommandation : un élève qui ne
- * comprend pas pourquoi on lui propose ce thème n'a aucune raison de nous croire
- * plutôt que de retourner choisir lui-même. Ces lignes sont donc affichées, pas
- * repliées derrière un "voir pourquoi" - cacher l'argument, c'est le perdre.
+ * Un livre qui ouvre sur une courbe montante, plutôt qu'une icône de bibliothèque
+ * agrandie : la première version (un BookOpen générique) se lisait comme un
+ * bouche-trou, pas comme quelque chose de dessiné pour cette page. La deuxième
+ * version (deux arcs sans détail) allait trop loin dans l'autre sens : sans reliure
+ * ni lignes de texte, la forme ne se lisait plus comme un livre du tout. Celle-ci a
+ * les deux repères qui font reconnaître un livre d'un coup d'œil - la reliure
+ * centrale et quelques lignes de texte sur chaque page - avant de laisser partir la
+ * courbe, nettement séparée, vers l'étincelle dorée. La courbe fait le lien avec ce
+ * que la séance montre déjà (une fréquence, un tableau de variation en maths) - deux
+ * points marquent sa progression, l'étincelle reprend le même or que la pastille de
+ * fréquence et les jalons de la semaine.
+ *
+ * Purement décorative (`aria-hidden`), donc jamais tenue d'égaler la hauteur du texte
+ * voisin, qui varie d'une séance à l'autre (0 à 4 raisons) - la recréer avec un
+ * second bloc de CONTENU aurait juste redonné deux colonnes à comparer. Masquée en
+ * dessous de `lg` : sur téléphone et tablette, l'espace manque déjà pour garder
+ * "Commencer" au-dessus du pli, la décoration cède toujours la place à l'action.
  */
-function Frequence({ seance }: { seance: Seance }) {
-  // Sur téléphone, la carte "Pourquoi cette séance ?" pesait presque un écran avant même
-  // le bouton "Commencer". On garde l'ARGUMENT (le chiffre de fréquence, ce qui fait
-  // croire la recommandation) et on replie le détail - jauge, années, autres raisons - à
-  // un toucher. Ailleurs, tout reste déplié : cacher l'argument, c'est le perdre.
-  const large = useMediaQuery("(min-width: 640px)")
-  const [ouvertMobile, setOuvertMobile] = useState(false)
-  const ouvert = large || ouvertMobile
-  if (!seance.frequence && seance.raisons.length === 0) return null
-  const aDuDetail = seance.raisons.length > 0 || (seance.frequence?.annees.length ?? 0) > 0
+function IllustrationSeance() {
   return (
-    <div className="mt-6 max-w-2xl rounded-2xl border border-gold/30 bg-gold/[0.06] p-4">
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Pourquoi cette séance ?</p>
-      {seance.frequence && <StatFrequence frequence={seance.frequence} detail={ouvert} />}
-      {ouvert && <AutresRaisons seance={seance} />}
-      {!large && aDuDetail && (
-        <button
-          type="button"
-          onClick={() => setOuvertMobile((v) => !v)}
-          aria-expanded={ouvertMobile}
-          className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary"
-        >
-          {ouvertMobile ? "Masquer le détail" : "Voir le détail"}
-          <ChevronDown className={cn("size-4 transition-transform", ouvertMobile && "rotate-180")} />
-        </button>
-      )}
+    <div
+      aria-hidden="true"
+      className="relative mt-8 hidden shrink-0 items-center justify-center overflow-hidden lg:mt-0 lg:flex lg:size-48 xl:size-56"
+    >
+      <div className="absolute -right-4 -top-4 size-24 rounded-full bg-gold/20 blur-2xl xl:size-28" />
+      <div className="absolute -bottom-6 -left-2 size-24 rounded-full bg-primary/10 blur-2xl xl:size-28" />
+      <svg viewBox="0 0 200 200" fill="none" className="relative size-32 xl:size-40">
+        {/* Le livre : page gauche et page droite, réunies par une reliure centrale -
+            sans elle, deux arcs isolés ne se lisent plus comme un livre du tout. */}
+        <path
+          d="M20 138C20 106 46 94 82 100L82 152C46 146 20 170 20 138Z
+             M160 138C160 106 134 94 98 100L98 152C134 146 160 170 160 138Z
+             M90 97L90 151"
+          className="stroke-primary/45"
+          strokeWidth="4"
+          strokeLinejoin="round"
+        />
+        {/* Les lignes de texte sur chaque page - le détail qui achève de dire "livre"
+            plutôt que "forme arrondie". Plus fines que le contour, en retrait. */}
+        <path
+          d="M32 118L58 114M32 128L62 124M32 138L60 135
+             M148 118L122 114M148 128L118 124M148 138L120 135"
+          className="stroke-primary/30"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
+        {/* La courbe : ce que la séance promet - une progression qui se lit de gauche
+            à droite, comme un tableau de variation ou une fréquence qui monte.
+            Nettement séparée du livre (part au-dessus de la reliure, jamais collée à
+            elle) pour ne jamais se confondre avec son contour. */}
+        <path
+          d="M100 82C112 68 122 78 130 55C138 32 152 36 162 14"
+          className="stroke-primary/35"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+        <circle cx="130" cy="55" r="4" className="fill-primary/45" />
+        <circle cx="162" cy="14" r="4" className="fill-primary/45" />
+        {/* L'étincelle dorée, au bout du trait - le même or que la pastille de
+            fréquence et les jalons de la semaine (voir PastilleFrequence, jalons.ts). */}
+        <path d="M180 4V20M171 12H189" className="stroke-gold" strokeWidth="3.5" strokeLinecap="round" />
+      </svg>
     </div>
   )
 }
 
-/** Le chiffre en grand, et une jauge qui le rend lisible sans lire : "8 sur 10" se
- * voit avant de se comprendre. */
-function StatFrequence({
-  frequence, detail = true,
-}: { frequence: NonNullable<Seance["frequence"]>; detail?: boolean }) {
-  const { occurrences, epreuves_total, annees } = frequence
-  const part = epreuves_total > 0 ? Math.min(100, Math.round((occurrences / epreuves_total) * 100)) : 0
+/**
+ * La fréquence à l'examen, en pastille : "35 sur 41 épreuves", au même rang que les
+ * pastilles matière/durée/étapes plutôt que dans sa propre carte.
+ *
+ * Tout le produit repose sur la crédibilité de sa recommandation : un élève qui ne
+ * comprend pas pourquoi on lui propose ce thème n'a aucune raison de nous croire
+ * plutôt que de retourner choisir lui-même. Le chiffre reste donc affiché en
+ * permanence, jamais replié derrière un "voir pourquoi" - cacher l'argument, c'est le
+ * perdre. Ce qui a changé, c'est sa PRÉSENTATION : une carte à part avec sa propre
+ * jauge de progression pesait, seule, plus que le reste de la carte réuni, et sa
+ * hauteur variait trop (0 à 6 années citées juste en dessous) pour ne jamais
+ * déséquilibrer un voisin. Une pastille a une hauteur fixe, quel que soit le chiffre.
+ */
+function PastilleFrequence({ frequence }: { frequence: NonNullable<Seance["frequence"]> }) {
   return (
-    <div className="mt-3">
-      <div className="flex items-center gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/20 text-gold-foreground dark:text-gold-text">
-          <Target className="size-5" />
-        </span>
-        <p className="text-sm leading-snug">
-          Tombé dans{" "}
-          <span className="font-display text-2xl font-semibold tabular-nums">{occurrences}</span>
-          <span className="text-muted-foreground"> des {epreuves_total} dernières épreuves</span>
-        </p>
-      </div>
-      {detail && (
-      <div
-        className="mt-3 h-1.5 overflow-hidden rounded-full bg-gold/15"
-        role="img"
-        aria-label={`${occurrences} épreuves sur ${epreuves_total}`}
-      >
-        <div className="h-full rounded-full bg-gradient-to-r from-gold/70 to-gold" style={{ width: `${part}%` }} />
-      </div>
-      )}
-      {/* Les années concernées : sans elles, le chiffre est à croire sur parole. Le
-          "…" dit qu'il y en a d'autres plutôt que de laisser croire à une liste
-          complète (voir ANNEES_FREQUENCE_MAX côté serveur). */}
-      {detail && annees.length > 0 && (
-        <p className="mt-2 text-xs tabular-nums text-muted-foreground">
-          {annees.join(" · ")}
-          {occurrences > annees.length ? " …" : ""}
-        </p>
-      )}
-    </div>
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-medium text-gold-foreground dark:text-gold-text">
+      <Target className="size-3.5 shrink-0" />
+      {frequence.occurrences} sur {frequence.epreuves_total} épreuves
+    </span>
   )
 }
 
 /** Les raisons autres que la fréquence - coefficient, ratage précédent, thème jamais
- * travaillé. Chacune est un fait déjà en base (voir raisons_de_la_seance). */
-function AutresRaisons({ seance }: { seance: Seance }) {
+ * travaillé. Chacune est un fait déjà en base (voir raisons_de_la_seance), affichée
+ * juste avant le bouton : le fait qui justifie l'action précède l'action, comme dans
+ * un argumentaire dit à voix haute. */
+function RaisonsSeance({ seance }: { seance: Seance }) {
   if (seance.raisons.length === 0) return null
   return (
-    <ul className="mt-3 flex flex-col gap-1.5">
+    <ul className="mt-3 flex flex-col gap-1">
       {seance.raisons.map((raison) => (
         <li key={raison.code} className="flex items-start gap-2 text-xs text-muted-foreground">
           <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/15">
@@ -723,7 +870,8 @@ function ChoixDuree({
 }
 
 /**
- * Les étapes groupées par phase : Comprendre, S'entraîner, Vérifier.
+ * Les étapes groupées par phase : Comprendre, S'entraîner, Vérifier - en bandeau
+ * horizontal, une carte par phase, plutôt qu'une frise verticale unique.
  *
  * La liste plate ("Relire la méthode", "Exercice 1", "5 questions") disait CE QU'ON
  * FAIT sans dire À QUOI ÇA SERT - or c'est la seule chose qui distingue une séance
@@ -738,6 +886,13 @@ function ChoixDuree({
  *
  * En dessous de deux phases (séance express : un seul quiz), les en-têtes sont tus :
  * intituler "Vérifier" une liste d'un seul élément est du bruit, pas de la structure.
+ *
+ * Horizontal plutôt que vertical : la mise en page à deux colonnes précédente
+ * enfermait ce parcours dans une colonne étroite dont la hauteur était comparée à sa
+ * voisine, avec un fil vertical qui ne cousait que trois étapes au maximum. En
+ * bandeau, chaque phase devient sa propre carte, le nombre de colonnes suit le
+ * nombre de phases réellement présentes (jamais de case vide), et la largeur libérée
+ * par la disparition de la grille sert enfin à quelque chose.
  */
 const PHASES = [
   { cle: "cours", titre: "Comprendre" },
@@ -770,57 +925,43 @@ function EtapesParPhase({
   const avecTitres = groupes.length > 1
 
   return (
-    <div className="self-start rounded-2xl border border-border/70 bg-background/70 p-4 backdrop-blur-sm sm:p-5">
+    <div className="mt-6 rounded-2xl border border-border/70 bg-background/70 p-4 backdrop-blur-sm sm:p-5">
       <p className="flex items-baseline justify-between gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         Ton parcours
         <span className="font-sans normal-case tracking-normal tabular-nums">{seance.duree_estimee_min} min</span>
       </p>
-      <ol className="mt-4 flex flex-col">
+      {/* Une colonne par phase réellement présente (une à trois), empilées sur
+          téléphone : le nombre de classes possibles est fini (1 à 3 phases), autant
+          les nommer plutôt que calculer une valeur arbitraire côté style. */}
+      <ol
+        className={cn(
+          "mt-4 grid grid-cols-1 gap-3",
+          groupes.length === 2 && "sm:grid-cols-2",
+          groupes.length >= 3 && "sm:grid-cols-3",
+        )}
+      >
         {groupes.map((phase, index) => (
-          // La frise : un fil vertical relie les phases, coupé après la dernière pour
-          // que le trajet se lise comme un chemin qui aboutit, pas comme une liste.
-          <li key={phase.cle} className={cn("relative", avecTitres && "pl-9 pb-4 last:pb-0")}>
+          <li key={phase.cle} className="rounded-xl border border-border/60 bg-background/60 p-3">
             {avecTitres && (
-              <>
-                {index < groupes.length - 1 && (
-                  <span aria-hidden className="absolute bottom-0 left-[11px] top-7 w-px bg-gradient-to-b from-primary/40 to-border" />
-                )}
-                <span className="absolute left-0 top-0 flex size-6 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground shadow-sm shadow-primary/30 ring-4 ring-primary/10">
+              <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-foreground/80">
+                <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[0.65rem] font-semibold text-primary-foreground shadow-sm shadow-primary/30">
                   {index + 1}
                 </span>
-                <p className="flex h-6 items-center text-xs font-semibold uppercase tracking-wide text-foreground/80">
-                  {phase.titre}
-                  {phase.cle === "quiz" && (
-                    <span className="ml-2 font-medium normal-case tracking-normal text-primary">
-                      · valide la séance
-                    </span>
-                  )}
-                </p>
-              </>
+                {phase.titre}
+                {phase.cle === "quiz" && (
+                  <span className="font-medium normal-case tracking-normal text-primary">· valide</span>
+                )}
+              </p>
             )}
-            <div className={cn("flex flex-col gap-1", avecTitres && "mt-1.5 -ml-2")}>
-              {/* La profondeur, à un clic, sans jamais déverser 33 liens dans la carte :
-                  la promesse de la séance est "une seule chose à faire", et un élève qui
-                  voit 33 items n'en fait généralement aucun. Même patron que
-                  "Propose-moi autre chose" - accessible, jamais promu. */}
-              {phase.cle === "exercice" && seance.exercices_total > phase.etapes.length && lienExercices && (
-                <Link
-                  to={lienExercices}
-                  className="order-last flex items-center gap-1.5 px-2 pt-1 text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
-                >
-                  Les {seance.exercices_total} exercices sur ce thème
-                  <ArrowRight className="size-3" />
-                </Link>
-              )}
+            <div className={cn("flex flex-col gap-1", avecTitres && "mt-2")}>
               {verrouillee
                 ? (phase.etapes as EtapeSeanceVerrouillee[]).map((etape, index) => (
                     <div
                       key={`${etape.type}-${index}`}
-                      className="flex items-center gap-3 rounded-xl px-2 py-1.5 text-sm opacity-60"
+                      className="flex items-center gap-2.5 rounded-lg px-1.5 py-1 text-sm opacity-60"
                     >
                       <IconeEtape type={etape.type} ouverte={false} />
                       <span className="line-clamp-2 min-w-0 flex-1 font-medium leading-snug">{etape.libelle}</span>
-                      <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{etape.duree_min} min</span>
                       <Lock className="hidden size-3.5 shrink-0 text-muted-foreground sm:block" aria-hidden="true" />
                     </div>
                   ))
@@ -829,14 +970,26 @@ function EtapesParPhase({
                       key={etape.cle}
                       to={lienEtape(etape, country, plan)}
                       onClick={() => onOuvrirEtape(etape)}
-                      className="group flex items-center gap-3 rounded-xl border border-transparent px-2 py-1.5 text-sm transition-all hover:border-primary/20 hover:bg-primary/[0.04]"
+                      className="group flex items-center gap-2.5 rounded-lg border border-transparent px-1.5 py-1 text-sm transition-all hover:border-primary/20 hover:bg-primary/[0.04]"
                     >
                       <IconeEtape type={etape.type} ouverte={etape.ouverte} />
                       <span className="line-clamp-2 min-w-0 flex-1 font-medium leading-snug">{etape.libelle}</span>
                       <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{etape.duree_min} min</span>
-                      <ChevronRight className="hidden size-4 shrink-0 text-muted-foreground/50 sm:block transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
                     </Link>
                   ))}
+              {/* La profondeur, à un clic, sans jamais déverser 33 liens dans la carte :
+                  la promesse de la séance est "une seule chose à faire", et un élève qui
+                  voit 33 items n'en fait généralement aucun. Même patron que
+                  "Propose-moi autre chose" - accessible, jamais promu. */}
+              {phase.cle === "exercice" && seance.exercices_total > phase.etapes.length && lienExercices && (
+                <Link
+                  to={lienExercices}
+                  className="flex items-center gap-1.5 px-1.5 pt-0.5 text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
+                >
+                  Les {seance.exercices_total} exercices sur ce thème
+                  <ArrowRight className="size-3" />
+                </Link>
+              )}
             </div>
           </li>
         ))}

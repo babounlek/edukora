@@ -44,12 +44,13 @@ class NotationAPITestCase(TestCase):
         self.cursus = Cursus.objects.get(country=self.country, examen=Examen.BAC, series__code="C")
         self.epreuve = _make_published_epreuve(self.country)
         self.user = User.objects.create_user(phone_number="677400090", password="x")
+        self.profil = self.user.profils.first()
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        self.tentative = TentativeInedite.objects.create(user=self.user, epreuve=self.epreuve)
+        self.tentative = TentativeInedite.objects.create(profil=self.profil, epreuve=self.epreuve)
         self.exercice = self.epreuve.exercices.get()
         self.qcm = self.exercice.questions.get(numero="1")
         self.ouverte = self.exercice.questions.get(numero="2")

@@ -17,7 +17,7 @@ class SimulationEpreuve(models.Model):
     ce niveau est ce que ferait un correcteur, et évite de demander 25 cases à cocher.
     """
 
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="simulations_epreuves")
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="simulations_epreuves")
     lesson = models.ForeignKey("catalog.Lesson", on_delete=models.CASCADE, related_name="simulations")
 
     started_at = models.DateTimeField(auto_now_add=True)
@@ -36,7 +36,7 @@ class SimulationEpreuve(models.Model):
         ordering = ["-started_at"]
 
     def __str__(self):
-        return f"{self.user} - {self.lesson}"
+        return f"{self.profil} - {self.lesson}"
 
 
 class SimulationReponse(models.Model):

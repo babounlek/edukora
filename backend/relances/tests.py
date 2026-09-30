@@ -34,7 +34,10 @@ class RelancesTestCase(TestCase):
             user.cursus_prepare = self.cursus
             user.save(update_fields=["cursus_prepare"])
         if abonne:
-            Subscription.objects.create(user=user, cursus=self.cursus, expires_at=self.maintenant + timedelta(days=30))
+            Subscription.objects.create(
+                user=user, profil=user.profils.first(), cursus=self.cursus,
+                expires_at=self.maintenant + timedelta(days=30),
+            )
         return user
 
     def transaction(self, user, statut, age):
@@ -77,7 +80,7 @@ class RappelSeanceTests(RelancesTestCase):
     def test_pas_de_rappel_a_qui_a_deja_fait_sa_seance_aujourd_hui(self):
         user = self.eleve()
         SeanceJournaliere.objects.create(
-            user=user, cursus=self.cursus, date=timezone.localdate(), origine=OrigineSeance.DIAGNOSTIC,
+            profil=user.profils.first(), cursus=self.cursus, date=timezone.localdate(), origine=OrigineSeance.DIAGNOSTIC,
             statut=StatutSeance.TERMINEE,
         )
         self.assertEqual(services.envoyer_rappels_seance(), 0)
@@ -91,7 +94,7 @@ class RappelSeanceTests(RelancesTestCase):
         user = self.eleve()
         for decalage in (1, 2, 3):
             SeanceJournaliere.objects.create(
-                user=user, cursus=self.cursus, date=timezone.localdate() - timedelta(days=decalage),
+                profil=user.profils.first(), cursus=self.cursus, date=timezone.localdate() - timedelta(days=decalage),
                 origine=OrigineSeance.DIAGNOSTIC, statut=StatutSeance.TERMINEE,
             )
         services.envoyer_rappels_seance()

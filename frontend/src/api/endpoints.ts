@@ -1,5 +1,6 @@
 import { API_BASE_URL, apiRequest, getAccessToken } from "./client"
 import type {
+  Accueil,
   Cours,
   CoursContent,
   CoursPreview,
@@ -41,6 +42,8 @@ import type {
   Subscription,
   Temoignage,
   ThemeExercicesResponse,
+  ThemesFrequentsMatiere,
+  ExerciceLecture,
   ThemesFrequentsResponse,
   PaiementAReprendre,
   SimulationListItem,
@@ -288,6 +291,21 @@ export function getThemesFrequents(cursusId: number, subjectId: string, signal?:
   )
 }
 
+export function getThemesFrequentsMatieres(cursusId: number, signal?: AbortSignal) {
+  return apiRequest<ThemesFrequentsMatiere[]>(`/catalog/cursus/${cursusId}/themes-frequents/matieres/`, {
+    auth: false,
+    signal,
+  })
+}
+
+export function getExerciceLecture(tagId: number, exerciseId: number, signal?: AbortSignal) {
+  // "optional" : un visiteur voit les énoncés (publics), seul le corrigé est réservé.
+  return apiRequest<ExerciceLecture>(`/catalog/themes/${tagId}/exercices/${exerciseId}/lecture/`, {
+    auth: "optional",
+    signal,
+  })
+}
+
 export function getThemeExercices(cursusId: number, tagId: number, subjectId: string, signal?: AbortSignal) {
   // "optional" : chaque exercice porte son propre has_access (voir ThemeExercice) -
   // même motif que getThemesFrequents, un visiteur anonyme voit la liste normalement.
@@ -427,6 +445,15 @@ export function requestQuizFichePdf(sessionId: number) {
  */
 export function getPlanDuJour(signal?: AbortSignal) {
   return apiRequest<PlanDuJour>("/quiz/plan-du-jour/", { signal })
+}
+
+/**
+ * L'accueil d'un abonné en une seule requête (voir quiz.accueil côté backend) : le
+ * plan du jour, le delta depuis la dernière visite, la trajectoire, le résumé du
+ * parcours, les révisions dues, la lecture à reprendre. Enregistre la visite.
+ */
+export function getAccueil(signal?: AbortSignal) {
+  return apiRequest<Accueil>("/quiz/accueil/", { signal })
 }
 
 export function terminerSeanceDuJour() {

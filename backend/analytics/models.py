@@ -36,6 +36,9 @@ class EventName(models.TextChoices):
     PLAN_VERROUILLE_CLIC = "plan_verrouille_clic", "Clic sur une séance verrouillée"
     PLAN_THEME_IGNORE = "plan_theme_ignore", "Thème proposé ignoré"
     OBJECTIF_MATIERE = "objectif_matiere", "Matière de concentration définie ou retirée"
+    # Le lendemain de l'examen, l'accueil demande comment ça s'est passé : trois boutons,
+    # une réponse - le seul retour qu'on ait sur ce que valait la préparation.
+    EXAMEN_RESSENTI = "examen_ressenti", "Ressenti après l'examen"
     # Volumes de visiteurs, anonymes compris : seule façon de voir combien de personnes
     # regardent le prix ou ouvrent la page de paiement sans jamais se créer de compte
     # (voir analytics.funnel, qui ne peut compter que les comptes).

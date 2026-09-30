@@ -579,6 +579,16 @@ export interface ThemeFrequent {
   quiz_disponible: boolean
 }
 
+/** Matière proposée au choix sur /themes-frequents (voir ThemesFrequentsMatieresView) :
+ * seulement celles qui ont des épreuves officielles sur le cursus choisi. */
+export interface ThemesFrequentsMatiere {
+  code: string
+  label: string
+  nb_sessions: number
+  // false = sous le seuil minimum, le classement ne serait pas fiable.
+  disponible: boolean
+}
+
 export interface ThemesFrequentsResponse {
   nb_sessions_disponibles: number
   seuil_minimum: number
@@ -598,10 +608,52 @@ export interface ThemeExercice {
   lesson_slug: string
   lesson_title: string
   lesson_year: number | null
+  // Chaîne brute plutôt que Origine : le backend peut aussi renvoyer SUJET_ZERO.
+  origine: string
   numero_exercice: string
   has_access: boolean
   // Declare par l'eleve (voir access.ExerciceFait), jamais deduit d'une ouverture.
   fait: boolean
+}
+
+/** Un (examen, matière) où le thème est traité - alimente le choix de l'examen et de la
+ * matière sur ThemeExercicesPage, sans jamais proposer une combinaison vide. */
+export interface ThemeExercicesContexte {
+  cursus_id: number
+  subject_code: string
+  subject_label: string
+  nb_exercices: number
+}
+
+/** Une question d'un exercice lu seul depuis un thème (voir ThemeExerciceLectureView). */
+export interface QuestionLecture {
+  numero: string
+  enonce_markdown: string
+  // null sans accès : les énoncés sont publics, jamais les corrigés.
+  corrige_markdown: string | null
+  // Vrai si la question porte le thème d'où l'on vient - surlignée à l'écran.
+  sur_le_theme: boolean
+}
+
+export interface ExerciceLecture {
+  exercise: { id: number; numero_exercice: string; titre: string; points: string; fait: boolean }
+  lesson: {
+    slug: string
+    title: string
+    year: number | null
+    origine: string
+    subject_code: string
+    subject_label: string
+    introduction_markdown: string
+  }
+  theme: { id: number; name: string }
+  has_access: boolean
+  enonce_intro_markdown: string
+  // null quand l'exercice ne se découpe pas fidèlement par question : afficher alors
+  // enonce_markdown/corrige_markdown en un seul bloc, sans surlignage.
+  questions: QuestionLecture[] | null
+  enonce_markdown: string
+  corrige_markdown: string | null
 }
 
 export interface ThemeExercicesResponse {
@@ -609,6 +661,7 @@ export interface ThemeExercicesResponse {
   exercices: ThemeExercice[]
   total: number
   faits: number
+  contextes: ThemeExercicesContexte[]
 }
 
 export interface Paginated<T> {
@@ -688,6 +741,10 @@ export interface QuizQuestion {
   // épreuve/leçon d'origine, contrairement à numero/lesson_id/enonce_intro_markdown
   // ci-dessous.
   theme?: string
+  // Id du thème et code matière (CompetenceItem seulement) : lien vers les exercices
+  // corrigés du thème (/themes-frequents/<id>/exercices).
+  theme_id?: number
+  subject_code?: string
   // Présents uniquement pour l'historique pré-bascule (source catalog.Question,
   // extraite d'une épreuve réelle) - jamais peuplés pour une session créée après la
   // bascule vers CompetenceItem.
@@ -727,6 +784,9 @@ export interface QuizCoursSuggere {
 
 export interface QuizThemeScore {
   theme: string
+  theme_id: number
+  // null pour une question historique (catalog.Question) : pas de lien vers le thème.
+  subject_code: string | null
   total: number
   reussies: number
   // Renseigné seulement pour un thème sous le seuil de maîtrise ET couvert par un cours
@@ -833,6 +893,80 @@ export interface ResumeMatiere {
   en_cours: number
   a_decouvrir: number
   sans_contenu: number
+  // "Ce qui tombe vraiment" : somme des poids (coefficient x fréquence, voir
+  // quiz.services.poids_savoir) des savoirs exploitables, et la part déjà maîtrisée.
+  poids_total: number
+  poids_maitrise: number
+}
+
+/** Phase de la préparation, d'après les jours restants (voir quiz.accueil.phase_examen). */
+export type PhaseExamen = "normal" | "simulation" | "derniere_ligne_droite" | "veille" | "jour_j" | "apres"
+
+/** Ce qui a changé depuis la visite précédente (voir quiz.accueil.delta_depuis). Null
+ * sans visite précédente ou quand rien n'a bougé. */
+export interface DepuisLaDerniereVisite {
+  // AAAA-MM-JJ.
+  depuis: string
+  seances: number
+  questions: number
+  themes_consolides_total: number
+  themes_consolides: { theme: string; subject_label: string }[]
+  matiere_en_hausse: { subject_id: number; subject_label: string; gain: number } | null
+  revisions_tenues: number
+}
+
+/** Où mène le rythme actuel (voir quiz.accueil.trajectoire). Les champs de projection
+ * sont null tant qu'il n'y a pas de rythme mesurable. */
+export interface Trajectoire {
+  jours_restants: number
+  fenetre_jours: number
+  seances_fenetre: number
+  seances_par_semaine: number | null
+  couverture_actuelle: number
+  couverture_projetee: number | null
+  cible: number
+  suffisant: boolean | null
+  seances_de_plus_par_semaine: number | null
+  // Faux quand même en travaillant tous les jours la cible n'est plus atteignable.
+  atteignable: boolean | null
+}
+
+export interface PreparationExamen {
+  // Part pondérée de ce qui tombe vraiment (0-1) - c'est l'anneau.
+  ponderee: number
+  // Part brute des savoirs exploitables (0-1) - le "12 sur 40" sous l'anneau.
+  brute: number
+  maitrises: number
+  exploitables: number
+}
+
+/** Une ligne "à réviser" réduite pour l'accueil (voir views.accueil_view). */
+export interface RevisionAccueil {
+  id: number
+  theme: string
+  theme_id: number
+  subject_id: number
+  subject_label: string
+  cursus: number
+  jours_retard: number
+}
+
+/** Réponse de GET /quiz/accueil/ - tout l'accueil d'un abonné en une requête. */
+export interface Accueil {
+  plan: PlanDuJour
+  phase: PhaseExamen
+  absence_jours: number
+  premiers_pas: boolean
+  nouvelle_visite: boolean
+  phrase_coach: string
+  depuis: DepuisLaDerniereVisite | null
+  trajectoire: Trajectoire | null
+  resume: ResumeMatiere[]
+  preparation: PreparationExamen | null
+  revisions: RevisionAccueil[]
+  lecture: { slug: string; title: string; country: string } | null
+  simulation_suggeree: { id: number; slug: string; title: string; subject_label: string; year: number | null } | null
+  bilan_semaine: BilanPeriode | null
 }
 
 export interface InscriptionInedite {

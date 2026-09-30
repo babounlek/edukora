@@ -144,7 +144,8 @@ class TransactionSyncStatusTests(TestCase):
         garantirait de toute façon en base, mais la logique applicative doit aussi
         prendre ce chemin (extend), pas tenter un create qui échouerait."""
         existing = Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=5),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=5),
         )
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-1"}
 

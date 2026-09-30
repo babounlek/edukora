@@ -15,6 +15,7 @@ from .models import MarqueEtude
 class _Base(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677500001", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(code="MATHS")
         self.cursus = Cursus.objects.get(examen=Examen.BAC, series__code="C")
         self.cours = Cours.objects.create(
@@ -30,41 +31,41 @@ class _Base(TestCase):
 
     def _abonner(self, jours=5):
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=jours),
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=jours),
         )
 
 
 class EnregistrerMarqueTests(_Base):
     def test_a_partial_update_only_touches_the_given_fields(self):
-        enregistrer_marque(self.user, self.cours, "regle", compris=True)
-        enregistrer_marque(self.user, self.cours, "regle", note="Penser au cas limite")
+        enregistrer_marque(self.profil, self.cours, "regle", compris=True)
+        enregistrer_marque(self.profil, self.cours, "regle", note="Penser au cas limite")
 
-        marque = MarqueEtude.objects.get(user=self.user, cours=self.cours, cle="regle")
+        marque = MarqueEtude.objects.get(profil=self.profil, cours=self.cours, cle="regle")
         self.assertTrue(marque.compris)
         self.assertEqual(marque.note, "Penser au cas limite")
 
     def test_the_row_disappears_once_nothing_is_left(self):
-        enregistrer_marque(self.user, self.cours, "regle", signet=True)
+        enregistrer_marque(self.profil, self.cours, "regle", signet=True)
 
-        resultat = enregistrer_marque(self.user, self.cours, "regle", signet=False)
+        resultat = enregistrer_marque(self.profil, self.cours, "regle", signet=False)
 
         self.assertIsNone(resultat)
         self.assertFalse(MarqueEtude.objects.exists())
 
     def test_marks_on_a_lesson_and_a_course_do_not_collide(self):
-        enregistrer_marque(self.user, self.cours, "exercice-1", signet=True)
-        enregistrer_marque(self.user, self.lesson, "exercice-1", signet=True)
+        enregistrer_marque(self.profil, self.cours, "exercice-1", signet=True)
+        enregistrer_marque(self.profil, self.lesson, "exercice-1", signet=True)
 
         self.assertEqual(MarqueEtude.objects.count(), 2)
 
     def test_a_malformed_key_is_rejected(self):
         for cle in ("", "Regle", "../etc", "a" * 61, "-x"):
             with self.assertRaises(MarqueInvalide):
-                enregistrer_marque(self.user, self.cours, cle, signet=True)
+                enregistrer_marque(self.profil, self.cours, cle, signet=True)
 
     def test_an_oversized_note_is_rejected(self):
         with self.assertRaises(MarqueInvalide):
-            enregistrer_marque(self.user, self.cours, "regle", note="x" * 2001)
+            enregistrer_marque(self.profil, self.cours, "regle", note="x" * 2001)
 
 
 class EtudeApiTests(_Base):
@@ -96,9 +97,11 @@ class EtudeApiTests(_Base):
 
     def test_marks_are_private_to_their_owner(self):
         self._abonner()
-        enregistrer_marque(self.user, self.cours, "regle", signet=True)
+        enregistrer_marque(self.profil, self.cours, "regle", signet=True)
         autre = User.objects.create_user(phone_number="677500002", password="x")
-        Subscription.objects.create(user=autre, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=5))
+        Subscription.objects.create(
+            user=autre, profil=autre.profils.first(), cursus=self.cursus, expires_at=timezone.now() + timedelta(days=5),
+        )
         client = APIClient()
         client.force_authenticate(user=autre)
 
@@ -113,9 +116,9 @@ class EtudeApiTests(_Base):
 
     def test_carnet_lists_bookmarks_and_notes_but_not_bare_understood_flags(self):
         self._abonner()
-        enregistrer_marque(self.user, self.cours, "regle", compris=True)
-        enregistrer_marque(self.user, self.cours, "synthese", signet=True)
-        enregistrer_marque(self.user, self.lesson, "exercice-2", note="Refaire")
+        enregistrer_marque(self.profil, self.cours, "regle", compris=True)
+        enregistrer_marque(self.profil, self.cours, "synthese", signet=True)
+        enregistrer_marque(self.profil, self.lesson, "exercice-2", note="Refaire")
 
         carnet = self.client.get("/access/etude/carnet/").data
 
@@ -125,7 +128,7 @@ class EtudeApiTests(_Base):
         self.assertEqual(cours["titre"], "Les limites")
 
     def test_carnet_keeps_the_notes_of_an_expired_subscription(self):
-        enregistrer_marque(self.user, self.cours, "regle", note="Ma note")
+        enregistrer_marque(self.profil, self.cours, "regle", note="Ma note")
 
         carnet = self.client.get("/access/etude/carnet/").data
 

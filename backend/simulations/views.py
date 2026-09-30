@@ -18,6 +18,7 @@ from catalog.models import Lesson, LessonType
 from inedit import notation, rapport
 from inedit.models import CausePerte
 from quiz.services import enregistrer_resultat_pour_revision
+from users.profils import profil_actif
 
 from .cadre import charger_exercices, duree_minutes_pour_lesson
 from .models import SimulationEpreuve, SimulationReponse
@@ -62,7 +63,7 @@ def _alimenter_revision(simulation, exercice, correcte):
     for cursus in _cursus(simulation):
         for theme in themes:
             enregistrer_resultat_pour_revision(
-                simulation.user, cursus, simulation.lesson.subject, theme, correcte,
+                simulation.profil, cursus, simulation.lesson.subject, theme, correcte,
             )
 
 
@@ -218,7 +219,7 @@ def _themes_a_reviser(simulation, bilan, exercices):
     if not perdus:
         return []
     echeances = {}
-    for planification in RevisionSchedule.objects.filter(user=simulation.user, theme__name__in=perdus):
+    for planification in RevisionSchedule.objects.filter(profil=simulation.profil, theme__name__in=perdus):
         actuelle = echeances.get(planification.theme.name)
         if actuelle is None or planification.due_at < actuelle:
             echeances[planification.theme.name] = planification.due_at
@@ -236,8 +237,8 @@ def _comparaison(simulation, resume):
             lesson_id=simulation.lesson_id, exam_mode_started_at__isnull=False,
             submitted_at__isnull=False, note_obtenue__isnull=False,
         )
-        .exclude(user_id=simulation.user_id)
-        .values("user_id")
+        .exclude(profil_id=simulation.profil_id)
+        .values("profil_id")
         .annotate(meilleure=Max("note_obtenue"))
     )
     return rapport.situer(Decimal(str(resume["note"])), [ligne["meilleure"] for ligne in autres])
@@ -274,7 +275,7 @@ def _resultat_payload(simulation, bilan=None, exercices=None):
         "temps_par_exercice": temps,
         "exercice_chronophage": rapport.exercice_chronophage(temps),
         "comparaison": _comparaison(simulation, resume),
-        "cursus_id": cursus[0].pk if cursus else (simulation.user.cursus_prepare_id or None),
+        "cursus_id": cursus[0].pk if cursus else (simulation.profil.compte.cursus_prepare_id or None),
         "par_exercice": [
             {
                 "numero_exercice": e["numero_exercice"],
@@ -303,7 +304,8 @@ def _resultat_payload(simulation, bilan=None, exercices=None):
 
 def _simulation_de(request, simulation_id):
     return get_object_or_404(
-        SimulationEpreuve.objects.select_related("lesson__subject__country"), pk=simulation_id, user=request.user,
+        SimulationEpreuve.objects.select_related("lesson__subject__country"),
+        pk=simulation_id, profil=profil_actif(request),
     )
 
 
@@ -319,7 +321,7 @@ def start_simulation(request):
         return Response({"error": "Abonnement requis pour simuler cette épreuve."}, status=403)
     if not charger_exercices(lesson):
         return Response({"error": "Cette épreuve n'est pas découpée en exercices : simulation impossible."}, status=400)
-    simulation = SimulationEpreuve.objects.create(user=request.user, lesson=lesson)
+    simulation = SimulationEpreuve.objects.create(profil=profil_actif(request), lesson=lesson)
     return Response(_payload(simulation), status=201)
 
 
@@ -332,7 +334,9 @@ def simulation_detail(request, simulation_id):
 
 @api_view(["GET"])
 def mes_simulations(request):
-    simulations = SimulationEpreuve.objects.filter(user=request.user).select_related("lesson").order_by("-started_at")
+    simulations = (
+        SimulationEpreuve.objects.filter(profil=profil_actif(request)).select_related("lesson").order_by("-started_at")
+    )
     return Response([
         {
             "id": s.id,

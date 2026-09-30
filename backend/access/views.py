@@ -7,6 +7,8 @@ from rest_framework.response import Response
 
 from catalog.models import Cours, Exercise, Lesson
 
+from users.profils import profil_actif
+
 from .etude import MarqueInvalide, enregistrer_marque, marques_du_document
 from .models import ExerciceFait, LectureProgress, MarqueEtude
 from .services import has_access
@@ -54,17 +56,18 @@ def read_lesson(request, lesson_slug):
     if not has_access(request.user, lesson):
         return Response({"error": "Abonnement requis pour lire ce contenu."}, status=403)
 
-    if request.user.is_authenticated:
-        LectureProgress.objects.update_or_create(user=request.user, lesson=lesson)
+    profil = profil_actif(request) if request.user.is_authenticated else None
+    if profil is not None:
+        LectureProgress.objects.update_or_create(profil=profil, lesson=lesson)
 
     # Exercices de CETTE épreuve que le lecteur a déjà déclaré avoir traités - une
     # seule requête pour toute la page. Sert à proposer la validation au bon endroit,
     # à la fin du corrigé (voir access.ExerciceFait) : c'est le seul moment où l'élève
     # a réellement de quoi juger s'il a résolu l'exercice.
     exercices_faits = set()
-    if request.user.is_authenticated:
+    if profil is not None:
         exercices_faits = set(
-            ExerciceFait.objects.filter(user=request.user, exercise__lesson=lesson)
+            ExerciceFait.objects.filter(profil=profil, exercise__lesson=lesson)
             .values_list("exercise_id", flat=True),
         )
     exercices = [dict(e, fait=e.get("id") in exercices_faits) for e in lesson.exercises_breakdown()]
@@ -128,7 +131,7 @@ def read_cours(request, cours_id):
         return Response({"error": "Abonnement requis pour lire ce contenu."}, status=403)
 
     if request.user.is_authenticated:
-        LectureProgress.objects.update_or_create(user=request.user, cours=cours)
+        LectureProgress.objects.update_or_create(profil=profil_actif(request), cours=cours)
 
     return Response({
         "id": cours.id,
@@ -162,13 +165,14 @@ def preview_cours(request, cours_id):
 @api_view(["GET"])
 def my_progression(request):
     """Leçons et cours dont l'utilisateur a ouvert la lecture complète, du plus récent au plus ancien."""
+    profil = profil_actif(request)
     lessons = (
-        Lesson.objects.visibles().filter(lectures__user=request.user)
+        Lesson.objects.visibles().filter(lectures__profil=profil)
         .select_related("subject__country")
         .order_by("-lectures__last_read_at")
     )
     cours = (
-        Cours.objects.visibles().filter(lectures__user=request.user)
+        Cours.objects.visibles().filter(lectures__profil=profil)
         .order_by("-lectures__last_read_at")
     )
 
@@ -195,11 +199,12 @@ def marquer_exercice_fait(request, exercise_id):
     if not has_access(request.user, exercise.lesson):
         return Response({"error": "Abonnement requis pour cette épreuve."}, status=403)
 
+    profil = profil_actif(request)
     fait = request.data.get("fait", True)
     if fait:
-        ExerciceFait.objects.get_or_create(user=request.user, exercise=exercise)
+        ExerciceFait.objects.get_or_create(profil=profil, exercise=exercise)
     else:
-        ExerciceFait.objects.filter(user=request.user, exercise=exercise).delete()
+        ExerciceFait.objects.filter(profil=profil, exercise=exercise).delete()
     return Response({"exercise_id": exercise.pk, "fait": bool(fait)})
 
 
@@ -239,12 +244,13 @@ def etude_marques(request):
     if not has_access(request.user, cible):
         return Response({"error": "Abonnement requis pour ce contenu."}, status=403)
 
+    profil = profil_actif(request)
     if request.method == "GET":
-        return Response([_marque_payload(m) for m in marques_du_document(request.user, cible)])
+        return Response([_marque_payload(m) for m in marques_du_document(profil, cible)])
 
     try:
         marque = enregistrer_marque(
-            request.user, cible, request.data.get("cle", ""),
+            profil, cible, request.data.get("cle", ""),
             compris=request.data.get("compris"), signet=request.data.get("signet"), note=request.data.get("note"),
         )
     except MarqueInvalide as exc:
@@ -266,7 +272,7 @@ def etude_carnet(request):
     reste gatée par le lecteur.
     """
     marques = (
-        MarqueEtude.objects.filter(user=request.user)
+        MarqueEtude.objects.filter(profil=profil_actif(request))
         .filter(models.Q(signet=True) | ~models.Q(note=""))
         .select_related("lesson__subject__country", "cours__subject__country")[:200]
     )

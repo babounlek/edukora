@@ -33,7 +33,7 @@ def _niveau(reussies, total):
     return "solide"
 
 
-def priorites_examen(user, cursus):
+def priorites_examen(profil, cursus):
     subjects = list(
         Subject.objects.filter(lessons__statut=StatutContenu.VALIDE, lessons__cursus=cursus).distinct(),
     )
@@ -42,7 +42,7 @@ def priorites_examen(user, cursus):
     stats = {s.id: {"total": 0, "reussies": 0} for s in subjects}
     for reponse in (
         QuizAnswer.objects.filter(
-            quiz_question__session__user=user,
+            quiz_question__session__profil=profil,
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
         )
@@ -82,7 +82,7 @@ def priorites_examen(user, cursus):
 
     diagnostic = (
         QuizSession.objects.filter(
-            user=user, cursus=cursus, mode=ModeQuiz.DIAGNOSTIC, completed_at__isnull=False,
+            profil=profil, cursus=cursus, mode=ModeQuiz.DIAGNOSTIC, completed_at__isnull=False,
         )
         .order_by("-completed_at")
         .first()

@@ -67,11 +67,14 @@ def _ids_revenus_apres(cohorte, jours):
 
     inscription = dict(cohorte.values_list("id", "date_joined"))
     revenus = set()
+    # SeanceJournaliere/QuizSession/TentativeInedite sont par profil (voir
+    # users.Profil), jamais par compte - remonté ici via profil__compte_id, chaque
+    # compte n'ayant à ce stade qu'un seul profil (voir users.profils.profil_actif).
     activites = (
-        SeanceJournaliere.objects.filter(user_id__in=inscription, statut=StatutSeance.TERMINEE)
-        .values_list("user_id", "termine_at"),
-        QuizSession.objects.filter(user_id__in=inscription).values_list("user_id", "started_at"),
-        TentativeInedite.objects.filter(user_id__in=inscription).values_list("user_id", "started_at"),
+        SeanceJournaliere.objects.filter(profil__compte_id__in=inscription, statut=StatutSeance.TERMINEE)
+        .values_list("profil__compte_id", "termine_at"),
+        QuizSession.objects.filter(profil__compte_id__in=inscription).values_list("profil__compte_id", "started_at"),
+        TentativeInedite.objects.filter(profil__compte_id__in=inscription).values_list("profil__compte_id", "started_at"),
     )
     for lot in activites:
         for user_id, quand in lot:
@@ -90,10 +93,12 @@ def entonnoir(jours=30, *, maintenant=None):
     total = len(inscrits)
 
     a_declare = set(cohorte.filter(cursus_prepare__isnull=False).values_list("id", flat=True))
-    a_lance = set(SeanceJournaliere.objects.filter(user_id__in=inscrits).values_list("user_id", flat=True))
+    a_lance = set(
+        SeanceJournaliere.objects.filter(profil__compte_id__in=inscrits).values_list("profil__compte_id", flat=True),
+    )
     a_termine = set(
-        SeanceJournaliere.objects.filter(user_id__in=inscrits, statut=StatutSeance.TERMINEE)
-        .values_list("user_id", flat=True),
+        SeanceJournaliere.objects.filter(profil__compte_id__in=inscrits, statut=StatutSeance.TERMINEE)
+        .values_list("profil__compte_id", flat=True),
     )
     a_essaye = inscrits & _ids_avec_tentative_de_paiement()
     a_paye = inscrits & _ids_avec_paiement_reussi()

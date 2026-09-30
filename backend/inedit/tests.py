@@ -168,7 +168,7 @@ class TentativeInediteTests(TestCase):
         self.epreuve = _make_epreuve()
 
     def test_en_cours_is_true_until_submitted_at_is_set(self):
-        tentative = TentativeInedite.objects.create(user=self.user, epreuve=self.epreuve)
+        tentative = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=self.epreuve)
         self.assertTrue(tentative.en_cours)
 
         tentative.submitted_at = timezone.now()
@@ -189,7 +189,7 @@ class TentativeReponseTests(TestCase):
             choix=[{"lettre": "a", "texte": "Un"}, {"lettre": "b", "texte": "Deux"}],
             reponse_correcte="b",
         )
-        tentative = TentativeInedite.objects.create(user=self.user, epreuve=question.exercice.epreuve)
+        tentative = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=question.exercice.epreuve)
 
         correcte = TentativeReponse.objects.create(tentative=tentative, question=question, reponse_choisie="b")
         self.assertTrue(correcte.est_correcte)
@@ -203,7 +203,7 @@ class TentativeReponseTests(TestCase):
 
     def test_open_question_correctness_relies_on_self_declared_result(self):
         question = _make_question(type_reponse=TypeReponse.OUVERTE)
-        tentative = TentativeInedite.objects.create(user=self.user, epreuve=question.exercice.epreuve)
+        tentative = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=question.exercice.epreuve)
 
         reponse = TentativeReponse.objects.create(
             tentative=tentative, question=question, resultat_declare=ResultatDeclare.REUSSI,
@@ -215,7 +215,7 @@ class TentativeReponseTests(TestCase):
 
     def test_duplicate_answer_to_same_question_in_same_tentative_is_rejected(self):
         question = _make_question(type_reponse=TypeReponse.QCM, reponse_correcte="a")
-        tentative = TentativeInedite.objects.create(user=self.user, epreuve=question.exercice.epreuve)
+        tentative = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=question.exercice.epreuve)
         TentativeReponse.objects.create(tentative=tentative, question=question, reponse_choisie="a")
 
         with self.assertRaises(IntegrityError):
@@ -232,7 +232,7 @@ class CascadeDeletionTests(TestCase):
         user = User.objects.create_user(phone_number="677300003", password="x")
         question = _make_question(type_reponse=TypeReponse.QCM, reponse_correcte="a")
         epreuve = question.exercice.epreuve
-        tentative = TentativeInedite.objects.create(user=user, epreuve=epreuve)
+        tentative = TentativeInedite.objects.create(profil=user.profils.first(), epreuve=epreuve)
         TentativeReponse.objects.create(tentative=tentative, question=question, reponse_choisie="a")
 
         epreuve.delete()  # ne doit lever aucune ProtectedError
@@ -1093,10 +1093,12 @@ class ListMyInscriptionsInediteAPITests(TestCase):
 
     def test_returns_only_the_authenticated_user_inscriptions(self):
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=10),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=10),
         )
         InscriptionInedite.objects.create(
-            user=self.other_user, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=10),
+            user=self.other_user, profil=self.other_user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=10),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -1187,7 +1189,8 @@ class EpreuveInediteDetailAPITests(TestCase):
 
     def test_has_access_true_with_active_inscription(self):
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -1299,9 +1302,9 @@ class ListMyTentativesInediteAPITests(TestCase):
         self.assertEqual(response.status_code, 401)
 
     def test_returns_only_the_authenticated_user_tentatives_most_recent_first(self):
-        TentativeInedite.objects.create(user=self.other_user, epreuve=self.epreuve)
-        older = TentativeInedite.objects.create(user=self.user, epreuve=self.epreuve)
-        newer = TentativeInedite.objects.create(user=self.user, epreuve=self.epreuve)
+        TentativeInedite.objects.create(profil=self.other_user.profils.first(), epreuve=self.epreuve)
+        older = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=self.epreuve)
+        newer = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=self.epreuve)
         self.client.force_authenticate(user=self.user)
 
         response = self.client.get("/inedit/mes-tentatives/")
@@ -1310,9 +1313,9 @@ class ListMyTentativesInediteAPITests(TestCase):
         self.assertEqual(response.data[0]["epreuve_titre"], self.epreuve.titre)
 
     def test_includes_both_in_progress_and_submitted_tentatives(self):
-        en_cours = TentativeInedite.objects.create(user=self.user, epreuve=self.epreuve)
+        en_cours = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=self.epreuve)
         soumise = TentativeInedite.objects.create(
-            user=self.user, epreuve=self.epreuve, submitted_at=timezone.now(), score_obtenu=75,
+            profil=self.user.profils.first(), epreuve=self.epreuve, submitted_at=timezone.now(), score_obtenu=75,
         )
         self.client.force_authenticate(user=self.user)
 
@@ -1345,7 +1348,8 @@ class StartTentativeAPITests(TestCase):
         from subscriptions.models import Subscription
 
         Subscription.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
         response = self.client.post("/inedit/tentatives/", {"epreuve": self.epreuve.id})
@@ -1353,14 +1357,15 @@ class StartTentativeAPITests(TestCase):
 
     def test_allowed_with_active_inscription_inedite(self):
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
         response = self.client.post("/inedit/tentatives/", {"epreuve": self.epreuve.id})
 
         self.assertEqual(response.status_code, 201)
-        self.assertTrue(TentativeInedite.objects.filter(user=self.user, epreuve=self.epreuve).exists())
+        self.assertTrue(TentativeInedite.objects.filter(profil=self.user.profils.first(), epreuve=self.epreuve).exists())
         self.assertEqual(len(response.data["exercices"]), 1)
         self.assertEqual(response.data["duree_minutes"], self.epreuve.blueprint.duree_minutes)
         # Mode libre par défaut (exam_mode_started_at jamais engagé) : le corrigé est
@@ -1377,7 +1382,8 @@ class StartTentativeAPITests(TestCase):
             _epreuve_payload(external_id="ep-brouillon", blueprint_external_id="bp-brouillon"), self.country,
         )
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
+            user=self.user, profil=self.user.profils.first(),
+            cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
         )
         self.client.force_authenticate(user=self.user)
 
@@ -1397,12 +1403,14 @@ class TentativeFlowAPITests(TestCase):
         self.epreuve = _make_published_epreuve(self.country)
         self.user = User.objects.create_user(phone_number="677400010", password="x")
         self.other_user = User.objects.create_user(phone_number="677400011", password="x")
+        self.profil = self.user.profils.first()
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
+            user=self.user, profil=self.profil,
+            cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        self.tentative = TentativeInedite.objects.create(user=self.user, epreuve=self.epreuve)
+        self.tentative = TentativeInedite.objects.create(profil=self.profil, epreuve=self.epreuve)
         exercice = self.epreuve.exercices.get()
         self.qcm_question = exercice.questions.get(numero="1")
         self.ouverte_question = exercice.questions.get(numero="2")
@@ -1476,7 +1484,7 @@ class TentativeFlowAPITests(TestCase):
             {"reponse_choisie": "a"},
         )
         theme = Tag.objects.get(name="Suites numériques")
-        self.assertTrue(RevisionSchedule.objects.filter(user=self.user, cursus=self.cursus, theme=theme).exists())
+        self.assertTrue(RevisionSchedule.objects.filter(profil=self.profil, cursus=self.cursus, theme=theme).exists())
 
     def test_open_question_answer_requires_valid_resultat_declare(self):
         response = self.client.post(
@@ -1532,7 +1540,7 @@ class CorrigeMarkdownCoursLinksAPITests(TestCase):
             exercice=self.exercice, external_id="rdi-test-1", competence="Test",
             contenu_markdown="Contenu du rappel.", cours=self.cours,
         )
-        self.tentative = TentativeInedite.objects.create(user=self.user, epreuve=self.epreuve)
+        self.tentative = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=self.epreuve)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
@@ -1583,12 +1591,14 @@ class ExamModeAPITests(TestCase):
         self.cursus = Cursus.objects.get(country=self.country, examen=Examen.BAC, series__code="C")
         self.epreuve = _make_published_epreuve(self.country)
         self.user = User.objects.create_user(phone_number="677400020", password="x")
+        self.profil = self.user.profils.first()
         InscriptionInedite.objects.create(
-            user=self.user, cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
+            user=self.user, profil=self.profil,
+            cursus=self.cursus, expires_at=timezone.now() + timezone.timedelta(days=1),
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        self.tentative = TentativeInedite.objects.create(user=self.user, epreuve=self.epreuve)
+        self.tentative = TentativeInedite.objects.create(profil=self.profil, epreuve=self.epreuve)
         exercice = self.epreuve.exercices.get()
         self.qcm_question = exercice.questions.get(numero="1")
         self.ouverte_question = exercice.questions.get(numero="2")
@@ -1614,7 +1624,7 @@ class ExamModeAPITests(TestCase):
         )
         epreuve_sans_duree.statut = StatutContenu.VALIDE
         epreuve_sans_duree.save(update_fields=["statut"])
-        tentative = TentativeInedite.objects.create(user=self.user, epreuve=epreuve_sans_duree)
+        tentative = TentativeInedite.objects.create(profil=self.profil, epreuve=epreuve_sans_duree)
 
         response = self.client.post(f"/inedit/tentatives/{tentative.id}/mode-examen/")
 
@@ -1717,7 +1727,7 @@ class QuestionMarqueeAPITests(TestCase):
         self.other_user = User.objects.create_user(phone_number="677400031", password="x")
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        self.tentative = TentativeInedite.objects.create(user=self.user, epreuve=self.epreuve)
+        self.tentative = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=self.epreuve)
         self.question = self.epreuve.exercices.get().questions.get(numero="1")
 
     def test_toggle_adds_then_removes(self):

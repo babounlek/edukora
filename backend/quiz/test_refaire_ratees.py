@@ -16,13 +16,14 @@ from .tests import _make_competence_item
 class RefaireRateesTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(phone_number="677600001", password="x")
+        self.profil = self.user.profils.first()
         self.subject = Subject.objects.get(country__code="CM", code="MATHS")
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.items = [
             _make_competence_item(self.subject, self.cursus, theme=Tag.objects.create(name=f"t{i}"), numero=f"r{i}")
             for i in range(4)
         ]
-        self.session = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        self.session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         # r0 juste, r1 raté, r2 raté, r3 jamais répondu
         for ordre, (item, resultat) in enumerate(zip(self.items, ("REUSSI", "ECHEC", "ECHEC", None)), start=1):
             quiz_question = QuizQuestion.objects.create(session=self.session, competence_item=item, ordre=ordre)
@@ -32,13 +33,15 @@ class RefaireRateesTests(TestCase):
         self.client.force_authenticate(user=self.user)
 
     def _abonner(self):
-        Subscription.objects.create(user=self.user, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=3))
+        Subscription.objects.create(
+            user=self.user, profil=self.profil, cursus=self.cursus, expires_at=timezone.now() + timedelta(days=3),
+        )
 
     def test_only_answered_and_missed_items_are_returned_in_order(self):
         self.assertEqual(items_rates(self.session), [self.items[1], self.items[2]])
 
     def test_the_new_session_reuses_exactly_those_items(self):
-        refaite = session_des_ratees(self.user, self.session)
+        refaite = session_des_ratees(self.profil, self.session)
 
         self.assertEqual(refaite.mode, ModeQuiz.PRATIQUE)
         self.assertNotEqual(refaite.pk, self.session.pk)
@@ -48,9 +51,9 @@ class RefaireRateesTests(TestCase):
         )
 
     def test_nothing_to_redo_raises(self):
-        propre = QuizSession.objects.create(user=self.user, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        propre = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         with self.assertRaises(ValueError):
-            session_des_ratees(self.user, propre)
+            session_des_ratees(self.profil, propre)
 
     def test_api_requires_an_active_subscription(self):
         response = self.client.post(f"/quiz/sessions/{self.session.id}/refaire-ratees/")

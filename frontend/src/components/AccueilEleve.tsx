@@ -1,321 +1,182 @@
+import { useEffect, useMemo } from "react"
 import { Link } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, ChevronRight, Clock, Crown, RotateCcw, TrendingUp } from "lucide-react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { ArrowRight, Clock, Crown } from "lucide-react"
 
-import { getBilanPeriode, getMyProgression, getPlanDuJour, getResumeParcours, listRevisionsDues } from "@/api/endpoints"
-import type { ResumeMatiere } from "@/api/types"
+import { getAccueil } from "@/api/endpoints"
+import type { Accueil } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { Button } from "@/components/ui/button"
-import { HeroAujourdhui } from "@/components/HeroAujourdhui"
+import { DepuisLaDerniereFois } from "@/components/DepuisLaDerniereFois"
+import { Moments } from "@/components/Moments"
+import { OuJenSuis } from "@/components/OuJenSuis"
 import { InviteRappels } from "@/components/RappelsEmail"
-import { SeanceDuJour } from "@/components/SeanceDuJour"
-import { TaSemaine } from "@/components/TaSemaine"
-import { AnneauProgression, BarreSegmentee, Ecrin, LegendeProgression } from "@/components/Progression"
-import { couleurMatiere } from "@/lib/matiereCouleur"
-import { pourcent } from "@/lib/maitrise"
-import { subjectIcon } from "@/lib/subjectIcon"
-import { cn } from "@/lib/utils"
-import { epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
+import { TeteAccueil } from "@/components/TeteAccueil"
+import { ecrireAccueilEnCache, lireAccueilEnCache } from "@/lib/accueilCache"
+import { marquerAffichageAccueil } from "@/lib/accueilChrono"
+import { epreuvesListPath } from "@/lib/countryPath"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 
 /**
- * L'accueil d'un élève ABONNÉ : sa séance, ses lectures, ses révisions, sa
- * progression. Rien d'autre.
+ * L'accueil d'un élève ABONNÉ, en trois zones et pas plus :
  *
- * La page /cm restait un argumentaire de vente jusqu'en bas pour quelqu'un qui avait
- * déjà payé : "Lire un corrigé gratuitement", "Un exemple plutôt qu'une promesse",
- * la preuve sociale, et surtout "Qu'est-ce que tu prépares ?" - qui lui redemandait à
- * chaque visite une information affichée deux centimètres plus haut dans son compte à
- * rebours. Convaincre quelqu'un de déjà convaincu, ce n'est pas neutre : c'est du
- * bruit à la place de ses affaires.
+ *   1. Aujourd'hui (TeteAccueil) : qui il est, où il en est, une phrase de coach, et
+ *      LE bouton - au-dessus du pli, y compris sur téléphone.
+ *   2. Depuis la dernière fois (DepuisLaDerniereFois) : ce qui a bougé, puis ce qu'il
+ *      y a à reprendre (deux révisions au plus, une lecture ouverte).
+ *   3. Où j'en suis (OuJenSuis) : l'anneau pondéré, la trajectoire d'ici le jour J, les
+ *      deux matières les plus en retard.
  *
- * Un VISITEUR et un élève NON abonné continuent de voir la page vitrine complète,
- * inchangée (voir CataloguePage) : pour le second, c'est sa page de conversion, et la
- * lui retirer coûterait des abonnements. La vitrine reste aussi ce que voient les
- * robots d'indexation, qui n'ont jamais de session - /cm est la page la plus
- * référencée du site et son contenu indexé ne bouge pas d'un octet.
+ * Tout vient d'UNE requête (voir getAccueil et quiz.accueil côté backend), rendue en
+ * un seul passage : plus de blocs qui apparaissent un à un ni de page qui saute. La
+ * dernière version connue est gardée dans le navigateur (voir lib/accueilCache) pour
+ * s'afficher avant la réponse - et hors connexion.
+ *
+ * Un VISITEUR et un élève NON abonné continuent de voir la page vitrine complète (voir
+ * CataloguePage) : pour le second, c'est sa page de conversion. La vitrine reste aussi
+ * ce que voient les robots d'indexation.
  */
 export function AccueilEleve({ country }: { country: string }) {
   const { user } = useAuth()
+  const queryClient = useQueryClient()
   const cursusId = user?.cursus_prepare?.id
+  const userId = user?.id
 
-  const { data: progression } = useQuery({
-    queryKey: ["progression"],
-    queryFn: ({ signal }) => getMyProgression(signal),
-  })
+  // Le chrono du seul chiffre qui juge cette page : le délai jusqu'à "Commencer".
+  useEffect(() => {
+    marquerAffichageAccueil()
+  }, [])
 
-  const { data: revisions } = useQuery({
-    queryKey: ["revisions-dues"],
-    queryFn: ({ signal }) => listRevisionsDues(signal),
-  })
+  const enCache = useMemo(
+    () => (userId && cursusId ? lireAccueilEnCache(userId, cursusId) : null),
+    [userId, cursusId],
+  )
 
-  const { data: resume } = useQuery({
-    queryKey: ["parcours-resume", cursusId],
-    queryFn: () => getResumeParcours(Number(cursusId)),
+  const { data, isError } = useQuery({
+    queryKey: ["accueil", cursusId],
+    queryFn: async ({ signal }) => {
+      const accueil = await getAccueil(signal)
+      // Les blocs qui vivent aussi ailleurs lisent leurs clés habituelles : on les
+      // alimente ici pour qu'aucun n'ait à refaire sa propre requête (la séance et ses
+      // mutations sous "plan-du-jour", le bilan de semaine, le résumé du parcours que
+      // la page Ma progression réutilise en arrivant depuis "Voir toute ma progression").
+      queryClient.setQueryData(["plan-du-jour"], accueil.plan)
+      if (accueil.bilan_semaine) queryClient.setQueryData(["bilan-periode", cursusId, 7], accueil.bilan_semaine)
+      queryClient.setQueryData(["parcours-resume", cursusId], accueil.resume)
+      if (userId && cursusId) ecrireAccueilEnCache(userId, cursusId, accueil)
+      return accueil
+    },
+    // La version en cache s'affiche tout de suite, et le serveur est TOUJOURS
+    // interrogé au montage (staleTime 0, contre 60 s par défaut) : un accueil rouvert
+    // deux minutes après la séance doit déjà dire "Séance faite" - c'est précisément la
+    // page dont la donnée bouge entre deux ouvertures.
+    initialData: enCache?.data,
+    initialDataUpdatedAt: enCache?.date,
+    staleTime: 0,
     enabled: Boolean(cursusId),
   })
 
-  // Même clé que BarreSeance et SeanceDuJour : une seule requête pour les trois.
-  const { data: plan } = useQuery({
-    queryKey: ["plan-du-jour"],
-    queryFn: ({ signal }) => getPlanDuJour(signal),
-    retry: false,
-  })
-
-  // Même clé que TaSemaine : une seule requête pour les deux.
-  const { data: semaine } = useQuery({
-    queryKey: ["bilan-periode", cursusId, 7],
-    queryFn: ({ signal }) => getBilanPeriode(Number(cursusId), signal, 7),
-    enabled: Boolean(cursusId),
-    retry: false,
-  })
-
-  // Les inédites de SON cursus uniquement (voir useInedites) - même clé de cache que
-  // la page vitrine pour le même cursus, donc aucune requête en plus entre les deux.
+  // Les inédites de SON cursus uniquement - même clé de cache que la vitrine.
   const cursusAccueil = useCursusAccueil(country)
   const { data: inedites } = useInedites(country, cursusAccueil)
 
-  // Les révisions de SON cursus uniquement : l'endpoint les renvoie tous cursus
-  // confondus (il servait une page dédiée), or cet écran parle d'un seul examen.
-  const revisionsDuCursus = (revisions ?? []).filter((r) => r.cursus === cursusId)
-  const lecture = progression?.lessons?.[0]
-  // La préparation d'ensemble, sur les seuls savoirs qui ont du contenu (même règle que
-  // EnTeteProgression) : un savoir sans contenu n'est pas un échec de l'élève.
-  const exploitables = (resume ?? []).reduce((somme, m) => somme + m.total - m.sans_contenu, 0)
-  const preparation = resume && exploitables > 0
-    ? resume.reduce((somme, m) => somme + m.maitrises, 0) / exploitables
-    : null
+  if (!data || !cursusId) {
+    return isError ? <ErreurAccueil /> : <SqueletteAccueil />
+  }
 
   return (
     <div className="pb-4">
-      <HeroAujourdhui preparation={preparation} seancesSemaine={semaine?.seances} serie={plan?.serie} />
-      <SeanceDuJour country={country} />
-      {/* Proposé une fois, quand l'élève sait ce qu'on lui rappellerait : après sa première séance. */}
-      {((plan?.serie?.record ?? 0) > 0 || (plan?.seances_cette_semaine ?? 0) > 0) && <InviteRappels />}
+      <TeteAccueil accueil={data} country={country} />
+      <Moments accueil={data} userId={userId} />
+      {/* Proposé une fois, quand l'élève sait ce qu'on lui rappellerait : après sa
+          première séance. */}
+      {!data.premiers_pas && <InviteRappels />}
+      <DepuisLaDerniereFois depuis={data.depuis} revisions={data.revisions} lecture={data.lecture} />
+      <OuJenSuis accueil={data} cursusId={cursusId} country={country} />
+      <LigneInedites accueil={data} country={country} inedites={inedites} cursusAccueil={cursusAccueil} />
+    </div>
+  )
+}
 
-      {lecture && (
-        <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
-          <Link
-            // getMyProgression ne renvoie jamais que des Lesson classiques - slug
-            // toujours renseigné (même garde que sur la page vitrine).
-            to={epreuveReaderPath(lecture.subject.country.code.toLowerCase(), lecture.slug as string)}
-            className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-4 transition-colors hover:border-primary/40"
-          >
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <BookOpen className="size-5" />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Reprendre ma lecture
-              </span>
-              <span className="block truncate font-display font-medium">{lecture.title}</span>
-            </span>
-            <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </section>
-      )}
+/**
+ * Le seul bloc "produit" conservé, réduit à une ligne : une inédite n'est pas un
+ * argumentaire, c'est du contenu neuf que l'abonné a payé pour recevoir - sans ça, il
+ * ne sait pas qu'il est arrivé.
+ */
+function LigneInedites({
+  country, inedites, cursusAccueil,
+}: {
+  accueil: Accueil
+  country: string
+  inedites: ReturnType<typeof useInedites>["data"]
+  cursusAccueil: ReturnType<typeof useCursusAccueil>
+}) {
+  if (!inedites || inedites.count === 0) return null
+  return (
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+      <Link
+        to={`${epreuvesListPath(country)}?${requeteInedites(cursusAccueil)}`}
+        className="group flex items-center gap-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold/60"
+      >
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
+          <Crown className="size-4" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {inedites.count} épreuve{inedites.count > 1 ? "s" : ""} inédite{inedites.count > 1 ? "s" : ""}
+          </span>
+          <span className="block truncate text-sm font-medium">
+            {inedites.results[0]?.title ?? "Des sujets originaux, chronométrés"}
+          </span>
+        </span>
+        <Clock className="size-4 shrink-0 text-muted-foreground" />
+        <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" />
+      </Link>
+    </section>
+  )
+}
 
-      {revisionsDuCursus.length > 0 && (
-        <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-          <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
-            <RotateCcw className="size-4 shrink-0 text-primary" />
-            À réviser
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Des thèmes déjà ratés une fois. Les revoir maintenant, c'est ce qui les fait tenir jusqu'au jour J.
-          </p>
-          <ul className="mt-3 flex flex-col gap-1.5">
-            {/* Plafonné : cette page doit donner une direction, pas une liste de
-                corvées. Le reste vit dans Ma progression. */}
-            {revisionsDuCursus.slice(0, 4).map((revision) => (
-              <li key={revision.id}>
-                <Link
-                  to={`/quiz?cursus=${revision.cursus}&theme=${revision.theme_id}`}
-                  className="group flex items-center gap-2.5 rounded-lg border border-border bg-card px-3 py-2.5 text-sm transition-colors hover:border-primary/40"
-                >
-                  <span className="min-w-0 flex-1 truncate font-medium">{revision.theme}</span>
-                  <span className="shrink-0 text-xs text-muted-foreground">{revision.subject_label}</span>
-                  {/* Un retard se dit, il ne se reproche pas : gris comme le reste,
-                      jamais en rouge (même règle que le compte à rebours). */}
-                  {revision.jours_retard > 0 && (
-                    <span className="shrink-0 text-xs text-muted-foreground">
-                      +{revision.jours_retard} j
-                    </span>
-                  )}
-                  <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-          {revisionsDuCursus.length > 4 && (
-            <p className="mt-2 text-xs text-muted-foreground">
-              et {revisionsDuCursus.length - 4} autre{revisionsDuCursus.length - 4 > 1 ? "s" : ""}.
-            </p>
-          )}
-        </section>
-      )}
-
-      {cursusId && <TaSemaine cursusId={Number(cursusId)} className="mx-auto max-w-5xl px-4 pt-8 sm:px-6" />}
-
-      {resume && resume.some((m) => m.total > m.sans_contenu) && (
-        <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-          <Ecrin variante="sobre">
-            <div>
-              <EnTeteProgression resume={resume} />
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                {/* Les matières les moins avancées d'abord - c'est là qu'il y a quelque
-                    chose à faire. Voir la page Ma progression pour la liste entière. */}
-                {[...resume]
-                  .filter((m) => m.total > m.sans_contenu)
-                  .sort(
-                    (a, b) =>
-                      partMaitrisee(a) - partMaitrisee(b) ||
-                      // Au démarrage, TOUTES les matières sont à 0 et le premier critère
-                      // ne départage rien : sans ce second tri, les quatre affichées
-                      // étaient celles que la base renvoyait en premier. À défaut de
-                      // connaître les coefficients ici (ils vivent côté serveur, voir
-                      // _coefficient_par_subject), on montre les matières où il reste le
-                      // plus à faire, puis l'ordre alphabétique pour rester stable d'une
-                      // visite à l'autre.
-                      restant(b) - restant(a) ||
-                      a.subject_label.localeCompare(b.subject_label, "fr"),
-                  )
-                  .slice(0, 4)
-                  .map((matiere) => (
-                    <BarreMatiere key={matiere.subject_id} matiere={matiere} cursusId={Number(cursusId)} />
-                  ))}
-              </div>
-              <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-                <LegendeProgression />
-                <Button asChild variant="outline" size="sm" className="group rounded-full">
-                  <Link to="/parcours">
-                    Voir toute ma progression
-                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-                  </Link>
-                </Button>
-              </div>
+/**
+ * Le squelette a la HAUTEUR du contenu qu'il remplace (la tête avec sa bande et son
+ * bouton, puis deux blocs) : quand la réponse arrive, rien ne saute. Sans animation
+ * de balayage - un téléphone d'entrée de gamme n'a pas besoin de ça pour attendre.
+ */
+export function SqueletteAccueil() {
+  return (
+    <div className="pb-4" aria-busy="true" aria-label="Chargement de ton accueil">
+      <div className="mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-6">
+        <div className="overflow-hidden rounded-3xl border border-border/70 bg-card">
+          <div className="h-44 bg-primary/10 sm:h-40" />
+          <div className="space-y-4 p-5 sm:p-8">
+            <div className="h-4 w-24 rounded bg-muted" />
+            <div className="h-9 w-3/4 rounded bg-muted" />
+            <div className="flex gap-2">
+              <div className="h-7 w-24 rounded-full bg-muted" />
+              <div className="h-7 w-16 rounded-full bg-muted" />
             </div>
-          </Ecrin>
-        </section>
-      )}
-
-      {/* Le seul bloc "produit" conservé : une inédite n'est pas un argumentaire,
-          c'est du contenu neuf que l'abonné a payé pour recevoir - sans ça, il ne sait
-          pas qu'il est arrivé. Compact, jamais la grande carte d'aperçu de la vitrine,
-          qui sert à convaincre quelqu'un qui n'a pas encore payé. */}
-      {inedites && inedites.count > 0 && (
-        <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-          <Link
-            to={`${epreuvesListPath(country)}?${requeteInedites(cursusAccueil)}`}
-            className="group flex items-center gap-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-4 transition-colors hover:border-gold/60"
-          >
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
-              <Crown className="size-5" />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                {inedites.count} épreuve{inedites.count > 1 ? "s" : ""} inédite{inedites.count > 1 ? "s" : ""}
-              </span>
-              <span className="block truncate font-display font-medium">
-                {inedites.results[0]?.title ?? "Des sujets originaux, chronométrés"}
-              </span>
-            </span>
-            <Clock className="size-4 shrink-0 text-muted-foreground" />
-            <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" />
-          </Link>
-        </section>
-      )}
+            <div className="h-12 w-52 rounded-full bg-muted" />
+          </div>
+        </div>
+      </div>
+      <div className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+        <div className="h-36 rounded-3xl border border-border/70 bg-card" />
+      </div>
+      <div className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+        <div className="h-64 rounded-3xl border border-border/70 bg-card" />
+      </div>
     </div>
   )
 }
 
-/** Savoirs qui ont du contenu et qui ne sont pas encore maîtrisés - ce qu'il reste
- * réellement à faire dans cette matière. */
-function restant(matiere: ResumeMatiere): number {
-  return matiere.total - matiere.sans_contenu - matiere.maitrises
-}
-
-/** Part de savoirs maîtrisés, sur les seuls savoirs qui ont du contenu - un savoir
- * sans contenu n'est pas un échec de l'élève, l'inclure ferait mentir la barre. */
-function partMaitrisee(matiere: ResumeMatiere): number {
-  const exploitables = matiere.total - matiere.sans_contenu
-  return exploitables > 0 ? matiere.maitrises / exploitables : 0
-}
-
-/**
- * Le titre et un seul chiffre d'ensemble, sur TOUTES les matières (pas seulement les
- * quatre affichées) : les barres disent où agir, l'anneau dit où l'on en est. Même
- * règle que les barres - seuls les savoirs qui ont du contenu comptent.
- */
-function EnTeteProgression({ resume }: { resume: ResumeMatiere[] }) {
-  const maitrises = resume.reduce((somme, m) => somme + m.maitrises, 0)
-  const exploitables = resume.reduce((somme, m) => somme + m.total - m.sans_contenu, 0)
-  const part = exploitables > 0 ? maitrises / exploitables : 0
+function ErreurAccueil() {
   return (
-    <div className="flex items-center justify-between gap-4">
-      <div className="min-w-0">
-        <h2 className="font-display">
-          <span className="flex items-center gap-2 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            <TrendingUp className="size-3.5" />
-            Ta progression
-          </span>
-          <span className="mt-2 block text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
-            Où j'en suis
-          </span>
-        </h2>
-        <p className="mt-1.5 text-sm text-muted-foreground">
-          <span className="font-semibold tabular-nums text-foreground">{maitrises}</span> savoir
-          {maitrises > 1 ? "s" : ""} maîtrisé{maitrises > 1 ? "s" : ""} sur{" "}
-          <span className="tabular-nums">{exploitables}</span> au programme
-        </p>
-      </div>
-      <AnneauProgression part={part} />
+    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      <p className="text-sm text-muted-foreground">
+        Impossible de charger ton accueil pour le moment. Vérifie ta connexion, puis{" "}
+        <button type="button" onClick={() => window.location.reload()} className="underline underline-offset-4 hover:text-primary">
+          réessaie
+        </button>
+        .
+      </p>
     </div>
-  )
-}
-
-/**
- * Une matière : son pourcentage en grand, puis une barre en trois segments -
- * maîtrisé, en révision, à découvrir. La barre à un seul segment restait vide pour
- * presque tout le monde au démarrage ; les segments montrent que le travail en cours
- * compte déjà, même avant la première maîtrise.
- */
-function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId: number }) {
-  const exploitables = matiere.total - matiere.sans_contenu
-  const Icone = subjectIcon(matiere.subject_code)
-  return (
-    <Link
-      // `?cursus=` est requis par ParcoursSubjectPage - même lien que depuis la page
-      // Ma progression, sans quoi la page s'ouvre sans savoir quel programme afficher.
-      to={`/parcours/${matiere.subject_id}?cursus=${cursusId}`}
-      className="group rounded-2xl border border-border/70 bg-background/70 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md hover:shadow-primary/[0.06]"
-    >
-      <div className="flex items-center justify-between gap-3">
-        <span className="flex min-w-0 items-center gap-2.5">
-          <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", couleurMatiere(matiere.subject_code).puce)}>
-            <Icone className="size-4" />
-          </span>
-          <span className="min-w-0 truncate text-sm font-semibold">{matiere.subject_label}</span>
-        </span>
-        <span className="shrink-0 font-display text-xl font-semibold tabular-nums">
-          {pourcent(partMaitrisee(matiere))}
-          <span className="ml-px text-xs font-medium text-muted-foreground">%</span>
-        </span>
-      </div>
-      <BarreSegmentee
-        className="mt-3"
-        maitrises={matiere.maitrises}
-        enRevision={matiere.en_revision}
-        enCours={matiere.en_cours}
-        exploitables={exploitables}
-      />
-      <div className="mt-2.5 flex items-center justify-between gap-2 text-xs text-muted-foreground">
-        <span className="tabular-nums">
-          {matiere.maitrises}/{exploitables} maîtrisés
-          {matiere.en_revision > 0 && <> · {matiere.en_revision} en révision</>}
-        </span>
-        <ChevronRight className="size-4 shrink-0 text-muted-foreground/50 transition-all group-hover:translate-x-0.5 group-hover:text-primary" />
-      </div>
-    </Link>
   )
 }

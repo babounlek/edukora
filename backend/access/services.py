@@ -73,15 +73,15 @@ def bulk_active_inedite_cursus_ids(user):
     )
 
 
-def bulk_read_ids(user, *, field):
-    """Ensemble des id (Lesson ou Cours selon `field`, "lesson" ou "cours") que
-    l'utilisateur a lus - calculé une fois par requête HTTP plutôt qu'un
-    obj.lectures.filter(user=user).exists() par objet affiché sur une page (voir
+def bulk_read_ids(profil, *, field):
+    """Ensemble des id (Lesson ou Cours selon `field`, "lesson" ou "cours") que le
+    profil a lus - calculé une fois par requête HTTP plutôt qu'un
+    obj.lectures.filter(profil=profil).exists() par objet affiché sur une page (voir
     catalog.serializers._HasAccessMixin.get_is_read)."""
-    if not user or not user.is_authenticated:
+    if profil is None:
         return set()
     return set(
-        LectureProgress.objects.filter(user=user, **{f"{field}_id__isnull": False})
+        LectureProgress.objects.filter(profil=profil, **{f"{field}_id__isnull": False})
         .values_list(f"{field}_id", flat=True),
     )
 

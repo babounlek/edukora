@@ -162,7 +162,7 @@ class RapportDansLeResultatTests(NotationAPITestCase):
         for i in range(20):
             autre = User.objects.create_user(phone_number=f"6775500{i:02d}", password="x")
             TentativeInedite.objects.create(
-                user=autre, epreuve=self.epreuve, exam_mode_started_at=timezone.now(),
+                profil=autre.profils.first(), epreuve=self.epreuve, exam_mode_started_at=timezone.now(),
                 submitted_at=timezone.now(), note_obtenue=D(str(i % 8)), bareme_snapshot=D("8"),
             )
         self.client.post(self.url("mode-examen"), {}, format="json")
@@ -179,7 +179,7 @@ class RapportDansLeResultatTests(NotationAPITestCase):
         for i in range(20):
             autre = User.objects.create_user(phone_number=f"6775600{i:02d}", password="x")
             TentativeInedite.objects.create(
-                user=autre, epreuve=self.epreuve, exam_mode_started_at=timezone.now(),
+                profil=autre.profils.first(), epreuve=self.epreuve, exam_mode_started_at=timezone.now(),
                 submitted_at=timezone.now(), note_obtenue=D("4"), bareme_snapshot=D("8"),
             )
         self.assertIsNone(self.client.post(self.url("completer")).data["comparaison"])

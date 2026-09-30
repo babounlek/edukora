@@ -49,6 +49,14 @@ class UserManager(BaseUserManager):
             AuthIdentity.objects.using(self._db).get_or_create(
                 provider=AuthProvider.PHONE, provider_uid=phone_number, defaults={"user": user},
             )
+
+        # Même invariant que ci-dessus, pour le profil : tout compte a AU MOINS un
+        # profil dès sa création, quel que soit le chemin (OTP, Google, e-mail, admin,
+        # script). Sans ça, `users.profils.profil_actif` renverrait None pour tout
+        # compte créé après l'introduction des profils multiples - une régression que
+        # rien ne signalerait avant qu'un élève tout neuf n'ouvre son accueil.
+        Profil.objects.using(self._db).get_or_create(compte=user)
+
         return user
 
     def create_user(self, phone_number, password=None, **extra_fields):
@@ -225,6 +233,59 @@ class User(AbstractBaseUser, PermissionsMixin):
         # Probabilité astronomiquement faible avec 36^6 combinaisons - filet de
         # sécurité seulement, jamais censé se produire en pratique.
         raise RuntimeError("Impossible de générer un code de parrainage unique.")
+
+
+class Profil(models.Model):
+    """
+    La personne qui étudie, sous un compte (`User`) qui peut en porter plusieurs -
+    un compte famille avec un enfant par profil, comme un compte Netflix.
+
+    Le compte reste l'identité de connexion et de facturation (téléphone/e-mail,
+    AuthIdentity, JWT, Subscription pour la facturation) - voir la docstring de
+    `User.cursus_prepare` ci-dessus, dont le raisonnement ("l'intérêt d'un plan
+    quotidien est qu'il n'y ait qu'une réponse à quoi réviser ce soir") s'applique ICI,
+    par personne, pas par compte : c'est pourquoi `cursus_prepare` vit sur `Profil` et
+    non plus sur `User`. Tout ce qui décrit une PROGRESSION D'APPRENTISSAGE (séances,
+    quiz, révisions, lectures, série de jours, objectif de la semaine) est FK sur
+    `Profil`, jamais sur `User` - fusionner l'activité de deux enfants sous un même
+    compte casserait leur série et leur coaching respectifs (voir quiz.serie).
+
+    Un compte migré depuis l'ancien schéma (avant l'introduction de ce modèle) a
+    exactement un profil, créé automatiquement avec son `cursus_prepare` et ses
+    réglages de rappel d'alors - voir la migration de backfill. Rien ne change pour
+    un compte qui n'ajoute jamais de second profil.
+    """
+
+    compte = models.ForeignKey(User, on_delete=models.CASCADE, related_name="profils")
+    prenom = models.CharField(
+        max_length=60, blank=True,
+        help_text="Affiché partout où le coach quotidien s'adresse à l'élève "
+                  "(\"Bonjour {prenom}\") - distinct du nom du titulaire du compte.",
+    )
+    cursus_prepare = models.ForeignKey(
+        "catalog.Cursus", null=True, blank=True, on_delete=models.SET_NULL, related_name="profils_eleves",
+        help_text="Cursus que CE profil prépare, déclaré par lui - voir la docstring "
+                  "de la classe : une seule valeur, jamais un M2M.",
+    )
+    rappels_actifs = models.BooleanField(
+        default=False,
+        help_text="Rappel quotidien de LA séance de ce profil par e-mail (voir "
+                  "relances.services) - l'adresse d'envoi reste celle du compte, mais "
+                  "chaque profil active ou non son propre rappel.",
+    )
+    rappels_invite_refusee_at = models.DateTimeField(null=True, blank=True)
+    ordre = models.PositiveSmallIntegerField(
+        default=0, help_text="Position stable dans le sélecteur de profils, à l'ajout.",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "profil"
+        verbose_name_plural = "profils"
+        ordering = ["compte_id", "ordre", "created_at"]
+
+    def __str__(self):
+        return self.prenom or f"profil #{self.pk}"
 
 
 class CodeCanal(models.TextChoices):

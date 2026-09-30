@@ -178,11 +178,11 @@ class QuestionInediteAdmin(admin.ModelAdmin):
 
 @admin.register(TentativeInedite)
 class TentativeInediteAdmin(admin.ModelAdmin):
-    list_display = ["user", "epreuve", "started_at", "exam_mode_started_at", "submitted_at", "score_obtenu"]
+    list_display = ["profil", "epreuve", "started_at", "exam_mode_started_at", "submitted_at", "score_obtenu"]
     list_filter = ["epreuve__cursus", "submitted_at"]
-    search_fields = ["user__phone_number", "epreuve__titre"]
+    search_fields = ["profil__compte__phone_number", "epreuve__titre"]
     readonly_fields = [
-        "user", "epreuve", "started_at", "exam_mode_started_at", "submitted_at", "score_obtenu", "questions_marquees",
+        "profil", "epreuve", "started_at", "exam_mode_started_at", "submitted_at", "score_obtenu", "questions_marquees",
     ]
     inlines = [TentativeReponseInline]
 

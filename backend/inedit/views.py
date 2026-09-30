@@ -3,7 +3,7 @@ Endpoints DRF de consommation élève - calqués sur quiz.views (start_session/
 session_detail/reveal_corrige/answer_question/complete_session), mêmes garanties :
 corrige_markdown/reponse_correcte jamais exposés avant réponse (sauf reveal_corrige,
 appelé explicitement par l'élève pour s'auto-évaluer sur une question ouverte - voir sa
-docstring), sous-endpoints gatés par ownership (tentative.user == request.user)
+docstring), sous-endpoints gatés par ownership (tentative.profil == profil_actif(request))
 seulement, jamais une re-vérification d'abonnement à chaque question (même compromis
 que quiz, voir quiz.views - accepté une fois, pas la peine de le retrancher ici).
 """
@@ -27,6 +27,7 @@ from catalog.serializers import CursusSerializer
 from quiz.models import ResultatDeclare
 from quiz.services import enregistrer_resultat_pour_revision
 from subscriptions.models import InscriptionInedite
+from users.profils import profil_actif
 
 from . import notation, rapport
 from .models import CausePerte, EpreuveInedite, QuestionInedite, TentativeInedite, TentativeReponse
@@ -128,7 +129,7 @@ def _alimenter_revision(tentative, question, correcte):
     for theme in question.themes.all():
         for cursus in tentative.epreuve.cursus.all():
             enregistrer_resultat_pour_revision(
-                tentative.user, cursus, tentative.epreuve.subject, theme, correcte,
+                tentative.profil, cursus, tentative.epreuve.subject, theme, correcte,
             )
 
 
@@ -201,8 +202,8 @@ def _comparaison(tentative, resume):
             epreuve_id=tentative.epreuve_id, exam_mode_started_at__isnull=False,
             submitted_at__isnull=False, note_obtenue__isnull=False,
         )
-        .exclude(user_id=tentative.user_id)
-        .values("user_id")
+        .exclude(profil_id=tentative.profil_id)
+        .values("profil_id")
         .annotate(meilleure=Max("note_obtenue"))
     )
     return rapport.situer(Decimal(str(resume["note"])), [ligne["meilleure"] for ligne in autres])
@@ -220,7 +221,7 @@ def _themes_a_reviser(tentative, bilan):
     if not perdus:
         return []
     echeances = {}
-    for planification in RevisionSchedule.objects.filter(user=tentative.user, theme__name__in=perdus):
+    for planification in RevisionSchedule.objects.filter(profil=tentative.profil, theme__name__in=perdus):
         actuelle = echeances.get(planification.theme.name)
         if actuelle is None or planification.due_at < actuelle:
             echeances[planification.theme.name] = planification.due_at
@@ -459,7 +460,7 @@ def list_my_tentatives_inedites(request):
     inédites") - toutes confondues, en cours et soumises (voir TentativeInedite.en_cours,
     le frontend distingue les deux via submitted_at)."""
     tentatives = (
-        TentativeInedite.objects.filter(user=request.user)
+        TentativeInedite.objects.filter(profil=profil_actif(request))
         .select_related("epreuve__subject")
         .prefetch_related("epreuve__cursus__series", "epreuve__cursus__country")
         .order_by("-started_at")
@@ -499,14 +500,14 @@ def start_tentative(request):
     if not has_access_inedite(request.user, epreuve):
         return Response({"error": "Add-on Épreuves Inédites requis pour ce cursus."}, status=403)
 
-    tentative = TentativeInedite.objects.create(user=request.user, epreuve=epreuve)
+    tentative = TentativeInedite.objects.create(profil=profil_actif(request), epreuve=epreuve)
     return Response(_tentative_payload(tentative), status=201)
 
 
 @api_view(["GET"])
 def tentative_detail(request, tentative_id):
     tentative = get_object_or_404(
-        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, user=request.user,
+        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, profil=profil_actif(request),
     )
     _auto_complete_if_expired(tentative)
     return Response(_tentative_payload(tentative))
@@ -521,7 +522,7 @@ def reveal_corrige(request, tentative_id, question_id):
     examen) : sans ce gate, un élève pourrait appeler cet endpoint directement pendant
     une fenêtre mode-examen active et lire le corrigé de n'importe quelle question."""
     tentative = get_object_or_404(
-        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, user=request.user,
+        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, profil=profil_actif(request),
     )
     _auto_complete_if_expired(tentative)
     if not _correction_disponible(tentative):
@@ -538,7 +539,7 @@ def reveal_corrige(request, tentative_id, question_id):
 @api_view(["POST"])
 def answer_question(request, tentative_id, question_id):
     tentative = get_object_or_404(
-        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, user=request.user,
+        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, profil=profil_actif(request),
     )
     _auto_complete_if_expired(tentative)
     if tentative.submitted_at is not None:
@@ -583,7 +584,7 @@ def start_exam_mode(request, tentative_id):
     un corrigé déjà potentiellement affiché côté client depuis un chargement en mode
     libre (voir _correction_disponible), ce qui viderait la protection de son sens."""
     tentative = get_object_or_404(
-        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, user=request.user,
+        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, profil=profil_actif(request),
     )
     if tentative.submitted_at is not None:
         return Response({"error": "Cette tentative est déjà terminée."}, status=409)
@@ -630,7 +631,7 @@ def noter_question(request, tentative_id, question_id):
 
     Une question notée devient automatiquement traitée : noter, c'est avoir traité."""
     tentative = get_object_or_404(
-        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, user=request.user,
+        TentativeInedite.objects.select_related("epreuve__blueprint"), pk=tentative_id, profil=profil_actif(request),
     )
     _auto_complete_if_expired(tentative)
     question = get_object_or_404(
@@ -722,7 +723,7 @@ def noter_question(request, tentative_id, question_id):
 def toggle_question_marquee(request, tentative_id, question_id):
     """Marquage « à revoir », indépendant d'avoir répondu ou non - aucune implication
     anti-triche, donc autorisé avant comme après soumission de la tentative."""
-    tentative = get_object_or_404(TentativeInedite, pk=tentative_id, user=request.user)
+    tentative = get_object_or_404(TentativeInedite, pk=tentative_id, profil=profil_actif(request))
     question = get_object_or_404(QuestionInedite, pk=question_id, exercice__epreuve_id=tentative.epreuve_id)
     if tentative.questions_marquees.filter(pk=question.pk).exists():
         tentative.questions_marquees.remove(question)
@@ -733,7 +734,7 @@ def toggle_question_marquee(request, tentative_id, question_id):
 
 @api_view(["POST"])
 def complete_tentative(request, tentative_id):
-    tentative = get_object_or_404(TentativeInedite, pk=tentative_id, user=request.user)
+    tentative = get_object_or_404(TentativeInedite, pk=tentative_id, profil=profil_actif(request))
     return Response(_complete(tentative))
 
 

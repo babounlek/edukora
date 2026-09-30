@@ -195,6 +195,14 @@
   animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Une seule passe au montage, mais c'est encore du mouvement : pour qui en a demandé
+   moins, le bloc apparaît simplement en place. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+  }
+}
+
 /* Barre de progression indéterminée (génération PDF d'une fiche répétiteur, voir
    FichesPage) : la durée réelle n'est pas connue du client, qui ne fait que sonder le
    statut - une barre qui balaie dit "ça travaille" sans mentir sur un pourcentage
