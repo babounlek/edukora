@@ -233,10 +233,10 @@ export function EpreuveInediteDetailPage() {
               </p>
               <div className="flex flex-wrap items-center gap-3">
                 <Button asChild size="lg" className="w-fit">
-                  {/* require=inedit : SubscribePage ne propose alors que les formules qui
-                      débloquent réellement l'add-on Épreuves Inédites (voir sa docstring) -
-                      sans ça, rien n'empêchait de repartir avec Essentiel/Performance. */}
-                  <Link to={`/abonnement?cursus=${epreuve.cursus[0]?.id}&require=inedit`}>Débloquer l'accès</Link>
+                  {/* Un seul abonnement existe par cursus (Jusqu'à l'Examen) et inclut
+                      toujours les épreuves inédites - plus besoin d'un filtre `require`
+                      dédié, SubscribePage ne propose de toute façon que cette formule. */}
+                  <Link to={`/abonnement?cursus=${epreuve.cursus[0]?.id}&duree=examen`}>Débloquer l'accès</Link>
                 </Button>
                 {/* Pas de durée dans ce libellé : depuis l'ajout du Pack Examen, la
                     formule la moins chère qui débloque les inédites n'est plus

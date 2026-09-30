@@ -39,7 +39,7 @@ function libelleCursus(cursus: Subscription["cursus"]): string {
  * l'échéance existante (voir Subscription.extend) : rien n'est perdu à le faire tôt.
  */
 function LigneAcces({
-  titre, sous_titre, expiresAt, actif, cursusId, renouvelable = true,
+  titre, sous_titre, expiresAt, actif, cursusId, renouvelable = true, inclutInedit = false,
 }: {
   titre: string
   sous_titre?: string
@@ -47,6 +47,7 @@ function LigneAcces({
   actif: boolean
   cursusId: number
   renouvelable?: boolean
+  inclutInedit?: boolean
 }) {
   const jours = joursRestants(expiresAt)
   const bientot = actif && jours <= JOURS_AVANT_RENOUVELLEMENT
@@ -56,6 +57,12 @@ function LigneAcces({
         <div className="min-w-0">
           <p className="text-sm font-semibold leading-snug">{titre}</p>
           {sous_titre && <p className="text-xs text-muted-foreground">{sous_titre}</p>}
+          {inclutInedit && (
+            <p className="mt-0.5 flex items-center gap-1 text-xs font-medium text-gold-text">
+              <Sparkles className="size-3" />
+              Épreuves inédites incluses
+            </p>
+          )}
         </div>
         {actif ? (
           <Badge variant="success" className="shrink-0 gap-1">
@@ -115,8 +122,18 @@ export function AccesPage() {
 
   const charge = inscriptionsInedites !== null && inscriptionsRepetiteur !== null
 
-  // Les trois sources d'accès (abonnement, add-on inédites, add-on répétiteur) partagent la même
-  // forme (cursus/expires_at/is_active) : une seule liste plutôt que trois blocs distincts qui
+  // L'add-on Épreuves Inédites n'est plus achetable séparément (retiré le 2026-09-30) :
+  // il est désormais TOUJOURS activé pour la même durée que l'abonnement qui l'inclut
+  // (voir payments.models._activer_acces, Plan.inclut_inedit). Une ligne séparée avec
+  // sa propre échéance ne ferait donc que dupliquer celle de l'abonnement - inutile et
+  // source de confusion ("deux abonnements actifs ?"). On s'en sert seulement pour
+  // savoir SUR QUEL cursus l'afficher comme un simple badge sur la ligne d'abonnement.
+  const cursusAvecInedit = new Set(
+    (inscriptionsInedites ?? []).filter((i) => i.is_active).map((i) => i.cursus.id),
+  )
+
+  // Les deux sources d'accès restantes (abonnement, add-on répétiteur) partagent la même
+  // forme (cursus/expires_at/is_active) : une seule liste plutôt que deux blocs distincts qui
   // répètent chacun leur propre état vide.
   const acces = [
     ...subscriptions.map((sub) => ({
@@ -129,15 +146,7 @@ export function AccesPage() {
       // Un accès "Jusqu'à l'Examen" couvre déjà l'échéance : lui proposer de prolonger n'aurait
       // aucun sens tant qu'il est actif.
       renouvelable: sub.duration_mode !== "JUSQUA_EXAMEN" || !sub.is_active,
-    })),
-    ...(inscriptionsInedites ?? []).map((i) => ({
-      key: `inedit-${i.id}`,
-      titre: libelleCursus(i.cursus),
-      sous_titre: "Épreuves inédites",
-      expiresAt: i.expires_at,
-      actif: i.is_active,
-      cursusId: i.cursus.id,
-      renouvelable: true,
+      inclutInedit: cursusAvecInedit.has(sub.cursus.id),
     })),
     ...(inscriptionsRepetiteur ?? []).map((i) => ({
       key: `repet-${i.id}`,

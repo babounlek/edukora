@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ChevronDown, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, UserCircle } from "lucide-react"
+import { Check, ChevronDown, GraduationCap, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, UserCircle } from "lucide-react"
 
 import { listEpreuves } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
@@ -9,7 +9,8 @@ import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeToggle } from "@/components/ThemeToggle"
-import { CompteAReboursBadge } from "@/components/CompteAReboursBadge"
+import { CompteAReboursBadge, formatCursus } from "@/components/CompteAReboursBadge"
+import { useCursusAbonnes, useChangerCursusPrepare } from "@/lib/changerCursusPrepare"
 import { cn } from "@/lib/utils"
 import { SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
@@ -24,6 +25,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -40,6 +42,8 @@ function AccountMenu() {
   const { user, logout } = useAuth()
   const { country } = useCountry()
   const navigate = useNavigate()
+  const cursusAbonnes = useCursusAbonnes()
+  const changerCursus = useChangerCursusPrepare()
 
   function handleLogout() {
     logout()
@@ -67,6 +71,29 @@ function AccountMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        {/* Seulement si le compte a deux abonnements actifs ou plus : sinon il n'y a
+            rien à basculer, la bascule silencieuse (voir profil_actif) suffit. */}
+        {cursusAbonnes.length > 1 && (
+          <>
+            <DropdownMenuLabel>Examen préparé</DropdownMenuLabel>
+            {cursusAbonnes.map((cursus) => {
+              const actif = cursus.id === user?.cursus_prepare?.id
+              return (
+                <DropdownMenuItem
+                  key={cursus.id}
+                  disabled={changerCursus.isPending}
+                  onSelect={() => {
+                    if (!actif) changerCursus.mutate(cursus.id)
+                  }}
+                >
+                  {actif ? <Check className="text-primary" /> : <GraduationCap />}
+                  {formatCursus(cursus)}
+                </DropdownMenuItem>
+              )
+            })}
+            <DropdownMenuSeparator />
+          </>
+        )}
         <DropdownMenuItem asChild>
           <Link to="/compte">
             <UserCircle />

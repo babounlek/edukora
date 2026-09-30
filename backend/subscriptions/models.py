@@ -45,17 +45,21 @@ PLANCHER_JUSQUA_EXAMEN = 4000
 class ProductType(models.TextChoices):
     """
     Ce que l'achat de ce Plan active - ABONNEMENT active/prolonge Subscription (accès de
-    base au Cursus), ADDON_INEDIT active/prolonge InscriptionInedite (add-on Épreuves
-    Inédites, voir sa docstring), ADDON_REPETITEUR active/prolonge InscriptionRepetiteur
-    (add-on Fiches, voir sa docstring - même patron qu'ADDON_INEDIT). Décision "C2" de
-    l'audit "Épreuves Inédites" : un type de produit supplémentaire sur le même modèle
-    Plan/Transaction/ManualPayment plutôt qu'une facturation parallèle -
-    Transaction.sync_status/ManualPayment.approve lisent ce champ pour savoir laquelle
-    des activations appeler.
+    base au Cursus, et l'add-on Épreuves Inédites avec lui si inclut_inedit=True - voir
+    ce champ), ADDON_REPETITEUR active/prolonge InscriptionRepetiteur (add-on Fiches,
+    voir sa docstring). Décision "C2" de l'audit "Épreuves Inédites" : un type de
+    produit supplémentaire sur le même modèle Plan/Transaction/ManualPayment plutôt
+    qu'une facturation parallèle - Transaction.sync_status/ManualPayment.approve
+    lisent ce champ pour savoir laquelle des activations appeler.
+
+    ADDON_INEDIT (achat séparé de l'add-on Épreuves Inédites) a existé jusqu'au
+    2026-09-30 : jamais un seul Plan de ce type n'a été vendu, l'add-on n'a jamais été
+    proposé qu'inclus dans l'abonnement de base (voir inclut_inedit) - décision
+    produit de le retirer plutôt que de garder un type de produit mort. Retiré ici
+    sans migration de données (aucune ligne existante ne le référençait).
     """
 
     ABONNEMENT = "ABONNEMENT", "Abonnement cursus"
-    ADDON_INEDIT = "ADDON_INEDIT", "Add-on Épreuves Inédites"
     ADDON_REPETITEUR = "ADDON_REPETITEUR", "Add-on Fiches Répétiteur"
 
 
@@ -76,11 +80,11 @@ class Plan(models.Model):
         default=False,
         help_text=(
             "Un Plan ABONNEMENT qui coche ceci active aussi l'add-on Épreuves Inédites "
-            "(InscriptionInedite) en plus de l'abonnement, pour la même durée - sans "
-            "achat séparé d'un Plan ADDON_INEDIT. Décision produit du 2026-08-09 : la "
-            "formule Max (1 an) inclut l'accès aux inédites. Sans effet sur un Plan "
-            "ADDON_INEDIT lui-même (déjà exclusivement dédié à cet accès, voir "
-            "_activer_acces) - n'a de sens que pour product_type=ABONNEMENT."
+            "(InscriptionInedite) en plus de l'abonnement, pour la même durée. Décision "
+            "produit du 2026-08-09 (formule Max) puis du 2026-09-30 (seule voie "
+            "restante : l'achat séparé de l'add-on, ProductType.ADDON_INEDIT, a été "
+            "retiré) - Jusqu'à l'Examen coche systématiquement ce champ. N'a de sens "
+            "que pour product_type=ABONNEMENT."
         ),
     )
 

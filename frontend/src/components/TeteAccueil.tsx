@@ -1,15 +1,22 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { Check, Flame, GraduationCap, Moon, Sparkles, Sun } from "lucide-react"
+import { Check, ChevronDown, Flame, GraduationCap, Moon, Sparkles, Sun } from "lucide-react"
 
 import { getPlanDuJour } from "@/api/endpoints"
-import type { Accueil, CompteARebours, PhaseExamen } from "@/api/types"
+import type { Accueil, CompteARebours, Cursus, PhaseExamen } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { BoutonSimulation } from "@/components/BoutonSimulation"
 import { formatCursus } from "@/components/CompteAReboursBadge"
 import { SeanceCorps } from "@/components/SeanceDuJour"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useChangerCursusPrepare, useCursusAbonnes } from "@/lib/changerCursusPrepare"
 import { seanceAffichable } from "@/lib/seance"
 import { trackEvent } from "@/lib/analytics"
 import { themesFrequentsPath } from "@/lib/countryPath"
@@ -64,7 +71,7 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
               <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground/80">
                 <span>
                   {prenom ? `Bonjour ${prenom}` : "Bonjour"}
-                  {cursus ? ` · ${formatCursus(cursus)}` : ""}
+                  {cursus && <CursusPreparePuce cursus={cursus} />}
                 </span>
                 <BadgePhase phase={accueil.phase} />
               </p>
@@ -152,6 +159,53 @@ function Corps({ accueil, plan, country }: { accueil: Accueil; plan: Accueil["pl
     )
   }
   return null
+}
+
+/**
+ * "· BAC D" à côté de "Bonjour" - simple texte pour la plupart des comptes, mais
+ * devient un sélecteur dès que deux abonnements ou plus sont actifs : c'est ici,
+ * dans "Aujourd'hui", qu'on voit le plus vite qu'on regarde le mauvais examen, donc
+ * c'est ici qu'il doit être le plus rapide d'en changer (voir aussi AccountMenu dans
+ * Header.tsx, même mécanisme, pour qui préfère passer par le menu du compte).
+ */
+function CursusPreparePuce({ cursus }: { cursus: Cursus }) {
+  const cursusAbonnes = useCursusAbonnes()
+  const changerCursus = useChangerCursusPrepare()
+
+  if (cursusAbonnes.length < 2) {
+    return <> · {formatCursus(cursus)}</>
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex items-center gap-0.5 normal-case tracking-normal text-primary-foreground/90 hover:text-primary-foreground"
+        >
+          · {formatCursus(cursus)}
+          <ChevronDown className="size-3" aria-hidden="true" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        {cursusAbonnes.map((c) => {
+          const actif = c.id === cursus.id
+          return (
+            <DropdownMenuItem
+              key={c.id}
+              disabled={changerCursus.isPending}
+              onSelect={() => {
+                if (!actif) changerCursus.mutate(c.id)
+              }}
+            >
+              {actif ? <Check className="text-primary" /> : <GraduationCap />}
+              {formatCursus(c)}
+            </DropdownMenuItem>
+          )
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
 }
 
 /** Un mot sur la phase quand elle change quelque chose à la page - jamais en temps normal. */

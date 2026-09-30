@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
-import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, XCircle, Zap } from "lucide-react"
+import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, Sparkles, XCircle, Zap } from "lucide-react"
 
 import { checkPaymentStatus, initiatePayment, listCursus, listPlans } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -86,15 +86,15 @@ export function SubscribePage() {
 
   const [searchParams] = useSearchParams()
   const cursusId = searchParams.get("cursus")
-  // Signal porté par le CTA "Débloquer avec Max" (voir EpreuveInediteDetailPage.tsx) :
-  // ne montrer QUE les formules qui débloquent réellement l'add-on Épreuves Inédites -
-  // sans ça, rien n'empêchait de repartir avec Essentiel/Performance depuis ce CTA et
-  // de ne toujours pas avoir ce qu'on est venu chercher.
-  const requireInedit = searchParams.get("require") === "inedit"
-  // Même garde-fou que requireInedit, pour le CTA "Débloquer l'add-on Fiches" (voir
-  // FichesPage.tsx) - ADDON_REPETITEUR est un product_type à part entière (pas un
-  // booléen sur un Plan ABONNEMENT comme inclut_inedit), donc le filtre porte
-  // directement sur product_type plutôt que sur un champ dédié.
+  // Garde-fou pour le CTA "Débloquer l'add-on Fiches" (voir FichesPage.tsx) -
+  // ADDON_REPETITEUR est un product_type à part entière (pas un booléen sur un Plan
+  // ABONNEMENT comme inclut_inedit), donc le filtre porte directement sur
+  // product_type plutôt que sur un champ dédié. Seul point d'entrée qui affiche
+  // encore cet add-on : le flux par défaut (sans `require`) ne propose plus jamais
+  // que l'abonnement de base, qui inclut désormais toujours les épreuves inédites
+  // (voir Plan.inclut_inedit, systématiquement vrai sur Jusqu'à l'Examen depuis la
+  // grille à un seul palier) - il n'existe donc plus d'add-on Inédites séparé à
+  // proposer ici.
   const requireRepetiteur = searchParams.get("require") === "repetiteur"
   // Formule déjà choisie sur la page Tarifs (nombre de jours, ou "examen" pour le
   // Pack Examen dont la durée n'est pas fixe) : la sélection arrive ici présélectionnée
@@ -127,8 +127,8 @@ export function SubscribePage() {
     if (isLoading) return
     if (!isAuthenticated) {
       // searchParams.toString() plutôt que reconstruire juste "cursus" à la main :
-      // préserve aussi require=inedit au retour de connexion, sinon le filtre ci-dessus
-      // se perdait silencieusement pour quiconque n'était pas déjà connecté.
+      // préserve aussi require=repetiteur au retour de connexion, sinon le filtre
+      // ci-dessus se perdait silencieusement pour quiconque n'était pas déjà connecté.
       navigate("/connexion", { state: { from: `/abonnement?${searchParams.toString()}` } })
     }
   }, [isLoading, isAuthenticated, searchParams, navigate])
@@ -139,43 +139,37 @@ export function SubscribePage() {
 
   useEffect(() => {
     listPlans(cursusId ? Number(cursusId) : undefined).then((data) => {
-      // require=inedit/require=repetiteur : ne garder que les formules qui débloquent
-      // réellement ce qu'on est venu chercher - impossible de repartir avec une
-      // formule qui n'active pas l'add-on visé par le CTA d'origine.
-      let eligiblePlans = data
-      if (requireInedit) eligiblePlans = data.filter((p) => p.inclut_inedit)
-      else if (requireRepetiteur) eligiblePlans = data.filter((p) => p.product_type === "ADDON_REPETITEUR")
+      // require=repetiteur : ne garder que l'add-on Fiches, seul point d'entrée qui
+      // le propose encore (voir FichesPage.tsx). Par défaut, l'abonnement de base
+      // uniquement - un seul palier existe par cursus (Jusqu'à l'Examen), il inclut
+      // toujours les épreuves inédites (voir Plan.inclut_inedit).
+      const eligiblePlans = requireRepetiteur
+        ? data.filter((p) => p.product_type === "ADDON_REPETITEUR")
+        : data.filter((p) => p.product_type === "ABONNEMENT")
       setPlans(eligiblePlans)
       // À défaut de formule explicitement demandée (`duree`, voir plus haut),
-      // présélectionne la formule la plus populaire (Jusqu'à l'Examen - même
-      // convention que la mise en avant ⭐ sur PricingPage, grille à 2 paliers du
-      // 2026-08-19) plutôt que la première de la liste (la moins chère,
-      // `Plan.Meta.ordering` trie par prix croissant) - repli sur la première.
-      // Recherche restreinte aux Plan ABONNEMENT : un visiteur non filtré (ex. "Se
-      // réabonner", qui ne passe aucun `require`) ne doit jamais se retrouver avec
-      // l'add-on Fiches présélectionné par défaut simplement parce qu'il matche aussi
-      // JUSQUA_EXAMEN. Repli sur le premier plan tous types confondus - pour
-      // require=repetiteur, qui n'a lui aucun Plan ABONNEMENT dans ses résultats, ça
-      // sélectionne le palier le moins cher plutôt que l'engagement le plus long :
-      // décision volontaire pour un add-on encore sans historique d'usage, cohérente
-      // avec "démarrer petit" plutôt que pousser l'engagement le plus long d'emblée.
-      const abonnementEligibles = eligiblePlans.filter((p) => p.product_type === "ABONNEMENT")
+      // présélectionne Jusqu'à l'Examen plutôt que la première de la liste (la moins
+      // chère, `Plan.Meta.ordering` trie par prix croissant) - repli sur la première
+      // pour require=repetiteur, qui n'a aucun palier JUSQUA_EXAMEN dans ses
+      // résultats : sélectionne alors le palier le moins cher, décision volontaire
+      // pour un add-on encore sans historique d'usage, cohérente avec "démarrer
+      // petit" plutôt que pousser l'engagement le plus long d'emblée.
       const demande = dureeParam
-        ? abonnementEligibles.find((p) =>
+        ? eligiblePlans.find((p) =>
             dureeParam === "examen"
               ? p.duration_mode === "JUSQUA_EXAMEN"
               : p.duration_mode === "FIXE" && p.duration_days === Number(dureeParam),
           )
         : undefined
-      const populaire = abonnementEligibles.find((p) => p.duration_mode === "JUSQUA_EXAMEN")
-      setSelectedPlanId((demande ?? populaire ?? abonnementEligibles[0] ?? eligiblePlans[0])?.id ?? null)
+      const populaire = eligiblePlans.find((p) => p.duration_mode === "JUSQUA_EXAMEN")
+      setSelectedPlanId((demande ?? populaire ?? eligiblePlans[0])?.id ?? null)
     })
     if (cursusId) {
       listCursus().then((all) => {
         setCursus(all.find((c) => c.id === Number(cursusId)) ?? null)
       })
     }
-  }, [cursusId, requireInedit, requireRepetiteur, dureeParam])
+  }, [cursusId, requireRepetiteur, dureeParam])
 
   useEffect(() => {
     return () => {
@@ -270,35 +264,11 @@ export function SubscribePage() {
   const creditAppliqueSelection = selectedPlan ? Math.min(selectedPlan.effective_price, creditDisponible) : 0
   const netAPayerSelection = (selectedPlan?.effective_price ?? 0) - creditAppliqueSelection
 
-  // Groupé par product_type plutôt qu'affiché en une liste plate - même hors des cas
-  // filtrés (requireInedit/requireRepetiteur), un cursus peut avoir à la fois des Plan
-  // ABONNEMENT et ADDON_REPETITEUR (voir l'audit qui a motivé ce chantier : la plupart
-  // des points d'entrée vers cette page - "Se réabonner", une fiche de cours/épreuve -
-  // ne passent aucun `require`, et Plan.Meta.ordering trie par prix croissant, ce qui
-  // entrelace les deux types dans une liste plate). Générique et non conditionné sur
-  // requireInedit/requireRepetiteur : quand un seul type est présent (cas filtré, ou
-  // cursus sans add-on), un seul groupe existe et aucun en-tête n'est affiché - même
-  // rendu qu'avant ce chantier.
-  const planGroups: { label: string | null; hint: string | null; plans: Plan[] }[] = [
-    { label: "Abonnement", hint: null, plans: plans.filter((p) => p.product_type === "ABONNEMENT") },
-    {
-      label: "Add-on Épreuves Inédites",
-      hint: "Ne débloque pas les corrigés/cours classiques - accès aux épreuves inédites uniquement.",
-      plans: plans.filter((p) => p.product_type === "ADDON_INEDIT"),
-    },
-    {
-      label: "Add-on Fiches (répétiteurs)",
-      hint: "Ne débloque pas les corrigés/cours classiques - accès à l'outil de génération de fiches uniquement.",
-      plans: plans.filter((p) => p.product_type === "ADDON_REPETITEUR"),
-    },
-  ].filter((group) => group.plans.length > 0)
-  const showGroupHeaders = planGroups.length > 1
-
   function renderPlanOption(plan: Plan) {
     return (
       <label
         key={plan.id}
-        className="flex cursor-pointer items-center justify-between rounded-lg border border-input px-3.5 py-3 text-sm transition-colors has-[:checked]:border-primary has-[:checked]:bg-accent has-[:checked]:ring-1 has-[:checked]:ring-primary"
+        className="flex cursor-pointer items-center justify-between rounded-xl border-2 border-input px-4 py-3.5 text-sm transition-all has-[:checked]:border-primary has-[:checked]:bg-accent has-[:checked]:ring-1 has-[:checked]:ring-primary"
       >
         <span className="flex items-center gap-2.5">
           <input
@@ -308,16 +278,17 @@ export function SubscribePage() {
             onChange={() => setSelectedPlanId(plan.id)}
             className="accent-primary"
           />
-          <span className="flex flex-col">
-            {plan.name}
+          <span className="flex flex-col gap-1">
+            <span className="font-display font-medium">{plan.name}</span>
             {plan.duration_mode === "JUSQUA_EXAMEN" && (
               <span className="text-xs font-normal text-muted-foreground">
                 Accès jusqu'à son examen - {plan.effective_duration_days} jour{plan.effective_duration_days > 1 ? "s" : ""} restant{plan.effective_duration_days > 1 ? "s" : ""}
               </span>
             )}
             {plan.inclut_inedit && (
-              <span className="text-xs font-normal text-primary">
-                Inclut l'accès aux épreuves inédites
+              <span className="flex items-center gap-1 text-xs font-medium text-gold-text">
+                <Sparkles className="size-3" />
+                Épreuves inédites incluses
               </span>
             )}
           </span>
@@ -331,27 +302,46 @@ export function SubscribePage() {
 
   return (
     <div className="mx-auto max-w-lg px-4 py-12 sm:py-16">
-      <div className="mb-8 animate-fade-up text-center">
-        <p className="mb-2 font-display text-sm italic text-primary">Abonnement</p>
-        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-          {cursus
-            ? `${cursus.examen_display}${cursus.series ? ` - Série ${cursus.series.code}` : ""}`
-            : "S'abonner"}
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {requireInedit
-            ? "Seules les formules qui débloquent les Épreuves Inédites sur ce cursus sont proposées ici."
-            : requireRepetiteur
+      {/* Même gabarit de hero que /tarifs (voir PricingPage.tsx) : fond dégradé, trame
+          de points discrète, halo doré décentré - cette page reste le point d'entrée
+          d'un paiement réel, elle doit inspirer la même confiance que la page qui y
+          mène. */}
+      <div className="relative mb-8 animate-fade-up overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent p-6 text-center sm:p-8">
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <div
+          className="pointer-events-none absolute -right-16 -top-16 size-56 rounded-full bg-gold/10 blur-3xl"
+          aria-hidden
+        />
+        <div className="relative">
+          <div className="mx-auto mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <Sparkles className="size-5" />
+          </div>
+          <p className="mb-1 font-display text-sm italic text-primary">Abonnement</p>
+          <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+            {cursus
+              ? `${cursus.examen_display}${cursus.series ? ` - Série ${cursus.series.code}` : ""}`
+              : "S'abonner"}
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {requireRepetiteur
               ? "Seul l'add-on Fiches (répétiteurs) pour ce cursus est proposé ici - il ne débloque pas les corrigés classiques."
-              : "Choisissez votre offre et votre moyen de paiement pour débloquer l'accès."}
-        </p>
+              : "Corrigés, cours, quiz et épreuves inédites - un seul abonnement, valable jusqu'à ton examen."}
+          </p>
+        </div>
       </div>
 
       {/* Renouvellement : ce que l'abonnement a déjà apporté, juste avant de repayer. Silencieux
           pour un premier achat (404) ou sans activité. */}
       {phase === "form" && cursus && <BilanDePeriode cursusId={cursus.id} className="mb-6" />}
 
-      <Card className="animate-fade-up shadow-lg shadow-primary/5">
+      <Card className="animate-fade-up overflow-hidden shadow-lg shadow-primary/5">
+        <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
         <CardContent className="p-6 sm:p-7">
           {phase === "form" && (
             <div className="flex flex-col gap-6">
@@ -367,20 +357,8 @@ export function SubscribePage() {
 
               <div className="flex flex-col gap-2.5">
                 <StepLabel n={1}>Votre offre</StepLabel>
-                <div className="flex flex-col gap-4">
-                  {planGroups.map((group) => (
-                    <div key={group.label} className="flex flex-col gap-2">
-                      {showGroupHeaders && (
-                        <div>
-                          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                            {group.label}
-                          </p>
-                          {group.hint && <p className="text-xs text-muted-foreground">{group.hint}</p>}
-                        </div>
-                      )}
-                      {group.plans.map(renderPlanOption)}
-                    </div>
-                  ))}
+                <div className="flex flex-col gap-2">
+                  {plans.map(renderPlanOption)}
                   {plans.length === 0 && (
                     <p className="text-sm text-muted-foreground">
                       {requireRepetiteur

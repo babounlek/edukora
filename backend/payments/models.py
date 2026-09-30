@@ -32,19 +32,15 @@ def _activer_acces(plan, user):
     (après verrouillage, avant écriture du statut final). Retourne un triplet
     (subscription, inscription_inedite, inscription_repetiteur) - au moins l'un des
     trois est renseigné ; subscription et inscription_inedite le sont tous les deux pour
-    un Plan ABONNEMENT avec `inclut_inedit=True` (ex. la formule Max), qui active
+    un Plan ABONNEMENT avec `inclut_inedit=True` (le seul cas restant depuis le retrait
+    de l'achat séparé de l'add-on Épreuves Inédites, voir ProductType), qui active
     l'abonnement de base ET l'add-on Épreuves Inédites en un seul paiement, pour la même
     durée. `Transaction`/`ManualPayment` acceptent bien plusieurs FK renseignées à la
-    fois (pas de contrainte base "exactement une seule") - seuls les cas ADDON_INEDIT et
-    ADDON_REPETITEUR purs restent exclusifs (aucun sens à activer un abonnement de base
-    pour l'achat d'un add-on seul).
+    fois (pas de contrainte base "exactement une seule") - seul le cas ADDON_REPETITEUR
+    pur reste exclusif (aucun sens à activer un abonnement de base pour l'achat de cet
+    add-on seul).
     """
     duration_days = plan.effective_duration_days()
-    if plan.product_type == ProductType.ADDON_INEDIT:
-        inscription_inedite = InscriptionInedite.objects.activate_or_extend(
-            user=user, cursus=plan.cursus, duration_days=duration_days,
-        )
-        return None, inscription_inedite, None
     if plan.product_type == ProductType.ADDON_REPETITEUR:
         inscription_repetiteur = InscriptionRepetiteur.objects.activate_or_extend(
             user=user, cursus=plan.cursus, duration_days=duration_days,
@@ -87,7 +83,7 @@ class Transaction(models.Model):
     )
     inscription_inedite = models.ForeignKey(
         InscriptionInedite, null=True, blank=True, on_delete=models.SET_NULL, related_name="transactions",
-        help_text="Renseigné une fois le paiement d'un Plan ADDON_INEDIT confirmé - exclusif avec `subscription` (voir _activer_acces).",
+        help_text="Renseigné avec `subscription` une fois le paiement d'un Plan ABONNEMENT inclut_inedit=True confirmé (voir _activer_acces).",
     )
     inscription_repetiteur = models.ForeignKey(
         InscriptionRepetiteur, null=True, blank=True, on_delete=models.SET_NULL, related_name="transactions",
@@ -326,7 +322,7 @@ class ManualPayment(models.Model):
     )
     inscription_inedite = models.ForeignKey(
         InscriptionInedite, null=True, blank=True, on_delete=models.SET_NULL, related_name="manual_payments",
-        help_text="Renseigné une fois un paiement de Plan ADDON_INEDIT approuvé - exclusif avec `subscription`.",
+        help_text="Renseigné avec `subscription` une fois un paiement de Plan ABONNEMENT inclut_inedit=True approuvé.",
     )
     inscription_repetiteur = models.ForeignKey(
         InscriptionRepetiteur, null=True, blank=True, on_delete=models.SET_NULL, related_name="manual_payments",

@@ -544,7 +544,7 @@ export interface Progression {
 
 export type DureeMode = "FIXE" | "JUSQUA_EXAMEN"
 
-export type ProductType = "ABONNEMENT" | "ADDON_INEDIT" | "ADDON_REPETITEUR"
+export type ProductType = "ABONNEMENT" | "ADDON_REPETITEUR"
 
 export interface Plan {
   id: number

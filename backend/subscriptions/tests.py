@@ -21,6 +21,7 @@ from users.models import User
 from .models import (
     DureeMode,
     InscriptionInedite,
+    InscriptionRepetiteur,
     ParrainageRecompense,
     Plan,
     ProductType,
@@ -336,9 +337,11 @@ class InscriptionInediteManagerActivateOrExtendTests(TestCase):
         )
 
 
-class ParrainageSkippedForAddonInediteTests(TestCase):
+class ParrainageSkippedForAddonRepetiteurTests(TestCase):
     """recompenser_parrainage() ne s'applique jamais à un achat d'add-on (voir sa
-    docstring dans models.py) - portée volontairement limitée à l'abonnement de base."""
+    docstring dans models.py) - portée volontairement limitée à l'abonnement de base.
+    ADDON_REPETITEUR sert d'exemple depuis le retrait de l'achat séparé de l'add-on
+    Épreuves Inédites (2026-09-30) - même add-on, même règle."""
 
     def setUp(self):
         self.cursus = _cursus()
@@ -348,7 +351,7 @@ class ParrainageSkippedForAddonInediteTests(TestCase):
             phone_number="677000041", password="x", referred_by=self.parrain,
         )
         self.addon_plan = Plan.objects.create(
-            name="Épreuves Inédites", cursus=self.cursus, price=1000, product_type=ProductType.ADDON_INEDIT,
+            name="Add-on Fiches", cursus=self.cursus, price=1000, product_type=ProductType.ADDON_REPETITEUR,
         )
 
     def test_addon_purchase_activates_the_addon_but_never_rewards_the_parrain(self):
@@ -363,7 +366,7 @@ class ParrainageSkippedForAddonInediteTests(TestCase):
         payment.approve(admin_user=self.admin)
 
         self.assertTrue(
-            InscriptionInedite.objects.filter(
+            InscriptionRepetiteur.objects.filter(
                 user=self.filleul, cursus=self.cursus, expires_at__gt=timezone.now(),
             ).exists(),
         )

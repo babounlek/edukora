@@ -23,7 +23,6 @@ from subscriptions.models import (
     InscriptionInedite,
     ParrainageRecompense,
     Plan,
-    ProductType,
     Subscription,
     solde_credit_parrainage,
 )
@@ -154,52 +153,6 @@ class TransactionSyncStatusTests(TestCase):
         self.assertEqual(Subscription.objects.filter(user=self.user, cursus=self.cursus).count(), 1)
         existing.refresh_from_db()
         self.assertGreater(existing.expires_at, timezone.now() + timezone.timedelta(days=90))
-
-
-class TransactionSyncStatusAddonInediteTests(TestCase):
-    """_activer_acces route un Plan ADDON_INEDIT vers InscriptionInedite, jamais
-    Subscription - même garanties d'idempotence que TransactionSyncStatusTests, sur
-    l'autre branche du branchement (voir payments.models._activer_acces)."""
-
-    def setUp(self):
-        self.cursus = _make_cursus()
-        self.user = User.objects.create_user(phone_number="677000050", password="x")
-        self.plan = Plan.objects.create(
-            name="Épreuves Inédites", cursus=self.cursus, price=1000, duration_days=30,
-            product_type=ProductType.ADDON_INEDIT,
-        )
-        self.transaction = Transaction.objects.create(
-            user=self.user, plan=self.plan, amount=self.plan.price,
-            phone_number=self.user.phone_number, provider_reference="ref-addon-1",
-        )
-
-    @patch("payments.campay_client.get_transaction_status")
-    def test_successful_status_activates_inscription_inedite_not_subscription(self, mock_status):
-        mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-addon-1"}
-
-        self.transaction.sync_status()
-
-        self.transaction.refresh_from_db()
-        self.assertEqual(self.transaction.status, StatutTransaction.SUCCESSFUL)
-        self.assertIsNotNone(self.transaction.inscription_inedite_id)
-        self.assertIsNone(self.transaction.subscription_id)
-        inscription = InscriptionInedite.objects.get(user=self.user, cursus=self.cursus)
-        self.assertTrue(inscription.is_active)
-        self.assertFalse(Subscription.objects.filter(user=self.user, cursus=self.cursus).exists())
-
-    @patch("payments.campay_client.get_transaction_status")
-    def test_sync_status_is_idempotent_on_repeated_call(self, mock_status):
-        mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-addon-1"}
-
-        self.transaction.sync_status()
-        inscription = InscriptionInedite.objects.get(user=self.user, cursus=self.cursus)
-        expires_after_first = inscription.expires_at
-
-        self.transaction.sync_status()
-
-        inscription.refresh_from_db()
-        self.assertEqual(inscription.expires_at, expires_after_first)
-        mock_status.assert_called_once()
 
 
 class TransactionSyncStatusPlanInclutInediteTests(TestCase):
