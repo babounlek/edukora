@@ -1312,6 +1312,16 @@ class QuizApiTests(TestCase):
         self.assertIn(f"[COURS_LINK:{bon_niveau.slug}]", corrige)
         self.assertNotIn(f"[COURS_LINK:{autre_niveau.slug}]", corrige)
 
+    def test_cours_from_another_level_suggested_when_explicitly_recommended(self):
+        # Notion transversale (EPS, problème d'âges) tirée d'une épreuve d'un autre
+        # niveau : ouverte par Cours.cursus_recommandes, sans toucher à Cours.cursus.
+        bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        cours = self._cours_issu_de(bepc, "cours-transversal")
+        cours.cursus_recommandes.add(self.cursus)
+
+        self.assertIn(f"[COURS_LINK:{cours.slug}]", self._corrige_via_api())
+        self.assertFalse(cours.cursus.exists())
+
     def test_most_relevant_title_wins_among_cours_sharing_the_tag(self):
         self.item.enonce_markdown = "Calculer la dérivée de $f(x)=x^3+2x$."
         self.item.save(update_fields=["enonce_markdown"])

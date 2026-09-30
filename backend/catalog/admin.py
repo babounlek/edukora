@@ -372,7 +372,7 @@ class CoursAdmin(admin.ModelAdmin):
     list_display = ["titre", "subject", "cursus_list", "sous_theme", "statut", "updated_at"]
     list_filter = ["statut", "subject", "cursus"]
     search_fields = ["titre", "sous_theme", "external_id"]
-    filter_horizontal = ["cursus", "tags"]
+    filter_horizontal = ["cursus", "cursus_recommandes", "tags"]
     actions = ["compiler_depuis_sections"]
     # Auto-rempli en JS depuis le titre (comportement natif de l'admin) - reste
     # modifiable manuellement si besoin avant la première sauvegarde ; Cours.save() ne

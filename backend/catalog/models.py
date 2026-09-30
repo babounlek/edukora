@@ -1118,6 +1118,15 @@ class Cours(models.Model):
         Cursus, related_name="cours", blank=True,
         help_text="Vide = notion commune à toutes les séries, accessible à tout abonné actif quel que soit son cursus.",
     )
+    cursus_recommandes = models.ManyToManyField(
+        Cursus, related_name="cours_recommandes", blank=True,
+        help_text=(
+            "Cursus auxquels ce cours est aussi SUGGÉRÉ (liens du quiz, révisions, parcours) "
+            "alors qu'aucune de ses épreuves sources n'en vient - ex. un cours d'EPS tiré du "
+            "BAC, valable tel quel au BEPC. Sans effet sur l'accès ni sur l'affichage, que "
+            "règle `cursus` seul (voir q_cours_du_cursus)."
+        ),
+    )
     sous_theme = models.CharField(max_length=255, blank=True)
     duree_estimee_min = models.PositiveSmallIntegerField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name="cours")
@@ -1218,15 +1227,21 @@ def q_cours_du_cursus(cursus_ids):
     donc retenu que si l'une de ses épreuves sources (RappelDeMethode, ou sa version
     inédite) appartient à l'un de ces cursus, ou s'il n'a aucune épreuve source - même
     signal de lignée que quiz.services.construire_parcours_par_frequence.
+
+    Cours.cursus_recommandes ouvre explicitement un cours à d'autres cursus quand la
+    lignée ne suffit pas (notion transversale tirée d'une épreuve d'un autre niveau).
     """
     from django.apps import apps
 
     RappelDeMethodeInedite = apps.get_model("inedit", "RappelDeMethodeInedite")
     cursus_ids = list(cursus_ids)
     lien_cursus = Cours.cursus.through.objects.filter(cours_id=models.OuterRef("pk"))
+    recommande = Cours.cursus_recommandes.through.objects.filter(
+        cours_id=models.OuterRef("pk"), cursus_id__in=cursus_ids,
+    )
     source = RappelDeMethode.objects.filter(cours_id=models.OuterRef("pk"))
     source_inedite = RappelDeMethodeInedite.objects.filter(cours_id=models.OuterRef("pk"))
-    return models.Q(models.Exists(lien_cursus.filter(cursus_id__in=cursus_ids))) | (
+    return models.Q(models.Exists(lien_cursus.filter(cursus_id__in=cursus_ids))) | models.Q(models.Exists(recommande)) | (
         ~models.Q(models.Exists(lien_cursus)) & (
             models.Q(models.Exists(source.filter(exercise__lesson__cursus__in=cursus_ids)))
             | models.Q(models.Exists(source_inedite.filter(exercice__epreuve__cursus__in=cursus_ids)))
