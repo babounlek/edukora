@@ -1204,6 +1204,37 @@ class Cours(models.Model):
         return self.rappels_source.filter(exercise__lesson__est_vitrine=True).exists()
 
 
+def q_cours_du_cursus(cursus_ids):
+    """
+    Filtre des Cours à RECOMMANDER à un élève de l'un de ces cursus (lien "Voir le cours
+    complet" d'un quiz, révisions dues, parcours) - pas un filtre d'accès.
+
+    `Cours.cursus` vide signifie en théorie "notion commune à toutes les séries", mais en
+    pratique l'ingestion le laisse vide pour la grande majorité des cours (6141 sur 9832
+    au 2026-09-30), y compris ceux générés depuis une épreuve de Terminale. L'ancien
+    filtre `Q(cursus__in=...) | Q(cursus__isnull=True)` proposait donc à un élève de BEPC
+    "Montrer qu'un point est l'unique point fixe d'une transformation complexe" sous un
+    rappel sur a²-b² (thème partagé "identité remarquable"). Un cours sans cursus n'est
+    donc retenu que si l'une de ses épreuves sources (RappelDeMethode, ou sa version
+    inédite) appartient à l'un de ces cursus, ou s'il n'a aucune épreuve source - même
+    signal de lignée que quiz.services.construire_parcours_par_frequence.
+    """
+    from django.apps import apps
+
+    RappelDeMethodeInedite = apps.get_model("inedit", "RappelDeMethodeInedite")
+    cursus_ids = list(cursus_ids)
+    lien_cursus = Cours.cursus.through.objects.filter(cours_id=models.OuterRef("pk"))
+    source = RappelDeMethode.objects.filter(cours_id=models.OuterRef("pk"))
+    source_inedite = RappelDeMethodeInedite.objects.filter(cours_id=models.OuterRef("pk"))
+    return models.Q(models.Exists(lien_cursus.filter(cursus_id__in=cursus_ids))) | (
+        ~models.Q(models.Exists(lien_cursus)) & (
+            models.Q(models.Exists(source.filter(exercise__lesson__cursus__in=cursus_ids)))
+            | models.Q(models.Exists(source_inedite.filter(exercice__epreuve__cursus__in=cursus_ids)))
+            | (~models.Q(models.Exists(source)) & ~models.Q(models.Exists(source_inedite)))
+        )
+    )
+
+
 class RappelDeMethode(models.Model):
     """
     Un bloc "### Rappel de méthode" extrait d'un Exercise par correction-experte,

@@ -1,4 +1,5 @@
 import re
+import unicodedata
 
 from django.db.models import Count, Q
 from django.http import FileResponse
@@ -10,6 +11,7 @@ from rest_framework.response import Response
 from analytics.models import AnalyticsEvent, EventName
 from catalog.models import (
     Cours, Cursus, ExamSession, Lesson, Origine, StatutContenu, Subject, Tag, TypeReponse,
+    q_cours_du_cursus,
 )
 from catalog.rendering import annotate_single_cours_link
 from catalog.serializers import CoursSummarySerializer, CursusSerializer, SubjectSerializer, SubjectWithQuizCountSerializer
@@ -116,7 +118,7 @@ def _clean_quiz_markdown(text):
 _LIBELLE_MIN = 8
 
 
-def _cours_pour_theme(theme, subject, cursus_ids):
+def _cours_pour_theme(theme, subject, cursus_ids, texte=""):
     """
     Le Cours publié qui correspond le mieux à un (thème, matière), cherché en trois
     passes de précision décroissante. La première qui rend un résultat gagne.
@@ -136,41 +138,62 @@ def _cours_pour_theme(theme, subject, cursus_ids):
     3. Libellé du chapitre retrouvé dans le sous-thème ou le titre du cours, une fois
        retiré le suffixe de série. Approximatif, donc encadré par _LIBELLE_MIN.
 
-    Tri explicite par identifiant à chaque niveau : sans lui, `.first()` rend un cours
-    arbitraire que le SGBD peut changer d'une requête à l'autre, et l'élève verrait le
-    lien pointer ailleurs d'une session à la suivante.
+    À chaque niveau, plusieurs cours peuvent convenir (un thème générique comme
+    « identité remarquable » en porte des dizaines, de la 3e à la Terminale) : le gagnant
+    est celui dont le titre partage le plus de mots avec `texte` (énoncé + corrigé de
+    l'item), puis le plus petit id - ordre stable, sans quoi l'élève verrait le lien
+    pointer ailleurs d'une session à la suivante. Avant ce départage, le plus petit id
+    gagnait seul : un rappel BEPC sur a²-b² pointait vers un cours de Terminale C sur
+    le point fixe d'une transformation complexe, porteur du même tag.
 
     `cursus_ids` : un itérable d'id de Cursus (pas un seul) - un CompetenceItem peut
-    couvrir plusieurs cursus (voir CompetenceItem.cursus, M2M), et un Cours sans cursus
-    du tout reste éligible (notion commune à toutes les séries, voir Cours.cursus).
+    couvrir plusieurs cursus (voir CompetenceItem.cursus, M2M), souvent du BEPC au BAC :
+    passer de préférence le seul cursus de la session. Un Cours sans cursus n'est retenu
+    que si sa lignée le rattache à l'un d'eux (voir q_cours_du_cursus).
     """
-    publies = (
-        Cours.objects.visibles()
-        .filter(subject=subject)
-        .filter(Q(cursus__in=cursus_ids) | Q(cursus__isnull=True))
-        .distinct()
-        .order_by("id")
-    )
+    publies = Cours.objects.visibles().filter(subject=subject).filter(q_cours_du_cursus(cursus_ids))
 
-    exact = publies.filter(tags=theme).first()
-    if exact:
-        return exact
-
-    savoir_id = theme.savoir_officiel_id
-    if savoir_id:
-        par_savoir = publies.filter(tags__savoir_officiel_id=savoir_id).first()
-        if par_savoir:
-            return par_savoir
-
+    niveaux = [Q(tags=theme)]
+    if theme.savoir_officiel_id:
+        niveaux.append(Q(tags__savoir_officiel_id=theme.savoir_officiel_id))
     libelle = theme.name.split("(")[0].strip()
     if len(libelle) >= _LIBELLE_MIN:
-        return publies.filter(
-            Q(sous_theme__icontains=libelle) | Q(titre__icontains=libelle),
-        ).first()
+        niveaux.append(Q(sous_theme__icontains=libelle) | Q(titre__icontains=libelle))
+
+    mots_texte = _mots_significatifs(texte)
+    for niveau in niveaux:
+        candidats = list(publies.filter(niveau).values_list("id", "titre").distinct())
+        if candidats:
+            meilleur_id, _ = min(
+                candidats, key=lambda c: (-len(_mots_significatifs(c[1]) & mots_texte), c[0]),
+            )
+            return Cours.objects.get(pk=meilleur_id)
     return None
 
 
-def _competence_item_corrige(item):
+_LATEX_RE = re.compile(r"\$\$?[^$]*\$\$?")
+_MOT_RE = re.compile(r"[a-z0-9]+")
+_MOTS_VIDES = {
+    "alors", "ainsi", "avec", "avoir", "bien", "cette", "chaque", "comme", "dans", "donc",
+    "dont", "elle", "elles", "entre", "etre", "faire", "leur", "leurs", "meme", "moins",
+    "nous", "partir", "plus", "pour", "puis", "quand", "sans", "sont", "sous", "suffit",
+    "tous", "tout", "toute", "toutes", "vous",
+}
+
+
+def _mots_significatifs(texte):
+    """Mots de 4 lettres et plus, sans accents ni formules LaTeX, hors mots vides -
+    base du départage par pertinence de _cours_pour_theme."""
+    texte = unicodedata.normalize("NFKD", _LATEX_RE.sub(" ", texte or "").lower())
+    texte = "".join(ch for ch in texte if not unicodedata.combining(ch))
+    return {m for m in _MOT_RE.findall(texte) if len(m) >= 4 and m not in _MOTS_VIDES}
+
+
+def _texte_item(item):
+    return f"{item.enonce_markdown}\n{item.corrige_markdown}"
+
+
+def _competence_item_corrige(item, cursus_ids=None):
     """
     corrige_markdown d'un CompetenceItem, avec un lien "Voir le cours complet" injecté
     quand un Cours publié couvre déjà sa compétence (voir _cours_pour_theme) - jamais
@@ -178,9 +201,12 @@ def _competence_item_corrige(item):
     fiable de connaître un slug de Cours au moment de la génération), toujours recalculé à la
     lecture pour rester exact même si le Cours correspondant est publié après coup.
     Même principe que catalog.rendering._clean_exercise_corrige pour Exercise, jamais
-    persisté sur item.corrige_markdown lui-même.
+    persisté sur item.corrige_markdown lui-même. `cursus_ids` : le cursus de la session
+    quand il est connu, à défaut ceux de l'item.
     """
-    cours = _cours_pour_theme(item.theme, item.subject, item.cursus.values_list("id", flat=True))
+    if cursus_ids is None:
+        cursus_ids = item.cursus.values_list("id", flat=True)
+    cours = _cours_pour_theme(item.theme, item.subject, cursus_ids, _texte_item(item))
     if not cours:
         return item.corrige_markdown
     return annotate_single_cours_link(item.corrige_markdown, cours.slug)
@@ -217,7 +243,7 @@ def _question_payload(quiz_question):
             "subject_label": item.subject.label,
         }
         if answer:
-            payload["corrige_markdown"] = _competence_item_corrige(item)
+            payload["corrige_markdown"] = _competence_item_corrige(item, [quiz_question.session.cursus_id])
             payload["reponse_correcte"] = item.reponse_correcte
     else:
         question = quiz_question.question
@@ -355,7 +381,7 @@ def _resultat_payload(session, request):
         # suggestion qu'une séance normale, sans règle spéciale.
         if s["theme"] is not None and 100 * s["reussies"] / s["total"] < SEUIL_MAITRISE:
             item = s["competence_item"]
-            cours = _cours_pour_theme(s["theme"], item.subject, item.cursus.values_list("id", flat=True))
+            cours = _cours_pour_theme(s["theme"], item.subject, [session.cursus_id], _texte_item(item))
             if cours:
                 entree["cours"] = CoursSummarySerializer(cours, context={"request": request}).data
         par_theme_payload.append(entree)
@@ -445,7 +471,7 @@ def reveal_corrige(request, session_id, quiz_question_id):
     )
     contenu = quiz_question.contenu
     corrige_markdown = (
-        _competence_item_corrige(contenu) if quiz_question.competence_item_id else contenu.corrige_markdown
+        _competence_item_corrige(contenu, [quiz_question.session.cursus_id]) if quiz_question.competence_item_id else contenu.corrige_markdown
     )
     return Response({"corrige_markdown": corrige_markdown, "reponse_correcte": contenu.reponse_correcte})
 
@@ -583,7 +609,7 @@ def list_revisions_dues(request):
         cours_qs = (
             Cours.objects.visibles()
             .filter(subject=schedule.subject, tags=schedule.theme)
-            .filter(Q(cursus=schedule.cursus) | Q(cursus__isnull=True))
+            .filter(q_cours_du_cursus([schedule.cursus_id]))
             .distinct()
         )
         payload.append({

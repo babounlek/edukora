@@ -1284,6 +1284,44 @@ class QuizApiTests(TestCase):
 
         self.assertIn(f"[COURS_LINK:{exact.slug}]", self._corrige_via_api())
 
+    def _cours_issu_de(self, cursus, external_id, **kwargs):
+        # Cours sans cursus, comme le laisse l'ingestion : seule sa lignée (le rappel de
+        # méthode d'une épreuve) dit à quel niveau il appartient.
+        cours = _make_cours(self.subject, tags=[self.theme], external_id=external_id, **kwargs)
+        lesson = Lesson.objects.create(
+            title=f"Épreuve {external_id}", subject=self.subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+        )
+        lesson.cursus.add(cursus)
+        exercise = Exercise.objects.create(lesson=lesson, numero_exercice="1")
+        RappelDeMethode.objects.create(
+            exercise=exercise, external_id=f"rdm-{external_id}", competence="C",
+            contenu_markdown="Méthode.", cours=cours,
+        )
+        return cours
+
+    def test_cursusless_cours_from_another_level_is_never_suggested(self):
+        # Le cas réel : un rappel BEPC sur a²-b² pointait vers un cours de Terminale C
+        # (même tag générique, Cours.cursus vide, plus petit id).
+        bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        autre_niveau = self._cours_issu_de(bepc, "cours-autre-niveau")
+        bon_niveau = self._cours_issu_de(self.cursus, "cours-bon-niveau")
+
+        corrige = self._corrige_via_api()
+
+        self.assertIn(f"[COURS_LINK:{bon_niveau.slug}]", corrige)
+        self.assertNotIn(f"[COURS_LINK:{autre_niveau.slug}]", corrige)
+
+    def test_most_relevant_title_wins_among_cours_sharing_the_tag(self):
+        self.item.enonce_markdown = "Calculer la dérivée de $f(x)=x^3+2x$."
+        self.item.save(update_fields=["enonce_markdown"])
+        _make_cours(self.subject, cursus=self.cursus, tags=[self.theme], external_id="cours-hors-sujet",
+                    titre="Étudier une suite géométrique")
+        pertinent = _make_cours(self.subject, cursus=self.cursus, tags=[self.theme], external_id="cours-pertinent",
+                                titre="Calculer la dérivée d'un polynôme")
+
+        self.assertIn(f"[COURS_LINK:{pertinent.slug}]", self._corrige_via_api())
+
     def test_reveal_corrige_denied_for_another_users_session(self):
         self._subscribe()
         self.client.force_authenticate(user=self.user)

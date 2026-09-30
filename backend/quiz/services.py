@@ -7,7 +7,9 @@ from django.db.models import Count, Q
 from django.utils import timezone
 
 from access.models import ExerciceFait, LectureProgress
-from catalog.models import Cours, Difficulte, ExamSession, Lesson, Origine, Question, StatutContenu, Subject, Tag
+from catalog.models import (
+    Cours, Difficulte, ExamSession, Lesson, Origine, Question, StatutContenu, Subject, Tag, q_cours_du_cursus,
+)
 from programme.models import Module, Savoir
 
 # Miroir volontaire de lib/maitrise.ts SEUIL_MAITRISE (frontend) - resume_parcours a
@@ -787,7 +789,7 @@ def construire_parcours(profil, cursus, subject):
             candidats_bruts = (
                 Cours.objects.visibles()
                 .filter(subject=subject, tags__savoir_officiel=savoir)
-                .filter(Q(cursus=cursus) | Q(cursus__isnull=True))
+                .filter(q_cours_du_cursus([cursus.id]))
                 # Voir construire_parcours_par_frequence : sans only(), le DISTINCT
                 # compare aussi le contenu entier de chaque cours.
                 .only("id", "slug", "titre", "sous_theme")

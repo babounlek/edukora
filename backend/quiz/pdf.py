@@ -100,7 +100,7 @@ def _bloc_question(quiz_question, *, avec_corrige):
     blocs = [f"## Question {quiz_question.ordre}", enonce]
     if avec_corrige:
         if quiz_question.competence_item_id:
-            corrige = _competence_item_corrige(contenu).strip()
+            corrige = _competence_item_corrige(contenu, [quiz_question.session.cursus_id]).strip()
         else:
             corrige = contenu.corrige_markdown.strip()
         # Les items générés par concepteur-quiz-competence ouvrent déjà sur leurs propres
