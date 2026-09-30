@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-probatoire-d-ti-physique-2019-officiel-cameroun-ex3-qB21-1",
+  "meta": {
+    "titre": "La loi de Faraday : calculer une f.é.m. induite",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "loi de Faraday",
+      "f.é.m. induite",
+      "flux magnétique",
+      "tension alternative"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2019-officiel-cameroun",
+    "epreuve_titre": "Probatoire D, TI - Physique 2019 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2019-officiel-cameroun-ex3-qB.2.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dès que l'on connaît l'expression du flux magnétique au cours du temps, une seule opération mathématique - une dérivation - donne accès à la tension produite par un alternateur. C'est la loi de Faraday qui fait ce pont entre le flux (une grandeur géométrique et magnétique) et la f.é.m. (une grandeur électrique directement mesurable)."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir dériver une fonction sinusoïdale du temps, $\\frac{d}{dt}\\cos(at) = -a\\sin(at)$.",
+        "Connaître la notion de flux magnétique $\\Phi(t)$ à travers un circuit.",
+        "Savoir identifier l'amplitude et la pulsation d'une fonction sinusoïdale."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi de Faraday",
+      "contenu_markdown": "La loi de Faraday relie la force électromotrice induite dans un circuit à la rapidité de variation du flux magnétique qui le traverse :\n\n$$e(t) = -\\frac{d\\Phi}{dt}$$\n\nLe signe moins traduit la loi de Lenz : le courant induit s'oppose toujours à la cause qui lui a donné naissance. Si $\\Phi(t) = \\Phi_0 \\cos(\\omega t)$, alors, en utilisant $\\frac{d}{dt}\\cos(\\omega t) = -\\omega\\sin(\\omega t)$ :\n\n$$e(t) = \\Phi_0 \\, \\omega \\, \\sin(\\omega t)$$",
+      "formule_principale": "e(t) = -\\dfrac{d\\Phi}{dt}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le flux à travers une bobine varie selon $\\Phi(t)=0{,}2\\cos(1{,}57\\,t)$ Wb. Déterminer l'expression de la f.é.m. induite $e(t)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la loi de Faraday",
+          "justification": "C'est la relation qui donne la f.é.m. à partir du flux.",
+          "resultat_markdown": "$e(t) = -\\dfrac{d\\Phi}{dt}$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver l'expression du flux",
+          "justification": "On applique la règle de dérivation d'un cosinus, $\\frac{d}{dt}\\cos(at)=-a\\sin(at)$, avec $a=1{,}57$.",
+          "resultat_markdown": "$\\dfrac{d\\Phi}{dt} = 0{,}2\\times(-1{,}57\\sin(1{,}57\\,t)) = -0{,}314\\sin(1{,}57\\,t)$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le signe moins de la loi de Faraday",
+          "justification": "$e(t)=-\\frac{d\\Phi}{dt}$, donc les deux signes moins se combinent.",
+          "resultat_markdown": "$e(t) = -(-0{,}314\\sin(1{,}57\\,t)) = 0{,}314\\sin(1{,}57\\,t)$ V"
+        }
+      ],
+      "conclusion_markdown": "La f.é.m. induite dans la bobine vaut $e(t)=0{,}314\\sin(1{,}57\\,t)$ V, une tension alternative sinusoïdale de même pulsation que le flux."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le signe moins de la loi de Faraday, en pensant que le signe moins de la dérivée du cosinus \"suffit déjà\".",
+          "pourquoi_faux": "Il y a bien deux signes moins distincts et indépendants : celui de la loi de Faraday elle-même, et celui qui apparaît en dérivant $\\cos$. Les deux doivent être appliqués, et ici ils se combinent pour redonner un résultat positif.",
+          "correction_markdown": "Traite les deux signes séparément, étape par étape, sans jamais les simplifier de tête avant d'avoir écrit chaque ligne du calcul."
+        },
+        {
+          "erreur_markdown": "Confondre l'amplitude du flux $\\Phi_0$ avec l'amplitude de la f.é.m. $E_{max}=\\Phi_0\\omega$.",
+          "pourquoi_faux": "La dérivation introduit un facteur $\\omega$ (la pulsation) : l'amplitude de la f.é.m. n'est pas celle du flux, elle lui est proportionnelle via $\\omega$.",
+          "correction_markdown": "Calcule toujours la dérivée complète avant de lire l'amplitude finale ; ne recopie jamais directement $\\Phi_0$ comme si c'était $E_{max}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le flux à travers une bobine vaut $\\Phi(t)=0{,}5\\cos(10t)$ Wb. Déterminer $e(t)$.",
+          "solution_markdown": "$\\dfrac{d\\Phi}{dt}=0{,}5\\times(-10\\sin(10t))=-5\\sin(10t)$. $e(t)=-\\dfrac{d\\Phi}{dt}=5\\sin(10t)$ V."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le flux à travers une bobine vaut $\\Phi(t)=0{,}1\\cos(100\\pi t)$ Wb. Déterminer $e(t)$ puis sa valeur maximale.",
+          "solution_markdown": "$\\dfrac{d\\Phi}{dt}=0{,}1\\times(-100\\pi\\sin(100\\pi t))=-10\\pi\\sin(100\\pi t)$. $e(t)=10\\pi\\sin(100\\pi t)$ V. Valeur maximale : $E_{max}=10\\pi\\approx31{,}4$ V."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que si le flux s'écrit $\\Phi(t)=\\Phi_0\\sin(\\omega t)$ (et non $\\cos$), la f.é.m. induite est alors $e(t)=-\\Phi_0\\omega\\cos(\\omega t)$, en utilisant $\\frac{d}{dt}\\sin(at)=a\\cos(at)$.",
+          "solution_markdown": "$\\dfrac{d\\Phi}{dt}=\\Phi_0\\times\\omega\\cos(\\omega t)$ (en appliquant $\\frac{d}{dt}\\sin(at)=a\\cos(at)$ avec $a=\\omega$). Donc $e(t)=-\\dfrac{d\\Phi}{dt}=-\\Phi_0\\omega\\cos(\\omega t)$. On retrouve bien une tension alternative de même pulsation $\\omega$ et d'amplitude $\\Phi_0\\omega$, mais déphasée par rapport au cas où le flux est en cosinus - ce qui montre que la forme précise de $e(t)$ (sinus ou cosinus, signe) dépend directement de la forme choisie pour $\\Phi(t)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Faraday, $e(t)=-\\dfrac{d\\Phi}{dt}$, transforme une expression du flux en expression de la f.é.m.",
+        "Le signe moins traduit la loi de Lenz : il ne doit jamais être oublié ni simplifié de tête.",
+        "Dériver $\\Phi_0\\cos(\\omega t)$ fait apparaître un facteur $\\omega$ : l'amplitude de $e(t)$ n'est jamais celle de $\\Phi(t)$.",
+        "Le résultat est toujours une tension alternative sinusoïdale, de même pulsation que le flux qui lui a donné naissance.",
+        "Cette méthode s'applique à toute expression de flux dérivable, pas seulement à un cosinus."
+      ]
+    }
+  ]
+}

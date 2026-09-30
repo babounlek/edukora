@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-reactances-circuit-serie-tle-c",
+  "meta": {
+    "titre": "L'addition des réactances dans un circuit série",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Courant alternatif sinusoïdal",
+    "duree_estimee_min": 20,
+    "tags": [
+      "impédance",
+      "circuit RL série",
+      "réactance",
+      "association série"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2002-PHYSIQUE-CM",
+    "epreuve_titre": "BAC Physique, série C, session 2002 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-physique-2002-officiel-cameroun-ex4-q2.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand on associe en série une résistance pure et une bobine réelle (elle-même résistance et inductance mélangées), on pourrait croire qu'il faut recommencer tout le calcul d'impédance depuis zéro. En réalité, une règle très simple permet de retrouver l'impédance de n'importe quel élément du circuit à partir de l'impédance totale : les résistances s'additionnent entre elles, les réactances (parties liées à l'inductance) s'additionnent entre elles, et ces deux sommes ne se combinent qu'à la toute fin, par un théorème de Pythagore."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître l'impédance d'une bobine réelle $Z=\\sqrt{R^2+(L\\omega)^2}$",
+        "Savoir que dans un circuit série, les tensions instantanées s'additionnent (loi des mailles)",
+        "Manipuler le théorème de Pythagore"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Additionner séparément résistances et réactances",
+      "contenu_markdown": "Dans un circuit série formé de plusieurs dipôles résistifs et inductifs, on peut toujours regrouper d'un côté la résistance totale (somme de toutes les résistances, y compris celle, interne, d'une bobine réelle) et de l'autre la réactance totale (somme de tous les termes $L\\omega$ des inductances en présence). L'impédance totale du circuit se calcule alors comme si le circuit ne comportait qu'une seule résistance et une seule inductance équivalentes : $Z^2=(R_{total})^2+(X_{total})^2$. Cette règle permet, en particulier, de retrouver la réactance propre d'un seul élément du circuit (ici la bobine) à partir de l'impédance totale mesurée et de la résistance totale connue.",
+      "formule_principale": "Z^2 = (R_{total})^2 + (X_{total})^2 \\quad\\text{avec}\\quad X_{total} = \\sum L_i\\omega",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un conducteur ohmique $r=4\\ \\Omega$ est associé en série à une bobine de résistance $R=4\\ \\Omega$. L'ensemble, alimenté sous $U=4\\ \\text{V}$ efficace, est parcouru par un courant $I=0{,}472\\ \\text{A}$ efficace. Calculer l'impédance propre $Z_{bobine}$ de la bobine.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'impédance totale du circuit",
+          "justification": "Loi d'Ohm en valeurs efficaces",
+          "resultat_markdown": "$Z = U/I = 4/0{,}472 \\approx 8{,}47\\ \\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler la réactance totale",
+          "justification": "$Z^2=(r+R)^2+(L\\omega)^2$, seule la bobine possède une réactance",
+          "resultat_markdown": "$(L\\omega)^2 = Z^2-(r+R)^2 = 8{,}47^2-8^2 \\approx 7{,}8$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'impédance propre de la bobine",
+          "justification": "La bobine seule a pour impédance $\\sqrt{R^2+(L\\omega)^2}$, avec sa propre résistance R (pas r)",
+          "resultat_markdown": "$Z_{bobine} = \\sqrt{R^2+(L\\omega)^2} = \\sqrt{16+7{,}8} \\approx 4{,}88\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "On retrouve ainsi l'impédance propre de la bobine sans avoir eu besoin de connaître $\\omega$ ou $L$ séparément : seule la combinaison $L\\omega$ intervient dans tout le calcul."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $Z_{bobine}$ en incluant la résistance $r$ du conducteur ohmique additionnel",
+          "pourquoi_faux": "$r$ n'appartient pas à la bobine : l'impédance propre de la bobine ne dépend que de sa propre résistance $R$ et de sa propre réactance $L\\omega$, jamais des éléments extérieurs du circuit.",
+          "correction_markdown": "Distingue toujours l'impédance totale du circuit (qui inclut tous les éléments) de l'impédance propre d'un seul élément (qui n'inclut que ses propres résistance et réactance)."
+        },
+        {
+          "erreur_markdown": "Additionner directement les impédances $Z_r$ et $Z_{bobine}$ au lieu de sommer séparément résistances et réactances",
+          "pourquoi_faux": "Les impédances ne s'additionnent pas terme à terme comme des nombres réels dès qu'il y a un déphasage différent entre les éléments : seules les résistances entre elles, et les réactances entre elles, s'additionnent directement.",
+          "correction_markdown": "Décompose toujours chaque dipôle en sa résistance et sa réactance avant d'additionner, jamais directement en « impédances »."
+        },
+        {
+          "erreur_markdown": "Confondre $L\\omega$ (réactance, en Ω) avec $L$ (inductance, en H) dans les calculs intermédiaires",
+          "pourquoi_faux": "$L\\omega$ est homogène à une résistance (Ω) et se combine avec $R$ dans un théorème de Pythagore ; $L$ seul (en Henry) n'a pas cette propriété et ne peut être extrait sans connaître $\\omega$.",
+          "correction_markdown": "Garde le produit $L\\omega$ groupé tant que $\\omega$ n'est pas nécessaire séparément dans la suite du problème."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit série (R, L) a une résistance totale $R=6\\ \\Omega$ et une réactance $L\\omega=8\\ \\Omega$. Calculer son impédance.",
+          "solution_markdown": "$Z=\\sqrt{R^2+(L\\omega)^2}=\\sqrt{36+64}=\\sqrt{100}=10\\ \\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit série associe un conducteur ohmique $r=10\\ \\Omega$ et une bobine d'impédance propre $Z_{bobine}=13\\ \\Omega$ et de résistance $R=5\\ \\Omega$. Calculer l'impédance totale du circuit.",
+          "solution_markdown": "La réactance de la bobine vaut $L\\omega=\\sqrt{Z_{bobine}^2-R^2}=\\sqrt{169-25}=\\sqrt{144}=12\\ \\Omega$. La résistance totale est $r+R=10+5=15\\ \\Omega$. L'impédance totale vaut $Z=\\sqrt{(r+R)^2+(L\\omega)^2}=\\sqrt{225+144}=\\sqrt{369}\\approx19{,}2\\ \\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit série associe deux bobines réelles, de résistances $R_1,R_2$ et de réactances $X_1,X_2$. Montrer que l'impédance totale n'est en général PAS égale à $Z_1+Z_2$ (où $Z_1,Z_2$ sont les impédances propres de chaque bobine), sauf cas particulier à préciser.",
+          "solution_markdown": "L'impédance totale correcte est $Z=\\sqrt{(R_1+R_2)^2+(X_1+X_2)^2}$, alors que $Z_1+Z_2=\\sqrt{R_1^2+X_1^2}+\\sqrt{R_2^2+X_2^2}$. Ces deux expressions ne coïncident en général pas : c'est une conséquence de l'inégalité triangulaire (stricte dès que les deux bobines n'ont pas le même rapport $X/R$, c'est-à-dire le même déphasage propre), qui donne toujours $Z\\le Z_1+Z_2$. L'égalité $Z=Z_1+Z_2$ n'a lieu que si $X_1/R_1=X_2/R_2$ (les deux bobines ont le même déphasage propre $\\varphi_1=\\varphi_2$), cas où les deux impédances sont \\og alignées\\fg{} dans le plan de Fresnel et s'additionnent alors comme des nombres réels ordinaires."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un circuit série, additionne séparément les résistances entre elles et les réactances ($L\\omega$) entre elles, jamais les impédances directement.",
+        "L'impédance totale se reconstruit ensuite par $Z^2=(R_{total})^2+(X_{total})^2$.",
+        "Pour isoler l'impédance propre d'un seul élément, n'utilise que SA résistance et SA réactance, jamais celles des autres éléments du circuit.",
+        "Garde le produit $L\\omega$ groupé tant que $\\omega$ n'est pas nécessaire séparément : cela évite des calculs inutiles.",
+        "Deux impédances ne s'additionnent directement en valeur ($Z=Z_1+Z_2$) que si les deux dipôles ont le même déphasage propre, un cas particulier rare."
+      ]
+    }
+  ]
+}

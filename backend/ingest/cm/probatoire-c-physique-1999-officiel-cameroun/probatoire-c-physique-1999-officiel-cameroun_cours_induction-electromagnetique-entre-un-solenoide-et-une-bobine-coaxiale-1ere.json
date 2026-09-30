@@ -1,0 +1,135 @@
+{
+  "cours_id": "cours-induction-electromagnetique-entre-un-solenoide-et-une-bobine-coaxiale-1ere",
+  "meta": {
+    "titre": "La f.é.m. induite dans une bobine par un solénoïde voisin",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "induction électromagnétique",
+      "loi de Faraday",
+      "flux magnétique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-physique-1999-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série C - Cameroun - Session 1999",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-physique-1999-officiel-cameroun-ex3-q4-1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un transformateur électrique, une plaque à induction, une carte de paiement sans contact : tous exploitent le même principe physique - un courant variable dans une bobine crée, dans une bobine voisine, une tension induite, sans aucun contact électrique entre les deux circuits. Ce cours détaille le calcul complet de cette f.é.m. induite, depuis le champ créé par le premier circuit jusqu'au courant qui en résulte dans le second."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le champ créé par un solénoïde : $B=\\mu_0 n I$",
+        "Connaître la loi de Faraday : $e=-N\\dfrac{d\\Phi}{dt}$",
+        "Savoir calculer l'aire d'un disque : $S=\\pi r^2$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la variation du champ à la f.é.m. induite",
+      "contenu_markdown": "Quand une bobine de $N'$ spires est placée à l'intérieur d'un solénoïde et lui est coaxiale, elle est traversée par le champ magnétique $B=\\mu_0 n I$ créé par ce solénoïde ($n$ étant le nombre de spires par mètre du solénoïde). Le flux à travers une spire de la bobine est $\\Phi_1=B\\times S'$, où $S'$ est l'aire de la bobine elle-même (pas celle du solénoïde). Toute variation temporelle de $I$ induit alors, par la loi de Faraday, une f.é.m. dans la bobine, proportionnelle à son nombre de spires, à son aire, et au taux de variation du courant du solénoïde.",
+      "formule_principale": "e' = -N'\\dfrac{d\\Phi_1}{dt} = -N'S'\\mu_0 n\\dfrac{dI}{dt}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un solénoïde de $500$ spires sur $50\\ \\text{cm}$ voit son courant passer linéairement de $10\\ \\text{A}$ à $0$ en $0{,}2\\ \\text{s}$. Une bobine coaxiale de $250$ spires et $4\\ \\text{cm}$ de diamètre est placée en son centre. Calculer la f.é.m. induite dans la bobine.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $n$, le nombre de spires par mètre du solénoïde",
+          "justification": "$n=N/l$ est nécessaire pour calculer le champ $B$.",
+          "resultat_markdown": "$n = \\dfrac{500}{0{,}5} = 1000\\ \\text{spires/m}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'aire de la bobine réceptrice",
+          "justification": "C'est l'aire de la BOBINE, pas celle du solénoïde, qui détermine le flux qu'elle reçoit.",
+          "resultat_markdown": "$S' = \\pi\\left(\\dfrac{0{,}04}{2}\\right)^2 = \\pi\\times(0{,}02)^2 \\approx 1{,}257\\times10^{-3}\\ \\text{m}^2$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le taux de variation du courant",
+          "justification": "Le courant passe linéairement de $10\\ \\text{A}$ à $0$ en $0{,}2\\ \\text{s}$.",
+          "resultat_markdown": "$\\dfrac{dI}{dt} = \\dfrac{0-10}{0{,}2} = -50\\ \\text{A/s}$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la formule de la f.é.m. induite",
+          "justification": "$e'=-N'S'\\mu_0 n\\,dI/dt$.",
+          "resultat_markdown": "$|e'| = 250\\times1{,}257\\times10^{-3}\\times4\\pi\\times10^{-7}\\times1000\\times50 \\approx 1{,}97\\times10^{-2}\\ \\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "La bobine voit apparaître une f.é.m. induite d'environ $19{,}7\\ \\text{mV}$, uniquement parce que le courant du solénoïde varie dans le temps - aucun contact électrique entre les deux circuits n'est nécessaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": {
+        "type": "erreurs_classiques",
+        "items": [
+          {
+            "erreur_markdown": "Utiliser l'aire du solénoïde (calculée à partir de son propre diamètre) au lieu de celle de la bobine réceptrice.",
+            "pourquoi_faux": "Le flux qui compte pour la f.é.m. induite dans la bobine est celui qui traverse SA PROPRE surface, délimitée par son propre diamètre - même si le champ magnétique $B$ traversant cette surface est bien celui créé par le solénoïde.",
+            "correction_markdown": "Distingue toujours la source du champ (le solénoïde, dont on tire $B$) du circuit qui reçoit le flux (la bobine, dont on tire l'aire $S'$)."
+          },
+          {
+            "erreur_markdown": "Oublier de convertir le diamètre en rayon avant de calculer l'aire, ou oublier le facteur $\\pi$.",
+            "pourquoi_faux": "L'aire d'un disque est $\\pi r^2$, avec $r$ le RAYON (moitié du diamètre donné) : utiliser directement le diamètre au carré multiplie l'aire par 4, une erreur fréquente et facile à éviter.",
+            "correction_markdown": "Note systématiquement « rayon = diamètre / 2 » comme première étape de tout calcul de surface circulaire."
+          }
+        ]
+      }
+    },
+    {
+      "type": "exercices_application",
+      "items": {
+        "type": "exercices_application",
+        "items": [
+          {
+            "numero": 1,
+            "difficulte": "facile",
+            "enonce_markdown": "Un solénoïde de $n=800\\ \\text{spires/m}$ voit son courant varier de $\\dfrac{dI}{dt}=20\\ \\text{A/s}$. Une bobine de $100$ spires et de rayon $1\\ \\text{cm}$ est placée en son centre. Calculer la f.é.m. induite (en valeur absolue).",
+            "solution_markdown": "$S'=\\pi(0{,}01)^2\\approx3{,}14\\times10^{-4}\\ \\text{m}^2$. $|e'|=N'S'\\mu_0 n|dI/dt|=100\\times3{,}14\\times10^{-4}\\times4\\pi\\times10^{-7}\\times800\\times20\\approx6{,}3\\times10^{-4}\\ \\text{V}\\approx0{,}63\\ \\text{mV}$."
+          },
+          {
+            "numero": 2,
+            "difficulte": "moyen",
+            "enonce_markdown": "Reprendre l'exemple du cours, mais avec une bobine deux fois plus grande en diamètre ($8\\ \\text{cm}$ au lieu de $4\\ \\text{cm}$). Que devient la f.é.m. induite ?",
+            "solution_markdown": "L'aire est proportionnelle au carré du rayon, donc au carré du diamètre : doubler le diamètre multiplie l'aire par 4. La f.é.m. induite étant proportionnelle à $S'$, elle est donc multipliée par 4 : $|e'|\\approx4\\times1{,}97\\times10^{-2}\\approx7{,}9\\times10^{-2}\\ \\text{V}\\approx79\\ \\text{mV}$ (à condition que la bobine reste entièrement à l'intérieur du solénoïde)."
+          },
+          {
+            "numero": 3,
+            "difficulte": "approfondissement",
+            "enonce_markdown": "Que se passerait-il si la bobine, au lieu d'être plus petite que le solénoïde, avait un diamètre supérieur à celui du solénoïde (elle l'entourerait de l'extérieur) ? Le calcul de $S'$ resterait-il basé sur l'aire propre de la bobine ?",
+            "solution_markdown": "Non : dans ce cas, le champ $B$ du solénoïde n'existe (de façon significative) qu'à l'intérieur du solénoïde lui-même - à l'extérieur, il est quasiment nul pour un solénoïde idéal. Le flux traversant la bobine (plus grande) serait alors limité par la surface DU SOLÉNOÏDE, pas par celle de la bobine : c'est la plus petite des deux surfaces (celle où le champ est non nul) qui détermine le flux réellement capté. Il faut donc toujours comparer les deux diamètres avant de choisir quelle aire utiliser dans le calcul."
+          }
+        ]
+      }
+    },
+    {
+      "type": "synthese",
+      "items_markdown": {
+        "type": "synthese",
+        "items_markdown": [
+          "La f.é.m. induite dans une bobine coaxiale à un solénoïde vaut $e'=-N'S'\\mu_0 n\\,dI/dt$.",
+          "$S'$ est toujours l'aire de la bobine RÉCEPTRICE (ou la plus petite des deux aires, si la bobine dépasse du solénoïde), jamais celle du solénoïde par défaut.",
+          "N'oublie jamais de diviser le diamètre par 2 pour obtenir le rayon avant de calculer une aire.",
+          "La f.é.m. induite est proportionnelle au carré du rayon de la bobine : une bobine deux fois plus grande induit une f.é.m. quatre fois plus grande.",
+          "C'est le principe physique de tout transformateur : deux bobines couplées magnétiquement, sans aucun contact électrique, échangent de l'énergie par ce mécanisme d'induction mutuelle."
+        ]
+      }
+    }
+  ]
+}

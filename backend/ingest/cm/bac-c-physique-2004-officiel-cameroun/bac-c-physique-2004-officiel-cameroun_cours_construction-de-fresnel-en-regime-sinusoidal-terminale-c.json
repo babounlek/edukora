@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-construction-de-fresnel-en-regime-sinusoidal-terminale-c",
+  "meta": {
+    "titre": "Construction de Fresnel en régime sinusoïdal",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Courant alternatif sinusoïdal",
+    "duree_estimee_min": 28,
+    "tags": [
+      "construction de Fresnel",
+      "déphasage",
+      "représentation vectorielle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2004-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Baccalauréat Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-2004-officiel-cameroun-ex2-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Additionner des tensions sinusoïdales qui ne sont pas en phase les unes avec les autres ne se fait jamais en additionnant simplement leurs valeurs efficaces : il faut tenir compte de leur décalage temporel. La construction de Fresnel transforme ce problème de trigonométrie en un simple problème de géométrie, où additionner des tensions revient à additionner des vecteurs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de phase et de déphasage d'une grandeur sinusoïdale",
+        "Théorème de Pythagore et fonction tangente",
+        "Impédance d'un dipôle RLC série"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Représentation de Fresnel des tensions d'un circuit série",
+      "contenu_markdown": "La construction de Fresnel représente chaque tension sinusoïdale d'un circuit par un vecteur, de norme égale à sa valeur efficace et d'angle égal à son déphasage par rapport à une grandeur de référence, ici l'intensité, commune à tous les dipôles d'un circuit série. Tous ces vecteurs tournant à la même vitesse angulaire $\\omega$, ils conservent entre eux des positions relatives fixes et peuvent donc être additionnés géométriquement comme des vecteurs ordinaires : la tension aux bornes d'un résistor est toujours en phase avec l'intensité, celle aux bornes d'une bobine est en avance de phase de $\\pi/2$, celle aux bornes d'un condensateur est en retard de phase de $\\pi/2$.",
+      "formule_principale": "\\tan\\varphi=\\dfrac{U_L-U_C}{U_R}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un dipôle RLC série est parcouru par un courant efficace $I=0{,}5\\,\\text{A}$. On calcule $U_R=40\\,\\text{V}$, $U_L=60\\,\\text{V}$ et $U_C=30\\,\\text{V}$. Construire le diagramme de Fresnel, déterminer la tension totale et le déphasage entre tension et intensité.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer le vecteur intensité comme référence, puis le vecteur U_R en phase avec lui",
+          "justification": "La tension aux bornes d'un résistor est toujours en phase avec le courant qui le traverse",
+          "resultat_markdown": "$\\vec I$ horizontal ; $\\vec{U_R}$ horizontal, de norme $40\\,\\text{V}$, dans le prolongement de $\\vec I$"
+        },
+        {
+          "numero": 2,
+          "action": "Ajouter le vecteur U_L, perpendiculaire, en avance de phase",
+          "justification": "La tension aux bornes d'une bobine est en avance de phase de π/2 sur le courant",
+          "resultat_markdown": "$\\vec{U_L}$ vertical vers le haut, de norme $60\\,\\text{V}$, chaîné à la suite de $\\vec{U_R}$"
+        },
+        {
+          "numero": 3,
+          "action": "Ajouter le vecteur U_C, perpendiculaire, en retard de phase",
+          "justification": "La tension aux bornes d'un condensateur est en retard de phase de π/2 sur le courant, donc de sens opposé à U_L",
+          "resultat_markdown": "$\\vec{U_C}$ vertical vers le bas, de norme $30\\,\\text{V}$, chaîné à la suite de $\\vec{U_L}$"
+        },
+        {
+          "numero": 4,
+          "action": "Fermer le polygone pour obtenir la tension totale et calculer le déphasage",
+          "justification": "Le vecteur allant de l'origine au point final de la chaîne représente la tension totale",
+          "resultat_markdown": "$U=\\sqrt{U_R^2+(U_L-U_C)^2}=\\sqrt{40^2+30^2}=\\sqrt{2500}=50\\,\\text{V}$ ; $\\tan\\varphi=\\dfrac{U_L-U_C}{U_R}=\\dfrac{30}{40}=0{,}75$, soit $\\varphi\\approx36{,}9^\\circ$ (tension en avance sur le courant, circuit inductif)"
+        }
+      ],
+      "conclusion_markdown": "La tension totale vaut $50\\,\\text{V}$ et est en avance de phase d'environ $36{,}9^\\circ$ sur l'intensité : le dipôle est globalement inductif car $U_L>U_C$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer U_L et U_C dans le même sens sur le diagramme",
+          "pourquoi_faux": "Ces deux tensions sont en quadrature de phase inverse l'une par rapport à l'autre (l'une en avance, l'autre en retard sur le courant) : elles doivent être représentées dans des sens opposés sur l'axe vertical.",
+          "correction_markdown": "Retenir la règle mnémotechnique : la bobine avance (vecteur vers le haut), le condensateur retarde (vecteur vers le bas), toujours par rapport à l'intensité de référence."
+        },
+        {
+          "erreur_markdown": "Additionner directement $U_R$, $U_L$ et $U_C$ pour obtenir la tension totale",
+          "pourquoi_faux": "Ces trois tensions ne sont pas en phase entre elles : leur somme arithmétique n'a pas de sens physique, seule leur somme vectorielle donne la tension réellement mesurée aux bornes du dipôle complet.",
+          "correction_markdown": "Toujours passer par la construction vectorielle (ou par la formule équivalente avec Pythagore) pour additionner des tensions sinusoïdales déphasées."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un dipôle RL série a $U_R=30\\,\\text{V}$ et $U_L=40\\,\\text{V}$. Calculer la tension totale et le déphasage entre tension et intensité.",
+          "solution_markdown": "$U=\\sqrt{U_R^2+U_L^2}=\\sqrt{900+1600}=\\sqrt{2500}=50\\,\\text{V}$. $\\tan\\varphi=U_L/U_R=40/30\\approx1{,}33$, soit $\\varphi\\approx53{,}1^\\circ$ (tension en avance sur le courant)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un dipôle RLC série a $U_R=60\\,\\text{V}$, $U_L=20\\,\\text{V}$, $U_C=90\\,\\text{V}$. Calculer la tension totale et préciser si le dipôle est inductif ou capacitif.",
+          "solution_markdown": "$U=\\sqrt{U_R^2+(U_L-U_C)^2}=\\sqrt{3600+4900}=\\sqrt{8500}\\approx92{,}2\\,\\text{V}$. Comme $U_C>U_L$, le terme $U_L-U_C$ est négatif : le dipôle est globalement capacitif, la tension est en retard sur le courant."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que si $U_L=U_C$ dans un dipôle RLC série, le déphasage entre tension et intensité est nul, et interpréter physiquement cette situation.",
+          "solution_markdown": "Si $U_L=U_C$, alors $U_L-U_C=0$, donc $\\tan\\varphi=0/U_R=0$, soit $\\varphi=0$ : la tension totale est en phase avec le courant, et $U=U_R$ (le diagramme de Fresnel se réduit à un segment horizontal). C'est la condition de résonance en intensité du circuit RLC série : le dipôle se comporte alors comme s'il était purement résistif, bien qu'il contienne réellement une bobine et un condensateur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La construction de Fresnel remplace une addition de fonctions sinusoïdales déphasées par une simple addition vectorielle, à condition que toutes les grandeurs aient la même pulsation.",
+        "Retiens la règle des trois vecteurs : $U_R$ en phase avec I, $U_L$ en avance de $\\pi/2$, $U_C$ en retard de $\\pi/2$.",
+        "La tension totale se calcule par $U=\\sqrt{U_R^2+(U_L-U_C)^2}$ et le déphasage par $\\tan\\varphi=(U_L-U_C)/U_R$.",
+        "Le signe de $U_L-U_C$ indique la nature du dipôle : positif, il est inductif (tension en avance) ; négatif, il est capacitif (tension en retard).",
+        "Au BAC, cette construction doit être dessinée avec soin (vecteurs à l'échelle, angle repéré) : une construction juste mais mal présentée perd des points au barème."
+      ]
+    }
+  ]
+}

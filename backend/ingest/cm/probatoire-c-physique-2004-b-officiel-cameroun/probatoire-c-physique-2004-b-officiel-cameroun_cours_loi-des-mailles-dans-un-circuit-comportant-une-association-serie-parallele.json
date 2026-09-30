@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-loi-des-mailles-serie-parallele-1ere",
+  "meta": {
+    "titre": "Loi des mailles dans un circuit comportant une association série-parallèle",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Lois de Kirchhoff",
+    "duree_estimee_min": 20,
+    "tags": [
+      "loi des mailles",
+      "circuit série-parallèle",
+      "tension aux bornes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-2004-CM",
+    "epreuve_titre": "Probatoire Physique - Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-physique-2004-b-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Beaucoup de circuits réels ne sont ni purement série, ni purement parallèle : un générateur alimente un groupe de récepteurs en parallèle à travers une résistance commune. Savoir isoler la \"partie série\" traversée par le courant total, avant de s'intéresser au partage entre les branches, est la clé pour résoudre ce genre de circuit sans se perdre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi des mailles pour un circuit simple",
+        "Notion de nœud et de branches en parallèle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Isoler la partie série pour appliquer la loi des mailles",
+      "contenu_markdown": "Dans un circuit où un générateur (f.é.m. $E$, résistance interne $r$) est en série avec une résistance $R$, elle-même en série avec un groupe de branches en parallèle, le courant $I$ qui traverse $r$ et $R$ est le courant TOTAL (celui qui existerait si tout le groupe de branches en parallèle était remplacé par un seul dipôle équivalent). La loi des mailles appliquée à la maille extérieure s'écrit alors $E=(r+R)I+U$, où $U$ est la tension commune aux bornes du groupe de branches en parallèle.",
+      "formule_principale": "E = (r+R)\\,I + U",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur de f.é.m. $E=8$ V et de résistance interne $r=0{,}4$ Ω est en série avec un résistor $R=10$ Ω, lui-même en série avec un groupe de deux branches en parallèle soumises à la tension $U_{AB}$. Exprime $U_{AB}$ en fonction de l'intensité totale $I$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les éléments traversés par le courant total",
+          "justification": "$r$ et $R$ sont en série entre eux et avec le générateur : aucune branche ne s'y ajoute avant le groupe de branches en parallèle.",
+          "resultat_markdown": "Courant $I$ commun à $E$, $r$ et $R$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la loi des mailles sur la maille extérieure",
+          "justification": "La somme des tensions le long d'une maille fermée, orientée dans le sens du courant, est nulle : la f.é.m. est égale à la somme des chutes de tension.",
+          "resultat_markdown": "$E=(r+R)I+U_{AB}$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler $U_{AB}$",
+          "justification": "On réarrange l'équation pour exprimer la tension inconnue en fonction de l'intensité totale.",
+          "resultat_markdown": "$U_{AB}=E-(r+R)I=8-10{,}4\\,I$"
+        }
+      ],
+      "conclusion_markdown": "La tension $U_{AB}$ diminue linéairement quand l'intensité totale $I$ augmente : c'est la caractéristique du générateur \"vu\" depuis le groupe de branches en parallèle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser dans $E=(r+R)I+U$ l'intensité d'une seule branche du groupe en parallèle plutôt que l'intensité totale.",
+          "pourquoi_faux": "$r$ et $R$ sont traversés par la somme des courants des branches en parallèle, pas par le courant d'une seule branche.",
+          "correction_markdown": "Repère toujours, avant d'écrire la loi des mailles, quel courant traverse réellement chaque élément : total avant le nœud, partagé après."
+        },
+        {
+          "erreur_markdown": "Oublier la résistance interne $r$ du générateur dans la loi des mailles.",
+          "pourquoi_faux": "Un générateur réel n'est jamais parfait : sa résistance interne provoque une chute de tension au même titre que n'importe quelle résistance du circuit.",
+          "correction_markdown": "Inclus systématiquement $r$ dans la somme des résistances traversées par le courant total."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur ($E=6$ V, $r=0{,}5$ Ω) est en série avec une résistance $R=2$ Ω, l'ensemble alimentant un groupe de récepteurs sous une tension $U$. Le courant total vaut $I=1$ A. Calcule $U$.",
+          "solution_markdown": "$U=E-(r+R)I=6-(0{,}5+2)\\times1=6-2{,}5=3{,}5$ V."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur ($E=12$ V, $r=1$ Ω) alimente, à travers une résistance $R=3$ Ω, un groupe de branches en parallèle sous une tension $U=4$ V. Calcule l'intensité totale I.",
+          "solution_markdown": "$E=(r+R)I+U \\Rightarrow I=\\dfrac{E-U}{r+R}=\\dfrac{12-4}{1+3}=\\dfrac{8}{4}=2$ A."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un générateur ($E=10$ V, $r=0{,}2$ Ω) est en série avec deux résistances $R_1=1$ Ω et $R_2=1{,}8$ Ω (elles-mêmes en série entre elles), l'ensemble alimentant un groupe de branches en parallèle sous tension $U$. Le courant total est $I=2$ A. Calcule $U$, puis vérifie que la somme de toutes les tensions du circuit redonne bien $E$.",
+          "solution_markdown": "Résistance totale en série : $r+R_1+R_2=0{,}2+1+1{,}8=3$ Ω. $U=E-(r+R_1+R_2)I=10-3\\times2=10-6=4$ V. Vérification : tension aux bornes de $r$ = $0{,}2\\times2=0{,}4$ V ; de $R_1$ = $1\\times2=2$ V ; de $R_2$ = $1{,}8\\times2=3{,}6$ V ; plus $U=4$ V. Somme : $0{,}4+2+3{,}6+4=10$ V $=E$, ce qui confirme la loi des mailles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant d'écrire la loi des mailles, identifie toujours quel courant (total ou partiel) traverse chaque élément du circuit.",
+        "Un élément placé avant tout nœud de partage est traversé par le courant TOTAL du circuit.",
+        "La loi des mailles s'écrit toujours : f.é.m. du générateur = somme des chutes de tension le long de la maille, résistance interne comprise.",
+        "Cette méthode se généralise à n'importe quel nombre de résistances en série avant un groupe de branches en parallèle : il suffit d'additionner toutes les résistances traversées par le courant total."
+      ]
+    }
+  ]
+}

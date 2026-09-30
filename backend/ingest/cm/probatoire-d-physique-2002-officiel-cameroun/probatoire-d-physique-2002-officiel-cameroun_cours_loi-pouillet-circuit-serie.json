@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-loi-pouillet-circuit-serie-probatoire",
+  "meta": {
+    "titre": "Loi de Pouillet pour un circuit série à un seul générateur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Électrocinétique - circuits série",
+    "duree_estimee_min": 20,
+    "tags": [
+      "loi de Pouillet",
+      "circuit série",
+      "intensité du courant"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-physique-2002-officiel-cameroun",
+    "epreuve_titre": "Probatoire Scientifique, Physique, Série D, Session de 2002 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-d-physique-2002-officiel-cameroun-ex1-qC3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une pile et un résistor, reliés par deux fils : c'est le circuit le plus simple qui existe, et pourtant il faut une méthode rigoureuse pour en calculer l'intensité sans se tromper. La loi de Pouillet donne directement le résultat, à condition de comprendre d'où elle vient. Ce cours te montre comment la retrouver en trente secondes à partir des lois d'Ohm, plutôt que de la réciter sans la comprendre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi d'Ohm du générateur $U_{\\text{pile}} = E - rI$ et celle du résistor $U_R = RI$",
+        "Savoir qu'un circuit série ne comporte qu'une seule boucle, donc un seul courant $I$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Pouillet",
+      "contenu_markdown": "Dans un circuit série ne comportant qu'un seul générateur de fem $E$ et de résistance interne $r$, associé à une résistance extérieure totale $R$, l'intensité du courant vaut $I = \\dfrac{E}{R+r}$. Cette loi s'obtient en écrivant que la tension aux bornes du générateur est égale à celle aux bornes de la résistance extérieure, puisque les deux sont mesurées entre les deux mêmes points d'une boucle unique.",
+      "formule_principale": "I = \\dfrac{E}{R+r}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une pile de fem $E=9$ V et de résistance interne $r=1{,}2\\ \\Omega$ alimente un résistor $R=22\\ \\Omega$ en série. Calculer l'intensité du courant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'égalité des deux tensions",
+          "justification": "Le circuit ne comporte qu'une seule boucle : la tension aux bornes de la pile et celle aux bornes du résistor sont mesurées entre les deux mêmes points.",
+          "resultat_markdown": "$U_{\\text{pile}} = U_R \\ \\Longrightarrow \\ E - rI = RI$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler $I$",
+          "justification": "On regroupe les termes en $I$ d'un même côté de l'égalité.",
+          "resultat_markdown": "$E = RI + rI = (R+r)I \\ \\Longrightarrow \\ I = \\dfrac{E}{R+r}$"
+        },
+        {
+          "numero": 3,
+          "action": "Faire l'application numérique",
+          "justification": "Il suffit de substituer les valeurs données par l'énoncé.",
+          "resultat_markdown": "$I = \\dfrac{9}{22+1{,}2} = \\dfrac{9}{23{,}2} \\approx 0{,}388$ A"
+        }
+      ],
+      "conclusion_markdown": "L'intensité du courant dans ce circuit série vaut environ $0{,}388$ A, soit $388$ mA."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la résistance interne $r$ et calculer $I = E/R$.",
+          "pourquoi_faux": "La pile n'est pas un générateur idéal : une partie de sa fem est consommée en interne, ce que traduit exactement le terme $r$ au dénominateur.",
+          "correction_markdown": "Vérifie systématiquement que le dénominateur contient bien $R + r$, la somme de toutes les résistances du circuit, internes et externes."
+        },
+        {
+          "erreur_markdown": "Appliquer la loi de Pouillet à un circuit comportant plusieurs générateurs ou plusieurs boucles.",
+          "pourquoi_faux": "La loi de Pouillet, sous cette forme simple, ne vaut que pour un circuit série à une seule maille et un seul générateur ; un circuit plus complexe demande la loi des mailles ou celle des nœuds.",
+          "correction_markdown": "Vérifie d'abord que le circuit est bien une boucle unique avant d'utiliser directement $I = E/(R+r)$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une pile de fem $E=4{,}5$ V et de résistance interne négligeable alimente un résistor $R=9\\ \\Omega$. Calculer l'intensité du courant.",
+          "solution_markdown": "Résistance interne négligeable signifie $r \\approx 0$ : $I = \\dfrac{E}{R+r} \\approx \\dfrac{4{,}5}{9} = 0{,}5$ A."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une pile de fem $E=6$ V débite un courant $I=0{,}4$ A dans un résistor $R=14\\ \\Omega$. Calculer sa résistance interne $r$.",
+          "solution_markdown": "À partir de $I=\\dfrac{E}{R+r}$, on isole $r$ : $R+r=\\dfrac{E}{I}=\\dfrac{6}{0{,}4}=15\\ \\Omega$, donc $r=15-14=1\\ \\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux résistors $R_1=10\\ \\Omega$ et $R_2=15\\ \\Omega$ sont placés en série avec une pile de fem $E=10$ V et de résistance interne $r=0{,}5\\ \\Omega$. Calculer l'intensité du courant, puis la tension aux bornes de chaque résistor.",
+          "solution_markdown": "En série, les résistances s'additionnent : $R_{\\text{éq}}=R_1+R_2=25\\ \\Omega$. Loi de Pouillet : $I=\\dfrac{E}{R_{\\text{éq}}+r}=\\dfrac{10}{25{,}5}\\approx 0{,}392$ A. Tensions : $U_1=R_1 I \\approx 10\\times 0{,}392=3{,}92$ V et $U_2=R_2 I\\approx 15\\times 0{,}392=5{,}88$ V."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Pouillet donne l'intensité d'un circuit série à un seul générateur : $I = \\dfrac{E}{R+r}$.",
+        "Elle se retrouve en une ligne à partir de l'égalité $U_{\\text{pile}} = U_R$, propre à une boucle unique.",
+        "Le dénominateur regroupe toutes les résistances du circuit, internes comme externes.",
+        "Cette loi est le point de départ de presque tous les calculs de circuits série au Probatoire et au BAC scientifiques."
+      ]
+    }
+  ]
+}

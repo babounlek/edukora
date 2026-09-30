@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-impedance-dun-dipole-rlc-serie-terminale-c",
+  "meta": {
+    "titre": "Impédance d'un dipôle RLC série",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Courant alternatif sinusoïdal",
+    "duree_estimee_min": 24,
+    "tags": [
+      "impédance",
+      "circuit RLC série",
+      "réactance",
+      "courant alternatif"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2004-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Baccalauréat Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-2004-officiel-cameroun-ex2-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "En régime continu, un résistor est le seul élément qui limite le courant, avec sa résistance R. En régime alternatif, la bobine et le condensateur s'en mêlent aussi, mais chacun à sa façon : l'un freine d'autant plus que la fréquence est élevée, l'autre l'inverse. Ce cours montre comment combiner ces trois effets en une seule grandeur, l'impédance, qui généralise la loi d'Ohm au régime sinusoïdal."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résistance d'un résistor et loi d'Ohm en continu",
+        "Notion de tension et d'intensité efficaces en régime sinusoïdal",
+        "Théorème de Pythagore"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Impédance d'un dipôle RLC série",
+      "contenu_markdown": "Pour un dipôle RLC série soumis à une tension alternative sinusoïdale, l'impédance Z relie les valeurs efficaces de la tension et de l'intensité par une loi d'Ohm généralisée $U=ZI$. Elle combine quadratiquement la résistance $R$ (ou la résistance totale du circuit) et la réactance équivalente du dipôle, laquelle oppose la réactance inductive de la bobine $L\\omega$ à la réactance capacitive du condensateur $1/(C\\omega)$, ces deux effets étant de signes opposés car en quadrature de phase inverse l'un par rapport à l'autre : $$Z=\\sqrt{R^2+\\left(L\\omega-\\dfrac{1}{C\\omega}\\right)^2}$$avec $\\omega=2\\pi f$ la pulsation du signal.",
+      "formule_principale": "Z=\\sqrt{R^2+\\left(L\\omega-\\dfrac{1}{C\\omega}\\right)^2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un dipôle série comprend un résistor $R=50\\,\\Omega$, une bobine $L=0{,}2\\,\\text{H}$ et un condensateur $C=20\\,\\mu\\text{F}$, alimenté par une tension sinusoïdale de fréquence $f=50\\,\\text{Hz}$. Calculer l'impédance du dipôle.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la pulsation",
+          "justification": "La pulsation intervient dans les deux réactances",
+          "resultat_markdown": "$\\omega=2\\pi f=2\\pi\\times50\\approx314{,}16\\,\\text{rad.s}^{-1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la réactance inductive",
+          "justification": "Formule directe de la réactance d'une bobine",
+          "resultat_markdown": "$L\\omega=0{,}2\\times314{,}16\\approx62{,}83\\,\\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la réactance capacitive",
+          "justification": "Formule directe de la réactance d'un condensateur",
+          "resultat_markdown": "$\\dfrac{1}{C\\omega}=\\dfrac{1}{20\\times10^{-6}\\times314{,}16}\\approx159{,}2\\,\\Omega$"
+        },
+        {
+          "numero": 4,
+          "action": "Combiner les trois éléments dans la formule de l'impédance",
+          "justification": "Application directe de la formule générale",
+          "resultat_markdown": "$Z=\\sqrt{50^2+(62{,}83-159{,}2)^2}=\\sqrt{2500+9286}\\approx\\sqrt{11\\,786}\\approx108{,}6\\,\\Omega$"
+        }
+      ],
+      "conclusion_markdown": "L'impédance de ce dipôle vaut environ $108{,}6\\,\\Omega$ ; elle est supérieure à la seule résistance $R$ car les réactances inductive et capacitive ne se compensent pas exactement à cette fréquence."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner directement R, Lω et 1/(Cω) comme des résistances en série continue",
+          "pourquoi_faux": "En régime sinusoïdal, la résistance et les réactances ne sont pas en phase les unes avec les autres : elles se combinent comme les côtés d'un triangle rectangle (somme quadratique), pas comme une simple somme arithmétique.",
+          "correction_markdown": "Toujours utiliser la formule $Z=\\sqrt{R^2+(L\\omega-1/(C\\omega))^2}$, jamais une somme directe des trois termes."
+        },
+        {
+          "erreur_markdown": "Additionner Lω et 1/(Cω) au lieu de les soustraire",
+          "pourquoi_faux": "La réactance inductive et la réactance capacitive ont des effets de phase opposés (l'une en avance, l'autre en retard par rapport au courant) : elles se retranchent l'une de l'autre dans l'impédance, jamais ne s'ajoutent.",
+          "correction_markdown": "Retenir que le terme entre parenthèses est une différence, $L\\omega-1/(C\\omega)$, jamais une somme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un dipôle RLC série comporte $R=30\\,\\Omega$, $L=0{,}1\\,\\text{H}$, $C=50\\,\\mu\\text{F}$, alimenté à $f=50\\,\\text{Hz}$. Calculer l'impédance du dipôle.",
+          "solution_markdown": "$\\omega=314{,}16\\,\\text{rad.s}^{-1}$, $L\\omega\\approx31{,}42\\,\\Omega$, $1/(C\\omega)\\approx63{,}66\\,\\Omega$. $Z=\\sqrt{30^2+(31{,}42-63{,}66)^2}=\\sqrt{900+1039}\\approx\\sqrt{1939}\\approx44{,}0\\,\\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un dipôle RLC série d'impédance $Z=125\\,\\Omega$ est parcouru par un courant efficace $I=0{,}4\\,\\text{A}$. Calculer la tension efficace à ses bornes, puis la tension maximale.",
+          "solution_markdown": "$U=ZI=125\\times0{,}4=50\\,\\text{V}$. La tension maximale est $U_{max}=U\\sqrt2=50\\times1{,}414\\approx70{,}7\\,\\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer qu'il existe une fréquence particulière pour laquelle l'impédance d'un dipôle RLC série est minimale et égale à sa seule résistance R, et exprimer cette fréquence en fonction de L et C.",
+          "solution_markdown": "L'impédance est minimale lorsque le terme entre parenthèses s'annule, c'est-à-dire quand $L\\omega=\\dfrac{1}{C\\omega}$, soit $\\omega^2=\\dfrac{1}{LC}$, donc $\\omega_0=\\dfrac{1}{\\sqrt{LC}}$ et $f_0=\\dfrac{1}{2\\pi\\sqrt{LC}}$. À cette fréquence, dite de résonance, $Z=R$ : c'est la valeur la plus faible que peut prendre l'impédance de ce dipôle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'impédance d'un dipôle RLC série généralise la loi d'Ohm au régime sinusoïdal : $U=ZI$, avec $Z=\\sqrt{R^2+(L\\omega-1/(C\\omega))^2}$.",
+        "La réactance inductive croît avec la fréquence, la réactance capacitive décroît : elles jouent des rôles opposés et se soustraient dans l'impédance, jamais ne s'additionnent.",
+        "La pulsation $\\omega=2\\pi f$ doit toujours être calculée en premier : c'est l'erreur de calcul la plus fréquente d'oublier ce facteur $2\\pi$.",
+        "Retiens qu'il existe une fréquence de résonance où l'impédance est minimale et égale à R seul : c'est un résultat que le BAC aime faire redémontrer.",
+        "Au BAC, cette formule sert quasi systématiquement de point de départ à tout exercice sur les circuits RLC en régime sinusoïdal forcé."
+      ]
+    }
+  ]
+}

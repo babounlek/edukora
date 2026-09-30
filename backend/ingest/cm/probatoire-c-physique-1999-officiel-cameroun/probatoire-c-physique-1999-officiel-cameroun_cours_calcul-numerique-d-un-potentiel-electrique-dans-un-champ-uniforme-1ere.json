@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-calcul-numerique-d-un-potentiel-electrique-dans-un-champ-uniforme-1ere",
+  "meta": {
+    "titre": "Évaluer numériquement un potentiel électrique en un point donné",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Potentiel électrique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "potentiel électrique",
+      "application numérique",
+      "condensateur plan"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-physique-1999-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série C - Cameroun - Session 1999",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-physique-1999-officiel-cameroun-ex1-q4-2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois la formule générale du potentiel établie, reste l'étape la plus concrète : l'évaluer en un point précis, celui qui intéresse vraiment le problème physique posé - ici, l'endroit exact où se trouve une charge suspendue dans le champ. Ce cours montre comment passer d'une formule littérale à un nombre, et comment gérer les données manquantes qu'un énoncé, parfois, ne fournit pas complètement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la formule $V_M(x)=\\dfrac{U}{d}x$ du potentiel dans un champ uniforme",
+        "Savoir identifier l'abscisse d'un point particulier décrit par un énoncé",
+        "Savoir reconnaître quand une donnée manque pour un calcul exact"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Substituer une abscisse connue dans la formule générale",
+      "contenu_markdown": "Calculer numériquement un potentiel en un point $M$ revient à identifier précisément l'abscisse $x$ de ce point sur l'axe choisi, puis à la substituer dans la formule générale $V_M(x)=\\dfrac{U}{d}x$ établie au préalable. La difficulté n'est presque jamais dans le calcul lui-même, mais dans l'identification correcte de $x$ : elle exige de bien relire la description géométrique du point donnée par l'énoncé (position par rapport aux plaques, éventuellement combinée à une donnée géométrique annexe comme une distance équidistante). Quand une donnée nécessaire au repérage exact du point manque (par exemple la longueur d'un fil de suspension), il faut retenir l'abscisse la mieux déterminée par les données disponibles et signaler explicitement l'approximation faite.",
+      "formule_principale": "V_M = V_M(x_M) = \\dfrac{U}{d}\\,x_M"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec $U_1=350\\ \\text{V}$, $d=25\\ \\text{cm}$ et un point $O$ équidistant des deux plaques, calculer le potentiel $V_M$ au point $M$ confondu avec le centre d'une boule suspendue en $O$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'abscisse du point $M$",
+          "justification": "$O$ étant équidistant des deux plaques, son abscisse est la moitié de $d$ ; c'est la seule abscisse fixée sans ambiguïté par l'énoncé.",
+          "resultat_markdown": "$x_M = \\dfrac{d}{2} = \\dfrac{25}{2} = 12{,}5\\ \\text{cm} = 0{,}125\\ \\text{m}$"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer dans la formule générale",
+          "justification": "On applique $V_M(x)=\\dfrac{U_1}{d}x$ établie précédemment.",
+          "resultat_markdown": "$V_M = \\dfrac{U_1}{d}\\times\\dfrac{d}{2} = \\dfrac{U_1}{2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numériquement",
+          "justification": "On remplace $U_1$ par sa valeur numérique.",
+          "resultat_markdown": "$V_M = \\dfrac{350}{2} = 175\\ \\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "Le potentiel au niveau de la boule vaut $175\\ \\text{V}$, exactement la moitié de la tension totale, puisque le point est situé à mi-chemin entre les deux plaques."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": {
+        "type": "erreurs_classiques",
+        "items": [
+          {
+            "erreur_markdown": "Chercher à calculer un déplacement horizontal supplémentaire dû à l'inclinaison d'un fil sans disposer de la longueur de ce fil.",
+            "pourquoi_faux": "Sans la longueur du fil, ce déplacement ne peut pas être chiffré : s'obstiner à vouloir un résultat « exact » à tout prix conduit soit à un blocage, soit à inventer une donnée non fournie.",
+            "correction_markdown": "Identifie la meilleure abscisse disponible avec les données réellement fournies, utilise-la, et signale explicitement l'approximation faite plutôt que d'inventer une donnée manquante."
+          },
+          {
+            "erreur_markdown": "Confondre l'abscisse du point de suspension avec celle d'un point quelconque du fil.",
+            "pourquoi_faux": "Seul le point de suspension a une position fixée sans ambiguïté par l'énoncé (« équidistant des deux plaques ») ; tout autre point du fil ou de la boule dépend de l'angle d'inclinaison, non donné précisément en distance.",
+            "correction_markdown": "Relis toujours l'énoncé pour identifier quel point précis a une position réellement connue, avant de lancer un calcul."
+          }
+        ]
+      }
+    },
+    {
+      "type": "exercices_application",
+      "items": {
+        "type": "exercices_application",
+        "items": [
+          {
+            "numero": 1,
+            "difficulte": "facile",
+            "enonce_markdown": "Avec $U=120\\ \\text{V}$ et $d=20\\ \\text{cm}$, calculer le potentiel au point situé au tiers de la distance depuis la plaque de référence ($V=0$).",
+            "solution_markdown": "$x = \\dfrac{d}{3} = \\dfrac{20}{3}\\ \\text{cm}$. $V_M = \\dfrac{U}{d}x = \\dfrac{120}{20}\\times\\dfrac{20}{3} = \\dfrac{120}{3} = 40\\ \\text{V}$."
+          },
+          {
+            "numero": 2,
+            "difficulte": "moyen",
+            "enonce_markdown": "Avec $U=500\\ \\text{V}$ et $d=1\\ \\text{m}$, calculer le potentiel au point situé à $30\\ \\text{cm}$ de la plaque de référence, puis à $70\\ \\text{cm}$ de cette même plaque. Commenter la somme des deux résultats.",
+            "solution_markdown": "$V(0{,}3)=\\dfrac{500}{1}\\times0{,}3=150\\ \\text{V}$ ; $V(0{,}7)=\\dfrac{500}{1}\\times0{,}7=350\\ \\text{V}$. La somme vaut $150+350=500\\ \\text{V}=U$ : c'est une conséquence directe de la linéarité de $V(x)$, les deux points étant symétriques par rapport au milieu de l'intervalle."
+          },
+          {
+            "numero": 3,
+            "difficulte": "approfondissement",
+            "enonce_markdown": "Un point $M$ est situé aux deux tiers de la distance entre la plaque de référence et l'autre plaque, avec $U=90\\ \\text{V}$. Un second point $N$ est à mi-distance de $M$ et de la plaque de référence. Calculer $V_M$ et $V_N$.",
+            "solution_markdown": "$x_M=\\dfrac{2d}{3}$, donc $V_M=\\dfrac{U}{d}\\times\\dfrac{2d}{3}=\\dfrac{2U}{3}=\\dfrac{2\\times90}{3}=60\\ \\text{V}$. $N$ est à mi-distance entre $0$ et $x_M$, donc $x_N=\\dfrac{x_M}{2}=\\dfrac{d}{3}$, et $V_N=\\dfrac{U}{d}\\times\\dfrac{d}{3}=\\dfrac{U}{3}=30\\ \\text{V}$. On vérifie que $V_N$ est bien la moitié de $V_M$, comme attendu puisque $N$ est le milieu du segment reliant l'origine à $M$."
+          }
+        ]
+      }
+    },
+    {
+      "type": "synthese",
+      "items_markdown": {
+        "type": "synthese",
+        "items_markdown": [
+          "Calculer un potentiel en un point précis, c'est d'abord identifier correctement son abscisse, puis substituer dans la formule générale déjà établie.",
+          "Quand une donnée manque pour fixer exactement une position (comme la longueur d'un fil), utilise la meilleure abscisse connue et signale l'approximation, plutôt que d'inventer la donnée manquante.",
+          "La linéarité du potentiel entraîne des propriétés utiles à connaître : deux points symétriques par rapport au milieu ont des potentiels dont la somme vaut $U$.",
+          "Une vérification rapide (potentiel proportionnel à la position relative) permet de contrôler un résultat sans refaire tout le calcul.",
+          "Ce type de calcul revient dans presque tous les exercices d'électrostatique impliquant un condensateur plan, dès qu'un point particulier est décrit par sa position relative entre les plaques."
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-retard-propagation-equation-horaire-terminale-c",
+  "meta": {
+    "titre": "Retard de propagation et équation horaire d'un point atteint par une onde",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Ondes mécaniques",
+    "duree_estimee_min": 28,
+    "tags": [
+      "retard de propagation",
+      "équation horaire",
+      "déphasage",
+      "opposition de phase"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2000-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, Session de 2000 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-2000-officiel-cameroun-ex2-q1.b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu entends un coup de tonnerre après avoir vu l'éclair, tu observes directement un retard de propagation : le son met du temps à te parvenir. Ce cours généralise cette idée simple pour écrire l'équation complète du mouvement d'un point quelconque atteint par une onde, à partir de celle de la source."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Équation horaire d'un mouvement sinusoïdal, $y(t)=Y_m\\sin(\\omega t + \\varphi)$",
+        "Relation $\\lambda = vT$ (cours sur les ondes périodiques)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Retard temporel et équation horaire décalée",
+      "contenu_markdown": "Un point $M$ du milieu de propagation, situé à la distance $d$ de la source, reproduit exactement le mouvement de la source, mais avec un retard $\\tau = d/v$ ($v$ étant la célérité de l'onde). Tant que $t<\\tau$, l'onde n'a pas encore atteint $M$, qui reste immobile. Dès que $t\\ge\\tau$, l'équation horaire de $M$ s'obtient en remplaçant $t$ par $(t-\\tau)$ dans celle de la source.",
+      "formule_principale": "y_M(t) = y_{source}(t-\\tau), \\qquad \\tau = \\dfrac{d}{v}, \\quad \\text{valable pour } t\\ge\\tau",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La source A vibre selon $y_A(t)=3\\sin(2\\pi\\times14\\,t)\\ \\text{mm}$. L'onde se propage à $v=0{,}322\\ \\text{m.s}^{-1}$. Établir l'équation horaire du point M situé à $d=80{,}5\\ \\text{mm}$ de A.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le retard de propagation",
+          "justification": "Application directe de la formule du cours.",
+          "resultat_markdown": "$\\tau = \\dfrac{d}{v} = \\dfrac{80{,}5\\times10^{-3}}{0{,}322} = 0{,}25\\ \\text{s}$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'équation horaire décalée",
+          "justification": "On remplace t par (t-tau) dans l'équation horaire de la source.",
+          "resultat_markdown": "$y_M(t) = 3\\sin\\big(2\\pi\\times14(t-0{,}25)\\big) = 3\\sin(28\\pi t - 7\\pi)\\ \\text{mm}$"
+        },
+        {
+          "numero": 3,
+          "action": "Simplifier en utilisant la périodicité du sinus",
+          "justification": "sin(X-7π)=sin(X-π)=-sin(X) car 7π = 3×(2π)+π et le sinus est 2π-périodique.",
+          "resultat_markdown": "$y_M(t) = -3\\sin(28\\pi t)\\ \\text{mm}$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier le résultat par le rapport d/lambda",
+          "justification": "Un rapport d/lambda demi-entier doit correspondre à une opposition de phase.",
+          "resultat_markdown": "$d/\\lambda = 80{,}5/23 = 3{,}5$ (demi-entier) : M et A sont bien en opposition de phase, ce qui confirme le signe « moins » trouvé."
+        }
+      ],
+      "conclusion_markdown": "L'équation horaire de M est identique en forme à celle de A, avec le même terme $28\\pi t$, mais un signe opposé : M reproduit le mouvement de A avec 0,25 s de retard, ce qui se traduit ici par une opposition de phase."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire l'équation horaire de M sans préciser la condition de validité $t\\ge\\tau$.",
+          "pourquoi_faux": "Avant que l'onde n'atteigne M, ce point est physiquement immobile : l'équation sinusoïdale ne décrit son mouvement qu'à partir de l'instant où l'onde l'a atteint.",
+          "correction_markdown": "Indique systématiquement la condition $t\\ge\\tau$ à côté de l'équation horaire d'un point situé à distance d'une source."
+        },
+        {
+          "erreur_markdown": "Oublier de simplifier un déphasage supérieur à $2\\pi$ (ou $360°$) en le ramenant à l'intervalle $[0;2\\pi[$ avant d'interpréter le résultat.",
+          "pourquoi_faux": "Un déphasage de $7\\pi$ n'est pas immédiatement reconnaissable comme une opposition de phase tant qu'on ne l'a pas réduit modulo $2\\pi$.",
+          "correction_markdown": "Retranche systématiquement le plus grand multiple entier de $2\\pi$ contenu dans le déphasage obtenu pour l'interpréter facilement (phase, opposition de phase, quadrature...)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une source vibre selon $y(t)=2\\sin(10\\pi t)\\ \\text{cm}$. Une onde se propageant à $v=1\\ \\text{m.s}^{-1}$ atteint un point situé à $d=0{,}5\\ \\text{m}$. Calculer le retard de propagation.",
+          "solution_markdown": "$\\tau = d/v = 0{,}5/1 = 0{,}5\\ \\text{s}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec les données de l'exercice précédent, écrire l'équation horaire du point atteint (pour $t\\ge\\tau$).",
+          "solution_markdown": "$y_M(t) = 2\\sin\\big(10\\pi(t-0{,}5)\\big) = 2\\sin(10\\pi t - 5\\pi)\\ \\text{cm}$, soit, en simplifiant ($5\\pi = 2\\times2\\pi+\\pi$, donc $\\sin(X-5\\pi)=-\\sin X$), $y_M(t)=-2\\sin(10\\pi t)\\ \\text{cm}$, valable pour $t\\ge0{,}5\\ \\text{s}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux points $M_1$ et $M_2$ sont situés respectivement à $d_1=2\\lambda$ et $d_2=2{,}5\\lambda$ d'une même source. Sans refaire tout le calcul, indiquer si $M_1$ vibre en phase ou en opposition de phase avec la source, puis pour $M_2$, et enfin si $M_1$ et $M_2$ vibrent en phase entre eux.",
+          "solution_markdown": "$d_1/\\lambda=2$ (entier) : $M_1$ vibre en phase avec la source. $d_2/\\lambda=2{,}5$ (demi-entier) : $M_2$ vibre en opposition de phase avec la source. Comme $M_1$ est en phase avec la source et $M_2$ en opposition de phase avec elle, $M_1$ et $M_2$ vibrent en opposition de phase l'un par rapport à l'autre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un point à distance d d'une source reproduit son mouvement avec un simple retard temporel $\\tau=d/v$, rien de plus.",
+        "L'équation horaire s'obtient en remplaçant t par (t-τ) dans celle de la source, valable seulement pour $t\\ge\\tau$.",
+        "Le rapport $d/\\lambda$ donne immédiatement la relation de phase : entier → en phase, demi-entier → en opposition de phase.",
+        "Toujours réduire un déphasage modulo $2\\pi$ avant de l'interpréter physiquement.",
+        "Cette méthode se généralise telle quelle aux ondes sonores, lumineuses ou électromagnétiques : seule change la nature physique de la grandeur qui se propage."
+      ]
+    }
+  ]
+}

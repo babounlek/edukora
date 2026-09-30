@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-identification-droite-experimentale-tle-c",
+  "meta": {
+    "titre": "Identifier une grandeur physique à partir d'une droite expérimentale",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Méthodes expérimentales",
+    "duree_estimee_min": 20,
+    "tags": [
+      "exploitation graphique",
+      "droite expérimentale",
+      "coefficient directeur",
+      "ordonnée à l'origine"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2002-PHYSIQUE-CM",
+    "epreuve_titre": "BAC Physique, série C, session 2002 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-physique-2002-officiel-cameroun-ex5-q2.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un physicien ne mesure presque jamais directement la grandeur qui l'intéresse : il mesure autre chose, plus accessible, puis en déduit ce qu'il cherche à l'aide d'un modèle théorique. Quand ce modèle prévoit une relation affine entre deux grandeurs mesurables, tracer le graphe expérimental et l'identifier terme à terme avec l'équation théorique devient une méthode redoutablement efficace : elle permet de peser un ressort sans balance, de mesurer une résistance interne sans l'ouvrir, ou de retrouver une constante physique inaccessible autrement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tracer une droite à partir d'un nuage de points expérimentaux",
+        "Déterminer le coefficient directeur et l'ordonnée à l'origine d'une droite ($y=ax+b$)",
+        "Manipuler une relation théorique pour la mettre sous forme affine"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Mettre le modèle théorique sous forme affine puis identifier terme à terme",
+      "contenu_markdown": "Lorsqu'un modèle théorique relie deux grandeurs mesurées par une expression qui peut se réécrire sous la forme $y=ax+b$ (avec $x$ et $y$ des combinaisons des grandeurs mesurées, éventuellement après un changement de variable), tracer le nuage de points expérimentaux et vérifier son alignement valide le modèle ; le coefficient directeur $a$ et l'ordonnée à l'origine $b$, lus directement sur la droite ou calculés par régression, s'identifient alors terme à terme avec l'expression théorique de $y$ en fonction de $x$. Cette identification donne accès à des grandeurs physiques (masse, résistance, constante) qui n'apparaissaient dans aucune mesure individuelle, mais seulement dans la pente ou l'ordonnée à l'origine de la droite globale.",
+      "formule_principale": "y_{mesure} = a\\,x_{mesure} + b \\quad\\Longleftrightarrow\\quad y_{theorie}(x) = (\\text{coefficient connu})\\,x + (\\text{grandeur cherchée})",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La période des oscillations d'un système masse $m$ + ressort de masse $M$ suit $T=2\\pi\\sqrt{(m+M/3)/k}$. En posant $y=kT^2/(4\\pi^2)$, on trouve expérimentalement $y=am+b$ avec $a=1{,}00$ et $b=0{,}05\\ \\text{kg}$. En déduire la masse $M$ du ressort.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Mettre la formule théorique sous forme affine en m",
+          "justification": "Élever au carré puis isoler y=kT²/(4π²)",
+          "resultat_markdown": "$T^2=\\dfrac{4\\pi^2}{k}\\left(m+\\dfrac{M}{3}\\right) \\Rightarrow y=\\dfrac{kT^2}{4\\pi^2}=m+\\dfrac{M}{3}$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier terme à terme avec y=am+b",
+          "justification": "Les deux écritures de y doivent coïncider pour toute valeur de m",
+          "resultat_markdown": "$a=1$ (coefficient de $m$) et $b=\\dfrac{M}{3}$ (terme constant)"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler M et faire l'application numérique",
+          "justification": "Résolution algébrique de $b=M/3$",
+          "resultat_markdown": "$M=3b=3\\times0{,}05=0{,}15\\ \\text{kg}$"
+        }
+      ],
+      "conclusion_markdown": "On obtient $M\\approx150\\ \\text{g}$ ; le fait que $a=1$ coïncide exactement avec la valeur théorique attendue confirme, en prime, la validité du modèle de départ."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Identifier $b$ à la grandeur cherchée directement, sans tenir compte du facteur numérique qui l'accompagne dans le modèle théorique (ici 1/3)",
+          "pourquoi_faux": "$b$ correspond à $M/3$, pas à $M$ lui-même : oublier ce facteur revient à sous-estimer $M$ d'un facteur 3.",
+          "correction_markdown": "Écris toujours complètement l'expression théorique de $y$ en fonction de $x$ avant d'identifier, pour ne rater aucun facteur numérique devant la grandeur cherchée."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier que le coefficient directeur expérimental correspond bien à la valeur théorique attendue (ici $a=1$)",
+          "pourquoi_faux": "Si $a$ mesuré s'écartait significativement de $1$, cela indiquerait que le modèle théorique de départ (ici, l'hypothèse $M/3$) n'est peut-être pas le bon, ou qu'une erreur expérimentale ou de calcul s'est glissée dans le tableau de mesures.",
+          "correction_markdown": "Compare systématiquement chaque coefficient trouvé expérimentalement à sa valeur théorique prévue par le modèle : c'est une vérification de la validité du modèle lui-même, pas seulement un calcul."
+        },
+        {
+          "erreur_markdown": "Changer de variable ($y$, $x$) sans vérifier que le nouveau graphe est bien une droite avant de lire un coefficient directeur",
+          "pourquoi_faux": "La méthode ne fonctionne que si le nuage de points est effectivement aligné après le changement de variable ; sinon, parler de « coefficient directeur » n'a pas de sens.",
+          "correction_markdown": "Trace toujours le nuage de points avant de chercher $a$ et $b$, et vérifie visuellement (ou par calcul de plusieurs pentes locales) que l'alignement est satisfaisant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un modèle prévoit $z = 2x + c$, où $c$ est une grandeur physique cherchée. L'expérience donne, après tracé, $z=2{,}0\\,x+7{,}5$. Donner la valeur de $c$.",
+          "solution_markdown": "Par identification directe (le coefficient directeur théorique 2 coïncide avec celui mesuré) : $c=7{,}5$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un modèle de décharge d'un condensateur prévoit $\\ln(u) = -\\dfrac{t}{RC}+\\ln(U_0)$. L'expérience, en traçant $\\ln(u)$ en fonction de $t$, donne une droite de coefficient directeur $-50\\ \\text{s}^{-1}$ et d'ordonnée à l'origine $2{,}30$. Sachant que $R=2000\\ \\Omega$, calculer $C$ et $U_0$.",
+          "solution_markdown": "Par identification : $-\\dfrac{1}{RC}=-50 \\Rightarrow RC=\\dfrac{1}{50}=0{,}02\\ \\text{s} \\Rightarrow C=\\dfrac{0{,}02}{2000}=10^{-5}\\ \\text{F}=10\\ \\mu\\text{F}$. Et $\\ln(U_0)=2{,}30 \\Rightarrow U_0=e^{2{,}30}\\approx9{,}97\\ \\text{V}\\approx10\\ \\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux modèles concurrents prévoient tous deux une relation affine entre $y=kT^2/(4\\pi^2)$ et $m$ : le premier néglige la masse du ressort ($y=m$, soit $a=1,b=0$), le second en tient compte ($y=m+M/3$, soit $a=1,b=M/3$). Expliquer comment les données du tableau de mesures permettent de trancher entre les deux modèles, sans aucun calcul de $M$.",
+          "solution_markdown": "Les deux modèles prévoient le même coefficient directeur $a=1$, mais des ordonnées à l'origine différentes : $b=0$ pour le premier (ressort sans masse), $b=M/3>0$ pour le second (ressort réel). Il suffit donc d'observer si la droite expérimentale passe par l'origine ($b=0$, ce qui validerait le modèle simplifié) ou si elle coupe l'axe des ordonnées en un point strictement positif ($b>0$, ce qui validerait le modèle avec masse du ressort). Dans les données de l'exercice, $b=0{,}05\\ \\text{kg}$ est clairement non nul et se retrouve de façon cohérente sur les cinq points du tableau : c'est donc le second modèle, prenant en compte la masse du ressort, qui est validé par l'expérience, sans qu'il soit nécessaire de calculer $M$ pour trancher entre les deux hypothèses."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Mets toujours le modèle théorique sous la forme $y=ax+b$ avant de comparer à la droite expérimentale.",
+        "Identifie terme à terme : le coefficient devant $x$ correspond à $a$, le terme constant correspond à $b$.",
+        "N'oublie aucun facteur numérique devant la grandeur cherchée lors de l'identification (ici, le facteur $1/3$).",
+        "Compare systématiquement le coefficient directeur mesuré à sa valeur théorique attendue : une bonne coïncidence valide le modèle lui-même, pas seulement le calcul de la grandeur cherchée.",
+        "Cette méthode (linéariser, tracer, identifier) est l'une des techniques les plus transférables de toute la physique expérimentale du lycée."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-theoreme-de-lenergie-cinetique-terminale-c",
+  "meta": {
+    "titre": "Théorème de l'énergie cinétique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Énergie mécanique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "théorème de l'énergie cinétique",
+      "travail d'une force",
+      "énergie cinétique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2004-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Baccalauréat Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-2004-officiel-cameroun-ex1-q1b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer une vitesse sans jamais écrire l'équation horaire complète du mouvement, cela paraît impossible et c'est pourtant l'un des outils les plus efficaces de la mécanique du lycée. Le théorème de l'énergie cinétique permet de relier directement une vitesse à une hauteur ou à une distance parcourue, sans jamais résoudre une équation différentielle : c'est l'outil de calcul rapide par excellence dès qu'un mouvement n'est pas uniforme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de travail d'une force constante, $W=\\vec F\\cdot\\vec d$",
+        "Énergie cinétique d'un point matériel, $E_c=\\frac12 mv^2$",
+        "Bilan des forces sur un point matériel"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Théorème de l'énergie cinétique",
+      "contenu_markdown": "Le théorème de l'énergie cinétique relie la variation d'énergie cinétique d'un point matériel, entre deux instants, à la somme des travaux de toutes les forces qui s'exercent sur lui pendant ce trajet : $\\Delta E_c = E_{c,\\text{finale}} - E_{c,\\text{initiale}} = \\sum W(\\vec F)$. Deux travaux se calculent immédiatement sans connaître la trajectoire en détail : le travail d'une force perpendiculaire à la vitesse à chaque instant (comme la tension d'un fil qui guide un mouvement circulaire) est toujours nul, et le travail du poids ne dépend que de la variation d'altitude, jamais du chemin suivi : $W(\\vec P)=\\pm mgh$, positif si le corps descend, négatif s'il monte.",
+      "formule_principale": "\\Delta E_c=\\sum W(\\vec F)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un pendule pesant, formé d'une tige rigide de longueur l portant une bille de masse M à son extrémité, est écarté d'un angle θ par rapport à la verticale puis lâché sans vitesse initiale. Calculer la vitesse de la bille lorsqu'elle repasse par la position verticale.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Faire le bilan des forces et identifier celles qui travaillent",
+          "justification": "Seules les forces dont le travail est non nul interviennent dans le bilan énergétique",
+          "resultat_markdown": "La bille subit son poids $\\vec P$ et la tension $\\vec T$ de la tige ; $\\vec T$ est à chaque instant perpendiculaire à la vitesse (mouvement circulaire), donc $W(\\vec T)=0$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la variation d'altitude entre les deux positions",
+          "justification": "Le travail du poids ne dépend que de la dénivellation, mesurée verticalement depuis le point de suspension",
+          "resultat_markdown": "À l'angle θ, la bille est à la distance verticale $l\\cos\\theta$ sous le point de suspension ; à la verticale, elle est à la distance $l$. La bille descend donc de $h=l-l\\cos\\theta=l(1-\\cos\\theta)$."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire le théorème de l'énergie cinétique entre les deux instants",
+          "justification": "La bille part sans vitesse initiale (état 1) et atteint la vitesse V à la verticale (état 2)",
+          "resultat_markdown": "$\\frac12MV^2-0=W(\\vec P)+W(\\vec T)=Mgl(1-\\cos\\theta)+0$"
+        },
+        {
+          "numero": 4,
+          "action": "Isoler la vitesse cherchée",
+          "justification": "Résolution algébrique simple de l'équation précédente",
+          "resultat_markdown": "$V=\\sqrt{2gl(1-\\cos\\theta)}$"
+        }
+      ],
+      "conclusion_markdown": "La vitesse de la bille à la verticale ne dépend que de $g$, de la longueur $l$ de la tige et de l'angle initial θ : elle a été obtenue sans jamais écrire l'équation différentielle du pendule."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire la hauteur de chute comme $l\\sin\\theta$ au lieu de $l(1-\\cos\\theta)$",
+          "pourquoi_faux": "$l\\sin\\theta$ est la distance horizontale parcourue par la bille, pas la variation d'altitude : c'est le travail du poids selon la verticale qui compte, jamais le déplacement horizontal.",
+          "correction_markdown": "Toujours faire un schéma avec la verticale du point de suspension et repérer la distance verticale entre les deux positions ; ici $l-l\\cos\\theta$."
+        },
+        {
+          "erreur_markdown": "Oublier que le théorème de l'énergie cinétique nécessite de sommer les travaux de TOUTES les forces, y compris celles dont le travail est nul",
+          "pourquoi_faux": "Omettre de vérifier le travail de la tension (même pour conclure qu'il est nul) peut conduire à l'ajouter par erreur si le mouvement n'est pas circulaire dans une variante de l'exercice.",
+          "correction_markdown": "Toujours lister explicitement toutes les forces du bilan avant de décider lesquelles travaillent, plutôt que de se souvenir « de mémoire » que la tension ne compte jamais."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un solide de masse $m=2\\,\\text{kg}$ glisse sans frottement sur un plan incliné, sur une longueur $d=5\\,\\text{m}$ faisant un angle $\\alpha=30°$ avec l'horizontale, en partant du repos. Calculer sa vitesse en bas du plan ($g=9{,}8\\,\\text{m.s}^{-2}$).",
+          "solution_markdown": "Le solide subit son poids et la réaction normale du plan (perpendiculaire au déplacement, travail nul). La descente verticale vaut $h=d\\sin\\alpha=5\\times0{,}5=2{,}5\\,\\text{m}$. Théorème de l'énergie cinétique : $\\frac12mv^2-0=mgh$, donc $v=\\sqrt{2gh}=\\sqrt{2\\times9{,}8\\times2{,}5}=\\sqrt{49}=7\\,\\text{m.s}^{-1}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bille de masse $m=50\\,\\text{g}$ est lancée verticalement vers le haut à $v_0=8\\,\\text{m.s}^{-1}$. Calculer, à l'aide du théorème de l'énergie cinétique, la hauteur maximale atteinte (frottements négligés, $g=9{,}8\\,\\text{m.s}^{-2}$).",
+          "solution_markdown": "Entre le départ (vitesse $v_0$) et le sommet (vitesse nulle), seul le poids travaille : $0-\\frac12mv_0^2=-mgh_{max}$, soit $h_{max}=\\dfrac{v_0^2}{2g}=\\dfrac{64}{19{,}6}\\approx3{,}27\\,\\text{m}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une bille glisse sans frottement le long d'une piste dont la forme est quelconque (ni un plan incliné, ni un arc de cercle simple), reliant un point A situé à une hauteur $h=2\\,\\text{m}$ au-dessus d'un point B, sans vitesse initiale en A. Expliquer pourquoi le théorème de l'énergie cinétique permet néanmoins de calculer la vitesse en B sans connaître la forme exacte de la piste, puis calculer cette vitesse ($g=9{,}8\\,\\text{m.s}^{-2}$).",
+          "solution_markdown": "La réaction normale de la piste est, en tout point, perpendiculaire à la vitesse (elle ne peut ni accélérer ni freiner le mobile le long de la piste), donc son travail est nul quelle que soit la forme de la piste. Seul le poids travaille, et son travail ne dépend que de la dénivellation totale, pas du chemin suivi : $W(\\vec P)=mgh$. Le théorème donne $\\frac12mv_B^2-0=mgh$, soit $v_B=\\sqrt{2gh}=\\sqrt{2\\times9{,}8\\times2}=\\sqrt{39{,}2}\\approx6{,}26\\,\\text{m.s}^{-1}$, indépendamment de la forme de la piste."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le théorème de l'énergie cinétique s'écrit $\\Delta E_c=\\sum W(\\vec F)$ : il relie une vitesse à un travail, sans jamais résoudre d'équation différentielle du mouvement.",
+        "Une force perpendiculaire à la vitesse à chaque instant (comme la tension d'un fil dans un mouvement circulaire, ou la réaction normale d'un support) a toujours un travail nul.",
+        "Le travail du poids ne dépend que de la dénivellation entre le point de départ et le point d'arrivée, jamais de la forme du trajet suivi.",
+        "Pense toujours à faire un schéma clair pour repérer la dénivellation verticale : c'est l'erreur la plus fréquente de confondre une distance parcourue avec une hauteur.",
+        "Au BAC, ce théorème est l'outil de référence dès qu'un énoncé demande une vitesse sans donner explicitement l'équation du mouvement : pendules, plans inclinés, chutes avec frottement."
+      ]
+    }
+  ]
+}

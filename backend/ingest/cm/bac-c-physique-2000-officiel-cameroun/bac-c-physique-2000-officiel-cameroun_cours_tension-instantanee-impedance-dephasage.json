@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-tension-instantanee-impedance-dephasage-terminale-c",
+  "meta": {
+    "titre": "Écrire la tension instantanée à partir de l'impédance et du déphasage",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité - régime sinusoïdal",
+    "duree_estimee_min": 22,
+    "tags": [
+      "tension instantanée",
+      "impédance",
+      "déphasage",
+      "origine des phases"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2000-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, Session de 2000 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-2000-officiel-cameroun-ex3-q1.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois l'impédance calculée par Fresnel, il reste une dernière étape trop souvent bâclée : traduire ce résultat géométrique en une véritable fonction du temps, celle que l'on pourrait effectivement observer sur un oscilloscope. Ce cours fait le lien entre le diagramme vectoriel et l'expression littérale de $u(t)$."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Construction de Fresnel de l'impédance (cours précédent)",
+        "Notion d'origine des phases"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la construction de Fresnel à u(t)",
+      "contenu_markdown": "Quand on choisit l'intensité comme origine des phases, $i(t)=I_m\\cos(\\omega t)$, la tension totale aux bornes du circuit s'écrit avec la même pulsation $\\omega$, une amplitude égale à $ZI_m$ (norme du vecteur de Fresnel résultant) et une phase à l'origine égale à l'angle $\\varphi$ que fait ce vecteur avec l'axe du courant, obtenu par $\\tan\\varphi = \\dfrac{\\text{composante en quadrature}}{\\text{composante en phase}}$.",
+      "formule_principale": "u(t) = ZI_m\\cos(\\omega t + \\varphi), \\qquad \\tan\\varphi = \\dfrac{\\text{partie imaginaire}}{\\text{partie réelle}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Pour le circuit (R,r,L) de l'exemple précédent ($Z\\approx327{,}1\\ \\Omega$, $R+r=91{,}0\\ \\Omega$, $L\\omega\\approx314{,}2\\ \\Omega$, $\\omega=1000\\pi\\ \\text{rad.s}^{-1}$), écrire l'expression de $u(t)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer tan(phi)",
+          "justification": "Rapport de la composante en quadrature sur la composante en phase, lu sur le diagramme de Fresnel.",
+          "resultat_markdown": "$\\tan\\varphi=\\dfrac{L\\omega}{R+r}=\\dfrac{314{,}2}{91{,}0}\\approx3{,}45$"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire phi",
+          "justification": "Fonction réciproque arctan, en vérifiant le signe (ici positif car circuit inductif).",
+          "resultat_markdown": "$\\varphi\\approx\\arctan(3{,}45)\\approx73{,}9°\\approx1{,}29\\ \\text{rad}$"
+        },
+        {
+          "numero": 3,
+          "action": "Assembler l'expression complète de u(t)",
+          "justification": "On combine Z (amplitude), omega (pulsation, identique à celle du courant) et phi (déphasage).",
+          "resultat_markdown": "$u(t) = 327{,}1\\,I_m\\cos(1000\\pi\\,t + 1{,}29)$"
+        }
+      ],
+      "conclusion_markdown": "La tension u(t) oscille à la même fréquence que le courant, avec une amplitude amplifiée par le facteur Z et un décalage temporel correspondant à l'avance de phase φ."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser une pulsation différente pour u(t) et pour i(t).",
+          "pourquoi_faux": "En régime sinusoïdal forcé et linéaire, toutes les tensions et le courant oscillent exactement à la même fréquence (celle du générateur) : seules l'amplitude et la phase changent d'un point à l'autre du circuit.",
+          "correction_markdown": "Ne recalcule jamais une nouvelle pulsation pour u(t) : reprends systématiquement celle du courant, imposée par le générateur."
+        },
+        {
+          "erreur_markdown": "Donner le déphasage en degrés dans une expression censée être en radians (ou l'inverse), sans préciser l'unité.",
+          "pourquoi_faux": "Un mélange d'unités dans l'argument d'un cosinus rend l'expression fausse numériquement, même si la méthode est correcte.",
+          "correction_markdown": "Convertis systématiquement en radians avant d'écrire l'expression finale de u(t), et précise l'unité utilisée pour φ si tu la donnes aussi en degrés à titre indicatif."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit purement résistif de résistance $R=20\\ \\Omega$ est parcouru par $i(t)=I_m\\cos(\\omega t)$. Écrire $u(t)$.",
+          "solution_markdown": "Pour un résistor pur, $u$ est en phase avec $i$ ($\\varphi=0$) et $Z=R$ : $u(t)=20\\,I_m\\cos(\\omega t)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit a pour impédance $Z=100\\ \\Omega$ et déphasage $\\varphi=45°$ (tension en avance sur le courant). Écrire $u(t)$ si $i(t)=2\\cos(300t)$ (SI).",
+          "solution_markdown": "$u(t) = ZI_m\\cos(\\omega t+\\varphi) = 100\\times2\\times\\cos\\big(300t+\\frac{\\pi}{4}\\big) = 200\\cos\\big(300t+\\frac{\\pi}{4}\\big)\\ \\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit RLC série présente, à une certaine fréquence, un déphasage $\\varphi=-30°$ (tension en retard sur le courant). Que peut-on en déduire sur la dominance capacitive ou inductive du circuit à cette fréquence, et sur le signe de $L\\omega - 1/(C\\omega)$ ?",
+          "solution_markdown": "Un déphasage négatif signifie que la tension est en retard sur le courant, comportement caractéristique d'un circuit à dominante capacitive. Cela correspond à $\\tan\\varphi = \\dfrac{L\\omega-1/(C\\omega)}{R+r} < 0$, donc $L\\omega < 1/(C\\omega)$ à cette fréquence : la réactance capacitive l'emporte sur la réactance inductive."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fois Z et φ connus par la construction de Fresnel, u(t) s'écrit immédiatement $u(t)=ZI_m\\cos(\\omega t+\\varphi)$.",
+        "La pulsation de u(t) est toujours identique à celle du courant qui traverse le circuit : seule l'amplitude et la phase changent.",
+        "Le signe de φ renseigne directement sur le caractère inductif (φ>0) ou capacitif (φ<0) dominant du circuit à la fréquence considérée.",
+        "Toujours homogénéiser les unités (radians) avant d'écrire l'expression finale.",
+        "Cette écriture de u(t) est le point de départ obligé pour toute étude ultérieure de puissance ou de résonance dans le circuit."
+      ]
+    }
+  ]
+}

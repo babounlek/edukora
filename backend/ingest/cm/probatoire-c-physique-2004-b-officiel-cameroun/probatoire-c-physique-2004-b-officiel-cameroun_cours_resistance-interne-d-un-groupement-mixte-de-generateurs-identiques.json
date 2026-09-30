@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-resistance-interne-groupement-mixte-1ere",
+  "meta": {
+    "titre": "Résistance interne d'un groupement mixte de générateurs identiques",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Association de générateurs",
+    "duree_estimee_min": 20,
+    "tags": [
+      "groupement mixte",
+      "résistance interne",
+      "association série-parallèle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-2004-CM",
+    "epreuve_titre": "Probatoire Physique - Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-physique-2004-b-officiel-cameroun-ex1-q1b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Regrouper des générateurs en parallèle ne sert pas qu'à répartir le courant : cela réduit aussi la résistance interne globale, ce qui limite l'échauffement et la chute de tension en charge. Ce cours t'apprend à calculer cette résistance interne pour un groupement mixte, complément indispensable du calcul de f.é.m. vu précédemment."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "F.é.m. et résistance interne d'un générateur",
+        "Association de résistances en série et en parallèle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résistance interne d'un groupement mixte",
+      "contenu_markdown": "Dans une branche de $n$ éléments identiques de résistance interne $r$ en série, la résistance de la branche vaut $r_{branche}=n\\times r$ (addition, comme pour toute association série). Si $p$ branches identiques sont ensuite placées en parallèle, la résistance équivalente du groupement vaut $r_{groupement}=\\dfrac{r_{branche}}{p}$, exactement comme pour $p$ résistances identiques en parallèle.",
+      "formule_principale": "r_{groupement} = \\dfrac{n\\times r}{p}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Reprends la pile de 12 éléments identiques disposés en séries de 4, chaque élément ayant une résistance interne de 0,3 Ω. Calcule la résistance interne de la pile.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la résistance d'une branche",
+          "justification": "4 éléments de résistance interne 0,3 Ω sont en série dans une branche : leurs résistances s'additionnent.",
+          "resultat_markdown": "$r_{branche} = 4\\times0{,}3 = 1{,}2$ Ω"
+        },
+        {
+          "numero": 2,
+          "action": "Diviser par le nombre de branches en parallèle",
+          "justification": "3 branches identiques sont en parallèle : la résistance équivalente d'un parallèle de résistances égales vaut la résistance d'une branche divisée par leur nombre.",
+          "resultat_markdown": "$r_{pile} = \\dfrac{1{,}2}{3} = 0{,}4$ Ω"
+        }
+      ],
+      "conclusion_markdown": "La pile équivaut à un générateur unique de résistance interne 0,4 Ω."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner directement toutes les résistances internes des 12 éléments : $12\\times0{,}3=3{,}6$ Ω.",
+          "pourquoi_faux": "Cela revient à traiter les 12 éléments comme tous en série, ce qui ignore le parallèle entre les 3 branches.",
+          "correction_markdown": "Traite toujours la série à l'intérieur d'une branche d'abord, puis le parallèle entre branches ensuite, jamais les deux mélangés."
+        },
+        {
+          "erreur_markdown": "Diviser la résistance d'un seul élément par le nombre total d'éléments : $0{,}3/12$.",
+          "pourquoi_faux": "Cette formule ne correspond à aucune loi d'association ; elle confond éléments individuels et branches.",
+          "correction_markdown": "Calcule d'abord $r_{branche}=n\\times r$, puis seulement ensuite $r_{branche}/p$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "2 branches identiques de 3 éléments en série (résistance interne 0,5 Ω chacun) sont associées en parallèle. Calcule la résistance interne du groupement.",
+          "solution_markdown": "$r_{branche}=3\\times0{,}5=1{,}5$ Ω. Avec 2 branches en parallèle : $r=\\dfrac{1{,}5}{2}=0{,}75$ Ω."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "20 éléments identiques de résistance interne 0,25 Ω sont répartis en 5 branches identiques. Calcule la résistance interne du groupement.",
+          "solution_markdown": "Chaque branche a $20\\div5=4$ éléments : $r_{branche}=4\\times0{,}25=1$ Ω. Avec 5 branches en parallèle : $r=\\dfrac{1}{5}=0{,}2$ Ω."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On dispose de 24 éléments identiques de résistance interne 0,2 Ω. Compare la résistance interne obtenue pour un groupement en 4 branches de 6 éléments avec celle obtenue pour un groupement en 6 branches de 4 éléments. Que constates-tu ?",
+          "solution_markdown": "Cas 1 (4 branches de 6) : $r_{branche}=6\\times0{,}2=1{,}2$ Ω, puis $r=1{,}2/4=0{,}3$ Ω. Cas 2 (6 branches de 4) : $r_{branche}=4\\times0{,}2=0{,}8$ Ω, puis $r=0{,}8/6\\approx0{,}133$ Ω. On constate que pour un même nombre total d'éléments, augmenter le nombre de branches en parallèle (au détriment du nombre d'éléments par branche) diminue la résistance interne globale : c'est le même principe que pour de simples résistances en parallèle."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Calcule toujours $r_{branche}=n\\times r$ avant de diviser par le nombre de branches en parallèle : jamais l'inverse, jamais les deux mélangés.",
+        "À nombre total d'éléments fixé, plus il y a de branches en parallèle, plus la résistance interne du groupement est faible.",
+        "La résistance interne d'un groupement mixte utilise l'association SÉRIE puis PARALLÈLE, exactement comme pour de simples résistances.",
+        "Ce calcul accompagne presque toujours celui de la f.é.m. dans un même exercice : traite-les l'un après l'autre avec la même structure de raisonnement."
+      ]
+    }
+  ]
+}

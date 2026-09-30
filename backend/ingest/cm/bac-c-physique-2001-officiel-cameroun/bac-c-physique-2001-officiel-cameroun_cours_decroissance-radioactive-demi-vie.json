@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-decroissance-radioactive-demi-vie-tle-c",
+  "meta": {
+    "titre": "Décroissance radioactive : demi-vie et loi p(t)/p0 = (1/2)^(t/T)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Radioactivité",
+    "duree_estimee_min": 25,
+    "tags": [
+      "décroissance radioactive",
+      "demi-vie",
+      "datation",
+      "loi exponentielle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2001-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique Série C - Physique - Session 2001 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-2001-officiel-cameroun-ex3-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment un archéologue peut-il dater un morceau de bois vieux de plusieurs millénaires sans avoir assisté à sa fabrication ? En mesurant la quantité de carbone 14 qu'il contient encore, et en remontant le temps grâce à une seule loi : la décroissance radioactive. Cette loi, d'une forme mathématique très simple, transforme une mesure de laboratoire en une date - c'est l'un des outils les plus concrets et les plus utilisés de toute la physique nucléaire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir manipuler une fonction exponentielle et ses propriétés (e^(a+b)=e^a·e^b)",
+        "Savoir résoudre une équation du type a^x=b par passage au logarithme",
+        "Comprendre la notion de proportionnalité entre le nombre de noyaux et une masse ou une proportion mesurable"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de décroissance radioactive et la demi-vie",
+      "contenu_markdown": "Le nombre de noyaux radioactifs $N(t)$ présents dans un échantillon à l'instant $t$ décroît selon la loi $N(t)=N_0e^{-\\lambda t}$, où $\\lambda$ est la constante radioactive du nucléide considéré. La demi-vie (ou période radioactive) $T$ est la durée au bout de laquelle la moitié des noyaux initiaux s'est désintégrée : $N(T)=N_0/2$, ce qui donne $\\lambda=\\dfrac{\\ln2}{T}$. En substituant, la loi se réécrit sous une forme équivalente très pratique, ne faisant intervenir que le rapport $t/T$, sans jamais avoir besoin de $\\lambda$ explicitement :",
+      "formule_principale": "\\dfrac{N(t)}{N_0}=\\left(\\dfrac12\\right)^{t/T}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le carbone 14 a une demi-vie $T=5600$ ans. Un morceau de bois fossilisé contient une proportion $p=0,39$ de la proportion initiale $p_0$ (rapport $p/p_0=0,39$). Déterminer l'âge du fossile.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'équation à résoudre",
+          "justification": "Le rapport de proportions suit la même loi que le rapport de nombres de noyaux, puisque proportion et nombre de noyaux sont proportionnels.",
+          "resultat_markdown": "$\\left(\\dfrac12\\right)^{t/T}=0,39$"
+        },
+        {
+          "numero": 2,
+          "action": "Passer au logarithme népérien",
+          "justification": "Le logarithme est une fonction strictement croissante, il transforme une puissance en produit et préserve l'égalité.",
+          "resultat_markdown": "$\\dfrac{t}{T}\\ln\\left(\\dfrac12\\right)=\\ln(0,39)$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler t/T",
+          "justification": "On divise les deux membres par ln(1/2), un nombre négatif non nul.",
+          "resultat_markdown": "$\\dfrac{t}{T}=\\dfrac{\\ln(0,39)}{\\ln(0,5)}\\approx\\dfrac{-0,9416}{-0,6931}\\approx1,359$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer t",
+          "justification": "On multiplie le rapport t/T obtenu par la demi-vie T=5600 ans.",
+          "resultat_markdown": "$t\\approx1,359\\times5600\\approx7608\\ \\text{ans}$"
+        }
+      ],
+      "conclusion_markdown": "Le fossile est âgé d'environ 7600 ans (7,6×10³ ans) : une seule mesure de proportion résiduelle de carbone 14, combinée à la connaissance de sa demi-vie, suffit à remonter à l'âge de l'échantillon, quelle que soit sa quantité initiale de matière."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer t/T comme le rapport de deux logarithmes positifs, en perdant le signe négatif commun aux deux logarithmes.",
+          "pourquoi_faux": "ln(0,39) et ln(0,5) sont tous deux négatifs (logarithme d'un nombre inférieur à 1) : leur rapport est un nombre POSITIF, cohérent avec t/T>0. Une erreur de signe sur l'un des deux termes donnerait un résultat négatif, physiquement impossible pour un âge.",
+          "correction_markdown": "Calculer explicitement chaque logarithme avec son signe, puis vérifier que le rapport final est bien positif avant de poursuivre le calcul."
+        },
+        {
+          "erreur_markdown": "Utiliser directement N0 ou une masse initiale dans le calcul alors que seule une PROPORTION (ou un rapport) est connue.",
+          "pourquoi_faux": "La loi de décroissance s'applique à un RAPPORT (N(t)/N0 ou p(t)/p0) : il n'est jamais nécessaire de connaître la quantité initiale absolue de matière radioactive pour dater un échantillon, seulement la proportion restante.",
+          "correction_markdown": "Travailler systématiquement avec le rapport p(t)/p0 (ou N(t)/N0) directement, sans jamais chercher à reconstituer une quantité absolue non demandée par l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un radionucléide a une demi-vie T=10 ans. Quelle proportion de l'échantillon initial reste-t-il après 30 ans ?",
+          "solution_markdown": "$t/T=30/10=3$.\n\n$\\dfrac{N(t)}{N_0}=\\left(\\dfrac12\\right)^3=\\dfrac18=0,125$\n\nIl reste 12,5 % de l'échantillon initial après 30 ans (trois demi-vies écoulées)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un échantillon radioactif de demi-vie T=8 jours a vu sa quantité initiale réduite à 20 % après combien de temps ?",
+          "solution_markdown": "$\\left(\\dfrac12\\right)^{t/T}=0,20$\n\n$\\dfrac{t}{T}=\\dfrac{\\ln(0,20)}{\\ln(0,5)}=\\dfrac{-1,609}{-0,693}\\approx2,322$\n\n$t\\approx2,322\\times8\\approx18,6$ jours."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que le temps nécessaire pour qu'un échantillon radioactif perde une fraction f de sa quantité initiale (c'est-à-dire pour que N(t)/N0=1-f) s'exprime par $t=T\\times\\dfrac{\\ln(1-f)}{\\ln(0,5)}$, puis calculer ce temps pour f=0,90 (perte de 90 %) avec T=5600 ans (carbone 14).",
+          "solution_markdown": "$\\dfrac{N(t)}{N_0}=1-f=\\left(\\dfrac12\\right)^{t/T}$\n\nEn passant au logarithme népérien : $\\ln(1-f)=\\dfrac{t}{T}\\ln(0,5)$, donc $t=T\\times\\dfrac{\\ln(1-f)}{\\ln(0,5)}$.\n\nPour f=0,90 : $1-f=0,10$, $\\ln(0,10)\\approx-2,303$, $\\ln(0,5)\\approx-0,693$.\n\n$t=5600\\times\\dfrac{-2,303}{-0,693}\\approx5600\\times3,323\\approx18\\,610$ ans.\n\nIl faut donc environ 18 600 ans pour que 90 % du carbone 14 initial d'un échantillon ait disparu, soit un peu plus de trois demi-vies et un tiers (cohérent avec (1/2)³≈0,125 et (1/2)⁴=0,0625, la valeur 0,10 se situant bien entre les deux)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La demi-vie T est la durée au bout de laquelle la moitié des noyaux radioactifs initiaux a disparu : $N(T)=N_0/2$.",
+        "Forme pratique de la loi de décroissance : $N(t)/N_0=(1/2)^{t/T}$, valable aussi pour tout rapport de grandeurs proportionnelles au nombre de noyaux (masse, proportion).",
+        "Pour résoudre une équation du type (1/2)^(t/T)=valeur donnée, passe systématiquement au logarithme népérien et vérifie que le rapport final est positif.",
+        "Aucune quantité absolue de matière n'est nécessaire pour dater un échantillon : seul le rapport (proportion restante) compte.",
+        "Au BAC, cette loi est la base de tout exercice de datation (carbone 14 pour les matières organiques, autres isotopes pour les roches) et de tout calcul de décroissance d'activité en médecine nucléaire ou en physique des rayonnements."
+      ]
+    }
+  ]
+}

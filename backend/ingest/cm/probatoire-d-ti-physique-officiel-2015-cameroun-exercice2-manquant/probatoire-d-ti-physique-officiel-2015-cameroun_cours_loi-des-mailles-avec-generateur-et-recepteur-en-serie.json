@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-loi-mailles-generateur-recepteur-1ere",
+  "meta": {
+    "titre": "Loi des mailles avec générateur et récepteur en série",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Circuits électriques en courant continu",
+    "duree_estimee_min": 18,
+    "tags": [
+      "loi des mailles",
+      "générateur",
+      "récepteur actif",
+      "force contre-électromotrice"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROB-D-TI-PHYSIQUE-2015-CM",
+    "epreuve_titre": "Probatoire D, TI - Physique - 2015 - Cameroun (officiel)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2015-cameroun-ex2-q2.2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un moteur électrique en marche ne se comporte pas comme une simple résistance : il freine lui-même le courant qui le traverse, un peu comme s'il était un second générateur monté à l'envers. Ignorer cet effet conduit à surestimer largement le courant réel dans le circuit. Comprendre comment un générateur et un récepteur actif «se disputent» la tension disponible permet de calculer correctement l'intensité dans n'importe quel circuit série mêlant une pile ou un alternateur à un moteur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de Pouillet pour un circuit série simple (générateur + résistances)",
+        "Notion de tension aux bornes d'un dipôle et convention récepteur/générateur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi des mailles avec générateur et récepteur actif",
+      "contenu_markdown": "Dans un circuit série comportant un générateur de f.é.m. $E$ et de résistance interne $r$, un récepteur actif comme un moteur de force contre-électromotrice $E'$ et de résistance interne $r'$, et un ou plusieurs résistors de résistance totale $R$, la loi des mailles s'écrit $E = (r+r'+R)I + E'$. Le générateur doit «vaincre» à la fois les résistances du circuit ET la contre-f.é.m. du récepteur : c'est pourquoi c'est la différence $E-E'$, et non $E$ seule, qui fait circuler le courant.",
+      "formule_principale": "E - E' = (r + r' + R)\\,I",
+      "variantes": [
+        {
+          "nom": "Circuit sans récepteur actif (loi de Pouillet classique)",
+          "quand_utiliser": "Quand le circuit ne comporte qu'un générateur et des résistances pures, sans moteur ni récepteur actif.",
+          "contenu_markdown": "En l'absence de récepteur actif, $E'=0$ et la formule se réduit à la loi de Pouillet ordinaire : $I = \\dfrac{E}{r+R}$. La formule générale avec récepteur actif est donc une extension de ce cas simple, pas une règle différente."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une portion de circuit comprend un générateur ($E=19$ V, $r=1{,}5\\ \\Omega$) monté en série avec un moteur électrique ($E'=12$ V, $r'=2\\ \\Omega$) et un résistor de résistance $R=10{,}5\\ \\Omega$. Calculer l'intensité $I$ du courant dans le circuit.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les grandeurs de chaque dipôle",
+          "justification": "Un générateur (f.é.m. $E$, résistance $r$) et un récepteur actif (force contre-électromotrice $E'$, résistance $r'$) jouent des rôles opposés dans le bilan de tension.",
+          "resultat_markdown": "$E=19$ V, $r=1{,}5\\ \\Omega$ ; $E'=12$ V, $r'=2\\ \\Omega$ ; $R=10{,}5\\ \\Omega$."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la loi des mailles généralisée",
+          "justification": "Le circuit est une maille unique en série : la somme des tensions le long de la maille est nulle, en tenant compte du sens du courant imposé par le générateur.",
+          "resultat_markdown": "$E - E' = (r+r'+R)\\,I$"
+        },
+        {
+          "numero": 3,
+          "action": "Substituer les valeurs numériques",
+          "justification": "On applique directement la formule avec les données de l'énoncé.",
+          "resultat_markdown": "$19-12 = (1{,}5+2+10{,}5)\\,I \\ \\Longrightarrow\\ 7 = 14\\,I$"
+        },
+        {
+          "numero": 4,
+          "action": "Isoler l'intensité",
+          "justification": "On divise les deux membres par le coefficient de $I$.",
+          "resultat_markdown": "$I = \\dfrac{7}{14} = 0{,}5$ A"
+        }
+      ],
+      "conclusion_markdown": "L'intensité dans ce circuit vaut $0{,}5$ A : nettement moins que ce que donnerait la loi de Pouillet sans tenir compte du moteur ($I=E/(r+R)=19/12\\approx 1{,}58$ A), ce qui montre l'importance de la contre-f.é.m. du moteur dans le bilan."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Traiter le moteur comme un simple résistor de résistance $r'$ et calculer $I = \\dfrac{E}{r+r'+R}$, en oubliant $E'$.",
+          "pourquoi_faux": "Un moteur en fonctionnement produit une force contre-électromotrice qui s'oppose au courant, en plus de sa résistance interne. Omettre $E'$ revient à ignorer tout l'effet utile du moteur (sa capacité à convertir l'énergie électrique en énergie mécanique) et surestime fortement le courant réel.",
+          "correction_markdown": "Identifie toujours si un dipôle du circuit est un récepteur ACTIF (moteur, accumulateur en charge) avant d'écrire la loi des mailles : s'il l'est, sa force contre-électromotrice $E'$ doit apparaître dans l'équation, retranchée à $E$."
+        },
+        {
+          "erreur_markdown": "Additionner $E$ et $E'$ au lieu de les soustraire : $E+E' = (r+r'+R)I$.",
+          "pourquoi_faux": "Le générateur et le récepteur actif ont des effets opposés sur la circulation du courant : l'un le fait circuler, l'autre s'y oppose. Les additionner reviendrait à traiter le moteur comme un second générateur qui aiderait le premier, ce qui est physiquement faux dans le montage décrit.",
+          "correction_markdown": "Repère le sens conventionnel du courant imposé par le générateur principal : la contre-f.é.m. de tout récepteur actif traversé dans ce même sens se soustrait toujours à la f.é.m. du générateur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur ($E=12$ V, $r=1\\ \\Omega$) est monté en série avec un simple résistor $R=5\\ \\Omega$ (aucun récepteur actif). Calculer l'intensité $I$ dans le circuit.",
+          "solution_markdown": "En l'absence de récepteur actif, $E'=0$ : on retrouve la loi de Pouillet ordinaire.\n\n$$I = \\frac{E}{r+R} = \\frac{12}{1+5} = \\frac{12}{6} = 2 \\ \\text{A}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur ($E=24$ V, $r=0{,}5\\ \\Omega$) est monté en série avec un moteur ($E'=18$ V, $r'=1{,}5\\ \\Omega$) et un résistor $R=8\\ \\Omega$. Calculer l'intensité $I$ dans le circuit.",
+          "solution_markdown": "$$E - E' = (r+r'+R)\\,I$$\n\n$$24 - 18 = (0{,}5+1{,}5+8)\\,I$$\n\n$$6 = 10\\,I$$\n\n$$I = \\frac{6}{10} = 0{,}6 \\ \\text{A}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un circuit série comportant un générateur ($E=20$ V, $r=1\\ \\Omega$), un moteur de résistance interne $r'=2\\ \\Omega$ et un résistor $R=15\\ \\Omega$, on mesure une intensité $I=0{,}8$ A. Calculer la force contre-électromotrice $E'$ du moteur.",
+          "solution_markdown": "On repart de la même loi des mailles, mais cette fois c'est $E'$ l'inconnue plutôt que $I$.\n\n$$E - E' = (r+r'+R)\\,I \\ \\Longrightarrow\\ E' = E - (r+r'+R)\\,I$$\n\n$$E' = 20 - (1+2+15)\\times 0{,}8 = 20 - 18\\times 0{,}8 = 20-14{,}4 = 5{,}6 \\ \\text{V}$$\n\nLa force contre-électromotrice du moteur vaut $5{,}6$ V : la même formule sert aussi bien à calculer $I$ qu'à retrouver n'importe laquelle des autres grandeurs, dès qu'elle est isolée correctement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un circuit série avec générateur ET récepteur actif, la loi des mailles s'écrit $E-E' = (r+r'+R)I$ : jamais $E$ seul.",
+        "Un récepteur actif (moteur, accumulateur en charge) s'identifie à sa force contre-électromotrice $E'$, qui s'oppose toujours au générateur principal.",
+        "Sans récepteur actif, $E'=0$ et on retrouve la loi de Pouillet ordinaire : c'est un cas particulier, pas une formule différente.",
+        "La même équation permet de calculer $I$, ou n'importe quelle autre grandeur ($E$, $E'$, $r$, $R$) dès qu'elle est isolée à la place de $I$.",
+        "Au Probatoire, ce type de circuit sert de point de départ à des questions sur le rendement et le bilan de puissance du générateur ou du récepteur."
+      ]
+    }
+  ]
+}

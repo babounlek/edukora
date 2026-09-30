@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-loi-faraday-fem-induite-premiere-d-ti",
+  "meta": {
+    "titre": "La loi de Faraday : f.é.m. induite et variation de flux",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Induction électromagnétique - loi de Faraday",
+    "duree_estimee_min": 20,
+    "tags": [
+      "loi de Faraday",
+      "f.é.m. induite",
+      "dérivation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2018-CM",
+    "epreuve_titre": "Probatoire D, TI - Physique - Session 2018 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2018-cameroun-ex3-q2.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi une bobine qui tourne dans un champ magnétique produit-elle du courant, alors qu'une bobine immobile dans ce même champ n'en produit aucun ? La réponse tient dans la loi de Faraday : ce n'est pas la présence du champ magnétique qui compte, mais sa VARIATION à travers le circuit."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer le flux magnétique à travers une bobine (voir [[flux-magnetique-bobine-rotation]])",
+        "Savoir dériver une fonction de la forme $\\cos(\\omega t)$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Faraday",
+      "contenu_markdown": "La loi de Faraday énonce que la force électromotrice induite dans un circuit est l'opposée de la dérivée temporelle du flux magnétique qui le traverse : $e = -\\dfrac{d\\Phi}{dt}$. Cette loi traduit physiquement le phénomène d'induction électromagnétique : toute variation du flux à travers un circuit fermé (qu'elle soit due à un déplacement, une rotation, ou une variation du champ lui-même) fait apparaître une f.é.m. à ses bornes, capable de produire un courant si le circuit est fermé. Le signe négatif traduit la loi de modération de Lenz : le courant induit s'oppose toujours à la cause qui lui a donné naissance.",
+      "formule_principale": "e = -\\frac{d\\Phi}{dt}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le flux à travers une bobine de $N$ spires vaut $\\Phi(t) = NBS\\cos(\\omega t)$. Déterminer l'expression de la f.é.m. induite $e(t)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la loi de Faraday",
+          "justification": "C'est la loi qui relie f.é.m. induite et flux",
+          "resultat_markdown": "$e = -\\dfrac{d\\Phi}{dt}$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver $\\Phi(t)$ par rapport au temps",
+          "justification": "$N$, $B$, $S$, $\\omega$ sont constants ; on utilise la dérivée de $\\cos(\\omega t)$, qui vaut $-\\omega\\sin(\\omega t)$",
+          "resultat_markdown": "$\\dfrac{d\\Phi}{dt} = NBS\\times(-\\omega\\sin(\\omega t)) = -NBS\\omega\\sin(\\omega t)$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la loi de Faraday avec ce résultat",
+          "justification": "Remplacer $d\\Phi/dt$ par l'expression obtenue",
+          "resultat_markdown": "$e = -(-NBS\\omega\\sin(\\omega t)) = NBS\\omega\\sin(\\omega t)$"
+        }
+      ],
+      "conclusion_markdown": "La f.é.m. induite vaut $e(t) = NBS\\omega\\sin(\\omega t)$ : elle est elle-même sinusoïdale, de même pulsation que la rotation de la bobine."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le signe moins dans la loi de Faraday",
+          "pourquoi_faux": "Le signe moins n'est pas une convention arbitraire : il traduit la loi de Lenz (le courant induit s'oppose à la variation qui le crée) et change le signe final de $e(t)$",
+          "correction_markdown": "Toujours écrire $e = -d\\Phi/dt$ avec le signe moins, puis dériver soigneusement avant de simplifier"
+        },
+        {
+          "erreur_markdown": "Dériver $\\cos(\\omega t)$ en $+\\omega\\sin(\\omega t)$ au lieu de $-\\omega\\sin(\\omega t)$",
+          "pourquoi_faux": "C'est une erreur de dérivation classique : la dérivée du cosinus fait apparaître un signe moins",
+          "correction_markdown": "Retenir la règle de dérivation $(\\cos(ax))' = -a\\sin(ax)$, souvent rappelée dans l'énoncé lui-même"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le flux à travers un circuit est $\\Phi(t) = 0{,}5\\cos(10t)$ (en Wb, t en s). Calculer la f.é.m. induite $e(t)$.",
+          "solution_markdown": "$e = -d\\Phi/dt = -[0{,}5\\times(-10\\sin(10t))] = 5\\sin(10t)$ V."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le flux à travers une bobine varie selon $\\Phi(t) = 0{,}02\\sin(50t)$ (Wb). Calculer la f.é.m. induite (on rappelle que la dérivée de $\\sin(ax)$ est $a\\cos(ax)$).",
+          "solution_markdown": "$e=-d\\Phi/dt=-[0{,}02\\times 50\\cos(50t)]=-1\\cos(50t)=-\\cos(50t)$ V."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une bobine de $N$ spires et de surface $S$ tourne dans un champ $B$. La f.é.m. induite mesurée a une valeur maximale $e_{max}=6$ V pour $\\omega=200$ rad/s. Si l'on double la vitesse angulaire (à $N$, $B$, $S$ inchangés), quelle sera la nouvelle valeur maximale de la f.é.m. ?",
+          "solution_markdown": "$e_{max}=NBS\\omega$ : la valeur maximale est proportionnelle à $\\omega$. En doublant $\\omega$ (de 200 à 400 rad/s), $e_{max}$ double aussi : la nouvelle valeur maximale est $2\\times 6=12$ V."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Faraday, $e=-d\\Phi/dt$, relie la f.é.m. induite dans un circuit à la variation temporelle du flux magnétique qui le traverse.",
+        "Le signe négatif traduit la loi de Lenz : le courant induit s'oppose toujours à la cause qui le produit.",
+        "Un flux qui varie sinusoïdalement produit une f.é.m. elle-même sinusoïdale, de même pulsation.",
+        "La dérivée d'un cosinus fait apparaître un sinus (et réciproquement), avec un signe qu'il faut suivre attentivement à chaque étape.",
+        "C'est cette loi qui explique le fonctionnement de tous les alternateurs, des dynamos de vélo aux centrales électriques."
+      ]
+    }
+  ]
+}

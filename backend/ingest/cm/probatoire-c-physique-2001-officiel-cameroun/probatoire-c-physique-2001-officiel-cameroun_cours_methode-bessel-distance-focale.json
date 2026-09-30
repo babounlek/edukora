@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-methode-bessel-distance-focale-1ere",
+  "meta": {
+    "titre": "Méthode de déplacement (Bessel) pour mesurer une distance focale",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Optique géométrique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "méthode de Bessel",
+      "déplacement de la lentille",
+      "relation de conjugaison",
+      "distance focale"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-2001-CM",
+    "epreuve_titre": "Probatoire Physique - Série C - Cameroun - Session 2001",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-physique-2001-officiel-cameroun-ex4-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment mesurer précisément la distance focale d'une lentille en laboratoire, sans avoir à repérer exactement la position de l'objet ni celle de l'image ? La méthode de Bessel répond à cette question avec une astuce élégante : en fixant la distance objet-écran et en cherchant les positions de la lentille qui donnent une image nette, on retrouve la focale à partir de deux longueurs faciles à mesurer à la règle. Ce cours en donne la démonstration complète et l'usage pratique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la relation de conjugaison d'une lentille convergente",
+        "Savoir résoudre une équation du second degré et interpréter son discriminant",
+        "Savoir manipuler une racine carrée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les deux positions de Bessel et leur écart",
+      "contenu_markdown": "Pour un objet et un écran fixés à une distance $D$ l'un de l'autre, il existe deux positions d'une lentille convergente de distance focale $f$ qui donnent une image nette sur l'écran, à condition que $D>4f$. En notant $p$ et $q$ les distances (positives) de la lentille à l'objet et de la lentille à l'écran pour l'une de ces positions, on a $p+q=D$ et, par la relation de conjugaison (exprimée ici avec des grandeurs positives pour un objet et une image réels), $pq=Df$. Ces deux positions sont symétriques par rapport au milieu de l'intervalle objet-écran, et la distance $d$ qui les sépare vérifie une relation simple qui permet, en pratique, de retrouver $f$ à partir des deux seules longueurs mesurables $D$ et $d$.",
+      "formule_principale": "d = \\sqrt{D(D-4f)} \\qquad\\Longleftrightarrow\\qquad f = \\dfrac{D^2-d^2}{4D}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un objet et un écran sont distants de D=180 cm. On plaît devant eux une lentille convergente de distance focale f=24 cm. Montrer qu'il existe deux positions de la lentille donnant une image nette, symétriques par rapport au milieu de l'intervalle objet-écran, et calculer leur écart d.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser p+q=D et traduire la relation de conjugaison en pq=Df",
+          "justification": "Avec des distances positives p (objet-lentille) et q (lentille-écran), la relation de conjugaison 1/p+1/q=1/f se réécrit (p+q)/(pq)=1/f, soit pq=Df puisque p+q=D.",
+          "resultat_markdown": "$p+q=D \\quad\\text{et}\\quad pq=Df$"
+        },
+        {
+          "numero": 2,
+          "action": "Reconnaître que p et q sont les deux racines d'une équation du second degré",
+          "justification": "Deux nombres de somme S et de produit P sont racines de l'équation t²-St+P=0 : ici S=D et P=Df.",
+          "resultat_markdown": "$t^2 - Dt + Df = 0$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le discriminant et poser la condition d'existence de deux solutions",
+          "justification": "Pour que p et q existent, réels et distincts, il faut un discriminant strictement positif.",
+          "resultat_markdown": "$\\Delta = D^2-4Df = D(D-4f)$ ; comme $D>0$, $\\Delta>0 \\Leftrightarrow D>4f$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier la condition numériquement",
+          "justification": "Application numérique avec D=180 cm et f=24 cm.",
+          "resultat_markdown": "$4f=96\\ \\text{cm}$, et $D=180\\ \\text{cm}>96\\ \\text{cm}$ : la condition est vérifiée, deux positions existent"
+        },
+        {
+          "numero": 5,
+          "action": "Exprimer les deux racines et vérifier leur symétrie autour de D/2",
+          "justification": "Les racines de l'équation du second degré s'écrivent explicitement avec le discriminant.",
+          "resultat_markdown": "$p_{1,2}=\\dfrac{D\\mp\\sqrt{\\Delta}}{2}$ ; leur moyenne vaut $\\dfrac{p_1+p_2}{2}=\\dfrac{D}{2}$ : les deux positions sont bien symétriques par rapport au milieu de l'intervalle"
+        },
+        {
+          "numero": 6,
+          "action": "Calculer d comme la différence des deux racines, puis sa valeur numérique",
+          "justification": "d = p2-p1 = racine du discriminant.",
+          "resultat_markdown": "$d=\\sqrt{\\Delta}=\\sqrt{D(D-4f)}=\\sqrt{180\\times84}=\\sqrt{15\\,120}\\approx123\\ \\text{cm}$"
+        }
+      ],
+      "conclusion_markdown": "La condition D>4f garantit l'existence de deux positions de la lentille donnant une image nette, symétriques par rapport au milieu du segment objet-écran, séparées d'une distance d≈123 cm."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la relation de conjugaison signée de Descartes (avec OA négatif) au lieu de la forme en distances positives p et q dans cette démonstration",
+          "pourquoi_faux": "Les deux formes sont équivalentes physiquement, mais mélanger les deux conventions dans une même démonstration (par exemple écrire p+q=D avec des positifs, puis 1/OA'-1/OA=1/f' avec un OA négatif) mène presque toujours à une erreur de signe.",
+          "correction_markdown": "Choisis une convention au début de la démonstration (ici, p et q positifs, avec p+q=D) et garde-la du début à la fin sans en changer."
+        },
+        {
+          "erreur_markdown": "Confondre D (distance fixe objet-écran) et d (distance entre les deux positions de la lentille) dans la formule finale",
+          "pourquoi_faux": "Ce sont deux longueurs de nature différente : D est imposée par le montage (fixe), d résulte du calcul et dépend de f. Les intervertir dans la formule $f=(D^2-d^2)/(4D)$ donne un résultat absurde.",
+          "correction_markdown": "Relis toujours la formule en te demandant laquelle des deux longueurs (D ou d) est la donnée fixe du montage, et laquelle est la distance entre les deux positions de la lentille que l'on cherche ou que l'on mesure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un objet et un écran sont distants de D=1 m. Une lentille de distance focale f=20 cm est-elle utilisable par la méthode de Bessel (existe-t-il deux positions donnant une image nette) ?",
+          "solution_markdown": "$4f=80\\ \\text{cm}=0{,}8\\ \\text{m}$. Comme $D=1\\ \\text{m}>0{,}8\\ \\text{m}$, la condition $D>4f$ est vérifiée : oui, deux positions existent."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans une expérience de Bessel, on mesure D=100 cm et d=60 cm. En déduire la distance focale de la lentille utilisée.",
+          "solution_markdown": "$f=\\dfrac{D^2-d^2}{4D}=\\dfrac{100^2-60^2}{4\\times100}=\\dfrac{10\\,000-3\\,600}{400}=\\dfrac{6\\,400}{400}=16\\ \\text{cm}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, dans la méthode de Bessel, les deux positions p1 et p2 de la lentille correspondent à un simple échange des rôles de p et q (autrement dit, la position 'objet-lentille' de l'une correspond à la position 'lentille-écran' de l'autre).",
+          "solution_markdown": "Les deux racines de l'équation $t^2-Dt+Df=0$ sont $p_1=\\dfrac{D-\\sqrt{\\Delta}}{2}$ et $p_2=\\dfrac{D+\\sqrt{\\Delta}}{2}$, de somme $D$. Pour la première position, on a $(p,q)=(p_1,\\,D-p_1)=(p_1,p_2)$ (puisque $p_1+p_2=D$). Pour la seconde position, $(p,q)=(p_2,\\,D-p_2)=(p_2,p_1)$. Les deux couples (p,q) sont donc bien identiques à un échange près : la distance objet-lentille de l'une des deux positions est exactement égale à la distance lentille-écran de l'autre, ce qui est cohérent avec la symétrie des deux positions par rapport au milieu du segment objet-écran, et se vérifie directement sur le banc d'optique en observant que l'image est agrandie dans un sens et réduite dans l'autre, dans un rapport inverse exact."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La méthode de Bessel permet de mesurer une distance focale sans connaître précisément les positions de l'objet ou de l'image, seulement D (fixe) et d (mesurée).",
+        "La condition d'existence des deux positions est $D>4f$ : sans elle, aucune position de la lentille ne donne d'image nette sur l'écran.",
+        "Formule à retenir dans les deux sens : $d=\\sqrt{D(D-4f)}$ pour prédire d, et $f=\\dfrac{D^2-d^2}{4D}$ pour mesurer f à partir de D et d.",
+        "Les deux positions de la lentille sont toujours symétriques par rapport au milieu du segment objet-écran.",
+        "Cette méthode est une application directe d'une mise en équation du second degré à un problème d'optique : elle illustre bien comment un outil purement mathématique (somme et produit de deux racines) résout un problème physique concret."
+      ]
+    }
+  ]
+}

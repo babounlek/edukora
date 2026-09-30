@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-fcem-recepteur-parallele-loi-noeuds-1ere",
+  "meta": {
+    "titre": "F.c.é.m. d'un récepteur en parallèle avec un autre récepteur (loi des nœuds)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Récepteurs actifs",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi des nœuds",
+      "récepteur actif",
+      "moteur électrique",
+      "association parallèle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-2004-CM",
+    "epreuve_titre": "Probatoire Physique - Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-physique-2004-b-officiel-cameroun-ex1-q5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une installation réelle, plusieurs récepteurs partagent souvent la même alimentation : un moteur et un électrolyseur, par exemple, branchés en parallèle sur la même tension. Déterminer les caractéristiques de l'un d'eux exige alors de séparer proprement les deux courants, grâce à la loi des nœuds."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi des nœuds",
+        "Loi d'un récepteur actif linéaire $U=E'+rI$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Séparer les courants de deux récepteurs en parallèle",
+      "contenu_markdown": "Deux récepteurs actifs placés en parallèle entre les mêmes nœuds sont soumis à la MÊME tension $U$, mais parcourus par des intensités différentes $I_1$ et $I_2$, liées à l'intensité totale $I$ par la loi des nœuds $I=I_1+I_2$. Si l'un des deux récepteurs est caractérisé (on connaît sa loi $U=E'_1+r_1I_1$), on en déduit $I_1$ à partir de $U$, puis $I_2=I-I_1$, et enfin la loi du second récepteur $U=E'_2+r_2I_2$ permet de calculer l'inconnue qui le concerne.",
+      "formule_principale": "I = I_1 + I_2 \\quad\\text{avec}\\quad U = E'_1+r_1 I_1 = E'_2 + r_2 I_2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un électrolyseur ($E'_1=1{,}5$ V, $r_1=3{,}75$ Ω) et un moteur ($r_2=2{,}8$ Ω) sont en parallèle sous une tension commune $U=6$ V. L'intensité totale qui les alimente vaut $I=2$ A. Calcule la f.c.é.m. du moteur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le courant dans l'électrolyseur à partir de sa loi",
+          "justification": "La tension $U$ étant commune aux deux branches, la loi de l'électrolyseur $U=E'_1+r_1I_1$ permet d'isoler $I_1$.",
+          "resultat_markdown": "$I_1=\\dfrac{U-E'_1}{r_1}=\\dfrac{6-1{,}5}{3{,}75}=\\dfrac{4{,}5}{3{,}75}=1{,}2$ A"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la loi des nœuds pour trouver le courant du moteur",
+          "justification": "Le courant total se répartit intégralement entre les deux branches en parallèle.",
+          "resultat_markdown": "$I_2=I-I_1=2-1{,}2=0{,}8$ A"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la loi du moteur pour trouver sa f.c.é.m.",
+          "justification": "Le moteur, comme l'électrolyseur, obéit à la loi d'un récepteur actif sous la même tension $U$.",
+          "resultat_markdown": "$E'_2=U-r_2I_2=6-2{,}8\\times0{,}8=6-2{,}24=3{,}76$ V"
+        }
+      ],
+      "conclusion_markdown": "Le moteur a une f.c.é.m. de 3,76 V dans ces conditions de fonctionnement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser l'intensité totale $I$ directement dans la loi du moteur, en écrivant $U=E'_2+r_2I$.",
+          "pourquoi_faux": "Le moteur n'est traversé que par SA part du courant total, $I_2$, pas par $I$ tout entier.",
+          "correction_markdown": "Sépare toujours les courants de chaque branche avant d'appliquer la loi propre à chaque récepteur."
+        },
+        {
+          "erreur_markdown": "Oublier que la tension $U$ est la même pour les deux récepteurs en parallèle et utiliser deux tensions différentes sans justification.",
+          "pourquoi_faux": "Par définition de l'association en parallèle entre deux mêmes nœuds, la tension à leurs bornes est identique.",
+          "correction_markdown": "Vérifie toujours que les deux récepteurs partagent bien les deux mêmes nœuds avant de leur attribuer la même tension $U$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux récepteurs en parallèle sous $U=4$ V sont traversés respectivement par $I_1=0{,}5$ A et par un courant total $I=1{,}3$ A. Calcule le courant $I_2$ dans le second récepteur.",
+          "solution_markdown": "$I_2=I-I_1=1{,}3-0{,}5=0{,}8$ A."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un électrolyseur ($E'=1$ V, $r=2$ Ω) et un moteur sont en parallèle sous une tension $U=5$ V, avec un courant total $I=3$ A. Le moteur a une résistance interne de 1,5 Ω. Calcule sa f.c.é.m.",
+          "solution_markdown": "Courant dans l'électrolyseur : $I_1=\\dfrac{U-E'}{r}=\\dfrac{5-1}{2}=2$ A. Courant dans le moteur : $I_2=I-I_1=3-2=1$ A. F.c.é.m. du moteur : $E'_{moteur}=U-r_{moteur}I_2=5-1{,}5\\times1=3{,}5$ V."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un électrolyseur ($E'=2$ V, $r=4$ Ω) et un moteur ($E'_m=3$ V, $r_m=2$ Ω) sont en parallèle sous une tension commune $U$ inconnue, avec un courant total $I=2{,}5$ A. Détermine $U$, puis les deux courants $I_1$ et $I_2$.",
+          "solution_markdown": "On a $I_1=\\dfrac{U-2}{4}$ et $I_2=\\dfrac{U-3}{2}$, avec $I_1+I_2=2{,}5$. En remplaçant : $\\dfrac{U-2}{4}+\\dfrac{U-3}{2}=2{,}5$. En multipliant tout par 4 : $(U-2)+2(U-3)=10$, soit $U-2+2U-6=10$, donc $3U-8=10$, $3U=18$, $U=6$ V. Alors $I_1=\\dfrac{6-2}{4}=1$ A et $I_2=\\dfrac{6-3}{2}=1{,}5$ A. Vérification : $I_1+I_2=1+1{,}5=2{,}5$ A $=I$, cohérent."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux récepteurs en parallèle entre les mêmes nœuds partagent toujours la même tension $U$.",
+        "La loi des nœuds $I=I_1+I_2$ est la clé pour séparer les courants de deux branches en parallèle.",
+        "Traite toujours les deux récepteurs l'un après l'autre : d'abord celui dont tu connais tous les paramètres, pour en déduire son courant, puis l'autre par différence.",
+        "Cette méthode se généralise à un nombre quelconque de récepteurs en parallèle, en écrivant la loi des nœuds pour autant de branches que nécessaire."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-flux-magnetique-bobine-rotation-premiere-d-ti",
+  "meta": {
+    "titre": "Le flux magnétique à travers une bobine plane en rotation",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Induction électromagnétique - flux magnétique",
+    "duree_estimee_min": 18,
+    "tags": [
+      "flux magnétique",
+      "bobine tournante",
+      "champ magnétique uniforme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2018-CM",
+    "epreuve_titre": "Probatoire D, TI - Physique - Session 2018 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2018-cameroun-ex3-q2.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le principe de tous les alternateurs - des centrales électriques aux dynamos de vélo - repose sur une même idée : faire tourner une bobine dans un champ magnétique. Pour comprendre comment cette rotation produit un courant, il faut d'abord savoir calculer une grandeur clé, le flux magnétique, et suivre comment il varie au cours de la rotation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de vecteur normal à une surface",
+        "Savoir manipuler un produit scalaire de deux vecteurs, $\\vec{u}\\cdot\\vec{v} = uv\\cos\\theta$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Flux magnétique à travers une bobine en rotation",
+      "contenu_markdown": "Le flux du champ magnétique à travers une spire plane de surface $S$ et de vecteur normal unitaire $\\vec{n}$, plongée dans un champ uniforme $\\vec{B}$, vaut $\\phi = \\vec{B}\\cdot\\vec{n}\\,S = BS\\cos\\theta$, où $\\theta$ est l'angle entre $\\vec{B}$ et $\\vec{n}$. Pour $N$ spires identiques associées en série (bobine), le flux total est $\\Phi = N\\phi$. Lorsque la bobine tourne à la vitesse angulaire constante $\\omega$ autour d'un axe contenu dans son plan, l'angle $\\theta$ entre $\\vec{n}$ (solidaire de la bobine) et $\\vec{B}$ (fixe) varie linéairement avec le temps : $\\theta(t) = \\omega t + \\theta_0$, où $\\theta_0$ est l'angle à $t=0$, fixé par les conditions initiales de l'énoncé.",
+      "formule_principale": "\\Phi(t) = NBS\\cos(\\omega t + \\theta_0)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine de $N$ spires de surface $S$ tourne à la vitesse angulaire $\\omega$ dans un champ uniforme $B$. À $t=0$, le champ est orthogonal au plan des spires et de même sens que la normale. Donner $\\Phi(t)$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire le flux à travers une spire",
+          "justification": "Définition du flux d'un champ uniforme à travers une surface plane",
+          "resultat_markdown": "$\\phi = BS\\cos\\theta$"
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer l'angle initial $\\theta_0$",
+          "justification": "L'énoncé précise qu'à $t=0$, $\\vec{B}$ est orthogonal au plan des spires et de même sens que $\\vec{n}$, donc colinéaire à $\\vec{n}$",
+          "resultat_markdown": "$\\theta_0 = 0$"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer $\\theta(t)$ pour une rotation à vitesse angulaire constante",
+          "justification": "L'angle croît linéairement avec le temps, à la vitesse $\\omega$",
+          "resultat_markdown": "$\\theta(t) = \\omega t$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire le flux total à travers les $N$ spires",
+          "justification": "Multiplier le flux par spire par le nombre de spires",
+          "resultat_markdown": "$\\Phi(t) = N\\phi(t) = NBS\\cos(\\omega t)$"
+        }
+      ],
+      "conclusion_markdown": "Le flux à travers la bobine varie sinusoïdalement au cours du temps : $\\Phi(t) = NBS\\cos(\\omega t)$, maximal à $t=0$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de multiplier par $N$ et donner le flux d'une seule spire comme réponse finale",
+          "pourquoi_faux": "Une bobine comporte $N$ spires en série : le flux total traversant le circuit est $N$ fois celui d'une seule spire",
+          "correction_markdown": "Toujours vérifier si l'énoncé parle d'une spire ou d'une bobine à $N$ spires, et multiplier par $N$ dans ce second cas"
+        },
+        {
+          "erreur_markdown": "Utiliser $\\sin(\\omega t)$ au lieu de $\\cos(\\omega t)$ sans tenir compte de la condition initiale donnée",
+          "pourquoi_faux": "Le choix entre sinus et cosinus (ou une phase à l'origine) dépend entièrement de l'angle entre $\\vec{B}$ et $\\vec{n}$ à $t=0$, précisé par l'énoncé",
+          "correction_markdown": "Toujours déterminer $\\theta_0$ à partir de la condition initiale de l'énoncé avant d'écrire l'expression de $\\Phi(t)$"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une bobine de $N=100$ spires de surface $S=5\\times10^{-3}$ m$^2$ est placée dans un champ $B=0{,}2$ T, avec son plan orthogonal au champ. Calculer le flux total à travers la bobine.",
+          "solution_markdown": "Le plan des spires est orthogonal au champ, donc $\\vec{n}$ est colinéaire à $\\vec{B}$ ($\\theta=0$). $\\Phi = NBS\\cos(0) = 100\\times 0{,}2\\times 5\\times10^{-3} = 0{,}1$ Wb."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bobine de $N=50$ spires, de surface $S=0{,}02$ m$^2$, tourne à $\\omega=100$ rad/s dans un champ $B=0{,}05$ T. À $t=0$, le plan des spires contient $\\vec{B}$ (donc $\\vec{n}\\perp\\vec{B}$). Donner $\\Phi(t)$.",
+          "solution_markdown": "Si $\\vec{n}\\perp\\vec{B}$ à $t=0$, l'angle initial est $\\theta_0=\\pi/2$. Donc $\\Phi(t)=NBS\\cos(\\omega t+\\pi/2)=-NBS\\sin(\\omega t)$. Numériquement : $\\Phi(t)=-50\\times0{,}05\\times0{,}02\\times\\sin(100t)=-0{,}05\\sin(100t)$ Wb."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une bobine plate de $N$ spires de surface $S$ tourne dans un champ $B$ à la vitesse $\\omega$. Le flux maximal mesuré est $\\Phi_{max}=0{,}08$ Wb, avec $N=200$, $S=0{,}01$ m$^2$. Calculer $B$.",
+          "solution_markdown": "Le flux maximal correspond à $\\cos(\\omega t)=1$, donc $\\Phi_{max}=NBS$. D'où $B=\\Phi_{max}/(NS)=0{,}08/(200\\times0{,}01)=0{,}08/2=0{,}04$ T."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le flux magnétique à travers une spire plane vaut $\\phi=BS\\cos\\theta$, avec $\\theta$ l'angle entre le champ et la normale à la spire.",
+        "Pour une bobine de $N$ spires, le flux total est $N$ fois celui d'une seule spire.",
+        "Lors d'une rotation à vitesse angulaire constante, l'angle $\\theta(t)$ varie linéairement avec le temps : $\\theta(t)=\\omega t+\\theta_0$.",
+        "La valeur de $\\theta_0$ se détermine toujours à partir de la position relative de $\\vec{B}$ et $\\vec{n}$ donnée à $t=0$ par l'énoncé.",
+        "Ce flux variable est la cause physique de la f.é.m. induite dans la bobine (loi de Faraday, voir cours suivant)."
+      ]
+    }
+  ]
+}

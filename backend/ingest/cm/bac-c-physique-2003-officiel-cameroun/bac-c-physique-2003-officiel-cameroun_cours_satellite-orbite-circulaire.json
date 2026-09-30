@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-satellite-orbite-circulaire-tle-c",
+  "meta": {
+    "titre": "Relation vitesse-altitude pour un satellite en orbite circulaire",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Gravitation universelle",
+    "duree_estimee_min": 25,
+    "tags": [
+      "gravitation universelle",
+      "satellite",
+      "mouvement circulaire uniforme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-PHYSIQUE-2003-CM",
+    "epreuve_titre": "Baccalauréat Cameroun, série C, Physique, session 2003",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-2003-ex2-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment les ingénieurs savent-ils à quelle vitesse lancer un satellite pour qu'il reste sur une orbite donnée, sans jamais avoir à l'essayer en vol ? La réponse tient dans une seule idée : la gravitation terrestre, qui attire le satellite vers le centre de la Terre, joue exactement le rôle de force centripète nécessaire à un mouvement circulaire. En écrivant cette égalité, on obtient une relation directe entre la vitesse du satellite et le rayon de son orbite, sans avoir besoin de connaître sa masse. C'est cette relation, simple mais puissante, qui permet de calculer l'altitude de n'importe quel satellite à partir de sa seule vitesse."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de gravitation universelle et expression du champ de gravitation $G_0R^2/(R+h)^2$",
+        "Mouvement circulaire uniforme : l'accélération est purement centripète, de norme $v^2/r$",
+        "Théorème du centre d'inertie (2e loi de Newton)",
+        "Savoir manipuler des puissances de 10 et extraire une racine cubique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La gravitation comme force centripète",
+      "contenu_markdown": "Un satellite de masse $m$ en orbite circulaire autour de la Terre, à l'altitude $h$, est uniquement soumis à la force de gravitation terrestre. Cette force joue le rôle de force centripète du mouvement circulaire uniforme : elle est donc constamment dirigée vers le centre de la Terre, et son intensité impose l'accélération centripète $\\dfrac{v^2}{R+h}$.\n\nLe théorème du centre d'inertie projeté sur l'axe centripète donne :\n\n$m\\dfrac{v^2}{R+h} = m\\dfrac{G_0R^2}{(R+h)^2}$\n\nLa masse $m$ du satellite se simplifie (elle apparaît des deux côtés) : la trajectoire d'un satellite ne dépend donc jamais de sa masse, seulement de son altitude. On en tire la relation fondamentale :\n\n$v^2(R+h) = G_0R^2 \\quad\\Longleftrightarrow\\quad R+h = \\dfrac{G_0R^2}{v^2}$\n\nUne fois $R+h$ connu, la période de révolution s'obtient simplement en divisant la circonférence de l'orbite par la vitesse : $T = \\dfrac{2\\pi(R+h)}{v}$.",
+      "formule_principale": "v^2(R+h) = G_0 R^2",
+      "variantes": [
+        {
+          "nom": "Formulation avec la période plutôt que la vitesse",
+          "quand_utiliser": "Quand l'énoncé donne la période de révolution plutôt que la vitesse orbitale (cas du satellite géostationnaire, par exemple)",
+          "contenu_markdown": "En remplaçant $v = \\dfrac{2\\pi(R+h)}{T}$ dans la relation précédente, on obtient la troisième loi de Kepler sous forme locale : $(R+h)^3 = \\dfrac{G_0R^2T^2}{4\\pi^2}$, qui permet de calculer directement l'altitude à partir de la période imposée, sans passer par la vitesse."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un satellite décrit une orbite circulaire à la vitesse $v = 7{,}0\\times10^3\\ \\text{m.s}^{-1}$ autour de la Terre ($R=6400\\ \\text{km}$, $G_0=10\\ \\text{N.kg}^{-1}$). Déterminer son altitude $h$ et sa période de révolution $T$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la force centripète et écrire le théorème du centre d'inertie",
+          "justification": "La gravitation est la seule force qui s'exerce sur le satellite et joue le rôle de force centripète",
+          "resultat_markdown": "$m\\dfrac{v^2}{R+h} = m\\dfrac{G_0R^2}{(R+h)^2}$"
+        },
+        {
+          "numero": 2,
+          "action": "Simplifier par $m$ et isoler $R+h$",
+          "justification": "La masse du satellite n'intervient pas dans sa trajectoire",
+          "resultat_markdown": "$v^2(R+h) = G_0R^2 \\;\\Rightarrow\\; R+h = \\dfrac{G_0R^2}{v^2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numériquement $R+h$",
+          "justification": "Application numérique directe",
+          "resultat_markdown": "$R+h = \\dfrac{10\\times(6{,}4\\times10^6)^2}{(7{,}0\\times10^3)^2} = \\dfrac{4{,}096\\times10^{14}}{4{,}9\\times10^7} \\approx 8{,}36\\times10^6\\ \\text{m}$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire l'altitude $h$",
+          "justification": "$h = (R+h) - R$",
+          "resultat_markdown": "$h \\approx 8{,}36\\times10^6 - 6{,}4\\times10^6 = 1{,}96\\times10^6\\ \\text{m} \\approx 1959\\ \\text{km}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la période de révolution",
+          "justification": "$T$ est le temps mis pour parcourir la circonférence de l'orbite à vitesse constante $v$",
+          "resultat_markdown": "$T = \\dfrac{2\\pi(R+h)}{v} = \\dfrac{2\\pi\\times8{,}36\\times10^6}{7{,}0\\times10^3} \\approx 7{,}50\\times10^3\\ \\text{s} \\approx 2\\,\\text{h}\\,05\\,\\text{min}$"
+        }
+      ],
+      "conclusion_markdown": "Le satellite gravite à l'altitude $h\\approx1959\\ \\text{km}$ avec une période de révolution $T\\approx2\\ \\text{h}\\,05\\,\\text{min}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de simplifier par $m$ et introduire une masse de satellite dans le calcul final de $h$",
+          "pourquoi_faux": "La masse du satellite disparaît toujours de la relation $v^2(R+h)=G_0R^2$ : la conserver dans le calcul est un signe qu'une étape d'algèbre a été sautée, ou que le théorème du centre d'inertie a été mal projeté.",
+          "correction_markdown": "Écris systématiquement le théorème du centre d'inertie avec la masse $m$ des deux côtés avant de simplifier, pour t'assurer qu'elle s'élimine bien."
+        },
+        {
+          "erreur_markdown": "Confondre $R$ (rayon de la Terre) et $R+h$ (rayon de l'orbite) dans la formule de la force de gravitation",
+          "pourquoi_faux": "$R$ seul n'apparaît que dans $G_0R^2$ (car $G_0$ est défini À LA SURFACE de la Terre) ; c'est $(R+h)$ qui représente la distance réelle entre le satellite et le centre de la Terre, et qui doit être élevé au carré au dénominateur.",
+          "correction_markdown": "Relis toujours la définition de $G_0$ donnée dans l'énoncé (champ de gravitation À LA SURFACE) avant d'écrire la formule, pour ne pas intervertir $R$ et $R+h$."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir le rayon terrestre en mètres avant le calcul numérique",
+          "pourquoi_faux": "Mélanger des kilomètres et des mètres dans un calcul d'ordre de grandeur donne un résultat faux par un facteur $10^3$ ou $10^6$, difficile à repérer sans vérification de l'ordre de grandeur final.",
+          "correction_markdown": "Convertis systématiquement toutes les longueurs en mètres avant de substituer dans la formule, et vérifie l'ordre de grandeur du résultat final (une altitude de satellite réaliste est de quelques centaines à quelques dizaines de milliers de km)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un satellite décrit une orbite circulaire à la vitesse $v=8{,}0\\times10^3\\ \\text{m.s}^{-1}$ autour d'une planète de rayon $R=5000\\ \\text{km}$ et de champ de gravitation à sa surface $G_0=8{,}0\\ \\text{N.kg}^{-1}$. Calculer le rayon de son orbite $R+h$.",
+          "solution_markdown": "$R+h = \\dfrac{G_0R^2}{v^2} = \\dfrac{8{,}0\\times(5{,}0\\times10^6)^2}{(8{,}0\\times10^3)^2} = \\dfrac{8{,}0\\times2{,}5\\times10^{13}}{6{,}4\\times10^7} = \\dfrac{2{,}0\\times10^{14}}{6{,}4\\times10^7} \\approx 3{,}1\\times10^6\\ \\text{m}$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exercice précédent et calculer l'altitude $h$ du satellite ainsi que sa période de révolution.",
+          "solution_markdown": "$h = (R+h) - R = 3{,}1\\times10^6 - 5{,}0\\times10^6$ : ce résultat est négatif, ce qui est physiquement impossible pour un satellite en orbite (il faudrait $R+h > R$).\n\nCela révèle une incohérence dans les données de l'énoncé (la vitesse choisie est trop élevée pour cette planète et ce rayon), qu'il faut signaler plutôt que de poursuivre le calcul avec un $h$ négatif dénué de sens physique. Ce constat fait partie intégrante de la vérification renforcée : un résultat physiquement absurde signale toujours une erreur de données ou de calcul, jamais un résultat à accepter tel quel."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux satellites A et B orbitent autour de la Terre à des altitudes différentes, $h_A < h_B$. Sans calculer de valeur numérique, comparer leurs vitesses $v_A$ et $v_B$, puis leurs périodes $T_A$ et $T_B$. Justifier à partir de la relation $v^2(R+h)=G_0R^2$.",
+          "solution_markdown": "D'après $v^2 = \\dfrac{G_0R^2}{R+h}$, la vitesse orbitale est une fonction décroissante de $(R+h)$ : plus l'altitude est grande, plus $(R+h)$ est grand, donc plus $v^2$ (et donc $v$) est petit.\n\nPuisque $h_A < h_B$, on a $R+h_A < R+h_B$, donc $v_A > v_B$ : le satellite le plus bas va plus vite.\n\nPour la période, $T = \\dfrac{2\\pi(R+h)}{v}$ : $(R+h)$ augmente avec $h$ ET $v$ diminue avec $h$, les deux effets jouent dans le même sens pour augmenter $T$. On en déduit $T_A < T_B$ : le satellite le plus bas a la période la plus courte (il tourne plus vite ET sur une orbite plus petite). C'est cohérent avec la troisième loi de Kepler, où $T$ croît avec le rayon de l'orbite."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour un satellite en orbite circulaire, la gravitation joue le rôle de force centripète : $\\dfrac{mv^2}{R+h} = \\dfrac{mG_0R^2}{(R+h)^2}$.",
+        "La masse du satellite se simplifie toujours : sa trajectoire ne dépend que de son altitude, jamais de sa masse.",
+        "La relation clé à retenir est $v^2(R+h) = G_0R^2$, qui relie directement vitesse orbitale et rayon de l'orbite.",
+        "Un satellite plus bas va plus vite et a une période plus courte qu'un satellite plus haut : c'est une conséquence directe de cette relation, à retrouver sans recalculer à chaque fois.",
+        "La période de révolution s'obtient ensuite simplement par $T = \\dfrac{2\\pi(R+h)}{v}$, la vitesse étant constante sur une orbite circulaire.",
+        "Au BAC, cette relation revient systématiquement dans les exercices de gravitation universelle, souvent couplée à une question sur l'énergie mécanique ou sur le satellite géostationnaire : maîtrise-la comme un point de départ automatique, pas comme un résultat à redémontrer entièrement à chaque fois."
+      ]
+    }
+  ]
+}

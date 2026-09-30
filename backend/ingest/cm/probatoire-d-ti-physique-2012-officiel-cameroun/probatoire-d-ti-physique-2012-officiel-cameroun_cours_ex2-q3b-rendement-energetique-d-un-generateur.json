@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-probatoire-d-ti-physique-2012-officiel-cameroun-ex2-q3b-1",
+  "meta": {
+    "titre": "Rendement énergétique d'un générateur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Circuits électriques",
+    "duree_estimee_min": 15,
+    "tags": [
+      "rendement électrique",
+      "générateur",
+      "résistance interne",
+      "puissance électrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2012-CM",
+    "epreuve_titre": "Probatoire Physique - Séries D, TI - Cameroun - Session 2012",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2012-officiel-cameroun-ex2-q3b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Aucun générateur réel ne transmet toute son énergie au circuit qu'il alimente : une partie est toujours perdue en chaleur dans sa propre résistance interne. Le rendement quantifie exactement cette perte, et peut se calculer de deux façons équivalentes, selon les données disponibles."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de Pouillet et calcul du courant total",
+        "Puissance électrique P=UI, P=RI²",
+        "Notion de tension aux bornes d'un générateur : U=E-rI"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux formules équivalentes pour le rendement",
+      "contenu_markdown": "Le rendement d'un générateur compare la puissance utile transmise au circuit extérieur à la puissance électrique totale qu'il produit. Il se calcule soit à partir des tensions, $\\rho=\\dfrac{U}{E}$ (avec $U=E-rI$ la tension aux bornes du générateur), soit à partir des résistances, $\\rho=\\dfrac{R_{eq}}{R_{eq}+r}$ : les deux formules donnent toujours exactement le même résultat, et permettent de vérifier un calcul par une seconde méthode indépendante.",
+      "formule_principale": "\\rho = \\dfrac{U}{E} = \\dfrac{R_{eq}}{R_{eq}+r}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur ($E=22$ V, $r=2\\ \\Omega$) débite un courant $I=2$ A dans un circuit extérieur équivalent à $R_{eq}=9\\ \\Omega$. Calculer son rendement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la tension aux bornes du générateur",
+          "justification": "U=E-rI",
+          "resultat_markdown": "$U=22-2\\times2=18$ V"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le rendement par la formule des tensions",
+          "justification": "ρ=U/E",
+          "resultat_markdown": "$\\rho=18/22=9/11\\approx0,818$"
+        },
+        {
+          "numero": 3,
+          "action": "Vérifier par la formule des résistances",
+          "justification": "ρ=Req/(Req+r), comme second calcul indépendant",
+          "resultat_markdown": "$\\rho=9/(9+2)=9/11\\approx0,818$, identique"
+        }
+      ],
+      "conclusion_markdown": "Le rendement vaut environ 81,8% : les deux méthodes de calcul se recoupent exactement, ce qui confirme le résultat."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer le rendement comme P_tot/P_u au lieu de P_u/P_tot (inverser numérateur et dénominateur).",
+          "pourquoi_faux": "Un rendement est toujours une fraction de l'énergie utile récupérée sur l'énergie totale fournie ; il est donc toujours inférieur à 1, jamais supérieur.",
+          "correction_markdown": "Si ton calcul donne un rendement supérieur à 1, c'est le signe immédiat d'une inversion à corriger."
+        },
+        {
+          "erreur_markdown": "Oublier que ρ=Req/(Req+r) suppose que R_eq représente bien TOUT le circuit extérieur, résistances en dérivation déjà réduites en une seule valeur.",
+          "pourquoi_faux": "Utiliser directement une résistance isolée du circuit extérieur (sans l'avoir réduite) donnerait un rendement incorrect.",
+          "correction_markdown": "Vérifie toujours que R_eq utilisée dans la formule du rendement est bien la résistance équivalente de tout le circuit extérieur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.é.m. $E=9$ V a une tension à ses bornes $U=8$ V en fonctionnement. Calculer son rendement.",
+          "solution_markdown": "$\\rho=U/E=8/9\\approx0,889$, soit environ 88,9%."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur de résistance interne $r=0,5\\ \\Omega$ alimente une résistance extérieure $R=19,5\\ \\Omega$. Calculer son rendement par la formule des résistances.",
+          "solution_markdown": "$\\rho=R/(R+r)=19,5/(19,5+0,5)=19,5/20=0,975$, soit 97,5%."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que le rendement d'un générateur tend vers 1 quand R devient très grand devant r, et interpréter physiquement ce résultat.",
+          "solution_markdown": "$\\rho=R/(R+r)$. Quand $R\\gg r$, le terme $r$ devient négligeable devant $R$, donc $\\rho\\to R/R=1$. Physiquement, un courant très faible (imposé par une grande résistance extérieure) dissipe très peu de puissance par effet Joule dans la résistance interne ($P_r=rI^2$, avec $I$ petit), donc la quasi-totalité de la puissance produite est transmise au circuit extérieur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "ρ=U/E=Req/(Req+r) : deux formules équivalentes, à utiliser l'une pour vérifier l'autre.",
+        "Un rendement est toujours compris entre 0 et 1 : un résultat hors de cet intervalle signale une erreur.",
+        "R_eq doit toujours représenter la résistance équivalente de tout le circuit extérieur.",
+        "Le rendement tend vers 1 quand R devient très grand devant r, vers 0 quand R devient très petit devant r.",
+        "Ce rendement mesure une perte par effet Joule dans le générateur lui-même, pas dans le circuit extérieur."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-localisation-noeuds-interference-segment-sources-tle-c",
+  "meta": {
+    "titre": "Localisation des nœuds d'interférence le long du segment joignant deux sources cohérentes",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Ondes et interférences",
+    "duree_estimee_min": 30,
+    "tags": [
+      "interférences",
+      "nœuds d'interférence",
+      "longueur d'onde",
+      "différence de marche"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2001-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique Série C - Physique - Session 2001 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-physique-2001-officiel-cameroun-ex4-q5-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Repérer UN point où le son disparaît entre deux haut-parleurs peut sembler anecdotique. Mais cette seule observation, correctement exploitée, permet de remonter à la longueur d'onde du son, puis à sa fréquence, puis de prédire EXACTEMENT combien de points de silence existent sur toute la ligne séparant les deux sources - sans avoir à les chercher un par un. C'est la puissance d'une relation géométrique simple entre position et différence de marche."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de différence de marche et la condition des nœuds d'interférence pour des sources en opposition de phase",
+        "Savoir exprimer une distance à un point M en fonction de sa position sur un segment",
+        "Savoir résoudre une inéquation portant sur une valeur absolue"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Différence de marche et comptage des nœuds sur le segment source-source",
+      "contenu_markdown": "Pour un point $M$ d'abscisse $x$ sur le segment $S_1S_2$ (de longueur $L$), compté depuis le milieu $O$, les distances aux deux sources valent $S_1M=\\frac{L}{2}-x$ et $S_2M=\\frac{L}{2}+x$, d'où une différence de marche $\\delta(x)=S_2M-S_1M=2x$, PROPORTIONNELLE à la position. Pour des sources en opposition de phase, les nœuds d'interférence (amplitude nulle) correspondent aux différences de marche multiples entiers de $\\lambda$ ($\\delta=k\\lambda$, $k$ entier relatif, y compris $k=0$ au centre) : un nœud repéré à une abscisse connue donne donc directement $\\lambda$, et le nombre total de nœuds sur le segment s'obtient en cherchant combien d'entiers $k$ vérifient $|\\delta(x)|\\le L$ (la plus grande différence de marche accessible, atteinte aux extrémités du segment).",
+      "formule_principale": "\\delta(x)=2x\\qquad |k|\\le\\dfrac{L}{\\lambda}\\ \\Longrightarrow\\ k\\text{ correspond à un nœud sur le segment}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Deux sources sonores en opposition de phase, distantes de $L=1,0$ m, produisent un nœud d'interférence au milieu $O$ et un autre nœud à $x=11$ cm de $O$. Déterminer la longueur d'onde, puis compter le nombre de nœuds sur le segment pour une fréquence de 1320 Hz ($c=334$ m/s).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'ordre du nœud observé à x = 11 cm",
+          "justification": "C'est le premier nœud rencontré en s'éloignant du centre O (lui-même nœud d'ordre k=0), donc k=1.",
+          "resultat_markdown": "$\\delta=2x=k\\lambda$ avec $k=1$"
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la longueur d'onde",
+          "justification": "On résout l'équation δ=λ pour k=1.",
+          "resultat_markdown": "$\\lambda=2\\times11=22\\ \\text{cm}=0,22\\ \\text{m}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la longueur d'onde à la fréquence de 1320 Hz",
+          "justification": "On veut compter les nœuds pour une fréquence différente (1320 Hz), il faut recalculer λ' correspondante.",
+          "resultat_markdown": "$\\lambda'=\\dfrac{c}{f}=\\dfrac{334}{1320}\\approx0,2530\\ \\text{m}$"
+        },
+        {
+          "numero": 4,
+          "action": "Compter les entiers k tels que le nœud reste sur le segment",
+          "justification": "Un nœud d'ordre k est à l'abscisse x_k=kλ'/2 ; il reste sur le segment tant que |x_k|≤L/2, soit |k|≤L/λ'.",
+          "resultat_markdown": "$\\dfrac{L}{\\lambda'}=\\dfrac{1,00}{0,2530}\\approx3,95$\n\n$k\\in\\{-3,-2,-1,0,1,2,3\\}$, soit 7 valeurs"
+        }
+      ],
+      "conclusion_markdown": "Il y a 7 points nodaux sur le segment $S_1S_2$ pour $f=1320$ Hz : un seul nœud observé, correctement interprété, a permis de déterminer la longueur d'onde puis de prédire le nombre total de nœuds pour une fréquence différente, sans avoir à les localiser un par un expérimentalement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Arrondir L/λ à l'entier le plus proche plutôt qu'à l'entier immédiatement inférieur.",
+          "pourquoi_faux": "Si L/λ vaut par exemple 3,95, arrondir à 4 (l'entier le plus proche) fait croire à tort qu'un nœud d'ordre k=4 existe encore sur le segment, alors que sa position réelle (x=4λ/2=2λ) dépasserait L/2 et sortirait donc du segment.",
+          "correction_markdown": "Toujours prendre la partie entière de L/λ (l'entier immédiatement inférieur ou égal, jamais un arrondi), pour ne compter que les nœuds réellement situés sur le segment."
+        },
+        {
+          "erreur_markdown": "Oublier de compter le nœud central (k=0) ou compter les nœuds positifs et négatifs de façon incohérente.",
+          "pourquoi_faux": "Le comptage |k|≤L/λ inclut k=0 (le centre) ET les valeurs positives ET négatives de k, qui correspondent aux nœuds de part et d'autre du centre : oublier k=0 ou ne compter qu'un seul côté sous-estime systématiquement le nombre total de nœuds.",
+          "correction_markdown": "Lister explicitement toutes les valeurs entières de k de -⌊L/λ⌋ à +⌊L/λ⌋ avant de les compter, plutôt que de multiplier par deux un comptage à moitié fait (ce qui omettrait le nœud central)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux sources en opposition de phase, distantes de L=0,60 m, ont une longueur d'onde λ=0,20 m. Combien de nœuds d'interférence se trouvent sur le segment qui les joint ?",
+          "solution_markdown": "$L/\\lambda=0,60/0,20=3,00$ (exactement 3, un cas limite).\n\n$|k|\\le3$ : $k\\in\\{-3,-2,-1,0,1,2,3\\}$, soit 7 nœuds (les nœuds d'ordre $k=\\pm3$ se trouvent exactement aux positions des sources elles-mêmes, $x=\\pm L/2$, cas limite à signaler mais à inclure dans le comptage)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux sources en opposition de phase, distantes de L=0,80 m, produisent un premier nœud (après le centre) à x=8,0 cm. Déterminer λ, puis le nombre de nœuds sur le segment.",
+          "solution_markdown": "Premier nœud après le centre : $k=1$, $\\delta=2x=\\lambda$.\n\n$\\lambda=2\\times8,0=16,0\\ \\text{cm}=0,160\\ \\text{m}$\n\n$L/\\lambda=0,80/0,160=5,00$\n\n$|k|\\le5$ : $k\\in\\{-5,...,5\\}$, soit 11 nœuds."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, pour des sources EN PHASE (et non plus en opposition de phase), la formule de comptage des nœuds devient légèrement différente, et l'établir.",
+          "solution_markdown": "Pour des sources en phase, les nœuds (interférence destructive) correspondent à une différence de marche demi-entière : $\\delta=\\left(k+\\dfrac12\\right)\\lambda$, $k$ entier relatif (contrairement au cas des sources en opposition de phase, où c'est $\\delta=k\\lambda$ qui donne les nœuds - les rôles de nœuds et de ventres sont échangés entre les deux cas en δ=0).\n\nAvec $\\delta(x)=2x$, un nœud d'ordre k est à l'abscisse $x_k=\\dfrac{(k+1/2)\\lambda}{2}$.\n\nIl reste sur le segment tant que $|x_k|\\le L/2$, soit $\\left|k+\\dfrac12\\right|\\le\\dfrac{L}{\\lambda}$, c'est-à-dire $-\\dfrac{L}{\\lambda}-\\dfrac12\\le k\\le\\dfrac{L}{\\lambda}-\\dfrac12$.\n\nLe nombre de nœuds sur le segment est donc, dans ce cas, le nombre d'entiers k compris dans cet intervalle - une formule légèrement différente de celle des sources en opposition de phase, car ici aucun nœud ne tombe exactement au centre (k=-1/2 n'est pas entier), contrairement au cas étudié dans l'exercice principal."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Sur le segment joignant deux sources distantes de L, la différence de marche en un point d'abscisse x (depuis le milieu) vaut toujours $\\delta(x)=2x$.",
+        "Pour des sources en opposition de phase, les nœuds sont aux différences de marche $\\delta=k\\lambda$ ($k$ entier, y compris 0 au centre).",
+        "Un seul nœud repéré expérimentalement à une abscisse connue suffit à déterminer λ : pas besoin de mesurer directement la fréquence ou la célérité de l'onde.",
+        "Compte les nœuds par l'encadrement $|k|\\le L/\\lambda$, en prenant la partie ENTIÈRE de ce rapport, jamais un arrondi.",
+        "N'oublie jamais le nœud central (k=0) dans le comptage, et vérifie que tu comptes bien les deux côtés du segment (k positifs et négatifs).",
+        "Au BAC, cette méthode de comptage se retrouve à l'identique dans les exercices sur les fentes de Young (interférences lumineuses) et sur les cuves à ondes (interférences à la surface de l'eau)."
+      ]
+    }
+  ]
+}

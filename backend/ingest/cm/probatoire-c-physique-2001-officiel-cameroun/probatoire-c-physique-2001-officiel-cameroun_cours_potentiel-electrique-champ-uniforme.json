@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-potentiel-electrique-champ-uniforme-1ere",
+  "meta": {
+    "titre": "Potentiel électrique le long d'un axe dans un champ uniforme",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Champ électrostatique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "potentiel électrique",
+      "champ électrostatique",
+      "condensateur plan"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-2001-CM",
+    "epreuve_titre": "Probatoire Physique - Série C - Cameroun - Session 2001",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-physique-2001-officiel-cameroun-ex1-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le champ électrique dit « où » la force s'exerce ; le potentiel électrique dit « avec quelle énergie ». Entre deux plaques, connaître le potentiel en tout point permet de savoir, sans refaire de calcul de force, quelle énergie potentielle électrique aurait une charge test placée à cet endroit. Ce cours montre comment construire, à partir d'un champ uniforme connu, l'expression complète du potentiel le long d'un axe - une compétence qui revient à chaque exercice de condensateur plan."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la relation $E=U/d$ dans un champ uniforme",
+        "Savoir qu'un potentiel se définit toujours par rapport à une origine choisie (ici, une des deux plaques)",
+        "Notions de dérivée et de primitive d'une fonction affine (niveau Première)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du champ au potentiel : intégrer le long de l'axe",
+      "contenu_markdown": "Dans un champ électrostatique uniforme orienté selon un axe $(x'x)$, la relation locale entre champ et potentiel est $E_x=-\\dfrac{dV}{dx}$, où $E_x$ est la composante du champ sur cet axe (positive si le champ pointe dans le sens de l'axe, négative sinon). En intégrant cette relation (puisque $E_x$ est une constante dans un champ uniforme), on obtient une fonction affine du potentiel : $V(x)=-E_x\\,x + V(0)$. La constante d'intégration $V(0)$ se fixe grâce à l'origine des potentiels choisie dans l'énoncé (souvent, l'une des deux plaques est prise comme référence à 0 V).",
+      "formule_principale": "V(x) = -E_x\\,x + V(0)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un axe $x'Ox$ est orienté de la plaque (C) vers la plaque (A), avec origine sur (C) où $V_C=0$. Les plaques sont distantes de $d$ et soumises à une tension $U_1=V_A-V_C>0$. Exprimer le potentiel $V(x)$ en un point d'abscisse $x$ de cet axe.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer le sens réel du champ électrique",
+          "justification": "Le champ va toujours du potentiel le plus élevé vers le potentiel le plus bas ; ici $V_A>V_C$, donc le champ va de (A) vers (C).",
+          "resultat_markdown": "$\\vec{E}$ orienté de (A) vers (C)"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer la composante E_x du champ sur l'axe choisi",
+          "justification": "L'axe est orienté de (C) vers (A), donc dans le sens opposé au champ réel : la composante E_x est donc négative.",
+          "resultat_markdown": "$E_x = -E$ (avec $E=U_1/d$ l'intensité du champ)"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la relation V(x) = -E_x . x + V(0)",
+          "justification": "On remplace E_x par sa valeur trouvée à l'étape précédente.",
+          "resultat_markdown": "$V(x) = -(-E)\\,x + V(0) = E\\,x + V(0)$"
+        },
+        {
+          "numero": 4,
+          "action": "Utiliser la condition V(0) = V_C = 0",
+          "justification": "L'origine de l'axe est sur la plaque (C), où le potentiel est nul par convention.",
+          "resultat_markdown": "$V(x) = E\\,x = \\dfrac{U_1}{d}\\,x$"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier la cohérence en x = d",
+          "justification": "En x=d on doit retrouver le potentiel de la plaque (A), qui vaut U1 puisque V_C=0.",
+          "resultat_markdown": "$V(d) = \\dfrac{U_1}{d}\\times d = U_1 = V_A$ : cohérent."
+        }
+      ],
+      "conclusion_markdown": "Le potentiel varie linéairement le long de l'axe, de 0 sur la plaque (C) à $U_1$ sur la plaque (A) : $V(x)=\\dfrac{U_1}{d}\\,x$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire directement $V(x)=Ex$ sans vérifier le sens de l'axe par rapport au sens réel du champ",
+          "pourquoi_faux": "Le signe de la relation dépend entièrement de l'orientation choisie pour l'axe par rapport au sens réel du champ : si l'axe et le champ sont dans le même sens, $E_x=+E$ et $V(x)=-Ex+V(0)$ (V décroît avec x) ; si l'axe est orienté à l'opposé du champ (cas ici), $E_x=-E$ et $V(x)=+Ex+V(0)$ (V croît avec x).",
+          "correction_markdown": "Détermine toujours d'abord le sens réel du champ (du potentiel haut vers le potentiel bas), puis compare-le au sens choisi pour l'axe, avant d'écrire l'expression de V(x)."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier le résultat sur un point de référence connu (ici, x=d doit redonner V_A)",
+          "pourquoi_faux": "Sans cette vérification, une erreur de signe passe totalement inaperçue jusqu'à l'application numérique suivante.",
+          "correction_markdown": "Prends l'habitude systématique de vérifier ta formule de V(x) sur au moins un point dont tu connais déjà le potentiel par ailleurs."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux plaques (A) et (B) distantes de $d=20$ cm sont soumises à $U=V_A-V_B=100$ V. Un axe est orienté de (A) vers (B), origine sur (A) où $V_A=0$. Exprimer V(x) et calculer V au milieu des plaques.",
+          "solution_markdown": "Le champ va de (A) (potentiel haut, 100 V) vers (B) (potentiel bas, 0 V si on prend $V_A=0$... attention ici c'est $V_A=0$ et $V_B=V_A-U=-100$V, donc le champ va bien de (A) vers (B) car A est plus haut). L'axe est orienté dans le même sens que le champ, donc $E_x=+E=U/d$, et $V(x)=-E_x x+V(0)=-\\dfrac{U}{d}x$ (avec $V(0)=V_A=0$). Au milieu, $x=d/2=0{,}10$ m : $V=-\\dfrac{100}{0{,}20}\\times0{,}10=-50$ V."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exemple résolu du cours (axe de C vers A, $V_C=0$, $U_1=350$ V, $d=25$ cm) et calculer le potentiel au point d'abscisse $x=20$ cm.",
+          "solution_markdown": "$V(x)=\\dfrac{U_1}{d}x=\\dfrac{350}{0{,}25}\\times0{,}20=1400\\times0{,}20=280$ V."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur l'axe de l'exemple résolu (de C vers A, $V_C=0$, $U_1=350$ V, $d=25$ cm), trouver l'abscisse $x_0$ du point M dont le potentiel vaut la moitié de celui de la plaque A, puis en déduire la position de M par rapport au milieu des plaques.",
+          "solution_markdown": "On veut $V(x_0)=\\dfrac{V_A}{2}=\\dfrac{U_1}{2}$ puisque $V_C=0$. Or $V(x)=\\dfrac{U_1}{d}x$, donc $\\dfrac{U_1}{d}x_0=\\dfrac{U_1}{2}$, d'où $x_0=\\dfrac{d}{2}=12{,}5$ cm. M est donc exactement au milieu des deux plaques - ce qui est logique puisque le potentiel varie linéairement avec x : la moitié du potentiel correspond exactement à la moitié de la distance."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un champ uniforme, le potentiel varie de façon affine (linéaire) le long de l'axe du champ.",
+        "La relation locale $E_x=-dV/dx$ se traduit, pour un champ constant, par $V(x)=-E_x x + V(0)$.",
+        "Le signe dépend entièrement du sens choisi pour l'axe par rapport au sens réel du champ (qui va toujours du potentiel haut vers le potentiel bas) : détermine-le AVANT d'écrire la formule.",
+        "Vérifie systématiquement ta formule sur un point de référence connu (souvent l'une des deux plaques) avant de l'utiliser pour un calcul numérique.",
+        "Cette compétence est la porte d'entrée de toutes les questions sur le potentiel dans un condensateur plan, très fréquentes au Probatoire série C."
+      ]
+    }
+  ]
+}

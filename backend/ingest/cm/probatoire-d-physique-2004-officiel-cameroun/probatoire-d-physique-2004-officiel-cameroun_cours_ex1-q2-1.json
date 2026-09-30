@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-probatoire-d-physique-2004-officiel-cameroun-ex1-q2-1",
+  "meta": {
+    "titre": "Calcul de la norme d'un champ résultant par symétrie",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Électrostatique",
+    "duree_estimee_min": 28,
+    "tags": [
+      "champ électrique",
+      "loi de Coulomb",
+      "calcul vectoriel",
+      "symétrie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-physique-2004-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique, Série D, Session 2004 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-d-physique-2004-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Savoir représenter un champ résultant, c'est bien ; savoir en calculer la valeur exacte, c'est ce qu'attend un correcteur au Probatoire. Ce cours t'apprend la démarche complète : calculer une distance par Pythagore, appliquer la loi de Coulomb, puis projeter proprement pour obtenir la norme du champ résultant - une méthode que tu retrouveras chaque fois qu'une configuration de charges présente un axe de symétrie."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Champ créé par une charge ponctuelle et principe de superposition (cours précédent)",
+        "Théorème de Pythagore",
+        "Trigonométrie de base (cosinus dans un triangle rectangle)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Norme du champ résultant sur un axe de symétrie",
+      "contenu_markdown": "Pour calculer la norme d'un champ résultant obtenu par symétrie, on calcule d'abord la distance $r$ de chaque charge au point M avec le théorème de Pythagore, puis la norme de chaque champ élémentaire $E_0 = kq/r^2$, et enfin on projette sur la direction de symétrie à l'aide de $\\cos\\theta$, où $\\theta$ est l'angle entre le champ élémentaire et l'axe de symétrie : $E_{résultant} = 2E_0\\cos\\theta$.",
+      "formule_principale": "E_M = 2\\,\\frac{kq}{r^2}\\cos\\theta = \\frac{2kqd}{r^3}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$q = 10^{-7}$ C en A et B, $AB = 5$ cm, M sur le plan médiateur avec $OM = 1$ cm. Calculer $E_M$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la distance AM (= BM) par Pythagore",
+          "justification": "Le triangle OAM est rectangle en O.",
+          "resultat_markdown": "$r = \\sqrt{OA^2+OM^2} = \\sqrt{2{,}5^2+1^2} = \\sqrt{7{,}25} \\approx 2{,}69$ cm."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la norme de chaque champ élémentaire",
+          "justification": "Loi de Coulomb appliquée à chaque charge.",
+          "resultat_markdown": "$E_A = E_B = k\\dfrac{q}{r^2} = 9\\times10^9\\times\\dfrac{10^{-7}}{7{,}25\\times10^{-4}} \\approx 1{,}24\\times10^{6}$ V/m."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le cosinus de l'angle de projection",
+          "justification": "$\\cos\\theta = OM/AM$ donne directement la fraction de $E_A$ qui se projette sur l'axe $(OM)$.",
+          "resultat_markdown": "$\\cos\\theta = \\dfrac{1}{2{,}69} \\approx 0{,}371$."
+        },
+        {
+          "numero": 4,
+          "action": "Sommer les deux projections",
+          "justification": "Les deux composantes perpendiculaires à AB s'ajoutent (superposition, question précédente).",
+          "resultat_markdown": "$E_M = 2\\times1{,}24\\times10^6\\times0{,}371 \\approx 9{,}2\\times10^5$ V/m."
+        }
+      ],
+      "conclusion_markdown": "Le champ résultant au point M vaut environ $9{,}2\\times10^5$ V/m, porté par $(OM)$ : la méthode « Pythagore puis projection » se généralise à toute configuration à deux charges symétriques."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $OA$ (2,5 cm) à la place de $AM$ (2,69 cm) dans la loi de Coulomb.",
+          "pourquoi_faux": "La loi de Coulomb utilise la distance entre la charge et le point où l'on calcule le champ, ici $AM$, pas la distance entre les deux charges ni la distance $OM$.",
+          "correction_markdown": "Toujours identifier clairement quelle distance intervient : ici c'est l'hypoténuse du triangle rectangle $OAM$, calculée par Pythagore."
+        },
+        {
+          "erreur_markdown": "Oublier le facteur 2 en écrivant $E_M = E_A\\cos\\theta$.",
+          "pourquoi_faux": "Il y a deux charges qui contribuent, chacune apportant $E_A\\cos\\theta$ à la somme : oublier le facteur 2 revient à ignorer la moitié du champ résultant.",
+          "correction_markdown": "Vérifier systématiquement le nombre de contributions à sommer avant d'écrire la formule finale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Reprendre l'exemple avec $OM = 2$ cm (au lieu de 1 cm) ; calculer $E_M$.",
+          "solution_markdown": "$r = \\sqrt{2{,}5^2+2^2}=\\sqrt{10{,}25}\\approx3{,}20$ cm. $E_A=k q/r^2 = 9\\times10^9\\times10^{-7}/(3{,}2\\times10^{-2})^2 \\approx 8{,}79\\times10^5$ V/m. $\\cos\\theta = 2/3{,}20 \\approx 0{,}625$. $E_M = 2\\times8{,}79\\times10^5\\times0{,}625 \\approx 1{,}10\\times10^6$ V/m."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux charges $q=5\\times10^{-8}$ C sont distantes de 8 cm. Calculer le champ résultant au point du plan médiateur situé à 3 cm de O.",
+          "solution_markdown": "$OA=4$ cm, $OM=3$ cm, $r=\\sqrt{16+9}=5$ cm. $E_A=9\\times10^9\\times5\\times10^{-8}/(0{,}05)^2=1{,}8\\times10^5$ V/m. $\\cos\\theta=3/5=0{,}6$. $E_M=2\\times1{,}8\\times10^5\\times0{,}6=2{,}16\\times10^5$ V/m."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, pour deux charges égales distantes de $2a$, le champ au point du plan médiateur situé à la distance $d$ de O est maximal pour une valeur particulière de $d$ (on ne demande pas de la calculer, seulement de justifier qualitativement pourquoi $E_M \\to 0$ quand $d \\to 0$ et quand $d \\to \\infty$).",
+          "solution_markdown": "Quand $d \\to 0$, M se rapproche de O : $\\cos\\theta \\to 0$ (le champ élémentaire devient presque horizontal, perpendiculaire à $(OM)$), donc la projection sur $(OM)$ s'annule bien que $E_A$ reste fini : $E_M \\to 0$. Quand $d \\to \\infty$, $r \\approx d$ devient très grand, donc $E_A = kq/r^2 \\to 0$ plus vite que $\\cos\\theta \\to 1$ : $E_M \\to 0$ également. Le champ résultant passe donc par un maximum pour une distance intermédiaire, ce qui est cohérent avec la formule $E_M = 2kqd/r^3 = 2kqd/(a^2+d^2)^{3/2}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois étapes systématiques : distance par Pythagore, norme par Coulomb, projection par cosinus.",
+        "Le facteur 2 apparaît dès que deux charges contribuent de façon identique par symétrie - ne l'oublie jamais.",
+        "La distance à utiliser dans la loi de Coulomb est toujours celle qui sépare la charge du point M, jamais une distance intermédiaire du schéma.",
+        "Ce calcul est un classique du Probatoire série D et C : maîtrise-le comme un automatisme, il revient très régulièrement."
+      ]
+    }
+  ]
+}

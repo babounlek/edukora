@@ -1,0 +1,130 @@
+{
+  "cours_id": "cours-association-de-lentilles-minces-accolees-1ere-ce",
+  "meta": {
+    "titre": "Association de lentilles minces accolées (addition des vergences)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Lentilles minces",
+    "duree_estimee_min": 30,
+    "tags": [
+      "association de lentilles",
+      "vergence",
+      "lentille accolée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-2015-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Probatoire Série C, E - Session 2015 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-physique-2015-officiel-cameroun-ex1-q2c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un opticien qui superpose deux verres correcteurs, ou un photographe qui ajoute une bonnette à son objectif, modifient la convergence totale du système sans avoir besoin de refaire toute la construction optique : ils utilisent, souvent sans le savoir, le fait que les vergences de lentilles accolées s'additionnent simplement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Théorème des vergences pour une lentille mince",
+        "Relation de conjugaison et grandissement d'une lentille mince"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Vergence équivalente d'un système de lentilles accolées",
+      "contenu_markdown": "Lorsque deux lentilles minces sont accolées (leurs centres optiques confondus en un même point $O$), elles se comportent, vis-à-vis d'un objet placé devant le système, comme une lentille unique dite **équivalente**, dont la vergence est la somme des vergences des lentilles associées :\n$$C_{eq} = C_1 + C_2$$\nPour trouver la vergence d'une lentille inconnue ajoutée à une lentille connue, on procède en général en trois temps : on calcule la vergence équivalente du système à partir de la nouvelle position de l'image (relation de conjugaison appliquée au système complet, avec le même objet qu'au départ), puis on soustrait la vergence de la lentille déjà connue pour isoler celle de la lentille ajoutée.",
+      "formule_principale": "C_{eq} = C_1 + C_2"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une lentille convergente de vergence $C_1=10\\ \\delta$ donne d'un objet situé à $\\overline{OA}=-0{,}12\\ m$ une image à $\\overline{OA'}=0{,}60\\ m$. On accole une seconde lentille : l'image se rapproche alors du système de $3\\ cm$. Déterminer la nature et la distance focale de la lentille ajoutée.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la nouvelle position de l'image",
+          "justification": "L'image se rapproche du système de $3\\ cm$ par rapport à sa position initiale ($60\\ cm$)",
+          "resultat_markdown": "$\\overline{OA''} = 60 - 3 = 57\\ cm = 0{,}57\\ m$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la vergence équivalente du système",
+          "justification": "L'objet n'a pas bougé ($\\overline{OA}=-0{,}12\\ m$ toujours) ; on applique la relation de conjugaison au système complet",
+          "resultat_markdown": "$C_{eq} = \\dfrac{1}{0{,}57} - \\dfrac{1}{-0{,}12} = \\dfrac{100}{57}+\\dfrac{25}{3} = \\dfrac{575}{57}\\ \\delta \\approx 10{,}088\\ \\delta$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler la vergence de la lentille ajoutée",
+          "justification": "$C_{eq}=C_1+C_2 \\Rightarrow C_2=C_{eq}-C_1$",
+          "resultat_markdown": "$C_2 = \\dfrac{575}{57} - 10 = \\dfrac{5}{57}\\ \\delta \\approx 0{,}088\\ \\delta$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur la nature et la distance focale",
+          "justification": "Le signe de $C_2$ donne la nature de la lentille ; sa distance focale est l'inverse de sa vergence",
+          "resultat_markdown": "$C_2>0$ : lentille **convergente**, $f_2' = \\dfrac{1}{C_2} = \\dfrac{57}{5} = 11{,}4\\ m$"
+        }
+      ],
+      "conclusion_markdown": "La lentille ajoutée est convergente, de distance focale $11{,}4\\ m$ : une vergence très faible, mais positive, suffit à rapprocher l'image de $3\\ cm$ dans ce montage."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recalculer la position de l'objet en pensant qu'elle a changé avec l'ajout de la seconde lentille",
+          "pourquoi_faux": "Accoler une lentille ne déplace pas l'objet : seule la position de l'image change, l'objet reste exactement là où il était pour la première lentille seule.",
+          "correction_markdown": "Garde toujours la même valeur de $\\overline{OA}$ pour le système complet que pour la première lentille seule, sauf si l'énoncé précise explicitement un déplacement de l'objet."
+        },
+        {
+          "erreur_markdown": "Soustraire les vergences dans le mauvais ordre, par exemple $C_2=C_1-C_{eq}$",
+          "pourquoi_faux": "Cela inverserait le signe de $C_2$ et conduirait à conclure à tort à une lentille divergente là où elle est convergente (ou l'inverse).",
+          "correction_markdown": "Pars toujours de l'égalité complète $C_{eq}=C_1+C_2$ et isole $C_2$ par soustraction de $C_1$ des deux côtés : $C_2=C_{eq}-C_1$, jamais l'inverse."
+        },
+        {
+          "erreur_markdown": "Juger un résultat numérique « bizarre » (comme une distance focale de plusieurs mètres) et en conclure qu'il y a une erreur de calcul",
+          "pourquoi_faux": "Le calcul de vergences reste valable même quand il conduit à une lentille très peu convergente, qui n'existe pas forcément dans le commerce : ce n'est pas un signe d'erreur, mais une caractéristique possible du résultat.",
+          "correction_markdown": "Vérifie ton calcul en reprenant chaque étape plutôt qu'en te fiant à une impression de vraisemblance physique du résultat final."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux lentilles minces accolées ont pour vergences $C_1=5\\ \\delta$ et $C_2=3\\ \\delta$. Calculer la vergence équivalente du système, puis la position de l'image d'un objet placé à $\\overline{OA}=-0{,}20\\ m$.",
+          "solution_markdown": "$C_{eq}=C_1+C_2=5+3=8\\ \\delta$. $\\dfrac{1}{\\overline{OA'}}=8+\\dfrac{1}{-0{,}20}=8-5=3\\ \\delta$, donc $\\overline{OA'}=\\dfrac{1}{3}\\approx0{,}333\\ m$ : l'image est réelle, à environ $33{,}3\\ cm$ derrière le système."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une lentille convergente de vergence $C_1=8\\ \\delta$ donne d'un objet placé à $\\overline{OA}=-0{,}25\\ m$ une image à une certaine position. On lui accole une lentille divergente de vergence $C_2=-3\\ \\delta$. Calculer la nouvelle position de l'image du système, et indiquer de combien et dans quel sens l'image s'est déplacée par rapport à la première lentille seule.",
+          "solution_markdown": "Avec la première lentille seule : $\\dfrac{1}{\\overline{OA'}_1}=8+\\dfrac{1}{-0{,}25}=8-4=4\\ \\delta \\Rightarrow \\overline{OA'}_1=0{,}25\\ m$.\nAvec le système complet : $C_{eq}=8-3=5\\ \\delta$, donc $\\dfrac{1}{\\overline{OA'}_2}=5+\\dfrac{1}{-0{,}25}=5-4=1\\ \\delta \\Rightarrow \\overline{OA'}_2=1{,}00\\ m$.\nL'image s'est donc éloignée du système : elle passe de $25\\ cm$ à $100\\ cm$, soit un éloignement de $75\\ cm$ - cohérent avec l'ajout d'une lentille divergente, qui affaiblit la convergence totale du système et repousse l'image."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut qu'un système de deux lentilles accolées, recevant un objet à $\\overline{OA}=-0{,}15\\ m$, forme son image exactement à l'infini (faisceau émergent parallèle). Sachant que la première lentille a une vergence $C_1=5\\ \\delta$, quelle vergence $C_2$ faut-il donner à la seconde lentille, et quelle relation cela impose-t-il entre $C_2$ et la position de l'objet ?",
+          "solution_markdown": "Une image à l'infini correspond à une vergence image nulle : $\\dfrac{1}{\\overline{OA'}}=0$. Le théorème des vergences donne alors $0 = \\dfrac{1}{\\overline{OA}} + C_{eq}$, soit $C_{eq}=-\\dfrac{1}{\\overline{OA}}=-\\dfrac{1}{-0{,}15}\\approx6{,}667\\ \\delta$. On en déduit $C_2=C_{eq}-C_1=6{,}667-5=1{,}667\\ \\delta$ (lentille convergente). Plus généralement, pour obtenir une image à l'infini quelle que soit la position de l'objet, il faut systématiquement que $C_{eq}=-1/\\overline{OA}$, c'est-à-dire que la vergence équivalente compense exactement l'opposé de la vergence objet - c'est le principe utilisé pour régler un système afocal (comme une lunette astronomique) sur un objet à distance finie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux lentilles minces accolées se comportent comme une seule lentille de vergence $C_{eq}=C_1+C_2$.",
+        "L'objet ne change pas de position quand on accole une nouvelle lentille : seule l'image se déplace.",
+        "Méthode systématique : calcule $C_{eq}$ à partir de la nouvelle position de l'image et de la position (inchangée) de l'objet, puis isole $C_2=C_{eq}-C_1$.",
+        "Le signe de $C_2$ donne la nature de la lentille ajoutée (convergente si positif, divergente si négatif), et $|f_2'|=1/|C_2|$ donne sa distance focale.",
+        "Ce type de calcul, qui combine théorème des vergences et relation de conjugaison, est une question classique de fin d'exercice sur les lentilles au Probatoire scientifique camerounais."
+      ]
+    }
+  ]
+}

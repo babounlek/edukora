@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-probatoire-d-physique-2000-officiel-cameroun-ex2-q3-1",
+  "meta": {
+    "titre": "Loi de la boussole des tangentes",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Champ magnétique créé par un courant",
+    "duree_estimee_min": 25,
+    "tags": [
+      "boussole des tangentes",
+      "champ magnétique d'un solénoïde",
+      "déviation angulaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-physique-2000-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique, Série D, Cameroun, session 2000",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-physique-2000-officiel-cameroun-ex2-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment mesurer un courant électrique sans ampèremètre ? Historiquement, la boussole des tangentes a répondu à cette question : une simple aiguille aimantée, placée au centre d'une bobine perpendiculaire au méridien magnétique, dévie d'un angle directement lié à l'intensité du courant. Ce cours détaille la loi qui relie cet angle à l'intensité, et le calcul du champ d'un solénoïde qui l'accompagne."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le champ magnétique d'un solénoïde $B=\\mu_0 nI$",
+        "Savoir composer deux champs perpendiculaires (règle du parallélogramme)",
+        "Manipuler la fonction tangente et son inverse"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Composition des champs et loi de la boussole des tangentes",
+      "contenu_markdown": "Lorsqu'une aiguille aimantée, initialement alignée sur le champ magnétique terrestre horizontal $B_H$, est placée au centre d'une bobine dont l'axe est perpendiculaire au méridien magnétique, elle est alors soumise à deux champs perpendiculaires : $B_H$ (inchangé) et $B_{bobine}$ (créé par le courant, le long de l'axe de la bobine). L'aiguille s'oriente selon la résultante de ces deux champs, faisant avec le méridien un angle $\\theta$ tel que $\\tan\\theta=B_{bobine}/B_H$. Le champ $B_{bobine}$ se calcule, pour une bobine assimilée à un solénoïde de longueur $\\ell$ et de $N$ spires, par $B_{bobine}=\\mu_0 \\dfrac{N}{\\ell}I$.",
+      "formule_principale": "\\tan\\theta = \\dfrac{B_{bobine}}{B_H} = \\dfrac{\\mu_0 N I/\\ell}{B_H}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine de longueur $30$ cm comportant $600$ spires, d'axe perpendiculaire au méridien magnétique d'un lieu où $B_H=2\\times10^{-5}$ T, est parcourue par un courant $I=0{,}3$ A. Calculer la déviation de l'aiguille placée en son centre.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le champ créé par la bobine",
+          "justification": "Formule du champ d'un solénoïde, $B=\\mu_0 NI/\\ell$.",
+          "resultat_markdown": "$B_{bobine}=4\\pi\\times10^{-7}\\times\\dfrac{600\\times0{,}3}{0{,}3}=4\\pi\\times10^{-7}\\times600\\approx7{,}54\\times10^{-4}$ T"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la tangente de l'angle de déviation",
+          "justification": "Loi de la boussole des tangentes.",
+          "resultat_markdown": "$\\tan\\theta=\\dfrac{7{,}54\\times10^{-4}}{2\\times10^{-5}}=12\\pi\\approx37{,}70$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'angle par la méthode du complémentaire",
+          "justification": "Pour un angle proche de 90°, il est plus précis de calculer $90°-\\arctan(1/\\tan\\theta)$ que $\\arctan$ directement.",
+          "resultat_markdown": "$\\theta=90°-\\arctan(1/37{,}70)\\approx90°-1{,}52°=88{,}48°\\approx88°29'$"
+        }
+      ],
+      "conclusion_markdown": "L'aiguille dévie d'un angle proche de 90° par rapport au méridien, signe que le champ de la bobine domine très largement le champ terrestre dans ce montage."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la formule du champ d'une spire circulaire ($B=\\mu_0 I/2R$) au lieu de celle du solénoïde.",
+          "pourquoi_faux": "Ces deux formules correspondent à des géométries différentes : une spire unique de rayon $R$ n'est pas un solénoïde de longueur $\\ell$ et de $N$ spires. Utiliser la mauvaise formule change complètement l'ordre de grandeur du résultat.",
+          "correction_markdown": "Vérifie quelles données sont fournies : longueur et nombre de spires signalent un solénoïde ($B=\\mu_0 NI/\\ell$), un rayon signale une spire ($B=\\mu_0 I/2R$)."
+        },
+        {
+          "erreur_markdown": "Calculer $\\theta=\\arctan(37{,}70)$ directement à la calculatrice sans vérifier la cohérence du résultat.",
+          "pourquoi_faux": "Une calculatrice mal réglée (en radians au lieu de degrés, par exemple) peut donner un résultat absurde sans que l'erreur saute aux yeux si on ne vérifie pas l'ordre de grandeur attendu.",
+          "correction_markdown": "Avant de conclure, vérifie que ton angle est cohérent avec le rapport des champs : un rapport très supérieur à 1 doit donner un angle proche de 90°, pas un angle modéré."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une bobine crée en son centre un champ $B_{bobine}=2\\times10^{-5}$ T, exactement égal à $B_H$. Quelle est la déviation de l'aiguille ?",
+          "solution_markdown": "$\\tan\\theta=B_{bobine}/B_H=1 \\Rightarrow \\theta=45°$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un solénoïde de longueur $50$ cm et de $1000$ spires est parcouru par un courant $I$. Sachant que $B_H=2\\times10^{-5}$ T et que l'aiguille dévie de $45°$, calculer $I$.",
+          "solution_markdown": "$\\theta=45° \\Rightarrow B_{bobine}=B_H=2\\times10^{-5}$ T. $B=\\mu_0 NI/\\ell \\Rightarrow I=\\dfrac{B\\ell}{\\mu_0 N}=\\dfrac{2\\times10^{-5}\\times0{,}5}{4\\pi\\times10^{-7}\\times1000}\\approx7{,}96\\times10^{-3}$ A."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, pour une même bobine et un même lieu, la déviation $\\theta$ de la boussole des tangentes ne dépend que du courant $I$ (à $N$, $\\ell$ et $B_H$ fixés), puis exprimer $I$ en fonction de $\\tan\\theta$.",
+          "solution_markdown": "$\\tan\\theta=\\dfrac{\\mu_0 N I/\\ell}{B_H}$ : à $N$, $\\ell$, $\\mu_0$ et $B_H$ fixés, $\\tan\\theta$ est directement proportionnel à $I$, donc $\\theta$ ne dépend que de $I$. En isolant $I$ : $I=\\dfrac{B_H \\ell}{\\mu_0 N}\\tan\\theta$ - c'est le principe même de la boussole des tangentes utilisée comme ampèremètre."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La boussole des tangentes exploite la composition de deux champs perpendiculaires : $B_H$ et $B_{bobine}$.",
+        "$\\tan\\theta=B_{bobine}/B_H$ relie directement la déviation de l'aiguille au courant qui traverse la bobine.",
+        "Le champ d'un solénoïde est $B=\\mu_0 NI/\\ell$ : vérifie toujours que la donnée d'une longueur et d'un nombre de spires t'oriente vers cette formule, pas celle d'une spire circulaire.",
+        "Pour un angle proche de 90°, calcule-le par son complémentaire pour plus de précision.",
+        "C'est cette même loi qui, historiquement, a permis de mesurer un courant sans ampèremètre : elle a une vraie valeur physique, pas seulement scolaire."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-bobine-reelle-r-l-tle-c",
+  "meta": {
+    "titre": "Déterminer R et L d'une bobine réelle par deux essais complémentaires",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité - régime sinusoïdal",
+    "duree_estimee_min": 20,
+    "tags": [
+      "bobine réelle",
+      "impédance",
+      "courant continu et alternatif"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-PHYSIQUE-2003-CM",
+    "epreuve_titre": "Baccalauréat Cameroun, série C, Physique, session 2003",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-physique-2003-ex4-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une bobine réelle n'est jamais un simple fil sans résistance : elle possède toujours une résistance interne, en plus de son inductance. Comment séparer ces deux grandeurs avec un simple générateur et un ampèremètre, sans matériel de mesure sophistiqué ? L'astuce consiste à faire deux mesures bien choisies au lieu d'une seule : un essai en courant continu isole la résistance à elle seule, puisqu'une bobine n'oppose alors aucune inductance, et un essai en courant alternatif donne ensuite l'effet combiné des deux grandeurs, dont on peut extraire l'inductance."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm en courant continu : $U=RI$",
+        "Notion d'impédance en régime sinusoïdal et relation $Z=U_{eff}/I_{eff}$",
+        "Impédance d'une bobine réelle : $Z_b = \\sqrt{R^2+(L\\omega)^2}$",
+        "Pulsation $\\omega=2\\pi f$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux essais pour deux inconnues",
+      "contenu_markdown": "Une bobine réelle se modélise par une résistance $R$ en série avec une inductance pure $L$. En régime continu, l'inductance ne s'oppose pas au passage d'un courant constant (elle ne réagit qu'aux variations de courant) : la tension mesurée est donc uniquement due à $R$ :\n\n$U_1 = RI_1 \\quad\\Rightarrow\\quad R = \\dfrac{U_1}{I_1}$\n\nEn régime sinusoïdal de fréquence $f$, l'impédance totale de la bobine combine les deux effets :\n\n$Z_b = \\dfrac{U_2}{I_2} = \\sqrt{R^2+(L\\omega)^2}$, avec $\\omega=2\\pi f$\n\nConnaissant $R$ (issu du premier essai) et $Z_b$ (issu du second), on isole l'inductance :\n\n$L\\omega = \\sqrt{Z_b^2-R^2} \\quad\\Rightarrow\\quad L = \\dfrac{\\sqrt{Z_b^2-R^2}}{2\\pi f}$",
+      "formule_principale": "R=\\frac{U_1}{I_1} \\quad;\\quad L=\\frac{\\sqrt{(U_2/I_2)^2-R^2}}{2\\pi f}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un essai en continu donne $U_1=12\\ \\text{V}$, $I_1=0{,}24\\ \\text{A}$. Un essai en alternatif à $f=50\\ \\text{Hz}$ donne $U_2=12\\ \\text{V}$, $I_2=0{,}2\\ \\text{A}$. Déterminer $R$ et $L$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $R$ à partir de l'essai en continu",
+          "justification": "En continu, seule la résistance limite le courant",
+          "resultat_markdown": "$R = \\dfrac{12}{0{,}24} = 50\\ \\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'impédance totale à partir de l'essai en alternatif",
+          "justification": "$Z_b = U_2/I_2$ combine résistance et inductance",
+          "resultat_markdown": "$Z_b = \\dfrac{12}{0{,}2} = 60\\ \\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler $L\\omega$ par Pythagore sur l'impédance",
+          "justification": "$Z_b^2 = R^2+(L\\omega)^2$",
+          "resultat_markdown": "$L\\omega = \\sqrt{60^2-50^2} = \\sqrt{1100} \\approx 33{,}2\\ \\Omega$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire $L$",
+          "justification": "Diviser par $\\omega=2\\pi f$",
+          "resultat_markdown": "$L = \\dfrac{33{,}2}{2\\pi\\times50} \\approx 0{,}106\\ \\text{H}$"
+        }
+      ],
+      "conclusion_markdown": "La bobine a pour résistance $R=50\\ \\Omega$ et pour inductance $L\\approx0{,}106\\ \\text{H}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $Z_b = R + L\\omega$ (somme algébrique) au lieu de la somme quadratique",
+          "pourquoi_faux": "La résistance et l'inductance ne sont pas en phase dans le circuit : leurs effets se combinent comme les côtés d'un triangle rectangle (Pythagore), jamais par simple addition.",
+          "correction_markdown": "Retiens toujours $Z_b^2 = R^2+(L\\omega)^2$, jamais $Z_b = R+L\\omega$ : c'est l'erreur la plus fréquente sur ce type de calcul."
+        },
+        {
+          "erreur_markdown": "Utiliser la tension ou le courant en valeur maximale au lieu de la valeur efficace dans les calculs d'impédance",
+          "pourquoi_faux": "$Z = U_{eff}/I_{eff}$ est définie à partir des valeurs efficaces ; mélanger valeur maximale et valeur efficace introduit un facteur $\\sqrt{2}$ d'erreur.",
+          "correction_markdown": "Vérifie toujours que les grandeurs données dans l'énoncé sont bien efficaces avant de les substituer dans $Z=U/I$ (l'énoncé le précise généralement explicitement)."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir $f$ en $\\omega$ avant de calculer $L$",
+          "pourquoi_faux": "La formule $L\\omega=\\sqrt{Z_b^2-R^2}$ utilise la pulsation $\\omega=2\\pi f$, pas directement la fréquence $f$ : diviser par $f$ au lieu de $2\\pi f$ donne un résultat faux par un facteur $2\\pi$.",
+          "correction_markdown": "Calcule systématiquement $\\omega=2\\pi f$ comme étape intermédiaire explicite, avant de l'utiliser dans tout calcul d'impédance."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un essai en continu sur une bobine donne $U_1=6{,}0\\ \\text{V}$ pour $I_1=0{,}30\\ \\text{A}$. Calculer sa résistance $R$.",
+          "solution_markdown": "$R = \\dfrac{U_1}{I_1} = \\dfrac{6{,}0}{0{,}30} = 20\\ \\Omega$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La bobine précédente ($R=20\\ \\Omega$), soumise à une tension alternative efficace $U_2=6{,}0\\ \\text{V}$ à $f=100\\ \\text{Hz}$, est parcourue par un courant efficace $I_2=0{,}12\\ \\text{A}$. Calculer son inductance $L$.",
+          "solution_markdown": "$Z_b = \\dfrac{U_2}{I_2} = \\dfrac{6{,}0}{0{,}12} = 50\\ \\Omega$\n\n$L\\omega = \\sqrt{Z_b^2-R^2} = \\sqrt{50^2-20^2} = \\sqrt{2500-400} = \\sqrt{2100} \\approx 45{,}8\\ \\Omega$\n\n$\\omega = 2\\pi\\times100 \\approx 628\\ \\text{rad.s}^{-1}$\n\n$L = \\dfrac{45{,}8}{628} \\approx 0{,}073\\ \\text{H}$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une bobine de résistance $R=15\\ \\Omega$ et d'inductance $L=0{,}05\\ \\text{H}$ est soumise à une tension efficace $U=10\\ \\text{V}$ de fréquence $f$ variable. Déterminer la fréquence $f$ pour laquelle l'intensité efficace vaut exactement la moitié de l'intensité obtenue en régime continu sous la même tension $U$.",
+          "solution_markdown": "En régime continu, l'intensité serait $I_{DC} = \\dfrac{U}{R} = \\dfrac{10}{15} \\approx 0{,}667\\ \\text{A}$ (l'inductance ne s'opposant pas à un courant constant).\n\nOn cherche $f$ telle que $I(f) = \\dfrac{I_{DC}}{2} \\approx 0{,}333\\ \\text{A}$, soit $Z_b(f) = \\dfrac{U}{I(f)} = \\dfrac{10}{0{,}333} = 30\\ \\Omega = 2R$.\n\n$Z_b^2 = R^2+(L\\omega)^2 \\;\\Rightarrow\\; (2R)^2 = R^2+(L\\omega)^2 \\;\\Rightarrow\\; (L\\omega)^2 = 4R^2-R^2=3R^2 \\;\\Rightarrow\\; L\\omega = R\\sqrt{3}$\n\n$\\omega = \\dfrac{R\\sqrt{3}}{L} = \\dfrac{15\\times1{,}732}{0{,}05} \\approx 520\\ \\text{rad.s}^{-1}$\n\n$f = \\dfrac{\\omega}{2\\pi} = \\dfrac{520}{2\\pi} \\approx 82{,}7\\ \\text{Hz}$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un essai en courant continu isole toujours $R$ seule : $R=U_1/I_1$, l'inductance n'intervenant jamais en régime constant.",
+        "Un essai en courant alternatif donne l'impédance totale $Z_b=U_2/I_2=\\sqrt{R^2+(L\\omega)^2}$, combinaison quadratique (jamais une simple somme) de $R$ et $L\\omega$.",
+        "Connaissant $R$ et $Z_b$, on isole systématiquement $L\\omega$ par $L\\omega=\\sqrt{Z_b^2-R^2}$, puis $L$ en divisant par $\\omega=2\\pi f$.",
+        "Vérifie toujours que les tensions et courants utilisés sont des valeurs efficaces, cohérentes avec la définition de l'impédance.",
+        "Cette méthode des deux essais complémentaires (continu puis alternatif) est une technique classique de caractérisation d'un dipôle réel, redemandée très régulièrement en début d'exercice de circuit RLC au BAC scientifique."
+      ]
+    }
+  ]
+}

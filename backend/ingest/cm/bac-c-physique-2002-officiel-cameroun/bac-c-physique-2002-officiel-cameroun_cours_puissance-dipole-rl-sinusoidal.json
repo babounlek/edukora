@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-puissance-dipole-rl-sinusoidal-tle-c",
+  "meta": {
+    "titre": "Puissance moyenne consommée par un dipôle en régime sinusoïdal",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Courant alternatif sinusoïdal",
+    "duree_estimee_min": 20,
+    "tags": [
+      "puissance électrique",
+      "régime sinusoïdal",
+      "valeur efficace",
+      "bobine réelle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2002-PHYSIQUE-CM",
+    "epreuve_titre": "BAC Physique, série C, session 2002 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-physique-2002-officiel-cameroun-ex4-q1.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une bobine chauffe légèrement quand elle est parcourue par un courant alternatif, alors qu'un condensateur idéal, lui, ne chauffe jamais. La différence tient à un seul composant caché à l'intérieur de la bobine réelle : sa résistance interne, faite du fil de cuivre qui la constitue. Savoir isoler la part de la puissance réellement dissipée en chaleur, et la relier uniquement à cette résistance, permet de retrouver des grandeurs qu'on ne peut pas mesurer directement avec un simple ohmmètre en régime variable."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les valeurs efficaces $U_{eff}=U_m/\\sqrt2$ et $I_{eff}=I_m/\\sqrt2$ en régime sinusoïdal",
+        "Savoir qu'une inductance idéale ne consomme aucune puissance moyenne",
+        "Manipuler la loi d'Ohm en valeurs efficaces $U_{eff}=Z\\,I_{eff}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Seule la résistance dissipe de la puissance",
+      "contenu_markdown": "Dans un dipôle formé d'une résistance $R$ en série avec une inductance pure $L$ (modèle d'une bobine réelle), seule la résistance dissipe de l'énergie sous forme de chaleur en moyenne sur une période : une inductance idéale emmagasine puis restitue intégralement l'énergie magnétique qu'elle reçoit, sans aucune perte nette. La puissance moyenne reçue par le dipôle s'écrit donc $P=R\\,I_{eff}^2$, une formule à privilégier dès que $R$ et $I_{eff}$ sont connus car elle évite tout calcul de déphasage. Elle est équivalente à la formule générale $P=U_{eff}I_{eff}\\cos\\varphi$, qui reste utile quand seules $U_{eff}$, $I_{eff}$ et $\\varphi$ sont disponibles.",
+      "formule_principale": "P = R\\,I_{eff}^2 = U_{eff}\\,I_{eff}\\,\\cos\\varphi",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine est parcourue par un courant $i=\\sqrt2\\sin(\\omega t+\\varphi)$ et consomme une puissance moyenne $P=4\\ \\text{W}$. Calculer sa résistance interne $R$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'intensité efficace à partir de l'amplitude",
+          "justification": "$I_{eff}=I_m/\\sqrt2$",
+          "resultat_markdown": "$I_{eff} = \\dfrac{\\sqrt2}{\\sqrt2} = 1\\ \\text{A}$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule $P=R\\,I_{eff}^2$",
+          "justification": "Seule la résistance de la bobine consomme cette puissance",
+          "resultat_markdown": "$R = \\dfrac{P}{I_{eff}^2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Application numérique",
+          "justification": "Remplacement des valeurs",
+          "resultat_markdown": "$R = \\dfrac{4}{1^2} = 4\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "La résistance interne de la bobine vaut $4\\ \\Omega$ ; ce résultat ne nécessite à aucun moment de connaître le déphasage $\\varphi$ ou l'inductance $L$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser l'amplitude $I_m$ à la place de la valeur efficace $I_{eff}$ dans la formule de puissance",
+          "pourquoi_faux": "La formule $P=RI^2$ n'est valable qu'avec des valeurs efficaces en régime sinusoïdal ; avec l'amplitude, il manquerait un facteur $1/2$ (puissance moyenne d'un carré de sinusoïde).",
+          "correction_markdown": "Convertir systématiquement amplitude en valeur efficace ($I_{eff}=I_m/\\sqrt2$) avant tout calcul de puissance."
+        },
+        {
+          "erreur_markdown": "Attribuer une partie de la puissance dissipée à l'inductance L",
+          "pourquoi_faux": "Une inductance idéale ne consomme aucune puissance moyenne : elle emmagasine de l'énergie pendant un quart de période puis la restitue intégralement pendant le quart suivant.",
+          "correction_markdown": "Retiens que dans un circuit (R,L) série, toute la puissance dissipée est attribuable à R, jamais à L."
+        },
+        {
+          "erreur_markdown": "Calculer d'abord $\\cos\\varphi$ pour en déduire R par la formule générale, alors que $P=RI_{eff}^2$ suffit directement",
+          "pourquoi_faux": "Passer par $\\cos\\varphi$ demande de connaître $U_{eff}$, une étape inutile quand $R$ est la seule inconnue recherchée et que $I_{eff}$ est déjà disponible.",
+          "correction_markdown": "Choisis toujours la formule la plus directe compte tenu des données disponibles : $P=RI_{eff}^2$ si $I_{eff}$ est connu, $P=U_{eff}I_{eff}\\cos\\varphi$ sinon."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un conducteur ohmique de résistance $R=20\\ \\Omega$ est parcouru par un courant efficace $I_{eff}=0{,}5\\ \\text{A}$. Calculer la puissance qu'il dissipe.",
+          "solution_markdown": "$P = R\\,I_{eff}^2 = 20\\times0{,}5^2 = 20\\times0{,}25 = 5\\ \\text{W}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bobine, alimentée sous une tension efficace $U_{eff}=12\\ \\text{V}$, est parcourue par un courant efficace $I_{eff}=0{,}3\\ \\text{A}$ et consomme une puissance $P=2{,}16\\ \\text{W}$. Calculer son facteur de puissance et sa résistance interne.",
+          "solution_markdown": "$\\cos\\varphi = \\dfrac{P}{U_{eff}I_{eff}} = \\dfrac{2{,}16}{12\\times0{,}3} = \\dfrac{2{,}16}{3{,}6} = 0{,}6$. Puis $R = \\dfrac{P}{I_{eff}^2} = \\dfrac{2{,}16}{0{,}09} = 24\\ \\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, pour un dipôle (R, L) série, la relation $\\cos\\varphi=R/Z$ (avec $Z$ l'impédance du dipôle) est équivalente à la formule $P=RI_{eff}^2$, en partant de $P=U_{eff}I_{eff}\\cos\\varphi$.",
+          "solution_markdown": "En loi d'Ohm en valeurs efficaces, $U_{eff}=Z\\,I_{eff}$. En reportant dans $P=U_{eff}I_{eff}\\cos\\varphi$ : $P = Z\\,I_{eff}\\times I_{eff}\\times\\cos\\varphi = Z\\,I_{eff}^2\\cos\\varphi$. En utilisant $\\cos\\varphi=R/Z$ (propriété géométrique du triangle des impédances d'un dipôle R,L série), on obtient $P = Z\\,I_{eff}^2\\times\\dfrac{R}{Z} = R\\,I_{eff}^2$ : les deux formules sont bien rigoureusement équivalentes, la seconde n'étant qu'une simplification algébrique de la première valable spécifiquement pour un dipôle (R, L) série."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un dipôle (R, L) série, toute la puissance moyenne dissipée provient de la résistance : $P=R\\,I_{eff}^2$.",
+        "Cette formule est équivalente à $P=U_{eff}I_{eff}\\cos\\varphi$, via $\\cos\\varphi=R/Z$.",
+        "Convertis toujours amplitude en valeur efficace avant tout calcul de puissance.",
+        "Choisis la formule la plus directe selon les données disponibles : inutile de calculer un déphasage si $R$ et $I_{eff}$ suffisent.",
+        "Au BAC, cette formule est presque toujours la première étape d'un exercice sur une bobine réelle : elle donne $R$ sans passer par $L$ ni par $\\varphi$."
+      ]
+    }
+  ]
+}

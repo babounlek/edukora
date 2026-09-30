@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-planeite-trajectoire-champ-uniforme-tle-c",
+  "meta": {
+    "titre": "Planéité d'une trajectoire dans un champ de force uniforme",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Mouvement dans un champ de pesanteur uniforme",
+    "duree_estimee_min": 20,
+    "tags": [
+      "mouvement plan",
+      "chute libre",
+      "intégration vectorielle",
+      "mécanique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2001-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique Série C - Physique - Session 2001 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-2001-officiel-cameroun-ex1-q1.2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant même de calculer une trajectoire, il faut savoir où elle vit : dans un plan, dans l'espace ? Un ballon frappé avec un effet complexe peut dévier dans les trois dimensions, mais un simple tir sans rotation reste toujours dans un plan vertical bien précis. Comprendre pourquoi - et savoir le démontrer proprement - évite de traiter à tort un problème à trois dimensions alors qu'une seule coordonnée supplémentaire, y, suffit à décrire tout le mouvement une fois la planéité acquise."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Décomposer un vecteur dans une base orthonormée de l'espace à trois dimensions",
+        "Connaître la deuxième loi de Newton (relation fondamentale de la dynamique)",
+        "Savoir qu'intégrer une fonction nulle donne une constante, puis qu'intégrer une constante nulle redonne cette même constante"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le critère de planéité par double intégration",
+      "contenu_markdown": "Un point matériel M évolue dans un plan fixe P dès lors que trois conditions sont réunies : sa position initiale appartient à P, sa vitesse initiale est contenue dans P (c'est-à-dire n'a aucune composante perpendiculaire à P), et l'accélération qu'il subit à chaque instant reste elle aussi entièrement contenue dans P. On le démontre en choisissant un axe perpendiculaire à P (souvent noté z ou associé à un vecteur $\\vec k$), puis en observant que l'accélération projetée sur cet axe est nulle à chaque instant. Une double intégration successive - d'abord sur la vitesse, puis sur la position - montre alors que la coordonnée perpendiculaire à P reste nulle pour tout temps t, puisqu'elle l'est ainsi que sa dérivée à l'instant initial.",
+      "formule_principale": "\\ddot z(t)=0,\\ \\dot z(0)=0,\\ z(0)=0\\ \\Longrightarrow\\ z(t)=0\\ \\forall t",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un ballon de football, assimilé à son centre, est frappé depuis un point O avec une vitesse initiale $\\vec v_0$ contenue dans le plan vertical $(O,\\vec i,\\vec j)$. Seul le poids agit sur le ballon (air négligé). Montrer que sa trajectoire reste entièrement dans ce plan.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compléter la base et décomposer la position",
+          "justification": "Pour raisonner sur la troisième dimension, il faut la faire apparaître explicitement dans un repère orthonormé complet.",
+          "resultat_markdown": "$(\\vec i,\\vec j,\\vec k)$ orthonormée, $\\overrightarrow{OM}(t)=x(t)\\vec i+y(t)\\vec j+z(t)\\vec k$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire les conditions initiales sur z",
+          "justification": "M(0)=O et la vitesse initiale est donnée entièrement dans le plan (O,i,j) par hypothèse de l'énoncé.",
+          "resultat_markdown": "$z(0)=0$ et $\\dot z(0)=0$"
+        },
+        {
+          "numero": 3,
+          "action": "Projeter la deuxième loi de Newton sur k",
+          "justification": "Le poids -mg·j n'a par construction aucune composante selon k, qui est perpendiculaire au plan (i,j).",
+          "resultat_markdown": "$m\\ddot z(t)=0 \\Longrightarrow \\ddot z(t)=0\\ \\forall t$"
+        },
+        {
+          "numero": 4,
+          "action": "Intégrer deux fois",
+          "justification": "Une accélération nulle à chaque instant, partant d'une vitesse initiale nulle, laisse la vitesse nulle pour toujours ; une vitesse nulle à chaque instant, partant d'une position initiale nulle, laisse la position nulle pour toujours.",
+          "resultat_markdown": "$\\dot z(t)=\\dot z(0)=0\\ \\forall t$, puis $z(t)=z(0)=0\\ \\forall t$"
+        }
+      ],
+      "conclusion_markdown": "La coordonnée z du centre du ballon reste nulle à tout instant : le mouvement est entièrement contenu dans le plan $(O,\\vec i,\\vec j)$, sa trajectoire est donc plane."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer la planéité d'une trajectoire « par évidence physique » sans jamais écrire la démonstration.",
+          "pourquoi_faux": "La planéité n'est vraie QUE parce que force et conditions initiales sont coplanaires ; dès qu'une force perpendiculaire au plan apparaît (vent latéral, effet Magnus sur un ballon qui tourne...), elle devient fausse. Ce n'est donc jamais un acquis gratuit.",
+          "correction_markdown": "Toujours dérouler explicitement le raisonnement en trois étapes (accélération nulle hors du plan, conditions initiales dans le plan, double intégration), même quand la conclusion paraît intuitive."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier la condition sur la VITESSE initiale (et se contenter de vérifier que la position initiale est dans le plan).",
+          "pourquoi_faux": "Une position initiale dans le plan ne suffit pas : si la vitesse initiale a une composante hors du plan, le point matériel en sortira immédiatement, même si l'accélération reste ensuite dans le plan.",
+          "correction_markdown": "Vérifier systématiquement les trois conditions (position, vitesse initiale, accélération à tout instant), jamais deux seulement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un point matériel part de l'origine avec une vitesse initiale entièrement portée par l'axe (Ox) et ne subit qu'une force constante portée elle aussi par (Ox). Montrer que son mouvement reste sur l'axe (Ox) (cas particulier, dégénéré, de la planéité).",
+          "solution_markdown": "Sur (Oy) et (Oz) : position initiale nulle, vitesse initiale nulle (vitesse entièrement sur Ox), et accélération nulle à chaque instant (force entièrement sur Ox). Par double intégration, y(t)=0 et z(t)=0 pour tout t : le mouvement reste sur l'axe (Ox)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un point matériel part de l'origine avec une vitesse initiale contenue dans le plan (Oxy) et subit une force constante non nulle selon (Oz) en plus du poids selon (Oy). Sa trajectoire peut-elle rester plane ?",
+          "solution_markdown": "Non : l'accélération selon (Oz) n'est plus nulle ($\\ddot z(t)=F_z/m\\ne0$), donc z(t) ne reste pas nul (double intégration d'une constante non nulle donne une fonction du second degré en t, non identiquement nulle). Le point matériel quitte le plan (Oxy) : sa trajectoire est une courbe de l'espace, pas une trajectoire plane dans ce plan-là (elle resterait éventuellement plane dans un AUTRE plan, contenant la résultante des deux accélérations constantes et la vitesse initiale, mais plus dans (Oxy))."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Généraliser le critère de planéité : montrer que si un point matériel part d'une position et d'une vitesse initiales toutes deux contenues dans un même plan P, et si à chaque instant l'accélération qu'il subit reste elle aussi dans un plan PARALLÈLE à P (pas nécessairement P lui-même), alors la trajectoire reste dans un plan parallèle à P (pas nécessairement P).",
+          "solution_markdown": "Choisissons un axe (Oz) perpendiculaire à la direction commune de P et des plans parallèles à P contenant l'accélération à chaque instant. Par hypothèse, la composante selon (Oz) de l'accélération est nulle à tout instant (elle est restée dans un plan parallèle à P, donc perpendiculaire à (Oz)). Les composantes initiales de position et de vitesse selon (Oz) valent une même constante $z_0$ (position) et $0$ (vitesse, car la vitesse initiale est dans P, parallèle donc à la direction commune). Par double intégration : $\\dot z(t)=0$ pour tout t, puis $z(t)=z_0$ pour tout t. Le point matériel reste donc dans le plan d'équation $z=z_0$, qui est parallèle à P (mais qui n'est pas P lui-même si $z_0\\ne0$) : la trajectoire est bien plane, dans un plan parallèle à P."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une trajectoire est plane dès que position initiale, vitesse initiale et accélération à chaque instant sont contenues dans un même plan fixe : ce sont TROIS conditions à vérifier, pas une seule.",
+        "La démonstration standard : choisis un axe perpendiculaire au plan supposé, montre que l'accélération y est nulle à chaque instant, puis intègre deux fois à partir de conditions initiales nulles sur cet axe.",
+        "Ne confonds jamais « la trajectoire semble plane » avec « la trajectoire EST plane » : la seconde affirmation se démontre, elle ne se constate pas.",
+        "Ce raisonnement se généralise à tout mouvement soumis à une force constante (champ électrique uniforme, champ de pesanteur, champ magnétique dans certains cas) : la méthode est transférable au-delà de la seule mécanique du projectile.",
+        "Au BAC, cette démonstration précède presque toujours l'établissement de l'équation cartésienne de la trajectoire : elle justifie qu'on puisse travailler avec seulement deux coordonnées (x,y) au lieu de trois."
+      ]
+    }
+  ]
+}

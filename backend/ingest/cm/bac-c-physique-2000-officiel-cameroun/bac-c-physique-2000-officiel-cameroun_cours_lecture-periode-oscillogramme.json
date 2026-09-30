@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-lecture-periode-oscillogramme-terminale-c",
+  "meta": {
+    "titre": "Lire une période sur un oscillogramme",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité - régime sinusoïdal",
+    "duree_estimee_min": 20,
+    "tags": [
+      "oscilloscope",
+      "balayage horizontal",
+      "période",
+      "fréquence"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2000-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, Session de 2000 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-2000-officiel-cameroun-ex3-q2.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un oscilloscope ne donne jamais directement une fréquence en hertz : il affiche une courbe sur une grille de petits carrés. Convertir cette image en une valeur numérique de fréquence est une compétence expérimentale de base, testée dans presque tous les TP d'électricité, et qui repose sur une seule information à ne jamais confondre avec les autres réglages de l'appareil : le calibre du balayage horizontal."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de période d'un signal périodique",
+        "Lecture d'un calibre (division, temps/division) sur un appareil de mesure"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Convertir des divisions en durée, puis en fréquence",
+      "contenu_markdown": "Le balayage horizontal d'un oscilloscope est réglé en temps par division (par exemple $15\\ \\mu\\text{s/div}$) : chaque carreau de la grille, horizontalement, représente cette durée fixe. Pour trouver la période $T$ d'un signal affiché, il suffit de compter le nombre de divisions occupées par un motif qui se répète à l'identique (par exemple, d'un minimum au minimum suivant), puis de multiplier ce nombre par le calibre. La fréquence s'obtient ensuite immédiatement par $N=1/T$.",
+      "formule_principale": "T = n_{div} \\times (\\text{calibre en s/div}), \\qquad N = \\dfrac{1}{T}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur un oscillogramme réglé avec un balayage horizontal de $15\\ \\mu\\text{s/div}$, une période complète occupe environ 7 divisions. Calculer la fréquence du signal.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer deux points homologues séparés d'une période",
+          "justification": "Deux minima consécutifs (ou deux maxima consécutifs) encadrent exactement une période.",
+          "resultat_markdown": "On choisit deux minima consécutifs de la courbe."
+        },
+        {
+          "numero": 2,
+          "action": "Compter le nombre de divisions entre ces deux points",
+          "justification": "Lecture directe sur la grille de l'oscilloscope.",
+          "resultat_markdown": "$n_{div}\\approx7$ divisions"
+        },
+        {
+          "numero": 3,
+          "action": "Convertir en durée grâce au calibre",
+          "justification": "Application de la formule du cours.",
+          "resultat_markdown": "$T = 7\\times15\\times10^{-6} = 105\\times10^{-6}\\ \\text{s} = 105\\ \\mu\\text{s}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la fréquence",
+          "justification": "N=1/T, définition de la fréquence.",
+          "resultat_markdown": "$N=\\dfrac{1}{105\\times10^{-6}}\\approx9{,}52\\times10^3\\ \\text{Hz}\\approx9{,}5\\ \\text{kHz}$"
+        }
+      ],
+      "conclusion_markdown": "La précision de cette mesure dépend directement du soin apporté au comptage des divisions : une erreur d'une demi-division sur 7 représente déjà une erreur relative de plus de 5% sur la fréquence finale."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter les divisions entre un minimum et le maximum suivant, en pensant mesurer une période complète.",
+          "pourquoi_faux": "Un minimum et le maximum qui le suit immédiatement ne sont séparés que d'une demi-période, pas d'une période complète : utiliser cette distance directement dans T=n×calibre divise le résultat par deux, doublant ainsi la fréquence calculée.",
+          "correction_markdown": "Repère toujours deux points strictement identiques dans le motif (deux minima, ou deux maxima), jamais un minimum et un maximum."
+        },
+        {
+          "erreur_markdown": "Utiliser le calibre de la déviation verticale (V/division) au lieu du calibre du balayage horizontal (temps/division) pour calculer une durée.",
+          "pourquoi_faux": "Ce sont deux réglages indépendants de l'oscilloscope : l'un contrôle l'échelle des tensions (axe vertical), l'autre l'échelle des temps (axe horizontal). Les confondre change la nature physique du résultat.",
+          "correction_markdown": "Vérifie systématiquement l'unité du calibre utilisé (V/div pour les tensions, s/div ou µs/div pour les durées) avant de l'utiliser dans un calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un balayage horizontal est réglé à $2\\ \\text{ms/div}$. Une période occupe 5 divisions. Calculer la fréquence du signal.",
+          "solution_markdown": "$T=5\\times2\\times10^{-3}=10\\times10^{-3}\\ \\text{s}=10\\ \\text{ms}$ ; $N=1/T=1/0{,}01=100\\ \\text{Hz}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sur un oscillogramme, on compte 3 périodes complètes sur 18 divisions, avec un balayage de $50\\ \\mu\\text{s/div}$. Calculer la fréquence.",
+          "solution_markdown": "Une période occupe $18/3=6$ divisions, donc $T=6\\times50\\times10^{-6}=300\\ \\mu\\text{s}$ ; $N=1/(300\\times10^{-6})\\approx3333\\ \\text{Hz}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pourquoi est-il généralement plus précis de mesurer la durée occupée par plusieurs périodes consécutives (par exemple 5 périodes), puis de diviser par leur nombre, plutôt que de mesurer une seule période isolée ?",
+          "solution_markdown": "L'erreur de pointé sur chaque extremum (par exemple ±0,2 division, due à l'épaisseur du trait ou à l'imprécision de lecture) reste la même quel que soit le nombre de périodes mesurées, mais elle se répartit alors sur une durée totale plus grande : l'erreur relative sur la période moyenne diminue proportionnellement au nombre de périodes mesurées. Mesurer 5 périodes plutôt qu'une seule divise ainsi l'erreur relative par 5 environ."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La période se lit entre deux points identiques du motif (deux minima ou deux maxima consécutifs), jamais entre un minimum et un maximum.",
+        "La conversion divisions → durée utilise le calibre du balayage HORIZONTAL (temps/division), à ne pas confondre avec la déviation verticale.",
+        "La fréquence s'obtient ensuite immédiatement par $N=1/T$.",
+        "Mesurer plusieurs périodes consécutives puis diviser améliore toujours la précision de la lecture.",
+        "Cette compétence de lecture graphique est systématiquement mobilisée dans les exercices de TP d'électricité au BAC, quelle que soit la nature du circuit étudié."
+      ]
+    }
+  ]
+}

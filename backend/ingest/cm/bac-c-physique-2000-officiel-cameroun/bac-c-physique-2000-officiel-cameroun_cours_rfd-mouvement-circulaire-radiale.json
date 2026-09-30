@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-rfd-mouvement-circulaire-projection-radiale-terminale-c",
+  "meta": {
+    "titre": "Relation fondamentale de la dynamique en mouvement circulaire (projection radiale)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Dynamique du solide",
+    "duree_estimee_min": 28,
+    "tags": [
+      "relation fondamentale de la dynamique",
+      "mouvement circulaire",
+      "accélération centripète",
+      "réaction normale"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2000-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, Session de 2000 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-2000-officiel-cameroun-ex1-q4.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi un objet posé sur un tourniquet est-il plaqué vers l'extérieur, alors qu'aucune force ne semble l'y pousser ? Le mystère se dissout dès qu'on regarde la bonne direction : sur une trajectoire circulaire, ce n'est pas la somme de toutes les forces qui compte, mais uniquement leur projection vers le centre du cercle. Ce cours te donne la méthode pour écrire cette projection sans erreur, quelle que soit la position sur le cercle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation fondamentale de la dynamique $m\\vec{a}=\\sum\\vec{F}_i$",
+        "Accélération centripète $a_N=v^2/r$ en mouvement circulaire",
+        "Théorème de l'énergie cinétique (pour obtenir $v^2$ en fonction de la position)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Projection radiale de la RFD en mouvement circulaire",
+      "contenu_markdown": "Pour un mobile en mouvement circulaire de rayon $r$, l'accélération se décompose en une composante tangentielle (qui change la norme de la vitesse) et une composante radiale, dirigée vers le centre, de norme $v^2/r$. En projetant la relation fondamentale de la dynamique sur l'axe radial (orienté vers le centre), on obtient une équation qui relie directement la réaction du support (ou la tension d'un fil) à la vitesse et à la position angulaire du mobile.",
+      "formule_principale": "\\sum F_{i,\\,radial} = \\dfrac{mv^2}{r}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un solide de masse $m$ glisse sans frottement sur un demi-cercle de rayon $r$, repéré par l'angle $\\theta$ depuis le point le plus bas $B$. Sa vitesse initiale en $B$ vaut $V_A$ (mouvement uniforme sur le segment précédent). Exprimer la réaction $R$ du support en fonction de $\\theta$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer v² en fonction de theta par le théorème de l'énergie cinétique",
+          "justification": "Il faut connaître la vitesse à chaque position avant de projeter la RFD, car R en dépend.",
+          "resultat_markdown": "$v^2(\\theta) = V_A^2 - 2gr(1-\\cos\\theta)$ (voir le cours sur le théorème de l'énergie cinétique)."
+        },
+        {
+          "numero": 2,
+          "action": "Identifier les forces et leur composante radiale",
+          "justification": "Seuls le poids et la réaction agissent ; il faut projeter chacune sur l'axe radial (vers le centre O).",
+          "resultat_markdown": "Réaction : $+R$ (dirigée vers O par construction). Poids : projection $-mg\\cos\\theta$ (nulle en $\\theta=90°$, maximale en $\\theta=0$ et $\\theta=180°$, de signes opposés)."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la RFD projetée sur l'axe radial",
+          "justification": "Application directe de la règle du cours.",
+          "resultat_markdown": "$R - mg\\cos\\theta = \\dfrac{mv^2}{r}$"
+        },
+        {
+          "numero": 4,
+          "action": "Isoler R et substituer v²(theta)",
+          "justification": "On combine les deux résultats précédents pour obtenir R uniquement en fonction de theta et des données du problème.",
+          "resultat_markdown": "$R = \\dfrac{m}{r}\\big[V_A^2-2gr(1-\\cos\\theta)\\big]+mg\\cos\\theta = \\dfrac{mV_A^2}{r}+mg(3\\cos\\theta-2)$"
+        }
+      ],
+      "conclusion_markdown": "La réaction R varie continûment le long du parcours : elle est maximale en bas (θ=0) et diminue à mesure que le solide monte, ce qui est cohérent avec l'intuition physique (le support « porte » moins le solide près du sommet)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de projeter le poids et considérer seulement $R = mv^2/r$.",
+          "pourquoi_faux": "Cela reviendrait à négliger la contribution (positive ou négative selon la position) du poids à la force centripète totale, alors que le poids n'est perpendiculaire à l'axe radial qu'au point C (theta=90°) et contribue pleinement ailleurs.",
+          "correction_markdown": "Décompose systématiquement CHAQUE force agissant sur le mobile selon les axes radial et tangentiel, même celles qui semblent « verticales fixes » comme le poids."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe pour la projection du poids selon la position sur le cercle.",
+          "pourquoi_faux": "Le signe de la projection du poids change selon que le mobile est proche du point bas (où le poids « tire » vers l'extérieur du cercle) ou du point haut (où il « tire » vers le centre).",
+          "correction_markdown": "Vérifie ta formule de projection sur les positions remarquables (bas, côté, haut du cercle) avant de l'utiliser : au point bas, le poids doit apparaître avec un signe opposé à la réaction ; au sommet, avec le même signe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un solide de masse $m$ décrit un cercle horizontal de rayon $r$ à vitesse constante $v$ (mouvement circulaire uniforme dans un plan horizontal, sans effet de la pesanteur sur la direction radiale). Exprimer la force centripète nécessaire.",
+          "solution_markdown": "Dans ce cas, la seule force radiale utile est celle qui assure la trajectoire circulaire (tension d'un fil, par exemple) : $F = \\dfrac{mv^2}{r}$, dirigée vers le centre."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un solide passe au point le plus bas ($\\theta=0$) d'un cercle vertical de rayon $r$ avec une vitesse $v_0$. Exprimer la réaction du support à cet instant, en fonction de $m$, $g$, $v_0$ et $r$.",
+          "solution_markdown": "Au point le plus bas, le poids est entièrement opposé à la direction du centre (qui est au-dessus) : $R - mg = \\dfrac{mv_0^2}{r}$ (le signe de $-mg$ correspond à $\\cos(0)=1$ dans la formule générale $R-mg\\cos\\theta=mv^2/r$), donc $R = mg + \\dfrac{mv_0^2}{r}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "En reprenant l'exemple résolu, montrer que la réaction $R$ est une fonction strictement décroissante de $\\theta$ sur $[0°;180°]$, et interpréter physiquement ce résultat.",
+          "solution_markdown": "$R(\\theta)=\\dfrac{mV_A^2}{r}+mg(3\\cos\\theta-2)$. Comme $\\cos\\theta$ est strictement décroissante sur $[0°;180°]$, et que $R$ en est une fonction affine croissante (coefficient $3mg>0$ devant $\\cos\\theta$), $R$ est bien strictement décroissante avec $\\theta$. Physiquement, cela traduit le fait que le poids « aide » de moins en moins la réaction à courber la trajectoire à mesure que le solide s'approche du sommet, jusqu'à pouvoir s'annuler puis devenir insuffisant : c'est précisément la condition de perte de contact étudiée dans le cours suivant."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "En mouvement circulaire, seule la projection radiale (vers le centre) de la RFD relie les forces à la vitesse via $v^2/r$.",
+        "Il faut combiner deux outils : le théorème de l'énergie cinétique pour connaître $v^2(\\theta)$, et la RFD radiale pour en déduire la réaction du support.",
+        "La projection du poids sur l'axe radial dépend de la position angulaire : $-mg\\cos\\theta$ si $\\theta$ est repéré depuis le point le plus bas du cercle.",
+        "Vérifier une formule de réaction sur les positions remarquables (bas, côté, sommet) est le réflexe qui évite la quasi-totalité des erreurs de signe.",
+        "Cette méthode est systématiquement réutilisée au BAC dans tous les problèmes de « looping », de virage relevé ou de satellite en orbite circulaire."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-conservation-energie-mecanique-pendule-1ere-ce",
+  "meta": {
+    "titre": "Conservation de l'énergie mécanique dans le mouvement pendulaire",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Énergie mécanique",
+    "duree_estimee_min": 28,
+    "tags": [
+      "conservation de l'énergie mécanique",
+      "pendule simple",
+      "énergie potentielle de pesanteur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-2015-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Probatoire Série C, E - Session 2015 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-physique-2015-officiel-cameroun-ex4-q2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une balançoire lâchée d'un côté prend de la vitesse en redescendant, puis ralentit en remontant de l'autre côté, sans jamais dépasser sa hauteur de départ (en l'absence de frottement). Ce va-et-vient énergétique entre vitesse et hauteur est exactement ce que décrit la conservation de l'énergie mécanique appliquée à un pendule."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Conservation de l'énergie mécanique (cas général)",
+        "Trigonométrie de base : $\\cos\\theta$ dans un triangle rectangle",
+        "Notion d'énergie potentielle de pesanteur et de son origine (référence) arbitraire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Hauteur d'un pendule et conservation de l'énergie mécanique",
+      "contenu_markdown": "Pour un pendule simple de longueur $l$, écarté d'un angle $\\theta$ par rapport à la verticale, la hauteur de la bille **au-dessus de sa position la plus basse** (fil vertical, $\\theta=0$) vaut\n$$z(\\theta) = l(1-\\cos\\theta)$$\nEn effet, la bille se trouve à une distance $l\\cos\\theta$ en dessous du point de suspension, donc à $l - l\\cos\\theta$ au-dessus de sa position la plus basse (elle-même à une distance $l$ sous le point de suspension).\n\nEn l'absence de frottement, l'énergie mécanique du pendule se conserve entre deux positions angulaires $\\theta_1$ et $\\theta_2$ quelconques :\n$$\\dfrac{1}{2}mv_1^2 + mgz(\\theta_1) = \\dfrac{1}{2}mv_2^2 + mgz(\\theta_2)$$\nce qui permet, connaissant la vitesse à un angle, de trouver la vitesse à n'importe quel autre angle - en particulier lorsque le pendule est lâché sans vitesse initiale depuis un angle $\\theta_0$.",
+      "formule_principale": "z(\\theta) = l(1-\\cos\\theta)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bille de masse $m=50\\ g$, suspendue à un fil de longueur $l=30\\ cm$, est écartée d'un angle $\\theta_0=60°$ puis lâchée sans vitesse initiale. Calculer sa vitesse au passage par $\\theta=45°$ ($g=10\\ N/kg$).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer la hauteur à chacun des deux angles",
+          "justification": "On utilise $z(\\theta)=l(1-\\cos\\theta)$ pour les deux positions à comparer",
+          "resultat_markdown": "$z(60°) = l(1-\\cos60°) \\qquad z(45°) = l(1-\\cos45°)$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la conservation de l'énergie mécanique entre $\\theta_0=60°$ (vitesse nulle) et $\\theta=45°$",
+          "justification": "Le pendule est lâché sans vitesse initiale à $60°$",
+          "resultat_markdown": "$0 + mgz(60°) = \\dfrac{1}{2}mv^2 + mgz(45°)$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler $v^2$",
+          "justification": "On réarrange et on simplifie par $m$",
+          "resultat_markdown": "$v^2 = 2g\\big[z(60°)-z(45°)\\big] = 2gl(\\cos45°-\\cos60°)$"
+        },
+        {
+          "numero": 4,
+          "action": "Faire l'application numérique",
+          "justification": "$\\cos45°\\approx0{,}7071$, $\\cos60°=0{,}5$, $l=0{,}3\\ m$",
+          "resultat_markdown": "$v^2 = 2\\times10\\times0{,}3\\times(0{,}7071-0{,}5) \\approx 1{,}243\\ m^2/s^2 \\Rightarrow v\\approx1{,}11\\ m/s$"
+        }
+      ],
+      "conclusion_markdown": "La bille passe par $\\theta=45°$ avec une vitesse d'environ $1{,}11\\ m/s$, en ayant déjà regagné une partie de la vitesse perdue lors de sa montée initiale jusqu'à $60°$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $z(\\theta)=-l\\cos\\theta$ (en oubliant le terme $l$) comme hauteur du pendule",
+          "pourquoi_faux": "Cette expression donnerait des hauteurs négatives dès que $\\cos\\theta>0$, ce qui n'a pas de sens si la référence est prise à la position la plus basse : il manque le terme $+l$ qui place correctement le zéro de hauteur en $\\theta=0$.",
+          "correction_markdown": "Retiens la formule complète $z(\\theta)=l(1-\\cos\\theta)$, qui donne bien $z(0)=0$ (position la plus basse, hauteur nulle par rapport à elle-même)."
+        },
+        {
+          "erreur_markdown": "Comparer $\\theta=45°$ à la position $\\theta=0°$ plutôt qu'à la position de lâcher $\\theta_0=60°$",
+          "pourquoi_faux": "La conservation de l'énergie mécanique ne dit rien sur une position quelconque si l'on ne connaît pas déjà la vitesse à cette position : c'est parce que la vitesse est CONNUE et NULLE en $\\theta_0=60°$ (position de lâcher) que ce point sert de référence au calcul, pas $\\theta=0$ (où la vitesse est inconnue a priori).",
+          "correction_markdown": "Identifie toujours, avant de poser l'équation, la position où la vitesse est connue avec certitude (souvent le point de lâcher, à vitesse nulle) : c'est elle qui doit servir de point de comparaison, pas une position arbitraire."
+        },
+        {
+          "erreur_markdown": "Oublier que $\\theta=45°<\\theta_0=60°$ signifie que le pendule est en train de redescendre, et s'étonner d'obtenir une vitesse non nulle",
+          "pourquoi_faux": "Un angle inférieur à l'angle de lâcher signifie que le pendule se rapproche de la verticale : il a donc déjà perdu de la hauteur et regagné de la vitesse depuis le lâcher, ce qui rend le résultat parfaitement cohérent.",
+          "correction_markdown": "Avant de conclure, situe toujours l'angle demandé par rapport à l'angle de lâcher : $\\theta<\\theta_0$ signifie que le pendule descend (vitesse non nulle attendue), $\\theta=\\theta_0$ correspondrait à une vitesse nulle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un pendule de longueur $l=50\\ cm$ est lâché sans vitesse initiale depuis $\\theta_0=30°$. Calculer sa vitesse au passage par la position verticale ($\\theta=0°$), avec $g=10\\ N/kg$.",
+          "solution_markdown": "$v^2 = 2gl(\\cos0°-\\cos30°) = 2\\times10\\times0{,}5\\times(1-0{,}866) = 10\\times0{,}134=1{,}34$\n$$v = \\sqrt{1{,}34} \\approx 1{,}16\\ m/s$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un pendule de longueur $l=1\\ m$ est lâché sans vitesse initiale depuis $\\theta_0=90°$ (position horizontale). Calculer sa vitesse maximale, atteinte au passage par la verticale, avec $g=10\\ N/kg$.",
+          "solution_markdown": "$v^2 = 2gl(\\cos0°-\\cos90°) = 2\\times10\\times1\\times(1-0)=20$\n$$v = \\sqrt{20} \\approx 4{,}47\\ m/s$$\nC'est la vitesse maximale du pendule, atteinte précisément à la verticale où toute l'énergie potentielle initiale s'est convertie en énergie cinétique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un pendule de longueur $l$ et de masse $m$, lâché sans vitesse initiale depuis un angle $\\theta_0$, passe par la verticale avec une vitesse $v_1$. On double la longueur du fil (nouvelle longueur $2l$) en gardant le même angle de lâcher $\\theta_0$. Exprimer la nouvelle vitesse $v_2$ à la verticale en fonction de $v_1$, et commenter.",
+          "solution_markdown": "Pour la longueur $l$ : $v_1^2 = 2gl(1-\\cos\\theta_0)$.\nPour la longueur $2l$ : $v_2^2 = 2g(2l)(1-\\cos\\theta_0) = 2\\times\\big[2gl(1-\\cos\\theta_0)\\big] = 2v_1^2$.\nDonc $v_2 = v_1\\sqrt{2} \\approx 1{,}41\\,v_1$ : doubler la longueur du pendule (à angle de lâcher égal) multiplie la vitesse à la verticale par $\\sqrt2$, et non par $2$ - la relation entre longueur et vitesse maximale n'est pas proportionnelle mais fait intervenir une racine carrée, exactement comme dans la formule $v=\\sqrt{2gl(1-\\cos\\theta_0)}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La hauteur d'un pendule au-dessus de sa position la plus basse vaut toujours $z(\\theta)=l(1-\\cos\\theta)$ : ne l'oublie jamais, y compris le terme $l$.",
+        "Sans frottement, l'énergie mécanique du pendule se conserve entre deux positions angulaires quelconques.",
+        "Repère toujours la position où la vitesse est connue avec certitude (souvent le point de lâcher, vitesse nulle) : c'est elle qui sert de référence au calcul.",
+        "Un angle inférieur à l'angle de lâcher signifie que le pendule redescend (vitesse non nulle) ; la vitesse est maximale à la verticale ($\\theta=0$).",
+        "Ce mouvement pendulaire, très classique en Première C-E, se traite systématiquement par conservation de l'énergie mécanique plutôt que par une résolution complète des équations du mouvement, beaucoup plus lourde."
+      ]
+    }
+  ]
+}

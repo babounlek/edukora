@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-probatoire-d-ti-physique-2010-officiel-cameroun-ex2-qB1-1",
+  "meta": {
+    "titre": "Bilan de puissance d'un générateur électrocinétique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Puissance électrique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "générateur électrique",
+      "bilan de puissance",
+      "effet Joule"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2010-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique, Série D-TI, Session 2010 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2010-officiel-cameroun-ex2-qB1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un générateur électrique ne transmet jamais toute l'énergie qu'il produit : une partie chauffe inutilement sa propre résistance interne. Faire le bilan de puissance, c'est répartir précisément cette énergie entre ce qui est utile et ce qui est perdu — le point de départ de toute question sur le rendement d'un circuit électrique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi d'Ohm généralisée d'un générateur, U = E - rI",
+        "Savoir que la puissance électrique vaut P = U × I"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois puissances, une seule relation",
+      "contenu_markdown": "Un générateur de f.é.m. $E$ et de résistance interne $r$, traversé par un courant d'intensité $I$, génère une puissance totale :\n\n$$P_{tot} = E \\times I$$\n\nUne partie de cette puissance est dissipée par effet Joule dans sa propre résistance interne :\n\n$$P_J = r \\times I^2$$\n\nLe reste est fourni au circuit extérieur, sous la tension $U = E - rI$ à ses bornes :\n\n$$P_{ext} = U \\times I = P_{tot} - P_J$$",
+      "formule_principale": "P_{tot} = E \\times I = P_J + P_{ext} \\quad \\text{avec} \\ P_J = rI^2 \\ \\text{et} \\ P_{ext} = UI",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur de f.é.m. E = 12,7 V et de résistance interne r = 1,0 Ω délivre un courant I = 1,5 A. Calculer les trois puissances du bilan.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance totale générée",
+          "justification": "P_tot = E × I par définition.",
+          "resultat_markdown": "$P_{tot} = 12{,}7 \\times 1{,}5 = 19{,}05$ W"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance dissipée par effet Joule",
+          "justification": "P_J = r × I² dans la résistance interne du générateur.",
+          "resultat_markdown": "$P_J = 1{,}0 \\times 1{,}5^2 = 2{,}25$ W"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire la puissance fournie au circuit extérieur",
+          "justification": "La puissance utile est ce qui reste après soustraction des pertes Joule.",
+          "resultat_markdown": "$P_{ext} = 19{,}05 - 2{,}25 = 16{,}8$ W"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier par le calcul direct U × I",
+          "justification": "U = E - rI donne une seconde méthode de calcul, indépendante, pour contrôler le résultat.",
+          "resultat_markdown": "$U = 12{,}7 - 1{,}5 = 11{,}2$ V, donc $P_{ext} = 11{,}2 \\times 1{,}5 = 16{,}8$ W : cohérent."
+        }
+      ],
+      "conclusion_markdown": "Le générateur produit 19,05 W, en perd 2,25 W par effet Joule interne, et fournit 16,8 W utiles au circuit extérieur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer P_J avec P_J = r × I au lieu de r × I².",
+          "pourquoi_faux": "La puissance dissipée par effet Joule dans une résistance dépend du CARRÉ de l'intensité, pas de l'intensité elle-même ; une erreur d'exposant change complètement l'ordre de grandeur du résultat.",
+          "correction_markdown": "Retiens la formule complète P_J = r × I² et vérifie toujours que tu as bien élevé l'intensité au carré avant de multiplier par la résistance."
+        },
+        {
+          "erreur_markdown": "Confondre puissance totale et puissance utile, en annonçant P_tot comme la puissance « reçue » par le circuit extérieur.",
+          "pourquoi_faux": "La puissance totale P_tot = E × I est celle générée par la conversion d'énergie à l'intérieur du générateur ; une partie en est systématiquement perdue par effet Joule avant d'atteindre le circuit extérieur.",
+          "correction_markdown": "Distingue toujours les trois grandeurs du bilan par leur définition physique : P_tot (générée), P_J (perdue en interne), P_ext (effectivement utile, transmise au reste du circuit)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.é.m. 6 V et de résistance interne 0,5 Ω délivre un courant de 2 A. Calculer la puissance totale générée.",
+          "solution_markdown": "$P_{tot} = E \\times I = 6 \\times 2 = 12$ W."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprends le générateur précédent (E = 6 V, r = 0,5 Ω, I = 2 A) et calcule la puissance dissipée par effet Joule et la puissance fournie au circuit extérieur.",
+          "solution_markdown": "$P_J = r \\times I^2 = 0{,}5 \\times 2^2 = 2$ W. $P_{ext} = P_{tot} - P_J = 12 - 2 = 10$ W. Vérification : $U = E - rI = 6 - 0{,}5 \\times 2 = 5$ V, donc $P_{ext} = U \\times I = 5 \\times 2 = 10$ W : cohérent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montre que la puissance fournie au circuit extérieur P_ext, en fonction de l'intensité I pour un générateur de f.é.m. E et de résistance interne r fixées, passe par un maximum pour une certaine valeur de I, et détermine cette valeur ainsi que la puissance maximale correspondante.",
+          "solution_markdown": "On a $P_{ext}(I) = U \\times I = (E - rI) \\times I = EI - rI^2$. C'est une fonction du second degré en I, de la forme $-rI^2 + EI$, avec un coefficient devant $I^2$ négatif (puisque $r>0$) : la fonction admet donc un maximum. En dérivant, $\\dfrac{dP_{ext}}{dI} = E - 2rI$, qui s'annule pour $I = \\dfrac{E}{2r}$. On vérifie qu'à cette valeur, $U = E - r \\times \\dfrac{E}{2r} = \\dfrac{E}{2}$, soit exactement la moitié de la f.é.m. La puissance maximale vaut alors $P_{ext,max} = \\dfrac{E}{2} \\times \\dfrac{E}{2r} = \\dfrac{E^2}{4r}$. Ce résultat, connu sous le nom de théorème du transfert de puissance maximale, montre qu'un générateur transmet le maximum de puissance à un circuit extérieur quand la résistance de charge est égale à sa propre résistance interne — un principe utilisé en électronique pour adapter une source à sa charge."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "P_tot = E × I : puissance totale générée par le générateur.",
+        "P_J = r × I² : puissance perdue par effet Joule dans sa résistance interne (attention au carré sur I).",
+        "P_ext = U × I = P_tot - P_J : puissance utile réellement fournie au circuit extérieur.",
+        "Deux méthodes de calcul de P_ext (par soustraction, ou directement par U × I) doivent toujours donner le même résultat : un bon réflexe de vérification.",
+        "Ce bilan à trois puissances est le point de départ de toute question sur le rendement d'un générateur électrique."
+      ]
+    }
+  ]
+}

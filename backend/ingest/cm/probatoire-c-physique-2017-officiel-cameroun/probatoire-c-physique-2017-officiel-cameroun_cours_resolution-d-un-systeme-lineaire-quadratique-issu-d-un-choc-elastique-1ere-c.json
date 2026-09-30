@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-resolution-d-un-systeme-lineaire-quadratique-issu-d-un-choc-elastique-1ere-c",
+  "meta": {
+    "titre": "Résolution d'un système linéaire-quadratique issu d'un choc élastique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Chocs mécaniques",
+    "duree_estimee_min": 25,
+    "tags": [
+      "système d'équations",
+      "choc élastique",
+      "résolution algébrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-physique-2017-officiel-cameroun",
+    "epreuve_titre": "Probatoire Série C - Physique - Session 2017 - Cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-physique-2017-officiel-cameroun-ex1-q2.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois les deux lois de conservation posées pour un choc élastique, il reste à en extraire les vitesses inconnues : c'est une pure question d'algèbre, mais une question qui piège fréquemment les candidats, car elle combine une équation du premier degré et une équation du second degré, et fait apparaître une solution mathématiquement correcte mais physiquement absurde qu'il faut savoir reconnaître et rejeter."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résolution d'une équation du second degré",
+        "Développement d'une identité remarquable",
+        "Conservation de la quantité de mouvement et de l'énergie cinétique lors d'un choc élastique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Substitution dans un système linéaire-quadratique",
+      "contenu_markdown": "Lorsqu'un système comporte une équation linéaire (ici issue de la conservation de la quantité de mouvement) et une équation quadratique (ici issue de la conservation de l'énergie cinétique), la méthode générale consiste à isoler une inconnue dans l'équation linéaire, puis à substituer l'expression obtenue dans l'équation quadratique :\n\n$$v_1'=2v_2'-v_1 \\ \\Longrightarrow\\ v_1^2=(2v_2'-v_1)^2+2v_2'^2$$\n\nLe développement du carré doit être mené sans sauter d'étape (identité remarquable $(a-b)^2=a^2-2ab+b^2$), après quoi l'équation obtenue se simplifie généralement en une équation du second degré à une seule inconnue, souvent factorisable en mettant cette inconnue en évidence. Une des racines correspond fréquemment à une situation sans choc (vitesse nulle) et doit être rejetée pour des raisons physiques, pas mathématiques.",
+      "formule_principale": "v_1'=2v_2'-v_1 \\ \\Longrightarrow\\ v_1^2=(2v_2'-v_1)^2+2v_2'^2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "À partir des deux relations $v_1+v'_1=2v'_2$ (quantité de mouvement) et $v_1^2=v_1'^2+2v_2'^2$ (énergie cinétique), avec $v_1=1{,}50$ m/s, déterminer $v'_1$ et $v'_2$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Isoler $v'_1$ dans la relation linéaire",
+          "justification": "C'est l'inconnue la plus simple à exprimer en fonction de l'autre.",
+          "resultat_markdown": "$v'_1 = 2v'_2 - v_1$"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer cette expression dans la relation quadratique",
+          "justification": "On se ramène ainsi à une équation à une seule inconnue, $v'_2$.",
+          "resultat_markdown": "$v_1^2 = (2v'_2-v_1)^2 + 2v_2'^2$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer le carré sans sauter d'étape",
+          "justification": "Identité remarquable $(a-b)^2=a^2-2ab+b^2$ avec $a=2v'_2$, $b=v_1$.",
+          "resultat_markdown": "$(2v'_2-v_1)^2 = 4v_2'^2-4v_1v'_2+v_1^2$"
+        },
+        {
+          "numero": 4,
+          "action": "Simplifier l'équation obtenue",
+          "justification": "Les termes $v_1^2$ s'éliminent de chaque côté de l'égalité.",
+          "resultat_markdown": "$0 = 6v_2'^2-4v_1v'_2 = 2v'_2(3v'_2-2v_1)$"
+        },
+        {
+          "numero": 5,
+          "action": "Rejeter la solution non physique et calculer numériquement",
+          "justification": "$v'_2=0$ correspondrait à l'absence de choc ; seule $v'_2=\\frac{2}{3}v_1$ est retenue.",
+          "resultat_markdown": "$v'_2 = \\frac{2}{3}\\times1{,}50 = 1{,}00$ m/s puis $v'_1=2\\times1{,}00-1{,}50=0{,}50$ m/s"
+        }
+      ],
+      "conclusion_markdown": "Le système admet une unique solution physiquement acceptable : la bille rebondit à 0,50 m/s, le solide part à 1,00 m/s."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conserver la solution $v'_2 = 0$ comme réponse valable.",
+          "pourquoi_faux": "Cette solution correspond mathématiquement à une racine de l'équation, mais physiquement à l'absence totale de choc, ce qui contredit l'énoncé.",
+          "correction_markdown": "Toujours interpréter chaque racine d'une équation issue d'un problème physique et écarter celles qui ne correspondent à aucune situation réelle décrite par l'énoncé."
+        },
+        {
+          "erreur_markdown": "Développer $(2v'_2-v_1)^2$ en oubliant le double produit.",
+          "pourquoi_faux": "Une identité remarquable mal développée (par exemple en écrivant $4v_2'^2-v_1^2$) fausse toute la suite du calcul.",
+          "correction_markdown": "Toujours développer explicitement $(a-b)^2=a^2-2ab+b^2$, terme par terme, sans raccourci."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Résoudre le système $x+y=6$ et $x^2+y^2=20$ (méthode de substitution).",
+          "solution_markdown": "$y=6-x$, donc $x^2+(6-x)^2=20 \\Rightarrow x^2+36-12x+x^2=20 \\Rightarrow 2x^2-12x+16=0 \\Rightarrow x^2-6x+8=0$, qui admet $x=2$ ou $x=4$. Solutions : $(2,4)$ ou $(4,2)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour un choc élastique entre une bille de masse $m$ à $v_1=2$ m/s et une bille de masse $M=3m$ immobile, on a $v_1+v'_1=4v'_2$ (quantité de mouvement, avec $M=3m$) et $v_1^2=v_1'^2+3v_2'^2$ (énergie cinétique). Déterminer $v'_1$ et $v'_2$.",
+          "solution_markdown": "$v'_1=4v'_2-2$. En substituant : $4=(4v'_2-2)^2+3v_2'^2=16v_2'^2-16v'_2+4+3v_2'^2$, soit $0=19v_2'^2-16v'_2$, donc $v'_2=0$ (rejeté) ou $v'_2=16/19\\approx0{,}84$ m/s, puis $v'_1=4\\times0{,}84-2\\approx1{,}37$ m/s."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, dans le cas général d'un choc élastique entre une masse $m$ à $v_1$ et une masse $M=km$ (k réel positif) immobile, la relation de quantité de mouvement $v_1+v'_1=(k+1)v'_2$ combinée à l'énergie cinétique $v_1^2=v_1'^2+k\\,v_2'^2$ conduit à $v'_2 = \\dfrac{2v_1}{k+1}$.",
+          "solution_markdown": "En posant $v'_1=(k+1)v'_2-v_1$ et en substituant dans l'équation d'énergie cinétique, le développement du carré fait apparaître un facteur commun $v'_2$ après simplification des termes en $v_1^2$ ; la résolution de l'équation du second degré (en écartant $v'_2=0$) donne $v'_2=\\dfrac{2v_1}{k+1}$, ce qui redonne bien $v'_2=\\frac{2}{3}v_1$ pour $k=2$ (cas de l'exercice source, où $M=2m$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un système linéaire-quadratique issu d'un choc élastique se résout toujours par substitution : isoler une inconnue dans l'équation linéaire, la remplacer dans l'équation quadratique.",
+        "Développe systématiquement l'identité remarquable qui apparaît, sans sauter d'étape : c'est la source d'erreur la plus fréquente.",
+        "Une équation du second degré issue d'un problème physique admet souvent une racine à rejeter pour des raisons physiques, pas mathématiques.",
+        "Vérifie ton résultat en le réinjectant dans les DEUX équations de départ, pas seulement celle que tu as utilisée en dernier."
+      ]
+    }
+  ]
+}

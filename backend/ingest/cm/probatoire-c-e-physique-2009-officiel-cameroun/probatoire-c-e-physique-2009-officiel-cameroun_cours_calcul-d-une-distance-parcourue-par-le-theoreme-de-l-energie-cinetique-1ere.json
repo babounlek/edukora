@@ -1,0 +1,124 @@
+{
+  "cours_id": "cours-calcul-d-une-distance-parcourue-par-le-theoreme-de-l-energie-cinetique-1ere",
+  "meta": {
+    "titre": "Calculer une distance parcourue grâce au théorème de l'énergie cinétique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Mécanique du solide - rotation",
+    "duree_estimee_min": 28,
+    "tags": [
+      "théorème de l'énergie cinétique",
+      "application numérique",
+      "roulement sans glissement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-PHYSIQUE-2009-CM",
+    "epreuve_titre": "Probatoire Physique, séries C-E, session 2009 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-physique-2009-officiel-cameroun-ex4-q2.5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Toute la mécanique du roulement sans glissement étudiée précédemment (énergie cinétique totale ¾mv², bilan des forces, travaux nuls de N et f) converge enfin vers une application numérique concrète : retrouver la distance parcourue par un solide à partir de sa vitesse et de l'angle du plan incliné. Ce cours rassemble la méthode complète, étape par étape."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Ec totale d'un cylindre roulant sans glisser : Ec = ¾mv² (voir cours dédié)",
+        "Théorème de l'énergie cinétique : ΔEc = ΣW(forces)",
+        "Travaux : W(P)=mgL sinα, W(N)=W(f)=0 (voir cours dédié)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode complète pour calculer la distance L",
+      "contenu_markdown": "En combinant le théorème de l'énergie cinétique avec les résultats précédents : Ec,finale - Ec,initiale = W(P) + W(N) + W(f) devient ¾mv² - 0 = mgL sinα + 0 + 0 (solide parti du repos). En simplifiant par m (qui apparaît des deux côtés), on obtient ¾v² = gL sinα, d'où L = 3v²/(4g sinα). Cette expression permet de calculer directement L à partir de la vitesse finale v, de g et de l'angle α du plan incliné.",
+      "formule_principale": "L = \\dfrac{3v^2}{4g\\sin\\alpha}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "**2.5.** Applique le théorème de l'énergie cinétique au morceau de bois pour calculer la distance qu'a parcourue son centre d'inertie le long d'une ligne parallèle à la ligne de plus grande pente du plan incliné, en partant du repos, lorsque sa vitesse est $v_G=6$ m/s. On donne : $\\alpha=20°$, $g=10$ N/kg.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire le théorème de l'énergie cinétique avec les expressions déjà établies",
+          "justification": "Ec,initiale=0 (départ du repos), Ec,finale=¾mv², seul le poids travaille.",
+          "resultat_markdown": "¾mv² = mgL sinα."
+        },
+        {
+          "numero": 2,
+          "action": "Simplifier par la masse m",
+          "justification": "m apparaît de part et d'autre de l'égalité, donc n'influence pas le résultat.",
+          "resultat_markdown": "¾v² = gL sinα."
+        },
+        {
+          "numero": 3,
+          "action": "Isoler L",
+          "justification": "On divise par g sinα.",
+          "resultat_markdown": "L = 3v²/(4g sinα)."
+        },
+        {
+          "numero": 4,
+          "action": "Application numérique avec la valeur de α donnée explicitement pour cette question",
+          "justification": "Utiliser la valeur d'angle donnée localement dans l'énoncé pour cette question précise (voir note sur l'incohérence α=30°/α=20° dans les incertitudes de l'exercice).",
+          "resultat_markdown": "L calculé numériquement à partir de v, g=10 N/kg et de la valeur d'angle retenue (voir corrigé complet pour le détail numérique et la discussion des deux valeurs possibles)."
+        }
+      ],
+      "conclusion_markdown": "Ce résultat L = 3v²/(4g sinα) illustre la force de la méthode énergétique : elle permet de retrouver directement une distance sans jamais calculer explicitement l'accélération ni la durée du mouvement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser Ec=½mv² (translation seule) au lieu de Ec=¾mv² (translation + rotation) dans le théorème final",
+          "pourquoi_faux": "Le solide roule sans glisser, donc son énergie cinétique totale inclut nécessairement la rotation ; utiliser seulement ½mv² sous-estime l'énergie cinétique réelle d'un facteur 2/3 et fausse tout le calcul de L.",
+          "correction_markdown": "Vérifie systématiquement, avant d'appliquer le théorème de l'énergie cinétique à un solide en roulement, que tu utilises bien son énergie cinétique TOTALE (translation+rotation), jamais la translation seule."
+        },
+        {
+          "erreur_markdown": "Ne pas remarquer/signaler une incohérence entre deux valeurs d'angle données à des endroits différents de l'énoncé",
+          "pourquoi_faux": "Utiliser silencieusement l'une ou l'autre valeur sans le signaler peut donner un résultat numérique complètement différent (par exemple ≈7,9 m contre ≈5,4 m) ; le correcteur ou l'élève doit être informé du choix fait et de son impact.",
+          "correction_markdown": "En cas de données apparemment contradictoires dans un énoncé, utilise la valeur la plus explicitement rattachée à la question posée, et signale toujours la contradiction plutôt que de la dissimuler."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris l'expression littérale de la distance L parcourue par un cylindre plein qui roule sans glisser sur un plan incliné d'angle α, en fonction de sa vitesse finale v.",
+          "solution_markdown": "L = 3v²/(4g sinα), obtenue en appliquant le théorème de l'énergie cinétique avec Ec=¾mv² et seul le poids qui travaille."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un cylindre plein, parti du repos, atteint v=4 m/s au bas d'un plan incliné d'angle α=30° (g=10 N/kg). Calcule la distance L parcourue.",
+          "solution_markdown": "L = 3×4²/(4×10×sin30°) = 3×16/(40×0,5) = 48/20 = 2,4 m."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Reprends l'exercice précédent en supposant cette fois une SPHÈRE pleine homogène (Ec totale = (7/10)mv², voir cours sur l'énergie cinétique de roulement) au lieu d'un cylindre. La distance L serait-elle plus grande ou plus petite ? Justifie sans calcul complet.",
+          "solution_markdown": "Le coefficient devant mv² est plus petit pour la sphère (7/10 = 0,7) que pour le cylindre (¾ = 0,75) : pour atteindre la même vitesse finale v, la sphère a besoin de moins d'énergie cinétique totale, donc d'un travail du poids plus faible, donc d'une distance L plus petite que pour le cylindre. La distance L serait donc plus petite pour la sphère."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Combiner Ec=¾mv² (roulement sans glissement) avec le théorème de l'énergie cinétique (ΔEc=ΣW, seul le poids travaillant) donne ¾mv² = mgL sinα.",
+        "On en tire L = 3v²/(4g sinα), une expression à redémontrer, jamais à réciter directement.",
+        "Toute incohérence de données dans l'énoncé (ex. deux valeurs d'angle différentes) doit être signalée explicitement, jamais résolue silencieusement."
+      ]
+    }
+  ]
+}

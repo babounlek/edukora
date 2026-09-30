@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-resonance-intensite-rlc-tle-c",
+  "meta": {
+    "titre": "Résonance d'intensité dans un circuit RLC série",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité - régime sinusoïdal",
+    "duree_estimee_min": 28,
+    "tags": [
+      "résonance d'intensité",
+      "circuit RLC série",
+      "puissance électrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-PHYSIQUE-2003-CM",
+    "epreuve_titre": "Baccalauréat Cameroun, série C, Physique, session 2003",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-physique-2003-ex4-q2.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi une radio doit-elle être \"accordée\" précisément sur la fréquence d'une station pour bien la capter ? La réponse est dans le phénomène de résonance d'un circuit RLC série : à une fréquence bien précise, l'impédance du circuit devient minimale, l'intensité et la puissance transmise deviennent maximales. Comprendre pourquoi cette fréquence particulière existe, et savoir la calculer, permet de concevoir aussi bien un poste radio qu'un filtre électronique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Impédance d'un circuit RLC série : $Z=\\sqrt{R^2+(L\\omega-1/(C\\omega))^2}$",
+        "Puissance moyenne consommée : $P=RI^2=RU^2/Z^2$",
+        "Pulsation $\\omega=2\\pi f$",
+        "Résolution d'une équation du type $x - 1/x = 0$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Minimiser l'impédance pour maximiser la puissance",
+      "contenu_markdown": "Dans un circuit RLC série, la puissance moyenne consommée s'écrit $P=\\dfrac{RU^2}{Z^2}$, avec $R$ et $U$ fixés : $P$ est donc maximale exactement quand $Z$ est minimale. Or :\n\n$Z=\\sqrt{R^2+\\left(L\\omega-\\dfrac{1}{C\\omega}\\right)^2}$\n\nest minimale, et vaut alors $Z_{min}=R$, lorsque le terme réactif s'annule :\n\n$L\\omega_0=\\dfrac{1}{C\\omega_0} \\quad\\Rightarrow\\quad \\omega_0=\\dfrac{1}{\\sqrt{LC}} \\quad\\Rightarrow\\quad f_0=\\dfrac{1}{2\\pi\\sqrt{LC}}$\n\nC'est la condition de résonance d'intensité. À cette fréquence particulière, l'intensité et la tension sont en phase (le circuit se comporte comme une simple résistance $R$), et :\n\n$I_0=\\dfrac{U}{R} \\quad;\\quad P_0=RI_0^2=\\dfrac{U^2}{R}$",
+      "formule_principale": "f_0=\\frac{1}{2\\pi\\sqrt{LC}} \\quad;\\quad Z_{min}=R \\quad;\\quad P_0=\\frac{U^2}{R}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit RLC série a pour caractéristiques $R=50\\ \\Omega$, $L=0{,}106\\ \\text{H}$, $C=4\\ \\mu\\text{F}$, alimenté sous une tension efficace $U=12\\ \\text{V}$. Calculer $f_0$, $I_0$ et $P_0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le produit $LC$",
+          "justification": "Terme intermédiaire nécessaire au calcul de $f_0$",
+          "resultat_markdown": "$LC = 0{,}106\\times4\\times10^{-6} = 4{,}24\\times10^{-7}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $f_0$",
+          "justification": "$f_0=1/(2\\pi\\sqrt{LC})$",
+          "resultat_markdown": "$f_0 = \\dfrac{1}{2\\pi\\sqrt{4{,}24\\times10^{-7}}} \\approx 245\\ \\text{Hz}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $I_0$",
+          "justification": "À résonance, $Z=R$, donc $I_0=U/R$",
+          "resultat_markdown": "$I_0 = \\dfrac{12}{50} = 0{,}24\\ \\text{A}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $P_0$",
+          "justification": "$P_0=RI_0^2$",
+          "resultat_markdown": "$P_0 = 50\\times0{,}24^2 = 2{,}88\\ \\text{W}$"
+        }
+      ],
+      "conclusion_markdown": "À la résonance, $f_0\\approx245\\ \\text{Hz}$, $I_0=0{,}24\\ \\text{A}$ et $P_0=2{,}88\\ \\text{W}$ : ce sont les valeurs maximales atteignables par ce circuit, quelle que soit la fréquence d'alimentation choisie."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher à annuler $Z$ elle-même plutôt que le terme réactif entre parenthèses",
+          "pourquoi_faux": "$Z$ ne peut jamais s'annuler tant que $R\\neq0$ : c'est le terme $(L\\omega-1/(C\\omega))$ qui s'annule à la résonance, ramenant $Z$ à sa valeur minimale $R$, jamais à zéro.",
+          "correction_markdown": "Cherche toujours la condition qui annule le terme réactif $L\\omega-1/(C\\omega)$, pas $Z$ elle-même, pour trouver $\\omega_0$."
+        },
+        {
+          "erreur_markdown": "Croire que $I_0$ ou $P_0$ dépendent de $L$ et $C$",
+          "pourquoi_faux": "À la résonance, $Z=R$ uniquement : $I_0=U/R$ et $P_0=U^2/R$ ne dépendent que de $U$ et $R$, jamais de $L$ ou $C$ (qui déterminent seulement la fréquence $f_0$ à laquelle cette résonance se produit).",
+          "correction_markdown": "Retiens que $L$ et $C$ ne servent qu'à calculer $f_0$ : une fois à la résonance, seuls $U$ et $R$ interviennent dans $I_0$ et $P_0$."
+        },
+        {
+          "erreur_markdown": "Utiliser $f$ au lieu de $\\omega$ dans la condition de résonance $L\\omega=1/(C\\omega)$",
+          "pourquoi_faux": "La condition de résonance s'écrit naturellement en pulsation $\\omega$ ; convertir trop tôt en fréquence $f$ avant de résoudre l'équation introduit des erreurs de facteur $2\\pi$.",
+          "correction_markdown": "Résous toujours d'abord pour $\\omega_0=1/\\sqrt{LC}$, et ne convertis en $f_0=\\omega_0/(2\\pi)$ qu'à la toute dernière étape."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit RLC série a $L=0{,}20\\ \\text{H}$ et $C=2{,}0\\ \\mu\\text{F}$. Calculer sa fréquence de résonance $f_0$.",
+          "solution_markdown": "$LC = 0{,}20\\times2{,}0\\times10^{-6} = 4{,}0\\times10^{-7}$\n\n$f_0 = \\dfrac{1}{2\\pi\\sqrt{4{,}0\\times10^{-7}}} = \\dfrac{1}{2\\pi\\times6{,}32\\times10^{-4}} \\approx 252\\ \\text{Hz}$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit RLC série, de résistance $R=25\\ \\Omega$, est alimenté sous une tension efficace $U=8{,}0\\ \\text{V}$. Calculer la puissance maximale $P_0$ que ce circuit peut consommer, quelle que soit la fréquence d'alimentation.",
+          "solution_markdown": "La puissance est maximale à la résonance, où $P_0=\\dfrac{U^2}{R}$ :\n\n$P_0 = \\dfrac{8{,}0^2}{25} = \\dfrac{64}{25} = 2{,}56\\ \\text{W}$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit RLC série a une fréquence de résonance $f_0=400\\ \\text{Hz}$ avec $L=0{,}10\\ \\text{H}$. On double la capacité $C$ tout en gardant $L$ inchangée. Calculer la nouvelle fréquence de résonance $f_0'$, sans recalculer explicitement $C$.",
+          "solution_markdown": "$f_0 = \\dfrac{1}{2\\pi\\sqrt{LC}}$, donc $f_0 \\propto \\dfrac{1}{\\sqrt{C}}$ à $L$ fixée.\n\nSi $C$ double ($C' = 2C$), alors $f_0' = \\dfrac{f_0}{\\sqrt{2}} \\approx \\dfrac{400}{1{,}414} \\approx 283\\ \\text{Hz}$\n\nDoubler la capacité ne divise pas la fréquence de résonance par deux, mais seulement par $\\sqrt{2}$, en raison de la racine carrée dans la formule de $f_0$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La puissance $P=RU^2/Z^2$ est maximale exactement quand $Z$ est minimale, soit à la fréquence de résonance $f_0=1/(2\\pi\\sqrt{LC})$.",
+        "À la résonance, $Z=R$ (le terme réactif s'annule) : $I_0=U/R$ et $P_0=U^2/R$ ne dépendent alors que de $U$ et $R$, jamais de $L$ ou $C$.",
+        "$L$ et $C$ ne déterminent que LA FRÉQUENCE à laquelle cette résonance se produit, pas l'amplitude du maximum atteint.",
+        "Résous toujours la condition de résonance en pulsation $\\omega$ d'abord, et convertis en fréquence $f_0=\\omega_0/(2\\pi)$ en toute dernière étape.",
+        "La résonance d'intensité dans un circuit RLC série est au cœur du fonctionnement de tout système d'accord en fréquence (radio, filtre électronique) : ce résultat revient très régulièrement au BAC scientifique, souvent suivi d'une question sur la bande passante."
+      ]
+    }
+  ]
+}

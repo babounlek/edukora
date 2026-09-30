@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-calculer-l-ecart-type-d-une-distribution-groupee-tle",
+  "meta": {
+    "titre": "Calculer l'écart-type d'une distribution groupée",
+    "matiere": "SVT",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Statistique descriptive appliquée à la biologie",
+    "duree_estimee_min": 22,
+    "tags": [
+      "écart-type",
+      "variance",
+      "dispersion",
+      "distribution groupée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2004-SVT-CAMEROUN-SUJET1",
+    "epreuve_titre": "Baccalauréat série C, Sciences de la Vie et de la Terre, session 2004 (Cameroun) - Sujet 1",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-svt-2004-officiel-cameroun-sujet1-ex2-3b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux distributions peuvent avoir exactement la même moyenne tout en étant très différentes : l'une resserrée autour de cette moyenne, l'autre très étalée. L'écart-type est l'outil qui permet de mesurer précisément cette dispersion. Ce cours t'apprend à le calculer méthodiquement, sans sauter d'étape."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer la moyenne d'une distribution groupée",
+        "Connaître la notion de carré d'un nombre"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Variance puis racine carrée : la méthode en deux temps",
+      "contenu_markdown": "L'écart-type $\\sigma$ d'une distribution groupée se calcule en deux étapes. On calcule d'abord la VARIANCE par la formule $V = \\dfrac{\\sum f_i x_i^2}{n} - \\bar{x}^2$ : la moyenne des carrés des centres de classe pondérés par leurs effectifs, moins le carré de la moyenne (déjà calculée). On extrait ensuite la RACINE CARRÉE de cette variance pour obtenir l'écart-type : $\\sigma = \\sqrt{V}$. Plus l'écart-type est grand par rapport à la moyenne, plus la distribution est dispersée autour de celle-ci.",
+      "formule_principale": "V = (Σ f_i x_i²)/n - x̄² ; σ = √V",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer l'écart-type de la distribution des longueurs de pétiole (n=800, moyenne 46,03, 12 classes de centres 20 à 75).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le carré de chaque centre de classe, pondéré par son effectif",
+          "justification": "On a besoin de Σf_i x_i² pour la formule de la variance.",
+          "resultat_markdown": "Ex. : 5×20²=2000 ; 217×45²=439425 ; etc."
+        },
+        {
+          "numero": 2,
+          "action": "Sommer tous ces produits",
+          "justification": "Cette somme donne Σf_i x_i².",
+          "resultat_markdown": "$\\sum f_i x_i^2 = 1741475$"
+        },
+        {
+          "numero": 3,
+          "action": "Diviser par l'effectif total n",
+          "justification": "On obtient la moyenne des carrés.",
+          "resultat_markdown": "1741475/800 = 2176,84"
+        },
+        {
+          "numero": 4,
+          "action": "Soustraire le carré de la moyenne, puis extraire la racine carrée",
+          "justification": "V = 2176,84 - 46,03² = 2176,84 - 2118,88 = 57,97 ; σ = √57,97",
+          "resultat_markdown": "$\\sigma \\approx 7,61$"
+        }
+      ],
+      "conclusion_markdown": "L'écart-type de cette distribution vaut environ 7,61, ce qui traduit une dispersion modérée des valeurs autour de la moyenne de 46,03."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer la variance en oubliant de soustraire le carré de la moyenne (s'arrêter à Σf_i x_i²/n)",
+          "pourquoi_faux": "Cette valeur seule n'est PAS la variance : il manque impérativement la soustraction de $\\bar{x}^2$.",
+          "correction_markdown": "Retiens la formule complète : variance = (moyenne des carrés) MOINS (carré de la moyenne), jamais l'un sans l'autre."
+        },
+        {
+          "erreur_markdown": "Oublier d'extraire la racine carrée et présenter la variance comme si c'était l'écart-type",
+          "pourquoi_faux": "La variance et l'écart-type sont deux grandeurs différentes : l'écart-type est la racine carrée de la variance, pas la variance elle-même.",
+          "correction_markdown": "Termine toujours le calcul par l'extraction de la racine carrée avant de donner l'écart-type final."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle est la relation entre la variance V et l'écart-type σ ?",
+          "solution_markdown": "σ = √V (l'écart-type est la racine carrée de la variance)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une distribution a pour effectif total n=10, Σf_i x_i²=1000 et moyenne x̄=8. Calculer son écart-type.",
+          "solution_markdown": "V = 1000/10 - 8² = 100 - 64 = 36. σ = √36 = 6."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux distributions ont la même moyenne mais des écarts-types différents (σ₁=2 et σ₂=15). Que peut-on en conclure sur la dispersion de chaque population, et quel intérêt cela a-t-il en biologie (par exemple pour comparer deux populations de feuilles) ?",
+          "solution_markdown": "La population associée à σ₁=2 est beaucoup plus homogène : ses valeurs sont fortement concentrées autour de la moyenne commune. La population associée à σ₂=15 est beaucoup plus dispersée : ses valeurs s'étalent largement de part et d'autre de cette même moyenne. En biologie, comparer les écarts-types de deux populations (par exemple deux variétés de plantes) permet de savoir laquelle est la plus homogène (variabilité intraspécifique faible) ou la plus variable (variabilité intraspécifique élevée), une information que la moyenne seule, identique dans les deux cas, ne permettrait jamais de détecter."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'écart-type mesure la dispersion des valeurs autour de la moyenne.",
+        "Formule en deux temps : variance V = (Σf_i x_i²)/n - x̄², puis σ = √V.",
+        "Ne jamais confondre variance (avant la racine carrée) et écart-type (après la racine carrée).",
+        "Un écart-type petit signale une population homogène ; un écart-type grand signale une population dispersée.",
+        "Au BAC, détaille chaque étape du calcul (Σf_i x_i², division par n, soustraction du carré de la moyenne, racine carrée) sans en sauter aucune."
+      ]
+    }
+  ]
+}

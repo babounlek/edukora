@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-generateur-resistance-interne-fem-1ere-e",
+  "meta": {
+    "titre": "Détermination de r et E d'un générateur par deux mesures",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "E",
+    "sous_theme": "Électrocinétique - générateur réel",
+    "duree_estimee_min": 20,
+    "tags": [
+      "générateur",
+      "résistance interne",
+      "force électromotrice",
+      "loi d'Ohm"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-E-CM-2000-SCIENCES-PHYSIQUES",
+    "epreuve_titre": "Probatoire Série E (Cameroun, session 2000) - Sciences Physiques (Chimie + Physique)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-e-physique-2000-officiel-cameroun-ex4-q2.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une pile ou une batterie réelle n'est jamais un générateur parfait : dès qu'elle débite du courant, sa tension aux bornes chute légèrement à cause de sa résistance interne. Deux mesures simples, faites avec deux résistances différentes, suffisent pourtant à retrouver à la fois la f.é.m. du générateur et sa résistance interne, sans avoir besoin d'un voltmètre supplémentaire ni d'un troisième essai."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm pour un résistor : $U = R \\times I$",
+        "Notion de générateur réel (f.é.m. $E$, résistance interne $r$)",
+        "Résolution d'un système de deux équations à deux inconnues par élimination"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi d'Ohm généralisée au circuit fermé",
+      "contenu_markdown": "Pour un circuit série comportant un générateur (f.é.m. $E$, résistance interne $r$) et une résistance extérieure totale $R$, la tension aux bornes du générateur s'écrit $U = E - rI$, et comme $U = RI$ (loi d'Ohm côté résistance extérieure), on obtient la relation $E = RI + rI = (R+r)I$. Deux mesures indépendantes $(R_1,I_1)$ et $(R_2,I_2)$ donnent alors un système de deux équations à deux inconnues $E$ et $r$, que l'on résout par élimination (soustraction des deux équations pour isoler $r$, puis report pour obtenir $E$).",
+      "formule_principale": "E = (R + r)\\,I \\quad\\Rightarrow\\quad r = \\frac{R_1 I_1 - R_2 I_2}{I_2 - I_1}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec $R_1 = 1{,}1\\ \\Omega$, l'ampèremètre indique $I_1 = 4{,}0\\ \\text{A}$ ; avec $R_2 = 1{,}6\\ \\Omega$, il indique $I_2 = 3{,}0\\ \\text{A}$. Calculer $r$ et $E$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire le système à partir des deux mesures",
+          "justification": "$E = (R+r)I$ s'applique à chaque mesure indépendamment, avec la même valeur de $E$ et de $r$.",
+          "resultat_markdown": "$E = R_1 I_1 + r I_1$ (1)  et  $E = R_2 I_2 + r I_2$ (2)"
+        },
+        {
+          "numero": 2,
+          "action": "Soustraire les deux équations pour éliminer $E$",
+          "justification": "En retranchant (2) de (1), le terme $E$ disparaît et il ne reste que l'inconnue $r$.",
+          "resultat_markdown": "$R_1 I_1 - R_2 I_2 = r(I_2 - I_1) \\Rightarrow r = \\dfrac{R_1 I_1 - R_2 I_2}{I_2 - I_1}$"
+        },
+        {
+          "numero": 3,
+          "action": "Faire l'application numérique de $r$",
+          "justification": "On calcule séparément $R_1 I_1$, $R_2 I_2$ et $I_2 - I_1$ avant de diviser.",
+          "resultat_markdown": "$R_1 I_1 = 4{,}4\\ \\text{V}$, $R_2 I_2 = 4{,}8\\ \\text{V}$, donc $r = \\dfrac{4{,}4-4{,}8}{3{,}0-4{,}0} = \\dfrac{-0{,}4}{-1{,}0} = 0{,}4\\ \\Omega$"
+        },
+        {
+          "numero": 4,
+          "action": "Reporter $r$ dans l'équation (1) pour obtenir $E$",
+          "justification": "Une fois $r$ connu, une seule des deux équations initiales suffit à calculer $E$.",
+          "resultat_markdown": "$E = 4{,}4 + 0{,}4 \\times 4{,}0 = 6{,}0\\ \\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "Le générateur a une résistance interne de 0,4 Ω et une f.é.m. de 6,0 V - un résultat confirmé en le réinjectant dans l'équation (2), qui redonne bien $E = 6{,}0\\ \\text{V}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre $R$ (résistance extérieure variable) et $r$ (résistance interne fixe du générateur) dans les deux équations.",
+          "pourquoi_faux": "$R$ change d'une mesure à l'autre (c'est la variable expérimentale) alors que $E$ et $r$, caractéristiques du générateur, restent identiques dans les deux équations : mélanger les deux conduit à un système incohérent.",
+          "correction_markdown": "Indice toujours $R$ avec le numéro de la mesure ($R_1$, $R_2$) mais laisse $E$ et $r$ sans indice, pour te rappeler qu'ils sont communs aux deux équations."
+        },
+        {
+          "erreur_markdown": "Faire une erreur de signe lors de la soustraction des deux équations, par exemple écrire $r = \\dfrac{R_1I_1 - R_2I_2}{I_1 - I_2}$ au lieu de diviser par $I_2 - I_1$.",
+          "pourquoi_faux": "Le dénominateur doit être cohérent avec le numérateur : si l'on soustrait (2) de (1) au numérateur ($R_1I_1 - R_2I_2$), il faut soustraire (2) de (1) de la même façon au dénominateur ($I_2 - I_1$, car le terme en $r$ dans (1) est $rI_1$ et dans (2) est $rI_2$).",
+          "correction_markdown": "Réécris explicitement l'étape intermédiaire $R_1I_1 - R_2I_2 = r(I_2-I_1)$ avant de diviser, plutôt que de mémoriser la formule finale par cœur."
+        },
+        {
+          "erreur_markdown": "Vérifier le résultat en réinjectant $r$ et $E$ dans la MÊME équation qui a servi à calculer $E$.",
+          "pourquoi_faux": "Cela ne vérifie rien : l'équation (1) est automatiquement satisfaite puisque $E$ en a été directement extrait. Seule l'équation (2), non utilisée pour ce calcul, constitue une vérification indépendante.",
+          "correction_markdown": "Vérifie toujours ton couple $(r,E)$ dans l'équation qui n'a PAS servi à calculer $E$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur alimente un résistor $R = 5{,}0\\ \\Omega$ et l'ampèremètre indique $I = 1{,}0\\ \\text{A}$. Avec $R = 9{,}0\\ \\Omega$, l'ampèremètre indique $I = 0{,}6\\ \\text{A}$. Calculer $r$ et $E$.",
+          "solution_markdown": "$R_1I_1 = 5{,}0 \\times 1{,}0 = 5{,}0\\ \\text{V}$, $R_2I_2 = 9{,}0 \\times 0{,}6 = 5{,}4\\ \\text{V}$. $r = \\dfrac{5{,}0-5{,}4}{0{,}6-1{,}0} = \\dfrac{-0{,}4}{-0{,}4} = 1{,}0\\ \\Omega$. $E = R_1I_1 + rI_1 = 5{,}0 + 1{,}0 \\times 1{,}0 = 6{,}0\\ \\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur de f.é.m. $E = 4{,}5\\ \\text{V}$ et de résistance interne $r = 0{,}5\\ \\Omega$ alimente un résistor $R = 2{,}0\\ \\Omega$. Calculer l'intensité du courant et la tension aux bornes du générateur.",
+          "solution_markdown": "$I = \\dfrac{E}{R+r} = \\dfrac{4{,}5}{2{,}0+0{,}5} = \\dfrac{4{,}5}{2{,}5} = 1{,}8\\ \\text{A}$. La tension aux bornes du générateur (tension aux bornes de $R$, identique puisqu'ils sont en série) vaut $U = RI = 2{,}0 \\times 1{,}8 = 3{,}6\\ \\text{V}$ ; on vérifie $U = E - rI = 4{,}5 - 0{,}5\\times1{,}8 = 4{,}5-0{,}9=3{,}6\\ \\text{V}$, cohérent."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Trois mesures sont faites sur un même générateur : $(R_1=1{,}0\\ \\Omega,\\ I_1=2{,}0\\ \\text{A})$, $(R_2=2{,}0\\ \\Omega,\\ I_2=1{,}5\\ \\text{A})$ et $(R_3=3{,}0\\ \\Omega,\\ I_3=1{,}2\\ \\text{A})$. Calculer $r$ et $E$ à partir des mesures 1 et 2, puis vérifier la cohérence avec la mesure 3.",
+          "solution_markdown": "$R_1I_1=2{,}0\\ \\text{V}$, $R_2I_2=3{,}0\\ \\text{V}$. $r = \\dfrac{2{,}0-3{,}0}{1{,}5-2{,}0} = \\dfrac{-1{,}0}{-0{,}5} = 2{,}0\\ \\Omega$. $E = R_1I_1+rI_1 = 2{,}0+2{,}0\\times2{,}0 = 6{,}0\\ \\text{V}$. Vérification avec la mesure 3 : $I_3$ attendu $= \\dfrac{E}{R_3+r} = \\dfrac{6{,}0}{3{,}0+2{,}0} = 1{,}2\\ \\text{A}$, qui correspond exactement à la valeur mesurée : les trois mesures sont cohérentes avec un même couple $(r,E) = (2{,}0\\ \\Omega,\\ 6{,}0\\ \\text{V})$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi d'Ohm généralisée au circuit fermé s'écrit $E = (R+r)I$, valable pour chaque mesure indépendante avec les mêmes $E$ et $r$.",
+        "Deux mesures $(R_1,I_1)$ et $(R_2,I_2)$ suffisent : soustrais les deux équations pour éliminer $E$ et isoler $r$, puis reporte dans l'une des deux pour obtenir $E$.",
+        "Vérifie toujours ton résultat dans l'équation qui n'a PAS servi à calculer $E$, jamais dans celle qui l'a produit.",
+        "La puissance dissipée dans le résistor extérieur se calcule par $P = RI^2$, à ne pas confondre avec la puissance totale fournie par le générateur $P_{\\text{totale}} = EI$.",
+        "Cette méthode par deux mesures est la façon standard de caractériser un générateur réel sans connaître à l'avance sa f.é.m. ni sa résistance interne."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-resistance-fil-spires-jointives-1ere",
+  "meta": {
+    "titre": "Résistance d'un fil enroulé en spires jointives",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Résistance électrique et résistivité",
+    "duree_estimee_min": 25,
+    "tags": [
+      "résistance d'un conducteur",
+      "résistivité",
+      "solénoïde",
+      "spires jointives"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-2004-CM",
+    "epreuve_titre": "Probatoire Physique - Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-physique-2004-b-officiel-cameroun-ex4-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le fil de cuivre enroulé dans un solénoïde peut mesurer plusieurs dizaines de mètres, alors que la bobine elle-même tient dans la main : calculer sa résistance suppose donc de retrouver, à partir des seules dimensions de l'enroulement, la longueur réelle et invisible du fil qui le compose."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résistance d'un conducteur $R=\\rho\\ell/A$",
+        "Aire d'un disque $A=\\pi r^2$",
+        "Périmètre d'un cercle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Nombre de spires, longueur de fil et résistance",
+      "contenu_markdown": "Pour un enroulement en spires jointives sur une seule couche, le pas de l'enroulement (distance d'axe en axe entre deux spires consécutives) est égal au diamètre du fil ISOLÉ (conducteur + isolant des deux côtés) : le nombre de spires vaut $N=\\dfrac{L}{d_{isole}}$, $L$ étant la longueur totale de l'enroulement. La longueur totale de fil est alors $\\ell=N\\times\\pi D$ ($D$ diamètre du solénoïde, assimilé au diamètre d'une spire), et la résistance se calcule avec $R=\\rho\\dfrac{\\ell}{A}$, où $A$ est la section du seul conducteur (sans l'isolant, qui ne conduit pas).",
+      "formule_principale": "N=\\dfrac{L}{d+2e}\\ ;\\quad R=\\rho\\dfrac{N\\pi D}{\\pi (d/2)^2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un solénoïde de longueur $L=20$ cm est bobiné en spires jointives avec un fil de diamètre $d=1$ mm, isolé par une couche de $e=0{,}05$ mm d'épaisseur, sur un diamètre de bobine $D=4$ cm. La résistivité du fil est $\\rho=1{,}7\\times10^{-8}\\ \\Omega.\\text{m}$. Calcule la résistance du fil.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le pas de l'enroulement",
+          "justification": "Les spires étant jointives, le pas est le diamètre du fil isolé (conducteur + isolant des deux côtés).",
+          "resultat_markdown": "$d_{isole}=d+2e=1+2\\times0{,}05=1{,}1$ mm $=1{,}1\\times10^{-3}$ m"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le nombre de spires",
+          "justification": "On divise la longueur totale de l'enroulement par le pas d'une spire.",
+          "resultat_markdown": "$N=\\dfrac{0{,}20}{1{,}1\\times10^{-3}}\\approx182$ spires"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la longueur totale de fil",
+          "justification": "Chaque spire a un périmètre égal à $\\pi D$.",
+          "resultat_markdown": "$\\ell=N\\times\\pi D=182\\times\\pi\\times0{,}04\\approx22{,}9$ m"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la section du conducteur",
+          "justification": "Seul le conducteur, de diamètre $d$, transporte le courant.",
+          "resultat_markdown": "$A=\\pi(d/2)^2=\\pi\\times(0{,}5\\times10^{-3})^2\\approx7{,}85\\times10^{-7}\\ \\text{m}^2$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la résistance",
+          "justification": "On applique $R=\\rho\\ell/A$.",
+          "resultat_markdown": "$R=1{,}7\\times10^{-8}\\times\\dfrac{22{,}9}{7{,}85\\times10^{-7}}\\approx0{,}50\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "Le fil du solénoïde a une résistance d'environ 0,50 Ω."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer la section du fil à partir du diamètre isolé $(d+2e)$ au lieu du diamètre du seul conducteur $d$.",
+          "pourquoi_faux": "L'isolant ne conduit pas le courant : seule l'âme métallique de diamètre $d$ participe à la conduction électrique.",
+          "correction_markdown": "Utilise toujours le diamètre isolé UNIQUEMENT pour le pas de l'enroulement (calcul de N), et le diamètre du seul conducteur pour la section (calcul de R)."
+        },
+        {
+          "erreur_markdown": "Oublier de multiplier par 2 l'épaisseur d'isolant $e$ dans le calcul du pas, en écrivant $d+e$ au lieu de $d+2e$.",
+          "pourquoi_faux": "L'isolant entoure le fil de tous les côtés : il ajoute son épaisseur $e$ à la fois à \"droite\" et à \"gauche\" du conducteur, soit $2e$ au diamètre total.",
+          "correction_markdown": "Représente-toi toujours la coupe transversale du fil isolé : le diamètre total est le diamètre du conducteur plus deux fois l'épaisseur de l'isolant."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un solénoïde de longueur 10 cm est bobiné en spires jointives avec un fil isolé de diamètre total 0,5 mm. Calcule le nombre de spires.",
+          "solution_markdown": "$N=\\dfrac{0{,}10}{0{,}5\\times10^{-3}}=200$ spires."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un solénoïde de 300 spires, de diamètre 3 cm, est bobiné avec un fil de résistivité $\\rho=1{,}6\\times10^{-8}\\ \\Omega.\\text{m}$ et de diamètre (conducteur seul) 0,6 mm. Calcule la résistance du fil.",
+          "solution_markdown": "Longueur de fil : $\\ell=300\\times\\pi\\times0{,}03\\approx28{,}3$ m. Section : $A=\\pi\\times(0{,}3\\times10^{-3})^2\\approx2{,}83\\times10^{-7}\\ \\text{m}^2$. $R=\\rho\\dfrac{\\ell}{A}=1{,}6\\times10^{-8}\\times\\dfrac{28{,}3}{2{,}83\\times10^{-7}}\\approx1{,}6\\ \\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un solénoïde de longueur $L$, diamètre $D$, est bobiné avec un fil de diamètre conducteur $d$ et d'isolant d'épaisseur $e$, de résistivité $\\rho$, spires jointives. Établis l'expression littérale de la résistance $R$ en fonction de $L$, $D$, $d$, $e$ et $\\rho$ uniquement, puis vérifie qu'elle redonne bien $R=2{,}0\\ \\Omega$ pour $L=0{,}40$ m, $D=0{,}05$ m, $d=0{,}0008$ m, $e=0{,}0001$ m, $\\rho=1{,}6\\times10^{-8}\\ \\Omega.\\text{m}$.",
+          "solution_markdown": "$N=\\dfrac{L}{d+2e}$, $\\ell=N\\pi D=\\dfrac{L\\pi D}{d+2e}$, $A=\\pi\\left(\\dfrac{d}{2}\\right)^2=\\dfrac{\\pi d^2}{4}$. Donc $R=\\rho\\dfrac{\\ell}{A}=\\rho\\times\\dfrac{L\\pi D}{d+2e}\\times\\dfrac{4}{\\pi d^2}=\\dfrac{4\\rho LD}{d^2(d+2e)}$. Vérification numérique : $d+2e=0{,}0008+0{,}0002=0{,}0010$ m ; $d^2=6{,}4\\times10^{-7}$ ; $4\\rho LD=4\\times1{,}6\\times10^{-8}\\times0{,}40\\times0{,}05=1{,}28\\times10^{-9}$ ; dénominateur $d^2(d+2e)=6{,}4\\times10^{-7}\\times10^{-3}=6{,}4\\times10^{-10}$ ; $R=\\dfrac{1{,}28\\times10^{-9}}{6{,}4\\times10^{-10}}=2{,}0\\ \\Omega$, ce qui confirme la formule littérale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Distingue toujours le diamètre isolé (utile pour compter les spires) du diamètre du seul conducteur (utile pour la section).",
+        "Le pas d'un enroulement jointif est le diamètre isolé complet, conducteur plus deux fois l'épaisseur d'isolant.",
+        "La longueur totale de fil s'obtient en multipliant le nombre de spires par le périmètre d'une spire, $\\pi D$.",
+        "Une vérification d'ordre de grandeur (nombre de spires cohérent avec les dimensions données) évite la plupart des erreurs de facteur 2 ou de confusion rayon/diamètre."
+      ]
+    }
+  ]
+}

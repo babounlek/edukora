@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-determination-de-la-resistance-totale-dun-circuit-rlc-serie-terminale-c",
+  "meta": {
+    "titre": "Détermination de la résistance totale d'un circuit RLC série",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Courant alternatif sinusoïdal",
+    "duree_estimee_min": 26,
+    "tags": [
+      "impédance",
+      "résistance totale",
+      "résistance interne d'une bobine"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2004-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Baccalauréat Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-2004-officiel-cameroun-ex2-q4a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une bobine réelle n'est jamais un composant purement inductif : elle possède toujours une résistance interne, due au fil conducteur qui la constitue. Comment séparer cette résistance cachée de la résistance visible d'un résistor placé dans le même circuit, sans jamais démonter le montage ? En exploitant, à l'envers, la formule de l'impédance."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Impédance d'un dipôle RLC série",
+        "Réactance inductive et réactance capacitive",
+        "Résolution d'une équation du second degré simple (racine carrée)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Isoler la résistance totale à partir de l'impédance mesurée",
+      "contenu_markdown": "Lorsqu'on dispose d'une valeur numérique de la capacité et de l'inductance, la résistance totale d'un dipôle RLC série s'obtient en isolant le terme résistif dans l'expression de l'impédance, $R_T=\\sqrt{Z^2-(L\\omega-1/(C\\omega))^2}$, à condition de connaître Z par ailleurs, le plus souvent à partir des valeurs efficaces U et I mesurées directement aux bornes du dipôle complet. Cette résistance totale inclut, le cas échéant, la résistance interne de tout composant réel du circuit qui ne serait pas purement réactif, en particulier une bobine réelle.",
+      "formule_principale": "R_T=\\sqrt{Z^2-\\left(L\\omega-\\dfrac{1}{C\\omega}\\right)^2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un dipôle RLC série, alimenté sous une tension efficace $U=50\\,\\text{V}$, est parcouru par un courant efficace $I=0{,}5\\,\\text{A}$ à la fréquence $f=50\\,\\text{Hz}$. On donne $L=0{,}15\\,\\text{H}$ et $C=40\\,\\mu\\text{F}$. Calculer la résistance totale du dipôle.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'impédance du dipôle",
+          "justification": "L'impédance se déduit directement des valeurs efficaces mesurées",
+          "resultat_markdown": "$Z=U/I=50/0{,}5=100\\,\\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les réactances inductive et capacitive",
+          "justification": "Elles nécessitent la pulsation, calculée à partir de la fréquence",
+          "resultat_markdown": "$\\omega=314{,}16\\,\\text{rad.s}^{-1}$ ; $L\\omega\\approx47{,}12\\,\\Omega$ ; $1/(C\\omega)\\approx79{,}58\\,\\Omega$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler la résistance totale",
+          "justification": "Résolution de l'expression de l'impédance par rapport à R_T",
+          "resultat_markdown": "$R_T=\\sqrt{Z^2-(L\\omega-1/(C\\omega))^2}=\\sqrt{100^2-(47{,}12-79{,}58)^2}=\\sqrt{10\\,000-1054}=\\sqrt{8\\,946}\\approx94{,}6\\,\\Omega$"
+        }
+      ],
+      "conclusion_markdown": "La résistance totale du dipôle vaut environ $94{,}6\\,\\Omega$ : si un résistor de résistance connue R est placé dans ce dipôle, la différence $R_T-R$ donnerait la résistance interne du reste du circuit."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre Z et R_T, en écrivant directement $R_T=Z$",
+          "pourquoi_faux": "L'impédance Z inclut l'effet des réactances, pas seulement la résistance : elle n'est égale à R_T que dans le cas particulier où les réactances inductive et capacitive se compensent exactement.",
+          "correction_markdown": "Toujours repartir de la formule complète $Z^2=R_T^2+(L\\omega-1/(C\\omega))^2$ et isoler $R_T$ par soustraction, jamais assimiler Z et $R_T$ sans vérification."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que la quantité sous la racine carrée est positive",
+          "pourquoi_faux": "Si le terme réactif calculé est plus grand que Z, cela signale une incohérence dans les données (valeurs de L, C ou de la mesure), pas une résistance totale imaginaire.",
+          "correction_markdown": "Systématiquement vérifier numériquement que $Z^2 \\ge (L\\omega-1/(C\\omega))^2$ avant de conclure ; sinon, remettre en question une des données du problème."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un dipôle RLC série a une impédance $Z=80\\,\\Omega$ et des réactances $L\\omega=60\\,\\Omega$, $1/(C\\omega)=20\\,\\Omega$. Calculer sa résistance totale.",
+          "solution_markdown": "$R_T=\\sqrt{Z^2-(L\\omega-1/(C\\omega))^2}=\\sqrt{80^2-(60-20)^2}=\\sqrt{6400-1600}=\\sqrt{4800}\\approx69{,}3\\,\\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un dipôle comprend un résistor $R=40\\,\\Omega$ en série avec une bobine réelle. La résistance totale mesurée du dipôle est $R_T=55\\,\\Omega$. Calculer la résistance interne de la bobine.",
+          "solution_markdown": "$R_T=R+R_{bobine} \\Rightarrow R_{bobine}=R_T-R=55-40=15\\,\\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, pour un dipôle RLC série à la résonance (fréquence pour laquelle $L\\omega=1/(C\\omega)$), la méthode de cette leçon donne directement $R_T=Z$, et expliquer pourquoi cela simplifie la détermination expérimentale de la résistance totale.",
+          "solution_markdown": "À la résonance, $L\\omega-1/(C\\omega)=0$, donc $R_T=\\sqrt{Z^2-0^2}=Z$. Il suffit alors de mesurer U et I à cette fréquence particulière pour obtenir directement $R_T=U/I$, sans même connaître les valeurs de L et C : c'est une méthode expérimentale simple et directe, très utilisée pour caractériser la résistance totale réelle d'un circuit RLC."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La résistance totale d'un circuit RLC série s'isole à partir de l'impédance par $R_T=\\sqrt{Z^2-(L\\omega-1/(C\\omega))^2}$.",
+        "Ne confonds jamais l'impédance Z (qui inclut l'effet des réactances) avec la résistance totale R_T (qui n'en est qu'une composante).",
+        "Cette méthode permet de mesurer la résistance interne d'une bobine réelle sans la démonter, par simple différence avec la résistance connue d'un résistor du même circuit.",
+        "À la résonance, l'impédance se réduit exactement à la résistance totale : c'est une façon simple de la mesurer expérimentalement.",
+        "Au BAC, cette étape suit presque toujours le calcul de l'impédance globale à partir de U et I : enchaîne les deux calculs sans réintroduire d'erreur d'arrondi."
+      ]
+    }
+  ]
+}

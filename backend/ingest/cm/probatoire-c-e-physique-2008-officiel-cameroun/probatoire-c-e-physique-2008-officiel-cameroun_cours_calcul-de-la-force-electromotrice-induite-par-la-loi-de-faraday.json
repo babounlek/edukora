@@ -1,0 +1,119 @@
+{
+  "cours_id": "cours-calcul-de-la-force-electromotrice-induite-par-la-loi-de-faraday-1ere-ce",
+  "meta": {
+    "titre": "Calcul de la force électromotrice induite par la loi de Faraday",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi de Faraday",
+      "flux magnétique",
+      "fem induite"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-PHYSIQUE-2008-CAMEROUN",
+    "epreuve_titre": "Physique - Probatoire série C, E - Session 2008 - Cameroun",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-physique-2008-officiel-cameroun-ex4-qA.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un simple cadre de fil, immobile, plongé dans un champ magnétique qui varie dans le temps, se met à produire une tension à ses bornes sans aucune pile ni générateur : c'est le phénomène d'induction électromagnétique, quantifié précisément par la loi de Faraday."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de flux magnétique à travers une surface : $\\Phi = B\\times S\\times\\cos\\theta$ (avec $\\theta$ l'angle entre $B$ et la normale à la surface)",
+        "Notion de dérivée d'une fonction affine (pente constante)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi de Faraday",
+      "contenu_markdown": "Lorsque le flux magnétique $\\Phi(t)$ à travers un circuit fermé varie au cours du temps, une force électromotrice (fem) induite $e$ apparaît aux bornes du circuit, égale à l'opposé de la dérivée du flux par rapport au temps. Si le champ magnétique $B(t)$ varie linéairement (donc de dérivée constante $a$) et que la surface $S$ du circuit reste fixe et perpendiculaire à $B$, le flux varie lui aussi linéairement, et la fem induite est constante, égale à $-a\\times S$.",
+      "formule_principale": "e = -\\frac{d\\Phi}{dt} \\qquad \\Phi(t) = B(t)\\times S \\;(\\text{si } B \\perp S) \\;\\Rightarrow\\; e = -a\\times S \\text{ si } B(t)=at+B_0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un cadre carré de côté $10\\,\\text{cm}$, immobile et perpendiculaire à un champ magnétique $B(t)=0{,}2t+0{,}2$ (T, avec $t$ en s), est placé dans ce champ. Calcule la fem induite dans le cadre.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la surface du cadre",
+          "justification": "$S=c^2$ pour un carré de côté $c$.",
+          "resultat_markdown": "$S = (0{,}10)^2 = 0{,}01\\,\\text{m}^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la pente a de B(t)",
+          "justification": "$B(t)=at+B_0$ avec $a=0{,}2\\,\\text{T/s}$ d'après l'expression donnée.",
+          "resultat_markdown": "$a = 0{,}2\\,\\text{T/s}$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la loi de Faraday",
+          "justification": "$e=-a\\times S$, le flux étant $\\Phi(t)=B(t)\\times S$ car $B$ est perpendiculaire au cadre fixe.",
+          "resultat_markdown": "$e = -0{,}2\\times 0{,}01 = -2\\times 10^{-3}\\,\\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "La fem induite dans le cadre vaut $e=-2\\times 10^{-3}\\,\\text{V}$, soit une valeur absolue de $2\\,\\text{mV}$, constante tant que $B(t)$ varie linéairement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le signe moins dans la loi de Faraday, ou au contraire s'inquiéter d'obtenir une fem négative.",
+          "pourquoi_faux": "Le signe moins traduit la loi de Lenz (le courant induit s'oppose à la variation de flux qui lui a donné naissance) ; une fem négative n'est pas une erreur, c'est une information sur le sens conventionnel du courant induit par rapport à l'orientation choisie pour le circuit.",
+          "correction_markdown": "Garde toujours le signe moins dans le calcul, et interprète-le comme une indication de sens (loi de Lenz), jamais comme une erreur à corriger en valeur absolue sans discussion."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir la surface en m² (rester en cm²) avant de calculer la fem en volts.",
+          "pourquoi_faux": "Le système international impose la surface en m² pour que $e=-a\\times S$ donne directement un résultat en volts ; une surface en cm² donnerait un résultat 10 000 fois trop grand.",
+          "correction_markdown": "Convertis systématiquement toute longueur en mètres et toute surface en m² avant d'appliquer la loi de Faraday."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un cadre de surface $S=0{,}02\\,\\text{m}^2$ est plongé dans un champ $B(t)=0{,}5t$ (T). Calcule la fem induite.",
+          "solution_markdown": "$a=0{,}5\\,\\text{T/s}$, donc $e=-a\\times S=-0{,}5\\times 0{,}02=-0{,}01\\,\\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un cadre rectangulaire de $5\\,\\text{cm}\\times 8\\,\\text{cm}$ est plongé dans un champ $B(t)=0{,}3t+0{,}1$ (T). Calcule la fem induite.",
+          "solution_markdown": "$S=0{,}05\\times 0{,}08=4\\times 10^{-3}\\,\\text{m}^2$. $a=0{,}3\\,\\text{T/s}$. $e=-a\\times S=-0{,}3\\times 4\\times 10^{-3}=-1{,}2\\times 10^{-3}\\,\\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un cadre carré de côté $10\\,\\text{cm}$ tourne à vitesse angulaire constante $\\omega$ dans un champ magnétique uniforme et constant $B_0$ (au lieu d'être immobile dans un champ variable). Explique pourquoi une fem induite apparaît quand même, en identifiant ce qui varie dans le flux dans ce cas.",
+          "solution_markdown": "Le flux à travers le cadre vaut $\\Phi(t)=B_0\\,S\\,\\cos\\theta(t)$, où $\\theta(t)$ est l'angle entre le champ $B_0$ et la normale au cadre. Si le cadre tourne à vitesse angulaire constante, $\\theta(t)=\\omega t$ varie dans le temps, donc $\\cos(\\omega t)$ varie également, même si $B_0$ et $S$ restent constants : c'est cette fois la variation de l'ANGLE (donc de l'orientation du cadre par rapport au champ) qui fait varier le flux, et non la variation du champ lui-même. La loi de Faraday $e=-d\\Phi/dt$ s'applique de la même façon et donne $e(t)=B_0\\,S\\,\\omega\\,\\sin(\\omega t)$, une fem sinusoïdale : c'est le principe de fonctionnement d'un alternateur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Faraday relie la fem induite à la variation du flux magnétique : $e=-d\\Phi/dt$.",
+        "Pour un champ variant linéairement et un cadre fixe perpendiculaire au champ, la fem induite est constante et vaut $e=-a\\times S$.",
+        "Le signe moins traduit la loi de Lenz : ne le supprime jamais, interprète-le comme une indication de sens du courant induit.",
+        "Le flux peut varier soit parce que le champ varie (cadre fixe), soit parce que l'orientation ou la surface du circuit varie (champ fixe, cas de l'alternateur) : dans tous les cas, c'est la variation du flux qui compte, pas celle du champ seul."
+      ]
+    }
+  ]
+}

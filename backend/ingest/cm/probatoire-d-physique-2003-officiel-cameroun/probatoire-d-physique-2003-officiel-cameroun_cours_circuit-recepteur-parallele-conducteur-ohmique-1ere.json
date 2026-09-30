@@ -1,0 +1,134 @@
+{
+  "cours_id": "cours-circuit-recepteur-parallele-conducteur-ohmique-1ere",
+  "meta": {
+    "titre": "Circuit avec un récepteur monté en parallèle d'un conducteur ohmique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Électrocinétique",
+    "duree_estimee_min": 35,
+    "tags": [
+      "loi des mailles",
+      "loi des nœuds",
+      "récepteur électrochimique",
+      "circuit électrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-physique-2003-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série D - Session 2003 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-d-physique-2003-officiel-cameroun-ex1-qB.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un générateur alimente rarement un seul dipôle : le plus souvent, le courant se partage entre plusieurs branches, dont certaines contiennent de simples résistances et d'autres des récepteurs (moteurs, électrolyseurs, batteries en charge). Résoudre un tel circuit demande une méthode précise pour ne pas se perdre entre les différentes lois, celle-ci est la même méthode qu'utilisent les électriciens pour dimensionner n'importe quelle installation à plusieurs branches."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi d'Ohm aux bornes d'un conducteur ohmique ($U=RI$)",
+        "Connaître la loi des nœuds ($I=I_1+I_2$ en un nœud à deux branches)",
+        "Savoir ce qu'est un récepteur électrique et sa force contre-électromotrice"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode de résolution d'un circuit à une maille avec dérivation",
+      "contenu_markdown": "Quand un générateur ($E$, $r$) alimente deux branches en parallèle - un conducteur ohmique $R$ et un récepteur ($E'$, $r'$) - on introduit la tension commune $U$ aux bornes de la dérivation. Chaque branche donne alors une relation : $I_1=U/R$ pour le conducteur ohmique, $I_2=(U-E')/r'$ pour le récepteur. La loi des nœuds impose $I=I_1+I_2$, et la loi des mailles sur le circuit principal s'écrit $E = rI + U$. En combinant ces relations, on obtient une équation à la seule inconnue $U$.",
+      "formule_principale": "E = r\\left(\\dfrac{U}{R} + \\dfrac{U-E'}{r'}\\right) + U",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une pile de f.é.m. $E=9$ V et de résistance interne $r=24\\,\\Omega$ alimente, en parallèle, une résistance $R=22\\,\\Omega$ et un électrolyseur de f.c.é.m. $E'=1{,}05$ V et de résistance interne $r'=3\\,\\Omega$. Calculer $U$, $I_1$, $I_2$ et $I$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer chaque courant en fonction de U",
+          "justification": "Loi d'Ohm dans R, caractéristique du récepteur dans l'électrolyseur.",
+          "resultat_markdown": "$I_1=\\dfrac{U}{22}$, $I_2=\\dfrac{U-1{,}05}{3}$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la loi des mailles",
+          "justification": "$E = rI + U$ avec $I=I_1+I_2$.",
+          "resultat_markdown": "$9 = 24\\left(\\dfrac{U}{22}+\\dfrac{U-1{,}05}{3}\\right) + U$"
+        },
+        {
+          "numero": 3,
+          "action": "Développer et regrouper en U",
+          "justification": "On distribue le facteur 24 et on regroupe les termes en U d'un côté.",
+          "resultat_markdown": "$9+8{,}4 = \\left(\\dfrac{24}{22}+8+1\\right)U \\Rightarrow 17{,}4 = 10{,}09\\,U$"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre en U",
+          "justification": "Division simple.",
+          "resultat_markdown": "$U \\approx 1{,}72\\ \\text{V}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer les courants",
+          "justification": "On réinjecte U dans les expressions de I1, I2 puis on somme.",
+          "resultat_markdown": "$I_1\\approx0{,}078\\ \\text{A}$, $I_2\\approx0{,}225\\ \\text{A}$, $I=I_1+I_2\\approx0{,}303\\ \\text{A}$"
+        }
+      ],
+      "conclusion_markdown": "Le circuit est entièrement résolu : $U\\approx1{,}72$ V, $I_1\\approx78$ mA, $I_2\\approx225$ mA, $I\\approx303$ mA, et on vérifie que $rI+U\\approx9$ V $=E$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $U = E' - r'I_2$ pour le récepteur.",
+          "pourquoi_faux": "Un récepteur absorbe de l'énergie électrique : la tension à ses bornes est toujours supérieure à sa f.c.é.m., donc $U=E'+r'I_2$, jamais avec un signe moins.",
+          "correction_markdown": "Retiens que pour un récepteur, $U>E'$ toujours (en fonctionnement normal), donc la formule comporte un signe +."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier le résultat en réinjectant les valeurs dans la loi des mailles.",
+          "pourquoi_faux": "Une erreur de calcul dans la résolution de l'équation en U passe alors inaperçue.",
+          "correction_markdown": "Vérifie systématiquement $E \\stackrel{?}{=} rI+U$ avec tes valeurs numériques finales."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur ($E=12$ V, $r=1\\,\\Omega$) alimente deux résistances en parallèle $R_1=10\\,\\Omega$ et $R_2=15\\,\\Omega$. Calculer la tension $U$ à leurs bornes puis le courant total $I$.",
+          "solution_markdown": "$U=E-rI$ et $I=U/R_1+U/R_2=U(1/10+1/15)=U\\times0{,}1667$. $12=1\\times0{,}1667U+U=1{,}1667U \\Rightarrow U\\approx10{,}3\\ \\text{V}$, $I\\approx0{,}1667\\times10{,}3\\approx1{,}71\\ \\text{A}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une pile ($E=6$ V, $r=2\\,\\Omega$) alimente, en parallèle, une résistance $R=8\\,\\Omega$ et un moteur de f.c.é.m. $E'=2$ V et de résistance interne $r'=1\\,\\Omega$. Calculer $U$.",
+          "solution_markdown": "$6=2\\left(\\dfrac{U}{8}+\\dfrac{U-2}{1}\\right)+U=2(0{,}125U+U-2)+U=0{,}25U+2U-4+U=3{,}25U-4$. $10=3{,}25U \\Rightarrow U\\approx3{,}08\\ \\text{V}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Reprendre l'exemple résolu de ce cours (pile $E=9$ V, $r=24\\,\\Omega$, $R=22\\,\\Omega$, électrolyseur $E'=1{,}05$ V, $r'=3\\,\\Omega$) et calculer la puissance totale fournie par la pile ainsi que la puissance reçue par l'électrolyseur (chimique + effet Joule).",
+          "solution_markdown": "Puissance fournie par la pile : $P=EI=9\\times0{,}303\\approx2{,}73\\ \\text{W}$. Puissance reçue par l'électrolyseur : $P_2=UI_2=1{,}72\\times0{,}225\\approx0{,}387\\ \\text{W}$ (dont $E'I_2=1{,}05\\times0{,}225\\approx0{,}236\\ \\text{W}$ convertie chimiquement et $r'I_2^2\\approx3\\times0{,}225^2\\approx0{,}152\\ \\text{W}$ dissipée par effet Joule)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Face à un générateur alimentant deux branches en parallèle, introduis toujours la tension commune $U$ aux bornes de la dérivation.",
+        "Exprime chaque courant de branche en fonction de $U$ : $I=U/R$ pour un conducteur ohmique, $I=(U-E')/r'$ pour un récepteur.",
+        "La loi des mailles sur le circuit principal, $E=rI+U$ avec $I=I_1+I_2$, donne une équation unique en $U$.",
+        "Vérifie toujours que $U>E'$ à la fin : un récepteur ne peut fonctionner que dans ce sens.",
+        "Cette méthode se généralise à n'importe quel nombre de branches en parallèle : on ajoute simplement un terme $I_k$ par branche supplémentaire."
+      ]
+    }
+  ]
+}

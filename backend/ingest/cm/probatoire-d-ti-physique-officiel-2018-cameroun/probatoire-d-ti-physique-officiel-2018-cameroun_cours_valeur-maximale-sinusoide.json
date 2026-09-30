@@ -1,0 +1,113 @@
+{
+  "cours_id": "cours-valeur-maximale-sinusoide-premiere-d-ti",
+  "meta": {
+    "titre": "La valeur maximale d'une grandeur électrique sinusoïdale",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Régime sinusoïdal - grandeurs caractéristiques",
+    "duree_estimee_min": 15,
+    "tags": [
+      "f.é.m. sinusoïdale",
+      "valeur maximale",
+      "vitesse angulaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2018-CM",
+    "epreuve_titre": "Probatoire D, TI - Physique - Session 2018 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2018-cameroun-ex3-q2.3.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un oscilloscope affiche une tension qui oscille entre deux valeurs extrêmes. Lire cette valeur maximale à l'écran est souvent la première étape - et la plus simple - pour remonter ensuite à des grandeurs physiques inconnues du circuit qui a produit ce signal, comme la vitesse de rotation d'une bobine ou son nombre de spires."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la forme générale d'une grandeur sinusoïdale, $g(t)=G_{max}\\sin(\\omega t)$ ou $G_{max}\\cos(\\omega t)$",
+        "Savoir que $\\sin$ et $\\cos$ prennent des valeurs comprises entre $-1$ et $1$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Identifier la valeur maximale d'une grandeur sinusoïdale",
+      "contenu_markdown": "La valeur maximale d'une grandeur sinusoïdale de la forme $g(t) = G_{max}\\sin(\\omega t)$ (ou $G_{max}\\cos(\\omega t)$) est directement le coefficient $G_{max}$ qui multiplie la fonction trigonométrique, puisque $\\sin$ et $\\cos$ atteignent au maximum la valeur $1$. Cette lecture directe fonctionne pour n'importe quelle grandeur électrique sinusoïdale (tension, courant, f.é.m.) et permet, en particulier, d'identifier une expression littérale inconnue (comme la vitesse angulaire d'une bobine) à partir d'une mesure expérimentale de cette valeur maximale, par exemple lue sur un oscilloscope.",
+      "formule_principale": "g(t) = G_{max}\\sin(\\omega t) \\;\\Longrightarrow\\; g_{max} = G_{max}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une f.é.m. induite a pour expression $e(t) = NBS\\omega\\sin(\\omega t)$. Sachant que sa valeur maximale mesurée est $e_{max} = 4$ V, exprimer $\\omega$ en fonction de $e_{max}$, $N$, $B$ et $S$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le coefficient qui multiplie le sinus",
+          "justification": "Ce coefficient est, par définition, la valeur maximale de la grandeur sinusoïdale",
+          "resultat_markdown": "$e_{max} = NBS\\omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler $\\omega$",
+          "justification": "On cherche à exprimer la vitesse angulaire en fonction des autres grandeurs",
+          "resultat_markdown": "$\\omega = \\dfrac{e_{max}}{NBS}$"
+        }
+      ],
+      "conclusion_markdown": "La vitesse angulaire s'exprime $\\omega = e_{max}/(NBS)$ : une simple lecture du coefficient devant le sinus a suffi à obtenir cette relation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre la valeur maximale $G_{max}$ avec la valeur instantanée $g(t)$ à un instant quelconque",
+          "pourquoi_faux": "$g(t)$ varie continuellement entre $-G_{max}$ et $+G_{max}$ ; seule sa valeur au sommet des oscillations est égale à $G_{max}$",
+          "correction_markdown": "Bien distinguer une grandeur instantanée (fonction du temps) de sa valeur maximale (une constante, atteinte seulement à certains instants)"
+        },
+        {
+          "erreur_markdown": "Chercher la valeur maximale en substituant une valeur particulière de $t$ dans l'expression, plutôt que d'identifier directement le coefficient",
+          "pourquoi_faux": "C'est une méthode inutilement compliquée : le coefficient devant le sinus (ou le cosinus) EST la valeur maximale, par construction",
+          "correction_markdown": "Identifier directement le facteur multiplicatif de la fonction trigonométrique comme valeur maximale, sans calcul supplémentaire"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une tension sinusoïdale s'écrit $u(t) = 8\\cos(100t)$ (V). Donner sa valeur maximale.",
+          "solution_markdown": "$u_{max} = 8$ V (coefficient devant le cosinus)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un courant sinusoïdal a pour valeur maximale $I_{max} = 0{,}5$ A et pour expression $i(t) = I_{max}\\sin(\\omega t)$, avec $\\omega = 2\\pi f$ et $f=50$ Hz. Écrire l'expression complète de $i(t)$.",
+          "solution_markdown": "$\\omega = 2\\pi\\times 50 = 100\\pi \\approx 314$ rad/s. Donc $i(t) = 0{,}5\\sin(314t)$ A."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La tension aux bornes d'une bobine tournante s'écrit $u(t) = NBS\\omega\\cos(\\omega t)$. On double à la fois le nombre de spires $N$ et la vitesse angulaire $\\omega$ (à $B$ et $S$ inchangés). Par quel facteur la valeur maximale de $u$ est-elle multipliée ?",
+          "solution_markdown": "$u_{max} = NBS\\omega$. En doublant $N$ ET $\\omega$, on multiplie $u_{max}$ par $2\\times 2 = 4$ : la nouvelle valeur maximale est donc 4 fois plus grande que l'originale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La valeur maximale d'une grandeur sinusoïdale s'identifie directement comme le coefficient qui multiplie le sinus ou le cosinus.",
+        "Il n'est jamais nécessaire de substituer une valeur de temps particulière pour la retrouver : c'est une lecture immédiate de l'expression littérale.",
+        "Cette identification permet de relier une mesure expérimentale (valeur maximale lue sur un oscilloscope) à une expression littérale contenant des grandeurs physiques inconnues.",
+        "Une grandeur sinusoïdale oscille en permanence entre $-G_{max}$ et $+G_{max}$ : ne jamais confondre une valeur instantanée quelconque avec la valeur maximale."
+      ]
+    }
+  ]
+}

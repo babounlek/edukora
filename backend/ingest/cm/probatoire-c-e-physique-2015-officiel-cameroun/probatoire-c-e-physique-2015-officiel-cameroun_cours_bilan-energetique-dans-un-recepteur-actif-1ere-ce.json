@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-bilan-energetique-dans-un-recepteur-actif-1ere-ce",
+  "meta": {
+    "titre": "Bilan énergétique dans un récepteur électrique actif",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Énergie électrique - récepteurs",
+    "duree_estimee_min": 30,
+    "tags": [
+      "bilan énergétique",
+      "récepteur actif",
+      "loi de Pouillet",
+      "énergie chimique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-2015-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Probatoire Série C, E - Session 2015 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2015-officiel-cameroun-ex3-q2d-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Charger une batterie, faire fonctionner un moteur électrique ou réaliser une électrolyse : dans ces trois cas, l'appareil branché ne se contente pas de dissiper de la chaleur comme une simple résistance, il stocke ou restitue une partie de l'énergie sous une autre forme (chimique, mécanique). Ce cours détaille comment répartir précisément l'énergie électrique reçue par un tel récepteur entre sa part utile et sa part perdue."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de Pouillet pour un circuit série (générateur + récepteur)",
+        "Effet Joule et puissance dissipée dans une résistance",
+        "Notion de force contre-électromotrice (f.c.é.m.) d'un récepteur actif"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi de Pouillet et répartition de l'énergie dans un récepteur actif",
+      "contenu_markdown": "Un **récepteur actif** (électrolyseur, moteur électrique...) se caractérise par une force contre-électromotrice $E'$ et une résistance interne $r'$ : contrairement à une résistance pure, il convertit une partie de l'énergie électrique reçue en une autre forme d'énergie utile (chimique, mécanique), le reste étant dissipé par effet Joule dans $r'$.\n\nPour un circuit série associant un générateur (f.é.m. $E$, résistance interne $r$) et ce récepteur, la **loi de Pouillet** donne l'intensité du courant :\n$$I = \\dfrac{E - E'}{r + r'}$$\nPendant une durée $t$, l'énergie électrique totale reçue par le récepteur est $W_{recu}=U\\times I\\times t$, avec $U=E'+r'I$ la tension à ses bornes. Cette énergie se répartit en deux parts :\n$$W_{recu} = \\underbrace{E' \\times I \\times t}_{\\text{énergie utile}} + \\underbrace{r'I^2t}_{\\text{énergie dissipée par effet Joule}}$$\nL'énergie utile, $E'\\times I\\times t$, est celle qui est effectivement convertie dans le récepteur (énergie chimique pour un électrolyseur, énergie mécanique pour un moteur).",
+      "formule_principale": "I = \\dfrac{E-E'}{r+r'} \\qquad W_{utile} = E'\\,I\\,t"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une batterie de f.é.m. $E=12\\ V$ et de résistance interne $r=0{,}6\\ \\Omega$ alimente un électrolyseur de f.c.é.m. $E'=6\\ V$ et de résistance interne $r'=4\\ \\Omega$. Calculer l'énergie chimique stockée dans l'électrolyseur après $10\\ min$ de fonctionnement.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'intensité du courant par la loi de Pouillet",
+          "justification": "Le circuit série associe le générateur et le récepteur actif",
+          "resultat_markdown": "$I = \\dfrac{E-E'}{r+r'} = \\dfrac{12-6}{0{,}6+4} = \\dfrac{6}{4{,}6} \\approx 1{,}304\\ A$"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir la durée en secondes",
+          "justification": "Les formules d'énergie électrique utilisent le temps en secondes (unité SI)",
+          "resultat_markdown": "$t = 10\\ min = 600\\ s$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'énergie chimique (part utile) reçue par l'électrolyseur",
+          "justification": "Seule la part $E'\\times I \\times t$ correspond à l'énergie chimique stockée, à l'exclusion des pertes Joule",
+          "resultat_markdown": "$E_{ch} = E'\\times I\\times t = 6\\times1{,}304\\times600 \\approx 4696\\ J$"
+        }
+      ],
+      "conclusion_markdown": "L'électrolyseur stocke environ $4{,}70\\times10^3\\ J$ d'énergie chimique après $10\\ min$ de fonctionnement - le reste de l'énergie reçue étant dissipé par effet Joule dans sa résistance interne."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer l'énergie chimique avec $U\\times I\\times t$ (tension totale aux bornes) au lieu de $E'\\times I\\times t$",
+          "pourquoi_faux": "$U\\times I\\times t$ donne l'énergie électrique TOTALE reçue par le récepteur (chimique et Joule confondues) ; seule la part $E'\\times I\\times t$ correspond spécifiquement à l'énergie utile convertie.",
+          "correction_markdown": "Décompose toujours systématiquement l'énergie reçue en ses deux parts ($E'It$ utile et $r'I^2t$ Joule) avant de répondre à une question qui porte sur l'une des deux seulement."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir la durée de minutes en secondes avant le calcul",
+          "pourquoi_faux": "Les formules d'énergie électrique en joules exigent un temps en secondes (unité SI) : utiliser directement des minutes multiplie le résultat par un facteur $60$ incorrect.",
+          "correction_markdown": "Convertis systématiquement toute durée en secondes avant un calcul d'énergie, quelle que soit l'unité de temps donnée dans l'énoncé (minutes, heures...)."
+        },
+        {
+          "erreur_markdown": "Utiliser la loi de Pouillet en oubliant le terme $E'$ au numérateur, comme s'il s'agissait d'un circuit sans récepteur actif",
+          "pourquoi_faux": "Un récepteur actif s'oppose au passage du courant par sa f.c.é.m. $E'$ : l'omettre revient à traiter le récepteur comme une simple résistance, ce qui surestime l'intensité réelle du circuit.",
+          "correction_markdown": "Vérifie toujours si le récepteur est passif (résistance seule) ou actif (f.c.é.m. $E'$ non nulle) avant d'écrire la loi de Pouillet, et inclus $E'$ au numérateur dans ce second cas."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.é.m. $E=9\\ V$, résistance interne $r=1\\ \\Omega$, alimente un moteur de f.c.é.m. $E'=5\\ V$, résistance interne $r'=2\\ \\Omega$. Calculer l'intensité du courant dans le circuit.",
+          "solution_markdown": "$I=\\dfrac{E-E'}{r+r'}=\\dfrac{9-5}{1+2}=\\dfrac{4}{3}\\approx1{,}33\\ A$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre le générateur et le moteur de l'exercice précédent, fonctionnant pendant $t=2\\ min$. Calculer l'énergie mécanique utile fournie par le moteur pendant cette durée.",
+          "solution_markdown": "$I\\approx1{,}33\\ A$ (question précédente). $t=2\\ min=120\\ s$.\n$$W_{utile} = E'\\times I\\times t = 5\\times1{,}33\\times120 \\approx 800\\ J$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un générateur ($E=15\\ V$, $r=0{,}5\\ \\Omega$) alimente un électrolyseur ($E'=8\\ V$, $r'=3\\ \\Omega$) pendant $t=15\\ min$. Calculer, en plus de l'énergie chimique stockée, le rendement énergétique du récepteur, défini comme le rapport entre l'énergie chimique utile et l'énergie électrique totale reçue par l'électrolyseur.",
+          "solution_markdown": "$I=\\dfrac{15-8}{0{,}5+3}=\\dfrac{7}{3{,}5}=2\\ A$. $t=15\\times60=900\\ s$.\n\nÉnergie chimique utile : $W_{utile}=E'It=8\\times2\\times900=14\\,400\\ J$.\n\nÉnergie dissipée par effet Joule dans le récepteur : $W_{Joule}=r'I^2t=3\\times2^2\\times900=10\\,800\\ J$.\n\nÉnergie électrique totale reçue par le récepteur : $W_{recu}=W_{utile}+W_{Joule}=14\\,400+10\\,800=25\\,200\\ J$.\n\nRendement du récepteur : $\\eta=\\dfrac{W_{utile}}{W_{recu}}=\\dfrac{14\\,400}{25\\,200}\\approx0{,}571$, soit environ $57{,}1\\%$ : un peu plus de la moitié de l'énergie électrique reçue par l'électrolyseur est effectivement convertie en énergie chimique, le reste étant perdu par effet Joule dans sa résistance interne."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un récepteur actif (électrolyseur, moteur) se caractérise par $E'$ (f.c.é.m.) et $r'$ (résistance interne), à ne jamais confondre avec un récepteur purement résistif.",
+        "La loi de Pouillet pour un circuit série générateur + récepteur actif s'écrit $I=(E-E')/(r+r')$ - ne jamais oublier le terme $E'$ au numérateur.",
+        "L'énergie électrique reçue par le récepteur se décompose toujours en deux parts : $E'It$ (utile) et $r'I^2t$ (perdue par effet Joule).",
+        "Convertis systématiquement le temps en secondes avant tout calcul d'énergie en joules.",
+        "Un bon réflexe de vérification consiste à recalculer les deux parts séparément et à vérifier que leur somme redonne bien l'énergie totale $UIt$ reçue par le récepteur."
+      ]
+    }
+  ]
+}

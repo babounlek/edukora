@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-datation-radiochronologique-tle-c",
+  "meta": {
+    "titre": "Le principe de la datation radiochronologique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Physique nucléaire",
+    "duree_estimee_min": 25,
+    "tags": [
+      "datation radiochronologique",
+      "couple parent-fils",
+      "période radioactive",
+      "âge d'un échantillon"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2002-PHYSIQUE-CM",
+    "epreuve_titre": "BAC Physique, série C, session 2002 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-2002-officiel-cameroun-ex2-q2.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment connaît-on l'âge d'une roche vieille de plusieurs millions d'années, sans avoir assisté à sa formation ? La radioactivité fournit une horloge d'une régularité parfaite : dès qu'un minéral se forme, il emprisonne un isotope radioactif (le « père ») qui se transforme lentement en un isotope stable (le « fils »). Comparer aujourd'hui les quantités de père et de fils présentes permet de remonter au temps écoulé depuis la formation du minéral, à condition qu'aucun atome, ni père ni fils, n'ait pu s'échapper de l'échantillon entre-temps."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi de décroissance radioactive $N(t)=N(0)e^{-\\lambda t}$",
+        "Relier la période radioactive $T$ à la constante $\\lambda$ ($T=\\ln2/\\lambda$)",
+        "Convertir une masse en nombre de noyaux via la masse molaire et le nombre d'Avogadro"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Comparer noyaux père restants et noyaux fils accumulés",
+      "contenu_markdown": "La datation radiochronologique compare, dans un échantillon fermé (aucun échange de matière avec l'extérieur depuis sa formation), le nombre de noyaux radioactifs restants au nombre de noyaux du produit de désintégration stable accumulé depuis l'instant $t=0$ où l'échantillon ne contenait encore aucun noyau fils : chaque noyau père disparu a donné naissance, directement ou après une chaîne de désintégrations rapides négligeables, à un noyau fils. Cette relation de bilan permet d'exprimer l'âge $t$ de l'échantillon à partir du seul rapport mesurable aujourd'hui entre noyaux père et noyaux fils, sans jamais avoir besoin de connaître $N(0)$ séparément.",
+      "formule_principale": "t = \\dfrac{1}{\\lambda}\\ln\\dfrac{N(0)}{N(t)} = \\dfrac{T}{\\ln 2}\\ln\\left(1+\\dfrac{N_{fils}(t)}{N(t)}\\right)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un minerai contient, à la date $t$, $1\\ \\text{g}$ d'uranium 238 (père) et $10\\ \\text{mg}$ de plomb 206 (fils), seul produit stable considéré. Calculer l'âge du minerai, sachant que $T(^{238}U)=4{,}5\\times10^9$ ans, $M(U)=238\\ \\text{g/mol}$, $M(Pb)=206\\ \\text{g/mol}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer le rapport des nombres de noyaux à partir des masses",
+          "justification": "$N=m/M\\times N_A$ ; le nombre d'Avogadro $N_A$ se simplifie dans tout rapport de noyaux",
+          "resultat_markdown": "$\\dfrac{N_{Pb}(t)}{N_U(t)} = \\dfrac{m_{Pb}/M(Pb)}{m_U/M(U)} = \\dfrac{m_{Pb}}{m_U}\\times\\dfrac{M(U)}{M(Pb)}$"
+        },
+        {
+          "numero": 2,
+          "action": "Application numérique du rapport",
+          "justification": "Remplacement des masses et masses molaires données",
+          "resultat_markdown": "$\\dfrac{N_{Pb}(t)}{N_U(t)} = \\dfrac{0{,}010}{1}\\times\\dfrac{238}{206} \\approx 0{,}01155$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire le rapport N(0)/N(t)",
+          "justification": "$N(0)=N_U(t)+N_{Pb}(t)$, tout noyau fils provenant d'un noyau père disparu",
+          "resultat_markdown": "$\\dfrac{N_U(0)}{N_U(t)} = 1+\\dfrac{N_{Pb}(t)}{N_U(t)} \\approx 1{,}01155$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'âge à partir de la formule de datation",
+          "justification": "$t=\\dfrac{T}{\\ln2}\\ln\\dfrac{N(0)}{N(t)}$",
+          "resultat_markdown": "$t = \\dfrac{4{,}5\\times10^9}{0{,}693}\\times\\ln(1{,}01155) \\approx 7{,}46\\times10^7$ ans"
+        }
+      ],
+      "conclusion_markdown": "Ce minerai s'est formé il y a environ 74,6 millions d'années, une durée bien plus courte que la demi-vie de l'uranium 238 (4,5 milliards d'années), ce qui est cohérent avec la faible quantité de plomb déjà accumulée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le rapport des masses $m_{Pb}/m_U$ avec le rapport des nombres de noyaux $N_{Pb}/N_U$",
+          "pourquoi_faux": "Les deux isotopes n'ont pas la même masse molaire : convertir en nombres de noyaux exige de diviser chaque masse par sa propre masse molaire avant de faire le rapport.",
+          "correction_markdown": "Toujours écrire explicitement $N=m/M\\times N_A$ pour chaque espèce avant de calculer un rapport de noyaux."
+        },
+        {
+          "erreur_markdown": "Utiliser directement $N_{Pb}(t)$ au lieu de $N_U(0)$ dans la formule de datation générale $t=(1/\\lambda)\\ln(N(0)/N(t))$",
+          "pourquoi_faux": "La formule fait intervenir $N(0)$, pas $N_{Pb}(t)$ : il faut d'abord reconstruire $N(0)=N_U(t)+N_{Pb}(t)$ avant de calculer le rapport et son logarithme.",
+          "correction_markdown": "Décomposer le calcul en deux étapes bien séparées : d'abord reconstruire $N(0)$, ensuite seulement appliquer la formule logarithmique de datation."
+        },
+        {
+          "erreur_markdown": "Négliger de vérifier que l'hypothèse « pas de plomb initial » et « échantillon fermé » est bien mentionnée dans l'énoncé",
+          "pourquoi_faux": "La méthode entière repose sur ces deux hypothèses ; un échantillon contaminé (plomb initial non nul, ou fuite d'uranium ou de plomb) donnerait un âge complètement faux sans qu'aucun calcul ne le révèle.",
+          "correction_markdown": "Toujours vérifier, avant de te lancer dans le calcul, que l'énoncé précise bien ces hypothèses ; si elles manquent, le signaler comme une incertitude du modèle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un échantillon contient, à la date $t$, un nombre de noyaux fils égal à $5\\ \\%$ du nombre de noyaux père restants. Écrire le rapport $N(0)/N(t)$ correspondant, sans calculer l'âge.",
+          "solution_markdown": "$\\dfrac{N_{fils}(t)}{N(t)} = 0{,}05$, donc $\\dfrac{N(0)}{N(t)} = 1+\\dfrac{N_{fils}(t)}{N(t)} = 1{,}05$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un échantillon de potassium-argon (période $T=1{,}25\\times10^9$ ans) contient un rapport $N_{fils}(t)/N(t)=0{,}02$. Calculer l'âge de l'échantillon.",
+          "solution_markdown": "$\\dfrac{N(0)}{N(t)} = 1{,}02$. $t = \\dfrac{T}{\\ln2}\\ln(1{,}02) = \\dfrac{1{,}25\\times10^9}{0{,}693}\\times0{,}0198 \\approx 3{,}57\\times10^7$ ans, soit environ 35,7 millions d'années."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que pour un échantillon très jeune par rapport à la période de l'élément ($t\\ll T$), l'âge peut s'écrire de façon approchée $t\\approx\\dfrac{T}{\\ln2}\\times\\dfrac{N_{fils}(t)}{N(t)}$, et évaluer l'erreur relative commise par cette approximation quand $N_{fils}(t)/N(t)=0{,}05$.",
+          "solution_markdown": "Pour $x=N_{fils}(t)/N(t)$ petit, $\\ln(1+x)\\approx x-\\dfrac{x^2}{2}$. La formule exacte $t=\\dfrac{T}{\\ln2}\\ln(1+x)$ devient donc $t\\approx\\dfrac{T}{\\ln2}x$ au premier ordre, en négligeant le terme en $x^2$. Pour $x=0{,}05$ : $\\ln(1{,}05)=0{,}04879$ contre $x=0{,}05$ : l'erreur relative sur $\\ln(1+x)$, donc sur l'âge calculé, vaut $(0{,}05-0{,}04879)/0{,}04879 \\approx 2{,}5\\ \\%$. Cette approximation, très pratique pour un calcul rapide sans logarithme, reste donc excellente tant que le rapport $N_{fils}/N$ ne dépasse pas quelques pourcents, ce qui est le cas de la plupart des roches jeunes à l'échelle géologique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La datation radiochronologique compare noyaux père restants et noyaux fils accumulés dans un échantillon fermé, sans plomb (ou fils) initial.",
+        "Convertis toujours les masses en nombres de noyaux via $N=m/M\\times N_A$ avant de calculer un rapport.",
+        "Reconstruis $N(0)=N(t)+N_{fils}(t)$ avant d'appliquer la formule logarithmique de l'âge.",
+        "Pour un échantillon jeune ($t\\ll T$), l'approximation $t\\approx(T/\\ln2)\\times(N_{fils}/N)$ donne un résultat proche du calcul exact, un bon moyen de vérifier ta réponse.",
+        "Cette méthode s'applique à tous les couples père-fils utilisés en géochronologie : uranium-plomb, potassium-argon, rubidium-strontium, chacun avec sa propre période."
+      ]
+    }
+  ]
+}

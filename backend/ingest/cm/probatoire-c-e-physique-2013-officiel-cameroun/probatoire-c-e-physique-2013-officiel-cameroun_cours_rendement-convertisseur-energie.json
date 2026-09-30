@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-rendement-convertisseur-energie-1ere",
+  "meta": {
+    "titre": "Rendement d'un convertisseur d'énergie électrique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Énergie électrique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "rendement énergétique",
+      "alternateur",
+      "puissance électrique",
+      "conversion d'énergie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2013-officiel-cameroun",
+    "epreuve_titre": "Physique - Probatoire Scientifique - Série C-E - Session de 2013 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-physique-2013-officiel-cameroun-ex4-qB25-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Aucune machine ne restitue jamais toute l'énergie qu'on lui fournit : un alternateur de groupe électrogène, aussi bien conçu soit-il, perd toujours une partie de la puissance mécanique du moteur en chaleur avant de la convertir en électricité. Calculer ce rendement, c'est mesurer très concrètement l'efficacité réelle d'un convertisseur d'énergie - une compétence transférable à n'importe quelle machine, du moteur électrique à la centrale hydraulique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "La distinction entre puissance apparente (VA) et puissance active (W)",
+        "Le facteur de puissance $\\cos\\varphi$ en régime alternatif",
+        "La conversion d'unités de puissance (W, kW)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rendement d'un convertisseur d'énergie",
+      "contenu_markdown": "Le rendement $\\eta$ d'un convertisseur d'énergie est le rapport entre la puissance utile qu'il restitue en sortie et la puissance qu'il reçoit en entrée : $\\eta=\\dfrac{P_{utile}}{P_{recue}}$, un nombre toujours compris entre $0$ et $1$ (ou exprimé en pourcentage). Pour l'alternateur d'un groupe électrogène, la puissance reçue est la puissance MÉCANIQUE fournie par le moteur thermique qui l'entraîne, et la puissance utile est la puissance ÉLECTRIQUE délivrée en sortie. Un point de vigilance essentiel : la puissance électrique d'une installation en courant alternatif est souvent donnée en puissance apparente (VA), qui n'égale la puissance active (W) - la seule à utiliser dans un calcul de rendement énergétique - que lorsque le facteur de puissance $\\cos\\varphi$ vaut $1$ (charge purement résistive). Dans le cas général, $P_{active}=S\\times\\cos\\varphi$ avec $S$ la puissance apparente en VA.",
+      "formule_principale": "\\eta = \\dfrac{P_{utile}}{P_{recue}}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un groupe électrogène a un moteur thermique de puissance $1,61\\ \\text{kW}$ qui entraîne un alternateur. Ce dernier délivre une puissance nominale à charge de $900\\ \\text{VA}$, avec un facteur de puissance de $1$. Calculer le rendement électrique de l'alternateur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Déterminer la puissance électrique active utile",
+          "justification": "Le facteur de puissance valant $1$, la puissance apparente en VA est intégralement active : $P_{active}=S\\times\\cos\\varphi=S\\times1$.",
+          "resultat_markdown": "$P_{élec} = 900\\times1 = 900\\ \\text{W}$"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la puissance mécanique reçue par l'alternateur",
+          "justification": "La puissance mécanique reçue par l'alternateur est celle que lui fournit le moteur thermique qui l'entraîne en rotation.",
+          "resultat_markdown": "$P_{méca} = 1,61\\ \\text{kW} = 1610\\ \\text{W}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le rendement",
+          "justification": "On applique la définition du rendement, rapport de la puissance utile (électrique) sur la puissance reçue (mécanique).",
+          "resultat_markdown": "$\\eta=\\dfrac{900}{1610}\\approx0,559$ soit $\\eta\\approx55,9\\%$"
+        }
+      ],
+      "conclusion_markdown": "L'alternateur convertit environ $56\\%$ de la puissance mécanique reçue en puissance électrique utile ; le reste (environ $44\\%$) est perdu principalement sous forme de chaleur, par effet Joule dans les enroulements et par pertes magnétiques dans le circuit ferromagnétique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement la puissance apparente en VA comme puissance électrique utile dans le calcul du rendement, sans vérifier le facteur de puissance.",
+          "pourquoi_faux": "Le rendement énergétique compare des puissances actives (en W), pas des puissances apparentes (en VA) : les deux ne coïncident que lorsque le facteur de puissance vaut exactement $1$ ; dans le cas général, ignorer le facteur de puissance surestime la puissance électrique réellement utile.",
+          "correction_markdown": "Toujours vérifier la valeur du facteur de puissance avant d'assimiler VA et W, et multiplier la puissance apparente par $\\cos\\varphi$ si celui-ci diffère de $1$."
+        },
+        {
+          "erreur_markdown": "Inverser le numérateur et le dénominateur dans le calcul du rendement, en divisant la puissance reçue par la puissance utile.",
+          "pourquoi_faux": "Un rendement supérieur à $1$ (ou à $100\\%$) n'a physiquement aucun sens pour un convertisseur d'énergie réel : cela violerait le principe de conservation de l'énergie, aucune machine ne peut restituer plus d'énergie qu'elle n'en reçoit.",
+          "correction_markdown": "Retiens l'ordre par le sens physique : le rendement est toujours (puissance UTILE, en sortie) divisée par (puissance REÇUE, en entrée), donc toujours inférieur à $1$ pour une machine réelle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur électrique reçoit une puissance électrique de $500\\ \\text{W}$ et fournit une puissance mécanique utile de $400\\ \\text{W}$. Calculer son rendement.",
+          "solution_markdown": "$\\eta=\\dfrac{P_{utile}}{P_{recue}}=\\dfrac{400}{500}=0,8$ soit un rendement de $80\\%$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un alternateur reçoit une puissance mécanique de $2\\ \\text{kW}$ et a un rendement de $65\\%$. Calculer la puissance électrique active qu'il délivre, puis la puissance apparente correspondante si le facteur de puissance de l'installation vaut $0,8$.",
+          "solution_markdown": "La puissance électrique active vaut $P_{élec}=\\eta\\times P_{méca}=0,65\\times2000=1300\\ \\text{W}$. La puissance apparente correspondante se déduit de $P_{active}=S\\times\\cos\\varphi$, soit $S=\\dfrac{P_{active}}{\\cos\\varphi}=\\dfrac{1300}{0,8}=1625\\ \\text{VA}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un groupe électrogène a un rendement global (du carburant à l'électricité utile) de $25\\%$. Sachant que la combustion du carburant libère une puissance chimique de $6\\ \\text{kW}$ et que le moteur thermique a lui-même un rendement de $30\\%$, calculer le rendement de l'alternateur seul, puis la puissance électrique finalement disponible.",
+          "solution_markdown": "Le rendement global est le produit des rendements successifs de la chaîne : $\\eta_{global}=\\eta_{moteur}\\times\\eta_{alternateur}$, soit $0,25=0,30\\times\\eta_{alternateur}$, d'où $\\eta_{alternateur}=\\dfrac{0,25}{0,30}\\approx0,833$ soit environ $83,3\\%$. La puissance électrique finalement disponible vaut $P_{élec}=\\eta_{global}\\times P_{chimique}=0,25\\times6000=1500\\ \\text{W}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le rendement d'un convertisseur d'énergie est toujours (puissance utile en sortie) / (puissance reçue en entrée), un nombre inférieur à $1$.",
+        "Pour un alternateur de groupe électrogène, la puissance reçue est mécanique (donnée par le moteur), la puissance utile est électrique (active, en W).",
+        "N'assimile une puissance apparente (VA) à une puissance active (W) que si le facteur de puissance vaut $1$ ; sinon, multiplie par $\\cos\\varphi$.",
+        "Dans une chaîne de conversion à plusieurs étages, le rendement global est le PRODUIT des rendements de chaque étage, jamais leur somme.",
+        "Cette notion de rendement, appliquée à un alternateur, un moteur ou tout autre convertisseur, est un classique des épreuves d'énergie électrique du Probatoire série C et E."
+      ]
+    }
+  ]
+}

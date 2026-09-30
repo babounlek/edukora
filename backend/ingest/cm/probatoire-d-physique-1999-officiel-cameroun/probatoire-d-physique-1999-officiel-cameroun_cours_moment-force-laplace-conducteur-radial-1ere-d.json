@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-moment-force-laplace-conducteur-radial-1ere-d",
+  "meta": {
+    "titre": "Moment d'une force de Laplace répartie sur un conducteur radial (roue de Barlow)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Électromagnétisme - forces de Laplace",
+    "duree_estimee_min": 25,
+    "tags": [
+      "moment d'une force",
+      "force répartie",
+      "intégration",
+      "roue de Barlow"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-physique-1999-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série D - Session 1999 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-physique-1999-officiel-cameroun-ex3-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une force qui n'agit pas en un seul point mais tout le long d'un objet ne produit pas le même moment qu'une force ponctuelle égale appliquée à son extrémité : il faut intégrer. Ce cours te montre comment, avec l'exemple concret d'un rayon conducteur dans un champ magnétique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de moment d'une force $\\tau=F\\times d$",
+        "Calcul intégral simple (primitive de r)",
+        "Force de Laplace élémentaire $dF=BI\\,dr$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Intégration d'un moment de force réparti",
+      "contenu_markdown": "Quand une force linéique $dF=BI\\,dr$ agit sur chaque élément d'un conducteur radial de longueur $R$ parcouru par un courant $I$ dans un champ uniforme $B$, le moment total par rapport à l'axe ne se calcule pas comme si toute la force agissait à l'extrémité : il faut intégrer le moment élémentaire $d\\tau=r\\,dF=BIr\\,dr$ sur toute la longueur, ce qui donne $\\tau=\\displaystyle\\int_0^R BIr\\,dr=\\dfrac{BIR^2}{2}$ - la moitié seulement du produit qu'on obtiendrait en supposant, à tort, la force entièrement concentrée en $R$.",
+      "formule_principale": "\\tau = \\int_0^R BIr\\,dr = \\dfrac{BIR^2}{2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une roue de Barlow de rayon $R=10$ cm, plongée sur sa moitié inférieure dans un champ $B=5\\times10^{-2}$ T, est parcourue par un courant $I=25$ A. Quelle force faudrait-il appliquer à l'extrémité d'un rayon horizontal pour l'empêcher de tourner ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le moment de la force électromagnétique",
+          "justification": "Intégration de $d\\tau=BIr\\,dr$ entre 0 et R.",
+          "resultat_markdown": "$\\tau=\\dfrac{BIR^2}{2}=\\dfrac{5\\times10^{-2}\\times25\\times(0{,}10)^2}{2}=6{,}25\\times10^{-3}$ N.m"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'équilibre des moments",
+          "justification": "Pour empêcher la rotation, le moment de la force extérieure doit compenser exactement $\\tau$.",
+          "resultat_markdown": "$F_{ext}\\times R=\\tau$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $F_{ext}$",
+          "justification": "Isoler $F_{ext}$ avec le bras de levier R.",
+          "resultat_markdown": "$F_{ext}=\\dfrac{6{,}25\\times10^{-3}}{0{,}10}=0{,}0625$ N"
+        }
+      ],
+      "conclusion_markdown": "Il faut appliquer une force d'environ 0,0625 N (62,5 mN) à l'extrémité du rayon horizontal."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer la force totale $F=BIR$ puis la multiplier directement par R pour obtenir le moment.",
+          "pourquoi_faux": "Cette force est répartie tout le long du rayon, pas concentrée à son extrémité : son moment réel vaut la moitié de ce que donnerait ce raccourci.",
+          "correction_markdown": "Utilise toujours l'intégrale $\\int_0^R BIr\\,dr=\\dfrac{BIR^2}{2}$ pour une force uniformément répartie."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir R en mètres avant de l'élever au carré.",
+          "pourquoi_faux": "Une erreur d'unité sur R se répercute au carré dans le résultat final, faussant complètement l'ordre de grandeur.",
+          "correction_markdown": "Convertis systématiquement toutes les longueurs en mètres avant tout calcul de moment ou de force."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer le moment d'une force de Laplace uniformément répartie sur un rayon $R=5$ cm, avec $B=0{,}2$ T et $I=8$ A.",
+          "solution_markdown": "$\\tau=\\dfrac{BIR^2}{2}=\\dfrac{0{,}2\\times8\\times(0{,}05)^2}{2}=\\dfrac{0{,}2\\times8\\times0{,}0025}{2}=\\dfrac{0{,}004}{2}=0{,}002$ N.m."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour le rayon de l'exercice précédent, quelle force ponctuelle appliquée à l'extrémité (R=5 cm) produirait le même moment ?",
+          "solution_markdown": "$F=\\dfrac{\\tau}{R}=\\dfrac{0{,}002}{0{,}05}=0{,}04$ N."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On considère un conducteur radial de longueur R parcouru par un courant I, plongé dans un champ non uniforme $B(r)=B_0\\dfrac{r}{R}$ (croissant linéairement avec r). Calculer le moment total de la force électromagnétique.",
+          "solution_markdown": "$d\\tau=r\\,dF=r\\times I B(r)\\,dr=I\\dfrac{B_0}{R}r^2\\,dr$. En intégrant : $\\tau=\\displaystyle\\int_0^R I\\dfrac{B_0}{R}r^2\\,dr=I\\dfrac{B_0}{R}\\left[\\dfrac{r^3}{3}\\right]_0^R=\\dfrac{IB_0R^2}{3}$. On retrouve un facteur $\\dfrac13$ au lieu de $\\dfrac12$, car le champ croissant avec r pondère davantage les éléments éloignés de l'axe."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une force répartie ne produit pas le même moment qu'une force ponctuelle égale placée à l'extrémité.",
+        "Le moment se calcule toujours par intégration : $\\tau=\\int r\\,dF$.",
+        "Pour B uniforme, on retrouve le facteur caractéristique $\\frac12$ (comme pour le moment d'inertie d'une tige homogène).",
+        "Convertis systématiquement toutes les longueurs en mètres avant de calculer.",
+        "Cette méthode d'intégration se retrouve dans de nombreux problèmes de force répartie (poids d'une tige, pression sur une paroi...)."
+      ]
+    }
+  ]
+}

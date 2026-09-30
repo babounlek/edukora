@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-rendement-alternateur-premiere",
+  "meta": {
+    "titre": "Calcul du rendement d'un alternateur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Énergie électrique - rendement",
+    "duree_estimee_min": 20,
+    "tags": [
+      "rendement",
+      "alternateur",
+      "puissance électrique",
+      "puissance mécanique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-2013-PHYSIQUE",
+    "epreuve_titre": "Probatoire série C - Épreuve de Physique - Session 2013 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-physique-2013-ex4-qB4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un alternateur ne restitue jamais, en électricité, toute l'énergie mécanique qu'on lui fournit : une partie part en chaleur, à cause des frottements et de la résistance des bobinages. Le rendement est le nombre qui mesure exactement cette efficacité. Ce cours te montre comment le calculer, une compétence essentielle pour tout exercice sur les machines électriques (alternateurs, moteurs, transformateurs)."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de puissance électrique $P=UI$",
+        "Notion de puissance mécanique",
+        "Pourcentage et rapport de deux grandeurs de même nature"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rendement d'un convertisseur d'énergie",
+      "contenu_markdown": "Le rendement $\\eta$ d'un dispositif qui convertit une forme d'énergie en une autre (ici, un alternateur qui convertit de l'énergie mécanique en énergie électrique) est le rapport entre la puissance utile qu'il délivre en sortie et la puissance qu'il reçoit en entrée :\n\n$$\\eta = \\frac{P_{\\text{utile}}}{P_{\\text{reçue}}}$$\n\nPour un alternateur, $P_{\\text{utile}}$ est la puissance électrique fournie à l'installation alimentée (souvent lisible sur la plaque signalétique de l'appareil, en kVA ou en kW selon qu'elle désigne une puissance apparente ou active), et $P_{\\text{reçue}}$ est la puissance mécanique que lui fournit le moteur qui l'entraîne. Le rendement est toujours compris entre 0 et 1 (ou, exprimé en pourcentage, entre 0 % et 100 %) : la différence $P_{\\text{reçue}} - P_{\\text{utile}}$ correspond aux pertes (frottements mécaniques, effet Joule dans les bobinages, pertes magnétiques), dissipées sous forme de chaleur et jamais récupérées.",
+      "formule_principale": "\\eta = \\dfrac{P_{utile}}{P_{reçue}}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un groupe électrogène à essence sans plomb a un moteur thermique de puissance $P_{méca}=1{,}61$ kW. Il délivre, à puissance nominale à charge, une puissance apparente $S=900$ VA sous un facteur de puissance $\\cos\\varphi=1$. Calculer le rendement électrique de son alternateur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance électrique utile",
+          "justification": "Le facteur de puissance valant $1$, la puissance apparente $S$ est intégralement active : $P_{utile}=S$.",
+          "resultat_markdown": "$P_{utile} = 900$ VA $= 900$ W"
+        },
+        {
+          "numero": 2,
+          "action": "Identifier la puissance reçue",
+          "justification": "$P_{reçue}$ est la puissance mécanique fournie par le moteur à l'alternateur.",
+          "resultat_markdown": "$P_{reçue} = 1{,}61$ kW $= 1610$ W"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule du rendement",
+          "justification": "$\\eta = P_{utile}/P_{reçue}$.",
+          "resultat_markdown": "$\\eta = \\dfrac{900}{1610} \\approx 0{,}559$"
+        },
+        {
+          "numero": 4,
+          "action": "Exprimer le résultat en pourcentage",
+          "justification": "Le rendement se donne fréquemment en pourcentage pour être plus parlant.",
+          "resultat_markdown": "$\\eta \\approx 55{,}9\\%$"
+        }
+      ],
+      "conclusion_markdown": "Le rendement de cet alternateur est d'environ $55{,}9$ % : sur chaque watt mécanique fourni par le moteur, un peu plus de la moitié est effectivement transformée en électricité utile, le reste étant dissipé en pertes (frottements, effet Joule, pertes magnétiques) - un ordre de grandeur réaliste pour l'alternateur d'un petit groupe électrogène portable."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inverser le rapport et calculer $\\eta = P_{reçue}/P_{utile}$, ce qui donne un rendement supérieur à 1.",
+          "pourquoi_faux": "Un rendement ne peut jamais dépasser 1 (ou 100 %) : un convertisseur ne peut pas produire plus d'énergie utile qu'il n'en reçoit, sous peine de violer la conservation de l'énergie.",
+          "correction_markdown": "Vérifie systématiquement que ton résultat est inférieur ou égal à 1 (ou 100 %) : si ce n'est pas le cas, le rapport est probablement inversé."
+        },
+        {
+          "erreur_markdown": "Confondre puissance apparente ($S=UI$, en VA) et puissance active ($P=UI\\cos\\varphi$, en W) lorsque le facteur de puissance de l'installation n'est pas égal à 1.",
+          "pourquoi_faux": "Quand le facteur de puissance $\\cos\\varphi$ est différent de 1, la puissance réellement utile (active) fournie à l'installation est inférieure à la puissance apparente ($S=UI$) : utiliser $S$ à la place de $P$ dans le calcul du rendement surestime la puissance utile réelle.",
+          "correction_markdown": "Vérifie toujours si le facteur de puissance est précisé et égal à 1 avant d'assimiler puissance apparente et puissance utile ; sinon, multiplie $UI$ par $\\cos\\varphi$ pour obtenir la puissance active réellement utile."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un alternateur reçoit une puissance mécanique de $2$ kW et a un rendement de $80$ %. Calculer la puissance électrique utile qu'il délivre.",
+          "solution_markdown": "$P_{utile} = \\eta \\times P_{reçue} = 0{,}80\\times2=1{,}6$ kW."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un alternateur délivre une puissance électrique utile de $3{,}6$ kW avec un rendement de $90$ %. Calculer la puissance mécanique qu'il reçoit du moteur.",
+          "solution_markdown": "$\\eta=P_{utile}/P_{reçue} \\Rightarrow P_{reçue}=P_{utile}/\\eta = 3{,}6/0{,}90=4$ kW."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un groupe électrogène délivre à une installation, sous une tension efficace $U=220$ V, un courant efficace $I=15$ A, avec un facteur de puissance $\\cos\\varphi=1$. La puissance mécanique fournie par le moteur à l'alternateur vaut $P_{reçue}=4$ kW. Calculer le rendement de l'alternateur.",
+          "solution_markdown": "La puissance électrique utile, le facteur de puissance étant égal à 1, se réduit à $P_{utile}=UI=220\\times15=3300$ W $=3{,}3$ kW. Le rendement vaut alors $\\eta=P_{utile}/P_{reçue}=3{,}3/4=0{,}825$, soit $82{,}5$ %."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le rendement d'un alternateur (ou de tout convertisseur d'énergie) est toujours $\\eta=P_{utile}/P_{reçue}$, un rapport inférieur ou égal à 1.",
+        "Vérifie systématiquement que ton résultat reste entre 0 et 1 (ou 0 % et 100 %) : au-delà, le calcul est forcément faux.",
+        "Fais attention à la nature de la puissance utile (apparente ou active) selon que le facteur de puissance vaut 1 ou non.",
+        "Ce calcul de rendement se généralise à tous les convertisseurs d'énergie (moteurs, transformateurs, cellules photovoltaïques) et revient très régulièrement dans les exercices d'énergie électrique du Probatoire et du BAC."
+      ]
+    }
+  ]
+}

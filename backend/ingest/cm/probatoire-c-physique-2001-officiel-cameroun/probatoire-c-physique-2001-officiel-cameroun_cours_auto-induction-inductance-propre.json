@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-auto-induction-inductance-propre-1ere",
+  "meta": {
+    "titre": "Auto-induction et inductance propre d'un solénoïde",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "auto-induction",
+      "inductance propre",
+      "f.é.m. auto-induite"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-2001-CM",
+    "epreuve_titre": "Probatoire Physique - Série C - Cameroun - Session 2001",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-physique-2001-officiel-cameroun-ex3-q4-2",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un circuit peut s'induire lui-même : quand le courant qui le traverse varie, le flux magnétique qu'il crée à travers son propre circuit varie aussi, ce qui y fait naître une f.é.m. supplémentaire, dirigée pour s'opposer au changement en cours. Ce phénomène, appelé auto-induction, explique pourquoi une bobine 'résiste' à toute variation brusque du courant qui la traverse - c'est le principe même des bobines de lissage en électronique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi de Faraday (f.é.m. induite = -dΦ/dt)",
+        "Savoir calculer le champ magnétique et la section d'un solénoïde",
+        "Avoir compris la notion de flux propre d'un circuit à travers lui-même"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Inductance propre et f.é.m. d'auto-induction",
+      "contenu_markdown": "Un circuit parcouru par un courant $I$ crée, à travers sa propre surface, un flux magnétique propre $\\Phi = L\\,I$, où $L$ est l'inductance propre du circuit (en henrys, H), une caractéristique purement géométrique qui ne dépend que de la forme du circuit. Pour un solénoïde de $N$ spires, de longueur $l$ et de section $S$, l'inductance propre vaut $L=\\mu_0\\dfrac{N^2}{l}S$. Si le courant $I$ varie, ce flux propre varie aussi, ce qui induit dans le circuit lui-même une f.é.m. d'auto-induction $e=-L\\dfrac{dI}{dt}$, dont le signe négatif traduit précisément la loi de Lenz : cette f.é.m. s'oppose toujours à la variation du courant qui la crée.",
+      "formule_principale": "L = \\mu_0\\,\\dfrac{N^2}{l}\\,S \\qquad\\text{et}\\qquad e = -L\\,\\dfrac{dI}{dt}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un solénoïde de N=500 spires, de longueur l=50 cm et de diamètre D=5 cm est parcouru par un courant qui décroît linéairement de 10 A à 0 en 0,2 s. Calculer son inductance propre, puis la f.é.m. d'auto-induction qui apparaît dans le solénoïde.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la section du solénoïde",
+          "justification": "L'inductance propre fait intervenir la section du solénoïde lui-même (pas celle d'un autre circuit).",
+          "resultat_markdown": "$a=D/2=0{,}025\\ \\text{m}$, donc $S=\\pi a^2=\\pi\\times(0{,}025)^2\\approx1{,}963\\times10^{-3}\\ \\text{m}^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'inductance propre L",
+          "justification": "Application directe de la formule L = μ0.N²/l.S, avec N=500 et l=0,5 m.",
+          "resultat_markdown": "$L=4\\pi\\times10^{-7}\\times\\dfrac{500^2}{0{,}5}\\times1{,}963\\times10^{-3}\\approx1{,}234\\times10^{-3}\\ \\text{H}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le taux de variation du courant",
+          "justification": "Le courant décroît linéairement de 10 A à 0 en 0,2 s.",
+          "resultat_markdown": "$\\left|\\dfrac{dI}{dt}\\right|=\\dfrac{10}{0{,}2}=50\\ \\text{A/s}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la f.é.m. d'auto-induction",
+          "justification": "Application directe de |e|=L.|dI/dt|.",
+          "resultat_markdown": "$|e_{auto}|=L\\times50=1{,}234\\times10^{-3}\\times50\\approx6{,}17\\times10^{-2}\\ \\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "Le solénoïde est le siège d'une f.é.m. d'auto-induction d'environ 62 mV, qui s'oppose (par la loi de Lenz) à la décroissance du courant qui la crée : le courant réel décroît donc légèrement moins vite qu'il ne le ferait sans ce phénomène d'auto-induction."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser N (nombre de spires) au lieu de N² dans la formule de l'inductance propre",
+          "pourquoi_faux": "L'inductance propre dépend du carré du nombre de spires, car chaque spire contribue à la fois à créer le champ (proportionnel à N) et à 'ressentir' ce champ dans le calcul du flux total (encore un facteur N) : les deux effets se multiplient.",
+          "correction_markdown": "Mémorise la formule complète $L=\\mu_0 N^2 S/l$ avec le carré sur N, et vérifie-le systématiquement avant de calculer."
+        },
+        {
+          "erreur_markdown": "Confondre l'inductance propre du solénoïde (utile pour l'auto-induction) avec le calcul du flux à travers une AUTRE bobine placée à proximité (utile pour l'induction mutuelle, comme dans le calcul de la bobine plate)",
+          "pourquoi_faux": "Ce sont deux phénomènes différents : l'auto-induction concerne un circuit qui s'induit lui-même (section et nombre de spires du MÊME circuit), l'induction mutuelle concerne l'effet d'un circuit sur un AUTRE circuit voisin (avec la section et le nombre de spires du circuit secondaire).",
+          "correction_markdown": "Avant de calculer une f.é.m. induite, identifie clairement si elle apparaît dans le circuit qui varie lui-même (auto-induction, utilise N² et S du même circuit) ou dans un circuit voisin (induction mutuelle, utilise N' et S' du circuit secondaire)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une bobine a une inductance propre de 0,05 H. Le courant qui la traverse varie de 2 A à 5 A en 0,1 s. Calculer la f.é.m. d'auto-induction.",
+          "solution_markdown": "$|dI/dt|=(5-2)/0{,}1=30\\ \\text{A/s}$. $|e|=L\\times|dI/dt|=0{,}05\\times30=1{,}5\\ \\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un solénoïde de 300 spires, longueur 30 cm, section 4×10⁻³ m², est parcouru par un courant constant de 2 A. Calculer son inductance propre puis le flux propre qui le traverse.",
+          "solution_markdown": "$L=\\mu_0\\dfrac{N^2}{l}S=4\\pi\\times10^{-7}\\times\\dfrac{300^2}{0{,}3}\\times4\\times10^{-3}\\approx4{,}52\\times10^{-4}\\ \\text{H}$. Le flux propre est $\\Phi=L\\,I=4{,}52\\times10^{-4}\\times2\\approx9{,}04\\times10^{-4}\\ \\text{Wb}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux solénoïdes A et B ont le même nombre de spires et la même longueur, mais le solénoïde B a un rayon double de celui de A. Comparer leurs inductances propres respectives.",
+          "solution_markdown": "L'inductance propre est proportionnelle à la section S=πr², donc au carré du rayon. Si le rayon de B est le double de celui de A, sa section est 4 fois plus grande ($r_B=2r_A \\Rightarrow S_B=\\pi(2r_A)^2=4\\pi r_A^2=4S_A$), et donc son inductance propre est également 4 fois plus grande : $L_B=4\\,L_A$, tous les autres paramètres (N et l) étant égaux par hypothèse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un circuit parcouru par un courant variable s'induit lui-même : c'est l'auto-induction, caractérisée par l'inductance propre L.",
+        "Pour un solénoïde, $L=\\mu_0 N^2 S/l$ : attention au carré sur le nombre de spires N.",
+        "La f.é.m. d'auto-induction vaut $|e|=L\\,|dI/dt|$ et s'oppose toujours (loi de Lenz) à la variation du courant qui la crée.",
+        "Ne confonds jamais l'auto-induction (un circuit et lui-même) avec l'induction mutuelle (un circuit qui en influence un autre) : les grandeurs géométriques à utiliser ne sont pas les mêmes dans les deux cas.",
+        "L'auto-induction explique pourquoi un courant dans une bobine ne peut jamais varier instantanément : c'est la base du comportement des bobines dans tous les circuits électroniques et électrotechniques."
+      ]
+    }
+  ]
+}

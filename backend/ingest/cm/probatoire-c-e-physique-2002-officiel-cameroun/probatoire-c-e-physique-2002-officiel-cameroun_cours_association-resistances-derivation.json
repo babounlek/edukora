@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-association-resistances-derivation-premiere",
+  "meta": {
+    "titre": "Association de résistances en dérivation (parallèle)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Électrocinétique - circuits en courant continu",
+    "duree_estimee_min": 25,
+    "tags": [
+      "résistances en dérivation",
+      "loi des nœuds",
+      "résistance équivalente"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2002-officiel-cameroun",
+    "epreuve_titre": "Physique - Probatoire Scientifique (Série C-E) - Session de 2002 - Cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-e-physique-2002-officiel-cameroun-ex2-q2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand un courant arrive à un carrefour où plusieurs chemins s'offrent à lui, il se partage entre eux - exactement comme de l'eau qui se divise entre plusieurs canaux. Ce cours t'apprend à calculer comment ce partage se fait entre des résistances montées en dérivation (en parallèle), une configuration omniprésente dès qu'un circuit comporte plus d'une maille."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi de Pouillet pour un circuit série (cours précédent)",
+        "Savoir ce qu'est un nœud électrique et la loi des nœuds ($I=I_1+I_2$)",
+        "Manipuler des fractions et des inverses"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Résistance équivalente de deux résistances en dérivation",
+      "contenu_markdown": "Deux résistors $R_3$ et $R_4$ montés en dérivation entre deux mêmes points $A$ et $B$ sont soumis à la même tension $U_{AB}$, mais parcourus par des intensités différentes qui s'additionnent à l'intensité totale (loi des nœuds). Leur résistance équivalente $R_{34}$ vérifie :",
+      "formule_principale": "\\dfrac{1}{R_{34}} = \\dfrac{1}{R_3}+\\dfrac{1}{R_4} \\quad\\text{soit}\\quad R_{34}=\\dfrac{R_3\\,R_4}{R_3+R_4}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur $(E=6\\ \\text{V}, R_1=1{,}5\\ \\Omega)$ est en série avec $R_2=22{,}5\\ \\Omega$, puis avec deux résistors $R_3=8\\ \\Omega$ et $R_4=4\\ \\Omega$ montés en dérivation entre $A$ et $B$. Calcule l'intensité totale, la tension $U_{AB}$, puis l'intensité dans chaque branche.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la résistance équivalente de R3 et R4",
+          "justification": "R3 et R4 sont en dérivation entre les mêmes points A et B.",
+          "resultat_markdown": "$R_{34}=\\dfrac{8\\times4}{8+4}=\\dfrac{32}{12}=\\dfrac{8}{3}\\ \\Omega\\approx2{,}67\\ \\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la loi de Pouillet à la maille équivalente",
+          "justification": "Le circuit devient une maille unique : générateur, R2, R34 en série.",
+          "resultat_markdown": "$I=\\dfrac{E}{R_1+R_2+R_{34}}=\\dfrac{6}{1{,}5+22{,}5+\\frac83}=\\dfrac{6}{80/3}=0{,}225\\ \\text{A}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer U_AB",
+          "justification": "$U_{AB}$ est la tension aux bornes de l'association équivalente R34, parcourue par I.",
+          "resultat_markdown": "$U_{AB}=R_{34}\\,I=\\dfrac83\\times0{,}225=0{,}6\\ \\text{V}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'intensité dans chaque branche",
+          "justification": "Chaque branche est soumise à la même tension U_AB (loi d'Ohm dans chaque branche).",
+          "resultat_markdown": "$I_3=\\dfrac{U_{AB}}{R_3}=\\dfrac{0{,}6}{8}=0{,}075\\ \\text{A}$ ; $I_4=\\dfrac{U_{AB}}{R_4}=\\dfrac{0{,}6}{4}=0{,}15\\ \\text{A}$"
+        }
+      ],
+      "conclusion_markdown": "On vérifie que $I_3+I_4=0{,}075+0{,}15=0{,}225\\ \\text{A}=I$ (loi des nœuds) : le calcul est cohérent."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner directement $R_3$ et $R_4$ comme s'ils étaient en série.",
+          "pourquoi_faux": "En dérivation, la résistance équivalente est toujours INFÉRIEURE à la plus petite des deux résistances : les additionner donnerait un résultat trop grand et physiquement incohérent avec l'ajout d'un chemin supplémentaire au courant.",
+          "correction_markdown": "Utilise systématiquement la formule $R_{34}=\\dfrac{R_3R_4}{R_3+R_4}$ (produit sur somme) pour deux résistances en dérivation, jamais une simple somme."
+        },
+        {
+          "erreur_markdown": "Calculer $I_3$ ou $I_4$ avec l'intensité totale $I$ plutôt qu'avec $U_{AB}$.",
+          "pourquoi_faux": "Chaque branche a sa PROPRE intensité, différente de $I$ : seule la tension $U_{AB}$ est commune aux deux branches en dérivation.",
+          "correction_markdown": "Calcule toujours $U_{AB}$ en premier, puis applique la loi d'Ohm séparément dans chaque branche : $I_3=U_{AB}/R_3$, $I_4=U_{AB}/R_4$."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier le résultat par la loi des nœuds.",
+          "pourquoi_faux": "Une erreur de calcul sur $R_{34}$ ou sur $U_{AB}$ passe souvent inaperçue si on ne vérifie pas que $I=I_3+I_4$.",
+          "correction_markdown": "Prends l'habitude systématique de vérifier $I=I_3+I_4$ en fin de calcul : c'est le moyen le plus rapide de détecter une erreur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calcule la résistance équivalente de deux résistors $R_1=6\\ \\Omega$ et $R_2=3\\ \\Omega$ montés en dérivation.",
+          "solution_markdown": "$R_{eq}=\\dfrac{6\\times3}{6+3}=\\dfrac{18}{9}=2\\ \\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Deux résistors en dérivation, $R_1=10\\ \\Omega$ et $R_2=15\\ \\Omega$, sont soumis à une tension commune $U=6\\ \\text{V}$. Calcule l'intensité dans chaque branche, puis l'intensité totale.",
+          "solution_markdown": "$I_1=U/R_1=6/10=0{,}6\\ \\text{A}$ ; $I_2=U/R_2=6/15=0{,}4\\ \\text{A}$ ; $I=I_1+I_2=1\\ \\text{A}$ (loi des nœuds)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un générateur $(E=10\\ \\text{V}, r=1\\ \\Omega)$ alimente, en série avec un résistor $R=3\\ \\Omega$, deux résistors $R_1$ et $R_2$ montés en dérivation. Sachant que $R_1=2R_2$ et que l'intensité totale débitée est $I=1\\ \\text{A}$, calcule $R_1$ et $R_2$.",
+          "solution_markdown": "La loi de Pouillet donne la résistance totale : $r+R+R_{12}=E/I=10/1=10\\ \\Omega$, donc $R_{12}=10-1-3=6\\ \\Omega$. Avec $R_1=2R_2$ : $R_{12}=\\dfrac{R_1R_2}{R_1+R_2}=\\dfrac{2R_2\\times R_2}{3R_2}=\\dfrac{2R_2}{3}=6 \\implies R_2=9\\ \\Omega$, puis $R_1=2\\times9=18\\ \\Omega$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux résistances en dérivation partagent la MÊME tension à leurs bornes, jamais la même intensité.",
+        "La résistance équivalente d'une dérivation se calcule par $R_{eq}=\\dfrac{R_3R_4}{R_3+R_4}$ (produit sur somme pour deux résistances), toujours INFÉRIEURE à la plus petite des deux.",
+        "Calcule d'abord $U_{AB}$ (via la résistance équivalente et l'intensité totale), puis chaque intensité de branche par la loi d'Ohm.",
+        "Vérifie systématiquement avec la loi des nœuds : la somme des intensités de branches doit redonner l'intensité totale.",
+        "Fermer un interrupteur qui active une branche en dérivation fait TOUJOURS baisser la résistance équivalente, donc augmenter l'intensité totale débitée par le générateur."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-bilan-puissance-diagramme-énergie-1ere",
+  "meta": {
+    "titre": "Bilan de puissance et diagramme des echanges d'énergie",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Énergie électrique",
+    "duree_estimee_min": 22,
+    "tags": [
+      "bilan de puissance",
+      "diagramme énergétique",
+      "effet Joule",
+      "rendement"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2011-b-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique, Séries C et E, session 2011 (source distincte, variante b)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2011-b-officiel-cameroun-ex3-q4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ou passe exactement l'énergie électrique fournie par une pile quand elle n'aboutit pas toute en énergie mécanique utile ? Le diagramme des echanges d'énergie repond visuellement a cette question, en suivant chaque watt depuis sa production jusqu'a sa destination finale - utile ou perdue en chaleur."
+    },
+    {
+      "type": "prérequis",
+      "items": [
+        "Puissance électrique $P=UI$",
+        "Effet Joule et puissance dissipee $P_J=rI^2$",
+        "Lois d'Ohm generalisees du générateur et du moteur"
+      ]
+    },
+    {
+      "type": "règle",
+      "titre": "Suivre la puissance étape par étape, sans en perdre",
+      "contenu_markdown": "A chaque étape du circuit, la puissance entrante se scinde intégralement entre une part transmise a l'element suivant et une part dissipee par effet Joule dans la résistance interne de l'element traverse. Le diagramme empile ces étapes successivement : la somme de toutes les parts (utiles et perdues) a chaque étape doit toujours redonner exactement la puissance totale de départ.",
+      "formule_principale": "P_{entrante} = P_{transmise} + P_{Joule} \\quad\\text{a chaque étape du circuit}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_résolu",
+      "enonce_markdown": "Établir le bilan de puissance d'un circuit générateur (E=4,5V, r=1,5 ohm) - moteur (E'=2,5V, r'=0,5 ohm) parcouru par I=1A.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance totale générée",
+          "justification": "C'est la puissance électrique totale que le générateur convertit a partir de sa source d'énergie (chimique, par exemple).",
+          "resultat_markdown": "$P_{tot}=EI=4{,}5\\times1=4{,}5\\,W$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les pertes Joule du générateur",
+          "justification": "Une partie de la puissance totale est dissipee par la résistance interne du générateur.",
+          "resultat_markdown": "$r I^2 = 1{,}5\\times1^2=1{,}5\\,W$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire la puissance utile transmise au moteur",
+          "justification": "Ce qui n'est pas perdu par effet Joule dans le générateur est transmis au reste du circuit.",
+          "resultat_markdown": "$P_{utile}=P_{tot}-rI^2=4{,}5-1{,}5=3\\,W$ (vérifie par $UI=3\\times1=3\\,W$)"
+        },
+        {
+          "numero": 4,
+          "action": "Scinder cette puissance a l'entree du moteur",
+          "justification": "Le moteur dissipe a son tour une partie de la puissance recue par effet Joule dans sa propre résistance interne.",
+          "resultat_markdown": "$r'I^2=0{,}5\\times1^2=0{,}5\\,W$ perdus, $P=3-0{,}5=2{,}5\\,W$ restitues en puissance mécanique utile"
+        }
+      ],
+      "conclusion_markdown": "Sur les $4{,}5\\,W$ produits par le générateur, $2\\,W$ sont perdus par effet Joule (1,5 W + 0,5 W) et $2{,}5\\,W$ ressortent en puissance mécanique utile - le bilan est complet, rien ne manque."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'une des deux étapes de pertes Joule (générateur ET moteur) et n'en représenter qu'une seule dans le diagramme.",
+          "pourquoi_faux": "Le générateur et le moteur possedent chacun leur propre résistance interne, donc chacun ses propres pertes Joule, a des étapes differentes du trajet de la puissance.",
+          "correction_markdown": "Recense systématiquement chaque dipole resistif du circuit un par un, et associe a chacun sa propre étape de pertes dans le diagramme."
+        },
+        {
+          "erreur_markdown": "Vérifier le bilan uniquement par addition finale ($1{,}5+0{,}5+2{,}5=4{,}5$) sans avoir calcule chaque grandeur intermediaire de facon independante.",
+          "pourquoi_faux": "Une addition qui \"tombe juste\" peut masquer une compensation d'erreurs (deux valeurs fausses qui s'annulent par coincidence) : elle ne garantit pas que chaque étape individuelle est correcte.",
+          "correction_markdown": "Calcule chaque grandeur du bilan par au moins deux méthodes independantes quand c'est possible (ici, $P_{utile}$ par $EI-rI^2$ ET par $UI$) avant de conclure que le bilan global est correct."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.e.m. $10\\,V$ et de résistance interne $0{,}5\\,\\Omega$ débite un courant de $2\\,A$. Calculer la puissance totale générée et les pertes Joule internes.",
+          "solution_markdown": "$P_{tot}=EI=10\\times2=20\\,W$. Pertes Joule : $rI^2=0{,}5\\times4=2\\,W$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exercice précédent : quelle est la puissance utile transmise au reste du circuit, et quelle est la tension aux bornes du générateur ?",
+          "solution_markdown": "$P_{utile}=P_{tot}-rI^2=20-2=18\\,W$. $U=P_{utile}/I=18/2=9\\,V$ (ou directement $U=E-rI=10-0{,}5\\times2=9\\,V$, coherent)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit comprend un générateur (E,r) alimentant en série un moteur (E',r') qui entraine lui-même, par un arbre mécanique, une petite génératrice de rendement $80\\%$. Sachant que le moteur fournit une puissance mécanique de $10\\,W$, quelle puissance électrique la génératrice restitue-t-elle en sortie, et pourquoi le rendement global de la chaine (du générateur électrique initial jusqu'a la sortie électrique finale) est-il necessairement inferieur a chacun des rendements pris separement ?",
+          "solution_markdown": "La génératrice recoit $10\\,W$ mécaniques et restitue $80\\%$ de cette puissance en sortie électrique : $10\\times0{,}80=8\\,W$. Le rendement global de la chaine complète (générateur électrique -> moteur -> génératrice) est le PRODUIT des rendements de chaque etage (chaque etage perd une partie de ce qu'il recoit, jamais rien ne se récupère en aval) : $\\eta_{global}=\\eta_{générateur}\\times\\eta_{moteur}\\times\\eta_{génératrice}$. Comme chaque rendement individuel est inferieur a $1$, leur produit est necessairement inferieur au plus petit d'entre eux - une chaine de conversions d'énergie ne peut jamais être plus efficace que son maillon le moins performant, et elle est toujours strictement moins efficace des qu'il y a plus d'un maillon avec pertes."
+        }
+      ]
+    },
+    {
+      "type": "synthèse",
+      "items_markdown": [
+        "A chaque étape du circuit, toute la puissance entrante se retrouve, intégralement, entre puissance transmise et pertes Joule - rien ne peut disparaitre sans être comptabilise.",
+        "Un générateur et un moteur ont chacun leur propre résistance interne, donc leur propre étape de pertes dans le diagramme : ne jamais les fusionner.",
+        "Vérifie chaque grandeur du bilan par (au moins) deux méthodes de calcul independantes avant de conclure a sa coherence globale.",
+        "Le diagramme des echanges d'énergie est l'outil de référence pour \"visualiser\" un bilan de puissance au Probatoire et au Baccalaureat : il rend explicite ce qu'une suite de formules isolees laisse parfois implicite."
+      ]
+    }
+  ]
+}

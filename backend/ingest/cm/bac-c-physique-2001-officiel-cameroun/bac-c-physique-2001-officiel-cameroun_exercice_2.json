@@ -1,0 +1,146 @@
+{
+  "epreuve_source": "bac-c-physique-2001-officiel-cameroun.pdf",
+  "pays": "cm",
+  "matiere": "Physique",
+  "nature_epreuve": null,
+  "serie": "C",
+  "examen": "bac",
+  "origine": "officiel",
+  "etablissement": null,
+  "annee": 2001,
+  "duree_epreuve": null,
+  "coefficient": null,
+  "points": 4,
+  "introduction_markdown": null,
+  "groupes": [],
+  "statut": "brouillon",
+  "numero_exercice": "2",
+  "enonce_intro_markdown": "**Exercice II (4 points)**\n\nDétermination de la capacité d'un condensateur\n\nPour déterminer la capacité $C$ d'un condensateur, on dispose du matériel suivant : un oscilloscope bicourbe ; un générateur délivrant une tension alternative sinusoïdale de valeur efficace constante $U=5$ V, de fréquence variable ; deux voltmètres ; un conducteur ohmique de résistance $R=250\\ \\Omega$ ; une bobine d'inductance $L=0,20$ H et de résistance négligeable devant $R$.\n\nPremier montage : on branche en série le générateur, le conducteur ohmique, la bobine et le condensateur.",
+  "figures": [
+    {
+      "id": "fig-1",
+      "fichier": "bac-c-physique-2001-officiel-cameroun_exercice_2_fig_1.png",
+      "page_source": 2,
+      "type": "courbe",
+      "legende": "Oscillogramme du deuxième montage : Courbe 1 (grande amplitude) et Courbe 2 (amplitude plus faible), à identifier avec u(t) et uR(t)",
+      "indispensable": true,
+      "lisibilite": "partielle",
+      "origine_figure": "enonce"
+    },
+    {
+      "id": "fig-2",
+      "fichier": "bac-c-physique-2001-officiel-cameroun_exercice_2_fig_2.png",
+      "page_source": 2,
+      "type": "schema",
+      "legende": "Schéma du montage RLC série avec branchement de l'oscilloscope (voie Y1 aux bornes du générateur, voie Y2 aux bornes de R)",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    },
+    {
+      "id": "fig-3",
+      "fichier": "bac-c-physique-2001-officiel-cameroun_exercice_2_fig_3.png",
+      "page_source": 2,
+      "type": "schema",
+      "legende": "Construction de Fresnel du dipôle RC : U_R en référence de phase, U_C en quadrature retard, U = U_R + U_C",
+      "indispensable": true,
+      "lisibilite": "bonne",
+      "origine_figure": "corrige"
+    }
+  ],
+  "questions": [
+    {
+      "numero": "1",
+      "enonce_markdown": "Faire un schéma du montage et indiquer comment relier l'oscilloscope pour visualiser la tension $u(t)$ aux bornes du générateur et l'intensité $i(t)$ dans le circuit. Faire figurer sur le schéma $u(t)$ et $i(t)$.",
+      "corrige_markdown": "Le montage est une maille série unique comportant, dans un ordre quelconque, le générateur G, le conducteur ohmique R, la bobine L et le condensateur C. L'oscilloscope ne mesure que des tensions : pour visualiser $u(t)$, on branche la voie Y1 directement aux bornes du générateur. Le courant $i(t)$, commun à tous les éléments de la maille série, ne peut être visualisé que de façon indirecte, par l'intermédiaire de la tension $u_R(t)=R\\,i(t)$ aux bornes du conducteur ohmique, qui lui est proportionnelle et exactement en phase avec lui : on branche donc la voie Y2 aux bornes de R.\n\n![fig-2](bac-c-physique-2001-officiel-cameroun_exercice_2_fig_2.png)\n\n### Piège à éviter\nLes deux voies d'un oscilloscope bicourbe partagent en général une masse commune reliée à la borne « froide » du générateur : il faut donc placer le conducteur ohmique directement adjacent à cette borne commune (comme sur le schéma) pour pouvoir mesurer $u_R(t)$ sans court-circuiter une partie du circuit à travers les masses des deux voies reliées entre elles.\n\n### Conseil\nRetiens la règle générale : un oscilloscope classique ne mesure jamais un courant directement, seulement une tension. Dès qu'un énoncé demande de « visualiser i(t) », il faut immédiatement penser à la tension aux bornes d'une résistance connue, image fidèle du courant qui la traverse.",
+      "themes": [
+        "circuit RLC série",
+        "oscilloscope",
+        "branchement voie de mesure"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "faible",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": []
+    },
+    {
+      "numero": "2",
+      "enonce_markdown": "On fait varier la fréquence de la tension délivrée par le générateur pour atteindre la résonance d'intensité. Donner un moyen de vérifier que la résonance est atteinte. Comment faut-il procéder pour mesurer la fréquence de résonance $f_0$ à l'oscillographe ? La mesure donne $f_0=200$ Hz. En déduire une valeur de la capacité $C$ du condensateur.",
+      "corrige_markdown": "### Rappel de méthode\nUn circuit RLC série est à la résonance d'intensité lorsque son impédance $Z=\\sqrt{R^2+\\left(L\\omega-\\frac1{C\\omega}\\right)^2}$ est minimale et purement résistive ($Z=R$) : cela se produit à la pulsation propre $\\omega_0=\\dfrac1{\\sqrt{LC}}$, pour laquelle les réactances de la bobine et du condensateur se compensent exactement, rendant le courant maximal et exactement en phase avec la tension délivrée par le générateur.\n\nDeux moyens pratiques permettent de repérer expérimentalement cette résonance : rechercher, en balayant la fréquence, le maximum de l'amplitude de $u_R(t)$ à l'oscilloscope (puisque $u_R=Ri$ est proportionnelle à l'intensité) ; ou bien rechercher l'ABSENCE de déphasage entre $u(t)$ et $u_R(t)$ (les deux courbes affichées doivent être exactement superposées en phase, puisqu'à la résonance le courant, donc $u_R$, est en phase avec $u$). Pour mesurer $f_0$ à l'oscillographe une fois la résonance repérée par l'un de ces deux critères, on relève la période $T_0$ du signal affiché à l'écran (nombre de divisions occupées par un motif périodique, multiplié par le calibre de la base de temps), puis on calcule $f_0=1/T_0$.\n\nLa mesure donne $f_0=200$ Hz. À la résonance, $LC\\omega_0^2=1$ avec $\\omega_0=2\\pi f_0$, d'où :\n$$C=\\dfrac{1}{L\\,(2\\pi f_0)^2}$$\n\nApplication numérique : $\\omega_0=2\\pi\\times200=400\\pi\\approx1256,6$ rad/s, donc $\\omega_0^2=(400\\pi)^2=160000\\pi^2\\approx1,579\\times10^{6}$ rad²/s².\n\n$$C=\\dfrac{1}{0,20\\times1,579\\times10^{6}}=\\dfrac{1}{3,158\\times10^{5}}\\approx3,17\\times10^{-6}\\ \\text{F}$$\n\nSoit $C\\approx3,17\\ \\mu$F.\n\n### Piège à éviter\nNe pas confondre la résonance d'INTENSITÉ (celle demandée ici, où $Z=R$ est minimale et $I$ maximale) avec une résonance de tension aux bornes d'un seul dipôle : dans un montage série alimenté à tension efficace constante, c'est bien l'intensité (donc $u_R$) qui est maximale exactement à $\\omega_0=1/\\sqrt{LC}$.\n\n### Conseil\nVérifie l'ordre de grandeur : avec $L$ de l'ordre du dixième de henry et $f_0$ de l'ordre de la centaine de hertz, $C$ tombe presque toujours dans la gamme du microfarad — une réponse en nanofarads ou en millifarads doit alerter sur une puissance de dix oubliée dans le calcul de $\\omega_0^2$.",
+      "themes": [
+        "résonance d'intensité",
+        "circuit RLC série"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-physique-2001-officiel-cameroun-ex2-q2-0",
+          "competence": "Résonance d'intensité dans un circuit RLC série",
+          "contenu_markdown": "Un circuit RLC série est à la résonance d'intensité lorsque son impédance $Z=\\sqrt{R^2+\\left(L\\omega-\\frac1{C\\omega}\\right)^2}$ est minimale et purement résistive ($Z=R$) : cela se produit à la pulsation propre $\\omega_0=\\dfrac1{\\sqrt{LC}}$, pour laquelle les réactances de la bobine et du condensateur se compensent exactement, rendant le courant maximal et exactement en phase avec la tension délivrée par le générateur.",
+          "cours_genere": true,
+          "cours_id": "cours-bac-c-physique-2001-officiel-cameroun-ex2-q2-0"
+        }
+      ]
+    },
+    {
+      "numero": "3",
+      "enonce_markdown": "Deuxième montage : on branche en série le conducteur ohmique, le condensateur et le générateur dont la fréquence est fixée à 200 Hz. L'oscillographe permet de visualiser la tension $u(t)$ aux bornes du générateur et la tension $u_R(t)$ aux bornes du conducteur ohmique (voir figure). La fréquence étant toujours de 200 Hz, on branche un voltmètre aux bornes du conducteur ohmique et un autre voltmètre aux bornes du condensateur ; ils indiquent alors une même tension de 3,54 V.\n\nQuelle courbe (1 ou 2) correspond à la tension $u(t)$ ? Justifier la méthode utilisée par une construction de Fresnel. Déterminer la phase $\\varphi$ de $u(t)$ par rapport à $u_R(t)$ et en déduire une valeur de la capacité $C$ du condensateur.",
+      "corrige_markdown": "Dans ce second montage, R et C sont seuls en série avec le générateur (la bobine n'intervient plus) : c'est un dipôle RC série, parcouru par l'intensité commune $i(t)$.\n\n### Rappel de méthode\nDans un dipôle RC série, on choisit l'intensité $i(t)$ (donc $\\vec U_R$, qui lui est colinéaire) comme référence de phase du diagramme de Fresnel ; $\\vec U_C$ lui est alors perpendiculaire et en retard de $\\pi/2$ sur elle, et la tension totale $\\vec U=\\vec U_R+\\vec U_C$ est l'hypoténuse du triangle rectangle ainsi formé — ce qui montre que $u(t)$ est TOUJOURS en retard sur $i(t)$ (donc sur $u_R(t)$) dans un tel dipôle, d'un angle $\\varphi$ compris entre $0$ et $\\pi/2$ tel que $\\tan\\varphi=\\dfrac{U_C}{U_R}=\\dfrac{1}{RC\\omega}$.\n\nLe générateur impose une tension efficace constante $U=5$ V quelle que soit la fréquence, alors que $U_R=RI$ reste nécessairement inférieure à $U$ dans un diviseur RC : la courbe de plus grande amplitude est donc nécessairement $u(t)$, celle de plus faible amplitude est $u_R(t)$. Sur le graphe fourni, la Courbe 1 a la plus grande amplitude et atteint son maximum APRÈS celui de la Courbe 2, de plus faible amplitude : la Courbe 2 est donc en avance sur la Courbe 1. Ceci correspond exactement à $u_R(t)$ (image de $i(t)$) en avance sur $u(t)$, conformément au diagramme de Fresnel ci-dessus.\n\n**La Courbe 1 correspond à $u(t)$ ; la Courbe 2 correspond à $u_R(t)$.**\n\nConstruction de Fresnel avec les valeurs données ($U_R=U_C=3,54$ V, voir aussi question 4) :\n\n![fig-3](bac-c-physique-2001-officiel-cameroun_exercice_2_fig_3.png)\n\nPar lecture graphique du décalage horaire entre les deux courbes rapporté à leur période commune (graduation non chiffrée sur le graphe reproduit, lecture donc affectée d'une incertitude non négligeable), on estime $\\varphi\\approx45°$, soit $\\varphi\\approx\\pi/4$ rad ; cette valeur sera confirmée précisément par le calcul indépendant de la question 4.\n\nDe $\\tan\\varphi=\\dfrac{1}{RC\\omega}$, on tire :\n$$C=\\dfrac{1}{R\\,\\omega\\,\\tan\\varphi}$$\n\nAvec $\\varphi\\approx45°$ (soit $\\tan\\varphi\\approx1$), $\\omega=2\\pi f=2\\pi\\times200=400\\pi$ rad/s et $R=250\\ \\Omega$ :\n$$C=\\dfrac{1}{250\\times400\\pi\\times1}=\\dfrac{1}{100000\\pi}\\approx3,18\\times10^{-6}\\ \\text{F}=3,18\\ \\mu\\text{F}$$\n\n### Piège à éviter\nNe pas se fier uniquement à la forme des deux courbes pour désigner $u(t)$ : c'est la comparaison des AMPLITUDES (le générateur impose la plus grande tension efficace du circuit) combinée à l'analyse du sens du déphasage (le retard caractéristique d'un dipôle capacitif) qui permet de conclure sans ambiguïté.\n\n### Conseil\nUne lecture graphique d'un déphasage n'est jamais un résultat définitif : donne toujours un ordre de grandeur assorti de sa précision, puis cherche à le confirmer par un calcul indépendant dès que les données le permettent — c'est exactement la démarche de la question 4.",
+      "themes": [
+        "diagramme de Fresnel",
+        "dipôle RC",
+        "déphasage tension-courant"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "élevée",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": [
+        {
+          "id": "rdm-bac-c-physique-2001-officiel-cameroun-ex2-q3-0",
+          "competence": "Construction de Fresnel et déphasage tension-courant dans un dipôle RC",
+          "contenu_markdown": "Dans un dipôle RC série, on choisit l'intensité $i(t)$ (donc $\\vec U_R$, qui lui est colinéaire) comme référence de phase du diagramme de Fresnel ; $\\vec U_C$ lui est alors perpendiculaire et en retard de $\\pi/2$ sur elle, et la tension totale $\\vec U=\\vec U_R+\\vec U_C$ est l'hypoténuse du triangle rectangle ainsi formé — ce qui montre que $u(t)$ est TOUJOURS en retard sur $i(t)$ (donc sur $u_R(t)$) dans un tel dipôle, d'un angle $\\varphi$ compris entre $0$ et $\\pi/2$ tel que $\\tan\\varphi=\\dfrac{U_C}{U_R}=\\dfrac{1}{RC\\omega}$.",
+          "cours_genere": true,
+          "cours_id": "cours-bac-c-physique-2001-officiel-cameroun-ex2-q3-0"
+        }
+      ]
+    },
+    {
+      "numero": "4",
+      "enonce_markdown": "Retrouver la capacité $C$ à partir de l'égalité de ces deux tensions.",
+      "corrige_markdown": "Les deux voltmètres, placés respectivement aux bornes du conducteur ohmique et aux bornes du condensateur, indiquent la même valeur efficace $U_R=U_C=3,54$ V. Or $U_R=RI$ et $U_C=\\dfrac{I}{C\\omega}$, où $I$ est l'intensité efficace commune aux deux dipôles en série. L'égalité $U_R=U_C$ donne :\n$$RI=\\dfrac{I}{C\\omega}\\ \\Longrightarrow\\ R=\\dfrac{1}{C\\omega}\\ \\Longrightarrow\\ C=\\dfrac{1}{R\\omega}$$\n\nApplication numérique (mêmes valeurs que précédemment, $R=250\\ \\Omega$, $\\omega=400\\pi$ rad/s) :\n$$C=\\dfrac{1}{250\\times400\\pi}=\\dfrac{1}{100000\\pi}\\approx3,18\\times10^{-6}\\ \\text{F}=3,18\\ \\mu\\text{F}$$\n\nCette valeur est rigoureusement identique à celle obtenue à la question précédente par la lecture du déphasage, ce qui n'a rien d'un hasard : $U_R=U_C$ équivaut exactement à $R=1/(C\\omega)$, c'est-à-dire à $\\tan\\varphi=1$, donc $\\varphi=45°$ — la méthode du déphasage et celle de l'égalité des tensions expriment la même condition physique par deux voies différentes. Les trois déterminations de $C$ effectuées dans cet exercice (3,17 µF par la résonance du premier montage ; 3,18 µF par le déphasage ; 3,18 µF par l'égalité des tensions) sont cohérentes entre elles à l'incertitude de mesure près : $C\\approx3,2\\ \\mu$F.\n\n### Conseil\nQuand deux voltmètres affichent la même tension efficace aux bornes de deux dipôles en série parcourus par le même courant, cela signifie directement que leurs impédances ont la même valeur numérique ($R=1/(C\\omega)$ ici) : c'est souvent la voie la plus rapide et la plus fiable pour extraire une grandeur inconnue, plus sûre qu'une lecture graphique de phase.",
+      "themes": [
+        "impédance",
+        "condensateur",
+        "diviseur de tension"
+      ],
+      "savoir_officiel": null,
+      "difficulte_estimee": "moyenne",
+      "type_reponse": "ouverte",
+      "choix": [],
+      "reponse_correcte": "",
+      "rappels_de_methode": []
+    }
+  ],
+  "mots_cles_recherche": [
+    "circuit RLC série",
+    "résonance d'intensité",
+    "oscilloscope",
+    "diagramme de Fresnel",
+    "condensateur",
+    "déphasage RC"
+  ],
+  "incertitudes": [
+    "savoir_officiel non renseigné : le fichier programme_officiel_cm_physique.json n'est pas accessible dans cet environnement (aucune invention de référence).",
+    "vocabulaire des thèmes existant non consulté : la commande Django vocabulaire_themes n'est pas exécutable dans cet environnement (pas de projet Django accessible) ; les thèmes proposés sont donc génériques et pourront nécessiter une fusion manuelle avec le vocabulaire déjà en base.",
+    "coefficient et durée de l'épreuve non imprimés sur le sujet source : laissés à null.",
+    "lecture graphique du déphasage à la question 3 effectuée sur un oscillogramme reproduit sans graduation chiffrée (échelle de temps non lisible sur le scan source) : la valeur φ≈45° retenue est corroborée par le calcul indépendant et cohérent de la question 4 (égalité UR=UC), qui seul fixe la valeur exacte de C."
+  ]
+}

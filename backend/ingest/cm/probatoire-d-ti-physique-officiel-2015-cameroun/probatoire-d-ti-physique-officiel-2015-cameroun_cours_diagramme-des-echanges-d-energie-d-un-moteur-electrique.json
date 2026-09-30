@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-diagramme-energie-moteur-1ere",
+  "meta": {
+    "titre": "Diagramme des échanges d'énergie d'un moteur électrique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Énergie électrique et puissance dans les circuits",
+    "duree_estimee_min": 18,
+    "tags": [
+      "bilan de puissance",
+      "moteur électrique",
+      "effet Joule",
+      "diagramme énergétique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROB-D-TI-PHYSIQUE-2015-CM",
+    "epreuve_titre": "Probatoire D, TI - Physique - 2015 - Cameroun (officiel)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2015-cameroun-ex2-q2.2c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un moteur qui chauffe pendant qu'il tourne ne gaspille pas toute son énergie électrique en chaleur : une partie devient bien du mouvement utile, l'autre part en chaleur perdue. Le diagramme des échanges d'énergie rend visible, en un seul schéma, comment se répartissent ces deux destins de la puissance électrique reçue - exactement ce que demande une question du type «construire le diagramme des échanges d'énergie»."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi des mailles avec générateur et récepteur actif (calcul de l'intensité $I$)",
+        "Puissance électrique $P=UI$ et puissance dissipée par effet Joule $P_J=rI^2$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Bilan de puissance d'un moteur",
+      "contenu_markdown": "Un moteur (récepteur actif de force contre-électromotrice $E'$ et de résistance interne $r'$, parcouru par un courant $I$) reçoit une puissance électrique totale $P_{recue}=(E'+r'I)I$. Cette puissance se répartit intégralement en deux emplois : une puissance mécanique utile $P_u=E'I$, convertie en travail par l'arbre du moteur, et une puissance perdue par effet Joule $P_J=r'I^2$, dissipée sous forme de chaleur dans sa résistance interne. Le diagramme des échanges d'énergie représente ce bilan par une flèche entrante ($P_{recue}$) qui se sépare en deux flèches sortantes ($P_u$ et $P_J$).",
+      "formule_principale": "P_{recue} = P_u + P_J = E'I + r'I^2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un moteur de force contre-électromotrice $E'=12$ V et de résistance interne $r'=2\\ \\Omega$ est parcouru par un courant $I=0{,}5$ A. Construire le diagramme des échanges d'énergie de ce moteur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance électrique totale reçue",
+          "justification": "C'est la puissance fournie au moteur par le reste du circuit, produit de la tension à ses bornes ($E'+r'I$) par le courant.",
+          "resultat_markdown": "$P_{recue} = (E'+r'I)I = (12+2\\times 0{,}5)\\times 0{,}5 = 13\\times 0{,}5 = 6{,}5$ W"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance mécanique utile",
+          "justification": "C'est la part de la puissance reçue effectivement convertie en travail par le moteur, associée à sa force contre-électromotrice.",
+          "resultat_markdown": "$P_u = E'I = 12\\times 0{,}5 = 6$ W, soit environ 92,3 % de $P_{recue}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la puissance perdue par effet Joule",
+          "justification": "C'est la part dissipée en chaleur dans la résistance interne $r'$ du moteur.",
+          "resultat_markdown": "$P_J = r'I^2 = 2\\times 0{,}5^2 = 0{,}5$ W, soit environ 7,7 % de $P_{recue}$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier le bilan et tracer le diagramme",
+          "justification": "La somme des deux puissances sortantes doit redonner exactement la puissance entrante.",
+          "resultat_markdown": "$P_u+P_J = 6+0{,}5 = 6{,}5$ W $= P_{recue}$ : une flèche entrante de 6,5 W se sépare en une flèche «puissance mécanique utile» de 6 W et une flèche «pertes Joule» de 0,5 W."
+        }
+      ],
+      "conclusion_markdown": "Ce moteur convertit environ 92,3 % de la puissance électrique reçue en puissance mécanique utile, le reste (7,7 %) étant perdu par effet Joule dans sa résistance interne : un bilan qui se lit directement sur le diagramme, sans recalculer les pourcentages à chaque fois."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre la puissance reçue par le moteur, $P_{recue}=(E'+r'I)I$, avec la puissance fournie par le générateur du circuit, $EI$.",
+          "pourquoi_faux": "Entre le générateur et le moteur, une partie de la puissance totale du circuit est déjà perdue dans les autres résistances (dont la résistance interne $r$ du générateur) : la puissance reçue par le moteur seul ne correspond qu'à ce qui atteint réellement ses propres bornes.",
+          "correction_markdown": "Calcule toujours $P_{recue}$ du moteur à partir de SES propres grandeurs ($E'$, $r'$, $I$), jamais à partir de la f.é.m. $E$ du générateur du circuit."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que $P_u+P_J$ redonne bien $P_{recue}$, et laisser passer une erreur de calcul sur l'une des deux puissances.",
+          "pourquoi_faux": "Le bilan de puissance d'un moteur est un cas particulier de la conservation de l'énergie : toute puissance électrique reçue devient nécessairement soit du travail utile, soit de la chaleur, sans reste possible.",
+          "correction_markdown": "Prends l'habitude de vérifier systématiquement $P_u+P_J=P_{recue}$ avant de tracer le diagramme : un écart signale immédiatement une erreur de calcul à corriger."
+        },
+        {
+          "erreur_markdown": "Dessiner un diagramme sans indiquer les valeurs numériques ni le sens des flèches, se contentant d'un schéma «décoratif».",
+          "pourquoi_faux": "Le diagramme des échanges d'énergie est un outil quantitatif : il doit permettre de lire directement les valeurs de $P_{recue}$, $P_u$ et $P_J$, pas seulement illustrer qu'«une partie se perd».",
+          "correction_markdown": "Indique toujours, sur chaque flèche du diagramme, la grandeur représentée, sa formule et sa valeur numérique (éventuellement son pourcentage du total)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur de force contre-électromotrice $E'=8$ V et de résistance interne $r'=1\\ \\Omega$ est parcouru par un courant $I=2$ A. Calculer la puissance reçue, la puissance utile et la puissance perdue par effet Joule.",
+          "solution_markdown": "$$P_{recue} = (E'+r'I)I = (8+1\\times 2)\\times 2 = 10\\times 2 = 20 \\ \\text{W}$$\n\n$$P_u = E'I = 8\\times 2 = 16 \\ \\text{W}$$\n\n$$P_J = r'I^2 = 1\\times 2^2 = 4 \\ \\text{W}$$\n\nVérification : $16+4=20$ W $=P_{recue}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur reçoit une puissance électrique totale $P_{recue}=100$ W lorsqu'il est parcouru par un courant $I=4$ A, avec une résistance interne $r'=1{,}25\\ \\Omega$. Calculer la puissance perdue par effet Joule, la puissance utile, puis le rendement du moteur (rapport $P_u/P_{recue}$).",
+          "solution_markdown": "**Puissance Joule.**\n\n$$P_J = r'I^2 = 1{,}25\\times 4^2 = 1{,}25\\times 16 = 20 \\ \\text{W}$$\n\n**Puissance utile.**\n\n$$P_u = P_{recue} - P_J = 100-20 = 80 \\ \\text{W}$$\n\n**Rendement du moteur.**\n\n$$\\eta_{moteur} = \\frac{P_u}{P_{recue}} = \\frac{80}{100} = 0{,}80 \\ \\Rightarrow\\ 80\\,\\%$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un moteur a un rendement de 90 % pour une puissance reçue $P_{recue}=50$ W, sous un courant $I=2{,}5$ A. Calculer la résistance interne $r'$ de ce moteur.",
+          "solution_markdown": "**Puissance perdue par effet Joule.** Un rendement de 90 % signifie que 10 % de la puissance reçue part en pertes Joule.\n\n$$P_J = (1-0{,}90)\\times P_{recue} = 0{,}10\\times 50 = 5 \\ \\text{W}$$\n\n**Résistance interne.** À partir de $P_J = r'I^2$ :\n\n$$r' = \\frac{P_J}{I^2} = \\frac{5}{2{,}5^2} = \\frac{5}{6{,}25} = 0{,}8\\ \\Omega$$\n\nCe moteur a donc une résistance interne de $0{,}8\\ \\Omega$, cohérente avec un bon rendement (90 %) : une résistance interne plus élevée aurait dissipé davantage de puissance en chaleur pour le même courant."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le bilan de puissance d'un moteur s'écrit toujours $P_{recue}=P_u+P_J$ : rien ne se perd, tout se répartit entre travail utile et chaleur.",
+        "$P_{recue}=(E'+r'I)I$ se calcule à partir des grandeurs propres du moteur, jamais à partir de la f.é.m. du générateur du circuit.",
+        "$P_u=E'I$ est la puissance mécanique utile, $P_J=r'I^2$ la puissance perdue par effet Joule : deux formules à ne jamais échanger.",
+        "Vérifie toujours $P_u+P_J=P_{recue}$ avant de tracer le diagramme : c'est le test le plus rapide pour repérer une erreur de calcul.",
+        "Au Probatoire comme au Baccalauréat, ce diagramme accompagne presque toujours une question de rendement : les deux notions se lisent sur le même bilan de puissance."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-minimum-deviation-prisme-1ere",
+  "meta": {
+    "titre": "Minimum de déviation d'un prisme et mesure de son indice",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Réfraction et prisme",
+    "duree_estimee_min": 25,
+    "tags": [
+      "prisme",
+      "minimum de déviation",
+      "loi de Descartes",
+      "indice de réfraction"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2014-officiel-cameroun.pdf",
+    "epreuve_titre": "Probatoire Physique, Série C-E, Session 2014 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-physique-2014-officiel-cameroun.pdf-ex1-q2.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "En laboratoire, mesurer l'indice de réfraction d'un verre inconnu se fait rarement en visant directement un angle d'incidence quelconque : on fait tourner le prisme jusqu'à repérer la position où la déviation du faisceau est minimale, une position remarquable et facile à repérer à l'œil, car la déviation cesse d'y varier de façon sensible. C'est cette configuration particulière, et la relation qu'elle vérifie, qui permettent de remonter à l'indice du prisme à partir de deux mesures d'angle seulement."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Les quatre formules fondamentales du prisme (cours précédent)",
+        "Résolution d'un système de deux équations à deux inconnues",
+        "Notion de symétrie d'un trajet optique"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La condition de minimum de déviation",
+      "contenu_markdown": "Quand on fait varier l'angle d'incidence $i_1$ sur un prisme fixe, la déviation $D = i_1+i_2-A$ varie elle aussi, et passe par un minimum noté $D_m$. Ce minimum est atteint exactement lorsque le trajet du rayon à l'intérieur du prisme est symétrique par rapport au plan bissecteur de l'angle $A$, ce qui se traduit par :\n\n$$i_1 = i_2 \\qquad \\text{et} \\qquad r = r' = \\dfrac{A}{2}$$\n\n**Conséquence sur l'angle d'incidence au minimum.** En notant $i_m = i_1 = i_2$ au minimum, la relation $D = i_1+i_2-A$ devient $D_m = 2i_m - A$, d'où $i_m = \\dfrac{D_m+A}{2}$.\n\n**Relation finale.** En reportant $i_m = \\dfrac{D_m+A}{2}$ et $r = \\dfrac{A}{2}$ dans la loi de Descartes à l'entrée $\\sin i_m = n\\sin r$, on obtient la relation caractéristique du minimum de déviation :\n\n$$\\sin\\!\\left(\\dfrac{A+D_m}{2}\\right) = n\\sin\\!\\left(\\dfrac{A}{2}\\right)$$\n\n**Intérêt pratique.** Cette relation ne fait intervenir que $A$ (mesurable directement sur le prisme) et $D_m$ (mesurable expérimentalement en cherchant la position de déviation minimale) : elle permet de calculer l'indice $n$ du prisme sans connaître ni mesurer $i_1$, $r$, $r'$ ou $i_2$ séparément.",
+      "formule_principale": "\\sin\\!\\left(\\dfrac{A+D_m}{2}\\right) = n\\sin\\!\\left(\\dfrac{A}{2}\\right)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un prisme d'angle $A = 46°$ présente un minimum de déviation $D_m = 27°$. Calculer son indice de réfraction $n$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la relation du minimum de déviation et isoler $n$",
+          "justification": "$\\sin\\left(\\frac{A+D_m}{2}\\right) = n\\sin\\left(\\frac{A}{2}\\right)$",
+          "resultat_markdown": "$n = \\dfrac{\\sin\\left(\\frac{A+D_m}{2}\\right)}{\\sin\\left(\\frac{A}{2}\\right)}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'angle $(A+D_m)/2$ et son sinus",
+          "justification": "Application numérique directe.",
+          "resultat_markdown": "$\\dfrac{46+27}{2} = 36{,}5° \\Rightarrow \\sin(36{,}5°) \\approx 0{,}5948$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'angle $A/2$ et son sinus",
+          "justification": "Application numérique directe.",
+          "resultat_markdown": "$\\dfrac{46}{2} = 23° \\Rightarrow \\sin(23°) \\approx 0{,}3907$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le rapport des deux sinus",
+          "justification": "On reporte les deux valeurs dans l'expression de $n$.",
+          "resultat_markdown": "$n = \\dfrac{0{,}5948}{0{,}3907} \\approx 1{,}52$"
+        }
+      ],
+      "conclusion_markdown": "L'indice mesuré, environ 1,52, est proche de la valeur usuelle d'un verre courant (n ≈ 1,5), ce qui confirme la cohérence physique du résultat."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la relation du minimum de déviation avec des valeurs de $i_1$, $r$, $r'$ ou $i_2$ qui ne correspondent pas à la configuration symétrique.",
+          "pourquoi_faux": "La relation $\\sin\\left(\\frac{A+D_m}{2}\\right) = n\\sin\\left(\\frac{A}{2}\\right)$ n'est valable QUE lorsque $i_1 = i_2$ (trajet symétrique). Pour toute autre incidence, il faut repartir des quatre formules générales du prisme, pas de cette relation particulière.",
+          "correction_markdown": "Vérifie toujours que l'énoncé précise bien qu'on se trouve au minimum de déviation (souvent formulé « pour $i_1 = i_2$ » ou « au minimum de déviation ») avant d'utiliser cette relation."
+        },
+        {
+          "erreur_markdown": "Diviser $D_m$ par 2 seul, en oubliant d'y ajouter $A$ avant de diviser (confondre $\\frac{D_m}{2}$ et $\\frac{A+D_m}{2}$).",
+          "pourquoi_faux": "C'est bien la DEMI-SOMME de $A$ et $D_m$ qui intervient dans la relation, pas la moitié de $D_m$ seul : oublier le terme $A$ change complètement le résultat.",
+          "correction_markdown": "Recopie la formule complète avant de substituer les valeurs numériques, plutôt que de manipuler les nombres de tête : cela évite d'oublier un terme dans la demi-somme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un prisme d'angle $A = 60°$ présente un minimum de déviation $D_m = 40°$. Calculer son indice $n$.",
+          "solution_markdown": "$\\dfrac{A+D_m}{2} = \\dfrac{60+40}{2} = 50° \\Rightarrow \\sin(50°) \\approx 0{,}766$.\n\n$\\dfrac{A}{2} = 30° \\Rightarrow \\sin(30°) = 0{,}5$.\n\n$$n = \\dfrac{0{,}766}{0{,}5} \\approx 1{,}53$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un prisme en verre d'indice $n = 1{,}5$ a un angle au sommet $A = 60°$. Calculer sa déviation minimale $D_m$.",
+          "solution_markdown": "On isole $D_m$ dans la relation du minimum de déviation :\n\n$$\\sin\\!\\left(\\dfrac{A+D_m}{2}\\right) = n\\sin\\!\\left(\\dfrac{A}{2}\\right) = 1{,}5\\times\\sin(30°) = 1{,}5\\times 0{,}5 = 0{,}75$$\n\n$$\\dfrac{A+D_m}{2} = \\arcsin(0{,}75) \\approx 48{,}6°$$\n\n$$A+D_m \\approx 97{,}2° \\Rightarrow D_m \\approx 97{,}2-60 = 37{,}2°$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que si l'angle au sommet $A$ d'un prisme d'indice $n$ donné devient très petit (prisme mince), la déviation minimale se simplifie en $D_m \\approx (n-1)A$ (formule du prisme mince).",
+          "solution_markdown": "Pour un angle $A$ petit (exprimé en radians), et donc $D_m$ également petit puisque la déviation dépend continûment de $A$, on peut utiliser l'approximation des petits angles $\\sin x \\approx x$ dans la relation du minimum de déviation :\n\n$$\\sin\\!\\left(\\dfrac{A+D_m}{2}\\right) \\approx \\dfrac{A+D_m}{2} \\qquad \\text{et} \\qquad \\sin\\!\\left(\\dfrac{A}{2}\\right) \\approx \\dfrac{A}{2}$$\n\nLa relation $\\sin\\left(\\frac{A+D_m}{2}\\right) = n\\sin\\left(\\frac{A}{2}\\right)$ devient alors :\n\n$$\\dfrac{A+D_m}{2} \\approx n\\times \\dfrac{A}{2}$$\n\nEn multipliant les deux membres par 2 :\n\n$$A + D_m \\approx nA$$\n\nD'où :\n\n$$D_m \\approx nA - A = (n-1)A$$\n\nCette formule approchée, valable uniquement pour un prisme d'angle $A$ petit, montre que la déviation minimale est alors directement proportionnelle à l'angle au sommet, avec pour coefficient $(n-1)$ : c'est la formule dite du « prisme mince », utilisée par exemple pour les prismes correcteurs en optométrie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Au minimum de déviation, le trajet du rayon dans le prisme est symétrique : $i_1 = i_2$ et $r = r' = A/2$.",
+        "Cette symétrie transforme les quatre relations générales du prisme en une seule relation à deux inconnues mesurables, $A$ et $D_m$ : $\\sin\\left(\\frac{A+D_m}{2}\\right) = n\\sin\\left(\\frac{A}{2}\\right)$.",
+        "Cette relation ne s'applique JAMAIS en dehors de la configuration de minimum de déviation ; pour toute autre incidence, il faut repartir des quatre formules générales.",
+        "Mesurer $A$ et $D_m$ expérimentalement (le minimum se repère facilement car $D$ cesse d'y varier sensiblement) permet de déterminer l'indice d'un verre inconnu sans aucun autre instrument de mesure d'angle interne.",
+        "Cette méthode de mesure de l'indice par le minimum de déviation est une manipulation classique de travaux pratiques d'optique, régulièrement questionnée au Probatoire scientifique."
+      ]
+    }
+  ]
+}

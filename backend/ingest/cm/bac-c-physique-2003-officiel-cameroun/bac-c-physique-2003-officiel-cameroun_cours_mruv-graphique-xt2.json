@@ -1,0 +1,141 @@
+{
+  "cours_id": "cours-mruv-graphique-xt2-tle-c",
+  "meta": {
+    "titre": "Identifier un mouvement rectiligne uniformément varié à partir de x = f(t²)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Cinématique du point - mouvement rectiligne",
+    "duree_estimee_min": 25,
+    "tags": [
+      "MRUV",
+      "cinématique",
+      "exploitation graphique",
+      "accélération"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-PHYSIQUE-2003-CM",
+    "epreuve_titre": "Baccalauréat Cameroun, série C, Physique, session 2003",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-2003-ex1-q1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un chariot lâché sur un plan incliné, une bille qui roule au bas d'une gouttière, une voiture qui freine : dans tous ces cas, un physicien veut savoir si le mouvement est uniformément varié sans disposer d'un capteur d'accélération. La solution est étonnamment simple : au lieu de tracer la distance parcourue en fonction du temps (une parabole difficile à lire précisément), on la trace en fonction du carré du temps. Si le nuage de points s'aligne sur une droite passant par l'origine, le mouvement est uniformément varié, et la pente de cette droite donne directement l'accélération. C'est exactement la méthode que tu vas retrouver à chaque fois qu'un tableau de mesures (x, t) accompagne un mobile lâché sans vitesse initiale."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer le carré d'un nombre décimal avec au moins deux chiffres significatifs",
+        "Connaître la définition du mouvement rectiligne uniformément varié (accélération constante)",
+        "Savoir lire un coefficient directeur (une pente) sur un graphique",
+        "Savoir tracer un nuage de points à l'échelle imposée par un énoncé"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la loi horaire au tracé linéarisé",
+      "contenu_markdown": "Un mobile lâché sans vitesse initiale ($v_0 = 0$) à l'instant $t=0$ et animé d'un mouvement rectiligne uniformément varié d'accélération constante $a$ parcourt, à partir de son point de départ, la distance :\n\n$x(t) = \\dfrac{1}{2}at^2$\n\nCette loi horaire est une fonction du second degré en $t$ : sa représentation graphique $x=f(t)$ est une parabole, sur laquelle il est difficile d'évaluer précisément une accélération à l'œil. L'astuce consiste à changer de variable en posant $u = t^2$ : la loi devient alors $x = \\dfrac{1}{2}au$, une fonction affine de $u$ sans terme constant, donc une droite passant par l'origine, de pente $\\dfrac{a}{2}$.\n\nRéciproquement, si des points expérimentaux $(t^2\\,;\\,x)$ s'alignent sur une droite passant par l'origine, le mouvement est bien uniformément varié, sans vitesse initiale, et l'accélération se calcule à partir de la pente $p$ mesurée sur le graphique par $a = 2p$.",
+      "formule_principale": "x = \\frac{1}{2}at^2 \\;\\Longleftrightarrow\\; x = \\left(\\frac{a}{2}\\right)t^2",
+      "variantes": [
+        {
+          "nom": "Cas d'une vitesse initiale non nulle",
+          "quand_utiliser": "Quand le mobile n'est pas lâché depuis le repos mais possède déjà une vitesse $v_0$ au départ du chronométrage",
+          "contenu_markdown": "Si $v_0 \\neq 0$, la loi horaire devient $x = v_0t + \\frac{1}{2}at^2$, qui n'est plus une droite en $x=f(t^2)$ (le terme en $v_0 t$ dépend de $t$, pas de $t^2$). Il faut alors tracer $x=f(t)$ et vérifier que la tangente à l'origine a pour pente $v_0$, ou dériver deux fois numériquement pour retrouver $a$. Cette variante ne concerne pas les mobiles \"lâchés\" ou \"partant du repos\", pour lesquels $x=f(t^2)$ reste la méthode la plus directe."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un chariot est lâché sans vitesse initiale sur un plan incliné. On mesure, pour différentes distances $x$ parcourues, le temps $t$ correspondant :\n\n| $x$ (m) | 0,40 | 0,80 | 1,40 |\n|---|---|---|---|\n| $t$ (s) | 0,73 | 1,03 | 1,37 |\n\nMontrer que le mouvement est uniformément varié et calculer l'accélération.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $t^2$ pour chaque valeur de $t$",
+          "justification": "Le changement de variable $u=t^2$ est la première étape indispensable de la méthode",
+          "resultat_markdown": "$0{,}73^2 = 0{,}53\\ \\text{s}^2\\;;\\quad 1{,}03^2 = 1{,}06\\ \\text{s}^2\\;;\\quad 1{,}37^2 = 1{,}88\\ \\text{s}^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Placer les points $(t^2\\,;\\,x)$ sur un graphique et vérifier l'alignement",
+          "justification": "Si le mouvement est uniformément varié sans vitesse initiale, ces points doivent s'aligner sur une droite passant par l'origine",
+          "resultat_markdown": "Les trois points $(0{,}53\\,;\\,0{,}40)$, $(1{,}06\\,;\\,0{,}80)$ et $(1{,}88\\,;\\,1{,}40)$ sont alignés sur une droite qui passe, aux incertitudes de mesure près, par l'origine du repère"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la pente de la droite entre les deux points extrêmes",
+          "justification": "Prendre deux points bien séparés minimise l'erreur relative sur la pente",
+          "resultat_markdown": "$p = \\dfrac{1{,}40 - 0{,}40}{1{,}88 - 0{,}53} = \\dfrac{1{,}00}{1{,}35} \\approx 0{,}74\\ \\text{m.s}^{-2}$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire l'accélération",
+          "justification": "La pente mesurée vaut $a/2$ d'après la loi $x = \\frac{1}{2}at^2$",
+          "resultat_markdown": "$a = 2p = 2 \\times 0{,}74 \\approx 1{,}49\\ \\text{m.s}^{-2}$"
+        }
+      ],
+      "conclusion_markdown": "Le nuage de points étant aligné sur une droite passant par l'origine, le mouvement du chariot est rectiligne uniformément varié, d'accélération $a \\approx 1{,}49\\ \\text{m.s}^{-2}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tracer directement $x = f(t)$ et essayer d'évaluer une pente sur la courbe obtenue",
+          "pourquoi_faux": "$x=f(t)$ est une parabole, pas une droite : elle n'a pas de pente unique, et toute tentative de lecture graphique d'une accélération dessus est imprécise et sans fondement théorique.",
+          "correction_markdown": "Toujours passer par le changement de variable $u=t^2$ avant de tracer, pour transformer la parabole en droite."
+        },
+        {
+          "erreur_markdown": "Confondre la pente mesurée $p$ avec l'accélération $a$ elle-même",
+          "pourquoi_faux": "La loi $x = \\frac{1}{2}at^2$ montre que la pente de $x=f(t^2)$ vaut $a/2$, pas $a$ : oublier ce facteur $\\frac{1}{2}$ divise le résultat final par deux.",
+          "correction_markdown": "Toujours écrire explicitement $a = 2p$ après avoir mesuré la pente $p$, jamais $a=p$ directement."
+        },
+        {
+          "erreur_markdown": "Calculer la pente à partir de deux points de mesure très proches l'un de l'autre",
+          "pourquoi_faux": "Deux points proches amplifient l'erreur relative sur la pente calculée, car une petite erreur de lecture sur $\\Delta x$ ou $\\Delta(t^2)$ pèse alors beaucoup plus lourd dans le rapport.",
+          "correction_markdown": "Toujours choisir deux points aussi éloignés que possible sur la droite tracée, idéalement le premier et le dernier point du tableau de mesures."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un mobile lâché sans vitesse initiale parcourt $x=0{,}20\\ \\text{m}$ en $t=0{,}50\\ \\text{s}$ et $x=0{,}80\\ \\text{m}$ en $t=1{,}00\\ \\text{s}$. Calculer l'accélération de ce mouvement en admettant qu'il est uniformément varié.",
+          "solution_markdown": "On calcule d'abord $t^2$ pour chaque mesure : $0{,}50^2 = 0{,}25\\ \\text{s}^2$ et $1{,}00^2 = 1{,}00\\ \\text{s}^2$.\n\nLa pente entre ces deux points est $p = \\dfrac{0{,}80-0{,}20}{1{,}00-0{,}25} = \\dfrac{0{,}60}{0{,}75} = 0{,}80\\ \\text{m.s}^{-2}$.\n\nL'accélération vaut $a = 2p = 2 \\times 0{,}80 = 1{,}60\\ \\text{m.s}^{-2}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un chariot est lâché sans vitesse initiale sur un rail. On mesure $x=0{,}30\\ \\text{m}$ pour $t=0{,}77\\ \\text{s}$ et $x=1{,}20\\ \\text{m}$ pour $t=1{,}55\\ \\text{s}$. Un camarade affirme que l'accélération vaut $a = \\dfrac{1{,}20-0{,}30}{1{,}55-0{,}77} \\approx 1{,}17\\ \\text{m.s}^{-2}$. Cette méthode est-elle correcte ? Calculer la valeur correcte de $a$.",
+          "solution_markdown": "La méthode du camarade est incorrecte : il calcule la pente de $x=f(t)$ (et non $x=f(t^2)$), ce qui n'a pas de sens puisque $x=f(t)$ n'est pas une droite pour un mouvement uniformément varié parti du repos.\n\nMéthode correcte : on calcule $t^2$ pour chaque mesure : $0{,}77^2 = 0{,}593\\ \\text{s}^2$ et $1{,}55^2 = 2{,}403\\ \\text{s}^2$.\n\nLa pente de $x=f(t^2)$ vaut $p = \\dfrac{1{,}20-0{,}30}{2{,}403-0{,}593} = \\dfrac{0{,}90}{1{,}810} \\approx 0{,}497\\ \\text{m.s}^{-2}$.\n\nL'accélération correcte vaut $a = 2p \\approx 0{,}994 \\approx 0{,}99\\ \\text{m.s}^{-2}$, très différente (presque la moitié) de la valeur obtenue par la méthode erronée."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un mobile est animé d'un mouvement rectiligne uniformément varié, mais avec une vitesse initiale $v_0$ non nulle inconnue. On mesure $x=1{,}0\\ \\text{m}$ à $t=1{,}0\\ \\text{s}$, $x=2{,}5\\ \\text{m}$ à $t=2{,}0\\ \\text{s}$ et $x=4{,}5\\ \\text{m}$ à $t=3{,}0\\ \\text{s}$. Montrer que le tracé $x=f(t^2)$ ne serait pas ici une droite, puis déterminer $v_0$ et $a$ en utilisant la méthode adaptée à ce cas.",
+          "solution_markdown": "Si l'on calculait $t^2$ (1,0 ; 4,0 ; 9,0) et qu'on cherchait une droite passant par l'origine reliant ces points à $x$, on constaterait que le rapport $x/t^2$ n'est pas constant : $1{,}0/1{,}0=1{,}0$, $2{,}5/4{,}0=0{,}625$, $4{,}5/9{,}0=0{,}5$. Le tracé $x=f(t^2)$ n'est donc pas une droite passant par l'origine ici : la présence d'une vitesse initiale non nulle invalide cette méthode.\n\nOn utilise à la place la loi complète $x = v_0t + \\frac{1}{2}at^2$, valable pour tout mouvement uniformément varié. Avec trois mesures, on écrit un système d'équations :\n\n$1{,}0 = v_0(1{,}0) + \\frac{1}{2}a(1{,}0)^2 \\;\\Rightarrow\\; v_0 + 0{,}5a = 1{,}0$\n\n$4{,}5 = v_0(3{,}0) + \\frac{1}{2}a(3{,}0)^2 \\;\\Rightarrow\\; 3v_0 + 4{,}5a = 4{,}5$\n\nDe la première équation : $v_0 = 1{,}0 - 0{,}5a$. En reportant dans la seconde :\n\n$3(1{,}0-0{,}5a) + 4{,}5a = 4{,}5 \\;\\Rightarrow\\; 3{,}0 - 1{,}5a + 4{,}5a = 4{,}5 \\;\\Rightarrow\\; 3a = 1{,}5 \\;\\Rightarrow\\; a = 0{,}5\\ \\text{m.s}^{-2}$\n\nOn en déduit $v_0 = 1{,}0 - 0{,}5\\times0{,}5 = 0{,}75\\ \\text{m.s}^{-1}$.\n\nVérification avec la deuxième mesure ($t=2{,}0\\ \\text{s}$) : $x = 0{,}75\\times2{,}0 + 0{,}5\\times0{,}5\\times2{,}0^2 = 1{,}5+1{,}0=2{,}5\\ \\text{m}$, ce qui correspond bien à la valeur mesurée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour un mobile lâché sans vitesse initiale, trace toujours $x = f(t^2)$ plutôt que $x = f(t)$ : tu obtiens une droite passant par l'origine, bien plus facile à exploiter qu'une parabole.",
+        "La pente de cette droite vaut $a/2$, jamais $a$ directement : n'oublie jamais de multiplier par 2 pour retrouver l'accélération.",
+        "Un alignement des points sur une droite passant par l'origine est la preuve expérimentale d'un mouvement rectiligne uniformément varié sans vitesse initiale.",
+        "Choisis toujours deux points bien séparés pour calculer une pente expérimentale, jamais deux mesures consécutives trop proches.",
+        "Si une vitesse initiale non nulle est suspectée, cette méthode ne s'applique plus telle quelle : il faut alors résoudre le système donné par la loi horaire complète $x=v_0t+\\frac{1}{2}at^2$.",
+        "Cette méthode revient très souvent au BAC et au Probatoire dans les exercices de mécanique expérimentale (chute libre, plan incliné, mobile autoporteur) : maîtriser ce changement de variable est un gain de temps immédiat le jour de l'épreuve."
+      ]
+    }
+  ]
+}

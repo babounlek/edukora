@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-fresnel-dephasage-dipole-rc-tle-c",
+  "meta": {
+    "titre": "Construction de Fresnel et déphasage tension-courant dans un dipôle RC",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Circuits électriques en régime sinusoïdal",
+    "duree_estimee_min": 30,
+    "tags": [
+      "diagramme de Fresnel",
+      "dipôle RC",
+      "déphasage",
+      "impédance complexe"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2001-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique Série C - Physique - Session 2001 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-2001-officiel-cameroun-ex2-q3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Additionner deux tensions sinusoïdales de même fréquence mais déphasées l'une par rapport à l'autre semble compliqué si l'on s'en tient à des formules trigonométriques. La construction de Fresnel transforme ce problème en un simple exercice de géométrie : chaque tension devient un vecteur tournant, et leur somme devient une addition de vecteurs. C'est l'outil qui permet, en une lecture de schéma, de savoir immédiatement quelle grandeur est en avance sur quelle autre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les lois d'Ohm en régime sinusoïdal pour un conducteur ohmique et un condensateur",
+        "Savoir additionner deux vecteurs du plan (relation de Chasles, théorème de Pythagore)",
+        "Savoir manipuler la fonction tangente et son inverse (arctangente) sur un triangle rectangle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Construire le diagramme de Fresnel d'un dipôle RC série",
+      "contenu_markdown": "Dans un dipôle RC série parcouru par un courant $i(t)$ commun, on choisit ce courant comme référence de phase : le vecteur de Fresnel $\\vec U_R$, représentant $u_R(t)=Ri(t)$, est colinéaire à $\\vec I$ (en phase avec le courant). Le vecteur $\\vec U_C$, représentant la tension aux bornes du condensateur, est perpendiculaire à $\\vec U_R$ et en RETARD de $\\pi/2$ sur le courant (propriété du condensateur). La tension totale du dipôle est la somme vectorielle $\\vec U=\\vec U_R+\\vec U_C$, hypoténuse d'un triangle rectangle dont l'angle $\\varphi$ (déphasage de $u$ par rapport à $i$, donc par rapport à $u_R$) vérifie :",
+      "formule_principale": "\\tan\\varphi=\\dfrac{U_C}{U_R}=\\dfrac{1}{RC\\omega}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un dipôle RC série ($R=250\\ \\Omega$) est parcouru par un courant sinusoïdal de fréquence $f=200$ Hz. Les voltmètres indiquent $U_R=U_C=3,54$ V. Construire le diagramme de Fresnel, déterminer le déphasage $\\varphi$ de $u$ par rapport à $u_R$, et en déduire la capacité $C$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer les vecteurs de Fresnel",
+          "justification": "UR est pris en référence de phase (horizontal), UC lui est perpendiculaire et en retard (donc placé à angle droit, en dessous si le temps croît dans le sens horaire des phases en retard).",
+          "resultat_markdown": "$\\vec U_R$ horizontal (3,54 V), $\\vec U_C$ perpendiculaire (3,54 V)"
+        },
+        {
+          "numero": 2,
+          "action": "Construire U comme somme vectorielle",
+          "justification": "La tension totale du dipôle est la somme des tensions aux bornes de ses deux éléments en série.",
+          "resultat_markdown": "$\\vec U=\\vec U_R+\\vec U_C$, hypoténuse du triangle rectangle formé par UR et UC"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'angle φ",
+          "justification": "Dans le triangle rectangle, tan φ = côté opposé (UC) / côté adjacent (UR).",
+          "resultat_markdown": "$\\tan\\varphi=\\dfrac{U_C}{U_R}=\\dfrac{3,54}{3,54}=1\\ \\Longrightarrow\\ \\varphi=45°$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire C",
+          "justification": "tan φ = 1/(RCω), on isole C.",
+          "resultat_markdown": "$C=\\dfrac1{R\\omega\\tan\\varphi}=\\dfrac1{250\\times2\\pi\\times200\\times1}=\\dfrac1{100000\\pi}\\approx3,18\\times10^{-6}\\ \\text{F}$"
+        }
+      ],
+      "conclusion_markdown": "Le déphasage entre u(t) et uR(t) vaut 45°, ce qui donne une capacité d'environ 3,18 µF : la construction de Fresnel transforme un problème de phases en un simple calcul géométrique dans un triangle rectangle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer UC en avance sur UR (ou sur I) au lieu de UC en retard.",
+          "pourquoi_faux": "C'est une propriété physique fondamentale du condensateur : la tension à ses bornes est TOUJOURS en retard de π/2 sur le courant qui le traverse (le courant charge le condensateur, la tension ne répond qu'après). Inverser ce sens inverse le signe du déphasage final.",
+          "correction_markdown": "Mémoriser une fois pour toutes : bobine → tension en AVANCE sur le courant ; condensateur → tension en RETARD sur le courant. C'est la clé de toute construction de Fresnel en régime sinusoïdal."
+        },
+        {
+          "erreur_markdown": "Désigner la courbe de plus grande amplitude comme uR ou uC plutôt que comme u, sans vérifier laquelle des tensions est structurellement la plus grande.",
+          "pourquoi_faux": "Dans un diviseur de tension RC, chaque tension partielle (UR ou UC) est nécessairement inférieure à la tension totale U : la courbe de plus grande amplitude sur un oscillogramme représente donc presque toujours la tension totale du générateur, pas une tension partielle.",
+          "correction_markdown": "Comparer systématiquement les amplitudes des courbes à la valeur connue de la tension du générateur avant de choisir laquelle représente u(t)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un dipôle RC série a $U_R=4,0$ V et $U_C=3,0$ V. Calculer $U$ et le déphasage $\\varphi$ de $u$ par rapport à $i$.",
+          "solution_markdown": "$U=\\sqrt{U_R^2+U_C^2}=\\sqrt{16+9}=\\sqrt{25}=5,0$ V.\n\n$\\tan\\varphi=\\dfrac{U_C}{U_R}=\\dfrac{3,0}{4,0}=0,75\\ \\Longrightarrow\\ \\varphi=\\arctan(0,75)\\approx36,9°$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un dipôle RC série (R=100 Ω, C=10 µF) est alimenté à f=50 Hz. Calculer $U_C/U_R$ puis le déphasage φ de u par rapport à i.",
+          "solution_markdown": "$\\omega=2\\pi\\times50\\approx314,2$ rad/s ; $X_C=\\dfrac1{C\\omega}=\\dfrac1{10\\times10^{-6}\\times314,2}\\approx318,3\\ \\Omega$.\n\n$\\dfrac{U_C}{U_R}=\\dfrac{X_C}{R}=\\dfrac{318,3}{100}\\approx3,18$\n\n$\\varphi=\\arctan(3,18)\\approx72,5°$ : ce déphasage, proche de 90°, signale que le condensateur domine nettement l'impédance du dipôle à cette fréquence relativement basse (XC≫R)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, dans un dipôle RC série, le déphasage φ de u par rapport à i tend vers 90° quand la fréquence tend vers 0, et vers 0° quand la fréquence tend vers l'infini ; interpréter physiquement ces deux limites.",
+          "solution_markdown": "$\\tan\\varphi=\\dfrac1{RC\\omega}$ avec $\\omega=2\\pi f$.\n\nQuand $f\\to0$ : $\\omega\\to0$, donc $\\tan\\varphi\\to+\\infty$, soit $\\varphi\\to90°$. Interprétation : à très basse fréquence, le condensateur se comporte presque comme un interrupteur ouvert (XC=1/(Cω) très grand), il impose son propre déphasage de 90° au dipôle presque entier.\n\nQuand $f\\to+\\infty$ : $\\omega\\to+\\infty$, donc $\\tan\\varphi\\to0$, soit $\\varphi\\to0°$. Interprétation : à très haute fréquence, XC devient négligeable devant R (le condensateur se comporte presque comme un fil), le dipôle se comporte comme une résistance pure, sans déphasage."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans un dipôle RC série, prends toujours le courant i(t) comme référence de phase du diagramme de Fresnel.",
+        "UR est en phase avec i ; UC est en retard de 90° sur i ; U=UR+UC est l'hypoténuse du triangle rectangle formé, avec $\\tan\\varphi=U_C/U_R$.",
+        "La tension totale u(t) est TOUJOURS en retard sur le courant (et donc sur uR) dans un dipôle RC série : ne jamais inverser ce sens.",
+        "Une courbe de plus grande amplitude sur un oscillogramme représente presque toujours la tension totale du générateur, jamais une tension partielle d'un diviseur.",
+        "Le déphasage φ varie continûment entre 90° (très basse fréquence) et 0° (très haute fréquence) pour un dipôle RC série : ces deux limites sont un bon repère de cohérence pour toute valeur intermédiaire calculée.",
+        "Au BAC, cette construction sert aussi bien à identifier une courbe sur un oscillogramme qu'à déterminer une capacité ou une résistance inconnue à partir d'un déphasage mesuré."
+      ]
+    }
+  ]
+}

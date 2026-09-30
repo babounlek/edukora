@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-expression-instantanee-dune-grandeur-sinusoidale-terminale-c",
+  "meta": {
+    "titre": "Expression instantanée d'une grandeur sinusoïdale",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Courant alternatif sinusoïdal",
+    "duree_estimee_min": 20,
+    "tags": [
+      "grandeur sinusoïdale",
+      "valeur efficace",
+      "valeur maximale",
+      "phase"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2004-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Baccalauréat Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-2004-officiel-cameroun-ex2-q6-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un multimètre affiche une tension alternative « de 220 V » : pourtant, à aucun instant cette tension ne vaut exactement 220 V, elle oscille sans cesse entre deux valeurs extrêmes. Ce cours explique le lien précis entre la valeur affichée (efficace) et la valeur réellement présente à chaque instant, et montre comment écrire complètement l'expression temporelle d'une grandeur sinusoïdale."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de fonction sinusoïdale et de pulsation",
+        "Valeur efficace d'une tension ou d'une intensité alternative",
+        "Déphasage entre deux grandeurs sinusoïdales"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Écrire l'expression instantanée d'une grandeur sinusoïdale",
+      "contenu_markdown": "Une grandeur sinusoïdale de valeur efficace $X$ et de pulsation $\\omega$ s'écrit en fonction du temps $x(t)=X\\sqrt2\\,\\sin(\\omega t+\\varphi)$, où $X\\sqrt2$ est son amplitude, c'est-à-dire sa valeur maximale, et $\\varphi$ sa phase à l'origine des temps, choisie nulle pour la grandeur prise comme référence de phase dans un circuit (le plus souvent l'intensité, dans un montage série). Toute autre grandeur du même circuit, à la même fréquence, a alors une phase égale à son déphasage par rapport à cette référence.",
+      "formule_principale": "x(t)=X\\sqrt{2}\\,\\sin(\\omega t+\\varphi)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un circuit, l'intensité efficace est $I=2\\,\\text{A}$, prise comme référence de phase, à la fréquence $f=50\\,\\text{Hz}$. La tension efficace aux bornes d'un dipôle est $U=110\\,\\text{V}$, en avance de phase de $\\pi/3$ sur l'intensité. Écrire les expressions instantanées de l'intensité et de la tension.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la pulsation",
+          "justification": "Elle est commune à toutes les grandeurs du circuit, quelle que soit leur phase",
+          "resultat_markdown": "$\\omega=2\\pi f=2\\pi\\times50\\approx314{,}16\\,\\text{rad.s}^{-1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'amplitude de l'intensité et écrire son expression",
+          "justification": "L'intensité est prise comme référence : sa phase à l'origine est nulle",
+          "resultat_markdown": "$I_{max}=I\\sqrt2=2\\times1{,}414\\approx2{,}83\\,\\text{A}$, donc $i(t)\\approx2{,}83\\sin(314{,}16\\,t)\\;\\text{A}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'amplitude de la tension et écrire son expression avec le déphasage donné",
+          "justification": "La tension est en avance de phase de π/3 sur l'intensité de référence",
+          "resultat_markdown": "$U_{max}=U\\sqrt2=110\\times1{,}414\\approx155{,}6\\,\\text{V}$, donc $u(t)\\approx155{,}6\\sin(314{,}16\\,t+\\pi/3)\\;\\text{V}$"
+        }
+      ],
+      "conclusion_markdown": "Les deux expressions instantanées partagent la même pulsation mais diffèrent par leur amplitude et par leur phase, cette dernière traduisant le déphasage physique entre tension et intensité."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la valeur efficace directement comme amplitude, en écrivant $x(t)=X\\sin(\\omega t)$",
+          "pourquoi_faux": "La valeur efficace n'est pas l'amplitude : elle est plus petite d'un facteur $\\sqrt2$. Oublier ce facteur sous-estime systématiquement l'amplitude réelle de la grandeur.",
+          "correction_markdown": "Toujours multiplier la valeur efficace par $\\sqrt2$ avant de l'utiliser comme amplitude dans l'expression temporelle."
+        },
+        {
+          "erreur_markdown": "Donner le même signe de déphasage à toutes les grandeurs sans réfléchir à qui est en avance ou en retard",
+          "pourquoi_faux": "Le signe du déphasage a un sens physique précis (avance ou retard par rapport à la référence) : l'inverser change complètement l'interprétation du circuit (inductif ou capacitif, par exemple).",
+          "correction_markdown": "Toujours vérifier, à partir du contexte physique (construction de Fresnel, signe de $L\\omega-1/(C\\omega)$), si le déphasage doit être positif (avance) ou négatif (retard) avant de l'écrire dans l'expression temporelle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une tension alternative a une valeur efficace $U=220\\,\\text{V}$ et une fréquence $f=50\\,\\text{Hz}$, prise comme référence de phase. Écrire son expression instantanée.",
+          "solution_markdown": "$U_{max}=220\\sqrt2\\approx311{,}1\\,\\text{V}$, $\\omega=314{,}16\\,\\text{rad.s}^{-1}$. $u(t)\\approx311{,}1\\sin(314{,}16\\,t)\\;\\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une intensité a pour expression $i(t)=4{,}5\\sin(628{,}3\\,t)\\;\\text{A}$. Calculer sa valeur efficace et sa fréquence.",
+          "solution_markdown": "L'amplitude est $4{,}5\\,\\text{A}$, donc $I=4{,}5/\\sqrt2\\approx3{,}18\\,\\text{A}$. La pulsation est $628{,}3\\,\\text{rad.s}^{-1}$, donc $f=\\omega/(2\\pi)=628{,}3/6{,}283\\approx100\\,\\text{Hz}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux tensions sinusoïdales de même fréquence ont pour expressions $u_1(t)=100\\sin(\\omega t)$ et $u_2(t)=100\\sin(\\omega t+\\pi)$. Montrer, sans calcul de somme point par point, que leur somme est nulle à tout instant, et interpréter ce résultat en termes de déphasage.",
+          "solution_markdown": "Un déphasage de $\\pi$ correspond à une opposition de phase : $\\sin(\\omega t+\\pi)=-\\sin(\\omega t)$ pour tout t. Donc $u_2(t)=-u_1(t)$ à chaque instant, et $u_1(t)+u_2(t)=0$ pour tout t. Physiquement, deux grandeurs sinusoïdales de même amplitude, en opposition de phase, s'annulent exactement à tout instant : c'est un cas particulier (destructif) de superposition de deux signaux sinusoïdaux de même fréquence."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'amplitude d'une grandeur sinusoïdale est toujours $\\sqrt2$ fois sa valeur efficace, jamais égale à elle.",
+        "La pulsation est commune à toutes les grandeurs d'un même circuit en régime sinusoïdal forcé : seules l'amplitude et la phase changent d'une grandeur à l'autre.",
+        "Le signe du déphasage porte une information physique réelle (avance ou retard) qu'il faut déterminer avant d'écrire l'expression, jamais choisir au hasard.",
+        "Prendre l'intensité comme référence de phase dans un circuit série est une convention pratique, pas une obligation physique : elle simplifie simplement l'écriture des autres grandeurs.",
+        "Au BAC, cette étape est presque toujours la dernière question d'un exercice sur les circuits en régime sinusoïdal : elle récapitule tous les résultats trouvés précédemment (valeurs efficaces, déphasage)."
+      ]
+    }
+  ]
+}

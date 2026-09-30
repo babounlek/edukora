@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-theoreme-energie-cinetique-plan-incline-1ere",
+  "meta": {
+    "titre": "Théorème de l'énergie cinétique sur un plan incliné sans frottement",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Travail et énergie mécanique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "théorème de l'énergie cinétique",
+      "plan incliné",
+      "travail du poids"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-officiel-2016-cameroun",
+    "epreuve_titre": "Probatoire D, TI - Physique - Session 2016 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2016-officiel-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une caissette lâchée sans vitesse sur une pente : quelle vitesse aura-t-elle en bas ? Tu pourrais projeter les forces et intégrer l'accélération selon les lois de Newton, mais il existe un raccourci bien plus rapide dès que seule la vitesse t'intéresse, sans avoir besoin du temps de parcours. C'est le théorème de l'énergie cinétique : il relie directement la vitesse à la distance parcourue et aux forces qui travaillent, sans jamais passer par l'accélération. C'est l'outil que tu utiliseras dans la quasi-totalité des exercices de mécanique du programme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Le travail d'une force constante sur un déplacement rectiligne : $W(\\vec F) = \\vec F \\cdot \\vec d = F \\times d \\times \\cos\\theta$",
+        "L'énergie cinétique d'un solide en translation : $E_c = \\frac{1}{2}mv^2$",
+        "La décomposition d'un poids sur un plan incliné d'angle $\\alpha$ : composante $mg\\sin\\alpha$ le long du plan"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le théorème de l'énergie cinétique",
+      "contenu_markdown": "Entre deux instants d'une trajectoire, la variation d'énergie cinétique d'un solide est égale à la somme des travaux de toutes les forces qui s'exercent sur lui, y compris celles qui ne travaillent pas (comme une réaction normale, dont le travail est simplement nul) : $$E_{c,\\,final} - E_{c,\\,initial} = \\sum W(\\vec F)$$\n\nSur un plan incliné d'angle $\\alpha$ sans frottement, seul le poids travaille : s'il descend d'une distance $d$ le long du plan, ce travail vaut $W(\\vec P) = mg \\times d \\times \\sin\\alpha$, et il est positif (le solide descend, le poids l'aide à avancer) ; s'il remonte, le même calcul donne un travail négatif.",
+      "formule_principale": "E_{c,B} - E_{c,A} = \\sum_{A \\to B} W(\\vec F)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une caissette de masse $m = 2$ kg, lâchée sans vitesse initiale en A, glisse sans frottement sur un plan incliné d'angle $\\alpha = 12°$. Elle arrive en B, au bas de la pente, avec une vitesse $v_B = 6$ m.s⁻¹. Calculer la distance $AB$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les forces et leur travail entre A et B",
+          "justification": "Le plan est sans frottement : seules le poids et la réaction normale agissent, et cette dernière ne travaille jamais car elle est perpendiculaire au déplacement.",
+          "resultat_markdown": "$W(\\vec N) = 0$ ; seul $W(\\vec P)$ reste à calculer."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire le théorème de l'énergie cinétique entre A et B",
+          "justification": "La caissette part sans vitesse initiale : $v_A = 0$, donc $E_{c,A} = 0$.",
+          "resultat_markdown": "$$\\frac{1}{2}mv_B^2 - 0 = W(\\vec P) = mg \\times AB \\times \\sin\\alpha$$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler la distance AB",
+          "justification": "La masse $m$ apparaît des deux côtés de l'égalité, elle se simplifie.",
+          "resultat_markdown": "$$AB = \\frac{v_B^2}{2g\\sin\\alpha}$$"
+        },
+        {
+          "numero": 4,
+          "action": "Faire l'application numérique",
+          "justification": "$\\sin 12° \\approx 0{,}2079$",
+          "resultat_markdown": "$$AB = \\frac{6^2}{2 \\times 9{,}8 \\times 0{,}2079} = \\frac{36}{4{,}075} \\approx 8{,}83 \\ \\text{m}$$"
+        }
+      ],
+      "conclusion_markdown": "La caissette a parcouru environ 8,83 m sur le plan incliné avant d'atteindre 6 m.s⁻¹ en B."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $W(\\vec P) = mgh$ avec $h = AB$ au lieu de $h = AB \\times \\sin\\alpha$",
+          "pourquoi_faux": "$h$ désigne la dénivellation verticale, pas la distance parcourue le long du plan ; ces deux longueurs ne coïncident que si le plan est vertical.",
+          "correction_markdown": "Toujours écrire le travail du poids sur un plan incliné comme $mg \\times d \\times \\sin\\alpha$, où $d$ est la distance le long du plan et $\\alpha$ l'angle avec l'horizontale."
+        },
+        {
+          "erreur_markdown": "Oublier que $v_A = 0$ et écrire $\\frac{1}{2}mv_B^2 - \\frac{1}{2}mv_A^2$ sans annuler le second terme",
+          "pourquoi_faux": "Rien ne change dans le résultat final si $v_A$ est correctement mis à zéro, mais garder le terme sans le simplifier est une source fréquente d'erreur de calcul dans la suite.",
+          "correction_markdown": "Relis l'énoncé pour repérer explicitement « lâché sans vitesse initiale » et pose $v_A = 0$ dès la première ligne."
+        },
+        {
+          "erreur_markdown": "Ne pas simplifier la masse $m$ des deux côtés et se tromper dans l'application numérique en la réintroduisant plus tard",
+          "pourquoi_faux": "La masse n'intervient pas dans le résultat final quand seul le poids travaille sur un plan sans frottement : la garder inutilement complique le calcul sans changer le résultat.",
+          "correction_markdown": "Simplifie systématiquement les termes communs à toute l'égalité avant de faire l'application numérique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un solide de masse $m = 1$ kg est lâché sans vitesse initiale en haut d'un plan incliné sans frottement, faisant un angle de $20°$ avec l'horizontale. Calculer sa vitesse après avoir parcouru $5$ m sur le plan ($g = 9{,}8$ N.kg⁻¹).",
+          "solution_markdown": "Le solide part sans vitesse : $v_A = 0$. Théorème de l'énergie cinétique entre le départ et le point après 5 m :\n\n$$\\frac{1}{2}mv^2 - 0 = mg \\times d \\times \\sin\\alpha$$\n\nLa masse se simplifie : $v^2 = 2g d \\sin\\alpha = 2 \\times 9{,}8 \\times 5 \\times \\sin 20° = 98 \\times 0{,}342 \\approx 33{,}5$ m².s⁻².\n\n$$v = \\sqrt{33{,}5} \\approx 5{,}79 \\ \\text{m.s}^{-1}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un solide de masse $m = 500$ g est lancé vers le haut d'un plan incliné sans frottement, incliné de $25°$, avec une vitesse initiale $v_0 = 4$ m.s⁻¹. Calculer la distance qu'il parcourt avant de s'arrêter momentanément.",
+          "solution_markdown": "Le solide monte : le poids travaille négativement. Sa vitesse finale est nulle au point d'arrêt. Théorème de l'énergie cinétique entre le départ et l'arrêt :\n\n$$0 - \\frac{1}{2}mv_0^2 = -mg \\times d \\times \\sin\\alpha$$\n\nLa masse se simplifie : $$d = \\frac{v_0^2}{2g\\sin\\alpha} = \\frac{4^2}{2 \\times 9{,}8 \\times \\sin 25°} = \\frac{16}{2 \\times 9{,}8 \\times 0{,}4226} \\approx \\frac{16}{8{,}28} \\approx 1{,}93 \\ \\text{m}$$\n\nLe solide parcourt environ 1,93 m avant de s'arrêter momentanément."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un solide de masse $m = 2$ kg part sans vitesse initiale du sommet d'un plan incliné sans frottement de hauteur $h = 3$ m (mesurée verticalement), quel que soit l'angle du plan. Montrer que sa vitesse en bas ne dépend pas de l'angle d'inclinaison, puis la calculer.",
+          "solution_markdown": "Notons $\\alpha$ l'angle du plan et $d$ la distance parcourue le long du plan : $h = d\\sin\\alpha$, donc $d = h/\\sin\\alpha$.\n\nThéorème de l'énergie cinétique entre le sommet et la base : $\\frac{1}{2}mv^2 - 0 = mg \\times d \\times \\sin\\alpha = mg \\times \\frac{h}{\\sin\\alpha} \\times \\sin\\alpha = mgh$.\n\nLe facteur $\\sin\\alpha$ se simplifie exactement : $v^2 = 2gh$, une expression qui ne dépend plus de l'angle $\\alpha$. C'est cohérent avec le théorème de l'énergie cinétique appliqué directement à la dénivellation, sans même passer par la distance le long du plan.\n\nApplication numérique : $v = \\sqrt{2 \\times 9{,}8 \\times 3} = \\sqrt{58{,}8} \\approx 7{,}67 \\ \\text{m.s}^{-1}$, quelle que soit la pente choisie pour descendre ces 3 m de dénivellation, tant qu'elle est sans frottement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le théorème de l'énergie cinétique relie vitesse et distance parcourue sans jamais passer par le temps ni l'accélération : c'est l'outil naturel dès que l'énoncé donne des vitesses et des longueurs.",
+        "Sur un plan incliné sans frottement, seul le poids travaille ; son travail vaut $mg \\times d \\times \\sin\\alpha$ si $d$ est la distance parcourue le long du plan.",
+        "Une réaction normale, perpendiculaire au déplacement, ne travaille jamais : ne l'oublie pas dans le bilan, mais son travail reste nul.",
+        "Simplifie systématiquement la masse quand elle apparaît des deux côtés de l'égalité : cela évite des erreurs de calcul inutiles.",
+        "Ce théorème est la porte d'entrée de presque tous les problèmes de mécanique du Probatoire D/TI : maîtrise-le avant d'aborder les cas avec frottement."
+      ]
+    }
+  ]
+}

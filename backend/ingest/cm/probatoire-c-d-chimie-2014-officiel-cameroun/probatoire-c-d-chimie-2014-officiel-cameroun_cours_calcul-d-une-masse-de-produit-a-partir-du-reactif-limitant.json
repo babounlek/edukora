@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-reactif-limitant-1ere",
+  "meta": {
+    "titre": "Calcul d'une masse de produit à partir du réactif limitant",
+    "matiere": "Chimie",
+    "pays": "cm",
+    "serie": "C, D",
+    "sous_theme": "Calculs stœchiométriques",
+    "duree_estimee_min": 18,
+    "tags": [
+      "réactif limitant",
+      "excès",
+      "calcul stœchiométrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-d-chimie-2014-officiel-cameroun",
+    "epreuve_titre": "Probatoire Chimie - Séries C et D - Session 2014 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-d-chimie-2014-officiel-cameroun-ex2-q1-2-3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand une recette de cuisine demande 2 œufs pour 200 g de farine et que tu n'as que 3 œufs mais 1 kg de farine, ce ne sont clairement pas les 3 œufs qui limitent le nombre de gâteaux réalisables - c'est bien la farine qui commande. En chimie, le raisonnement est identique : dès qu'un réactif est annoncé « en excès », c'est l'AUTRE réactif qui pilote entièrement la quantité de produit formé."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer une quantité de matière à partir d'une masse ou d'une concentration",
+        "Savoir exploiter les coefficients stœchiométriques d'une équation-bilan"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le réactif en excès ne compte pas : seul le réactif limitant fixe la quantité de produit",
+      "contenu_markdown": "Lorsqu'un réactif est annoncé « en large excès », c'est l'autre réactif qui est totalement consommé au cours de la réaction et qui fixe donc la quantité de matière de produit formé. La méthode consiste à calculer la quantité de matière initiale de ce réactif limitant (jamais celle du réactif en excès, qui n'intervient pas dans le résultat), puis à remonter à la quantité de matière du produit recherché grâce aux coefficients stœchiométriques de l'équation-bilan, et enfin à convertir cette quantité de matière en masse via la masse molaire du produit.",
+      "formule_principale": "n(produit) = (coefficient produit / coefficient réactif limitant) × n(réactif limitant)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Du zinc en large excès réagit avec 0,200 L d'acide chlorhydrique à 3,5 mol/L, selon l'équation Zn + 2HCl → ZnCl$_2$ + H$_2$. Calculer la masse de chlorure de zinc obtenue (M(ZnCl$_2$) = 136,5 g/mol).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le réactif limitant",
+          "justification": "Le zinc est explicitement annoncé en large excès, donc c'est HCl qui est totalement consommé",
+          "resultat_markdown": "Réactif limitant : HCl. Le zinc en excès n'intervient pas dans le calcul."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la quantité de matière initiale du réactif limitant",
+          "justification": "n = C × V pour une solution",
+          "resultat_markdown": "$n(HCl) = 3{,}5 \\times 0{,}200 = 0{,}70\\ mol$"
+        },
+        {
+          "numero": 3,
+          "action": "Utiliser les coefficients stœchiométriques pour en déduire la quantité de matière de produit",
+          "justification": "L'équation-bilan indique que 2 mol de HCl produisent 1 mol de ZnCl2",
+          "resultat_markdown": "$n(ZnCl_2) = \\dfrac{n(HCl)}{2} = \\dfrac{0{,}70}{2} = 0{,}35\\ mol$"
+        },
+        {
+          "numero": 4,
+          "action": "Convertir en masse",
+          "justification": "m = n × M",
+          "resultat_markdown": "$m(ZnCl_2) = 0{,}35 \\times 136{,}5 \\approx 47{,}8\\ g$"
+        }
+      ],
+      "conclusion_markdown": "On obtient environ 47,8 g de chlorure de zinc, une valeur entièrement déterminée par la quantité initiale de HCl, sans jamais avoir eu besoin de connaître la masse exacte de zinc engagée (au-delà du fait qu'elle est suffisante pour être en excès)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la quantité de matière du réactif en excès pour calculer la masse de produit, au lieu de celle du réactif limitant.",
+          "pourquoi_faux": "Le réactif en excès n'est pas totalement consommé : une partie en reste après la réaction, donc sa quantité de matière initiale ne correspond pas à la quantité réellement transformée en produit - seul le réactif limitant, entièrement consommé, permet ce calcul.",
+          "correction_markdown": "Repère toujours, en premier lieu, lequel des deux réactifs est annoncé « en excès » (ou calcule les deux quantités de matière et compare leur rapport aux coefficients stœchiométriques si l'énoncé ne le précise pas explicitement) avant de te lancer dans le calcul."
+        },
+        {
+          "erreur_markdown": "Oublier de diviser par le coefficient stœchiométrique du réactif limitant lors du passage à la quantité de matière de produit.",
+          "pourquoi_faux": "Le rapport entre les quantités de matière de deux espèces d'une équation-bilan est fixé par leurs coefficients stœchiométriques respectifs, jamais un rapport 1:1 par défaut sauf si les coefficients sont effectivement égaux à 1.",
+          "correction_markdown": "Relis toujours l'équation-bilan équilibrée avant de poser le rapport n(produit)/n(réactif) = coefficient(produit)/coefficient(réactif) : ne suppose jamais un rapport 1:1 sans l'avoir vérifié."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Du fer en large excès réagit avec 0,100 L d'acide sulfurique à 2 mol/L selon Fe + H$_2$SO$_4$ → FeSO$_4$ + H$_2$. Calculer la quantité de matière de FeSO$_4$ formée.",
+          "solution_markdown": "$n(H_2SO_4) = 2\\times0{,}100 = 0{,}20\\ mol$ (réactif limitant, le fer étant en excès). Coefficient 1:1 entre H$_2$SO$_4$ et FeSO$_4$ : $n(FeSO_4) = 0{,}20\\ mol$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "0,50 mol d'aluminium réagit avec 2,0 mol d'acide chlorhydrique selon $2Al + 6HCl \\rightarrow 2AlCl_3 + 3H_2$. Déterminer le réactif limitant, puis la quantité de matière de AlCl$_3$ formée.",
+          "solution_markdown": "Il faut 3 mol de HCl pour 1 mol d'Al (rapport 6:2 simplifié) : pour consommer 0,50 mol d'Al, il faudrait $0{,}50\\times3 = 1{,}5\\ mol$ de HCl. Or on dispose de 2,0 mol de HCl, donc HCl est en excès et l'aluminium est le réactif limitant. D'après l'équation, 2 mol d'Al donnent 2 mol d'AlCl$_3$ (coefficient 1:1) : $n(AlCl_3) = 0{,}50\\ mol$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "3,0 mol de dihydrogène réagissent avec 1,0 mol de diazote selon $N_2 + 3H_2 \\rightarrow 2NH_3$. Montrer qu'aucun des deux réactifs n'est explicitement « en large excès » au sens strict, mais que l'un des deux est malgré tout limitant, et calculer la quantité de matière d'ammoniac formée.",
+          "solution_markdown": "Le rapport stœchiométrique exigé est 3 mol de H$_2$ pour 1 mol de N$_2$. Ici, on dispose exactement de 3,0 mol de H$_2$ pour 1,0 mol de N$_2$ : les deux réactifs sont engagés dans des proportions EXACTEMENT stœchiométriques, aucun n'est donc à proprement parler « en excès » - ils seront consommés totalement et simultanément. Ce cas particulier (réactifs en proportions stœchiométriques) revient à considérer indifféremment l'un ou l'autre comme réactif « limitant » puisque les deux sont totalement consommés en même temps. D'après l'équation, 1 mol de N$_2$ donne 2 mol de NH$_3$ : $n(NH_3) = 2\\times1{,}0 = 2{,}0\\ mol$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un réactif « en large excès » n'est jamais totalement consommé : c'est l'autre réactif, le réactif limitant, qui fixe la quantité de produit formé.",
+        "Ne calcule JAMAIS la masse de produit à partir de la quantité de matière du réactif en excès.",
+        "Utilise toujours les coefficients stœchiométriques de l'équation-bilan équilibrée pour passer de n(réactif limitant) à n(produit) : n(produit)/n(réactif) = coefficient(produit)/coefficient(réactif).",
+        "Quand l'énoncé ne précise aucun excès, compare les rapports n(réactif)/coefficient pour chaque réactif : le plus petit rapport désigne le réactif limitant."
+      ]
+    }
+  ]
+}

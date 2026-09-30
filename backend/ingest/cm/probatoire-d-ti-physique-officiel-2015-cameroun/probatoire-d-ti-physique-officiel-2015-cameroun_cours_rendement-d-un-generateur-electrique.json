@@ -1,0 +1,122 @@
+{
+  "cours_id": "cours-rendement-generateur-1ere",
+  "meta": {
+    "titre": "Rendement d'un générateur électrique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Énergie électrique et puissance dans les circuits",
+    "duree_estimee_min": 16,
+    "tags": [
+      "rendement électrique",
+      "générateur",
+      "puissance électrique",
+      "résistance interne"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROB-D-TI-PHYSIQUE-2015-CM",
+    "epreuve_titre": "Probatoire D, TI - Physique - 2015 - Cameroun (officiel)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2015-cameroun-ex2-q2.2b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Aucun générateur réel ne restitue toute l'énergie qu'il produit : une partie chauffe inutilement sa propre résistance interne au lieu d'alimenter le circuit extérieur. Le rendement mesure exactement cette proportion perdue. C'est la notion qui permet de répondre à la question «ce générateur est-il efficace ?» avec un nombre précis plutôt qu'une impression."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi des mailles et calcul de l'intensité dans un circuit série",
+        "Tension aux bornes d'un générateur : $U = E - rI$",
+        "Puissance électrique $P = UI$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rendement d'un générateur",
+      "contenu_markdown": "Le rendement d'un générateur est le rapport entre la puissance électrique qu'il fournit réellement au circuit extérieur ($P_{utile}=UI$) et la puissance électromotrice totale qu'il produit ($P_{totale}=EI$). Comme le courant $I$ traverse aussi bien le circuit extérieur que le générateur lui-même, il se simplifie dans ce rapport : le rendement ne dépend alors que des tensions.",
+      "formule_principale": "p = \\dfrac{P_{utile}}{P_{totale}} = \\dfrac{UI}{EI} = \\dfrac{U}{E} = \\dfrac{E-rI}{E}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un générateur de f.é.m. $E=19$ V et de résistance interne $r=1{,}5\\ \\Omega$ débite un courant $I=0{,}5$ A. Déterminer son rendement $p$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la tension aux bornes du générateur",
+          "justification": "La loi d'Ohm généralisée pour un générateur donne $U=E-rI$.",
+          "resultat_markdown": "$U = 19 - 1{,}5\\times 0{,}5 = 19 - 0{,}75 = 18{,}25$ V"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le rendement",
+          "justification": "On applique $p=U/E$, forme simplifiée valable puisque le même courant $I$ traverse les deux puissances comparées.",
+          "resultat_markdown": "$p = \\dfrac{18{,}25}{19} \\approx 0{,}9605$"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer le résultat en pourcentage",
+          "justification": "Un rendement se lit plus naturellement en pourcentage.",
+          "resultat_markdown": "$p \\approx 96{,}1\\ \\%$"
+        }
+      ],
+      "conclusion_markdown": "Ce générateur convertit environ 96,1 % de sa puissance électromotrice totale en puissance utile pour le circuit extérieur ; les 3,9 % restants sont dissipés par effet Joule dans sa propre résistance interne."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $p = \\dfrac{E-rI}{rI}$ (rapport à la puissance perdue) au lieu de $\\dfrac{E-rI}{E}$ (rapport à la puissance totale).",
+          "pourquoi_faux": "Un rendement compare toujours la puissance utile à la puissance TOTALE produite, jamais à la puissance perdue : sinon la formule ne donnerait pas une valeur comprise entre 0 et 1 (ou 0 et 100 %).",
+          "correction_markdown": "Vérifie systématiquement que ton résultat de rendement reste inférieur à 1 (ou 100 %) : un résultat supérieur signale presque toujours une inversion entre puissance utile et puissance totale au dénominateur."
+        },
+        {
+          "erreur_markdown": "Oublier de calculer $I$ au préalable et tenter d'utiliser directement $E$ et $r$ dans la formule du rendement.",
+          "pourquoi_faux": "La formule $p=(E-rI)/E$ nécessite la valeur de $I$, qui dépend en général de tout le circuit (résistances extérieures, éventuel récepteur actif) : le rendement d'un générateur n'est pas une caractéristique fixe de l'appareil seul, il dépend du circuit dans lequel il débite.",
+          "correction_markdown": "Calcule toujours d'abord l'intensité $I$ à partir de la loi des mailles du circuit complet, avant de chercher le rendement du générateur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.é.m. $E=6$ V et de résistance interne $r=0{,}2\\ \\Omega$ débite un courant $I=1$ A. Calculer son rendement.",
+          "solution_markdown": "$$U = E - rI = 6 - 0{,}2\\times 1 = 5{,}8 \\ \\text{V}$$\n\n$$p = \\frac{U}{E} = \\frac{5{,}8}{6} \\approx 0{,}967 \\ \\Rightarrow\\ p\\approx 96{,}7\\,\\%$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un générateur de f.é.m. $E=12$ V et de résistance interne $r=0{,}5\\ \\Omega$ alimente un résistor unique $R=5{,}5\\ \\Omega$ monté en série (aucun récepteur actif). Calculer l'intensité $I$, puis le rendement du générateur.",
+          "solution_markdown": "**Intensité (loi de Pouillet, pas de récepteur actif).**\n\n$$I = \\frac{E}{r+R} = \\frac{12}{0{,}5+5{,}5} = \\frac{12}{6} = 2 \\ \\text{A}$$\n\n**Rendement.**\n\n$$U = E-rI = 12 - 0{,}5\\times 2 = 11 \\ \\text{V}$$\n\n$$p = \\frac{U}{E} = \\frac{11}{12} \\approx 0{,}917 \\ \\Rightarrow\\ p\\approx 91{,}7\\,\\%$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un générateur de f.é.m. $E=9$ V a un rendement $p=90\\,\\%$ lorsqu'il débite un courant $I=0{,}6$ A. Calculer sa résistance interne $r$.",
+          "solution_markdown": "On repart de la même relation, avec cette fois $r$ pour inconnue.\n\n$$p = \\frac{E-rI}{E} \\ \\Longrightarrow\\ rI = E(1-p) \\ \\Longrightarrow\\ r = \\frac{E(1-p)}{I}$$\n\n$$r = \\frac{9\\times(1-0{,}90)}{0{,}6} = \\frac{9\\times 0{,}10}{0{,}6} = \\frac{0{,}9}{0{,}6} = 1{,}5\\ \\Omega$$\n\nLa résistance interne de ce générateur vaut $1{,}5\\ \\Omega$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le rendement d'un générateur se calcule toujours par $p=U/E=(E-rI)/E$ : le rapport de la tension utile à la f.é.m., jamais l'inverse.",
+        "Un rendement reste toujours compris entre 0 et 1 (ou 0 et 100 %) : un résultat hors de cet intervalle signale une erreur de formule.",
+        "Il faut connaître $I$ avant de calculer un rendement : cette intensité dépend de tout le circuit, pas seulement du générateur.",
+        "Un rendement proche de 100 % traduit une résistance interne $r$ faible devant les autres résistances du circuit.",
+        "Au Probatoire, cette question suit presque toujours un calcul d'intensité par la loi des mailles : les deux notions s'enchaînent dans le même exercice."
+      ]
+    }
+  ]
+}

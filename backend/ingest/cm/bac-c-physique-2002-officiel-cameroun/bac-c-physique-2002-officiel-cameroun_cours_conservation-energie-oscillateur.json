@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-conservation-energie-oscillateur-tle-c",
+  "meta": {
+    "titre": "Établir une équation différentielle par conservation de l'énergie mécanique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Oscillateurs mécaniques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "énergie mécanique",
+      "oscillateur harmonique",
+      "équation différentielle",
+      "méthode énergétique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2002-PHYSIQUE-CM",
+    "epreuve_titre": "BAC Physique, série C, session 2002 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-physique-2002-officiel-cameroun-ex5-q3.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Établir l'équation du mouvement d'un oscillateur peut se faire de deux façons : en isolant chaque force et en appliquant la relation fondamentale de la dynamique, ou en écrivant simplement que l'énergie totale se conserve, puis en dérivant cette conservation par rapport au temps. La seconde méthode, dite énergétique, devient particulièrement précieuse dès que le système comporte plusieurs masses en mouvement (ici, la masse suspendue ET le ressort lui-même) : elle évite d'avoir à écrire une force de rappel répartie sur tout le ressort, en la remplaçant par un simple bilan d'énergie global."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les expressions de l'énergie cinétique et de l'énergie potentielle élastique",
+        "Savoir dériver une fonction du temps (règle de dérivation en chaîne, $\\frac{d}{dt}(x^2)=2xx'$)",
+        "Reconnaître la forme canonique d'une équation d'oscillateur harmonique $x''+\\omega_0^2x=0$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Dériver la conservation de l'énergie mécanique totale",
+      "contenu_markdown": "Quand aucune force de frottement ne dissipe d'énergie, l'énergie mécanique totale d'un système (somme de toutes les énergies cinétiques et de l'énergie potentielle élastique) reste constante au cours du mouvement : $E_m(t)=\\text{constante}$, donc $\\dfrac{dE_m}{dt}=0$. En écrivant explicitement $E_m$ en fonction de la position $x$ et de la vitesse $x'$, puis en dérivant terme à terme par rapport au temps (chaque terme en $x^2$ ou $x'^2$ donnant, par dérivation en chaîne, un facteur $2xx'$ ou $2x'x''$), on obtient une équation qui se factorise toujours par $x'$ (non identiquement nul dans un mouvement réel) : ce qui reste après simplification est précisément l'équation différentielle du mouvement, sans qu'il ait été nécessaire d'identifier une seule force.",
+      "formule_principale": "\\dfrac{dE_m}{dt} = 0 \\quad\\Longrightarrow\\quad \\text{équation différentielle du mouvement}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une masse $m$ oscille au bout d'un ressort de raideur $k$ et de masse $M$ (l'énergie cinétique du ressort valant $\\tfrac16 Mx'^2$). Établir l'équation différentielle du mouvement par conservation de l'énergie, en négligeant l'énergie potentielle de pesanteur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'énergie mécanique totale",
+          "justification": "Somme des énergies cinétiques (masse et ressort) et de l'énergie potentielle élastique",
+          "resultat_markdown": "$E_m = \\dfrac12 kx^2 + \\dfrac12 mx'^2 + \\dfrac16 Mx'^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver par rapport au temps",
+          "justification": "$dE_m/dt=0$ puisque l'énergie mécanique se conserve",
+          "resultat_markdown": "$kxx' + mx'x'' + \\dfrac13 Mx'x'' = 0$"
+        },
+        {
+          "numero": 3,
+          "action": "Factoriser par x' et simplifier",
+          "justification": "$x'$ n'est pas identiquement nul dans un mouvement réel",
+          "resultat_markdown": "$kx + \\left(m+\\dfrac{M}{3}\\right)x'' = 0$"
+        }
+      ],
+      "conclusion_markdown": "On obtient $\\left(m+\\dfrac{M}{3}\\right)x''+kx=0$, l'équation d'un oscillateur harmonique de pulsation propre $\\omega_0^2=k/(m+M/3)$, en accord avec la formule de la période admise par ailleurs."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de dériver le terme d'énergie cinétique du ressort, en ne considérant que la masse suspendue",
+          "pourquoi_faux": "Le ressort lui-même est en mouvement (chaque point du ressort a sa propre vitesse) et possède donc une énergie cinétique propre, non négligeable si sa masse M n'est pas négligeable : l'omettre revient à retrouver l'équation d'un ressort sans masse, ce qui contredit l'énoncé.",
+          "correction_markdown": "Relis l'énoncé pour vérifier si la masse du ressort doit être prise en compte, et inclus alors systématiquement son énergie cinétique propre dans le bilan."
+        },
+        {
+          "erreur_markdown": "Se tromper dans la dérivation en chaîne, par exemple écrire $\\frac{d}{dt}(x^2)=x'^2$ au lieu de $2xx'$",
+          "pourquoi_faux": "La dérivée d'une fonction composée $x(t)^2$ par rapport au temps applique la règle de la chaîne : $\\frac{d}{dt}(x^2) = 2x\\cdot\\frac{dx}{dt} = 2xx'$, pas $x'^2$ qui serait la dérivée d'une tout autre expression.",
+          "correction_markdown": "Révise systématiquement la règle de dérivation en chaîne avant d'aborder un exercice de méthode énergétique : c'est l'étape technique la plus fréquemment ratée."
+        },
+        {
+          "erreur_markdown": "Oublier de factoriser par x' avant de conclure, et présenter une équation contenant encore x' en facteur partout",
+          "pourquoi_faux": "Sans cette simplification, l'équation obtenue n'est pas sous la forme canonique attendue d'un oscillateur harmonique et ne permet pas de lire directement $\\omega_0^2$.",
+          "correction_markdown": "Vérifie toujours que chaque terme de l'équation dérivée contient un facteur $x'$ commun, à simplifier systématiquement (sauf mouvement trivial où $x'\\equiv0$)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une masse $m$ oscille au bout d'un ressort idéal (sans masse) de raideur $k$. Établir l'équation différentielle du mouvement par la méthode énergétique.",
+          "solution_markdown": "$E_m = \\dfrac12 kx^2+\\dfrac12 mx'^2$. En dérivant : $kxx'+mx'x''=0$, soit, après factorisation par $x'$ : $mx''+kx=0$, l'équation classique de l'oscillateur harmonique sans masse de ressort."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un pendule simple de longueur $l$ et de masse $m$ a pour énergie mécanique (pour de petites oscillations, angle $\\theta$ petit) $E_m = \\dfrac12 ml^2\\theta'^2 + \\dfrac12 mgl\\theta^2$. Établir l'équation différentielle du mouvement par la méthode énergétique.",
+          "solution_markdown": "En dérivant : $ml^2\\theta'\\theta'' + mgl\\theta\\theta' = 0$. En factorisant par $ml\\theta'$ (non nul) : $l\\theta''+g\\theta=0$, soit $\\theta''+\\dfrac{g}{l}\\theta=0$, l'équation bien connue du pendule simple aux petites oscillations, de pulsation propre $\\omega_0=\\sqrt{g/l}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Généraliser la méthode à un système masse-ressort horizontal sur un plan avec frottement visqueux, dont l'énergie mécanique décroît selon $\\dfrac{dE_m}{dt} = -\\alpha x'^2$ ($\\alpha>0$, coefficient de frottement visqueux). Montrer que l'équation différentielle obtenue est celle d'un oscillateur amorti.",
+          "solution_markdown": "En reprenant $E_m=\\dfrac12 kx^2+\\dfrac12 mx'^2$ (ressort sans masse ici) et en dérivant : $kxx'+mx'x'' = -\\alpha x'^2$. En divisant par $x'$ (non nul) : $kx+mx''=-\\alpha x'$, soit $mx''+\\alpha x'+kx=0$. C'est l'équation classique de l'oscillateur harmonique amorti par frottement visqueux, où le terme supplémentaire en $x'$ (par rapport au cas sans frottement) traduit exactement la perte d'énergie mécanique au cours du temps : la méthode énergétique se généralise donc sans difficulté au cas dissipatif, à condition de remplacer la conservation stricte ($dE_m/dt=0$) par le bilan de puissance dissipée ($dE_m/dt=-\\alpha x'^2$, qui est bien négatif car $\\alpha>0$, traduisant une perte d'énergie)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La méthode énergétique établit l'équation du mouvement en dérivant la conservation de l'énergie mécanique totale, sans isoler aucune force.",
+        "Inclus toujours l'énergie cinétique de TOUS les éléments en mouvement, y compris un ressort de masse non négligeable.",
+        "La dérivation en chaîne transforme systématiquement un terme en $x^2$ (ou $\\theta^2$) en $2xx'$ (ou $2\\theta\\theta'$).",
+        "Factorise toujours par la vitesse ($x'$ ou $\\theta'$) pour faire apparaître l'équation différentielle sous sa forme canonique.",
+        "Cette méthode se généralise au cas amorti en remplaçant $dE_m/dt=0$ par un bilan de puissance dissipée non nul."
+      ]
+    }
+  ]
+}

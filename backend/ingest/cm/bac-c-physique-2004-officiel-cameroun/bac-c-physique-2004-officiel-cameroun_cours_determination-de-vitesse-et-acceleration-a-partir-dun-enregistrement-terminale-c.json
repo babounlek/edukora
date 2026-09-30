@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-determination-de-vitesse-et-acceleration-a-partir-dun-enregistrement-terminale-c",
+  "meta": {
+    "titre": "Détermination de vitesse et accélération à partir d'un enregistrement",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Cinématique expérimentale",
+    "duree_estimee_min": 24,
+    "tags": [
+      "enregistrement de positions",
+      "différences finies centrées",
+      "vitesse instantanée",
+      "accélération instantanée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2004-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Baccalauréat Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-physique-2004-officiel-cameroun-ex5-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un appareil de mesure ne fournit jamais directement une vitesse ou une accélération : il enregistre des positions, à intervalles de temps réguliers. Comment reconstituer, à partir de cette seule suite de positions, une estimation fiable de la vitesse et de l'accélération à chaque instant ? La méthode des différences finies centrées répond précisément à cette question, avec une précision suffisante pour l'exploitation expérimentale au lycée."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Définition de la vitesse moyenne entre deux instants",
+        "Définition de l'accélération moyenne entre deux instants",
+        "Lecture d'un enregistrement de positions à intervalles réguliers"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode des différences finies centrées",
+      "contenu_markdown": "Lorsqu'un enregistrement fournit les positions successives d'un mobile à des dates régulièrement espacées de $\\Delta t$, la vitesse instantanée en un point $G_i$ s'approxime par la vitesse moyenne entre les deux points voisins $G_{i-1}$ et $G_{i+1}$ : $V_i=\\dfrac{G_{i+1}-G_{i-1}}{2\\Delta t}$. L'accélération instantanée en $G_i$ s'obtient de la même façon à partir des vitesses ainsi calculées en $G_{i-1}$ et $G_{i+1}$ : $a_i=\\dfrac{V_{i+1}-V_{i-1}}{2\\Delta t}$. Cette méthode, dite des différences finies centrées, est plus précise qu'une simple différence avec un seul voisin, car elle ne privilégie ni le point précédent ni le point suivant : un mouvement est dit rectiligne uniformément accéléré lorsque les valeurs successives de l'accélération obtenues par cette méthode restent sensiblement constantes.",
+      "formule_principale": "V_i=\\dfrac{G_{i+1}-G_{i-1}}{2\\Delta t}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un enregistrement donne les positions $G_0=0\\,\\text{m}$, $G_1=1\\,\\text{m}$, $G_2=2{,}5\\,\\text{m}$, $G_3=4{,}5\\,\\text{m}$, $G_4=7\\,\\text{m}$, à des dates espacées de $\\Delta t=1\\,\\text{s}$. Calculer $V_1$, $V_2$, $V_3$ et $a_2$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer la formule des différences finies centrées à V_1",
+          "justification": "V_1 nécessite les positions voisines G_0 et G_2",
+          "resultat_markdown": "$V_1=\\dfrac{G_2-G_0}{2\\Delta t}=\\dfrac{2{,}5-0}{2}=1{,}25\\,\\text{m.s}^{-1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer V_2 de la même façon",
+          "justification": "V_2 nécessite les positions voisines G_1 et G_3",
+          "resultat_markdown": "$V_2=\\dfrac{G_3-G_1}{2\\Delta t}=\\dfrac{4{,}5-1}{2}=1{,}75\\,\\text{m.s}^{-1}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer V_3 de la même façon",
+          "justification": "V_3 nécessite les positions voisines G_2 et G_4",
+          "resultat_markdown": "$V_3=\\dfrac{G_4-G_2}{2\\Delta t}=\\dfrac{7-2{,}5}{2}=2{,}25\\,\\text{m.s}^{-1}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer a_2 à partir des vitesses V_1 et V_3 déjà trouvées",
+          "justification": "a_2 s'obtient par différences finies centrées appliquées cette fois aux vitesses",
+          "resultat_markdown": "$a_2=\\dfrac{V_3-V_1}{2\\Delta t}=\\dfrac{2{,}25-1{,}25}{2}=0{,}5\\,\\text{m.s}^{-2}$"
+        }
+      ],
+      "conclusion_markdown": "Les vitesses successives augmentent régulièrement (1,25 ; 1,75 ; 2,25 m/s, soit un accroissement constant de 0,5 m/s par seconde) : ce mouvement est bien rectiligne uniformément accéléré."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $V_i$ avec une différence à un seul voisin, par exemple $V_i=(G_i-G_{i-1})/\\Delta t$",
+          "pourquoi_faux": "Cette formule donne la vitesse moyenne sur l'intervalle précédent, pas une estimation centrée de la vitesse instantanée en G_i ; elle est moins précise et ne correspond pas à la formule fournie par l'énoncé.",
+          "correction_markdown": "Toujours utiliser exactement la formule centrée donnée par l'énoncé, avec les deux voisins symétriques et le facteur 2 au dénominateur."
+        },
+        {
+          "erreur_markdown": "Essayer de calculer V_0 ou le dernier V_i (aux extrémités de la série de mesures) avec la formule centrée",
+          "pourquoi_faux": "La formule centrée nécessite un voisin de chaque côté du point considéré : elle n'est tout simplement pas définie pour le premier et le dernier point de la série, qui n'ont qu'un seul voisin.",
+          "correction_markdown": "Ne jamais forcer un calcul aux points extrêmes de la série : les cases correspondantes du tableau restent vides, ce n'est pas un oubli mais une conséquence de la méthode."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un enregistrement donne $G_1=2\\,\\text{m}$ et $G_3=5\\,\\text{m}$, avec $\\Delta t=0{,}5\\,\\text{s}$. Calculer $V_2$.",
+          "solution_markdown": "$V_2=\\dfrac{G_3-G_1}{2\\Delta t}=\\dfrac{5-2}{1}=3\\,\\text{m.s}^{-1}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On trouve $V_2=1{,}5\\,\\text{m.s}^{-1}$ et $V_4=2{,}7\\,\\text{m.s}^{-1}$, avec $\\Delta t=0{,}5\\,\\text{s}$. Calculer $a_3$.",
+          "solution_markdown": "$a_3=\\dfrac{V_4-V_2}{2\\Delta t}=\\dfrac{2{,}7-1{,}5}{1}=1{,}2\\,\\text{m.s}^{-2}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un enregistrement donne des valeurs d'accélération $a_i$ qui ne sont pas constantes, mais qui augmentent régulièrement au fil du temps. Que peut-on en conclure sur la nature du mouvement, et quelle grandeur faudrait-il calculer en plus pour la caractériser complètement ?",
+          "solution_markdown": "Une accélération qui varie dans le temps signifie que le mouvement n'est pas uniformément accéléré : ce n'est donc ni un mouvement uniforme (accélération nulle) ni un mouvement uniformément varié (accélération constante). Pour caractériser précisément ce mouvement, il faudrait examiner comment $a_i$ varie en fonction du temps (croissance linéaire, exponentielle, etc.), ce qui pourrait indiquer par exemple une force motrice elle-même dépendante du temps ou de la vitesse (cas d'un frottement fluide proportionnel à la vitesse)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La méthode des différences finies centrées estime une vitesse ou une accélération instantanée à partir des deux points voisins, symétriquement : $V_i=(G_{i+1}-G_{i-1})/(2\\Delta t)$.",
+        "Cette méthode ne peut jamais être appliquée au premier ni au dernier point d'une série de mesures, faute de voisin des deux côtés.",
+        "Un mouvement est rectiligne uniformément accéléré si les valeurs successives de l'accélération, calculées ainsi, restent sensiblement égales entre elles.",
+        "La même méthode s'applique deux fois de suite : d'abord aux positions pour obtenir les vitesses, puis aux vitesses obtenues pour obtenir les accélérations.",
+        "Au BAC, cette méthode est le point de départ obligé de tout exercice fondé sur un enregistrement chronophotographique ou une table à coussin d'air : sans elle, aucune exploitation numérique n'est possible."
+      ]
+    }
+  ]
+}

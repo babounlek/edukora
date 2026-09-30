@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-trace-caracteristique-recepteur-1ere-c",
+  "meta": {
+    "titre": "Tracer et vérifier l'alignement d'une caractéristique U = f(I)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Circuits électriques - mesures",
+    "duree_estimee_min": 20,
+    "tags": [
+      "caractéristique courant-tension",
+      "récepteur actif",
+      "tracé graphique",
+      "alignement de points"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-CHIMIE-2004",
+    "epreuve_titre": "Science Physique - Probatoire Scientifique Série C - Session 2004",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-probatoire-c-physique-chimie-2004-officiel-cameroun-ex5-q3.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Avant de lire un résultat sur un graphique, il faut d'abord s'assurer que les points mesurés sont réellement alignés : sans cette vérification, tout calcul ultérieur de pente ou d'ordonnée à l'origine perd sa justification. Ce cours te donne la méthode rigoureuse pour vérifier un alignement à partir d'un simple tableau de mesures."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir placer un point de coordonnées (x, y) dans un repère",
+        "Savoir calculer un taux de variation $\\Delta y/\\Delta x$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Vérifier l'alignement de points expérimentaux",
+      "contenu_markdown": "Un récepteur électrique actif, comme un moteur en fonctionnement, a une caractéristique U = f(I) qui est une droite d'équation $U = E' + r'I$. Pour tracer cette caractéristique à partir d'un tableau de mesures (I, U), on place d'abord chaque point dans un repère, à l'échelle imposée. Pour vérifier que ces points sont bien alignés (condition nécessaire pour qu'ils appartiennent à une droite unique), on calcule le taux de variation $\\Delta U/\\Delta I$ entre plusieurs couples de points successifs : s'il est constant (aux incertitudes de mesure près), les points sont alignés et on peut tracer la droite qui les joint.",
+      "formule_principale": "$\\dfrac{\\Delta U}{\\Delta I} = \\text{constante} \\Leftrightarrow \\text{points alignés}$",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Vérifier que les points (0,1 ; 2,9), (0,2 ; 3,3), (0,3 ; 3,7) et (0,5 ; 4,5) sont alignés, puis tracer la droite correspondante.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le taux de variation entre le premier et le deuxième point",
+          "justification": "On applique $\\Delta U/\\Delta I$ entre deux points successifs du tableau.",
+          "resultat_markdown": "$\\dfrac{3{,}3-2{,}9}{0{,}2-0{,}1}=\\dfrac{0{,}4}{0{,}1}=4{,}0$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le taux de variation entre le deuxième et le troisième point",
+          "justification": "On répète le calcul pour un autre couple de points successifs.",
+          "resultat_markdown": "$\\dfrac{3{,}7-3{,}3}{0{,}3-0{,}2}=\\dfrac{0{,}4}{0{,}1}=4{,}0$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le taux de variation entre le troisième et le quatrième point",
+          "justification": "On vérifie sur un troisième intervalle, non consécutif de même largeur, pour renforcer la vérification.",
+          "resultat_markdown": "$\\dfrac{4{,}5-3{,}7}{0{,}5-0{,}3}=\\dfrac{0{,}8}{0{,}2}=4{,}0$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure sur l'alignement et tracer la droite",
+          "justification": "Les trois taux de variation calculés sont rigoureusement égaux.",
+          "resultat_markdown": "Les quatre points sont parfaitement alignés (taux constant de 4,0 V/A) : on trace la droite qui les joint, prolongée jusqu'à I=0 pour lire l'ordonnée à l'origine."
+        }
+      ],
+      "conclusion_markdown": "Les quatre points expérimentaux sont parfaitement alignés (taux de variation constant de 4,0 V/A), ce qui confirme que la caractéristique U=f(I) de ce récepteur est bien une droite, conformément au modèle théorique attendu."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tracer la droite en reliant simplement les points sans avoir vérifié leur alignement au préalable.",
+          "pourquoi_faux": "Des points expérimentaux ne sont jamais parfaitement alignés en toute rigueur (incertitudes de mesure) ; sans un calcul explicite du taux de variation entre plusieurs couples de points, on ne peut pas justifier scientifiquement que le modèle « droite » est le bon.",
+          "correction_markdown": "Calcule systématiquement au moins deux ou trois taux de variation $\\Delta U/\\Delta I$ entre des couples de points différents avant de tracer une droite : c'est cette étape qui légitime le choix du modèle linéaire."
+        },
+        {
+          "erreur_markdown": "Calculer le taux de variation entre deux points NON successifs et non adjacents dans le tableau, en oubliant de vérifier les intervalles intermédiaires.",
+          "pourquoi_faux": "Si l'on ne calcule le taux de variation qu'entre le premier et le dernier point du tableau, on pourrait manquer une éventuelle non-linéarité localisée entre des points intermédiaires, qui se compenserait dans le calcul global.",
+          "correction_markdown": "Vérifie le taux de variation sur PLUSIEURS intervalles successifs du tableau, pas seulement entre les valeurs extrêmes."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un tableau donne les points (0 ; 1), (1 ; 3), (2 ; 5). Ces points sont-ils alignés ? Justifier par un calcul de taux de variation.",
+          "solution_markdown": "Entre (0;1) et (1;3) : $\\Delta y/\\Delta x=(3-1)/(1-0)=2$. Entre (1;3) et (2;5) : $\\Delta y/\\Delta x=(5-3)/(2-1)=2$. Les deux taux sont égaux (2) : **les points sont alignés**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un tableau donne les points (0,1 ; 2,0), (0,2 ; 2,5), (0,4 ; 3,7). Ces points sont-ils alignés ? Que peut-on en conclure sur le modèle U=E'+r'I ?",
+          "solution_markdown": "Entre (0,1;2,0) et (0,2;2,5) : $\\Delta U/\\Delta I=(2{,}5-2{,}0)/(0{,}2-0{,}1)=0{,}5/0{,}1=5{,}0$. Entre (0,2;2,5) et (0,4;3,7) : $\\Delta U/\\Delta I=(3{,}7-2{,}5)/(0{,}4-0{,}2)=1{,}2/0{,}2=6{,}0$. Les deux taux (5,0 et 6,0) sont DIFFÉRENTS : **les points ne sont pas alignés**. On ne peut donc pas conclure que ce récepteur suit exactement le modèle linéaire $U=E'+r'I$ sur toute la plage mesurée : soit il existe une erreur de mesure sur l'un des points, soit le comportement réel du récepteur n'est pas linéaire dans cette plage de courant (ce qui arrive par exemple pour un moteur proche de son régime de saturation)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Explique pourquoi, en pratique, on ne se contente jamais d'un SEUL calcul de taux de variation entre deux points pour affirmer l'alignement de tous les points d'un tableau de mesures.",
+          "solution_markdown": "Deux points, quels qu'ils soient, définissent TOUJOURS une droite unique qui passe par eux : un calcul de taux de variation entre seulement deux points ne peut donc jamais démontrer un alignement, il ne fait que définir la pente de la droite qui les joint, sans aucune information sur les autres points du tableau. C'est seulement en calculant le taux de variation sur PLUSIEURS couples de points différents, et en vérifiant qu'ils coïncident tous, qu'on obtient une preuve réelle que TOUS les points appartiennent à une même droite (et pas seulement les deux points choisis pour le calcul). Avec n points de mesure, il faut donc au minimum $n-1$ calculs de taux de variation (entre chaque couple de points consécutifs) pour vérifier rigoureusement l'alignement de l'ensemble du tableau, comme cela a été fait sur les trois intervalles du tableau à quatre points de cet exercice."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Ne trace jamais une droite à partir de points expérimentaux sans avoir d'abord vérifié leur alignement par un calcul de taux de variation.",
+        "Calcule le taux de variation $\\Delta U/\\Delta I$ sur PLUSIEURS couples de points successifs, jamais un seul, pour une vérification rigoureuse.",
+        "Un taux de variation constant confirme le modèle linéaire $U=E'+r'I$ ; un taux variable signale soit une erreur de mesure, soit un comportement non linéaire réel.",
+        "Deux points définissent toujours une droite : ce n'est jamais une preuve d'alignement pour un tableau de plus de deux points.",
+        "Cette vérification d'alignement est le préalable indispensable à toute lecture graphique d'ordonnée à l'origine ou de pente, l'étape suivante de l'exercice."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "cours_id": "cours-bilan-puissances-recepteur-premiere-d-ti",
+  "meta": {
+    "titre": "Le bilan des puissances d'un récepteur électrochimique en charge",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Électrocinétique - bilan énergétique",
+    "duree_estimee_min": 18,
+    "tags": [
+      "bilan des puissances",
+      "effet Joule",
+      "dipôle récepteur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-D-TI-PHYSIQUE-2018-CM",
+    "epreuve_titre": "Probatoire D, TI - Physique - Session 2018 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2018-cameroun-ex3-q1.2.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand on recharge une batterie, toute l'énergie électrique fournie par le chargeur ne se retrouve pas intégralement stockée : une partie est perdue en chaleur dans les fils et les résistances du circuit. Le bilan des puissances permet de quantifier précisément cette répartition."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi d'un dipôle en fonctionnement récepteur, $U = E' + rI$ (voir [[loi-recepteur-dipole-actif]])",
+        "Savoir calculer une puissance électrique, $P = UI$, et une puissance dissipée par effet Joule, $P_J = RI^2$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Bilan des puissances d'un récepteur en charge",
+      "contenu_markdown": "Le bilan des puissances d'un récepteur électrochimique en charge distingue la puissance électrique totale reçue $P_{fournie} = UI$ (fournie par le dispositif de charge), qui se répartit intégralement entre la puissance dissipée par effet Joule $P_J = RI^2$ (dans la résistance totale en série) et la puissance électrique convertie utilement - stockée sous forme chimique dans le cas d'une batterie - $P_{reçue} = E'I$, où $E'$ est la force contre-électromotrice du récepteur. Ce bilan vérifie toujours $P_{fournie} = P_J + P_{reçue}$, conséquence directe de la loi des mailles $U = E' + RI$ multipliée par $I$.",
+      "formule_principale": "P_{fournie} = P_J + P_{reçue} \\quad\\text{soit}\\quad UI = RI^2 + E'I",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une batterie est chargée sous $U' = 15$ V par un courant $I' = 2$ A, avec une résistance de protection $R = 1$ Ω en série et une f.c.é.m. $E' = 13$ V. Établir le bilan des puissances.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance fournie",
+          "justification": "$P_{fournie} = UI$, puissance totale délivrée par le dispositif de charge",
+          "resultat_markdown": "$P_{fournie} = 15\\times 2 = 30$ W"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance dissipée par effet Joule",
+          "justification": "$P_J = RI^2$, dissipée dans la résistance de protection",
+          "resultat_markdown": "$P_J = 1\\times 2^2 = 4$ W"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la puissance reçue (stockée) par la batterie",
+          "justification": "$P_{reçue} = E'I$, énergie électrique convertie en énergie chimique",
+          "resultat_markdown": "$P_{reçue} = 13\\times 2 = 26$ W"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier le bilan global",
+          "justification": "La somme des puissances reçue et dissipée doit égaler la puissance fournie",
+          "resultat_markdown": "$P_J + P_{reçue} = 4 + 26 = 30$ W $= P_{fournie}$ : le bilan est cohérent"
+        }
+      ],
+      "conclusion_markdown": "Sur les 30 W fournis par le chargeur, 4 W sont dissipés en chaleur et 26 W sont effectivement stockés sous forme chimique dans la batterie."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Considérer $P_{reçue} = E'I$ comme une puissance perdue ou inutile",
+          "pourquoi_faux": "$P_{reçue}$ est au contraire la puissance UTILEMENT convertie et stockée (sous forme chimique pour une batterie), à l'inverse de $P_J$ qui est réellement perdue en chaleur",
+          "correction_markdown": "Bien distinguer $P_J$ (perte réelle par effet Joule) de $P_{reçue}$ (conversion utile, stockée ou transformée)"
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier la cohérence du bilan ($P_{fournie} = P_J + P_{reçue}$) avant de conclure",
+          "pourquoi_faux": "Cette vérification permet de détecter une erreur de calcul sur l'une des trois puissances",
+          "correction_markdown": "Toujours terminer un bilan de puissances par la vérification de l'égalité globale"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un moteur de f.c.é.m. $E' = 20$ V et de résistance interne $r = 1$ Ω est alimenté sous $U = 24$ V. L'intensité qui le traverse est $I = 4$ A. Calculer les trois puissances du bilan.",
+          "solution_markdown": "$P_{fournie} = UI = 24\\times 4 = 96$ W. $P_J = rI^2 = 1\\times 16 = 16$ W. $P_{utile} = E'I = 20\\times 4 = 80$ W. Vérification : $16+80=96$ W $=P_{fournie}$. ✓"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un dispositif de charge fournit une puissance totale de $50$ W à une batterie, dont $8$ W sont dissipés par effet Joule. Calculer la puissance reçue (stockée) par la batterie, puis le rendement de la charge (rapport $P_{reçue}/P_{fournie}$).",
+          "solution_markdown": "$P_{reçue} = P_{fournie} - P_J = 50-8=42$ W. Rendement $= 42/50 = 0{,}84$ soit $84\\%$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une batterie de f.c.é.m. $E'=12$ V et de résistance interne $r=0{,}2$ Ω est chargée sous une tension $U$ inconnue, avec un courant $I=5$ A. Sachant que le rendement de la charge (rapport $P_{reçue}/P_{fournie}$) vaut $92{,}3\\%$, calculer $U$ et vérifier la cohérence avec $r$.",
+          "solution_markdown": "$P_{reçue}=E'I=12\\times 5=60$ W. Rendement $=P_{reçue}/P_{fournie}=0{,}923 \\Rightarrow P_{fournie}=60/0{,}923\\approx 65$ W. Or $P_{fournie}=UI \\Rightarrow U=65/5=13$ V. Vérification par la loi des mailles : $U=E'+rI=12+0{,}2\\times 5=12+1=13$ V. Cohérent : on retrouve la même tension par les deux méthodes."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le bilan des puissances d'un récepteur en charge distingue puissance fournie, puissance dissipée par effet Joule et puissance utilement reçue (stockée).",
+        "La relation $P_{fournie} = P_J + P_{reçue}$ découle directement de la loi des mailles multipliée par l'intensité.",
+        "$P_{reçue} = E'I$ n'est pas une perte : c'est l'énergie effectivement convertie et stockée par le récepteur.",
+        "Vérifier systématiquement la cohérence globale du bilan avant de conclure un calcul de puissances."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "cours_id": "cours-distance-entre-les-deux-positions-conjuguees-methode-de-bessel-1ere",
+  "meta": {
+    "titre": "Calculer la distance entre les deux positions de Bessel",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Optique géométrique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "méthode de Bessel",
+      "équation du second degré",
+      "distance focale"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-physique-1999-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série C - Cameroun - Session 1999",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-physique-1999-officiel-cameroun-ex2-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois établi qu'il existe deux positions de la lentille donnant une image nette, reste une question très concrète pour l'expérimentateur : quelle distance sépare exactement ces deux positions ? C'est cette distance, mesurable directement sur le banc d'optique, qui permet en pratique de remonter à la focale de la lentille sans connaître précisément où se forme l'image. Ce cours en donne le calcul."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître l'équation du second degré $x^2-Dx+Df=0$ de la méthode de Bessel",
+        "Savoir calculer la différence des racines d'une équation du second degré",
+        "Savoir manipuler une racine carrée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La différence des racines d'une équation du second degré",
+      "contenu_markdown": "Pour une équation du second degré $x^2+bx+c=0$, la différence entre ses deux racines (quand elles existent, c'est-à-dire quand $\\Delta\\geq0$) vaut $\\sqrt{\\Delta}$ divisé par la valeur absolue du coefficient de $x^2$. Appliquée à l'équation de Bessel $x^2-Dx+Df=0$, cette formule donne directement la distance $d$ entre les deux positions de la lentille, en fonction seulement de $D$ (distance objet-écran, mesurable) et $f$ (la focale que l'on cherche à déterminer).",
+      "formule_principale": "d = |x_2-x_1| = \\sqrt{\\Delta} = \\sqrt{D^2-4Df} = \\sqrt{D(D-4f)}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec $D=180\\ \\text{cm}$ et $f=24\\ \\text{cm}$, calculer la distance $d$ entre les deux positions de la lentille.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $D^2$",
+          "justification": "Première étape du calcul sous la racine.",
+          "resultat_markdown": "$D^2 = 180^2 = 32\\,400$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $4Df$",
+          "justification": "Deuxième terme du discriminant.",
+          "resultat_markdown": "$4Df = 4\\times180\\times24 = 17\\,280$"
+        },
+        {
+          "numero": 3,
+          "action": "Soustraire et extraire la racine carrée",
+          "justification": "$d=\\sqrt{D^2-4Df}$.",
+          "resultat_markdown": "$d = \\sqrt{32\\,400-17\\,280} = \\sqrt{15\\,120} \\approx 123\\ \\text{cm}$"
+        }
+      ],
+      "conclusion_markdown": "La distance entre les deux positions de la lentille vaut environ $123\\ \\text{cm}$, une valeur directement mesurable au banc d'optique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": {
+        "type": "erreurs_classiques",
+        "items": [
+          {
+            "erreur_markdown": "Calculer $\\sqrt{D^2}-\\sqrt{4Df}$ au lieu de $\\sqrt{D^2-4Df}$.",
+            "pourquoi_faux": "La racine carrée d'une différence n'est jamais égale à la différence des racines carrées : il faut impérativement effectuer la soustraction À L'INTÉRIEUR de la racine avant de l'extraire.",
+            "correction_markdown": "Calcule d'abord $D^2$ et $4Df$ séparément, soustrais-les, puis seulement alors extrais la racine carrée du résultat."
+          },
+          {
+            "erreur_markdown": "Ne pas vérifier que les deux positions calculées $x_1=\\frac{D-d}{2}$ et $x_2=\\frac{D+d}{2}$ restent bien comprises entre $0$ et $D$.",
+            "pourquoi_faux": "Une position de lentille négative ou supérieure à $D$ n'aurait aucun sens physique (la lentille doit être entre l'objet et l'écran) : un tel résultat signalerait une erreur de calcul en amont.",
+            "correction_markdown": "Prends l'habitude de calculer $x_1$ et $x_2$ et de vérifier qu'ils sont bien dans l'intervalle $[0,D]$, comme contrôle final."
+          }
+        ]
+      }
+    },
+    {
+      "type": "exercices_application",
+      "items": {
+        "type": "exercices_application",
+        "items": [
+          {
+            "numero": 1,
+            "difficulte": "facile",
+            "enonce_markdown": "Avec $D=100\\ \\text{cm}$ et $f=20\\ \\text{cm}$, calculer $d$.",
+            "solution_markdown": "$D^2=10\\,000$ ; $4Df=4\\times100\\times20=8000$. $d=\\sqrt{10\\,000-8000}=\\sqrt{2000}\\approx44{,}7\\ \\text{cm}$."
+          },
+          {
+            "numero": 2,
+            "difficulte": "moyen",
+            "enonce_markdown": "Une expérience de Bessel donne $D=90\\ \\text{cm}$ et mesure $d=30\\ \\text{cm}$ entre les deux positions. En déduire la focale $f$ de la lentille utilisée.",
+            "solution_markdown": "De $d^2=D^2-4Df$, on tire $4Df=D^2-d^2=90^2-30^2=8100-900=7200$, donc $f=\\dfrac{7200}{4\\times90}=\\dfrac{7200}{360}=20\\ \\text{cm}$. C'est exactement le principe expérimental de la méthode de Bessel : mesurer $D$ et $d$ pour en déduire $f$ sans connaître directement la position de l'image."
+          },
+          {
+            "numero": 3,
+            "difficulte": "approfondissement",
+            "enonce_markdown": "Montrer que $x_1\\times x_2 = Df$ (produit des deux positions), puis vérifier cette relation numériquement pour $D=180\\ \\text{cm}$ et $f=24\\ \\text{cm}$ à partir des positions trouvées dans l'exemple du cours ($x_1\\approx28{,}5\\ \\text{cm}$, $x_2\\approx151{,}5\\ \\text{cm}$).",
+            "solution_markdown": "Pour une équation $x^2-Dx+Df=0$, le produit des racines est égal au terme constant (ici $Df$), propriété générale des équations du second degré ($x_1x_2=c/a$ avec $a=1$). Donc $x_1x_2=Df$. Vérification numérique : $28{,}5\\times151{,}5\\approx4318$, et $Df=180\\times24=4320$ : l'écart ($\\approx0{,}05\\%$) provient uniquement de l'arrondi sur $d\\approx123\\ \\text{cm}$ utilisé pour calculer $x_1$ et $x_2$, ce qui confirme la relation."
+          }
+        ]
+      }
+    },
+    {
+      "type": "synthese",
+      "items_markdown": {
+        "type": "synthese",
+        "items_markdown": [
+          "La distance entre les deux positions de Bessel vaut $d=\\sqrt{D^2-4Df}=\\sqrt{D(D-4f)}$.",
+          "Effectue toujours la soustraction sous la racine avant d'extraire celle-ci : $\\sqrt{D^2-4Df}\\neq\\sqrt{D^2}-\\sqrt{4Df}$.",
+          "Cette formule permet, en sens inverse, de déterminer $f$ à partir de $D$ et $d$ mesurés expérimentalement - c'est tout l'intérêt pratique de la méthode de Bessel.",
+          "Les deux positions valent $x_{1,2}=\\dfrac{D\\mp d}{2}$ : vérifie toujours qu'elles restent comprises entre $0$ et $D$.",
+          "Cette méthode est un grand classique du Probatoire scientifique : sa maîtrise complète (démonstration et calcul numérique) vaut la totalité des points d'un exercice d'optique."
+        ]
+      }
+    }
+  ]
+}

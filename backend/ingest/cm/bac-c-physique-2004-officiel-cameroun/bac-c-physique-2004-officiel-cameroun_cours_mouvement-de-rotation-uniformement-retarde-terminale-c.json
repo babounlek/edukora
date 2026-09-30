@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-mouvement-de-rotation-uniformement-retarde-terminale-c",
+  "meta": {
+    "titre": "Mouvement de rotation uniformément retardé",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Cinématique de rotation",
+    "duree_estimee_min": 25,
+    "tags": [
+      "mouvement de rotation uniformément varié",
+      "freinage",
+      "cinématique angulaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2004-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Baccalauréat Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-physique-2004-officiel-cameroun-ex5-q4a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une roue qu'on lance puis qu'on laisse tourner librement finit toujours par s'arrêter, freinée par les frottements résiduels de son axe. Ce cours montre que ce ralentissement, loin d'être quelconque, obéit aux mêmes lois simples que celles d'un mouvement rectiligne uniformément retardé, à condition de raisonner en termes d'angles et de vitesses angulaires plutôt qu'en distances et vitesses."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relations cinématiques du mouvement rectiligne uniformément varié",
+        "Relation entre vitesse linéaire et vitesse angulaire, $v=R\\omega$",
+        "Théorème du moment cinétique appliqué à un solide en rotation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Cinématique d'un mouvement de rotation uniformément retardé",
+      "contenu_markdown": "Une fois qu'une cause motrice cesse d'agir sur un solide en rotation, seul le moment des forces de frottement continue d'agir : le mouvement devient uniformément retardé, avec une décélération angulaire constante $\\alpha'$, ce qui permet de calculer la durée nécessaire pour que la vitesse angulaire s'annule à partir de la vitesse angulaire initiale et de cette décélération, exactement comme pour un mouvement rectiligne uniformément retardé. Les relations utiles sont $\\omega(t)=\\omega_0-\\alpha' t$ (d'où $t_{arret}=\\omega_0/\\alpha'$) et $\\theta=\\omega_0 t_{arret}-\\frac12\\alpha' t_{arret}^2=\\dfrac{\\omega_0^2}{2\\alpha'}$ pour l'angle total balayé avant l'arrêt.",
+      "formule_principale": "t_{arret}=\\dfrac{\\omega_0}{\\alpha'}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un cylindre tourne librement à la vitesse angulaire $\\omega_0$ lorsque la cause motrice qui l'entraînait disparaît brusquement. Seul un moment de frottement constant, de valeur $M_f$, continue d'agir. Calculer le temps mis par le cylindre pour s'arrêter et le nombre de tours effectués pendant ce temps, en fonction de son moment d'inertie J.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Établir la décélération angulaire à partir du moment résistant",
+          "justification": "Le théorème du moment cinétique, avec le seul moment de frottement comme moment résultant, donne directement l'accélération angulaire (négative, donc une décélération)",
+          "resultat_markdown": "$J\\alpha'=-M_f \\Rightarrow \\alpha'=\\dfrac{M_f}{J}$ (valeur absolue de la décélération)"
+        },
+        {
+          "numero": 2,
+          "action": "Utiliser la relation vitesse angulaire-temps pour trouver l'instant d'arrêt",
+          "justification": "Le mouvement est uniformément retardé : la vitesse angulaire décroît linéairement jusqu'à zéro",
+          "resultat_markdown": "$\\omega(t)=\\omega_0-\\alpha't$, l'arrêt correspond à $\\omega=0$, soit $t_{arret}=\\dfrac{\\omega_0}{\\alpha'}=\\dfrac{\\omega_0 J}{M_f}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'angle total balayé jusqu'à l'arrêt",
+          "justification": "Formule analogue à $v^2=2ad$ du mouvement rectiligne, transposée à la rotation",
+          "resultat_markdown": "$\\theta=\\dfrac{\\omega_0^2}{2\\alpha'}=\\dfrac{\\omega_0^2 J}{2M_f}$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire le nombre de tours effectués",
+          "justification": "Un tour complet correspond à un angle de 2π radians",
+          "resultat_markdown": "$n=\\dfrac{\\theta}{2\\pi}=\\dfrac{\\omega_0^2 J}{4\\pi M_f}$"
+        }
+      ],
+      "conclusion_markdown": "Le cylindre s'arrête d'autant plus vite, et en moins de tours, que le moment de frottement est grand ou que son moment d'inertie est petit : ce résultat généralise directement les formules du freinage rectiligne à la rotation."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Réutiliser l'accélération angulaire du mouvement moteur initial (avant l'arrêt de la cause motrice) pour calculer le temps d'arrêt",
+          "pourquoi_faux": "Une fois la cause motrice supprimée, le système mécanique change complètement : ce n'est plus la même accélération qui gouverne le mouvement, mais une décélération due au seul frottement résiduel, en général beaucoup plus faible en valeur absolue.",
+          "correction_markdown": "Toujours ré-écrire les équations de la dynamique pour la nouvelle situation physique (plus de force motrice, seul le frottement agit), plutôt que de réutiliser un résultat valable seulement pour l'ancienne situation."
+        },
+        {
+          "erreur_markdown": "Confondre l'angle $\\theta$ balayé avec le nombre de tours n directement, en oubliant de diviser par $2\\pi$",
+          "pourquoi_faux": "L'angle balayé est exprimé en radians, alors qu'un tour complet correspond à un angle de $2\\pi$ radians : ces deux grandeurs ne sont égales que dans le cas particulier, très rare, où $\\theta=2\\pi$ exactement.",
+          "correction_markdown": "Toujours diviser l'angle balayé (en radians) par $2\\pi$ pour obtenir un nombre de tours, et vérifier que l'unité de l'angle utilisé est bien le radian dans tout le calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un disque tourne à $\\omega_0=50\\,\\text{rad.s}^{-1}$ puis subit une décélération angulaire constante $\\alpha'=5\\,\\text{rad.s}^{-2}$ jusqu'à l'arrêt. Calculer le temps d'arrêt.",
+          "solution_markdown": "$t_{arret}=\\omega_0/\\alpha'=50/5=10\\,\\text{s}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exercice précédent et calculer le nombre de tours effectués avant l'arrêt.",
+          "solution_markdown": "$\\theta=\\omega_0^2/(2\\alpha')=2500/10=250\\,\\text{rad}$. $n=\\theta/(2\\pi)=250/6{,}283\\approx39{,}8$ tours."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une roue de moment d'inertie $J=0{,}02\\,\\text{kg.m}^2$ tourne à $\\omega_0=100\\,\\text{rad.s}^{-1}$ et s'arrête après avoir effectué 20 tours sous l'effet d'un moment de frottement constant $M_f$. Calculer $M_f$.",
+          "solution_markdown": "L'angle balayé est $\\theta=20\\times2\\pi\\approx125{,}66\\,\\text{rad}$. De $\\theta=\\omega_0^2J/(2M_f)$, on tire $M_f=\\dfrac{\\omega_0^2 J}{2\\theta}=\\dfrac{100^2\\times0{,}02}{2\\times125{,}66}=\\dfrac{200}{251{,}3}\\approx0{,}796\\,\\text{N.m}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fois la cause motrice supprimée, un solide en rotation freiné uniquement par un frottement constant décrit un mouvement uniformément retardé, exactement analogue au freinage rectiligne.",
+        "Les formules $t_{arret}=\\omega_0/\\alpha'$ et $\\theta=\\omega_0^2/(2\\alpha')$ sont les analogues directs des formules $t=v_0/a$ et $d=v_0^2/(2a)$ du mouvement rectiligne.",
+        "Le nombre de tours s'obtient toujours en divisant l'angle balayé, exprimé en radians, par $2\\pi$ : ne jamais confondre angle et nombre de tours.",
+        "Un changement de système mécanique (suppression d'une force motrice, rupture d'un fil) impose de ré-écrire entièrement les équations de la dynamique, jamais de réutiliser telles quelles celles de la phase précédente.",
+        "Au BAC, ce type de question suit très souvent le calcul d'un frottement par comparaison théorie-expérience : le frottement trouvé sert alors de donnée d'entrée pour cette étude du freinage final."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-angle-de-refraction-limite-dun-dioptre-1ere-ce",
+  "meta": {
+    "titre": "Angle de réfraction limite (angle critique) d'un dioptre",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Réfraction et dioptres",
+    "duree_estimee_min": 25,
+    "tags": [
+      "réfraction",
+      "angle limite",
+      "réflexion totale",
+      "dioptre eau-air"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-E-2015-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Probatoire Série C, E - Session 2015 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-physique-2015-officiel-cameroun-ex1-q1a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un plongeur qui regarde vers la surface, depuis le fond d'une piscine, ne voit pas tout le ciel : il ne voit qu'un disque lumineux limité, entouré de reflets du fond de l'eau. Au-delà d'un certain angle, la lumière ne parvient plus à sortir de l'eau : elle est totalement réfléchie vers le fond. Ce cours explique pourquoi cette limite existe, et comment la calculer pour n'importe quel dioptre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de Snell-Descartes pour la réfraction : $n_1\\sin i_1 = n_2\\sin i_2$",
+        "Indice de réfraction d'un milieu transparent (eau, verre, air)",
+        "Résolution d'une équation trigonométrique simple avec $\\arcsin$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Condition d'existence et calcul de l'angle limite",
+      "contenu_markdown": "Quand un rayon lumineux passe d'un milieu 1 vers un milieu 2 **moins réfringent** ($n_1 > n_2$), il s'écarte de la normale en se réfractant : l'angle de réfraction $i_2$ est toujours plus grand que l'angle d'incidence $i_1$. Si $i_1$ augmente, $i_2$ augmente plus vite, jusqu'à atteindre $90°$ : le rayon réfracté rase alors la surface. Au-delà de cette valeur particulière de $i_1$, appelée **angle limite** $a$, il n'existe plus de rayon réfracté : toute la lumière est réfléchie dans le milieu 1, c'est la **réflexion totale**.\n\nL'angle limite se calcule en posant $i_2=90°$ dans la loi de Snell-Descartes :\n$$n_1 \\sin a = n_2 \\sin 90° = n_2 \\quad\\Longrightarrow\\quad \\sin a = \\dfrac{n_2}{n_1}$$\n\n**Condition d'existence.** Cette formule ne donne un angle valide que si $n_2 < n_1$ (passage vers un milieu moins réfringent) : dans le cas contraire ($n_2 \\geq n_1$), $\\sin a$ serait supérieur à 1, ce qui est impossible - il n'existe alors aucun angle limite, et la lumière traverse toujours le dioptre quel que soit l'angle d'incidence.",
+      "formule_principale": "\\sin a = \\dfrac{n_2}{n_1}\\quad (n_1 > n_2)"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer l'angle de réfraction limite $a$ d'un dioptre eau-air, sachant que l'indice de réfraction de l'eau est $n_{eau}=\\dfrac{4}{3}$ et celui de l'air $n_{air}=1$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le sens de propagation et les indices en présence",
+          "justification": "L'angle limite ne se définit que pour un rayon partant du milieu le plus réfringent vers le moins réfringent ; ici la lumière part de l'eau ($n_1=n_{eau}$) vers l'air ($n_2=n_{air}$)",
+          "resultat_markdown": "$n_1 = n_{eau} = \\dfrac{4}{3} \\qquad n_2 = n_{air} = 1$"
+        },
+        {
+          "numero": 2,
+          "action": "Vérifier la condition d'existence de l'angle limite",
+          "justification": "La formule $\\sin a = n_2/n_1$ n'a de sens que si $n_1 > n_2$",
+          "resultat_markdown": "$n_1=4/3 \\approx 1{,}33 > n_2 = 1$ : la condition est vérifiée, l'angle limite existe"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la formule de l'angle limite",
+          "justification": "On pose $i_2=90°$ dans la loi de Snell-Descartes et on isole $\\sin a$",
+          "resultat_markdown": "$\\sin a = \\dfrac{n_{air}}{n_{eau}} = \\dfrac{1}{4/3} = \\dfrac{3}{4} = 0{,}75$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'angle par la fonction réciproque",
+          "justification": "On applique $\\arcsin$ aux deux membres",
+          "resultat_markdown": "$a = \\arcsin(0{,}75) \\approx 48{,}6°$"
+        }
+      ],
+      "conclusion_markdown": "L'angle de réfraction limite du dioptre eau-air vaut environ $48{,}6°$ : tout rayon issu de l'eau avec un angle d'incidence supérieur à cette valeur subit une réflexion totale et ne peut pas sortir dans l'air."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\sin a = n_1/n_2$ au lieu de $n_2/n_1$, ce qui donne ici $\\sin a = 4/3 \\approx 1{,}33$",
+          "pourquoi_faux": "Un sinus ne peut jamais dépasser 1 : obtenir $\\sin a > 1$ signifie que les deux indices ont été inversés dans la formule, pas qu'il faille chercher un angle supérieur à $90°$.",
+          "correction_markdown": "Revenir systématiquement à la loi de Snell-Descartes complète $n_1\\sin i_1=n_2\\sin i_2$, poser $i_2=90°$, puis isoler $\\sin i_1=\\sin a$ : cela donne automatiquement le bon rapport $n_2/n_1$."
+        },
+        {
+          "erreur_markdown": "Chercher un angle limite pour un rayon allant de l'air vers l'eau (du moins réfringent vers le plus réfringent)",
+          "pourquoi_faux": "Dans ce sens, l'angle de réfraction est toujours plus petit que l'angle d'incidence et ne peut jamais atteindre $90°$ : il n'existe pas de réflexion totale ni d'angle limite dans ce sens de propagation.",
+          "correction_markdown": "Vérifier toujours quel milieu est le plus réfringent avant de chercher un angle limite : il n'existe que pour un rayon partant du milieu le plus réfringent vers le moins réfringent."
+        },
+        {
+          "erreur_markdown": "Confondre l'angle limite avec l'angle d'incidence d'un rayon particulier de l'exercice",
+          "pourquoi_faux": "L'angle limite est une caractéristique du dioptre lui-même (il ne dépend que des deux indices), pas de la géométrie d'un rayon donné - un même dioptre a un seul angle limite, quel que soit le rayon considéré.",
+          "correction_markdown": "Calculer l'angle limite une seule fois pour le dioptre étudié, puis le comparer à l'angle d'incidence de chaque rayon particulier pour savoir s'il émerge ou subit une réflexion totale."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer l'angle de réfraction limite du dioptre verre-air, sachant que l'indice de réfraction du verre est $n_{verre}=1{,}5$.",
+          "solution_markdown": "Le rayon part du verre (plus réfringent, $n_1=1{,}5$) vers l'air (moins réfringent, $n_2=1$) : la condition d'existence $n_1>n_2$ est vérifiée.\n$$\\sin a = \\dfrac{n_2}{n_1} = \\dfrac{1}{1{,}5} \\approx 0{,}667$$\n$$a = \\arcsin(0{,}667) \\approx 41{,}8°$$\nL'angle de réfraction limite du dioptre verre-air vaut environ $41{,}8°$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un diamant a un indice de réfraction $n_{diamant}=2{,}42$. Calculer son angle limite dans l'air, puis expliquer en une phrase pourquoi cette petite valeur explique l'éclat particulier de la pierre taillée.",
+          "solution_markdown": "$$\\sin a = \\dfrac{1}{2{,}42} \\approx 0{,}413 \\qquad a = \\arcsin(0{,}413) \\approx 24{,}4°$$\nL'angle limite du diamant (environ $24{,}4°$) est beaucoup plus petit que celui du verre ou de l'eau : la plupart des rayons entrés dans la pierre y subissent donc une réflexion totale sur ses facettes internes avant de ressortir, au lieu de s'échapper directement - c'est ce très grand nombre de réflexions totales internes qui donne au diamant taillé son éclat caractéristique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une fibre optique est constituée d'un cœur d'indice $n_1=1{,}48$ entouré d'une gaine d'indice $n_2=1{,}46$. Calculer l'angle limite au dioptre cœur-gaine, puis expliquer pourquoi un rayon lumineux entré dans le cœur avec un angle d'incidence de $89°$ (presque parallèle à l'axe de la fibre) s'y propage sur de longues distances sans en sortir.",
+          "solution_markdown": "Le rayon se propage du cœur ($n_1=1{,}48$, plus réfringent) vers la gaine ($n_2=1{,}46$, moins réfringent) : la condition $n_1>n_2$ est vérifiée, même si l'écart entre les deux indices est faible.\n$$\\sin a = \\dfrac{1{,}46}{1{,}48} \\approx 0{,}9865 \\qquad a = \\arcsin(0{,}9865) \\approx 80{,}6°$$\nL'angle limite au dioptre cœur-gaine vaut environ $80{,}6°$. Un rayon incident sur la paroi cœur-gaine avec un angle de $89°$ (mesuré par rapport à la normale à cette paroi, donc quasiment rasant) a un angle d'incidence très supérieur à l'angle limite $80{,}6°$ : il subit donc une réflexion totale à chaque rencontre de la paroi, et rebondit ainsi de proche en proche le long du cœur sans jamais s'échapper dans la gaine - c'est le principe même de la propagation guidée dans une fibre optique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'angle limite n'existe que pour un rayon allant du milieu le plus réfringent vers le moins réfringent : vérifie toujours $n_1>n_2$ avant de te lancer dans le calcul.",
+        "La formule à retenir est $\\sin a = n_2/n_1$ : elle vient simplement de la loi de Snell-Descartes dans laquelle on impose un angle de réfraction de $90°$.",
+        "Au-delà de l'angle limite, il n'y a plus de rayon réfracté : c'est la réflexion totale, qui renvoie toute la lumière dans le milieu d'origine.",
+        "Plus l'indice du milieu de départ est grand devant celui du milieu d'arrivée, plus l'angle limite est petit - c'est ce qui explique l'éclat du diamant et le guidage de la lumière dans une fibre optique.",
+        "Au Probatoire comme au Baccalauréat, ce calcul apparaît systématiquement en première question d'un exercice d'optique géométrique portant sur un dioptre plan, souvent pour être ensuite comparé à l'angle d'incidence réel d'un rayon donné dans la suite de l'exercice."
+      ]
+    }
+  ]
+}

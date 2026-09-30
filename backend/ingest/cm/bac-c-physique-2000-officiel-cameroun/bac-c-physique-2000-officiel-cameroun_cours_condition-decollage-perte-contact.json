@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-condition-decollage-perte-contact-terminale-c",
+  "meta": {
+    "titre": "La condition de perte de contact sur une piste circulaire",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Dynamique du solide",
+    "duree_estimee_min": 24,
+    "tags": [
+      "perte de contact",
+      "réaction normale",
+      "mouvement circulaire",
+      "looping"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2000-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, Session de 2000 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-2000-officiel-cameroun-ex1-q4.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un looping de montagnes russes, il existe une vitesse minimale en dessous de laquelle le wagon décroche du rail avant même d'atteindre le sommet. Ce phénomène, spectaculaire en apparence, se résume à une seule idée physique très simple : un rail ne peut que pousser, jamais tirer. Ce cours te montre comment traduire cette idée en une condition mathématique précise."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation fondamentale de la dynamique en mouvement circulaire (projection radiale)",
+        "Résolution d'une inéquation ou d'une équation trigonométrique simple ($\\cos\\theta = ...$)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Un support à simple appui ne peut jamais tirer",
+      "contenu_markdown": "Une piste, un rail ou une gouttière exercent une réaction normale $R$ qui ne peut prendre que des valeurs positives ou nulles : physiquement, un support ne peut que pousser le solide, jamais le tirer vers lui. Si le calcul théorique de $R(\\theta)$, mené comme si le contact durait tout le long du trajet, conduit à une valeur négative à partir d'un certain angle, cela signifie que le contact a en réalité cessé **avant** cet angle : le solide a décollé exactement à l'angle $\\theta_0$ pour lequel $R(\\theta_0)=0$.",
+      "formule_principale": "R(\\theta) \\ge 0 \\;\\text{(condition physique)} \\quad\\Longrightarrow\\quad \\theta_{d\\acute{e}collage} : R(\\theta_{d\\acute{e}collage})=0",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec $R(\\theta) = \\dfrac{mV_A^2}{r}+mg(3\\cos\\theta-2)$, déterminer la condition sur $V_A$ pour qu'un décollage se produise avant le sommet du cercle (θ=180°), puis calculer l'angle de décollage pour $V_A=3\\ \\text{m.s}^{-1}$, $r=0{,}2\\ \\text{m}$, $g=9{,}8\\ \\text{m.s}^{-2}$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Poser l'équation R(theta)=0",
+          "justification": "Le décollage a lieu exactement quand la réaction s'annule.",
+          "resultat_markdown": "$\\dfrac{mV_A^2}{r}+mg(3\\cos\\theta-2)=0$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler cos(theta)",
+          "justification": "On cherche à exprimer la condition en fonction d'une grandeur qu'on peut comparer à l'intervalle [-1;1].",
+          "resultat_markdown": "$\\cos\\theta = \\dfrac{2gr-V_A^2}{3gr}$"
+        },
+        {
+          "numero": 3,
+          "action": "Poser la condition d'existence d'un angle réel",
+          "justification": "Un cosinus doit être compris entre -1 et 1 pour correspondre à un angle réel.",
+          "resultat_markdown": "$-1\\le\\dfrac{2gr-V_A^2}{3gr}\\le1 \\;\\Longrightarrow\\; V_A^2\\le 5gr$ (condition utile)"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier la condition numériquement",
+          "justification": "On compare V_A² aux données numériques.",
+          "resultat_markdown": "$V_A^2=9\\ \\text{m}^2\\text{.s}^{-2}$ et $5gr=9{,}8\\ \\text{m}^2\\text{.s}^{-2}$ : $9<9{,}8$, la condition est vérifiée."
+        },
+        {
+          "numero": 5,
+          "action": "Calculer l'angle de décollage",
+          "justification": "Application numérique directe de la formule de cos(theta).",
+          "resultat_markdown": "$\\cos\\theta=\\dfrac{2\\times9{,}8\\times0{,}2-9}{3\\times9{,}8\\times0{,}2}=\\dfrac{-5{,}08}{5{,}88}\\approx-0{,}864 \\Rightarrow \\theta\\approx149{,}8°$"
+        }
+      ],
+      "conclusion_markdown": "Le solide perd le contact avec la piste à environ 149,8°, soit avant d'atteindre le sommet (180°) : au-delà de cet angle, il poursuit son mouvement en chute libre, indépendamment de la piste."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Poursuivre le calcul de R(θ) au-delà de l'angle de décollage comme si le solide restait sur la piste jusqu'au sommet.",
+          "pourquoi_faux": "Dès que R s'annule, le modèle « solide posé sur la piste » n'est plus valable : une valeur de R négative au-delà n'a plus de sens physique, elle signale seulement que les hypothèses du calcul (contact permanent) sont devenues fausses.",
+          "correction_markdown": "Considère la formule de R(θ) comme valable uniquement tant que $R(\\theta)\\ge0$ ; au-delà de l'angle où R s'annule, il faut changer de modèle (chute libre)."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que $\\cos\\theta$ calculé appartient bien à $[-1;1]$ avant de conclure à l'existence d'un décollage.",
+          "pourquoi_faux": "Si $V_A^2 > 5gr$, la formule donnerait un cosinus inférieur à $-1$, ce qui est mathématiquement impossible : cela signifie en réalité qu'il n'y a jamais de décollage, le solide parcourt tout le cercle en restant en contact.",
+          "correction_markdown": "Vérifie systématiquement la condition d'existence ($V_A^2\\le5gr$ dans ce type de problème) avant de calculer un angle : c'est elle qui te dit si un décollage a lieu ou non."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Pour quelle raison physique une réaction de support ne peut-elle jamais être négative dans ce type de problème ?",
+          "solution_markdown": "Une réaction normale traduit un contact par appui simple : le support (rail, gouttière, piste) ne peut que repousser le solide, pas l'attirer. Une valeur « négative » signifierait que le support tire le solide vers lui, ce qui est physiquement impossible pour ce type de contact ; elle indique en réalité que le contact a déjà cessé."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec les mêmes données que l'exemple résolu ($r=0{,}2\\ \\text{m}$, $g=9{,}8\\ \\text{m.s}^{-2}$), déterminer si un solide lancé avec $V_A=4{,}5\\ \\text{m.s}^{-1}$ atteint le sommet du looping sans décoller.",
+          "solution_markdown": "On compare $V_A^2=20{,}25\\ \\text{m}^2\\text{.s}^{-2}$ à $5gr=9{,}8\\ \\text{m}^2\\text{.s}^{-2}$ : $V_A^2>5gr$, la condition de décollage n'est pas remplie, donc le solide atteint le sommet sans décoller (au sommet, on aurait même $R=\\dfrac{mV_A^2}{r}-5mg>0$, strictement positif)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que la vitesse minimale $V_{A,min}$ permettant de parcourir tout le demi-cercle jusqu'au sommet D sans décoller correspond exactement au cas limite $R(180°)=0$, et l'exprimer en fonction de $g$ et $r$.",
+          "solution_markdown": "Le cas le plus défavorable pour le contact est le sommet ($\\theta=180°$), où le poids contribue le moins à la force centripète nécessaire. Si $R(180°)\\ge0$, alors $R(\\theta)\\ge0$ pour tout $\\theta$ dans $[0°;180°]$ (R est décroissante avec θ, voir le cours sur la RFD en mouvement circulaire). La condition limite est donc $R(180°)=0$ : $\\dfrac{mV_{A,min}^2}{r}+mg(3\\times(-1)-2)=0 \\Rightarrow V_{A,min}^2=5gr \\Rightarrow V_{A,min}=\\sqrt{5gr}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une réaction de support ne peut jamais être négative : c'est la condition physique clé de tout problème de « perte de contact ».",
+        "Le décollage se produit exactement à l'angle où la réaction, calculée comme si le contact durait, s'annule.",
+        "Toujours vérifier que le cosinus obtenu appartient à $[-1;1]$ : hors de cet intervalle, il n'y a tout simplement pas de décollage.",
+        "Le cas limite $V_A^2=5gr$ (dans un looping de rayon r) sépare les deux régimes : en dessous, décollage avant le sommet ; au-dessus, parcours complet sans décollage.",
+        "Ce type de raisonnement (grandeur physique bornée, recherche du cas limite) est un classique du BAC, que l'on retrouve aussi bien en mécanique qu'en électricité (résonance) ou en optique (angle limite de réfraction)."
+      ]
+    }
+  ]
+}

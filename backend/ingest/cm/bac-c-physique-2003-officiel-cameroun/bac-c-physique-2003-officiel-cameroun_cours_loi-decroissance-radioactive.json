@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-loi-decroissance-radioactive-tle-c",
+  "meta": {
+    "titre": "La loi de décroissance radioactive N(t) = N0 exp(-lambda t)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Physique nucléaire",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi de décroissance radioactive",
+      "équation différentielle",
+      "constante radioactive"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-PHYSIQUE-2003-CM",
+    "epreuve_titre": "Baccalauréat Cameroun, série C, Physique, session 2003",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-physique-2003-ex5-q2.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi le carbone 14 permet-il de dater des objets vieux de plusieurs milliers d'années, avec une précision remarquable ? La réponse tient dans une seule loi physique, valable pour tout noyau radioactif : le nombre de noyaux restants décroît de façon exponentielle avec le temps, à un rythme caractérisé par une constante propre à chaque isotope. Comprendre d'où vient cette loi, et savoir l'exploiter à partir de mesures expérimentales, est la compétence centrale de tout exercice de radioactivité au BAC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de désintégration radioactive spontanée et aléatoire",
+        "Résoudre une équation différentielle du premier ordre à variables séparables",
+        "Manipuler le logarithme népérien et la fonction exponentielle",
+        "Savoir qu'un phénomène aléatoire portant sur un très grand nombre de noyaux devient prévisible statistiquement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De l'équation différentielle à la loi exponentielle",
+      "contenu_markdown": "La désintégration radioactive est un phénomène aléatoire à l'échelle d'un noyau individuel, mais parfaitement prévisible à l'échelle d'un échantillon contenant un grand nombre de noyaux : à chaque instant, la probabilité qu'un noyau donné se désintègre pendant un intervalle de temps $dt$ est la même pour tous les noyaux, indépendamment de leur âge. Cela se traduit par :\n\n$\\dfrac{dN}{dt} = -\\lambda N$\n\noù $\\lambda$ (la constante radioactive) est la probabilité de désintégration par noyau et par unité de temps. En séparant les variables et en intégrant entre $t=0$ (où $N=N_0$) et un instant $t$ quelconque :\n\n$\\int_{N_0}^{N}\\dfrac{dN}{N} = -\\lambda\\int_0^t dt \\quad\\Rightarrow\\quad \\ln\\left(\\dfrac{N}{N_0}\\right)=-\\lambda t$\n\nOn obtient la loi de décroissance radioactive, valable pour tout noyau radioactif, quelle que soit sa nature :\n\n$N(t) = N_0\\,e^{-\\lambda t}$\n\nLa période radioactive (demi-vie) $T$, durée au bout de laquelle la moitié des noyaux se sont désintégrés, se relie à $\\lambda$ par $T=\\dfrac{\\ln 2}{\\lambda}$.",
+      "formule_principale": "N(t) = N_0 e^{-\\lambda t} \\quad;\\quad T = \\frac{\\ln 2}{\\lambda}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un échantillon contient $N_0 = 1{,}0\\times10^{5}$ noyaux radioactifs de constante radioactive $\\lambda = 3{,}1\\times10^{-3}\\ \\text{s}^{-1}$. Calculer le nombre de noyaux restants après $t=200\\ \\text{s}$, puis la période radioactive $T$ de ce noyau.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la loi de décroissance radioactive",
+          "justification": "C'est la formule centrale de ce cours",
+          "resultat_markdown": "$N(t) = N_0\\,e^{-\\lambda t}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'exposant $\\lambda t$",
+          "justification": "Étape intermédiaire avant de calculer l'exponentielle",
+          "resultat_markdown": "$\\lambda t = 3{,}1\\times10^{-3}\\times200 = 0{,}62$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $N(200\\ \\text{s})$",
+          "justification": "Substitution numérique dans la loi de décroissance",
+          "resultat_markdown": "$N(200) = 1{,}0\\times10^5\\times e^{-0{,}62} \\approx 1{,}0\\times10^5\\times0{,}538 \\approx 5{,}4\\times10^4\\ \\text{noyaux}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la période radioactive $T$",
+          "justification": "Utiliser $T=\\ln 2/\\lambda$",
+          "resultat_markdown": "$T = \\dfrac{0{,}693}{3{,}1\\times10^{-3}} \\approx 224\\ \\text{s}$"
+        }
+      ],
+      "conclusion_markdown": "Après 200 s, il reste environ $5{,}4\\times10^4$ noyaux sur les $1{,}0\\times10^5$ initiaux, et la période radioactive de ce noyau vaut $T\\approx224\\ \\text{s}$, soit environ 3 min 44 s."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que $T$ (la demi-vie) est le temps au bout duquel TOUS les noyaux ont disparu",
+          "pourquoi_faux": "$T$ est le temps au bout duquel exactement la MOITIÉ des noyaux initiaux se sont désintégrés, pas la totalité : à $t=2T$, il ne reste pas 0 % mais 25 % des noyaux initiaux (la moitié de la moitié), et ainsi de suite indéfiniment sans jamais atteindre zéro exactement.",
+          "correction_markdown": "Retiens que $N(nT) = N_0/2^n$ : après $n$ demi-vies, il reste une fraction $1/2^n$ des noyaux initiaux, jamais zéro."
+        },
+        {
+          "erreur_markdown": "Confondre la constante radioactive $\\lambda$ avec la période $T$, ou les utiliser l'une pour l'autre sans conversion",
+          "pourquoi_faux": "$\\lambda$ a la dimension de l'inverse d'un temps (s$^{-1}$) tandis que $T$ a la dimension d'un temps (s) : ce sont deux grandeurs physiquement différentes, reliées par $T=\\ln 2/\\lambda$, jamais interchangeables directement.",
+          "correction_markdown": "Vérifie toujours l'unité de la grandeur donnée dans l'énoncé (s$^{-1}$ pour $\\lambda$, s ou une unité de temps pour $T$) avant de l'utiliser dans une formule."
+        },
+        {
+          "erreur_markdown": "Oublier que $N(t)=N_0e^{-\\lambda t}$ suppose $N_0$ connu à $t=0$, et appliquer la formule avec une origine des temps mal choisie",
+          "pourquoi_faux": "La loi de décroissance n'est valable qu'à partir de l'instant choisi comme origine des temps, où $N=N_0$ par définition : appliquer la formule à partir d'un autre instant sans redéfinir $N_0$ à cet instant donne un résultat faux.",
+          "correction_markdown": "Identifie toujours clairement l'instant $t=0$ de l'énoncé et la valeur $N_0$ qui lui correspond avant d'appliquer la loi de décroissance à un instant ultérieur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un échantillon radioactif a une période $T=8{,}0\\ \\text{jours}$. Calculer sa constante radioactive $\\lambda$ (en jour$^{-1}$).",
+          "solution_markdown": "$\\lambda = \\dfrac{\\ln 2}{T} = \\dfrac{0{,}693}{8{,}0} \\approx 0{,}0866\\ \\text{jour}^{-1}$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un échantillon contient initialement $N_0=8{,}0\\times10^6$ noyaux d'un isotope de période $T=10\\ \\text{jours}$. Calculer le nombre de noyaux restants après 30 jours, en utilisant la relation avec la demi-vie sans recalculer $\\lambda$ explicitement.",
+          "solution_markdown": "30 jours correspondent exactement à $n=30/10=3$ périodes.\n\n$N(30) = \\dfrac{N_0}{2^n} = \\dfrac{8{,}0\\times10^6}{2^3} = \\dfrac{8{,}0\\times10^6}{8} = 1{,}0\\times10^6\\ \\text{noyaux}$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un échantillon radioactif voit son nombre de noyaux passer de $N_0$ à $N_0/5$ au bout de $t=100\\ \\text{s}$. Déterminer sa constante radioactive $\\lambda$ puis sa période $T$.",
+          "solution_markdown": "$N(t) = N_0e^{-\\lambda t}$, avec $N(t) = N_0/5$ :\n\n$\\dfrac{N_0}{5} = N_0e^{-\\lambda\\times100} \\quad\\Rightarrow\\quad \\dfrac{1}{5} = e^{-100\\lambda}$\n\nEn prenant le logarithme népérien : $\\ln\\left(\\dfrac{1}{5}\\right) = -100\\lambda \\quad\\Rightarrow\\quad -\\ln 5 = -100\\lambda$\n\n$\\lambda = \\dfrac{\\ln 5}{100} = \\dfrac{1{,}609}{100} \\approx 1{,}61\\times10^{-2}\\ \\text{s}^{-1}$\n\n$T = \\dfrac{\\ln 2}{\\lambda} = \\dfrac{0{,}693}{1{,}61\\times10^{-2}} \\approx 43{,}0\\ \\text{s}$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de décroissance radioactive $N(t)=N_0e^{-\\lambda t}$ se démontre à partir de l'équation différentielle $dN/dt=-\\lambda N$, valable pour tout noyau radioactif.",
+        "$\\lambda$ (constante radioactive, en s$^{-1}$) et $T$ (période radioactive, en unité de temps) sont deux grandeurs différentes, liées par $T=\\ln 2/\\lambda$.",
+        "Après $n$ périodes, il reste toujours une fraction $1/2^n$ des noyaux initiaux, jamais zéro : la décroissance radioactive ne s'arrête jamais complètement en théorie.",
+        "Cette loi exponentielle est la même pour TOUS les noyaux radioactifs : seule la valeur de $\\lambda$ (ou de $T$) change d'un isotope à l'autre.",
+        "Cette loi est le fondement de toutes les applications de la radioactivité en physique nucléaire (datation, médecine nucléaire, gestion des déchets radioactifs) et revient systématiquement en première partie des exercices de radioactivité au BAC scientifique."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-angle-limite-reflexion-totale-premiere",
+  "meta": {
+    "titre": "Angle limite de réfraction et réflexion totale",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Optique géométrique - dioptre",
+    "duree_estimee_min": 22,
+    "tags": [
+      "angle limite",
+      "réflexion totale",
+      "dioptre",
+      "optique géométrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-2013-PHYSIQUE",
+    "epreuve_titre": "Probatoire série C - Épreuve de Physique - Session 2013 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-physique-2013-ex2-qA2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi une paille dans un verre d'eau semble-t-elle parfois se \"couper\" net quand on regarde le verre sous un certain angle, avec une brillance presque miroir en dessous ? C'est le phénomène de réflexion totale, à l'œuvre aussi dans les fibres optiques et certains prismes. Ce cours te montre à partir de quel angle ce phénomène apparaît, et comment le prévoir par le calcul."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de la réfraction de Snell-Descartes",
+        "Fonction sinus et sa réciproque arcsinus",
+        "Notion de milieu plus ou moins réfringent (indice de réfraction)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Angle limite et condition de réflexion totale",
+      "contenu_markdown": "Lorsqu'un rayon lumineux passe d'un milieu plus réfringent d'indice $n$ (par exemple du verre) vers un milieu moins réfringent d'indice $n'$ plus petit (par exemple l'air, $n'=1$), la loi de Snell-Descartes $n\\sin i = n'\\sin i'$ montre que l'angle de réfraction $i'$ (dans l'air) est toujours plus grand que l'angle d'incidence $i$ (dans le verre). Quand $i$ augmente, $i'$ finit par atteindre $90°$ (le rayon réfracté rase alors la surface) : l'angle d'incidence correspondant est appelé **angle de réfraction limite** (ou angle critique) $\\lambda$, défini par\n\n$$\\sin\\lambda = \\frac{n'}{n} = \\frac{1}{n}\\ \\text{(dioptre avec l'air)}$$\n\nPour tout angle d'incidence $i$ supérieur à $\\lambda$, il n'existe plus de rayon réfracté possible : toute la lumière est alors réfléchie à l'intérieur du milieu le plus réfringent, selon les lois classiques de la réflexion. C'est le phénomène de **réflexion totale**.",
+      "formule_principale": "\\sin\\lambda = \\frac{1}{n}",
+      "variantes": [
+        {
+          "nom": "Comparaison directe angle/angle limite",
+          "quand_utiliser": "Dès que l'on connaît déjà l'angle d'incidence réel sur une face (par exemple trouvé via la relation du prisme $A=r_1+r_2$)",
+          "contenu_markdown": "Il suffit de calculer $\\lambda=\\arcsin(1/n)$ puis de comparer numériquement à l'angle d'incidence connu : si celui-ci dépasse $\\lambda$, conclure directement à la réflexion totale sans chercher à calculer un angle de réfraction (qui n'existe pas dans ce cas)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un rayon lumineux, à l'intérieur d'un prisme en verre d'indice $n=1{,}5$, atteint une face avec un angle d'incidence de $45°$. Déterminer si ce rayon ressort réfracté à travers cette face ou s'il subit une réflexion totale.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'angle de réfraction limite du dioptre verre-air",
+          "justification": "On applique $\\sin\\lambda = 1/n$ avec $n=1{,}5$.",
+          "resultat_markdown": "$\\sin\\lambda = \\dfrac{1}{1{,}5} \\approx 0{,}667$, donc $\\lambda = \\arcsin(0{,}667) \\approx 41{,}8°$"
+        },
+        {
+          "numero": 2,
+          "action": "Comparer l'angle d'incidence réel à l'angle limite",
+          "justification": "On compare $i=45°$ à $\\lambda\\approx41{,}8°$.",
+          "resultat_markdown": "$45° > 41{,}8°$, donc $i > \\lambda$"
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la nature du phénomène",
+          "justification": "Un angle d'incidence supérieur à l'angle limite entraîne systématiquement une réflexion totale.",
+          "resultat_markdown": "Aucun rayon réfracté ne sort de cette face : le rayon est intégralement réfléchi (réflexion totale)"
+        }
+      ],
+      "conclusion_markdown": "L'angle d'incidence de $45°$ étant supérieur à l'angle limite $\\lambda\\approx41{,}8°$ du dioptre verre-air, le rayon subit une réflexion totale sur cette face : il n'y a pas de rayon transmis, seulement un rayon réfléchi."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $\\lambda$ correctement mais oublier de comparer avec l'angle d'incidence réel, en concluant directement « il y a réflexion totale » sans justification chiffrée.",
+          "pourquoi_faux": "L'existence d'un angle limite ne garantit pas à elle seule la réflexion totale : elle ne se produit que si l'angle d'incidence réel dépasse effectivement cette valeur. Sans comparaison explicite, la conclusion n'est pas justifiée et ferait perdre des points au barème.",
+          "correction_markdown": "Écris toujours la comparaison numérique explicite ($i$ par rapport à $\\lambda$) avant de conclure, même si le résultat te paraît évident."
+        },
+        {
+          "erreur_markdown": "Inverser la formule et écrire $\\sin\\lambda = n$ au lieu de $\\sin\\lambda=1/n$.",
+          "pourquoi_faux": "Comme $n>1$ pour le verre, $\\sin\\lambda=n$ donnerait une valeur supérieure à 1, ce qui est impossible pour un sinus (la formule serait donc immédiatement incohérente).",
+          "correction_markdown": "Retiens que $\\lambda$ existe seulement pour un rayon qui va du milieu le plus réfringent (indice $n$) vers le moins réfringent (indice 1 pour l'air), d'où $\\sin\\lambda=1/n<1$, toujours une valeur inférieure à 1."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer l'angle limite de réfraction du dioptre eau-air, sachant que l'indice de l'eau vaut $n=1{,}33$.",
+          "solution_markdown": "$\\sin\\lambda=1/1{,}33\\approx0{,}752$, donc $\\lambda\\approx48{,}8°$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un rayon lumineux, à l'intérieur d'un bloc de verre d'indice $n=1{,}6$, atteint une face avec un angle d'incidence de $35°$. Ce rayon ressort-il réfracté, ou subit-il une réflexion totale ?",
+          "solution_markdown": "$\\sin\\lambda=1/1{,}6=0{,}625$, donc $\\lambda\\approx38{,}7°$. Comme $35°<38{,}7°$, l'angle d'incidence est inférieur à l'angle limite : le rayon ressort réfracté, il n'y a pas réflexion totale."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un prisme en verre d'indice $n$ inconnu a un angle au sommet $A=40°$. Un rayon arrive sous incidence normale sur la première face. On observe expérimentalement que ce rayon subit tout juste une réflexion totale sur la seconde face (angle d'incidence égal à l'angle limite). Déterminer l'indice $n$ du verre.",
+          "solution_markdown": "Incidence normale : $r_1=0°$, donc $r_2=A=40°$ d'après la relation du prisme. Si cet angle est exactement l'angle limite, $\\lambda=40°$, donc $\\sin\\lambda=1/n$ donne $n=\\dfrac{1}{\\sin40°}=\\dfrac{1}{0{,}643}\\approx1{,}56$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'angle limite $\\lambda$ vérifie $\\sin\\lambda=1/n$ pour un dioptre entre un milieu d'indice $n$ et l'air.",
+        "La réflexion totale se produit dès que l'angle d'incidence, dans le milieu le plus réfringent, dépasse $\\lambda$.",
+        "Compare toujours numériquement l'angle réel à $\\lambda$ avant de conclure : ce n'est jamais automatique sans cette comparaison.",
+        "Ce phénomène est le principe physique des prismes à réflexion totale (jumelles, périscopes) et des fibres optiques, fréquemment interrogé au Probatoire et au BAC série C."
+      ]
+    }
+  ]
+}

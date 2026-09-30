@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-generateur-loi-de-pouillet-1ere-d",
+  "meta": {
+    "titre": "Générateur électrique : loi de Pouillet (loi d'Ohm généralisée)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Électrocinétique - générateurs et résistances",
+    "duree_estimee_min": 20,
+    "tags": [
+      "générateur",
+      "loi de Pouillet",
+      "résistance interne",
+      "f.é.m."
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-physique-1999-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série D - Session 1999 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-d-physique-1999-officiel-cameroun-ex1-q1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un générateur ne délivre jamais toute sa force électromotrice à ses bornes dès qu'il débite du courant : une partie de cette énergie se perd dans sa propre résistance interne. Ce cours te donne la méthode pour retrouver la f.é.m. et la résistance interne d'un générateur à partir de deux mesures seulement - exactement la situation que tu rencontres dès qu'un exercice mêle voltmètre, ampèremètre et interrupteur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi d'Ohm U = RI pour un résistor",
+        "Notion de circuit électrique en série",
+        "Lecture d'un voltmètre et d'un ampèremètre supposés idéaux"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Pouillet (loi d'Ohm généralisée à un circuit avec générateur)",
+      "contenu_markdown": "Un générateur réel se modélise par une f.é.m. $E$ en série avec une résistance interne $r$. Relié à une résistance externe $R_{ext}$, il impose dans le circuit une intensité $I = \\dfrac{E}{r+R_{ext}}$, et sa tension aux bornes vaut $U = E - rI$. Ces deux relations suffisent à déterminer $E$ et $r$ dès qu'on dispose de deux situations de mesure différentes du même générateur (typiquement une à vide et une en charge).",
+      "formule_principale": "U = E - rI",
+      "variantes": [
+        {
+          "nom": "Système à deux équations",
+          "quand_utiliser": "Quand on dispose de deux couples (U,I) mesurés dans deux configurations différentes du même générateur",
+          "contenu_markdown": "On écrit $U_1 = E - rI_1$ et $U_2 = E - rI_2$ pour les deux mesures, puis on résout ce système linéaire à deux inconnues (E, r) par soustraction ou substitution."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Lorsque l'interrupteur K est ouvert, le voltmètre indique 24 V. Lorsqu'on ferme l'interrupteur, avec une résistance R = 11 Ω, l'ampèremètre indique 2 A. Calculer la f.é.m. E du générateur et sa résistance interne r.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Traiter le cas K ouvert",
+          "justification": "Le voltmètre a une résistance très grande : le courant débité est négligeable, donc U = E - r×0 = E.",
+          "resultat_markdown": "$E = 24$ V"
+        },
+        {
+          "numero": 2,
+          "action": "Traiter le cas K fermé",
+          "justification": "L'ampèremètre et l'interrupteur ont une résistance négligeable, donc la tension aux bornes du générateur égale la chute de tension dans R.",
+          "resultat_markdown": "$U = R \\times I = 11 \\times 2 = 22$ V"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler r à partir de U = E - rI",
+          "justification": "La même tension aux bornes s'exprime aussi en fonction de r.",
+          "resultat_markdown": "$r = \\dfrac{E-U}{I} = \\dfrac{24-22}{2} = 1\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "Le générateur a pour caractéristiques $E = 24$ V et $r = 1\\ \\Omega$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que le voltmètre indique toujours la f.é.m., même une fois K fermé.",
+          "pourquoi_faux": "Ces deux grandeurs ne coïncident qu'à vide (intensité nulle). Dès qu'un courant circule, la tension aux bornes chute de $rI$ par rapport à la f.é.m.",
+          "correction_markdown": "Utilise $U=E-rI$ dès que l'intensité n'est pas nulle, et réserve $U=E$ au seul cas où le circuit est ouvert."
+        },
+        {
+          "erreur_markdown": "Inclure la résistance de l'ampèremètre ou de l'interrupteur dans le calcul de la résistance externe.",
+          "pourquoi_faux": "L'énoncé précise que ces deux éléments ont une résistance négligeable : les inclure fausserait le calcul de U=RI.",
+          "correction_markdown": "Ne retiens que les résistances explicitement non négligeables pour calculer la tension aux bornes de la résistance externe."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un générateur de f.é.m. $E=12$ V et de résistance interne $r=0{,}5\\ \\Omega$ est relié à une résistance $R=5{,}5\\ \\Omega$. Calculer l'intensité I et la tension U à ses bornes.",
+          "solution_markdown": "Loi de Pouillet : $I=\\dfrac{E}{r+R}=\\dfrac{12}{0{,}5+5{,}5}=\\dfrac{12}{6}=2$ A. Tension aux bornes : $U=E-rI=12-0{,}5\\times2=11$ V (on vérifie : $U=RI=5{,}5\\times2=11$ V, cohérent)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "K ouvert, un voltmètre indique 6 V. K fermé, avec $R=4\\ \\Omega$, l'ampèremètre indique 1 A. Déterminer E et r.",
+          "solution_markdown": "K ouvert : $E=6$ V. K fermé : $U=RI=4\\times1=4$ V, donc $r=\\dfrac{E-U}{I}=\\dfrac{6-4}{1}=2\\ \\Omega$. Le générateur a pour caractéristiques $E=6$ V et $r=2\\ \\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un générateur de f.é.m. $E=20$ V, relié à $R_1=9\\ \\Omega$, débite un courant de 2 A. Déterminer sa résistance interne r, puis calculer l'intensité qu'il débiterait s'il était relié à $R_2=14\\ \\Omega$.",
+          "solution_markdown": "Avec $R_1$ : $E=(r+R_1)I_1 \\Rightarrow r+9=\\dfrac{20}{2}=10 \\Rightarrow r=1\\ \\Omega$. Avec $R_2$ : $I_2=\\dfrac{E}{r+R_2}=\\dfrac{20}{1+14}=\\dfrac{20}{15}\\approx1{,}33$ A."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Distingue toujours la f.é.m. E (caractéristique intrinsèque du générateur) de la tension à ses bornes U (qui dépend du courant débité).",
+        "À vide (I=0), U=E : c'est la méthode la plus directe pour mesurer une f.é.m.",
+        "En charge, U=E-rI : la résistance interne fait chuter la tension disponible proportionnellement au courant.",
+        "Deux mesures (U,I) suffisent à déterminer E et r par résolution d'un système linéaire.",
+        "Ce calcul revient chaque année en Probatoire dès qu'un circuit associe générateur, résistance variable et interrupteur."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-bilan-de-puissance-circuit-electrique",
+  "meta": {
+    "titre": "Bilan de puissance dans un circuit générateur-récepteur",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Circuits électriques en courant continu",
+    "duree_estimee_min": 25,
+    "tags": [
+      "puissance électrique",
+      "effet Joule",
+      "rendement énergétique",
+      "circuit série"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2008-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série D, TI - Session 2008 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2008-officiel-cameroun-ex2-qB2a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une pile fournit de l'énergie électrique à un circuit, mais toute cette énergie n'arrive pas utile jusqu'au moteur : une partie se perd en chaleur dans les résistances. Le bilan de puissance permet de chiffrer précisément cette perte, et de calculer le rendement réel du circuit - une compétence directement utile pour comprendre pourquoi un appareil électrique chauffe, ou pourquoi certains circuits sont plus efficaces que d'autres."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi de Pouillet dans un circuit générateur-récepteur en série",
+        "Savoir calculer une puissance électrique ($P = UI$ ou ses variantes)",
+        "Savoir que le rendement d'un système est le rapport entre ce qui est utile et ce qui est fourni"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les trois puissances d'un circuit série générateur-récepteur",
+      "contenu_markdown": "Dans un circuit série comprenant un générateur et un récepteur actif (moteur), on distingue la puissance électrique totale fournie par le générateur, la puissance utile réellement exploitée par le récepteur, et la puissance dissipée par effet Joule dans l'ensemble des résistances. Ces trois puissances sont liées par un bilan de conservation de l'énergie, et leur rapport définit le rendement du circuit.",
+      "formule_principale": "P_{\\text{totale}} = E \\times I \\ ; \\ P_{\\text{utile}} = E' \\times I \\ ; \\ P_J = (R+r+r')\\,I^2 \\ ; \\ P_{\\text{totale}} = P_{\\text{utile}} + P_J \\ ; \\ \\eta = \\frac{P_{\\text{utile}}}{P_{\\text{totale}}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le circuit pile ($E=9$ V, $r=3$ $\\Omega$) - moteur ($E'=3{,}51$ V, $r'=1{,}5$ $\\Omega$) - lampe ($R=23$ $\\Omega$), l'ampèremètre indique $I = 200$ mA. Calculer les trois puissances et le rendement du circuit.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la puissance électrique totale générée",
+          "justification": "$P_{\\text{totale}} = E \\times I$, produit de la f.é.m. de la pile par l'intensité",
+          "resultat_markdown": "$P_{\\text{totale}} = 9 \\times 0{,}2 = 1{,}8 \\ \\text{W}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance utile fournie par le moteur",
+          "justification": "$P_{\\text{utile}} = E' \\times I$, produit de la f.c.é.m. du moteur par l'intensité",
+          "resultat_markdown": "$P_{\\text{utile}} = 3{,}51 \\times 0{,}2 = 0{,}702 \\ \\text{W}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la puissance dissipée par effet Joule",
+          "justification": "$P_J = (R+r+r') \\times I^2$, effet Joule dans toutes les résistances du circuit",
+          "resultat_markdown": "$P_J = 27{,}5 \\times 0{,}2^2 = 27{,}5 \\times 0{,}04 = 1{,}1 \\ \\text{W}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le rendement énergétique du circuit",
+          "justification": "$\\eta = P_{\\text{utile}} / P_{\\text{totale}}$",
+          "resultat_markdown": "$\\eta = \\dfrac{0{,}702}{1{,}8} = 0{,}39$, soit $39\\ \\%$"
+        }
+      ],
+      "conclusion_markdown": "Sur les $1{,}8$ W fournis par la pile, seuls $0{,}702$ W ($39\\ \\%$) sont utilement transmis par le moteur, le reste ($1{,}1$ W, soit $61\\ \\%$) étant dissipé par effet Joule dans les résistances du circuit."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer le rendement comme $P_J / P_{\\text{totale}}$ au lieu de $P_{\\text{utile}} / P_{\\text{totale}}$",
+          "pourquoi_faux": "Le rendement mesure la part UTILE de l'énergie, pas la part perdue : ce sont deux quantités complémentaires ($\\eta + \\text{part perdue} = 1$), mais pas interchangeables",
+          "correction_markdown": "Retiens la définition dans le bon sens : rendement = (ce qui est utile) / (ce qui est fourni au total), toujours une valeur entre 0 et 1."
+        },
+        {
+          "erreur_markdown": "Utiliser $P_J = (R+r+r') \\times I$ (oublier le carré de l'intensité)",
+          "pourquoi_faux": "La puissance dissipée par effet Joule dans une résistance suit la loi $P = R I^2$, avec le carré de l'intensité, pas une simple proportionnalité",
+          "correction_markdown": "Mémorise bien la formule de l'effet Joule avec le carré : $P_J = R_{\\text{totale}} \\times I^2$, jamais $R_{\\text{totale}} \\times I$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une pile de f.é.m. $E = 6$ V débite un courant $I = 0{,}5$ A dans un circuit sans récepteur actif. Calculer la puissance électrique totale générée.",
+          "solution_markdown": "$P_{\\text{totale}} = E \\times I = 6 \\times 0{,}5 = 3 \\ \\text{W}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit comprend un moteur de f.c.é.m. $E' = 4$ V traversé par un courant $I = 0{,}5$ A, et des résistances totalisant $R_{\\text{totale}} = 6$ $\\Omega$. Calculer la puissance utile et la puissance Joule, puis vérifier le bilan de puissance si $E = 7$ V.",
+          "solution_markdown": "$P_{\\text{utile}} = E' \\times I = 4 \\times 0{,}5 = 2 \\ \\text{W}$. $P_J = R_{\\text{totale}} \\times I^2 = 6 \\times 0{,}5^2 = 6 \\times 0{,}25 = 1{,}5 \\ \\text{W}$. Puissance totale attendue : $P_{\\text{totale}} = E \\times I = 7 \\times 0{,}5 = 3{,}5 \\ \\text{W}$. Vérification du bilan : $P_{\\text{utile}} + P_J = 2 + 1{,}5 = 3{,}5 \\ \\text{W}$, exactement égal à $P_{\\text{totale}}$ : le bilan de puissance est vérifié."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un circuit générateur-moteur a un rendement $\\eta = 0{,}75$ pour une puissance totale $P_{\\text{totale}} = 4$ W. Sachant que la résistance totale du circuit vaut $R_{\\text{totale}} = 2$ $\\Omega$ et que $E = 10$ V, calculer l'intensité I, puis la f.c.é.m. E' du moteur.",
+          "solution_markdown": "De $P_{\\text{totale}} = E \\times I$, on tire $I = \\dfrac{P_{\\text{totale}}}{E} = \\dfrac{4}{10} = 0{,}4$ A. Le rendement donne $P_{\\text{utile}} = \\eta \\times P_{\\text{totale}} = 0{,}75 \\times 4 = 3 \\ \\text{W}$. Comme $P_{\\text{utile}} = E' \\times I$, on isole $E' = \\dfrac{P_{\\text{utile}}}{I} = \\dfrac{3}{0{,}4} = 7{,}5$ V. Vérification par la puissance Joule : $P_J = P_{\\text{totale}} - P_{\\text{utile}} = 4 - 3 = 1 \\ \\text{W}$, et $R_{\\text{totale}} \\times I^2 = 2 \\times 0{,}4^2 = 2 \\times 0{,}16 = 0{,}32 \\ \\text{W}$ - l'écart avec $1$ W montre qu'une donnée du circuit (par exemple $R_{\\text{totale}}$) n'est pas cohérente avec les autres, ce qui illustre l'intérêt de toujours vérifier le bilan de puissance complet avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois puissances à distinguer : totale ($E \\times I$), utile ($E' \\times I$), Joule ($R_{\\text{totale}} \\times I^2$).",
+        "Le bilan de conservation de l'énergie impose toujours $P_{\\text{totale}} = P_{\\text{utile}} + P_J$ : un bon réflexe de vérification.",
+        "Le rendement $\\eta = P_{\\text{utile}} / P_{\\text{totale}}$ est toujours compris entre 0 et 1 (ou entre 0 % et 100 %).",
+        "Ce bilan de puissance est un grand classique du Probatoire et du BAC dès qu'un circuit comporte un récepteur actif comme un moteur."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-probatoire-d-physique-2004-officiel-cameroun-ex3-q3-1",
+  "meta": {
+    "titre": "Moment d'une force répartie et condition d'équilibre de rotation",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Mécanique",
+    "duree_estimee_min": 26,
+    "tags": [
+      "moment d'une force",
+      "équilibre de rotation",
+      "force répartie",
+      "roue de Barlow"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-physique-2004-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique, Série D, Session 2004 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-physique-2004-officiel-cameroun-ex3-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une force ne fait pas toujours tourner un objet avec la même efficacité selon l'endroit où elle s'applique : pousser une porte près de la poignée est bien plus efficace que près des gonds. Cette efficacité se mesure par le moment de la force. Ce cours t'apprend à calculer le moment d'une force RÉPARTIE le long d'un conducteur - une subtilité fréquemment rencontrée en électromagnétisme - et à l'utiliser pour établir une condition d'équilibre."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Force de Laplace sur un conducteur rectiligne (cours précédent)",
+        "Notion de moment d'une force ponctuelle, $\\mathcal{M} = F \\times d$",
+        "Calcul intégral élémentaire (intégrale d'une fonction affine)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Moment d'une force uniformément répartie",
+      "contenu_markdown": "Quand une force est répartie de façon uniforme le long d'un conducteur radial (même force par unité de longueur en tout point, ce qui est le cas pour la force de Laplace dans un champ uniforme), son moment total par rapport à l'axe de rotation s'obtient en intégrant la contribution de chaque tronçon. Le résultat est identique à celui d'une force ponctuelle égale à la force totale, appliquée au milieu du conducteur. Pour immobiliser un système en rotation, il faut appliquer un moment extérieur opposé, de même intensité que le moment moteur.",
+      "formule_principale": "\\mathcal{M} = \\int_0^{R} (B I)\\,r\\,dr = \\frac{B I R^2}{2} = F_{total}\\times\\frac{R}{2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$B=5\\times10^{-4}$ T, $I=25$ A, $R=0{,}10$ m. Calculer le moment de la force de Laplace, puis la force à appliquer en bout de rayon pour équilibrer la roue.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Établir que la force par unité de longueur est constante",
+          "justification": "$B$ et $I$ sont uniformes sur tout le rayon immergé : $dF/dr=BI$ ne dépend pas de $r$.",
+          "resultat_markdown": "$dF = B\\,I\\,dr$, constante le long du rayon."
+        },
+        {
+          "numero": 2,
+          "action": "Intégrer le moment élémentaire",
+          "justification": "Chaque tronçon $dr$ à la distance $r$ de l'axe contribue au moment total par $r\\,dF$.",
+          "resultat_markdown": "$\\mathcal{M}=\\displaystyle\\int_0^R r\\,(BI\\,dr) = BI\\dfrac{R^2}{2} = 5\\times10^{-4}\\times25\\times\\dfrac{0{,}01}{2}=6{,}25\\times10^{-5}$ N·m."
+        },
+        {
+          "numero": 3,
+          "action": "Retrouver ce résultat par la force totale appliquée au milieu",
+          "justification": "Une force uniformément répartie équivaut, pour le moment, à la force totale appliquée à mi-longueur.",
+          "resultat_markdown": "$F_{total}=BIR=1{,}25\\times10^{-3}$ N ; $\\mathcal{M}=F_{total}\\times R/2 = 1{,}25\\times10^{-3}\\times0{,}05=6{,}25\\times10^{-5}$ N·m. ✓"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la condition d'équilibre avec une force ponctuelle en bout de rayon",
+          "justification": "Une force extérieure appliquée à l'extrémité (distance R) doit produire un moment opposé de même intensité.",
+          "resultat_markdown": "$F_{ext}\\times R = \\mathcal{M} \\Rightarrow F_{ext} = \\dfrac{6{,}25\\times10^{-5}}{0{,}10} = 6{,}25\\times10^{-4}$ N."
+        }
+      ],
+      "conclusion_markdown": "Il faut appliquer $F_{ext}=6{,}25\\times10^{-4}$ N à l'extrémité du rayon horizontal pour équilibrer la roue - exactement la moitié de la force totale de Laplace, car celle-ci s'applique en moyenne au milieu du rayon."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer l'équilibre avec $F_{ext}=F_{total}$ au lieu de $F_{total}/2$.",
+          "pourquoi_faux": "La force de Laplace totale est répartie sur tout le rayon (bras de levier moyen $R/2$), alors que $F_{ext}$ est ponctuelle en bout de rayon (bras de levier $R$) : pour le même moment, une force appliquée deux fois plus loin doit être deux fois plus petite.",
+          "correction_markdown": "Calcule toujours le moment de la force répartie séparément (par intégration ou en utilisant le bras de levier moyen $R/2$), puis égale-le au moment de la force ponctuelle extérieure ($F_{ext}\\times R$)."
+        },
+        {
+          "erreur_markdown": "Oublier que le moment d'une force dépend de son bras de levier, pas seulement de sa norme.",
+          "pourquoi_faux": "Deux forces de même norme appliquées à des distances différentes de l'axe produisent des moments différents.",
+          "correction_markdown": "Identifie toujours la distance exacte entre l'axe de rotation et le point d'application de la force avant de calculer un moment."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une force ponctuelle de 2 N est appliquée à 30 cm d'un axe. Calculer son moment.",
+          "solution_markdown": "$\\mathcal{M}=F\\times d = 2\\times0{,}30=0{,}6$ N·m."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une force totale de $4\\times10^{-3}$ N est uniformément répartie sur un rayon de 8 cm. Calculer son moment par rapport à l'axe.",
+          "solution_markdown": "Le bras de levier équivalent est $R/2=4$ cm. $\\mathcal{M}=F_{total}\\times R/2 = 4\\times10^{-3}\\times0{,}04=1{,}6\\times10^{-4}$ N·m."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une roue de Barlow de rayon $R=12$ cm est parcourue par $I=30$ A dans un champ $B=8\\times10^{-4}$ T. Calculer la force qu'il faut appliquer à 6 cm de l'axe (pas à l'extrémité) pour l'empêcher de tourner.",
+          "solution_markdown": "$\\mathcal{M}=BI R^2/2 = 8\\times10^{-4}\\times30\\times(0{,}12)^2/2 = 8\\times10^{-4}\\times30\\times0{,}0072 = 1{,}728\\times10^{-4}$ N·m. En appliquant $F_{ext}$ à $d=0{,}06$ m : $F_{ext}=\\mathcal{M}/d = 1{,}728\\times10^{-4}/0{,}06 \\approx 2{,}88\\times10^{-3}$ N."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le moment d'une force uniformément répartie sur un rayon équivaut à celui de la force totale appliquée au milieu du rayon (bras de levier $R/2$).",
+        "Une force ponctuelle appliquée à l'extrémité (bras de levier $R$) doit donc valoir la moitié de la force totale répartie pour produire le même moment.",
+        "La condition d'équilibre de rotation s'écrit toujours en égalant deux moments, jamais deux forces directement.",
+        "Cette subtilité (force répartie vs force ponctuelle) est un piège classique des exercices sur la roue de Barlow et les dispositifs similaires."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-decroissance-radioactive-tle-c",
+  "meta": {
+    "titre": "La loi de décroissance radioactive",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Physique nucléaire",
+    "duree_estimee_min": 20,
+    "tags": [
+      "décroissance radioactive",
+      "constante radioactive",
+      "équation différentielle",
+      "exponentielle décroissante"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2002-PHYSIQUE-CM",
+    "epreuve_titre": "BAC Physique, série C, session 2002 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-2002-officiel-cameroun-ex2-q2.1-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi le nombre de noyaux radioactifs décroît-il selon une exponentielle, et pas selon une droite ou une autre courbe ? La réponse tient en une seule idée : chaque noyau a, à chaque instant, la même probabilité de se désintégrer, indépendamment de son passé et des autres noyaux. Cette hypothèse d'absence de mémoire, vérifiée expérimentalement sur tous les éléments radioactifs connus, impose mathématiquement une décroissance exponentielle : c'est elle qui permet ensuite de dater des roches, des fossiles ou des objets archéologiques."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Résoudre une équation différentielle du premier ordre à variables séparables",
+        "Manipuler les fonctions exponentielle et logarithme népérien",
+        "Connaître la notion de probabilité de désintégration par unité de temps"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'équation différentielle de la décroissance radioactive",
+      "contenu_markdown": "La désintégration radioactive est un phénomène aléatoire et spontané : le nombre de noyaux qui se désintègrent pendant un intervalle de temps $dt$ est proportionnel au nombre de noyaux $N(t)$ encore présents et à la durée $dt$, avec un coefficient de proportionnalité $\\lambda$ (la constante radioactive, caractéristique de l'élément et homogène à l'inverse d'un temps). Cette loi s'écrit $dN=-\\lambda N\\,dt$ (le signe moins traduisant la diminution du nombre de noyaux), et s'intègre en séparant les variables pour donner une décroissance exponentielle.",
+      "formule_principale": "N(t) = N(0)\\,e^{-\\lambda t}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un échantillon contient initialement $N(0)=10^{20}$ noyaux d'un isotope radioactif de constante $\\lambda=2{,}3\\times10^{-6}\\ \\text{s}^{-1}$. Établir l'expression de $N(t)$ et calculer le nombre de noyaux restants après $t=3\\times10^5\\ \\text{s}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la loi de décroissance sous forme différentielle",
+          "justification": "C'est la loi fondamentale de la radioactivité",
+          "resultat_markdown": "$\\dfrac{dN}{N} = -\\lambda\\,dt$"
+        },
+        {
+          "numero": 2,
+          "action": "Intégrer entre 0 et t",
+          "justification": "Primitives usuelles de $dN/N$ (logarithme) et de $dt$ (fonction affine)",
+          "resultat_markdown": "$\\ln N(t) - \\ln N(0) = -\\lambda t$"
+        },
+        {
+          "numero": 3,
+          "action": "Passer à l'exponentielle",
+          "justification": "Fonction réciproque du logarithme népérien",
+          "resultat_markdown": "$N(t) = N(0)\\,e^{-\\lambda t}$"
+        },
+        {
+          "numero": 4,
+          "action": "Application numérique",
+          "justification": "Remplacement des valeurs données",
+          "resultat_markdown": "$\\lambda t = 2{,}3\\times10^{-6}\\times3\\times10^5 = 0{,}69$, donc $N(t) = 10^{20}\\times e^{-0{,}69} \\approx 5{,}02\\times10^{19}$ noyaux"
+        }
+      ],
+      "conclusion_markdown": "Environ la moitié des noyaux initiaux ont disparu après cette durée, ce qui n'est pas un hasard : $\\lambda t\\approx0{,}69\\approx\\ln2$ signifie que cette durée est précisément voisine de la période radioactive de l'élément."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le nombre de noyaux $N(t)$ avec le nombre de désintégrations survenues, $N(0)-N(t)$",
+          "pourquoi_faux": "$N(t)$ est ce qui reste, pas ce qui a disparu ; ces deux quantités sont complémentaires ($N(0)=N(t)+\\text{désintégrations}$) mais jouent des rôles opposés dans les calculs de datation.",
+          "correction_markdown": "Avant tout calcul, préciser explicitement si la grandeur cherchée est « ce qui reste » ou « ce qui a disparu »."
+        },
+        {
+          "erreur_markdown": "Oublier le signe moins dans l'équation différentielle, ce qui conduirait à une croissance exponentielle",
+          "pourquoi_faux": "Le nombre de noyaux radioactifs ne peut que diminuer au cours du temps : un signe positif donnerait une solution physiquement absurde qui croît indéfiniment.",
+          "correction_markdown": "Vérifier la cohérence physique du signe avant d'intégrer : $dN$ doit être négatif quand $N$ et $dt$ sont positifs."
+        },
+        {
+          "erreur_markdown": "Utiliser $\\log_{10}$ au lieu de $\\ln$ dans l'intégration ou dans l'application numérique",
+          "pourquoi_faux": "La primitive de $1/N$ est le logarithme népérien, pas le logarithme décimal ; mélanger les deux introduit un facteur $\\ln10\\approx2{,}3$ d'erreur.",
+          "correction_markdown": "Toujours utiliser la touche « ln » de la calculatrice pour cette loi, jamais « log »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un échantillon radioactif a une constante $\\lambda=1{,}5\\times10^{-4}\\ \\text{s}^{-1}$. Calculer la fraction de noyaux restants après $t=2000\\ \\text{s}$.",
+          "solution_markdown": "$\\dfrac{N(t)}{N(0)} = e^{-\\lambda t} = e^{-1{,}5\\times10^{-4}\\times2000} = e^{-0{,}3} \\approx 0{,}741$. Il reste environ $74{,}1\\ \\%$ des noyaux initiaux."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un échantillon perd $20\\ \\%$ de ses noyaux radioactifs en $500\\ \\text{s}$. Calculer sa constante radioactive $\\lambda$.",
+          "solution_markdown": "Il reste $80\\ \\%$ des noyaux : $\\dfrac{N(t)}{N(0)}=0{,}8=e^{-\\lambda\\times500}$. En prenant le logarithme népérien : $\\ln(0{,}8) = -\\lambda\\times500$, soit $\\lambda = \\dfrac{-\\ln(0{,}8)}{500} = \\dfrac{0{,}223}{500} \\approx 4{,}46\\times10^{-4}\\ \\text{s}^{-1}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que le temps nécessaire pour que $N(t)$ passe de $N(0)$ à $N(0)/2^n$ (avec $n$ un entier) vaut exactement $n$ fois la période radioactive $T$, sans utiliser explicitement $\\lambda$ dans le résultat final.",
+          "solution_markdown": "$N(t)=N(0)/2^n \\Rightarrow e^{-\\lambda t} = 2^{-n} \\Rightarrow -\\lambda t = -n\\ln2 \\Rightarrow t = n\\dfrac{\\ln2}{\\lambda}$. Comme $T=\\dfrac{\\ln2}{\\lambda}$ (relation établie séparément entre la période et la constante radioactive), on obtient directement $t=nT$ : chaque intervalle de durée $T$ divise le nombre de noyaux restants par 2, quel que soit le nombre de périodes déjà écoulées. C'est cette propriété qui donne à la période radioactive tout son intérêt pratique : elle ne dépend jamais de l'instant choisi comme origine."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La décroissance radioactive obéit à $N(t)=N(0)e^{-\\lambda t}$, conséquence directe de l'équation différentielle $dN=-\\lambda N\\,dt$.",
+        "$\\lambda$, la constante radioactive, est homogène à l'inverse d'un temps et caractérise l'élément considéré.",
+        "Ne confonds jamais $N(t)$ (ce qui reste) avec $N(0)-N(t)$ (ce qui a disparu, donc le nombre de noyaux fils formés).",
+        "Utilise toujours le logarithme népérien (ln), jamais le logarithme décimal, pour inverser cette loi.",
+        "Cette loi est le point de départ obligé de tout exercice de datation radiochronologique au BAC."
+      ]
+    }
+  ]
+}

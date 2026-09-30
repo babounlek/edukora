@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-determination-fem-resistance-interne-1ere-c",
+  "meta": {
+    "titre": "Déterminer la f.c.é.m. et la résistance interne d'un récepteur actif",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Circuits électriques - récepteurs actifs",
+    "duree_estimee_min": 25,
+    "tags": [
+      "force contre-électromotrice",
+      "résistance interne",
+      "récepteur actif",
+      "caractéristique linéaire"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-CHIMIE-2004",
+    "epreuve_titre": "Science Physique - Probatoire Scientifique Série C - Session 2004",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-probatoire-c-physique-chimie-2004-officiel-cameroun-ex5-q3.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois la caractéristique U=f(I) d'un moteur tracée et vérifiée alignée, deux nombres suffisent à le caractériser entièrement : sa force contre-électromotrice et sa résistance interne. Ce cours t'explique comment les extraire directement de la droite, avec la vérification qui sécurise ton résultat."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir qu'un récepteur actif suit la loi $U=E'+r'I$",
+        "Savoir vérifier l'alignement de points expérimentaux et calculer un taux de variation"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lecture de E' et r' sur une caractéristique linéaire",
+      "contenu_markdown": "Pour un récepteur actif (comme un moteur en fonctionnement), la caractéristique U = E' + r'I est une droite dont les deux coefficients ont un sens physique direct : l'**ordonnée à l'origine** (la valeur de U quand I=0) est égale à la force contre-électromotrice E' du récepteur, et le **coefficient directeur** (la pente) de la droite est égal à sa résistance interne r'. On détermine la pente à partir du taux de variation $\\Delta U/\\Delta I$ entre deux points de mesure, puis on calcule E' en réinjectant cette pente et un point expérimental dans l'équation de la droite.",
+      "formule_principale": "$U = E' + r'I$ : ordonnée à l'origine = E' ; pente = r'",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "À partir des points alignés (0,1;2,9) et (0,5;4,5) de taux de variation 4,0 V/A, déterminer E' et r' du moteur.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier r' à partir du taux de variation déjà calculé",
+          "justification": "Le coefficient directeur de la droite U=E'+r'I est directement r'.",
+          "resultat_markdown": "$r' = \\dfrac{\\Delta U}{\\Delta I} = 4{,}0$ V/A $= 4{,}0\\ \\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Réinjecter r' et un point expérimental dans l'équation de la droite",
+          "justification": "On choisit un point de mesure connu, par exemple (0,1 ; 2,9), et on résout l'équation pour E'.",
+          "resultat_markdown": "$2{,}9 = E' + 4{,}0\\times0{,}1 = E' + 0{,}4$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler et calculer E'",
+          "justification": "On résout l'équation du premier degré en E'.",
+          "resultat_markdown": "$E' = 2{,}9 - 0{,}4 = 2{,}5$ V"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier avec un second point expérimental, différent du premier",
+          "justification": "On réinjecte E' et r' dans l'équation avec un autre point pour confirmer le résultat.",
+          "resultat_markdown": "Avec (0,5 ; 4,5) : $U=E'+r'I=2{,}5+4{,}0\\times0{,}5=2{,}5+2{,}0=4{,}5$ V, valeur retrouvée exactement."
+        }
+      ],
+      "conclusion_markdown": "La f.c.é.m. du moteur vaut $E' = 2{,}5$ V et sa résistance interne vaut $r' = 4{,}0\\ \\Omega$, résultat confirmé par un second point expérimental."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer E' en prenant U à I=0 directement sur le graphique sans avoir réellement de point mesuré à I=0.",
+          "pourquoi_faux": "Le tableau de mesures ne contient généralement aucun point à I=0 exactement (le rhéostat ne permet pas toujours de descendre jusqu'à I=0, ou cette valeur n'a pas été mesurée) : il faut donc calculer E' par le calcul, en réinjectant la pente r' et un point expérimental réel dans l'équation de la droite, plutôt que de lire approximativement une valeur extrapolée sur un graphique tracé à la main.",
+          "correction_markdown": "Calcule toujours E' algébriquement à partir de l'équation $U=E'+r'I$ et d'un point de mesure réel, plutôt que de te fier à une lecture graphique approximative de l'extrapolation à I=0."
+        },
+        {
+          "erreur_markdown": "Confondre le modèle du récepteur actif $U=E'+r'I$ (signe +) avec celui du générateur $U=E-rI$ (signe -).",
+          "pourquoi_faux": "Un récepteur actif consomme de l'énergie électrique : U est TOUJOURS supérieure à E' (une partie de l'énergie électrique sert à vaincre la résistance interne, en plus du travail utile), d'où le signe + devant r'I. Un générateur, au contraire, fournit de l'énergie : U est inférieure à sa f.é.m. E à cause des pertes internes, d'où le signe - devant rI.",
+          "correction_markdown": "Avant d'écrire l'équation, demande-toi si le dipôle étudié CONSOMME de l'énergie électrique (récepteur, signe +) ou en FOURNIT (générateur, signe -)."
+        },
+        {
+          "erreur_markdown": "Ne vérifier le résultat qu'avec le MÊME point ayant servi à calculer E', ce qui ne prouve rien (l'équation est vérifiée par construction).",
+          "pourquoi_faux": "Si l'on calcule E' à partir du point A puis qu'on « vérifie » en réinjectant E' et r' dans l'équation avec ce même point A, l'égalité est automatiquement vraie par construction : ce n'est pas une vérification, c'est une tautologie.",
+          "correction_markdown": "Vérifie toujours tes résultats avec un point DIFFÉRENT de celui utilisé pour le calcul initial : c'est la seule vérification qui apporte une information réelle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une caractéristique de récepteur actif a pour pente 2,0 Ω et passe par le point (0,2 ; 3,0). Calculer E'.",
+          "solution_markdown": "$U=E'+r'I$ donne $3{,}0=E'+2{,}0\\times0{,}2=E'+0{,}4$, donc $E'=3{,}0-0{,}4=2{,}6$ V."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur a pour caractéristique les points (0,2 ; 4,4) et (0,6 ; 7,2). Déterminer E' et r'.",
+          "solution_markdown": "Pente : $r'=\\dfrac{7{,}2-4{,}4}{0{,}6-0{,}2}=\\dfrac{2{,}8}{0{,}4}=7{,}0\\ \\Omega$. Avec le point (0,2 ; 4,4) : $4{,}4=E'+7{,}0\\times0{,}2=E'+1{,}4$, donc $E'=4{,}4-1{,}4=3{,}0$ V. Vérification avec (0,6 ; 7,2) : $3{,}0+7{,}0\\times0{,}6=3{,}0+4{,}2=7{,}2$ V ✓."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux moteurs différents ont chacun une caractéristique linéaire $U=E'+r'I$. Le premier a $E'_1=2{,}0$ V et $r'_1=5{,}0\\ \\Omega$ ; le second a $E'_2=3{,}0$ V et $r'_2=2{,}0\\ \\Omega$. Pour quelle valeur de I les deux moteurs ont-ils la même tension à leurs bornes ? Interpréter le résultat en termes de rendement relatif à faible et forte intensité.",
+          "solution_markdown": "On cherche I tel que $E'_1+r'_1I=E'_2+r'_2I$, soit $2{,}0+5{,}0I=3{,}0+2{,}0I$, donc $3{,}0I=1{,}0$, soit $I=1/3\\approx0{,}33$ A. Pour cette intensité, les deux moteurs ont la même tension à leurs bornes ($U=2{,}0+5{,}0\\times1/3\\approx3{,}67$ V pour les deux). En dessous de cette intensité (I < 0,33 A), c'est le premier moteur (E' plus faible) qui présente la tension U la plus basse à ses bornes, car sa résistance interne plus élevée pèse alors moins lourd dans l'équation ; au-dessus de cette intensité (I > 0,33 A), c'est l'inverse : la résistance interne plus élevée du premier moteur ($r'_1=5{,}0\\ \\Omega$ contre $r'_2=2{,}0\\ \\Omega$) fait croître sa tension U plus rapidement avec I, si bien qu'il finit par nécessiter une tension d'alimentation plus élevée que le second moteur pour une même intensité. Ce type de comparaison, entre l'ordonnée à l'origine et la pente de deux caractéristiques, est essentiel pour choisir le moteur le mieux adapté à une plage de fonctionnement donnée."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Sur une caractéristique linéaire $U=E'+r'I$ d'un récepteur actif, l'ordonnée à l'origine donne E' et la pente donne r'.",
+        "Calcule toujours E' par le calcul algébrique (à partir de r' et d'un point mesuré), jamais par une simple lecture graphique approximative à I=0.",
+        "Ne confonds jamais le signe + d'un récepteur actif ($U=E'+r'I$) avec le signe - d'un générateur ($U=E-rI$) : consommer et fournir de l'énergie sont deux situations opposées.",
+        "Vérifie toujours ton résultat avec un point DIFFÉRENT de celui utilisé pour le calcul — sinon la vérification ne prouve rien.",
+        "Cette détermination de E' et r' est l'aboutissement classique de tout exercice de caractéristique de moteur au Probatoire : maîtrise l'enchaînement complet, du tableau de mesures jusqu'à ces deux valeurs finales."
+      ]
+    }
+  ]
+}

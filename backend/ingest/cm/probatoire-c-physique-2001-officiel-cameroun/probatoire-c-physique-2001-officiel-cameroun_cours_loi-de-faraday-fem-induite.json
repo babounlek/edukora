@@ -1,0 +1,145 @@
+{
+  "cours_id": "cours-loi-de-faraday-fem-induite-1ere",
+  "meta": {
+    "titre": "Loi de Faraday : f.é.m. induite dans une bobine plate",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "loi de Faraday",
+      "f.é.m. induite",
+      "flux magnétique",
+      "bobine plate"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-2001-CM",
+    "epreuve_titre": "Probatoire Physique - Série C - Cameroun - Session 2001",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-physique-2001-officiel-cameroun-ex3-q4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La loi de Lenz dit dans quel sens circule un courant induit ; la loi de Faraday dit combien de volts il représente. Ensemble, ces deux lois permettent de prédire complètement le phénomène d'induction : c'est exactement ce qui se passe dans un alternateur, une plaque à induction, ou - comme dans cet exercice - une bobine plate placée au centre d'un solénoïde dont on fait varier le courant."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi de Lenz (sens du courant induit)",
+        "Savoir calculer le champ magnétique créé par un solénoïde : B = μ0.N/l.I",
+        "Savoir calculer l'aire d'un disque : S = π.r²",
+        "Savoir calculer un taux de variation constant (variation divisée par la durée) pour une grandeur qui varie linéairement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Faraday et le flux à travers une bobine plate",
+      "contenu_markdown": "La loi de Faraday donne la valeur absolue de la f.é.m. induite dans un circuit soumis à un flux magnétique variable : $|e|=\\left|\\dfrac{d\\Phi}{dt}\\right|$. Pour une bobine plate de $N'$ spires, de section $S'$, placée dans un champ magnétique $B$ uniforme et perpendiculaire à son plan, le flux total à travers la bobine (en tenant compte de toutes ses spires) vaut $\\Phi=N'\\,B\\,S'$. Si le champ $B$ varie (par exemple parce qu'il est créé par un solénoïde dont le courant varie), on peut réécrire la f.é.m. induite directement à partir du taux de variation de ce courant.",
+      "formule_principale": "|e| = N'\\,S'\\,\\left|\\dfrac{dB}{dt}\\right|"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine plate de N'=250 spires et de rayon a'=2 cm est placée au centre d'un solénoïde de N=500 spires et de longueur l=50 cm, avec le même axe. Le courant du solénoïde décroît linéairement de I0=10 A à 0 en 0,2 s. Calculer la valeur de la f.é.m. induite dans la bobine plate, puis l'intensité du courant induit si la bobine est reliée à un galvanomètre de résistance 35 Ω (bobine de résistance 5 Ω).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le taux de variation du courant du solénoïde",
+          "justification": "Le courant décroît linéairement de I0 à 0 en un temps Δt donné : le taux de variation est constant et vaut I0/Δt.",
+          "resultat_markdown": "$\\left|\\dfrac{dI}{dt}\\right| = \\dfrac{10}{0{,}2} = 50\\ \\text{A/s}$"
+        },
+        {
+          "numero": 2,
+          "action": "Exprimer le champ B créé par le solénoïde en fonction de I",
+          "justification": "Le champ à l'intérieur d'un solénoïde est proportionnel au courant qui le traverse.",
+          "resultat_markdown": "$B = \\mu_0\\dfrac{N}{l}I$, donc $\\dfrac{dB}{dt}=\\mu_0\\dfrac{N}{l}\\dfrac{dI}{dt}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer numériquement dB/dt",
+          "justification": "Application numérique directe avec N=500, l=0,5 m.",
+          "resultat_markdown": "$\\left|\\dfrac{dB}{dt}\\right| = 4\\pi\\times10^{-7}\\times\\dfrac{500}{0{,}5}\\times50 = 4\\pi\\times10^{-7}\\times1000\\times50 \\approx 6{,}28\\times10^{-2}\\ \\text{T/s}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la surface d'une spire de la bobine plate",
+          "justification": "Il faut utiliser la surface de la bobine elle-même (plus petite que celle du solénoïde), puisque c'est elle qui délimite le flux qui la traverse.",
+          "resultat_markdown": "$S' = \\pi a'^2 = \\pi\\times(0{,}02)^2 \\approx 1{,}257\\times10^{-3}\\ \\text{m}^2$"
+        },
+        {
+          "numero": 5,
+          "action": "Appliquer la loi de Faraday avec le nombre de spires N'",
+          "justification": "La f.é.m. totale induite dans la bobine est N' fois plus grande que celle d'une seule spire.",
+          "resultat_markdown": "$|e'| = N' \\times S' \\times \\left|\\dfrac{dB}{dt}\\right| = 250\\times1{,}257\\times10^{-3}\\times6{,}28\\times10^{-2} \\approx 1{,}97\\times10^{-2}\\ \\text{V}$"
+        },
+        {
+          "numero": 6,
+          "action": "Calculer le courant induit i' dans le circuit fermé (bobine + galvanomètre)",
+          "justification": "Le circuit secondaire est un circuit résistif simple, la loi d'Ohm s'applique directement à la f.é.m. induite.",
+          "resultat_markdown": "$i' = \\dfrac{|e'|}{R'+R_g} = \\dfrac{1{,}97\\times10^{-2}}{5+35} \\approx 4{,}9\\times10^{-4}\\ \\text{A}$"
+        }
+      ],
+      "conclusion_markdown": "La bobine plate est le siège d'une f.é.m. induite d'environ 20 mV, qui fait circuler dans le circuit fermé (bobine + galvanomètre) un courant d'environ 0,5 mA, dans le sens donné par la loi de Lenz (même sens que le courant du solénoïde, puisque le flux diminue)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser la surface du solénoïde (et non celle de la bobine plate) dans le calcul du flux à travers la bobine",
+          "pourquoi_faux": "Le flux à travers UN circuit donné se calcule avec LA SURFACE DE CE CIRCUIT, pas avec celle d'un autre circuit voisin, même s'ils partagent le même axe et baignent dans le même champ.",
+          "correction_markdown": "Identifie toujours quelle surface est réellement traversée par le flux qui t'intéresse : ici, c'est la petite bobine plate qui est le siège de la f.é.m. induite, donc c'est sa propre surface qui compte."
+        },
+        {
+          "erreur_markdown": "Oublier de multiplier par le nombre de spires N' de la bobine plate",
+          "pourquoi_faux": "Chaque spire de la bobine est traversée par le même flux élémentaire, mais elles sont toutes en série (électriquement) : leurs f.é.m. élémentaires s'additionnent, d'où le facteur N' dans la formule.",
+          "correction_markdown": "N'oublie jamais le facteur N' (nombre de spires) dans le calcul d'une f.é.m. induite dans une bobine à plusieurs spires : c'est un facteur multiplicatif direct, pas un détail secondaire."
+        },
+        {
+          "erreur_markdown": "Confondre le courant du solénoïde I (qui varie) et le courant induit i' dans la bobine plate (qui en résulte) : les traiter comme une seule et même grandeur",
+          "pourquoi_faux": "Ce sont deux circuits électriquement séparés : I circule dans le solénoïde (imposé par son propre générateur), i' circule dans le circuit bobine+galvanomètre (créé par l'induction). Leurs valeurs n'ont aucune raison d'être égales, ni même du même ordre de grandeur.",
+          "correction_markdown": "Distingue toujours clairement, dans un problème à deux circuits couplés magnétiquement, la grandeur qui varie dans le circuit primaire (ici I) de la grandeur induite dans le circuit secondaire (ici i')."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une bobine plate de 100 spires et de surface 5×10⁻³ m² est plongée dans un champ magnétique uniforme qui varie à raison de 0,2 T/s. Calculer la f.é.m. induite.",
+          "solution_markdown": "$|e|=N\\,S\\,\\left|\\dfrac{dB}{dt}\\right|=100\\times5\\times10^{-3}\\times0{,}2=0{,}1\\ \\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bobine de 50 spires, de surface 2×10⁻³ m², est le siège d'une f.é.m. induite de 0,05 V. Calculer le taux de variation du champ magnétique dB/dt.",
+          "solution_markdown": "De $|e|=N\\,S\\,|dB/dt|$, on tire $\\left|\\dfrac{dB}{dt}\\right|=\\dfrac{|e|}{N\\,S}=\\dfrac{0{,}05}{50\\times2\\times10^{-3}}=\\dfrac{0{,}05}{0{,}1}=0{,}5\\ \\text{T/s}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une bobine plate de N'=100 spires et de rayon 3 cm est placée au centre d'un solénoïde de 800 spires et de longueur 40 cm, même axe. Le courant du solénoïde croît linéairement de 0 à 5 A en 0,5 s. Calculer la f.é.m. induite dans la bobine plate, puis le courant induit si la bobine (résistance 8 Ω) est reliée à un ampèremètre de résistance négligeable.",
+          "solution_markdown": "Taux de variation du courant : $|dI/dt|=5/0{,}5=10\\ \\text{A/s}$. Champ par ampère du solénoïde : $\\mu_0 N/l=4\\pi\\times10^{-7}\\times800/0{,}4=4\\pi\\times10^{-7}\\times2000\\approx2{,}513\\times10^{-3}\\ \\text{T/A}$. Taux de variation du champ : $|dB/dt|=2{,}513\\times10^{-3}\\times10\\approx2{,}513\\times10^{-2}\\ \\text{T/s}$. Surface de la bobine plate : $S'=\\pi\\times(0{,}03)^2\\approx2{,}827\\times10^{-3}\\ \\text{m}^2$. F.é.m. induite : $|e'|=N'\\,S'\\,|dB/dt|=100\\times2{,}827\\times10^{-3}\\times2{,}513\\times10^{-2}\\approx7{,}1\\times10^{-3}\\ \\text{V}$. Courant induit, avec l'ampèremètre de résistance négligeable, donc la résistance du circuit secondaire est essentiellement celle de la bobine (8 Ω) : $i'=\\dfrac{7{,}1\\times10^{-3}}{8}\\approx8{,}9\\times10^{-4}\\ \\text{A}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Faraday donne la f.é.m. induite : $|e|=|d\\Phi/dt|$, avec $\\Phi=N\\,B\\,S$ pour une bobine de N spires et de surface S.",
+        "Utilise toujours la surface propre du circuit qui subit l'induction, jamais celle d'un autre circuit voisin.",
+        "N'oublie jamais le facteur N (nombre de spires) : chaque spire contribue à la f.é.m. totale.",
+        "Décompose le calcul en blocs indépendants (champ par ampère, surface, taux de variation du courant, nombre de spires) pour limiter les erreurs sur une formule à plusieurs facteurs.",
+        "La loi de Faraday se combine toujours avec la loi de Lenz : Faraday donne la valeur, Lenz donne le sens - les deux réponses sont nécessaires pour décrire complètement un courant induit."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-referentiel-non-galileen-rotation-force-centrifuge-tle-c",
+  "meta": {
+    "titre": "Référentiel non galiléen en rotation : force centrifuge et équilibre relatif",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Mécanique dans un référentiel non galiléen",
+    "duree_estimee_min": 30,
+    "tags": [
+      "mouvement circulaire",
+      "force centrifuge",
+      "référentiel tournant",
+      "dynamique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2001-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique Série C - Physique - Session 2001 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-physique-2001-officiel-cameroun-ex5-q2-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un manège qui tourne, pourquoi te sens-tu « plaqué » vers l'extérieur, alors qu'aucune force ne semble t'y pousser depuis le centre ? Ce ressenti, aussi réel soit-il, correspond à une force qui n'existe que dans le référentiel tournant avec toi : la force centrifuge. Comprendre son statut particulier - et savoir l'utiliser à bon escient, sans jamais oublier qu'elle disparaît si l'on observe le mouvement depuis l'extérieur (référentiel galiléen) - est la clé de tous les problèmes de rotation en dynamique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître l'expression de l'accélération centripète d'un mouvement circulaire uniforme",
+        "Savoir appliquer la deuxième loi de Newton en référentiel galiléen",
+        "Savoir résoudre une équation du premier degré où l'inconnue apparaît des deux côtés"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux façons équivalentes de traiter un équilibre en rotation",
+      "contenu_markdown": "Pour une masse en mouvement circulaire uniforme de rayon $r$ et de vitesse angulaire $\\omega$, deux approches équivalentes sont possibles. En référentiel GALILÉEN (terrestre) : la résultante des forces réelles doit être centripète (dirigée vers l'axe) et de norme $m\\omega^2 r$, conformément à la deuxième loi de Newton appliquée à un mouvement circulaire uniforme. En référentiel TOURNANT avec la masse (non galiléen) : on écrit un équilibre APPARENT en ajoutant une force centrifuge fictive $m\\omega^2 r$, dirigée vers l'EXTÉRIEUR, qui compense exactement la force réelle centripète. Les deux méthodes donnent la même équation finale ; la seconde est souvent plus intuitive quand l'objet est effectivement immobile par rapport au support tournant.",
+      "formule_principale": "\\text{(référentiel galiléen) } \\sum\\vec F=m\\omega^2 r\\,(\\text{vers l'axe})\\quad\\Leftrightarrow\\quad\\text{(référentiel tournant) équilibre avec }F_{centrifuge}=m\\omega^2r",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un ressort de raideur $k$ et de longueur à vide $l_0$, fixé en un point $O$ sur un axe vertical, porte à son autre extrémité une masse $m$ pouvant coulisser sans frottement sur une tige horizontale solidaire de l'axe. L'ensemble tourne autour de l'axe à la vitesse angulaire constante $\\omega$. Établir l'allongement du ressort.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le rayon de rotation et la force centripète",
+          "justification": "La masse décrit un cercle de rayon égal à la longueur l du ressort en rotation (mesurée depuis l'axe) ; la seule force horizontale est la tension du ressort.",
+          "resultat_markdown": "rayon $r=l$ ; force centripète nécessaire de norme $m\\omega^2 l$, fournie par la tension $k(l-l_0)$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'équation d'équilibre (deuxième loi de Newton, référentiel galiléen)",
+          "justification": "La résultante des forces (ici la seule tension du ressort) doit égaler la force centripète nécessaire au mouvement circulaire observé.",
+          "resultat_markdown": "$k(l-l_0)=m\\omega^2 l$"
+        },
+        {
+          "numero": 3,
+          "action": "Poser Δl = l - l0 et développer",
+          "justification": "On introduit l'inconnue demandée, l'allongement Δl, pour isoler cette grandeur plutôt que l elle-même.",
+          "resultat_markdown": "$k\\,\\Delta l=m\\omega^2(l_0+\\Delta l)\\ \\Longrightarrow\\ \\Delta l(k-m\\omega^2)=m\\omega^2 l_0$"
+        },
+        {
+          "numero": 4,
+          "action": "Isoler Δl",
+          "justification": "On divise par (k - mω²), en supposant cette quantité non nulle (et positive, condition physique nécessaire).",
+          "resultat_markdown": "$\\Delta l=\\dfrac{m\\omega^2 l_0}{k-m\\omega^2}$"
+        }
+      ],
+      "conclusion_markdown": "L'allongement du ressort augmente avec la vitesse angulaire et devient infini quand $\\omega$ approche la valeur critique $\\sqrt{k/m}$ : au-delà, le ressort ne peut plus fournir la force centripète nécessaire, et aucun équilibre n'est plus possible."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser l0 comme rayon de rotation au lieu de la longueur réelle l = l0 + Δl du ressort en train de tourner.",
+          "pourquoi_faux": "Le rayon du cercle décrit par la masse est la longueur RÉELLE du ressort pendant la rotation, pas sa longueur à vide : substituer l0 au lieu de l transforme une équation implicite (juste) en une équation explicite mais physiquement fausse.",
+          "correction_markdown": "Toujours écrire l'équation avec l (ou l0+Δl) comme rayon, quitte à devoir résoudre une équation où l'inconnue apparaît des deux côtés - c'est le prix de la rigueur physique."
+        },
+        {
+          "erreur_markdown": "Mélanger l'approche « référentiel galiléen, force centripète » et l'approche « référentiel tournant, force centrifuge » dans la même équation, en écrivant par erreur les deux forces du même côté.",
+          "pourquoi_faux": "Ces deux approches sont deux façons cohérentes mais DISTINCTES de traiter le même problème : dans l'une, il n'y a qu'une force réelle (centripète) égalée à mω²r ; dans l'autre, il y a un équilibre entre la force réelle et une force fictive centrifuge. Les mélanger fait apparaître deux fois la même force ou double le résultat.",
+          "correction_markdown": "Choisir explicitement UNE SEULE des deux approches avant d'écrire l'équation, et s'y tenir jusqu'au bout du calcul."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une masse m=0,20 kg tourne à ω=5,0 rad/s sur un rayon r=0,50 m. Calculer la force centripète nécessaire.",
+          "solution_markdown": "$F=m\\omega^2r=0,20\\times25\\times0,50=2,5\\ \\text{N}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exemple résolu avec m=0,10 kg, k=40 N/m, l0=20 cm et ω=10 rad/s. Calculer numériquement l'allongement du ressort.",
+          "solution_markdown": "$m\\omega^2=0,10\\times100=10\\ \\text{N/m}$\n\n$k-m\\omega^2=40-10=30\\ \\text{N/m}$\n\n$\\Delta l=\\dfrac{m\\omega^2 l_0}{k-m\\omega^2}=\\dfrac{10\\times0,20}{30}=\\dfrac{2,0}{30}\\approx0,067\\ \\text{m}=6,7\\ \\text{cm}$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer la vitesse angulaire critique $\\omega_c$ au-delà de laquelle aucun équilibre n'est plus possible pour m=0,10 kg et k=40 N/m (mêmes valeurs que l'exercice précédent), et vérifier que ω=10 rad/s en est bien éloignée.",
+          "solution_markdown": "L'allongement devient infini (perte d'équilibre) quand $k-m\\omega^2=0$, soit $\\omega_c=\\sqrt{k/m}$.\n\n$\\omega_c=\\sqrt{40/0,10}=\\sqrt{400}=20\\ \\text{rad/s}$\n\nLa vitesse angulaire de l'exercice précédent, $\\omega=10$ rad/s, vaut la moitié de $\\omega_c=20$ rad/s : le système fonctionne donc dans un régime raisonnablement éloigné de la limite de rupture (allongement modéré de 6,7 cm), ce qui confirme la cohérence physique du résultat obtenu."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux approches équivalentes pour un équilibre en rotation : force centripète en référentiel galiléen, ou équilibre avec force centrifuge fictive en référentiel tournant - ne jamais les mélanger dans le même calcul.",
+        "Le rayon de rotation à utiliser est TOUJOURS la longueur réelle du ressort en rotation (l0+Δl), jamais sa longueur à vide seule.",
+        "Quand l'inconnue (ici Δl) apparaît des deux côtés de l'équation via le rayon, regroupe les termes avant de résoudre : $\\Delta l=\\dfrac{m\\omega^2l_0}{k-m\\omega^2}$.",
+        "Il existe toujours une vitesse angulaire critique $\\omega_c=\\sqrt{k/m}$ au-delà de laquelle aucun équilibre n'est plus possible : vérifie que ta valeur de ω en reste éloignée pour juger de la plausibilité du résultat.",
+        "Au BAC, ce type de problème (masse-ressort en rotation) est un grand classique de la mécanique en référentiel non galiléen, à ne pas confondre avec le cas de la translation accélérée (force d'inertie d'entraînement, voir le cours dédié)."
+      ]
+    }
+  ]
+}

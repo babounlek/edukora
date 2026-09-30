@@ -1,0 +1,126 @@
+{
+  "cours_id": "cours-fem-auto-induction-solenoide-probatoire",
+  "meta": {
+    "titre": "Force électromotrice d'auto-induction d'un solénoïde",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Électromagnétisme - induction",
+    "duree_estimee_min": 25,
+    "tags": [
+      "auto-induction",
+      "inductance propre",
+      "force électromotrice induite"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-physique-2002-officiel-cameroun",
+    "epreuve_titre": "Probatoire Scientifique, Physique, Série D, Session de 2002 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-physique-2002-officiel-cameroun-ex2-q2b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Coupe brusquement le courant dans une bobine et tu observeras parfois une étincelle au niveau de l'interrupteur : la bobine « résiste » à ce changement brutal en générant elle-même une tension. Ce phénomène, appelé auto-induction, est exploité dans les allumages de moteurs à essence comme dans les alimentations électroniques. Ce cours te montre comment le quantifier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le champ magnétique d'un solénoïde $B=\\mu_0 nI$",
+        "Savoir ce qu'est un flux magnétique à travers une surface",
+        "Avoir déjà rencontré la loi de Lenz-Faraday sur l'induction"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Inductance propre et force électromotrice d'auto-induction",
+      "contenu_markdown": "Un solénoïde parcouru par un courant variable est le siège d'une force électromotrice d'auto-induction $e = -L\\dfrac{dI}{dt}$, où $L$ est son inductance propre, une grandeur qui ne dépend que de sa géométrie. Pour un solénoïde de $n$ spires par unité de longueur, de section $S$ et de longueur $\\ell$, cette inductance vaut $L = \\mu_0\\,n^2\\,S\\,\\ell$.",
+      "formule_principale": "e = -L\\dfrac{dI}{dt} \\quad \\text{avec} \\quad L = \\mu_0\\,n^2\\,S\\,\\ell",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un solénoïde de longueur $\\ell=0,25$ m, de diamètre $5$ cm, comportant $n=2500$ spires/m, voit son courant passer de $I=0,5$ A à $0$ en $\\Delta t = 0,01$ s. Calculer la fem d'auto-induction.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la section du solénoïde",
+          "justification": "La formule de $L$ demande la section transversale du solénoïde, obtenue à partir de son rayon.",
+          "resultat_markdown": "$R_0 = 2{,}5$ cm $=0{,}025$ m ; $S=\\pi R_0^2 \\approx 1{,}963\\times 10^{-3}$ m$^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'inductance propre $L$",
+          "justification": "On applique $L=\\mu_0 n^2 S \\ell$ avec les valeurs numériques du solénoïde.",
+          "resultat_markdown": "$L = 4\\pi\\times 10^{-7}\\times (2500)^2\\times 1{,}963\\times 10^{-3}\\times 0{,}25 \\approx 3{,}86\\times 10^{-3}$ H"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le taux de variation du courant",
+          "justification": "$dI/dt$ se remplace, pour une variation quasi linéaire, par $\\Delta I/\\Delta t$.",
+          "resultat_markdown": "$\\dfrac{\\Delta I}{\\Delta t} = \\dfrac{0 - 0{,}5}{0{,}01} = -50$ A/s"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la fem d'auto-induction",
+          "justification": "On applique la loi de Faraday pour l'auto-induction, en valeur absolue pour l'intensité de la fem.",
+          "resultat_markdown": "$|e| = L\\left|\\dfrac{\\Delta I}{\\Delta t}\\right| = 3{,}86\\times 10^{-3}\\times 50 \\approx 0{,}193$ V"
+        }
+      ],
+      "conclusion_markdown": "La fem d'auto-induction qui apparaît pendant l'annulation du courant vaut environ $0{,}19$ V."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre le nombre total de spires $N$ et la densité de spires $n$ dans la formule de $L$.",
+          "pourquoi_faux": "La formule $L=\\mu_0 n^2 S \\ell$ utilise $n$ en spires par mètre au carré ; y mettre un nombre total de spires fausserait totalement le résultat.",
+          "correction_markdown": "Vérifie l'unité de chaque grandeur avant de l'insérer dans la formule : $n$ en spires/m, $S$ en m², $\\ell$ en m."
+        },
+        {
+          "erreur_markdown": "Oublier d'élever $n$ au carré dans le calcul de $L$.",
+          "pourquoi_faux": "L'inductance dépend du carré de la densité de spires, car le champ créé par le solénoïde est lui-même proportionnel à $n$, et le flux total récolté par toutes les spires ajoute un second facteur $n$.",
+          "correction_markdown": "Retiens la structure de la formule : $L=\\mu_0\\,n^2\\,S\\,\\ell$, avec le carré bien sur $n$ et non sur une autre grandeur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un solénoïde a une inductance $L=2\\times 10^{-3}$ H. Le courant qui le traverse varie de $0,4$ A à $0$ en $0,02$ s. Calculer la fem d'auto-induction.",
+          "solution_markdown": "$|e| = L\\left|\\dfrac{\\Delta I}{\\Delta t}\\right| = 2\\times 10^{-3}\\times \\dfrac{0{,}4}{0{,}02} = 2\\times 10^{-3}\\times 20 = 0{,}04$ V."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un solénoïde de section $S=1{,}0\\times 10^{-3}$ m$^2$, de longueur $\\ell=0,20$ m, comporte $n=3000$ spires/m. Calculer son inductance propre $L$.",
+          "solution_markdown": "$L=\\mu_0 n^2 S \\ell = 4\\pi\\times 10^{-7}\\times (3000)^2\\times 1{,}0\\times 10^{-3}\\times 0{,}20 \\approx 4\\pi\\times 10^{-7}\\times 9\\times 10^6\\times 2\\times 10^{-4} \\approx 2{,}26\\times 10^{-3}$ H."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un solénoïde d'inductance $L=5\\times 10^{-3}$ H est parcouru par un courant qui croît linéairement de $0$ à $2$ A en $0,1$ s, puis reste constant. Décrire l'évolution de la fem d'auto-induction au cours du temps et calculer sa valeur pendant la phase de croissance.",
+          "solution_markdown": "Pendant la croissance linéaire du courant, $\\dfrac{dI}{dt}$ est constant et vaut $\\dfrac{2-0}{0{,}1}=20$ A/s, donc la fem d'auto-induction est constante : $e=-L\\dfrac{dI}{dt}=-5\\times 10^{-3}\\times 20=-0{,}1$ V (le signe traduisant l'opposition à l'augmentation du courant). Une fois le courant constant, $dI/dt=0$, donc la fem d'auto-induction s'annule : $e=0$ V."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'auto-induction produit une fem $e=-L\\,dI/dt$ chaque fois que le courant dans un solénoïde varie.",
+        "L'inductance propre d'un solénoïde long vaut $L=\\mu_0\\,n^2\\,S\\,\\ell$, une grandeur purement géométrique.",
+        "Le signe moins traduit la loi de Lenz : le phénomène induit s'oppose à la variation qui le crée.",
+        "Cette compétence, plus délicate, apparaît au Probatoire et au BAC dans les exercices avancés d'électromagnétisme, souvent en fin d'exercice."
+      ]
+    }
+  ]
+}

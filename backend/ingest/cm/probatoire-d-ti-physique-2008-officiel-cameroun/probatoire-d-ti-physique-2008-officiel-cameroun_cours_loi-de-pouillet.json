@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-loi-de-pouillet",
+  "meta": {
+    "titre": "Loi de Pouillet dans un circuit générateur-récepteur en série",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Circuits électriques en courant continu",
+    "duree_estimee_min": 20,
+    "tags": [
+      "loi de Pouillet",
+      "circuit série",
+      "générateur",
+      "récepteur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2008-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série D, TI - Session 2008 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2008-officiel-cameroun-ex2-qB1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un circuit avec une pile, un moteur et une lampe montés en série : comment prévoir en une seule formule l'intensité qui va circuler, sans avoir à écrire toutes les lois d'Ohm une par une ? La loi de Pouillet fait exactement cela : elle condense tout le circuit série en une seule fraction."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la loi d'Ohm aux bornes d'un conducteur ohmique",
+        "Savoir ce qu'est une f.é.m. (générateur) et une f.c.é.m. (récepteur actif comme un moteur)",
+        "Savoir qu'en circuit série, la même intensité traverse tous les dipôles"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi de Pouillet",
+      "contenu_markdown": "Dans un circuit série comportant un générateur (f.é.m. $E$, résistance interne $r$) et un récepteur actif comme un moteur (f.c.é.m. $E'$, résistance interne $r'$), éventuellement complété par d'autres résistances $R$, l'intensité du courant s'obtient en divisant la somme algébrique des forces électromotrices par la somme de toutes les résistances du circuit.",
+      "formule_principale": "I = \\frac{E - E'}{R + r + r'}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un circuit série comprend une pile ($E = 9$ V, $r = 3$ $\\Omega$), un moteur ($E' = 3{,}51$ V, $r' = 1{,}5$ $\\Omega$) et une lampe ($R = 23$ $\\Omega$). Écrire la loi de Pouillet donnant l'intensité I.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer le générateur et sa f.é.m.",
+          "justification": "C'est la pile qui fournit l'énergie électrique au circuit",
+          "resultat_markdown": "f.é.m. du générateur : $E = 9$ V"
+        },
+        {
+          "numero": 2,
+          "action": "Repérer le récepteur actif et sa f.c.é.m.",
+          "justification": "Le moteur consomme une partie de l'énergie sous forme utile, ce qui s'oppose au passage du courant",
+          "resultat_markdown": "f.c.é.m. du moteur : $E' = 3{,}51$ V"
+        },
+        {
+          "numero": 3,
+          "action": "Additionner toutes les résistances du circuit",
+          "justification": "En série, toutes les résistances s'ajoutent, qu'elles soient internes (générateur, moteur) ou externes (lampe)",
+          "resultat_markdown": "$R + r + r' = 23 + 3 + 1{,}5 = 27{,}5$ $\\Omega$"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la loi de Pouillet complète",
+          "justification": "Appliquer directement la formule générale à ce circuit",
+          "resultat_markdown": "$I = \\dfrac{E - E'}{R+r+r'} = \\dfrac{9 - 3{,}51}{27{,}5}$"
+        }
+      ],
+      "conclusion_markdown": "La loi de Pouillet pour ce circuit s'écrit $I = \\dfrac{E - E'}{R + r + r'}$, qui donne ici $I \\approx 0{,}1996$ A, cohérent avec la valeur mesurée expérimentalement (200 mA)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner $E$ et $E'$ au lieu de les soustraire",
+          "pourquoi_faux": "La f.c.é.m. du moteur s'OPPOSE au passage du courant imposé par la pile, elle doit donc être soustraite, pas ajoutée",
+          "correction_markdown": "Retiens que dans un circuit générateur + récepteur actif, c'est toujours la DIFFÉRENCE des f.é.m. et f.c.é.m. qui apparaît au numérateur, jamais leur somme."
+        },
+        {
+          "erreur_markdown": "Oublier une résistance interne (celle du générateur ou celle du moteur) dans la somme au dénominateur",
+          "pourquoi_faux": "Toute résistance traversée par le courant, y compris à l'intérieur d'un générateur ou d'un moteur, participe à l'opposition totale au passage du courant",
+          "correction_markdown": "Fais toujours l'inventaire complet des résistances du circuit (internes ET externes) avant d'écrire le dénominateur de la loi de Pouillet."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit série comprend un générateur de f.é.m. $E = 6$ V et de résistance interne $r = 1$ $\\Omega$, et une simple lampe de résistance $R = 5$ $\\Omega$ (pas de moteur). Écrire la loi de Pouillet et calculer I.",
+          "solution_markdown": "Sans récepteur actif, $E' = 0$ : $I = \\dfrac{E}{R+r} = \\dfrac{6}{5+1} = 1$ A."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un circuit série comprend une pile ($E = 12$ V, $r = 0{,}5$ $\\Omega$), un moteur ($E' = 8$ V, $r' = 1$ $\\Omega$) et un conducteur ohmique $R = 10{,}5$ $\\Omega$. Calculer l'intensité du courant.",
+          "solution_markdown": "$I = \\dfrac{E - E'}{R + r + r'} = \\dfrac{12 - 8}{10{,}5 + 0{,}5 + 1} = \\dfrac{4}{12} \\approx 0{,}333$ A."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un circuit série pile-moteur-résistance, on mesure $I = 0{,}5$ A. La pile a pour caractéristiques $E = 10$ V et $r = 2$ $\\Omega$, la résistance externe vaut $R = 8$ $\\Omega$, et la résistance interne du moteur est $r' = 2$ $\\Omega$. Déterminer la f.c.é.m. $E'$ du moteur.",
+          "solution_markdown": "En partant de la loi de Pouillet $I = \\dfrac{E-E'}{R+r+r'}$, on isole $E'$ : $E' = E - I(R+r+r') = 10 - 0{,}5 \\times (8+2+2) = 10 - 0{,}5 \\times 12 = 10 - 6 = 4$ V. La f.c.é.m. du moteur vaut donc $4$ V."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Pouillet condense en une seule formule tout circuit série générateur-récepteur : $I = \\dfrac{E - E'}{R+r+r'}$.",
+        "Les f.é.m. et f.c.é.m. se SOUSTRAIENT au numérateur, jamais ne s'additionnent.",
+        "Toutes les résistances, internes comme externes, s'ADDITIONNENT simplement au dénominateur.",
+        "Cette loi permet de vérifier la cohérence d'une mesure expérimentale d'intensité avec les caractéristiques annoncées des dipôles du circuit."
+      ]
+    }
+  ]
+}

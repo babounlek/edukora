@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-determination-graphique-fem-resistance-interne-probatoire",
+  "meta": {
+    "titre": "Détermination graphique de la fem et de la résistance interne",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Électrocinétique - caractérisation d'un générateur",
+    "duree_estimee_min": 22,
+    "tags": [
+      "lecture graphique",
+      "force électromotrice",
+      "résistance interne",
+      "pente d'une droite"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-physique-2002-officiel-cameroun",
+    "epreuve_titre": "Probatoire Scientifique, Physique, Série D, Session de 2002 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-physique-2002-officiel-cameroun-ex3-q2c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une fois les points de mesure placés sur un graphique et la droite moyenne tracée, il reste une dernière étape essentielle : en extraire les deux grandeurs physiques recherchées, la force électromotrice et la résistance interne de la pile. Cette étape est purement graphique, mais elle demande une méthode rigoureuse pour ne pas se tromper."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir tracer une droite moyenne à partir d'un nuage de points expérimentaux",
+        "Savoir calculer la pente d'une droite à partir de deux de ses points",
+        "Connaître la relation $U=E-rI$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lecture de $E$ et de $r$ sur la caractéristique $U=f(I)$",
+      "contenu_markdown": "La caractéristique $U=E-rI$ d'un générateur est une droite décroissante. Son ordonnée à l'origine, c'est-à-dire la valeur de $U$ quand $I=0$, est directement égale à $E$ : à intensité nulle, aucune chute de tension interne ne se produit. La pente de cette droite est égale à $-r$ : elle se calcule à partir de deux points bien séparés pris sur la droite tracée (jamais deux points de mesure bruts, pour moyenner les incertitudes expérimentales), par $\\text{pente} = \\dfrac{U_2-U_1}{I_2-I_1}$.",
+      "formule_principale": "E = U(I=0) \\quad ; \\quad r = -\\text{pente de la droite } U=f(I)",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une caractéristique $U=f(I)$ passe par les points $(0\\text{ mA}, 4{,}50\\text{ V})$ et $(120\\text{ mA}, 1{,}90\\text{ V})$. Déterminer $E$ et $r$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire l'ordonnée à l'origine",
+          "justification": "Le point $(I=0, U=4{,}50\\text{ V})$ correspond exactement à $I=0$, donc directement à $E$.",
+          "resultat_markdown": "$E = 4{,}50$ V"
+        },
+        {
+          "numero": 2,
+          "action": "Choisir deux points bien séparés sur la droite",
+          "justification": "Une pente calculée sur deux points très proches amplifie l'erreur relative ; on prend les deux points les plus écartés disponibles.",
+          "resultat_markdown": "$(I_1=0\\text{ A}, U_1=4{,}50\\text{ V})$ et $(I_2=0{,}120\\text{ A}, U_2=1{,}90\\text{ V})$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la pente en unités cohérentes",
+          "justification": "Il faut exprimer $I$ en ampères pour obtenir une pente en volts par ampère, homogène à une résistance.",
+          "resultat_markdown": "$\\text{pente} = \\dfrac{1{,}90-4{,}50}{0{,}120-0} = \\dfrac{-2{,}60}{0{,}120} \\approx -21{,}7$ V/A"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire $r$",
+          "justification": "La pente de $U=E-rI$ vaut $-r$ : $r$ est donc l'opposé de la pente calculée.",
+          "resultat_markdown": "$r \\approx 21{,}7\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "La pile a une force électromotrice $E=4{,}50$ V et une résistance interne $r\\approx 21{,}7\\ \\Omega$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer la pente avec $I$ exprimé en milliampères, puis annoncer $r$ directement en ohms.",
+          "pourquoi_faux": "Une pente en V/mA est mille fois plus petite, en valeur absolue, que la même pente en V/A : oublier la conversion donne une résistance interne mille fois trop faible.",
+          "correction_markdown": "Convertis systématiquement $I$ en ampères avant de calculer une pente destinée à donner une résistance en ohms."
+        },
+        {
+          "erreur_markdown": "Calculer la pente à partir de deux points de mesure très proches l'un de l'autre.",
+          "pourquoi_faux": "Deux points proches amplifient l'effet des incertitudes de lecture ou de mesure sur la pente calculée, qui devient alors peu fiable.",
+          "correction_markdown": "Choisis toujours deux points aussi éloignés que possible sur la droite tracée pour calculer une pente robuste."
+        },
+        {
+          "erreur_markdown": "Lire $E$ sur un point de mesure qui ne correspond pas exactement à $I=0$.",
+          "pourquoi_faux": "Si aucun point mesuré ne correspond à $I=0$, il faut extrapoler la droite tracée jusqu'à l'axe des ordonnées, pas se contenter du point mesuré le plus proche de $I=0$.",
+          "correction_markdown": "Vérifie si $I=0$ fait partie des points mesurés ; sinon, prolonge la droite moyenne jusqu'à l'axe vertical pour lire $E$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une caractéristique $U=f(I)$ passe par $(0\\text{ A}, 6{,}0\\text{ V})$ et $(0{,}5\\text{ A}, 4{,}0\\text{ V})$. Déterminer $E$ et $r$.",
+          "solution_markdown": "$E=6{,}0$ V (valeur en $I=0$). Pente $=\\dfrac{4{,}0-6{,}0}{0{,}5-0}=\\dfrac{-2{,}0}{0{,}5}=-4$ V/A, donc $r=4\\ \\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une droite $U=f(I)$ passe par $(0{,}1\\text{ A}, 3{,}2\\text{ V})$ et $(0{,}4\\text{ A}, 2{,}0\\text{ V})$ (aucun point mesuré en $I=0$). Déterminer $E$ et $r$.",
+          "solution_markdown": "Pente $=\\dfrac{2{,}0-3{,}2}{0{,}4-0{,}1}=\\dfrac{-1{,}2}{0{,}3}=-4$ V/A, donc $r=4\\ \\Omega$. Pour $E$, on extrapole la droite jusqu'à $I=0$ : $U=U_1 - \\text{pente}\\times(0-I_1) = 3{,}2-(-4)\\times(0-0{,}1)=3{,}2-0{,}4=2{,}8$ V, donc $E=2{,}8$ V."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur une série de mesures $(I,U)$, les points ne sont pas parfaitement alignés (dispersion expérimentale). Expliquer pourquoi utiliser deux points de mesure bruts pour calculer la pente est moins fiable que tracer d'abord une droite moyenne visuelle, puis calculer la pente à partir de deux points pris SUR cette droite.",
+          "solution_markdown": "Deux points de mesure bruts peuvent chacun porter une erreur expérimentale (imprécision de lecture, fluctuation du montage) qui n'a aucune raison de se compenser : la pente calculée directement sur ces deux points hérite pleinement de ces deux erreurs, parfois amplifiées si les points sont rapprochés. En traçant d'abord une droite moyenne qui passe au plus près de l'ensemble des points, on lisse ces erreurs individuelles par une sorte de moyenne visuelle sur tout le nuage de points ; les deux points ensuite choisis sur cette droite (souvent ses extrémités) ne portent plus l'erreur d'une mesure isolée, mais reflètent la tendance générale des données, ce qui donne une valeur de pente bien plus robuste."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$E$ se lit directement comme l'ordonnée à l'origine de la caractéristique $U=f(I)$, à $I=0$.",
+        "$r$ est l'opposé de la pente de cette droite, calculée sur deux points bien séparés pris sur la droite tracée.",
+        "Toujours convertir $I$ en ampères avant de calculer une pente destinée à donner une résistance en ohms.",
+        "Cette lecture graphique clôture presque systématiquement les exercices de caractérisation d'un générateur au Probatoire et au BAC."
+      ]
+    }
+  ]
+}

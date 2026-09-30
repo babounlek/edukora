@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-bilan-calorimetrique-effet-joule-1ere",
+  "meta": {
+    "titre": "Bilan calorimétrique et effet Joule dans un résistor",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Calorimétrie et effet Joule",
+    "duree_estimee_min": 25,
+    "tags": [
+      "calorimétrie",
+      "effet Joule",
+      "bilan énergétique",
+      "puissance électrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-2004-CM",
+    "epreuve_titre": "Probatoire Physique - Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-physique-2004-b-officiel-cameroun-ex1-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un fer à repasser, un radiateur électrique, une bouilloire : tous chauffent un corps grâce à un simple résistor parcouru par un courant. Ce cours te montre comment relier ce que \"voit\" l'électricien (une intensité, une résistance, une durée) à ce que \"voit\" le thermicien (une masse, une chaleur massique, une élévation de température), à travers un même bilan d'énergie."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi de Joule $P=RI^2$",
+        "Quantité de chaleur $Q=mc\\Delta\\theta$",
+        "Relation énergie-puissance-durée $W=Pt$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Égalité entre énergie dissipée et chaleur reçue",
+      "contenu_markdown": "Un résistor de résistance $R$, parcouru par un courant d'intensité $I$ pendant une durée $t$, dissipe par effet Joule une énergie $W=RI^2t$. S'il est plongé dans un liquide calorimétrique de masse $m$ et de chaleur massique $c$, et que la capacité calorifique du calorimètre est négligeable, toute cette énergie sert à élever la température du liquide d'une quantité $\\Delta\\theta$ : $Q=mc\\Delta\\theta$. Le principe de conservation de l'énergie impose alors $RI^2t=mc\\Delta\\theta$, une égalité qui permet de calculer n'importe laquelle des grandeurs dès que les autres sont connues.",
+      "formule_principale": "R\\,I^2\\,t = m\\,c\\,\\Delta\\theta",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un résistor de résistance $R=10$ Ω est plongé dans 400 g de pétrole de chaleur massique $c=2090\\ \\text{J.kg}^{-1}.°\\text{C}^{-1}$, dans un calorimètre de capacité calorifique négligeable. La température du pétrole s'élève de 2,4°C. Détermine l'expression de l'intensité du courant en fonction de la durée $t$ de passage du courant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la quantité de chaleur reçue par le pétrole",
+          "justification": "Elle ne dépend que des grandeurs du pétrole : masse, chaleur massique, élévation de température.",
+          "resultat_markdown": "$Q=mc\\Delta\\theta=0{,}400\\times2090\\times2{,}4=2006{,}4$ J"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'égalité énergie électrique = chaleur reçue",
+          "justification": "La capacité calorifique du calorimètre étant négligée, toute l'énergie dissipée par le résistor est intégralement reçue par le pétrole.",
+          "resultat_markdown": "$RI^2t = Q = 2006{,}4$ J"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler l'intensité I",
+          "justification": "On résout l'égalité précédente par rapport à $I$, seule inconnue restante une fois $t$ connu.",
+          "resultat_markdown": "$I=\\sqrt{\\dfrac{Q}{Rt}}=\\sqrt{\\dfrac{2006{,}4}{10\\,t}}$"
+        }
+      ],
+      "conclusion_markdown": "Dès que la durée $t$ (en secondes) de passage du courant est connue, il suffit de la reporter dans cette expression pour obtenir la valeur numérique de $I$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de convertir la durée en secondes lorsqu'elle est donnée en minutes, par exemple utiliser $t=5$ au lieu de $t=300$.",
+          "pourquoi_faux": "La formule $Q=RI^2t$ n'est homogène que si $t$ est en secondes (le joule est défini à partir du watt fois la seconde) ; une durée en minutes donne un résultat 60 fois trop grand pour $I^2$.",
+          "correction_markdown": "Convertis systématiquement toute durée en secondes avant de l'utiliser dans un bilan d'énergie électrique."
+        },
+        {
+          "erreur_markdown": "Confondre la chaleur $Q$ reçue par le liquide avec la puissance $P$ dissipée par le résistor, et écrire directement $I=\\sqrt{Q/R}$ sans la durée $t$.",
+          "pourquoi_faux": "$Q$ est une énergie (en joules), $P=RI^2$ est une puissance (en watts) : le lien entre les deux passe obligatoirement par la durée, $Q=Pt$.",
+          "correction_markdown": "N'élimine jamais la durée $t$ de l'équation : c'est elle qui transforme une puissance en énergie."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un résistor de résistance $R=5$ Ω, plongé dans 200 g d'eau (chaleur massique $c=4180\\ \\text{J.kg}^{-1}.°\\text{C}^{-1}$), est parcouru par un courant pendant $t=60$ s. La température de l'eau s'élève de 3°C. Calcule l'intensité du courant (capacité calorifique du calorimètre négligée).",
+          "solution_markdown": "$Q=mc\\Delta\\theta=0{,}200\\times4180\\times3=2508$ J. $RI^2t=Q \\Rightarrow I=\\sqrt{\\dfrac{2508}{5\\times60}}=\\sqrt{8{,}36}\\approx2{,}89$ A."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un résistor de résistance $R=8$ Ω est parcouru par un courant d'intensité $I=2$ A pendant $t=10$ min. Il est plongé dans 500 g d'un liquide de chaleur massique inconnue. La température du liquide s'élève de 15°C (capacité calorifique du calorimètre négligée). Détermine la chaleur massique du liquide.",
+          "solution_markdown": "$t=10\\times60=600$ s. Énergie dissipée : $W=RI^2t=8\\times2^2\\times600=19200$ J. Cette énergie est reçue par le liquide : $mc\\Delta\\theta=19200$, donc $c=\\dfrac{19200}{0{,}500\\times15}=\\dfrac{19200}{7{,}5}=2560\\ \\text{J.kg}^{-1}.°\\text{C}^{-1}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Deux résistors identiques de résistance $R=4$ Ω sont plongés côte à côte dans le même calorimètre contenant 300 g d'eau ($c=4180\\ \\text{J.kg}^{-1}.°\\text{C}^{-1}$), et parcourus en série par le même courant $I=1{,}5$ A pendant $t=4$ min. Calcule l'élévation de température de l'eau (capacité calorifique du calorimètre négligée).",
+          "solution_markdown": "En série, chaque résistor dissipe $RI^2t$ ; les deux résistors dissipent donc $2RI^2t$ au total. $t=4\\times60=240$ s. Énergie totale : $W=2\\times4\\times1{,}5^2\\times240=2\\times4\\times2{,}25\\times240=4320$ J. Cette énergie chauffe l'eau : $mc\\Delta\\theta=W \\Rightarrow \\Delta\\theta=\\dfrac{4320}{0{,}300\\times4180}=\\dfrac{4320}{1254}\\approx3{,}45°\\text{C}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Calcule toujours $Q=mc\\Delta\\theta$ d'un côté (ne dépend que du liquide) avant d'écrire l'égalité avec $RI^2t$ de l'autre côté.",
+        "Une durée doit toujours être en secondes dans $Q=RI^2t$ : convertis systématiquement les minutes.",
+        "\"Capacité calorifique du calorimètre négligée\" signifie que TOUTE l'énergie électrique sert à chauffer le liquide, sans perte.",
+        "Ce type de bilan est un classique du Probatoire : il combine dans une seule question l'électricité (loi de Joule) et la calorimétrie du programme de Première."
+      ]
+    }
+  ]
+}

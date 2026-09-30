@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-loi-de-faraday-masse-deposee",
+  "meta": {
+    "titre": "Calcul d'une masse déposée à partir de la charge électrique (loi de Faraday)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Piles et énergie électrochimique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "loi de Faraday",
+      "quantité d'électricité",
+      "électrolyse",
+      "stœchiométrie"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2008-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série D, TI - Session 2008 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2008-officiel-cameroun-ex2-qA1c2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de métal une pile ou un électrolyseur peut-il déposer en une heure de fonctionnement ? La réponse ne dépend que de trois nombres : l'intensité du courant, la durée, et la charge portée par une mole d'électrons. Cette chaîne de calcul, la loi de Faraday, est l'outil qui relie l'électricité (mesurée en ampères) à la chimie (mesurée en moles et en grammes)."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir écrire une équation d'électrode et repérer le nombre d'électrons échangés",
+        "Connaître la relation $Q = I \\times t$ entre charge, intensité et durée",
+        "Savoir convertir une durée en secondes et utiliser une masse molaire"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Chaîne de calcul de la loi de Faraday",
+      "contenu_markdown": "Pour calculer la masse d'un dépôt métallique, il faut suivre une chaîne de conversion en quatre étapes : la charge électrique transportée, puis la quantité de matière d'électrons échangés, puis la quantité de matière du métal déposé (grâce aux coefficients stœchiométriques de la demi-équation), et enfin la masse correspondante.",
+      "formule_principale": "Q = I \\times t \\ \\longrightarrow \\ n(\\text{e}^-) = \\frac{Q}{F} \\ \\longrightarrow \\ n(\\text{métal}) = \\frac{n(\\text{e}^-)}{\\text{coefficient stœchiométrique}} \\ \\longrightarrow \\ m = n \\times M",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une pile débite un courant $I = 250$ mA pendant $t = 1$ h $30$ min. Calculer la masse de cuivre déposée à la cathode (équation $\\text{Cu}^{2+} + 2\\text{e}^- \\rightarrow \\text{Cu}$, $M_{Cu} = 63{,}5$ g/mol, $F = 96500$ C/mol).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la durée en secondes",
+          "justification": "L'intensité en ampères est définie en coulombs par seconde, la durée doit donc être en secondes",
+          "resultat_markdown": "$t = 1\\,\\text{h}\\,30\\,\\text{min} = 90 \\times 60 = 5400 \\ \\text{s}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la charge électrique transportée",
+          "justification": "Application directe de $Q = I \\times t$",
+          "resultat_markdown": "$Q = 0{,}25 \\times 5400 = 1350 \\ \\text{C}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la quantité de matière d'électrons",
+          "justification": "Une mole d'électrons transporte une charge $F$ : diviser $Q$ par $F$ donne le nombre de moles d'électrons",
+          "resultat_markdown": "$n(\\text{e}^-) = \\dfrac{1350}{96500} \\approx 0{,}01399 \\ \\text{mol}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la quantité de matière de cuivre déposé",
+          "justification": "L'équation $\\text{Cu}^{2+} + 2\\text{e}^- \\rightarrow \\text{Cu}$ indique qu'il faut 2 électrons pour déposer 1 atome de cuivre",
+          "resultat_markdown": "$n(\\text{Cu}) = \\dfrac{n(\\text{e}^-)}{2} \\approx 0{,}006995 \\ \\text{mol}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la masse de cuivre déposée",
+          "justification": "$m = n \\times M$",
+          "resultat_markdown": "$m(\\text{Cu}) = 0{,}006995 \\times 63{,}5 \\approx 0{,}444 \\ \\text{g}$"
+        }
+      ],
+      "conclusion_markdown": "En 1 h 30 min de fonctionnement à 250 mA, la pile dépose environ $0{,}444$ g de cuivre à la cathode."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de diviser par le coefficient stœchiométrique (nombre d'électrons échangés par ion métallique)",
+          "pourquoi_faux": "Une mole d'électrons ne dépose pas toujours une mole de métal : cela dépend du nombre d'électrons nécessaires par ion, donné par la demi-équation d'électrode",
+          "correction_markdown": "Relis toujours la demi-équation avant de calculer $n(\\text{métal})$ : le coefficient devant $\\text{e}^-$ te donne le nombre par lequel diviser $n(\\text{e}^-)$."
+        },
+        {
+          "erreur_markdown": "Laisser la durée en heures et minutes dans le calcul de $Q = I \\times t$",
+          "pourquoi_faux": "L'intensité en ampères est homogène à des coulombs par SECONDE : utiliser des heures ou des minutes donne une charge fausse d'un facteur 3600 ou 60",
+          "correction_markdown": "Convertis systématiquement toute durée en secondes avant de calculer une charge électrique avec $Q = I \\times t$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un courant $I = 1$ A circule pendant $t = 965$ s dans un électrolyseur. Calculer la quantité de matière d'électrons échangée ($F = 96500$ C/mol).",
+          "solution_markdown": "$Q = I \\times t = 1 \\times 965 = 965 \\ \\text{C}$. $n(\\text{e}^-) = \\dfrac{Q}{F} = \\dfrac{965}{96500} = 0{,}01 \\ \\text{mol}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exercice précédent ($n(\\text{e}^-) = 0{,}01$ mol) pour une cathode où se dépose de l'argent selon $\\text{Ag}^+ + \\text{e}^- \\rightarrow \\text{Ag}$ ($M_{Ag} = 108$ g/mol). Calculer la masse d'argent déposée.",
+          "solution_markdown": "L'équation montre qu'un seul électron dépose un atome d'argent : $n(\\text{Ag}) = n(\\text{e}^-) = 0{,}01$ mol. $m(\\text{Ag}) = n \\times M = 0{,}01 \\times 108 = 1{,}08 \\ \\text{g}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut déposer exactement $1$ g d'aluminium ($M_{Al} = 27$ g/mol, équation $\\text{Al}^{3+} + 3\\text{e}^- \\rightarrow \\text{Al}$) avec un courant constant $I = 2$ A. Calculer la durée nécessaire.",
+          "solution_markdown": "Quantité de matière d'aluminium visée : $n(\\text{Al}) = \\dfrac{m}{M} = \\dfrac{1}{27} \\approx 0{,}03704$ mol. Comme il faut 3 électrons par atome d'aluminium : $n(\\text{e}^-) = 3 \\times n(\\text{Al}) = 3 \\times 0{,}03704 \\approx 0{,}1111$ mol. Charge nécessaire : $Q = n(\\text{e}^-) \\times F = 0{,}1111 \\times 96500 \\approx 10722 \\ \\text{C}$. Durée : $t = \\dfrac{Q}{I} = \\dfrac{10722}{2} \\approx 5361 \\ \\text{s}$, soit environ $1$ h $29$ min."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La chaîne de calcul est toujours la même : charge $Q = It$, puis $n(\\text{e}^-) = Q/F$, puis $n(\\text{métal})$ via la stœchiométrie de l'électrode, puis $m = nM$.",
+        "Convertis systématiquement la durée en secondes avant de calculer $Q$.",
+        "Le coefficient stœchiométrique de la demi-équation (nombre d'électrons par ion) est indispensable : ne saute jamais cette étape.",
+        "Cette méthode fonctionne aussi bien pour une pile qui se décharge que pour un électrolyseur qui dépose un métal : seule la source du courant change."
+      ]
+    }
+  ]
+}

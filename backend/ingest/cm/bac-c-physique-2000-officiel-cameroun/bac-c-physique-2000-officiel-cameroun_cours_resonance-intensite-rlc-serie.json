@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-resonance-intensite-rlc-serie-terminale-c",
+  "meta": {
+    "titre": "La résonance d'intensité d'un circuit RLC série",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité - régime sinusoïdal",
+    "duree_estimee_min": 26,
+    "tags": [
+      "résonance d'intensité",
+      "circuit RLC série",
+      "impédance minimale",
+      "condition d'accord"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2000-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, Session de 2000 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-2000-officiel-cameroun-ex3-q2.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pourquoi une radio ne capte-t-elle qu'une seule station à la fois, alors que l'antenne reçoit en permanence des dizaines de fréquences superposées ? La réponse tient dans un seul phénomène : la résonance d'intensité d'un circuit RLC, qui amplifie sélectivement une fréquence bien précise et atténue toutes les autres. Ce cours explique comment reconnaître et exploiter cette résonance."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Impédance d'un circuit RLC série (avec condensateur) : $Z=\\sqrt{(R+r)^2+(L\\omega-1/(C\\omega))^2}$",
+        "Construction de Fresnel et déphasage tension/courant"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Condition et reconnaissance de la résonance d'intensité",
+      "contenu_markdown": "Dans un circuit RLC série alimenté à fréquence variable, l'intensité (à amplitude de tension imposée constante) est maximale lorsque l'impédance du circuit est minimale, c'est-à-dire lorsque sa réactance totale s'annule : $L\\omega = \\dfrac{1}{C\\omega}$. À cette fréquence dite de résonance, le circuit se comporte comme une simple résistance $(R+r)$ : la tension totale $u(t)$ est alors **en phase** avec le courant $i(t)$, ce qui se traduit expérimentalement par la coïncidence des maximums de $u(t)$ et $i(t)$ sur un oscillogramme.",
+      "formule_principale": "L\\omega_0 = \\dfrac{1}{C\\omega_0} \\;\\Longleftrightarrow\\; \\omega_0 = \\dfrac{1}{\\sqrt{LC}}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sur un oscilloscope à deux voies, on visualise $U_1$ (image du courant, prélevée aux bornes d'un résistor) et $U_2$ (tension totale du circuit RLC série). Les deux courbes apparaissent synchrones (maximums et minimums coïncidant). Interpréter cette observation et en déduire la relation entre L, C et la pulsation.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Interpréter la synchronisation des deux courbes",
+          "justification": "U1, prélevée aux bornes d'une résistance pure, est toujours en phase avec i(t) : si U2 lui est synchrone, U2 est donc aussi en phase avec i(t).",
+          "resultat_markdown": "$U_1$ et $U_2$ en phase $\\Longrightarrow$ $u(t)$ (tension totale) en phase avec $i(t)$."
+        },
+        {
+          "numero": 2,
+          "action": "Relier cette observation à l'impédance du circuit",
+          "justification": "u et i en phase signifie un déphasage nul, donc une réactance totale nulle dans l'expression de Z.",
+          "resultat_markdown": "Le circuit est à la résonance d'intensité : sa réactance totale $L\\omega-1/(C\\omega)$ est nulle."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la condition sur L, C et omega",
+          "justification": "Traduction algébrique directe de la réactance nulle.",
+          "resultat_markdown": "$L\\omega = \\dfrac{1}{C\\omega} \\;\\Longrightarrow\\; LC\\omega^2=1 \\;\\Longrightarrow\\; \\omega=\\dfrac{1}{\\sqrt{LC}}$"
+        }
+      ],
+      "conclusion_markdown": "Reconnaître une résonance sur un oscillogramme ne nécessite qu'un seul critère visuel : la coïncidence des maximums (ou des passages par zéro) de la tension totale et de l'image du courant, sans avoir besoin de connaître au préalable les valeurs de L et C."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher la résonance en comparant les amplitudes de U1 et U2 plutôt que leurs phases.",
+          "pourquoi_faux": "La résonance d'intensité est un phénomène de phase (déphasage nul entre u et i), pas une comparaison d'amplitudes : U1 et U2 ont presque toujours des amplitudes différentes, même à la résonance, car elles ne mesurent pas la même portion du circuit.",
+          "correction_markdown": "Concentre-toi uniquement sur la coïncidence temporelle des maximums (ou des zéros) des deux courbes pour diagnostiquer une résonance, jamais sur leurs hauteurs respectives."
+        },
+        {
+          "erreur_markdown": "Confondre la condition de résonance $L\\omega=1/(C\\omega)$ avec l'égalité $L=1/C$ (en oubliant la pulsation).",
+          "pourquoi_faux": "La condition de résonance porte sur les réactances $L\\omega$ et $1/(C\\omega)$, pas directement sur L et C seuls : la pulsation de résonance dépend du produit LC, pas de L et C séparément.",
+          "correction_markdown": "Retiens la relation complète $\\omega_0=1/\\sqrt{LC}$ plutôt qu'une comparaison directe, incorrecte, entre L et C."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un circuit RLC série a pour inductance $L=0{,}2\\ \\text{H}$ et capacité $C=5\\times10^{-6}\\ \\text{F}$. Calculer sa pulsation de résonance.",
+          "solution_markdown": "$\\omega_0=\\dfrac{1}{\\sqrt{LC}}=\\dfrac{1}{\\sqrt{0{,}2\\times5\\times10^{-6}}}=\\dfrac{1}{\\sqrt{10^{-6}}}=\\dfrac{1}{10^{-3}}=1000\\ \\text{rad.s}^{-1}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "En reprenant l'exercice précédent, calculer la fréquence de résonance $N_0$ correspondante.",
+          "solution_markdown": "$N_0=\\dfrac{\\omega_0}{2\\pi}=\\dfrac{1000}{2\\pi}\\approx159{,}2\\ \\text{Hz}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer qu'à la résonance, l'impédance du circuit RLC série est minimale et égale à $R+r$, puis expliquer pourquoi l'intensité y est alors maximale pour une tension d'alimentation d'amplitude fixée.",
+          "solution_markdown": "$Z(\\omega)=\\sqrt{(R+r)^2+(L\\omega-1/(C\\omega))^2}$ : le second terme sous la racine est un carré, toujours positif ou nul, minimal (nul) exactement quand $L\\omega=1/(C\\omega)$, c'est-à-dire à la résonance. On a alors $Z_{min}=R+r$. Comme $I_m=U_m/Z$ à amplitude de tension $U_m$ fixée, une impédance minimale correspond directement à une intensité maximale : c'est la signature caractéristique de la résonance d'intensité."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La résonance d'intensité d'un circuit RLC série se reconnaît à ce que la tension totale soit en phase avec le courant.",
+        "Elle correspond à l'annulation de la réactance totale : $L\\omega_0=1/(C\\omega_0)$, soit $\\omega_0=1/\\sqrt{LC}$.",
+        "À la résonance, l'impédance est minimale et vaut $R+r$ (partie purement résistive) : l'intensité y est donc maximale.",
+        "Sur un oscillogramme, le critère de reconnaissance est purement temporel (coïncidence des maximums), indépendant des amplitudes affichées.",
+        "C'est le principe physique exploité dans l'accord d'un poste radio ou dans les filtres électroniques sélectifs en fréquence."
+      ]
+    }
+  ]
+}

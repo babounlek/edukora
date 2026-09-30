@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-calcul-angle-refraction-1ere-c",
+  "meta": {
+    "titre": "Calculer un angle de réfraction avec la relation de Snell-Descartes",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Optique géométrique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "réfraction",
+      "indice de réfraction",
+      "loi de Snell-Descartes",
+      "calcul d'angle"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-PHYSIQUE-CHIMIE-2004",
+    "epreuve_titre": "Science Physique - Probatoire Scientifique Série C - Session 2004",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-physique-chimie-2004-officiel-cameroun-ex4-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La relation de Snell-Descartes n'est utile que si tu sais vraiment la résoudre pour trouver un angle inconnu : ce cours détaille la démarche complète, de la mise en équation au calcul de l'arc sinus, avec la vérification qui te met à l'abri d'une erreur de calcul."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la relation de Snell-Descartes $n_1\\sin(i_1)=n_2\\sin(i_2)$",
+        "Savoir utiliser la fonction arcsin (ou $\\sin^{-1}$) à la calculatrice"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Méthode de calcul d'un angle de réfraction",
+      "contenu_markdown": "Pour calculer l'angle de réfraction $i_2$ connaissant l'angle d'incidence $i_1$ et les deux indices $n_1$ et $n_2$, on isole $\\sin(i_2)$ dans la relation de Snell-Descartes : $\\sin(i_2) = \\dfrac{n_1\\sin(i_1)}{n_2}$, puis on applique la fonction réciproque arcsin pour obtenir $i_2$. Il est indispensable de vérifier ensuite la cohérence physique du résultat : si $n_2 > n_1$ (passage vers un milieu plus réfringent), le rayon se rapproche de la normale et $i_2 < i_1$ ; si $n_2 < n_1$, il s'en éloigne et $i_2 > i_1$.",
+      "formule_principale": "$\\sin(i_2) = \\dfrac{n_1\\sin(i_1)}{n_2}$",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un rayon lumineux passe de l'air ($n_1=1$) au cristal ($n_2=1{,}7$) avec un angle d'incidence $i_1=30°$. Calculer l'angle de réfraction.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la relation de Snell-Descartes pour ce dioptre",
+          "justification": "On applique directement la loi avec les valeurs de l'énoncé.",
+          "resultat_markdown": "$n_1\\sin(i_1) = n_2\\sin(r)$, soit $1\\times\\sin(30°) = 1{,}7\\times\\sin(r)$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler $\\sin(r)$",
+          "justification": "On divise les deux membres par $n_2=1{,}7$.",
+          "resultat_markdown": "$\\sin(r) = \\dfrac{\\sin(30°)}{1{,}7} = \\dfrac{0{,}5}{1{,}7} \\approx 0{,}2941$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer r par la fonction arcsin",
+          "justification": "On applique la fonction réciproque du sinus à la valeur trouvée.",
+          "resultat_markdown": "$r = \\arcsin(0{,}2941) \\approx 17{,}1°$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier la cohérence physique du résultat",
+          "justification": "Le rayon passe d'un milieu moins réfringent (air, $n_1=1$) à un milieu plus réfringent (cristal, $n_2=1{,}7>n_1$) : il doit se rapprocher de la normale.",
+          "resultat_markdown": "$r\\approx17{,}1° < i_1=30°$ : le résultat est cohérent, le rayon se rapproche bien de la normale."
+        }
+      ],
+      "conclusion_markdown": "L'angle de réfraction vaut $r\\approx17{,}1°$, une valeur inférieure à l'angle d'incidence conforme au passage vers un milieu plus réfringent."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier d'appliquer la fonction arcsin et donner directement la valeur du sinus comme réponse à la question posée sur l'angle.",
+          "pourquoi_faux": "$\\sin(r)\\approx0{,}2941$ n'est pas un angle, c'est la valeur du sinus de cet angle : il faut impérativement appliquer la fonction réciproque arcsin pour obtenir la valeur de r en degrés.",
+          "correction_markdown": "Relis toujours l'énoncé : s'il demande « l'angle », ta réponse finale doit être exprimée en degrés (ou radians), jamais une valeur de sinus sans unité angulaire."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier le sens de variation de l'angle par rapport aux indices, ce qui laisse passer des erreurs de calcul grossières (calculatrice en mode radians au lieu de degrés, par exemple).",
+          "pourquoi_faux": "Une calculatrice réglée en radians donnerait un résultat numériquement différent (et absurde en degrés) sans qu'aucun message d'erreur ne s'affiche : seule la vérification physique (le sens de variation attendu) permet de détecter ce genre d'erreur silencieuse.",
+          "correction_markdown": "Prends l'habitude systématique de vérifier le sens de variation ($n_2>n_1 \\Rightarrow r<i_1$, ou l'inverse) : c'est ta meilleure protection contre une erreur de calculatrice."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un rayon passe de l'air ($n=1$) à l'eau ($n=1{,}33$) avec un angle d'incidence de 45°. Calculer l'angle de réfraction.",
+          "solution_markdown": "$\\sin(r)=\\dfrac{1\\times\\sin(45°)}{1{,}33}=\\dfrac{0{,}7071}{1{,}33}\\approx0{,}5317$, donc $r=\\arcsin(0{,}5317)\\approx32{,}1°$. Vérification : $n_2=1{,}33>n_1=1$, donc $r<i_1$ ; on a bien $32{,}1°<45°$ ✓."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un rayon passe du verre ($n_1=1{,}5$) à l'air ($n_2=1$) avec un angle d'incidence de 20° dans le verre. Calculer l'angle de réfraction dans l'air.",
+          "solution_markdown": "$\\sin(i_2)=\\dfrac{n_1\\sin(i_1)}{n_2}=\\dfrac{1{,}5\\times\\sin(20°)}{1}=1{,}5\\times0{,}3420\\approx0{,}5130$, donc $i_2=\\arcsin(0{,}5130)\\approx30{,}9°$. Vérification : le rayon passe d'un milieu plus réfringent (verre) vers un milieu moins réfringent (air), il doit donc s'ÉLOIGNER de la normale : on a bien $30{,}9°>20°$ ✓."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un rayon passe du verre ($n_1=1{,}5$) à l'air ($n_2=1$) avec un angle d'incidence de 50° dans le verre. Que se passe-t-il si l'on applique mécaniquement la formule $\\sin(i_2)=n_1\\sin(i_1)/n_2$ sans réfléchir ? Interpréter le résultat obtenu.",
+          "solution_markdown": "$\\sin(i_2)=\\dfrac{1{,}5\\times\\sin(50°)}{1}=1{,}5\\times0{,}766\\approx1{,}149$. Cette valeur de sinus DÉPASSE 1, ce qui est mathématiquement impossible pour un sinus réel : la fonction arcsin n'est pas définie pour un argument supérieur à 1, la calculatrice affiche alors une erreur. Ce résultat n'est pas une erreur de calcul mais un signal physique important : au-delà d'un certain angle d'incidence (l'angle limite, ici $\\lambda=\\arcsin(1/1{,}5)\\approx41{,8}°$), un rayon qui va d'un milieu plus réfringent vers un milieu moins réfringent ne peut PLUS être transmis dans le second milieu : il subit une réflexion totale sur le dioptre. Un angle d'incidence de 50°, supérieur à cet angle limite d'environ 41,8°, correspond précisément à ce cas : aucun rayon réfracté n'existe, toute la lumière est réfléchie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour calculer un angle de réfraction, isole toujours $\\sin(i_2)$ avant d'appliquer la fonction arcsin — ne t'arrête jamais à la valeur du sinus.",
+        "Vérifie systématiquement le sens de variation attendu : $n_2>n_1 \\Rightarrow i_2<i_1$ (rapprochement de la normale), et inversement.",
+        "Cette vérification est ta meilleure protection contre une erreur de calculatrice (mode radians/degrés) qui, sinon, passerait totalement inaperçue.",
+        "Si le calcul donne un $\\sin(i_2)>1$, ce n'est pas une erreur : c'est le signal d'une réflexion totale, un phénomène physique à part entière.",
+        "Cette méthode de calcul, une fois automatisée, se réutilise identiquement à chaque dioptre d'un système optique plus complexe, comme une fibre optique à plusieurs interfaces."
+      ]
+    }
+  ]
+}

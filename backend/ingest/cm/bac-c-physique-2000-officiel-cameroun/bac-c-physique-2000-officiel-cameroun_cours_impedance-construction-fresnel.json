@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-impedance-construction-fresnel-terminale-c",
+  "meta": {
+    "titre": "Impédance d'un circuit RLC série : construction de Fresnel",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Électricité - régime sinusoïdal",
+    "duree_estimee_min": 26,
+    "tags": [
+      "impédance",
+      "construction de Fresnel",
+      "circuit RLC série",
+      "régime sinusoïdal"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2000-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, Session de 2000 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-bac-c-physique-2000-officiel-cameroun-ex3-q1.1-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Additionner des tensions sinusoïdales déphasées les unes par rapport aux autres n'a rien d'une simple addition de nombres : une tension de 90 V et une tension de 314 V, déphasées de 90°, ne donnent jamais 404 V. La construction de Fresnel transforme ce problème de trigonométrie en un simple problème de géométrie : additionner des vecteurs, que l'on sait faire depuis la classe de seconde."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Tension aux bornes d'un résistor (en phase avec i) et d'une bobine (en quadrature avance sur i)",
+        "Théorème de Pythagore et notion de vecteur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Principe de la construction de Fresnel",
+      "contenu_markdown": "En régime sinusoïdal, on représente chaque tension par un vecteur tournant, dont la norme est l'amplitude de la tension et dont l'angle avec un axe de référence (souvent le courant) est son déphasage. Pour un circuit série, la tension totale est le vecteur somme de toutes les tensions élémentaires : sa norme donne l'amplitude de la tension totale ($ZI_m$, où $Z$ est l'impédance du circuit), et son angle donne le déphasage $\\varphi$ de la tension par rapport au courant.",
+      "formule_principale": "Z = \\dfrac{U_m}{I_m}, \\quad \\text{avec } \\vec{U} = \\sum \\vec{U}_i \\text{ (somme vectorielle de Fresnel)}",
+      "variantes": [
+        {
+          "nom": "Cas particulier RLC série (résistance totale R', inductance L)",
+          "quand_utiliser": "Quand le circuit ne comporte qu'une résistance totale et une inductance (pas de condensateur)",
+          "contenu_markdown": "$Z = \\sqrt{R'^2 + (L\\omega)^2}$, obtenu directement par Pythagore car les deux vecteurs sont perpendiculaires."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine de résistance $r=1{,}00\\ \\Omega$ et d'inductance $L=0{,}1\\ \\text{H}$ est associée en série à un conducteur ohmique $R=90\\ \\Omega$, parcourus par un courant sinusoïdal de fréquence $N=500\\ \\text{Hz}$. Calculer l'impédance du circuit.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les deux vecteurs de Fresnel du circuit",
+          "justification": "Un circuit (R,r,L) série ne comporte que deux natures de tension : résistive (R+r, en phase avec i) et inductive (L, en quadrature avance).",
+          "resultat_markdown": "$\\vec{U}_{R+r}$, norme $(R+r)I_m$, sur l'axe du courant ; $\\vec{U}_L$, norme $L\\omega I_m$, perpendiculaire, à +90°."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la pulsation",
+          "justification": "omega=2 pi N est nécessaire pour évaluer L*omega.",
+          "resultat_markdown": "$\\omega=2\\pi\\times500=1000\\pi\\approx3141{,}6\\ \\text{rad.s}^{-1}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les deux normes",
+          "justification": "Application numérique directe.",
+          "resultat_markdown": "$(R+r)=91{,}0\\ \\Omega$ ; $L\\omega=0{,}1\\times1000\\pi\\approx314{,}2\\ \\Omega$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer Pythagore pour obtenir Z",
+          "justification": "Les deux vecteurs de Fresnel étant perpendiculaires, leur somme se calcule par Pythagore.",
+          "resultat_markdown": "$Z=\\sqrt{91{,}0^2+314{,}2^2}=\\sqrt{106977}\\approx327{,}1\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "L'impédance du circuit vaut environ 327 Ω, une valeur intermédiaire, plus proche de la composante inductive (314 Ω) que de la composante résistive (91 Ω), ce qui est cohérent puisque le vecteur inductif est ici le plus grand des deux."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner directement $R+r+L\\omega$ pour obtenir Z.",
+          "pourquoi_faux": "Cette somme ignore totalement le déphasage de 90° entre tension résistive et tension inductive : ce ne sont pas des grandeurs colinéaires, on ne peut pas les additionner algébriquement.",
+          "correction_markdown": "Utilise toujours le théorème de Pythagore (ou la construction géométrique complète) dès que deux tensions sont déphasées, jamais une simple addition."
+        },
+        {
+          "erreur_markdown": "Oublier de convertir la fréquence N en pulsation $\\omega=2\\pi N$ avant de calculer $L\\omega$.",
+          "pourquoi_faux": "La réactance inductive s'exprime avec la pulsation, pas directement avec la fréquence : oublier le facteur $2\\pi$ change le résultat d'un facteur 6,28.",
+          "correction_markdown": "Prends l'habitude systématique de calculer $\\omega=2\\pi N$ comme première étape numérique de tout exercice de régime sinusoïdal forcé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un résistor $R=50\\ \\Omega$ est associé en série à une bobine purement inductive de réactance $L\\omega=50\\ \\Omega$. Calculer l'impédance de l'ensemble.",
+          "solution_markdown": "$Z=\\sqrt{50^2+50^2}=50\\sqrt{2}\\approx70{,}7\\ \\Omega$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bobine de résistance $r=5\\ \\Omega$ et d'inductance $L=0{,}05\\ \\text{H}$ est alimentée à la fréquence $N=100\\ \\text{Hz}$. Calculer son impédance propre (seule, sans résistor supplémentaire).",
+          "solution_markdown": "$\\omega=2\\pi\\times100\\approx628{,}3\\ \\text{rad.s}^{-1}$ ; $L\\omega=0{,}05\\times628{,}3\\approx31{,}4\\ \\Omega$ ; $Z=\\sqrt{5^2+31{,}4^2}=\\sqrt{25+986}=\\sqrt{1011}\\approx31{,}8\\ \\Omega$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, dans un circuit (R,r,L) série, le déphasage $\\varphi$ de la tension par rapport au courant tend vers $90°$ quand la fréquence $N$ tend vers l'infini, et vers $0°$ quand $N$ tend vers $0$. Interpréter physiquement ces deux limites.",
+          "solution_markdown": "$\\tan\\varphi = \\dfrac{L\\omega}{R+r} = \\dfrac{2\\pi LN}{R+r}$. Quand $N\\to\\infty$, $\\tan\\varphi\\to\\infty$ donc $\\varphi\\to90°$ : à très haute fréquence, la bobine se comporte comme un circuit ouvert (grande réactance), le circuit devient purement inductif. Quand $N\\to0$, $\\tan\\varphi\\to0$ donc $\\varphi\\to0°$ : à très basse fréquence (proche du continu), la réactance de la bobine devient négligeable, seule la résistance compte, et la tension redevient en phase avec le courant."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La construction de Fresnel remplace une trigonométrie complexe par une simple addition vectorielle.",
+        "Tension résistive : vecteur en phase avec le courant. Tension inductive : vecteur en quadrature avance (+90°).",
+        "L'impédance se calcule par Pythagore uniquement quand les vecteurs concernés sont perpendiculaires (cas R+L sans condensateur).",
+        "Ne jamais oublier de convertir la fréquence en pulsation ($\\omega=2\\pi N$) avant de calculer une réactance.",
+        "Cette construction est l'outil de base pour tout circuit en régime sinusoïdal forcé : elle se complexifie légèrement avec l'ajout d'un condensateur (cours suivant sur la résonance)."
+      ]
+    }
+  ]
+}

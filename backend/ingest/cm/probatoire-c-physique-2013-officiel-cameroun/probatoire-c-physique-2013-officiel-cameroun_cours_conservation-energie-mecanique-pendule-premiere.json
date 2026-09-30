@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-conservation-energie-mecanique-pendule-premiere",
+  "meta": {
+    "titre": "Conservation de l'énergie mécanique d'un pendule simple",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Énergie mécanique - pendule simple",
+    "duree_estimee_min": 22,
+    "tags": [
+      "conservation de l'énergie mécanique",
+      "pendule simple",
+      "vitesse",
+      "mécanique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROBATOIRE-C-2013-PHYSIQUE",
+    "epreuve_titre": "Probatoire série C - Épreuve de Physique - Session 2013 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-physique-2013-ex1-qA22-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Comment calculer la vitesse d'un pendule au point le plus bas sans jamais écrire l'équation du mouvement ? C'est possible grâce à un principe puissant : en l'absence de frottement, l'énergie mécanique totale d'un système ne change pas, elle change seulement de forme. Ce cours te montre comment transformer une énergie potentielle connue en une vitesse, en une seule ligne de calcul."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Énergie potentielle de pesanteur $E_{pp}=mgh$ (voir le cours dédié)",
+        "Énergie cinétique $E_c=\\frac12 mv^2$",
+        "Notion de système sans frottement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Conservation de l'énergie mécanique",
+      "contenu_markdown": "L'énergie mécanique d'un système est la somme de son énergie cinétique et de son (ou ses) énergie(s) potentielle(s) : $E_m = E_c + E_{pp}$ (ou $E_m=E_c+E_{pe}$ pour un système avec ressort, voir le cours dédié). Lorsque le système n'est soumis à aucune force de frottement (ni résistance de l'air notable), son énergie mécanique se conserve : elle garde la même valeur à tout instant du mouvement.\n\nPour un pendule simple lâché sans vitesse initiale depuis une position écartée, cela permet d'écrire l'égalité entre l'énergie mécanique au départ (uniquement potentielle, puisque $E_c=0$) et l'énergie mécanique à un instant ultérieur quelconque (par exemple au passage par la verticale, où $E_{pp}=0$ si l'on y prend la référence). La masse $m$ se simplifie toujours dans cette égalité, ce qui donne directement la vitesse en fonction de $g$ et de la hauteur de chute $h$ : $v=\\sqrt{2gh}$, exactement comme pour une chute libre.",
+      "formule_principale": "E_{m,\\text{initiale}} = E_{m,\\text{finale}} \\;\\Rightarrow\\; v=\\sqrt{2gh}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un pendule simple de longueur $L=90$ cm et de masse $m=0{,}2$ kg est écarté d'un angle $\\alpha=30°$ puis lâché sans vitesse initiale ($g=9{,}8$ N.kg$^{-1}$). Calculer sa vitesse $v$ au passage par la position d'équilibre (verticale).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'énergie potentielle de pesanteur initiale",
+          "justification": "D'après le cours sur l'élévation d'un pendule écarté, $E_{pp}=mgL(1-\\cos\\alpha)$.",
+          "resultat_markdown": "$E_{pp} = 0{,}2\\times9{,}8\\times0{,}90\\times(1-\\cos30°) \\approx 0{,}236$ J"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la conservation de l'énergie mécanique",
+          "justification": "Aucun frottement n'est signalé (fil sans masse, pas d'air mentionné) : $E_{m,\\text{écarté}} = E_{m,\\text{verticale}}$.",
+          "resultat_markdown": "$E_{pp} + 0 = 0 + \\frac12 mv^2$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler $v^2$ puis simplifier par $m$",
+          "justification": "La masse apparaît des deux côtés de l'égalité, elle se simplifie.",
+          "resultat_markdown": "$v^2 = \\dfrac{2E_{pp}}{m} = 2gL(1-\\cos\\alpha) = 2\\times9{,}8\\times0{,}90\\times0{,}1340 \\approx 2{,}363$ m$^2$.s$^{-2}$"
+        },
+        {
+          "numero": 4,
+          "action": "Prendre la racine carrée",
+          "justification": "$v$ est une norme de vitesse, donc positive.",
+          "resultat_markdown": "$v = \\sqrt{2{,}363} \\approx 1{,}54$ m.s$^{-1}$"
+        }
+      ],
+      "conclusion_markdown": "La vitesse du pendule au passage par la verticale est $v \\approx 1{,}54$ m.s$^{-1}$ : toute l'énergie potentielle de pesanteur initiale s'est intégralement transformée en énergie cinétique, sans aucune perte, conformément à la conservation de l'énergie mécanique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de vérifier qu'aucun frottement n'agit sur le système avant d'appliquer la conservation de l'énergie mécanique.",
+          "pourquoi_faux": "La conservation de l'énergie mécanique n'est vraie qu'en l'absence de frottement (ou de toute force non conservative qui dissipe de l'énergie). Si un énoncé mentionne un frottement, une résistance de l'air, ou un amortissement, une partie de l'énergie mécanique initiale est perdue sous forme de chaleur et l'égalité $E_{m,\\text{initiale}}=E_{m,\\text{finale}}$ devient fausse.",
+          "correction_markdown": "Relis toujours l'énoncé pour repérer une mention explicite ou implicite de frottement avant d'écrire une conservation de l'énergie ; en son absence, l'hypothèse est légitime."
+        },
+        {
+          "erreur_markdown": "Garder la masse $m$ dans le résultat final de la vitesse, en écrivant par exemple $v = \\sqrt{2gh/m}$ au lieu de $v=\\sqrt{2gh}$.",
+          "pourquoi_faux": "La masse apparaît dans les deux énergies ($E_{pp}=mgh$ et $E_c=\\frac12mv^2$) : elle se simplifie entièrement dans l'égalité $mgh=\\frac12mv^2$, et ne doit donc plus apparaître dans l'expression finale de $v$.",
+          "correction_markdown": "Écris explicitement l'étape de simplification par $m$ avant de conclure, pour éviter de la laisser par erreur dans la formule finale."
+        },
+        {
+          "erreur_markdown": "Confondre le point où l'on cherche la vitesse avec le point où l'on a calculé l'énergie potentielle, et réutiliser la même valeur de $E_{pp}$ aux deux endroits.",
+          "pourquoi_faux": "L'énergie potentielle de pesanteur change de valeur à chaque position du pendule (elle dépend de l'altitude à cet instant) : c'est précisément cette variation qui permet de calculer la vitesse. Utiliser la même valeur aux deux points annulerait le résultat.",
+          "correction_markdown": "Identifie clairement les deux instants comparés (départ et point d'arrivée choisi), calcule $E_{pp}$ à chacun, puis applique la conservation entre les deux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un pendule simple de longueur $L=1$ m, masse $m=0{,}05$ kg, est écarté de $\\alpha=20°$ puis lâché sans vitesse initiale. Calculer sa vitesse au passage par la verticale ($g=9{,}8$ N.kg$^{-1}$).",
+          "solution_markdown": "$h=L(1-\\cos20°)=1\\times(1-0{,}9397)=0{,}0603$ m. Par conservation de l'énergie mécanique, $v=\\sqrt{2gh}=\\sqrt{2\\times9{,}8\\times0{,}0603}=\\sqrt{1{,}182}\\approx1{,}09$ m.s$^{-1}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un pendule simple de longueur $L=1{,}2$ m est lâché sans vitesse initiale depuis un angle $\\alpha$ et passe à la verticale avec une vitesse $v=2$ m.s$^{-1}$. Déterminer $\\alpha$ ($g=9{,}8$ N.kg$^{-1}$).",
+          "solution_markdown": "$v^2=2gL(1-\\cos\\alpha)$ donne $1-\\cos\\alpha=\\dfrac{v^2}{2gL}=\\dfrac{4}{2\\times9{,}8\\times1{,}2}=\\dfrac{4}{23{,}52}\\approx0{,}1701$. Donc $\\cos\\alpha\\approx0{,}8299$, soit $\\alpha\\approx\\arccos(0{,}8299)\\approx33{,}9°$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un pendule simple de longueur $L$, lâché sans vitesse initiale d'un angle $\\alpha_0$, passe par la verticale avec une vitesse $v_0$. Le fil rencontre un petit clou fixé verticalement sous le point de suspension, à une distance $d < L$ de celui-ci, qui raccourcit brusquement le rayon de la trajectoire à $d$ après le passage à la verticale, sans changer l'énergie mécanique du système. Exprimer, en fonction de $L$, $d$ et $\\alpha_0$, l'angle maximal $\\beta$ que fera le fil avec la verticale de l'autre côté, sachant que l'énergie mécanique reste conservée tout au long du mouvement.",
+          "solution_markdown": "L'énergie mécanique totale, fixée dès le départ, vaut $E_m = mgL(1-\\cos\\alpha_0)$ (toute l'énergie potentielle initiale, la vitesse étant nulle au départ). Après le clou, le pendule oscille autour du même point d'accrochage mais avec un rayon $d$ : au point le plus haut de la nouvelle oscillation (vitesse à nouveau nulle), toute l'énergie mécanique est redevenue potentielle, mesurée cette fois avec le rayon $d$ : $E_m = mgd(1-\\cos\\beta)$. En égalant les deux expressions de $E_m$ (la masse se simplifie) : $L(1-\\cos\\alpha_0) = d(1-\\cos\\beta)$, d'où $\\cos\\beta = 1 - \\dfrac{L}{d}(1-\\cos\\alpha_0)$, et $\\beta = \\arccos\\!\\left(1-\\dfrac{L}{d}(1-\\cos\\alpha_0)\\right)$. Comme $d<L$, le pendule remonte plus haut que $\\alpha_0$ de l'autre côté."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "En l'absence de frottement, l'énergie mécanique $E_m=E_c+E_{pp}$ garde la même valeur à tout instant du mouvement.",
+        "Pour un pendule lâché sans vitesse initiale, toute l'énergie potentielle de départ se retrouve en énergie cinétique au point où $E_{pp}=0$ : $mgh=\\frac12mv^2$.",
+        "La masse se simplifie toujours dans ce type de calcul : la vitesse d'un pendule (ou d'une chute libre) ne dépend jamais de sa masse, seulement de $g$ et de la hauteur de chute.",
+        "Vérifie toujours qu'aucun frottement n'est en jeu avant d'invoquer la conservation de l'énergie mécanique : c'est l'hypothèse clé de tout ce raisonnement.",
+        "Cette méthode est l'outil de base de presque tous les exercices de mécanique du Probatoire et du BAC portant sur un pendule, un solide en chute, ou un système glissant sans frottement."
+      ]
+    }
+  ]
+}

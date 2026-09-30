@@ -1,0 +1,121 @@
+{
+  "cours_id": "cours-ecriture-acos-theta-phi-premiere",
+  "meta": {
+    "titre": "Écriture d'une somme sinus + cosinus sous forme A cos(θ - φ)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Signaux sinusoïdaux - amplitude et phase",
+    "duree_estimee_min": 25,
+    "tags": [
+      "écriture Acos(ωt+φ)",
+      "amplitude",
+      "déphasage",
+      "identité trigonométrique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2002-officiel-cameroun",
+    "epreuve_titre": "Physique - Probatoire Scientifique (Série C-E) - Session de 2002 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2002-officiel-cameroun-ex3-q3b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "En courant alternatif, une tension s'écrit rarement sous une forme simple comme $\\cos(\\omega t)$ : elle apparaît souvent comme une combinaison $a\\sin\\theta+b\\cos\\theta$, issue d'un calcul physique (loi d'une bobine, superposition de signaux...). Pourtant, cette combinaison représente TOUJOURS un unique signal sinusoïdal, avec une amplitude et une phase bien précises. Ce cours t'apprend la méthode pour les faire apparaître."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les formules d'addition trigonométriques, notamment $\\cos(a-b)=\\cos a\\cos b+\\sin a\\sin b$",
+        "Connaître les valeurs remarquables $\\cos(\\pi/4)=\\sin(\\pi/4)=\\sqrt{2}/2$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Écriture unique d'une combinaison sinus + cosinus",
+      "contenu_markdown": "Toute expression $a\\sin\\theta+b\\cos\\theta$ peut se réécrire sous la forme unique $A\\cos(\\theta-\\varphi)$. La méthode consiste à développer la forme cible avec la formule d'addition, puis à identifier terme à terme les coefficients de $\\cos\\theta$ et de $\\sin\\theta$ avec $a$ et $b$ :",
+      "formule_principale": "A\\cos(\\theta-\\varphi) = A\\cos\\varphi\\,\\cos\\theta + A\\sin\\varphi\\,\\sin\\theta",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Mets $u(\\theta)=25\\sin\\theta+25\\cos\\theta$ sous la forme $U\\sqrt{2}\\cos(\\theta-\\varphi)$, avec $\\varphi=\\pi/4$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Développer la forme cible avec la formule d'addition",
+          "justification": "On applique cos(a-b)=cos a cos b + sin a sin b avec a=θ, b=π/4.",
+          "resultat_markdown": "$\\cos(\\theta-\\tfrac{\\pi}{4}) = \\cos\\theta\\cos\\tfrac{\\pi}{4}+\\sin\\theta\\sin\\tfrac{\\pi}{4}$"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer les valeurs remarquables de cos(π/4) et sin(π/4)",
+          "justification": "$\\cos(\\pi/4)=\\sin(\\pi/4)=\\sqrt2/2$, une valeur remarquable à connaître par cœur.",
+          "resultat_markdown": "$\\cos(\\theta-\\tfrac{\\pi}{4}) = \\dfrac{\\sqrt2}{2}(\\cos\\theta+\\sin\\theta)$"
+        },
+        {
+          "numero": 3,
+          "action": "Multiplier par U√2 et identifier avec l'expression de départ",
+          "justification": "On veut que U√2·cos(θ-π/4) coïncide exactement avec 25sinθ+25cosθ.",
+          "resultat_markdown": "$U\\sqrt2\\cos(\\theta-\\tfrac{\\pi}{4}) = U(\\cos\\theta+\\sin\\theta)$, à identifier à $25(\\cos\\theta+\\sin\\theta)$ : donc $U=25$."
+        }
+      ],
+      "conclusion_markdown": "On obtient $u(\\theta)=25\\sqrt2\\cos(\\theta-\\pi/4)$ : la combinaison sinus+cosinus de départ est bien un unique signal sinusoïdal d'amplitude $25\\sqrt2$ et de phase $-\\pi/4$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Choisir arbitrairement le signe (+ ou -) dans $\\cos(\\theta\\pm\\varphi)$ sans vérifier par développement que l'identification fonctionne.",
+          "pourquoi_faux": "Le signe n'est pas une question de convention libre : seul le développement complet, comparé terme à terme à l'expression de départ, permet de savoir si + ou - est le bon signe. Un mauvais choix mène à une identification impossible (deux valeurs contradictoires pour le même coefficient).",
+          "correction_markdown": "Développe toujours complètement la forme cible avant d'identifier les coefficients : ne fais jamais confiance à une formule recopiée sans vérification si le signe semble douteux."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier que l'identification donne bien LA MÊME valeur du coefficient inconnu à partir du terme en cos ET à partir du terme en sin.",
+          "pourquoi_faux": "Une identification terme à terme correcte doit donner un système cohérent (les deux termes donnent la même valeur) ; deux valeurs différentes signalent une erreur de signe ou de calcul en amont.",
+          "correction_markdown": "Vérifie systématiquement que les deux identifications (coefficient de cos, coefficient de sin) sont cohérentes entre elles avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Mets $u(\\theta)=10\\cos\\theta+10\\sin\\theta$ sous la forme $A\\cos(\\theta-\\pi/4)$.",
+          "solution_markdown": "$\\cos(\\theta-\\pi/4)=\\frac{\\sqrt2}{2}(\\cos\\theta+\\sin\\theta)$, donc $A\\cos(\\theta-\\pi/4)=\\frac{A\\sqrt2}{2}(\\cos\\theta+\\sin\\theta)$. En identifiant à $10(\\cos\\theta+\\sin\\theta)$ : $\\frac{A\\sqrt2}{2}=10 \\Rightarrow A=10\\sqrt2$. Donc $u(\\theta)=10\\sqrt2\\cos(\\theta-\\pi/4)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Mets $u(\\theta)=6\\sin\\theta-6\\cos\\theta$ sous la forme $A\\cos(\\theta-\\varphi)$ avec $\\varphi=-\\pi/4$ (indication : $\\cos(\\theta+\\pi/4)=\\frac{\\sqrt2}{2}(\\cos\\theta-\\sin\\theta)$).",
+          "solution_markdown": "On cherche à identifier à $-6\\cos\\theta+6\\sin\\theta$. En développant $A\\cos(\\theta+\\pi/4)=\\frac{A\\sqrt2}{2}(\\cos\\theta-\\sin\\theta)$, l'identification donnerait $A\\sqrt2/2=-6$ (coeff cos) et $-A\\sqrt2/2=6$ (coeff sin), soit $A=-6\\sqrt2$ dans les deux cas - cohérent. Donc $u(\\theta)=-6\\sqrt2\\cos(\\theta+\\pi/4)$, ou de façon équivalente (en changeant le signe de A et en ajoutant π à la phase) $u(\\theta)=6\\sqrt2\\cos(\\theta+\\pi/4-\\pi)=6\\sqrt2\\cos(\\theta-3\\pi/4)$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une tension s'écrit $u(\\theta)=a\\sin\\theta+a\\cos\\theta$ où $a$ est une constante positive inconnue. Sachant que l'amplitude de $u$ vaut $14\\ \\text{V}$, calcule $a$.",
+          "solution_markdown": "D'après la méthode, $u(\\theta)=a(\\sin\\theta+\\cos\\theta)=a\\sqrt2\\cos(\\theta-\\pi/4)$ : l'amplitude du signal est $a\\sqrt2$. On pose $a\\sqrt2=14 \\Rightarrow a=\\dfrac{14}{\\sqrt2}=7\\sqrt2\\approx9{,}9\\ \\text{V}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Toute combinaison $a\\sin\\theta+b\\cos\\theta$ représente un unique signal sinusoïdal, qu'on peut toujours réécrire $A\\cos(\\theta-\\varphi)$.",
+        "La méthode : développer la forme cible avec la formule d'addition, puis identifier terme à terme les coefficients de cos et de sin.",
+        "Un mauvais choix de signe dans $\\cos(\\theta\\pm\\varphi)$ se détecte immédiatement par une identification incohérente (deux valeurs différentes pour le même coefficient) - ne l'ignore jamais.",
+        "Quand $a=b$, l'amplitude résultante vaut toujours $a\\sqrt2$ et la phase $\\pm\\pi/4$ : un cas particulier fréquent à reconnaître directement.",
+        "Cette écriture unique (amplitude, phase) est indispensable pour comparer deux signaux sinusoïdaux de même pulsation, ou pour résoudre une équation différentielle en régime sinusoïdal forcé."
+      ]
+    }
+  ]
+}

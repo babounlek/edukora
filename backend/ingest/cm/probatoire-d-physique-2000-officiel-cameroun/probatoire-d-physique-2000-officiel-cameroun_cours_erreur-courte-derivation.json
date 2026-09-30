@@ -1,0 +1,120 @@
+{
+  "cours_id": "cours-probatoire-d-physique-2000-officiel-cameroun-ex4-q3.5-1",
+  "meta": {
+    "titre": "Erreur systématique du montage courte dérivation",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Mesure des résistances",
+    "duree_estimee_min": 25,
+    "tags": [
+      "erreur de mesure",
+      "montage courte dérivation",
+      "méthode ampèremètre-voltmètre"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-physique-2000-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique, Série D, Cameroun, session 2000",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-d-physique-2000-officiel-cameroun-ex4-q3.5-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Même un montage de mesure parfaitement réalisé comporte un défaut structurel : dans le montage courte dérivation, l'ampèremètre ne mesure jamais tout à fait le courant qui traverse le résistor étudié, mais un peu plus. Ce cours montre comment quantifier précisément cette erreur, sans avoir besoin de connaître la valeur vraie de la résistance."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le montage courte dérivation (ampèremètre-voltmètre)",
+        "Savoir calculer une résistance équivalente de deux résistances en parallèle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Erreur relative du montage courte dérivation",
+      "contenu_markdown": "Dans le montage courte dérivation, l'ampèremètre mesure le courant total $I=I_R+I_V=\\dfrac{U}{R_{vrai}}+\\dfrac{U}{R_v}$, si bien que la résistance mesurée $R_{mesuré}=U/I$ est en réalité la résistance équivalente de $R_{vrai}$ et $R_v$ montées en parallèle : $R_{mesuré}=\\dfrac{R_{vrai}R_v}{R_{vrai}+R_v}$, toujours inférieure à $R_{vrai}$. En exprimant l'erreur relative $\\varepsilon=(R_{vrai}-R_{mesuré})/R_{vrai}$ uniquement à partir des grandeurs effectivement connues après la mesure ($R_{mesuré}$ et $R_v$), cette relation se simplifie exactement en $\\varepsilon = R_{mesuré}/R_v$.",
+      "formule_principale": "\\varepsilon = \\dfrac{R_{mesuré}}{R_v}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un résistor est mesuré par montage courte dérivation avec un voltmètre de résistance $R_v=90\\ \\text{k}\\Omega$, donnant $R_{mesuré}=150\\ \\Omega$. Calculer l'erreur relative commise.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les grandeurs disponibles",
+          "justification": "Après la mesure, on connaît $R_{mesuré}$ (déduit de U et I) et $R_v$ (donnée du voltmètre).",
+          "resultat_markdown": "$R_{mesuré}=150\\ \\Omega$, $R_v=90\\,000\\ \\Omega$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la formule de l'erreur relative",
+          "justification": "$\\varepsilon=R_{mesuré}/R_v$, établie pour le montage courte dérivation.",
+          "resultat_markdown": "$\\varepsilon=\\dfrac{150}{90\\,000}=\\dfrac{1}{600}\\approx1{,}67\\times10^{-3}$"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer en pourcentage et conclure",
+          "justification": "Une erreur relative se lit plus facilement en pourcentage.",
+          "resultat_markdown": "$\\varepsilon\\approx0{,}17\\%$, donc erreur négligeable : montage bien adapté à cette résistance faible"
+        }
+      ],
+      "conclusion_markdown": "Une erreur relative de 0,17 % est totalement négligeable : ce résultat confirme que le montage courte dérivation était le bon choix pour mesurer une résistance de seulement 150 Ω."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Chercher à calculer l'erreur relative en utilisant $R_{vrai}$, jugée inconnue et donc laissée de côté, plutôt que $R_{mesuré}$.",
+          "pourquoi_faux": "$R_{vrai}$ n'est en effet jamais connue directement dans une mesure réelle ; c'est justement l'intérêt de la formule $\\varepsilon=R_{mesuré}/R_v$ de n'utiliser que des grandeurs effectivement disponibles après la mesure.",
+          "correction_markdown": "Utilise systématiquement $R_{mesuré}$ (et non une hypothétique valeur vraie) dans la formule de l'erreur relative de ce montage."
+        },
+        {
+          "erreur_markdown": "Conclure qu'un montage est mauvais dès qu'une erreur relative non nulle est calculée, aussi petite soit-elle.",
+          "pourquoi_faux": "Toute mesure comporte une erreur non nulle ; ce qui compte est de comparer cette erreur à la précision recherchée, pas d'exiger une erreur strictement nulle qui n'existe jamais en pratique.",
+          "correction_markdown": "Compare l'erreur relative trouvée à un seuil raisonnable (souvent quelques %) avant de juger le montage adapté ou non."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un montage courte dérivation donne $R_{mesuré}=200\\ \\Omega$ avec un voltmètre $R_v=20\\,000\\ \\Omega$. Calculer l'erreur relative.",
+          "solution_markdown": "$\\varepsilon=200/20\\,000=0{,}01=1\\%$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un montage courte dérivation donne $R_{mesuré}=5\\,000\\ \\Omega$ avec un voltmètre $R_v=50\\,000\\ \\Omega$. Ce montage est-il encore satisfaisant, ou fallait-il changer de montage ? Justifier.",
+          "solution_markdown": "$\\varepsilon=5000/50000=0{,}1=10\\%$ : une erreur bien trop importante pour la plupart des usages. Il aurait été préférable d'utiliser le montage longue dérivation, plus adapté à une résistance dont l'ordre de grandeur se rapproche de celui de $R_v$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer, à partir de $R_{mesuré}=\\dfrac{R_{vrai}R_v}{R_{vrai}+R_v}$, que l'erreur relative $\\varepsilon=(R_{vrai}-R_{mesuré})/R_{vrai}$ est bien égale exactement à $R_{mesuré}/R_v$ (et non une simple approximation).",
+          "solution_markdown": "De $R_{mesuré}=\\dfrac{R_{vrai}R_v}{R_{vrai}+R_v}$, on tire $R_{mesuré}(R_{vrai}+R_v)=R_{vrai}R_v$, soit $R_{mesuré}R_{vrai}+R_{mesuré}R_v=R_{vrai}R_v$, donc $R_{mesuré}R_v = R_{vrai}(R_v-R_{mesuré})$, soit $R_{vrai}=\\dfrac{R_{mesuré}R_v}{R_v-R_{mesuré}}$. On calcule alors $\\varepsilon=1-\\dfrac{R_{mesuré}}{R_{vrai}}=1-\\dfrac{R_{mesuré}(R_v-R_{mesuré})}{R_{mesuré}R_v}=1-\\dfrac{R_v-R_{mesuré}}{R_v}=\\dfrac{R_{mesuré}}{R_v}$. La relation est donc exacte, pas seulement approchée, quelle que soit la valeur de $R_{mesuré}/R_v$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Dans le montage courte dérivation, la résistance mesurée est systématiquement inférieure à la résistance vraie.",
+        "L'erreur relative s'exprime exactement par $\\varepsilon=R_{mesuré}/R_v$, sans avoir besoin de connaître $R_{vrai}$.",
+        "Une erreur relative petite (quelques dixièmes de %) valide le choix du montage courte dérivation pour une résistance faible.",
+        "Une erreur relative importante (plusieurs %, voire dizaines de %) signale qu'il fallait changer de montage.",
+        "Cette méthode de calcul d'erreur systématique se généralise à d'autres montages de mesure comportant un défaut structurel connu."
+      ]
+    }
+  ]
+}

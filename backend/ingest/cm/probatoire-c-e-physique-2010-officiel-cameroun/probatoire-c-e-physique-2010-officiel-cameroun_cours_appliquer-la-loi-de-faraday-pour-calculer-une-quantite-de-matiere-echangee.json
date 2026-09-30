@@ -1,0 +1,131 @@
+{
+  "cours_id": "cours-appliquer-la-loi-de-faraday-pour-calculer-une-quantite-de-matiere-echangee-1ere",
+  "meta": {
+    "titre": "Appliquer la loi de Faraday pour calculer une quantité de matière échangée",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Piles et oxydoréduction",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi de Faraday",
+      "quantité de matière échangée",
+      "électrolyse et piles"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2010-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série C, E - Session 2010 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-probatoire-c-e-physique-2010-officiel-cameroun-ex1-q1.4-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de temps une pile peut-elle vraiment débiter un courant donné avant de s'épuiser ? Répondre à cette question, essentielle pour dimensionner un objet électronique, demande de relier deux mondes que rien ne semble rapprocher a priori : le courant électrique, mesuré en ampères, et la quantité de matière consommée à l'électrode, mesurée en moles. La loi de Faraday est ce pont."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation entre charge électrique, intensité et durée : $Q = I \\times t$",
+        "Notion de mole et de masse molaire",
+        "Savoir écrire une demi-équation électronique équilibrée"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Faraday",
+      "contenu_markdown": "Lorsqu'un courant d'intensité $I$ traverse une pile ou un électrolyseur pendant une durée $t$, la charge électrique échangée vaut $Q = I \\times t$. Cette charge correspond exactement au passage d'une certaine quantité de matière d'électrons à travers le circuit, donnée par $n(e^-) = \\dfrac{Q}{\\mathcal{F}}$, où $\\mathcal{F} = 96500\\ \\text{C/mol}$ est la constante de Faraday (charge portée par une mole d'électrons). Il suffit ensuite d'utiliser les nombres stœchiométriques de la demi-équation d'électrode pour convertir $n(e^-)$ en quantité de matière de l'espèce chimique réellement consommée ou produite, puis en masse via $m = n \\times M$.",
+      "formule_principale": "n(e^-) = \\dfrac{Q}{\\mathcal{F}} = \\dfrac{I \\times t}{\\mathcal{F}}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une pile-bouton au mercure débite un courant $I=0,30\\ \\text{mA}$ pendant $t=100\\ \\text{h}$. Calculer la masse minimale de zinc consommée, sachant que le zinc s'oxyde selon $Zn \\rightarrow Zn^{2+} + 2e^-$ ($M_{Zn}=65,4\\ \\text{g/mol}$, $\\mathcal{F}=96500\\ \\text{C/mol}$).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la durée en secondes",
+          "justification": "La constante de Faraday est exprimée en coulombs par mole, avec la seconde comme unité de temps du Système International.",
+          "resultat_markdown": "$t = 100 \\times 3600 = 3,6\\times10^5\\ \\text{s}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la charge électrique échangée",
+          "justification": "$Q = I \\times t$.",
+          "resultat_markdown": "$Q = 0,30\\times10^{-3} \\times 3,6\\times10^5 = 108\\ \\text{C}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la quantité de matière d'électrons échangés",
+          "justification": "$n(e^-) = Q/\\mathcal{F}$.",
+          "resultat_markdown": "$n(e^-) = 108/96500 = 1,12\\times10^{-3}\\ \\text{mol}$"
+        },
+        {
+          "numero": 4,
+          "action": "Convertir en quantité de matière de zinc consommé",
+          "justification": "D'après $Zn \\rightarrow Zn^{2+} + 2e^-$, une mole de zinc libère 2 moles d'électrons, donc $n(Zn) = n(e^-)/2$.",
+          "resultat_markdown": "$n(Zn) = 1,12\\times10^{-3}/2 = 5,60\\times10^{-4}\\ \\text{mol}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer la masse correspondante",
+          "justification": "$m = n \\times M$.",
+          "resultat_markdown": "$m(Zn) = 5,60\\times10^{-4} \\times 65,4 = 3,66\\times10^{-2}\\ \\text{g}$"
+        }
+      ],
+      "conclusion_markdown": "La pile doit contenir au minimum $3,66\\times10^{-2}\\ \\text{g}$ de zinc pour pouvoir débiter ce courant pendant cette durée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier de convertir la durée en secondes avant de calculer $Q=I\\times t$.",
+          "pourquoi_faux": "La constante de Faraday est définie en coulombs par mole, avec le coulomb lui-même défini à partir de l'ampère et de la SECONDE ; utiliser des heures directement multiplie le résultat par 3600 et fausse tout le calcul.",
+          "correction_markdown": "Convertis systématiquement toute durée en secondes avant d'utiliser $Q=I\\times t$."
+        },
+        {
+          "erreur_markdown": "Oublier de diviser par le nombre d'électrons échangés dans la demi-équation (ici 2 pour le zinc) et confondre directement $n(e^-)$ avec $n(Zn)$.",
+          "pourquoi_faux": "La demi-équation $Zn \\rightarrow Zn^{2+}+2e^-$ montre que CHAQUE atome de zinc libère DEUX électrons : le nombre de moles d'électrons est donc le double du nombre de moles de zinc, pas égal.",
+          "correction_markdown": "Relis toujours la demi-équation d'électrode pour repérer le nombre d'électrons échangés par unité de l'espèce étudiée, avant de convertir $n(e^-)$ en quantité de matière de cette espèce."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calcule la charge électrique qui traverse un circuit parcouru par un courant de $2,0\\ \\text{A}$ pendant $10\\ \\text{minutes}$.",
+          "solution_markdown": "$t = 10\\times60 = 600\\ \\text{s}$. $Q = I\\times t = 2,0\\times600 = 1200\\ \\text{C}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un électrolyseur est parcouru par un courant $I=0,50\\ \\text{A}$ pendant $2,0\\ \\text{h}$. Calcule la masse de cuivre déposée sur l'électrode par réduction des ions $Cu^{2+}$ selon $Cu^{2+}+2e^- \\rightarrow Cu$ ($M_{Cu}=63,5\\ \\text{g/mol}$).",
+          "solution_markdown": "$t=2,0\\times3600=7200\\ \\text{s}$. $Q=I\\times t=0,50\\times7200=3600\\ \\text{C}$. $n(e^-)=Q/\\mathcal{F}=3600/96500=3,73\\times10^{-2}\\ \\text{mol}$. D'après la demi-équation, $n(Cu)=n(e^-)/2=1,87\\times10^{-2}\\ \\text{mol}$. $m(Cu)=n(Cu)\\times M_{Cu}=1,87\\times10^{-2}\\times63,5=1,18\\ \\text{g}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une pile alcaline au manganèse ($MnO_2+H_2O+e^-\\rightarrow MnOOH+OH^-$ à l'électrode positive, un seul électron échangé) doit débiter un courant constant $I=5,0\\ \\text{mA}$ pendant $200\\ \\text{h}$. Calcule la quantité de matière minimale de $MnO_2$ que la pile doit contenir ($M_{MnO_2}=87,0\\ \\text{g/mol}$), puis la masse correspondante.",
+          "solution_markdown": "$t=200\\times3600=7,2\\times10^5\\ \\text{s}$. $Q=I\\times t=5,0\\times10^{-3}\\times7,2\\times10^5=3600\\ \\text{C}$. $n(e^-)=Q/\\mathcal{F}=3600/96500=3,73\\times10^{-2}\\ \\text{mol}$. La demi-équation échange 1 électron par $MnO_2$, donc $n(MnO_2)=n(e^-)=3,73\\times10^{-2}\\ \\text{mol}$. $m(MnO_2)=n(MnO_2)\\times M_{MnO_2}=3,73\\times10^{-2}\\times87,0=3,25\\ \\text{g}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Faraday relie une grandeur électrique mesurable ($Q=I\\times t$) à une quantité de matière transformée à une électrode : $n(e^-)=Q/\\mathcal{F}$.",
+        "Convertis toujours la durée en secondes avant de calculer $Q$.",
+        "Le passage de $n(e^-)$ à la quantité de matière de l'espèce étudiée se fait grâce aux nombres stœchiométriques de la demi-équation d'électrode : ne saute jamais cette étape.",
+        "Cette méthode en quatre étapes (charge, moles d'électrons, moles d'espèce, masse) est identique pour une pile qui se décharge ou un électrolyseur qui fonctionne : au Probatoire comme au Bac, elle revient dans presque tous les exercices chiffrés sur les générateurs électrochimiques."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "cours_id": "cours-equation-trajectoire-projectile-tle-c",
+  "meta": {
+    "titre": "Équation cartésienne de la trajectoire d'un projectile dans un champ de pesanteur uniforme",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Mouvement dans un champ de pesanteur uniforme",
+    "duree_estimee_min": 30,
+    "tags": [
+      "projectile",
+      "trajectoire parabolique",
+      "chute avec vitesse initiale",
+      "mécanique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2001-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique Série C - Physique - Session 2001 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-2001-officiel-cameroun-ex1-q1.3-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un footballeur qui tire un coup franc, un basketteur qui shoote, un jet d'eau qui jaillit d'une fontaine : dans tous ces cas, un objet lancé avec une vitesse initiale inclinée suit la même courbe caractéristique, une parabole. Savoir écrire l'équation de cette parabole permet de répondre à des questions très concrètes - le ballon passera-t-il par-dessus le mur ? à quelle distance retombera-t-il ? - sans avoir à suivre le mouvement instant par instant. C'est ce que tu vas apprendre à faire ici, à partir d'un principe unique : la deuxième loi de Newton."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Décomposer un vecteur vitesse initial selon deux axes perpendiculaires (projection, cosinus, sinus)",
+        "Connaître la deuxième loi de Newton et savoir l'appliquer à un point matériel",
+        "Savoir intégrer une fonction constante puis une fonction affine du temps (primitives simples)",
+        "Manipuler une équation du second degré ou une expression en x²"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De la deuxième loi de Newton à l'équation y(x)",
+      "contenu_markdown": "Pour un projectile soumis à la seule pesanteur (résistance de l'air négligée), on choisit un repère $(O,\\vec i,\\vec j)$ avec $\\vec i$ horizontal (dans le plan de tir) et $\\vec j$ vertical ascendant. La deuxième loi de Newton, $m\\vec a=\\vec P$, se projette en $\\ddot x=0$ et $\\ddot y=-g$. Deux intégrations successives, à partir des conditions initiales $x(0)=y(0)=0$ et $\\dot x(0)=v_0\\cos\\alpha$, $\\dot y(0)=v_0\\sin\\alpha$, donnent les équations horaires paramétriques : $x(t)=v_0\\cos\\alpha\\cdot t$ et $y(t)=v_0\\sin\\alpha\\cdot t-\\frac12 gt^2$. On élimine ensuite le paramètre $t$ en le tirant de $x(t)$ et en le substituant dans $y(t)$, ce qui donne l'équation cartésienne de la trajectoire, une fonction $y(x)$ du second degré :",
+      "formule_principale": "y(x)=x\\tan\\alpha-\\dfrac{g\\,x^2}{2v_0^2\\cos^2\\alpha}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un ballon est frappé depuis le sol (origine $O$, centre du ballon au moment du tir) avec une vitesse initiale $v_0=18,4$ m/s inclinée de $\\alpha=30°$ sur l'horizontale, dans un champ de pesanteur $g=10$ m/s². Écrire l'équation de sa trajectoire et vérifier qu'à $x=25,0$ m, l'altitude atteinte est proche de $2,14$ m.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire les équations horaires paramétriques x(t) et y(t)",
+          "justification": "La deuxième loi de Newton donne une accélération horizontale nulle et une accélération verticale égale à -g ; deux intégrations successives à partir des conditions initiales donnent x(t) et y(t).",
+          "resultat_markdown": "$x(t)=v_0\\cos\\alpha\\cdot t \\qquad y(t)=v_0\\sin\\alpha\\cdot t-\\dfrac12 gt^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Isoler le temps t dans x(t)",
+          "justification": "On veut une relation directe entre y et x, sans dépendance explicite au temps : il faut donc exprimer t en fonction de x.",
+          "resultat_markdown": "$t=\\dfrac{x}{v_0\\cos\\alpha}$"
+        },
+        {
+          "numero": 3,
+          "action": "Substituer cette expression de t dans y(t)",
+          "justification": "Remplacer t par x/(v0 cosα) dans y(t) fait disparaître le paramètre temporel et fait apparaître y comme fonction de x uniquement.",
+          "resultat_markdown": "$y(x)=v_0\\sin\\alpha\\cdot\\dfrac{x}{v_0\\cos\\alpha}-\\dfrac12 g\\left(\\dfrac{x}{v_0\\cos\\alpha}\\right)^2=x\\tan\\alpha-\\dfrac{g\\,x^2}{2v_0^2\\cos^2\\alpha}$"
+        },
+        {
+          "numero": 4,
+          "action": "Application numérique à x = 25,0 m",
+          "justification": "On substitue les valeurs numériques de l'énoncé (g=10, α=30°, v0=18,4 m/s, x=25,0 m) dans l'équation obtenue.",
+          "resultat_markdown": "$\\tan30°\\approx0,5774$ ; $\\cos^230°=0,75$ ; $v_0^2\\approx338,6$\n\n$y(25,0)=25,0\\times0,5774-\\dfrac{10\\times625}{2\\times338,6\\times0,75}\\approx14,43-12,30\\approx2,14\\ \\text{m}$"
+        }
+      ],
+      "conclusion_markdown": "On retrouve bien $y(25,0)\\approx2,14$ m, la valeur attendue : l'équation de trajectoire établie par élimination du temps permet de calculer directement l'altitude atteinte à n'importe quelle distance horizontale, sans avoir à reconstituer l'évolution temporelle complète du mouvement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $y(x)=x\\tan\\alpha-\\dfrac{gx^2}{2v_0^2}$ en oubliant le $\\cos^2\\alpha$ au dénominateur.",
+          "pourquoi_faux": "Ce cos²α provient du carré de t = x/(v0 cosα) : quand on substitue t² dans le terme -½gt², on obtient x²/(v0²cos²α), pas x²/v0² seul. Oublier ce facteur revient à ignorer que la vitesse horizontale n'est qu'une fraction de v0.",
+          "correction_markdown": "Toujours écrire explicitement $t=\\dfrac{x}{v_0\\cos\\alpha}$ puis calculer $t^2=\\dfrac{x^2}{v_0^2\\cos^2\\alpha}$ avant de substituer dans y(t), sans jamais raccourcir cette étape."
+        },
+        {
+          "erreur_markdown": "Confondre l'origine du repère (le point de lancement) avec le sol ou un autre point de référence, en particulier lorsque le projectile a une dimension propre (un ballon, par exemple).",
+          "pourquoi_faux": "Si l'origine choisie est le centre d'un objet de rayon r posé au sol, elle se trouve déjà à la hauteur r au-dessus du sol : toute condition portant sur une hauteur mesurée depuis le sol doit être corrigée de ce décalage avant d'être utilisée dans y(x).",
+          "correction_markdown": "Relire systématiquement la définition de l'origine donnée par l'énoncé avant d'imposer une condition de hauteur, et convertir explicitement toute donnée de hauteur au sol dans le repère utilisé."
+        },
+        {
+          "erreur_markdown": "Penser que la trajectoire pourrait ne pas être plane sans le démontrer, ou au contraire l'affirmer sans justification.",
+          "pourquoi_faux": "La planéité n'est vraie que parce que la seule force (le poids) et les conditions initiales sont contenues dans un même plan fixe ; ce n'est pas une évidence géométrique gratuite, c'est une conséquence précise de la deuxième loi de Newton qui doit être démontrée par double intégration sur l'axe perpendiculaire.",
+          "correction_markdown": "Toujours établir la planéité par le raisonnement en trois étapes (accélération nulle hors du plan, conditions initiales dans le plan, double intégration) avant de l'utiliser comme acquis dans la suite du problème."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une balle est lancée depuis le sol avec $v_0=10$ m/s et $\\alpha=45°$ ($g=10$ m/s²). Écrire l'équation de sa trajectoire y(x) et calculer y pour x=5 m.",
+          "solution_markdown": "Équations horaires : $x(t)=v_0\\cos\\alpha\\cdot t$, $y(t)=v_0\\sin\\alpha\\cdot t-\\frac12 gt^2$.\n\nÉlimination du temps : $t=\\dfrac{x}{v_0\\cos\\alpha}$, d'où $y(x)=x\\tan\\alpha-\\dfrac{gx^2}{2v_0^2\\cos^2\\alpha}$.\n\nAvec $\\alpha=45°$ : $\\tan45°=1$, $\\cos^245°=0,5$, $v_0^2=100$.\n\n$y(x)=x-\\dfrac{10x^2}{2\\times100\\times0,5}=x-\\dfrac{x^2}{10}$\n\n$y(5)=5-\\dfrac{25}{10}=5-2,5=2,5$ m."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une balle est lancée avec $v_0=20$ m/s et $\\alpha=30°$ ($g=10$ m/s²) depuis le sol. Calculer la portée (distance horizontale à laquelle la balle retombe au sol, y=0).",
+          "solution_markdown": "On cherche $x\\ne0$ tel que $y(x)=0$ : $x\\tan\\alpha-\\dfrac{gx^2}{2v_0^2\\cos^2\\alpha}=0$.\n\n$x\\left(\\tan\\alpha-\\dfrac{gx}{2v_0^2\\cos^2\\alpha}\\right)=0$, donc $x=0$ (point de départ) ou $x=\\dfrac{2v_0^2\\cos^2\\alpha\\tan\\alpha}{g}=\\dfrac{2v_0^2\\sin\\alpha\\cos\\alpha}{g}=\\dfrac{v_0^2\\sin(2\\alpha)}{g}$.\n\nApplication numérique : $v_0^2=400$, $\\sin(60°)\\approx0,866$, $g=10$.\n\nPortée $=\\dfrac{400\\times0,866}{10}\\approx34,6$ m."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un projectile est lancé depuis le sol avec un angle $\\alpha$ réglable et une vitesse $v_0$ fixée. Montrer que la portée est maximale pour $\\alpha=45°$, et exprimer cette portée maximale en fonction de $v_0$ et $g$.",
+          "solution_markdown": "D'après l'exercice précédent, la portée s'écrit $D(\\alpha)=\\dfrac{v_0^2\\sin(2\\alpha)}{g}$ pour $\\alpha\\in\\,]0°,90°[$.\n\nLe facteur $v_0^2/g$ est une constante positive (à $v_0$ fixé) : $D(\\alpha)$ est donc maximale exactement quand $\\sin(2\\alpha)$ est maximal.\n\nOr $\\sin(2\\alpha)\\le1$ pour tout $\\alpha$, avec égalité si et seulement si $2\\alpha=90°$, c'est-à-dire $\\alpha=45°$ (seule solution dans l'intervalle $]0°,90°[$ considéré).\n\nLa portée maximale correspondante vaut, avec $\\sin(90°)=1$ :\n\n$$D_{max}=\\dfrac{v_0^2}{g}$$\n\nCe résultat classique explique pourquoi, en l'absence de résistance de l'air, un angle de tir de 45° donne la portée maximale, aussi bien pour un boulet de canon que pour un lancer de poids."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour établir $y(x)$, pars toujours de la deuxième loi de Newton projetée sur les deux axes, intègre deux fois, puis élimine le temps en le tirant de $x(t)$.",
+        "La trajectoire d'un projectile soumis à la seule pesanteur est toujours une parabole : $y(x)=x\\tan\\alpha-\\dfrac{gx^2}{2v_0^2\\cos^2\\alpha}$.",
+        "Une trajectoire reste plane tant que la seule force et les conditions initiales sont contenues dans un même plan fixe : ce n'est jamais un acquis gratuit, toujours une conséquence à démontrer.",
+        "Impose un point imposé (cible) directement dans y(x) pour en déduire une inconnue (souvent v0) : c'est la méthode la plus directe, plus sûre qu'un raisonnement purement cinématique.",
+        "N'oublie jamais une dimension propre de l'objet étudié (rayon d'un ballon, taille d'un projectile) quand l'énoncé le précise : elle décale la condition à imposer dans y(x).",
+        "Au BAC, ce type de calcul apparaît systématiquement dans les exercices de mécanique du point sur le mouvement dans un champ de pesanteur uniforme (chute avec vitesse initiale, tir, saut), en Terminale C comme en Terminale D."
+      ]
+    }
+  ]
+}

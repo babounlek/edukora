@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-conjugaison-cascade-deux-lentilles-1ere",
+  "meta": {
+    "titre": "Relations de conjugaison en cascade pour un système de deux lentilles",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Instruments d'optique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "microscope",
+      "association de lentilles",
+      "conjugaison",
+      "intervalle optique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2014-officiel-cameroun.pdf",
+    "epreuve_titre": "Probatoire Physique, Série C-E, Session 2014 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-c-e-physique-2014-officiel-cameroun.pdf-ex2-q2.2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Calculer où se forme l'image finale à travers un microscope, une lunette, ou tout autre instrument à plusieurs lentilles, semble intimidant au premier abord : deux lentilles, deux distances focales, une position d'objet à suivre à travers tout le système. En réalité, la méthode se résume à répéter deux fois, dans l'ordre, exactement le même calcul que pour une lentille seule, en prenant bien soin de changer de référentiel de position à chaque nouvelle lentille."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation de conjugaison d'une lentille mince convergente",
+        "Principe de formation de l'image dans un microscope (cours précédent)",
+        "Addition et soustraction de longueurs algébriques sur un axe orienté"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La méthode en cascade, lentille après lentille",
+      "contenu_markdown": "Pour un système de deux lentilles convergentes $L_1$ (objectif) et $L_2$ (oculaire) séparées par une distance connue, la position de l'image finale s'obtient en trois étapes systématiques :\n\n**Étape 1 : image intermédiaire à travers la première lentille.** On applique la relation de conjugaison de $L_1$ à l'objet réel donné, ce qui donne la position $\\overline{O_1A_1}$ de l'image intermédiaire, mesurée par rapport au centre optique $O_1$ de la première lentille :\n\n$$\\dfrac{1}{\\overline{O_1A_1}} = \\dfrac{1}{f_1} + \\dfrac{1}{\\overline{O_1A}}$$\n\n**Étape 2 : changement de référentiel.** L'image intermédiaire $A_1$, calculée par rapport à $O_1$, devient l'OBJET de la deuxième lentille $L_2$. Il faut donc recalculer sa position par rapport au centre optique $O_2$ de $L_2$, en utilisant la distance $\\overline{O_1O_2}$ qui sépare les deux lentilles (souvent donnée via l'intervalle optique, distance entre les foyers intermédiaires, à laquelle on ajoute les deux distances focales concernées) :\n\n$$\\overline{O_2A_1} = \\overline{O_1A_1} - \\overline{O_1O_2}$$\n\n**Étape 3 : image finale à travers la deuxième lentille.** On applique de nouveau la relation de conjugaison, cette fois à $L_2$, en prenant $A_1$ comme objet :\n\n$$\\dfrac{1}{\\overline{O_2A'}} = \\dfrac{1}{f_2} + \\dfrac{1}{\\overline{O_2A_1}}$$\n\n**Ramener le résultat au référentiel demandé.** Si la position finale doit être exprimée par rapport à la première lentille (et non la seconde), une dernière addition est nécessaire :\n\n$$\\overline{O_1A'} = \\overline{O_1O_2} + \\overline{O_2A'}$$\n\nCette méthode se généralise sans difficulté à un système de plus de deux lentilles : on répète simplement l'étape « conjugaison puis changement de référentiel » autant de fois qu'il y a de lentilles."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un microscope a un objectif de focale $f_1 = 0{,}5\\ \\text{cm}$, un oculaire de focale $f_2 = 5\\ \\text{cm}$, et un intervalle optique $\\Delta = \\overline{F_1'F_2} = 16\\ \\text{cm}$. Un objet est placé à $0{,}515\\ \\text{cm}$ devant l'objectif. Déterminer la position de l'image définitive par rapport à l'objectif.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer l'image intermédiaire à travers l'objectif",
+          "justification": "Objet réel à $\\overline{O_1A} = -0{,}515\\ \\text{cm}$, relation de conjugaison de l'objectif.",
+          "resultat_markdown": "$\\dfrac{1}{\\overline{O_1A_1}} = \\dfrac{1}{0{,}5} + \\dfrac{1}{-0{,}515} \\approx 0{,}0583\\ \\text{cm}^{-1} \\Rightarrow \\overline{O_1A_1} \\approx 17{,}17\\ \\text{cm}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la distance entre les deux lentilles",
+          "justification": "$\\overline{O_1O_2} = f_1 + \\Delta + f_2$ (foyer image de l'objectif, puis intervalle optique, puis distance focale de l'oculaire).",
+          "resultat_markdown": "$\\overline{O_1O_2} = 0{,}5+16+5 = 21{,}5\\ \\text{cm}$"
+        },
+        {
+          "numero": 3,
+          "action": "Changer de référentiel : position de l'image intermédiaire par rapport à l'oculaire",
+          "justification": "$\\overline{O_2A_1} = \\overline{O_1A_1} - \\overline{O_1O_2}$",
+          "resultat_markdown": "$\\overline{O_2A_1} = 17{,}17 - 21{,}5 = -4{,}33\\ \\text{cm}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer l'image finale à travers l'oculaire",
+          "justification": "$A_1$ devient l'objet (réel) de l'oculaire ; on applique sa relation de conjugaison.",
+          "resultat_markdown": "$\\dfrac{1}{\\overline{O_2A'}} = \\dfrac{1}{5} + \\dfrac{1}{-4{,}33} \\approx -0{,}0309\\ \\text{cm}^{-1} \\Rightarrow \\overline{O_2A'} \\approx -32{,}5\\ \\text{cm}$"
+        },
+        {
+          "numero": 5,
+          "action": "Ramener la position finale par rapport à l'objectif",
+          "justification": "$\\overline{O_1A'} = \\overline{O_1O_2} + \\overline{O_2A'}$",
+          "resultat_markdown": "$\\overline{O_1A'} = 21{,}5 + (-32{,}5) = -11\\ \\text{cm}$"
+        }
+      ],
+      "conclusion_markdown": "L'image définitive se forme à 11 cm en avant de l'objectif (virtuelle) : le calcul en cascade, mené en trois étapes bien distinctes avec un changement de référentiel explicite entre elles, donne le résultat sans jamais avoir besoin de manipuler simultanément plus d'une lentille à la fois."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement $\\overline{O_1A_1}$ (position par rapport à l'objectif) comme position d'objet dans la relation de conjugaison de l'oculaire.",
+          "pourquoi_faux": "La relation de conjugaison d'une lentille exige que toutes les positions soient mesurées par rapport au centre optique de CETTE lentille. Utiliser une position mesurée par rapport à l'objectif dans la formule de l'oculaire mélange deux référentiels différents et fausse tout le calcul qui suit.",
+          "correction_markdown": "Avant d'appliquer la conjugaison à la deuxième lentille, convertis systématiquement la position de l'objet intermédiaire dans le référentiel de cette lentille, par une simple soustraction de la distance entre les deux centres optiques."
+        },
+        {
+          "erreur_markdown": "Oublier de reconvertir le résultat final dans le référentiel demandé par l'énoncé, si celui-ci diffère du référentiel du dernier calcul.",
+          "pourquoi_faux": "Le dernier calcul de conjugaison donne une position par rapport à la DERNIÈRE lentille utilisée. Si la question demande la position par rapport à une AUTRE lentille (comme l'objectif dans l'exemple), il faut impérativement ajouter ou soustraire la distance entre les deux lentilles.",
+          "correction_markdown": "Relis toujours l'énoncé pour repérer par rapport à QUELLE lentille la position finale doit être exprimée, et vérifie que ton dernier résultat est bien dans ce référentiel avant de conclure."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un système de deux lentilles a pour focales $f_1 = 2\\ \\text{cm}$ et $f_2 = 4\\ \\text{cm}$, séparées de $\\overline{O_1O_2} = 10\\ \\text{cm}$. Un objet réel est placé à $\\overline{O_1A} = -3\\ \\text{cm}$ de la première lentille. Calculer la position de l'image intermédiaire $\\overline{O_1A_1}$.",
+          "solution_markdown": "$$\\dfrac{1}{\\overline{O_1A_1}} = \\dfrac{1}{f_1} + \\dfrac{1}{\\overline{O_1A}} = \\dfrac{1}{2} + \\dfrac{1}{-3} = \\dfrac{3-2}{6} = \\dfrac{1}{6}$$\n\n$$\\overline{O_1A_1} = 6\\ \\text{cm}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec les données de l'exercice précédent, déterminer la position de l'image finale $\\overline{O_2A'}$ par rapport à la deuxième lentille.",
+          "solution_markdown": "On change de référentiel : $\\overline{O_2A_1} = \\overline{O_1A_1} - \\overline{O_1O_2} = 6 - 10 = -4\\ \\text{cm}$.\n\nOn applique la conjugaison à la deuxième lentille :\n\n$$\\dfrac{1}{\\overline{O_2A'}} = \\dfrac{1}{f_2} + \\dfrac{1}{\\overline{O_2A_1}} = \\dfrac{1}{4} + \\dfrac{1}{-4} = 0$$\n\nCe cas limite donne $\\overline{O_2A'} \\to \\infty$ : l'image finale se forme à l'infini (l'image intermédiaire tombe exactement au foyer objet de la deuxième lentille)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que si l'image intermédiaire $A_1$ tombe EXACTEMENT sur le centre optique $O_2$ de la deuxième lentille ($\\overline{O_2A_1} = 0$), l'image finale se confond avec l'image intermédiaire, quel que soit $f_2$. Interpréter.",
+          "solution_markdown": "Si $\\overline{O_2A_1} = 0$, la relation de conjugaison de la deuxième lentille s'écrit :\n\n$$\\dfrac{1}{\\overline{O_2A'}} = \\dfrac{1}{f_2} + \\dfrac{1}{0}$$\n\nLe terme $\\dfrac{1}{0}$ n'est pas défini mathématiquement : ce cas correspond en réalité à une situation dégénérée où le point objet est confondu avec le centre optique de la lentille. Physiquement, tout rayon passant par le centre optique d'une lentille mince n'est jamais dévié : un objet ponctuel placé exactement au centre optique de $L_2$ n'est donc affecté par aucune réfraction de cette lentille, et son image par $L_2$ est en fait CE POINT LUI-MÊME, quelle que soit la valeur de $f_2$.\n\nCe cas limite illustre une propriété générale utile en cascade : plus l'image intermédiaire est proche du centre optique de la lentille suivante, moins cette lentille modifie sa position, l'effet de la seconde lentille devenant de plus en plus faible à mesure que l'objet s'en approche."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un système de plusieurs lentilles se traite toujours lentille après lentille, jamais toutes en même temps.",
+        "Chaque relation de conjugaison exige que les positions soient mesurées par rapport au centre optique de LA lentille concernée : un changement de lentille impose un changement de référentiel.",
+        "Le changement de référentiel se fait par une simple addition ou soustraction de la distance entre les deux centres optiques concernés.",
+        "Vérifie toujours, à la fin du calcul, dans quel référentiel la question demande le résultat, et reconvertis si nécessaire.",
+        "Cette méthode en cascade s'applique à tous les instruments à plusieurs lentilles (microscope, lunette astronomique, télescope à lentilles) et revient très régulièrement dans les exercices d'instruments d'optique du Probatoire et du Baccalauréat."
+      ]
+    }
+  ]
+}

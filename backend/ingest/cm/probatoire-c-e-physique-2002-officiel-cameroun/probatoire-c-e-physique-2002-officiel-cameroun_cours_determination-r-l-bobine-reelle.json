@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-determination-r-l-bobine-reelle-premiere",
+  "meta": {
+    "titre": "Détermination de R et L d'une bobine réelle à partir de deux mesures",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": null,
+    "sous_theme": "Électromagnétisme - bobine et auto-induction",
+    "duree_estimee_min": 28,
+    "tags": [
+      "bobine réelle",
+      "inductance",
+      "résistance d'une bobine",
+      "loi de comportement d'une bobine"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2002-officiel-cameroun",
+    "epreuve_titre": "Physique - Probatoire Scientifique (Série C-E) - Session de 2002 - Cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2002-officiel-cameroun-ex3-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une bobine réelle n'est jamais un composant parfait : le fil qui la constitue a toujours une résistance, en plus de sa capacité à s'opposer aux variations de courant (l'inductance). Ce cours t'apprend une méthode puissante et systématique pour déterminer ces deux caractéristiques inconnues à partir de simples mesures de tension, sans jamais avoir besoin de démonter la bobine."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir dériver une fonction affine du temps",
+        "Résoudre un système de deux équations à deux inconnues",
+        "Connaître la loi d'Ohm de base $U=RI$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Loi de comportement d'une bobine réelle",
+      "contenu_markdown": "Une bobine réelle, d'inductance $L$ et de résistance $R$, parcourue par un courant $i(t)$, présente à ses bornes une tension :",
+      "formule_principale": "u(t) = R\\,i(t) + L\\,\\dfrac{di}{dt}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine est parcourue par $i(t)=30t-0{,}9$ (SI) sur un intervalle $[t_1,t_2]$. Aux instants $t_1=2\\times10^{-2}\\ \\text{s}$ et $t_2=4\\times10^{-2}\\ \\text{s}$, la tension $u_{AB}$ vaut respectivement $-1{,}125\\ \\text{V}$ et $1{,}875\\ \\text{V}$. Détermine $R$ et $L$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la dérivée di/dt",
+          "justification": "i(t) est une fonction affine du temps : sa dérivée est constante, égale au coefficient directeur.",
+          "resultat_markdown": "$\\dfrac{di}{dt}=30\\ \\text{A/s}$ (constante, valable à t1 comme à t2)"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer i(t1) et i(t2)",
+          "justification": "On substitue chaque instant dans la loi horaire du courant.",
+          "resultat_markdown": "$i(t_1)=30\\times0{,}02-0{,}9=-0{,}3\\ \\text{A}$ ; $i(t_2)=30\\times0{,}04-0{,}9=0{,}3\\ \\text{A}$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la loi de la bobine aux deux instants",
+          "justification": "On applique u=Ri+Ldi/dt à chaque instant, avec les valeurs de i et la tension donnée.",
+          "resultat_markdown": "$-1{,}125=-0{,}3R+30L$ (1) et $1{,}875=0{,}3R+30L$ (2)"
+        },
+        {
+          "numero": 4,
+          "action": "Résoudre le système : additionner puis soustraire les deux équations",
+          "justification": "L'addition élimine R (les termes en R sont opposés), la soustraction élimine L (les termes en L sont identiques).",
+          "resultat_markdown": "Somme : $0{,}75=60L \\Rightarrow L=0{,}0125\\ \\text{H}$. Différence : $3=0{,}6R \\Rightarrow R=5\\ \\Omega$"
+        }
+      ],
+      "conclusion_markdown": "La bobine a une résistance $R=5\\ \\Omega$ et une inductance $L=12{,}5\\ \\text{mH}$, valeurs vérifiées en les réinjectant dans l'une des deux équations de départ."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recalculer di/dt séparément à chaque instant, en pensant qu'elle varie comme i(t).",
+          "pourquoi_faux": "Pour une fonction AFFINE du temps (i(t)=at+b), la dérivée est une CONSTANTE (ici 30 A/s), la même à tout instant - ce n'est que i(t) elle-même qui varie.",
+          "correction_markdown": "Calcule la dérivée une seule fois pour toute fonction affine du temps : elle ne dépend pas de l'instant considéré."
+        },
+        {
+          "erreur_markdown": "Essayer de résoudre le système par substitution complexe plutôt que par addition/soustraction.",
+          "pourquoi_faux": "Ce n'est pas une erreur de fond, mais une perte de temps : la structure du système (coefficients de L identiques, coefficients de i opposés) est spécialement adaptée à l'addition/soustraction directe.",
+          "correction_markdown": "Repère toujours si additionner ou soustraire deux équations élimine directement une inconnue avant de te lancer dans une substitution plus longue."
+        },
+        {
+          "erreur_markdown": "Ne pas vérifier le résultat trouvé en le réinjectant dans les équations de départ.",
+          "pourquoi_faux": "Une erreur de signe lors de la résolution du système passe facilement inaperçue sans vérification.",
+          "correction_markdown": "Réinjecte systématiquement R et L trouvés dans l'une des deux équations initiales pour t'assurer qu'elle est bien vérifiée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une bobine de résistance $R=10\\ \\Omega$ et d'inductance $L=0{,}1\\ \\text{H}$ est parcourue par un courant dont la dérivée vaut $di/dt=5\\ \\text{A/s}$ à l'instant où $i=2\\ \\text{A}$. Calcule la tension à ses bornes à cet instant.",
+          "solution_markdown": "$u=Ri+L\\dfrac{di}{dt}=10\\times2+0{,}1\\times5=20+0{,}5=20{,}5\\ \\text{V}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bobine est parcourue par $i(t)=10t+2$ (SI). On mesure $u=25\\ \\text{V}$ à $t=0{,}5\\ \\text{s}$ et $u=35\\ \\text{V}$ à $t=1{,}5\\ \\text{s}$. Détermine $R$ et $L$.",
+          "solution_markdown": "$di/dt=10\\ \\text{A/s}$ (constante). $i(0{,}5)=10\\times0{,}5+2=7$ ; $i(1{,}5)=10\\times1{,}5+2=17$. Système : $25=7R+10L$ (1), $35=17R+10L$ (2). Soustraction (2)-(1) : $10=10R \\Rightarrow R=1\\ \\Omega$. Report dans (1) : $25=7+10L \\Rightarrow L=1{,}8\\ \\text{H}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une bobine de résistance $R=4\\ \\Omega$ et d'inductance $L$ inconnue est parcourue par $i(t)=20t-1$ (SI). On mesure $u=1\\ \\text{V}$ à un instant $t_0$ où $i(t_0)=0{,}5\\ \\text{A}$. Calcule $L$.",
+          "solution_markdown": "$di/dt=20\\ \\text{A/s}$. $u=Ri(t_0)+L\\dfrac{di}{dt} \\Rightarrow 1 = 4\\times0{,}5+20L = 2+20L \\Rightarrow 20L=-1 \\Rightarrow L=-0{,}05\\ \\text{H}$. Une inductance ne peut pas être négative : ce résultat signale une incohérence dans les données de l'énoncé (à signaler, jamais à masquer), par exemple un signe de u ou de i mal transmis."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi $u=Ri+L\\,di/dt$ décrit toute bobine réelle : R et L se déterminent à partir de deux mesures de u à deux instants différents.",
+        "Pour un courant affine du temps, $di/dt$ est une CONSTANTE : ne la recalcule qu'une seule fois.",
+        "Le système à deux équations se résout le plus souvent par addition/soustraction directe, sans passer par une substitution complexe.",
+        "Vérifie toujours tes valeurs de R et L en les réinjectant dans une des équations de départ - et vérifie aussi qu'elles sont physiquement acceptables (R et L positives).",
+        "Cette méthode de détermination de R et L à partir de mesures est directement transférable à tout dipôle inconnu obéissant à une loi affine à deux paramètres."
+      ]
+    }
+  ]
+}

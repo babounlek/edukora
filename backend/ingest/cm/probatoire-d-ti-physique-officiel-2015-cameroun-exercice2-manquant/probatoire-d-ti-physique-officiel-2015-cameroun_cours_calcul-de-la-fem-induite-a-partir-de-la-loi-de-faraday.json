@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-fem-induite-loi-faraday-1ere",
+  "meta": {
+    "titre": "Calcul de la f.é.m. induite maximale à partir de la loi de Faraday",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 20,
+    "tags": [
+      "loi de Faraday",
+      "f.é.m. induite",
+      "flux magnétique",
+      "alternateur"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "PROB-D-TI-PHYSIQUE-2015-CM",
+    "epreuve_titre": "Probatoire D, TI - Physique - 2015 - Cameroun (officiel)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-probatoire-d-ti-physique-officiel-2015-cameroun-ex2-q2.1b2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un alternateur de centrale électrique et une simple bobine que l'on fait tourner devant un aimant obéissent à la même règle : c'est la VARIATION du flux magnétique, pas le flux lui-même, qui crée une tension. Cette idée explique pourquoi un aimant immobile face à une bobine ne produit rien, alors que le même aimant en mouvement y fait naître un courant. La loi de Faraday donne la relation exacte entre cette variation et la tension produite, celle que tu dois savoir manier pour tout exercice sur l'alternateur ou l'induction."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de flux magnétique à travers un circuit",
+        "Dérivée d'une fonction sinusoïdale du temps ($\\sin$, $\\cos$)",
+        "Loi de Lenz (sens du phénomène d'induction)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Faraday",
+      "contenu_markdown": "La force électromotrice induite $e(t)$ qui apparaît aux bornes d'un circuit est l'opposée de la dérivée par rapport au temps du flux magnétique $\\varphi(t)$ qui le traverse. Le signe moins traduit la loi de Lenz : la f.é.m. induite s'oppose toujours à la cause qui lui donne naissance. Pour obtenir l'AMPLITUDE (la valeur maximale) de $e(t)$ à partir d'un flux sinusoïdal, il suffit de dériver l'expression du flux, puis de repérer le coefficient qui multiplie le terme oscillant restant.",
+      "formule_principale": "e(t) = -\\dfrac{d\\varphi}{dt}",
+      "variantes": [
+        {
+          "nom": "Cas d'un flux sinusoïdal",
+          "quand_utiliser": "Dès que $\\varphi(t)$ s'écrit sous la forme $\\varphi_0\\sin(\\omega t)$ ou $\\varphi_0\\cos(\\omega t)$, cas le plus fréquent en exercice (rotation à vitesse angulaire constante).",
+          "contenu_markdown": "Si $\\varphi(t) = \\varphi_0 \\sin(\\omega t)$, alors $\\dfrac{d\\varphi}{dt} = \\omega\\varphi_0\\cos(\\omega t)$, donc $e(t) = -\\omega\\varphi_0\\cos(\\omega t)$. Dans les deux cas ($\\sin$ ou $\\cos$ au départ), l'amplitude de $e(t)$ vaut toujours $E = \\omega\\varphi_0$ : le produit de la pulsation par l'amplitude du flux, sans qu'il soit nécessaire de refaire la dérivée à chaque exercice une fois cette règle comprise."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le flux instantané $\\varphi(t)$ d'un champ magnétique à travers un circuit admet pour expression $\\varphi(t) = 4\\sin(31{,}4\\,t)$ en webers. Calculer $E$, la valeur de la f.é.m. induite maximale qui va naître (on donne $|\\sin(At)|' = A\\cos(At)$).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'amplitude du flux et la pulsation",
+          "justification": "L'expression $\\varphi(t) = 4\\sin(31{,}4\\,t)$ est de la forme $\\varphi_0\\sin(At)$.",
+          "resultat_markdown": "$\\varphi_0 = 4$ Wb, $A = 31{,}4$ rad/s."
+        },
+        {
+          "numero": 2,
+          "action": "Dériver le flux par rapport au temps",
+          "justification": "On applique la formule de dérivation rappelée par l'énoncé, $|\\sin(At)|' = A\\cos(At)$.",
+          "resultat_markdown": "$\\dfrac{d\\varphi}{dt} = 4 \\times 31{,}4\\,\\cos(31{,}4\\,t) = 125{,}6\\,\\cos(31{,}4\\,t)$ Wb/s."
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer la loi de Faraday",
+          "justification": "La f.é.m. induite est l'opposée de la dérivée du flux.",
+          "resultat_markdown": "$e(t) = -\\dfrac{d\\varphi}{dt} = -125{,}6\\,\\cos(31{,}4\\,t)$ V."
+        },
+        {
+          "numero": 4,
+          "action": "En déduire l'amplitude maximale",
+          "justification": "Le cosinus a pour valeur absolue maximale 1, atteinte périodiquement.",
+          "resultat_markdown": "$E = 125{,}6$ V."
+        }
+      ],
+      "conclusion_markdown": "La f.é.m. induite maximale vaut $125{,}6$ V, obtenue directement comme le produit de la pulsation ($31{,}4$ rad/s) par l'amplitude du flux ($4$ Wb) : c'est la valeur qui alimenterait effectivement un circuit extérieur relié à ce dispositif."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $E = \\varphi_0$ ou $E = A$ séparément, en oubliant que l'amplitude de $e(t)$ est le PRODUIT des deux.",
+          "pourquoi_faux": "La dérivation multiplie l'amplitude du flux par la pulsation ($A \\times \\varphi_0$) : ni l'une ni l'autre seule ne donne l'amplitude de la f.é.m.",
+          "correction_markdown": "Retiens la formule $E = \\omega\\varphi_0$ comme un produit à part entière, jamais comme un simple recopiage d'une des deux données."
+        },
+        {
+          "erreur_markdown": "Oublier le signe moins de la loi de Faraday et écrire directement $e(t) = \\dfrac{d\\varphi}{dt}$.",
+          "pourquoi_faux": "Ce signe n'change rien à la valeur maximale en valeur absolue, mais il inverse la phase de $e(t)$ : une question qui demande le signe de $e(t)$ à un instant donné, ou l'instant où $e(t)$ s'annule avec une pente précise, devient fausse sans lui.",
+          "correction_markdown": "Écris toujours $e(t) = -\\dfrac{d\\varphi}{dt}$ en entier avant de dériver, même si la question ne porte que sur une amplitude."
+        },
+        {
+          "erreur_markdown": "Confondre la pulsation $\\omega$ (en rad/s, ce qui multiplie $t$ dans $\\sin(\\omega t)$) avec la fréquence $f$ (en Hz).",
+          "pourquoi_faux": "Ce sont deux grandeurs liées par $\\omega = 2\\pi f$ mais numériquement différentes : utiliser $f$ à la place de $\\omega$ dans la formule $E=\\omega\\varphi_0$ donne un résultat environ $2\\pi$ fois trop petit.",
+          "correction_markdown": "Vérifie toujours que le nombre multiplié par $t$ dans l'expression du flux est bien appelé pulsation ($\\omega$, en rad/s) avant de l'utiliser directement dans $E=\\omega\\varphi_0$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le flux à travers un circuit s'écrit $\\varphi(t) = 2\\sin(100\\,t)$ Wb. Calculer la f.é.m. induite maximale $E$.",
+          "solution_markdown": "L'expression est de la forme $\\varphi_0\\sin(At)$ avec $\\varphi_0 = 2$ Wb et $A = 100$ rad/s.\n\n$$\\frac{d\\varphi}{dt} = 2 \\times 100\\,\\cos(100\\,t) = 200\\,\\cos(100\\,t)$$\n\n$$e(t) = -\\frac{d\\varphi}{dt} = -200\\,\\cos(100\\,t) \\ \\text{V}$$\n\nL'amplitude maximale de la f.é.m. induite vaut donc $E = 200$ V."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le flux à travers un circuit s'écrit cette fois $\\varphi(t) = 0{,}5\\cos(50\\,t)$ Wb (une fonction cosinus, pas sinus). Sachant que $|\\cos(At)|' = -A\\sin(At)$, calculer $e(t)$ puis la f.é.m. induite maximale $E$.",
+          "solution_markdown": "**Dérivation.** Avec $\\varphi_0 = 0{,}5$ Wb et $A = 50$ rad/s :\n\n$$\\frac{d\\varphi}{dt} = 0{,}5 \\times (-50)\\,\\sin(50\\,t) = -25\\,\\sin(50\\,t)$$\n\n**Loi de Faraday.**\n\n$$e(t) = -\\frac{d\\varphi}{dt} = -(-25\\,\\sin(50\\,t)) = 25\\,\\sin(50\\,t) \\ \\text{V}$$\n\nLe sinus a pour valeur absolue maximale 1, donc la f.é.m. induite maximale vaut $E = 25$ V - exactement le produit $\\omega\\varphi_0 = 50\\times 0{,}5$, comme pour un flux en sinus : le résultat de la règle générale ne dépend pas du choix entre sinus et cosinus au départ."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une bobine plate de $N = 200$ spires, de surface $S = 0{,}02$ m$^2$ chacune, tourne à vitesse angulaire constante $\\omega = 20\\pi$ rad/s dans un champ magnétique uniforme de norme $B = 0{,}05$ T. Le flux à travers la bobine s'écrit $\\varphi(t) = N B S \\cos(\\omega t)$. Calculer la f.é.m. induite maximale produite par cette bobine.",
+          "solution_markdown": "**Étape 1 - calculer l'amplitude du flux.** L'amplitude du flux à travers les $N$ spires est :\n\n$$\\varphi_0 = N B S = 200 \\times 0{,}05 \\times 0{,}02 = 0{,}2 \\ \\text{Wb}$$\n\n**Étape 2 - appliquer la règle générale.** D'après la loi de Faraday appliquée à un flux sinusoïdal, l'amplitude de la f.é.m. induite vaut $E = \\omega \\varphi_0$ :\n\n$$E = 20\\pi \\times 0{,}2 = 4\\pi \\approx 12{,}57 \\ \\text{V}$$\n\nCette bobine, une fois mise en rotation, se comporte donc comme un petit alternateur délivrant une f.é.m. alternative d'amplitude environ $12{,}57$ V - le principe exact utilisé, à plus grande échelle, dans les centrales électriques."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La f.é.m. induite est toujours l'opposée de la dérivée du flux : $e(t) = -\\dfrac{d\\varphi}{dt}$, jamais la dérivée seule.",
+        "Pour un flux sinusoïdal $\\varphi_0\\sin(\\omega t)$ ou $\\varphi_0\\cos(\\omega t)$, l'amplitude de la f.é.m. vaut toujours $E=\\omega\\varphi_0$ : retiens ce produit, il t'évite de redériver à chaque exercice.",
+        "Ne confonds jamais la pulsation $\\omega$ (rad/s) avec la fréquence $f$ (Hz) : c'est $\\omega$ qui entre directement dans la formule.",
+        "Le signe moins de la loi de Faraday ne change pas l'amplitude en valeur absolue, mais il compte dès qu'on te demande une valeur instantanée ou un instant précis.",
+        "Au Probatoire, ce calcul accompagne presque toujours une question sur l'alternateur ou la loi de Lenz : les trois notions forment un même bloc de cours à maîtriser ensemble."
+      ]
+    }
+  ]
+}

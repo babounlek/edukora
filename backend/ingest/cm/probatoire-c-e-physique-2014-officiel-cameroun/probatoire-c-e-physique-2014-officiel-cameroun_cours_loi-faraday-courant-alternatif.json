@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-loi-faraday-courant-alternatif-1ere",
+  "meta": {
+    "titre": "Loi de Faraday et apparition d'un courant alternatif",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Induction électromagnétique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "loi de Faraday",
+      "force électromotrice induite",
+      "courant alternatif"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2014-officiel-cameroun.pdf",
+    "epreuve_titre": "Probatoire Physique, Série C-E, Session 2014 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-c-e-physique-2014-officiel-cameroun.pdf-ex3-q2.2c-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le courant qui alimente nos maisons change de sens 50 ou 60 fois par seconde : c'est un courant alternatif, produit dans les centrales électriques par des bobines en rotation dans un champ magnétique. Comprendre pourquoi cette rotation produit précisément un courant qui alterne de sens, et pas un courant constant, est la clé de fonctionnement de tout alternateur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Loi horaire d'une bobine en rotation uniforme, $\\theta(t) = \\omega t + \\theta_0$",
+        "Expression du flux magnétique à travers une bobine tournante, $\\Phi(t) = NBS\\cos\\theta(t)$",
+        "Notion de dérivée d'une fonction par rapport au temps"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La loi de Faraday et le signe du courant induit",
+      "contenu_markdown": "**Loi de Faraday.** Toute variation du flux magnétique $\\Phi(t)$ à travers un circuit y fait apparaître une force électromotrice (f.é.m.) induite $e(t)$, donnée par :\n\n$$e(t) = -\\dfrac{d\\Phi}{dt}$$\n\nLe signe moins traduit la loi de Lenz : la f.é.m. induite s'oppose à la variation de flux qui la crée.\n\n**Cas d'un flux sinusoïdal (bobine tournante).** Si $\\Phi(t) = \\Phi_0\\cos(\\omega t)$ (avec $\\Phi_0 = NBS$ le flux maximal), on dérive :\n\n$$e(t) = -\\dfrac{d}{dt}\\big[\\Phi_0\\cos(\\omega t)\\big] = \\Phi_0\\,\\omega\\sin(\\omega t)$$\n\n**De la f.é.m. au courant : pourquoi il est alternatif.** Dans un circuit fermé de résistance $R$, cette f.é.m. produit un courant $i(t) = \\dfrac{e(t)}{R} = \\dfrac{\\Phi_0\\omega}{R}\\sin(\\omega t)$. La fonction $\\sin(\\omega t)$ change de signe deux fois par période (elle est positive sur une demi-période, négative sur l'autre) : le courant $i(t)$ change donc PÉRIODIQUEMENT de sens dans le circuit, ce qui est précisément la définition d'un courant alternatif.\n\n**Valeur maximale.** L'intensité maximale $I_m$ (atteinte quand $\\sin(\\omega t) = \\pm 1$) vaut :\n\n$$I_m = \\dfrac{\\Phi_0\\,\\omega}{R} = \\dfrac{NBS\\,\\omega}{R}$$",
+      "formule_principale": "e(t) = -\\dfrac{d\\Phi}{dt} \\quad;\\quad I_m = \\dfrac{NBS\\omega}{R}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une bobine de $N=2000$ spires de rayon $r=15\\ \\text{cm}$ tourne à $\\omega = 20\\pi\\ \\text{rad/s}$ dans un champ $B=0{,}1\\ \\text{T}$. Aux bornes de la bobine, on branche un circuit de résistance totale $R = 2000\\ \\Omega$. Montrer qu'un courant alternatif apparaît et calculer sa valeur maximale $I_m$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire le flux en fonction du temps",
+          "justification": "$\\Phi(t) = NBS\\cos(\\omega t)$ avec $S = \\pi r^2$ et $\\theta(t)=\\omega t$ (angle nul à $t=0$).",
+          "resultat_markdown": "$\\Phi(t) = NB\\pi r^2\\cos(\\omega t)$"
+        },
+        {
+          "numero": 2,
+          "action": "Dériver le flux pour obtenir la f.é.m. induite",
+          "justification": "Loi de Faraday, $e(t) = -d\\Phi/dt$.",
+          "resultat_markdown": "$e(t) = NB\\pi r^2\\,\\omega\\sin(\\omega t)$"
+        },
+        {
+          "numero": 3,
+          "action": "En déduire le courant et constater son caractère alternatif",
+          "justification": "$i(t) = e(t)/R$ ; la fonction $\\sin(\\omega t)$ change de signe périodiquement.",
+          "resultat_markdown": "$i(t) = \\dfrac{NB\\pi r^2\\omega}{R}\\sin(\\omega t)$ : alternativement positif et négatif, donc courant alternatif."
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la surface d'une spire",
+          "justification": "$S = \\pi r^2$ avec $r=0{,}15\\ \\text{m}$.",
+          "resultat_markdown": "$S = \\pi\\times 0{,}15^2 \\approx 0{,}0707\\ \\text{m}^2$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer l'intensité maximale $I_m$",
+          "justification": "$I_m = \\dfrac{NBS\\omega}{R}$",
+          "resultat_markdown": "$I_m = \\dfrac{2000\\times 0{,}1\\times 0{,}0707\\times 20\\pi}{2000} \\approx 0{,}444\\ \\text{A}$"
+        }
+      ],
+      "conclusion_markdown": "Le courant obtenu est bien alternatif, de pulsation identique à la vitesse de rotation de la bobine, et son amplitude maximale vaut environ 444 mA : c'est le principe même de fonctionnement d'un alternateur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer que le courant est alternatif sans jamais calculer explicitement $e(t)$ ou $i(t)$, en se contentant d'une intuition.",
+          "pourquoi_faux": "Une affirmation qualitative non justifiée par le calcul de la f.é.m. (et sa dépendance en $\\sin(\\omega t)$, fonction qui change de signe) ne démontre rien et ne rapporte pas les points de démonstration attendus à une question « Montrer que... ».",
+          "correction_markdown": "Dérive systématiquement le flux pour obtenir $e(t)$, puis fais explicitement remarquer que $\\sin(\\omega t)$ change de signe périodiquement : c'est ce changement de signe, démontré et non supposé, qui prouve le caractère alternatif du courant."
+        },
+        {
+          "erreur_markdown": "Oublier le signe moins de la loi de Faraday lors de la dérivation, ou le rajouter deux fois.",
+          "pourquoi_faux": "Le signe moins n'est pas un détail : il fixe la phase de $e(t)$ par rapport à $\\Phi(t)$ (ici, un flux en cosinus donne une f.é.m. en sinus, pas en cosinus négatif ni en sinus négatif). Une erreur de signe décale la phase du résultat final.",
+          "correction_markdown": "Dérive d'abord $\\Phi(t)$ terme à terme sans te soucier du signe global, puis applique le signe moins de la loi de Faraday une seule fois, à la toute fin de la dérivation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Le flux à travers une bobine de $N$ spires vaut $\\Phi(t) = \\Phi_0\\cos(\\omega t)$. Donner l'expression de la f.é.m. induite $e(t)$.",
+          "solution_markdown": "$e(t) = -\\dfrac{d\\Phi}{dt} = \\Phi_0\\,\\omega\\sin(\\omega t)$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une bobine de $N=500$ spires, de surface $S = 0{,}02\\ \\text{m}^2$, tourne à $\\omega = 100\\pi\\ \\text{rad/s}$ dans un champ $B = 0{,}05\\ \\text{T}$. Calculer l'amplitude maximale $E_m$ de la f.é.m. induite.",
+          "solution_markdown": "$E_m = NBS\\omega = 500\\times 0{,}05\\times 0{,}02\\times 100\\pi$.\n\n$$E_m = 0{,}5\\times 100\\pi = 50\\pi \\approx 157\\ \\text{V}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que la fréquence du courant alternatif produit par une bobine tournante est directement égale à la fréquence de rotation mécanique de la bobine (nombre de tours par seconde), et expliquer pourquoi c'est cette propriété qui impose la vitesse de rotation des alternateurs des centrales électriques (50 Hz en Europe et en Afrique francophone).",
+          "solution_markdown": "Le courant induit s'écrit $i(t) = I_m\\sin(\\omega t)$, de pulsation $\\omega$ identique à la vitesse angulaire de rotation mécanique de la bobine. La fréquence électrique du courant est $f_{elec} = \\dfrac{\\omega}{2\\pi}$.\n\nOr la fréquence de rotation mécanique de la bobine (nombre de tours complets par seconde) est, par définition, $f_{meca} = \\dfrac{1}{T} = \\dfrac{\\omega}{2\\pi}$ également (voir le cours sur la loi horaire de rotation).\n\nOn a donc $f_{elec} = f_{meca}$ : la fréquence du courant électrique produit est exactement égale à la fréquence de rotation mécanique de la bobine, sans aucun facteur multiplicatif dans le cas d'une seule paire de pôles.\n\nC'est cette égalité qui impose aux centrales électriques de faire tourner leurs alternateurs à une vitesse mécanique précise (par exemple 3000 tours par minute pour un alternateur à une paire de pôles produisant du 50 Hz, puisque $3000/60 = 50$ tours par seconde) : la fréquence du réseau électrique dépend directement, et uniquement, de cette vitesse de rotation mécanique."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La loi de Faraday, $e(t) = -d\\Phi/dt$, donne la valeur (et le signe instantané) de la f.é.m. induite à partir de la variation du flux magnétique.",
+        "Pour un flux sinusoïdal $\\Phi(t) = \\Phi_0\\cos(\\omega t)$, la f.é.m. induite est également sinusoïdale, $e(t) = \\Phi_0\\omega\\sin(\\omega t)$, de même pulsation $\\omega$.",
+        "C'est le changement PÉRIODIQUE de signe de $\\sin(\\omega t)$ qui prouve, par le calcul et non par affirmation, l'apparition d'un courant alternatif dans le circuit.",
+        "L'intensité maximale du courant se déduit directement de l'amplitude de la f.é.m. par la loi d'Ohm, $I_m = E_m/R = NBS\\omega/R$.",
+        "Ce mécanisme (rotation uniforme → flux en cosinus → f.é.m. en sinus → courant alternatif) est le principe même de tout alternateur, des plus petites dynamos aux centrales électriques, et revient systématiquement en fin d'exercice d'induction au Probatoire."
+      ]
+    }
+  ]
+}

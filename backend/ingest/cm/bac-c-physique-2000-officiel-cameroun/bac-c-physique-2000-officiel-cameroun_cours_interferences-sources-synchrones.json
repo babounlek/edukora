@@ -1,0 +1,127 @@
+{
+  "cours_id": "cours-interferences-sources-synchrones-terminale-c",
+  "meta": {
+    "titre": "Interférences de deux sources synchrones",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Ondes mécaniques",
+    "duree_estimee_min": 26,
+    "tags": [
+      "interférences",
+      "sources synchrones",
+      "différence de marche",
+      "vibration maximale"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2000-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique, Physique, Série C, Session de 2000 (Cameroun)",
+    "exercice_numero": "2",
+    "rappel_id": "rdm-bac-c-physique-2000-officiel-cameroun-ex2-q2.a-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Deux haut-parleurs identiques, alimentés par le même signal, peuvent produire à certains endroits un son plus fort qu'un seul haut-parleur, et à d'autres... un silence quasi total. Ce phénomène d'interférences, spectaculaire et contre-intuitif, obéit pourtant à une règle géométrique d'une grande simplicité, que ce cours te propose de maîtriser."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Notion de longueur d'onde et de déphasage entre deux points d'une onde",
+        "Vocabulaire : sources synchrones, différence de marche"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Condition d'interférence constructive",
+      "contenu_markdown": "Deux sources $S_1$ et $S_2$ sont dites synchrones si elles vibrent avec la même fréquence et un déphasage constant (souvent nul). En un point $M$, les deux ondes issues de $S_1$ et $S_2$ parcourent des distances différentes $S_1M$ et $S_2M$ : leur différence, appelée différence de marche $\\delta$, détermine si les deux vibrations arrivent en phase (interférence constructive, amplitude maximale) ou en opposition de phase (interférence destructive, amplitude minimale ou nulle).",
+      "formule_principale": "\\delta = S_2M - S_1M = k\\lambda \\;(k\\in\\mathbb{Z}) \\;\\Longrightarrow\\; \\text{interférence constructive en } M",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Deux sources synchrones $S_1$, $S_2$ distantes de $a=82\\ \\text{mm}$ vibrent avec $\\lambda=23\\ \\text{mm}$. Déterminer le nombre de lignes de vibration maximale entre $S_1$ et $S_2$, et leurs positions par rapport à $S_1$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Exprimer la différence de marche pour un point M du segment S1S2",
+          "justification": "Sur le segment lui-même, les distances à S1 et S2 se déduisent simplement de la position x.",
+          "resultat_markdown": "En notant $x=S_1M$, on a $S_2M=a-x$, donc $\\delta(x)=(a-x)-x=a-2x$."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la condition de vibration maximale",
+          "justification": "Application directe de la règle du cours.",
+          "resultat_markdown": "$a-2x=k\\lambda \\;\\Longrightarrow\\; x_k=\\dfrac{a-k\\lambda}{2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Déterminer les valeurs de k physiquement possibles",
+          "justification": "x_k doit rester entre 0 et a (le point M doit rester sur le segment S1S2).",
+          "resultat_markdown": "$0\\le x_k\\le a \\;\\Longleftrightarrow\\; |k|\\le a/\\lambda = 82/23\\approx3{,}57 \\;\\Longrightarrow\\; k\\in\\{-3,...,3\\}$, soit 7 valeurs."
+        },
+        {
+          "numero": 4,
+          "action": "Calculer les 7 positions x_k",
+          "justification": "Application numérique directe de la formule pour chaque k.",
+          "resultat_markdown": "$x_{-3}=75{,}5$ ; $x_{-2}=64$ ; $x_{-1}=52{,}5$ ; $x_0=41$ ; $x_1=29{,}5$ ; $x_2=18$ ; $x_3=6{,}5$ (en mm)."
+        }
+      ],
+      "conclusion_markdown": "Les 7 lignes de vibration maximale coupent le segment $S_1S_2$ en 7 points régulièrement espacés de $\\lambda/2$, symétriques par rapport au milieu du segment (ligne centrale $k=0$)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter seulement les valeurs positives de k, en oubliant les valeurs négatives.",
+          "pourquoi_faux": "La différence de marche peut être positive ou négative selon que M est plus proche de $S_1$ ou de $S_2$ : il faut donc considérer tout l'intervalle $[-a/\\lambda\\,;a/\\lambda]$, symétrique autour de zéro.",
+          "correction_markdown": "Compte toujours les entiers k de $-\\lfloor a/\\lambda\\rfloor$ à $+\\lfloor a/\\lambda\\rfloor$ : le nombre total de lignes est donc systématiquement impair (il inclut toujours k=0)."
+        },
+        {
+          "erreur_markdown": "Utiliser $S_1M+S_2M=a$ au lieu de $S_2M-S_1M$ pour la différence de marche.",
+          "pourquoi_faux": "$S_1M+S_2M=a$ est vrai pour tout point du segment (c'est juste la longueur du segment), mais ce n'est pas la différence de marche : c'est la différence, pas la somme, des deux distances qui gouverne l'interférence.",
+          "correction_markdown": "Retiens bien que $\\delta=S_2M-S_1M$ (différence), jamais la somme des deux distances au point considéré."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux sources synchrones distantes de $a=10\\ \\text{cm}$ vibrent avec $\\lambda=4\\ \\text{cm}$. Combien de lignes de vibration maximale coupent le segment $S_1S_2$ ?",
+          "solution_markdown": "$a/\\lambda=10/4=2{,}5$, donc $k\\in\\{-2,-1,0,1,2\\}$ : 5 lignes de vibration maximale."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec les mêmes données ($a=10\\ \\text{cm}$, $\\lambda=4\\ \\text{cm}$), calculer la position de la ligne $k=1$ par rapport à $S_1$.",
+          "solution_markdown": "$x_1=\\dfrac{a-\\lambda}{2}=\\dfrac{10-4}{2}=3\\ \\text{cm}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer, à partir de la formule $x_k=(a-k\\lambda)/2$, que deux lignes de vibration maximale consécutives (k et k+1) sont toujours séparées, sur le segment $S_1S_2$, d'une distance égale à $\\lambda/2$, indépendamment de la valeur de a.",
+          "solution_markdown": "$x_k - x_{k+1} = \\dfrac{a-k\\lambda}{2} - \\dfrac{a-(k+1)\\lambda}{2} = \\dfrac{(k+1)\\lambda-k\\lambda}{2} = \\dfrac{\\lambda}{2}$, quel que soit k et quelle que soit la distance a entre les sources : l'espacement entre deux lignes consécutives ne dépend que de la longueur d'onde."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deux sources synchrones produisent une interférence constructive là où la différence de marche vaut un multiple entier de $\\lambda$.",
+        "Sur le segment reliant les deux sources, la différence de marche s'écrit simplement $\\delta(x)=a-2x$.",
+        "Le nombre de lignes de vibration maximale entre les deux sources est toujours impair : $2\\lfloor a/\\lambda\\rfloor+1$.",
+        "Ces lignes sont régulièrement espacées de $\\lambda/2$ sur le segment $S_1S_2$, symétriquement autour du milieu.",
+        "Cette méthode, vue ici sur des ondes à la surface d'un liquide, est strictement identique à celle utilisée pour les interférences lumineuses (fentes de Young) ou sonores."
+      ]
+    }
+  ]
+}

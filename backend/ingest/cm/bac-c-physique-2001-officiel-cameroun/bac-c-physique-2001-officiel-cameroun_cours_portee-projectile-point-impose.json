@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-portee-projectile-point-impose-tle-c",
+  "meta": {
+    "titre": "Détermination des conditions initiales d'un tir de projectile pour atteindre un point imposé",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Mouvement dans un champ de pesanteur uniforme",
+    "duree_estimee_min": 25,
+    "tags": [
+      "projectile",
+      "portée",
+      "trajectoire parabolique",
+      "mécanique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2001-PHYSIQUE-CM",
+    "epreuve_titre": "Baccalauréat Scientifique Série C - Physique - Session 2001 (Cameroun)",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bac-c-physique-2001-officiel-cameroun-ex1-q1.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un archer qui vise une cible, un artilleur qui règle sa portée, un basketteur qui ajuste la force de son tir : dans tous ces cas, la question n'est plus « où va atterrir le projectile ? » mais l'inverse - « quelle vitesse initiale donner pour qu'il passe exactement par tel point ? ». C'est un simple retournement de l'équation de trajectoire, mais il exige de savoir manipuler cette équation comme une équation à résoudre, pas seulement comme une formule à appliquer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître l'équation cartésienne y(x) de la trajectoire d'un projectile (voir le cours dédié)",
+        "Savoir résoudre une équation du premier degré par rapport à une inconnue apparaissant au carré",
+        "Savoir convertir une donnée géométrique (hauteur, rayon d'un objet) en une condition sur les coordonnées du repère utilisé"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Imposer un point de passage dans l'équation de trajectoire",
+      "contenu_markdown": "Lorsqu'un projectile de trajectoire connue $y(x)=x\\tan\\alpha-\\dfrac{gx^2}{2v_0^2\\cos^2\\alpha}$ doit passer par un point précis $(x_{cible},y_{cible})$, il suffit d'écrire $y(x_{cible})=y_{cible}$ et de résoudre cette égalité par rapport à l'inconnue recherchée. Comme $v_0$ n'apparaît que dans le second terme, au carré et au dénominateur, on isole ce terme puis on prend la racine carrée à la fin, jamais avant. Un point de cette méthode, souvent oublié, est la conversion préalable des données géométriques de l'énoncé (une hauteur au sol, la taille propre de l'objet étudié) dans le système de coordonnées effectivement utilisé par l'équation de trajectoire, dont l'origine n'est pas toujours le sol.",
+      "formule_principale": "v_0^2=\\dfrac{g\\,x_{cible}^2}{2\\cos^2\\alpha\\,\\big[x_{cible}\\tan\\alpha-y_{cible}\\big]}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un ballon de rayon $r=0,15$ m, tiré depuis le sol (centre du ballon pris comme origine O) avec $\\alpha=30°$, doit franchir au ras d'une barre transversale de hauteur $h=2,44$ m située à $d=25,0$ m, avec $g=10$ m/s². Déterminer $v_0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir la condition géométrique dans le repère utilisé",
+          "justification": "L'origine O est le centre du ballon, situé à la hauteur r au-dessus du sol ; passer « au ras » de la barre signifie que le sommet du ballon (à r au-dessus de son centre) atteint la hauteur h : le centre doit donc être à h-r au-dessus du sol, soit h-2r au-dessus de O.",
+          "resultat_markdown": "$y_{cible}=h-2r=2,44-0,30=2,14\\ \\text{m}$"
+        },
+        {
+          "numero": 2,
+          "action": "Imposer le point (d, y_cible) dans y(x)",
+          "justification": "Le point de passage doit vérifier l'équation de la trajectoire.",
+          "resultat_markdown": "$d\\tan\\alpha-\\dfrac{gd^2}{2v_0^2\\cos^2\\alpha}=y_{cible}$"
+        },
+        {
+          "numero": 3,
+          "action": "Isoler v0² puis prendre la racine carrée",
+          "justification": "v0 n'apparaît que dans le terme en 1/v0² : on l'isole algébriquement avant d'extraire la racine, jamais avant.",
+          "resultat_markdown": "$v_0^2=\\dfrac{gd^2}{2\\cos^2\\alpha\\,(d\\tan\\alpha-y_{cible})}$"
+        },
+        {
+          "numero": 4,
+          "action": "Application numérique",
+          "justification": "On substitue g=10, d=25,0, cos²30°=0,75, tan30°≈0,5774, y_cible=2,14.",
+          "resultat_markdown": "$d\\tan\\alpha=14,43$ ; $d\\tan\\alpha-y_{cible}=12,29$\n\n$v_0^2=\\dfrac{10\\times625}{2\\times0,75\\times12,29}\\approx339$\n\n$v_0\\approx18,4\\ \\text{m/s}$"
+        }
+      ],
+      "conclusion_markdown": "La vitesse initiale minimale nécessaire pour que le ballon franchisse la barre au ras de celle-ci vaut environ 18,4 m/s : c'est la seule vitesse qui, associée à l'angle de 30°, fait passer la trajectoire exactement par le point imposé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser directement la hauteur h de la cible sans tenir compte de la position réelle de l'origine du repère ni de la dimension propre de l'objet étudié.",
+          "pourquoi_faux": "Si l'origine est le centre d'un objet de rayon r et non le sol, une hauteur mesurée depuis le sol ne correspond pas directement à la coordonnée y du repère : il manque le décalage dû à r (et parfois 2r si un autre point de l'objet, comme son sommet, doit atteindre la cible).",
+          "correction_markdown": "Toujours convertir explicitement, dans une étape séparée et écrite, toute donnée géométrique de l'énoncé vers le système de coordonnées réellement utilisé, avant de l'imposer dans l'équation de trajectoire."
+        },
+        {
+          "erreur_markdown": "Prendre la racine carrée trop tôt, en manipulant v0 directement dans l'équation au lieu de v0².",
+          "pourquoi_faux": "L'équation de trajectoire fait intervenir 1/v0² : isoler d'abord v0 (au lieu de v0²) oblige à manipuler une racine carrée dans une fraction, ce qui multiplie les risques d'erreur algébrique.",
+          "correction_markdown": "Isoler systématiquement v0² en premier, terminer tous les calculs numériques sur cette quantité, et ne prendre la racine carrée qu'à la toute dernière étape."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un projectile est tiré depuis le sol (origine au sol) avec $\\alpha=45°$ et $g=10$ m/s². Quelle vitesse initiale $v_0$ faut-il pour qu'il passe par le point $(x,y)=(20\\ \\text{m},\\,5\\ \\text{m})$ ?",
+          "solution_markdown": "$v_0^2=\\dfrac{gx^2}{2\\cos^2\\alpha\\,(x\\tan\\alpha-y)}$ avec $\\tan45°=1$, $\\cos^245°=0,5$.\n\n$x\\tan\\alpha-y=20-5=15$\n\n$v_0^2=\\dfrac{10\\times400}{2\\times0,5\\times15}=\\dfrac{4000}{15}\\approx266,7$\n\n$v_0\\approx16,3$ m/s."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un ballon de rayon $r=0,11$ m (ballon de basket), tiré depuis le sol (centre du ballon en O) avec $\\alpha=50°$ et $g=10$ m/s², doit passer par le centre d'un panier situé à $x=6,0$ m et à une hauteur de 3,05 m au-dessus du sol. Établir la condition sur $y_{cible}$ (en tenant compte du rayon du ballon) puis calculer $v_0$.",
+          "solution_markdown": "Le CENTRE du ballon doit atteindre la hauteur du panier (le ballon rentre dedans par son centre, pas par son sommet, contrairement au cas de la barre transversale) : $y_{cible}$ mesurée depuis le centre initial O (à r au-dessus du sol) vaut donc simplement $y_{cible}=3,05-r=3,05-0,11=2,94$ m (un seul décalage de r, pas 2r, car ici c'est le même point - le centre - qui doit atteindre la cible aux deux instants).\n\n$\\tan50°\\approx1,19$, $\\cos^250°\\approx0,413$.\n\n$x\\tan\\alpha-y_{cible}=6,0\\times1,19-2,94\\approx7,14-2,94=4,20$\n\n$v_0^2=\\dfrac{10\\times36}{2\\times0,413\\times4,20}\\approx\\dfrac{360}{3,47}\\approx103,7$\n\n$v_0\\approx10,2$ m/s."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, pour un point cible fixé à la distance x et à la hauteur y toutes deux positives, il n'existe de solution réelle en v0 que si l'angle de tir α vérifie une condition minimale, et exprimer cette condition.",
+          "solution_markdown": "$v_0^2=\\dfrac{gx^2}{2\\cos^2\\alpha\\,(x\\tan\\alpha-y)}$ n'a de solution réelle (v0² positif) que si le dénominateur est strictement positif, c'est-à-dire si $x\\tan\\alpha-y>0$, soit $\\tan\\alpha>\\dfrac{y}{x}$.\n\nInterprétation géométrique : $y/x$ est la pente de la droite reliant l'origine au point cible. La condition $\\tan\\alpha>y/x$ signifie que l'angle de tir doit être STRICTEMENT SUPÉRIEUR à l'angle d'élévation direct du point cible vu depuis l'origine - ce qui est physiquement nécessaire, puisque la trajectoire est une parabole qui retombe : si l'on visait exactement dans l'axe du point cible ($\\tan\\alpha=y/x$), la gravité ferait immanquablement passer la trajectoire EN DESSOUS de ce point avant de l'atteindre horizontalement."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour atteindre un point imposé, impose ce point directement dans l'équation y(x) de la trajectoire : c'est toujours plus direct qu'un raisonnement cinématique image par image.",
+        "Isole systématiquement v0² avant de prendre la racine carrée, jamais l'inverse.",
+        "Convertis toujours les données géométriques de l'énoncé (hauteur au sol, dimension propre de l'objet) dans le repère effectivement utilisé avant de les imposer dans l'équation.",
+        "Une trajectoire ne peut atteindre un point cible que si l'angle de tir dépasse l'angle d'élévation direct de ce point (tan α > y/x) : sinon aucune vitesse, même infinie, ne convient.",
+        "Vérifie systématiquement l'ordre de grandeur du v0 trouvé par comparaison avec des vitesses réelles connues (vitesse de balle, de tir au but...) : c'est un test de cohérence rapide et efficace."
+      ]
+    }
+  ]
+}

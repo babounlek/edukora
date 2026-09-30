@@ -1,0 +1,132 @@
+{
+  "cours_id": "cours-travail-poids-frottements-1ere",
+  "meta": {
+    "titre": "Travail du poids (force conservative) et travail des frottements (force non conservative)",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C, E",
+    "sous_theme": "Énergie mécanique",
+    "duree_estimee_min": 25,
+    "tags": [
+      "travail du poids",
+      "force conservative",
+      "frottements",
+      "énergie mécanique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-c-e-physique-2014-officiel-cameroun.pdf",
+    "epreuve_titre": "Probatoire Physique, Série C-E, Session 2014 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-probatoire-c-e-physique-2014-officiel-cameroun.pdf-ex4-q4.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Descendre une pente en ligne droite ou en zigzag ne change rien à la hauteur perdue, mais change tout à l'énergie dissipée par les frottements : deux chemins qui relient les deux mêmes points ne se valent jamais du point de vue énergétique dès qu'une force non conservative, comme le frottement, entre en jeu. Comprendre cette distinction entre forces conservatives et non conservatives évite l'un des pièges les plus fréquents des exercices de mécanique."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Théorème de l'énergie cinétique",
+        "Notion d'énergie mécanique et de son niveau de référence (cours précédent)",
+        "Calcul du travail d'une force constante le long d'un déplacement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Force conservative contre force non conservative",
+      "contenu_markdown": "**Force conservative : le poids.** Le travail du poids entre deux points A et B ne dépend QUE de la dénivellation $\\Delta h$ entre ces deux points, jamais de la forme ni de la longueur du chemin parcouru pour aller de A à B :\n\n$$W_{A\\to B}(\\vec P) = mg\\,\\Delta h$$\n\noù $\\Delta h$ est la perte d'altitude entre A et B (positif si le système descend). Que le trajet soit une ligne droite, une courbe, ou un chemin en zigzag, tant que le point de départ A et le point d'arrivée B restent les mêmes, le travail du poids reste rigoureusement identique. C'est cette propriété qui définit une force comme CONSERVATIVE.\n\n**Force non conservative : le frottement.** Le travail d'une force de frottement d'intensité constante $f$, toujours opposée au déplacement, dépend au contraire directement de la longueur RÉELLE du chemin parcouru $d$ :\n\n$$W(\\vec f) = -f\\times d$$\n\nUn chemin deux fois plus long dissipe deux fois plus d'énergie par frottement, même s'il relie les deux mêmes points de départ et d'arrivée. C'est cette dépendance au chemin qui définit une force comme NON CONSERVATIVE.\n\n**Conséquence pratique.** Face à un même déplacement net (mêmes points de départ et d'arrivée) mais parcouru par des chemins différents : le travail du poids ne change JAMAIS, seul le travail des frottements change, proportionnellement à la longueur réelle parcourue."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un cycliste de masse $m=90\\ \\text{kg}$ relie deux points A et B situés sur une pente à $\\beta=30°$, distants de $l=100\\ \\text{m}$ en ligne directe, en zigzaguant sur une distance totale $l_{zz}=300\\ \\text{m}$ (trois fois plus longue). Le frottement vaut $f=135\\ \\text{N}$. Comparer le travail du poids et celui du frottement entre le trajet direct et le trajet en zigzag ($g=9{,}8\\ \\text{N/kg}$).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la dénivellation entre A et B (indépendante du chemin)",
+          "justification": "La dénivellation ne dépend que des positions de A et B, pas du chemin suivi entre eux ; pour le trajet direct de longueur $l$ le long de la pente, $\\Delta h = l\\sin\\beta$.",
+          "resultat_markdown": "$\\Delta h = 100\\times\\sin(30°) = 50\\ \\text{m}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le travail du poids pour le trajet direct",
+          "justification": "$W(\\vec P) = mg\\Delta h$",
+          "resultat_markdown": "$W(\\vec P)_{direct} = 90\\times 9{,}8\\times 50 = 44\\,100\\ \\text{J}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le travail du poids pour le trajet en zigzag",
+          "justification": "Le poids est une force conservative : son travail entre A et B ne dépend que de $\\Delta h$, identique pour les deux trajets.",
+          "resultat_markdown": "$W(\\vec P)_{zigzag} = 90\\times 9{,}8\\times 50 = 44\\,100\\ \\text{J}$ (strictement identique au trajet direct)"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer le travail du frottement pour le trajet direct",
+          "justification": "$W(\\vec f) = -f\\times l$",
+          "resultat_markdown": "$W(\\vec f)_{direct} = -135\\times 100 = -13\\,500\\ \\text{J}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer le travail du frottement pour le trajet en zigzag",
+          "justification": "Le frottement est une force non conservative : son travail dépend de la longueur RÉELLE parcourue, $l_{zz}=300\\ \\text{m}$.",
+          "resultat_markdown": "$W(\\vec f)_{zigzag} = -135\\times 300 = -40\\,500\\ \\text{J}$ (nettement plus négatif)"
+        }
+      ],
+      "conclusion_markdown": "Le poids fournit exactement le même travail moteur (44 100 J) sur les deux trajets, tandis que le frottement dissipe presque trois fois plus d'énergie sur le trajet en zigzag (40 500 J contre 13 500 J) : c'est cette différence, et elle seule, qui explique la vitesse finale bien plus faible obtenue en zigzaguant."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Tripler également le travail du poids sous prétexte que le trajet est trois fois plus long.",
+          "pourquoi_faux": "C'est l'erreur la plus fréquente sur ce type de question : le poids est une force CONSERVATIVE, son travail ne dépend que de la dénivellation entre les deux points, jamais de la longueur du chemin suivi. Seul le frottement, force non conservative, voit son travail multiplié par le rapport des longueurs.",
+          "correction_markdown": "Avant tout calcul, pose-toi systématiquement la question : « cette force est-elle conservative ? » Si oui (poids, force électrique, force de rappel d'un ressort), son travail ne dépend que des positions de départ et d'arrivée. Si non (frottement, résistance de l'air), il dépend de la longueur réelle du chemin."
+        },
+        {
+          "erreur_markdown": "Calculer la dénivellation du trajet en zigzag comme si elle était différente de celle du trajet direct.",
+          "pourquoi_faux": "Le problème précise explicitement que le zigzag relie les MÊMES points de départ et d'arrivée que le trajet direct : la dénivellation entre ces deux points est une donnée purement géométrique (différence d'altitude), totalement indépendante du chemin choisi pour les relier.",
+          "correction_markdown": "Calcule la dénivellation UNE SEULE FOIS, à partir des positions de départ et d'arrivée données par l'énoncé, et réutilise cette même valeur pour tous les trajets qui relient ces deux points, quelle que soit leur forme."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un objet de masse $m=4\\ \\text{kg}$ descend une dénivellation $\\Delta h=15\\ \\text{m}$, d'abord par un trajet direct, puis par un trajet deux fois plus long reliant les mêmes points. Le travail du poids change-t-il entre les deux trajets ? Le calculer ($g=9{,}8\\ \\text{N/kg}$).",
+          "solution_markdown": "Le poids est une force conservative : son travail ne dépend que de la dénivellation, identique dans les deux cas.\n\n$$W(\\vec P) = mg\\Delta h = 4\\times 9{,}8\\times 15 = 588\\ \\text{J}$$\n\nCette valeur est la même pour le trajet direct et pour le trajet deux fois plus long : le travail du poids ne change PAS."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un solide de masse $m=3\\ \\text{kg}$ parcourt un trajet de longueur $d_1=20\\ \\text{m}$ freiné par un frottement $f=6\\ \\text{N}$, puis, pour relier les mêmes points, un second trajet de longueur $d_2=50\\ \\text{m}$ avec le même frottement. Comparer les travaux du frottement sur les deux trajets, et calculer leur différence.",
+          "solution_markdown": "$W(\\vec f)_1 = -f\\times d_1 = -6\\times 20 = -120\\ \\text{J}$.\n\n$W(\\vec f)_2 = -f\\times d_2 = -6\\times 50 = -300\\ \\text{J}$.\n\nDifférence : $W(\\vec f)_2 - W(\\vec f)_1 = -300-(-120) = -180\\ \\text{J}$ : le second trajet, plus long de 30 m, dissipe 180 J de plus par frottement, soit exactement $f\\times 30 = 6\\times 30 = 180\\ \\text{J}$, cohérent avec le fait que le travail du frottement est directement proportionnel à la distance parcourue."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un mobile relie deux points A et B (dénivellation $\\Delta h$ connue) par un chemin de longueur $d$, avec un frottement constant $f$, en partant du repos. Établir l'expression littérale de sa vitesse en B en fonction de $m$, $g$, $\\Delta h$, $f$ et $d$, puis discuter la condition d'existence de cette vitesse.",
+          "solution_markdown": "D'après le théorème de l'énergie cinétique, en partant du repos :\n\n$$\\dfrac{1}{2}mv_B^2 = W(\\vec P) + W(\\vec f) = mg\\Delta h - fd$$\n\n$$v_B = \\sqrt{\\dfrac{2(mg\\Delta h - fd)}{m}} = \\sqrt{2g\\Delta h - \\dfrac{2fd}{m}}$$\n\n**Condition d'existence.** Cette expression n'a de solution réelle que si le terme sous la racine est positif ou nul, c'est-à-dire :\n\n$$mg\\Delta h \\ge fd \\quad\\Longleftrightarrow\\quad d \\le \\dfrac{mg\\Delta h}{f}$$\n\nPhysiquement, cela signifie qu'il existe une longueur de trajet MAXIMALE, $d_{max} = \\dfrac{mg\\Delta h}{f}$, au-delà de laquelle le mobile, freiné par le frottement, ne peut plus atteindre le point B avec une vitesse réelle : il s'arrête avant d'y parvenir, toute l'énergie potentielle disponible ($mg\\Delta h$) ayant été intégralement dissipée par le frottement avant la fin du trajet. Cette relation quantifie précisément le compromis entre la longueur d'un chemin (zigzag, détour) et l'énergie qu'il reste disponible pour la vitesse finale."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une force conservative (le poids) a un travail qui ne dépend que des positions de départ et d'arrivée, jamais du chemin suivi entre elles.",
+        "Une force non conservative (le frottement) a un travail qui dépend directement de la longueur réelle du chemin parcouru : plus le chemin est long, plus l'énergie dissipée est grande.",
+        "Face à un trajet allongé entre deux points fixes, seul le travail des forces non conservatives change ; le travail des forces conservatives reste rigoureusement identique.",
+        "Cette distinction permet de comprendre pourquoi zigzaguer, ou tout détour, ne change jamais l'altitude perdue mais augmente toujours l'énergie perdue par frottement.",
+        "Ce piège classique (tripler par erreur le travail du poids en même temps que celui du frottement) est l'un des plus fréquemment sanctionnés dans les exercices de mécanique du Probatoire et du Baccalauréat : identifier la nature conservative ou non de chaque force est le réflexe qui l'évite."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-dynamique-de-rotation-dun-systeme-poulie-masse-terminale-c",
+  "meta": {
+    "titre": "Dynamique de rotation d'un système poulie-masse",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Dynamique de rotation",
+    "duree_estimee_min": 30,
+    "tags": [
+      "dynamique de rotation",
+      "moment d'inertie",
+      "système poulie-masse",
+      "moment cinétique"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2004-PHYSIQUE-CM",
+    "epreuve_titre": "Physique - Baccalauréat Série C - Session 2004 (Cameroun)",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bac-c-physique-2004-officiel-cameroun-ex5-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un seau qui descend au bout d'une corde enroulée sur un treuil n'accélère jamais aussi vite qu'en chute libre : une partie de l'énergie sert à mettre le treuil en rotation. Ce cours montre comment coupler la dynamique de translation du solide qui tombe à la dynamique de rotation de la poulie qui l'entraîne, pour prédire précisément l'accélération réelle du système."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Relation fondamentale de la dynamique de translation, $\\sum\\vec F=m\\vec a$",
+        "Moment d'inertie d'un solide en rotation, notamment $J=mR^2$ pour un anneau mince",
+        "Relation entre accélération linéaire et accélération angulaire, $a=R\\alpha$, dans le cas d'un fil sans glissement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Système poulie-masse sans frottement",
+      "contenu_markdown": "Pour un système constitué d'un solide de masse m suspendu par un fil inextensible enroulé sur une poulie de moment d'inertie J et de rayon R, le mouvement, en l'absence de frottement, s'obtient en appliquant la relation fondamentale de la dynamique de translation au solide et le théorème du moment cinétique à la poulie, puis en éliminant la tension du fil entre les deux équations grâce à la condition de non-glissement du fil sur la poulie, $a=R\\alpha$. Pour le solide, $mg-T=ma$ ; pour la poulie, $TR=J\\alpha=Ja/R$. En combinant ces deux équations, on obtient $a=\\dfrac{mg}{m+J/R^2}$, expression qui se réduit à $a=\\dfrac{mg}{m+M}$ lorsque la poulie est un anneau mince de masse M (moment d'inertie $J=MR^2$).",
+      "formule_principale": "a=\\dfrac{mg}{m+J/R^2}",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un solide de masse m est suspendu par un fil enroulé sur une poulie en forme d'anneau mince, de masse M et de rayon R, pouvant tourner sans frottement autour de son axe. Établir l'expression de l'accélération du système, sachant que toute la masse de l'anneau est répartie à sa périphérie.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier le moment d'inertie de la poulie",
+          "justification": "Un anneau mince a toute sa masse à la distance R de l'axe, ce qui donne un moment d'inertie particulièrement simple",
+          "resultat_markdown": "$J=MR^2$"
+        },
+        {
+          "numero": 2,
+          "action": "Appliquer la relation fondamentale de la dynamique au solide suspendu",
+          "justification": "Le solide est soumis à son poids et à la tension du fil, projetés sur la verticale descendante",
+          "resultat_markdown": "$mg-T=ma$"
+        },
+        {
+          "numero": 3,
+          "action": "Appliquer le théorème du moment cinétique à la poulie",
+          "justification": "Seul le moment de la tension du fil, de bras de levier R, fait tourner la poulie en l'absence de frottement",
+          "resultat_markdown": "$TR=J\\alpha=J\\dfrac{a}{R}$ (condition de non-glissement $a=R\\alpha$)"
+        },
+        {
+          "numero": 4,
+          "action": "Éliminer T entre les deux équations",
+          "justification": "De la seconde équation, $T=Ja/R^2=MRa\times R/R^2$... plus simplement $T=Ma$ avec $J=MR^2$, à substituer dans la première",
+          "resultat_markdown": "$mg-Ma=ma \\Rightarrow a=\\dfrac{mg}{M+m}$"
+        }
+      ],
+      "conclusion_markdown": "L'accélération du système est plus faible que celle d'une chute libre pure : une partie de l'effet du poids sert à mettre la poulie en rotation, ce qui se traduit mathématiquement par le terme M ajouté à m au dénominateur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier l'inertie de la poulie et traiter le solide comme s'il tombait en chute libre",
+          "pourquoi_faux": "Une partie de l'action du poids sert nécessairement à mettre la poulie en rotation : ignorer son moment d'inertie revient à ignorer une partie réelle du système mécanique, ce qui surestime l'accélération.",
+          "correction_markdown": "Toujours écrire les deux équations, celle du solide ET celle de la poulie, même quand cette dernière semble « ne pas avoir de masse propre à prendre en compte »."
+        },
+        {
+          "erreur_markdown": "Confondre le rayon utilisé pour le moment de la tension (rayon de la poulie R) avec un autre rayon du système (comme celui d'un arbre de rotation, s'il y en a un)",
+          "pourquoi_faux": "C'est le rayon sur lequel le fil s'enroule réellement qui détermine à la fois la relation $a=R\\alpha$ et le bras de levier de la tension : un autre rayon du dispositif (arbre, axe) n'intervient pas dans cette équation.",
+          "correction_markdown": "Identifier clairement, sur le schéma, quel rayon correspond à l'enroulement du fil avant d'écrire les équations."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un solide de masse $m=150\\,\\text{g}$ est suspendu à un fil enroulé sur une poulie de masse $M=100\\,\\text{g}$ (anneau mince). Calculer l'accélération du système ($g=9{,}8\\,\\text{m.s}^{-2}$).",
+          "solution_markdown": "$a=\\dfrac{mg}{M+m}=\\dfrac{0{,}150\\times9{,}8}{0{,}100+0{,}150}=\\dfrac{1{,}47}{0{,}250}\\approx5{,}88\\,\\text{m.s}^{-2}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Reprendre l'exercice précédent avec une poulie de même masse M mais dont le moment d'inertie est $J=\\frac12MR^2$ (disque homogène plutôt qu'anneau). Établir la nouvelle expression de l'accélération et comparer numériquement.",
+          "solution_markdown": "Avec $J=\\frac12MR^2$, la relation générale $a=\\dfrac{mg}{m+J/R^2}$ devient $a=\\dfrac{mg}{m+M/2}$. Numériquement : $a=\\dfrac{0{,}150\\times9{,}8}{0{,}150+0{,}050}=\\dfrac{1{,}47}{0{,}200}=7{,}35\\,\\text{m.s}^{-2}$, une accélération plus grande qu'avec l'anneau : un disque a un moment d'inertie plus faible qu'un anneau de même masse, il freine donc moins le système."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que, lorsque le moment d'inertie J de la poulie tend vers zéro (poulie de masse négligeable), l'accélération du système tend vers celle d'une chute libre simple, $a\\to g$ si m est seul, et interpréter physiquement ce résultat.",
+          "solution_markdown": "Dans l'expression générale $a=\\dfrac{mg}{m+J/R^2}$, si $J\\to0$, alors $J/R^2\\to0$, donc $a\\to\\dfrac{mg}{m}=g$. Ce résultat est cohérent : une poulie sans inertie ne prélève aucune part de l'action du poids pour se mettre en rotation, le solide suspendu tombe alors exactement comme s'il était en chute libre, sans aucune poulie."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un système poulie-masse s'étudie en couplant la relation fondamentale de la dynamique du solide et le théorème du moment cinétique de la poulie, reliés par $a=R\\alpha$.",
+        "L'accélération obtenue, $a=\\dfrac{mg}{m+J/R^2}$, est toujours inférieure à g : la poulie retient une partie de l'effet moteur du poids pour se mettre en rotation.",
+        "Le moment d'inertie de la poulie dépend de la répartition de sa masse : un anneau (toute la masse à la périphérie, $J=MR^2$) freine plus le système qu'un disque homogène de même masse ($J=\\frac12MR^2$).",
+        "Le rayon qui intervient dans les équations est toujours celui sur lequel le fil s'enroule réellement, à ne pas confondre avec un autre rayon du dispositif mécanique.",
+        "Au BAC, ce résultat théorique sert ensuite de référence pour mettre en évidence l'existence de frottements, en le comparant à une accélération mesurée expérimentalement plus faible."
+      ]
+    }
+  ]
+}

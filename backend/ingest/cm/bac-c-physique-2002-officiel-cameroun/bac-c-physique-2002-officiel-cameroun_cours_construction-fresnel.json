@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-construction-fresnel-tle-c",
+  "meta": {
+    "titre": "La construction de Fresnel en régime sinusoïdal",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "C",
+    "sous_theme": "Courant alternatif sinusoïdal",
+    "duree_estimee_min": 25,
+    "tags": [
+      "construction de Fresnel",
+      "vecteur tournant",
+      "déphasage",
+      "addition de tensions sinusoïdales"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "BAC-C-2002-PHYSIQUE-CM",
+    "epreuve_titre": "BAC Physique, série C, session 2002 (Cameroun)",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-c-physique-2002-officiel-cameroun-ex4-q2.4-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Additionner deux tensions sinusoïdales de même fréquence mais déphasées l'une par rapport à l'autre n'est pas une simple addition de nombres : le résultat dépend à la fois de leurs amplitudes et de leur décalage temporel. Plutôt que de manipuler des formules trigonométriques longues, Fresnel a proposé de représenter chaque tension par une flèche (un vecteur), dont la longueur est l'amplitude et la direction code la phase : additionner les tensions revient alors à additionner ces flèches bout à bout, exactement comme en géométrie plane."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire une tension sinusoïdale sous la forme $u=U_m\\sin(\\omega t+\\varphi)$",
+        "Additionner deux vecteurs du plan par leurs coordonnées",
+        "Convertir entre coordonnées polaires (norme, angle) et coordonnées cartésiennes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Représenter chaque tension par un vecteur de Fresnel",
+      "contenu_markdown": "La construction de Fresnel associe à toute tension sinusoïdale $u=U_m\\sin(\\omega t+\\varphi)$ un vecteur de norme $U_m$ (ou $U_{eff}$, à condition d'utiliser la même convention pour tous les vecteurs du schéma) et d'angle $\\varphi$ par rapport à un axe de référence commun, généralement celui du courant. Comme tous les vecteurs tournent à la même vitesse angulaire $\\omega$, leurs positions relatives (angles les uns par rapport aux autres) restent fixes : on peut donc les figer à un instant donné et les traiter comme des vecteurs géométriques ordinaires. Dans un circuit série, la loi des mailles impose que la tension totale instantanée soit la somme des tensions instantanées de chaque élément à chaque instant : cela se traduit, pour les vecteurs de Fresnel, par une simple addition vectorielle, bout à bout ou par leurs coordonnées.",
+      "formule_principale": "\\vec{U}_{total} = \\sum_i \\vec{U}_i \\quad (\\text{addition vectorielle des vecteurs de Fresnel})",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un circuit série, un conducteur ohmique $r=4\\ \\Omega$ est parcouru par $I=0{,}472\\ \\text{A}$ efficace, en série avec une bobine d'impédance $Z_{bobine}=4{,}88\\ \\Omega$ et de résistance $R=4\\ \\Omega$. Déterminer, par construction de Fresnel, le déphasage $\\varphi$ entre la tension totale et le courant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer le vecteur de référence (courant) et le vecteur U_r",
+          "justification": "$U_r=rI$ est en phase avec le courant, donc porté par l'axe de référence",
+          "resultat_markdown": "$U_r = 4\\times0{,}472 = 1{,}888\\ \\text{V}$, vecteur horizontal"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le déphasage propre de la bobine et placer son vecteur",
+          "justification": "$\\tan\\varphi_{bobine}=L\\omega/R$, avec $L\\omega=\\sqrt{Z_{bobine}^2-R^2}$",
+          "resultat_markdown": "$L\\omega\\approx2{,}80\\ \\Omega$, $\\tan\\varphi_{bobine}=2{,}80/4=0{,}70$, $\\varphi_{bobine}\\approx35°$ ; $U_{bobine}=Z_{bobine}I\\approx2{,}30\\ \\text{V}$"
+        },
+        {
+          "numero": 3,
+          "action": "Additionner les deux vecteurs par leurs coordonnées",
+          "justification": "La tension totale est la somme vectorielle de $U_r$ et $U_{bobine}$",
+          "resultat_markdown": "$U_x = 1{,}888+2{,}30\\cos35°\\approx3{,}77\\ \\text{V}$, $U_y=2{,}30\\sin35°\\approx1{,}32\\ \\text{V}$"
+        },
+        {
+          "numero": 4,
+          "action": "En déduire l'angle du vecteur résultant",
+          "justification": "$\\varphi$ est l'angle entre le vecteur résultant et l'axe de référence (courant)",
+          "resultat_markdown": "$\\tan\\varphi = U_y/U_x \\approx 0{,}350 \\Rightarrow \\varphi\\approx19{,}3°$"
+        }
+      ],
+      "conclusion_markdown": "La norme du vecteur résultant, $\\sqrt{U_x^2+U_y^2}\\approx4{,}0\\ \\text{V}$, retrouve bien la tension totale donnée, confirmant la construction."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Mélanger amplitudes et valeurs efficaces dans un même diagramme de Fresnel",
+          "pourquoi_faux": "Un diagramme cohérent doit utiliser soit uniquement des amplitudes, soit uniquement des valeurs efficaces pour toutes les tensions représentées : mélanger les deux fausse tous les rapports de longueur entre vecteurs.",
+          "correction_markdown": "Choisis une convention (amplitudes ou valeurs efficaces) en début d'exercice et garde-la pour tous les vecteurs du diagramme."
+        },
+        {
+          "erreur_markdown": "Additionner les normes des vecteurs au lieu de les additionner vectoriellement (par leurs coordonnées ou géométriquement)",
+          "pourquoi_faux": "Sauf si deux tensions sont exactement en phase, la norme de la somme n'est jamais la somme des normes : c'est précisément parce que les tensions sont déphasées que la construction de Fresnel est nécessaire.",
+          "correction_markdown": "Décompose toujours chaque vecteur en coordonnées $(U\\cos\\varphi, U\\sin\\varphi)$ avant d'additionner, sauf construction géométrique précise à l'échelle."
+        },
+        {
+          "erreur_markdown": "Oublier de vérifier le résultat en recalculant la norme du vecteur somme et en la comparant à la tension totale donnée par l'énoncé",
+          "pourquoi_faux": "Une erreur de signe ou d'angle lors du calcul des composantes passe facilement inaperçue sans cette vérification finale, qui est pourtant immédiate.",
+          "correction_markdown": "Termine systématiquement une construction de Fresnel par le calcul de la norme du vecteur résultant, à comparer à la valeur attendue."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Deux tensions de Fresnel ont pour coordonnées $\\vec{U_1}=(3,0)$ V et $\\vec{U_2}=(0,4)$ V. Calculer la norme et l'angle du vecteur somme.",
+          "solution_markdown": "$\\vec{U}=\\vec{U_1}+\\vec{U_2}=(3,4)$. Norme : $\\sqrt{3^2+4^2}=5\\ \\text{V}$. Angle : $\\tan\\varphi=4/3\\Rightarrow\\varphi\\approx53{,}1°$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un conducteur ohmique $r=6\\ \\Omega$ (traversé par $I=0{,}5\\ \\text{A}$) est en série avec un condensateur d'impédance $Z_C=8\\ \\Omega$ (déphasage $-90°$ par rapport au courant, puisque la tension aux bornes d'un condensateur est en retard de $\\pi/2$). Déterminer par construction de Fresnel la tension totale et le déphasage $\\varphi$.",
+          "solution_markdown": "$U_r=rI=3\\ \\text{V}$ (vecteur horizontal). $U_C=Z_CI=4\\ \\text{V}$ (vecteur vertical, vers le bas puisque déphasage $-90°$). Coordonnées du vecteur somme : $(3,-4)$. Norme : $\\sqrt{3^2+4^2}=5\\ \\text{V}$. Angle : $\\tan\\varphi=-4/3\\Rightarrow\\varphi\\approx-53{,}1°$ (la tension totale est en retard sur le courant, comme attendu pour un circuit capacitif)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Montrer que la construction de Fresnel, appliquée à un circuit (R, L) série complet en une seule étape (sans passer par une bobine intermédiaire), redonne directement $Z=\\sqrt{R^2+(L\\omega)^2}$ et $\\tan\\varphi=L\\omega/R$.",
+          "solution_markdown": "Le vecteur $U_R=RI$ est horizontal (en phase avec $I$), le vecteur $U_L=L\\omega I$ est vertical (en avance de phase de $90°$ sur $I$, propriété d'une inductance pure). Le vecteur somme a pour coordonnées $(RI,\\,L\\omega I)$, de norme $\\sqrt{(RI)^2+(L\\omega I)^2}=I\\sqrt{R^2+(L\\omega)^2}$. Comme cette norme vaut aussi $U_{total}=ZI$ par définition de l'impédance totale, on identifie $Z=\\sqrt{R^2+(L\\omega)^2}$. L'angle du vecteur somme donne $\\tan\\varphi=\\dfrac{L\\omega I}{RI}=\\dfrac{L\\omega}{R}$ : la construction de Fresnel redémontre ainsi, par une méthode purement géométrique, les deux formules usuelles de l'impédance et du déphasage d'un circuit (R, L) série, sans jamais manipuler l'écriture complexe des impédances."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Chaque tension sinusoïdale devient, dans un diagramme de Fresnel, un vecteur de norme son amplitude (ou sa valeur efficace) et d'angle sa phase par rapport à une référence commune.",
+        "Dans un circuit série, la tension totale est la somme vectorielle des tensions de chaque élément.",
+        "Utilise systématiquement les coordonnées $(U\\cos\\varphi,\\,U\\sin\\varphi)$ pour additionner, sauf construction géométrique précise à l'échelle sur papier millimétré.",
+        "Vérifie toujours ta construction en comparant la norme du vecteur résultant à la valeur donnée par l'énoncé.",
+        "Cette méthode redémontre, de façon purement géométrique, toutes les formules usuelles d'impédance et de déphasage d'un circuit série : c'est une alternative complète au calcul trigonométrique direct."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "cours_id": "cours-bilan-puissance-recepteur-electrique-1ere",
+  "meta": {
+    "titre": "Bilan de puissance d'un récepteur électrique",
+    "matiere": "Physique",
+    "pays": "cm",
+    "serie": "D, TI",
+    "sous_theme": "Puissance et énergie électrique",
+    "duree_estimee_min": 22,
+    "tags": [
+      "bilan de puissance",
+      "effet Joule",
+      "récepteur",
+      "force contre-électromotrice"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "probatoire-d-ti-physique-2011-officiel-cameroun",
+    "epreuve_titre": "Probatoire Physique - Série D, TI - Session 2011 (Cameroun)",
+    "exercice_numero": "3",
+    "rappel_id": "rdm-probatoire-d-ti-physique-2011-officiel-cameroun-ex3-qC.1.3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un moteur électrique qui chauffe légèrement en fonctionnant, un chargeur qui tiédit pendant qu'il recharge une batterie : dans les deux cas, toute l'énergie électrique reçue n'est pas convertie utilement, une partie est perdue en chaleur. Le bilan de puissance d'un récepteur permet de chiffrer précisément cette répartition entre énergie utile et énergie perdue."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une force contre-électromotrice $E'$ et une résistance interne $r'$",
+        "Connaître la formule de la puissance électrique $P = UI$",
+        "Savoir que la loi d'Ohm généralisée pour un récepteur s'écrit $U = E' + r'I$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le bilan de puissance d'un récepteur",
+      "contenu_markdown": "Un récepteur électrique, traversé par un courant d'intensité $I$ et soumis à une tension $U$ à ses bornes, reçoit une puissance électrique totale $P_{él} = UI$. Cette puissance se répartit intégralement, sans aucune perte non comptabilisée, entre une puissance utile $P_u = E'I$ (effectivement convertie sous une autre forme d'énergie : chimique, mécanique...) et une puissance perdue par effet Joule $P_j = r'I^2$ dans la résistance interne du récepteur.",
+      "formule_principale": "P_{\\text{él}} = P_u + P_j \\quad \\text{soit} \\quad UI = E'I + r'I^2",
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un électrolyseur de force contre-électromotrice $E' = 1{,}5$ V et de résistance interne $r' = 8$ Ω est traversé par un courant $I = 0{,}375$ A. Calculer les trois puissances de son bilan énergétique.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la tension aux bornes du récepteur",
+          "justification": "La loi d'Ohm généralisée pour un récepteur donne $U = E' + r'I$.",
+          "resultat_markdown": "$U = E' + r'I = 1{,}5 + 8 \\times 0{,}375 = 1{,}5 + 3 = 4{,}5 \\text{ V}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la puissance électrique reçue",
+          "justification": "Elle vaut le produit de la tension à ses bornes par l'intensité qui le traverse.",
+          "resultat_markdown": "$P_{él} = UI = 4{,}5 \\times 0{,}375 = 1{,}6875 \\text{ W}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer la puissance utile",
+          "justification": "Elle correspond à l'énergie effectivement convertie, via la force contre-électromotrice.",
+          "resultat_markdown": "$P_u = E'I = 1{,}5 \\times 0{,}375 = 0{,}5625 \\text{ W}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer la puissance perdue par effet Joule",
+          "justification": "Elle correspond à l'échauffement dû à la résistance interne.",
+          "resultat_markdown": "$P_j = r'I^2 = 8 \\times (0{,}375)^2 = 8 \\times 0{,}140625 = 1{,}125 \\text{ W}$"
+        }
+      ],
+      "conclusion_markdown": "On vérifie que $P_u + P_j = 0{,}5625 + 1{,}125 = 1{,}6875 \\text{ W} = P_{él}$ : le bilan de puissance est cohérent."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $P_u = UI$ au lieu de $P_u = E'I$.",
+          "pourquoi_faux": "$UI$ est la puissance TOTALE reçue par le récepteur, pas la part utile ; seule la fraction associée à la force contre-électromotrice $E'$ est réellement convertie de façon utile, le reste étant dissipé par effet Joule.",
+          "correction_markdown": "Retiens que $U$ (tension aux bornes) sert au calcul de la puissance reçue $P_{él}$, tandis que $E'$ (force contre-électromotrice) sert au calcul de la puissance utile $P_u$ : ce sont deux grandeurs différentes."
+        },
+        {
+          "erreur_markdown": "Calculer $P_j = r'I$ en oubliant d'élever l'intensité au carré.",
+          "pourquoi_faux": "La loi de Joule s'écrit $P_j = r'I^2$, pas $r'I$ : oublier le carré sous-estime fortement la puissance dissipée, surtout pour un courant faible comme ici.",
+          "correction_markdown": "Mémorise la formule complète $P_j = r'I^2$, à l'image de $P = UI$ combinée à la loi d'Ohm $U = rI$ pour un résistor pur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un récepteur de f.c.é.m. $E' = 3$ V et de résistance interne $r' = 2$ Ω est traversé par un courant $I = 0{,}5$ A. Calculer $P_{él}$, $P_u$ et $P_j$.",
+          "solution_markdown": "$U = E' + r'I = 3 + 2 \\times 0{,}5 = 4$ V. $P_{él} = UI = 4 \\times 0{,}5 = 2$ W. $P_u = E'I = 3 \\times 0{,}5 = 1{,}5$ W. $P_j = r'I^2 = 2 \\times 0{,}25 = 0{,}5$ W. On vérifie : $1{,}5 + 0{,}5 = 2$ W $= P_{él}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur de résistance interne $r' = 4$ Ω, traversé par un courant de $2$ A, reçoit une puissance électrique de $30$ W. Calculer sa f.c.é.m. $E'$ et sa puissance utile.",
+          "solution_markdown": "$U = P_{él}/I = 30/2 = 15$ V. De $U = E' + r'I$, on tire $E' = U - r'I = 15 - 4 \\times 2 = 15 - 8 = 7$ V. $P_u = E'I = 7 \\times 2 = 14$ W."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un récepteur a un rendement $\\eta = 0{,}8$ pour un courant $I = 1$ A. Sachant que sa résistance interne vaut $r' = 1$ Ω, calculer sa force contre-électromotrice $E'$.",
+          "solution_markdown": "Le rendement d'un récepteur s'écrit $\\eta = \\dfrac{P_u}{P_{él}} = \\dfrac{E'I}{E'I + r'I^2} = \\dfrac{E'}{E' + r'I}$ (en simplifiant par $I$). On isole $E'$ : $\\eta(E' + r'I) = E' \\Rightarrow \\eta \\, r' I = E'(1 - \\eta) \\Rightarrow E' = \\dfrac{\\eta \\, r' I}{1 - \\eta} = \\dfrac{0{,}8 \\times 1 \\times 1}{1 - 0{,}8} = \\dfrac{0{,}8}{0{,}2} = 4$ V."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La puissance électrique reçue par un récepteur vaut $P_{él} = UI$, avec $U$ la tension à ses bornes.",
+        "Elle se répartit entre puissance utile $P_u = E'I$ (avec $E'$ la force contre-électromotrice) et puissance perdue par effet Joule $P_j = r'I^2$.",
+        "Ces trois puissances vérifient toujours $P_{él} = P_u + P_j$, ce qui donne aussi $U = E' + r'I$.",
+        "Ne confonds jamais $U$ (tension aux bornes, sert à $P_{él}$) et $E'$ (force contre-électromotrice, sert à $P_u$).",
+        "Ce bilan de puissance est le même schéma, quel que soit le récepteur (moteur, électrolyseur, accumulateur en charge) : seule change l'interprétation physique de la puissance utile."
+      ]
+    }
+  ]
+}
