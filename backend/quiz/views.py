@@ -117,10 +117,15 @@ def _clean_quiz_markdown(text):
 # désignent bien un chapitre. En dessous, on préfère aucun lien à un lien douteux.
 _LIBELLE_MIN = 8
 
+# Seuil du niveau 4 (lignée) de _cours_pour_theme, calé sur les 65 items BEPC restés sans
+# lien le 2026-09-30 : à 2 mots, « problème d'âges » tombait sur « Factoriser une
+# différence de deux carrés » et « lancer du poids » sur « saut en hauteur ».
+_MOTS_COMMUNS_MIN_LIGNEE = 3
+
 
 def _cours_pour_theme(theme, subject, cursus_ids, texte=""):
     """
-    Le Cours publié qui correspond le mieux à un (thème, matière), cherché en trois
+    Le Cours publié qui correspond le mieux à un (thème, matière), cherché en quatre
     passes de précision décroissante. La première qui rend un résultat gagne.
 
     Pourquoi une cascade plutôt qu'un seul appariement par tag : deux vocabulaires de
@@ -137,6 +142,11 @@ def _cours_pour_theme(theme, subject, cursus_ids, texte=""):
        programme, par des tags différents. Sémantiquement aussi sûr que le niveau 1.
     3. Libellé du chapitre retrouvé dans le sous-thème ou le titre du cours, une fois
        retiré le suffixe de série. Approximatif, donc encadré par _LIBELLE_MIN.
+    4. Lignée : cours tiré d'un exercice d'une épreuve du cursus dont une question porte
+       ce thème, alors que le cours lui-même porte un tag de technique différent (item
+       « droite horizontale » -> « L'équation x = k : reconnaître et tracer une droite
+       parallèle à l'axe »). Un exercice couvre plusieurs notions, donc retenu seulement
+       si son titre partage au moins _MOTS_COMMUNS_MIN_LIGNEE mots avec l'item.
 
     À chaque niveau, plusieurs cours peuvent convenir (un thème générique comme
     « identité remarquable » en porte des dizaines, de la 3e à la Terminale) : le gagnant
@@ -151,22 +161,30 @@ def _cours_pour_theme(theme, subject, cursus_ids, texte=""):
     passer de préférence le seul cursus de la session. Un Cours sans cursus n'est retenu
     que si sa lignée le rattache à l'un d'eux (voir q_cours_du_cursus).
     """
+    cursus_ids = list(cursus_ids)
     publies = Cours.objects.visibles().filter(subject=subject).filter(q_cours_du_cursus(cursus_ids))
 
-    niveaux = [Q(tags=theme)]
+    # (filtre, nombre minimal de mots du titre communs avec `texte`)
+    niveaux = [(Q(tags=theme), 0)]
     if theme.savoir_officiel_id:
-        niveaux.append(Q(tags__savoir_officiel_id=theme.savoir_officiel_id))
+        niveaux.append((Q(tags__savoir_officiel_id=theme.savoir_officiel_id), 0))
     libelle = theme.name.split("(")[0].strip()
     if len(libelle) >= _LIBELLE_MIN:
-        niveaux.append(Q(sous_theme__icontains=libelle) | Q(titre__icontains=libelle))
+        niveaux.append((Q(sous_theme__icontains=libelle) | Q(titre__icontains=libelle), 0))
+    niveaux.append((
+        Q(rappels_source__exercise__lesson__cursus__in=cursus_ids, rappels_source__exercise__questions__themes=theme),
+        _MOTS_COMMUNS_MIN_LIGNEE,
+    ))
 
     mots_texte = _mots_significatifs(texte)
-    for niveau in niveaux:
-        candidats = list(publies.filter(niveau).values_list("id", "titre").distinct())
+    for niveau, mots_min in niveaux:
+        candidats = []
+        for cours_id, titre in publies.filter(niveau).values_list("id", "titre").distinct():
+            communs = _mots_significatifs(titre) & mots_texte
+            if not mots_min or len(communs - _MOTS_CONSIGNE) >= mots_min:
+                candidats.append((len(communs), cours_id))
         if candidats:
-            meilleur_id, _ = min(
-                candidats, key=lambda c: (-len(_mots_significatifs(c[1]) & mots_texte), c[0]),
-            )
+            _, meilleur_id = min(candidats, key=lambda c: (-c[0], c[1]))
             return Cours.objects.get(pk=meilleur_id)
     return None
 
@@ -179,6 +197,11 @@ _MOTS_VIDES = {
     "nous", "partir", "plus", "pour", "puis", "quand", "sans", "sont", "sous", "suffit",
     "tous", "tout", "toute", "toutes", "vous",
 }
+# Mots de consigne, ignorés par le seul seuil du niveau 4 : sans eux, « Déterminer la
+# nature exacte d'un quadrilatère » atteignait 3 mots communs avec une question de
+# symétrie centrale. Pas retirés de _MOTS_VIDES : ils départagent utilement les niveaux
+# 1 à 3 (« Calculer l'aire… » face à « Vérifier la colinéarité… » pour une aire).
+_MOTS_CONSIGNE = {"calculer", "determiner", "donner", "exacte", "exactement", "justifier", "montrer"}
 
 
 def _mots_significatifs(texte):

@@ -1322,6 +1322,39 @@ class QuizApiTests(TestCase):
 
         self.assertIn(f"[COURS_LINK:{pertinent.slug}]", self._corrige_via_api())
 
+    def _cours_par_lignee(self, titre, external_id):
+        # Cours tagué d'une technique différente du thème de l'item, mais tiré d'un
+        # exercice du cursus dont une question porte ce thème.
+        cours = _make_cours(self.subject, external_id=external_id, titre=titre,
+                            tags=[Tag.objects.create(name=f"technique {external_id}")])
+        lesson = Lesson.objects.create(
+            title=f"Épreuve {external_id}", subject=self.subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+        )
+        lesson.cursus.add(self.cursus)
+        question = _make_question(lesson, "1")
+        question.themes.add(self.theme)
+        RappelDeMethode.objects.create(
+            exercise=question.exercise, external_id=f"rdm-{external_id}", competence="C",
+            contenu_markdown="Méthode.", cours=cours,
+        )
+        return cours
+
+    def test_cours_found_through_exercise_lineage_when_titles_agree(self):
+        self.item.enonce_markdown = "Calculer la dérivée d'une fonction polynôme de degré trois."
+        self.item.save(update_fields=["enonce_markdown"])
+        cours = self._cours_par_lignee("Dériver une fonction polynôme de degré trois", "cours-lignee")
+
+        self.assertIn(f"[COURS_LINK:{cours.slug}]", self._corrige_via_api())
+
+    def test_exercise_lineage_ignored_when_only_instruction_words_match(self):
+        # « Déterminer la nature exacte… » ne partage que des mots de consigne.
+        self.item.enonce_markdown = "Déterminer la nature exacte de la transformation, justifier."
+        self.item.save(update_fields=["enonce_markdown"])
+        self._cours_par_lignee("Déterminer la nature exacte d'un quadrilatère", "cours-consigne")
+
+        self.assertNotIn("COURS_LINK", self._corrige_via_api())
+
     def test_reveal_corrige_denied_for_another_users_session(self):
         self._subscribe()
         self.client.force_authenticate(user=self.user)
