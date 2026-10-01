@@ -26,11 +26,17 @@ export function useProfils() {
  * invalidation qui en oublierait une. Basculer d'enfant reste une action déclarée et
  * peu fréquente - le coût d'un rechargement est acceptable ici, contrairement au
  * changement de cursus (useChangerCursusPrepare), bien plus fréquent.
+ *
+ * `cursusId` (optionnel) : voir activerProfil - à fournir dès que l'appelant sait
+ * exactement quel abonnement il vise (ex. le sélecteur "Examen préparé", qui liste
+ * des abonnements, pas de simples profils), jamais seulement le profil quand deux
+ * cursus de ce profil pourraient tous les deux convenir au réalignement par défaut.
  */
 export function useChangerProfilActif() {
   const { login } = useAuth()
   return useMutation({
-    mutationFn: (profilId: number) => activerProfil(profilId),
+    mutationFn: ({ profilId, cursusId }: { profilId: number; cursusId?: number }) =>
+      activerProfil(profilId, cursusId),
     onSuccess: (response) => {
       login(response.access, response.user)
       window.location.reload()

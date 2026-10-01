@@ -1989,6 +1989,53 @@ class ActiverProfilAPITests(TestCase):
 
         self.assertEqual(response.data["user"]["cursus_prepare"]["id"], bac_c.id)
 
+    def test_cursus_id_explicite_prime_sur_le_realignement_generique(self):
+        """
+        Régression : le sélecteur "Examen préparé" (Header.tsx/TeteAccueil.tsx) liste
+        des ABONNEMENTS individuels - cliquer "BEPC (Junior)" quand Junior prépare
+        AUSSI BAC D doit retenir le BEPC cliqué, pas le "most recent" que choisirait
+        le réalignement générique (`_realigner_cursus_prepare`) livré sans `cursus_id`.
+        Sans cette précision, basculer d'abonnement pouvait associer un enfant à un
+        cursus qui n'est pas celui sur lequel on a cliqué.
+        """
+        bac_d = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        bepc = Cursus.objects.filter(examen=Examen.BEPC, series__isnull=True).first()
+        # bac_d est l'abonnement le plus récent de Junior - le réalignement générique
+        # le choisirait par défaut si on ne précisait pas cursus_id.
+        Subscription.objects.create(
+            user=self.user, profil=self.cadet, cursus=bepc, expires_at=timezone.now() + timedelta(days=10),
+        )
+        Subscription.objects.create(
+            user=self.user, profil=self.cadet, cursus=bac_d, expires_at=timezone.now() + timedelta(days=30),
+        )
+        self.user.cursus_prepare = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        self.user.save(update_fields=["cursus_prepare"])
+
+        response = self.client.post(
+            f"/auth/profils/{self.cadet.id}/activer/", {"cursus_id": bepc.id}, format="json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["user"]["cursus_prepare"]["id"], bepc.id)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.cursus_prepare_id, bepc.id)
+
+    def test_refuse_un_cursus_id_qui_n_appartient_pas_a_ce_profil(self):
+        """Jamais une fuite - même en précisant explicitement cursus_id, impossible de
+        déclarer un cursus que ce profil ne prépare pas réellement."""
+        bac_c = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        # Jamais souscrit par self.cadet.
+        self.user.cursus_prepare = None
+        self.user.save(update_fields=["cursus_prepare"])
+
+        response = self.client.post(
+            f"/auth/profils/{self.cadet.id}/activer/", {"cursus_id": bac_c.id}, format="json",
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.user.refresh_from_db()
+        self.assertIsNone(self.user.cursus_prepare_id)
+
 
 class BackfillProfilDepuisUserTests(TestCase):
     """

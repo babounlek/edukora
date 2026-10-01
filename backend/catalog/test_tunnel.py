@@ -88,6 +88,15 @@ class TunnelGatesTests(TestCase):
         self.assertEqual(alertes[0].severity, ALERTE)
         self.assertIn("2 rappel(s) de méthode sans cours dans 1 épreuve(s)", alertes[0].message)
 
+    def test_published_cours_without_sections_is_blocking(self):
+        from .models import Cours, StatutContenu, Subject
+        Cours.objects.create(
+            external_id="cours-vide", titre="Cours vide", statut=StatutContenu.VALIDE,
+            subject=Subject.objects.get(country__code="CM", code="MATHS"), sections_raw=[],
+        )
+        findings = gate_structure(timezone.now() - timezone.timedelta(hours=1))
+        self.assertTrue(any(f.severity == BLOQUANT and "sans aucune section" in f.message for f in findings))
+
     def test_incoherent_qcm_is_blocking(self):
         exercise = self._ingest(["Dérivation"])
         question = exercise.questions.get()

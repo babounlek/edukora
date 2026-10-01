@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { CompteAReboursBadge, formatCursus } from "@/components/CompteAReboursBadge"
-import { useCursusAbonnes, useChangerCursusPrepare } from "@/lib/changerCursusPrepare"
+import { useCursusAbonnes } from "@/lib/changerCursusPrepare"
 import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
 import { SITE_NAME } from "@/lib/site"
@@ -44,7 +44,6 @@ function AccountMenu() {
   const { country } = useCountry()
   const navigate = useNavigate()
   const cursusAbonnes = useCursusAbonnes()
-  const changerCursus = useChangerCursusPrepare()
   const profils = useProfils()
   const changerProfil = useChangerProfilActif()
 
@@ -86,7 +85,7 @@ function AccountMenu() {
                   key={profil.id}
                   disabled={changerProfil.isPending}
                   onSelect={() => {
-                    if (!actif) changerProfil.mutate(profil.id)
+                    if (!actif) changerProfil.mutate({ profilId: profil.id })
                   }}
                 >
                   {actif ? <Check className="text-primary" /> : <User />}
@@ -98,23 +97,27 @@ function AccountMenu() {
           </>
         )}
         {/* Seulement si le compte a deux abonnements actifs ou plus : sinon il n'y a
-            rien à basculer, la bascule silencieuse (voir changerCursusPrepare) suffit. */}
+            rien à basculer, la bascule silencieuse (voir changerCursusPrepare) suffit.
+            Chaque entrée est un ABONNEMENT (profil + cursus), pas un simple cursus :
+            deux profils peuvent préparer le même examen (voir useCursusAbonnes) -
+            cliquer doit donc basculer sur CE couple précis (activerProfil avec
+            cursusId), jamais sur le profil seul suivi d'un réalignement générique qui
+            pourrait retomber sur un AUTRE cursus de ce même profil (régression
+            signalée : "un enfant avec un cursus qui n'est pas le sien"). */}
         {cursusAbonnes.length > 1 && (
           <>
             <DropdownMenuLabel>Examen préparé</DropdownMenuLabel>
             {cursusAbonnes.map((sub) => {
-              const actif = sub.cursus.id === user?.cursus_prepare?.id
+              const actif = sub.cursus.id === user?.cursus_prepare?.id && sub.profil.id === user?.profil_actif?.id
               return (
                 <DropdownMenuItem
                   key={sub.id}
-                  disabled={changerCursus.isPending}
+                  disabled={changerProfil.isPending}
                   onSelect={() => {
-                    if (!actif) changerCursus.mutate(sub.cursus.id)
+                    if (!actif) changerProfil.mutate({ profilId: sub.profil.id, cursusId: sub.cursus.id })
                   }}
                 >
                   {actif ? <Check className="text-primary" /> : <GraduationCap />}
-                  {/* Deux profils du même compte peuvent préparer le même cursus (voir
-                      useCursusAbonnes) - le prénom lève toute ambiguïté entre les deux. */}
                   {formatCursus(sub.cursus)} ({sub.profil.prenom})
                 </DropdownMenuItem>
               )

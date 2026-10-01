@@ -280,6 +280,14 @@ def gate_structure(since):
             "sinon ils restent sans lien « Voir le cours complet ».",
         ))
 
+    cours_vides = _scoped(Cours.objects.filter(statut=StatutContenu.VALIDE, sections_raw=[]), since)
+    if cours_vides.exists():
+        findings.append(Finding(
+            "structure", BLOQUANT,
+            f"{cours_vides.count()} Cours publié(s) sans aucune section (page vide derrière « Voir le cours complet ») - ex. "
+            + ", ".join(cours_vides.values_list("external_id", flat=True)[:5]),
+        ))
+
     for label, model in (("Question", Question), ("CompetenceItem", CompetenceItem)):
         for item in _scoped(model.objects.filter(type_reponse=TypeReponse.QCM), since):
             lettres = {c.get("lettre") for c in (item.choix or []) if isinstance(c, dict)}

@@ -480,16 +480,35 @@ def activer_profil_view(request, profil_id):
     Réémet un access token (claim `profil_id`) ET le cookie de refresh : sans ce
     dernier, le choix ne survivrait pas aux 2h de vie de l'access token - le prochain
     `/auth/token/refresh/` relirait l'ancien cookie, sans la claim, et retomberait sur
-    le premier profil du compte. Réaligne aussi `cursus_prepare` sur un examen que ce
-    profil prépare réellement - voir `_realigner_cursus_prepare`.
+    le premier profil du compte.
 
-    Jamais le profil d'un autre compte (même garde que profil_detail_view).
+    `cursus_id` (optionnel) : le sélecteur "Examen préparé" (Header.tsx/TeteAccueil.tsx)
+    liste des ABONNEMENTS individuels, pas de simples cursus - deux profils du même
+    compte peuvent y apparaître sur le même examen ("BEPC (Serge)"/"BEPC (Junior)").
+    Cliquer l'un d'eux doit basculer sur CE couple (profil, cursus) précis, jamais sur
+    le profil seul suivi d'un réalignement générique (`_realigner_cursus_prepare`) qui
+    pourrait retomber sur un AUTRE cursus du même profil - régression signalée :
+    "un enfant avec un cursus qui n'est pas le sien". Sans `cursus_id` (bascule depuis
+    "Changer d'enfant", qui ne connaît qu'un profil), le réalignement générique reste
+    le repli.
     """
     profil = request.user.profils.filter(pk=profil_id).first()
     if profil is None:
         return Response({"error": "Profil introuvable."}, status=404)
 
-    _realigner_cursus_prepare(request.user, profil)
+    if cursus_id := request.data.get("cursus_id"):
+        from subscriptions.models import Subscription
+
+        a_cet_abonnement = Subscription.objects.filter(
+            profil=profil, cursus_id=cursus_id, expires_at__gt=timezone.now(),
+        ).exists()
+        if not a_cet_abonnement:
+            return Response({"error": "Ce cursus n'appartient pas à ce profil."}, status=400)
+        if str(request.user.cursus_prepare_id) != str(cursus_id):
+            request.user.cursus_prepare_id = cursus_id
+            request.user.save(update_fields=["cursus_prepare"])
+    else:
+        _realigner_cursus_prepare(request.user, profil)
 
     refresh = RefreshToken.for_user(request.user)
     refresh["profil_id"] = profil.id

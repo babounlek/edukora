@@ -7355,3 +7355,40 @@ class LessonIntroductionMarkdownTests(TestCase):
 
         self.assertNotIn("\n\n---\n\n---\n\n", lesson.content_markdown)
         self.assertFalse(lesson.content_markdown.startswith("\n\n---\n\n"))
+
+
+class CoursVideTests(TestCase):
+    """251 cours publiés vides au 2026-10-01 : ébauches `"sections": []` du mode cours,
+    ingérées et publiées telles quelles, derrière 446 liens « Voir le cours complet »."""
+
+    def setUp(self):
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.lesson = Lesson.objects.create(
+            title="Maths BEPC 2020", subject=self.subject, lesson_type=LessonType.CORR,
+            epreuve_source="bepc-maths-2020-cameroun.pdf", statut=StatutContenu.VALIDE,
+        )
+        self.lesson.cursus.add(Cursus.objects.get(country__code="CM", examen=Examen.BEPC))
+
+    def test_a_draft_cours_without_sections_is_rejected(self):
+        payload = {
+            "cours_id": "cours-ebauche", "sections": [],
+            "source": {"rappel_id": "rdm-inexistant", "epreuve_source": "bepc-maths-2020-cameroun.pdf"},
+            "meta": {"titre": "Ébauche", "matiere": "Mathématiques"},
+        }
+        with self.assertRaisesMessage(IngestionError, "sans aucune section"):
+            ingest_cours(payload)
+        self.assertFalse(Cours.objects.filter(external_id="cours-ebauche").exists())
+
+    def test_no_link_to_an_unpublished_cours(self):
+        cours = Cours.objects.create(
+            external_id="cours-brouillon", titre="Cours en brouillon", subject=self.subject, statut=StatutContenu.BROUILLON,
+        )
+        exercise = Exercise.objects.create(
+            lesson=self.lesson, numero_exercice="1", statut=StatutContenu.VALIDE,
+            corrige_markdown="Corrigé.\n\n### Rappel de méthode\n\nContenu du rappel.",
+        )
+        RappelDeMethode.objects.create(
+            exercise=exercise, external_id="rdm-brouillon", competence="Test", contenu_markdown="Contenu du rappel.", cours=cours,
+        )
+
+        self.assertNotIn("COURS_LINK", self.lesson.exercises_breakdown()[0]["corrige_markdown"])

@@ -170,10 +170,18 @@ export function createProfil(prenom: string) {
  * charge utile que verifyOtp/googleSignIn/verifyEmailCode (access + user), pour que
  * AuthContext.login() et cette bascule se traitent par le même geste côté appelant
  * (setAccessToken + setUser).
+ *
+ * `cursusId` (optionnel) : pour le sélecteur "Examen préparé" (Header.tsx/
+ * TeteAccueil.tsx), qui liste des ABONNEMENTS individuels - deux profils du même
+ * compte peuvent y partager le même cursus. Sans lui, le cursus préparé est réaligné
+ * par le serveur sur un examen que ce profil prépare réellement (voir
+ * users.views._realigner_cursus_prepare) ; avec lui, c'est ce cursus précis qui est
+ * retenu, jamais un autre du même profil.
  */
-export function activerProfil(profilId: number) {
+export function activerProfil(profilId: number, cursusId?: number) {
   return apiRequest<{ access: string; user: User }>(`/auth/profils/${profilId}/activer/`, {
     method: "POST",
+    body: cursusId ? { cursus_id: cursusId } : undefined,
   })
 }
 

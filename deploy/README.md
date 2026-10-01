@@ -59,7 +59,7 @@ ssh-keygen -t ed25519 -C "deploy@edukora" -f ./edukora_deploy_key
 
 Puis, en SSH sur le Droplet en tant que root :
 
-1. Copier `deploy/setup-droplet.sh` sur le Droplet et l'exécuter :
+1. Copier `/setup-droplet.sh` sur le Droplet et l'exécuter :
    `./setup-droplet.sh deploy "$(cat edukora_deploy_key.pub)"`
 2. **Dans un AUTRE terminal**, vérifier que `ssh deploy@<ip>` et `docker ps`
    fonctionnent (voir le message affiché à la fin du script).

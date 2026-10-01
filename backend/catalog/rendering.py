@@ -372,7 +372,16 @@ def annotate_cours_links(corrige, rappels, *, append_unmatched=True):
     rappel appartenant à une AUTRE question du même exercice apparaîtrait à tort sur
     celle-ci : mieux vaut le taire que le tromper.
     """
-    rappels = [r for r in rappels if r.cours_id and r.contenu_markdown.strip()]
+    from .models import StatutContenu
+
+    # Un cours dépublié (BROUILLON) garde son lien rappel -> cours pour être republié
+    # tel quel une fois rédigé, mais son lien ne doit jamais s'afficher : 251 cours
+    # publiés vides ont été repassés en brouillon le 2026-10-01, leurs 446 rappels
+    # auraient sinon pointé vers une page introuvable.
+    rappels = [
+        r for r in rappels
+        if r.cours_id and r.contenu_markdown.strip() and r.cours.statut == StatutContenu.VALIDE
+    ]
     if not rappels:
         return corrige
 

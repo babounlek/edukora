@@ -16,7 +16,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useChangerCursusPrepare, useCursusAbonnes } from "@/lib/changerCursusPrepare"
+import { useCursusAbonnes } from "@/lib/changerCursusPrepare"
+import { useChangerProfilActif } from "@/lib/changerProfilActif"
 import { seanceAffichable } from "@/lib/seance"
 import { trackEvent } from "@/lib/analytics"
 import { themesFrequentsPath } from "@/lib/countryPath"
@@ -167,10 +168,17 @@ function Corps({ accueil, plan, country }: { accueil: Accueil; plan: Accueil["pl
  * dans "Aujourd'hui", qu'on voit le plus vite qu'on regarde le mauvais examen, donc
  * c'est ici qu'il doit être le plus rapide d'en changer (voir aussi AccountMenu dans
  * Header.tsx, même mécanisme, pour qui préfère passer par le menu du compte).
+ *
+ * Chaque entrée est un ABONNEMENT (profil + cursus), pas un simple cursus : deux
+ * profils peuvent préparer le même examen (voir useCursusAbonnes) - cliquer doit donc
+ * basculer sur CE couple précis (activerProfil avec cursusId), jamais sur le cursus
+ * seul, qui laisserait le profil actif inchangé et pourrait associer un enfant à un
+ * cursus qui n'est pas le sien (régression signalée).
  */
 function CursusPreparePuce({ cursus }: { cursus: Cursus }) {
+  const { user } = useAuth()
   const cursusAbonnes = useCursusAbonnes()
-  const changerCursus = useChangerCursusPrepare()
+  const changerProfil = useChangerProfilActif()
 
   if (cursusAbonnes.length < 2) {
     return <> · {formatCursus(cursus)}</>
@@ -189,18 +197,16 @@ function CursusPreparePuce({ cursus }: { cursus: Cursus }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         {cursusAbonnes.map((sub) => {
-          const actif = sub.cursus.id === cursus.id
+          const actif = sub.cursus.id === cursus.id && sub.profil.id === user?.profil_actif?.id
           return (
             <DropdownMenuItem
               key={sub.id}
-              disabled={changerCursus.isPending}
+              disabled={changerProfil.isPending}
               onSelect={() => {
-                if (!actif) changerCursus.mutate(sub.cursus.id)
+                if (!actif) changerProfil.mutate({ profilId: sub.profil.id, cursusId: sub.cursus.id })
               }}
             >
               {actif ? <Check className="text-primary" /> : <GraduationCap />}
-              {/* Deux profils du même compte peuvent préparer le même cursus (voir
-                  useCursusAbonnes) - le prénom lève toute ambiguïté entre les deux. */}
               {formatCursus(sub.cursus)} ({sub.profil.prenom})
             </DropdownMenuItem>
           )

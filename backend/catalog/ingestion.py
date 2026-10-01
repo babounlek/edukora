@@ -1875,6 +1875,14 @@ def ingest_cours(data, source_dir=None):
             _link_rappels_lies(existing, source)
         return existing, False
 
+    # Une ébauche `"sections": []` (cours annoncé mais jamais rédigé par le mode cours)
+    # était publiée telle quelle : 251 cours vides en ligne au 2026-10-01, derrière
+    # 446 liens « Voir le cours complet ». Mieux vaut un rappel sans cours qu'un lien
+    # vers une page vide. Vérifié après le chemin « déjà ingéré » ci-dessus, pour que
+    # les ébauches déjà en base ne remontent pas une erreur à chaque relance sur ingest/.
+    if not data.get("sections"):
+        raise IngestionError(f"Cours {cours_id} sans aucune section : ébauche non rédigée, à générer avant ingestion")
+
     rappel = RappelDeMethode.objects.select_related("exercise__lesson").filter(
         external_id=source["rappel_id"],
     ).first()
