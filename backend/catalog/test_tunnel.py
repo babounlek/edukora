@@ -76,6 +76,18 @@ class TunnelGatesTests(TestCase):
         findings = gate_structure(timezone.now() - timezone.timedelta(hours=1))
         self.assertFalse([f for f in findings if f.severity == BLOQUANT])
 
+    def test_rappels_without_cours_are_summarised_in_a_single_alert(self):
+        for numero in ("1", "2"):
+            exercise = ingest_exercise(_payload(["Dérivation"], numero=numero), source_dir=Path("ingest/cm/bac-maths-2024"))[0]
+            RappelDeMethode.objects.create(
+                exercise=exercise, external_id=f"rdm-test-{numero}", competence="C", contenu_markdown="Méthode.",
+            )
+        findings = gate_structure(timezone.now() - timezone.timedelta(hours=1))
+        alertes = [f for f in findings if "sans cours" in f.message]
+        self.assertEqual(len(alertes), 1)
+        self.assertEqual(alertes[0].severity, ALERTE)
+        self.assertIn("2 rappel(s) de méthode sans cours dans 1 épreuve(s)", alertes[0].message)
+
     def test_incoherent_qcm_is_blocking(self):
         exercise = self._ingest(["Dérivation"])
         question = exercise.questions.get()

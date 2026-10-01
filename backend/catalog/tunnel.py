@@ -238,6 +238,7 @@ def gate_structure(since):
             f"{total} Question sans aucun thème (invisibles du Parcours par thèmes) - ex. {exemples}",
         ))
 
+    rappels_sans_cours = defaultdict(int)
     for ex in _scoped(Exercise.objects.filter(rappels_de_methode__isnull=False), since).distinct().select_related("lesson"):
         # Sans le titre, le rendu n'affiche jamais le rappel alors qu'il existe en base
         # (Programmation Bac TI 2022/2023, corrigé le 2026-09-19).
@@ -262,11 +263,22 @@ def gate_structure(since):
             ))
         sans_cours = ex.rappels_de_methode.filter(cours__isnull=True).count()
         if sans_cours:
-            findings.append(Finding(
-                "structure", ALERTE,
-                f"{ex.lesson.slug}#{ex.numero_exercice} : {sans_cours} rappel(s) sans cours lié "
-                "(cours non ingérés ? voir les erreurs du run)",
-            ))
+            rappels_sans_cours[ex.lesson.slug] += sans_cours
+
+    # Une seule ligne récapitulative plutôt qu'une par exercice : noyée parmi les autres
+    # alertes, la version par exercice n'a pas empêché 192 rappels BEPC de rester sans
+    # cours après la mise en place du tunnel (constat du 2026-10-01, 784 au total).
+    if rappels_sans_cours:
+        total = sum(rappels_sans_cours.values())
+        exemples = ", ".join(
+            f"{slug} ({n})" for slug, n in sorted(rappels_sans_cours.items(), key=lambda x: -x[1])[:5]
+        )
+        findings.append(Finding(
+            "structure", ALERTE,
+            f"{total} rappel(s) de méthode sans cours dans {len(rappels_sans_cours)} épreuve(s) - ex. {exemples}. "
+            "Générer leurs cours (correction-experte, mode cours) et les ingérer avant de clore le round, "
+            "sinon ils restent sans lien « Voir le cours complet ».",
+        ))
 
     for label, model in (("Question", Question), ("CompetenceItem", CompetenceItem)):
         for item in _scoped(model.objects.filter(type_reponse=TypeReponse.QCM), since):
