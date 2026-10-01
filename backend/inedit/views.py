@@ -391,12 +391,13 @@ def list_my_inscriptions_inedites(request):
     """
     inscriptions = (
         InscriptionInedite.objects.filter(user=request.user)
-        .select_related("cursus__series", "cursus__country")
+        .select_related("cursus__series", "cursus__country", "profil")
     )
     return Response([
         {
             "id": inscription.id,
             "cursus": CursusSerializer(inscription.cursus).data,
+            "profil": {"id": inscription.profil_id, "prenom": inscription.profil.prenom},
             "expires_at": inscription.expires_at,
             "is_active": inscription.is_active,
         }
@@ -456,15 +457,25 @@ def epreuve_inedite_detail(request, id):
 
 @api_view(["GET"])
 def list_my_tentatives_inedites(request):
-    """Historique des tentatives de l'utilisateur (AccountPage, "Mes épreuves
+    """Historique des tentatives de l'utilisateur (HistoriquePage, "Mes épreuves
     inédites") - toutes confondues, en cours et soumises (voir TentativeInedite.en_cours,
-    le frontend distingue les deux via submitted_at)."""
+    le frontend distingue les deux via submitted_at).
+
+    Filtré sur le cursus préparé actuellement (même raison et même champ que
+    access.views.my_progression - `request.user.cursus_prepare`, pas
+    `profil.cursus_prepare`, non synchronisé pour l'instant) : un compte avec deux
+    abonnements actifs ne doit pas voir les tentatives de l'autre cursus mélangées à
+    la sienne."""
+    profil = profil_actif(request)
+    cursus = request.user.cursus_prepare if profil is not None else None
     tentatives = (
-        TentativeInedite.objects.filter(profil=profil_actif(request))
+        TentativeInedite.objects.filter(profil=profil)
         .select_related("epreuve__subject")
         .prefetch_related("epreuve__cursus__series", "epreuve__cursus__country")
         .order_by("-started_at")
     )
+    if cursus is not None:
+        tentatives = tentatives.filter(epreuve__cursus=cursus)
     return Response([
         {
             "id": tentative.id,

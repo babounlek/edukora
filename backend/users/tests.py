@@ -18,15 +18,18 @@ from django.core.management import call_command
 from django.core.exceptions import ValidationError
 from django.core.management.base import CommandError
 from django.db.utils import IntegrityError
-from django.test import TestCase, override_settings
+from django.contrib.auth.models import AnonymousUser
+from django.test import RequestFactory, TestCase, override_settings
 from django.utils import timezone
 from rest_framework.test import APIClient
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 
 from catalog.models import Cursus, Examen, ExamSession
+from subscriptions.models import Subscription
 
 from .management.commands.purge_otp_codes import MIN_RETENTION_DAYS
 from .models import AuthIdentity, AuthProvider, CodeCanal, OTPCode, Profil, User
+from .profils import profil_actif
 from .email_service import (
     EmailAlreadyTaken,
     EmailCapReached,
@@ -207,6 +210,25 @@ class OTPFlowAPITests(TestCase):
 
         self.assertEqual(me_response.status_code, 200)
         self.assertEqual(me_response.data["phone_number"], "677200020")
+
+    @patch("users.otp_service.get_sms_backend")
+    def test_verify_response_already_includes_profil_actif(self, mock_get_backend):
+        """
+        Régression : UserSerializer.get_profil_actif appelait profil_actif(request), qui
+        lit request.user - encore anonyme à cet instant précis (AllowAny, le token de
+        l'utilisateur vient tout juste d'être émis DANS cette même réponse) - et
+        renvoyait donc systématiquement None ici, pas le premier profil attendu. Le
+        header n'affichait alors le bon prénom qu'après un rechargement complet de page
+        (le prochain GET /auth/me/, une vraie requête authentifiée).
+        """
+        self.client.post("/auth/otp/request/", {"phone_number": "677200023"})
+        otp = OTPCode.objects.get(destination="+237677200023")
+
+        response = self.client.post("/auth/otp/verify/", {"phone_number": "677200023", "code": otp.code})
+
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(phone_number="+237677200023")
+        self.assertEqual(response.data["user"]["profil_actif"]["id"], user.profils.get().id)
 
     def test_request_rejects_invalid_phone_format(self):
         response = self.client.post("/auth/otp/request/", {"phone_number": "12345"})
@@ -1729,6 +1751,243 @@ class ProfilTests(TestCase):
         second = Profil.objects.create(compte=self.user, prenom="Junior")
 
         self.assertEqual(list(Profil.objects.filter(compte=self.user)), [premier, second])
+
+
+class ProfilsAPITests(TestCase):
+    """GET/POST /auth/profils/, PATCH /auth/profils/<id>/ - voir users.views.profils_view/
+    profil_detail_view. Nommer/ajouter un enfant (AccesPage.tsx "Ajouter un enfant")."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677900510", password="x")
+        self.profil_par_defaut = self.user.profils.get()
+        self.other_user = User.objects.create_user(phone_number="677900511", password="x")
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def test_requires_authentication(self):
+        anonyme = APIClient()
+        self.assertEqual(anonyme.get("/auth/profils/").status_code, 401)
+        self.assertEqual(anonyme.post("/auth/profils/", {"prenom": "Awa"}).status_code, 401)
+
+    def test_liste_uniquement_les_profils_du_compte_connecte(self):
+        Profil.objects.create(compte=self.other_user, prenom="Pas le mien")
+
+        response = self.client.get("/auth/profils/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([p["id"] for p in response.data], [self.profil_par_defaut.id])
+
+    def test_cree_un_profil_avec_un_ordre_apres_les_existants(self):
+        response = self.client.post("/auth/profils/", {"prenom": "Junior"}, format="json")
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data["prenom"], "Junior")
+        nouveau = Profil.objects.get(pk=response.data["id"])
+        self.assertEqual(nouveau.compte_id, self.user.id)
+        self.assertGreater(nouveau.ordre, self.profil_par_defaut.ordre)
+
+    def test_creation_refuse_un_prenom_vide(self):
+        response = self.client.post("/auth/profils/", {"prenom": "   "}, format="json")
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(Profil.objects.filter(compte=self.user).exclude(pk=self.profil_par_defaut.pk).exists())
+
+    def test_renomme_son_propre_profil(self):
+        response = self.client.patch(
+            f"/auth/profils/{self.profil_par_defaut.id}/", {"prenom": "Awa"}, format="json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["prenom"], "Awa")
+        self.profil_par_defaut.refresh_from_db()
+        self.assertEqual(self.profil_par_defaut.prenom, "Awa")
+
+    def test_ne_peut_pas_renommer_le_profil_d_un_autre_compte(self):
+        profil_autrui = Profil.objects.create(compte=self.other_user, prenom="Pas le mien")
+
+        response = self.client.patch(f"/auth/profils/{profil_autrui.id}/", {"prenom": "Piraté"}, format="json")
+
+        self.assertEqual(response.status_code, 404)
+        profil_autrui.refresh_from_db()
+        self.assertEqual(profil_autrui.prenom, "Pas le mien")
+
+    def test_renommer_un_profil_inexistant_404(self):
+        response = self.client.patch("/auth/profils/999999/", {"prenom": "Awa"}, format="json")
+        self.assertEqual(response.status_code, 404)
+
+
+class ProfilActifTests(TestCase):
+    """profil_actif() elle-même, indépendamment de toute vue - voir sa docstring."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677900520", password="x")
+        self.profil_par_defaut = self.user.profils.get()
+        self.cadet = Profil.objects.create(compte=self.user, prenom="Junior")
+        self.factory = RequestFactory()
+
+    def _request(self, user, auth=None):
+        request = self.factory.get("/")
+        request.user = user
+        request.auth = auth
+        return request
+
+    def test_repli_sur_le_premier_profil_sans_claim(self):
+        """Comportement inchangé pour l'immense majorité des requêtes (aucune claim
+        posée) - y compris force_authenticate(user=...) sans token=, qui laisse
+        request.auth à None dans toute la suite de tests existante."""
+        request = self._request(self.user, auth=None)
+        self.assertEqual(profil_actif(request), self.profil_par_defaut)
+
+    def test_lit_la_claim_quand_elle_pointe_sur_un_profil_du_compte(self):
+        token = AccessToken()
+        token["profil_id"] = self.cadet.id
+        request = self._request(self.user, auth=token)
+        self.assertEqual(profil_actif(request), self.cadet)
+
+    def test_repli_si_la_claim_pointe_sur_le_profil_d_un_autre_compte(self):
+        """Jamais de fuite inter-comptes, même si la claim est falsifiée/périmée."""
+        autre_user = User.objects.create_user(phone_number="677900521", password="x")
+        profil_autrui = autre_user.profils.first()
+        token = AccessToken()
+        token["profil_id"] = profil_autrui.id
+        request = self._request(self.user, auth=token)
+        self.assertEqual(profil_actif(request), self.profil_par_defaut)
+
+    def test_repli_si_la_claim_pointe_sur_un_profil_inexistant(self):
+        token = AccessToken()
+        token["profil_id"] = 999999
+        request = self._request(self.user, auth=token)
+        self.assertEqual(profil_actif(request), self.profil_par_defaut)
+
+    def test_none_pour_un_visiteur_anonyme(self):
+        request = self._request(AnonymousUser())
+        self.assertIsNone(profil_actif(request))
+
+
+class ActiverProfilAPITests(TestCase):
+    """POST /auth/profils/<id>/activer/ - voir users.views.activer_profil_view."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677900530", password="x")
+        self.profil_par_defaut = self.user.profils.get()
+        self.cadet = Profil.objects.create(compte=self.user, prenom="Junior")
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def test_requires_authentication(self):
+        anonyme = APIClient()
+        response = anonyme.post(f"/auth/profils/{self.cadet.id}/activer/")
+        self.assertEqual(response.status_code, 401)
+
+    def test_refuse_le_profil_d_un_autre_compte(self):
+        other_user = User.objects.create_user(phone_number="677900531", password="x")
+        profil_autrui = other_user.profils.first()
+
+        response = self.client.post(f"/auth/profils/{profil_autrui.id}/activer/")
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_refuse_un_profil_inexistant(self):
+        response = self.client.post("/auth/profils/999999/activer/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_le_token_retourne_porte_la_claim_profil_id(self):
+        response = self.client.post(f"/auth/profils/{self.cadet.id}/activer/")
+
+        self.assertEqual(response.status_code, 200)
+        access = AccessToken(response.data["access"])
+        self.assertEqual(access["profil_id"], self.cadet.id)
+
+    def test_la_reponse_reflete_le_nouveau_profil_actif(self):
+        response = self.client.post(f"/auth/profils/{self.cadet.id}/activer/")
+        self.assertEqual(response.data["user"]["profil_actif"]["id"], self.cadet.id)
+
+    def test_reemet_le_cookie_de_refresh(self):
+        """Sans ça, le choix ne survivrait pas aux 2h de vie de l'access token - voir
+        la docstring de la vue."""
+        response = self.client.post(f"/auth/profils/{self.cadet.id}/activer/")
+        self.assertIn("edukamer_refresh", response.cookies)
+
+    def test_la_claim_est_effectivement_lue_sur_une_vraie_requete_authentifiee(self):
+        """Bout en bout : le nouvel access token, utilisé pour une VRAIE requête
+        authentifiée (pas force_authenticate, qui ne pose jamais request.auth), fait
+        bien résoudre profil_actif() sur l'enfant tout juste activé."""
+        activation = self.client.post(f"/auth/profils/{self.cadet.id}/activer/")
+
+        client_reel = APIClient()
+        client_reel.credentials(HTTP_AUTHORIZATION=f"Bearer {activation.data['access']}")
+        response = client_reel.get("/auth/me/")
+
+        self.assertEqual(response.data["profil_actif"]["id"], self.cadet.id)
+
+    def test_realigne_cursus_prepare_sur_un_examen_que_le_profil_prepare_reellement(self):
+        """
+        Régression : basculer vers un enfant qui ne prépare pas le cursus actuellement
+        déclaré sur le compte laissait "Aujourd'hui" montrer l'examen du PRÉCÉDENT
+        enfant actif (menu affichant "Junior · BAC C" alors que Junior ne prépare que
+        le BEPC) - voir _realigner_cursus_prepare.
+        """
+        bac_c = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        bepc = Cursus.objects.filter(examen=Examen.BEPC, series__isnull=True).first()
+        self.user.cursus_prepare = bac_c
+        self.user.save(update_fields=["cursus_prepare"])
+        Subscription.objects.create(
+            user=self.user, profil=self.cadet, cursus=bepc, expires_at=timezone.now() + timedelta(days=30),
+        )
+
+        response = self.client.post(f"/auth/profils/{self.cadet.id}/activer/")
+
+        self.assertEqual(response.data["user"]["cursus_prepare"]["id"], bepc.id)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.cursus_prepare_id, bepc.id)
+
+    def test_ne_touche_pas_a_cursus_prepare_si_deja_un_abonnement_actif_du_profil(self):
+        """Un enfant qui prépare plusieurs cursus ne doit pas être réinitialisé sur un
+        autre des siens à chaque bascule."""
+        bac_c = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        bepc = Cursus.objects.filter(examen=Examen.BEPC, series__isnull=True).first()
+        Subscription.objects.create(
+            user=self.user, profil=self.cadet, cursus=bac_c, expires_at=timezone.now() + timedelta(days=30),
+        )
+        Subscription.objects.create(
+            user=self.user, profil=self.cadet, cursus=bepc, expires_at=timezone.now() + timedelta(days=30),
+        )
+        self.user.cursus_prepare = bepc
+        self.user.save(update_fields=["cursus_prepare"])
+
+        response = self.client.post(f"/auth/profils/{self.cadet.id}/activer/")
+
+        self.assertEqual(response.data["user"]["cursus_prepare"]["id"], bepc.id)
+
+    def test_realignement_privilegie_le_cursus_prepare_du_profil_sur_son_abonnement_le_plus_recent(self):
+        bac_c = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        bac_d = Cursus.objects.get(examen=Examen.BAC, series__code="D")
+        bepc = Cursus.objects.filter(examen=Examen.BEPC, series__isnull=True).first()
+        # cadet prépare BAC C (abonnement le plus récent) ET BAC D, mais a explicitement
+        # déclaré BEPC comme son cursus_prepare (ex. vient de changer d'avis, pas
+        # encore payé pour ce nouveau choix) - cette déclaration prime sur l'abonnement.
+        Subscription.objects.create(
+            user=self.user, profil=self.cadet, cursus=bac_d, expires_at=timezone.now() + timedelta(days=10),
+        )
+        Subscription.objects.create(
+            user=self.user, profil=self.cadet, cursus=bac_c, expires_at=timezone.now() + timedelta(days=30),
+        )
+        self.cadet.cursus_prepare = bepc
+        self.cadet.save(update_fields=["cursus_prepare"])
+        self.user.cursus_prepare = None
+        self.user.save(update_fields=["cursus_prepare"])
+
+        response = self.client.post(f"/auth/profils/{self.cadet.id}/activer/")
+
+        self.assertEqual(response.data["user"]["cursus_prepare"]["id"], bepc.id)
+
+    def test_ne_change_rien_si_le_profil_n_a_ni_cursus_prepare_ni_abonnement_actif(self):
+        bac_c = Cursus.objects.get(examen=Examen.BAC, series__code="C")
+        self.user.cursus_prepare = bac_c
+        self.user.save(update_fields=["cursus_prepare"])
+
+        response = self.client.post(f"/auth/profils/{self.cadet.id}/activer/")
+
+        self.assertEqual(response.data["user"]["cursus_prepare"]["id"], bac_c.id)
 
 
 class BackfillProfilDepuisUserTests(TestCase):

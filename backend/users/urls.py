@@ -22,4 +22,7 @@ urlpatterns = [
     path("identities/<slug:provider>/", views.unlink_identity_view, name="identity-unlink"),
     path("logout/", views.logout_view, name="logout"),
     path("me/", views.me_view, name="me"),
+    path("profils/", views.profils_view, name="profils"),
+    path("profils/<int:profil_id>/", views.profil_detail_view, name="profil-detail"),
+    path("profils/<int:profil_id>/activer/", views.activer_profil_view, name="profil-activer"),
 ]

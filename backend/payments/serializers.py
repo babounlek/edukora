@@ -75,6 +75,12 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
     transaction_reference = serializers.CharField(max_length=100, allow_blank=False, trim_whitespace=True)
     paid_at = serializers.DateTimeField(required=False, allow_null=True)
     proof = serializers.FileField(required=False, allow_null=True)
+    # L'enfant pour qui cet achat est fait (voir "Ajouter un enfant", AccesPage.tsx) -
+    # optionnel, retombe sur le profil par défaut du compte dans ManualPayment.objects.declare
+    # si absent. Un simple IntegerField plutôt qu'un PrimaryKeyRelatedField(queryset=...) :
+    # la restriction "appartient au compte connecté" se vérifie contre request.user,
+    # indisponible au moment où DRF construirait le queryset du champ.
+    profil_id = serializers.IntegerField(required=False, allow_null=True)
 
     def validate(self, attrs):
         if not MobileMoneyAccount.objects.filter(operator=attrs["operator"], active=True).exists():
@@ -90,6 +96,13 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
                     f"l'offre sélectionnée ({prix_attendu} FCFA)."
                 ),
             })
+        profil_id = attrs.pop("profil_id", None)
+        if profil_id:
+            request = self.context["request"]
+            profil = request.user.profils.filter(pk=profil_id).first()
+            if profil is None:
+                raise serializers.ValidationError({"profil_id": "Profil introuvable."})
+            attrs["profil"] = profil
         return attrs
 
     def create(self, validated_data):

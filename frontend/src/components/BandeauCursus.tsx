@@ -1,13 +1,14 @@
 import { useState } from "react"
 import { useLocation } from "react-router-dom"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { X } from "lucide-react"
 import { toast } from "sonner"
-import { listCursus, updateMe } from "@/api/endpoints"
+import { listCursus } from "@/api/endpoints"
 import type { Cursus } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { memoriserCursusPrepareEnAttente, useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
+import { useChangerCursusPrepare } from "@/lib/changerCursusPrepare"
 import { Button } from "@/components/ui/button"
 
 const FERME_KEY = "edukamer_bandeau_cursus_ferme"
@@ -39,9 +40,8 @@ function lireFerme(): boolean {
  */
 export function BandeauCursus() {
   const { pathname } = useLocation()
-  const { isAuthenticated, user, updateUser } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const { country } = useCountry()
-  const queryClient = useQueryClient()
   const [ferme, setFerme] = useState(lireFerme)
   const enAttente = useCursusPrepareEnAttente()
 
@@ -54,14 +54,7 @@ export function BandeauCursus() {
     enabled: visible,
   })
 
-  const declarer = useMutation({
-    mutationFn: (cursusId: number) => updateMe({ cursus_prepare: cursusId }),
-    onSuccess: (utilisateur) => {
-      updateUser(utilisateur)
-      // La séance ne se construit qu'une fois le cursus connu.
-      queryClient.invalidateQueries({ queryKey: ["plan-du-jour"] })
-    },
-  })
+  const declarer = useChangerCursusPrepare()
 
   function choisir(cursus: Cursus) {
     if (isAuthenticated) {

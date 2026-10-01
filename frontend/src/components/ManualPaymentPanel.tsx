@@ -13,6 +13,9 @@ interface ManualPaymentPanelProps {
   plan: Plan
   operator: MobileMoneyOperator
   onDeclared: (payment: ManualPayment) => void
+  // L'enfant pour qui cet achat est fait - voir SubscribePage.tsx, même rôle que
+  // InitiatePaymentParams.profilId.
+  profilId?: number
 }
 
 // Mêmes couleurs de marque que le sélecteur de moyen de paiement (SubscribePage) -
@@ -46,7 +49,7 @@ const OPERATOR_STYLES: Record<MobileMoneyOperator, { initials: string; badgeClas
  * et l'horodatage comme la capture ne faisaient que redire ce que la référence de
  * transaction permet déjà de vérifier auprès de l'opérateur.
  */
-export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPaymentPanelProps) {
+export function ManualPaymentPanel({ plan, operator, onDeclared, profilId }: ManualPaymentPanelProps) {
   const [accounts, setAccounts] = useState<MobileMoneyAccount[] | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -108,6 +111,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared }: ManualPayment
         amountDeclared: amount,
         payerPhoneNumber,
         transactionReference,
+        profilId,
       })
       onDeclared(payment)
     } catch (err) {

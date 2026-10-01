@@ -1325,6 +1325,35 @@ class ListMyTentativesInediteAPITests(TestCase):
         self.assertIsNone(by_id[en_cours.id]["submitted_at"])
         self.assertEqual(by_id[soumise.id]["score_obtenu"], 75)
 
+    def test_filtered_to_cursus_prepare_when_declared(self):
+        """Même raison que access.views.my_progression : un compte avec deux
+        abonnements actifs ne doit pas voir les tentatives de l'autre cursus mélangées
+        à celles du cursus actuellement préparé."""
+        autre_cursus = Cursus.objects.get(country=self.country, examen=Examen.BEPC)
+        # blueprint_external_id/external_id distincts de _blueprint_payload() par
+        # défaut : sinon ingest_blueprint met simplement à jour le même Blueprint que
+        # self.epreuve (même external_id), au lieu d'en créer un second.
+        blueprint_autre, _ = ingest_blueprint(
+            _blueprint_payload(external_id="bp-cm-bepc-autre-cursus", cursus=[{"examen": "bepc", "serie": ""}]),
+            self.country,
+        )
+        blueprint_autre.statut = StatutContenu.VALIDE
+        blueprint_autre.save(update_fields=["statut"])
+        autre_epreuve = EpreuveInedite.objects.create(
+            blueprint=blueprint_autre, subject=blueprint_autre.subject,
+            titre="Épreuve BEPC", statut=StatutContenu.VALIDE,
+        )
+        autre_epreuve.cursus.set(blueprint_autre.cursus.all())
+        tentative_ici = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=self.epreuve)
+        TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=autre_epreuve)
+        self.client.force_authenticate(user=self.user)
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+
+        response = self.client.get("/inedit/mes-tentatives/")
+
+        self.assertEqual([t["id"] for t in response.data], [tentative_ici.id])
+
 
 class StartTentativeAPITests(TestCase):
     def setUp(self):

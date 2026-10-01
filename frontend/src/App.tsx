@@ -35,6 +35,7 @@ const CoursListPage = lazy(() => import("@/pages/CoursListPage").then((m) => ({ 
 const CoursDetailPage = lazy(() => import("@/pages/CoursDetailPage").then((m) => ({ default: m.CoursDetailPage })))
 const CoursReaderPage = lazy(() => import("@/pages/CoursReaderPage").then((m) => ({ default: m.CoursReaderPage })))
 const LoginPage = lazy(() => import("@/pages/LoginPage").then((m) => ({ default: m.LoginPage })))
+const QuiEtudiePage = lazy(() => import("@/pages/QuiEtudiePage").then((m) => ({ default: m.QuiEtudiePage })))
 const SubscribePage = lazy(() => import("@/pages/SubscribePage").then((m) => ({ default: m.SubscribePage })))
 const PricingPage = lazy(() => import("@/pages/PricingPage").then((m) => ({ default: m.PricingPage })))
 const AccountPage = lazy(() => import("@/pages/AccountPage").then((m) => ({ default: m.AccountPage })))
@@ -121,6 +122,7 @@ function App() {
                       <Route path="/cours/:slug" element={<CoursDetailPage />} />
                       <Route path="/cours/:slug/lire" element={<CoursReaderPage />} />
                       <Route path="/connexion" element={<LoginPage />} />
+                      <Route path="/qui-etudie" element={<QuiEtudiePage />} />
                       <Route path="/tarifs" element={<PricingPage />} />
                       <Route path="/abonnement" element={<SubscribePage />} />
                       <Route path="/compte" element={<AccountPage />} />

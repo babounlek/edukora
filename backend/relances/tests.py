@@ -42,7 +42,7 @@ class RelancesTestCase(TestCase):
 
     def transaction(self, user, statut, age):
         transaction = Transaction.objects.create(
-            user=user, plan=self.plan, amount=5000, phone_number="677000000", status=statut,
+            user=user, profil=user.profils.first(), plan=self.plan, amount=5000, phone_number="677000000", status=statut,
         )
         Transaction.objects.filter(pk=transaction.pk).update(created_at=self.maintenant - age)
         transaction.refresh_from_db()
@@ -177,8 +177,8 @@ class RelancePaiementTests(RelancesTestCase):
         self.transaction(manuel, StatutTransaction.FAILED, timedelta(hours=5))
         ManualPayment.objects.bulk_create([
             ManualPayment(
-                user=manuel, plan=self.plan, operator="ORANGE", amount_declared=5000, amount_expected=5000,
-                status=ManualPaymentStatus.PENDING,
+                user=manuel, profil=manuel.profils.first(), plan=self.plan, operator="ORANGE", amount_declared=5000,
+                amount_expected=5000, status=ManualPaymentStatus.PENDING,
             ),
         ])
 

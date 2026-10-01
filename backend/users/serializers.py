@@ -5,7 +5,7 @@ from catalog.models import Cursus, ExamSession
 from catalog.serializers import CursusSerializer
 
 from .email_service import normalize_email
-from .models import User
+from .models import Profil, User
 from .phone import to_e164, to_local
 
 # Le frontend envoie toujours le format local à 9 chiffres (voir le champ de saisie
@@ -84,6 +84,7 @@ class UserSerializer(serializers.ModelSerializer):
     compte_a_rebours = serializers.SerializerMethodField()
     a_un_abonnement_actif = serializers.SerializerMethodField()
     rappels_invite_refusee = serializers.SerializerMethodField()
+    profil_actif = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -92,6 +93,7 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined", "referral_code", "filleuls_count", "auth_methods",
             "credit_parrainage_disponible", "cursus_prepare", "compte_a_rebours",
             "a_un_abonnement_actif", "rappels_actifs", "rappels_invite_refusee",
+            "profil_actif",
         ]
 
     def get_rappels_invite_refusee(self, obj):
@@ -151,6 +153,29 @@ class UserSerializer(serializers.ModelSerializer):
 
         return Subscription.objects.filter(user=obj, expires_at__gt=timezone.now()).exists()
 
+    def get_profil_actif(self, obj):
+        """
+        L'enfant actif pour `obj` - voir users.profils.profil_actif, LE point d'entrée
+        qui lit la claim `profil_id` du token.
+
+        `profil_actif(request)` lit `request.user`, pas `obj` : les deux coïncident
+        pour la quasi-totalité des appelants (me_view, etc., où `obj` EST
+        `request.user`), mais pas dans les vues de connexion (otp_verify_view,
+        google_signin_view, email_code_verify_view) - `AllowAny`, `request.user` y
+        est encore anonyme au moment où le token de `obj` vient tout juste d'être émis
+        dans la même réponse. Aucune claim n'existe alors de toute façon (le token
+        n'a pas encore été utilisé une seule fois) : `obj.profils.first()` y est
+        donc la seule réponse correcte, jamais None via profil_actif(request).
+        """
+        from .profils import profil_actif
+
+        request = self.context.get("request")
+        if request is not None and getattr(request.user, "pk", None) == obj.pk:
+            profil = profil_actif(request)
+        else:
+            profil = obj.profils.first()
+        return ProfilSerializer(profil).data if profil is not None else None
+
 
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     # Explicite plutôt que déduit du modèle : `allow_null` (on doit pouvoir effacer sa
@@ -197,3 +222,34 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         # contrainte unique) entreraient en collision au premier qui essaierait de
         # l'enregistrer après un autre - voir le help_text du champ sur le modèle.
         return value or None
+
+
+class ProfilSerializer(serializers.ModelSerializer):
+    """
+    L'enfant pour qui un abonnement est acheté - voir Profil.prenom. Réutilisé par
+    subscriptions.serializers.SubscriptionSerializer pour afficher, sur chaque
+    abonnement, à qui il appartient (voir AccesPage.tsx, qui regroupe par profil).
+    """
+
+    class Meta:
+        model = Profil
+        fields = ["id", "prenom", "ordre"]
+
+
+class ProfilWriteSerializer(serializers.ModelSerializer):
+    """
+    Création/renommage d'un profil. `prenom` obligatoire et non vide ici,
+    contrairement au modèle (blank=True, pour ne jamais bloquer le backfill
+    automatique d'un compte migré) : la fonctionnalité "nommer chaque abonnement"
+    n'a de sens que si un nom est effectivement saisi.
+    """
+
+    class Meta:
+        model = Profil
+        fields = ["id", "prenom"]
+
+    def validate_prenom(self, value):
+        value = value.strip()
+        if not value:
+            raise serializers.ValidationError("Le prénom ne peut pas être vide.")
+        return value

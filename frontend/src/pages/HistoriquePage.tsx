@@ -128,10 +128,16 @@ function ContenuLectures({ progression }: { progression: Progression }) {
 export function HistoriquePage() {
   useSeo({ title: "Mon historique" })
 
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, isLoading, user } = useAuth()
   const navigate = useNavigate()
   const [progression, setProgression] = useState<Progression | null>(null)
   const [tentatives, setTentatives] = useState<TentativeInediteListItem[] | null>(null)
+  // Les deux réponses sont filtrées côté serveur sur le cursus préparé actuellement
+  // (voir access.views.my_progression/inedit.views.list_my_tentatives_inedites) - sans
+  // cette dépendance, basculer d'examen (voir le sélecteur dans Header.tsx) depuis
+  // cette page laissait l'historique de l'ancien cursus affiché jusqu'au prochain
+  // aller-retour de page.
+  const cursusId = user?.cursus_prepare?.id
 
   useEffect(() => {
     if (isLoading) return
@@ -141,7 +147,7 @@ export function HistoriquePage() {
     }
     getMyProgression().then(setProgression)
     listMyTentativesInedites().then(setTentatives)
-  }, [isLoading, isAuthenticated, navigate])
+  }, [isLoading, isAuthenticated, navigate, cursusId])
 
   if (isLoading) return null
 

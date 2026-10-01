@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from catalog.serializers import CursusSerializer
+from users.serializers import ProfilSerializer
 
 from .models import Plan, Subscription
 
@@ -26,12 +27,13 @@ class PlanSerializer(serializers.ModelSerializer):
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     cursus = CursusSerializer(read_only=True)
+    profil = ProfilSerializer(read_only=True)
     is_active = serializers.BooleanField(read_only=True)
     plan_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Subscription
-        fields = ["id", "cursus", "expires_at", "is_active", "plan_name", "duration_mode"]
+        fields = ["id", "cursus", "profil", "expires_at", "is_active", "plan_name", "duration_mode"]
 
     def get_plan_name(self, obj):
         """

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { Check, ChevronDown, GraduationCap, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, UserCircle } from "lucide-react"
+import { Check, ChevronDown, GraduationCap, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, User, UserCircle } from "lucide-react"
 
 import { listEpreuves } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { CompteAReboursBadge, formatCursus } from "@/components/CompteAReboursBadge"
 import { useCursusAbonnes, useChangerCursusPrepare } from "@/lib/changerCursusPrepare"
+import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
 import { SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
@@ -44,6 +45,8 @@ function AccountMenu() {
   const navigate = useNavigate()
   const cursusAbonnes = useCursusAbonnes()
   const changerCursus = useChangerCursusPrepare()
+  const profils = useProfils()
+  const changerProfil = useChangerProfilActif()
 
   function handleLogout() {
     logout()
@@ -65,29 +68,54 @@ function AccountMenu() {
           {/* Tronqué sur petit écran : un nom complet un peu long (le champ est libre)
               repoussait sinon la barre au-delà de la largeur de l'écran. */}
           <span className="max-w-[7.5rem] truncate sm:max-w-none">
-            {user?.full_name || user?.pseudo || user?.phone_number}
+            {user?.profil_actif?.prenom || user?.full_name || user?.pseudo || user?.phone_number}
           </span>
           <ChevronDown className="size-3.5 shrink-0 opacity-60" aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        {/* Seulement si le compte a déjà déclaré 2+ enfants : sinon il n'y a rien à
+            basculer, profil_actif retombe silencieusement sur l'unique profil. */}
+        {profils.length > 1 && (
+          <>
+            <DropdownMenuLabel>Changer d'enfant</DropdownMenuLabel>
+            {profils.map((profil) => {
+              const actif = profil.id === user?.profil_actif?.id
+              return (
+                <DropdownMenuItem
+                  key={profil.id}
+                  disabled={changerProfil.isPending}
+                  onSelect={() => {
+                    if (!actif) changerProfil.mutate(profil.id)
+                  }}
+                >
+                  {actif ? <Check className="text-primary" /> : <User />}
+                  {profil.prenom || "Profil sans nom"}
+                </DropdownMenuItem>
+              )
+            })}
+            <DropdownMenuSeparator />
+          </>
+        )}
         {/* Seulement si le compte a deux abonnements actifs ou plus : sinon il n'y a
-            rien à basculer, la bascule silencieuse (voir profil_actif) suffit. */}
+            rien à basculer, la bascule silencieuse (voir changerCursusPrepare) suffit. */}
         {cursusAbonnes.length > 1 && (
           <>
             <DropdownMenuLabel>Examen préparé</DropdownMenuLabel>
-            {cursusAbonnes.map((cursus) => {
-              const actif = cursus.id === user?.cursus_prepare?.id
+            {cursusAbonnes.map((sub) => {
+              const actif = sub.cursus.id === user?.cursus_prepare?.id
               return (
                 <DropdownMenuItem
-                  key={cursus.id}
+                  key={sub.id}
                   disabled={changerCursus.isPending}
                   onSelect={() => {
-                    if (!actif) changerCursus.mutate(cursus.id)
+                    if (!actif) changerCursus.mutate(sub.cursus.id)
                   }}
                 >
                   {actif ? <Check className="text-primary" /> : <GraduationCap />}
-                  {formatCursus(cursus)}
+                  {/* Deux profils du même compte peuvent préparer le même cursus (voir
+                      useCursusAbonnes) - le prénom lève toute ambiguïté entre les deux. */}
+                  {formatCursus(sub.cursus)} ({sub.profil.prenom})
                 </DropdownMenuItem>
               )
             })}

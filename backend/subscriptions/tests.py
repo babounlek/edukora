@@ -16,7 +16,7 @@ from django.utils import timezone
 from rest_framework.test import APIClient
 
 from catalog.models import Cursus, Examen, ExamSession
-from users.models import User
+from users.models import Profil, User
 
 from .models import (
     DureeMode,
@@ -256,6 +256,38 @@ class SubscriptionManagerActivateOrExtendTests(TestCase):
         )
         self.assertEqual(subscription.duration_mode, DureeMode.JUSQUA_EXAMEN)
 
+    def test_two_profils_of_the_same_account_get_independent_subscriptions_on_the_same_cursus(self):
+        """Le cas que la contrainte élargie (user, cursus, profil) débloque : deux
+        enfants du même compte préparant le même examen, chacun son abonnement, chacun
+        sa propre échéance - voir unique_subscription_per_cursus_profil."""
+        aine = self.user.profils.first()
+        cadet = Profil.objects.create(compte=self.user, prenom="Junior")
+
+        sub_aine = Subscription.objects.activate_or_extend(self.user, self.cursus, 30, profil=aine)
+        sub_cadet = Subscription.objects.activate_or_extend(self.user, self.cursus, 90, profil=cadet)
+
+        self.assertNotEqual(sub_aine.id, sub_cadet.id)
+        self.assertEqual(Subscription.objects.filter(user=self.user, cursus=self.cursus).count(), 2)
+        self.assertAlmostEqual(
+            sub_aine.expires_at, timezone.now() + timedelta(days=30), delta=timedelta(seconds=5),
+        )
+        self.assertAlmostEqual(
+            sub_cadet.expires_at, timezone.now() + timedelta(days=90), delta=timedelta(seconds=5),
+        )
+
+        # Prolonger l'un ne doit jamais toucher l'autre.
+        Subscription.objects.activate_or_extend(self.user, self.cursus, 10, profil=aine)
+        sub_cadet.refresh_from_db()
+        self.assertAlmostEqual(
+            sub_cadet.expires_at, timezone.now() + timedelta(days=90), delta=timedelta(seconds=5),
+        )
+
+    def test_profil_defaults_to_the_account_s_first_profil_when_not_given(self):
+        """Comportement inchangé pour l'immense majorité des appels (aucun profil
+        précisé) - voir la docstring de activate_or_extend."""
+        subscription = Subscription.objects.activate_or_extend(self.user, self.cursus, 30)
+        self.assertEqual(subscription.profil_id, self.user.profils.first().id)
+
 
 class InscriptionInediteExtendTests(TestCase):
     """Miroir de SubscriptionExtendTests - même comportement, modèle séparé (décision "C2")."""
@@ -358,7 +390,7 @@ class ParrainageSkippedForAddonRepetiteurTests(TestCase):
         from payments.models import ManualPayment, MobileMoneyOperator
 
         payment = ManualPayment.objects.create(
-            user=self.filleul, plan=self.addon_plan, operator=MobileMoneyOperator.ORANGE,
+            user=self.filleul, profil=self.filleul.profils.first(), plan=self.addon_plan, operator=MobileMoneyOperator.ORANGE,
             amount_expected=self.addon_plan.price, amount_declared=self.addon_plan.price,
             payer_phone_number=self.filleul.phone_number, transaction_reference="ref-addon-1",
         )
@@ -476,7 +508,7 @@ class MySubscriptionsViewPlanNameTests(TestCase):
         from payments.models import StatutTransaction, Transaction
 
         Transaction.objects.create(
-            user=self.user, plan=self.plan, subscription=self.subscription,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, subscription=self.subscription,
             amount=self.plan.price, phone_number=self.user.phone_number,
             status=StatutTransaction.SUCCESSFUL,
         )
@@ -490,12 +522,12 @@ class MySubscriptionsViewPlanNameTests(TestCase):
 
         older_plan = Plan.objects.create(name="Ancien forfait", cursus=self.cursus, price=1500, duration_days=30)
         Transaction.objects.create(
-            user=self.user, plan=older_plan, subscription=self.subscription,
+            user=self.user, profil=self.user.profils.first(), plan=older_plan, subscription=self.subscription,
             amount=older_plan.price, phone_number=self.user.phone_number,
             status=StatutTransaction.SUCCESSFUL,
         )
         ManualPayment.objects.create(
-            user=self.user, plan=self.plan, subscription=self.subscription,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, subscription=self.subscription,
             operator=MobileMoneyOperator.ORANGE, amount_expected=self.plan.price,
             amount_declared=self.plan.price, payer_phone_number=self.user.phone_number,
             transaction_reference="REF123", status=ManualPaymentStatus.APPROVED,
@@ -531,7 +563,7 @@ class ParrainageAcrossPaymentChannelsTests(TestCase):
         from payments.models import ManualPayment, MobileMoneyOperator
 
         return ManualPayment.objects.create(
-            user=self.filleul, plan=self.plan, operator=MobileMoneyOperator.ORANGE,
+            user=self.filleul, profil=self.filleul.profils.first(), plan=self.plan, operator=MobileMoneyOperator.ORANGE,
             amount_expected=self.plan.price, amount_declared=self.plan.price,
             payer_phone_number=self.filleul.phone_number, transaction_reference=reference,
         )
@@ -549,7 +581,7 @@ class ParrainageAcrossPaymentChannelsTests(TestCase):
         from payments.models import StatutTransaction, Transaction
 
         transaction = Transaction.objects.create(
-            user=self.filleul, plan=self.plan, amount=self.plan.price,
+            user=self.filleul, profil=self.filleul.profils.first(), plan=self.plan, amount=self.plan.price,
             phone_number=self.filleul.phone_number, provider_reference="ref-campay-1",
             status=StatutTransaction.SUCCESSFUL,
         )

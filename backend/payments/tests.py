@@ -26,7 +26,7 @@ from subscriptions.models import (
     Subscription,
     solde_credit_parrainage,
 )
-from users.models import User
+from users.models import Profil, User
 
 from .campay_client import CampayError
 from .models import (
@@ -60,7 +60,7 @@ def _octroyer_credit(parrain, montant, cursus):
     filleul_bidon = User.objects.create_user(phone_number=f"679{User.objects.count():06d}", password="x")
     plan_bidon = Plan.objects.create(name="Bidon", cursus=cursus, price=1, duration_days=1)
     transaction_bidon = Transaction.objects.create(
-        user=filleul_bidon, plan=plan_bidon, amount=1,
+        user=filleul_bidon, profil=filleul_bidon.profils.first(), plan=plan_bidon, amount=1,
         phone_number=filleul_bidon.phone_number, status=StatutTransaction.SUCCESSFUL,
     )
     return ParrainageRecompense.objects.create(
@@ -78,7 +78,7 @@ class TransactionSyncStatusTests(TestCase):
         self.user = User.objects.create_user(phone_number="677000001", password="x")
         self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=90)
         self.transaction = Transaction.objects.create(
-            user=self.user, plan=self.plan, amount=self.plan.price,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, amount=self.plan.price,
             phone_number=self.user.phone_number, provider_reference="ref-1",
         )
 
@@ -169,7 +169,7 @@ class TransactionSyncStatusPlanInclutInediteTests(TestCase):
             inclut_inedit=True,
         )
         self.transaction = Transaction.objects.create(
-            user=self.user, plan=self.plan, amount=self.plan.price,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, amount=self.plan.price,
             phone_number=self.user.phone_number, provider_reference="ref-max-1",
         )
 
@@ -218,7 +218,7 @@ class TransactionSyncStatusPlanWithoutInclutInediteTests(TestCase):
         self.user = User.objects.create_user(phone_number="677000061", password="x")
         self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=90)
         self.transaction = Transaction.objects.create(
-            user=self.user, plan=self.plan, amount=self.plan.price,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, amount=self.plan.price,
             phone_number=self.user.phone_number, provider_reference="ref-no-inedit-1",
         )
 
@@ -252,7 +252,7 @@ class ParrainageFrozenTests(TestCase):
     def test_first_conversion_no_longer_rewards_parrain(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL}
         transaction = Transaction.objects.create(
-            user=self.filleul, plan=self.plan, amount=self.plan.price,
+            user=self.filleul, profil=self.filleul.profils.first(), plan=self.plan, amount=self.plan.price,
             phone_number=self.filleul.phone_number, provider_reference="ref-1",
         )
 
@@ -266,7 +266,7 @@ class ParrainageFrozenTests(TestCase):
     def test_replaying_sync_status_still_never_rewards_parrain(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL}
         transaction = Transaction.objects.create(
-            user=self.filleul, plan=self.plan, amount=self.plan.price,
+            user=self.filleul, profil=self.filleul.profils.first(), plan=self.plan, amount=self.plan.price,
             phone_number=self.filleul.phone_number, provider_reference="ref-1",
         )
 
@@ -299,6 +299,35 @@ class PaymentFlowAPITests(TestCase):
         self.assertEqual(transaction.status, StatutTransaction.PENDING)
         self.assertEqual(transaction.provider_reference, "campay-ref-123")
         self.assertEqual(transaction.user, self.user)
+        self.assertEqual(transaction.profil_id, self.user.profils.first().id)
+
+    @patch("payments.campay_client.init_collect")
+    def test_initiate_payment_activates_the_explicit_profil_when_given(self, mock_init):
+        """"Ajouter un enfant" (AccesPage.tsx) : un profil_id explicite doit activer
+        l'abonnement de CET enfant, pas le profil par défaut du compte."""
+        mock_init.return_value = {"reference": "campay-ref-cadet", "status": "SUCCESSFUL"}
+        cadet = Profil.objects.create(compte=self.user, prenom="Junior")
+
+        response = self.client.post(
+            "/payments/initiate/",
+            {"plan_id": self.plan.id, "phone_number": self.user.phone_number, "profil_id": cadet.id},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        transaction = Transaction.objects.get(pk=response.data["transaction_id"])
+        self.assertEqual(transaction.profil_id, cadet.id)
+
+    def test_initiate_payment_rejects_a_profil_id_belonging_to_another_account(self):
+        other_user = User.objects.create_user(phone_number="677000007", password="x")
+        profil_autrui = other_user.profils.first()
+
+        response = self.client.post(
+            "/payments/initiate/",
+            {"plan_id": self.plan.id, "phone_number": self.user.phone_number, "profil_id": profil_autrui.id},
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(Transaction.objects.filter(user=self.user).exists())
 
     @patch("payments.campay_client.init_collect")
     def test_initiate_payment_charges_the_effective_price_for_a_jusqua_examen_plan(self, mock_init):
@@ -352,7 +381,7 @@ class PaymentFlowAPITests(TestCase):
         # aurait quand même consommé le crédit du parrain.
         _octroyer_credit(self.user, 500, self.cursus)
         transaction = Transaction.objects.create(
-            user=self.user, plan=self.plan, amount=self.plan.price - 500,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, amount=self.plan.price - 500,
             credit_applique=500, phone_number=self.user.phone_number, provider_reference="ref-credit-confirm",
         )
         self.assertEqual(solde_credit_parrainage(self.user), 500)
@@ -424,7 +453,7 @@ class PaymentFlowAPITests(TestCase):
     def test_check_status_full_happy_path(self, mock_status):
         mock_status.return_value = {"status": StatutTransaction.SUCCESSFUL, "reference": "ref-1"}
         transaction = Transaction.objects.create(
-            user=self.user, plan=self.plan, amount=self.plan.price,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, amount=self.plan.price,
             phone_number=self.user.phone_number, provider_reference="ref-1",
         )
 
@@ -437,7 +466,7 @@ class PaymentFlowAPITests(TestCase):
     @patch("payments.campay_client.get_transaction_status")
     def test_check_status_does_not_repoll_already_successful_transaction(self, mock_status):
         transaction = Transaction.objects.create(
-            user=self.user, plan=self.plan, amount=self.plan.price,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, amount=self.plan.price,
             phone_number=self.user.phone_number, provider_reference="ref-1",
             status=StatutTransaction.SUCCESSFUL,
         )
@@ -452,7 +481,7 @@ class PaymentFlowAPITests(TestCase):
     def test_check_status_reports_campay_error_to_sentry(self, mock_status, mock_capture):
         mock_status.side_effect = CampayError("CamPay injoignable")
         transaction = Transaction.objects.create(
-            user=self.user, plan=self.plan, amount=self.plan.price,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, amount=self.plan.price,
             phone_number=self.user.phone_number, provider_reference="ref-1",
         )
 
@@ -464,7 +493,7 @@ class PaymentFlowAPITests(TestCase):
     def test_check_status_rejects_other_users_transaction(self):
         other_user = User.objects.create_user(phone_number="677000006", password="x")
         transaction = Transaction.objects.create(
-            user=other_user, plan=self.plan, amount=self.plan.price, phone_number=other_user.phone_number,
+            user=other_user, profil=other_user.profils.first(), plan=self.plan, amount=self.plan.price, phone_number=other_user.phone_number,
         )
 
         response = self.client.get(f"/payments/status/{transaction.id}/")
@@ -529,7 +558,7 @@ class TransactionConcurrencyTests(TransactionTestCase):
         )
         self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=30)
         self.transaction = Transaction.objects.create(
-            user=self.filleul, plan=self.plan, amount=self.plan.price,
+            user=self.filleul, profil=self.filleul.profils.first(), plan=self.plan, amount=self.plan.price,
             phone_number=self.filleul.phone_number, provider_reference="ref-race",
         )
 
@@ -746,7 +775,7 @@ class ManualPaymentApproveRejectTests(TestCase):
         self.admin = User.objects.create_user(phone_number="677000041", password="x", is_staff=True)
         self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=90)
         self.payment = ManualPayment.objects.create(
-            user=self.user, plan=self.plan, operator=MobileMoneyOperator.ORANGE,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, operator=MobileMoneyOperator.ORANGE,
             amount_expected=self.plan.price, amount_declared=self.plan.price,
             payer_phone_number=self.user.phone_number, transaction_reference="OM-APR-1",
         )
@@ -813,12 +842,12 @@ class ManualPaymentMineAPITests(TestCase):
 
     def test_returns_only_the_authenticated_user_payments(self):
         ManualPayment.objects.create(
-            user=self.user, plan=self.plan, operator=MobileMoneyOperator.ORANGE,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, operator=MobileMoneyOperator.ORANGE,
             amount_expected=self.plan.price, amount_declared=self.plan.price,
             payer_phone_number=self.user.phone_number, transaction_reference="OM-MINE-1",
         )
         ManualPayment.objects.create(
-            user=self.other_user, plan=self.plan, operator=MobileMoneyOperator.ORANGE,
+            user=self.other_user, profil=self.other_user.profils.first(), plan=self.plan, operator=MobileMoneyOperator.ORANGE,
             amount_expected=self.plan.price, amount_declared=self.plan.price,
             payer_phone_number=self.other_user.phone_number, transaction_reference="OM-MINE-2",
         )
@@ -844,7 +873,7 @@ class ManualPaymentConcurrencyTests(TransactionTestCase):
         self.admin = User.objects.create_user(phone_number="677100021", password="x", is_staff=True)
         self.plan = Plan.objects.create(name="Trimestre", cursus=self.cursus, price=2000, duration_days=30)
         self.payment = ManualPayment.objects.create(
-            user=self.user, plan=self.plan, operator=MobileMoneyOperator.ORANGE,
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, operator=MobileMoneyOperator.ORANGE,
             amount_expected=self.plan.price, amount_declared=self.plan.price,
             payer_phone_number=self.user.phone_number, transaction_reference="OM-RACE-1",
         )
@@ -894,7 +923,7 @@ class PaymentProviderAbstractionTests(TestCase):
 
     def _transaction(self, **kwargs):
         return Transaction.objects.create(
-            user=self.user, plan=self.plan, amount=3000, phone_number="677000091",
+            user=self.user, profil=self.user.profils.first(), plan=self.plan, amount=3000, phone_number="677000091",
             provider_reference="ref-prov", **kwargs,
         )
 

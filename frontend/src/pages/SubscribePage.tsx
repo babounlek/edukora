@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, Sparkles, XCircle, Zap } from "lucide-react"
 
-import { checkPaymentStatus, initiatePayment, listCursus, listPlans } from "@/api/endpoints"
+import { checkPaymentStatus, initiatePayment, listCursus, listPlans, listProfils } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Cursus, ManualPayment, MobileMoneyOperator, Plan } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
@@ -102,11 +102,17 @@ export function SubscribePage() {
   // formulaire présélectionné sur une autre formule - le choix venait d'être fait, la
   // page suivante le perdait.
   const dureeParam = searchParams.get("duree")
+  // L'enfant pour qui cet achat est fait ("Ajouter un enfant", AccesPage.tsx) -
+  // absent pour l'immense majorité des achats (compte à un seul profil), relayé tel
+  // quel à initiatePayment/declareManualPayment (voir payments.views._resoudre_profil).
+  const profilParam = searchParams.get("profil")
+  const profilId = profilParam ? Number(profilParam) : undefined
   const navigate = useNavigate()
   const { isAuthenticated, isLoading, user } = useAuth()
   const { country } = useCountry()
 
   const [cursus, setCursus] = useState<Cursus | null>(null)
+  const [profilPrenom, setProfilPrenom] = useState<string | null>(null)
   const [plans, setPlans] = useState<Plan[]>([])
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null)
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -171,6 +177,17 @@ export function SubscribePage() {
     }
   }, [cursusId, requireRepetiteur, dureeParam])
 
+  // Confirmation visuelle qu'on achète pour le bon enfant ("Abonnement pour Awa") -
+  // uniquement quand la page arrive avec un profil explicite (voir "Ajouter un
+  // enfant", AccesPage.tsx) ; silencieux sinon, pas de requête en plus pour
+  // l'immense majorité des achats.
+  useEffect(() => {
+    if (!profilId) return
+    listProfils().then((profils) => {
+      setProfilPrenom(profils.find((p) => p.id === profilId)?.prenom ?? null)
+    })
+  }, [profilId])
+
   useEffect(() => {
     return () => {
       if (pollRef.current) window.clearInterval(pollRef.current)
@@ -226,7 +243,7 @@ export function SubscribePage() {
     const properties = { cursus_id: cursusId ? Number(cursusId) : undefined, plan_id: selectedPlanId }
     trackEvent("payment_initiated", properties)
     try {
-      const response = await initiatePayment({ planId: selectedPlanId, phoneNumber })
+      const response = await initiatePayment({ planId: selectedPlanId, phoneNumber, profilId })
       if (response.status === "FAILED") {
         setPhase("failed")
         trackEvent("payment_failed", properties)
@@ -322,7 +339,9 @@ export function SubscribePage() {
           <div className="mx-auto mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <Sparkles className="size-5" />
           </div>
-          <p className="mb-1 font-display text-sm italic text-primary">Abonnement</p>
+          <p className="mb-1 font-display text-sm italic text-primary">
+            {profilPrenom ? `Abonnement pour ${profilPrenom}` : "Abonnement"}
+          </p>
           <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
             {cursus
               ? `${cursus.examen_display}${cursus.series ? ` - Série ${cursus.series.code}` : ""}`
@@ -484,6 +503,7 @@ export function SubscribePage() {
                     <ManualPaymentPanel
                       plan={selectedPlan}
                       operator={paymentMethod}
+                      profilId={profilId}
                       onDeclared={(payment) => {
                         setDeclaredPayment(payment)
                         setPhase("manual_submitted")

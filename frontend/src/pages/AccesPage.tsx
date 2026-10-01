@@ -1,17 +1,22 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { ArrowRight, CalendarClock, Check, Sparkles } from "lucide-react"
+import { ArrowRight, CalendarClock, Check, Loader2, Pencil, Plus, Sparkles, UserPlus } from "lucide-react"
 
 import {
+  createProfil,
   listMyInscriptionsInedites,
   listMyInscriptionsRepetiteur,
   listMySubscriptions,
+  listProfils,
+  renameProfil,
 } from "@/api/endpoints"
-import type { InscriptionInedite, InscriptionRepetiteur, Subscription } from "@/api/types"
+import { ApiError } from "@/api/client"
+import type { InscriptionInedite, InscriptionRepetiteur, Profil, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { EnteteCompte, EtatVide, Section } from "@/components/CompteSection"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
@@ -39,13 +44,14 @@ function libelleCursus(cursus: Subscription["cursus"]): string {
  * l'échéance existante (voir Subscription.extend) : rien n'est perdu à le faire tôt.
  */
 function LigneAcces({
-  titre, sous_titre, expiresAt, actif, cursusId, renouvelable = true, inclutInedit = false,
+  titre, sous_titre, expiresAt, actif, cursusId, profilId, renouvelable = true, inclutInedit = false,
 }: {
   titre: string
   sous_titre?: string
   expiresAt: string
   actif: boolean
   cursusId: number
+  profilId: number
   renouvelable?: boolean
   inclutInedit?: boolean
 }) {
@@ -88,13 +94,144 @@ function LigneAcces({
 
       {renouvelable && (!actif || bientot) && (
         <Button asChild size="sm" variant={actif ? "default" : "outline"} className="mt-3 h-8 rounded-full text-xs">
-          <Link to={`/abonnement?cursus=${cursusId}`}>
+          {/* `profil=` : sans lui, prolonger depuis la carte d'un enfant précis
+              retomberait sur le profil par défaut du compte (voir
+              payments.views._resoudre_profil), pas nécessairement le bon enfant. */}
+          <Link to={`/abonnement?cursus=${cursusId}&profil=${profilId}`}>
             {actif ? "Prolonger" : "Se réabonner"}
             <ArrowRight className="size-3.5" />
           </Link>
         </Button>
       )}
     </li>
+  )
+}
+
+/**
+ * Le prénom d'un profil, renommable en ligne (clic -> champ -> Entrée/blur pour
+ * enregistrer). Jamais un modal : c'est un simple libellé, pas une action qui
+ * mérite d'interrompre la page.
+ */
+function NomProfilEditable({ profil, onRenamed }: { profil: Profil; onRenamed: (profil: Profil) => void }) {
+  const [editing, setEditing] = useState(false)
+  const [valeur, setValeur] = useState(profil.prenom)
+  const [saving, setSaving] = useState(false)
+
+  async function enregistrer() {
+    const prenom = valeur.trim()
+    if (!prenom || prenom === profil.prenom) {
+      setValeur(profil.prenom)
+      setEditing(false)
+      return
+    }
+    setSaving(true)
+    try {
+      const updated = await renameProfil(profil.id, prenom)
+      onRenamed(updated)
+    } catch {
+      setValeur(profil.prenom)
+    } finally {
+      setSaving(false)
+      setEditing(false)
+    }
+  }
+
+  if (editing) {
+    return (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          enregistrer()
+        }}
+        className="flex items-center gap-1.5"
+      >
+        <Input
+          autoFocus
+          value={valeur}
+          onChange={(e) => setValeur(e.target.value)}
+          onBlur={enregistrer}
+          disabled={saving}
+          maxLength={60}
+          className="h-8 w-40 text-sm font-semibold"
+        />
+        {saving && <Loader2 className="size-4 shrink-0 animate-spin text-muted-foreground" />}
+      </form>
+    )
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setEditing(true)}
+      className="group flex items-center gap-1.5 text-left"
+    >
+      <h3 className="font-display text-base font-semibold">
+        {profil.prenom || "Sans nom"}
+      </h3>
+      <Pencil className="size-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+    </button>
+  )
+}
+
+/** "Ajouter un enfant" : crée le profil puis envoie choisir un cursus à lui payer. */
+function AjouterEnfant({ onCreated }: { onCreated: (profil: Profil) => void }) {
+  const navigate = useNavigate()
+  const [ouvert, setOuvert] = useState(false)
+  const [prenom, setPrenom] = useState("")
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!prenom.trim()) return
+    setSaving(true)
+    setError(null)
+    try {
+      const profil = await createProfil(prenom.trim())
+      onCreated(profil)
+      navigate(`/tarifs?profil=${profil.id}`)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Impossible de créer ce profil.")
+      setSaving(false)
+    }
+  }
+
+  if (!ouvert) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOuvert(true)}
+        className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border px-4 py-3.5 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+      >
+        <UserPlus className="size-4" />
+        Ajouter un enfant
+      </button>
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 rounded-xl border border-dashed border-primary/40 bg-primary/[0.03] p-3.5">
+      <label htmlFor="nouveau-prenom" className="text-xs font-medium text-muted-foreground">
+        Prénom de l'enfant
+      </label>
+      <div className="flex items-center gap-2">
+        <Input
+          id="nouveau-prenom"
+          autoFocus
+          value={prenom}
+          onChange={(e) => setPrenom(e.target.value)}
+          placeholder="Awa"
+          maxLength={60}
+          disabled={saving}
+          className="h-9"
+        />
+        <Button type="submit" size="sm" disabled={saving || !prenom.trim()} className="h-9 shrink-0 rounded-full">
+          {saving ? <Loader2 className="size-4 animate-spin" /> : <Plus className="size-4" />}
+          Continuer
+        </Button>
+      </div>
+      {error && <p className="text-xs text-destructive">{error}</p>}
+    </form>
   )
 }
 
@@ -106,6 +243,7 @@ export function AccesPage() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [inscriptionsInedites, setInscriptionsInedites] = useState<InscriptionInedite[] | null>(null)
   const [inscriptionsRepetiteur, setInscriptionsRepetiteur] = useState<InscriptionRepetiteur[] | null>(null)
+  const [profils, setProfils] = useState<Profil[] | null>(null)
 
   useEffect(() => {
     if (isLoading) return
@@ -116,11 +254,12 @@ export function AccesPage() {
     listMySubscriptions().then(setSubscriptions)
     listMyInscriptionsInedites().then(setInscriptionsInedites)
     listMyInscriptionsRepetiteur().then(setInscriptionsRepetiteur)
+    listProfils().then(setProfils)
   }, [isLoading, isAuthenticated, navigate])
 
   if (isLoading) return null
 
-  const charge = inscriptionsInedites !== null && inscriptionsRepetiteur !== null
+  const charge = inscriptionsInedites !== null && inscriptionsRepetiteur !== null && profils !== null
 
   // L'add-on Épreuves Inédites n'est plus achetable séparément (retiré le 2026-09-30) :
   // il est désormais TOUJOURS activé pour la même durée que l'abonnement qui l'inclut
@@ -143,6 +282,7 @@ export function AccesPage() {
       expiresAt: sub.expires_at,
       actif: sub.is_active,
       cursusId: sub.cursus.id,
+      profilId: sub.profil.id,
       // Un accès "Jusqu'à l'Examen" couvre déjà l'échéance : lui proposer de prolonger n'aurait
       // aucun sens tant qu'il est actif.
       renouvelable: sub.duration_mode !== "JUSQUA_EXAMEN" || !sub.is_active,
@@ -155,9 +295,27 @@ export function AccesPage() {
       expiresAt: i.expires_at,
       actif: i.is_active,
       cursusId: i.cursus.id,
+      profilId: i.profil.id,
       renouvelable: true,
     })),
   ]
+
+  // Un groupe par profil (enfant), dans l'ordre où ils ont été ajoutés (voir
+  // Profil.ordre) - même un compte à un seul profil en voit un, personnalisable :
+  // c'est exactement ce que "nommer chaque abonnement" demande, pas seulement les
+  // comptes à plusieurs enfants.
+  const groupes = (profils ?? []).map((profil) => ({
+    profil,
+    acces: acces.filter((a) => a.profilId === profil.id),
+  }))
+
+  function renommer(profilRenomme: Profil) {
+    setProfils((prev) => (prev ?? []).map((p) => (p.id === profilRenomme.id ? profilRenomme : p)))
+  }
+
+  function ajouterProfil(nouveau: Profil) {
+    setProfils((prev) => [...(prev ?? []), nouveau])
+  }
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:py-10 sm:px-6">
@@ -168,18 +326,40 @@ export function AccesPage() {
       />
 
       <Section icone={Sparkles} titre="Abonnements et accès">
-        {acces.length > 0 ? (
-          <ul className="flex flex-col gap-2.5">
-            {acces.map(({ key, ...props }) => <LigneAcces key={key} {...props} />)}
-          </ul>
-        ) : charge ? (
+        {!charge ? (
+          <p className="text-sm text-muted-foreground">Chargement…</p>
+        ) : acces.length === 0 ? (
           <EtatVide
             texte="Aucun accès actif pour le moment. Choisis ton examen pour débloquer les corrigés, les cours et ta séance du jour."
             lien="/tarifs"
             libelleLien="Voir les formules"
           />
         ) : (
-          <p className="text-sm text-muted-foreground">Chargement…</p>
+          <div className="flex flex-col gap-5">
+            {groupes.map(({ profil, acces: accesDuProfil }) => (
+              <div key={profil.id} className="flex flex-col gap-2.5">
+                <NomProfilEditable profil={profil} onRenamed={renommer} />
+                {accesDuProfil.length > 0 ? (
+                  <ul className="flex flex-col gap-2.5">
+                    {accesDuProfil.map(({ key, ...props }) => <LigneAcces key={key} {...props} />)}
+                  </ul>
+                ) : (
+                  <Button asChild size="sm" variant="outline" className="h-8 w-fit rounded-full text-xs">
+                    <Link to={`/tarifs?profil=${profil.id}`}>
+                      Choisir un abonnement
+                      <ArrowRight className="size-3.5" />
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {charge && (
+          <div className="mt-5">
+            <AjouterEnfant onCreated={ajouterProfil} />
+          </div>
         )}
       </Section>
     </div>

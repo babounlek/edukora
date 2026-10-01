@@ -42,7 +42,7 @@ class EntonnoirTests(TestCase):
 
     def paiement(self, user, statut, *, age=timedelta(days=1)):
         transaction = Transaction.objects.create(
-            user=user, plan=self.plan, amount=5000, phone_number="677000000", status=statut,
+            user=user, profil=user.profils.first(), plan=self.plan, amount=5000, phone_number="677000000", status=statut,
         )
         Transaction.objects.filter(pk=transaction.pk).update(created_at=self.maintenant - age)
         return transaction

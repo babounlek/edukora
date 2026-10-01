@@ -53,7 +53,7 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
   })
   const cursus = user?.cursus_prepare
   const compte = user?.compte_a_rebours ?? plan?.compte_a_rebours ?? null
-  const prenom = (user?.pseudo || user?.full_name || "").trim().split(/\s+/)[0]
+  const prenom = (user?.profil_actif?.prenom || user?.pseudo || user?.full_name || "").trim().split(/\s+/)[0]
   const serie = plan?.serie
   const seancesSemaine = plan?.seances_cette_semaine
 
@@ -188,18 +188,20 @@ function CursusPreparePuce({ cursus }: { cursus: Cursus }) {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        {cursusAbonnes.map((c) => {
-          const actif = c.id === cursus.id
+        {cursusAbonnes.map((sub) => {
+          const actif = sub.cursus.id === cursus.id
           return (
             <DropdownMenuItem
-              key={c.id}
+              key={sub.id}
               disabled={changerCursus.isPending}
               onSelect={() => {
-                if (!actif) changerCursus.mutate(c.id)
+                if (!actif) changerCursus.mutate(sub.cursus.id)
               }}
             >
               {actif ? <Check className="text-primary" /> : <GraduationCap />}
-              {formatCursus(c)}
+              {/* Deux profils du même compte peuvent préparer le même cursus (voir
+                  useCursusAbonnes) - le prénom lève toute ambiguïté entre les deux. */}
+              {formatCursus(sub.cursus)} ({sub.profil.prenom})
             </DropdownMenuItem>
           )
         })}

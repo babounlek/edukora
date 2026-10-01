@@ -24,7 +24,7 @@ class StatutTransaction(models.TextChoices):
     FAILED = "FAILED", "Échouée"
 
 
-def _activer_acces(plan, user):
+def _activer_acces(plan, user, profil=None):
     """
     Point de bascule unique entre les types de produit (voir
     subscriptions.models.ProductType) - jamais dupliqué entre Transaction.sync_status et
@@ -39,26 +39,30 @@ def _activer_acces(plan, user):
     fois (pas de contrainte base "exactement une seule") - seul le cas ADDON_REPETITEUR
     pur reste exclusif (aucun sens à activer un abonnement de base pour l'achat de cet
     add-on seul).
+
+    `profil` : l'enfant pour qui cet achat est fait (voir Transaction.profil/
+    ManualPayment.profil) - relayé tel quel aux trois `activate_or_extend`, qui
+    retombent eux-mêmes sur `user.profils.first()` si None (voir leur docstring).
     """
     duration_days = plan.effective_duration_days()
     if plan.product_type == ProductType.ADDON_REPETITEUR:
         inscription_repetiteur = InscriptionRepetiteur.objects.activate_or_extend(
-            user=user, cursus=plan.cursus, duration_days=duration_days,
+            user=user, cursus=plan.cursus, duration_days=duration_days, profil=profil,
         )
         return None, None, inscription_repetiteur
     subscription = Subscription.objects.activate_or_extend(
-        user=user, cursus=plan.cursus, duration_days=duration_days, duration_mode=plan.duration_mode,
+        user=user, cursus=plan.cursus, duration_days=duration_days, duration_mode=plan.duration_mode, profil=profil,
     )
     inscription_inedite = None
     if plan.inclut_inedit:
         inscription_inedite = InscriptionInedite.objects.activate_or_extend(
-            user=user, cursus=plan.cursus, duration_days=duration_days,
+            user=user, cursus=plan.cursus, duration_days=duration_days, profil=profil,
         )
     return subscription, inscription_inedite, None
 
 
 class TransactionManager(models.Manager):
-    def creer_couverte_par_credit(self, *, user, plan, phone_number, credit_applique):
+    def creer_couverte_par_credit(self, *, user, plan, phone_number, credit_applique, profil=None):
         """
         Achat intégralement couvert par le crédit parrainage disponible de `user`
         (credit_applique == plan.effective_price()) - jamais envoyé à un agrégateur, activé
@@ -68,6 +72,7 @@ class TransactionManager(models.Manager):
         transaction = self.create(
             user=user, plan=plan, amount=0, phone_number=phone_number,
             credit_applique=credit_applique, status=StatutTransaction.SUCCESSFUL,
+            profil=profil or user.profils.first(),
         )
         return transaction._confirmer_succes()
 
@@ -76,6 +81,10 @@ class Transaction(models.Model):
     """Une tentative de paiement Mobile Money : achat/renouvellement d'un Plan d'abonnement ou d'un add-on."""
 
     user = models.ForeignKey("users.User", on_delete=models.PROTECT, related_name="transactions")
+    profil = models.ForeignKey(
+        "users.Profil", on_delete=models.PROTECT, related_name="transactions",
+        help_text="L'enfant pour qui cet achat est fait - voir payments.views.initiate_payment.",
+    )
     plan = models.ForeignKey(Plan, on_delete=models.PROTECT, related_name="transactions")
     subscription = models.ForeignKey(
         Subscription, null=True, blank=True, on_delete=models.SET_NULL, related_name="transactions",
@@ -193,7 +202,9 @@ class Transaction(models.Model):
                 self.inscription_repetiteur = locked.inscription_repetiteur
                 return self
 
-            subscription, inscription_inedite, inscription_repetiteur = _activer_acces(self.plan, self.user)
+            subscription, inscription_inedite, inscription_repetiteur = _activer_acces(
+                self.plan, self.user, profil=locked.profil,
+            )
             if self.credit_applique:
                 consommer_credit_parrainage(self.user, self.credit_applique)
             locked.subscription = subscription
@@ -280,7 +291,7 @@ def _notifier_utilisateur(phone_number, message):
 
 class ManualPaymentManager(models.Manager):
     def declare(self, *, user, plan, operator, amount_declared, payer_phone_number,
-                transaction_reference, paid_at=None, proof=None, ip=None):
+                transaction_reference, paid_at=None, proof=None, ip=None, profil=None):
         """
         Point d'entrée unique de la déclaration utilisateur. `amount_expected` est
         TOUJOURS recalculé depuis `plan.effective_price()` ici - jamais accepté depuis
@@ -294,7 +305,7 @@ class ManualPaymentManager(models.Manager):
         reference = (transaction_reference or "").strip().upper()
 
         payment = self.create(
-            user=user, plan=plan, operator=operator,
+            user=user, plan=plan, operator=operator, profil=profil or user.profils.first(),
             amount_expected=plan.effective_price(), amount_declared=amount_declared,
             payer_phone_number=payer_phone_number, transaction_reference=reference,
             paid_at=paid_at, proof=proof, declared_ip=ip,
@@ -315,6 +326,10 @@ class ManualPayment(models.Model):
     """
 
     user = models.ForeignKey("users.User", on_delete=models.PROTECT, related_name="manual_payments")
+    profil = models.ForeignKey(
+        "users.Profil", on_delete=models.PROTECT, related_name="manual_payments",
+        help_text="L'enfant pour qui cet achat est fait - voir payments.views.declare_manual_payment.",
+    )
     plan = models.ForeignKey(Plan, on_delete=models.PROTECT, related_name="manual_payments")
     subscription = models.ForeignKey(
         Subscription, null=True, blank=True, on_delete=models.SET_NULL, related_name="manual_payments",
@@ -408,7 +423,9 @@ class ManualPayment(models.Model):
                     f"Paiement #{locked.pk} déjà traité (statut actuel : {locked.status}).",
                 )
 
-            subscription, inscription_inedite, inscription_repetiteur = _activer_acces(locked.plan, locked.user)
+            subscription, inscription_inedite, inscription_repetiteur = _activer_acces(
+                locked.plan, locked.user, profil=locked.profil,
+            )
             locked.status = ManualPaymentStatus.APPROVED
             locked.subscription = subscription
             locked.inscription_inedite = inscription_inedite

@@ -569,7 +569,7 @@ export function ParcoursSubjectPage() {
             <div role="group" aria-label="Cursus" className="inline-flex flex-wrap rounded-full border border-border/80 bg-muted/60 p-1">
               {actifs.map((sub) => (
                 <button
-                  key={sub.cursus.id}
+                  key={sub.id}
                   type="button"
                   aria-pressed={String(sub.cursus.id) === selectedCursus}
                   onClick={() => {
@@ -583,7 +583,9 @@ export function ParcoursSubjectPage() {
                       : "text-muted-foreground hover:text-foreground",
                   )}
                 >
-                  {libelleCursus(sub.cursus)}
+                  {/* Deux profils du même compte peuvent préparer le même cursus (voir
+                      "Ajouter un enfant", AccesPage.tsx) - le prénom lève l'ambiguïté. */}
+                  {libelleCursus(sub.cursus)} ({sub.profil.prenom})
                 </button>
               ))}
             </div>

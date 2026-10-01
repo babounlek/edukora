@@ -164,17 +164,37 @@ def preview_cours(request, cours_id):
 
 @api_view(["GET"])
 def my_progression(request):
-    """Leçons et cours dont l'utilisateur a ouvert la lecture complète, du plus récent au plus ancien."""
+    """
+    Leçons et cours dont l'utilisateur a ouvert la lecture complète pour le cursus
+    préparé actuellement, du plus récent au plus ancien.
+
+    Filtré sur le cursus préparé actuellement : un compte avec deux abonnements actifs
+    (voir le sélecteur d'examen dans Header.tsx/TeteAccueil.tsx) mélangeait sinon les
+    lectures des deux cursus dans "Mon historique", "Reprendre ma lecture"
+    (CataloguePage, CoursListPage) - une leçon de BEPC lue apparaissait encore une fois
+    qu'on avait basculé sur BAC C. Un Cours sans cursus du tout (notion commune à
+    toutes les séries, voir Cours.cursus) reste toujours inclus.
+
+    Lu sur `request.user.cursus_prepare` (et non `profil.cursus_prepare`) : c'est le
+    champ que le sélecteur d'examen écrit (voir users.serializers.UserProfileUpdateSerializer)
+    et que tout le reste de l'app lit encore aujourd'hui (voir quiz.views, "Aujourd'hui")
+    - `Profil.cursus_prepare` existe (refonte compte famille en cours) mais n'est pas
+    encore la source vivante, les deux ne sont pas synchronisés.
+    """
     profil = profil_actif(request)
+    cursus = request.user.cursus_prepare if profil is not None else None
+
+    lessons_qs = Lesson.objects.visibles().filter(lectures__profil=profil)
+    cours_qs = Cours.objects.visibles().filter(lectures__profil=profil)
+    if cursus is not None:
+        lessons_qs = lessons_qs.filter(cursus=cursus)
+        cours_qs = cours_qs.filter(models.Q(cursus=cursus) | models.Q(cursus__isnull=True))
+
     lessons = (
-        Lesson.objects.visibles().filter(lectures__profil=profil)
-        .select_related("subject__country")
+        lessons_qs.select_related("subject__country")
         .order_by("-lectures__last_read_at")
     )
-    cours = (
-        Cours.objects.visibles().filter(lectures__profil=profil)
-        .order_by("-lectures__last_read_at")
-    )
+    cours = cours_qs.order_by("-lectures__last_read_at").distinct()
 
     return Response({
         "lessons": _LessonProgressionSerializer(lessons, many=True).data,

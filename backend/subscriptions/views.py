@@ -23,5 +23,5 @@ class MySubscriptionsView(generics.ListAPIView):
     def get_queryset(self):
         return (
             Subscription.objects.filter(user=self.request.user)
-            .select_related("cursus", "cursus__series")
+            .select_related("cursus", "cursus__series", "profil")
         )

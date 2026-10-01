@@ -29,6 +29,7 @@ import type {
   Plan,
   PlanDuJour,
   Priorites,
+  Profil,
   Progression,
   QuizCorrige,
   QuizFichePdfStatus,
@@ -152,6 +153,33 @@ export interface UpdateProfileParams {
 
 export function updateMe(params: UpdateProfileParams) {
   return apiRequest<User>("/auth/me/", { method: "PATCH", body: params })
+}
+
+/** Les profils (enfants) du compte - voir users.models.Profil, users.views.profils_view. */
+export function listProfils() {
+  return apiRequest<Profil[]>("/auth/profils/")
+}
+
+/** Ajoute un profil ("Ajouter un enfant", AccesPage.tsx) - `prenom` obligatoire. */
+export function createProfil(prenom: string) {
+  return apiRequest<Profil>("/auth/profils/", { method: "POST", body: { prenom } })
+}
+
+/**
+ * Bascule le profil actif du compte (voir users.views.activer_profil_view) - même
+ * charge utile que verifyOtp/googleSignIn/verifyEmailCode (access + user), pour que
+ * AuthContext.login() et cette bascule se traitent par le même geste côté appelant
+ * (setAccessToken + setUser).
+ */
+export function activerProfil(profilId: number) {
+  return apiRequest<{ access: string; user: User }>(`/auth/profils/${profilId}/activer/`, {
+    method: "POST",
+  })
+}
+
+/** Renomme un profil existant - toujours celui du compte connecté (voir le filtre côté vue). */
+export function renameProfil(profilId: number, prenom: string) {
+  return apiRequest<Profil>(`/auth/profils/${profilId}/`, { method: "PATCH", body: { prenom } })
 }
 
 export function getPaiementAReprendre(signal?: AbortSignal) {
@@ -335,12 +363,15 @@ export function listPlans(cursusId?: number) {
 interface InitiatePaymentParams {
   planId: number
   phoneNumber: string
+  // L'enfant pour qui cet achat est fait (voir "Ajouter un enfant", AccesPage.tsx) -
+  // absent = le profil par défaut du compte (voir payments.views._resoudre_profil).
+  profilId?: number
 }
 
-export function initiatePayment({ planId, phoneNumber }: InitiatePaymentParams) {
+export function initiatePayment({ planId, phoneNumber, profilId }: InitiatePaymentParams) {
   return apiRequest<PaymentInitiateResponse>("/payments/initiate/", {
     method: "POST",
-    body: { plan_id: planId, phone_number: phoneNumber },
+    body: { plan_id: planId, phone_number: phoneNumber, profil_id: profilId },
   })
 }
 
@@ -360,6 +391,8 @@ export interface DeclareManualPaymentParams {
   transactionReference: string
   paidAt?: string
   proof?: File
+  // Même rôle que InitiatePaymentParams.profilId - voir sa note.
+  profilId?: number
 }
 
 export function declareManualPayment(params: DeclareManualPaymentParams) {
@@ -371,6 +404,7 @@ export function declareManualPayment(params: DeclareManualPaymentParams) {
   formData.append("transaction_reference", params.transactionReference)
   if (params.paidAt) formData.append("paid_at", params.paidAt)
   if (params.proof) formData.append("proof", params.proof)
+  if (params.profilId) formData.append("profil_id", String(params.profilId))
   return apiRequest<ManualPayment>("/payments/manual/declare/", { method: "POST", body: formData })
 }
 

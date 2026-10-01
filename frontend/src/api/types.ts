@@ -34,6 +34,9 @@ export interface User {
   rappels_actifs: boolean
   // L'élève a écarté l'invitation à les activer : on ne la lui représente plus.
   rappels_invite_refusee: boolean
+  // L'enfant actif pour cette requête (voir users.profils.profil_actif) - jamais null
+  // pour un compte normalement créé, voir sa docstring côté backend.
+  profil_actif: Profil
 }
 
 /** Une étape de la séance du jour - voir quiz.services._construire_etapes. */
@@ -559,9 +562,17 @@ export interface Plan {
   inclut_inedit: boolean
 }
 
+/** L'enfant pour qui un abonnement est payé - voir users.models.Profil. */
+export interface Profil {
+  id: number
+  prenom: string
+  ordre: number
+}
+
 export interface Subscription {
   id: number
   cursus: Cursus
+  profil: Profil
   expires_at: string
   is_active: boolean
   plan_name: string | null
@@ -972,6 +983,7 @@ export interface Accueil {
 export interface InscriptionInedite {
   id: number
   cursus: Cursus
+  profil: Profil
   expires_at: string
   is_active: boolean
 }
@@ -1132,6 +1144,7 @@ export type Difficulte = "FAIBLE" | "MOYENNE" | "ELEVEE"
 export interface InscriptionRepetiteur {
   id: number
   cursus: Cursus
+  profil: Profil
   expires_at: string
   is_active: boolean
 }

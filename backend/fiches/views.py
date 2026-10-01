@@ -51,12 +51,13 @@ def list_my_inscriptions_repetiteur(request):
     de le remplir (voir create_fiche pour le point réellement gaté)."""
     inscriptions = (
         InscriptionRepetiteur.objects.filter(user=request.user)
-        .select_related("cursus__series", "cursus__country")
+        .select_related("cursus__series", "cursus__country", "profil")
     )
     return Response([
         {
             "id": inscription.id,
             "cursus": CursusSerializer(inscription.cursus).data,
+            "profil": {"id": inscription.profil_id, "prenom": inscription.profil.prenom},
             "expires_at": inscription.expires_at,
             "is_active": inscription.is_active,
         }

@@ -164,12 +164,12 @@ class Plan(models.Model):
 
 
 class SubscriptionManager(models.Manager):
-    def activate_or_extend(self, user, cursus, duration_days, duration_mode=DureeMode.FIXE):
+    def activate_or_extend(self, user, cursus, duration_days, duration_mode=DureeMode.FIXE, profil=None):
         """
         Point de passage unique pour toute prolongation d'abonnement (paiement direct
         du filleul comme récompense de parrainage au parrain) - deux appels concurrents
-        sur le même (user, cursus) (ex. le paiement du filleul et sa récompense au
-        parrain qui se chevauchent, ou deux paiements distincts qui se terminent en
+        sur le même (user, cursus, profil) (ex. le paiement du filleul et sa récompense
+        au parrain qui se chevauchent, ou deux paiements distincts qui se terminent en
         même temps) ne doivent jamais s'écraser l'un l'autre : chacun doit s'appliquer
         sur la valeur déjà prolongée par l'autre, pas sur une valeur périmée lue avant
         que l'autre n'ait sauvegardé.
@@ -179,20 +179,23 @@ class SubscriptionManager(models.Manager):
         Subscription.extend) : un top-up Mensuel après un achat Jusqu'à l'Examen ne doit
         pas faire perdre l'accès aux fonctionnalités exclusives à ce palier pour le
         reste de la période déjà payée.
+
+        `profil` : l'enfant pour qui cet achat est fait - voir users.models.Profil. Par
+        défaut (appelant qui ne le précise pas encore, ex. la plupart des tests) :
+        `user.profils.first()`, qui fait l'affaire pour un compte à un seul profil,
+        c'est-à-dire tous les comptes tant que "Ajouter un enfant" (AccesPage.tsx)
+        n'a jamais été utilisé. Inclus dans la clé de `get_or_create` ci-dessous
+        (pas seulement dans `defaults`) : sinon deux profils distincts du même
+        compte, sur le même cursus, continueraient de se partager la même ligne
+        malgré la contrainte élargie `unique_subscription_per_cursus_profil`.
         """
+        profil = profil or user.profils.first()
         with db_transaction.atomic():
             subscription, created = self.get_or_create(
-                user=user, cursus=cursus,
+                user=user, cursus=cursus, profil=profil,
                 defaults={
                     "expires_at": timezone.now() + timezone.timedelta(days=duration_days),
                     "duration_mode": duration_mode,
-                    # `.first()` fait l'affaire tant qu'aucun élève n'a encore choisi
-                    # POUR QUEL enfant précis cet abonnement est acheté (pas d'endpoint
-                    # ni de sélecteur de profil actif encore branché sur le paiement) -
-                    # chaque compte n'a par construction qu'un seul profil à ce stade.
-                    # À corriger le jour où l'achat sait pour quel profil il paie :
-                    # passer ce profil ici plutôt que de le redéduire.
-                    "profil": user.profils.first(),
                 },
             )
             if not created:
@@ -222,11 +225,9 @@ class Subscription(models.Model):
     Accès actif d'un utilisateur (le compte payeur, `user`) à un Cursus, POUR UN
     PROFIL PRÉCIS (`profil`, l'enfant qui étudie) - voir users.models.Profil : deux
     enfants du même compte préparant le même cursus ont chacun leur propre ligne, leur
-    propre paiement. Une seule ligne par (user, cursus) pour l'instant : voir le
-    commentaire sur `profil` dans SubscriptionManager.activate_or_extend, le grain
-    exact (par compte ou par profil) sera resserré une fois l'achat pour un profil
-    précis branché de bout en bout. Chaque paiement réussi prolonge expires_at plutôt
-    que de créer une nouvelle ligne.
+    propre paiement (voir la contrainte `unique_subscription_per_cursus_profil` et
+    SubscriptionManager.activate_or_extend). Chaque paiement réussi pour le MÊME
+    (user, cursus, profil) prolonge expires_at plutôt que de créer une nouvelle ligne.
     """
 
     user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="subscriptions")
@@ -255,7 +256,9 @@ class Subscription(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["user", "cursus"], name="unique_subscription_per_cursus"),
+            models.UniqueConstraint(
+                fields=["user", "cursus", "profil"], name="unique_subscription_per_cursus_profil",
+            ),
         ]
 
     def __str__(self):
@@ -285,17 +288,16 @@ class Subscription(models.Model):
 
 
 class InscriptionInediteManager(models.Manager):
-    def activate_or_extend(self, user, cursus, duration_days):
+    def activate_or_extend(self, user, cursus, duration_days, profil=None):
         """Miroir exact de SubscriptionManager.activate_or_extend - même raison de
-        verrouillage (voir sa docstring), jamais dupliquée en logique divergente."""
+        verrouillage et même traitement de `profil` (voir sa docstring), jamais
+        dupliquée en logique divergente."""
+        profil = profil or user.profils.first()
         with db_transaction.atomic():
             inscription, created = self.get_or_create(
-                user=user, cursus=cursus,
-                # Même pont temporaire que SubscriptionManager.activate_or_extend - voir
-                # son commentaire.
+                user=user, cursus=cursus, profil=profil,
                 defaults={
                     "expires_at": timezone.now() + timezone.timedelta(days=duration_days),
-                    "profil": user.profils.first(),
                 },
             )
             if not created:
@@ -332,7 +334,9 @@ class InscriptionInedite(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["user", "cursus"], name="unique_inscription_inedite_per_cursus"),
+            models.UniqueConstraint(
+                fields=["user", "cursus", "profil"], name="unique_inscription_inedite_per_cursus_profil",
+            ),
         ]
 
     def __str__(self):
@@ -350,17 +354,16 @@ class InscriptionInedite(models.Model):
 
 
 class InscriptionRepetiteurManager(models.Manager):
-    def activate_or_extend(self, user, cursus, duration_days):
+    def activate_or_extend(self, user, cursus, duration_days, profil=None):
         """Miroir exact de SubscriptionManager.activate_or_extend - même raison de
-        verrouillage (voir sa docstring), jamais dupliquée en logique divergente."""
+        verrouillage et même traitement de `profil` (voir sa docstring), jamais
+        dupliquée en logique divergente."""
+        profil = profil or user.profils.first()
         with db_transaction.atomic():
             inscription, created = self.get_or_create(
-                user=user, cursus=cursus,
-                # Même pont temporaire que SubscriptionManager.activate_or_extend - voir
-                # son commentaire.
+                user=user, cursus=cursus, profil=profil,
                 defaults={
                     "expires_at": timezone.now() + timezone.timedelta(days=duration_days),
-                    "profil": user.profils.first(),
                 },
             )
             if not created:
@@ -395,7 +398,9 @@ class InscriptionRepetiteur(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["user", "cursus"], name="unique_inscription_repetiteur_per_cursus"),
+            models.UniqueConstraint(
+                fields=["user", "cursus", "profil"], name="unique_inscription_repetiteur_per_cursus_profil",
+            ),
         ]
 
     def __str__(self):

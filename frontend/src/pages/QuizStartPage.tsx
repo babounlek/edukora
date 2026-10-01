@@ -543,12 +543,14 @@ export function QuizStartPage() {
             <FiltreLigne titre="Examen">
               {subscriptions.map((sub) => (
                 <PastilleFiltre
-                  key={sub.cursus.id}
+                  key={sub.id}
                   actif={selectedCursus === String(sub.cursus.id)}
                   onClick={() => setSelectedCursus(String(sub.cursus.id))}
                 >
+                  {/* Deux profils du même compte peuvent préparer le même cursus (voir
+                      "Ajouter un enfant", AccesPage.tsx) - le prénom lève l'ambiguïté. */}
                   {sub.cursus.examen_display}
-                  {sub.cursus.series ? ` ${sub.cursus.series.code}` : ""}
+                  {sub.cursus.series ? ` ${sub.cursus.series.code}` : ""} ({sub.profil.prenom})
                 </PastilleFiltre>
               ))}
             </FiltreLigne>

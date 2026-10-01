@@ -11,6 +11,27 @@ from .models import ManualPayment, MobileMoneyAccount, StatutTransaction, Transa
 from .serializers import ManualPaymentDeclareSerializer, ManualPaymentSerializer, MobileMoneyAccountSerializer
 
 
+def _resoudre_profil(request):
+    """
+    Le profil (l'enfant) pour qui cet achat est fait - `profil_id` optionnel dans le
+    corps de la requête (voir "Ajouter un enfant", AccesPage.tsx), jamais accepté sans
+    vérifier qu'il appartient bien au compte connecté. Retombe sur
+    `request.user.profils.first()` par défaut : le comportement inchangé pour
+    l'immense majorité des achats (compte à un seul profil, ou renouvellement d'un
+    abonnement déjà existant sans ce paramètre).
+
+    Retourne (profil, erreur) - `erreur` est une Response 400 prête à renvoyer si
+    `profil_id` est fourni mais n'appartient pas au compte, None sinon.
+    """
+    profil_id = request.data.get("profil_id")
+    if not profil_id:
+        return request.user.profils.first(), None
+    profil = request.user.profils.filter(pk=profil_id).first()
+    if profil is None:
+        return None, Response({"error": "Profil introuvable."}, status=400)
+    return profil, None
+
+
 def _report_provider_error(exc, transaction):
     """
     PaiementFournisseurError (CampayError, etc.) est déjà gérée gracieusement ici (réponse 502 propre, jamais un
@@ -37,6 +58,9 @@ def initiate_payment(request):
         return Response({"error": "Fournis plan_id et phone_number."}, status=400)
 
     plan = get_object_or_404(Plan, pk=plan_id, is_active=True)
+    profil, erreur = _resoudre_profil(request)
+    if erreur is not None:
+        return erreur
 
     prix = plan.effective_price()
     # Remise automatique par crédit parrainage disponible (voir
@@ -52,6 +76,7 @@ def initiate_payment(request):
     if montant_a_payer == 0:
         transaction = Transaction.objects.creer_couverte_par_credit(
             user=request.user, plan=plan, phone_number=phone_number, credit_applique=credit_applique,
+            profil=profil,
         )
         return Response({
             "transaction_id": transaction.id, "status": transaction.status,
@@ -60,7 +85,7 @@ def initiate_payment(request):
 
     transaction = Transaction.objects.create(
         user=request.user, plan=plan, amount=montant_a_payer,
-        phone_number=phone_number, credit_applique=credit_applique,
+        phone_number=phone_number, credit_applique=credit_applique, profil=profil,
     )
 
     try:

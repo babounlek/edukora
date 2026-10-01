@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
 
-import { googleSignIn, requestEmailCode, requestOtp, verifyEmailCode, verifyOtp } from "@/api/endpoints"
+import { googleSignIn, listProfils, requestEmailCode, requestOtp, verifyEmailCode, verifyOtp } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -98,6 +98,24 @@ export function LoginPage() {
   // Facultative - les autres entrées vers /connexion n'en passent pas.
   const intent = navigationState?.intent
 
+  // Après une connexion réussie : direct vers la destination, sauf si le compte a
+  // déjà déclaré 2+ enfants, auquel cas "Qui étudie ?" s'intercale une fois (voir
+  // QuiEtudiePage.tsx) - comportement inchangé pour l'immense majorité des comptes
+  // (un seul profil).
+  async function naviguerApresConnexion() {
+    try {
+      const profils = await listProfils()
+      if (profils.length > 1) {
+        navigate("/qui-etudie", { state: { from: redirectTo }, replace: true })
+        return
+      }
+    } catch {
+      // Impossible de savoir : on part sur le chemin normal plutôt que de bloquer une
+      // connexion qui vient de réussir pour un aléa secondaire.
+    }
+    navigate(redirectTo, { replace: true })
+  }
+
   const isSupported = SUPPORTED_REGISTRATION_COUNTRIES.includes(dialCountry)
   const selectedCountry = countries.find((c) => c.code.toLowerCase() === dialCountry)
 
@@ -159,7 +177,7 @@ export function LoginPage() {
         : await verifyEmailCode(email, code, referral)
       clearReferralCode()
       login(response.access, response.user)
-      navigate(redirectTo, { replace: true })
+      await naviguerApresConnexion()
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
     } finally {
@@ -174,7 +192,7 @@ export function LoginPage() {
       const response = await googleSignIn(credential, consumeReferralCode())
       clearReferralCode()
       login(response.access, response.user)
-      navigate(redirectTo, { replace: true })
+      await naviguerApresConnexion()
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Une erreur est survenue.")
     } finally {

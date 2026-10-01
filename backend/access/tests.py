@@ -540,3 +540,41 @@ class MyProgressionAPITests(TestCase):
         response = self.client.get("/access/progression/")
         self.assertEqual(response.data["lessons"], [])
         self.assertEqual(response.data["cours"], [])
+
+    def test_progression_filtered_to_cursus_prepare_when_declared(self):
+        """Un compte avec deux abonnements actifs (voir le sélecteur d'examen) ne doit
+        jamais voir les lectures de l'autre cursus une fois qu'il a basculé - c'est
+        précisément le bug que ce filtre corrige."""
+        autre_cursus = Cursus.objects.get(examen=Examen.BEPC)
+        autre_lesson = Lesson.objects.create(
+            title="Maths BEPC 2024", subject=self.subject, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        autre_lesson.cursus.add(autre_cursus)
+        Subscription.objects.create(
+            user=self.user, profil=self.profil, cursus=autre_cursus, expires_at=timezone.now() + timedelta(days=1),
+        )
+        self.client.get(f"/access/read/{self.lesson.id}/")
+        self.client.get(f"/access/read/{autre_lesson.id}/")
+
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+        response = self.client.get("/access/progression/")
+        self.assertEqual([l["id"] for l in response.data["lessons"]], [self.lesson.id])
+
+        self.user.cursus_prepare = autre_cursus
+        self.user.save(update_fields=["cursus_prepare"])
+        response = self.client.get("/access/progression/")
+        self.assertEqual([l["id"] for l in response.data["lessons"]], [autre_lesson.id])
+
+    def test_progression_shows_cours_commun_a_toutes_les_series_regardless_of_cursus(self):
+        """Un Cours sans cursus du tout (notion partagée, voir Cours.cursus) reste
+        visible quel que soit le cursus actif - il n'est pas exclusif à l'un ou l'autre."""
+        cours_commun = Cours.objects.create(
+            subject=self.subject, titre="Notion commune", statut=StatutContenu.VALIDE,
+        )
+        LectureProgress.objects.create(profil=self.profil, cours=cours_commun)
+
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+        response = self.client.get("/access/progression/")
+        self.assertEqual([c["id"] for c in response.data["cours"]], [cours_commun.id])

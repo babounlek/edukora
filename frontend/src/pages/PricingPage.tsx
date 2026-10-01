@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import {
   ArrowRight,
   ArrowRightLeft,
@@ -276,6 +276,11 @@ export function PricingPage() {
   const { country } = useCountry()
   const { user } = useAuth()
   const [allPlans, setAllPlans] = useState<Plan[]>([])
+  // Présent quand on arrive ici pour acheter l'abonnement d'un enfant qu'on vient de
+  // créer ("Ajouter un enfant", AccesPage.tsx) - relayé tel quel vers /abonnement,
+  // jamais interprété ici.
+  const [searchParams] = useSearchParams()
+  const profilParam = searchParams.get("profil")
 
   useEffect(() => {
     trackEvent("tarifs_vus")
@@ -346,7 +351,7 @@ export function PricingPage() {
       cursusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
       return
     }
-    navigate(`/abonnement?cursus=${selectedCursus}&duree=examen`)
+    navigate(`/abonnement?cursus=${selectedCursus}&duree=examen${profilParam ? `&profil=${profilParam}` : ""}`)
   }
 
   return (

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_ipv46_address
+from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -46,6 +47,8 @@ from .serializers import (
     OTPVerifySerializer,
     PhoneChangeConfirmSerializer,
     PhoneChangeRequestSerializer,
+    ProfilSerializer,
+    ProfilWriteSerializer,
     UserProfileUpdateSerializer,
     UserSerializer,
 )
@@ -161,7 +164,7 @@ def otp_verify_view(request):
     refresh = RefreshToken.for_user(user)
     response = Response({
         "access": str(refresh.access_token),
-        "user": UserSerializer(user).data,
+        "user": UserSerializer(user, context={"request": request}).data,
     })
     _set_refresh_cookie(response, refresh)
     return response
@@ -194,7 +197,7 @@ def google_signin_view(request):
     refresh = RefreshToken.for_user(user)
     response = Response({
         "access": str(refresh.access_token),
-        "user": UserSerializer(user).data,
+        "user": UserSerializer(user, context={"request": request}).data,
         "created": cree,
     })
     _set_refresh_cookie(response, refresh)
@@ -219,7 +222,7 @@ def google_link_view(request):
     except GoogleAuthError as exc:
         return Response({"error": str(exc)}, status=401)
 
-    return Response(UserSerializer(request.user).data)
+    return Response(UserSerializer(request.user, context={"request": request}).data)
 
 
 def _reponse_envoi_email(exc):
@@ -277,7 +280,7 @@ def email_code_verify_view(request):
     refresh = RefreshToken.for_user(user)
     response = Response({
         "access": str(refresh.access_token),
-        "user": UserSerializer(user).data,
+        "user": UserSerializer(user, context={"request": request}).data,
         "created": cree,
     })
     _set_refresh_cookie(response, refresh)
@@ -322,7 +325,7 @@ def email_link_confirm_view(request):
     except EmailInvalid as exc:
         return Response({"error": str(exc)}, status=400)
 
-    return Response(UserSerializer(user).data)
+    return Response(UserSerializer(user, context={"request": request}).data)
 
 
 @api_view(["POST"])
@@ -365,7 +368,7 @@ def phone_change_confirm_view(request):
     except OTPInvalid as exc:
         return Response({"error": str(exc)}, status=400)
 
-    return Response(UserSerializer(user).data)
+    return Response(UserSerializer(user, context={"request": request}).data)
 
 
 @api_view(["DELETE"])
@@ -379,7 +382,7 @@ def unlink_identity_view(request, provider):
     except LastIdentityError as exc:
         return Response({"error": str(exc)}, status=409)
 
-    return Response(UserSerializer(user).data)
+    return Response(UserSerializer(user, context={"request": request}).data)
 
 
 @api_view(["GET", "PATCH"])
@@ -395,7 +398,109 @@ def me_view(request):
             return Response({"error": str(first_field_errors[0])}, status=400)
         serializer.save()
 
-    return Response(UserSerializer(request.user).data)
+    return Response(UserSerializer(request.user, context={"request": request}).data)
+
+
+@api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
+def profils_view(request):
+    """
+    GET : les profils du compte (un enfant par profil, voir Profil) - toujours au
+    moins un, voir la docstring de profils_actif. POST : en ajoute un nouveau (achat
+    d'un abonnement supplémentaire pour un second enfant, voir AccesPage.tsx
+    "Ajouter un enfant") - ordre placé après les profils existants du compte.
+    """
+    if request.method == "POST":
+        serializer = ProfilWriteSerializer(data=request.data)
+        if not serializer.is_valid():
+            first_field_errors = next(iter(serializer.errors.values()))
+            return Response({"error": str(first_field_errors[0])}, status=400)
+        dernier_ordre = request.user.profils.order_by("-ordre").values_list("ordre", flat=True).first()
+        profil = serializer.save(compte=request.user, ordre=(dernier_ordre or 0) + 1)
+        return Response(ProfilSerializer(profil).data, status=201)
+
+    profils = request.user.profils.all()
+    return Response(ProfilSerializer(profils, many=True).data)
+
+
+@api_view(["PATCH"])
+@permission_classes([IsAuthenticated])
+def profil_detail_view(request, profil_id):
+    """Renomme un profil - jamais celui d'un autre compte (voir le filtre ci-dessous,
+    même garde que unlink_identity/les autres vues "propriété du compte connecté")."""
+    profil = request.user.profils.filter(pk=profil_id).first()
+    if profil is None:
+        return Response({"error": "Profil introuvable."}, status=404)
+
+    serializer = ProfilWriteSerializer(profil, data=request.data, partial=True)
+    if not serializer.is_valid():
+        first_field_errors = next(iter(serializer.errors.values()))
+        return Response({"error": str(first_field_errors[0])}, status=400)
+    serializer.save()
+    return Response(ProfilSerializer(profil).data)
+
+
+def _realigner_cursus_prepare(user, profil):
+    """
+    `User.cursus_prepare` reste account-level (voir sa docstring sur le modèle) - sans
+    ce réalignement, basculer vers un enfant qui ne prépare pas le cursus actuellement
+    déclaré sur le compte laisse "Aujourd'hui" montrer l'examen du PRÉCÉDENT enfant
+    actif (bug signalé : le menu affichait "Junior · BAC C" alors que Junior n'a
+    jamais préparé que le BEPC).
+
+    Ne touche à rien si le cursus déjà déclaré correspond à un abonnement ACTIF de ce
+    profil - un enfant qui prépare plusieurs cursus (ex. Serge : BAC C et BEPC) ne doit
+    pas se voir réinitialisé sur un autre des siens à chaque bascule. Sinon, retombe
+    sur `Profil.cursus_prepare` s'il est déclaré, puis sur son abonnement actif le plus
+    récent, par ordre d'expiration - jamais une 3e source de vérité : la valeur
+    retenue est toujours écrite dans `User.cursus_prepare`, qui reste l'unique champ lu
+    partout ailleurs (voir quiz.views).
+    """
+    from subscriptions.models import Subscription
+
+    abonnements_du_profil = Subscription.objects.filter(profil=profil, expires_at__gt=timezone.now())
+    if user.cursus_prepare_id in set(abonnements_du_profil.values_list("cursus_id", flat=True)):
+        return
+
+    cursus = profil.cursus_prepare
+    if cursus is None:
+        abonnement = abonnements_du_profil.order_by("-expires_at").first()
+        cursus = abonnement.cursus if abonnement else None
+
+    if cursus is not None and cursus.id != user.cursus_prepare_id:
+        user.cursus_prepare = cursus
+        user.save(update_fields=["cursus_prepare"])
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def activer_profil_view(request, profil_id):
+    """
+    Bascule le profil actif du compte - voir la docstring de `users.profils.profil_actif`.
+    Réémet un access token (claim `profil_id`) ET le cookie de refresh : sans ce
+    dernier, le choix ne survivrait pas aux 2h de vie de l'access token - le prochain
+    `/auth/token/refresh/` relirait l'ancien cookie, sans la claim, et retomberait sur
+    le premier profil du compte. Réaligne aussi `cursus_prepare` sur un examen que ce
+    profil prépare réellement - voir `_realigner_cursus_prepare`.
+
+    Jamais le profil d'un autre compte (même garde que profil_detail_view).
+    """
+    profil = request.user.profils.filter(pk=profil_id).first()
+    if profil is None:
+        return Response({"error": "Profil introuvable."}, status=404)
+
+    _realigner_cursus_prepare(request.user, profil)
+
+    refresh = RefreshToken.for_user(request.user)
+    refresh["profil_id"] = profil.id
+    # La requête courante porte encore l'ANCIENNE claim (ou aucune) : profil_actif(request),
+    # lu via UserSerializer.get_profil_actif, ne verrait pas encore ce changement -
+    # le profil nouvellement actif est donc injecté explicitement plutôt que relu.
+    data = UserSerializer(request.user, context={"request": request}).data
+    data["profil_actif"] = ProfilSerializer(profil).data
+    response = Response({"access": str(refresh.access_token), "user": data})
+    _set_refresh_cookie(response, refresh)
+    return response
 
 
 @api_view(["POST"])
