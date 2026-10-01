@@ -178,6 +178,16 @@ GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID", default="")
 # vers les pages consultables par un visiteur, jamais vers cette API.
 FRONTEND_URL = config("FRONTEND_URL", default="https://edukora.africa").rstrip("/")
 
+# Domaine utilisé DANS les PDF générés (liens profonds, QR codes - voir
+# catalog/sujet_pdf.py et les pipelines PDF qui en reprennent les briques :
+# inedit/sujet_pdf.py, fiches/pdf.py, quiz/pdf.py). Volontairement distinct de
+# FRONTEND_URL : un PDF est généré une fois puis copié tel quel sur le serveur de
+# production, jamais régénéré là-bas - s'il reprenait FRONTEND_URL (http://localhost
+# en dev, voir .env), ses liens et QR codes seraient inutilisables une fois déployés.
+# Décision utilisateur du 2026-10-01 - déjà le domaine de production par défaut, quel
+# que soit l'environnement où tourne la génération.
+PDF_SITE_URL = config("PDF_SITE_URL", default="https://edukora.africa").rstrip("/")
+
 # Envoi d'e-mails - aujourd'hui uniquement les codes de connexion (users.email_service).
 #
 # Console par défaut, sur le modèle de SMS_BACKEND : un développeur qui clone le dépôt

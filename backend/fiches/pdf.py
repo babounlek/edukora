@@ -61,11 +61,12 @@ def _prepared_by(fiche):
 # qu'il a le plus de raisons de vouloir rouvrir.
 def _sujet_deep_link(fiche):
     country_code = fiche.cursus.country.code.lower()
-    return f"{settings.FRONTEND_URL}/{country_code}?ref=pdf_fiche_sujet"
+    # settings.PDF_SITE_URL, pas FRONTEND_URL - voir catalog.sujet_pdf._lesson_deep_link.
+    return f"{settings.PDF_SITE_URL}/{country_code}?ref=pdf_fiche_sujet"
 
 
 def _corrige_deep_link(fiche):
-    return f"{settings.FRONTEND_URL}/fiches?ref=pdf_fiche_corrige"
+    return f"{settings.PDF_SITE_URL}/fiches?ref=pdf_fiche_corrige"
 
 
 def _bloc_question(item, *, avec_corrige):
@@ -107,7 +108,7 @@ def _render_html(fiche, *, avec_corrige, template_name, deep_link):
         "prepared_by": _prepared_by(fiche),
         "content_html": content_html,
         "site_name": settings.SITE_NAME,
-        "site_url_display": settings.FRONTEND_URL.removeprefix("https://").removeprefix("http://"),
+        "site_url_display": settings.PDF_SITE_URL.removeprefix("https://").removeprefix("http://"),
         "deep_link": deep_link,
         "qr_code_data_uri": _qr_code_data_uri(deep_link),
         "katex_css_url": (_KATEX_DIR / "katex.min.css").as_uri(),

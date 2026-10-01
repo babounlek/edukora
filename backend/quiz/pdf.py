@@ -61,8 +61,9 @@ _COURS_LINK_RE = re.compile(r"^\[COURS_LINK:([a-zA-Z0-9_-]+)\]$", re.MULTILINE)
 
 
 def _resolve_cours_links(markdown_text):
+    # settings.PDF_SITE_URL, pas FRONTEND_URL - voir catalog.sujet_pdf._lesson_deep_link.
     return _COURS_LINK_RE.sub(
-        lambda m: f"[Voir le cours complet →]({settings.FRONTEND_URL}/cours/{m.group(1)})", markdown_text,
+        lambda m: f"[Voir le cours complet →]({settings.PDF_SITE_URL}/cours/{m.group(1)})", markdown_text,
     )
 
 
@@ -72,12 +73,12 @@ def _resolve_cours_links(markdown_text):
 # visites viennent réellement de l'une ou l'autre fiche téléchargée.
 def _sujet_deep_link(session):
     country_code = session.cursus.country.code.lower()
-    return f"{settings.FRONTEND_URL}/{country_code}?ref=pdf_quiz_fiche"
+    return f"{settings.PDF_SITE_URL}/{country_code}?ref=pdf_quiz_fiche"
 
 
 def _corrige_deep_link(session):
     country_code = session.cursus.country.code.lower()
-    return f"{settings.FRONTEND_URL}/{country_code}?ref=pdf_quiz_correction"
+    return f"{settings.PDF_SITE_URL}/{country_code}?ref=pdf_quiz_correction"
 
 
 def _bloc_question(quiz_question, *, avec_corrige):
@@ -138,7 +139,7 @@ def _render_html(session, *, avec_corrige, template_name, deep_link):
         "total_questions": session.quiz_questions.count(),
         "content_html": content_html,
         "site_name": settings.SITE_NAME,
-        "site_url_display": settings.FRONTEND_URL.removeprefix("https://").removeprefix("http://"),
+        "site_url_display": settings.PDF_SITE_URL.removeprefix("https://").removeprefix("http://"),
         "deep_link": deep_link,
         "qr_code_data_uri": _qr_code_data_uri(deep_link),
         "katex_css_url": (_KATEX_DIR / "katex.min.css").as_uri(),

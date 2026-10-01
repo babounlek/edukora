@@ -61,7 +61,8 @@ def _cursus_display(cursus_iterable):
 # depuis un sujet imprimé pour lancer sa tentative chronométrée ?).
 def _epreuve_deep_link(epreuve):
     country_code = epreuve.cursus.first().country.code.lower()
-    return f"{settings.FRONTEND_URL}/{country_code}/epreuves-inedites/{epreuve.slug}?ref=pdf_sujet_inedit"
+    # settings.PDF_SITE_URL, pas FRONTEND_URL - voir catalog.sujet_pdf._lesson_deep_link.
+    return f"{settings.PDF_SITE_URL}/{country_code}/epreuves-inedites/{epreuve.slug}?ref=pdf_sujet_inedit"
 
 
 def _render_html(epreuve):
@@ -87,8 +88,8 @@ def _render_html(epreuve):
         },
         "content_html": content_html,
         "site_name": settings.SITE_NAME,
-        "site_url": settings.FRONTEND_URL,
-        "site_url_display": settings.FRONTEND_URL.removeprefix("https://").removeprefix("http://"),
+        "site_url": settings.PDF_SITE_URL,
+        "site_url_display": settings.PDF_SITE_URL.removeprefix("https://").removeprefix("http://"),
         "epreuve_url": epreuve_url,
         "qr_code_data_uri": _qr_code_data_uri(epreuve_url),
         "katex_css_url": (_KATEX_DIR / "katex.min.css").as_uri(),

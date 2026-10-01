@@ -124,7 +124,10 @@ def _resolve_media_paths(markdown_text):
 # et analytics.models.EventName.PDF_SUJET_LANDING (évènement) côté frontend.
 def _lesson_deep_link(lesson, header):
     country_code = header["pays"]["code"].lower()
-    return f"{settings.FRONTEND_URL}/{country_code}/epreuves/{lesson.slug}?ref=pdf_sujet"
+    # settings.PDF_SITE_URL, pas FRONTEND_URL : ce lien est imprimé dans un PDF
+    # destiné à circuler tel quel après coup (voir settings.py) - il doit rester
+    # valide indépendamment de l'environnement qui a généré le fichier.
+    return f"{settings.PDF_SITE_URL}/{country_code}/epreuves/{lesson.slug}?ref=pdf_sujet"
 
 
 def _qr_code_data_uri(url):
@@ -157,8 +160,8 @@ def _render_html(lesson):
         "header": header,
         "content_html": content_html,
         "site_name": settings.SITE_NAME,
-        "site_url": settings.FRONTEND_URL,
-        "site_url_display": settings.FRONTEND_URL.removeprefix("https://").removeprefix("http://"),
+        "site_url": settings.PDF_SITE_URL,
+        "site_url_display": settings.PDF_SITE_URL.removeprefix("https://").removeprefix("http://"),
         "lesson_url": lesson_url,
         "qr_code_data_uri": _qr_code_data_uri(lesson_url),
         "katex_css_url": (_KATEX_DIR / "katex.min.css").as_uri(),
