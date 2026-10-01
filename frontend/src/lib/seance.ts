@@ -2,7 +2,7 @@ import type { QueryClient } from "@tanstack/react-query"
 
 import { marquerEtapeOuverte } from "@/api/endpoints"
 import type { EtapeSeance, PlanDuJour } from "@/api/types"
-import { coursReaderPath, epreuveReaderPath } from "@/lib/countryPath"
+import { coursReaderPath, epreuveReaderPath, themeExerciceLecturePath } from "@/lib/countryPath"
 
 /**
  * Où mène une étape. Le quiz part vers QuizStartPage avec son thème prérempli
@@ -11,7 +11,20 @@ import { coursReaderPath, epreuveReaderPath } from "@/lib/countryPath"
  */
 export function lienEtape(etape: EtapeSeance, country: string, plan: PlanDuJour): string {
   if (etape.type === "cours") return coursReaderPath(etape.slug)
-  if (etape.type === "exercice") return epreuveReaderPath(country, etape.lesson_slug)
+  if (etape.type === "exercice") {
+    // L'exercice lu seul, centré sur son thème (voir ThemeExerciceLecturePage) plutôt
+    // que l'épreuve entière : sans quoi l'élève atterrit au milieu d'exercices sans
+    // rapport avec ce qu'il révise. Repli sur l'épreuve entière seulement si la séance
+    // n'a pas de thème/matière/cursus exploitable (même garde que lienExercices côté
+    // EtapesParPhase, pour la même raison).
+    const theme = plan.seance?.theme
+    const subject = plan.seance?.subject
+    if (theme && subject && plan.cursus) {
+      const params = new URLSearchParams({ subject: subject.code, cursus: String(plan.cursus.id) })
+      return `${themeExerciceLecturePath(country, theme.id, etape.exercise_id)}?${params.toString()}`
+    }
+    return epreuveReaderPath(country, etape.lesson_slug)
+  }
   const params = new URLSearchParams()
   if (plan.cursus) params.set("cursus", String(plan.cursus.id))
   if (plan.seance?.theme) params.set("theme", String(plan.seance.theme.id))
