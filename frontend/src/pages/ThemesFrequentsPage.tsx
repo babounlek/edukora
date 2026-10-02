@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import {
@@ -49,6 +49,18 @@ const CLASSEMENT_ILLUSTRATIF: ThemeIllustratif[] = [
 // Lignes fantômes affichées sous le teaser d'un non-abonné : de quoi montrer la
 // profondeur du classement sans jamais en révéler le contenu (le serveur ne l'envoie pas).
 const MAX_LIGNES_FANTOMES = 5
+
+// Le classement affiche 20 thèmes par défaut ("Top 20", voir le hero) puis révèle 10
+// thèmes de plus par clic sur "Charger 10 thèmes de plus" - le serveur en renvoie déjà
+// jusqu'à 50 (voir MAX_THEMES_FREQUENTS côté catalog.views), donc chaque clic ne fait
+// que révéler des données déjà en main, aucune requête supplémentaire.
+const THEMES_AFFICHES_PAR_DEFAUT = 20
+const THEMES_CHARGES_PAR_CLIC = 10
+// En dessous, le thème suivant n'est plus assez fréquent pour qu'aller le chercher
+// vaille le clic (mesuré sur le corpus réel : le signal reste net jusque-là, voir la
+// proposition qui a motivé ce chantier) - le bouton disparaît plutôt que de promettre
+// un classement qui se dilue en bruit statistique.
+const SEUIL_CHARGER_PLUS_PCT = 15
 
 function libelleCursus(c: Pick<Cursus, "examen_display" | "series">) {
   return `${c.examen_display}${c.series ? ` ${c.series.code}` : ""}`
@@ -389,6 +401,14 @@ export function ThemesFrequentsPage() {
     enabled: Boolean(cursusId && subjectFilter),
   })
 
+  // Combien de thèmes révéler - remis à la valeur par défaut à chaque changement
+  // d'examen/matière, sinon "Charger 10 de plus" cliqué en Maths resterait ouvert en
+  // arrivant sur Anglais.
+  const [nbAffiches, setNbAffiches] = useState(THEMES_AFFICHES_PAR_DEFAUT)
+  useEffect(() => {
+    setNbAffiches(THEMES_AFFICHES_PAR_DEFAUT)
+  }, [cursusId, subjectFilter])
+
   function updateFilter(key: string, value: string) {
     const next = new URLSearchParams(searchParams)
     if (value) next.set(key, value)
@@ -412,9 +432,14 @@ export function ThemesFrequentsPage() {
   const disponible = themesData?.disponible === true
   const themes = disponible ? themesData.themes : []
   const total = themesData?.nb_sessions_disponibles ?? 0
-  const podium = themes.slice(0, 3)
-  const suite = themes.slice(3)
+  const themesAffiches = themes.slice(0, nbAffiches)
+  const podium = themesAffiches.slice(0, 3)
+  const suite = themesAffiches.slice(3)
   const verrouille = disponible && !themesData.has_access && themesData.nb_themes_verrouilles > 0
+  // Le thème juste sous la coupure actuelle : tant qu'il reste assez fréquent pour
+  // valoir le clic, "Charger 10 de plus" révèle la suite déjà reçue du serveur.
+  const prochainTheme = themes[nbAffiches]
+  const chargerPlusVisible = Boolean(prochainTheme && prochainTheme.frequence_pct >= SEUIL_CHARGER_PLUS_PCT)
   const topTheme = themes[0]
   const matiereLabel = matiereCourante?.label
   const MatiereIcon = subjectIcon(subjectFilter)
@@ -653,6 +678,14 @@ export function ThemesFrequentsPage() {
                   />
                 ))}
               </ol>
+            )}
+
+            {chargerPlusVisible && (
+              <div className="mt-6 flex justify-center">
+                <Button variant="outline" onClick={() => setNbAffiches((n) => n + THEMES_CHARGES_PAR_CLIC)}>
+                  Charger {THEMES_CHARGES_PAR_CLIC} thèmes de plus
+                </Button>
+              </div>
             )}
 
             {verrouille && (

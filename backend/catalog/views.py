@@ -612,7 +612,11 @@ class CursusListView(generics.ListAPIView):
 # sur 5" sonnerait comme une fausse promesse plutôt que comme une vraie récurrence.
 SEUIL_MINIMUM_THEMES_FREQUENTS = 8
 TEASER_THEMES_FREQUENTS = 2
-MAX_THEMES_FREQUENTS = 20
+# 20 était la vitrine initiale ("Top 20") ; relevé à 50 le 2026-10-02 car le signal
+# reste exploitable bien au-delà (mesuré sur Maths BAC C : encore 20% au rang 40) -
+# c'est au frontend (SEUIL_CHARGER_PLUS_THEMES_FREQUENTS) de ne révéler que la part
+# du classement qui reste réellement significative, pas à cette troncature.
+MAX_THEMES_FREQUENTS = 50
 
 
 class ThemesFrequentsView(APIView):
