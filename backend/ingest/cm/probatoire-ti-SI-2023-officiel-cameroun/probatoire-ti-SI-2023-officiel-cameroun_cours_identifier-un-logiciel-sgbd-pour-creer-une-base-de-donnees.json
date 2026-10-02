@@ -7,6 +7,14 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-identifier-un-logiciel-sgbd-pour-creer-une-base-de-donnees (bac-c-d-e-informatique-theorique-2021-cameroun).",
+    "duree_estimee_min": 20,
+    "tags": [
+      "SGBD",
+      "MySQL",
+      "logiciel de base de données",
+      "PostgreSQL",
+      "Microsoft Access"
+    ],
     "statut": "brouillon"
   },
   "source": {
@@ -17,5 +25,107 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu sais qu'une base de données stocke des informations, mais qui range les lignes, qui vérifie les droits des utilisateurs et qui exécute tes requêtes SQL ? C'est le SGBD. Quand un sujet demande « citer un logiciel qui permet de créer une base de données », il attend le nom exact d'un SGBD. C'est une question à 0,5 point, mais il faut éviter les mauvais choix."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une base de données",
+        "Connaître le rôle du langage SQL"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le SGBD et les logiciels à citer",
+      "contenu_markdown": "Un **SGBD** (système de gestion de bases de données) est un logiciel qui permet de créer, remplir, interroger, modifier et protéger une base de données. Il gère aussi les accès simultanés de plusieurs utilisateurs.\n\nExemples de SGBD relationnels à citer :\n\n| Logiciel | Remarque |\n|---|---|\n| MySQL | Libre, très utilisé avec PHP pour les sites web |\n| PostgreSQL | Libre, très complet |\n| SQLite | Libre, léger, intégré dans de nombreuses applications mobiles |\n| Microsoft Access | Propriétaire, pour de petites bases sur poste de bureau |\n| Oracle Database et Microsoft SQL Server | Propriétaires, utilisés par les grandes entreprises |\n\nPour répondre : donne le **nom exact** du logiciel, puis sa **catégorie** (SGBD relationnel). Un seul bon nom suffit quand la question demande « un exemple ».\n\nÀ ne pas citer comme SGBD : SQL (c'est un langage), PHP (langage de programmation), Excel ou Word (tableur et traitement de texte), WampServer ou XAMPP (ensembles qui contiennent MySQL mais ne sont pas eux-mêmes un SGBD)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Citer un exemple de logiciel qui permet d'implémenter une base de données.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Comprendre ce qui est demandé",
+          "justification": "Le mot « implémenter une base de données » désigne un SGBD.",
+          "resultat_markdown": "On cherche un SGBD, pas un langage."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir un logiciel connu",
+          "justification": "Un nom exact et courant évite toute discussion.",
+          "resultat_markdown": "MySQL."
+        },
+        {
+          "numero": 3,
+          "action": "Donner sa catégorie",
+          "justification": "La catégorie montre que tu connais la notion.",
+          "resultat_markdown": "MySQL est un SGBD relationnel libre."
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter un autre exemple si le barème le permet",
+          "justification": "Cela ne pénalise pas.",
+          "resultat_markdown": "On peut aussi citer PostgreSQL ou Microsoft Access."
+        }
+      ],
+      "conclusion_markdown": "Un exemple de logiciel permettant d'implémenter une base de données est MySQL, un SGBD relationnel libre."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « SQL ».",
+          "pourquoi_faux": "SQL est le langage utilisé dans un SGBD, pas le logiciel qui contient la base.",
+          "correction_markdown": "Cite un logiciel : MySQL, PostgreSQL, Access."
+        },
+        {
+          "erreur_markdown": "Répondre « Excel » ou « Word ».",
+          "pourquoi_faux": "Excel est un tableur : il stocke des tableaux mais n'assure ni l'intégrité ni le partage sécurisé qu'un SGBD garantit. Word est un traitement de texte.",
+          "correction_markdown": "Réserve ces noms à leur usage et cite un vrai SGBD."
+        },
+        {
+          "erreur_markdown": "Répondre « WampServer ».",
+          "pourquoi_faux": "WampServer regroupe Apache, MySQL et PHP. Le SGBD qu'il contient est MySQL.",
+          "correction_markdown": "Donne MySQL."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Parmi MySQL, PHP, PostgreSQL, Word, SQL et Microsoft Access, quels sont les SGBD ?",
+          "solution_markdown": "MySQL, PostgreSQL et Microsoft Access sont des SGBD. PHP est un langage de programmation, SQL est un langage de requêtes, Word est un traitement de texte."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Explique en deux phrases la différence entre un SGBD, une base de données et le langage SQL, avec MySQL comme exemple.",
+          "solution_markdown": "La base de données est l'ensemble des données (par exemple la table Eleve). Le SGBD (ici MySQL) est le logiciel qui les stocke et les protège. Le langage SQL est celui qu'on écrit pour demander au SGBD de créer, lire ou modifier ces données, par exemple `SELECT * FROM Eleve;`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un lycée de 800 élèves veut gérer ses notes avec plusieurs utilisateurs à la fois. Son responsable propose Excel. Propose un autre outil et justifie en citant deux caractéristiques d'une base de données.",
+          "solution_markdown": "1) Outil : un SGBD comme MySQL ou PostgreSQL.\n\n2) Partage : plusieurs enseignants peuvent saisir et lire les notes en même temps sans écraser le travail des autres.\n\n3) Intégrité : le SGBD applique des règles (une note comprise entre 0 et 20, un élève existant) que le tableur ne vérifie pas automatiquement.\n\nOn peut ajouter la sécurité : chaque utilisateur reçoit des droits limités."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un SGBD est le logiciel qui gère une base de données : MySQL, PostgreSQL, Access, Oracle.",
+        "SQL est un langage, pas un SGBD.",
+        "Donne toujours le nom exact du logiciel, puis sa catégorie.",
+        "Excel, Word et WampServer ne sont pas des SGBD.",
+        "Au Probatoire TI, la question « citer un logiciel qui permet d'implémenter une base de données » fait partie des points de cours à ne pas perdre."
+      ]
+    }
+  ]
 }

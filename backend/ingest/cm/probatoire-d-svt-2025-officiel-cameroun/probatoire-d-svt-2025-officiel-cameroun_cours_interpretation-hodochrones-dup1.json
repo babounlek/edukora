@@ -5,9 +5,15 @@
     "matiere": "SVT",
     "pays": "cm",
     "serie": "D",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Sismologie et structure interne du globe",
+    "duree_estimee_min": 30,
+    "tags": [
+      "courbe hodochrone",
+      "ondes P et S",
+      "vitesse des ondes",
+      "milieu hétérogène",
+      "structure interne du globe"
+    ],
     "savoir_officiel": null,
     "statut": "brouillon"
   },
@@ -19,5 +25,121 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Personne n'a jamais creusé jusqu'au centre de la Terre, et pourtant on sait qu'elle est faite de couches. Cette connaissance vient des séismes : les ondes qu'ils produisent traversent le globe et arrivent aux stations d'enregistrement, plus ou moins vite selon le chemin suivi. En traçant le temps d'arrivée en fonction de la distance, on obtient une courbe, la courbe hodochrone, qui renseigne sur la nature des milieux traversés."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les ondes sismiques P (premières) et S (secondes)",
+        "Savoir calculer une vitesse $v = d / t$ et convertir minutes et secondes",
+        "Savoir tracer une courbe à partir d'un tableau de valeurs"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire une hodochrone : pente, vitesse, homogénéité",
+      "contenu_markdown": "Une **courbe hodochrone** représente le **temps de trajet** d'une onde (en ordonnée) en fonction de la **distance épicentrale** (en abscisse). Elle part de l'origine : à distance nulle, le temps est nul.\n\n**Pente et vitesse.** La pente d'une hodochrone, $\\dfrac{\\Delta t}{\\Delta d}$, est l'**inverse de la vitesse**. Plus la pente est **faible**, plus l'onde va **vite**. La courbe de l'onde la plus rapide est donc celle qui s'élève le moins : c'est celle des ondes **P**.\n\n**Homogène ou hétérogène.**\n\n- Si le milieu est **homogène**, la vitesse est constante et l'hodochrone est une **droite** passant par l'origine.\n- Si l'hodochrone est une **courbe** dont la pente diminue avec la distance, la vitesse **augmente** avec la profondeur atteinte par l'onde : le milieu est **hétérogène**. Plus une onde parcourt une grande distance en surface, plus elle plonge profondément.\n\n**Conclusion sur la structure du globe.** Des vitesses qui changent avec la profondeur indiquent un globe formé de **couches de propriétés différentes** (croûte, manteau, noyau), et non d'un matériau uniforme.\n\n**Calcul utile.** La vitesse moyenne d'une onde jusqu'à une station est $v = \\dfrac{d}{t}$.",
+      "formule_principale": "v = \\dfrac{d}{t}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Trois stations enregistrent un séisme. Distances à l'épicentre : 1112 km, 5049 km, 11332 km. Durées de trajet des ondes P : 2 min 24 s, 8 min 14 s, 13 min 48 s. Durées des ondes S : 4 min 17 s, 14 min 49 s, 25 min 20 s. Interpréter les courbes hodochrones : quelle onde est la plus rapide, et le milieu traversé est-il homogène ou hétérogène ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convertir les durées en secondes",
+          "justification": "On calcule en secondes pour avoir des vitesses en km/s",
+          "resultat_markdown": "P : 144 s, 494 s, 828 s. S : 257 s, 889 s, 1520 s."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les vitesses moyennes des ondes P",
+          "justification": "On applique $v = d / t$ à chaque station",
+          "resultat_markdown": "$\\dfrac{1112}{144} \\approx 7{,}7$ ; $\\dfrac{5049}{494} \\approx 10{,}2$ ; $\\dfrac{11332}{828} \\approx 13{,}7$ km/s"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer les vitesses moyennes des ondes S",
+          "justification": "Même calcul",
+          "resultat_markdown": "$\\dfrac{1112}{257} \\approx 4{,}3$ ; $\\dfrac{5049}{889} \\approx 5{,}7$ ; $\\dfrac{11332}{1520} \\approx 7{,}5$ km/s"
+        },
+        {
+          "numero": 4,
+          "action": "Comparer P et S",
+          "justification": "À chaque distance, l'onde la plus rapide met le moins de temps",
+          "resultat_markdown": "À distance égale, P met moins de temps que S (par exemple 144 s contre 257 s) : l'onde P est la plus rapide. Sa courbe s'élève moins."
+        },
+        {
+          "numero": 5,
+          "action": "Étudier l'évolution de la vitesse moyenne",
+          "justification": "Si le milieu était homogène, la vitesse moyenne resterait constante",
+          "resultat_markdown": "Les vitesses moyennes augmentent avec la distance, pour P comme pour S : les hodochrones ne sont pas des droites, leur pente diminue."
+        },
+        {
+          "numero": 6,
+          "action": "Conclure sur le milieu",
+          "justification": "Une vitesse qui augmente avec la profondeur indique des propriétés qui changent avec la profondeur",
+          "resultat_markdown": "Le milieu traversé est **hétérogène**."
+        }
+      ],
+      "conclusion_markdown": "L'onde P est la plus rapide et les milieux traversés sont hétérogènes : les propriétés du globe changent avec la profondeur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dire que l'onde la plus rapide est celle dont la courbe est la plus haute",
+          "pourquoi_faux": "Une courbe plus haute signifie un temps de trajet plus long pour la même distance, donc une onde plus lente.",
+          "correction_markdown": "L'onde la plus rapide est celle dont la courbe est la plus basse, celle dont la pente est la plus faible."
+        },
+        {
+          "erreur_markdown": "Confondre « courbe » et « milieu homogène »",
+          "pourquoi_faux": "Dans un milieu homogène, la vitesse est constante, donc l'hodochrone est une droite. Une courbe indique que la vitesse varie.",
+          "correction_markdown": "Droite = homogène. Courbe = hétérogène."
+        },
+        {
+          "erreur_markdown": "Oublier la conversion minutes-secondes avant de calculer une vitesse",
+          "pourquoi_faux": "$8$ min $14$ s n'est pas $8{,}14$ min. En mélangeant les unités, on obtient des vitesses absurdes.",
+          "correction_markdown": "Convertis d'abord en secondes : $8 \\times 60 + 14 = 494$ s."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un milieu supposé homogène, une station située à 720 km reçoit les ondes P après 90 s et les ondes S après 160 s. Calculer les vitesses de P et de S.",
+          "solution_markdown": "$V_P = \\dfrac{720}{90} = 8$ km/s et $V_S = \\dfrac{720}{160} = 4{,}5$ km/s. L'onde P est la plus rapide : sa pente $\\dfrac{1}{V_P} = 0{,}125$ s/km est plus faible que celle de S ($\\dfrac{1}{4{,}5} \\approx 0{,}222$ s/km)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Pour une onde, on relève : 500 km en 70 s, 1000 km en 125 s, 2000 km en 215 s. Calculer les vitesses moyennes et conclure sur l'homogénéité du milieu.",
+          "solution_markdown": "Vitesses moyennes : $\\dfrac{500}{70} \\approx 7{,}1$ km/s ; $\\dfrac{1000}{125} = 8{,}0$ km/s ; $\\dfrac{2000}{215} \\approx 9{,}3$ km/s.\n\nLa vitesse moyenne augmente avec la distance, donc la pente de l'hodochrone diminue : l'hodochrone est une courbe, pas une droite. Le milieu est **hétérogène** : la vitesse augmente avec la profondeur."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un milieu homogène avec $V_P = 8$ km/s et $V_S = 4{,}5$ km/s, une station enregistre l'arrivée des ondes S 105 s après celle des ondes P. À quelle distance de l'épicentre est-elle ? (on néglige la profondeur du foyer)",
+          "solution_markdown": "Le décalage vaut $\\Delta t = d\\left(\\dfrac{1}{4{,}5} - \\dfrac{1}{8}\\right)$.\n\n$\\dfrac{1}{4{,}5} - \\dfrac{1}{8} = \\dfrac{8 - 4{,}5}{4{,}5 \\times 8} = \\dfrac{3{,}5}{36}$ s/km.\n\nDonc $d = 105 \\times \\dfrac{36}{3{,}5} = 105 \\times 10{,}2857 \\approx 1080$ km. Vérification : à 1080 km, $t_P = 135$ s et $t_S = 240$ s, soit un décalage de 105 s."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une hodochrone donne le **temps de trajet** en fonction de la **distance** ; sa pente est l'**inverse de la vitesse**.",
+        "Courbe plus basse, pente plus faible : onde plus **rapide**. Les ondes P arrivent avant les ondes S.",
+        "Hodochrone en **droite** : milieu homogène. Hodochrone **courbe** : milieu hétérogène, vitesse qui varie avec la profondeur.",
+        "Une vitesse qui change avec la profondeur révèle un globe organisé en **couches**.",
+        "Au probatoire, tu dois construire les hodochrones à partir d'un tableau, puis les interpréter et conclure sur la structure interne : pense à convertir les durées en secondes."
+      ]
+    }
+  ]
 }

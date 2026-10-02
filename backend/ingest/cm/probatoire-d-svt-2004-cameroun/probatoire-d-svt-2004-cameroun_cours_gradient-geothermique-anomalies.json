@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "D",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Géodynamique interne : chaleur du globe",
+    "duree_estimee_min": 30,
+    "tags": [
+      "gradient géothermique",
+      "anomalie géothermique",
+      "isothermes",
+      "flux de chaleur",
+      "subduction"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "D",
@@ -25,5 +31,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "En descendant dans une mine profonde, les mineurs ressentent une chaleur de plus en plus forte : la température monte avec la profondeur. Mais elle ne monte pas partout de la même façon. Sous certaines régions, le sous-sol est étonnamment froid, sous d'autres étonnamment chaud. Ce cours apprend à définir cette valeur normale, à reconnaître les écarts et à les nommer anomalies."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "La température augmente avec la profondeur à l'intérieur de la Terre",
+        "Le vocabulaire des coupes : fosse, arc volcanique, dorsale",
+        "La lecture d'une coupe où des lignes représentent des températures égales, les isothermes",
+        "Le calcul d'un rapport de type variation de température sur variation de profondeur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Gradient géothermique et anomalies",
+      "contenu_markdown": "Le **gradient géothermique** est l'augmentation de la température avec la profondeur. Sa valeur moyenne dans la croûte terrestre est d'environ **30 °C par kilomètre**, soit 3 °C tous les 100 mètres.\n\n$$g = \\dfrac{T_{\\text{profondeur}} - T_{\\text{surface}}}{\\text{profondeur}}$$\n\nSi $T_0$ est la température de surface et $z$ la profondeur en km, la température normale vaut $T = T_0 + g \\times z$.\n\nDans une région « normale », les **isothermes**, lignes joignant les points de même température, sont horizontales et régulièrement espacées.\n\nUne **anomalie** est un **écart notable à la valeur moyenne**.\n\n- **Anomalie positive** : le gradient est plus élevé que la normale, les isothermes remontent vers la surface. On la rencontre sous les **dorsales** et sous les **arcs volcaniques**.\n- **Anomalie négative** : le gradient est plus faible que la normale, les isothermes plongent. On la rencontre sous les **fosses** de subduction, où une plaque froide s'enfonce.\n\nUne zone de subduction associe donc deux anomalies voisines et opposées : froide au niveau de la fosse, chaude sous l'arc volcanique."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le document 4 présente la répartition des températures en profondeur dans deux régions de subduction : les isothermes ne sont pas horizontales mais plongent profondément sous la fosse, formant une langue froide. Pourquoi parle-t-on d'anomalies de gradient géothermique dans ces régions ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler la valeur normale",
+          "justification": "Le gradient moyen de la croûte est d'environ 30 °C par km",
+          "resultat_markdown": "Dans une région normale, les isothermes sont **horizontales et régulièrement espacées**."
+        },
+        {
+          "numero": 2,
+          "action": "Décrire le document",
+          "justification": "Les isothermes du document 4 ne sont ni horizontales ni régulières",
+          "resultat_markdown": "Elles s'**enfoncent** en suivant la plaque plongeante, sous la fosse."
+        },
+        {
+          "numero": 3,
+          "action": "Comparer à profondeur égale",
+          "justification": "À une même profondeur, par exemple 100 km, la température sous la fosse est inférieure à celle observée sous l'océan voisin",
+          "resultat_markdown": "Le gradient y est **anormalement faible**."
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la définition",
+          "justification": "Une anomalie est un écart notable à la valeur moyenne attendue",
+          "resultat_markdown": "Il s'agit d'une anomalie **négative**, c'est-à-dire froide."
+        },
+        {
+          "numero": 5,
+          "action": "Compléter par la zone voisine",
+          "justification": "Sous la zone volcanique, les isothermes remontent vers la surface",
+          "resultat_markdown": "Le gradient y est anormalement élevé : anomalie positive."
+        }
+      ],
+      "conclusion_markdown": "On parle d'anomalies de gradient géothermique parce que les isothermes s'écartent nettement de la disposition normale : plongeantes (anomalie froide) sous la fosse, remontantes (anomalie chaude) sous l'arc volcanique."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire qu'une anomalie est forcément un excès de chaleur.",
+          "pourquoi_faux": "Une anomalie est un écart à la normale dans un sens ou dans l'autre. Sous une fosse, l'anomalie est un déficit de température.",
+          "correction_markdown": "Préciser à chaque fois : anomalie positive (chaude) ou négative (froide)."
+        },
+        {
+          "erreur_markdown": "Oublier de citer la valeur de référence.",
+          "pourquoi_faux": "Sans rappeler la valeur normale, on ne peut pas dire qu'une valeur s'en écarte.",
+          "correction_markdown": "Écrire d'abord « le gradient normal est d'environ 30 °C par km », puis comparer."
+        },
+        {
+          "erreur_markdown": "Calculer le gradient en divisant la température par la profondeur sans retrancher la température de surface.",
+          "pourquoi_faux": "Le gradient mesure une augmentation. Pour 60 °C à 3 km avec 15 °C en surface, l'augmentation est de 45 °C et non de 60.",
+          "correction_markdown": "Utiliser $g = \\dfrac{T - T_0}{z}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la température normale à $2$ km de profondeur si la température de surface est de $20\\ ^\\circ C$ et le gradient de $30\\ ^\\circ C/km$.",
+          "solution_markdown": "$T = T_0 + g \\times z = 20 + 30 \\times 2 = 20 + 60 = 80\\ ^\\circ C$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un forage profond de $10$ km, on mesure $450\\ ^\\circ C$ au fond. La température de surface est de $15\\ ^\\circ C$. Calculer le gradient mesuré, puis dire s'il y a anomalie par rapport à $30\\ ^\\circ C/km$ et de quel type.",
+          "solution_markdown": "**1. Gradient.** $g = \\dfrac{450 - 15}{10} = \\dfrac{435}{10} = 43{,}5\\ ^\\circ C/km$.\n\n**2. Comparaison.** $43{,}5 > 30$ : le gradient est plus élevé que la normale.\n\n**3. Conclusion.** Il y a une **anomalie positive**. Une telle valeur se rencontre par exemple sous une dorsale ou un arc volcanique."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Trois forages donnent des gradients de $30\\ ^\\circ C/km$ (F1), $12\\ ^\\circ C/km$ (F2) et $80\\ ^\\circ C/km$ (F3). Classer les forages par type d'anomalie, puis associer F2 et F3 à une région de subduction (fosse ou arc volcanique) en justifiant. Calculer enfin la température à $3$ km de profondeur dans chaque forage, pour une surface à $15\\ ^\\circ C$.",
+          "solution_markdown": "**1. Classement.** F1 correspond à la valeur normale, donc sans anomalie. F2 est inférieur à 30 : anomalie négative. F3 est supérieur à 30 : anomalie positive.\n\n**2. Association.** F2 est situé près de la **fosse**, car la plaque froide qui plonge abaisse le gradient. F3 est situé sous l'**arc volcanique**, car la fusion du manteau et la remontée des magmas y élèvent le gradient.\n\n**3. Températures à 3 km.**\n\n- F1 : $15 + 30 \\times 3 = 105\\ ^\\circ C$ ;\n- F2 : $15 + 12 \\times 3 = 51\\ ^\\circ C$ ;\n- F3 : $15 + 80 \\times 3 = 255\\ ^\\circ C$.\n\nLes écarts, de $-54\\ ^\\circ C$ et $+150\\ ^\\circ C$ par rapport à F1, montrent l'importance des anomalies."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le gradient géothermique moyen est d'environ 30 °C par km, ce qui donne des isothermes horizontales dans une région normale.",
+        "Une anomalie est un écart à la normale : positive si c'est plus chaud, négative si c'est plus froid.",
+        "Sous une fosse, l'anomalie est froide car la plaque plongeante est froide.",
+        "Sous l'arc volcanique, l'anomalie est chaude à cause de la fusion du manteau.",
+        "Au Probatoire, cite d'abord la valeur normale (30 °C par km), puis compare avec la coupe."
+      ]
+    }
+  ]
 }

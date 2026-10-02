@@ -7,6 +7,14 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-contraintes-dintegrite-et-formats-de-donnees-dans-une-table (probatoire-c-d-e-informatique-throrique-2024-officiel-2024), qui traite deja la contrainte de valeur autorisee (domaine).",
+    "duree_estimee_min": 30,
+    "tags": [
+      "contrainte d'intégrité",
+      "contrainte de domaine",
+      "clé primaire",
+      "clé étrangère",
+      "CHECK"
+    ],
     "statut": "brouillon"
   },
   "source": {
@@ -17,5 +25,114 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans la table Eleve d'un lycée, quelqu'un saisit « X » dans la colonne Sexe, ou un âge de -4 ans. La base accepterait ces valeurs si personne ne lui avait dit ce qui est permis. Les contraintes d'intégrité sont ces règles : elles empêchent l'entrée de données absurdes. Les sujets demandent de les décrire, de les reconnaître dans un cahier des charges et de les écrire en SQL."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table, une ligne et une colonne",
+        "Connaître la clé primaire et la clé étrangère",
+        "Savoir lire un CREATE TABLE simple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les contraintes d'intégrité d'une table",
+      "contenu_markdown": "Une **contrainte d'intégrité** est une règle que le SGBD vérifie à chaque ajout ou modification, et qui refuse toute donnée qui la viole. Pour la décrire, dis ce qu'elle impose, sur quoi elle porte (un champ, une table, un lien entre tables) et donne un exemple.\n\n| Contrainte | Ce qu'elle impose | Mot-clé SQL |\n|---|---|---|\n| Valeur autorisée (domaine) | Le champ ne prend que des valeurs d'un ensemble ou d'un intervalle prédéfini | `CHECK` |\n| Clé primaire | Valeur unique et jamais vide pour chaque ligne | `PRIMARY KEY` |\n| Unicité | Deux lignes ne peuvent pas avoir la même valeur dans ce champ | `UNIQUE` |\n| Non nullité | Le champ doit toujours être renseigné | `NOT NULL` |\n| Intégrité référentielle | Une clé étrangère doit renvoyer à une clé primaire existante | `FOREIGN KEY ... REFERENCES` |\n\nLa **contrainte de valeur autorisée**, ou contrainte de domaine, limite les valeurs d'un champ : par exemple, Sexe ne peut valoir que « M » ou « F », ou Age doit être compris entre 10 et 25. Elle se traduit ainsi :\n\n```sql\nCHECK (Sexe IN ('M', 'F'))\nCHECK (Age BETWEEN 10 AND 25)\n```\n\nPour une règle de gestion exprimée en français, repère les mots-clés : « unique » donne UNIQUE, « toujours renseigné » donne NOT NULL, « doit être compris entre » ou « seulement » donne CHECK."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La table Eleve (Matricule, Nom, Prenom, Sexe, Age) a pour clé primaire Matricule. Décrire la contrainte de valeur autorisée et l'écrire pour le champ Sexe (valeurs M ou F) et le champ Age (entre 10 et 25 ans).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dire ce que la contrainte impose",
+          "justification": "Une description commence par l'effet de la règle.",
+          "resultat_markdown": "Elle limite les valeurs que peut prendre un champ à un ensemble ou un intervalle prédéfini."
+        },
+        {
+          "numero": 2,
+          "action": "Dire sur quoi elle porte",
+          "justification": "Une contrainte de domaine porte sur un champ, pas sur une table entière.",
+          "resultat_markdown": "Elle porte ici sur deux champs de la table Eleve : Sexe et Age."
+        },
+        {
+          "numero": 3,
+          "action": "Donner un exemple",
+          "justification": "Un exemple prouve la compréhension.",
+          "resultat_markdown": "Le champ Sexe ne peut recevoir que « M » ou « F » : la valeur « X » est refusée."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la règle sur Sexe en SQL",
+          "justification": "Un ensemble de valeurs se teste avec IN.",
+          "resultat_markdown": "`CHECK (Sexe IN ('M', 'F'))`"
+        },
+        {
+          "numero": 5,
+          "action": "Écrire la règle sur Age en SQL",
+          "justification": "Un intervalle se teste avec BETWEEN, bornes comprises.",
+          "resultat_markdown": "`CHECK (Age BETWEEN 10 AND 25)`"
+        }
+      ],
+      "conclusion_markdown": "La contrainte de valeur autorisée limite les valeurs d'un champ à un domaine prédéfini, et elle s'écrit avec CHECK dans la définition de la table."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décrire la contrainte de valeur autorisée comme « la valeur ne doit pas être vide ».",
+          "pourquoi_faux": "Un champ non vide relève de la contrainte de non nullité. La contrainte de valeur autorisée porte sur le contenu permis, vide ou non.",
+          "correction_markdown": "Retiens : non vide = NOT NULL ; valeurs permises = CHECK."
+        },
+        {
+          "erreur_markdown": "Confondre clé primaire et unicité.",
+          "pourquoi_faux": "Une clé primaire est unique et jamais vide, et il n'y en a qu'une par table. Un champ UNIQUE peut être vide (selon le SGBD) et une table peut en avoir plusieurs.",
+          "correction_markdown": "Utilise PRIMARY KEY pour l'identifiant principal et UNIQUE pour les autres champs qui ne doivent pas se répéter."
+        },
+        {
+          "erreur_markdown": "Écrire `CHECK (Age > 10 AND < 25)`.",
+          "pourquoi_faux": "Chaque condition doit être complète : « < 25 » seul n'est pas une expression valide. La syntaxe est refusée par le SGBD.",
+          "correction_markdown": "Écris `CHECK (Age > 10 AND Age < 25)` ou, plus simplement, `CHECK (Age BETWEEN 10 AND 25)`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans la table Note (Matricule, Matiere, Valeur), écris en SQL la contrainte qui impose une note comprise entre 0 et 20.",
+          "solution_markdown": "La note est un nombre dont on fixe l'intervalle permis, donc une contrainte de valeur autorisée :\n\n```sql\nCHECK (Valeur BETWEEN 0 AND 20)\n```\n\nUne note de 21 ou de -1 sera refusée par le SGBD."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les règles de gestion de l'entreprise NDENDE disent : le libellé d'un type d'accessoires est unique ; plusieurs clients peuvent avoir le même nom mais jamais le même nom et le même prénom ; le prix unitaire d'un accessoire est strictement positif. Écris les contraintes correspondantes.",
+          "solution_markdown": "1) Libellé unique : le libellé ne doit jamais se répéter, d'où `UNIQUE` sur le champ Libelle de la table Type.\n\n2) Nom et prénom : le nom seul peut se répéter, mais le couple ne peut pas. C'est une unicité sur deux champs pris ensemble :\n\n```sql\nUNIQUE (Nom, Prenom)\n```\n\n3) Prix strictement positif : contrainte de valeur autorisée :\n\n```sql\nCHECK (PrixUnitaire > 0)\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit les tables Client (IdClient, Nom) et Commande (NumCmd, DateCmd, IdClient). 1) Écris la contrainte qui garantit qu'une commande appartient toujours à un client existant. 2) Que se passe-t-il si on insère une commande avec IdClient = 99 alors que ce client n'existe pas ? 3) Que se passe-t-il, par défaut, si on supprime un client qui a des commandes ?",
+          "solution_markdown": "1) Contrainte d'intégrité référentielle :\n\n```sql\nFOREIGN KEY (IdClient) REFERENCES Client(IdClient)\n```\n\n2) L'insertion est refusée : IdClient = 99 ne correspond à aucune clé primaire de Client, donc la clé étrangère ne renvoie à rien.\n\n3) Par défaut, la suppression du client est refusée, car des commandes y font encore référence. Pour supprimer aussi ses commandes, on déclare la clé étrangère avec `ON DELETE CASCADE`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une contrainte d'intégrité est une règle que le SGBD vérifie pour refuser les données incohérentes.",
+        "Pour la décrire : ce qu'elle impose, sur quoi elle porte, un exemple.",
+        "Contrainte de valeur autorisée = domaine d'un champ, écrite avec CHECK.",
+        "Clé primaire (unique, non vide), UNIQUE, NOT NULL et FOREIGN KEY sont les autres contraintes à connaître.",
+        "Au Probatoire TI, « décrire la contrainte de valeur autorisée » est une question de cours à 1 point, et les règles de gestion d'un énoncé se traduisent souvent en contraintes."
+      ]
+    }
+  ]
 }

@@ -5,9 +5,15 @@
     "matiere": "Programmation",
     "pays": "cm",
     "serie": "TI",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Formulaires et PHP",
+    "duree_estimee_min": 30,
+    "tags": [
+      "PHP",
+      "variable GET",
+      "variable POST",
+      "formulaire",
+      "superglobale"
+    ],
     "savoir_officiel": null,
     "statut": "brouillon"
   },
@@ -19,5 +25,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand tu tapes un mot dans le champ de recherche d'un site et que l'adresse devient `recherche.php?mot=physique`, tu viens de voir un formulaire GET en action. Quand tu te connectes et que l'adresse ne change pas, c'est un formulaire POST. Dans les deux cas, PHP reçoit les valeurs saisies, mais pas dans le même tableau. Ce cours t'apprend à choisir le bon tableau et à lire chaque valeur sans erreur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Construire un formulaire HTML (`form`, `input`, `name`, `method`, `action`)",
+        "Savoir lire une valeur dans un tableau associatif avec sa clé",
+        "Afficher une valeur avec `echo`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "`$_GET` et `$_POST` : les deux tableaux de réception d'un formulaire",
+      "contenu_markdown": "`$_GET` et `$_POST` sont des tableaux associatifs **superglobaux** de PHP : ils sont accessibles depuis n'importe quel endroit du script sans déclaration préalable. Ils contiennent automatiquement les données envoyées par un formulaire HTML, chaque valeur étant indexée par le nom (`name`) du champ correspondant.\n\nQuand un formulaire est soumis avec `method=\"get\"`, PHP range les valeurs dans `$_GET`. Il suffit de lire `$_GET['nom_du_champ']` pour récupérer une valeur et de l'afficher avec `echo`.\n\n| | `method=\"get\"` | `method=\"post\"` |\n|---|---|---|\n| Tableau lu en PHP | `$_GET` | `$_POST` |\n| Où voyagent les données | dans l'adresse : `page.php?nom=Biyong&classe=TI` | dans le corps de la requête, invisibles dans l'adresse |\n| Adresse partageable ou enregistrable | oui | non |\n| Convient à | une recherche, un filtre, un affichage | un mot de passe, une inscription, une écriture en base |\n\n```html\n<form action=\"fiche.php\" method=\"get\">\n  <input type=\"text\" name=\"nom\">\n  <input type=\"text\" name=\"classe\">\n  <input type=\"submit\" value=\"Voir\">\n</form>\n```\n\n```php\n<?php\necho \"Nom : \" . htmlspecialchars($_GET['nom']) . \"<br>\";\necho \"Classe : \" . htmlspecialchars($_GET['classe']);\n?>\n```",
+      "variantes": [
+        {
+          "nom": "Lire un paramètre d'adresse écrit à la main",
+          "quand_utiliser": "Quand une page est appelée par un lien, par exemple `fiche.php?matricule=TI042`, sans aucun formulaire.",
+          "contenu_markdown": "Un lien peut transporter des paramètres comme un formulaire GET. `fiche.php?matricule=TI042` fournit `$_GET['matricule']` égal à `TI042`. Le caractère `?` ouvre la liste, `&` sépare deux paramètres."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec le formulaire GET et le script de la règle, un élève saisit `Ngo Biyong` dans le champ `nom` et `TI` dans le champ `classe`, puis valide. Quelle est l'adresse affichée par le navigateur et que produit le script ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la méthode",
+          "justification": "La méthode décide où les données sont placées.",
+          "resultat_markdown": "`method=\"get\"` : les données sont ajoutées à l'adresse après un `?`."
+        },
+        {
+          "numero": 2,
+          "action": "Construire l'adresse",
+          "justification": "Chaque champ devient `name=valeur`, les paramètres sont séparés par `&`, et l'espace est encodé (`+` ou `%20`).",
+          "resultat_markdown": "`fiche.php?nom=Ngo+Biyong&classe=TI`"
+        },
+        {
+          "numero": 3,
+          "action": "Lire les valeurs en PHP",
+          "justification": "PHP décode automatiquement l'adresse : le `+` redevient un espace dans `$_GET`.",
+          "resultat_markdown": "`$_GET['nom']` vaut `Ngo Biyong` et `$_GET['classe']` vaut `TI`."
+        },
+        {
+          "numero": 4,
+          "action": "Exécuter les deux `echo`",
+          "justification": "Chaque `echo` écrit sa valeur. `<br>` est du HTML qui crée un retour à la ligne.",
+          "resultat_markdown": "```html\nNom : Ngo Biyong<br>\nClasse : TI\n```"
+        }
+      ],
+      "conclusion_markdown": "L'adresse contient les données en clair (`fiche.php?nom=Ngo+Biyong&classe=TI`) et la page affiche le nom et la classe de l'élève."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Envoyer un mot de passe avec `method=\"get\"`.",
+          "pourquoi_faux": "Le mot de passe apparaît dans la barre d'adresse, dans l'historique du navigateur et dans les journaux du serveur.",
+          "correction_markdown": "Utilise `method=\"post\"` dès qu'une donnée est confidentielle, et lis-la avec `$_POST`."
+        },
+        {
+          "erreur_markdown": "Écrire `$_GET['nom']` pour un formulaire en POST (ou l'inverse).",
+          "pourquoi_faux": "Le formulaire remplit un seul des deux tableaux, celui qui correspond à sa méthode. L'autre reste vide.",
+          "correction_markdown": "Lis d'abord l'attribut `method` du formulaire, puis choisis `$_GET` ou `$_POST`."
+        },
+        {
+          "erreur_markdown": "Utiliser l'attribut `id` comme clé : `$_GET['champ1']` alors que le champ est `<input id=\"champ1\" name=\"nom\">`.",
+          "pourquoi_faux": "La clé du tableau est la valeur de `name`. L'attribut `id` n'est pas transmis au serveur.",
+          "correction_markdown": "Écris `$_GET['nom']`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un formulaire GET contient `<input name=\"matricule\">`. Écris l'instruction PHP qui affiche la valeur saisie.",
+          "solution_markdown": "La clé est le `name` du champ :\n\n```php\n<?php\necho htmlspecialchars($_GET['matricule']);\n?>\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On ouvre `liste.php?classe=TI&annee=2022`. Donne les valeurs de `$_GET['classe']` et `$_GET['annee']`, puis écris le script qui affiche `Classe TI, année 2022`.",
+          "solution_markdown": "Les paramètres de l'adresse remplissent `$_GET` : `$_GET['classe']` vaut `TI` et `$_GET['annee']` vaut `2022`.\n\n```php\n<?php\necho \"Classe \" . htmlspecialchars($_GET['classe']) . \", année \" . htmlspecialchars($_GET['annee']);\n?>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un site propose deux formulaires : une recherche d'élève par nom, et une inscription avec mot de passe. Pour chacun, indique la méthode à choisir, le tableau lu par PHP et justifie.",
+          "solution_markdown": "- **Recherche d'élève par nom** : `method=\"get\"`, lecture avec `$_GET['nom']`. La recherche ne modifie rien, et l'adresse obtenue peut être gardée en favori ou partagée.\n- **Inscription avec mot de passe** : `method=\"post\"`, lecture avec `$_POST['motdepasse']`. Les données restent hors de l'adresse, donc absentes de l'historique du navigateur, et l'envoi crée une donnée en base (une requête GET ne doit pas modifier les données).\n\nLe critère de choix : GET pour consulter, POST pour envoyer une donnée sensible ou provoquer une écriture."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un formulaire en `get` remplit `$_GET`, un formulaire en `post` remplit `$_POST` : la méthode décide du tableau.",
+        "Dans les deux cas, la clé est l'attribut `name` du champ.",
+        "GET place les données dans l'adresse (visibles, partageables), POST les place dans le corps de la requête.",
+        "Mot de passe ou écriture en base : POST. Recherche ou filtre : GET.",
+        "Au BAC TI, on te demande de récupérer les valeurs d'un formulaire en PHP et de les afficher avec `echo` : lis la méthode, choisis le tableau, utilise le bon `name`."
+      ]
+    }
+  ]
 }

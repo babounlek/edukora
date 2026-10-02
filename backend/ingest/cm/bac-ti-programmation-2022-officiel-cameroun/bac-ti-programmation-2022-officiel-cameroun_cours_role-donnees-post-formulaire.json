@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-recuperer-les-donnees-d-un-formulaire-en-php-get-et-post-ti-2021 (bac-ti-informatique-programmation-2021-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "sous_theme": "Formulaires et PHP",
+    "duree_estimee_min": 30,
+    "tags": [
+      "PHP",
+      "variable POST",
+      "formulaire",
+      "superglobale",
+      "méthode POST"
+    ]
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2022-officiel-cameroun",
@@ -17,5 +26,120 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur un site d'inscription, tu tapes ton nom et ton mot de passe, tu cliques sur « Envoyer », et la page suivante te dit « Bienvenue, Mballa ». Entre les deux, une petite structure PHP a retrouvé ce que tu avais saisi. Si les données avaient été envoyées par l'adresse de la page, ton mot de passe serait visible dans la barre d'adresse. C'est pour cela que les formulaires sensibles utilisent la méthode POST, et que `$_POST` est l'outil à connaître pour les lire côté serveur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire un formulaire HTML avec les attributs `action`, `method` et `name` des champs",
+        "Savoir qu'un tableau associatif relie une clé à une valeur (`$t['cle']`)",
+        "Utiliser `echo` pour afficher une valeur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire un formulaire envoyé en POST avec `$_POST`",
+      "contenu_markdown": "`$_POST` est un tableau associatif **superglobal** de PHP, c'est-à-dire accessible depuis n'importe quel endroit du script sans déclaration. Il contient les données envoyées par un formulaire dont la méthode est `method=\"post\"`.\n\n- La **clé** est l'attribut `name` du champ HTML (pas `id`). `$_POST['nom']` renvoie la valeur saisie dans le champ `name=\"nom\"`.\n- Le tableau n'existe avec des valeurs que si le formulaire a été soumis en POST. Teste-le avec `isset($_POST['nom'])`.\n- Une valeur reçue vient du visiteur : elle n'est jamais sûre. Avant de l'afficher, utilise `htmlspecialchars(...)`. Avant de l'insérer dans une requête SQL, nettoie-la (`mysqli_real_escape_string($connexion, ...)`).\n\nFormulaire (`formulaire.html`) :\n\n```html\n<form action=\"traitement.php\" method=\"post\">\n  <label>Nom : <input type=\"text\" name=\"nom\"></label>\n  <label>Moyenne : <input type=\"number\" name=\"moyenne\" step=\"0.01\"></label>\n  <input type=\"submit\" value=\"Envoyer\">\n</form>\n```\n\nScript (`traitement.php`) :\n\n```php\n<?php\n$nom = $_POST['nom'];\n$moyenne = $_POST['moyenne'];\necho \"L'élève \" . htmlspecialchars($nom) . \" a \" . $moyenne . \" de moyenne.\";\n?>\n```",
+      "variantes": [
+        {
+          "nom": "Tester la soumission avec isset",
+          "quand_utiliser": "Quand le même script sert à afficher le formulaire puis à le traiter, ou quand on ne veut pas d'erreur si la page est ouverte sans passer par le formulaire.",
+          "contenu_markdown": "```php\n<?php\nif (isset($_POST['nom'])) {\n    echo \"Reçu : \" . htmlspecialchars($_POST['nom']);\n} else {\n    echo \"Aucun formulaire reçu.\";\n}\n?>\n```\n\n`isset` renvoie `true` si la clé existe et n'est pas nulle. Sans ce test, lire une clé absente produit un avertissement."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Avec le formulaire et le script ci-dessus, un utilisateur saisit `Mballa` dans le champ nom et `13.5` dans le champ moyenne, puis clique sur « Envoyer ». Quel texte la page `traitement.php` affiche-t-elle ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la méthode du formulaire",
+          "justification": "L'attribut `method` décide du tableau superglobal à lire : `post` donne `$_POST`.",
+          "resultat_markdown": "`method=\"post\"`, donc les données arrivent dans `$_POST`."
+        },
+        {
+          "numero": 2,
+          "action": "Associer chaque champ à sa clé",
+          "justification": "La clé du tableau est la valeur de l'attribut `name`, pas celle de `id`.",
+          "resultat_markdown": "`$_POST['nom']` contient `Mballa` et `$_POST['moyenne']` contient `13.5`."
+        },
+        {
+          "numero": 3,
+          "action": "Exécuter les affectations",
+          "justification": "Les valeurs sont copiées dans des variables ordinaires, plus pratiques à manipuler.",
+          "resultat_markdown": "`$nom = \"Mballa\"` et `$moyenne = \"13.5\"` (PHP reçoit toujours du texte)."
+        },
+        {
+          "numero": 4,
+          "action": "Construire la phrase avec l'opérateur de concaténation",
+          "justification": "Le point `.` colle les morceaux de texte. `htmlspecialchars` ne change rien ici, car `Mballa` ne contient aucun caractère spécial.",
+          "resultat_markdown": "`L'élève Mballa a 13.5 de moyenne.`"
+        }
+      ],
+      "conclusion_markdown": "La page affiche : L'élève Mballa a 13.5 de moyenne. Les données ont voyagé dans le corps de la requête, pas dans l'adresse."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `$_POST['id']` alors que le champ HTML est `<input id=\"nom\" ...>` sans attribut `name`.",
+          "pourquoi_faux": "Seuls les champs qui portent un attribut `name` sont envoyés, et c'est `name` qui sert de clé. L'attribut `id` sert au CSS et à JavaScript.",
+          "correction_markdown": "Donne un `name` à chaque champ et utilise exactement le même texte comme clé : `<input name=\"nom\">` se lit avec `$_POST['nom']`."
+        },
+        {
+          "erreur_markdown": "Lire `$_POST['nom']` alors que le formulaire est déclaré avec `method=\"get\"`.",
+          "pourquoi_faux": "Avec GET, les valeurs sont placées dans l'adresse et rangées dans `$_GET`. `$_POST` reste vide, donc la clé n'existe pas.",
+          "correction_markdown": "Vérifie la méthode du formulaire avant de choisir le tableau à lire."
+        },
+        {
+          "erreur_markdown": "Écrire `$_POST('nom')` avec des parenthèses ou `$_POST[nom]` sans guillemets.",
+          "pourquoi_faux": "`$_POST` est un tableau, pas une fonction. La clé est une chaîne de caractères et doit être entre guillemets.",
+          "correction_markdown": "La forme correcte est `$_POST['nom']`."
+        },
+        {
+          "erreur_markdown": "Insérer `$_POST['nom']` directement dans une requête SQL.",
+          "pourquoi_faux": "Un visiteur peut saisir une apostrophe ou du code SQL qui casse la requête ou détourne son effet (injection SQL).",
+          "correction_markdown": "Passe d'abord la valeur par `mysqli_real_escape_string($connexion, $_POST['nom'])`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un formulaire en POST contient `<input type=\"text\" name=\"ville\">`. Écris le code PHP qui affiche `Ville : ` suivi de la valeur saisie.",
+          "solution_markdown": "La clé est la valeur de `name`, soit `ville` :\n\n```php\n<?php\necho \"Ville : \" . htmlspecialchars($_POST['ville']);\n?>\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris un script qui affiche `Bienvenue, ` suivi du champ `prenom` si le formulaire a été envoyé en POST, et `Remplis le formulaire.` sinon.",
+          "solution_markdown": "On teste d'abord l'existence de la clé avec `isset`, puis on choisit l'affichage :\n\n```php\n<?php\nif (isset($_POST['prenom'])) {\n    echo \"Bienvenue, \" . htmlspecialchars($_POST['prenom']);\n} else {\n    echo \"Remplis le formulaire.\";\n}\n?>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un formulaire POST contient les champs `nom` et `moyenne`. Écris le script qui enregistre l'élève dans la table `eleve(nom, moyenne)` de la base `ecole` (serveur `localhost`, utilisateur `root`, mot de passe vide), en protégeant les valeurs.",
+          "solution_markdown": "1. Connexion avec `mysqli_connect(serveur, login, mot_de_passe, base)`.\n2. Nettoyage du texte avec `mysqli_real_escape_string`. La moyenne est un nombre : on la convertit avec `(float)`, ce qui élimine tout texte dangereux.\n3. Construction de la requête puis exécution.\n4. Fermeture de la connexion.\n\n```php\n<?php\n$conn = mysqli_connect(\"localhost\", \"root\", \"\", \"ecole\");\n$nom = mysqli_real_escape_string($conn, $_POST['nom']);\n$moyenne = (float) $_POST['moyenne'];\n$sql = \"INSERT INTO eleve (nom, moyenne) VALUES ('$nom', $moyenne)\";\nmysqli_query($conn, $sql);\nmysqli_close($conn);\n?>\n```\n\nLe nom est entre apostrophes dans la requête (type texte), la moyenne non (type nombre)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`$_POST` est un tableau associatif superglobal qui contient les données d'un formulaire envoyé avec `method=\"post\"`.",
+        "La clé est l'attribut `name` du champ, jamais `id`.",
+        "Avec `method=\"get\"` on lit `$_GET`. Mélanger les deux donne un tableau vide.",
+        "Une donnée reçue est toujours suspecte : `htmlspecialchars` avant l'affichage, `mysqli_real_escape_string` avant le SQL.",
+        "Au BAC TI de Programmation, on te demande de donner le rôle de `$_POST['nom_du_champ']` ou d'écrire le script qui récupère un formulaire puis l'insère en base."
+      ]
+    }
+  ]
 }

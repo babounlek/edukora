@@ -5,9 +5,15 @@
     "matiere": "Programmation",
     "pays": "cm",
     "serie": "TI",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Programmation web côté serveur (PHP)",
+    "duree_estimee_min": 25,
+    "tags": [
+      "PHP",
+      "script côté serveur",
+      "client-serveur",
+      "HTTP",
+      "page dynamique"
+    ],
     "savoir_officiel": null,
     "statut": "brouillon"
   },
@@ -19,5 +25,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu as déjà ouvert un site dans ton navigateur et fait un clic droit puis « Afficher le code source » : tu y vois du HTML, du CSS, parfois du JavaScript. Mais jamais le code PHP de la page de connexion ou de la page qui affiche les notes d'un élève. Où est-il passé ? Il a été exécuté avant que la page ne quitte le serveur. Comprendre ce mécanisme répond à une question d'examen très fréquente : où s'exécute PHP, et que reçoit réellement le visiteur ?"
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure d'une page HTML (balises `html`, `body`, `p`, `h1`)",
+        "Savoir ce qu'est un client (le navigateur) et un serveur web qui lui répond",
+        "Savoir déclarer une variable et afficher une valeur avec `echo`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "PHP s'exécute sur le serveur, le navigateur ne reçoit que le résultat",
+      "contenu_markdown": "PHP est un langage de script **exécuté côté serveur** : le code est interprété sur le serveur avant l'envoi de la page, si bien que seul le résultat (du HTML) parvient au navigateur, jamais le code source PHP lui-même.\n\nLe déroulement d'une requête sur une page PHP :\n\n1. Le navigateur (client) envoie une requête HTTP pour un fichier, par exemple `http://localhost/facture.php`.\n2. Le serveur web (Apache, par exemple) reconnaît l'extension `.php` et confie le fichier à l'interpréteur PHP.\n3. L'interpréteur exécute uniquement ce qui se trouve entre `<?php` et `?>`. Chaque bloc est remplacé par ce qu'il affiche avec `echo`. Le HTML situé autour est recopié tel quel.\n4. Le serveur renvoie au navigateur le document obtenu : du HTML pur, sans aucune trace de PHP.\n5. Le navigateur affiche la page.\n\n```php\n<!DOCTYPE html>\n<html>\n<body>\n  <?php\n    $nom = \"Elodie\";\n    echo \"<p>Bonjour \" . $nom . \"</p>\";\n  ?>\n</body>\n</html>\n```\n\nLe navigateur reçoit `<p>Bonjour Elodie</p>` à la place du bloc PHP. Le fichier doit porter l'extension `.php` et être demandé **par le serveur** (adresse en `http://`), sinon l'interpréteur n'est jamais appelé.",
+      "variantes": [
+        {
+          "nom": "Script côté client (JavaScript)",
+          "quand_utiliser": "Quand la page doit réagir immédiatement dans le navigateur : vérifier un champ avant l'envoi, afficher un message au clic, sans recharger la page.",
+          "contenu_markdown": "JavaScript est envoyé tel quel au navigateur, qui l'exécute chez le visiteur. Son code est donc visible dans « Afficher le code source ». À l'inverse, PHP sert à tout ce qui doit rester sous le contrôle du serveur : accès à la base de données, vérification d'un mot de passe, enregistrement d'un formulaire. Une page dynamique combine souvent les deux."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un fichier `facture.php` est hébergé sur un serveur web. Son contenu est :\n\n```php\n<?php\n$prix = 2500;\n$quantite = 4;\n$total = $prix * $quantite;\n?>\n<h1>Facture</h1>\n<p>Total : <?php echo $total; ?> FCFA</p>\n```\n\nUn visiteur demande cette page depuis son navigateur. Quel document le serveur lui envoie-t-il ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les blocs PHP du fichier",
+          "justification": "Seul ce qui est entre `<?php` et `?>` est exécuté par le serveur. Le reste est du HTML copié sans modification.",
+          "resultat_markdown": "Deux blocs PHP : le premier déclare les variables, le second contient `echo $total;`."
+        },
+        {
+          "numero": 2,
+          "action": "Exécuter le premier bloc",
+          "justification": "Les affectations s'exécutent dans l'ordre. Ce bloc ne contient aucun `echo`, donc il ne produit aucun texte.",
+          "resultat_markdown": "`$total = 2500 * 4 = 10000`. Rien n'est écrit dans la page."
+        },
+        {
+          "numero": 3,
+          "action": "Exécuter le second bloc",
+          "justification": "`echo $total;` affiche la valeur de la variable à l'endroit où se trouve le bloc.",
+          "resultat_markdown": "Le bloc est remplacé par `10000`."
+        },
+        {
+          "numero": 4,
+          "action": "Assembler le document envoyé",
+          "justification": "Le serveur recopie le HTML et remplace chaque bloc PHP par sa sortie. Les balises `<?php` et `?>` disparaissent.",
+          "resultat_markdown": "```html\n<h1>Facture</h1>\n<p>Total : 10000 FCFA</p>\n```"
+        }
+      ],
+      "conclusion_markdown": "Le navigateur reçoit uniquement ces deux lignes de HTML. Les variables `$prix`, `$quantite` et le calcul n'apparaissent nulle part : PHP s'est exécuté sur le serveur."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Penser qu'on peut lire le code PHP d'un site avec « Afficher le code source ».",
+          "pourquoi_faux": "Le serveur exécute le PHP avant l'envoi. Le navigateur n'a jamais reçu ce code, il ne peut donc pas l'afficher.",
+          "correction_markdown": "Retiens que le visiteur voit le résultat HTML. Les identifiants de base de données écrits dans un fichier PHP ne transitent pas vers lui."
+        },
+        {
+          "erreur_markdown": "Ouvrir un fichier `.php` par double-clic et s'étonner de voir le code brut ou une page vide.",
+          "pourquoi_faux": "Le double-clic ouvre le fichier directement (adresse `file://`). Aucun serveur ne passe par l'interpréteur PHP.",
+          "correction_markdown": "Place le fichier dans le dossier du serveur local (par exemple `htdocs`) et ouvre `http://localhost/facture.php`."
+        },
+        {
+          "erreur_markdown": "Écrire du PHP dans un fichier `.html` et s'attendre à ce qu'il s'exécute.",
+          "pourquoi_faux": "Le serveur confie à l'interpréteur PHP les fichiers `.php`. Un fichier `.html` est envoyé tel quel, code compris.",
+          "correction_markdown": "Donne toujours l'extension `.php` à une page qui contient du code PHP."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un fichier PHP contient uniquement `<?php echo \"Salut\"; ?>`. Quel texte le navigateur reçoit-il ?",
+          "solution_markdown": "Le serveur exécute le bloc : `echo \"Salut\";` écrit `Salut`. Les balises PHP ne sont pas envoyées. Le navigateur reçoit donc seulement le texte `Salut`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Voici une page `age.php` :\n\n```php\n<?php\n$age = 17;\n?>\n<p>Âge dans un an : <?php echo $age + 1; ?> ans</p>\n```\n\nÉcris le HTML reçu par le navigateur.",
+          "solution_markdown": "1. Premier bloc : `$age` vaut 17, aucun affichage.\n2. Second bloc : `$age + 1 = 17 + 1 = 18`, que `echo` écrit à la place du bloc.\n\nHTML reçu :\n\n```html\n<p>Âge dans un an : 18 ans</p>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un développeur place dans `accueil.html` le code `<?php echo \"Bonjour\"; ?>` puis ouvre `http://localhost/accueil.html`. Explique ce que voit le visiteur, pourquoi, et comment corriger.",
+          "solution_markdown": "Le serveur ne confie à l'interpréteur PHP que les fichiers d'extension `.php`. Le fichier `.html` est donc envoyé tel quel. Le navigateur reçoit `<?php echo \"Bonjour\"; ?>`, ne reconnaît pas la balise `<?php` comme du HTML et n'affiche pas « Bonjour » (le texte reste souvent invisible ou apparaît comme un commentaire). En plus, le code PHP devient lisible dans le code source de la page.\n\nCorrection : renommer le fichier en `accueil.php` et l'ouvrir via `http://localhost/accueil.php`. Le visiteur reçoit alors `Bonjour`."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "PHP est exécuté sur le serveur : le navigateur ne reçoit que le HTML produit, jamais le code PHP.",
+        "Seul ce qui est entre `<?php` et `?>` est interprété. Le reste du fichier est recopié sans changement.",
+        "Une page PHP doit avoir l'extension `.php` et être demandée à un serveur (`http://`), pas ouverte par double-clic.",
+        "JavaScript s'exécute chez le visiteur, PHP chez l'hébergeur : ne confonds jamais les deux.",
+        "À l'examen du BAC TI, on te demande souvent de justifier pourquoi PHP est un langage côté serveur ou ce que reçoit le navigateur : réponds par le déroulement requête, exécution, réponse HTML."
+      ]
+    }
+  ]
 }

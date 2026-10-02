@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-recuperer-les-donnees-d-un-formulaire-en-php-get-et-post-ti-2021 (bac-ti-informatique-programmation-2021-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "sous_theme": "Formulaires et PHP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "PHP",
+      "variable GET",
+      "variable POST",
+      "superglobale",
+      "attribut method"
+    ]
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2023-officiel-cameroun",
@@ -17,5 +26,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "À l'examen, l'énoncé te montre souvent un formulaire HTML et te demande : « Quelle variable PHP permet de récupérer les données ? » La réponse ne se devine pas, elle se lit dans le formulaire : tout dépend de l'attribut `method`. Cette question vaut des points faciles si tu as le bon réflexe, et en fait perdre si tu réponds au hasard."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Lire un formulaire HTML : `action`, `method`, `name`",
+        "Savoir ce qu'est un tableau associatif en PHP",
+        "Savoir afficher du texte avec `echo`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Identifier la variable superglobale qui reçoit un formulaire",
+      "contenu_markdown": "En PHP, les données envoyées par un formulaire sont récupérées grâce aux **tableaux superglobaux**, accessibles partout dans le script sans déclaration. `$_GET` contient les données transmises dans l'adresse (méthode `get`) et `$_POST` celles envoyées dans le corps de la requête (méthode `post`). On lit une valeur par `$_POST['nom_du_champ']`.\n\nLe choix entre les deux dépend de l'attribut `method` du formulaire, et la clé doit correspondre exactement à l'attribut `name` du champ.\n\nDémarche en trois temps devant un énoncé :\n\n1. Lire `method` dans la balise `form` (ou la méthode imposée par l'énoncé).\n2. En déduire le tableau : `get` donne `$_GET`, `post` donne `$_POST`.\n3. Relever les `name` des champs pour écrire les clés.\n\n```html\n<form action=\"connexion.php\" method=\"get\">\n  <input type=\"text\" name=\"login\">\n  <input type=\"password\" name=\"pwd\">\n  <input type=\"submit\" value=\"Connexion\">\n</form>\n```\n\n```php\n<?php\n$login = $_GET['login'];\n$pwd = $_GET['pwd'];\n?>\n```",
+      "variantes": [
+        {
+          "nom": "Méthode imposée par l'énoncé",
+          "quand_utiliser": "Quand le formulaire n'est pas donné et que l'énoncé écrit « la méthode de récupération imposée est GET ».",
+          "contenu_markdown": "L'énoncé fixe directement le tableau : « méthode GET » signifie `$_GET`. Les noms des champs (par exemple `login` et `pwd`) fournissent les clés `$_GET['login']` et `$_GET['pwd']`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un formulaire est écrit ainsi :\n\n```html\n<form action=\"note.php\" method=\"post\">\n  <input type=\"text\" name=\"matricule\">\n  <input type=\"number\" name=\"note\">\n  <input type=\"submit\" value=\"Valider\">\n</form>\n```\n\nÉcris les instructions PHP de `note.php` qui rangent le matricule dans `$m` et la note dans `$n`, et nomme la variable superglobale utilisée.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire la méthode du formulaire",
+          "justification": "C'est elle qui désigne le tableau de réception.",
+          "resultat_markdown": "`method=\"post\"`."
+        },
+        {
+          "numero": 2,
+          "action": "En déduire la superglobale",
+          "justification": "POST correspond à `$_POST` et GET à `$_GET`.",
+          "resultat_markdown": "La superglobale est `$_POST`."
+        },
+        {
+          "numero": 3,
+          "action": "Relever les noms des champs",
+          "justification": "Les clés du tableau sont les valeurs des attributs `name`.",
+          "resultat_markdown": "Les champs s'appellent `matricule` et `note`."
+        },
+        {
+          "numero": 4,
+          "action": "Écrire les affectations",
+          "justification": "On lit chaque valeur avec sa clé entre guillemets.",
+          "resultat_markdown": "```php\n<?php\n$m = $_POST['matricule'];\n$n = $_POST['note'];\n?>\n```"
+        }
+      ],
+      "conclusion_markdown": "La variable superglobale est `$_POST`, et les deux valeurs se lisent avec les clés `matricule` et `note`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre `$_POST` par habitude sans regarder l'attribut `method`.",
+          "pourquoi_faux": "Si le formulaire est en `get`, les données sont dans `$_GET` et `$_POST` est vide.",
+          "correction_markdown": "Commence toujours par lire `method`."
+        },
+        {
+          "erreur_markdown": "Confondre la clé avec le texte affiché à l'écran (par exemple écrire `$_GET['Mot de passe']`).",
+          "pourquoi_faux": "Le texte d'une étiquette n'est jamais transmis. Seul l'attribut `name` du champ sert de clé.",
+          "correction_markdown": "Utilise `$_GET['pwd']` si le champ est `<input name=\"pwd\">`."
+        },
+        {
+          "erreur_markdown": "Oublier que les superglobales ne se déclarent pas et écrire `global $_GET;`.",
+          "pourquoi_faux": "Une superglobale est visible partout, y compris dans les fonctions, sans déclaration.",
+          "correction_markdown": "Utilise `$_GET['login']` directement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un formulaire a `method=\"get\"` et un champ `name=\"ville\"`. Quelle superglobale lit-on et avec quelle clé ?",
+          "solution_markdown": "La méthode `get` donne `$_GET`, et la clé est la valeur de `name`. On lit donc `$_GET['ville']`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La méthode imposée par un énoncé est `$_GET` et les champs s'appellent `login` et `pwd`. Écris le script qui affiche `Utilisateur : ` suivi du login.",
+          "solution_markdown": "```php\n<?php\n$login = $_GET['login'];\necho \"Utilisateur : \" . htmlspecialchars($login);\n?>\n```\n\nLe mot de passe `$_GET['pwd']` est lu de la même façon mais n'est pas affiché ici."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un développeur choisit `method=\"get\"` pour un formulaire de connexion avec `login` et `pwd`. Que devient l'adresse après validation avec `login=eleve1` et `pwd=ti2022`, et pourquoi faut-il changer ce choix ?",
+          "solution_markdown": "L'adresse devient `connexion.php?login=eleve1&pwd=ti2022`. Le mot de passe est visible dans la barre d'adresse, conservé dans l'historique du navigateur et enregistré dans les journaux du serveur.\n\nOn doit passer en `method=\"post\"` et lire `$_POST['login']` et `$_POST['pwd']` dans le script : les données sont alors dans le corps de la requête, absentes de l'adresse."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La méthode du formulaire désigne le tableau : `get` pour `$_GET`, `post` pour `$_POST`.",
+        "La clé d'une valeur est l'attribut `name` du champ, écrite exactement entre guillemets.",
+        "Les superglobales sont accessibles partout, sans déclaration.",
+        "Un mot de passe ne voyage jamais en GET.",
+        "Au BAC TI de Programmation, la question « quelle variable récupère les données du formulaire ? » revient régulièrement : lis `method`, réponds avec le bon tableau et les bonnes clés."
+      ]
+    }
+  ]
 }

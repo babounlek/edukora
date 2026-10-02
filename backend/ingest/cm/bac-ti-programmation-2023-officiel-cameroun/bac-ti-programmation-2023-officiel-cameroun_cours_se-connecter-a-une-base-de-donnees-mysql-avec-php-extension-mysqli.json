@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-se-connecter-a-une-base-de-donnees-mysql-avec-php-extension-mysqli-ti-2021 (bac-ti-informatique-programmation-2021-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "sous_theme": "Accès aux bases de données avec PHP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "mysqli",
+      "connexion MySQL",
+      "paramètres de connexion",
+      "mysqli_select_db",
+      "PHP et base de données"
+    ]
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2023-officiel-cameroun",
@@ -17,5 +26,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une épreuve, on te montre quelques lignes de code PHP et on te demande de repérer la ligne qui connecte le script à MySQL, puis de dire ce que représente chaque paramètre. Une ligne comme `$connexion = mysqli_connect(\"localhost\", \"root\", \"1234\");` contient tout ce qu'il faut pour répondre : adresse du serveur, identifiants et, parfois, une base qui manque. Ce cours t'apprend à la lire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable et une chaîne de caractères en PHP",
+        "Connaître le vocabulaire serveur, utilisateur, mot de passe, base de données",
+        "Savoir appeler une fonction PHP avec des arguments"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Identifier la ligne de connexion mysqli et ses paramètres",
+      "contenu_markdown": "Avec l'extension mysqli, la connexion s'établit par `new mysqli(hôte, utilisateur, mot_de_passe, base)` (ou `mysqli_connect` en style procédural). Les quatre paramètres sont, dans l'ordre : l'adresse du serveur MySQL (souvent `localhost`), le nom de l'utilisateur, son mot de passe (éventuellement vide en local) et le nom de la base à utiliser.\n\nL'ordre des paramètres est imposé, et la base doit déjà exister sur le serveur.\n\nPour identifier la ligne de connexion dans un code :\n\n1. Chercher l'appel à `mysqli_connect(...)` ou `new mysqli(...)`, presque toujours affecté à une variable.\n2. Associer les arguments aux rôles dans l'ordre.\n3. Vérifier combien d'arguments sont présents : le quatrième (la base) peut manquer.\n\nQuand la base n'est pas donnée dans l'appel, on la choisit ensuite avec `mysqli_select_db` :\n\n```php\n$connexion = mysqli_connect(\"localhost\", \"root\", \"1234\");\nmysqli_select_db($connexion, \"ecole\");\n```\n\nL'équivalent en un seul appel est `mysqli_connect(\"localhost\", \"root\", \"1234\", \"ecole\")`.",
+      "variantes": [
+        {
+          "nom": "Style objet",
+          "quand_utiliser": "Quand le code utilise des flèches `->` sur une variable de connexion.",
+          "contenu_markdown": "```php\n$connexion = new mysqli(\"localhost\", \"root\", \"1234\", \"ecole\");\n```\n\nLes paramètres et leur ordre sont identiques. La connexion est un objet sur lequel on appelle ensuite `query()` et `close()`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un script, on lit la ligne suivante :\n\n```php\n$connexion = mysqli_connect(\"localhost\", \"root\", \"1234\");\n```\n\nDonne le rôle de chaque paramètre. Cette ligne permet-elle de lire la table `eleve` de la base `ecole` ? Sinon, complète le code.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la ligne de connexion",
+          "justification": "La fonction `mysqli_connect` ouvre la connexion avec le serveur MySQL, et son résultat est rangé dans `$connexion`.",
+          "resultat_markdown": "La ligne de connexion est celle qui contient `mysqli_connect(...)`."
+        },
+        {
+          "numero": 2,
+          "action": "Associer chaque argument à son rôle",
+          "justification": "Les paramètres sont lus dans l'ordre : serveur, utilisateur, mot de passe, base.",
+          "resultat_markdown": "`\"localhost\"` : le serveur (la machine locale). `\"root\"` : l'utilisateur. `\"1234\"` : le mot de passe de `root`. Aucun quatrième argument."
+        },
+        {
+          "numero": 3,
+          "action": "Constater l'absence de base",
+          "justification": "Sans nom de base, la connexion existe mais aucune base n'est sélectionnée. Une requête sur la table `eleve` échouerait.",
+          "resultat_markdown": "La ligne seule ne suffit pas pour lire `eleve`."
+        },
+        {
+          "numero": 4,
+          "action": "Compléter le code",
+          "justification": "Deux solutions équivalentes : ajouter le quatrième argument, ou sélectionner la base juste après.",
+          "resultat_markdown": "```php\n$connexion = mysqli_connect(\"localhost\", \"root\", \"1234\", \"ecole\");\n```\n\nou bien\n\n```php\n$connexion = mysqli_connect(\"localhost\", \"root\", \"1234\");\nmysqli_select_db($connexion, \"ecole\");\n```"
+        }
+      ],
+      "conclusion_markdown": "La ligne se connecte au serveur `localhost` avec l'utilisateur `root` et le mot de passe `1234`, sans choisir de base. Pour lire la table `eleve`, il faut ajouter `\"ecole\"` comme quatrième paramètre ou appeler `mysqli_select_db`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Croire que le troisième paramètre est le nom de la base.",
+          "pourquoi_faux": "La base est en quatrième position. Le troisième est le mot de passe de l'utilisateur.",
+          "correction_markdown": "Retiens l'ordre serveur, utilisateur, mot de passe, base."
+        },
+        {
+          "erreur_markdown": "Citer `localhost` comme « le nom de la base » parce que c'est le premier mot de la ligne.",
+          "pourquoi_faux": "`localhost` désigne la machine qui héberge MySQL, c'est-à-dire l'ordinateur local.",
+          "correction_markdown": "Dis : le premier paramètre est l'adresse du serveur, `localhost` signifiant le serveur local."
+        },
+        {
+          "erreur_markdown": "Supposer que la base existe toute seule ou qu'elle est créée par la connexion.",
+          "pourquoi_faux": "La connexion ne crée rien. Si la base n'existe pas sur le serveur, la sélection échoue.",
+          "correction_markdown": "Crée d'abord la base avec MySQL, puis connecte-toi."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donne le rôle des paramètres de `mysqli_connect(\"localhost\", \"root\", \"\", \"boutique\")`.",
+          "solution_markdown": "`\"localhost\"` : le serveur. `\"root\"` : l'utilisateur. `\"\"` : le mot de passe, vide en local. `\"boutique\"` : la base utilisée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Réécris `$c = mysqli_connect(\"localhost\", \"admin\", \"ti2022\");` pour qu'elle sélectionne la base `lycee`, d'abord avec un quatrième argument, puis avec `mysqli_select_db`.",
+          "solution_markdown": "Avec un quatrième argument :\n\n```php\n$c = mysqli_connect(\"localhost\", \"admin\", \"ti2022\", \"lycee\");\n```\n\nAvec `mysqli_select_db` :\n\n```php\n$c = mysqli_connect(\"localhost\", \"admin\", \"ti2022\");\nmysqli_select_db($c, \"lycee\");\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris la connexion en style objet à la base `ecole` (serveur `localhost`, utilisateur `root`, mot de passe `1234`), puis le test d'échec et la fermeture.",
+          "solution_markdown": "```php\n<?php\n$connexion = new mysqli(\"localhost\", \"root\", \"1234\", \"ecole\");\nif ($connexion->connect_error) {\n    die(\"Connexion impossible : \" . $connexion->connect_error);\n}\n// ... requêtes ...\n$connexion->close();\n?>\n```\n\n`connect_error` contient le message d'échec, ou `null` quand la connexion réussit. `close()` referme la connexion une fois le travail terminé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une connexion mysqli porte quatre informations dans cet ordre : serveur, utilisateur, mot de passe, base.",
+        "`localhost` est l'adresse du serveur local, jamais le nom d'une base.",
+        "Sans quatrième argument, il faut choisir la base avec `mysqli_select_db($connexion, \"base\")`.",
+        "Le style procédural `mysqli_connect` et le style objet `new mysqli` ont les mêmes paramètres.",
+        "Au BAC TI de Programmation, la question « identifier la ligne de connexion et ses paramètres » est classique : désigne la ligne, puis donne le rôle de chaque argument."
+      ]
+    }
+  ]
 }

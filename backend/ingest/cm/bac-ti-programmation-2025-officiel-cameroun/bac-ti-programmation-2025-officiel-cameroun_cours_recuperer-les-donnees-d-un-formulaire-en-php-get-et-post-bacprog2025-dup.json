@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-recuperer-les-donnees-d-un-formulaire-en-php-get-et-post-ti-2021 (bac-ti-informatique-programmation-2021-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "sous_theme": "Formulaires et PHP",
+    "duree_estimee_min": 30,
+    "tags": [
+      "PHP",
+      "variable GET",
+      "variable POST",
+      "formulaire",
+      "paramètres d adresse"
+    ]
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
@@ -17,5 +26,109 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le service de la discipline d'un lycée veut une page qui affiche le dossier d'un élève dès qu'on saisit son matricule et le code d'une faute. Les informations saisies par l'utilisateur doivent passer du navigateur au script PHP, puis être utilisées pour interroger la base. Le maillon central, c'est la lecture des paramètres du formulaire. Ce cours le traite avec la méthode GET, puis te montre le même travail avec POST."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire un formulaire HTML avec `method` et `name`",
+        "Connaître la notion de tableau associatif en PHP",
+        "Savoir concaténer du texte avec l'opérateur point `.`"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Récupérer matricule et code de faute avec GET ou POST",
+      "contenu_markdown": "Les informations saisies par l'utilisateur transitent par `$_GET` si la méthode du formulaire est GET, et par `$_POST` si elle est POST. Dans les deux cas, PHP range chaque valeur dans le tableau sous la clé égale à l'attribut `name` du champ.\n\n```html\n<form action=\"faute.php\" method=\"get\">\n  <input type=\"text\" name=\"matricule\">\n  <input type=\"text\" name=\"code\">\n  <input type=\"submit\" value=\"Rechercher\">\n</form>\n```\n\n```php\n<?php\n$matricule = $_GET['matricule'];\n$code = $_GET['code'];\n?>\n```\n\nLe même formulaire en POST se lirait avec `$_POST['matricule']` et `$_POST['code']`. Seul le nom du tableau change.",
+      "variantes": [
+        {
+          "nom": "Version POST",
+          "quand_utiliser": "Quand le formulaire enregistre une donnée (ajout d'une faute) ou contient une information confidentielle.",
+          "contenu_markdown": "```php\n<?php\n$matricule = $_POST['matricule'];\n$code = $_POST['code'];\n?>\n```\n\nIl suffit de remplacer `$_GET` par `$_POST` et de déclarer `method=\"post\"` dans le formulaire."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un élève saisit `TI042` dans le champ `matricule` et `F07` dans le champ `code` du formulaire GET ci-dessus. Écris l'adresse produite, puis le script qui affiche `Élève TI042 : faute F07`.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire l'adresse produite par le formulaire",
+          "justification": "En GET, les champs sont ajoutés à l'adresse sous la forme `name=valeur`, séparés par `&`, après un `?`.",
+          "resultat_markdown": "`faute.php?matricule=TI042&code=F07`"
+        },
+        {
+          "numero": 2,
+          "action": "Lire les deux paramètres",
+          "justification": "Ils sont rangés dans `$_GET` sous les clés `matricule` et `code`.",
+          "resultat_markdown": "`$matricule = $_GET['matricule'];` donne `TI042`, et `$code = $_GET['code'];` donne `F07`."
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'affichage",
+          "justification": "On concatène avec le point les textes fixes et les variables.",
+          "resultat_markdown": "```php\n<?php\n$matricule = $_GET['matricule'];\n$code = $_GET['code'];\necho \"Élève \" . htmlspecialchars($matricule) . \" : faute \" . htmlspecialchars($code);\n?>\n```"
+        }
+      ],
+      "conclusion_markdown": "La page affiche : Élève TI042 : faute F07. Les deux valeurs ont été retrouvées grâce aux clés `matricule` et `code` du tableau `$_GET`."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `$_GET[matricule]` sans guillemets autour de la clé.",
+          "pourquoi_faux": "PHP cherche d'abord une constante nommée `matricule`. Selon la version, il affiche un avertissement ou une erreur.",
+          "correction_markdown": "La clé est une chaîne : `$_GET['matricule']`."
+        },
+        {
+          "erreur_markdown": "Mettre une clé qui ne correspond pas au `name` : `$_GET['code_faute']` alors que le champ est `name=\"code\"`.",
+          "pourquoi_faux": "PHP ne devine pas : la clé doit être la même, lettre pour lettre, que l'attribut `name`.",
+          "correction_markdown": "Recopie le `name` du champ HTML."
+        },
+        {
+          "erreur_markdown": "Mélanger les méthodes : formulaire en POST, lecture dans `$_GET`.",
+          "pourquoi_faux": "Les données ne sont pas dans l'adresse et `$_GET` est vide.",
+          "correction_markdown": "Aligne le tableau sur la méthode déclarée."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Quelle est l'adresse produite par un formulaire GET vers `fiche.php` avec `matricule` = `TI007` ?",
+          "solution_markdown": "En GET, la valeur est ajoutée à l'adresse après `?` : `fiche.php?matricule=TI007`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convertis le script de la règle pour un formulaire en POST et affiche `Code reçu : ` suivi du code.",
+          "solution_markdown": "Le formulaire devient `method=\"post\"` et le script lit `$_POST` :\n\n```php\n<?php\n$code = $_POST['code'];\necho \"Code reçu : \" . htmlspecialchars($code);\n?>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une page `faute.php?matricule=TI042&code=F07` doit afficher le nombre de fautes enregistrées dans la table `faute(matricule, code)` de la base `lycee` pour ce matricule. Écris le script (serveur `localhost`, utilisateur `root`, mot de passe vide).",
+          "solution_markdown": "1. Lire le paramètre dans `$_GET`.\n2. Se connecter avec `mysqli_connect(serveur, login, mot_de_passe, base)`.\n3. Nettoyer la valeur reçue avant de l'utiliser dans le SQL.\n4. Exécuter un `COUNT(*)` et lire la ligne unique du résultat.\n\n```php\n<?php\n$conn = mysqli_connect(\"localhost\", \"root\", \"\", \"lycee\");\n$matricule = mysqli_real_escape_string($conn, $_GET['matricule']);\n$resultat = mysqli_query($conn, \"SELECT COUNT(*) AS total FROM faute WHERE matricule = '$matricule'\");\n$ligne = mysqli_fetch_array($resultat);\necho \"Nombre de fautes : \" . $ligne['total'];\nmysqli_close($conn);\n?>\n```\n\nLa clé `total` est l'alias donné à `COUNT(*)` dans la requête."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Tout ce que l'utilisateur saisit dans un formulaire arrive dans `$_GET` ou `$_POST`, selon la méthode.",
+        "La clé est le `name` du champ, copié exactement, avec des guillemets.",
+        "Le passage de GET à POST ne change que le nom du tableau.",
+        "Avant d'utiliser une valeur reçue dans une requête SQL, nettoie-la.",
+        "Au BAC TI, un exercice de programmation commence souvent par la récupération des champs, puis enchaîne sur l'interrogation de la base : sécurise cette première étape."
+      ]
+    }
+  ]
 }

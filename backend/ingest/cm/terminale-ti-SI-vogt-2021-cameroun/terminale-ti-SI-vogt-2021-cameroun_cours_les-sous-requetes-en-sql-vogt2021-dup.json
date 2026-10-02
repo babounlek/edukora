@@ -7,6 +7,14 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-sql-sous-requetes (bac-epreuve-zero-ti-dres-ouest-2022-cameroun).",
+    "duree_estimee_min": 30,
+    "tags": [
+      "sous-requête",
+      "IN",
+      "NOT IN",
+      "SELECT imbriqué",
+      "requête SQL"
+    ],
     "statut": "brouillon"
   },
   "source": {
@@ -17,5 +25,114 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu connais le nom du supérieur d'un employé, mais la table Employe ne stocke que son matricule. Tu peux faire une première requête pour trouver ce matricule, le noter, puis le réutiliser dans une seconde. La sous-requête fait ce travail en une seule fois : la première requête s'imbrique dans la seconde. Elle est aussi la manière la plus simple d'exprimer « ceux qui ne sont pas dans... »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire un SELECT avec WHERE",
+        "Savoir faire une jointure simple",
+        "Connaître IN et NOT IN comme opérateurs d'appartenance"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une requête dans une requête : =, IN et NOT IN",
+      "contenu_markdown": "Une **sous-requête** est un SELECT placé entre parenthèses dans la clause WHERE d'un autre SELECT. SQL l'exécute d'abord, puis utilise son résultat pour la requête principale.\n\n| Situation | Opérateur | Forme |\n|---|---|---|\n| La sous-requête retourne **une seule** valeur | `=` (ou <, >) | `WHERE col = (SELECT ...)` |\n| La sous-requête retourne **plusieurs** valeurs, on veut ceux qui y figurent | `IN` | `WHERE col IN (SELECT ...)` |\n| Idem, on veut ceux qui n'y figurent **pas** | `NOT IN` | `WHERE col NOT IN (SELECT ...)` |\n\nLa sous-requête ne doit sélectionner qu'**une colonne**, du même type que la colonne comparée.\n\nChoix de la méthode : pour une valeur connue indirectement (un nom au lieu d'un identifiant), la sous-requête avec = ou IN convient bien. Pour une exclusion (« ne travaillent sur aucun projet »), NOT IN est le plus direct. Une jointure convient mieux quand tu dois afficher des colonnes des deux tables."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Schéma : Employe (Matricule, Nom, Prenom, ..., #N_dep, superieur), où superieur contient le matricule du supérieur direct. Exprimer en SQL : le nom et le prénom des employés dont le supérieur est BOMBO Marsien.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Constater le problème",
+          "justification": "La table contient le matricule du supérieur, pas son nom. On ne peut pas écrire superieur = 'BOMBO'.",
+          "resultat_markdown": "Il faut d'abord retrouver le matricule de BOMBO Marsien."
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la sous-requête",
+          "justification": "Elle cherche le matricule dans la même table.",
+          "resultat_markdown": "`SELECT Matricule FROM Employe WHERE Nom = 'BOMBO' AND Prenom = 'Marsien'`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la requête principale",
+          "justification": "On veut les employés dont le champ superieur égale ce matricule.",
+          "resultat_markdown": "`SELECT Nom, Prenom FROM Employe WHERE superieur = (...)`"
+        },
+        {
+          "numero": 4,
+          "action": "Choisir l'opérateur",
+          "justification": "Un nom et un prénom désignent une seule personne : la sous-requête retourne une valeur, donc =.",
+          "resultat_markdown": "Opérateur : =."
+        },
+        {
+          "numero": 5,
+          "action": "Assembler",
+          "justification": "On place la sous-requête entre parenthèses.",
+          "resultat_markdown": "```sql\nSELECT Nom, Prenom\nFROM Employe\nWHERE superieur = (\n    SELECT Matricule FROM Employe\n    WHERE Nom = 'BOMBO' AND Prenom = 'Marsien'\n);\n```"
+        }
+      ],
+      "conclusion_markdown": "La requête retourne le nom et le prénom de chaque employé dont le champ superieur contient le matricule de BOMBO Marsien."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser = quand la sous-requête peut retourner plusieurs lignes.",
+          "pourquoi_faux": "Le SGBD refuse de comparer une valeur à une liste avec =. L'erreur « subquery returns more than one row » apparaît.",
+          "correction_markdown": "Si plusieurs valeurs sont possibles, utilise IN ou NOT IN."
+        },
+        {
+          "erreur_markdown": "Sélectionner plusieurs colonnes dans la sous-requête : `SELECT Matricule, Nom FROM ...`.",
+          "pourquoi_faux": "La sous-requête doit retourner une seule colonne pour être comparée à une colonne de la requête principale.",
+          "correction_markdown": "Garde uniquement la colonne comparée."
+        },
+        {
+          "erreur_markdown": "Chercher les employés sans projet avec une jointure puis WHERE Heures IS NULL, sans comprendre pourquoi cela échoue.",
+          "pourquoi_faux": "Une jointure ordinaire (JOIN) élimine les employés sans ligne dans Travaille, donc justement ceux que l'on cherche. Ils ne sont jamais présents dans le résultat.",
+          "correction_markdown": "Pour « n'apparaissent pas », utilise NOT IN avec une sous-requête qui liste ceux qui apparaissent."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Même schéma. Donner le nom des employés dont le salaire est supérieur à celui de BOMBO Marsien.",
+          "solution_markdown": "Le salaire de BOMBO Marsien est une valeur unique, donc on utilise > avec une sous-requête :\n\n```sql\nSELECT Nom\nFROM Employe\nWHERE Salaire > (\n    SELECT Salaire FROM Employe\n    WHERE Nom = 'BOMBO' AND Prenom = 'Marsien'\n);\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Schéma : Employe (Matricule, Nom, Prenom, ...) ; Travaille (#Matricule, #N_Proj, Heures). Donner le nom et le prénom des employés qui ne travaillent sur aucun projet.",
+          "solution_markdown": "Les employés cherchés sont ceux dont le matricule ne figure pas dans Travaille. NOT IN convient :\n\n```sql\nSELECT Nom, Prenom\nFROM Employe\nWHERE Matricule NOT IN (SELECT Matricule FROM Travaille);\n```\n\nLa sous-requête liste les matricules des employés qui travaillent sur au moins un projet, la requête principale garde les autres."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Schéma complété par Projet (NomP, N_pro, Lieu, #N_Dep). Donner le nom des employés qui ne travaillent sur aucun projet situé à Douala, puis explique pourquoi un employé qui a un projet à Douala et un autre à Yaoundé est exclu.",
+          "solution_markdown": "On commence par la liste de ceux qu'il faut exclure : les employés qui ont au moins un projet à Douala. C'est une jointure à l'intérieur de la sous-requête :\n\n```sql\nSELECT Nom\nFROM Employe\nWHERE Matricule NOT IN (\n    SELECT T.Matricule\n    FROM Travaille T\n    JOIN Projet P ON T.N_Proj = P.N_pro\n    WHERE P.Lieu = 'Douala'\n);\n```\n\nL'employé qui a un projet à Douala et un autre à Yaoundé apparaît dans la sous-requête, grâce à sa ligne Douala. Son matricule est donc dans la liste à exclure, et il disparaît du résultat. C'est bien le sens de « ne travaille sur aucun projet à Douala »."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une sous-requête est un SELECT entre parenthèses dans le WHERE d'un autre SELECT.",
+        "= pour une valeur unique, IN et NOT IN pour une liste de valeurs.",
+        "Pour dire « qui ne figurent pas », pense NOT IN.",
+        "La sous-requête ne retourne qu'une colonne.",
+        "Au BAC TI, les sous-requêtes et NOT IN sont les questions SQL de niveau élevé, souvent placées en fin de série de requêtes."
+      ]
+    }
+  ]
 }

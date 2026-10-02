@@ -3,7 +3,16 @@
   "meta": {
     "titre": "Topologies physiques et architectures reseau",
     "matiere": "Réseaux, Internet et Sécurité Informatique",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "sous_theme": "Topologies et architectures réseau",
+    "duree_estimee_min": 30,
+    "tags": [
+      "topologie réseau",
+      "architecture réseau",
+      "topologie en étoile",
+      "client-serveur",
+      "poste à poste"
+    ]
   },
   "source": {
     "epreuve_id": "probatoire-blanc-ti-SI-bayangam-2023",
@@ -12,5 +21,121 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un bureau, trois ordinateurs et une imprimante partagent des fichiers. Dans une salle informatique de lycée, vingt postes passent par un serveur qui garde les documents de tous les élèves. Ces deux réseaux ne diffèrent pas seulement par leur taille : leurs câbles sont disposés autrement (la topologie) et les ordinateurs n'y jouent pas les mêmes rôles (l'architecture). Ces deux notions reviennent presque à chaque examen de réseau, souvent dans la même question."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un réseau local (LAN) et à quoi il sert",
+        "Connaître les équipements de base : carte réseau, câble, switch, hub, routeur, serveur",
+        "Distinguer un poste client d'un serveur"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Topologie (comment c'est câblé) et architecture (qui joue quel rôle)",
+      "contenu_markdown": "Dans un réseau, on distingue la **topologie** (comment les équipements sont reliés entre eux) de l'**architecture** (quels rôles jouent les équipements entre eux). L'architecture répond à la question « qui joue quel rôle ? », tandis que la topologie répond à la question « comment est câblé le réseau ? ».\n\n**Les topologies physiques courantes**\n\n| Topologie | Principe | Avantages | Inconvénients |\n|---|---|---|---|\n| Bus | tous les postes sont branchés sur un même câble | peu de câble, installation simple | une coupure du câble paralyse le réseau, débit partagé |\n| Étoile | chaque poste est relié par son propre câble à un équipement central (switch ou hub) | une panne de poste ou de câble n'affecte pas les autres, ajout d'un poste facile | l'équipement central est un point de défaillance, plus de câble |\n| Anneau | les postes forment une boucle, chacun relié à son voisin | accès équitable au réseau | la rupture de l'anneau peut interrompre les échanges |\n| Maillée | chaque poste est relié à plusieurs autres | très grande fiabilité, plusieurs chemins | câblage coûteux et complexe |\n\n**Les deux architectures**\n\n- **Client-serveur** : un ou plusieurs serveurs dédiés fournissent des services (fichiers, impression, messagerie) aux postes clients. Gestion centralisée, sécurité élevée, coût de mise en œuvre plus élevé.\n- **Poste à poste** (*peer to peer*) : aucun serveur dédié, chaque ordinateur est à la fois client et fournisseur de ressources. Coût faible, mais réseau plus vulnérable.\n\nPour **choisir une topologie**, on confronte les contraintes de la situation décrite (nombre de postes, évolutivité, fiabilité, budget) aux avantages et inconvénients de chaque option, puis on justifie le choix retenu. Pour **déterminer l'architecture**, on cherche s'il existe un serveur dédié qui fournit des services aux autres postes ou si tous les postes jouent le même rôle, puis on conclut en nommant le type d'architecture.",
+      "variantes": [
+        {
+          "nom": "Topologie logique",
+          "quand_utiliser": "Quand la question demande comment les données circulent dans le réseau, indépendamment du câblage.",
+          "contenu_markdown": "La topologie logique décrit la manière dont les données circulent (par exemple Ethernet). Elle peut différer de la topologie physique : un réseau Ethernet câblé en étoile autour d'un switch reste un réseau Ethernet sur le plan logique."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un cabinet comptable possède une imprimante et trois ordinateurs : celui de la directrice, celui de la secrétaire et celui du comptable. Chacun peut utiliser l'imprimante et consulter les fichiers des autres postes. Aucun ordinateur n'est réservé à un service particulier. Le cabinet prévoit d'ajouter des postes dans l'année. Propose la topologie la mieux appropriée et donne l'architecture du réseau.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Relever les contraintes de la situation",
+          "justification": "Le choix d'une topologie repose sur les besoins décrits.",
+          "resultat_markdown": "Petit réseau local de trois postes et une imprimante, avec des ajouts de postes prévus. Il faut donc un câblage où l'on peut brancher un nouveau poste facilement, sans arrêter les autres."
+        },
+        {
+          "numero": 2,
+          "action": "Confronter les contraintes aux topologies",
+          "justification": "On compare les avantages de chaque option aux besoins relevés.",
+          "resultat_markdown": "Le bus est fragile (une coupure arrête tout). L'anneau et le maillage sont lourds à mettre en œuvre pour un petit cabinet. L'étoile permet l'ajout d'un poste par un simple câble vers l'équipement central, et la panne d'un poste n'affecte pas les autres."
+        },
+        {
+          "numero": 3,
+          "action": "Conclure sur la topologie",
+          "justification": "Le choix est justifié par au moins un avantage lié à la situation.",
+          "resultat_markdown": "La topologie la mieux appropriée est la topologie **en étoile**, avec un switch au centre."
+        },
+        {
+          "numero": 4,
+          "action": "Chercher un serveur dédié",
+          "justification": "L'architecture se détermine par les rôles des ordinateurs.",
+          "resultat_markdown": "Aucun des trois ordinateurs n'est un serveur réservé à fournir des services : chacun partage et consulte des ressources."
+        },
+        {
+          "numero": 5,
+          "action": "Nommer l'architecture",
+          "justification": "Sans serveur dédié, tous les postes jouent le même rôle.",
+          "resultat_markdown": "L'architecture est **poste à poste** (peer to peer)."
+        }
+      ],
+      "conclusion_markdown": "Le cabinet doit adopter une topologie en étoile autour d'un switch, et son réseau a une architecture poste à poste puisqu'aucun serveur dédié n'existe."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Confondre topologie et architecture, en répondant « client-serveur » à la question « quelle topologie ? ».",
+          "pourquoi_faux": "Client-serveur et poste à poste décrivent les rôles des machines. Bus, étoile, anneau et maillage décrivent la disposition des liaisons.",
+          "correction_markdown": "Lis le mot de la question : topologie donne une forme de câblage, architecture donne un modèle de rôles."
+        },
+        {
+          "erreur_markdown": "Choisir une topologie sans justifier le choix.",
+          "pourquoi_faux": "Le barème attend le nom de la topologie et au moins une raison tirée de l'énoncé. Un nom seul fait perdre des points.",
+          "correction_markdown": "Ajoute une phrase de justification : avantage de la topologie en rapport avec les contraintes de la situation."
+        },
+        {
+          "erreur_markdown": "Dire que dans une étoile « si un poste tombe en panne, tout le réseau tombe ».",
+          "pourquoi_faux": "C'est vrai du bus, pas de l'étoile. Dans l'étoile, seul le poste ou le câble en cause est isolé. Seule la panne de l'équipement central arrête tout.",
+          "correction_markdown": "Précise : panne d'un poste, réseau intact ; panne du switch central, réseau arrêté."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Définis la topologie réseau et l'architecture réseau en une phrase chacune.",
+          "solution_markdown": "La topologie réseau est la manière dont sont agencés et reliés entre eux les équipements d'un réseau (disposition des câbles et des liaisons). L'architecture réseau est le modèle d'organisation qui définit les rôles des ordinateurs (qui fournit des ressources, qui les consomme) : client-serveur ou poste à poste."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans une salle informatique, vingt postes élèves accèdent à un ordinateur central qui héberge les documents et la messagerie. Donne l'architecture, puis cite un avantage et un inconvénient de cette architecture.",
+          "solution_markdown": "Un ordinateur central fournit des services (documents, messagerie) aux vingt postes : l'architecture est **client-serveur**.\n\nAvantage : la gestion des accès aux ressources est centralisée, ce qui permet une sécurité élevée.\n\nInconvénient : le coût de mise en œuvre est plus élevé (serveur dédié, administration) et le serveur est un point de dépendance : s'il tombe en panne, les services qu'il fournit sont indisponibles."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Un lycée veut relier trois bâtiments avec une exigence forte de fiabilité : la coupure d'une liaison ne doit pas isoler un bâtiment. Compare l'étoile et la topologie maillée pour ce besoin, puis recommande une solution en précisant son principal inconvénient.",
+          "solution_markdown": "- **Étoile** : chaque bâtiment est relié à un équipement central. Si la liaison vers un bâtiment est coupée, ce bâtiment est isolé, et la panne de l'équipement central arrête tout.\n- **Maillée** : chaque bâtiment est relié à plusieurs autres. Si une liaison est coupée, les données empruntent un autre chemin, aucun bâtiment n'est isolé.\n\nLa contrainte principale est la fiabilité : la **topologie maillée** est recommandée. Son principal inconvénient est le coût et la complexité du câblage, qui augmente vite avec le nombre de liaisons (pour trois bâtiments, trois liaisons suffisent à relier chaque bâtiment à tous les autres)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La topologie répond à « comment est câblé le réseau ? », l'architecture à « qui joue quel rôle ? ».",
+        "Les topologies physiques à connaître : bus, étoile, anneau, maillée, avec leurs avantages et leurs inconvénients.",
+        "Pour choisir une topologie, relève les contraintes de l'énoncé puis justifie par un avantage précis.",
+        "Pour trouver l'architecture, cherche un serveur dédié : s'il existe, client-serveur, sinon poste à poste.",
+        "Au Probatoire TI, ces notions sont posées en définition (« définir topologie, architecture ») ou en étude de cas (« quelle topologie, quelle architecture ? ») : réponds en nommant puis en justifiant."
+      ]
+    }
+  ]
 }

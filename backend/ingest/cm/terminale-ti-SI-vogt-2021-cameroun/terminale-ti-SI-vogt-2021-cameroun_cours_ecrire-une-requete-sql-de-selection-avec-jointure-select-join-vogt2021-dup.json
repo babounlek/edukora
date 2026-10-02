@@ -7,6 +7,14 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-ecrire-une-requete-sql-de-selection-avec-jointure-select-join (bac-c-d-e-informatique-theorique-2025-officiel-cameroun).",
+    "duree_estimee_min": 30,
+    "tags": [
+      "jointure",
+      "JOIN",
+      "clé étrangère",
+      "SELECT",
+      "requête SQL multi-tables"
+    ],
     "statut": "brouillon"
   },
   "source": {
@@ -17,5 +25,119 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le nom d'un employé se trouve dans la table Employe, mais le nom de son département se trouve dans la table Departement. Pour répondre à « les employés qui travaillent au département Recherche », il faut relier les deux tables. La jointure est l'outil qui les rapproche, ligne à ligne, grâce à une colonne commune. C'est la notion SQL qui fait la différence entre une copie moyenne et une bonne copie."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire un SELECT avec WHERE et AND",
+        "Savoir repérer une clé primaire et une clé étrangère dans un schéma relationnel"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Relier des tables avec JOIN ... ON",
+      "contenu_markdown": "Une **jointure** associe les lignes de deux tables dont la clé étrangère est égale à la clé primaire de l'autre.\n\n```sql\nSELECT colonnes\nFROM table1 alias1\nJOIN table2 alias2 ON alias1.cle_etrangere = alias2.cle_primaire\nWHERE condition;\n```\n\nMéthode en quatre pas :\n\n1. Repérer dans quelles tables se trouvent les informations demandées et les informations de filtrage.\n2. Prendre l'une comme table de départ (FROM) et ajouter les autres par JOIN.\n3. Écrire pour chaque JOIN la condition d'égalité entre la clé étrangère et la clé primaire.\n4. Filtrer avec WHERE sur la table qui porte le critère.\n\nPour relier **trois tables**, on enchaîne deux JOIN, chacun avec sa condition. Les **alias** (`E` pour Employe, `D` pour Departement) raccourcissent l'écriture et préviennent les ambiguïtés de colonnes.\n\nAncienne écriture équivalente : `FROM Employe E, Departement D WHERE E.N_dep = D.N_Dep`. Elle fonctionne, mais mélange condition de jointure et condition de filtre : préfère JOIN ... ON.\n\nAjoute `DISTINCT` quand une même ligne de résultat peut apparaître plusieurs fois à cause des liens multiples."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Schéma : Departement (NomD, N_Dep, Directeur) ; Employe (Matricule, Nom, Prenom, DateNaissance, Adresse, Salaire, #N_dep, superieur). Exprimer en SQL : le nom et l'adresse des employés qui travaillent au département Recherche.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Localiser les informations",
+          "justification": "Le nom et l'adresse sont dans Employe, le nom du département est dans Departement.",
+          "resultat_markdown": "Deux tables sont nécessaires."
+        },
+        {
+          "numero": 2,
+          "action": "Trouver la colonne qui les relie",
+          "justification": "Employe porte une clé étrangère vers Departement.",
+          "resultat_markdown": "Employe.N_dep = Departement.N_Dep"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire le SELECT et le FROM avec alias",
+          "justification": "Les alias E et D raccourcissent les noms.",
+          "resultat_markdown": "`SELECT E.Nom, E.Adresse FROM Employe E`"
+        },
+        {
+          "numero": 4,
+          "action": "Ajouter la jointure",
+          "justification": "Chaque ligne d'employé est reliée à la ligne de son département.",
+          "resultat_markdown": "`JOIN Departement D ON E.N_dep = D.N_Dep`"
+        },
+        {
+          "numero": 5,
+          "action": "Ajouter le filtre",
+          "justification": "Le critère « Recherche » porte sur le nom du département, donc sur la table D.",
+          "resultat_markdown": "`WHERE D.NomD = 'Recherche';`"
+        },
+        {
+          "numero": 6,
+          "action": "Assembler",
+          "justification": "On rassemble les morceaux dans l'ordre.",
+          "resultat_markdown": "```sql\nSELECT E.Nom, E.Adresse\nFROM Employe E\nJOIN Departement D ON E.N_dep = D.N_Dep\nWHERE D.NomD = 'Recherche';\n```"
+        }
+      ],
+      "conclusion_markdown": "La requête retourne le nom et l'adresse de chaque employé dont le département porte le nom « Recherche »."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier la condition ON (ou le WHERE de liaison) : `FROM Employe E, Departement D` seul.",
+          "pourquoi_faux": "Sans condition, SQL associe chaque employé à chaque département : le résultat est un produit cartésien rempli de combinaisons absurdes.",
+          "correction_markdown": "Écris toujours l'égalité clé étrangère = clé primaire pour chaque jointure."
+        },
+        {
+          "erreur_markdown": "Joindre sur de mauvaises colonnes : `ON E.Matricule = D.N_Dep`.",
+          "pourquoi_faux": "On compare deux colonnes qui n'ont aucun lien de sens. Le résultat est vide ou faux.",
+          "correction_markdown": "Le ON relie la clé étrangère à la clé primaire qu'elle référence. Regarde le schéma, la clé étrangère est précédée de #."
+        },
+        {
+          "erreur_markdown": "Oublier DISTINCT quand un employé peut apparaître plusieurs fois (par exemple plusieurs projets à Dubai).",
+          "pourquoi_faux": "Chaque combinaison employé-projet donne une ligne : l'employé est répété.",
+          "correction_markdown": "Ajoute `SELECT DISTINCT` quand la question demande une liste de noms sans répétition."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Schéma : Departement (NomD, N_Dep, Directeur) ; Projet (NomP, N_pro, Lieu, #N_Dep). Donner le nom des projets rattachés au département Recherche.",
+          "solution_markdown": "Le nom du projet est dans Projet, le nom du département dans Departement, reliés par N_Dep :\n\n```sql\nSELECT P.NomP\nFROM Projet P\nJOIN Departement D ON P.N_Dep = D.N_Dep\nWHERE D.NomD = 'Recherche';\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Schéma : Employe (Matricule, Nom, ...) ; Projet (NomP, N_pro, Lieu, #N_Dep) ; Travaille (#Matricule, #N_Proj, Heures). Donner le nom des employés qui travaillent plus de 10 heures sur un projet à Dubai.",
+          "solution_markdown": "L'employé et le projet ne sont pas reliés directement : Travaille fait le pont. On enchaîne deux jointures.\n\n1) Employe - Travaille sur le matricule.\n2) Travaille - Projet sur le numéro de projet.\n3) Filtre sur le lieu et les heures.\n\n```sql\nSELECT DISTINCT E.Nom\nFROM Employe E\nJOIN Travaille T ON E.Matricule = T.Matricule\nJOIN Projet P ON T.N_Proj = P.N_pro\nWHERE P.Lieu = 'Dubai' AND T.Heures > 10;\n```\n\nDISTINCT évite de répéter un employé qui a travaillé plus de 10 heures sur plusieurs projets à Dubai."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Même schéma complété par Departement (NomD, N_Dep, Directeur). Donner, sans répétition, le nom de chaque employé et le nom de son département, pour les employés qui ont travaillé plus de 10 heures sur un projet à Douala.",
+          "solution_markdown": "Quatre tables sont nécessaires : Employe, Departement, Travaille, Projet. On part d'Employe et on enchaîne trois jointures.\n\n```sql\nSELECT DISTINCT E.Nom, D.NomD\nFROM Employe E\nJOIN Departement D ON E.N_dep = D.N_Dep\nJOIN Travaille T ON E.Matricule = T.Matricule\nJOIN Projet P ON T.N_Proj = P.N_pro\nWHERE P.Lieu = 'Douala' AND T.Heures > 10;\n```\n\nLe département à afficher est celui de l'employé (E.N_dep), pas celui du projet (P.N_Dep) : le sujet précise que ces deux départements peuvent être différents."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une jointure relie deux tables par l'égalité entre clé étrangère et clé primaire.",
+        "Écris JOIN table ON condition, une jointure par table ajoutée.",
+        "Les alias raccourcissent la requête et évitent les ambiguïtés.",
+        "Sans condition de jointure, tu obtiens un produit cartésien : une erreur grave.",
+        "Au BAC TI, les requêtes à deux et trois tables sont la partie la mieux valorisée de l'exercice SQL."
+      ]
+    }
+  ]
 }

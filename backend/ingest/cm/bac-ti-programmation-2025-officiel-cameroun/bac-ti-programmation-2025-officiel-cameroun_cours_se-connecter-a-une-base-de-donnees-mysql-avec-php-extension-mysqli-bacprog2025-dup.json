@@ -7,7 +7,16 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-se-connecter-a-une-base-de-donnees-mysql-avec-php-extension-mysqli-ti-2021 (bac-ti-informatique-programmation-2021-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "sous_theme": "Accès aux bases de données avec PHP",
+    "duree_estimee_min": 25,
+    "tags": [
+      "mysqli",
+      "mysqli_connect",
+      "connexion MySQL",
+      "ordre des arguments",
+      "correction de code"
+    ]
   },
   "source": {
     "epreuve_id": "bac-ti-programmation-2025-officiel-cameroun",
@@ -17,5 +26,115 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un script PHP qui ne se connecte pas à la base ne produit souvent aucun message clair : une page vide, un avertissement incompréhensible. Dans un exercice de correction de code, l'erreur la plus fréquente se trouve dans la ligne de connexion. Quand tu sais exactement ce que `mysqli_connect` attend, tu repères cette faute en quelques secondes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est un serveur de base de données (hôte, utilisateur, mot de passe, base)",
+        "Utiliser des variables PHP (`$servername`, `$username`...)",
+        "Appeler une fonction avec plusieurs arguments"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La signature de `mysqli_connect` : quatre arguments dans un ordre imposé",
+      "contenu_markdown": "La signature à connaître est :\n\n```php\nmysqli_connect(servername, username, password, dbname)\n```\n\nLes arguments sont **positionnels** : PHP ne lit pas leur nom, il les associe selon leur place.\n\n| Position | Rôle | Exemple |\n|---|---|---|\n| 1 | adresse du serveur MySQL | `\"localhost\"` |\n| 2 | nom de l'utilisateur | `\"root\"` |\n| 3 | mot de passe (peut être vide en local) | `\"\"` |\n| 4 | nom de la base à utiliser | `\"ecole\"` |\n\nSi un argument manque ou si deux arguments sont inversés, chaque valeur est lue avec le rôle d'une autre position, et la connexion échoue ou vise la mauvaise cible.\n\nMéthode de correction : relever les quatre valeurs, nommer le rôle de chacune, puis réécrire l'appel dans l'ordre serveur, utilisateur, mot de passe, base.",
+      "variantes": [
+        {
+          "nom": "Port et socket facultatifs",
+          "quand_utiliser": "Quand le serveur MySQL n'écoute pas sur le port standard 3306.",
+          "contenu_markdown": "Après les quatre arguments, `mysqli_connect` accepte un cinquième argument facultatif, le port : `mysqli_connect(\"localhost\", \"root\", \"\", \"ecole\", 3306)`. Il vient toujours après `dbname`."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un script déclare les variables ci-dessous, puis se connecte :\n\n```php\n<?php\n$servername = \"localhost\";\n$username = \"root\";\n$password = \"\";\n$dbname = \"ecole\";\n$conn = mysqli_connect($username, $password, $dbname);\n?>\n```\n\nLa connexion échoue. Explique pourquoi et corrige la ligne.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rappeler la signature attendue",
+          "justification": "On compare toujours l'appel à la signature de référence.",
+          "resultat_markdown": "`mysqli_connect(servername, username, password, dbname)`."
+        },
+        {
+          "numero": 2,
+          "action": "Lire l'appel fourni argument par argument",
+          "justification": "PHP associe les valeurs aux positions, dans l'ordre d'écriture.",
+          "resultat_markdown": "Position 1 : `$username` (`\"root\"`). Position 2 : `$password` (`\"\"`). Position 3 : `$dbname` (`\"ecole\"`). Il n'y a pas de position 4."
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter ce que PHP comprend",
+          "justification": "Chaque valeur prend le rôle de la position qu'elle occupe.",
+          "resultat_markdown": "PHP cherche un serveur nommé `root`, avec l'utilisateur `\"\"` et le mot de passe `ecole`. Le nom du serveur `$servername` est complètement omis et les trois autres arguments sont décalés d'un rang."
+        },
+        {
+          "numero": 4,
+          "action": "Corriger la ligne",
+          "justification": "Il faut ajouter `$servername` en première position pour rétablir l'ordre.",
+          "resultat_markdown": "```php\n$conn = mysqli_connect($servername, $username, $password, $dbname);\n```"
+        }
+      ],
+      "conclusion_markdown": "Les arguments étaient dans le mauvais ordre : le nom du serveur `$servername` était omis, donc l'appel ne correspondait pas à la signature `mysqli_connect(servername, username, password, dbname)`. La ligne corrigée relie les quatre valeurs à leur bon rôle."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le premier argument parce que le serveur est « évident » (`localhost`).",
+          "pourquoi_faux": "La fonction n'a pas de valeur par défaut fiable pour la première position : sans elle, tous les autres arguments sont décalés.",
+          "correction_markdown": "Écris toujours `\"localhost\"` (ou `$servername`) en premier."
+        },
+        {
+          "erreur_markdown": "Mettre le nom de la base avant le mot de passe : `mysqli_connect(\"localhost\", \"root\", \"ecole\", \"\")`.",
+          "pourquoi_faux": "Le mot de passe envoyé est `ecole` et la base demandée est une chaîne vide. L'accès est refusé ou la base est introuvable.",
+          "correction_markdown": "Respecte l'ordre : serveur, login, mot de passe, base."
+        },
+        {
+          "erreur_markdown": "Supprimer le mot de passe quand il est vide, ce qui décale la base en position 3.",
+          "pourquoi_faux": "Un mot de passe vide s'écrit `\"\"`, il occupe quand même sa place.",
+          "correction_markdown": "Écris `mysqli_connect(\"localhost\", \"root\", \"\", \"ecole\")`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Nomme le rôle de chaque argument dans `mysqli_connect(\"localhost\", \"admin\", \"ti2022\", \"lycee\")`.",
+          "solution_markdown": "Position 1, `\"localhost\"` : le serveur. Position 2, `\"admin\"` : l'utilisateur. Position 3, `\"ti2022\"` : son mot de passe. Position 4, `\"lycee\"` : la base utilisée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Corrige cette ligne, sachant que le serveur est `localhost`, l'utilisateur `root`, le mot de passe vide et la base `boutique` :\n\n```php\n$conn = mysqli_connect(\"root\", \"\", \"boutique\", \"localhost\");\n```",
+          "solution_markdown": "Les quatre valeurs sont présentes mais mal placées : le serveur est en dernière position. Chaque valeur doit retrouver le rôle de sa place :\n\n```php\n$conn = mysqli_connect(\"localhost\", \"root\", \"\", \"boutique\");\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris la ligne de connexion à la base `ecole` du serveur `localhost` (utilisateur `root`, mot de passe vide) sur le port 3307, puis le test qui affiche un message si la connexion échoue.",
+          "solution_markdown": "Le port est le cinquième argument, après la base. Le test utilise `mysqli_connect_error()`, qui décrit l'échec de la dernière connexion.\n\n```php\n<?php\n$conn = mysqli_connect(\"localhost\", \"root\", \"\", \"ecole\", 3307);\nif (!$conn) {\n    die(\"Connexion impossible : \" . mysqli_connect_error());\n}\n?>\n```\n\n`mysqli_connect` renvoie `false` en cas d'échec : `!$conn` est alors vrai et le script s'arrête avec le message."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`mysqli_connect(servername, username, password, dbname)` : quatre arguments, un ordre imposé.",
+        "Les arguments sont reconnus par leur position, pas par leur nom de variable.",
+        "Un mot de passe vide s'écrit `\"\"`, il garde sa place dans la liste.",
+        "Un argument omis ou deux arguments échangés décalent toutes les valeurs suivantes.",
+        "Au BAC TI de Programmation, un exercice de correction de code cache souvent l'erreur dans la ligne de connexion : compare toujours l'appel à la signature."
+      ]
+    }
+  ]
 }

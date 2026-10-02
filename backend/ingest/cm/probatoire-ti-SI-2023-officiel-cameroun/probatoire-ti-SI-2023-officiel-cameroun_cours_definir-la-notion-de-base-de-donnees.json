@@ -7,6 +7,14 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-definir-la-notion-de-base-de-donnees (bac-c-d-e-informatique-theorique-2021-cameroun), qui definit la base de donnees et ses proprietes cles (non-redondance, partage des donnees).",
+    "duree_estimee_min": 25,
+    "tags": [
+      "base de données",
+      "non-redondance",
+      "partage des données",
+      "intégrité",
+      "SGBD"
+    ],
     "statut": "brouillon"
   },
   "source": {
@@ -17,5 +25,107 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ton lycée tient la liste de ses élèves, leurs notes et leurs absences. Si chaque service gardait sa propre feuille Excel, le nom d'un élève pourrait être orthographié de trois façons et son âge différer d'un fichier à l'autre. La base de données résout ce problème : toutes les informations sont rangées une seule fois, au même endroit, et partagées. Les épreuves de systèmes d'information demandent régulièrement de la définir et d'en citer deux caractéristiques."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion de donnée et d'information",
+        "Savoir ce qu'est un tableau à lignes et colonnes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Définition et caractéristiques d'une base de données",
+      "contenu_markdown": "Une **base de données** (BD) est un ensemble structuré de données, organisé de façon à être stocké, consulté et mis à jour facilement par plusieurs utilisateurs. Elle est gérée par un **SGBD** (système de gestion de bases de données).\n\nVocabulaire d'une base relationnelle :\n\n- une **table** est organisée en lignes et en colonnes ;\n- une **ligne** (enregistrement) décrit une occurrence, par exemple un élève ;\n- une **colonne** (champ) décrit une propriété, par exemple le nom ;\n- la **clé primaire** identifie de façon unique chaque ligne.\n\nLes caractéristiques à connaître :\n\n| Caractéristique | Ce qu'elle garantit |\n|---|---|\n| Non-redondance | Chaque information n'est stockée qu'une seule fois, ce qui évite les contradictions |\n| Partage | Plusieurs utilisateurs ou applications accèdent aux mêmes données en même temps |\n| Intégrité | Les données restent cohérentes et respectent les règles fixées (contraintes) |\n| Sécurité | Seules les personnes autorisées peuvent lire ou modifier les données |\n| Indépendance | On peut changer le programme sans réorganiser les données, et inversement |\n\nPour répondre à « donner deux caractéristiques », choisis deux lignes du tableau et ajoute ce que chacune garantit."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une base de données contient la table Eleve (Matricule, Nom, Prenom, Sexe, Age), où Matricule est la clé primaire. Donner deux caractéristiques d'une base de données.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir deux caractéristiques du cours",
+          "justification": "On prend des caractéristiques enseignées pour être sûr d'être dans le barème.",
+          "resultat_markdown": "Non-redondance et partage des données."
+        },
+        {
+          "numero": 2,
+          "action": "Expliquer la première",
+          "justification": "Une caractéristique citée sans explication rapporte moins de points.",
+          "resultat_markdown": "Non-redondance : chaque information n'est stockée qu'une seule fois, ce qui évite les incohérences."
+        },
+        {
+          "numero": 3,
+          "action": "Illustrer avec la table du sujet",
+          "justification": "Un exemple montre que tu as compris.",
+          "resultat_markdown": "Un élève n'apparaît qu'une fois dans Eleve, identifié par son Matricule, même s'il est utilisé par plusieurs services."
+        },
+        {
+          "numero": 4,
+          "action": "Expliquer la seconde",
+          "justification": "Même exigence.",
+          "resultat_markdown": "Partage : plusieurs utilisateurs ou applications accèdent aux mêmes données en même temps grâce au SGBD."
+        }
+      ],
+      "conclusion_markdown": "Une base de données se caractérise notamment par la non-redondance des données et par leur partage entre plusieurs utilisateurs."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Définir une base de données comme « un logiciel ».",
+          "pourquoi_faux": "Le logiciel est le SGBD. La base de données est l'ensemble des données elles-mêmes, organisées.",
+          "correction_markdown": "Écris : « ensemble structuré de données géré par un SGBD »."
+        },
+        {
+          "erreur_markdown": "Citer « rapidité » ou « modernité » comme caractéristique.",
+          "pourquoi_faux": "Ce ne sont pas des caractéristiques enseignées en cours, le correcteur ne les prendra pas dans son barème.",
+          "correction_markdown": "Reste sur les mots du cours : non-redondance, partage, intégrité, sécurité."
+        },
+        {
+          "erreur_markdown": "Écrire que la non-redondance veut dire « supprimer les doublons dans la saisie des élèves ».",
+          "pourquoi_faux": "La non-redondance est un principe de conception : une information n'est stockée qu'à un seul endroit. Elle ne se réduit pas à un nettoyage de doublons.",
+          "correction_markdown": "Dis que chaque information est enregistrée une fois, et que les autres tables la référencent par une clé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cite deux caractéristiques d'une base de données et explique en une phrase ce que garantit chacune.",
+          "solution_markdown": "Intégrité : les données restent cohérentes parce qu'elles respectent des règles (par exemple, le sexe ne peut valoir que M ou F).\n\nSécurité : seules les personnes autorisées peuvent consulter ou modifier les données, grâce à des droits d'accès gérés par le SGBD."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un lycée garde le nom des élèves dans le fichier de la scolarité et dans celui de la bibliothèque. Explique le risque, puis dis comment une base de données le supprime.",
+          "solution_markdown": "1) Risque : le même élève est enregistré deux fois. Si son nom est corrigé dans un fichier mais pas dans l'autre, les données se contredisent. C'est la redondance.\n\n2) Dans une base de données, l'élève est enregistré une seule fois dans la table Eleve, avec son Matricule comme clé primaire. La bibliothèque ne garde que le Matricule, qui renvoie à cette ligne unique.\n\n3) Une correction faite à un endroit est donc visible partout."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans la table Eleve (Matricule, Nom, Prenom, Sexe, Age), identifie une table, une ligne, une colonne et la clé primaire. Explique pourquoi Nom ne peut pas servir de clé primaire.",
+          "solution_markdown": "Table : Eleve. Ligne (enregistrement) : toutes les informations d'un élève, par exemple (E001, Nkoulou, Paul, M, 17). Colonne (champ) : par exemple Prenom. Clé primaire : Matricule.\n\nNom ne peut pas être clé primaire car deux élèves peuvent porter le même nom. Une clé primaire doit identifier chaque ligne de façon unique et ne jamais être vide. Le Matricule attribué à chaque élève remplit ces deux conditions."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une base de données est un ensemble structuré de données, géré par un SGBD.",
+        "Quatre caractéristiques à connaître : non-redondance, partage, intégrité, sécurité.",
+        "Quand on te demande deux caractéristiques, explique-les : une phrase pour chacune suffit.",
+        "La base de données n'est pas le logiciel : le logiciel est le SGBD.",
+        "Cette question de cours revient régulièrement au Probatoire TI et au BAC, comme première question d'un exercice sur les bases de données."
+      ]
+    }
+  ]
 }

@@ -5,8 +5,8 @@
     "matiere": "Réseaux, Internet et Sécurité Informatique",
     "pays": "cm",
     "serie": "TI",
-    "sous_theme": null,
-    "duree_estimee_min": null,
+    "sous_theme": "Cryptographie et sécurité des données",
+    "duree_estimee_min": 25,
     "tags": [
       "cryptographie"
     ],
@@ -23,5 +23,134 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Jules César envoyait des ordres à ses généraux en décalant chaque lettre de son message de quelques rangs dans l'alphabet : un messager capturé ne lisait que du charabia. Ce procédé, vieux de plus de deux mille ans, reste le premier exemple étudié en sécurité informatique parce qu'il montre en quelques lignes ce qu'est un chiffrement, une clé et pourquoi un chiffrement trop simple se casse. À l'examen, on te donne un mot de passe ou une phrase et on te demande son équivalent chiffré."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître l'ordre des 26 lettres de l'alphabet",
+        "Savoir calculer un reste de division euclidienne (modulo)",
+        "Connaître les mots chiffrement, clé, message clair, message chiffré"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Chiffrer un message par la méthode de César",
+      "contenu_markdown": "Le chiffrement de César décale chaque lettre du message clair d'un nombre fixe de positions dans l'alphabet, appelé le **décalage** ou la **clé** $k$. Lorsque l'énoncé ne précise pas explicitement ce décalage, la convention historique veut que l'on retienne le décalage attribué à Jules César lui-même, qui est de 3.\n\nProcédure :\n\n1. Numéroter l'alphabet de 0 à 25 : A = 0, B = 1, ..., Z = 25.\n2. Pour chaque lettre de rang $P$, calculer le rang chiffré $C$ avec la formule ci-dessous.\n3. Revenir de $C$ à la lettre. Les lettres du bout de l'alphabet repassent au début (X, Y, Z donnent A, B, C pour $k=3$) : c'est le rôle du modulo 26.\n4. Conserver tels quels les espaces, la ponctuation et la casse des lettres (majuscule ou minuscule).\n\nPour **déchiffrer**, on décale dans l'autre sens : $P = (C - k) \\bmod 26$. La clé est la même pour chiffrer et déchiffrer, le chiffrement de César est donc un chiffrement **symétrique**.\n\nLa méthode est facile à casser : il n'y a que 25 clés utiles, on peut toutes les essayer (attaque par force brute), ou compter la lettre la plus fréquente du message chiffré (analyse de fréquences).",
+      "formule_principale": "C = (P + k) \\bmod 26",
+      "variantes": [
+        {
+          "nom": "Décalage donné par l'énoncé",
+          "quand_utiliser": "Quand le sujet précise la clé, par exemple « avec un décalage de 5 ».",
+          "contenu_markdown": "Le décalage de l'énoncé remplace le 3 historique. On applique exactement la même procédure avec la nouvelle valeur de $k$. Le 3 n'est une valeur par défaut que lorsque rien n'est précisé."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Un mot de passe est « Elodie marche ». Détermine son équivalent chiffré par la méthode de César, l'énoncé ne précisant pas le décalage.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Fixer la clé",
+          "justification": "L'énoncé ne donne aucun décalage : on applique la convention historique.",
+          "resultat_markdown": "$k = 3$."
+        },
+        {
+          "numero": 2,
+          "action": "Numéroter les lettres de « Elodie »",
+          "justification": "On travaille sur les rangs, la casse sera rétablie à la fin (E majuscule, le reste en minuscules).",
+          "resultat_markdown": "E = 4, l = 11, o = 14, d = 3, i = 8, e = 4."
+        },
+        {
+          "numero": 3,
+          "action": "Décaler chaque rang de 3",
+          "justification": "On applique $C = (P + 3) \\bmod 26$. Aucun rang ne dépasse 25, le modulo ne change rien ici.",
+          "resultat_markdown": "4+3 = 7, 11+3 = 14, 14+3 = 17, 3+3 = 6, 8+3 = 11, 4+3 = 7."
+        },
+        {
+          "numero": 4,
+          "action": "Revenir aux lettres",
+          "justification": "7 = H, 14 = O, 17 = R, 6 = G, 11 = L, 7 = H. La première lettre reste en majuscule.",
+          "resultat_markdown": "« Elodie » devient « Horglh »."
+        },
+        {
+          "numero": 5,
+          "action": "Traiter « marche » de la même façon",
+          "justification": "m = 12, a = 0, r = 17, c = 2, h = 7, e = 4. En ajoutant 3 : 15, 3, 20, 5, 10, 7, soit P, D, U, F, K, H.",
+          "resultat_markdown": "« marche » devient « pdufkh »."
+        },
+        {
+          "numero": 6,
+          "action": "Recomposer le message",
+          "justification": "L'espace n'est pas une lettre : il est conservé.",
+          "resultat_markdown": "« Horglh pdufkh »."
+        }
+      ],
+      "conclusion_markdown": "Le mot de passe « Elodie marche » devient « Horglh pdufkh » avec le décalage 3. En le décalant de 3 rangs vers l'arrière, on retrouve le message clair."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Décaler les lettres de fin d'alphabet sans revenir au début (X + 3 donnerait une lettre inexistante).",
+          "pourquoi_faux": "L'alphabet est circulaire. Après Z, on repart à A, ce que traduit le modulo 26.",
+          "correction_markdown": "Pour X (rang 23), $23 + 3 = 26$ et $26 \\bmod 26 = 0$, soit A. De même Y donne B et Z donne C."
+        },
+        {
+          "erreur_markdown": "Déchiffrer en décalant encore vers l'avant.",
+          "pourquoi_faux": "Le déchiffrement est l'opération inverse du chiffrement : il faut soustraire la clé.",
+          "correction_markdown": "Pour déchiffrer, utilise $P = (C - k) \\bmod 26$, par exemple H (7) moins 3 donne E (4)."
+        },
+        {
+          "erreur_markdown": "Chiffrer aussi les espaces ou changer la casse.",
+          "pourquoi_faux": "Le chiffrement de César ne porte que sur les lettres. Les autres caractères restent identiques.",
+          "correction_markdown": "Garde les espaces, la ponctuation, les majuscules et les minuscules à leur place."
+        },
+        {
+          "erreur_markdown": "Utiliser le décalage 3 alors que l'énoncé impose une autre clé.",
+          "pourquoi_faux": "La clé de 3 est une convention valable seulement en l'absence de précision.",
+          "correction_markdown": "Relis l'énoncé : s'il donne un décalage, c'est lui qu'il faut appliquer."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Chiffre le mot « BAC » avec la méthode de César, décalage 3.",
+          "solution_markdown": "B = 1, A = 0, C = 2. En ajoutant 3 : 4, 3, 5. Ces rangs correspondent à E, D, F. Le mot chiffré est « EDF »."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déchiffre le message « FDPHURXQ » chiffré avec un décalage de 3.",
+          "solution_markdown": "On soustrait 3 à chaque rang (modulo 26) :\n\n| Lettre chiffrée | Rang | Rang − 3 | Lettre claire |\n|---|---|---|---|\n| F | 5 | 2 | C |\n| D | 3 | 0 | A |\n| P | 15 | 12 | M |\n| H | 7 | 4 | E |\n| U | 20 | 17 | R |\n| R | 17 | 14 | O |\n| X | 23 | 20 | U |\n| Q | 16 | 13 | N |\n\nLe message clair est « CAMEROUN »."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le mot « BONJOUR » a été chiffré en « GTSOTZW » par un chiffrement de César dont on ignore la clé. Trouve la clé, vérifie-la sur toutes les lettres, puis dis pourquoi cette méthode est peu sûre.",
+          "solution_markdown": "1. **Clé.** La première lettre B (rang 1) est devenue G (rang 6). Le décalage est donc $6 - 1 = 5$, soit $k = 5$.\n2. **Vérification lettre par lettre** avec $C = (P + 5) \\bmod 26$ :\n\n| Claire | Rang | Rang + 5 | Chiffrée |\n|---|---|---|---|\n| B | 1 | 6 | G |\n| O | 14 | 19 | T |\n| N | 13 | 18 | S |\n| J | 9 | 14 | O |\n| O | 14 | 19 | T |\n| U | 20 | 25 | Z |\n| R | 17 | 22 | W |\n\nLes sept lettres obtenues forment « GTSOTZW » : la clé 5 est correcte.\n3. **Sécurité.** Il n'existe que 25 clés possibles, un attaquant les essaie toutes en quelques secondes. Il peut aussi repérer la lettre la plus fréquente du texte chiffré et en déduire le décalage. La méthode ne protège donc pas des données sensibles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le chiffrement de César décale chaque lettre de $k$ rangs : $C = (P + k) \\bmod 26$.",
+        "Sans précision dans l'énoncé, le décalage est celui de Jules César : 3.",
+        "L'alphabet est circulaire : après Z on revient à A, grâce au modulo 26.",
+        "Pour déchiffrer, tu soustrais la clé. Espaces, ponctuation et casse restent inchangés.",
+        "Avec seulement 25 clés possibles, César se casse par force brute : il illustre le principe, pas une protection réelle.",
+        "Au BAC TI de Réseau et Sécurité informatique, on te demande de chiffrer ou déchiffrer un mot de passe ou une phrase avec César : montre le décalage utilisé et le calcul lettre par lettre."
+      ]
+    }
+  ]
 }

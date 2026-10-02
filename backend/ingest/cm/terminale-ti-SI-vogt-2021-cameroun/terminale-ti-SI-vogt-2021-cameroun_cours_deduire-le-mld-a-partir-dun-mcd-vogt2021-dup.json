@@ -7,6 +7,14 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-deduire-le-mld-a-partir-d-un-mcd (epreuve-hamonise-c-d-e-informatique-2026-cameroun).",
+    "duree_estimee_min": 35,
+    "tags": [
+      "MLD",
+      "MCD",
+      "règles de passage",
+      "clé étrangère",
+      "modèle relationnel"
+    ],
     "statut": "brouillon"
   },
   "source": {
@@ -17,5 +25,113 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un MCD dessine les entités et leurs liens, mais un SGBD ne sait pas lire un dessin : il stocke des tables. Le passage du MCD au MLD (modèle logique de données) est la traduction de ton dessin en tables prêtes à être créées. Cette traduction suit un petit nombre de règles fixes. Une fois qu'elles sont maîtrisées, la traduction est mécanique et rapporte des points sûrs dans tous les sujets de Terminale TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire un MCD : entités, associations, cardinalités",
+        "Connaître clé primaire et clé étrangère"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les règles de passage du MCD au MLD",
+      "contenu_markdown": "Notation : la clé primaire est en **gras**, la clé étrangère est précédée de #. Exemple : Employe(**Matricule**, Nom, #N_Dep).\n\nLes règles s'appliquent dans cet ordre (la numérotation exacte peut varier d'un support de cours à l'autre, le contenu reste le même) :\n\n**Règle 1 : chaque entité devient une relation (table).** Ses attributs deviennent les colonnes, son identifiant devient la clé primaire.\n\n**Règle 2 : association hiérarchique (père-fils), avec une cardinalité maximale 1 d'un côté et n de l'autre.** Elle ne devient pas une table. L'entité « fils » est celle dont la propre cardinalité a un maximum de 1 (un employé n'a qu'un département), l'entité « père » est l'autre (un département a plusieurs employés). La clé primaire du père migre comme clé étrangère dans la relation du fils.\n\n**Règle 3 : association maillée, avec une cardinalité maximale n des deux côtés.** Elle devient une table à part, dont la clé primaire est formée des deux clés étrangères (clé composée). Les propriétés portées deviennent des colonnes de cette table.\n\nCas de l'association (1,1) - (1,1) : la clé migre d'un côté ou de l'autre, au choix, avec une préférence pour le côté où la participation est obligatoire.\n\nPour repérer le fils : c'est l'entité dont la cardinalité **maximale** vaut 1 dans l'association, quel que soit le minimum (0 ou 1)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "MCD : Departement (N_Dep, NomD), Employe (Matricule, Nom, Prenom), Projet (N_Pro, NomP, Lieu). Associations : Appartenir entre Employe (1,1) et Departement (0,n) ; Gerer entre Projet (1,1) et Departement (0,n) ; Travailler entre Employe (0,n) et Projet (0,n), avec la propriété Heures. Déduire le MLD.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Appliquer la règle 1 aux trois entités",
+          "justification": "Chaque entité devient une table, avec son identifiant en clé primaire.",
+          "resultat_markdown": "Departement(**N_Dep**, NomD) ; Employe(**Matricule**, Nom, Prenom) ; Projet(**N_Pro**, NomP, Lieu)."
+        },
+        {
+          "numero": 2,
+          "action": "Traiter Appartenir",
+          "justification": "Employe a une cardinalité maximale de 1 (un employé n'a qu'un département) : c'est le fils. Departement est le père. Règle 2 : la clé du père migre vers le fils.",
+          "resultat_markdown": "Employe(**Matricule**, Nom, Prenom, #N_Dep)."
+        },
+        {
+          "numero": 3,
+          "action": "Traiter Gerer",
+          "justification": "Même configuration : Projet est le fils (un projet n'a qu'un département), Departement est le père. La clé de Departement migre vers Projet.",
+          "resultat_markdown": "Projet(**N_Pro**, NomP, Lieu, #N_Dep)."
+        },
+        {
+          "numero": 4,
+          "action": "Traiter Travailler",
+          "justification": "Cardinalités n des deux côtés : règle 3, une table à part.",
+          "resultat_markdown": "Travaille(#Matricule, #N_Pro, Heures)."
+        },
+        {
+          "numero": 5,
+          "action": "Définir la clé primaire de Travaille",
+          "justification": "Un couple (employé, projet) est unique : on combine les deux clés étrangères.",
+          "resultat_markdown": "Clé primaire : (Matricule, N_Pro)."
+        }
+      ],
+      "conclusion_markdown": "Le MLD obtenu est : Departement(N_Dep, NomD) ; Employe(Matricule, Nom, Prenom, #N_Dep) ; Projet(N_Pro, NomP, Lieu, #N_Dep) ; Travaille(#Matricule, #N_Pro, Heures), avec la clé primaire composée (Matricule, N_Pro)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Créer une table pour chaque association, même hiérarchique.",
+          "pourquoi_faux": "Une association avec patte maximale 1 se traduit par une simple clé étrangère. Une table de plus alourdirait inutilement la base.",
+          "correction_markdown": "Table à part uniquement quand les deux pattes ont une cardinalité maximale n."
+        },
+        {
+          "erreur_markdown": "Faire migrer la clé du fils vers le père, par exemple mettre Matricule dans la table Departement.",
+          "pourquoi_faux": "Un département a plusieurs employés : il faudrait stocker une liste de matricules dans une seule case, ce qu'une table relationnelle interdit. À l'inverse, chaque employé n'a qu'un département, donc une seule valeur à stocker.",
+          "correction_markdown": "La clé du père va dans la table du fils. Dans l'exemple, N_Dep va dans Employe, jamais l'inverse."
+        },
+        {
+          "erreur_markdown": "Oublier les propriétés portées de l'association (n,n).",
+          "pourquoi_faux": "La propriété Heures n'a plus de place si elle n'est pas rangée dans la table de l'association. L'information est perdue.",
+          "correction_markdown": "Les propriétés portées deviennent des colonnes de la table de l'association."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "MCD : Classe (CodeClasse, Libelle) et Eleve (Matricule, Nom). Association Appartenir : Eleve (1,1) - Classe (0,n). Déduis le MLD.",
+          "solution_markdown": "Règle 1 : une table par entité.\n\nRègle 2 : un élève appartient à une seule classe (cardinalité maximale 1 côté Eleve), une classe contient plusieurs élèves. Eleve est le fils, Classe est le père. La clé de Classe migre dans Eleve.\n\nMLD : Classe(**CodeClasse**, Libelle) ; Eleve(**Matricule**, Nom, #CodeClasse)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "MCD : Eleve (Matricule, Nom), Matiere (CodeMat, Libelle). Association Evaluer : Eleve (0,n) - Matiere (0,n), propriété Note. Déduis le MLD.",
+          "solution_markdown": "Règle 1 : Eleve(**Matricule**, Nom) ; Matiere(**CodeMat**, Libelle).\n\nRègle 3 : les deux cardinalités maximales valent n, donc l'association devient une table. Elle reprend les deux clés comme clés étrangères et la propriété portée Note.\n\nEvaluer(#Matricule, #CodeMat, Note), de clé primaire (Matricule, CodeMat)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "MCD : Client (IdClient, Nom) ; Commande (NumCmd, DateCmd) ; Produit (CodeP, Designation, PU). Associations : Passer entre Client (0,n) et Commande (1,1) ; Contenir entre Commande (1,n) et Produit (0,n), avec la propriété Quantite. Déduis le MLD et explique le choix de la clé primaire de la table issue de Contenir.",
+          "solution_markdown": "Règle 1 : Client(**IdClient**, Nom) ; Commande(**NumCmd**, DateCmd) ; Produit(**CodeP**, Designation, PU).\n\nRègle 2 (Passer) : une commande n'a qu'un client (cardinalité maximale 1 côté Commande), donc Commande est le fils et Client le père. La clé du client est ajoutée dans Commande : Commande(**NumCmd**, DateCmd, #IdClient).\n\nRègle 3 (Contenir) : cardinalités maximales n des deux côtés, d'où une table : LigneCommande(#NumCmd, #CodeP, Quantite).\n\nClé primaire : le couple (NumCmd, CodeP). Une commande contient un produit au plus une fois, avec sa quantité ; chaque couple est donc unique et identifie la ligne."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Règle 1 : une entité devient une table, son identifiant devient la clé primaire.",
+        "Règle 2 : association père-fils (un maximum de 1 d'un côté, n de l'autre) : la clé du père migre en clé étrangère dans la table du fils.",
+        "Règle 3 : association n,n : une table à part, clé primaire composée des deux clés étrangères, propriétés portées en colonnes.",
+        "Pour savoir où va la clé, regarde les cardinalités maximales, pas les minimales.",
+        "Au BAC TI, le passage du MCD au MLD est une question de cours régulière et un exercice de modélisation classique."
+      ]
+    }
+  ]
 }

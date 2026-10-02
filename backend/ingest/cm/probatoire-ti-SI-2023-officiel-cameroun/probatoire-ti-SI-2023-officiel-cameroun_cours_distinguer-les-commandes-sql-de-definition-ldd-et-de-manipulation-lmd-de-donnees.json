@@ -7,6 +7,15 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-distinguer-les-commandes-sql-de-definition-ldd-et-de-manipulation-lmd-de-donnees (bac-c-d-e-informatique-theorique-2022-cameroun).",
+    "duree_estimee_min": 25,
+    "tags": [
+      "LDD",
+      "LMD",
+      "SQL",
+      "CREATE TABLE",
+      "INSERT",
+      "UPDATE"
+    ],
     "statut": "brouillon"
   },
   "source": {
@@ -17,5 +26,107 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Le langage SQL sert à deux métiers très différents : construire la structure de la base (les tables, les colonnes) et travailler sur son contenu (les lignes). Ces deux familles s'appellent le LDD et le LMD. Les sujets demandent soit de citer des commandes de manipulation, soit de classer des commandes dans leur famille. Une fois la distinction acquise, la réponse vient toute seule."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une table, une ligne, une colonne",
+        "Avoir déjà vu une requête SQL simple"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "LDD pour la structure, LMD pour les données",
+      "contenu_markdown": "Le **Langage de Définition de Données (LDD)** agit sur la **structure** de la base : il crée, modifie ou supprime des tables et des colonnes.\n\nLe **Langage de Manipulation de Données (LMD)** agit sur le **contenu** des tables : il ajoute, modifie, supprime ou lit des lignes.\n\n| Famille | Commande | Effet |\n|---|---|---|\n| LDD | `CREATE TABLE` | crée une table |\n| LDD | `ALTER TABLE` | modifie la structure d'une table (ajouter une colonne par exemple) |\n| LDD | `DROP TABLE` | supprime une table entière |\n| LMD | `INSERT INTO` | ajoute une ligne |\n| LMD | `UPDATE` | modifie des valeurs existantes |\n| LMD | `DELETE` | supprime des lignes |\n| LMD | `SELECT` | lit et extrait des données (rangé dans le LMD par le programme) |\n\nMoyen de ne pas se tromper : se demander si l'on change **le cadre** (la table, les colonnes) ou **ce qu'il y a dedans** (les lignes). Cadre = LDD, contenu = LMD.\n\nPour répondre à « citer deux opérations de manipulation de données », cite deux commandes du LMD et donne l'effet de chacune."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit la table Eleve (Matricule, Nom, Prenom, Sexe, Age). Citer deux opérations de manipulation de données.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la famille demandée",
+          "justification": "« Manipulation de données » désigne le LMD, pas le LDD.",
+          "resultat_markdown": "On cherche des commandes du LMD."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir une première commande",
+          "justification": "SELECT lit les données et appartient au LMD.",
+          "resultat_markdown": "**SELECT** : interroger et extraire des données, par exemple `SELECT Nom FROM Eleve;`."
+        },
+        {
+          "numero": 3,
+          "action": "Choisir une seconde commande",
+          "justification": "INSERT INTO ajoute une ligne, c'est aussi du LMD.",
+          "resultat_markdown": "**INSERT INTO** : ajouter un enregistrement, par exemple `INSERT INTO Eleve VALUES ('E001', 'Nkoulou', 'Paul', 'M', 17);`."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier qu'aucune commande LDD ne s'est glissée",
+          "justification": "CREATE, ALTER et DROP changent la structure.",
+          "resultat_markdown": "Aucune des deux n'est du LDD."
+        }
+      ],
+      "conclusion_markdown": "Deux opérations de manipulation de données sont SELECT, qui extrait des données, et INSERT INTO, qui ajoute un enregistrement."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Classer ALTER TABLE dans le LMD parce qu'il « modifie ».",
+          "pourquoi_faux": "ALTER TABLE modifie la structure de la table (une colonne en plus, un type changé), pas son contenu. C'est donc du LDD. UPDATE est la commande qui modifie les valeurs.",
+          "correction_markdown": "Demande-toi : est-ce que je touche aux colonnes ou aux lignes ? Colonnes = LDD."
+        },
+        {
+          "erreur_markdown": "Confondre DELETE et DROP TABLE.",
+          "pourquoi_faux": "DELETE supprime des lignes (la table reste). DROP TABLE supprime la table entière avec sa structure.",
+          "correction_markdown": "DELETE = LMD, on vide des lignes. DROP = LDD, on supprime l'objet."
+        },
+        {
+          "erreur_markdown": "Citer CREATE TABLE quand on demande une opération de manipulation.",
+          "pourquoi_faux": "CREATE TABLE crée la structure : c'est une commande de définition, hors sujet.",
+          "correction_markdown": "Relis le mot de la question : manipulation donne INSERT, UPDATE, DELETE, SELECT."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classe dans le LDD ou le LMD : CREATE TABLE, INSERT INTO, DROP TABLE, UPDATE, SELECT, ALTER TABLE.",
+          "solution_markdown": "LDD : CREATE TABLE, DROP TABLE, ALTER TABLE (elles agissent sur la structure).\n\nLMD : INSERT INTO, UPDATE, SELECT (elles agissent sur les lignes)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris la commande SQL qui ajoute une colonne Telephone (texte de 15 caractères) à la table Eleve, puis celle qui passe à 18 l'âge de l'élève de matricule E001. Indique la famille de chacune.",
+          "solution_markdown": "1) Ajouter une colonne change la structure : LDD.\n\n```sql\nALTER TABLE Eleve ADD Telephone VARCHAR(15);\n```\n\n2) Modifier une valeur existante : LMD.\n\n```sql\nUPDATE Eleve SET Age = 18 WHERE Matricule = 'E001';\n```\n\nLe `WHERE` limite la modification à l'élève E001, sans lui toutes les lignes passeraient à 18 ans."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une secrétaire doit : a) créer la table Classe (CodeClasse, Libelle) ; b) y insérer la classe 'TI1' de libellé 'Terminale TI' ; c) corriger le libellé en 'Terminale TI 1' ; d) supprimer cette classe ; e) supprimer la table. Écris les commandes dans l'ordre et donne la famille de chacune.",
+          "solution_markdown": "a) LDD :\n```sql\nCREATE TABLE Classe (CodeClasse VARCHAR(10) PRIMARY KEY, Libelle VARCHAR(30));\n```\n\nb) LMD :\n```sql\nINSERT INTO Classe VALUES ('TI1', 'Terminale TI');\n```\n\nc) LMD :\n```sql\nUPDATE Classe SET Libelle = 'Terminale TI 1' WHERE CodeClasse = 'TI1';\n```\n\nd) LMD :\n```sql\nDELETE FROM Classe WHERE CodeClasse = 'TI1';\n```\n\ne) LDD :\n```sql\nDROP TABLE Classe;\n```\n\nL'ordre compte : on ne peut pas insérer avant d'avoir créé la table, ni supprimer la table avant d'avoir fini de s'en servir."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "LDD = définir la structure : CREATE, ALTER, DROP.",
+        "LMD = manipuler le contenu : INSERT, UPDATE, DELETE, SELECT.",
+        "Pour classer une commande, demande-toi si elle touche aux colonnes ou aux lignes.",
+        "UPDATE et DELETE sans WHERE agissent sur toutes les lignes : ne les oublie pas.",
+        "Au Probatoire TI et au BAC TI, cette distinction est demandée en question de cours, ou elle sert à classer les commandes d'un énoncé."
+      ]
+    }
+  ]
 }

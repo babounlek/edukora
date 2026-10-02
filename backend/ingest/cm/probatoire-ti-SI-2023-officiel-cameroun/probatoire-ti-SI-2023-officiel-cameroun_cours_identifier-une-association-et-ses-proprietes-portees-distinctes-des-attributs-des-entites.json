@@ -7,6 +7,14 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-identifier-une-association-et-ses-proprietes-portees-distinctes-des-attributs-des-entites (bac-c-d-e-informatique-theorique-2021-cameroun), qui traite exactement la distinction entre une propriete d'entite et une propriete portee par une association.",
+    "duree_estimee_min": 30,
+    "tags": [
+      "MCD",
+      "association",
+      "propriété portée",
+      "cardinalités",
+      "modèle entité-association"
+    ],
     "statut": "brouillon"
   },
   "source": {
@@ -17,5 +25,119 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur le MCD d'une boutique, le prénom d'un client se range dans l'entité Client, c'est évident. Mais où ranger la date à laquelle ce client a commandé tel accessoire ? Elle n'appartient ni au client seul, ni à l'accessoire seul : elle n'existe que parce que les deux se sont rencontrés. Cette information est une propriété portée par l'association. Savoir la repérer est un point qui sépare les MCD corrects des MCD approximatifs."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir identifier les entités et leurs attributs dans un texte",
+        "Connaître la notation des cardinalités (0,1), (1,1), (0,n), (1,n)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Repérer une association et ses propriétés portées",
+      "contenu_markdown": "Une **association** relie deux entités (ou plus). Dans le texte d'un cahier des charges, elle se repère par un **verbe** qui lie deux noms : « un client *commande* des accessoires », « un type *contient* des accessoires ».\n\nUne **propriété** est une information qui décrit quelque chose. La question est : *qui la porte ?* Pose-toi le test suivant : pour connaître cette valeur, faut-il connaître **une seule entité** ou **les deux ensemble** ?\n\n| Test | Conclusion | Exemple |\n|---|---|---|\n| Une seule entité suffit | La propriété est un attribut de l'entité | le prix unitaire dépend du seul accessoire |\n| Il faut les deux entités | La propriété est portée par l'association | la date de commande dépend du client et de l'accessoire |\n\nCas particulier important : une association dont une patte est de cardinalité maximale 1 (par exemple « un accessoire est dans un seul type ») ne porte pas de propriété. Une propriété de ce genre migre vers l'entité du côté 1.\n\nLes propriétés portées sont typiques des associations de cardinalités (n,n) : la date d'une commande, la note d'un élève dans une matière, les heures d'un employé sur un projet."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Règles de gestion de l'entreprise NDENDE : les accessoires (code, désignation, prix unitaire, quantité) sont classés par type (libellé, quantité). Chaque type contient plusieurs accessoires et un accessoire est dans un et un seul type. Les accessoires sont commandés par plusieurs clients à une date précise. Un client (nom, prénom, date de naissance) peut commander plusieurs accessoires. Relever les associations et leurs propriétés portées.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les entités",
+          "justification": "Les noms qui ont des caractéristiques propres sont des entités.",
+          "resultat_markdown": "Accessoire, Type, Client."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les verbes qui relient deux entités",
+          "justification": "Chaque verbe de liaison donne une association.",
+          "resultat_markdown": "« Un type *contient* des accessoires » et « les accessoires sont *commandés* par des clients »."
+        },
+        {
+          "numero": 3,
+          "action": "Fixer les cardinalités de la première association",
+          "justification": "Un type contient plusieurs accessoires, un accessoire est dans un seul type.",
+          "resultat_markdown": "Type (1,n) - Contenir - (1,1) Accessoire."
+        },
+        {
+          "numero": 4,
+          "action": "Fixer les cardinalités de la seconde",
+          "justification": "Un client peut commander plusieurs accessoires et un accessoire peut être commandé par plusieurs clients.",
+          "resultat_markdown": "Client (0,n) - Commander - (0,n) Accessoire."
+        },
+        {
+          "numero": 5,
+          "action": "Chercher les propriétés portées dans Commander",
+          "justification": "« À une date précise » : la date ne dépend ni du client seul ni de l'accessoire seul.",
+          "resultat_markdown": "Propriété portée : DateCommande."
+        },
+        {
+          "numero": 6,
+          "action": "Vérifier Contenir",
+          "justification": "Association à patte maximale 1 : aucune information supplémentaire n'est donnée, et elle ne porterait de toute façon pas de propriété.",
+          "resultat_markdown": "Contenir ne porte aucune propriété."
+        }
+      ],
+      "conclusion_markdown": "Le MCD comporte deux associations, Contenir (Type - Accessoire) sans propriété et Commander (Client - Accessoire) qui porte la propriété DateCommande."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ranger DateCommande dans l'entité Client.",
+          "pourquoi_faux": "Un même client commande à plusieurs dates : la date changerait à chaque commande, alors qu'un attribut d'entité a une seule valeur par client.",
+          "correction_markdown": "Une information qui dépend des deux entités à la fois est portée par l'association."
+        },
+        {
+          "erreur_markdown": "Faire porter le prix unitaire par l'association Commander.",
+          "pourquoi_faux": "Le prix unitaire est connu dès qu'on connaît l'accessoire, sans avoir besoin du client. C'est donc un attribut d'Accessoire.",
+          "correction_markdown": "Applique le test : une seule entité suffit pour connaître la valeur ? Alors c'est un attribut de cette entité."
+        },
+        {
+          "erreur_markdown": "Créer une association avec un nom d'entité ou un nom vague comme « Relation ».",
+          "pourquoi_faux": "Une association se nomme par un verbe qui dit ce qu'elle exprime (Commander, Contenir, Travailler).",
+          "correction_markdown": "Prends le verbe du cahier des charges."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un hôpital, un patient consulte un médecin à une date donnée et le médecin établit un diagnostic. Quelle est l'association, et quelles propriétés porte-t-elle ?",
+          "solution_markdown": "Association : **Consulter** entre Patient et Médecin (cardinalités (0,n) de chaque côté : un patient voit plusieurs médecins, un médecin voit plusieurs patients).\n\nPropriétés portées : la date de consultation et le diagnostic, car elles dépendent du patient et du médecin ensemble."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Entités : Eleve (Matricule, Nom), Matiere (CodeMat, Libelle). Un élève reçoit une note dans chaque matière. Où range-t-on l'attribut Note ? Justifie avec le test du cours.",
+          "solution_markdown": "Pour connaître une note, il faut connaître l'élève ET la matière. Une seule entité ne suffit pas : Note est donc portée par l'association **Evaluer** entre Eleve et Matiere, de cardinalités (0,n) des deux côtés.\n\nSi on mettait Note dans Eleve, il faudrait une seule note par élève ; dans Matiere, une seule note par matière."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Entités : Employe (Matricule, Nom, DateEmbauche), Departement (NumDep, NomDep), Projet (NumPro, NomPro). Un employé appartient à un seul département. Un employé travaille sur plusieurs projets et un projet occupe plusieurs employés, avec un nombre d'heures par employé et par projet. Donne les associations, leurs cardinalités et leurs propriétés portées, et explique pourquoi DateEmbauche n'est portée par aucune association.",
+          "solution_markdown": "1) Association **Appartenir** : Employe (1,1) - Departement (0,n). Patte maximale 1 côté Employe, donc aucune propriété portée.\n\n2) Association **Travailler** : Employe (0,n) - Projet (0,n). Elle porte la propriété **Heures**, car il faut un employé et un projet pour la connaître.\n\n3) DateEmbauche est un attribut d'Employe : elle ne dépend que de l'employé, indépendamment de son département ou de ses projets."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une association se repère par un verbe qui relie deux entités dans le texte.",
+        "Test de la propriété : une seule entité suffit ? Alors attribut. Il faut les deux ? Alors propriété portée.",
+        "Les propriétés portées apparaissent surtout dans les associations (n,n).",
+        "Une association avec une patte maximale 1 ne porte pas de propriété.",
+        "Au Probatoire TI, l'exercice de MCD demande presque toujours d'identifier les associations et leurs propriétés à partir de règles de gestion."
+      ]
+    }
+  ]
 }

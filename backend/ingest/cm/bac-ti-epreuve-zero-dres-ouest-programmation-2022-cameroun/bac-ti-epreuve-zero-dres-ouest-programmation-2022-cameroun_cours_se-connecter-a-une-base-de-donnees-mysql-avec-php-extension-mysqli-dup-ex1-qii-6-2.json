@@ -5,9 +5,15 @@
     "matiere": "Programmation",
     "pays": "cm",
     "serie": "TI",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Accès aux bases de données avec PHP",
+    "duree_estimee_min": 35,
+    "tags": [
+      "mysqli",
+      "connexion MySQL",
+      "mysqli_connect",
+      "mysqli_fetch_array",
+      "PHP et base de données"
+    ],
     "savoir_officiel": null,
     "statut": "brouillon"
   },
@@ -19,5 +25,126 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page web qui affiche la liste des élèves d'un lycée ne contient pas cette liste dans son fichier : elle la va chercher dans une base de données MySQL au moment où le visiteur ouvre la page. Pour cela, le script PHP doit ouvrir une connexion, envoyer une requête SQL, lire les lignes du résultat une à une, puis refermer la connexion. Ce cours déroule ces quatre étapes avec l'extension mysqli, au programme du BAC TI."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire une requête SQL `SELECT ... FROM ... WHERE`",
+        "Connaître les variables, la concaténation et la boucle `while` en PHP",
+        "Savoir lire un tableau associatif (`$ligne['nom']`)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les quatre étapes d'un accès MySQL avec mysqli",
+      "contenu_markdown": "L'extension **mysqli** permet à PHP de dialoguer avec un serveur MySQL. Le travail suit toujours le même ordre.\n\n1. **Connexion.** `mysqli_connect(serveur, login, mot_de_passe, base)` ouvre une connexion entre le script PHP et le serveur MySQL. La fonction renvoie une ressource de connexion utilisable par les fonctions suivantes, ou `false` en cas d'échec, ce qu'on intercepte généralement avec `or die(...)`.\n2. **Requête.** `mysqli_query($conn, $sql)` envoie la requête SQL. Pour un `SELECT`, elle renvoie un résultat.\n3. **Lecture.** `mysqli_fetch_array($resultat)` extrait la ligne suivante du résultat sous forme de tableau (indices numériques et noms de colonnes) et avance le pointeur interne du résultat. Elle renvoie `false` lorsqu'il n'y a plus de ligne à lire, ce qui permet de l'utiliser directement comme condition d'une boucle `while`.\n4. **Fermeture.** `mysqli_close($conn)` libère la connexion.\n\n```php\n<?php\n$conn = mysqli_connect(\"localhost\", \"root\", \"\", \"ecole\")\n    or die(\"Connexion impossible : \" . mysqli_connect_error());\n$resultat = mysqli_query($conn, \"SELECT nom, moyenne FROM eleve ORDER BY nom\");\nwhile ($ligne = mysqli_fetch_array($resultat)) {\n    echo $ligne['nom'] . \" : \" . $ligne['moyenne'] . \"<br>\";\n}\nmysqli_close($conn);\n?>\n```\n\nDans la condition du `while`, l'affectation `$ligne = mysqli_fetch_array($resultat)` est évaluée comme la valeur affectée : un tableau (vrai) tant qu'il reste une ligne, `false` à la fin.",
+      "variantes": [
+        {
+          "nom": "Style orienté objet : new mysqli",
+          "quand_utiliser": "Quand l'énoncé impose l'objet `mysqli`, ou quand tu veux regrouper les opérations autour d'un seul objet de connexion.",
+          "contenu_markdown": "L'extension mysqli permet de dialoguer avec un serveur MySQL au moyen d'un objet de connexion, créé une seule fois avec `new mysqli(hôte, utilisateur, mot de passe, base)`, puis utilisé pour envoyer des requêtes et systématiquement refermé avec `close()` une fois le travail terminé.\n\n```php\n<?php\n$conn = new mysqli(\"localhost\", \"root\", \"\", \"ecole\");\nif ($conn->connect_error) {\n    die(\"Connexion impossible : \" . $conn->connect_error);\n}\n$resultat = $conn->query(\"SELECT nom, moyenne FROM eleve ORDER BY nom\");\nwhile ($ligne = $resultat->fetch_array()) {\n    echo $ligne['nom'] . \" : \" . $ligne['moyenne'] . \"<br>\";\n}\n$conn->close();\n?>\n```"
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La table `eleve(nom, moyenne)` de la base `ecole` contient deux lignes : (`Atangana`, 12.5) et (`Biyong`, 9). Que produit le script de la règle, et pourquoi la boucle s'arrête-t-elle ?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ouvrir la connexion",
+          "justification": "Sans connexion, aucune requête n'est possible. Les quatre arguments sont dans l'ordre serveur, login, mot de passe, base.",
+          "resultat_markdown": "Connexion à `localhost` avec `root`, mot de passe vide, base `ecole`. Elle réussit, donc `or die(...)` n'est pas exécuté."
+        },
+        {
+          "numero": 2,
+          "action": "Envoyer la requête",
+          "justification": "`ORDER BY nom` trie les lignes par ordre alphabétique avant leur envoi.",
+          "resultat_markdown": "`$resultat` contient deux lignes, dans l'ordre `Atangana` puis `Biyong`."
+        },
+        {
+          "numero": 3,
+          "action": "Premier tour de boucle",
+          "justification": "`mysqli_fetch_array` renvoie la première ligne et avance le pointeur. Un tableau non vide est considéré comme vrai.",
+          "resultat_markdown": "`$ligne['nom']` vaut `Atangana`, `$ligne['moyenne']` vaut `12.5`. Affichage : `Atangana : 12.5`."
+        },
+        {
+          "numero": 4,
+          "action": "Deuxième tour de boucle",
+          "justification": "Le pointeur est sur la deuxième ligne.",
+          "resultat_markdown": "Affichage : `Biyong : 9`."
+        },
+        {
+          "numero": 5,
+          "action": "Fin de boucle",
+          "justification": "Il n'y a plus de ligne : `mysqli_fetch_array` renvoie `false`, la condition du `while` devient fausse et la boucle s'arrête.",
+          "resultat_markdown": "Le script exécute ensuite `mysqli_close($conn)`."
+        }
+      ],
+      "conclusion_markdown": "La page affiche `Atangana : 12.5` puis `Biyong : 9`, chacun suivi d'un retour à la ligne. La boucle s'arrête parce que `mysqli_fetch_array` renvoie `false` quand les lignes sont épuisées."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Appeler `mysqli_fetch_array` une seule fois, sans boucle, et s'étonner de ne voir que la première ligne.",
+          "pourquoi_faux": "Chaque appel ne lit qu'une ligne. Pour parcourir tout le résultat, il faut répéter l'appel jusqu'à ce qu'il renvoie `false`.",
+          "correction_markdown": "Utilise `while ($ligne = mysqli_fetch_array($resultat)) { ... }`."
+        },
+        {
+          "erreur_markdown": "Inverser les paramètres de `mysqli_connect`, par exemple mettre la base avant l'utilisateur.",
+          "pourquoi_faux": "Les paramètres sont lus dans l'ordre. Un login pris pour un serveur fait échouer la connexion.",
+          "correction_markdown": "Retiens l'ordre serveur, login, mot de passe, base."
+        },
+        {
+          "erreur_markdown": "Oublier de refermer la connexion avec `mysqli_close` (ou `close()`).",
+          "pourquoi_faux": "La connexion reste ouverte inutilement jusqu'à la fin du script, et un serveur très sollicité finit par refuser de nouvelles connexions.",
+          "correction_markdown": "Termine toujours le script par la fermeture."
+        },
+        {
+          "erreur_markdown": "Utiliser les anciennes fonctions `mysql_connect` et `mysql_query`.",
+          "pourquoi_faux": "Elles ont été supprimées de PHP 7. Le code produit une erreur sur un serveur récent.",
+          "correction_markdown": "Utilise les fonctions `mysqli_...` ou l'objet `mysqli`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris la ligne de connexion à la base `lycee` du serveur `localhost` avec l'utilisateur `admin` et le mot de passe `ti2022`, rangée dans `$conn`.",
+          "solution_markdown": "```php\n$conn = mysqli_connect(\"localhost\", \"admin\", \"ti2022\", \"lycee\");\n```\n\nOrdre des arguments : serveur, login, mot de passe, base."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris le script qui affiche le nombre d'élèves de la table `eleve` de la base `ecole` (serveur `localhost`, utilisateur `root`, mot de passe vide). Utilise `mysqli_num_rows`.",
+          "solution_markdown": "```php\n<?php\n$conn = mysqli_connect(\"localhost\", \"root\", \"\", \"ecole\");\n$resultat = mysqli_query($conn, \"SELECT nom FROM eleve\");\necho \"Nombre d'élèves : \" . mysqli_num_rows($resultat);\nmysqli_close($conn);\n?>\n```\n\n`mysqli_num_rows($resultat)` renvoie le nombre de lignes du résultat d'un `SELECT`."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris le script qui affiche, dans un tableau HTML, le nom et la moyenne des élèves de `eleve(nom, moyenne)` dont la moyenne est supérieure ou égale à 10. La connexion se fait en style orienté objet.",
+          "solution_markdown": "1. Connexion avec `new mysqli(...)` et test d'échec.\n2. Requête avec le filtre `WHERE moyenne >= 10`.\n3. Une ligne `<tr>` par résultat, produite dans la boucle.\n4. Fermeture avec `close()`.\n\n```php\n<?php\n$conn = new mysqli(\"localhost\", \"root\", \"\", \"ecole\");\nif ($conn->connect_error) {\n    die(\"Connexion impossible : \" . $conn->connect_error);\n}\n$resultat = $conn->query(\"SELECT nom, moyenne FROM eleve WHERE moyenne >= 10\");\necho \"<table border=\"1\">\";\necho \"<tr><th>Nom</th><th>Moyenne</th></tr>\";\nwhile ($ligne = $resultat->fetch_array()) {\n    echo \"<tr><td>\" . $ligne['nom'] . \"</td><td>\" . $ligne['moyenne'] . \"</td></tr>\";\n}\necho \"</table>\";\n$conn->close();\n?>\n```\n\nL'en-tête du tableau est écrit avant la boucle, la fermeture du tableau après : ces deux affichages ne doivent pas être répétés à chaque ligne."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un accès MySQL suit toujours quatre étapes : connexion, requête, lecture des lignes, fermeture.",
+        "`mysqli_connect(serveur, login, mot_de_passe, base)` renvoie une connexion ou `false` en cas d'échec.",
+        "`mysqli_fetch_array` lit une ligne par appel et renvoie `false` à la fin : c'est la condition naturelle d'un `while`.",
+        "Le style objet `new mysqli(...)` et le style procédural `mysqli_connect(...)` ont les mêmes paramètres, dans le même ordre.",
+        "Au BAC TI de Programmation, on te demande de compléter ou de corriger un script de connexion et d'affichage d'une table : vérifie l'ordre des paramètres, la boucle de lecture et la fermeture."
+      ]
+    }
+  ]
 }

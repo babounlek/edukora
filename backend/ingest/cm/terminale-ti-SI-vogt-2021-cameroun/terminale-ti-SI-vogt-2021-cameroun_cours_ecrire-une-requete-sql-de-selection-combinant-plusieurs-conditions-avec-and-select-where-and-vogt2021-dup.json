@@ -7,6 +7,14 @@
     "serie": "TI",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-ecrire-une-requete-sql-de-selection-combinant-plusieurs-conditions-avec-and-select-where-and (bac-c-d-e-informatique-theorique-2022-cameroun).",
+    "duree_estimee_min": 25,
+    "tags": [
+      "SELECT",
+      "WHERE",
+      "opérateur AND",
+      "conditions multiples",
+      "requête SQL"
+    ],
     "statut": "brouillon"
   },
   "source": {
@@ -17,5 +25,107 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Chercher un employé d'après son seul nom ne suffit pas : plusieurs personnes peuvent s'appeler BOMBO. Il faut ajouter le prénom, et la requête doit retourner uniquement la ligne qui satisfait les deux critères en même temps. C'est le rôle de l'opérateur AND dans la clause WHERE. Presque toutes les épreuves de SQL au BAC TI en contiennent au moins une."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Écrire un SELECT simple avec FROM",
+        "Connaître les opérateurs de comparaison : =, <, >, <=, >=, <>"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Combiner des conditions avec AND, OR et les parenthèses",
+      "contenu_markdown": "La clause `WHERE` filtre les lignes. Pour poser **plusieurs** conditions, on les relie par un opérateur logique :\n\n- **AND** : la ligne est gardée si **toutes** les conditions sont vraies ;\n- **OR** : la ligne est gardée si **au moins une** condition est vraie ;\n- **NOT** : inverse une condition.\n\nForme générale :\n\n```sql\nSELECT colonne1, colonne2\nFROM table\nWHERE condition1 AND condition2;\n```\n\nRègles de rédaction :\n\n1. Chaque condition est complète : colonne, opérateur, valeur (`Nom = 'BOMBO' AND Prenom = 'Marsien'`).\n2. Une valeur texte s'écrit entre apostrophes, un nombre sans.\n3. **AND est prioritaire sur OR** : en l'absence de parenthèses, SQL évalue d'abord les AND. Pour mélanger les deux, mets des parenthèses.\n4. Pour un intervalle, `BETWEEN a AND b` remplace deux comparaisons (bornes comprises)."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Schéma : Employe (Matricule, Nom, Prenom, DateNaissance, Adresse, Salaire, N_dep, superieur). Exprimer en SQL : la date de naissance et l'adresse de BOMBO Marsien.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les colonnes demandées",
+          "justification": "Ce que l'on veut voir va dans le SELECT.",
+          "resultat_markdown": "DateNaissance et Adresse."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer la table",
+          "justification": "Les colonnes figurent dans Employe.",
+          "resultat_markdown": "`FROM Employe`"
+        },
+        {
+          "numero": 3,
+          "action": "Repérer les critères",
+          "justification": "Un nom ET un prénom : les deux doivent être vrais en même temps, donc AND.",
+          "resultat_markdown": "Nom = 'BOMBO' et Prenom = 'Marsien'"
+        },
+        {
+          "numero": 4,
+          "action": "Assembler",
+          "justification": "On suit la forme générale SELECT, FROM, WHERE.",
+          "resultat_markdown": "```sql\nSELECT DateNaissance, Adresse\nFROM Employe\nWHERE Nom = 'BOMBO' AND Prenom = 'Marsien';\n```"
+        }
+      ],
+      "conclusion_markdown": "La requête retourne la date de naissance et l'adresse de l'unique employé dont le nom est BOMBO et le prénom Marsien."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire `WHERE Nom = 'BOMBO' OR Prenom = 'Marsien'`.",
+          "pourquoi_faux": "Avec OR, la requête retourne tous les BOMBO et tous les Marsien, même ceux qui ne sont pas BOMBO Marsien. Le sujet veut les deux critères en même temps.",
+          "correction_markdown": "Quand les critères portent sur la même personne, relie-les par AND."
+        },
+        {
+          "erreur_markdown": "Oublier les apostrophes : `Nom = BOMBO`.",
+          "pourquoi_faux": "SQL lit BOMBO comme un nom de colonne et signale une erreur ou compare à la mauvaise chose. Une valeur texte s'écrit entre apostrophes.",
+          "correction_markdown": "Mets toujours les textes entre apostrophes simples."
+        },
+        {
+          "erreur_markdown": "Mélanger AND et OR sans parenthèses : `WHERE Adresse = 'Douala' OR Adresse = 'Yaoundé' AND Salaire > 150000`.",
+          "pourquoi_faux": "AND est évalué avant OR : la requête retourne tous les employés de Douala, quel que soit le salaire, plus ceux de Yaoundé qui gagnent plus de 150 000. Ce n'est pas ce que l'on voulait.",
+          "correction_markdown": "Ajoute des parenthèses : `WHERE (Adresse = 'Douala' OR Adresse = 'Yaoundé') AND Salaire > 150000`."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Même schéma. Donner le nom et le prénom des employés du département 2 dont le salaire est supérieur à 150000.",
+          "solution_markdown": "Les deux critères doivent être vrais ensemble, donc AND :\n\n```sql\nSELECT Nom, Prenom\nFROM Employe\nWHERE N_dep = 2 AND Salaire > 150000;\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Donner le nom des employés qui habitent Douala et dont le salaire est compris entre 100000 et 200000 (bornes comprises). Écris la requête de deux façons.",
+          "solution_markdown": "Version avec deux comparaisons :\n\n```sql\nSELECT Nom\nFROM Employe\nWHERE Adresse = 'Douala' AND Salaire >= 100000 AND Salaire <= 200000;\n```\n\nVersion avec BETWEEN (bornes comprises) :\n\n```sql\nSELECT Nom\nFROM Employe\nWHERE Adresse = 'Douala' AND Salaire BETWEEN 100000 AND 200000;\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Donner le nom des employés qui habitent Douala ou Yaoundé et gagnent plus de 150000. Explique ce que donnerait la requête sans parenthèses.",
+          "solution_markdown": "Requête correcte :\n\n```sql\nSELECT Nom\nFROM Employe\nWHERE (Adresse = 'Douala' OR Adresse = 'Yaoundé') AND Salaire > 150000;\n```\n\nSans parenthèses, AND est évalué avant OR. SQL lirait : Adresse = 'Douala' OU (Adresse = 'Yaoundé' ET Salaire > 150000). On obtiendrait tous les employés de Douala, même ceux qui gagnent peu, ce qui est faux."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "AND garde les lignes qui vérifient toutes les conditions, OR celles qui en vérifient au moins une.",
+        "Les valeurs texte vont entre apostrophes, les nombres sans.",
+        "AND passe avant OR : dès que tu mélanges les deux, mets des parenthèses.",
+        "Pour un nom ET un prénom, c'est toujours AND.",
+        "Au BAC TI, la série de requêtes SQL commence généralement par une sélection simple avec deux critères, d'où l'importance de cette base."
+      ]
+    }
+  ]
 }
