@@ -144,7 +144,7 @@ export function SubscribePage() {
   }, [user])
 
   useEffect(() => {
-    listPlans(cursusId ? Number(cursusId) : undefined).then((data) => {
+    listPlans(cursusId ? Number(cursusId) : undefined, profilId, true).then((data) => {
       // require=repetiteur : ne garder que l'add-on Fiches, seul point d'entrée qui
       // le propose encore (voir FichesPage.tsx). Par défaut, l'abonnement de base
       // uniquement - un seul palier existe par cursus (Jusqu'à l'Examen), il inclut
@@ -175,7 +175,7 @@ export function SubscribePage() {
         setCursus(all.find((c) => c.id === Number(cursusId)) ?? null)
       })
     }
-  }, [cursusId, requireRepetiteur, dureeParam])
+  }, [cursusId, requireRepetiteur, dureeParam, profilId])
 
   // Confirmation visuelle qu'on achète pour le bon enfant ("Abonnement pour Awa") -
   // uniquement quand la page arrive avec un profil explicite (voir "Ajouter un
@@ -281,6 +281,50 @@ export function SubscribePage() {
   const creditAppliqueSelection = selectedPlan ? Math.min(selectedPlan.effective_price, creditDisponible) : 0
   const netAPayerSelection = (selectedPlan?.effective_price ?? 0) - creditAppliqueSelection
 
+  // Plan B proposé directement depuis l'écran d'échec / de délai dépassé : retour au
+  // formulaire avec le paiement manuel déjà déplié, plutôt que de laisser l'élève
+  // retrouver le petit lien « Des difficultés avec Campay ? ».
+  function passerAuPaiementManuel() {
+    setError(null)
+    setShowManualOptions(true)
+    setPaymentMethod("ORANGE")
+    setPhase("form")
+  }
+
+  // Une seule offre à choisir : un bouton radio à valider ne servirait à rien, on montre
+  // un récapitulatif (pour qui, quoi, combien) plutôt qu'un choix. Le choix par radio
+  // reste pour plusieurs offres (ex. l'add-on Fiches).
+  function renderPlanRecap(plan: Plan) {
+    return (
+      <div key={plan.id} className="flex items-center justify-between gap-3 rounded-xl border-2 border-primary bg-accent px-4 py-3.5 text-sm ring-1 ring-primary">
+        <span className="flex flex-col gap-1">
+          <span className="font-display font-medium">
+            {profilPrenom ? `${plan.name} pour ${profilPrenom}` : plan.name}
+          </span>
+          {plan.duration_mode === "JUSQUA_EXAMEN" && (
+            <span className="text-xs font-normal text-muted-foreground">
+              Accès jusqu'à son examen - {plan.effective_duration_days} jour{plan.effective_duration_days > 1 ? "s" : ""} restant{plan.effective_duration_days > 1 ? "s" : ""}
+            </span>
+          )}
+          {plan.inclut_inedit && (
+            <span className="flex items-center gap-1 text-xs font-medium text-gold-text">
+              <Sparkles className="size-3" />
+              Épreuves inédites incluses
+            </span>
+          )}
+          {plan.duration_mode === "JUSQUA_EXAMEN" && plan.effective_price < plan.price && (
+            <span className="text-xs font-medium text-success">
+              Tarif enfant supplémentaire (−20 %) : {formatAmount(plan.price)} → {formatAmount(plan.effective_price)} FCFA
+            </span>
+          )}
+        </span>
+        <span className="shrink-0 font-display text-base font-semibold text-primary">
+          {formatAmount(plan.effective_price)} FCFA
+        </span>
+      </div>
+    )
+  }
+
   function renderPlanOption(plan: Plan) {
     return (
       <label
@@ -377,7 +421,7 @@ export function SubscribePage() {
               <div className="flex flex-col gap-2.5">
                 <StepLabel n={1}>Votre offre</StepLabel>
                 <div className="flex flex-col gap-2">
-                  {plans.map(renderPlanOption)}
+                  {plans.length === 1 ? renderPlanRecap(plans[0]) : plans.map(renderPlanOption)}
                   {plans.length === 0 && (
                     <p className="text-sm text-muted-foreground">
                       {requireRepetiteur
@@ -504,6 +548,7 @@ export function SubscribePage() {
                       plan={selectedPlan}
                       operator={paymentMethod}
                       profilId={profilId}
+                      defaultPayerPhone={phoneNumber}
                       onDeclared={(payment) => {
                         setDeclaredPayment(payment)
                         setPhase("manual_submitted")
@@ -528,12 +573,18 @@ export function SubscribePage() {
               <CheckCircle2 className="size-10 text-success" />
               <p className="font-display font-medium">Votre déclaration a bien été enregistrée</p>
               <p className="text-sm text-muted-foreground">
-                Elle est actuellement en cours de vérification par notre équipe, généralement en quelques heures.
+                Notre équipe la vérifie, généralement en quelques heures. Tu recevras un SMS dès qu'elle est validée,
+                et ton accès s'active alors tout seul : rien d'autre à faire, tu peux fermer cette page.
                 Numéro de demande : #{declaredPayment.id}.
               </p>
-              <Button asChild>
-                <Link to="/mes-paiements">Suivre mes paiements</Link>
-              </Button>
+              <div className="flex flex-wrap justify-center gap-2">
+                <Button asChild>
+                  <Link to="/mes-paiements">Suivre mes paiements</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link to={epreuvesListPath(country)}>Retour au catalogue</Link>
+                </Button>
+              </div>
             </div>
           )}
 
@@ -565,6 +616,13 @@ export function SubscribePage() {
               <Button variant="outline" onClick={() => setPhase("form")}>
                 Réessayer
               </Button>
+              <button
+                type="button"
+                onClick={passerAuPaiementManuel}
+                className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+              >
+                Payer manuellement via Orange Money ou MTN MoMo
+              </button>
             </div>
           )}
 
@@ -601,6 +659,13 @@ export function SubscribePage() {
               <Button variant="outline" onClick={() => setPhase("form")}>
                 Réessayer
               </Button>
+              <button
+                type="button"
+                onClick={passerAuPaiementManuel}
+                className="text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
+              >
+                Payer manuellement via Orange Money ou MTN MoMo
+              </button>
             </div>
           )}
         </CardContent>

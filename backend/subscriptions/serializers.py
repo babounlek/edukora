@@ -10,19 +10,33 @@ class PlanSerializer(serializers.ModelSerializer):
     cursus = CursusSerializer(read_only=True)
     effective_duration_days = serializers.SerializerMethodField()
     effective_price = serializers.SerializerMethodField()
+    prix_enfant_supplementaire = serializers.SerializerMethodField()
 
     class Meta:
         model = Plan
         fields = [
             "id", "name", "cursus", "product_type", "price", "duration_mode", "duration_days",
-            "effective_duration_days", "effective_price", "inclut_inedit",
+            "effective_duration_days", "effective_price", "prix_enfant_supplementaire", "inclut_inedit",
         ]
 
     def get_effective_duration_days(self, obj):
         return obj.effective_duration_days()
 
     def get_effective_price(self, obj):
-        return obj.effective_price()
+        """Prix pour l'enfant `?profil=` du compte connecté si fourni (enfant
+        supplémentaire de la famille = tarif remisé), sinon pour le premier profil du
+        compte connecté ; tarif de référence pour un visiteur anonyme."""
+        request = self.context.get("request")
+        user = getattr(request, "user", None)
+        if user is None or not user.is_authenticated:
+            return obj.effective_price()
+        profil = None
+        if profil_id := request.query_params.get("profil"):
+            profil = user.profils.filter(pk=profil_id).first() if str(profil_id).isdigit() else None
+        return obj.effective_price(user=user, profil=profil)
+
+    def get_prix_enfant_supplementaire(self, obj):
+        return obj.prix_enfant_supplementaire()
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

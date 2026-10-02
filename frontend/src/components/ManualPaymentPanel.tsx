@@ -16,6 +16,8 @@ interface ManualPaymentPanelProps {
   // L'enfant pour qui cet achat est fait - voir SubscribePage.tsx, même rôle que
   // InitiatePaymentParams.profilId.
   profilId?: number
+  // Numéro du compte, proposé d'office comme numéro payeur (le plus souvent le même).
+  defaultPayerPhone?: string
 }
 
 // Mêmes couleurs de marque que le sélecteur de moyen de paiement (SubscribePage) -
@@ -36,26 +38,28 @@ const OPERATOR_STYLES: Record<MobileMoneyOperator, { initials: string; badgeClas
 
 /**
  * Instructions + formulaire de déclaration pour le paiement Mobile Money manuel.
- * `plan.effective_price` alimente l'affichage "montant à payer" mais ne sert qu'à
- * préremplir amount_declared côté formulaire - le serveur recalcule toujours
+ * `plan.effective_price` alimente l'affichage "montant à payer" ; le serveur recalcule toujours
  * amount_expected lui-même depuis plan.effective_price() au moment de la
  * déclaration (voir payments.serializers) - jamais depuis `plan.price` brut, qui
  * n'est qu'un plafond pour un Plan JUSQUA_EXAMEN (voir subscriptions.models.Plan).
  *
- * Ne demande que les trois informations qui identifient le versement (numéro payeur,
- * référence de transaction, montant) : `paid_at` et `proof` restent acceptés par
+ * Ne demande que les deux informations qui identifient le versement (numéro payeur,
+ * référence de transaction) : le montant est connu (plan.effective_price), le serveur le
+ * reprend de lui-même ; `paid_at` et `proof` restent acceptés par
  * l'API et affichés dans l'admin pour les déclarations passées, mais ne sont
  * volontairement plus saisis ici - un formulaire long est un formulaire abandonné,
  * et l'horodatage comme la capture ne faisaient que redire ce que la référence de
  * transaction permet déjà de vérifier auprès de l'opérateur.
  */
-export function ManualPaymentPanel({ plan, operator, onDeclared, profilId }: ManualPaymentPanelProps) {
+export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defaultPayerPhone }: ManualPaymentPanelProps) {
   const [accounts, setAccounts] = useState<MobileMoneyAccount[] | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [copied, setCopied] = useState(false)
-  const [payerPhoneNumber, setPayerPhoneNumber] = useState("")
+  const [copiedAmount, setCopiedAmount] = useState(false)
+  const [payerPhoneNumber, setPayerPhoneNumber] = useState(() =>
+    defaultPayerPhone && /^6\d{8}$/.test(defaultPayerPhone) ? defaultPayerPhone : "",
+  )
   const [transactionReference, setTransactionReference] = useState("")
-  const [amountDeclared, setAmountDeclared] = useState(String(plan.effective_price))
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -68,11 +72,16 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId }: Man
   useEffect(() => {
     setShowForm(false)
     setError(null)
-    setAmountDeclared(String(plan.effective_price))
-  }, [operator, plan.id, plan.effective_price])
+  }, [operator, plan.id])
 
   const account = accounts?.find((a) => a.operator === operator) ?? null
   const style = OPERATOR_STYLES[operator]
+
+  function handleCopyAmount() {
+    navigator.clipboard.writeText(String(plan.effective_price))
+    setCopiedAmount(true)
+    setTimeout(() => setCopiedAmount(false), 2000)
+  }
 
   function handleCopyNumber() {
     if (!account) return
@@ -93,22 +102,12 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId }: Man
       setError("Le numéro de transaction est obligatoire.")
       return
     }
-    const amount = Number(amountDeclared)
-    if (!amount || amount <= 0) {
-      setError("Indique le montant réellement payé.")
-      return
-    }
-    if (amount < plan.effective_price) {
-      setError(`Le montant payé ne peut pas être inférieur au prix de l'offre (${formatAmount(plan.effective_price)} FCFA).`)
-      return
-    }
 
     setSubmitting(true)
     try {
       const payment = await declareManualPayment({
         planId: plan.id,
         operator,
-        amountDeclared: amount,
         payerPhoneNumber,
         transactionReference,
         profilId,
@@ -149,8 +148,17 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId }: Man
         </div>
 
         <p className="mt-4 text-xs uppercase tracking-wide text-muted-foreground">Montant à payer</p>
-        <p className="font-display text-3xl font-semibold text-primary">
-          {formatAmount(plan.effective_price)} <span className="text-base font-normal text-muted-foreground">FCFA</span>
+        <div className="flex items-center justify-between gap-3">
+          <p className="font-display text-3xl font-semibold text-primary">
+            {formatAmount(plan.effective_price)} <span className="text-base font-normal text-muted-foreground">FCFA</span>
+          </p>
+          <Button type="button" variant="outline" size="sm" onClick={handleCopyAmount} className="shrink-0">
+            {copiedAmount ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
+            {copiedAmount ? "Copié" : "Copier"}
+          </Button>
+        </div>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Envoie exactement {formatAmount(plan.effective_price)} FCFA au numéro ci-dessous.
         </p>
 
         <div className="mt-3.5 flex items-center justify-between gap-3 rounded-lg border border-border bg-background/70 px-3.5 py-2.5">
@@ -199,15 +207,10 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId }: Man
                 value={transactionReference}
                 onChange={(e) => setTransactionReference(e.target.value)}
               />
-            </div>
-            <div className="flex flex-col gap-2 sm:col-span-2">
-              <Label htmlFor="amount-declared">Montant payé (FCFA)</Label>
-              <Input
-                id="amount-declared"
-                inputMode="numeric"
-                value={amountDeclared}
-                onChange={(e) => setAmountDeclared(e.target.value.replace(/\D/g, ""))}
-              />
+              <p className="text-xs text-muted-foreground">
+                Dans le SMS de confirmation {account.operator_display}, recopie l'identifiant de la transaction
+                (« ID de transaction » ou « Transaction Id »), sans espace.
+              </p>
             </div>
           </div>
 

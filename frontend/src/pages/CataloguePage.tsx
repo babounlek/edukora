@@ -649,7 +649,7 @@ function CatalogueVitrine() {
           <div className="relative">
             <h2 className="font-display text-2xl font-semibold">Prêt à commencer ?</h2>
             <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
-              Un seul abonnement, valable jusqu'à ton examen, moins cher chaque mois qui passe. Paiement par Mobile
+              Un seul abonnement, valable jusqu'à ton examen : 15 000 FCFA par enfant, puis 12 000 FCFA pour chaque enfant supplémentaire de la même famille. Paiement par Mobile
               Money, sans engagement.
             </p>
             <div className="mt-5 flex justify-center">

@@ -95,15 +95,22 @@ class PlanEffectiveDurationDaysTests(TestCase):
 
 class PlanEffectivePriceTests(TestCase):
     """
-    Grille par tranches du 2026-08-19 (remplace la règle continue "miroir du taux
-    Mensuel" du même jour) : Jusqu'à l'Examen n'a pas de prix figé, `price` sert de
-    plafond (voir Plan.effective_price) atteint à la 8e tranche de 30 jours entamée
-    (plancher et plafond relevés deux fois le 2026-09-05, voir PLANCHER_JUSQUA_EXAMEN et
-    INCREMENT_PAR_TRANCHE). Miroir de PlanEffectiveDurationDaysTests, même tolérance
-    d'un jour sur les bornes calculées depuis `timezone.now().date()` - jours choisis
-    loin des limites de tranche (multiples de 30) pour que cette tolérance ne fasse
-    jamais changer de palier.
+    Tarification unique du 2026-10-02 : Jusqu'à l'Examen = `price` (15 000 F) par enfant,
+    quelle que soit la date d'achat ; chaque enfant supplémentaire de la même famille
+    paie 12 000 F (remise fixe de 20 %, jamais cumulative).
     """
+
+    def _plan(self, cursus=None):
+        return Plan.objects.create(
+            name="Jusqu'à l'Examen", cursus=cursus or _cursus(), price=15000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
+        )
+
+    def _payer(self, user, profil, cursus, jours=200):
+        Subscription.objects.create(
+            user=user, profil=profil, cursus=cursus,
+            expires_at=timezone.now() + timedelta(days=jours), duration_mode=DureeMode.JUSQUA_EXAMEN,
+        )
 
     def test_fixe_mode_returns_price_as_is(self):
         plan = Plan.objects.create(
@@ -111,59 +118,56 @@ class PlanEffectivePriceTests(TestCase):
             duration_mode=DureeMode.FIXE, duration_days=30,
         )
         self.assertEqual(plan.effective_price(), 2000)
+        self.assertEqual(plan.prix_enfant_supplementaire(), 2000)
 
-    def test_jusqua_examen_is_capped_at_price_from_the_8th_tranche(self):
-        cursus = _cursus()
-        ExamSession.objects.create(
-            country=cursus.country, examen=cursus.examen, annee=timezone.now().year + 1,
-            date_debut=(timezone.now() + timedelta(days=240)).date(),
-        )
-        plan = Plan.objects.create(
-            name="Jusqu'à l'Examen", cursus=cursus, price=20000,
-            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
-        )
-        # 240j (8e tranche) atteint tout juste le plafond de 20 000 (4 000 + 8 x
-        # 2 000) - le prix reste au plafond quel que soit le +/-1 jour de tolérance.
-        self.assertEqual(plan.effective_price(), 20000)
-
-    def test_jusqua_examen_applies_the_staircase_in_the_middle_zone(self):
-        cursus = _cursus()
-        # Voir le commentaire de PlanEffectiveDurationDaysTests - même effacement.
-        ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).delete()
-        ExamSession.objects.create(
-            country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
-            date_debut=(timezone.now() + timedelta(days=100)).date(),
-        )
-        plan = Plan.objects.create(
-            name="Jusqu'à l'Examen", cursus=cursus, price=20000,
-            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
-        )
-        # 100j tombe dans la 4e tranche (90-119j) que ce soit 99, 100 ou 101 avec la
-        # tolérance d'un jour : 4 000 + 3 x 2 000.
-        self.assertEqual(plan.effective_price(), 10000)
-
-    def test_jusqua_examen_never_drops_below_the_floor_close_to_the_exam(self):
+    def test_jusqua_examen_price_does_not_depend_on_the_date(self):
         cursus = _cursus()
         ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).delete()
         ExamSession.objects.create(
             country=cursus.country, examen=cursus.examen, annee=timezone.now().year,
             date_debut=(timezone.now() + timedelta(days=5)).date(),
         )
-        plan = Plan.objects.create(
-            name="Jusqu'à l'Examen", cursus=cursus, price=20000,
-            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
-        )
-        self.assertEqual(plan.effective_price(), 4000)
+        self.assertEqual(self._plan(cursus).effective_price(), 15000)
 
-    def test_jusqua_examen_without_a_session_applies_the_same_rule_to_the_fallback_duration(self):
+    def test_additional_child_price_is_a_fixed_20_percent_discount(self):
+        self.assertEqual(self._plan().prix_enfant_supplementaire(), 12000)
+
+    def test_first_child_pays_full_price_then_each_other_child_pays_12000(self):
+        user = User.objects.create_user(phone_number="677000091", password="x")
         cursus = _cursus()
-        ExamSession.objects.filter(country=cursus.country, examen=cursus.examen).delete()
-        plan = Plan.objects.create(
-            name="Jusqu'à l'Examen", cursus=cursus, price=20000,
-            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
-        )
-        # Repli sur duration_days=30 : pile la 2e tranche (30-59j), 4 000 + 2 000.
-        self.assertEqual(plan.effective_price(), 6000)
+        plan = self._plan(cursus)
+        enfants = [user.profils.first()]
+        enfants += [Profil.objects.create(compte=user, prenom=f"Enfant{i}", ordre=i + 1) for i in range(3)]
+
+        totaux = []
+        for profil in enfants:
+            totaux.append(plan.effective_price(user=user, profil=profil))
+            self._payer(user, profil, cursus)
+
+        self.assertEqual(totaux, [15000, 12000, 12000, 12000])
+        self.assertEqual(sum(totaux[:2]), 27000)
+        self.assertEqual(sum(totaux[:3]), 39000)
+        self.assertEqual(sum(totaux), 51000)
+
+    def test_renewing_an_already_active_child_is_not_discounted(self):
+        user = User.objects.create_user(phone_number="677000092", password="x")
+        cursus = _cursus()
+        plan = self._plan(cursus)
+        premier = user.profils.first()
+        second = Profil.objects.create(compte=user, prenom="Second", ordre=1)
+        self._payer(user, premier, cursus)
+        self._payer(user, second, cursus)
+
+        self.assertEqual(plan.effective_price(user=user, profil=premier), 15000)
+
+    def test_another_family_does_not_get_the_discount(self):
+        cursus = _cursus()
+        plan = self._plan(cursus)
+        autre = User.objects.create_user(phone_number="677000093", password="x")
+        self._payer(autre, autre.profils.first(), cursus)
+        user = User.objects.create_user(phone_number="677000094", password="x")
+
+        self.assertEqual(plan.effective_price(user=user, profil=user.profils.first()), 15000)
 
 
 class SubscriptionExtendTests(TestCase):

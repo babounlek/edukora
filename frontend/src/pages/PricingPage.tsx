@@ -163,80 +163,32 @@ function ChipReassurance({ icon, children }: { icon: ReactNode; children: ReactN
   )
 }
 
-// Miroir volontaire de subscriptions.models.{PLANCHER_JUSQUA_EXAMEN,
-// INCREMENT_PAR_TRANCHE, JOURS_PAR_TRANCHE} - recalculés ici pour dessiner
-// l'échéancier visuel ci-dessous, jamais pour fixer un prix (toujours
-// jusquaExamen.effective_price/.price, qui viennent du serveur - voir Echeancier).
-// Grille "Septembre 20 000 F ... Juin 4 000 F" (plancher et plafond relevés deux fois
-// le 2026-09-05, voir subscriptions.models.py) : si elle change côté backend, ces
-// trois constantes doivent suivre.
-const PLANCHER_AFFICHE = 4000
-const PALIER_AFFICHE = 2000
-const JOURS_PAR_TRANCHE_AFFICHE = 30
-
-type EtapeEcheancier = { tranche: number; prix: number }
-
-/** Une marche par tranche de prix, de la plus loin de l'examen (plafond, tranche la
- * plus haute) à la plus proche (plancher, tranche 0) - voir Echeancier. */
-function construireEcheancier(plafond: number): EtapeEcheancier[] {
-  const nbTranches = Math.round((plafond - PLANCHER_AFFICHE) / PALIER_AFFICHE)
-  return Array.from({ length: nbTranches + 1 }, (_, i) => {
-    const tranche = nbTranches - i
-    return { tranche, prix: Math.min(plafond, PLANCHER_AFFICHE + tranche * PALIER_AFFICHE) }
-  })
-}
-
 /**
- * Échéancier visuel de Jusqu'à l'Examen : une marche par mois entamé, du plafond
- * (loin de l'examen, à gauche) au plancher (dernier mois, à droite) - rend concret
- * "plus tu t'abonnes tôt, moins tu payes" au lieu de le laisser en simple phrase.
- * La marche de l'utilisateur (déduite de son cursus, donc de la vraie date
- * d'examen - jamais un mois calendaire supposé) est repérée par un badge doré
- * plutôt que noyée dans la liste.
+ * Tarif famille, rendu concret par un petit tableau plutôt qu'une phrase. Le tarif de
+ * référence vient du serveur (`plan.price`) ; l'enfant supplémentaire en est déduit
+ * par la même remise fixe de 20 % que subscriptions.models.REMISE_ENFANT_SUPPLEMENTAIRE_PCT
+ * (voir Plan.prix_enfant_supplementaire) - jamais cumulative : le 2e, le 3e, le 4e
+ * enfant paient tous le même prix.
  */
-function Echeancier({ plan }: { plan: Plan }) {
-  const etapes = useMemo(() => construireEcheancier(plan.price), [plan.price])
-  const trancheActuelle = Math.min(
-    etapes[0]?.tranche ?? 0,
-    Math.floor(plan.effective_duration_days / JOURS_PAR_TRANCHE_AFFICHE),
-  )
+function TarifFamille({ plan }: { plan: Plan }) {
+  const reference = plan.price
+  const supplementaire = plan.prix_enfant_supplementaire
+  const total = (nbEnfants: number) => reference + (nbEnfants - 1) * supplementaire
 
   return (
     <div className="rounded-xl border border-primary/15 bg-primary/[0.03] p-4">
       <p className="text-xs font-medium text-muted-foreground">
-        Le tarif baisse à chaque mois qui passe, jusqu'à ton examen
+        Plusieurs enfants ? {formatAmount(supplementaire)} FCFA pour chaque enfant supplémentaire de la même famille
+        (20 % de réduction)
       </p>
-      <div className="mt-6 flex items-end gap-1 sm:gap-1.5" role="img" aria-label={`Grille de prix par mois, de ${formatAmount(etapes[0]?.prix ?? 0)} à ${formatAmount(PLANCHER_AFFICHE)} FCFA`}>
-        {etapes.map((etape) => {
-          const actif = etape.tranche === trancheActuelle
-          const extremite = etape.tranche === etapes[0].tranche || etape.tranche === 0
-          const hauteurPx = Math.round(18 + (etape.prix / plan.price) * 74)
-          return (
-            <div key={etape.tranche} className="relative flex flex-1 flex-col items-center">
-              {actif && (
-                <span className="absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gold px-2 py-0.5 font-display text-xs font-semibold tracking-wide text-gold-foreground shadow-sm">
-                  Toi
-                </span>
-              )}
-              <div
-                className={cn("w-full rounded-t-[3px] transition-colors", actif ? "bg-gold" : "bg-primary/20")}
-                style={{ height: `${hauteurPx}px` }}
-              />
-              <span className={cn("mt-1.5 text-xs tabular-nums text-muted-foreground", !extremite && "opacity-0")}>
-                {formatAmount(etape.prix)}
-              </span>
-            </div>
-          )
-        })}
-      </div>
-      <div className="mt-0.5 flex justify-between text-xs text-muted-foreground">
-        <span>Rentrée</span>
-        <span>Jour de l'examen</span>
-      </div>
-      <p className="mt-2 text-center text-xs text-muted-foreground">
-        <span className="font-medium text-gold-text">Dernière ligne droite</span> : {formatAmount(PLANCHER_AFFICHE)} FCFA
-        garantis, même à la veille de l'examen.
-      </p>
+      <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm">
+        {[1, 2, 3, 4].map((n) => (
+          <div key={n} className="contents">
+            <dt className="text-muted-foreground">{n === 1 ? "1 enfant" : `${n} enfants`}</dt>
+            <dd className="text-right font-medium tabular-nums">{formatAmount(total(n))} FCFA</dd>
+          </div>
+        ))}
+      </dl>
     </div>
   )
 }
@@ -292,9 +244,9 @@ export function PricingPage() {
   const [cursusManquant, setCursusManquant] = useState(false)
 
   // Un élève qui a déjà déclaré ce qu'il prépare (voir User.cursus_prepare) n'a pas à
-  // le redire ici : sans cette préselection, il voit la fourchette "4 000-20 000 FCFA"
-  // alors qu'on connaît son prix exact et le nombre de jours qui le justifie. Il reste
-  // libre d'en choisir un autre - le sélecteur n'est pas verrouillé, et son choix
+  // le redire ici : sans cette préselection, il ne voit pas le nombre de jours avant son
+  // examen. Le prix, lui, est le même pour tous les cursus.
+  // Il reste libre d'en choisir un autre - le sélecteur n'est pas verrouillé, et son choix
   // manuel gagne (la condition `!selectedCursus` ci-dessous ne le réécrit jamais).
   useEffect(() => {
     if (!user?.cursus_prepare || selectedCursus) return
@@ -321,21 +273,15 @@ export function PricingPage() {
       String(p.cursus.id) === selectedCursus,
   )
 
-  // Plafond réel de la grille Jusqu'à l'Examen, lu sur les plans chargés plutôt que
-  // recopié en dur (comme PLANCHER_AFFICHE) : contrairement au plancher, qui est une
-  // constante Python partagée par tous les cursus (voir PLANCHER_JUSQUA_EXAMEN côté
-  // backend), le plafond est le champ `price` de chaque Plan, seedé à 12 000 FCFA par
-  // la migration 0009, relevé à 15 000 par la 0014 puis 20 000 par la 0015, mais modifiable cursus par cursus depuis
-  // l'admin - un futur écart entre cursus resterait donc correct ici. Sert à afficher
-  // une fourchette avant le choix du cursus plutôt qu'un plancher nu (voir son usage
-  // plus bas) : montrer "dès 3 000 FCFA" seul, puis révéler 11 000 FCFA après le choix
-  // du cursus, ressemble à un prix d'appel - la fourchette annonce l'écart d'emblée.
-  const plafondJusquaExamen = useMemo(() => {
-    const prix = allPlans
-      .filter((p) => p.product_type === "ABONNEMENT" && p.duration_mode === "JUSQUA_EXAMEN")
-      .map((p) => p.price)
-    return prix.length > 0 ? Math.max(...prix) : null
-  }, [allPlans])
+  // Plan servant à afficher le tarif de référence : celui du cursus choisi, sinon n'importe
+  // quel plan Jusqu'à l'Examen - depuis le tarif unique du 2026-10-02 (migration
+  // subscriptions/0018), le prix est le même pour tous les cursus.
+  const planTarif = useMemo(
+    () =>
+      jusquaExamen ??
+      allPlans.find((p) => p.product_type === "ABONNEMENT" && p.duration_mode === "JUSQUA_EXAMEN"),
+    [jusquaExamen, allPlans],
+  )
 
   const cursusEleve = useMemo(() => cursusVendables(allPlans, "ABONNEMENT"), [allPlans])
 
@@ -387,10 +333,10 @@ export function PricingPage() {
               mergé, donc sans effet sur la version publiée, mais présent dans l'arbre de
               travail. Écarté au profit de la cohérence de ton déjà en place ailleurs. */}
           <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
-            Plus tôt tu t'abonnes, <span className="text-primary">plus tu économises</span>.
+            Un seul tarif, <span className="text-primary">jusqu'à ton examen</span>.
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Un abonnement valable jusqu'à ton examen, dont le prix baisse chaque mois qui passe.
+            15 000 FCFA par enfant, puis 12 000 FCFA pour chaque enfant supplémentaire de la même famille.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2">
@@ -424,7 +370,7 @@ export function PricingPage() {
             précédent laissait la carte visiblement plus étroite que le bandeau qu'elle
             suit, ce qui se lisait comme un décalage plutôt que comme une hiérarchie -
             et sa colonne de droite, la plus dense (prix, encart exclusif, histogramme
-            de dégressivité), s'en trouvait comprimée. */}
+            du tarif famille), s'en trouvait comprimée. */}
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
             <div className="grid grid-cols-1 sm:grid-cols-2">
@@ -525,58 +471,33 @@ export function PricingPage() {
                   <>
                     <p className="font-display font-semibold">Jusqu'à l'Examen</p>
                     <p className="text-sm text-muted-foreground">Toute l'année scolaire, jusqu'au jour de l'examen</p>
-                    {/* Le prix reste visible cursus ou non (voir jusquaExamen) - avant, la
-                        colonne cachait tout chiffre tant que le cursus n'était pas choisi
-                        ("Choisis ton cursus pour voir le prix exact"), alors que c'est
-                        justement ce qu'on vient chercher sur une page Tarifs. Une fourchette
-                        complète (plancher-plafond, voir plafondJusquaExamen) plutôt qu'un
-                        "Dès 2 000 FCFA" isolé, essayé puis abandonné : un plancher nu se lit
-                        comme LE prix, et le révéler beaucoup plus haut une fois le cursus
-                        choisi ressemble à un prix d'appel - la fourchette annonce l'écart
-                        avant même le clic. Seuls l'échéancier et le prix exact dépendent du
-                        cursus.
-                        Le prix passe AVANT le callout "Exclusif Edukora" (inversé le
-                        2026-08-30) : sur une page Tarifs, c'est la première chose qu'on
-                        scanne - le callout vient ensuite justifier ce chiffre plutôt que
-                        retarder sa lecture. */}
+                    {/* Tarif unique (2026-10-02) : le même prix quel que soit le cursus et
+                        le moment de l'année, donc affiché d'emblée, avant même le choix du
+                        cursus - `jusquaExamen` sert surtout à la durée et à la date
+                        d'examen. Le prix passe AVANT le callout "Exclusif Edukora" : sur
+                        une page Tarifs, c'est la première chose qu'on scanne. */}
                     <div className="mt-4 flex flex-col gap-4">
-                      {jusquaExamen ? (
-                        <div>
-                          <p className="font-display text-3xl font-semibold text-primary">
-                            {formatAmount(jusquaExamen.effective_price)}
-                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                          </p>
-                          {/* Le nombre de jours, pas seulement la date : c'est lui qui
-                              rend le prix lisible. "61 FCFA/jour" isolé ne dit rien tant
-                              qu'on ne sait pas sur combien de jours il court, et c'est
-                              exactement la durée qu'on facture (effective_duration_days,
-                              calculée depuis la prochaine ExamSession). */}
-                          <p className="mt-0.5 text-xs text-muted-foreground">
-                            ≈ {formatAmount(Math.round(jusquaExamen.effective_price / jusquaExamen.effective_duration_days))} FCFA/jour
-                            {" - "}
-                            {jusquaExamen.effective_duration_days} jours avant ton{" "}
-                            {jusquaExamen.cursus.examen_display}, qui commence le{" "}
-                            {formatDateDansNJours(jusquaExamen.effective_duration_days)}
-                          </p>
-                        </div>
-                      ) : (
-                        <div>
-                          <p className="font-display text-3xl font-semibold text-primary">
-                            {formatAmount(PLANCHER_AFFICHE)}
-                            <span className="mx-1.5 text-lg font-normal text-muted-foreground">-</span>
-                            {formatAmount(plafondJusquaExamen ?? PLANCHER_AFFICHE)}
-                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                          </p>
-                          <p className="mt-0.5 text-xs text-muted-foreground">
-                            Selon le temps qu'il te reste avant ton examen - {formatAmount(PLANCHER_AFFICHE)} FCFA le
-                            dernier mois.
-                          </p>
-                        </div>
-                      )}
+                      <div>
+                        <p className="font-display text-3xl font-semibold text-primary">
+                          {formatAmount(planTarif?.price ?? 0)}
+                          <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                        </p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          par enfant, jusqu'à l'examen
+                          {jusquaExamen && (
+                            <>
+                              {" - "}
+                              {jusquaExamen.effective_duration_days} jours avant ton{" "}
+                              {jusquaExamen.cursus.examen_display}, qui commence le{" "}
+                              {formatDateDansNJours(jusquaExamen.effective_duration_days)}
+                            </>
+                          )}
+                        </p>
+                      </div>
                       <CalloutExclusifsJusquaExamen />
+                      {planTarif && <TarifFamille plan={planTarif} />}
                       {jusquaExamen ? (
                         <>
-                          <Echeancier plan={jusquaExamen} />
                           <Button onClick={choisirFormule} size="lg" className="w-full">
                             S'abonner
                           </Button>
@@ -668,10 +589,10 @@ export function PricingPage() {
               <Lock className="size-4" />
             </span>
             <div>
-              <p className="font-medium">Le prix payé aujourd'hui reste-t-il garanti jusqu'à mon examen ?</p>
+              <p className="font-medium">Le tarif change-t-il selon la date d'achat ?</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                Oui. Le tarif est figé le jour de l'achat et couvre l'accès jusqu'à ton examen, même si le prix
-                affiché baisse ensuite pour ceux qui achètent plus tard.
+                Non. Le tarif est de 15 000 FCFA par enfant, quel que soit le moment où tu t'abonnes, et couvre
+                l'accès jusqu'à ton examen. Pour chaque enfant supplémentaire de la même famille, c'est 12 000 FCFA.
               </p>
             </div>
           </li>

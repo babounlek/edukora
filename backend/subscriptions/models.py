@@ -10,36 +10,13 @@ class DureeMode(models.TextChoices):
     JUSQUA_EXAMEN = "JUSQUA_EXAMEN", "Jusqu'à l'examen"
 
 
-# Grille de Plan.effective_price pour Jusqu'à l'Examen : un palier de
-# INCREMENT_PAR_TRANCHE FCFA par tranche entamée de JOURS_PAR_TRANCHE jours restants,
-# du plancher PLANCHER_JUSQUA_EXAMEN jusqu'au plafond `price` du Plan. Décision
-# utilisateur du 2026-08-19 - reprend telle quelle la grille "Septembre 12 000 F ...
-# Juin 3 000 F" (paliers mensuels explicites), recalculée en tranches de jours
-# glissantes plutôt qu'en mois calendaires pour rester exacte quel que soit le mois
-# réel de la session (BEPC/Probatoire/BAC n'ont pas tous la même date, ni d'un pays à
-# l'autre - voir _calculer_duree_jusqua_examen). Remplace l'ancienne règle continue
-# ("jamais plus cher au jour que Mensuel"), elle-même un remplacement d'un filet de
-# seuils choisis à la main.
-#
-# Plancher et plafond une première fois relevés le 2026-09-05 (2 000 → 3 000,
-# 12 000 → 15 000, voir migration 0014) : décision utilisateur, la grille du 30/08
-# sous-évaluait les deux bornes. Le plancher retrouvait son niveau d'avant le 30/08 (la
-# raison de l'avoir baissé - ne jamais dépasser le prix de l'ancien Mensuel à 2 000 F -
-# ne tenait plus depuis que Mensuel est retiré de la vente par la même migration). Le
-# plafond retrouvait le niveau de l'ancien palier "Max" (365j), qui existait avant la
-# fusion à 2 paliers du 19/08.
-#
-# Relevés une seconde fois le même jour (3 000 → 4 000, 15 000 → 20 000, voir migration
-# 0015) : décision utilisateur, toujours pré-lancement (aucun utilisateur payant à ce
-# stade, donc aucune donnée de conversion à arbitrer - le bon moment pour se tromper).
-# INCREMENT_PAR_TRANCHE relevé à 2 000 en même temps (1 000 → 1 500 → 2 000) - même
-# ratio que la grille précédente (plafond = 5x le plancher, incrément = 0,5x le
-# plancher), donc une hausse uniforme de 33 % plutôt qu'un nouveau design : le plafond
-# reste atteint à 8 tranches (240 jours), toujours dans le calendrier scolaire réel
-# (rentrée en septembre, examens en juin, ~280-300 jours).
-JOURS_PAR_TRANCHE = 30
-INCREMENT_PAR_TRANCHE = 2000
-PLANCHER_JUSQUA_EXAMEN = 4000
+# Tarification unique Jusqu'à l'Examen (décision utilisateur du 2026-10-02) : `price` du
+# Plan (15 000 F) par enfant, quel que soit le moment de l'année - remplace la grille
+# dégressive par tranches de 30 jours (plancher/plafond/incrément, migrations 0014/0015).
+# Un enfant supplémentaire de la même famille (même compte payeur) bénéficie d'une
+# remise FIXE de 20 % sur ce tarif de référence (12 000 F), jamais cumulative : le 2e,
+# le 3e, le 4e enfant paient tous 12 000 F.
+REMISE_ENFANT_SUPPLEMENTAIRE_PCT = 20
 
 
 class ProductType(models.TextChoices):
@@ -144,23 +121,46 @@ class Plan(models.Model):
         fin = compte_a_rebours["date_fin"] or compte_a_rebours["date_examen"]
         return max((fin - timezone.now().date()).days, 1)
 
-    def effective_price(self):
-        """
-        Prix réel à facturer/afficher. Pour JUSQUA_EXAMEN, `price` sert de plafond
-        (payé par qui achète loin de l'examen, à partir de 9 tranches entamées) : le
-        prix descend par palier de INCREMENT_PAR_TRANCHE FCFA à chaque tranche de
-        JOURS_PAR_TRANCHE jours entamée, jusqu'à PLANCHER_JUSQUA_EXAMEN qui protège
-        un ticket minimum même acheté la veille de l'examen. Toujours achetable, à
-        n'importe quel moment de l'année scolaire (l'ancien Plan.est_achetable/
-        FENETRE_URGENCE_JOURS a été retiré) : le plafond fait déjà le travail
-        qu'assurait cette fenêtre d'urgence. Voir effective_duration_days pour le
-        même principe appliqué à la durée.
-        """
+    def prix_enfant_supplementaire(self):
+        """Tarif d'un enfant supplémentaire de la même famille : le tarif de référence
+        moins la remise fixe (15 000 F -> 12 000 F). Identique à `price` hors
+        JUSQUA_EXAMEN, la remise famille ne s'appliquant qu'à cette formule."""
         if self.duration_mode != DureeMode.JUSQUA_EXAMEN:
             return self.price
-        jours = self.effective_duration_days()
-        tranche = jours // JOURS_PAR_TRANCHE
-        return min(self.price, PLANCHER_JUSQUA_EXAMEN + tranche * INCREMENT_PAR_TRANCHE)
+        return self.price * (100 - REMISE_ENFANT_SUPPLEMENTAIRE_PCT) // 100
+
+    def effective_price(self, user=None, profil=None):
+        """
+        Prix réel à facturer/afficher pour `profil` (l'enfant) du compte `user`. Pour
+        JUSQUA_EXAMEN : `price` pour le premier enfant de la famille,
+        `prix_enfant_supplementaire()` si un AUTRE enfant du même compte a déjà un
+        accès Jusqu'à l'Examen en cours (voir `est_enfant_supplementaire`). Sans `user`
+        (affichage du catalogue) : le tarif de référence.
+        """
+        if self.duration_mode == DureeMode.JUSQUA_EXAMEN and est_enfant_supplementaire(user, profil):
+            return self.prix_enfant_supplementaire()
+        return self.price
+
+
+def est_enfant_supplementaire(user, profil=None):
+    """
+    Vrai si un autre enfant du compte `user` (la famille) a déjà un accès Jusqu'à
+    l'Examen non expiré. `profil` retombe sur `user.profils.first()` comme partout
+    (voir SubscriptionManager.activate_or_extend) ; renouveler l'accès d'un enfant
+    déjà payé reste au tarif de référence, jamais remisé.
+    """
+    if user is None or not getattr(user, "pk", None):
+        return False
+    profil = profil or user.profils.first()
+    autres = Subscription.objects.filter(
+        user=user, duration_mode=DureeMode.JUSQUA_EXAMEN, expires_at__gt=timezone.now(),
+    )
+    if profil is not None:
+        # Renouveler l'accès d'un enfant déjà actif n'est jamais un "enfant supplémentaire".
+        if autres.filter(profil=profil).exists():
+            return False
+        autres = autres.exclude(profil=profil)
+    return autres.exists()
 
 
 class SubscriptionManager(models.Manager):

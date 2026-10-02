@@ -242,7 +242,7 @@ export function EpreuveInediteDetailPage() {
                     formule la moins chère qui débloque les inédites n'est plus
                     forcément l'abonnement annuel. */}
                 {minPrice !== null && (
-                  <span className="text-sm text-muted-foreground">à partir de {formatAmount(minPrice)} FCFA</span>
+                  <span className="text-sm text-muted-foreground">{formatAmount(minPrice)} FCFA par enfant</span>
                 )}
               </div>
               <ParrainageHint />

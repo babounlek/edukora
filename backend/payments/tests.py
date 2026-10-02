@@ -331,10 +331,9 @@ class PaymentFlowAPITests(TestCase):
 
     @patch("payments.campay_client.init_collect")
     def test_initiate_payment_charges_the_effective_price_for_a_jusqua_examen_plan(self, mock_init):
-        # Le montant encaissé doit suivre Plan.effective_price(), jamais le plafond
-        # `price` brut - sinon un candidat proche de son examen se voit facturer le
-        # tarif plein plutôt que le prix réellement affiché (voir mission tarification
-        # 2026-08-19).
+        # Tarif unique (2026-10-02) : le montant encaissé est Plan.effective_price() -
+        # 15 000 F pour le premier enfant, 12 000 F pour un enfant supplémentaire de la
+        # même famille, quelle que soit la date de l'examen.
         mock_init.return_value = {"reference": "campay-ref-jusqua", "status": "PENDING"}
         # Le référentiel seedé (migration catalog 0056) porte désormais une vraie
         # ExamSession pour ce cursus - à effacer pour tester un état propre.
@@ -344,7 +343,7 @@ class PaymentFlowAPITests(TestCase):
             date_debut=(timezone.now() + timedelta(days=5)).date(),
         )
         plan = Plan.objects.create(
-            name="Jusqu'à l'Examen", cursus=self.cursus, price=12000,
+            name="Jusqu'à l'Examen", cursus=self.cursus, price=15000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
         )
 
@@ -354,7 +353,29 @@ class PaymentFlowAPITests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         transaction = Transaction.objects.get(pk=response.data["transaction_id"])
-        self.assertEqual(transaction.amount, 4000)
+        self.assertEqual(transaction.amount, 15000)
+
+    @patch("payments.campay_client.init_collect")
+    def test_initiate_payment_charges_12000_for_an_additional_child(self, mock_init):
+        mock_init.return_value = {"reference": "campay-ref-fratrie", "status": "PENDING"}
+        plan = Plan.objects.create(
+            name="Jusqu'à l'Examen", cursus=self.cursus, price=15000,
+            duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
+        )
+        premier = self.user.profils.first()
+        Subscription.objects.create(
+            user=self.user, profil=premier, cursus=self.cursus,
+            expires_at=timezone.now() + timedelta(days=200), duration_mode=DureeMode.JUSQUA_EXAMEN,
+        )
+        second = Profil.objects.create(compte=self.user, prenom="Second", ordre=1)
+
+        response = self.client.post(
+            "/payments/initiate/",
+            {"plan_id": plan.id, "phone_number": self.user.phone_number, "profil_id": second.id},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Transaction.objects.get(pk=response.data["transaction_id"]).amount, 12000)
 
     @patch("payments.campay_client.init_collect")
     def test_initiate_payment_applies_available_credit_as_a_discount(self, mock_init):
@@ -664,17 +685,27 @@ class ManualPaymentDeclareAPITests(TestCase):
             date_debut=(timezone.now() + timedelta(days=5)).date(),
         )
         plan = Plan.objects.create(
-            name="Jusqu'à l'Examen", cursus=self.cursus, price=12000,
+            name="Jusqu'à l'Examen", cursus=self.cursus, price=15000,
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
         )
 
         response = self.client.post(
-            "/payments/manual/declare/", self._payload(plan=plan.id, amount_declared=4000),
+            "/payments/manual/declare/", self._payload(plan=plan.id, amount_declared=15000),
         )
 
         self.assertEqual(response.status_code, 201)
         payment = ManualPayment.objects.get(pk=response.data["id"])
-        self.assertEqual(payment.amount_expected, 4000)
+        self.assertEqual(payment.amount_expected, 15000)
+
+    def test_amount_declared_defaults_to_the_expected_price_when_omitted(self):
+        payload = self._payload()
+        payload.pop("amount_declared")
+
+        response = self.client.post("/payments/manual/declare/", payload)
+
+        self.assertEqual(response.status_code, 201)
+        payment = ManualPayment.objects.get(pk=response.data["id"])
+        self.assertEqual(payment.amount_declared, payment.amount_expected)
 
     def test_rejects_amount_declared_below_plan_price(self):
         # Constaté en production : un montant déclaré inférieur au prix de l'offre ne

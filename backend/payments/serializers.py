@@ -70,7 +70,9 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
 
     plan = serializers.PrimaryKeyRelatedField(queryset=Plan.objects.filter(is_active=True))
     operator = serializers.ChoiceField(choices=MobileMoneyOperator.choices)
-    amount_declared = serializers.IntegerField(min_value=1)
+    # Optionnel : le montant est connu (prix de l'offre), l'élève n'a rien à saisir - absent, il
+    # vaut amount_expected. Toujours accepté s'il est fourni (anciens clients).
+    amount_declared = serializers.IntegerField(min_value=1, required=False)
     payer_phone_number = PayerPhoneField()
     transaction_reference = serializers.CharField(max_length=100, allow_blank=False, trim_whitespace=True)
     paid_at = serializers.DateTimeField(required=False, allow_null=True)
@@ -88,7 +90,15 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
                 "operator": "Ce moyen de paiement n'est pas disponible actuellement.",
             })
         plan = attrs["plan"]
-        prix_attendu = plan.effective_price()
+        request = self.context["request"]
+        profil_id = attrs.pop("profil_id", None)
+        if profil_id:
+            profil = request.user.profils.filter(pk=profil_id).first()
+            if profil is None:
+                raise serializers.ValidationError({"profil_id": "Profil introuvable."})
+            attrs["profil"] = profil
+        prix_attendu = plan.effective_price(user=request.user, profil=attrs.get("profil"))
+        attrs.setdefault("amount_declared", prix_attendu)
         if attrs["amount_declared"] < prix_attendu:
             raise serializers.ValidationError({
                 "amount_declared": (
@@ -96,13 +106,6 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
                     f"l'offre sélectionnée ({prix_attendu} FCFA)."
                 ),
             })
-        profil_id = attrs.pop("profil_id", None)
-        if profil_id:
-            request = self.context["request"]
-            profil = request.user.profils.filter(pk=profil_id).first()
-            if profil is None:
-                raise serializers.ValidationError({"profil_id": "Profil introuvable."})
-            attrs["profil"] = profil
         return attrs
 
     def create(self, validated_data):

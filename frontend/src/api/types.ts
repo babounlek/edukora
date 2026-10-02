@@ -559,6 +559,8 @@ export interface Plan {
   duration_days: number
   effective_duration_days: number
   effective_price: number
+  /** Tarif d'un enfant supplémentaire de la même famille (remise fixe de 20 %). */
+  prix_enfant_supplementaire: number
   inclut_inedit: boolean
 }
 

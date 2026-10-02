@@ -363,9 +363,15 @@ export function getPlatformStats() {
   return apiRequest<PlatformStats>("/catalog/stats/", { auth: false })
 }
 
-export function listPlans(cursusId?: number) {
-  const query = cursusId ? `?cursus=${cursusId}` : ""
-  return apiRequest<Plan[]>(`/subscriptions/plans/${query}`, { auth: false })
+/** `authentifie` : à vrai (page d'abonnement), le prix renvoyé tient compte de la famille
+ * du compte connecté - 12 000 FCFA pour un enfant supplémentaire (`profilId`), voir
+ * Plan.effective_price côté backend. Sinon : le tarif de référence. */
+export function listPlans(cursusId?: number, profilId?: number, authentifie = false) {
+  const params = new URLSearchParams()
+  if (cursusId) params.set("cursus", String(cursusId))
+  if (profilId) params.set("profil", String(profilId))
+  const query = params.toString() ? `?${params.toString()}` : ""
+  return apiRequest<Plan[]>(`/subscriptions/plans/${query}`, { auth: authentifie ? "optional" : false })
 }
 
 interface InitiatePaymentParams {
@@ -394,7 +400,7 @@ export function listManualPaymentMethods() {
 export interface DeclareManualPaymentParams {
   planId: number
   operator: string
-  amountDeclared: number
+  amountDeclared?: number
   payerPhoneNumber: string
   transactionReference: string
   paidAt?: string
@@ -407,7 +413,7 @@ export function declareManualPayment(params: DeclareManualPaymentParams) {
   const formData = new FormData()
   formData.append("plan", String(params.planId))
   formData.append("operator", params.operator)
-  formData.append("amount_declared", String(params.amountDeclared))
+  if (params.amountDeclared) formData.append("amount_declared", String(params.amountDeclared))
   formData.append("payer_phone_number", params.payerPhoneNumber)
   formData.append("transaction_reference", params.transactionReference)
   if (params.paidAt) formData.append("paid_at", params.paidAt)

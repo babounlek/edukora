@@ -62,7 +62,7 @@ def initiate_payment(request):
     if erreur is not None:
         return erreur
 
-    prix = plan.effective_price()
+    prix = plan.effective_price(user=request.user, profil=profil)
     # Remise automatique par crédit parrainage disponible (voir
     # subscriptions.models.solde_credit_parrainage) - mécanisme gelé depuis le
     # 2026-09-28 (le parrainage est redevenu un simple partage de lien, sans
