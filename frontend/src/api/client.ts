@@ -32,15 +32,31 @@ export function clearAccessToken() {
 // informer sont deux préoccupations distinctes de "faire une requête API".
 export const SESSION_EXPIRED_EVENT = "edukamer:session-expired"
 
+// Premier message lisible d'une réponse d'erreur : `error` (nos vues), `detail` (DRF),
+// ou la première erreur de champ d'un ValidationError DRF ({champ: ["message"]}) -
+// sans cela, un refus de validation (ex. « transaction déjà déclarée ») s'affichait
+// seulement comme « Erreur API (400) », sans dire quoi corriger.
+function extraireMessage(body: unknown): string | null {
+  if (typeof body === "string") return body || null
+  if (Array.isArray(body)) return body.length > 0 ? extraireMessage(body[0]) : null
+  if (typeof body !== "object" || body === null) return null
+  const record = body as Record<string, unknown>
+  for (const cle of ["error", "detail"]) {
+    if (cle in record) return extraireMessage(record[cle]) ?? String(record[cle])
+  }
+  for (const valeur of Object.values(record)) {
+    const message = extraireMessage(valeur)
+    if (message) return message
+  }
+  return null
+}
+
 class ApiError extends Error {
   status: number
   body: unknown
 
   constructor(status: number, body: unknown) {
-    const message =
-      typeof body === "object" && body !== null && "error" in body
-        ? String((body as { error: unknown }).error)
-        : `Erreur API (${status})`
+    const message = extraireMessage(body) ?? `Erreur API (${status})`
     super(message)
     this.status = status
     this.body = body
