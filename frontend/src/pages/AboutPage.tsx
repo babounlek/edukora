@@ -1,58 +1,91 @@
 import { Link } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query"
 import {
   ArrowRight,
   BookOpen,
+  CalendarCheck,
   Check,
+  FileText,
   Heart,
   Landmark,
+  ListChecks,
   Mail,
   MessageCircle,
   ShieldCheck,
   Smartphone,
+  Sparkles,
+  TrendingUp,
+  Users,
 } from "lucide-react"
 
+import { getPlatformStats, listCursus, listSubjects } from "@/api/endpoints"
 import { useSeo } from "@/lib/seo"
 import { SITE_DOMAIN, SITE_NAME } from "@/lib/site"
 import { useCountry } from "@/context/CountryContext"
-import { epreuvesListPath } from "@/lib/countryPath"
+import { catalogueHomePath, epreuvesListPath } from "@/lib/countryPath"
+import { formatAmount } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 const CONTACT_EMAIL = `contact@${SITE_DOMAIN}`
 
-const PILLARS = [
+// Du plus tôt au plus tard dans la scolarité, pas l'ordre alphabétique de l'API.
+const ORDRE_EXAMENS = ["BEPC", "PROBATOIRE", "BAC"]
+
+const OUTILS = [
   {
-    label: "Épreuves",
-    title: "Sujets officiels",
-    body: "Les annales du BEPC, du Probatoire et du BAC, toujours consultables gratuitement. Le corrigé détaillé s'ouvre avec un abonnement.",
+    icon: CalendarCheck,
+    label: "Séance du jour",
+    title: "Chaque jour, on te dit quoi réviser",
+    body: "Un thème qui tombe vraiment à ton examen : le cours pour la méthode, un exercice réellement posé, un quiz pour vérifier. Environ 25 minutes.",
   },
   {
-    label: "Cours",
-    title: "Une notion à la fois",
-    body: "La règle, la méthode, les erreurs classiques à éviter : pas un résumé vague recopié d'un manuel.",
+    icon: Sparkles,
+    label: "Mémoire",
+    title: "On retient ce que tu rates",
+    body: "Un thème raté revient demain, puis dans trois jours, puis dans une semaine, jusqu'à ce qu'il soit acquis. Tu n'as rien à noter ni à planifier.",
   },
   {
-    label: "Quiz",
-    title: "Auto-évaluation ciblée",
-    body: "Des questions par compétence pour savoir précisément ce qu'il te reste à travailler avant l'examen.",
+    icon: TrendingUp,
+    label: "Thèmes qui reviennent",
+    title: "Ce qui tombe vraiment",
+    body: "Le classement des notions les plus posées à ton examen, matière par matière, calculé sur les épreuves officielles. Un thème traité trois fois dans un même sujet ne compte qu'une fois.",
+  },
+  {
+    icon: FileText,
+    label: "Épreuves corrigées",
+    title: "Les annales officielles",
+    body: "Les sujets du BEPC, du Probatoire et du BAC sont toujours consultables gratuitement. Le corrigé détaillé, pas à pas, s'ouvre avec l'abonnement.",
+  },
+  {
+    icon: BookOpen,
+    label: "Cours et quiz",
+    title: "La méthode, puis le test",
+    body: "Un cours par méthode : la règle, la façon de faire, les pièges classiques. Puis un quiz d'auto-évaluation par compétence pour voir ce qui reste fragile.",
+  },
+  {
+    icon: ListChecks,
+    label: "Épreuves inédites",
+    title: "S'entraîner comme le jour J",
+    body: "Des sujets originaux, jamais tirés des annales, au même niveau et au même barème que l'examen, à composer chronométrés.",
   },
 ]
 
 const METHOD_STEPS = [
   {
     title: "Sélection",
-    body: "Uniquement des sujets réellement tombés à l'examen, jamais des exercices inventés pour l'occasion.",
+    body: "Les corrigés portent uniquement sur des sujets réellement tombés à l'examen. Les épreuves inédites sont, elles, toujours signalées comme telles.",
   },
   {
     title: "Rédaction experte",
     body: "Un corrigé écrit à un niveau supérieur à celui d'un répétiteur classique : le raisonnement complet, pas seulement la réponse finale.",
   },
   {
-    title: "Alignement au programme officiel",
-    body: "Chaque cours est vérifié par rapport au référentiel officiel du pays, matière par matière, série par série.",
+    title: "Classement par thème",
+    body: "Chaque question est rattachée aux notions qu'elle mobilise. C'est ce qui permet de savoir ce qui tombe vraiment, et de te proposer la bonne séance.",
   },
   {
-    title: "Vérification continue",
-    body: "Chaque contenu publié est audité ; une erreur signalée est corrigée, pas simplement notée pour plus tard.",
+    title: "Contrôle avant publication",
+    body: "La structure, les thèmes et l'affichage des formules sont vérifiés avant qu'un contenu soit mis en ligne. Une erreur signalée est corrigée, pas simplement notée pour plus tard.",
   },
 ]
 
@@ -62,19 +95,19 @@ const AUDIENCES = [
     title: "Élève",
     points: [
       <><strong className="text-foreground">Les sujets sont toujours gratuits</strong>, avec ou sans compte.</>,
+      "Une séance courte chaque jour qui te dit quoi réviser, au lieu de te laisser chercher seul·e parmi des milliers de pages.",
       "Le corrigé explique la méthode et les pièges, pas juste « la bonne réponse ».",
-      "Un quiz d'auto-évaluation par compétence pour cibler ce qui te fait vraiment perdre des points.",
       "Accessible depuis un téléphone simple, aucune carte bancaire à saisir.",
     ],
   },
   {
-    icon: ShieldCheck,
+    icon: Users,
     title: "Parent",
     points: [
-      <><strong className="text-foreground">Aucune carte bancaire enregistrée</strong> : paiement direct par Mobile Money (Orange Money, MTN).</>,
-      "Aucune reconduction automatique : l'abonnement s'arrête à sa date, il ne se débite jamais tout seul.",
-      "Un éditeur identifié et joignable, pas un site anonyme derrière un formulaire.",
-      "Aucune donnée revendue ni utilisée à des fins publicitaires.",
+      <><strong className="text-foreground">Un seul compte pour plusieurs enfants</strong> : chacun a son profil, sa progression et son abonnement.</>,
+      "Un abonnement unique, valable jusqu'à l'examen, dont le prix payé est figé le jour de l'achat.",
+      "Paiement direct par Mobile Money (Orange Money, MTN), sans carte bancaire et sans reconduction automatique.",
+      "Un éditeur identifié et joignable, et aucune donnée revendue ni utilisée à des fins publicitaires.",
     ],
   },
   {
@@ -108,13 +141,6 @@ const COMMITMENTS = [
   },
 ]
 
-const STATS = [
-  { value: "15", label: "matières couvertes, des maths à la philosophie" },
-  { value: "6", label: "séries : A, C, D, E, SES, TI" },
-  { value: "3", label: "examens : BEPC, Probatoire, BAC" },
-  { value: "1", label: "pays actif aujourd'hui : le Cameroun. D'autres pays francophones sont en préparation." },
-]
-
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p className="mb-3 flex items-center gap-2.5 font-display text-sm italic text-primary">
@@ -133,18 +159,59 @@ function ChipReassurance({ icon, children }: { icon: React.ReactNode; children: 
   )
 }
 
+/** "A, C, D, E et TI" : liste lisible, sans dépendre d'un tableau codé en dur. */
+function listeFrancaise(items: string[]): string {
+  if (items.length <= 1) return items.join("")
+  return `${items.slice(0, -1).join(", ")} et ${items[items.length - 1]}`
+}
+
 export function AboutPage() {
   useSeo({
     title: "À propos",
-    description: `Qui est derrière ${SITE_NAME}, comment les corrigés sont produits, et pourquoi élèves, parents et établissements peuvent nous faire confiance.`,
+    description: `Qui est derrière ${SITE_NAME}, comment fonctionnent la séance du jour et les corrigés, et pourquoi élèves, parents et établissements peuvent nous faire confiance.`,
   })
-  const { country } = useCountry()
+  const { country, countries } = useCountry()
+  const countryLabel = countries.find((c) => c.code.toLowerCase() === country)?.label
+
+  // Chiffres réels, jamais codés en dur : ils ont dérivé plus d'une fois de la
+  // réalité du catalogue. Mêmes clés de cache que le pied de page et l'accueil.
+  const { data: stats } = useQuery({ queryKey: ["platform-stats"], queryFn: getPlatformStats })
+  const { data: subjects } = useQuery({
+    queryKey: ["subjects", country],
+    queryFn: ({ signal }) => listSubjects(country, signal),
+    enabled: Boolean(country),
+  })
+  const { data: cursusList } = useQuery({
+    queryKey: ["cursus", country],
+    queryFn: ({ signal }) => listCursus(country, signal),
+    enabled: Boolean(country),
+  })
+
+  const nbMatieres = subjects?.length
+  const examens = [...new Map(
+    [...(cursusList ?? [])]
+      .sort((a, b) => (ORDRE_EXAMENS.indexOf(a.examen) + 1 || 99) - (ORDRE_EXAMENS.indexOf(b.examen) + 1 || 99))
+      .map((c) => [c.examen, c.examen_display] as const),
+  ).values()]
+  const series = [...new Set((cursusList ?? []).flatMap((c) => (c.series ? [c.series.code] : [])))].sort()
+
+  const STATS = [
+    { value: stats ? formatAmount(stats.corriges_disponibles) : "-", label: "épreuves corrigées, annales officielles et épreuves inédites" },
+    { value: stats ? formatAmount(stats.cours_disponibles) : "-", label: "cours et fiches, une notion à la fois" },
+    { value: nbMatieres !== undefined ? String(nbMatieres) : "-", label: "matières couvertes, des maths à la philosophie" },
+    {
+      value: cursusList ? String(cursusList.length) : "-",
+      label: cursusList
+        ? `parcours d'examen : ${listeFrancaise(examens)}${series.length > 0 ? `, séries ${listeFrancaise(series)}` : ""}`
+        : "parcours d'examen",
+    },
+  ]
 
   return (
     <div className="animate-fade-up">
       {/* Hero - même gabarit de carte (bordure arrondie, fond pointillé, icône) que Tarifs,
           Fiches, CGU et Confidentialité : seule la mise en page à deux colonnes et la carte
-          "18/20" restent propres à cette page. */}
+          "séance du jour" restent propres à cette page. */}
       <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
         <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 sm:p-8 lg:p-12">
           <div
@@ -161,17 +228,18 @@ export function AboutPage() {
               </div>
               <Eyebrow>À propos</Eyebrow>
               <h1 className="font-display text-4xl font-semibold leading-[1.1] tracking-tight text-balance sm:text-5xl lg:text-[3.1rem]">
-                Un bon corrigé ne devrait pas dépendre du portefeuille de tes parents.
+                Réviser ce qui tombe vraiment, un peu chaque jour.
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
-                {SITE_NAME} réunit les sujets officiels du BEPC, du Probatoire et du BAC, et les corrige à un niveau
-                que peu de répétiteurs atteignent, accessible depuis un simple téléphone, payable en Mobile Money,
-                sans carte bancaire ni engagement caché.
+                {SITE_NAME} réunit les sujets officiels du BEPC, du Probatoire et du BAC, les corrige à un niveau que
+                peu de répétiteurs atteignent, et en tire chaque jour une séance courte sur les thèmes les plus posés à
+                ton examen. Accessible depuis un simple téléphone, payable en Mobile Money, sans carte bancaire ni
+                engagement caché.
               </p>
 
               <div className="mt-5 flex flex-wrap gap-2">
                 <ChipReassurance icon={<BookOpen className="size-3.5 text-primary" />}>
-                  15 matières couvertes
+                  {nbMatieres !== undefined ? `${nbMatieres} matières couvertes` : "Toutes les matières"}
                 </ChipReassurance>
                 <ChipReassurance icon={<ShieldCheck className="size-3.5 text-success" />}>
                   Sujets toujours gratuits
@@ -183,8 +251,8 @@ export function AboutPage() {
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild size="lg">
-                  <Link to={epreuvesListPath(country)}>
-                    Découvrir le catalogue
+                  <Link to={catalogueHomePath(country)}>
+                    Commencer
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>
@@ -194,21 +262,39 @@ export function AboutPage() {
               </div>
             </div>
 
+            {/* La séance du jour en un coup d'œil : la forme, sans données inventées. */}
             <div className="relative mx-auto w-full max-w-[19rem] lg:mx-0 lg:justify-self-end">
               <span className="absolute -top-3 right-7 z-10 rotate-2 rounded-md bg-gold px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-gold-foreground shadow-md">
-                Corrigé {SITE_NAME}
+                Séance du jour
               </span>
-              <div className="-rotate-2 rounded-lg border border-border bg-card p-7 shadow-xl transition-transform duration-300 hover:rotate-0">
-                <div className="relative inline-flex items-center">
-                  <span className="absolute -inset-x-3 -inset-y-2 -rotate-3 rounded-[50%] border-[2.5px] border-destructive/60" />
-                  <span className="relative flex items-center gap-2 font-display text-4xl italic text-destructive">
-                    18/20
-                    <Check className="size-6 shrink-0" strokeWidth={3} />
-                  </span>
-                </div>
+              <div className="-rotate-2 rounded-lg border border-border bg-card p-6 shadow-xl transition-transform duration-300 hover:rotate-0">
+                <p className="flex items-baseline justify-between text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Ton parcours
+                  <span className="font-sans normal-case tracking-normal tabular-nums">environ 25 min</span>
+                </p>
+                <ol className="mt-4 flex flex-col gap-3">
+                  {[
+                    { icon: BookOpen, titre: "Le cours", detail: "la méthode, sans détour" },
+                    { icon: FileText, titre: "Un exercice", detail: "réellement posé à l'examen" },
+                    { icon: ListChecks, titre: "Un quiz", detail: "pour vérifier que c'est acquis" },
+                  ].map(({ icon: Icon, titre, detail }, index) => (
+                    <li key={titre} className="flex items-center gap-3">
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground shadow-sm shadow-primary/30">
+                        {index + 1}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="flex items-center gap-1.5 font-display text-sm font-semibold">
+                          <Icon className="size-3.5 text-primary" aria-hidden="true" />
+                          {titre}
+                        </span>
+                        <span className="block text-xs text-muted-foreground">{detail}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
                 <div className="my-4 h-px bg-gradient-to-r from-gold/0 via-gold/70 to-gold/0" />
-                <p className="font-display text-base italic leading-relaxed text-muted-foreground">
-                  « Raisonnement complet, méthode bien justifiée, aucun raccourci. »
+                <p className="font-display text-sm italic leading-relaxed text-muted-foreground">
+                  « Un thème qui tombe vraiment : on te dit dans combien des dernières épreuves. »
                 </p>
               </div>
             </div>
@@ -216,18 +302,23 @@ export function AboutPage() {
         </div>
       </section>
 
-      {/* Pillars */}
+      {/* Outils */}
       <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
         <Eyebrow>Ce que tu trouves ici</Eyebrow>
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-          Trois façons de préparer un examen sérieusement
+          Six outils, un seul objectif : ton examen
         </h2>
-        <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
-          {PILLARS.map((pillar) => (
-            <div key={pillar.label} className="bg-card p-6">
-              <span className="text-xs font-semibold uppercase tracking-wider text-primary">{pillar.label}</span>
-              <h3 className="mt-2 font-display text-base font-semibold">{pillar.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{pillar.body}</p>
+        <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {OUTILS.map((outil) => (
+            <div key={outil.label} className="bg-card p-6">
+              <div className="flex items-center gap-2.5">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <outil.icon className="size-4" aria-hidden="true" />
+                </span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-primary">{outil.label}</span>
+              </div>
+              <h3 className="mt-3 font-display text-base font-semibold">{outil.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{outil.body}</p>
             </div>
           ))}
         </div>
@@ -261,7 +352,7 @@ export function AboutPage() {
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           Ce qu'{SITE_NAME} te doit, concrètement
         </h2>
-        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
           {AUDIENCES.map((audience) => (
             <div
               key={audience.title}
@@ -321,6 +412,10 @@ export function AboutPage() {
             </div>
           ))}
         </div>
+        <p className="mt-4 text-sm text-muted-foreground">
+          {countryLabel ? `Un seul pays est actif aujourd'hui : ${countryLabel}.` : "Un seul pays est actif aujourd'hui."}{" "}
+          D'autres pays francophones sont en préparation.
+        </p>
       </section>
 
       {/* Qui sommes-nous */}
@@ -376,7 +471,7 @@ export function AboutPage() {
           </h2>
           <Button asChild size="lg" className="shrink-0 bg-gold text-gold-foreground hover:bg-gold/90">
             <Link to={epreuvesListPath(country)}>
-              Découvrir le catalogue
+              Parcourir les épreuves
               <ArrowRight className="size-4" />
             </Link>
           </Button>
