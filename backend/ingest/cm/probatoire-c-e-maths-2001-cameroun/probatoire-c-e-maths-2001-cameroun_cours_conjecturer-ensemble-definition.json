@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Fonctions numériques - généralités et lecture graphique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "ensemble de définition",
+      "lecture graphique",
+      "asymptote verticale",
+      "fonction rationnelle",
+      "conjecture"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,122 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Au Probatoire, un exercice commence souvent par une courbe et une consigne : « faire des conjectures ». Pas encore de formule, seulement un dessin. La première chose à en tirer est l'ensemble de définition : pour quelles valeurs de $x$ la fonction existe-t-elle ? Bien lue, cette information guide toute la suite, jusqu'au calcul des coefficients de la fonction ; mal lue (un minimum pris pour une asymptote, un point creux oublié), elle fausse l'exercice entier."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire les coordonnées d'un point dans un repère",
+        "Connaître la notation des intervalles et de la réunion ($\\cup$), et l'écriture $\\mathbb{R} \\setminus \\{a\\}$",
+        "Savoir ce qu'est une asymptote verticale ou horizontale",
+        "Connaître les conditions d'existence usuelles : dénominateur non nul, radicande positif ou nul"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Lire l'ensemble de définition sur l'axe des abscisses",
+      "contenu_markdown": "**Le principe.** Un réel $x$ appartient à l'ensemble de définition $D_f$ si et seulement si la droite verticale d'abscisse $x$ rencontre la courbe (en un seul point, puisque $f(x)$ est unique). Autrement dit, $D_f$ est **l'ombre de la courbe projetée sur l'axe des abscisses** : on lit $D_f$ sur l'axe horizontal, jamais sur l'axe vertical (celui-là donne l'ensemble des valeurs prises).\n\n**Ce qu'il faut repérer sur le graphique.**\n\n| Ce que l'on voit | Ce que l'on conjecture |\n|---|---|\n| Courbe tracée d'un bord à l'autre, sans coupure | $D_f = \\mathbb{R}$ (si rien n'indique une limite au tracé) |\n| Asymptote verticale $x = a$ (branches qui filent vers $\\pm\\infty$) | $a \\notin D_f$ |\n| Point creux (rond vide) à l'abscisse $a$ | $a \\notin D_f$ |\n| Courbe qui commence ou s'arrête sur un point plein d'abscisse $a$ | $a \\in D_f$, borne fermée |\n| Courbe qui s'arrête sur un point creux | borne ouverte |\n\n**Pourquoi « conjecturer ».** Un graphique ne montre qu'une fenêtre et a une précision limitée : la lecture fournit une **conjecture**, qu'on confirme ensuite par le calcul dès que l'expression de $f$ est connue. Pour une fonction rationnelle, on cherche les valeurs qui annulent le dénominateur ; pour une racine carrée, celles qui rendent le radicande négatif.",
+      "formule_principale": "x \\in D_f \\iff \\text{la verticale d'abscisse } x \\text{ coupe la courbe}",
+      "variantes": [
+        {
+          "nom": "Confirmer par le calcul",
+          "quand_utiliser": "Dès que l'expression de f est donnée ou retrouvée",
+          "contenu_markdown": "Pour $f(x) = \\dfrac{P(x)}{Q(x)}$ : $D_f = \\{x \\in \\mathbb{R} \\,/\\, Q(x) \\neq 0\\}$. Si $Q$ est un trinôme de discriminant strictement négatif, il ne s'annule jamais et $D_f = \\mathbb{R}$. Pour $f(x) = \\sqrt{u(x)}$ : $D_f = \\{x \\,/\\, u(x) \\geqslant 0\\}$. Lorsque le calcul contredit la lecture, c'est le calcul qui fait foi et l'on signale l'écart."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "enonce_markdown": "La courbe $(\\mathcal{C})$ d'une fonction rationnelle $f$ est tracée pour $x$ allant de $-5{,}5$ à $5{,}5$. Elle est continue, sans coupure ni point creux ; elle se rapproche de la droite $y = 1$ aux deux extrémités en restant au-dessous ; elle coupe l'axe des abscisses en $-1$ et $2$ et atteint un minimum de $-3$ en $x = \\frac12$. 1) Conjecturer l'ensemble de définition de $f$. 2) On établit ensuite que $f(x) = \\dfrac{x^2 - x - 2}{x^2 - x + 1}$ : confirmer la conjecture.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Balayer la courbe de gauche à droite",
+          "justification": "On cherche toute coupure, asymptote verticale ou point creux : ce sont les seuls indices d'une valeur exclue.",
+          "resultat_markdown": "Aucune coupure, aucune branche infinie verticale, aucun point creux sur $[-5{,}5\\,;\\,5{,}5]$."
+        },
+        {
+          "numero": 2,
+          "action": "Interpréter le minimum",
+          "justification": "En $x = \\frac12$ la courbe descend fortement, mais elle atteint la valeur $-3$ puis remonte : c'est un minimum, pas une asymptote (une asymptote verticale ferait partir la courbe vers l'infini).",
+          "resultat_markdown": "$\\frac12 \\in D_f$ et $f\\left(\\frac12\\right) \\approx -3$ par lecture graphique."
+        },
+        {
+          "numero": 3,
+          "action": "Interpréter les extrémités",
+          "justification": "Aux bords, la courbe se poursuit en longeant $y = 1$ : rien n'indique qu'elle s'arrête, la fenêtre seule est limitée.",
+          "resultat_markdown": "Conjecture : $D_f = \\mathbb{R}$."
+        },
+        {
+          "numero": 4,
+          "action": "Confirmer par le calcul",
+          "justification": "$f$ est rationnelle : elle est définie là où son dénominateur $x^2 - x + 1$ ne s'annule pas. On calcule son discriminant.",
+          "resultat_markdown": "$\\Delta = (-1)^2 - 4 \\times 1 \\times 1 = 1 - 4 = -3 < 0$ : le dénominateur ne s'annule jamais, donc $D_f = \\mathbb{R}$ ✔"
+        }
+      ],
+      "conclusion_markdown": "La lecture graphique donne $D_f = \\mathbb{R}$, et le discriminant négatif du dénominateur la confirme : la conjecture est démontrée."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire l'ensemble de définition sur l'axe des ordonnées et répondre $D_f = [-3\\,;\\,1[$.",
+          "pourquoi_faux": "$[-3\\,;\\,1[$ est l'ensemble des **valeurs prises** par $f$ (lu verticalement). L'ensemble de définition concerne les antécédents $x$, donc l'axe horizontal.",
+          "correction_markdown": "Projeter la courbe sur l'axe des abscisses : ici toute valeur de $x$ a un point de courbe au-dessus ou au-dessous, donc $D_f = \\mathbb{R}$."
+        },
+        {
+          "erreur_markdown": "Exclure $\\frac12$ parce que la courbe y « plonge ».",
+          "pourquoi_faux": "Une valeur n'est exclue que si la courbe n'a **aucun** point d'abscisse $\\frac12$. Ici elle passe par $\\left(\\frac12\\,;\\,-3\\right)$ : c'est un minimum.",
+          "correction_markdown": "Ne conclure à une valeur interdite que devant une asymptote verticale (branche infinie), une coupure ou un point creux."
+        },
+        {
+          "erreur_markdown": "Répondre $D_f = [-5{,}5\\,;\\,5{,}5]$ parce que le dessin s'arrête là.",
+          "pourquoi_faux": "Les bords du dessin sont ceux de la fenêtre, pas ceux de la fonction. Une courbe qui s'approche d'une asymptote horizontale continue au-delà.",
+          "correction_markdown": "Ne fermer l'ensemble de définition que si la courbe s'arrête visiblement sur un point plein ou creux à l'intérieur de la fenêtre."
+        },
+        {
+          "erreur_markdown": "Oublier un point creux et inclure son abscisse dans $D_f$.",
+          "pourquoi_faux": "Un rond vide signifie précisément que la fonction n'est pas définie en cette abscisse (ou n'y prend pas cette valeur).",
+          "correction_markdown": "Repérer tous les ronds, pleins ou vides, avant de répondre, et écrire la réunion d'intervalles correspondante."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La courbe d'une fonction $g$ présente une asymptote verticale d'équation $x = 2$ : à gauche de cette droite, une branche descend vers $-\\infty$ quand $x$ s'approche de $2$ ; à droite, une branche descend de $+\\infty$. Partout ailleurs, la courbe est tracée sans coupure jusqu'aux bords de la fenêtre. Conjecturer l'ensemble de définition de $g$.",
+          "solution_markdown": "**Lecture.** La seule valeur sans point de courbe est $x = 2$ : la verticale $x = 2$ est une asymptote, la courbe ne la rencontre jamais. Partout ailleurs, la verticale d'abscisse $x$ coupe la courbe.\n\n**Conjecture.**\n\n$$D_g = \\mathbb{R} \\setminus \\{2\\} = \\left]-\\infty\\,;\\,2\\right[ \\cup \\left]2\\,;\\,+\\infty\\right[$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La courbe d'une fonction $h$ commence au point plein $(-3\\,;\\,0)$, monte sans coupure, présente un rond vide au point $(1\\,;\\,2)$, puis continue sans coupure jusqu'au point plein $(4\\,;\\,1)$ où elle s'arrête. Aucun autre point n'est tracé à l'abscisse $1$. Conjecturer $D_h$.",
+          "solution_markdown": "**Bornes.** La courbe commence et s'arrête sur des points **pleins** : $-3 \\in D_h$ et $4 \\in D_h$ (bornes fermées).\n\n**Le point creux.** À l'abscisse $1$, seul un rond vide apparaît, et aucun autre point de courbe n'a cette abscisse : $h$ n'est pas définie en $1$.\n\n**Conjecture.**\n\n$$D_h = [-3\\,;\\,1[ \\;\\cup\\; ]1\\,;\\,4]$$\n\nPour vérifier, on balaie l'axe des abscisses : toute verticale d'abscisse comprise entre $-3$ et $4$, sauf $1$, rencontre la courbe."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La courbe d'une fonction $k$ commence au point plein $(1\\,;\\,0)$, descend, puis part vers $-\\infty$ en s'approchant de la droite verticale $x = 3$ par la gauche ; à droite de cette droite, une branche descend de $+\\infty$ et continue jusqu'au bord de la fenêtre. 1) Conjecturer $D_k$. 2) On admet que $k(x) = \\dfrac{\\sqrt{x - 1}}{x - 3}$ ; démontrer la conjecture.",
+          "solution_markdown": "**1) Lecture.** Le point plein $(1\\,;\\,0)$ donne une borne fermée en $1$ ; rien à gauche de $1$. La droite $x = 3$ est une asymptote verticale : $3$ est exclu. À droite, la courbe se poursuit au-delà de la fenêtre.\n\n$$\\text{Conjecture : } D_k = [1\\,;\\,3[ \\;\\cup\\; ]3\\,;\\,+\\infty[$$\n\n**2) Démonstration.** $k(x)$ existe si et seulement si les deux conditions suivantes sont réunies :\n\n- la racine carrée existe : $x - 1 \\geqslant 0$, soit $x \\geqslant 1$ ;\n- le dénominateur est non nul : $x - 3 \\neq 0$, soit $x \\neq 3$.\n\nDonc $D_k = \\{x \\,/\\, x \\geqslant 1 \\text{ et } x \\neq 3\\} = [1\\,;\\,3[ \\;\\cup\\; ]3\\,;\\,+\\infty[$ : la conjecture est confirmée.\n\n*Contrôle du point de départ* : $k(1) = \\dfrac{\\sqrt{0}}{1 - 3} = \\dfrac{0}{-2} = 0$, ce qui correspond bien au point plein $(1\\,;\\,0)$ ✔"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'ensemble de définition se lit sur l'axe des abscisses : un $x$ est dans $D_f$ si sa verticale rencontre la courbe.",
+        "Seuls trois indices excluent une valeur : une asymptote verticale, une coupure, un point creux. Un minimum profond n'en est pas un.",
+        "Les bords de la fenêtre ne sont pas les bords de la fonction : ne ferme un intervalle que sur un point plein visible.",
+        "Une lecture graphique est une conjecture : confirme-la par le calcul (dénominateur non nul, radicande positif) dès que tu connais $f$.",
+        "Au Probatoire C et E, cette conjecture ouvre l'exercice « courbe donnée » et sert plus loin : un $D_f = \\mathbb{R}$ pour une fonction rationnelle impose un dénominateur qui ne s'annule jamais."
+      ]
+    }
+  ]
 }

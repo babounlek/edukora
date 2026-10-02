@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Géométrie plane - angles orientés et constructions",
+    "duree_estimee_min": 30,
+    "tags": [
+      "angle orienté",
+      "sens direct",
+      "construction géométrique",
+      "carré",
+      "orientation du plan"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,128 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "« On considère un carré $ABCD$ tel que $\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right) = \\dfrac{\\pi}{2}$. » Cette petite précision, que beaucoup lisent trop vite, décide de tout : si tu traces le carré à l'envers, la rotation de la question suivante aura un angle de signe opposé, et toute la suite du problème part dans la mauvaise direction. Construire une figure orientée, c'est savoir de quel côté placer chaque point avant de prendre la règle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion d'angle orienté de deux vecteurs et le sens direct (trigonométrique)",
+        "Savoir construire un carré, un triangle équilatéral à la règle et au compas",
+        "Savoir calculer les coordonnées d'un vecteur et d'un point dans un repère orthonormé",
+        "Connaître la relation de Chasles pour les vecteurs"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le signe de l'angle orienté décide du côté",
+      "contenu_markdown": "**Le sens direct.** Le plan est orienté : le sens **direct** (ou trigonométrique) est le sens inverse des aiguilles d'une montre. Un angle orienté $\\left(\\vec{u},\\vec{v}\\right)$ positif signifie qu'on passe de $\\vec{u}$ à $\\vec{v}$ en tournant dans le sens direct.\n\n**La règle de construction.** Si l'énoncé impose $\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right) = +\\theta$ (avec $0 < \\theta < \\pi$), le point $D$ est situé à **gauche** de la demi-droite $[AB)$ quand on la parcourt de $A$ vers $B$ ; si l'angle vaut $-\\theta$, il est à droite. En pratique :\n\n1. Tracer d'abord le segment de référence, par exemple $[AB]$ horizontal, $A$ à gauche, $B$ à droite.\n2. Lire le signe de l'angle imposé : positif, on tourne **vers le haut** depuis $\\overrightarrow{AB}$ ; négatif, vers le bas.\n3. Placer le point suivant de ce côté, puis compléter la figure en respectant l'ordre alphabétique des sommets (ils se suivent sur le contour).\n\n**Le calcul qui confirme.** Dans un repère orthonormé direct, le vecteur obtenu en tournant $\\vec{u}(x\\,;\\,y)$ de $+\\frac{\\pi}{2}$ est $\\vec{u}\\,'(-y\\,;\\,x)$ ; de $-\\frac{\\pi}{2}$, c'est $(y\\,;\\,-x)$. Plus généralement, le signe de $\\det(\\vec{u},\\vec{v}) = xy' - yx'$ est celui de $\\sin\\left(\\vec{u},\\vec{v}\\right)$ : positif, l'angle est dans $]0\\,;\\,\\pi[$, la figure est directe.",
+      "formule_principale": "\\left(\\vec{u},\\vec{v}\\right) = +\\frac{\\pi}{2} \\text{ et } \\|\\vec{v}\\| = \\|\\vec{u}\\| \\iff \\vec{u}(x\\,;\\,y),\\ \\vec{v}(-y\\,;\\,x)",
+      "variantes": [
+        {
+          "nom": "Construire au compas un triangle équilatéral direct",
+          "quand_utiliser": "Quand l'énoncé impose (AB, AC) = +π/3",
+          "contenu_markdown": "On trace $[AB]$, puis les arcs de centres $A$ et $B$ et de rayon $AB$ : ils se coupent en deux points, symétriques par rapport à $(AB)$. Le point $C$ est celui situé à **gauche** de $[AB)$ parcourue de $A$ vers $B$ (au-dessus si $[AB]$ est horizontal, $A$ à gauche), puisque l'angle $+\\frac{\\pi}{3}$ se parcourt dans le sens direct."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "enonce_markdown": "Dans le plan orienté, on considère un carré $ABCD$ de centre $O$ tel que $\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right) = \\dfrac{\\pi}{2}$, et les points $E$, $F$, $G$, $H$ respectivement sur $[AB]$, $[BC]$, $[CD]$, $[DA]$ tels que $AE = BF = CG = DH$. Réaliser la figure avec $AB = 5$ cm et $AE = 2$ cm.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Tracer le segment de référence",
+          "justification": "On choisit $[AB]$ horizontal, $A$ à gauche, pour lire facilement le sens direct.",
+          "resultat_markdown": "$[AB]$ de longueur $5$ cm. Dans le repère d'origine $A$ et d'unité $1$ cm : $A(0\\,;\\,0)$, $B(5\\,;\\,0)$."
+        },
+        {
+          "numero": 2,
+          "action": "Placer $D$ du bon côté",
+          "justification": "$\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right) = +\\frac{\\pi}{2}$ : on tourne de $90°$ dans le sens direct depuis $\\overrightarrow{AB}$, donc vers le haut. Par le calcul : $\\overrightarrow{AB}(5\\,;\\,0)$ tourné de $+\\frac{\\pi}{2}$ donne $(-0\\,;\\,5) = (0\\,;\\,5)$.",
+          "resultat_markdown": "$D(0\\,;\\,5)$, au-dessus de $A$."
+        },
+        {
+          "numero": 3,
+          "action": "Compléter le carré",
+          "justification": "Les sommets se suivent sur le contour : $\\overrightarrow{AC} = \\overrightarrow{AB} + \\overrightarrow{AD}$ (règle du parallélogramme).",
+          "resultat_markdown": "$C(5\\,;\\,5)$, et le centre $O$, milieu de $[AC]$ : $O(2{,}5\\,;\\,2{,}5)$."
+        },
+        {
+          "numero": 4,
+          "action": "Placer les quatre points, chacun depuis le bon sommet",
+          "justification": "$AE = 2$ se mesure depuis $A$ vers $B$, $BF = 2$ depuis $B$ vers $C$, $CG = 2$ depuis $C$ vers $D$, $DH = 2$ depuis $D$ vers $A$ : on avance toujours dans le sens de parcours $A \\to B \\to C \\to D$.",
+          "resultat_markdown": "$E(2\\,;\\,0)$, $F(5\\,;\\,2)$, $G(3\\,;\\,5)$, $H(0\\,;\\,3)$."
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier l'orientation",
+          "justification": "$\\det\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right) = 5 \\times 5 - 0 \\times 0 = 25 > 0$ : l'angle est bien positif.",
+          "resultat_markdown": "La figure est directe ✔ ; on trace enfin le quadrilatère $EFGH$."
+        }
+      ],
+      "conclusion_markdown": "Le carré est parcouru $A \\to B \\to C \\to D$ dans le sens inverse des aiguilles d'une montre, et les points $E$, $F$, $G$, $H$ se déduisent les uns des autres « en tourniquet » : c'est exactement ce que la rotation de centre $O$ et d'angle $+\\frac{\\pi}{2}$ exploitera ensuite."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Placer $D$ au-dessous de $A$ alors que $\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right) = +\\frac{\\pi}{2}$ avec $[AB]$ horizontal de gauche à droite.",
+          "pourquoi_faux": "Tourner vers le bas depuis $\\overrightarrow{AB}$, c'est tourner dans le sens des aiguilles d'une montre : l'angle obtenu vaut $-\\frac{\\pi}{2}$. Toutes les rotations du problème changeraient alors de signe.",
+          "correction_markdown": "Angle positif, on tourne dans le sens direct : avec $[AB]$ horizontal et $A$ à gauche, $D$ est au-dessus."
+        },
+        {
+          "erreur_markdown": "Confondre $\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right)$ et $\\left(\\overrightarrow{AD},\\overrightarrow{AB}\\right)$.",
+          "pourquoi_faux": "Les angles orientés sont antisymétriques : $\\left(\\overrightarrow{AD},\\overrightarrow{AB}\\right) = -\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right)$. L'ordre des vecteurs dit d'où l'on part et où l'on arrive.",
+          "correction_markdown": "Toujours partir du **premier** vecteur et tourner vers le second."
+        },
+        {
+          "erreur_markdown": "Nommer les sommets dans le désordre (diagonale $[AC]$ prise pour un côté).",
+          "pourquoi_faux": "Dans un polygone $ABCD$, les lettres se suivent sur le contour : $[AB]$, $[BC]$, $[CD]$, $[DA]$ sont les côtés, $[AC]$ et $[BD]$ les diagonales.",
+          "correction_markdown": "Placer $C$ par $\\overrightarrow{AC} = \\overrightarrow{AB} + \\overrightarrow{AD}$, en face de $A$."
+        },
+        {
+          "erreur_markdown": "Mesurer $F$ depuis $C$ au lieu de $B$.",
+          "pourquoi_faux": "$BF = 2$ cm se mesure depuis $B$. Inverser un seul point détruit la régularité tournante de la figure.",
+          "correction_markdown": "Pour chaque point, relire quel sommet sert d'origine dans l'égalité de longueurs."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un repère orthonormé direct, $A(0\\,;\\,0)$ et $B(4\\,;\\,0)$. Déterminer les coordonnées du point $C$ tel que $ABC$ soit un triangle équilatéral avec $\\left(\\overrightarrow{AB},\\overrightarrow{AC}\\right) = \\dfrac{\\pi}{3}$.",
+          "solution_markdown": "**Le côté.** $AC = AB = 4$, et $C$ s'obtient en tournant $B$ autour de $A$ de $+\\frac{\\pi}{3}$, donc dans le sens direct : $C$ est au-dessus de l'axe des abscisses.\n\n**Les coordonnées.** Un point situé à la distance $4$ de l'origine, dans la direction d'angle $\\frac{\\pi}{3}$ avec $\\vec{i}$, a pour coordonnées $\\left(4\\cos\\frac{\\pi}{3}\\,;\\,4\\sin\\frac{\\pi}{3}\\right)$. Avec $\\cos\\frac{\\pi}{3} = \\frac12$ et $\\sin\\frac{\\pi}{3} = \\frac{\\sqrt3}{2}$ :\n\n$$C\\left(4 \\times \\frac12\\,;\\,4 \\times \\frac{\\sqrt3}{2}\\right) = C\\left(2\\,;\\,2\\sqrt3\\right)$$\n\n*Contrôle* : $BC = \\sqrt{(2 - 4)^2 + \\left(2\\sqrt3\\right)^2} = \\sqrt{4 + 12} = \\sqrt{16} = 4$ ✔"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un repère orthonormé direct, $A(1\\,;\\,1)$ et $B(4\\,;\\,2)$. 1) Déterminer les coordonnées des points $C$ et $D$ tels que $ABCD$ soit un carré avec $\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right) = \\dfrac{\\pi}{2}$. 2) Quelles seraient celles de $D$ si l'angle valait $-\\dfrac{\\pi}{2}$ ?",
+          "solution_markdown": "**1) Le vecteur $\\overrightarrow{AD}$.** $\\overrightarrow{AB} = (4 - 1\\,;\\,2 - 1) = (3\\,;\\,1)$. Le vecteur de même norme obtenu par rotation de $+\\frac{\\pi}{2}$ est $(-1\\,;\\,3)$ (règle $(x\\,;\\,y) \\mapsto (-y\\,;\\,x)$).\n\n*Contrôles* : $\\overrightarrow{AB} \\cdot \\overrightarrow{AD} = 3 \\times (-1) + 1 \\times 3 = 0$ (perpendiculaires) ; normes $\\sqrt{9 + 1} = \\sqrt{1 + 9} = \\sqrt{10}$ ; $\\det = 3 \\times 3 - 1 \\times (-1) = 10 > 0$ (sens direct).\n\n$$D = (1 - 1\\,;\\,1 + 3) = (0\\,;\\,4)$$\n\n**Le point $C$** : $\\overrightarrow{AC} = \\overrightarrow{AB} + \\overrightarrow{AD} = (3 - 1\\,;\\,1 + 3) = (2\\,;\\,4)$, donc $C(1 + 2\\,;\\,1 + 4) = C(3\\,;\\,5)$.\n\n**2) Angle $-\\frac{\\pi}{2}$.** On tourne dans l'autre sens : $\\overrightarrow{AD} = (1\\,;\\,-3)$, donc $D(2\\,;\\,-2)$. Le carré est alors construit de l'autre côté de $[AB]$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un repère orthonormé direct, $A(0\\,;\\,0)$, $B(2\\,;\\,0)$ et $C(1\\,;\\,3)$. 1) Le triangle $ABC$ est-il direct, c'est-à-dire $\\left(\\overrightarrow{AB},\\overrightarrow{AC}\\right) \\in\\, ]0\\,;\\,\\pi[$ ? 2) Construire, par le calcul, le carré $ACMN$ tel que $\\left(\\overrightarrow{AC},\\overrightarrow{AN}\\right) = \\dfrac{\\pi}{2}$. 3) Ce carré est-il du même côté de $(AC)$ que $B$ ?",
+          "solution_markdown": "**1) Orientation.** $\\overrightarrow{AB}(2\\,;\\,0)$ et $\\overrightarrow{AC}(1\\,;\\,3)$ :\n\n$$\\det\\left(\\overrightarrow{AB},\\overrightarrow{AC}\\right) = 2 \\times 3 - 0 \\times 1 = 6 > 0$$\n\nLe sinus de l'angle est positif : $\\left(\\overrightarrow{AB},\\overrightarrow{AC}\\right) \\in\\, ]0\\,;\\,\\pi[$, le triangle $ABC$ est direct.\n\n**2) Le carré.** $\\overrightarrow{AN}$ s'obtient en tournant $\\overrightarrow{AC}(1\\,;\\,3)$ de $+\\frac{\\pi}{2}$ : $\\overrightarrow{AN}(-3\\,;\\,1)$, donc $N(-3\\,;\\,1)$. Puis $\\overrightarrow{AM} = \\overrightarrow{AC} + \\overrightarrow{AN} = (1 - 3\\,;\\,3 + 1) = (-2\\,;\\,4)$, donc $M(-2\\,;\\,4)$.\n\n*Contrôles* : $\\overrightarrow{AC} \\cdot \\overrightarrow{AN} = -3 + 3 = 0$ ; $AC = AN = \\sqrt{10}$.\n\n**3) Position.** $B$ est tel que $\\left(\\overrightarrow{AC},\\overrightarrow{AB}\\right) = -\\left(\\overrightarrow{AB},\\overrightarrow{AC}\\right)$ est négatif : $B$ est à droite de $[AC)$. Le point $N$ est à gauche, puisque $\\left(\\overrightarrow{AC},\\overrightarrow{AN}\\right) = +\\frac{\\pi}{2}$. Le carré est donc construit **à l'extérieur** du triangle, du côté opposé à $B$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant de tracer, lis le signe de l'angle orienté imposé : positif, tu tournes dans le sens inverse des aiguilles d'une montre.",
+        "Trace le premier côté horizontal, de gauche à droite : un angle positif t'envoie alors vers le haut, un angle négatif vers le bas.",
+        "Dans un repère orthonormé direct, tourner $(x\\,;\\,y)$ de $+\\frac{\\pi}{2}$ donne $(-y\\,;\\,x)$ : c'est le moyen le plus sûr de vérifier ta figure.",
+        "Les sommets d'un polygone se suivent sur le contour ; chaque longueur se mesure depuis le sommet nommé dans l'énoncé.",
+        "Au Probatoire C et E, la figure orientée ouvre presque toujours la partie géométrie : une erreur de sens à cette question change le signe de toutes les rotations qui suivent."
+      ]
+    }
+  ]
 }

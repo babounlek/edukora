@@ -7,7 +7,17 @@
     "serie": "C, D, E",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-structures-de-controle-et-structures-de-donnees-en-algorithmique (probatoire-c-d-e-informatique-throrique-2024-officiel-2024).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "structures de contrôle",
+      "boucle",
+      "structure conditionnelle",
+      "tableau",
+      "trace d'algorithme",
+      "langage C"
+    ],
+    "sous_theme": "Algorithmique et programmation",
+    "duree_estimee_min": 40
   },
   "source": {
     "epreuve_id": "probatoire-c-d-e-informatique-theorique-2026-officiel-cameroun",
@@ -17,5 +27,127 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un professeur veut connaître le pourcentage d'élèves qui ont la moyenne. Avec cinq copies, il compte de tête ; avec cinq cents, il lui faut un programme. Ce programme doit ranger toutes les notes quelque part, les parcourir une à une, tester chacune et compter. Ranger, c'est le rôle des **structures de données** ; parcourir, tester et répéter, c'est celui des **structures de contrôle**. Tous les algorithmes du programme, et tous ceux du Probatoire, se construisent avec ces deux familles d'outils."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable, son nom, son type (entier, réel, caractère, booléen) et sa valeur",
+        "Connaître l'affectation (notée $\\leftarrow$ en algorithmique, $=$ en C), la lecture et l'affichage",
+        "Connaître les opérateurs de comparaison ($<$, $\\leqslant$, $=$, $\\neq$...) et les opérateurs logiques ET, OU, NON"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois structures de contrôle, une structure de données à connaître",
+      "contenu_markdown": "**1. Les structures de contrôle** décident de l'ordre dans lequel les instructions sont exécutées.\n\n| Structure | Rôle | Algorithmique | Langage C |\n|---|---|---|---|\n| **Séquentielle** | exécuter les instructions l'une après l'autre | instructions écrites à la suite | instructions terminées par `;` |\n| **Conditionnelle** (alternative) | exécuter un bloc seulement si une condition est vraie | `Si ... Alors ... Sinon ... FinSi` | `if (...) { ... } else { ... }` |\n| | choisir parmi plusieurs cas | `Selon ... Faire` | `switch (...) { case ...: }` |\n| **Répétitive** (boucle) | répéter un bloc | `Pour i <- 1 à N Faire ... FinPour` | `for (i = 1; i <= N; i++) { ... }` |\n| | | `Tant que ... Faire ... FinTantQue` | `while (...) { ... }` |\n| | | `Répéter ... Jusqu'à ...` | `do { ... } while (...);` |\n\n**Quelle boucle choisir ?** La boucle `Pour` convient quand on connaît le nombre de tours à l'avance. La boucle `Tant que` teste la condition **avant** chaque tour : elle peut ne jamais s'exécuter. La boucle `Répéter` teste **après** : elle s'exécute au moins une fois.\n\n**2. Les structures de données** organisent les valeurs en mémoire. Au niveau Probatoire, on distingue :\n\n- les **variables simples**, qui contiennent une seule valeur ;\n- le **tableau** (à une dimension), qui regroupe sous un même nom plusieurs valeurs **de même type**, repérées par un **indice**. En algorithmique : `Note : Tableau[1..5] de Entier` ; on accède au $k$-ième élément par `Note[k]`. En C : `int Note[5];`, et les indices vont de `0` à `4`.\n\n**3. Les variables de travail des boucles.**\n\n- Un **compteur** compte des événements : on l'initialise à $0$, puis `Comp <- Comp + 1` à chaque événement.\n- Un **accumulateur** additionne des valeurs : `S <- 0`, puis `S <- S + Note[k]`.\n- Une **initialisation** donne sa première valeur à une variable, avant la boucle ; l'oublier rend le résultat imprévisible.\n\n**4. Exécuter un algorithme à la main (trace).** On construit un tableau avec une colonne par variable et une ligne par tour de boucle, et on y note les valeurs après chaque instruction, jusqu'à ce que la condition d'arrêt soit atteinte.",
+      "formule_principale": "\\text{Algorithme} = \\text{structures de données} + \\text{structures de contrôle (séquence, alternative, répétition)}",
+      "variantes": [
+        {
+          "nom": "Réécrire une boucle Tant que en boucle Pour",
+          "quand_utiliser": "Quand un compteur est initialisé, testé et incrémenté explicitement",
+          "contenu_markdown": "La boucle `K <- 1 ; Tant que K <= N Faire ... K <- K + 1 ; FinTantQue` répète exactement $N$ tours : elle équivaut à `Pour K <- 1 à N Faire ... FinPour`. En C : `for (K = 1; K <= N; K++) { ... }`. Les deux écritures sont acceptées ; la boucle `Pour` évite d'oublier l'incrémentation, cause classique de boucle infinie."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On considère l'algorithme suivant, qui calcule le taux de réussite d'une classe :\n\n```\nDebut\n  Afficher(\"Entrez N\") ;\n  Lire(N) ;\n  Comp <- 0 ; K <- 1 ;\n  Tant que K <= N faire\n      Si Note[K] >= 10 alors\n          Comp <- Comp + 1 ;\n      Finsi\n      K <- K + 1 ;\n  Fin Tant que\n  Taux <- Comp * 100 / N ;\n  Afficher(\"Taux reussite=\", Taux) ;\nFin\n```\n\na) Quelle structure de données utilise-t-il ? b) Quelles structures de contrôle ? c) Exécuter l'algorithme pour $N = 5$ et `Note = [10, 8, 12, 14, 7]`.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer la structure de données",
+          "justification": "Les notes sont désignées par un même nom suivi d'un indice, `Note[K]` : c'est la marque d'un tableau.",
+          "resultat_markdown": "Un **tableau** d'entiers `Note`, déclaré en C par `int Note[5];`."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les structures de contrôle",
+          "justification": "`Tant que ... Fin Tant que` répète un bloc ; `Si ... alors ... Finsi` n'exécute `Comp <- Comp + 1` que si la note vaut au moins 10 ; le reste s'exécute en séquence.",
+          "resultat_markdown": "Une structure **répétitive** (Tant que), une structure **conditionnelle** (Si) placée à l'intérieur, et la structure **séquentielle** pour le reste."
+        },
+        {
+          "numero": 3,
+          "action": "Initialiser la trace",
+          "justification": "Avant la boucle, l'instruction `Comp <- 0 ; K <- 1` fixe les valeurs de départ.",
+          "resultat_markdown": "`Comp = 0`, `K = 1`"
+        },
+        {
+          "numero": 4,
+          "action": "Dérouler la boucle tour par tour",
+          "justification": "À chaque tour on teste `K <= 5`, puis `Note[K] >= 10`, et on augmente K de 1.",
+          "resultat_markdown": "| K | Note[K] | Note[K] >= 10 ? | Comp |\n|---|---|---|---|\n| 1 | 10 | vrai | 1 |\n| 2 | 8 | faux | 1 |\n| 3 | 12 | vrai | 2 |\n| 4 | 14 | vrai | 3 |\n| 5 | 7 | faux | 3 |"
+        },
+        {
+          "numero": 5,
+          "action": "Sortir de la boucle et calculer le taux",
+          "justification": "Avec K = 6, le test `6 <= 5` est faux : la boucle s'arrête avec Comp = 3.",
+          "resultat_markdown": "$\\text{Taux} = \\dfrac{3 \\times 100}{5} = \\dfrac{300}{5} = 60$ ; l'algorithme affiche « Taux reussite=60 »."
+        }
+      ],
+      "conclusion_markdown": "L'algorithme combine un tableau (structure de données) avec une boucle Tant que contenant un test Si (structures de contrôle). La trace montre que 3 élèves sur 5 ont la moyenne, soit un taux de réussite de $60\\ \\%$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Citer « Lire » et « Afficher » comme structures de contrôle.",
+          "pourquoi_faux": "Lire et Afficher sont des **instructions** d'entrée et de sortie. Une structure de contrôle organise l'ordre d'exécution d'autres instructions : séquence, alternative, répétition.",
+          "correction_markdown": "Pour répondre, cherche les mots-clés `Si`, `Selon`, `Pour`, `Tant que`, `Répéter` et nomme la famille correspondante."
+        },
+        {
+          "erreur_markdown": "Oublier `K <- K + 1` dans une boucle Tant que.",
+          "pourquoi_faux": "La condition `K <= N` reste toujours vraie puisque K ne change pas : la boucle ne s'arrête jamais (boucle infinie).",
+          "correction_markdown": "Dans une boucle Tant que, vérifie qu'une instruction du bloc fait évoluer la variable testée vers la condition d'arrêt."
+        },
+        {
+          "erreur_markdown": "En C, parcourir `int Note[5];` avec `for (K = 1; K <= 5; K++)`.",
+          "pourquoi_faux": "En C, les indices d'un tableau de 5 éléments vont de 0 à 4. `Note[5]` n'existe pas : on lit une case mémoire hors du tableau et on oublie `Note[0]`.",
+          "correction_markdown": "Écris `for (K = 0; K < 5; K++)`, ou décale l'indice si l'algorithme numérote à partir de 1."
+        },
+        {
+          "erreur_markdown": "Arrêter la trace dès le dernier élément, sans écrire le test de sortie.",
+          "pourquoi_faux": "La boucle s'arrête parce que le test devient faux (ici K = 6). Ne pas l'écrire laisse croire que la boucle s'arrête « toute seule » et fait souvent oublier la dernière valeur de K.",
+          "correction_markdown": "Termine toujours la trace par la ligne du test faux : « K = 6, 6 <= 5 faux, sortie de boucle »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Voici un algorithme :\n\n```\nDebut\n  Lire(a) ;\n  Si a mod 2 = 0 alors\n      Afficher(\"pair\") ;\n  Sinon\n      Afficher(\"impair\") ;\n  Finsi\nFin\n```\n\na) Quelle(s) structure(s) de contrôle utilise-t-il ? b) Qu'affiche-t-il pour a = 7 ? c) Traduire la structure conditionnelle en C.",
+          "solution_markdown": "**a)** Une structure **séquentielle** (Lire, puis le test) et une structure **conditionnelle** complète `Si ... Sinon ... Finsi`. Il n'y a pas de boucle.\n\n**b)** $7 \\bmod 2 = 1$ (reste de la division de 7 par 2, car $7 = 2 \\times 3 + 1$). La condition $1 = 0$ est fausse : on exécute le Sinon et l'algorithme affiche **impair**.\n\n**c)**\n\n```c\nif (a % 2 == 0) {\n    printf(\"pair\");\n} else {\n    printf(\"impair\");\n}\n```\n\nEn C, `mod` s'écrit `%` et le test d'égalité s'écrit `==` (un seul `=` est une affectation)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On considère l'algorithme suivant, où T est un tableau de 5 entiers :\n\n```\nDebut\n  max <- T[1] ;\n  Pour i <- 2 à 5 faire\n      Si T[i] > max alors\n          max <- T[i] ;\n      Finsi\n  FinPour\n  Afficher(max) ;\nFin\n```\n\na) Exécuter cet algorithme pour T = [4, 9, 2, 9, 7] en présentant la trace. b) Que calcule-t-il ?",
+          "solution_markdown": "**a)** Initialisation : `max = T[1] = 4`.\n\n| i | T[i] | T[i] > max ? | max après le tour |\n|---|---|---|---|\n| 2 | 9 | 9 > 4 vrai | 9 |\n| 3 | 2 | 2 > 9 faux | 9 |\n| 4 | 9 | 9 > 9 faux | 9 |\n| 5 | 7 | 7 > 9 faux | 9 |\n\nLa boucle Pour s'arrête après i = 5. L'algorithme affiche **9**.\n\n**b)** Il calcule la **plus grande valeur** du tableau. Remarque : au tour i = 4, la comparaison est stricte ($>$), donc le second 9 ne modifie pas max ; le résultat reste le même."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On veut un algorithme qui lit N notes dans un tableau, calcule leur moyenne, puis compte combien de notes sont supérieures ou égales à cette moyenne. a) Écrire l'algorithme. b) L'exécuter pour N = 4 et les notes 12, 8, 15, 5. c) Traduire en C le calcul de la moyenne et le comptage.",
+          "solution_markdown": "**a)** Il faut deux parcours : le premier pour calculer la somme (la moyenne n'est connue qu'à la fin), le second pour comparer chaque note à la moyenne.\n\n```\nDebut\n  Lire(N) ;\n  Pour k <- 1 à N faire\n      Lire(Note[k]) ;\n  FinPour\n  S <- 0 ;\n  Pour k <- 1 à N faire\n      S <- S + Note[k] ;\n  FinPour\n  Moy <- S / N ;\n  Comp <- 0 ;\n  Pour k <- 1 à N faire\n      Si Note[k] >= Moy alors\n          Comp <- Comp + 1 ;\n      Finsi\n  FinPour\n  Afficher(Moy, Comp) ;\nFin\n```\n\n**b)** Somme : $S = 0 + 12 = 12$, puis $12 + 8 = 20$, puis $20 + 15 = 35$, puis $35 + 5 = 40$. Moyenne : $\\text{Moy} = \\dfrac{40}{4} = 10$.\n\nComptage : $12 \\geqslant 10$ vrai (Comp = 1) ; $8 \\geqslant 10$ faux ; $15 \\geqslant 10$ vrai (Comp = 2) ; $5 \\geqslant 10$ faux. L'algorithme affiche **10** et **2**.\n\n**c)** Avec un tableau C indicé à partir de 0 :\n\n```c\nint S = 0, Comp = 0, k;\nfloat Moy;\nfor (k = 0; k < N; k++) {\n    S = S + Note[k];\n}\nMoy = (float) S / N;\nfor (k = 0; k < N; k++) {\n    if (Note[k] >= Moy) {\n        Comp = Comp + 1;\n    }\n}\nprintf(\"Moyenne = %.2f, notes >= moyenne : %d\", Moy, Comp);\n```\n\nLa conversion `(float) S` évite la division entière : sans elle, `S / N` avec deux entiers tronquerait le résultat (par exemple $41 / 4$ donnerait $10$ au lieu de $10{,}25$)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Trois structures de contrôle seulement : la séquence, l'alternative (Si, Selon) et la répétition (Pour, Tant que, Répéter). Tout algorithme les combine.",
+        "Un tableau range plusieurs valeurs de même type sous un seul nom ; en C, ses indices commencent à 0.",
+        "Avant une boucle, initialise compteurs et accumulateurs ; dans une boucle Tant que, fais évoluer la variable testée, sinon la boucle ne s'arrête jamais.",
+        "Pour exécuter un algorithme à la main, fais une trace : une colonne par variable, une ligne par tour, et termine par le test qui devient faux.",
+        "Au Probatoire, on te demande d'identifier ces structures dans un algorithme donné, de l'exécuter sur des valeurs, puis d'en traduire une partie en C : chacune de ces questions se prépare avec cette fiche."
+      ]
+    }
+  ]
 }

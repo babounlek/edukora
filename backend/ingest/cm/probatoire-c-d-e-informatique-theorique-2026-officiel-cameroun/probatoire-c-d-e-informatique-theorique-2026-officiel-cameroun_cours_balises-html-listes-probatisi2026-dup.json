@@ -7,7 +7,16 @@
     "serie": "C, D, E",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-balises-html-listes (bac-a-abi-informatique-2025-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "HTML",
+      "listes",
+      "balise ul",
+      "balise ol",
+      "balise li"
+    ],
+    "sous_theme": "Langage HTML",
+    "duree_estimee_min": 25
   },
   "source": {
     "epreuve_id": "probatoire-c-d-e-informatique-theorique-2026-officiel-cameroun",
@@ -17,5 +26,123 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une liste de matières avec leurs coefficients, les étapes d'une recette, le sommaire d'un exposé : sur une page web, ces informations se lisent mieux sous forme de liste qu'en un bloc de texte. Le HTML prévoit pour cela quelques balises très simples. Au Probatoire, on te donne souvent un code contenant une liste et on te demande de l'interpréter, ou d'en écrire une. Avec trois balises et deux attributs, tu peux répondre à toutes ces questions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une balise HTML ouvrante (`<p>`) et fermante (`</p>`).",
+        "Connaître la structure minimale d'une page : `<html>`, `<head>`, `<body>`.",
+        "Savoir écrire un attribut sous la forme `nom='valeur'` dans une balise ouvrante."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les balises de liste : ul, ol et li",
+      "contenu_markdown": "**1. Liste non ordonnée (à puces)** : balise `<ul>` (*unordered list*). Chaque élément est encadré par `<li>` (*list item*).\n\n```html\n<ul type=\"square\">\n  <li>Maths</li>\n  <li>Chimie</li>\n</ul>\n```\n\nL'attribut `type` de `<ul>` fixe la forme de la puce : `disc` (disque plein, par défaut), `circle` (cercle vide), `square` (carré).\n\n**2. Liste ordonnée (numérotée)** : balise `<ol>` (*ordered list*), avec les mêmes `<li>`.\n\n```html\n<ol type=\"I\" start=\"3\">\n  <li>Allumer l'ordinateur</li>\n  <li>Ouvrir le navigateur</li>\n</ol>\n```\n\nL'attribut `type` de `<ol>` fixe le style de numérotation : `1` (1, 2, 3, par défaut), `a` (a, b, c), `A` (A, B, C), `i` (i, ii, iii), `I` (I, II, III). L'attribut `start` fixe le numéro de départ : ici la liste affiche III, IV.\n\n**3. Règles d'écriture**\n\n- Un `<li>` se place **toujours** à l'intérieur d'un `<ul>` ou d'un `<ol>`.\n- Chaque balise ouverte est refermée : `</li>`, puis `</ul>` ou `</ol>`.\n- Une liste peut en contenir une autre (**liste imbriquée**) : la sous-liste se place à l'intérieur d'un `<li>`.\n\n**Remarque** : en HTML moderne, la forme des puces se règle de préférence en CSS (`list-style-type: square;`), mais l'attribut `type` reste reconnu par les navigateurs et figure dans les sujets d'examen.",
+      "formule_principale": "<ul> ou <ol> (le conteneur) + un <li> par élément + </ul> ou </ol>",
+      "variantes": [
+        {
+          "nom": "Choisir entre ul et ol",
+          "quand_utiliser": "Au moment d'écrire une liste",
+          "contenu_markdown": "Utilise `<ol>` quand l'ordre des éléments a un sens (étapes, classement) ; utilise `<ul>` quand l'ordre est indifférent (liste de matières, de fournitures)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans la page web d'Adrien (Probatoire C, D, E 2026), on lit :\n\n```html\n4. <ul type='square'>\n5. <li> Coef : 4</li> <li> Coef : 2</li><li> Coef : 6</li> <li> Coef : 2</li></ul>\n```\n\nInterpréter le code des lignes 4 et 5.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier la balise conteneur",
+          "justification": "`<ul>` ouvre une liste non ordonnée.",
+          "resultat_markdown": "Ligne 4 : ouverture d'une **liste à puces**."
+        },
+        {
+          "numero": 2,
+          "action": "Interpréter l'attribut",
+          "justification": "L'attribut `type` de `<ul>` fixe la forme des puces ; sa valeur est `square`.",
+          "resultat_markdown": "Les puces seront des **carrés**."
+        },
+        {
+          "numero": 3,
+          "action": "Compter les éléments de la liste",
+          "justification": "Chaque paire `<li>...</li>` correspond à un élément.",
+          "resultat_markdown": "Ligne 5 : **quatre éléments** : « Coef : 4 », « Coef : 2 », « Coef : 6 », « Coef : 2 »."
+        },
+        {
+          "numero": 4,
+          "action": "Repérer la fermeture",
+          "justification": "La balise fermante termine la liste.",
+          "resultat_markdown": "`</ul>` en fin de ligne 5 referme la liste."
+        },
+        {
+          "numero": 5,
+          "action": "Décrire l'affichage obtenu",
+          "justification": "Interpréter un code, c'est dire ce qu'il produit à l'écran.",
+          "resultat_markdown": "Le navigateur affiche quatre lignes, chacune précédée d'une puce carrée :\n\n▪ Coef : 4\n▪ Coef : 2\n▪ Coef : 6\n▪ Coef : 2\n\nCes coefficients correspondent, dans l'ordre, aux matières citées ligne 3 (Maths, Chimie, SVTEEHB, Info)."
+        }
+      ],
+      "conclusion_markdown": "Une interprétation complète nomme la balise, explique l'attribut, compte les éléments et décrit l'affichage final."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire des `<li>` sans les placer dans un `<ul>` ou un `<ol>`.",
+          "pourquoi_faux": "`<li>` n'a de sens qu'à l'intérieur d'une liste : le code est invalide et l'affichage dépend du navigateur.",
+          "correction_markdown": "Commence toujours par la balise conteneur (`<ul>` ou `<ol>`), puis écris les `<li>`, puis referme le conteneur."
+        },
+        {
+          "erreur_markdown": "Utiliser `<ul type=\"1\">` pour obtenir une liste numérotée.",
+          "pourquoi_faux": "La valeur `1` appartient à `<ol>`. Une liste `<ul>` n'est jamais numérotée, quel que soit son attribut.",
+          "correction_markdown": "Pour numéroter, change de balise : `<ol type=\"1\">`."
+        },
+        {
+          "erreur_markdown": "Dire que `<ul>` signifie « underline » (souligné), par confusion avec `<u>`.",
+          "pourquoi_faux": "`<u>` souligne un texte ; `<ul>` signifie *unordered list*. Dans la page d'Adrien, `<u> Liste des matieres</u>` souligne le titre, tandis que `<ul>` ouvre la liste.",
+          "correction_markdown": "Retiens : `u` seul = souligné ; `ul` = liste non ordonnée ; `ol` = liste ordonnée ; `li` = élément de liste."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écris le code HTML d'une liste à puces en forme de cercle contenant : Stylo, Cahier, Règle.",
+          "solution_markdown": "On utilise `<ul>` (l'ordre est indifférent) avec l'attribut `type=\"circle\"`, puis un `<li>` par fourniture :\n\n```html\n<ul type=\"circle\">\n  <li>Stylo</li>\n  <li>Cahier</li>\n  <li>Règle</li>\n</ul>\n```\n\nAffichage : trois lignes précédées chacune d'un cercle vide."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écris le code d'une liste numérotée en lettres minuscules donnant les trois étapes : Écrire le programme, Compiler, Exécuter. Indique ce qu'affiche le navigateur. Comment modifier le code pour que la numérotation commence à « c » ?",
+          "solution_markdown": "L'ordre des étapes compte : on utilise `<ol>` avec `type=\"a\"`.\n\n```html\n<ol type=\"a\">\n  <li>Écrire le programme</li>\n  <li>Compiler</li>\n  <li>Exécuter</li>\n</ol>\n```\n\nAffichage :\n\na. Écrire le programme\nb. Compiler\nc. Exécuter\n\nPour commencer à « c », on ajoute l'attribut `start` avec la **position** de la lettre c dans l'alphabet, soit 3 : `<ol type=\"a\" start=\"3\">`. La liste affiche alors c, d, e."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écris le code d'une liste numérotée (1, 2) de deux séries, Série C et Série D ; sous chaque série, une liste à puces carrées donne les matières à fort coefficient : Maths et Physique pour la C, SVTEEHB et Maths pour la D. Explique où se place chaque sous-liste.",
+          "solution_markdown": "On imbrique une liste `<ul>` à l'intérieur de chaque `<li>` de la liste `<ol>` :\n\n```html\n<ol type=\"1\">\n  <li>Série C\n    <ul type=\"square\">\n      <li>Maths</li>\n      <li>Physique</li>\n    </ul>\n  </li>\n  <li>Série D\n    <ul type=\"square\">\n      <li>SVTEEHB</li>\n      <li>Maths</li>\n    </ul>\n  </li>\n</ol>\n```\n\n**Placement** : chaque sous-liste se trouve **entre** le texte de l'élément (« Série C ») et la balise `</li>` qui le ferme. Si l'on fermait `</li>` avant d'ouvrir `<ul>`, la sous-liste ne serait plus rattachée à la série.\n\n**Vérification des fermetures** : 2 `<ul>` ouverts et 2 fermés ; 6 `<li>` ouverts et 6 fermés ; 1 `<ol>` ouvert et 1 fermé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "`<ul>` = liste à puces, `<ol>` = liste numérotée, `<li>` = un élément : ne mélange pas ces rôles.",
+        "Pour `<ul>`, `type` vaut disc, circle ou square ; pour `<ol>`, il vaut 1, a, A, i ou I, et `start` fixe le point de départ.",
+        "Un `<li>` vit toujours dans un `<ul>` ou un `<ol>` ; une sous-liste se place à l'intérieur d'un `<li>`.",
+        "Ne confonds pas `<u>` (souligné) et `<ul>` (liste).",
+        "Pour interpréter un code, décris la balise, l'attribut, le nombre d'éléments et l'affichage obtenu.",
+        "Au Probatoire, l'exercice HTML demande souvent d'interpréter quelques lignes contenant une liste ou d'en écrire une : compte toujours tes balises ouvrantes et fermantes avant de rendre ta copie."
+      ]
+    }
+  ]
 }

@@ -6,9 +6,14 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Suites numériques - suites géométriques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "suite géométrique",
+      "somme des termes",
+      "valeur exacte",
+      "nombre de termes"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +30,133 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Additionner à la main $\\frac13 + \\frac19 + \\frac1{27} + \\dots + \\frac{1}{19\\,683}$, c'est neuf fractions à mettre au même dénominateur : long, et la moindre étourderie ruine tout. Une formule fait le travail en une ligne, à condition de savoir reconnaître la somme, compter ses termes sans se tromper, et garder la valeur **exacte** jusqu'au bout. Ce sont ces trois réflexes que l'examinateur évalue quand il écrit « calculer la valeur exacte »."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir reconnaître une suite géométrique et sa raison",
+        "Connaître le terme général $u_n = u_p \\times q^{\\,n-p}$",
+        "Calculer avec les puissances et les fractions (simplification, produit, quotient)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Somme de termes consécutifs d'une suite géométrique",
+      "contenu_markdown": "**La formule.** Soit $(u_n)$ une suite géométrique de raison $q \\neq 1$. La somme de termes **consécutifs** de $u_p$ à $u_n$ vaut :\n\n$$S = u_p + u_{p+1} + \\dots + u_n = u_p \\times \\frac{1 - q^{\\,N}}{1 - q} \\qquad \\text{avec} \\qquad N = n - p + 1$$\n\nÀ retenir en mots : **premier terme** $\\times \\dfrac{1 - \\text{raison}^{\\text{nombre de termes}}}{1 - \\text{raison}}$.\n\n**La méthode en quatre temps.**\n\n1. **Reconnaître** : vérifier que chaque terme s'obtient en multipliant le précédent par un même nombre $q$ ; identifier le premier terme de la somme (pas forcément $u_0$).\n2. **Compter** les termes : $N = n - p + 1$ (indice du dernier, moins indice du premier, plus un). Quand les termes sont des puissances, repérer l'exposant du premier et du dernier.\n3. **Appliquer** la formule.\n4. **Simplifier** en gardant des fractions et des puissances : la valeur exacte est une fraction irréductible ou une expression du type $\\frac{3}{2}\\left(1 - \\frac{1}{3^9}\\right)$. Une valeur décimale ne s'écrit qu'en complément.\n\n**Le cas $q = 1$.** Tous les termes sont égaux à $u_p$ et $S = N \\times u_p$ : la formule ne s'applique pas (division par zéro).\n\n**Un facteur devant la parenthèse.** Pour $k\\left(a + aq + \\dots + aq^{N-1}\\right)$, on calcule d'abord la somme entre parenthèses, **puis** on multiplie par $k$.",
+      "formule_principale": "S = u_p \\times \\frac{1 - q^{\\,N}}{1 - q}, \\qquad N = n - p + 1, \\qquad q \\neq 1",
+      "variantes": [
+        {
+          "nom": "Forme adaptée à une raison supérieure à 1",
+          "quand_utiliser": "Quand q > 1, pour éviter de manipuler des nombres négatifs",
+          "contenu_markdown": "En multipliant numérateur et dénominateur par $-1$ : $S = u_p \\times \\dfrac{q^{\\,N} - 1}{q - 1}$. Exemple : $1 + 2 + 4 + \\dots + 2^{10} = 1 \\times \\dfrac{2^{11} - 1}{2 - 1} = 2047$. Les deux écritures sont égales ; on choisit celle dont le numérateur et le dénominateur sont positifs."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "enonce_markdown": "Calculer la valeur exacte de $3\\left(\\dfrac{1}{3} + \\dfrac{1}{3^2} + \\dots + \\dfrac{1}{3^9}\\right)$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Nommer la somme entre parenthèses",
+          "justification": "Le facteur $3$ se traite à la fin : on isole d'abord la somme.",
+          "resultat_markdown": "$T = \\dfrac{1}{3} + \\dfrac{1}{3^2} + \\dots + \\dfrac{1}{3^9}$"
+        },
+        {
+          "numero": 2,
+          "action": "Reconnaître une somme géométrique",
+          "justification": "Chaque terme est le précédent multiplié par $\\frac13$ : $\\frac{1}{3^{k+1}} = \\frac{1}{3^k} \\times \\frac{1}{3}$.",
+          "resultat_markdown": "Premier terme $\\dfrac{1}{3}$, raison $q = \\dfrac{1}{3}$."
+        },
+        {
+          "numero": 3,
+          "action": "Compter les termes",
+          "justification": "Les exposants vont de $1$ à $9$ : $N = 9 - 1 + 1$.",
+          "resultat_markdown": "$N = 9$ termes."
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la formule",
+          "justification": "$S = \\text{premier terme} \\times \\frac{1 - q^N}{1 - q}$ ; le dénominateur vaut $1 - \\frac13 = \\frac23$, et diviser par $\\frac23$ revient à multiplier par $\\frac32$.",
+          "resultat_markdown": "$T = \\dfrac{1}{3} \\times \\dfrac{1 - \\frac{1}{3^9}}{\\frac{2}{3}} = \\dfrac{1}{3} \\times \\dfrac{3}{2}\\left(1 - \\dfrac{1}{3^9}\\right) = \\dfrac{1}{2}\\left(1 - \\dfrac{1}{3^9}\\right)$"
+        },
+        {
+          "numero": 5,
+          "action": "Multiplier par le facteur 3",
+          "justification": "On revient à la quantité demandée.",
+          "resultat_markdown": "$3T = \\dfrac{3}{2}\\left(1 - \\dfrac{1}{3^9}\\right)$"
+        },
+        {
+          "numero": 6,
+          "action": "Écrire une fraction irréductible",
+          "justification": "$3^9 = 19\\,683$, donc $1 - \\frac{1}{3^9} = \\frac{19\\,682}{19\\,683}$. On simplifie avec $19\\,682 = 2 \\times 9\\,841$ et $19\\,683 = 3 \\times 6\\,561$.",
+          "resultat_markdown": "$3T = \\dfrac{3 \\times 19\\,682}{2 \\times 19\\,683} = \\dfrac{3 \\times 2 \\times 9\\,841}{2 \\times 3 \\times 6\\,561} = \\dfrac{9\\,841}{6\\,561} \\approx 1{,}4999$"
+        }
+      ],
+      "conclusion_markdown": "$3\\left(\\dfrac{1}{3} + \\dots + \\dfrac{1}{3^9}\\right) = \\dfrac{3}{2}\\left(1 - \\dfrac{1}{3^9}\\right) = \\dfrac{9\\,841}{6\\,561}$ : valeur exacte obtenue sans additionner une seule fraction à la main."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter $10$ termes dans $\\frac13 + \\dots + \\frac{1}{3^9}$ (en pensant « de $0$ à $9$ »).",
+          "pourquoi_faux": "Le premier exposant est $1$, pas $0$ : les exposants $1, 2, \\dots, 9$ donnent $9 - 1 + 1 = 9$ termes. Une erreur sur $N$ change la puissance $q^N$ et fausse tout le résultat.",
+          "correction_markdown": "Toujours écrire $N = (\\text{indice du dernier}) - (\\text{indice du premier}) + 1$ avant d'appliquer la formule."
+        },
+        {
+          "erreur_markdown": "Prendre $1$ comme premier terme : $T = 1 \\times \\frac{1 - (1/3)^9}{1 - 1/3}$.",
+          "pourquoi_faux": "La formule multiplie par le **premier terme de la somme**, ici $\\frac13$. Prendre $1$ revient à calculer $1 + \\frac13 + \\dots + \\frac{1}{3^8}$, une autre somme.",
+          "correction_markdown": "Lire le premier terme directement dans la somme écrite : $T = \\frac13 \\times \\frac{1 - (1/3)^9}{1 - 1/3}$."
+        },
+        {
+          "erreur_markdown": "Donner seulement $3T \\approx 1{,}5$.",
+          "pourquoi_faux": "La consigne demande la valeur **exacte** : une valeur approchée, même très précise, ne répond pas à la question et perd les points.",
+          "correction_markdown": "Conserver fractions et puissances : $\\frac{3}{2}\\left(1 - \\frac{1}{3^9}\\right) = \\frac{9\\,841}{6\\,561}$, puis éventuellement ajouter $\\approx 1{,}4999$."
+        },
+        {
+          "erreur_markdown": "Oublier le facteur $3$ devant la parenthèse et répondre $T = \\frac12\\left(1 - \\frac{1}{3^9}\\right)$.",
+          "pourquoi_faux": "$T$ n'est qu'une étape : la quantité demandée est $3T$.",
+          "correction_markdown": "Relire l'énoncé une fois la somme calculée et appliquer le facteur extérieur."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Calculer la valeur exacte de $S = 1 + 2 + 2^2 + \\dots + 2^{10}$.",
+          "solution_markdown": "**Reconnaître.** Chaque terme est le précédent multiplié par $2$ : somme géométrique de premier terme $1$ et de raison $q = 2$.\n\n**Compter.** Les exposants vont de $0$ à $10$ : $N = 10 - 0 + 1 = 11$ termes.\n\n**Appliquer** (forme adaptée à $q > 1$) :\n\n$$S = 1 \\times \\frac{2^{11} - 1}{2 - 1} = 2^{11} - 1 = 2048 - 1 = 2047$$\n\n*Contrôle sur un petit cas* : $1 + 2 + 4 = 7 = 2^3 - 1$ ✔"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer la valeur exacte de $S = 2\\left(\\dfrac{1}{5} + \\dfrac{1}{5^2} + \\dots + \\dfrac{1}{5^6}\\right)$, sous forme de fraction irréductible.",
+          "solution_markdown": "**Somme entre parenthèses.** $T = \\frac15 + \\dots + \\frac{1}{5^6}$ : premier terme $\\frac15$, raison $q = \\frac15$, exposants de $1$ à $6$ donc $N = 6$ termes.\n\n$$T = \\frac{1}{5} \\times \\frac{1 - \\frac{1}{5^6}}{1 - \\frac{1}{5}} = \\frac{1}{5} \\times \\frac{1 - \\frac{1}{5^6}}{\\frac{4}{5}} = \\frac{1}{5} \\times \\frac{5}{4}\\left(1 - \\frac{1}{5^6}\\right) = \\frac{1}{4}\\left(1 - \\frac{1}{5^6}\\right)$$\n\n**Facteur 2.**\n\n$$S = 2T = \\frac{1}{2}\\left(1 - \\frac{1}{5^6}\\right)$$\n\n**Fraction.** $5^6 = 15\\,625$, donc $1 - \\frac{1}{5^6} = \\frac{15\\,624}{15\\,625}$ et :\n\n$$S = \\frac{15\\,624}{2 \\times 15\\,625} = \\frac{15\\,624}{31\\,250} = \\frac{7\\,812}{15\\,625}$$\n\n$15\\,625 = 5^6$ n'a que $5$ comme facteur premier, et $7\\,812$ ne se termine ni par $0$ ni par $5$ : la fraction est irréductible. $S \\approx 0{,}49997$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On considère la suite $(u_n)$ définie pour tout entier naturel $n$ par $u_n = 3 \\times 2^n - 1$. 1) Exprimer $S_n = u_0 + u_1 + \\dots + u_n$ en fonction de $n$. 2) En déduire $S_9$.",
+          "solution_markdown": "**1) Séparer les deux parties.** $(u_n)$ n'est pas géométrique (le $-1$ l'en empêche), mais chaque terme est la somme d'un terme géométrique et d'une constante :\n\n$$S_n = \\left(3 \\times 2^0 + 3 \\times 2^1 + \\dots + 3 \\times 2^n\\right) - \\underbrace{(1 + 1 + \\dots + 1)}_{n+1 \\text{ termes}}$$\n\n**Partie géométrique** : premier terme $3$, raison $2$, exposants de $0$ à $n$, donc $n + 1$ termes :\n\n$$3 \\times \\frac{2^{n+1} - 1}{2 - 1} = 3\\left(2^{n+1} - 1\\right) = 3 \\times 2^{n+1} - 3$$\n\n**Partie constante** : $n + 1$ termes égaux à $1$, soit $n + 1$.\n\n$$S_n = 3 \\times 2^{n+1} - 3 - (n + 1) = 3 \\times 2^{n+1} - n - 4$$\n\n*Contrôles* : $S_0 = u_0 = 3 - 1 = 2$ et la formule donne $3 \\times 2 - 0 - 4 = 2$ ✔ ; $S_1 = 2 + 5 = 7$ et la formule donne $12 - 1 - 4 = 7$ ✔\n\n**2)** $S_9 = 3 \\times 2^{10} - 9 - 4 = 3 \\times 1024 - 13 = 3072 - 13 = 3059$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Premier terme × (1 − raison^nombre de termes) / (1 − raison) : retiens la formule en mots, elle s'applique quel que soit l'indice de départ.",
+        "Le nombre de termes se calcule, il ne se devine pas : $N = n - p + 1$. C'est là que se perdent la plupart des points.",
+        "Le premier terme est celui de la somme écrite, pas forcément $u_0$ ni $1$.",
+        "« Valeur exacte » veut dire fractions et puissances jusqu'au bout ; la valeur décimale vient en complément.",
+        "Au Probatoire C et E, cette question conclut souvent l'exercice de suites : la somme demandée est presque toujours celle des termes de la suite géométrique auxiliaire que tu viens d'étudier, repère-la."
+      ]
+    }
+  ]
 }

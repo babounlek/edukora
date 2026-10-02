@@ -23,5 +23,126 @@
     "rappel_id": "rdm-probatoire-a-maths-2000-officiel-cameroun-exB-qII.2-1",
     "rappels_lies": []
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Combien de voitures peut-on immatriculer dans l'Adamaoua dans la série B ? Les écrire toutes prendrait des jours. Pourtant la réponse s'obtient en quelques secondes, par une seule multiplication, à condition de voir le numéro comme une suite de choix faits les uns après les autres. Ce raisonnement, appelé principe multiplicatif, sert pour les plaques, les codes, les menus, les tenues… et il revient chaque année au Probatoire A."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir effectuer des multiplications et calculer des puissances de $10$",
+        "Savoir lire attentivement un énoncé pour repérer ce qui est fixé, ce qui varie et ce qui est interdit"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le principe multiplicatif : on multiplie les nombres de choix",
+      "contenu_markdown": "**La règle.** Si un objet se construit par une suite de $p$ choix successifs, avec $n_1$ possibilités pour le premier choix, $n_2$ pour le deuxième, …, $n_p$ pour le dernier, et que le nombre de possibilités de chaque choix ne dépend pas des choix précédents, alors le nombre total d'objets est :\n\n$$N = n_1 \\times n_2 \\times \\dots \\times n_p$$\n\n**La méthode en quatre temps.**\n\n1. **Décomposer** l'objet en cases à remplir (par exemple : chiffre 1, chiffre 2, chiffre 3, chiffre 4).\n2. **Repérer** ce qui est **fixé** par l'énoncé (une seule possibilité) et ce qui **varie**.\n3. **Compter** les possibilités de chaque case, en se demandant si les répétitions sont permises : avec répétition, un chiffre a toujours $10$ possibilités ($0$ à $9$) ; sans répétition, le nombre diminue de $1$ à chaque case.\n4. **Multiplier**, puis **retrancher** les cas explicitement exclus par l'énoncé, mais seulement s'ils font réellement partie du total compté.\n\n**Cas particulier à connaître.** Une suite de $k$ chiffres, répétitions permises, peut prendre $10^k$ valeurs : $10^4 = 10\\,000$ suites de quatre chiffres, de $0000$ à $9999$.",
+      "formule_principale": "N = n_1 \\times n_2 \\times \\dots \\times n_p",
+      "variantes": [
+        {
+          "nom": "L'arbre de choix",
+          "quand_utiliser": "Quand les nombres sont petits, pour visualiser ou vérifier",
+          "contenu_markdown": "On dessine un arbre : une branche par possibilité du premier choix, puis, au bout de chacune, une branche par possibilité du deuxième choix, etc. Le nombre de chemins complets (de la racine au bout) est le nombre d'objets. Avec $3$ entrées puis $2$ desserts, l'arbre a $3$ branches qui se divisent chacune en $2$ : $3 \\times 2 = 6$ chemins, donc $6$ menus."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "enonce_markdown": "Un numéro d'immatriculation comporte les initiales de la province, une suite de quatre chiffres (sauf $0000$) et une lettre appelée série. Exemple : AD 4102 B. 1) Combien de véhicules de la série B peut-on immatriculer dans l'Adamaoua (AD) ? 2) Combien de véhicules peuvent porter un numéro de la forme AD $3bcd$ B ?",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Question 1 : repérer ce qui est fixé",
+          "justification": "La province (AD) et la série (B) sont imposées : une seule possibilité chacune.",
+          "resultat_markdown": "Seuls les quatre chiffres varient."
+        },
+        {
+          "numero": 2,
+          "action": "Compter les suites de quatre chiffres",
+          "justification": "Chaque chiffre peut prendre $10$ valeurs ($0$ à $9$), et les répétitions sont permises (4102, 4444…).",
+          "resultat_markdown": "$10 \\times 10 \\times 10 \\times 10 = 10^4 = 10\\,000$ suites."
+        },
+        {
+          "numero": 3,
+          "action": "Retrancher le cas interdit",
+          "justification": "La suite $0000$ fait partie des $10\\,000$ suites comptées, et l'énoncé l'exclut.",
+          "resultat_markdown": "$10\\,000 - 1 = 9\\,999$ véhicules."
+        },
+        {
+          "numero": 4,
+          "action": "Question 2 : repérer ce qui est fixé",
+          "justification": "AD, le premier chiffre $3$ et la série B sont imposés ; seuls $b$, $c$, $d$ varient, chacun parmi $10$ valeurs.",
+          "resultat_markdown": "$10 \\times 10 \\times 10 = 10^3 = 1\\,000$ suites."
+        },
+        {
+          "numero": 5,
+          "action": "Examiner le cas interdit",
+          "justification": "Une suite qui commence par $3$ ne peut jamais être $0000$ : le cas exclu ne fait pas partie des $1\\,000$ suites comptées.",
+          "resultat_markdown": "On ne retranche rien : $1\\,000$ véhicules."
+        }
+      ],
+      "conclusion_markdown": "On peut immatriculer $9\\,999$ véhicules de la série B dans l'Adamaoua, et $1\\,000$ véhicules portent un numéro de la forme AD $3bcd$ B. Le cas $0000$ ne se retranche que lorsqu'il fait réellement partie des possibilités comptées."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Additionner les possibilités : $10 + 10 + 10 + 10 = 40$ suites de quatre chiffres.",
+          "pourquoi_faux": "Chaque choix du premier chiffre se combine avec **chacun** des choix du deuxième, etc. : les possibilités se multiplient. On additionne seulement quand on choisit **l'un ou l'autre** de plusieurs cas séparés.",
+          "correction_markdown": "$10 \\times 10 \\times 10 \\times 10 = 10\\,000$."
+        },
+        {
+          "erreur_markdown": "Oublier d'exclure $0000$ et répondre $10\\,000$ à la question 1.",
+          "pourquoi_faux": "L'énoncé interdit explicitement ce numéro ; il fait partie des $10\\,000$ suites comptées.",
+          "correction_markdown": "Compter d'abord sans restriction, puis retrancher : $10\\,000 - 1 = 9\\,999$."
+        },
+        {
+          "erreur_markdown": "Retrancher $1$ par réflexe à la question 2 et répondre $999$.",
+          "pourquoi_faux": "Le premier chiffre vaut $3$ : le numéro $0000$ n'est pas parmi les $1\\,000$ suites comptées, on retrancherait un cas qui n'existe pas.",
+          "correction_markdown": "Avant de retrancher un cas interdit, vérifier qu'il fait bien partie de l'ensemble compté."
+        },
+        {
+          "erreur_markdown": "Compter $9$ possibilités pour un chiffre (de $1$ à $9$).",
+          "pourquoi_faux": "Les chiffres vont de $0$ à $9$ : il y en a $10$. Le $0$ n'est exclu que si l'énoncé le dit (par exemple un nombre qui ne commence pas par $0$).",
+          "correction_markdown": "$10$ possibilités par chiffre, sauf contrainte écrite dans l'énoncé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un restaurant propose $3$ entrées, $4$ plats et $2$ desserts. Un menu se compose d'une entrée, d'un plat et d'un dessert. Combien de menus différents peut-on composer ?",
+          "solution_markdown": "**Décomposition.** Un menu = trois choix successifs : l'entrée ($3$ possibilités), le plat ($4$ possibilités), le dessert ($2$ possibilités). Le choix du plat ne dépend pas de l'entrée choisie, ni le dessert des choix précédents.\n\n**Principe multiplicatif.**\n\n$$N = 3 \\times 4 \\times 2 = 24$$\n\nOn peut composer $24$ menus différents."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un code de téléphone se compose de $4$ chiffres. 1) Combien de codes différents existe-t-il ? 2) Combien commencent par un chiffre différent de $0$ ? 3) Combien sont formés de quatre chiffres tous différents ?",
+          "solution_markdown": "**1)** Quatre chiffres, $10$ possibilités chacun, répétitions permises :\n\n$$10 \\times 10 \\times 10 \\times 10 = 10^4 = 10\\,000 \\text{ codes}$$\n\n**2)** Le premier chiffre a $9$ possibilités ($1$ à $9$), les trois suivants $10$ chacun :\n\n$$9 \\times 10 \\times 10 \\times 10 = 9 \\times 1\\,000 = 9\\,000 \\text{ codes}$$\n\n**3)** Sans répétition, chaque chiffre utilisé n'est plus disponible pour les suivants : $10$ possibilités pour le premier, $9$ pour le deuxième, $8$ pour le troisième, $7$ pour le quatrième.\n\n$$10 \\times 9 \\times 8 \\times 7 = 90 \\times 56 = 5\\,040 \\text{ codes}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un pays, une plaque d'immatriculation comporte deux lettres (parmi les $26$ de l'alphabet) suivies de trois chiffres, le numéro $000$ étant interdit. 1) Combien de plaques peut-on fabriquer ? 2) Combien de plaques ont deux lettres différentes et un numéro pair ?",
+          "solution_markdown": "**1) Toutes les plaques.**\n\n*Lettres* : $26 \\times 26 = 676$ possibilités (répétitions permises, AA est autorisé).\n\n*Chiffres* : $10 \\times 10 \\times 10 = 1\\,000$ suites, moins le numéro interdit $000$, qui en fait partie : $1\\,000 - 1 = 999$.\n\n$$N = 676 \\times 999 = 676 \\times 1\\,000 - 676 = 676\\,000 - 676 = 675\\,324$$\n\n**2) Lettres différentes et numéro pair.**\n\n*Lettres* : $26$ choix pour la première, puis $25$ pour la seconde (différente de la première) : $26 \\times 25 = 650$.\n\n*Numéro pair* : un nombre est pair si son dernier chiffre est $0$, $2$, $4$, $6$ ou $8$. Premier et deuxième chiffres : $10$ possibilités chacun ; dernier chiffre : $5$ possibilités. Cela donne $10 \\times 10 \\times 5 = 500$ suites. Le numéro $000$ se termine par $0$, il fait donc partie de ces $500$ suites et doit être retranché : $500 - 1 = 499$.\n\n$$N = 650 \\times 499 = 650 \\times 500 - 650 = 325\\,000 - 650 = 324\\,350$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand un objet se construit par une suite de choix, découpe-le en cases et multiplie les nombres de possibilités de chaque case.",
+        "« Et » (un chiffre et un autre chiffre…) se traduit par une multiplication ; « ou » entre cas séparés, par une addition.",
+        "Avec répétition, un chiffre a toujours $10$ possibilités ; sans répétition, le nombre baisse de $1$ à chaque case.",
+        "Compte d'abord sans restriction, puis retranche les cas interdits, mais seulement s'ils font partie de ce que tu as compté.",
+        "Au Probatoire A, ces questions de dénombrement (plaques, codes, menus, tenues) valent des points faciles si tu poses clairement les choix avant de calculer."
+      ]
+    }
+  ]
 }

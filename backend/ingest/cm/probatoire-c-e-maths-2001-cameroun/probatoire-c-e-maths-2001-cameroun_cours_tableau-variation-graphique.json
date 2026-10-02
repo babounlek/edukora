@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Fonctions numériques - variations et lecture graphique",
+    "duree_estimee_min": 35,
+    "tags": [
+      "tableau de variation",
+      "lecture graphique",
+      "extremum",
+      "limite",
+      "asymptote"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,128 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une courbe contient une foule d'informations, mais en vrac. Le tableau de variation les range : où la fonction monte, où elle descend, jusqu'où, et ce qui se passe aux bords. C'est ce résumé que l'on consulte ensuite pour compter les solutions d'une équation, encadrer une valeur ou trouver un extremum. Savoir le dresser à partir d'un dessin est une question presque garantie dès qu'un sujet fournit une courbe."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir lire les coordonnées d'un point sur un graphique",
+        "Connaître les notions de fonction croissante, décroissante, de maximum et de minimum",
+        "Savoir interpréter une asymptote horizontale ou verticale en termes de limite",
+        "Connaître la notation des intervalles"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Du dessin au tableau : bornes, extremums, flèches, valeurs",
+      "contenu_markdown": "**Le principe.** Lue de gauche à droite, une courbe **monte** sur les intervalles où la fonction est croissante et **descend** là où elle est décroissante. Les points où le sens change sont les **extremums locaux** (sommets et creux de la courbe).\n\n**La méthode en cinq étapes.**\n\n1. **Ensemble de définition** : repérer où la courbe existe, et les éventuelles valeurs interdites (asymptotes verticales).\n2. **Points de changement** : relever les abscisses des extremums, et celles des asymptotes verticales.\n3. **Ligne des $x$** : y écrire dans l'ordre croissant les bornes de $D_f$, les abscisses des extremums et les valeurs interdites.\n4. **Flèches** : sur chaque intervalle, $\\nearrow$ si la courbe monte, $\\searrow$ si elle descend.\n5. **Valeurs** : au bout de chaque flèche, l'image (valeur d'un extremum) ou la **limite** (à une borne infinie ou au voisinage d'une valeur interdite). Une valeur interdite se signale par une **double barre** $\\Vert$.\n\n**Une valeur lue est approchée.** On écrit « par lecture graphique, $f(1) \\approx 5$ » ; si l'expression de $f$ est connue, on confirme par le calcul.\n\n**Exemple de présentation** (minimum $m$ en $a$, limites $\\ell$ aux bornes) :\n\n$$\n\\begin{array}{c|ccccc}\nx & -\\infty & & a & & +\\infty \\\\\n\\hline f(x) & \\ell & \\searrow & m & \\nearrow & \\ell\n\\end{array}\n$$\n",
+      "formule_principale": "\\text{courbe qui monte} \\Rightarrow \\nearrow \\qquad ; \\qquad \\text{courbe qui descend} \\Rightarrow \\searrow",
+      "variantes": [
+        {
+          "nom": "Ajouter la ligne du signe de f'(x)",
+          "quand_utiliser": "Quand l'énoncé demande aussi le signe de la dérivée, ou pour présenter un tableau complet",
+          "contenu_markdown": "Entre la ligne des $x$ et celle de $f(x)$, on peut ajouter la ligne de $f'(x)$ : $+$ sous une flèche montante, $-$ sous une flèche descendante, et $0$ sous l'abscisse d'un extremum où la courbe a une tangente horizontale. Cette ligne se déduit du sens de variation lu sur le graphique ; elle ne remplace pas le calcul de $f'$ quand l'expression est connue."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "enonce_markdown": "La courbe d'une fonction $f$ est tracée dans un repère orthonormé. Elle est définie sur $\\mathbb{R}$, sans coupure ; elle admet la droite $y = 1$ pour asymptote horizontale en $-\\infty$ et en $+\\infty$, en restant au-dessous ; elle atteint un unique minimum, au point $\\left(\\frac12\\,;\\,-3\\right)$. Dresser le tableau de variation de $f$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Ensemble de définition",
+          "justification": "La courbe est tracée d'un bord à l'autre sans coupure ni asymptote verticale.",
+          "resultat_markdown": "$D_f = \\mathbb{R}$ : bornes $-\\infty$ et $+\\infty$."
+        },
+        {
+          "numero": 2,
+          "action": "Repérer les points de changement",
+          "justification": "La courbe descend puis remonte : un seul changement de sens, au minimum.",
+          "resultat_markdown": "Minimum en $x = \\frac12$, de valeur $f\\left(\\frac12\\right) = -3$ (lecture graphique)."
+        },
+        {
+          "numero": 3,
+          "action": "Lire le sens de variation sur chaque intervalle",
+          "justification": "De gauche à droite : la courbe descend jusqu'au minimum, puis monte.",
+          "resultat_markdown": "$f$ décroissante sur $\\left]-\\infty\\,;\\,\\frac12\\right]$, croissante sur $\\left[\\frac12\\,;\\,+\\infty\\right[$."
+        },
+        {
+          "numero": 4,
+          "action": "Lire les limites aux bornes",
+          "justification": "L'asymptote horizontale $y = 1$ en $-\\infty$ et en $+\\infty$ traduit une limite égale à $1$.",
+          "resultat_markdown": "$\\lim\\limits_{x \\to -\\infty} f(x) = 1$ et $\\lim\\limits_{x \\to +\\infty} f(x) = 1$."
+        },
+        {
+          "numero": 5,
+          "action": "Assembler le tableau",
+          "justification": "Ligne des $x$ : $-\\infty$, $\\frac12$, $+\\infty$ ; signe de $f'$ : $-$ puis $+$, avec $0$ au minimum ; flèches et valeurs aux extrémités.",
+          "resultat_markdown": "$$\n\\begin{array}{c|ccccc}\nx & -\\infty & & \\frac{1}{2} & & +\\infty \\\\\n\\hline f'(x) & & - & 0 & + & \\\\\n\\hline f(x) & 1 & \\searrow & -3 & \\nearrow & 1\n\\end{array}\n$$"
+        }
+      ],
+      "conclusion_markdown": "$f$ décroît de $1$ (en limite) à $-3$ sur $\\left]-\\infty\\,;\\,\\frac12\\right]$, puis croît de $-3$ à $1$ (en limite) sur $\\left[\\frac12\\,;\\,+\\infty\\right[$ ; son minimum absolu est $-3$, atteint en $\\frac12$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire les intervalles de variation avec des ordonnées : « $f$ est décroissante sur $[-3\\,;\\,1]$ ».",
+          "pourquoi_faux": "Un intervalle de variation est un ensemble de valeurs de $x$. Les ordonnées $-3$ et $1$ sont des valeurs prises par $f$, elles vont au bout des flèches, pas dans les intervalles.",
+          "correction_markdown": "« $f$ est décroissante sur $\\left]-\\infty\\,;\\,\\frac12\\right]$ », avec les abscisses lues sur l'axe horizontal."
+        },
+        {
+          "erreur_markdown": "Laisser les extrémités des flèches vides, ou y écrire $\\pm\\infty$ par réflexe.",
+          "pourquoi_faux": "Une asymptote horizontale $y = 1$ signifie que la limite vaut $1$, pas l'infini. Un tableau sans ces valeurs est jugé incomplet par le barème.",
+          "correction_markdown": "Lire chaque limite sur le graphique (asymptote horizontale, branche infinie) et l'inscrire au bout de la flèche."
+        },
+        {
+          "erreur_markdown": "Tracer une seule flèche qui « traverse » une asymptote verticale.",
+          "pourquoi_faux": "La fonction n'est pas définie en cette valeur : le tableau doit être coupé par une double barre, avec les limites à gauche et à droite.",
+          "correction_markdown": "Placer la valeur interdite sur la ligne des $x$ et écrire de part et d'autre de la double barre les deux limites lues."
+        },
+        {
+          "erreur_markdown": "Confondre signe de $f$ et sens de variation : mettre $-$ là où la courbe est sous l'axe des abscisses.",
+          "pourquoi_faux": "Le signe de $f(x)$ dit si la courbe est au-dessus ou au-dessous de l'axe ; le sens de variation dit si elle monte ou descend. Une courbe peut monter en restant sous l'axe.",
+          "correction_markdown": "Pour le tableau de variation, regarder uniquement si la courbe monte ou descend, de gauche à droite."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La courbe d'une fonction $g$ est tracée sur $[-2\\,;\\,4]$. Elle part du point $(-2\\,;\\,1)$, monte jusqu'au point $(1\\,;\\,5)$, puis descend jusqu'au point $(4\\,;\\,-3)$. Dresser le tableau de variation de $g$.",
+          "solution_markdown": "**Ensemble de définition** : $[-2\\,;\\,4]$, bornes atteintes (la courbe commence et finit en des points tracés).\n\n**Changement de sens** : maximum au point $(1\\,;\\,5)$.\n\n**Sens de variation** : croissante sur $[-2\\,;\\,1]$, décroissante sur $[1\\,;\\,4]$.\n\n**Valeurs** : $g(-2) = 1$, $g(1) = 5$, $g(4) = -3$ (lecture graphique).\n\n$$\n\\begin{array}{c|ccccc}\nx & -2 & & 1 & & 4 \\\\\n\\hline g(x) & 1 & \\nearrow & 5 & \\searrow & -3\n\\end{array}\n$$\n\nLe maximum de $g$ sur $[-2\\,;\\,4]$ vaut $5$, atteint en $1$ ; le minimum vaut $-3$, atteint en $4$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La courbe d'une fonction $h$ admet la droite $x = 1$ pour asymptote verticale et la droite $y = 2$ pour asymptote horizontale en $-\\infty$ et en $+\\infty$. Sur $]-\\infty\\,;\\,1[$, la courbe monte depuis le niveau $2$ et part vers $+\\infty$ quand $x$ s'approche de $1$. Sur $]1\\,;\\,+\\infty[$, elle descend de $+\\infty$ jusqu'au point $(3\\,;\\,-1)$, puis remonte vers le niveau $2$. Dresser le tableau de variation de $h$.",
+          "solution_markdown": "**Ensemble de définition** : $\\mathbb{R} \\setminus \\{1\\}$, à cause de l'asymptote verticale.\n\n**Points à placer sur la ligne des $x$** : $-\\infty$, la valeur interdite $1$, l'abscisse $3$ du minimum, $+\\infty$.\n\n**Limites** : $\\lim\\limits_{x \\to -\\infty} h(x) = 2$ ; $\\lim\\limits_{x \\to 1^-} h(x) = +\\infty$ ; $\\lim\\limits_{x \\to 1^+} h(x) = +\\infty$ ; $\\lim\\limits_{x \\to +\\infty} h(x) = 2$.\n\n**Minimum** : $h(3) = -1$ par lecture graphique.\n\n$$\n\\begin{array}{c|ccccccc}\nx & -\\infty & & 1 & & 3 & & +\\infty \\\\\n\\hline h(x) & 2 & \\nearrow & +\\infty \\;\\Vert\\; +\\infty & \\searrow & -1 & \\nearrow & 2\n\\end{array}\n$$\n\nLa double barre sous $1$ rappelle que $h$ n'y est pas définie : $h$ est croissante sur $]-\\infty\\,;\\,1[$, décroissante sur $]1\\,;\\,3]$ et croissante sur $[3\\,;\\,+\\infty[$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La courbe de $f(x) = x^3 - 3x$ présente, par lecture graphique, un maximum au point $(-1\\,;\\,2)$ et un minimum au point $(1\\,;\\,-2)$ ; elle part de $-\\infty$ à gauche et monte vers $+\\infty$ à droite. 1) Dresser le tableau de variation conjecturé. 2) Le confirmer par le calcul de $f'(x)$. 3) En déduire le nombre de solutions de l'équation $f(x) = 1$.",
+          "solution_markdown": "**1) Tableau conjecturé.** La courbe monte jusqu'à $(-1\\,;\\,2)$, descend jusqu'à $(1\\,;\\,-2)$, puis remonte :\n\n$$\n\\begin{array}{c|ccccccc}\nx & -\\infty & & -1 & & 1 & & +\\infty \\\\\n\\hline f'(x) & & + & 0 & - & 0 & + & \\\\\n\\hline f(x) & -\\infty & \\nearrow & 2 & \\searrow & -2 & \\nearrow & +\\infty\n\\end{array}\n$$\n\n**2) Confirmation.** $f'(x) = 3x^2 - 3 = 3(x^2 - 1) = 3(x - 1)(x + 1)$. Ce trinôme est positif à l'extérieur de ses racines $-1$ et $1$, négatif entre elles : les variations lues sont exactes. Les valeurs aussi : $f(-1) = (-1)^3 - 3 \\times (-1) = -1 + 3 = 2$ et $f(1) = 1 - 3 = -2$ ✔\n\n**3) Équation $f(x) = 1$.** On examine chaque intervalle de monotonie :\n\n- sur $]-\\infty\\,;\\,-1]$, $f$ croît de $-\\infty$ à $2$ : la valeur $1$ y est atteinte une fois ;\n- sur $[-1\\,;\\,1]$, $f$ décroît de $2$ à $-2$ : la valeur $1$ y est atteinte une fois ;\n- sur $[1\\,;\\,+\\infty[$, $f$ croît de $-2$ à $+\\infty$ : la valeur $1$ y est atteinte une fois.\n\nL'équation $f(x) = 1$ admet donc **trois** solutions réelles."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Lis la courbe de gauche à droite : elle monte, flèche montante ; elle descend, flèche descendante. Les sommets et les creux séparent les intervalles.",
+        "La ligne des $x$ contient des abscisses, le bout des flèches contient des valeurs de $f$ ou des limites : ne mélange jamais les deux axes.",
+        "Une asymptote horizontale $y = \\ell$ te donne une limite $\\ell$, une asymptote verticale une double barre avec deux limites.",
+        "Une valeur lue s'écrit avec « ≈ » ou « par lecture graphique » ; si tu connais $f$, confirme par le calcul.",
+        "Au Probatoire (séries C, D, E, mais aussi A), cette question revient dès qu'une courbe est fournie : le tableau sert ensuite à résoudre des équations $f(x) = k$ et à trouver des extremums."
+      ]
+    }
+  ]
 }

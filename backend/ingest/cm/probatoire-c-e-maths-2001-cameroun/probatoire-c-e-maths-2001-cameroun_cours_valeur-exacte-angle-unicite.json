@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Trigonométrie - équations trigonométriques",
+    "duree_estimee_min": 45,
+    "tags": [
+      "équations trigonométriques",
+      "valeur exacte",
+      "unicité de la solution",
+      "cercle trigonométrique",
+      "formules de duplication"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,134 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Ta calculatrice affirme que $\\cos 72° \\approx 0{,}309$, et que $\\dfrac{\\sqrt5 - 1}{4} \\approx 0{,}309$ aussi. Deux valeurs approchées qui coïncident ne prouvent rien : il faut **démontrer** que l'angle vaut exactement $\\dfrac{2\\pi}{5}$. La méthode employée au Probatoire est toujours la même : montrer que l'angle cherché est solution d'une équation qui n'a qu'**une seule** solution dans un intervalle où l'on sait le situer. Ce cours décompose ce raisonnement en trois étapes que tu pourras réutiliser telles quelles."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir résoudre les équations $\\cos a = \\cos b$ et $\\sin a = \\sin b$",
+        "Connaître les formules de duplication ($\\cos 2a = 2\\cos^2 a - 1$) et les formules d'addition",
+        "Savoir situer un angle sur le cercle trigonométrique à partir du signe de son cosinus et de son sinus",
+        "Savoir encadrer une expression du type $\\dfrac{2k\\pi}{5}$ pour trouver les entiers $k$ qui conviennent"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le raisonnement par unicité en trois étapes",
+      "contenu_markdown": "**Situation.** On connaît un angle $\\alpha$ seulement par des relations (une valeur de cosinus, une égalité entre $\\cos 2\\alpha$ et $\\cos 3\\alpha$...) et on veut sa valeur exacte.\n\n**Le raisonnement.**\n\n1. **$\\alpha$ vérifie une équation $(E)$.** On l'établit à partir des données (souvent par un calcul fait à une question précédente).\n2. **$\\alpha$ appartient à un intervalle $I$.** On le justifie par le signe de $\\cos\\alpha$ et de $\\sin\\alpha$ (position sur le cercle trigonométrique), en vérifiant que les bornes sont exclues si $I$ est ouvert.\n3. **$(E)$ a une unique solution $x_0$ dans $I$.** On résout $(E)$ sur $I$.\n\n**Conclusion :** $\\alpha = x_0$. Les trois étapes sont indispensables : sans l'étape 2, $\\alpha$ pourrait être une autre solution de $(E)$ ; sans l'unicité de l'étape 3, on ne pourrait pas choisir.\n\n**L'outil de l'étape 3.** Pour tous réels $a$ et $b$ :\n\n$$\\cos a = \\cos b \\iff a = b + 2k\\pi \\ \\text{ ou } \\ a = -b + 2k\\pi \\qquad (k \\in \\mathbb{Z})$$\n\n$$\\sin a = \\sin b \\iff a = b + 2k\\pi \\ \\text{ ou } \\ a = \\pi - b + 2k\\pi \\qquad (k \\in \\mathbb{Z})$$\n\nOn écrit les deux familles, puis on cherche, par encadrement, les entiers $k$ pour lesquels la solution tombe dans $I$.",
+      "formule_principale": "\\cos a = \\cos b \\iff a = b + 2k\\pi \\ \\text{ou}\\ a = -b + 2k\\pi",
+      "variantes": [
+        {
+          "nom": "Quand l'équation mélange sinus et cosinus",
+          "quand_utiliser": "Équation du type $\\sin 3x = \\cos 2x$",
+          "contenu_markdown": "On se ramène à une seule fonction avec $\\cos u = \\sin\\left(\\dfrac\\pi2 - u\\right)$ ou $\\sin u = \\cos\\left(\\dfrac\\pi2 - u\\right)$. Par exemple $\\sin 3x = \\cos 2x \\iff \\sin 3x = \\sin\\left(\\dfrac\\pi2 - 2x\\right)$, puis on applique la règle sur $\\sin a = \\sin b$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "On sait que $\\alpha$ est une mesure de l'angle $\\left(\\vec i,\\overrightarrow{OM}\\right)$, où $M$ est un point du cercle trigonométrique d'**ordonnée positive** tel que $\\cos\\alpha = \\dfrac{\\sqrt5-1}{4}$, et l'on a établi que $\\cos 2\\alpha = \\cos 3\\alpha = -\\dfrac{1+\\sqrt5}{4}$. Résoudre dans $\\left]0\\,;\\,\\dfrac\\pi2\\right[$ l'équation $\\cos 2x = \\cos 3x$, puis en déduire la valeur exacte de $\\alpha$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire les deux familles de solutions de $\\cos 3x = \\cos 2x$",
+          "justification": "On applique $\\cos a = \\cos b \\iff a = b + 2k\\pi$ ou $a = -b + 2k\\pi$, avec $a = 3x$ et $b = 2x$.",
+          "resultat_markdown": "$3x = 2x + 2k\\pi \\iff x = 2k\\pi$ ; $\\quad 3x = -2x + 2k\\pi \\iff 5x = 2k\\pi \\iff x = \\dfrac{2k\\pi}{5}$"
+        },
+        {
+          "numero": 2,
+          "action": "Chercher les solutions de la première famille dans $\\left]0\\,;\\,\\frac\\pi2\\right[$",
+          "justification": "$0 < 2k\\pi < \\frac\\pi2 \\iff 0 < k < \\frac14$ : aucun entier ne convient.",
+          "resultat_markdown": "Aucune solution dans cette famille."
+        },
+        {
+          "numero": 3,
+          "action": "Chercher les solutions de la seconde famille dans $\\left]0\\,;\\,\\frac\\pi2\\right[$",
+          "justification": "$0 < \\frac{2k\\pi}{5} < \\frac\\pi2 \\iff 0 < \\frac{2k}{5} < \\frac12 \\iff 0 < k < \\frac54$ : seul $k = 1$ convient.",
+          "resultat_markdown": "Unique solution : $x = \\dfrac{2\\pi}{5}$"
+        },
+        {
+          "numero": 4,
+          "action": "Établir que $\\alpha$ vérifie l'équation",
+          "justification": "C'est le résultat admis de l'énoncé (établi à la question précédente de l'épreuve).",
+          "resultat_markdown": "$\\cos 2\\alpha = \\cos 3\\alpha$"
+        },
+        {
+          "numero": 5,
+          "action": "Situer $\\alpha$ dans $\\left]0\\,;\\,\\frac\\pi2\\right[$",
+          "justification": "$\\cos\\alpha = \\frac{\\sqrt5-1}{4} > 0$ car $\\sqrt5 > 1$, et $\\sin\\alpha > 0$ car $M$ a une ordonnée positive : $M$ est dans le premier quadrant. Les bornes sont exclues : $\\alpha \\neq 0$ car $\\cos\\alpha \\neq 1$, et $\\alpha \\neq \\frac\\pi2$ car $\\cos\\alpha \\neq 0$.",
+          "resultat_markdown": "On peut choisir $\\alpha \\in \\left]0\\,;\\,\\dfrac\\pi2\\right[$"
+        },
+        {
+          "numero": 6,
+          "action": "Conclure par unicité",
+          "justification": "$\\alpha$ est une solution de l'équation dans $\\left]0\\,;\\,\\frac\\pi2\\right[$, et cette équation n'en a qu'une dans cet intervalle.",
+          "resultat_markdown": "$\\alpha = \\dfrac{2\\pi}{5}$"
+        }
+      ],
+      "conclusion_markdown": "$\\alpha = \\dfrac{2\\pi}{5}$, et l'on a démontré au passage la valeur exacte $\\cos\\dfrac{2\\pi}{5} = \\dfrac{\\sqrt5-1}{4}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Conclure dès que $\\alpha$ vérifie l'équation : « $\\cos 2\\alpha = \\cos 3\\alpha$, donc $\\alpha = \\frac{2\\pi}{5}$ ».",
+          "pourquoi_faux": "Sur $\\mathbb{R}$, l'équation a une infinité de solutions ($0$, $\\frac{2\\pi}{5}$, $\\frac{4\\pi}{5}$, $2\\pi$...). Le fait que $\\alpha$ en soit une ne dit pas laquelle.",
+          "correction_markdown": "Toujours ajouter les deux autres étapes : situer $\\alpha$ dans un intervalle, puis montrer qu'il n'y a qu'une solution dans cet intervalle."
+        },
+        {
+          "erreur_markdown": "Oublier la seconde famille : de $\\cos 3x = \\cos 2x$, ne garder que $3x = 2x + 2k\\pi$.",
+          "pourquoi_faux": "On n'obtient alors que $x = 2k\\pi$, qui n'a aucune valeur dans $\\left]0\\,;\\,\\frac\\pi2\\right[$ : on conclut à tort que l'équation n'a pas de solution.",
+          "correction_markdown": "Écrire systématiquement les deux familles $a = b + 2k\\pi$ **et** $a = -b + 2k\\pi$."
+        },
+        {
+          "erreur_markdown": "Affirmer $\\alpha \\in \\left]0\\,;\\,\\frac\\pi2\\right[$ sans justification, ou en s'appuyant sur le seul signe du cosinus.",
+          "pourquoi_faux": "$\\cos\\alpha > 0$ place seulement $\\alpha$ dans $\\left]-\\frac\\pi2\\,;\\,\\frac\\pi2\\right[$ (modulo $2\\pi$). Sans le signe du sinus, $\\alpha$ pourrait valoir $-\\frac{2\\pi}{5}$.",
+          "correction_markdown": "Citer les deux signes : celui de $\\cos\\alpha$ et celui de $\\sin\\alpha$ (ici l'ordonnée positive de $M$, donnée par l'énoncé)."
+        },
+        {
+          "erreur_markdown": "« Démontrer » la valeur avec la calculatrice : $\\cos 72° \\approx 0{,}309 \\approx \\frac{\\sqrt5-1}{4}$.",
+          "pourquoi_faux": "Une égalité de valeurs approchées ne prouve pas une égalité exacte : deux nombres différents peuvent avoir les mêmes décimales affichées.",
+          "correction_markdown": "Utiliser la calculatrice comme contrôle, jamais comme preuve."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "a) Résoudre dans $]0\\,;\\,\\pi[$ l'équation $\\cos 2x = \\cos x$. b) Le réel $\\beta \\in \\,]0\\,;\\,\\pi[$ vérifie $2\\cos^2\\beta - \\cos\\beta - 1 = 0$. En déduire la valeur exacte de $\\beta$.",
+          "solution_markdown": "**a)** $\\cos 2x = \\cos x \\iff 2x = x + 2k\\pi$ ou $2x = -x + 2k\\pi$, soit $x = 2k\\pi$ ou $x = \\dfrac{2k\\pi}{3}$.\n\n- $0 < 2k\\pi < \\pi \\iff 0 < k < \\frac12$ : aucun entier.\n- $0 < \\frac{2k\\pi}{3} < \\pi \\iff 0 < k < \\frac32$ : seul $k = 1$, d'où $x = \\dfrac{2\\pi}{3}$.\n\nL'équation a une unique solution dans $]0\\,;\\,\\pi[$ : $\\dfrac{2\\pi}{3}$.\n\n**b)** $2\\cos^2\\beta - 1 = \\cos 2\\beta$, donc l'égalité s'écrit $\\cos 2\\beta - \\cos\\beta = 0$, soit $\\cos 2\\beta = \\cos\\beta$. Ainsi $\\beta$ est solution de l'équation du a), et $\\beta \\in \\,]0\\,;\\,\\pi[$. Par unicité, $\\beta = \\dfrac{2\\pi}{3}$.\n\n**Contrôle.** $\\cos\\frac{2\\pi}{3} = -\\frac12$ et $2 \\times \\frac14 - \\left(-\\frac12\\right) - 1 = \\frac12 + \\frac12 - 1 = 0$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "a) Résoudre dans $\\left]0\\,;\\,\\dfrac\\pi2\\right[$ l'équation $\\sin 3x = \\cos 2x$. b) On admet qu'un réel $\\gamma$ de $\\left]0\\,;\\,\\dfrac\\pi2\\right[$ vérifie $\\sin 3\\gamma = \\cos 2\\gamma$. Déterminer $\\gamma$.",
+          "solution_markdown": "**a)** On écrit $\\cos 2x = \\sin\\left(\\dfrac\\pi2 - 2x\\right)$. L'équation devient $\\sin 3x = \\sin\\left(\\dfrac\\pi2 - 2x\\right)$, donc :\n\n- $3x = \\dfrac\\pi2 - 2x + 2k\\pi \\iff 5x = \\dfrac\\pi2 + 2k\\pi \\iff x = \\dfrac{\\pi}{10} + \\dfrac{2k\\pi}{5}$ ;\n- $3x = \\pi - \\left(\\dfrac\\pi2 - 2x\\right) + 2k\\pi \\iff 3x = \\dfrac\\pi2 + 2x + 2k\\pi \\iff x = \\dfrac\\pi2 + 2k\\pi$.\n\nPremière famille : $0 < \\frac{\\pi}{10} + \\frac{2k\\pi}{5} < \\frac\\pi2 \\iff 0 < 1 + 4k < 5 \\iff -\\frac14 < k < 1$ : seul $k = 0$, d'où $x = \\dfrac{\\pi}{10}$.\n\nSeconde famille : $0 < \\frac\\pi2 + 2k\\pi < \\frac\\pi2 \\iff -\\frac14 < k < 0$ : aucun entier.\n\nUnique solution dans $\\left]0\\,;\\,\\frac\\pi2\\right[$ : $\\dfrac{\\pi}{10}$.\n\n**b)** $\\gamma$ est une solution de l'équation et appartient à $\\left]0\\,;\\,\\frac\\pi2\\right[$ ; par unicité, $\\gamma = \\dfrac{\\pi}{10}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $\\theta \\in [0\\,;\\,\\pi]$ tel que $\\cos\\theta = \\dfrac{1+\\sqrt5}{4}$. On rappelle que $\\cos 3a = 4\\cos^3 a - 3\\cos a$. a) Calculer $\\cos 2\\theta$ et $\\cos 3\\theta$, et vérifier que $\\cos 3\\theta = -\\cos 2\\theta$. b) Résoudre dans $\\left]0\\,;\\,\\dfrac\\pi2\\right[$ l'équation $\\cos 3x = \\cos(\\pi - 2x)$. c) En déduire la valeur exacte de $\\theta$.",
+          "solution_markdown": "Notons $c = \\dfrac{1+\\sqrt5}{4}$.\n\n**a)** $c^2 = \\dfrac{(1+\\sqrt5)^2}{16} = \\dfrac{1 + 2\\sqrt5 + 5}{16} = \\dfrac{6+2\\sqrt5}{16} = \\dfrac{3+\\sqrt5}{8}$.\n\n$$\\cos 2\\theta = 2c^2 - 1 = \\frac{3+\\sqrt5}{4} - 1 = \\frac{\\sqrt5 - 1}{4}$$\n\n$(1+\\sqrt5)^3 = (1+\\sqrt5)(6+2\\sqrt5) = 6 + 2\\sqrt5 + 6\\sqrt5 + 10 = 16 + 8\\sqrt5$, donc $c^3 = \\dfrac{16+8\\sqrt5}{64} = \\dfrac{2+\\sqrt5}{8}$.\n\n$$\\cos 3\\theta = 4c^3 - 3c = \\frac{2+\\sqrt5}{2} - \\frac{3+3\\sqrt5}{4} = \\frac{4 + 2\\sqrt5 - 3 - 3\\sqrt5}{4} = \\frac{1-\\sqrt5}{4}$$\n\nOn a bien $\\cos 3\\theta = -\\dfrac{\\sqrt5-1}{4} = -\\cos 2\\theta$.\n\n**b)** $\\cos 3x = \\cos(\\pi - 2x) \\iff 3x = \\pi - 2x + 2k\\pi$ ou $3x = -\\pi + 2x + 2k\\pi$, soit $x = \\dfrac\\pi5 + \\dfrac{2k\\pi}{5}$ ou $x = -\\pi + 2k\\pi$.\n\n- $0 < \\frac\\pi5 + \\frac{2k\\pi}{5} < \\frac\\pi2 \\iff 0 < 2 + 4k < 5 \\iff -\\frac12 < k < \\frac34$ : seul $k = 0$, d'où $x = \\dfrac\\pi5$.\n- $0 < -\\pi + 2k\\pi < \\frac\\pi2 \\iff \\frac12 < k < \\frac34$ : aucun entier.\n\nUnique solution : $\\dfrac{\\pi}{5}$.\n\n**c)** Comme $\\cos(\\pi - 2\\theta) = -\\cos 2\\theta$, le a) donne $\\cos 3\\theta = \\cos(\\pi - 2\\theta)$ : $\\theta$ vérifie l'équation du b).\n\nSituons $\\theta$ : $\\theta \\in [0\\,;\\,\\pi]$ et $\\cos\\theta > 0$, donc $\\theta \\in \\left[0\\,;\\,\\frac\\pi2\\right[$. De plus $\\sqrt5 < 3$ donne $c < 1$, donc $\\theta \\neq 0$. Ainsi $\\theta \\in \\left]0\\,;\\,\\frac\\pi2\\right[$, et par unicité :\n\n$$\\theta = \\frac{\\pi}{5}, \\qquad \\text{d'où} \\qquad \\cos\\frac\\pi5 = \\frac{1+\\sqrt5}{4}$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une valeur exacte d'angle se démontre en trois temps : l'angle vérifie une équation, il appartient à un intervalle, et l'équation n'a qu'une solution dans cet intervalle.",
+        "Pour résoudre $\\cos a = \\cos b$, écris toujours les **deux** familles $a = b + 2k\\pi$ et $a = -b + 2k\\pi$.",
+        "Trouve les entiers $k$ par un encadrement écrit, jamais en essayant quelques valeurs au hasard.",
+        "Pour situer un angle, cite le signe de son cosinus **et** celui de son sinus, et justifie que les bornes d'un intervalle ouvert sont exclues.",
+        "Au Probatoire C et E, ce raisonnement conclut souvent un problème de trigonométrie ou de géométrie (pentagone régulier, $\\cos\\frac{2\\pi}{5}$, $\\cos\\frac\\pi5$) : c'est la question qui rapporte les derniers points."
+      ]
+    }
+  ]
 }

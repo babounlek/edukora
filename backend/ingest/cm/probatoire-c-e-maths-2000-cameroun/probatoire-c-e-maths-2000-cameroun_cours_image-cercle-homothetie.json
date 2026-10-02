@@ -6,9 +6,14 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Transformations du plan - homothéties",
+    "duree_estimee_min": 35,
+    "tags": [
+      "homothétie",
+      "image d'un cercle",
+      "rapport",
+      "construction géométrique"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +30,128 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un photographe qui agrandit une photo ne déforme pas les cercles : un cercle reste un cercle, simplement plus grand. L'homothétie est l'outil mathématique de ce zoom. Pour construire l'image d'un cercle, inutile de transformer ses points un par un : deux informations suffisent, l'image du centre et le nouveau rayon. Encore faut-il placer le bon centre, du bon côté, et ne pas oublier qu'un rayon ne peut pas être négatif."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition d'une homothétie : $\\overrightarrow{\\Omega M'} = k\\,\\overrightarrow{\\Omega M}$, de centre $\\Omega$ et de rapport $k \\neq 0$",
+        "Savoir construire le point $M'$ tel que $\\overrightarrow{\\Omega M'} = k\\,\\overrightarrow{\\Omega M}$, y compris pour $k < 0$",
+        "Savoir qu'un cercle est déterminé par son centre et son rayon",
+        "Connaître la valeur absolue d'un réel"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Image d'un cercle : image du centre, rayon multiplié par |k|",
+      "contenu_markdown": "**La propriété.** Soit $h$ l'homothétie de centre $\\Omega$ et de rapport $k$ ($k \\neq 0$). Une homothétie multiplie toutes les distances par $|k|$ : pour tous points $M$, $N$ d'images $M'$, $N'$, on a $M'N' = |k|\\,MN$. Par conséquent, l'image du cercle $(\\mathcal{C})$ de centre $I$ et de rayon $r$ est le cercle $(\\mathcal{C}')$ :\n\n$$h\\big(\\mathcal{C}(I\\,;\\,r)\\big) = \\mathcal{C}\\big(I'\\,;\\,|k|\\,r\\big) \\qquad \\text{où} \\qquad I' = h(I),\\ \\ \\overrightarrow{\\Omega I'} = k\\,\\overrightarrow{\\Omega I}$$\n\n*Pourquoi.* $M \\in (\\mathcal{C}) \\iff IM = r \\iff I'M' = |k|\\,IM = |k|\\,r \\iff M' \\in \\mathcal{C}(I'\\,;\\,|k|r)$.\n\n**Méthode de construction.**\n\n1. Construire $I' = h(I)$ : sur la droite $(\\Omega I)$, du **même côté** que $I$ par rapport à $\\Omega$ si $k > 0$, du côté **opposé** si $k < 0$, à la distance $|k| \\times \\Omega I$ de $\\Omega$.\n2. Calculer le rayon $r' = |k|\\,r$.\n3. Tracer le cercle de centre $I'$ et de rayon $r'$.\n\n**Cas particulier fréquent.** Si le centre du cercle est le centre de l'homothétie ($I = \\Omega$), alors $I' = \\Omega$ (le centre d'une homothétie est invariant) : les deux cercles sont **concentriques**, de rayons $r$ et $|k|\\,r$.",
+      "formule_principale": "h(\\Omega, k)\\big(\\mathcal{C}(I\\,;\\,r)\\big) = \\mathcal{C}\\big(h(I)\\,;\\,|k|\\,r\\big)",
+      "variantes": [
+        {
+          "nom": "Construction par un point du cercle",
+          "quand_utiliser": "Pour contrôler la construction, ou quand le rayon n'est pas connu numériquement",
+          "contenu_markdown": "On choisit un point $M$ de $(\\mathcal{C})$ facile à transformer (par exemple sur la droite $(\\Omega I)$), on construit $M' = h(M)$, puis on trace le cercle de centre $I'$ passant par $M'$. Comme $M'$ est sur $(\\mathcal{C}')$, ce cercle est le bon, et la longueur $I'M'$ doit valoir $|k|\\,r$ : c'est un contrôle immédiat."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "enonce_markdown": "$ABCD$ est un carré, $G$ le milieu de $[AD]$. On a établi que $(\\mathcal{C})$ est le cercle de centre $G$ et de rayon $\\dfrac{AD}{4}$, et que $f$ est l'homothétie de centre $G$ et de rapport $-2$. Construire $(\\mathcal{C})$, puis déterminer et construire son image $(\\mathcal{C}')$ par $f$ (on prendra $AD = 5$ cm pour la construction).",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Construire $(\\mathcal{C})$",
+          "justification": "Centre $G$, milieu de $[AD]$ ; rayon $\\frac{AD}{4} = \\frac{5}{4}$.",
+          "resultat_markdown": "Cercle de centre $G$ et de rayon $1{,}25$ cm."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer l'image du centre",
+          "justification": "Le centre du cercle est aussi le centre de l'homothétie : $\\overrightarrow{GG'} = -2\\,\\overrightarrow{GG} = \\vec{0}$.",
+          "resultat_markdown": "$G' = G$ : le centre est invariant."
+        },
+        {
+          "numero": 3,
+          "action": "Calculer le rayon de l'image",
+          "justification": "Une homothétie de rapport $k$ multiplie les longueurs par $|k|$, ici $|-2| = 2$.",
+          "resultat_markdown": "$r' = 2 \\times \\dfrac{AD}{4} = \\dfrac{AD}{2}$, soit $2{,}5$ cm."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure et repérer une propriété utile pour tracer",
+          "justification": "$G$ étant le milieu de $[AD]$, on a $GA = GD = \\frac{AD}{2} = r'$ : les points $A$ et $D$ sont sur $(\\mathcal{C}')$.",
+          "resultat_markdown": "$(\\mathcal{C}')$ est le cercle de centre $G$ et de rayon $\\dfrac{AD}{2}$ : c'est le cercle de diamètre $[AD]$, concentrique à $(\\mathcal{C})$."
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler avec un point",
+          "justification": "Prenons $M$ le point de $(\\mathcal{C})$ situé sur $[GD]$, à $1{,}25$ cm de $G$. Son image vérifie $\\overrightarrow{GM'} = -2\\,\\overrightarrow{GM}$ : elle est sur la demi-droite opposée, du côté de $A$, à $2{,}5$ cm de $G$.",
+          "resultat_markdown": "$M' = A$, qui est bien sur $(\\mathcal{C}')$ ✔"
+        }
+      ],
+      "conclusion_markdown": "$(\\mathcal{C}')$ est le cercle de centre $G$ et de rayon $\\dfrac{AD}{2}$, c'est-à-dire le cercle de diamètre $[AD]$ : on le trace au compas en piquant en $G$ avec l'écartement $GA$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $r' = k\\,r = -2 \\times \\dfrac{AD}{4} = -\\dfrac{AD}{2}$.",
+          "pourquoi_faux": "Un rayon est une longueur, donc positif. L'homothétie multiplie les longueurs par $|k|$, pas par $k$ : le signe de $k$ agit sur la **position** des points (côté de $\\Omega$), pas sur les longueurs.",
+          "correction_markdown": "$r' = |k|\\,r = 2 \\times \\dfrac{AD}{4} = \\dfrac{AD}{2}$."
+        },
+        {
+          "erreur_markdown": "Prendre comme centre de $(\\mathcal{C}')$ le centre $\\Omega$ de l'homothétie, alors que le cercle est centré en un autre point $I$.",
+          "pourquoi_faux": "Le centre de l'image est l'**image du centre**, $I' = h(I)$. Il ne coïncide avec $\\Omega$ que dans le cas particulier $I = \\Omega$.",
+          "correction_markdown": "Toujours construire $I'$ par $\\overrightarrow{\\Omega I'} = k\\,\\overrightarrow{\\Omega I}$ ; conclure « concentriques » seulement si $I = \\Omega$."
+        },
+        {
+          "erreur_markdown": "Pour $k < 0$, placer $I'$ du même côté que $I$ par rapport à $\\Omega$.",
+          "pourquoi_faux": "$\\overrightarrow{\\Omega I'} = k\\,\\overrightarrow{\\Omega I}$ avec $k < 0$ : les vecteurs sont de sens contraires, donc $I'$ est de l'autre côté de $\\Omega$.",
+          "correction_markdown": "Pour $k < 0$ : $I'$ sur la demi-droite opposée à $[\\Omega I)$, à la distance $|k|\\,\\Omega I$ de $\\Omega$."
+        },
+        {
+          "erreur_markdown": "Écrire $\\overrightarrow{I\\Omega'} = k\\,\\overrightarrow{I\\Omega}$ (vecteurs partant du mauvais point).",
+          "pourquoi_faux": "Dans la définition, les deux vecteurs partent du **centre de l'homothétie** : $\\overrightarrow{\\Omega M'} = k\\,\\overrightarrow{\\Omega M}$.",
+          "correction_markdown": "Écrire systématiquement $\\overrightarrow{\\Omega I'} = k\\,\\overrightarrow{\\Omega I}$, origine au centre $\\Omega$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$(\\mathcal{C})$ est le cercle de centre $\\Omega$ et de rayon $3$ cm. Déterminer l'image de $(\\mathcal{C})$ par l'homothétie $h$ de centre $\\Omega$ et de rapport $\\dfrac{1}{3}$.",
+          "solution_markdown": "**Le centre.** Le centre $\\Omega$ du cercle est le centre de l'homothétie, donc invariant : $h(\\Omega) = \\Omega$.\n\n**Le rayon.** $r' = \\left|\\dfrac13\\right| \\times 3 = 1$ cm.\n\n**Conclusion.** $h(\\mathcal{C})$ est le cercle de centre $\\Omega$ et de rayon $1$ cm, concentrique à $(\\mathcal{C})$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un repère orthonormé, on donne $\\Omega(1\\,;\\,2)$ et le cercle $(\\mathcal{C})$ de centre $I(3\\,;\\,1)$ et de rayon $2$. Déterminer le centre, le rayon et une équation de l'image $(\\mathcal{C}')$ de $(\\mathcal{C})$ par l'homothétie $h$ de centre $\\Omega$ et de rapport $-3$.",
+          "solution_markdown": "**Image du centre.** $\\overrightarrow{\\Omega I} = (3 - 1\\,;\\,1 - 2) = (2\\,;\\,-1)$. Le point $I'$ vérifie :\n\n$$\\overrightarrow{\\Omega I'} = -3\\,\\overrightarrow{\\Omega I} = (-6\\,;\\,3)$$\n\ndonc $x_{I'} = 1 + (-6) = -5$ et $y_{I'} = 2 + 3 = 5$ : $I'(-5\\,;\\,5)$.\n\n**Rayon.** $r' = |-3| \\times 2 = 6$.\n\n**Équation.** Le cercle de centre $(a\\,;\\,b)$ et de rayon $R$ a pour équation $(x - a)^2 + (y - b)^2 = R^2$ :\n\n$$(\\mathcal{C}') : (x + 5)^2 + (y - 5)^2 = 36$$\n\n*Contrôle* : $I'$ est bien du côté opposé à $I$ par rapport à $\\Omega$ ($I$ est à droite de $\\Omega$, $I'$ à gauche), conformément à $k < 0$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un repère orthonormé, $(\\mathcal{C})$ est le cercle de centre $I(0\\,;\\,0)$ et de rayon $2$, $(\\mathcal{C}')$ celui de centre $I'(8\\,;\\,0)$ et de rayon $6$. Déterminer toutes les homothéties qui transforment $(\\mathcal{C})$ en $(\\mathcal{C}')$ (centre et rapport).",
+          "solution_markdown": "**Le rapport.** Une homothétie $h$ de rapport $k$ qui envoie $(\\mathcal{C})$ sur $(\\mathcal{C}')$ envoie le centre sur le centre ($h(I) = I'$) et multiplie le rayon par $|k|$ :\n\n$$|k| \\times 2 = 6 \\qquad \\Longrightarrow \\qquad |k| = 3 \\qquad \\Longrightarrow \\qquad k = 3 \\ \\text{ou} \\ k = -3$$\n\n**Le centre $\\Omega$** vérifie $\\overrightarrow{\\Omega I'} = k\\,\\overrightarrow{\\Omega I}$. Il est sur la droite $(II')$, l'axe des abscisses : notons $\\Omega(x\\,;\\,0)$. En abscisses : $8 - x = k\\,(0 - x) = -kx$.\n\n*Cas $k = 3$* : $8 - x = -3x$, soit $2x = -8$, donc $x = -4$ : $\\Omega_1(-4\\,;\\,0)$.\nContrôle : $\\overrightarrow{\\Omega_1 I} = (4\\,;\\,0)$, $\\overrightarrow{\\Omega_1 I'} = (12\\,;\\,0) = 3\\,\\overrightarrow{\\Omega_1 I}$ ✔\n\n*Cas $k = -3$* : $8 - x = 3x$, soit $4x = 8$, donc $x = 2$ : $\\Omega_2(2\\,;\\,0)$.\nContrôle : $\\overrightarrow{\\Omega_2 I} = (-2\\,;\\,0)$, $\\overrightarrow{\\Omega_2 I'} = (6\\,;\\,0) = -3\\,\\overrightarrow{\\Omega_2 I}$ ✔\n\n**Conclusion.** Deux homothéties conviennent : celle de centre $(-4\\,;\\,0)$ et de rapport $3$, et celle de centre $(2\\,;\\,0)$ et de rapport $-3$. Le premier centre est à l'extérieur du segment $[II']$, le second à l'intérieur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'image d'un cercle par une homothétie est un cercle : son centre est l'image du centre, son rayon est multiplié par $|k|$.",
+        "Le signe de $k$ décide du côté où tombe l'image, jamais de la longueur : un rayon négatif n'existe pas.",
+        "Quand le cercle est centré au centre de l'homothétie, ce centre est invariant et les deux cercles sont concentriques.",
+        "Contrôle ta construction avec un point : l'image d'un point du cercle doit tomber sur le cercle image.",
+        "Au Probatoire C et E, cette construction clôt souvent une partie « barycentre, ensemble de points, homothétie » : on identifie d'abord un cercle par réduction vectorielle, puis on le transforme."
+      ]
+    }
+  ]
 }

@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Transformations du plan - homothéties et translations",
+    "duree_estimee_min": 40,
+    "tags": [
+      "homothétie",
+      "barycentre",
+      "relation de Chasles",
+      "translation",
+      "transformations du plan"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,123 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une application du plan définie par une formule comme $\\overrightarrow{GM'} = 2\\overrightarrow{MA} - \\overrightarrow{MB} + \\overrightarrow{MC}$ ne dit pas tout de suite ce qu'elle fait. Pour la reconnaître, il faut la réécrire sous une forme caractéristique, $\\overrightarrow{\\Omega M'} = k\\,\\overrightarrow{\\Omega M}$ pour une homothétie ou $\\overrightarrow{MM'} = \\vec u$ pour une translation. Ce cours t'apprend à mener cette réécriture avec les deux outils qui suffisent presque toujours : le barycentre et la relation de Chasles, sans perdre le signe qui décide de tout."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la relation de Chasles et la règle $\\overrightarrow{MG} = -\\overrightarrow{GM}$",
+        "Connaître la définition du barycentre de points pondérés et la réduction $\\sum \\alpha_i\\overrightarrow{MA_i} = \\left(\\sum\\alpha_i\\right)\\overrightarrow{MG}$",
+        "Connaître la définition d'une homothétie et d'une translation",
+        "Savoir reconnaître un milieu comme barycentre de deux points de même coefficient"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ramener la relation à une forme caractéristique",
+      "contenu_markdown": "**Formes caractéristiques à reconnaître.**\n\n| Relation | Transformation |\n|---|---|\n| $\\overrightarrow{\\Omega M'} = k\\,\\overrightarrow{\\Omega M}$, $k \\neq 0$, $k \\neq 1$ | homothétie de centre $\\Omega$ et de rapport $k$ |\n| $\\overrightarrow{\\Omega M'} = -\\overrightarrow{\\Omega M}$ | symétrie centrale de centre $\\Omega$ (homothétie de rapport $-1$) |\n| $\\overrightarrow{MM'} = \\vec u$ (vecteur constant) | translation de vecteur $\\vec u$ |\n\n**Outil 1 : réduire une somme pondérée.** Si $\\alpha_1 + \\dots + \\alpha_n \\neq 0$ et si $G$ est le barycentre de $\\{(A_1;\\alpha_1),\\dots,(A_n;\\alpha_n)\\}$, alors pour tout point $M$ :\n\n$$\\alpha_1\\overrightarrow{MA_1} + \\dots + \\alpha_n\\overrightarrow{MA_n} = (\\alpha_1 + \\dots + \\alpha_n)\\,\\overrightarrow{MG}$$\n\nSi la somme des coefficients est **nulle**, cette somme est un vecteur **constant** (indépendant de $M$), qu'on calcule en introduisant un point fixe par la relation de Chasles.\n\n**Outil 2 : changer d'origine et retourner les vecteurs.** On fait apparaître le centre $\\Omega$ par la relation de Chasles, $\\overrightarrow{\\Omega M'} = \\overrightarrow{\\Omega M} + \\overrightarrow{MM'}$, et on retourne les vecteurs mal orientés avec $\\overrightarrow{M\\Omega} = -\\overrightarrow{\\Omega M}$.\n\n**Méthode.**\n\n1. Réduire la somme pondérée (outil 1).\n2. Écrire tout en fonction de vecteurs **issus du même point** $\\Omega$ (outil 2).\n3. Reconnaître la forme caractéristique et nommer la transformation avec ses éléments caractéristiques.",
+      "formule_principale": "\\overrightarrow{\\Omega M'} = k\\,\\overrightarrow{\\Omega M}",
+      "variantes": [
+        {
+          "nom": "Relation donnée sous la forme MM' = ...",
+          "quand_utiliser": "Quand l'énoncé définit $M'$ par $\\overrightarrow{MM'} = \\lambda\\,\\overrightarrow{M\\Omega}$",
+          "contenu_markdown": "On écrit $\\overrightarrow{\\Omega M'} = \\overrightarrow{\\Omega M} + \\overrightarrow{MM'} = \\overrightarrow{\\Omega M} + \\lambda\\overrightarrow{M\\Omega} = \\overrightarrow{\\Omega M} - \\lambda\\overrightarrow{\\Omega M} = (1 - \\lambda)\\,\\overrightarrow{\\Omega M}$. C'est une homothétie de centre $\\Omega$ et de rapport $1 - \\lambda$ (si $\\lambda \\neq 0$ et $\\lambda \\neq 1$)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCD$ est un carré et $G$ le barycentre de $\\{(A;2),(B;-1),(C;1)\\}$. L'application $f$ associe à tout point $M$ le point $M'$ tel que $\\overrightarrow{GM'} = 2\\overrightarrow{MA} - \\overrightarrow{MB} + \\overrightarrow{MC}$. Démontrer que $\\overrightarrow{GM'} = -2\\,\\overrightarrow{GM}$ et en déduire la nature de $f$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Réduire la somme pondérée",
+          "justification": "Somme des coefficients : $2 - 1 + 1 = 2 \\neq 0$. On introduit $G$ par la relation de Chasles.",
+          "resultat_markdown": "$2(\\overrightarrow{MG} + \\overrightarrow{GA}) - (\\overrightarrow{MG} + \\overrightarrow{GB}) + (\\overrightarrow{MG} + \\overrightarrow{GC}) = 2\\overrightarrow{MG} + \\left(2\\overrightarrow{GA} - \\overrightarrow{GB} + \\overrightarrow{GC}\\right)$"
+        },
+        {
+          "numero": 2,
+          "action": "Utiliser la définition du barycentre",
+          "justification": "Par définition de $G$ : $2\\overrightarrow{GA} - \\overrightarrow{GB} + \\overrightarrow{GC} = \\vec 0$.",
+          "resultat_markdown": "$2\\overrightarrow{MA} - \\overrightarrow{MB} + \\overrightarrow{MC} = 2\\,\\overrightarrow{MG}$"
+        },
+        {
+          "numero": 3,
+          "action": "Reporter dans la définition de $f$",
+          "justification": "On remplace la somme par sa forme réduite.",
+          "resultat_markdown": "$\\overrightarrow{GM'} = 2\\,\\overrightarrow{MG}$"
+        },
+        {
+          "numero": 4,
+          "action": "Retourner le vecteur",
+          "justification": "Les deux vecteurs doivent partir du même point $G$ : $\\overrightarrow{MG} = -\\overrightarrow{GM}$.",
+          "resultat_markdown": "$\\overrightarrow{GM'} = 2\\times\\left(-\\overrightarrow{GM}\\right) = -2\\,\\overrightarrow{GM}$"
+        },
+        {
+          "numero": 5,
+          "action": "Reconnaître la transformation",
+          "justification": "Forme $\\overrightarrow{\\Omega M'} = k\\,\\overrightarrow{\\Omega M}$ avec $\\Omega = G$ et $k = -2$.",
+          "resultat_markdown": "$f$ est l'homothétie de centre $G$ et de rapport $-2$."
+        }
+      ],
+      "conclusion_markdown": "Pour tout point $M$, $\\overrightarrow{GM'} = -2\\,\\overrightarrow{GM}$ : $f$ est l'homothétie de centre $G$ (milieu de $[AD]$ dans cette épreuve) et de rapport $-2$. Le signe moins place $M'$ de l'autre côté de $G$ par rapport à $M$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\overrightarrow{GM'} = 2\\,\\overrightarrow{GM}$ en oubliant de retourner $\\overrightarrow{MG}$.",
+          "pourquoi_faux": "$\\overrightarrow{MG}$ et $\\overrightarrow{GM}$ sont opposés. On conclurait à une homothétie de rapport $2$, qui place $M'$ du même côté que $M$ : c'est une autre transformation.",
+          "correction_markdown": "Écrire explicitement la ligne $\\overrightarrow{MG} = -\\overrightarrow{GM}$ avant de conclure."
+        },
+        {
+          "erreur_markdown": "Lire une homothétie dans une relation dont les vecteurs ne partent pas du même point, comme $\\overrightarrow{GM'} = 2\\,\\overrightarrow{MG}$.",
+          "pourquoi_faux": "La forme caractéristique exige deux vecteurs **issus du centre** : $\\overrightarrow{\\Omega M'}$ et $\\overrightarrow{\\Omega M}$. Tant que ce n'est pas le cas, le rapport lu peut avoir le mauvais signe.",
+          "correction_markdown": "Transformer la relation jusqu'à ce que les deux vecteurs partent du même point."
+        },
+        {
+          "erreur_markdown": "Utiliser un barycentre alors que la somme des coefficients est nulle, par exemple pour $\\overrightarrow{MA} - \\overrightarrow{MB}$.",
+          "pourquoi_faux": "Le barycentre n'existe pas si la somme des coefficients est nulle. Ici $\\overrightarrow{MA} - \\overrightarrow{MB} = \\overrightarrow{MA} + \\overrightarrow{BM} = \\overrightarrow{BA}$ : c'est un vecteur constant.",
+          "correction_markdown": "Calculer d'abord la somme des coefficients. Si elle est nulle, chercher une translation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$A$ est un point fixe. L'application $f$ associe à tout point $M$ le point $M'$ tel que $\\overrightarrow{MM'} = 3\\,\\overrightarrow{MA}$. Démontrer que $f$ est une homothétie dont on précisera le centre et le rapport.",
+          "solution_markdown": "On fait apparaître le point fixe $A$ par la relation de Chasles :\n\n$$\\overrightarrow{AM'} = \\overrightarrow{AM} + \\overrightarrow{MM'} = \\overrightarrow{AM} + 3\\,\\overrightarrow{MA}$$\n\nOn retourne $\\overrightarrow{MA} = -\\overrightarrow{AM}$ :\n\n$$\\overrightarrow{AM'} = \\overrightarrow{AM} - 3\\,\\overrightarrow{AM} = -2\\,\\overrightarrow{AM}$$\n\n$f$ est l'homothétie de centre $A$ et de rapport $-2$.\n\n**Contrôle avec un point.** Si $M$ est tel que $\\overrightarrow{AM} = \\vec u$, alors $\\overrightarrow{MM'} = 3\\overrightarrow{MA} = -3\\vec u$ et $\\overrightarrow{AM'} = \\vec u - 3\\vec u = -2\\vec u$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$A$ et $B$ sont deux points distincts et $I$ le milieu de $[AB]$. L'application $g$ associe à tout point $M$ le point $M'$ tel que $\\overrightarrow{MM'} = \\overrightarrow{MA} + \\overrightarrow{MB}$. Déterminer la nature de $g$.",
+          "solution_markdown": "**Réduction.** $I$ est le barycentre de $\\{(A;1),(B;1)\\}$ et $1 + 1 = 2 \\neq 0$ :\n\n$$\\overrightarrow{MA} + \\overrightarrow{MB} = (\\overrightarrow{MI} + \\overrightarrow{IA}) + (\\overrightarrow{MI} + \\overrightarrow{IB}) = 2\\,\\overrightarrow{MI} + (\\overrightarrow{IA} + \\overrightarrow{IB}) = 2\\,\\overrightarrow{MI}$$\n\ncar $\\overrightarrow{IA} + \\overrightarrow{IB} = \\vec 0$ ($I$ milieu de $[AB]$).\n\n**Changement d'origine.**\n\n$$\\overrightarrow{IM'} = \\overrightarrow{IM} + \\overrightarrow{MM'} = \\overrightarrow{IM} + 2\\,\\overrightarrow{MI} = \\overrightarrow{IM} - 2\\,\\overrightarrow{IM} = -\\overrightarrow{IM}$$\n\n$g$ est la **symétrie centrale de centre $I$** (homothétie de centre $I$ et de rapport $-1$)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$ABC$ est un triangle. a) L'application $f$ associe à $M$ le point $M'$ tel que $\\overrightarrow{MM'} = 2\\overrightarrow{MA} + \\overrightarrow{MB} - 3\\overrightarrow{MC}$. Démontrer que $f$ est une translation et préciser son vecteur. b) L'application $h$ associe à $M$ le point $M'$ tel que $\\overrightarrow{MM'} = 2\\overrightarrow{MA} + \\overrightarrow{MB}$. Démontrer que $h$ est une homothétie et préciser son centre $L$ (on situera $L$ sur $[AB]$) et son rapport.",
+          "solution_markdown": "**a)** La somme des coefficients vaut $2 + 1 - 3 = 0$ : pas de barycentre, on introduit le point fixe $C$.\n\n$$2\\overrightarrow{MA} + \\overrightarrow{MB} - 3\\overrightarrow{MC} = 2(\\overrightarrow{MC} + \\overrightarrow{CA}) + (\\overrightarrow{MC} + \\overrightarrow{CB}) - 3\\overrightarrow{MC}$$\n\n$$= (2 + 1 - 3)\\,\\overrightarrow{MC} + 2\\overrightarrow{CA} + \\overrightarrow{CB} = 2\\overrightarrow{CA} + \\overrightarrow{CB}$$\n\nCe vecteur ne dépend pas de $M$ : $\\overrightarrow{MM'} = 2\\overrightarrow{CA} + \\overrightarrow{CB}$ pour tout $M$, donc $f$ est la translation de vecteur $\\vec u = 2\\overrightarrow{CA} + \\overrightarrow{CB}$.\n\n**b)** Somme des coefficients : $2 + 1 = 3 \\neq 0$. Soit $L$ le barycentre de $\\{(A;2),(B;1)\\}$ : $2\\overrightarrow{LA} + \\overrightarrow{LB} = \\vec 0$. On situe $L$ : $2\\overrightarrow{LA} + \\overrightarrow{LA} + \\overrightarrow{AB} = \\vec 0$, soit $3\\overrightarrow{LA} = -\\overrightarrow{AB}$, donc $\\overrightarrow{AL} = \\dfrac13\\,\\overrightarrow{AB}$ : $L$ est sur $[AB]$, au tiers en partant de $A$.\n\n$$2\\overrightarrow{MA} + \\overrightarrow{MB} = 3\\,\\overrightarrow{ML}$$\n\nPuis :\n\n$$\\overrightarrow{LM'} = \\overrightarrow{LM} + \\overrightarrow{MM'} = \\overrightarrow{LM} + 3\\,\\overrightarrow{ML} = \\overrightarrow{LM} - 3\\,\\overrightarrow{LM} = -2\\,\\overrightarrow{LM}$$\n\n$h$ est l'homothétie de centre $L$ et de rapport $-2$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour reconnaître une transformation, vise une forme caractéristique : $\\overrightarrow{\\Omega M'} = k\\,\\overrightarrow{\\Omega M}$ (homothétie) ou $\\overrightarrow{MM'} = \\vec u$ constant (translation).",
+        "Calcule d'abord la somme des coefficients : non nulle, réduis avec un barycentre ; nulle, tu obtiens un vecteur constant.",
+        "Fais partir tous les vecteurs du même point grâce à Chasles, et retourne-les avec $\\overrightarrow{M\\Omega} = -\\overrightarrow{\\Omega M}$ : c'est cette ligne qui fixe le signe du rapport.",
+        "Un rapport négatif place l'image de l'autre côté du centre : contrôle ce point sur ta figure.",
+        "Au Probatoire C et E, cette question suit généralement la construction d'un barycentre et précède la construction de l'image d'un cercle ou d'une droite par la transformation trouvée."
+      ]
+    }
+  ]
 }

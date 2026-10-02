@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Géométrie dans l'espace - plans et vecteurs normaux",
+    "duree_estimee_min": 35,
+    "tags": [
+      "équation cartésienne d'un plan",
+      "plans parallèles",
+      "vecteur normal",
+      "géométrie dans l'espace",
+      "produit scalaire"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,128 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Les étages d'un immeuble sont des plans parallèles : ils ont tous la même « orientation », seule leur hauteur change. En coordonnées, c'est exactement ce qui se passe : deux plans parallèles ont des équations qui ne diffèrent que par leur terme constant. Trouver le plan parallèle à un plan donné passant par un point revient donc à déterminer **un seul nombre**. Ce cours t'explique pourquoi, et comment le faire sans erreur de signe, y compris en QCM."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer un produit scalaire dans un repère orthonormé de l'espace",
+        "Savoir qu'un vecteur $\\vec n$ est normal à un plan s'il est orthogonal à deux vecteurs non colinéaires de ce plan",
+        "Savoir vérifier si un point appartient à un plan donné par une équation",
+        "Savoir reconnaître deux vecteurs colinéaires"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Plans parallèles : même vecteur normal",
+      "contenu_markdown": "**Vecteur normal et équation.** Dans un repère orthonormé de l'espace, le plan passant par $A(x_A\\,;\\,y_A\\,;\\,z_A)$ et de vecteur normal $\\vec n\\,(a\\,;\\,b\\,;\\,c)$ non nul est l'ensemble des points $M$ tels que $\\overrightarrow{AM}\\cdot\\vec n = 0$, soit :\n\n$$a(x - x_A) + b(y - y_A) + c(z - z_A) = 0$$\n\nqui s'écrit $ax + by + cz + d = 0$. Réciproquement, le plan d'équation $ax + by + cz + d = 0$ admet $\\vec n\\,(a\\,;\\,b\\,;\\,c)$ pour vecteur normal.\n\n**Plans parallèles.** Deux plans sont parallèles si et seulement si leurs vecteurs normaux sont **colinéaires**. On peut alors choisir le même vecteur normal : les équations ont les mêmes coefficients $a$, $b$, $c$, seul $d$ change.\n\n**Méthode.** Pour le plan $(P')$ parallèle à $(P) : ax + by + cz + d = 0$ passant par $A$ :\n\n1. Écrire $(P') : ax + by + cz + d' = 0$ (mêmes $a$, $b$, $c$).\n2. Écrire que $A$ appartient à $(P')$ : $ax_A + by_A + cz_A + d' = 0$, d'où $d'$.\n3. Vérifier en substituant les coordonnées de $A$.\n\n**Reconnaître des plans parallèles.** $2x - 4y + 6z - 1 = 0$ et $x - 2y + 3z + 5 = 0$ sont parallèles : $(2;-4;6) = 2\\,(1;-2;3)$. Pour savoir s'ils sont confondus, on divise la première équation par $2$ : $x - 2y + 3z - \\frac12 = 0$ ; les termes constants $-\\frac12$ et $5$ diffèrent, donc les plans sont strictement parallèles.",
+      "formule_principale": "(P') \\parallel (P) : ax + by + cz + d' = 0,\\quad d' = -(ax_A + by_A + cz_A)",
+      "variantes": [
+        {
+          "nom": "Méthode rapide en QCM",
+          "quand_utiliser": "Quand les propositions ont toutes les mêmes coefficients $a$, $b$, $c$",
+          "contenu_markdown": "Substitue les coordonnées du point dans chaque proposition : une seule doit donner $0$. Ce test vérifie en même temps l'appartenance du point et ton éventuel calcul de $d'$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un repère orthonormé $(O;\\vec i,\\vec j,\\vec k)$, le plan $(P)$ a pour équation $x + 2y + z - 1 = 0$. Déterminer une équation cartésienne du plan parallèle à $(P)$ passant par $A(1\\,;\\,1\\,;\\,2)$, et choisir parmi : a) $x + 2y + z - 5 = 0$ ; b) $x + 2y + z - 2 = 0$ ; c) $x + 2y + z + 5 = 0$ ; d) $x + 2y + z - 1 = 0$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Lire le vecteur normal de $(P)$",
+          "justification": "Les coefficients de $x$, $y$, $z$ dans l'équation de $(P)$.",
+          "resultat_markdown": "$\\vec n\\,(1\\,;\\,2\\,;\\,1)$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire la forme générale du plan cherché",
+          "justification": "Un plan parallèle admet le même vecteur normal.",
+          "resultat_markdown": "$(P') : x + 2y + z + d = 0$"
+        },
+        {
+          "numero": 3,
+          "action": "Exprimer que $A$ appartient à $(P')$",
+          "justification": "On remplace $x$, $y$, $z$ par $1$, $1$, $2$.",
+          "resultat_markdown": "$1 + 2 \\times 1 + 2 + d = 0 \\iff 5 + d = 0 \\iff d = -5$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure et vérifier",
+          "justification": "Substitution de $A$ dans l'équation trouvée.",
+          "resultat_markdown": "$(P') : x + 2y + z - 5 = 0$ ; $1 + 2 + 2 - 5 = 0$"
+        },
+        {
+          "numero": 5,
+          "action": "Écarter les autres propositions",
+          "justification": "Chacune doit être testée avec le point $A$.",
+          "resultat_markdown": "b) : $1+2+2-2 = 3 \\neq 0$ ; c) : $1+2+2+5 = 10 \\neq 0$ ; d) est $(P)$ lui-même et $1+2+2-1 = 4 \\neq 0$"
+        }
+      ],
+      "conclusion_markdown": "Le plan parallèle à $(P)$ passant par $A$ a pour équation $x + 2y + z - 5 = 0$ : réponse a)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Erreur de signe sur $d$ : trouver $5 + d = 0$ puis écrire $x + 2y + z + 5 = 0$.",
+          "pourquoi_faux": "$5 + d = 0$ donne $d = -5$, pas $+5$. Avec $+5$, le point $A$ donne $10 \\neq 0$.",
+          "correction_markdown": "Toujours finir par la substitution du point dans l'équation obtenue."
+        },
+        {
+          "erreur_markdown": "Recopier l'équation de $(P)$ sans changer $d$.",
+          "pourquoi_faux": "Deux plans parallèles distincts n'ont aucun point commun. Si $A \\notin (P)$, le plan cherché ne peut pas être $(P)$ lui-même.",
+          "correction_markdown": "Recalculer $d$ avec le point donné ; ne garder $(P)$ que si ce point appartient déjà à $(P)$."
+        },
+        {
+          "erreur_markdown": "Prendre comme vecteur normal un vecteur colinéaire mal calculé, par exemple $(2;4;1)$ pour $(P) : x + 2y + z - 1 = 0$.",
+          "pourquoi_faux": "$(2;4;1)$ n'est pas colinéaire à $(1;2;1)$ : $2 = 2\\times1$, $4 = 2 \\times 2$, mais $1 \\neq 2 \\times 1$. Le plan obtenu ne serait pas parallèle à $(P)$.",
+          "correction_markdown": "Garder exactement les coefficients de $(P)$, ou les multiplier **tous** par le même nombre non nul."
+        },
+        {
+          "erreur_markdown": "Confondre « parallèle » et « perpendiculaire » : prendre pour vecteur normal du plan cherché un vecteur orthogonal à $\\vec n$.",
+          "pourquoi_faux": "Un plan dont le vecteur normal est orthogonal à $\\vec n$ est **perpendiculaire** à $(P)$, pas parallèle.",
+          "correction_markdown": "Parallèles : vecteurs normaux colinéaires. Perpendiculaires : vecteurs normaux orthogonaux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer une équation du plan parallèle à $(P) : 3x - y + 2z + 4 = 0$ passant par $A(2\\,;\\,-1\\,;\\,0)$.",
+          "solution_markdown": "Le plan cherché a pour équation $3x - y + 2z + d = 0$. Le point $A$ lui appartient :\n\n$$3 \\times 2 - (-1) + 2 \\times 0 + d = 0 \\iff 6 + 1 + 0 + d = 0 \\iff d = -7$$\n\nÉquation : $3x - y + 2z - 7 = 0$.\n\nVérification : $6 + 1 + 0 - 7 = 0$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On donne $(P_1) : 2x - 4y + 6z - 1 = 0$ et $(P_2) : x - 2y + 3z + 5 = 0$. a) Ces plans sont-ils parallèles ? confondus ? b) Déterminer une équation du plan parallèle à $(P_1)$ passant par $B(1\\,;\\,0\\,;\\,-1)$.",
+          "solution_markdown": "**a)** Vecteurs normaux : $\\vec n_1\\,(2;-4;6)$ et $\\vec n_2\\,(1;-2;3)$, avec $\\vec n_1 = 2\\,\\vec n_2$ : ils sont colinéaires, donc les plans sont parallèles. En divisant l'équation de $(P_1)$ par $2$ : $x - 2y + 3z - \\frac12 = 0$. Les termes constants $-\\frac12$ et $5$ sont différents, donc les plans ne sont pas confondus : ils sont **strictement parallèles**.\n\nAutre justification : le point $\\left(\\frac12;0;0\\right)$ appartient à $(P_1)$ car $1 - 0 + 0 - 1 = 0$, mais pas à $(P_2)$ car $\\frac12 + 5 \\neq 0$.\n\n**b)** On peut prendre $\\vec n_2\\,(1;-2;3)$ comme vecteur normal : $x - 2y + 3z + d = 0$. Le point $B$ appartient au plan :\n\n$$1 - 2 \\times 0 + 3 \\times (-1) + d = 0 \\iff 1 - 3 + d = 0 \\iff d = 2$$\n\nÉquation : $x - 2y + 3z + 2 = 0$. Vérification : $1 - 0 - 3 + 2 = 0$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On donne $B(1\\,;\\,0\\,;\\,0)$, $C(0\\,;\\,1\\,;\\,0)$, $D(0\\,;\\,0\\,;\\,1)$ et $A(1\\,;\\,2\\,;\\,-1)$. a) Déterminer une équation du plan $(BCD)$. b) En déduire une équation du plan $(Q)$ parallèle à $(BCD)$ passant par $A$. c) Déterminer les points d'intersection de $(Q)$ avec les trois axes du repère.",
+          "solution_markdown": "**a)** $\\overrightarrow{BC}\\,(-1;1;0)$ et $\\overrightarrow{BD}\\,(-1;0;1)$, non colinéaires. On cherche $\\vec n\\,(a;b;c)$ tel que :\n\n$$\\vec n\\cdot\\overrightarrow{BC} = -a + b = 0 \\qquad ; \\qquad \\vec n\\cdot\\overrightarrow{BD} = -a + c = 0$$\n\nAvec $a = 1$ : $b = 1$ et $c = 1$, donc $\\vec n\\,(1;1;1)$. Équation $x + y + z + d = 0$ ; $B$ donne $1 + d = 0$, $d = -1$ :\n\n$$(BCD) : x + y + z - 1 = 0$$\n\nVérification : $C$ : $0 + 1 + 0 - 1 = 0$ ; $D$ : $0 + 0 + 1 - 1 = 0$.\n\n**b)** $(Q) : x + y + z + d' = 0$, et $A$ donne $1 + 2 - 1 + d' = 0$, soit $d' = -2$ :\n\n$$(Q) : x + y + z - 2 = 0$$\n\n**c)** Sur l'axe des abscisses, $y = z = 0$ : $x - 2 = 0$, $x = 2$, point $(2;0;0)$. De même $(0;2;0)$ sur l'axe des ordonnées et $(0;0;2)$ sur l'axe des cotes.\n\nOn remarque que ces points sont les images de $B$, $C$, $D$ par l'homothétie de centre $O$ et de rapport $2$ : une homothétie transforme un plan en un plan parallèle, ce qui confirme le résultat."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le plan $ax + by + cz + d = 0$ a pour vecteur normal $\\vec n(a;b;c)$ ; deux plans sont parallèles quand leurs vecteurs normaux sont colinéaires.",
+        "Pour le plan parallèle passant par un point, garde $a$, $b$, $c$ et calcule le seul nombre $d$ avec les coordonnées du point.",
+        "Le signe de $d$ est le piège principal : vérifie toujours en substituant le point.",
+        "En QCM, tester chaque proposition avec le point est la méthode la plus sûre et la plus rapide.",
+        "Au Probatoire C et E, cette question apparaît en QCM ou en début d'exercice de géométrie dans l'espace, avant un calcul d'intersection ou de distance."
+      ]
+    }
+  ]
 }

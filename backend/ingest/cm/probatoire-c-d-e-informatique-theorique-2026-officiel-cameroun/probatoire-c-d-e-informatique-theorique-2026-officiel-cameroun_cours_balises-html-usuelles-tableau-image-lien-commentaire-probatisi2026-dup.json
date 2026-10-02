@@ -7,7 +7,17 @@
     "serie": "C, D, E",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-balises-html-usuelles-tableau-image-lien-commentaire-proba2026a (probatoire-a-informatique-theorique-2026-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "HTML",
+      "balise table",
+      "balise img",
+      "lien hypertexte",
+      "commentaire HTML",
+      "chemin relatif"
+    ],
+    "sous_theme": "Création de pages web en HTML",
+    "duree_estimee_min": 35
   },
   "source": {
     "epreuve_id": "probatoire-c-d-e-informatique-theorique-2026-officiel-cameroun",
@@ -17,5 +27,127 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Une page web d'établissement scolaire affiche presque toujours les mêmes éléments : un tableau des effectifs ou des résultats, le logo de l'école, des liens vers d'autres pages. Chacun de ces éléments correspond à une balise HTML précise, avec ses attributs. Les connaître par cœur ne suffit pas : il faut savoir les écrire sans erreur de fermeture ni de chemin, car un seul oubli et le tableau se déforme ou le lien ne mène nulle part. Ce cours rassemble les balises que le Probatoire demande le plus souvent d'écrire."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la structure minimale d'une page HTML : `<html>`, `<head>`, `<title>`, `<body>`",
+        "Savoir ce qu'est une balise ouvrante, une balise fermante et un attribut (`nom=\"valeur\"`)",
+        "Savoir qu'une page HTML s'écrit dans un éditeur (Notepad++, Visual Studio Code) et s'affiche dans un navigateur (Firefox, Chrome, Opera)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Quatre balises et leurs attributs",
+      "contenu_markdown": "**1. Le tableau.** Il se construit de l'extérieur vers l'intérieur : le tableau, puis les lignes, puis les cellules.\n\n| Balise | Rôle |\n|---|---|\n| `<table> ... </table>` | délimite le tableau ; l'attribut `border=\"1\"` affiche les bordures |\n| `<tr> ... </tr>` | une ligne (*table row*) |\n| `<th> ... </th>` | une cellule d'en-tête (*table header*), affichée en gras et centrée |\n| `<td> ... </td>` | une cellule de données (*table data*) |\n\nChaque ligne doit contenir le même nombre de cellules ; une cellule ne se place jamais directement dans `<table>`, toujours dans un `<tr>`.\n\n**2. L'image.** `<img src=\"chemin/image.jpg\" alt=\"description\">` est une balise **orpheline** (auto-fermante) : elle n'a pas de balise fermante.\n\n- `src` (obligatoire) : le chemin du fichier image ;\n- `alt` : le texte affiché si l'image ne se charge pas, lu aussi par les logiciels d'aide aux malvoyants ;\n- `width` et `height` : la largeur et la hauteur en pixels.\n\n**3. Le lien hypertexte.** `<a href=\"destination\">texte cliquable</a>`.\n\n- `href` reçoit le chemin ou l'adresse de destination ;\n- un chemin **relatif** part du dossier de la page courante : `resultats.html`, `pages/resultats.html`, `../index.html` (le `..` remonte d'un dossier) ;\n- un chemin **absolu** donne l'adresse complète : `https://www.exemple.cm/index.html`, ou un chemin de fichier local ;\n- `target=\"_blank\"` ouvre la destination dans un nouvel onglet ;\n- on rend une image cliquable en plaçant `<img>` à l'intérieur de `<a> ... </a>`.\n\n**4. Le commentaire.** `<!-- texte du commentaire -->`. Le navigateur l'ignore : il n'apparaît pas sur la page affichée. Il sert au développeur à **expliquer son code**, à le **structurer** (repérer le début d'une section) ou à **désactiver temporairement** une portion de code sans l'effacer.\n\n**Règles de bonne écriture.** Les attributs se placent toujours dans la balise **ouvrante** ; leurs valeurs s'écrivent entre guillemets ; les balises se ferment dans l'ordre inverse de leur ouverture (`<b><i>texte</i></b>`).",
+      "formule_principale": "\\text{tableau} \\rightarrow \\text{ligne} \\rightarrow \\text{cellule} \\qquad ; \\qquad \\text{image : src} \\qquad ; \\qquad \\text{lien : href}",
+      "variantes": [
+        {
+          "nom": "Fusionner des cellules",
+          "quand_utiliser": "Quand une cellule doit s'étendre sur plusieurs colonnes ou plusieurs lignes, par exemple un titre au-dessus de tout le tableau",
+          "contenu_markdown": "L'attribut `colspan=\"2\"` étend une cellule sur deux colonnes, `rowspan=\"2\"` sur deux lignes. Exemple : `<tr><th colspan=\"2\">Effectifs 2026</th></tr>` placé en première ligne d'un tableau à deux colonnes. La ligne concernée contient alors une cellule de moins."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Écrire le code HTML qui affiche le tableau suivant dans une page web :\n\n| Classe | Effectifs |\n|---|---|\n| Troisièmes | 55 |\n| TleD | 50 |",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compter lignes et colonnes",
+          "justification": "Le tableau a 3 lignes (une d'en-tête et deux de données) et 2 colonnes : il faudra 3 balises `<tr>`, chacune avec 2 cellules.",
+          "resultat_markdown": "3 lignes x 2 colonnes"
+        },
+        {
+          "numero": 2,
+          "action": "Ouvrir le tableau avec une bordure",
+          "justification": "Sans l'attribut `border`, le tableau s'affiche sans traits, ce qui le rend difficile à lire.",
+          "resultat_markdown": "`<table border=\"1\">`"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la ligne d'en-tête",
+          "justification": "Les intitulés de colonnes sont des cellules d'en-tête, donc des `<th>`.",
+          "resultat_markdown": "`<tr> <th>Classe</th> <th>Effectifs</th> </tr>`"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire les lignes de données",
+          "justification": "Les valeurs sont des cellules ordinaires, donc des `<td>`, dans le même ordre que les colonnes.",
+          "resultat_markdown": "`<tr> <td>Troisièmes</td> <td>55</td> </tr>` puis `<tr> <td>TleD</td> <td>50</td> </tr>`"
+        },
+        {
+          "numero": 5,
+          "action": "Fermer le tableau et vérifier",
+          "justification": "On contrôle que chaque balise ouverte est fermée et que chaque ligne a bien 2 cellules.",
+          "resultat_markdown": "```html\n<table border=\"1\">\n  <tr>\n    <th>Classe</th>\n    <th>Effectifs</th>\n  </tr>\n  <tr>\n    <td>Troisièmes</td>\n    <td>55</td>\n  </tr>\n  <tr>\n    <td>TleD</td>\n    <td>50</td>\n  </tr>\n</table>\n```"
+        }
+      ],
+      "conclusion_markdown": "Le tableau est construit de l'extérieur vers l'intérieur : `<table>`, puis une `<tr>` par ligne, puis une `<th>` ou une `<td>` par cellule. L'indentation du code n'est pas obligatoire, mais elle permet de vérifier d'un coup d'œil que tout est bien fermé."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire des cellules sans ligne : `<table><td>Classe</td><td>Effectifs</td></table>`.",
+          "pourquoi_faux": "Une cellule appartient toujours à une ligne. Sans `<tr>`, le navigateur doit deviner la structure et le tableau peut s'afficher de façon incorrecte ; le correcteur, lui, ne devine pas.",
+          "correction_markdown": "`<table><tr><td>Classe</td><td>Effectifs</td></tr></table>`"
+        },
+        {
+          "erreur_markdown": "Fermer la balise image : `<img src=\"logo.png\"></img>`, ou oublier `src` : `<img alt=\"logo\">`.",
+          "pourquoi_faux": "`<img>` est une balise orpheline : elle n'a pas de balise fermante. Et sans `src`, le navigateur ne sait pas quel fichier afficher.",
+          "correction_markdown": "`<img src=\"logo.png\" alt=\"Logo du lycée\">`"
+        },
+        {
+          "erreur_markdown": "Placer l'adresse entre les balises : `<a>probatoire.html</a>`, ou utiliser `src` au lieu de `href`.",
+          "pourquoi_faux": "Le texte entre `<a>` et `</a>` est seulement ce qui s'affiche. La destination doit être donnée par l'attribut `href` ; `src` est réservé aux images et aux fichiers intégrés à la page.",
+          "correction_markdown": "`<a href=\"probatoire.html\">Sujet du Probatoire</a>`"
+        },
+        {
+          "erreur_markdown": "Écrire un commentaire avec `//` ou `/* */` : `// menu principal`.",
+          "pourquoi_faux": "Ces notations appartiennent au C, au CSS ou au JavaScript. En HTML, `// menu principal` n'est pas un commentaire : le texte s'affiche sur la page.",
+          "correction_markdown": "`<!-- menu principal -->`"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire le code HTML qui : a) affiche l'image `logo.png`, située dans le dossier `images` du site, avec le texte alternatif « Logo du lycée » ; b) crée un lien vers la page `contact.html`, située dans le même dossier que la page courante, avec le texte « Nous contacter » ; c) ajoute un commentaire indiquant « Pied de page ».",
+          "solution_markdown": "**a)** L'image est dans le sous-dossier `images` : le chemin relatif est `images/logo.png`.\n\n```html\n<img src=\"images/logo.png\" alt=\"Logo du lycée\">\n```\n\n**b)** La page est dans le même dossier : son nom suffit comme chemin.\n\n```html\n<a href=\"contact.html\">Nous contacter</a>\n```\n\n**c)**\n\n```html\n<!-- Pied de page -->\n```"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Le code suivant contient quatre erreurs. Les identifier et les corriger.\n\n```html\n<table border=1>\n  <tr>\n    <th>Matière<th>\n    <th>Coefficient</th>\n  <tr>\n    <td>Informatique</td>\n    <td>2</td>\n  </tr>\n</table>\n<img href=\"photo.jpg\">\n<a src=\"index.html\">Accueil</a>\n```",
+          "solution_markdown": "**Erreur 1** : `<th>Matière<th>` ; la seconde balise devrait être fermante. Correction : `<th>Matière</th>`.\n\n**Erreur 2** : la première ligne n'est jamais fermée ; il manque `</tr>` après `<th>Coefficient</th>`.\n\n**Erreur 3** : l'image utilise `href` au lieu de `src`. Correction : `<img src=\"photo.jpg\" alt=\"Photo\">` (le texte `alt` est conseillé).\n\n**Erreur 4** : le lien utilise `src` au lieu de `href`. Correction : `<a href=\"index.html\">Accueil</a>`.\n\nRemarque : `border=1` sans guillemets est toléré par les navigateurs ; écrire `border=\"1\"` reste la forme recommandée.\n\nCode corrigé :\n\n```html\n<table border=\"1\">\n  <tr>\n    <th>Matière</th>\n    <th>Coefficient</th>\n  </tr>\n  <tr>\n    <td>Informatique</td>\n    <td>2</td>\n  </tr>\n</table>\n<img src=\"photo.jpg\" alt=\"Photo\">\n<a href=\"index.html\">Accueil</a>\n```"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Écrire le code d'un tableau de deux colonnes, intitulées « Club » et « Logo », contenant une ligne de données : dans la première cellule le texte « Club informatique », dans la seconde l'image `club.png` (dossier `images`, largeur 80 pixels) rendue cliquable et menant à la page `clubs/informatique.html`, ouverte dans un nouvel onglet. Précéder le tableau d'un commentaire explicatif.",
+          "solution_markdown": "On procède de l'extérieur vers l'intérieur : tableau, lignes, cellules, puis le contenu de la cellule « Logo », qui est une image placée dans un lien.\n\n```html\n<!-- Tableau de présentation des clubs du lycée -->\n<table border=\"1\">\n  <tr>\n    <th>Club</th>\n    <th>Logo</th>\n  </tr>\n  <tr>\n    <td>Club informatique</td>\n    <td>\n      <a href=\"clubs/informatique.html\" target=\"_blank\">\n        <img src=\"images/club.png\" alt=\"Logo du club informatique\" width=\"80\">\n      </a>\n    </td>\n  </tr>\n</table>\n```\n\nVérifications : chaque ligne a 2 cellules ; `<img>` est à l'intérieur de `<a>`, lui-même à l'intérieur de `<td>`, et les fermetures se font dans l'ordre inverse (`</a>` puis `</td>` puis `</tr>`) ; `target=\"_blank\"` ouvre le nouvel onglet ; les deux chemins sont relatifs, ce qui permet au site de fonctionner une fois copié sur un serveur."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Un tableau se construit de l'extérieur vers l'intérieur : `<table>`, puis `<tr>` pour chaque ligne, puis `<th>` (en-tête) ou `<td>` (donnée) pour chaque cellule.",
+        "`<img>` n'a pas de balise fermante et ne fonctionne pas sans `src` ; ajoute `alt` pour décrire l'image.",
+        "Un lien, c'est `<a href=\"destination\">texte</a>` : `href` pour les liens, `src` pour les images, ne les échange jamais.",
+        "Préfère les chemins relatifs (`images/logo.png`, `../index.html`) : ils restent valables quand le site change d'ordinateur.",
+        "Un commentaire `<!-- ... -->` est invisible à l'affichage ; au Probatoire, on te demande souvent d'écrire ces balises ou d'en donner le rôle, et de corriger un code fautif ligne par ligne."
+      ]
+    }
+  ]
 }

@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Transformations du plan - rotations et isométries",
+    "duree_estimee_min": 40,
+    "tags": [
+      "aire",
+      "isométrie",
+      "rotation",
+      "découpage",
+      "carré"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,133 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans un carré $ABCD$ de centre $O$, on place quatre points $E$, $F$, $G$, $H$ « en tourniquet » sur les côtés, puis on demande l'aire du quadrilatère $EBFO$. Ce quadrilatère n'a rien de régulier : pas de parallélogramme, pas de trapèze, aucune formule toute faite. Pourtant la réponse tient en une ligne, et elle ne dépend même pas de la position des points. Le secret : au lieu de mesurer le morceau, on montre que le carré en contient exactement quatre copies superposables."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition d'une rotation (centre, angle) et savoir trouver l'image d'un point",
+        "Savoir qu'une rotation, une translation et une symétrie conservent les distances (ce sont des isométries)",
+        "Connaître les propriétés du carré : centre, diagonales perpendiculaires de même longueur",
+        "Savoir calculer l'aire d'un carré et d'un triangle rectangle"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Une isométrie conserve les aires : découper en morceaux superposables",
+      "contenu_markdown": "**Le principe.** Une isométrie du plan (translation, rotation, symétrie orthogonale ou centrale) conserve les distances, donc les angles, donc les aires : une figure et son image ont **la même aire**.\n\n**La méthode du découpage.** Pour obtenir l'aire d'un morceau $P$ d'une figure $\\mathcal{F}$ :\n\n1. **Découper** $\\mathcal{F}$ en $n$ morceaux $P_1 = P,\\ P_2,\\ \\dots,\\ P_n$ qui ne se chevauchent pas (intérieurs disjoints) et dont la réunion est $\\mathcal{F}$ tout entière : on dit qu'ils **pavent** $\\mathcal{F}$.\n2. **Exhiber une isométrie** $s$ qui envoie chaque morceau sur le suivant : $s(P_1) = P_2$, $s(P_2) = P_3$, etc. On le justifie sommet par sommet : l'image d'un polygone est le polygone formé par les images de ses sommets.\n3. **Conclure** : les $n$ morceaux ont la même aire, et leur somme vaut l'aire de $\\mathcal{F}$.\n\n$$\\mathcal{A}(P_1) = \\mathcal{A}(P_2) = \\dots = \\mathcal{A}(P_n) = \\frac{\\mathcal{A}(\\mathcal{F})}{n}$$\n\n**Où chercher l'isométrie.** Si la figure est globalement invariante par une rotation $r$ de centre $O$ et d'angle $\\dfrac{2\\pi}{n}$ (carré : $n = 4$, triangle équilatéral : $n = 3$, hexagone régulier : $n = 6$), on découpe en joignant $O$ à $n$ points qui se correspondent par $r$. Les $n$ morceaux obtenus sont alors images successives les uns des autres.",
+      "formule_principale": "s \\text{ isométrie} \\Rightarrow \\mathcal{A}\\big(s(P)\\big) = \\mathcal{A}(P) \\qquad ; \\qquad \\mathcal{A}(P) = \\frac{\\mathcal{A}(\\mathcal{F})}{n}",
+      "variantes": [
+        {
+          "nom": "L'aire par différence",
+          "quand_utiliser": "Quand on cherche l'aire de la partie centrale d'une figure, entourée de morceaux superposables",
+          "contenu_markdown": "On retire de la grande figure les morceaux qui l'entourent, dont on a montré qu'ils sont images les uns des autres par une isométrie : il suffit alors de calculer l'aire d'**un seul** d'entre eux. Exemple : le carré $EFGH$ inscrit dans $ABCD$ s'obtient en retirant les quatre triangles rectangles $AEH$, $BFE$, $CGF$, $DHG$, images successives par la rotation de centre $O$ et d'angle $\\frac{\\pi}{2}$ ; son aire vaut donc $c^2 - 4\\,\\mathcal{A}(AEH)$."
+        },
+        {
+          "nom": "Le découpage par symétrie",
+          "quand_utiliser": "Quand la figure possède un axe ou un centre de symétrie (n = 2)",
+          "contenu_markdown": "Un axe de symétrie (ou un centre de symétrie) de la figure la partage en **deux** morceaux superposables, chacun d'aire $\\dfrac{\\mathcal{A}(\\mathcal{F})}{2}$. Par exemple, toute droite passant par le centre d'un parallélogramme le coupe en deux morceaux échangés par la symétrie centrale, donc de même aire."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "enonce_markdown": "Dans le plan orienté, $ABCD$ est un carré de centre $O$ tel que $\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right) = \\dfrac{\\pi}{2}$. Les points $E$, $F$, $G$, $H$ sont sur $[AB]$, $[BC]$, $[CD]$, $[DA]$ avec $AE = BF = CG = DH$. On note $r$ la rotation de centre $O$ qui transforme $A$ en $B$ ; on admet que $r$ a pour angle $\\dfrac{\\pi}{2}$ et que $r(E) = F$, $r(F) = G$, $r(G) = H$, $r(H) = E$. Déterminer l'aire du quadrilatère $EBFO$ en fonction de celle du carré $ABCD$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choisir le découpage",
+          "justification": "On joint le centre $O$ aux quatre points $E$, $F$, $G$, $H$, qui se correspondent par $r$ : c'est le découpage adapté à la rotation d'angle $\\frac{\\pi}{2}$ ($n = 4$).",
+          "resultat_markdown": "Les segments $[OE]$, $[OF]$, $[OG]$, $[OH]$ partagent $ABCD$ en quatre quadrilatères d'intérieurs disjoints : $EBFO$, $FCGO$, $GDHO$, $HAEO$. Leur réunion est le carré entier."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer l'image de $EBFO$ par $r$, sommet par sommet",
+          "justification": "Une rotation transforme un polygone en le polygone formé par les images de ses sommets. Le centre $O$ est invariant ; la rotation d'angle $\\frac{\\pi}{2}$ fait tourner les sommets du carré d'un cran : $r(B) = C$.",
+          "resultat_markdown": "$r(E) = F \\;;\\; r(B) = C \\;;\\; r(F) = G \\;;\\; r(O) = O$, donc $r(EBFO) = FCGO$."
+        },
+        {
+          "numero": 3,
+          "action": "Répéter pour les morceaux suivants",
+          "justification": "Mêmes raisonnements : $r(F) = G$, $r(C) = D$, $r(G) = H$, puis $r(G) = H$, $r(D) = A$, $r(H) = E$.",
+          "resultat_markdown": "$r(FCGO) = GDHO$ et $r(GDHO) = HAEO$."
+        },
+        {
+          "numero": 4,
+          "action": "Conclure par conservation des aires",
+          "justification": "Une rotation est une isométrie : les quatre morceaux ont la même aire. Comme ils pavent le carré, la somme de leurs aires vaut $\\mathcal{A}_{ABCD}$.",
+          "resultat_markdown": "$4\\,\\mathcal{A}_{EBFO} = \\mathcal{A}_{ABCD}$, d'où $\\mathcal{A}_{EBFO} = \\dfrac{1}{4}\\,\\mathcal{A}_{ABCD}$."
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler sur un cas numérique",
+          "justification": "Avec $AB = 5$ et $AE = 2$, dans le repère d'origine $A$ : $E(2;0)$, $B(5;0)$, $F(5;2)$, $O(2{,}5;2{,}5)$. On découpe $EBFO$ par la diagonale $[EF]$ en deux triangles.",
+          "resultat_markdown": "$\\mathcal{A}_{EBF} = \\dfrac{EB \\times BF}{2} = \\dfrac{3 \\times 2}{2} = 3$. Pour $EFO$ : $\\overrightarrow{EF}(3;2)$, $\\overrightarrow{EO}(0{,}5;2{,}5)$, $\\mathcal{A}_{EFO} = \\dfrac{1}{2}\\left|3 \\times 2{,}5 - 2 \\times 0{,}5\\right| = \\dfrac{1}{2} \\times 6{,}5 = 3{,}25$. Total : $3 + 3{,}25 = 6{,}25 = \\dfrac{25}{4}$ ✔"
+        }
+      ],
+      "conclusion_markdown": "Le quadrilatère $EBFO$ occupe toujours le quart du carré, **quelle que soit** la longueur commune $AE = BF = CG = DH$ : la rotation fournit le résultat sans aucune mesure."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Affirmer que les quatre morceaux ont la même aire « parce qu'ils se ressemblent sur la figure ».",
+          "pourquoi_faux": "Une impression visuelle n'est pas une preuve, et deux quadrilatères peuvent se ressembler sans être superposables. Le barème attend l'isométrie explicite et le calcul des images des sommets.",
+          "correction_markdown": "Nommer l'isométrie ($r$, centre $O$, angle $\\frac{\\pi}{2}$), écrire l'image de chaque sommet, puis conclure : $r(EBFO) = FCGO$."
+        },
+        {
+          "erreur_markdown": "Choisir un découpage qui ne contient pas le morceau étudié, par exemple joindre $O$ aux sommets $A$, $B$, $C$, $D$ puis comparer les triangles obtenus à $EBFO$.",
+          "pourquoi_faux": "L'égalité $n \\times \\mathcal{A}(P) = \\mathcal{A}(\\mathcal{F})$ n'est vraie que si $P$ est **l'un** des $n$ morceaux qui pavent exactement la figure. Les triangles $OAB$, $OBC$… pavent bien le carré, mais $EBFO$ n'est pas l'un d'eux.",
+          "correction_markdown": "Construire le pavage autour du morceau étudié : ici, joindre $O$ aux points $E$, $F$, $G$, $H$, pas aux sommets."
+        },
+        {
+          "erreur_markdown": "Utiliser une homothétie de rapport $k$ comme si elle conservait les aires.",
+          "pourquoi_faux": "Une homothétie multiplie les longueurs par $|k|$ et les aires par $k^2$. Seules les isométries (translations, rotations, symétries) conservent les aires.",
+          "correction_markdown": "Vérifier que la transformation employée conserve les distances avant d'écrire « même aire »."
+        },
+        {
+          "erreur_markdown": "Calculer l'aire avec les valeurs numériques $AB = 5$, $AE = 2$ et présenter $6{,}25$ comme la réponse.",
+          "pourquoi_faux": "L'énoncé demande l'aire **en fonction de celle du carré** : la réponse attendue est une relation générale, $\\frac{1}{4}\\mathcal{A}_{ABCD}$, valable pour toutes les positions des points.",
+          "correction_markdown": "Conduire le raisonnement avec les isométries, sans valeur numérique, et garder le calcul numérique comme simple vérification."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$ABCDEF$ est un hexagone régulier de centre $O$ et d'aire $S$. Déterminer l'aire du triangle $OAB$ en fonction de $S$.",
+          "solution_markdown": "**Le découpage.** Les segments $[OA]$, $[OB]$, …, $[OF]$ partagent l'hexagone en six triangles $OAB$, $OBC$, $OCD$, $ODE$, $OEF$, $OFA$, d'intérieurs disjoints, dont la réunion est l'hexagone.\n\n**L'isométrie.** L'hexagone étant régulier, ses sommets se déduisent les uns des autres par la rotation $r$ de centre $O$ et d'angle $\\dfrac{2\\pi}{6} = \\dfrac{\\pi}{3}$, orientée de sorte que $r(A) = B$. On a $r(O) = O$, $r(A) = B$, $r(B) = C$, donc $r(OAB) = OBC$, et de même $r(OBC) = OCD$, etc.\n\n**Conclusion.** Une rotation conserve les aires : les six triangles ont la même aire. Comme ils pavent l'hexagone :\n\n$$6\\,\\mathcal{A}_{OAB} = S \\qquad \\Longrightarrow \\qquad \\mathcal{A}_{OAB} = \\frac{S}{6}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$ABC$ est un triangle équilatéral de centre $O$, d'aire $S$, parcouru dans le sens direct. Les points $P$, $Q$, $R$ sont sur $[AB]$, $[BC]$, $[CA]$ avec $AP = BQ = CR$. On note $r$ la rotation de centre $O$ et d'angle $\\dfrac{2\\pi}{3}$. 1) Justifier que $r(A) = B$, $r(B) = C$, $r(C) = A$, puis que $r(P) = Q$. 2) En déduire l'aire du quadrilatère $PBQO$.",
+          "solution_markdown": "**1) Images des sommets.** Le centre $O$ d'un triangle équilatéral est à égale distance des trois sommets : $OA = OB = OC$. Les triangles $OAB$, $OBC$, $OCA$ ont donc leurs trois côtés égaux deux à deux : ils sont superposables, et les angles $\\widehat{AOB}$, $\\widehat{BOC}$, $\\widehat{COA}$ sont égaux. Leur somme valant $2\\pi$, chacun vaut $\\dfrac{2\\pi}{3}$. Le triangle étant direct, on passe de $\\overrightarrow{OA}$ à $\\overrightarrow{OB}$ en tournant de $+\\dfrac{2\\pi}{3}$ : $r(A) = B$. De même $r(B) = C$ et $r(C) = A$.\n\n**Image de $P$.** $P$ est sur $[AB]$, donc $r(P)$ est sur $r([AB]) = [BC]$. Une rotation conserve les longueurs : $B\\,r(P) = r(A)\\,r(P) = AP$. Le point de $[BC]$ situé à la distance $AP$ de $B$ est $Q$, puisque $BQ = AP$. Donc $r(P) = Q$. De même $r(Q) = R$ et $r(R) = P$.\n\n**2) Découpage.** Les segments $[OP]$, $[OQ]$, $[OR]$ partagent le triangle en trois quadrilatères $PBQO$, $QCRO$, $RAPO$, qui le pavent.\n\n$$r(PBQO) = QCRO \\qquad ; \\qquad r(QCRO) = RAPO$$\n\nLes trois morceaux ont donc la même aire :\n\n$$3\\,\\mathcal{A}_{PBQO} = S \\qquad \\Longrightarrow \\qquad \\mathcal{A}_{PBQO} = \\frac{S}{3}$$\n\nLe résultat ne dépend pas de la position de $P$ sur $[AB]$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On reprend le carré $ABCD$ de côté $c$ et de centre $O$ de l'exemple, avec $AE = BF = CG = DH = a$ ($0 < a < c$). 1) Montrer que les triangles $AEH$, $BFE$, $CGF$, $DHG$ ont la même aire et calculer cette aire. 2) En déduire l'aire du carré $EFGH$ en fonction de $a$ et $c$. 3) Pour quelle valeur de $a$ cette aire est-elle minimale ? Que vaut-elle alors ?",
+          "solution_markdown": "**1) Les quatre triangles.** On sait que $r(A) = B$, $r(E) = F$ et $r(H) = E$. Donc $r(AEH) = BFE$. De même $r(BFE) = CGF$ et $r(CGF) = DHG$. La rotation conservant les aires, les quatre triangles ont la même aire.\n\nLe triangle $AEH$ est rectangle en $A$ (angle du carré). Ses côtés de l'angle droit sont $AE = a$ et $AH = AD - DH = c - a$. Donc :\n\n$$\\mathcal{A}_{AEH} = \\frac{AE \\times AH}{2} = \\frac{a(c-a)}{2}$$\n\n**2) Aire par différence.** Le carré $ABCD$ est pavé par $EFGH$ et les quatre triangles :\n\n$$\\mathcal{A}_{EFGH} = c^2 - 4 \\times \\frac{a(c-a)}{2} = c^2 - 2a(c-a) = c^2 - 2ac + 2a^2$$\n\n*Contrôle avec $c = 5$, $a = 2$* : $25 - 2 \\times 2 \\times 3 = 25 - 12 = 13$, et l'on retrouve $EF^2 = 3^2 + 2^2 = 13$ ✔\n\n**3) Minimum.** Mettons $2a^2 - 2ac + c^2$ sous forme canonique en $a$ :\n\n$$2a^2 - 2ac + c^2 = 2\\left(a^2 - ac\\right) + c^2 = 2\\left[\\left(a - \\frac{c}{2}\\right)^2 - \\frac{c^2}{4}\\right] + c^2 = 2\\left(a - \\frac{c}{2}\\right)^2 + \\frac{c^2}{2}$$\n\nUn carré étant positif ou nul, l'aire est minimale quand $a - \\dfrac{c}{2} = 0$, c'est-à-dire $a = \\dfrac{c}{2}$ ($E$, $F$, $G$, $H$ milieux des côtés). L'aire minimale vaut $\\dfrac{c^2}{2}$ : la moitié du grand carré."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une isométrie conserve les aires : si tu montres qu'un morceau est l'image d'un autre par une rotation, une translation ou une symétrie, ils ont la même aire, sans aucun calcul.",
+        "Pour l'aire d'un morceau « biscornu », cherche un découpage de la figure entière en $n$ copies de ce morceau, sans chevauchement ni trou : son aire vaut $\\frac{1}{n}$ de l'aire totale.",
+        "Une figure invariante par une rotation d'angle $\\frac{2\\pi}{n}$ se découpe naturellement en joignant son centre à $n$ points qui se correspondent.",
+        "Justifie toujours sommet par sommet : $r(E)=F$, $r(B)=C$, $r(O)=O$ donc $r(EBFO)=FCGO$.",
+        "Au Probatoire C et E, cette question arrive en fin de partie géométrique, après le calcul des images par une rotation : elle récompense celui qui réutilise les résultats précédents au lieu de se lancer dans des calculs de coordonnées."
+      ]
+    }
+  ]
 }

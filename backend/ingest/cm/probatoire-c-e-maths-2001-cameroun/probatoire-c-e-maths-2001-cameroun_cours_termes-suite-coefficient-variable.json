@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Suites numériques",
+    "duree_estimee_min": 30,
+    "tags": [
+      "suite récurrente",
+      "coefficient variable",
+      "indice de départ",
+      "suite auxiliaire",
+      "calcul fractionnaire"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,122 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Dans une suite géométrique, on multiplie toujours par le même nombre pour passer d'un terme au suivant. Mais il arrive que ce multiplicateur change à chaque étape, parce qu'il dépend du rang : $u_{n+1} = \\dfrac{n+1}{3n}\\,u_n$, par exemple. La suite n'est alors ni arithmétique ni géométrique, et les réflexes habituels ne s'appliquent plus. Ce cours t'apprend à calculer sans erreur les termes de ces suites, en gardant la trace de l'indice à chaque étape, puis à repérer la régularité cachée qui permet souvent de les ramener à une suite connue."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer les premiers termes d'une suite définie par récurrence de proche en proche",
+        "Savoir multiplier et simplifier des fractions",
+        "Connaître la définition d'une suite géométrique : $v_{n+1} = q\\,v_n$ avec $q$ constant"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Remplacer à la fois le terme précédent et l'indice",
+      "contenu_markdown": "**Situation.** La suite est donnée par son premier terme et une relation du type\n\n$$u_{n+1} = a(n)\\,u_n \\qquad \\text{ou} \\qquad u_{n+1} = u_n + b(n)$$\n\noù le coefficient $a(n)$ ou le terme ajouté $b(n)$ **dépend de $n$**.\n\n**Méthode.**\n\n1. **Repérer l'indice de départ.** Si la suite commence à $u_1$, le premier calcul se fait avec $n = 1$ et donne $u_2$. Si elle commence à $u_0$, on part de $n = 0$.\n2. **Écrire, pour chaque terme cherché, la valeur de $n$ utilisée** : pour obtenir $u_{k+1}$, on prend $n = k$.\n3. **Calculer d'abord le coefficient** $a(k)$ (ou $b(k)$), le simplifier, **puis** le combiner avec $u_k$ déjà connu.\n4. **Rester en fractions exactes.**\n\n**Repérer la régularité.** Une fois trois ou quatre termes obtenus, on les range dans un tableau avec l'indice $n$. Diviser ou multiplier $u_n$ par une expression en $n$ (par exemple $\\dfrac{u_n}{n}$ ou $n\\,u_n$) fait souvent apparaître une suite géométrique ou constante : c'est l'idée des suites auxiliaires proposées dans les sujets.",
+      "formule_principale": "u_{k+1} = a(k)\\,u_k \\quad \\text{avec } n = k \\text{ remplacé partout}",
+      "variantes": [
+        {
+          "nom": "Écriture en produit",
+          "quand_utiliser": "Pour une relation $u_{n+1} = a(n)\\,u_n$, quand on veut une expression directe d'un terme",
+          "contenu_markdown": "En enchaînant les étapes depuis $u_1$ : $u_2 = a(1)\\,u_1$, $u_3 = a(2)\\,a(1)\\,u_1$, et plus généralement $u_n = a(n-1) \\times \\dots \\times a(2) \\times a(1) \\times u_1$. Avec $a(k) = \\dfrac{k+1}{3k}$, les facteurs $\\dfrac{k+1}{k}$ se simplifient en cascade ($\\dfrac{2}{1} \\times \\dfrac{3}{2} \\times \\dots \\times \\dfrac{n}{n-1} = n$), et il reste $u_n = \\dfrac{1}{3} \\times n \\times \\left(\\dfrac{1}{3}\\right)^{n-1} = \\dfrac{n}{3^n}$. On vérifie : $u_2 = \\dfrac{2}{9}$, $u_3 = \\dfrac{3}{27} = \\dfrac{1}{9}$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "La suite $(U_n)$ est définie pour $n \\geqslant 1$ par $U_1 = \\dfrac{1}{3}$ et $U_{n+1} = \\dfrac{n+1}{3n}\\,U_n$. Calculer $U_2$, $U_3$ et $U_4$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer l'indice de départ",
+          "justification": "La suite commence à $U_1$ : pour obtenir $U_2$, il faut prendre $n = 1$ (et non $n = 2$).",
+          "resultat_markdown": "$U_2 \\leftrightarrow n = 1$ ; $U_3 \\leftrightarrow n = 2$ ; $U_4 \\leftrightarrow n = 3$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $U_2$ avec $n = 1$",
+          "justification": "Le coefficient vaut $\\dfrac{1+1}{3 \\times 1} = \\dfrac{2}{3}$ ; on le multiplie par $U_1 = \\dfrac{1}{3}$.",
+          "resultat_markdown": "$U_2 = \\dfrac{2}{3} \\times \\dfrac{1}{3} = \\dfrac{2}{9}$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $U_3$ avec $n = 2$",
+          "justification": "Le coefficient vaut $\\dfrac{2+1}{3 \\times 2} = \\dfrac{3}{6} = \\dfrac{1}{2}$ ; on le multiplie par $U_2 = \\dfrac{2}{9}$.",
+          "resultat_markdown": "$U_3 = \\dfrac{1}{2} \\times \\dfrac{2}{9} = \\dfrac{2}{18} = \\dfrac{1}{9}$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $U_4$ avec $n = 3$",
+          "justification": "Le coefficient vaut $\\dfrac{3+1}{3 \\times 3} = \\dfrac{4}{9}$ ; on le multiplie par $U_3 = \\dfrac{1}{9}$.",
+          "resultat_markdown": "$U_4 = \\dfrac{4}{9} \\times \\dfrac{1}{9} = \\dfrac{4}{81}$"
+        },
+        {
+          "numero": 5,
+          "action": "Chercher la régularité",
+          "justification": "On divise chaque terme par son indice : $\\dfrac{U_1}{1} = \\dfrac{1}{3}$, $\\dfrac{U_2}{2} = \\dfrac{1}{9}$, $\\dfrac{U_3}{3} = \\dfrac{1}{27}$, $\\dfrac{U_4}{4} = \\dfrac{1}{81}$.",
+          "resultat_markdown": "Les quotients $\\dfrac{U_n}{n}$ sont les puissances successives de $\\dfrac{1}{3}$ : la suite $V_n = \\dfrac{U_n}{n}$ semble géométrique de raison $\\dfrac{1}{3}$"
+        }
+      ],
+      "conclusion_markdown": "On a $U_2 = \\dfrac{2}{9}$, $U_3 = \\dfrac{1}{9}$ et $U_4 = \\dfrac{4}{81}$. Le coefficient $\\dfrac{n+1}{3n}$ a pris trois valeurs différentes ($\\dfrac{2}{3}$, $\\dfrac{1}{2}$, $\\dfrac{4}{9}$) : la suite $(U_n)$ n'est pas géométrique, mais la suite auxiliaire $V_n = \\dfrac{U_n}{n}$ l'est, ce que l'épreuve demande ensuite de démontrer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Garder le même coefficient à chaque étape : $U_3 = \\dfrac{2}{3} \\times U_2 = \\dfrac{4}{27}$.",
+          "pourquoi_faux": "Le coefficient $\\dfrac{n+1}{3n}$ dépend de $n$. Le réutiliser revient à traiter la suite comme géométrique de raison $\\dfrac{2}{3}$, ce qu'elle n'est pas.",
+          "correction_markdown": "Recalcule le coefficient à chaque rang : pour $U_3$, $n = 2$ donne $\\dfrac{3}{6} = \\dfrac{1}{2}$, d'où $U_3 = \\dfrac{1}{9}$."
+        },
+        {
+          "erreur_markdown": "Prendre $n = 2$ pour calculer $U_2$ : $U_2 = \\dfrac{2+1}{3 \\times 2}\\,U_1 = \\dfrac{1}{2} \\times \\dfrac{1}{3} = \\dfrac{1}{6}$.",
+          "pourquoi_faux": "La relation donne $U_{n+1}$, pas $U_n$. Pour obtenir $U_2$, il faut $n + 1 = 2$, donc $n = 1$. Le décalage d'un cran fausse tous les termes suivants.",
+          "correction_markdown": "Écris toujours « pour obtenir $U_{k+1}$, je prends $n = k$ » avant de remplacer."
+        },
+        {
+          "erreur_markdown": "Supposer que la suite commence à $U_0$ et chercher à calculer $U_1$ avec $n = 0$.",
+          "pourquoi_faux": "Avec $n = 0$, le coefficient $\\dfrac{n+1}{3n}$ a un dénominateur nul : il n'est pas défini. C'est précisément pour cela que la suite démarre à l'indice $1$.",
+          "correction_markdown": "Lis l'indice du premier terme donné ($U_1$ ici) et vérifie que le coefficient est défini pour les valeurs de $n$ utilisées."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La suite $(u_n)$ est définie par $u_0 = 1$ et $u_{n+1} = (n+1)\\,u_n$ pour tout entier naturel $n$. Calculer $u_1$, $u_2$, $u_3$ et $u_4$.",
+          "solution_markdown": "La suite commence à $u_0$ : pour obtenir $u_{k+1}$, on prend $n = k$.\n\nPour $n = 0$ : $u_1 = (0+1) \\times u_0 = 1 \\times 1 = 1$.\n\nPour $n = 1$ : $u_2 = (1+1) \\times u_1 = 2 \\times 1 = 2$.\n\nPour $n = 2$ : $u_3 = (2+1) \\times u_2 = 3 \\times 2 = 6$.\n\nPour $n = 3$ : $u_4 = (3+1) \\times u_3 = 4 \\times 6 = 24$.\n\n$$u_1 = 1 \\quad ; \\quad u_2 = 2 \\quad ; \\quad u_3 = 6 \\quad ; \\quad u_4 = 24$$\n\nOn reconnaît les produits $1$, $1 \\times 2$, $1 \\times 2 \\times 3$, $1 \\times 2 \\times 3 \\times 4$ : le coefficient change à chaque rang, ce n'est pas une suite géométrique."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La suite $(u_n)$ est définie pour $n \\geqslant 1$ par $u_1 = 2$ et $u_{n+1} = u_n + 2n + 1$. a) Calculer $u_2$, $u_3$ et $u_4$. b) Comparer $u_n$ et $n^2$ pour $n = 1, 2, 3, 4$, puis conjecturer une expression de $u_n$.",
+          "solution_markdown": "**a)** Ici c'est le terme ajouté, $2n+1$, qui dépend de $n$. La suite commence à $u_1$.\n\nPour $n = 1$ : $u_2 = u_1 + 2 \\times 1 + 1 = 2 + 3 = 5$.\n\nPour $n = 2$ : $u_3 = u_2 + 2 \\times 2 + 1 = 5 + 5 = 10$.\n\nPour $n = 3$ : $u_4 = u_3 + 2 \\times 3 + 1 = 10 + 7 = 17$.\n\n**b)**\n\n| $n$ | $1$ | $2$ | $3$ | $4$ |\n|---|---|---|---|---|\n| $u_n$ | $2$ | $5$ | $10$ | $17$ |\n| $n^2$ | $1$ | $4$ | $9$ | $16$ |\n\nÀ chaque rang, $u_n = n^2 + 1$. On conjecture donc $u_n = n^2 + 1$. Cette conjecture est cohérente avec la relation : $(n+1)^2 + 1 = n^2 + 2n + 1 + 1 = (n^2 + 1) + 2n + 1$, ce qui est exactement $u_n + 2n + 1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La suite $(u_n)$ est définie pour $n \\geqslant 1$ par $u_1 = 1$ et $u_{n+1} = \\dfrac{n}{n+1}\\,u_n$. a) Calculer $u_2$, $u_3$ et $u_4$. b) On pose $v_n = n\\,u_n$. Démontrer que $v_{n+1} = v_n$ pour tout $n \\geqslant 1$. c) En déduire $u_n$ en fonction de $n$.",
+          "solution_markdown": "**a)** Pour $n = 1$ : $u_2 = \\dfrac{1}{2} \\times u_1 = \\dfrac{1}{2} \\times 1 = \\dfrac{1}{2}$.\n\nPour $n = 2$ : $u_3 = \\dfrac{2}{3} \\times u_2 = \\dfrac{2}{3} \\times \\dfrac{1}{2} = \\dfrac{2}{6} = \\dfrac{1}{3}$.\n\nPour $n = 3$ : $u_4 = \\dfrac{3}{4} \\times u_3 = \\dfrac{3}{4} \\times \\dfrac{1}{3} = \\dfrac{3}{12} = \\dfrac{1}{4}$.\n\n**b)** Par définition, $v_{n+1} = (n+1)\\,u_{n+1}$. On remplace $u_{n+1}$ par la relation :\n\n$$v_{n+1} = (n+1) \\times \\frac{n}{n+1}\\,u_n$$\n\nComme $n+1 \\neq 0$, le facteur $(n+1)$ se simplifie :\n\n$$v_{n+1} = n\\,u_n = v_n$$\n\n**c)** La suite $(v_n)$ est donc constante, égale à son premier terme $v_1 = 1 \\times u_1 = 1$. Ainsi $n\\,u_n = 1$, d'où\n\n$$u_n = \\frac{1}{n} \\qquad (n \\geqslant 1)$$\n\nContrôle avec a) : $u_2 = \\dfrac{1}{2}$, $u_3 = \\dfrac{1}{3}$, $u_4 = \\dfrac{1}{4}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Quand le coefficient dépend de $n$, recalcule-le à chaque rang : c'est la différence essentielle avec une suite géométrique.",
+        "Repère l'indice du premier terme : si la suite commence à $u_1$, ton premier calcul se fait avec $n = 1$ et donne $u_2$.",
+        "Écris « pour $n = \\dots$ » devant chaque calcul : cette simple habitude supprime presque toutes les erreurs de décalage.",
+        "Range tes termes dans un tableau avec $n$ : diviser ou multiplier par $n$ fait souvent apparaître une suite géométrique ou constante.",
+        "Au Probatoire C et E, cette question ouvre les exercices de suites à coefficient variable ; les valeurs exactes obtenues serviront à vérifier la suite auxiliaire et la formule du terme général demandées ensuite."
+      ]
+    }
+  ]
 }

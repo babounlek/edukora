@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Suites numériques - suites géométriques et suites auxiliaires",
+    "duree_estimee_min": 40,
+    "tags": [
+      "suite géométrique",
+      "suite auxiliaire",
+      "relation de récurrence",
+      "terme général",
+      "raison"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,128 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La suite définie par $U_{n+1} = \\dfrac{n+1}{3n}\\,U_n$ n'est ni arithmétique ni géométrique : son coefficient change à chaque rang. Impossible d'écrire directement $U_n$ en fonction de $n$. L'énoncé propose alors une suite « auxiliaire » $V_n = \\dfrac{U_n}{n}$, et tout s'éclaire : $V$ est géométrique, on sait l'exprimer, puis on revient à $U$. Démontrer qu'une suite auxiliaire est géométrique est l'un des exercices les plus fréquents du Probatoire, et il repose toujours sur le même calcul de simplification."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition d'une suite géométrique : $V_{n+1} = q\\,V_n$ pour tout $n$, avec $q$ constant",
+        "Savoir écrire le terme général $V_n = V_p \\times q^{\\,n-p}$",
+        "Savoir manipuler des fractions algébriques : simplifier, factoriser, réduire au même dénominateur",
+        "Savoir remplacer $n$ par $n+1$ dans une expression"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Partir de V(n+1), substituer, simplifier jusqu'à q × V(n)",
+      "contenu_markdown": "**Ce qu'il faut démontrer.** $(V_n)$ est géométrique si et seulement s'il existe un réel $q$, **indépendant de $n$**, tel que pour tout $n$ : $V_{n+1} = q\\,V_n$.\n\n**La méthode en quatre temps.**\n\n1. **Écrire $V_{n+1}$** à partir de la définition de $V_n$, en remplaçant $n$ par $n + 1$ **partout** (y compris dans un éventuel facteur en $n$).\n2. **Substituer** $U_{n+1}$ par la relation de récurrence de $(U_n)$.\n3. **Simplifier** (factoriser, réduire, simplifier les facteurs communs non nuls) jusqu'à faire réapparaître l'expression de $V_n$.\n4. **Conclure** : on obtient $V_{n+1} = q\\,V_n$ avec $q$ constant ; préciser la raison $q$ et le **premier terme** (calculé à l'indice de départ de la suite, $0$ ou $1$).\n\n**Deux familles classiques.**\n\n| Récurrence de $(U_n)$ | Suite auxiliaire | Mécanisme de simplification |\n|---|---|---|\n| $U_{n+1} = aU_n + b$ | $V_n = U_n - \\ell$, avec $\\ell = a\\ell + b$ | on factorise par $a$ |\n| $U_{n+1} = \\dfrac{n+1}{c\\,n}\\,U_n$ | $V_n = \\dfrac{U_n}{n}$ | le facteur $(n+1)$ se simplifie |\n\n**Ensuite.** $V_n = V_p\\,q^{\\,n-p}$, puis on revient à $U_n$ en inversant la définition de $V_n$ (par exemple $U_n = n\\,V_n$).",
+      "formule_principale": "V_{n+1} = \\dots = q\\,V_n \\quad (q \\text{ indépendant de } n) \\iff (V_n) \\text{ géométrique de raison } q",
+      "variantes": [
+        {
+          "nom": "La méthode du quotient",
+          "quand_utiliser": "Quand on sait que V(n) ne s'annule jamais",
+          "contenu_markdown": "Si $V_n \\neq 0$ pour tout $n$, on peut calculer $\\dfrac{V_{n+1}}{V_n}$ et montrer que ce quotient est une constante $q$. C'est équivalent, mais il faut **justifier** que $V_n$ ne s'annule pas (sinon le quotient n'a pas de sens). La méthode « $V_{n+1} = q\\,V_n$ » n'a pas cette contrainte : c'est pourquoi on la préfère."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "enonce_markdown": "On considère les suites définies par $U_1 = \\dfrac13$, $U_{n+1} = \\dfrac{n+1}{3n}\\,U_n$ et $V_n = \\dfrac{U_n}{n}$ pour $n \\geqslant 1$. Démontrer que $(V_n)$ est géométrique, préciser son premier terme et sa raison, puis exprimer $V_n$ et $U_n$ en fonction de $n$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire $V_{n+1}$",
+          "justification": "On remplace $n$ par $n + 1$ dans $V_n = \\frac{U_n}{n}$, au numérateur **et** au dénominateur.",
+          "resultat_markdown": "$V_{n+1} = \\dfrac{U_{n+1}}{n+1}$"
+        },
+        {
+          "numero": 2,
+          "action": "Substituer la relation de récurrence",
+          "justification": "$U_{n+1} = \\frac{n+1}{3n}\\,U_n$.",
+          "resultat_markdown": "$V_{n+1} = \\dfrac{1}{n+1} \\times \\dfrac{n+1}{3n}\\,U_n$"
+        },
+        {
+          "numero": 3,
+          "action": "Simplifier",
+          "justification": "Le facteur $n + 1$ figure au numérateur et au dénominateur ; il est non nul car $n \\geqslant 1$.",
+          "resultat_markdown": "$V_{n+1} = \\dfrac{U_n}{3n} = \\dfrac{1}{3} \\times \\dfrac{U_n}{n} = \\dfrac{1}{3}\\,V_n$"
+        },
+        {
+          "numero": 4,
+          "action": "Conclure : raison et premier terme",
+          "justification": "Le coefficient $\\frac13$ ne dépend pas de $n$. La suite commence au rang $1$.",
+          "resultat_markdown": "$(V_n)$ est géométrique de raison $q = \\dfrac13$ et de premier terme $V_1 = \\dfrac{U_1}{1} = \\dfrac13$."
+        },
+        {
+          "numero": 5,
+          "action": "Exprimer $V_n$ puis $U_n$",
+          "justification": "Premier terme d'indice $1$ : $V_n = V_1 \\times q^{\\,n-1}$. Puis $U_n = n\\,V_n$.",
+          "resultat_markdown": "$V_n = \\dfrac13 \\times \\left(\\dfrac13\\right)^{n-1} = \\left(\\dfrac13\\right)^n = \\dfrac{1}{3^n}$ et $U_n = \\dfrac{n}{3^n}$. Contrôle : $U_2 = \\frac{2}{3 \\times 1} \\times \\frac13 = \\frac29$ et $\\frac{2}{3^2} = \\frac29$ ✔"
+        }
+      ],
+      "conclusion_markdown": "$(V_n)$ est géométrique de premier terme $V_1 = \\frac13$ et de raison $\\frac13$ ; on en déduit $V_n = \\dfrac{1}{3^n}$ et $U_n = \\dfrac{n}{3^n}$. Le facteur $\\frac{n+1}{n}$ de la récurrence a été « absorbé » par la division par $n$ dans la définition de $V$ : c'est tout l'intérêt de cette suite auxiliaire."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $V_{n+1} = \\dfrac{U_{n+1}}{n}$ en ne changeant que l'indice de $U$.",
+          "pourquoi_faux": "$V_{n+1}$ s'obtient en remplaçant $n$ par $n+1$ **partout** dans $\\frac{U_n}{n}$. Avec $\\frac{U_{n+1}}{n}$, le facteur $n+1$ ne se simplifie plus et l'on trouve un coefficient $\\frac{n+1}{3n}$ qui dépend de $n$.",
+          "correction_markdown": "$V_{n+1} = \\dfrac{U_{n+1}}{n+1}$."
+        },
+        {
+          "erreur_markdown": "Conclure « $V_{n+1} = \\frac{n+1}{3n}\\,V_n$, donc $(V_n)$ est géométrique de raison $\\frac{n+1}{3n}$ ».",
+          "pourquoi_faux": "Une raison est une **constante** : un coefficient qui dépend de $n$ ne fait pas une suite géométrique.",
+          "correction_markdown": "Pousser la simplification jusqu'à un coefficient sans $n$ ; si c'est impossible, revoir le calcul de $V_{n+1}$."
+        },
+        {
+          "erreur_markdown": "Donner $V_0$ comme premier terme alors que la suite commence au rang $1$, ou écrire $V_n = V_1 \\times q^n$.",
+          "pourquoi_faux": "$V_0 = \\frac{U_0}{0}$ n'existe pas. Et avec $V_n = V_1 q^n$, on obtiendrait $V_1 = \\frac13 \\times \\frac13 = \\frac19$, en contradiction avec $V_1 = \\frac13$.",
+          "correction_markdown": "Repérer l'indice de départ $p$ et écrire $V_n = V_p \\times q^{\\,n-p}$, ici $V_n = V_1 \\times q^{\\,n-1}$."
+        },
+        {
+          "erreur_markdown": "Utiliser le quotient $\\frac{V_{n+1}}{V_n}$ sans justifier que $V_n \\neq 0$.",
+          "pourquoi_faux": "Diviser par une quantité qui pourrait être nulle n'est pas licite ; le correcteur sanctionne l'absence de justification.",
+          "correction_markdown": "Préférer la forme $V_{n+1} = q\\,V_n$, qui ne demande aucune condition."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La suite $(U_n)$ est définie par $U_0 = 2$ et $U_{n+1} = 2U_n + 3$. On pose $V_n = U_n + 3$. Démontrer que $(V_n)$ est géométrique, puis exprimer $U_n$ en fonction de $n$.",
+          "solution_markdown": "**Calcul de $V_{n+1}$.**\n\n$$V_{n+1} = U_{n+1} + 3 = 2U_n + 3 + 3 = 2U_n + 6 = 2\\left(U_n + 3\\right) = 2\\,V_n$$\n\nLe coefficient $2$ ne dépend pas de $n$ : $(V_n)$ est géométrique de raison $q = 2$.\n\n**Premier terme.** $V_0 = U_0 + 3 = 2 + 3 = 5$.\n\n**Termes généraux.** $V_n = 5 \\times 2^n$, et $U_n = V_n - 3 = 5 \\times 2^n - 3$.\n\n*Contrôle* : $U_1 = 2 \\times 2 + 3 = 7$ et $5 \\times 2 - 3 = 7$ ✔"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "La suite $(U_n)$ est définie pour $n \\geqslant 1$ par $U_1 = 2$ et $U_{n+1} = \\dfrac{2(n+1)}{n}\\,U_n$. On pose $V_n = \\dfrac{U_n}{n}$. Démontrer que $(V_n)$ est géométrique, puis exprimer $U_n$ en fonction de $n$.",
+          "solution_markdown": "**Calcul de $V_{n+1}$.**\n\n$$V_{n+1} = \\frac{U_{n+1}}{n+1} = \\frac{1}{n+1} \\times \\frac{2(n+1)}{n}\\,U_n$$\n\nLe facteur $n + 1$, non nul, se simplifie :\n\n$$V_{n+1} = \\frac{2\\,U_n}{n} = 2 \\times \\frac{U_n}{n} = 2\\,V_n$$\n\n$(V_n)$ est géométrique de raison $2$ et de premier terme $V_1 = \\dfrac{U_1}{1} = 2$.\n\n**Termes généraux.** $V_n = V_1 \\times 2^{\\,n-1} = 2 \\times 2^{\\,n-1} = 2^n$, donc $U_n = n\\,V_n = n \\times 2^n$.\n\n*Contrôles* : $U_2 = \\frac{2 \\times 2}{1} \\times 2 = 8$ et $2 \\times 2^2 = 8$ ✔ ; $U_3 = \\frac{2 \\times 3}{2} \\times 8 = 24$ et $3 \\times 2^3 = 24$ ✔"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La suite $(U_n)$ est définie par $U_0 = 3$ et $U_{n+1} = \\dfrac{4U_n - 2}{U_n + 1}$ ; on admet que $U_n > 2$ pour tout $n$. On pose $V_n = \\dfrac{U_n - 2}{U_n - 1}$. 1) Démontrer que $(V_n)$ est géométrique. 2) Exprimer $V_n$, puis $U_n$, en fonction de $n$.",
+          "solution_markdown": "**1) Calcul séparé du numérateur et du dénominateur de $V_{n+1}$.** On réduit au même dénominateur $U_n + 1$ (non nul car $U_n > 2$) :\n\n$$U_{n+1} - 2 = \\frac{4U_n - 2 - 2(U_n + 1)}{U_n + 1} = \\frac{4U_n - 2 - 2U_n - 2}{U_n + 1} = \\frac{2U_n - 4}{U_n + 1} = \\frac{2(U_n - 2)}{U_n + 1}$$\n\n$$U_{n+1} - 1 = \\frac{4U_n - 2 - (U_n + 1)}{U_n + 1} = \\frac{3U_n - 3}{U_n + 1} = \\frac{3(U_n - 1)}{U_n + 1}$$\n\n**Quotient.** Les dénominateurs $U_n + 1$ se simplifient :\n\n$$V_{n+1} = \\frac{U_{n+1} - 2}{U_{n+1} - 1} = \\frac{2(U_n - 2)}{3(U_n - 1)} = \\frac{2}{3}\\,V_n$$\n\n$(V_n)$ est géométrique de raison $\\frac23$ et de premier terme $V_0 = \\dfrac{3 - 2}{3 - 1} = \\dfrac12$.\n\n**2) Termes généraux.** $V_n = \\dfrac12\\left(\\dfrac23\\right)^n$.\n\nPour revenir à $U_n$, on isole $U_n$ dans $V_n = \\frac{U_n - 2}{U_n - 1}$ :\n\n$$V_n(U_n - 1) = U_n - 2 \\iff V_n U_n - U_n = V_n - 2 \\iff U_n(V_n - 1) = V_n - 2 \\iff U_n = \\frac{V_n - 2}{V_n - 1} = \\frac{2 - V_n}{1 - V_n}$$\n\n(division licite car $V_n \\leqslant \\frac12$, donc $V_n \\neq 1$). Ainsi $U_n = \\dfrac{2 - \\frac12\\left(\\frac23\\right)^n}{1 - \\frac12\\left(\\frac23\\right)^n}$.\n\n*Contrôles* : pour $n = 0$, $\\frac{2 - 0{,}5}{1 - 0{,}5} = \\frac{1{,}5}{0{,}5} = 3 = U_0$ ✔ ; pour $n = 1$, $V_1 = \\frac13$ donne $\\frac{2 - \\frac13}{1 - \\frac13} = \\frac{5/3}{2/3} = \\frac52$, et $U_1 = \\frac{4 \\times 3 - 2}{3 + 1} = \\frac{10}{4} = \\frac52$ ✔"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Pour montrer qu'une suite est géométrique, pars toujours de $V_{n+1}$, remplace, simplifie, et arrête-toi quand tu lis $q \\times V_n$.",
+        "En écrivant $V_{n+1}$, remplace $n$ par $n+1$ partout : c'est ce qui fait apparaître le facteur qui se simplifie.",
+        "Une raison ne contient jamais $n$ : si ton coefficient en dépend encore, ton calcul n'est pas fini ou il est faux.",
+        "Repère l'indice de départ : premier terme $V_1$ donne $V_n = V_1\\,q^{\\,n-1}$, premier terme $V_0$ donne $V_n = V_0\\,q^n$.",
+        "Au Probatoire C et E, cette question est le cœur de l'exercice de suites : elle conditionne le terme général, la limite et la somme demandés juste après."
+      ]
+    }
+  ]
 }

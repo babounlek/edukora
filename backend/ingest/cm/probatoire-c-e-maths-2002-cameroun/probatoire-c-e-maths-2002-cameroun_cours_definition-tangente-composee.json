@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Trigonométrie - fonctions circulaires",
+    "duree_estimee_min": 35,
+    "tags": [
+      "fonction tangente",
+      "ensemble de définition",
+      "fonction composée",
+      "périodicité",
+      "équations trigonométriques"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,122 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tape $\\tan(90°)$ sur ta calculatrice : elle affiche une erreur. La fonction tangente a des « trous » réguliers, là où le cosinus s'annule. Quand on la compose, comme dans $\\tan 2x$ ou $\\tan\\left(2x + \\frac\\pi3\\right)$, ces trous se déplacent et se resserrent. Un QCM du Probatoire te propose justement quatre ensembles de définition très voisins, dont trois sont construits sur des erreurs typiques. Ce cours te donne la démarche qui mène sans hésiter au bon."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la définition $\\tan u = \\dfrac{\\sin u}{\\cos u}$",
+        "Savoir résoudre l'équation $\\cos u = 0$ : $u = \\dfrac\\pi2 + k\\pi$, $k \\in \\mathbb{Z}$",
+        "Savoir résoudre une équation du premier degré en $x$",
+        "Connaître la notion de période d'une fonction"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Condition d'existence de tan(ax + b)",
+      "contenu_markdown": "**La fonction tangente.** $\\tan u$ existe si et seulement si $\\cos u \\neq 0$, c'est-à-dire :\n\n$$u \\neq \\frac{\\pi}{2} + k\\pi \\qquad (k \\in \\mathbb{Z})$$\n\nLa fonction tangente est périodique de période $\\pi$.\n\n**Fonction composée $\\tan(ax + b)$, avec $a \\neq 0$.** On écrit la condition sur $u = ax + b$, **puis** on résout en $x$ en divisant **tous** les termes par $a$ :\n\n$$ax + b \\neq \\frac\\pi2 + k\\pi \\iff ax \\neq \\frac\\pi2 - b + k\\pi \\iff x \\neq \\frac{1}{a}\\left(\\frac\\pi2 - b\\right) + k\\,\\frac{\\pi}{a}$$\n\n**Contrôle par la période.** La fonction $x \\mapsto \\tan(ax+b)$ est périodique de période $\\dfrac{\\pi}{|a|}$ : ses valeurs interdites se succèdent avec un pas égal à cette période. Un ensemble de valeurs interdites dont le pas n'est pas $\\frac{\\pi}{|a|}$ est faux.\n\n**Expression contenant d'autres conditions.** Si la tangente apparaît au dénominateur ou sous une autre opération, on ajoute les conditions correspondantes (dénominateur non nul, etc.) et on réunit toutes les valeurs interdites.",
+      "formule_principale": "\\tan(ax+b) \\text{ existe} \\iff ax + b \\neq \\frac{\\pi}{2} + k\\pi,\\ k\\in\\mathbb{Z}",
+      "variantes": [
+        {
+          "nom": "Vérification ponctuelle en QCM",
+          "quand_utiliser": "Pour départager deux propositions voisines",
+          "contenu_markdown": "Choisis une valeur exclue par une proposition et pas par l'autre, et teste-la : si le cosinus de l'argument s'annule en cette valeur, elle doit être exclue. Par exemple, pour $\\tan 2x$ et $x = \\frac{3\\pi}{4}$ : $2x = \\frac{3\\pi}{2}$ et $\\cos\\frac{3\\pi}{2} = 0$, donc $\\frac{3\\pi}{4}$ doit être une valeur interdite."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Soit $f(x) = \\tan 2x$. Parmi les ensembles suivants, lequel est l'ensemble de définition de $f$ ? a) $\\mathbb{R}$ ; b) $\\mathbb{R}\\setminus\\left\\{\\frac\\pi2 + k\\pi\\right\\}$ ; c) $\\mathbb{R}\\setminus\\left\\{\\frac\\pi4 + k\\frac\\pi2\\right\\}$ ; d) $\\mathbb{R}\\setminus\\left\\{\\frac\\pi4 + k\\pi\\right\\}$ ($k \\in \\mathbb{Z}$).",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la condition d'existence sur l'argument",
+          "justification": "$\\tan u$ existe si et seulement si $\\cos u \\neq 0$ ; ici $u = 2x$.",
+          "resultat_markdown": "$2x \\neq \\dfrac\\pi2 + k\\pi \\quad (k \\in \\mathbb{Z})$"
+        },
+        {
+          "numero": 2,
+          "action": "Résoudre en $x$ en divisant tous les termes par $2$",
+          "justification": "Le terme $k\\pi$ se divise aussi par $2$.",
+          "resultat_markdown": "$x \\neq \\dfrac\\pi4 + k\\dfrac\\pi2 \\quad (k \\in \\mathbb{Z})$"
+        },
+        {
+          "numero": 3,
+          "action": "Contrôler par la période",
+          "justification": "$\\tan 2x$ est de période $\\frac\\pi2$ : les valeurs interdites doivent se succéder avec ce pas.",
+          "resultat_markdown": "Pas de $\\frac\\pi2$ : conforme à la proposition c), pas à la d) (pas de $\\pi$)."
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier ponctuellement",
+          "justification": "$x = \\frac{3\\pi}{4}$ est exclu par c) ($k = 1$) mais pas par d). Or $2x = \\frac{3\\pi}{2}$ et $\\cos\\frac{3\\pi}{2} = 0$.",
+          "resultat_markdown": "$\\frac{3\\pi}4$ doit être exclu : d) est incomplète."
+        }
+      ],
+      "conclusion_markdown": "La bonne réponse est c) : $D_f = \\mathbb{R} \\setminus \\left\\{\\dfrac{\\pi}{4} + k\\dfrac{\\pi}{2},\\ k \\in \\mathbb{Z}\\right\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Recopier les valeurs interdites de $\\tan x$ : $D_f = \\mathbb{R}\\setminus\\left\\{\\frac\\pi2 + k\\pi\\right\\}$.",
+          "pourquoi_faux": "Ces valeurs concernent l'argument $u = 2x$, pas la variable $x$. Par exemple $x = \\frac\\pi4$ donne $2x = \\frac\\pi2$, où la fonction n'existe pas, alors que cet ensemble l'autorise.",
+          "correction_markdown": "Écrire la condition sur l'argument complet, puis la résoudre en $x$."
+        },
+        {
+          "erreur_markdown": "Diviser seulement le premier terme : $x \\neq \\frac\\pi4 + k\\pi$.",
+          "pourquoi_faux": "Diviser une condition par $2$, c'est diviser **chacun** de ses termes. Oublier $k\\pi$ fait perdre une valeur interdite sur deux ($\\frac{3\\pi}{4}$, $\\frac{7\\pi}{4}$...).",
+          "correction_markdown": "$2x \\neq \\frac\\pi2 + k\\pi \\iff x \\neq \\frac\\pi4 + \\frac{k\\pi}{2}$, puis contrôle par la période $\\frac\\pi2$."
+        },
+        {
+          "erreur_markdown": "Pour $\\tan\\left(2x + \\frac\\pi3\\right)$, oublier de soustraire $\\frac\\pi3$ avant de diviser, ou se tromper de signe.",
+          "pourquoi_faux": "On écrirait $x \\neq \\frac\\pi4 + \\frac{k\\pi}{2}$ comme si le décalage n'existait pas, ou $x \\neq \\frac{5\\pi}{12} + \\frac{k\\pi}2$ en ajoutant $\\frac\\pi3$ au lieu de le retrancher.",
+          "correction_markdown": "Isoler d'abord $2x$ : $2x \\neq \\frac\\pi2 - \\frac\\pi3 + k\\pi = \\frac\\pi6 + k\\pi$, puis diviser : $x \\neq \\frac{\\pi}{12} + \\frac{k\\pi}{2}$."
+        },
+        {
+          "erreur_markdown": "Écrire la condition $\\sin 2x \\neq 0$ au lieu de $\\cos 2x \\neq 0$.",
+          "pourquoi_faux": "$\\tan u = \\frac{\\sin u}{\\cos u}$ : c'est le **dénominateur** $\\cos u$ qui ne doit pas s'annuler. La condition $\\sin u \\neq 0$ concerne la cotangente $\\frac{\\cos u}{\\sin u}$.",
+          "correction_markdown": "Revenir à la définition $\\tan u = \\frac{\\sin u}{\\cos u}$ avant d'écrire la condition."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Déterminer l'ensemble de définition de $f(x) = \\tan 3x$ et la période de $f$.",
+          "solution_markdown": "$\\tan 3x$ existe si et seulement si $\\cos 3x \\neq 0$, soit :\n\n$$3x \\neq \\frac\\pi2 + k\\pi \\iff x \\neq \\frac{\\pi}{6} + \\frac{k\\pi}{3} \\qquad (k \\in \\mathbb{Z})$$\n\n$$D_f = \\mathbb{R}\\setminus\\left\\{\\frac\\pi6 + \\frac{k\\pi}{3},\\ k\\in\\mathbb{Z}\\right\\}$$\n\nLa période est $\\dfrac{\\pi}{3}$ : pour tout $x$ de $D_f$, $f\\left(x + \\frac\\pi3\\right) = \\tan(3x + \\pi) = \\tan 3x$. Le pas des valeurs interdites, $\\frac\\pi3$, est bien égal à la période."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Déterminer l'ensemble de définition de $g(x) = \\tan\\left(2x + \\dfrac\\pi3\\right)$, puis donner les valeurs interdites situées dans l'intervalle $[0\\,;\\,\\pi]$.",
+          "solution_markdown": "$g(x)$ existe si et seulement si $\\cos\\left(2x + \\frac\\pi3\\right) \\neq 0$ :\n\n$$2x + \\frac\\pi3 \\neq \\frac\\pi2 + k\\pi \\iff 2x \\neq \\frac\\pi2 - \\frac\\pi3 + k\\pi$$\n\nOr $\\frac\\pi2 - \\frac\\pi3 = \\frac{3\\pi}{6} - \\frac{2\\pi}{6} = \\frac\\pi6$, donc :\n\n$$2x \\neq \\frac\\pi6 + k\\pi \\iff x \\neq \\frac{\\pi}{12} + \\frac{k\\pi}{2}$$\n\n$$D_g = \\mathbb{R}\\setminus\\left\\{\\frac{\\pi}{12} + \\frac{k\\pi}{2},\\ k \\in\\mathbb{Z}\\right\\}$$\n\n**Valeurs dans $[0\\,;\\,\\pi]$.** $0 \\le \\frac\\pi{12} + \\frac{k\\pi}2 \\le \\pi \\iff 0 \\le 1 + 6k \\le 12 \\iff -\\frac16 \\le k \\le \\frac{11}{6}$, donc $k = 0$ ou $k = 1$ :\n\n$$x = \\frac{\\pi}{12} \\qquad \\text{et} \\qquad x = \\frac{\\pi}{12} + \\frac{6\\pi}{12} = \\frac{7\\pi}{12}$$"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Déterminer l'ensemble de définition de $h(x) = \\dfrac{1}{1 - \\tan 2x}$, puis la liste des valeurs interdites de l'intervalle $[0\\,;\\,\\pi[$.",
+          "solution_markdown": "Deux conditions sont nécessaires.\n\n**Condition 1 : $\\tan 2x$ existe.** $2x \\neq \\frac\\pi2 + k\\pi \\iff x \\neq \\dfrac\\pi4 + \\dfrac{k\\pi}2$.\n\n**Condition 2 : le dénominateur ne s'annule pas.** $1 - \\tan 2x \\neq 0 \\iff \\tan 2x \\neq 1$. Sur chaque intervalle de longueur $\\pi$ où elle est définie, la tangente prend la valeur $1$ une seule fois, et $\\tan\\frac\\pi4 = 1$ ; la tangente étant de période $\\pi$ :\n\n$$\\tan 2x = 1 \\iff 2x = \\frac\\pi4 + k\\pi \\iff x = \\frac\\pi8 + \\frac{k\\pi}{2}$$\n\n**Ensemble de définition.**\n\n$$D_h = \\mathbb{R}\\setminus\\left(\\left\\{\\frac\\pi4 + \\frac{k\\pi}2\\right\\} \\cup \\left\\{\\frac\\pi8 + \\frac{k\\pi}2\\right\\}\\right),\\quad k\\in\\mathbb{Z}$$\n\n**Valeurs interdites dans $[0\\,;\\,\\pi[$.**\n\n- $0 \\le \\frac\\pi4 + \\frac{k\\pi}2 < \\pi \\iff 0 \\le 1 + 2k < 4 \\iff -\\frac12 \\le k < \\frac32$ : $k = 0$ ou $1$, d'où $\\frac\\pi4$ et $\\frac{3\\pi}4$.\n- $0 \\le \\frac\\pi8 + \\frac{k\\pi}2 < \\pi \\iff 0 \\le 1 + 4k < 8 \\iff -\\frac14 \\le k < \\frac74$ : $k = 0$ ou $1$, d'où $\\frac\\pi8$ et $\\frac{5\\pi}8$.\n\nLes valeurs interdites de $[0\\,;\\,\\pi[$ sont $\\dfrac\\pi8$, $\\dfrac\\pi4$, $\\dfrac{5\\pi}{8}$ et $\\dfrac{3\\pi}{4}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\tan u$ n'existe que si $\\cos u \\neq 0$, c'est-à-dire $u \\neq \\frac\\pi2 + k\\pi$ : écris cette condition sur l'argument **complet**.",
+        "Isole ensuite $x$ en traitant **tous** les termes, y compris $k\\pi$ : le pas des valeurs interdites devient $\\frac{\\pi}{|a|}$.",
+        "Contrôle ton résultat par la période de $\\tan(ax+b)$, qui vaut $\\frac{\\pi}{|a|}$.",
+        "Si la tangente est elle-même au dénominateur, ajoute la condition « dénominateur non nul » et réunis toutes les valeurs interdites.",
+        "Au Probatoire C et E, cette question apparaît surtout en QCM, avec des propositions pièges construites sur ces erreurs : la vérification par la période t'en élimine la plupart en quelques secondes."
+      ]
+    }
+  ]
 }

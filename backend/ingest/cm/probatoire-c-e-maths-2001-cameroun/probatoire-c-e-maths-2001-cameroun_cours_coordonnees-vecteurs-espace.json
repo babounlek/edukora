@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Géométrie dans l'espace - repérage et vecteurs",
+    "duree_estimee_min": 30,
+    "tags": [
+      "coordonnées d'un vecteur",
+      "repère de l'espace",
+      "cube",
+      "produit scalaire",
+      "relation de Chasles"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,128 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Démontrer qu'une diagonale de cube est perpendiculaire à un plan, uniquement avec des vecteurs et la relation de Chasles, demande de l'astuce. Avec des coordonnées, la même démonstration devient une suite de multiplications et d'additions. Encore faut-il placer correctement les huit sommets du cube dans un repère, puis calculer les coordonnées des vecteurs sans inverser les points. C'est la porte d'entrée de toute la géométrie analytique de l'espace."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer les coordonnées d'un vecteur dans un repère du plan",
+        "Connaître la relation de Chasles et la règle du parallélogramme",
+        "Savoir ce qu'est un repère orthonormé",
+        "Connaître le vocabulaire du cube : sommets, arêtes, faces, diagonales"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Extrémité moins origine, coordonnée par coordonnée",
+      "contenu_markdown": "**Repère de l'espace.** Un repère $(O\\,;\\,\\vec{i},\\vec{j},\\vec{k})$ est formé d'un point $O$ et de trois vecteurs non coplanaires. Un point $M$ a pour coordonnées $(x\\,;\\,y\\,;\\,z)$ si et seulement si :\n\n$$\\overrightarrow{OM} = x\\,\\vec{i} + y\\,\\vec{j} + z\\,\\vec{k}$$\n\n**Coordonnées d'un vecteur.** Pour $M(x_M\\,;\\,y_M\\,;\\,z_M)$ et $N(x_N\\,;\\,y_N\\,;\\,z_N)$ :\n\n$$\\overrightarrow{MN}\\,\\big(x_N - x_M\\,;\\,y_N - y_M\\,;\\,z_N - z_M\\big)$$\n\nc'est-à-dire **extrémité moins origine**, sur chacune des trois coordonnées.\n\n**Ce que l'on fait ensuite avec ces coordonnées.**\n\n| Calcul | Formule |\n|---|---|\n| Somme, produit par un réel | coordonnée par coordonnée |\n| Milieu $I$ de $[MN]$ | $\\left(\\frac{x_M + x_N}{2}\\,;\\,\\frac{y_M + y_N}{2}\\,;\\,\\frac{z_M + z_N}{2}\\right)$ |\n| Colinéarité de $\\vec{u}$ et $\\vec{v}$ | coordonnées proportionnelles : $\\vec{v} = \\lambda\\,\\vec{u}$ |\n| Produit scalaire (repère **orthonormé**) | $xx' + yy' + zz'$ |\n| Norme (repère **orthonormé**) | $\\sqrt{x^2 + y^2 + z^2}$ |\n\n**Placer les sommets d'un cube.** Avec un sommet $A$ pour origine et les trois arêtes issues de $A$ pour vecteurs de base, chaque sommet a des coordonnées égales à $0$ ou $1$ : on les obtient en écrivant le chemin qui va de $A$ au sommet le long des arêtes.",
+      "formule_principale": "\\overrightarrow{MN}\\,\\big(x_N - x_M\\,;\\,y_N - y_M\\,;\\,z_N - z_M\\big)",
+      "variantes": [
+        {
+          "nom": "Par décomposition sur les arêtes (relation de Chasles)",
+          "quand_utiliser": "Quand on ne dispose pas encore des coordonnées des points, ou pour contrôler un calcul",
+          "contenu_markdown": "On écrit le vecteur comme un chemin le long des arêtes, puis on remplace chaque arête par $\\pm\\vec{i}$, $\\pm\\vec{j}$, $\\pm\\vec{k}$. Dans le cube $ABCDEFGH$ avec $\\vec{i} = \\overrightarrow{AB}$, $\\vec{j} = \\overrightarrow{AD}$, $\\vec{k} = \\overrightarrow{AE}$ : $\\overrightarrow{CF} = \\overrightarrow{CB} + \\overrightarrow{BF} = -\\vec{j} + \\vec{k}$, d'où $\\overrightarrow{CF}(0\\,;\\,-1\\,;\\,1)$. Les deux méthodes doivent donner le même résultat."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $1$ : $ABCD$ est la face inférieure ($A$ avant-gauche, $B$ avant-droite, $C$ arrière-droite, $D$ arrière-gauche) et $E$, $F$, $G$, $H$ sont respectivement au-dessus de $A$, $B$, $C$, $D$. On pose $\\vec{i} = \\overrightarrow{AB}$, $\\vec{j} = \\overrightarrow{AD}$, $\\vec{k} = \\overrightarrow{AE}$. Déterminer les coordonnées des vecteurs $\\overrightarrow{AG}$, $\\overrightarrow{CF}$ et $\\overrightarrow{FH}$ dans la base $(\\vec{i},\\vec{j},\\vec{k})$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Placer les sommets utiles",
+          "justification": "On suit les arêtes depuis $A$ : $\\overrightarrow{AC} = \\overrightarrow{AB} + \\overrightarrow{BC} = \\vec{i} + \\vec{j}$ ; $\\overrightarrow{AF} = \\overrightarrow{AB} + \\overrightarrow{BF} = \\vec{i} + \\vec{k}$ ; $\\overrightarrow{AG} = \\vec{i} + \\vec{j} + \\vec{k}$ ; $\\overrightarrow{AH} = \\overrightarrow{AD} + \\overrightarrow{DH} = \\vec{j} + \\vec{k}$.",
+          "resultat_markdown": "$A(0\\,;\\,0\\,;\\,0)$, $C(1\\,;\\,1\\,;\\,0)$, $F(1\\,;\\,0\\,;\\,1)$, $G(1\\,;\\,1\\,;\\,1)$, $H(0\\,;\\,1\\,;\\,1)$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $\\overrightarrow{AG}$",
+          "justification": "Extrémité $G$ moins origine $A$.",
+          "resultat_markdown": "$\\overrightarrow{AG}\\,(1 - 0\\,;\\,1 - 0\\,;\\,1 - 0) = (1\\,;\\,1\\,;\\,1)$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $\\overrightarrow{CF}$",
+          "justification": "Extrémité $F$ moins origine $C$.",
+          "resultat_markdown": "$\\overrightarrow{CF}\\,(1 - 1\\,;\\,0 - 1\\,;\\,1 - 0) = (0\\,;\\,-1\\,;\\,1)$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $\\overrightarrow{FH}$",
+          "justification": "Extrémité $H$ moins origine $F$.",
+          "resultat_markdown": "$\\overrightarrow{FH}\\,(0 - 1\\,;\\,1 - 0\\,;\\,1 - 1) = (-1\\,;\\,1\\,;\\,0)$"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler par la relation de Chasles",
+          "justification": "$\\overrightarrow{CF} = \\overrightarrow{CB} + \\overrightarrow{BF} = -\\vec{j} + \\vec{k}$ et $\\overrightarrow{FH} = \\overrightarrow{FE} + \\overrightarrow{EH} = -\\vec{i} + \\vec{j}$.",
+          "resultat_markdown": "Mêmes coordonnées ✔. Bonus : $\\overrightarrow{AG} \\cdot \\overrightarrow{CF} = 0 - 1 + 1 = 0$ et $\\overrightarrow{AG} \\cdot \\overrightarrow{FH} = -1 + 1 + 0 = 0$ (repère orthonormé)."
+        }
+      ],
+      "conclusion_markdown": "$\\overrightarrow{AG}(1\\,;\\,1\\,;\\,1)$, $\\overrightarrow{CF}(0\\,;\\,-1\\,;\\,1)$, $\\overrightarrow{FH}(-1\\,;\\,1\\,;\\,0)$ : les produits scalaires nuls montrent que $(AG)$ est orthogonale à deux droites sécantes du plan $(CFH)$, donc perpendiculaire à ce plan."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculer $\\overrightarrow{CF}$ par « origine moins extrémité » : $(1 - 1\\,;\\,1 - 0\\,;\\,0 - 1) = (0\\,;\\,1\\,;\\,-1)$.",
+          "pourquoi_faux": "On obtient $\\overrightarrow{FC}$, l'opposé du vecteur demandé. Pour un produit scalaire nul cela passe inaperçu, mais pour une équation de droite ou une somme de vecteurs le résultat est faux.",
+          "correction_markdown": "Toujours **extrémité moins origine** : $\\overrightarrow{CF} = F - C = (0\\,;\\,-1\\,;\\,1)$."
+        },
+        {
+          "erreur_markdown": "Placer $H$ en $(1\\,;\\,1\\,;\\,1)$ en lisant mal la perspective.",
+          "pourquoi_faux": "$H$ est au-dessus de $D$, pas de $C$ : $\\overrightarrow{AH} = \\overrightarrow{AD} + \\overrightarrow{DH} = \\vec{j} + \\vec{k}$. Une figure en perspective trompe facilement.",
+          "correction_markdown": "Écrire pour chaque sommet le chemin d'arêtes depuis $A$, au lieu de le lire à l'œil sur la figure."
+        },
+        {
+          "erreur_markdown": "Utiliser $\\sqrt{x^2 + y^2 + z^2}$ ou $xx' + yy' + zz'$ dans un repère quelconque.",
+          "pourquoi_faux": "Ces formules reposent sur $\\vec{i}\\cdot\\vec{j} = 0$, $\\|\\vec{i}\\| = 1$, etc. : elles ne valent que dans un repère **orthonormé**.",
+          "correction_markdown": "Vérifier (ou démontrer, comme le demande souvent l'énoncé) que le repère est orthonormé avant d'employer ces formules."
+        },
+        {
+          "erreur_markdown": "Confondre les coordonnées du point $G$ et celles du vecteur $\\overrightarrow{CG}$.",
+          "pourquoi_faux": "Les coordonnées d'un point sont celles du vecteur qui part de l'**origine du repère**. $\\overrightarrow{CG}$ part de $C$ : $(0\\,;\\,0\\,;\\,1)$, différent de $G(1\\,;\\,1\\,;\\,1)$.",
+          "correction_markdown": "Identifier l'origine du vecteur ; seul un vecteur issu de $A$ (origine du repère) a les mêmes coordonnées que son extrémité."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un repère orthonormé de l'espace, on donne $A(2\\,;\\,-1\\,;\\,3)$ et $B(5\\,;\\,1\\,;\\,-1)$. Calculer les coordonnées de $\\overrightarrow{AB}$ et la distance $AB$.",
+          "solution_markdown": "**Coordonnées.** Extrémité moins origine :\n\n$$\\overrightarrow{AB}\\,\\big(5 - 2\\,;\\,1 - (-1)\\,;\\,-1 - 3\\big) = (3\\,;\\,2\\,;\\,-4)$$\n\n**Distance** (repère orthonormé) :\n\n$$AB = \\sqrt{3^2 + 2^2 + (-4)^2} = \\sqrt{9 + 4 + 16} = \\sqrt{29}$$"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On reprend le cube $ABCDEFGH$ d'arête $1$ et le repère $(A\\,;\\,\\vec{i},\\vec{j},\\vec{k})$ de l'exemple. $I$ est le milieu de $[EF]$ et $J$ le milieu de $[BC]$. 1) Calculer les coordonnées de $I$, $J$ et $\\overrightarrow{IJ}$. 2) Les droites $(IJ)$ et $(AG)$ sont-elles orthogonales ?",
+          "solution_markdown": "**1) Coordonnées.** $E(0\\,;\\,0\\,;\\,1)$ et $F(1\\,;\\,0\\,;\\,1)$, donc :\n\n$$I\\left(\\frac{0 + 1}{2}\\,;\\,\\frac{0 + 0}{2}\\,;\\,\\frac{1 + 1}{2}\\right) = I\\left(\\frac12\\,;\\,0\\,;\\,1\\right)$$\n\n$B(1\\,;\\,0\\,;\\,0)$ et $C(1\\,;\\,1\\,;\\,0)$, donc :\n\n$$J\\left(\\frac{1 + 1}{2}\\,;\\,\\frac{0 + 1}{2}\\,;\\,\\frac{0 + 0}{2}\\right) = J\\left(1\\,;\\,\\frac12\\,;\\,0\\right)$$\n\n$$\\overrightarrow{IJ}\\left(1 - \\frac12\\,;\\,\\frac12 - 0\\,;\\,0 - 1\\right) = \\left(\\frac12\\,;\\,\\frac12\\,;\\,-1\\right)$$\n\n**2) Orthogonalité.** Le repère est orthonormé et $\\overrightarrow{AG}(1\\,;\\,1\\,;\\,1)$ :\n\n$$\\overrightarrow{IJ} \\cdot \\overrightarrow{AG} = \\frac12 \\times 1 + \\frac12 \\times 1 + (-1) \\times 1 = \\frac12 + \\frac12 - 1 = 0$$\n\nLes droites $(IJ)$ et $(AG)$ sont orthogonales."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un repère de l'espace, on donne $A(1\\,;\\,0\\,;\\,2)$, $B(3\\,;\\,1\\,;\\,0)$, $C(0\\,;\\,2\\,;\\,1)$ et $E(7\\,;\\,3\\,;\\,-4)$. 1) Déterminer les coordonnées du point $D$ tel que $ABCD$ soit un parallélogramme. 2) Les points $A$, $B$, $E$ sont-ils alignés ?",
+          "solution_markdown": "**1) Le point $D$.** $ABCD$ est un parallélogramme si et seulement si $\\overrightarrow{AD} = \\overrightarrow{BC}$.\n\n$$\\overrightarrow{BC}\\,(0 - 3\\,;\\,2 - 1\\,;\\,1 - 0) = (-3\\,;\\,1\\,;\\,1)$$\n\nEn notant $D(x\\,;\\,y\\,;\\,z)$ : $\\overrightarrow{AD}(x - 1\\,;\\,y - 0\\,;\\,z - 2)$. L'égalité coordonnée par coordonnée donne $x - 1 = -3$, $y = 1$, $z - 2 = 1$, soit :\n\n$$D(-2\\,;\\,1\\,;\\,3)$$\n\n*Contrôle par les diagonales* : le milieu de $[AC]$ est $\\left(\\frac12\\,;\\,1\\,;\\,\\frac32\\right)$, celui de $[BD]$ est $\\left(\\frac{3 - 2}{2}\\,;\\,\\frac{1 + 1}{2}\\,;\\,\\frac{0 + 3}{2}\\right) = \\left(\\frac12\\,;\\,1\\,;\\,\\frac32\\right)$ : mêmes milieux ✔\n\n**2) Alignement.** $\\overrightarrow{AB}(2\\,;\\,1\\,;\\,-2)$ et $\\overrightarrow{AE}(7 - 1\\,;\\,3 - 0\\,;\\,-4 - 2) = (6\\,;\\,3\\,;\\,-6)$. On constate $6 = 3 \\times 2$, $3 = 3 \\times 1$, $-6 = 3 \\times (-2)$ : $\\overrightarrow{AE} = 3\\,\\overrightarrow{AB}$. Les vecteurs sont colinéaires et ont le point $A$ en commun : $A$, $B$, $E$ sont alignés."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Coordonnées d'un vecteur : extrémité moins origine, sur les trois coordonnées. L'ordre ne se discute pas.",
+        "Pour placer les sommets d'un cube, écris le chemin d'arêtes depuis l'origine : chaque arête parcourue ajoute $\\vec{i}$, $\\vec{j}$ ou $\\vec{k}$.",
+        "Contrôle tes résultats par la relation de Chasles : deux méthodes, un seul résultat.",
+        "Norme et produit scalaire par les coordonnées n'ont de sens que dans un repère orthonormé.",
+        "Au Probatoire C et E, ce calcul ouvre la partie « géométrie dans l'espace » : il prépare les produits scalaires, l'équation d'un plan et le calcul d'une distance d'un point à un plan."
+      ]
+    }
+  ]
 }

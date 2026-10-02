@@ -6,9 +6,14 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Dénombrement - combinaisons",
+    "duree_estimee_min": 30,
+    "tags": [
+      "combinaisons",
+      "dénombrement",
+      "principe multiplicatif",
+      "arrangements"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +30,127 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quatre garçons et deux filles veulent former un groupe de travail de deux garçons et une fille. Faut-il compter $6 \\times 5$ façons ? $4 \\times 3 \\times 2$ ? Au QCM du Probatoire, quatre réponses sont proposées, et trois d'entre elles correspondent exactement aux erreurs les plus fréquentes. Pour ne pas tomber dans le piège, il faut répondre à une seule question avant tout calcul : l'ordre des personnes choisies compte-t-il ?"
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le principe multiplicatif (on multiplie les nombres de choix successifs)",
+        "Connaître la notation factorielle : $n! = n \\times (n-1) \\times \\dots \\times 1$, avec $0! = 1$",
+        "Connaître les arrangements $A_n^p = n(n-1)\\cdots(n-p+1)$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Groupe = combinaison ; groupe mixte = produit de combinaisons",
+      "contenu_markdown": "**Combinaison.** Choisir $p$ éléments **sans ordre** parmi $n$ (former une partie, un groupe, une équipe, une main de cartes), c'est former une combinaison. Leur nombre est :\n\n$$C_n^p = \\frac{n!}{p!\\,(n-p)!} = \\frac{A_n^p}{p!} = \\frac{n(n-1)\\cdots(n-p+1)}{p!}$$\n\nLa division par $p!$ efface l'ordre : chaque groupe de $p$ personnes correspond à $p!$ listes ordonnées.\n\n**Le test décisif.** « Si j'échange deux personnes choisies, est-ce que j'obtiens la même chose ? » Oui : combinaison ($C_n^p$). Non (président et secrétaire, podium, code) : arrangement ($A_n^p$).\n\n**Groupe mixte.** Pour un groupe imposant $p$ éléments d'une catégorie de taille $n$ **et** $q$ éléments d'une autre catégorie de taille $m$, on choisit séparément dans chaque catégorie, puis on applique le principe multiplicatif :\n\n$$N = C_n^p \\times C_m^q$$\n\n**Valeurs utiles.** $C_n^0 = C_n^n = 1$ ; $C_n^1 = n$ ; $C_n^p = C_n^{n-p}$ ; $C_n^2 = \\dfrac{n(n-1)}{2}$.",
+      "formule_principale": "C_n^p = \\frac{n!}{p!\\,(n-p)!} \\qquad ; \\qquad N = C_n^p \\times C_m^q",
+      "variantes": [
+        {
+          "nom": "« Au moins un » : passer par le contraire",
+          "quand_utiliser": "Quand l'énoncé impose au moins un élément d'une catégorie",
+          "contenu_markdown": "Compter directement « au moins une fille » oblige à additionner plusieurs cas (une fille, deux filles…). Il est souvent plus rapide de compter **tous** les groupes, puis de retrancher ceux qui ne contiennent **aucune** fille : $N = C_{\\text{total}}^{p} - C_{\\text{garçons}}^{p}$. On peut vérifier en additionnant les cas séparés."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": true,
+      "enonce_markdown": "Quatre garçons et deux filles veulent constituer un groupe de travail composé de deux garçons et une fille. Le nombre de groupes possibles est : a) $3$ ; b) $24$ ; c) $48$ ; d) $12$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Décider : ordre ou pas ordre",
+          "justification": "Dans un groupe de travail, « Paul et Jean » et « Jean et Paul » forment le même groupe : l'ordre ne compte pas.",
+          "resultat_markdown": "On compte des **combinaisons**."
+        },
+        {
+          "numero": 2,
+          "action": "Choisir les deux garçons parmi quatre",
+          "justification": "$C_4^2 = \\dfrac{4!}{2!\\,2!} = \\dfrac{4 \\times 3}{2 \\times 1}$.",
+          "resultat_markdown": "$C_4^2 = 6$"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir la fille parmi deux",
+          "justification": "$C_2^1 = 2$.",
+          "resultat_markdown": "$C_2^1 = 2$"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer le principe multiplicatif",
+          "justification": "Chacune des $6$ paires de garçons peut être associée à chacune des $2$ filles.",
+          "resultat_markdown": "$N = C_4^2 \\times C_2^1 = 6 \\times 2 = 12$ : réponse **d)**."
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier par énumération",
+          "justification": "Avec $G_1, G_2, G_3, G_4$, les paires sont $\\{G_1G_2\\}$, $\\{G_1G_3\\}$, $\\{G_1G_4\\}$, $\\{G_2G_3\\}$, $\\{G_2G_4\\}$, $\\{G_3G_4\\}$.",
+          "resultat_markdown": "$6$ paires, multipliées par $2$ filles : $12$ groupes ✔"
+        }
+      ],
+      "conclusion_markdown": "On peut former $12$ groupes. La proposition b) ($24$) correspond à l'erreur qui compte les garçons avec ordre ($A_4^2 = 12$, puis $\\times 2$)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Utiliser $A_4^2 = 4 \\times 3 = 12$ pour les garçons, et trouver $12 \\times 2 = 24$.",
+          "pourquoi_faux": "$A_4^2$ compte les couples **ordonnés** (premier choisi, second choisi) : chaque paire est comptée deux fois. Dans un groupe, l'ordre n'existe pas.",
+          "correction_markdown": "$C_4^2 = \\dfrac{A_4^2}{2!} = \\dfrac{12}{2} = 6$, puis $6 \\times 2 = 12$."
+        },
+        {
+          "erreur_markdown": "Additionner : $C_4^2 + C_2^1 = 6 + 2 = 8$.",
+          "pourquoi_faux": "On choisit les garçons **et** la fille : chaque choix de garçons se combine avec chaque choix de fille, ce qui se traduit par une multiplication.",
+          "correction_markdown": "$C_4^2 \\times C_2^1 = 12$."
+        },
+        {
+          "erreur_markdown": "Calculer $C_6^3 = 20$ en choisissant $3$ personnes parmi $6$ sans tenir compte de la composition.",
+          "pourquoi_faux": "$C_6^3$ compte aussi les groupes de trois garçons ou de deux filles et un garçon, interdits par l'énoncé.",
+          "correction_markdown": "Respecter la composition imposée en choisissant séparément dans chaque catégorie."
+        },
+        {
+          "erreur_markdown": "Pour « au moins une fille », calculer $C_2^1 \\times C_{5}^{2}$ (une fille, puis deux personnes quelconques parmi les autres).",
+          "pourquoi_faux": "Un groupe contenant deux filles est alors compté deux fois, selon laquelle des deux est « la » fille choisie en premier.",
+          "correction_markdown": "Passer par le contraire : $C_6^3 - C_4^3 = 20 - 4 = 16$, ou additionner les cas disjoints : $C_2^1C_4^2 + C_2^2C_4^1 = 12 + 4 = 16$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une classe de $10$ élèves, on choisit $3$ élèves pour former une délégation (sans fonctions particulières). Combien de délégations différentes peut-on former ?",
+          "solution_markdown": "**Ordre ?** Une délégation sans fonctions est un simple groupe : l'ordre ne compte pas, ce sont des combinaisons.\n\n$$C_{10}^3 = \\frac{10!}{3!\\,7!} = \\frac{10 \\times 9 \\times 8}{3 \\times 2 \\times 1} = \\frac{720}{6} = 120$$\n\nOn peut former $120$ délégations."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un comité de $5$ membres doit être formé à partir de $5$ hommes et $4$ femmes, et comprendre exactement $3$ hommes et $2$ femmes. Combien de comités différents peut-on former ?",
+          "solution_markdown": "**Hommes** : choisir $3$ hommes parmi $5$, sans ordre :\n\n$$C_5^3 = \\frac{5 \\times 4 \\times 3}{3 \\times 2 \\times 1} = \\frac{60}{6} = 10$$\n\n**Femmes** : choisir $2$ femmes parmi $4$ :\n\n$$C_4^2 = \\frac{4 \\times 3}{2 \\times 1} = 6$$\n\n**Principe multiplicatif** :\n\n$$N = C_5^3 \\times C_4^2 = 10 \\times 6 = 60$$\n\nOn peut former $60$ comités."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Avec les mêmes $5$ hommes et $4$ femmes, on forme un comité de $4$ membres comprenant **au moins une femme**. Combien de comités peut-on former ? Vérifier le résultat par une seconde méthode.",
+          "solution_markdown": "**Méthode 1 : par le contraire.**\n\n*Tous les comités de 4 parmi 9* :\n\n$$C_9^4 = \\frac{9 \\times 8 \\times 7 \\times 6}{4 \\times 3 \\times 2 \\times 1} = \\frac{3\\,024}{24} = 126$$\n\n*Comités sans aucune femme* (4 hommes parmi 5) : $C_5^4 = 5$.\n\n$$N = 126 - 5 = 121$$\n\n**Méthode 2 : par cas disjoints** (nombre exact de femmes) :\n\n| Femmes | Hommes | Nombre de comités |\n|---|---|---|\n| $1$ | $3$ | $C_4^1 \\times C_5^3 = 4 \\times 10 = 40$ |\n| $2$ | $2$ | $C_4^2 \\times C_5^2 = 6 \\times 10 = 60$ |\n| $3$ | $1$ | $C_4^3 \\times C_5^1 = 4 \\times 5 = 20$ |\n| $4$ | $0$ | $C_4^4 \\times C_5^0 = 1 \\times 1 = 1$ |\n\nTotal : $40 + 60 + 20 + 1 = 121$ ✔\n\nOn peut former $121$ comités comprenant au moins une femme."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avant tout calcul, demande-toi si l'ordre compte : un groupe, une équipe, une délégation, ce sont des combinaisons $C_n^p$.",
+        "$C_n^p = \\dfrac{A_n^p}{p!}$ : diviser par $p!$ efface l'ordre.",
+        "Pour un groupe à composition imposée, choisis séparément dans chaque catégorie, puis multiplie.",
+        "« Au moins un » : compte tout, retire les groupes qui n'en ont aucun.",
+        "Au Probatoire C et E, ce type de question apparaît souvent en QCM : les mauvaises réponses proposées sont exactement les erreurs d'ordre ou d'addition, une vérification rapide par énumération te protège."
+      ]
+    }
+  ]
 }

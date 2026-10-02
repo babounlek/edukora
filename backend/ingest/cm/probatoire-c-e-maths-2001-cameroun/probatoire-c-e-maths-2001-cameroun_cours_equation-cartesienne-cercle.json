@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Géométrie analytique du plan - cercles",
+    "duree_estimee_min": 40,
+    "tags": [
+      "cercle",
+      "équation cartésienne",
+      "distance de deux points",
+      "forme canonique",
+      "géométrie analytique"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,134 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un cercle, c'est l'ensemble des points situés à la même distance d'un centre. Traduite en coordonnées, cette phrase devient une équation : un point appartient au cercle si et seulement si ses coordonnées la vérifient. Cette équation permet ensuite de tout calculer : les points où le cercle coupe un axe, la position d'un point, l'intersection avec une droite. Au Probatoire, c'est souvent la première question d'un problème de géométrie analytique, et toute la suite s'appuie dessus."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer la distance de deux points en repère orthonormé : $AB = \\sqrt{(x_B - x_A)^2 + (y_B - y_A)^2}$",
+        "Savoir calculer les coordonnées du milieu d'un segment",
+        "Connaître les identités remarquables $(a \\pm b)^2 = a^2 \\pm 2ab + b^2$",
+        "Savoir calculer un produit scalaire en coordonnées"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Équation cartésienne d'un cercle",
+      "contenu_markdown": "**Propriété.** Dans un repère orthonormé, le cercle $(\\mathcal{C})$ de centre $\\Omega(x_0\\,;\\,y_0)$ et de rayon $r > 0$ a pour équation :\n\n$$(x - x_0)^2 + (y - y_0)^2 = r^2$$\n\n**Démonstration.** $M(x;y) \\in (\\mathcal{C}) \\iff \\Omega M = r \\iff \\Omega M^2 = r^2$ (les deux membres sont positifs) $\\iff (x-x_0)^2 + (y-y_0)^2 = r^2$.\n\n**Méthode.**\n\n1. Déterminer les coordonnées du centre (milieu, point donné, intersection...).\n2. Déterminer le rayon, souvent comme distance du centre à un point du cercle.\n3. Écrire l'équation avec $r^2$, puis la développer si on le demande : $x^2 + y^2 - 2x_0 x - 2y_0 y + (x_0^2 + y_0^2 - r^2) = 0$.\n4. Vérifier l'équation avec un point connu du cercle.\n\n**Réciproque : reconnaître un cercle.** Une équation $x^2 + y^2 + \\alpha x + \\beta y + \\gamma = 0$ se met sous forme canonique en complétant les carrés, $x^2 + \\alpha x = \\left(x + \\frac\\alpha2\\right)^2 - \\frac{\\alpha^2}4$, et de même en $y$. On obtient $(x - x_0)^2 + (y - y_0)^2 = k$, et :\n\n- si $k > 0$, c'est le cercle de centre $(x_0;y_0)$ et de rayon $\\sqrt k$ ;\n- si $k = 0$, c'est le seul point $(x_0;y_0)$ ;\n- si $k < 0$, l'ensemble est vide.",
+      "formule_principale": "(x-x_0)^2 + (y-y_0)^2 = r^2",
+      "variantes": [
+        {
+          "nom": "Cercle défini par un diamètre",
+          "quand_utiliser": "Quand l'énoncé donne un diamètre $[AB]$",
+          "contenu_markdown": "Un point $M$ appartient au cercle de diamètre $[AB]$ si et seulement si $\\overrightarrow{MA}\\cdot\\overrightarrow{MB} = 0$. En coordonnées : $(x_A - x)(x_B - x) + (y_A - y)(y_B - y) = 0$. On peut aussi prendre pour centre le milieu de $[AB]$ et pour rayon $\\frac{AB}{2}$ : les deux méthodes donnent la même équation développée."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un repère orthonormé $(O;\\vec i,\\vec j)$, on note $K(-1\\,;\\,0)$, $J(0\\,;\\,1)$ et $A$ le milieu de $[OK]$. Écrire une équation cartésienne du cercle $(\\mathcal{C}')$ de centre $A$ passant par $J$, puis déterminer l'abscisse positive $x_B$ du point $B$ où il coupe l'axe des abscisses.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer les coordonnées du centre",
+          "justification": "$A$ est le milieu de $[OK]$ avec $O(0;0)$ et $K(-1;0)$.",
+          "resultat_markdown": "$A\\left(\\dfrac{0 + (-1)}{2}\\,;\\,\\dfrac{0+0}{2}\\right) = A\\left(-\\dfrac12\\,;\\,0\\right)$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer le rayon",
+          "justification": "Le cercle passe par $J$, donc le rayon est $AJ$.",
+          "resultat_markdown": "$AJ = \\sqrt{\\left(0 + \\frac12\\right)^2 + (1 - 0)^2} = \\sqrt{\\frac14 + 1} = \\sqrt{\\frac54} = \\dfrac{\\sqrt5}{2}$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire l'équation avec le carré du rayon",
+          "justification": "$r^2 = \\frac54$ ; attention au signe : $x - \\left(-\\frac12\\right) = x + \\frac12$.",
+          "resultat_markdown": "$(\\mathcal{C}') : \\left(x + \\dfrac12\\right)^2 + y^2 = \\dfrac54$"
+        },
+        {
+          "numero": 4,
+          "action": "Développer et vérifier avec $J$",
+          "justification": "$\\left(x + \\frac12\\right)^2 = x^2 + x + \\frac14$.",
+          "resultat_markdown": "$x^2 + y^2 + x - 1 = 0$ ; pour $J(0;1)$ : $0 + 1 + 0 - 1 = 0$"
+        },
+        {
+          "numero": 5,
+          "action": "Couper par l'axe des abscisses",
+          "justification": "Un point de l'axe des abscisses a une ordonnée nulle : on remplace $y$ par $0$.",
+          "resultat_markdown": "$x^2 + x - 1 = 0$ ; $\\Delta = 1 + 4 = 5$ ; $x = \\dfrac{-1 - \\sqrt5}{2}$ ou $x = \\dfrac{-1+\\sqrt5}{2}$"
+        },
+        {
+          "numero": 6,
+          "action": "Choisir la solution positive",
+          "justification": "$\\sqrt5 > 1$, donc $\\frac{-1+\\sqrt5}{2} > 0$ tandis que $\\frac{-1-\\sqrt5}{2} < 0$.",
+          "resultat_markdown": "$x_B = \\dfrac{\\sqrt5 - 1}{2} \\approx 0{,}618$"
+        }
+      ],
+      "conclusion_markdown": "$(\\mathcal{C}') : \\left(x + \\frac12\\right)^2 + y^2 = \\frac54$, soit $x^2 + y^2 + x - 1 = 0$ ; il coupe l'axe des abscisses au point $B$ d'abscisse $x_B = \\dfrac{\\sqrt5-1}{2}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $r$ au lieu de $r^2$ : $\\left(x + \\frac12\\right)^2 + y^2 = \\frac{\\sqrt5}{2}$.",
+          "pourquoi_faux": "L'équation vient de $\\Omega M^2 = r^2$ : le membre de gauche est un **carré** de distance. Avec $r$ au lieu de $r^2$, le point $J$ ne vérifie plus l'équation : $\\frac14 + 1 = \\frac54 \\neq \\frac{\\sqrt5}{2}$.",
+          "correction_markdown": "Calculer $r^2$ à part avant d'écrire l'équation, et vérifier avec un point du cercle."
+        },
+        {
+          "erreur_markdown": "Se tromper de signe sur le centre : lire le centre $\\left(\\frac12;0\\right)$ dans $\\left(x+\\frac12\\right)^2 + y^2 = \\frac54$.",
+          "pourquoi_faux": "La forme est $(x - x_0)^2$ : $x + \\frac12 = x - \\left(-\\frac12\\right)$, donc $x_0 = -\\frac12$.",
+          "correction_markdown": "Réécrire chaque parenthèse sous la forme $x - x_0$ avant de lire les coordonnées du centre."
+        },
+        {
+          "erreur_markdown": "Conclure qu'une équation $x^2 + y^2 + \\alpha x + \\beta y + \\gamma = 0$ est toujours celle d'un cercle.",
+          "pourquoi_faux": "Après complétion des carrés, le second membre peut être nul ou négatif : par exemple $x^2 + y^2 + 2 = 0$ n'a aucune solution, puisque $x^2 + y^2 \\ge 0$.",
+          "correction_markdown": "Toujours mettre sous forme canonique et discuter le signe du second membre."
+        },
+        {
+          "erreur_markdown": "En complétant le carré, oublier de diviser par $2$ : $x^2 - 6x = (x - 6)^2 - 36$.",
+          "pourquoi_faux": "$(x - 6)^2 = x^2 - 12x + 36$, ce qui ne redonne pas $x^2 - 6x$.",
+          "correction_markdown": "$x^2 - 6x = (x - 3)^2 - 9$ : on prend la **moitié** du coefficient de $x$, puis on retranche son carré."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Écrire une équation cartésienne du cercle de centre $\\Omega(2\\,;\\,-3)$ et de rayon $4$, sous forme réduite puis développée. Le point $E(2\\,;\\,1)$ lui appartient-il ?",
+          "solution_markdown": "**Forme réduite :** $(x - 2)^2 + (y + 3)^2 = 16$.\n\n**Forme développée :** $x^2 - 4x + 4 + y^2 + 6y + 9 = 16$, soit\n\n$$x^2 + y^2 - 4x + 6y - 3 = 0$$\n\n**Point $E$ :** $(2 - 2)^2 + (1 + 3)^2 = 0 + 16 = 16$ : $E$ appartient au cercle. Cohérent : $E$ est situé $4$ unités au-dessus du centre."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "On donne $A(1\\,;\\,2)$ et $B(5\\,;\\,-2)$. Écrire une équation du cercle de diamètre $[AB]$ par deux méthodes différentes et vérifier qu'elles concordent.",
+          "solution_markdown": "**Méthode 1 : centre et rayon.** Le centre est le milieu $I\\left(\\frac{1+5}{2}\\,;\\,\\frac{2-2}{2}\\right) = I(3\\,;\\,0)$. Le rayon vaut $\\frac{AB}{2}$ avec\n\n$$AB = \\sqrt{(5-1)^2 + (-2-2)^2} = \\sqrt{16 + 16} = 4\\sqrt2, \\qquad r = 2\\sqrt2, \\qquad r^2 = 8$$\n\nÉquation : $(x - 3)^2 + y^2 = 8$, soit $x^2 - 6x + 9 + y^2 = 8$, soit $x^2 + y^2 - 6x + 1 = 0$.\n\n**Méthode 2 : produit scalaire.** $M(x;y)$ appartient au cercle si et seulement si $\\overrightarrow{MA}\\cdot\\overrightarrow{MB} = 0$ :\n\n$$(1 - x)(5 - x) + (2 - y)(-2 - y) = 0$$\n\n$(1-x)(5-x) = 5 - 6x + x^2$ et $(2-y)(-2-y) = -(2-y)(2+y) = -(4 - y^2) = y^2 - 4$, d'où $x^2 + y^2 - 6x + 1 = 0$.\n\nLes deux méthodes donnent la même équation. Vérification avec $A$ : $1 + 4 - 6 + 1 = 0$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Pour tout réel $m$, on note $(\\Gamma_m)$ l'ensemble des points $M(x;y)$ tels que $x^2 + y^2 + 2x - 4y + m = 0$. a) Déterminer, selon $m$, la nature de $(\\Gamma_m)$. b) Pour $m = 1$, déterminer les points d'intersection de $(\\Gamma_1)$ avec l'axe des abscisses et interpréter.",
+          "solution_markdown": "**a)** On complète les carrés : $x^2 + 2x = (x+1)^2 - 1$ et $y^2 - 4y = (y-2)^2 - 4$. L'équation devient\n\n$$(x+1)^2 - 1 + (y-2)^2 - 4 + m = 0 \\iff (x + 1)^2 + (y - 2)^2 = 5 - m$$\n\n- Si $m < 5$ : cercle de centre $\\Omega(-1\\,;\\,2)$ et de rayon $\\sqrt{5 - m}$.\n- Si $m = 5$ : $(\\Gamma_5)$ est réduit au point $\\Omega(-1\\,;\\,2)$.\n- Si $m > 5$ : le second membre est strictement négatif, alors que le premier est positif ; $(\\Gamma_m)$ est vide.\n\n**b)** Pour $m = 1$ : cercle de centre $\\Omega(-1;2)$ et de rayon $\\sqrt4 = 2$. Sur l'axe des abscisses, $y = 0$ :\n\n$$(x+1)^2 + 4 = 4 \\iff (x+1)^2 = 0 \\iff x = -1$$\n\nUn seul point d'intersection, $T(-1\\,;\\,0)$ : le cercle est **tangent** à l'axe des abscisses. C'est cohérent : la distance du centre $\\Omega$ à cet axe est son ordonnée $2$, égale au rayon."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le cercle de centre $\\Omega(x_0;y_0)$ et de rayon $r$ a pour équation $(x - x_0)^2 + (y - y_0)^2 = r^2$ : c'est la traduction de $\\Omega M^2 = r^2$.",
+        "Commence toujours par le centre, puis le rayon comme distance du centre à un point connu du cercle.",
+        "Écris $r^2$, pas $r$, et lis le centre avec son signe : $(x + 2)^2$ correspond à $x_0 = -2$.",
+        "Pour reconnaître un cercle, complète les carrés et discute le signe du second membre.",
+        "Au Probatoire C et E, cette équation ouvre souvent un problème : elle sert ensuite à couper le cercle par un axe ou une droite, ce qui ramène à une équation du second degré."
+      ]
+    }
+  ]
 }

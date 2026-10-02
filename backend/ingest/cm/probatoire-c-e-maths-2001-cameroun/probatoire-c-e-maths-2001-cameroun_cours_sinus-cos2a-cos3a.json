@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Trigonométrie",
+    "duree_estimee_min": 40,
+    "tags": [
+      "relation fondamentale",
+      "formule de duplication",
+      "formule de triplication",
+      "formules d'addition",
+      "cercle trigonométrique"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,129 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un angle n'a pas toujours une mesure « remarquable » comme $\\dfrac{\\pi}{6}$ ou $\\dfrac{\\pi}{4}$. Souvent, l'énoncé ne donne que son cosinus, par exemple $\\cos\\alpha = \\dfrac{\\sqrt5-1}{4}$, et demande d'en tirer tout le reste : le sinus, le cosinus du double, celui du triple. Trois formules suffisent, à condition de les appliquer dans le bon ordre et de justifier le signe du sinus. Au Probatoire C et E, cette chaîne de calculs prépare souvent une équation trigonométrique qui révèle la valeur exacte de l'angle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le cercle trigonométrique et le signe de $\\cos$ et $\\sin$ dans chacun des quatre quadrants",
+        "Connaître la relation $\\cos^2 x + \\sin^2 x = 1$",
+        "Connaître les formules d'addition $\\cos(a+b) = \\cos a\\cos b - \\sin a\\sin b$ et $\\sin(a+b) = \\sin a\\cos b + \\cos a\\sin b$",
+        "Savoir développer $(a-b)^2$ et calculer avec des radicaux"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Trois outils, dans cet ordre",
+      "contenu_markdown": "On connaît $\\cos\\alpha$ et l'intervalle (ou le quadrant) auquel appartient $\\alpha$.\n\n**1. Le sinus, par la relation fondamentale.**\n\n$$\\sin^2\\alpha = 1 - \\cos^2\\alpha \\qquad \\text{donc} \\qquad \\sin\\alpha = \\sqrt{1-\\cos^2\\alpha} \\ \\text{ ou } \\ \\sin\\alpha = -\\sqrt{1-\\cos^2\\alpha}$$\n\nLe **signe** se choisit d'après le quadrant : $\\sin\\alpha > 0$ si $\\alpha \\in \\left]0\\,;\\,\\pi\\right[$, $\\sin\\alpha < 0$ si $\\alpha \\in \\left]-\\pi\\,;\\,0\\right[$. Ce choix doit être justifié par une phrase.\n\n**2. Le cosinus double (formule de duplication).** En appliquant la formule d'addition avec $a = b = \\alpha$, puis $\\sin^2\\alpha = 1 - \\cos^2\\alpha$ :\n\n$$\\cos 2\\alpha = \\cos^2\\alpha - \\sin^2\\alpha = 2\\cos^2\\alpha - 1 = 1 - 2\\sin^2\\alpha$$\n\nQuand on connaît $\\cos\\alpha$, la forme $2\\cos^2\\alpha - 1$ est la plus directe. De même, $\\sin 2\\alpha = 2\\sin\\alpha\\cos\\alpha$.\n\n**3. Le cosinus triple (formule de triplication).** On écrit $3\\alpha = 2\\alpha + \\alpha$ :\n\n$$\\cos 3\\alpha = \\cos 2\\alpha\\cos\\alpha - \\sin 2\\alpha\\sin\\alpha = (2\\cos^2\\alpha - 1)\\cos\\alpha - 2\\sin^2\\alpha\\cos\\alpha$$\n\nEn remplaçant $\\sin^2\\alpha$ par $1 - \\cos^2\\alpha$ :\n\n$$\\cos 3\\alpha = 2\\cos^3\\alpha - \\cos\\alpha - 2\\cos\\alpha + 2\\cos^3\\alpha = 4\\cos^3\\alpha - 3\\cos\\alpha$$\n\n**Conseil d'organisation.** Calcule $\\cos^2\\alpha$ une seule fois, au début : il sert pour le sinus, pour $\\cos 2\\alpha$ et pour $\\cos^3\\alpha = \\cos\\alpha \\times \\cos^2\\alpha$.",
+      "formule_principale": "\\sin^2\\alpha = 1-\\cos^2\\alpha \\quad ; \\quad \\cos 2\\alpha = 2\\cos^2\\alpha - 1 \\quad ; \\quad \\cos 3\\alpha = 4\\cos^3\\alpha - 3\\cos\\alpha",
+      "variantes": [
+        {
+          "nom": "Cosinus triple par la formule d'addition",
+          "quand_utiliser": "Quand on ne se souvient pas de $4\\cos^3\\alpha - 3\\cos\\alpha$, ou pour contrôler le résultat",
+          "contenu_markdown": "Calcule d'abord $\\cos 2\\alpha$ et $\\sin 2\\alpha = 2\\sin\\alpha\\cos\\alpha$, puis applique directement $\\cos 3\\alpha = \\cos 2\\alpha\\cos\\alpha - \\sin 2\\alpha\\sin\\alpha$. Le calcul est un peu plus long mais n'exige aucune formule supplémentaire, et il fournit un contrôle indépendant."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$\\alpha$ est un réel de $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$ tel que $\\cos\\alpha = \\dfrac{\\sqrt5-1}{4}$. Calculer $\\sin\\alpha$, $\\cos 2\\alpha$ et $\\cos 3\\alpha$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer $\\cos^2\\alpha$",
+          "justification": "On développe $(\\sqrt5-1)^2 = 5 - 2\\sqrt5 + 1 = 6 - 2\\sqrt5$, puis on simplifie par $2$.",
+          "resultat_markdown": "$\\cos^2\\alpha = \\dfrac{6-2\\sqrt5}{16} = \\dfrac{3-\\sqrt5}{8}$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $\\sin^2\\alpha$",
+          "justification": "Relation fondamentale : $\\sin^2\\alpha = 1 - \\cos^2\\alpha = \\dfrac{8}{8} - \\dfrac{3-\\sqrt5}{8}$.",
+          "resultat_markdown": "$\\sin^2\\alpha = \\dfrac{8 - 3 + \\sqrt5}{8} = \\dfrac{5+\\sqrt5}{8}$"
+        },
+        {
+          "numero": 3,
+          "action": "Choisir le signe de $\\sin\\alpha$",
+          "justification": "$\\alpha \\in \\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$, donc $\\sin\\alpha > 0$. On écrit $\\dfrac{5+\\sqrt5}{8} = \\dfrac{2(5+\\sqrt5)}{16} = \\dfrac{10+2\\sqrt5}{16}$ pour sortir le dénominateur de la racine.",
+          "resultat_markdown": "$\\sin\\alpha = \\dfrac{\\sqrt{10+2\\sqrt5}}{4} \\approx 0{,}951$"
+        },
+        {
+          "numero": 4,
+          "action": "Calculer $\\cos 2\\alpha$",
+          "justification": "Formule de duplication $\\cos 2\\alpha = 2\\cos^2\\alpha - 1$ avec $\\cos^2\\alpha = \\dfrac{3-\\sqrt5}{8}$.",
+          "resultat_markdown": "$\\cos 2\\alpha = \\dfrac{2(3-\\sqrt5)}{8} - 1 = \\dfrac{3-\\sqrt5}{4} - \\dfrac{4}{4} = \\dfrac{-1-\\sqrt5}{4}$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer $\\cos^3\\alpha$",
+          "justification": "$\\cos^3\\alpha = \\cos\\alpha \\times \\cos^2\\alpha$ ; au numérateur, $(\\sqrt5-1)(3-\\sqrt5) = 3\\sqrt5 - 5 - 3 + \\sqrt5 = 4\\sqrt5 - 8$.",
+          "resultat_markdown": "$\\cos^3\\alpha = \\dfrac{\\sqrt5-1}{4} \\times \\dfrac{3-\\sqrt5}{8} = \\dfrac{4\\sqrt5-8}{32} = \\dfrac{\\sqrt5-2}{8}$"
+        },
+        {
+          "numero": 6,
+          "action": "Calculer $\\cos 3\\alpha$",
+          "justification": "Formule de triplication $\\cos 3\\alpha = 4\\cos^3\\alpha - 3\\cos\\alpha$, puis réduction au dénominateur $4$.",
+          "resultat_markdown": "$\\cos 3\\alpha = \\dfrac{\\sqrt5-2}{2} - \\dfrac{3\\sqrt5-3}{4} = \\dfrac{2\\sqrt5-4-3\\sqrt5+3}{4} = \\dfrac{-1-\\sqrt5}{4}$"
+        }
+      ],
+      "conclusion_markdown": "On obtient $\\sin\\alpha = \\dfrac{\\sqrt{10+2\\sqrt5}}{4}$ et $\\cos 2\\alpha = \\cos 3\\alpha = -\\dfrac{1+\\sqrt5}{4} \\approx -0{,}809$. Contrôle : $\\cos^2\\alpha + \\sin^2\\alpha = \\dfrac{3-\\sqrt5}{8} + \\dfrac{5+\\sqrt5}{8} = \\dfrac{8}{8} = 1$. L'égalité $\\cos 2\\alpha = \\cos 3\\alpha$ est la clé de la suite de l'épreuve : en résolvant cette équation sur $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$, on obtient $\\alpha = \\dfrac{2\\pi}{5}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\sin\\alpha = \\sqrt{1-\\cos^2\\alpha}$ sans justification, quel que soit l'angle.",
+          "pourquoi_faux": "L'équation $\\sin^2\\alpha = k$ a deux solutions, $\\sqrt{k}$ et $-\\sqrt{k}$. Si $\\alpha$ est dans $\\left]-\\pi\\,;\\,0\\right[$, le sinus est négatif et la réponse positive est fausse. Même quand le signe est le bon, l'absence de justification coûte des points.",
+          "correction_markdown": "Écris une phrase du type : « $\\alpha \\in \\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$, donc $\\sin\\alpha > 0$ », puis seulement $\\sin\\alpha = \\sqrt{1-\\cos^2\\alpha}$."
+        },
+        {
+          "erreur_markdown": "Croire que $\\cos 2\\alpha = 2\\cos\\alpha$.",
+          "pourquoi_faux": "Le cosinus n'est pas linéaire. Avec $\\alpha = \\dfrac{\\pi}{3}$ : $\\cos\\dfrac{2\\pi}{3} = -\\dfrac{1}{2}$ alors que $2\\cos\\dfrac{\\pi}{3} = 1$. Les deux valeurs n'ont même pas le même signe.",
+          "correction_markdown": "Utilise la formule de duplication $\\cos 2\\alpha = 2\\cos^2\\alpha - 1$."
+        },
+        {
+          "erreur_markdown": "Mal développer $\\left(\\dfrac{\\sqrt5-1}{4}\\right)^2$ en $\\dfrac{5-1}{16} = \\dfrac{1}{4}$.",
+          "pourquoi_faux": "On a oublié le double produit : $(a-b)^2 = a^2 - 2ab + b^2$. Ici $(\\sqrt5-1)^2 = 5 - 2\\sqrt5 + 1 = 6 - 2\\sqrt5$. L'erreur se propage ensuite au sinus, à $\\cos 2\\alpha$ et à $\\cos 3\\alpha$.",
+          "correction_markdown": "Développe l'identité remarquable en écrivant ses trois termes, puis simplifie : $\\cos^2\\alpha = \\dfrac{6-2\\sqrt5}{16} = \\dfrac{3-\\sqrt5}{8}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$a$ est un réel de $\\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$ tel que $\\cos a = \\dfrac{3}{5}$. Calculer $\\sin a$, $\\cos 2a$ et $\\cos 3a$.",
+          "solution_markdown": "**Sinus.** $\\sin^2 a = 1 - \\left(\\dfrac{3}{5}\\right)^2 = 1 - \\dfrac{9}{25} = \\dfrac{16}{25}$. Comme $a \\in \\left]0\\,;\\,\\dfrac{\\pi}{2}\\right[$, $\\sin a > 0$, donc $\\sin a = \\sqrt{\\dfrac{16}{25}} = \\dfrac{4}{5}$.\n\n**Cosinus double.** $\\cos 2a = 2\\cos^2 a - 1 = 2 \\times \\dfrac{9}{25} - 1 = \\dfrac{18}{25} - \\dfrac{25}{25} = -\\dfrac{7}{25}$.\n\n**Cosinus triple.** $\\cos^3 a = \\left(\\dfrac{3}{5}\\right)^3 = \\dfrac{27}{125}$, donc\n\n$$\\cos 3a = 4 \\times \\frac{27}{125} - 3 \\times \\frac{3}{5} = \\frac{108}{125} - \\frac{9}{5} = \\frac{108}{125} - \\frac{225}{125} = -\\frac{117}{125}$$\n\n**Contrôle par la formule d'addition.** $\\sin 2a = 2 \\times \\dfrac{4}{5} \\times \\dfrac{3}{5} = \\dfrac{24}{25}$, et $\\cos 3a = \\cos 2a\\cos a - \\sin 2a\\sin a = -\\dfrac{7}{25} \\times \\dfrac{3}{5} - \\dfrac{24}{25} \\times \\dfrac{4}{5} = -\\dfrac{21}{125} - \\dfrac{96}{125} = -\\dfrac{117}{125}$. Les deux méthodes concordent."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$a$ est un réel de $\\left]\\dfrac{\\pi}{2}\\,;\\,\\pi\\right[$ tel que $\\cos a = -\\dfrac{1}{3}$. Calculer $\\sin a$, $\\sin 2a$, $\\cos 2a$ et $\\cos 3a$.",
+          "solution_markdown": "**Sinus.** $\\sin^2 a = 1 - \\dfrac{1}{9} = \\dfrac{8}{9}$. Comme $a \\in \\left]\\dfrac{\\pi}{2}\\,;\\,\\pi\\right[$, le point associé est dans le deuxième quadrant, où le sinus est positif : $\\sin a = \\sqrt{\\dfrac{8}{9}} = \\dfrac{\\sqrt8}{3} = \\dfrac{2\\sqrt2}{3}$.\n\n**Sinus double.** $\\sin 2a = 2\\sin a\\cos a = 2 \\times \\dfrac{2\\sqrt2}{3} \\times \\left(-\\dfrac{1}{3}\\right) = -\\dfrac{4\\sqrt2}{9}$.\n\n**Cosinus double.** $\\cos 2a = 2\\cos^2 a - 1 = 2 \\times \\dfrac{1}{9} - 1 = \\dfrac{2}{9} - \\dfrac{9}{9} = -\\dfrac{7}{9}$.\n\n**Cosinus triple.** $\\cos^3 a = \\left(-\\dfrac{1}{3}\\right)^3 = -\\dfrac{1}{27}$, donc\n\n$$\\cos 3a = 4 \\times \\left(-\\frac{1}{27}\\right) - 3 \\times \\left(-\\frac{1}{3}\\right) = -\\frac{4}{27} + 1 = \\frac{23}{27}$$\n\n**Contrôle.** $\\cos 2a\\cos a - \\sin 2a\\sin a = \\left(-\\dfrac{7}{9}\\right)\\left(-\\dfrac{1}{3}\\right) - \\left(-\\dfrac{4\\sqrt2}{9}\\right)\\dfrac{2\\sqrt2}{3} = \\dfrac{7}{27} + \\dfrac{8 \\times 2}{27} = \\dfrac{7}{27} + \\dfrac{16}{27} = \\dfrac{23}{27}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "a) Démontrer, à partir des formules d'addition, que pour tout réel $x$ : $\\cos 3x = 4\\cos^3 x - 3\\cos x$. b) On pose $\\beta = \\dfrac{\\pi}{5}$ et on admet que $\\cos\\beta = \\dfrac{1+\\sqrt5}{4}$. Calculer $\\cos 2\\beta$ et $\\cos 3\\beta$. c) Vérifier que $\\cos 3\\beta = -\\cos 2\\beta$ et expliquer ce résultat à l'aide de la relation $3\\beta = \\pi - 2\\beta$.",
+          "solution_markdown": "**a)** $\\cos 3x = \\cos(2x + x) = \\cos 2x\\cos x - \\sin 2x\\sin x$. On remplace $\\cos 2x = 2\\cos^2 x - 1$ et $\\sin 2x = 2\\sin x\\cos x$ :\n\n$$\\cos 3x = (2\\cos^2 x - 1)\\cos x - 2\\sin^2 x\\cos x = 2\\cos^3 x - \\cos x - 2(1-\\cos^2 x)\\cos x$$\n\n$$\\cos 3x = 2\\cos^3 x - \\cos x - 2\\cos x + 2\\cos^3 x = 4\\cos^3 x - 3\\cos x$$\n\n**b)** $\\cos^2\\beta = \\dfrac{(1+\\sqrt5)^2}{16} = \\dfrac{1 + 2\\sqrt5 + 5}{16} = \\dfrac{6+2\\sqrt5}{16} = \\dfrac{3+\\sqrt5}{8}$.\n\n$$\\cos 2\\beta = 2 \\times \\frac{3+\\sqrt5}{8} - 1 = \\frac{3+\\sqrt5}{4} - \\frac{4}{4} = \\frac{\\sqrt5-1}{4}$$\n\n$\\cos^3\\beta = \\dfrac{1+\\sqrt5}{4} \\times \\dfrac{3+\\sqrt5}{8} = \\dfrac{3 + \\sqrt5 + 3\\sqrt5 + 5}{32} = \\dfrac{8+4\\sqrt5}{32} = \\dfrac{2+\\sqrt5}{8}$, donc\n\n$$\\cos 3\\beta = 4 \\times \\frac{2+\\sqrt5}{8} - 3 \\times \\frac{1+\\sqrt5}{4} = \\frac{4+2\\sqrt5}{4} - \\frac{3+3\\sqrt5}{4} = \\frac{1-\\sqrt5}{4}$$\n\n**c)** $-\\cos 2\\beta = -\\dfrac{\\sqrt5-1}{4} = \\dfrac{1-\\sqrt5}{4} = \\cos 3\\beta$. Explication : $3\\beta = \\dfrac{3\\pi}{5} = \\pi - \\dfrac{2\\pi}{5} = \\pi - 2\\beta$, et pour tout réel $x$, $\\cos(\\pi - x) = -\\cos x$. Donc $\\cos 3\\beta = \\cos(\\pi - 2\\beta) = -\\cos 2\\beta$, ce qui confirme les calculs."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Avec $\\cos\\alpha$ seul, tu peux tout obtenir : $\\sin\\alpha$ par $\\cos^2 + \\sin^2 = 1$, puis $\\cos 2\\alpha = 2\\cos^2\\alpha - 1$, puis $\\cos 3\\alpha = 4\\cos^3\\alpha - 3\\cos\\alpha$.",
+        "Le signe du sinus se justifie toujours par le quadrant de l'angle : une phrase suffit, mais elle est attendue.",
+        "Calcule $\\cos^2\\alpha$ une fois pour toutes au début et réutilise-le : moins de calculs, moins d'erreurs.",
+        "Si tu oublies la formule du triple, écris $3\\alpha = 2\\alpha + \\alpha$ et applique la formule d'addition : elle te redonne le résultat et sert de contrôle.",
+        "Au Probatoire C et E, ces calculs précèdent souvent une équation trigonométrique (du type $\\cos 2x = \\cos 3x$) qui donne la valeur exacte de l'angle : garde tes résultats sous forme exacte avec les radicaux."
+      ]
+    }
+  ]
 }

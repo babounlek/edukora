@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Transformations du plan - rotations",
+    "duree_estimee_min": 40,
+    "tags": [
+      "rotation",
+      "angle orienté",
+      "carré",
+      "transformations du plan",
+      "produit scalaire"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,123 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Fais tourner un carré autour de son centre d'un quart de tour : il retombe exactement sur lui-même, chaque sommet prenant la place du suivant. Cette rotation est entièrement décrite par deux données, son centre et son angle. Au Probatoire, le centre est presque toujours donné, et c'est l'angle qu'on te demande de « déterminer en justifiant ». Ce cours te montre comment le lire sur une figure, comment fixer son signe sans hésiter, et comment le calculer quand on te donne des coordonnées."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la notion d'angle orienté de deux vecteurs et la relation de Chasles pour les angles orientés",
+        "Connaître les propriétés des diagonales d'un carré, d'un triangle équilatéral",
+        "Savoir calculer un produit scalaire et une norme en repère orthonormé",
+        "Connaître les valeurs remarquables de $\\cos$ et $\\sin$ ($0$, $\\frac\\pi6$, $\\frac\\pi4$, $\\frac\\pi3$, $\\frac\\pi2$...)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "L'angle d'une rotation se lit au centre",
+      "contenu_markdown": "**Définition.** Soit $O$ un point et $\\theta$ un réel. La rotation $r$ de centre $O$ et d'angle $\\theta$ associe à $O$ le point $O$ lui-même, et à tout point $M \\neq O$ le point $M'$ tel que :\n\n$$OM' = OM \\qquad \\text{et} \\qquad \\left(\\overrightarrow{OM},\\overrightarrow{OM'}\\right) = \\theta \\ [2\\pi]$$\n\n**Conséquence.** Si l'on connaît le centre $O$ et **un seul** couple (point, image) $M \\mapsto M'$ avec $M \\neq O$, l'angle est déterminé :\n\n$$\\theta = \\left(\\overrightarrow{OM},\\overrightarrow{OM'}\\right) \\ [2\\pi]$$\n\n**Méthode.**\n\n1. Vérifier que $OM = OM'$ (sinon aucune rotation de centre $O$ n'envoie $M$ sur $M'$).\n2. Trouver la **mesure** de l'angle géométrique $\\widehat{MOM'}$ grâce à la figure (diagonales perpendiculaires, triangle équilatéral...).\n3. Trouver le **signe** grâce à l'orientation de la figure : on tourne de $\\overrightarrow{OM}$ vers $\\overrightarrow{OM'}$ ; si c'est dans le sens trigonométrique, l'angle est positif.\n4. Conclure par une mesure, de préférence la mesure principale dans $]-\\pi\\,;\\,\\pi]$.\n\n**Angles à connaître** (figures orientées dans le sens direct) :\n\n| Figure | Rotation | Angle |\n|---|---|---|\n| carré $ABCD$ de centre $O$ | $A \\mapsto B$, centre $O$ | $\\dfrac{\\pi}{2}$ |\n| triangle équilatéral $ABC$ de centre $G$ | $A \\mapsto B$, centre $G$ | $\\dfrac{2\\pi}{3}$ |\n| triangle équilatéral $ABC$ | $B \\mapsto C$, centre $A$ | $\\dfrac{\\pi}{3}$ |\n| hexagone régulier de centre $O$ | sommet $\\mapsto$ sommet suivant | $\\dfrac{\\pi}{3}$ |",
+      "formule_principale": "\\theta = \\left(\\overrightarrow{OM},\\overrightarrow{OM'}\\right)\\ [2\\pi]",
+      "variantes": [
+        {
+          "nom": "Calcul de l'angle en repère orthonormé direct",
+          "quand_utiliser": "Quand le centre et les points sont donnés par leurs coordonnées",
+          "contenu_markdown": "Avec $\\vec u = \\overrightarrow{OM}\\,(x\\,;\\,y)$ et $\\vec v = \\overrightarrow{OM'}\\,(x'\\,;\\,y')$, de même norme $\\ell$, dans un repère orthonormé direct :\n\n$$\\cos\\theta = \\frac{\\vec u \\cdot \\vec v}{\\ell^2} = \\frac{xx' + yy'}{\\ell^2} \\qquad ; \\qquad \\sin\\theta = \\frac{\\det(\\vec u, \\vec v)}{\\ell^2} = \\frac{xy' - yx'}{\\ell^2}$$\n\nOn calcule les **deux** valeurs, puis on identifie $\\theta$. Le cosinus seul ne suffit jamais : $\\cos\\theta = 0$ convient aussi bien à $\\frac\\pi2$ qu'à $-\\frac\\pi2$, c'est le signe du sinus qui tranche."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans le plan orienté, $ABCD$ est un carré de centre $O$ tel que $\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right) = \\dfrac{\\pi}{2}$. On note $r$ la rotation de centre $O$ qui transforme $A$ en $B$. Déterminer l'angle de $r$ en justifiant.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Vérifier que la rotation existe",
+          "justification": "Les diagonales d'un carré sont de même longueur et se coupent en leur milieu $O$.",
+          "resultat_markdown": "$OA = OB = OC = OD$"
+        },
+        {
+          "numero": 2,
+          "action": "Écrire l'angle à calculer",
+          "justification": "L'angle d'une rotation se lit au centre, entre un vecteur et son image.",
+          "resultat_markdown": "$\\theta = \\left(\\overrightarrow{OA},\\overrightarrow{OB}\\right)\\ [2\\pi]$"
+        },
+        {
+          "numero": 3,
+          "action": "Trouver la mesure de l'angle géométrique",
+          "justification": "Les diagonales $[AC]$ et $[BD]$ d'un carré sont perpendiculaires ; $\\overrightarrow{OA}$ est porté par l'une, $\\overrightarrow{OB}$ par l'autre.",
+          "resultat_markdown": "$\\widehat{AOB} = \\dfrac{\\pi}{2}$, donc $\\theta = \\dfrac\\pi2$ ou $\\theta = -\\dfrac\\pi2$"
+        },
+        {
+          "numero": 4,
+          "action": "Fixer le signe",
+          "justification": "$\\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right) = +\\frac\\pi2$ : le carré $ABCD$ est parcouru dans le sens direct, et ses sommets se succèdent autour de $O$ dans le sens trigonométrique. On passe de $\\overrightarrow{OA}$ à $\\overrightarrow{OB}$ en tournant dans ce sens.",
+          "resultat_markdown": "$\\theta = \\dfrac{\\pi}{2}\\ [2\\pi]$"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler par le calcul",
+          "justification": "Repère orthonormé direct d'origine $A$, d'axes $(AB)$ et $(AD)$, avec $AB = 5$ : $A(0;0)$, $B(5;0)$, $O(2{,}5;2{,}5)$. Donc $\\overrightarrow{OA}(-2{,}5;-2{,}5)$ et $\\overrightarrow{OB}(2{,}5;-2{,}5)$, de norme au carré $12{,}5$.",
+          "resultat_markdown": "$\\cos\\theta = \\dfrac{(-2{,}5)(2{,}5) + (-2{,}5)(-2{,}5)}{12{,}5} = 0$ ; $\\sin\\theta = \\dfrac{(-2{,}5)(-2{,}5) - (-2{,}5)(2{,}5)}{12{,}5} = \\dfrac{12{,}5}{12{,}5} = 1$, donc $\\theta = \\dfrac\\pi2$."
+        }
+      ],
+      "conclusion_markdown": "La rotation $r$ a pour angle $\\dfrac{\\pi}{2}$ : c'est le quart de tour direct de centre $O$, qui envoie $A$ sur $B$, $B$ sur $C$, $C$ sur $D$ et $D$ sur $A$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Lire l'angle à un sommet : écrire $\\theta = \\left(\\overrightarrow{AB},\\overrightarrow{AD}\\right)$ ou $\\left(\\overrightarrow{AO},\\overrightarrow{AB}\\right) = \\frac\\pi4$.",
+          "pourquoi_faux": "La définition de la rotation fait intervenir les vecteurs issus du **centre** : un angle mesuré en un autre point n'a aucun rapport direct avec la rotation.",
+          "correction_markdown": "Toujours écrire $\\theta = \\left(\\overrightarrow{OM},\\overrightarrow{OM'}\\right)$ avec $O$ le centre de la rotation."
+        },
+        {
+          "erreur_markdown": "Donner $\\theta = \\dfrac\\pi2$ sans justifier le signe, ou trouver $-\\dfrac\\pi2$ par mégarde.",
+          "pourquoi_faux": "La perpendicularité des diagonales donne seulement $\\theta = \\pm\\frac\\pi2$. Un carré orienté dans le sens indirect donnerait $-\\frac\\pi2$ : le signe dépend de l'orientation, il doit être justifié.",
+          "correction_markdown": "Citer l'hypothèse d'orientation de l'énoncé et dire dans quel sens on tourne de $\\overrightarrow{OM}$ vers $\\overrightarrow{OM'}$."
+        },
+        {
+          "erreur_markdown": "En coordonnées, conclure avec le seul cosinus : « $\\cos\\theta = 0$ donc $\\theta = \\frac\\pi2$ ».",
+          "pourquoi_faux": "$\\cos\\theta = 0$ a deux solutions dans $]-\\pi\\,;\\,\\pi]$ : $\\frac\\pi2$ et $-\\frac\\pi2$. Sans le sinus, on a une chance sur deux de se tromper.",
+          "correction_markdown": "Calculer $\\cos\\theta$ **et** $\\sin\\theta$, puis identifier l'unique $\\theta$ de $]-\\pi\\,;\\,\\pi]$ qui convient aux deux."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$ABC$ est un triangle équilatéral tel que $\\left(\\overrightarrow{AB},\\overrightarrow{AC}\\right) = \\dfrac\\pi3$, et $G$ son centre de gravité. Déterminer l'angle de la rotation de centre $A$ qui transforme $B$ en $C$, puis celui de la rotation de centre $G$ qui transforme $A$ en $B$.",
+          "solution_markdown": "**Rotation de centre $A$.** $AB = AC$ (triangle équilatéral), donc la rotation existe. Son angle est $\\left(\\overrightarrow{AB},\\overrightarrow{AC}\\right) = \\dfrac\\pi3$, donné par l'énoncé.\n\n**Rotation de centre $G$.** Dans un triangle équilatéral, le centre de gravité est aussi le centre du cercle circonscrit, donc $GA = GB = GC$. Les trois angles $\\widehat{AGB}$, $\\widehat{BGC}$, $\\widehat{CGA}$ sont égaux (les triangles $AGB$, $BGC$, $CGA$ sont superposables, ayant leurs trois côtés égaux deux à deux) et leur somme fait un tour complet $2\\pi$ : chacun vaut $\\dfrac{2\\pi}{3}$.\n\nLe triangle étant orienté dans le sens direct ($\\left(\\overrightarrow{AB},\\overrightarrow{AC}\\right) > 0$), les sommets $A$, $B$, $C$ se succèdent autour de $G$ dans le sens trigonométrique : l'angle cherché est $\\left(\\overrightarrow{GA},\\overrightarrow{GB}\\right) = \\dfrac{2\\pi}{3}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans un repère orthonormé direct d'origine $O$, on donne $A(2\\,;\\,0)$ et $B(1\\,;\\,\\sqrt3)$. Démontrer qu'il existe une rotation de centre $O$ qui transforme $A$ en $B$ et déterminer son angle.",
+          "solution_markdown": "**Existence.** $OA = \\sqrt{2^2 + 0^2} = 2$ et $OB = \\sqrt{1^2 + (\\sqrt3)^2} = \\sqrt{1+3} = 2$. Donc $OA = OB$ : la rotation existe.\n\n**Cosinus.** $\\overrightarrow{OA}\\cdot\\overrightarrow{OB} = 2\\times 1 + 0 \\times \\sqrt3 = 2$, d'où\n\n$$\\cos\\theta = \\frac{2}{2\\times 2} = \\frac12$$\n\n**Sinus.** $\\det\\left(\\overrightarrow{OA},\\overrightarrow{OB}\\right) = 2\\times\\sqrt3 - 0 \\times 1 = 2\\sqrt3$, d'où\n\n$$\\sin\\theta = \\frac{2\\sqrt3}{2 \\times 2} = \\frac{\\sqrt3}{2}$$\n\n**Identification.** Le seul réel de $]-\\pi\\,;\\,\\pi]$ dont le cosinus vaut $\\frac12$ et le sinus $\\frac{\\sqrt3}{2}$ est $\\dfrac\\pi3$. La rotation a pour angle $\\dfrac{\\pi}{3}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Dans un repère orthonormé direct, on donne $\\Omega(1\\,;\\,1)$, $A(3\\,;\\,2)$, $B(0\\,;\\,3)$ et $C(1\\,;\\,4)$. a) Démontrer qu'il existe une rotation $r$ de centre $\\Omega$ telle que $r(A) = B$, et déterminer son angle. b) Déterminer les coordonnées de $C' = r(C)$.",
+          "solution_markdown": "**a) Existence et angle.** $\\overrightarrow{\\Omega A}\\,(2\\,;\\,1)$ et $\\overrightarrow{\\Omega B}\\,(-1\\,;\\,2)$.\n\n$$\\Omega A = \\sqrt{4+1} = \\sqrt5 \\qquad ; \\qquad \\Omega B = \\sqrt{1+4} = \\sqrt5$$\n\nLes distances sont égales : la rotation existe.\n\n$$\\cos\\theta = \\frac{2\\times(-1) + 1 \\times 2}{5} = \\frac{0}{5} = 0 \\qquad ; \\qquad \\sin\\theta = \\frac{2 \\times 2 - 1 \\times (-1)}{5} = \\frac{5}{5} = 1$$\n\nDonc $\\theta = \\dfrac\\pi2$.\n\n**b) Image de $C$.** $\\overrightarrow{\\Omega C}\\,(0\\,;\\,3)$. Le vecteur $\\overrightarrow{\\Omega C'}\\,(a\\,;\\,b)$ a la même norme $3$ et fait avec $\\overrightarrow{\\Omega C}$ l'angle $\\frac\\pi2$, donc :\n\n$$\\cos\\frac\\pi2 = \\frac{0\\times a + 3b}{9} = 0 \\ \\Longrightarrow\\ b = 0 \\qquad ; \\qquad \\sin\\frac\\pi2 = \\frac{0 \\times b - 3a}{9} = 1 \\ \\Longrightarrow\\ a = -3$$\n\nAinsi $\\overrightarrow{\\Omega C'}\\,(-3\\,;\\,0)$ et $C'(1 - 3\\,;\\,1 + 0) = C'(-2\\,;\\,1)$.\n\n**Contrôle.** Le même calcul appliqué à $\\overrightarrow{\\Omega A}\\,(2;1)$ redonne bien $(-1;2) = \\overrightarrow{\\Omega B}$ : un quart de tour direct envoie un vecteur $(x;y)$ sur $(-y;x)$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'angle d'une rotation se lit **au centre** : $\\theta = \\left(\\overrightarrow{OM},\\overrightarrow{OM'}\\right)$, jamais en un sommet de la figure.",
+        "Vérifie d'abord que $OM = OM'$ : c'est la condition d'existence de la rotation.",
+        "La figure donne la mesure de l'angle, l'orientation donne son signe : justifie toujours les deux.",
+        "En coordonnées, calcule le cosinus **et** le sinus ; le cosinus seul laisse deux possibilités.",
+        "Au Probatoire C et E, l'angle de la rotation est la première étape d'un exercice de transformations : il sert ensuite à compléter un tableau d'images ou à démontrer une perpendicularité."
+      ]
+    }
+  ]
 }

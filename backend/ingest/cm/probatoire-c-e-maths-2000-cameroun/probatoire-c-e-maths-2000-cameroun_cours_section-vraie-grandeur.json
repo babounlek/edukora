@@ -6,9 +6,16 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Géométrie dans l'espace - solides et sections",
+    "duree_estimee_min": 40,
+    "tags": [
+      "vraie grandeur",
+      "section plane",
+      "pyramide régulière",
+      "cube",
+      "théorème de Pythagore",
+      "construction à la règle et au compas"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +32,129 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur une perspective cavalière, un carré devient un parallélogramme et un angle droit peut paraître aigu : le dessin d'un solide ment sur les longueurs. Quand l'énoncé demande de dessiner « en vraie grandeur » ou « en dimensions réelles » un triangle ou un quadrilatère tracé à l'intérieur d'un solide, il ne s'agit donc pas de recopier la figure, mais de **calculer** chaque longueur puis de construire la figure plane à la règle et au compas. Ce cours te donne la méthode, et les quelques longueurs de référence qui reviennent à chaque épreuve."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le théorème de Pythagore et sa réciproque",
+        "Connaître les propriétés du carré, du rectangle, du triangle équilatéral",
+        "Savoir reconnaître un cube, un pavé droit, une pyramide régulière et nommer leurs arêtes et leurs faces",
+        "Savoir construire un triangle connaissant ses trois côtés, à la règle et au compas"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Calculer d'abord, construire ensuite",
+      "contenu_markdown": "**Principe.** Une figure plane contenue dans un solide (triangle, section par un plan) a des dimensions réelles que la perspective ne conserve pas. Seules les longueurs **calculées** à partir des hypothèses peuvent être reportées.\n\n**Méthode en quatre temps.**\n\n1. **Repérer** dans le solide chacun des côtés de la figure demandée et dire de quoi il s'agit : arête, diagonale d'une face, hauteur, segment joignant deux milieux...\n2. **Calculer** chaque longueur exacte à partir des hypothèses : faces équilatérales, base carrée, Pythagore dans une face ou dans un triangle rectangle de l'espace, théorème des milieux.\n3. **Identifier la nature** de la figure obtenue : isocèle, équilatérale, rectangle (réciproque de Pythagore), rectangle isocèle...\n4. **Construire** la figure plane : on trace un côté, puis on place le dernier sommet à l'intersection de deux arcs de cercle dont les rayons sont les longueurs calculées. On contrôle avec une propriété établie au point 3.\n\n**Longueurs de référence à connaître** (côté ou arête $a$) :\n\n| Segment | Longueur |\n|---|---|\n| diagonale d'un carré de côté $a$ | $a\\sqrt2$ |\n| diagonale d'une face d'un cube d'arête $a$ | $a\\sqrt2$ |\n| grande diagonale d'un cube d'arête $a$ | $a\\sqrt3$ |\n| hauteur d'un triangle équilatéral de côté $a$ | $\\dfrac{a\\sqrt3}{2}$ |\n| segment joignant les milieux de deux côtés d'un triangle | moitié du troisième côté |\n\n**Valeurs exactes, puis valeurs approchées.** On garde les valeurs exactes ($4\\sqrt2$, $3\\sqrt2$...) pendant tout le calcul ; on ne passe à une valeur approchée au millimètre qu'au moment de tracer.",
+      "formule_principale": "\\text{diagonale d'un carré de côté } a = a\\sqrt{2}",
+      "variantes": [
+        {
+          "nom": "Construire avec un angle droit",
+          "quand_utiliser": "Quand la nature de la figure révèle un angle droit (réciproque de Pythagore)",
+          "contenu_markdown": "Si le triangle est rectangle, il est plus précis de tracer l'angle droit à l'équerre puis de reporter les deux côtés de l'angle droit au compas. L'hypoténuse mesurée sur ta figure sert alors de contrôle : elle doit correspondre à la valeur calculée."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCDE$ est une pyramide régulière de sommet $E$, de base le carré $ABCD$ de centre $O$, dont les faces latérales sont des triangles équilatéraux. On donne $AB = 4$ cm. Dessiner en dimensions réelles le triangle $DEB$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Repérer les trois côtés du triangle $DEB$",
+          "justification": "$[DE]$ et $[BE]$ sont des arêtes latérales ; $[BD]$ est une diagonale du carré de base.",
+          "resultat_markdown": "Deux arêtes latérales et une diagonale de la base."
+        },
+        {
+          "numero": 2,
+          "action": "Calculer $DE$ et $BE$",
+          "justification": "Les faces latérales sont des triangles équilatéraux dont un côté est une arête de la base, de longueur $4$ cm : toutes leurs arêtes mesurent $4$ cm.",
+          "resultat_markdown": "$DE = BE = 4$ cm"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $BD$",
+          "justification": "Le triangle $ABD$ est rectangle en $A$ (angle d'un carré) : on applique le théorème de Pythagore.",
+          "resultat_markdown": "$BD^2 = AB^2 + AD^2 = 16 + 16 = 32$, donc $BD = \\sqrt{32} = 4\\sqrt2 \\approx 5{,}66$ cm"
+        },
+        {
+          "numero": 4,
+          "action": "Déterminer la nature du triangle",
+          "justification": "Deux côtés égaux : il est isocèle en $E$. On teste la réciproque de Pythagore sur le plus grand côté $[BD]$.",
+          "resultat_markdown": "$DE^2 + BE^2 = 16 + 16 = 32 = BD^2$ : le triangle $DEB$ est **rectangle isocèle en $E$**."
+        },
+        {
+          "numero": 5,
+          "action": "Construire le triangle",
+          "justification": "On trace $[BD]$ de longueur $4\\sqrt2 \\approx 5{,}66$ cm, puis les arcs de centres $B$ et $D$ de rayon $4$ cm ; $E$ est l'un de leurs points d'intersection.",
+          "resultat_markdown": "Contrôle : l'angle $\\widehat{DEB}$ mesuré à l'équerre est droit."
+        },
+        {
+          "numero": 6,
+          "action": "Contrôler par la hauteur",
+          "justification": "Dans un triangle rectangle isocèle, la hauteur issue du sommet de l'angle droit est aussi la médiane, et vaut la moitié de l'hypoténuse. Ici cette hauteur est $[EO]$, car $O$ est le milieu de $[BD]$.",
+          "resultat_markdown": "$EO = \\dfrac{4\\sqrt2}{2} = 2\\sqrt2 \\approx 2{,}83$ cm"
+        }
+      ],
+      "conclusion_markdown": "Le triangle $DEB$ est rectangle isocèle en $E$, de côtés $4$ cm, $4$ cm et $4\\sqrt2 \\approx 5{,}66$ cm ; on le construit à partir de ces seules valeurs calculées, et non à partir de la perspective."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Mesurer les côtés sur la perspective cavalière et les reporter tels quels.",
+          "pourquoi_faux": "La perspective cavalière conserve les longueurs des segments situés dans un plan frontal, mais réduit et déforme les segments « fuyants ». La diagonale $[BD]$ dessinée en perspective n'a presque jamais la longueur $4\\sqrt2$ cm.",
+          "correction_markdown": "Ne reporter que des longueurs calculées à partir des hypothèses de l'énoncé."
+        },
+        {
+          "erreur_markdown": "Confondre la diagonale du carré de base avec une arête : écrire $BD = 4$ cm.",
+          "pourquoi_faux": "$B$ et $D$ sont deux sommets **opposés** du carré : $[BD]$ est une diagonale, plus longue que le côté, de longueur $4\\sqrt2$ cm.",
+          "correction_markdown": "Avant de calculer, nommer la nature de chaque segment (arête, diagonale de face, diagonale du solide) et appliquer la longueur de référence correspondante."
+        },
+        {
+          "erreur_markdown": "Arrondir trop tôt : remplacer $BD$ par $5{,}7$ puis vérifier Pythagore avec $5{,}7^2 = 32{,}49$.",
+          "pourquoi_faux": "Avec une valeur approchée, $16 + 16 = 32 \\neq 32{,}49$ : on conclut à tort que le triangle n'est pas rectangle.",
+          "correction_markdown": "Faire tous les calculs et toutes les vérifications avec la valeur exacte $4\\sqrt2$, dont le carré vaut exactement $32$. N'arrondir qu'au moment du tracé."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "$ABCDEFGH$ est un cube d'arête $3$ cm ($ABCD$ et $EFGH$ sont deux faces opposées, $E$ au-dessus de $A$, $F$ au-dessus de $B$, $G$ au-dessus de $C$, $H$ au-dessus de $D$). Déterminer la nature du triangle $BDE$ et le dessiner en vraie grandeur.",
+          "solution_markdown": "**Repérage.** Les trois côtés sont des diagonales de faces : $[BD]$ dans la face $ABCD$, $[BE]$ dans la face $ABFE$, $[DE]$ dans la face $ADHE$.\n\n**Calcul.** Chaque face est un carré de côté $3$ cm. Dans la face $ABCD$, le triangle $ABD$ est rectangle en $A$ :\n\n$$BD^2 = AB^2 + AD^2 = 9 + 9 = 18, \\qquad BD = \\sqrt{18} = 3\\sqrt2 \\text{ cm}$$\n\nDe même, dans le triangle $ABE$ rectangle en $A$ : $BE^2 = 9 + 9 = 18$, $BE = 3\\sqrt2$ cm ; et dans le triangle $ADE$ rectangle en $A$ : $DE = 3\\sqrt2$ cm.\n\n**Nature.** $BD = BE = DE = 3\\sqrt2$ cm : le triangle $BDE$ est **équilatéral**.\n\n**Construction.** Tracer $[BD]$ de longueur $3\\sqrt2 \\approx 4{,}24$ cm, puis les arcs de centres $B$ et $D$ de même rayon $4{,}24$ cm ; leur intersection donne $E$. Contrôle : chaque angle mesure $60°$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Avec le même étiquetage, $ABCDEFGH$ est un cube d'arête $4$ cm. Démontrer que le quadrilatère $ABGH$ est un rectangle, calculer ses dimensions puis le dessiner en vraie grandeur. Calculer la longueur de sa diagonale $[AG]$.",
+          "solution_markdown": "**Nature.** $\\overrightarrow{HG} = \\overrightarrow{DC} = \\overrightarrow{AB}$ (arêtes parallèles de même sens et de même longueur), donc $ABGH$ est un parallélogramme. La droite $(AB)$ est orthogonale au plan $(BCG)$, car elle est perpendiculaire aux deux droites sécantes $(BC)$ et $(BF)$ de ce plan ; elle est donc orthogonale à $(BG)$, qui est contenue dans ce plan. Un parallélogramme ayant un angle droit est un **rectangle**.\n\n**Dimensions.** $AB = 4$ cm. $[BG]$ est une diagonale de la face carrée $BCGF$ ; le triangle $BCG$ est rectangle en $C$ :\n\n$$BG^2 = BC^2 + CG^2 = 16 + 16 = 32, \\qquad BG = 4\\sqrt2 \\approx 5{,}66 \\text{ cm}$$\n\n**Construction.** Tracer $[AB]$ de $4$ cm, les perpendiculaires en $A$ et en $B$ à l'équerre, reporter $5{,}66$ cm sur chacune pour placer $H$ et $G$.\n\n**Diagonale.** Le triangle $ABG$ est rectangle en $B$ :\n\n$$AG^2 = AB^2 + BG^2 = 16 + 32 = 48, \\qquad AG = \\sqrt{48} = 4\\sqrt3 \\approx 6{,}93 \\text{ cm}$$\n\nOn retrouve la longueur de référence $a\\sqrt3$ de la grande diagonale d'un cube d'arête $a = 4$. Contrôle sur la figure : la diagonale mesurée doit faire environ $6{,}9$ cm."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "$SABCD$ est une pyramide régulière de sommet $S$, de base le carré $ABCD$ de côté $6$ cm et de centre $O$ ; ses arêtes latérales mesurent $5$ cm. Dessiner en vraie grandeur le triangle $SAC$, préciser sa nature, puis calculer la hauteur $SO$ de la pyramide et l'aire du triangle $SAC$.",
+          "solution_markdown": "**Côtés.** $SA = SC = 5$ cm (arêtes latérales). $[AC]$ est une diagonale du carré de base ; le triangle $ABC$ est rectangle en $B$ :\n\n$$AC^2 = AB^2 + BC^2 = 36 + 36 = 72, \\qquad AC = 6\\sqrt2 \\approx 8{,}49 \\text{ cm}$$\n\n**Nature.** Le triangle est isocèle en $S$. On compare $SA^2 + SC^2 = 25 + 25 = 50$ et $AC^2 = 72$ : comme $72 > 50$, l'angle $\\widehat{ASC}$ n'est pas droit. Le théorème d'Al-Kashi précise sa nature :\n\n$$\\cos\\widehat{ASC} = \\frac{SA^2 + SC^2 - AC^2}{2 \\times SA \\times SC} = \\frac{25 + 25 - 72}{2 \\times 5 \\times 5} = \\frac{-22}{50} = -0{,}44 < 0$$\n\nL'angle $\\widehat{ASC}$ est donc **obtus**. Le triangle $SAC$ est isocèle en $S$ et obtusangle.\n\n**Construction.** Tracer $[AC]$ de $8{,}49$ cm, puis les arcs de centres $A$ et $C$ de rayon $5$ cm ; $S$ est à leur intersection.\n\n**Hauteur $SO$.** La pyramide étant régulière, $O$ est le pied de la hauteur et le milieu de $[AC]$, donc $AO = \\dfrac{6\\sqrt2}{2} = 3\\sqrt2$ cm. Le triangle $SOA$ est rectangle en $O$ :\n\n$$SO^2 = SA^2 - AO^2 = 25 - 18 = 7, \\qquad SO = \\sqrt7 \\approx 2{,}65 \\text{ cm}$$\n\n**Aire de $SAC$.** $[SO]$ est la hauteur issue de $S$ dans ce triangle :\n\n$$\\mathcal{A} = \\frac{AC \\times SO}{2} = \\frac{6\\sqrt2 \\times \\sqrt7}{2} = 3\\sqrt{14} \\approx 11{,}2 \\text{ cm}^2$$"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une perspective ne donne jamais de longueurs fiables : en vraie grandeur, tu ne reportes que des longueurs calculées.",
+        "Nomme chaque côté avant de calculer : arête, diagonale de face ($a\\sqrt2$), grande diagonale du cube ($a\\sqrt3$), hauteur.",
+        "Dès que tu as trois longueurs, teste la réciproque de Pythagore avec les valeurs exactes : un angle droit caché simplifie souvent la suite.",
+        "Construis au compas à partir des longueurs, puis contrôle la figure avec une propriété calculée (angle droit, hauteur, diagonale).",
+        "Au Probatoire C et E, cette question ouvre souvent la partie géométrie dans l'espace : les longueurs calculées ici resservent pour une hauteur, une aire latérale ou un volume."
+      ]
+    }
+  ]
 }

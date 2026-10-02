@@ -7,7 +7,17 @@
     "serie": "A",
     "deduplique_vers_cours_existant": true,
     "note_deduplication": "Deja couvert par le cours cours-la-sequence-de-demarrage-dun-ordinateur-post-tle-ti (bac-ti-informatique-etude-de-cas-2020-officiel-cameroun).",
-    "statut": "brouillon"
+    "statut": "brouillon",
+    "tags": [
+      "démarrage",
+      "POST",
+      "BIOS",
+      "UEFI",
+      "veille",
+      "bips sonores"
+    ],
+    "sous_theme": "Matériel informatique - démarrage de l'ordinateur",
+    "duree_estimee_min": 30
   },
   "source": {
     "epreuve_id": "probatoire-a-informatique-theorique-2026-officiel-cameroun",
@@ -17,5 +27,121 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand on appuie sur le bouton d'un ordinateur, le bureau n'apparaît pas tout de suite : l'écran reste noir, des lignes de texte défilent, parfois un bip retentit. Pendant ces quelques secondes, la machine se vérifie elle-même, cherche où se trouve son système d'exploitation et le charge en mémoire. Comprendre cette séquence permet d'interpréter ce que l'on voit et entend au démarrage, et de savoir si une panne vient du matériel ou du logiciel. C'est aussi une question classique du Probatoire, souvent posée à partir d'une petite situation de la vie courante."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître les principaux composants d'un ordinateur : carte mère, processeur, mémoire vive (RAM), disque dur ou SSD, carte graphique",
+        "Savoir ce qu'est un système d'exploitation (Windows, Linux...) et à quoi il sert",
+        "Savoir distinguer mémoire vive (effacée à la coupure du courant) et mémoire de stockage (conservée)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Les étapes du démarrage d'un ordinateur",
+      "contenu_markdown": "Le **démarrage** (ou **amorçage**, en anglais *boot*) est la phase qui va de la mise sous tension à l'affichage du bureau. Elle se déroule toujours dans le même ordre.\n\n| Étape | Ce qui se passe | Qui agit |\n|---|---|---|\n| 1. Mise sous tension | L'alimentation fournit le courant aux composants | Bloc d'alimentation |\n| 2. Lancement du micrologiciel | Le processeur exécute le programme stocké dans une mémoire de la carte mère | **BIOS** ou **UEFI** |\n| 3. **POST** | Autotest du matériel essentiel : processeur, RAM, carte graphique, clavier | BIOS/UEFI |\n| 4. Recherche du périphérique d'amorçage | Le BIOS/UEFI parcourt les supports dans l'**ordre de démarrage** réglé (disque, clé USB, DVD) | BIOS/UEFI |\n| 5. Chargeur d'amorçage | Un petit programme présent sur le disque est lancé et charge le système d'exploitation | Chargeur (*boot loader*) |\n| 6. Chargement du système d'exploitation | Le système est copié en mémoire vive, démarre ses pilotes et ses services | Système d'exploitation |\n| 7. Ouverture de session | L'écran de connexion puis le bureau s'affichent | Système d'exploitation |\n\n**Le BIOS et l'UEFI.** Le BIOS (*Basic Input/Output System*) est le micrologiciel de la carte mère : il est enregistré dans une mémoire qui ne s'efface pas à l'arrêt, et c'est le premier programme exécuté. L'UEFI est son successeur sur les ordinateurs récents ; il joue le même rôle.\n\n**Le POST.** Le POST (*Power-On Self-Test*, autotest de mise sous tension) est le programme du BIOS/UEFI qui **vérifie l'état du matériel** avant de charger le système d'exploitation. Comme l'écran peut ne pas encore fonctionner à ce moment, le résultat est signalé par des **bips sonores** :\n\n- un bip court unique signifie en général que le test est réussi ;\n- plusieurs bips, ou des bips longs, signalent une **anomalie matérielle** (mémoire, carte graphique, clavier...). La signification exacte de chaque combinaison dépend du fabricant du BIOS et se lit dans la documentation de la carte mère.\n\n**Démarrage, veille et mise en veille prolongée.** En **veille**, l'ordinateur n'est pas éteint : la mémoire vive reste alimentée et conserve la session ; une touche ou le pavé tactile suffit à le réveiller, **sans POST**. En **veille prolongée** (hibernation), la session est enregistrée sur le disque et l'ordinateur s'éteint ; au rallumage, le POST a lieu, puis la session est restaurée. Après un **arrêt** complet, le démarrage parcourt toutes les étapes.",
+      "formule_principale": "\\text{Mise sous tension} \\rightarrow \\text{BIOS/UEFI} \\rightarrow \\text{POST} \\rightarrow \\text{amorçage} \\rightarrow \\text{système d'exploitation} \\rightarrow \\text{bureau}",
+      "variantes": [
+        {
+          "nom": "Démarrage à froid et démarrage à chaud",
+          "quand_utiliser": "Quand un sujet demande de distinguer allumer et redémarrer",
+          "contenu_markdown": "Un **démarrage à froid** part d'un ordinateur éteint, par le bouton d'alimentation. Un **démarrage à chaud** (redémarrage) se fait alors que l'ordinateur est déjà allumé, par le menu « Redémarrer » ou une combinaison de touches : le courant n'est pas coupé, mais le système est rechargé. Dans les deux cas le BIOS/UEFI reprend la main et lance la séquence de démarrage."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Une ménagère essuie un ordinateur portable ouvert ; l'appareil s'allume sans qu'elle ait appuyé sur le bouton. Une fois allumé, il fait défiler des écritures à l'écran pendant un moment, émet un bip, puis affiche le bureau. a) Dans quel état se trouvait l'ordinateur ? b) Comment s'appelle la phase avec les écritures qui défilent ? c) Quel programme vérifie l'ordinateur pendant cette phase ? d) Que signifie le bip ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier l'état initial de l'ordinateur",
+          "justification": "Un ordinateur éteint ne s'allume pas sans action sur le bouton Power. En revanche, un ordinateur en veille se réveille au moindre contact avec le clavier ou le pavé tactile, ce que le chiffon a provoqué.",
+          "resultat_markdown": "L'ordinateur était en **veille**."
+        },
+        {
+          "numero": 2,
+          "action": "Nommer la phase observée",
+          "justification": "Entre la mise en route et l'affichage du bureau, l'ordinateur vérifie son matériel et charge le système d'exploitation : c'est la séquence décrite dans la règle.",
+          "resultat_markdown": "Il s'agit du **démarrage** (ou amorçage, *boot*)."
+        },
+        {
+          "numero": 3,
+          "action": "Nommer le programme de vérification",
+          "justification": "Le contrôle du matériel au démarrage est réalisé par l'autotest intégré au BIOS/UEFI de la carte mère.",
+          "resultat_markdown": "Ce programme est le **POST** (*Power-On Self-Test*), exécuté par le **BIOS** ou l'**UEFI**."
+        },
+        {
+          "numero": 4,
+          "action": "Interpréter le bip",
+          "justification": "Le POST signale son résultat par des bips. Ici, un seul bip est entendu et le démarrage se poursuit jusqu'au bureau : aucune anomalie bloquante n'a été détectée.",
+          "resultat_markdown": "Le bip unique indique que le **POST s'est terminé sans erreur**."
+        }
+      ],
+      "conclusion_markdown": "On a reconstitué la situation à l'aide de la séquence de démarrage : un ordinateur en veille réveillé par erreur, une phase de démarrage, un autotest POST mené par le BIOS/UEFI et un bip qui confirme que le matériel est en bon état. Remarque : un ordinateur qui sort d'une simple veille reprend normalement sa session sans refaire de POST ; si l'on observe un démarrage complet, c'est que la veille avait cédé la place à une veille prolongée ou que la batterie était épuisée. Le sujet attend surtout que tu nommes correctement chaque élément."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre que le POST est « le système d'exploitation qui démarre ».",
+          "pourquoi_faux": "Le POST s'exécute **avant** le chargement du système d'exploitation. Il appartient au BIOS/UEFI, enregistré sur la carte mère, et non à Windows ou Linux, qui se trouvent sur le disque.",
+          "correction_markdown": "Retiens l'ordre : BIOS/UEFI, puis POST, puis chargement du système d'exploitation."
+        },
+        {
+          "erreur_markdown": "Affirmer qu'un bip au démarrage signifie toujours une panne.",
+          "pourquoi_faux": "Un bip court unique est en général le signal d'un POST réussi. C'est le nombre et la durée des bips qui renseignent : plusieurs bips ou des bips longs signalent une anomalie.",
+          "correction_markdown": "Interprète le bip selon sa forme : un bip court suivi d'un démarrage normal = test réussi ; une série de bips sans affichage = défaut matériel à identifier dans la documentation du fabricant."
+        },
+        {
+          "erreur_markdown": "Confondre veille et arrêt : « l'ordinateur était éteint ».",
+          "pourquoi_faux": "Un ordinateur éteint ne se rallume pas par un simple contact avec le clavier. En veille, la mémoire vive reste alimentée et l'ordinateur attend un signal pour reprendre.",
+          "correction_markdown": "Quand un ordinateur s'allume sans action sur le bouton Power, pense à la veille."
+        },
+        {
+          "erreur_markdown": "Confondre BIOS et RAM : « le POST est stocké dans la mémoire vive ».",
+          "pourquoi_faux": "La mémoire vive est vide à la mise sous tension ; elle ne peut donc pas contenir le premier programme exécuté. Le BIOS/UEFI est enregistré dans une mémoire de la carte mère qui conserve son contenu sans courant.",
+          "correction_markdown": "Le BIOS/UEFI (et son POST) est sur la carte mère ; le système d'exploitation est sur le disque ; la RAM reçoit le système pendant le démarrage."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Remettre dans l'ordre les étapes suivantes du démarrage d'un ordinateur : (A) affichage du bureau ; (B) POST ; (C) mise sous tension ; (D) chargement du système d'exploitation en mémoire ; (E) recherche du périphérique d'amorçage ; (F) lancement du BIOS/UEFI.",
+          "solution_markdown": "On suit la logique de la séquence : il faut d'abord du courant, puis le premier programme (le BIOS/UEFI), qui teste le matériel, cherche le support contenant le système et le fait charger ; le bureau n'apparaît qu'à la fin.\n\n**Ordre : C - F - B - E - D - A**\n\n1. (C) mise sous tension ;\n2. (F) lancement du BIOS/UEFI ;\n3. (B) POST ;\n4. (E) recherche du périphérique d'amorçage ;\n5. (D) chargement du système d'exploitation en mémoire ;\n6. (A) affichage du bureau."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un élève allume l'ordinateur de la salle informatique. L'écran reste noir et l'unité centrale émet une série de bips longs et répétés ; le bureau n'apparaît jamais. a) À quelle étape du démarrage le problème se produit-il ? b) Le problème est-il plutôt matériel ou logiciel ? Justifier. c) Que peut faire l'élève pour connaître la cause précise ?",
+          "solution_markdown": "**a)** Les bips sont émis par le BIOS/UEFI pendant le **POST**, avant tout chargement du système d'exploitation. L'écran noir confirme qu'on n'a pas dépassé cette étape.\n\n**b)** Le problème est **matériel**. Le POST ne teste que le matériel (mémoire vive, carte graphique, clavier...). Une série de bips longs indique qu'il a détecté une anomalie et bloqué le démarrage. Un problème logiciel (système d'exploitation endommagé) apparaîtrait plus tard, après un POST réussi, avec en général un message d'erreur à l'écran.\n\n**c)** Compter le nombre et la durée des bips, puis chercher leur signification dans la documentation de la carte mère ou du fabricant du BIOS, car le code varie d'un fabricant à l'autre. En attendant, l'élève doit prévenir le responsable de la salle plutôt que d'ouvrir lui-même l'unité centrale."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "On compare trois situations pour un ordinateur portable : (1) il est en veille et on appuie sur une touche ; (2) il est en veille prolongée et on appuie sur le bouton Power ; (3) il a été arrêté et on appuie sur le bouton Power. Pour chaque situation, dire si le POST est exécuté et si la session de travail précédente (documents ouverts) est retrouvée. Justifier à l'aide du rôle de la mémoire vive.",
+          "solution_markdown": "Le point de départ est la mémoire vive : elle perd son contenu dès que le courant est coupé.\n\n**(1) Veille.** La RAM reste alimentée et garde la session. L'ordinateur n'a pas été éteint, donc pas de nouveau démarrage : **pas de POST**, et la session est **retrouvée** presque instantanément.\n\n**(2) Veille prolongée.** Avant de s'éteindre, le système a copié le contenu de la RAM sur le disque. L'ordinateur a été réellement éteint, donc le rallumage relance le BIOS/UEFI : **le POST est exécuté**. Ensuite le système recopie la session du disque vers la RAM : la session est **retrouvée**, mais plus lentement qu'après une veille.\n\n**(3) Arrêt.** Le système a fermé les programmes et rien n'a été conservé. Le démarrage complet a lieu : **POST exécuté**, session **non retrouvée** (il faut rouvrir les documents ; seuls les fichiers enregistrés sont conservés).\n\n| Situation | POST | Session retrouvée |\n|---|---|---|\n| Veille | non | oui |\n| Veille prolongée | oui | oui |\n| Arrêt | oui | non |"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le démarrage suit toujours le même ordre : courant, BIOS/UEFI, POST, recherche du support d'amorçage, chargement du système d'exploitation, bureau.",
+        "Le POST est l'autotest du matériel ; il appartient au BIOS/UEFI de la carte mère et s'exécute avant le système d'exploitation.",
+        "Un bip court unique annonce en général un POST réussi ; plusieurs bips ou des bips longs signalent un défaut matériel dont le code dépend du fabricant.",
+        "Un ordinateur qui s'allume sans qu'on touche au bouton Power était en veille, pas éteint.",
+        "Au Probatoire, ces notions sont évaluées par de courtes questions de vocabulaire à partir d'une situation concrète : nomme précisément (démarrage, BIOS, POST, veille) et justifie en une phrase."
+      ]
+    }
+  ]
 }

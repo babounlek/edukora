@@ -6,9 +6,15 @@
     "pays": "cm",
     "niveau": "1ere",
     "serie": "C, E",
-    "sous_theme": null,
-    "duree_estimee_min": null,
-    "tags": [],
+    "sous_theme": "Géométrie dans l'espace - aires et volumes",
+    "duree_estimee_min": 35,
+    "tags": [
+      "aire latérale",
+      "pyramide",
+      "triangle équilatéral",
+      "apothème",
+      "géométrie dans l'espace"
+    ],
     "savoir_officiel": {
       "classe": "1ere",
       "serie_label": "C-E",
@@ -25,5 +31,117 @@
     "rappels_lies": [],
     "correction_id": null
   },
-  "sections": []
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour peindre les quatre pans d'un toit en forme de pyramide, ou pour découper le patron d'une pyramide en carton, on n'a besoin ni du volume ni de la hauteur : on a besoin de la surface des faces qui « montent » vers le sommet. C'est exactement ce que mesure l'aire latérale. Quand ces faces sont des triangles équilatéraux, le calcul se réduit à une seule formule bien maîtrisée, appliquée autant de fois qu'il y a de faces. Le Probatoire C et E pose régulièrement cette question en fin de problème de géométrie dans l'espace, après les questions d'orthogonalité."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître le vocabulaire d'une pyramide : sommet, base, arêtes latérales, faces latérales, hauteur",
+        "Savoir calculer l'aire d'un triangle : $\\dfrac{\\text{base} \\times \\text{hauteur}}{2}$",
+        "Savoir appliquer le théorème de Pythagore dans un triangle rectangle",
+        "Savoir simplifier une racine carrée, par exemple $\\sqrt{12} = 2\\sqrt{3}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Aire latérale d'une pyramide dont les faces latérales sont équilatérales",
+      "contenu_markdown": "**Définition.** L'aire latérale d'une pyramide est la somme des aires de ses **faces latérales**, c'est-à-dire des triangles qui joignent le sommet aux côtés de la base. La base n'en fait **pas** partie. L'aire **totale** est l'aire latérale augmentée de l'aire de la base.\n\n**Aire d'un triangle équilatéral de côté $c$.** Dans un triangle équilatéral, la hauteur issue d'un sommet tombe au milieu du côté opposé. Le demi-triangle est rectangle, d'hypoténuse $c$ et de petit côté $\\dfrac{c}{2}$, donc par Pythagore :\n\n$$h^2 = c^2 - \\left(\\frac{c}{2}\\right)^2 = c^2 - \\frac{c^2}{4} = \\frac{3c^2}{4} \\qquad \\text{d'où} \\qquad h = \\frac{c\\sqrt{3}}{2}$$\n\nL'aire vaut alors :\n\n$$\\mathcal{A} = \\frac{c \\times h}{2} = \\frac{1}{2} \\times c \\times \\frac{c\\sqrt{3}}{2} = \\frac{c^2\\sqrt{3}}{4}$$\n\n**Aire latérale.** Si la pyramide a $n$ faces latérales qui sont toutes des triangles équilatéraux de côté $c$, ces faces sont isométriques et :\n\n$$\\mathcal{A}_{\\text{latérale}} = n \\times \\frac{c^2\\sqrt{3}}{4}$$\n\n| Pyramide | Nombre de faces latérales | Aire latérale |\n|---|---|---|\n| base triangulaire (tétraèdre régulier posé sur une face) | $3$ | $\\dfrac{3c^2\\sqrt{3}}{4}$ |\n| base carrée (pyramide régulière à faces équilatérales) | $4$ | $c^2\\sqrt{3}$ |\n\n**Hauteur de face et hauteur de pyramide.** La hauteur d'une face, $\\dfrac{c\\sqrt{3}}{2}$, s'appelle l'**apothème** de la pyramide régulière. Elle est différente de la hauteur de la pyramide, segment qui joint le sommet au centre de la base perpendiculairement à celle-ci. Pour une pyramide à base carrée et faces équilatérales, cette hauteur vaut $\\dfrac{c\\sqrt{2}}{2}$.",
+      "formule_principale": "\\mathcal{A}_{\\text{latérale}} = n \\times \\frac{c^2\\sqrt{3}}{4}",
+      "variantes": [
+        {
+          "nom": "Calcul par l'apothème",
+          "quand_utiliser": "Quand la formule de l'aire du triangle équilatéral est oubliée, ou quand les faces sont seulement isocèles",
+          "contenu_markdown": "Pour toute pyramide régulière, l'aire latérale vaut $\\dfrac{\\text{périmètre de la base} \\times \\text{apothème}}{2}$. Avec une base carrée de côté $c$ et une apothème $a = \\dfrac{c\\sqrt{3}}{2}$ : $\\dfrac{4c \\times \\frac{c\\sqrt{3}}{2}}{2} = c^2\\sqrt{3}$, le même résultat. Cette voie reste valable quand les faces sont isocèles sans être équilatérales : il suffit alors de calculer l'apothème par Pythagore dans une face."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "$ABCDE$ est une pyramide régulière de sommet $E$, de base le carré $ABCD$ et de hauteur $(EO)$. Ses faces latérales sont des triangles équilatéraux et $AB = 4$ cm. Calculer l'aire latérale de la pyramide.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identifier les faces latérales et leur nature",
+          "justification": "L'aire latérale ne compte que les faces qui contiennent le sommet $E$ : $ABE$, $BCE$, $CDE$ et $DAE$. L'énoncé dit qu'elles sont équilatérales ; chacune a un côté commun avec le carré, donc chacune a pour côté $c = AB = 4$ cm.",
+          "resultat_markdown": "$4$ triangles équilatéraux de côté $c = 4$ cm"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer la hauteur d'une face",
+          "justification": "Dans la face $ABE$, la hauteur issue de $E$ coupe $[AB]$ en son milieu $H$, avec $AH = 2$ cm. Le triangle $AHE$ est rectangle en $H$, d'hypoténuse $AE = 4$ cm.",
+          "resultat_markdown": "$EH^2 = AE^2 - AH^2 = 16 - 4 = 12$, donc $EH = \\sqrt{12} = 2\\sqrt{3}$ cm"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer l'aire d'une face",
+          "justification": "On applique $\\dfrac{\\text{base} \\times \\text{hauteur}}{2}$, puis on contrôle avec la formule $\\dfrac{c^2\\sqrt{3}}{4}$.",
+          "resultat_markdown": "$\\mathcal{A}_{\\text{face}} = \\dfrac{4 \\times 2\\sqrt{3}}{2} = 4\\sqrt{3}$ cm², et $\\dfrac{4^2\\sqrt{3}}{4} = \\dfrac{16\\sqrt{3}}{4} = 4\\sqrt{3}$ cm² : les deux calculs concordent"
+        },
+        {
+          "numero": 4,
+          "action": "Multiplier par le nombre de faces latérales",
+          "justification": "Les quatre faces sont isométriques, elles ont donc la même aire. La base carrée n'est pas comptée.",
+          "resultat_markdown": "$\\mathcal{A}_{\\text{latérale}} = 4 \\times 4\\sqrt{3} = 16\\sqrt{3}$ cm² $\\approx 27{,}7$ cm²"
+        }
+      ],
+      "conclusion_markdown": "L'aire latérale de la pyramide vaut $16\\sqrt{3}$ cm², soit environ $27{,}7$ cm². Si l'on demandait l'aire totale, on ajouterait l'aire du carré de base, $4^2 = 16$ cm², pour obtenir $16\\sqrt{3} + 16 = 16(\\sqrt{3}+1) \\approx 43{,}7$ cm²."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Ajouter l'aire de la base : $\\mathcal{A}_{\\text{latérale}} = 16\\sqrt{3} + 16$.",
+          "pourquoi_faux": "Le mot « latérale » désigne les faces sur les côtés, celles qui joignent le sommet à la base. La base est justement la face qui n'est pas latérale. Le résultat $16\\sqrt{3}+16$ est l'aire totale, qui répond à une autre question.",
+          "correction_markdown": "Lis le mot exact de la consigne : « latérale » donne $16\\sqrt{3}$ cm², « totale » donne $16\\sqrt{3}+16$ cm²."
+        },
+        {
+          "erreur_markdown": "Calculer l'aire d'une face avec la hauteur de la pyramide : $\\dfrac{4 \\times 2\\sqrt{2}}{2} = 4\\sqrt{2}$ cm².",
+          "pourquoi_faux": "La hauteur de la pyramide, $EO = 2\\sqrt{2}$ cm, est perpendiculaire au plan de la base : elle n'est contenue dans aucune face. L'aire d'un triangle se calcule avec une hauteur de ce triangle, ici l'apothème $2\\sqrt{3}$ cm.",
+          "correction_markdown": "Isole la face dans un croquis à part et calcule sa propre hauteur par Pythagore : $\\sqrt{4^2-2^2} = 2\\sqrt{3}$ cm."
+        },
+        {
+          "erreur_markdown": "Écrire l'aire d'un triangle équilatéral sous la forme $\\dfrac{c \\times c}{2}$, soit $8$ cm² pour $c = 4$.",
+          "pourquoi_faux": "Le produit $c \\times c$ utilise un côté comme hauteur. Or dans un triangle équilatéral aucun côté n'est perpendiculaire à un autre : la hauteur vaut $\\dfrac{c\\sqrt{3}}{2} \\approx 0{,}87\\,c$, plus courte que le côté.",
+          "correction_markdown": "Utilise $\\mathcal{A} = \\dfrac{c^2\\sqrt{3}}{4}$, ou recalcule la hauteur par Pythagore avant d'appliquer $\\dfrac{\\text{base} \\times \\text{hauteur}}{2}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Une pyramide régulière $SABCD$ a pour base le carré $ABCD$ de côté $6$ cm ; ses quatre faces latérales sont des triangles équilatéraux. Calculer la valeur exacte, puis une valeur approchée au dixième, de son aire latérale.",
+          "solution_markdown": "Chaque face latérale est un triangle équilatéral de côté $c = 6$ cm, puisqu'elle a un côté commun avec le carré.\n\nAire d'une face :\n\n$$\\mathcal{A}_{\\text{face}} = \\frac{c^2\\sqrt{3}}{4} = \\frac{6^2\\sqrt{3}}{4} = \\frac{36\\sqrt{3}}{4} = 9\\sqrt{3}\\ \\text{cm}^2$$\n\nContrôle par la hauteur : $h = \\sqrt{6^2 - 3^2} = \\sqrt{36-9} = \\sqrt{27} = 3\\sqrt{3}$ cm, et $\\dfrac{6 \\times 3\\sqrt{3}}{2} = 9\\sqrt{3}$ cm².\n\nLa pyramide a quatre faces latérales isométriques :\n\n$$\\mathcal{A}_{\\text{latérale}} = 4 \\times 9\\sqrt{3} = 36\\sqrt{3}\\ \\text{cm}^2$$\n\nAvec $\\sqrt{3} \\approx 1{,}732$ : $36 \\times 1{,}732 = 62{,}352$, donc $\\mathcal{A}_{\\text{latérale}} \\approx 62{,}4$ cm²."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$ABCD$ est un tétraèdre régulier d'arête $5$ cm (ses quatre faces sont des triangles équilatéraux). On le pose sur la face $BCD$, qui joue le rôle de base. Calculer son aire latérale, puis son aire totale.",
+          "solution_markdown": "Le tétraèdre posé sur $BCD$ est une pyramide de sommet $A$ et de base triangulaire. Ses faces latérales sont les trois faces qui contiennent $A$ : $ABC$, $ACD$ et $ABD$. Ce sont des triangles équilatéraux de côté $c = 5$ cm.\n\nAire d'une face :\n\n$$\\mathcal{A}_{\\text{face}} = \\frac{5^2\\sqrt{3}}{4} = \\frac{25\\sqrt{3}}{4}\\ \\text{cm}^2$$\n\nAire latérale (trois faces) :\n\n$$\\mathcal{A}_{\\text{latérale}} = 3 \\times \\frac{25\\sqrt{3}}{4} = \\frac{75\\sqrt{3}}{4}\\ \\text{cm}^2$$\n\nValeur approchée : $75 \\times 1{,}732 = 129{,}9$ et $129{,}9 \\div 4 \\approx 32{,}5$, donc $\\mathcal{A}_{\\text{latérale}} \\approx 32{,}5$ cm².\n\nAire totale : on ajoute la base $BCD$, elle aussi équilatérale de côté $5$ cm :\n\n$$\\mathcal{A}_{\\text{totale}} = \\frac{75\\sqrt{3}}{4} + \\frac{25\\sqrt{3}}{4} = \\frac{100\\sqrt{3}}{4} = 25\\sqrt{3}\\ \\text{cm}^2 \\approx 43{,}3\\ \\text{cm}^2$$\n\nLe point délicat est le nombre de faces latérales : une base triangulaire en donne trois, pas quatre."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une pyramide régulière $SABCD$, de base le carré $ABCD$ de centre $O$, a des faces latérales équilatérales. Son aire latérale vaut $64\\sqrt{3}$ cm². a) Déterminer la longueur $c$ de ses arêtes. b) Calculer la hauteur $SO$. c) En déduire son volume.",
+          "solution_markdown": "**a)** Pour une base carrée, l'aire latérale vaut $4 \\times \\dfrac{c^2\\sqrt{3}}{4} = c^2\\sqrt{3}$. On résout :\n\n$$c^2\\sqrt{3} = 64\\sqrt{3} \\iff c^2 = 64 \\iff c = 8\\ \\text{cm} \\quad (\\text{car } c > 0)$$\n\n**b)** Dans le triangle $ABC$ rectangle en $B$, Pythagore donne $AC^2 = 8^2 + 8^2 = 128$, donc $AC = \\sqrt{128} = 8\\sqrt{2}$ cm. Le centre $O$ est le milieu de $[AC]$ : $OA = 4\\sqrt{2}$ cm.\n\nLa droite $(SO)$ est perpendiculaire au plan de base, donc à $(OA)$ : le triangle $SOA$ est rectangle en $O$, d'hypoténuse $SA = 8$ cm.\n\n$$SO^2 = SA^2 - OA^2 = 64 - \\left(4\\sqrt{2}\\right)^2 = 64 - 32 = 32 \\qquad \\text{donc} \\qquad SO = \\sqrt{32} = 4\\sqrt{2}\\ \\text{cm}$$\n\nOn retrouve bien $SO = \\dfrac{c\\sqrt{2}}{2}$ avec $c = 8$.\n\n**c)** Le volume d'une pyramide vaut $\\dfrac{1}{3} \\times \\text{aire de la base} \\times \\text{hauteur}$ :\n\n$$\\mathcal{V} = \\frac{1}{3} \\times 8^2 \\times 4\\sqrt{2} = \\frac{64 \\times 4\\sqrt{2}}{3} = \\frac{256\\sqrt{2}}{3}\\ \\text{cm}^3$$\n\nValeur approchée : $256 \\times 1{,}4142 \\approx 362{,}0$ et $362{,}0 \\div 3 \\approx 120{,}7$, donc $\\mathcal{V} \\approx 120{,}7$ cm³."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'aire latérale, ce sont les faces qui touchent le sommet, et rien d'autre : la base ne compte que dans l'aire totale.",
+        "Un triangle équilatéral de côté $c$ a pour hauteur $\\dfrac{c\\sqrt{3}}{2}$ et pour aire $\\dfrac{c^2\\sqrt{3}}{4}$ ; si tu l'oublies, Pythagore dans le demi-triangle te la redonne en une ligne.",
+        "Compte les faces latérales : trois pour une base triangulaire, quatre pour une base carrée. Pour une base carrée à faces équilatérales, $\\mathcal{A}_{\\text{latérale}} = c^2\\sqrt{3}$.",
+        "Ne confonds pas la hauteur d'une face (l'apothème, $\\dfrac{c\\sqrt{3}}{2}$) avec la hauteur de la pyramide ($\\dfrac{c\\sqrt{2}}{2}$ pour une base carrée).",
+        "Au Probatoire C et E, ce calcul arrive en fin de partie « géométrie dans l'espace », après les questions d'orthogonalité et de longueurs : il rapporte un point facile si tu gardes la valeur exacte avec $\\sqrt{3}$ avant d'arrondir."
+      ]
+    }
+  ]
 }
