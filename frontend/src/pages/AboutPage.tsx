@@ -6,7 +6,6 @@ import {
   CalendarCheck,
   Check,
   FileText,
-  Heart,
   Landmark,
   ListChecks,
   Mail,
@@ -144,7 +143,6 @@ const COMMITMENTS = [
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p className="mb-3 flex items-center gap-2.5 font-display text-sm italic text-primary">
-      <span className="h-px w-8 bg-gold" />
       {children}
     </p>
   )
@@ -223,9 +221,6 @@ export function AboutPage() {
           />
           <div className="relative grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center lg:gap-16">
             <div>
-              <div className="mb-3 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Heart className="size-5" />
-              </div>
               <Eyebrow>À propos</Eyebrow>
               <h1 className="font-display text-4xl font-semibold leading-[1.1] tracking-tight text-balance sm:text-5xl lg:text-[3.1rem]">
                 Réviser ce qui tombe vraiment, un peu chaque jour.
