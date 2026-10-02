@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-derouler-un-algorithme-table-dexecution-et-finalite-bepc",
+  "meta": {
+    "titre": "Dérouler un algorithme : table d'exécution et finalité",
+    "matiere": "Informatique",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Algorithmique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "algorithme",
+      "table d'exécution",
+      "variable",
+      "affectation",
+      "finalité d'un algorithme"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-informatique-2022-officiel-cameroun",
+    "exercice_numero": "3",
+    "rappel_id": "rm-info2022-ex3-q3",
+    "rappels_lies": [
+      "rdm-bepc-informatique-2019-cameroun-ex2-q3.c-0"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un algorithme est une recette : si tu suis les étapes dans l'ordre, tu obtiens un résultat. Mais pour être sûr que la recette marche, il faut la faire tourner à la main, en notant à chaque étape ce que contiennent les variables. C'est le rôle de la table d'exécution. Une fois le déroulement fait, on peut dire en une phrase à quoi sert l'algorithme."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce qu'est une variable (une case mémoire qui porte un nom et contient une valeur)",
+        "Connaître les instructions Lire, Ecrire et l'affectation (←)",
+        "Savoir faire des calculs simples et comparer deux nombres"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Table d'exécution et finalité",
+      "contenu_markdown": "**La table d'exécution** est un tableau qui contient une colonne par variable. On exécute l'algorithme **ligne par ligne, dans l'ordre**, et on écrit dans le tableau la nouvelle valeur de chaque variable au moment où elle change.\n\n- **Lire (a)** : la variable reçoit la valeur donnée par l'utilisateur (ici, celle de l'énoncé).\n- **P ← a * b** : on calcule d'abord le membre de droite avec les valeurs actuelles, puis on range le résultat dans la variable de gauche. Le signe ← se lit « reçoit ».\n- **Ecrire P** : on affiche la valeur, la table ne change pas.\n- **Si condition Alors ... Sinon ...** : on évalue la condition ; une seule des deux branches est exécutée.\n\n**La finalité d'un algorithme** est ce qu'il fait, dit en une phrase. Pour la trouver, repère trois choses :\n1. l'**entrée** : ce que l'utilisateur fournit (les Lire) ;\n2. le **traitement** : le calcul ou le test réalisé ;\n3. la **sortie** : ce qui est affiché (les Ecrire).\n\nPuis résume : « Cet algorithme permet de ... (entrée), en ... (traitement), et affiche ... (sortie) ». On ne paraphrase jamais ligne par ligne."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Algorithme Produit : Variables a, b, P : entier ; Début ; Lire (a) ; Lire (b) ; P ← a*b ; Ecrire P ; Fin. Reproduire et compléter la table d'exécution pour a = 5 et b = 6, puis donner la finalité de l'algorithme.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Dessiner la table avec une colonne par variable",
+          "justification": "L'algorithme déclare trois variables : a, b et P.",
+          "resultat_markdown": "| Variables | a | b | P |"
+        },
+        {
+          "numero": 2,
+          "action": "Exécuter Lire (a)",
+          "justification": "L'utilisateur fournit 5 : la variable a reçoit cette valeur.",
+          "resultat_markdown": "a = 5"
+        },
+        {
+          "numero": 3,
+          "action": "Exécuter Lire (b)",
+          "justification": "Même principe avec la valeur 6 pour b.",
+          "resultat_markdown": "b = 6"
+        },
+        {
+          "numero": 4,
+          "action": "Exécuter P ← a*b",
+          "justification": "On calcule avec les valeurs actuelles de a et de b, puis on range le résultat dans P.",
+          "resultat_markdown": "P = 5 × 6 = 30"
+        },
+        {
+          "numero": 5,
+          "action": "Exécuter Ecrire P",
+          "justification": "L'instruction affiche la valeur de P sans la modifier.",
+          "resultat_markdown": "L'écran affiche 30."
+        },
+        {
+          "numero": 6,
+          "action": "Donner la finalité",
+          "justification": "Entrée : deux entiers. Traitement : multiplication. Sortie : le produit.",
+          "resultat_markdown": "Cet algorithme calcule et affiche le produit de deux nombres entiers saisis par l'utilisateur."
+        }
+      ],
+      "conclusion_markdown": "La table finale est a = 5, b = 6, P = 30, et l'algorithme calcule le produit de deux entiers."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Laisser la case P vide dans la table.",
+          "pourquoi_faux": "La table d'exécution doit contenir la valeur de chaque variable à la fin. Une case vide montre que l'instruction P ← a*b n'a pas été exécutée.",
+          "correction_markdown": "Calcule le produit (5 × 6 = 30) et écris 30 dans la case P."
+        },
+        {
+          "erreur_markdown": "Décrire l'algorithme ligne par ligne au lieu de donner sa finalité.",
+          "pourquoi_faux": "« Il lit a, puis il lit b, puis il calcule P... » est une paraphrase. La question demande en quoi consiste l'algorithme, c'est-à-dire ce qu'il fait au total.",
+          "correction_markdown": "Écris une seule phrase : « Cet algorithme calcule le produit de deux nombres saisis »."
+        },
+        {
+          "erreur_markdown": "Croire que « Recommencez » dans un message d'un algorithme le fait redemander la saisie.",
+          "pourquoi_faux": "Un message n'est que du texte affiché. Sans instruction de répétition (boucle), l'algorithme s'arrête après un essai.",
+          "correction_markdown": "Cherche une boucle (TantQue, Répéter, Pour) avant d'affirmer qu'il y a une répétition."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Algorithme Somme : Variables a, b, S : entier ; Début ; Lire (a) ; Lire (b) ; S ← a+b ; Ecrire S ; Fin. Complète la table d'exécution pour a = 7 et b = 8.",
+          "solution_markdown": "| Variables | a | b | S |\n|---|---|---|---|\n| Valeurs | 7 | 8 | 15 |\n\nOn calcule S ← a + b = 7 + 8 = 15. L'algorithme affiche 15."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Algorithme Echange : Variables a, b, x : entier ; Début ; Lire (a) ; Lire (b) ; x ← a ; a ← b ; b ← x ; Ecrire a ; Ecrire b ; Fin. Complète la table pour a = 3 et b = 9, puis donne la finalité.",
+          "solution_markdown": "On exécute ligne par ligne.\n\n- Lire (a) : a = 3.\n- Lire (b) : b = 9.\n- x ← a : x reçoit 3, donc x = 3.\n- a ← b : a reçoit 9, donc a = 9.\n- b ← x : b reçoit 3, donc b = 3.\n\n| Variables | a | b | x |\n|---|---|---|---|\n| Valeurs finales | 9 | 3 | 3 |\n\nL'algorithme affiche 9 puis 3. Sa finalité : il **échange les valeurs** de deux variables, en utilisant x comme variable temporaire."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Algorithme Test : Variables N : entier ; Début ; Lire (N) ; Si (N < 1 ou N > 10) Alors Ecrire « Hors intervalle » Sinon Ecrire « Dans l'intervalle » FinSi ; Fin. Donne ce qu'affiche l'algorithme pour N = 12, puis pour N = 5, puis sa finalité en une phrase.",
+          "solution_markdown": "- Pour N = 12 : N < 1 est faux, N > 10 est vrai. Avec « ou », il suffit qu'une condition soit vraie : la condition globale est vraie. L'algorithme affiche **Hors intervalle**.\n- Pour N = 5 : N < 1 est faux et N > 10 est faux. La condition globale est fausse, on exécute le Sinon. L'algorithme affiche **Dans l'intervalle**.\n\nFinalité : cet algorithme demande un entier et vérifie s'il est compris entre 1 et 10."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une table d'exécution a une colonne par variable et se remplit dans l'ordre des instructions.",
+        "Pour une affectation, calcule d'abord le membre de droite, puis range le résultat dans la variable de gauche.",
+        "Dans un Si ... Alors ... Sinon, une seule branche est exécutée.",
+        "La finalité se dit en une phrase : entrée, traitement, sortie, jamais ligne par ligne.",
+        "Au BEPC d'Informatique, la partie algorithmique demande très souvent une table d'exécution puis une explication de ce que fait l'algorithme : ce sont des points rapides si tu déroules sans sauter d'étape."
+      ]
+    }
+  ]
+}
