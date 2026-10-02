@@ -7057,6 +7057,33 @@ class PlatformStatsApiTests(TestCase):
         self.assertNotIn("abonnes", data)
         self.assertNotIn("eleves", data)
 
+    def test_counts_validated_inedites_like_the_catalogue_hero(self):
+        """Le pied de page doit annoncer le même total que le hero du catalogue (liste
+        fusionnée annales + inédites), pas seulement les annales."""
+        cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        lesson = Lesson.objects.create(
+            title="Corrigé validé", subject=self.subject, lesson_type=LessonType.CORR,
+            epreuve_source="src", statut=StatutContenu.VALIDE,
+        )
+        lesson.cursus.add(cursus)
+        blueprint = Blueprint.objects.create(
+            subject=self.subject, titre="Blueprint stats",
+            sections_plan=[{"section": "Exercice 1", "points": 20}], duree_minutes=120, bareme_total=20,
+            statut=StatutContenu.VALIDE,
+        )
+        blueprint.cursus.set([cursus])
+        for titre, statut in (("Inédite validée", StatutContenu.VALIDE), ("Inédite brouillon", StatutContenu.BROUILLON)):
+            epreuve = EpreuveInedite.objects.create(
+                blueprint=blueprint, subject=self.subject, titre=titre, statut=statut,
+            )
+            epreuve.cursus.set([cursus])
+
+        stats = self.client.get(reverse("catalog:platform-stats")).json()
+        hero = self.client.get(reverse("catalog:lesson-list"), {"country": "cm"}).json()
+
+        self.assertEqual(stats["corriges_disponibles"], 2)
+        self.assertEqual(stats["corriges_disponibles"], hero["count"])
+
 
 class IngestionAdminBackgroundRunTests(TestCase):
     """Reproduit un blocage réel : le bouton "Lancer l'ingestion" de l'admin renvoyait

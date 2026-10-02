@@ -581,8 +581,13 @@ class PlatformStatsView(APIView):
 
     def get(self, request):
         contenu_valide = Q(statut=StatutContenu.VALIDE, subject__country__actif=True)
+        # Annales corrigées + épreuves inédites publiées : le même total que le hero du
+        # catalogue (liste fusionnée /catalog/lessons/), sinon deux chiffres différents
+        # pour la même mention "épreuves corrigées" sur une même page.
+        nb_corriges = Lesson.objects.filter(contenu_valide, lesson_type=LessonType.CORR).count()
+        nb_inedites = build_inedit_queryset({}, min_popular_readers=0).count()
         return Response({
-            "corriges_disponibles": Lesson.objects.filter(contenu_valide, lesson_type=LessonType.CORR).count(),
+            "corriges_disponibles": nb_corriges + nb_inedites,
             "cours_disponibles": Cours.objects.filter(contenu_valide).count(),
             "pays_actifs": Country.objects.filter(actif=True).count(),
         })
