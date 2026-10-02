@@ -1,0 +1,139 @@
+{
+  "cours_id": "cours-regles-de-calcul-sur-la-racine-carree-bepc",
+  "meta": {
+    "titre": "Racine carrée d'un produit, d'un quotient, d'une somme : règles et pièges",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Racines carrées",
+    "duree_estimee_min": 25,
+    "tags": [
+      "racine carrée",
+      "produit et quotient",
+      "égalité vraie ou fausse",
+      "contre-exemple",
+      "simplification"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2014-officiel-cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bepc-maths-2014-officiel-cameroun-ex1-q3-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Tu as sûrement déjà écrit $\\sqrt{9+16} = \\sqrt{9}+\\sqrt{16}$ en pensant que la racine « se distribue ». Calcule les deux membres : $\\sqrt{25} = 5$ d'un côté, $3 + 4 = 7$ de l'autre. Cette intuition fausse est l'un des pièges favoris du BEPC dans les exercices « vrai ou faux ». Ce cours fixe la liste exacte de ce qui est permis avec les racines carrées et ce qui ne l'est pas, et t'apprend à le prouver."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir ce que représente $\\sqrt{a}$ : le nombre positif dont le carré est $a$",
+        "Connaître les carrés parfaits jusqu'à $15^{2}$",
+        "Utiliser une valeur approchée à la calculatrice ou par encadrement"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Ce qui se distribue et ce qui ne se distribue pas",
+      "contenu_markdown": "Pour $a \\geq 0$ et $b \\geq 0$ :\n\n- **Produit** : $\\sqrt{ab} = \\sqrt{a} \\times \\sqrt{b}$.\n- **Quotient** (avec $b > 0$) : $\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$.\n- **Carré** : $\\sqrt{a^{2}} = a$, et $(\\sqrt{a})^{2} = a$.\n\nPour une somme ou une différence, **rien de tel** :\n\n$$\\sqrt{a+b} \\neq \\sqrt{a} + \\sqrt{b} \\qquad\\text{et}\\qquad \\sqrt{a-b} \\neq \\sqrt{a} - \\sqrt{b} \\quad \\text{en général}$$\n\n**Comment décider qu'une égalité est fausse.** Deux méthodes :\n\n- *Valeurs approchées* : on calcule chaque membre avec trois décimales. Si les nombres sont nettement différents, l'égalité est fausse.\n- *Contre-exemple* : on remplace les lettres par des nombres simples. Avec $a = 9$ et $b = 16$ : $\\sqrt{a+b} = 5$ et $\\sqrt{a}+\\sqrt{b} = 7$.\n\n**Comment prouver qu'une égalité est fausse de manière exacte.** On élève les deux membres positifs au carré et on montre que les résultats diffèrent. Pour les égalités vraies sur les produits, on s'en sert pour simplifier : $\\sqrt{50} = \\sqrt{25 \\times 2} = 5\\sqrt{2}$.",
+      "formule_principale": "\\sqrt{ab} = \\sqrt{a}\\,\\sqrt{b}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Indiquer si l'égalité $\\sqrt{5} - \\sqrt{2} = \\sqrt{3}$ est vraie ou fausse.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer une valeur approchée du membre de gauche",
+          "justification": "On remplace chaque racine par sa valeur approchée",
+          "resultat_markdown": "$\\sqrt{5} \\approx 2{,}236$ et $\\sqrt{2} \\approx 1{,}414$, donc $\\sqrt{5} - \\sqrt{2} \\approx 0{,}822$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer une valeur approchée du membre de droite",
+          "justification": "Même démarche",
+          "resultat_markdown": "$\\sqrt{3} \\approx 1{,}732$"
+        },
+        {
+          "numero": 3,
+          "action": "Comparer",
+          "justification": "Les deux nombres sont nettement différents ($0{,}822$ contre $1{,}732$)",
+          "resultat_markdown": "L'égalité est fausse."
+        },
+        {
+          "numero": 4,
+          "action": "Confirmer par un calcul exact",
+          "justification": "Si l'égalité était vraie, les carrés de ses deux membres (positifs) seraient égaux",
+          "resultat_markdown": "$(\\sqrt{5} - \\sqrt{2})^{2} = 5 - 2\\sqrt{10} + 2 = 7 - 2\\sqrt{10}$ et $(\\sqrt{3})^{2} = 3$"
+        },
+        {
+          "numero": 5,
+          "action": "Conclure par l'absurde",
+          "justification": "L'égalité des carrés conduirait à une égalité impossible",
+          "resultat_markdown": "$7 - 2\\sqrt{10} = 3$ donnerait $2\\sqrt{10} = 4$, donc $\\sqrt{10} = 2$, donc $10 = 4$ : impossible."
+        }
+      ],
+      "conclusion_markdown": "L'égalité $\\sqrt{5} - \\sqrt{2} = \\sqrt{3}$ est fausse."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Écrire $\\sqrt{9+16} = \\sqrt{9}+\\sqrt{16} = 7$",
+          "pourquoi_faux": "$\\sqrt{9+16} = \\sqrt{25} = 5$ et non $7$. La racine carrée ne se distribue pas sur une somme.",
+          "correction_markdown": "On calcule d'abord la somme sous le radical : $\\sqrt{9+16} = \\sqrt{25} = 5$."
+        },
+        {
+          "erreur_markdown": "Simplifier $\\sqrt{x^{2}+4}$ en $x+2$",
+          "pourquoi_faux": "Ce serait appliquer la distribution à une somme. Pour $x = 3$ : $\\sqrt{13} \\approx 3{,}606$, alors que $3 + 2 = 5$.",
+          "correction_markdown": "Une somme sous le radical reste telle quelle, sauf si elle est un carré parfait connu."
+        },
+        {
+          "erreur_markdown": "Penser que la règle du produit s'étend à $\\sqrt{a}-\\sqrt{b}$ : $\\sqrt{5}-\\sqrt{2} = \\sqrt{3}$ « car $5-2=3$ »",
+          "pourquoi_faux": "La règle $\\sqrt{a}\\sqrt{b} = \\sqrt{ab}$ vaut pour la multiplication, pas pour la soustraction. Les valeurs approchées ($0{,}822$ et $1{,}732$) le montrent.",
+          "correction_markdown": "Pour douter d'une égalité, essaie toujours une valeur approchée ou un contre-exemple numérique."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dire si chaque égalité est vraie ($V$) ou fausse ($F$) : a) $\\sqrt{9}+\\sqrt{16} = \\sqrt{25}$ ; b) $\\sqrt{9 \\times 16} = \\sqrt{9} \\times \\sqrt{16}$ ; c) $\\sqrt{\\dfrac{100}{4}} = \\dfrac{\\sqrt{100}}{\\sqrt{4}}$.",
+          "solution_markdown": "**a)** $\\sqrt{9}+\\sqrt{16} = 3 + 4 = 7$ et $\\sqrt{25} = 5$. Les nombres sont différents : **F**.\n\n**b)** $\\sqrt{9 \\times 16} = \\sqrt{144} = 12$ et $\\sqrt{9} \\times \\sqrt{16} = 3 \\times 4 = 12$ : **V**.\n\n**c)** $\\sqrt{\\dfrac{100}{4}} = \\sqrt{25} = 5$ et $\\dfrac{\\sqrt{100}}{\\sqrt{4}} = \\dfrac{10}{2} = 5$ : **V**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Écrire sous la forme $a\\sqrt{b}$ avec $b$ le plus petit possible : $\\sqrt{50}$, $\\sqrt{75}$, $\\sqrt{72}$.",
+          "solution_markdown": "On cherche le plus grand carré parfait qui divise le nombre.\n\n$$\\sqrt{50} = \\sqrt{25 \\times 2} = \\sqrt{25}\\times\\sqrt{2} = 5\\sqrt{2}$$\n\n$$\\sqrt{75} = \\sqrt{25 \\times 3} = 5\\sqrt{3}$$\n\n$$\\sqrt{72} = \\sqrt{36 \\times 2} = 6\\sqrt{2}$$\n\n*Contrôle pour $\\sqrt{72}$.* $(6\\sqrt{2})^{2} = 36 \\times 2 = 72$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Soit $A = \\sqrt{18} + \\sqrt{50} - \\sqrt{8}$.\n1. Écrire $A$ sous la forme $k\\sqrt{2}$.\n2. Comparer $A$ avec $\\sqrt{18 + 50 - 8}$. Que constate-t-on ?",
+          "solution_markdown": "**1.** On simplifie chaque racine :\n\n$$\\sqrt{18} = \\sqrt{9 \\times 2} = 3\\sqrt{2} \\qquad \\sqrt{50} = \\sqrt{25 \\times 2} = 5\\sqrt{2} \\qquad \\sqrt{8} = \\sqrt{4 \\times 2} = 2\\sqrt{2}$$\n\n$$A = 3\\sqrt{2} + 5\\sqrt{2} - 2\\sqrt{2} = (3 + 5 - 2)\\sqrt{2} = 6\\sqrt{2}$$\n\n**2.** $18 + 50 - 8 = 60$, donc $\\sqrt{18+50-8} = \\sqrt{60}$. Par ailleurs $A = 6\\sqrt{2} = \\sqrt{36 \\times 2} = \\sqrt{72}$.\n\nComme $72 \\neq 60$, on a $\\sqrt{72} \\neq \\sqrt{60}$, donc $\\sqrt{18}+\\sqrt{50}-\\sqrt{8} \\neq \\sqrt{18+50-8}$. La racine ne se distribue pas sur une somme ni sur une différence."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La racine carrée se distribue sur un produit et un quotient : $\\sqrt{ab} = \\sqrt{a}\\sqrt{b}$ et $\\sqrt{\\dfrac{a}{b}} = \\dfrac{\\sqrt{a}}{\\sqrt{b}}$.",
+        "Elle ne se distribue jamais sur une somme ni sur une différence : $\\sqrt{9+16} = 5$, pas $7$.",
+        "Pour réfuter une égalité, calcule des valeurs approchées ou cherche un contre-exemple numérique.",
+        "Pour une preuve exacte, élève au carré des nombres positifs et montre que les résultats diffèrent.",
+        "Au BEPC, ces règles apparaissent dans les exercices « vrai ou faux » du calcul numérique et dans toute simplification de racines."
+      ]
+    }
+  ]
+}

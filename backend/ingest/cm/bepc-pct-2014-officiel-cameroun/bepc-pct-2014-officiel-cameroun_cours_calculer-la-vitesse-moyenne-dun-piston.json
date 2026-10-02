@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-calculer-la-vitesse-moyenne-dun-piston-bepc",
+  "meta": {
+    "titre": "Calculer la vitesse moyenne d'un piston",
+    "matiere": "PCT",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Technologie - moteur à piston",
+    "duree_estimee_min": 25,
+    "tags": [
+      "vitesse moyenne du piston",
+      "course du piston",
+      "manivelle",
+      "fréquence de rotation",
+      "conversion tr/min en tr/s"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-pct-2014-officiel-cameroun",
+    "exercice_numero": "5",
+    "rappel_id": "rm-pct2014-ex5-q1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Quand le moteur d'une voiture tourne à 3000 tours par minute, chaque piston monte et descend des dizaines de fois par seconde dans son cylindre. Peut-on dire à quelle vitesse il se déplace en moyenne ? Oui, avec une seule formule et un peu de rigueur sur les unités. C'est exactement ce que demande le BEPC dans les exercices de technologie sur le moteur."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir que la vitesse moyenne se calcule par $v = \\frac{d}{t}$.",
+        "Convertir des millimètres en mètres et des minutes en secondes.",
+        "Connaître le rôle de la manivelle (ou du vilebrequin) : elle transforme le mouvement de va-et-vient du piston en rotation."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Course du piston et vitesse moyenne",
+      "contenu_markdown": "La **course** $C$ du piston est la distance qu'il parcourt entre sa position la plus haute (point mort haut) et sa position la plus basse (point mort bas). Elle est égale au double de la longueur $OA$ du bras de la manivelle :\n\n$$C = 2 \times OA$$\n\nÀ chaque tour du vilebrequin, le piston fait un aller (une course $C$) puis un retour (une autre course $C$). Il parcourt donc la distance $2C$ en un tour. Si le vilebrequin fait $N$ tours par seconde, la distance parcourue en une seconde est $2C \times N$. La vitesse moyenne du piston est donc :",
+      "formule_principale": "v_m = 2 \times C \times N",
+      "variantes": [
+        {
+          "nom": "Passage par la formule v = d / t",
+          "quand_utiliser": "Quand tu préfères retrouver la formule plutôt que la mémoriser.",
+          "contenu_markdown": "Un tour dure $T = \\frac{1}{N}$ seconde. Pendant ce temps, le piston parcourt $d = 2C$. Donc $v_m = \\frac{d}{T} = \\frac{2C}{1/N} = 2 \times C \times N$. On retrouve la même formule."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un régime où le vilebrequin fait 3000 tr/min, déterminer en m/s la vitesse moyenne $v_m$ du piston sachant que la manivelle a une longueur $OA = 36$ mm.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer la course du piston",
+          "justification": "La course est le double de la longueur de la manivelle : $C = 2 \times OA$.",
+          "resultat_markdown": "$C = 2 \times 36 = 72$ mm"
+        },
+        {
+          "numero": 2,
+          "action": "Convertir la course en mètres",
+          "justification": "La vitesse doit être en m/s, donc toutes les longueurs en mètres : 1 mm = 0,001 m.",
+          "resultat_markdown": "$C = 72 \times 0,001 = 0,072$ m"
+        },
+        {
+          "numero": 3,
+          "action": "Convertir la fréquence de rotation en tours par seconde",
+          "justification": "Une minute vaut 60 secondes, donc on divise le nombre de tours par minute par 60.",
+          "resultat_markdown": "$N = \\frac{3000}{60} = 50$ tr/s"
+        },
+        {
+          "numero": 4,
+          "action": "Appliquer la formule",
+          "justification": "À chaque tour, le piston parcourt $2C$ (aller et retour).",
+          "resultat_markdown": "$v_m = 2 \times C \times N = 2 \times 0,072 \times 50$"
+        },
+        {
+          "numero": 5,
+          "action": "Calculer",
+          "justification": "On multiplie : $2 \times 0,072 = 0,144$ puis $0,144 \times 50 = 7,2$.",
+          "resultat_markdown": "$v_m = 7,2$ m/s"
+        }
+      ],
+      "conclusion_markdown": "La vitesse moyenne du piston est $v_m = 7,2$ m/s (soit environ 26 km/h)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Oublier le facteur 2 et écrire $v_m = C \times N = 0,072 \times 50 = 3,6$ m/s",
+          "pourquoi_faux": "Le piston ne fait pas seulement la course $C$ en un tour : il monte et il redescend. La distance parcourue par tour est $2C$, pas $C$.",
+          "correction_markdown": "Toujours écrire la phrase « en un tour, le piston parcourt $2C$ » avant de calculer. On obtient $7,2$ m/s."
+        },
+        {
+          "erreur_markdown": "Garder 3000 tr/min dans le calcul : $v_m = 2 \times 0,072 \times 3000 = 432$ m/s",
+          "pourquoi_faux": "Le résultat doit être en m/s, donc la fréquence doit être en tours **par seconde**. Un piston à 432 m/s (plus vite que le son) est absurde : l'ordre de grandeur doit t'alerter.",
+          "correction_markdown": "Diviser par 60 : $N = 3000 \\div 60 = 50$ tr/s."
+        },
+        {
+          "erreur_markdown": "Utiliser la longueur de la manivelle à la place de la course : $v_m = 2 \times 0,036 \times 50 = 3,6$ m/s",
+          "pourquoi_faux": "$OA$ est la longueur du bras de la manivelle, pas la distance parcourue par le piston. La course vaut $2 \times OA$.",
+          "correction_markdown": "Calculer d'abord $C = 2 \times OA = 72$ mm, puis seulement utiliser la formule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "La manivelle d'un moteur mesure $OA = 40$ mm. Le vilebrequin tourne à 2400 tr/min. Calculer la vitesse moyenne du piston en m/s.",
+          "solution_markdown": "$C = 2 \times OA = 2 \times 40 = 80$ mm $= 0,08$ m.\n\n$N = \\frac{2400}{60} = 40$ tr/s.\n\n$v_m = 2 \times C \times N = 2 \times 0,08 \times 40 = 6,4$ m/s."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Un moteur a une course de piston $C = 90$ mm. Il tourne à 6000 tr/min. Calculer la vitesse moyenne du piston, puis la convertir en km/h.",
+          "solution_markdown": "$C = 90$ mm $= 0,09$ m.\n\n$N = \\frac{6000}{60} = 100$ tr/s.\n\n$v_m = 2 \times 0,09 \times 100 = 18$ m/s.\n\nConversion : 1 m/s = 3,6 km/h, donc $18 \times 3,6 = 64,8$ km/h."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La manivelle d'un moteur mesure $OA = 30$ mm. On veut que la vitesse moyenne du piston soit de 12 m/s. À quelle fréquence de rotation, en tr/min, doit tourner le vilebrequin ?",
+          "solution_markdown": "$C = 2 \times 30 = 60$ mm $= 0,06$ m.\n\nOn part de $v_m = 2 \times C \times N$ et on isole $N$ : $N = \\frac{v_m}{2 \times C}$.\n\n$N = \\frac{12}{2 \times 0,06} = \\frac{12}{0,12} = 100$ tr/s.\n\nEn tr/min : $100 \times 60 = 6000$ tr/min."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "La course du piston est le double de la longueur de la manivelle : $C = 2 \times OA$.",
+        "En un tour, le piston fait un aller et un retour : il parcourt $2C$, jamais $C$ seul.",
+        "La formule $v_m = 2 \times C \times N$ n'est valable qu'avec $C$ en mètres et $N$ en tours par seconde.",
+        "Avant de calculer, convertis : mm vers m (÷ 1000) et tr/min vers tr/s (÷ 60).",
+        "Au BEPC, cette question vaut souvent 1 point dans l'exercice de technologie sur le moteur : lis bien si on te demande des m/s ou des km/h."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "cours_id": "cours-systeme-poulies-courroie-rapport-de-transmission-et-vitesses-bepc",
+  "meta": {
+    "titre": "Système poulies-courroie : rapport de transmission et vitesses de rotation",
+    "matiere": "PCT",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Technologie - transmission du mouvement",
+    "duree_estimee_min": 30,
+    "tags": [
+      "poulies-courroie",
+      "rapport de transmission",
+      "vitesse de rotation",
+      "roue menante",
+      "roue menée"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-pct-2025-officiel-cameroun",
+    "exercice_numero": "2",
+    "rappel_id": "rm-pct2025-ex2-q2",
+    "rappels_lies": [
+      "rm-pct2022-ex2-q4",
+      "rm-pct2006-ex5-q4"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur une moulinette à manioc, une scie ou le moteur d'une voiture, une courroie relie deux roues de tailles différentes. Selon la taille des roues, la machine tourne plus vite ou plus lentement que le moteur qui l'entraîne. Le rapport de transmission mesure exactement cela, et c'est l'un des calculs les plus réguliers de l'exercice de technologie au BEPC."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Savoir calculer une vitesse de rotation en tours par minute ou en tours par seconde",
+        "Savoir faire des produits en croix et résoudre une équation simple",
+        "Savoir convertir des secondes en minutes"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Le rapport de transmission d'un système poulies-courroie",
+      "contenu_markdown": "Dans un système poulies-courroie, la roue **menante** (ou motrice, d'entrée) entraîne la roue **menée** (ou réceptrice, de sortie) par l'intermédiaire de la courroie.\n\nLe **rapport de transmission** $k$ compare les vitesses de rotation de la sortie et de l'entrée :\n\n$$k = \\frac{N_{sortie}}{N_{entrée}}$$\n\n$N$ désigne la vitesse de rotation, en tours par minute (tr/min) ou en tours par seconde (tr/s). Le rapport $k$ n'a pas d'unité.\n\n- Si $k > 1$ : la roue de sortie tourne plus vite que celle d'entrée, le système **multiplie** la vitesse.\n- Si $k < 1$ : la roue de sortie tourne moins vite, le système **réduit** la vitesse.\n\nComme $N_{sortie} = k \\times N_{entrée}$, connaître $k$ et une vitesse permet de retrouver l'autre : $N_{entrée} = \\dfrac{N_{sortie}}{k}$.\n\n**Lien avec les diamètres.** La courroie, qui ne glisse pas, avance à la même vitesse sur les deux poulies. On en déduit :\n\n$$D_A \\times N_A = D_B \\times N_B \\qquad \\text{donc} \\qquad k = \\frac{N_B}{N_A} = \\frac{D_A}{D_B}$$\n\n($A$ est la roue menante, $B$ la roue menée.) La poulie de plus petit diamètre tourne donc toujours plus vite que la poulie de plus grand diamètre.",
+      "formule_principale": "k = \\dfrac{N_{\\text{sortie}}}{N_{\\text{entrée}}}"
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Le rapport de transmission d'un système poulies-courroie A → B est $k = \\dfrac{3}{2}$. La vitesse de rotation de la roue de sortie est $N_B = 450$ tr/min. 1) Dire s'il y a multiplication ou réduction du mouvement. 2) Déterminer la vitesse de rotation $N_A$ de la roue d'entrée.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la définition de $k$ avec les notations de l'énoncé",
+          "justification": "La roue de sortie est B et la roue d'entrée est A.",
+          "resultat_markdown": "$k = \\dfrac{N_{sortie}}{N_{entrée}} = \\dfrac{N_B}{N_A}$"
+        },
+        {
+          "numero": 2,
+          "action": "Comparer $k$ à 1",
+          "justification": "Le signe de $k - 1$ indique si la sortie tourne plus vite ou moins vite que l'entrée.",
+          "resultat_markdown": "$k = \\dfrac{3}{2} = 1{,}5 > 1$ : la roue de sortie tourne plus vite que la roue d'entrée. Il y a **multiplication** du mouvement."
+        },
+        {
+          "numero": 3,
+          "action": "Isoler $N_A$",
+          "justification": "On connaît $k$ et $N_B$ : on résout $\\dfrac{N_B}{N_A} = k$ pour $N_A$.",
+          "resultat_markdown": "$N_A = \\dfrac{N_B}{k}$"
+        },
+        {
+          "numero": 4,
+          "action": "Faire l'application numérique",
+          "justification": "Diviser par une fraction revient à multiplier par son inverse.",
+          "resultat_markdown": "$N_A = \\dfrac{450}{3/2} = 450 \\times \\dfrac{2}{3} = \\dfrac{900}{3} = 300$ tr/min"
+        },
+        {
+          "numero": 5,
+          "action": "Vérifier la cohérence",
+          "justification": "Il y a multiplication, donc la sortie doit être plus rapide que l'entrée.",
+          "resultat_markdown": "$N_A = 300$ tr/min $< N_B = 450$ tr/min : le résultat est cohérent. On retrouve aussi $k = \\dfrac{450}{300} = 1{,}5$."
+        }
+      ],
+      "conclusion_markdown": "Le système multiplie le mouvement, et la roue d'entrée tourne à 300 tr/min."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Inverser le rapport et écrire $k = \\dfrac{N_{entrée}}{N_{sortie}}$",
+          "pourquoi_faux": "Avec cette définition inversée, on conclurait à une réduction alors qu'il y a multiplication, et le calcul de $N_A$ serait faux ($450 \\times \\dfrac{3}{2} = 675$ tr/min au lieu de 300).",
+          "correction_markdown": "Retiens le sens : sortie au-dessus, entrée en dessous. $k = \\dfrac{N_{sortie}}{N_{entrée}}$."
+        },
+        {
+          "erreur_markdown": "Multiplier au lieu de diviser (ou l'inverse) pour trouver une vitesse",
+          "pourquoi_faux": "Si l'on cherche la vitesse de sortie, on multiplie par $k$ ; si l'on cherche la vitesse d'entrée, on divise par $k$. Se tromper de sens donne un résultat incohérent avec la conclusion multiplication ou réduction.",
+          "correction_markdown": "Après chaque calcul, compare le résultat à $k$ : si $k < 1$, la sortie doit être plus lente que l'entrée."
+        },
+        {
+          "erreur_markdown": "Penser que la plus grande poulie tourne le plus vite",
+          "pourquoi_faux": "La courroie avance à la même vitesse sur les deux poulies. Sur une grande poulie, un tour fait avancer beaucoup de courroie ; il faut donc moins de tours pour la même longueur. La grande poulie tourne plus lentement.",
+          "correction_markdown": "Petit diamètre, vitesse de rotation plus grande ; grand diamètre, vitesse plus petite : $D_A \\times N_A = D_B \\times N_B$."
+        },
+        {
+          "erreur_markdown": "Mélanger les unités, par exemple une vitesse en tours par seconde et l'autre en tours par minute",
+          "pourquoi_faux": "Le rapport $k$ compare deux vitesses : elles doivent être exprimées dans la même unité, sinon le quotient est faux d'un facteur 60.",
+          "correction_markdown": "Convertis d'abord toutes les vitesses en tr/min ou toutes en tr/s, puis calcule."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Un système poulies-courroie a un rapport de transmission $k = \\dfrac{2}{5}$. La roue d'entrée tourne à 1000 tr/min. Calculer la vitesse de la roue de sortie et dire s'il y a multiplication ou réduction.",
+          "solution_markdown": "**Vitesse de sortie.** $N_{sortie} = k \\times N_{entrée} = \\dfrac{2}{5} \\times 1000 = 400$ tr/min.\n\n**Conclusion.** $k = \\dfrac{2}{5} = 0{,}4 < 1$ : la sortie tourne moins vite que l'entrée ($400 < 1000$). Il y a **réduction** du mouvement."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Une roue menante A de diamètre 30 cm tourne à 200 tr/min. Elle entraîne par une courroie une roue menée B de diamètre 10 cm. Calculer la vitesse de rotation de B et le rapport de transmission.",
+          "solution_markdown": "**Vitesse de B.** La courroie impose $D_A \\times N_A = D_B \\times N_B$, d'où :\n\n$N_B = \\dfrac{D_A \\times N_A}{D_B} = \\dfrac{30 \\times 200}{10} = \\dfrac{6000}{10} = 600$ tr/min.\n\n**Rapport de transmission.** $k = \\dfrac{N_B}{N_A} = \\dfrac{600}{200} = 3$.\n\n**Vérification.** $\\dfrac{D_A}{D_B} = \\dfrac{30}{10} = 3$ : on retrouve la même valeur. Comme $k > 1$, le système multiplie la vitesse, ce qui est logique puisque B est la plus petite poulie."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "La roue menante A d'un système poulies-courroie, de diamètre 24 cm, fait 300 tours en 20 s. La roue menée B a un diamètre de 36 cm. Déterminer la vitesse de rotation de A en tr/s, celle de B en tr/s puis en tr/min, et le rapport de transmission. Conclure.",
+          "solution_markdown": "**Vitesse de A.** $N_A = \\dfrac{300}{20} = 15$ tr/s.\n\n**Vitesse de B.** Avec $D_A \\times N_A = D_B \\times N_B$ :\n\n$N_B = \\dfrac{D_A \\times N_A}{D_B} = \\dfrac{24 \\times 15}{36} = \\dfrac{360}{36} = 10$ tr/s.\n\n**Conversion.** $10 \\text{ tr/s} = 10 \\times 60 = 600$ tr/min.\n\n**Rapport de transmission.** $k = \\dfrac{N_B}{N_A} = \\dfrac{10}{15} = \\dfrac{2}{3}$. Vérification : $\\dfrac{D_A}{D_B} = \\dfrac{24}{36} = \\dfrac{2}{3}$.\n\n**Conclusion.** $k < 1$ : il y a réduction du mouvement. La roue B, plus grande que A, tourne moins vite (10 tr/s contre 15 tr/s)."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Le rapport de transmission est toujours sortie sur entrée : $k = \\dfrac{N_{sortie}}{N_{entrée}}$.",
+        "Si $k > 1$ le système multiplie la vitesse, si $k < 1$ il la réduit : vérifie toujours ton résultat avec cette règle.",
+        "Pour la vitesse de sortie tu multiplies par $k$, pour la vitesse d'entrée tu divises par $k$.",
+        "La courroie impose $D_A \\times N_A = D_B \\times N_B$ : la plus petite poulie tourne le plus vite.",
+        "Au BEPC, la question sur le système poulies-courroie est presque garantie à l'exercice de technologie : elle demande une vitesse de rotation, un rapport ou la nature du mouvement (multiplication ou réduction)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "cours_id": "cours-retrouver-des-effectifs-inconnus-avec-effectif-total-et-moyenne-bepc",
+  "meta": {
+    "titre": "Retrouver deux effectifs inconnus à partir de l'effectif total et de la moyenne",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Statistiques et systèmes",
+    "duree_estimee_min": 35,
+    "tags": [
+      "moyenne pondérée",
+      "effectif total",
+      "série groupée en classes",
+      "centre de classe",
+      "système d'équations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2020-officiel-cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bepc-maths-2020-officiel-cameroun-ex1-q2.1-1",
+    "rappels_lies": [
+      "rdm-bepc-maths-2020-officiel-cameroun-ex1-q2.2-1",
+      "rdm-bepc-maths-2020-officiel-cameroun-ex1-q2.3-1",
+      "rdm-bepc-maths-2019-officiel-cameroun-ex2-q2-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Un tableau statistique où deux effectifs manquent, notés $a$ et $b$, mais pour lequel on te donne l'effectif total et la moyenne : c'est un classique du BEPC. Chaque information fournit une équation, et deux équations pour deux inconnues forment un système. Le plus important est de savoir écrire correctement ces deux équations, et en particulier la moyenne quand les valeurs sont groupées en classes."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer une moyenne pondérée à partir d'un tableau d'effectifs",
+        "Résoudre un système de deux équations à deux inconnues (substitution ou combinaison)",
+        "Calculer le centre d'une classe $[a\\;;\\,b[$ : $\\dfrac{a+b}{2}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deux informations, deux équations",
+      "contenu_markdown": "Dans un tableau d'effectifs $n_{1}, n_{2}, \\dots, n_{p}$ associés aux valeurs $x_{1}, x_{2}, \\dots, x_{p}$ :\n\n- **l'effectif total** est la somme des effectifs : $N = n_{1} + n_{2} + \\dots + n_{p}$ ;\n- **la moyenne** est :\n\n$$\\bar{x} = \\frac{n_{1}x_{1} + n_{2}x_{2} + \\dots + n_{p}x_{p}}{N}$$\n\n**Série groupée en classes.** On remplace chaque classe par son **centre**, c'est-à-dire la demi-somme de ses bornes : le centre de $[5\\;;\\,10[$ est $\\dfrac{5+10}{2} = 7{,}5$. On utilise ensuite la formule de la moyenne avec les centres à la place des valeurs.\n\n**Effectifs inconnus.** Si deux effectifs $a$ et $b$ sont inconnus :\n\n1. l'effectif total donne la première équation (une somme égale à $N$) ;\n2. la moyenne donne la seconde : on écrit $\\bar{x} \\times N = n_{1}x_{1} + \\dots$ et on développe ;\n3. on résout le système obtenu (substitution ou combinaison) ;\n4. on vérifie en recalculant l'effectif total et la moyenne.",
+      "formule_principale": "\\bar{x} = \\dfrac{n_{1}x_{1} + n_{2}x_{2} + \\dots + n_{p}x_{p}}{N}",
+      "variantes": [
+        {
+          "nom": "Série de valeurs isolées",
+          "quand_utiliser": "Quand le tableau donne des valeurs (notes) et non des classes : on utilise directement les valeurs, sans centre.",
+          "contenu_markdown": "Notes $6, 7, 8, 9, 11, 14$ ; effectifs $8, x, 15, 7, 3, y$ ; effectif total $40$ ; moyenne $8$.\n\nEffectif total : $33 + x + y = 40$, donc $x + y = 7$.\n\nMoyenne : $48 + 7x + 120 + 63 + 33 + 14y = 8 \\times 40 = 320$, donc $7x + 14y = 56$, soit $x + 2y = 8$.\n\nEn soustrayant : $y = 1$, puis $x = 6$. Vérification : effectif $8+6+15+7+3+1 = 40$ et moyenne $\\dfrac{320}{40} = 8$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Les notes de $60$ élèves se répartissent ainsi : $[0\\,;5[$ : $8$ élèves ; $[5\\,;10[$ : $a$ élèves ; $[10\\,;15[$ : $b$ élèves ; $[15\\,;20[$ : $10$ élèves. La moyenne de la classe est $9{,}75$. Déterminer $a$ et $b$.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Écrire la première équation avec l'effectif total",
+          "justification": "La somme des effectifs vaut $60$",
+          "resultat_markdown": "$8 + a + b + 10 = 60$, donc $a + b = 42$"
+        },
+        {
+          "numero": 2,
+          "action": "Calculer les centres des classes",
+          "justification": "Demi-somme des bornes de chaque classe",
+          "resultat_markdown": "$2{,}5$ ; $7{,}5$ ; $12{,}5$ ; $17{,}5$"
+        },
+        {
+          "numero": 3,
+          "action": "Écrire la somme « centre fois effectif »",
+          "justification": "On multiplie chaque centre par son effectif",
+          "resultat_markdown": "$2{,}5\\times 8 + 7{,}5a + 12{,}5b + 17{,}5\\times 10 = 195 + 7{,}5a + 12{,}5b$"
+        },
+        {
+          "numero": 4,
+          "action": "Écrire la seconde équation avec la moyenne",
+          "justification": "Moyenne fois effectif total égale cette somme",
+          "resultat_markdown": "$195 + 7{,}5a + 12{,}5b = 9{,}75 \\times 60 = 585$, donc $7{,}5a + 12{,}5b = 390$"
+        },
+        {
+          "numero": 5,
+          "action": "Simplifier l'équation",
+          "justification": "On multiplie par $2$ pour supprimer les décimales, puis on divise par $5$",
+          "resultat_markdown": "$15a + 25b = 780$, puis $3a + 5b = 156$"
+        },
+        {
+          "numero": 6,
+          "action": "Résoudre le système par substitution",
+          "justification": "De $a + b = 42$ on tire $a = 42 - b$",
+          "resultat_markdown": "$3(42 - b) + 5b = 156$, donc $126 - 3b + 5b = 156$, $2b = 30$, $b = 15$ et $a = 42 - 15 = 27$"
+        },
+        {
+          "numero": 7,
+          "action": "Vérifier",
+          "justification": "Effectif total puis moyenne",
+          "resultat_markdown": "$8 + 27 + 15 + 10 = 60$ et $\\dfrac{195 + 7{,}5\\times 27 + 12{,}5\\times 15}{60} = \\dfrac{195 + 202{,}5 + 187{,}5}{60} = \\dfrac{585}{60} = 9{,}75$"
+        }
+      ],
+      "conclusion_markdown": "On trouve $a = 27$ et $b = 15$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Remplacer chaque classe par sa borne inférieure ($0$, $5$, $10$, $15$) dans la moyenne",
+          "pourquoi_faux": "Cela revient à supposer que tous les élèves de la classe ont la note la plus basse de leur classe. La moyenne obtenue serait trop faible.",
+          "correction_markdown": "Utilise toujours le centre : $\\dfrac{0+5}{2} = 2{,}5$."
+        },
+        {
+          "erreur_markdown": "Écrire $a + b = 60$ pour l'effectif total",
+          "pourquoi_faux": "$60$ est l'effectif de toute la classe. Il faut retrancher les effectifs connus ($8$ et $10$) : $a + b = 60 - 18 = 42$.",
+          "correction_markdown": "Écris la somme complète $8 + a + b + 10 = 60$ avant de simplifier."
+        },
+        {
+          "erreur_markdown": "Oublier de multiplier la moyenne par l'effectif total en écrivant $195 + 7{,}5a + 12{,}5b = 9{,}75$",
+          "pourquoi_faux": "La somme « centre fois effectif » est un total, elle se compare à moyenne $\\times$ effectif, soit $9{,}75 \\times 60 = 585$.",
+          "correction_markdown": "Soit tu multiplies la moyenne par $N$, soit tu gardes la fraction $\\dfrac{195 + 7{,}5a + 12{,}5b}{60} = 9{,}75$."
+        },
+        {
+          "erreur_markdown": "Ne vérifier que l'effectif total",
+          "pourquoi_faux": "Une erreur sur la moyenne ne se voit pas. Les deux données doivent être contrôlées.",
+          "correction_markdown": "Recalcule aussi la moyenne avec les valeurs trouvées pour $a$ et $b$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un tableau, les notes $4$, $8$ et $12$ ont pour effectifs respectifs $6$, $x$ et $5$. L'effectif total est $20$. Déterminer $x$.",
+          "solution_markdown": "Effectif total :\n\n$$6 + x + 5 = 20 \\quad\\Longrightarrow\\quad x = 20 - 11 = 9$$\n\n*Vérification.* $6 + 9 + 5 = 20$. Donc $x = 9$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Les notes $10$, $12$ et $14$ ont pour effectifs $5$, $x$ et $y$. L'effectif total est $20$ et la moyenne est $12{,}1$. Déterminer $x$ et $y$.",
+          "solution_markdown": "**Première équation (effectif total).** $5 + x + y = 20$, donc $x + y = 15$.\n\n**Seconde équation (moyenne).** La somme « note fois effectif » vaut $12{,}1 \\times 20 = 242$ :\n\n$$10\\times 5 + 12x + 14y = 242 \\quad\\Longrightarrow\\quad 12x + 14y = 192 \\quad\\Longrightarrow\\quad 6x + 7y = 96$$\n\n**Résolution par substitution.** De $x = 15 - y$ : $6(15 - y) + 7y = 96$, soit $90 - 6y + 7y = 96$, donc $y = 6$ et $x = 9$.\n\n*Vérification.* $5 + 9 + 6 = 20$ et $\\dfrac{50 + 108 + 84}{20} = \\dfrac{242}{20} = 12{,}1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Une série de $40$ valeurs est groupée en classes : $[0\\,;10[$ : $4$ ; $[10\\,;20[$ : $a$ ; $[20\\,;30[$ : $b$ ; $[30\\,;40[$ : $6$. La moyenne est $21$. Déterminer $a$ et $b$.",
+          "solution_markdown": "**Effectif total.** $4 + a + b + 6 = 40$, donc $a + b = 30$.\n\n**Centres.** $5$ ; $15$ ; $25$ ; $35$.\n\n**Moyenne.** La somme « centre fois effectif » vaut $21 \\times 40 = 840$ :\n\n$$5\\times 4 + 15a + 25b + 35\\times 6 = 840 \\quad\\Longrightarrow\\quad 20 + 15a + 25b + 210 = 840 \\quad\\Longrightarrow\\quad 15a + 25b = 610$$\n\nOn divise par $5$ : $3a + 5b = 122$.\n\n**Substitution.** $a = 30 - b$ donne $3(30 - b) + 5b = 122$, soit $90 + 2b = 122$, donc $b = 16$ et $a = 14$.\n\n*Vérification.* $4 + 14 + 16 + 6 = 40$ et $\\dfrac{20 + 210 + 400 + 210}{40} = \\dfrac{840}{40} = 21$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'effectif total est la somme de tous les effectifs : elle donne une première équation.",
+        "Dans une série en classes, on travaille avec les centres, jamais avec les bornes.",
+        "La moyenne donne la seconde équation : somme « valeur fois effectif » égale moyenne fois effectif total.",
+        "Deux équations, deux inconnues : tu résous le système, puis tu vérifies l'effectif total ET la moyenne.",
+        "Au BEPC, ce type d'exercice combine statistique et système d'équations, avec souvent une question qui prépare l'autre : lis l'énoncé en entier avant de commencer."
+      ]
+    }
+  ]
+}

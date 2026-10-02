@@ -1,0 +1,151 @@
+{
+  "cours_id": "cours-reconnaitre-une-rotation-et-son-centre-bepc",
+  "meta": {
+    "titre": "Reconnaître une rotation et son centre",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Transformations du plan",
+    "duree_estimee_min": 35,
+    "tags": [
+      "rotation",
+      "centre de rotation",
+      "transformation",
+      "quart de tour",
+      "image d'une figure"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-maths-2008-officiel-cameroun",
+    "exercice_numero": "5",
+    "rappel_id": "rdm-bepc-maths-2008-officiel-cameroun-ex5-q1.b-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Sur un quadrillage, six petites figures identiques sont dessinées dans des positions différentes. L'énoncé demande de dire, pour chaque paire, quelle transformation envoie l'une sur l'autre : translation, symétrie ou rotation. Pour ne pas te tromper, il faut un petit test visuel, puis une vérification par les coordonnées. Ce cours te donne ce test et la façon d'écrire la réponse complète, avec le centre et l'angle."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Connaître la translation et la symétrie axiale",
+        "Lire les coordonnées d'un point sur un quadrillage",
+        "Savoir ce qu'est le sens direct (contraire des aiguilles d'une montre) et le sens indirect"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Reconnaître une rotation : orientation conservée, un point qui ne bouge pas",
+      "contenu_markdown": "**Définition.** Une rotation est une transformation du plan qui fait tourner toute la figure d'un angle donné, dans un sens donné, autour d'un point fixe appelé **centre**. Elle conserve les longueurs, les angles et l'orientation de la figure.\n\n**Le test de reconnaissance.** Pour deux figures identiques, on regarde comment un détail de la figure (une pointe, un coin) a bougé.\n\n| Ce que l'on observe | Transformation |\n|---|---|\n| la figure est déplacée sans être tournée, ni retournée | translation |\n| la figure est retournée comme dans un miroir | symétrie axiale |\n| la figure est tournée, sans effet de miroir | rotation |\n\n**Le centre.** Le centre $\\Omega$ est le seul point qui est son propre image. Pour tout point $M$ et son image $M'$, on a $\\Omega M = \\Omega M'$ : le centre est donc sur la médiatrice de $[MM']$. Quand les deux figures ont un sommet commun, c'est le premier candidat à essayer.\n\n**Calcul de l'image par un quart de tour direct** de centre $\\Omega$. Si le vecteur $\\overrightarrow{\\Omega M}$ a pour coordonnées $(a\\;;\\,b)$, alors $\\overrightarrow{\\Omega M'}$ a pour coordonnées $(-b\\;;\\,a)$. On en déduit les coordonnées de $M'$ en ajoutant à celles de $\\Omega$.\n\n**La réponse complète** donne trois éléments : la nature (rotation), le **centre** et l'**angle avec son sens** (par exemple $90°$ dans le sens direct).",
+      "variantes": [
+        {
+          "nom": "Quart de tour dans le sens indirect",
+          "quand_utiliser": "Quand la figure tourne dans le sens des aiguilles d'une montre",
+          "contenu_markdown": "Si $\\overrightarrow{\\Omega M}\\,(a\\;;\\,b)$, alors le quart de tour **indirect** donne $\\overrightarrow{\\Omega M'}\\,(b\\;;\\,-a)$. Vérifie sur un exemple simple : $(1\\;;\\,0)$ (vers la droite) devient $(0\\;;\\,-1)$ (vers le bas), ce qui correspond bien au sens des aiguilles d'une montre."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans un repère orthonormé, la figure $I_3$ a pour sommets $(6\\;;\\,1)$, $(6\\;;\\,2)$, $(5\\;;\\,2)$, $(5\\;;\\,3)$ et $(4\\;;\\,3)$. La figure $I_2$ a pour sommets $(4\\;;\\,3)$, $(3\\;;\\,3)$, $(3\\;;\\,2)$, $(2\\;;\\,2)$ et $(2\\;;\\,1)$. La pointe de $I_3$ est dirigée vers le haut, celle de $I_2$ vers la gauche. Quelle transformation $f$ vérifie $f(I_3) = I_2$ ?",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Observer l'orientation",
+          "justification": "On suit la pointe d'une figure à l'autre : passer du haut vers la gauche sans effet de miroir.",
+          "resultat_markdown": "Il n'y a pas de retournement, donc ce n'est pas une symétrie. La figure est tournée, donc ce n'est pas une translation. On cherche une rotation."
+        },
+        {
+          "numero": 2,
+          "action": "Déterminer l'angle et le sens",
+          "justification": "Passer de « vers le haut » à « vers la gauche » est un quart de tour dans le sens contraire des aiguilles d'une montre.",
+          "resultat_markdown": "Rotation d'angle $90°$ dans le sens direct."
+        },
+        {
+          "numero": 3,
+          "action": "Chercher le centre",
+          "justification": "Les deux figures ont un sommet commun : on l'essaie comme centre, car un centre est invariant.",
+          "resultat_markdown": "Candidat : $\\Omega(4\\;;\\,1)$."
+        },
+        {
+          "numero": 4,
+          "action": "Contrôler sur un premier sommet",
+          "justification": "Pour $M(6\\;;\\,1)$ : $\\overrightarrow{\\Omega M}\\,(2\\;;\\,0)$. Le quart de tour direct transforme $(a\\;;\\,b)$ en $(-b\\;;\\,a)$.",
+          "resultat_markdown": "$(2\\;;\\,0)$ devient $(0\\;;\\,2)$, donc l'image est $(4 + 0\\;;\\,1 + 2) = (4\\;;\\,3)$, un sommet de $I_2$."
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler sur un deuxième sommet",
+          "justification": "Pour $M(6\\;;\\,2)$ : $\\overrightarrow{\\Omega M}\\,(2\\;;\\,1)$.",
+          "resultat_markdown": "$(2\\;;\\,1)$ devient $(-1\\;;\\,2)$, donc l'image est $(4 - 1\\;;\\,1 + 2) = (3\\;;\\,3)$, un sommet de $I_2$."
+        },
+        {
+          "numero": 6,
+          "action": "Contrôler sur un troisième sommet",
+          "justification": "Pour $M(5\\;;\\,3)$ : $\\overrightarrow{\\Omega M}\\,(1\\;;\\,2)$.",
+          "resultat_markdown": "$(1\\;;\\,2)$ devient $(-2\\;;\\,1)$, donc l'image est $(4 - 2\\;;\\,1 + 1) = (2\\;;\\,2)$, un sommet de $I_2$."
+        }
+      ],
+      "conclusion_markdown": "$f$ est la rotation de centre $\\Omega(4\\;;\\,1)$ et d'angle $90°$ dans le sens direct. Le contrôle sur les cinq sommets donne le même résultat."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Répondre « symétrie par rapport à la droite $x = 4$ » parce que les deux figures se touchent le long de cette droite.",
+          "pourquoi_faux": "La symétrie renverrait la figure comme dans un miroir : la pointe resterait tournée vers le haut. Or elle est tournée vers la gauche. Un petit détail de la figure sert justement à trancher.",
+          "correction_markdown": "Repère un détail asymétrique et suis-le : s'il est retourné, c'est une symétrie ; s'il a tourné, c'est une rotation."
+        },
+        {
+          "erreur_markdown": "Donner « rotation » sans préciser le centre, l'angle ou le sens.",
+          "pourquoi_faux": "Il existe une infinité de rotations. Sans centre, angle et sens, on ne sait pas laquelle est utilisée, et le correcteur ne peut pas valider.",
+          "correction_markdown": "Écris toujours : « rotation de centre $\\Omega$, d'angle $90°$, dans le sens direct »."
+        },
+        {
+          "erreur_markdown": "Se tromper de sens : écrire sens indirect pour un mouvement contraire aux aiguilles d'une montre.",
+          "pourquoi_faux": "Le sens direct est le sens contraire des aiguilles d'une montre. Beaucoup d'élèves inversent par réflexe.",
+          "correction_markdown": "Fais un petit schéma d'une horloge et vérifie : le sens direct est celui qui va de « 3 heures » vers « 12 heures »."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans un repère orthonormé, on considère la rotation de centre $O(0\\;;\\,0)$ et d'angle $90°$ dans le sens direct. Calculer l'image du point $A(3\\;;\\,1)$ et celle du point $B(-2\\;;\\,4)$.",
+          "solution_markdown": "Pour un quart de tour direct de centre $O$, le point de coordonnées $(a\\;;\\,b)$ a pour image $(-b\\;;\\,a)$.\n\n*Image de $A(3\\;;\\,1)$.* $a = 3$ et $b = 1$, donc $A'(-1\\;;\\,3)$.\n\n*Image de $B(-2\\;;\\,4)$.* $a = -2$ et $b = 4$, donc $B'(-4\\;;\\,-2)$.\n\n*Contrôle.* $OA = \\sqrt{9 + 1} = \\sqrt{10}$ et $OA' = \\sqrt{1 + 9} = \\sqrt{10}$ : la distance au centre est conservée."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Même question avec le centre $\\Omega(1\\;;\\,1)$ : donner l'image du point $C(2\\;;\\,5)$ par la rotation de centre $\\Omega$ et d'angle $90°$ dans le sens direct.",
+          "solution_markdown": "On calcule le vecteur $\\overrightarrow{\\Omega C}\\,(2 - 1\\;;\\,5 - 1) = (1\\;;\\,4)$.\n\nLe quart de tour direct le transforme en $(-4\\;;\\,1)$.\n\nL'image $C'$ a donc pour coordonnées $(1 - 4\\;;\\,1 + 1) = (-3\\;;\\,2)$.\n\n*Contrôle.* $\\Omega C^{2} = 1 + 16 = 17$ et $\\Omega C'^{2} = (-3-1)^{2} + (2-1)^{2} = 16 + 1 = 17$ ✔"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Le point $A(5\\;;\\,1)$ a pour image $A'(2\\;;\\,4)$ par la rotation de centre $\\Omega(2\\;;\\,1)$ et d'angle $90°$ dans le sens direct. Vérifier que $\\Omega A = \\Omega A'$, puis que le triangle $\\Omega AA'$ est rectangle isocèle en $\\Omega$.",
+          "solution_markdown": "*Distances au centre.* $\\Omega A = \\sqrt{(5-2)^{2} + (1-1)^{2}} = \\sqrt{9} = 3$ et $\\Omega A' = \\sqrt{(2-2)^{2} + (4-1)^{2}} = \\sqrt{9} = 3$. Donc $\\Omega A = \\Omega A'$, et le triangle est isocèle en $\\Omega$.\n\n*Image par le calcul.* $\\overrightarrow{\\Omega A}\\,(3\\;;\\,0)$ devient $(0\\;;\\,3)$, donc l'image est $(2\\;;\\,4) = A'$ ✔\n\n*Angle droit.* $AA'^{2} = (2-5)^{2} + (4-1)^{2} = 9 + 9 = 18$ et $\\Omega A^{2} + \\Omega A'^{2} = 9 + 9 = 18$. D'après la réciproque du théorème de Pythagore, le triangle est rectangle en $\\Omega$.\n\nLe triangle $\\Omega AA'$ est donc rectangle isocèle en $\\Omega$ : l'angle de la rotation, $90°$, est bien retrouvé."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une rotation tourne la figure autour d'un centre fixe, sans effet de miroir : suis un détail de la figure pour le voir.",
+        "Le centre est un point qui ne bouge pas ; quand deux figures ont un sommet commun, essaie-le d'abord.",
+        "Pour chaque point $M$ et son image $M'$, la distance au centre est la même : $\\Omega M = \\Omega M'$.",
+        "Un quart de tour direct de centre $\\Omega$ envoie $\\overrightarrow{\\Omega M}\\,(a\\;;\\,b)$ sur $(-b\\;;\\,a)$.",
+        "Au BEPC, la réponse doit donner la nature, le centre, l'angle et le sens ; contrôle toujours sur plusieurs sommets."
+      ]
+    }
+  ]
+}

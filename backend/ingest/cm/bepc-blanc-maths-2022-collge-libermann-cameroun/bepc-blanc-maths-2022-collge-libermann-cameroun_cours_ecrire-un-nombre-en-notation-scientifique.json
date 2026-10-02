@@ -1,0 +1,146 @@
+{
+  "cours_id": "cours-ecrire-un-nombre-en-notation-scientifique-bepc",
+  "meta": {
+    "titre": "Écrire un nombre en notation scientifique",
+    "matiere": "Mathématiques",
+    "pays": "cm",
+    "niveau": "3e",
+    "serie": null,
+    "sous_theme": "Puissances de 10 et écriture scientifique",
+    "duree_estimee_min": 30,
+    "tags": [
+      "notation scientifique",
+      "puissances de 10",
+      "écriture scientifique",
+      "calcul numérique",
+      "exposant"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bepc-blanc-maths-2022-collge-libermann-cameroun",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-bepc-blanc-maths-2022-collge-libermann-cameroun-ex1-q3-1",
+    "rappels_lies": [
+      "rdm-bepc-maths-2021-officiel-cameroun-ex1-qA.1-1"
+    ],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "La distance entre deux villes, la taille d'un virus, la capacité d'un disque dur : les nombres très grands ou très petits sont pénibles à écrire avec tous leurs zéros. Les scientifiques ont inventé une écriture standard qui les rend lisibles d'un coup d'œil : la notation scientifique. Au BEPC, on te demande de l'utiliser pour donner le résultat d'un calcul, et une réponse correcte mais mal présentée perd des points."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Calculer avec des puissances de 10 : $10^{2}$, $10^{-3}$, $10^{0}$",
+        "Multiplier et diviser des nombres décimaux",
+        "Connaître les règles $10^{p} \\times 10^{q} = 10^{p+q}$ et $\\dfrac{10^{p}}{10^{q}} = 10^{p-q}$"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La forme $a \\times 10^{n}$ avec $1 \\leq a < 10$",
+      "contenu_markdown": "**Définition.** L'écriture scientifique d'un nombre positif est\n\n$$a \\times 10^{n}$$\n\noù $a$ est un nombre décimal tel que $1 \\leq a < 10$ (un seul chiffre non nul avant la virgule) et $n$ un entier relatif.\n\n**Règles sur les puissances de 10.**\n\n- $10^{p} \\times 10^{q} = 10^{p+q}$\n- $\\dfrac{10^{p}}{10^{q}} = 10^{p-q}$\n- $\\left(10^{p}\\right)^{q} = 10^{p \\times q}$\n- $10^{0} = 1$\n\n**Procédure pour un calcul.**\n\n1. Écrire chaque facteur sous la forme (nombre décimal) $\\times$ (puissance de 10).\n2. Regrouper d'un côté les nombres décimaux, de l'autre les puissances de 10, et calculer séparément.\n3. Si le nombre décimal obtenu n'est pas compris entre 1 et 10, **ajuster** : déplacer la virgule et compenser sur l'exposant.\n\n**Comment ajuster.**\n\n| Si le nombre $a$ est trop petit ($a<1$) | on déplace la virgule vers la droite et on **diminue** $n$ |\n|---|---|\n| Si le nombre $a$ est trop grand ($a \\geq 10$) | on déplace la virgule vers la gauche et on **augmente** $n$ |\n\nExemples : $0{,}15 \\times 10^{-1} = 1{,}5 \\times 10^{-2}$ et $12 \\times 10^{3} = 1{,}2 \\times 10^{4}$."
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Calculer $D = \\dfrac{0{,}64 \\times 10^{2} \\times 4 \\times 10^{-5}}{5 \\times 10^{3} \\times 5 \\times 10^{-6}}$ et donner le résultat en notation scientifique.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Regrouper le numérateur",
+          "justification": "On sépare les nombres décimaux et les puissances de 10.",
+          "resultat_markdown": "$0{,}64 \\times 4 = 2{,}56$ et $10^{2} \\times 10^{-5} = 10^{2 + (-5)} = 10^{-3}$, donc le numérateur vaut $2{,}56 \\times 10^{-3}$"
+        },
+        {
+          "numero": 2,
+          "action": "Regrouper le dénominateur",
+          "justification": "Même procédé.",
+          "resultat_markdown": "$5 \\times 5 = 25$ et $10^{3} \\times 10^{-6} = 10^{-3}$, donc le dénominateur vaut $25 \\times 10^{-3}$"
+        },
+        {
+          "numero": 3,
+          "action": "Faire la division",
+          "justification": "On divise les nombres entre eux et les puissances de 10 entre elles.",
+          "resultat_markdown": "$D = \\dfrac{2{,}56}{25} \\times 10^{-3 - (-3)} = 0{,}1024 \\times 10^{0} = 0{,}1024$"
+        },
+        {
+          "numero": 4,
+          "action": "Vérifier la condition de la notation scientifique",
+          "justification": "$0{,}1024$ est inférieur à $1$ : l'écriture n'est pas encore scientifique.",
+          "resultat_markdown": "Il faut $1 \\leq a < 10$."
+        },
+        {
+          "numero": 5,
+          "action": "Ajuster",
+          "justification": "On déplace la virgule d'un rang vers la droite, ce qui multiplie le nombre par $10$, donc on compense avec $10^{-1}$.",
+          "resultat_markdown": "$0{,}1024 = 1{,}024 \\times 10^{-1}$"
+        },
+        {
+          "numero": 6,
+          "action": "Contrôler",
+          "justification": "$1{,}024 \\times 10^{-1} = 1{,}024 \\times 0{,}1 = 0{,}1024$.",
+          "resultat_markdown": "$1 \\leq 1{,}024 < 10$ ✔"
+        }
+      ],
+      "conclusion_markdown": "$D = 1{,}024 \\times 10^{-1}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Laisser le résultat sous la forme $0{,}1024 \\times 10^{0}$ ou $0{,}1024$.",
+          "pourquoi_faux": "Dans une écriture scientifique, le nombre devant la puissance de 10 doit être compris entre $1$ (inclus) et $10$ (exclu). $0{,}1024$ est inférieur à $1$.",
+          "correction_markdown": "Déplace la virgule d'un rang vers la droite et compense : $0{,}1024 = 1{,}024 \\times 10^{-1}$."
+        },
+        {
+          "erreur_markdown": "Écrire $0{,}15 \\times 10^{-1} = 1{,}5 \\times 10^{0}$ en se trompant de sens de compensation.",
+          "pourquoi_faux": "Quand le nombre $0{,}15$ devient $1{,}5$, il est multiplié par $10$. Pour que la valeur ne change pas, il faut diviser par $10$, donc l'exposant diminue de $1$ : on obtient $10^{-2}$.",
+          "correction_markdown": "Règle : la virgule va à droite, l'exposant diminue ; la virgule va à gauche, l'exposant augmente. Vérifie ensuite avec la forme décimale."
+        },
+        {
+          "erreur_markdown": "Soustraire les exposants lors d'un produit, ou les additionner lors d'une division.",
+          "pourquoi_faux": "Pour un produit, $10^{p} \\times 10^{q} = 10^{p+q}$ : on additionne. Pour un quotient, $10^{p} / 10^{q} = 10^{p-q}$ : on soustrait. Les confondre est la cause principale d'erreur d'exposant.",
+          "correction_markdown": "Écris la règle utilisée en face de chaque ligne de calcul, et traite les exposants sur une ligne à part."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Donner l'écriture scientifique de $4\\,500\\,000$ puis de $0{,}00032$.",
+          "solution_markdown": "*Premier nombre.* On place la virgule après le premier chiffre non nul : $4{,}5$. Pour passer de $4{,}5$ à $4\\,500\\,000$, la virgule se déplace de $6$ rangs vers la droite, donc $4\\,500\\,000 = 4{,}5 \\times 10^{6}$.\n\n*Second nombre.* La virgule se place après le $3$ : $3{,}2$. Pour passer de $0{,}00032$ à $3{,}2$, la virgule se déplace de $4$ rangs vers la droite, donc $0{,}00032 = 3{,}2 \\times 10^{-4}$.\n\n*Contrôle.* $3{,}2 \\times 10^{-4} = 3{,}2 \\times 0{,}0001 = 0{,}00032$ ✔"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Calculer $E = (3 \\times 10^{5}) \\times (4 \\times 10^{-2})$ et donner le résultat en notation scientifique.",
+          "solution_markdown": "On sépare : $3 \\times 4 = 12$ et $10^{5} \\times 10^{-2} = 10^{5 + (-2)} = 10^{3}$.\n\nDonc $E = 12 \\times 10^{3}$. Mais $12$ n'est pas compris entre $1$ et $10$. On déplace la virgule d'un rang vers la gauche : $12 = 1{,}2 \\times 10^{1}$.\n\n$E = 1{,}2 \\times 10^{1} \\times 10^{3} = 1{,}2 \\times 10^{4}$.\n\n*Contrôle.* $300\\,000 \\times 0{,}04 = 12\\,000 = 1{,}2 \\times 10^{4}$ ✔"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Calculer $F = \\dfrac{6 \\times 10^{-3} \\times 5 \\times 10^{4}}{1{,}5 \\times 10^{2}}$, puis résoudre le problème suivant : un disque contient $2{,}5 \\times 10^{9}$ octets et chaque fichier occupe $5 \\times 10^{5}$ octets. Combien de fichiers peut-on y ranger au maximum ?",
+          "solution_markdown": "*Calcul de $F$.* Le numérateur : $6 \\times 5 = 30$ et $10^{-3} \\times 10^{4} = 10^{1}$, donc $30 \\times 10^{1} = 3 \\times 10^{2}$.\n\nLe quotient : $F = \\dfrac{3 \\times 10^{2}}{1{,}5 \\times 10^{2}} = \\dfrac{3}{1{,}5} \\times 10^{2 - 2} = 2 \\times 10^{0} = 2$.\n\nL'écriture scientifique de $F$ est $2 \\times 10^{0}$.\n\n*Problème.* Le nombre de fichiers est $\\dfrac{2{,}5 \\times 10^{9}}{5 \\times 10^{5}} = \\dfrac{2{,}5}{5} \\times 10^{9 - 5} = 0{,}5 \\times 10^{4}$.\n\nComme $0{,}5$ est inférieur à $1$, on ajuste : $0{,}5 \\times 10^{4} = 5 \\times 10^{3}$. On peut ranger au maximum $5 \\times 10^{3} = 5\\,000$ fichiers."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "L'écriture scientifique est $a \\times 10^{n}$ avec $1 \\leq a < 10$ et $n$ entier relatif.",
+        "Traite les nombres décimaux et les puissances de 10 séparément, sur deux lignes distinctes.",
+        "Produit : on additionne les exposants. Quotient : on les soustrait.",
+        "Si $a$ n'est pas entre 1 et 10, déplace la virgule et compense sur l'exposant, puis vérifie en revenant à l'écriture décimale.",
+        "Au BEPC, la réponse en notation scientifique est exigée dans l'énoncé : un résultat juste mais mal présenté perd des points."
+      ]
+    }
+  ]
+}
